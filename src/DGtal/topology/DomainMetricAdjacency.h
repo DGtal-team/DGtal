@@ -74,7 +74,7 @@ namespace DGtal
         Dimension dimension = Domain::Space::dimension >
     class DomainMetricAdjacency
     {
-      BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> ));
       // ----------------------- public types ------------------------------
     public:
       typedef typename Domain::Space Space;

@@ -676,7 +676,7 @@ exportEmbeddedSurfaceAs3DNOFF
   const CellEmbedder & cembedder ) const
 {
   BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
-  BOOST_CONCEPT_ASSERT(( CWithGradientMap< CellEmbedder > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CWithGradientMap< CellEmbedder > ));
 
   typedef typename CellEmbedder::GradientMap GradientMap;
   typedef typename CellEmbedder::Cell MyCell;
@@ -757,7 +757,7 @@ exportAs3DNOFF
   const SCellEmbedderWithGradientMap & scembedder ) const
 {
   BOOST_CONCEPT_ASSERT(( concepts::CSCellEmbedder< SCellEmbedderWithGradientMap > ));
-  BOOST_CONCEPT_ASSERT(( CWithGradientMap< SCellEmbedderWithGradientMap > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CWithGradientMap< SCellEmbedderWithGradientMap > ));
 
   typedef typename SCellEmbedderWithGradientMap::GradientMap GradientMap;
   typedef typename SCellEmbedderWithGradientMap::SCell MySCell;

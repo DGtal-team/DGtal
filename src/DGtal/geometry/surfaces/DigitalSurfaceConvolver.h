@@ -97,8 +97,8 @@ public:
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -458,8 +458,8 @@ public:
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -821,8 +821,8 @@ public:
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 

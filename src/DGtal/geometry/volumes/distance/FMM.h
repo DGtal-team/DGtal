@@ -155,9 +155,9 @@ namespace DGtal
 
     //concept assert
     BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CPointFunctor<TPointFunctor> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<TPointFunctor> ));
 
     typedef TImage Image; 
     typedef TSet AcceptedPointSet; 

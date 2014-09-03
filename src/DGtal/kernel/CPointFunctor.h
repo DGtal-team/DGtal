@@ -46,7 +46,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CPointFunctor
   /**
@@ -97,7 +98,7 @@ Description of \b concept '\b CPointFunctor' <p>
   private:
 
   }; // end of concept CPointFunctor
-
+  }
 } // namespace DGtal
 
 //                                                                           //

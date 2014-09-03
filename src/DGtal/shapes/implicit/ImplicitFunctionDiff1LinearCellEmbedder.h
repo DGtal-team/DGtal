@@ -79,7 +79,7 @@ namespace DGtal
   {
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunctionDiff1< TImplicitFunctionDiff1 > ));
-    BOOST_CONCEPT_ASSERT(( CPointEmbedder< TEmbedder > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointEmbedder< TEmbedder > ));
 
   public:
     typedef TKSpace KSpace;

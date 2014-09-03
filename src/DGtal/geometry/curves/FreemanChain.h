@@ -113,7 +113,7 @@ namespace DGtal
 
   public :
 
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     typedef TInteger Integer;
     typedef FreemanChain<Integer> Self;
 

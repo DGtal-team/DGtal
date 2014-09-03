@@ -49,7 +49,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CPointPredicate
   /**
@@ -91,7 +92,7 @@ struct CPointPredicate: CPredicate<T, typename T::Point>
 
 
   }; // end of concept CPointPredicate
-
+  }
 } // namespace DGtal
 
 //                                                                           //

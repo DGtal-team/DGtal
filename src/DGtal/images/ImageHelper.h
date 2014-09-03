@@ -351,7 +351,7 @@ namespace DGtal
     typedef TValue Value;
     
     BOOST_CONCEPT_ASSERT(( CImage<Image> ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
     BOOST_CONCEPT_ASSERT(( CQuantity<Value> ));
     
     /*BOOST_CONCEPT_USAGE(ImageToConstantFunctor)

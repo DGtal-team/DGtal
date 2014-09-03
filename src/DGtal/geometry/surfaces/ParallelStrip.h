@@ -89,7 +89,7 @@ namespace DGtal
   template <typename TSpace, bool muIncluded = true, bool muPlusNuIncluded = true>
   class ParallelStrip
   {
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
 
     // ----------------------- public types ------------------------------
   public:

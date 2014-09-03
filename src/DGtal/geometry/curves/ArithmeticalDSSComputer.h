@@ -106,13 +106,13 @@ namespace DGtal
      * Type of coordinate
      */
     typedef typename IteratorCirculatorTraits<TIterator>::Value::Coordinate Coordinate; 
-    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
 
     /**
      * Type of integer, devoted to remainders (and intercepts)
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
 
     /**
      * Type of objects that represents DSSs 

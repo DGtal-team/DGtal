@@ -91,7 +91,7 @@ namespace DGtal
 		typedef Dimension Index;
 		typedef Component Scalar;
 
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing<TComponent> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<TComponent> ));
     BOOST_STATIC_ASSERT(TM > 0 );
     BOOST_STATIC_ASSERT(TM > 0 );
 
