@@ -45,19 +45,9 @@
 #include "DGtal/math/linalg/EigenDecomposition.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
-
-  namespace functors
-  {
-  /**
-  * This namespace gathers functors transforming the integral
-  * invariant covariance matrix into some geometric quantity: normal
-  * vector, mean curvature, first and second principal curvatures,
-  * principal directions, etc.
-  */
-  namespace IIGeometricFunctors 
-  {
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
     /////////////////////////////////////////////////////////////////////////////
     // template class IINormalDirectionFunctor
@@ -894,7 +884,6 @@ namespace DGtal
       /// A data member only used for temporary calculations.
       mutable RealVector eigenValues;
     }; // end of class IIPrincipalCurvatures3DFunctor
-  } // namespace IIGeometricFunctors 
 
 } // namespace functors
 

@@ -416,7 +416,7 @@ getAdjacentOnSurfelPredicate( SCell & adj_surfel,
                               DGtal::Dimension track_dir,
                               bool pos ) const
 {
-  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
   typedef typename KSpace::Integer Integer;
 
   // Check that [m_surfel] is a bel.

@@ -713,7 +713,7 @@ defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity
 // PointsRange
 template <typename TIterator, typename TKSpace>
 DGtal::DrawableWithBoard2D*
-defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToPoint<TKSpace>, typename TKSpace::Point> & /*object*/,
+defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToPoint<TKSpace>, typename TKSpace::Point> & /*object*/,
              std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
@@ -736,7 +736,7 @@ defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::CanonicSCellEmbedd
 // ArrowsRange
 template <typename TIterator, typename TKSpace>
 DGtal::DrawableWithBoard2D*
-defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToArrow<TKSpace>,
+defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToArrow<TKSpace>,
              std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & /*object*/,
              std::string mode = "" )
 {
@@ -748,7 +748,7 @@ defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToArrow<TKSpa
 // InnerPointsRange
 template <typename TIterator, typename TKSpace>
 DGtal::DrawableWithBoard2D*
-defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & /*object*/,
+defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & /*object*/,
              std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
@@ -759,7 +759,7 @@ defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToInnerPoint<
 // OuterPointsRange
 template <typename TIterator, typename TKSpace>
 DGtal::DrawableWithBoard2D*
-defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & /*object*/,
+defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & /*object*/,
              std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
@@ -770,7 +770,7 @@ defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToOuterPoint<
 // IncidentPointsRange
 template <typename TIterator, typename TKSpace>
 DGtal::DrawableWithBoard2D*
-defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToIncidentPoints<TKSpace>,
+defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToIncidentPoints<TKSpace>,
              std::pair<typename TKSpace::Point, typename TKSpace::Point> > & /*object*/,
              std::string mode = "" )
 {

@@ -13,6 +13,11 @@
     - BasicFunctor functors have been moved to functors:: namespace.
     - DefaultFunctor has been renamed functors::Identity.
     - xxxFunctor have been renamed to xxx.
+
+ - Moving graph, topology, geometry/estimation concepts into
+   namespace concepts::, also moving some functors into namespace
+   functors:: (Jacques-Olivier Lachaud,
+   [#912](https://github.com/DGtal-team/DGtal/pull/912)).
     
 - *DEC Package*
  - DGtal 0.8 contains the first release of the Discrete Exterior
@@ -101,6 +106,10 @@
  - Add comparison operators in variants of CountedPtr. Improve
    coverage of these classes and fix compilation problem
    (Jacques-Olivier Lachaud)
+ - Update doc of CountedPtr, CountedPtrOrPtr and
+   CountedConstPtrOrConstPtr. Add asserts. Add tests. Fix issue 773
+   (https://github.com/DGtal-team/DGtal/issues/773). (Jacques-Olivier
+   Lachaud, [#894](https://github.com/DGtal-team/DGtal/pull/894)).
  - XXXOutputRangeYYY classes are now called
    XXXRangeWithWritableIteratorYYY (Tristan Roussillon,
    [#850](https://github.com/DGtal-team/DGtal/pull/850)).

@@ -166,8 +166,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   for (TIteratorOnBels it = itb; it != ite; ++it) 
     {
       //getting incident points
-      SCellToIncidentPoints<KSpace> func( aK ); 
-      typename SCellToIncidentPoints<KSpace>::Output points = func( *it ); 
+      functors::SCellToIncidentPoints<KSpace> func( aK ); 
+      typename functors::SCellToIncidentPoints<KSpace>::Output points = func( *it ); 
       //assignement
       insertAndAlwaysSetValue( aImg, aSet, points.first, -k*aValue ); 
       insertAndAlwaysSetValue( aImg, aSet, points.second, k*aValue ); 
@@ -193,9 +193,9 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   typedef std::pair<const Bel, Value> BelValue; 
   typedef std::map<Bel, Value> Buffer;
   
-  typedef typename SCellToIncidentPoints<KSpace>::Output Pair;  
+  typedef typename functors::SCellToIncidentPoints<KSpace>::Output Pair;  
   typedef std::vector<Pair> IncidentPoints; 
-  SCellToIncidentPoints<KSpace> getIncidentPoints( aK ); 
+  functors::SCellToIncidentPoints<KSpace> getIncidentPoints( aK ); 
 
   /// 1) store a value for each bel
   /// (== distance of the inner point to the interface) 

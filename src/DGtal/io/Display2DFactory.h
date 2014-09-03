@@ -240,7 +240,7 @@ static void draw( DGtal::Board2D & aBoard,
 // PointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object );
+           const ConstRangeAdapter<TIterator, functors::SCellToPoint<TKSpace>, typename TKSpace::Point> & object );
 // PointsRange
 
 // MidPointsRange
@@ -253,28 +253,28 @@ static void draw( DGtal::Board2D & aBoard,
 // ArrowsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+           const ConstRangeAdapter<TIterator, functors::SCellToArrow<TKSpace>, 
            std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & object );
 // ArrowsRange
 
 // InnerPointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, 
+           const ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<TKSpace>, 
            typename TKSpace::Point > & object );
 // InnerPointsRange
 
 // OuterPointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, 
+           const ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<TKSpace>, 
            typename TKSpace::Point > & object );
 // OuterPointsRange
 
 // IncidentPointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+           const ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<TKSpace>, 
            std::pair<typename TKSpace::Point, typename TKSpace::Point> > & object );
 // IncidentPointsRange
 

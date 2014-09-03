@@ -121,7 +121,7 @@ int main( int argc, char** argv )
   }
 
   //implicit frontier 
-  SCellToIncidentPoints<KSpace> functor( ks );
+  functors::SCellToIncidentPoints<KSpace> functor( ks );
   std::pair<Point,Point> bpair = functor(bel);    
   SurfelPredicate surfelPredicate( ks, binaryImage, 
 				   binaryImage( bpair.first ), 

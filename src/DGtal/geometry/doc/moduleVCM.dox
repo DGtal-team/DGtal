@@ -128,8 +128,8 @@ You may then access to the following elements:
 
 - the \f$ \chi \f$ VCM is returned by method
   VoronoiCovarianceMeasure::measure, where a kernel function must be
-  specified. The type of the kernel function can be \ref HatPointFunction
-  or \ref BallConstantPointFunction, but you may define your own.
+  specified. The type of the kernel function can be \ref functors::HatPointFunction
+  or \ref functors::BallConstantPointFunction, but you may define your own.
 
 Example geometry/volumes/dvcm-2d.cpp gives the full code for computing the \f$ \chi
 \f$-VCM of an arbitrary set of digital points, and then estimating the
@@ -155,15 +155,15 @@ The class VoronoiCovarianceMeasureOnDigitalSurface is templated by the
 following types:
 
 - \b TDigitalSurfaceContainer the type of digital surface container
-  (model of CDigitalSurfaceContainer), e.g. an ImplicitDigitalSurface.
+  (model of concepts::CDigitalSurfaceContainer), e.g. an ImplicitDigitalSurface.
 
-- \b TSeparableMetric a model of CSeparableMetric used for
+- \b TSeparableMetric a model of concepts::CSeparableMetric used for
    computing the Voronoi map (e.g. Euclidean metric is
    DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
 
 - \b TKernelFunction the type of the kernel function \f$ \chi \f$ used
-   for integrating the VCM, a map: Point -> Scalar, e.g. \ref HatPointFunction
-   or \ref BallConstantPointFunction, but you may define your own.
+   for integrating the VCM, a map: Point -> Scalar, e.g. \ref functors::HatPointFunction
+  or \ref functors::BallConstantPointFunction, but you may define your own.
 
 At instanciation, you have to precise several parameters:
 
@@ -241,13 +241,16 @@ is a small piece of code that extracts the VCM normal for each surfel.
 
 The class VCMDigitalSurfaceLocalEstimator adapts a
 VoronoiCovarianceMeasureOnDigitalSurface to be a model of
-CDigitalSurfaceLocalEstimator. It uses the \b Voronoi \b Covariance \b
-Measure to estimate geometric quantities. The template type \b
-TVCMGeometricFunctor specifies what is the estimated quantity.  For
-instance, VCMGeometricFunctors::VCMNormalVectorFunctor returns the
+concepts::CDigitalSurfaceLocalEstimator. It uses the \b Voronoi \b
+Covariance \b Measure to estimate geometric quantities. The template
+type \b TVCMGeometricFunctor specifies what is the estimated
+quantity. Standard geometric functors for VCM are defined in file
+DGtal/geometry/surfaces/estimation/VCMGeometricFunctors.h.
+For
+instance, functors::VCMNormalVectorFunctor returns the
 estimated VCM surface \b outward normal for given surfels,
-VCMGeometricFunctors::VCMAbsoluteCurvatureFunctor returns the absolute
-curvature (see namespace VCMGeometricFunctors).
+functors::VCMAbsoluteCurvatureFunctor returns the absolute
+curvature (see namespace functors:: and those functors starting with VCM).
 
 In order to fulfill concept requirements, a VCMDigitalSurfaceLocalEstimator
 can be instantiated in several ways:
@@ -290,7 +293,7 @@ VCMDigitalSurfaceLocalEstimator::setParams.
 
 \code
 typedef VCMDigitalSurfaceNormalEstimator<SurfaceContainer,Metric,KernelFunction> VCMNormalEstimator;
-typedef VCMGeometricFunctors::VCMNormalVectorFunctor<VCMOnSurface> NormalVectorFunctor;
+typedef functors::VCMNormalVectorFunctor<VCMOnSurface> NormalVectorFunctor;
 typedef VCMDigitalSurfaceLocalEstimator<SurfaceContainer,Metric,
                                         KernelFunction, NormalVectorFunctor> VCMNormalEstimator;
 CountedConstPtrOrConstPtr<Surface> ptrSurface( new Surface( surfaceContainer ) ); // acquired
@@ -306,7 +309,7 @@ for ( typename Surface::ConstIterator it = ptrSurface->begin(),
   }
 \endcode
 
-Example geometry/surfaces/dvcm-2d-curvature.cpp shows how to extract the curvature field (in absolute value) of a digital contour with VCMDigitalSurfaceLocalEstimator templated by functor VCMGeometricFunctors::VCMAbsoluteCurvatureFunctor.
+Example geometry/surfaces/dvcm-2d-curvature.cpp shows how to extract the curvature field (in absolute value) of a digital contour with VCMDigitalSurfaceLocalEstimator templated by functor functors::VCMAbsoluteCurvatureFunctor.
 
 @image html dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure."
 @image latex dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure." width=8cm

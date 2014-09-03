@@ -109,7 +109,7 @@ cellular grid space \f$\mathbf{F}^2\f$.
 Instead of chosing a specific implementation of a cellular grid
 space, we keep the genericity and efficiency objective of DGtal by
 defining a cellular grid space as the concept
-CCellularGridSpaceND. It provides a set of types (Cell, SCell, etc)
+concepts::CCellularGridSpaceND. It provides a set of types (Cell, SCell, etc)
 and methods to manipulate cells of arbitrary dimension. Models of
 CCellularGridSpaceND are:
 
@@ -151,7 +151,7 @@ Methods include:
 - Incidence services
 - Interface
 
-An comprehensive description is given in the concept CCellularGridSpaceND.
+An comprehensive description is given in concepts::CCellularGridSpaceND.
 
 @subsection dgtal_ctopo_sec4  Creating a cellular grid space
 

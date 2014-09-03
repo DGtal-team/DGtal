@@ -46,8 +46,9 @@
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
 /////////////////////////////////////////////////////////////////////////////
 // class CCellEmbedder
@@ -69,9 +70,9 @@ It adds inner types to functor.
 - \e Value: type of value, same as RealPoint
 
 ### Notation
- - \e X : A type that is a model of CCellEmbedder
- - \e x : object of type X
- - \e p : object of type Cell
+- \e X : A type that is a model of CCellEmbedder
+- \e x : object of type X
+- \e p : object of type Cell
 
 ### Definitions
 
@@ -126,6 +127,7 @@ private:
 
 }; // end of concept CCellEmbedder
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //
