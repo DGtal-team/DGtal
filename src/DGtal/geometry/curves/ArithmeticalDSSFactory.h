@@ -87,6 +87,7 @@ namespace DGtal
     typedef ArithmeticalDSL<TCoordinate,TInteger,adjacency> DSL;
 
     // ----------------------- Creation methods ------------------------------
+
   public:
 
     /**
@@ -97,7 +98,7 @@ namespace DGtal
      * @param aL last point of the subsegment
      *
      * NB: logarithmic-time in the greatest component of the direction vector
-     * of the subsegment. Uses smartCH algorithm. 
+     * of the subsegment. Uses smartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
      */
     static DSS createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL);
 
@@ -109,7 +110,9 @@ namespace DGtal
      * @param aL last point of the subsegment
      *
      * NB: logarithmic-time in the greatest component of the direction vector
-     * of the subsegment. Uses reverseSmartCH algorithm. 
+     * of the subsegment. Uses reverseSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014].
+     *
+     * @see createLeftSubsegment
      */
     static DSS createSubsegment(const DSS& aDSS, const Point& aF, const Point& aL);
 
@@ -143,6 +146,18 @@ namespace DGtal
 
     // ----------------------- Internals -------------------------------------
   private:
+
+    /**
+     * Construction of the left subsegment of minimal parameters of a greater DSS. 
+     * It is bound by the first point of @a aDSS on the left and by @a aL on the right. 
+     *
+     * @param aDSS bounding DSS
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reverseSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+     */
+    static DSS createLeftSubsegment(const DSS& aDSS, const Point& aL);
 
     /**
      * Returns the bezout vector (u,v) of a given
