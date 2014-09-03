@@ -46,7 +46,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/base/BasicBoolFunctions.h"
+#include "DGtal/base/BasicBoolFunctors.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/base/CQuantity.h"
 #include "DGtal/kernel/domains/CDomain.h"
@@ -528,7 +528,7 @@ namespace functors
       typedef TValue Value;
       typedef typename Domain::Point Point;
 
-      BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > ));
+      BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
       BOOST_CONCEPT_ASSERT(( CDomain< Domain > ));
       BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
 

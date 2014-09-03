@@ -42,11 +42,11 @@ inline
 void 
 DGtal::setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred)
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<P> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<P> )); 
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<I> ));
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<O,typename P::Point> ));
 
-  NotPointPredicate<P> nPred( aPred ); 
+  functors::NotPointPredicate<P> nPred( aPred ); 
   std::remove_copy_if(itb, ite, ito, nPred); 
 }
 
@@ -97,8 +97,8 @@ DGtal::setFromImage(const I& aImg, const O& ito,
   T1 t1( low ); 
   typedef functors::Thresholder<typename I::Value,false,false> T2; 
   T2 t2( up ); 
-  typedef functors::PredicateCombiner<T1,T2,OrBoolFct2 > P; 
-  P p( t1, t2, OrBoolFct2() ); 
+  typedef functors::PredicateCombiner< T1, T2, functors::OrBoolFct2 > P; 
+  P p( t1, t2, functors::OrBoolFct2() ); 
   functors::Composer<I, P, bool> aPred(aImg, p); 
   //call
   std::remove_copy_if(d.begin(), d.end(), ito, aPred); 

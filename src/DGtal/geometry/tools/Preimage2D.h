@@ -112,22 +112,22 @@ namespace DGtal
 
     //Predicates used to decide whether the preimage
     //has to be updated or not
-    typedef Point2ShapePredicate<Shape,false,true> 
+    typedef functors::Point2ShapePredicate<Shape,false,true> 
       PHullBackQHullFrontPred; 
-    typedef Point2ShapePredicate<Shape,true,true> 
+    typedef functors::Point2ShapePredicate<Shape,true,true> 
       QHullBackPHullFrontPred; 
-    typedef Point2ShapePredicate<Shape,true,true> 
+    typedef functors::Point2ShapePredicate<Shape,true,true> 
       PHullFrontQHullBackPred; 
-    typedef Point2ShapePredicate<Shape,false,true> 
+    typedef functors::Point2ShapePredicate<Shape,false,true> 
       QHullFrontPHullBackPred; 
     //Predicates used to update the hulls
-    typedef Point2ShapePredicate<Shape,true,false> 
+    typedef functors::Point2ShapePredicate<Shape,true,false> 
       FrontPHullUpdatePred; 
-    typedef Point2ShapePredicate<Shape,false,false> 
+    typedef functors::Point2ShapePredicate<Shape,false,false> 
       FrontQHullUpdatePred; 
-    typedef Point2ShapePredicate<Shape,false,false> 
+    typedef functors::Point2ShapePredicate<Shape,false,false> 
       BackPHullUpdatePred; 
-    typedef Point2ShapePredicate<Shape,true,false> 
+    typedef functors::Point2ShapePredicate<Shape,true,false> 
       BackQHullUpdatePred; 
     
 

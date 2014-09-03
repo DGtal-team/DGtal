@@ -66,7 +66,7 @@ in order to construct an ad hoc domain or to bound some local computations withi
 
  \subsection dgtalintroBasicConceptsImplicitSet Implicit sets of points
 
-CPointFunctor, CPointPredicate: 
+CPointFunctor, concepts::CPointPredicate: 
 The concept of point <em>functor</em> describe a mapping between 
 the points of a digital space and a set of values. 
 If the set of values is {0,1}, this mapping is called a point <em>predicate</em>.  
@@ -74,9 +74,9 @@ The main method of the models of these concept is the operator (),
 which must take a point as argument and must return a value.
 Some models of point predicate are adapters: 
 - of point functors by the means of value comparators like Thresholder
-(PointFunctorPredicate), 
-- of explicit sets of points, ie. domains (DomainPredicate)
-and digital sets (SetPredicate).  
+(functors::PointFunctorPredicate), 
+- of explicit sets of points, ie. domains (functors::DomainPredicate)
+and digital sets.
 
  \subsection dgtalintroBasicConceptsImage Image
 

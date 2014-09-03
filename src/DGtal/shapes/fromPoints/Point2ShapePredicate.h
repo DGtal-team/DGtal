@@ -46,9 +46,9 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
-
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class Point2ShapePredicate
@@ -87,7 +87,7 @@ namespace DGtal
   no
    @endcode
    *
-   * This class is a model of CPointPredicate.
+   * This class is a model of concepts::CPointPredicate.
    *
    * @see testHalfPlane.cpp
    */
@@ -271,6 +271,8 @@ struct Point2ShapePredicateComparator<T,true,true> {
   }
 };
 
+} // namespace functors
+
 /**
  * Overloads 'operator<<' for displaying objects of class 'Point2ShapePredicate'.
  * @param out the output stream where the object is written.
@@ -281,7 +283,7 @@ template <typename TSurface, bool isUpward, bool isClosed>
 inline
 std::ostream&
 operator<< ( std::ostream & out, 
-      const Point2ShapePredicate<TSurface,isUpward,isClosed> & object );
+             const DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed> & object );
 
 } // namespace DGtal
 

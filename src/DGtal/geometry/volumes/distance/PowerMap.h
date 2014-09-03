@@ -47,11 +47,10 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/CConstImage.h"
-#include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/base/ConstAlias.h"
 #include "DGtal/geometry/volumes/distance/CPowerSeparableMetric.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////

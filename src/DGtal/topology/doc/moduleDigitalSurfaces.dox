@@ -383,10 +383,10 @@ container accordingly:
   Surfel -> bool: model ExplicitDigitalSurface and a start surfel.
 - the boundary of a region in a labelled image: model
   ExplicitDigitalSurface and a start surfel, and the class
-  BoundaryPredicate, which is model of concepts::CSurfelPredicate.
+  functors::BoundaryPredicate, which is model of concepts::CSurfelPredicate.
 - the frontier between two regions in a labelled image: model
   ExplicitDigitalSurface and a start surfel, and the class
-  FrontierPredicate, which is model of concepts::CSurfelPredicate.
+  functors::FrontierPredicate, which is model of concepts::CSurfelPredicate.
 
 Light versions of containers should be preferred in mostly two
 cases:
@@ -404,8 +404,7 @@ it is called).
 The following snippet shows how to create a digital surface
 associated to a LightImplicitDigitalSurface. The
 LightImplicitDigitalSurface is connected to a shape described by a
-predicate on point (variable set3dPredicate of type
-SetPredicate<DigitalSet>). The full code is in
+predicate on point (a simple digital set). The full code is in
 volBreadthFirstTraversal.cpp.
 
 @snippet topology/volBreadthFirstTraversal.cpp volBreadthFirstTraversal-SetUpDigitalSurface
@@ -467,14 +466,14 @@ standards.
 
 Surfels of a digital surface can also be defined by a predicate
 telling whether or not some surfel belongs to it. Given an image of
-labels, the class BoundaryPredicate and FrontierPredicate are such
+labels, the class functors::BoundaryPredicate and functors::FrontierPredicate are such
 predicates:
 
-  1. BoundaryPredicate ( KSpace, Image, l ) is a predicate returning
+  1. functors::BoundaryPredicate ( KSpace, Image, l ) is a predicate returning
 true for a surfel \a s iff the interior spel of \a s has label
 \c l while the exterior spel of \a s has label different from \c l.
 
-  2. FrontierPredicate ( KSpace, Image, l1, l2 ) is a predicate returning
+  2. functors::FrontierPredicate ( KSpace, Image, l1, l2 ) is a predicate returning
 true for a surfel \a s iff the interior spel of \a s has label
 \c l1 while the exterior spel of \a s has label \c l2.
 
