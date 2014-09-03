@@ -45,7 +45,9 @@ smartCH(const DSL& aDSL,
 {
   typedef typename DSL::Vector Vector; 
   typedef typename DSL::Position Position; 
-  typedef typename DSL::Coordinate Coordinate; 
+  typedef typename DSL::Coordinate Coordinate;
+  ASSERT( aDSL.isValid() ); 
+  ASSERT( aLength >= NumberTraits<Position>::ONE ); 
 
   //position functor
   functors::PositionFunctorFrom2DPoint<Vector,Position> position(aDSL.shift());     
@@ -59,7 +61,8 @@ smartCH(const DSL& aDSL,
   //intercept 
   Coordinate intercept = DSL::toCoordinate( aDSL.mu() - aDSL.remainder(aFirstPoint) ); 
 
-  return smartCH(aFirstPoint, intercept, aLength, step, rStep, shift, rShift, position, uIto, lIto); 
+  Position lastPosition = position(aFirstPoint) + aLength; 
+  return smartCH(aFirstPoint, intercept, lastPosition, step, rStep, shift, rShift, position, uIto, lIto); 
 }
 
 
@@ -133,8 +136,8 @@ smartCH(const PointVector& aFirstPoint,
       ASSERT( (V[0]*(L-U)[1] - V[1]*(L-U)[0]) == 1 ); //eq. 6 
       ASSERT( (stop) || ((!stop)&&(rL + rV < aRemainderBound)) ); //eq. 5
       ASSERT( (stop) || ((!stop)&&(rU + rV >= aRemainderBound)) ); //eq. 5
-      ASSERT( (stop) || ((!stop)&&(aPositionFunctor(L) < aPositionFunctor(V))) ); //eq. 10
-      ASSERT( (stop) || ((!stop)&&(aPositionFunctor(U) < aPositionFunctor(V))) ); //eq. 10
+      ASSERT( (stop) || ((!stop)&&((aPositionFunctor(L)-aPositionFunctor(aFirstPoint)) < aPositionFunctor(V))) ); //eq. 10
+      ASSERT( (stop) || ((!stop)&&((aPositionFunctor(U)-aPositionFunctor(aFirstPoint)) < aPositionFunctor(V))) ); //eq. 10
     }
 
   return V; 
@@ -176,8 +179,6 @@ smartCHNextVertex(const Position& positionBound,
     {
       rX += q * rV; 
       *ito++ = X; 
-
-      ASSERT( pos(V) <= pos(X) ); //eq. 9
 
       q = f2( remainderBound - (rY + rV), (rX - rY) ); //second ray casting
       V += (X - Y) * q;
@@ -236,28 +237,28 @@ reverseSmartCH(const DSS& aDSS,
   Vector v(aDSS.b(), aDSS.a());
  
   return reverseSmartCH( aDSS.Uf(), aDSS.Lf()-aDSS.dsl().shift(), v, 
-			 aPositionBound, 
-			 uIto, lIto, position ); 
+			 aDSS.position(aDSS.back()), aPositionBound, 
+			 position, uIto, lIto ); 
 } 
 
 
 //----------------------------------------------------------------------------
 template<typename PointVector, typename Position, 
-	 typename OutputIterator, typename PositionFunctor>
+	 typename PositionFunctor, typename OutputIterator>
 inline
 PointVector 
 DGtal::functions::
 reverseSmartCH(PointVector U, PointVector L, PointVector V, 
-	       Position aBound, 
-	       OutputIterator uIto, OutputIterator lIto, 
-	       PositionFunctor position)
+	       const Position& aFirstPosition, const Position& aLastPosition, 
+	       const PositionFunctor& aPositionFunctor, 
+	       OutputIterator uIto, OutputIterator lIto)
 {
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
   BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
   BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
   typedef typename PointVector::Coordinate Coordinate; 
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
-
+  ASSERT( aFirstPosition <= aLastPosition ); 
   ASSERT( (V[0]*(L-U)[1] - V[1]*(L-U)[0]) == NumberTraits<Coordinate>::ONE ); //eq. 6 
 
   //functors
@@ -268,27 +269,29 @@ reverseSmartCH(PointVector U, PointVector L, PointVector V,
   *lIto++ = L; 
   *uIto++ = U; 
   bool stop = false; 
-  if (position(L) >= position(U))
+  if (aPositionFunctor(L) >= aPositionFunctor(U))
     {
-      if ((position(U)+position(V)) <= aBound)
+      if ((aPositionFunctor(U)+aPositionFunctor(V)) <= aLastPosition)
 	stop = true; 
     }
   else 
     {
-      if ((position(L)+position(V)) <= aBound)
+      if ((aPositionFunctor(L)+aPositionFunctor(V)) <= aLastPosition)
 	stop = true; 	
     }	
 
   //----------------- main --------------------//
-  while ( (position(L) != position(U)) && (!stop) )
+  while ( (aPositionFunctor(L) != aPositionFunctor(U)) && (!stop) )
     {  
-      if (position(L) > position(U))
+      if (aPositionFunctor(L) > aPositionFunctor(U))
 	{
-	  stop = smartCHPreviousVertex(L, U, V, aBound, lIto, sTruncation, lTruncation, position); 
+	  stop = smartCHPreviousVertex(L, U, V, aFirstPosition, aLastPosition, 
+				       lIto, aPositionFunctor, sTruncation, lTruncation); 
 	}
       else
 	{
-	  stop = smartCHPreviousVertex(U, L, V, aBound, uIto, sTruncation, lTruncation, position); 
+	  stop = smartCHPreviousVertex(U, L, V, aFirstPosition, aLastPosition, 
+				       uIto, aPositionFunctor, sTruncation, lTruncation); 
 	}
     }
 
@@ -303,41 +306,42 @@ template<typename PointVector, typename Position,
 inline
 bool 
 DGtal::functions::
-smartCHPreviousVertex(PointVector& X, const PointVector& Y, PointVector& V, const Position& aBound, 
+smartCHPreviousVertex(PointVector& X, const PointVector& Y, PointVector& V, 
+		      const Position& aFirstPosition, const Position& aLastPosition, 
 		      OutputIterator ito, 
+		      const PositionFunctor& pos,
 		      const TruncationFunctor1& f1, 
-		      const TruncationFunctor2& f2, 
-		      const PositionFunctor& position)
+		      const TruncationFunctor2& f2)
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
   BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
   typedef PointVector Vector; 
 
   //pre-conditions
-  ASSERT(position(X) > position(Y)); 
-  ASSERT(position(X) < position(V)); //eq 10
-  ASSERT(position(Y) < position(V)); //eq 10
+  ASSERT(pos(X) > pos(Y)); 
+  ASSERT((pos(X)-aFirstPosition) < pos(V)); //eq 10
+  ASSERT((pos(Y)-aFirstPosition) < pos(V)); //eq 10
 
   bool stop = false; 
 
   //update V
   Vector XY = X-Y; 
-  Position q = f1( (position(V)-position(Y)), position(XY) ); 
+  Position q = f1( (aFirstPosition+pos(V)-pos(Y)), pos(XY) ); 
   ASSERT(q > 0); 
   V -= q * XY; 
-  ASSERT(position(V) <= position(X)); //eq 9 (NB: equality at position 0)
-  if (position(Y) + position(V) >= aBound)
+  ASSERT(pos(V) <= (pos(X)-aFirstPosition)); //eq 9 (NB: equality at position 0)
+  if (pos(Y) + pos(V) > aLastPosition)
     {
       //update X
-      q = f2(position(X), position(V)); 
+      q = f2((pos(X)-aFirstPosition), pos(V)); 
       ASSERT(q >= 0); 
       X -= q * V; 
-      ASSERT(position(X) < position(V)); //eq 10
+      ASSERT((pos(X)-aFirstPosition) < pos(V)); //eq 10
 	
-      if (position(X) + position(V) < aBound)
-	{
+      if (pos(X) + pos(V) <= aLastPosition)
+	{ //X can be increased
 	  stop = true; 
-	  q = (aBound - (position(X) + position(V))) / position(V); 
+	  q = (aLastPosition - (pos(X) + pos(V))) / pos(V);
 	  X += q * V; 
 	}
       *ito++ = X; 
@@ -345,21 +349,21 @@ smartCHPreviousVertex(PointVector& X, const PointVector& Y, PointVector& V, cons
   else
     {
       stop = true;
-      //update V
-      q = ( aBound - (position(Y) + position(V)) ) / position(XY);  
+      //V can be increased
+      q = (aLastPosition - (pos(Y) + pos(V)) ) / pos(XY);  
       ASSERT(q >= 0); 
       V += q * XY;
       //update X
-      q = f2( (position(X) - aBound), position(V) ); 
+      q = f2( (pos(X) - pos(Y)), pos(V) ); 
       if (q >= 0) 
-	{
-	  X -= (q+1) * V; 
-	  *ito++ = X;
-	}
+      	{
+      	  X -= q * V; 
+      	  *ito++ = X;
+      	}
       //there is nothing else to do
-      ASSERT(position(X) <= aBound); 
-      ASSERT(position(Y) <= aBound); 
-      ASSERT(position(Y) + position(V) <= aBound); 
+      ASSERT(pos(X) <= aLastPosition); 
+      ASSERT(pos(Y) <= aLastPosition); 
+      ASSERT(pos(Y) + pos(V) <= aLastPosition); 
     }
 
   return stop; 

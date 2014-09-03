@@ -262,7 +262,8 @@ namespace DGtal
      * @param aL last point of the subsegment
      *
      * NB: logarithmic-time in the greatest component of the direction vector
-     * of the subsegment. Uses smartCH algorithm. 
+     * of the subsegment. Uses smartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+     * @see ArithmeticalDSSFactory
      */
     ArithmeticalDSS(const DSL& aDSL, const Point& aF, const Point& aL);
 
@@ -274,7 +275,8 @@ namespace DGtal
      * @param aL last point of the subsegment
      *
      * NB: logarithmic-time in the greatest component of the direction vector
-     * of the subsegment. Uses reverseSmartCH algorithm. 
+     * of the subsegment. Uses reverseSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+     * @see ArithmeticalDSSFactory
      */
     ArithmeticalDSS(const ArithmeticalDSS& aDSS, const Point& aF, const Point& aL);
 
@@ -844,6 +846,20 @@ namespace DGtal
 		 const typename Super::Point& aF, const typename Super::Point& aL);
 
     /**
+     * Construction as the subsegment of minimal parameters of a greater DSS. 
+     *
+     * @param aDSS bounding DSS
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reverseSmartCH algorithm. 
+     * @see ArithmeticalDSSFactory
+     */
+    StandardDSS4(const StandardDSS4& aDSS, 
+		 const typename Super::Point& aF, const typename Super::Point& aL);
+
+    /**
      * Construction from a range of iterators on points. 
      *
      * @param aItb begin iterator
@@ -963,6 +979,20 @@ namespace DGtal
      * of the subsegment. Uses smartCH algorithm. 
      */
     NaiveDSS8(const typename Super::DSL& aDSL, 
+	      const typename Super::Point& aF, const typename Super::Point& aL);
+
+    /**
+     * Construction as the subsegment of minimal parameters of a greater DSS. 
+     *
+     * @param aDSS bounding DSS
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reverseSmartCH algorithm. 
+     * @see ArithmeticalDSSFactory
+     */
+    NaiveDSS8(const NaiveDSS8& aDSS, 
 	      const typename Super::Point& aF, const typename Super::Point& aL);
 
     /**

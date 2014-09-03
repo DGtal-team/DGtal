@@ -379,7 +379,7 @@ DSL trivialSubsegment(const DSL& aDSL,
       dss.extendFront(*it); 
     }
 
-  trace.info() << "(" << dss.a() << ", " << dss.b() << ", " << dss.mu() << ")" << std::endl; 
+  //trace.info() << "(" << dss.a() << ", " << dss.b() << ", " << dss.mu() << ")" << std::endl; 
   return DSL(dss.a(), dss.b(), dss.mu());  
 }
 
@@ -619,10 +619,8 @@ bool testWithoutLengthConstraint2()
 
 /**
  * Computes the minimal parameters of a subsegment with reverseSmartCH
- * @param aDSL DSL containing the subsegment
- * @param x minimal position
- * @param y maximal position
- * @pre x != y
+ * @param aDSS DSS containing the subsegment
+ * @param aBound maximal position
  * @return the computed DSL of minimal parameters
  * @tparam DSS an arithmetical DSS (either naive or standard)
  */
@@ -639,7 +637,7 @@ typename DSS::DSL reverseSmartCHSubsegment(const DSS& aDSS,
   
   Point startingPoint = aDSS.dsl().getPoint(aBound);  
 
-  //running smartCH
+  //running reverseSmartCH
   std::vector<Point> lch, uch; 
   Vector v = reverseSmartCH( aDSS, aBound,
 			     std::back_inserter(uch), std::back_inserter(lch) );
@@ -649,18 +647,17 @@ typename DSS::DSL reverseSmartCHSubsegment(const DSS& aDSS,
   Integer intercept = (static_cast<Integer>(upperLeaningPoint[0])*static_cast<Integer>(v[1])
 		       -static_cast<Integer>(upperLeaningPoint[1])*static_cast<Integer>(v[0])); 
 
-  trace.info() << "(" << v[1] << ", " << v[0] << ", " << intercept  << ")" << std::endl; 
+  //trace.info() << "(" << v[1] << ", " << v[0] << ", " << intercept  << ")" << std::endl; 
   return DSL( v[1],v[0],intercept ); 
 }
 
 /**
  * Compares reverseSmartCH to the classical incremental recognition algorithm for 
- * one subgement of a given DSL
- * @param aDSL DSL containing the subsegment
- * @param x minimal position
- * @param y maximal position
+ * one subgement of a greater DSS
+ * @param aDSS DSS containing the subsegment
+ * @param aBound maximal position
  * @return 'true' if results match, 'false' otherwise
- * @tparam DSL an arithmetical DSL (either naive or standard)
+ * @tparam DSS an arithmetical DSS (either naive or standard)
  */
 template <typename DSS>
 bool comparisonSubsegment2(const DSS& aDSS, typename DSS::Position aBound)
@@ -675,7 +672,7 @@ bool comparisonSubsegment2(const DSS& aDSS, typename DSS::Position aBound)
 
 
 /**
- * Compares smartCH to the classical incremental recognition algorithm
+ * Compares reverseSmartCH to the classical incremental recognition algorithm
  * for various intercepts and lengths
  * @param a numerator of the slope
  * @param b denominator of the slope
@@ -696,6 +693,7 @@ bool comparisonSubsegment2(typename DSL::Coordinate a, typename DSL::Coordinate 
     {
       trace.info() << "mu=" << mu << std::endl; 
 
+      //computation of a bounding DSS
       typedef typename DSL::Point Point; 
       typedef typename DSL::Coordinate Coordinate; 
       typedef typename DSL::Integer Integer; 
@@ -708,8 +706,7 @@ bool comparisonSubsegment2(typename DSL::Coordinate a, typename DSL::Coordinate 
 
       DSS dss = DSS(aDSL.begin(startingPoint), aDSL.begin(endingPoint)); 
 
-      trace.info() << dss << std::endl; 
-
+      //test for a left subsegment
       for (typename DSL::Position l = 1; ( (l <= 2*aDSL.patternLength())&&(nbok == nb) ); ++l)
 	{
 	  trace.info() << "l=" << l << std::endl; 
@@ -770,7 +767,6 @@ bool testSubsegment2()
   return res;    
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 int main( int argc, char** argv )
@@ -812,11 +808,11 @@ int main( int argc, char** argv )
   //all automatic tests
   bool res = true; 
   res = res 
-    // && testWithoutLengthConstraint()
-    // && testWithLengthConstraint()
-    // && testSubsegment() 
-    //&& testWithoutLengthConstraint2()
-    && testSubsegment2() 
+    && testWithoutLengthConstraint()
+    && testWithLengthConstraint()
+    && testSubsegment() 
+    && testWithoutLengthConstraint2()
+    && testSubsegment2()    
     ; 
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

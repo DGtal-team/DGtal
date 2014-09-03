@@ -58,7 +58,6 @@ createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL)
   //otherwise
   else 
     {
-
       //running smartCH to compute the minimal characteristics AND the leaning points
       OneItemOutputIterator<Point> lastUpperVertex, lastLowerVertex;
       using namespace functions; 
@@ -70,7 +69,8 @@ createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL)
       DSL dsl( v[1], v[0], DSL::remainder(v[1], v[0], U) ); 
       Point L = lastLowerVertex.get() + dsl.shift();
       //NB: U (resp. L) can be the first or the last upper (resp. lower) leaning point 
-      // of the DSS according to the relative order of their position. 
+      // of the DSS according to the relative order of their position.
+      ASSERT( dsl.position(v) != 0 ); 
       Position qUForward = ( dsl.position(aL) - dsl.position(U) ) / dsl.position(v);  
       Position qLForward = ( dsl.position(aL) - dsl.position(L) ) / dsl.position(v); 
       Position qUBackward = ( dsl.position(U) - dsl.position(aF) ) / dsl.position(v);  
@@ -92,6 +92,8 @@ createSubsegment(const DSS& aDSS, const Point& aF, const Point& aL)
   ASSERT( aDSS.dsl().isInDSL( aF ) ); 
   ASSERT( aDSS.dsl().isInDSL( aL ) ); 
   ASSERT( aDSS.dsl().beforeOrEqual(aF, aL) ); 
+  ASSERT( aDSS.dsl().beforeOrEqual(aDSS.back(), aL) ); 
+  ASSERT( aDSS.dsl().beforeOrEqual(aF, aDSS.front()) ); 
 
   //specific case: DSS of one point
   if (aF == aL)
@@ -101,11 +103,42 @@ createSubsegment(const DSS& aDSS, const Point& aF, const Point& aL)
   //otherwise
   else 
     {
-      std::cerr << "TODO" << std::endl; 
-      return DSS( aF ); 
+      DSS leftSubsegment = createLeftSubsegment(aDSS, aL);
+      DSS tmp = leftSubsegment.negate();
+      DSS subsegment = createLeftSubsegment(tmp, aF); 
+      return subsegment.negate(); 
     }
 }
 
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>
+DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::
+createLeftSubsegment(const DSS& aDSS, const Point& aL)
+{
+  //running reverseSmartCH to compute the minimal characteristics AND the leaning points
+  OneItemOutputIterator<Point> lastUpperVertex, lastLowerVertex;
+  using namespace functions; 
+  Vector v = reverseSmartCH( aDSS, aDSS.position(aL),
+			     lastUpperVertex, lastLowerVertex );
+
+  //DSS construction
+  Point U = lastUpperVertex.get(); 
+  DSL dsl( v[1], v[0], DSL::remainder(v[1], v[0], U) ); 
+  Point L = lastLowerVertex.get() + dsl.shift();
+  //NB: U (resp. L) can be the first or the last upper (resp. lower) leaning point 
+  // of the DSS according to the relative order of their position. 
+  ASSERT( dsl.position(v) != 0 ); 
+  Position qUForward = ( dsl.position(aL) - dsl.position(U) ) / dsl.position(v);  
+  Position qLForward = ( dsl.position(aL) - dsl.position(L) ) / dsl.position(v); 
+  Position qUBackward = ( dsl.position(U) - dsl.position(aDSS.back()) ) / dsl.position(v);  
+  Position qLBackward = ( dsl.position(L) - dsl.position(aDSS.back()) ) / dsl.position(v); 
+  return DSS( v[1], v[0], dsl.mu(), DSL::remainder(v[1], v[0], L), aDSS.back(), aL,  
+	      (U - qUBackward * v), (U + qUForward * v ), 
+	      (L - qLBackward * v), (L + qLForward * v ), 
+	      dsl.steps(), dsl.shift() );
+}
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
