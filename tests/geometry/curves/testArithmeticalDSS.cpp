@@ -650,7 +650,7 @@ bool updateTest()
 /**
  * Test of the directional position
  * and the checks of the steps
- * @param dss 
+ * @param dss an instance of DSS
  * @tparam DSS a model of arithmetical DSS,
  * either naive or standard
  */
