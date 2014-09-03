@@ -568,7 +568,7 @@ bool testCompareExactInexact(unsigned int size, unsigned int nb)
   typedef typename Space::Point Point;
   typedef DigitalSetBySTLSet<Domain> Set;
   // typedef NotPointPredicate<SetPredicate<Set> > NegPredicate;
-  typedef NotPointPredicate<Set> NegPredicate;
+  typedef functors::NotPointPredicate<Set> NegPredicate;
 
   Point low=Point::diagonal(0),
     up=Point::diagonal(size);

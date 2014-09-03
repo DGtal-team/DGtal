@@ -1,5 +1,5 @@
 SET(DGTAL_TESTS_SRC
-   testBasicBoolFunctions
+   testBasicBoolFunctors
    testOrderedAlphabet
    testCirculator
    testConstIteratorAdapter

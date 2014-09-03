@@ -111,7 +111,7 @@ namespace DGtal
     private:
       const CharacteristicSet* ptrSet;
     };
-    typedef DGtal::NotPointPredicate<CharacteristicSetPredicate> NotPredicate; ///< the type of the point predicate used by the voronoi map.
+    typedef DGtal::functors::NotPointPredicate<CharacteristicSetPredicate> NotPredicate; ///< the type of the point predicate used by the voronoi map.
     typedef DGtal::VoronoiMap<Space, NotPredicate, Metric > Voronoi; ///< the type of the Voronoi map.
 
     typedef double Scalar;                                    ///< the type for "real" numbers.
