@@ -46,8 +46,9 @@
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /////////////////////////////////////////////////////////////////////////////
   // class FrontierPredicate
@@ -158,6 +159,7 @@ namespace DGtal
 
   }; // end of class FrontierPredicate
 
+  } // namespace functors
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'FrontierPredicate'.
@@ -168,7 +170,7 @@ namespace DGtal
   template <typename TKSpace, typename TImage>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const FrontierPredicate<TKSpace,TImage> & object );
+               const DGtal::functors::FrontierPredicate<TKSpace,TImage> & object );
 
 
 } // namespace DGtal

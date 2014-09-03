@@ -43,6 +43,7 @@
 
 using namespace std;
 using namespace DGtal;
+using namespace DGtal::functors;
 
 
 

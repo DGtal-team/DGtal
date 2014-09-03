@@ -91,10 +91,10 @@ int main( int argc, char** argv )
   trace.beginBlock( "Set up digital surface." );
   typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
   MySurfelAdjacency surfAdj( true ); // interior in all directions.
-  typedef FrontierPredicate<KSpace, Image> FSurfelPredicate;
+  typedef functors::FrontierPredicate<KSpace, Image> FSurfelPredicate;
   typedef ExplicitDigitalSurface<KSpace,FSurfelPredicate> FrontierContainer;
   typedef DigitalSurface<FrontierContainer> Frontier;
-  typedef BoundaryPredicate<KSpace, Image> BSurfelPredicate;
+  typedef functors::BoundaryPredicate<KSpace, Image> BSurfelPredicate;
   typedef ExplicitDigitalSurface<KSpace,BSurfelPredicate> BoundaryContainer;
   typedef DigitalSurface<BoundaryContainer> Boundary;
   // frontier between label 1 and 0 (connected part containing bel10)

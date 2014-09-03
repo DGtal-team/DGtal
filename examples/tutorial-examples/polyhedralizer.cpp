@@ -145,7 +145,7 @@ int main( int argc, char** argv )
   trace.beginBlock( "Reading vol file into an image." );
   typedef ImageContainerBySTLVector< Domain, int> Image;
   Image image = VolReader<Image>::importVol(inputFilename);
-  typedef SimpleThresholdForegroundPredicate<Image> DigitalObject;
+  typedef functors::SimpleThresholdForegroundPredicate<Image> DigitalObject;
   DigitalObject digitalObject( image, threshold );
   trace.endBlock();
   //! [polyhedralizer-readVol]

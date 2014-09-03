@@ -41,13 +41,13 @@
 
 template <typename TSurface, bool isUpward, bool isClosed>
 inline
-DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::~Point2ShapePredicate()
+DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed>::~Point2ShapePredicate()
 {
 }
 
 template <typename TSurface, bool isUpward, bool isClosed>
 inline
-DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::Point2ShapePredicate(
+DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed>::Point2ShapePredicate(
         const TSurface& aSurface):
         myS(aSurface)
 {
@@ -59,7 +59,7 @@ DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::Point2ShapePredicate(
  */
 template <typename TSurface, bool isUpward, bool isClosed>
 inline
-DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::Point2ShapePredicate(
+DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed>::Point2ShapePredicate(
         const Point2ShapePredicate & other):
         myS(other.myS)
 {
@@ -69,10 +69,10 @@ DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>::Point2ShapePredicate(
 template <typename TSurface, bool isUpward, bool isClosed>
 inline
 bool
-DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>
+DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed>
 ::operator()(const Point& p) const
 {
-  DGtal::Point2ShapePredicateComparator<
+  DGtal::functors::Point2ShapePredicateComparator<
     Distance,
     isUpward,
     isClosed> theComparator;
@@ -88,7 +88,7 @@ DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>
 template <typename TSurface, bool isUpward, bool isClosed>
 inline
 void
-DGtal::Point2ShapePredicate<TSurface,isUpward,isClosed>
+DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed>
 ::selfDisplay ( std::ostream & out ) const
 {
   out << "[Point2ShapePredicate] :\n";
@@ -109,7 +109,7 @@ template <typename TSurface, bool isUpward, bool isClosed>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-      const Point2ShapePredicate<TSurface,isUpward,isClosed> & object )
+                    const DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed> & object )
 {
   object.selfDisplay( out );
   return out;

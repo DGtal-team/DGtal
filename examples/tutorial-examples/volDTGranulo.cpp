@@ -78,7 +78,7 @@ int main(int argc, char ** argv)
 
   //DT
   Z3i::L2Metric l2;
-  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  typedef functors::SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate binaryshape(image, 0);
 
   typedef DistanceTransformation< Z3i::Space, Predicate, Z3i::L2Metric> DT;

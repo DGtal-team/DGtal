@@ -133,9 +133,9 @@ namespace DGtal
     typedef CircleFrom3Points<Point> Circle; 
       
     //Predicates used to decide whether the current circle is still seperating or not
-    typedef Point2ShapePredicate<Circle,false,true> 
+    typedef functors::Point2ShapePredicate<Circle,false,true> 
       PInCirclePred; 
-    typedef Point2ShapePredicate<Circle,true,true> 
+    typedef functors::Point2ShapePredicate<Circle,true,true> 
       QInCirclePred; 
   
     // ----------------------- Standard services ------------------------------
