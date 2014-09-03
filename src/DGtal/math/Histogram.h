@@ -147,7 +147,7 @@ namespace DGtal
   {
   public:
     BOOST_CONCEPT_ASSERT(( CEuclideanRing< TQuantity > ));
-    BOOST_CONCEPT_ASSERT(( CBinner< TBinner > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CBinner< TBinner > ));
     BOOST_STATIC_ASSERT(( boost::is_same< TQuantity, typename TBinner::Quantity >::value ));
 
     // ----------------------- public types ------------------------------
