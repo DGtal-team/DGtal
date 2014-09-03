@@ -47,17 +47,10 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-namespace DGtal
-{
-  namespace concepts
-  {
-=======
 // @since 0.8 In DGtal::concepts
 namespace DGtal {
   namespace concepts {
 
->>>>>>> masterDGTal
   /////////////////////////////////////////////////////////////////////////////
   // class CPointPredicate
   /**
@@ -99,12 +92,7 @@ namespace DGtal {
 
 
   }; // end of concept CPointPredicate
-<<<<<<< HEAD
-  }
-=======
-
 } // namespace concepts
->>>>>>> masterDGTal
 } // namespace DGtal
 
 //                                                                           //
