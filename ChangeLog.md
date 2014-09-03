@@ -198,7 +198,7 @@
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
   - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
     [#851](https://github.com/DGtal-team/DGtal/pull/851))
-  - New methods to fill the interior/exterior of digital contours (in the Surface class of topology/helpers).     [#827](https://github.com/DGtal-team/DGtal/pull/827))
+  - New methods to fill the interior/exterior of digital contours (in the Surface class of topology/helpers).  (Bertrand Kerautret   [#827](https://github.com/DGtal-team/DGtal/pull/827))
 
 
 - *Graph Package*
@@ -218,7 +218,7 @@
    [#853](https://github.com/DGtal-team/DGtal/pull/853))
   - Renaming BasicColorToScalarFunctors namespace to functors:: (David
     Coeurjolly,  [#857](https://github.com/DGtal-team/DGtal/pull/857))
-  - Fix OpenGL warnings by redefining openGL primitive (glSphere) (Bertrand Kerautret [#981] https://github.com/DGtal-team/DGtal/pull/891)
+  - Fix OpenGL warnings by redefining openGL primitive (glSphere) (Bertrand Kerautret [#981](https://github.com/DGtal-team/DGtal/pull/891))
 
 === DGtal 0.7 ===
 
