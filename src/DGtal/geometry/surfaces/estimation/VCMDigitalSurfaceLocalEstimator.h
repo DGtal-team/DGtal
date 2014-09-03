@@ -81,7 +81,7 @@ namespace DGtal
             typename TKernelFunction, typename TVCMGeometricFunctor>
   class VCMDigitalSurfaceLocalEstimator
   {
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
 
     // ----------------------- public types ------------------------------

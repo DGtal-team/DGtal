@@ -85,12 +85,12 @@ subgraph cluster_concepts_2 {
     color=lightgrey;
     node [style=filled,color=white];
 
-    CPrimitiveComputer [ URL="\ref CPrimitiveComputer" ];
-    CIncrementalPrimitiveComputer [ URL="\ref CIncrementalPrimitiveComputer" ];
-    CAdditivePrimitiveComputer [ URL="\ref CAdditivePrimitiveComputer" ];
+    CPrimitiveComputer [ URL="\ref concepts::CPrimitiveComputer" ];
+    CIncrementalPrimitiveComputer [ URL="\ref concepts::CIncrementalPrimitiveComputer" ];
+    CAdditivePrimitiveComputer [ URL="\ref concepts::CAdditivePrimitiveComputer" ];
     CDigitalSurfaceLocalEstimator [ URL="\ref CDigitalSurfaceLocalEstimator" ];
 
-    CAdditivePrimitiveComputer -> CIncrementalPrimitiveComputer -> CPrimitiveComputer;
+    CAdditivePrimitiveComputer -> concepts::CIncrementalPrimitiveComputer -> concepts::CPrimitiveComputer;
     label="geometry/surfaces (main concepts)";
   }
 

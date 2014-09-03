@@ -13,6 +13,11 @@
     - BasicFunctor functors have been moved to functors:: namespace.
     - DefaultFunctor has been renamed functors::Identity.
     - xxxFunctor have been renamed to xxx.
+
+ - Moving graph, topology, geometry/estimation concepts into
+   namespace concepts::, also moving some functors into namespace
+   functors:: (Jacques-Olivier Lachaud,
+   [#912](https://github.com/DGtal-team/DGtal/pull/912)).
     
 - *DEC Package*
  - DGtal 0.8 contains the first release of the Discrete Exterior
@@ -22,6 +27,7 @@
    combined to create classical vector analysis operator such as
    gradient, curl and divergence. (Pierre Gueth,
    [#877](https://github.com/DGtal-team/DGtal/pull/877))
+
 
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
@@ -59,6 +65,14 @@
    (experimental::ChamferNorm2D). (David Coeurjolly,
    [#898](https://github.com/DGtal-team/DGtal/pull/898))
 
+ - Feature extraction algorithm from Tensor Voting.(Jérémy Levallois,
+   David Coeurjolly,
+   [#895](https://github.com/DGtal-team/DGtal/pull/895))
+
+ - Ray shooting intersection predicates (ray-triangle, ray-quad,
+   ray-surfel) added in geometry/tools (David Coeurjolly,
+   [#904](https://github.com/DGtal-team/DGtal/pull/904))
+       
 
 - *IO Package*
   - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 
@@ -97,6 +111,10 @@
  - Add comparison operators in variants of CountedPtr. Improve
    coverage of these classes and fix compilation problem
    (Jacques-Olivier Lachaud)
+ - Update doc of CountedPtr, CountedPtrOrPtr and
+   CountedConstPtrOrConstPtr. Add asserts. Add tests. Fix issue 773
+   (https://github.com/DGtal-team/DGtal/issues/773). (Jacques-Olivier
+   Lachaud, [#894](https://github.com/DGtal-team/DGtal/pull/894)).
  - XXXOutputRangeYYY classes are now called
    XXXRangeWithWritableIteratorYYY (Tristan Roussillon,
    [#850](https://github.com/DGtal-team/DGtal/pull/850)).
@@ -180,6 +198,8 @@
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
   - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
     [#851](https://github.com/DGtal-team/DGtal/pull/851))
+  - New methods to fill the interior/exterior of digital contours (in the Surface class of topology/helpers).     [#827](https://github.com/DGtal-team/DGtal/pull/827))
+
 
 - *Graph Package*
   - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,

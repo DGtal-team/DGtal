@@ -96,7 +96,7 @@ bool testVoronoiCovarianceMeasure()
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "sizeCells.size() == 10" << std::endl;
 
-  HatPointFunction< Point, double > chi_r( 1.0, 4.0 );
+  functors::HatPointFunction< Point, double > chi_r( 1.0, 4.0 );
   Matrix vcm_r = vcm.measure( chi_r, Point( 10,10,10 ) );
   trace.info() << "- vcm_r.row(0) = " << vcm_r.row( 0 ) << std::endl;
   trace.info() << "- vcm_r.row(1) = " << vcm_r.row( 1 ) << std::endl;

@@ -209,6 +209,27 @@ namespace functors
     typedef typename Space::Dimension Dimension; 
     typedef typename Space::Point Point; 
     typedef typename Space::Integer Integer; 
+    /** 
+     * Constructor.
+     * (default point is defined from lower point of the domain)
+     * @param dimAdded  the index of the new dimension inserted.
+     * @param aDomain3DImg the 3D domain used to keep the resulting point in the domain. 
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     * @param dimRotated the index of the rotation axis.
+     * @param rotationAngle the angle of rotation (in radians).
+     */
+    
+    SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, 
+                    const Integer &sliceIndex,  const Dimension &dimRotated,
+                    double rotationAngle):
+      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (aDomain3DImg.lowerBound())
+    {
+      myCenter[0] = aDomain3DImg.lowerBound()[0]+((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;  
+      myCenter[1] = aDomain3DImg.lowerBound()[1]+((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;  
+      myCenter[2] = aDomain3DImg.lowerBound()[2]+((aDomain3DImg.upperBound())[2]-(aDomain3DImg.lowerBound())[2])/2.0;  
+      myCenter[dimAdded]=sliceIndex;
+    };
     
     /** 
      * Constructor.
@@ -217,20 +238,21 @@ namespace functors
      * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
      * @param dimRotated the index of the rotation axis.
      * @param rotationAngle the angle of rotation (in radians).
-     * @param defautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     * @param defaultPoint the point given when the resulting point is outside the domain.
      */
     
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, 
                     const Integer &sliceIndex,  const Dimension &dimRotated,
-                    double rotationAngle, const Point &defautPoint = Point(0,0,0)):
+                    double rotationAngle,  const Point &defaultPoint):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
-      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (defautPoint)
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (defaultPoint)
     {
-      myCenter[0] = ((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;  
-      myCenter[1] = ((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;  
-      myCenter[2] = ((aDomain3DImg.upperBound())[2]-(aDomain3DImg.lowerBound())[2])/2.0;  
+      myCenter[0] = aDomain3DImg.lowerBound()[0]+((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;  
+      myCenter[1] = aDomain3DImg.lowerBound()[1]+((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;  
+      myCenter[2] = aDomain3DImg.lowerBound()[2]+((aDomain3DImg.upperBound())[2]-(aDomain3DImg.lowerBound())[2])/2.0;  
       myCenter[dimAdded]=sliceIndex;
     };
+
     /** 
      * Constructor.
      * @param dimAdded  the index of the new dimension inserted.
@@ -239,15 +261,32 @@ namespace functors
      * @param dimRotated the index of the rotation axis.
      * @param ptCenter the rotation center.
      * @param rotationAngle the angle of rotation (in radians).
-     * @param defautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     * @param defaultPoint the point given when the resulting point is outside the domain.
      */
     
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
-                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defautPoint = Point(0,0,0)):
+                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defaultPoint):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
-      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (defautPoint)
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (defaultPoint)
     {
-      myDefaultPoint = Point(0,0,0);
+    };
+
+    /** 
+     * Constructor.
+     * (default point is defined from lower point of the domain)
+     * @param dimAdded  the index of the new dimension inserted.
+     * @param aDomain3DImg the 3D domain used to keep the resulting point in the domain. 
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     * @param dimRotated the index of the rotation axis.
+     * @param ptCenter the rotation center.
+     * @param rotationAngle the angle of rotation (in radians).
+     */
+    
+    SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
+                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle):
+      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (aDomain3DImg.lowerBound())
+    {
     };
     
     /** 
@@ -647,6 +686,91 @@ namespace functors
     Point myGridShift;
     std::vector<TValue> myGridSize;    
  };
+
+
+
+
+
+
+
+
+
+
+  /**
+   * Description of template class 'FlipDomainAxis' <p> \brief Aim:
+   * Functor that flips the domain coordinate system from some 
+   * selected axis.  For instance, if a flip on the y axis is applied
+   * on a domain of bounds (0, 0, 0) (MaxX, MaxY, MaxZ), then the
+   * coordinate of P(x,y,z) will transformed in P(x, MaxY-y, z).
+   *
+   * Such functor can be useful to apply basic image
+   * flip from some specific axis directions.
+   *
+   *
+   * @see tests/kernel/testBasicPointFunctors.cpp 
+   *
+   * @tparam TDomain the type of the domain. 
+   *
+   */
+
+ template <typename TDomain>
+ class FlipDomainAxis
+  {
+  public:        
+    typedef typename TDomain::Space  Space;
+    typedef typename TDomain::Size Size; 
+    typedef typename Space::Dimension Dimension; 
+    typedef typename Space::Point Point; 
+
+    /** 
+     * Constructor.
+     * Construct the functor from a source domain and a vector defining the axis being flipped.
+     * Such a vector should contain the dimension number associated to the axis to be flipped. 
+     * For instance to flip the x and z axis of a given 3d domain you have to give a vector 
+     * containing 1 and 2. 
+     *
+     * @param aSourceDomain  the source domain. 
+     * @param axisFlipped a vector containing  the indices of the dimension to be flipped. 
+     *
+     */
+    
+    FlipDomainAxis(const TDomain &aSourceDomain, const std::vector<Size> & axisFlipped): mySourceDomain(aSourceDomain), 
+                                                                                         myAxisFlipped(axisFlipped){      
+    };    
+    
+
+    /** 
+     * The operator computes the coordinates of the point in the
+     * flipped domain.  
+     *
+     * @param aPoint a source point.
+     * @return the point with flipped coordinates according the source domain.
+     *
+     */
+    
+    inline
+    Point  operator()(const Point& aPoint) const
+    {
+      Point ptRes;
+      for (Dimension dim=0; dim< Space::dimension; dim++){
+        ptRes[dim] = aPoint[dim]; 
+      }
+      for(Dimension i = 0; i< myAxisFlipped.size(); i++){
+        ptRes[myAxisFlipped[i]] = mySourceDomain.upperBound()[myAxisFlipped[i]]-aPoint[myAxisFlipped[i]];
+      }      
+      return ptRes;
+    }
+    
+  private:
+    TDomain mySourceDomain;
+    std::vector<Size> myAxisFlipped;    
+ };
+
+
+
+
+
+
 
 
 

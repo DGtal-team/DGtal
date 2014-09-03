@@ -122,7 +122,7 @@ namespace DGtal
   {
   public:
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<DigitalSurfaceContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer<DigitalSurfaceContainer> ));
 
     // ----------------------- boost graph tags ------------------------------
     // JOL (2013/02/01): required to define internal tags (boost/graph/copy.hpp, l. 251 error ?).

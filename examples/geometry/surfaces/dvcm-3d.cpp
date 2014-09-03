@@ -71,8 +71,8 @@ int main( int argc, char** argv )
   typedef ImplicitDigitalSurface< KSpace, ThresholdedImage > DigitalSurfaceContainer;
 
   //! [DVCM3D-typedefs]
-  typedef ExactPredicateLpSeparableMetric<Space, 2> Metric; // L2-metric type
-  typedef HatPointFunction<Point,double> KernelFunction;    // chi function type 
+  typedef ExactPredicateLpSeparableMetric<Space, 2> Metric;          // L2-metric type
+  typedef functors::HatPointFunction<Point,double>  KernelFunction;  // chi function type 
   typedef VoronoiCovarianceMeasureOnDigitalSurface< DigitalSurfaceContainer, Metric,
                                                     KernelFunction > VCMOnSurface;
   typedef VCMOnSurface::Surfel2Normals::const_iterator S2NConstIterator;

@@ -540,6 +540,18 @@ DGtal::PointVector<dim, TComponent, TContainer>::dot( const Self& v ) const
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
+typename DGtal::PointVector<dim, TComponent, TContainer>
+DGtal::PointVector<dim, TComponent, TContainer>::crossProduct( const Self& v ) const
+{
+  Self crossprod;
+  for ( DGtal::Dimension i = 0; i < dim; ++i )
+    crossprod[i] = this->myArray[ (i+1)%dim ]*v[ (i+2)%dim ] - 
+      this->myArray[ (i+2)%dim ]*v[ (i+1)%dim ];
+  return crossprod;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+inline
 DGtal::PointVector<dim, TComponent, TContainer>
 DGtal::PointVector<dim, TComponent, TContainer>::operator- ( const Self& v ) const
 {

@@ -58,7 +58,7 @@ int main( int /* argc */, char** /* argv */ )
   typedef LinearAlgebraTool::Matrix Matrix;
 
   typedef VoronoiCovarianceMeasure<Space,Metric> VCM;
-  typedef HatPointFunction<Point,double> KernelFunction;
+  typedef functors::HatPointFunction<Point,double> KernelFunction;
 
   // Gets the points
   vector<unsigned int> vPos;

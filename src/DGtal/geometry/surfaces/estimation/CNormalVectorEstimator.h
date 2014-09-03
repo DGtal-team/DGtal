@@ -46,8 +46,9 @@
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
 /////////////////////////////////////////////////////////////////////////////
 // class CNormalVectorEstimator
@@ -99,7 +100,7 @@ public:
   typedef typename T::ConstIterator ConstIterator;
   typedef typename T::Quantity Quantity;
 
-  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< typename Surface::KSpace > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< typename Surface::KSpace > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, typename Surface::SCell >::value ));
   BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
   
@@ -126,6 +127,7 @@ private:
 
 }; // end of concept CNormalVectorEstimator
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedConstPtrOrConstPtr.h"
+#include "DGtal/kernel/Point2ScalarFunctors.h"
 #include "DGtal/math/linalg/EigenDecomposition.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -84,7 +85,7 @@ namespace DGtal
             typename TKernelFunction>
   class VoronoiCovarianceMeasureOnDigitalSurface
   {
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
     // ----------------------- public types ------------------------------
   public:

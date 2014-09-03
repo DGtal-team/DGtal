@@ -116,11 +116,11 @@ int main( int argc, char** argv )
     //! [IntegralInvariantUsage]
     double radius = std::atof(argv[3]);
 
-    typedef functors::IIGeometricFunctors::IIMeanCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+    typedef functors::IIMeanCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
     typedef IntegralInvariantVolumeEstimator< Z3i::KSpace, ImagePredicate, MyIICurvatureFunctor > MyIICurvatureEstimator;
     
     // For computing Gaussian curvature instead, for example, change the two typedef above by : 
-    // typedef IIGeometricFunctors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+    // typedef functors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
     // typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, ImagePredicate, MyIICurvatureFunctor > MyIICurvatureEstimator;
     // and it's done. The following part is exactly the same.
 

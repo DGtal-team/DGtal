@@ -922,9 +922,9 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 // PointsRange
 template <typename TIterator, typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
-           const ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object )
+           const ConstRangeAdapter<TIterator, functors::SCellToPoint<TKSpace>, typename TKSpace::Point> & object )
 {
-    typedef ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> Range;
+    typedef ConstRangeAdapter<TIterator, functors::SCellToPoint<TKSpace>, typename TKSpace::Point> Range;
     typedef typename Range::ConstIterator ConstIterator;
 
     ConstIterator it ( object.begin() );
@@ -962,13 +962,13 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 // ArrowsRange
 template <typename TIterator, typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
-           const ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>,
+           const ConstRangeAdapter<TIterator, functors::SCellToArrow<TKSpace>,
            std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & object )
 {
     typedef typename TKSpace::Point Point;
     typedef typename TKSpace::Vector Vector;
     typedef std::pair<Point, Vector> Arrow;
-    typedef ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, Arrow > Range;
+    typedef ConstRangeAdapter<TIterator, functors::SCellToArrow<TKSpace>, Arrow > Range;
     typedef typename Range::ConstIterator ConstIterator;
 
     ConstIterator it ( object.begin() );
@@ -990,11 +990,11 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 // InnerPointsRange
 template <typename TIterator, typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
-           const ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>,
+           const ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<TKSpace>,
            typename TKSpace::Point > & object )
 {
     typedef typename TKSpace::Point Point;
-    typedef ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, Point > Range;
+    typedef ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<TKSpace>, Point > Range;
     typedef typename Range::ConstIterator ConstIterator;
 
     ConstIterator it ( object.begin() );
@@ -1012,11 +1012,11 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 // OuterPointsRange
 template <typename TIterator, typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
-           const ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>,
+           const ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<TKSpace>,
            typename TKSpace::Point > & object )
 {
     typedef typename TKSpace::Point Point;
-    typedef ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, Point > Range;
+    typedef ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<TKSpace>, Point > Range;
     typedef typename Range::ConstIterator ConstIterator;
 
     ConstIterator it ( object.begin() );
@@ -1034,12 +1034,12 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 // IncidentPointsRange
 template <typename TIterator, typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
-           const ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>,
+           const ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<TKSpace>,
            std::pair<typename TKSpace::Point, typename TKSpace::Point> > & object )
 {
     typedef typename TKSpace::Point Point;
     typedef std::pair<Point, Point> Pair;
-    typedef ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, Pair > Range;
+    typedef ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<TKSpace>, Pair > Range;
     typedef typename Range::ConstIterator ConstIterator;
 
     ConstIterator it ( object.begin() );
