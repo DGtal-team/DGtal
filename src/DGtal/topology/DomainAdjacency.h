@@ -72,7 +72,7 @@ namespace DGtal
   class DomainAdjacency
   {
     BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
-    BOOST_CONCEPT_ASSERT(( CAdjacency<TAdjacency> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CAdjacency<TAdjacency> ));
   public:
 
     // Required as model of CAdjacency

@@ -67,7 +67,7 @@ bool testSCellsFunctors()
   {
     typedef KhalimskySpaceND<3> K3;
     K3 theKSpace; 
-    SCellToPoint<K3> m(theKSpace); 
+    functors::SCellToPoint<K3> m(theKSpace); 
     K3::SCell s = theKSpace.sPointel( K3::Point(3,3,4) );
     K3::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
@@ -79,7 +79,7 @@ bool testSCellsFunctors()
   {
     typedef KhalimskySpaceND<3> K3;
     K3 theKSpace; 
-    SCellToPoint<K3> m(theKSpace); 
+    functors::SCellToPoint<K3> m(theKSpace); 
     K3::SCell s(K3::Point(0,0,0), true); //default point and orientation 
     theKSpace.sSetKCoords( s, K3::Point(5,6,8) );
     K3::Point aPoint = m( s );
@@ -105,7 +105,7 @@ bool testSCellsFunctors()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
-    SCellToArrow<K2> m(theKSpace); 
+    functors::SCellToArrow<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     std::pair<K2::Point, K2::Vector> aArrow = m( s );
     trace.info() << s << aArrow.first << aArrow.second <<std::endl;  
@@ -120,7 +120,7 @@ bool testSCellsFunctors()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
-    SCellToInnerPoint<K2> m(theKSpace); 
+    functors::SCellToInnerPoint<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     K2::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
@@ -133,7 +133,7 @@ bool testSCellsFunctors()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
-    SCellToOuterPoint<K2> m(theKSpace); 
+    functors::SCellToOuterPoint<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     K2::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
@@ -146,7 +146,7 @@ bool testSCellsFunctors()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
-    SCellToIncidentPoints<K2> m(theKSpace); 
+    functors::SCellToIncidentPoints<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     std::pair<K2::Point, K2::Point> aPair = m( s );
     trace.info() << s << aPair.first << aPair.second <<std::endl;  
@@ -161,7 +161,7 @@ bool testSCellsFunctors()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
-    SCellToCode<K2> m(theKSpace); 
+    functors::SCellToCode<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     char aCode = m( s );
     trace.info() << s << aCode <<std::endl;  
@@ -188,13 +188,13 @@ int main( int argc, char** argv )
 
   //concepts
   typedef KhalimskySpaceND<2> K2;
-  checkingConcepts<SCellToPoint<K2>, K2::SCell, K2::Point >(); 
+  checkingConcepts<functors::SCellToPoint<K2>, K2::SCell, K2::Point >(); 
   checkingConcepts<CanonicSCellEmbedder<K2>, K2::SCell, K2::Space::RealPoint >();
-  checkingConcepts<SCellToArrow<K2>, K2::SCell, std::pair<K2::Point, K2::Vector> >(); 
-  checkingConcepts<SCellToInnerPoint<K2>, K2::SCell, K2::Point >(); 
-  checkingConcepts<SCellToOuterPoint<K2>, K2::SCell, K2::Point >(); 
-  checkingConcepts<SCellToIncidentPoints<K2>, K2::SCell, std::pair<K2::Point, K2::Point> >(); 
-  checkingConcepts<SCellToCode<K2>, K2::SCell, char >(); 
+  checkingConcepts<functors::SCellToArrow<K2>, K2::SCell, std::pair<K2::Point, K2::Vector> >(); 
+  checkingConcepts<functors::SCellToInnerPoint<K2>, K2::SCell, K2::Point >(); 
+  checkingConcepts<functors::SCellToOuterPoint<K2>, K2::SCell, K2::Point >(); 
+  checkingConcepts<functors::SCellToIncidentPoints<K2>, K2::SCell, std::pair<K2::Point, K2::Point> >(); 
+  checkingConcepts<functors::SCellToCode<K2>, K2::SCell, char >(); 
 
   bool res = testSCellsFunctors(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

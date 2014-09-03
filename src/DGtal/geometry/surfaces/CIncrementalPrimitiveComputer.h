@@ -47,54 +47,54 @@
 #include "DGtal/geometry/surfaces/CPrimitiveComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CIncrementalPrimitiveComputer
   /**
-Description of \b concept '\b CIncrementalPrimitiveComputer' <p>
-     @ingroup Concepts 
-     @brief Aim: Defines the concept describing an object that
-     computes some primitive from input points given one at a time,
-     while keeping some internal state. At any moment, the object is
-     supposed to store at least one valid primitive for the formerly
-     given input points. A primitive is an informal word that
-     describes some family of objects that share common
-     characteristics. Often, the primitives are geometric,
-     e.g. digital planes.
-
- ### Refinement of CPrimitiveComputer
-
- ### Associated types :
-     - \t Primitive, the type that defines the primitive.
-     - \t Point: the type of the input points.
-
- ### Notation
-     - \t X : A type that is a model of CIncrementalPrimitiveComputer
-     - \a x : object of type \t X
-     - \a p : object of type \t Point
-
- ### Valid expressions and semantics
-
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|insert new point| x.extend(\a p)|                 | \t bool     |                  | tries to find a primitive that matches the new point \a p and all formerly given input points, return \t true on success (state may change), \t false otherwise (state is unchanged)| | |
-|check new point| x.isExtendable(\a p)|            | \t bool     |                  | tries to find a primitive that matches the new point \a p and all formerly given input points, return \t true only if it possible, the state is always unchanged| | |
-     
-
- ### Invariants###
-
- ### Models###
-
-- COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer
-
- ### Notes###
-
-
-@tparam T the type that should be a model of CIncrementalPrimitiveComputer.
-   */
+  Description of \b concept '\b CIncrementalPrimitiveComputer' <p>
+  @ingroup Concepts 
+  @brief Aim: Defines the concept describing an object that
+  computes some primitive from input points given one at a time,
+  while keeping some internal state. At any moment, the object is
+  supposed to store at least one valid primitive for the formerly
+  given input points. A primitive is an informal word that
+  describes some family of objects that share common
+  characteristics. Often, the primitives are geometric,
+  e.g. digital planes.
+  
+  ### Refinement of CPrimitiveComputer
+  
+  ### Associated types :
+  - \t Primitive, the type that defines the primitive.
+  - \t Point: the type of the input points.
+  
+  ### Notation
+  - \t X : A type that is a model of CIncrementalPrimitiveComputer
+  - \a x : object of type \t X
+  - \a p : object of type \t Point
+  
+  ### Valid expressions and semantics
+  
+  
+  | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+  |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+  |insert new point| x.extend(\a p)|                 | \t bool     |                  | tries to find a primitive that matches the new point \a p and all formerly given input points, return \t true on success (state may change), \t false otherwise (state is unchanged)| | |
+  |check new point| x.isExtendable(\a p)|            | \t bool     |                  | tries to find a primitive that matches the new point \a p and all formerly given input points, return \t true only if it possible, the state is always unchanged| | |
+  
+  
+  ### Invariants###
+  
+  ### Models###
+  
+  - COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer
+  
+  ### Notes###
+  
+  @tparam T the type that should be a model of CIncrementalPrimitiveComputer.
+  */
   template <typename T>
   struct CIncrementalPrimitiveComputer : CPrimitiveComputer<T>
   {
@@ -124,6 +124,7 @@ Description of \b concept '\b CIncrementalPrimitiveComputer' <p>
 
   }; // end of concept CIncrementalPrimitiveComputer
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

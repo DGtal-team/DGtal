@@ -101,8 +101,8 @@ namespace DGtal
     // should be the same as Point.
     typedef typename BackgroundAdjacency::Point BackPoint; 
     
-    BOOST_CONCEPT_ASSERT(( CAdjacency< ForegroundAdjacency > ));
-    BOOST_CONCEPT_ASSERT(( CAdjacency< BackgroundAdjacency > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CAdjacency< ForegroundAdjacency > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CAdjacency< BackgroundAdjacency > ));
     
     /**
      * Opposite topology type.

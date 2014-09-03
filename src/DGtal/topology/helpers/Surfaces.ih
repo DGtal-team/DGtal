@@ -237,7 +237,7 @@ trackSurface( SCellSet & surface,
               const SurfelPredicate & sp,
               const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
 
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
@@ -291,7 +291,7 @@ trackClosedSurface( SCellSet & surface,
                     const SurfelPredicate & sp,
                     const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
 
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
@@ -482,7 +482,7 @@ track2DSurface( std::vector<SCell> & aSCellContour,
 		const SurfelPredicate & sp,
 		const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
   ASSERT( KSpace::dimension == 2 );
 
   SCell b= start_surfel;  // current surfel
@@ -546,7 +546,7 @@ track2DSliceSurface( std::vector<SCell> & aSCellContour,
 		     const SurfelPredicate & sp,
 		     const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );

@@ -96,7 +96,7 @@ namespace DGtal
   template <typename TKSpace, typename TShape, typename TGeometricFunctor>
   class TrueDigitalSurfaceLocalEstimator
   {
-    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< TKSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
 
   public:
     typedef TrueDigitalSurfaceLocalEstimator<TKSpace,TShape,TGeometricFunctor> Self;

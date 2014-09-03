@@ -66,7 +66,7 @@ bool testGaussianCurvature3d( double h, double delta )
   typedef GraphVisitorRange< Visitor > VisitorRange;
   typedef VisitorRange::ConstIterator VisitorConstIterator;
 
-  typedef functors::IIGeometricFunctors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+  typedef functors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
   typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
   typedef MyIICurvatureFunctor::Value Value;
 
@@ -168,7 +168,7 @@ bool testPrincipalCurvatures3d( double h )
   typedef GraphVisitorRange< Visitor > VisitorRange;
   typedef VisitorRange::ConstIterator VisitorConstIterator;
 
-  typedef functors::IIGeometricFunctors::IIPrincipalCurvatures3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+  typedef functors::IIPrincipalCurvatures3DFunctor<Z3i::Space> MyIICurvatureFunctor;
   typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
   typedef MyIICurvatureFunctor::Value Value;
 

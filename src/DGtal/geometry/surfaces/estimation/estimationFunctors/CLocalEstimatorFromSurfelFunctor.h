@@ -110,7 +110,7 @@ public:
   typedef typename T::Surfel Surfel;
 
   BOOST_CONCEPT_ASSERT(( CQuantity< Quantity > ));
-  BOOST_CONCEPT_ASSERT(( CSCellEmbedder< SCellEmbedder > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSCellEmbedder< SCellEmbedder > ));
 
   // 2. then check the presence of data members, operators and methods with
   BOOST_CONCEPT_USAGE( CLocalEstimatorFromSurfelFunctor )

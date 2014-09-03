@@ -759,7 +759,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
-                              const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
+                              const DGtal::ConstRangeAdapter<TIterator, functors::SCellToPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aRangeAdapter);
 }
@@ -783,7 +783,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
-                              const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<KSpace>, std::pair<typename KSpace::Point, typename KSpace::Vector > > & aRangeAdapter )
+                              const DGtal::ConstRangeAdapter<TIterator, functors::SCellToArrow<KSpace>, std::pair<typename KSpace::Point, typename KSpace::Vector > > & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aRangeAdapter);
 }
@@ -795,7 +795,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
-                              const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
+                              const DGtal::ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aRangeAdapter);
 }
@@ -807,7 +807,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
-                              const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
+                              const DGtal::ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aRangeAdapter);
 }
@@ -819,7 +819,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
-                              const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<KSpace>,std::pair<typename KSpace::Point, typename KSpace::Point > > & aRangeAdapter )
+                              const DGtal::ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<KSpace>,std::pair<typename KSpace::Point, typename KSpace::Point > > & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aRangeAdapter);
 }
