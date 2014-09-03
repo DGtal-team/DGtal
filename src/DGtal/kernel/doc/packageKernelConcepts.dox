@@ -61,7 +61,7 @@ digraph GKERNEL {
       node [style=filled,color=white];
       label="kernel (main concepts)";
       
-      CPointPredicate [label="CPointPredicate" URL="@ref  CPointPredicate"];
+      CPointPredicate [label="CPointPredicate" URL="@ref  concepts::CPointPredicate"];
       CPointFunctor [label="CPointFunctor" URL="@ref CPointFunctor"];
       CSpace [label="CSpace" ULR="@ref CSpace"];
       CInteger [label="CInteger" URL="@ref CInteger"];

@@ -138,7 +138,7 @@ DSL D( 3, 5, -5 );
 
 A DSL provides the function operator StandardDSLQ0::operator(), taking a \e Point \e p
 and returning 'true' iff \e p belongs to the set of points of the DSL. It is
-indeed a model of CPointPredicate.
+indeed a model of concepts::CPointPredicate.
 
 The \e Point type is PointVector<2,Fraction::Integer>.
 

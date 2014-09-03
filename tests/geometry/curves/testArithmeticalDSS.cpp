@@ -50,7 +50,7 @@ using namespace DGtal;
 template <typename DSS>
 bool mainTest()
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<DSS> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<DSS> ));
   BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;
@@ -737,7 +737,7 @@ bool compatibleStepsTest(const DSS& dss)
 template <typename DSS>
 bool constructorsTest()
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<DSS> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<DSS> ));
   BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;

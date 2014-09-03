@@ -56,7 +56,7 @@ namespace DGtal
    * More precisely, the functor operator() returns true if the value
    * is greater than a given threshold.
    *
-   * This class is a model of CPointPredicate.
+   * This class is a model of concepts::CPointPredicate.
    *
    * @tparam Image an model of CConstImage concept. 
    */

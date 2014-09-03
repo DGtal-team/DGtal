@@ -39,6 +39,7 @@
 using namespace std;
 using namespace DGtal;
 using namespace DGtal::functors;
+using namespace DGtal::concepts;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class PointPredicateConcepts.

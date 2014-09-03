@@ -92,7 +92,7 @@ namespace DGtal
 * @tparam TKSpace a model of CCellularGridSpaceND, the cellular space
 * in which the shape is defined.
 *
-* @tparam TPointPredicate a model of CPointPredicate, a predicate
+* @tparam TPointPredicate a model of concepts::CPointPredicate, a predicate
 * Point -> bool that defines a digital shape as a characteristic
 * function.
 *

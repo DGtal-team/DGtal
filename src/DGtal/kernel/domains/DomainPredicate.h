@@ -60,7 +60,7 @@ namespace DGtal
    * It is used by domains to define the type by their method \c
    * predicate().
    *
-   * Model of CPointPredicate
+   * Model of concepts::CPointPredicate
    *
    * @see DomainAdjacency::predicate.
    */

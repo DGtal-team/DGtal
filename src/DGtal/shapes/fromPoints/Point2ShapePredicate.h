@@ -87,7 +87,7 @@ namespace DGtal
   no
    @endcode
    *
-   * This class is a model of CPointPredicate.
+   * This class is a model of concepts::CPointPredicate.
    *
    * @see testHalfPlane.cpp
    */
