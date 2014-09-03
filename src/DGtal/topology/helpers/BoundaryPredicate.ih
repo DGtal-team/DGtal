@@ -41,13 +41,13 @@
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
-DGtal::BoundaryPredicate<TKSpace,TImage>::
+DGtal::functors::BoundaryPredicate<TKSpace,TImage>::
 ~BoundaryPredicate()
 {}
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
-DGtal::BoundaryPredicate<TKSpace,TImage>::  
+DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
 BoundaryPredicate( const KSpace & aSpace, const Image & anImage,
                    const Value & l1 )
   : myPtrSpace( &aSpace ), myPtrImage( &anImage ),
@@ -56,7 +56,7 @@ BoundaryPredicate( const KSpace & aSpace, const Image & anImage,
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
-DGtal::BoundaryPredicate<TKSpace,TImage>::  
+DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
 BoundaryPredicate( const BoundaryPredicate & other )
   : myPtrSpace( other.myPtrSpace ), myPtrImage( other.myPtrImage ),
     myLabel1( other.myLabel1 )
@@ -64,8 +64,8 @@ BoundaryPredicate( const BoundaryPredicate & other )
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
-DGtal::BoundaryPredicate<TKSpace,TImage> &
-DGtal::BoundaryPredicate<TKSpace,TImage>::  
+DGtal::functors::BoundaryPredicate<TKSpace,TImage> &
+DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
 operator=( const BoundaryPredicate & other )
 {
   if ( this != &other )
@@ -80,7 +80,7 @@ operator=( const BoundaryPredicate & other )
 template <typename TKSpace, typename TImage>
 inline
 bool 
-DGtal::BoundaryPredicate<TKSpace,TImage>::  
+DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
 operator()( const Surfel & s ) const
 {
   Dimension orthDir = myPtrSpace->sOrthDir( s );
@@ -96,7 +96,7 @@ operator()( const Surfel & s ) const
 template <typename TKSpace, typename TImage>
 inline
 void
-DGtal::BoundaryPredicate<TKSpace,TImage>::  
+DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
 selfDisplay ( std::ostream & out ) const
 {
   out << "[BoundaryPredicate]";
@@ -105,7 +105,7 @@ selfDisplay ( std::ostream & out ) const
 template <typename TKSpace, typename TImage>
 inline
 bool 
-DGtal::BoundaryPredicate<TKSpace,TImage>::  
+DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
 isValid() const
 {
     return true;
@@ -126,7 +126,7 @@ template <typename TKSpace, typename TImage>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const BoundaryPredicate<TKSpace,TImage> & object )
+                    const DGtal::functors::BoundaryPredicate<TKSpace,TImage> & object )
 {
     object.selfDisplay ( out );
     return out;

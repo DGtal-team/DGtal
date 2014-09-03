@@ -46,8 +46,9 @@
 #include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /**
    * Description of template class 'IntervalForegroundPredicate' <p>
@@ -107,9 +108,9 @@ namespace DGtal
     
   };
 
+} // namespace functors
+} // namespace DGtal
 
-
-}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -67,7 +67,7 @@ int main( int argc, char** argv )
   typedef KSpace::Cell Cell;
 
   typedef ImageSelector<Domain, unsigned char>::Type Image;
-  typedef IntervalForegroundPredicate<Image> ThresholdedImage;
+  typedef functors::IntervalForegroundPredicate<Image> ThresholdedImage;
   typedef ImplicitDigitalSurface< KSpace, ThresholdedImage > DigitalSurfaceContainer;
 
   //! [DVCM3D-typedefs]
