@@ -71,12 +71,12 @@ namespace DGtal
      
  ### Refinement of 
    - boost::CopyConstructible
-   - CPointPredicate
+   - concepts::CPointPredicate
 
 @todo add boost::Container ? Not for now, since coding style do not
  match with STL (e.g. Iterator instead of iterator).
 
-@note It is also a refinement of boost::Assignable from CPointPredicate.
+@note It is also a refinement of boost::Assignable from concepts::CPointPredicate.
     
  ### Associated types :
 
@@ -87,7 +87,7 @@ namespace DGtal
      boost_concepts::ReadableIteratorConcept) and allow bidirectional
      traversal (model of
      boost_concepts::BidirectionalTraversalConcept). Its value has
-     type \c Point (defined in CPointPredicate).
+     type \c Point (defined in concepts::CPointPredicate).
    - \c ConstIterator: the type for visiting elements of the set. Note
      that types for Iterator and ConstIterator should be the same,
      similarly to STL simple associative containers.

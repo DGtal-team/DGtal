@@ -78,7 +78,7 @@ namespace DGtal
    * mutable). It is iterable (inner type ConstIterator, begin(),
    * end()). You may clear() it.
 
-   * It is also a model of CPointPredicate (returns 'true' iff a point
+   * It is also a model of concepts::CPointPredicate (returns 'true' iff a point
    * is within the current bounds).
 
    * \par Note on complexity: According to the paper, the
@@ -133,7 +133,7 @@ namespace DGtal
 
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
    * boost::Assignable, boost::ForwardContainer,
-   * CAdditivePrimitiveComputer, CPointPredicate.
+   * concepts::CAdditivePrimitiveComputer, concepts::CPointPredicate.
 
    * @tparam TSpace specifies the digital space (provides dimension and
    * types for the primitive)
@@ -312,13 +312,13 @@ namespace DGtal
     Size maxSize() const;
 
 
-    //-------------------- model of CPointPredicate -----------------------------
+    //-------------------- model of concepts::CPointPredicate -----------------------------
   public:
 
     /**
      * Checks if the point \a p is in the current digital
      * plane. Therefore, a ChordNaivePlaneComputer is a model of
-     * CPointPredicate.
+     * concepts::CPointPredicate.
      *
      * @param p any 3D point.
      *

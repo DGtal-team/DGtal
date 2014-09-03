@@ -51,7 +51,7 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/Clone.h"
-#include "DGtal/kernel/CCellFunctor.h"
+#include "DGtal/topology/CCellFunctor.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/SCellsFunctors.h"
 //////////////////////////////////////////////////////////////////////////////

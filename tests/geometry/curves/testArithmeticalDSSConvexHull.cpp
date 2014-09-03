@@ -42,7 +42,7 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace ArithmeticalDSSConvexHull; 
+using namespace functions; 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing functions of ArithmeticalDSSConvexHull namespace.

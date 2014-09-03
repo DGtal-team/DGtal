@@ -135,7 +135,7 @@ namespace DGtal
        @tparam DigitalSet a model of CDigitalSet such that
        DigitalSet::Domain is Domain.
 
-       @tparam PointPredicate a model of CPointPredicate such that
+       @tparam PointPredicate a model of concepts::CPointPredicate such that
        PointPredicate::Point is Point.
      */
     template < typename DigitalSet, typename PointPredicate >

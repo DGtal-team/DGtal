@@ -46,10 +46,10 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/kernel/CCellFunctor.h"
-#include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
+#include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/topology/CCellFunctor.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
 
 #include "DGtal/shapes/GaussDigitizer.h"
@@ -92,7 +92,7 @@ namespace DGtal
 * @tparam TKSpace a model of CCellularGridSpaceND, the cellular space
 * in which the shape is defined.
 *
-* @tparam TPointPredicate a model of CPointPredicate, a predicate
+* @tparam TPointPredicate a model of concepts::CPointPredicate, a predicate
 * Point -> bool that defines a digital shape as a characteristic
 * function.
 *

@@ -303,12 +303,12 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::closestPower (const Point &o
 template <typename T,  typename P>
 inline
 typename DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::Abscissa 
-DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &udim, 
-								       const Abscissa &vdim,
-								       const Promoted &nu,
-								       const Promoted &nv,
-								       const Abscissa &lower,
-								       const Abscissa &upper) const
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &/*udim*/, 
+								       const Abscissa &/*vdim*/,
+								       const Promoted &/*nu*/,
+								       const Promoted &/*nv*/,
+								       const Abscissa &/*lower*/,
+								       const Abscissa &/*upper*/) const
 {   
   ASSERT(false && "Not Necessary for l_2");
   

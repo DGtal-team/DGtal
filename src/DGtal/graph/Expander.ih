@@ -183,12 +183,12 @@ DGtal::Expander<TObject>
   
   // const ObjectDomainPredicate & objectPred = myObjectDomain.predicate();
   typedef typename ObjectDomain::Predicate ObjectDomainPredicate; 
-  typedef BinaryPointPredicate< ObjectDomainPredicate, 
+  typedef functors::BinaryPointPredicate< ObjectDomainPredicate, 
     NotInCoreDomainPredicate > Predicate;
 
   Predicate cPred( myObjectDomain.predicate(), 
-                           myNotInCorePred,
-                           andBF2 );
+                   myNotInCorePred,
+                   functors::andBF2 );
   // Computes the 1-neighborhood of the core.
   for ( ; p != pEnd; ++p )
     {

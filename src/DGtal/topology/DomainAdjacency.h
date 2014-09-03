@@ -82,7 +82,7 @@ namespace DGtal
 
     // Required as model of CDomainAdjacency
     typedef TDomain Domain;
-    typedef DomainPredicate< Domain > Predicate;
+    typedef functors::DomainPredicate< Domain > Predicate;
 
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;

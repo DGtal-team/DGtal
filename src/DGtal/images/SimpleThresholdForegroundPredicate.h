@@ -46,8 +46,9 @@
 #include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /**
    * Description of template class 'SimpleThresholdForegroundPredicate' <p>
@@ -56,7 +57,7 @@ namespace DGtal
    * More precisely, the functor operator() returns true if the value
    * is greater than a given threshold.
    *
-   * This class is a model of CPointPredicate.
+   * This class is a model of concepts::CPointPredicate.
    *
    * @tparam Image an model of CConstImage concept. 
    */
@@ -114,8 +115,9 @@ namespace DGtal
   };
 
 
+} // namespace functors
+} // namespace DGtal
 
-}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

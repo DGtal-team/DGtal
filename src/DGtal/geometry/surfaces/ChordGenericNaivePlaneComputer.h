@@ -74,7 +74,7 @@ namespace DGtal
    * mutable). It is iterable (inner type ConstIterator, begin(),
    * end()). You may clear() it.
 
-   * It is also a model of CPointPredicate (returns 'true' iff a point
+   * It is also a model of concepts::CPointPredicate (returns 'true' iff a point
    * is within the current bounds).
 
    * Note on complexity: See ChordNaivePlaneComputer and \ref
@@ -110,7 +110,7 @@ namespace DGtal
    * @endcode
 
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
-   * boost::Assignable, boost::ForwardContainer, CAdditivePrimitiveComputer, CPointPredicate.
+   * boost::Assignable, boost::ForwardContainer, concepts::CAdditivePrimitiveComputer, concepts::CPointPredicate.
    */
   template < typename TSpace,
              typename TInputPoint,
@@ -245,13 +245,13 @@ namespace DGtal
     Size maxSize() const;
 
 
-    //-------------------- model of CPointPredicate -----------------------------
+    //-------------------- model of concepts::CPointPredicate -----------------------------
   public:
 
     /**
      * Checks if the point \a p is in the current digital
      * plane. Therefore, a ChordGenericNaivePlaneComputer is a model of
-     * CPointPredicate.
+     * concepts::CPointPredicate.
      *
      * @param p any 3D point.
      *

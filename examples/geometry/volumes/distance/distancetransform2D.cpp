@@ -107,7 +107,7 @@ int main()
 
   //! [DTPredicate]
   //Point Predicate from random seed image
-  typedef SimpleThresholdForegroundPredicate<Image> PointPredicate;
+  typedef functors::SimpleThresholdForegroundPredicate<Image> PointPredicate;
   PointPredicate predicate(image,0);
   //! [DTPredicate]  
 

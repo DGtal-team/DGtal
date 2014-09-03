@@ -39,14 +39,12 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <exception>
+#include <iomanip>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
-#include <exception>
-
-#include <iomanip>
 
 namespace DGtal
 {

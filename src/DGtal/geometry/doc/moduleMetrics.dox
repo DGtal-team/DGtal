@@ -72,6 +72,8 @@ example,
  InexactPredicateLpSeparableMetric) are models of concepts::CMetricSpace for
  @f$p>1@f$
 
+ - Chamfer norms with axis symmetric unit ball (see experimental::ChamferNorm2D in dimension 2).
+
  - DigitalMetricAdapter which adapts any metric (model of
    concepts::CMetricSpace) to digital space using the ceil function. This induces
    a digital metric (ceil function preserves the
@@ -207,7 +209,7 @@ concepts::CPowerSeparableMetric are:
  - monotonicity property) to concepts::CSeparableMetric
  - ExactPredicateLpPowerSeparableMetric:  main class for power @f@f$
   l_p@f$ functions (with exact predicates).
-
+ - experimental::ChamferNorm2D: proof-of-concept of sperable volumetric computation from path based norms.
 
 As discussed in @ref moduleVolumetric, both VoronoiMap and PowerMap (and their associated
 subclasses) are parametrized by a generic separable metric (model of CSeparableMetric or CPowerSeparableMetric). If @f$ C
@@ -225,6 +227,7 @@ of the separable metrics can be summarized as follows:
 | ExactPredicateLpPowerSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
 | ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
 | SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(mlog(n)) @f$ | relies on aMetric(p,q) computations |
+| experimental::ChamferNorm2D | @f$ O(log(p)) @f$ | @f$ O(log^2(n)) @f$ | @cite dcoeurjo_metric14|
 
 
 Following this table, VoronoiMap, DistanceTransformation, PowerMap, ReverseDistanceTransformation have the following computational cost:
