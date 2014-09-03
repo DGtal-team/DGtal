@@ -88,7 +88,7 @@ subgraph cluster_concepts_2 {
     CPrimitiveComputer [ URL="\ref concepts::CPrimitiveComputer" ];
     CIncrementalPrimitiveComputer [ URL="\ref concepts::CIncrementalPrimitiveComputer" ];
     CAdditivePrimitiveComputer [ URL="\ref concepts::CAdditivePrimitiveComputer" ];
-    CDigitalSurfaceLocalEstimator [ URL="\ref CDigitalSurfaceLocalEstimator" ];
+    CDigitalSurfaceLocalEstimator [ URL="\ref concepts::CDigitalSurfaceLocalEstimator" ];
 
     CAdditivePrimitiveComputer -> concepts::CIncrementalPrimitiveComputer -> concepts::CPrimitiveComputer;
     label="geometry/surfaces (main concepts)";
