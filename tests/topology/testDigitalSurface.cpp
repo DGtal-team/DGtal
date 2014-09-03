@@ -49,6 +49,7 @@
 using namespace std;
 using namespace DGtal;
 using namespace DGtal::concepts;
+using namespace DGtal::functors;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class DigitalSurface.

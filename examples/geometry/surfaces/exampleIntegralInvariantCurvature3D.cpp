@@ -80,7 +80,7 @@ int main( int argc, char** argv )
 
     /// Construction of the shape from vol file
     typedef ImageSelector< Z3i::Domain, bool >::Type Image;
-    typedef SimpleThresholdForegroundPredicate< Image > ImagePredicate;
+    typedef functors::SimpleThresholdForegroundPredicate< Image > ImagePredicate;
     typedef LightImplicitDigitalSurface< Z3i::KSpace, ImagePredicate > MyLightImplicitDigitalSurface;
     typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
 

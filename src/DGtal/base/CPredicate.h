@@ -81,7 +81,7 @@ namespace DGtal
 
      ###  Models
 
-     - specializations: CPointPredicate, CVertexPredicate
+     - specializations: concepts::CPointPredicate, concepts::CVertexPredicate
 
      ###  Notes
 

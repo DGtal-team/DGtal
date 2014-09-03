@@ -81,7 +81,7 @@ int main( int argc, char** argv )
   //types
   typedef ImageContainerBySTLVector<Domain,short int> LabelImage; 
   typedef ConstImageAdapter<LabelImage, Domain, functors::Identity, bool, DGtal::functors::Thresholder<LabelImage::Value> > BinaryImage;
-  typedef FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
+  typedef functors::FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
   
   //reading image

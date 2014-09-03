@@ -66,7 +66,7 @@ findABel
   const PointPredicate & pp,
   unsigned int nbtries) throw (DGtal::InputException)
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
 
   DGtal::InputException dgtalerror;
   Point sizes = K.upperBound() - K.lowerBound();
@@ -103,7 +103,7 @@ findABel
   const PointPredicate & pp,
   Point x1, Point x2 )
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
   // (1) Checks the two candidates in the space.
   bool val_v1 = pp( x1 ); // dset.find( x1 ) != dset.end();
   ASSERT( val_v1 != pp( x2 ) );
@@ -184,7 +184,7 @@ trackBoundary( SCellSet & surface,
                const PointPredicate & pp,
                const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
 
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
@@ -338,7 +338,7 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
   const PointPredicate & pp,
   const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
   ASSERT( K.dimension == 2 );
 
   SCell b= start_surfel;  // current surfel
@@ -411,7 +411,7 @@ DGtal::Surfaces<TKSpace>::track2DSliceBoundary
   const PointPredicate & pp,
   const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );

@@ -249,7 +249,7 @@ namespace DGtal
 
        @tparam PointPredicate any model of predicate on point, i.e. a
        boolean functor returning 'true' when the point belongs to the
-       object. It is a model of CPointPredicate. The type
+       object. It is a model of concepts::CPointPredicate. The type
        SurfelNeighborhood::Point should be the same as
        PointPredicate::Point.
 

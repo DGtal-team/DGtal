@@ -44,8 +44,8 @@
 #include <iostream>
 #include <iterator>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/BasicBoolFunctors.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/base/BasicBoolFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 // @since 0.8 In DGtal::functors

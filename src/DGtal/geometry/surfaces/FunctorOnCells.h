@@ -50,7 +50,6 @@
 
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/CPointFunctor.h"
-#include "DGtal/kernel/CPointPredicate.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

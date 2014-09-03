@@ -278,7 +278,7 @@ namespace DGtal
     Self & operator+=
     ( const TDigitalSet & aSet );
 
-    // ----------------------- Model of CPointPredicate -----------------------------
+    // ----------------------- Model of concepts::CPointPredicate -----------------------------
   public:
 
     /**
