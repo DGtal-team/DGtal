@@ -390,7 +390,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateSha
                 continue;
 
             const Index& cell_border_index = iter_property->second.index;
-            ASSERT( cell_border_index < index_cells[actualOrder(1, duality)].size());
+            ASSERT( cell_border_index < (Index)index_cells[actualOrder(1, duality)].size());
 
             const DGtal::Dimension direction = edgeDirection(cell_border, duality);
 
@@ -401,7 +401,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateSha
             for (typename std::list<Index>::const_iterator bi=border_indexes[direction].begin(), bie=border_indexes[direction].end(); bi!=bie; bi++)
             {
                 const Index& cell_border_index = *bi;
-                ASSERT( cell_border_index < index_cells[actualOrder(1, duality)].size());
+                ASSERT( cell_border_index < (Index)index_cells[actualOrder(1, duality)].size());
                 ASSERT( cell_border_index < kFormLength(1, duality) );
 
                 sharp_operator_matrix[direction](kk, cell_border_index) = 1./border_indexes[direction].size();
@@ -465,7 +465,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateFla
                 continue;
 
             const Index& cell_border_index = iter_property->second.index;
-            ASSERT( cell_border_index < index_cells[actualOrder(0, duality)].size());
+            ASSERT( cell_border_index < (Index)index_cells[actualOrder(0, duality)].size());
             ASSERT( cell_border_index < kFormLength(0, duality) );
 
             border_indexes.push_back(cell_border_index);
@@ -474,7 +474,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateFla
         for (typename BorderIndexes::const_iterator bi=border_indexes.begin(), bie=border_indexes.end(); bi!=bie; bi++)
         {
             const Index& cell_border_index = *bi;
-            ASSERT( cell_border_index < index_cells[actualOrder(0, duality)].size());
+            ASSERT( cell_border_index < (Index)index_cells[actualOrder(0, duality)].size());
             ASSERT( cell_border_index < kFormLength(0, duality) );
 
             flat_operator_matrix[direction](kk, cell_border_index) = 1./border_indexes.size();

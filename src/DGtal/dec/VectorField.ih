@@ -62,6 +62,7 @@ template <typename Calculus, DGtal::Duality duality>
 void
 DGtal::VectorField<Calculus, duality>::selfDisplay(std::ostream& out) const
 {
+  out << "[VectorField] ";
 }
 
 template <typename Calculus, DGtal::Duality duality>

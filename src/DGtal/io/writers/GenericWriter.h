@@ -86,7 +86,10 @@ namespace DGtal
    *
    */
 
-  template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TValue = typename TContainer::Value, typename TFunctor = functors::Identity >
+  template <typename TContainer, 
+            int Tdim=TContainer::Point::dimension,
+            typename TValue = typename TContainer::Value, 
+            typename TFunctor = functors::Identity >
   struct GenericWriter
   {
     BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
@@ -97,8 +100,9 @@ namespace DGtal
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exportFile(const std::string &filename, const TContainer &anImage,  
-		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+    static bool exportFile(const std::string &filename, 
+                           const TContainer &anImage,  
+                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
   };
 
   /**
@@ -142,8 +146,10 @@ namespace DGtal
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exportFile(const std::string &filename,  const TContainer &anImage, const std::string &datasetName="UInt32Array3D",
-		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+    static bool exportFile(const std::string &filename,  
+                           const TContainer &anImage, 
+                           const std::string &datasetName="UInt32Array3D",
+                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
     
   };
   
@@ -188,8 +194,10 @@ namespace DGtal
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exportFile(const std::string &filename,  const TContainer &anImage, const std::string &datasetName="UInt8Array3D",
-		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+    static bool exportFile(const std::string &filename,  
+                           const TContainer &anImage, 
+                           const std::string &datasetName="UInt8Array3D",
+                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
   };
 
@@ -210,8 +218,9 @@ namespace DGtal
      *
      **/
 
-    static bool exportFile(const std::string &filename, const TContainer &anImage,
-		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+    static bool exportFile(const std::string &filename, 
+                           const TContainer &anImage,
+                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
   }; 
 
