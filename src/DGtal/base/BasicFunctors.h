@@ -49,7 +49,7 @@
 #include <functional>
 #include <cmath>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/BasicBoolFunctions.h"
+#include "DGtal/base/BasicBoolFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -491,7 +491,7 @@ struct Thresholder<T,true,true>
    * @tparam TBinaryFunctor binary functor used for comparison
    */
   template <typename TPredicate1, typename TPredicate2,
-	    typename TBinaryFunctor = BoolFunction2 >
+	    typename TBinaryFunctor = BoolFunctor2 >
   struct PredicateCombiner
   {
     typedef TPredicate1 Predicate1;

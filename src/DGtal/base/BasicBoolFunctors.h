@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file BasicBoolFunctions.h
+ * @file BasicBoolFunctors.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -28,15 +28,15 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(BasicBoolFunctions_RECURSES)
-#error Recursive header files inclusion detected in BasicBoolFunctions.h
-#else // defined(BasicBoolFunctions_RECURSES)
+#if defined(BasicBoolFunctors_RECURSES)
+#error Recursive header files inclusion detected in BasicBoolFunctors.h
+#else // defined(BasicBoolFunctors_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define BasicBoolFunctions_RECURSES
+#define BasicBoolFunctors_RECURSES
 
-#if !defined BasicBoolFunctions_h
+#if !defined BasicBoolFunctors_h
 /** Prevents repeated inclusion of headers. */
-#define BasicBoolFunctions_h
+#define BasicBoolFunctors_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -44,27 +44,29 @@
 #include <boost/function.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
-  /**
-   * May hold bool functions taking no arguments.
-   */
-  typedef boost::function0< bool > BoolFunction0;
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /**
-   * May hold bool functions taking one bool argument.
+   * May hold bool functors taking no arguments.
    */
-  typedef boost::function1< bool, bool > BoolFunction1;
+  typedef boost::function0< bool > BoolFunctor0;
 
   /**
-   * May hold bool functions taking two bool arguments.
+   * May hold bool functors taking one bool argument.
    */
-  typedef boost::function2< bool, bool, bool > BoolFunction2;
+  typedef boost::function1< bool, bool > BoolFunctor1;
 
   /**
-   * May hold bool functions taking three bool arguments (Useful ?).
+   * May hold bool functors taking two bool arguments.
    */
-  typedef boost::function3< bool, bool, bool, bool > BoolFunction3;
+  typedef boost::function2< bool, bool, bool > BoolFunctor2;
+
+  /**
+   * May hold bool functors taking three bool arguments (Useful ?).
+   */
+  typedef boost::function3< bool, bool, bool, bool > BoolFunctor3;
 
   /**
    * Functor with no argument returning true.
@@ -83,12 +85,12 @@ namespace DGtal
   /**
    * The object function (0 bool args) returning true.
    */
-  static const BoolFunction0 trueBF0 = TrueBoolFct0();
+  static const BoolFunctor0 trueBF0 = TrueBoolFct0();
 
   /**
    * The object function (0 bool args) returning false.
    */
-  static const BoolFunction0 falseBF0 = FalseBoolFct0();
+  static const BoolFunctor0 falseBF0 = FalseBoolFct0();
 
   /**
    * Functor boolean identity.
@@ -107,12 +109,12 @@ namespace DGtal
   /**
    * The object function identity (1 bool args).
    */
-  static const BoolFunction1 identityBF1 = IdentityBoolFct1();
+  static const BoolFunctor1 identityBF1 = IdentityBoolFct1();
 
   /**
    * The object function NOT (1 bool args).
    */
-  static const BoolFunction1 notBF1 = NotBoolFct1();
+  static const BoolFunctor1 notBF1 = NotBoolFct1();
 
   /**
    * Functor boolean and.
@@ -145,34 +147,35 @@ namespace DGtal
   /**
    * The object function and (2 bool args).
    */
-  static const BoolFunction2 andBF2 = AndBoolFct2();
+  static const BoolFunctor2 andBF2 = AndBoolFct2();
 
   /**
    * The object function or (2 bool args).
    */
-  static const BoolFunction2 orBF2 = OrBoolFct2();
+  static const BoolFunctor2 orBF2 = OrBoolFct2();
 
   /**
    * The object function xor (2 bool args).
    */
-  static const BoolFunction2 xorBF2 = XorBoolFct2();
+  static const BoolFunctor2 xorBF2 = XorBoolFct2();
 
   /**
    * The object function implies (2 bool args).
    */
-  static const BoolFunction2 impliesBF2 = ImpliesBoolFct2();
+  static const BoolFunctor2 impliesBF2 = ImpliesBoolFct2();
 
+} // namespace functors
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/base/BasicBoolFunctions.ih"
+// Includes inline functors.
+#include "DGtal/base/BasicBoolFunctors.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined BasicBoolFunctions_h
+#endif // !defined BasicBoolFunctors_h
 
-#undef BasicBoolFunctions_RECURSES
-#endif // else defined(BasicBoolFunctions_RECURSES)
+#undef BasicBoolFunctors_RECURSES
+#endif // else defined(BasicBoolFunctors_RECURSES)
