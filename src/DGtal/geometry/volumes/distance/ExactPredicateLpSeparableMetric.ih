@@ -310,12 +310,12 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::closest (const Point &origin,
 template <typename T,  typename P>
 inline
 typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Abscissa
-DGtal::ExactPredicateLpSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &udim,
-                                                                  const Abscissa &vdim,
-                                                                  const RawValue &nu,
-                                                                  const RawValue &nv,
-                                                                  const Abscissa &lower,
-                                                                  const Abscissa &upper) const
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &,
+                                                                  const Abscissa &,
+                                                                  const RawValue &,
+                                                                  const RawValue &,
+                                                                  const Abscissa &,
+                                                                  const Abscissa &) const
 {
   ASSERT(false && "Not Necessary for l_2");
 

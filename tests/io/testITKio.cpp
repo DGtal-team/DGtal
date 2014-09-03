@@ -138,7 +138,7 @@ bool testITKio()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   bool res = testITKio(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

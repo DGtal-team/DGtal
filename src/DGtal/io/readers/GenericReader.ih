@@ -128,7 +128,8 @@ DGtal::GenericReader<TContainer, 3, DGtal::uint32_t>::import(const std::string &
 template <typename TContainer, typename TValue>
 inline
 TContainer
-DGtal::GenericReader<TContainer, 2, TValue>::import(const std::string &filename, unsigned int x, unsigned int y)  throw(DGtal::IOException)
+DGtal::GenericReader<TContainer, 2, TValue>::import(const std::string &filename,
+                                                    unsigned int x, unsigned int y)  throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
   //Getting image extension
@@ -172,7 +173,9 @@ DGtal::GenericReader<TContainer, 2, TValue>::import(const std::string &filename,
 template <typename TContainer>
 inline
 TContainer
-DGtal::GenericReader<TContainer, 2, DGtal::uint32_t>::import(const std::string &filename, unsigned int x, unsigned int y)  throw(DGtal::IOException)
+DGtal::GenericReader<TContainer, 2, DGtal::uint32_t>::import(const std::string &filename, 
+                                                             unsigned int x, unsigned int y) 
+  throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
   //Getting image extension
