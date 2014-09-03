@@ -51,7 +51,7 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/Clone.h"
-#include "DGtal/kernel/CCellFunctor.h"
+#include "DGtal/topology/CCellFunctor.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/SCellsFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -97,8 +97,8 @@ public:
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -458,8 +458,8 @@ public:
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -821,8 +821,8 @@ public:
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
