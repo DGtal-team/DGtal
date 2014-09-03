@@ -43,7 +43,7 @@
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSSCheck::
+DGtal::functions::
 checkOnePoint(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
   ASSERT(aDSS.front()==aDSS.back()); 
@@ -68,7 +68,7 @@ checkOnePoint(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSSCheck::
+DGtal::functions::
 checkPointsRemainder(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
   ASSERT(aDSS.front()!=aDSS.back()); 
@@ -98,7 +98,7 @@ checkPointsRemainder(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSSCheck::
+DGtal::functions::
 checkPointsPosition(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
   ASSERT(aDSS.front()!=aDSS.back()); 
@@ -136,7 +136,7 @@ checkPointsPosition(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSSCheck::
+DGtal::functions::
 checkAll(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 { 
   //'true' if valid, 'false' otherwise

@@ -66,7 +66,7 @@ namespace DGtal
   {
     // ----------------------- public types ------------------------------
   public:
-    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< TKSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_CONCEPT_ASSERT(( CConstImage< TImage > ));
     typedef TKSpace KSpace;
     typedef TImage Image;

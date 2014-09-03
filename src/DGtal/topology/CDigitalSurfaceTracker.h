@@ -44,42 +44,43 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+namespace DGtal {
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSurfaceTracker
   /**
-Description of \b concept '\b CDigitalSurfaceTracker' <p>
-     @ingroup Concepts
-     @brief Aim:
+  Description of \b concept '\b CDigitalSurfaceTracker' <p>
+  @ingroup Concepts
+  @brief Aim:
+  @todo Complete documentation
      
- ### Refinement of 
-     boost::CopyConstructible
+  ### Refinement of 
+  boost::CopyConstructible
     
- ### Associated types :
+  ### Associated types :
     
- ### Notation
-     - \t X : A type that is a model of CDigitalSurfaceTracker
-     - \t x, \t y : object of type X
+  ### Notation
+  - \t X : A type that is a model of CDigitalSurfaceTracker
+  - \t x, \t y : object of type X
     
- ### Definitions
+  ### Definitions
     
- ### Valid expressions and semantics
+  ### Valid expressions and semantics
     
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| | | | | | | | | 
+  | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+  |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+  | | | | | | | | | 
      
- ### Invariants
+  ### Invariants
     
- ### Models
-     A dummy model (for concept checking) is CCDigitalSurfaceTrackerArchetype.
+  ### Models
+  A dummy model (for concept checking) is CCDigitalSurfaceTrackerArchetype.
 
- ### Notes
+  ### Notes
 
-@tparam T the type that should be a model of CDigitalSurfaceTracker.
-   */
+  @tparam T the type that should be a model of CDigitalSurfaceTracker.
+  */
   template <typename T> 
   struct CDigitalSurfaceTracker : boost::CopyConstructible<T>
   {
@@ -132,6 +133,7 @@ Description of \b concept '\b CDigitalSurfaceTracker' <p>
     
   }; // end of concept CDigitalSurfaceTracker
   
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

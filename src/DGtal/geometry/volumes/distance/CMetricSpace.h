@@ -70,7 +70,6 @@ In addition, CMetricSpace models should implement a distance function
  - d(x,y) <= d(x,z) + d(z,y) (triangle inequality)
 
 Two additional methods must be implemented: 
-
 - @e rawDistance(x,y) method provides internal distance representation
 between two points. For example, a convenient way to have an exact
 representation of hte Euclidean metric is to consider its square which
@@ -79,8 +78,7 @@ case, the rawDistance method returns the square of the Euclidean
 distance between the two points in an exact way as soon as the
 internal @a RawValue type is error free and can represents sum of
 squares of Point::Coordiante values.
-
- - @e closest(a,x,y) decides which point between x and y is closest to
+- @e closest(a,x,y) decides which point between x and y is closest to
    a. This method is required for performance purposes.
 
 

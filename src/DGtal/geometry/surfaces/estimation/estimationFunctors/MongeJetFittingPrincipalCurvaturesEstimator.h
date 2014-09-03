@@ -60,6 +60,8 @@
 
 namespace DGtal
 {
+  namespace functors
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class MongeJetFittingPrincipalCurvaturesEstimator
   /**
@@ -162,7 +164,7 @@ namespace DGtal
 
 
   }; // end of class MongeJetFittingPrincipalCurvaturesEstimator
-
+  }
 } // namespace DGtal
 
 

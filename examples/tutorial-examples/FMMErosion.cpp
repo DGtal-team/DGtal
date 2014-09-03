@@ -108,7 +108,7 @@ int main( int argc, char** argv )
   //! [FMMErosionTracking]
   typedef FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
-  SCellToIncidentPoints<KSpace> toIncidentPoints( ks );
+  functors::SCellToIncidentPoints<KSpace> toIncidentPoints( ks );
   std::pair<Point,Point> bpair = toIncidentPoints( bel );    
   SurfelPredicate surfelPredicate( ks, binaryImage, 
 				   binaryImage( bpair.first ), 
@@ -132,7 +132,7 @@ int main( int argc, char** argv )
   //! [FMMErosionFMMInit]
   DistanceImage imageDistance( domain, 0.0 );
   AcceptedPointSet pointSet( imageDistance );
-  SCellToInnerPoint<KSpace> toInnerPoint( ks );
+  functors::SCellToInnerPoint<KSpace> toInnerPoint( ks );
   for (Frontier::SurfelConstIterator it = frontier.begin(), itEnd = frontier.end(); 
        it != itEnd; ++it) 
     {

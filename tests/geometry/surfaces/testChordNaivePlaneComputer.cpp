@@ -40,6 +40,7 @@
 
 using namespace std;
 using namespace DGtal;
+using namespace DGtal::concepts;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class ChordNaivePlaneComputer.

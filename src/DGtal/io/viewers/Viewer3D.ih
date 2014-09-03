@@ -1408,6 +1408,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>:
     glBegin(GL_QUAD_STRIP);
     for(unsigned int i =0; i <= thetaResolution; i++){
       double theta0 =  i * thetaStep;
+      glColor4ub ( aBall.color.red(), aBall.color.green(), aBall.color.blue(), aBall.color.alpha() );
       glNormal3f(cos(phi0)*cos(theta0), cos(phi0)*sin(theta0), sin(phi0));
       glVertex3f(xCenter+cos(phi0)*cos(theta0)*radius,yCenter+ cos(phi0)*sin(theta0)*radius, zCenter+ sin(phi0)*radius);      
       glNormal3f(cos(phi1)*cos(theta0), cos(phi1)*sin(theta0), sin(phi1));

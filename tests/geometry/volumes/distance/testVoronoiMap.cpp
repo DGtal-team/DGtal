@@ -444,16 +444,16 @@ bool testSimple2D()
 
 bool testSimpleRandom2D()
 {
-
+  unsigned size=16;
  Z2i::Point a(0,0);
- Z2i::Point b(64,64);
+ Z2i::Point b(size,size);
   Z2i::Domain domain(a,b);
 
   Z2i::DigitalSet sites(domain);
   bool ok;
 
   trace.beginBlock("Random 2D");
-  for(unsigned int i = 0 ; i < 64; ++i)
+  for(unsigned int i = 0 ; i < size; ++i)
     {
       Z2i::Point p(  rand() % (b[0]) -  a[0],  rand() % (b[1]) +  a[1]  );
       sites.insert( p );
@@ -462,7 +462,7 @@ bool testSimpleRandom2D()
   trace.endBlock();
 
   trace.beginBlock("Random 2D (dense)");
-  for(unsigned int i = 0 ; i < 64*64-64; ++i)
+  for(unsigned int i = 0 ; i < size*size-size; ++i)
     {
       Z2i::Point p(  rand() % (b[0]) -  a[0],  rand() % (b[1]) +  a[1]  );
       sites.insert( p );

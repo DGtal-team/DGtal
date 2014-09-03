@@ -47,55 +47,51 @@
 #include "boost/concept_check.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal { 
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CVertexMap
   /**
-   *  Description of \b concept '\b CVertexMap' <p>
-   * @ingroup Concepts
-   * \brief Aim: models of CVertexMap concept implement mapping
-   * between graph vertices and values.
-   *
-   * This concept is associated with concepts related to graph  in
-   * DGtal (CUndirectedSimpleLocalGraph and CUndirectedSimpleGraph)
-   *
-   * Associates values to vertices.
+  Description of \b concept '\b CVertexMap' <p>
+  @ingroup Concepts
+  \brief Aim: models of CVertexMap concept implement mapping
+  between graph vertices and values.
+  
+  This concept is associated with concepts related to graph  in
+  DGtal (CUndirectedSimpleLocalGraph and CUndirectedSimpleGraph). Associates a value to each vertex of a graph.
+  
+  ### Associated types :
+  - Vertex : specifies the type for an element of the domain (inner type).
+  - Value : specifies the type for a value (inner type).
    
-   ### Associated types :
-   * - Vertex : specifies the type for an element of the domain (inner
-   *   type).
-   * - Value : specifies the type for a value (inner type).
+  ###  Notation
+  - \t X : A type that is a model of CVertexMap
+  - \t x : Object of type X
+  - \t v : Object of type Vertex
+  - \t val : Object of type Value
    
-   
-   ###  Notation
-   * - \t X : A type that is a model of CVertexMap
-   * - \t x : Object of type X
-   * - \t v : Object of type Vertex
-   * - \t val : Object of type Value
-   
-   ### Definitions
+  ### Definitions
    
    
-   ###  Valid expressions and
+  ###  Valid expressions and
    
-   | Name      | Expression              | Type requirements                           | Return type | Precondition | Semantics                                 | Post condition | Complexity |
-   |-----------|-------------------------|---------------------------------------------|-------------|--------------|-------------------------------------------|----------------|------------|
-   | Set value | x.setValue(vertex, val) | vertex of type Vertex and val of type Value | void        |              | set a given value val to a given vertex v |                |            |
-   | Accessor  | x(vertex)               | vertex of type Vertex                       | Value       |              | Access to the value at vertex             |                |            |
+  | Name      | Expression              | Type requirements                           | Return type | Precondition | Semantics                                 | Post condition | Complexity |
+  |-----------|-------------------------|---------------------------------------------|-------------|--------------|-------------------------------------------|----------------|------------|
+  | Set value | x.setValue(vertex, val) | vertex of type Vertex and val of type Value | void        |              | set a given value val to a given vertex v |                |            |
+  | Accessor  | x(vertex)               | vertex of type Vertex                       | Value       |              | Access to the value at vertex             |                |            |
    
    
-   ###  Invariants
-   *
+  ###  Invariants
+     
+  ###  Models
+  - ImageContainerBySTLVector, ImageContainerBySTLMap,
+  ImageContainerByITKImage, ImageContainerByHashTree
+  - Any adapted type from STLMapToVertexMapAdapter  
    
-   ###  Models
-   * ImageContainerBySTLVector, ImageContainerBySTLMap
-   * ImageContainerByITKImage, ImageContainerByHashTree
-   * Any adapted type from STLMapToVertexMapAdapter  
-   
-   ### Notes###
-   */
+  ### Notes###
+  */
   template <typename T>
   struct CVertexMap:
     boost::Assignable<T>
@@ -121,6 +117,7 @@ namespace DGtal
     
   }; // end of concept CVertexMap
   
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

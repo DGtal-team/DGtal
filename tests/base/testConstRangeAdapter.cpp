@@ -172,13 +172,15 @@ int main( int argc, char** argv )
   //which are projected into 2d points
   typedef SpaceND<2> S;
   typedef S::Point Point2; 
-  SCellToInnerPoint<K> f(ks); 
+  functors::SCellToInnerPoint<K> f(ks); 
 
-  ::functors::Projector<S> p;
-  functors::Composer<SCellToInnerPoint<K>,functors::Projector<S>,Point2> c(f,p);
+  functors::Projector<S> p;
+  functors::Composer< functors::SCellToInnerPoint<K>,
+                      functors::Projector<S>, Point2 > c(f,p);
 
-  typedef ConstRangeAdapter<std::vector<K::SCell>::iterator, 
-                            functors::Composer<SCellToInnerPoint<K>,functors::Projector<S>,Point2>, Point2 > PointRange;
+  typedef ConstRangeAdapter< std::vector<K::SCell>::iterator, 
+                             functors::Composer< functors::SCellToInnerPoint<K>,
+                                                 functors::Projector<S>, Point2 >, Point2 > PointRange;
   PointRange r3(v3.begin(), v3.end(), c); 
  
   /////////// concept checking
