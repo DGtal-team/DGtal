@@ -13,6 +13,11 @@
     - BasicFunctor functors have been moved to functors:: namespace.
     - DefaultFunctor has been renamed functors::Identity.
     - xxxFunctor have been renamed to xxx.
+
+ - Moving graph, topology, geometry/estimation concepts into
+   namespace concepts::, also moving some functors into namespace
+   functors:: (Jacques-Olivier Lachaud,
+   [#912](https://github.com/DGtal-team/DGtal/pull/912)).
     
 - *DEC Package*
  - DGtal 0.8 contains the first release of the Discrete Exterior

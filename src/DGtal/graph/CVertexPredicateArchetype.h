@@ -44,18 +44,17 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+namespace DGtal {
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CVertexPredicateArchetype
   /**
-Description of \b class '\b CVertexPredicateArchetype' <p>
+  Description of \b class '\b CVertexPredicateArchetype' <p>
 
-@brief Aim: Defines a an archetype for concept CVertexPredicate.
-@tparam TVertex the type chosen for vertices.
-
-   */
+  @brief Aim: Defines a an archetype for concept CVertexPredicate.
+  @tparam TVertex the type chosen for vertices.
+  */
   template <typename TVertex>
   struct CVertexPredicateArchetype
   {
@@ -69,6 +68,7 @@ Description of \b class '\b CVertexPredicateArchetype' <p>
     }
   }; // end of concept CVertexPredicateArchetype
   
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

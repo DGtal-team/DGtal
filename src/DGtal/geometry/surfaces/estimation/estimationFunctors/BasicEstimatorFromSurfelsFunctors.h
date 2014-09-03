@@ -61,7 +61,7 @@ namespace DGtal
     ///Embedder type
     typedef TSCellEmbedder SCellEmbedder;
 
-    BOOST_CONCEPT_ASSERT(( CSCellEmbedder<SCellEmbedder> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSCellEmbedder<SCellEmbedder> ));
 
     ///Type of output values
     typedef int Quantity;

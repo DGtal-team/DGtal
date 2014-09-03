@@ -120,7 +120,7 @@ public:
   typedef TPointPredicate PointPredicate;
   typedef TCovarianceMatrixFunctor CovarianceMatrixFunctor;
 
-  BOOST_CONCEPT_ASSERT (( CCellularGridSpaceND< KSpace > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellularGridSpaceND< KSpace > ));
   BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate > ));
 
   typedef typename KSpace::Space Space;
