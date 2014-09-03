@@ -95,7 +95,7 @@ namespace DGtal
    *
    * @tparam TSpace type of Digital Space (model of CSpace).
    * @tparam TPointPredicate point predicate returning true for points
-   * from which we compute the distance (model of CPointPredicate)
+   * from which we compute the distance (model of concepts::CPointPredicate)
    * @tparam TSeparableMetric a model of CSeparableMetric
    * @tparam TImageContainer any model of CImage to store the
    * VoronoiMap (default: ImageContainerBySTLVector). The space of the

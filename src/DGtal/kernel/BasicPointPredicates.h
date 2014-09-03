@@ -46,15 +46,16 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/BasicBoolFunctions.h"
+#include "DGtal/base/BasicBoolFunctors.h"
 #include "DGtal/base/CPredicate.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class ConstantPointPredicate
@@ -270,7 +271,7 @@ namespace DGtal
    * @tparam TBinaryFunctor binary functor used for comparison
    */
   template <typename TPointPredicate1, typename TPointPredicate2,
-      typename TBinaryFunctor = BoolFunction2 >
+      typename TBinaryFunctor = BoolFunctor2 >
   struct BinaryPointPredicate
   {
     typedef TPointPredicate1 PointPredicate1;
@@ -394,6 +395,7 @@ namespace DGtal
     const Predicate* myPred;
   };
 
+} // namespace functors
 } // namespace DGtal
 
 

@@ -126,7 +126,7 @@ namespace DGtal
    *
    * @tparam TImage  any model of CImage
    * @tparam TSet  any model of CDigitalSet
-   * @tparam TPointPredicate  any model of CPointPredicate, 
+   * @tparam TPointPredicate  any model of concepts::CPointPredicate, 
    * used to bound the computation within a domain 
    * @tparam TPointFunctor  any model of CPointFunctor,
    * used to compute the new distance value

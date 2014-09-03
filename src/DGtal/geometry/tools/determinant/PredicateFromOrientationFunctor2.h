@@ -56,7 +56,7 @@ namespace DGtal
   /**
    * Description of template class 'PredicateFromOrientationFunctor2' <p>
    * \brief Aim: Small adapter to models of COrientationFunctor2. 
-   * It is a model of CPointPredicate. It is also a ternary predicate on points, 
+   * It is a model of concepts::CPointPredicate. It is also a ternary predicate on points, 
    * useful for basic geometric tasks such as convex hull computation. 
    *
    * Once a orientation functor is defined, you can adapt it as follows: 

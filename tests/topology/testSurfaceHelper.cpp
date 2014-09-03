@@ -44,6 +44,7 @@
 
 using namespace std;
 using namespace DGtal;
+using namespace DGtal::functors;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class SurfaceHelper.

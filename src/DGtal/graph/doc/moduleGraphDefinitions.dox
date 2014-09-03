@@ -147,7 +147,7 @@ namespace DGtal {
    @image html graphTraversal-bfs.png "Coloring vertices of an object graph according to the topological distance to a seed (breadth-first traversal)."
 
    @note The traversal of the graph can be changed dynamically in two ways:
-     - visited vertices can be limited with a model of CVertexPredicate
+     - visited vertices can be limited with a model of concepts::CVertexPredicate
        (e.g. see BreadthFirstVisitor::expand( const VertexPredicate & )
        ).
      - you may forbid some visited vertices to have descendants
@@ -161,7 +161,7 @@ namespace DGtal {
    for digital surfaces to iterate through all vertices on-the-fly
    (see LightImplicitDigitalSurface, LightExplicitDigitalSurface).
    This is done easily with class GraphVisitorRange. This class
-   transforms an arbitary model of CGraphVisitor into a single pass
+   transforms an arbitary model of concepts::CGraphVisitor into a single pass
    input range (on \c Vertex or on \c Node).
 
    The following snippet transforms a DepthFirstVisitor into a range.

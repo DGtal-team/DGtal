@@ -116,7 +116,7 @@ int main( int argc, char** argv )
 
 
   //Distance transformation computation
-  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  typedef functors::SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(imageSeeds,0);
 
   typedef  DistanceTransformation<Z3i::Space,Predicate, Z3i::L2Metric> DTL2;

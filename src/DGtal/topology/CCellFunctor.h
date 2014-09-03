@@ -47,44 +47,44 @@
 #include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
-  namespace concepts
-  {
+// @since 0.8 In DGtal::concepts (and in DGtal/topology)
+namespace DGtal {
+  namespace concepts {
+
   /////////////////////////////////////////////////////////////////////////////
   // class CCellFunctor
   /**
-Description of \b concept '\b CCellFunctor' <p>
-     @ingroup Concepts
+  Description of \b concept '\b CCellFunctor' <p>
+  @ingroup Concepts
 
-@brief Aim: Defines a functor on cells.
-     
- Associates values to cells.
+  @brief Aim: Defines a functor on cells.
+  
+  Associates values to cells.
+  
+  ### Refinement of CUnaryFunctor
+  
+  ### Associated types
+  - Cell : specifies the type for a cells (inner type).
+  - Quantity : specifies the type for a quantity (inner type).
+  
+  ### Notation
+  - \t X : A type that is a model of CCellFunctor
+  - \t x : Object of type \t X
+  - \t c : Object of type Cell
+  - \t q : Object of type Quantity
     
- ### Refinement of CUnaryFunctor
-    
- ### Associated types
- - Cell : specifies the type for a cells (inner type).
- - Quantity : specifies the type for a quantity (inner type).
-    
- ### Notation
-     - \t X : A type that is a model of CCellFunctor
-     - \t x : Object of type \t X
-     - \t c : Object of type Cell
-     - \t q : Object of type Quantity
-    
- ### Definitions
-    
- ### Valid expressions and semantics
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|     
-|Apply function | \t x( \t c)|                     | \c q        |                  |the quantity of the function \t x at cell \t c | | |
-    
- ### Invariants
-    
- ### Notes###
-   */
+  ### Definitions
+  
+  ### Valid expressions and semantics
+  
+  | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+  |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|     
+  |Apply function | \t x( \t c)|                     | \c q        |                  |the quantity of the function \t x at cell \t c | | |
+  
+  ### Invariants
+  
+  ### Notes###
+  */
   template <typename T>
   struct CCellFunctor
   {
@@ -92,7 +92,7 @@ Description of \b concept '\b CCellFunctor' <p>
   public:
     typedef typename T::Cell Cell;
     typedef typename T::Quantity Quantity;
-
+    
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Cell,Quantity> ));
     
     BOOST_CONCEPT_USAGE( CCellFunctor )
@@ -102,7 +102,7 @@ Description of \b concept '\b CCellFunctor' <p>
     void check_const_constraints() const
     {
     }
-
+      
     // ------------------------- Private Datas --------------------------------
   private:
     // ------------------------- Internals ------------------------------------

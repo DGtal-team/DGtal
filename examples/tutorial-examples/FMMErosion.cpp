@@ -106,7 +106,7 @@ int main( int argc, char** argv )
 
   //implicit frontier 
   //! [FMMErosionTracking]
-  typedef FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
+  typedef functors::FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
   functors::SCellToIncidentPoints<KSpace> toIncidentPoints( ks );
   std::pair<Point,Point> bpair = toIncidentPoints( bel );    

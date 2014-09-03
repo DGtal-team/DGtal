@@ -118,7 +118,7 @@ namespace DGtal
     typedef Iterator ConstIterator;
     typedef ReverseIterator ConstReverseIterator;
     
-    typedef IsWithinPointPredicate<Point> Predicate;
+    typedef functors::IsWithinPointPredicate<Point> Predicate;
 
     /**
      * Default Constructor.

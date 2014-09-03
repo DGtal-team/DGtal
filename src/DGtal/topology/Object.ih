@@ -791,7 +791,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Intermediate container that is fast writable.
   Container tmp_local_points;
   std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
-  NotPointPredicate<DigitalSet> not_pred_is_in_X( *myPointSet );
+  functors::NotPointPredicate<DigitalSet> not_pred_is_in_X( *myPointSet );
   alpha.writeNeighbors( back_ins_it, p, not_pred_is_in_X );
 
   // Construct local domain.

@@ -47,39 +47,46 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 namespace DGtal
 {
   namespace concepts
   {
+=======
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
+
+>>>>>>> masterDGTal
   /////////////////////////////////////////////////////////////////////////////
   // class CPointPredicate
   /**
-Description of \b concept '\b CPointPredicate' <p>
-     @ingroup Concepts
-     \brief Aim: Defines a predicate on a point.
-
- Associates booleans to points.
-
- ### Refinement of
-    CPredicate
-
-
- ### Associated types :
-     - Point : specifies the type for an element of the domain (inner
-       type).
-
- ### Models
-    - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
-    - complex predicate constructor: BinaryPointPredicate
-    - others: DomainPredicate, SetPredicate, IntervalForegroundPredicate, SimpleThresholdForegroundPredicate
-    - all models of CDigitalSet are models of CPointPredicate: DigitalSetBySTLVector, DigitalSetBySTLMap, DigitalSetFromMap
-
- ### Notes
-   */
-template <typename T>
-struct CPointPredicate: CPredicate<T, typename T::Point>
+  Description of \b concept '\b CPointPredicate' <p>
+  @ingroup Concepts
+  \brief Aim: Defines a predicate on a point.
+  
+  Associates booleans to points.
+  
+  ### Refinement of
+  CPredicate
+  
+  
+  ### Associated types :
+  - Point : specifies the type for an element of the domain (inner
+  type).
+  
+  ### Models
+  - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
+  - complex predicate constructor: BinaryPointPredicate
+  - others: DomainPredicate, SetPredicate, IntervalForegroundPredicate, SimpleThresholdForegroundPredicate
+  - all models of CDigitalSet are models of CPointPredicate: DigitalSetBySTLVector, DigitalSetBySTLMap, DigitalSetFromMap
+  
+  ### Notes
+  */
+  template <typename T>
+  struct CPointPredicate: CPredicate<T, typename T::Point>
   {
-    // ----------------------- Concept checks ------------------------------
+  // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::Point Point;
 
@@ -92,7 +99,12 @@ struct CPointPredicate: CPredicate<T, typename T::Point>
 
 
   }; // end of concept CPointPredicate
+<<<<<<< HEAD
   }
+=======
+
+} // namespace concepts
+>>>>>>> masterDGTal
 } // namespace DGtal
 
 //                                                                           //

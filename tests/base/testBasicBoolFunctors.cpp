@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testBasicBoolFunctions.cpp
+ * @file testBasicBoolFunctors.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/07/10
  *
- * Functions for testing class BasicBoolFunctions.
+ * Functions for testing class BasicBoolFunctors.
  *
  * This file is part of the DGtal library.
  */
@@ -30,11 +30,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/BasicBoolFunctions.h"
+#include "DGtal/base/BasicBoolFunctors.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+using namespace DGtal::functors;
 
 #define INBLOCK_TEST(x) \
   nbok += ( x ) ? 1 : 0; \
@@ -49,13 +50,13 @@ using namespace DGtal;
   << y << std::endl;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class BasicBoolFunctions.
+// Functions for testing class BasicBoolFunctors.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testBasicBoolFunctions()
+bool testBasicBoolFunctors()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -155,13 +156,13 @@ bool testBasicBoolFunctions()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class BasicBoolFunctions" );
+  trace.beginBlock ( "Testing class BasicBoolFunctors" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testBasicBoolFunctions(); // && ... other tests
+  bool res = testBasicBoolFunctors(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
