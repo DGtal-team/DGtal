@@ -88,7 +88,7 @@ namespace DGtal
       // ----------------------- Standard services ------------------------------
     public:
 
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT( TSpace::dimension == 2 );
 
       ///Underlying Space

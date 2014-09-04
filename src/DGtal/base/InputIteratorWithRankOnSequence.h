@@ -81,7 +81,7 @@ namespace DGtal
     // ----------------------- public types ------------------------------
   public:
     BOOST_CONCEPT_ASSERT(( boost::Sequence<TSequence> ));
-    BOOST_CONCEPT_ASSERT(( CInteger<TRank> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TRank> ));
 
     typedef TSequence Sequence;
     typedef TRank Rank;

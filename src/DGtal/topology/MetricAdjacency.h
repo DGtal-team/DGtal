@@ -78,7 +78,7 @@ namespace DGtal
 	    Dimension dimension = TSpace::dimension >
   class MetricAdjacency
   {
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency

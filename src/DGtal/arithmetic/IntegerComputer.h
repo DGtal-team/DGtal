@@ -96,9 +96,9 @@ href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
     typedef typename SpaceND<3,Integer>::Point Point3I;
     typedef typename SpaceND<3,Integer>::Vector Vector3I;
 
-    BOOST_CONCEPT_ASSERT((CInteger<Integer>));
-    BOOST_CONCEPT_ASSERT((CUnsignedNumber<UnsignedInteger>));
-    BOOST_CONCEPT_ASSERT((CIntegralNumber<UnsignedInteger>));
+    BOOST_CONCEPT_ASSERT((concepts::CInteger<Integer>));
+    BOOST_CONCEPT_ASSERT((concepts::CUnsignedNumber<UnsignedInteger>));
+    BOOST_CONCEPT_ASSERT((concepts::CIntegralNumber<UnsignedInteger>));
 
     // ----------------------- Standard services ------------------------------
   public:

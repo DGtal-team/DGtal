@@ -49,7 +49,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
 /////////////////////////////////////////////////////////////////////////////
 // class CBinner
 /**
@@ -124,7 +125,7 @@ private:
 private:
 
 }; // end of concept CBinner
-
+  }
 } // namespace DGtal
 
 //                                                                           //

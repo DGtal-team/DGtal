@@ -109,8 +109,7 @@ namespace DGtal {
   private:
     T myT;
   }; // end of concept CCellFunctor
-  
-} // namespace concepts
+  }
 } // namespace DGtal
 
 //                                                                           //

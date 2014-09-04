@@ -100,7 +100,7 @@ template <typename DigitalSet, typename LinearAlgebraBackend>
 void
 test_hodge(int domain_size=5)
 {
-    BOOST_CONCEPT_ASSERT(( DGtal::CDigitalSet<DigitalSet> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDigitalSet<DigitalSet> ));
 
     typedef typename DigitalSet::Domain Domain;
     typedef typename DigitalSet::Point Point;
@@ -226,7 +226,7 @@ template <typename DigitalSet, typename LinearAlgebraBackend>
 void
 test_derivative(int domain_size=10)
 {
-    BOOST_CONCEPT_ASSERT(( DGtal::CDigitalSet<DigitalSet> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDigitalSet<DigitalSet> ));
 
     typedef typename DigitalSet::Domain Domain;
     typedef typename DigitalSet::Point Point;

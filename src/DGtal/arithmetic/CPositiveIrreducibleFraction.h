@@ -169,8 +169,8 @@ public:
   typedef typename T::ConstIterator ConstIterator;
   typedef typename T::const_iterator const_iterator;
 
-  BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-  BOOST_CONCEPT_ASSERT(( CInteger< Quotient > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CInteger< Integer > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CInteger< Quotient > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, std::pair<Quotient,Quotient> >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, Value >::value ));
 

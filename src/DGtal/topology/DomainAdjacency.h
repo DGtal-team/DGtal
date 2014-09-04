@@ -71,7 +71,7 @@ namespace DGtal
   template <typename TDomain, typename TAdjacency>
   class DomainAdjacency
   {
-    BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
     BOOST_CONCEPT_ASSERT(( concepts::CAdjacency<TAdjacency> ));
   public:
 

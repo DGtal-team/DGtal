@@ -117,7 +117,7 @@ namespace DGtal
      * before being stored into the matrix. 
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing<Integer> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<Integer> )); 
 
     /**
      * Type of matrix

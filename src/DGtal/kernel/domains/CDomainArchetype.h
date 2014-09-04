@@ -54,7 +54,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class CDomainArchetype
   /**
@@ -184,7 +185,7 @@ namespace DGtal
     bool isValid() const { return true; }
 
   }; // end of class CDomainArchetype
-
+  }
 } // namespace DGtal
 
 

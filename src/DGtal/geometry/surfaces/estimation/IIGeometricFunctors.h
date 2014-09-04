@@ -76,7 +76,7 @@ namespace DGtal {
       typedef Quantity Value;
 
       // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
 
       /// Default constructor.
       IINormalDirectionFunctor() {}
@@ -150,7 +150,7 @@ namespace DGtal {
       typedef Quantity Value;
 
       // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 2 ));
 
       /// Default constructor.
@@ -223,7 +223,7 @@ namespace DGtal {
       typedef Quantity Value;
 
       // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 2 ));
 
       /// Default constructor.
@@ -302,7 +302,7 @@ namespace DGtal {
       typedef Quantity Value;
 
       // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
 
       /// Default constructor.
@@ -380,7 +380,7 @@ namespace DGtal {
       typedef Quantity Value;
 
       // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
 
       /// Default constructor.
@@ -455,7 +455,7 @@ namespace DGtal {
       typedef Component Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 2 ));
 
       /**
@@ -518,7 +518,7 @@ namespace DGtal {
       typedef Component Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -584,7 +584,7 @@ namespace DGtal {
       typedef Quantity Value;
 
       // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -667,7 +667,7 @@ namespace DGtal {
       typedef Quantity Value;
 
       // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -749,7 +749,7 @@ namespace DGtal {
       typedef Quantity Value;
 
       // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -830,7 +830,7 @@ namespace DGtal {
       typedef Quantity Value;
 
       // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**

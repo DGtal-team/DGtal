@@ -45,6 +45,8 @@
 
 namespace DGtal
 {
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CEuclideanRing
   /**
@@ -96,6 +98,7 @@ DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal
     T a,b,c;
   
   };
+  }
 } // namespace DGtal
 
 

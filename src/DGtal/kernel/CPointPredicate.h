@@ -92,7 +92,6 @@ namespace DGtal {
 
 
   }; // end of concept CPointPredicate
-
 } // namespace concepts
 } // namespace DGtal
 

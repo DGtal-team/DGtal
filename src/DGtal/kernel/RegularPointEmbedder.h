@@ -67,7 +67,7 @@ namespace DGtal
   template <typename TSpace>
   class RegularPointEmbedder
   {
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
 
     // ----------------------- Standard services ------------------------------
   public:

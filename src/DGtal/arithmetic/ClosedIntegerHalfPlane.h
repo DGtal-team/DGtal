@@ -63,7 +63,7 @@ namespace DGtal
   struct ClosedIntegerHalfPlane
   {
     typedef ClosedIntegerHalfPlane<TSpace> Self;
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     
     typedef TSpace Space;
     typedef typename Space::Integer Integer;

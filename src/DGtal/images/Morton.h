@@ -82,9 +82,9 @@ namespace DGtal
     typedef typename Point::Coordinate Coordinate;
     static const Dimension dimension ;    
 
-    BOOST_CONCEPT_ASSERT(( CUnsignedNumber<THashKey> ));
-    BOOST_CONCEPT_ASSERT(( CIntegralNumber<THashKey> ));
-    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber<THashKey> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CIntegralNumber<THashKey> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
 
     /**
      * Constructor

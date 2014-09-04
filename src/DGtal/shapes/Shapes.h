@@ -71,7 +71,7 @@ namespace DGtal
   class Shapes
   {
     // Concept checks
-    BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ) );
 
     // ----------------------- public types ------------------------------
   public:

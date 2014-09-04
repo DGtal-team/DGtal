@@ -54,7 +54,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSet
   /////////////////////////////////////////////////////////////////////////////
@@ -147,7 +148,7 @@ namespace DGtal
     typedef typename T::Iterator Iterator;
     typedef typename T::ConstIterator ConstIterator;
 
-    BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator > ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<ConstIterator > ));
     //following the STL concept of simple associative container 
@@ -219,7 +220,7 @@ namespace DGtal
   private:
     
   }; // end of concept CDigitalSet
-  
+  }  
 } // namespace DGtal
 
 

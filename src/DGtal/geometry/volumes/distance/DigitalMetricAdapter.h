@@ -79,7 +79,7 @@ namespace DGtal
 
     ///Values are integer numbers
     typedef TInteger Value;
-    BOOST_CONCEPT_ASSERT(( CInteger<Value> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Value> ));
 
     // ----------------------- CDigitalMetric------------------------------------
     ///Point type

@@ -112,7 +112,7 @@ namespace DGtal
     typedef TMap Map;
     typedef LightSternBrocot<TInteger,TQuotient,TMap> Self;
     
-    BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger< Integer > ));
 
     struct Node;
     typedef typename TMap:: template Rebinder<Quotient, Node*>::Type MapQuotientToNode;

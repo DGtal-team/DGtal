@@ -98,7 +98,7 @@ namespace DGtal
      * Type of integer for the input coefficients of the 2x2 matrix
      */
     typedef TArgumentInteger ArgumentInteger; 
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing<ArgumentInteger> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> )); 
     /**
      * DGtal alias of type ArgumentInteger
      */
@@ -112,7 +112,7 @@ namespace DGtal
      * Type of integer for the returned determinant
      */
     typedef TResultInteger ResultInteger; 
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing<ArgumentInteger> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> )); 
 
     /**
      * DGtal alias type of ResultInteger
