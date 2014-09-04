@@ -53,7 +53,7 @@ namespace DGtal{
       return a[0]*b[1]-a[1]*b[0];
     
     FATAL_ERROR(!"Determinant not yet implemented");
-    
+    return 0;
   }
 
 
