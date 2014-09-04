@@ -131,7 +131,7 @@ namespace DGtal
     typedef ImageContainerBySTLVector<TDomain, TValue> Self;
 
     /// domain
-    BOOST_CONCEPT_ASSERT ( ( CDomain<TDomain> ) );
+    BOOST_CONCEPT_ASSERT ( ( concepts::CDomain<TDomain> ) );
     typedef TDomain Domain;
     typedef typename Domain::Point Point;
     typedef typename Domain::Vector Vector;

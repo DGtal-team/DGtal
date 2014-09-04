@@ -248,7 +248,7 @@ DGtal::Shapes<TDomain>::makeSetFromPointPredicate
   const PointPredicate & aPP )
 {
   
-  BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSet > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSet > ));
   BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
   BOOST_STATIC_ASSERT
     (( ConceptUtils::SameType< Domain, typename DigitalSet::Domain >::value ));

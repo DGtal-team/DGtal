@@ -81,7 +81,7 @@ namespace DGtal
     typedef TQuotient Quotient;
     typedef SternBrocot<Integer,Quotient> Self;
     
-    BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger< Integer > ));
 
   public:
 

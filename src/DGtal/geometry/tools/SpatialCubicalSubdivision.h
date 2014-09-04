@@ -71,7 +71,7 @@ namespace DGtal
   template <typename TSpace>
   class SpatialCubicalSubdivision
   {
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
   public:
     typedef TSpace Space;
     typedef typename Space::Point Point;

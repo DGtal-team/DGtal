@@ -121,8 +121,8 @@ namespace DGtal
   class COBAGenericNaivePlaneComputer
   {
 
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( CInteger< TInternalInteger > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger< TInternalInteger > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
 
     // ----------------------- public types ------------------------------

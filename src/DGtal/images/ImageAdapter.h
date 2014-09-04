@@ -115,7 +115,7 @@ public:
 
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( CDomain<TNewDomain> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TNewDomain> ));
    
     typedef TNewDomain Domain;
     typedef typename TNewDomain::Point Point;

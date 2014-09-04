@@ -369,7 +369,7 @@ namespace DGtal {
   template <typename TPointFunctor, typename TPredicate>
   struct PointFunctorPredicate
   {
-    BOOST_CONCEPT_ASSERT (( CPointFunctor< TPointFunctor > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointFunctor< TPointFunctor > ));
     BOOST_CONCEPT_ASSERT (( CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));
 
     typedef TPointFunctor PointFunctor;

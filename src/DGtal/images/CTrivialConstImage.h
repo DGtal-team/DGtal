@@ -84,7 +84,7 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
    */
 
   template <typename I>
-  struct CTrivialConstImage: CPointFunctor<I>
+  struct CTrivialConstImage: concepts::CPointFunctor<I>
   {
 
   public:
@@ -92,7 +92,7 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
     BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
     //Inner types
     typedef typename I::Domain Domain;
-    BOOST_CONCEPT_ASSERT((CDomain<Domain>));
+    BOOST_CONCEPT_ASSERT((concepts::CDomain<Domain>));
 
 
     BOOST_CONCEPT_USAGE(CTrivialConstImage)

@@ -70,7 +70,7 @@ template <typename TSpace>
 class ForwardRigidTransformation3D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
 {
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
 
     // ----------------------- Types ------------------------------
@@ -151,7 +151,7 @@ template <typename TSpace>
 class BackwardRigidTransformation3D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
 {
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
 
     // ----------------------- Types ------------------------------
@@ -230,7 +230,7 @@ class DomainRigidTransformation3D :
 {
     ///Checking concepts
     BOOST_STATIC_ASSERT(( TDomain::dimension == 3 ));
-    BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
 
     // ----------------------- Types ------------------------------
 public:

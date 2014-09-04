@@ -85,7 +85,7 @@ namespace DGtal
     typedef typename TImage::Value Value; 
 
     /// constant iterator types 
-    BOOST_CONCEPT_ASSERT(( CDomain<Domain> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> )); 
     typedef ConstIteratorAdapter<typename Domain::ConstIterator,TImage,Value> ConstIterator; 
     typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 

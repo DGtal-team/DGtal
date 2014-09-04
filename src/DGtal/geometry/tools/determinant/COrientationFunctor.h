@@ -109,12 +109,12 @@ namespace DGtal
      @tparam T the type that should be a model of COrientationFunctor.
   */
   template <typename T>
-  struct COrientationFunctor : CPointFunctor<T>
+  struct COrientationFunctor : concepts::CPointFunctor<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
 
-    BOOST_CONCEPT_ASSERT(( CSignedNumber< typename T::Value > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber< typename T::Value > ));
     
     typedef typename T::PointArray PointArray; 
     typedef typename T::SizeArray SizeArray; 
