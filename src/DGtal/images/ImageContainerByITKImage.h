@@ -80,7 +80,7 @@ namespace DGtal
     public:
 
       BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
-      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
 
       typedef TValue Value;
       typedef TDomain Domain;

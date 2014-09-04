@@ -212,7 +212,7 @@ namespace DGtal
     typedef ImageContainer OutputImage;
     typedef typename OutputImage::Value Value;
 
-    BOOST_CONCEPT_ASSERT(( CBoundedNumber< Value > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< Value > ));
 
     // ----------------------- Standard services ------------------------------
 
