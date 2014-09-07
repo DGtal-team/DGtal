@@ -94,6 +94,21 @@ bool testGenericReader()
   DGtal::trace.info()<<"size[2]:  " << size2Img2 << std::endl;;
   nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0; 
   nb++;
+
+  typedef DGtal::functors::Rescaling<unsigned char ,unsigned char > RescalFCT;
+  Image3D imageanImportedImage2 = DGtal::GenericReader<Image3D>::importWithValueFunctor( filenameImage2,  RescalFCT(0, 120,
+                                                                                                             0, 255) );  
+  domain2 = anImportedImage2.domain(); 
+  size0Img2= domain2.upperBound()[0]-domain2.lowerBound()[0]+1;
+  size1Img2= domain2.upperBound()[1]-domain2.lowerBound()[1]+1;
+  size2Img2= domain2.upperBound()[2]-domain2.lowerBound()[2]+1;
+  DGtal::trace.info()<<"Pgm3D image read (with scale functor) : size[0]:" << size0Img2  ;
+  DGtal::trace.info()<<"size[1]:  " << size1Img2;
+  DGtal::trace.info()<<"size[2]:  " << size2Img2 << std::endl;;
+  nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0; 
+  nb++;
+  
+
 #ifdef WITH_HDF5
   std::string filenameImageh5 = testPath + "samples/cat10.h5";    
   Image3D anImportedImageh5= DGtal::GenericReader<Image3D>::import(filenameImageh5);
