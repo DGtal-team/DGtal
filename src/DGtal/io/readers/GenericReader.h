@@ -159,19 +159,19 @@ namespace DGtal
       std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
       if(extension=="vol")
-        return  VolReader<TContainer>::importVol( filename, aFunctor );
+        return  VolReader<TContainer, TFunctor>::importVol( filename, aFunctor );
 
       if(extension=="longvol")
-        return  LongvolReader<TContainer>::importLongvol( filename, aFunctor  );
+        return  LongvolReader<TContainer, TFunctor>::importLongvol( filename, aFunctor  );
 
       if(extension=="pgm3d"|| extension=="pgm3D" || extension=="p3d" || extension=="pgm")
-        return PGMReader<TContainer>::importPGM3D(filename, aFunctor);
+        return PGMReader<TContainer, TFunctor>::importPGM3D(filename, aFunctor);
 
       if(extension=="raw")
         {
           ASSERT(x!=0 && y!=0 && z!=0);
           typename TContainer::Point pt (x,y,z);
-          return RawReader< TContainer >::importRaw8 ( filename, pt, aFunctor  );
+          return RawReader< TContainer, TFunctor >::importRaw8 ( filename, pt, aFunctor  );
         }
 
 #ifdef WITH_HDF5
