@@ -20,7 +20,7 @@ script:
   - cmake . $BTYPE
   - make DGtal && make DGtalIO
   - cd examples && make -j 3 
-  - cd ../tests &&  make -j 3 &&  cd ..&& make test
+  - cd ../tests &&  make &&  cd ..&& make test
 
 after_script:
   - make lcov
