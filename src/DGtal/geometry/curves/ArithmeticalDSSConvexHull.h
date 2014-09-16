@@ -343,7 +343,7 @@ namespace DGtal
      */
     template<typename PointVector, typename Position, typename PositionFunctor, typename OutputIterator>
     inline
-    PointVector reverseSmartCH(PointVector U, PointVector L, PointVector V, 
+    PointVector reversedSmartCH(PointVector U, PointVector L, PointVector V, 
 			       const Position& aFirstPosition, const Position& aLastPosition,
 			       const PositionFunctor& aPositionFunctor, 
 			       OutputIterator uIto, OutputIterator lIto); 
@@ -369,7 +369,7 @@ namespace DGtal
      */
     template<typename DSS, typename OutputIterator>
     inline
-    typename DSS::Vector reverseSmartCH(const DSS& aDSS, 
+    typename DSS::Vector reversedSmartCH(const DSS& aDSS, 
 					const typename DSS::Position& aPositionBound, 
 					OutputIterator uIto, OutputIterator lIto); 
 

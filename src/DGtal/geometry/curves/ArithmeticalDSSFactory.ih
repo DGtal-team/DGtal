@@ -117,10 +117,10 @@ DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>
 DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::
 createLeftSubsegment(const DSS& aDSS, const Point& aL)
 {
-  //running reverseSmartCH to compute the minimal characteristics AND the leaning points
+  //running reversedSmartCH to compute the minimal characteristics AND the leaning points
   OneItemOutputIterator<Point> lastUpperVertex, lastLowerVertex;
   using namespace functions; 
-  Vector v = reverseSmartCH( aDSS, aDSS.position(aL),
+  Vector v = reversedSmartCH( aDSS, aDSS.position(aL),
 			     lastUpperVertex, lastLowerVertex );
 
   //DSS construction

@@ -110,7 +110,7 @@ namespace DGtal
      * @param aL last point of the subsegment
      *
      * NB: logarithmic-time in the greatest component of the direction vector
-     * of the subsegment. Uses reverseSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014].
+     * of the subsegment. Uses reversedSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014].
      *
      * @see createLeftSubsegment
      */
@@ -155,7 +155,7 @@ namespace DGtal
      * @param aL last point of the subsegment
      *
      * NB: logarithmic-time in the greatest component of the direction vector
-     * of the subsegment. Uses reverseSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+     * of the subsegment. Uses reversedSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
      */
     static DSS createLeftSubsegment(const DSS& aDSS, const Point& aL);
 

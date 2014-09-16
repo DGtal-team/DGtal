@@ -335,7 +335,7 @@ and the computation of the opposite leaning points).
 and runs in logarithmic-time [Roussillon 2014 : \cite RoussillonDGCI2014]. 
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorDSL 
 - as a subsegment of a greater DSS (with known leaning points). The construction is 
-based on the reverseSmartCH algorithm and runs in logarithmic-time 
+based on the reversedSmartCH algorithm and runs in logarithmic-time 
 [Roussillon 2014 : \cite RoussillonDGCI2014]. 
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorDSS 
 - from a sequence of simply connected points. The construction runs in linear-time, 
