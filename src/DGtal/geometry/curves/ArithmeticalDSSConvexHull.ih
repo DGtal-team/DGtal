@@ -222,7 +222,7 @@ template<typename DSS, typename OutputIterator>
 inline
 typename DSS::Vector 
 DGtal::functions::
-reverseSmartCH(const DSS& aDSS, 
+reversedSmartCH(const DSS& aDSS, 
 	       const typename DSS::Position& aPositionBound, 
 	       OutputIterator uIto, OutputIterator lIto)
 {
@@ -236,7 +236,7 @@ reverseSmartCH(const DSS& aDSS,
   //direction vector
   Vector v(aDSS.b(), aDSS.a());
  
-  return reverseSmartCH( aDSS.Uf(), aDSS.Lf()-aDSS.dsl().shift(), v, 
+  return reversedSmartCH( aDSS.Uf(), aDSS.Lf()-aDSS.dsl().shift(), v, 
 			 aDSS.position(aDSS.back()), aPositionBound, 
 			 position, uIto, lIto ); 
 } 
@@ -248,7 +248,7 @@ template<typename PointVector, typename Position,
 inline
 PointVector 
 DGtal::functions::
-reverseSmartCH(PointVector U, PointVector L, PointVector V, 
+reversedSmartCH(PointVector U, PointVector L, PointVector V, 
 	       const Position& aFirstPosition, const Position& aLastPosition, 
 	       const PositionFunctor& aPositionFunctor, 
 	       OutputIterator uIto, OutputIterator lIto)

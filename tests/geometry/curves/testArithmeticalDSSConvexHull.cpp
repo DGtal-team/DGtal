@@ -45,7 +45,7 @@ using namespace DGtal;
 using namespace functions; 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing functions smartCH and reverseSmartCH.
+// Functions for testing functions smartCH and reversedSmartCH.
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -486,9 +486,9 @@ bool testSubsegment()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// reverseSmartCH
+// reversedSmartCH
 /**
- * Applies reverseSmartCH on a segment starting from (0,0)
+ * Applies reversedSmartCH on a segment starting from (0,0)
  * and contained in a given arithmetical DSL
  * @param aDSL any DSL
  * @return 'true' if the algorithm returns correct values, 'false' otherwise
@@ -519,7 +519,7 @@ bool basicTest2(const DSL& aDSL)
 
   //computation
   std::vector<Point> lch, uch; 
-  Vector v = reverseSmartCH( dss, NumberTraits<Position>::ZERO,
+  Vector v = reversedSmartCH( dss, NumberTraits<Position>::ZERO,
 			     std::back_inserter(uch), std::back_inserter(lch) );
 
   trace.info() << v << lch.back() << uch.back() << std::endl; 
@@ -541,7 +541,7 @@ bool basicTest2(const DSL& aDSL)
 }
 
 /**
- * Applies reverseSmartCH on a segment starting from (0,0)
+ * Applies reversedSmartCH on a segment starting from (0,0)
  * and contained in a naive DSL of slope @a a, @a b with 
  * various intercepts
  * @param a numerator of the slope
@@ -618,14 +618,14 @@ bool testWithoutLengthConstraint2()
 }
 
 /**
- * Computes the minimal parameters of a subsegment with reverseSmartCH
+ * Computes the minimal parameters of a subsegment with reversedSmartCH
  * @param aDSS DSS containing the subsegment
  * @param aBound maximal position
  * @return the computed DSL of minimal parameters
  * @tparam DSS an arithmetical DSS (either naive or standard)
  */
 template <typename DSS>
-typename DSS::DSL reverseSmartCHSubsegment(const DSS& aDSS, 
+typename DSS::DSL reversedSmartCHSubsegment(const DSS& aDSS, 
 					   typename DSS::Position aBound)
 {
   ASSERT( (aBound - aDSS.position(aDSS.back())) > 0 ); 
@@ -637,9 +637,9 @@ typename DSS::DSL reverseSmartCHSubsegment(const DSS& aDSS,
   
   Point startingPoint = aDSS.dsl().getPoint(aBound);  
 
-  //running reverseSmartCH
+  //running reversedSmartCH
   std::vector<Point> lch, uch; 
-  Vector v = reverseSmartCH( aDSS, aBound,
+  Vector v = reversedSmartCH( aDSS, aBound,
 			     std::back_inserter(uch), std::back_inserter(lch) );
 
   //computing the slope and the remainder of the last upper leaning point 
@@ -652,7 +652,7 @@ typename DSS::DSL reverseSmartCHSubsegment(const DSS& aDSS,
 }
 
 /**
- * Compares reverseSmartCH to the classical incremental recognition algorithm for 
+ * Compares reversedSmartCH to the classical incremental recognition algorithm for 
  * one subgement of a greater DSS
  * @param aDSS DSS containing the subsegment
  * @param aBound maximal position
@@ -663,7 +663,7 @@ template <typename DSS>
 bool comparisonSubsegment2(const DSS& aDSS, typename DSS::Position aBound)
 {
   typedef typename DSS::DSL DSL; 
-  DSL dsl1 = reverseSmartCHSubsegment(aDSS, aBound); 
+  DSL dsl1 = reversedSmartCHSubsegment(aDSS, aBound); 
   DSL dsl2 = trivialSubsegment(aDSS.dsl(), aDSS.position(aDSS.back()), aBound); 
 
   return (dsl1 == dsl2); 
@@ -672,7 +672,7 @@ bool comparisonSubsegment2(const DSS& aDSS, typename DSS::Position aBound)
 
 
 /**
- * Compares reverseSmartCH to the classical incremental recognition algorithm
+ * Compares reversedSmartCH to the classical incremental recognition algorithm
  * for various intercepts and lengths
  * @param a numerator of the slope
  * @param b denominator of the slope

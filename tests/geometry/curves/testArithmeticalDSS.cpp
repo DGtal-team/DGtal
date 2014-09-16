@@ -798,7 +798,7 @@ bool constructorsTest()
 }
 
 /**
- * Compares smartCH and reverseSmartCH to 
+ * Compares smartCH and reversedSmartCH to 
  * the classical incremental recognition algorithm 
  * for one subgement of a greater DSS
  * @param aDSS DSS containing the subsegment
@@ -814,12 +814,12 @@ bool comparisonSubsegment(const DSS& aDSS,
   typename DSS::DSL dsl = aDSS.dsl(); 
   DSS dss0( dsl.begin(dsl.getPoint(x)), dsl.end(dsl.getPoint(y)) ); //classical (linear-time)
   DSS dss1( dsl, dsl.getPoint(x), dsl.getPoint(y) ); //smartCH (log)
-  DSS dss2( aDSS, dsl.getPoint(x), dsl.getPoint(y) ); //reverseSmartCH (log)
+  DSS dss2( aDSS, dsl.getPoint(x), dsl.getPoint(y) ); //reversedSmartCH (log)
   return ( (dss0 == dss1)&&(dss0 == dss2) ); 
 }
 
 /**
- * Compares smartCH and reverseSmartCH to 
+ * Compares smartCH and reversedSmartCH to 
  * the classical incremental recognition algorithm 
  * for various intercepts and lengths
  * @param a numerator of the slope
