@@ -65,6 +65,12 @@
    (experimental::ChamferNorm2D). (David Coeurjolly,
    [#898](https://github.com/DGtal-team/DGtal/pull/898))
 
+ - Logarithmic construction of an arithmetical DSS of minimal
+   parameters from a bounding DSS (of known leaning points)
+   and two end points (ctor of
+    ArithmeticalDSS) (Tristan Roussillon,
+    [#914](https://github.com/DGtal-team/DGtal/pull/914))
+
  - Feature extraction algorithm from Tensor Voting.(Jérémy Levallois,
    David Coeurjolly,
    [#895](https://github.com/DGtal-team/DGtal/pull/895))
@@ -72,7 +78,7 @@
  - Ray shooting intersection predicates (ray-triangle, ray-quad,
    ray-surfel) added in geometry/tools (David Coeurjolly,
    [#904](https://github.com/DGtal-team/DGtal/pull/904))
-       
+
 
 - *IO Package*
   - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 

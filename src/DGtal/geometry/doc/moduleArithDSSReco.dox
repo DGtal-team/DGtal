@@ -31,10 +31,10 @@ A \b digital \b straight \b line (DSL) of \b slope \f$ a/b \f$ (with \f$ a,b, \i
 \b intercept \f$ \mu \in \mathbb{Z} \f$ and \b thickness \f$ \omega \in \mathbb{Z} \f$, 
 which is conveniently denoted by \f$ D(a,b,\mu,\omega) \f$, 
 is the set of digital points \f$ (x,y) \in \mathbb{Z}^2 \f$ such that \f$ \mu \leq ax - by < \mu + \omega \f$
-[Reveilles, 1991 : \cite Reveilles_1991_thesis]. 
+(Reveilles, 1991  \cite Reveilles_1991_thesis). 
 
 Any DSL such that \f$ \omega = \max(|a|,|b|) \f$ (resp. \f$ \omega = |a| + |b| \f$) is said to be naive 
-(resp. standard) and is simply 8-connected (resp. 4-connected) [Reveilles, 1991 : \cite Reveilles_1991_thesis]. 
+(resp. standard) and is simply 8-connected (resp. 4-connected) (Reveilles, 1991 \cite Reveilles_1991_thesis). 
 
 For instance, the naive DSL \f$ D(2,5,0,5) \f$ is depicted below: 
 @image html NaiveDSL.png "Example of Naive DSL"
@@ -308,7 +308,7 @@ the lower leaning points are always on the left,
 while the upper leaning points are always on the right 
 of the bounding DSL. This invariant is an important feature of ArithmeticalDSL and ArithmeticalDSS
 that may be used to link DSS leaning points and convex hull vertices in a convex part. It is used in the computation 
-of the \b Faithful \b Polygon (FP)  [Roussillon and Sivignon, 2011 : \cite RoussillonSivignonPR2011]. 
+of the \b Faithful \b Polygon (FP)  (see Roussillon and Sivignon, 2011  \cite RoussillonSivignonPR2011). 
 
 \subsection moduleArithDSSReco-DSS-Ctors Different ways of constructing DSSs
 
@@ -323,7 +323,7 @@ leaning and ending points to the parameters of the minimal bounding DSL.
 - function ArithmeticalDSSCheck::checkPointsPosition compares the position of the 
 leaning and ending points to the parameters of the minimal bounding DSL.
 
-There are four extra ways of constructing an instance of ArithmeticalDSS:
+There are five extra ways of constructing an instance of ArithmeticalDSS:
 - from the minimal set of data members required to build the DSS in constant time.  
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorParam
 - from two points, considered either as two upper or two lower leaning points. 
@@ -332,8 +332,12 @@ and the computation of the opposite leaning points).
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorUpperPoints
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorLowerPoints
 - as a subsegment of a given DSL. The construction is based on the smartCH algorithm 
-and runs in logarithmic-time [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+and runs in logarithmic-time (see Roussillon 2014  \cite RoussillonDGCI2014). 
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorDSL 
+- as a subsegment of a greater DSS (with known leaning points). The construction is 
+based on the reversedSmartCH algorithm and runs in logarithmic-time 
+(see Roussillon 2014 \cite RoussillonDGCI2014). 
+@snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorDSS 
 - from a sequence of simply connected points. The construction runs in linear-time, 
 using the recognition algorithm of [Debled and Reveilles, 1995 : \cite Debled_1995_ijprai], 
 which is detailed in the next section. 
@@ -341,7 +345,7 @@ which is detailed in the next section.
 
 \section moduleArithDSSReco-DSSRec Recognition of digital straight segments
 
-[Debled and Reveilles, 1995 : \cite Debled_1995_ijprai] present an algorithm to 
+Debled and Reveilles \cite Debled_1995_ijprai present an algorithm to 
 incrementally recognize a naive DSS. Even if their algorithm  originally deals 
 with naive DSSs only, it is trivial to extend it to standard DSSs. 
 
@@ -354,7 +358,7 @@ The point \f$ M \f$ is assumed to be simply connected
 to the front (resp. back) point of \f$ S \f$.  
 ArithmeticalDSS provides two methods for this purpose: 
 ArithmeticalDSS::extendFront() (resp. ArithmeticalDSS::extendBack()), 
-based on [Debled and Reveilles, 1995 : \cite Debled_1995_ijprai].  
+based on \cite Debled_1995_ijprai.  
 
 Method ArithmeticalDSS::isExtendableFront() 
 (resp. ArithmeticalDSS::isExtendableBack()),
@@ -390,8 +394,7 @@ In this case, the return value is true and the resulting DSS is:
 ArithmeticalDSS can also perform the converse operation, ie. 
 removing the front (resp. back) point of a given DSS \f$ S \f$
 and computing the parameters of the resulting DSS
-[Feschet and Tougne, 1999 : \cite FeschetTougneDGCI1999]
-[Lachaud et. al., 2007 : \cite LachaudIVC2007].  
+(Feschet and Tougne \cite FeschetTougneDGCI1999, Lachaud et. al. \cite LachaudIVC2007).  
 
 For instance, the following code just undoes the previous extension: 
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSUpdateRetraction
