@@ -262,7 +262,7 @@ namespace DGtal
      * @param aL last point of the subsegment
      *
      * NB: logarithmic-time in the greatest component of the direction vector
-     * of the subsegment. Uses smartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+     * of the subsegment. Uses smartCH algorithm (see Roussillon 2014  \cite RoussillonDGCI2014). 
      * @see ArithmeticalDSSFactory
      */
     ArithmeticalDSS(const DSL& aDSL, const Point& aF, const Point& aL);
@@ -275,7 +275,7 @@ namespace DGtal
      * @param aL last point of the subsegment
      *
      * NB: logarithmic-time in the greatest component of the direction vector
-     * of the subsegment. Uses reversedSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+     * of the subsegment. Uses reversedSmartCH algorithm (see Roussillon 2014  \cite RoussillonDGCI2014). 
      * @see ArithmeticalDSSFactory
      */
     ArithmeticalDSS(const ArithmeticalDSS& aDSS, const Point& aF, const Point& aL);
