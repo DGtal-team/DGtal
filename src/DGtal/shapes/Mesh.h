@@ -269,7 +269,7 @@ namespace DGtal
      *
      **/
     
-    FaceStorage::iterator 
+    FaceStorage::const_iterator 
     FaceBegin() const {
       return myFaceList.begin();
     }
