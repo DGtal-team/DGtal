@@ -73,7 +73,7 @@ inline
 void 
 DGtal::setFromImage(const I& aImg, const O& ito, const typename I::Value& aThreshold)
 {
-  BOOST_CONCEPT_ASSERT(( CConstImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CConstImage<I> )); 
 
   typename I::Domain d = aImg.domain(); 
   setFromPointsRangeAndFunctor(d.begin(), d.end(), ito, aImg, aThreshold); 
@@ -87,7 +87,7 @@ DGtal::setFromImage(const I& aImg, const O& ito,
 		    const typename I::Value& low, 
 		    const typename I::Value& up)
 {
-  BOOST_CONCEPT_ASSERT(( CConstImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CConstImage<I> )); 
   ASSERT( low < up ); 
 
   //domain
@@ -112,7 +112,7 @@ DGtal::imageFromRangeAndValue(const It& itb, const It& ite, Im& aImg,
 			      const typename Im::Value& aValue)
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<It> ));
-  BOOST_CONCEPT_ASSERT(( CImage<Im> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CImage<Im> )); 
 
   typename Im::Domain d = aImg.domain(); 
   for (It it = itb; it != ite; ++it)
@@ -130,7 +130,7 @@ DGtal::imageFromRangeAndValue(const R& aRange, I& aImg,
 			      const typename I::Value& aValue)
 {
   BOOST_CONCEPT_ASSERT(( CConstSinglePassRange<R> ));
-  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CImage<I> )); 
 
   imageFromRangeAndValue( aRange.begin(), aRange.end(), aImg, aValue); 
 }
@@ -141,7 +141,7 @@ inline
 void 
 DGtal::imageFromFunctor(I& aImg, const F& aFun)
 {
-  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CImage<I> )); 
   BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<F> ));
 
   typename I::Domain d = aImg.domain();
@@ -155,7 +155,7 @@ inline
 void 
 DGtal::imageFromImage(I& aImg1, const I& aImg2)
 {
-  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CImage<I> )); 
 
   typename I::ConstRange r = aImg2.constRange(); 
   std::copy( r.begin(), r.end(), aImg1.range().outputIterator() ); 
@@ -217,7 +217,7 @@ DGtal::insertAndSetValue(I& aImg, S& aSet,
 			 const typename I::Point& aPoint, 
 			 const typename I::Value& aValue ) 
 {
-  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CImage<I> )); 
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<S> )); 
   BOOST_STATIC_ASSERT(( boost::is_same< typename I::Point, typename S::Point >::value ));
 
@@ -280,7 +280,7 @@ DGtal::insertAndAlwaysSetValue(I& aImg, S& aSet,
 			       const typename I::Value& aValue ) 
 {
   
-  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CImage<I> )); 
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<S> )); 
   BOOST_STATIC_ASSERT(( boost::is_same< typename I::Point, typename S::Point >::value ));
 
@@ -341,7 +341,7 @@ DGtal::findAndGetValue(const I& aImg, const S& aSet,
 		       typename I::Value& aValue ) 
 {
   
-  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CImage<I> )); 
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<S> )); 
   BOOST_STATIC_ASSERT(( boost::is_same< typename I::Point, typename S::Point >::value ));
 

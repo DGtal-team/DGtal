@@ -67,7 +67,7 @@ bool testSimple()
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
     typedef ImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, functors::Identity, functors::Identity > MyImageAdapter;
-    BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImageAdapter > ));
     
     functors::Identity idD;
     functors::Identity idV;
@@ -160,7 +160,7 @@ bool test_g_f_fm1()
     //ConstAdapter
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
     typedef ConstImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, DGtal::functors::ConstValue<VImage::Value> > MyImageAdapter;
-    BOOST_CONCEPT_ASSERT(( CConstImage< MyImageAdapter > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CConstImage< MyImageAdapter > ));
     functors::Identity idD;
     DGtal::functors::ConstValue<VImage::Value> idV(3);
     MyImageAdapter restimage(image, domain, idD, idV);
@@ -172,7 +172,7 @@ bool test_g_f_fm1()
     
     //! [ImageAdapterConstruction]
   typedef ImageAdapter<VImage, Z2i::Domain, functors::Identity, bool, functors::Thresholder<VImage::Value>, functors::Cast<VImage::Value>  > MyImageAdapter2;
-    BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter2 > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImageAdapter2 > ));
     
     functors::Identity idD_2;
     DGtal::functors::Thresholder<VImage::Value>  idV_2(4);
@@ -202,7 +202,7 @@ bool test_g_f_fm1()
     trace.warning()<< "Original image at (2,2) = "<< (image)(Z2i::Point(2,2)) << std::endl;
     
     typedef ImageAdapter<VImage, Z2i::Domain, MyTransValueFunctor<Z2i::Point>, VImage::Value, functors::Identity, functors::Identity > MyImageAdapter3;
-    BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter3 > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImageAdapter3 > ));
     
     MyTransValueFunctor<Z2i::Point> idD_3(Z2i::Point(2,2));
     functors::Identity idV_3;
@@ -242,7 +242,7 @@ bool test_range_constRange()
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
     typedef ImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, functors::Identity, functors::Identity > MyImageAdapter;
-    BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImageAdapter > ));
     
     functors::Identity idD;
     functors::Identity idV;
@@ -308,7 +308,7 @@ bool testImageAdapter()
 #endif
 
     typedef ImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, functors::Identity, functors::Identity> MyImageAdapter;
-    BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImageAdapter > ));
 
     nbok += true ? 1 : 0;
     nb++;

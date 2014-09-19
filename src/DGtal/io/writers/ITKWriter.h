@@ -67,8 +67,8 @@ namespace DGtal
     typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
     typedef TFunctor Functor;
 
-    BOOST_CONCEPT_ASSERT(( CConstImage<TImage> ));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, Value, ValueOut> )) ;
+    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, Value, ValueOut> )) ;
     BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3) || (TImage::Domain::dimension == 2) ));
 
     /**
