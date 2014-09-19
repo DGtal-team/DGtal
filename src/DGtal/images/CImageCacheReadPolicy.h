@@ -46,7 +46,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
 /////////////////////////////////////////////////////////////////////////////
 // class CImageCacheReadPolicy
 /**
@@ -123,7 +124,7 @@ private:
 private:
 
 }; // end of concept CImageCacheReadPolicy
-
+  }
 } // namespace DGtal
 
 //                                                                           //

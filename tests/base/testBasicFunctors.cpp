@@ -48,7 +48,7 @@ using namespace DGtal;
 template <typename TFunctor, typename TArg, typename TRes >
 void basicFunctorsConceptChecking()
 {
-  BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, TArg, TRes > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, TArg, TRes > ));
 }
 /**
  * Simple test. 

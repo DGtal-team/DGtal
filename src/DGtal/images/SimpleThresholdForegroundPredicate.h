@@ -65,7 +65,7 @@ namespace DGtal {
   class SimpleThresholdForegroundPredicate
   {
   public:
-    BOOST_CONCEPT_ASSERT(( CConstImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
     
     typedef typename Image::Value Value;
     typedef typename Image::Point Point;

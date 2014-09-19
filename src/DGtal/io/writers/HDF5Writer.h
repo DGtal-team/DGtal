@@ -72,7 +72,7 @@ namespace DGtal
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
     
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
     BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
 
     /** 
