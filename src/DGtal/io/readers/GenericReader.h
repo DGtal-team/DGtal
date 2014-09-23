@@ -183,11 +183,8 @@ namespace DGtal
 #ifdef WITH_ITK
       if(extension=="dcm")
         return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
-<<<<<<< HEAD
-=======
       if(extension=="mha" || extension=="mhd")
         return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
->>>>>>> 597b84e... fix generic reader template param
 #endif
 
       trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
@@ -249,21 +246,14 @@ namespace DGtal
         {
           ASSERT(x!=0 && y!=0 && z!=0);
           typename TContainer::Point pt (x,y,z);
-<<<<<<< HEAD
-          return RawReader< TContainer , TFunctor>::importRaw32 ( filename, pt, aFunctor  );
-=======
           return RawReader< TContainer, TFunctor >::importRaw32 ( filename, pt, aFunctor  );
->>>>>>> 597b84e... fix generic reader template param
         }
 
 #ifdef WITH_ITK
       if(extension=="dcm")
         return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
-<<<<<<< HEAD
-=======
       if(extension=="mha" || extension=="mhd")
         return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
->>>>>>> 597b84e... fix generic reader template param
 #endif
 
       trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
@@ -479,11 +469,7 @@ namespace DGtal
       if(extension=="raw"){
         ASSERT(x!=0 && y!=0);
         typename TContainer::Point pt (x,y);
-<<<<<<< HEAD
-        return RawReader< TContainer , TFunctor>::importRaw32 ( filename, pt, aFunctor  );
-=======
         return RawReader< TContainer, TFunctor >::importRaw32 ( filename, pt, aFunctor  );
->>>>>>> 597b84e... fix generic reader template param
       }
 
       if(extension=="pgm")
