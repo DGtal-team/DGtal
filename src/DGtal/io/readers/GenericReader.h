@@ -57,6 +57,7 @@
 #endif
 #ifdef WITH_ITK
 #include "DGtal/io/readers/DicomReader.h"
+#include "DGtal/io/readers/ITKReader.h"
 #endif
 #include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 
@@ -176,12 +177,14 @@ namespace DGtal
 
 #ifdef WITH_HDF5
       if (extension=="h5")
-        return HDF5Reader<TContainer>::importHDF5_3D(filename, "UInt8Array3D", aFunctor);
+        return HDF5Reader<TContainer, TFunctor>::importHDF5_3D(filename, "UInt8Array3D", aFunctor);
 #endif
 
 #ifdef WITH_ITK
       if(extension=="dcm")
-        return DicomReader<TContainer>::importDicom(filename, aFunctor);
+        return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
+      if(extension=="mha" || extension=="mhd")
+        return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
 #endif
 
       trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
@@ -237,18 +240,20 @@ namespace DGtal
       std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
       if(extension=="longvol")
-        return  LongvolReader<TContainer>::importLongvol( filename, aFunctor  );
+        return  LongvolReader<TContainer, TFunctor>::importLongvol( filename, aFunctor  );
 
       if(extension=="raw")
         {
           ASSERT(x!=0 && y!=0 && z!=0);
           typename TContainer::Point pt (x,y,z);
-          return RawReader< TContainer >::importRaw32 ( filename, pt, aFunctor  );
+          return RawReader< TContainer, TFunctor >::importRaw32 ( filename, pt, aFunctor  );
         }
 
 #ifdef WITH_ITK
       if(extension=="dcm")
-        return DicomReader<TContainer>::importDicom(filename, aFunctor);
+        return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
+      if(extension=="mha" || extension=="mhd")
+        return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
 #endif
 
       trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
@@ -304,12 +309,12 @@ namespace DGtal
       std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
       if(extension=="ppm")
-        return PPMReader<TContainer>::importPPM(filename, aFunctor);
+        return PPMReader<TContainer, TFunctor>::importPPM(filename, aFunctor);
 
       if(extension=="raw"){
         ASSERT(x!=0 && y!=0);
         typename TContainer::Point pt (x,y);
-        return RawReader< TContainer >::importRaw8 ( filename, pt , aFunctor);
+        return RawReader< TContainer, TFunctor >::importRaw8 ( filename, pt , aFunctor);
       }
 
 
@@ -353,16 +358,16 @@ namespace DGtal
       if(extension=="raw"){
         ASSERT(x!=0 && y!=0);
         typename TContainer::Point pt (x,y);
-        return RawReader< TContainer >::importRaw8 ( filename, pt, aFunctor  );
+        return RawReader< TContainer, TFunctor >::importRaw8 ( filename, pt, aFunctor  );
       }
 
 
       if(extension=="pgm")
-        return PGMReader<TContainer>::importPGM(filename, aFunctor);
+        return PGMReader<TContainer, TFunctor>::importPGM(filename, aFunctor);
 
 #ifdef WITH_HDF5
       if (extension=="h5")
-        return HDF5Reader<TContainer>::importHDF5(filename, "image8bit", aFunctor);
+        return HDF5Reader<TContainer, TFunctor>::importHDF5(filename, "image8bit", aFunctor);
 #endif
 
       trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
@@ -423,7 +428,7 @@ namespace DGtal
       std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
       if(extension=="ppm")
-        return PPMReader<TContainer>::importPPM(filename, aFunctor);
+        return PPMReader<TContainer, TFunctor>::importPPM(filename, aFunctor);
       
       if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp")
         {
@@ -464,15 +469,15 @@ namespace DGtal
       if(extension=="raw"){
         ASSERT(x!=0 && y!=0);
         typename TContainer::Point pt (x,y);
-        return RawReader< TContainer >::importRaw32 ( filename, pt, aFunctor  );
+        return RawReader< TContainer, TFunctor >::importRaw32 ( filename, pt, aFunctor  );
       }
 
       if(extension=="pgm")
-        return PGMReader<TContainer>::importPGM(filename, aFunctor);
+        return PGMReader<TContainer, TFunctor>::importPGM(filename, aFunctor);
 
 #ifdef WITH_HDF5
       if (extension=="h5")
-        return HDF5Reader<TContainer>::importHDF5(filename, "image8bit", aFunctor);
+        return HDF5Reader<TContainer, TFunctor>::importHDF5(filename, "image8bit", aFunctor);
 #endif
 
       trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
