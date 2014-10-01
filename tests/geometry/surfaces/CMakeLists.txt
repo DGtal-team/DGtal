@@ -15,6 +15,7 @@ SET(TESTS_SURFACES_SRC
   testLocalEstimatorFromFunctorAdapter
   testVoronoiCovarianceMeasureOnSurface
   testTensorVoting
+  testEstimatorCache
   )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})
