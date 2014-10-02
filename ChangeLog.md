@@ -7,7 +7,7 @@
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a
    surfel local estimator. (David Coeurjolly,
-   [#803](https://github.com/DGtal-team/DGtal/pull/803))
+   [#927](https://github.com/DGtal-team/DGtal/pull/927))
 
 
 ## Bug Fixes
