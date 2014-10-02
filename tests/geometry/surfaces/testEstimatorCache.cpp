@@ -199,7 +199,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testEstimatorCache( 0.3 ); // && ... other tests
+  bool res = testEstimatorCache( 0.8 ); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
