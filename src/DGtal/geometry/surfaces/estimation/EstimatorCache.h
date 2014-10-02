@@ -149,10 +149,10 @@ namespace DGtal
      *
      */
     template <typename SurfelConstIterator>
-    void init(const double h, SurfelConstIterator itb, SurfelConstIterator ite)
+    void init(const double aH, SurfelConstIterator itb, SurfelConstIterator ite)
     {
       ASSERT(myEstimator);
-      myEstimator->init(h,itb,ite);
+      myEstimator->init(aH,itb,ite);
       myContainer.clear();
       
       ///FIXME use range eval instead of pointwise one
