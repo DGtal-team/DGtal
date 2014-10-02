@@ -677,11 +677,11 @@ public:
     /**
      * Finds a quadrant change in 'this' Freeman chain and returns the
      * position as an iterator. A quadrant change is some
-     <code>
+     * @code
      abb..bc
      |
      iterator
-     <endcode>
+     * @endcode
      *
      * The alphabet is possibly re-ordered so that a > b > c.
      *
@@ -697,11 +697,11 @@ public:
     /**
      * Finds a quadrant change in 'this' Freeman chain and returns the
      * position as an iterator. A quadrant change is some
-     <code>
+     @code
      (abc)*bc...cd
      |
      iterator
-     <endcode>
+     @ endcode
      *
      * This quadrant change also guarantees that is not a place where a
      * convexity change occurs in the combinatorial MLP algorithm.
