@@ -61,7 +61,7 @@ using namespace DGtal;
  * Example of a test. To be completed.
  *
  */
-bool testEstimatorCache(double h, double delta)
+bool testEstimatorCache(double h)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -80,7 +80,6 @@ bool testEstimatorCache(double h, double delta)
 
   double re = 5.0;
   double radius = 5.0;
-  double realValue = 1.0/(radius * radius);
 
   trace.beginBlock( "Shape initialisation ..." );
 
@@ -200,7 +199,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testEstimatorCache( 0.3, 0.007 ); // && ... other tests
+  bool res = testEstimatorCache( 0.3 ); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
