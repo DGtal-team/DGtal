@@ -1,3 +1,18 @@
+# DGtal 0.9
+
+## New Features / Critical Changes
+
+## Changes
+
+- *Geometry Package*
+ - New EstimatorCache class to cache quantities estimated by a
+   surfel local estimator. (David Coeurjolly,
+   [#803](https://github.com/DGtal-team/DGtal/pull/803))
+
+
+## Bug Fixes
+
+
 # DGtal 0.8
 
 
