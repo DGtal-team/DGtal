@@ -143,7 +143,7 @@ namespace DGtal
      * estimator and caches all estimated quantity between @a itb and @a ite. 
      *
      * @tparam  SurfelConstIterator a const iterator on surfels.
-     * @param[in] h the gridstep
+     * @param[in] aH the gridstep
      * @param[in] ite iterator on the first surfel of the surface.
      * @param[in] itb iterator after the last surfel of the surface.
      *
