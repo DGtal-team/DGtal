@@ -181,7 +181,7 @@ namespace DGtal
         normal(0) = norm[0];
         normal(1) = norm[1];
         normal(2) = norm[2];
-        PatatePoint point(pp,  pp);
+        PatatePoint point(pp,  normal);
         myFit->addNeighbor(point);
 #ifdef DEBUG_VERBOSE
         trace.info() <<"#";
