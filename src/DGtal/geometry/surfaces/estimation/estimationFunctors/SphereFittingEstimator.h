@@ -107,8 +107,8 @@ namespace DGtal
       typedef double Quantity;
       typedef typename SCellEmbedder::RealPoint RealPoint;
 
-      typedef PatatePoint::Scalar Scalar;
-      typedef PatatePoint::VectorType VectorType;
+      typedef typename PatatePoint::Scalar Scalar;
+      typedef typename PatatePoint::VectorType VectorType;
       
       typedef Grenaille::DistWeightFunc<PatatePoint,Grenaille::SmoothWeightKernel<Scalar> > WeightFunc; 
       typedef Grenaille::Basket<PatatePoint,WeightFunc,Grenaille::OrientedSphereFit, Grenaille::GLSParam> Fit;
@@ -120,11 +120,24 @@ namespace DGtal
        * @param h gridstep.
        */
       SphereFittingEstimator(ConstAlias<SCellEmbedder> anEmbedder,
-                             const double h:
+                             const double h):
         myEmbedder(&anEmbedder), myH(h) 
       {
+        //From Mellado's example
+        myFit = new Fit();
+        myFit->setWeightFunc(WeightFunc(100.0));
       }
 
+
+      /**
+       * Destructor.
+       */
+      ~SphereFittingEstimator( )
+      {
+        delete myFit ;
+      }
+
+      
       /**
        * Add the geometrical embedding of a surfel to the point list
        *
@@ -137,9 +150,16 @@ namespace DGtal
         BOOST_VERIFY(aDistance==aDistance);
 
         RealPoint p = myEmbedder->operator()(aSurf);
-        PatatePoint pp(p[0]*myH,p[1]*myH,p[2]*myH);
-        
-        myPoints.push_back(pp);
+        VectorType pp;
+        pp(0) = p[0]*myH;
+        pp(1) = p[1]*myH;
+        pp(2) = p[2]*myH;
+        VectorType normal;
+        normal(0) = 1.0;
+        normal(1) = 0.0;
+        normal(2) = 0.0;
+        PatatePoint point(pp,  pp);
+        myFit->addNeighbor(point);        
       }
 
       /**
@@ -149,15 +169,48 @@ namespace DGtal
        */
       Quantity eval()
       {
-        /*  CGALMongeForm monge_form;
-        CGALMongeViaJet monge_fit;
+        VectorType p;
+        p(0)=0;
+        p(1)=0;
+        p(2)=0;
         
-        monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (2<myD)? myD : 2);
+        myFit->finalize();
 
-        double k1 = monge_form.principal_curvatures ( 0 );
-        double k2 = monge_form.principal_curvatures ( 1 );
-        return 0.5*(k1+k2);*/
+        //Test if the fitting ended without errors
+	if(myFit->isStable())
+	{
+		std::cout << "Center: [" << myFit->center().transpose() << "] ;  radius: " << myFit->radius() << std::endl;
+
+		std::cout << "Pratt normalization" 
+			<< (myFit->applyPrattNorm() ? " is now done." : " has already been applied.") << std::endl;
+
+		// Play with fitting output
+		std::cout << "Value of the scalar field at the initial point: " 
+			<< p.transpose() 
+			<< " is equal to " << myFit->potential(p)
+			<< std::endl;
+
+		std::cout << "It's gradient at this place is equal to: "
+			<< myFit->primitiveGradient(p).transpose()
+			<< std::endl;
+
+		std::cout << "Fitted Sphere: " << std::endl
+			<< "\t Tau  : "      << myFit->tau()             << std::endl
+			<< "\t Eta  : "      << myFit->eta().transpose() << std::endl
+			<< "\t Kappa: "      << myFit->kappa()           << std::endl;
+
+		std::cout << "The initial point " << p.transpose()              << std::endl
+			<< "Is projected at   " << myFit->project(p).transpose() << std::endl;
+	}
+        else
+          {
+            std::cout << "Ooops... not stable result"<<std::endl;
+          }
+        
+        //fake
+        return 0.0;
       }
+                             
 
       /**
        * Reset the point list.
@@ -165,7 +218,8 @@ namespace DGtal
        */
       void reset()
       {
-        myPoints.clear();
+        delete (myFit);
+        myFit = new Fit();
       }
 
 
@@ -174,11 +228,11 @@ namespace DGtal
       ///Alias of the geometrical embedder
       const SCellEmbedder * myEmbedder;
 
-      ///Array of CGAL points
-      std::vector<PatatePoint> myPoints;
-
+      ///Fitting object
+      Fit *myFit;
+      
       ///Grid step
-                             double myH;
+      double myH;
 
     }; // end of class SphereFittingEstimator
   }
