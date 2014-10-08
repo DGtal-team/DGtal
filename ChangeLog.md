@@ -5,8 +5,9 @@
 - *Geometry Package*
  - New digital surface local estimator that compute a sphere
   fitting. It requires to have the Patate library installed (and
-  WITH_PATATE=true): http://patate.gforge.inria.fr/html/.  (David
-  Coeurjolly, [xxx](https://github.com/DGtal-team/DGtal/pull/xxx))
+  WITH_PATATE=true): http://patate.gforge.inria.fr/html/. See
+  SphereFittingEstimator (David Coeurjolly,
+  [xxx](https://github.com/DGtal-team/DGtal/pull/xxx))
  
 
 ## Changes
