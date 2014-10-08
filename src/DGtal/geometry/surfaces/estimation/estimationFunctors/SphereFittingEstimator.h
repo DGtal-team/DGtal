@@ -125,8 +125,15 @@ namespace DGtal
       {
         RealPoint center;
         double radius;
+        double tau;
+        double kappa;
+        RealPoint eta;
+        
         Quantity(){}
-        Quantity(RealPoint p, double rad): center(p), radius(rad) {}
+        Quantity(RealPoint p, double rad, double _tau,
+                 double _kappa, RealPoint _eta): center(p), radius(rad),
+                                                 tau(_tau), kappa(_kappa),
+                                                 eta(_eta) {}
         ~Quantity(){}
         bool operator==(Quantity aq) {return (center==aq.center) && (radius==aq.radius);}
         bool operator<(Quantity aq) {return (center<aq.center) && (radius<aq.radius);}        
@@ -225,6 +232,11 @@ namespace DGtal
                                (myFit->center())(1),
                                (myFit->center())(2));
         res.radius =  myFit->radius();
+        res.tau = myFit->tau();
+        res.kappa = myFit->kappa();
+        res.eta = RealPoint((myFit->eta())(0),
+                            (myFit->eta())(1),
+                            (myFit->eta())(2));
         return res;
       }
                              
