@@ -52,6 +52,8 @@
 
 namespace DGtal
 {
+  namespace functors
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class ElementaryConvolutionNormalVectorEstimator
   /**
@@ -86,7 +88,7 @@ namespace DGtal
      * @param h grid step
      */
     ElementaryConvolutionNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder,
-                                         const double h):
+                                               const double h):
       myEmbedder(&anEmbedder), myH(h)
     {
     }
@@ -139,7 +141,7 @@ namespace DGtal
     double myH;
 
   }; // end of class ElementaryConvolutionNormalVectorEstimator
-
+  } //namespace functors
 } // namespace DGtal
 
 

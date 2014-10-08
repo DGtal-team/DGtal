@@ -60,7 +60,11 @@ namespace DGtal
    * The use-case of this class is when you want to estimate the same quantity
    * several times.
    *
-   * This class is also a model of CSurfelLocalEstimator
+   * This class implements eval() methods for surfel iterators as in
+   * concepts::CSurfelLocalEstimator concept. Addtitionnaly, we also
+   * have an eval method from a surfel.
+   *
+   * This class is also a model of concepts::CSurfelLocalEstimator
    *
    * @tparam TEstimator any model of CSurfelLocalEstimator
    * @tparam TContainer the associative container to use (default type: std::map<Surfel,Quantity>)
@@ -178,6 +182,20 @@ namespace DGtal
       return myContainer.find( *it )->second;
     }
     
+    /**
+     * Cached evaluation of the estimator at a surfel @a s
+     *
+     * @pre init() method must have been called first.
+     *
+     * @param [in] s the iterator to the surfel to estimate.
+     * @return the estimated quantity.
+     */
+    Quantity eval(const Surfel s) const
+    {
+      ASSERT_MSG(myInit, " init() method must have been called first.");
+      return myContainer.find( s )->second;
+    }
+    
     
     /**
      * Cached range evaluation of the estimator between @a itb
@@ -234,7 +252,7 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const
     {
-      out<< "[EstimatorCache] cache of "<< *myEstimator;
+      out<< "[EstimatorCache] number of surfels="<<myContainer.size();
     }
     
     /**
@@ -273,9 +291,13 @@ namespace DGtal
    * @param object the object of class 'EstimatorCache' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename T, typename TC>
   std::ostream&
-  operator<< ( std::ostream & out, const EstimatorCache<T> & object );
+  operator<< ( std::ostream & out, const EstimatorCache<T,TC> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
   
 } // namespace DGtal
 //                                                                           //

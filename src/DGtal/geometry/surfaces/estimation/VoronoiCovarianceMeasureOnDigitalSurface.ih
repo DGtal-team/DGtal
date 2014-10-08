@@ -99,15 +99,17 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
   if ( verbose ) trace.beginBlock ( "Computing average orientation for each surfel." );
   typedef functors::HatFunction<Scalar> Functor;
   Functor fct( 1.0, myRadiusTrivial );
-  typedef ElementaryConvolutionNormalVectorEstimator< Surfel, CanonicSCellEmbedder<KSpace> > 
+  typedef functors::ElementaryConvolutionNormalVectorEstimator< Surfel, CanonicSCellEmbedder<KSpace> > 
     SurfelFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter< DigitalSurfaceContainer, Metric, SurfelFunctor, Functor>
     NormalEstimator;
 
   CanonicSCellEmbedder<KSpace> canonic_embedder( ks );
   SurfelFunctor surfelFct( canonic_embedder, 1.0 );
-  NormalEstimator estimator( *mySurface, aMetric, surfelFct, fct );
-  estimator.init( 1.0, myRadiusTrivial );
+  NormalEstimator estimator;
+  estimator.attach( *mySurface);
+  estimator.setParams( aMetric, surfelFct, fct , myRadiusTrivial);
+  estimator.init( 1.0,  mySurface->begin(), mySurface->end());
   i = 0; 
   std::vector<Point> pts; 
   int surf_size = mySurface->size();
