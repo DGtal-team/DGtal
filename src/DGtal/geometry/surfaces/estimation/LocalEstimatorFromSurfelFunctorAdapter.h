@@ -134,6 +134,10 @@ namespace DGtal
     ///Digital surface type
     typedef DigitalSurface< DigitalSurfaceContainer > Surface;
 
+    ///Surfel type
+    typedef typename DigitalSurfaceContainer::Surfel Surfel;
+    
+    
   private:
 
     ///Embedded and type definitions
@@ -170,6 +174,33 @@ namespace DGtal
       ConstAlias<ConvolutionFunctor> aConvolutionFunctor );
 
     /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    LocalEstimatorFromSurfelFunctorAdapter ( const LocalEstimatorFromSurfelFunctorAdapter & other ):
+      mySurface(other.mySurface), myFunctor(other.myFunctor), myMetric(other.myMetric),
+      myEmbedder(other.myEmbedder), myConvFunctor(other.myConvFunctor)
+    {  }
+    
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    LocalEstimatorFromSurfelFunctorAdapter & operator= ( const LocalEstimatorFromSurfelFunctorAdapter & other )
+    {
+      mySurface = other.mySurface;
+      myFunctor = other.myFunctor;
+      myMetric = other.myMetric;
+      myEmbedder = other.myEmbedder;
+      myConvFunctor = other.myConvFunctor;
+      return *this;
+    }
+    
+    /*
      * Destructor.
      */
     ~LocalEstimatorFromSurfelFunctorAdapter();
@@ -206,16 +237,18 @@ namespace DGtal
      */
     void setParams( ConstAlias<TMetric> aMetric,
                     Alias<FunctorOnSurfel>  aFunctor,
-                    ConstAlias<ConvolutionFunctor> aConvolutionFunctor );
+                    ConstAlias<ConvolutionFunctor> aConvolutionFunctor,
+                    const Value radius);
 
     /**
      * Initialisation of estimator parameters.
-     * @param [in] _h grid size (must be >0).
-     * @param [in] radius radius of the ball kernel.
      *
+     * @param[in] _h grid size (must be >0).
+     * @param[in] itb iterator after the last surfel of the surface.
+     * @param[in] ite iterator on the first surfel of the surface.
      */
-    void init(const double _h,
-              const Value radius);
+    template<typename SurfelConstIterator>
+    void init(const double _h, SurfelConstIterator itb, SurfelConstIterator ite);
 
 
     /**
@@ -254,20 +287,6 @@ namespace DGtal
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    LocalEstimatorFromSurfelFunctorAdapter ( const LocalEstimatorFromSurfelFunctorAdapter & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    LocalEstimatorFromSurfelFunctorAdapter & operator= ( const LocalEstimatorFromSurfelFunctorAdapter & other );
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -307,7 +326,6 @@ namespace DGtal
   template <typename TD, typename TV, typename TF, typename TC>
   std::ostream&
   operator<< ( std::ostream & out, const LocalEstimatorFromSurfelFunctorAdapter<TD,TV,TF,TC> & object );
-
 } // namespace DGtal
 
 

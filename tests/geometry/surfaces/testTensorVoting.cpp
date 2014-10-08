@@ -109,9 +109,11 @@ bool testLocalEstimatorFromFunctorAdapter()
   FunctorVoting estimator(embedder,1);
 
   ConvFunctor convFunc(1.0);
-  Reporter reporter(surface, l2Metric, estimator , convFunc);
+  Reporter reporter;
+  reporter.attach(surface);
+  reporter.setParams(l2Metric, estimator , convFunc, 2.0);
 
-  reporter.init(1, 2);
+  reporter.init(1, surface.begin(), surface.end());
 
   typename FunctorVoting::Quantity val = reporter.eval( surface.begin());
   trace.info() << "probing at "<< *(surface.begin())<<std::endl;
@@ -180,7 +182,7 @@ bool testCube()
   ConvFunctor convFunc(1.0);
   Reporter reporter(surface, l2Metric, estimator , convFunc);
 
-  reporter.init(1, 5);
+  reporter.init(1, surface.begin(),surface.end());
 
   for(Surface::ConstIterator it = surface.begin(), itend = surface.end(); it!= itend; ++it)
     {

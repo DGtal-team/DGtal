@@ -51,7 +51,7 @@
 #error You need to have activated Patate (WITH_PATATE) to include this file.
 #endif
 
-//Patate
+//Patate includes
 #include <Patate/grenaille.h>
 #include <Eigen/Eigen>
 #include <vector>
@@ -66,15 +66,20 @@ namespace DGtal
     // template class SphereFittingEstimator
     /**
      * Description of template class 'SphereFittingEstimator' <p>
-     * \brief Aim: 
+     * \brief Aim: Use patate library to perform a local sphere fitting.
      *
      * model of CLocalEstimatorFromSurfelFunctor.
      *
      *
      * @tparam TSurfel type of surfels
-     * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
+     * @tparam TEmbedder type of functors which embed surfel to @f$
+     * \mathbb{R}^3@f$.
+     * @tparam TNormalVectorEstimatorCache the type of normal vector
+     * czche to consider (see EstimatorCache class).
      */
-    template <typename TSurfel, typename TEmbedder>
+    template <typename TSurfel,
+              typename TEmbedder,
+              typename TNormalVectorEstimatorCache>
     class SphereFittingEstimator
     {
     public:
@@ -101,17 +106,33 @@ namespace DGtal
       private:
 	VectorType m_pos, m_normal;
       };
-      
+
+     
       typedef TSurfel Surfel;
       typedef TEmbedder SCellEmbedder;
-      typedef double Quantity;
       typedef typename SCellEmbedder::RealPoint RealPoint;
+
+      typedef TNormalVectorEstimatorCache NormalVectorEstimatorCache;
 
       typedef typename PatatePoint::Scalar Scalar;
       typedef typename PatatePoint::VectorType VectorType;
       
       typedef Grenaille::DistWeightFunc<PatatePoint,Grenaille::SmoothWeightKernel<Scalar> > WeightFunc; 
       typedef Grenaille::Basket<PatatePoint,WeightFunc,Grenaille::OrientedSphereFit, Grenaille::GLSParam> Fit;
+
+      ///Quantity type: a 3-sphere (model of CQuantity)
+      struct Quantity
+      {
+        RealPoint center;
+        double radius;
+        Quantity(){}
+        Quantity(RealPoint p, double rad): center(p), radius(rad) {}
+        ~Quantity(){}
+        bool operator==(Quantity aq) {return (center==aq.center) && (radius==aq.radius);}
+        bool operator<(Quantity aq) {return (center<aq.center) && (radius<aq.radius);}        
+        bool operator!=(Quantity aq) {return !(*this == aq);}
+      };
+
 
       /**
        * Constructor.
@@ -120,8 +141,9 @@ namespace DGtal
        * @param h gridstep.
        */
       SphereFittingEstimator(ConstAlias<SCellEmbedder> anEmbedder,
-                             const double h):
-        myEmbedder(&anEmbedder), myH(h) 
+                             const double h,
+                             ConstAlias<NormalVectorEstimatorCache> anEstimator):
+        myEmbedder(&anEmbedder), myH(h), myNormalEsitmatorCache(&anEstimator)
       {
         //From Mellado's example
         myFit = new Fit();
@@ -150,32 +172,34 @@ namespace DGtal
         BOOST_VERIFY(aDistance==aDistance);
 
         RealPoint p = myEmbedder->operator()(aSurf);
+        RealPoint norm = myNormalEsitmatorCache->eval(aSurf);          
         VectorType pp;
         pp(0) = p[0]*myH;
         pp(1) = p[1]*myH;
         pp(2) = p[2]*myH;
         VectorType normal;
-        normal(0) = 1.0;
-        normal(1) = 0.0;
-        normal(2) = 0.0;
+        normal(0) = norm[0];
+        normal(1) = norm[1];
+        normal(2) = norm[2];
         PatatePoint point(pp,  pp);
-        myFit->addNeighbor(point);        
+        myFit->addNeighbor(point);
+#ifdef DEBUG_VERBOSE
+        trace.info() <<"#";
+#endif
       }
 
       /**
-       * Evaluate the curvature from Monge form.
+       * Evaluate the sphere fitting.
        *
-       * @return the mean curvature
+       * @return the fitted sphere 
        */
       Quantity eval()
       {
-        VectorType p;
-        p(0)=0;
-        p(1)=0;
-        p(2)=0;
-        
         myFit->finalize();
 
+#ifdef DEBUG_VERBOSE
+        trace.info() <<std::endl;
+        
         //Test if the fitting ended without errors
 	if(myFit->isStable())
 	{
@@ -184,31 +208,24 @@ namespace DGtal
 		std::cout << "Pratt normalization" 
 			<< (myFit->applyPrattNorm() ? " is now done." : " has already been applied.") << std::endl;
 
-		// Play with fitting output
-		std::cout << "Value of the scalar field at the initial point: " 
-			<< p.transpose() 
-			<< " is equal to " << myFit->potential(p)
-			<< std::endl;
-
-		std::cout << "It's gradient at this place is equal to: "
-			<< myFit->primitiveGradient(p).transpose()
-			<< std::endl;
-
+	
 		std::cout << "Fitted Sphere: " << std::endl
 			<< "\t Tau  : "      << myFit->tau()             << std::endl
 			<< "\t Eta  : "      << myFit->eta().transpose() << std::endl
 			<< "\t Kappa: "      << myFit->kappa()           << std::endl;
 
-		std::cout << "The initial point " << p.transpose()              << std::endl
-			<< "Is projected at   " << myFit->project(p).transpose() << std::endl;
 	}
         else
           {
             std::cout << "Ooops... not stable result"<<std::endl;
           }
-        
-        //fake
-        return 0.0;
+#endif
+        Quantity res;
+        res.center = RealPoint((myFit->center())(0),
+                               (myFit->center())(1),
+                               (myFit->center())(2));
+        res.radius =  myFit->radius();
+        return res;
       }
                              
 
@@ -218,9 +235,10 @@ namespace DGtal
        */
       void reset()
       {
-        delete (myFit);
+        delete myFit;
         myFit = new Fit();
-      }
+        myFit->setWeightFunc(WeightFunc(100.0));
+     }
 
 
     private:
@@ -233,6 +251,9 @@ namespace DGtal
       
       ///Grid step
       double myH;
+
+      ///NormalVectorCache
+      const NormalVectorEstimatorCache *myNormalEsitmatorCache;
 
     }; // end of class SphereFittingEstimator
   }
