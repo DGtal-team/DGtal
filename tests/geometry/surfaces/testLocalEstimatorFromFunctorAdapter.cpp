@@ -159,10 +159,11 @@ bool testLocalEstimatorFromFunctorAdapter()
   nbok += ((fabs((double)val - 124.0)) < 40) ? 1 : 0;
   nb++;
 
-  reporterGaussian.setParams(l2Metric,estimator,gaussKernelFunc, 20.0);
+  reporter.setParams(l2Metric,estimator,convFunc, 20.0);
   reporter.init(1, surface.begin(), surface.end());
   Functor::Quantity val2 = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 20= "<<val2 << std::endl;
+
   nbok += ((fabs((double)val2 - 398.0)) < 120) ? 1 : 0;
   nb++;
 
