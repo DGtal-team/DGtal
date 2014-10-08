@@ -11,7 +11,13 @@
    #924, DGtal configuration file when using Eigen3.
    (Jacques-Olivier Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
 
+- *Geometry Package*
+ - New EstimatorCache class to cache quantities estimated by a
+   surfel local estimator. (David Coeurjolly,
+   [#927](https://github.com/DGtal-team/DGtal/pull/927))
 
+
+## Bug Fixes
 
 
 # DGtal 0.8
