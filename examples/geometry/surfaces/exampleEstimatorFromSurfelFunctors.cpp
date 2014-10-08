@@ -117,7 +117,7 @@ int main(  )
 
   ///For Elmentary convolution, we specify a Gaussian convolution
   ///kernel from the BasicFunctors.h file
-  typedef ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalElem;
+  typedef functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalElem;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric,
                                                  FunctorNormalElem, DGtal::functors::GaussianKernel> ReporterNormalElem;
   //! [SurfelFunctorsType]
@@ -157,8 +157,11 @@ int main(  )
   FunctorNormal::Quantity valN = reporterN.eval( surface.begin());
   FunctorNormalLeast::Quantity valL = reporterL.eval( surface.begin());
 #endif
-
-  reporterElem.init(1.0, 5.0);
+  
+  reporterElem.attach(surface);
+  reporterElem.setParams(l2Metric,
+                         estimatorNormalElem, gaussian, 5.0);
+  reporterElem.init(1.0, surface.begin(), surface.end());
   FunctorNormalElem::Quantity valElem = reporterElem.eval( surface.begin());
 
 #ifdef WITH_CGAL
