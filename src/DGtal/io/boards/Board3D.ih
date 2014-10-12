@@ -675,8 +675,8 @@ DGtal::Board3D<Space, KSpace>::init()
   Board3D<Space, KSpace>::myBallSetNameList.push_back(nameBallSet);
 
 
-  std::string nameQuad;
-  Board3D<Space, KSpace>::myQuadSetNameList.push_back(nameQuad);
+  // std::string nameQuad;
+  // Board3D<Space, KSpace>::myQuadSetNameList.push_back(nameQuad);
 
   std::string nameTriangle;
   Board3D<Space, KSpace>::myTriangleSetNameList.push_back(nameTriangle);
