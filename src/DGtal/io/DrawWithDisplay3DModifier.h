@@ -227,6 +227,25 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
 };
 
 
+  /**
+   * This structure is used to set the "OpenGL name" (an integer
+   * identifier) of the following display command(s).
+   * You may use it like
+   * \code
+   * SCell surfel = ... ;
+   * viewer << SetName3D( 100 );
+   * viewer << surfel; // surfel is identified with name 100 when clicked.
+   * \endcode
+   */
+  struct SetName3D : public DrawWithDisplay3DModifier {
+    /// Sets the "OpenGL name" of future display command(s).
+    /// @param aName any integer: an identifier for later selection or -1 for none.
+    SetName3D( DGtal::int32_t aName = -1 ) : name( aName ) {} 
+    /// @return the class name as a string.
+    std::string className() const { return "SetName3D"; }
+    /// the "OpenGL name" for selection, or -1 for none.
+    DGtal::int32_t name;
+  };
 
 } // namespace DGtal
 

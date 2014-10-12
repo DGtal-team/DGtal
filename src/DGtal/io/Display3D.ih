@@ -122,6 +122,26 @@ DGtal::Display3D< Space ,KSpace >::getFillColor()
   return myCurrentFillColor;
 }
 
+//-----------------------------------------------------------------------------
+template < typename Space ,typename KSpace >
+inline
+void
+DGtal::Display3D< Space ,KSpace >::
+setName3d( DGtal::int32_t name )
+  : myName3D( name )
+{}
+
+//-----------------------------------------------------------------------------
+template < typename Space ,typename KSpace >
+inline
+DGtal::int32_t
+DGtal::Display3D< Space ,KSpace >::
+name3D() const
+{ 
+  return myName3D;
+}
+
+//-----------------------------------------------------------------------------
 template < typename Space ,typename KSpace >
 inline
 std::string
