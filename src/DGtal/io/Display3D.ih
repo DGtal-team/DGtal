@@ -191,7 +191,7 @@ DGtal::Display3D< Space ,KSpace >::createNewQuadList(std::string str)
 {
   std::vector< QuadD3D > v;
   myQuadSetList.push_back(v);
-  myQuadSetNameList.push_back(str);
+  // myQuadSetNameList.push_back(str);
 }
 
 template < typename Space ,typename KSpace >
@@ -1377,7 +1377,7 @@ DGtal::Display3D< Space ,KSpace >::clear()
   myBallSetNameList.clear();
   myClippingPlaneNameList.clear();
   myPrismNameList.clear();
-  myQuadSetNameList.clear();
+  // myQuadSetNameList.clear();
   myTriangleSetNameList.clear();
   myPolygonSetNameList.clear();
 

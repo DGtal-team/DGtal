@@ -827,7 +827,7 @@ namespace DGtal
 
     /// names of the lists in myQuadList
     ///
-    std::vector<std::string> myQuadSetNameList;
+    // std::vector<std::string> myQuadSetNameList;
 
     /// names of the lists in myTriangleList
     ///
