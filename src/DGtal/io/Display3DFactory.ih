@@ -1610,8 +1610,16 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display, const DGtal
 
 }
 
-
-
+template< typename Space, typename KSpace>
+inline
+void 
+DGtal::Display3DFactory<Space,KSpace>::
+draw( Display & display, const DGtal::SetName3D& name3d )
+{ 
+  // Simply sets the "OpenGL name" of class Display3D, so that it
+  // names the next graphical structures with it.
+  display.setName3D( name3d.name );
+}
 
 // //
 ///////////////////////////////////////////////////////////////////////////////

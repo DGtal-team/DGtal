@@ -362,7 +362,20 @@ namespace DGtal
     virtual void  setSKSpaceEmbedder(SCellEmbedder *anEmbedder);
 
 
+    /**
+     * Sets the "OpenGL name" for next graphical directives.
+     * @param name the "OpenGL name", an integer identifier or -1 for none.
+     */
+    void setName3D( DGtal::int32_t name = -1 );
 
+    /**
+     * @return the current "OpenGL name", an integer identifier or -1 if none was set.
+     */
+    DGtal::int32_t name3D() const;
+
+
+    // ----------------------- Graphical directives ----------------------------------
+  public:
 
 
     /**
@@ -825,8 +838,9 @@ namespace DGtal
     ///
     std::vector<std::string> myPolygonSetNameList;
 
-
-
+    /// the "OpenGL name", used for instance by QGLViewer for selecting objects.
+    ///
+    DGtal::int32_t myName3D;
 
     //----end of protected datas
 
