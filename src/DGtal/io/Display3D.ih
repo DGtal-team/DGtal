@@ -128,17 +128,18 @@ inline
 void
 DGtal::Display3D< Space ,KSpace >::
 setName3d( DGtal::int32_t name )
-  : myName3D( name )
-{}
+{
+  myName3d = name;
+}
 
 //-----------------------------------------------------------------------------
 template < typename Space ,typename KSpace >
 inline
 DGtal::int32_t
 DGtal::Display3D< Space ,KSpace >::
-name3D() const
+name3d() const
 { 
-  return myName3D;
+  return myName3d;
 }
 
 //-----------------------------------------------------------------------------

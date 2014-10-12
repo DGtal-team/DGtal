@@ -184,7 +184,7 @@ namespace DGtal
     /// @see addBall
     ///
     //have to be public because of external functions
-    struct BallD3D
+    struct BallD3D : public CommonD3D
     {
       const double & operator[]( unsigned int i ) const
       {
@@ -197,7 +197,6 @@ namespace DGtal
         return center[i];
       };
       RealPoint center;
-      DGtal::Color color;
       bool isSigned;
       bool signPos;
       double size;
@@ -208,7 +207,7 @@ namespace DGtal
      * This structure is used to display polygonal faces in 3d.
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
-    struct PolygonD3D
+    struct PolygonD3D : public CommonD3D
     {
       std::vector<RealPoint> vertices;
       double nx, ny, nz;
@@ -366,12 +365,12 @@ namespace DGtal
      * Sets the "OpenGL name" for next graphical directives.
      * @param name the "OpenGL name", an integer identifier or -1 for none.
      */
-    void setName3D( DGtal::int32_t name = -1 );
+    void setName3d( DGtal::int32_t name = -1 );
 
     /**
      * @return the current "OpenGL name", an integer identifier or -1 if none was set.
      */
-    DGtal::int32_t name3D() const;
+    DGtal::int32_t name3d() const;
 
 
     // ----------------------- Graphical directives ----------------------------------
@@ -840,7 +839,7 @@ namespace DGtal
 
     /// the "OpenGL name", used for instance by QGLViewer for selecting objects.
     ///
-    DGtal::int32_t myName3D;
+    DGtal::int32_t myName3d;
 
     //----end of protected datas
 
