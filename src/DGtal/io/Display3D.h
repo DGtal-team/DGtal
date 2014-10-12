@@ -106,72 +106,73 @@ namespace DGtal
     typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
 
   protected:
-
+    /**
+     * Common data to most graphical structures used in Display3D.
+     */
+    struct CommonD3D {
+      DGtal::Color   color; ///< Color used for displaying the graphical structure 
+      DGtal::int32_t name;  ///< The "OpenGL name" associated with the graphical structure, used for selecting it (-1 is none).
+    };
 
     /**
-     * structure used to display line in 3D
+     * The graphical structure that represents a 3D line segment in Display3D.
      */
-    struct LineD3D{
+    struct LineD3D : public CommonD3D {
       RealPoint point1;
       RealPoint point2;
       double width;
-      DGtal::Color color;
       bool isSigned;
       bool signPos;
     };
 
     /**
-     * Defines the 3D cube.
+     * The graphical structure that represents a 3D cube in Display3D.
      */
-    struct CubeD3D{
+    struct CubeD3D : public CommonD3D {
       /// The center coordinate of the cube.
-      ///
       RealPoint center;
-      /// The display color of the cube.
-      ///
-      DGtal::Color color;
-
       /// The width of a cube face
-      ///
       double width;
     };
 
     /**
-     * Used to define clipping planes (it uses the quadD3D structure)
+     * The graphical structure that represents a clipping plane (it
+     * uses the quadD3D structure)
+     *
      * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
-     **/
-    struct ClippingPlaneD3D{
+     */
+    struct ClippingPlaneD3D : public CommonD3D {
       double a,b,c,d;
     };
 
 
     /**
-     * This structure is used to display clipping planes and the
-     * components of the myPrismList (allowing to set normal and
-     * color).
+     * The graphical structure that represents a quadrilateral in the
+     * space. It is used to display clipping planes and the components
+     * of the myPrismList (allowing to set normal and color).
+     *
      * @see Display3D, Viewer3D, Board3DTo2D
-     **/
-    struct QuadD3D{
+     */
+    struct QuadD3D : public CommonD3D {
       RealPoint point1;
       RealPoint point2;
       RealPoint point3;
       RealPoint point4;
       double nx, ny, nz;
-      DGtal::Color color;
     };
 
 
 
     /**
-     * This structure is used to display triangle faces.
+     * The graphical structure that represents a triangle in the space.
+     *
      * @see Display3D, Viewer3D, Board3DTo2D
-     **/
-    struct TriangleD3D{
+     */
+    struct TriangleD3D : public CommonD3D {
       RealPoint point1;
       RealPoint point2;
       RealPoint point3;
       double nx, ny, nz;
-      DGtal::Color color;
     };
 
 

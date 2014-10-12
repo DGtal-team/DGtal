@@ -693,12 +693,12 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList ( myListToAff+j );
     }
 
-
-  glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()) );
-  for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myCubeSetList.size() ; j++ )
-    {
-      glCallList ( myListToAff+j );
-    }
+  // JOL: same display as above.
+  // glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()) );
+  // for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myCubeSetList.size() ; j++ )
+  //   {
+  //     glCallList ( myListToAff+j );
+  //   }
 
   // Calling lists associated to Mesh display (see. updateList)
   unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
@@ -933,7 +933,7 @@ DGtal::Viewer3D<Space, KSpace>::postSelection ( const QPoint& point )
   if ( found )
     {
       DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << endl;
-      if ( selectedName() !=-1 )
+      if ( selectedName() < 0 )
         {
           unsigned int id = abs ( selectedName()-1 );
           if ( id< Viewer3D<Space, KSpace>::myCubeSetList.size())
