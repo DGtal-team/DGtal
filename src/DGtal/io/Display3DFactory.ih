@@ -1618,7 +1618,7 @@ draw( Display & display, const DGtal::SetName3D& name3d )
 { 
   // Simply sets the "OpenGL name" of class Display3D, so that it
   // names the next graphical structures with it.
-  display.setName3D( name3d.name );
+  display.setName3d( name3d.name );
 }
 
 // //
