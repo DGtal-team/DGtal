@@ -618,19 +618,23 @@ inline
 void
 DGtal::Viewer3D<Space, KSpace>::drawWithNames()
 {
-  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
-    {
-      glCallList ( myListToAff+i );
-    }
-  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
-    {
-      glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+i ) );
-    }
+  trace.info() << "Viewer3D::drawWithNames()" << std::endl;
+  // for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
+  //   {
+  //     glCallList ( myListToAff+i );
+  //   }
+  // for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
+  //   {
+  //     glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+i ) );
+  //   }
 
-  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myBallSetList.size(); i++ )
-    {
-      glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+Viewer3D<Space, KSpace>::myLineSetList.size() +i ) );
-    }
+  // for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myBallSetList.size(); i++ )
+  //   {
+  //     glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+Viewer3D<Space, KSpace>::myLineSetList.size() +i ) );
+  //   }
+  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
+  glCallList ( GLuint ( myListToAff + nbListOfPrimitives + 1 ) );
+
 }
 
 template< typename Space, typename KSpace>
@@ -934,7 +938,7 @@ DGtal::Viewer3D<Space, KSpace>::postSelection ( const QPoint& point )
   if ( found )
     {
       DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << endl;
-      if ( selectedName() < 0 )
+      if ( selectedName() >= 0 )
         {
           unsigned int id = abs ( selectedName()-1 );
           if ( id< Viewer3D<Space, KSpace>::myCubeSetList.size())
@@ -1205,14 +1209,18 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   // First List (quad faces)
   glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 1 ), GL_COMPILE );
   myNbListe++;
-  glPushName ( myNbListe );
-
-  glEnable ( GL_LIGHTING );
-  glBegin ( GL_QUADS );
-
+  // glPushName ( myNbListe );
+  // if ( Viewer3D<Space, KSpace>::myQuadsMap.begin() != Viewer3D<Space, KSpace>::myQuadsMap.end() )
+  //     glPushName ( Viewer3D<Space, KSpace>::myQuadsMap.begin( )->first );
+  // glEnable ( GL_LIGHTING );
+  // glBegin ( GL_QUADS );
   for (typename Viewer3D<Space, KSpace>::QuadsMap::iterator it = Viewer3D<Space, KSpace>::myQuadsMap.begin(), itE = Viewer3D<Space, KSpace>::myQuadsMap.end(); 
        it != itE; ++it )
     {
+      glPushName ( it->first );
+      glEnable ( GL_LIGHTING );
+      glBegin ( GL_QUADS );
+      trace.info() << "Quad name = " << it->first << std::endl;
       for (typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::iterator it_s = it->second.begin(); it_s != it->second.end(); it_s++)
         {
           glColor4ub ( it_s->color.red(), it_s->color.green(), it_s->color.blue(), it_s->color.alpha() );
@@ -1222,8 +1230,9 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
           glVertex3f ( it_s->point3[0], it_s->point3[1], it_s->point3[2] );
           glVertex3f ( it_s->point4[0], it_s->point4[1], it_s->point4[2] );
         }
+      glEnd();
+      glPopName();
     }
-  glEnd();
   glEndList();
 
   // Second list: Wired version of quad face.
