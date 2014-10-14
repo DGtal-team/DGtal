@@ -217,6 +217,12 @@ namespace DGtal
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
 
+
+  public:
+    // The type that maps identifier name -> vector of QuadD3D.
+    typedef std::map<DGtal::int32_t, std::vector< QuadD3D > > QuadsMap;
+
+
   protected:
     /// an embeder from a dgtal space point to a real space point
     Embedder *myEmbedder;
@@ -425,12 +431,12 @@ namespace DGtal
      **/
     void createNewCubeList(std::string s= "");
 
-    /**
-     * Used to create a new list containing new 3D objects
-     * (useful to use transparency between different objects).
-     * @param s name of the new list
-     **/
-    void createNewQuadList(std::string s= "");
+    // /**
+    //  * Used to create a new list containing new 3D objects
+    //  * (useful to use transparency between different objects).
+    //  * @param s name of the new list
+    //  **/
+    // void createNewQuadList(std::string s= "");
 
     /**
      * Used to create a new list containing new 3D objects
@@ -797,8 +803,14 @@ namespace DGtal
     ///
     std::vector< QuadD3D > myPrismList;
 
-    /// Represents all the planes drawn in the Display3D or to display Khalimsky Space Cell.
-    std::vector<std::vector< QuadD3D > > myQuadSetList;
+    // Represents all the planes drawn in the Display3D or to display Khalimsky Space Cell.
+    // std::vector<std::vector< QuadD3D > > myQuadSetList;
+
+    /// Represents all the planes drawn in the Display3D or to display
+    /// Khalimsky Space Cell.  The map int --> vector< QuadD3D>
+    /// associates to a vector of quads to an integer identifier
+    /// (OpenGL name)
+    QuadsMap myQuadsMap;
 
     /// Represents all the triangles drawn in the Display3D
     std::vector<std::vector< TriangleD3D > > myTriangleSetList;
