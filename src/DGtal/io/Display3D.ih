@@ -184,15 +184,15 @@ DGtal::Display3D< Space ,KSpace >::createNewLineList(std::string str)
   myLineSetNameList.push_back(str);
 }
 
-template < typename Space ,typename KSpace >
-inline
-void
-DGtal::Display3D< Space ,KSpace >::createNewQuadList(std::string str)
-{
-  std::vector< QuadD3D > v;
-  myQuadSetList.push_back(v);
-  // myQuadSetNameList.push_back(str);
-}
+// template < typename Space ,typename KSpace >
+// inline
+// void
+// DGtal::Display3D< Space ,KSpace >::createNewQuadList(std::string str)
+// {
+//   std::vector< QuadD3D > v;
+//   myQuadSetList.push_back(v);
+//   // myQuadSetNameList.push_back(str);
+// }
 
 template < typename Space ,typename KSpace >
 inline
@@ -298,10 +298,10 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
                                                      const bool enableReorientation,
                                                      const bool enableDoubleFace)
 {
-  if(myQuadSetList.size() == 0 )
-    {
-      createNewQuadList("quad");
-    }
+  // if(myQuadSetList.size() == 0 )
+  //   {
+  //     createNewQuadList("quad");
+  //   }
   QuadD3D aQuad,aQuad2;
   updateBoundingBox(p1);
   updateBoundingBox(p2);
@@ -370,13 +370,15 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
     }
   aQuad.name  = name3d();
   aQuad2.name = name3d();
-  
-  if (myQuadSetList.size()== 0)
-    createNewQuadList("Quad Root");
 
-  (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad);
-  if (enableDoubleFace)
-    (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad2);
+  myQuadsMap[ aQuad.name ] .push_back( aQuad );
+  myQuadsMap[ aQuad2.name ].push_back( aQuad2 );
+  // if (myQuadSetList.size()== 0)
+  //   createNewQuadList("Quad Root");
+
+  // (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad);
+  // if (enableDoubleFace)
+  //   (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad2);
 }
 
 
@@ -959,7 +961,7 @@ DGtal::Display3D< Space ,KSpace >::addCylinder(const RealPoint &p1, const RealPo
   double xr, yr, zr;
 
   createNewTriangleList("Cylinder");
-  createNewQuadList("Cylinder");
+  //createNewQuadList("Cylinder");
   for (int i =0; i < nbPoints-1; i ++)
     {
       // r = AB^n
@@ -1201,9 +1203,9 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
 
 
   // Export QuadList
-  for (typename std::vector<std::vector<QuadD3D> >::const_iterator it = myQuadSetList.begin(); it != myQuadSetList.end(); it++)
+  for (typename QuadsMap::const_iterator it = myQuadsMap.begin(); it != myQuadsMap.end(); it++)
     {
-      for (typename std::vector<QuadD3D>::const_iterator aQuad = it->begin(); aQuad!=it->end();aQuad ++)
+      for (typename std::vector<QuadD3D>::const_iterator aQuad = it->second.begin(); aQuad!=it->second.end();aQuad ++)
 	{
 	  BallD3D p1, p2, p3, p4;
 	  p1.center=aQuad->point1;
@@ -1369,7 +1371,8 @@ DGtal::Display3D< Space ,KSpace >::clear()
   myBallSetList.clear();
   myClippingPlaneList.clear();
   myPrismList.clear();
-  myQuadSetList.clear();
+  //myQuadSetList.clear();
+  myQuadsMap.clear();
   myTriangleSetList.clear();
   myPolygonSetList.clear();
   myCubeSetNameList.clear();
