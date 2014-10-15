@@ -247,6 +247,19 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
     DGtal::int32_t name;
   };
 
+
+  struct SetSelectCallback3D : public DrawWithDisplay3DModifier {
+    typedef int (*CallbackFct)( void* viewer, DGtal::int32_t name, void* data );
+    SetSelectCallback3D( CallbackFct f, 
+                         DGtal::int32_t min = 0, DGtal::int32_t max = 0x7fffffff ) 
+      : myFct( f ), myMin( min ), myMax( max ) {}
+    /// @return the class name as a string.
+    std::string className() const { return "SetSelectCallback3D"; }
+    /// The callback function associated to the selection of an element.
+    CallbackFct myFct;
+    DGtal::int32_t myMin;
+    DGtal::int32_t myMax;
+  };
 } // namespace DGtal
 
 

@@ -105,7 +105,34 @@ namespace DGtal
     typedef CanonicCellEmbedder<KSpace> CellEmbedder;
     typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
 
+    /// Select callback function type.
+    typedef int (*SelectCallbackFct)( void* viewer, DGtal::int32_t name, void* data );
+
   protected:
+
+    /// Structure for storing select callback functions. The select
+    /// callback function is called whenever the user select a
+    /// graphical object with "OpenGL name" in [min,max]. The order
+    /// relation is used to find quickly the correct function.
+    struct SelectCallbackFctStore {
+      SelectCallbackFctStore( SelectCallbackFct _fct, 
+                              DGtal::int32_t _min, DGtal::int32_t _max )
+        : fct( _fct ), min( _min ), max( _max ) {}
+      bool operator<( const SelectCallbackFctStore& other ) const
+      { 
+        return ( min < other.min )
+          || ( ( min == other.min ) && ( ( max < other.max )
+                                         || ( ( max == other.max ) 
+                                              && ( fct < other.fct ) ) ) );
+      }
+      bool isSelected( DGtal::int32_t name ) const
+      { return ( min <= name ) && ( name <= max ); }
+
+      SelectCallbackFct fct;
+      DGtal::int32_t min;
+      DGtal::int32_t max;
+    };
+
     /**
      * Common data to most graphical structures used in Display3D.
      */
@@ -378,6 +405,25 @@ namespace DGtal
      */
     DGtal::int32_t name3d() const;
 
+    /**
+     * Sets the callback function called when selecting a graphical
+     * object with "OpenGL name" between \a min_name and \a max_name.
+     * Note that ranges should not overlap. If several functions can
+     * be called, behavior is undefined afterwards.
+     *
+     * @param fct any function.
+     * @param min_name the first "OpenGL name" for which \a fct should be called.
+     * @param max_name the last "OpenGL name" for which \a fct should be called.
+     */
+    void setSelectCallback3D( SelectCallbackFct fct, 
+                              DGtal::int32_t min_name, DGtal::int32_t max_name );
+
+    /**
+     * @param[in]  the "OpenGL name" that was selected.
+     * @return the select callback function that match the given \a
+     * name, or 0 if none is associated to this name.
+     */
+    SelectCallbackFct getSelectCallback3D( DGtal::int32_t name ) const;
 
     // ----------------------- Graphical directives ----------------------------------
   public:
@@ -852,6 +898,10 @@ namespace DGtal
     /// the "OpenGL name", used for instance by QGLViewer for selecting objects.
     ///
     DGtal::int32_t myName3d;
+
+    /// Stores the callback functions called when selecting a graphical object.
+    ///
+    std::set<SelectCallbackFctStore> mySelectCallBackFcts;
 
     //----end of protected datas
 

@@ -615,6 +615,16 @@ namespace DGtal
     static void 
     draw( Display & display, const DGtal::SetName3D& name3d );
 
+    /**
+     * Set the callback function when selecting an object (e.g. shift
+     * + left click in QGLViewer).
+     *
+     * @param display the display where to draw
+     * @param aFct an object storing the callback function.
+     */
+    static void 
+    draw( Display & display, const DGtal::SetSelectCallback3D& aFct );
+
   }; // end of struct Display3DFactory
 
 } // namespace DGtal

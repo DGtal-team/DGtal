@@ -40,7 +40,19 @@ using namespace std;
 using namespace DGtal;
 using namespace Z3i;
 
+typedef Viewer3D<Space,KSpace> MyViewer;
+typedef MyViewer::SelectCallbackFct SelectCallbackFct;
 
+int reaction1( void* viewer, int32_t name, void* data )
+{
+  trace.info() << "Reaction1 with name " << name << std::endl;
+  return 0;
+}
+int reaction23( void* viewer, int32_t name, void* data )
+{
+  trace.info() << "Reaction23 with name " << name << std::endl;
+  return 0;
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -55,7 +67,6 @@ int main( int argc, char** argv )
   KSpace K; 
   K.init( p1, p2, true );
   
-  typedef Viewer3D<Space,KSpace> MyViewer;
   MyViewer viewer( K );
   viewer.show();
   SCell surfel1 = K.sCell( Point( 1, 1, 2 ), KSpace::POS ); 
@@ -65,7 +76,8 @@ int main( int argc, char** argv )
   viewer << SetName3D( 10001 ) << CustomColors3D( Color::Red, Color::Red ) << surfel1;
   viewer << SetName3D( 10002 ) << CustomColors3D( Color::Green, Color::Green ) << surfel2;
   viewer << SetName3D( 10003 ) << CustomColors3D( Color::Blue, Color::Blue ) << surfel3;
-  
+  viewer << SetSelectCallback3D( reaction1,  10001, 10001 );
+  viewer << SetSelectCallback3D( reaction23, 10002, 10003 );
   viewer<< MyViewer::updateDisplay;
   return application.exec();
 }
