@@ -618,22 +618,28 @@ inline
 void
 DGtal::Viewer3D<Space, KSpace>::drawWithNames()
 {
-  trace.info() << "Viewer3D::drawWithNames()" << std::endl;
-  // for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
-  //   {
-  //     glCallList ( myListToAff+i );
-  //   }
-  // for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
-  //   {
-  //     glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+i ) );
-  //   }
-
-  // for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myBallSetList.size(); i++ )
-  //   {
-  //     glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+Viewer3D<Space, KSpace>::myLineSetList.size() +i ) );
-  //   }
+  // JOL: 2014/10/15. This method is called only when the user tries
+  // to select some graphic object through QGLViewer. By default,
+  // selection is left clic + shift key.
+  // JOL: 2014/10/15. This is my addition for interacting with
+  // quads. Seems to work well.
   unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
   glCallList ( GLuint ( myListToAff + nbListOfPrimitives + 1 ) );
+  // JOL: 2014/10/15. I leave the remaining code, but I am not
+  // confident that it works reliably.
+  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
+    {
+      glCallList ( myListToAff+i );
+    }
+  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
+    {
+      glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+i ) );
+    }
+
+  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myBallSetList.size(); i++ )
+    {
+      glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+Viewer3D<Space, KSpace>::myLineSetList.size() +i ) );
+    }
 
 }
 
@@ -697,7 +703,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList ( myListToAff+j );
     }
 
-  // JOL: same display as above.
+  // JOL:  2014/10/15. Looks like duplicated code. Same display as above.
   // glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()) );
   // for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myCubeSetList.size() ; j++ )
   //   {
