@@ -760,11 +760,21 @@ namespace DGtal
 
     /**
      * Set the "OpenGL name" of future graphical commands.
-     * @param display the display where to draw
+     * @param viewer the viewer where to draw
      * @param aName3d an object storing the "OpenGL" name.
      */
     static void 
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::SetName3D& name3d );
+
+    /**
+     * Set the callback function when selecting an object (e.g. shift
+     * + left click in QGLViewer).
+     *
+     * @param viewer the viewer where to draw
+     * @param aFct an object storing the callback function.
+     */
+    static void 
+    draw( Viewer3D<Space,KSpace> & viewer, const DGtal::SetSelectCallback3D& aFct );
 
     // end heritage
     //----------------------------------------------------------------------------------------------

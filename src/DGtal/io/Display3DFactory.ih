@@ -1610,6 +1610,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display, const DGtal
 
 }
 
+//-----------------------------------------------------------------------------
 template< typename Space, typename KSpace>
 inline
 void 
@@ -1619,6 +1620,15 @@ draw( Display & display, const DGtal::SetName3D& name3d )
   // Simply sets the "OpenGL name" of class Display3D, so that it
   // names the next graphical structures with it.
   display.setName3d( name3d.name );
+}
+//-----------------------------------------------------------------------------
+template< typename Space, typename KSpace>
+inline
+void 
+DGtal::Display3DFactory<Space,KSpace>::
+draw( Display & display, const DGtal::SetSelectCallback3D& aFct )
+{
+  display.setSelectCallback3D( aFct.myFct, aFct.myMin, aFct.myMax );
 }
 
 // //

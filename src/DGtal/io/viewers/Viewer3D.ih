@@ -944,7 +944,11 @@ DGtal::Viewer3D<Space, KSpace>::postSelection ( const QPoint& point )
   if ( found )
     {
       DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << endl;
-      if ( selectedName() >= 0 )
+      // JOL: 2014/10/15
+      SelectCallbackFct fct = getSelectCallback3D( selectedName() );
+      if ( fct ) fct( this, selectedName(), 0 );
+      // I leave the remaining code.
+      else if ( selectedName() >= 0 )
         {
           unsigned int id = abs ( selectedName()-1 );
           if ( id< Viewer3D<Space, KSpace>::myCubeSetList.size())

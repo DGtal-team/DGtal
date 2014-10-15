@@ -129,6 +129,14 @@ namespace DGtal
 
     //---------------overwritting some functions of Display3D -------------------
 
+    // ----------------------- public types ------------------------------
+  public:
+
+    typedef Display3D<Space, KSpace> Display;
+
+    typedef typename Display::SelectCallbackFct SelectCallbackFct;
+    using Display::getSelectCallback3D;
+
     // ----------------------- Standard services ------------------------------
   public:
 
