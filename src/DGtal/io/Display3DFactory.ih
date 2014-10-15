@@ -1628,7 +1628,7 @@ void
 DGtal::Display3DFactory<Space,KSpace>::
 draw( Display & display, const DGtal::SetSelectCallback3D& aFct )
 {
-  display.setSelectCallback3D( aFct.myFct, aFct.myMin, aFct.myMax );
+  display.setSelectCallback3D( aFct.myFct, aFct.myData, aFct.myMin, aFct.myMax );
 }
 
 // //

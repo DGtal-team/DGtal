@@ -42,15 +42,26 @@ using namespace Z3i;
 
 typedef Viewer3D<Space,KSpace> MyViewer;
 typedef MyViewer::SelectCallbackFct SelectCallbackFct;
+typedef KSpace::SCell SCell;
+
+struct BigData
+{
+  KSpace K;
+  std::map< int32_t, SCell > cells;
+};
 
 int reaction1( void* viewer, int32_t name, void* data )
 {
-  trace.info() << "Reaction1 with name " << name << std::endl;
+  BigData* bg = (BigData*) data;
+  trace.info() << "Reaction1 with name " << name 
+               << " cell " << bg->K.sKCoords( bg->cells[ name ] ) << std::endl;
   return 0;
 }
 int reaction23( void* viewer, int32_t name, void* data )
 {
-  trace.info() << "Reaction23 with name " << name << std::endl;
+  BigData* bg = (BigData*) data;
+  trace.info() << "Reaction23 with name " << name
+               << " cell " << bg->K.sKCoords( bg->cells[ name ] ) << std::endl;
   return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,13 +69,12 @@ int reaction23( void* viewer, int32_t name, void* data )
 
 int main( int argc, char** argv )
 {
-  typedef KSpace::SCell SCell;
   QApplication application(argc,argv);
-  
+  BigData data;
   Point p1( 0, 0, 0 );
   Point p2( 5, 5 ,5 );
   Point p3( 2, 3, 4 );
-  KSpace K; 
+  KSpace & K = data.K; 
   K.init( p1, p2, true );
   
   MyViewer viewer( K );
@@ -72,12 +82,15 @@ int main( int argc, char** argv )
   SCell surfel1 = K.sCell( Point( 1, 1, 2 ), KSpace::POS ); 
   SCell surfel2 = K.sCell( Point( 3, 3, 4 ), KSpace::NEG ); 
   SCell surfel3 = K.sCell( Point( 5, 6, 5 ), KSpace::POS ); 
+  data.cells[ 10001 ] = surfel1;
+  data.cells[ 10002 ] = surfel2;
+  data.cells[ 10003 ] = surfel3;
   viewer << SetMode3D( surfel1.className(), "Basic" );
   viewer << SetName3D( 10001 ) << CustomColors3D( Color::Red, Color::Red ) << surfel1;
   viewer << SetName3D( 10002 ) << CustomColors3D( Color::Green, Color::Green ) << surfel2;
   viewer << SetName3D( 10003 ) << CustomColors3D( Color::Blue, Color::Blue ) << surfel3;
-  viewer << SetSelectCallback3D( reaction1,  10001, 10001 );
-  viewer << SetSelectCallback3D( reaction23, 10002, 10003 );
+  viewer << SetSelectCallback3D( reaction1,  &data, 10001, 10001 );
+  viewer << SetSelectCallback3D( reaction23, &data, 10002, 10003 );
   viewer<< MyViewer::updateDisplay;
   return application.exec();
 }
