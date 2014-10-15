@@ -116,21 +116,20 @@ namespace DGtal
     /// relation is used to find quickly the correct function.
     struct SelectCallbackFctStore {
       SelectCallbackFctStore( SelectCallbackFct _fct, 
+                              void* _data,
                               DGtal::int32_t _min, DGtal::int32_t _max )
-        : fct( _fct ), min( _min ), max( _max ) {}
+        : fct( _fct ), data( _data ), min( _min ), max( _max ) {}
       bool operator<( const SelectCallbackFctStore& other ) const
       { 
-        return ( min < other.min )
-          || ( ( min == other.min ) && ( ( max < other.max )
-                                         || ( ( max == other.max ) 
-                                              && ( fct < other.fct ) ) ) );
+        return ( min < other.min ); // simple since there is no overlap.
       }
       bool isSelected( DGtal::int32_t name ) const
       { return ( min <= name ) && ( name <= max ); }
 
       SelectCallbackFct fct;
-      DGtal::int32_t min;
-      DGtal::int32_t max;
+      void*             data;
+      DGtal::int32_t    min;
+      DGtal::int32_t    max;
     };
 
     /**
@@ -412,18 +411,20 @@ namespace DGtal
      * be called, behavior is undefined afterwards.
      *
      * @param fct any function.
+     * @param data an arbitrary pointer that is given when calling the callback function.
      * @param min_name the first "OpenGL name" for which \a fct should be called.
      * @param max_name the last "OpenGL name" for which \a fct should be called.
      */
-    void setSelectCallback3D( SelectCallbackFct fct, 
+    void setSelectCallback3D( SelectCallbackFct fct, void* data,
                               DGtal::int32_t min_name, DGtal::int32_t max_name );
 
     /**
      * @param[in]  the "OpenGL name" that was selected.
+     * @param[out] a pointer that was given setting the callback function.
      * @return the select callback function that match the given \a
      * name, or 0 if none is associated to this name.
      */
-    SelectCallbackFct getSelectCallback3D( DGtal::int32_t name ) const;
+    SelectCallbackFct getSelectCallback3D( DGtal::int32_t name, void*& data ) const;
 
     // ----------------------- Graphical directives ----------------------------------
   public:

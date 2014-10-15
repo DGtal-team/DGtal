@@ -247,16 +247,26 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
     DGtal::int32_t name;
   };
 
-
+  /**
+   * This structure is used to pass callback functions to the
+   * viewer. These callback functions are called when specific
+   * graphical objects are selected by the user (@see SetName3D).
+   */
   struct SetSelectCallback3D : public DrawWithDisplay3DModifier {
+    /// The prototype for a callback function. It is called with a
+    /// pointer to the viewer, the "OpenGL name" of the selected
+    /// graphical element and a pointer toward the data that was given
+    /// at construction of SetSelectCallback3D.
     typedef int (*CallbackFct)( void* viewer, DGtal::int32_t name, void* data );
     SetSelectCallback3D( CallbackFct f, 
+                         void* data,
                          DGtal::int32_t min = 0, DGtal::int32_t max = 0x7fffffff ) 
-      : myFct( f ), myMin( min ), myMax( max ) {}
+      : myFct( f ), myMin( min ), myMax( max ), myData( data ) {}
     /// @return the class name as a string.
     std::string className() const { return "SetSelectCallback3D"; }
     /// The callback function associated to the selection of an element.
     CallbackFct myFct;
+    void* myData;
     DGtal::int32_t myMin;
     DGtal::int32_t myMax;
   };

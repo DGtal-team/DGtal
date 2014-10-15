@@ -945,8 +945,9 @@ DGtal::Viewer3D<Space, KSpace>::postSelection ( const QPoint& point )
     {
       DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << endl;
       // JOL: 2014/10/15
-      SelectCallbackFct fct = getSelectCallback3D( selectedName() );
-      if ( fct ) fct( this, selectedName(), 0 );
+      void* data = 0;
+      SelectCallbackFct fct = getSelectCallback3D( selectedName(), data );
+      if ( fct ) fct( this, selectedName(), data );
       // I leave the remaining code.
       else if ( selectedName() >= 0 )
         {
