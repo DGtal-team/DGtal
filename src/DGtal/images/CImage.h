@@ -50,7 +50,8 @@
 
 namespace DGtal
 {
-
+namespace concepts
+{
 /////////////////////////////////////////////////////////////////////////////
 // struct CImage
 /**
@@ -121,6 +122,7 @@ private:
     Range myR;
 
 };
+}
 } // namespace DGtal
 
 //                                                                           //

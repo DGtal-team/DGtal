@@ -12,6 +12,11 @@
 
 ## Bug Fixes
 
+- *Configuration*
+ - Fix issue #925, detection of Eigen3 (3.1 minimum) and also issue
+   #924, DGtal configuration file when using Eigen3.
+   (Jacques-Olivier Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
+
 
 # DGtal 0.8
 

@@ -40,6 +40,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/io/ITKIOTrait.h"
 
@@ -63,8 +64,8 @@ namespace DGtal
     typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
     typedef TFunctor Functor;
 
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, ValueOut, Value> )) ;
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, ValueOut, Value> )) ;
     BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3) || (TImage::Domain::dimension == 2) ));
 
     /**

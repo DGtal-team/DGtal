@@ -106,7 +106,7 @@ int main( int argc, char** argv )
   functors::Identity g;
   DGtal::functors::Thresholder<Image::Value> t( thresholdValue );
   typedef ConstImageAdapter<Image, Domain, functors::Identity, bool, DGtal::functors::Thresholder<Image::Value> > MyConstImageAdapter;
-  BOOST_CONCEPT_ASSERT(( CConstImage< MyConstImageAdapter > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CConstImage< MyConstImageAdapter > ));
   MyConstImageAdapter a(img, d, g, t); 
   //! [ConstImageAdapterConstruction]
 
