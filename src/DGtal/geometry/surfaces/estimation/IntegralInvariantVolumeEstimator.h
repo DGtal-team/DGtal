@@ -158,7 +158,7 @@ public:
   typedef typename Matrix::Component Component;
   typedef double Scalar;
   BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
-  BOOST_CONCEPT_ASSERT (( CUnaryFunctor< VolumeFunctor, Component, Quantity > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CUnaryFunctor< VolumeFunctor, Component, Quantity > ));
   BOOST_STATIC_ASSERT (( ConceptUtils::SameType< typename Convolver::Quantity, 
                                                  typename VolumeFunctor::Argument >::value ));
 

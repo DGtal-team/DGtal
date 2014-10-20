@@ -53,7 +53,7 @@ to read and write values in images are detailed.
 
   \subsection dgtalImagesConcepts Concepts
 
-Any model of the concept CPointFunctor must have two nested types:
+Any model of the concept concepts::CPointFunctor must have two nested types:
  
   - Point, which specifies the type for a point.
   - Value, which specifies the type for a value.
@@ -63,11 +63,11 @@ Moreover, it must have the following method:
   - `operator()`, which takes a point as input parameter
 and returns a value, like a function.
 
-The concept CConstImage is a refinement of CPointFunctor. 
+The concept concepts::CConstImage is a refinement of concepts::CPointFunctor. 
 Its models must have two extra nested types: 
 
-  - Domain, a model of CDomain
-  - ConstRange, a model of CConstBidirectionnalRangeFromPoint
+  - Domain, a model of concepts::CDomain
+  - ConstRange, a model of concepts::CConstBidirectionnalRangeFromPoint
 
 Obviously, there are two methods 
 that return instances of these two types: 
@@ -80,7 +80,7 @@ You can see @ref moduleSpacePointVectorDomain for more
 details about spaces and domains and @ref dgtalImagesRanges 
 for more details about ranges in images.
 
-The concept CImage is refinement of CConstImage.  
+The concept concepts::CImage is refinement of concepts::CConstImage.  
 Images, instead of constant ones, provide services
 to update values. 
 The main way of assigning values to points is the 
@@ -91,8 +91,8 @@ following method:
 Moreover, in addition to the ConstRange, images must have
 the following inner type: 
 
-  - Range, a model of CConstBidirectionalRangeFromPoint, like ConstRange,
-and a model of CBidirectionalRangeWithWritableIteratorFromPoint, which must provide 
+  - Range, a model of concepts::CConstBidirectionalRangeFromPoint, like ConstRange,
+and a model of concepts::CBidirectionalRangeWithWritableIteratorFromPoint, which must provide 
 output iterators for incrementally updating a (sub)range of values.   
 
 Obviously, you can get an instance of this type using the following method: 
@@ -101,7 +101,7 @@ Obviously, you can get an instance of this type using the following method:
 iterators and output iterators. 
 
 Lastly, note that the Value type in the (constant) images
-is expected to be at least a model of CLabel, ie.  
+is expected to be at least a model of concepts::CLabel, ie.  
 to be default-constructible, assignable and equality comparable.
 
 @note In the snippets of the following subsections, 
@@ -145,7 +145,7 @@ is not always the fastest and that is why we also provide ranges.
   \subsection dgtalImagesRanges Ranges of values
 
 Constant images provide a constant range of values returned by the `constRange` method.
-As every model of CConstBidirectionalRange, it provides `begin`, `end`, `rbegin` and `rend`
+As every model of concepts::CConstBidirectionalRange, it provides `begin`, `end`, `rbegin` and `rend`
  methods returning constant iterators to iterate over the values in the forward or
 backward direction. 
 
@@ -155,8 +155,8 @@ backward direction.
     it != itEnd; ++it)
     {} 
 
-However, this range is also a model of CConstBidirectionalRangeFromPoint, 
-which is a refinement of CConstBidirectionalRange. That is why it also has 
+However, this range is also a model of concepts::CConstBidirectionalRangeFromPoint, 
+which is a refinement of concepts::CConstBidirectionalRange. That is why it also has 
 overloaded versions of the `begin` and `rbegin` methods taking a point as input argument. 
 This provides a way of iterating on sub-ranges defined from points.  
 
@@ -171,8 +171,8 @@ must be equal to the `end` (resp. `rend`) methods.
 
 
 Images provide in addition to a constant range, a richer range returned by the `range` method.
-This range is not only a model of CBidirectionalRangeFromPoint, but also a model 
-of CBidirectionalRangeWithWritableIteratorFromPoint. That is why, it must have two methods:   
+This range is not only a model of concepts::CBidirectionalRangeFromPoint, but also a model 
+of concepts::CBidirectionalRangeWithWritableIteratorFromPoint. That is why, it must have two methods:   
 `outputIterator` and `routputIterator` returning output iterators. Moreover, 
 it must have overloaded versions of these methods taking a point as input argument. 
 Thus, these output iterators are useful in order to incrementaly fill (a part of) an image. 
@@ -191,7 +191,7 @@ ImageContainerBySTLMap, and --- coming soon --- experimental::ImageContainerByHa
 
   \subsection dgtalImagesModelsVector ImageContainerBySTLVector
 
-ImageContainerBySTLVector is a model of CImage 
+ImageContainerBySTLVector is a model of concepts::CImage 
 that inherits the STL vector class. 
 The hyper-rectangular domain, which the only model
 of domain accepted, is linearized so that  
@@ -212,7 +212,7 @@ iterating over the values of the image.
 
   \subsection dgtalImagesModelsMap ImageContainerBySTLMap
 
-ImageContainerBySTLMap is a model of CImage
+ImageContainerBySTLMap is a model of concepts::CImage
 that inherits the STL map class. 
 The domain can be any set of points. 
 Values are stored and associated to points

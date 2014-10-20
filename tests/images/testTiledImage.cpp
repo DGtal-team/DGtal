@@ -71,7 +71,7 @@ bool testSimple()
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
 
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 
     typedef MyTiledImage::OutputImage OutputImage;
@@ -152,7 +152,7 @@ bool test3d()
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
 
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 
     typedef MyTiledImage::OutputImage OutputImage;
@@ -202,7 +202,7 @@ bool testIterators()
   MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
 
   typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-  BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImage< MyTiledImage > ));
   MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 
   tiledImage.setValue( Z2i::Point(5,5), 42 );
@@ -264,7 +264,7 @@ bool test_range_constRange()
     MyImageCacheWritePolicyWB imageCacheWritePolicyWB(imageFactoryFromImage);
 
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWB> MyTiledImage;
-    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWB, 4);
 
     // writing values

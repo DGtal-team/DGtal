@@ -105,7 +105,7 @@ namespace DGtal
     typedef typename VCM::VectorN                   VectorN;  ///< n-dimensional R-vector
     typedef typename VCM::MatrixNN                 MatrixNN;  ///< nxn R-matrix
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<KernelFunction, Point, Scalar> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<KernelFunction, Point, Scalar> ));
 
     /// Structure to hold a diagonalized matrix.
     struct EigenStructure {
