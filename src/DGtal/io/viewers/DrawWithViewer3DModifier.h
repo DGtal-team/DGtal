@@ -250,7 +250,7 @@ namespace DGtal
   template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
   {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
 
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
@@ -296,7 +296,7 @@ namespace DGtal
   template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage3DWithFunctor : public DrawWithViewer3DModifier
   {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
 
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.

@@ -458,7 +458,7 @@ bool testTiledImage2D_int64()
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
 
     typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyTiledImage > ));
     MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 
     typedef MyTiledImage::OutputImage OutputImage;
@@ -527,7 +527,7 @@ bool testTiledImage3D_double()
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
 
     typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyTiledImage > ));
     MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 2);
 
     typedef MyTiledImage::OutputImage OutputImage;

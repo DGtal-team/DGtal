@@ -114,16 +114,16 @@ public:
     typedef ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1> Self; 
 
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<TNewDomain> ));
    
     typedef TNewDomain Domain;
     typedef typename TNewDomain::Point Point;
     typedef TNewValue Value;
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> ));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value > ));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorVm1, Value, typename TImageContainer::Value > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctorVm1, Value, typename TImageContainer::Value > ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;

@@ -83,10 +83,10 @@ public:
     typedef ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy> Self; 
     
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));
-    BOOST_CONCEPT_ASSERT(( CImageCacheReadPolicy<TReadPolicy> ));
-    BOOST_CONCEPT_ASSERT(( CImageCacheWritePolicy<TWritePolicy> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageCacheReadPolicy<TReadPolicy> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageCacheWritePolicy<TWritePolicy> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;

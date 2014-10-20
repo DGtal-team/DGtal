@@ -23,5 +23,8 @@ script:
   - cd ../tests &&  make &&  cd ..&& make test
 
 after_script:
+  - cat /tmp/testVoronoiCovarianceMeasureOnSurface*.cpp
+  - echo "h"
+  - cat /tmp/testVoronoiCovarianceMeasureOnSurface*.sh
   - make lcov
   - coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info

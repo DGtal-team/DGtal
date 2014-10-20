@@ -107,7 +107,7 @@ namespace DGtal
     
     enum MagicNumber {P1,P2,P3,P4,P5,P6};
 
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor,  DGtal::Color, Value> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor,  DGtal::Color, Value> )) ;    
 
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
                          (ImageContainer::Domain::dimension == 3));
