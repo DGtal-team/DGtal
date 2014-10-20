@@ -43,7 +43,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // struct CTrivialImage
 /**
@@ -96,6 +97,7 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
     typename I::Value myValue; 
     
   };
+  }
 } // namespace DGtal
 
 //                                                                           //

@@ -36,7 +36,7 @@ digraph GIMAGE {
                  node [style=filled,color=white];
                  label="base";
 
-                 CLabel [label="CLabel" URL="@ref CLabel"];  
+                 CLabel [label="CLabel" URL="@ref concepts::CLabel"];  
 		 }
 
         subgraph cluster_kernel {
@@ -45,10 +45,10 @@ digraph GIMAGE {
                  node [style=filled,color=white];
                  label="kernel";
 
-                 CPointFunctor [label="CPointFunctor" URL="@ref CPointFunctor"];   
-		 CDomain [label="CDomain" URL="@ref CDomain"]; 
-		 CConstBidirectionalRangeFromPoint [label="CConstBidirectionalRangeFromPoint" URL="@ref CConstBidirectionalRangeFromPoint"]; 
-		 CBidirectionalRangeWithWritableIteratorFromPoint [label="CBidirectionalRangeWithWritableIteratorFromPoint" URL="@ref CBidirectionalRangeWithWritableIteratorFromPoint"]; 
+                 CPointFunctor [label="CPointFunctor" URL="@ref concepts::CPointFunctor"];   
+		 CDomain [label="CDomain" URL="@ref concepts::CDomain"]; 
+		 CConstBidirectionalRangeFromPoint [label="CConstBidirectionalRangeFromPoint" URL="@ref concepts::CConstBidirectionalRangeFromPoint"]; 
+		 CBidirectionalRangeWithWritableIteratorFromPoint [label="CBidirectionalRangeWithWritableIteratorFromPoint" URL="@ref concepts::CBidirectionalRangeWithWritableIteratorFromPoint"]; 
 		 }
 	 }
 
@@ -58,10 +58,10 @@ digraph GIMAGE {
     node [style=filled,color=white];
     label="Image (main concepts)";
 
-    CImage [label="CImage" URL="@ref CImage"];
-    CConstImage [label="CConstImage" URL="@ref CConstImage"];
-    CTrivialImage [label="CTrivialImage" URL="@ref CTrivialImage"];
-    CTrivialConstImage [label="CTrivialConstImage" URL="@ref CTrivialConstImage"];
+    CImage [label="CImage" URL="@ref concepts::CImage"];
+    CConstImage [label="CConstImage" URL="@ref concepts::CConstImage"];
+    CTrivialImage [label="CTrivialImage" URL="@ref concepts::CTrivialImage"];
+    CTrivialConstImage [label="CTrivialConstImage" URL="@ref concepts::CTrivialConstImage"];
 
     CImage -> CConstImage;
     CImage -> CTrivialImage;

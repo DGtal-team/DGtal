@@ -110,7 +110,7 @@ namespace DGtal
     typedef typename RealPoint::Coordinate Scalar;
     typedef typename GeometricFunctor::Quantity Quantity;
     typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor< GeometricFunctor, RealPoint, Quantity > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor< GeometricFunctor, RealPoint, Quantity > ));
 
     // ----------------------- Standard services ------------------------------
   public:

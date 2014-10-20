@@ -75,7 +75,7 @@ namespace DGtal
     typedef TFunctor Functor;
     typedef DGtal::uint64_t ValueLongvol;
     
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, ValueLongvol> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, ValueLongvol> )) ;    
     
     
     /** 

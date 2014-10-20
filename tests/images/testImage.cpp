@@ -57,7 +57,7 @@ template<typename Image>
 bool testImage(const Image& aImage)
 {
 
-    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
 
     int nb = 0;
     int nbok = 0;
