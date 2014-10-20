@@ -71,7 +71,7 @@ namespace DGtal
   public:
 
     typedef TImage Image;
-    BOOST_CONCEPT_ASSERT(( CTrivialImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CTrivialImage<Image> ));
 
 
     // ----------------------- Standard services ------------------------------

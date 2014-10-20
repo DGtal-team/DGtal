@@ -80,7 +80,7 @@ namespace DGtal
     // ------------------------- inner types --------------------------------
   public: 
   
-    BOOST_CONCEPT_ASSERT(( CTrivialImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CTrivialImage<TImage> ));
     typedef typename TImage::Domain Domain; 
     typedef typename TImage::Point Point; 
     typedef typename TImage::Value Value; 

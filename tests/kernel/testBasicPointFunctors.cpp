@@ -46,7 +46,7 @@ using namespace std;
 template <typename TFunctor, typename TArg, typename TRes >
 void checkingConcepts()
 {
-  BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, TArg, TRes > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, TArg, TRes > ));
 }
 
 bool testProjector()

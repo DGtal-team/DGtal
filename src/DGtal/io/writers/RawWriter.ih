@@ -44,7 +44,7 @@ bool
 RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
 			   const Functor & aFunctor)
 {
-  BOOST_CONCEPT_ASSERT((  CUnaryFunctor<Functor, typename I::Value, unsigned char> )) ;    
+  BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<Functor, typename I::Value, unsigned char> )) ;    
   std::ofstream out;
   
 
@@ -75,7 +75,7 @@ RawWriter<I,C>::exportRaw32(const std::string & filename, const I & aImage,
 			   const Functor & aFunctor)
 {
 
-  BOOST_CONCEPT_ASSERT((  CUnaryFunctor<Functor, typename I::Value, unsigned int> )) ;    
+  BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<Functor, typename I::Value, unsigned int> )) ;    
   std::ofstream out;  
   typename I::Domain domain = aImage.domain();
   typename I::Value val;
