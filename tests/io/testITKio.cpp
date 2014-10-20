@@ -48,7 +48,7 @@ template <typename Image>
 bool
 test_image(const string& filename)
 {
-    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
 
     typedef typename Image::Domain::Point Point;
     Point point0;

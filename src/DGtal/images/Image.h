@@ -74,7 +74,7 @@ namespace DGtal
   public:
 
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CVertexMap<TImageContainer> ));
 
     ///Types copied from the container

@@ -75,7 +75,7 @@ namespace DGtal
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, DGtal::Color> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, DGtal::Color> )) ;    
     BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) || 
        (TImage::Domain::dimension == 3));
 
