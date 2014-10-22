@@ -1308,7 +1308,7 @@ namespace DGtal
       typedef typename DSSComputer::ConstIterator ConstIterator; 
       typedef double Quantity;
 
-      BOOST_CONCEPT_ASSERT(( CUnaryFunctor< Functor, SegmentComputer, Quantity > ));  
+      BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor< Functor, SegmentComputer, Quantity > ));  
 
       // ----------------------- internal data ------------------------------
     public:

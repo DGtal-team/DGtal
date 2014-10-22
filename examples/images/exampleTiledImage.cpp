@@ -99,7 +99,7 @@ int main( /*int argc, char** argv*/ )
     
     // here we create the TiledImage
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 //! [TiledImage_creation]
     

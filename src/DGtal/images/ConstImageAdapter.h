@@ -110,7 +110,7 @@ public:
     typedef ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> Self;
 
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CConstImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<TNewDomain> ));
 
     typedef TNewDomain Domain;
@@ -118,8 +118,8 @@ public:
     typedef TNewValue Value;
 
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> ));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;

@@ -45,7 +45,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // struct CTrivialConstImage
   /**
@@ -105,6 +106,7 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
     Domain d;
 
   };
+  }
 } // namespace DGtal
 
 //                                                                           //

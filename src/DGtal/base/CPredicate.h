@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CPredicate
   /**
@@ -104,7 +105,7 @@ namespace DGtal
   private:
 
   }; // end of concept CPredicate
-
+  }
 } // namespace DGtal
 
 //                                                                           //
