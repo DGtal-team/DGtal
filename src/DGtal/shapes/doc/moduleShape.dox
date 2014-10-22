@@ -161,9 +161,6 @@ parameters which are not specified in the captions).
 @image html ellipse1.png  "Ellipse h=1"
 @image html ellipse01.png  "Ellipse h=0.1"
 @image html ellipse01.png  "Ellipse h=0.01"
-@image html flower1.png  "Flower h=1"
-@image html flower01.png  "Flower h=0.1"
-@image html flower01.png  "Flower h=0.01"
 @image latex accflower1.png  "Accelerated flower h=1" width=5cm
 @image latex accflower01.png  "Accelerated flower h=0.1" width=5cm
 @image latex accflower01.png  "Accelerated flower h=0.01" width=5cm
