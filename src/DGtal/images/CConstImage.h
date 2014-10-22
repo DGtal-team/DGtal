@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // struct CConstImage
   /**
@@ -114,6 +115,7 @@ namespace DGtal
     ConstRange r;
 
   };
+  }
 } // namespace DGtal
 
 //                                                                           //

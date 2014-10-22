@@ -46,7 +46,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
 /////////////////////////////////////////////////////////////////////////////
 // class CImageFactory
 /**
@@ -118,7 +119,7 @@ private:
 private:
 
 }; // end of concept CImageFactory
-
+  }
 } // namespace DGtal
 
 //                                                                           //
