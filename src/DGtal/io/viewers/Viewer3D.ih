@@ -624,21 +624,22 @@ DGtal::Viewer3D<Space, KSpace>::drawWithNames()
   // JOL: 2014/10/15. This is my addition for interacting with
   // quads. Seems to work well.
   unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
-  glCallList ( GLuint ( myListToAff + nbListOfPrimitives + 1 ) );
+  
+  glCallList ( myQuadsMapId );
   // JOL: 2014/10/15. I leave the remaining code, but I am not
   // confident that it works reliably.
   for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
     {
-      glCallList ( myListToAff+i );
+      glCallList ( myCubeSetListId +i);
     }
   for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
     {
-      glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+i ) );
+      glCallList ( myLineSetListId+i );
     }
 
   for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myBallSetList.size(); i++ )
     {
-      glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+Viewer3D<Space, KSpace>::myLineSetList.size() +i ) );
+      glCallList(myBallSetListId+i);
     }
 
 }
@@ -685,7 +686,8 @@ DGtal::Viewer3D<Space, KSpace>::draw()
         {
           glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).size ) /distCam );
         }
-      glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myLineSetList.size() +j+1 ) );
+      glCallList(myBallSetListId+j);
+      //glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myLineSetList.size() +j+1 ) );
     }
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
@@ -694,13 +696,16 @@ DGtal::Viewer3D<Space, KSpace>::draw()
         {
           glLineWidth ( ( Viewer3D<Space, KSpace>::myLineSetList.at ( j ).at ( 0 ).width ) );
         }
-      glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size()+1+j ) );
+      glCallList(myLineSetListId+j);
+      //glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size()+1+j ) );
     }
 
-  glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size()) );
+  //glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size()) );
+  glCallList(myPrismListId);
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myCubeSetList.size() ; j++ )
     {
-      glCallList ( myListToAff+j );
+      //glCallList ( myListToAff+j );
+      glCallList( myCubeSetListId+j);
     }
 
   // JOL:  2014/10/15. Looks like duplicated code. Same display as above.
@@ -714,31 +719,37 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
   glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
   glDisable(GL_CULL_FACE);
-  glCallList ( GLuint ( myListToAff+nbListOfPrimitives+1 ) );
+  //glCallList ( GLuint ( myListToAff+nbListOfPrimitives+1 ) );
+  glCallList(myQuadsMapId);
   if(myViewWire)
     {
       glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
-      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+2 ) );
+      glCallList(myQuadsMapWiredId);
+      //glCallList ( GLuint ( myListToAff+nbListOfPrimitives+2 ) );
+
     }
 
   glDisable(GL_CULL_FACE);
-  glCallList ( GLuint ( myListToAff+nbListOfPrimitives+3 ) );
-
+  //  glCallList ( GLuint ( myListToAff+nbListOfPrimitives+3 ) );
+  glCallList(myTriangleSetListId);
   if(myViewWire)
     {
       glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
-      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+4 ) );
+      //glCallList ( GLuint ( myListToAff+nbListOfPrimitives+4 ) );
+      glCallList(myTriangleSetListWiredId);
     }
 
 
   glDisable(GL_CULL_FACE);
-  glCallList ( GLuint ( myListToAff+nbListOfPrimitives+5 ) );
+  //glCallList ( GLuint ( myListToAff+nbListOfPrimitives+5 ) );
+  glCallList(myPolygonSetListId);
   if(myViewWire)
     {
       glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
-      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+6 ) );
+      //glCallList ( GLuint ( myListToAff+nbListOfPrimitives+6 ) );
+      glCallList(myPolygonSetListWiredId);
     }
-
+  
   for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
 	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
     {
@@ -983,8 +994,37 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   unsigned int nbList= ( unsigned int ) ( Viewer3D<Space, KSpace>::myCubeSetList.size()+
                                           Viewer3D<Space, KSpace>::myLineSetList.size() +
                                           Viewer3D<Space, KSpace>::myBallSetList.size() +6 );
-  glDeleteLists ( myListToAff, myNbListe );
-  myListToAff = glGenLists ( nbList );
+  //@TODOBK:
+  //glDeleteLists ( myListToAff, myNbListe );
+  //myListToAff = glGenLists ( nbList );
+  
+  // glDeleteLists
+  glDeleteLists(myCubeSetListId, myNbCubeSetList);
+  glDeleteLists(myLineSetListId, myNbLineSetList);
+  glDeleteLists(myBallSetListId, myNbBallSetList);
+  glDeleteLists(myTriangleSetListId, 1);
+  glDeleteLists(myTriangleSetListWiredId, 1);
+  glDeleteLists(myCubeSetListId, 1);
+  glDeleteLists(myCubeSetListWiredId, 1);
+  glDeleteLists(myPolygonSetListId, 1);
+  glDeleteLists(myPolygonSetListWiredId, 1);
+  glDeleteLists(myQuadsMapId, 1);
+  glDeleteLists(myQuadsMapWiredId, 1);
+  
+  
+  // Storing ID for each list
+  myCubeSetListId = glGenLists(Viewer3D<Space, KSpace>::myCubeSetList.size()); // ok
+  myLineSetListId = glGenLists(Viewer3D<Space, KSpace>::myLineSetList.size()); // ok
+  myBallSetListId = glGenLists(Viewer3D<Space, KSpace>::myBallSetList.size()); //ok
+  myTriangleSetListId = glGenLists(1); //ok 
+  myTriangleSetListWiredId = glGenLists(1); //ok 
+  myCubeSetListWiredId = glGenLists(1);
+  myPolygonSetListId = glGenLists(1); //ok 
+  myPolygonSetListWiredId = glGenLists(1); //ok
+  myQuadsMapId = glGenLists(1); // ok
+  myQuadsMapWiredId = glGenLists(1); //ok
+  myPrismListId = glGenLists(1);   //ok
+
   myNbListe=0;
   unsigned int listeID=0;
   glEnable ( GL_BLEND );
@@ -999,7 +1039,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   std::vector<ItCube> listIt;
   std::vector<ItCube> listEnd;
   int nbCubes =0;
-  unsigned int i =0; //number of lists in myCubeSetList already added to listToAff
+  unsigned int tmpNbList =0; //number of lists in myCubeSetList already added to listToAff
 
   //adding all the unvoid lists of cubes to draw
   for (typename std::vector<vectorCubes >::iterator it = Viewer3D<Space, KSpace>::myCubeSetList.begin() ;
@@ -1014,23 +1054,23 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
       else
         {
           //create void lists
-          glNewList ( myListToAff+i , GL_COMPILE );
+          glNewList ( myCubeSetListId+tmpNbList , GL_COMPILE );
           myNbListe++;
           glPushName ( myNbListe );
           glBegin ( GL_QUADS );
           glEnd();
           glEndList();
-          i++;
+          tmpNbList++;
         }
     }
 
   if (listIt.size() > 0)
     {
-      glNewList ( myListToAff+i , GL_COMPILE );
+      glNewList ( myCubeSetListId+tmpNbList , GL_COMPILE );
       myNbListe++;
       glPushName ( myNbListe );
       glBegin ( GL_QUADS );
-      i++;
+      tmpNbList++;
 
       qglviewer::Vec posCam = camera()->position();
 
@@ -1125,11 +1165,10 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
               if (listIt.size() >0)
                 {
-                  glNewList ( myListToAff+i , GL_COMPILE );
+                  glNewList ( myCubeSetListId+tmpNbList , GL_COMPILE );
                   myNbListe++;
                   glPushName ( myNbListe );
                   glBegin ( GL_QUADS );
-                  i++;
                 }
             }
         }
@@ -1137,7 +1176,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
 
 
-  glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()), GL_COMPILE );
+  glNewList ( myPrismListId, GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glEnable ( GL_DEPTH_TEST );
@@ -1165,7 +1204,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
     {
       listeID++;
-      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+j+1 ), GL_COMPILE );
+      glNewList ( myLineSetListId+j, GL_COMPILE );
       myNbListe++;
       glDisable ( GL_LIGHTING );
       glPushName ( myNbListe );
@@ -1185,7 +1224,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
   for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
-      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+j+1 ), GL_COMPILE );
+      glNewList ( myBallSetListId+j, GL_COMPILE );
       myNbListe++;
       glDepthMask ( GL_TRUE );
       glDisable ( GL_TEXTURE_2D );
@@ -1218,7 +1257,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
 
   // First List (quad faces)
-  glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 1 ), GL_COMPILE );
+  glNewList ( myQuadsMapId, GL_COMPILE );
   myNbListe++;
   // glPushName ( myNbListe );
   // if ( Viewer3D<Space, KSpace>::myQuadsMap.begin() != Viewer3D<Space, KSpace>::myQuadsMap.end() )
@@ -1247,7 +1286,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEndList();
 
   // Second list: Wired version of quad face.
-  glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 2 ), GL_COMPILE );
+  glNewList ( myQuadsMapWiredId, GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glDisable ( GL_LIGHTING );
@@ -1277,7 +1316,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEndList();
 
   // Third list: Triangle faces.
-  glNewList ( GLuint (myListToAff +nbListOfPrimitives + 3 ), GL_COMPILE );
+  glNewList ( myTriangleSetListId, GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glEnable ( GL_LIGHTING );
@@ -1298,7 +1337,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
 
   // Fourth list: Wired version of triangle face.
-  glNewList ( GLuint ( myListToAff + nbListOfPrimitives +4), GL_COMPILE );
+  glNewList ( myTriangleSetListWiredId, GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
 
@@ -1322,7 +1361,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEndList();
 
   // Fifth list: Polygonal faces.
-  glNewList ( GLuint (myListToAff + nbListOfPrimitives +5 ), GL_COMPILE );
+  glNewList ( myPolygonSetListId, GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glEnable ( GL_LIGHTING );
@@ -1345,7 +1384,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
 
   // Sixth list: Wired version of polygonal face.
-  glNewList ( GLuint (myListToAff + nbListOfPrimitives +6 ), GL_COMPILE );
+  glNewList ( myPolygonSetListWiredId, GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glDisable ( GL_LIGHTING );

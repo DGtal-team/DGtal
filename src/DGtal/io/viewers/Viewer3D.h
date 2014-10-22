@@ -1029,6 +1029,14 @@ namespace DGtal
 
 
 
+    
+    unsigned int GLpushCubeSetLists(const std::vector<typename Viewer3D<Space, KSpace>::CubeD3D> &vectorCubes,
+                                    unsigned int numstartLa){
+      
+      return 0;
+    }
+
+
   public:
     /**
      * Rotate Image2DDomainD3D or TextureImage  vertex from a given
@@ -1080,9 +1088,33 @@ namespace DGtal
   private:
 
     /// lists of the list to draw
-    GLuint myListToAff;
+    //GLuint myListToAff;
+    
+    GLuint myCubeSetListId;
+    GLuint myCubeSetListWiredId;
+
+    GLuint myTriangleSetListId;
+    GLuint myTriangleSetListWiredId;
+
+    GLuint myPolygonSetListId;
+    GLuint myPolygonSetListWiredId;
+    
+    GLuint myLineSetListId;
+    GLuint myBallSetListId;
+    GLuint myPrismListId;
+
+    GLuint myQuadsMapId;
+    GLuint myQuadsMapWiredId;
+    
     /// number of lists in myListToAff
+    
     unsigned int myNbListe;
+    unsigned int myNbCubeSetList;    
+    unsigned int myNbLineSetList;
+    unsigned int myNbBallSetList;
+    unsigned int myNbPrismSetList;
+
+
     /// information linked to the navigation in the viewer
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
     /// a point selected with postSelection @see postSelection
