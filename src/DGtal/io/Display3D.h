@@ -105,73 +105,100 @@ namespace DGtal
     typedef CanonicCellEmbedder<KSpace> CellEmbedder;
     typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
 
+    /// Select callback function type.
+    typedef int (*SelectCallbackFct)( void* viewer, DGtal::int32_t name, void* data );
+
   protected:
 
+    /// Structure for storing select callback functions. The select
+    /// callback function is called whenever the user select a
+    /// graphical object with "OpenGL name" in [min,max]. The order
+    /// relation is used to find quickly the correct function.
+    struct SelectCallbackFctStore {
+      SelectCallbackFctStore( SelectCallbackFct _fct, 
+                              void* _data,
+                              DGtal::int32_t _min, DGtal::int32_t _max )
+        : fct( _fct ), data( _data ), min( _min ), max( _max ) {}
+      bool operator<( const SelectCallbackFctStore& other ) const
+      { 
+        return ( min < other.min ); // simple since there is no overlap.
+      }
+      bool isSelected( DGtal::int32_t name ) const
+      { return ( min <= name ) && ( name <= max ); }
+
+      SelectCallbackFct fct;
+      void*             data;
+      DGtal::int32_t    min;
+      DGtal::int32_t    max;
+    };
 
     /**
-     * structure used to display line in 3D
+     * Common data to most graphical structures used in Display3D.
      */
-    struct LineD3D{
+    struct CommonD3D {
+      DGtal::Color   color; ///< Color used for displaying the graphical structure 
+      DGtal::int32_t name;  ///< The "OpenGL name" associated with the graphical structure, used for selecting it (-1 is none).
+    };
+
+    /**
+     * The graphical structure that represents a 3D line segment in Display3D.
+     */
+    struct LineD3D : public CommonD3D {
       RealPoint point1;
       RealPoint point2;
       double width;
-      DGtal::Color color;
       bool isSigned;
       bool signPos;
     };
 
     /**
-     * Defines the 3D cube.
+     * The graphical structure that represents a 3D cube in Display3D.
      */
-    struct CubeD3D{
+    struct CubeD3D : public CommonD3D {
       /// The center coordinate of the cube.
-      ///
       RealPoint center;
-      /// The display color of the cube.
-      ///
-      DGtal::Color color;
-
       /// The width of a cube face
-      ///
       double width;
     };
 
     /**
-     * Used to define clipping planes (it uses the quadD3D structure)
+     * The graphical structure that represents a clipping plane (it
+     * uses the quadD3D structure)
+     *
      * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
-     **/
-    struct ClippingPlaneD3D{
+     */
+    struct ClippingPlaneD3D : public CommonD3D {
       double a,b,c,d;
     };
 
 
     /**
-     * This structure is used to display clipping planes and the
-     * components of the myPrismList (allowing to set normal and
-     * color).
+     * The graphical structure that represents a quadrilateral in the
+     * space. It is used to display clipping planes and the components
+     * of the myPrismList (allowing to set normal and color).
+     *
      * @see Display3D, Viewer3D, Board3DTo2D
-     **/
-    struct QuadD3D{
+     */
+    struct QuadD3D : public CommonD3D {
       RealPoint point1;
       RealPoint point2;
       RealPoint point3;
       RealPoint point4;
       double nx, ny, nz;
-      DGtal::Color color;
     };
 
 
 
     /**
-     * This structure is used to display triangle faces.
+     * The graphical structure that represents a triangle in the space.
+     *
      * @see Display3D, Viewer3D, Board3DTo2D
-     **/
-    struct TriangleD3D{
+     */
+    struct TriangleD3D : public CommonD3D {
       RealPoint point1;
       RealPoint point2;
       RealPoint point3;
       double nx, ny, nz;
-      DGtal::Color color;
     };
 
 
@@ -183,7 +210,7 @@ namespace DGtal
     /// @see addBall
     ///
     //have to be public because of external functions
-    struct BallD3D
+    struct BallD3D : public CommonD3D
     {
       const double & operator[]( unsigned int i ) const
       {
@@ -196,7 +223,6 @@ namespace DGtal
         return center[i];
       };
       RealPoint center;
-      DGtal::Color color;
       bool isSigned;
       bool signPos;
       double size;
@@ -207,7 +233,7 @@ namespace DGtal
      * This structure is used to display polygonal faces in 3d.
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
-    struct PolygonD3D
+    struct PolygonD3D : public CommonD3D
     {
       std::vector<RealPoint> vertices;
       double nx, ny, nz;
@@ -216,6 +242,12 @@ namespace DGtal
 
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
+
+
+  public:
+    // The type that maps identifier name -> vector of QuadD3D.
+    typedef std::map<DGtal::int32_t, std::vector< QuadD3D > > QuadsMap;
+
 
   protected:
     /// an embeder from a dgtal space point to a real space point
@@ -361,7 +393,41 @@ namespace DGtal
     virtual void  setSKSpaceEmbedder(SCellEmbedder *anEmbedder);
 
 
+    /**
+     * Sets the "OpenGL name" for next graphical directives.
+     * @param name the "OpenGL name", an integer identifier or -1 for none.
+     */
+    void setName3d( DGtal::int32_t name = -1 );
 
+    /**
+     * @return the current "OpenGL name", an integer identifier or -1 if none was set.
+     */
+    DGtal::int32_t name3d() const;
+
+    /**
+     * Sets the callback function called when selecting a graphical
+     * object with "OpenGL name" between \a min_name and \a max_name.
+     * Note that ranges should not overlap. If several functions can
+     * be called, behavior is undefined afterwards.
+     *
+     * @param fct any function.
+     * @param data an arbitrary pointer that is given when calling the callback function.
+     * @param min_name the first "OpenGL name" for which \a fct should be called.
+     * @param max_name the last "OpenGL name" for which \a fct should be called.
+     */
+    void setSelectCallback3D( SelectCallbackFct fct, void* data,
+                              DGtal::int32_t min_name, DGtal::int32_t max_name );
+
+    /**
+     * @param[in]  the "OpenGL name" that was selected.
+     * @param[out] a pointer that was given setting the callback function.
+     * @return the select callback function that match the given \a
+     * name, or 0 if none is associated to this name.
+     */
+    SelectCallbackFct getSelectCallback3D( DGtal::int32_t name, void*& data ) const;
+
+    // ----------------------- Graphical directives ----------------------------------
+  public:
 
 
     /**
@@ -412,12 +478,12 @@ namespace DGtal
      **/
     void createNewCubeList(std::string s= "");
 
-    /**
-     * Used to create a new list containing new 3D objects
-     * (useful to use transparency between different objects).
-     * @param s name of the new list
-     **/
-    void createNewQuadList(std::string s= "");
+    // /**
+    //  * Used to create a new list containing new 3D objects
+    //  * (useful to use transparency between different objects).
+    //  * @param s name of the new list
+    //  **/
+    // void createNewQuadList(std::string s= "");
 
     /**
      * Used to create a new list containing new 3D objects
@@ -784,8 +850,14 @@ namespace DGtal
     ///
     std::vector< QuadD3D > myPrismList;
 
-    /// Represents all the planes drawn in the Display3D or to display Khalimsky Space Cell.
-    std::vector<std::vector< QuadD3D > > myQuadSetList;
+    // Represents all the planes drawn in the Display3D or to display Khalimsky Space Cell.
+    // std::vector<std::vector< QuadD3D > > myQuadSetList;
+
+    /// Represents all the planes drawn in the Display3D or to display
+    /// Khalimsky Space Cell.  The map int --> vector< QuadD3D>
+    /// associates to a vector of quads to an integer identifier
+    /// (OpenGL name)
+    QuadsMap myQuadsMap;
 
     /// Represents all the triangles drawn in the Display3D
     std::vector<std::vector< TriangleD3D > > myTriangleSetList;
@@ -814,7 +886,7 @@ namespace DGtal
 
     /// names of the lists in myQuadList
     ///
-    std::vector<std::string> myQuadSetNameList;
+    // std::vector<std::string> myQuadSetNameList;
 
     /// names of the lists in myTriangleList
     ///
@@ -824,8 +896,13 @@ namespace DGtal
     ///
     std::vector<std::string> myPolygonSetNameList;
 
+    /// the "OpenGL name", used for instance by QGLViewer for selecting objects.
+    ///
+    DGtal::int32_t myName3d;
 
-
+    /// Stores the callback functions called when selecting a graphical object.
+    ///
+    std::set<SelectCallbackFctStore> mySelectCallBackFcts;
 
     //----end of protected datas
 
