@@ -1048,7 +1048,7 @@ namespace DGtal
     /**
      * create the list of a vector of CubeD3D
      * @param listIt a vector of iterator on cubes.
-     * @param listIt another a vector of  of iterator on cubes.
+     * @param listEnd another a vector of  of iterator on cubes.
      * @param idList the Id of the list (should be givent by glGenLists).
      **/
     
