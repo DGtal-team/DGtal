@@ -1028,14 +1028,124 @@ namespace DGtal
     };
 
 
+    
+    /**
+     *
+     * Type associated to the special intern method GLCreateCubeSetList.
+     *
+     **/ 
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::CubeD3D> VectorCubes;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D> VectorQuad;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::LineD3D> VectorLine;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::BallD3D> VectorBall;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::TriangleD3D> VectorTriangle;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::PolygonD3D> VectorPolygon;
+    
+    
+    typedef typename VectorCubes::iterator ItCube;
+    
+
+    /**
+     * create the list of a vector of CubeD3D
+     * @param listIt a vector of iterator on cubes.
+     * @param listIt another a vector of  of iterator on cubes.
+     * @param idList the Id of the list (should be givent by glGenLists).
+     **/
+    
+    void GLCreateListCubeSet( std::vector<ItCube> & listIt,
+                              std::vector<ItCube> & listEnd,
+                              unsigned int idList);
+
+    /**
+     * 
+     *
+     **/
+    
+    void GLCreateListQuadD3D(const VectorQuad &aVectQuad, unsigned int idList);
+    
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListLineSet(const VectorLine &aVectLine, unsigned int idList);
+
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListBallSet(const VectorBall &aVectBall, unsigned int idList);
+
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListQuadMap(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
+    
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListQuadMapWired(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
+
+
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListTriangle(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
+
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListTriangleWired(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
+    
+
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListPolygon(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
+    
+
+
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListPolygonWired(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
 
     
-    unsigned int GLpushCubeSetLists(const std::vector<typename Viewer3D<Space, KSpace>::CubeD3D> &vectorCubes,
-                                    unsigned int numstartLa){
-      
-      return 0;
-    }
 
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLUpdateTextureImage(const std::vector<Viewer3D<Space, KSpace>::TextureImage>  &aVectImage);
+    
+    
+
+    
+
+    
 
   public:
     /**
