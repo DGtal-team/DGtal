@@ -613,7 +613,7 @@ namespace DGtal
      * @param aName3d an object storing the "OpenGL" name.
      */
     static void 
-    draw( Display & display, const DGtal::SetName3D& name3d );
+    draw( Display & display, const DGtal::SetName3D& aName3d );
 
     /**
      * Set the callback function when selecting an object (e.g. shift

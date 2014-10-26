@@ -419,12 +419,12 @@ namespace DGtal
                               DGtal::int32_t min_name, DGtal::int32_t max_name );
 
     /**
-     * @param[in]  the "OpenGL name" that was selected.
-     * @param[out] a pointer that was given setting the callback function.
+     * @param[in] aName  the "OpenGL name" that was selected.
+     * @param[out] data a pointer that was given setting the callback function.
      * @return the select callback function that match the given \a
-     * name, or 0 if none is associated to this name.
+     * aName, or 0 if none is associated to this name.
      */
-    SelectCallbackFct getSelectCallback3D( DGtal::int32_t name, void*& data ) const;
+    SelectCallbackFct getSelectCallback3D( DGtal::int32_t aName, void*& data ) const;
 
     // ----------------------- Graphical directives ----------------------------------
   public:
