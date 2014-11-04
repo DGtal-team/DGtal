@@ -60,7 +60,9 @@ namespace DGtal
    * The use-case of this class is when you want to estimate the same quantity
    * several times.
    *
-   * This class is also a model of CSurfelLocalEstimator
+   * This class is also a model of CSurfelLocalEstimator.
+   *
+   * @see testEstimatorCache.cpp
    *
    * @tparam TEstimator any model of CSurfelLocalEstimator
    * @tparam TContainer the associative container to use (default type: std::map<Surfel,Quantity>)
@@ -135,11 +137,11 @@ namespace DGtal
       
       return *this;
     }
-    
+
     // ----------------------- CSurfelLocalEstimator Interface --------------------------------------
     
     /**
-     * Estiamtor initialization. This method initializes the underlying
+     * Estimator initialization. This method initializes the underlying
      * estimator and caches all estimated quantity between @a itb and @a ite. 
      *
      * @tparam  SurfelConstIterator a const iterator on surfels.
@@ -154,8 +156,10 @@ namespace DGtal
       ASSERT(myEstimator);
       myEstimator->init(aH,itb,ite);
       myContainer.clear();
-      
-      ///FIXME use range eval instead of pointwise one
+
+      //We estimate and store the quantities
+      //(since SurfelConstIterator models are usually SinglePass, we
+      //cannot use the optimized "range" eval on the estimator)
       for(SurfelConstIterator it = itb; it != ite; ++it)
         myContainer.insert( std::pair<Surfel, Quantity>(*it, myEstimator->eval(it) ) );
       
