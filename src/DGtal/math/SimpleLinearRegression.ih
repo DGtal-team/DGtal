@@ -182,12 +182,8 @@ DGtal::SimpleLinearRegression::computeRegression()
       myD = 0.0;
       return false;
     }
-
   myB[ 1 ] = ( -mySumX * mySumY + myN * mySumXY ) / myD;
- 
-  //myB[ 0 ] = ( mySumX2 * mySumY - mySumX * mySumXY ) / myD;
   myB[ 0 ] = mySumY/(double)myN - myB[ 1 ]*mySumX/(double)myN;
-
   myU.clear();
   myNormU2 = 0.0;
   for ( unsigned int i = 0; i < myN; ++i )
