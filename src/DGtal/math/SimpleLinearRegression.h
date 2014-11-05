@@ -217,7 +217,6 @@ namespace DGtal
     ///Number of samples
     unsigned int myN;
 
-
     ///Ordinate values of sample points
     std::vector<double> myY;
     
