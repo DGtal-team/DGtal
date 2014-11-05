@@ -33,6 +33,7 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/math/SimpleLinearRegression.h"
+#include "DGtal/math/OrderedLinearRegression.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -174,6 +175,40 @@ bool testSimpleRegression3()
   return nbok == nb;
 }
 
+/**
+ *
+ */
+bool testSimpleRegressionOrdered()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Testing OrderedLinearRegression..." );
+
+  double x[] = {1, 2, 2.5, 3, 4 ,5 , 6};
+  double y[] = {1, 2, 2.5, 2.9, 4.1, 15, 58};
+
+  OrderedLinearRegression OLR;
+  OLR.addSamples( &x[0] , &x[7], &y[0]);
+
+  SimpleLinearRegression forward; 
+  SimpleLinearRegression backward;
+  OLR.forwardSLR(forward);
+  OLR.backwardSLR(backward);
+    
+  SimpleLinearRegression SLR;
+  SLR.addSamples( &x[0] , &x[7], &y[0]);
+  SLR.computeRegression();
+  trace.info() << "SLR slope = "<< SLR.slope()<<std::endl;
+  trace.info() << "Forward slope = "<< forward.slope()<<" " << forward.size()<<std::endl;
+  trace.info() << "Backward slope = "<< backward.slope()<<" "<< backward.size()<<std::endl;
+  
+  trace.endBlock();
+
+  return nbok == nb;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -187,7 +222,8 @@ int main( int argc, char** argv )
 
   bool res = testSimpleRegression()
     && testSimpleRegression2()
-    && testSimpleRegression3(); // && ... other tests
+    && testSimpleRegression3()
+    && testSimpleRegressionOrdered(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
