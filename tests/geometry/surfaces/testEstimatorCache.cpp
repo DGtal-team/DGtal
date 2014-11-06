@@ -146,7 +146,7 @@ bool testEstimatorCache(double h)
       if (  cache.eval(it) != curvatureEstimator.eval(it) )
         {
           ok=false;
-          trace.error() << "Incorrect values at "<<*it<<std::endl;
+          trace.error() << "Incorrect values at "<<*it<<" read " <<cache.eval(it)<< " and expecting "<<curvatureEstimator.eval(it)<<std::endl;
         }
     }
   trace.endBlock();
