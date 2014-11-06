@@ -26,7 +26,7 @@
  *
  * @date 2011/06/24
  *
- * Header file for module Statistics
+ * Header file for module OrderedLinearRegression
  *
  * This file is part of the DGtal library.
  */
@@ -59,10 +59,9 @@ namespace DGtal
    * @brief Description of class 'OrderedLinearRegression'
    *
    * Aim: Utility based on SimpleLinearRegression to compute
-   * regression on ordered data.  Hence, we can obtain linear fitting
+   * regression on ordered data. Hence, we can obtain linear fitting
    * with interval trust from the left to the right (resp. from the
    * right to the left) of the data.
-   *
    *
    * @note  backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    */
@@ -82,28 +81,34 @@ namespace DGtal
      * Constructor.
      * The object is empty (and invalid for regression).
      *
-     * @param eps_zero the value below which the absolute value of the
+     * @param[in] eps_zero the value below which the absolute value of the
      * determinant is considered null.
      */
     OrderedLinearRegression( double eps_zero = 1e-8 ):
-      myEpsilonZero(eps_zero)
+      myEpsilonZero(eps_zero),
+      myN(0)
     {}
 
     /**
      * Clear all datas.
      */
-    void clear();
+    void clear()
+    {
+      myX.clear();
+      myY.clear();
+      myN = 0;
+    }
 
     /**
-     * Adds the samples (y,x). Does not compute immediately the
-     * regression. See 'computeRegression' for computing the
+     * Adds the samples (x,y). Does not compute immediately the
+     * regression. See 'forwardSLR' or 'backwardSLR' for computing the
      * regression with the current samples.
      *
-     * @param begin_x an iterator on the first x-data
-     * @param end_x an iterator after the last x-data
-     * @param begin_y an iterator on the first y-data
+     * @param[in] begin_x an iterator on the first x-data
+     * @param[in] end_x an iterator after the last x-data
+     * @param[in] begin_y an iterator on the first y-data
      *
-     * @see computeRegression
+     * @see forwardSLR backwardSLR
      */
     template <class XIterator, class YIterator>
     void addSamples( XIterator begin_x, XIterator end_x, YIterator begin_y )
@@ -116,14 +121,14 @@ namespace DGtal
 
 
     /**
-     * Adds the sample (y,x). Does not compute immediately the
-     * regression. See 'computeRegression' for computing the
+     * Adds the sample (x,y). Does not compute immediately the
+     * regression. See 'forwardSLR' or 'backwardSLR' for computing the
      * regression with the current samples.
      *
-     * @param x the x data.
-     * @param y the y data.
+     * @param[in] x the x data.
+     * @param[in] y the y data.
      *
-     * @see computeRegression
+     * @see forwardSLR backwardSLR
      */
     void addSample( const double x, const double y )
     {
@@ -135,20 +140,21 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
     /**
-     * Return the slope of the first straight part of the data.  The
+     * Return the slope of the first straight part of the data. The
      * straightness is evaluated through a statistic test based on a
-     * simple linear regression model. It requires two parameters: @a n
-     * is the minimum number of samples to fit a linear model,
+     * simple linear regression (SLR) model. 
+     * It requires two parameters: 
+     * @a n is the minimum number of samples to fit a linear model,
      * 1-[ @a alpha] is the proportion of accepted linear model of the
      * test (99%, alpha=0.01, means that 99% of all linear model with
      * a Gaussian noise are accepted).
      *
-     * @param n the minimum number of samples greater than 3 (default
+     * @param[in] n the minimum number of samples greater than 3 (default
      * value is 4).  
-     * @param alpha is the proportion of rejected linear
+     * @param[in] alpha is the proportion of rejected linear
      * model (the ones with big variance, default value is 0.01).
      *
-     * @return the SLR instance of the first straight part of the data.
+     * @param[out] linearModel the SLR instance of the first straight part of the data.
      */
     void forwardSLR(SimpleLinearRegression &linearModel,
                     const unsigned int n = 4,
@@ -179,18 +185,19 @@ namespace DGtal
      /**
      * Return the slope of the last straight part of the data.  The
      * straightness is evaluated through a statistic test based on a
-     * simple linear regression model. It requires two parameters: @a n
-     * is the minimum number of samples to fit a linear model,
+     * simple linear regression (SLR) model. 
+     * It requires two parameters: 
+     * @a n is the minimum number of samples to fit a linear model,
      * 1-[ @a alpha] is the proportion of accepted linear model of the
      * test (99%, alpha=0.01, means that 99% of all linear model with
      * a Gaussian noise are accepted).
      *
-     * @param n the minimum number of samples greater than 3 (default
+     * @param[in] n the minimum number of samples greater than 3 (default
      * value is 4).  
-     * @param alpha is the proportion of rejected linear
+     * @param[in] alpha is the proportion of rejected linear
      * model (the ones with big variance, default value is 0.01).
      *
-     * @return the linearModel instance of the last straight part of the data.
+     * @param[out] linearModel the SLR instance of the last straight part of the data.
      */
     void backwardSLR(SimpleLinearRegression &linearModel,
                      const unsigned int n = 4,
