@@ -115,9 +115,11 @@ bool testLocalEstimatorFromFunctorAdapter(int argc, char **argv)
   FunctorVoting estimator(embedder,1);
 
   ConvFunctor convFunc(4.0);
-  Reporter reporter(surface, l2Metric, estimator , convFunc);
+  Reporter reporter;
+  reporter.attach(surface);
+  reporter.setParams(l2Metric, estimator , convFunc, 5.0);
 
-  reporter.init(1, 5);
+  reporter.init(1, surface.begin() , surface.end());
 
   std::vector<double> values;
   reporter.eval( surface.begin(), surface.end(), std::back_insert_iterator<std::vector<double> >(values));

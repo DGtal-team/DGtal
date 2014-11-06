@@ -8,6 +8,11 @@
  - New EstimatorCache class to cache quantities estimated by a
    surfel local estimator. (David Coeurjolly,
    [#927](https://github.com/DGtal-team/DGtal/pull/927))
+ - New digital surface local estimator that compute a sphere
+  fitting. It requires to have the Patate library installed (and
+  WITH_PATATE=true): http://patate.gforge.inria.fr/html/. See
+  SphereFittingEstimator (David Coeurjolly,
+  [929](https://github.com/DGtal-team/DGtal/pull/929))
 
 
 ## Bug Fixes
