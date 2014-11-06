@@ -132,17 +132,29 @@ bool testLocalEstimatorFromFunctorAdapter()
   FunctorNormalLeast estimatorL(embedder,1);
 
   ConvFunctor convFunc(1.0);
-  ReporterK reporterK(surface, l2Metric, estimatorK , convFunc);
-  Reporterk1k2 reporterk1k2(surface, l2Metric, estimatork1k2 , convFunc);
-  ReporterH reporterH(surface, l2Metric, estimatorH , convFunc);
-  ReporterNormal reporterN(surface, l2Metric, estimatorN , convFunc);
-  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , convFunc);
+  ReporterK reporterK;
+  Reporterk1k2 reporterk1k2;
+  ReporterH reporterH;
+  ReporterNormal reporterN;
+  ReporterNormalLeast reporterL;
 
-  reporterK.init(1, 5);
-  reporterk1k2.init(1, 5);
-  reporterH.init(1, 5);
-  reporterN.init(1, 5);
-  reporterL.init(1, 5);
+  reporterK.attach(surface);
+  reporterk1k2.attach(surface);
+  reporterH.attach(surface);
+  reporterN.attach(surface);
+  reporterL.attach(surface);
+
+  reporterK.init(1, surface.begin(), surface.end());
+  reporterk1k2.init(1, surface.begin(), surface.end());
+  reporterH.init(1, surface.begin(), surface.end());
+  reporterN.init(1, surface.begin(), surface.end());
+  reporterL.init(1, surface.begin(), surface.end());
+
+  reporterK.setParams(l2Metric, estimatorK, convFunc, 5.0);
+  reporterk1k2.setParams(l2Metric, estimatork1k2, convFunc, 5.0);
+  reporterH.setParams(l2Metric, estimatorH, convFunc, 5.0);
+  reporterN.setParams(l2Metric, estimatorN, convFunc, 5.0);
+  reporterL.setParams(l2Metric, estimatorL, convFunc, 5.0);
 
   FunctorGaussian::Quantity valK = reporterK.eval( surface.begin());
   FunctorPrincipalCurvatures::Quantity valk1k2 = reporterk1k2.eval( surface.begin());
