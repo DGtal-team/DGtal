@@ -186,22 +186,31 @@ bool testSimpleRegressionOrdered()
   trace.beginBlock ( "Testing OrderedLinearRegression..." );
 
   double x[] = {1, 2, 2.5, 3, 4 ,5 , 6};
-  double y[] = {1, 2, 2.5, 2.9, 4.1, 15, 58};
+  double y[] = {1, 2, 2.5, 2.9, 4.1, 15, 25.9};
 
   OrderedLinearRegression OLR;
   OLR.addSamples( &x[0] , &x[7], &y[0]);
+  
+  SimpleLinearRegression SLR;
+  SLR.addSamples( &x[0] , &x[7], &y[0]);
 
   SimpleLinearRegression forward; 
   SimpleLinearRegression backward;
-  OLR.forwardSLR(forward);
-  OLR.backwardSLR(backward);
+  
+  OLR.forwardSLR(forward, 4);
+  OLR.backwardSLR(backward, 3);
     
-  SimpleLinearRegression SLR;
-  SLR.addSamples( &x[0] , &x[7], &y[0]);
   SLR.computeRegression();
-  trace.info() << "SLR slope = "<< SLR.slope()<<std::endl;
-  trace.info() << "Forward slope = "<< forward.slope()<<" " << forward.size()<<std::endl;
-  trace.info() << "Backward slope = "<< backward.slope()<<" "<< backward.size()<<std::endl;
+
+  trace.info() << "SLR slope = " << SLR.slope() <<std::endl;
+  nbok += ( SLR.slope() < 5 ) ? 1 : 0;
+  nb++;
+  trace.info() << "Forward slope = " << forward.slope() << " " << forward.size() << std::endl;
+  nbok += (( forward.size() == 5 ) && ( forward.slope() < 1.05 ))  ? 1 : 0;
+  nb++;
+  trace.info() << "Backward slope = " << backward.slope() << " " << backward.size() << std::endl;
+  nbok += (( backward.slope() < 11 ) && ( backward.slope() > 10 ))  ? 1 : 0;
+  nb++;
   
   trace.endBlock();
 
