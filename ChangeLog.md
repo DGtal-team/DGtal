@@ -19,7 +19,7 @@
 
 - *Base*
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
- [#926](https://github.com/DGtal-team/DGtal/pull/926))
+ [#938](https://github.com/DGtal-team/DGtal/pull/938))
 
 
 
