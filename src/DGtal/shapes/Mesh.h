@@ -252,7 +252,6 @@ namespace DGtal
     }
     
     
-
     /**
      * @return an const_iterator pointing after the end of the last vertex of the mesh.
      *
