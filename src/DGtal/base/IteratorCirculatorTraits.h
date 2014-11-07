@@ -330,11 +330,6 @@ struct IteratorCirculatorTraits<T const*>
 
 } // namespace DGtal
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-//#include "DGtal/base/IteratorCirculatorTraits.ih"
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
