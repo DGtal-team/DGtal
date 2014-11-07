@@ -101,14 +101,14 @@ bool testMesh()
   trace.beginBlock ( "Testing Mesh iterator  ..." );
   unsigned int nb=0;
   // just testing nb iterations on const iterator
-  for( typename Mesh<Point>::VertexStorage::const_iterator it = aMesh.cVertexBegin(); 
+  for(  Mesh<Point>::VertexStorage::const_iterator it = aMesh.cVertexBegin(); 
        it !=aMesh.cVertexEnd(); 
        it++){
     nb++;    
   }
   okMeshIterators = nb == aMesh.nbVertex();
   // testing to change vertex  on  iterator
-  for( typename Mesh<Point>::VertexStorage::iterator it = aMesh.vertexBegin(); 
+  for(  Mesh<Point>::VertexStorage::iterator it = aMesh.vertexBegin(); 
        it !=aMesh.vertexEnd(); 
        it++){
     (*it)[0]+=10.0; (*it)[1]+=5.0;
