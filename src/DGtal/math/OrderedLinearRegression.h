@@ -47,11 +47,8 @@
 #include <vector>
 #include "DGtal/math/SimpleLinearRegression.h"
 //////////////////////////////////////////////////////////////////////////////
-
-
 namespace DGtal
 {
-
   /////////////////////////////////////////////////////////////////////////////
   // class OrderedLinearRegression
   /////////////////////////////////////////////////////////////////////////////
@@ -67,7 +64,6 @@ namespace DGtal
    */
   class OrderedLinearRegression
   {
-
     // ----------------------- Standard services ------------------------------
   public:
     
@@ -90,7 +86,7 @@ namespace DGtal
     {}
 
     /**
-     * Clear all datas.
+     * Clears the data.
      */
     void clear()
     {
@@ -101,8 +97,9 @@ namespace DGtal
 
     /**
      * Adds the samples (x,y). Does not compute immediately the
-     * regression. See 'forwardSLR' or 'backwardSLR' for computing the
-     * regression with the current samples.
+     * regression but copies the data. See 'forwardSLR' or
+     * 'backwardSLR' for computing the regression with the current
+     * samples.
      *
      * @param[in] begin_x an iterator on the first x-data
      * @param[in] end_x an iterator after the last x-data
@@ -122,8 +119,9 @@ namespace DGtal
 
     /**
      * Adds the sample (x,y). Does not compute immediately the
-     * regression. See 'forwardSLR' or 'backwardSLR' for computing the
-     * regression with the current samples.
+     * regression but copies the data. See 'forwardSLR' or
+     * 'backwardSLR' for computing the regression with the current
+     * samples.
      *
      * @param[in] x the x data.
      * @param[in] y the y data.
@@ -140,7 +138,7 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
     /**
-     * Return the slope of the first straight part of the data. The
+     * Returns the slope of the first straight part of the data. The
      * straightness is evaluated through a statistic test based on a
      * simple linear regression (SLR) model. 
      * It requires two parameters: 
@@ -183,7 +181,7 @@ namespace DGtal
 
     
      /**
-     * Return the slope of the last straight part of the data.  The
+     * Returns the slope of the last straight part of the data.  The
      * straightness is evaluated through a statistic test based on a
      * simple linear regression (SLR) model. 
      * It requires two parameters: 
@@ -300,11 +298,10 @@ namespace DGtal
 	      const OrderedLinearRegression & that_object_to_display );
 
 
-} // namespace ImaGene
+} // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
 #endif // !defined OrderedLinearRegression_h
 
 #undef OrderedLinearRegression_RECURSES
