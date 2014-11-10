@@ -114,7 +114,13 @@ bool testMesh()
     (*it)[0]+=10.0; (*it)[1]+=5.0;
   }
   okMeshIterators = okMeshIterators &&  (aMesh.getVertex(5))[0]==13;
-  ok = ok & okMeshConstruct &&  okMeshIterators;  
+
+  // testing changing color of individual face:
+  aMesh.setFaceColor(1, DGtal::Color::Red);
+  bool okMeshColor = (aMesh.getFaceColor(0)==DGtal::Color::White)
+                     && (aMesh.getFaceColor(1)==DGtal::Color::Red) ;
+  
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor;  
   trace.endBlock();
   return ok;
 
