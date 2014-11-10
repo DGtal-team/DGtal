@@ -223,7 +223,7 @@ namespace DGtal
      * @return the face of index i. 
      **/
     const MeshFace & getFace(unsigned int i) const;
-
+    
 
 
     /**
@@ -234,6 +234,20 @@ namespace DGtal
     const Color & getFaceColor(unsigned int i) const;
     
 
+    /**
+     *  Set the color of a particular face of the mesh. If the mesh
+     *  does not yet store the color of all individual faces
+     *  (isStoringFaceColors to false) it fills each face color with
+     *  the default color and the value of isStoringFaceColors is set
+     *  to true.
+     *
+     * @param[in] i the index of the face
+     * @param[in] aColor the color for the considered face.
+     *
+     **/
+
+    void setFaceColor(unsigned int i, const DGtal::Color &aColor) ; 
+    
 
     /**
      * @return true if the Mesh is storing a color for each faces. 
