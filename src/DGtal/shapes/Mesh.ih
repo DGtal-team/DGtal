@@ -234,7 +234,8 @@ DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const
 template<typename TPoint>
 inline
 void
-DGtal::Mesh<TPoint>::setFaceColor(unsigned int i, const DGtal::Color &aColor) 
+DGtal::Mesh<TPoint>::setFaceColor(const unsigned int index,
+                                  const DGtal::Color &aColor) 
 {
   if (!mySaveFaceColor){
     for(unsigned int i = 0; i<myFaceList.size(); i++){
@@ -242,7 +243,7 @@ DGtal::Mesh<TPoint>::setFaceColor(unsigned int i, const DGtal::Color &aColor)
     }
     mySaveFaceColor=true;
   }
-  myFaceColorList.at(i) = aColor;
+  myFaceColorList.at(index) = aColor;
 }
 
 
