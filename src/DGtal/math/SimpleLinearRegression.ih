@@ -214,7 +214,8 @@ DGtal::SimpleLinearRegression::computeRegression()
  */
 inline
 std::pair<double,double>
-DGtal::SimpleLinearRegression::trustIntervalForY( double x, double a ) const
+DGtal::SimpleLinearRegression::trustIntervalForY( const double x,
+                                                  const double a ) const
 {
   double t = ( mySumX2 - 2.0 * x * mySumX + myN * x * x ) / myD;
   double c = sqrt( estimateVariance() * ( 1 + t ) );

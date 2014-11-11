@@ -9,6 +9,13 @@
    surfel local estimator. (David Coeurjolly,
    [#927](https://github.com/DGtal-team/DGtal/pull/927))
 
+- *Math Package*
+ - Utilities added (OrderedLinearRegression) to perform sequential
+   linear model estimation of scalar data. (David Coeurjolly, Jérémy
+   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/927),
+   backport from imagene)
+    
+ 
 
 ## Bug Fixes
 
