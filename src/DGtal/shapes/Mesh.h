@@ -116,6 +116,17 @@ namespace DGtal
     typedef  std::vector<DGtal::Color> ColorStorage; 
      
 
+    /**
+     * Define the type of the const iterator on vertex.
+     **/
+    typedef typename VertexStorage::const_iterator ConstIterator;
+
+    /**
+     * Define the type of the iterator on vertex.
+     **/
+    typedef typename VertexStorage::iterator Iterator;
+
+    
 
 
     // ----------------------- Standard services ------------------------------
@@ -260,7 +271,7 @@ namespace DGtal
      * @return an const_iterator pointing to the first vertex of the mesh.  
      * 
      **/
-    typename VertexStorage::const_iterator 
+    ConstIterator 
     cVertexBegin() const {
       return myVertexList.begin();
     }
@@ -270,7 +281,7 @@ namespace DGtal
      * @return an const_iterator pointing after the end of the last vertex of the mesh.
      *
      **/
-    typename  VertexStorage::const_iterator 
+    ConstIterator 
     cVertexEnd() const {
       return myVertexList.end();
     }
@@ -280,7 +291,7 @@ namespace DGtal
      * @return an iterator pointing to the first vertex of the mesh.  
      * 
      **/
-    typename VertexStorage::iterator 
+    Iterator
     vertexBegin()  {
       return myVertexList.begin();
     }
@@ -291,7 +302,7 @@ namespace DGtal
      * @return an iterator pointing after the end of the last vertex of the mesh.
      *
      **/
-    typename  VertexStorage::iterator 
+    Iterator
     vertexEnd()  {
       return myVertexList.end();
     }
