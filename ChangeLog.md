@@ -17,6 +17,10 @@
     
  
 
+- *Shapes Package*
+ - Adds a vertex Iterator in the Mesh class in addition to the ConstIterator and adds a new method to change the color of a specific face. (Bertrand Kerautret, [#937](https://github.com/DGtal-team/DGtal/pull/937))
+
+
 ## Bug Fixes
 
 - *Configuration*
