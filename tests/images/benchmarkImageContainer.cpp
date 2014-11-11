@@ -68,12 +68,12 @@ BENCHMARK_TEMPLATE(BM_Constructor, ImageMap2)->Range(1<<3 , 1 << 16);
 BENCHMARK_TEMPLATE(BM_Constructor, ImageHash2)->Range(1<<3 , 1 << 16);
 
 template<typename Point>
-std::set<Point> ConstructRandomSet(int size, int maxWidth) {
+std::set<Point> ConstructRandomSet(unsigned int size, unsigned int maxWidth) {
   std::set<Point> s;
   Point p;
-  for (int i = 0; i < size; ++i)
+  for (unsigned int i = 0; i < size; ++i)
     {
-      for(int j=0; j < Point::dimension; j++)
+      for(unsigned int j=0; j < Point::dimension; j++)
         p[j] = rand() % maxWidth;
       s.insert( p );
     }
