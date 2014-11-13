@@ -57,7 +57,6 @@ bool testFP(string filename)
 {
 
   using namespace DGtal;
-  //using namespace LibBoard;
 
   trace.info() << endl;
   trace.info() << "Reading GridCurve from " << filename << endl;
@@ -102,18 +101,10 @@ bool compare(const Range1& pts, const Range2& groundTruth)
   DGtal::GridCurve<> curve;
   curve.initFromPointsRange(pts.begin(), pts.end()); 
 
-  std::cout << curve.size() << std::endl; 
-  std::copy(curve.getPointsRange().begin(), curve.getPointsRange().end(), std::ostream_iterator<DGtal::Z2i::Point>(std::cout, " ") ); 
-  std::cout << std::endl; 
-
   typedef DGtal::GridCurve<>::PointsRange::ConstCirculator   ConstCirculator;
   typedef DGtal::FP<ConstCirculator, DGtal::Z2i::Integer, 4>                FaithfulPolygon;
   FaithfulPolygon theFP( curve.getPointsRange().c(), curve.getPointsRange().c() );
 
-  std::cout << theFP.polygon().size() << std::endl; 
-  std::copy(theFP.polygon().begin(), theFP.polygon().end(), std::ostream_iterator<DGtal::Z2i::Point>(std::cout, " ") ); 
-  std::cout << std::endl; 
-  
   return ( (theFP.polygon().size() == groundTruth.size()) && 
 	   std::equal(theFP.polygon().begin(), theFP.polygon().end(), groundTruth.begin()) ); 
 }
@@ -125,6 +116,8 @@ bool stoppingCriterionTest()
 
   int nbok = 0; 
   int nb = 0; 
+
+  trace.beginBlock ( "Stopping criterion" );
 
   { //inflection part, one leaning point
     std::vector<Point> pts, pts2;
@@ -252,6 +245,7 @@ bool stoppingCriterionTest()
     
     trace.info() << nbok << " / " << nb << std::endl; 
   }
+  trace.endBlock();
 
   return (nb == nbok); 
 }
@@ -261,27 +255,26 @@ bool stoppingCriterionTest()
 
 int main( int argc, char** argv )
 {
-  DGtal::trace.beginBlock ( "Testing class FP" );
-  DGtal::trace.info() << "Args:";
+  using namespace DGtal;
+
+  trace.beginBlock ( "Testing class FP" );
+  trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
-    DGtal::trace.info() << " " << argv[ i ];
-  DGtal::trace.info() << std::endl;
+    trace.info() << " " << argv[ i ];
+  trace.info() << endl;
 
-  std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
-  std::string square = testPath + "samples/smallSquare.dat";
-  std::string dss = testPath + "samples/DSS.dat";
+  string sinus2D4 = testPath + "samples/sinus2D4.dat";
+  string square = testPath + "samples/smallSquare.dat";
+  string dss = testPath + "samples/DSS.dat";
 
-  bool res = 
-/*testFP(sinus2D4)
+  bool res = testFP(sinus2D4)
     && testFP(square)
     && testFP(dss)
-    //other tests
-    &&*/ 
-stoppingCriterionTest()
+    && stoppingCriterionTest()
     ;
 
-  DGtal::trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
-  DGtal::trace.endBlock();
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
   return res ? 0 : 1;
 }
 //                                                                           //
