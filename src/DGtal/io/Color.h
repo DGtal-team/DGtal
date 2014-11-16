@@ -44,6 +44,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include <boost/lexical_cast.hpp>
+#include <algorithm>  
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -78,7 +79,8 @@ namespace DGtal
      * @param aAlpha color transparency (default value =255);
      */
     
-    Color( const unsigned int aRgb, unsigned char aAlpha = 255 );
+    Color( const unsigned int aRgb,
+           unsigned char aAlpha = 255 );
 
   
   
@@ -93,7 +95,9 @@ namespace DGtal
      */
     
     
-    Color( unsigned char aRedValue, unsigned char  aGreenValue, unsigned char  aBlueValue,
+    Color( unsigned char aRedValue,
+           unsigned char  aGreenValue,
+           unsigned char  aBlueValue,
 	   unsigned char aAlphaValue = 255 )
       : myRed(aRedValue),myGreen(aGreenValue),myBlue(aBlueValue),myAlpha(aAlphaValue) { }
     
@@ -105,7 +109,8 @@ namespace DGtal
      * @param aAlphaValue color transparency (default value =255);.
      */
     
-    Color( unsigned char aGrayValue, unsigned char aAlphaValue = 255 )
+    Color( unsigned char aGrayValue,
+           unsigned char aAlphaValue = 255 )
       : myRed(aGrayValue),myGreen(aGrayValue), myBlue(aGrayValue), myAlpha(aAlphaValue) { }
 
 
@@ -201,6 +206,119 @@ namespace DGtal
 
     bool operator<( const Color & aColor ) const;
 
+    
+    /**
+     * Addition operator with assignement.
+     *
+     * @note Be careful, no overflow check is performed.
+     *
+     * @param v is the Color that gets added to @a *this.
+     * @return a reference on 'this'.
+     */
+    Color & operator+= ( const Color & v )
+    {
+      this->myRed = std::min((int)this->myRed + (int)v.myRed, 255);
+      this->myBlue =  std::min((int)this->myRed + (int)v.myBlue, 255);
+      this->myGreen =  std::min((int)this->myRed + (int)v.myGreen, 255);
+      this->myAlpha =  std::min((int)this->myAlpha + (int)v.myAlpha, 255);
+      return *this;
+    }
+
+    /**
+     * Addition operator.
+     *
+     * @note Be careful, no overflow check is performed.
+     *
+     *
+     * @param v is the Color that gets added to @a *this.
+     * @return a new Point that is the addition of 'this' to [v].
+     */
+    Color operator+ ( const Color & v ) const
+    {
+      Color c;
+      c.myRed = std::min((int)this->myRed + (int)v.myRed, 255);
+      c.myBlue =std::min((int)this->myBlue + (int)v.myBlue, 255);
+      c.myGreen = std::min((int)this->myGreen + (int)v.myGreen, 255);
+      c.myAlpha = std::min((int)this->myAlpha + (int)v.myAlpha, 255);
+      return c;
+    }
+
+    /**
+     * Substraction operator with assignement.
+     *
+     * @note Be careful, no overflow check is performed.
+     *
+     *
+     * @param v is the Point that gets substracted to  *this.
+     * @return a reference on 'this'.
+     */
+    Color & operator-= ( const Color & v )
+    {
+      this->myRed -= v.myRed;
+      this->myBlue -= v.myBlue;
+      this->myGreen -= v.myGreen;
+      this->myAlpha -= v.myAlpha;
+      return *this;
+    }
+
+    /**
+     * Substraction operator.
+     *
+     * @note Be careful, no overflow check is performed.
+     *
+     * @param v is the Color that gets substacted to @a *this.
+     * @return a new Point that is the subtraction 'this'-[v].
+     */
+    Color operator- ( const Color & v ) const
+    {
+      Color c;
+      c.myRed =this->myRed + v.myRed;
+      c.myBlue =this->myBlue + v.myBlue;
+      c.myGreen = this->myGreen + v.myGreen;
+      c.myAlpha = this->myAlpha + v.myAlpha;
+      return c;
+    }
+
+    /** 
+     * Multiplication by a scalar (component-wise)
+     *
+     * @note Be careful, no overflow check is performed.
+     *
+     * 
+     * @param coeff the scalar
+     * 
+     * @return the scaled color
+     */
+    Color &operator *= ( const double coeff)
+    {
+      this->myRed = static_cast<unsigned char>(this->myRed*coeff);
+      this->myBlue = static_cast<unsigned char>(this->myBlue*coeff);
+      this->myGreen = static_cast<unsigned char>(this->myGreen*coeff);
+      this->myAlpha =  static_cast<unsigned char>(this->myAlpha*coeff);
+      return *this;
+    }
+
+    /** 
+     * Multiplication by a scalar (component-wise)
+     *
+     * @note Be careful, no overflow check is performed.
+     *
+     * @param coeff the scalar.
+     * 
+     * @return a scaled color
+     */
+    Color operator * ( const double coeff) const
+    {
+      Color c;
+      c.myRed = static_cast<unsigned char>(this->myRed*coeff);
+      c.myBlue = static_cast<unsigned char>(this->myBlue*coeff);
+      c.myGreen = static_cast<unsigned char>(this->myGreen*coeff);
+      c.myAlpha =  static_cast<unsigned char>(this->myAlpha*coeff);
+      return c;
+    }
+   
+    
+    
     void flushPostscript( std::ostream & ) const;
 
     std::string svg() const;
