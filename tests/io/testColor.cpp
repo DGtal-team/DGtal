@@ -74,12 +74,32 @@ bool testColor()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "coeff" << std::endl;
-  /*  trace.info() << " 2*g = gg "<< 2.0*g<< " expected ="<<gg<<std::endl;
+
+  trace.info() << " 1.*red = red "<< 1.0*Color::Red<< " expected ="<<Color::Red<<std::endl;
+  nbok += ((1.0*Color::Red)==Color::Red) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "coeff" << std::endl;
+
+  trace.info() << " 2*g = gg "<< 2.0*g<< " expected ="<<gg<<std::endl;
   nbok += ((2*g)==gg) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "coeff" << std::endl;
-  */
+
+
+
+  Color val;
+  val.setRGBi(0,0,0,255);
+  val += 1.0*Color::Red;
+  trace.info() << " val == Color::Red "<< val<<std::endl;
+  nbok += (val==Color::Red) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "red" << std::endl;
+
+  
+
   trace.endBlock();
   
   return nbok == nb;

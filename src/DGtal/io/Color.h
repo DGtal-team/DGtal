@@ -225,8 +225,8 @@ namespace DGtal
     Color & operator+= ( const Color & v )
     {
       this->myRed = clamp((int)this->myRed + (int)v.myRed);
-      this->myBlue =  clamp((int)this->myRed + (int)v.myBlue);
-      this->myGreen =  clamp((int)this->myRed + (int)v.myGreen);
+      this->myBlue =  clamp((int)this->myBlue + (int)v.myBlue);
+      this->myGreen =  clamp((int)this->myGreen + (int)v.myGreen);
       this->myAlpha =  clamp((int)this->myAlpha + (int)v.myAlpha);
       return *this;
     }
