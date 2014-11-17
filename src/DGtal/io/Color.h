@@ -298,10 +298,10 @@ namespace DGtal
      */
     Color &operator *= ( const double coeff)
     {
-      this->myRed = clamp(this->myRed*coeff);
-      this->myBlue = clamp(this->myBlue*coeff);
-      this->myGreen = clamp(this->myGreen*coeff);
-      this->myAlpha =  clamp(this->myAlpha*coeff);
+      this->myRed = clamp((double)this->myRed*coeff);
+      this->myBlue = clamp((double)this->myBlue*coeff);
+      this->myGreen = clamp((double)this->myGreen*coeff);
+      this->myAlpha =  clamp((double)this->myAlpha*coeff);
       return *this;
     }
 
@@ -316,10 +316,10 @@ namespace DGtal
     Color operator * ( const double coeff) const
     {
       Color c;
-      c.myRed = clamp(this->myRed*coeff);
-      c.myBlue = clamp(this->myBlue*coeff);
-      c.myGreen = clamp(this->myGreen*coeff);
-      c.myAlpha =  clamp(this->myAlpha*coeff);
+      c.myRed = clamp((double)this->myRed*coeff);
+      c.myBlue = clamp((double)this->myBlue*coeff);
+      c.myGreen = clamp((double)this->myGreen*coeff);
+      c.myAlpha =  clamp((double)this->myAlpha*coeff);
       return c;
     }
    
