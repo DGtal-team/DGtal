@@ -254,10 +254,10 @@ namespace DGtal
      */
     Color & operator-= ( const Color & v )
     {
-      this->myRed -= v.myRed;
-      this->myBlue -= v.myBlue;
-      this->myGreen -= v.myGreen;
-      this->myAlpha -= v.myAlpha;
+      this->myRed = std::max((int)this->myRed - (int)v.myRed,0);
+      this->myBlue = std::max((int)this->myBlue - (int)v.myBlue,0);
+      this->myGreen = std::max((int)this->myGreen - (int)v.myGreen,0);
+      this->myAlpha = std::max((int)this->myAlpha - (int)v.myAlpha,0);
       return *this;
     }
 
@@ -272,10 +272,10 @@ namespace DGtal
     Color operator- ( const Color & v ) const
     {
       Color c;
-      c.myRed =this->myRed + v.myRed;
-      c.myBlue =this->myBlue + v.myBlue;
-      c.myGreen = this->myGreen + v.myGreen;
-      c.myAlpha = this->myAlpha + v.myAlpha;
+      c.myRed = std::max((int)this->myRed - (int)v.myRed,0);
+      c.myBlue = std::max((int)this->myBlue - (int)v.myBlue,0);
+      c.myGreen = std::max((int)this->myGreen - (int)v.myGreen,0);
+      c.myAlpha = std::max((int)this->myAlpha - (int)v.myAlpha,0);
       return c;
     }
 
