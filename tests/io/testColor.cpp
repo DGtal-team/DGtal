@@ -69,12 +69,17 @@ bool testColor()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "max " << std::endl;
 
-  trace.info() << " 2*g = gg "<< g*2<< " expected ="<<gg<<std::endl;
+  trace.info() << " g*2 = gg "<< g*2<< " expected ="<<gg<<std::endl;
   nbok += ((g*2)==gg) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "coeff" << std::endl;
-
+  /*  trace.info() << " 2*g = gg "<< 2.0*g<< " expected ="<<gg<<std::endl;
+  nbok += ((2*g)==gg) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "coeff" << std::endl;
+  */
   trace.endBlock();
   
   return nbok == nb;

@@ -45,7 +45,6 @@
 #include "DGtal/base/Common.h"
 #include <boost/lexical_cast.hpp>
 #include <algorithm>  
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,7 +55,7 @@ namespace DGtal
   /**
    * Description of class 'Color' <p>
    * 
-   * @brief Structure representing an RGB triple.
+   * @brief Structure representing an RGB triple with alpha component.
 
    */
   class Color
@@ -82,8 +81,16 @@ namespace DGtal
     Color( const unsigned int aRgb,
            unsigned char aAlpha = 255 );
 
-  
-  
+    /*
+     * Copy Constructor.
+     *
+     * @param aColor the color to copy.
+     */
+    
+    Color( const Color &aColor ):
+      myRed(aColor.myRed),myGreen(aColor.myGreen),
+      myBlue(aColor.myBlue), myAlpha(aColor.myAlpha)
+    {}
 
     /**
      * Constructor from R, G, B and Alpha parameter.
@@ -210,24 +217,24 @@ namespace DGtal
     /**
      * Addition operator with assignement.
      *
-     * @note Be careful, no overflow check is performed.
+     * @note returned components are clamped to [0,255] interval. 
      *
      * @param v is the Color that gets added to @a *this.
      * @return a reference on 'this'.
      */
     Color & operator+= ( const Color & v )
     {
-      this->myRed = std::min((int)this->myRed + (int)v.myRed, 255);
-      this->myBlue =  std::min((int)this->myRed + (int)v.myBlue, 255);
-      this->myGreen =  std::min((int)this->myRed + (int)v.myGreen, 255);
-      this->myAlpha =  std::min((int)this->myAlpha + (int)v.myAlpha, 255);
+      this->myRed = clamp((int)this->myRed + (int)v.myRed);
+      this->myBlue =  clamp((int)this->myRed + (int)v.myBlue);
+      this->myGreen =  clamp((int)this->myRed + (int)v.myGreen);
+      this->myAlpha =  clamp((int)this->myAlpha + (int)v.myAlpha);
       return *this;
     }
 
     /**
      * Addition operator.
      *
-     * @note Be careful, no overflow check is performed.
+     * @note returned components are clamped to [0,255] interval. 
      *
      *
      * @param v is the Color that gets added to @a *this.
@@ -236,17 +243,17 @@ namespace DGtal
     Color operator+ ( const Color & v ) const
     {
       Color c;
-      c.myRed = std::min((int)this->myRed + (int)v.myRed, 255);
-      c.myBlue =std::min((int)this->myBlue + (int)v.myBlue, 255);
-      c.myGreen = std::min((int)this->myGreen + (int)v.myGreen, 255);
-      c.myAlpha = std::min((int)this->myAlpha + (int)v.myAlpha, 255);
+      c.myRed = clamp((int)this->myRed + (int)v.myRed);
+      c.myBlue =clamp((int)this->myBlue + (int)v.myBlue);
+      c.myGreen = clamp((int)this->myGreen + (int)v.myGreen);
+      c.myAlpha = clamp((int)this->myAlpha + (int)v.myAlpha);
       return c;
     }
 
     /**
      * Substraction operator with assignement.
      *
-     * @note Be careful, no overflow check is performed.
+     * @note returned components are clamped to [0,255] interval. 
      *
      *
      * @param v is the Point that gets substracted to  *this.
@@ -254,17 +261,17 @@ namespace DGtal
      */
     Color & operator-= ( const Color & v )
     {
-      this->myRed = std::max((int)this->myRed - (int)v.myRed,0);
-      this->myBlue = std::max((int)this->myBlue - (int)v.myBlue,0);
-      this->myGreen = std::max((int)this->myGreen - (int)v.myGreen,0);
-      this->myAlpha = std::max((int)this->myAlpha - (int)v.myAlpha,0);
+      this->myRed = clamp((int)this->myRed - (int)v.myRed);
+      this->myBlue = clamp((int)this->myBlue - (int)v.myBlue);
+      this->myGreen = clamp((int)this->myGreen - (int)v.myGreen);
+      this->myAlpha = clamp((int)this->myAlpha - (int)v.myAlpha);
       return *this;
     }
 
     /**
      * Substraction operator.
      *
-     * @note Be careful, no overflow check is performed.
+     * @note returned components are clamped to [0,255] interval. 
      *
      * @param v is the Color that gets substacted to @a *this.
      * @return a new Point that is the subtraction 'this'-[v].
@@ -272,17 +279,17 @@ namespace DGtal
     Color operator- ( const Color & v ) const
     {
       Color c;
-      c.myRed = std::max((int)this->myRed - (int)v.myRed,0);
-      c.myBlue = std::max((int)this->myBlue - (int)v.myBlue,0);
-      c.myGreen = std::max((int)this->myGreen - (int)v.myGreen,0);
-      c.myAlpha = std::max((int)this->myAlpha - (int)v.myAlpha,0);
+      c.myRed = clamp((int)this->myRed - (int)v.myRed);
+      c.myBlue = clamp((int)this->myBlue - (int)v.myBlue);
+      c.myGreen = clamp((int)this->myGreen - (int)v.myGreen);
+      c.myAlpha = clamp((int)this->myAlpha - (int)v.myAlpha);
       return c;
     }
 
     /** 
      * Multiplication by a scalar (component-wise)
      *
-     * @note Be careful, no overflow check is performed.
+     * @note returned components are clamped to [0,255] interval. 
      *
      * 
      * @param coeff the scalar
@@ -291,33 +298,47 @@ namespace DGtal
      */
     Color &operator *= ( const double coeff)
     {
-      this->myRed = static_cast<unsigned char>(this->myRed*coeff);
-      this->myBlue = static_cast<unsigned char>(this->myBlue*coeff);
-      this->myGreen = static_cast<unsigned char>(this->myGreen*coeff);
-      this->myAlpha =  static_cast<unsigned char>(this->myAlpha*coeff);
+      this->myRed = clamp(this->myRed*coeff);
+      this->myBlue = clamp(this->myBlue*coeff);
+      this->myGreen = clamp(this->myGreen*coeff);
+      this->myAlpha =  clamp(this->myAlpha*coeff);
       return *this;
     }
 
     /** 
      * Multiplication by a scalar (component-wise)
      *
-     * @note Be careful, no overflow check is performed.
+     * @note returned components are clamped to [0,255] interval. 
      *
      * @param coeff the scalar.
-     * 
      * @return a scaled color
      */
     Color operator * ( const double coeff) const
     {
       Color c;
-      c.myRed = static_cast<unsigned char>(this->myRed*coeff);
-      c.myBlue = static_cast<unsigned char>(this->myBlue*coeff);
-      c.myGreen = static_cast<unsigned char>(this->myGreen*coeff);
-      c.myAlpha =  static_cast<unsigned char>(this->myAlpha*coeff);
+      c.myRed = clamp(this->myRed*coeff);
+      c.myBlue = clamp(this->myBlue*coeff);
+      c.myGreen = clamp(this->myGreen*coeff);
+      c.myAlpha =  clamp(this->myAlpha*coeff);
       return c;
     }
    
+    /**
+     * Assignement Operator
+     *
+     * @param pv the object to copy.
+     * @return a reference on 'this'.
+     */
+    Color & operator= ( const Color & pv )
+    {
+      this->myRed = pv.myRed;
+      this->myGreen = pv.myGreen;
+      this->myBlue = pv.myBlue;
+      this->myAlpha = pv.myAlpha;
+      return *this;
+    }
     
+
     
     void flushPostscript( std::ostream & ) const;
 
@@ -361,24 +382,6 @@ namespace DGtal
     static const Color Navy;
     static const Color Aqua;
 
-
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    //Color ( const Color & aColor );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    //   Color & operator= ( const Color & aColor );
-
-
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
@@ -393,7 +396,17 @@ namespace DGtal
 
   private:
 
- 
+    /** 
+     * Clamp an int to [0,255]
+     * 
+     * @param [in] value the value to clamp
+     * 
+     * @return the clamped value
+     */
+    unsigned char clamp(const double value)  const
+    {
+      return static_cast<unsigned char>(std::max( std::min(value, 255.0), 0.0));
+    }
 
 
 
@@ -402,10 +415,23 @@ namespace DGtal
 
   }; // end of class Color
 
-  
 
-  
-  
+
+  /**
+     External multiplication operator with a scalar number
+
+     @param coeff is the factor \a Color is multiplied by.
+     @param aColor is the vector that is multiplied by the factor \a coef.
+
+     @return a new Vector that is the multiplication of \a aVector by
+     \a coeff.
+  */
+  Color
+  operator*( const double coeff,
+	     const Color &aColor );
+ 
+ 
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'Color'.
    * @param out the output stream where the object is written.
