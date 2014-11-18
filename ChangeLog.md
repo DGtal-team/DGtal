@@ -25,8 +25,13 @@
 
 - *Configuration*
  - Fix issue #925, detection of Eigen3 (3.1 minimum) and also issue
-   #924, DGtal configuration file when using Eigen3.
-   (Jacques-Olivier Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
+ #924, DGtal configuration file when using Eigen3.  (Jacques-Olivier
+ Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
+
+- *Base*
+ - Iterator category fix for boost > 1.57 (David Coeurjolly,
+ [#938](https://github.com/DGtal-team/DGtal/pull/938))
+
 
 
 # DGtal 0.8
