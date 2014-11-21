@@ -32,7 +32,9 @@
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
 
-
+- *Geometry*
+ - Fixing DSS based length estimator on open curves. (David
+   Coeurjolly, [#941](https://github.com/DGtal-team/DGtal/pull/941))
 
 # DGtal 0.8
 
