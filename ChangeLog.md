@@ -28,6 +28,11 @@
    #924, DGtal configuration file when using Eigen3.
    (Jacques-Olivier Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
 
+- *Geometry Package*
+ - Fix bug occuring in the computation of the Faithful Polygon (class FP)
+   in the closed case, ie. with circulators.
+   (Tristan Roussillon, [#939](https://github.com/DGtal-team/DGtal/pull/939))
+
 
 # DGtal 0.8
 
