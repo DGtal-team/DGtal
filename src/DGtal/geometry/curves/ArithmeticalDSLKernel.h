@@ -105,7 +105,12 @@ namespace DGtal
      * Type of the step vectors, defined as a STL pair of Vector
      */
     typedef std::pair<Vector, Vector> Steps;
+    /**
+     * Type of the octant values, defined as a STL pair of unsigned int
+     */
+    typedef std::pair<int, int> Octant;
 
+    
     // ----------------------- static members ---------------------------------
   public:
     /**
@@ -179,6 +184,10 @@ namespace DGtal
      */
     template<typename TInteger>
     static TInteger norm(const TInteger& a, const TInteger& b);
+
+
+    template<typename TInteger>
+    static Octant octant(const TInteger& a, const TInteger& b);
   };
 
   /////////////////////////////////////////////////////////////////////////////
