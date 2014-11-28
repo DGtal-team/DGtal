@@ -150,13 +150,15 @@ bool
 DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
 ::sameOctant( const ArithmeticalDSL & aOther ) const  
 {
-  ArithmeticalDSLKernel<TCoordinate, adjacency>::Octant octant, octantOther;
-
+  typename ArithmeticalDSLKernel<TCoordinate, adjacency>::Octant octant, octantOther;
+  
   octant = ArithmeticalDSLKernel<TCoordinate, adjacency>::octant(myA,myB);
   octantOther = ArithmeticalDSLKernel<TCoordinate, adjacency>::octant(aOther.myA,aOther.myB);
-
   
-
+  if(octant.first==octantOther.first || octant.first==octantOther.second || octant.second==octantOther.first || octant.second == octantOther.second)
+    return true;
+  else
+    return false;
 }  
   
 

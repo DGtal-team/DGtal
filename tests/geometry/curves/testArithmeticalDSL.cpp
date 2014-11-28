@@ -316,6 +316,25 @@ bool rangeTest(const DSL& dsl)
 }
 
 
+
+template <typename DSL>
+bool sameOctantTest(const DSL& dsl1, const DSL& dsl2)
+{
+  typedef typename DSL::Point Point; 
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Test same octant" );
+  trace.info() << dsl1  << " " << dsl2 << std::endl; 
+  
+  return dsl1.sameOctant(dsl2);
+
+  trace.endBlock();
+
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
@@ -375,6 +394,21 @@ int main( int argc, char** argv )
       && rangeTest( DSL(0, 1, -17) )
       && rangeTest( DSL(-1, 0, -17) )
       ;
+  }
+
+
+  { // same octant test
+    typedef DGtal::ArithmeticalDSL<DGtal::int32_t> DSL; 
+    res = res 
+      && sameOctantTest(DSL(5,8,16),DSL(1,2,3))==true 
+      && sameOctantTest(DSL(5,8,16),DSL(2,1,3))==false
+      && sameOctantTest(DSL(2,2,16),DSL(6,3,3))==true
+      && sameOctantTest(DSL(2,2,16),DSL(3,3,3))==true
+      && sameOctantTest(DSL(5,-8,16),DSL(0,-2,3))==true 
+      && sameOctantTest(DSL(5,8,16),DSL(-2,1,3))==false
+      ;
+    
+
   }
 
 #ifdef WITH_BIGINTEGER
