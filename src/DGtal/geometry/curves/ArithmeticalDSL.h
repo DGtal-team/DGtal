@@ -367,6 +367,16 @@ namespace DGtal
      */
     bool operator!= ( const ArithmeticalDSL & aOther ) const;
 
+  /**
+   * Test if DSLs lie in the same octant.
+   * @param aOther the object to compare with.
+   * @return 'true' the two DSLs lie in the same octant, 'false' otherwise
+   * @see sameOctant
+   */
+  bool sameOctant ( const ArithmeticalDSL & aOther ) const;
+
+
+
     /**
      * Destructor.
      */

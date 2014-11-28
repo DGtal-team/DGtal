@@ -504,6 +504,9 @@ namespace DGtal
      * @param aPoint any point
      * @see isInDSS
      */
+
+    ArithmeticalDSS Union(const ArithmeticalDSS & aOther);
+    
     bool operator()(const Point& aPoint) const; 
 
 

@@ -116,7 +116,7 @@ bool specialCases(const Integer& a, const Integer& b)
     {
       if ( (steps.first == Vector(0,0)) 
 	   && (steps.second == Vector(0,0)) 
-	   && (shift == Vector(0,0)) )
+	   && (shift == Vector(0,0)))
 	nbok++; 
       nb++; 
     }
@@ -126,7 +126,7 @@ bool specialCases(const Integer& a, const Integer& b)
 	{
 	  if ( (steps.first != Vector(0,0)) 
 	       && (steps.second == Vector(0,0)) 
-	       && (shift != Vector(0,0)) )
+	       && (shift != Vector(0,0)))
 	    nbok++; 
 	  nb++; 
 	}
@@ -158,6 +158,41 @@ bool specialCases(const Integer& a, const Integer& b)
   return nbok == nb;
 
 }
+
+
+/**
+ * Test for the special cases  
+ * 
+ * @param a a-parameter
+ * @param b b-parameter
+ *
+ * @tparam Coordinate model of integer for the vector components
+ * @tparam Integer model of integer for the a- and b-parameter
+ * @tparam adj integer equal to 4 or 8 for the adjacency type
+ */
+template <typename Coordinate, typename Integer, unsigned short adj>
+bool testOctant(const Integer& a, const Integer& b)
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "testing octant..." );
+  
+  trace.info() << " a " << a << " b " << b << std::endl;
+
+  typename ArithmeticalDSLKernel<Coordinate, adj>::Octant octant = 
+    ArithmeticalDSLKernel<Coordinate, adj>::octant(a, b); 
+
+  trace.info() << " octant1: " << octant.first << std::endl;
+  trace.info() << " octant2: " << octant.second << std::endl;
+  
+  
+  trace.endBlock();
+
+  return nb==nbok;
+
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -220,6 +255,21 @@ int main( int argc, char** argv )
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(-1,1)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(-1,-1)
     ; 
+
+
+  // ---------------- octant tests -------------------------
+  res = res 
+    && testOctant<DGtal::int32_t, DGtal::int32_t, 8>(0,0)
+    && testOctant<DGtal::int32_t, DGtal::int32_t, 8>(0,5)
+    && testOctant<DGtal::int32_t, DGtal::int32_t, 8>(0,-5)
+    && testOctant<DGtal::int32_t, DGtal::int32_t, 8>(5,0)
+    && testOctant<DGtal::int32_t, DGtal::int32_t, 8>(-5,0)
+    && testOctant<DGtal::int32_t, DGtal::int32_t, 8>(1,1)
+    && testOctant<DGtal::int32_t, DGtal::int32_t, 8>(1,-1)
+    && testOctant<DGtal::int32_t, DGtal::int32_t, 8>(-1,1)
+    && testOctant<DGtal::int32_t, DGtal::int32_t, 8>(-1,-1)
+    ; 
+
 
 #ifdef WITH_BIGINTEGER
   res = res 

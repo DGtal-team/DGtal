@@ -144,6 +144,23 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
   return !( operator==(aOther) ); 
 }
 
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+bool
+DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
+::sameOctant( const ArithmeticalDSL & aOther ) const  
+{
+  ArithmeticalDSLKernel<TCoordinate, adjacency>::Octant octant, octantOther;
+
+  octant = ArithmeticalDSLKernel<TCoordinate, adjacency>::octant(myA,myB);
+  octantOther = ArithmeticalDSLKernel<TCoordinate, adjacency>::octant(aOther.myA,aOther.myB);
+
+  
+
+}  
+  
+
+
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline

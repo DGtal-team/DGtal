@@ -1,4 +1,4 @@
-/**
+l/**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
  *  published by the Free Software Foundation, either version 3 of the
@@ -455,6 +455,23 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isInDSS(const Point& a
   else 
     return false; 
 }
+
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::Union(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther) const
+{
+  // Test whether the two DSSs belong to the same octant
+
+  // Test connectivity
+  
+  
+  return ArithmeticalDSS(Point(0,0));
+}
+
 
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
