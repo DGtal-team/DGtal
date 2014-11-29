@@ -37,7 +37,8 @@
  - Fix bug occuring in the computation of the Faithful Polygon (class FP)
    in the closed case, ie. with circulators.
    (Tristan Roussillon, [#939](https://github.com/DGtal-team/DGtal/pull/939))
-
+ - Fixing DSS based length estimator on open curves. (David
+   Coeurjolly, [#941](https://github.com/DGtal-team/DGtal/pull/941))
 
 # DGtal 0.8
 

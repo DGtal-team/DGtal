@@ -105,7 +105,8 @@ inline
 typename DGtal::DSSLengthEstimator<T>::Point
 DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& ite, IteratorType)
 {
-  return *--ite; 
+  ConstIterator itcopy = ite;
+  return *--itcopy;
 }
 
 template <typename T>
