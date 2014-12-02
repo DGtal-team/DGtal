@@ -350,7 +350,7 @@ namespace DGtal
     typedef typename Image::Point Point;
     typedef TValue Value;
     
-    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
     BOOST_CONCEPT_ASSERT(( CQuantity<Value> ));
     

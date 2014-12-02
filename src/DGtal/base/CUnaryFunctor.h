@@ -46,7 +46,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CUnaryFunctor
   /**
@@ -132,7 +133,7 @@ Description of \b concept '\b CUnaryFunctor' <p>
     }
 
   }; // end of concept CUnaryFunctor
-
+  }
 } // namespace DGtal
 
 //                                                                           //

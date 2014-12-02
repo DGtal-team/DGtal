@@ -100,7 +100,7 @@ namespace DGtal
 
   public:
 
-    BOOST_CONCEPT_ASSERT(( CConstImage< TWeightImage > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CConstImage< TWeightImage > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPowerSeparableMetric<TPowerSeparableMetric> ));
     
     ///Copy of the distance image types

@@ -6,6 +6,9 @@ compiler:
 
 cache: apt
 
+notifications:
+  slack: dgtal:FObxCZFoeQkkaRuktJD5uhnN
+
 env:
   - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"
   - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"

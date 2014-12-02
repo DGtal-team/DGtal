@@ -97,8 +97,8 @@ namespace DGtal
 	typedef TFunctor Functor;
 	typedef int32_t PixelType;
 
-	BOOST_CONCEPT_ASSERT((  CImage<ImageContainer> )) ;
-	BOOST_CONCEPT_ASSERT((  CUnaryFunctor<Functor, PixelType, Value > )) ;
+	BOOST_CONCEPT_ASSERT((  concepts::CImage<ImageContainer> )) ;
+	BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<Functor, PixelType, Value > )) ;
 	BOOST_STATIC_ASSERT(( TImageContainer::Domain::dimension == 3 ));
 
 	/**

@@ -179,7 +179,7 @@ DGtal::Viewer3D< Space ,KSpace >::updateTextureImage(unsigned int imageIndex, co
                                                      double xTranslation, double yTranslation, double zTranslation,
 						     double rotationAngle, ImageDirection rotationDir)
 {
-  BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
   typename Viewer3D< Space ,KSpace >::TextureImage &anImage = myGSImageList.at(imageIndex);
   Display3D< Space, KSpace>::updateBoundingBox(DGtal::Z3i::RealPoint(anImage.point1[0]+xTranslation, anImage.point1[1]+yTranslation, anImage.point1[2]+zTranslation));
