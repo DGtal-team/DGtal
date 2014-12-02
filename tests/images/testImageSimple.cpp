@@ -55,7 +55,7 @@ bool testSelfCheckConcept()
 
   trace.beginBlock ( "Testing Boost concept ..." );
   typedef Image<ImageContainerBySTLVector<Z2i::Domain, int> > MyImage;
-  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImage > ));
 
   nbok += true ? 1 : 0;
 
@@ -77,7 +77,7 @@ bool testCreate()
   trace.beginBlock ( "Testing Image Create ..." );
   typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
   typedef Image<VImage > MyImage;
-  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImage > ));
 
   Z2i::Point a(0,0);
   Z2i::Point b(128,128);
@@ -93,7 +93,7 @@ bool testCreate()
   typedef HyperRectDomain<SpaceND <6> > Domain6;
   typedef ImageContainerBySTLVector<Domain6, int> VImage6;
   typedef Image<VImage6 > MyImage6;
-  BOOST_CONCEPT_ASSERT(( CImage< MyImage6 > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImage6 > ));
 
   int aa[] = {0,0,0,0,0,0};
   int bb[] = {2,2,2,2,2,2};
@@ -123,7 +123,7 @@ bool testAPI()
   trace.beginBlock ( "Testing Image API ..." );
   typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
   typedef Image<VImage > MyImage;
-  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImage > ));
 
   Z2i::Point a(0,0);
   Z2i::Point b(32,32);
@@ -168,7 +168,7 @@ bool testImageCopy()
   trace.beginBlock ( "Testing copy of Image..." );
   typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
   typedef Image<VImage > MyImage;
-  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImage > ));
 
   Z2i::Point a(0,0);
   Z2i::Point b(32,32);
@@ -217,7 +217,7 @@ bool testImageCopyShort()
   trace.beginBlock ( "Testing smart copy of Image..." );
   typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
   typedef Image<VImage > MyImage;
-  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImage > ));
 
   Z2i::Point a(0,0);
   Z2i::Point b(32,32);
@@ -277,7 +277,7 @@ bool testImageScan()
   trace.beginBlock ( "Testing Image scan ..." );
   typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
   typedef Image<VImage > MyImage;
-  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImage > ));
 
   Z2i::Point a(0,0);
   Z2i::Point b(32,32);

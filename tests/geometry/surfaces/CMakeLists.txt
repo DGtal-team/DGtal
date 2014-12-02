@@ -13,8 +13,9 @@ SET(TESTS_SURFACES_SRC
   testIntegralInvariantVolumeEstimator
   testIntegralInvariantCovarianceEstimator
   testLocalEstimatorFromFunctorAdapter
-  testVoronoiCovarianceMeasureOnSurface
+  ##testVoronoiCovarianceMeasureOnSurface
   testTensorVoting
+  testEstimatorCache
   )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})

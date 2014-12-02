@@ -106,7 +106,7 @@ namespace DGtal
     
     enum MagicNumber {P1,P2,P3,P4,P5,P6};
 
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
 
     
 

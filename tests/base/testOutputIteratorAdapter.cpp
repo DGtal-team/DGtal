@@ -82,6 +82,7 @@ bool testPairs()
   typedef OutputIteratorAdapter<Map::iterator, DGtal::functors::Pair2ndMutator<string>, string> Adapter;
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<Adapter, string> ));
   functors::Pair2ndMutator<string> f;
+
   Adapter  a( m.begin(), f ); 
 
   copy(v.begin(), v.end(), a); 

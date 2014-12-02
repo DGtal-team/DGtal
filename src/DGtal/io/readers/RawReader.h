@@ -96,7 +96,7 @@ namespace DGtal
     typedef TFunctor Functor;
 
 
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;        
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;        
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
        (ImageContainer::Domain::dimension == 3));
 

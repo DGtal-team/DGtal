@@ -104,7 +104,7 @@ namespace DGtal
 
     ///Image Container type
     typedef TImageContainer ImageContainer;
-    BOOST_CONCEPT_ASSERT(( CImage<ImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<ImageContainer> ));
 
     ///Separable Metric type value type
     typedef typename PowerSeparableMetric::Value Value;

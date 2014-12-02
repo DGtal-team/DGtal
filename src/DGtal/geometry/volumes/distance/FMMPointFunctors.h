@@ -97,7 +97,7 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
@@ -232,7 +232,7 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
@@ -360,7 +360,7 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
@@ -475,7 +475,7 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
@@ -707,7 +707,7 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TDistanceImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TDistanceImage> ));
     typedef TDistanceImage DistanceImage;
     typedef typename DistanceImage::Point Point;
     typedef typename DistanceImage::Value DistanceValue;
