@@ -87,7 +87,23 @@ bool testColor()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "coeff" << std::endl;
 
-
+  //Checking alpha channel
+  Color a(0,0,0,64);
+  Color aa(0,0,0,32);
+  Color c = a+aa;
+#ifdef COLOR_WITH_ALPHA_ARITH
+  trace.info() << " a+aa = "<< a+aa<<std::endl;
+  nbok += (c == Color(0,0,0,96)) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "alpha arith (enabled)" << std::endl;
+#else
+  trace.info() << " a+aa = "<< a+aa<<std::endl;
+  nbok += (c == Color(0,0,0,64)) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "alpha arith (disabled)" << std::endl;
+#endif  
 
   Color val;
   val.setRGBi(0,0,0,255);
