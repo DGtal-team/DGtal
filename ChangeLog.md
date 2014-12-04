@@ -14,8 +14,13 @@
    linear model estimation of scalar data. (David Coeurjolly, Jérémy
    Levallois [#935](https://github.com/DGtal-team/DGtal/pull/927),
    backport from imagene)
-    
- 
+
+- *IO Package*
+ - Limited interaction added to QGLViewer Viewer3D class. The user
+   may assign integer identifiers (OpenGL names) to surfels and
+   callback functions, which are called when surfels are
+   selected. (Jacques-Olivier Lachaud
+   [#942](https://github.com/DGtal-team/DGtal/pull/942))
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the ConstIterator and adds a new method to change the color of a specific face. (Bertrand Kerautret, [#937](https://github.com/DGtal-team/DGtal/pull/937))
