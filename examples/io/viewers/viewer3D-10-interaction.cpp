@@ -53,15 +53,19 @@ struct BigData
 int reaction1( void* viewer, int32_t name, void* data )
 {
   BigData* bg = (BigData*) data;
-  trace.info() << "Reaction1 with name " << name 
-               << " cell " << bg->K.sKCoords( bg->cells[ name ] ) << std::endl;
+  stringstream ssMessage;
+  ssMessage << "Reaction1 with name " << name << " cell " << bg->K.sKCoords( bg->cells[ name ] )  ;
+  ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000); 
+  trace.info() <<  ssMessage.str() << std::endl;
   return 0;
 }
 int reaction23( void* viewer, int32_t name, void* data )
 {
   BigData* bg = (BigData*) data;
-  trace.info() << "Reaction23 with name " << name
-               << " cell " << bg->K.sKCoords( bg->cells[ name ] ) << std::endl;
+  stringstream ssMessage;
+  ssMessage <<  "Reaction23 with name " << name << " cell " << bg->K.sKCoords( bg->cells[ name ] );
+  ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000); 
+  trace.info() << ssMessage.str() << std::endl;
   return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -79,6 +83,7 @@ int main( int argc, char** argv )
   
   MyViewer viewer( K );
   viewer.show();
+  viewer.displayMessage(QString("You can use [shift + click right] on surfels to interact ..."), 100000); 
   SCell surfel1 = K.sCell( Point( 1, 1, 2 ), KSpace::POS ); 
   SCell surfel2 = K.sCell( Point( 3, 3, 4 ), KSpace::NEG ); 
   SCell surfel3 = K.sCell( Point( 5, 6, 5 ), KSpace::POS ); 
