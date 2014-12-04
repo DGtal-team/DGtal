@@ -183,7 +183,9 @@ bool testCube()
   Reporter reporter(surface, l2Metric, estimator , convFunc);
 
   reporter.init(1, surface.begin(),surface.end());
+  trace.endBlock();
 
+  trace.beginBlock("Probing ...");
   for(Surface::ConstIterator it = surface.begin(), itend = surface.end(); it!= itend; ++it)
     {
       if (K.sKCoords(*it) == KSpace::Point(11,-12,1))
