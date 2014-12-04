@@ -48,6 +48,7 @@ In this package, we present DGtal tools and utilities to import/export images an
 
 - \ref moduleBoard2D (Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola)
 - \ref moduleDisplay3D (Bertrand Kerautret, Martial Tola, Aline Martin, David Coeurjolly)
+  - \ref moduleQGLInteraction (Jacques-Olivier Lachaud)
 - \ref moduleIO (David Coeurjolly, Bertrand Kerautret, Martial Tola, Pierre Gueth)
 
 @b Package @b Concepts @b Overview
