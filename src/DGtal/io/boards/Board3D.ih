@@ -461,12 +461,12 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   {
     //std::vector<quadD3D>::const_iterator
     k = 0; // id of each list
-    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::QuadD3D> >::const_iterator it =Board3D<Space, KSpace>::myQuadSetList.begin();
-        it != Board3D<Space, KSpace>::myQuadSetList.end();   it++)
+    for (typename Display3D<Space, KSpace>::QuadsMap::iterator it = Display3D<Space, KSpace>::myQuadsMap.begin(), itE = Display3D<Space, KSpace>::myQuadsMap.end(); 
+         it != itE; ++it )
       {
         std::ostringstream tmpStream;
-        for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator s_it = it->begin();
-             s_it != it->end(); ++s_it)
+        for (typename std::vector< typename Display3D<Space, KSpace>::QuadD3D>::const_iterator s_it = it->second.begin();
+             s_it != it->second.end(); ++s_it)
           {
             //test if a clipping plane do not cut it
             apoint1 = (s_it->point1 -shift)*scale;
@@ -491,7 +491,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
                 name << "myQuadSetList_" << k ;
               }
 
-            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = it->begin();
+            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = it->second.begin();
             unsigned int matid = getMaterialIndex(itBegin->color);
             std::stringstream matName;
             matName <<  "Mat_" << matid;
@@ -675,8 +675,8 @@ DGtal::Board3D<Space, KSpace>::init()
   Board3D<Space, KSpace>::myBallSetNameList.push_back(nameBallSet);
 
 
-  std::string nameQuad;
-  Board3D<Space, KSpace>::myQuadSetNameList.push_back(nameQuad);
+  // std::string nameQuad;
+  // Board3D<Space, KSpace>::myQuadSetNameList.push_back(nameQuad);
 
   std::string nameTriangle;
   Board3D<Space, KSpace>::myTriangleSetNameList.push_back(nameTriangle);
