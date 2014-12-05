@@ -176,14 +176,14 @@ DGtal::SimpleLinearRegression::computeRegression()
 {
   if ( myN <= 2 ) return false;
   myD = myN * mySumX2 - ( mySumX * mySumX );
+
   if ( ( myD > -myEpsilonZero ) && ( myD < myEpsilonZero ) )
     {
       myD = 0.0;
       return false;
     }
-  myB[ 0 ] = ( mySumX2 * mySumY - mySumX * mySumXY ) / myD;
   myB[ 1 ] = ( -mySumX * mySumY + myN * mySumXY ) / myD;
-
+  myB[ 0 ] = mySumY/(double)myN - myB[ 1 ]*mySumX/(double)myN;
   myU.clear();
   myNormU2 = 0.0;
   for ( unsigned int i = 0; i < myN; ++i )
@@ -192,6 +192,7 @@ DGtal::SimpleLinearRegression::computeRegression()
       myU.push_back( u );
       myNormU2 += u * u;
     }
+  
   return true;
 }
 
@@ -213,7 +214,8 @@ DGtal::SimpleLinearRegression::computeRegression()
  */
 inline
 std::pair<double,double>
-DGtal::SimpleLinearRegression::trustIntervalForY( double x, double a ) const
+DGtal::SimpleLinearRegression::trustIntervalForY( const double x,
+                                                  const double a ) const
 {
   double t = ( mySumX2 - 2.0 * x * mySumX + myN * x * x ) / myD;
   double c = sqrt( estimateVariance() * ( 1 + t ) );

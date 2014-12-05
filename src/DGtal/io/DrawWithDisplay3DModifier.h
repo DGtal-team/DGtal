@@ -261,7 +261,7 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
     SetSelectCallback3D( CallbackFct f, 
                          void* data,
                          DGtal::int32_t min = 0, DGtal::int32_t max = 0x7fffffff ) 
-      : myFct( f ), myMin( min ), myMax( max ), myData( data ) {}
+      : myFct( f ), myData( data ), myMin( min ), myMax( max ) {}
     /// @return the class name as a string.
     std::string className() const { return "SetSelectCallback3D"; }
     /// The callback function associated to the selection of an element.

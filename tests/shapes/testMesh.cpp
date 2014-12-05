@@ -51,7 +51,8 @@ bool testMesh()
 {
   
   trace.beginBlock ( "Testing Mesh  ..." );
-
+  bool ok = true;
+  trace.beginBlock ( "Testing Mesh contruction  ..." );
   Mesh<Point> aMesh;
   Point p0=Point(0,0);
   Point p1=Point(0,1);
@@ -89,10 +90,40 @@ bool testMesh()
 
   trace.info() << "Face2 points " << endl;
   trace.info() << p0f1 << p1f1 << p2f1<< endl;
+
   
-  
-  return (p0==p0f0) && (p1==p1f0) && (p2==p2f0) && 
+  bool okMeshConstruct =  (p0==p0f0) && (p1==p1f0) && (p2==p2f0) && 
     (p3==p0f1) && (p4==p1f1) && (p5==p2f1) ;
+  
+  
+  trace.endBlock();
+  bool okMeshIterators = true;
+  trace.beginBlock ( "Testing Mesh iterator  ..." );
+  unsigned int nb=0;
+  // just testing nb iterations on const iterator
+  for(  Mesh<Point>::VertexStorage::const_iterator it = aMesh.cVertexBegin(); 
+       it !=aMesh.cVertexEnd(); 
+       it++){
+    nb++;    
+  }
+  okMeshIterators = nb == aMesh.nbVertex();
+  // testing to change vertex  on  iterator
+  for(  Mesh<Point>::VertexStorage::iterator it = aMesh.vertexBegin(); 
+       it !=aMesh.vertexEnd(); 
+       it++){
+    (*it)[0]+=10.0; (*it)[1]+=5.0;
+  }
+  okMeshIterators = okMeshIterators &&  (aMesh.getVertex(5))[0]==13;
+
+  // testing changing color of individual face:
+  aMesh.setFaceColor(1, DGtal::Color::Red);
+  bool okMeshColor = (aMesh.getFaceColor(0)==DGtal::Color::White)
+                     && (aMesh.getFaceColor(1)==DGtal::Color::Red) ;
+  
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor;  
+  trace.endBlock();
+  return ok;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////

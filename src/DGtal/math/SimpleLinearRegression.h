@@ -26,20 +26,20 @@
  *
  * @date 2011/06/24
  *
- * Header file for module Statistics
+ * Header file for module SimpleLinearRegression
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Statistics_RECURSES)
-#error Recursive header files inclusion detected in Statistics.h
-#else // defined(Statistics_RECURSES)
+#if defined(SimpleLinearRegression_RECURSES)
+#error Recursive header files inclusion detected in SimpleLinearRegression.h
+#else // defined(SimpleLinearRegression_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Statistics_RECURSES
+#define SimpleLinearRegression_RECURSES
 
-#if !defined Statistics_h
+#if !defined SimpleLinearRegression_h
 /** Prevents repeated inclusion of headers. */
-#define Statistics_h
+#define SimpleLinearRegression_h
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -134,6 +134,7 @@ namespace DGtal
      */
     double slope() const;
 
+
     /**
      * @return the intercept of the linear regression (B0 in Y=B0+B1*X).
      */
@@ -161,14 +162,14 @@ namespace DGtal
      * current linear model or not.
      *
      * @param x any x value.
-     *
      * @param a the expected confidence value for the test (a=0.05
      * means 95% of confidence).
      *
      * @return the expected interval [min_y, max_y] such that any
      * value y within confirms the current linear model.
      */
-    std::pair<double,double> trustIntervalForY( double x, double a ) const;
+    std::pair<double,double> trustIntervalForY( const double x,
+                                                const double a ) const;
 
 
     /** 
@@ -191,6 +192,14 @@ namespace DGtal
       return myEpsilonZero;
     }
 
+    /** 
+     * 
+     * @return the number of samples.
+     */
+    double size() const
+    {
+      return myN;
+    }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -216,7 +225,6 @@ namespace DGtal
 
     ///Number of samples
     unsigned int myN;
-
 
     ///Ordinate values of sample points
     std::vector<double> myY;
