@@ -623,7 +623,7 @@ DGtal::Viewer3D<Space, KSpace>::drawWithNames()
   // selection is left clic + shift key.
   // JOL: 2014/10/15. This is my addition for interacting with
   // quads. Seems to work well.
-  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
+  //  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
   
   glCallList ( myQuadsMapId );
   // JOL: 2014/10/15. I leave the remaining code, but I am not
@@ -716,7 +716,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   //   }
 
   // Calling lists associated to Mesh display (see. updateList)
-  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
+  //  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
   glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
   glDisable(GL_CULL_FACE);
   //glCallList ( GLuint ( myListToAff+nbListOfPrimitives+1 ) );
@@ -1082,7 +1082,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   // Fifth list: Polygonal faces.
   // Sixth list: Wired version of polygonal face.
 
-  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
+  //  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
   
   myNbListe++;
   GLCreateListQuadMap(Viewer3D<Space, KSpace>::myQuadsMap, myQuadsMapId);
@@ -1107,8 +1107,12 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   
   if ( needToUpdateBoundingBox )
     {
-      setSceneBoundingBox ( qglviewer::Vec ( Viewer3D<Space, KSpace>::myBoundingPtLow[0],Viewer3D<Space, KSpace>::myBoundingPtLow[1],Viewer3D<Space, KSpace>::myBoundingPtLow[2] ),
-                            qglviewer::Vec ( Viewer3D<Space, KSpace>::myBoundingPtUp[0], Viewer3D<Space, KSpace>::myBoundingPtUp[1], Viewer3D<Space, KSpace>::myBoundingPtUp[2] ) );
+      setSceneBoundingBox ( qglviewer::Vec ( Viewer3D<Space, KSpace>::myBoundingPtLow[0],
+                                             Viewer3D<Space, KSpace>::myBoundingPtLow[1],
+                                             Viewer3D<Space, KSpace>::myBoundingPtLow[2] ),
+                            qglviewer::Vec ( Viewer3D<Space, KSpace>::myBoundingPtUp[0], 
+                                             Viewer3D<Space, KSpace>::myBoundingPtUp[1], 
+                                             Viewer3D<Space, KSpace>::myBoundingPtUp[2] ) );
       showEntireScene();
     }
   glPopMatrix();
