@@ -231,6 +231,21 @@ DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const
   }
 }
 
+template<typename TPoint>
+inline
+void
+DGtal::Mesh<TPoint>::setFaceColor(const unsigned int index,
+                                  const DGtal::Color &aColor) 
+{
+  if (!mySaveFaceColor){
+    for(unsigned int i = 0; i<myFaceList.size(); i++){
+      myFaceColorList.push_back(myDefaultColor);
+    }
+    mySaveFaceColor=true;
+  }
+  myFaceColorList.at(index) = aColor;
+}
+
 
 template<typename TPoint>
 inline

@@ -4,14 +4,44 @@
 
 ## Changes
 
+- *Geometry Package*
+ - New EstimatorCache class to cache quantities estimated by a
+   surfel local estimator. (David Coeurjolly,
+   [#927](https://github.com/DGtal-team/DGtal/pull/927))
+
+- *Math Package*
+ - Utilities added (OrderedLinearRegression) to perform sequential
+   linear model estimation of scalar data. (David Coeurjolly, Jérémy
+   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/927),
+   backport from imagene)
+
+- *IO Package*
+ - Limited interaction added to QGLViewer Viewer3D class. The user
+   may assign integer identifiers (OpenGL names) to surfels and
+   callback functions, which are called when surfels are
+   selected. (Jacques-Olivier Lachaud
+   [#942](https://github.com/DGtal-team/DGtal/pull/942))
+
+- *Shapes Package*
+ - Adds a vertex Iterator in the Mesh class in addition to the ConstIterator and adds a new method to change the color of a specific face. (Bertrand Kerautret, [#937](https://github.com/DGtal-team/DGtal/pull/937))
+
+
 ## Bug Fixes
 
 - *Configuration*
  - Fix issue #925, detection of Eigen3 (3.1 minimum) and also issue
-   #924, DGtal configuration file when using Eigen3.
-   (Jacques-Olivier Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
+ #924, DGtal configuration file when using Eigen3.  (Jacques-Olivier
+ Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
+
+- *Base*
+ - Iterator category fix for boost > 1.57 (David Coeurjolly,
+ [#938](https://github.com/DGtal-team/DGtal/pull/938))
 
 
+- *Geometry Package*
+ - Fix bug occuring in the computation of the Faithful Polygon (class FP)
+   in the closed case, ie. with circulators.
+   (Tristan Roussillon, [#939](https://github.com/DGtal-team/DGtal/pull/939))
 
 
 # DGtal 0.8

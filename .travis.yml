@@ -6,6 +6,9 @@ compiler:
 
 cache: apt
 
+notifications:
+  slack: dgtal:FObxCZFoeQkkaRuktJD5uhnN
+
 env:
   - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"
   - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"
@@ -23,8 +26,5 @@ script:
   - cd ../tests &&  make &&  cd ..&& make test
 
 after_script:
-  - cat /tmp/testVoronoiCovarianceMeasureOnSurface*.cpp
-  - echo "h"
-  - cat /tmp/testVoronoiCovarianceMeasureOnSurface*.sh
   - make lcov
   - coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info
