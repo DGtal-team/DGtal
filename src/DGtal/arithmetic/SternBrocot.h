@@ -381,10 +381,20 @@ namespace DGtal
          NB: O(1) operation.
       */
       ConstIterator end() const;
+  
+      /** 
+       * Compute the fraction of smallest denominator strictly between
+       * this fraction and other fraction. Assumes that "this" fraction is
+       * smaller than "other" fraction.
+       * @param other any fraction
+       * @return a fraction
+       * NB: \f$ O(k) where k is the depth of the output fraction\f$.
+       */
+      Fraction fractionOfSmallestDenominatorInBetween(const Fraction & other) const;
       
     };
 
-
+  
 
     // ----------------------- Standard services ------------------------------
   public:

@@ -497,17 +497,25 @@ namespace DGtal
      * @param aPoint any point
      */
     bool isInDSS(const Point& aPoint) const; 
-
-    /**
-     * @return 'true' if @a aPoint is in the DSS
-     * 'false' otherwise. 
-     * @param aPoint any point
-     * @see isInDSS
-     */
-
-    ArithmeticalDSS Union(const ArithmeticalDSS & aOther);
     
     bool operator()(const Point& aPoint) const; 
+    
+    
+    
+
+    /** 
+     * @return 'true' if 'this' belongs to the DSL @a aDSL.
+     * 'false' otherwise.
+     * @param aDSL any DSL
+     */
+    
+    bool isInDSL(const DSL& aDSL) const;
+
+    
+    
+
+
+    ArithmeticalDSS Union(const ArithmeticalDSS & aOther);
 
 
     // ----------------------- Iterator services -------------------------------
@@ -715,7 +723,7 @@ namespace DGtal
     /**
      * First point
      */
-    Point myF;
+    Point mF;
     /**
      * Last point 
      */

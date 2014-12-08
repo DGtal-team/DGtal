@@ -148,17 +148,26 @@ template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
-::sameOctant( const ArithmeticalDSL & aOther ) const  
+::sameOctant( const ArithmeticalDSL & aOther, int *theOctant ) const  
 {
   typename ArithmeticalDSLKernel<TCoordinate, adjacency>::Octant octant, octantOther;
   
   octant = ArithmeticalDSLKernel<TCoordinate, adjacency>::octant(myA,myB);
   octantOther = ArithmeticalDSLKernel<TCoordinate, adjacency>::octant(aOther.myA,aOther.myB);
   
-  if(octant.first==octantOther.first || octant.first==octantOther.second || octant.second==octantOther.first || octant.second == octantOther.second)
-    return true;
+  if(octant.first==octantOther.first || octant.first==octantOther.second)
+    {
+      *theOctant = octant.first;
+      return true;
+    }
   else
-    return false;
+    if(octant.second==octantOther.first || octant.second == octantOther.second)
+      {
+	*theOctant = octant.second;
+	return true;
+      }
+    else
+      return false;
 }  
   
 
@@ -389,6 +398,25 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::isInDSL(const Point& a
 {
   Integer r = remainder(aPoint);
   return ( (r >= myLowerBound)&&(r <= myUpperBound) );
+}
+
+
+//------------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+bool
+DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::isUpperLeaningPoint(const Point& aPoint) const
+{
+  return (remainder(aPoint)==0);
+}
+
+//----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+bool
+DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::isLowerLeaningPoint(const Point& aPoint) const
+{
+  return (remainder(aPoint)==myOmega-1);
 }
 
 
