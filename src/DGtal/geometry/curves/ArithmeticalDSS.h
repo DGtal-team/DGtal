@@ -509,13 +509,13 @@ namespace DGtal
      * @param aDSL any DSL
      */
     
-    bool isInDSL(const DSL& aDSL) const;
+    bool isInDSL(const DSL& aDSL, std::vector<Point> Ulp, std::vector<Point> Llp, Point *outP) const;
 
     
     
 
 
-    ArithmeticalDSS Union(const ArithmeticalDSS & aOther);
+    ArithmeticalDSS Union(const ArithmeticalDSS & aOther) const;
 
 
     // ----------------------- Iterator services -------------------------------
@@ -723,7 +723,7 @@ namespace DGtal
     /**
      * First point
      */
-    Point mF;
+    Point myF;
     /**
      * Last point 
      */
