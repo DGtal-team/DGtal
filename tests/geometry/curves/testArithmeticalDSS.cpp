@@ -875,7 +875,16 @@ bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b
   return (nb == nbok); 
 }
 
+//---------------------------------------------------------------------------
+template <typename DSS>
+bool unionTest()
+{
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
 
+  
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )

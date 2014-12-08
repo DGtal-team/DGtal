@@ -407,7 +407,7 @@ inline
 bool
 DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::isUpperLeaningPoint(const Point& aPoint) const
 {
-  return (remainder(aPoint)==0);
+  return (remainder(aPoint)==myLowerBound);
 }
 
 //----------------------------------------------------------------------------
@@ -416,7 +416,7 @@ inline
 bool
 DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::isLowerLeaningPoint(const Point& aPoint) const
 {
-  return (remainder(aPoint)==myOmega-1);
+  return (remainder(aPoint)==myUpperBound);
 }
 
 

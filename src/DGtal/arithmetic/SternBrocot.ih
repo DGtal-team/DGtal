@@ -504,8 +504,8 @@ typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
 fractionOfSmallestDenominatorInBetween(const Fraction & other) const
 {
-  Fraction f = this;  
-  Fraction g = other; 
+  Fraction f(*this);  
+  Fraction g(other); 
   
   int depthf = f.k();
   int depthg = g.k();
@@ -532,7 +532,8 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
 	}
       else // when the coefficient differ
 	{
-	  int coeff = min(uf.first,ug.first);
+	  //int coeff = min(uf.first,ug.first);
+	  int coeff = (uf.first<ug.first)?uf.first:ug.first;
 	  if(i == f.k() && i == g.k()) // if the coefficient is the last one for f or g
 	    {
 	      if(abs(uf.first-ug.first) <= 1)
