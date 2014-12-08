@@ -496,6 +496,117 @@ end() const
   static CFracSequence dummy;
   return ConstIterator( 0, dummy.end() );
 }
+
+//----------------------------------------------------------------------------
+template <typename TInteger, typename TQuotient>
+inline
+typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
+DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
+fractionOfSmallestDenominatorInBetween(const Fraction & other) const
+{
+  Fraction f = this;  
+  Fraction g = other; 
+  
+  int depthf = f.k();
+  int depthg = g.k();
+  
+  Fraction res;
+  
+  bool found = false;
+  int i = 0;
+  bool minf;
+  
+  bool noRes = false;
+  
+  ConstIterator itf=f.begin(), itg=g.begin();
+  // Compare each coefficient of the two fractions one by one.
+  for(itf = f.begin(), itg = g.begin(); itf != f.end() && itg != g.end() && !found && !noRes; ++itf, ++itg)
+    {
+      Value uf = *itf;
+      Value ug = *itg;
+      // while the coefficients are equal, add it to the result
+      if(uf.first == ug.first)
+	{
+	  res.push_back(std::make_pair(uf.first,i));
+	  i++;
+	}
+      else // when the coefficient differ
+	{
+	  int coeff = min(uf.first,ug.first);
+	  if(i == f.k() && i == g.k()) // if the coefficient is the last one for f or g
+	    {
+	      if(abs(uf.first-ug.first) <= 1)
+		noRes = true;
+	      else
+		{
+		  res.push_back(std::make_pair(coeff+1,i)); // fractions are ancestors but we can conclude straight away
+		  found = true;
+		}
+	    }	
+	  else
+	    if((i!=f.k() && i !=g.k()) || (i==f.k() && uf.first > 2) || (i==g.k() && ug.first > 2))
+	      {
+		res.push_back(std::make_pair(coeff+1,i));
+		//trace.info() << "found : fractions are not ancestors" << std::endl;
+		found = true;
+	      }	
+	    else // we have itf++ = fend or itg++ = gend and exit the loop
+	      res.push_back(std::make_pair(coeff,i));
+	  
+	}
+    }
+  
+  if(!found && !noRes) // one fraction is the ancestor of the other
+    {
+      if(itf == f.end()) // either itf == fend, or itg == gend, but not both of them 
+	minf = true;
+      else
+	minf = false;
+      
+      if(minf) // f is an ancestor of g
+	{
+	  if(g.k() == f.k() + 1)
+	    res.push_back(std::make_pair(1+1,f.k()+1));
+	  else
+	    res.push_back(std::make_pair(1,f.k()+1));
+	  ++itg;
+	  if(itg!=g.end())
+	    {
+	      if(g.k() == f.k() +2) // no fraction of smaller denominator between f and g
+		noRes = true;
+	      else
+		res.push_back(std::make_pair((*itg).first+1,f.k()+2));
+	    }
+	  
+	}
+      else // g is an ancestor of f
+	{
+	  if(f.k() == g.k() + 1)
+	    res.push_back(std::make_pair(1+1,g.k()+1));
+	  else
+	    res.push_back(std::make_pair(1,g.k()+1));
+	  ++itf;
+	  if(itf!=f.end())
+	    {
+	      if(f.k() == g.k() +2) // no fraction of smaller denominator between f and g
+		noRes = true;
+	      else
+		res.push_back(std::make_pair((*itf).first+1,g.k()+2));
+	    }	  
+	}
+    }
+  
+  // if no fraction of denominator smaller than the ones of f or g was
+  // found, the result is the median of f and g. 
+  if(noRes || res == f || res ==g)
+    res = Fraction(f.p()+g.p(),f.q()+g.q()); 
+  
+  return res;
+  
+}
+
+
+
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient>
 inline

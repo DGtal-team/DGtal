@@ -373,8 +373,12 @@ namespace DGtal
    * @return 'true' the two DSLs lie in the same octant, 'false' otherwise
    * @see sameOctant
    */
-  bool sameOctant ( const ArithmeticalDSL & aOther ) const;
+  bool sameOctant ( const ArithmeticalDSL & aOther, int *theOctant ) const;
 
+
+  bool isUpperLeaningPoint(const Point& aPoint) const;
+  bool isLowerLeaningPoint(const Point& aPoint) const;
+  
 
 
     /**
@@ -533,6 +537,8 @@ namespace DGtal
      */
     bool isInDSL(const Point& aPoint) const;
 
+  
+  
     /**
      * @return 'true' if @a aPoint is in the DSL
      * 'false' otherwise.

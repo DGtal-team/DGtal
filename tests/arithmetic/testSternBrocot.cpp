@@ -530,7 +530,7 @@ bool testPattern()
                                           7, 16 );
   trace.info() << "sub(5,16) = " << sp << " " << sp.rE() << "^" << np << endl;
   ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
-  pat_even.getGreatestIncludedSubpattern( sp, np, start,
+  Pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           1, 4 );
   trace.info() << "sub(1,4) = " << sp << " " << sp.rE() << "^" << np << endl;
   ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
@@ -804,6 +804,30 @@ testAncestors()
   std::cerr << D1 << std::endl;
   return D1.slope() == Fraction( 1, 1 );
 }
+
+//-------------------------------------------
+template <typename SB>
+bool
+testFractionOfSmallestDenominatorInBetween()
+{
+  typedef typename SB::Fraction Fraction;
+  Fraction f,g;
+
+  // When the two fractions are not ancestors of one other
+  f = Fraction(1,5); g = Fraction(3,4);
+  ++nb, nbok += f.fractionOfSmallestDenominatorInBetween(g) == Fraction(1,2) ? 1 : 0;
+
+  f = Fraction(4,7); g = Fraction(5,7);
+  ++nb, nbok += f.fractionOfSmallestDenominatorInBetween(g) == Fraction(1,2) ? 1 : 0;
+
+  // When f is an ancestor of g
+  
+
+  // When g is an ancestor of f
+
+
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
