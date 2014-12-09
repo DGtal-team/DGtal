@@ -153,9 +153,9 @@ namespace DGtal
       {
         ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
       }
-#endif
 
       trace.warning()<< "Eigen values= "<< eigenvalues<< std::endl;
+#endif
       
       return ((eigenvalues[0] + eigenvalues[1])/(eigenvalues[2]));
     }
