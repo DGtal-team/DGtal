@@ -42,8 +42,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
-using namespace DGtal;
-using namespace LibBoard;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class FP.
@@ -58,6 +56,7 @@ using namespace LibBoard;
 bool testFP(string filename)
 {
 
+  using namespace DGtal;
 
   trace.info() << endl;
   trace.info() << "Reading GridCurve from " << filename << endl;
@@ -95,26 +94,184 @@ bool testFP(string filename)
  
 }
 
+template <typename Range1, typename Range2>
+bool compare(const Range1& pts, const Range2& groundTruth)
+{
+
+  DGtal::GridCurve<> curve;
+  curve.initFromPointsRange(pts.begin(), pts.end()); 
+
+  typedef DGtal::GridCurve<>::PointsRange::ConstCirculator   ConstCirculator;
+  typedef DGtal::FP<ConstCirculator, DGtal::Z2i::Integer, 4>                FaithfulPolygon;
+  FaithfulPolygon theFP( curve.getPointsRange().c(), curve.getPointsRange().c() );
+
+  return ( (theFP.polygon().size() == groundTruth.size()) && 
+	   std::equal(theFP.polygon().begin(), theFP.polygon().end(), groundTruth.begin()) ); 
+}
+
+bool stoppingCriterionTest()
+{
+  using namespace DGtal;
+  using namespace Z2i;
+
+  int nbok = 0; 
+  int nb = 0; 
+
+  trace.beginBlock ( "Stopping criterion" );
+
+  { //inflection part, one leaning point
+    std::vector<Point> pts, pts2;
+    pts.push_back(Point(0,0)); 
+    pts.push_back(Point(1,0)); 
+    pts.push_back(Point(1,1)); 
+    pts.push_back(Point(2,1)); 
+    pts.push_back(Point(3,1)); 
+    pts.push_back(Point(3,0)); 
+    pts.push_back(Point(4,0)); 
+    pts.push_back(Point(4,1)); 
+    pts.push_back(Point(4,2)); 
+    pts.push_back(Point(3,2)); 
+    pts.push_back(Point(2,2)); 
+    pts.push_back(Point(1,2)); 
+    pts.push_back(Point(0,2));
+    pts.push_back(Point(-1,2)); 
+    pts.push_back(Point(-2,2)); 
+    pts.push_back(Point(-2,1)); 
+    pts.push_back(Point(-2,0)); 
+    pts.push_back(Point(-1,0)); 
+    
+    pts2.push_back(Point(1,1)); 
+    pts2.push_back(Point(3,1)); 
+    pts2.push_back(Point(3,0)); 
+    pts2.push_back(Point(4,0)); 
+    pts2.push_back(Point(4,2)); 
+    pts2.push_back(Point(-2,2)); 
+    pts2.push_back(Point(-2,0)); 
+    pts2.push_back(Point(1,0)); 
+    
+    if(compare(pts, pts2))
+      nbok++; 
+    nb++; 
+    
+    trace.info() << nbok << " / " << nb << std::endl; 
+  }
+
+  { //inflection part, two distinct leaning points
+    std::vector<Point> pts, pts2;
+    pts.push_back(Point(0,0)); 
+    pts.push_back(Point(1,0)); 
+    pts.push_back(Point(1,1)); 
+    pts.push_back(Point(2,1)); 
+    pts.push_back(Point(3,1)); 
+    pts.push_back(Point(4,1)); 
+    pts.push_back(Point(4,0)); 
+    pts.push_back(Point(5,0)); 
+    pts.push_back(Point(5,1)); 
+    for (int i = 5; i >= -2; --i)
+      pts.push_back(Point(i,2)); 
+    pts.push_back(Point(-2,1)); 
+    pts.push_back(Point(-2,0)); 
+    pts.push_back(Point(-1,0)); 
+    
+    pts2.push_back(Point(1,1)); 
+    pts2.push_back(Point(4,1)); 
+    pts2.push_back(Point(4,0)); 
+    pts2.push_back(Point(5,0)); 
+    pts2.push_back(Point(5,2)); 
+    pts2.push_back(Point(-2,2)); 
+    pts2.push_back(Point(-2,0)); 
+    pts2.push_back(Point(1,0)); 
+    
+    if(compare(pts, pts2))
+      nbok++; 
+    nb++; 
+    
+    trace.info() << nbok << " / " << nb << std::endl; 
+  }
+
+  { //convex part, one leaning point
+    std::vector<Point> pts, pts2;
+    pts.push_back(Point(0,0)); 
+    pts.push_back(Point(1,0)); 
+    pts.push_back(Point(1,1)); 
+    pts.push_back(Point(2,1)); 
+    pts.push_back(Point(3,1)); 
+    pts.push_back(Point(3,2)); 
+    for (int i = 3; i >= -2; --i)
+      pts.push_back(Point(i,3)); 
+    pts.push_back(Point(-2,2)); 
+    pts.push_back(Point(-2,1)); 
+    pts.push_back(Point(-2,0)); 
+    pts.push_back(Point(-1,0)); 
+
+    //FP begins at the last leaning point of the first MS
+    pts2.push_back(Point(1,0)); 
+    pts2.push_back(Point(3,1)); 
+    pts2.push_back(Point(3,3)); 
+    pts2.push_back(Point(-2,3)); 
+    pts2.push_back(Point(-2,0)); 
+    
+    if(compare(pts, pts2))
+      nbok++; 
+    nb++; 
+    
+    trace.info() << nbok << " / " << nb << std::endl; 
+  }
+
+  { //convex part, two distinct leaning points
+    std::vector<Point> pts, pts2;
+    pts.push_back(Point(0,0)); 
+    pts.push_back(Point(1,0)); 
+    pts.push_back(Point(1,1)); 
+    pts.push_back(Point(2,1)); 
+    pts.push_back(Point(3,1)); 
+    pts.push_back(Point(3,2)); 
+    for (int i = 3; i >= -1; --i)
+      pts.push_back(Point(i,3)); 
+    pts.push_back(Point(-1,2)); 
+    pts.push_back(Point(-1,1)); 
+    pts.push_back(Point(-1,0)); 
+    
+    //FP begins at the last leaning point of the first MS
+    pts2.push_back(Point(3,1)); 
+    pts2.push_back(Point(3,3)); 
+    pts2.push_back(Point(-1,3)); 
+    pts2.push_back(Point(-1,0)); 
+    pts2.push_back(Point(1,0)); 
+    
+    if(compare(pts, pts2))
+      nbok++; 
+    nb++; 
+    
+    trace.info() << nbok << " / " << nb << std::endl; 
+  }
+  trace.endBlock();
+
+  return (nb == nbok); 
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int argc, char** argv )
 {
+  using namespace DGtal;
+
   trace.beginBlock ( "Testing class FP" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
-  std::string square = testPath + "samples/smallSquare.dat";
-  std::string dss = testPath + "samples/DSS.dat";
+  string sinus2D4 = testPath + "samples/sinus2D4.dat";
+  string square = testPath + "samples/smallSquare.dat";
+  string dss = testPath + "samples/DSS.dat";
 
   bool res = testFP(sinus2D4)
-            && testFP(square)
-            && testFP(dss)
-//other tests
-;
+    && testFP(square)
+    && testFP(dss)
+    && stoppingCriterionTest()
+    ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

@@ -76,11 +76,11 @@ namespace DGtal
   // class Viewer3D
   /**
    * Description of class 'Viewer3D' <p>
-   * Aim: Display 3D
-   * primitive (like PointVector, DigitalSetBySTLSet, Object ...). This
-   * class uses the libQGLViewer library (@see http://www.libqglviewer.com ). It inherits of the
-   * class Display3D and permits to display object using a simple
-   * stream mechanism of "<<".
+   * Aim: Display 3D primitive (like PointVector, DigitalSetBySTLSet,
+   * Object ...). This class uses the libQGLViewer library (@see
+   * http://www.libqglviewer.com ). It inherits of the class Display3D
+   * and displays objects using a simple stream mechanism of
+   * "<<".
    *
    * For instance you can display objects as follows:
    *
@@ -109,11 +109,14 @@ namespace DGtal
    * This class is parametrized by both the Digital and Khalimsky
    * space used to display object. More precisely, embed methods are
    * used to compute the Euclidean coordinate of digital
-   * obejects/khalimksy cells.
+   * objects/khalimksy cells. 
    *
    * @tparam Space any model of Digital 3D Space
    * @tparam KSpace any mode of Khalimksky 3D space
    *
+   * @note You *must* provide a Khalimksy space at instanciation if
+   * you wish to display cells with the viewer. If you are not going
+   * to display cells, then it is not compulsory to provide it.
    *
    * @see Display3D, Board3DTo2D
    */
@@ -125,6 +128,14 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
 
     //---------------overwritting some functions of Display3D -------------------
+
+    // ----------------------- public types ------------------------------
+  public:
+
+    typedef Display3D<Space, KSpace> Display;
+
+    typedef typename Display::SelectCallbackFct SelectCallbackFct;
+    using Display::getSelectCallback3D;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -223,14 +234,13 @@ namespace DGtal
     DGtal::Color myDefaultColor;
     /// true if the background is default
     bool myIsBackgroundDefault;
-
-    bool myViewWire;/// objects have shadows which follow the camera if false
+    /// objects have shadows which follow the camera if false
+    bool myViewWire;
 
     /**
      * Used to display the 2D domain of an image.
-     *
+     * @note has to be public because of external functions
      **/
-    //have to be public because of external functions
     struct Image2DDomainD3D
     {
 
@@ -467,7 +477,7 @@ namespace DGtal
       }
 
       /**
-       * return the class name to implment the CDrawableWithViewer3D concept.
+       * return the class name to implement the CDrawableWithViewer3D concept.
        **/
       std::string className() const;
 
