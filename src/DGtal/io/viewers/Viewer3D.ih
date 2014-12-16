@@ -1281,50 +1281,51 @@ DGtal::Viewer3D<Space, KSpace>::GLCreateListCubes( const VectorCubes & aVectCube
                                                    unsigned int idList){  
   glNewList ( idList , GL_COMPILE );
   glPushName ( myNbListe );
-  glEnable ( GL_DEPTH_TEST );
-  
+  glEnable ( GL_DEPTH_TEST );  
   glBegin ( GL_QUADS );
   
-  for (typename  VectorCubes::const_iterator c_it =  aVectCubes.begin(); c_it != aVectCubes.end(); ++c_it ){
+  for (typename  VectorCubes::const_iterator c_it =  aVectCubes.begin(); 
+       c_it != aVectCubes.end(); ++c_it ){
+    
     typename Viewer3D<Space, KSpace>::CubeD3D cube = (*c_it);
-        glColor4ub ( cube.color.red(), cube.color.green(), cube.color.blue(), cube.color.alpha() );
-      double _width= cube.width;
-      //z+
-      glNormal3f ( 0.0, 0.0, 1.0 );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]+_width );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]+_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]+_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]+_width );
-      //z-
-      glNormal3f ( 0.0, 0.0, -1.0 );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]-_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]-_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]-_width );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]-_width );
-      //x+
-      glNormal3f ( 1.0, 0.0, 0.0 );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]+_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]-_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]-_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]+_width );
-      //x-
-      glNormal3f ( -1.0, 0.0, 0.0 );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]+_width );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]+_width );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]-_width );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]-_width );
-      //y+
-      glNormal3f ( 0.0, 1.0, 0.0 );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]+_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]+_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]-_width );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]-_width );
-      //y-
-      glNormal3f ( 0.0, -1.0, 0.0 );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]+_width );
-      glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]-_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]-_width );
-      glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]+_width );
+    glColor4ub ( cube.color.red(), cube.color.green(), cube.color.blue(), cube.color.alpha() );
+    double _width= cube.width;
+    //z+
+    glNormal3f ( 0.0, 0.0, 1.0 );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]+_width );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]+_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]+_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]+_width );
+    //z-
+    glNormal3f ( 0.0, 0.0, -1.0 );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]-_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]-_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]-_width );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]-_width );
+    //x+
+    glNormal3f ( 1.0, 0.0, 0.0 );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]+_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]-_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]-_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]+_width );
+    //x-
+    glNormal3f ( -1.0, 0.0, 0.0 );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]+_width );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]+_width );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]-_width );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]-_width );
+    //y+
+    glNormal3f ( 0.0, 1.0, 0.0 );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]+_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]+_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]-_width );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]-_width );
+    //y-
+    glNormal3f ( 0.0, -1.0, 0.0 );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]+_width );
+    glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]-_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]-_width );
+    glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]+_width );
   }
   glEnd();
   glEndList();
@@ -1345,9 +1346,11 @@ DGtal::Viewer3D<Space, KSpace>::GLCreateListQuadD3D(const VectorQuad &aVectQuad,
   glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
   glBegin ( GL_QUADS );
-  for ( typename  VectorQuad::const_iterator s_it = aVectQuad.begin(); s_it != aVectQuad.end(); ++s_it )
+  for ( typename  VectorQuad::const_iterator s_it = aVectQuad.begin(); 
+        s_it != aVectQuad.end(); ++s_it )
     {
-      glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
+      glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), 
+                   ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
       glNormal3f ( ( *s_it ).nx, ( *s_it ).ny, ( *s_it ).nz );
       glVertex3f ( ( *s_it ).point1[0], ( *s_it ).point1[1] , ( *s_it ).point1[2] );
       glVertex3f ( ( *s_it ).point2[0], ( *s_it ).point2[1] , ( *s_it ).point2[2] );
@@ -1368,9 +1371,11 @@ DGtal::Viewer3D<Space, KSpace>::GLCreateListLines(const VectorLine &aVectLine,
   glDisable ( GL_LIGHTING );
   glPushName ( myNbListe );
   glBegin ( GL_LINES );
-  for (typename  VectorLine::const_iterator s_it =  aVectLine.begin(); s_it != aVectLine.end(); ++s_it )
+  for (typename  VectorLine::const_iterator s_it =  aVectLine.begin(); 
+       s_it != aVectLine.end(); ++s_it )
     {
-      glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
+      glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(),
+                   ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
       glVertex3f ( ( *s_it ).point1[0], ( *s_it ).point1[1], ( *s_it ).point1[2] );
       glVertex3f ( ( *s_it ).point2[0], ( *s_it ).point2[1], ( *s_it ).point2[2] );
     }

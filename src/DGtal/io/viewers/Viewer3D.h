@@ -1046,93 +1046,109 @@ namespace DGtal
     
 
     /**
-     * create the list of a vector of CubeD3D
-     * @param listIt a vector of iterator on cubes.
-     * @param listEnd another a vector of  of iterator on cubes.
-     * @param idList the Id of the list (should be givent by glGenLists).
+     * Creates an OpenGL list of type GL_QUADS from a vector of CubeD3D. 
+     * @param[in] aVectCubes a vector of cubes (Cube3D) containing the cubes to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
      **/
-    
     void GLCreateListCubes( const VectorCubes & aVectCubes,
                               unsigned int idList);
 
+
     /**
-     * 
-     *
-     **/    
+     * Creates an OpenGL list of type GL_QUADS from a vector of QuadD3D. 
+     * @param[in] aVectQuad  a vector of quads (QuadD3D) containing the quads to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
     void GLCreateListQuadD3D(const VectorQuad &aVectQuad, unsigned int idList);
     
 
     /**
-     * 
-     *
-     **/        
+     * Creates an OpenGL list of type QL_LINES from a vector of LineD3D. 
+     * @param[in] aVectLine  a vector of lines (LineD3D) containing the quads to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
     void GLCreateListLines(const VectorLine &aVectLine, unsigned int idList);
-
-
-    /**
-     * 
-     *
-     **/    
     
+    
+    /**
+     * Creates an OpenGL list of type  GL_POINTS from a vector of BallD3D. 
+     * @param[in] aVectBall  a vector of cube (BallD3D) containing the points to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
     void GLCreateListBalls(const VectorBall &aVectBall, unsigned int idList);
 
-
-    /**
-     * 
-     *
-     **/    
     
+    /**
+     * Creates an OpenGL list of type GL_QUADS from a QuadsMap.  Only
+     * one OpenGL list is created but each map compoment (QuadD3D
+     * vector) are marked by its identifier through the OpenGl
+     * glPushName() function. 
+     * @see moduleQGLInteraction for more details.
+     * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/    
     void GLCreateListQuadMaps(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
     
-
-    /**
-     * 
-     *
-     **/    
     
+    /**
+     * Creates an OpenGL list of type GL_LINES from a QuadsMap.  Only
+     * one OpenGL list is created but each map compoment (QuadD3D
+     * vector) are marked by its identifier through the OpenGl
+     * glPushName() function. 
+     * @see moduleQGLInteraction for more details.
+     * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/    
     void GLCreateListQuadMapsWired(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
 
-
-
-    /**
-     * 
-     *
-     **/    
     
+    /**
+     * Creates an OpenGL list of type GL_TRIANGLES from a vector of VectorTriangle.
+     * All triangles are displayed in the same list.
+     * @todo change the structure to support interactions as QuadMap do.
+     * @param[in] aVectQuad  a vector of VectorTriangle containing the set of triangles to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/    
     void GLCreateListTriangles(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
 
 
     /**
-     * 
-     *
+     * Creates an OpenGL list of type GL_LINES defines from a vector of VectorTriangle.
+     * All triangles are displayed in the same list.
+     * @todo change the structure to support interactions as QuadMap do.
+     * @param[in] aVectQuad  a vector of VectorTriangle containing the set of triangles to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
      **/    
-    
     void GLCreateListTrianglesWired(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
     
 
-
     /**
-     * 
-     *
-     **/    
-    
+     * Creates an OpenGL list of type  GL_POLYGON from a vector of VectorPolygon. 
+     * All polygons are displayed in the same list.
+     * @todo change the structure to support interactions as QuadMap do.
+     * @param aVectBall  a vector of cube (BallD3D) containing the points to be displayed.
+     * @param idList the Id of the list (should be given by glGenLists).
+     **/
     void GLCreateListPolygons(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
     
 
 
 
     /**
-     * 
-     *
-     **/    
-    
+     * Creates an OpenGL list of type  GL_LINES from a vector of VectorPolygon. 
+     * All polygons are displayed in the same list.
+     * @todo change the structure to support interactions as QuadMap do.
+     * @param[in] aVectBall  a vector of cube (BallD3D) containing the points to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
     void GLCreateListPolygonsWired(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
 
     
 
 
     /**
-     * 
+     * Update the container of GLTextureImage object with the given vector of TextureImage. 
+     *  @param[in] aVectImage the vector containing 
      *
      **/    
     
