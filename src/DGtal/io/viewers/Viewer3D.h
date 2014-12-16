@@ -1052,24 +1052,21 @@ namespace DGtal
      * @param idList the Id of the list (should be givent by glGenLists).
      **/
     
-    void GLCreateListCubeSet( std::vector<ItCube> & listIt,
-                              std::vector<ItCube> & listEnd,
+    void GLCreateListCubes( const VectorCubes & aVectCubes,
                               unsigned int idList);
 
     /**
      * 
      *
-     **/
-    
+     **/    
     void GLCreateListQuadD3D(const VectorQuad &aVectQuad, unsigned int idList);
     
 
     /**
      * 
      *
-     **/    
-    
-    void GLCreateListLineSet(const VectorLine &aVectLine, unsigned int idList);
+     **/        
+    void GLCreateListLines(const VectorLine &aVectLine, unsigned int idList);
 
 
     /**
@@ -1077,7 +1074,7 @@ namespace DGtal
      *
      **/    
     
-    void GLCreateListBallSet(const VectorBall &aVectBall, unsigned int idList);
+    void GLCreateListBalls(const VectorBall &aVectBall, unsigned int idList);
 
 
     /**
@@ -1085,7 +1082,7 @@ namespace DGtal
      *
      **/    
     
-    void GLCreateListQuadMap(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
+    void GLCreateListQuadMaps(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
     
 
     /**
@@ -1093,34 +1090,7 @@ namespace DGtal
      *
      **/    
     
-    void GLCreateListQuadMapWired(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
-
-
-
-    /**
-     * 
-     *
-     **/    
-    
-    void GLCreateListTriangle(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
-
-
-    /**
-     * 
-     *
-     **/    
-    
-    void GLCreateListTriangleWired(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
-    
-
-
-    /**
-     * 
-     *
-     **/    
-    
-    void GLCreateListPolygon(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
-    
+    void GLCreateListQuadMapsWired(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
 
 
 
@@ -1129,7 +1099,34 @@ namespace DGtal
      *
      **/    
     
-    void GLCreateListPolygonWired(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
+    void GLCreateListTriangles(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
+
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListTrianglesWired(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
+    
+
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListPolygons(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
+    
+
+
+
+    /**
+     * 
+     *
+     **/    
+    
+    void GLCreateListPolygonsWired(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
 
     
 
@@ -1139,7 +1136,7 @@ namespace DGtal
      *
      **/    
     
-    void GLUpdateTextureImage(const std::vector<Viewer3D<Space, KSpace>::TextureImage>  &aVectImage);
+    void GLUpdateTextureImages(const std::vector<Viewer3D<Space, KSpace>::TextureImage>  &aVectImage);
     
     
 
