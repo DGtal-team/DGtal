@@ -876,15 +876,328 @@ bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b
 }
 
 //---------------------------------------------------------------------------
-template <typename DSS>
 bool unionTest()
 {
   unsigned int nb = 0;
   unsigned int nbok = 0;
+  
+  typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
+  typedef typename DSS::Point Point;
 
+  trace.beginBlock("Testing union of two DSSs");
+
+  // Different tests to cover all possible configurations
+  // to be tested for different octants
+  
+  //-------------------------------------------------
+  //---------- Union is part of a DSL----------------
+
+  // DSS1 included in DSS2
+  
+  trace.beginBlock("Simplest inclusion: DSS1 in DSS2");
+  // octant 0
+  trace.info() << "octant 0\n";
+  DSS DSS1(1,2,Point(2,2),Point(6,4),Point(2,2),Point(6,4),Point(3,2),Point(5,3));
+  DSS DSS2(3,5,Point(-2,-1),Point(9,6),Point(2,2),Point(7,5),Point(0,0),Point(5,3));
+  DSS res=DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+  
+  // octant 1
+  trace.info() << "octant 1\n";
+  DSS1 = DSS(2,1,Point(2,2),Point(4,6),Point(2,3),Point(3,5),Point(2,2),Point(4,6));
+  assert(DSS1.isValid());
+  DSS2 = DSS(5,3,Point(-1,-2),Point(6,9),Point(0,0),Point(3,5),Point(2,2),Point(5,7));
+  assert(DSS2.isValid());
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+
+  // octant 2
+  trace.info() << "octant 2\n";
+  DSS1 = DSS(2,-1,Point(-2,2),Point(-4,6),Point(-2,2),Point(-4,6),Point(-2,3),Point(-3,5));
+  assert(DSS1.isValid());
+  DSS2 = DSS(5,-3,Point(1,-2),Point(-6,9),Point(-2,2),Point(-5,7),Point(0,0),Point(-3,5));
+  assert(DSS2.isValid());
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+
+  // octant 3
+  trace.info() << "octant 3\n";
+  DSS1 = DSS(1,-2,Point(-2,2),Point(-6,4),Point(-3,2),Point(-5,3),Point(-2,2),Point(-6,4));
+  assert(DSS1.isValid());
+  DSS2 = DSS(3,-5,Point(2,-1),Point(-9,6),Point(0,0),Point(-5,3),Point(-2,2),Point(-7,5));
+  assert(DSS2.isValid());
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+
+  // octant 4
+  trace.info() << "octant 4\n";
+  DSS1 = DSS(-1,-2,Point(-2,-2),Point(-6,-4),Point(-2,-2),Point(-6,-4),Point(-3,-2),Point(-5,-3));
+  assert(DSS1.isValid());
+  DSS2 = DSS(-3,-5,Point(2,1),Point(-9,-6),Point(-2,-2),Point(-7,-5),Point(0,0),Point(-5,-3));
+  assert(DSS2.isValid());
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+
+  // octant 5 - take octant3 - DSS(a,b...) -> DSS(-a,b...) + Point(x,y) -> Point(x,-y) + inverse lower and upper leaning points
+
+  trace.endBlock();
+  
+  // DSS2 included in DSS1 + see unionComparisonTest below
+  trace.beginBlock("Simplest inclusion: DSS2 in DSS1");
+  // octant 0
+  trace.info() << "octant 0\n";
+  DSS1 = DSS(3,5,Point(-2,-1),Point(9,6),Point(2,2),Point(7,5),Point(0,0),Point(5,3));
+  DSS2 = DSS(1,2,Point(2,2),Point(6,4),Point(2,2),Point(6,4),Point(3,2),Point(5,3));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS1)?1:0;
+  
+  trace.endBlock();
+  
+  // DSS2 belongs to DSS1's supporting DSL
+
+  trace.beginBlock("DSS2 belongs to DSS1's supporting DSL");
+  // octant 0
+  trace.info() << "octant 0 - no new leaning points\n";
+  DSS1 = DSS(3,7,Point(1,3),Point(12,7),Point(3,4),Point(10,7),Point(5,4),Point(12,7));
+  DSS2 = DSS(1,2,Point(14,8),Point(16,9),Point(15,9),Point(15,9),Point(14,8),Point(16,9));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(3,7,Point(1,3),Point(16,9),Point(3,4),Point(10,7),Point(5,4),Point(12,7)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+
+  trace.info() << "octant 0 - new leaning points in DSS2\n";
+  DSS1 = DSS(3,7,Point(1,3),Point(10,7),Point(3,4),Point(10,7),Point(5,4),Point(5,4));
+  DSS2 = DSS(1,2,Point(12,7),Point(17,10),Point(13,8),Point(17,10),Point(12,7),Point(16,9));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(3,7,Point(1,3),Point(17,10),Point(3,4),Point(17,10),Point(5,4),Point(12,7)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+  trace.info() << "octant 0 - new leaning points between DSS1 and DSS2\n";
+  DSS1 = DSS(3,7,Point(1,3),Point(10,7),Point(3,4),Point(10,7),Point(5,4),Point(5,4));
+  DSS2 = DSS(1,2,Point(13,8),Point(15,9),Point(13,8),Point(15,9),Point(14,8),Point(14,8));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(3,7,Point(1,3),Point(15,9),Point(3,4),Point(10,7),Point(5,4),Point(12,7)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+  trace.endBlock();
+  
+  // DSS1 belongs to DSS2 supporting DSL
+
+  // DSS1 and DSS2 connected and union is part of a DSL -> see
+  // unionComparisonTest below
+  
+  // DSS1 and DSS2 not connected but easy case and union is part of a
+  // DSL -> see unionComparisonTest below
+  
+  // DSS1 and DSS2 not connected and union is part of a DSL
   
 
+  //-------------------------------------------------
+  //---------- Union is not part of a DSL -----------
+  
+  // DSS1 and DSS2 not in the same octant
+  
+  // DSS1 and DSS2 connected and union is not part of a DSL
+  
+  // DSS1 and DSS2 not connected but easy case and union is part of a DSL
+  
+  // DSS1 and DSS2 not connected and union is not part of a DSL
+  
+  trace.endBlock();
+  
+  return (nb==nbok);
+  
 }
+
+
+// Test of the union of DSSs in the easy (connected or first point of
+// DSS2 and last point of DSS1 have the same ordinate) and inclusion cases
+// - compare the result with ArithmeticalDSS recognition algorithm
+bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
+{
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  
+  typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
+  typedef typename DSS::DSL DSL;
+  typedef typename DSS::Point Point;
+  typedef typename DSS::Integer Integer;
+  
+  DGtal::IntegerComputer<Integer> ic;
+
+  trace.beginBlock("Testing results wrt Arithmetical DSS recognition algorithm");
+
+  for ( unsigned int i = 0; i < nbtries; ++i )
+    {
+      // Pick up a random DSL slope
+      Integer b( random() % modb + 1 );
+      Integer a( random() % b +1);
+      while(ic.gcd(a,b) !=1)
+	a =random()%b +1; // |a| < |b|
+      
+      // Pick-up random signs for a and b
+      // a = a*((random()%2==0)?1:-1);
+      // b = b*((random()%2==0)?1:-1);
+
+      if ( ic.gcd( a, b ) == 1 )
+        {
+	  
+          for ( unsigned int j = 0; j < 5; ++j )
+            {
+	      // Pick up the DSL intercept
+              Integer mu = random() % (2*modb);
+	      DSL baseDSL(a,b,-mu);
+	      
+	      for (Integer x = 0; x < 10; ++x )
+                {
+		  // elemMove equals 1 or -1
+		  Integer elemMove = ((baseDSL.steps()).first)[0]; 
+		  // modx modulates the length of the subsegments
+		  
+		  // Pick up the beginning of the first subsegment
+		  Integer x1 = random() % modx;
+		  // Pick up the end of the first subsegment
+		  Integer x2 = x1 + (modx + (random() % modx))*elemMove;
+                  
+		  /************************************************/
+		  // Connected DSSs: The beginning of the second
+		  //subsegment is randomly set between x1 and x2 or just
+		  //after x2. 
+		  //Integer x3 = x2+1*elemMove;
+		  Integer x3 = x1 + (random() % (x2-x1+b))*elemMove;
+		  
+		  // The length of the second segment is set to modx
+		  Integer x4 = x3 + modx*elemMove;
+		  
+		  Integer y1,y2,y3,y4;
+		  if(baseDSL.shift()[1] < 0)
+		    {
+		       y1 = ic.floorDiv(a*x1+mu,b);  y2 = ic.floorDiv(a*x2+mu,b);
+		       y3 = ic.floorDiv(a*x3+mu,b);  y4 = ic.floorDiv(a*x4+mu,b);
+		    }
+		  else
+		    {
+		       y1 = ic.ceilDiv(a*x1+mu,b);  y2 = ic.ceilDiv(a*x2+mu,b);
+		       y3 = ic.ceilDiv(a*x3+mu,b);  y4 = ic.ceilDiv(a*x4+mu,b);
+		    }
+		  
+		  Point A,B,C,D;
+		  DSL aDSL(baseDSL);
+		  //Randomly switch a and b to cover cases where |a| > |b|
+		  // if(random()%2)
+		  //   {
+		  //     aDSL = DSL(b,-a,-mu);
+		  //     A = Point(-y1,x1); B = Point(-y2,x2);
+		  //     C = Point(-y3,x3); D = Point(-y4,x4);
+		  //   }
+		  // else
+		    {
+		      A = Point(x1,y1); B = Point(x2,y2);
+		      C = Point(x3,y3); D = Point(x4,y4);
+		    }
+		  
+		  
+		  // Computation of the parameters of the two segments
+		  // using the subsegment algorithm of [Roussillon,
+		  // 2014] 
+		  
+		  DSS DSS1(aDSL,A,B);
+		  DSS DSS2(aDSL,C,D);
+		 
+		  // Treat easy cases only for comparisons with
+		  // Arithmetical DSS recognition algorithm
+		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,aDSL.shift())==0)
+		    {
+		      nb++;
+		      // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
+		      DSS DSSres = DSS1.Union(DSS2);
+		      
+		      // Computation of DSS1 \cup DSS2 using the
+		      // Arithmetical DSS algorithm: add points from B++
+		      // until D
+		      DSS DSSGroundTruth(DSS1);
+		      if(aDSL.before(B,D)) // otherwise [CD] is included
+					   // in [AB]
+			{
+			  typename DSS::ConstIterator itbegin = aDSL.begin(B);
+			  typename DSS::ConstIterator itend = aDSL.end(D);
+			  typename DSS::ConstIterator it = itbegin++;
+			  while(it != itend)
+			    {
+			      DSSGroundTruth.extendFront(*it);
+			      it++;
+			    }
+			}
+		      
+		      if(DSSres != DSSGroundTruth)
+			{
+			  
+			  std::cout << DSS1 << "\n" << DSS2 << std::endl; 
+			  std::cout << DSSres << std::endl;
+			  std::cout << DSSGroundTruth << std::endl;
+			  std::cout << "------------------\n";
+			}
+		      nbok+=(DSSres == DSSGroundTruth)?1:0;
+		    }
+		  else
+		    DSS DSSres = DSS1.Union(DSS2);
+		}
+	      
+	    }
+	}
+    }
+ 
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  trace.endBlock();
+  return (nb==nbok);
+}
+
+
+
+//---------------------------------------------------------------------------
+bool createDSSTest()
+{
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  
+  trace.beginBlock("Testing creation of a DSS from direction vector and one upper leaning point");
+  
+  typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8;
+  typedef DSS8::Point Point;
+  typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory;
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(-6,-4),Point(14,8),Point(5,3)) == DSS8(3,5,Point(-6,-4),Point(14,8),Point(-5,-3),Point(10,6),Point(-2,-2),Point(13,7)))?1:0;
+
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(0,0),Point(14,8),Point(3,2)) == DSS8(3,5,Point(0,0),Point(14,8),Point(3,2),Point(13,8),Point(1,0),Point(11,6)))?1:0;
+
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(-3,-2),Point(14,8),Point(3,2)) == DSS8(3,5,Point(-3,-2),Point(14,8),Point(-2,-1),Point(13,8),Point(1,0),Point(11,6)))?1:0;
+
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(0,0),Point(14,8),Point(3,2)) == DSS8(3,5,Point(0,0),Point(14,8),Point(3,2),Point(13,8),Point(1,0),Point(11,6)))?1:0;
+
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(0,0),Point(14,8),Point(3,2)) == DSS8(3,5,Point(0,0),Point(14,8),Point(3,2),Point(13,8),Point(1,0),Point(11,6)))?1:0;
+								   
+  trace.endBlock();
+ 
+  return (nb==nbok);
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
@@ -996,32 +1309,43 @@ int main( int argc, char** argv )
     && constructorsTest<DGtal::StandardDSS4<DGtal::int32_t> >()
     ;
 
-  {   //subsegment 
-  res = res 
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,8)
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,13)
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(12,29)
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,5)
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,8)
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,5)
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,-8)
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,-5)
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,-8)
-    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,-5)
+//   {   //subsegment 
+//   res = res 
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,8)
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,13)
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(12,29)
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,5)
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,8)
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,5)
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,-8)
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,-5)
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,-8)
+//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,-5)
 
-    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,8)
-    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,5)
-    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,8)
-    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,5)
-    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,-8)
-    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,-5)
-    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,-8)
-    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,-5)
-#ifdef WITH_BIGINTEGER
-    && comparisonSubsegment<StandardDSL<DGtal::int32_t, DGtal::BigInteger> >(5,8)
-#endif
-      ;
+//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,8)
+//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,5)
+//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,8)
+//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,5)
+//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,-8)
+//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,-5)
+//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,-8)
+//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,-5)
+// #ifdef WITH_BIGINTEGER
+//     && comparisonSubsegment<StandardDSL<DGtal::int32_t, DGtal::BigInteger> >(5,8)
+// #endif
+//       ;
+//   }
+  
+  { // createDSS
+    res = res && createDSSTest();
   }
+
+  { // union of two DSSs
+    res = res && unionTest();
+    res = res && unionComparisonTest(10,5,200);
+  }
+  
+  
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
