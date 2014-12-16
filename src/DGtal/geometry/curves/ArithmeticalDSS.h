@@ -48,6 +48,8 @@
 #include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSConvexHull.h"
+#include "DGtal/arithmetic/SternBrocot.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -211,7 +213,7 @@ namespace DGtal
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl);
-
+    
     /**
      * Constructor.
      * Minimal set of parameters to build the DSS
@@ -237,6 +239,9 @@ namespace DGtal
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl);
+
+    
+
 
     /**
      * Construction of a sequence of patterns 
@@ -509,7 +514,7 @@ namespace DGtal
      * @param aDSL any DSL
      */
     
-    bool isInDSL(const DSL& aDSL, std::vector<Point> Ulp, std::vector<Point> Llp, Point *outP) const;
+    bool isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point& outP) const;
 
     
     

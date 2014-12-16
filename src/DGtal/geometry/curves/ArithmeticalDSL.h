@@ -551,7 +551,7 @@ namespace DGtal
     // ----------------------- Iterator services -------------------------------
     /**
      * @param aPoint any point of the DSL
-     * @pre aPoint sould belongs to the DSL
+     * @pre aPoint should belong to the DSL
      * @return begin iterator,
      * which points to @a aPoint
      */
@@ -559,7 +559,7 @@ namespace DGtal
 
     /**
      * @param aPoint any point of the DSL
-     * @pre aPoint sould belongs to the DSL
+     * @pre aPoint should belong to the DSL
      * @return end iterator,
      * which points to the point located after @a aPoint
      */

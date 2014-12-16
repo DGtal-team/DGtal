@@ -507,9 +507,6 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
   Fraction f(*this);  
   Fraction g(other); 
   
-  int depthf = f.k();
-  int depthg = g.k();
-  
   Fraction res;
   
   bool found = false;
