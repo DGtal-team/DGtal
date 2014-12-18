@@ -63,6 +63,12 @@ bool testColor()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "add" << std::endl;
 
+  trace.info() << " g+g = gg "<< g*2<< " expected ="<<gg<<std::endl;
+  nbok += ((g+g)==gg) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "add (bis)" << std::endl;
+
   trace.info() << " W+W = w "<< w+w<<std::endl;
   nbok += ((w+w)==w) ? 1 : 0; 
   nb++;
