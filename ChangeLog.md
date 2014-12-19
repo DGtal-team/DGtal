@@ -46,7 +46,9 @@
  - Fix bug occuring in the computation of the Faithful Polygon (class FP)
    in the closed case, ie. with circulators.
    (Tristan Roussillon, [#939](https://github.com/DGtal-team/DGtal/pull/939))
-
+ - Fix bug of method ArithmeticalDSL::getPoint with negative values
+   of positions as input arguments.
+   (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
 
 # DGtal 0.8
 
