@@ -183,6 +183,7 @@ We list below the main methods of ArithmeticalDSL:
   - ArithmeticalDSL::remainder()
   - ArithmeticalDSL::isInDSL() (called in ArithmeticalDSL::operator())
   - ArithmeticalDSL::position()
+  - ArithmeticalDSL::getPoint()
   - ArithmeticalDSL::before()
   - ArithmeticalDSL::beforeOrEqual()
 
