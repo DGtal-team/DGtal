@@ -246,20 +246,39 @@ struct ToDGtalCategory<boost::random_access_traversal_tag> {
     typedef  RandomAccessCategory Category;
 };
 
-template <>
-struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
+
+
+
+#if (((BOOST_VERSION /100000)==1) && ((BOOST_VERSION / 100 % 1000 )<57))
+  template <>
+  struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
     typedef  ForwardCategory Category;
-};
-
-template <>
-struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
+  };
+  template <>
+  struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
     typedef  BidirectionalCategory Category;
-};
+  };
 
-template <>
-struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
+  template <>
+  struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
     typedef  RandomAccessCategory Category;
-};
+  };
+#else
+  template <>
+  struct ToDGtalCategory<boost::iterators::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
+    typedef  ForwardCategory Category;
+  };
+  template <>
+  struct ToDGtalCategory<boost::iterators::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
+    typedef  BidirectionalCategory Category;
+  };
+  
+  template <>
+  struct ToDGtalCategory<boost::iterators::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
+    typedef  RandomAccessCategory Category;
+  };
+#endif
+
 
 /////////////////////////////////////////////////////////////////////////////
 /**
@@ -310,11 +329,6 @@ struct IteratorCirculatorTraits<T const*>
 };
 
 } // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-//#include "DGtal/base/IteratorCirculatorTraits.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
