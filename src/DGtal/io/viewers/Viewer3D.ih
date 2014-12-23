@@ -815,7 +815,6 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myGLScaleFactorX=1.0;
   myGLScaleFactorY=1.0;
   myGLScaleFactorZ=1.0;
-  myBallDisplayPrecision=10;
 
   myIsDoubleFaceRendering=true;
   Viewer3D<Space, KSpace>::createNewCubeList ( );
@@ -1415,9 +1414,9 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>::BallD3D aBall )
 {
-  double thetaResolution = myBallDisplayPrecision;
+  double thetaResolution = aBall.resolution;
   double thetaStep= (2.0*M_PI)/thetaResolution;
-  double phiResolution = myBallDisplayPrecision;
+  double phiResolution = aBall.resolution;
   double phiStep= M_PI/phiResolution;
   
   double radius = aBall.size;
