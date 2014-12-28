@@ -225,7 +225,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
                 double yCenter = (s_it->center[1]-shift[0])*scale;
                 double zCenter = (s_it->center[2]-shift[0])*scale;
                 
-                for(unsigned int jj =0; j < phiResolution; jj++)
+                for(unsigned int jj =0; jj < phiResolution; jj++)
                   {
                     double phi0 = M_PI/2.0-jj*phiStep;
                     double phi1 = M_PI/2.0-(jj+1)*phiStep;
