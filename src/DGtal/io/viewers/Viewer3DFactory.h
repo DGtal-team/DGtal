@@ -761,7 +761,7 @@ namespace DGtal
     /**
      * Set the "OpenGL name" of future graphical commands.
      * @param viewer the viewer where to draw
-     * @param aName3d an object storing the "OpenGL" name.
+     * @param name3d an object storing the "OpenGL" name.
      */
     static void 
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::SetName3D& name3d );
