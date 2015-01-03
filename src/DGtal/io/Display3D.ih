@@ -271,7 +271,9 @@ DGtal::Display3D< Space ,KSpace >::addCube(const RealPoint &center, double width
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center, double size)
+DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center,
+                                           const double size,
+                                           const unsigned int resolution)
 {
   updateBoundingBox(center);
   BallD3D p;
@@ -280,6 +282,7 @@ DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center, double size)
   p.isSigned = false;
   p.signPos  = false;
   p.size     = size;
+  p.resolution = resolution;
   p.name     = name3d();
   if (myBallSetList.size()== 0)
     createNewBallList("Ball Root");

@@ -1112,8 +1112,6 @@ namespace DGtal
     /// Used to store all the domains
     std::vector<Image2DDomainD3D> myImageDomainList;
 
-    unsigned int myBallDisplayPrecision;
-
   }; // end of class Viewer3D
 
 
