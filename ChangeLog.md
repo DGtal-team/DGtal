@@ -21,12 +21,16 @@
    callback functions, which are called when surfels are
    selected. (Jacques-Olivier Lachaud
    [#942](https://github.com/DGtal-team/DGtal/pull/942))
+ - Balls can be exported to OBJ in Board3D and ball resolution can now
+   be specified in Viewer3D and Board3D (David Coeurjolly,
+   [#945](https://github.com/DGtal-team/DGtal/pull/945)
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
    ConstIterator and adds a new method to change the color of a
    specific face. (Bertrand Kerautret,
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
+
 
 
 ## Bug Fixes
@@ -41,12 +45,11 @@
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
 
 - *Geometry Package*
- - Fixing DSS based length estimator on open curves. (David
-   Coeurjolly, [#941](https://github.com/DGtal-team/DGtal/pull/941))
  - Fix bug occuring in the computation of the Faithful Polygon (class FP)
    in the closed case, ie. with circulators.
    (Tristan Roussillon, [#939](https://github.com/DGtal-team/DGtal/pull/939))
-
+ - Fixing DSS based length estimator on open curves. (David
+   Coeurjolly, [#941](https://github.com/DGtal-team/DGtal/pull/941))
 
 # DGtal 0.8
 
