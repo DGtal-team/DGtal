@@ -215,12 +215,44 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
               }
             if (notCut)
               {
-                apoint = ((s_it->center)-shift)*scale;
-                tmpStream << "v " << apoint[0] << " " << apoint[1] << " " << apoint[2] << std::endl;
-                tmpStream << "f " << "-1" << " " << "-1" << " "<< "-1" << std::endl;
+                double thetaResolution = s_it->resolution;
+                double thetaStep= (2.0*M_PI)/thetaResolution;
+                double phiResolution = s_it->resolution;
+                double phiStep= M_PI/phiResolution;
+                
+                double radius = s_it->size*scale;
+                double xCenter = (s_it->center[0]-shift[0])*scale;
+                double yCenter = (s_it->center[1]-shift[0])*scale;
+                double zCenter = (s_it->center[2]-shift[0])*scale;
+                
+                for(unsigned int jj =0; jj < phiResolution; jj++)
+                  {
+                    double phi0 = M_PI/2.0-jj*phiStep;
+                    double phi1 = M_PI/2.0-(jj+1)*phiStep;
+                    for(unsigned int i =0; i < thetaResolution; i++)
+                      {
+                        double theta0 =  i * thetaStep;
+                        double theta1 =  (i+1) * thetaStep;
+                        tmpStream << "v " << xCenter+cos(phi0)*cos(theta0)*radius
+                                  << " "  << yCenter+ cos(phi0)*sin(theta0)*radius << " " << zCenter+ sin(phi0)*radius << std::endl;                  
+                        tmpStream << "v " << xCenter+cos(phi0)*cos(theta1)*radius
+                                  << " " << yCenter+ cos(phi0)*sin(theta1)*radius << " " << zCenter+ sin(phi0)*radius << std::endl;            
+                        tmpStream << "v " << xCenter+cos(phi1)*cos(theta0)*radius << " "
+                                  << yCenter+ cos(phi1)*sin(theta0)*radius << " " <<zCenter+ sin(phi1)*radius << std::endl;                   
+                        tmpStream << "f " << "-1" << " " << "-2" << " " << "-3"<< std::endl;
+
+                        tmpStream << "v " << xCenter+cos(phi0)*cos(theta1)*radius
+                                  << " " << yCenter+ cos(phi0)*sin(theta1)*radius << " " << zCenter+ sin(phi0)*radius << std::endl;            
+                        tmpStream << "v " << xCenter+cos(phi1)*cos(theta0)*radius << " "
+                                  << yCenter+ cos(phi1)*sin(theta0)*radius << " " <<zCenter+ sin(phi1)*radius << std::endl;                   
+                        tmpStream << "v " << xCenter+cos(phi1)*cos(theta1)*radius << " "
+                                  << yCenter+ cos(phi1)*sin(theta1)*radius << " " <<zCenter+ sin(phi1)*radius << std::endl;
+                        tmpStream << "f " << "-3" << " " << "-2" << " " << "-1"<< std::endl;
+                      }
+                  }  
               }
           }
-
+        
         if (tmpStream.str().size() > 0)
           {
             std::stringstream name;
@@ -461,12 +493,12 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   {
     //std::vector<quadD3D>::const_iterator
     k = 0; // id of each list
-    for (typename Display3D<Space, KSpace>::QuadsMap::iterator it = Display3D<Space, KSpace>::myQuadsMap.begin(), itE = Display3D<Space, KSpace>::myQuadsMap.end(); 
-         it != itE; ++it )
+    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::QuadD3D> >::const_iterator it =Board3D<Space, KSpace>::myQuadSetList.begin();
+        it != Board3D<Space, KSpace>::myQuadSetList.end();   it++)
       {
         std::ostringstream tmpStream;
-        for (typename std::vector< typename Display3D<Space, KSpace>::QuadD3D>::const_iterator s_it = it->second.begin();
-             s_it != it->second.end(); ++s_it)
+        for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator s_it = it->begin();
+             s_it != it->end(); ++s_it)
           {
             //test if a clipping plane do not cut it
             apoint1 = (s_it->point1 -shift)*scale;
@@ -491,7 +523,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
                 name << "myQuadSetList_" << k ;
               }
 
-            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = it->second.begin();
+            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = it->begin();
             unsigned int matid = getMaterialIndex(itBegin->color);
             std::stringstream matName;
             matName <<  "Mat_" << matid;
@@ -675,8 +707,8 @@ DGtal::Board3D<Space, KSpace>::init()
   Board3D<Space, KSpace>::myBallSetNameList.push_back(nameBallSet);
 
 
-  // std::string nameQuad;
-  // Board3D<Space, KSpace>::myQuadSetNameList.push_back(nameQuad);
+  std::string nameQuad;
+  Board3D<Space, KSpace>::myQuadSetNameList.push_back(nameQuad);
 
   std::string nameTriangle;
   Board3D<Space, KSpace>::myTriangleSetNameList.push_back(nameTriangle);
