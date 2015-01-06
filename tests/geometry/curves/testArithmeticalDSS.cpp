@@ -1047,8 +1047,8 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 	a =random()%b +1; // |a| < |b|
       
       // Pick-up random signs for a and b
-      a = a*((random()%2==0)?1:-1);
-      b = b*((random()%2==0)?1:-1);
+      // a = a*((random()%2==0)?1:-1);
+      // b = b*((random()%2==0)?1:-1);
 
       if ( ic.gcd( a, b ) == 1 )
         {
@@ -1074,8 +1074,8 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  // Connected DSSs: The beginning of the second
 		  //subsegment is randomly set between x1 and x2 or just
 		  //after x2. 
-		  Integer x3 = x2+1*elemMove;
-		  //Integer x3 = x1 + (random() % (x2-x1+b))*elemMove;
+		  //Integer x3 = x2+1*elemMove;
+		  Integer x3 = x1 + (random() % (x2-x1+b))*elemMove;
 		  
 		  // The length of the second segment is set to modx
 		  Integer x4 = x3 + modx*elemMove;
@@ -1095,13 +1095,13 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  Point A,B,C,D;
 		  DSL aDSL(baseDSL);
 		  //Randomly switch a and b to cover cases where |a| > |b|
-		  if(random()%2)
-		    {
-		      aDSL = DSL(b,-a,-mu);
-		      A = Point(-y1,x1); B = Point(-y2,x2);
-		      C = Point(-y3,x3); D = Point(-y4,x4);
-		    }
-		  else
+		  // if(random()%2)
+		  //   {
+		  //     aDSL = DSL(b,-a,-mu);
+		  //     A = Point(-y1,x1); B = Point(-y2,x2);
+		  //     C = Point(-y3,x3); D = Point(-y4,x4);
+		  //   }
+		  // else
 		    {
 		      A = Point(x1,y1); B = Point(x2,y2);
 		      C = Point(x3,y3); D = Point(x4,y4);
