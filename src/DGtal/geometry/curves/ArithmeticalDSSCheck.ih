@@ -151,11 +151,11 @@ checkAll(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
     {
 
       if (!aDSS.dsl().isValid()) 
-	isValid = false; 
+	{ isValid = false; std::cout << "dsl not valid" << std::endl;} 
       else if (!checkPointsRemainder(aDSS))
-	isValid = false; 
+	{ isValid = false; std::cout << "remainders not valid" << std::endl;} 
       else if (!checkPointsPosition(aDSS))
-	isValid = false; 
+	{ isValid = false; std::cout << "positions not valid" << std::endl;}
       else 
 	isValid = true; 
 

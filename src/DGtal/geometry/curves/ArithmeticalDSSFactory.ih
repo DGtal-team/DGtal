@@ -207,22 +207,25 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createPattern(con
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>
-DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createDSS(const Coordinate& aA, const Coordinate& aB, const Point& aF, const Point& aL, const Point& aU)
+DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createDSS(const Coordinate& aA, const Coordinate& aB, const Point& aFirst, const Point& aLast, const Point& aU)
 {
   Point Uf, Ul, Lf, Ll;
   DSL dsl(aA,aB,DSL::remainder(aA,aB,aU));
   
+  //  std::cout << aU << std::endl;
+
   Vector u(aB,aA);
 
   //Upper leaning points
   
-  Vector t = (aL-aU)/u;
+  Vector t = (aLast-aU)/u;
   Integer k1 = (t[0]>t[1])?t[1]:t[0];
   Ul = aU + u*k1;
 
-  t = (aU-aF)/u;
+  t = (aU-aFirst)/u;
   Integer k2 = (t[0]>t[1])?t[1]:t[0];
   Uf = aU - u*k2;
+  
   
   //Lower leaning points
   if ( dsl.steps().second == Vector(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO) )
@@ -238,19 +241,20 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createDSS(const C
       Vector v = bezoutVector(aA, aB, signedUnity);
       v -= dsl.shift()*signedUnity; // "forward" vector from an upper to a lower leaning point
       Vector w = v - u; // "backward" vector from an upper to a lower leaning point
-      if(dsl.before(aF,Uf+w)) // there is a lower leaning point before Uf
+      if(dsl.beforeOrEqual(aFirst,Uf+w)) // there is a lower leaning point before Uf
 	Lf = Uf + w;
       else
 	Lf = Uf + v;
       
-      if(dsl.before(Ul+v,aL))
+      if(dsl.beforeOrEqual(Ul+v,aLast))
 	Ll = Ul + v;
       else
 	Ll = Ul + w;
     }
   
-  DSS res(dsl.a(), dsl.b(), aF, aL, Uf, Ul, Lf, Ll);
- 
+  DSS res(dsl.a(), dsl.b(), aFirst, aLast, Uf, Ul, Lf, Ll);
+  //std::cout << "create DSS from one upper leaning point " << res << std::endl;
+
   assert(res.isValid());
 
   return res;

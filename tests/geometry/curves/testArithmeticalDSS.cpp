@@ -1047,8 +1047,8 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 	a =random()%b +1; // |a| < |b|
       
       // Pick-up random signs for a and b
-      // a = a*((random()%2==0)?1:-1);
-      // b = b*((random()%2==0)?1:-1);
+      a = a*((random()%2==0)?1:-1);
+      b = b*((random()%2==0)?1:-1);
 
       if ( ic.gcd( a, b ) == 1 )
         {
@@ -1069,13 +1069,13 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  Integer x1 = random() % modx;
 		  // Pick up the end of the first subsegment
 		  Integer x2 = x1 + (modx + (random() % modx))*elemMove;
-                  
+		  
 		  /************************************************/
 		  // Connected DSSs: The beginning of the second
 		  //subsegment is randomly set between x1 and x2 or just
 		  //after x2. 
-		  //Integer x3 = x2+1*elemMove;
-		  Integer x3 = x1 + (random() % (x2-x1+b))*elemMove;
+		  Integer x3 = x2+1*elemMove;
+		  //Integer x3 = x1 + (random() % (x2-x1+b))*elemMove;
 		  
 		  // The length of the second segment is set to modx
 		  Integer x4 = x3 + modx*elemMove;
@@ -1095,13 +1095,13 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  Point A,B,C,D;
 		  DSL aDSL(baseDSL);
 		  //Randomly switch a and b to cover cases where |a| > |b|
-		  // if(random()%2)
-		  //   {
-		  //     aDSL = DSL(b,-a,-mu);
-		  //     A = Point(-y1,x1); B = Point(-y2,x2);
-		  //     C = Point(-y3,x3); D = Point(-y4,x4);
-		  //   }
-		  // else
+		  if(random()%2)
+		    {
+		      aDSL = DSL(b,-a,-mu);
+		      A = Point(-y1,x1); B = Point(-y2,x2);
+		      C = Point(-y3,x3); D = Point(-y4,x4);
+		    }
+		  else
 		    {
 		      A = Point(x1,y1); B = Point(x2,y2);
 		      C = Point(x3,y3); D = Point(x4,y4);
@@ -1122,6 +1122,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		      nb++;
 		      // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
 		      DSS DSSres = DSS1.Union(DSS2);
+		      //std::cout << "------------------\n";
 		      
 		      // Computation of DSS1 \cup DSS2 using the
 		      // Arithmetical DSS algorithm: add points from B++
@@ -1142,8 +1143,8 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		      
 		      if(DSSres != DSSGroundTruth)
 			{
-			  
-			  std::cout << DSS1 << "\n" << DSS2 << std::endl; 
+			
+			  std::cout << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
 			  std::cout << DSSres << std::endl;
 			  std::cout << DSSGroundTruth << std::endl;
 			  std::cout << "------------------\n";
@@ -1152,6 +1153,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		    }
 		  else
 		    DSS DSSres = DSS1.Union(DSS2);
+		  //  std::cout << "---------------------------" << std::endl;
 		}
 	      
 	    }
@@ -1342,7 +1344,7 @@ int main( int argc, char** argv )
 
   { // union of two DSSs
     res = res && unionTest();
-    res = res && unionComparisonTest(10,5,200);
+    res = res && unionComparisonTest(10000,500,1000);
   }
   
   
