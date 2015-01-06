@@ -472,6 +472,7 @@ DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL,
   if(!(myDSL.sameOctant(aDSL, &oc)))
     return false;
   
+ 
   // Consider the leaning points in order, from the "leftmost" to the "rightmost" wrt the position operator.
   if(before(myUf,myLf))
     {
@@ -523,6 +524,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 {
   int oc;
   bool easyCase;
+  Vector shift;
   
   typedef DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
   typedef DGtal::ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency> Factory;
@@ -533,6 +535,14 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   // Test whether the two DSSs belong to the same octant or not
   if(!(myDSL.sameOctant(aOther.dsl(), &oc)))
     return ArithmeticalDSS(Point(0,0));
+  
+  // the shift of the result (if any) is the shift of the DSL that is not in between two octants.
+  // if the two DSL have a slope in between two octants, the shift has to be determined later
+  if(abs(myDSL.a()) != abs(myDSL.b()))
+    shift = myDSL.shift();
+  else
+    shift = aOther.shift();
+   
   
   if(beforeOrEqual(myL,aOther.front()))
     {
@@ -673,8 +683,8 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   
   Integer b = Ll[0]-Lf[0];
   Integer a = Ll[1]-Lf[1];
-  Vector shift = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::shift(a,b);
-  Integer mu = -DSL::remainder(a,b,shift) + 1 + DSL::remainder(a,b,Lf); 
+  Vector shiftRes = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::shift(a,b);
+  Integer mu = -DSL::remainder(a,b,shiftRes) + 1 + DSL::remainder(a,b,Lf); 
   DSL DSLLower(a,b,mu); // DSL defined by the two candidate lower
 			// leaning points
   
@@ -689,8 +699,10 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   
   // DSS1 \cup DSS2 is not part of a DSL
   if(!LPointsInDSL && !UPointsInDSL) 
-    return ArithmeticalDSS(Point(0,0));
-  
+    {
+      std::cout << "not a dsl" << std::endl;
+      return ArithmeticalDSS(Point(0,0));
+    }
   
   Integer aRes, bRes;
   
@@ -743,33 +755,40 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
       return ArithmeticalDSS<TCoordinate, TInteger, adjacency>(aRes,bRes,DSS1.back(),DSS2.front(),Uf,Ul,Lf,Ll);
     }
   
-  std::cout << "not easy" << std::endl;
+  // std::cout << "not easy" << std::endl;
+  //std::cout << DSS1 << "\n" << DSS2 << std::endl;
+  
+  // std::cout << Lf << Ll << Uf << Ul << std::endl;
+
   // Compute vectors of maximal and minimal slope
-  Vector Vup = (Ll-DSS1.shift()) - Uf;
-  Vector Vlow = Ul - (Lf-DSS1.shift());
+  shiftRes = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::shift(aRes,bRes);
+  Vector Vup = (Ll-shiftRes) - Uf;
+  Vector Vlow = Ul - (Lf-shiftRes);
   
   typedef DGtal::SternBrocot<Integer, Integer> SB; // type of Stern-Brocot tree
   typedef typename SB::Fraction Fraction; // type of fraction
+  //std::cout << Vlow << " " << Vup << std::endl;
   Fraction low(Vlow[1],Vlow[0]);
   Fraction up(Vup[1],Vup[0]);
   
   // Compute the fraction of smallest denominator between low and up
   Fraction res = low.fractionOfSmallestDenominatorInBetween(up);
-  std::cout << low.p() << "/" << low.q() << " " << up.p() << "/" << up.q() << " " << res.p() << "/" << res.q() << std::endl;
+  //std::cout << low.p() << "/" << low.q() << " " << up.p() << "/" << up.q() << " " << res.p() << "/" << res.q() << std::endl;
   typedef SimpleMatrix<Integer,2,2> Matrix;
   Matrix A; A.clear();
   A.setComponent(0,0,res.q());A.setComponent(1,0,res.p());A.setComponent(0,1,(Uf-Ul)[0]);A.setComponent(1,1,(Uf-Ul)[1]);
   
   if(Uf == Ul)
     {
-      DSSres = Factory::createDSS(res.q(),res.p(),DSS1.back(),DSS2.front(),Uf);
+      DSSres = Factory::createDSS(res.p(),res.q(),DSS1.back(),DSS2.front(),Uf);
     }
   else
     if(DGtal::SimpleMatrixSpecializations<Matrix,2,2>::determinant(A)>0)
-      DSSres = Factory::createDSS(res.q(),res.p(),DSS1.back(),DSS2.front(),Ul);
+
+    DSSres = Factory::createDSS(res.p(),res.q(),DSS1.back(),DSS2.front(),Ul);
     else
-      DSSres = Factory::createDSS(res.q(),res.p(),DSS1.back(),DSS2.front(),Uf);
-  
+      DSSres = Factory::createDSS(res.p(),res.q(),DSS1.back(),DSS2.front(),Uf);
+
   return DSSres;
 }
 

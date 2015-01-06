@@ -61,7 +61,7 @@ Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
   // std::cerr << "(" << p1 << "/" << q1 << "," << u1 << "," << k1 << ")";
 }
 
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 // DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient>
@@ -497,6 +497,16 @@ end() const
   return ConstIterator( 0, dummy.end() );
 }
 
+template <typename TInteger, typename TQuotient>
+inline
+typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
+DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
+median(const Fraction & f, const Fraction & g) const
+{
+  return Fraction(f.p()+g.p(),f.q()+g.q());
+}
+
+
 //----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient>
 inline
@@ -507,46 +517,51 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
   Fraction f(*this);  
   Fraction g(other); 
   
+  if(f>g)
+    {
+      Fraction tmp = f; f = g; g = tmp;
+    }
+  
   Fraction res;
   
-  bool found = false;
   int i = 0;
   bool minf;
   
-  bool noRes = false;
-  
+  Value uf, ug;
   ConstIterator itf=f.begin(), itg=g.begin();
+  
+  if(abs(f.p()*g.q()-f.q()*g.p())==1)
+    return  median(f,g);
+  
+
   // Compare each coefficient of the two fractions one by one.
-  for(itf = f.begin(), itg = g.begin(); itf != f.end() && itg != g.end() && !found && !noRes; ++itf, ++itg)
+  for(itf = f.begin(), itg = g.begin(); itf != f.end() && itg != g.end() ; ++itf, ++itg)
     {
-      Value uf = *itf;
-      Value ug = *itg;
-      // while the coefficients are equal, add it to the result
+      uf = *itf;
+      ug = *itg;
       if(uf.first == ug.first)
 	{
 	  res.push_back(std::make_pair(uf.first,i));
 	  i++;
 	}
-      else // when the coefficient differ
+      else
 	{
-	  //int coeff = min(uf.first,ug.first);
 	  int coeff = (uf.first<ug.first)?uf.first:ug.first;
-	  if(i == f.k() && i == g.k()) // if the coefficient is the last one for f or g
+	  if(i==f.k() && i == g.k())
 	    {
 	      if(abs(uf.first-ug.first) <= 1)
-		noRes = true;
+		return median(f,g);
 	      else
 		{
-		  res.push_back(std::make_pair(coeff+1,i)); // fractions are ancestors but we can conclude straight away
-		  found = true;
+		  res.push_back(std::make_pair(coeff+1,i));
+		  return res;
 		}
 	    }	
 	  else
-	    if((i!=f.k() && i !=g.k()) || (i==f.k() && uf.first > 2) || (i==g.k() && ug.first > 2))
+	    if((i!=f.k() && i !=g.k()) || ( (i==f.k() || i==g.k()) && abs(uf.first-ug.first) > 1))
 	      {
 		res.push_back(std::make_pair(coeff+1,i));
-		//trace.info() << "found : fractions are not ancestors" << std::endl;
-		found = true;
+		return res;
 	      }	
 	    else // we have itf++ = fend or itg++ = gend and exit the loop
 	      res.push_back(std::make_pair(coeff,i));
@@ -554,53 +569,62 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
 	}
     }
   
-  if(!found && !noRes) // one fraction is the ancestor of the other
+  // one fraction is the ancestor of the other and f.k() != g.k() (f.k() < g.k())
+  
+  if(itf == f.end()) // either itf == fend, or itg == gend, but not both of them 
+    minf = true;
+  else
+    minf = false;
+  
+  if(minf) // f is an ancestor of g: since f < g, g is in the right son of f
     {
-      if(itf == f.end()) // either itf == fend, or itg == gend, but not both of them 
-	minf = true;
+      if(uf.first==ug.first)
+	if(g.k() == f.k()+1)
+	  return median(f,g);
+	else
+	  res.push_back(std::make_pair((*(itg)).first+1,f.k()+1));
       else
-	minf = false;
-      
-      if(minf) // f is an ancestor of g
-	{
-	  if(g.k() == f.k() + 1)
+	if(uf.first>ug.first)
+	  if((*itg).first > 2 || ((*itg).first == 2 && g.k() > f.k()+1))
 	    res.push_back(std::make_pair(1+1,f.k()+1));
 	  else
-	    res.push_back(std::make_pair(1,f.k()+1));
-	  ++itg;
-	  if(itg!=g.end())
-	    {
-	      if(g.k() == f.k() +2) // no fraction of smaller denominator between f and g
-		noRes = true;
-	      else
-		res.push_back(std::make_pair((*itg).first+1,f.k()+2));
-	    }
-	  
-	}
-      else // g is an ancestor of f
-	{
-	  if(f.k() == g.k() + 1)
+	    if(g.k() == f.k()+2)
+	      return median(f,g);
+	    else
+	      {
+		res.push_back(std::make_pair(1,f.k()+1));
+		res.push_back(std::make_pair((*(++itg)).first+1,f.k()+2));
+	      }
+	else // uf.first < ug.first
+	  res.push_back(std::make_pair(1,f.k()+1));
+      
+      
+    }
+  else // g is an ancestor of f
+    {
+      if(uf.first==ug.first)
+	if(f.k() == g.k()+1)
+	  return median(f,g);
+	else
+	  res.push_back(std::make_pair((*(itf)).first+1,g.k()+1));
+      else
+	if(ug.first>uf.first)
+	  if((*itf).first > 2 || ((*itf).first == 2 && f.k() > g.k()+1))
 	    res.push_back(std::make_pair(1+1,g.k()+1));
 	  else
-	    res.push_back(std::make_pair(1,g.k()+1));
-	  ++itf;
-	  if(itf!=f.end())
-	    {
-	      if(f.k() == g.k() +2) // no fraction of smaller denominator between f and g
-		noRes = true;
-	      else
-		res.push_back(std::make_pair((*itf).first+1,g.k()+2));
-	    }	  
-	}
+	    if(f.k() == g.k()+2)
+	      return median(f,g);
+	    else
+	      {
+		res.push_back(std::make_pair(1,g.k()+1));
+		res.push_back(std::make_pair((*(++itf)).first+1,g.k()+2));
+	      }
+	else // uf.first < ug.first
+	  res.push_back(std::make_pair(1,g.k()+1));
     }
   
-  // if no fraction of denominator smaller than the ones of f or g was
-  // found, the result is the median of f and g. 
-  if(noRes || res == f || res ==g)
-    res = Fraction(f.p()+g.p(),f.q()+g.q()); 
-  
   return res;
-  
+
 }
 
 

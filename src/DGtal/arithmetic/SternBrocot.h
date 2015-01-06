@@ -381,7 +381,9 @@ namespace DGtal
          NB: O(1) operation.
       */
       ConstIterator end() const;
-  
+      
+      Fraction median(const Fraction & f, const Fraction & g) const;
+
       /** 
        * Compute the fraction of smallest denominator strictly between
        * this fraction and other fraction. Assumes that "this" fraction is
