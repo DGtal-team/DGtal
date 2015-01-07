@@ -71,6 +71,7 @@ class FuzzySegmentComputer
   
 public:
 
+
   typedef TSpace Space;
   typedef TInputPoint InputPoint;
   typedef TInternalScalar InternalScalar;
@@ -86,7 +87,6 @@ public:
 
   typedef ParallelStrip<Space,true,true> Primitive;
   
-
 
   
   // ----------------------- Standard services ------------------------------
@@ -106,7 +106,7 @@ public:
 public:
 
   /**
-   * @return the number of distinct points in the current naive plane.
+   * @return the number of distinct points in the current fuzzy segment.
    */
   Size size() const;
 
@@ -195,11 +195,6 @@ public:
       @return the current primitive recognized by this computer,
       which is a ParallelStrip of axis width smaller than the one
       specified at instanciation.
-      
-      @note The returned primitive has the form \f$\mu \le \vec{N}
-      \cdot \vec{X} \le \mu + \epsilon\f$. It is guaranteed that its axis
-      width is strictly less than the value \a widthNumerator / \a
-      widthDenominator specified with method \ref init.
    */
   Primitive primitive() const;
   
@@ -234,8 +229,14 @@ private:
     // ------------------------- Private Datas --------------------------------
 private:
 
-
-
+  /**
+   * The set of points contained in the fuzzy segment which can be changed during computations.
+   *
+   **/
+  mutable InputPointSet myPointSet; 
+  
+  
+  
   /**
    *  Melkman algorithm main dequeu 
    *
@@ -278,6 +279,11 @@ private:
     FuzzySegmentComputer & operator= ( const FuzzySegmentComputer & other );
 
 
+  /**
+   *  Used to check if the initialisation with 3 non aligned points is well done.
+   *
+   **/     
+   bool melkmanIsWellInitialized() const;
 
 
   /**
@@ -285,8 +291,8 @@ private:
    *  @return the main diagonal width of a convex set
    *
    **/     
-   void melkmanMainDiagonal();
-
+   double melkmanMainDiagonal() const;
+  
   
   /**
    * Melkman
@@ -298,9 +304,9 @@ private:
   
   /**
    * IsConvexValid
-   * Depending on connexity, return if a convex is valid.
+   * Depending on connexity, return true if a convex is valid.
    */
-  bool melkmanIsConvexValid( std::deque<int> & D , float thick );
+  bool melkmanIsConvexValid( const std::deque<int> & D , float thick ) const;
   
   
 
