@@ -93,6 +93,12 @@ public:
 public:
   
 
+  /**
+   * Constructor.
+   */
+  FuzzySegmentComputer();
+
+
 
   /**
    * Destructor.
@@ -220,9 +226,19 @@ public:
     bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
-private:
+protected:
+  
+  /**
+   * begin iterator (associated to input data)
+   **/
+  ConstIterator myBegin;
 
-
+  /**
+   * begin iterator (associated to input data)
+   **/
+  ConstIterator myEnd;
+  
+    
 
 
 
@@ -235,28 +251,33 @@ private:
    **/
   mutable InputPointSet myPointSet; 
   
-  
+  bool myIsValid;
   
   /**
    *  Melkman algorithm main dequeu 
    *
    **/
 
-  std::deque<int> myMelkmanQueue;
+  std::deque<Point> myMelkmanQueue;
   
   
+  bool myIsMelkmanInitialized;
   
+  // Used in melkmanMainDiagonal()
+  double myConvexHullHeight;  
+  double myConvexHullWidth;
 
+  Point myEdgeP, myEdgeQ, myVertexS;
+  Point myEdgePh, myEdgeQh, myVertexSh;
+  Point myEdgePw, myEdgeQw, myVertexSw;
+  Point mySav_P, mySav_Q, mySav_S;
+
+  
 
 
     // ------------------------- Hidden services ------------------------------
 protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    FuzzySegmentComputer();
 
 
 
@@ -297,11 +318,23 @@ private:
   /**
    * Melkman
    * Add a point in a convex using one step of Melkman algorithm.
+   * @param[in] aPoint the point to be added.
    */
-  void melkmanAddPoint( const Point &p );
+  void melkmanAddPoint( const Point &aPoint );
 
-  
-  
+
+
+  /**
+   * Melkman
+   * Check if the 3 init point of the queue are given in the correct order (else it re order it).
+   *
+   * (it checks only the 3 first points of myMelkmanQueue)
+   **/
+  void melkmanInitCheck( ) ; 
+
+
+
+
   /**
    * IsConvexValid
    * Depending on connexity, return true if a convex is valid.
@@ -309,10 +342,15 @@ private:
   bool melkmanIsConvexValid( const std::deque<int> & D , float thick ) const;
   
   
-
-
+  /**
+   * Test if a point aP2 is Left|On|Right of an infinite line (defined from fron two points aP0 and aP1).
+   *
+   * @param[in] aP0 the first point defining the line.
+   * @param[in] aP1 the second point defining the line.
+   * @param[in] aP2 the point to be tested.
+   */
+  InternalScalar melkmanIsLeft(const Point &aP0, const Point &aP1, const Point &aP2) const;
   
-
   
 
     // ------------------------- Internals ------------------------------------
@@ -327,8 +365,9 @@ private:
  * @param object the object of class 'FuzzySegmentComputer' to write.
  * @return the output stream after the writing.
  */
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 std::ostream&
-operator<< ( std::ostream & out, const FuzzySegmentComputer & object );
+operator<< ( std::ostream & out, const FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar> & object );
 
 
 } // namespace DGtal
