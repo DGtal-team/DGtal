@@ -38,6 +38,270 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+// ----------------------- Standard services ------------------------------
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::~FuzzySegmentComputer()
+{ // Nothing to do.
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::FuzzySegmentComputer()
+{ // Nothing to do.
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+FuzzySegmentComputer( const FuzzySegmentComputer & other )
+{ // Nothing to do.
+}
+
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+FuzzySegmentComputer & 
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+operator= ( const FuzzySegmentComputer & other )
+{// Nothing to do.
+
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+Size
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::size() const 
+{
+  return myPointSet.size();
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+bool
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::empty() const 
+{
+  return myPointSet.size()!=0;
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+ConstIterator
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::begin() const 
+{
+  return myPointSet.begin();
+
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+ConstIterator
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::end() const 
+{
+  return myPointSet.end();
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+Size
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::max_size() const 
+{
+  return myPointSet.max_size();
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+Size
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::maxSize() const 
+{
+  return myPointSet.max_size();
+}
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+void
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::init(const ConstIterator& it) const 
+{
+  // looking for 3 points.
+  
+  
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+bool
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableFront() 
+{
+  return true;  
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+bool
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront() 
+{
+  return true;  
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+bool
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableBack() 
+{
+  return true;  
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+bool
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendBack() 
+{
+  return true;  
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+Primitive
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::primitive()  const
+{
+  return Primitive(0,0,0);  
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+void
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay(std::ostream & out)  const
+{
+  out << "[Fuzzy Segment Computer]" ; 
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+void
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isValid()  const
+{
+  return true;
+}
+
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+bool
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsWellInitialized()  const
+{
+  return true;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+double
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDiagonal()  const
+{
+  return 0.0;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+void
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanAddPoint(const Point &p)
+{
+  
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+bool
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsConvexValid(const std::deque<int> & D , float thick) const
+{
+  return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
