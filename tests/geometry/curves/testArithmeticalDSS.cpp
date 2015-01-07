@@ -34,6 +34,7 @@
 #include "DGtal/base/CConstBidirectionalRange.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
+#include "DGtal/geometry/curves/StabbingLineComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -1021,6 +1022,153 @@ bool unionTest()
 }
 
 
+
+
+template <typename ConstPairIterator, typename DSS>
+DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::PreimagePtr P, typename DSS::Point first, typename DSS::Point last)
+{
+  typedef typename StabbingLineComputer<ConstPairIterator>::Preimage::Container Hull; 
+  Hull pH, qH;
+  
+  pH = P->pHull();
+  qH = P->qHull();
+  
+  typedef typename DSS::Point Point;
+  typedef typename DSS::Integer Integer;
+  typedef typename DSS::Vector Vector;
+  
+  
+  Point Uf = P->Uf(); // = pH.rbegin()
+  Point Ul = P->Ul(); // = pH.begin()
+  Point Lf = P->Lf(); // = qH.rbegin()
+  Point Ll = P->Ll(); // = qH.begin()
+  
+  Point rUf,rUl,rLf,rLl;
+  
+  // std::cout << Uf << " " << Ul << " " << Lf <<  " " << Ll << std::endl;
+  
+  Vector Vlow = Lf - Ul;
+  Vector Vup = Uf - Ll;
+  
+  typename Hull::iterator it;
+  typename Hull::reverse_iterator rit;
+  
+  /***********************/
+  /// Ul
+  
+  Point cur, next;
+  bool ok = true;
+  it = pH.begin();
+  cur = *it;
+  //std::cout << "first = " << cur;
+  while(it != pH.end() && ok)
+    {
+      if(++it !=pH.end())
+	{
+	  next = *(it);
+	  //std::cout << "next = " << next;
+	  if(determinant(next-cur,Vlow)!=0)
+	    ok = false;
+	  else
+	    cur = next;
+	}
+      else
+	ok = false;
+    }
+  rUl = cur;
+  //std::cout << rUl;
+  /*************************/
+  /// Uf
+
+  ok = true;
+  rit = pH.rbegin();
+  //  std::cout << "first = " << *rit;
+  cur = *rit;
+  while(rit != pH.rend() && ok)
+    {
+      if(++rit !=pH.rend())
+	{
+	  next = *(rit);
+	  //std::cout << "next =" << next;
+	  if(determinant(cur-next,Vup)!=0)
+	    ok = false;
+	  else
+	    cur = next;
+	}
+      else
+	ok = false;
+    }
+  rUf = cur;
+  //std::cout << rUf;
+  /***********************/
+  /// Ll
+  
+  it = qH.begin();
+  cur = *it;
+  ok = true;
+  while(it != qH.end() && ok)
+    {
+      if(++it != qH.end())
+	{
+	  next = *(it);
+	  if(determinant(next-cur,Vup)!=0)
+	    ok = false;
+	  else
+	    cur = next;
+	}
+      else
+	ok = false;
+    }
+  rLl = cur;
+
+  /*************************/
+  /// Lf
+
+  ok = true;
+  rit = qH.rbegin();
+  cur = *rit;
+  while(rit != pH.rend() && ok)
+    {
+      if(++rit != pH.rend())
+	{
+	  next = *rit;
+	  if(determinant(cur-next,Vlow)!=0)
+	    ok = false;
+	  else
+	    cur = next;
+	}
+      else
+	ok = false;
+    }
+  rLf = cur;
+
+  /****************************/
+  
+  Integer a, b;
+  if(rUl != rUf)
+    {
+      a = rUf[1]-rUl[1];
+      b = rUf[0]-rUl[0];
+    }
+  else
+    {
+      a = rLf[1]-rLl[1];
+      b = rLf[0]-rLl[0];
+    }
+  
+  IntegerComputer<Integer> ic;
+  Integer g = ic.gcd(a,b);
+  a = a/g;
+  b = b/g;
+		 
+  DSS resDSS(a,b,first, last, rLl, rLf, rUl+Point(0,-1), rUf+Point(0,-1));
+  return resDSS;
+
+}
+
+
+
+
 // Test of the union of DSSs in the easy (connected or first point of
 // DSS2 and last point of DSS1 have the same ordinate) and inclusion cases
 // - compare the result with ArithmeticalDSS recognition algorithm
@@ -1095,13 +1243,13 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  Point A,B,C,D;
 		  DSL aDSL(baseDSL);
 		  //Randomly switch a and b to cover cases where |a| > |b|
-		  // if(random()%2)
-		  //   {
-		  //     aDSL = DSL(b,-a,-mu);
-		  //     A = Point(-y1,x1); B = Point(-y2,x2);
-		  //     C = Point(-y3,x3); D = Point(-y4,x4);
-		  //   }
-		  // else
+		  if(random()%2)
+		    {
+		      aDSL = DSL(b,-a,-mu);
+		      A = Point(-y1,x1); B = Point(-y2,x2);
+		      C = Point(-y3,x3); D = Point(-y4,x4);
+		    }
+		  else
 		    {
 		      A = Point(x1,y1); B = Point(x2,y2);
 		      C = Point(x3,y3); D = Point(x4,y4);
@@ -1114,7 +1262,9 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  
 		  DSS DSS1(aDSL,A,B);
 		  DSS DSS2(aDSL,C,D);
-		 
+
+		  //std::cout << DSS1 << "\n" << DSS2 << std::endl << "--------" << std::endl;
+		  
 		  // Treat easy cases only for comparisons with
 		  // Arithmetical DSS recognition algorithm
 		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,aDSL.shift())==0)
@@ -1152,7 +1302,57 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		      nbok+=(DSSres == DSSGroundTruth)?1:0;
 		    }
 		  else
-		    DSS DSSres = DSS1.Union(DSS2);
+		    // TODO: comparison with stabbing line computer
+		    {
+		      DSS DSSres = DSS1.Union(DSS2);
+		      
+		      typedef pair<Point,Point> Pair;
+		      typedef std::vector< Pair > PairContainer;
+		      // Iterator on the container
+		      typedef PairContainer::const_iterator ConstPairIterator;
+		      
+		      // Build the "contour" as the concatenation of DSS1 and
+		      // the leaning points of DSS2
+		      PairContainer contour;
+		      DSS::ConstIterator itbegin = aDSL.begin(A);
+		      DSS::ConstIterator itend = aDSL.end(B);
+		      DSS::ConstIterator it;
+		      it = itbegin;
+		      while(it!=itend)
+			{
+			  Pair p = make_pair(*it-aDSL.shift(),*it);
+			  contour.push_back(p);
+			  ++it;
+			}
+		      
+		      itbegin = aDSL.begin(C);
+		      itend = aDSL.end(D);
+		      it = itbegin;
+		      while(it!= itend)
+			{
+			  if(*it == DSS2.Uf() || *it == DSS2.Ul() || *it == DSS2.Lf() || *it == DSS2.Ll())
+			    {
+			      Pair p = make_pair(*it-aDSL.shift(),*it);
+			      contour.push_back(p);
+			    }
+			  ++it;
+			}
+		      
+		      StabbingLineComputer<ConstPairIterator> s; 
+		      
+		      // //extension
+		      s.init( contour.begin() );
+		      bool ok=true; bool Clock =false;
+		      while ( s.end() != contour.end() && s.extendFront())
+		      	{}
+		      
+		      DSS DSSStab(DSS1);
+		      
+		      DSSStab = computeMinDSSFromPreimage<ConstPairIterator,DSS>(s.getPreimage(),DSS1.back(),DSS2.front());
+		      
+		      
+
+		    }
 		  //  std::cout << "---------------------------" << std::endl;
 		}
 	      
@@ -1344,7 +1544,7 @@ int main( int argc, char** argv )
 
   { // union of two DSSs
     res = res && unionTest();
-    res = res && unionComparisonTest(10000,500,1000);
+    res = res && unionComparisonTest(1000,50,1000);
   }
   
   

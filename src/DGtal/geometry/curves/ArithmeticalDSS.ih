@@ -768,27 +768,65 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   typedef DGtal::SternBrocot<Integer, Integer> SB; // type of Stern-Brocot tree
   typedef typename SB::Fraction Fraction; // type of fraction
   //std::cout << Vlow << " " << Vup << std::endl;
-  Fraction low(Vlow[1],Vlow[0]);
-  Fraction up(Vup[1],Vup[0]);
+  Integer p = abs(Vlow[0])<abs(Vlow[1])?abs(Vlow[0]):abs(Vlow[1]);
+  Integer q = abs(Vlow[0])<abs(Vlow[1])?abs(Vlow[1]):abs(Vlow[0]);
+  Fraction low(p,q);
+  //Fraction low(Vlow[1],Vlow[0]);
+  
+  p = abs(Vup[0])<abs(Vup[1])?abs(Vup[0]):abs(Vup[1]);
+  q = abs(Vup[0])<abs(Vup[1])?abs(Vup[1]):abs(Vup[0]);
+  Fraction up(p,q);
+  //Fraction up(Vup[1],Vup[0]);
   
   // Compute the fraction of smallest denominator between low and up
   Fraction res = low.fractionOfSmallestDenominatorInBetween(up);
-  //std::cout << low.p() << "/" << low.q() << " " << up.p() << "/" << up.q() << " " << res.p() << "/" << res.q() << std::endl;
-  typedef SimpleMatrix<Integer,2,2> Matrix;
-  Matrix A; A.clear();
-  A.setComponent(0,0,res.q());A.setComponent(1,0,res.p());A.setComponent(0,1,(Uf-Ul)[0]);A.setComponent(1,1,(Uf-Ul)[1]);
+  
+  Integer aFinal,bFinal;
+  if(aRes<0)
+    aFinal = (aRes<bRes)?-res.p():-res.q();
+  else
+    aFinal = (aRes<bRes)?res.p():res.q();
+  
+  if(bRes<0)
+    bFinal = (aRes<bRes)?-res.q():-res.p();
+  else
+    bFinal = (aRes<bRes)?res.q():res.p();
+  
   
   if(Uf == Ul)
     {
-      DSSres = Factory::createDSS(res.p(),res.q(),DSS1.back(),DSS2.front(),Uf);
+      DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),Uf);
     }
   else
-    if(DGtal::SimpleMatrixSpecializations<Matrix,2,2>::determinant(A)>0)
+    {
+      typedef SimpleMatrix<Integer,2,2> Matrix;
+      Matrix A; A.clear();
+      A.setComponent(0,0,bFinal);A.setComponent(1,0,aFinal);A.setComponent(0,1,(Uf-Ul)[0]);A.setComponent(1,1,(Uf-Ul)[1]);
+      
+      if(DGtal::SimpleMatrixSpecializations<Matrix,2,2>::determinant(A)>0)	
+	DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),Ul);
+      else
+	DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),Uf);
+    }
 
-    DSSres = Factory::createDSS(res.p(),res.q(),DSS1.back(),DSS2.front(),Ul);
-    else
-      DSSres = Factory::createDSS(res.p(),res.q(),DSS1.back(),DSS2.front(),Uf);
-
+ 
+  //std::cout << low.p() << "/" << low.q() << " " << up.p() << "/" << up.q() << " " << res.p() << "/" << res.q() << std::endl;
+  
+  // if(Uf == Ul)
+  //   {
+  //     DSSres = Factory::createDSS(res.p(),res.q(),DSS1.back(),DSS2.front(),Uf);
+  //   }
+  // else
+  //   {
+  //     typedef SimpleMatrix<Integer,2,2> Matrix;
+  //     Matrix A; A.clear();
+  //     A.setComponent(0,0,res.q());A.setComponent(1,0,res.p());A.setComponent(0,1,(Uf-Ul)[0]);A.setComponent(1,1,(Uf-Ul)[1]);
+      
+  //     if(DGtal::SimpleMatrixSpecializations<Matrix,2,2>::determinant(A)>0)	
+  // 	DSSres = Factory::createDSS(res.p(),res.q(),DSS1.back(),DSS2.front(),Ul);
+  //     else
+  // 	DSSres = Factory::createDSS(res.p(),res.q(),DSS1.back(),DSS2.front(),Uf);
+  //   }
   return DSSres;
 }
 
