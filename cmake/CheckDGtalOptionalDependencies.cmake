@@ -22,6 +22,7 @@ OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_HDF5 "With HDF5." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
+OPTION(WITH_PATATE "With Patate library for geometry OFF (Eigen required)." processing)
 OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
 
 
@@ -79,6 +80,13 @@ message(STATUS "      WITH_CGAL         true    (cgal)")
 ELSE(WITH_CGAL)
 message(STATUS "      WITH_CGAL         false   (cgal)")
 ENDIF(WITH_CGAL)
+
+IF(WITH_PATATE)
+SET (LIST_OPTION ${LIST_OPTION} [PATATE]\ )
+message(STATUS "      WITH_PATATE       true    (Patate geometry library)")
+ELSE(WITH_PATATE)
+message(STATUS "      WITH_PATATE       false   (Patate geometry library)")
+ENDIF(WITH_PATATE)
 
 
 IF(WITH_ITK)
@@ -416,7 +424,7 @@ IF(WITH_CGAL)
   IF (WITH_GMP AND  WITH_EIGEN)
     message(STATUS "GMP and Eigen3 detected for CGAL.")
   ELSE()
-    message(FATAL_ERROR "CGAL needs GMP and Eigen3. You must active WITH_GMP and WITH_EIGEN flags and have the associated package installed.")
+    message(FATAL_ERROR "CGAL needs GMP and Eigen3. You must activate  WITH_GMP and WITH_EIGEN flags and have the associated package installed.")
   ENDIF()
 
   find_package(CGAL COMPONENTS Core Eigen3 BLAS LAPACK)
@@ -432,6 +440,30 @@ IF(WITH_CGAL)
   ENDIF(CGAL_FOUND)
 ENDIF(WITH_CGAL)
 
+# -----------------------------------------------------------------------------
+# Look for Patate
+# http://patate.gforge.inria.fr/html/index.html
+# (they Are not compulsory).
+# -----------------------------------------------------------------------------
+SET(PATATE_FOUND_DGTAL 0)
+IF(WITH_PATATE)
+  IF (WITH_EIGEN)
+    message(STATUS "Eigen3 detected for PATATE.")
+  ELSE()
+    message(FATAL_ERROR "PATATE needs  Eigen3. You must activate  WITH_EIGEN flags and have the associated package installed.")
+  ENDIF()
+  find_package(Patate)
+  IF(PATATE_FOUND)
+    SET(DGtalLibInc ${DGtalLibInc} ${PATATE_INCLUDE_DIR})
+    INCLUDE_DIRECTORIES( ${PATATE_INCLUDE_DIR})
+    SET(PATATE_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_PATATE ")
+    ADD_DEFINITIONS("-DWITH_Eigen3 ")
+    message(STATUS "PATATE found. ${PATATE_INCLUDE_DIR} ")
+ ELSE(PATATE_FOUND)
+   message(FATAL_ERROR "Patate headers not found.")
+ ENDIF(PATATE_FOUND)
+ENDIF(WITH_PATATE)
 
 # -----------------------------------------------------------------------------
 # Look for Google Benchmark

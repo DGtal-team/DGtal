@@ -1194,7 +1194,7 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       updateGL();
     }
   if ( ( e->key() ==Qt::Key_C ) ) 
-    {
+   {
       handled=true;
       GLint Viewport[4];
       GLdouble Projection[16], Modelview[16];
