@@ -66,7 +66,7 @@ namespace DGtal
     // template class SphereFittingEstimator
     /**
      * Description of template class 'SphereFittingEstimator' <p>
-     * \brief Aim: Use patate library to perform a local sphere fitting.
+     * \brief Aim: Use Patate library to perform a local sphere fitting.
      *
      * model of CLocalEstimatorFromSurfelFunctor.
      *
@@ -75,8 +75,10 @@ namespace DGtal
      * @tparam TEmbedder type of functors which embed surfel to @f$
      * \mathbb{R}^3@f$.
      * @tparam TNormalVectorEstimatorCache the type of normal vector
-     * czche to consider (see EstimatorCache class).
-     */
+     * cache to consider (see EstimatorCache class).
+     *
+     * @see testSphereFitting.cpp
+     **/
     template <typename TSurfel,
               typename TEmbedder,
               typename TNormalVectorEstimatorCache>
@@ -144,8 +146,8 @@ namespace DGtal
       /**
        * Constructor.
        *
-       * @param anEmbedder embedder to map surfel to R^n.
-       * @param h gridstep.
+       * @param [in] anEmbedder embedder to map surfel to R^n.
+       * @param [in] h gridstep.
        */
       SphereFittingEstimator(ConstAlias<SCellEmbedder> anEmbedder,
                              const double h,
@@ -154,7 +156,8 @@ namespace DGtal
       {
         //From Mellado's example
         myFit = new Fit();
-        myFit->setWeightFunc(WeightFunc(100.0));
+        myWeightFunction = new WeightFunc(100.0);
+        myFit->setWeightFunc(*myWeightFunction);
       }
 
 
@@ -163,6 +166,7 @@ namespace DGtal
        */
       ~SphereFittingEstimator( )
       {
+        delete myWeightFunction;
         delete myFit ;
       }
 
@@ -170,8 +174,8 @@ namespace DGtal
       /**
        * Add the geometrical embedding of a surfel to the point list
        *
-       * @param aSurf a surfel to add
-       * @param aDistance of aSurf to the neighborhood boundary
+       * @param [in] aSurf a surfel to add
+       * @param [in] aDistance of aSurf to the neighborhood boundary
        */
       void pushSurfel(const Surfel & aSurf,
                       const double aDistance)
@@ -249,7 +253,7 @@ namespace DGtal
       {
         delete myFit;
         myFit = new Fit();
-        myFit->setWeightFunc(WeightFunc(100.0));
+        myFit->setWeightFunc(*myWeightFunction);
      }
 
 
@@ -267,6 +271,9 @@ namespace DGtal
       ///NormalVectorCache
       const NormalVectorEstimatorCache *myNormalEsitmatorCache;
 
+      ///const WeightFunction
+      const  WeightFunc *myWeightFunction;
+      
     }; // end of class SphereFittingEstimator
   }
 } // namespace DGtal
