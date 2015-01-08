@@ -158,9 +158,9 @@ typename DGtal::Display3D< Space ,KSpace >::SelectCallbackFct
 DGtal::Display3D< Space ,KSpace >::
 getSelectCallback3D( DGtal::int32_t aName, void*& data ) const
 {
-  typedef typename std::set<SelectCallbackFctStore>::const_iterator ConstIterator;
+  typedef typename std::set<SelectCallbackFctStore>::const_iterator SetConstIterator;
   SelectCallbackFctStore seek( 0, 0, aName, aName );
-  ConstIterator it_up = mySelectCallBackFcts.upper_bound( seek );
+  SetConstIterator it_up = mySelectCallBackFcts.upper_bound( seek );
   if ( ( it_up != mySelectCallBackFcts.end() ) && it_up->isSelected( aName ) )
     {
       data = it_up->data;

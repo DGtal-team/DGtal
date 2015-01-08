@@ -1073,7 +1073,7 @@ namespace DGtal
     
     /**
      * Creates an OpenGL list of type  GL_POINTS from a vector of BallD3D. 
-     * @param[in] aVectBall  a vector of cube (BallD3D) containing the points to be displayed.
+     * @param[in] aVectBall  a vector of balls (BallD3D) containing the points to be displayed.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/
     void glCreateListBalls(const VectorBall &aVectBall, unsigned int idList);
@@ -1084,7 +1084,7 @@ namespace DGtal
      * one OpenGL list is created but each map compoment (QuadD3D
      * vector) are marked by its identifier through the OpenGl
      * glPushName() function. 
-     * \see \ref moduleQGLInteraction for more details.
+     * See @ref moduleQGLInteraction for more details.
      * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/    
@@ -1096,7 +1096,7 @@ namespace DGtal
      * one OpenGL list is created but each map compoment (QuadD3D
      * vector) are marked by its identifier through the OpenGl
      * glPushName() function. 
-     * @see @ref moduleQGLInteraction for more details.
+     * See @ref moduleQGLInteraction for more details.
      * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/    
@@ -1106,10 +1106,10 @@ namespace DGtal
     /**
      * Creates an OpenGL list of type GL_TRIANGLES from a vector of VectorTriangle.
      * All triangles are displayed in the same list.
-     * @param[in] aVectQuad  a vector of VectorTriangle containing the set of triangles to be displayed.
+     * @param[in] aVectTriangle  a vector of VectorTriangle containing the set of triangles to be displayed.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      * @todo change the structure to support interactions as QuadMap do.
-     * @see \ref moduleQGLInteraction for more details.
+     * See \ref moduleQGLInteraction for more details.
      **/    
     void glCreateListTriangles(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
 
@@ -1117,10 +1117,10 @@ namespace DGtal
     /**
      * Creates an OpenGL list of type GL_LINES defines from a vector of VectorTriangle.
      * All triangles are displayed in the same list.
-     * @param[in] aVectQuad  a vector of VectorTriangle containing the set of triangles to be displayed.
+     * @param[in] aVectTriangle  a vector of VectorTriangle containing the set of triangles to be displayed.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      * @todo change the structure to support interactions as QuadMap do.
-     * @see \ref moduleQGLInteraction for more details.
+     * See @ref moduleQGLInteraction for more details.
      **/    
     void glCreateListTrianglesWired(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
     
@@ -1128,10 +1128,10 @@ namespace DGtal
     /**
      * Creates an OpenGL list of type  GL_POLYGON from a vector of VectorPolygon. 
      * All polygons are displayed in the same list.
-     * @param aVectBall  a vector of cube (BallD3D) containing the points to be displayed.
+     * @param  aVectPolygon a vector of VectorPolygon containing the points to be displayed.
      * @param idList the Id of the list (should be given by glGenLists).
      * @todo change the structure to support interactions as QuadMap do.
-     * @see \ref moduleQGLInteraction for more details.
+     * See @ref moduleQGLInteraction for more details.
      **/
     void glCreateListPolygons(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
     
@@ -1139,10 +1139,10 @@ namespace DGtal
     /**
      * Creates an OpenGL list of type  GL_LINES from a vector of VectorPolygon. 
      * All polygons are displayed in the same list.
-     * @param[in] aVectBall  a vector of cube (BallD3D) containing the points to be displayed.
+     * @param[in] aVectPolygon  a vector of vector of polygons (VectorPolygon) containing the points to be displayed.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      * @todo change the structure to support interactions as QuadMap do.
-     * @see \ref moduleQGLInteraction for more details.
+     * See @ref moduleQGLInteraction for more details.
      **/
     void glCreateListPolygonsWired(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
 
