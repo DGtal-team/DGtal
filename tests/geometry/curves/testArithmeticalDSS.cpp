@@ -1022,7 +1022,11 @@ bool unionTest()
 }
 
 
-
+template <typename Vector>
+typename Vector::Coordinate determinant(Vector u, Vector v)
+{
+  return u[0]*v[1] - u[1]*v[0];
+} 
 
 template <typename ConstPairIterator, typename DSS>
 DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::PreimagePtr P, typename DSS::Point first, typename DSS::Point last)
@@ -1044,8 +1048,9 @@ DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::
   Point Ll = P->Ll(); // = qH.begin()
   
   Point rUf,rUl,rLf,rLl;
-  
-  // std::cout << Uf << " " << Ul << " " << Lf <<  " " << Ll << std::endl;
+
+  //std::cout << P << std::endl;
+  std::cout << Uf << " " << Ul << " " << Lf <<  " " << Ll << std::endl;
   
   Vector Vlow = Lf - Ul;
   Vector Vup = Uf - Ll;
@@ -1067,7 +1072,7 @@ DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::
 	{
 	  next = *(it);
 	  //std::cout << "next = " << next;
-	  if(determinant(next-cur,Vlow)!=0)
+	  if(determinant<Vector>(next-cur,Vlow)!=0)
 	    ok = false;
 	  else
 	    cur = next;
@@ -1090,7 +1095,7 @@ DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::
 	{
 	  next = *(rit);
 	  //std::cout << "next =" << next;
-	  if(determinant(cur-next,Vup)!=0)
+	  if(determinant<Vector>(cur-next,Vup)!=0)
 	    ok = false;
 	  else
 	    cur = next;
@@ -1111,7 +1116,7 @@ DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::
       if(++it != qH.end())
 	{
 	  next = *(it);
-	  if(determinant(next-cur,Vup)!=0)
+	  if(determinant<Vector>(next-cur,Vup)!=0)
 	    ok = false;
 	  else
 	    cur = next;
@@ -1132,7 +1137,7 @@ DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::
       if(++rit != pH.rend())
 	{
 	  next = *rit;
-	  if(determinant(cur-next,Vlow)!=0)
+	  if(determinant<Vector>(cur-next,Vlow)!=0)
 	    ok = false;
 	  else
 	    cur = next;
@@ -1161,7 +1166,8 @@ DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::
   a = a/g;
   b = b/g;
 		 
-  DSS resDSS(a,b,first, last, rLl, rLf, rUl+Point(0,-1), rUf+Point(0,-1));
+  Vector shift = DGtal::ArithmeticalDSLKernel<typename DSS::Integer, 8>::shift(a,b);
+  DSS resDSS(a,b,first, last, rLl, rLf, rUl+shift, rUf+shift);
   return resDSS;
 
 }
@@ -1243,13 +1249,13 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  Point A,B,C,D;
 		  DSL aDSL(baseDSL);
 		  //Randomly switch a and b to cover cases where |a| > |b|
-		  if(random()%2)
-		    {
-		      aDSL = DSL(b,-a,-mu);
-		      A = Point(-y1,x1); B = Point(-y2,x2);
-		      C = Point(-y3,x3); D = Point(-y4,x4);
-		    }
-		  else
+		  // if(random()%2)
+		  //   {
+		  //     aDSL = DSL(b,-a,-mu);
+		  //     A = Point(-y1,x1); B = Point(-y2,x2);
+		  //     C = Point(-y3,x3); D = Point(-y4,x4);
+		  //   }
+		  // else
 		    {
 		      A = Point(x1,y1); B = Point(x2,y2);
 		      C = Point(x3,y3); D = Point(x4,y4);
@@ -1265,15 +1271,13 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 
 		  //std::cout << DSS1 << "\n" << DSS2 << std::endl << "--------" << std::endl;
 		  
-		  // Treat easy cases only for comparisons with
-		  // Arithmetical DSS recognition algorithm
+		  nb++;
+		  // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
+		  DSS DSSres = DSS1.Union(DSS2);
+		  
+		  // Compare the result with Arithmetical DSS recognition algorithm for easy cases
 		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,aDSL.shift())==0)
 		    {
-		      nb++;
-		      // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
-		      DSS DSSres = DSS1.Union(DSS2);
-		      //std::cout << "------------------\n";
-		      
 		      // Computation of DSS1 \cup DSS2 using the
 		      // Arithmetical DSS algorithm: add points from B++
 		      // until D
@@ -1301,11 +1305,8 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 			}
 		      nbok+=(DSSres == DSSGroundTruth)?1:0;
 		    }
-		  else
-		    // TODO: comparison with stabbing line computer
+		  else // Compare the result with Stabbing line algorithm for other cases
 		    {
-		      DSS DSSres = DSS1.Union(DSS2);
-		      
 		      typedef pair<Point,Point> Pair;
 		      typedef std::vector< Pair > PairContainer;
 		      // Iterator on the container
@@ -1342,24 +1343,33 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		      
 		      // //extension
 		      s.init( contour.begin() );
-		      bool ok=true; bool Clock =false;
 		      while ( s.end() != contour.end() && s.extendFront())
 		      	{}
 		      
 		      DSS DSSStab(DSS1);
 		      
+		      std::cout << "-------------\n";
 		      DSSStab = computeMinDSSFromPreimage<ConstPairIterator,DSS>(s.getPreimage(),DSS1.back(),DSS2.front());
-		      
-		      
-
+		      if(DSSres != DSSStab)
+			{
+			  
+			  std::cout << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
+			  std::cout << DSSres << std::endl;
+			  std::cout << DSSStab << std::endl;
+			  std::cout << "------------------\n";
+			}
+		      nbok+=(DSSres == DSSStab)?1:0;
 		    }
-		  //  std::cout << "---------------------------" << std::endl;
+		  
+		  
 		}
-	      
+	      //  std::cout << "---------------------------" << std::endl;
 	    }
+	  
 	}
     }
- 
+  
+  
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << std::endl;
   trace.endBlock();
@@ -1544,7 +1554,7 @@ int main( int argc, char** argv )
 
   { // union of two DSSs
     res = res && unionTest();
-    res = res && unionComparisonTest(1000,50,1000);
+    res = res && unionComparisonTest(10,5,200);
   }
   
   
