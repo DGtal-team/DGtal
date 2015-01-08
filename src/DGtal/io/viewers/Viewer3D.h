@@ -1084,7 +1084,7 @@ namespace DGtal
      * one OpenGL list is created but each map compoment (QuadD3D
      * vector) are marked by its identifier through the OpenGl
      * glPushName() function. 
-     * @see \ref moduleQGLInteraction for more details.
+     * \see \ref moduleQGLInteraction for more details.
      * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/    

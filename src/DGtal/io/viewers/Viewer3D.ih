@@ -948,9 +948,9 @@ DGtal::Viewer3D<Space, KSpace>::postSelection ( const QPoint& point )
     {
       DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << endl;
       // JOL: 2014/10/15
-      void* data = 0;
-      SelectCallbackFct fct = getSelectCallback3D( selectedName(), data );
-      if ( fct ) fct( this, selectedName(), data );
+      void* aData = 0;
+      SelectCallbackFct fct = getSelectCallback3D( selectedName(), aData );
+      if ( fct ) fct( this, selectedName(), aData );
       // I leave the remaining code.
       else if ( selectedName() >= 0 )
         {
@@ -1018,7 +1018,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
   std::vector<ItCube> listIt;
   std::vector<ItCube> listEnd;
-  int nbCubes =0;
+
   
   for( unsigned int i = 0; i <   Viewer3D<Space, KSpace>::myCubeSetList.size(); i++){
     if (Viewer3D<Space, KSpace>::myCubeSetList.at(i).size() > 0  )
@@ -1573,7 +1573,7 @@ template< typename Space, typename KSpace>
 void 
 DGtal::Viewer3D<Space, KSpace>::glCreateListPolygonsWired(const std::vector<VectorPolygon>  &aVectPolygon, 
                                                          unsigned int idList){
-  glNewList ( myPolygonSetListWiredId, GL_COMPILE );
+  glNewList ( idList, GL_COMPILE );
   glPushName ( myNbListe );
   glDisable ( GL_LIGHTING );
   glBegin ( GL_LINES );
