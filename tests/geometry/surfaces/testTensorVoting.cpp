@@ -109,9 +109,11 @@ bool testLocalEstimatorFromFunctorAdapter()
   FunctorVoting estimator(embedder,1);
 
   ConvFunctor convFunc(1.0);
-  Reporter reporter(surface, l2Metric, estimator , convFunc);
+  Reporter reporter;
+  reporter.attach(surface);
+  reporter.setParams(l2Metric, estimator , convFunc, 2.0);
 
-  reporter.init(1, 2);
+  reporter.init(1, surface.begin(), surface.end());
 
   typename FunctorVoting::Quantity val = reporter.eval( surface.begin());
   trace.info() << "probing at "<< *(surface.begin())<<std::endl;
@@ -179,14 +181,18 @@ bool testCube()
 
   ConvFunctor convFunc(1.0);
   Reporter reporter(surface, l2Metric, estimator , convFunc);
+  reporter.attach(surface);
+  reporter.setParams(l2Metric, estimator , convFunc, 2.0);
+  reporter.init(1, surface.begin(),surface.end());
+  trace.endBlock();
 
-  reporter.init(1, 5);
-
+  trace.beginBlock("Probing ...");
+  Z3i::KSpace::Point p(11,-12,1);
   for(Surface::ConstIterator it = surface.begin(), itend = surface.end(); it!= itend; ++it)
     {
-      if (K.sKCoords(*it) == KSpace::Point(11,-12,1))
+      if (K.sKCoords(*it) == p)
         {
-          FunctorVoting::Quantity val = reporter.eval(it );
+          Reporter::Quantity val = reporter.eval( it );
           trace.info() << "probing at "<< *it<<std::endl;
           trace.info() << "Voting = "<<val <<std::endl;
         }
