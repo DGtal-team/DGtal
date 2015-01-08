@@ -133,9 +133,9 @@ namespace DGtal
   public:
 
     typedef Display3D<Space, KSpace> Display;
-
     typedef typename Display::SelectCallbackFct SelectCallbackFct;
     using Display::getSelectCallback3D;
+    typedef typename Display::RealPoint RealPoint;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -245,10 +245,10 @@ namespace DGtal
     {
 
       /// The image domain coordinates
-      DGtal::Z3i::RealPoint point1;
-      DGtal::Z3i::RealPoint point2;
-      DGtal::Z3i::RealPoint point3;
-      DGtal::Z3i::RealPoint point4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
       /// The image domain color
       DGtal::Color color;
       /// the width of the image domain
@@ -316,10 +316,10 @@ namespace DGtal
     struct TextureImage
     {
 
-      DGtal::Z3i::RealPoint point1;
-      DGtal::Z3i::RealPoint point2;
-      DGtal::Z3i::RealPoint point3;
-      DGtal::Z3i::RealPoint point4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
 
       ImageDirection myDirection; /// direction of the image (x, y or z axe)
 
@@ -428,10 +428,10 @@ namespace DGtal
        * @param aPoint4 the fourth image point (lower bound point in first dimension and upper in the second dimentsion)
        */
       void
-      updateImage3DEmbedding( DGtal::Z3i::RealPoint aPoint1,
-                              DGtal::Z3i::RealPoint aPoint2,
-                              DGtal::Z3i::RealPoint aPoint3,
-                              DGtal::Z3i::RealPoint aPoint4)
+      updateImage3DEmbedding( RealPoint aPoint1,
+                              RealPoint aPoint2,
+                              RealPoint aPoint3,
+                              RealPoint aPoint4)
       {
         point1 = aPoint1;  point2 = aPoint2; point3 = aPoint3;   point4 = aPoint4;
         myDirection=undefDirection;
@@ -877,10 +877,10 @@ namespace DGtal
     struct GLTextureImage
     {
       /// coordinates
-      DGtal::Z3i::RealPoint point1;
-      DGtal::Z3i::RealPoint point2;
-      DGtal::Z3i::RealPoint point3;
-      DGtal::Z3i::RealPoint point4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
 
       typename Viewer3D<Space, KSpace>::ImageDirection myDirection;
       unsigned int myImageWidth;
@@ -969,8 +969,8 @@ namespace DGtal
         vectNormal[1]= (myDirection == Viewer3D<Space, KSpace>::yDirection)? -1.0: 0.0;
         vectNormal[2]= (myDirection == Viewer3D<Space, KSpace>::zDirection)? 1.0: 0.0;
         if(myDirection==undefDirection){
-          DGtal::Z3i::RealPoint v1 = point2-point1;
-          DGtal::Z3i::RealPoint v2 = point4-point1;
+          RealPoint v1 = point2-point1;
+          RealPoint v2 = point4-point1;
           vectNormal[0] = v1[1]*v2[2] - v1[2]*v2[1];
           vectNormal[1] = v1[2]*v2[0] - v1[0]*v2[2];
           vectNormal[2] = v1[0]*v2[1] - v1[1]*v2[0];
@@ -1040,6 +1040,7 @@ namespace DGtal
     typedef typename std::vector<typename Viewer3D<Space, KSpace>::BallD3D> VectorBall;
     typedef typename std::vector<typename Viewer3D<Space, KSpace>::TriangleD3D> VectorTriangle;
     typedef typename std::vector<typename Viewer3D<Space, KSpace>::PolygonD3D> VectorPolygon;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::TextureImage> VectorTextureImage;
     
     
     typedef typename VectorCubes::iterator ItCube;
@@ -1151,7 +1152,7 @@ namespace DGtal
      * @param[in] aVectImage the vector containing 
      *
      **/    
-    void glUpdateTextureImages(const std::vector<Viewer3D<Space, KSpace>::TextureImage>  &aVectImage);
+    void glUpdateTextureImages(const VectorTextureImage  &aVectImage);
     
     
 

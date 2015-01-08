@@ -182,18 +182,18 @@ DGtal::Viewer3D< Space ,KSpace >::updateTextureImage(unsigned int imageIndex, co
   BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
   typename Viewer3D< Space ,KSpace >::TextureImage &anImage = myGSImageList.at(imageIndex);
-  Display3D< Space, KSpace>::updateBoundingBox(DGtal::Z3i::RealPoint(anImage.point1[0]+xTranslation,
-                                                                     anImage.point1[1]+yTranslation, 
-                                                                     anImage.point1[2]+zTranslation));
-  Display3D< Space, KSpace>::updateBoundingBox(DGtal::Z3i::RealPoint(anImage.point2[0]+xTranslation,
-                                                                     anImage.point2[1]+yTranslation, 
-                                                                     anImage.point2[2]+zTranslation));
-  Display3D< Space, KSpace>::updateBoundingBox(DGtal::Z3i::RealPoint(anImage.point3[0]+xTranslation,
-                                                                     anImage.point3[1]+yTranslation, 
-                                                                     anImage.point3[2]+zTranslation));
-  Display3D< Space, KSpace>::updateBoundingBox(DGtal::Z3i::RealPoint(anImage.point4[0]+xTranslation, 
-                                                                     anImage.point4[1]+yTranslation, 
-                                                                     anImage.point4[2]+zTranslation));
+  Display::updateBoundingBox(RealPoint(anImage.point1[0]+xTranslation,
+                                                   anImage.point1[1]+yTranslation, 
+                                                   anImage.point1[2]+zTranslation));
+  Display::updateBoundingBox(RealPoint(anImage.point2[0]+xTranslation,
+                                                   anImage.point2[1]+yTranslation, 
+                                                   anImage.point2[2]+zTranslation));
+  Display::updateBoundingBox(RealPoint(anImage.point3[0]+xTranslation,
+                                                   anImage.point3[1]+yTranslation, 
+                                                   anImage.point3[2]+zTranslation));
+  Display::updateBoundingBox(RealPoint(anImage.point4[0]+xTranslation, 
+                                                   anImage.point4[1]+yTranslation, 
+                                                   anImage.point4[2]+zTranslation));
   anImage.updateImageDataAndParam(image, aFunctor, xTranslation, yTranslation, zTranslation);
   if(anImage.myDrawDomain)
     {
@@ -638,7 +638,6 @@ DGtal::Viewer3D<Space, KSpace>::drawWithNames()
   // selection is left clic + shift key.
   // JOL: 2014/10/15. This is my addition for interacting with
   // quads. Seems to work well.
-  //  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
   
   glCallList ( myQuadsMapId );
   // JOL: 2014/10/15. I leave the remaining code, but I am not
@@ -1604,7 +1603,7 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListPolygonsWired(const std::vector<Vect
 
 template< typename Space, typename KSpace>
 void 
-DGtal::Viewer3D<Space, KSpace>::glUpdateTextureImages(const  std::vector<Viewer3D<Space, KSpace>::TextureImage>& aVectImage){
+DGtal::Viewer3D<Space, KSpace>::glUpdateTextureImages(const  VectorTextureImage &aVectImage){
   myVectTextureImage.clear();
   for(unsigned int j=0; j<aVectImage.size(); j++)
     {

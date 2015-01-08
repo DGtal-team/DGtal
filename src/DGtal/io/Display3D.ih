@@ -166,7 +166,11 @@ getSelectCallback3D( DGtal::int32_t aName, void*& data ) const
       data = it_up->data;
       return it_up->fct;
     }
+  if (it_up == mySelectCallBackFcts.begin()){
+    return 0;
+  }
   --it_up;
+  
   if ( ( it_up != mySelectCallBackFcts.end() ) && it_up->isSelected( aName ) )
     {
       data = it_up->data;
