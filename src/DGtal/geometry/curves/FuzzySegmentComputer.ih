@@ -169,7 +169,9 @@ init(const typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalSc
   myBegin = it;
   myEnd = it;
   ++myEnd;
-  melkmanAddPoint(*it);  
+  melkmanAddPoint(*it);
+  myPointSet.insert(*it);
+  
 }
 
 
@@ -190,6 +192,10 @@ inline
 bool
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront() 
 {
+  
+  melkmanAddPoint(*myEnd);
+  myPointSet.insert(*myEnd);
+  ++myEnd;
   return true;  
 }
 
@@ -236,7 +242,12 @@ inline
 void
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay(std::ostream & out)  const
 {
-  out << "[Fuzzy Segment Computer]" ; 
+  out << "[Fuzzy Segment Computer]" << std::endl; 
+  out << "Inside points: "<< std::endl;
+  for ( ConstIterator it = myPointSet.begin(); it != myPointSet.end(); ++it){
+    out << *it << " ";
+  }
+  
 }
 
 

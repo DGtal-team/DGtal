@@ -59,10 +59,11 @@ bool testFuzzySegmentComputer()
   aContour.insert(Z2i::RealPoint(6.1, -0.1));
   
   aFuzzySegment.init(aContour.cbegin());
+  for (int i=0; i<aContour.size()-1; i++){ 
+    aFuzzySegment.extendFront();
+  }
   
-
-  
-
+  trace.info() << aFuzzySegment;
   // loading inoput Z2i::RealPoint contour
 
 
