@@ -1,7 +1,7 @@
 SET(DGTAL_TESTS_SRC
    testBreadthFirstPropagation
    testDepthFirstPropagation
-   testDigitalSurfaceBoostGraphInterface
+   ##testDigitalSurfaceBoostGraphInterface
    testDistancePropagation
    testExpander
    testSTLMapToVertexMapAdapter
