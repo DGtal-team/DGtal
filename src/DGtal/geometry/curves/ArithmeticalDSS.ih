@@ -515,9 +515,6 @@ DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL,
 }
 
 
-
-
-
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
@@ -773,7 +770,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   //std::cout << Vlow << " " << Vup << std::endl;
   Integer p = abs(Vlow[0])<abs(Vlow[1])?abs(Vlow[0]):abs(Vlow[1]);
   Integer q = abs(Vlow[0])<abs(Vlow[1])?abs(Vlow[1]):abs(Vlow[0]);
-  Fraction low(p,q);
+  Fraction low(p,q); // a fraction p/q is such that p>0, q>0 and p<=q 
   //Fraction low(Vlow[1],Vlow[0]);
   
   p = abs(Vup[0])<abs(Vup[1])?abs(Vup[0]):abs(Vup[1]);
@@ -784,17 +781,20 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   // Compute the fraction of smallest denominator between low and up
   Fraction res = low.fractionOfSmallestDenominatorInBetween(up);
   
+  //std::cout << low.p() << "/" << low.q() << " " << up.p() << "/" << up.q() << " " << res.p() << "/" << res.q() << std::endl;
+  
   Integer aFinal,bFinal;
   if(aRes<0)
-    aFinal = (aRes<bRes)?-res.p():-res.q();
+    aFinal = (abs(aRes)<abs(bRes))?-res.p():-res.q();
   else
-    aFinal = (aRes<bRes)?res.p():res.q();
+    aFinal = (abs(aRes)<abs(bRes))?res.p():res.q();
   
   if(bRes<0)
-    bFinal = (aRes<bRes)?-res.q():-res.p();
+    bFinal = (abs(aRes)<abs(bRes))?-res.q():-res.p();
   else
-    bFinal = (aRes<bRes)?res.q():res.p();
+    bFinal = (abs(aRes)<abs(bRes))?res.q():res.p();
   
+  //std::cout << aFinal << " " << bFinal << std::endl;
   
   if(Uf == Ul)
     {

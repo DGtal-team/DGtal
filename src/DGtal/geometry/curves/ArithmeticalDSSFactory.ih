@@ -212,8 +212,6 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createDSS(const C
   Point Uf, Ul, Lf, Ll;
   DSL dsl(aA,aB,DSL::remainder(aA,aB,aU));
   
-  //  std::cout << aU << std::endl;
-
   Vector u(aB,aA);
 
   //Upper leaning points
@@ -239,7 +237,7 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createDSS(const C
     { //otherwise
       Coordinate signedUnity = -1; 
       Vector v = bezoutVector(aA, aB, signedUnity);
-      v -= dsl.shift()*signedUnity; // "forward" vector from an upper to a lower leaning point
+      v += dsl.shift(); // "forward" vector from an upper to a lower leaning point
       Vector w = v - u; // "backward" vector from an upper to a lower leaning point
       if(dsl.beforeOrEqual(aFirst,Uf+w)) // there is a lower leaning point before Uf
 	Lf = Uf + w;
@@ -253,8 +251,7 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createDSS(const C
     }
   
   DSS res(dsl.a(), dsl.b(), aFirst, aLast, Uf, Ul, Lf, Ll);
-  //std::cout << "create DSS from one upper leaning point " << res << std::endl;
-
+  
   assert(res.isValid());
 
   return res;
@@ -288,21 +285,38 @@ bezoutVector(const Coordinate& aA,
   IntegerComputer<Coordinate> computer; 
   Vector v = computer.extendedEuclid(aA, -aB, aR); 
   ASSERT( (aA*v[0]-aB*v[1]) == aR );
-
+  
   //compute the one whose component
   //have a sign equal to the direction
   //vector components
-  if ( (aB >= 0)&&(v[0] < 0) )
+  // if ( (aB >= 0)&&(v[0] < 0) )
+  //   v += Vector(aB,aA); 
+  // else if ( (aB < 0)&&(v[0] >= 0) )
+  //   v += Vector(aB,aA); 
+  // else if ( ( aA >= 0 )&&(v[1] < 0) )
+  //   v += Vector(aB,aA);
+  // else if ( ( aA < 0 )&&(v[1] >= 0) )
+  //   v += Vector(aB,aA);
+  
+  // Erratum: modify v if and only if aB and v[0] or aA and v[1] have strictly different signs
+  if ( (aB > 0)&&(v[0] < 0) )
     v += Vector(aB,aA); 
-  else if ( (aB < 0)&&(v[0] >= 0) )
+  else if ( (aB < 0)&&(v[0] > 0) )
     v += Vector(aB,aA); 
-  else if ( ( aA >= 0 )&&(v[1] < 0) )
+  else if ( ( aA > 0 )&&(v[1] < 0) )
     v += Vector(aB,aA);
-  else if ( ( aA < 0 )&&(v[1] >= 0) )
+  else if ( ( aA < 0 )&&(v[1] > 0) )
     v += Vector(aB,aA);
+  
   ASSERT( (aA*v[0]-aB*v[1]) == aR );
-  ASSERT( (( aA >= 0 )&&(v[1] >= 0))||(( aA < 0 )&&(v[1] < 0)) ); 
-  ASSERT( (( aB >= 0 )&&(v[0] >= 0))||(( aB < 0 )&&(v[0] < 0)) ); 
+  
+  // Too restrictive asserts: cases where one v component is null are rejected while they should be accepted. See for instance bezoutVector(-1,-3,-1)
+  //  ASSERT( (( aA >= 0 )&&(v[1] >= 0))||(( aA < 0 )&&(v[1] < 0)) ); 
+  //  ASSERT( (( aB >= 0 )&&(v[0] >= 0))||(( aB < 0 )&&(v[0] < 0)) ); 
+
+  // assert that for the pairs (aA,v[1]) and (aB,v[0]) either one member is null, or they have the same sign
+  ASSERT( (aA ==0 || v[1] == 0 || (aA > 0 && v[1] > 0) || (aA < 0 && v[1] <0)) && (aB ==0 || v[0] == 0 || (aB > 0 && v[0] > 0) || (aB < 0 && v[0] <0)));
+  
 
   return v; 
 }
