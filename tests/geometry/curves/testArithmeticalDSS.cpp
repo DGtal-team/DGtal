@@ -1003,6 +1003,8 @@ bool unionTest()
   
   // DSS1 and DSS2 not connected and union is part of a DSL
   
+  
+
 
   //-------------------------------------------------
   //---------- Union is not part of a DSL -----------
@@ -1029,7 +1031,7 @@ typename Vector::Coordinate determinant(Vector u, Vector v)
 } 
 
 template <typename ConstPairIterator, typename DSS>
-DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::PreimagePtr P, typename DSS::Point first, typename DSS::Point last)
+DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::PreimagePtr P, typename DSS::Point first, typename DSS::Point last, typename DSS::Vector shift)
 {
   typedef typename StabbingLineComputer<ConstPairIterator>::Preimage::Container Hull; 
   Hull pH, qH;
@@ -1050,7 +1052,7 @@ DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::
   Point rUf,rUl,rLf,rLl;
 
   //std::cout << P << std::endl;
-  std::cout << Uf << " " << Ul << " " << Lf <<  " " << Ll << std::endl;
+  //std::cout << Uf << " " << Ul << " " << Lf <<  " " << Ll << std::endl;
   
   Vector Vlow = Lf - Ul;
   Vector Vup = Uf - Ll;
@@ -1148,7 +1150,8 @@ DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::
   rLf = cur;
 
   /****************************/
-  
+
+  // If P is the preimage of a connected set of pixels, the minimal characteristics can be computed directly
   Integer a, b;
   if(rUl != rUf)
     {
@@ -1166,8 +1169,13 @@ DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::
   a = a/g;
   b = b/g;
 		 
-  Vector shift = DGtal::ArithmeticalDSLKernel<typename DSS::Integer, 8>::shift(a,b);
   DSS resDSS(a,b,first, last, rLl, rLf, rUl+shift, rUf+shift);
+
+  // otherwise, some extra work has to be done
+
+  
+
+
   return resDSS;
 
 }
@@ -1182,6 +1190,8 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 {
   unsigned int nb = 0;
   unsigned int nbok = 0;
+  unsigned int nbSameOrdinate = 0;
+
   
   typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
   typedef typename DSS::DSL DSL;
@@ -1201,8 +1211,8 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 	a =random()%b +1; // |a| < |b|
       
       // Pick-up random signs for a and b
-      // a = a*((random()%2==0)?1:-1);
-      // b = b*((random()%2==0)?1:-1);
+      a = a*((random()%2==0)?1:-1);
+      b = b*((random()%2==0)?1:-1);
 
       if ( ic.gcd( a, b ) == 1 )
         {
@@ -1217,8 +1227,8 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
                 {
 		  // elemMove equals 1 or -1
 		  Integer elemMove = ((baseDSL.steps()).first)[0]; 
-		  // modx modulates the length of the subsegments
 		  
+		  // modx modulates the length of the subsegments
 		  // Pick up the beginning of the first subsegment
 		  Integer x1 = random() % modx;
 		  // Pick up the end of the first subsegment
@@ -1230,6 +1240,9 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  //after x2. 
 		  //Integer x3 = x2+1*elemMove;
 		  Integer x3 = x1 + (random() % (x2-x1+b))*elemMove;
+
+		  // Disonnected DSSs: The beginning of the second subsegment is randomly set after x2. 
+		  //Integer x3 = x2 + (random() % (2*modb))*elemMove;
 		  
 		  // The length of the second segment is set to modx
 		  Integer x4 = x3 + modx*elemMove;
@@ -1249,13 +1262,13 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  Point A,B,C,D;
 		  DSL aDSL(baseDSL);
 		  //Randomly switch a and b to cover cases where |a| > |b|
-		  // if(random()%2)
-		  //   {
-		  //     aDSL = DSL(b,-a,-mu);
-		  //     A = Point(-y1,x1); B = Point(-y2,x2);
-		  //     C = Point(-y3,x3); D = Point(-y4,x4);
-		  //   }
-		  // else
+		  if(random()%2)
+		    {
+		      aDSL = DSL(b,-a,-mu);
+		      A = Point(-y1,x1); B = Point(-y2,x2);
+		      C = Point(-y3,x3); D = Point(-y4,x4);
+		    }
+		  else
 		    {
 		      A = Point(x1,y1); B = Point(x2,y2);
 		      C = Point(x3,y3); D = Point(x4,y4);
@@ -1269,15 +1282,19 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  DSS DSS1(aDSL,A,B);
 		  DSS DSS2(aDSL,C,D);
 
-		  //std::cout << DSS1 << "\n" << DSS2 << std::endl << "--------" << std::endl;
+		  // std::cout << DSS1 << "\n" << DSS2 << std::endl << "--------" << std::endl;
 		  
-		  nb++;
+		  
+		  //nb++;
 		  // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
 		  DSS DSSres = DSS1.Union(DSS2);
 		  
 		  // Compare the result with Arithmetical DSS recognition algorithm for easy cases
 		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,aDSL.shift())==0)
 		    {
+		      if(!aDSL.beforeOrEqual(C,B))
+			nbSameOrdinate++;
+		      nb++;
 		      // Computation of DSS1 \cup DSS2 using the
 		      // Arithmetical DSS algorithm: add points from B++
 		      // until D
@@ -1304,61 +1321,64 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 			  std::cout << "------------------\n";
 			}
 		      nbok+=(DSSres == DSSGroundTruth)?1:0;
-		    }
-		  else // Compare the result with Stabbing line algorithm for other cases
-		    {
-		      typedef pair<Point,Point> Pair;
-		      typedef std::vector< Pair > PairContainer;
-		      // Iterator on the container
-		      typedef PairContainer::const_iterator ConstPairIterator;
+		      //   }
+		      // else // Compare the result with Stabbing line algorithm for other cases
+		      //   {
+		      // typedef pair<Point,Point> Pair;
+		      // typedef std::vector< Pair > PairContainer;
+		      // // Iterator on the container
+		      // typedef PairContainer::const_iterator ConstPairIterator;
 		      
-		      // Build the "contour" as the concatenation of DSS1 and
-		      // the leaning points of DSS2
-		      PairContainer contour;
-		      DSS::ConstIterator itbegin = aDSL.begin(A);
-		      DSS::ConstIterator itend = aDSL.end(B);
-		      DSS::ConstIterator it;
-		      it = itbegin;
-		      while(it!=itend)
-			{
-			  Pair p = make_pair(*it-aDSL.shift(),*it);
-			  contour.push_back(p);
-			  ++it;
-			}
+		      // // Build the "contour" as the concatenation of DSS1 and
+		      // // the leaning points of DSS2
+		      // PairContainer contour;
+		      // DSS::ConstIterator itbegin = aDSL.begin(A);
+		      // DSS::ConstIterator itend = aDSL.end(B);
+		      // DSS::ConstIterator it;
+		      // it = itbegin;
+		      // while(it!=itend)
+		      // 	{
+		      // 	  Pair p = make_pair(*it-aDSL.shift(),*it);
+		      // 	  contour.push_back(p);
+		      // 	  ++it;
+		      // 	}
 		      
-		      itbegin = aDSL.begin(C);
-		      itend = aDSL.end(D);
-		      it = itbegin;
-		      while(it!= itend)
-			{
-			  if(*it == DSS2.Uf() || *it == DSS2.Ul() || *it == DSS2.Lf() || *it == DSS2.Ll())
-			    {
-			      Pair p = make_pair(*it-aDSL.shift(),*it);
-			      contour.push_back(p);
-			    }
-			  ++it;
-			}
+		      // itbegin = aDSL.begin(C);
+		      // itend = aDSL.end(D);
+		      // it = itbegin;
+		      // while(it!= itend)
+		      // 	{
+		      // 	  if(*it == DSS2.Uf() || *it == DSS2.Ul() || *it == DSS2.Lf() || *it == DSS2.Ll())
+		      // 	    {
+		      // 	      Pair p = make_pair(*it-aDSL.shift(),*it);
+		      // 	      contour.push_back(p);
+		      // 	    }
+		      // 	  ++it;
+		      // 	}
 		      
-		      StabbingLineComputer<ConstPairIterator> s; 
+		      // StabbingLineComputer<ConstPairIterator> s; 
 		      
-		      // //extension
-		      s.init( contour.begin() );
-		      while ( s.end() != contour.end() && s.extendFront())
-		      	{}
+		      // // //extension
+		      // s.init( contour.begin() );
+		      // while ( s.end() != contour.end() && s.extendFront())
+		      // 	{}
 		      
-		      DSS DSSStab(DSS1);
+		      // DSS DSSStab(DSS1);
 		      
-		      std::cout << "-------------\n";
-		      DSSStab = computeMinDSSFromPreimage<ConstPairIterator,DSS>(s.getPreimage(),DSS1.back(),DSS2.front());
-		      if(DSSres != DSSStab)
-			{
+		      // // std::cout << "-------------\n";
+		      // if(aDSL.before(DSS1.front(),DSS2.front()))
+		      // 	DSSStab = computeMinDSSFromPreimage<ConstPairIterator,DSS>(s.getPreimage(),DSS1.back(),DSS2.front(),aDSL.shift());
+		      // else
+		      // 	DSSStab = computeMinDSSFromPreimage<ConstPairIterator,DSS>(s.getPreimage(),DSS1.back(),DSS1.front(),aDSL.shift());
+		      // if(DSSres != DSSStab)
+		      // 	{
 			  
-			  std::cout << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
-			  std::cout << DSSres << std::endl;
-			  std::cout << DSSStab << std::endl;
-			  std::cout << "------------------\n";
-			}
-		      nbok+=(DSSres == DSSStab)?1:0;
+		      // 	  std::cout << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
+		      // 	  std::cout << DSSres << std::endl;
+		      // 	  std::cout << DSSStab << std::endl;
+		      // 	  std::cout << "------------------\n";
+		      // 	}
+		      // nbok+=(DSSres == DSSStab)?1:0;
 		    }
 		  
 		  
@@ -1371,7 +1391,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
   
   
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << std::endl;
+	       << nbSameOrdinate << std::endl;
   trace.endBlock();
   return (nb==nbok);
 }
@@ -1554,10 +1574,16 @@ int main( int argc, char** argv )
 
   { // union of two DSSs
     res = res && unionTest();
-    res = res && unionComparisonTest(10,5,200);
+    res = res && unionComparisonTest(10000,50,2000);
   }
   
-  
+  // typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory;
+  // typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8;
+  // DSS8 dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(-1,-3));
+  // std::cout << dss << std::endl;
+  // dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(10,-1));
+  // std::cout << dss << std::endl;
+
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
