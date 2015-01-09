@@ -679,8 +679,12 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 
   // Four candidate critical points are known in Uf, Lf, Ul, Ll
   
-  //  std::cout << "candidates = " << Uf << Ul << Lf << Ll << std::endl;
+  //std::cout << "candidates = " << Uf << Ul << Lf << Ll << std::endl;
   
+  if(Uf==Ul && Lf==Ll)
+    return ArithmeticalDSS(Point(0,0));
+
+
   Integer b = Ll[0]-Lf[0];
   Integer a = Ll[1]-Lf[1];
   Vector shiftRes = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::shift(a,b);
@@ -698,15 +702,15 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   bool UPointsInDSL = DSLLower.isInDSL(Uf) && DSLLower.isInDSL(Ul);
   
   // DSS1 \cup DSS2 is not part of a DSL
-  if(!LPointsInDSL && !UPointsInDSL) 
+  if((Uf == Ul && !UPointsInDSL) || (Lf==Ll && !LPointsInDSL) || (!LPointsInDSL && !UPointsInDSL)) 
     {
-      std::cout << "not a dsl" << std::endl;
+      //  std::cout << "not a dsl" << std::endl;
       return ArithmeticalDSS(Point(0,0));
     }
   
   Integer aRes, bRes;
   
-  if( LPointsInDSL && UPointsInDSL)
+  if(LPointsInDSL && UPointsInDSL)
     { // four critical points
       if(DSLUpper.a() != 0 || DSLUpper.b() != 0) // a and b may be null
 						 // if Ul and Uf are confounded
@@ -722,6 +726,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
     }
   else
     { // three critical points only
+      //std::cout << "ici\n";
       if(LPointsInDSL)
 	{
 	  aRes = DSLUpper.a();
@@ -805,11 +810,11 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
       typedef SimpleMatrix<Integer,2,2> Matrix;
       Matrix A; A.clear();
       A.setComponent(0,0,bFinal);A.setComponent(1,0,aFinal);A.setComponent(0,1,(Uf-Ul)[0]);A.setComponent(1,1,(Uf-Ul)[1]);
-      
+      //std::cout << aFinal << " " << bFinal << " " << Uf << " " << Ul << std::endl;
       if(DGtal::SimpleMatrixSpecializations<Matrix,2,2>::determinant(A)>0)	
-	DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),Ul);
-      else
 	DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),Uf);
+      else
+	DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),Ul);
     }
 
  

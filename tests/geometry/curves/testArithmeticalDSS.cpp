@@ -1000,23 +1000,98 @@ bool unionTest()
   
   // DSS1 and DSS2 not connected but easy case and union is part of a
   // DSL -> see unionComparisonTest below
+
+  trace.beginBlock("Not connected but easy case");
+
+  trace.info() << "octant 2";
+  DSS1 = DSS(1,5,Point(0,1),Point(5,2),Point(1,2),Point(1,2),Point(0,1),Point(5,2));
+  DSS2 = DSS(1,4,Point(9,2),Point(14,3),Point(11,3),Point(11,3),Point(10,2),Point(14,3));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(1,10,Point(0,1),Point(14,3),Point(1,2),Point(11,3),Point(0,1),Point(10,2)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+
+  trace.endBlock();
   
   // DSS1 and DSS2 not connected and union is part of a DSL
   
-  
+  trace.beginBlock("Not connected case");
 
+  trace.info() << "octant 0\n";
+  DSS1 = DSS(1,5,Point(0,1),Point(5,2),Point(1,2),Point(1,2),Point(0,1),Point(5,2));
+  DSS2 = DSS(1,4,Point(9,2),Point(14,3),Point(11,3),Point(11,3),Point(10,2),Point(14,3));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(1,10,Point(0,1),Point(14,3),Point(1,2),Point(11,3),Point(0,1),Point(10,2)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+ 
+  DSS1 = DSS(1,6,Point(0,1),Point(6,2),Point(1,2),Point(1,2),Point(0,1),Point(6,2));
+  DSS2 = DSS(0,1,Point(13,3),Point(18,3),Point(13,3),Point(18,3),Point(13,3),Point(18,3));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(1,9,Point(0,1),Point(18,3),Point(1,2),Point(10,3),Point(0,1),Point(18,3)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+ 
+  trace.info() << "octant 2\n";
+
+  DSS1 = DSS(6,-1,Point(-1,0),Point(-2,6),Point(-2,1),Point(-2,1),Point(-1,0),Point(-2,6));
+  DSS2 = DSS(1,0,Point(-3,13),Point(-3,18),Point(-3,13),Point(-3,18),Point(-3,13),Point(-3,18));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(9,-1,Point(-1,0),Point(-3,18),Point(-2,1),Point(-3,10),Point(-1,0),Point(-3,18)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+
+  trace.endBlock();
 
   //-------------------------------------------------
   //---------- Union is not part of a DSL -----------
+
+  trace.beginBlock("Union is not part of a DSL");
   
   // DSS1 and DSS2 not in the same octant
+  trace.info() << "DSS1 and DSS2 are not in the same octant\n";
+  
+  DSS1 = DSS(1,3,Point(0,0),Point(3,1),Point(0,0),Point(3,1),Point(2,0),Point(2,0));
+  DSS2 = DSS(1,-3,Point(6,2),Point(9,1),Point(6,2),Point(9,1),Point(8,2),Point(8,2));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(Point(0,0)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
   
   // DSS1 and DSS2 connected and union is not part of a DSL
   
-  // DSS1 and DSS2 not connected but easy case and union is part of a DSL
+  trace.info() << "DSS1 and DSS2 are in the same octant and connected\n";
+  DSS1 = DSS(1,3,Point(0,0),Point(4,2),Point(1,1),Point(4,2),Point(0,0),Point(3,1));
+  DSS2 = DSS(1,5,Point(4,2),Point(9,3),Point(4,2),Point(9,3),Point(8,2),Point(8,2));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(Point(0,0)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+
+  // DSS1 and DSS2 not connected but easy case and union is not part of a DSL
+  
+  trace.info() << "DSS1 and DSS1 are in the same octant, not connected but easy case anyway\n";
+  
+  DSS1 = DSS(-3,-1,Point(0,0),Point(-2,-5),Point(0,0),Point(-1,-3),Point(-1,-1),Point(-2,-4));
+  DSS2 = DSS(-3,-1,Point(-2,-8),Point(-3,-11),Point(-2,-10),Point(-2,-10),Point(-2,-8),Point(-3,-11));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(Point(0,0)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
   
   // DSS1 and DSS2 not connected and union is not part of a DSL
   
+  trace.info() << "DSS1 and DSS2 are in the same octant but not connected\n";
+
   trace.endBlock();
   
   return (nb==nbok);
@@ -1024,173 +1099,14 @@ bool unionTest()
 }
 
 
-template <typename Vector>
-typename Vector::Coordinate determinant(Vector u, Vector v)
-{
-  return u[0]*v[1] - u[1]*v[0];
-} 
-
-template <typename ConstPairIterator, typename DSS>
-DSS computeMinDSSFromPreimage(typename StabbingLineComputer<ConstPairIterator>::PreimagePtr P, typename DSS::Point first, typename DSS::Point last, typename DSS::Vector shift)
-{
-  typedef typename StabbingLineComputer<ConstPairIterator>::Preimage::Container Hull; 
-  Hull pH, qH;
-  
-  pH = P->pHull();
-  qH = P->qHull();
-  
-  typedef typename DSS::Point Point;
-  typedef typename DSS::Integer Integer;
-  typedef typename DSS::Vector Vector;
-  
-  
-  Point Uf = P->Uf(); // = pH.rbegin()
-  Point Ul = P->Ul(); // = pH.begin()
-  Point Lf = P->Lf(); // = qH.rbegin()
-  Point Ll = P->Ll(); // = qH.begin()
-  
-  Point rUf,rUl,rLf,rLl;
-
-  //std::cout << P << std::endl;
-  //std::cout << Uf << " " << Ul << " " << Lf <<  " " << Ll << std::endl;
-  
-  Vector Vlow = Lf - Ul;
-  Vector Vup = Uf - Ll;
-  
-  typename Hull::iterator it;
-  typename Hull::reverse_iterator rit;
-  
-  /***********************/
-  /// Ul
-  
-  Point cur, next;
-  bool ok = true;
-  it = pH.begin();
-  cur = *it;
-  //std::cout << "first = " << cur;
-  while(it != pH.end() && ok)
-    {
-      if(++it !=pH.end())
-	{
-	  next = *(it);
-	  //std::cout << "next = " << next;
-	  if(determinant<Vector>(next-cur,Vlow)!=0)
-	    ok = false;
-	  else
-	    cur = next;
-	}
-      else
-	ok = false;
-    }
-  rUl = cur;
-  //std::cout << rUl;
-  /*************************/
-  /// Uf
-
-  ok = true;
-  rit = pH.rbegin();
-  //  std::cout << "first = " << *rit;
-  cur = *rit;
-  while(rit != pH.rend() && ok)
-    {
-      if(++rit !=pH.rend())
-	{
-	  next = *(rit);
-	  //std::cout << "next =" << next;
-	  if(determinant<Vector>(cur-next,Vup)!=0)
-	    ok = false;
-	  else
-	    cur = next;
-	}
-      else
-	ok = false;
-    }
-  rUf = cur;
-  //std::cout << rUf;
-  /***********************/
-  /// Ll
-  
-  it = qH.begin();
-  cur = *it;
-  ok = true;
-  while(it != qH.end() && ok)
-    {
-      if(++it != qH.end())
-	{
-	  next = *(it);
-	  if(determinant<Vector>(next-cur,Vup)!=0)
-	    ok = false;
-	  else
-	    cur = next;
-	}
-      else
-	ok = false;
-    }
-  rLl = cur;
-
-  /*************************/
-  /// Lf
-
-  ok = true;
-  rit = qH.rbegin();
-  cur = *rit;
-  while(rit != pH.rend() && ok)
-    {
-      if(++rit != pH.rend())
-	{
-	  next = *rit;
-	  if(determinant<Vector>(cur-next,Vlow)!=0)
-	    ok = false;
-	  else
-	    cur = next;
-	}
-      else
-	ok = false;
-    }
-  rLf = cur;
-
-  /****************************/
-
-  // If P is the preimage of a connected set of pixels, the minimal characteristics can be computed directly
-  Integer a, b;
-  if(rUl != rUf)
-    {
-      a = rUf[1]-rUl[1];
-      b = rUf[0]-rUl[0];
-    }
-  else
-    {
-      a = rLf[1]-rLl[1];
-      b = rLf[0]-rLl[0];
-    }
-  
-  IntegerComputer<Integer> ic;
-  Integer g = ic.gcd(a,b);
-  a = a/g;
-  b = b/g;
-		 
-  DSS resDSS(a,b,first, last, rLl, rLf, rUl+shift, rUf+shift);
-
-  // otherwise, some extra work has to be done
-
-  
-
-
-  return resDSS;
-
-}
-
-
-
-
-// Test of the union of DSSs in the easy (connected or first point of
+// Test of the union of two DSSs 
+// - compare the result with ArithmeticalDSS recognition algorithm for easy cases (connected or first point of
 // DSS2 and last point of DSS1 have the same ordinate) and inclusion cases
-// - compare the result with ArithmeticalDSS recognition algorithm
 bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 {
   unsigned int nb = 0;
   unsigned int nbok = 0;
-  unsigned int nbSameOrdinate = 0;
+  unsigned int nbEasy = 0;
 
   
   typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
@@ -1238,12 +1154,14 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  // Connected DSSs: The beginning of the second
 		  //subsegment is randomly set between x1 and x2 or just
 		  //after x2. 
-		  //Integer x3 = x2+1*elemMove;
-		  Integer x3 = x1 + (random() % (x2-x1+b))*elemMove;
+		  //Integer x3 = x1 + (random() % (x2-x1+b))*elemMove;
 
 		  // Disonnected DSSs: The beginning of the second subsegment is randomly set after x2. 
-		  //Integer x3 = x2 + (random() % (2*modb))*elemMove;
+		  //Integer x3 = x2 + (random() % (modb))*elemMove;
 		  
+		  // General Case
+		  Integer x3 = x1 + (random() % (2*modb))*elemMove;
+
 		  // The length of the second segment is set to modx
 		  Integer x4 = x3 + modx*elemMove;
 		  
@@ -1282,19 +1200,19 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  DSS DSS1(aDSL,A,B);
 		  DSS DSS2(aDSL,C,D);
 
-		  // std::cout << DSS1 << "\n" << DSS2 << std::endl << "--------" << std::endl;
+		  //std::cout << DSS1 << "\n" << DSS2 << std::endl;
 		  
 		  
-		  //nb++;
+		  nb++;
 		  // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
 		  DSS DSSres = DSS1.Union(DSS2);
 		  
+		  //std::cout << DSSres << "\n----------------\n";
+
 		  // Compare the result with Arithmetical DSS recognition algorithm for easy cases
 		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,aDSL.shift())==0)
 		    {
-		      if(!aDSL.beforeOrEqual(C,B))
-			nbSameOrdinate++;
-		      nb++;
+		      nbEasy++;
 		      // Computation of DSS1 \cup DSS2 using the
 		      // Arithmetical DSS algorithm: add points from B++
 		      // until D
@@ -1321,69 +1239,33 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 			  std::cout << "------------------\n";
 			}
 		      nbok+=(DSSres == DSSGroundTruth)?1:0;
-		      //   }
-		      // else // Compare the result with Stabbing line algorithm for other cases
-		      //   {
-		      // typedef pair<Point,Point> Pair;
-		      // typedef std::vector< Pair > PairContainer;
-		      // // Iterator on the container
-		      // typedef PairContainer::const_iterator ConstPairIterator;
 		      
-		      // // Build the "contour" as the concatenation of DSS1 and
-		      // // the leaning points of DSS2
-		      // PairContainer contour;
-		      // DSS::ConstIterator itbegin = aDSL.begin(A);
-		      // DSS::ConstIterator itend = aDSL.end(B);
-		      // DSS::ConstIterator it;
-		      // it = itbegin;
-		      // while(it!=itend)
-		      // 	{
-		      // 	  Pair p = make_pair(*it-aDSL.shift(),*it);
-		      // 	  contour.push_back(p);
-		      // 	  ++it;
-		      // 	}
+		    }
+		  else
+		    { // for disconnected cases, check that all the leaning points of DSSres that are between A anb B or between C and D are in the DSL
+		      bool error = false;
+		      if((aDSL.beforeOrEqual(DSSres.Uf(),B) && !aDSL.isInDSL(DSSres.Uf())) || (!aDSL.before(DSSres.Uf(),C) && !aDSL.isInDSL(DSSres.Uf()))) 
+			error = true;
+		      if((aDSL.beforeOrEqual(DSSres.Ul(),B) && !aDSL.isInDSL(DSSres.Ul())) || (!aDSL.before(DSSres.Ul(),C) && !aDSL.isInDSL(DSSres.Ul()))) 
+			error = true;
+		      if((aDSL.beforeOrEqual(DSSres.Lf(),B) && !aDSL.isInDSL(DSSres.Lf())) || (!aDSL.before(DSSres.Lf(),C) && !aDSL.isInDSL(DSSres.Lf()))) 
+			error = true;
+		      if((aDSL.beforeOrEqual(DSSres.Ll(),B) && !aDSL.isInDSL(DSSres.Ll())) || (!aDSL.before(DSSres.Ll(),C) && !aDSL.isInDSL(DSSres.Ll()))) 
+			error = true;
 		      
-		      // itbegin = aDSL.begin(C);
-		      // itend = aDSL.end(D);
-		      // it = itbegin;
-		      // while(it!= itend)
-		      // 	{
-		      // 	  if(*it == DSS2.Uf() || *it == DSS2.Ul() || *it == DSS2.Lf() || *it == DSS2.Ll())
-		      // 	    {
-		      // 	      Pair p = make_pair(*it-aDSL.shift(),*it);
-		      // 	      contour.push_back(p);
-		      // 	    }
-		      // 	  ++it;
-		      // 	}
+		      if(error)
+			{
+			  std::cout << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
+		      	  std::cout << DSSres << std::endl;
+			  std::cout << "--------------------------------\n";
+			}
+		      else
+			nbok++;
 		      
-		      // StabbingLineComputer<ConstPairIterator> s; 
-		      
-		      // // //extension
-		      // s.init( contour.begin() );
-		      // while ( s.end() != contour.end() && s.extendFront())
-		      // 	{}
-		      
-		      // DSS DSSStab(DSS1);
-		      
-		      // // std::cout << "-------------\n";
-		      // if(aDSL.before(DSS1.front(),DSS2.front()))
-		      // 	DSSStab = computeMinDSSFromPreimage<ConstPairIterator,DSS>(s.getPreimage(),DSS1.back(),DSS2.front(),aDSL.shift());
-		      // else
-		      // 	DSSStab = computeMinDSSFromPreimage<ConstPairIterator,DSS>(s.getPreimage(),DSS1.back(),DSS1.front(),aDSL.shift());
-		      // if(DSSres != DSSStab)
-		      // 	{
-			  
-		      // 	  std::cout << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
-		      // 	  std::cout << DSSres << std::endl;
-		      // 	  std::cout << DSSStab << std::endl;
-		      // 	  std::cout << "------------------\n";
-		      // 	}
-		      // nbok+=(DSSres == DSSStab)?1:0;
 		    }
 		  
 		  
 		}
-	      //  std::cout << "---------------------------" << std::endl;
 	    }
 	  
 	}
@@ -1391,7 +1273,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
   
   
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << nbSameOrdinate << std::endl;
+	       << nbEasy << std::endl;
   trace.endBlock();
   return (nb==nbok);
 }
@@ -1571,10 +1453,10 @@ int main( int argc, char** argv )
   { // createDSS
     res = res && createDSSTest();
   }
-
+  
   { // union of two DSSs
     res = res && unionTest();
-    res = res && unionComparisonTest(10000,50,2000);
+    res = res && unionComparisonTest(1000,100,2000);
   }
   
   // typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory;
