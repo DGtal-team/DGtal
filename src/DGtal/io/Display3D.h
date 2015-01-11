@@ -484,7 +484,7 @@ namespace DGtal
       * (useful to use transparency between different objects).
       * @return the new key of the map associated to the new list.
       **/
-     int createNewQuadList();
+    DGtal::int32_t createNewQuadList();
 
     /**
      * Used to create a new list containing new 3D objects

@@ -491,22 +491,15 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   //OPT quad
   // myQuadList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
-    //std::vector<quadD3D>::const_iterator
-    k = 0; // id of each list
-
-
-    // for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::QuadD3D> >::const_iterator it =Board3D<Space, KSpace>::myQuadSetList.begin();
-    //     it != Board3D<Space, KSpace>::myQuadSetList.end();   it++)
-    //   {
-
-    for (typename Board3D<Space, KSpace>::QuadsMap::const_iterator it = Board3D<Space, KSpace>::myQuadsMap.begin(); it != Board3D<Space, KSpace>::myQuadsMap.end(); it++)
+    k = 0; // id of each list 
+    for (typename Board3D<Space, KSpace>::QuadsMap::const_iterator it = Board3D<Space, KSpace>::myQuadsMap.begin();
+         it != Board3D<Space, KSpace>::myQuadsMap.end(); it++)
       {
         std::ostringstream tmpStream;
 
-        for (typename std::vector<typename Board3D<Space, KSpace>::QuadD3D>::const_iterator aQuad = it->second.begin(); aQuad!=it->second.end();aQuad ++)
-	{ //        for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator s_it = it->begin();
-          //    s_it != it->end(); ++s_it)
-          // {
+        for (typename std::vector<typename Board3D<Space, KSpace>::QuadD3D>::const_iterator aQuad = it->second.begin();
+             aQuad!=it->second.end();aQuad ++)
+	{ 
             //test if a clipping plane do not cut it
             apoint1 = (aQuad->point1 -shift)*scale;
             apoint2 = (aQuad->point2 -shift)*scale;
