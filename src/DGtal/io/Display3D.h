@@ -479,12 +479,12 @@ namespace DGtal
      **/
     void createNewCubeList(std::string s= "");
 
-    // /**
-    //  * Used to create a new list containing new 3D objects
-    //  * (useful to use transparency between different objects).
-    //  * @param s name of the new list
-    //  **/
-    // void createNewQuadList(std::string s= "");
+     /**
+      * Used to create a new list containing new 3D objects
+      * (useful to use transparency between different objects).
+      * @return the new key of the map associated to the new list.
+      **/
+     int createNewQuadList();
 
     /**
      * Used to create a new list containing new 3D objects
