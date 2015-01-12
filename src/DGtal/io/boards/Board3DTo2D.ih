@@ -493,8 +493,9 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
         }
     }
 
-    for(typename std::vector<std::vector<typename Board3DTo2D<Space, KSpace>::QuadD3D> >::iterator it=Board3DTo2D<Space, KSpace>::myQuadSetList.begin(); it != Board3DTo2D<Space, KSpace>::myQuadSetList.end(); it++)
-        trace.info() << "-> Quad not YET implemented in Board3DTo2D" << std::endl;
+    // for(typename Display3D<Space, KSpace>::QuadsMap::iterator it = myQuadsMap.begin(); it != myQuadsMap.end(); it++)
+    if ( myQuadsMap.begin() != myQuadsMap.end() )
+      trace.info() << "-> Quad not YET implemented in Board3DTo2D" << std::endl;
 
     // Drawing all Khalimsky Space Cells
 
