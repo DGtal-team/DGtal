@@ -236,7 +236,9 @@ namespace DGtal
     bool myIsBackgroundDefault;
     /// objects have shadows which follow the camera if false
     bool myViewWire;
-
+    /// to improve the display of gl line
+    double myGLLineMinWidth;
+    
     /**
      * Used to display the 2D domain of an image.
      * @note has to be public because of external functions
