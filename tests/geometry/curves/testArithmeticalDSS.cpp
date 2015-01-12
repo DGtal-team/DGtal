@@ -1044,6 +1044,17 @@ bool unionTest()
   nbok +=(res==DSS(9,-1,Point(-1,0),Point(-3,18),Point(-2,1),Point(-3,10),Point(-1,0),Point(-3,18)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << std::endl;
+  
+  trace.info() << "octant 5\n";
+  // DSS1 = DSS(-3,-1,Point(0,0),Point(-2,-5),Point(0,0),Point(-1,-3),Point(-1,-1),Point(-2,-4));
+  // DSS2 = DSS(-3,-1,Point(-3,-8),Point(-4,-11),Point(-3,-10),Point(-3,-10),Point(-3,-8),Point(-4,-11));
+  // res = DSS1.Union(DSS2);
+  // nb++;
+  // nbok +=(res==DSS()?1:0;
+  // trace.info() << "(" << nbok << "/" << nb << ") "
+  // 	       << std::endl;
+
+
 
   trace.endBlock();
 
@@ -1064,8 +1075,8 @@ bool unionTest()
 	       << std::endl;
   
   // DSS1 and DSS2 connected and union is not part of a DSL
-  
   trace.info() << "DSS1 and DSS2 are in the same octant and connected\n";
+  
   DSS1 = DSS(1,3,Point(0,0),Point(4,2),Point(1,1),Point(4,2),Point(0,0),Point(3,1));
   DSS2 = DSS(1,5,Point(4,2),Point(9,3),Point(4,2),Point(9,3),Point(8,2),Point(8,2));
   res = DSS1.Union(DSS2);
@@ -1076,7 +1087,6 @@ bool unionTest()
   
 
   // DSS1 and DSS2 not connected but easy case and union is not part of a DSL
-  
   trace.info() << "DSS1 and DSS1 are in the same octant, not connected but easy case anyway\n";
   
   DSS1 = DSS(-3,-1,Point(0,0),Point(-2,-5),Point(0,0),Point(-1,-3),Point(-1,-1),Point(-2,-4));
@@ -1087,10 +1097,17 @@ bool unionTest()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << std::endl;
   
-  
   // DSS1 and DSS2 not connected and union is not part of a DSL
-  
   trace.info() << "DSS1 and DSS2 are in the same octant but not connected\n";
+
+  DSS1 = DSS(-3,-1,Point(0,0),Point(-2,-5),Point(0,0),Point(-1,-3),Point(-1,-1),Point(-2,-4));
+  DSS2 = DSS(-3,-1,Point(-5,-8),Point(-6,-11),Point(-5,-10),Point(-5,-10),Point(-5,-8),Point(-6,-11));
+  res = DSS1.Union(DSS2);
+  nb++;
+  nbok +=(res==DSS(Point(0,0)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
 
   trace.endBlock();
   
@@ -1200,14 +1217,14 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  DSS DSS1(aDSL,A,B);
 		  DSS DSS2(aDSL,C,D);
 
-		  //std::cout << DSS1 << "\n" << DSS2 << std::endl;
+		  //trace.info() << DSS1 << "\n" << DSS2 << std::endl;
 		  
 		  
 		  nb++;
 		  // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
 		  DSS DSSres = DSS1.Union(DSS2);
 		  
-		  //std::cout << DSSres << "\n----------------\n";
+		  //trace.info() << DSSres << "\n----------------\n";
 
 		  // Compare the result with Arithmetical DSS recognition algorithm for easy cases
 		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,aDSL.shift())==0)
@@ -1233,10 +1250,10 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		      if(DSSres != DSSGroundTruth)
 			{
 			
-			  std::cout << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
-			  std::cout << DSSres << std::endl;
-			  std::cout << DSSGroundTruth << std::endl;
-			  std::cout << "------------------\n";
+			  trace.info() << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
+			  trace.info() << DSSres << std::endl;
+			  trace.info() << DSSGroundTruth << std::endl;
+			  trace.info() << "------------------\n";
 			}
 		      nbok+=(DSSres == DSSGroundTruth)?1:0;
 		      
@@ -1255,9 +1272,9 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		      
 		      if(error)
 			{
-			  std::cout << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
-		      	  std::cout << DSSres << std::endl;
-			  std::cout << "--------------------------------\n";
+			  trace.info() << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
+		      	  trace.info() << DSSres << std::endl;
+			  trace.info() << "--------------------------------\n";
 			}
 		      else
 			nbok++;
@@ -1286,7 +1303,7 @@ bool createDSSTest()
   unsigned int nb = 0;
   unsigned int nbok = 0;
   
-  trace.beginBlock("Testing creation of a DSS from direction vector and one upper leaning point");
+  trace.beginBlock("Testing creation of a DSS from direction vector, two endpoints and one upper leaning point");
   
   typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8;
   typedef DSS8::Point Point;
@@ -1462,9 +1479,9 @@ int main( int argc, char** argv )
   // typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory;
   // typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8;
   // DSS8 dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(-1,-3));
-  // std::cout << dss << std::endl;
+  // trace.info() << dss << std::endl;
   // dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(10,-1));
-  // std::cout << dss << std::endl;
+  // trace.info() << dss << std::endl;
 
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
