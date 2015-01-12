@@ -115,11 +115,14 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric,
                                               TFunctorOnSurfel, TConvolutionFunctor>::
 setParams( ConstAlias<TMetric> aMetric,
            Alias<FunctorOnSurfel> aFunctor,
-           ConstAlias<ConvolutionFunctor> aConvolutionFunctor )
+           ConstAlias<ConvolutionFunctor> aConvolutionFunctor,
+           const Value radius )
 {
+  ASSERT(radius>0);
   myFunctor = &aFunctor;
   myMetric = aMetric;
   myConvFunctor = aConvolutionFunctor;
+  myRadius = radius;
 }
 
 //-----------------------------------------------------------------------------
@@ -137,17 +140,18 @@ h() const
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+
+template<typename SurfelIt>
 inline
 void
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
                                               TFunctorOnSurfel, TConvolutionFunctor>::
 init(const double _h,
-     const Value radius)
+     SurfelIt /*itb*/,
+     SurfelIt /*ite*/)
 {
   ASSERT(_h>0);
-  ASSERT(radius>0);
   myH = _h;
-  myRadius = radius;
   myInit = true;
 }
 ///////////////////////////////////////////////////////////////////////////////

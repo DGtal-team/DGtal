@@ -1329,6 +1329,30 @@ bool createDSSTest()
 }
 
 
+bool testPatchCreatePattern()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock("Test patch bezoutVector/CreatePattern");
+
+  typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory;
+  typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8;
+  typedef DSS8::Point Point;
+  DSS8 dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(-1,-3));
+  nb++;
+  nbok += (dss == DSS8(-3,-1,Point(0,0), Point(-1,-3), Point(0,0), Point(-1,-3), Point(-1,-1), Point(-1,-1)));
+  
+  dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(10,-1));
+  nb++;
+  nbok += (dss == DSS8(-1,10, Point(0,0), Point(10,-1), Point(0,0), Point(10,-1), Point(1,-1), Point(1,-1)));
+  
+  trace.endBlock();
+
+  return (nb == nbok);
+
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
@@ -1483,6 +1507,11 @@ int main( int argc, char** argv )
   // dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(10,-1));
   // trace.info() << dss << std::endl;
 
+
+  {
+    res = res && testPatchCreatePattern();
+  }
+  
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
