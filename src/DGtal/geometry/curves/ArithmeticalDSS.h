@@ -517,8 +517,7 @@ namespace DGtal
     bool isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point& outP) const;
 
     
-    
-
+   
 
     ArithmeticalDSS Union(const ArithmeticalDSS & aOther) const;
 

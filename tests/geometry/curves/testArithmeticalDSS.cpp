@@ -840,7 +840,7 @@ bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b
   DSL aDSL(a, b, 0); 
   for (typename DSL::Integer mu = 0; ( (mu-1 >= -aDSL.omega())&&(nbok == nb) ); --mu)
     {
-      trace.info() << "mu=" << mu << std::endl; 
+      //trace.info() << "mu=" << mu << std::endl; 
 
       typedef typename DSL::Point Point; 
       typedef typename DSL::Coordinate Coordinate; 
@@ -856,11 +856,11 @@ bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b
 
       for (typename DSL::Position l = 0; ( (l <= 2*aDSL.patternLength())&&(nbok == nb) ); ++l)
 	{
-	  trace.info() << "l=" << l << std::endl; 
+	  //trace.info() << "l=" << l << std::endl; 
 
 	  for (typename DSL::Position k = 0; ( (k <= l)&&(nbok == nb) ); ++k)
 	    {
-	      trace.info() << "k=" << k << std::endl; 
+	      //trace.info() << "k=" << k << std::endl; 
 
 	      if (comparisonSubsegment(dss, k, l))
 		nbok++;
@@ -888,7 +888,6 @@ bool unionTest()
   trace.beginBlock("Testing union of two DSSs");
 
   // Different tests to cover all possible configurations
-  // to be tested for different octants
   
   //-------------------------------------------------
   //---------- Union is part of a DSL----------------
@@ -1348,9 +1347,9 @@ bool testPatchCreatePattern()
   nbok += (dss == DSS8(-1,10, Point(0,0), Point(10,-1), Point(0,0), Point(10,-1), Point(1,-1), Point(1,-1)));
   
   trace.endBlock();
-
+  
   return (nb == nbok);
-
+  
 }
 
 
@@ -1447,7 +1446,7 @@ int main( int argc, char** argv )
       && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(0,-5)) )
       ;
   }
-
+  
   res = res
     && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
 #ifdef WITH_BIGINTEGER
@@ -1464,35 +1463,39 @@ int main( int argc, char** argv )
     && constructorsTest<DGtal::StandardDSS4<DGtal::int32_t> >()
     ;
 
-//   {   //subsegment 
-//   res = res 
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,8)
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,13)
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(12,29)
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,5)
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,8)
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,5)
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,-8)
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,-5)
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,-8)
-//     && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,-5)
+  {   //subsegment 
+  res = res 
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,8)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,13)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(12,29)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,5)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,8)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,5)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,-8)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,-5)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,-8)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,-5)
 
-//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,8)
-//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,5)
-//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,8)
-//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,5)
-//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,-8)
-//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,-5)
-//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,-8)
-//     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,-5)
-// #ifdef WITH_BIGINTEGER
-//     && comparisonSubsegment<StandardDSL<DGtal::int32_t, DGtal::BigInteger> >(5,8)
-// #endif
-//       ;
-//   }
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,8)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,5)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,8)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,5)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,-8)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,-5)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,-8)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,-5)
+#ifdef WITH_BIGINTEGER
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t, DGtal::BigInteger> >(5,8)
+#endif
+      ;
+  }
   
   { // createDSS
     res = res && createDSSTest();
+  }
+  
+  {
+    res = res && testPatchCreatePattern();
   }
   
   { // union of two DSSs
@@ -1500,19 +1503,7 @@ int main( int argc, char** argv )
     res = res && unionComparisonTest(1000,100,2000);
   }
   
-  // typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory;
-  // typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8;
-  // DSS8 dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(-1,-3));
-  // trace.info() << dss << std::endl;
-  // dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(10,-1));
-  // trace.info() << dss << std::endl;
-
-
-  {
-    res = res && testPatchCreatePattern();
-  }
   
-
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
