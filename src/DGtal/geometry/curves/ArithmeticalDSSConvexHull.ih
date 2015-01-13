@@ -48,7 +48,7 @@ smartCH(const DSL& aDSL,
   typedef typename DSL::Coordinate Coordinate;
   ASSERT( aDSL.isValid() ); 
   ASSERT( aLength >= NumberTraits<Position>::ONE ); 
-
+ 
   //position functor
   functors::PositionFunctorFrom2DPoint<Vector,Position> position(aDSL.shift());     
 
@@ -62,6 +62,7 @@ smartCH(const DSL& aDSL,
   Coordinate intercept = DSL::toCoordinate( aDSL.mu() - aDSL.remainder(aFirstPoint) ); 
 
   Position lastPosition = position(aFirstPoint) + aLength; 
+ 
   return smartCH(aFirstPoint, intercept, lastPosition, step, rStep, shift, rShift, position, uIto, lIto); 
 }
 
@@ -86,8 +87,10 @@ smartCH(const PointVector& aFirstPoint,
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
   BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
   BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
-  ASSERT( aPositionBound > NumberTraits<Position>::ZERO ); 
-
+  
+  // Why cannot the last position be negative ? The important condition seems to be that the position of aFirstPoint is less than a positionBound 
+  //ASSERT( aPositionBound > NumberTraits<Position>::ZERO ); 
+  
   //----------------- init --------------------//
   //functors
   functors::StrictTruncationFunctor<Coordinate> sTruncation; 
@@ -165,7 +168,8 @@ smartCHNextVertex(const Position& positionBound,
 		  const TruncationFunctor1& f1, 
 		  const TruncationFunctor2& f2)
 {
-  ASSERT( positionBound > NumberTraits<Position>::ZERO ); 
+  // Why is this condition necessary ?
+  //  ASSERT( positionBound > NumberTraits<Position>::ZERO ); 
   ASSERT( rV != NumberTraits<Coordinate>::ZERO ); 
   ASSERT( ((V[0]*(X-Y)[1] - V[1]*(X-Y)[0]) == 1)||
 	  ((V[0]*(X-Y)[1] - V[1]*(X-Y)[0]) == -1) ); 

@@ -210,7 +210,8 @@ namespace DGtal
     typedef SpaceND<2, TCoordinate> Space;
     typedef typename Space::Vector Vector;
     typedef std::pair<Vector, Vector> Steps;
-
+    typedef std::pair<int, int> Octant;
+    
     // ----------------------- static members ---------------------------------
   public:
     static const unsigned short ForegroundAdjacency = 4;  //adjacency
@@ -224,6 +225,8 @@ namespace DGtal
     static Steps steps(const TInteger& a, const TInteger& b);
     template<typename TInteger>
     static TInteger norm(const TInteger& a, const TInteger& b);
+    template<typename TInteger>
+    static Octant octant(const TInteger& a, const TInteger& b);
   };
 
 } // namespace DGtal

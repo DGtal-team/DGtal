@@ -1114,10 +1114,16 @@ bool unionTest()
   
 }
 
+int max(int a, int b)
+{
+  return ((a>b)?a:b);
+}
 
-// Test of the union of two DSSs 
+// General random test of the union of two DSSs 
 // - compare the result with ArithmeticalDSS recognition algorithm for easy cases (connected or first point of
 // DSS2 and last point of DSS1 have the same ordinate) and inclusion cases
+// - otherwise, check DSS result validity + check that computed leaning points belong to the DSL when they should (when they are between A and B or between C and D)
+template <typename DSS>
 bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 {
   unsigned int nb = 0;
@@ -1125,15 +1131,19 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
   unsigned int nbEasy = 0;
 
   
-  typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
+  //typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
   typedef typename DSS::DSL DSL;
   typedef typename DSS::Point Point;
   typedef typename DSS::Integer Integer;
+  typedef typename DSS::Vector Vector;
   
   DGtal::IntegerComputer<Integer> ic;
 
-  trace.beginBlock("Testing results wrt Arithmetical DSS recognition algorithm");
+  DSS dss(Point(0,0));
 
+  trace.beginBlock("General random test results");
+  trace.emphase() << "Adjacency: " << dss.foregroundAdjacency << std::endl;
+  
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
       // Pick up a random DSL slope
@@ -1158,8 +1168,9 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 	      for (Integer x = 0; x < 10; ++x )
                 {
 		  // elemMove equals 1 or -1
-		  Integer elemMove = ((baseDSL.steps()).first)[0]; 
-		  
+		  //Integer elemMove = ((baseDSL.steps()).first)[0];
+		  Integer elemMove = (b>0)?1:-1;
+
 		  // modx modulates the length of the subsegments
 		  // Pick up the beginning of the first subsegment
 		  Integer x1 = random() % modx;
@@ -1167,10 +1178,13 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  Integer x2 = x1 + (modx + (random() % modx))*elemMove;
 		  
 		  /************************************************/
+		  
+		  
+		  
 		  // Connected DSSs: The beginning of the second
 		  //subsegment is randomly set between x1 and x2 or just
 		  //after x2. 
-		  //Integer x3 = x1 + (random() % (x2-x1+b))*elemMove;
+		  //Integer x3 = x1 + (random() % (x2-x1+1))*elemMove;
 
 		  // Disonnected DSSs: The beginning of the second subsegment is randomly set after x2. 
 		  //Integer x3 = x2 + (random() % (modb))*elemMove;
@@ -1208,7 +1222,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		      C = Point(x3,y3); D = Point(x4,y4);
 		    }
 		  
-		  
+		  assert(aDSL.isInDSL(A) && aDSL.isInDSL(B) && aDSL.isInDSL(C) && aDSL.isInDSL(D));
 		  // Computation of the parameters of the two segments
 		  // using the subsegment algorithm of [Roussillon,
 		  // 2014] 
@@ -1216,6 +1230,10 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  DSS DSS1(aDSL,A,B);
 		  DSS DSS2(aDSL,C,D);
 
+		  assert(DSS1.isValid() && DSS2.isValid());
+
+		  //trace.info() << x1 << " " << x2 << " " << x3 << " " << x4 << std::endl;
+		
 		  //trace.info() << DSS1 << "\n" << DSS2 << std::endl;
 		  
 		  
@@ -1223,10 +1241,20 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
 		  DSS DSSres = DSS1.Union(DSS2);
 		  
-		  //trace.info() << DSSres << "\n----------------\n";
+		  //trace.info() <<"\n----------------\n";
 
 		  // Compare the result with Arithmetical DSS recognition algorithm for easy cases
-		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,aDSL.shift())==0)
+		  
+		  
+		  Vector dir;
+		  if(abs(aDSL.a())<=abs(aDSL.b()))
+		     dir = Vector(0,1);
+		  else
+		    dir = Vector(1,0);
+		  DGtal::IntegerComputer<Integer> ic;
+		  
+		  //if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,aDSL.shift())==0)
+		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,dir)==0 ||  DGtal::ArithmeticalDSLKernel<typename DSS::Coordinate,dss.foregroundAdjacency>::norm((C-B)[0], (C-B)[1])<=1 )
 		    {
 		      nbEasy++;
 		      // Computation of DSS1 \cup DSS2 using the
@@ -1248,7 +1276,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		      
 		      if(DSSres != DSSGroundTruth)
 			{
-			
+			  
 			  trace.info() << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
 			  trace.info() << DSSres << std::endl;
 			  trace.info() << DSSGroundTruth << std::endl;
@@ -1259,6 +1287,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		    }
 		  else
 		    { // for disconnected cases, check that all the leaning points of DSSres that are between A anb B or between C and D are in the DSL
+		      
 		      bool error = false;
 		      if((aDSL.beforeOrEqual(DSSres.Uf(),B) && !aDSL.isInDSL(DSSres.Uf())) || (!aDSL.before(DSSres.Uf(),C) && !aDSL.isInDSL(DSSres.Uf()))) 
 			error = true;
@@ -1269,8 +1298,9 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		      if((aDSL.beforeOrEqual(DSSres.Ll(),B) && !aDSL.isInDSL(DSSres.Ll())) || (!aDSL.before(DSSres.Ll(),C) && !aDSL.isInDSL(DSSres.Ll()))) 
 			error = true;
 		      
-		      if(error)
+		      if(error || !DSSres.isValid() || DSSres==DSS(Point(0,0)))
 			{
+			  trace.info() << "disconnected\n";
 			  trace.info() << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
 		      	  trace.info() << DSSres << std::endl;
 			  trace.info() << "--------------------------------\n";
@@ -1289,7 +1319,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
   
   
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << nbEasy << std::endl;
+	       << nbEasy << " easy cases." << std::endl;
   trace.endBlock();
   return (nb==nbok);
 }
@@ -1500,7 +1530,11 @@ int main( int argc, char** argv )
   
   { // union of two DSSs
     res = res && unionTest();
-    res = res && unionComparisonTest(1000,100,2000);
+    typedef DGtal::ArithmeticalDSS<DGtal::int64_t> DSS8;
+    res = res && unionComparisonTest<DSS8>(567846,3546,2000);
+    //res = res && unionComparisonTest<DSS8>(500,100,1000);
+    typedef DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::int32_t, 4> DSS4;
+    res = res && unionComparisonTest<DSS4>(23243,258,2000);
   }
   
   

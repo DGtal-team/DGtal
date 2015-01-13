@@ -506,19 +506,37 @@ namespace DGtal
     bool operator()(const Point& aPoint) const; 
     
     
-    
-
     /** 
+     * Returns a boolean equal to true if 'this' belongs to the DSL @a aDSL, false otherwise.
      * @return 'true' if 'this' belongs to the DSL @a aDSL.
      * 'false' otherwise.
      * @param aDSL any DSL
      */
-    
+    bool isInDSL(const DSL& aDSL) const;
+
+ 
+    /** 
+     * Returns a boolean equal to true if 'this' belongs to the DSL @a
+     * aDSL, false otherwise. Also returns extra information about the
+     * leaning points included in 'this' or a point outside @a aDSL. 
+     * @return 'true' if 'this' belongs to the DSL @a aDSL.
+     * 'false' otherwise.
+     * @param aDSL any DSL
+     * @return Ulp the list of @a aDSL upper leaning points on 'this', if any
+     * @return Llp the list of @a aDSL lower leaning points on 'this', if any
+     * @return outP a point of 'this' that does not belong to @a aDSL, if any
+     */
     bool isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point& outP) const;
 
     
    
-
+    /** Compute the union of two DSSs. If the union belongs to a DSL,
+	returns the DSS of minimal characteristics that includes the two
+	DSSs. Otherwise, returns the void DSS (see Sivignon 2014  \cite SivignonDGCI2014).
+	
+	
+	
+     */
     ArithmeticalDSS Union(const ArithmeticalDSS & aOther) const;
 
 
