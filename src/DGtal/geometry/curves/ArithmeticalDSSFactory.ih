@@ -61,9 +61,10 @@ createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL)
       //running smartCH to compute the minimal characteristics AND the leaning points
       OneItemOutputIterator<Point> lastUpperVertex, lastLowerVertex;
       using namespace functions; 
+     
       Vector v = smartCH( aDSL, aF, ( aDSL.position(aL) - aDSL.position(aF) ),
 			  lastUpperVertex, lastLowerVertex );
-
+      
       //DSS construction
       Point U = lastUpperVertex.get(); 
       DSL dsl( v[1], v[0], DSL::remainder(v[1], v[0], U) ); 
@@ -213,6 +214,7 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createDSS(const C
   DSL dsl(aA,aB,DSL::remainder(aA,aB,aU));
   
   Vector u(aB,aA);
+
 
   //Upper leaning points
   
