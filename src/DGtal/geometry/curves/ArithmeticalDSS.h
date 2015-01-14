@@ -532,10 +532,17 @@ namespace DGtal
    
     /** Compute the union of two DSSs. If the union belongs to a DSL,
 	returns the DSS of minimal characteristics that includes the two
-	DSSs. Otherwise, returns the void DSS (see Sivignon 2014  \cite SivignonDGCI2014).
+	DSSs. Otherwise, returns the void DSS (DSS(Point(0,0)). See
+	Sivignon 2014  \cite SivignonDGCI2014). 
 	
+	@param aOther a DSS
+	@return a DSS
 	
-	
+	nb: runs in O(1) when: 1) the union of the two DSSs is
+	not part of a DSL, 2) the two DSSs are connected, 3) the last
+	point of the first DSS and the first point of the second DSS
+	have the same ordinate (or abscissa). Otherwise, runs in
+	O(log(n)) where n is the total length of the union.
      */
     ArithmeticalDSS Union(const ArithmeticalDSS & aOther) const;
 
