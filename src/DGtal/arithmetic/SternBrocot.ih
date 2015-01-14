@@ -501,9 +501,9 @@ template <typename TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
-median(const Fraction & f, const Fraction & g) const
+median(const Fraction & g) const
 {
-  return Fraction(f.p()+g.p(),f.q()+g.q());
+  return Fraction(this->p()+g.p(),this->q()+g.q());
 }
 
 
@@ -531,7 +531,7 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
   ConstIterator itf=f.begin(), itg=g.begin();
   
   if(abs(f.p()*g.q()-f.q()*g.p())==1)
-    return  median(f,g);
+    return  f.median(g);
   
 
   // Compare each coefficient of the two fractions one by one.
@@ -550,7 +550,7 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
 	  if(i==f.k() && i == g.k())
 	    {
 	      if(abs(uf.first-ug.first) <= 1)
-		return median(f,g);
+		return f.median(g);
 	      else
 		{
 		  res.push_back(std::make_pair(coeff+1,i));
@@ -580,7 +580,7 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
     {
       if(uf.first==ug.first)
 	if(g.k() == f.k()+1)
-	  return median(f,g);
+	  return f.median(g);
 	else
 	  res.push_back(std::make_pair((*(itg)).first+1,f.k()+1));
       else
@@ -589,7 +589,7 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
 	    res.push_back(std::make_pair(1+1,f.k()+1));
 	  else
 	    if(g.k() == f.k()+2)
-	      return median(f,g);
+	      return f.median(g);
 	    else
 	      {
 		res.push_back(std::make_pair(1,f.k()+1));
@@ -604,7 +604,7 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
     {
       if(uf.first==ug.first)
 	if(f.k() == g.k()+1)
-	  return median(f,g);
+	  return f.median(g);
 	else
 	  res.push_back(std::make_pair((*(itf)).first+1,g.k()+1));
       else
@@ -613,7 +613,7 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
 	    res.push_back(std::make_pair(1+1,g.k()+1));
 	  else
 	    if(f.k() == g.k()+2)
-	      return median(f,g);
+	      return f.median(g);
 	    else
 	      {
 		res.push_back(std::make_pair(1,g.k()+1));

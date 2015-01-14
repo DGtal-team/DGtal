@@ -382,7 +382,12 @@ namespace DGtal
       */
       ConstIterator end() const;
       
-      Fraction median(const Fraction & f, const Fraction & g) const;
+      /**
+	 @param g any fraction
+	 @return the median of 'this' and g
+       */
+
+      Fraction median(const Fraction & g) const;
 
       /** 
        * Compute the fraction of smallest denominator strictly between

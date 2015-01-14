@@ -507,21 +507,11 @@ DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL,
   if(!(myDSL.sameOctant(aDSL, &oc)))
     return false;
   
-  // Consider the leaning points in order, from the "leftmost" to the "rightmost" wrt the position operator.
-  if(before(myUf,myLf))
-    {
-      LPoints.push_back(myUf);
-      LPoints.push_back(myLf);
-      LPoints.push_back(myUl);
-      LPoints.push_back(myLl);
-    }
-  else
-    {
-      LPoints.push_back(myLf);
-      LPoints.push_back(myUf);
-      LPoints.push_back(myLl);
-      LPoints.push_back(myUl);
-    }
+  // Consider the leaning points of 'this' 
+  LPoints.push_back(myLf);
+  LPoints.push_back(myUf);
+  LPoints.push_back(myLl);
+  LPoints.push_back(myUl);
   
   typename std::vector<Point>::const_iterator it = LPoints.begin();
   Point p;
@@ -543,7 +533,7 @@ DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL,
     }
 
   if(!inDSL)
-    outP = *it;
+    outP = *it; 
   return inDSL;
 }
 
@@ -801,7 +791,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   // Compute the fraction of smallest denominator between low and up
   Fraction res = low.fractionOfSmallestDenominatorInBetween(up);
   
-  // Replace it in the good octant
+  // Replacethe result in the good octant
   Integer aFinal,bFinal;
   if(aRes<0)
     aFinal = (abs(aRes)<abs(bRes))?-res.p():-res.q();
