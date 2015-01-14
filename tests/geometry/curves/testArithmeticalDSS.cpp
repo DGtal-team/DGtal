@@ -1114,25 +1114,24 @@ int max(int a, int b)
 // - compare the result with ArithmeticalDSS recognition algorithm for easy cases (connected or first point of
 // DSS2 and last point of DSS1 have the same ordinate) and inclusion cases
 // - otherwise, check DSS result validity + check that computed leaning points belong to the DSL when they should (when they are between A and B or between C and D)
-template <typename DSS>
+template <typename TCoordinate,typename TInteger, unsigned short adjacency>
+//template <typename DSS>
 bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 {
+  typedef ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
   typedef typename DSS::DSL DSL;
   typedef typename DSS::Point Point;
   typedef typename DSS::Integer Integer;
   typedef typename DSS::Vector Vector;
- 
+
   unsigned int nb = 0;
   unsigned int nbok = 0;
   unsigned int nbEasy = 0;
-
  
   DGtal::IntegerComputer<Integer> ic;
 
-  DSS dss(Point(0,0));
-
   trace.beginBlock("General random test results");
-  trace.emphase() << "Adjacency: " << dss.foregroundAdjacency << std::endl;
+  trace.emphase() << "Adjacency: " << adjacency << std::endl;
   
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
@@ -1226,10 +1225,8 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		     dir = Vector(0,1);
 		  else
 		    dir = Vector(1,0);
-		  
-		  static const unsigned short adj=dss.foregroundAdjacency;
-		  
-		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,dir)==0 ||  DGtal::ArithmeticalDSLKernel<typename DSS::Coordinate,adj>::norm((C-B)[0], (C-B)[1])<=1 )
+
+		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,dir)==0 ||  DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::norm((C-B)[0], (C-B)[1])<=1 )
 		    {
 		      nbEasy++;
 		      // Computation of DSS1 \cup DSS2 using the
@@ -1505,11 +1502,11 @@ int main( int argc, char** argv )
   
   { // union of two DSSs
     res = res && unionTest();
-    typedef DGtal::ArithmeticalDSS<DGtal::int64_t> DSS8;
-    res = res && unionComparisonTest<DSS8>(457753,1267,2000);
+    //typedef DGtal::ArithmeticalDSS<DGtal::int64_t> DSS8;
+    res = res && unionComparisonTest<DGtal::int64_t,DGtal::int64_t,8>(457753,1267,2000);
     //res = res && unionComparisonTest<DSS8>(500,100,1000);
-    typedef DGtal::ArithmeticalDSS<DGtal::int64_t, DGtal::int64_t, 4> DSS4;
-    res = res && unionComparisonTest<DSS4>(86745,664,2000);
+    //typedef DGtal::ArithmeticalDSS<DGtal::int64_t, DGtal::int64_t, 4> DSS4;
+    res = res && unionComparisonTest<DGtal::int64_t, DGtal::int64_t, 4>(86745,664,2000);
   }
   
   
