@@ -322,9 +322,6 @@ bool sameOctantTest(const DSL& dsl1, const DSL& dsl2)
 {
   typedef typename DSL::Point Point; 
 
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Test same octant" );
   trace.info() << dsl1  << " " << dsl2 << std::endl; 
   
@@ -401,7 +398,7 @@ int main( int argc, char** argv )
 
   { // same octant test
     typedef DGtal::ArithmeticalDSL<DGtal::int32_t> DSL; 
-    int oc;
+   
     res = res 
       && sameOctantTest(DSL(5,8,16),DSL(1,2,3))==true 
       && sameOctantTest(DSL(5,8,16),DSL(2,1,3))==false
