@@ -883,8 +883,8 @@ bool unionTest()
   unsigned int nbok = 0;
   
   typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
-  typedef typename DSS::Point Point;
-
+  typedef DSS::Point Point;
+  
   trace.beginBlock("Testing union of two DSSs");
 
   // Different tests to cover all possible configurations
@@ -1117,15 +1117,16 @@ int max(int a, int b)
 template <typename DSS>
 bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 {
-  unsigned int nb = 0;
-  unsigned int nbok = 0;
-  unsigned int nbEasy = 0;
-
   typedef typename DSS::DSL DSL;
   typedef typename DSS::Point Point;
   typedef typename DSS::Integer Integer;
   typedef typename DSS::Vector Vector;
-  
+ 
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  unsigned int nbEasy = 0;
+
+ 
   DGtal::IntegerComputer<Integer> ic;
 
   DSS dss(Point(0,0));
@@ -1225,9 +1226,10 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		     dir = Vector(0,1);
 		  else
 		    dir = Vector(1,0);
-		  DGtal::IntegerComputer<Integer> ic;
 		  
-		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,dir)==0 ||  DGtal::ArithmeticalDSLKernel<typename DSS::Coordinate,dss.foregroundAdjacency>::norm((C-B)[0], (C-B)[1])<=1 )
+		  static const unsigned short adj=dss.foregroundAdjacency;
+		  
+		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,dir)==0 ||  DGtal::ArithmeticalDSLKernel<typename DSS::Coordinate,adj>::norm((C-B)[0], (C-B)[1])<=1 )
 		    {
 		      nbEasy++;
 		      // Computation of DSS1 \cup DSS2 using the
