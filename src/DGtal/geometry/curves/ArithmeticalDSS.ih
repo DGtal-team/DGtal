@@ -548,7 +548,6 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 {
   int oc;
   bool easyCase;
-  Vector shift;
   
   typedef DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
   typedef DGtal::ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency> Factory;
@@ -558,14 +557,6 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   // Test whether the two DSSs belong to the same octant or not
   if(!(myDSL.sameOctant(aOther.dsl(), &oc)))
     return ArithmeticalDSS(Point(0,0));
-  
-  // the shift of the result (if any) is the shift of the DSL that is not in between two octants.
-  // if the two DSL have a slope in between two octants, the shift has to be determined later
-  if(abs(myDSL.a()) != abs(myDSL.b()))
-    shift = myDSL.shift();
-  else
-    shift = aOther.shift();
-   
   
   if(beforeOrEqual(myL,aOther.front()))
     {
