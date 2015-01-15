@@ -28,7 +28,10 @@
    [#942](https://github.com/DGtal-team/DGtal/pull/942))
  - Balls can be exported to OBJ in Board3D and ball resolution can now
    be specified in Viewer3D and Board3D (David Coeurjolly,
-   [#945](https://github.com/DGtal-team/DGtal/pull/945)
+   [#945](https://github.com/DGtal-team/DGtal/pull/945))
+ - Viewer3d cleanings with better organisation through the
+   separation of all code generating the GL lists. (Bertrand Kerautret)
+  ([#945](https://github.com/DGtal-team/DGtal/pull/945))
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
