@@ -175,6 +175,21 @@ bool mainTest()
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") "
   	       << std::endl;
+
+  if ( (dsl7.getPoint() == Point(0,0)) 
+       &&(DSL(5,8,dsl7.omega()-1).getPoint() == Point(0,0)+dsl.shift())
+       &&(DSL(5,8,dsl7.omega()).getPoint() == Point(0,0)+dsl.shift())
+       &&(DSL(5,8,dsl7.omega()+1).getPoint() == Point(0,0)+2*dsl.shift())
+       &&(DSL(5,8,-dsl7.omega()+1).getPoint() == Point(0,0))
+       &&(DSL(5,8,-dsl7.omega()).getPoint() == Point(0,0)-dsl.shift())
+       &&(DSL(5,8,-dsl7.omega()-1).getPoint() == Point(0,0)-dsl.shift())
+       )
+    nbok++; 
+  nb++; 
+
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << std::endl;
+
             
   trace.endBlock();
   
@@ -201,7 +216,8 @@ bool rangeTest(const DSL& dsl)
   trace.beginBlock ( "Range/Iterator services..." );
   trace.info() << dsl << std::endl; 
 
-  Point first = dsl.getPoint(); 
+  Point origin = dsl.getPoint();
+  Point first = Point(origin[0]-dsl.b(), origin[1]-dsl.a());
   Point last = Point(first[0]+dsl.b(), first[1]+dsl.a()); 
   trace.info() << "from " << first << " to " << last << std::endl; 
 
