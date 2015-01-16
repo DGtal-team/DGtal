@@ -61,7 +61,7 @@
  - Fix bug of method ArithmeticalDSL::getPoint with negative values
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
- - Fix too restrictive asserts of methods ArithmeticalDSSConvexHull::smartCH and ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative positions as input arguments.
+ - Fix too restrictive asserts of methods ArithmeticalDSSConvexHull::smartCH and ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative positions as input arguments. (Isabelle Sivignon, [#950](https://github.com/DGtal-team/DGtal/pull/950))
 
 # DGtal 0.8
 
