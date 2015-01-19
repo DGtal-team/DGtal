@@ -8,6 +8,11 @@
  - New EstimatorCache class to cache quantities estimated by a
    surfel local estimator. (David Coeurjolly,
    [#927](https://github.com/DGtal-team/DGtal/pull/927))
+ - New digital surface local estimator that computes a sphere
+  fitting. It requires to have the Patate library installed (and
+  WITH_PATATE=true): http://patate.gforge.inria.fr/html/. See
+  SphereFittingEstimator (David Coeurjolly,
+  [929](https://github.com/DGtal-team/DGtal/pull/929))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
@@ -23,7 +28,10 @@
    [#942](https://github.com/DGtal-team/DGtal/pull/942))
  - Balls can be exported to OBJ in Board3D and ball resolution can now
    be specified in Viewer3D and Board3D (David Coeurjolly,
-   [#945](https://github.com/DGtal-team/DGtal/pull/945)
+   [#945](https://github.com/DGtal-team/DGtal/pull/945))
+ - Viewer3d cleanings with better organisation through the
+   separation of all code generating the GL lists. (Bertrand Kerautret)
+  ([#945](https://github.com/DGtal-team/DGtal/pull/945))
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the

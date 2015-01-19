@@ -899,9 +899,9 @@ template <typename Space, typename KSpace>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::
-draw( Viewer3D<Space,KSpace> & viewer, const DGtal::SetName3D& name3d )
+draw( Viewer3D<Space,KSpace> & viewer, const DGtal::SetName3D& aName3d )
 {
-  DGtal::Display3DFactory<Space,KSpace>::draw( viewer, name3d );
+  DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aName3d );
 }
 //-----------------------------------------------------------------------------
 template <typename Space, typename KSpace>
