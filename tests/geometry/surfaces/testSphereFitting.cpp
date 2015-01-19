@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testTensorVoting.cpp
+ * @file testSphereFitting.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2013/05/28
+ * @date 2014/10/07
  *
- * Functions for testing class LocalEstimatorFromFunctorAdapter.
+ * Functions for testing class SphereFitting.
  *
  * This file is part of the DGtal library.
  */
@@ -36,22 +36,20 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/shapes/implicit/ImplicitBall.h"
+#include "DGtal/shapes/GaussDigitizer.h"
+
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/BasicEstimatorFromSurfelsFunctors.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/geometry/surfaces/estimation/estimationFunctors/TensorVotingFeatureExtraction.h"
-
-#include "DGtal/shapes/implicit/ImplicitHyperCube.h"
-#include "DGtal/shapes/implicit/ImplicitBall.h"
-#include "DGtal/shapes/GaussDigitizer.h"
-
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/SphereFittingEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/EstimatorCache.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -61,103 +59,94 @@ using namespace DGtal;
 // Functions for testing class LocalEstimatorFromFunctorAdapter.
 ///////////////////////////////////////////////////////////////////////////////
 
+
 /**
  * Example of a test. To be completed.
  *
  */
-template<typename Shape>
-bool testLocalEstimatorFromFunctorAdapter(int argc, char **argv)
+bool testFitting()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   trace.beginBlock ( "Testing init ..." );
 
   using namespace Z3i;
- 
-  typedef GaussDigitizer<Space,Shape> Gauss;
-
-  typedef LightImplicitDigitalSurface<KSpace,Gauss> SurfaceContainer;
-  typedef DigitalSurface<SurfaceContainer> Surface;
-  //typedef Surface::SurfelConstIterator ConstIterator;
-  //typedef Surface::Tracker Tracker;
-  typedef typename Surface::Surfel Surfel;
-
 
   trace.beginBlock("Creating Surface");
-  Point p1( -100, -100, -100 );
-  Point p2( 100, 100, 100 );
+  Point p1( -20, -20, -20 );
+  Point p2( 20, 20, 20 );
+   
+  ImplicitBall<Z3i::Space> shape( RealPoint(6.0,0,0), 4);
+  typedef GaussDigitizer<Z3i::Space, ImplicitBall<Z3i::Space> > Gauss;
+  Gauss gauss;
+  gauss.attach(shape);
+  gauss.init(p1, p2, 1);
+  
+  typedef LightImplicitDigitalSurface<KSpace,  Gauss > SurfaceContainer;
+  typedef DigitalSurface<SurfaceContainer> Surface;
+  typedef Surface::Surfel Surfel;
+
+
   KSpace K;
   nbok += K.init( p1, p2, true ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "K.init() is ok" << std::endl;
-
-  //Shape
-  Shape shape(RealPoint::diagonal(0.0), 30.0 );
-  Gauss gauss;
-  gauss.attach(shape);
-  gauss.init(p1,p2,1.0);
-
-  //Surface
   Surfel bel = Surfaces<KSpace>::findABel( K, gauss, 10000 );
   SurfaceContainer* surfaceContainer = new SurfaceContainer
     ( K, gauss, SurfelAdjacency<KSpace::dimension>( true ), bel );
   Surface surface( surfaceContainer ); // acquired
+  CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   trace.endBlock();
 
-  trace.beginBlock("Creating  adapters");
-  typedef TensorVotingFeatureExtraction<Surfel, CanonicSCellEmbedder<KSpace> > FunctorVoting;
+  trace.beginBlock("Normal vector field computation");
+  typedef functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormal;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric,
+                                                 FunctorNormal,
+                                                 DGtal::functors::GaussianKernel> ReporterNormal;
+  typedef EstimatorCache<ReporterNormal> NormalCache;
 
-  typedef functors::GaussianKernel ConvFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorVoting, ConvFunctor> Reporter;
+  //estimator
+  DGtal::functors::GaussianKernel gaussKernelFunc(5.0);
+  FunctorNormal functorNormal(embedder, 1.0);
+  ReporterNormal reporterNormal;
+  reporterNormal.attach(surface);
+  reporterNormal.setParams(l2Metric, functorNormal, gaussKernelFunc, 5.0);
 
-  CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
-  FunctorVoting estimator(embedder,1);
+  //caching normal field
+  NormalCache normalCache(reporterNormal);
+  normalCache.init( 1, surface.begin(), surface.end());
+  trace.info() << "Normal vector field cached... "<< normalCache << std::endl;
+  trace.endBlock();
 
-  ConvFunctor convFunc(4.0);
+  trace.beginBlock("Creating  sphere fitting adapter from normal vector field");
+  typedef functors::SphereFittingEstimator<Surfel, CanonicSCellEmbedder<KSpace> , NormalCache> Functor;
+  typedef functors::ConstValue< double > ConvFunctor;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, Functor, ConvFunctor> Reporter;
+
+  Functor fitter(embedder,1, normalCache);
+  ConvFunctor convFunc(1.0);
   Reporter reporter;
   reporter.attach(surface);
-  reporter.setParams(l2Metric, estimator , convFunc, 5.0);
-
-  reporter.init(1, surface.begin() , surface.end());
-
-  std::vector<double> values;
-  reporter.eval( surface.begin(), surface.end(), std::back_insert_iterator<std::vector<double> >(values));
-
-  double maxval = *std::max_element(values.begin(), values.end());
-  double minval = *std::min_element(values.begin(), values.end());
-  trace.info() << "Min/max= "<< minval<<"/"<<maxval<<std::endl;
-  QApplication application( argc, argv );
-  typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-  Viewer viewer( K );
-  viewer.setWindowTitle("Features from Tensor Voting");
-  viewer.show();
-
-  typedef GradientColorMap< double > Gradient;
-  Gradient cmap_grad( minval, maxval );
-  cmap_grad.addColor( Color( 50, 50, 255 ) );
-  cmap_grad.addColor( Color( 255, 0, 0 ) );
-  cmap_grad.addColor( Color( 255, 255, 10 ) );
-
-
-  viewer << SetMode3D((*(surface.begin())).className(), "Basic" );
-  unsigned int i=0;
+  reporter.setParams(l2Metric, fitter , convFunc, 15.0);
   
-  for(typename Surface::ConstIterator it = surface.begin(), itend=surface.end();
-      it!= itend;
-      ++it, ++i)
+  reporter.init(1, surface.begin(), surface.end());
+  for(Surface::ConstIterator it = surface.begin(), ite=surface.end(); it!=ite; ++it)
     {
-      viewer << CustomColors3D( Color::Black, cmap_grad( values[ i ] ))
-             <<  *it ;    
+      Functor::Quantity val = reporter.eval( it );
+      trace.info() << "Fitting = "<<val.center <<" rad="<<val.radius<<std::endl;
     }
-  
-  
-  viewer << Viewer3D<>::updateDisplay;
-  
   trace.endBlock();
-  application.exec();
 
-  return true;
+
+  trace.endBlock();
+
+  nbok += true ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+
+  return nbok == nb;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -165,15 +154,13 @@ bool testLocalEstimatorFromFunctorAdapter(int argc, char **argv)
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class TensorVotingFeatureExtraction" );
+  trace.beginBlock ( "Testing class SphereFitting" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testLocalEstimatorFromFunctorAdapter<ImplicitHyperCube<Z3i::Space> >(argc,argv)
-    && testLocalEstimatorFromFunctorAdapter<ImplicitBall<Z3i::Space> >(argc,argv);
-  
+  bool res = testFitting(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

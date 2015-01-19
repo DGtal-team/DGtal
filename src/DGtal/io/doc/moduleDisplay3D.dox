@@ -615,6 +615,14 @@ Khalimsky Signed Cell Visualization (with Board3DTo2D)
 */
 
 /**
+   \image html  viewer3D-4-modes.png  "Illustration of the Paving/Grid modes  on 3D points"
+\example io/viewers/viewer3D-4-modes.cpp
+*/
+
+
+
+
+/**
    \image html  view3D-4bis-illustrationMode.png  "Illustration of the \"Illustration\" KhalimskyCell mode."
 \example io/viewers/viewer3D-4bis-illustrationMode.cpp
 */
