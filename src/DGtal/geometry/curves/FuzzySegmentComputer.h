@@ -20,7 +20,7 @@
  * @file FuzzySegmentComputer.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
- *
+ * 
  * @date 2015/01/05
  *
  * Header file for module FuzzySegmentComputer.cpp
@@ -84,8 +84,7 @@ public:
   typedef typename InputPointSet::const_iterator ConstIterator;
   typedef typename InputPointSet::iterator Iterator;
 
-  typedef ParallelStrip<Space,true,true> Primitive;
-  
+  typedef ParallelStrip<Space,true,true> Primitive;  
 
   
   // ----------------------- Standard services ------------------------------
@@ -96,7 +95,6 @@ public:
    * Constructor.
    */
   FuzzySegmentComputer();
-
 
 
   /**
@@ -256,8 +254,7 @@ private:
   
   bool myIsValid;
 
-  double myThickness;
-  
+  double myThickness;  
   
 
   /**
@@ -280,11 +277,6 @@ private:
 
     // ------------------------- Hidden services ------------------------------
 protected:
-
-
-
-
-
 
 
     /**
