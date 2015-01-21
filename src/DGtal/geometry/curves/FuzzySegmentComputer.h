@@ -267,18 +267,14 @@ private:
 
   std::deque<InputPoint> myMelkmanQueue;
   
-  bool myIsMelkmanInitialized;
-  
+  bool myIsMelkmanInitialized;  
   // Used in melkmanMainDiagonal()
   double myConvexHullHeight;  
-  double myConvexHullWidth;
-  
+  double myConvexHullWidth;  
 
   InputPoint myEdgeP, myEdgeQ, myVertexS;
   InputPoint myEdgePh, myEdgeQh, myVertexSh;
   InputPoint myEdgePw, myEdgeQw, myVertexSw;
-
-
   
 
 
