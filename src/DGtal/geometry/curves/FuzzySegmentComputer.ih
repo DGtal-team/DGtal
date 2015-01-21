@@ -506,7 +506,7 @@ inline
 std::vector<TInputPoint>
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConvexHull() const{
   std::vector<InputPoint> aResult;
-  for (typename std::deque<TInputPoint>::const_iterator it = myMelkmanQueue.cbegin(); it != myMelkmanQueue.cend(); it++){
+  for (typename std::deque<TInputPoint>::const_iterator it = myMelkmanQueue.begin(); it != myMelkmanQueue.end(); it++){
     aResult.push_back(*it);
   }
   return aResult;
