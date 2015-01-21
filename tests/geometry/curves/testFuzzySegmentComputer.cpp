@@ -55,19 +55,20 @@ bool testFuzzySegmentComputer()
   typedef  FuzzySegmentComputer<Z2i::Space, Z2i::RealPoint, int> FuzzySegmentComputer2D;
   trace.beginBlock ( "Testing Fuzzy segment ..." );
   FuzzySegmentComputer<Z2i::Space, Z2i::RealPoint, int> aFuzzySegmentComp;
-  std::set<Z2i::RealPoint> aContour;
-  aContour.insert(Z2i::RealPoint(0.2, 0.3));
-  aContour.insert(Z2i::RealPoint(2.2, 0.1));
-  aContour.insert(Z2i::RealPoint(3.1, 0.5));
-  aContour.insert(Z2i::RealPoint(1.1, 1.1));
-  aContour.insert(Z2i::RealPoint(4.1, -0.4));
-  aContour.insert(Z2i::RealPoint(6.1, 0.9));
-  aContour.insert(Z2i::RealPoint(8.1, 2.1));
-  aContour.insert(Z2i::RealPoint(4.1, 1.1));
-  aContour.insert(Z2i::RealPoint(5.1, 4.1));
-  aContour.insert(Z2i::RealPoint(10.1, 2.1));  
-  aFuzzySegmentComp.init(30.0, aContour.begin());
+  std::vector<Z2i::RealPoint> aContour;
+  aContour.push_back(Z2i::RealPoint(0.2, 0.3));
+  aContour.push_back(Z2i::RealPoint(2.2, 0.1));
+  aContour.push_back(Z2i::RealPoint(3.1, 0.5));
+  aContour.push_back(Z2i::RealPoint(1.1, 1.1));
+  aContour.push_back(Z2i::RealPoint(4.1, -0.4));
+  aContour.push_back(Z2i::RealPoint(6.1, 0.9));
+  aContour.push_back(Z2i::RealPoint(8.1, 2.1));
+  aContour.push_back(Z2i::RealPoint(4.1, 1.1));
+  aContour.push_back(Z2i::RealPoint(5.1, 4.1));
+  aContour.push_back(Z2i::RealPoint(10.1, 2.1));  
+  aFuzzySegmentComp.init(3.0, aContour.begin());
   for (int i=0; i<aContour.size()-1; i++){ 
+    trace.info() << "insert point " << i << std::endl; 
     bool res = aFuzzySegmentComp.extendFront();
     if (!res) {
       break;
@@ -92,6 +93,16 @@ bool testFuzzySegmentComputer()
        it != aFuzzySegmentComp.end(); it++){
     aBoard << *it;
   }
+  
+  // Display boundingbox
+  Z2i::RealPoint pt1, pt2, pt3, pt4;
+  aFuzzySegmentComp.getRealBounds(pt1,pt2,pt3,pt4);
+  aBoard.setPenColor(DGtal::Color::Blue);
+  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
+  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
+  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
+  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
+  
   
   
   aBoard.saveEPS("testFuzzySegmentComputer_Convexhull.eps"); 
