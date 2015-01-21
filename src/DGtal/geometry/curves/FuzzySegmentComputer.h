@@ -76,9 +76,8 @@ public:
   typedef TInputPoint InputPoint;
   typedef TInternalScalar InternalScalar;
   typedef InputPoint InputVector;
-  
   typedef InternalScalar InternalVector[ 2 ];
-  typedef typename Space::Point Point;
+
   
   typedef std::set< InputPoint > InputPointSet;
   typedef typename InputPointSet::size_type Size;
@@ -157,10 +156,12 @@ public:
   
   /**
    * Initialisation.
+   * @param aThickness the thickness of the fuzzy segment.
    * @param it an iterator on 2D points
    */
-  void init(const ConstIterator& it);
-  
+  void init(double aThickness, const ConstIterator& it);  
+
+
   
   /**
    * Tests whether the current fuzzy segment can be extended at the front.
@@ -176,6 +177,7 @@ public:
    * @return 'true' if yes, 'false' otherwise.
    */
   bool extendFront();
+
   
   /**
    * Tests whether the current fuzzy segment can be extended at the back.
@@ -192,11 +194,11 @@ public:
    */
   bool extendBack();
   
-
+ 
 
   //-------------------- Primitive services -----------------------------
-
-
+  
+  
    /**
       @return the current primitive recognized by this computer,
       which is a ParallelStrip of axis width smaller than the one
@@ -211,6 +213,7 @@ public:
 public:
 
   
+  std::vector<InputPoint> getConvexHull() const;
 
 
     /**
@@ -240,7 +243,7 @@ protected:
   
     
 
-
+  
 
     // ------------------------- Private Datas --------------------------------
 private:
@@ -252,25 +255,29 @@ private:
   mutable InputPointSet myPointSet; 
   
   bool myIsValid;
+
+  double myThickness;
   
+  
+
   /**
    *  Melkman algorithm main dequeu 
    *
    **/
 
-  std::deque<Point> myMelkmanQueue;
-  
+  std::deque<InputPoint> myMelkmanQueue;
   
   bool myIsMelkmanInitialized;
   
   // Used in melkmanMainDiagonal()
   double myConvexHullHeight;  
   double myConvexHullWidth;
+  
 
-  Point myEdgeP, myEdgeQ, myVertexS;
-  Point myEdgePh, myEdgeQh, myVertexSh;
-  Point myEdgePw, myEdgeQw, myVertexSw;
-  Point mySav_P, mySav_Q, mySav_S;
+  InputPoint myEdgeP, myEdgeQ, myVertexS;
+  InputPoint myEdgePh, myEdgeQh, myVertexSh;
+  InputPoint myEdgePw, myEdgeQw, myVertexSw;
+
 
   
 
@@ -282,7 +289,7 @@ protected:
 
 
 
-private:
+
 
     /**
      * Copy constructor.
@@ -290,14 +297,14 @@ private:
      * Forbidden by default.
      */
     FuzzySegmentComputer ( const FuzzySegmentComputer & other );
-
+  
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    FuzzySegmentComputer & operator= ( const FuzzySegmentComputer & other );
+  FuzzySegmentComputer & operator= ( const FuzzySegmentComputer & other );
 
 
   /**
@@ -312,7 +319,7 @@ private:
    *  @return the main diagonal width of a convex set
    *
    **/     
-   double melkmanMainDiagonal() const;
+   double melkmanMainDiagonal();
   
   
   /**
@@ -320,7 +327,7 @@ private:
    * Add a point in a convex using one step of Melkman algorithm.
    * @param[in] aPoint the point to be added.
    */
-  void melkmanAddPoint( const Point &aPoint );
+  void melkmanAddPoint( const InputPoint &aPoint );
 
 
 
@@ -333,13 +340,12 @@ private:
   void melkmanInitCheck( ) ; 
 
 
-
-
   /**
    * IsConvexValid
    * Depending on connexity, return true if a convex is valid.
+   * @param aThick the thickness of reference
    */
-  bool melkmanIsConvexValid( const std::deque<int> & D , float thick ) const;
+  bool melkmanIsConvexValid() ;
   
   
   /**
@@ -349,7 +355,7 @@ private:
    * @param[in] aP1 the second point defining the line.
    * @param[in] aP2 the point to be tested.
    */
-  InternalScalar melkmanIsLeft(const Point &aP0, const Point &aP1, const Point &aP2) const;
+  InternalScalar melkmanIsLeft(const InputPoint &aP0, const InputPoint &aP1, const InputPoint &aP2) const;
   
   
 
