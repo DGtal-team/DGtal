@@ -66,7 +66,7 @@ bool testFuzzySegmentComputer()
   aContour.insert(Z2i::RealPoint(4.1, 1.1));
   aContour.insert(Z2i::RealPoint(5.1, 4.1));
   aContour.insert(Z2i::RealPoint(10.1, 2.1));  
-  aFuzzySegmentComp.init(30.0, aContour.cbegin());
+  aFuzzySegmentComp.init(30.0, aContour.begin());
   for (int i=0; i<aContour.size()-1; i++){ 
     bool res = aFuzzySegmentComp.extendFront();
     if (!res) {
