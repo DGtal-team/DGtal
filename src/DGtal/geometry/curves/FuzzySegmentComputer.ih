@@ -18,6 +18,10 @@
  * @file FuzzySegmentComputer.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Alexandre Faure
+ * @author Fabien Feschet 
+ * @author Mohammad Said
+ * @author Jacques-Olivier Lachaud
  *
  * @date 2015/01/05
  *
@@ -174,7 +178,8 @@ init(double aThickness, const typename DGtal::FuzzySegmentComputer<TSpace, TInpu
   myEnd = it;
   ++myEnd;
   melkmanAddPoint(*it);
-  myPointSet.insert(*it);  
+  myPointSet.push_back(*it);  
+  myBoxLength = -1.0;
 }
 
 
@@ -204,7 +209,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront()
   // Try to add point
   melkmanAddPoint(*myEnd);
   if (melkmanIsConvexValid()){
-    myPointSet.insert(*myEnd);
+    myPointSet.push_back(*myEnd);
     ++myEnd;
     return true;
   }else{
@@ -495,7 +500,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsConv
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 TInternalScalar
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft(const InputPoint &aP0, const InputPoint &aP1, const InputPoint &aP2) const
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft(const InputPoint &aP0,
+                                                                                 const InputPoint &aP1, const InputPoint &aP2) const
 {
   return (aP1 - aP0)[0]*(aP2 - aP0)[1]-(aP2 - aP0)[0]*(aP1 - aP0)[1];
 }
@@ -512,6 +518,175 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConvexHull
   return aResult;
 }
 
+
+
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+void
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getSegmentBoundsFromExtremPt(const InputPoint &aFirstPt,
+                                                                                                const InputPoint &aLastPt,
+                                                                                                InputPoint &pt1LongestSegment1,
+                                                                                                InputPoint &pt2LongestSegment1,
+                                                                                                InputPoint &pt3LongestSegment2,
+                                                                                                InputPoint &pt4LongestSegment2,
+                                                                                                double minVisibleWidthBounds) const{
+  
+  // Special case, blurred segment composed only of aligned points. 
+  // In this cas the bounding box is restrained to a eplison width rectangle.
+  
+  if(myConvexHullHeight==0.0){
+    InputPoint vectPQ (myQ[0]- myP[0], myQ[1]- myP[1]); 
+    double normPQ = vectPQ.norm();
+    InputPoint vectUnitPerpPQ (-vectPQ[1]/normPQ, vectPQ[0]/normPQ);
+    pt1LongestSegment1[0]=myP[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt1LongestSegment1[1]=myP[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    
+    pt2LongestSegment1[0]=myQ[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt2LongestSegment1[1]=myQ[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    
+    pt3LongestSegment2[0]= myQ[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt3LongestSegment2[1]= myQ[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    
+    pt4LongestSegment2[0]= myP[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt4LongestSegment2[1]= myP[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    
+  }else{
+    InputPoint projF, projL, projS ;
+    projetOnStraightLine(myP, myQ, aFirstPt, projF);
+    projetOnStraightLine(myP, myQ, aLastPt, projL);
+    projetOnStraightLine(myP, myQ, myS, projS);
+    
+    // Shift of the projection of PQ to define the other part of bounds.
+    InputPoint dep (myS[0]-projS[0], myS[1]-projS[1]);
+    InputPoint projF2(projF[0]+dep[0], projF[1]+dep[1] );
+    InputPoint projL2(projL[0]+dep[0], projL[1]+dep[1] );
+    
+    pt1LongestSegment1[0]=projF[0];
+    pt1LongestSegment1[1]=projF[1];
+    
+    pt2LongestSegment1[0]=projL[0];
+    pt2LongestSegment1[1]=projL[1];
+    
+    pt3LongestSegment2[0]=projL2[0];
+    pt3LongestSegment2[1]=projL2[1];
+    
+    pt4LongestSegment2[0]=projF2[0];
+    pt4LongestSegment2[1]=projF2[1];      
+  }
+}
+
+
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+void
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBounds(InputPoint &pt1LongestSegment1,
+                                                                                  InputPoint &pt2LongestSegment1,
+                                                                                  InputPoint &pt3LongestSegment2,
+                                                                                  InputPoint &pt4LongestSegment2,
+                                                                                  double minVisibleWidthBounds) const{ 
+  // To be changed with saved point added by push front/push back
+  InputPoint fp = myPointSet[0];
+  InputPoint lp = myPointSet[myPointSet.size()-1];
+  getSegmentBoundsFromExtremPt(fp, lp, pt1LongestSegment1, pt2LongestSegment1, pt3LongestSegment2, pt4LongestSegment2);
+}
+
+
+
+
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+void 
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBounds(InputPoint &pt1LongestSegment1,
+                                                                                 InputPoint &pt2LongestSegment1,
+                                                                                 InputPoint &pt3LongestSegment2,
+                                                                                 InputPoint &pt4LongestSegment2,
+                                                                                 double minVisibleWidthBounds ) const
+{
+  
+  getBasicBounds(pt1LongestSegment1, pt2LongestSegment1, 
+                 pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);
+  if(myConvexHullHeight==0.0){
+    return;
+  }
+  // To be changed with saved point added by push front/push back
+  InputPoint extremF = myPointSet[0];
+  InputPoint extremL = myPointSet[myPointSet.size()-1];
+  InputPoint projExtremF;
+  InputPoint projExtremL;
+  
+  projetOnStraightLine(myP, myQ, extremF, projExtremF);
+  projetOnStraightLine(myP, myQ, extremL, projExtremL);  
+  
+  std::deque<InputPoint> dSegment = myMelkmanQueue;
+  int nb = dSegment.size();
+  for( uint p = 0 ; p < nb ; ++p)
+    {
+      InputPoint pointEnvConv = dSegment[p];
+      InputPoint projPointEnvConv;
+      bool isNewExtrema = !projetOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
+      if(isNewExtrema){
+	double distFirst = (projPointEnvConv-projExtremF).norm(); 
+	double distLast = (projPointEnvConv- projExtremL).norm(); 
+	if(distFirst> distLast){
+	  extremL = pointEnvConv;
+	  projExtremL = projPointEnvConv;	  
+	}else{
+	  extremF = pointEnvConv;
+	  projExtremF = projPointEnvConv;	 
+	}
+      }      
+    }
+  
+  getSegmentBoundsFromExtremPt(extremF, extremL, pt1LongestSegment1, pt2LongestSegment1, 
+                               pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);  
+}
+
+
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+double 
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicLength(){
+  InputPoint pt1, pt2, pt3, pt4;
+  getBasicBounds(pt1, pt2, pt3, pt4);
+  return (pt2-pt1).norm();
+}
+
+
+
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+double 
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealLength(){
+  InputPoint pt1, pt2, pt3, pt4;
+  getRealBounds(pt1, pt2, pt3, pt4);
+  return (pt2-pt1).norm();
+}
+  
+
+
+
+
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+bool
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOnStraightLine(const InputPoint & ptA,
+                                                                                        const InputPoint & ptB,
+                                                                                        const InputPoint & ptC,
+                                                                                        InputPoint & ptProjected) const {
+  
+  InputPoint vAB (ptB[0]- ptA[0], ptB[1]- ptA[1]);
+  InputPoint vAC (ptC[0]-ptA[0], ptC[1]-ptA[1]);
+  
+  double normeAB = vAB.norm();
+  double normevAC = vAC.norm();
+  
+  double scalABAC = vAB.dot(vAC);
+  double distPtA_Proj = scalABAC/normeAB;
+
+  ptProjected[0]= ptA[0]+vAB[0]*(distPtA_Proj/normeAB);
+  ptProjected[1] = ptA[1]+vAB[1]*(distPtA_Proj/normeAB);  
+  return  (scalABAC>=0 && distPtA_Proj<=normeAB); 
+}
 
 
 

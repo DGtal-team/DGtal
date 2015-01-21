@@ -20,7 +20,11 @@
  * @file FuzzySegmentComputer.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
- * 
+ * @author Alexandre Faure
+ * @author Fabien Feschet 
+ * @author Mohammad Said
+ * @author Jacques-Olivier Lachaud
+ *
  * @date 2015/01/05
  *
  * Header file for module FuzzySegmentComputer.cpp
@@ -79,10 +83,10 @@ public:
   typedef InternalScalar InternalVector[ 2 ];
 
   
-  typedef std::set< InputPoint > InputPointSet;
-  typedef typename InputPointSet::size_type Size;
-  typedef typename InputPointSet::const_iterator ConstIterator;
-  typedef typename InputPointSet::iterator Iterator;
+  typedef std::vector< InputPoint > InputPointContainer;
+  typedef typename InputPointContainer::size_type Size;
+  typedef typename InputPointContainer::const_iterator ConstIterator;
+  typedef typename InputPointContainer::iterator Iterator;
 
   typedef ParallelStrip<Space,true,true> Primitive;  
 
@@ -209,23 +213,80 @@ public:
   
     // ----------------------- Interface --------------------------------------
 public:
+  
 
   
   std::vector<InputPoint> getConvexHull() const;
 
 
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
+  /**
+   *  Compute and update the Bounds of the BlurredSeg according different parameters.
+   * 
+   * @param segment (return)
+   *
+   **/
+  
+  void getSegmentBoundsFromExtremPt(const InputPoint &aFirstPt,
+                                             const InputPoint &aLastPt,
+                                             InputPoint &pt1LongestSegment1,
+                                             InputPoint &pt2LongestSegment1,
+                                             InputPoint &pt3LongestSegment2,
+                                             InputPoint &pt4LongestSegment2,
+                                             double minVisibleWidthBounds = 0.2) const;
+  
+  
+  /**
+  * Compute the basic Bounds of Blurred Segment by updating the values of segment bounding points 
+  *  ptALongestSegment1, ptBLongestSegment ptCLongestSegment2 and ptDLongestSegment2
+  * 
+  * @param aSegment (return).
+  */ 
+  
+  void getBasicBounds(InputPoint &pt1LongestSegment1,
+                      InputPoint &pt2LongestSegment1,
+                      InputPoint &pt3LongestSegment2,
+                      InputPoint &pt4LongestSegment2,
+                      double minVisibleWidthBounds=0.2) const;
+  
+  
+  /**
+   * Compute the Bounds of Blurred Segmente by taking into account
+   *  correctly the extremity even by change of direction for the end
+   *  points.  The values of segment bounding points are updated (
+   *  ptALongestSegment1, ptBLongestSegment ptCLongestSegment2 and
+   *  ptDLongestSegment2)
+   * 
+   * @param aSegment (return).
+   */
 
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
+  void  getRealBounds(InputPoint &pt1LongestSegment1,
+                      InputPoint &pt2LongestSegment1,
+                      InputPoint &pt3LongestSegment2,
+                      InputPoint &pt4LongestSegment2,
+                      double minVisibleWidthBounds=0.2) const;
+  
 
+  double getBasicLength();
+  double getRealLength();
+  
+
+
+  
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const;
+  
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+     */
+  bool isValid() const;
+  
+
+
+  
     // ------------------------- Protected Datas ------------------------------
 protected:
   
@@ -250,12 +311,11 @@ private:
    * The set of points contained in the fuzzy segment which can be changed during computations.
    *
    **/
-  mutable InputPointSet myPointSet; 
+  mutable InputPointContainer myPointSet; 
   
   bool myIsValid;
-
   double myThickness;  
-  
+  double myBoxLength;
 
   /**
    *  Melkman algorithm main dequeu 
@@ -269,9 +329,9 @@ private:
   double myConvexHullHeight;  
   double myConvexHullWidth;  
 
-  InputPoint myEdgeP, myEdgeQ, myVertexS;
+  InputPoint myP, myQ, myS;
   InputPoint myEdgePh, myEdgeQh, myVertexSh;
-  InputPoint myEdgePw, myEdgeQw, myVertexSw;
+  
   
 
 
@@ -345,6 +405,21 @@ protected:
    */
   InternalScalar melkmanIsLeft(const InputPoint &aP0, const InputPoint &aP1, const InputPoint &aP2) const;
   
+  
+  /**
+   * Compute the projection of a Point ptC on the real line defined by the two points (ptA,ptB), and
+   * return true if the projected point is inside the segment closed interval [A,B].
+   * 
+   * @param[in] ptA one of the two points defining the straight line.
+   * @param[in] ptB one of the two points defining the straight line.
+   * @param[in] ptC the point to be projected.
+   * @param[out] ptProjected (return) the projected point.
+   * @return: true if ptProjected is inside the segment [A,B].
+   **/
+  
+  bool projetOnStraightLine(const InputPoint & ptA, const InputPoint & ptB,
+                       const InputPoint & ptC,
+                       InputPoint & ptProjected) const;
   
 
     // ------------------------- Internals ------------------------------------
