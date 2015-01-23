@@ -159,7 +159,6 @@ public:
   /**
    * Initialisation.
    * @param aThickness the thickness of the fuzzy segment.
-   * @param it an iterator on 2D points
    */
   
   void init(double aThickness);  
@@ -257,7 +256,6 @@ public:
    *  ptALongestSegment1, ptBLongestSegment ptCLongestSegment2 and
    *  ptDLongestSegment2)
    * 
-   * @param aSegment (return).
    */
 
   void  getRealBounds(InputPoint &pt1LongestSegment1,
@@ -372,7 +370,7 @@ protected:
    *  @return the main diagonal width of a convex set
    *
    **/     
-   double melkmanMainDiagonal();
+   void melkmanUpdateMainDiagonal();
   
   
   /**
@@ -396,7 +394,6 @@ protected:
   /**
    * IsConvexValid
    * Depending on connexity, return true if a convex is valid.
-   * @param aThick the thickness of reference
    */
   bool melkmanIsConvexValid() ;
   

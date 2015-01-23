@@ -205,9 +205,9 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(c
   sav_S = myVertexSh;
   
   // Try to add point
-  
-  melkmanAddPoint(myPointSet.size());
-  myPointSet.push_back(aPoint);
+  myPointSet.push_back(aPoint);  
+  melkmanAddPoint(myPointSet.size()-1);
+
   if (melkmanIsConvexValid()){
     if (myPointSet.size()==1){
       myLastBack = aPoint;
@@ -314,14 +314,14 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsWell
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-double
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDiagonal()  
+void
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdateMainDiagonal()  
 {
   /** Strategie is simple:
    *  Do the same thing than for height but with a correction due to 
    *  the diagonal.
    */
-  int size = myPointSet.size();
+  int queueSize = myMelkmanQueue.size();
   InputPoint P, Q, R, S;
   int q,s; /* [pq] is an edge and s a vertex */
   bool stop = false; /* Default is false */
@@ -367,7 +367,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDi
       while( ( Q[0] - P[0] ) * ( R[1] - S[1] )  - ( Q[1] - P[1] ) * ( R[0] - S[0] ) >= 0 )
         {
           S = R;
-          s = ( s + 1 ) % size;
+          s = ( s + 1 ) % queueSize;
           R = myPointSet[myMelkmanQueue[ s ]] ;
         }
       /* Update height if necessary */
@@ -389,14 +389,13 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDi
         }
       /* Go to next point */
       P = Q;
-      q = ( q + 1 ) % size;
+      q = ( q + 1 ) % queueSize;
       Q = myPointSet[myMelkmanQueue[ q ]] ;
     }while( q != 0 );
   
   /* Fix width to an innaccessible value. */
   myConvexHullWidth = maxDoubleValue; 
 
-  return 0.0;
 }
 
 
@@ -499,7 +498,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsConv
   if (!myIsMelkmanInitialized){
     return true;
   } 
-  melkmanMainDiagonal();
+  melkmanUpdateMainDiagonal();
   return ( myConvexHullHeight < myConvexHullWidth ? myConvexHullHeight: myConvexHullWidth ) < myThickness * sqrt( 2.0 );
   
 }
