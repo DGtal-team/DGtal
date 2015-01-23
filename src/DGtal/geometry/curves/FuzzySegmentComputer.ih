@@ -597,7 +597,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBound
   // To be changed with saved point added by push front/push back
   InputPoint fp = myLastBack;
   InputPoint lp = myLastFront;
-  getSegmentBoundsFromExtremPt(fp, lp, pt1LongestSegment1, pt2LongestSegment1, pt3LongestSegment2, pt4LongestSegment2);
+  getSegmentBoundsFromExtremPt(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
+                               pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);
 }
 
 
@@ -628,8 +629,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBounds
   projetOnStraightLine(myP, myQ, extremL, projExtremL);  
   
   std::deque<unsigned int> dSegment = myMelkmanQueue;
-  int nb = dSegment.size();
-  for( uint p = 0 ; p < nb ; ++p)
+  unsigned int nb = dSegment.size();
+  for( unsigned int p = 0 ; p < nb ; ++p)
     {
       InputPoint pointEnvConv = myPointSet[dSegment[p]];
       InputPoint projPointEnvConv;
@@ -688,7 +689,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOnStrai
   InputPoint vAC (ptC[0]-ptA[0], ptC[1]-ptA[1]);
   
   double normeAB = vAB.norm();
-  double normevAC = vAC.norm();
+  
   
   double scalABAC = vAB.dot(vAC);
   double distPtA_Proj = scalABAC/normeAB;

@@ -116,7 +116,7 @@ public:
    * @return the number of distinct points in the current fuzzy segment.
    */
   Size size() const;
-
+  
   /**
    * @return 'true' if and only if this object contains no point.
    */
@@ -222,7 +222,6 @@ public:
   /**
    *  Compute and update the Bounds of the BlurredSeg according different parameters.
    * 
-   * @param segment (return)
    *
    **/
   
@@ -239,7 +238,6 @@ public:
   * Compute the basic Bounds of Blurred Segment by updating the values of segment bounding points 
   *  ptALongestSegment1, ptBLongestSegment ptCLongestSegment2 and ptDLongestSegment2
   * 
-  * @param aSegment (return).
   */ 
   
   void getBasicBounds(InputPoint &pt1LongestSegment1,
@@ -266,6 +264,7 @@ public:
   
 
   double getBasicLength();
+
   double getRealLength();
   
 
@@ -376,7 +375,7 @@ protected:
   /**
    * Melkman
    * Add a point in a convex using one step of Melkman algorithm.
-   * @param[in] aPoint the point to be added.
+   * @param[in] aPointIndex the point to be added.
    */
   void melkmanAddPoint( unsigned int aPointIndex );
 
@@ -401,9 +400,9 @@ protected:
   /**
    * Test if a point aP2 is Left|On|Right of an infinite line (defined from fron two points aP0 and aP1).
    *
-   * @param[in] aP0 the first point defining the line.
-   * @param[in] aP1 the second point defining the line.
-   * @param[in] aP2 the point to be tested.
+   * @param[in] aPointIndex0 the first point defining the line.
+   * @param[in] aPointIndex1 the second point defining the line.
+   * @param[in] aPointIndex2 the point to be tested.
    */
   InternalScalar melkmanIsLeft(unsigned int aPointIndex0, unsigned int aPointIndex1, unsigned int aPointIndex2) const;
   
