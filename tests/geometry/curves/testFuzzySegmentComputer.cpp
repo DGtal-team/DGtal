@@ -61,7 +61,7 @@ bool testFuzzySegmentComputer()
   std::string fileContour = testPath + "samples/contourNoiseSample.sdp";
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
   bool res = true;
-  aFuzzySegmentComp.init(1);
+  aFuzzySegmentComp.init(10);
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
     res &= aFuzzySegmentComp.extendFront(*it);
     if (!res){

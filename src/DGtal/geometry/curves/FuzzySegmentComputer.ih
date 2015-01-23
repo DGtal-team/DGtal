@@ -205,6 +205,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(c
   sav_S = myVertexSh;
   
   // Try to add point
+  
   melkmanAddPoint(myPointSet.size());
   myPointSet.push_back(aPoint);
   if (melkmanIsConvexValid()){
@@ -320,7 +321,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDi
    *  Do the same thing than for height but with a correction due to 
    *  the diagonal.
    */
-  int size = myMelkmanQueue.size();
+  int size = myPointSet.size();
   InputPoint P, Q, R, S;
   int q,s; /* [pq] is an edge and s a vertex */
   bool stop = false; /* Default is false */
@@ -512,7 +513,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft
                                                                                  unsigned int aPointIndex1,
                                                                                  unsigned int aPointIndex2) const
 {
-  return (myPointSet[aPointIndex1] - myPointSet[aPointIndex0])[0]*(myPointSet[aPointIndex2] - myPointSet[aPointIndex0])[1]-(myPointSet[aPointIndex2] - myPointSet[aPointIndex0])[0]*(myPointSet[aPointIndex1] - myPointSet[aPointIndex0])[1];
+  return ((myPointSet[aPointIndex1] - myPointSet[aPointIndex0])[0] *  (myPointSet[aPointIndex2] - myPointSet[aPointIndex0])[1])   -
+         ((myPointSet[aPointIndex2] - myPointSet[aPointIndex0])[0] *  (myPointSet[aPointIndex1] - myPointSet[aPointIndex0])[1]);
 }
 
 
