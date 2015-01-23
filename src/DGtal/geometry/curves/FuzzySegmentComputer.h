@@ -83,7 +83,7 @@ public:
   typedef InternalScalar InternalVector[ 2 ];
 
   
-  typedef std::set< InputPoint > InputPointSet;
+  typedef std::vector< InputPoint > InputPointSet;
   typedef typename InputPointSet::size_type Size;
   typedef typename InputPointSet::const_iterator ConstIterator;
   typedef typename InputPointSet::iterator Iterator;
@@ -327,7 +327,7 @@ private:
    *
    **/
 
-  std::deque<InputPoint> myMelkmanQueue;
+  std::deque<unsigned int > myMelkmanQueue;
   
   bool myIsMelkmanInitialized;  
   // Used in melkmanMainDiagonal()
@@ -380,7 +380,7 @@ protected:
    * Add a point in a convex using one step of Melkman algorithm.
    * @param[in] aPoint the point to be added.
    */
-  void melkmanAddPoint( const InputPoint &aPoint );
+  void melkmanAddPoint( unsigned int aPointIndex );
 
 
 
@@ -408,7 +408,7 @@ protected:
    * @param[in] aP1 the second point defining the line.
    * @param[in] aP2 the point to be tested.
    */
-  InternalScalar melkmanIsLeft(const InputPoint &aP0, const InputPoint &aP1, const InputPoint &aP2) const;
+  InternalScalar melkmanIsLeft(unsigned int aPointIndex0, unsigned int aPointIndex1, unsigned int aPointIndex2) const;
   
   
   /**

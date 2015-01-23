@@ -197,7 +197,7 @@ bool
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(const InputPoint &aPoint) 
 {
   // save previous state
-  std::deque< TInputPoint > prevEnvConv = myMelkmanQueue;
+  std::deque< unsigned int > prevEnvConv = myMelkmanQueue;
   InputPoint sav_P, sav_Q, sav_S;
    
   sav_P = myEdgePh;
@@ -205,19 +205,19 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(c
   sav_S = myVertexSh;
   
   // Try to add point
-  melkmanAddPoint(aPoint);
-  
+  melkmanAddPoint(myPointSet.size());
+  myPointSet.push_back(aPoint);
   if (melkmanIsConvexValid()){
-    if (myPointSet.size()==0){
+    if (myPointSet.size()==1){
       myLastBack = aPoint;
     }
-    myPointSet.insert(aPoint);
     myLastFront = aPoint;
     myP = myEdgePh;
     myQ = myEdgeQh;
     myS = myVertexSh;
     return true;
   }else{
+    myPointSet.pop_back();
     myMelkmanQueue = prevEnvConv;
     myEdgePh = sav_P;
     myEdgeQh = sav_Q;
@@ -328,15 +328,15 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDi
   double maxDoubleValue =  std::numeric_limits<int>::max();
 
   /* Take the first edge and find the corresponding point of support */
-  P =  myMelkmanQueue[ 0 ] ;
+  P =  myPointSet[myMelkmanQueue[ 0 ]] ;
   q = 1;
-  Q = myMelkmanQueue[ q++ ] ;
+  Q = myPointSet[myMelkmanQueue[ q++ ]] ;
   /** To find s, start at q+1 and move until angle between the edge at s 
    *  and the line pq is positive.
    */
   s = q;
-  S = myMelkmanQueue[ s++ ];
-  R = myMelkmanQueue[ s++ ];
+  S = myPointSet[myMelkmanQueue[ s++ ]];
+  R = myPointSet[myMelkmanQueue[ s++ ]];
   while( !stop )
     {
       /* Use vectorial product to ckeck angle */
@@ -345,7 +345,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDi
       if( !stop )
         {
           S = R;
-          R =  myMelkmanQueue[ s++ ];
+          R =  myPointSet[myMelkmanQueue[ s++ ]];
         }
     }
   /* Initialize the diagonal distance */
@@ -357,7 +357,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDi
   /* We have found the first (edge,vertex) pair. Go on until cycling. */
   s--;   /* R is untouch */
   P = Q;
-  Q = myMelkmanQueue[ q ] ;
+  Q = myPointSet[myMelkmanQueue[ q ]] ;
   do
     {
       /** Rotate until one edge touch the border
@@ -367,7 +367,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDi
         {
           S = R;
           s = ( s + 1 ) % size;
-          R = myMelkmanQueue[ s ] ;
+          R = myPointSet[myMelkmanQueue[ s ]] ;
         }
       /* Update height if necessary */
       k = ( Q[1] - P[1] ) * S[0] - ( Q[0] - P[0] ) * S[1] - ( Q[1] * P[0] - Q[0] * P[1] );
@@ -389,7 +389,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDi
       /* Go to next point */
       P = Q;
       q = ( q + 1 ) % size;
-      Q = myMelkmanQueue[ q ] ;
+      Q = myPointSet[myMelkmanQueue[ q ]] ;
     }while( q != 0 );
   
   /* Fix width to an innaccessible value. */
@@ -403,46 +403,46 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanMainDi
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanAddPoint(const InputPoint &aPoint)
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanAddPoint(unsigned int aPointIndex)
 {
   if (myMelkmanQueue.size() ==  2){
-    myMelkmanQueue.push_back(aPoint);
+    myMelkmanQueue.push_back(aPointIndex);
     melkmanInitCheck();
     myIsMelkmanInitialized=true;
     return;
   }else if (myMelkmanQueue.size() < 2){
-    myMelkmanQueue.push_back(aPoint);
+    myMelkmanQueue.push_back(aPointIndex);
     return;
   }
   
   /** incrementally add an exterior vertex to the deque hull
    *  get the rightmore tangent at the deque bottom
    */
-  if( myMelkmanQueue.size() == 3 && melkmanIsLeft( myMelkmanQueue[0], myMelkmanQueue[1], aPoint ) == 0 
-      && melkmanIsLeft( myMelkmanQueue[1], myMelkmanQueue[2], aPoint ) == 0 )
+  if( myMelkmanQueue.size() == 3 && melkmanIsLeft( myMelkmanQueue[0], myMelkmanQueue[1], aPointIndex ) == 0 
+      && melkmanIsLeft( myMelkmanQueue[1], myMelkmanQueue[2], aPointIndex ) == 0 )
     {
       myMelkmanQueue.pop_front();
-      myMelkmanQueue.push_front( aPoint );
+      myMelkmanQueue.push_front( aPointIndex );
       myMelkmanQueue.pop_back();
-      myMelkmanQueue.push_back( aPoint );
+      myMelkmanQueue.push_back( aPointIndex );
     }
 
   /* Test if next vertex is inside the deque Hull */
-  else if( melkmanIsLeft( myMelkmanQueue[0], myMelkmanQueue[1], aPoint ) > 0
+  else if( melkmanIsLeft( myMelkmanQueue[0], myMelkmanQueue[1], aPointIndex ) > 0
            && melkmanIsLeft( myMelkmanQueue[int(myMelkmanQueue.size())-2], 
-                             myMelkmanQueue[int(myMelkmanQueue.size())-1], aPoint ) > 0 )
+                             myMelkmanQueue[int(myMelkmanQueue.size())-1], aPointIndex ) > 0 )
     return;   /* skip an interior vertex */
   else //if( IsLeft( D[0], D[1], P ) < 0 || IsLeft( D[n-2], D[n-1], P ) < 0 )
     {
-      while( melkmanIsLeft( myMelkmanQueue[0], myMelkmanQueue[1], aPoint ) <= 0 )
+      while( melkmanIsLeft( myMelkmanQueue[0], myMelkmanQueue[1], aPointIndex ) <= 0 )
         myMelkmanQueue.pop_front();    /* remove bottom of deque */
 
-      myMelkmanQueue.push_front( aPoint );  /* insert id at bottom of deque */
+      myMelkmanQueue.push_front( aPointIndex );  /* insert id at bottom of deque */
 
-      while( melkmanIsLeft( myMelkmanQueue[int(myMelkmanQueue.size())-2], myMelkmanQueue[int(myMelkmanQueue.size())-1], aPoint ) <= 0 )
+      while( melkmanIsLeft( myMelkmanQueue[int(myMelkmanQueue.size())-2], myMelkmanQueue[int(myMelkmanQueue.size())-1], aPointIndex ) <= 0 )
         myMelkmanQueue.pop_back();     /* pop top of deque */
 
-      myMelkmanQueue.push_back( aPoint );   /* push id onto top of deque */
+      myMelkmanQueue.push_back( aPointIndex );   /* push id onto top of deque */
     }
 }
 
@@ -454,9 +454,9 @@ void
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::
 melkmanInitCheck() 
 {
-  InputPoint aPoint1 = myMelkmanQueue[0];
-  InputPoint aPoint2 = myMelkmanQueue[1];
-  InputPoint aPoint3 = myMelkmanQueue[2];
+  unsigned int aPoint1 = myMelkmanQueue[0];
+  unsigned int aPoint2 = myMelkmanQueue[1];
+  unsigned int aPoint3 = myMelkmanQueue[2];
   myMelkmanQueue.clear();
 
   if( melkmanIsLeft( aPoint1, aPoint2, aPoint3 ) == 0.0 )
@@ -508,10 +508,11 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsConv
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 TInternalScalar
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft(const InputPoint &aP0,
-                                                                                 const InputPoint &aP1, const InputPoint &aP2) const
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft(unsigned int aPointIndex0,
+                                                                                 unsigned int aPointIndex1,
+                                                                                 unsigned int aPointIndex2) const
 {
-  return (aP1 - aP0)[0]*(aP2 - aP0)[1]-(aP2 - aP0)[0]*(aP1 - aP0)[1];
+  return (myPointSet[aPointIndex1] - myPointSet[aPointIndex0])[0]*(myPointSet[aPointIndex2] - myPointSet[aPointIndex0])[1]-(myPointSet[aPointIndex2] - myPointSet[aPointIndex0])[0]*(myPointSet[aPointIndex1] - myPointSet[aPointIndex0])[1];
 }
 
 
@@ -520,8 +521,8 @@ inline
 std::vector<TInputPoint>
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConvexHull() const{
   std::vector<InputPoint> aResult;
-  for (typename std::deque<TInputPoint>::const_iterator it = myMelkmanQueue.begin(); it != myMelkmanQueue.end(); it++){
-    aResult.push_back(*it);
+  for (typename std::deque<unsigned int>::const_iterator it = myMelkmanQueue.begin(); it != myMelkmanQueue.end(); it++){
+    aResult.push_back(myPointSet[*it]);
   }
   return aResult;
 }
@@ -625,11 +626,11 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBounds
   projetOnStraightLine(myP, myQ, extremF, projExtremF);
   projetOnStraightLine(myP, myQ, extremL, projExtremL);  
   
-  std::deque<InputPoint> dSegment = myMelkmanQueue;
+  std::deque<unsigned int> dSegment = myMelkmanQueue;
   int nb = dSegment.size();
   for( uint p = 0 ; p < nb ; ++p)
     {
-      InputPoint pointEnvConv = dSegment[p];
+      InputPoint pointEnvConv = myPointSet[dSegment[p]];
       InputPoint projPointEnvConv;
       bool isNewExtrema = !projetOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
       if(isNewExtrema){
