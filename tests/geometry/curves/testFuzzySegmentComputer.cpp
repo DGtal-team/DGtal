@@ -107,6 +107,14 @@ bool testFuzzySegmentComputer()
       aBoard.drawLine((*it)[0], (*it)[1], next[0], next[1]);
     }
   }
+
+  // Display the Fuzzy segement
+  aBoard << SetMode((*aContour.begin()).className(), "Grid");
+  for (FuzzySegmentComputer2D::ConstIterator it = aFuzzySegmentComp.begin(); 
+       it != aFuzzySegmentComp.end(); it++){
+      aBoard.setPenColor(DGtal::Color::Gray);
+      aBoard.drawCircle((*it)[0], (*it)[1], 0.2);
+  }
   
   
   aBoard.saveEPS("testFuzzySegmentComputer_Convexhull.eps"); 
