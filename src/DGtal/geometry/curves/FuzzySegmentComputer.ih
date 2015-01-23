@@ -199,7 +199,6 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(c
   // save previous state
   std::deque< unsigned int > prevEnvConv = myMelkmanQueue;
   InputPoint sav_P, sav_Q, sav_S;
-   
   sav_P = myEdgePh;
   sav_Q = myEdgeQh;
   sav_S = myVertexSh;
@@ -213,9 +212,6 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(c
       myLastBack = aPoint;
     }
     myLastFront = aPoint;
-    myP = myEdgePh;
-    myQ = myEdgeQh;
-    myS = myVertexSh;
     return true;
   }else{
     myPointSet.pop_back();
@@ -223,9 +219,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(c
     myEdgePh = sav_P;
     myEdgeQh = sav_Q;
     myVertexSh = sav_S;  
-    myP = sav_P;
-    myQ = sav_Q;
-    myS = sav_S;
+    melkmanUpdateMainDiagonal();
     return false;
   }
 }
@@ -545,29 +539,29 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getSegmentBou
   // In this cas the bounding box is restrained to a eplison width rectangle.
   
   if(myConvexHullHeight==0.0){
-    InputPoint vectPQ (myQ[0]- myP[0], myQ[1]- myP[1]); 
+    InputPoint vectPQ (myEdgeQh[0]- myEdgePh[0], myEdgeQh[1]- myEdgePh[1]); 
     double normPQ = vectPQ.norm();
     InputPoint vectUnitPerpPQ (-vectPQ[1]/normPQ, vectPQ[0]/normPQ);
-    pt1LongestSegment1[0]=myP[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt1LongestSegment1[1]=myP[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    pt1LongestSegment1[0]=myEdgePh[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt1LongestSegment1[1]=myEdgePh[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-    pt2LongestSegment1[0]=myQ[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt2LongestSegment1[1]=myQ[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    pt2LongestSegment1[0]=myEdgeQh[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt2LongestSegment1[1]=myEdgeQh[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-    pt3LongestSegment2[0]= myQ[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt3LongestSegment2[1]= myQ[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    pt3LongestSegment2[0]= myEdgeQh[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt3LongestSegment2[1]= myEdgeQh[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-    pt4LongestSegment2[0]= myP[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt4LongestSegment2[1]= myP[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    pt4LongestSegment2[0]= myEdgePh[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt4LongestSegment2[1]= myEdgePh[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
   }else{
     InputPoint projF, projL, projS ;
-    projetOnStraightLine(myP, myQ, aFirstPt, projF);
-    projetOnStraightLine(myP, myQ, aLastPt, projL);
-    projetOnStraightLine(myP, myQ, myS, projS);
+    projetOnStraightLine(myEdgePh, myEdgeQh, aFirstPt, projF);
+    projetOnStraightLine(myEdgePh, myEdgeQh, aLastPt, projL);
+    projetOnStraightLine(myEdgePh, myEdgeQh, myVertexSh, projS);
     
     // Shift of the projection of PQ to define the other part of bounds.
-    InputPoint dep (myS[0]-projS[0], myS[1]-projS[1]);
+    InputPoint dep (myVertexSh[0]-projS[0], myVertexSh[1]-projS[1]);
     InputPoint projF2(projF[0]+dep[0], projF[1]+dep[1] );
     InputPoint projL2(projL[0]+dep[0], projL[1]+dep[1] );
     
@@ -625,8 +619,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBounds
   InputPoint projExtremF;
   InputPoint projExtremL;
   
-  projetOnStraightLine(myP, myQ, extremF, projExtremF);
-  projetOnStraightLine(myP, myQ, extremL, projExtremL);  
+  projetOnStraightLine(myEdgePh, myEdgeQh, extremF, projExtremF);
+  projetOnStraightLine(myEdgePh, myEdgeQh, extremL, projExtremL);  
   
   std::deque<unsigned int> dSegment = myMelkmanQueue;
   unsigned int nb = dSegment.size();
@@ -689,8 +683,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOnStrai
   InputPoint vAC (ptC[0]-ptA[0], ptC[1]-ptA[1]);
   
   double normeAB = vAB.norm();
-  
-  
+     
   double scalABAC = vAB.dot(vAC);
   double distPtA_Proj = scalABAC/normeAB;
 
