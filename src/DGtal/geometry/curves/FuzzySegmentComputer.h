@@ -331,7 +331,7 @@ private:
   double myConvexHullHeight;  
   double myConvexHullWidth;  
 
-  InputPoint myP, myQ, myS;
+
   InputPoint myEdgePh, myEdgeQh, myVertexSh;
   
   

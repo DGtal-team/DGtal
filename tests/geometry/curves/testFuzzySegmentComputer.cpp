@@ -119,7 +119,7 @@ bool testFuzzySegmentComputer()
   
   aBoard.saveEPS("testFuzzySegmentComputer_Convexhull.eps"); 
   trace.info() << aFuzzySegmentComp;
-  
+  res = aFuzzySegmentComp.size()==45;
   
   nbok += res ? 1 : 0; 
   nb++;
