@@ -83,10 +83,10 @@ public:
   typedef InternalScalar InternalVector[ 2 ];
 
   
-  typedef std::vector< InputPoint > InputPointContainer;
-  typedef typename InputPointContainer::size_type Size;
-  typedef typename InputPointContainer::const_iterator ConstIterator;
-  typedef typename InputPointContainer::iterator Iterator;
+  typedef std::set< InputPoint > InputPointSet;
+  typedef typename InputPointSet::size_type Size;
+  typedef typename InputPointSet::const_iterator ConstIterator;
+  typedef typename InputPointSet::iterator Iterator;
 
   typedef ParallelStrip<Space,true,true> Primitive;  
 
@@ -161,16 +161,17 @@ public:
    * @param aThickness the thickness of the fuzzy segment.
    * @param it an iterator on 2D points
    */
-  void init(double aThickness, const ConstIterator& it);  
-
-
+  
+  void init(double aThickness);  
+  
+ 
   
   /**
    * Tests whether the current fuzzy segment can be extended at the front.
    *  
    * @return 'true' if yes, 'false' otherwise.
    */
-  bool isExtendableFront();
+  bool isExtendableFront(const InputPoint &aPoint);
 
 
   /**
@@ -178,7 +179,7 @@ public:
    * Computes the parameters of the extended fuzzy segment if yes.
    * @return 'true' if yes, 'false' otherwise.
    */
-  bool extendFront();
+  bool extendFront(const InputPoint &aPoint);
 
   
   /**
@@ -290,11 +291,15 @@ public:
     // ------------------------- Protected Datas ------------------------------
 protected:
   
+  
+  InputPoint myLastFront;
+
+  InputPoint myLastBack;
   /**
    * begin iterator (associated to input data)
    **/
   ConstIterator myBegin;
-
+  
   /**
    * begin iterator (associated to input data)
    **/
@@ -311,7 +316,7 @@ private:
    * The set of points contained in the fuzzy segment which can be changed during computations.
    *
    **/
-  mutable InputPointContainer myPointSet; 
+  mutable InputPointSet myPointSet; 
   
   bool myIsValid;
   double myThickness;  

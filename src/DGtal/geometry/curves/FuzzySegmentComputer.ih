@@ -167,27 +167,23 @@ template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::
-init(double aThickness, const typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator& it)  
+init(double aThickness)  
 {
   myThickness = aThickness;
   myConvexHullWidth = 0.0;
   myConvexHullHeight = 0.0;
   myIsMelkmanInitialized = false;
   myIsValid = true;
-  myBegin = it;
-  myEnd = it;
-  ++myEnd;
-  melkmanAddPoint(*it);
-  myPointSet.push_back(*it);  
   myBoxLength = -1.0;
 }
+
 
 
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableFront() 
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableFront(const InputPoint &aPoint ) 
 {
   return true;  
 }
@@ -198,25 +194,37 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableF
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront() 
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(const InputPoint &aPoint) 
 {
   // save previous state
   std::deque< TInputPoint > prevEnvConv = myMelkmanQueue;
   InputPoint sav_P, sav_Q, sav_S;
+   
   sav_P = myEdgePh;
   sav_Q = myEdgeQh;
   sav_S = myVertexSh;
+  
   // Try to add point
-  melkmanAddPoint(*myEnd);
+  melkmanAddPoint(aPoint);
+  
   if (melkmanIsConvexValid()){
-    myPointSet.push_back(*myEnd);
-    ++myEnd;
+    if (myPointSet.size()==0){
+      myLastBack = aPoint;
+    }
+    myPointSet.insert(aPoint);
+    myLastFront = aPoint;
+    myP = myEdgePh;
+    myQ = myEdgeQh;
+    myS = myVertexSh;
     return true;
   }else{
     myMelkmanQueue = prevEnvConv;
     myEdgePh = sav_P;
     myEdgeQh = sav_Q;
     myVertexSh = sav_S;  
+    myP = sav_P;
+    myQ = sav_Q;
+    myS = sav_S;
     return false;
   }
 }
@@ -585,8 +593,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBound
                                                                                   InputPoint &pt4LongestSegment2,
                                                                                   double minVisibleWidthBounds) const{ 
   // To be changed with saved point added by push front/push back
-  InputPoint fp = myPointSet[0];
-  InputPoint lp = myPointSet[myPointSet.size()-1];
+  InputPoint fp = myLastBack;
+  InputPoint lp = myLastFront;
   getSegmentBoundsFromExtremPt(fp, lp, pt1LongestSegment1, pt2LongestSegment1, pt3LongestSegment2, pt4LongestSegment2);
 }
 
@@ -609,8 +617,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBounds
     return;
   }
   // To be changed with saved point added by push front/push back
-  InputPoint extremF = myPointSet[0];
-  InputPoint extremL = myPointSet[myPointSet.size()-1];
+  InputPoint extremF = myLastFront;
+  InputPoint extremL = myLastBack;
   InputPoint projExtremF;
   InputPoint projExtremL;
   

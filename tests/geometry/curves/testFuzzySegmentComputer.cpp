@@ -33,6 +33,8 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/curves/FuzzySegmentComputer.h"
+#include "DGtal/io/readers/PointListReader.h"
+
 #include <DGtal/io/boards/Board2D.h>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -52,69 +54,66 @@ bool testFuzzySegmentComputer()
   unsigned int nb = 0;
   
   Board2D aBoard;
-  typedef  FuzzySegmentComputer<Z2i::Space, Z2i::RealPoint, int> FuzzySegmentComputer2D;
+  typedef  FuzzySegmentComputer<Z2i::Space, Z2i::RealPoint, double> FuzzySegmentComputer2D;
   trace.beginBlock ( "Testing Fuzzy segment ..." );
-  FuzzySegmentComputer<Z2i::Space, Z2i::RealPoint, int> aFuzzySegmentComp;
+  FuzzySegmentComputer2D aFuzzySegmentComp;
   std::vector<Z2i::RealPoint> aContour;
-  aContour.push_back(Z2i::RealPoint(0.2, 0.3));
-  aContour.push_back(Z2i::RealPoint(2.2, 0.1));
-  aContour.push_back(Z2i::RealPoint(3.1, 0.5));
-  aContour.push_back(Z2i::RealPoint(1.1, 1.1));
-  aContour.push_back(Z2i::RealPoint(4.1, -0.4));
-  aContour.push_back(Z2i::RealPoint(6.1, 0.9));
-  aContour.push_back(Z2i::RealPoint(8.1, 2.1));
-  aContour.push_back(Z2i::RealPoint(4.1, 1.1));
-  aContour.push_back(Z2i::RealPoint(5.1, 4.1));
-  aContour.push_back(Z2i::RealPoint(10.1, 2.1));  
-  aFuzzySegmentComp.init(3.0, aContour.begin());
-  for (int i=0; i<aContour.size()-1; i++){ 
-    trace.info() << "insert point " << i << std::endl; 
-    bool res = aFuzzySegmentComp.extendFront();
-    if (!res) {
+  std::string fileContour = testPath + "samples/contourNoiseSample.sdp";
+  aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
+  bool res = true;
+  aFuzzySegmentComp.init(6);
+  for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
+    res &= aFuzzySegmentComp.extendFront(*it);
+    if (!res){
       break;
     }
   }
   
-  // Display the segment
-  for (FuzzySegmentComputer2D::ConstIterator it = aFuzzySegmentComp.begin(); 
-       it != aFuzzySegmentComp.end(); it++){
-    aBoard << *it;
-  }
   
-
   // Display convexhull
   std::vector<Z2i::RealPoint> aVect = aFuzzySegmentComp.getConvexHull();
+  aBoard.setLineWidth(5);
+  aBoard.setPenColor(DGtal::Color::Red);
   for (unsigned int i = 0; i < aVect.size(); i++){
     aBoard.drawLine(aVect.at(i)[0], aVect.at(i)[1], 
                     aVect.at((i+1)%aVect.size())[0],
                     aVect.at((i+1)%aVect.size())[1]);    
   } 
-  for (FuzzySegmentComputer2D::ConstIterator it = aFuzzySegmentComp.begin(); 
-       it != aFuzzySegmentComp.end(); it++){
-    aBoard << *it;
-  }
   
   // Display boundingbox
   Z2i::RealPoint pt1, pt2, pt3, pt4;
+  aBoard.setLineWidth(1);
   aFuzzySegmentComp.getRealBounds(pt1,pt2,pt3,pt4);
   aBoard.setPenColor(DGtal::Color::Blue);
+  trace.info() << "Bounding box of the segment:" << std::endl;
+  trace.info() << "pt1 :" << pt1 << std::endl;
+  trace.info() << "pt2 :" << pt2 << std::endl;
+  trace.info() << "pt3 :" << pt3 << std::endl;
+  trace.info() << "pt4 :" << pt4 << std::endl;
   aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
   aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
   aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
   aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
   
+
+  // Display the input curve
+  aBoard << SetMode((*aContour.begin()).className(), "Grid");
+  for (std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); 
+       it != aContour.end(); it++){
+    aBoard << *it;
+    if (it+1 != aContour.end()){
+      Z2i::RealPoint next = *(it+1);
+      aBoard.setPenColor(DGtal::Color::Gray);
+      aBoard.drawLine((*it)[0], (*it)[1], next[0], next[1]);
+    }
+  }
   
   
   aBoard.saveEPS("testFuzzySegmentComputer_Convexhull.eps"); 
   trace.info() << aFuzzySegmentComp;
   
   
-
-
-
-
-
-  nbok += true ? 1 : 0; 
+  nbok += res ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "true == true" << std::endl;
