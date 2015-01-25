@@ -81,10 +81,10 @@ public:
   typedef InternalScalar InternalVector[ 2 ];
 
   
-  typedef std::vector< InputPoint > InputPointSet;
-  typedef typename InputPointSet::size_type Size;
-  typedef typename InputPointSet::const_iterator ConstIterator;
-  typedef typename InputPointSet::iterator Iterator;
+  typedef std::vector< InputPoint > InputPointContainer;
+  typedef typename InputPointContainer::size_type Size;
+  typedef typename InputPointContainer::const_iterator ConstIterator;
+  typedef typename InputPointContainer::iterator Iterator;
   typedef ParallelStrip<Space,true,true> Primitive;  
 
 
@@ -95,10 +95,10 @@ private:
     std::deque<unsigned int > melkmanQueue; /** Melkman algorithm main dequeu */
     InputPoint lastFront; /** the last point added at the front of the fuzzy segment */
     InputPoint lastBack; /** the last point added at the back of the fuzzy segment */
-    InputPoint edgePh; 
-    InputPoint edgeQh;
-    InputPoint vertexSh;    
-    bool isMelkmanInitialized;  
+    InputPoint edgePh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
+    InputPoint edgeQh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
+    InputPoint vertexSh; /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
+    bool isMelkmanInitialized; /** well initialized when at least 3 points are given.  */ 
     double convexHullHeight;  /** Used in melkmanMainDiagonal() */
     double convexHullWidth;  /** Used in melkmanMainDiagonal() */ 
   };
@@ -171,41 +171,57 @@ public:
   
   /**
    * Initialisation.
-   * @param aThickness the thickness of the fuzzy segment.
-   */
-  
+   * @param[in] aThickness the maximal thickness of the fuzzy segment (alpha_max).
+   */  
   void init(double aThickness);  
   
- 
-  
+   
   /**
-   * Tests whether the current fuzzy segment can be extended at the front.
+   *  Tests whether the current fuzzy segment can be extended at the
+   *  front, i.e checks if we have still a fuzzy segment of width
+   *  alpha_max after adding the given point \aPoint. The segment
+   *  parameters are keep in its original state.
    *  
-   * @return 'true' if yes, 'false' otherwise.
+   * @param[in] aPoint the point to be tested for the segment extension.
+   * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
    */
   bool isExtendableFront(const InputPoint &aPoint);
 
 
   /**
-   * Tests whether the current fuzzy segment can be extended at the front.
-   * Computes the parameters of the extended fuzzy segment if yes.
-   * @return 'true' if yes, 'false' otherwise.
+   * Tries to add the point \a aPoint at the front of the current fuzzy
+   * segment and checks if we have still a fuzzy segment of thickness
+   * less or equal to the initial value alpha_max. If it is the case
+   * the new point is added and the segment parameters are updated,
+   * otherwise the fuzzy segment is keep in its original state.
+   *
+   * @return 'true' if the segment has been extended and 'false'
+   * otherwise (the object is then in its original state).
    */
   bool extendFront(const InputPoint &aPoint);
 
   
   /**
-   * Tests whether the current fuzzy segment can be extended at the back.
+   *  Tests whether the current fuzzy segment can be extended at the
+   *  front, i.e checks if we have still a fuzzy segment of width
+   *  alpha_max after adding the given point \a aPoint. The segment
+   *  parameters are keep in its original state.
    *  
-   * @return 'true' if yes, 'false' otherwise.
+   * @param[in] aPoint the point to be tested for the segment extension.
+   * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
    */
   bool isExtendableBack();
 
 
   /**
-   * Tests whether the current fuzzy segment can be extended at the back.
-   * Computes the parameters of the extended fuzzy segment if yes.
-   * @return 'true' if yes, 'false' otherwise.
+   * Tries to add the point \aPoint at the back of the current fuzzy
+   * segment and checks if we have still a fuzzy segment of thickness
+   * less or equal to the initial value alpha_max. If it is the case
+   * the new point is added and the segment parameters are updated,
+   * otherwise the fuzzy segment is keep in its original state.
+   *
+   * @return 'true' if the segment has been extended and 'false'
+   * otherwise (the object is then in its original state).
    */
   bool extendBack(const InputPoint &aPoint);
   
@@ -214,11 +230,11 @@ public:
   //-------------------- Primitive services -----------------------------
   
   
-   /**
-      @return the current primitive recognized by this computer,
-      which is a ParallelStrip of axis width smaller than the one
-      specified at instanciation.
-   */
+  /**
+     Returns the current primitive recognized by this computer,
+     which is a ParallelStrip of axis width smaller than the one
+     specified at instanciation.
+  */
   Primitive primitive() const;
   
 
@@ -228,71 +244,115 @@ public:
 public:
   
 
-  
+  /**
+   * Returns the current segment convexhull.
+   * 
+   * @return the convexhull given as a vector containing the vertex points.
+   **/
   std::vector<InputPoint> getConvexHull() const;
 
 
+  
   /**
-   *  Compute and update the Bounds of the BlurredSeg according different parameters.
-   * 
+   * Computes the segment bounding box according to two extremity points (\a aFirstPt, \a aLastPt).
+   * @param[in] aFirstPt the first extrem point.
+   * @param[in] aFirstPt the last extrem point. 
+   * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
+   * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
+   * @param[out] pt3LongestSegment1 the first point of one of the second longest segment.
+   * @param[out] pt4LongestSegment1 the second point of one of the second longest segment.
+   * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue).
    *
+   * @note the segment bounding box can be drawn with the sequence of
+   * out parameters pt1LongestSegment1, pt2LongestSegment1,
+   * pt3LongestSegment1, pt4LongestSegment1.
    **/
   
-  void getSegmentBoundsFromExtremPt(const InputPoint &aFirstPt,
-                                             const InputPoint &aLastPt,
-                                             InputPoint &pt1LongestSegment1,
-                                             InputPoint &pt2LongestSegment1,
-                                             InputPoint &pt3LongestSegment2,
-                                             InputPoint &pt4LongestSegment2,
-                                             double minVisibleWidthBounds = 0.2) const;
+  void getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
+                                      const InputPoint &aLastPt,
+                                      InputPoint &pt1LongestSegment1,
+                                      InputPoint &pt2LongestSegment1,
+                                      InputPoint &pt3LongestSegment2,
+                                      InputPoint &pt4LongestSegment2,
+                                      double minVisibleWidthBounds = 0.2) const;
   
   
   /**
-  * Compute the basic Bounds of Blurred Segment by updating the values of segment bounding points 
-  *  ptALongestSegment1, ptBLongestSegment ptCLongestSegment2 and ptDLongestSegment2
-  * 
-  */ 
-  
-  void getBasicBounds(InputPoint &pt1LongestSegment1,
-                      InputPoint &pt2LongestSegment1,
-                      InputPoint &pt3LongestSegment2,
-                      InputPoint &pt4LongestSegment2,
-                      double minVisibleWidthBounds=0.2) const;
+   * Computes the basic segment bounding box according to the segment
+   * extremity points (the last points added to the front and to the
+   * back).
+   *
+   * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
+   * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
+   * @param[out] pt3LongestSegment1 the first point of one of the second longest segment.
+   * @param[out] pt4LongestSegment1 the second point of one of the second longest segment.
+   * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue).
+   *
+   * @note the segment bounding box can be drawn with the sequence of
+   * out parameters pt1LongestSegment1, pt2LongestSegment1,
+   * pt3LongestSegment1, pt4LongestSegment1.
+   **/
+
+  void getBasicBoundingBox(InputPoint &pt1LongestSegment1,
+                           InputPoint &pt2LongestSegment1,
+                           InputPoint &pt3LongestSegment2,
+                           InputPoint &pt4LongestSegment2,
+                           double minVisibleWidthBounds=0.2) const;
   
   
   /**
-   * Compute the Bounds of Blurred Segmente by taking into account
-   *  correctly the extremity even by change of direction for the end
-   *  points.  The values of segment bounding points are updated (
-   *  ptALongestSegment1, ptBLongestSegment ptCLongestSegment2 and
-   *  ptDLongestSegment2)
-   * 
-   */
-
-  void  getRealBounds(InputPoint &pt1LongestSegment1,
-                      InputPoint &pt2LongestSegment1,
-                      InputPoint &pt3LongestSegment2,
-                      InputPoint &pt4LongestSegment2,
-                      double minVisibleWidthBounds=0.2) const;
+   * Computes the real bounding box according to the real extremity
+   * points of the segment. The real extremity points are computed
+   * after a scan of all the segment points. The real bounding box can
+   * differs of the basic bounding box when a large amount of noise
+   * are give in the initial curve.
+   *
+   * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
+   * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
+   * @param[out] pt3LongestSegment1 the first point of one of the second longest segment.
+   * @param[out] pt4LongestSegment1 the second point of one of the second longest segment.
+   * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue).
+   *
+   * @note the segment bounding box can be drawn with the sequence of
+   * out parameters pt1LongestSegment1, pt2LongestSegment1,
+   * pt3LongestSegment1, pt4LongestSegment1.
+   **/
+  void  getRealBoundingBox(InputPoint &pt1LongestSegment1,
+                          InputPoint &pt2LongestSegment1,
+                          InputPoint &pt3LongestSegment2,
+                          InputPoint &pt4LongestSegment2,
+                          double minVisibleWidthBounds=0.2) const;
   
-
+  
+  /**
+   * Returns the segment length defined from the basic bouding box (@see getBasicBoundingBox).
+   *
+   * @return the segment length.
+   **/
   double getBasicLength();
 
+
+  /**
+   * Returns the segment length defined from the real bouding box (@see getRealBoudingBox).
+   *
+   * @return the segment length.
+   **/
   double getRealLength();
   
-
 
   
   /**
    * Writes/Displays the object on an output stream.
-   * @param out the output stream where the object is written.
+   *
+   * @param[out] out the output stream where the object is written.
    */
   void selfDisplay ( std::ostream & out ) const;
   
+
   /**
    * Checks the validity/consistency of the object.
    * @return 'true' if the object is valid, 'false' otherwise.
-     */
+   */
   bool isValid() const;
   
 
@@ -321,16 +381,18 @@ private:
 
   /**
    * The set of points contained in the fuzzy segment which can be changed during computations.
-   *
    **/
-  mutable InputPointSet myPointSet; 
+  mutable InputPointContainer myPointContainer; 
+
+  /**
+   * The maximal thickness of the segment.
+   */
   double myThickness;  
+  
   State myState;
+  
   mutable State _state;
   
-  double myBoxLength;
-
-
   
   
 
@@ -339,39 +401,41 @@ private:
 protected:
 
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    FuzzySegmentComputer ( const FuzzySegmentComputer & other );
+  /**
+   * Copy constructor.
+   *
+   * @param[in] other the object to clone.
+   * Forbidden by default.
+   */
+  FuzzySegmentComputer ( const FuzzySegmentComputer & other );
   
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
+  /**
+   * Assignment.
+   *
+   * @param other the object to copy.
+   * @return a reference on 'this'.
+   * Forbidden by default.
+   */
   FuzzySegmentComputer & operator= ( const FuzzySegmentComputer & other );
-
-
+  
+  
   /**
    *  Used to check if the initialisation with 3 non aligned points is well done.
    *
+   * @return 'true' if the segment contains at least 3 non aligned points. 
    **/     
    bool melkmanIsWellInitialized() const;
 
 
   /**
-   *  Melkman main diagonal
-   *
+   *  Updates the main height of the melkman convex set.
    **/     
-   void melkmanUpdateMainDiagonal();
+  void melkmanUpdateMainHeight();
   
   
   /**
-   * Melkman
-   * Add a point in a convex using one step of Melkman algorithm.
+   * Adds a point in the convex set  using one step of Melkman algorithm.
+   *
    * @param[in] aPointIndex the point to be added.
    */
   void melkmanAddPoint( unsigned int aPointIndex );
@@ -379,23 +443,20 @@ protected:
 
 
   /**
-   * Melkman
-   * Check if the 3 init point of the queue are given in the correct order (else it re order it).
-   *
-   * (it checks only the 3 first points of myState.melkmanQueue)
+   * Checks if the 3 init points of the queue are given in the correct order (else it re order it).
+   * (it checks only the 3 first points of \a myState.melkmanQueue).
    **/
   void melkmanInitCheck( ) ; 
 
 
   /**
-   * IsConvexValid
    * Depending on connexity, return true if a convex is valid.
    */
   bool melkmanIsConvexValid() ;
   
   
   /**
-   * Test if a point aP2 is Left|On|Right of an infinite line (defined from fron two points aP0 and aP1).
+   * Tests if the point of index \a aPointIndex2 is Left|On|Right of an infinite line (defined from two points of index aPointIndex0 and aPointIndex1).
    *
    * @param[in] aPointIndex0 the first point defining the line.
    * @param[in] aPointIndex1 the second point defining the line.
@@ -405,19 +466,19 @@ protected:
   
   
   /**
-   * Compute the projection of a Point ptC on the real line defined by the two points (ptA,ptB), and
+   * Compute the projection of a Point \a ptC on the real line defined by the two points (\a ptA, \a ptB), and
    * return true if the projected point is inside the segment closed interval [A,B].
    * 
    * @param[in] ptA one of the two points defining the straight line.
    * @param[in] ptB one of the two points defining the straight line.
    * @param[in] ptC the point to be projected.
    * @param[out] ptProjected (return) the projected point.
-   * @return: true if ptProjected is inside the segment [A,B].
+   * @return true if ptProjected is inside the segment [A,B].
    **/
   
   bool projetOnStraightLine(const InputPoint & ptA, const InputPoint & ptB,
-                       const InputPoint & ptC,
-                       InputPoint & ptProjected) const;
+                            const InputPoint & ptC,
+                            InputPoint & ptProjected) const;
   
 
     // ------------------------- Internals ------------------------------------

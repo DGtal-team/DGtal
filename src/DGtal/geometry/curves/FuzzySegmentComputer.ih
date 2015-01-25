@@ -95,7 +95,7 @@ inline
 typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::size() const 
 {
-  return myPointSet.size();
+  return myPointContainer.size();
 }
 
 
@@ -105,7 +105,7 @@ inline
 bool
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::empty() const 
 {
-  return myPointSet.size()!=0;
+  return myPointContainer.size()!=0;
 }
 
 
@@ -116,7 +116,7 @@ inline
 typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::begin() const 
 {
-  return myPointSet.begin();
+  return myPointContainer.begin();
 
 }
 
@@ -128,7 +128,7 @@ inline
 typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::end() const 
 {
-  return myPointSet.end();
+  return myPointContainer.end();
 }
 
 
@@ -140,7 +140,7 @@ inline
 typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::max_size() const 
 {
-  return myPointSet.max_size();
+  return myPointContainer.max_size();
 }
 
 
@@ -152,7 +152,7 @@ inline
 typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::maxSize() const 
 {
-  return myPointSet.max_size();
+  return myPointContainer.max_size();
 }
 
 
@@ -172,8 +172,6 @@ init(double aThickness)
   myState.convexHullWidth = 0.0;
   myState.convexHullHeight  = 0.0;
   myState.isMelkmanInitialized = false;
-
-  myBoxLength = -1.0;
 }
 
 
@@ -185,10 +183,10 @@ bool
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableFront(const InputPoint &aPoint ) 
 {
   _state = myState;
-  myPointSet.push_back(aPoint);  
-  melkmanAddPoint(myPointSet.size()-1);
+  myPointContainer.push_back(aPoint);  
+  melkmanAddPoint(myPointContainer.size()-1);
   bool aResult = melkmanIsConvexValid();
-  myPointSet.pop_back();
+  myPointContainer.pop_back();
   myState = _state;
   return aResult;      
 }
@@ -202,18 +200,17 @@ bool
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(const InputPoint &aPoint) 
 {
   _state = myState;
-  
-  myPointSet.push_back(aPoint);  
-  melkmanAddPoint(myPointSet.size()-1);
+  myPointContainer.push_back(aPoint);  
+  melkmanAddPoint(myPointContainer.size()-1);
   
   if (melkmanIsConvexValid()){
-    if (myPointSet.size()==1){
+    if (myPointContainer.size()==1){
       myState.lastBack = aPoint;
     }
     myState.lastFront = aPoint;
     return true;
   }else{
-    myPointSet.pop_back();
+    myPointContainer.pop_back();
     myState = _state;
     return false;
   }
@@ -238,19 +235,18 @@ inline
 bool
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendBack(const InputPoint &aPoint) 
 {
-  _state = myState;
-  
-  myPointSet.push_back(aPoint);  
-  melkmanAddPoint(myPointSet.size()-1);
+  _state = myState;  
+  myPointContainer.push_back(aPoint);  
+  melkmanAddPoint(myPointContainer.size()-1);
   
   if (melkmanIsConvexValid()){
-    if (myPointSet.size()==1){
+    if (myPointContainer.size()==1){
       myState.lastFront = aPoint;
     }
     myState.lastBack = aPoint;
     return true;
   }else{
-    myPointSet.pop_back();
+    myPointContainer.pop_back();
     myState = _state;
     return false;
   }
@@ -279,7 +275,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay(s
 {
   out << "[Fuzzy Segment Computer]" << std::endl; 
   out << "Inside points: "<< std::endl;
-  for ( ConstIterator it = myPointSet.begin(); it != myPointSet.end(); ++it){
+  for ( ConstIterator it = myPointContainer.begin(); it != myPointContainer.end(); ++it){
     out << *it << " ";
   }
   out << std::endl << "is well melkman init ?" << (myState.isMelkmanInitialized? " OK ": "NO"); 
@@ -319,12 +315,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsWell
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdateMainDiagonal()  
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdateMainHeight()  
 {
-  /** Strategie is simple:
-   *  Do the same thing than for height but with a correction due to 
-   *  the diagonal.
-   */
   int queueSize = myState.melkmanQueue.size();
   InputPoint P, Q, R, S;
   int q,s; /* [pq] is an edge and s a vertex */
@@ -333,15 +325,15 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdate
   double maxDoubleValue =  std::numeric_limits<int>::max();
 
   /* Take the first edge and find the corresponding point of support */
-  P =  myPointSet[myState.melkmanQueue[ 0 ]] ;
+  P =  myPointContainer[myState.melkmanQueue[ 0 ]] ;
   q = 1;
-  Q = myPointSet[myState.melkmanQueue[ q++ ]] ;
+  Q = myPointContainer[myState.melkmanQueue[ q++ ]] ;
   /** To find s, start at q+1 and move until angle between the edge at s 
    *  and the line pq is positive.
    */
   s = q;
-  S = myPointSet[myState.melkmanQueue[ s++ ]];
-  R = myPointSet[myState.melkmanQueue[ s++ ]];
+  S = myPointContainer[myState.melkmanQueue[ s++ ]];
+  R = myPointContainer[myState.melkmanQueue[ s++ ]];
   while( !stop )
     {
       /* Use vectorial product to ckeck angle */
@@ -350,7 +342,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdate
       if( !stop )
         {
           S = R;
-          R =  myPointSet[myState.melkmanQueue[ s++ ]];
+          R =  myPointContainer[myState.melkmanQueue[ s++ ]];
         }
     }
   /* Initialize the diagonal distance */
@@ -362,7 +354,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdate
   /* We have found the first (edge,vertex) pair. Go on until cycling. */
   s--;   /* R is untouch */
   P = Q;
-  Q = myPointSet[myState.melkmanQueue[ q ]] ;
+  Q = myPointContainer[myState.melkmanQueue[ q ]] ;
   do
     {
       /** Rotate until one edge touch the border
@@ -372,7 +364,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdate
         {
           S = R;
           s = ( s + 1 ) % queueSize;
-          R = myPointSet[myState.melkmanQueue[ s ]] ;
+          R = myPointContainer[myState.melkmanQueue[ s ]] ;
         }
       /* Update height if necessary */
       k = ( Q[1] - P[1] ) * S[0] - ( Q[0] - P[0] ) * S[1] - ( Q[1] * P[0] - Q[0] * P[1] );
@@ -394,7 +386,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdate
       /* Go to next point */
       P = Q;
       q = ( q + 1 ) % queueSize;
-      Q = myPointSet[myState.melkmanQueue[ q ]] ;
+      Q = myPointContainer[myState.melkmanQueue[ q ]] ;
     }while( q != 0 );
   
   /* Fix width to an innaccessible value. */
@@ -502,7 +494,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsConv
   if (!myState.isMelkmanInitialized){
     return true;
   } 
-  melkmanUpdateMainDiagonal();
+  melkmanUpdateMainHeight();
   return ( myState.convexHullHeight < myState.convexHullWidth ? myState.convexHullHeight: myState.convexHullWidth ) < myThickness * sqrt( 2.0 );
   
 }
@@ -516,8 +508,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft
                                                                                  unsigned int aPointIndex1,
                                                                                  unsigned int aPointIndex2) const
 {
-  return ((myPointSet[aPointIndex1] - myPointSet[aPointIndex0])[0] *  (myPointSet[aPointIndex2] - myPointSet[aPointIndex0])[1])   -
-         ((myPointSet[aPointIndex2] - myPointSet[aPointIndex0])[0] *  (myPointSet[aPointIndex1] - myPointSet[aPointIndex0])[1]);
+  return ((myPointContainer[aPointIndex1] - myPointContainer[aPointIndex0])[0] *  (myPointContainer[aPointIndex2] - myPointContainer[aPointIndex0])[1])   -
+         ((myPointContainer[aPointIndex2] - myPointContainer[aPointIndex0])[0] *  (myPointContainer[aPointIndex1] - myPointContainer[aPointIndex0])[1]);
 }
 
 
@@ -527,7 +519,7 @@ std::vector<TInputPoint>
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConvexHull() const{
   std::vector<InputPoint> aResult;
   for (typename std::deque<unsigned int>::const_iterator it = myState.melkmanQueue.begin(); it != myState.melkmanQueue.end(); it++){
-    aResult.push_back(myPointSet[*it]);
+    aResult.push_back(myPointContainer[*it]);
   }
   return aResult;
 }
@@ -537,7 +529,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConvexHull
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getSegmentBoundsFromExtremPt(const InputPoint &aFirstPt,
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
                                                                                                 const InputPoint &aLastPt,
                                                                                                 InputPoint &pt1LongestSegment1,
                                                                                                 InputPoint &pt2LongestSegment1,
@@ -593,15 +585,15 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getSegmentBou
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBounds(InputPoint &pt1LongestSegment1,
-                                                                                  InputPoint &pt2LongestSegment1,
-                                                                                  InputPoint &pt3LongestSegment2,
-                                                                                  InputPoint &pt4LongestSegment2,
-                                                                                  double minVisibleWidthBounds) const{ 
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBoundingBox(InputPoint &pt1LongestSegment1,
+                                                                                       InputPoint &pt2LongestSegment1,
+                                                                                       InputPoint &pt3LongestSegment2,
+                                                                                       InputPoint &pt4LongestSegment2,
+                                                                                       double minVisibleWidthBounds) const{ 
   // To be changed with saved point added by push front/push back
   InputPoint fp = myState.lastBack;
   InputPoint lp = myState.lastFront;
-  getSegmentBoundsFromExtremPt(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
+  getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
                                pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);
 }
 
@@ -611,15 +603,15 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBound
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void 
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBounds(InputPoint &pt1LongestSegment1,
-                                                                                 InputPoint &pt2LongestSegment1,
-                                                                                 InputPoint &pt3LongestSegment2,
-                                                                                 InputPoint &pt4LongestSegment2,
-                                                                                 double minVisibleWidthBounds ) const
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBoundingBox(InputPoint &pt1LongestSegment1,
+                                                                                     InputPoint &pt2LongestSegment1,
+                                                                                     InputPoint &pt3LongestSegment2,
+                                                                                     InputPoint &pt4LongestSegment2,
+                                                                                     double minVisibleWidthBounds ) const
 {
   
-  getBasicBounds(pt1LongestSegment1, pt2LongestSegment1, 
-                 pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);
+  getBasicBoundingBox(pt1LongestSegment1, pt2LongestSegment1, 
+                      pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);
   if(myState.convexHullHeight==0.0){
     return;
   }
@@ -636,7 +628,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBounds
   unsigned int nb = dSegment.size();
   for( unsigned int p = 0 ; p < nb ; ++p)
     {
-      InputPoint pointEnvConv = myPointSet[dSegment[p]];
+      InputPoint pointEnvConv = myPointContainer[dSegment[p]];
       InputPoint projPointEnvConv;
       bool isNewExtrema = !projetOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
       if(isNewExtrema){
@@ -652,7 +644,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBounds
       }      
     }
   
-  getSegmentBoundsFromExtremPt(extremF, extremL, pt1LongestSegment1, pt2LongestSegment1, 
+  getBoundingBoxFromExtremPoints(extremF, extremL, pt1LongestSegment1, pt2LongestSegment1, 
                                pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);  
 }
 
@@ -662,7 +654,7 @@ inline
 double 
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicLength(){
   InputPoint pt1, pt2, pt3, pt4;
-  getBasicBounds(pt1, pt2, pt3, pt4);
+  getBasicBoundingBox(pt1, pt2, pt3, pt4);
   return (pt2-pt1).norm();
 }
 
@@ -673,7 +665,7 @@ inline
 double 
 DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealLength(){
   InputPoint pt1, pt2, pt3, pt4;
-  getRealBounds(pt1, pt2, pt3, pt4);
+  getRealBoundingBox(pt1, pt2, pt3, pt4);
   return (pt2-pt1).norm();
 }
   
