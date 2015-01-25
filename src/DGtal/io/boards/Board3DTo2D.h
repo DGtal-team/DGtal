@@ -69,6 +69,10 @@ class Board3DTo2D : public Display3D<Space, KSpace>
 {
 
   BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
+
+protected:
+  using Display3D<Space, KSpace>::myQuadsMap;
+
 public:
     /**
      * Cairo type for save files.
