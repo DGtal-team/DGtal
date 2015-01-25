@@ -144,24 +144,26 @@ bool testLocalEstimatorFromFunctorAdapter()
   ConvFunctor convFunc(1.0);
   Reporter reporter;//(surface,l2Metric,estimator,convFunc);
   reporter.attach(surface);
-  reporter.setParams(l2Metric,estimator,convFunc);
+  reporter.setParams(l2Metric,estimator,convFunc, 5);
 
   //We just test the init for Gaussian
   DGtal::functors::GaussianKernel gaussKernelFunc(1.0);
   ReporterGaussian reporterGaussian;
   reporterGaussian.attach(surface);
-  reporterGaussian.setParams(l2Metric,estimator,gaussKernelFunc);
-  reporterGaussian.init(1,5);
+  reporterGaussian.setParams(l2Metric,estimator,gaussKernelFunc, 5.0);
+  reporterGaussian.init(1, surface.begin(), surface.end());
 
-  reporter.init(1.0, 5.0);
+  reporter.init(1.0, surface.begin(), surface.end());
   Functor::Quantity val = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 5= "<<val << std::endl;
   nbok += ((fabs((double)val - 124.0)) < 40) ? 1 : 0;
   nb++;
 
-  reporter.init(1, 20);
+  reporter.setParams(l2Metric,estimator,convFunc, 20.0);
+  reporter.init(1, surface.begin(), surface.end());
   Functor::Quantity val2 = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 20= "<<val2 << std::endl;
+
   nbok += ((fabs((double)val2 - 398.0)) < 120) ? 1 : 0;
   nb++;
 
@@ -183,7 +185,7 @@ bool testConcepts()
   typedef CanonicSCellEmbedder<Z3i::KSpace> Embedder;
   trace.beginBlock("Checking concepts");
   BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< functors::DummyEstimatorFromSurfels<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< functors::ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
 
 #ifdef WITH_CGAL
   BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >));
