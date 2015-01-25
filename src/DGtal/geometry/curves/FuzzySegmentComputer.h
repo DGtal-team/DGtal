@@ -74,8 +74,6 @@ class FuzzySegmentComputer
   BOOST_STATIC_ASSERT(( TInputPoint::dimension == 2 ));
   
 public:
-
-
   typedef TSpace Space;
   typedef TInputPoint InputPoint;
   typedef TInternalScalar InternalScalar;
@@ -87,9 +85,24 @@ public:
   typedef typename InputPointSet::size_type Size;
   typedef typename InputPointSet::const_iterator ConstIterator;
   typedef typename InputPointSet::iterator Iterator;
-
   typedef ParallelStrip<Space,true,true> Primitive;  
 
+
+  // ----------------------- internal types --------------------------------------
+
+private: 
+  struct State{
+    std::deque<unsigned int > melkmanQueue; /** Melkman algorithm main dequeu */
+    InputPoint lastFront; /** the last point added at the front of the fuzzy segment */
+    InputPoint lastBack; /** the last point added at the back of the fuzzy segment */
+    InputPoint edgePh; 
+    InputPoint edgeQh;
+    InputPoint vertexSh;    
+    bool isMelkmanInitialized;  
+    double convexHullHeight;  /** Used in melkmanMainDiagonal() */
+    double convexHullWidth;  /** Used in melkmanMainDiagonal() */ 
+  };
+    
   
   // ----------------------- Standard services ------------------------------
 public:
@@ -194,7 +207,7 @@ public:
    * Computes the parameters of the extended fuzzy segment if yes.
    * @return 'true' if yes, 'false' otherwise.
    */
-  bool extendBack();
+  bool extendBack(const InputPoint &aPoint);
   
  
 
@@ -289,9 +302,7 @@ public:
 protected:
   
   
-  InputPoint myLastFront;
-
-  InputPoint myLastBack;
+  
   /**
    * begin iterator (associated to input data)
    **/
@@ -304,7 +315,6 @@ protected:
   
     
 
-  
 
     // ------------------------- Private Datas --------------------------------
 private:
@@ -314,25 +324,13 @@ private:
    *
    **/
   mutable InputPointSet myPointSet; 
-  
-  bool myIsValid;
   double myThickness;  
+  State myState;
+  mutable State _state;
+  
   double myBoxLength;
 
-  /**
-   *  Melkman algorithm main dequeu 
-   *
-   **/
 
-  std::deque<unsigned int > myMelkmanQueue;
-  
-  bool myIsMelkmanInitialized;  
-  // Used in melkmanMainDiagonal()
-  double myConvexHullHeight;  
-  double myConvexHullWidth;  
-
-
-  InputPoint myEdgePh, myEdgeQh, myVertexSh;
   
   
 
@@ -366,7 +364,6 @@ protected:
 
   /**
    *  Melkman main diagonal
-   *  @return the main diagonal width of a convex set
    *
    **/     
    void melkmanUpdateMainDiagonal();
@@ -385,7 +382,7 @@ protected:
    * Melkman
    * Check if the 3 init point of the queue are given in the correct order (else it re order it).
    *
-   * (it checks only the 3 first points of myMelkmanQueue)
+   * (it checks only the 3 first points of myState.melkmanQueue)
    **/
   void melkmanInitCheck( ) ; 
 

@@ -56,19 +56,47 @@ bool testFuzzySegmentComputer()
   Board2D aBoard;
   typedef  FuzzySegmentComputer<Z2i::Space, Z2i::RealPoint, double> FuzzySegmentComputer2D;
   trace.beginBlock ( "Testing Fuzzy segment ..." );
-  FuzzySegmentComputer2D aFuzzySegmentComp;
   std::vector<Z2i::RealPoint> aContour;
   std::string fileContour = testPath + "samples/contourNoiseSample.sdp";
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
   bool res = true;
+  FuzzySegmentComputer2D aFuzzySegmentComp;
   aFuzzySegmentComp.init(4);
+  FuzzySegmentComputer2D aFuzzySegmentComp2;
+  aFuzzySegmentComp2.init(6);
+  FuzzySegmentComputer2D aFuzzySegmentComp3;
+  aFuzzySegmentComp3.init(1);
+  FuzzySegmentComputer2D aFuzzySegmentComp4;
+  aFuzzySegmentComp4.init(0.5);
+  
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
     res &= aFuzzySegmentComp.extendFront(*it);
     if (!res){
       break;
     }
   }
-  
+  res=true;
+  for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
+    res &= aFuzzySegmentComp2.extendFront(*it);
+    if (!res){
+      break;
+    }
+  }
+  res=true;
+  for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
+    res &= aFuzzySegmentComp3.extendFront(*it);
+    if (!res){
+      break;
+    }
+  }
+  res=true;
+  for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
+    res &= aFuzzySegmentComp4.extendFront(*it);
+    if (!res){
+      break;
+    }
+  }
+
   
   // Display convexhull
   std::vector<Z2i::RealPoint> aVect = aFuzzySegmentComp.getConvexHull();
@@ -90,6 +118,24 @@ bool testFuzzySegmentComputer()
   trace.info() << "pt2 :" << pt2 << std::endl;
   trace.info() << "pt3 :" << pt3 << std::endl;
   trace.info() << "pt4 :" << pt4 << std::endl;
+  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
+  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
+  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
+  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
+ 
+  aFuzzySegmentComp2.getRealBounds(pt1,pt2,pt3,pt4);
+  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
+  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
+  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
+  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
+  
+  aFuzzySegmentComp3.getRealBounds(pt1,pt2,pt3,pt4);
+  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
+  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
+  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
+  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
+
+  aFuzzySegmentComp4.getRealBounds(pt1,pt2,pt3,pt4);
   aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
   aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
   aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
