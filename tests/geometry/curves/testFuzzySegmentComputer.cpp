@@ -61,9 +61,9 @@ bool testFuzzySegmentComputerFloatingPointContour()
   std::vector<Z2i::RealPoint> aContour;
   std::string fileContour = testPath + "samples/contourNoiseSample2.sdp";
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
-  bool res = true;
+  
   FuzzySegmentComputer2D aFuzzySegmentComp;
-  aFuzzySegmentComp.init(4);
+  aFuzzySegmentComp.init(1);
   
   unsigned int indexStart = 10;
   bool isExtending = true;
@@ -99,12 +99,11 @@ bool testFuzzySegmentComputerFloatingPointContour()
     }
   }
 
-  
+  trace.info() << "Segment size: " << aFuzzySegmentComp.size() << std::endl;
   
   aBoard.saveEPS("testFuzzySegmentComputer_FloatingPt.eps"); 
-  trace.info() << aFuzzySegmentComp;
   
-  nbok += res ? 1 : 0; 
+  nbok += aFuzzySegmentComp.size()==30 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "true == true" << std::endl;
