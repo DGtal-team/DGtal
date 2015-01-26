@@ -180,7 +180,7 @@ init(double aThickness)
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableFront(const InputPoint &aPoint ) 
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendable(const InputPoint &aPoint ) 
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
@@ -197,7 +197,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableF
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(const InputPoint &aPoint) 
+DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extend(const InputPoint &aPoint) 
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
@@ -217,40 +217,6 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(c
 }
 
 
-
-//-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
-inline
-bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableBack() 
-{
-  return isExtendableFront();  
-}
-
-
-
-//-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
-inline
-bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendBack(const InputPoint &aPoint) 
-{
-  _state = myState;  
-  myPointContainer.push_back(aPoint);  
-  melkmanAddPoint(myPointContainer.size()-1);
-  
-  if (melkmanIsConvexValid()){
-    if (myPointContainer.size()==1){
-      myState.lastFront = aPoint;
-    }
-    myState.lastBack = aPoint;
-    return true;
-  }else{
-    myPointContainer.pop_back();
-    myState = _state;
-    return false;
-  }
-}
 
 
 
