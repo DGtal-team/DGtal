@@ -119,6 +119,12 @@ public:
    */
   ~FuzzySegmentComputer();
 
+  /**
+   * Initialisation.
+   * @param[in] aThickness the maximal thickness of the fuzzy segment (alpha_max).
+   */  
+  void init(double aThickness);  
+  
   
 
 
@@ -165,27 +171,20 @@ public:
 
 
 
-  //-------------------- model of CBidirectionalSegmentComputer ----------------
+  //-------------------- model of CIncrementalPrimitiveComputer ----------------
 
 public:
-  
+     
   /**
-   * Initialisation.
-   * @param[in] aThickness the maximal thickness of the fuzzy segment (alpha_max).
-   */  
-  void init(double aThickness);  
-  
-   
-  /**
-   *  Tests whether the current fuzzy segment can be extended at the
-   *  front, i.e checks if we have still a fuzzy segment of width
-   *  alpha_max after adding the given point \aPoint. The segment
-   *  parameters are keep in its original state.
+   *  Tests whether the current fuzzy segment can be extended, i.e
+   *  checks if we have still a fuzzy segment of width alpha_max after
+   *  adding the given point \aPoint. The segment parameters are keep
+   *  in its original state.
    *  
    * @param[in] aPoint the point to be tested for the segment extension.
    * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
    */
-  bool isExtendableFront(const InputPoint &aPoint);
+  bool isExtendable(const InputPoint &aPoint);
 
 
   /**
@@ -195,35 +194,11 @@ public:
    * the new point is added and the segment parameters are updated,
    * otherwise the fuzzy segment is keep in its original state.
    *
+   * @param[in] aPoint the new point to extend the current segment.
    * @return 'true' if the segment has been extended and 'false'
    * otherwise (the object is then in its original state).
    */
-  bool extendFront(const InputPoint &aPoint);
-
-  
-  /**
-   *  Tests whether the current fuzzy segment can be extended at the
-   *  front, i.e checks if we have still a fuzzy segment of width
-   *  alpha_max after adding the given point \a aPoint. The segment
-   *  parameters are keep in its original state.
-   *  
-   * @param[in] aPoint the point to be tested for the segment extension.
-   * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
-   */
-  bool isExtendableBack();
-
-
-  /**
-   * Tries to add the point \aPoint at the back of the current fuzzy
-   * segment and checks if we have still a fuzzy segment of thickness
-   * less or equal to the initial value alpha_max. If it is the case
-   * the new point is added and the segment parameters are updated,
-   * otherwise the fuzzy segment is keep in its original state.
-   *
-   * @return 'true' if the segment has been extended and 'false'
-   * otherwise (the object is then in its original state).
-   */
-  bool extendBack(const InputPoint &aPoint);
+  bool extend(const InputPoint &aPoint);
   
  
 
@@ -256,11 +231,11 @@ public:
   /**
    * Computes the segment bounding box according to two extremity points (\a aFirstPt, \a aLastPt).
    * @param[in] aFirstPt the first extrem point.
-   * @param[in] aFirstPt the last extrem point. 
+   * @param[in] aLastPt the last extrem point. 
    * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
-   * @param[out] pt3LongestSegment1 the first point of one of the second longest segment.
-   * @param[out] pt4LongestSegment1 the second point of one of the second longest segment.
+   * @param[out] pt3LongestSegment2 the first point of one of the second longest segment.
+   * @param[out] pt4LongestSegment2 the second point of one of the second longest segment.
    * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue).
    *
    * @note the segment bounding box can be drawn with the sequence of
@@ -284,8 +259,8 @@ public:
    *
    * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
-   * @param[out] pt3LongestSegment1 the first point of one of the second longest segment.
-   * @param[out] pt4LongestSegment1 the second point of one of the second longest segment.
+   * @param[out] pt3LongestSegment2 the first point of one of the second longest segment.
+   * @param[out] pt4LongestSegment2 the second point of one of the second longest segment.
    * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue).
    *
    * @note the segment bounding box can be drawn with the sequence of
@@ -309,8 +284,8 @@ public:
    *
    * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
-   * @param[out] pt3LongestSegment1 the first point of one of the second longest segment.
-   * @param[out] pt4LongestSegment1 the second point of one of the second longest segment.
+   * @param[out] pt3LongestSegment2 the first point of one of the second longest segment.
+   * @param[out] pt4LongestSegment2 the second point of one of the second longest segment.
    * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue).
    *
    * @note the segment bounding box can be drawn with the sequence of

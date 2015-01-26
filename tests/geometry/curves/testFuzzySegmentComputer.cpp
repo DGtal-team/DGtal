@@ -44,6 +44,77 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class FuzzySegmentComputer.
 ///////////////////////////////////////////////////////////////////////////////
+
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testFuzzySegmentComputerFloatingPointContour()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  Board2D aBoard;
+  typedef  FuzzySegmentComputer<Z2i::Space, Z2i::RealPoint, double> FuzzySegmentComputer2D;
+  trace.beginBlock ( "Testing Fuzzy segment on contour composed of floating coords ..." );
+  std::vector<Z2i::RealPoint> aContour;
+  std::string fileContour = testPath + "samples/contourNoiseSample2.sdp";
+  aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
+  bool res = true;
+  FuzzySegmentComputer2D aFuzzySegmentComp;
+  aFuzzySegmentComp.init(4);
+  
+  unsigned int indexStart = 10;
+  bool isExtending = true;
+  isExtending &= aFuzzySegmentComp.extend(aContour[indexStart]);
+  unsigned int i = 1;
+  while (isExtending){
+    isExtending &= aFuzzySegmentComp.extend(aContour[indexStart+i]);
+    i++;
+  }
+
+  
+  
+  // Display boundingbox
+  Z2i::RealPoint pt1, pt2, pt3, pt4;
+  aBoard.setLineWidth(1);
+  aFuzzySegmentComp.getRealBoundingBox(pt1,pt2,pt3,pt4);
+  aBoard.setPenColor(DGtal::Color::Blue);
+  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
+  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
+  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
+  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
+ 
+  
+  // Display the input curve
+  aBoard << SetMode((*aContour.begin()).className(), "Grid");
+  for (std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); 
+       it != aContour.end(); it++){
+    aBoard << *it;
+    if (it+1 != aContour.end()){
+      Z2i::RealPoint next = *(it+1);
+      aBoard.setPenColor(DGtal::Color::Gray);
+      aBoard.drawLine((*it)[0], (*it)[1], next[0], next[1]);
+    }
+  }
+
+  
+  
+  aBoard.saveEPS("testFuzzySegmentComputer_FloatingPt.eps"); 
+  trace.info() << aFuzzySegmentComp;
+  
+  nbok += res ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
+
+
 /**
  * Example of a test. To be completed.
  *
@@ -70,28 +141,28 @@ bool testFuzzySegmentComputer()
   aFuzzySegmentComp4.init(0.5);
   
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp.extendFront(*it);
+    res &= aFuzzySegmentComp.extend(*it);
     if (!res){
       break;
     }
   }
   res=true;
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp2.extendFront(*it);
+    res &= aFuzzySegmentComp2.extend(*it);
     if (!res){
       break;
     }
   }
   res=true;
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp3.extendFront(*it);
+    res &= aFuzzySegmentComp3.extend(*it);
     if (!res){
       break;
     }
   }
   res=true;
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp4.extendFront(*it);
+    res &= aFuzzySegmentComp4.extend(*it);
     if (!res){
       break;
     }
@@ -159,7 +230,7 @@ bool testFuzzySegmentComputer()
   for (FuzzySegmentComputer2D::ConstIterator it = aFuzzySegmentComp.begin(); 
        it != aFuzzySegmentComp.end(); it++){
       aBoard.setPenColor(DGtal::Color::Gray);
-      aBoard.drawCircle((*it)[0], (*it)[1], 0.2);
+      aBoard.drawCircle((*it)[0], (*it)[1], 0.02);
   }
   
   
@@ -187,7 +258,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testFuzzySegmentComputer(); // && ... other tests
+  bool res = testFuzzySegmentComputer() && testFuzzySegmentComputerFloatingPointContour() ; // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
