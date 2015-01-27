@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file FuzzySegmentComputer.h
+ * @file AlphaThickSegmentComputer.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  * @author Alexandre Faure
@@ -27,20 +27,20 @@
  *
  * @date 2015/01/05
  *
- * Header file for module FuzzySegmentComputer.cpp
+ * Header file for module AlphaThickSegmentComputer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(FuzzySegmentComputer_RECURSES)
-#error Recursive header files inclusion detected in FuzzySegmentComputer.h
-#else // defined(FuzzySegmentComputer_RECURSES)
+#if defined(AlphaThickSegmentComputer_RECURSES)
+#error Recursive header files inclusion detected in AlphaThickSegmentComputer.h
+#else // defined(AlphaThickSegmentComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define FuzzySegmentComputer_RECURSES
+#define AlphaThickSegmentComputer_RECURSES
 
-#if !defined FuzzySegmentComputer_h
+#if !defined AlphaThickSegmentComputer_h
 /** Prevents repeated inclusion of headers. */
-#define FuzzySegmentComputer_h
+#define AlphaThickSegmentComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -53,9 +53,9 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class FuzzySegmentComputer
+// class AlphaThickSegmentComputer
 /**
- * Description of class 'FuzzySegmentComputer' <p>
+ * Description of class 'AlphaThickSegmentComputer' <p>
  * \brief Aim:
  */
 
@@ -64,7 +64,7 @@ template <typename TSpace,
           typename TInputPoint,
           typename TInternalScalar>
 
-class FuzzySegmentComputer
+class AlphaThickSegmentComputer
 {
 
   // ----------------------- public types --------------------------------------
@@ -111,13 +111,13 @@ public:
   /**
    * Constructor.
    */
-  FuzzySegmentComputer();
+  AlphaThickSegmentComputer();
 
 
   /**
    * Destructor.
    */
-  ~FuzzySegmentComputer();
+  ~AlphaThickSegmentComputer();
 
   /**
    * Initialisation.
@@ -382,7 +382,7 @@ protected:
    * @param[in] other the object to clone.
    * Forbidden by default.
    */
-  FuzzySegmentComputer ( const FuzzySegmentComputer & other );
+  AlphaThickSegmentComputer ( const AlphaThickSegmentComputer & other );
   
   /**
    * Assignment.
@@ -391,7 +391,7 @@ protected:
    * @return a reference on 'this'.
    * Forbidden by default.
    */
-  FuzzySegmentComputer & operator= ( const FuzzySegmentComputer & other );
+  AlphaThickSegmentComputer & operator= ( const AlphaThickSegmentComputer & other );
   
   
   /**
@@ -459,18 +459,18 @@ protected:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class FuzzySegmentComputer
+}; // end of class AlphaThickSegmentComputer
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'FuzzySegmentComputer'.
+ * Overloads 'operator<<' for displaying objects of class 'AlphaThickSegmentComputer'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'FuzzySegmentComputer' to write.
+ * @param object the object of class 'AlphaThickSegmentComputer' to write.
  * @return the output stream after the writing.
  */
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 std::ostream&
-operator<< ( std::ostream & out, const FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar> & object );
+operator<< ( std::ostream & out, const AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & object );
 
 
 } // namespace DGtal
@@ -479,14 +479,14 @@ operator<< ( std::ostream & out, const FuzzySegmentComputer<TSpace, TInputPoint,
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #if !defined(BUILD_INLINE)
-#include "DGtal/geometry/curves/FuzzySegmentComputer.ih"
+#include "DGtal/geometry/curves/AlphaThickSegmentComputer.ih"
 #endif
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined FuzzySegmentComputer_h
+#endif // !defined AlphaThickSegmentComputer_h
 
-#undef FuzzySegmentComputer_RECURSES
-#endif // else defined(FuzzySegmentComputer_RECURSES)
+#undef AlphaThickSegmentComputer_RECURSES
+#endif // else defined(AlphaThickSegmentComputer_RECURSES)

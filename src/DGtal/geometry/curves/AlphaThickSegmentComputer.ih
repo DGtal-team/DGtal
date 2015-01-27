@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file FuzzySegmentComputer.ih
+ * @file AlphaThickSegmentComputer.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  * @author Alexandre Faure
@@ -25,7 +25,7 @@
  *
  * @date 2015/01/05
  *
- * Implementation of inline methods defined in FuzzySegmentComputer.h
+ * Implementation of inline methods defined in AlphaThickSegmentComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -53,7 +53,7 @@
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::~FuzzySegmentComputer()
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::~AlphaThickSegmentComputer()
 { 
 }
 
@@ -62,7 +62,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::~FuzzySegment
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::FuzzySegmentComputer()
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::AlphaThickSegmentComputer()
 { 
   myState.isMelkmanInitialized = false;
 }
@@ -72,16 +72,16 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::FuzzySegmentC
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::
-FuzzySegmentComputer( const FuzzySegmentComputer & other )
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other )
 { // Nothing to do.
 }
 
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar> & 
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::
-operator= ( const FuzzySegmentComputer & other )
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+operator= ( const AlphaThickSegmentComputer & other )
 {// Nothing to do.
 
 }
@@ -92,8 +92,8 @@ operator= ( const FuzzySegmentComputer & other )
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::size() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::size() const 
 {
   return myPointContainer.size();
 }
@@ -103,7 +103,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::size() const
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::empty() const 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::empty() const 
 {
   return myPointContainer.size()!=0;
 }
@@ -113,8 +113,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::empty() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::begin() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::begin() const 
 {
   return myPointContainer.begin();
 
@@ -125,8 +125,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::begin() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::end() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::end() const 
 {
   return myPointContainer.end();
 }
@@ -137,8 +137,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::end() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::max_size() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::max_size() const 
 {
   return myPointContainer.max_size();
 }
@@ -149,8 +149,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::max_size() co
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::maxSize() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::maxSize() const 
 {
   return myPointContainer.max_size();
 }
@@ -165,7 +165,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::maxSize() con
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
 init(double aThickness)  
 {
   myThickness = aThickness;
@@ -180,7 +180,7 @@ init(double aThickness)
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendable(const InputPoint &aPoint ) 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendable(const InputPoint &aPoint ) 
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
@@ -197,7 +197,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendable(
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extend(const InputPoint &aPoint) 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::extend(const InputPoint &aPoint) 
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
@@ -224,8 +224,8 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::extend(const 
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-typename DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::Primitive
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::primitive()  const
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::Primitive
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::primitive()  const
 {
   return Primitive(0,0,0);  
 }
@@ -237,7 +237,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::primitive()  
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay(std::ostream & out)  const
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay(std::ostream & out)  const
 {
   out << "[Fuzzy Segment Computer]" << std::endl; 
   out << "Inside points: "<< std::endl;
@@ -258,7 +258,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay(s
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isValid()  const
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::isValid()  const
 {
   return true;
 }
@@ -271,7 +271,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::isValid()  co
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsWellInitialized()  const
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsWellInitialized()  const
 {
   return myState.isMelkmanInitialized;
 }
@@ -281,7 +281,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsWell
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdateMainHeight()  
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdateMainHeight()  
 {
   int queueSize = myState.melkmanQueue.size();
   InputPoint P, Q, R, S;
@@ -365,7 +365,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdate
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanAddPoint(unsigned int aPointIndex)
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanAddPoint(unsigned int aPointIndex)
 {
   if (myState.melkmanQueue.size() ==  2){
     myState.melkmanQueue.push_back(aPointIndex);
@@ -413,7 +413,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanAddPoi
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
 melkmanInitCheck() 
 {
   unsigned int aPoint1 = myState.melkmanQueue[0];
@@ -452,7 +452,7 @@ melkmanInitCheck()
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsConvexValid() 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsConvexValid() 
 {
   /** Strategy is as follows:
    *  If connexity is 0, use MainDiagonal < k * sqrt(2), for k = 1,2,...
@@ -470,7 +470,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsConv
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 TInternalScalar
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft(unsigned int aPointIndex0,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft(unsigned int aPointIndex0,
                                                                                  unsigned int aPointIndex1,
                                                                                  unsigned int aPointIndex2) const
 {
@@ -482,7 +482,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 std::vector<TInputPoint>
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConvexHull() const{
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConvexHull() const{
   std::vector<InputPoint> aResult;
   for (typename std::deque<unsigned int>::const_iterator it = myState.melkmanQueue.begin(); it != myState.melkmanQueue.end(); it++){
     aResult.push_back(myPointContainer[*it]);
@@ -495,7 +495,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConvexHull
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
                                                                                                 const InputPoint &aLastPt,
                                                                                                 InputPoint &pt1LongestSegment1,
                                                                                                 InputPoint &pt2LongestSegment1,
@@ -551,7 +551,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBoundingBo
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBoundingBox(InputPoint &pt1LongestSegment1,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBoundingBox(InputPoint &pt1LongestSegment1,
                                                                                        InputPoint &pt2LongestSegment1,
                                                                                        InputPoint &pt3LongestSegment2,
                                                                                        InputPoint &pt4LongestSegment2,
@@ -569,7 +569,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBound
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void 
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBoundingBox(InputPoint &pt1LongestSegment1,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBoundingBox(InputPoint &pt1LongestSegment1,
                                                                                      InputPoint &pt2LongestSegment1,
                                                                                      InputPoint &pt3LongestSegment2,
                                                                                      InputPoint &pt4LongestSegment2,
@@ -618,7 +618,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBoundi
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 double 
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicLength(){
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicLength(){
   InputPoint pt1, pt2, pt3, pt4;
   getBasicBoundingBox(pt1, pt2, pt3, pt4);
   return (pt2-pt1).norm();
@@ -629,7 +629,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicLengt
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 double 
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealLength(){
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealLength(){
   InputPoint pt1, pt2, pt3, pt4;
   getRealBoundingBox(pt1, pt2, pt3, pt4);
   return (pt2-pt1).norm();
@@ -642,7 +642,7 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealLength
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOnStraightLine(const InputPoint & ptA,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOnStraightLine(const InputPoint & ptA,
                                                                                         const InputPoint & ptB,
                                                                                         const InputPoint & ptC,
                                                                                         InputPoint & ptProjected) const {
@@ -668,16 +668,16 @@ DGtal::FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOnStrai
 // Implementation of inline functions and external operators                 //
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'FuzzySegmentComputer'.
+ * Overloads 'operator<<' for displaying objects of class 'AlphaThickSegmentComputer'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'FuzzySegmentComputer' to write.
+ * @param object the object of class 'AlphaThickSegmentComputer' to write.
  * @return the output stream after the writing.
  */
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const FuzzySegmentComputer<TSpace, TInputPoint, TInternalScalar> & object )
+                    const AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & object )
 {
   object.selfDisplay ( out );
   return out;
