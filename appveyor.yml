@@ -48,7 +48,7 @@ matrix:
 #platform: Any CPU
  
 # to add several platforms to build matrix:
-#platform:
+platform:
   - x86
   - Any CPU
  
