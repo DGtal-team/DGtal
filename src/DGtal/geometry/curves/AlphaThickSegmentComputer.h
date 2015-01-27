@@ -93,8 +93,8 @@ public:
 private: 
   struct State{
     std::deque<unsigned int > melkmanQueue; /** Melkman algorithm main dequeu */
-    InputPoint lastFront; /** the last point added at the front of the fuzzy segment */
-    InputPoint lastBack; /** the last point added at the back of the fuzzy segment */
+    InputPoint lastFront; /** the last point added at the front of the alpha thick segment */
+    InputPoint lastBack; /** the last point added at the back of the alpha thick segment */
     InputPoint edgePh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint edgeQh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint vertexSh; /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
@@ -121,7 +121,7 @@ public:
 
   /**
    * Initialisation.
-   * @param[in] aThickness the maximal thickness of the fuzzy segment (alpha_max).
+   * @param[in] aThickness the maximal thickness of the alpha thick segment (alpha_max).
    */  
   void init(double aThickness);  
   
@@ -132,7 +132,7 @@ public:
 public:
 
   /**
-   * @return the number of distinct points in the current fuzzy segment.
+   * @return the number of distinct points in the current alpha thick segment.
    */
   Size size() const;
   
@@ -143,20 +143,20 @@ public:
   
   
   /**
-   * @return a const iterator pointing on the first point stored in the current fuzzy segment.
+   * @return a const iterator pointing on the first point stored in the current alpha thick segment.
    */
   ConstIterator begin() const;
 
 
   /**
-   * @return a const iterator pointing after the last point stored in the current fuzzy segment.
+   * @return a const iterator pointing after the last point stored in the current alpha thick segment.
    */
   ConstIterator end() const;
 
 
   /**
    * NB: std version.
-   * @return the maximal allowed number of points in the current fuzzy segment.
+   * @return the maximal allowed number of points in the current alpha thick segment.
    * @see maxSize
    */
   Size max_size() const;
@@ -164,7 +164,7 @@ public:
   
   /**
    * same as max_size
-   * @return the maximal allowed number of points in the current fuzzy segment.
+   * @return the maximal allowed number of points in the current alpha thick segment.
    */
   Size maxSize() const;  
   
@@ -176,8 +176,8 @@ public:
 public:
      
   /**
-   *  Tests whether the current fuzzy segment can be extended, i.e
-   *  checks if we have still a fuzzy segment of width alpha_max after
+   *  Tests whether the current alpha thick segment can be extended, i.e
+   *  checks if we have still a alpha thick segment of width alpha_max after
    *  adding the given point \aPoint. The segment parameters are keep
    *  in its original state.
    *  
@@ -188,11 +188,11 @@ public:
 
 
   /**
-   * Tries to add the point \a aPoint at the front of the current fuzzy
-   * segment and checks if we have still a fuzzy segment of thickness
+   * Tries to add the point \a aPoint at the front of the current alpha thick
+   * segment and checks if we have still a alpha thick segment of thickness
    * less or equal to the initial value alpha_max. If it is the case
    * the new point is added and the segment parameters are updated,
-   * otherwise the fuzzy segment is keep in its original state.
+   * otherwise the alpha thick segment is keep in its original state.
    *
    * @param[in] aPoint the new point to extend the current segment.
    * @return 'true' if the segment has been extended and 'false'
@@ -355,7 +355,7 @@ protected:
 private:
 
   /**
-   * The set of points contained in the fuzzy segment which can be changed during computations.
+   * The set of points contained in the alpha thick segment which can be changed during computations.
    **/
   mutable InputPointContainer myPointContainer; 
 
