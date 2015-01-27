@@ -1,9 +1,7 @@
 version: 0.9beta.{build}
 
 environment:
-  P: "c:/projects/libs"
-#  ACCOUNT:
-#    secure: haKHy4KWVnBuCd6I3obXGMa9TjRa8oXFm9P+Pw6f5P0=
+  P: "c:/projects/dgtal"
 
 # branches to build
 branches:
