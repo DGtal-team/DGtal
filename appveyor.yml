@@ -72,7 +72,7 @@ install:
 before_build:
   - echo Running cmake...
   - cd c:\projects\dgtal
-  - cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX=%P% -DBoost_DIR=C:\Libraries\boost
+  - cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX=%P% -DBOOST_ROOT=C:\Libraries\boost
 
 # scripts to run after build
 after_build:
