@@ -1,3 +1,87 @@
-version: 1.0.{build}
+version: 3.8.5.{build}
+
+environment:
+  P: "c:/projects/libs"
+#  ACCOUNT:
+#    secure: haKHy4KWVnBuCd6I3obXGMa9TjRa8oXFm9P+Pw6f5P0=
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+ 
+# Operating system (build VM template)
+os: Windows Server 2012
+ 
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+ 
+# clone directory
+clone_folder: c:\projects\dgtal
+ 
+# fetch repository as zip archive
+shallow_clone: true                 # default is "false"
+
+
+
+# this is how to allow failing jobs in the matrix
+matrix:
+  fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
+  allow_failures:
+    - platform: x86
+      configuration: Debug
+    - platform: x64
+      configuration: Release
+ 
+# scripts that run after cloning repository
+install:
+  # by default, all script lines are interpreted as batch
+  - echo This is batch
+ 
+
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+ 
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: Any CPU
+ 
+# to add several platforms to build matrix:
+#platform:
+#  - x86
+#  - Any CPU
+ 
+# build Configuration, i.e. Debug, Release, etc.
+configuration:
+  - Debug
+  - Release
+ 
 build:
-  verbosity: minimal
+  parallel: true                  # enable MSBuild parallel builds
+  project: DGtal.sln      # path to Visual Studio solution or project
+ 
+  # MSBuild verbosity level
+  verbosity: quiet|minimal|normal|detailed
+
+
+install:
+  # by default, all script lines are interpreted as batch
+
+
+# scripts to run before build
+before_build:
+  - echo Running cmake...
+  - cd c:\projects\dgtal
+  - cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX=%P%
+
+# scripts to run after build
+after_build:
+ 
