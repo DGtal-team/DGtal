@@ -62,7 +62,7 @@ build:
   project: DGtal.sln      # path to Visual Studio solution or project
  
   # MSBuild verbosity level
-  verbosity: quiet|minimal|normal|detailed
+  #verbosity: quiet|minimal|normal|detailed
 
 install:
   # by default, all script lines are interpreted as batch
