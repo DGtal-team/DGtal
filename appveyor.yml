@@ -49,7 +49,6 @@ matrix:
  
 # to add several platforms to build matrix:
 platform:
-  - x86
   - Any CPU
  
 # build Configuration, i.e. Debug, Release, etc.
