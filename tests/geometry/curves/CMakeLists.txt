@@ -21,7 +21,7 @@ SET(DGTAL_TESTS_SRC
   testDSLSubsegment
   testArithDSSIterator
   testArithmeticalDSSConvexHull
-  testFuzzySegmentComputer
+  testAlphaThickSegmentComputer
   )
 
 
