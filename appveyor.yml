@@ -15,7 +15,7 @@ branches:
 #---------------------------------#
  
 # Operating system (build VM template)
-os: Windows Server 2012
+os: Unstable
  
 # scripts that are called at very beginning, before repo cloning
 init:
@@ -72,7 +72,7 @@ install:
 before_build:
   - echo Running cmake...
   - cd c:\projects\dgtal
-  - cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX=%P%
+  - cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX=%P% -DBoost_DIR=C:\Libraries\boost
 
 # scripts to run after build
 after_build:
