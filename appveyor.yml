@@ -7,7 +7,7 @@ environment:
 branches:
   # whitelist
   only:
-    - master
+    - appveyor
 
 
 #---------------------------------#
