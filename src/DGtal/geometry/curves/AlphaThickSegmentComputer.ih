@@ -207,7 +207,7 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::extend(c
     if (myPointContainer.size()==1){
       myState.lastBack = aPoint;
     }
-    myState.lastFront = aPoint;
+   myState.lastFront = aPoint;
     return true;
   }else{
     myPointContainer.pop_back();
@@ -245,9 +245,12 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::selfDisp
     out << *it << " ";
   }
   out << std::endl << "is well melkman init ?" << (myState.isMelkmanInitialized? " OK ": "NO"); 
-  out << std::endl << "Convexhull width: " << myState.convexHullWidth << std::endl;
+  out << std::endl << "diagonal width: " << myState.convexHullHeight/sqrt(2) << std::endl;
   out << std::endl << "Convexhull height: " << myState.convexHullHeight << std::endl;  
-
+  out << std::endl << "Convexhull height: " << myState.convexHullHeight << std::endl;  
+  PointD pt1, pt2, pt3, pt4;
+  getBasicBoundingBox(pt1, pt2, pt3, pt4);
+  out << std::endl << "Bounding box:" << pt1 << " " << pt2 << " " << pt3 << " " << pt4 << std::endl;
 
 }
 
@@ -367,11 +370,20 @@ inline
 void
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanAddPoint(unsigned int aPointIndex)
 {
+  /* The  melkman algorithm is well initialize when we have 3 non aligned points  */
   if (myState.melkmanQueue.size() ==  2){
-    myState.melkmanQueue.push_back(aPointIndex);
-    melkmanInitCheck();
-    myState.isMelkmanInitialized=true;
-    return;
+    if(  melkmanIsLeft( myState.melkmanQueue[0], 
+                        myState.melkmanQueue[1],
+                        aPointIndex ) !=0){
+      myState.melkmanQueue.push_back(aPointIndex);
+      melkmanInit();
+      myState.isMelkmanInitialized=true;
+      return;
+    }else{
+      myState.melkmanQueue.pop_back();
+      myState.melkmanQueue.push_back(aPointIndex);
+      return;
+    }
   }else if (myState.melkmanQueue.size() < 2){
     myState.melkmanQueue.push_back(aPointIndex);
     return;
@@ -414,7 +426,7 @@ template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
-melkmanInitCheck() 
+melkmanInit() 
 {
   unsigned int aPoint1 = myState.melkmanQueue[0];
   unsigned int aPoint2 = myState.melkmanQueue[1];
@@ -496,42 +508,41 @@ template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
-                                                                                                const InputPoint &aLastPt,
-                                                                                                InputPoint &pt1LongestSegment1,
-                                                                                                InputPoint &pt2LongestSegment1,
-                                                                                                InputPoint &pt3LongestSegment2,
-                                                                                                InputPoint &pt4LongestSegment2,
-                                                                                                double minVisibleWidthBounds) const{
+                                                                                                       const InputPoint &aLastPt,
+                                                                                                       PointD &pt1LongestSegment1,
+                                                                                                       PointD &pt2LongestSegment1,
+                                                                                                       PointD &pt3LongestSegment2,
+                                                                                                       PointD &pt4LongestSegment2,
+                                                                                                       double minVisibleWidthBounds) const{
   
   // Special case, blurred segment composed only of aligned points. 
   // In this cas the bounding box is restrained to a eplison width rectangle.
-  
   if(myState.convexHullHeight==0.0){
-    InputPoint vectPQ (myState.edgeQh[0]- myState.edgePh[0], myState.edgeQh[1]- myState.edgePh[1]); 
+    PointD vectPQ (aFirstPt[0]- aLastPt[0], aFirstPt[1]- aLastPt[1]); 
     double normPQ = vectPQ.norm();
-    InputPoint vectUnitPerpPQ (-vectPQ[1]/normPQ, vectPQ[0]/normPQ);
-    pt1LongestSegment1[0]=myState.edgePh[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt1LongestSegment1[1]=myState.edgePh[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    PointD vectUnitPerpPQ (-vectPQ[1]/normPQ, vectPQ[0]/normPQ);
+    pt1LongestSegment1[0]= aFirstPt[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt1LongestSegment1[1]= aFirstPt[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-    pt2LongestSegment1[0]=myState.edgeQh[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt2LongestSegment1[1]=myState.edgeQh[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    pt2LongestSegment1[0]= aLastPt[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt2LongestSegment1[1]= aLastPt[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-    pt3LongestSegment2[0]= myState.edgeQh[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt3LongestSegment2[1]= myState.edgeQh[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    pt3LongestSegment2[0]= aLastPt[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt3LongestSegment2[1]= aLastPt[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-    pt4LongestSegment2[0]= myState.edgePh[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt4LongestSegment2[1]= myState.edgePh[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+    pt4LongestSegment2[0]=  aFirstPt[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+    pt4LongestSegment2[1]=  aFirstPt[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
   }else{
-    InputPoint projF, projL, projS ;
+    PointD projF, projL, projS ;
     projetOnStraightLine(myState.edgePh, myState.edgeQh, aFirstPt, projF);
     projetOnStraightLine(myState.edgePh, myState.edgeQh, aLastPt, projL);
     projetOnStraightLine(myState.edgePh, myState.edgeQh, myState.vertexSh, projS);
     
     // Shift of the projection of PQ to define the other part of bounds.
-    InputPoint dep (myState.vertexSh[0]-projS[0], myState.vertexSh[1]-projS[1]);
-    InputPoint projF2(projF[0]+dep[0], projF[1]+dep[1] );
-    InputPoint projL2(projL[0]+dep[0], projL[1]+dep[1] );
+    PointD dep (myState.vertexSh[0]-projS[0], myState.vertexSh[1]-projS[1]);
+    PointD projF2(projF[0]+dep[0], projF[1]+dep[1] );
+    PointD projL2(projL[0]+dep[0], projL[1]+dep[1] );
     
     pt1LongestSegment1[0]=projF[0];
     pt1LongestSegment1[1]=projF[1];
@@ -551,16 +562,15 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBound
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBoundingBox(InputPoint &pt1LongestSegment1,
-                                                                                       InputPoint &pt2LongestSegment1,
-                                                                                       InputPoint &pt3LongestSegment2,
-                                                                                       InputPoint &pt4LongestSegment2,
-                                                                                       double minVisibleWidthBounds) const{ 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBoundingBox(PointD &pt1LongestSegment1,
+                                                                                            PointD &pt2LongestSegment1,
+                                                                                            PointD &pt3LongestSegment2,
+                                                                                            PointD &pt4LongestSegment2) const{ 
   // To be changed with saved point added by push front/push back
   InputPoint fp = myState.lastBack;
   InputPoint lp = myState.lastFront;
   getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
-                               pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);
+                               pt3LongestSegment2, pt4LongestSegment2, myThickness);
 }
 
 
@@ -569,23 +579,22 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasic
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void 
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBoundingBox(InputPoint &pt1LongestSegment1,
-                                                                                     InputPoint &pt2LongestSegment1,
-                                                                                     InputPoint &pt3LongestSegment2,
-                                                                                     InputPoint &pt4LongestSegment2,
-                                                                                     double minVisibleWidthBounds ) const
-{
-  
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBoundingBox(PointD &pt1LongestSegment1,
+                                                                                           PointD &pt2LongestSegment1,
+                                                                                           PointD &pt3LongestSegment2,
+                                                                                           PointD &pt4LongestSegment2 ) const
+{  
+
   getBasicBoundingBox(pt1LongestSegment1, pt2LongestSegment1, 
-                      pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);
+                      pt3LongestSegment2, pt4LongestSegment2);
   if(myState.convexHullHeight==0.0){
     return;
   }
   // To be changed with saved point added by push front/push back
   InputPoint extremF = myState.lastFront;
   InputPoint extremL = myState.lastBack;
-  InputPoint projExtremF;
-  InputPoint projExtremL;
+  PointD projExtremF;
+  PointD projExtremL;
   
   projetOnStraightLine(myState.edgePh, myState.edgeQh, extremF, projExtremF);
   projetOnStraightLine(myState.edgePh, myState.edgeQh, extremL, projExtremL);  
@@ -594,8 +603,8 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealB
   unsigned int nb = dSegment.size();
   for( unsigned int p = 0 ; p < nb ; ++p)
     {
-      InputPoint pointEnvConv = myPointContainer[dSegment[p]];
-      InputPoint projPointEnvConv;
+      PointD pointEnvConv = PointD(myPointContainer[dSegment[p]][0],myPointContainer[dSegment[p]][1]);
+      PointD projPointEnvConv;
       bool isNewExtrema = !projetOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
       if(isNewExtrema){
 	double distFirst = (projPointEnvConv-projExtremF).norm(); 
@@ -611,7 +620,7 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealB
     }
   
   getBoundingBoxFromExtremPoints(extremF, extremL, pt1LongestSegment1, pt2LongestSegment1, 
-                               pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);  
+                                 pt3LongestSegment2, pt4LongestSegment2, myThickness);  
 }
 
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
@@ -647,15 +656,16 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealL
 
 
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template<typename TPointD>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOnStraightLine(const InputPoint & ptA,
-                                                                                        const InputPoint & ptB,
-                                                                                        const InputPoint & ptC,
-                                                                                        InputPoint & ptProjected) const {
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOnStraightLine(const TPointD & ptA,
+                                                                                             const TPointD & ptB,
+                                                                                             const TPointD & ptC,
+                                                                                             PointD & ptProjected) const {
   
-  InputPoint vAB (ptB[0]- ptA[0], ptB[1]- ptA[1]);
-  InputPoint vAC (ptC[0]-ptA[0], ptC[1]-ptA[1]);
+  TPointD vAB (ptB[0]- ptA[0], ptB[1]- ptA[1]);
+  TPointD vAC (ptC[0]-ptA[0], ptC[1]-ptA[1]);
   
   double normeAB = vAB.norm();
      

@@ -395,12 +395,10 @@ void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
   PointD topLeft, topRight, bottomRight, bottomLeft;
   anAlphaThickSegment.getRealBoundingBox(topLeft, topRight, bottomRight, bottomLeft);
   //draw bounding box
-  std::vector<LibBoard::Point> bb;
-  bb.push_back(LibBoard::Point(topLeft[0],topLeft[1]));
-  bb.push_back(LibBoard::Point(topRight[0],topRight[1]));
-  bb.push_back(LibBoard::Point(bottomRight[0], bottomRight[1]));
-  bb.push_back(LibBoard::Point(bottomLeft[0], bottomLeft[1]));
-  aBoard.drawClosedPolyline(bb);
+  aBoard.drawLine(topLeft[0],topLeft[1],topRight[0],topRight[1]);
+  aBoard.drawLine(topRight[0],topRight[1],bottomRight[0], bottomRight[1] );
+  aBoard.drawLine(bottomRight[0], bottomRight[1], bottomLeft[0], bottomLeft[1]);
+  aBoard.drawLine(bottomLeft[0], bottomLeft[1],topLeft[0],topLeft[1]);
 }
 
 
@@ -409,10 +407,23 @@ void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
                                  const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & anAlphaThickSegment){
   typedef typename  DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::InputPointContainer::const_iterator ConstIterator;
   typedef TInputPoint Point;
-  // Draw points
+  // Draw a linking polygonal line if the pixels are drawn as points.
+  if(aBoard.getMode("PointVector")=="Grid" || aBoard.getMode("PointVector")=="")
+    {
+      std::vector<LibBoard::Point> contour;
+      for (ConstIterator it = anAlphaThickSegment.begin(); it != anAlphaThickSegment.end(); it++) {
+        Point p = *it;
+        double xp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[0]);
+        double yp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[1]);
+        contour.push_back(LibBoard::Point(xp,yp));
+      }
+      aBoard.drawPolyline(contour);
+    }
+// Draw points
   for (ConstIterator it = anAlphaThickSegment.begin(); it != anAlphaThickSegment.end(); it++) {
     Point p = *it;
-    aBoard << p;
+    draw(aBoard,p );
+    
   }  
 }
 
@@ -426,8 +437,8 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
     drawAsDigitalPoints( aBoard, anAlphaThickSegment );
   else if ( ( mode == "" ) )
     {
-      drawAsBoundingBox( aBoard, anAlphaThickSegment );
       drawAsDigitalPoints( aBoard, anAlphaThickSegment );
+      drawAsBoundingBox( aBoard, anAlphaThickSegment );
     }
   else
     FATAL_ERROR_MSG(false, "draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode);

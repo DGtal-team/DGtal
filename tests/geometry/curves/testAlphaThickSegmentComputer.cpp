@@ -208,6 +208,71 @@ bool testAlphaThickSegmentComputer()
   return nbok == nb;
 }
 
+
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testAlphaThickSegmentInt()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  Board2D aBoard;
+  typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::Point, int> AlphaThickSegmentComputer2D;
+  trace.beginBlock ( "Testing Fuzzy segment on contour composed of int coords ..." );
+  std::vector<Z2i::Point> aContour;
+  std::string fileContour = testPath + "samples/klokan.sdp";
+  aContour = PointListReader<Z2i::Point>::getPointsFromFile(fileContour);
+  
+  AlphaThickSegmentComputer2D aFuzzySegmentComp;
+  aFuzzySegmentComp.init(10.0);
+  
+  unsigned int indexStart = 1340;
+  bool isExtending = true;
+  isExtending &= aFuzzySegmentComp.extend(aContour[indexStart]);
+  unsigned int i = 1;
+  while (isExtending){
+    isExtending &= aFuzzySegmentComp.extend(aContour[indexStart+i]);
+    i++;
+  }
+
+  trace.info() << aFuzzySegmentComp;
+  // Display the input curve
+  aBoard << SetMode((*aContour.begin()).className(), "Grid");
+  for (std::vector<Z2i::Point>::const_iterator it = aContour.begin(); 
+       it != aContour.end(); it++){
+    aBoard << *it;
+    if (it+1 != aContour.end()){
+      Z2i::Point next = *(it+1);
+      aBoard.setPenColor(DGtal::Color::Gray);
+      aBoard.drawLine((*it)[0], (*it)[1], next[0], next[1]);
+    }
+  }
+    
+  // Display segment 
+  aBoard << SetMode((*aFuzzySegmentComp.begin()).className(), "Grid"); 
+  aBoard << aFuzzySegmentComp;
+ 
+  
+  trace.info() << "Segment size: " << aFuzzySegmentComp.size() << std::endl;  
+  aBoard.saveEPS("testAlphaThickSegmentComputer_Int.eps"); 
+  
+  nbok += aFuzzySegmentComp.size()==30 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+
+
+}
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -219,8 +284,11 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testAlphaThickSegmentComputer() && testAlphaThickSegmentComputerFloatingPointContour() ; // && ... other tests
+  bool res = testAlphaThickSegmentComputer() && testAlphaThickSegmentComputerFloatingPointContour() 
+    && testAlphaThickSegmentInt(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+
+  
   trace.endBlock();
   return res ? 0 : 1;
 }

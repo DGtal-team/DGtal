@@ -57,6 +57,10 @@ namespace DGtal
 /**
  * Description of class 'AlphaThickSegmentComputer' <p>
  * \brief Aim:
+ * 
+ *
+ *
+ *
  */
 
 
@@ -86,7 +90,12 @@ public:
   typedef typename InputPointContainer::const_iterator ConstIterator;
   typedef typename InputPointContainer::iterator Iterator;
   typedef ParallelStrip<Space,true,true> Primitive;  
-
+  
+  /**
+   * Type of embedded points 
+   * @see getBasicBoundingBox, getRealBoudingBox, getBoundingBoxFromExtremPoints
+   */
+  typedef DGtal::PointVector<2, double> PointD; 
 
   // ----------------------- internal types --------------------------------------
 
@@ -274,10 +283,10 @@ public:
   
   void getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
                                       const InputPoint &aLastPt,
-                                      InputPoint &pt1LongestSegment1,
-                                      InputPoint &pt2LongestSegment1,
-                                      InputPoint &pt3LongestSegment2,
-                                      InputPoint &pt4LongestSegment2,
+                                      PointD &pt1LongestSegment1,
+                                      PointD &pt2LongestSegment1,
+                                      PointD &pt3LongestSegment2,
+                                      PointD &pt4LongestSegment2,
                                       double minVisibleWidthBounds = 0.2) const;
   
   
@@ -290,18 +299,16 @@ public:
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
    * @param[out] pt3LongestSegment2 the first point of one of the second longest segment.
    * @param[out] pt4LongestSegment2 the second point of one of the second longest segment.
-   * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue).
    *
    * @note the segment bounding box can be drawn with the sequence of
    * out parameters pt1LongestSegment1, pt2LongestSegment1,
    * pt3LongestSegment1, pt4LongestSegment1.
    **/
 
-  void getBasicBoundingBox(InputPoint &pt1LongestSegment1,
-                           InputPoint &pt2LongestSegment1,
-                           InputPoint &pt3LongestSegment2,
-                           InputPoint &pt4LongestSegment2,
-                           double minVisibleWidthBounds=0.2) const;
+  void getBasicBoundingBox(PointD &pt1LongestSegment1,
+                           PointD &pt2LongestSegment1,
+                           PointD &pt3LongestSegment2,
+                           PointD &pt4LongestSegment2) const;
   
   
   /**
@@ -315,17 +322,15 @@ public:
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
    * @param[out] pt3LongestSegment2 the first point of one of the second longest segment.
    * @param[out] pt4LongestSegment2 the second point of one of the second longest segment.
-   * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue).
    *
    * @note the segment bounding box can be drawn with the sequence of
    * out parameters pt1LongestSegment1, pt2LongestSegment1,
    * pt3LongestSegment1, pt4LongestSegment1.
    **/
-  void  getRealBoundingBox(InputPoint &pt1LongestSegment1,
-                          InputPoint &pt2LongestSegment1,
-                          InputPoint &pt3LongestSegment2,
-                          InputPoint &pt4LongestSegment2,
-                          double minVisibleWidthBounds=0.2) const;
+  void  getRealBoundingBox(PointD &pt1LongestSegment1,
+                          PointD &pt2LongestSegment1,
+                          PointD &pt3LongestSegment2,
+                          PointD &pt4LongestSegment2) const;
   
   
   
@@ -430,10 +435,9 @@ protected:
 
 
   /**
-   * Checks if the 3 init points of the queue are given in the correct order (else it re order it).
-   * (it checks only the 3 first points of \a myState.melkmanQueue).
+   * Init melkman algorithm with the main queue and the 3 input first points.
    **/
-  void melkmanInitCheck( ) ; 
+  void melkmanInit( ) ; 
 
 
   /**
@@ -462,10 +466,9 @@ protected:
    * @param[out] ptProjected (return) the projected point.
    * @return true if ptProjected is inside the segment [A,B].
    **/
-  
-  bool projetOnStraightLine(const InputPoint & ptA, const InputPoint & ptB,
-                            const InputPoint & ptC,
-                            InputPoint & ptProjected) const;
+  template<typename TPointD>
+  bool projetOnStraightLine(const TPointD & ptA, const TPointD & ptB,
+                            const TPointD & ptC, PointD & ptProjected) const;
   
 
     // ------------------------- Internals ------------------------------------
