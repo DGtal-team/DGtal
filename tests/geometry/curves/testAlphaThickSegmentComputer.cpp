@@ -74,17 +74,10 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
     i++;
   }
 
-  
-  
-  // Display boundingbox
-  Z2i::RealPoint pt1, pt2, pt3, pt4;
-  aBoard.setLineWidth(1);
-  aFuzzySegmentComp.getRealBoundingBox(pt1,pt2,pt3,pt4);
-  aBoard.setPenColor(DGtal::Color::Blue);
-  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
-  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
-  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
-  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
+    
+  // Display segment 
+  aBoard << SetMode((*aFuzzySegmentComp.begin()).className(), "Grid"); 
+  aBoard << aFuzzySegmentComp;
  
   
   // Display the input curve
@@ -99,8 +92,7 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
     }
   }
 
-  trace.info() << "Segment size: " << aFuzzySegmentComp.size() << std::endl;
-  
+  trace.info() << "Segment size: " << aFuzzySegmentComp.size() << std::endl;  
   aBoard.saveEPS("testAlphaThickSegmentComputer_FloatingPt.eps"); 
   
   nbok += aFuzzySegmentComp.size()==30 ? 1 : 0; 
@@ -171,7 +163,7 @@ bool testAlphaThickSegmentComputer()
   // Display convexhull
   std::vector<Z2i::RealPoint> aVect = aFuzzySegmentComp.getConvexHull();
   aBoard.setLineWidth(5);
-  aBoard.setPenColor(DGtal::Color::Red);
+  aBoard.setPenColor(DGtal::Color::Blue);
   for (unsigned int i = 0; i < aVect.size(); i++){
     aBoard.drawLine(aVect.at(i)[0], aVect.at(i)[1], 
                     aVect.at((i+1)%aVect.size())[0],
@@ -179,38 +171,8 @@ bool testAlphaThickSegmentComputer()
   } 
   
   // Display boundingbox
-  Z2i::RealPoint pt1, pt2, pt3, pt4;
-  aBoard.setLineWidth(1);
-  aFuzzySegmentComp.getRealBoundingBox(pt1,pt2,pt3,pt4);
-  aBoard.setPenColor(DGtal::Color::Blue);
-  trace.info() << "Bounding box of the segment:" << std::endl;
-  trace.info() << "pt1 :" << pt1 << std::endl;
-  trace.info() << "pt2 :" << pt2 << std::endl;
-  trace.info() << "pt3 :" << pt3 << std::endl;
-  trace.info() << "pt4 :" << pt4 << std::endl;
-  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
-  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
-  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
-  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
- 
-  aFuzzySegmentComp2.getRealBoundingBox(pt1,pt2,pt3,pt4);
-  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
-  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
-  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
-  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
-  
-  aFuzzySegmentComp3.getRealBoundingBox(pt1,pt2,pt3,pt4);
-  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
-  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
-  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
-  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
-
-  aFuzzySegmentComp4.getRealBoundingBox(pt1,pt2,pt3,pt4);
-  aBoard.drawLine(pt1[0],pt1[1], pt2[0], pt2[1]);
-  aBoard.drawLine(pt2[0],pt2[1], pt3[0], pt3[1]);
-  aBoard.drawLine(pt3[0],pt3[1], pt4[0], pt4[1]);  
-  aBoard.drawLine(pt4[0],pt4[1], pt1[0], pt1[1]);  
-  
+  aBoard << SetMode(aFuzzySegmentComp.className(), "BoundingBox"); 
+  aBoard << aFuzzySegmentComp << aFuzzySegmentComp2 << aFuzzySegmentComp3 << aFuzzySegmentComp4;
   
   // Display the input curve
   aBoard << SetMode((*aContour.begin()).className(), "Grid");

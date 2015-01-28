@@ -614,6 +614,13 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealB
                                pt3LongestSegment2, pt4LongestSegment2, minVisibleWidthBounds);  
 }
 
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+std::string 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::className() const{
+  return "AlphaThickSegment";
+}
+
 
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
