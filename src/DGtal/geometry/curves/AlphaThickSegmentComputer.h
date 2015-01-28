@@ -177,7 +177,7 @@ public:
      
   /**
    *  Tests whether the current alpha thick segment can be extended, i.e
-   *  checks if we have still a alpha thick segment of width alpha_max after
+   *  checks if we have still an alpha thick segment of width alpha_max after
    *  adding the given point \aPoint. The segment parameters are keep
    *  in its original state.
    *  
@@ -189,7 +189,7 @@ public:
 
   /**
    * Tries to add the point \a aPoint at the front of the current alpha thick
-   * segment and checks if we have still a alpha thick segment of thickness
+   * segment and checks if we have still an alpha thick segment of thickness
    * less or equal to the initial value alpha_max. If it is the case
    * the new point is added and the segment parameters are updated,
    * otherwise the alpha thick segment is keep in its original state.
@@ -217,7 +217,36 @@ public:
   
     // ----------------------- Interface --------------------------------------
 public:
+
   
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const;
+  
+
+
+ 
+   /**
+   * Returns the segment length defined from the basic bouding box (@see getBasicBoundingBox).
+   *
+   * @return the segment length.
+   **/
+  double getBasicLength();
+
+
+  /**
+   * Returns the segment length defined from the real bouding box (@see getRealBoudingBox).
+   *
+   * @return the segment length.
+   **/
+  double getRealLength();
+  
+
+
+  // ------------------------- Display services ------------------------------
+
 
   /**
    * Returns the current segment convexhull.
@@ -299,21 +328,14 @@ public:
                           double minVisibleWidthBounds=0.2) const;
   
   
-  /**
-   * Returns the segment length defined from the basic bouding box (@see getBasicBoundingBox).
-   *
-   * @return the segment length.
-   **/
-  double getBasicLength();
-
-
-  /**
-   * Returns the segment length defined from the real bouding box (@see getRealBoudingBox).
-   *
-   * @return the segment length.
-   **/
-  double getRealLength();
   
+
+   /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
+
+
 
   
   /**
@@ -322,16 +344,6 @@ public:
    * @param[out] out the output stream where the object is written.
    */
   void selfDisplay ( std::ostream & out ) const;
-  
-
-  /**
-   * Checks the validity/consistency of the object.
-   * @return 'true' if the object is valid, 'false' otherwise.
-   */
-  bool isValid() const;
-  
-
-
   
     // ------------------------- Protected Datas ------------------------------
 protected:
