@@ -14,13 +14,13 @@ env:
    - 
 
   matrix:
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"
-
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true" DOC=false
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF" DOC=false
+  - DOC="true" BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true"
 
 before_install:
-   - openssl aes-256-cbc -K $encrypted_73d1df012ee4_key -iv $encrypted_73d1df012ee4_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d
-   - chmod 600 .travis/dgtal_rsa
+   - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && openssl aes-256-cbc -K $encrypted_73d1df012ee4_key -iv $encrypted_73d1df012ee4_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d
+   - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && chmod 600 .travis/dgtal_rsa
    
 before_script:
   - sudo apt-get -qq update
@@ -30,9 +30,9 @@ before_script:
 
 script:
   - cmake . $BTYPE
-  - make DGtal && make DGtalIO
-  - cd examples && make -j 3 
-  - cd ../tests &&  make &&  cd ..&& make test
+  - '[ "${DOC}" = "false" ] && make DGtal && make DGtalIO
+  - '[ "${DOC}" = "false" ] && cd examples && make -j 3 
+  - '[ "${DOC}" = "false" ] && cd ../tests &&  make &&  cd ..&& make test
 
 after_script:
   - make lcov
@@ -40,6 +40,6 @@ after_script:
 
 
 after_success:
-  - make doc
-  - ssh-add .travis/dgtal_rsa
-  - rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && '[ "${DOC}" = "true" ] && make doc
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && '[ "${DOC}" = "true" ] && ssh-add .travis/dgtal_rsa
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && '[ "${DOC}" = "true" ] && rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/
