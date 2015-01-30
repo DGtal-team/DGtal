@@ -19,8 +19,8 @@ env:
 
 
 before_install:
-   - openssl aes-256-cbc -K $encrypted_73d1df012ee4_key -iv $encrypted_73d1df012ee4_iv -in .travis/dgtal_rsa.enc -out ~\/.ssh/dgtal_rsa -d
-   - chmod 600 .ssh/dgtal_rsa
+   - openssl aes-256-cbc -K $encrypted_73d1df012ee4_key -iv $encrypted_73d1df012ee4_iv -in .travis/dgtal_rsa.enc -out ~\/.travis/dgtal_rsa -d
+   - chmod 600 .travis/dgtal_rsa
    
 before_script:
   - sudo apt-get -qq update
@@ -41,5 +41,5 @@ after_script:
 
 after_success:
   - make doc
-  - ssh-add .ssh/dgtal_rsa
+  - ssh-add .travis/dgtal_rsa
   - rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/
