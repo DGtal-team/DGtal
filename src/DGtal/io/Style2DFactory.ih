@@ -627,9 +627,9 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ArithmeticalDSSComputer<TI
 
 
 // AlphaThickSegmentComputer
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & /*a*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & /*a*/, std::string mode = "" )
 {
   if ( ( mode == "" ) || ( mode == "BoundingBox" ) )
     return new DGtal::DefaultDrawStyleBB_AlphaThickSegmentComputer;

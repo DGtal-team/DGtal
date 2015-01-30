@@ -51,18 +51,18 @@
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::~AlphaThickSegmentComputer()
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::~AlphaThickSegmentComputer()
 { 
 }
 
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::AlphaThickSegmentComputer()
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::AlphaThickSegmentComputer()
 { 
   myState.isMelkmanInitialized = false;
 }
@@ -70,17 +70,17 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::AlphaThi
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::
 AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other )
 { // Nothing to do.
 }
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & 
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::
 operator= ( const AlphaThickSegmentComputer & other )
 {// Nothing to do.
 
@@ -90,61 +90,73 @@ operator= ( const AlphaThickSegmentComputer & other )
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::size() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::Size
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::size() const 
 {
   return myPointContainer.size();
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::empty() const 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::empty() const 
 {  
   return myPointContainer.size()!=0;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::begin() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::ConstIterator
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::begin() const 
 {
-  if(myIsStoringPoints){
-    return myPointContainer.begin();
-  }else {
     return myBegin;
-  }
 }
 
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::end() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::ConstIterator
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::end() const 
 {
-  if(myIsStoringPoints){
+  return myEnd;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+inline
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::ContainerConstIterator
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::containerBegin() const 
+{
+  return myPointContainer.begin();
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+inline
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::ContainerConstIterator
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::containerEnd() const 
+{
     return myPointContainer.end();
-  }else{
-    return myEnd;
-  }
 }
 
 
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::max_size() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::Size
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::max_size() const 
 {
   return myPointContainer.max_size();
 }
@@ -153,10 +165,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::max_size
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::Size
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::maxSize() const 
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::Size
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::maxSize() const 
 {
   return myPointContainer.max_size();
 }
@@ -168,10 +180,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::maxSize(
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 void
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::
 init(double aThickness)  
 {
   myIsStoringPoints = true;
@@ -182,10 +194,10 @@ init(double aThickness)
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 void 
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::
 init(const ConstIterator &it, double aThickness)
 {
   myIsStoringPoints = false;
@@ -199,10 +211,10 @@ init(const ConstIterator &it, double aThickness)
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableFront(const InputPoint &aPoint ) 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::isExtendableFront(const InputPoint &aPoint ) 
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
@@ -216,10 +228,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtend
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront(const InputPoint &aPoint) 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::extendFront(const InputPoint &aPoint) 
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
@@ -239,10 +251,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFr
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtendableFront( ) 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::isExtendableFront( ) 
 {
   _state = myState;
   melkmanAddPoint(*myEnd);
@@ -254,10 +266,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::isExtend
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFront() 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::extendFront() 
 {
   _state = myState;
   melkmanAddPoint(*myEnd);
@@ -281,10 +293,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::extendFr
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::Primitive
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::primitive()  const
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::Primitive
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::primitive()  const
 {
   return Primitive(0,0,0);  
 }
@@ -293,10 +305,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::primitiv
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 void
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay(std::ostream & out)  const
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::selfDisplay(std::ostream & out)  const
 {
   out << "[Fuzzy Segment Computer]" << std::endl; 
   out << "Inside points: "<< std::endl;
@@ -317,10 +329,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::selfDisp
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::isValid()  const
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::isValid()  const
 {
   return true;
 }
@@ -330,20 +342,20 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::isValid(
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsWellInitialized()  const
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::melkmanIsWellInitialized()  const
 {
   return myState.isMelkmanInitialized;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 void
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanUpdateMainHeight()  
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::melkmanUpdateMainHeight()  
 {
   int queueSize = myState.melkmanQueue.size();
   InputPoint P, Q, R, S;
@@ -424,10 +436,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanU
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 void
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanAddPoint(const InputPoint &aPoint)
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::melkmanAddPoint(const InputPoint &aPoint)
 {
   /* The  melkman algorithm is well initialize when we have 3 non aligned points  */
   if (myState.melkmanQueue.size() ==  2){
@@ -482,10 +494,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanA
 
 
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 void
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::
 melkmanInit() 
 {
   InputPoint aPoint1 = myState.melkmanQueue[0];
@@ -521,10 +533,10 @@ melkmanInit()
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsConvexValid() 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::melkmanIsConvexValid() 
 {
   /** Strategy is as follows:
    *  If connexity is 0, use MainDiagonal < k * sqrt(2), for k = 1,2,...
@@ -539,10 +551,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanI
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 TInternalScalar
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanIsLeft(const InputPoint &aPointIndex0,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::melkmanIsLeft(const InputPoint &aPointIndex0,
                                                                                       const InputPoint &aPointIndex1,
                                                                                       const InputPoint &aPointIndex2) const
 {
@@ -551,10 +563,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::melkmanI
 }
 
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 std::vector<TInputPoint>
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConvexHull() const{
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::getConvexHull() const{
   std::vector<InputPoint> aResult;
   for (typename std::deque<InputPoint>::const_iterator it = myState.melkmanQueue.begin(); it != myState.melkmanQueue.end(); it++){
     aResult.push_back(*it);
@@ -564,10 +576,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getConve
 
 
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 void
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
                                                                                                        const InputPoint &aLastPt,
                                                                                                        PointD &pt1LongestSegment1,
                                                                                                        PointD &pt2LongestSegment1,
@@ -619,10 +631,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBound
 }
 
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 void
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicBoundingBox(PointD &pt1LongestSegment1,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::getBasicBoundingBox(PointD &pt1LongestSegment1,
                                                                                             PointD &pt2LongestSegment1,
                                                                                             PointD &pt3LongestSegment2,
                                                                                             PointD &pt4LongestSegment2) const{ 
@@ -636,10 +648,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasic
 
 
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 void 
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealBoundingBox(PointD &pt1LongestSegment1,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::getRealBoundingBox(PointD &pt1LongestSegment1,
                                                                                            PointD &pt2LongestSegment1,
                                                                                            PointD &pt3LongestSegment2,
                                                                                            PointD &pt4LongestSegment2 ) const
@@ -650,54 +662,35 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealB
   if(myState.convexHullHeight==0.0){
     return;
   }
-  // To be changed with saved point added by push front/push back
-  InputPoint extremF = myState.lastFront;
-  InputPoint extremL = myState.lastBack;
-  PointD projExtremF;
-  PointD projExtremL;
   
-  projetOnStraightLine(myState.edgePh, myState.edgeQh, extremF, projExtremF);
-  projetOnStraightLine(myState.edgePh, myState.edgeQh, extremL, projExtremL);  
-  
+  InputPoint extremF;
+  InputPoint extremL;
+
+
   std::deque<InputPoint> dSegment = myState.melkmanQueue;
   unsigned int nb = dSegment.size();
-  ConstIterator itBegin = myIsStoringPoints? myPointContainer.begin(): myBegin;
-  ConstIterator itEnd = myIsStoringPoints? myPointContainer.end(): myEnd;  
-  for(ConstIterator it = itBegin; it != itEnd; it++)
-    {
-      InputPoint p = *it;
-      PointD pointEnvConv = PointD(p[0], p[1]);//PointD(myPointContainer[dSegment[p]][0],myPointContainer[dSegment[p]][1]);
-      PointD projPointEnvConv;
-      bool isNewExtrema = !projetOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
-      if(isNewExtrema){
-	double distFirst = (projPointEnvConv-projExtremF).norm(); 
-	double distLast = (projPointEnvConv- projExtremL).norm(); 
-	if(distFirst> distLast){
-	  extremL = pointEnvConv;
-	  projExtremL = projPointEnvConv;	  
-	}else{
-	  extremF = pointEnvConv;
-	  projExtremF = projPointEnvConv;	 
-	}
-      }      
-    }
+  if (myIsStoringPoints){
+    computeExtremaPoints(myPointContainer.begin(), myPointContainer.end() , extremF, extremL);
+  }else{
+    computeExtremaPoints(myBegin, myEnd , extremF, extremL);
+  }
   
   getBoundingBoxFromExtremPoints(extremF, extremL, pt1LongestSegment1, pt2LongestSegment1, 
                                  pt3LongestSegment2, pt4LongestSegment2, myThickness);  
 }
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 std::string 
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::className() const{
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::className() const{
   return "AlphaThickSegment";
 }
 
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 double 
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasicLength(){
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::getBasicLength(){
   InputPoint pt1, pt2, pt3, pt4;
   getBasicBoundingBox(pt1, pt2, pt3, pt4);
   return (pt2-pt1).norm();
@@ -705,10 +698,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getBasic
 
 
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 double 
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealLength(){
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::getRealLength(){
   InputPoint pt1, pt2, pt3, pt4;
   getRealBoundingBox(pt1, pt2, pt3, pt4);
   return (pt2-pt1).norm();
@@ -718,20 +711,18 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::getRealL
 
 
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 template<typename TPointD>
 inline
 bool
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOnStraightLine(const TPointD & ptA,
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::projetOnStraightLine(const TPointD & ptA,
                                                                                              const TPointD & ptB,
                                                                                              const TPointD & ptC,
                                                                                              PointD & ptProjected) const {
   
   TPointD vAB (ptB[0]- ptA[0], ptB[1]- ptA[1]);
   TPointD vAC (ptC[0]-ptA[0], ptC[1]-ptA[1]);
-  
-  double normeAB = vAB.norm();
-     
+  double normeAB = vAB.norm();   
   double scalABAC = vAB.dot(vAC);
   double distPtA_Proj = scalABAC/normeAB;
 
@@ -742,6 +733,42 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOn
 
 
 
+template<typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+template<typename TConstIteratorG>
+void
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::
+computeExtremaPoints(const TConstIteratorG & itBegin,
+                     const TConstIteratorG & itEnd,
+                     InputPoint & aFirstExtrPt,
+                     InputPoint & aLastExtrPt) const{
+  // To be changed with saved point added by push front/push back
+  InputPoint extremF = myState.lastFront;
+  InputPoint extremL = myState.lastBack;
+  PointD projExtremF;
+  PointD projExtremL;
+  
+  projetOnStraightLine(myState.edgePh, myState.edgeQh, extremF, projExtremF);
+  projetOnStraightLine(myState.edgePh, myState.edgeQh, extremL, projExtremL);  
+  
+  for(TConstIteratorG it = itBegin; it != itEnd; it++)
+    {
+      InputPoint p = *it;
+      PointD pointEnvConv = PointD(p[0], p[1]);
+      PointD projPointEnvConv;
+      bool isNewExtrema = !projetOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
+      if(isNewExtrema){
+	double distFirst = (projPointEnvConv-projExtremF).norm(); 
+	double distLast = (projPointEnvConv- projExtremL).norm(); 
+	if(distFirst> distLast){
+	  aLastExtrPt = pointEnvConv;
+	  projExtremL = projPointEnvConv;	  
+	}else{
+	  aFirstExtrPt = pointEnvConv;
+	  projExtremF = projPointEnvConv;	 
+	}
+      }      
+    }
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -753,7 +780,7 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar>::projetOn
  * @param object the object of class 'AlphaThickSegmentComputer' to write.
  * @return the output stream after the writing.
  */
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

@@ -151,17 +151,17 @@ template <typename TIterator, typename TInteger, int connectivity>
 
 
 // AlphaThickSegmentComputer
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+   template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 static void drawAsBoundingBox( DGtal::Board2D & aBoard, 
-                               const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & );
+                               const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & );
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 static void drawAsDigitalPoints( DGtal::Board2D & aBoard, 
-                                   const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & );
+                                 const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & );
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
   static void draw( DGtal::Board2D & aBoard, 
-                    const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & );
+                    const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & );
 // AlphaThickSegmentComputer
     
     

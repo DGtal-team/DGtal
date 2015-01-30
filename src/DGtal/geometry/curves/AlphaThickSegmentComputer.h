@@ -83,7 +83,7 @@ namespace DGtal
 
 template <typename TSpace, 
           typename TInputPoint,
-          typename TInternalScalar>
+          typename TInternalScalar, typename TConstIterator = typename std::vector< TInputPoint >::const_iterator >
 
 class AlphaThickSegmentComputer
 {
@@ -104,8 +104,9 @@ public:
   
   typedef std::vector< InputPoint > InputPointContainer;
   typedef typename InputPointContainer::size_type Size;
-  typedef typename InputPointContainer::const_iterator ConstIterator;
+  typedef typename InputPointContainer::const_iterator ContainerConstIterator;
   typedef typename InputPointContainer::iterator Iterator;
+  typedef TConstIterator ConstIterator;
   typedef ParallelStrip<Space,true,true> Primitive;  
   
   /**
@@ -174,14 +175,34 @@ public:
   
   
   /**
-   * &return a const iterator pointing on the first point of the
-   * current alpha thick segment.
+   * @return a const iterator pointing on the first point given in the
+   * container associated to the current alpha thick segment (is empty
+   * if the saving option is not selected in the init method).
+   */
+  ContainerConstIterator containerBegin() const;
+
+
+  /**
+   * @return a const iterator pointing after the last point given in the
+   * container associated to the current alpha thick segment (is
+   * empty if the saving option is not selected in the init method).
+   */
+  ContainerConstIterator containerEnd() const;
+
+
+  /**
+   * @return a const iterator pointing on the first point of the
+   * current alpha thick segment. Usefull oonly if the initialisation was
+   * done with a contour iterator (else, it is empty).
    */
   ConstIterator begin() const;
 
 
   /**
-   * @returns a const iterator pointing after the last point stored in the current alpha thick segment container.
+   * @returns a const iterator pointing after the last point stored in
+   * the current alpha thick segment container. Usefull oonly if the
+   * initialisation was done with a contour iterator (else, it is
+   * empty).
    */
   ConstIterator end() const;
 
@@ -524,6 +545,13 @@ protected:
                             const TPointD & ptC, PointD & ptProjected) const;
   
 
+  /**
+   **/
+  template<typename TConstIteratorG>
+  void computeExtremaPoints(const TConstIteratorG & itBegin, const TConstIteratorG & itEnd,
+                            InputPoint & aFirstExtrPt, InputPoint & aLastExtrPt) const;
+  
+
     // ------------------------- Internals ------------------------------------
 private:
 
@@ -536,7 +564,7 @@ private:
  * @param object the object of class 'AlphaThickSegmentComputer' to write.
  * @return the output stream after the writing.
  */
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 std::ostream&
 operator<< ( std::ostream & out, const AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & object );
 
