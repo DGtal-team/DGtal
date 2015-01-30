@@ -18,7 +18,6 @@ env:
 
 before_install:
    - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && openssl aes-256-cbc -K $encrypted_73d1df012ee4_key -iv $encrypted_73d1df012ee4_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d
-   - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && chmod 600 .travis/dgtal_rsa
    
 before_script:
   - sudo apt-get -qq update
