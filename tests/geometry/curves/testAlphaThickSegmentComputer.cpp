@@ -63,21 +63,14 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
   
   AlphaThickSegmentComputer2D aFuzzySegmentComp;
-  aFuzzySegmentComp.init(1);
+  aFuzzySegmentComp.init(aContour.begin(), 3);
   
-  unsigned int indexStart = 10;
   bool isExtending = true;
-  isExtending &= aFuzzySegmentComp.extend(aContour[indexStart]);
-  unsigned int i = 1;
   while (isExtending){
-    isExtending &= aFuzzySegmentComp.extend(aContour[indexStart+i]);
-    i++;
+    isExtending &= aFuzzySegmentComp.extendFront();
   }
 
     
-  // Display segment 
-  aBoard << SetMode((*aFuzzySegmentComp.begin()).className(), "Grid"); 
-  aBoard << aFuzzySegmentComp;
  
   
   // Display the input curve
@@ -91,6 +84,11 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
       aBoard.drawLine((*it)[0], (*it)[1], next[0], next[1]);
     }
   }
+  // Display segment 
+  aBoard << SetMode((*aFuzzySegmentComp.begin()).className(), "Grid"); 
+  aBoard << aFuzzySegmentComp;
+
+
 
   trace.info() << "Segment size: " << aFuzzySegmentComp.size() << std::endl;  
   aBoard.saveEPS("testAlphaThickSegmentComputer_FloatingPt.eps"); 
@@ -132,28 +130,28 @@ bool testAlphaThickSegmentComputer()
   aFuzzySegmentComp4.init(0.5);
   
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp.extend(*it);
+    res &= aFuzzySegmentComp.extendFront(*it);
     if (!res){
       break;
     }
   }
   res=true;
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp2.extend(*it);
+    res &= aFuzzySegmentComp2.extendFront(*it);
     if (!res){
       break;
     }
   }
   res=true;
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp3.extend(*it);
+    res &= aFuzzySegmentComp3.extendFront(*it);
     if (!res){
       break;
     }
   }
   res=true;
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp4.extend(*it);
+    res &= aFuzzySegmentComp4.extendFront(*it);
     if (!res){
       break;
     }
@@ -227,14 +225,14 @@ bool testAlphaThickSegmentInt()
   aContour = PointListReader<Z2i::Point>::getPointsFromFile(fileContour);
   
   AlphaThickSegmentComputer2D aFuzzySegmentComp;
-  aFuzzySegmentComp.init(10.0);
+  aFuzzySegmentComp.init(1.0);
   
   unsigned int indexStart = 1340;
   bool isExtending = true;
-  isExtending &= aFuzzySegmentComp.extend(aContour[indexStart]);
+  isExtending &= aFuzzySegmentComp.extendFront(aContour[indexStart]);
   unsigned int i = 1;
   while (isExtending){
-    isExtending &= aFuzzySegmentComp.extend(aContour[indexStart+i]);
+    isExtending &= aFuzzySegmentComp.extendFront(aContour[indexStart+i]);
     i++;
   }
 

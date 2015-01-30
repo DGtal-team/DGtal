@@ -56,11 +56,28 @@ namespace DGtal
 // class AlphaThickSegmentComputer
 /**
  * Description of class 'AlphaThickSegmentComputer' <p>
- * \brief Aim:
- * 
  *
+ * \brief Aim: This class is devoted to the recognition of the alpha
+ * thick segment as described in \cite FaureTangential2008 . From a
+ * maximal diagonal alphaMax width, it allows to apply the recognition
+ * of a thick segment with the ability to take into accounts some
+ * noise. Moreover the segment can be detected from points not
+ * necessary connected and/or with floating coordinates.
  *
+ * As other solutions like \cite DebledRennessonBlurred2005 the
+ * algorithm given here is based on the height/width computation from
+ * the convex hull of a given set of points. The actual implementation
+ * exploits the height/width maintenance defined from the \cite
+ * FaureTangential2008 (see \cite FaureTangential2008 page 363) which
+ * reduces the complexity from \f$O(n\ log\ n) \f$ into  \f$O( log\ n) \f$.
+ * Note that the convexhull maintenance in linear time (with point
+ * substraction) proposed by Buzer \cite lilianComputing2007 is not
+ * yet implemented.
+ *  
  *
+ * The proposed implementation is mainly a backport from
+ * [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
+ * various refactoring.
  */
 
 
@@ -101,7 +118,7 @@ public:
 
 private: 
   struct State{
-    std::deque<unsigned int > melkmanQueue; /** Melkman algorithm main dequeu */
+    std::deque<InputPoint> melkmanQueue; /** Melkman algorithm main dequeu */
     InputPoint lastFront; /** the last point added at the front of the alpha thick segment */
     InputPoint lastBack; /** the last point added at the back of the alpha thick segment */
     InputPoint edgePh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
@@ -141,24 +158,30 @@ public:
 public:
 
   /**
-   * @return the number of distinct points in the current alpha thick segment.
+   * @return the number of distinct points stored in the container.
+   * @note it returns 0 if segment computer is initialized with a curve
+   * iterator without the option of saving samples).
    */
   Size size() const;
   
+  
   /**
-   * @return 'true' if and only if this object contains no point.
+   * @return 'true' if and only if the container contains no point. 
+   * @note: returns always 'true' if the segment computer is initialized with a curve
+   * const iterator without the option of saving samples).
    */
   bool empty() const;
   
   
   /**
-   * @return a const iterator pointing on the first point stored in the current alpha thick segment.
+   * &return a const iterator pointing on the first point of the
+   * current alpha thick segment.
    */
   ConstIterator begin() const;
 
 
   /**
-   * @return a const iterator pointing after the last point stored in the current alpha thick segment.
+   * @returns a const iterator pointing after the last point stored in the current alpha thick segment container.
    */
   ConstIterator end() const;
 
@@ -180,10 +203,46 @@ public:
 
 
 
-  //-------------------- model of CIncrementalPrimitiveComputer ----------------
+  //-------------------- model of CForwardSegmentComputer ----------------
 
 public:
      
+  /**
+   * Initialisation with an ConstIterator (to conform to CForwardSegmentComputer).
+   * By default the thickness will be set to 1.
+   *
+   * @param[in] it an iterator on input points.
+   * @param[in] aThickness the thickness of the alpha thick segment (default 1.0).
+   */  
+  void init(const ConstIterator &it, double aThickness=1.0);    
+  
+  
+  /**
+   * Tries to extend front the current alpha thick segment with the
+   * next contour point and checks if we have still an alpha thick
+   * segment of thickness less or equal to the initial value
+   * alpha_max. If it is the case the new point is added and the
+   * segment parameters are updated, otherwise the alpha thick segment
+   * is keep in its original state.
+   *
+   * @return 'true' if the segment has been extended and 'false'
+   * otherwise (the object is then in its original state).
+   */
+  bool extendFront();
+
+
+  /**
+   *  Tests whether the current alpha thick segment can be extended at
+   *  the front with the next contour point i.e checks if we have
+   *  still an alpha thick segment of width alpha_max after adding the
+   *  given point \aPoint. The segment parameters are keep in its
+   *  original state.
+   *  
+   * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
+   */
+  bool isExtendableFront();
+
+  
   /**
    *  Tests whether the current alpha thick segment can be extended, i.e
    *  checks if we have still an alpha thick segment of width alpha_max after
@@ -193,7 +252,7 @@ public:
    * @param[in] aPoint the point to be tested for the segment extension.
    * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
    */
-  bool isExtendable(const InputPoint &aPoint);
+  bool isExtendableFront(const InputPoint &aPoint);
 
 
   /**
@@ -207,7 +266,7 @@ public:
    * @return 'true' if the segment has been extended and 'false'
    * otherwise (the object is then in its original state).
    */
-  bool extend(const InputPoint &aPoint);
+  bool extendFront(const InputPoint &aPoint);
   
  
 
@@ -238,9 +297,7 @@ public:
 
  
    /**
-   * Returns the segment length defined from the basic bouding box (@see getBasicBoundingBox).
-   *
-   * @return the segment length.
+   * @return the segment length defined from the basic bouding box (@see getBasicBoundingBox).
    **/
   double getBasicLength();
 
@@ -258,9 +315,7 @@ public:
 
 
   /**
-   * Returns the current segment convexhull.
-   * 
-   * @return the convexhull given as a vector containing the vertex points.
+   * @return the current alpha thick segment convexhull given as a vector containing the vertex points.
    **/
   std::vector<InputPoint> getConvexHull() const;
 
@@ -279,8 +334,7 @@ public:
    * @note the segment bounding box can be drawn with the sequence of
    * out parameters pt1LongestSegment1, pt2LongestSegment1,
    * pt3LongestSegment1, pt4LongestSegment1.
-   **/
-  
+   **/  
   void getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
                                       const InputPoint &aLastPt,
                                       PointD &pt1LongestSegment1,
@@ -304,7 +358,6 @@ public:
    * out parameters pt1LongestSegment1, pt2LongestSegment1,
    * pt3LongestSegment1, pt4LongestSegment1.
    **/
-
   void getBasicBoundingBox(PointD &pt1LongestSegment1,
                            PointD &pt2LongestSegment1,
                            PointD &pt3LongestSegment2,
@@ -385,7 +438,7 @@ private:
   
   mutable State _state;
   
-  
+  bool myIsStoringPoints;
   
 
 
@@ -428,9 +481,9 @@ protected:
   /**
    * Adds a point in the convex set  using one step of Melkman algorithm.
    *
-   * @param[in] aPointIndex the point to be added.
+   * @param[in] aPoint the point to be added.
    */
-  void melkmanAddPoint( unsigned int aPointIndex );
+  void melkmanAddPoint(const InputPoint  &aPoint );
 
 
 
@@ -447,23 +500,23 @@ protected:
   
   
   /**
-   * Tests if the point of index \a aPointIndex2 is Left|On|Right of an infinite line (defined from two points of index aPointIndex0 and aPointIndex1).
+   * Tests if the point \a aPoint2 is Left|On|Right of an infinite line (defined from two points \a  aPoint0 and \a aPoint1).
    *
-   * @param[in] aPointIndex0 the first point defining the line.
-   * @param[in] aPointIndex1 the second point defining the line.
-   * @param[in] aPointIndex2 the point to be tested.
+   * @param[in] aPoint0 the first point defining the line.
+   * @param[in] aPoint1 the second point defining the line.
+   * @param[in] aPoint2 the point to be tested.
    */
-  InternalScalar melkmanIsLeft(unsigned int aPointIndex0, unsigned int aPointIndex1, unsigned int aPointIndex2) const;
+  InternalScalar melkmanIsLeft(const InputPoint &aPoint0, const InputPoint &aPoint1, const InputPoint &aPoint2) const;
   
   
   /**
-   * Compute the projection of a Point \a ptC on the real line defined by the two points (\a ptA, \a ptB), and
+   * Computes the projection of a Point \a ptC on the real line defined by the two points (\a ptA, \a ptB), and
    * return true if the projected point is inside the segment closed interval [A,B].
    * 
    * @param[in] ptA one of the two points defining the straight line.
    * @param[in] ptB one of the two points defining the straight line.
    * @param[in] ptC the point to be projected.
-   * @param[out] ptProjected (return) the projected point.
+   * @param[out] ptProjected the projected point.
    * @return true if ptProjected is inside the segment [A,B].
    **/
   template<typename TPointD>
