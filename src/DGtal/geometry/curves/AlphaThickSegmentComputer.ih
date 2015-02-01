@@ -519,12 +519,13 @@ melkmanInit()
   else
     {
       myState.melkmanQueue.push_front(aPoint3);
-      if( melkmanIsLeft( aPoint1, aPoint2, aPoint3 ) > 0 )      /* ccw vertices are: 2,0,1,2 */
+      /* ccw vertices are: 2,0,1,2 */
+      if( melkmanIsLeft( aPoint1, aPoint2, aPoint3 ) > 0 )    
         {
           myState.melkmanQueue.push_back(aPoint1);
           myState.melkmanQueue.push_back(aPoint2); 
         }
-      else                                /* ccw vertices are: 2,1,0,2 */
+      else /* ccw vertices are: 2,1,0,2 */
         {
           myState.melkmanQueue.push_back(aPoint2);
           myState.melkmanQueue.push_back(aPoint1); 
