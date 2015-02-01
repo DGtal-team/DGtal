@@ -63,7 +63,7 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
   
   AlphaThickSegmentComputer2D aFuzzySegmentComp;
-  aFuzzySegmentComp.init(aContour.begin(), 3);
+  aFuzzySegmentComp.init(aContour.begin()+10, 1);
   
   bool isExtending = true;
   while (isExtending){
@@ -90,10 +90,10 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
 
 
 
-  trace.info() << "Segment size: " << aFuzzySegmentComp.size() << std::endl;  
+  trace.info() << "Segment size: " << aFuzzySegmentComp.getNumberSegmentPoints() << std::endl;  
   aBoard.saveEPS("testAlphaThickSegmentComputer_FloatingPt.eps"); 
   
-  nbok += aFuzzySegmentComp.size()==30 ? 1 : 0; 
+  nbok += aFuzzySegmentComp.getNumberSegmentPoints()==30 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "true == true" << std::endl;
@@ -114,23 +114,23 @@ bool testAlphaThickSegmentComputer()
   unsigned int nb = 0;
   
   Board2D aBoard;
-  typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::RealPoint, double> AlphaThickSegmentComputer2D;
+  typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::RealPoint, double > AlphaThickSegmentComputer2D;
   trace.beginBlock ( "Testing Fuzzy segment ..." );
   std::vector<Z2i::RealPoint> aContour;
   std::string fileContour = testPath + "samples/contourNoiseSample.sdp";
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
   bool res = true;
   AlphaThickSegmentComputer2D aFuzzySegmentComp;
-  aFuzzySegmentComp.init(4);
+  aFuzzySegmentComp.init(aContour.begin(),4);
   AlphaThickSegmentComputer2D aFuzzySegmentComp2;
   aFuzzySegmentComp2.init(6);
   AlphaThickSegmentComputer2D aFuzzySegmentComp3;
-  aFuzzySegmentComp3.init(1);
+  aFuzzySegmentComp3.init(aContour.begin(),1);
   AlphaThickSegmentComputer2D aFuzzySegmentComp4;
-  aFuzzySegmentComp4.init(0.5);
+  aFuzzySegmentComp4.init(aContour.begin(), 0.5);
   
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp.extendFront(*it);
+    res &= aFuzzySegmentComp.extendFront();
     if (!res){
       break;
     }
@@ -142,20 +142,23 @@ bool testAlphaThickSegmentComputer()
       break;
     }
   }
+
+
   res=true;
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp3.extendFront(*it);
+    res &= aFuzzySegmentComp3.extendFront();
     if (!res){
       break;
     }
   }
   res=true;
   for (  std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); it!= aContour.end();  it++){ 
-    res &= aFuzzySegmentComp4.extendFront(*it);
+    res &= aFuzzySegmentComp4.extendFront();
     if (!res){
       break;
     }
   }
+
 
   
   // Display convexhull
@@ -167,10 +170,23 @@ bool testAlphaThickSegmentComputer()
                     aVect.at((i+1)%aVect.size())[0],
                     aVect.at((i+1)%aVect.size())[1]);    
   } 
+
+
+
+
+
   
   // Display boundingbox
-  aBoard << SetMode(aFuzzySegmentComp.className(), "BoundingBox"); 
-  aBoard << aFuzzySegmentComp << aFuzzySegmentComp2 << aFuzzySegmentComp3 << aFuzzySegmentComp4;
+  // aBoard << SetMode(aFuzzySegmentComp.className(), "BoundingBox"); 
+ aBoard  << CustomStyle( aFuzzySegmentComp.className(), new CustomColors( DGtal::Color::Green, DGtal::Color::None ) );  
+  aBoard << aFuzzySegmentComp2;
+ 
+  aBoard  << CustomStyle( aFuzzySegmentComp.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );      
+  aBoard << aFuzzySegmentComp;
+  aBoard  << CustomStyle( aFuzzySegmentComp.className(), new CustomColors( DGtal::Color::Yellow, DGtal::Color::None ) );  
+  aBoard << aFuzzySegmentComp3;
+  aBoard  << CustomStyle( aFuzzySegmentComp.className(), new CustomColors( DGtal::Color::Magenta, DGtal::Color::None ) );  
+  aBoard << aFuzzySegmentComp4;
   
   // Display the input curve
   aBoard << SetMode((*aContour.begin()).className(), "Grid");
@@ -184,18 +200,10 @@ bool testAlphaThickSegmentComputer()
     }
   }
 
-  // Display the Fuzzy segement
-  aBoard << SetMode((*aContour.begin()).className(), "Grid");
-  for (AlphaThickSegmentComputer2D::ConstIterator it = aFuzzySegmentComp.begin(); 
-       it != aFuzzySegmentComp.end(); it++){
-      aBoard.setPenColor(DGtal::Color::Gray);
-      aBoard.drawCircle((*it)[0], (*it)[1], 0.02);
-  }
-  
   
   aBoard.saveEPS("testAlphaThickSegmentComputer_Convexhull.eps"); 
-  trace.info() << aFuzzySegmentComp;
-  res = aFuzzySegmentComp.size()==45;
+  trace.info() << aFuzzySegmentComp << "size:"<< aFuzzySegmentComp.getNumberSegmentPoints();
+  res = aFuzzySegmentComp.getNumberSegmentPoints()==45;
   
   nbok += res ? 1 : 0; 
   nb++;
@@ -225,15 +233,11 @@ bool testAlphaThickSegmentInt()
   aContour = PointListReader<Z2i::Point>::getPointsFromFile(fileContour);
   
   AlphaThickSegmentComputer2D aFuzzySegmentComp;
-  aFuzzySegmentComp.init(1.0);
+  aFuzzySegmentComp.init(aContour.begin()+1340,  10.0);
   
-  unsigned int indexStart = 1340;
-  bool isExtending = true;
-  isExtending &= aFuzzySegmentComp.extendFront(aContour[indexStart]);
-  unsigned int i = 1;
-  while (isExtending){
-    isExtending &= aFuzzySegmentComp.extendFront(aContour[indexStart+i]);
-    i++;
+
+  while (aFuzzySegmentComp.extendFront()){
+
   }
 
   trace.info() << aFuzzySegmentComp;
@@ -254,10 +258,10 @@ bool testAlphaThickSegmentInt()
   aBoard << aFuzzySegmentComp;
  
   
-  trace.info() << "Segment size: " << aFuzzySegmentComp.size() << std::endl;  
+  trace.info() << "Segment size: " << aFuzzySegmentComp.getNumberSegmentPoints() << std::endl;  
   aBoard.saveEPS("testAlphaThickSegmentComputer_Int.eps"); 
   
-  nbok += aFuzzySegmentComp.size()==30 ? 1 : 0; 
+  nbok += aFuzzySegmentComp.getNumberSegmentPoints()==153 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "true == true" << std::endl;
