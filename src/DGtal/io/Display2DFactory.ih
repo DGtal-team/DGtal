@@ -405,26 +405,48 @@ void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
 template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard, 
                                                    const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & anAlphaThickSegment){
+  typedef typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::ContainerConstIterator ContConstIterator;
   typedef TConstIterator ConstIterator;
   typedef TInputPoint Point;
   // Draw a linking polygonal line if the pixels are drawn as points.
   if(aBoard.getMode("PointVector")=="Grid" || aBoard.getMode("PointVector")=="")
     {
       std::vector<LibBoard::Point> contour;
-      for (ConstIterator it = anAlphaThickSegment.begin(); it != anAlphaThickSegment.end(); it++) {
-        Point p = *it;
-        double xp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[0]);
-        double yp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[1]);
-        contour.push_back(LibBoard::Point(xp,yp));
+      if (anAlphaThickSegment.isStoringSegmentPoints()){
+        for (ContConstIterator it = anAlphaThickSegment.containerBegin(); 
+             it != anAlphaThickSegment.containerEnd(); it++) {
+          Point p = *it;
+          double xp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[0]);
+          double yp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[1]);
+          contour.push_back(LibBoard::Point(xp,yp));
+        }
+
+      }else{
+        
+        for (ConstIterator it = anAlphaThickSegment.begin(); it != anAlphaThickSegment.end(); it++) {
+          Point p = *it;
+          double xp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[0]);
+          double yp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[1]);
+          contour.push_back(LibBoard::Point(xp,yp));
+        }
       }
-      aBoard.drawPolyline(contour);
+      if(contour.size()>0){
+        aBoard.drawPolyline(contour);
+      }
     }
-// Draw points
-  for (ConstIterator it = anAlphaThickSegment.begin(); it != anAlphaThickSegment.end(); it++) {
-    Point p = *it;
-    draw(aBoard,p );
-    
-  }  
+  // Draw points
+  if (anAlphaThickSegment.isStoringSegmentPoints()){
+    for (ContConstIterator it = anAlphaThickSegment.containerBegin(); 
+         it != anAlphaThickSegment.containerEnd(); it++) {
+      Point p = *it;
+     draw(aBoard,p );  
+    }
+  }else {
+    for (ConstIterator it = anAlphaThickSegment.begin(); it != anAlphaThickSegment.end(); it++) {
+      Point p = *it;
+    draw(aBoard,p );  
+    }  
+  }
 }
 
 template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
@@ -442,7 +464,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
     }
   else
     FATAL_ERROR_MSG(false, "draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode);
-}
+  }
 // AlphaThickSegmentComputer
 
 

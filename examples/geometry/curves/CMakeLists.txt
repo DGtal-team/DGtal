@@ -4,6 +4,7 @@ SET(DGTAL_EXAMPLES_SRC
   greedy-dss-decomposition
   convex-and-concave-parts
   exampleAlphaThickSegment
+  exampleAlphaThickSegmentNoisy
   exampleGridCurve2d
   exampleStabbingLineComputer
   exampleStabbingCircleComputer

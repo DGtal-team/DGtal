@@ -331,6 +331,18 @@ public:
   double getRealLength();
   
 
+  /**
+   * @return 'true' if the points of the segment computer are stored in the main container.
+   **/
+  bool isStoringSegmentPoints() const;
+
+
+  /**
+   * @return the total number of points beeing recognized through in the segment construction.
+   **/  
+  unsigned int getNumberSegmentPoints() const;
+
+
 
   // ------------------------- Display services ------------------------------
 
@@ -454,13 +466,24 @@ private:
    * The maximal thickness of the segment.
    */
   double myThickness;  
-  
+
+  /**
+   * State of the actual computer
+   **/ 
   State myState;
-  
+
+  /**
+   * Previous saved computer state
+   **/   
   mutable State _state;
+
   
   bool myIsStoringPoints;
   
+  /**
+   * Used by the size method.
+   **/
+  unsigned int myNbPointsAddedFromIterators;
 
 
     // ------------------------- Hidden services ------------------------------
@@ -566,7 +589,7 @@ private:
  */
 template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 std::ostream&
-operator<< ( std::ostream & out, const AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar> & object );
+operator<< ( std::ostream & out, const AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & object );
 
 
 } // namespace DGtal
