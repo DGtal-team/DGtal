@@ -73,8 +73,12 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIte
 template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::
-AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other )
-{ // Nothing to do.
+AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ):myThickness(other.myThickness), myPointContainer(other.myPointContainer),
+                                                                     myState(other.myState), _state(other._state), 
+                                                                     myIsStoringPoints(other.myIsStoringPoints),
+                                                                     myNbPointsAddedFromIterators(other.myNbPointsAddedFromIterators), 
+                                                                     myBegin(other.myBegin), myEnd(other.myEnd)
+{ 
 }
 
 template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
@@ -82,11 +86,62 @@ inline
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & 
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::
 operator= ( const AlphaThickSegmentComputer & other )
-{// Nothing to do.
+{
+ if ( this != &other )
+    {
+      myThickness = other.myThickness;
+      myPointContainer = other.myPointContainer;
+      myState = other.myState;
+      _state = other._state;
+      myIsStoringPoints = other.myIsStoringPoints;
+      myNbPointsAddedFromIterators = other.myNbPointsAddedFromIterators;
+      myBegin = other.myBegin;
+      myEnd = other.myEnd;
+    }
+  return *this;
+}
+
+
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+inline
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::Self
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::getSelf() const 
+{
+  return Self();
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+inline
+typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::Reverse
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::getReverse() const 
+{
+  return Reverse();
+}
+
+
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+inline
+bool 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::operator==( const AlphaThickSegmentComputer & other ) const{
+  return ( (myBegin == other.myBegin) 
+	   && (myEnd == other.myEnd) ); 
 
 }
 
 
+template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+inline
+bool 
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::operator!=( const AlphaThickSegmentComputer & other ) const{
+  return (!(*this == other));
+}
 
 
 //-----------------------------------------------------------------------------
@@ -177,8 +232,6 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIte
 
 
 
-
-
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
@@ -210,6 +263,8 @@ init(const ConstIterator &it, double aThickness)
   myState.convexHullHeight  = 0.0;
   myState.isMelkmanInitialized = false;
 }
+
+
 
 
 //-----------------------------------------------------------------------------
@@ -674,10 +729,8 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIte
   InputPoint extremF =  myState.lastFront;
   InputPoint extremL =  myState.lastBack;
 
-
   std::deque<InputPoint> dSegment = myState.melkmanQueue;
-  unsigned int nb = dSegment.size();
-  if (myIsStoringPoints){
+   if (myIsStoringPoints){
     computeExtremaPoints(myPointContainer.begin(), myPointContainer.end() , extremL, extremF);
   }else{ 
     computeExtremaPoints(begin(), end() , extremL, extremF);

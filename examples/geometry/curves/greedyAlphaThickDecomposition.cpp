@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file exampleAlphaThickSegment.cpp
+ * @file greedyAlphaThickDecomposition.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2015/01/30
+ * @date 2015/02/01
  *
- * An example file named exampleAlphaThickSegment
+ * An example file named greedyAlphaThickDecomposition
  *
  * This file is part of the DGtal library.
  */
@@ -34,7 +34,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/curves/AlphaThickSegmentComputer.h"
 #include "DGtal/io/boards/Board2D.h"
-#include <DGtal/io/readers/PointListReader.h>
+#include "DGtal/geometry/curves/GreedySegmentation.h"
 #include <DGtal/io/readers/GenericReader.h>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -45,50 +45,26 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Example exampleAlphaThickSegment" );
+  trace.beginBlock ( "Example of greedy alpha thick segment decomposition" );
 
-
-  typedef FreemanChain<Z2i::Space::Integer>::ConstIterator FCConstIterator;
-  typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::Point, int, FCConstIterator > AlphaThickSegmentComputer2D;
+  typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::RealPoint, double,  
+                                     std::vector<Z2i::RealPoint>::const_iterator  > AlphaThickSegmentComputer2D;
   Board2D aBoard;
+  std::string file = examplesPath + "samples/contourS.sdp";
+  std::vector<Z2i::RealPoint> aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile (file);
+  typedef GreedySegmentation<AlphaThickSegmentComputer2D> DecompositionAT;
 
-  // Reading input contour
-  std::string freemanChainFilename = examplesPath + "samples/contourS.fc";
-  fstream fst;
-  fst.open (freemanChainFilename.c_str(), ios::in);
-  FreemanChain<Z2i::Space::Integer> fc(fst);
-  fst.close();
-
-
-  //construction of an AlphaThickSegmentComputer2D from the freemanchain iterator
-  AlphaThickSegmentComputer2D anAlphaSegment, anAlphaSegment2, anAlphaSegment3;
-  anAlphaSegment.init(fc.begin(), 15);                           
-  while (anAlphaSegment.extendFront()) {
-  }
-
-  aBoard << fc;
-  aBoard << anAlphaSegment;  
-  
-  anAlphaSegment2.init(fc.begin(), 5);
-  while (anAlphaSegment2.extendFront()) {
-  }
-  aBoard  << CustomStyle( anAlphaSegment2.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );  
-  aBoard << anAlphaSegment2;
-  
-  FCConstIterator fcIt = fc.begin();
-  anAlphaSegment3.init(1);
-  while (anAlphaSegment3.extendFront(*fcIt)) {
-    fcIt++;
-  }
-
-
-  aBoard  << CustomStyle( anAlphaSegment3.className(), new CustomColors( DGtal::Color::Green, DGtal::Color::None ) );  
-  aBoard << anAlphaSegment3;
-  
-
-
-  aBoard.saveEPS("exampleAlphaThickSegment.eps");
-
+  DecompositionAT theDecomposition(aContour.begin(), aContour.end(), AlphaThickSegmentComputer2D()); 
+  for ( DecompositionAT::SegmentComputerIterator 
+          it = theDecomposition.begin(),
+          itEnd = theDecomposition.end();
+        it != itEnd; ++it ) 
+     {
+       trace.info()<< "displaying computer "<< *it << std::endl;
+       aBoard<< *it;
+     }   
+   
+  aBoard.saveEPS("greedyAlphaThickDecomposition.eps"); 
   trace.endBlock();
   return 0;
 }

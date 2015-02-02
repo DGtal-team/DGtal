@@ -422,7 +422,6 @@ void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
         }
 
       }else{
-        
         for (ConstIterator it = anAlphaThickSegment.begin(); it != anAlphaThickSegment.end(); it++) {
           Point p = *it;
           double xp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[0]);

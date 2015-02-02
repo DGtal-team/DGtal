@@ -46,6 +46,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ReverseIterator.h"
 #include "DGtal/geometry/surfaces/ParallelStrip.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -115,6 +116,10 @@ public:
    */
   typedef DGtal::PointVector<2, double> PointD; 
 
+  typedef AlphaThickSegmentComputer<Space, InputPoint,InternalScalar, ConstIterator> Self; 
+  typedef AlphaThickSegmentComputer<Space, InputPoint,InternalScalar, ReverseIterator<ConstIterator> > Reverse; 
+
+
   // ----------------------- internal types --------------------------------------
 
 private: 
@@ -145,6 +150,52 @@ public:
    * Destructor.
    */
   ~AlphaThickSegmentComputer();
+  
+
+  /**
+   * Copy constructor.
+   *
+   * @param[in] other the object to clone.
+   */
+  AlphaThickSegmentComputer ( const AlphaThickSegmentComputer & other );
+  
+
+  /**
+   * Assignment.
+   *
+   * @param other the object to copy.
+   * @return a reference on 'this'.
+   */
+  AlphaThickSegmentComputer & operator= ( const AlphaThickSegmentComputer & other );
+  
+
+  /** 
+   * @return a default-constructed instance of Self 
+   */
+  Self getSelf() const;
+
+  
+  /**
+   * @return a default-constructed instance of Reverse
+   */
+  Reverse getReverse() const;
+  
+  /**
+   * Equality operator.
+   * @param other the object to compare with.
+   * @return 'true' if the AlphaThickSegment representations
+   * and the ranges of the two objects match,
+   * 'false' otherwise
+   */
+  bool operator==( const AlphaThickSegmentComputer & other ) const;
+  
+  /**
+   * Difference operator.
+   * @param other the object to compare with.
+   * @return 'false' if equal
+   * 'true' otherwise
+   */
+  bool operator!=( const AlphaThickSegmentComputer & other ) const;
 
   /**
    * Initialisation.
@@ -324,9 +375,8 @@ public:
 
 
   /**
-   * Returns the segment length defined from the real bouding box (@see getRealBoudingBox).
+   * @return the segment length defined from the real bouding box (@see getRealBoudingBox).
    *
-   * @return the segment length.
    **/
   double getRealLength();
   
@@ -489,24 +539,6 @@ private:
     // ------------------------- Hidden services ------------------------------
 protected:
 
-
-  /**
-   * Copy constructor.
-   *
-   * @param[in] other the object to clone.
-   * Forbidden by default.
-   */
-  AlphaThickSegmentComputer ( const AlphaThickSegmentComputer & other );
-  
-  /**
-   * Assignment.
-   *
-   * @param other the object to copy.
-   * @return a reference on 'this'.
-   * Forbidden by default.
-   */
-  AlphaThickSegmentComputer & operator= ( const AlphaThickSegmentComputer & other );
-  
   
   /**
    *  Used to check if the initialisation with 3 non aligned points is well done.
@@ -569,12 +601,21 @@ protected:
   
 
   /**
+   * From an point iterator (\a itBegin and \a itEnd) it computes the
+   * two extrem points (\a aFirstExtrPt and \a aLastExtrPt) defined
+   * according to the direction of the current segment.
+   *
+   * @param[in] itBegin the start iterator of the input points.
+   * @param[in] itEnd the end iterator of the input points.
+   * @param[out] aFirstExtrPt the first extrem point.
+   * @param[out] aLastExtrPt the last extrem point.
+   * 
    **/
   template<typename TConstIteratorG>
   void computeExtremaPoints(const TConstIteratorG & itBegin, const TConstIteratorG & itEnd,
                             InputPoint & aFirstExtrPt, InputPoint & aLastExtrPt) const;
   
-
+  
     // ------------------------- Internals ------------------------------------
 private:
 
