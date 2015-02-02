@@ -65,6 +65,7 @@ inline
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::AlphaThickSegmentComputer()
 { 
   myState.isMelkmanInitialized = false;
+  myThickness = 3.0;
 }
 
 
@@ -131,7 +132,8 @@ inline
 bool 
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::operator==( const AlphaThickSegmentComputer & other ) const{
   return ( (myBegin == other.myBegin) 
-	   && (myEnd == other.myEnd) ); 
+	   && (myEnd == other.myEnd) && myState.vertexSh == other.myState.vertexSh
+           && myState.edgePh == other.myState.edgePh && myState.edgeQh == other.myState.edgeQh); 
 
 }
 

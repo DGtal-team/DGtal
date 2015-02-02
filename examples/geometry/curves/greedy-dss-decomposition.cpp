@@ -85,6 +85,7 @@ int main( )
 	  itEnd = theDecomposition.end();
 	it != itEnd; ++it ) 
     {
+      trace.info()<< "displaying computer "; 
       aBoard << CustomStyle( className, 
 			     new CustomPenColor( Color::Blue ) )
 	     << it->primitive();
