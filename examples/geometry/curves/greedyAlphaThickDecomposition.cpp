@@ -43,14 +43,14 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main(  )
 {
   trace.beginBlock ( "Example of greedy alpha thick segment decomposition" );
-
+    
   typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::RealPoint, double,  
                                      std::vector<Z2i::RealPoint>::const_iterator  > AlphaThickSegmentComputer2D;
   Board2D aBoard;
-  std::string file = examplesPath + "samples/contourS.sdp";
+  std::string file = examplesPath + "samples/contourSnoisy.sdp";
   std::vector<Z2i::RealPoint> aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile (file);
   typedef GreedySegmentation<AlphaThickSegmentComputer2D> DecompositionAT;
 
