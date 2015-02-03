@@ -30,6 +30,7 @@ before_script:
 
 script:
   - cmake . $BTYPE
+  - echo $DOC
   - if [ ! $DOC == "true" ]; then  make DGtal && make DGtalIO; fi
   - if [ ! $DOC == "true" ]; then  cd examples && make -j 3 ; fi
   - if [ ! $DOC == "true" ]; then  cd ../tests &&  make &&  cd .. ; fi
