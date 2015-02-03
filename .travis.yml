@@ -48,5 +48,5 @@ after_script:
 ##
 after_success:
   - if [ $DOC == "true" ]; then make doc; fi
-  - if [ $DOC == "true" ]; ssh-add .travis/dgtal_rsa; fi
+  - if [ $DOC == "true" ]; then ssh-add .travis/dgtal_rsa; fi
   - if [ $DOC == "true" ]; then rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/; fi
