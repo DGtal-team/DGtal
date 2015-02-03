@@ -61,6 +61,7 @@
    (Tristan Roussillon, [#939](https://github.com/DGtal-team/DGtal/pull/939))
  - Fixing DSS based length estimator on open curves. (David
    Coeurjolly, [#941](https://github.com/DGtal-team/DGtal/pull/941))
+ - Fix Bezout Vector computation (Isabelle Sivignon, [#948](https://github.com/DGtal-team/DGtal/pull/948))
 
 # DGtal 0.8
 
