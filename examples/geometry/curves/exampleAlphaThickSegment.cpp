@@ -43,7 +43,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main(  )
 {
   trace.beginBlock ( "Example exampleAlphaThickSegment" );
 
@@ -65,6 +65,7 @@ int main( int argc, char** argv )
   anAlphaSegment.init(fc.begin(), 15);                           
   while (anAlphaSegment.extendFront()) {
   }
+
 
   aBoard << fc;
   aBoard << anAlphaSegment;  
