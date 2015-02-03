@@ -286,7 +286,7 @@ public:
    * @param[in] it an iterator on input points.
    * @param[in] aThickness the thickness of the alpha thick segment (default 1.0).
    */  
-  void init(const ConstIterator &it, double aThickness=1.0);    
+  void init(const ConstIterator &it, double aThickness=5.0);    
   
   
   /**
