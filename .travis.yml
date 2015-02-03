@@ -14,8 +14,8 @@ matrix:
 
 
 env:
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true" DOC="false"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF" DOC="false"
   - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true" DOC="true"
 
 
@@ -31,14 +31,14 @@ before_script:
 script:
   - cmake . $BTYPE
   - echo $DOC
-  - if [ ! $DOC == "true" ]; then  make DGtal && make DGtalIO; fi
-  - if [ ! $DOC == "true" ]; then  cd examples && make -j 3 ; fi
-  - if [ ! $DOC == "true" ]; then  cd ../tests &&  make &&  cd .. ; fi
-  - if [ ! $DOC == "true" ]; then  make test;  fi
+  - if [ $DOC == "false" ]; then  make DGtal && make DGtalIO; fi
+  - if [ $DOC == "false" ]; then  cd examples && make -j 3 ; fi
+  - if [ $DOC == "false" ]; then  cd ../tests &&  make &&  cd .. ; fi
+  - if [ $DOC == "false" ]; then  make test;  fi
 
 after_script:
-  - if [ ! $DOC == "true" ]; then make lcov; fi
-  - if [ ! $DOC == "true" ]; then coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info; fi
+  - if [ $DOC == "false" ]; then make lcov; fi
+  - if [ $DOC == "false" ]; then coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info; fi
 
 
 ##
