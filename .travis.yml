@@ -30,20 +30,19 @@ before_script:
 
 script:
   - cmake . $BTYPE
-  - '[ "${DOC}" = "true" ] && true || make DGtal && make DGtalIO'
-  - '[ "${DOC}" = "true" ] && true || cd examples && make -j 3 '
-  - '[ "${DOC}" = "true" ] && true || cd ../tests &&  make &&  cd ..'
-  - '[ "${DOC}" = "true" ] && true || make test'
+  - if [ ! $DOC == "true" ] then  make DGtal && make DGtalIO; fi
+  - if [ ! $DOC == "true" ] then  cd examples && make -j 3 ; fi
+  - if [ ! $DOC == "true" ] then  cd ../tests &&  make &&  cd .. ; fi
+  - if [ ! $DOC == "true" ] then  make test;  fi
 
 after_script:
-  - '[ "${DOC}" = "true" ] && true || make lcov'
-  - '[ "${DOC}" = "true" ] && true || coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info'
+  - if [ ! $DOC == "true" ] then make lcov; fi
+  - if [ ! $DOC == "true" ] then coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info; fi
 
 
 ##
 ## Building the documentation
 ##
 after_success:
-  - '[ "${DOC}" = "true" ] && make doc || false'
-  - '[ "${DOC}" = "true" ] && ssh-add .travis/dgtal_rsa || false'
-  - '[ "${DOC}" = "true" ] && rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/ || false'
+  - if [ $DOC == "true" ] then make doc &&  ssh-add .travis/dgtal_rsa; fi
+  - if [ $DOC == "true" ] then rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/; fi
