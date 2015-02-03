@@ -332,6 +332,7 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::extendFront() 
 {
+    
   _state = myState;
   melkmanAddPoint(*myEnd);
   

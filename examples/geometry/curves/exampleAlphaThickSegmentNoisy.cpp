@@ -43,7 +43,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main(  )
 {
   trace.beginBlock ( "Example exampleAlphaThickSegment" );
   
@@ -60,6 +60,7 @@ int main( int argc, char** argv )
       aBoard.drawLine(aContour[i][0], aContour[i][1], 
                   aContour[(i+1)%aContour.size()][0], aContour[(i+1)%aContour.size()][1]);
   }
+
     
   //construction of an AlphaThickSegmentComputer2D from the freemanchain iterator
   AlphaThickSegmentComputer2D anAlphaSegment, anAlphaSegment2, anAlphaSegment3;

@@ -82,10 +82,9 @@ int main( )
   string className = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentComputerIterator 
 	  it = theDecomposition.begin(),
-	  itEnd = theDecomposition.end();
+	  itEnd = theDecomposition.begin();
 	it != itEnd; ++it ) 
     {
-      trace.info()<< "displaying computer "; 
       aBoard << CustomStyle( className, 
 			     new CustomPenColor( Color::Blue ) )
 	     << it->primitive();
