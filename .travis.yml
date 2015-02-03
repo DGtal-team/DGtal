@@ -30,19 +30,19 @@ before_script:
 
 script:
   - cmake . $BTYPE
-  - if [ ! $DOC == "true" ] then  make DGtal && make DGtalIO; fi
-  - if [ ! $DOC == "true" ] then  cd examples && make -j 3 ; fi
-  - if [ ! $DOC == "true" ] then  cd ../tests &&  make &&  cd .. ; fi
-  - if [ ! $DOC == "true" ] then  make test;  fi
+  - if [ ! $DOC == "true" ]; then  make DGtal && make DGtalIO; fi
+  - if [ ! $DOC == "true" ]; then  cd examples && make -j 3 ; fi
+  - if [ ! $DOC == "true" ]; then  cd ../tests &&  make &&  cd .. ; fi
+  - if [ ! $DOC == "true" ]; then  make test;  fi
 
 after_script:
-  - if [ ! $DOC == "true" ] then make lcov; fi
-  - if [ ! $DOC == "true" ] then coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info; fi
+  - if [ ! $DOC == "true" ]; then make lcov; fi
+  - if [ ! $DOC == "true" ]; then coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info; fi
 
 
 ##
 ## Building the documentation
 ##
 after_success:
-  - if [ $DOC == "true" ] then make doc &&  ssh-add .travis/dgtal_rsa; fi
-  - if [ $DOC == "true" ] then rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/; fi
+  - if [ $DOC == "true" ]; then make doc &&  ssh-add .travis/dgtal_rsa; fi
+  - if [ $DOC == "true" ]; then rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/; fi
