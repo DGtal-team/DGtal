@@ -62,10 +62,10 @@ DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIte
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
 inline
-DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::AlphaThickSegmentComputer()
+DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::AlphaThickSegmentComputer(): myBegin(), myEnd()
 { 
   myState.isMelkmanInitialized = false;
-  myThickness = 3.0;
+  myThickness = 1.0;
 }
 
 
