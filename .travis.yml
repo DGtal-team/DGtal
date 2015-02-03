@@ -30,17 +30,20 @@ before_script:
 
 script:
   - cmake . $BTYPE
-  - make DGtal && make DGtalIO
-  - cd examples && make -j 3 
-  - cd ../tests &&  make &&  cd ..
+  - '[ "${DOC}" = "true" ] && true || make DGtal && make DGtalIO'
+  - '[ "${DOC}" = "true" ] && true || cd examples && make -j 3 '
+  - '[ "${DOC}" = "true" ] && true || cd ../tests &&  make &&  cd ..'
   - '[ "${DOC}" = "true" ] && true || make test'
 
 after_script:
-  - make lcov
-  - coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info
+  - '[ "${DOC}" = "true" ] && true || make lcov'
+  - '[ "${DOC}" = "true" ] && true || coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info'
 
 
+##
+## Building the documentation
+##
 after_success:
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && make doc || false'
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] &&  ssh-add .travis/dgtal_rsa || false'
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] &&   rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/ || false'
+  - '[ "${DOC}" = "true" ] && make doc || false'
+  - '[ "${DOC}" = "true" ] && ssh-add .travis/dgtal_rsa || false'
+  - '[ "${DOC}" = "true" ] && rsync -azv --delete --delete-after html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/ || false'
