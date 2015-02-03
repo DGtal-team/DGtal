@@ -52,13 +52,20 @@
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const Color & object )
+                    const Color & object )
 {
     object.selfDisplay ( out );
     return out;
 }
 
-
+inline
+DGtal::Color
+DGtal::operator*( const double coeff,
+                  const Color & aColor )
+ {
+    Color c=aColor*coeff;
+    return c;
+  }
 
 inline DGtal::Color &
 DGtal::Color::setRGBi( const unsigned char aRedValue,

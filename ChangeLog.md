@@ -17,7 +17,7 @@
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
    linear model estimation of scalar data. (David Coeurjolly, Jérémy
-   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/927),
+   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
 
 - *IO Package*
@@ -32,13 +32,16 @@
  - Viewer3d cleanings with better organisation through the
    separation of all code generating the GL lists. (Bertrand Kerautret)
   ([#945](https://github.com/DGtal-team/DGtal/pull/945))
-
+ - Operators added to perform computations on Color objects (addition,
+   substraction scaling...). Color is now CopyConstructible and
+   Assignable (David Coeurjolly
+   [#940](https://github.com/DGtal-team/DGtal/pull/940))
+ 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
    ConstIterator and adds a new method to change the color of a
    specific face. (Bertrand Kerautret,
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
-
 
 
 ## Bug Fixes
