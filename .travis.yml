@@ -31,9 +31,9 @@ before_install:
    - openssl aes-256-cbc -K $encrypted_73d1df012ee4_key -iv $encrypted_73d1df012ee4_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d
    - chmod 600 .travis/dgtal_rsa
 
-   - if [ $CONFIG == "Debug,Magick,GMP,Coverage"]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true" DOC="false"; fi
-   - if [ $CONFIG == "Debug,Cairo,QGLviewer"]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF" DOC="false"; fi
-   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP"]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true" DOC="true"; fi
+   - if [ $CONFIG == "Debug,Magick,GMP,Coverage"]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"; DOC="false"; fi
+   - if [ $CONFIG == "Debug,Cairo,QGLviewer"]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"; DOC="false"; fi
+   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP"]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; fi
    - 
 
 
