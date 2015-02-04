@@ -40,7 +40,7 @@ before_install:
 
 
 before_script:
-  - if [ $TRAVIS_OS_NAME == linux ]; then  sudo apt-get -qq update &&  sudo apt-get -qq install hdf5 libboost-program-options-dev libcairo2-dev doxygen graphviz libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev lcov; fi
+  - if [ $TRAVIS_OS_NAME == linux ]; then  sudo apt-get -qq update &&  sudo apt-get -qq install libhdf5-dev libboost-program-options-dev libcairo2-dev doxygen graphviz libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev lcov; fi
   - if [ $TRAVIS_OS_NAME == linux ]; then gem install coveralls-lcov; fi
   - if [ $TRAVIS_OS_NAME == osx ]; then brew update; brew install boost doxygen hdf5 graphviz graphicsmagick homebrew/science/insighttoolkit gmp libqglviewer; echo "done";fi
 
