@@ -9,15 +9,13 @@ cache: apt
 notifications:
   slack: dgtal:FObxCZFoeQkkaRuktJD5uhnN
 
-matrix:
- fast_finish: true      
-
 env:
   - CONFIG="Debug,Magick,GMP,Coverage"
   - CONFIG="Debug,Cairo,QGLviewer,HDF5"
   - CONFIG="Documentation,Debug,Cairo,GMP"
 
 matrix:
+  fast_finish: true 
   exclude:
     - os: linux
       env: CONFIG="Documentation,Debug,Cairo,GMP"
@@ -34,7 +32,7 @@ before_install:
    - chmod 600 .travis/dgtal_rsa
 
    - if [ $CONFIG == "Debug,Magick,GMP,Coverage" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"; DOC="false";  fi
-   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWTH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"; DOC="false"; fi
+   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"; DOC="false"; fi
    - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; fi
    - 
 
@@ -65,7 +63,7 @@ after_script:
 after_success:
   - if [ $DOC == "true" ]; then make doc; fi
   - if [ $DOC == "true" ]; then rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/; fi
-  - if [ $DOC == "true" ]; then if [ $TRAVIS_OS_NAME == "osx" ]; cd html; make ; fi fi
+  - if [ $DOC == "true" ]; then if [ $TRAVIS_OS_NAME == "osx" ]; cd html; make ; fi; fi
 
 os:
   - linux
