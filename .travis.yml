@@ -12,7 +12,6 @@ notifications:
 matrix:
  fast_finish: true      
 
-
 env:
   - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true" DOC="false"
   - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF" DOC="false"
