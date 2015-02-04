@@ -19,13 +19,13 @@ env:
 
 matrix:
   exclude:
-    - os: osx
+    - os: linux
+      env: CONFIG="Documentation,Debug,Cairo,GMP"
+    - compiler: gcc
+      os: osx
       env: CONFIG="Documentation,Debug,Cairo,GMP"
     - os: osx
       compiler: gcc
-    - compiler: clang
-      os: linux
-      env: CONFIG="Documentation,Debug,Cairo,GMP"
 
    
 
