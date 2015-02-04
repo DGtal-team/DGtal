@@ -16,7 +16,17 @@ env:
   - CONFIG="Debug,Magick,GMP,Coverage"
   - CONFIG="Debug,Cairo,QGLviewer"
   - CONFIG="Documentation,Debug,Cairo,GMP"
- 
+
+matrix:
+  exclude:
+    - os: osx
+      env: CONFIG="Documentation,Debug,Cairo,GMP"
+    - compiler: clang
+      os: gcc
+      env: CONFIG="Documentation,Debug,Cairo,GMP"
+
+
+
 before_install:
    - openssl aes-256-cbc -K $encrypted_73d1df012ee4_key -iv $encrypted_73d1df012ee4_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d
    - chmod 600 .travis/dgtal_rsa
