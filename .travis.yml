@@ -22,7 +22,7 @@ matrix:
     - os: osx
       env: CONFIG="Documentation,Debug,Cairo,GMP"
     - compiler: clang
-      os: gcc
+      os: linux
       env: CONFIG="Documentation,Debug,Cairo,GMP"
 
 
