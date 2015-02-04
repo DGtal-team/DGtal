@@ -44,6 +44,8 @@ before_script:
 
 script:
   - cmake . $BTYPE
+  - echo $DOC
+  - echo $BTYPE
   - if [ $DOC == "false" ]; then  make DGtal && make DGtalIO; fi
   - if [ $DOC == "false" ]; then  cd examples && make -j 3 ; fi
   - if [ $DOC == "false" ]; then  cd ../tests &&  make &&  cd .. ; fi
