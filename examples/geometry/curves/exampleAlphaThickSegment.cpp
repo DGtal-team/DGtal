@@ -58,16 +58,13 @@ int main(  )
   fst.open (freemanChainFilename.c_str(), ios::in);
   FreemanChain<Z2i::Space::Integer> fc(fst);
   fst.close();
-
+  aBoard << fc;
 
   //construction of an AlphaThickSegmentComputer2D from the freemanchain iterator
   AlphaThickSegmentComputer2D anAlphaSegment, anAlphaSegment2, anAlphaSegment3;
   anAlphaSegment.init(fc.begin(), 15);                           
   while (anAlphaSegment.extendFront()) {
   }
-
-
-  aBoard << fc;
   aBoard << anAlphaSegment;  
   
   anAlphaSegment2.init(fc.begin(), 5);
