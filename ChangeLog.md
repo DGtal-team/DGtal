@@ -2,6 +2,13 @@
 
 ## New Features / Critical Changes
 
+- *Configuration*
+ - Continuous integration enabled on both linux and macosx
+   systems. Furthermore, the nightly build documentation is
+   automatically deployed.  (David Coeurjolly,
+   [#955](https://github.com/DGtal-team/DGtal/pull/955))
+
+
 ## Changes
 
 - *Geometry Package*
@@ -12,7 +19,7 @@
   fitting. It requires to have the Patate library installed (and
   WITH_PATATE=true): http://patate.gforge.inria.fr/html/. See
   SphereFittingEstimator (David Coeurjolly,
-  [929](https://github.com/DGtal-team/DGtal/pull/929))
+  [#929](https://github.com/DGtal-team/DGtal/pull/929))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
