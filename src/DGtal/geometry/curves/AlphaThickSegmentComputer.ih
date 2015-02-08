@@ -361,7 +361,20 @@ inline
 typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::Primitive
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::primitive()  const
 {
-  return Primitive(0,0,0);  
+  PointD dirSeg =  myState.edgeQh - myState.edgePh; 
+  PointD dirNormal;
+  // Normal dir oriented inside the segment
+  if (melkmanIsLeft(myState.edgePh, myState.edgeQh, myState.vertexSh)){
+    dirNormal[0] = -dirSeg[1];
+    dirNormal[1] = dirSeg[0];
+  }else{
+    dirNormal[0] = dirSeg[1];
+    dirNormal[1] = -dirSeg[0];
+  }
+  double mu = dirNormal[0]*myState.edgePh[0]+dirNormal[1]*myState.edgePh[1];
+  double muPlusNu = dirNormal[0]*myState.vertexSh[0]+dirNormal[1]*myState.vertexSh[1];  
+
+  return Primitive(mu,dirNormal,muPlusNu-mu);  
 }
 
 

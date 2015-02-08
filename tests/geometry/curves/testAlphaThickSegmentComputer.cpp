@@ -57,6 +57,9 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
   
   Board2D aBoard;
   typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::RealPoint, double> AlphaThickSegmentComputer2D;
+  typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::RealPoint, double>::Primitive Primitive;
+
+
   trace.beginBlock ( "Testing Fuzzy segment on contour composed of floating coords ..." );
   std::vector<Z2i::RealPoint> aContour;
   std::string fileContour = testPath + "samples/contourNoiseSample2.sdp";
@@ -69,24 +72,27 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
   while (isExtending){
     isExtending &= aFuzzySegmentComp.extendFront();
   }
-
-    
- 
   
+  // Display segment 
+  aBoard << SetMode((*aFuzzySegmentComp.begin()).className(), "Grid"); 
+  aBoard << aFuzzySegmentComp;
+  
+  Primitive pStrip = aFuzzySegmentComp.primitive();
   // Display the input curve
   aBoard << SetMode((*aContour.begin()).className(), "Grid");
   for (std::vector<Z2i::RealPoint>::const_iterator it = aContour.begin(); 
        it != aContour.end(); it++){
-    aBoard << *it;
     if (it+1 != aContour.end()){
       Z2i::RealPoint next = *(it+1);
+      aBoard.setLineWidth(2);
       aBoard.setPenColor(DGtal::Color::Gray);
       aBoard.drawLine((*it)[0], (*it)[1], next[0], next[1]);
     }
+    if (pStrip(*it)){
+      aBoard << *it; 
+    }    
+
   }
-  // Display segment 
-  aBoard << SetMode((*aFuzzySegmentComp.begin()).className(), "Grid"); 
-  aBoard << aFuzzySegmentComp;
 
 
 
