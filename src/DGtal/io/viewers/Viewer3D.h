@@ -133,9 +133,9 @@ namespace DGtal
   public:
 
     typedef Display3D<Space, KSpace> Display;
-
     typedef typename Display::SelectCallbackFct SelectCallbackFct;
     using Display::getSelectCallback3D;
+    typedef typename Display::RealPoint RealPoint;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -236,7 +236,9 @@ namespace DGtal
     bool myIsBackgroundDefault;
     /// objects have shadows which follow the camera if false
     bool myViewWire;
-
+    /// to improve the display of gl line
+    double myGLLineMinWidth;
+    
     /**
      * Used to display the 2D domain of an image.
      * @note has to be public because of external functions
@@ -245,10 +247,10 @@ namespace DGtal
     {
 
       /// The image domain coordinates
-      DGtal::Z3i::RealPoint point1;
-      DGtal::Z3i::RealPoint point2;
-      DGtal::Z3i::RealPoint point3;
-      DGtal::Z3i::RealPoint point4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
       /// The image domain color
       DGtal::Color color;
       /// the width of the image domain
@@ -316,10 +318,10 @@ namespace DGtal
     struct TextureImage
     {
 
-      DGtal::Z3i::RealPoint point1;
-      DGtal::Z3i::RealPoint point2;
-      DGtal::Z3i::RealPoint point3;
-      DGtal::Z3i::RealPoint point4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
 
       ImageDirection myDirection; /// direction of the image (x, y or z axe)
 
@@ -428,10 +430,10 @@ namespace DGtal
        * @param aPoint4 the fourth image point (lower bound point in first dimension and upper in the second dimentsion)
        */
       void
-      updateImage3DEmbedding( DGtal::Z3i::RealPoint aPoint1,
-                              DGtal::Z3i::RealPoint aPoint2,
-                              DGtal::Z3i::RealPoint aPoint3,
-                              DGtal::Z3i::RealPoint aPoint4)
+      updateImage3DEmbedding( RealPoint aPoint1,
+                              RealPoint aPoint2,
+                              RealPoint aPoint3,
+                              RealPoint aPoint4)
       {
         point1 = aPoint1;  point2 = aPoint2; point3 = aPoint3;   point4 = aPoint4;
         myDirection=undefDirection;
@@ -877,10 +879,10 @@ namespace DGtal
     struct GLTextureImage
     {
       /// coordinates
-      DGtal::Z3i::RealPoint point1;
-      DGtal::Z3i::RealPoint point2;
-      DGtal::Z3i::RealPoint point3;
-      DGtal::Z3i::RealPoint point4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
 
       typename Viewer3D<Space, KSpace>::ImageDirection myDirection;
       unsigned int myImageWidth;
@@ -969,8 +971,8 @@ namespace DGtal
         vectNormal[1]= (myDirection == Viewer3D<Space, KSpace>::yDirection)? -1.0: 0.0;
         vectNormal[2]= (myDirection == Viewer3D<Space, KSpace>::zDirection)? 1.0: 0.0;
         if(myDirection==undefDirection){
-          DGtal::Z3i::RealPoint v1 = point2-point1;
-          DGtal::Z3i::RealPoint v2 = point4-point1;
+          RealPoint v1 = point2-point1;
+          RealPoint v2 = point4-point1;
           vectNormal[0] = v1[1]*v2[2] - v1[2]*v2[1];
           vectNormal[1] = v1[2]*v2[0] - v1[0]*v2[2];
           vectNormal[2] = v1[0]*v2[1] - v1[1]*v2[0];
@@ -1028,6 +1030,136 @@ namespace DGtal
     };
 
 
+    
+    /**
+     *
+     * Type associated to the special intern method GLCreateCubeSetList.
+     *
+     **/ 
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::CubeD3D> VectorCubes;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D> VectorQuad;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::LineD3D> VectorLine;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::BallD3D> VectorBall;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::TriangleD3D> VectorTriangle;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::PolygonD3D> VectorPolygon;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::TextureImage> VectorTextureImage;
+    
+    
+    typedef typename VectorCubes::iterator ItCube;
+    
+
+    /**
+     * Creates an OpenGL list of type GL_QUADS from a vector of CubeD3D. 
+     * @param[in] aVectCubes a vector of cubes (Cube3D) containing the cubes to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListCubes( const VectorCubes & aVectCubes,
+                              unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type GL_QUADS from a vector of QuadD3D. 
+     * @param[in] aVectQuad  a vector of quads (QuadD3D) containing the quads to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListQuadD3D(const VectorQuad &aVectQuad, unsigned int idList);
+    
+
+    /**
+     * Creates an OpenGL list of type QL_LINES from a vector of LineD3D. 
+     * @param[in] aVectLine  a vector of lines (LineD3D) containing the quads to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListLines(const VectorLine &aVectLine, unsigned int idList);
+    
+    
+    /**
+     * Creates an OpenGL list of type  GL_POINTS from a vector of BallD3D. 
+     * @param[in] aVectBall  a vector of balls (BallD3D) containing the points to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListBalls(const VectorBall &aVectBall, unsigned int idList);
+
+    
+    /**
+     * Creates an OpenGL list of type GL_QUADS from a QuadsMap.  Only
+     * one OpenGL list is created but each map compoment (QuadD3D
+     * vector) are marked by its identifier through the OpenGl
+     * glPushName() function. 
+     * See @ref moduleQGLInteraction for more details.
+     * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/    
+    void glCreateListQuadMaps(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
+    
+    
+    /**
+     * Creates an OpenGL list of type GL_LINES from a QuadsMap.  Only
+     * one OpenGL list is created but each map compoment (QuadD3D
+     * vector) are marked by its identifier through the OpenGl
+     * glPushName() function. 
+     * See @ref moduleQGLInteraction for more details.
+     * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/    
+    void glCreateListQuadMapsWired(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
+
+    
+    /**
+     * Creates an OpenGL list of type GL_TRIANGLES from a vector of VectorTriangle.
+     * All triangles are displayed in the same list.
+     * @param[in] aVectTriangle  a vector of VectorTriangle containing the set of triangles to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     * @todo change the structure to support interactions as QuadMap do.
+     * See \ref moduleQGLInteraction for more details.
+     **/    
+    void glCreateListTriangles(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type GL_LINES defines from a vector of VectorTriangle.
+     * All triangles are displayed in the same list.
+     * @param[in] aVectTriangle  a vector of VectorTriangle containing the set of triangles to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     * @todo change the structure to support interactions as QuadMap do.
+     * See @ref moduleQGLInteraction for more details.
+     **/    
+    void glCreateListTrianglesWired(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
+    
+
+    /**
+     * Creates an OpenGL list of type  GL_POLYGON from a vector of VectorPolygon. 
+     * All polygons are displayed in the same list.
+     * @param  aVectPolygon a vector of VectorPolygon containing the points to be displayed.
+     * @param idList the Id of the list (should be given by glGenLists).
+     * @todo change the structure to support interactions as QuadMap do.
+     * See @ref moduleQGLInteraction for more details.
+     **/
+    void glCreateListPolygons(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
+    
+
+    /**
+     * Creates an OpenGL list of type  GL_LINES from a vector of VectorPolygon. 
+     * All polygons are displayed in the same list.
+     * @param[in] aVectPolygon  a vector of vector of polygons (VectorPolygon) containing the points to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     * @todo change the structure to support interactions as QuadMap do.
+     * See @ref moduleQGLInteraction for more details.
+     **/
+    void glCreateListPolygonsWired(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
+
+    
+    /**
+     * Update the container of GLTextureImage object with the given vector of TextureImage. 
+     * @param[in] aVectImage the vector containing 
+     *
+     **/    
+    void glUpdateTextureImages(const VectorTextureImage  &aVectImage);
+    
+    
+
+
+    
 
   public:
     /**
@@ -1080,9 +1212,33 @@ namespace DGtal
   private:
 
     /// lists of the list to draw
-    GLuint myListToAff;
+    //GLuint myListToAff;
+    
+    GLuint myCubeSetListId;
+    GLuint myCubeSetListWiredId;
+
+    GLuint myTriangleSetListId;
+    GLuint myTriangleSetListWiredId;
+
+    GLuint myPolygonSetListId;
+    GLuint myPolygonSetListWiredId;
+    
+    GLuint myLineSetListId;
+    GLuint myBallSetListId;
+    GLuint myPrismListId;
+
+    GLuint myQuadsMapId;
+    GLuint myQuadsMapWiredId;
+    
     /// number of lists in myListToAff
+    
     unsigned int myNbListe;
+    unsigned int myNbCubeSetList;    
+    unsigned int myNbLineSetList;
+    unsigned int myNbBallSetList;
+    unsigned int myNbPrismSetList;
+
+
     /// information linked to the navigation in the viewer
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
     /// a point selected with postSelection @see postSelection

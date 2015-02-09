@@ -610,10 +610,10 @@ namespace DGtal
     /**
      * Set the "OpenGL name" of future graphical commands.
      * @param display the display where to draw
-     * @param name3d an object storing the "OpenGL" name.
+     * @param aName3d an object storing the "OpenGL" name.
      */
     static void 
-    draw( Display & display, const DGtal::SetName3D& name3d );
+    draw( Display & display, const DGtal::SetName3D& aName3d );
 
     /**
      * Set the callback function when selecting an object (e.g. shift

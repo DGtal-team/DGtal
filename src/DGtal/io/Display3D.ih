@@ -156,18 +156,22 @@ template < typename Space ,typename KSpace >
 inline
 typename DGtal::Display3D< Space ,KSpace >::SelectCallbackFct 
 DGtal::Display3D< Space ,KSpace >::
-getSelectCallback3D( DGtal::int32_t name, void*& data ) const
+getSelectCallback3D( DGtal::int32_t aName, void*& data ) const
 {
-  typedef typename std::set<SelectCallbackFctStore>::const_iterator ConstIterator;
-  SelectCallbackFctStore seek( 0, 0, name, name );
-  ConstIterator it_up = mySelectCallBackFcts.upper_bound( seek );
-  if ( ( it_up != mySelectCallBackFcts.end() ) && it_up->isSelected( name ) )
+  typedef typename std::set<SelectCallbackFctStore>::const_iterator SetConstIterator;
+  SelectCallbackFctStore seek( 0, 0, aName, aName );
+  SetConstIterator it_up = mySelectCallBackFcts.upper_bound( seek );
+  if ( ( it_up != mySelectCallBackFcts.end() ) && it_up->isSelected( aName ) )
     {
       data = it_up->data;
       return it_up->fct;
     }
+  if (it_up == mySelectCallBackFcts.begin()){
+    return 0;
+  }
   --it_up;
-  if ( ( it_up != mySelectCallBackFcts.end() ) && it_up->isSelected( name ) )
+  
+  if ( ( it_up != mySelectCallBackFcts.end() ) && it_up->isSelected( aName ) )
     {
       data = it_up->data;
       return it_up->fct;
@@ -218,15 +222,25 @@ DGtal::Display3D< Space ,KSpace >::createNewLineList(std::string str)
   myLineSetNameList.push_back(str);
 }
 
-// template < typename Space ,typename KSpace >
-// inline
-// void
-// DGtal::Display3D< Space ,KSpace >::createNewQuadList(std::string str)
-// {
-//   std::vector< QuadD3D > v;
-//   myQuadSetList.push_back(v);
-//   // myQuadSetNameList.push_back(str);
-// }
+ template < typename Space ,typename KSpace >
+ inline
+ DGtal::int32_t
+ DGtal::Display3D< Space ,KSpace >::createNewQuadList()
+ {
+   // looking for an empty key
+   DGtal::int32_t aKey=0;
+   bool found =  myQuadsMap.count(aKey) == 0;
+   do{
+     aKey++;
+     found = myQuadsMap.count(aKey) == 0; 
+   }while (!found && aKey < std::numeric_limits<DGtal::int32_t>::max());
+   if (found){
+     myName3d = aKey;
+     return aKey;
+   }
+
+   return -1;
+ }
 
 template < typename Space ,typename KSpace >
 inline
