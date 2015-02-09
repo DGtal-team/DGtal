@@ -1524,7 +1524,10 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
       display.createNewLineList("SetMode3D");
       display.createNewBallList("SetMode3D");
       display.createNewCubeList("SetMode3D");
-      // display.createNewQuadList("SetMode3D");
+      
+      // @todo to be change with single map processing.
+      display.createNewQuadList();
+      
       display.createNewTriangleList("SetMode3D");
       display.createNewPolygonList("SetMode3D");
       display.myModes[ sm3d.myClassname ] = sm3d.myMode;
@@ -1542,7 +1545,9 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
       display.createNewLineList("CustomStyle3D");
       display.createNewBallList("CustomStyle3D");
       display.createNewCubeList("CustomStyle3D");
-      // display.createNewQuadList("CustomStyle3D");
+
+      // @todo to be change with single map processing.
+      display.createNewQuadList();
       display.createNewTriangleList("CustomStyle3D");
       display.createNewPolygonList("CustomStyle3D");
     }
@@ -1560,7 +1565,10 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display, const DGtal
       display.createNewLineList("CustomColors3D");
       display.createNewBallList("CustomColors3D");
       display.createNewCubeList("CustomColors3D");
-      //display.createNewQuadList("CustomColors3D");
+
+      // @todo to be change with single map processing.
+      display.createNewQuadList();
+
       display.createNewTriangleList("CustomColors3D");
       display.createNewPolygonList("CustomColors3D");
     }
@@ -1617,11 +1625,11 @@ template< typename Space, typename KSpace>
 inline
 void 
 DGtal::Display3DFactory<Space,KSpace>::
-draw( Display & display, const DGtal::SetName3D& name3d )
+draw( Display & display, const DGtal::SetName3D& aName3d )
 { 
   // Simply sets the "OpenGL name" of class Display3D, so that it
   // names the next graphical structures with it.
-  display.setName3d( name3d.name );
+  display.setName3d( aName3d.name );
 }
 //-----------------------------------------------------------------------------
 template< typename Space, typename KSpace>
