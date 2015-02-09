@@ -133,7 +133,8 @@ bool
 DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::operator==( const AlphaThickSegmentComputer & other ) const{
   return ( (myBegin == other.myBegin) 
 	   && (myEnd == other.myEnd) && myState.vertexSh == other.myState.vertexSh
-           && myState.edgePh == other.myState.edgePh && myState.edgeQh == other.myState.edgeQh); 
+           && myState.edgePh == other.myState.edgePh && myState.edgeQh == other.myState.edgeQh)
+    && sef.primitive == other.primitive; 
 
 }
 
