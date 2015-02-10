@@ -61,6 +61,9 @@
    (Tristan Roussillon, [#939](https://github.com/DGtal-team/DGtal/pull/939))
  - Fixing DSS based length estimator on open curves. (David
    Coeurjolly, [#941](https://github.com/DGtal-team/DGtal/pull/941))
+ - Fix bug of method ArithmeticalDSL::getPoint with negative values
+   of positions as input arguments.
+   (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
  - Fix Bezout Vector computation (Isabelle Sivignon, [#948](https://github.com/DGtal-team/DGtal/pull/948))
 
 # DGtal 0.8
