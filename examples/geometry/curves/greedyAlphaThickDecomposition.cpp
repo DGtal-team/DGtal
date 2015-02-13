@@ -48,7 +48,7 @@ int main(  )
   trace.beginBlock ( "Example of greedy alpha thick segment decomposition" );
   
   typedef  std::vector<Z2i::RealPoint>::const_iterator ConstIterator;
-  typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::RealPoint, double, ConstIterator > AlphaThickSegmentComputer2D;
+  typedef  AlphaThickSegmentComputer<Z2i::RealPoint, ConstIterator > AlphaThickSegmentComputer2D;
   
   Board2D aBoard;
   std::string file = examplesPath + "samples/contourSnoisy.sdp";
@@ -66,7 +66,7 @@ int main(  )
   ConstIterator contourIt = aContour.begin();
   while(contourIt != aContour.end()){
     AlphaThickSegmentComputer2D aComputer;
-    aComputer.init(2);  
+    aComputer.init(4);  
     while(contourIt != aContour.end() && aComputer.extendFront(*contourIt)){
       contourIt++;
     }
