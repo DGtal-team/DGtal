@@ -60,21 +60,52 @@ namespace DGtal
  *
  * \brief Aim: This class is devoted to the recognition of the alpha
  * thick segment as described in \cite FaureTangential2008 . From a
- * maximal diagonal alphaMax width, it allows to apply the recognition
+ * maximal diagonal alphaMax thickness, it allows to apply the recognition
  * of a thick segment with the ability to take into accounts some
  * noise. Moreover the segment can be detected from points not
  * necessary connected and/or with floating coordinates.
  *
  * As other solutions like \cite DebledRennessonBlurred2005 the
- * algorithm given here is based on the height/width computation from
- * the convex hull of a given set of points. The actual implementation
- * exploits the height/width maintenance defined from the \cite
- * FaureTangential2008 (see \cite FaureTangential2008 page 363) which
- * reduces the complexity from \f$O(n\ log\ n) \f$ into  \f$O( log\ n) \f$.
- * Note that the convexhull maintenance in linear time (with point
- * substraction) proposed by Buzer \cite lilianComputing2007 is not
- * yet implemented.
+ * algorithm given here is based on the height/width computation of
+ * the convex hull computed from a given set of points. The actual
+ * implementation exploits the height/width maintenance defined from
+ * the \cite FaureTangential2008 (see \cite FaureTangential2008 page
+ * 363) which reduces the complexity from \f$O(n\ log\ n) \f$ into
+ * \f$O( log\ n) \f$.  Note that the convexhull maintenance in linear
+ * time (with point substraction) proposed by Buzer \cite
+ * lilianComputing2007 is not yet implemented.
+ *
+ *
+ *
+ * @tparam TInputPoint the type of the input point which have to be of
+ * dimension 2.
+ * 
+ * @tparam TConstIterator the type of iterator of candidate points
+ * (used in the init with iterator) which should be readable and
+ * forward. By default the iterator is set to the const_iterator of std::vector< TInputPoint > .
+ *
+ *
+ * This class is a model of ForwardContainer and  CForwardSegmentComputer.  
+ * It is also default constructible, copy  constructible, assignable and equality comparable.
+ *
+ *
+ * A typical application of an alpha thick segment recognition can be
+ * done as follows:
+ * - If you consider input point with floating coordinates, you can define this type:
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyTypedef
+ *
+ * - Then import eventually a vector containing the input points by using the PointListReader class:
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyReadFile 
+ * 
+ * - Finally apply the segment recognition (here of maximal thickness 10)  by adding the sequence (forward) of contour points: 
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco 
  *  
+ * - If you use a Board2D display, you can draw the resulting segment like other 2D objects:
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementDisplay 
+ * 
+ * The complete example of segment recognition is given in exampleAlphaThickSegmentNoisy.cpp
+ *
+ * @note You can also construct the segment by using an input point iterator in initialisation (see @ref moduleAlphaThickSegmentReco for more details) 
  *
  * The proposed implementation is mainly a backport from
  * [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
@@ -82,33 +113,25 @@ namespace DGtal
  */
 
 
-template <typename TSpace, 
-          typename TInputPoint,
-          typename TInternalScalar, typename TConstIterator = typename std::vector< TInputPoint >::const_iterator >
+template <typename TInputPoint,
+          typename TConstIterator = typename std::vector< TInputPoint >::const_iterator >
 
 class AlphaThickSegmentComputer
 {
 
   // ----------------------- public types --------------------------------------
-  BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-  BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber< TInternalScalar > ));
-  BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
   BOOST_STATIC_ASSERT(( TInputPoint::dimension == 2 ));
   
 public:
-  typedef TSpace Space;
   typedef TInputPoint InputPoint;
-  typedef TInternalScalar InternalScalar;
   typedef InputPoint InputVector;
-  typedef InternalScalar InternalVector[ 2 ];
-
   
   typedef std::vector< InputPoint > InputPointContainer;
   typedef typename InputPointContainer::size_type Size;
   typedef typename InputPointContainer::const_iterator ContainerConstIterator;
   typedef typename InputPointContainer::iterator Iterator;
   typedef TConstIterator ConstIterator;
-  typedef ParallelStrip<Space,true,true> Primitive;  
+  typedef ParallelStrip< SpaceND< 2,  DGtal::int32_t > ,true,true> Primitive;  
   
   /**
    * Type of embedded points 
@@ -116,8 +139,8 @@ public:
    */
   typedef DGtal::PointVector<2, double> PointD; 
 
-  typedef AlphaThickSegmentComputer<Space, InputPoint,InternalScalar, ConstIterator> Self; 
-  typedef AlphaThickSegmentComputer<Space, InputPoint,InternalScalar, ReverseIterator<ConstIterator> > Reverse; 
+  typedef AlphaThickSegmentComputer<InputPoint, ConstIterator> Self; 
+  typedef AlphaThickSegmentComputer<InputPoint, ReverseIterator<ConstIterator> > Reverse; 
 
 
   // ----------------------- internal types --------------------------------------
@@ -132,7 +155,7 @@ private:
     InputPoint vertexSh; /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
     bool isMelkmanInitialized; /** well initialized when at least 3 points are given.  */ 
     double convexHullHeight;  /** Used in melkmanMainDiagonal() */
-    double convexHullWidth;  /** Used in melkmanMainDiagonal() */ 
+    double actualThickness; /*the actual thickness of the current segment*/
   };
     
   
@@ -243,7 +266,7 @@ public:
 
   /**
    * @return a const iterator pointing on the first point of the
-   * current alpha thick segment. Usefull oonly if the initialisation was
+   * current alpha thick segment. Usefull only if the initialisation was
    * done with a contour iterator (else, it is empty).
    */
   ConstIterator begin() const;
@@ -251,7 +274,7 @@ public:
 
   /**
    * @returns a const iterator pointing after the last point stored in
-   * the current alpha thick segment container. Usefull oonly if the
+   * the current alpha thick segment container. Usefull only if the
    * initialisation was done with a contour iterator (else, it is
    * empty).
    */
@@ -286,7 +309,7 @@ public:
    * @param[in] it an iterator on input points.
    * @param[in] aThickness the thickness of the alpha thick segment (default 1.0).
    */  
-  void init(const ConstIterator &it, double aThickness=5.0);    
+  void init(const ConstIterator &it, double aThickness=1.0);    
   
   
   /**
@@ -352,12 +375,12 @@ public:
   */
   Primitive primitive() const;
   
-
+  
 
   
     // ----------------------- Interface --------------------------------------
 public:
-
+  
   
   /**
    * Checks the validity/consistency of the object.
@@ -366,19 +389,27 @@ public:
   bool isValid() const;
   
 
-
+  /**
+   * Computes the paralell strip params from the current state of the segment.
+   * @param[out] mu the minimal value of N.X (with N is the normal vector of the segment).
+   * @param[out] N the normal of the vector (not normalized).
+   * @param[out] nu the width of the strip. 
+   *
+   **/
+  void computeParalellStripParams(double &mu, PointD &N, double &nu) const;
+  
  
    /**
    * @return the segment length defined from the basic bouding box (@see getBasicBoundingBox).
    **/
-  double getBasicLength();
+  double getBasicLength() const;
 
 
   /**
    * @return the segment length defined from the real bouding box (@see getRealBoudingBox).
    *
    **/
-  double getRealLength();
+  double getRealLength() const;
   
 
   /**
@@ -515,7 +546,7 @@ private:
   /**
    * The maximal thickness of the segment.
    */
-  double myThickness;  
+  double myMaximalThickness;  
 
   /**
    * State of the actual computer
@@ -549,9 +580,11 @@ protected:
 
 
   /**
-   *  Updates the main height of the melkman convex set.
+   *  Updates the main height of the melkman convex set and return the new thickness of the segment.
+   * 
+   * @return the thickness of the segment. 
    **/     
-  void melkmanUpdateMainHeight();
+  double melkmanUpdateMainHeight();
   
   
   /**
@@ -582,7 +615,7 @@ protected:
    * @param[in] aPoint1 the second point defining the line.
    * @param[in] aPoint2 the point to be tested.
    */
-  InternalScalar melkmanIsLeft(const InputPoint &aPoint0, const InputPoint &aPoint1, const InputPoint &aPoint2) const;
+  typename TInputPoint::Component melkmanIsLeft(const InputPoint &aPoint0, const InputPoint &aPoint1, const InputPoint &aPoint2) const;
   
   
   /**
@@ -628,9 +661,9 @@ private:
  * @param object the object of class 'AlphaThickSegmentComputer' to write.
  * @return the output stream after the writing.
  */
-template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+template <typename TInputPoint, typename TConstIterator>
 std::ostream&
-operator<< ( std::ostream & out, const AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & object );
+operator<< ( std::ostream & out, const AlphaThickSegmentComputer<TInputPoint, TConstIterator> & object );
 
 
 } // namespace DGtal

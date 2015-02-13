@@ -46,12 +46,16 @@ using namespace DGtal;
 int main(  )
 {
   trace.beginBlock ( "Example exampleAlphaThickSegment" );
+
+  //! [exampleAlphaThickSegementNoisyTypedef]
+  typedef  AlphaThickSegmentComputer< Z2i::RealPoint > AlphaThickSegmentComputer2D;
+  //! [exampleAlphaThickSegementNoisyTypedef]
   
-  typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::RealPoint, double  > AlphaThickSegmentComputer2D;
   Board2D aBoard;
   std::string file = examplesPath + "samples/contourSnoisy.sdp";
-  std::vector<Z2i::RealPoint> aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile (file);
-
+  //! [exampleAlphaThickSegementNoisyReadFile]
+  std::vector<Z2i::RealPoint> aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(file);
+  //! [exampleAlphaThickSegementNoisyReadFile]
 
   // displaying contour
   aBoard << SetMode(aContour[0].className(), "Grid"); 
@@ -61,25 +65,32 @@ int main(  )
                   aContour[(i+1)%aContour.size()][0], aContour[(i+1)%aContour.size()][1]);
   }
 
-    
-  //construction of an AlphaThickSegmentComputer2D from the freemanchain iterator
-  AlphaThickSegmentComputer2D anAlphaSegment, anAlphaSegment2, anAlphaSegment3;
-  std::vector<Z2i::RealPoint>::const_iterator it2 =  aContour.begin();  
   
-  anAlphaSegment.init(10);                           
-  while (anAlphaSegment.extendFront(*it2)) {
-    it2++;
+  //initialisation of an AlphaThickSegmentComputer2D of thickness 10 and forward recognition.
+  //! [exampleAlphaThickSegementNoisInitAndReco]
+  AlphaThickSegmentComputer2D anAlphaSegment;
+  anAlphaSegment.init(15);                             
+  std::vector<Z2i::RealPoint>::const_iterator it =  aContour.begin();  
+  while (anAlphaSegment.extendFront(*it)) {
+    it++;
   }
+  //! [exampleAlphaThickSegementNoisInitAndReco]
 
+  //! [exampleAlphaThickSegementDisplay]
   aBoard << anAlphaSegment;  
-  
-  anAlphaSegment2.init(aContour.begin(), 5);
+  //! [exampleAlphaThickSegementDisplay]
+  AlphaThickSegmentComputer2D anAlphaSegment2;
+  //! [exampleAlphaThickSegementNoisInitAndReco2]
+  anAlphaSegment2.init(aContour.begin(), 9);
   while (anAlphaSegment2.extendFront()) {
   }
+  //! [exampleAlphaThickSegementNoisInitAndReco2]
+  
   aBoard  << CustomStyle( anAlphaSegment2.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );  
   aBoard << anAlphaSegment2;  
+  AlphaThickSegmentComputer2D  anAlphaSegment3;
 
-  anAlphaSegment3.init(aContour.begin(), 1);
+  anAlphaSegment3.init(aContour.begin(), 2);
   while (anAlphaSegment3.extendFront()) {
   }
   aBoard  << CustomStyle( anAlphaSegment3.className(), new CustomColors( DGtal::Color::Green, DGtal::Color::None ) );  

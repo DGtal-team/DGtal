@@ -49,7 +49,7 @@ int main(  )
 
 
   typedef FreemanChain<Z2i::Space::Integer>::ConstIterator FCConstIterator;
-  typedef  AlphaThickSegmentComputer<Z2i::Space, Z2i::Point, int, FCConstIterator > AlphaThickSegmentComputer2D;
+  typedef  AlphaThickSegmentComputer< Z2i::Point, FCConstIterator > AlphaThickSegmentComputer2D;
   Board2D aBoard;
 
   // Reading input contour
@@ -74,7 +74,7 @@ int main(  )
   aBoard << anAlphaSegment2;
   
   FCConstIterator fcIt = fc.begin();
-  anAlphaSegment3.init(1);
+  anAlphaSegment3.init(2);
   while (anAlphaSegment3.extendFront(*fcIt)) {
     fcIt++;
   }

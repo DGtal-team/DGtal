@@ -387,9 +387,9 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 
 
 // AlphaThickSegmentComputer
-template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+template <typename TInputPoint,  typename TConstIterator>
 void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard, 
-                                                 const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>  & anAlphaThickSegment){
+                                                 const DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>  & anAlphaThickSegment){
   typedef DGtal::PointVector<2,double> PointD;
 
   PointD topLeft, topRight, bottomRight, bottomLeft;
@@ -402,10 +402,10 @@ void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
 }
 
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+template < typename TInputPoint, typename TConstIterator>
 void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard, 
-                                                   const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator> & anAlphaThickSegment){
-  typedef typename DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>::ContainerConstIterator ContConstIterator;
+                                                   const DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator> & anAlphaThickSegment){
+  typedef typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ContainerConstIterator ContConstIterator;
   typedef TConstIterator ConstIterator;
   typedef TInputPoint Point;
   // Draw a linking polygonal line if the pixels are drawn as points.
@@ -448,9 +448,9 @@ void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
   }
 }
 
-template <typename TSpace, typename TInputPoint, typename TInternalScalar, typename TConstIterator>
+template < typename TInputPoint,  typename TConstIterator>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
-                                    const DGtal::AlphaThickSegmentComputer<TSpace, TInputPoint, TInternalScalar, TConstIterator>  & anAlphaThickSegment ){
+                                    const DGtal::AlphaThickSegmentComputer< TInputPoint,  TConstIterator>  & anAlphaThickSegment ){
   std::string mode = aBoard.getMode( anAlphaThickSegment.className() );
   if ( mode == "BoundingBox" )
     drawAsBoundingBox( aBoard, anAlphaThickSegment );
