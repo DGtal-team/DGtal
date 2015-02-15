@@ -1,10 +1,29 @@
 language: cpp
+
 compiler:
-- gcc
-- clang
+  - gcc
+  - clang
+
+os:
+  - linux
+  - osx
+
+osx_image: xcode61
+
 cache: apt
+
 notifications:
   slack: dgtal:FObxCZFoeQkkaRuktJD5uhnN
+
+########
+# matrix details:
+#    - one build for the documentation on macosx (clang) and only for commits on
+#      DGtal-team repo (no pull request). Encrypted var. required.
+#    - code coverage only for gcc on linux and first config (Magick, GMP)
+#    - No gcc on macosx
+#    - Otherwise, 2 os x 2 configs
+#
+########
 env:
   - CONFIG="Debug,Magick,GMP,Coverage"
   - CONFIG="Debug,Cairo,QGLviewer,HDF5"
@@ -22,17 +41,27 @@ matrix:
       compiler: gcc
 
 before_install:
-  - if [ $CONFIG == "Debug,Magick,GMP,Coverage" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"; DOC="false";  fi
-  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"; DOC="false"; fi
-  - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; fi
-  - if [ $OriginalRepo == "true" ]; then openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="false"; fi
+  - COVERAGE="false"
+  - DOC="false"
+  - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
   
+  - if [ $CONFIG == "Debug,Magick,GMP,Coverage" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"; COVERAGE="true"; fi
+  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"; fi
+  - if [ $DOC == "true" ]; then  BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="true"; fi
 
+
+########
+# Deps.
+########
 before_script:
-  - if [ $TRAVIS_OS_NAME == linux ]; then  sudo apt-get -qq update &&  sudo apt-get -qq install libhdf5-serial-dev libboost-program-options-dev libcairo2-dev doxygen graphviz libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev lcov; fi
-  - if [ $TRAVIS_OS_NAME == linux ]; then gem install coveralls-lcov; fi
+  - if [ $TRAVIS_OS_NAME == linux ]; then  sudo apt-get -qq update &&  sudo apt-get -qq install libhdf5-serial-dev libboost-program-options-dev libcairo2-dev doxygen graphviz libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev lcov;  fi
+  - if [ $COVERAGE == "true" ]; then  gem install coveralls-lcov; fi
   - if [ $TRAVIS_OS_NAME == osx ]; then brew update; brew install boost doxygen hdf5 graphviz graphicsmagick homebrew/science/insighttoolkit gmp libqglviewer; sudo ln -s /usr/local/Cellar/libqglviewer/2.5.1/QGLViewer.framework /Library/Frameworks/ ; echo "done";fi
 
+
+############
+# Main rules
+############
 script:
   - cmake . $BTYPE
   - echo $DOC
@@ -42,22 +71,18 @@ script:
   - if [ $DOC == "false" ]; then  cd ../tests &&  make &&  cd .. ; fi
   - if [ $DOC == "false" ]; then  make test;  fi
 
+############
+# Coverage
+############
 after_script:
-  - if [ $DOC == "false" ]; then make lcov; fi
-  - if [ $DOC == "false" ]; then coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info; fi
+  - if [ $COVERAGE == "true" ]; then make lcov; fi
+  - if [ $COVERAGE == "true" ]; then coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info; fi
 
 
-###
+###########
 ## Building the documentation
-###
-
+###########
 after_success:
-  - if [ $DOC == "true" ]; then if [ $TRAVIS_PULL_REQUEST == "false" ]; then make doc; fi; fi
-  - if [ $DOC == "true" ]; then if [ $TRAVIS_PULL_REQUEST == "false" ]; then rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/; fi; f
-  - if [ $DOC == "true" ]; then if [ $TRAVIS_PULL_REQUEST == "false" ]; then if [ $TRAVIS_OS_NAME == "osx" ]; then cd html; make ; wget http://dgtal.org/doc/docset/template.tgz ; tar zxvf template.tgz ; mv template/* org.dgtal.docset ; tar zcvf DGtal-devel.tgz org.dgtal.docset ; cd .. ;rsync  -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/DGtal-devel.tgz dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/docset ;   fi; fi; fi
-
-os:
-  - linux
-  - osx
-
-osx_image: xcode61
+  - if [ $DOC == "true" ]; then  make doc; fi
+  - if [ $DOC == "true" ]; then rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/;  fi
+  - if [ $DOC == "true" ]; then cd html; make ; wget http://dgtal.org/doc/docset/template.tgz ; tar zxvf template.tgz ; mv template/* org.dgtal.docset ; tar zcvf DGtal-devel.tgz org.dgtal.docset ; cd .. ;rsync  -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/DGtal-devel.tgz dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/docset ;   fi
