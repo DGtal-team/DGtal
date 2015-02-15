@@ -480,6 +480,7 @@ namespace DGtal
     /**
      * Returns the unique point of the DSL located at position zero
      * in O(1). 
+     * @pre the arithmetical thickness is not equal to zero
      * @return the point of the DSL located at position zero
      */
     Point getPoint() const;
@@ -487,6 +488,7 @@ namespace DGtal
     /**
      * Returns the unique point of the DSL located at position @a aPosition
      * in O(1). 
+     * @pre the arithmetical thickness is not equal to zero
      * @param aPosition position of the returned point
      * @return the point of the DSL located at position @a aPosition
      */
