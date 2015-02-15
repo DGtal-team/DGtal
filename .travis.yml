@@ -1,14 +1,10 @@
 language: cpp
-
 compiler:
-  - gcc
-  - clang
-
+- gcc
+- clang
 cache: apt
-
 notifications:
   slack: dgtal:FObxCZFoeQkkaRuktJD5uhnN
-
 env:
   - CONFIG="Debug,Magick,GMP,Coverage"
   - CONFIG="Debug,Cairo,QGLviewer,HDF5"
