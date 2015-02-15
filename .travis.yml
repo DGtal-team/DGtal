@@ -24,16 +24,11 @@ matrix:
    
 
 before_install:
-
-before_install:
   - openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv  -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d
   - chmod 600 .travis/dgtal_rsa
-
-   - if [ $CONFIG == "Debug,Magick,GMP,Coverage" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"; DOC="false";  fi
-   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"; DOC="false"; fi
-   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; fi
-   - 
-
+  - if [ $CONFIG == "Debug,Magick,GMP,Coverage" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"; DOC="false";  fi
+  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"; DOC="false"; fi   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; fi
+  
 
 before_script:
   - if [ $TRAVIS_OS_NAME == linux ]; then  sudo apt-get -qq update &&  sudo apt-get -qq install libhdf5-serial-dev libboost-program-options-dev libcairo2-dev doxygen graphviz libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev lcov; fi
