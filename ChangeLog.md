@@ -73,6 +73,13 @@
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
  - Fix Bezout Vector computation (Isabelle Sivignon, [#948](https://github.com/DGtal-team/DGtal/pull/948))
 
+- *IO Package*
+ - Performance improvement of color managment in Display3D, Board3D
+   and Viewer3D: no more "createNew...List" when setting a new
+   color. (David Coeurjolly,
+   [#958](https://github.com/DGtal-team/DGtal/pull/958))
+
+
 # DGtal 0.8
 
 
