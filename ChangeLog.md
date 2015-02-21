@@ -44,7 +44,7 @@
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
  - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
-   [#940](https://github.com/DGtal-team/DGtal/pull/940)
+   [#961](https://github.com/DGtal-team/DGtal/pull/961)
 
 
 - *Shapes Package*
