@@ -74,7 +74,8 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::AlphaThickSegmen
 template < typename TInputPoint, typename TConstIterator>
 inline
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
-AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ):myMaximalThickness(other.myMaximalThickness), myPointContainer(other.myPointContainer),
+AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ):myMaximalThickness(other.myMaximalThickness), 
+                                                                     myPointContainer(other.myPointContainer),
                                                                      myState(other.myState), _state(other._state), 
                                                                      myIsStoringPoints(other.myIsStoringPoints),
                                                                      myNbPointsAddedFromIterators(other.myNbPointsAddedFromIterators), 
@@ -134,7 +135,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::operator==( cons
   return ( (myBegin == other.myBegin) 
 	   && (myEnd == other.myEnd) && myState.vertexSh == other.myState.vertexSh
            && myState.edgePh == other.myState.edgePh && myState.edgeQh == other.myState.edgeQh); 
-
 }
 
 
@@ -303,9 +303,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(cons
     myState.lastFront = aPoint;
     return true;
   }else{
-  
-    myPointContainer.pop_back();
-    
+    myPointContainer.pop_back();    
     myState = _state;
     return false;
   }
@@ -332,7 +330,6 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront() 
 {
-    
   _state = myState;
   melkmanAddPoint(*myEnd);
   
@@ -361,7 +358,6 @@ inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::Primitive
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::primitive()  const
 {
-  
   PointD vectNormal;
   double mu, nu;
   computeParalellStripParams(mu, vectNormal, nu);

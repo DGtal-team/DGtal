@@ -68,14 +68,16 @@ bool testAlphaThickSegmentConvexHullAndBox()
   AlphaThickSegmentComputer2D anAlphaThickSegmentComputer4;
   anAlphaThickSegmentComputer4.init(aContour.begin(), 1);
   
-  unsigned aPos=0;
-  while (anAlphaThickSegmentComputer.extendFront() && aPos<aContour.size()-1){aPos++;}
-  aPos=0;
-  while (anAlphaThickSegmentComputer2.extendFront() && aPos<aContour.size()-1){aPos++;}
-  aPos=0;
-  while (anAlphaThickSegmentComputer3.extendFront() && aPos<aContour.size()-1){aPos++;}
-  aPos=0;
-  while (anAlphaThickSegmentComputer4.extendFront() && aPos<aContour.size()-1){aPos++;}
+  
+  while (anAlphaThickSegmentComputer.end() != aContour.end() && 
+         anAlphaThickSegmentComputer.extendFront()){}  
+  while (anAlphaThickSegmentComputer2.end() != aContour.end() &&
+         anAlphaThickSegmentComputer2.extendFront() ){}
+  while (anAlphaThickSegmentComputer3.end() != aContour.end() && 
+         anAlphaThickSegmentComputer3.extendFront()){}
+  while (anAlphaThickSegmentComputer4.end() != aContour.end() &&
+         anAlphaThickSegmentComputer4.extendFront()){}
+
     
   // Display convexhull
   std::vector<Z2i::Point> aVect = anAlphaThickSegmentComputer.getConvexHull();
@@ -149,7 +151,8 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
   AlphaThickSegmentComputer2D anAlphaThickSegmentComputer;
   anAlphaThickSegmentComputer.init(aContour.begin()+10, 2);
   
-  while (anAlphaThickSegmentComputer.extendFront()){
+  while (anAlphaThickSegmentComputer.end()!= aContour.end() && 
+         anAlphaThickSegmentComputer.extendFront()){
   }
 
   
@@ -225,7 +228,8 @@ bool testAlphaThickSegmentFreeman()
   
   AlphaThickSegmentComputer2D anAlphaThickSegmentComputer;
   anAlphaThickSegmentComputer.init(fc.begin(),  70.0);
-  while (anAlphaThickSegmentComputer.extendFront()){
+  while (anAlphaThickSegmentComputer.end() != fc.end() && 
+         anAlphaThickSegmentComputer.extendFront()){
   }
 
   
