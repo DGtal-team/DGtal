@@ -49,6 +49,16 @@
    ConstIterator and adds a new method to change the color of a
    specific face. (Bertrand Kerautret,
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
+ - Refactoring of CSG operations on Euclidean / Digital shapes.
+   Can combine easily several operations.
+   EuclideanShapesUnion, EuclideanShapesIntersection and 
+   EuclideanShapesMinus are now deprecated. Use EuclideanShapesCSG
+   instead.
+   DigitalShapesUnion, DigitalShapesIntersection and 
+   DigitalShapesMinus are now deprecated. Use DigitalShapesCSG
+   instead. (Jérémy Levallois
+   [#962](https://github.com/DGtal-team/DGtal/pull/962))
+
 
 
 ## Bug Fixes
