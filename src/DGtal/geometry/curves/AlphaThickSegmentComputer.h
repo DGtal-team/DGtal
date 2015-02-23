@@ -47,6 +47,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ReverseIterator.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/surfaces/ParallelStrip.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -97,7 +98,7 @@ namespace DGtal
  * - Then import eventually a vector containing the input points by using the PointListReader class:
  *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyReadFile 
  * 
- * - Finally apply the segment recognition (here of maximal thickness 10)  by adding the sequence (forward) of contour points: 
+ * - Finally apply the segment recognition (here of maximal thickness 15)  by adding the sequence (forward) of contour points: 
  *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco 
  *  
  * - If you use a Board2D display, you can draw the resulting segment like other 2D objects:
@@ -221,7 +222,14 @@ public:
   bool operator!=( const AlphaThickSegmentComputer & other ) const;
 
   /**
-   * Initialisation.
+   * Initialisation from a maximal thickness. The maximal thickness
+   * corresponds to the width of the ParallelStrip primitive. 
+   *
+   * @note By using this initialisation the computer will store the
+   * internal points (needed for length computation and display). To
+   * avoid this storage, you can use the initialisation given from the
+   * an iterator (@see init().
+   *
    * @param[in] aThickness the maximal thickness of the alpha thick segment (alpha_max).
    */  
   void init(double aThickness);  
