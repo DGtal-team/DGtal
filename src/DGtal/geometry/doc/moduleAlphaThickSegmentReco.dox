@@ -26,7 +26,7 @@ irregularities.
 We present here the implementation of the recognition of the alpha
 thick segment as described in \cite FaureTangential2008. From a
 maximal thickness alpha, it permits the recognition of a thick segment
-with the possibilty to take into accounts some noise. Moreover the
+with the possibility to take into accounts some noise. Moreover the
 segment can be detected from points not necessary connected and/or
 with floating coordinates.
 
@@ -44,7 +44,7 @@ A set \f$ \mathcal{S}_f \f$ of consecutive points (\f$ \mathcal{S}_f
 \f$ d \f$ if there exists a discrete line \f$ \mathcal{D}(a,b, \mu,
 \omega) \f$ such that all points of \f$ \mathcal{S}_f \f$ belong to
 \f$ \mathcal{D} \f$ and \f$ \frac{\omega}{max(|a|,|b|) \leq d
-} \f$. The line \f$ D \f$ is said bouding for \f$ \mathcal{S}_f \f$.
+} \f$. The line \f$ D \f$ is said bounding for \f$ \mathcal{S}_f \f$.
 
 
 Following this definition, the authors also propose an incremental
@@ -74,7 +74,7 @@ computed incrementally with the melkman algorithm in linear time \cite
 melkmanLine1987 . Then the actual implementation allows to add point
 on the front of the current segment and to update the value of
 vertical/horizontal thickness with a coast of \f$O(n\ log\ n) \f$ into
-\f$O( log\ n) \f$ (thanks to the Buzer optimisation \cite
+\f$O( log\ n) \f$ (thanks to the Buzer optimization \cite
 lilianComputing2007 ).  Note that the convexhull maintenance in linear
 time (with point substraction) proposed by Buzer \cite
 lilianComputing2007 is not yet implemented.
@@ -102,7 +102,7 @@ For illustration, the alpha thick segments can be recognized on such contours:
 
 
 
-But will produces some error with this one:
+But will produce some errors with this one:
 @image html alphThickSegmentInputPointsLoop.png "Example of input contour (1) containing loop which produce incorrect convexhull (2)." 
 @image latex alphThickSegmentInputPointsLoop.png "Example of input contour (1) containing loop which produce incorrect convexhull (2)." width=5cm
 
@@ -161,7 +161,7 @@ exampleAlphaThickSegmentNoisy.cpp produce such a display:
 Other examples with other input types are given here: exampleAlphaThickSegment.cpp.
 
 
-\subsection moduleAlphaThickSegmentRecoDetails-CodeInitIter AlphaThickSegmentComputer with iterator
+\subsection moduleAlphaThickSegmentRecoDetails-CodeInitIter AlphaThickSegmentComputer with a point iterator
 
 Since the AlphaThickSegmentComputer is a model of
 CForwardSegmentComputer, you can initialize it from a given input
@@ -171,6 +171,9 @@ similar way than in the previous example:
 
  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco2 
 
+
+Since here the iterator is given on an open contour, we have to ensure that
+other candidates exits before applying the potential extension.
 
 
 
@@ -190,48 +193,46 @@ You should obtain such a visualization:
 @image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segment with alpha = 4" width=6cm
 
 
-The whole example can be found in \ref greedyAlphaThickDecomposition.cpp .
+The whole example can be found in \ref greedyAlphaThickDecomposition.cpp.
+
+
+
+
 
 
 */
 
 
 
+
 /**
    This example a simple Alpha Thick segment recognition given from a freeman chain contour.
+   @see \ref moduleAlphaThickSegmentReco
 
-@see \ref moduleAlphaThickSegmentReco
-
-@image html exampleAlphaThickSegment.png "Simple example of some alpha thick segments recognition with alpha = 2, 5  and 15."
-@image latex exampleAlphaThickSegment.png "Simple example of some alpha thick segments recognition with alpha = 2, 5  and 15." width=6cm
-
-\example geometry/curves/exampleAlphaThickSegment.cpp
+   @image html exampleAlphaThickSegment.png "Simple example of some alpha thick segments recognition with alpha = 2, 5  and 15."
+   @image latex exampleAlphaThickSegment.png "Simple example of some alpha thick segments recognition with alpha = 2, 5  and 15." width=6cm
+   \example geometry/curves/exampleAlphaThickSegment.cpp
 */
 
 
 
 /**
    This example shows a simple alpha thick segment recognition given from a noisy input contour with floating point coordinates.
+   @see \ref moduleAlphaThickSegmentReco
 
-@see \ref moduleAlphaThickSegmentReco
-
-@image html exampleAlphaThickSegmentNoisy.png "Simple example of some alpha thick segments recognition with alpha = 2, 9  and 15."
-@image latex exampleAlphaThickSegmentNoisy.png "Simple example of some alpha thick segments recognition with alpha = 2, 9  and 15." width=6cm
-
-\example geometry/curves/exampleAlphaThickSegmentNoisy.cpp
+   @image html exampleAlphaThickSegmentNoisy.png "Simple example of some alpha thick segments recognition with alpha = 2, 9  and 15."
+   @image latex exampleAlphaThickSegmentNoisy.png "Simple example of some alpha thick segments recognition with alpha = 2, 9  and 15." width=6cm
+   \example geometry/curves/exampleAlphaThickSegmentNoisy.cpp
 */
-
 
 
 /**
    This example shows the greedy decomposition of an noisy contour from the alpha thick segment primitive with alpha = 4.
+   @see \ref moduleAlphaThickSegmentReco
 
-@see \ref moduleAlphaThickSegmentReco
-
-@image html examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segments with alpha = 4"
-@image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segment with alpha = 4" width=6cm
-
-\example geometry/curves/greedyAlphaThickDecomposition.cpp
+   @image html examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segments with alpha = 4"
+   @image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segment with alpha = 4" width=6cm
+   \example geometry/curves/greedyAlphaThickDecomposition.cpp
 */
 
 
