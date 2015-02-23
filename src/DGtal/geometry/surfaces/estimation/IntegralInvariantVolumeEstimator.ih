@@ -231,7 +231,8 @@ init
         shiftPoint[ k ] = (Scalar) (*it_neigh)[ k ];
       shiftPoint *= (Scalar) myH;
       KernelSupport* kernelShifted = new KernelSupport( shiftPoint, eRadius );
-      EuclideanMinus* current = new EuclideanMinus( *myKernel, *kernelShifted );
+      EuclideanMinus* current = new EuclideanMinus( myKernel );
+      current->op_minus( kernelShifted );
       DigitalShape digCurrent;
       digCurrent.attach( *current );
       digCurrent.init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );
