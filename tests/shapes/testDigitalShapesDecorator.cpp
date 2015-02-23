@@ -68,6 +68,7 @@ bool testDigitalShapesDecorator()
 
   ShapeA shapeA(-2.501, 0.0, 2.5013);
   ShapeA shapeB(2, 0.0, 2.5013);
+  ShapeA shapeC(0.0, 0.0, 2.5);
 
   MyGaussDigitizerA digShapeA;
   digShapeA.attach( shapeA );
@@ -77,19 +78,21 @@ bool testDigitalShapesDecorator()
   digShapeB.attach( shapeB );
   digShapeB.init( shapeB.getLowerBound(), shapeB.getUpperBound(), h );
 
-  typedef DigitalShapesUnion< MyGaussDigitizerA, MyGaussDigitizerA > Union;
-  Union s_union ( digShapeA, digShapeB );
-
-  ShapeA shapeC(0.0, 0.0, 2.5);
   MyGaussDigitizerA digShapeC;
   digShapeC.attach( shapeC );
   digShapeC.init( shapeC.getLowerBound(), shapeC.getUpperBound(), h );
 
-  typedef DigitalShapesIntersection< Union, MyGaussDigitizerA > Intersection;
-  Intersection s_intersec ( s_union, digShapeC );
 
-  typedef DigitalShapesMinus< MyGaussDigitizerA, MyGaussDigitizerA > Minus;
-  Minus s_minus ( digShapeA, digShapeC );
+  typedef DigitalShapesCSG< MyGaussDigitizerA, MyGaussDigitizerA > CSG;
+  CSG s_union ( digShapeA );
+  s_union.op_union( digShapeB );
+
+  CSG s_intersec ( digShapeA );
+  s_intersec.op_union( digShapeB );
+  s_intersec.op_intersection( digShapeC );
+
+  CSG s_minus ( digShapeA );
+  s_minus.op_minus( digShapeC );
 
 
   nbok += (( s_union.orientation( Point( -12, 0 )) == INSIDE )

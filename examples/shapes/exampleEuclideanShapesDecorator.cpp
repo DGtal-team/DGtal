@@ -71,8 +71,9 @@ int main( int argc, char** argv )
     MyEuclideanShapeA shapeA( Z2i::RealPoint( 0.0, 0.0 ), 14 );
     MyEuclideanShapeB shapeB( Z2i::RealPoint( 1.0, 0.0 ), 14 );
 
-    typedef EuclideanShapesMinus< MyEuclideanShapeA, MyEuclideanShapeB > Minus;
-    Minus s_minus ( shapeA, shapeB );
+    typedef EuclideanShapesCSG< MyEuclideanShapeA, MyEuclideanShapeB > Minus;
+    Minus s_minus ( shapeA );
+    s_minus.op_minus( shapeB );
     //! [EuclideanShapesDecoratorUsage]
 
     typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeA;
