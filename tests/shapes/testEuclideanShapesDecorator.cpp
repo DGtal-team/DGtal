@@ -59,17 +59,18 @@ bool testEuclideanShapesDecorator()
 
   ShapeA shapeA(-2.501, 0.0, 2.5013);
   ShapeA shapeB(2, 0.0, 2.5013);
-
-  typedef EuclideanShapesUnion< ShapeA, ShapeA > Union;
-  Union s_union ( shapeA, shapeB );
-
   ShapeA shapeC(0.0, 0.0, 2.5);
 
-  typedef EuclideanShapesIntersection< Union, ShapeA > Intersection;
-  Intersection s_intersec ( s_union, shapeC );
+  typedef EuclideanShapesCSG< ShapeA, ShapeA > CSG;
+  CSG s_union ( shapeA );
+  s_union.op_union( shapeB );
 
-  typedef EuclideanShapesMinus< ShapeA, ShapeA > Minus;
-  Minus s_minus ( shapeA, shapeC );
+  CSG s_intersec ( shapeA );
+  s_intersec.op_union( shapeB );
+  s_intersec.op_intersection( shapeC );
+
+  CSG s_minus ( shapeA );
+  s_minus.op_minus( shapeC );
 
 
   nbok += (( s_union.orientation( RealPoint( -5.1, 0.0 )) == INSIDE )
