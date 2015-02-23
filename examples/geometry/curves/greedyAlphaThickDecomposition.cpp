@@ -62,7 +62,11 @@ int main(  )
   aBoard.fillPolyline(poly);
 
   // Computing greedy Alpha Thick decomposition.
+  //! [greedyAlphaThickDecompositionModeDisplay]
   aBoard << SetMode("AlphaThickSegment", "BoundingBox");
+  //! [greedyAlphaThickDecompositionModeDisplay]
+
+  //! [greedyAlphaThickDecompositionAlgo]
   ConstIterator contourIt = aContour.begin();
   while(contourIt != aContour.end()){
     AlphaThickSegmentComputer2D aComputer;
@@ -75,7 +79,7 @@ int main(  )
       contourIt--;
     }
   }
-  
+  //! [greedyAlphaThickDecompositionAlgo]  
   
   aBoard.saveEPS("greedyAlphaThickDecomposition.eps"); 
   trace.endBlock();

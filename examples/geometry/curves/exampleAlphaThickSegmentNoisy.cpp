@@ -30,12 +30,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "ConfigExamples.h"
-#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
+//! [exampleAlphaThickSegementNoisyInclude]
 #include "DGtal/geometry/curves/AlphaThickSegmentComputer.h"
-#include "DGtal/io/boards/Board2D.h"
-#include <DGtal/io/readers/GenericReader.h>
+#include "DGtal/helpers/StdDefs.h"
 #include <DGtal/io/readers/PointListReader.h>
+//! [exampleAlphaThickSegementNoisyInclude]
+#include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -68,12 +69,16 @@ int main(  )
   
   //initialisation of an AlphaThickSegmentComputer2D of thickness 10 and forward recognition.
   //! [exampleAlphaThickSegementNoisInitAndReco]
+  //! [exampleAlphaThickSegementNoisInit]
   AlphaThickSegmentComputer2D anAlphaSegment;
   anAlphaSegment.init(15);                             
+  //! [exampleAlphaThickSegementNoisInit]
+  //! [exampleAlphaThickSegementNoisReco]
   std::vector<Z2i::RealPoint>::const_iterator it =  aContour.begin();  
   while (anAlphaSegment.extendFront(*it)) {
     it++;
   }
+  //! [exampleAlphaThickSegementNoisReco]
   //! [exampleAlphaThickSegementNoisInitAndReco]
 
   //! [exampleAlphaThickSegementDisplay]
@@ -85,11 +90,13 @@ int main(  )
   while (anAlphaSegment2.extendFront()) {
   }
   //! [exampleAlphaThickSegementNoisInitAndReco2]
-  
+
+  //! [exampleAlphaThickSegementNoisCustomColor]  
   aBoard  << CustomStyle( anAlphaSegment2.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );  
   aBoard << anAlphaSegment2;  
-  AlphaThickSegmentComputer2D  anAlphaSegment3;
+  //! [exampleAlphaThickSegementNoisCustomColor]  
 
+  AlphaThickSegmentComputer2D  anAlphaSegment3;
   anAlphaSegment3.init(aContour.begin(), 2);
   while (anAlphaSegment3.extendFront()) {
   }
