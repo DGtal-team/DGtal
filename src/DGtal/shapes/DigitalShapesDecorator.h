@@ -105,7 +105,7 @@ namespace DGtal
       * @param[in] a a model of CDigitalBoundedShape and CDigitalOrientedShape
       */
     DigitalShapesCSG( ConstAlias<ShapeA> a )
-      : myShapeA( &a )
+      : myShapeA( a )
     {
       myLowerBound = myShapeA->getLowerBound();
       myUpperBound = myShapeA->getUpperBound();
@@ -121,7 +121,7 @@ namespace DGtal
     {
       BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
-      std::pair<e_operator, const ShapeB*> shape( e_union, &b );
+      std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_union, b );
 
       for(uint i =0; i < Space::dimension; ++i)
       {
@@ -142,7 +142,7 @@ namespace DGtal
     {
       BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
-      std::pair<e_operator, const ShapeB*> shape( e_intersection, &b );
+      std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_intersection, b );
 
       for(uint i=0; i < Space::dimension; ++i)
       {
@@ -163,7 +163,7 @@ namespace DGtal
     {
       BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
-      std::pair<e_operator, const ShapeB*> shape( e_minus, &b );
+      std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_minus, b );
       v_shapes.push_back(shape); 
 
     }
@@ -264,10 +264,10 @@ namespace DGtal
   private:
 
     /// Base Shape.
-    const ShapeA * myShapeA;
+    CountedConstPtrOrConstPtr< ShapeA > myShapeA;
 
     /// Vector of all operations (ordered) of ShapeB.
-    std::vector< std::pair<e_operator, const ShapeB*> > v_shapes;
+    std::vector< std::pair<e_operator,  CountedConstPtrOrConstPtr< ShapeB > > > v_shapes;
 
     /// Domain lower bound.
     Point myLowerBound;
