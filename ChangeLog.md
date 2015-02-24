@@ -1,6 +1,14 @@
 # DGtal 0.9
 
 ## New Features / Critical Changes
+- *Geometry Package*
+
+ - New Alpha Thick Segment Computer allowing the recognition of noisy
+   digital segment (from a given thickness parameter). The actual implementation is a
+   model of CForwardSegmentComputer with a ParallelStrip primitive. The primitive follow
+   the  Debled-Rennesson etal 2005 blurred segment with isothetic thickness. (David Coeurjolly,
+   [#963](https://github.com/DGtal-team/DGtal/pull/963))
+
 
 ## Changes
 
