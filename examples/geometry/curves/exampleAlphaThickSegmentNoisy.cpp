@@ -93,7 +93,7 @@ int main(  )
   //! [exampleAlphaThickSegementNoisInitAndReco2]
 
   //! [exampleAlphaThickSegementNoisCustomColor]  
-  aBoard  << CustomStyle( anAlphaSegment2.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );  
+  aBoard << CustomStyle( anAlphaSegment2.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );  
   aBoard << anAlphaSegment2;  
   //! [exampleAlphaThickSegementNoisCustomColor]  
 

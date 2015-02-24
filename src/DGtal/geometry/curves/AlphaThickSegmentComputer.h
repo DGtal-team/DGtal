@@ -100,6 +100,10 @@ namespace DGtal
  * 
  * - Finally apply the segment recognition (here of maximal thickness 15)  by adding the sequence (forward) of contour points: 
  *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco 
+ *  @note The maximal thickness given in initialization is the same than
+ *  the width given by the method width() of the ParallelStrip primitive
+ *  (not the vertical/horizontal width of the convex hull).
+ *
  *  
  * - If you use a Board2D display, you can draw the resulting segment like other 2D objects:
  *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementDisplay 
@@ -228,9 +232,11 @@ public:
    * @note By using this initialisation the computer will store the
    * internal points (needed for length computation and display). To
    * avoid this storage, you can use the initialisation given from the
-   * an iterator (@see init().
+   * an iterator @see init().
    *
    * @param[in] aThickness the maximal thickness of the alpha thick segment (alpha_max).
+   *
+   *
    */  
   void init(double aThickness);  
   
@@ -309,10 +315,11 @@ public:
   //-------------------- model of CForwardSegmentComputer ----------------
 
 public:
-     
+****     
   /**
-   * Initialisation with an ConstIterator (to conform to CForwardSegmentComputer).
-   * By default the thickness will be set to 1.
+   * Initialisation with an ConstIterator (to conform to
+   * CForwardSegmentComputer).  The maximal thickness corresponds to
+   * the width of the ParallelStrip primitive (set to 1 by default).
    *
    * @param[in] it an iterator on input points.
    * @param[in] aThickness the thickness of the alpha thick segment (default 1.0).
