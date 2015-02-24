@@ -315,7 +315,7 @@ public:
   //-------------------- model of CForwardSegmentComputer ----------------
 
 public:
-****     
+
   /**
    * Initialisation with an ConstIterator (to conform to
    * CForwardSegmentComputer).  The maximal thickness corresponds to
