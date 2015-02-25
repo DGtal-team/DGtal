@@ -43,7 +43,10 @@
    substraction scaling...). Color is now CopyConstructible and
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
- 
+ - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
+   [#961](https://github.com/DGtal-team/DGtal/pull/961)
+
+
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
    ConstIterator and adds a new method to change the color of a
