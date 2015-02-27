@@ -67,8 +67,12 @@
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/dec/VectorField.h"
+#include "DGtal/dec/KForm.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
 
 //#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/helpers/StdDefs.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -85,7 +89,34 @@ namespace DGtal
   struct Display2DFactory
  {
 
+// DiscreteExteriorCalculus
+template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+static
+void
+draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus);
+// DiscreteExteriorCalculus
+
+// KForm
+template <typename TCalculus, DGtal::Order order, DGtal::Duality duality>
+static
+void
+draw(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform);
+
+		 private:
+template <typename TCalculus, DGtal::Order order, DGtal::Duality duality, typename TColorMap>
+static
+void
+drawWithColorMap(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform, const TColorMap& colormap);
+		 public:
+// KForm
     
+// VectorField
+template <typename TCalculus, DGtal::Duality duality>
+static
+void
+draw(DGtal::Board2D& board, const DGtal::VectorField<TCalculus, duality>& vector_field);
+// VectorField
+
 // AngleLinearMinimizer
 static void draw( DGtal::Board2D & board, const DGtal::AngleLinearMinimizer & );
 // AngleLinearMinimizer
@@ -202,14 +233,14 @@ static void drawFill( DGtal::Board2D & aBoard, const GridCurve<TKSpace> & object
     
 // SCellsRange
 template <typename TIterator, typename TSCell>
-static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, DefaultFunctor, TSCell> & object );
+static void draw( DGtal::Board2D & aBoard,
+                  const ConstRangeAdapter<TIterator, functors::Identity, TSCell> & object );
 // SCellsRange
     
 // PointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object );
+           const ConstRangeAdapter<TIterator, functors::SCellToPoint<TKSpace>, typename TKSpace::Point> & object );
 // PointsRange
 
 // MidPointsRange
@@ -222,28 +253,28 @@ static void draw( DGtal::Board2D & aBoard,
 // ArrowsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+           const ConstRangeAdapter<TIterator, functors::SCellToArrow<TKSpace>, 
            std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & object );
 // ArrowsRange
 
 // InnerPointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, 
+           const ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<TKSpace>, 
            typename TKSpace::Point > & object );
 // InnerPointsRange
 
 // OuterPointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, 
+           const ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<TKSpace>, 
            typename TKSpace::Point > & object );
 // OuterPointsRange
 
 // IncidentPointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+           const ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<TKSpace>, 
            std::pair<typename TKSpace::Point, typename TKSpace::Point> > & object );
 // IncidentPointsRange
 

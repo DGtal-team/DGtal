@@ -125,12 +125,12 @@ namespace DGtal
      * and the slope parameters.
      */
     typedef TCoordinate Coordinate;
-    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
     /**
      * Type used for the intercepts and the remainders.
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
     /**
      * Type of digital plane.
      */
@@ -480,6 +480,7 @@ namespace DGtal
     /**
      * Returns the unique point of the DSL located at position zero
      * in O(1). 
+     * @pre the arithmetical thickness is not equal to zero
      * @return the point of the DSL located at position zero
      */
     Point getPoint() const;
@@ -487,6 +488,7 @@ namespace DGtal
     /**
      * Returns the unique point of the DSL located at position @a aPosition
      * in O(1). 
+     * @pre the arithmetical thickness is not equal to zero
      * @param aPosition position of the returned point
      * @return the point of the DSL located at position @a aPosition
      */
@@ -768,7 +770,7 @@ namespace DGtal
   namespace detail {
     
     /**
-     * Description of template class 'CastFunctorForSignedIntegers' <p>
+     * Description of template class 'functors::CastForSignedIntegers' <p>
      * \brief Aim: Define a simple functor that can cast 
      * a signed integer (possibly a DGtal::BigInteger) into another.
      *
@@ -778,10 +780,10 @@ namespace DGtal
     template <typename TInput, typename TOutput >
     struct toCoordinateImpl
     {
-      BOOST_CONCEPT_ASSERT(( CSignedNumber<TInput> ));
-      BOOST_CONCEPT_ASSERT(( CSignedNumber<TOutput> ));
-      BOOST_CONCEPT_ASSERT(( CInteger<TInput> ));
-      BOOST_CONCEPT_ASSERT(( CInteger<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber<TInput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TOutput> ));
       /**
        * cast operator
        * @return the conversion of @a aInput into an object of type TOutput.
@@ -797,8 +799,8 @@ namespace DGtal
     template <typename TOutput>
     struct toCoordinateImpl<DGtal::BigInteger, TOutput>
     {
-      BOOST_CONCEPT_ASSERT(( CSignedNumber<TOutput> ));
-      BOOST_CONCEPT_ASSERT(( CInteger<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TOutput> ));
 
       inline
       static TOutput cast(const DGtal::BigInteger& aInput)

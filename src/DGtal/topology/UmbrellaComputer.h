@@ -87,7 +87,7 @@ namespace DGtal
   class UmbrellaComputer
   {
     // Concept checks
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceTracker<TDigitalSurfaceTracker> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceTracker<TDigitalSurfaceTracker> ) );
 
     // ----------------------- public types ------------------------------
   public:

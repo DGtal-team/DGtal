@@ -178,7 +178,7 @@ namespace DGtal
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::CellSet CellSet;
     typedef typename KSpace::SCellSet SCellSet;
-    typedef SurfelSetPredicate<SurfelSet, Surfel> SurfelPredicate;
+    typedef functors::SurfelSetPredicate<SurfelSet, Surfel> SurfelPredicate;
 
     // ----------------------- Standard services ------------------------------
   public:

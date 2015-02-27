@@ -44,12 +44,9 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
-
-  namespace VCMGeometricFunctors 
-  {
-
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
     /**
      * Description of template class 'VCMNormalVectorFunctor' <p> 
@@ -388,9 +385,7 @@ namespace DGtal
       CountedConstPtrOrConstPtr<VCMOnDigitalSurface> myVCMOnDigitalSurface;
     };
 
-
-    
-  } // namespace VCMGeometricFunctors 
+  } //namespace functors
 } // namespace DGtal
 
 

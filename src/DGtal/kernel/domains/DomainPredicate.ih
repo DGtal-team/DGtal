@@ -41,7 +41,7 @@
 //------------------------------------------------------------------------------
 template <typename TDomain>
 inline
-DGtal::DomainPredicate<TDomain>
+DGtal::functors::DomainPredicate<TDomain>
 ::DomainPredicate( const Domain & aDomain )
   : myDomain( &aDomain )
 {
@@ -49,7 +49,7 @@ DGtal::DomainPredicate<TDomain>
 //------------------------------------------------------------------------------
 template <typename TDomain>
 inline
-DGtal::DomainPredicate<TDomain>
+DGtal::functors::DomainPredicate<TDomain>
 ::DomainPredicate( const DomainPredicate & other )
   : myDomain( other.myDomain )
 {
@@ -57,8 +57,8 @@ DGtal::DomainPredicate<TDomain>
 //------------------------------------------------------------------------------
 template <typename TDomain>
 inline
-DGtal::DomainPredicate<TDomain>&
-DGtal::DomainPredicate<TDomain>
+DGtal::functors::DomainPredicate<TDomain>&
+DGtal::functors::DomainPredicate<TDomain>
 ::operator=( const DomainPredicate & other )
 {
   if (this != &other)
@@ -72,7 +72,7 @@ DGtal::DomainPredicate<TDomain>
 template <typename TDomain>
 inline
 const TDomain & 
-DGtal::DomainPredicate<TDomain>
+DGtal::functors::DomainPredicate<TDomain>
 ::domain() const
 {
   return *myDomain;
@@ -81,10 +81,9 @@ DGtal::DomainPredicate<TDomain>
 template <typename TDomain>
 inline
 bool
-DGtal::DomainPredicate<TDomain>
+DGtal::functors::DomainPredicate<TDomain>
 ::operator()( const Point & p ) const
 {
-  //  std::cerr << "DomainPred.operator(" << p << ")" << std::endl;
   return myDomain->isInside( p );
 }
 //------------------------------------------------------------------------------

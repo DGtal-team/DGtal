@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CPredicate
   /**
@@ -81,7 +82,7 @@ namespace DGtal
 
      ###  Models
 
-     - specializations: CPointPredicate, CVertexPredicate
+     - specializations: concepts::CPointPredicate, concepts::CVertexPredicate
 
      ###  Notes
 
@@ -104,7 +105,7 @@ namespace DGtal
   private:
 
   }; // end of concept CPredicate
-
+  }
 } // namespace DGtal
 
 //                                                                           //

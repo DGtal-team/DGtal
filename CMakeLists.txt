@@ -14,7 +14,7 @@ ENDIF()
 # -----------------------------------------------------------------------------
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 SET(DGtal_VERSION_MAJOR 0)
-SET(DGtal_VERSION_MINOR 8)
+SET(DGtal_VERSION_MINOR 9)
 SET(DGtal_VERSION_PATCH beta)
 SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
@@ -43,6 +43,11 @@ INCLUDE(CheckDGtalOptionalDependencies)
 # Debug, Cpack and Ctest settings
 # -----------------------------------------------------------------------------
 INCLUDE(CpackCtest)
+
+# -----------------------------------------------------------------------------
+# Code coverage
+# -----------------------------------------------------------------------------
+INCLUDE(CheckCoverage)
 
 # -----------------------------------------------------------------------------
 # Custom command/targets depending on the cmake generator

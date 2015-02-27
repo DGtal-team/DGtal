@@ -23,7 +23,7 @@ namespace DGtal {
 /*!
 @page packageMathConcepts  Math Main Concepts
 
-@writers Jacques-Olivier Lachaud
+@writers Jacques-Olivier Lachaud, Pierre Gueth, David Coeurjolly
 
 @dot
 digraph GMath {
@@ -31,7 +31,7 @@ digraph GMath {
 
     subgraph cluster_ext {
 	rank = same;
-        style=invis;
+        
 
         subgraph cluster_kernel {
                  style=filled;
@@ -39,8 +39,8 @@ digraph GMath {
                  node [style=filled,color=white];
                  label="kernel";
 
-		 CCommutativeRing [ label="CCommutativeRing" URL="\ref CCommutativeRing" ];
-		 CEuclideanRing [ label="CEuclideanRing" URL="\ref CEuclideanRing" ];
+		 CCommutativeRing [ label="CCommutativeRing" URL="\ref concepts::CCommutativeRing" ];
+		 CEuclideanRing [ label="CEuclideanRing" URL="\ref concepts::CEuclideanRing" ];
         }
         subgraph cluster_io {
                  style=filled;
@@ -56,6 +56,7 @@ digraph GMath {
                  label="boost";
 
                  boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
+                 boost_DefaultConstructible [ label="boost::DefaultConstructible" URL="\ref boost::DefaultConstructible" ];
                  boost_InputIterator [ label="boost::InputIterator" URL="\ref boost::InputIterator" ];
                  boost_is_integral [ label="boost::is_integral" URL="\ref boost::is_integral" ];
                  boost_is_unsigned [ label="boost::is_unsigned" URL="\ref boost::is_unsigned" ];
@@ -67,23 +68,59 @@ digraph GMath {
                  label="std";
 
        }
+       
     }
-  
+    
+   subgraph cluster_math_cc {
+	rank = same;
+
+   subgraph cluster_math_linalg {
+                 style=filled;
+                 color="#e4e4ff";
+                 node [style=filled,color=white];
+                 label="math/linalg";
+
+                 CVectorSpace [ label="CVectorSpace" URL="\ref concepts::CVectorSpace" ];
+                 CMatrix [ label="CMatrix" URL="\ref CMatrix" ];
+                 CStaticMatrix [ label="CStaticMatrix" URL="\ref concepts::CStaticMatrix" ];
+                 CDynamicMatrix [ label="CDynamicMatrix" URL="\ref concepts::CDynamicMatrix" ];
+                 CVector [ label="CVector" URL="\ref CVector" ];
+                 CStaticVector [ label="CStaticVector" URL="\ref concepts::CStaticVector" ];
+                 CDynamicVector [ label="CDynamicVector" URL="\ref concepts::CDynamicVector" ];
+                 CLinearAlgebra [ label="CLinearAlgebra" URL="\ref concepts::CLinearAlgebra" ];
+                 CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref concepts::CLinearAlgebraSolver" ];
+        }
+
+        CVector -> CVectorSpace;
+        CStaticVector -> CVector;
+        CStaticVector -> boost_DefaultConstructible;
+        CDynamicVector -> CVector;
+        CMatrix -> CVectorSpace;
+        CStaticMatrix -> CMatrix;
+        CStaticMatrix -> boost_DefaultConstructible;
+        CDynamicMatrix -> CMatrix;
+
+        CLinearAlgebra -> CMatrix;
+        CLinearAlgebra -> CVector;
+
+        CLinearAlgebraSolver -> CLinearAlgebra;
+        CLinearAlgebraSolver -> boost_DefaultConstructible;
+
+
     subgraph cluster_concepts {
         style=filled;
         color=lightgrey;
         node [style=filled,color=white];
         label="Math (main concepts)";
         
-        CBinner [ label="CBinner" URL="\ref CBinner" ] ;
+        CBinner [ label="CBinner" URL="\ref concepts::CBinner" ] ;
     }
-
+}
     CBinner -> boost_CopyConstructible;
     CBinner -> CEuclideanRing [label="use",style=dashed] ;
     CBinner -> boost_is_integral [label="use",style=dashed] ;
     CBinner -> boost_is_unsigned [label="use",style=dashed] ;
 
-    subgraph cluster_down {
     
 	subgraph cluster_models {
         	 style=filled;
@@ -94,6 +131,7 @@ digraph GMath {
 		 Statistic [ label="Statistic" URL="\ref Statistic" ] ;
         	 RegularBinner [ label="RegularBinner" URL="\ref RegularBinner" ] ;
 		 Histogram [ label="Histogram" URL="\ref Histogram" ] ;
+                 SimpleMatrix [ label = "SimpleMatrix" URL= "\ref SimpleMatrix"];
         }
 
 	Statistic -> CCommutativeRing [label="tparam",style=dashed] ;
@@ -102,7 +140,9 @@ digraph GMath {
 	Histogram -> CBinner [label="tparam",style=dashed];
 	Histogram -> CEuclideanRing [label="tparam",style=dashed];
 	Histogram -> boost_InputIterator [label="use",style=dashed];
-    }
+        SimpleMatrix -> CStaticMatrix;
+
+        
 }
 @enddot
 

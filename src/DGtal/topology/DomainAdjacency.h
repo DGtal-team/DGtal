@@ -71,8 +71,8 @@ namespace DGtal
   template <typename TDomain, typename TAdjacency>
   class DomainAdjacency
   {
-    BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
-    BOOST_CONCEPT_ASSERT(( CAdjacency<TAdjacency> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CAdjacency<TAdjacency> ));
   public:
 
     // Required as model of CAdjacency
@@ -82,7 +82,7 @@ namespace DGtal
 
     // Required as model of CDomainAdjacency
     typedef TDomain Domain;
-    typedef DomainPredicate< Domain > Predicate;
+    typedef functors::DomainPredicate< Domain > Predicate;
 
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;

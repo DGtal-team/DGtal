@@ -52,7 +52,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CIntegralNumber
   /**
@@ -112,7 +113,7 @@ BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
     typename NumberTraits<T>::IsIntegral myIsIntegral;
 
   }; // end of concept CIntegralNumber
-  
+  }  
 } // namespace DGtal
 
 

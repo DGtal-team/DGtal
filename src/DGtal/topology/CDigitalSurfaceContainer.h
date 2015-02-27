@@ -47,8 +47,9 @@
 #include "DGtal/topology/CDigitalSurfaceTracker.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSurfaceContainer
@@ -135,7 +136,7 @@ See @ref dgtal_digsurf_sec3_2
 
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<SurfelConstIterator> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<SurfelConstIterator> ));
-    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND<KSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND<KSpace> ));
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
 
     // 2. then check the presence of data members, operators and methods with
@@ -178,6 +179,7 @@ See @ref dgtal_digsurf_sec3_2
     
   }; // end of concept CDigitalSurfaceContainer
   
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

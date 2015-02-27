@@ -94,7 +94,7 @@ namespace DGtal
     typedef typename std::set<Point>::const_iterator ConstIterator;
 
     ///Concept checks
-    BOOST_CONCEPT_ASSERT(( CDomain< TDomain > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -260,7 +260,7 @@ namespace DGtal
     DigitalSetBySTLSet<Domain, Compare> & operator+=
     ( const DigitalSetBySTLSet<Domain, Compare> & aSet );
 
-    // ----------------------- Model of CPointPredicate -----------------------------
+    // ----------------------- Model of concepts::CPointPredicate -----------------------------
   public:
 
     /**

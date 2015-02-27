@@ -500,7 +500,7 @@ namespace DGtal
   template < typename TIterator, typename TSCell>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-        const ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & aRangeAdapter );
+        const ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & aRangeAdapter );
   // SCellsRange
 
   // PointsRange
@@ -512,7 +512,7 @@ namespace DGtal
   template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<KSpace>, typename KSpace::Point> & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, functors::SCellToPoint<KSpace>, typename KSpace::Point> & aRangeAdapter );
   // PointsRange
 
   // MidPointsRange
@@ -536,7 +536,7 @@ namespace DGtal
     template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<KSpace>, std::pair<typename KSpace::Point, typename KSpace::Vector > > & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, functors::SCellToArrow<KSpace>, std::pair<typename KSpace::Point, typename KSpace::Vector > > & aRangeAdapter );
   // ArrowsRange
 
   // InnerPointsRange
@@ -548,7 +548,7 @@ namespace DGtal
   template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<KSpace>, typename KSpace::Point> & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<KSpace>, typename KSpace::Point> & aRangeAdapter );
   // InnerPointsRange
 
   // OuterPointsRange
@@ -560,7 +560,7 @@ namespace DGtal
   template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<KSpace>, typename KSpace::Point> & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<KSpace>, typename KSpace::Point> & aRangeAdapter );
   // OuterPointsRange
 
   // IncidentPointsRange
@@ -572,7 +572,7 @@ namespace DGtal
   template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<KSpace>,std::pair<typename KSpace::Point, typename KSpace::Point > > & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<KSpace>,std::pair<typename KSpace::Point, typename KSpace::Point > > & aRangeAdapter );
   // IncidentPointsRange
 
 

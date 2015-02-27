@@ -45,11 +45,12 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+using namespace DGtal::functors;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class DistanceTransformation.
@@ -568,7 +569,7 @@ bool testCompareExactInexact(unsigned int size, unsigned int nb)
   typedef typename Space::Point Point;
   typedef DigitalSetBySTLSet<Domain> Set;
   // typedef NotPointPredicate<SetPredicate<Set> > NegPredicate;
-  typedef NotPointPredicate<Set> NegPredicate;
+  typedef functors::NotPointPredicate<Set> NegPredicate;
 
   Point low=Point::diagonal(0),
     up=Point::diagonal(size);

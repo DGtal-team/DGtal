@@ -485,7 +485,7 @@ template < typename TIterator, typename TSCell>
 inline
 void
 DGtal::Board3DTo2DFactory<Space,KSpace>::draw( DGtal::Board3DTo2D<Space, KSpace> & board,
-                  const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & aRangeAdapter )
+                  const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aRangeAdapter);
 }
@@ -498,7 +498,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board,
-                  const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
+                  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aRangeAdapter);
 }
@@ -524,7 +524,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board,
-                  const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<KSpace>, std::pair<typename KSpace::Point, typename KSpace::Vector > > & aRangeAdapter )
+                  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToArrow<KSpace>, std::pair<typename KSpace::Point, typename KSpace::Vector > > & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aRangeAdapter);
 }
@@ -537,7 +537,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board,
-                  const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
+                  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aRangeAdapter);
 }
@@ -550,7 +550,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board,
-                  const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
+                  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<KSpace>, typename KSpace::Point> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aRangeAdapter);
 }
@@ -563,7 +563,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board,
-                  const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<KSpace>,std::pair<typename KSpace::Point, typename KSpace::Point > > & aRangeAdapter )
+                  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<KSpace>,std::pair<typename KSpace::Point, typename KSpace::Point > > & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aRangeAdapter);
 }

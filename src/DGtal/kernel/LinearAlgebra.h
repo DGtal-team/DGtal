@@ -62,7 +62,7 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
    
-    BOOST_CONCEPT_ASSERT(( CSpace<Space> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<Space> ));
     
     typedef typename Space::Integer Integer;
     typedef typename Space::Point Point;

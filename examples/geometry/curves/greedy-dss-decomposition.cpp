@@ -79,20 +79,20 @@ int main( )
 
   // Draw each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string className = "ArithmeticalDSS/BoundingBox";
+  string styleName = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentComputerIterator 
 	  it = theDecomposition.begin(),
-	  itEnd = theDecomposition.begin();
+	  itEnd = theDecomposition.end();
 	it != itEnd; ++it ) 
     {
-      aBoard << CustomStyle( className, 
-			     new CustomPenColor( Color::Blue ) )
+      aBoard << CustomStyle( styleName, 
+       			     new CustomPenColor( Color::Blue ) )
 	     << it->primitive();
     } 
 
   
-  aBoard.saveSVG("dgtalboard-5-greedy-dss.svg");
-  aBoard.saveSVG("dgtalboard-5-greedy-dss.eps");
+  aBoard.saveSVG("greedy-dss-decomposition.svg");
+  aBoard.saveEPS("greedy-dss-decomposition.eps");
 
   trace.endBlock();
 

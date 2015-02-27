@@ -53,7 +53,7 @@
   
 
 using namespace DGtal;
-
+using namespace DGtal::functors;
 using namespace LibBoard;
 
 

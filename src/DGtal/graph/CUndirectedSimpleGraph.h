@@ -46,65 +46,62 @@
 #include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal { 
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CUndirectedSimpleGraph
   /**
-Description of \b concept '\b CUndirectedSimpleGraph' <p>
-     @ingroup Concepts
-@brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
+  Description of \b concept '\b CUndirectedSimpleGraph' <p>
+  @ingroup Concepts
+  @brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
      
- ### Refinement of 
-      CUndirectedSimpleLocalGraph, CSinglePassConstRange
+  ### Refinement of 
+  CUndirectedSimpleLocalGraph, CSinglePassConstRange
     
- ### Associated types :
-     - Edge: the type for the edges of the graph.
+  ### Associated types :
+  - Edge: the type for the edges of the graph.
 
-     The following types are defined in CSinglePassConstRange 
-     - ConstIterator: const iterator on Vertex
+  The following types are defined in CSinglePassConstRange 
+  - ConstIterator: const iterator on Vertex
 
-     The following types are defined in CUndirectedSimpleLocalGraph
-     - Size: an integral type to count the number of vertices.
-     - Vertex: the type for the vertices of the graph.
-     - VertexSet: the type for storing a set of vertices.
-     - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
+  The following types are defined in CUndirectedSimpleLocalGraph
+  - Size: an integral type to count the number of vertices.
+  - Vertex: the type for the vertices of the graph.
+  - VertexSet: the type for storing a set of vertices.
+  - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
     
- ### Notation
-     - \c X : A type that is a model of CUndirectedSimpleGraph
-     - \c x : object of type X
-     - \c v : object of type Vertex
-     - \c out : an output iterator of type OutputIterator (model of boost::OutputIterator).
-     - \c p : a predicate on vertex of type VertexPredicate (model of CVertexPredicate).
+  ### Notation
+  - \c X : A type that is a model of CUndirectedSimpleGraph
+  - \c x : object of type X
+  - \c v : object of type Vertex
+  - \c out : an output iterator of type OutputIterator (model of boost::OutputIterator).
+  - \c p : a predicate on vertex of type VertexPredicate (model of CVertexPredicate).
     
- ### Definitions
+  ### Definitions
     
- ### Valid expressions and 
+  ### Valid expressions and 
 
 
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|Size           | x.size()   |                     | Size        |                  | Returns  the number of vertices of this graph | | | 
+  | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+  |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+  |Size           | x.size()   |                     | Size        |                  | Returns  the number of vertices of this graph | | | 
        
     
- ### Invariants###
+  ### Invariants###
     
- ### Models###
-     DigitalSurface, Object
+  ### Models###
+  DigitalSurface, Object
 
- ### Notes###
+  ### Notes###
 
-@tparam T the type that should be a model of CUndirectedSimpleGraph.
-   */
+  @tparam T the type that should be a model of CUndirectedSimpleGraph.
+  */
   template <typename T> 
   struct CUndirectedSimpleGraph : 
     CUndirectedSimpleLocalGraph<T>, 
     CConstSinglePassRange<T>
-  // Use derivation for coarser concepts, like
-  // : CoarserConcept<T>
-  // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
-  // http://www.boost.org/doc/libs/1_49_0/libs/concept_check/reference.htm
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -132,7 +129,8 @@ Description of \b concept '\b CUndirectedSimpleGraph' <p>
   private:
     
   }; // end of concept CUndirectedSimpleGraph
-  
+
+  } // namespace concepts  
 } // namespace DGtal
 
 //                                                                           //

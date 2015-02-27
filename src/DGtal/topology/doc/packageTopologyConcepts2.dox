@@ -42,8 +42,8 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="graph";
 
-		 CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref CUndirectedSimpleGraph" ];
-		 CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref CUndirectedSimpleLocalGraph" ];
+		 CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref concepts::CUndirectedSimpleGraph" ];
+		 CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref concepts::CUndirectedSimpleLocalGraph" ];
 
         }
         subgraph cluster_3 {
@@ -78,10 +78,10 @@ digraph GTOPOLOGY {
         node [style=filled,color=white];
         label="topology (main concepts)";
 
-        CDigitalSurfaceContainer [ label="CDigitalSurfaceContainer" URL="\ref CDigitalSurfaceContainer" ]; 
-        CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref CDigitalSurfaceTracker" ];
-        CSurfelPredicate [ label="CSurfelPredicate" URL="\ref CSurfelPredicate" ];
-        CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref CCellularGridSpaceND" ];
+        CDigitalSurfaceContainer [ label="CDigitalSurfaceContainer" URL="\ref concepts::CDigitalSurfaceContainer" ]; 
+        CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref concepts::CDigitalSurfaceTracker" ];
+        CSurfelPredicate [ label="CSurfelPredicate" URL="\ref concepts::CSurfelPredicate" ];
+        CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref concepts::CCellularGridSpaceND" ];
     }
     CDigitalSurfaceContainer -> boost_CopyConstructible;
     CDigitalSurfaceTracker -> boost_CopyConstructible;
@@ -125,9 +125,9 @@ digraph GTOPOLOGY {
             node [style=filled,color=white];
             label="(others)";
 
-            SurfelSetPredicate [ label="SurfelSetPredicate" URL="\ref SurfelSetPredicate" ];
-            BoundaryPredicate [ label="BoundaryPredicate" URL="\ref BoundaryPredicate" ];
-            FrontierPredicate [ label="FrontierPredicate" URL="\ref FrontierPredicate" ];
+            SurfelSetPredicate [ label="SurfelSetPredicate" URL="\ref functors::SurfelSetPredicate" ];
+            BoundaryPredicate [ label="BoundaryPredicate" URL="\ref functors::BoundaryPredicate" ];
+            FrontierPredicate [ label="FrontierPredicate" URL="\ref functors::FrontierPredicate" ];
         }
     }
 

@@ -40,7 +40,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -107,7 +107,7 @@ int main()
 
   //! [DTPredicate]
   //Point Predicate from random seed image
-  typedef SimpleThresholdForegroundPredicate<Image> PointPredicate;
+  typedef functors::SimpleThresholdForegroundPredicate<Image> PointPredicate;
   PointPredicate predicate(image,0);
   //! [DTPredicate]  
 

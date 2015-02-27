@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
-#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
+#include "DGtal/images/IntervalForegroundPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -107,7 +107,7 @@ namespace DGtal
 		typename Image::Domain::ConstIterator itBegin, 
 		typename Image::Domain::ConstIterator itEnd)
     {
-      IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
+      functors::IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       
       append(aSet, isForeground,itBegin,itEnd);
     }
@@ -150,7 +150,7 @@ namespace DGtal
 		const typename Image::Value minVal,
 		const typename Image::Value maxVal)
     {
-      IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
+      functors::IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       append(aSet,aImage,isForeground);
     }
 

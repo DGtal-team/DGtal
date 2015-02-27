@@ -40,9 +40,9 @@ offer better colormap for scientific visualisation purposes.
 
 In some situations, we may have to convert colors into   scalar
 values (see below). In this case, basic conversion functors are
-available in the DGtal::BasicColorToScalarFunctors namespace. For
-example, you would find in this namespace a DGtal::BasicColorToScalarFunctors::RedChannel converter or a
-DGtal::BasicColorToScalarFunctors::MeanChannels converter. 
+available in the DGtal::functors namespace. For
+example, you would find in this namespace a DGtal::functors::RedChannel converter or a
+DGtal::functors::MeanChannels converter. 
 
 Hence, to implement a functor taking values and returning the red
 channel of a colormap, you just have to compose the two functors with
@@ -53,7 +53,7 @@ the help of the Composer:
 #include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 
 typedef GradientColorMap<unsigned char, CMAP_JET > JetMap;
-typedef BasicColorToScalarFunctors::RedChannel RedChan;
+typedef functors::RedChannel RedChan;
 typedef Composer< JetMap, RedChan, unsigned char> RedFunctor;
 RedFunctor redFunctor( JetMap(0,255), RedChan() );
 
@@ -106,7 +106,7 @@ For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template c
 
 The class GenericWriter (DGtal/io/reader/GenericWriter.h) allows to
 automatically export any image (2d, 3d, nd) from its filename. The
-class is templated with a image container type, a dimension value (given by
+class is templated with an image container type, a dimension value (given by
 default by the image container dimension), a value type, (also given
 by default by the image container) and a functor type (by default set to
 the DefaultFunctor type).
@@ -171,6 +171,7 @@ DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::expo
 |            | HDF5              | HDF5 file with 3D UInt8 image dataset(s)                    | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
 |            | any 3D ITK format | Any file format in the ITK library (mhd, mha, ...)          | ITKReader     | with @a WITH_ITK build flag, http://www.itk.org/               |
 |         nD | Raw8              | raw binary file format on 8bits                             | RawReader     |                                                                |
+|            | Raw32             | raw binary file format on 32bits                            | RawReader     |                                                                |
 
 @note Since DGtal doesn't integrate ITK by default, ITK image should by read directly using the ITKReader class.
 @code
@@ -178,7 +179,19 @@ DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::expo
 @endcode
 
 
-The class GenericReader (DGtal/io/reader/GenericReader.h) allows to automatically import any image (2d, 3d, nd) from its filename:
+The class GenericReader (DGtal/io/reader/GenericReader.h) allows to
+automatically import any image (2d, 3d, nd) from its filename. The
+class is templated with an image container type, a dimension value
+(given by default by the image container dimension), a value type,
+(also given by default by the image container). Note that the reader
+choice between 8 bits or 32 bits is automatically done according to
+the templated image container type. So you can have an DGtal::IOException if
+you try to read a 8 bits raw image from an unsigned int image type (choose an
+8 bits type like unsigned char or explicitly call the specific reader
+RawReader::importRaw8).
+
+
+
 @code 
    #include "DGTal/io/readers/GenericReader.h"
    #include "DGtal/helpers/StdDefs.h"

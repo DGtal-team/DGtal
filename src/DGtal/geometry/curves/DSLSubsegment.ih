@@ -636,7 +636,7 @@ template <typename TInteger, typename TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu)
 {
-  BOOST_CONCEPT_ASSERT((CInteger<TNumber>));
+  BOOST_CONCEPT_ASSERT((concepts::CInteger<TNumber>));
   return (Integer) ceil((LongDoubleType) (r*b-mu*q)/(-p*b+a*q));
 }
 
@@ -659,7 +659,7 @@ template <typename TInteger, typename TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<TInteger,TNumber>::positionWrtRay(RayC &r, Number a, Number b, Number mu)
 {
-  BOOST_CONCEPT_ASSERT((CInteger<TNumber>));
+  BOOST_CONCEPT_ASSERT((concepts::CInteger<TNumber>));
   Integer v = -a*r.x + r.y*b - mu;
 
 
@@ -719,7 +719,7 @@ template <typename TInteger, typename TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number a, Number b, Number mu, Integer n, bool *flagRayFound)
 {
-  BOOST_CONCEPT_ASSERT((CInteger<Number>));
+  BOOST_CONCEPT_ASSERT((concepts::CInteger<Number>));
 
   RayC myRay;
   Position myPosition;
@@ -881,7 +881,7 @@ template <typename TInteger, typename TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu, Integer UNUSED(n))
 {
-  BOOST_CONCEPT_ASSERT((CInteger<Number>));
+  BOOST_CONCEPT_ASSERT((concepts::CInteger<Number>));
   Number alpha = slope(fp, fq,r,a,b,mu);
   
 

@@ -33,12 +33,12 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
-#include "DGtal/math/EigenDecomposition.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
+#include "DGtal/images/IntervalForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -67,12 +67,12 @@ int main( int argc, char** argv )
   typedef KSpace::Cell Cell;
 
   typedef ImageSelector<Domain, unsigned char>::Type Image;
-  typedef IntervalForegroundPredicate<Image> ThresholdedImage;
+  typedef functors::IntervalForegroundPredicate<Image> ThresholdedImage;
   typedef ImplicitDigitalSurface< KSpace, ThresholdedImage > DigitalSurfaceContainer;
 
   //! [DVCM3D-typedefs]
-  typedef ExactPredicateLpSeparableMetric<Space, 2> Metric; // L2-metric type
-  typedef HatPointFunction<Point,double> KernelFunction;    // chi function type 
+  typedef ExactPredicateLpSeparableMetric<Space, 2> Metric;          // L2-metric type
+  typedef functors::HatPointFunction<Point,double>  KernelFunction;  // chi function type 
   typedef VoronoiCovarianceMeasureOnDigitalSurface< DigitalSurfaceContainer, Metric,
                                                     KernelFunction > VCMOnSurface;
   typedef VCMOnSurface::Surfel2Normals::const_iterator S2NConstIterator;

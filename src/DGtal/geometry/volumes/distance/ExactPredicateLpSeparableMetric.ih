@@ -51,30 +51,16 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::~ExactPredicateLpSeparableMetric(
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Promoted
-DGtal::ExactPredicateLpSeparableMetric<T,p,P>::exactDistanceRepresentation (const Point &aP,
-                                                                            const Point &aQ) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::RawValue
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::rawDistance (const Point &aP,
+                                                            const Point &aQ) const
 {
-  Promoted res= NumberTraits<Promoted>::ZERO;
+  RawValue res= NumberTraits<RawValue>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
     {
-      res += BasicMathFunctions::power(static_cast<Promoted>(abs(aP[d]-aQ[d])), p);
+      res += BasicMathFunctions::power(static_cast<RawValue>(abs(aP[d]-aQ[d])), p);
     }
   return res;
-}
-//------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p,  typename P>
-inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,p,P>::local (const Point &/*aP*/, 
-						      const Vector &aDir) const
-{
-  Promoted res= NumberTraits<Promoted>::ZERO;
-  for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
-    {
-      res += BasicMathFunctions::power(static_cast<Promoted>(abs(aDir[d])), p);
-    }
-  return std::pow( NumberTraits<Promoted>::castToDouble(res), 1.0/(double)p);
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
@@ -83,22 +69,22 @@ typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Value
 DGtal::ExactPredicateLpSeparableMetric<T,p,P>::operator()(const Point &aP,
 							  const Point &aQ) const
 {
-  return std::pow( NumberTraits<Promoted>::castToDouble(exactDistanceRepresentation(aP,aQ)), 1.0/(double)p);
+  return std::pow( NumberTraits<RawValue>::castToDouble(rawDistance(aP,aQ)), 1.0/(double)p);
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 DGtal::Closest
-DGtal::ExactPredicateLpSeparableMetric<T,p,P>::closest (const Point &origin, 
-                                                        const Point &first, 
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::closest (const Point &origin,
+                                                        const Point &first,
                                                         const Point &second) const
 {
-  Promoted a=NumberTraits<Promoted>::ZERO,
-    b=NumberTraits<Promoted>::ZERO;
-      
-  a = exactDistanceRepresentation(origin,first);
-  b = exactDistanceRepresentation(origin,second);
-  
+  RawValue a=NumberTraits<RawValue>::ZERO,
+    b=NumberTraits<RawValue>::ZERO;
+
+  a = rawDistance(origin,first);
+  b = rawDistance(origin,second);
+
   if (a<b)
     return ClosestFIRST;
   else
@@ -110,47 +96,47 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::closest (const Point &origin,
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Abscissa 
-DGtal::ExactPredicateLpSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa &udim, 
+typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Abscissa
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa &udim,
                                                                   const Abscissa &vdim,
-                                                                  const Promoted &nu,
-                                                                  const Promoted &nv,
+                                                                  const RawValue &nu,
+                                                                  const RawValue &nv,
                                                                   const Abscissa &lower,
                                                                   const Abscissa &upper) const
-{   
-  ASSERT(  (nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - lower)),  p)) <
-           (nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - lower)), p)));
-  
-  //Recurrence stop 
+{
+  ASSERT(  (nu +  BasicMathFunctions::power( static_cast<RawValue>(abs( udim - lower)),  p)) <
+           (nv +  BasicMathFunctions::power( static_cast<RawValue>(abs( vdim - lower)), p)));
+
+  //Recurrence stop
   if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
     {
       //testing upper
-      Promoted nuUpdated = nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - upper )), p);
-      Promoted nvUpdated = nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - upper )), p);
+      RawValue nuUpdated = nu +  BasicMathFunctions::power( static_cast<RawValue>(abs( udim - upper )), p);
+      RawValue nvUpdated = nv +  BasicMathFunctions::power( static_cast<RawValue>(abs( vdim - upper )), p);
       if (nuUpdated < nvUpdated)
         return upper;
       else
         return lower;
     }
-  
+
   Abscissa mid = (lower + upper)/2;
-  Promoted nuUpdated = nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - mid )), p);
-  Promoted nvUpdated = nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - mid )), p);
-      
+  RawValue nuUpdated = nu +  BasicMathFunctions::power( static_cast<RawValue>(abs( udim - mid )), p);
+  RawValue nvUpdated = nv +  BasicMathFunctions::power( static_cast<RawValue>(abs( vdim - mid )), p);
+
   //Recursive call
   if ( nuUpdated < nvUpdated)
     return binarySearchHidden(udim,vdim,nu,nv,mid,upper);
   else
     return binarySearchHidden(udim,vdim,nu,nv,lower,mid);
-      
+
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p ,  typename P>
 inline
-bool 
-DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u, 
+bool
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u,
                                                         const Point &v,
-                                                        const Point &w, 
+                                                        const Point &w,
                                                         const Point &startingPoint,
                                                         const Point &endPoint,
                                                         const typename Point::UnsignedComponent dim) const
@@ -158,27 +144,27 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u,
   //Interval bound for the binary search
   Abscissa lower = startingPoint[dim];
   Abscissa upper = endPoint[dim];
-      
+
   //Partial norm computation (sum_{i!=dim}  |u_i-v_i|^p
-  Promoted nu = NumberTraits<Promoted>::ZERO;
-  Promoted nv = NumberTraits<Promoted>::ZERO;
-  Promoted nw = NumberTraits<Promoted>::ZERO;
+  RawValue nu = NumberTraits<RawValue>::ZERO;
+  RawValue nv = NumberTraits<RawValue>::ZERO;
+  RawValue nw = NumberTraits<RawValue>::ZERO;
   for(DGtal::Dimension i  = 0 ; i < Point::dimension ; i++)
     if (i != dim)
       {
-        nu += BasicMathFunctions::power ( static_cast<Promoted>(abs(u[i] - startingPoint[i])), p);
-        nv += BasicMathFunctions::power ( static_cast<Promoted>(abs(v[i] - startingPoint[i])), p);
-        nw += BasicMathFunctions::power ( static_cast<Promoted>(abs(w[i] - startingPoint[i])), p);
+        nu += BasicMathFunctions::power ( static_cast<RawValue>(abs(u[i] - startingPoint[i])), p);
+        nv += BasicMathFunctions::power ( static_cast<RawValue>(abs(v[i] - startingPoint[i])), p);
+        nw += BasicMathFunctions::power ( static_cast<RawValue>(abs(w[i] - startingPoint[i])), p);
       }
- 
+
   //Abscissa of voronoi edges
   Abscissa uv,vw;
-  Promoted dv,dw,du,ddv,ddw;
+  RawValue dv,dw,du,ddv,ddw;
 
   //checking distances to lower bound
-  du = nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)), p);
-  dv = nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p);
-  dw = nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p);
+  du = nu + BasicMathFunctions::power( static_cast<RawValue>(abs( u[dim] - lower)), p);
+  dv = nv + BasicMathFunctions::power( static_cast<RawValue>(abs( v[dim] - lower)), p);
+  dw = nw + BasicMathFunctions::power( static_cast<RawValue>(abs( w[dim] - lower)), p);
 
   //Precondition of binarySearchHidden is true
   if (du < dv )
@@ -191,17 +177,17 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u,
         }
 
       if (dw > dv)
-        return true; 
+        return true;
       else
         {
           //check if uv + 1 is stricly in W
-       
+
           //first, optimisation
           if (uv == upper) return true;
-          
+
           //distances at uv+1
-          ddv = nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - uv -1)), p);
-          ddw = nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - uv -1)), p);
+          ddv = nv + BasicMathFunctions::power( static_cast<RawValue>(abs( v[dim] - uv -1)), p);
+          ddw = nw + BasicMathFunctions::power( static_cast<RawValue>(abs( w[dim] - uv -1)), p);
           if (ddw < ddv)
             return true;
           else
@@ -236,7 +222,7 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::isValid() const
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const ExactPredicateLpSeparableMetric<T,p,P> & object )
 {
   object.selfDisplay( out );
@@ -263,14 +249,14 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::~ExactPredicateLpSeparableMetric(
 //------------------------------------------------------------------------------
 template <typename T, typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Promoted
-DGtal::ExactPredicateLpSeparableMetric<T,2,P>::exactDistanceRepresentation (const Point &aP,
-                                                                            const Point &aQ) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::RawValue
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::rawDistance (const Point &aP,
+                                                            const Point &aQ) const
 {
-  Promoted res= NumberTraits<Promoted>::ZERO;
+  RawValue res= NumberTraits<RawValue>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
     {
-      res += static_cast<Promoted>(aP[d]-aQ[d])*static_cast<Promoted>(aP[d]-aQ[d]);
+      res += static_cast<RawValue>(aP[d]-aQ[d])*static_cast<RawValue>(aP[d]-aQ[d]);
     }
   return res;
 }
@@ -278,15 +264,15 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::exactDistanceRepresentation (cons
 template <typename T,   typename P>
 inline
 typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,2,P>::local (const Point &/*aP*/, 
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::local (const Point &/*aP*/,
 						      const Vector &aDir) const
 {
-  Promoted res= NumberTraits<Promoted>::ZERO;
+  RawValue res= NumberTraits<RawValue>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
     {
-      res += (static_cast<Promoted>(aDir[d]))*(static_cast<Promoted>(aDir[d]));
+      res += (static_cast<RawValue>(aDir[d]))*(static_cast<RawValue>(aDir[d]));
     }
-  return std::pow( NumberTraits<Promoted>::castToDouble(res), 1.0/2.0);
+  return std::pow( NumberTraits<RawValue>::castToDouble(res), 1.0/2.0);
 }
 //------------------------------------------------------------------------------
 template <typename T,   typename P>
@@ -295,23 +281,23 @@ typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Value
 DGtal::ExactPredicateLpSeparableMetric<T,2,P>::operator() (const Point &aP,
 							   const Point &aQ) const
 {
-  return std::pow( NumberTraits<Promoted>::castToDouble(exactDistanceRepresentation(aP,aQ)),
+  return std::pow( NumberTraits<RawValue>::castToDouble(rawDistance(aP,aQ)),
                    1.0/2.0);
 }
 //------------------------------------------------------------------------------
 template <typename T,  typename P>
 inline
 DGtal::Closest
-DGtal::ExactPredicateLpSeparableMetric<T,2,P>::closest (const Point &origin, 
-                                                        const Point &first, 
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::closest (const Point &origin,
+                                                        const Point &first,
                                                         const Point &second) const
 {
-  Promoted a=NumberTraits<Promoted>::ZERO,
-    b=NumberTraits<Promoted>::ZERO;
-      
-  a = exactDistanceRepresentation(origin,first);
-  b = exactDistanceRepresentation(origin,second);
-  
+  RawValue a=NumberTraits<RawValue>::ZERO,
+    b=NumberTraits<RawValue>::ZERO;
+
+  a = rawDistance(origin,first);
+  b = rawDistance(origin,second);
+
   if (a<b)
     return ClosestFIRST;
   else
@@ -323,45 +309,45 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::closest (const Point &origin,
 //------------------------------------------------------------------------------
 template <typename T,  typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Abscissa 
-DGtal::ExactPredicateLpSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &udim, 
-                                                                  const Abscissa &vdim,
-                                                                  const Promoted &nu,
-                                                                  const Promoted &nv,
-                                                                  const Abscissa &lower,
-                                                                  const Abscissa &upper) const
-{   
+typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Abscissa
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &,
+                                                                  const Abscissa &,
+                                                                  const RawValue &,
+                                                                  const RawValue &,
+                                                                  const Abscissa &,
+                                                                  const Abscissa &) const
+{
   ASSERT(false && "Not Necessary for l_2");
-  
+
 }
 //------------------------------------------------------------------------------
 template <typename T,   typename P>
 inline
-bool 
-DGtal::ExactPredicateLpSeparableMetric<T,2,P>::hiddenBy(const Point &u, 
+bool
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::hiddenBy(const Point &u,
                                                         const Point &v,
-                                                        const Point &w, 
+                                                        const Point &w,
                                                         const Point &startingPoint,
                                                         const Point &/*endPoint*/,
                                                         const typename Point::UnsignedComponent dim) const
 {
-  Promoted a,b, c;
+  RawValue a,b, c;
 
   a = v[dim] - u[dim];
   b = w[dim] - v[dim];
-  c = a + b;  
-  
-  Promoted d2_v=NumberTraits<Promoted>::ZERO, d2_u=NumberTraits<Promoted>::ZERO ,d2_w=NumberTraits<Promoted>::ZERO;
+  c = a + b;
+
+  RawValue d2_v=NumberTraits<RawValue>::ZERO, d2_u=NumberTraits<RawValue>::ZERO ,d2_w=NumberTraits<RawValue>::ZERO;
 
   for(DGtal::Dimension i  = 0 ; i < Point::dimension ; i++)
     if (i != dim)
       {
-        d2_u += static_cast<Promoted>(u[i] - startingPoint[i] ) *static_cast<Promoted>(u[i] - startingPoint[i] );
-        d2_v += static_cast<Promoted>(v[i] - startingPoint[i] ) *static_cast<Promoted>(v[i] - startingPoint[i] );
-        d2_w += static_cast<Promoted>(w[i] - startingPoint[i] ) *static_cast<Promoted>(w[i] - startingPoint[i] );
+        d2_u += static_cast<RawValue>(u[i] - startingPoint[i] ) *static_cast<RawValue>(u[i] - startingPoint[i] );
+        d2_v += static_cast<RawValue>(v[i] - startingPoint[i] ) *static_cast<RawValue>(v[i] - startingPoint[i] );
+        d2_w += static_cast<RawValue>(w[i] - startingPoint[i] ) *static_cast<RawValue>(w[i] - startingPoint[i] );
       }
- 
-  return (c * d2_v -  b*d2_u - a*d2_w - a*b*c) > 0 ;       
+
+  return (c * d2_v -  b*d2_u - a*d2_w - a*b*c) > 0 ;
 }
 //------------------------------------------------------------------------------
 template <typename T,   typename P>

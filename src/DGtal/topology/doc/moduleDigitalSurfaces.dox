@@ -318,16 +318,16 @@ Digital surfaces arise in many different contexts:
 Since there are so many digital surfaces, it is necessary to
 provide a mechanism to handle them generically. The class
 DigitalSurface will be the common proxy to hide models of
-CDigitalSurfaceContainer.
+concepts::CDigitalSurfaceContainer.
 
 @subsection dgtal_digsurf_sec3_1  A common architecture for digital surfaces
 
 Since there may be several types of digital surfaces, there are
 several container classes for them. All of them follow the concept
-CDigitalSurfaceContainer. Essentially, a model of this class should
+concepts::CDigitalSurfaceContainer. Essentially, a model of this class should
 provide methods begin() and end() to visit all the surfels, and a
 \e Tracker which allows to move by adjacencies on the surface. A
-Tracker should be a model of CDigitalSurfaceTracker. The
+Tracker should be a model of concepts::CDigitalSurfaceTracker. The
 architecture is sumed up below:
 
 @image html diag-digital-surface-1.png "Class architecture of digital surfaces."
@@ -336,7 +336,7 @@ architecture is sumed up below:
 @subsection dgtal_digsurf_sec3_2  Models of digital surface containers
 
 For now, the implemented digital surface container are (realization
-of CDigitalSurfaceContainer):
+of concepts::CDigitalSurfaceContainer):
 
 - model DigitalSetBoundary, parameterized by a cellular space and a
   digital set. Represents the boundary of a digital set (a set of
@@ -369,11 +369,11 @@ Depending of what is your digital surface, you should choose your
 container accordingly:
 - an explicit set of oriented surfels: model SetOfSurfels, or if
   you wish to keep only one connected component, the model
-  ExplicitDigitalSurface together with a model of CSurfelPredicate
+  ExplicitDigitalSurface together with a model of concepts::CSurfelPredicate
   on your set.
 - the boundary of an explicit set of spels: either convert it to a
   DigitalSet and use model DigitalSetBoundary, or use model
-  ImplicitDigitalSurface and a CPointPredicate on your set of spels
+  ImplicitDigitalSurface and a concepts::CPointPredicate on your set of spels
   (require connectedness).
 - the boundary of an explicit set of digital points: model
   DigitalSetBoundary directly
@@ -383,10 +383,10 @@ container accordingly:
   Surfel -> bool: model ExplicitDigitalSurface and a start surfel.
 - the boundary of a region in a labelled image: model
   ExplicitDigitalSurface and a start surfel, and the class
-  BoundaryPredicate, which is model of CSurfelPredicate.
+  functors::BoundaryPredicate, which is model of concepts::CSurfelPredicate.
 - the frontier between two regions in a labelled image: model
   ExplicitDigitalSurface and a start surfel, and the class
-  FrontierPredicate, which is model of CSurfelPredicate.
+  functors::FrontierPredicate, which is model of concepts::CSurfelPredicate.
 
 Light versions of containers should be preferred in mostly two
 cases:
@@ -404,8 +404,7 @@ it is called).
 The following snippet shows how to create a digital surface
 associated to a LightImplicitDigitalSurface. The
 LightImplicitDigitalSurface is connected to a shape described by a
-predicate on point (variable set3dPredicate of type
-SetPredicate<DigitalSet>). The full code is in
+predicate on point (a simple digital set). The full code is in
 volBreadthFirstTraversal.cpp.
 
 @snippet topology/volBreadthFirstTraversal.cpp volBreadthFirstTraversal-SetUpDigitalSurface
@@ -421,8 +420,8 @@ digital surface takes almost no time, since the chosen container
 
 @subsection dgtal_digsurf_sec3_4  A digital surface is a graph, example of breadth-first traversal
 
-Any DigitalSurface is a model of CUndirectedSimpleGraph (a
-refinement of CUndirectedLocalSimpleGraph). Essentially, you have
+Any DigitalSurface is a model of concepts::CUndirectedSimpleGraph (a
+refinement of concepts::CUndirectedSimpleLocalGraph). Essentially, you have
 methods DigitalSurface::begin() and DigitalSurface::end() to visit
 all the vertices, and for each vertex, you obtain its neighbors
 with DigitalSurface::writeNeighbors. You may thus for instance use
@@ -459,22 +458,22 @@ by itself. Therefere, you may use a simple begin() and end() to get
 the vertices in this order, when \b your \b container \b is \b a \b
 LightImplicitDigitalSurface.
 
-@todo The concepts CUndirectedLocalSimpleGraph and
-CUndirectedSimpleGraph are susceptible to evolve to meet other
+@todo The concepts concepts::CUndirectedSimpleLocalGraph and
+concepts::CUndirectedSimpleGraph are susceptible to evolve to meet other
 standards.
 
 @subsection dgtal_digsurf_sec3_5  Boundary and frontiers  examples of digital surface
 
 Surfels of a digital surface can also be defined by a predicate
 telling whether or not some surfel belongs to it. Given an image of
-labels, the class BoundaryPredicate and FrontierPredicate are such
+labels, the class functors::BoundaryPredicate and functors::FrontierPredicate are such
 predicates:
 
-  1. BoundaryPredicate ( KSpace, Image, l ) is a predicate returning
+  1. functors::BoundaryPredicate ( KSpace, Image, l ) is a predicate returning
 true for a surfel \a s iff the interior spel of \a s has label
 \c l while the exterior spel of \a s has label different from \c l.
 
-  2. FrontierPredicate ( KSpace, Image, l1, l2 ) is a predicate returning
+  2. functors::FrontierPredicate ( KSpace, Image, l1, l2 ) is a predicate returning
 true for a surfel \a s iff the interior spel of \a s has label
 \c l1 while the exterior spel of \a s has label \c l2.
 

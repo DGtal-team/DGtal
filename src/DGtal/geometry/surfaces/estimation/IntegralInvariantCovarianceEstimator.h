@@ -46,10 +46,10 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/kernel/CCellFunctor.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
+#include "DGtal/topology/CCellFunctor.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
 
 #include "DGtal/shapes/GaussDigitizer.h"
@@ -91,7 +91,7 @@ namespace DGtal
 * @tparam TKSpace a model of CCellularGridSpaceND, the cellular space
 * in which the shape is defined.
 *
-* @tparam TPointPredicate a model of CPointPredicate, a predicate
+* @tparam TPointPredicate a model of concepts::CPointPredicate, a predicate
 * Point -> bool that defines a digital shape as a characteristic
 * function.
 *
@@ -109,7 +109,7 @@ namespace DGtal
 * parameterized by a point predicate instead of a functor spel ->
 * {0,1}. The two latter classes should evolve as this one in a further release.
 *
-* @see testVoronoiCovarianceMeasureOnSurface.cpp
+* @see testIntegralInvariantCovarianceEstimator.cpp
 */
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 class IntegralInvariantCovarianceEstimator
@@ -120,8 +120,8 @@ public:
   typedef TPointPredicate PointPredicate;
   typedef TCovarianceMatrixFunctor CovarianceMatrixFunctor;
 
-  BOOST_CONCEPT_ASSERT (( CCellularGridSpaceND< KSpace > ));
-  BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellularGridSpaceND< KSpace > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate > ));
 
   typedef typename KSpace::Space Space;
   typedef HyperRectDomain<Space> Domain;
@@ -141,13 +141,13 @@ public:
 
   /// A wrapper around point predicate (functor Point -> bool) that
   /// transforms it into a functor Point -> uint (0 or 1).
-  typedef PointFunctorFromPointPredicateAndDomain< PointPredicate, Domain, unsigned int > ShapePointFunctor;
+  typedef functors::PointFunctorFromPointPredicateAndDomain< PointPredicate, Domain, unsigned int > ShapePointFunctor;
   /// Adapts the a functor Point -> uint (0 or 1) to a functor Cell ->
   /// uint (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
   typedef FunctorOnCells< ShapePointFunctor, KSpace > ShapeSpelFunctor;
 
 
-  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef functors::ConstValueCell<Value, Spel> KernelSpelFunctor;
   typedef ImplicitBall<Space> KernelSupport;
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
   typedef GaussDigitizer< Space, KernelSupport > DigitalShapeKernel;
@@ -159,8 +159,8 @@ public:
   typedef typename Convolver::CovarianceMatrix Matrix;
   typedef typename Matrix::Component Component;
   typedef double Scalar;
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
-  BOOST_CONCEPT_ASSERT (( CUnaryFunctor< CovarianceMatrixFunctor, Matrix, Quantity > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CUnaryFunctor< CovarianceMatrixFunctor, Matrix, Quantity > ));
   BOOST_STATIC_ASSERT (( ConceptUtils::SameType< typename Convolver::CovarianceMatrix, 
                                                  typename CovarianceMatrixFunctor::Argument >::value ));
 

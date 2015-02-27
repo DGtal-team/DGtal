@@ -39,11 +39,12 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+using namespace DGtal::functors;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class DistanceTransformND.
@@ -93,15 +94,15 @@ bool testDistanceTransformND()
     {
       //distance from the point to the seed
       d = (*itDom) - c;
-      L2Metric::Promoted norm2=0;
+      L2Metric::RawValue norm2=0;
       for(Point::Iterator itd=d.begin(), itdend=d.end(); itd!=itdend; ++itd)
 	norm2+= (*itd)*(*itd);
 
-      if ( dt.metric()->exactDistanceRepresentation( (*itDom), dt.getVoronoiVector(*itDom) ) != norm2)
+      if ( dt.metric()->rawDistance( (*itDom), dt.getVoronoiVector(*itDom) ) != norm2)
   {
     trace.error()<<"Error at "<<(*itDom)
                  << ": expected="<<norm2<<" and computed="
-                 <<dt.metric()->exactDistanceRepresentation( (*itDom), dt.getVoronoiVector(*itDom) )
+                 <<dt.metric()->rawDistance( (*itDom), dt.getVoronoiVector(*itDom) )
                  <<endl;
   res=false;
   }

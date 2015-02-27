@@ -46,117 +46,15 @@
 #include "DGtal/math/BasicMathFunctions.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
+#include "DGtal/kernel/Point2ScalarFunctors.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
-#include "DGtal/geometry/volumes/CubicalSubdivision.h"
+#include "DGtal/geometry/tools/SpatialCubicalSubdivision.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-  /**
-     The hat function of value v0 at 0 with a linear decrease to 0 at value r.
-     A function Scalar -> Scalar.
-  */
-  template <typename TScalar>
-  struct HatFunction {
-    typedef TScalar Scalar;
-    typedef Scalar argument_type;
-    typedef Scalar value_type;
-
-    Scalar myV0;
-    Scalar myV0OverR;
-    Scalar myR;
-
-  public:
-    HatFunction( Scalar v0, Scalar r ) 
-      : myV0( v0 ), myV0OverR( v0 / r ), myR( r ) {}
-    Scalar operator()( Scalar d ) const
-    { // d >= 0
-      ASSERT( d >= 0.0 );
-      if ( d >= myR ) return 0.0;
-      return myV0 - myV0OverR * d;
-    }
-  };
-
-  /**
-     The ball constant function of value v0 between 0 and r, 0 elsewhere.
-     A function Scalar -> Scalar.
-  */
-  template <typename TScalar>
-  struct BallConstantFunction {
-    typedef TScalar Scalar;
-    typedef Scalar argument_type;
-    typedef Scalar value_type;
-
-    Scalar myV0;
-    Scalar myR;
-
-  public:
-    BallConstantFunction( Scalar v0, Scalar r ) 
-      : myV0( v0 ), myR( r ) {}
-    Scalar operator()( Scalar d ) const
-    {// d >= 0
-      ASSERT( d >= 0.0 );
-      return ( d > myR ) ? 0.0 : myV0;
-    }
-  };
-
-  /**
-     The hat function of value v0 at point 0 with a linear decrease to 0 at distance r.
-     A function Point -> Scalar.
-  */
-  template <typename TPoint, typename TScalar>
-  struct HatPointFunction {
-    typedef TPoint Point;
-    typedef TScalar Scalar;
-    typedef Point argument_type;
-    typedef Scalar value_type;
-
-    Scalar myV0;
-    Scalar myV0OverR;
-    Scalar myR;
-    Scalar myR2;
-
-  public:
-    HatPointFunction( Scalar v0, Scalar r ) 
-      : myV0( v0 ), myV0OverR( v0 / r ), myR( r ), myR2( r*r ) {}
-    Scalar operator()( const Point& p ) const
-    {
-      Scalar d = 0;
-      for ( typename Point::ConstIterator it = p.begin(), itE = p.end(); it != itE; ++it )
-        d += BasicMathFunctions::square( (Scalar) *it );
-      if ( d >= myR2 ) return 0.0;
-      d = sqrt( d );
-      return myV0 - myV0OverR * d;
-    }
-  };
-
-  /**
-     The ball constant function of value v0 between norm 0 and r, 0 elsewhere.
-     A function Point -> Scalar.
-  */
-  template <typename TPoint, typename TScalar>
-  struct BallConstantPointFunction {
-    typedef TPoint Point;
-    typedef TScalar Scalar;
-    typedef Point argument_type;
-    typedef Scalar value_type;
-
-    Scalar myV0;
-    Scalar myR2;
-
-  public:
-    BallConstantPointFunction( Scalar v0, Scalar r ) 
-      : myV0( v0 ), myR2( r*r ) {}
-    Scalar operator()( const Point& p ) const
-    {
-     Scalar d = 0;
-      for ( typename Point::ConstIterator it = p.begin(), itE = p.end(); it != itE; ++it )
-        d += BasicMathFunctions::square( (Scalar) *it );
-      return ( d > myR2 ) ? 0.0 : myV0;
-    }
-  };
 
   /////////////////////////////////////////////////////////////////////////////
   // template class VoronoiCovarianceMeasure
@@ -180,8 +78,8 @@ namespace DGtal
   template <typename TSpace, typename TSeparableMetric>
   class VoronoiCovarianceMeasure
   {
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
 
   public:
     typedef TSpace Space;                         ///< the type of digital space
@@ -191,11 +89,11 @@ namespace DGtal
     typedef typename Space::Integer Integer;      ///< the type of each digital point coordinate, some integral type
     typedef DGtal::HyperRectDomain<Space> Domain; ///< the type of rectangular domain of the VCM.
     typedef DGtal::ImageContainerBySTLVector<Domain,bool> CharacteristicSet; ///< the type of a binary image that is the characteristic function of K.
-    typedef DGtal::CubicalSubdivision<Space> ProximityStructure; ///< the structure used for proximity queries.
+    typedef DGtal::SpatialCubicalSubdivision<Space> ProximityStructure; ///< the structure used for proximity queries.
 
     /**
        A predicate that returns 'true' whenever the given binary image contains 'true'.
-       Model of CPointPredicate.
+       Model of concepts::CPointPredicate.
        @note Internal use.
     */
     struct CharacteristicSetPredicate {
@@ -213,7 +111,7 @@ namespace DGtal
     private:
       const CharacteristicSet* ptrSet;
     };
-    typedef DGtal::NotPointPredicate<CharacteristicSetPredicate> NotPredicate; ///< the type of the point predicate used by the voronoi map.
+    typedef DGtal::functors::NotPointPredicate<CharacteristicSetPredicate> NotPredicate; ///< the type of the point predicate used by the voronoi map.
     typedef DGtal::VoronoiMap<Space, NotPredicate, Metric > Voronoi; ///< the type of the Voronoi map.
 
     typedef double Scalar;                                    ///< the type for "real" numbers.
@@ -287,17 +185,17 @@ namespace DGtal
     const Point2MatrixNN& vcmMap() const;
 
     /**
-       Computes the Voronoi Covariance Measure of the function \a chi_r.
-       
-       @tparam Point2ScalarFunction the type of a functor
-       Point->Scalar. For instance HatPointFunction and
-       BallConstantPointFunction are models of this type.
-
-       @param chi_r the kernel function whose support is included in
-       the cube centered on the origin with edge size 2r (see \ref
-       VoronoiCovarianceMeasure).
-
-       @param p the point where the kernel function is moved. It must lie within domain.
+    Computes the Voronoi Covariance Measure of the function \a chi_r.
+    
+    @tparam Point2ScalarFunction the type of a functor
+    Point->Scalar. For instance functors::HatPointFunction and
+    functors::BallConstantPointFunction are models of this type.
+    
+    @param chi_r the kernel function whose support is included in
+    the cube centered on the origin with edge size 2r (see \ref
+    VoronoiCovarianceMeasure).
+    
+    @param p the point where the kernel function is moved. It must lie within domain.
     */
     template <typename Point2ScalarFunction>
     MatrixNN measure( Point2ScalarFunction chi_r, Point p ) const;

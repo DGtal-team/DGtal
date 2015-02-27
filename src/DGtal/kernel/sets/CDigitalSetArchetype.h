@@ -55,7 +55,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class CDigitalSetArchetype
   /**
@@ -250,7 +251,7 @@ namespace DGtal
     ( const CDigitalSetArchetype<Domain> & aSet )
     { return *this; }
 
-    // ----------------------- Model of CPointPredicate -----------------------------
+    // ----------------------- Model of concepts::CPointPredicate -----------------------------
   public:
 
     /**
@@ -308,7 +309,7 @@ namespace DGtal
 
 
   }; // end of class CDigitalSetArchetype
-
+  }
 } // namespace DGtal
 
 

@@ -94,7 +94,7 @@ namespace DGtal
     // ----------------------- Types ------------------------------
     public :
       //Required type
-      BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
       typedef TConstIterator ConstIterator;
       typedef TInteger Integer;
 

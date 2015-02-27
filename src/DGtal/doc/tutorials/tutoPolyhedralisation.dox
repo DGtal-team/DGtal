@@ -14,7 +14,7 @@ surface) from a digital object. It uses several ingredients of DGtal:
 
 - readers: to read an ".obj" file into memory (class VolReader)
 - images: to store the ".obj" file into memory (class ImageContainerBySTLVector)
-- predicate: to represent the characteristic function of the digital object (class SimpleThresholdForegroundPredicate)
+- predicate: to represent the characteristic function of the digital object (class functors::SimpleThresholdForegroundPredicate)
 - cellular space: the cellular digital space in which the boundary of the digital object is well defined (class KhalimskySpaceND)
 - digital surface: to connect all boundary elements of the digital object as a graph (class DigitalSurface)
 - graph visitor: to define neighborhoods on the digital object boundary (class BreadthFirstVisitor)
@@ -79,14 +79,14 @@ Domain of Z3 (defined in namespace Z3i) and `int`.
 However an image is not a digital object. We define a digital object
 implicitly as a Predicate : Point -> bool. Hence, we define the
 digital object as a threshold of the image with class
-SimpleThresholdForegroundPredicate.
+functors::SimpleThresholdForegroundPredicate.
 
 \code
-  typedef SimpleThresholdForegroundPredicate<Image> DigitalObject;
+  typedef functors::SimpleThresholdForegroundPredicate<Image> DigitalObject;
   DigitalObject digitalObject( image, threshold );
 \endcode
 
-Of course, class SimpleThresholdForegroundPredicate is a wrapper
+Of course, class functors::SimpleThresholdForegroundPredicate is a wrapper
 around the image and only references the image.
 
 \section tutoPolyhedralisation_sec3 Wrapping a surface around the boundary of the digital object
@@ -114,7 +114,7 @@ moduleDigitalSurfaces). To address this diversity, the class
 DigitalSurface is templated by a model of
 CDigitalSurfaceContainer. Here we wish to define a digital surface as
 the boundary of a characteristic function (a model of
-CPointPredicate). We choose in our case the container \ref
+concepts::CPointPredicate). We choose in our case the container \ref
 ImplicitDigitalSurface, which does exactly this but around one
 boundary component only. You must provide one starting surfel for the
 implicitly defined surface, which indicates the component of the

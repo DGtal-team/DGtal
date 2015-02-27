@@ -126,7 +126,7 @@ namespace DGtal
    *
    * @tparam TImage  any model of CImage
    * @tparam TSet  any model of CDigitalSet
-   * @tparam TPointPredicate  any model of CPointPredicate, 
+   * @tparam TPointPredicate  any model of concepts::CPointPredicate, 
    * used to bound the computation within a domain 
    * @tparam TPointFunctor  any model of CPointFunctor,
    * used to compute the new distance value
@@ -154,10 +154,10 @@ namespace DGtal
 
 
     //concept assert
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CPointFunctor<TPointFunctor> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<TPointFunctor> ));
 
     typedef TImage Image; 
     typedef TSet AcceptedPointSet; 

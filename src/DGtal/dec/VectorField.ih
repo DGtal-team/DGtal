@@ -1,0 +1,179 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file VectorField.ih
+ * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2014/03/26
+ *
+ * Implementation of inline methods defined in VectorField.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>::VectorField(ConstAlias<Calculus> _calculus)
+    : myCoordinates((&_calculus)->kFormLength(0, duality), DGtal::Dimension(Calculus::dimension)), myCalculus(&_calculus)
+{
+    clear();
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>::VectorField(ConstAlias<Calculus> _calculus, const Coordinates& _coordinates)
+    : myCoordinates(_coordinates), myCalculus(&_calculus)
+{
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>&
+DGtal::VectorField<Calculus, duality>::operator=(const VectorField& _vector_field)
+{
+    myCoordinates = _vector_field.myCoordinates;
+    myCalculus = _vector_field.myCalculus;
+    return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template <typename Calculus, DGtal::Duality duality>
+void
+DGtal::VectorField<Calculus, duality>::selfDisplay(std::ostream& out) const
+{
+  out << "[VectorField] ";
+}
+
+template <typename Calculus, DGtal::Duality duality>
+std::string
+DGtal::VectorField<Calculus, duality>::className() const
+{
+    return "VectorField";
+}
+
+template <typename Calculus, DGtal::Duality duality>
+void
+DGtal::VectorField<Calculus, duality>::clear()
+{
+    myCoordinates.clear();
+}
+
+template <typename Calculus, DGtal::Duality duality>
+bool
+DGtal::VectorField<Calculus, duality>::isValid() const
+{
+    return myCalculus != NULL;
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::VectorField<Calculus, duality>::normalized(const typename Calculus::Scalar& epsilon) const
+{
+    VectorField normalized_vector_field(*myCalculus);
+
+    for (typename Calculus::Index index=0; index<myCalculus->kFormLength(0, duality); index++)
+    {
+        Arrow arrow = getArrow(index);
+
+        const typename Calculus::Scalar& norm = arrow.norm();
+        if (norm <= epsilon) continue;
+        arrow /= norm;
+
+        normalized_vector_field.setArrow(index, arrow);
+    }
+
+    return normalized_vector_field;
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::KForm<Calculus, 0, duality>
+DGtal::VectorField<Calculus, duality>::extractZeroForm(const DGtal::Dimension& dim) const
+{
+    ASSERT( dim < Calculus::dimension );
+
+    typedef KForm<Calculus, 0, duality> ZeroForm;
+    const ZeroForm zero_form(*myCalculus, myCoordinates.col(dim));
+    ASSERT( zero_form.myContainer.rows() == myCoordinates.rows() );
+
+    return zero_form;
+}
+
+template <typename Calculus, DGtal::Duality duality>
+typename DGtal::PointVector<Calculus::dimension, typename Calculus::Scalar>
+DGtal::VectorField<Calculus, duality>::getArrow(const Index& index) const
+{
+    Arrow arrow;
+
+    for (DGtal::Dimension dim=0; dim<Calculus::dimension; dim++)
+        arrow[dim] = myCoordinates(index, dim);
+
+    return arrow;
+}
+
+template <typename Calculus, DGtal::Duality duality>
+void
+DGtal::VectorField<Calculus, duality>::setArrow(const Index& index, const Arrow& arrow)
+{
+    for (DGtal::Dimension dim=0; dim<Calculus::dimension; dim++)
+        myCoordinates(index, dim) = arrow[dim];
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename Calculus, DGtal::Duality duality>
+std::ostream&
+DGtal::operator<<(std::ostream & out, const DGtal::VectorField<Calculus, duality>& object)
+{
+    object.selfDisplay(out);
+    return out;
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::operator+(const DGtal::VectorField<Calculus, duality>& _vector_field_a, const DGtal::VectorField<Calculus, duality>& _vector_field_b)
+{
+    ASSERT( _vector_field_a.myCalculus == _vector_field_b.myCalculus );
+    return DGtal::VectorField<Calculus, duality>(*_vector_field_a.myCalculus, _vector_field_a.myCoordinates + _vector_field_b.myCoordinates);
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::operator-(const DGtal::VectorField<Calculus, duality>& _vector_field_a, const DGtal::VectorField<Calculus, duality>& _vector_field_b)
+{
+    ASSERT( _vector_field_a.myCalculus == _vector_field_b.myCalculus );
+    return DGtal::VectorField<Calculus, duality>(*_vector_field_a.myCalculus, _vector_field_a.myCoordinates - _vector_field_b.myCoordinates);
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::operator*(const typename Calculus::Scalar& _scalar, const DGtal::VectorField<Calculus, duality>& _vector_field)
+{
+    return DGtal::VectorField<Calculus, duality>(*_vector_field.myCalculus, _scalar * _vector_field.myCoordinates);
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

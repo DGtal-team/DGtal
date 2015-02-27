@@ -54,7 +54,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CSpace
   /**
@@ -133,7 +134,7 @@ Description of \b concept '\b CSpace' <p>
   private:
 
   }; // end of concept CSpace
-
+  }
 } // namespace DGtal
 
 

@@ -173,7 +173,7 @@ namespace DGtal
 
   public: 
     typedef TKSpace KSpace; 
-    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KSpace > )); 
   
     typedef typename KSpace::Point Point;
     typedef typename KSpace::Point Vector;
@@ -406,24 +406,24 @@ namespace DGtal
 
     ///////////////////////// SCellsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, DefaultFunctor, SCell >  SCellsRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::Identity, SCell >  SCellsRange;
 
     /**
      * @return an instance of SCellsRange
      */
     SCellsRange getSCellsRange() const {
-      return SCellsRange(mySCells.begin(), mySCells.end(), new DefaultFunctor() );
+      return SCellsRange(mySCells.begin(), mySCells.end(), new functors::Identity() );
     } 
 
     ///////////////////////// PointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToPoint<KSpace>, Point >  PointsRange;
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToPoint<KSpace>, Point >  PointsRange;
 
     /**
      * @return an instance of PointsRange
      */
     PointsRange getPointsRange() const {
-      return PointsRange(mySCells.begin(), mySCells.end(), new SCellToPoint<KSpace>(*myKPtr) );
+      return PointsRange(mySCells.begin(), mySCells.end(), new functors::SCellToPoint<KSpace>(*myKPtr) );
     } 
 
     ///////////////////////// MidPointsRange
@@ -440,60 +440,60 @@ namespace DGtal
 
     ///////////////////////// ArrowsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToArrow<KSpace>, 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToArrow<KSpace>, 
                                std::pair<Point,Vector> >  ArrowsRange; 
 
     /**
      * @return an instance of ArrowsRange
      */
     ArrowsRange getArrowsRange() const {
-      return ArrowsRange(mySCells.begin(), mySCells.end(), new SCellToArrow<KSpace>(*myKPtr) );
+      return ArrowsRange(mySCells.begin(), mySCells.end(), new functors::SCellToArrow<KSpace>(*myKPtr) );
     } 
 
     ///////////////////////// InnerPointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToInnerPoint<KSpace>, 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToInnerPoint<KSpace>, 
                                Point >  InnerPointsRange; 
 
     /**
      * @return an instance of ArrowsRange
      */
     InnerPointsRange getInnerPointsRange() const {
-      return InnerPointsRange(mySCells.begin(), mySCells.end(), new SCellToInnerPoint<KSpace>(*myKPtr) );
+      return InnerPointsRange(mySCells.begin(), mySCells.end(), new functors::SCellToInnerPoint<KSpace>(*myKPtr) );
     } 
 
     ///////////////////////// OuterPointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToOuterPoint<KSpace>, 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToOuterPoint<KSpace>, 
                                Point >  OuterPointsRange; 
 
     /**
      * @return an instance of OuterPointsRange
      */
     OuterPointsRange getOuterPointsRange() const {
-      return OuterPointsRange(mySCells.begin(), mySCells.end(), new SCellToOuterPoint<KSpace>(*myKPtr) );
+      return OuterPointsRange(mySCells.begin(), mySCells.end(), new functors::SCellToOuterPoint<KSpace>(*myKPtr) );
     } 
 
     ///////////////////////// IncidentPointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToIncidentPoints<KSpace>, 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToIncidentPoints<KSpace>, 
                                std::pair<Point, Point> >  IncidentPointsRange; 
 
     /**
      * @return an instance of IncidentPointsRange
      */
     IncidentPointsRange getIncidentPointsRange() const {
-      return IncidentPointsRange(mySCells.begin(), mySCells.end(), new SCellToIncidentPoints<KSpace>(*myKPtr) );
+      return IncidentPointsRange(mySCells.begin(), mySCells.end(), new functors::SCellToIncidentPoints<KSpace>(*myKPtr) );
     } 
     ///////////////////////// CodesRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToCode<KSpace>, char >  CodesRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToCode<KSpace>, char >  CodesRange; 
 
     /**
      * @return an instance of CodesRange
      */
     typename GridCurve::CodesRange getCodesRange() const {
-      return CodesRange( mySCells.begin(), mySCells.end(), new SCellToCode<KSpace>(*myKPtr) );    
+      return CodesRange( mySCells.begin(), mySCells.end(), new functors::SCellToCode<KSpace>(*myKPtr) );    
     } 
 
   }; // end of class GridCurve

@@ -202,7 +202,7 @@ namespace DGtal
     typedef ImageFactoryFromHDF5<TImageContainer> Self;
 
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
@@ -212,7 +212,7 @@ namespace DGtal
     typedef ImageContainer OutputImage;
     typedef typename OutputImage::Value Value;
 
-    BOOST_CONCEPT_ASSERT(( CBoundedNumber< Value > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< Value > ));
 
     // ----------------------- Standard services ------------------------------
 

@@ -142,7 +142,7 @@ public:
     return nb;
   }
   inline 
-  void display ( ostream & out, unsigned int l, unsigned int x, unsigned int y )
+  void display ( ostream & , unsigned int , unsigned int , unsigned int  )
   {}
 
   inline
@@ -220,7 +220,7 @@ public:
     return _data[ x ][ y ].size();
   }
   inline 
-  void display ( ostream & out, unsigned int l, unsigned int x, unsigned int y )
+  void display ( ostream & , unsigned int, unsigned int , unsigned int  )
   {}
 
 
@@ -375,7 +375,7 @@ public:
     return n;
   }
   inline 
-  void display ( ostream & out, unsigned int l, unsigned int x, unsigned int y )
+  void display ( ostream & , unsigned int , unsigned int , unsigned int )
   {}
 
 
@@ -464,7 +464,7 @@ public:
   {
     return _data[ x ][ y ].size();
   }
-  inline void display ( ostream & out, unsigned int l, unsigned int x, unsigned int y )
+  inline void display ( ostream & , unsigned int , unsigned int x, unsigned int y )
   {
     std::cerr << _data[ x ][ y ] << endl;
   }
