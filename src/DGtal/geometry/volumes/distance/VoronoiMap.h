@@ -95,7 +95,7 @@ namespace DGtal
    *
    * @tparam TSpace type of Digital Space (model of CSpace).
    * @tparam TPointPredicate point predicate returning true for points
-   * from which we compute the distance (model of CPointPredicate)
+   * from which we compute the distance (model of concepts::CPointPredicate)
    * @tparam TSeparableMetric a model of CSeparableMetric
    * @tparam TImageContainer any model of CImage to store the
    * VoronoiMap (default: ImageContainerBySTLVector). The space of the
@@ -114,9 +114,9 @@ namespace DGtal
   {
 
   public:
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
 
     ///Both Space points and PointPredicate points must be the same.
     BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Point,

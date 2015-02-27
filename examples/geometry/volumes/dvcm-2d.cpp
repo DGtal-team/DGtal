@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
-#include "DGtal/math/EigenDecomposition.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/volumes/estimation/VoronoiCovarianceMeasure.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -58,7 +58,7 @@ int main( int /* argc */, char** /* argv */ )
   typedef LinearAlgebraTool::Matrix Matrix;
 
   typedef VoronoiCovarianceMeasure<Space,Metric> VCM;
-  typedef HatPointFunction<Point,double> KernelFunction;
+  typedef functors::HatPointFunction<Point,double> KernelFunction;
 
   // Gets the points
   vector<unsigned int> vPos;

@@ -80,7 +80,7 @@ namespace DGtal
    *
    * @tparam I any model of input iterator
    * @tparam O any model of output iterator
-   * @tparam P any model of CPointPredicate
+   * @tparam P any model of concepts::CPointPredicate
    */
   template<typename I, typename O, typename P>
   void setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred); 
@@ -338,7 +338,7 @@ namespace DGtal
    * Create a Point Functor from a Point Predicate and an Image.
    *
    * @tparam Image a model of CImage.
-   * @tparam PointPredicate a model of CPointPredicate.
+   * @tparam PointPredicate a model of concepts::CPointPredicate.
    * @tparam TValue a model of CQuantity. Type return by the functor.
    *
    */
@@ -350,8 +350,8 @@ namespace DGtal
     typedef typename Image::Point Point;
     typedef TValue Value;
     
-    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
     BOOST_CONCEPT_ASSERT(( CQuantity<Value> ));
     
     /*BOOST_CONCEPT_USAGE(ImageToConstantFunctor)

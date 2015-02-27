@@ -48,7 +48,8 @@
 
 namespace DGtal
 {
-
+  namespace functors
+  {
   template<typename TSurfel, typename TSCellEmbedder>
   struct DummyEstimatorFromSurfels
   {
@@ -60,7 +61,7 @@ namespace DGtal
     ///Embedder type
     typedef TSCellEmbedder SCellEmbedder;
 
-    BOOST_CONCEPT_ASSERT(( CSCellEmbedder<SCellEmbedder> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSCellEmbedder<SCellEmbedder> ));
 
     ///Type of output values
     typedef int Quantity;
@@ -125,7 +126,7 @@ namespace DGtal
     ///Grid step
     double myH;
   };
-
+  }
 
 } // namespace DGtal
 

@@ -79,8 +79,8 @@ class ImageCacheReadPolicyLAST
 public:
   
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));    
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));    
     
     typedef TImageFactory ImageFactory;
     
@@ -184,8 +184,8 @@ class ImageCacheReadPolicyFIFO
 public:
   
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));    
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));    
     
     typedef TImageFactory ImageFactory;
     
@@ -288,8 +288,8 @@ class ImageCacheWritePolicyWT
 public:
   
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));
   
     typedef TImageFactory ImageFactory;
     
@@ -364,8 +364,8 @@ class ImageCacheWritePolicyWB
 public:
   
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));
   
     typedef TImageFactory ImageFactory;
     

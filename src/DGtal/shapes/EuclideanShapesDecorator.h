@@ -65,10 +65,10 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeB > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
 
     typedef typename ShapeA::Space Space;
     typedef typename ShapeA::RealPoint RealPoint;
@@ -202,10 +202,10 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeB > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
 
     typedef typename ShapeA::Space Space;
     typedef typename ShapeA::RealPoint RealPoint;
@@ -346,10 +346,10 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeB > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
 
     typedef typename ShapeA::Space Space;
     typedef typename ShapeA::RealPoint RealPoint;

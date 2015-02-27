@@ -46,15 +46,16 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/BasicBoolFunctions.h"
+#include "DGtal/base/BasicBoolFunctors.h"
 #include "DGtal/base/CPredicate.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class ConstantPointPredicate
@@ -206,7 +207,7 @@ namespace DGtal
   struct NotPointPredicate
   {
     typedef TPointPredicate PointPredicate;
-    BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate> ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate<PointPredicate> ));
     typedef typename PointPredicate::Point Point;
 
     /**
@@ -260,12 +261,17 @@ namespace DGtal
    * Aim: The predicate returns true when the given binary functor
    * returns true for the two PointPredicates given at construction.
    *
+   * Note that this class is specialized for DGtal::AndBoolFct2 and 
+   * DGtal::OrBoolFct2 in order to guarantee that the second computation
+   * is not performed when the first point predicate return false (resp. true)
+   * with DGtal::AndBoolFct2 (resp. DGtal::OrBoolFct2). 
+   *
    * @tparam TPointPredicate1 the left predicate type.
    * @tparam TPointPredicate2 the right predicate type.
    * @tparam TBinaryFunctor binary functor used for comparison
    */
   template <typename TPointPredicate1, typename TPointPredicate2,
-      typename TBinaryFunctor = BoolFunction2 >
+      typename TBinaryFunctor = BoolFunctor2 >
   struct BinaryPointPredicate
   {
     typedef TPointPredicate1 PointPredicate1;
@@ -273,8 +279,8 @@ namespace DGtal
     typedef typename PointPredicate1::Point Point;
     typedef typename PointPredicate2::Point Point2;
 
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate2 > ));
     BOOST_CONCEPT_ASSERT (( boost::BinaryFunction< TBinaryFunctor, bool, bool, bool > ));
     BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
 
@@ -301,6 +307,54 @@ namespace DGtal
     const TBinaryFunctor* myBoolFunctor;
   };
 
+  /**
+   * Specialization of BinaryPointPredicate for AndBoolFct2
+   */
+  template <typename TPointPredicate1, typename TPointPredicate2>
+  struct BinaryPointPredicate<TPointPredicate1, TPointPredicate2, AndBoolFct2>
+  {
+    typedef TPointPredicate1 PointPredicate1;
+    typedef TPointPredicate2 PointPredicate2;
+    typedef typename PointPredicate1::Point Point;
+    typedef typename PointPredicate2::Point Point2;
+
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate2 > ));
+    BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
+
+    BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<AndBoolFct2> boolFunctor );
+
+    bool operator()( const Point & p ) const;
+
+    const PointPredicate1* myPred1;
+    const PointPredicate2* myPred2;
+    const AndBoolFct2* myBoolFunctor;
+  };
+
+  /**
+   * Specialization of BinaryPointPredicate for OrBoolFct2
+   */
+  template <typename TPointPredicate1, typename TPointPredicate2>
+  struct BinaryPointPredicate<TPointPredicate1, TPointPredicate2, OrBoolFct2>
+  {
+    typedef TPointPredicate1 PointPredicate1;
+    typedef TPointPredicate2 PointPredicate2;
+    typedef typename PointPredicate1::Point Point;
+    typedef typename PointPredicate2::Point Point2;
+
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate2 > ));
+    BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
+
+    BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<OrBoolFct2> boolFunctor );
+
+    bool operator()( const Point & p ) const;
+
+    const PointPredicate1* myPred1;
+    const PointPredicate2* myPred2;
+    const OrBoolFct2* myBoolFunctor;
+  };
+
   /////////////////////////////////////////////////////////////////////////////
   // template class PointFunctorPredicate
   /**
@@ -315,8 +369,8 @@ namespace DGtal
   template <typename TPointFunctor, typename TPredicate>
   struct PointFunctorPredicate
   {
-    BOOST_CONCEPT_ASSERT (( CPointFunctor< TPointFunctor > ));
-    BOOST_CONCEPT_ASSERT (( CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointFunctor< TPointFunctor > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));
 
     typedef TPointFunctor PointFunctor;
     typedef TPredicate Predicate;
@@ -341,6 +395,7 @@ namespace DGtal
     const Predicate* myPred;
   };
 
+} // namespace functors
 } // namespace DGtal
 
 

@@ -109,7 +109,7 @@ namespace DGtal
     typedef DigitalSetDomain<DigitalSet> CoreDomain;
     typedef DomainAdjacency< ObjectDomain, ForegroundAdjacency> ObjectAdjacency;
     typedef typename CoreDomain::Predicate InCoreDomainPredicate; 
-    typedef NotPointPredicate< InCoreDomainPredicate > NotInCoreDomainPredicate;
+    typedef functors::NotPointPredicate< InCoreDomainPredicate > NotInCoreDomainPredicate;
 
     // ----------------------- Standard services ------------------------------
   public:

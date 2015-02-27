@@ -111,7 +111,7 @@ namespace DGtal
     
     //entier
     
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     typedef TInteger Integer;
     
     

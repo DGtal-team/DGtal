@@ -50,7 +50,7 @@
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
-#include "DGtal/geometry/volumes/distance/CMetric.h"
+#include "DGtal/geometry/volumes/distance/CMetricSpace.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/CLocalEstimatorFromSurfelFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ namespace DGtal
   /**
    * Description of template class 'LocalEstimatorFromSurfelFunctorAdapter' <p>
    * \brief Aim: this class adapts any local functor on digital surface element to define
-   * a local estimator.
+   * a local estimator. This class is model of CDigitalSurfaceLocalEstimator.
    *
    * When we evaluate the adapted estimator at a surfel @a s, we first
    * identify the set of neighboring around @a s using a
@@ -71,8 +71,7 @@ namespace DGtal
    * the estimated quantity is computed applying a functor on the
    * surfel set.
    *
-   *
-   * More precisely, this adapter needs a model of CMetric to define
+   * More precisely, this adapter needs a model of CMetric to define 
    * the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
    * to perform the local estimator computation. When sent to the
    * functor, the surfels are weighted using the distance from the
@@ -82,10 +81,6 @@ namespace DGtal
    * distance-to-weight function is defined by a functor of type @e
    * TConvolutionFunctor.
    *
-   * Models of TConvolutionFunctor could be for instance
-   * DefaultFunctor (returns the distance itself),
-   * ConstValueFunctor (returns a constant value) or
-   * GaussianKernelFunctor (parametrized by a sigma).
    *
    * During the @e init() method, we thus specify the gridstep @e h
    * and the radius of the ball to consider to define the
@@ -110,12 +105,12 @@ namespace DGtal
   public:
 
     ///Concept Checks
-    BOOST_CONCEPT_ASSERT(( CMetric<TMetric>));
-    BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TConvolutionFunctor,double,double> ));
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<TDigitalSurfaceContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<TMetric>));
+    BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TConvolutionFunctor,double,double> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer<TDigitalSurfaceContainer> ));
 
-    ///Digital surface type
+    ///Digital surface container type
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
 
     ///Metric type
@@ -133,17 +128,32 @@ namespace DGtal
     ///Quantity type
     typedef typename TFunctorOnSurfel::Quantity Quantity;
 
+    ///The "real number" type
+    typedef double Scalar;
+
+    ///Digital surface type
+    typedef DigitalSurface< DigitalSurfaceContainer > Surface;
+
+    ///Surfel type
+    typedef typename DigitalSurfaceContainer::Surfel Surfel;
+    
+    
   private:
 
     ///Embedded and type definitions
     typedef typename FunctorOnSurfel::SCellEmbedder Embedder;
     typedef std::binder1st<Metric> MetricToPoint;
-    typedef Composer<Embedder, MetricToPoint, Value> VertexFunctor;
-    typedef DistanceBreadthFirstVisitor< DigitalSurface< DigitalSurfaceContainer >, 
+    typedef functors::Composer<Embedder, MetricToPoint, Value> VertexFunctor;
+    typedef DistanceBreadthFirstVisitor< Surface, 
                                          VertexFunctor> Visitor;
 
 
   public:
+
+    /**
+     * Default constructor.
+     */
+    LocalEstimatorFromSurfelFunctorAdapter ();
 
     /**
      * Constructor.
@@ -158,12 +168,39 @@ namespace DGtal
      * function of the distance to the surfel.
      */
     LocalEstimatorFromSurfelFunctorAdapter
-    ( ConstAlias< DigitalSurface< DigitalSurfaceContainer > >  aSurface,
+    ( ConstAlias< Surface >  aSurface,
       ConstAlias<TMetric> aMetric,
       Alias<FunctorOnSurfel>  aFunctor,
       ConstAlias<ConvolutionFunctor> aConvolutionFunctor );
 
     /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    LocalEstimatorFromSurfelFunctorAdapter ( const LocalEstimatorFromSurfelFunctorAdapter & other ):
+      mySurface(other.mySurface), myFunctor(other.myFunctor), myMetric(other.myMetric),
+      myEmbedder(other.myEmbedder), myConvFunctor(other.myConvFunctor)
+    {  }
+    
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    LocalEstimatorFromSurfelFunctorAdapter & operator= ( const LocalEstimatorFromSurfelFunctorAdapter & other )
+    {
+      mySurface = other.mySurface;
+      myFunctor = other.myFunctor;
+      myMetric = other.myMetric;
+      myEmbedder = other.myEmbedder;
+      myConvFunctor = other.myConvFunctor;
+      return *this;
+    }
+    
+    /*
      * Destructor.
      */
     ~LocalEstimatorFromSurfelFunctorAdapter();
@@ -171,15 +208,47 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
+    /**
+     @return the gridstep. 
+     @pre must be called after init
+    */
+    Scalar h() const;
+
+    /**
+     * Attach a digital surface. After this call, the object is then
+     * invalid and the user must called \ref setParams.
+     *
+     * @param aSurface the digital surface that is aliased in this. The
+     * user can \b secure the aliasing by passing a
+     * CountedConstPtrOrConstPtr.
+     */
+    void attach( ConstAlias<Surface> aSurface );
+
+    /**
+     * Initialisation of estimator specific parameters.
+     *
+     * @param aMetric the metric
+     *
+     * @param aFunctor a functor on digital surface elements (e.g. the
+     * normal or the curvature estimation)
+     *
+     * @param aConvolutionFunctor a functor giving the weight as a
+     * function of the distance to the surfel.
+     */
+    void setParams( ConstAlias<TMetric> aMetric,
+                    Alias<FunctorOnSurfel>  aFunctor,
+                    ConstAlias<ConvolutionFunctor> aConvolutionFunctor,
+                    const Value radius);
 
     /**
      * Initialisation of estimator parameters.
-     * @param [in] h grid size (must be >0).
-     * @param [in] radius radius of the ball kernel.
      *
+     * @param[in] _h grid size (must be >0).
+     * @param[in] itb iterator after the last surfel of the surface.
+     * @param[in] ite iterator on the first surfel of the surface.
      */
-    void init(const double h,
-              const Value radius);
+    template<typename SurfelConstIterator>
+    void init(const double _h, SurfelConstIterator itb, SurfelConstIterator ite);
 
 
     /**
@@ -215,42 +284,21 @@ namespace DGtal
     bool isValid() const;
 
     // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    LocalEstimatorFromSurfelFunctorAdapter();
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    LocalEstimatorFromSurfelFunctorAdapter ( const LocalEstimatorFromSurfelFunctorAdapter & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    LocalEstimatorFromSurfelFunctorAdapter & operator= ( const LocalEstimatorFromSurfelFunctorAdapter & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
     ///Digital surface member
-    const DigitalSurface< DigitalSurfaceContainer > * mySurface;
+    CountedConstPtrOrConstPtr<Surface> mySurface;
 
     ///Functor member
-    FunctorOnSurfel * myFunctor;
+    FunctorOnSurfel* myFunctor;
 
     ///Distance functor
-    const Metric * myMetric;
+    CountedConstPtrOrConstPtr<Metric> myMetric;
 
     ///Grid step
     double myH;
@@ -259,10 +307,10 @@ namespace DGtal
     bool myInit;
 
     ///Embedder object
-    const Embedder myEmbedder;
+    Embedder myEmbedder;
 
     ///Convolution functor
-    const ConvolutionFunctor *myConvFunctor;
+    CountedConstPtrOrConstPtr<ConvolutionFunctor> myConvFunctor;
 
     ///Ball radius
     Value myRadius;
@@ -278,7 +326,6 @@ namespace DGtal
   template <typename TD, typename TV, typename TF, typename TC>
   std::ostream&
   operator<< ( std::ostream & out, const LocalEstimatorFromSurfelFunctorAdapter<TD,TV,TF,TC> & object );
-
 } // namespace DGtal
 
 

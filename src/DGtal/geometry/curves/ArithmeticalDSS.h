@@ -92,6 +92,7 @@ namespace DGtal
 	    unsigned short adjacency = 8>
   class ArithmeticalDSS
   {
+    friend class ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency>; 
 
     // ----------------------- static members -----------------------------------
   public:
@@ -108,12 +109,12 @@ namespace DGtal
      * and the slope parameters. 
      */
     typedef TCoordinate Coordinate;
-    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> )); 
     /**
      * Type used for the intercepts and the remainders. 
      */
     typedef TInteger Integer; 
-    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
 
     /**
      * Type of the bounding DSL. 
@@ -261,9 +262,23 @@ namespace DGtal
      * @param aL last point of the subsegment
      *
      * NB: logarithmic-time in the greatest component of the direction vector
-     * of the subsegment. Uses smartCH algorithm. 
+     * of the subsegment. Uses smartCH algorithm (see Roussillon 2014  \cite RoussillonDGCI2014). 
+     * @see ArithmeticalDSSFactory
      */
     ArithmeticalDSS(const DSL& aDSL, const Point& aF, const Point& aL);
+
+    /**
+     * Construction as the subsegment of minimal parameters of a greater DSS. 
+     *
+     * @param aDSS bounding DSS
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reversedSmartCH algorithm (see Roussillon 2014  \cite RoussillonDGCI2014). 
+     * @see ArithmeticalDSSFactory
+     */
+    ArithmeticalDSS(const ArithmeticalDSS& aDSS, const Point& aF, const Point& aL);
 
     /**
      * Construction from a range of iterator on points. 
@@ -831,6 +846,20 @@ namespace DGtal
 		 const typename Super::Point& aF, const typename Super::Point& aL);
 
     /**
+     * Construction as the subsegment of minimal parameters of a greater DSS. 
+     *
+     * @param aDSS bounding DSS
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reversedSmartCH algorithm. 
+     * @see ArithmeticalDSSFactory
+     */
+    StandardDSS4(const StandardDSS4& aDSS, 
+		 const typename Super::Point& aF, const typename Super::Point& aL);
+
+    /**
      * Construction from a range of iterators on points. 
      *
      * @param aItb begin iterator
@@ -950,6 +979,20 @@ namespace DGtal
      * of the subsegment. Uses smartCH algorithm. 
      */
     NaiveDSS8(const typename Super::DSL& aDSL, 
+	      const typename Super::Point& aF, const typename Super::Point& aL);
+
+    /**
+     * Construction as the subsegment of minimal parameters of a greater DSS. 
+     *
+     * @param aDSS bounding DSS
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reversedSmartCH algorithm. 
+     * @see ArithmeticalDSSFactory
+     */
+    NaiveDSS8(const NaiveDSS8& aDSS, 
 	      const typename Super::Point& aF, const typename Super::Point& aL);
 
     /**

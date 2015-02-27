@@ -68,7 +68,7 @@ namespace DGtal
 
     typedef TDigitalSurface Surface;
     typedef typename Surface::KSpace KSpace;
-    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND<KSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND<KSpace> ));
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Space Space;
     typedef typename Space::RealPoint RealPoint;

@@ -44,7 +44,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 //! [polyhedralizer-includes-readvol]
 
 #include "DGtal/io/Display3D.h"
@@ -61,8 +61,8 @@
 #include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
 #include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.h"
 
-#include "DGtal/kernel/SimpleMatrix.h"
-#include "DGtal/math/EigenDecomposition.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -145,7 +145,7 @@ int main( int argc, char** argv )
   trace.beginBlock( "Reading vol file into an image." );
   typedef ImageContainerBySTLVector< Domain, int> Image;
   Image image = VolReader<Image>::importVol(inputFilename);
-  typedef SimpleThresholdForegroundPredicate<Image> DigitalObject;
+  typedef functors::SimpleThresholdForegroundPredicate<Image> DigitalObject;
   DigitalObject digitalObject( image, threshold );
   trace.endBlock();
   //! [polyhedralizer-readVol]
@@ -169,7 +169,6 @@ int main( int argc, char** argv )
 
   //! [polyhedralizer-ExtractingSurface]
   trace.beginBlock( "Extracting boundary by tracking the surface. " );
-  typedef KSpace::SCell SCell;
   typedef KSpace::Surfel Surfel;
   Surfel start_surfel = Surfaces<KSpace>::findABel( ks, digitalObject, 100000 );
   typedef ImplicitDigitalSurface< KSpace, DigitalObject > MyContainer;
@@ -199,7 +198,6 @@ int main( int argc, char** argv )
     {
       if ( ( (++j) % 50 == 0 ) || ( j == nb ) ) trace.progressBar( j, nb );
       Surfel v = *it;
-      int axis = ks.sOrthDir( v );
       planeComputer.init( widthNum, widthDen );
       // The visitor takes care of all the breadth-first traversal.
       Visitor visitor( digSurf, v );
@@ -411,5 +409,8 @@ int main( int argc, char** argv )
     delete *it;
   //! [polyhedralizer-freeMemory]
 
-  return 0;
+  if (isOK && isOK2)
+    return 0;
+  else
+    return 1;
 }

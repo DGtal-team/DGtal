@@ -47,53 +47,54 @@
 #include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CAdjacency
   /**
-DescriptionDescription of \b concept '\b CAdjacency' <p>
-@ingroup Concepts
+  DescriptionDescription of \b concept '\b CAdjacency' <p>
+  @ingroup Concepts
    
-@brief Aim: The concept CAdjacency defines an elementary
-    adjacency relation between points of a digital space.
+  @brief Aim: The concept CAdjacency defines an elementary
+  adjacency relation between points of a digital space.
     
-It thus distinguishes which points are close and which points are
-further away in this space. Adjacency relations are used to
-define a digital topology, in the sense of Rosenfeld or in the
-sense of Herman. In other words, and adjacency relation define a
-neighborhood graph on the points of a digital domain.
+  It thus distinguishes which points are close and which points are
+  further away in this space. Adjacency relations are used to
+  define a digital topology, in the sense of Rosenfeld or in the
+  sense of Herman. In other words, and adjacency relation define a
+  neighborhood graph on the points of a digital domain.
    
-### Refinement of 
-     CUndirectedSimpleLocalGraph
+  ### Refinement of 
+  - CUndirectedSimpleLocalGraph
    
-### Associated types (must be defined in the model):
-    - \c Space: the space of the adjacency.
-    - \c Point: the digital point type.
-    - \c Adjacency: the type of the adjacency itself.
+  ### Associated types (must be defined in the model):
+  - \c Space: the space of the adjacency.
+  - \c Point: the digital point type.
+  - \c Adjacency: the type of the adjacency itself.
    
-###  Notations
-    - \c Adj : A type that is a model of CAdjacency
-    - \c adj  : Object of type Adj.
-    - \c p1, \c p2 : an object of type \ref Point.
+  ###  Notations
+  - \c Adj : A type that is a model of CAdjacency
+  - \c adj  : Object of type Adj.
+  - \c p1, \c p2 : an object of type \ref Point.
     
-### Definitions
+  ### Definitions
    
-### Valid expressions and semantics
+  ### Valid expressions and semantics
 
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| adjacency test | adj.isAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj | | |
-| proper adjacency test | adj.isProperlyAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 | | | 
+  | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+  |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+  | adjacency test | adj.isAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj | | |
+  | proper adjacency test | adj.isProperlyAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 | | | 
     
-### Invariants
+  ### Invariants
    
-### Models
-    MetricAdjacency, DomainAdjacency
+  ### Models
+  - MetricAdjacency, DomainAdjacency
    
-### Notes
-   */
+  ### Notes
+  */
   template <typename Adj>
   struct CAdjacency : CUndirectedSimpleLocalGraph<Adj>
   {
@@ -126,6 +127,7 @@ neighborhood graph on the points of a digital domain.
     
   }; // end of concept CAdjacency
   
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

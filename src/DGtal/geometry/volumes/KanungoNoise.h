@@ -59,7 +59,7 @@ namespace DGtal
   // template class KanungoNoise
   /**
    * Description of template class 'KanungoNoise' <p>
-   * \brief Aim: From a point predicate (model of CPointPredicate), this class 
+   * \brief Aim: From a point predicate (model of concepts::CPointPredicate), this class 
    * constructs another point predicate as a noisy version of the input one.
    *
    * The noise model used here, called Kanungo noise, can be defined as follows:
@@ -74,7 +74,7 @@ namespace DGtal
    * Eucliean metric (the distance is computed on both true and false points from the point
    * predicate in the given domain).
    *
-   * @tparam TPointPredicate any model of point predicate concept (CPointPredicate)
+   * @tparam TPointPredicate any model of point predicate concept (concepts::CPointPredicate)
    * @tparam TDomain any model of CDomain
    * @tparam TDigitalSetContainer container type to store the point predicate (default: DigitalSetBySTLSet)
    *
@@ -87,9 +87,9 @@ namespace DGtal
   public:
 
     ///Concept checks
-    BOOST_CONCEPT_ASSERT(( CDomain< TDomain > ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TDigitalSetContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSetContainer> ));
     
     ///Object type
     typedef TPointPredicate PointPredicate;

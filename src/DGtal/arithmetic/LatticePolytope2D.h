@@ -82,7 +82,7 @@ namespace DGtal
              typename TSequence = std::list< typename TSpace::Point > >
   class LatticePolytope2D 
   {
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
     BOOST_CONCEPT_ASSERT(( boost::Sequence< TSequence > ));
 

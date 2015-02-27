@@ -43,7 +43,7 @@
 #include <iostream>
 #include <cmath>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/volumes/distance/CMetric.h"
+#include "DGtal/geometry/volumes/distance/CMetricSpace.h"
 #include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -84,7 +84,7 @@ namespace DGtal
 
     ///Copy the space type
     typedef TMetric Metric;
-    BOOST_CONCEPT_ASSERT(( CMetric<TMetric> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<TMetric> ));
 
     ///Type for points
     typedef typename Metric::Point Point;
@@ -92,6 +92,8 @@ namespace DGtal
     typedef typename Point::Coordinate Abscissa;
     ///Type for values
     typedef typename Metric::Value Value;
+    ///Type for raw values
+    typedef typename Metric::RawValue RawValue;
     ///Type for vectors
     typedef typename Metric::Vector Vector;
     ///Type for Space
@@ -130,22 +132,6 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
-    // ----------------------- CLocalMetric --------------------------------------
-    /**
-     * Compute the local distance between @a aP and its displacement
-     * along the direction @a aDir.
-     *
-     * @param aP a point.
-     * @param aDir a direction.
-     *
-     * @return the distance between @a aP and @a aP+@a aDir.
-     */
-    Value local(const Point & aP, const Vector &aDir) const
-    {
-      return myMetric.local(aP,aDir);
-    };
-
-
     // ----------------------- CMetric --------------------------------------
     /**
      * Compute the distance between @a aP and @a aQ.
@@ -160,6 +146,18 @@ namespace DGtal
       return myMetric.operator()(aP,aQ);
     }
 
+    /**
+     * Compute the raw distance between @a aP and @a aQ.
+     *
+     * @param aP a first point.
+     * @param aQ a second point.
+     *
+     * @return the distance between aP and aQ.
+     */
+    RawValue rawDistance(const Point & aP, const Point &aQ) const
+    {
+      return myMetric.rawDistance(aP,aQ);
+    }
     /**
      * Given an origin and two points, this method decides which one
      * is closest to the origin. This method should be faster than

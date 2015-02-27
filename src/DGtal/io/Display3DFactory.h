@@ -55,6 +55,7 @@
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/shapes/Mesh.h"
 #include "DGtal/geometry/tools/SphericalAccumulator.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/CColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -63,6 +64,9 @@
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/dec/VectorField.h"
+#include "DGtal/dec/KForm.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
 
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -85,6 +89,27 @@ namespace DGtal
     typedef Display3D<Space, KSpace> Display;
     typedef typename Display::RealPoint RealPoint;
     typedef typename Display::RealVector RealVector;
+
+    // DiscreteExteriorCalculus
+    template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+    static
+    void
+    draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus);
+    // DiscreteExteriorCalculus
+
+    // KForm
+    template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+    static
+    void
+    draw(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, double cmap_min = 0, double cmap_max = 0);
+    // KForm
+
+    // VectorField
+    template <typename Calculus, DGtal::Duality duality>
+    static
+    void
+    draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale = 0.5, const double& epsilon = 1e-8);
+    // VectorField
 
     // SphericalAccumulator
     /**
@@ -466,7 +491,7 @@ namespace DGtal
      */
     template < typename TIterator, typename TSCell>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & anObject );
     // SCellsRange
 
     // PointsRange
@@ -477,7 +502,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<KSpace>, typename TKSpace::Point> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToPoint<KSpace>, typename TKSpace::Point> & anObject );
     // PointsRange
 
     // MidPointsRange
@@ -500,7 +525,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<KSpace>,
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToArrow<KSpace>,
                       std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & anObject );
     // ArrowsRange
 
@@ -512,7 +537,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<KSpace>, typename TKSpace::Point> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<KSpace>, typename TKSpace::Point> & anObject );
     // InnerPointsRange
 
     // OuterPointsRange
@@ -523,7 +548,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<KSpace>, typename TKSpace::Point> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<KSpace>, typename TKSpace::Point> & anObject );
     // OuterPointsRange
 
     // IncidentPointsRange
@@ -534,7 +559,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<KSpace>,
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<KSpace>,
                       std::pair<typename TKSpace::Point, typename TKSpace::Point > > & anObject );
     // IncidentPointsRange
 
@@ -581,6 +606,24 @@ namespace DGtal
      */
     static void
     draw( Display & display, const DGtal::TransformedPrism & aTransformedPrism);
+
+    /**
+     * Set the "OpenGL name" of future graphical commands.
+     * @param display the display where to draw
+     * @param aName3d an object storing the "OpenGL" name.
+     */
+    static void 
+    draw( Display & display, const DGtal::SetName3D& aName3d );
+
+    /**
+     * Set the callback function when selecting an object (e.g. shift
+     * + left click in QGLViewer).
+     *
+     * @param display the display where to draw
+     * @param aFct an object storing the callback function.
+     */
+    static void 
+    draw( Display & display, const DGtal::SetSelectCallback3D& aFct );
 
   }; // end of struct Display3DFactory
 

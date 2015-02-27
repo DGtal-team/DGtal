@@ -80,7 +80,7 @@ namespace DGtal
     public:
 
       BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
-      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
 
       typedef TValue Value;
       typedef TDomain Domain;
@@ -114,7 +114,6 @@ namespace DGtal
       /**
        * Constructor.
        *
-       * @param aDomain the image domain.
        * @param aRef a reference to an ITKImage
        */
       ImageContainerByITKImage(const ITKImagePointer &aRef);
@@ -205,7 +204,7 @@ namespace DGtal
        * Set a value on an Image at aPoint.
        *
        * @param it location of the point (Iterator) to associate with aValue.
-       * @param aValue the value.
+       * @param V the value.
        */
       void setValue(Iterator &it, const Value &V);
 

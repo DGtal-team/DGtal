@@ -45,7 +45,7 @@
 
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
-#include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -117,7 +117,7 @@ namespace DGtal
      * before being stored into the matrix. 
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing<Integer> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<Integer> )); 
 
     /**
      * Type of matrix

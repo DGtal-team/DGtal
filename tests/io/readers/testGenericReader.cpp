@@ -58,6 +58,9 @@ bool testGenericReader()
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
 
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned int> Image3D32bits;
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned int> Image2D32bits;
+
   std::string filenameImage1 = testPath + "samples/cat10.vol";    
   Image3D anImportedImage1= DGtal::GenericReader<Image3D>::import(filenameImage1);
   DGtal::Z3i::Domain domain1 = anImportedImage1.domain(); 
@@ -91,6 +94,21 @@ bool testGenericReader()
   DGtal::trace.info()<<"size[2]:  " << size2Img2 << std::endl;;
   nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0; 
   nb++;
+
+  typedef DGtal::functors::Rescaling<unsigned char ,unsigned char > RescalFCT;
+  Image3D imageanImportedImage2 = DGtal::GenericReader<Image3D>::importWithValueFunctor( filenameImage2,  RescalFCT(0, 120,
+                                                                                                             0, 255) );  
+  domain2 = anImportedImage2.domain(); 
+  size0Img2= domain2.upperBound()[0]-domain2.lowerBound()[0]+1;
+  size1Img2= domain2.upperBound()[1]-domain2.lowerBound()[1]+1;
+  size2Img2= domain2.upperBound()[2]-domain2.lowerBound()[2]+1;
+  DGtal::trace.info()<<"Pgm3D image read (with scale functor) : size[0]:" << size0Img2  ;
+  DGtal::trace.info()<<"size[1]:  " << size1Img2;
+  DGtal::trace.info()<<"size[2]:  " << size2Img2 << std::endl;;
+  nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0; 
+  nb++;
+  
+
 #ifdef WITH_HDF5
   std::string filenameImageh5 = testPath + "samples/cat10.h5";    
   Image3D anImportedImageh5= DGtal::GenericReader<Image3D>::import(filenameImageh5);
@@ -114,6 +132,31 @@ bool testGenericReader()
   DGtal::trace.info()<<"size[1]:  " << size1Img3     << std::endl;;
   nbok += (size0Img3==185 && size1Img3==85 ) ? 1 : 0; 
   nb++;
+
+  std::string filenameImage4 = testPath + "samples/raw32bits5x5x5.raw";    
+  Image3D32bits anImportedImage4= DGtal::GenericReader<Image3D32bits>::import(filenameImage4, 5, 5, 5);
+  DGtal::Z3i::Domain domain4 = anImportedImage4.domain(); 
+  unsigned int size0Img4= domain4.upperBound()[0]-domain4.lowerBound()[0]+1;
+  unsigned int size1Img4= domain4.upperBound()[1]-domain4.lowerBound()[1]+1;
+  unsigned int size2Img4= domain4.upperBound()[2]-domain4.lowerBound()[2]+1;
+  DGtal::trace.info()<<"Raw32 bits 3D image read: size[0]:" << size0Img4;
+  DGtal::trace.info()<<"size[1]:  " << size1Img4;
+  DGtal::trace.info()<<"size[2]:  " << size2Img4 << std::endl;
+  DGtal::trace.info()<<"Image value of Point (2,3,4): " << anImportedImage4(DGtal::Z3i::Point(2,3,4)) << " (should be 250000*2*3*4) "<<std::endl;
+  nbok += (size0Img4==5 && size1Img4==5 && size2Img4==5 && anImportedImage4(DGtal::Z3i::Point(2,3,4))==250000*2*3*4) ? 1 : 0; 
+  nb++;
+
+  std::string filenameImage5 = testPath + "samples/raw32bits5x5.raw";    
+  Image2D32bits anImportedImage5= DGtal::GenericReader<Image2D32bits>::import(filenameImage5, 5, 5);
+  DGtal::Z2i::Domain domain5 = anImportedImage5.domain(); 
+  unsigned int size0Img5= domain5.upperBound()[0]-domain5.lowerBound()[0]+1;
+  unsigned int size1Img5= domain5.upperBound()[1]-domain5.lowerBound()[1]+1;
+  DGtal::trace.info()<<"Raw32 bits 3D image read: size[0]:" << size0Img4;
+  DGtal::trace.info()<<"size[1]:  " << size1Img5 << std::endl;
+  DGtal::trace.info()<<"Image value of Point (2,3): " << anImportedImage5(DGtal::Z2i::Point(2,3)) << " (should be 250000*2*3*4) "<<std::endl;
+  nbok += (size0Img5==5 && size1Img5==5  && anImportedImage5(DGtal::Z2i::Point(2,3))==250000*2*3*4) ? 1 : 0; 
+  nb++;
+
 
 
 

@@ -1,5 +1,5 @@
 SET(DGTAL_TESTS_SRC
-   testBasicBoolFunctions
+   testBasicBoolFunctors
    testOrderedAlphabet
    testCirculator
    testConstIteratorAdapter
@@ -11,6 +11,8 @@ SET(DGTAL_TESTS_SRC
    testTrace
    testcpp11
    testCountedPtr
+   testCountedPtrOrPtr
+   testCountedConstPtrOrConstPtr
    testBits
    testIndexedListWithBlocks
    testLabels

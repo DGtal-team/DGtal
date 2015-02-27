@@ -260,7 +260,7 @@ namespace DGtal
     DigitalSetBySTLVector<Domain> & operator+=
     ( const DigitalSetBySTLVector<Domain> & aSet );
 
-    // ----------------------- Model of CPointPredicate -----------------------------
+    // ----------------------- Model of concepts::CPointPredicate -----------------------------
   public:
 
     /**

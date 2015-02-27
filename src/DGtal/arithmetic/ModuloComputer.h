@@ -85,7 +85,7 @@ namespace DGtal
     typedef typename NumberTraits<TInteger>::UnsignedVersion UnsignedInteger;
     typedef typename NumberTraits<UnsignedInteger>::ParamType UnsignedIntegerParamType;
 
-    BOOST_CONCEPT_ASSERT((CInteger<Integer>));
+    BOOST_CONCEPT_ASSERT((concepts::CInteger<Integer>));
     
     /**
      * Initializes the modulo computer with the value [m].

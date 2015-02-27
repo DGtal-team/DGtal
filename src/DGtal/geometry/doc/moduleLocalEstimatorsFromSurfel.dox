@@ -52,10 +52,10 @@ specified metric) and each surfel is sent to the surfel functor.
 In DGtal, we implement this class of estimator using the generic
 LocalEstimatorsFromSurfel class. Such class is parametrized by the
 following template parameters:
--  a model of digital surface concept (CDigitalSurfaceContainer)
--  a model of CMetric to be used in the neighborhood construction.
+-  a model of digital surface concept (concepts::CDigitalSurfaceContainer)
+-  a model of concepts::CMetricSpace to be used in the neighborhood construction.
 -  a functor to define the  estimator on surfel set (model of
-CLocalEstimatorFromSurfelFunctor)
+concepts::CLocalEstimatorFromSurfelFunctor)
 -  a convolution function to weight neighboring surfels.
 
 This class provides three main methods:
@@ -68,7 +68,7 @@ This class provides three main methods:
   range of surfels.
 
 The core of the estimators are thus specified in the surfel functor
-(model of CLocalEstimatorFromSurfelFunctor). In DGtal, we have defined
+(model of concepts::CLocalEstimatorFromSurfelFunctor). In DGtal, we have defined
 several functors:
 
 - MongeJetFittingGaussianCurvatureEstimator,

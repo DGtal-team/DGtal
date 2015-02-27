@@ -203,7 +203,7 @@ writeNeighbors( OutputIterator & it,
                 const Vertex & v,
                 const VertexPredicate & pred ) const
 {
-  BOOST_CONCEPT_ASSERT(( CVertexPredicate< VertexPredicate > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CVertexPredicate< VertexPredicate > ));
   Vertex s;
   myTracker->move( v );
   for ( typename KSpace::DirIterator q = container().space().sDirs( v );
@@ -609,7 +609,7 @@ exportEmbeddedSurfaceAs3DOFF
 ( std::ostream & out,
   const CellEmbedder & cembedder ) const
 {
-  BOOST_CONCEPT_ASSERT(( CCellEmbedder< CellEmbedder > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
 
   typedef DGtal::uint64_t Number;
   // Numbers all vertices.
@@ -675,8 +675,8 @@ exportEmbeddedSurfaceAs3DNOFF
 ( std::ostream & out,
   const CellEmbedder & cembedder ) const
 {
-  BOOST_CONCEPT_ASSERT(( CCellEmbedder< CellEmbedder > ));
-  BOOST_CONCEPT_ASSERT(( CWithGradientMap< CellEmbedder > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CWithGradientMap< CellEmbedder > ));
 
   typedef typename CellEmbedder::GradientMap GradientMap;
   typedef typename CellEmbedder::Cell MyCell;
@@ -756,8 +756,8 @@ exportAs3DNOFF
 ( std::ostream & out,
   const SCellEmbedderWithGradientMap & scembedder ) const
 {
-  BOOST_CONCEPT_ASSERT(( CSCellEmbedder< SCellEmbedderWithGradientMap > ));
-  BOOST_CONCEPT_ASSERT(( CWithGradientMap< SCellEmbedderWithGradientMap > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSCellEmbedder< SCellEmbedderWithGradientMap > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CWithGradientMap< SCellEmbedderWithGradientMap > ));
 
   typedef typename SCellEmbedderWithGradientMap::GradientMap GradientMap;
   typedef typename SCellEmbedderWithGradientMap::SCell MySCell;

@@ -50,7 +50,6 @@
 
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/CPointFunctor.h"
-#include "DGtal/kernel/CPointPredicate.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -81,7 +80,7 @@ namespace DGtal
     typedef typename FunctorOnPoints::Value Value;
     typedef typename KSpace::SCell Cell;
 
-    BOOST_CONCEPT_ASSERT(( CPointFunctor< FunctorOnPoints > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor< FunctorOnPoints > ));
     //BOOST_CONCEPT_ASSERT(( CSpace< KSpace > ));
 
     /**

@@ -47,7 +47,7 @@
 namespace DGtal
 {
 
-  namespace ArithmeticalDSSConvexHull {
+  namespace functors {
 
     /**
      * @brief Functor that returns the position of any point/vector 
@@ -156,6 +156,10 @@ namespace DGtal
       } 
     }; 
 
+  } // namespace functors
+
+
+  namespace functions {
 
     /**
      * @brief Procedure that computes the next (lower or upper) vertex of 
@@ -216,14 +220,15 @@ namespace DGtal
      * and the remainder of the first point. 
      * @param aPositionBound (strictly positive) length of the DSS
      * @param aStep first step of the DSL
-     * @param aRStep remainder of the first step, ie. parameter a of the bounding DSL
+     * @param aRStep remainder of the first step, ie. parameter \f$ a \f$ of the bounding DSL
      * @param aShift shift vector of the DSL
-     * @param aRShift remainder of the shift vector, ie. parameter omega of the bounding DSL. 
+     * @param aRShift remainder of the shift vector, ie. parameter \f$ omega \f$ of the bounding DSL. 
      * @param aPositionFunctor position functor, which returns the position of any given point/vector 
      * @param uIto output iterator used to store the vertices of the upper convex hull
      * @param lIto output iterator used to store the vertices of the lower convex hull
      *
-     * @return last direction vector, ie. the minimal parameters of the DSS
+     * @return last direction vector, 
+     * ie. the rational slope of minimal denominator of the DSS
      *
      * @tparam PointVector a model of 2d point/vector
      * @tparam Coordinate a model of integer for the coordinates of the point/vector 
@@ -248,7 +253,7 @@ namespace DGtal
     /**
      * @brief Procedure that computes the lower and upper left hull of 
      * a DSS of first point @a aFirstPoint, length @a aLength, 
-     * contained in a DSL @a aDSL. 
+     * contained in a DSL @a aDSL [Roussillon 2014 : \cite RoussillonDGCI2014]. 
      *
      * @param aDSL bounding DSL
      * @param aFirstPoint first point of the DSS
@@ -256,7 +261,8 @@ namespace DGtal
      * @param uIto output iterator used to store the vertices of the upper convex hull
      * @param lIto output iterator used to store the vertices of the lower convex hull
      *
-     * @return last direction vector, ie. the minimal parameters of the DSS
+     * @return last direction vector, 
+     * ie. the rational slope of minimal denominator
      *
      * @tparam DSL a model of arithmetical DSL 
      * @tparam OutputIterator a model of output iterator
@@ -269,7 +275,105 @@ namespace DGtal
 				 OutputIterator uIto, OutputIterator lIto); 
 
 
-  } // namespace ArithmeticalDSSConvexHull
+    /**
+     * @brief Procedure that computes the previous vertex of the 
+     * left hull of a DSS of main direction vector @a V , 
+     * first upper leaning point @a U and first positive Bezout 
+     * point @a L. The computation stops as soon as a computed vertex
+     * is located before @a aLastPosition.  
+     *
+     * @param X (returned) first vertex of the left hull on the considered side
+     * @param Y first vertex of the left hull on the opposite side
+     * @param V (returned) previous direction vector
+     * @param aFirstPosition position of the first point of the subsegment
+     * @param aLastPosition position of the last point of the subsegment
+     * @param ito output iterator used to store the vertices of the left hull
+     * lying on the same side as @a X
+     * @param pos position functor, which returns the position of any given point/vector
+     * @param f1 integer divisor for the direction vector update
+     * @param f2 integer divisor for the vertex update
+     *
+     * @tparam PointVector a model of couple of coordinates
+     * @tparam Position a model of integer for the position of the points
+     * @tparam OutputIterator a model of output iterator
+     * @tparam TruncationFunctor1 a model of functor for the integer division
+     * @tparam TruncationFunctor2 a model of functor for the integer division
+     * @tparam PositionFunctor a model of functor returning the position of a point
+     *
+     * @return 'true' if the last vertex has been reached, 
+     * 'false' otherwise
+     */
+    template<typename PointVector, typename Position, 
+	     typename OutputIterator, 
+	     typename TruncationFunctor1, typename TruncationFunctor2, 
+	     typename PositionFunctor>
+    inline
+    bool smartCHPreviousVertex(PointVector& X, const PointVector& Y, PointVector& V, 
+			       const Position& aFirstPosition, const Position& aLastPosition, 
+			       OutputIterator ito, 
+			       const PositionFunctor& pos,
+			       const TruncationFunctor1& f1, 
+			       const TruncationFunctor2& f2); 
+
+    /**
+     * @brief Procedure that computes the lower and upper left hull of 
+     * the left subsegment of a greater DSS characterized by the first 
+     * upper leaning point @a U, the first positive Bezout point @a L 
+     * and its direction vector @a V. Note that the so-called left 
+     * subsegment is bounded on the one hand by the first point of the DSS
+     * located at @a aFirstPosition and on the other hand by the point 
+     * located at position @a aLastPosition. 
+     *
+     * @param U last upper convex hull vertex
+     * @param L last lower convex hull vertex
+     * @param V last valid Bezout vector (main direction vector)
+     * @param aFirstPosition position of the first point of the subsegment
+     * @param aLastPosition position of the last point of the subsegment
+     * @param aPositionFunctor position functor, which returns the position of any given point/vector 
+     * @param uIto output iterator used to store the vertices of the upper convex hull
+     * @param lIto output iterator used to store the vertices of the lower convex hull
+     *
+     * @tparam PointVector a model of 2d point/vector
+     * @tparam Position a model of integer for the position of the point in the bounding DSS
+     * @tparam PositionFunctor a model of unary functor that returns the position of a point/vector
+     * @tparam OutputIterator a model of output iterator
+     *
+     * @return last direction vector, 
+     * ie. the rational slope of minimal denominator
+     */
+    template<typename PointVector, typename Position, typename PositionFunctor, typename OutputIterator>
+    inline
+    PointVector reversedSmartCH(PointVector U, PointVector L, PointVector V, 
+			       const Position& aFirstPosition, const Position& aLastPosition,
+			       const PositionFunctor& aPositionFunctor, 
+			       OutputIterator uIto, OutputIterator lIto); 
+
+    /**
+     * @brief Procedure that computes the lower and upper left hull of 
+     * the left subsegment of a greater DSS @a aDSS. Note that the so-called left 
+     * subsegment is bounded on the one hand by the first point of @a aDSS and 
+     * on the other hand by the point located at position @a aPositionBound
+     * [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+     *
+     * @param aDSS bounding DSS
+     * @param aPositionBound position of the last point of the subsegment 
+     * (should be located after the first point of @a aDSS).
+     * @param uIto output iterator used to store the vertices of the upper convex hull
+     * @param lIto output iterator used to store the vertices of the lower convex hull
+     *
+     * @tparam DSS a model of arithmetical DSS 
+     * @tparam OutputIterator a model of output iterator
+     *
+     * @return last direction vector, 
+     * ie. the rational slope of minimal denominator
+     */
+    template<typename DSS, typename OutputIterator>
+    inline
+    typename DSS::Vector reversedSmartCH(const DSS& aDSS, 
+					const typename DSS::Position& aPositionBound, 
+					OutputIterator uIto, OutputIterator lIto); 
+
+  } // namespace functions
 
 
 } // namespace DGtal

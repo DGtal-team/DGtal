@@ -33,7 +33,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
@@ -101,13 +101,13 @@ int main(  )
 
   //! [SurfelFunctorsType]
 #ifdef WITH_CGAL
-  typedef MongeJetFittingGaussianCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorGaussian;
-  typedef MongeJetFittingMeanCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorMean;
-  typedef MongeJetFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormal;
-  typedef LinearLeastSquareFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalLeast;
+  typedef DGtal::functors::MongeJetFittingGaussianCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorGaussian;
+  typedef functors::MongeJetFittingMeanCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorMean;
+  typedef functors::MongeJetFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormal;
+  typedef functors::LinearLeastSquareFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalLeast;
 
   //constant convolution functor
-  typedef ConstValueFunctor<double> ConstFunctor;
+  typedef functors::ConstValue<double> ConstFunctor;
 
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorGaussian, ConstFunctor> ReporterK;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorMean, ConstFunctor> ReporterH;
@@ -117,9 +117,9 @@ int main(  )
 
   ///For Elmentary convolution, we specify a Gaussian convolution
   ///kernel from the BasicFunctors.h file
-  typedef ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalElem;
+  typedef functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalElem;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric,
-                                                 FunctorNormalElem, GaussianKernelFunctor> ReporterNormalElem;
+                                                 FunctorNormalElem, DGtal::functors::GaussianKernel> ReporterNormalElem;
   //! [SurfelFunctorsType]
 
 
@@ -133,32 +133,46 @@ int main(  )
 
   ConstFunctor constFunctor(1.0);
 
-  ReporterK reporterK(surface, l2Metric, estimatorK , constFunctor);
-  ReporterH reporterH(surface, l2Metric, estimatorH , constFunctor);
-  ReporterNormal reporterN(surface, l2Metric, estimatorN ,constFunctor);
-  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , constFunctor);
+  ReporterK reporterK;
+  ReporterH reporterH;
+  ReporterNormal reporterN;
+  ReporterNormalLeast reporterL;
 #endif
 
   FunctorNormalElem estimatorNormalElem(CanonicSCellEmbedder<KSpace>(surface.container().space()),1.0);
   ///sigma = 2.0 for the gaussian smoothing
-  GaussianKernelFunctor gaussian(2.0);
+  DGtal::functors::GaussianKernel gaussian(2.0);
   ReporterNormalElem reporterElem(surface, l2Metric,
                                   estimatorNormalElem, gaussian);
   //! [SurfelFunctorsInstances]
 
   //! [SurfelFunctorsEstim]
 #ifdef WITH_CGAL
-  reporterK.init(1.0, 5.0);
-  reporterH.init(1.0, 5.0);
-  reporterN.init(1.0, 5.0);
-  reporterL.init(1.0, 5.0);
+  reporterK.attach(surface);
+  reporterH.attach(surface);
+  reporterN.attach(surface);
+  reporterL.attach(surface);
+
+  reporterK.init(1, surface.begin(), surface.end());
+  reporterH.init(1, surface.begin(), surface.end());
+  reporterN.init(1, surface.begin(), surface.end());
+  reporterL.init(1, surface.begin(), surface.end());
+
+  reporterK.setParams(l2Metric, estimatorK, constFunctor, 5.0);
+  reporterH.setParams(l2Metric, estimatorH, constFunctor, 5.0);
+  reporterN.setParams(l2Metric, estimatorN, constFunctor, 5.0);
+  reporterL.setParams(l2Metric, estimatorL, constFunctor, 5.0);
+
   FunctorGaussian::Quantity valK = reporterK.eval( surface.begin());
   FunctorMean::Quantity valH = reporterH.eval( surface.begin());
   FunctorNormal::Quantity valN = reporterN.eval( surface.begin());
   FunctorNormalLeast::Quantity valL = reporterL.eval( surface.begin());
 #endif
-
-  reporterElem.init(1.0, 5.0);
+  
+  reporterElem.attach(surface);
+  reporterElem.setParams(l2Metric,
+                         estimatorNormalElem, gaussian, 5.0);
+  reporterElem.init(1.0, surface.begin(), surface.end());
   FunctorNormalElem::Quantity valElem = reporterElem.eval( surface.begin());
 
 #ifdef WITH_CGAL

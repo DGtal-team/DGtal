@@ -32,15 +32,15 @@ complemented within their domain. Last, a digital set is also a
 predicate on point, returning true whenever the points lies inside the
 set.
 
-@section digital_sets_2 The concept CDigitalSet and models of CDigitalSet
+@section digital_sets_2 The concept concepts::CDigitalSet and models of concepts::CDigitalSet
 
 There are several ways for defining concretely a digital set, this is
-why digital sets are specified through the concept CDigitalSet. All
+why digital sets are specified through the concept concepts::CDigitalSet. All
 types and required methods are specified in the documentation of
 CDigitalSet. It is worthy to note that a digital set is also
-associated to a digital domain, i.e. any model of CDomain.
+associated to a digital domain, i.e. any model of concepts::CDomain.
 
-There exists several models for CDigitalSet; their difference lies in
+There exists several models for concepts::CDigitalSet; their difference lies in
 the way elements are stored (let \a n be the number of points in the
 set).
 
@@ -129,9 +129,9 @@ Other methods may be found in the concept definition of digital sets (CDigitalSe
 
 @section digital_sets_4 Digital sets and point predicates
 
-Since 0.6, any digital set is also a model of CPointPredicate. You may
+Since 0.6, any digital set is also a model of concepts::CPointPredicate. You may
 thus use a digital set directly in functions and methods requiring a
-predicate on points. However, the class SetPredicate, which builds a
+predicate on points. However, the class deprecated::SetPredicate, which builds a
 predicate on points around a digital set, is deprecated since 0.6. You
 may still used it by referecing it with
 DGtal::deprecated::SetPredicate, but it will no longer be maintained.
@@ -141,7 +141,7 @@ DGtal::deprecated::SetPredicate, but it will no longer be maintained.
 Sometimes it is useful to see a digital set as a new domain for
 further computation. This is possible with the facade class
 DigitalSetDomain, which wraps around some given digital set all
-necessary methods and types so that it satisfies the concept CDomain.
+necessary methods and types so that it satisfies the concept concepts::CDomain.
 
 @code
 typedef DigitalSetDomain< SpecificSet > RestrictedDomain;

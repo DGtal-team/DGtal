@@ -57,13 +57,13 @@ namespace DGtal
      half-space is the set \f$ \{ P \in Z^2, N.P \le c \} \f$.
 
      A model of boost::DefaultConstructible, boost::CopyConstructible,
-     boost::Assignable, CPointPredicate.
+     boost::Assignable, concepts::CPointPredicate.
   */
   template <typename TSpace>
   struct ClosedIntegerHalfPlane
   {
     typedef ClosedIntegerHalfPlane<TSpace> Self;
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     
     typedef TSpace Space;
     typedef typename Space::Integer Integer;

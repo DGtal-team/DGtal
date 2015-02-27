@@ -131,6 +131,18 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::ArithmeticalDSS(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS, 
+		  const Point& aF, const Point& aL)
+  : myDSL( NumberTraits<Coordinate>::ZERO, NumberTraits<Coordinate>::ZERO, NumberTraits<Integer>::ZERO )
+{
+  typedef DGtal::ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency> Factory; 
+  *this = Factory::createSubsegment(aDSS, aF, aL); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 template <typename Iterator>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
@@ -247,7 +259,7 @@ inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isValid() const
 {
-  return ArithmeticalDSSCheck::checkAll(*this); 
+  return functions::checkAll(*this); 
 }
 
 //-----------------------------------------------------------------------------
@@ -922,6 +934,15 @@ StandardDSS4(const typename Super::DSL& aDSL,
 
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger>
+inline
+DGtal::StandardDSS4<TCoordinate, TInteger>::
+StandardDSS4(const StandardDSS4<TCoordinate, TInteger>& aDSS, 
+	     const typename Super::Point& aF, const typename Super::Point& aL)
+  : Super(aDSS, aF, aL) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger>
 template<typename Iterator>
 inline
 DGtal::StandardDSS4<TCoordinate, TInteger>::
@@ -976,6 +997,15 @@ DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8(const typename Super::DSL& aDSL,
 	  const typename Super::Point& aF, const typename Super::Point& aL)
   : Super(aDSL, aF, aL) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger>
+inline
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
+NaiveDSS8(const NaiveDSS8<TCoordinate, TInteger>& aDSS,
+	  const typename Super::Point& aF, const typename Super::Point& aL)
+  : Super(aDSS, aF, aL) 
 {}
 
 //-----------------------------------------------------------------------------

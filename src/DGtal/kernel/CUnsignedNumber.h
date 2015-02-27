@@ -51,7 +51,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CUnsignedNumber
   /**
@@ -108,7 +109,7 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
     typename NumberTraits<T>::IsUnsigned myIsUnsigned;
 
   }; // end of concept CUnsignedNumber
-  
+}
 } // namespace DGtal
 
                                                                            //

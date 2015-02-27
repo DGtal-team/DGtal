@@ -174,13 +174,13 @@ bool testSegmentation()
   board << aCurve.getArrowsRange();
   
 
-  double error = 3;
+  double anerror = 3;
   nbok =3;
   
   trace.beginBlock ( "Greedy segmentation" );
   {
     typedef GreedySegmentation<SegmentComputer> Segmentation;
-    Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer(error) );
+    Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer(anerror) );
     
     Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();

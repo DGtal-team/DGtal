@@ -65,7 +65,7 @@ namespace DGtal
      is mapped onto the digital point (0,...,0).
      
      GaussDigitizer is a model of CDigitalEuclideanShape and
-     CDigitalBoundedShape. It is thus a model of CPointPredicate.
+     CDigitalBoundedShape. It is thus a model of concepts::CPointPredicate.
      A Gauss digitizer owns a RegularPointEmbedder, a model of CPointEmbedder.
 
      @tparam TSpace the type of digital Space where the digitized
@@ -91,7 +91,7 @@ namespace DGtal
     // JOL: GaussDigitizer do not need a bounded shape.
     // BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
     
-    BOOST_CONCEPT_ASSERT(( CEuclideanOrientedShape<TEuclideanShape> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanOrientedShape<TEuclideanShape> ));
 
     
     /**
@@ -105,7 +105,7 @@ namespace DGtal
     GaussDigitizer();
 
     /**
-     * Assignment. Required by CPointPredicate.
+     * Assignment. Required by concepts::CPointPredicate.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */

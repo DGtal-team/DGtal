@@ -43,7 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedConstPtrOrConstPtr.h"
-#include "DGtal/math/EigenDecomposition.h"
+#include "DGtal/kernel/Point2ScalarFunctors.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
@@ -84,8 +85,8 @@ namespace DGtal
             typename TKernelFunction>
   class VoronoiCovarianceMeasureOnDigitalSurface
   {
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
-    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
     // ----------------------- public types ------------------------------
   public:
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer; ///< the chosen container
@@ -104,7 +105,7 @@ namespace DGtal
     typedef typename VCM::VectorN                   VectorN;  ///< n-dimensional R-vector
     typedef typename VCM::MatrixNN                 MatrixNN;  ///< nxn R-matrix
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<KernelFunction, Point, Scalar> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<KernelFunction, Point, Scalar> ));
 
     /// Structure to hold a diagonalized matrix.
     struct EigenStructure {

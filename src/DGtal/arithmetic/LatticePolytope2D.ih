@@ -384,6 +384,7 @@ findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside,
   ++nb;
   if ( ( visibility_begin_vtx = hs( *it++ ) ) ) ++nbWithin; // Assignment
   visibility_prev_vtx = visibility_begin_vtx;
+  visibility_vtx = visibility_begin_vtx;
   for ( ; it != it_end; ++it, ++nb )
     {
       if ( ( visibility_vtx = hs( *it ) ) ) ++nbWithin; // Assignment
@@ -528,7 +529,7 @@ void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
 getIncludedDigitalPoints( DigitalSet & aSet ) const
 {
-  BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSet > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSet > ));
   typedef typename DigitalSet::Domain DigitalSetDomain;
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< DigitalSetDomain, Domain >::value ));
   typedef typename DigitalSetDomain::ConstIterator DomainConstIterator;

@@ -71,6 +71,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
   - \ref moduleVCM (Louis Cuel, Jacques-Olivier Lachaud, Quentin Mérigot, Boris Thibert)
 
 - Volumetric analysis
+  - \ref moduleMetrics (David Coeurjolly)
   - \ref moduleVolumetric (David Coeurjolly)
   - \ref moduleFMM (Tristan Roussillon) 
 

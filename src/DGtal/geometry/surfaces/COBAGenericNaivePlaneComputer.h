@@ -76,7 +76,7 @@ namespace DGtal
    * successful. It is thus a model of boost::ForwardContainer (non
    * mutable).
    *
-   * It is also a model of CPointPredicate (returns 'true' iff a point
+   * It is also a model of concepts::CPointPredicate (returns 'true' iff a point
    * is within the current bounds).
    *
    * Note on complexity: See COBANaivePlaneComputer. Although it uses three
@@ -114,15 +114,15 @@ namespace DGtal
    @endcode
    *
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
-   * boost::Assignable, boost::ForwardContainer, CAdditivePrimitiveComputer, CPointPredicate.
+   * boost::Assignable, boost::ForwardContainer, concepts::CAdditivePrimitiveComputer, concepts::CPointPredicate.
    */
   template < typename TSpace, 
              typename TInternalInteger >
   class COBAGenericNaivePlaneComputer
   {
 
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( CInteger< TInternalInteger > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger< TInternalInteger > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
 
     // ----------------------- public types ------------------------------
@@ -257,13 +257,13 @@ namespace DGtal
     Size maxSize() const;
 
 
-    //-------------------- model of CPointPredicate -----------------------------
+    //-------------------- model of concepts::CPointPredicate -----------------------------
   public:
 
     /**
      * Checks if the point \a p is in the current digital
      * plane. Therefore, a COBAGenericNaivePlaneComputer is a model of
-     * CPointPredicate.
+     * concepts::CPointPredicate.
      *
      * @param p any 3D point.
      *

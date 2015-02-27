@@ -50,7 +50,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CEuclideanBoundedShape
   /**
@@ -113,7 +114,7 @@ namespace DGtal
     RealPoint myP;
     
   }; // end of concept CEuclideanBoundedShape
-  
+  }
 } // namespace DGtal
 
 

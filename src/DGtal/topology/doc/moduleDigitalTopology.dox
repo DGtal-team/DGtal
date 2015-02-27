@@ -140,8 +140,8 @@ namespace DGtal {
   
    Adjacencies are used at many places as a basis for more complex
    operations. To keep genericity and efficiency, adjacencies should
-   satisfy the concept CAdjacency. They are specialized only at
-   instanciation as argument to templates. A CAdjacency concept should
+   satisfy the concept concepts::CAdjacency. They are specialized only at
+   instanciation as argument to templates. A model of concepts::CAdjacency should
    define the following inner types:
   
    - Space: the space of the adjacency.
@@ -159,7 +159,7 @@ namespace DGtal {
    overloaded so as to substitute their own predicate with another
    user-given predicate. They are useful to restrict neighborhoods.
   
-   A CDomainAdjacency refines a CAdjacency by specifying a limiting
+   A concepts::CDomainAdjacency refines a concepts::CAdjacency by specifying a limiting
    domain for the adjacency. It adds the following inner types:
   
    - Domain: the type of embedding domain.

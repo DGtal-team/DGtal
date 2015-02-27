@@ -44,29 +44,31 @@
 #include <iostream>
 #include <iterator>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/BasicBoolFunctors.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/base/BasicBoolFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToPoint
   /**
-   * Description of template class 'SCellToPoint' <p>
-   * \brief Aim: transforms a scell into a point
-   * @tparam KSpace the Khalimsky space 
-   * @code 
+  Description of template class 'SCellToPoint' <p>
+  \brief Aim: transforms a scell into a point
+  @tparam KSpace the Khalimsky space 
+
+  @code 
   KSpace aKSpace;
   typename KSpace::SCell aSCell; 
   typename KSpace::Point aPoint; 
   SCellToPoint<KSpace> f(aKSpace);
   ...
   aPoint = f(aSCell); 
-   * @endcode
-   * @see ConstIteratorAdapter KhalimskySpaceND PointVector
-   */
+  @endcode
+  @see ConstIteratorAdapter KhalimskySpaceND PointVector
+  */
   template <typename KSpace>
   class SCellToPoint
   {
@@ -143,20 +145,22 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToMidPoint
   /**
-   * Description of template class 'SCellToMidPoint' <p>
-   * \brief Aim: transforms a scell into a real point
-   * (the coordinates are divided by 2)
-   * @tparam KSpace the Khalimsky space 
-   * @code 
+  Description of template class 'SCellToMidPoint' <p>
+  \brief Aim: transforms a scell into a real point
+  (the coordinates are divided by 2)
+  @tparam KSpace the Khalimsky space 
+
+  @code 
   KSpace aKSpace;
   typename KSpace::SCell aSCell; 
   typename KSpace::Space::RealPoint aPoint; 
   SCellToMidPoint<KSpace> f(aKSpace); 
   ...
   aPoint = f(aSCell); 
-   * @endcode
-   * @see ConstIteratorAdapter KhalimskySpaceND PointVector 
-   */
+  @endcode
+
+  @see ConstIteratorAdapter KhalimskySpaceND PointVector 
+  */
   template <typename KSpace>
   class SCellToMidPoint
   {
@@ -225,12 +229,12 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToArrow
   /**
-   * Description of template class 'SCellToArrow' <p>
-   * \brief Aim: transforms a signed cell into an arrow, 
-   * ie. a pair point-vector
-   * @tparam KSpace the Khalimsky space 
-   * @see SCellToPoint ConstIteratorAdapter KhalimskySpaceND PointVector
-   */
+  Description of template class 'SCellToArrow' <p>
+  \brief Aim: transforms a signed cell into an arrow, 
+  ie. a pair point-vector
+  @tparam KSpace the Khalimsky space 
+  @see SCellToPoint ConstIteratorAdapter KhalimskySpaceND PointVector
+  */
   template <typename KSpace>
   class SCellToArrow
   {
@@ -303,17 +307,17 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToInnerPoint
   /**
-   * Description of template class 'SCellToInnerPoint' <p>
-   * \brief Aim: transforms a signed cell c into a point
-   * corresponding to the signed cell of greater dimension
-   * that is indirectly incident to c. 
-   *
-   * For instance, a linel is mapped into the indirect incident pixel center
-   * and a surfel is mapped into the indirect incident voxel center. 
-   *
-   * @tparam KSpace the Khalimsky space 
-   * @see SCellToPoint SCellToOuterPoint ConstIteratorAdapter KhalimskySpaceND PointVector
-   */
+  Description of template class 'SCellToInnerPoint' <p>
+  \brief Aim: transforms a signed cell c into a point
+  corresponding to the signed cell of greater dimension
+  that is indirectly incident to c. 
+  
+  For instance, a linel is mapped into the indirect incident pixel center
+  and a surfel is mapped into the indirect incident voxel center. 
+  
+  @tparam KSpace the Khalimsky space 
+  @see SCellToPoint SCellToOuterPoint ConstIteratorAdapter KhalimskySpaceND PointVector
+  */
   template <typename KSpace>
   class SCellToInnerPoint
   {
@@ -379,17 +383,17 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToOuterPoint
   /**
-   * Description of template class 'SCellToOuterPoint' <p>
-   * \brief Aim: transforms a signed cell c into a point
-   * corresponding to the signed cell of greater dimension
-   * that is directly incident to c. 
-   *
-   * For instance, a linel is mapped into the direct incident pixel center
-   * and a surfel is mapped into the direct incident voxel center. 
-   *
-   * @tparam KSpace the Khalimsky space 
-   * @see SCellToPoint SCellToInnerPoint ConstIteratorAdapter KhalimskySpaceND PointVector
-   */
+  Description of template class 'SCellToOuterPoint' <p>
+  \brief Aim: transforms a signed cell c into a point
+  corresponding to the signed cell of greater dimension
+  that is directly incident to c. 
+  
+  For instance, a linel is mapped into the direct incident pixel center
+  and a surfel is mapped into the direct incident voxel center. 
+  
+  @tparam KSpace the Khalimsky space 
+  @see SCellToPoint SCellToInnerPoint ConstIteratorAdapter KhalimskySpaceND PointVector
+  */
   template <typename KSpace>
   class SCellToOuterPoint
   {
@@ -454,17 +458,17 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToIncidentPoints
   /**
-   * Description of template class 'SCellToIncidentPoints' <p>
-   * \brief Aim: transforms a signed cell c into a pair of points
-   * corresponding to the signed cells of greater dimension
-   * that are indirectly and directly incident to c. 
-   *
-   * For instance, a linel is mapped into the pair of incident pixel centers
-   * and a surfel is mapped into the pair of incident voxel centers. 
-   *
-   * @tparam KSpace the Khalimsky space 
-   * @see SCellToInnerPoint SCellToOuterPoint ConstIteratorAdapter KhalimskySpaceND PointVector
-   */
+  Description of template class 'SCellToIncidentPoints' <p>
+  \brief Aim: transforms a signed cell c into a pair of points
+  corresponding to the signed cells of greater dimension
+  that are indirectly and directly incident to c. 
+  
+  For instance, a linel is mapped into the pair of incident pixel centers
+  and a surfel is mapped into the pair of incident voxel centers. 
+  
+  @tparam KSpace the Khalimsky space 
+  @see SCellToInnerPoint SCellToOuterPoint ConstIteratorAdapter KhalimskySpaceND PointVector
+  */
   template <typename KSpace>
   class SCellToIncidentPoints
   {
@@ -535,12 +539,12 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToCode
   /**
-   * Description of template class 'SCellToCode' <p>
-   * \brief Aim: transforms a 2d signed cell, basically a linel, 
-    * into a code (0,1,2 or 3), 
-   * @tparam KSpace the 2d Khalimsky space 
-   * @see ConstIteratorAdapter KhalimskySpaceND
-   */
+  Description of template class 'SCellToCode' <p>
+  \brief Aim: transforms a 2d signed cell, basically a linel, 
+  into a code (0,1,2 or 3), 
+  @tparam KSpace the 2d Khalimsky space 
+  @see ConstIteratorAdapter KhalimskySpaceND
+  */
   template <typename KSpace>
   class SCellToCode
   {
@@ -616,7 +620,7 @@ namespace DGtal
       
   }; // end of class SCellToCode
 
-
+} // namespace functors
 } // namespace DGtal
 
 

@@ -1,6 +1,7 @@
 add_subdirectory(determinant)
 
 SET(DGTAL_TESTS_SRC
+  testRayIntersection
   testPreimage
   testSphericalAccumulator)
 

@@ -79,13 +79,13 @@ namespace DGtal
     // ------------------------- inner types --------------------------------
   public: 
   
-    BOOST_CONCEPT_ASSERT(( CTrivialConstImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CTrivialConstImage<TImage> ));
     typedef typename TImage::Domain Domain; 
     typedef typename TImage::Point Point; 
     typedef typename TImage::Value Value; 
 
     /// constant iterator types 
-    BOOST_CONCEPT_ASSERT(( CDomain<Domain> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> )); 
     typedef ConstIteratorAdapter<typename Domain::ConstIterator,TImage,Value> ConstIterator; 
     typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 

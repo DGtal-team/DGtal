@@ -49,17 +49,18 @@
 #include <functional>
 #include <cmath>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/BasicBoolFunctions.h"
+#include "DGtal/base/BasicBoolFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-
+namespace functors
+{
 /////////////////////////////////////////////////////////////////////////////
 /// Duplicated STL functors
 /////////////////////////////////////////////////////////////////////////////
   template<typename T>
-  struct MinFunctor : std::binary_function <T,T,T>
+  struct Min : std::binary_function <T,T,T>
   {
     inline
     T operator() (const T&a, const T&b) const
@@ -67,7 +68,7 @@ namespace DGtal
   };
 
   template<typename T>
-  struct MaxFunctor : std::binary_function <T,T,T>
+  struct Max : std::binary_function <T,T,T>
   {
     inline
     T operator() (const T&a, const T&b) const
@@ -78,7 +79,7 @@ namespace DGtal
    * Copy of the std::minus binary operator (not implemented on MS-VS)
    */
   template <class T>
-  struct MinusFunctor : std::binary_function <T,T,T>
+  struct Minus : std::binary_function <T,T,T>
   {
     T operator() (const T& x, const T& y) const
     {return x-y;}
@@ -88,7 +89,7 @@ namespace DGtal
    * Abs functor.
    */
   template <class T>
-  struct AbsFunctor : std::unary_function<T,T>
+  struct Abs : std::unary_function<T,T>
   {
     inline
     T operator() (const T &x) const
@@ -104,7 +105,7 @@ namespace DGtal
    * Unary minus functor.
    */
   template <class T>
-  struct UnaryMinusFunctor : std::unary_function<T,T>
+  struct UnaryMinus : std::unary_function<T,T>
   {
     /**
        @param x any value.
@@ -121,10 +122,10 @@ namespace DGtal
    * Unary minus functor.
    */
   template <class T>
-  struct MultiplicationByScalarFunctor : std::unary_function<T,T>
+  struct MultiplicationByScalar : std::unary_function<T,T>
   {
     inline
-    MultiplicationByScalarFunctor( const T & aValue )
+    MultiplicationByScalar( const T & aValue )
       : myValue( aValue )
     {}
 
@@ -145,12 +146,12 @@ namespace DGtal
 // Some basic unary functors that may be useful
 //////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of template class 'DefaultFunctor' <p>
+   * Description of template class 'functors::Identity' <p>
    * \brief Aim: Define a simple default functor that
    * just returns its argument
    *
    */
-  struct DefaultFunctor
+  struct Identity
   {
     /**
      * Operator
@@ -166,14 +167,14 @@ namespace DGtal
   };
 
   /**
-   * Description of template class 'ConstValueFunctor' <p>
+   * Description of template class 'ConstValue' <p>
    * \brief Aim: Define a simple functor that returns
    * a constant value (0 by default).
    *
    * @tparam TValue type of the value
    */
   template <typename TValue>
-  class ConstValueFunctor : std::unary_function <TValue,TValue>
+  class ConstValue : std::unary_function <TValue,TValue>
   {
   public:
     typedef TValue Value;
@@ -182,7 +183,7 @@ namespace DGtal
      * Constructor.
      * @param aValue  the constant value.
      */
-    ConstValueFunctor(const Value& aValue = 0)
+    ConstValue(const Value& aValue = 0)
       :myValue(aValue) {};
 
     /**
@@ -208,7 +209,7 @@ namespace DGtal
   };
 
   /**
-   * Description of template class 'ConstValueCellFunctor' <p>
+   * Description of template class 'ConstValueCell' <p>
    * \brief Aim: Define a simple functor that returns
    * a constant quantity (0 by default).
    *
@@ -216,7 +217,7 @@ namespace DGtal
    * @tparam TCell type of the cell
    */
   template <typename TQuantity, typename TCell>
-  class ConstValueCellFunctor : std::unary_function <TQuantity,TQuantity>
+  class ConstValueCell : std::unary_function <TQuantity,TQuantity>
   {
   public:
     typedef TCell Cell;
@@ -226,7 +227,7 @@ namespace DGtal
      * Constructor.
      * @param aQuantity  the constant quantity.
      */
-    ConstValueCellFunctor(const Quantity& aQuantity = 0)
+    ConstValueCell(const Quantity& aQuantity = 0)
       :myQuantity(aQuantity) {}
 
     /**
@@ -250,13 +251,13 @@ namespace DGtal
 
 
   /**
-   * Description of template class 'CastFunctor' <p>
+   * Description of template class 'Cast' <p>
    * \brief Aim: Define a simple functor using the static cast operator.
    *
    * @tparam TOutput type of the return value
    */
   template <typename TOutput >
-  struct CastFunctor
+  struct Cast
   {
     /**
      * Operator
@@ -490,7 +491,7 @@ struct Thresholder<T,true,true>
    * @tparam TBinaryFunctor binary functor used for comparison
    */
   template <typename TPredicate1, typename TPredicate2,
-	    typename TBinaryFunctor = BoolFunction2 >
+	    typename TBinaryFunctor = BoolFunctor2 >
   struct PredicateCombiner
   {
     typedef TPredicate1 Predicate1;
@@ -767,7 +768,7 @@ private:
   };
 
   /**
-   * Description of template class 'RescalingFunctor' <p>
+   * Description of template class 'Rescaling' <p>
    * \brief Aim: Functor allowing to rescale a value.
    * Values of the initial scale [initMin,initMax] are rescaled to the new scale [newMin,newMax].
    *
@@ -775,7 +776,7 @@ private:
    * @tparam TOutputType the type of values on the new scale.
    */
   template<typename TInputType, typename TOutputType>
-  struct RescalingFunctor
+  struct Rescaling
   {
       TInputType myInitMin;
       TInputType myInitMax;
@@ -793,7 +794,7 @@ private:
        * @param newMin the minimum value of the new scale.
        * @param newMax the maximum value of the new scale.
        */
-      RescalingFunctor( const TInputType &initMin, const TInputType &initMax, const TOutputType &newMin, const TOutputType &newMax ) :
+      Rescaling( const TInputType &initMin, const TInputType &initMax, const TOutputType &newMin, const TOutputType &newMax ) :
                           myInitMin(initMin), myInitMax(initMax), myInitRange(initMax-initMin), myNewMin(newMin), myNewMax(newMax), myNewRange(newMax-newMin) {}
       /**
        * Operator.
@@ -810,20 +811,20 @@ private:
 
 
   /**
-   * Description of  class 'GaussianKernelFunctor' <p>
-   * \brief Aim: defines a functor on double number which correspond
-   * to a Gaussian convolution kernel.
-   * This functor acts from [0,1] to [0,1]
+   * Description of class 'GaussianKernel' <p>
+   * \brief Aim: defines a
+   * functor on double numbers which corresponds to a Gaussian
+   * convolution kernel.  This functor acts from [0,1] to [0,1]
    *
    */
-  struct GaussianKernelFunctor
+  struct GaussianKernel
   {
     /**
      * Constructor
      *
      * @param [in] aSigma the sigma parameter of the Gaussian function.
      */
-    GaussianKernelFunctor(const double aSigma) :mySigma(aSigma)
+    GaussianKernel(const double aSigma) :mySigma(aSigma)
     {
       myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
       myCoef2 = 1.0/(2.0*M_PI);
@@ -845,10 +846,11 @@ private:
 
     ///Temporary variable
     double myCoef;
+  private: 
     ///Temporary variable
     double myCoef2;
   };
-
+}
 }
 ///////////////////////////////////////////////////////////////////////////////
 

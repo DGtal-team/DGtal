@@ -45,8 +45,9 @@
 #include "DGtal/kernel/BasicPointPredicates.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class DomainPredicate
@@ -60,7 +61,7 @@ namespace DGtal
    * It is used by domains to define the type by their method \c
    * predicate().
    *
-   * Model of CPointPredicate
+   * Model of concepts::CPointPredicate
    *
    * @see DomainAdjacency::predicate.
    */
@@ -121,7 +122,7 @@ namespace DGtal
 
   }; // end of struct DomainPredicate
 
-
+} // namespace functors
 } // namespace DGtal
 
 

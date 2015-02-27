@@ -46,8 +46,9 @@
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts 
+namespace DGtal {
+  namespace concepts {
 
 /////////////////////////////////////////////////////////////////////////////
 // class CSCellEmbedder
@@ -103,7 +104,7 @@ public:
   typedef typename T::Argument Argument;
   typedef typename T::Value Value;
 
-  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KSpace > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, typename KSpace::SCell >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, Argument >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, Value >::value ));
@@ -129,6 +130,7 @@ private:
 
 }; // end of concept CSCellEmbedder
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

@@ -323,7 +323,7 @@ DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>
                   const Vertex & v,
                   const VertexPredicate & pred ) const
 {
-  BOOST_CONCEPT_ASSERT(( CVertexPredicate< VertexPredicate > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CVertexPredicate< VertexPredicate > ));
   Vertex s;
   myTracker.move( v );
   for ( typename KSpace::DirIterator q = space().sDirs( v );

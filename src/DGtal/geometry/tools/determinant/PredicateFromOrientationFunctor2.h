@@ -56,7 +56,7 @@ namespace DGtal
   /**
    * Description of template class 'PredicateFromOrientationFunctor2' <p>
    * \brief Aim: Small adapter to models of COrientationFunctor2. 
-   * It is a model of CPointPredicate. It is also a ternary predicate on points, 
+   * It is a model of concepts::CPointPredicate. It is also a ternary predicate on points, 
    * useful for basic geometric tasks such as convex hull computation. 
    *
    * Once a orientation functor is defined, you can adapt it as follows: 
@@ -97,7 +97,7 @@ namespace DGtal
      * Type of the thresholder, which compares the result
      * of the functor to zero
      */
-    typedef Thresholder<typename Functor::Value, acceptNeg, acceptZero> MyThresholder; 
+    typedef functors::Thresholder<typename Functor::Value, acceptNeg, acceptZero> MyThresholder; 
 
     // ----------------------- Standard services ------------------------------
   public:

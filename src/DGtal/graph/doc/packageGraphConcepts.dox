@@ -81,11 +81,11 @@ digraph GGraph {
         node [style=filled,color=white];
         label="Graph (main concepts)";
         
-        CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref CUndirectedSimpleLocalGraph" ] ;
-        CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref CUndirectedSimpleGraph" ] ;
-        CVertexPredicate [ label="CVertexPredicate" URL="\ref CVertexPredicate" ] ;
-        CVertexMap [ label="CVertexMap" URL="\ref CVertexMap" ] ;
-        CGraphVisitor [ label="CGraphVisitor" URL="\ref CGraphVisitor" ] ;
+        CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref concepts::CUndirectedSimpleLocalGraph" ] ;
+        CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref concepts::CUndirectedSimpleGraph" ] ;
+        CVertexPredicate [ label="CVertexPredicate" URL="\ref concepts::CVertexPredicate" ] ;
+        CVertexMap [ label="CVertexMap" URL="\ref concepts::CVertexMap" ] ;
+        CGraphVisitor [ label="CGraphVisitor" URL="\ref concepts::CGraphVisitor" ] ;
     }
 
     CVertexPredicate -> CPredicate;
@@ -104,7 +104,7 @@ digraph GGraph {
         node [style=filled,color=white];
         label="Graph (main models and classes)";
 
-        CVertexPredicateArchetype [ label="CVertexPredicateArchetype" URL="\ref CVertexPredicateArchetype" ] ;
+        CVertexPredicateArchetype [ label="CVertexPredicateArchetype" URL="\ref concepts::CVertexPredicateArchetype" ] ;
         STLMapToVertexMapAdapter [ label="STLMapToVertexMapAdapter" URL="\ref STLMapToVertexMapAdapter" ] ;
         BreadthFirstVisitor [ label="BreadthFirstVisitor" URL="\ref BreadthFirstVisitor" ] ;
         DepthFirstVisitor [ label="DepthFirstVisitor" URL="\ref DepthFirstVisitor" ] ;

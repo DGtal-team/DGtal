@@ -113,7 +113,7 @@ namespace DGtal
 
   public :
 
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     typedef TInteger Integer;
     typedef FreemanChain<Integer> Self;
 
@@ -677,11 +677,11 @@ public:
     /**
      * Finds a quadrant change in 'this' Freeman chain and returns the
      * position as an iterator. A quadrant change is some
-     <code>
+     * @code
      abb..bc
      |
      iterator
-     <endcode>
+     * @endcode
      *
      * The alphabet is possibly re-ordered so that a > b > c.
      *
@@ -697,11 +697,11 @@ public:
     /**
      * Finds a quadrant change in 'this' Freeman chain and returns the
      * position as an iterator. A quadrant change is some
-     <code>
+     * @code
      (abc)*bc...cd
      |
      iterator
-     <endcode>
+     * @endcode
      *
      * This quadrant change also guarantees that is not a place where a
      * convexity change occurs in the combinatorial MLP algorithm.
@@ -1051,40 +1051,6 @@ public:
             const FreemanChain & aOuterChain,
             bool ccw = true );
 
-    /**
-     * Reads the 4-connected contour [c] so that meaningless back and
-     * forth steps are removed. These operations may create one or
-     * several 4-connected contours (stored in [clean_cs]), whether
-     * these removals cuts the contour in several loops. Because of
-     * that, the mappings are more complex.
-
-     * @param aCleanCs (output) the array of cleaned 4-connected contours.
-     *
-     * @param aC2clean (output) the mapping associating an element to
-     * its clean element as a pair (n,i) where n is the index of the
-     * cleaned contour and i the indice of the element in this Freeman
-     * chain.
-     *
-     * @param aClean2c (output) the array of mapping associating a
-     * clean element to its non-clean element. clean2c[n][j] gives the
-     * index of the non-clean element on c corresponding to the clean
-     * element of index j in the n-th contour.
-     *
-     * @param c the input code of the 4-connected contour.
-     *
-     * @param ccw 'true' if the contour is seen counterclockwise with
-     * its inside to the left.
-     *
-     * @todo This method is not implemented.
-     */
-    static void cleanContour( std::vector<FreemanChain> & aCleanCs,
-            std::vector< std::pair<unsigned int, unsigned int> > & aC2clean,
-            std::vector< std::vector<unsigned int> > & aClean2c,
-            const FreemanChain & c,
-            bool ccw = true )
-    {
-      // \TODO not implemented yet.
-    }
 
     /**
      * Removes outer spikes along a 4-connected contour, meaning steps

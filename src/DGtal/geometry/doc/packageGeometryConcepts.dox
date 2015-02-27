@@ -64,15 +64,17 @@ subgraph cluster_concepts_2 {
     color=lightgrey;
     node [style=filled,color=white];
 
-    CLocalPremetric [ label="CLocalPremetric"  URL="\ref CLocalPremetric" ];
-    CMetric [label="CMetric" URL="@ref CMetric"];
-    CSeparableMetric [label="CSeparableMetric" URL="@ref CSeparableMetric"];
-    CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];
-    CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref CPowerSeparableMetric"];
+  CMetricSpace [label="CMetricSpace" URL="@ref concepts::CMetricSpace"];
+    CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref concepts::CDigitalMetricSpace"];
+    CSeparableMetric [label="CSeparableMetric" URL="@ref concepts::CSeparableMetric"];
+    CDigitalSeparableMetric [label="CDigitalSeparableMetric" URL="@ref concepts::CDigitalSeparableMetric"];
+    CPowerMetric [label="CPowerMetric" URL="@ref concepts::CPowerMetric"];
+    CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref concepts::CPowerSeparableMetric"];
 
-    CPowerMetric -> CMetric;
-    CMetric -> CLocalPremetric;
-    CSeparableMetric -> CMetric;
+    CSeparableMetric -> CMetricSpace;
+    CSeparableMetric -> CMetricSpace;
+    CDigitalSeparableMetric -> CDigitalMetricSpace;
+    CDigitalSeparableMetric -> CSeparableMetric;
     CPowerSeparableMetric -> CPowerMetric;
 
     label="geometry/volumes (main concepts)";
@@ -83,18 +85,20 @@ subgraph cluster_concepts_2 {
     color=lightgrey;
     node [style=filled,color=white];
 
-    CPrimitiveComputer [ URL="\ref CPrimitiveComputer" ];
-    CIncrementalPrimitiveComputer [ URL="\ref CIncrementalPrimitiveComputer" ];
-    CAdditivePrimitiveComputer [ URL="\ref CAdditivePrimitiveComputer" ];
-    CDigitalSurfaceLocalEstimator [ URL="\ref CDigitalSurfaceLocalEstimator" ];
+    CPrimitiveComputer [ URL="\ref concepts::CPrimitiveComputer" ];
+    CIncrementalPrimitiveComputer [ URL="\ref concepts::CIncrementalPrimitiveComputer" ];
+    CAdditivePrimitiveComputer [ URL="\ref concepts::CAdditivePrimitiveComputer" ];
+    CDigitalSurfaceLocalEstimator [ URL="\ref concepts::CDigitalSurfaceLocalEstimator" ];
 
-    CAdditivePrimitiveComputer -> CIncrementalPrimitiveComputer -> CPrimitiveComputer;
+    CAdditivePrimitiveComputer -> concepts::CIncrementalPrimitiveComputer -> concepts::CPrimitiveComputer;
     label="geometry/surfaces (main concepts)";
   }
 
 
-  CLocalPremetric -> boost_CopyConstructible;
-  CLocalPremetric -> boost_Assignable;
+  CMetric -> boost_CopyConstructible;
+  CMetric -> boost_Assignable;
+  CPowerMetric -> boost_CopyConstructible;
+  CPowerMetric -> boost_Assignable;
 
   CSegment -> boost_CopyConstructible ;
   CSegment -> boost_DefaultConstructible;

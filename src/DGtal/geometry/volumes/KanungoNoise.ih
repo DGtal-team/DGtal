@@ -51,11 +51,11 @@ DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAli
 
   typedef ExactPredicateLpSeparableMetric< typename Domain::Space, 2> L2;
   typedef DistanceTransformation< typename Domain::Space, PointPredicate, L2> DTPredicate;
-  typedef DistanceTransformation< typename Domain::Space, NotPointPredicate<PointPredicate> , L2> DTNotPredicate;
+  typedef DistanceTransformation< typename Domain::Space, functors::NotPointPredicate<PointPredicate> , L2> DTNotPredicate;
 
   //DT computation for l2metric
   L2 l2;
-  NotPointPredicate<PointPredicate> negPred(myPredicate);
+  functors::NotPointPredicate<PointPredicate> negPred(myPredicate);
  
   DTPredicate DTin(myDomain, myPredicate, l2);
   DTNotPredicate DTout(myDomain, negPred, l2);

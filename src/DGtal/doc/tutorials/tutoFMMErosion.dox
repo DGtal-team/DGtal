@@ -141,12 +141,13 @@ The dilation operation will look like the erosion operation. There are however t
 
 - Contrary to the erosion operation that is bounded by the volume, the dilation operation must be limited 
   to the background, but inside the domain. On one hand, you may adapt the binary image, 
-  used as a point predicate in FMMErosion.cpp, with NotPointPredicate in order to bound the computation to the background. 
-  On the other hand, you may adapt the domain with DomainPredicate in order to limit the computation to the domain. 
-  Finally, you may use BinaryPointPredicate to combine these two point predicates. Thus, you may define
+  used as a point predicate in FMMErosion.cpp, with functors::NotPointPredicate in order to bound the computation to the background. 
+  On the other hand, you may adapt the domain with functors::DomainPredicate in order to limit the computation to the domain. 
+  Finally, you may use functors::BinaryPointPredicate to combine these two point predicates. Thus, you may define
   the following types: 
 
 \code
+    using namespace DGtal::functors;
     typedef NotPointPredicate<BinaryImage> BackgroundPredicate; 
     typedef BinaryPointPredicate<
       BackgroundPredicate, 
@@ -161,11 +162,11 @@ Once these types are defined, you can construct your new point predicate as foll
     Predicate pred( backgroundPredicate, domainPredicate, andBF2 ); 
 \endcode
 
-  Note that most point predicate adapters are defined in BasicPointPredicates.h. Moreover, andBF2 is a binary functor 
-  defined in BasicBoolFunctions.h 
+  Note that most point predicate adapters are defined in BasicPointPredicates.h. Moreover, functors::andBF2 is a binary functor 
+  defined in BasicBoolFunctors.h 
 
-- You must initialize the accepted point set from the outer points of the digital surface. You may use SCellToOuterPoint defined 
-  in SCellsFunctors.h instead of SCellToInnerPoint.  
+- You must initialize the accepted point set from the outer points of the digital surface. You may use functors::SCellToOuterPoint defined 
+  in SCellsFunctors.h instead of functors::SCellToInnerPoint.  
 
 - Obviously, after the computation, you must flip the points of the accepted point set from the background to the volume in order to 
   complete the dilation operation. 
