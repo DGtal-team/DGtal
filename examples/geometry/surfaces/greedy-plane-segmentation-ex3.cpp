@@ -227,7 +227,7 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-ex3-segment]
 
   //! [greedy-plane-segmentation-ex3-visualization]
-  Viewer3D<> viewer;
+  Viewer3D<> viewer( ks );
   viewer.show(); 
   Color col( 255, 255, 120 );
   for ( std::map<Vertex,SegmentedPlane*>::const_iterator 
