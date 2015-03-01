@@ -371,6 +371,8 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   private:
 
+
+
     
 
 
@@ -386,13 +388,31 @@ namespace DGtal
     
 
     
-    // ------------------------- Hidden services ------------------------------
-  protected:
 
   
+    // ------------------------- Mesh generation ------------------------------
 
-
-          
+  public:
+    
+    /**
+     * Generates a tube mesh from a set of points representing the
+     * tube skeleton.  Each circular sections are connected with
+     * quads.  @note The vertices of circular sections are associated
+     * from nearest point according to the tube direction.
+     *
+     * @param[out] aMesh the mesh in which the new tube mesh will be created.
+     * @param[in] aSkeleton the set of points which defines the tube skeleton.
+     * @param[in] aRadius the tube radius.
+     * @param[in] angleStep the circular precision of the tube approximation. 
+     *
+     **/
+    static
+    void
+    createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const double aRadius, 
+                      const double angleStep = 0.2 );
+    
+    
+    
 
 
 
@@ -436,6 +456,8 @@ namespace DGtal
   template <typename TPoint>
   std::ostream&
   operator<< ( std::ostream & out, const Mesh<TPoint> & object );
+
+
 
 } // namespace DGtal
 

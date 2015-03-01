@@ -31,6 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/writers/MeshWriter.h"
 #include "DGtal/shapes/Mesh.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -43,9 +44,9 @@ using namespace DGtal::Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class Mesh.
 ///////////////////////////////////////////////////////////////////////////////
+
 /**
- * Example of a test. To be completed.
- *
+ * Test the mesh object construction.
  */
 bool testMesh()
 {
@@ -126,6 +127,53 @@ bool testMesh()
 
 }
 
+
+
+/**
+ * Test mesh generation from static fonctions.
+ */
+bool testMeshGeneration()
+{
+  
+  trace.beginBlock ( "Testing Mesh generation  ..." );
+  bool ok = true;
+  trace.beginBlock ( "Testing Tube generation  ..." );
+  std::vector<Z3i::RealPoint> aSkeleton;
+  
+  aSkeleton.push_back(Z3i::RealPoint(0.0, 0.0, 0.0));
+  aSkeleton.push_back(Z3i::RealPoint(0.0, 0.0, 1.0));
+  aSkeleton.push_back(Z3i::RealPoint(0.0, 0.0, 3.0));
+  aSkeleton.push_back(Z3i::RealPoint(1.0, 2.0, 7.0));  
+  aSkeleton.push_back(Z3i::RealPoint(3.0, 6.0, 10.0));  
+  aSkeleton.push_back(Z3i::RealPoint(10.0, 10.0, 15.0));  
+  aSkeleton.push_back(Z3i::RealPoint(12.0, 13.0, 18.0));  
+  aSkeleton.push_back(Z3i::RealPoint(22.0, 15.0, 22.0));  
+  aSkeleton.push_back(Z3i::RealPoint(28.0, 25.0, 32.0));  
+  aSkeleton.push_back(Z3i::RealPoint(28.0, 50.0, 32.0));  
+  aSkeleton.push_back(Z3i::RealPoint(28.0, 65.0, 22.0));  
+  
+  Mesh<Z3i::RealPoint> aMesh;
+  Mesh<Z3i::RealPoint>::createTubularMesh(aMesh, aSkeleton, 2);
+  for(  Mesh<Z3i::RealPoint>::VertexStorage::const_iterator it = aMesh.cVertexBegin(); 
+        it !=aMesh.cVertexEnd(); it++){
+    trace.info() << (*it)[0] << " " << (*it)[1] << " "<< (*it)[2] << std::endl;
+  }
+  std::ofstream of ("tubeMeshGeneratedFromTestMesh.off"); 
+  DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(of, aMesh);
+  
+  trace.endBlock();
+  trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (sould be 320)" << std::endl;
+  trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 352)" << std::endl;
+
+  bool okMeshTube1 = aMesh.nbFaces() == 320 && aMesh.nbVertex() == 352;
+
+
+  ok = ok & okMeshTube1;  
+  trace.endBlock();
+  return ok;
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -137,7 +185,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMesh(); // && ... other tests
+  bool res = testMesh() && testMeshGeneration(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
