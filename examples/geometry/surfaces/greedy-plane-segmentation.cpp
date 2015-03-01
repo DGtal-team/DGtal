@@ -178,7 +178,7 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-segment]
 
   //! [greedy-plane-segmentation-visualization]
-  Viewer3D<> viewer;
+  Viewer3D<> viewer( ks );
   viewer.show(); 
   for ( std::map<Vertex,SegmentedPlane*>::const_iterator 
           it = v2plane.begin(), itE = v2plane.end();
