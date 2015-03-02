@@ -404,12 +404,13 @@ namespace DGtal
      * @param[in] aSkeleton the set of points which defines the tube skeleton.
      * @param[in] aRadius the tube radius.
      * @param[in] angleStep the circular precision of the tube approximation. 
+     * @param[in] aMeshColor the color given to the generated tube mesh. 
      *
      **/
     static
     void
     createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const double aRadius, 
-                      const double angleStep = 0.2 );
+                      const double angleStep = 0.2, const DGtal::Color &aMeshColor = DGtal::Color::White );
     
     
     
