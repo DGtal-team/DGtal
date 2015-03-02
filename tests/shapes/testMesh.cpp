@@ -138,29 +138,31 @@ bool testMeshGeneration()
   trace.beginBlock ( "Testing Mesh generation  ..." );
   bool ok = true;
   trace.beginBlock ( "Testing Tube generation  ..." );
-  std::vector<Z3i::RealPoint> aSkeleton;
-  
+
+  //! [testMeshCreateSkeleton]
+  std::vector<Z3i::RealPoint> aSkeleton;  
   aSkeleton.push_back(Z3i::RealPoint(0.0, 0.0, 0.0));
-  aSkeleton.push_back(Z3i::RealPoint(0.0, 0.0, 1.0));
-  aSkeleton.push_back(Z3i::RealPoint(0.0, 0.0, 3.0));
-  aSkeleton.push_back(Z3i::RealPoint(1.0, 2.0, 7.0));  
-  aSkeleton.push_back(Z3i::RealPoint(3.0, 6.0, 10.0));  
-  aSkeleton.push_back(Z3i::RealPoint(10.0, 10.0, 15.0));  
-  aSkeleton.push_back(Z3i::RealPoint(12.0, 13.0, 18.0));  
-  aSkeleton.push_back(Z3i::RealPoint(22.0, 15.0, 22.0));  
-  aSkeleton.push_back(Z3i::RealPoint(28.0, 25.0, 32.0));  
-  aSkeleton.push_back(Z3i::RealPoint(28.0, 50.0, 32.0));  
-  aSkeleton.push_back(Z3i::RealPoint(28.0, 65.0, 22.0));  
-  
+  aSkeleton.push_back(Z3i::RealPoint(10.0, 0.0, 0.0));
+  aSkeleton.push_back(Z3i::RealPoint(20.0, 0.0, 0.0));
+  aSkeleton.push_back(Z3i::RealPoint(30.0, 0.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(35.0, 5.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 10.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 20.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 30.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 35.0, 5.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 40.0, 10.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 40.0, 20.0));  
+  //! [testMeshCreateSkeleton]
+
+  //! [testMeshCreateTubeMesh]  
   Mesh<Z3i::RealPoint> aMesh;
-  Mesh<Z3i::RealPoint>::createTubularMesh(aMesh, aSkeleton, 2);
-  for(  Mesh<Z3i::RealPoint>::VertexStorage::const_iterator it = aMesh.cVertexBegin(); 
-        it !=aMesh.cVertexEnd(); it++){
-    trace.info() << (*it)[0] << " " << (*it)[1] << " "<< (*it)[2] << std::endl;
-  }
+  Mesh<Z3i::RealPoint>::createTubularMesh(aMesh, aSkeleton, 0.5);
+  //! [testMeshCreateTubeMesh]  
+  //! [testMeshExport]  
   std::ofstream of ("tubeMeshGeneratedFromTestMesh.off"); 
   DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(of, aMesh);
-  
+  //! [testMeshExport]  
+
   trace.endBlock();
   trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (sould be 320)" << std::endl;
   trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 352)" << std::endl;

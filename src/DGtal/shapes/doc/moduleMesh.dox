@@ -29,9 +29,9 @@ namespace DGtal {
 The aim of this class is to handle basic simple mesh mainly for the
 task of import/export/display of digital surface. This class is able
 to deal with triangulated, quad or polygonal faces and can include
-specific colors to display faces. It also contains several static tools
-to generate simple shapes like tubular objects or the 3d height fields
-defined from 2D intensity images.
+specific colors to display faces. It also provides several static
+tools to generate simple shapes like tubular objects or the 3d surface
+from height map.
 
 
 \subsection subsect2moduleMesh Mesh Construction
@@ -93,6 +93,36 @@ The mesh import is also simple:
 
 
 
+\section sectmoduleMesh2 Generating Basic Mesh 
+
+
+The Mesh class also provides some methods to generate shape mesh
+associated to tubular object or 3d surface from height map.
+
+For instance you can first define the  vector of the 3D skeleton points:
+@snippet tests/shapes/testMesh.cpp testMeshCreateSkeleton
+
+Then you can reconstruct a tubular mesh with a given radius:
+@snippet tests/shapes/testMesh.cpp testMeshCreateTubeMesh
+
+You will obtain such a tube display:
+   \image html  testMeshVisu3d.png  "Resulting mesh of tubular object."
+   \image latex testMeshVisu3d.png  "Resulting mesh of tubular object."  width=5cm
+
+@see  tests/shapes/testMesh.cpp
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -119,7 +149,9 @@ The mesh import is also simple:
 
 /**
    \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
-\example shapes/mesh3DConstructionAndVisualisation.cpp
+   \image latex example3dMeshConstruction.png  "Simple example of 3D mesh construction."  width=5cm
+
+   \example shapes/mesh3DConstructionAndVisualisation.cpp
 
 *
 */
@@ -130,6 +162,7 @@ The mesh import is also simple:
 
 
 }
+
 
 
 
