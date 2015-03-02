@@ -70,7 +70,7 @@ namespace DGtal
    * Since it realized the concept of CDrawableWithDisplay3D we can display an Mesh with a Display3D object:
    *
    * First we have to include the following header files:
-   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
    *
    * Prepare display using QGLviewer: Viewer3D
    @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInitDisplay 
