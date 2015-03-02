@@ -18,7 +18,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleMesh
+@page moduleMesh Manupulating mesh objects
 @author Bertrand Kerautret
 
 [TOC]
@@ -28,8 +28,10 @@ namespace DGtal {
 
 The aim of this class is to handle basic simple mesh mainly for the
 task of export/display of digital surface. This class is able to deal
-with triangulated or quad faces and can include specific color to display
-faces. 
+with triangulated or quad faces and can include specific color to
+display faces. It also contains differents static tools to generate
+simple shapes like tubular objects or projected surface (from line
+strips).
 
 
 \subsection subsect2moduleMesh Mesh construction
@@ -39,7 +41,11 @@ construct an empty mesh input and specify if you want to store or not
 the vertex colors in the mesh.
 
 
-\subsection subsect2moduleMesh 
+
+
+*/
+
+
 
 
 
