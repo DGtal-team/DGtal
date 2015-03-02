@@ -155,12 +155,12 @@ bool testMeshGeneration()
   //! [testMeshCreateSkeleton]
 
   //! [testMeshCreateTubeMesh]  
-  Mesh<Z3i::RealPoint> aMesh;
-  Mesh<Z3i::RealPoint>::createTubularMesh(aMesh, aSkeleton, 0.5);
+  Mesh<Z3i::RealPoint> aMesh(true);
+  Mesh<Z3i::RealPoint>::createTubularMesh(aMesh, aSkeleton, 0.5, 0.2, DGtal::Color::Blue);
   //! [testMeshCreateTubeMesh]  
   //! [testMeshExport]  
   std::ofstream of ("tubeMeshGeneratedFromTestMesh.off"); 
-  DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(of, aMesh);
+  DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(of, aMesh, true);
   //! [testMeshExport]  
 
   trace.endBlock();
