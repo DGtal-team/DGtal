@@ -128,43 +128,7 @@ You will obtain such a small height field display (with previous tube mesh):
    \image html  testMeshVisu3dBis.png  "Resulting mesh of tubular object and height field."
    \image latex testMeshVisu3dBis.png  "Resulting mesh of tubular object and height field."  width=5cm
 
-
-
-
 @see  tests/shapes/testMesh.cpp
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 */
 
 
@@ -174,18 +138,7 @@ You will obtain such a small height field display (with previous tube mesh):
    \image latex example3dMeshConstruction.png  "Simple example of 3D mesh construction."  width=5cm
 
    \example shapes/mesh3DConstructionAndVisualisation.cpp
-
-*
 */
 
 
-
-
-
-
 }
-
-
-
-
-
