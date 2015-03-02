@@ -33,6 +33,7 @@ specific colors to display faces. It also provides several static
 tools to generate simple shapes like tubular objects or the 3d surface
 from height map.
 
+The mesh object store explicitly each vertex and each face are represented with the list of point index.       
 
 \subsection subsect2moduleMesh Mesh Construction
 
@@ -108,6 +109,27 @@ Then you can reconstruct a tubular mesh with a given radius:
 You will obtain such a tube display:
    \image html  testMeshVisu3d.png  "Resulting mesh of tubular object."
    \image latex testMeshVisu3d.png  "Resulting mesh of tubular object."  width=5cm
+
+
+
+Another example is given in testMesh.cpp which generates an height
+field from a sequence of height. In the same way than the previous
+example, you can construct your input height vector:
+
+@snippet tests/shapes/testMesh.cpp testMeshCreateHeightSequence
+
+and then construct the height field mesh:
+
+@snippet tests/shapes/testMesh.cpp testMeshCreateSequenceMesh
+
+
+You will obtain such a small height field display (with previous tube mesh):
+
+   \image html  testMeshVisu3dBis.png  "Resulting mesh of tubular object and height field."
+   \image latex testMeshVisu3dBis.png  "Resulting mesh of tubular object and height field."  width=5cm
+
+
+
 
 @see  tests/shapes/testMesh.cpp
 

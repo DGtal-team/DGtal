@@ -411,6 +411,30 @@ namespace DGtal
     void
     createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const double aRadius, 
                       const double angleStep = 0.2, const DGtal::Color &aMeshColor = DGtal::Color::White );
+
+
+
+    /**
+     * Generates a surface mesh defined from an sequence of a 2D
+     * height values (can be seen as a height map). 
+     *
+     * @param[out] aMesh the mesh in which the new tube mesh will be created.
+     * @param[in] anValueSequence the sequence of values defining the height points.
+     * @param[in] lengthSequence the number of points constituing a line in the height map.
+     * @param[in] stepX the x grid step to define the scale of the resulting mesh. 
+     * @param[in] stepY the y grid step to define the scale of the resulting mesh. 
+     * @param[in] stepZ the z grid step to define the scale of the resulting mesh. 
+     *
+     * @param[in] aMeshColor the color given to the generated tube mesh. 
+     *
+     **/
+    template <typename TValue>
+    static
+    void
+    createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const std::vector<TValue> & anValueSequence, 
+                                 const unsigned int lengthSequence,
+                                 double stepX, double stepY, double stepZ, 
+                                 const DGtal::Color &aMeshColor = DGtal::Color::White );
     
     
     
