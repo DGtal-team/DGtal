@@ -54,13 +54,13 @@ namespace DGtal
   // template class Mesh
   /**
    * Description of template class 'Mesh' <p> \brief Aim: This class
-   * is defined to represent a surface mesh through a set a vertex and
-   * a set of faces represented by its vertex index.  By using the
-   * default constructor, the mesh does not store color information
-   * (can be done by setting the default constructor parameter
-   * saveFaceColor to true).
+   * is defined to represent a surface mesh through a set of vertices
+   * and faces.  By using the default constructor, the mesh does not
+   * store any color information (it can be changed  by setting the default
+   * constructor parameter saveFaceColor to 'true').
    *
-   * The mesh object store explicitly each vertex and each face are represented with the list of point index.   
+   * The mesh object stores explicitly each vertex and each face are
+   * represented with the list of point index.
    *
    * @note This class is a preliminary version of a mesh strucuture
    * (the method to access neigborhing facets or to a given facet are
