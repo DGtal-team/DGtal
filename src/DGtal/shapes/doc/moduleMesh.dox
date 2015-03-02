@@ -18,7 +18,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleMesh Manupulating mesh objects
+@page moduleMesh Manipulating Simple Mesh 
 @author Bertrand Kerautret
 
 [TOC]
@@ -27,18 +27,88 @@ namespace DGtal {
 
 
 The aim of this class is to handle basic simple mesh mainly for the
-task of export/display of digital surface. This class is able to deal
-with triangulated or quad faces and can include specific color to
-display faces. It also contains differents static tools to generate
-simple shapes like tubular objects or projected surface (from line
-strips).
+task of import/export/display of digital surface. This class is able
+to deal with triangulated, quad or polygonal faces and can include
+specific colors to display faces. It also contains several static tools
+to generate simple shapes like tubular objects or the 3d height fields
+defined from 2D intensity images.
 
 
-\subsection subsect2moduleMesh Mesh construction
+\subsection subsect2moduleMesh Mesh Construction
 
-The Mesh construction is very simple, you can start for instance to
-construct an empty mesh input and specify if you want to store or not
-the vertex colors in the mesh.
+To construct a Mesh object you need first to include the associated
+header file:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
+
+
+Then the mesh construction is very simple, for instance you can start
+to construct an empty mesh input and specify if you want to store or
+not the vertex colors in the mesh:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshConstructor 
+
+Then you can add some vertex mesh:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingPoints 
+
+
+and add  some triangular/quad faces from the vertex index:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingBasicFaces 
+
+
+You can also insert some polygonal faces by defining a vector containing the vertices of the face:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingPolygonalFaces 
+
+An example of mesh construction is given here:  mesh3DConstructionAndVisualisation.cpp and will produce the following faces:
+
+   \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
+
+
+\subsection subsect2moduleMeshIO Mesh IO
+
+The Mesh object are integrated in the main IO framework of DGtal. You
+can for instance display a Mesh object directly through a Viewer3d object:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseDisplay
+
+(See complete example in mesh3DConstructionAndVisualisation.cpp)
+
+You can also export a mesh by using the MeshWriter class given in the header file:
+@snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseIncludes
+and export it:
+@snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseMeshExport
+
+
+The mesh import is also simple:
+
+- First add the MeshReader file:
+@snippet examples/io/meshFromOFF.cpp includeImportOFF
+
+- import the mesh:
+@snippet examples/io/meshFromOFF.cpp ImportOFFfile
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -46,6 +116,13 @@ the vertex colors in the mesh.
 */
 
 
+
+/**
+   \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
+\example shapes/mesh3DConstructionAndVisualisation.cpp
+
+*
+*/
 
 
 
