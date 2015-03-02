@@ -73,13 +73,13 @@ namespace DGtal
    @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
    *
    * Prepare display using QGLviewer: Viewer3D
-   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshUseInitDisplay 
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInitDisplay 
    *
    * Construct a Mesh with various faces:
-   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshUseMeshCreation
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshCreation
    
    * Displaying the result:
-   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshUseDisplay
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseDisplay
    *
    * 
    *
