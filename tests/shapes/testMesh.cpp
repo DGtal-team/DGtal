@@ -137,8 +137,8 @@ bool testMeshGeneration()
   
   trace.beginBlock ( "Testing Mesh generation  ..." );
   bool ok = true;
-  trace.beginBlock ( "Testing Tube generation  ..." );
 
+  trace.beginBlock ( "Testing Tube generation  ..." );
   //! [testMeshCreateSkeleton]
   std::vector<Z3i::RealPoint> aSkeleton;  
   aSkeleton.push_back(Z3i::RealPoint(0.0, 0.0, 0.0));
@@ -158,19 +158,44 @@ bool testMeshGeneration()
   Mesh<Z3i::RealPoint> aMesh(true);
   Mesh<Z3i::RealPoint>::createTubularMesh(aMesh, aSkeleton, 0.5, 0.2, DGtal::Color::Blue);
   //! [testMeshCreateTubeMesh]  
-  //! [testMeshExport]  
-  std::ofstream of ("tubeMeshGeneratedFromTestMesh.off"); 
-  DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(of, aMesh, true);
-  //! [testMeshExport]  
 
   trace.endBlock();
   trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (sould be 320)" << std::endl;
   trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 352)" << std::endl;
-
   bool okMeshTube1 = aMesh.nbFaces() == 320 && aMesh.nbVertex() == 352;
 
+  trace.beginBlock("Testing Mesh from Height sequence");
 
-  ok = ok & okMeshTube1;  
+  //! [testMeshCreateHeightSequence]
+  std::vector<double> heightSequence;
+  heightSequence.push_back(0.1); 
+  heightSequence.push_back(0.2); 
+  heightSequence.push_back(0.15);
+
+  heightSequence.push_back(1.1); 
+  heightSequence.push_back(2.2); 
+  heightSequence.push_back(1.15);
+
+  heightSequence.push_back(0.1); 
+  heightSequence.push_back(0.2); 
+  heightSequence.push_back(0.15);
+  //! [testMeshCreateHeightSequence]
+  
+  //! [testMeshCreateSequenceMesh]  
+  Mesh<Z3i::RealPoint>::createMeshFromHeightSequence(aMesh, heightSequence, 3, 10, 10, 3, DGtal::Color::Yellow);
+  //! [testMeshCreateSequenceMesh]  
+  
+  trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (sould be 324)" << std::endl;
+  trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 361)" << std::endl;
+  bool okMeshTube1AndHF = aMesh.nbFaces() == 324 && aMesh.nbVertex() == 361;
+  
+  
+  //! [testMeshExport]  
+  std::ofstream of ("tubeAndHeighFieldGeneratedFromTestMesh.off"); 
+  DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(of, aMesh, true);
+  //! [testMeshExport]  
+  
+  ok = ok & okMeshTube1 & okMeshTube1AndHF;  
   trace.endBlock();
   return ok;
 
