@@ -74,7 +74,12 @@
  - Fix bug of method ArithmeticalDSL::getPoint with negative values
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
- - Fix Bezout Vector computation (Isabelle Sivignon, [#948](https://github.com/DGtal-team/DGtal/pull/948))
+ - Fix Bezout Vector computation (Isabelle Sivignon,
+ [#948](https://github.com/DGtal-team/DGtal/pull/948))
+ - Fix issues with SphereFitting and TensorVoting local estimators on
+   digital surfaces (Jérémy Levallois, David Coeurjolly
+   [#944](https://github.com/DGtal-team/DGtal/pull/944))
+   
 
 - *IO Package*
  - Performance improvement of color managment in Display3D, Board3D
