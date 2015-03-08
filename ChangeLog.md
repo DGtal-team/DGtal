@@ -78,7 +78,7 @@
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
  - Fix issues with SphereFitting and TensorVoting local estimators on
    digital surfaces (Jérémy Levallois, David Coeurjolly
-   [#944](https://github.com/DGtal-team/DGtal/pull/944))
+   [#970](https://github.com/DGtal-team/DGtal/pull/970))
    
 
 - *IO Package*
