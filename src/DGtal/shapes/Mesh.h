@@ -430,10 +430,11 @@ namespace DGtal
   public:
     
     /**
-     * Generates a tube mesh from a set of points representing the
-     * tube skeleton.  Each circular section is connected with
-     * quads.  @note The vertices of circular sections are associated
-     * from nearest point according to the tube direction.
+     * Generates a tube mesh (of constant radius) from a set of points
+     * representing the tube skeleton.  Each circular section is
+     * connected with quads.  @note The vertices of circular sections
+     * are associated from nearest point according to the tube
+     * direction.
      *
      * @param[out] aMesh the mesh in which the new tube mesh will be created.
      * @param[in] aSkeleton the set of points which defines the tube skeleton.
@@ -448,6 +449,27 @@ namespace DGtal
                       const double angleStep = 0.2, const DGtal::Color &aMeshColor = DGtal::Color::White );
 
 
+
+    /**
+     * Generates a tube mesh from a tube skeleton and from its
+     * associated circular section radii. Each circular section is
+     * connected with quads.   @note The vertices of circular sections
+     * are associated from nearest point according to the tube
+     * direction.
+     *
+     * @param[out] aMesh the mesh in which the new tube mesh will be created.
+     * @param[in] aSkeleton the set of points which defines the tube skeleton.
+     * @param[in] aVectOfRadius the vector containing all circular sections (if it contains not enougth it value, the next values will be taken from the begining of the vector).
+     * @param[in] angleStep the circular precision of the tube approximation. 
+     * @param[in] aMeshColor the color given to the generated tube mesh. 
+     *
+     **/
+    static
+    void
+    createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const std::vector<double> &aVectOfRadius, 
+                      const double angleStep = 0.2, const DGtal::Color &aMeshColor = DGtal::Color::White );
+
+    
 
     /**
      * Generates a surface mesh defined from a sequence of 2D
