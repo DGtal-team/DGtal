@@ -69,7 +69,7 @@ namespace DGtal
      * \brief Aim: Use Patate library to perform a local sphere fitting.
      *
      * Given a kernel radius, this functor performs a sphere fitting
-     * and outputs the paramters of an AlgebraicSphere (please see
+     * and outputs the parameters of an AlgebraicSphere (please see
      * Patate documentation for details).
      *
      * Model of CLocalEstimatorFromSurfelFunctor.
