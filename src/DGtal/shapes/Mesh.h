@@ -284,7 +284,7 @@ namespace DGtal
      * 
      **/
     ConstIterator 
-    cVertexBegin() const {
+    vertexBegin() const {
       return myVertexList.begin();
     }
     
@@ -294,7 +294,7 @@ namespace DGtal
      *
      **/
     ConstIterator 
-    cVertexEnd() const {
+    vertexEnd() const {
       return myVertexList.end();
     }
 
@@ -322,24 +322,47 @@ namespace DGtal
     
     
     /**
-     * @return an iterator pointing to the first face of the mesh.  
+     * @return a const iterator pointing to the first face of the mesh.  
      *
      **/
     
     FaceStorage::const_iterator 
-    FaceBegin() const {
+    faceBegin() const {
       return myFaceList.begin();
     }
     
 
 
     /**
-     * @return an iterator pointing after the end of the last face of the mesh.
+     * @return a const iterator pointing after the end of the last face of the mesh.
      *
      **/
     
     FaceStorage::const_iterator 
-    FaceEnd() const {
+    faceEnd() const {
+      return myFaceList.end();
+    }    
+    
+
+    /**
+     * @return a const iterator pointing to the first face of the mesh.  
+     *
+     **/
+    
+    FaceStorage::iterator 
+    faceBegin()  {
+      return myFaceList.begin();
+    }
+    
+
+
+    /**
+     * @return a const iterator pointing after the end of the last face of the mesh.
+     *
+     **/
+    
+    FaceStorage::iterator 
+    faceEnd()  {
       return myFaceList.end();
     }    
     
