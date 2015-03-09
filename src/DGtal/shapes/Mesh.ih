@@ -317,14 +317,31 @@ DGtal::Mesh<TPoint>::className() const
 
 
 
+
 template <typename TPoint>
 inline
 void 
 DGtal::Mesh<TPoint>::createTubularMesh(DGtal::Mesh<TPoint> &aMesh, const std::vector<TPoint> &aSkeleton, 
-                                       const double aRadius, const double angleStep, const DGtal::Color &aMeshColor)
+                                       const double aRadius, 
+                                       const double angleStep, const DGtal::Color &aMeshColor)
+{
+  std::vector<double> aVecR;
+  aVecR.push_back(aRadius);
+  DGtal::Mesh<TPoint>::createTubularMesh(aMesh, aSkeleton, 
+                                         aVecR, angleStep, aMeshColor);
+  
+}
+
+
+template <typename TPoint>
+inline
+void 
+DGtal::Mesh<TPoint>::createTubularMesh(DGtal::Mesh<TPoint> &aMesh, const std::vector<TPoint> &aSkeleton, 
+                                       const std::vector<double> &aVectRadius, 
+                                       const double angleStep, const DGtal::Color &aMeshColor)
 {
   unsigned int nbVertexInitial = aMesh.nbVertex();
-
+  ASSERT(aVectRadius.size() > 0);
   // Generating vertices..
   for(unsigned int i = 0; i< aSkeleton.size(); i++)
     {
@@ -380,13 +397,13 @@ DGtal::Mesh<TPoint>::createTubularMesh(DGtal::Mesh<TPoint> &aMesh, const std::ve
         uDir2/=uDir2.norm();      
         for(double a = 0.0; a < 2.0*M_PI; a += angleStep)
           {
-          TPoint vMove = aRadius*(uDir1*cos(a) + uDir2*sin(a));  
-          aMesh.addVertex(vMove + aSkeleton[i]);
-          if(a==0)
-            {
-              firstPoint = vMove + aSkeleton[i]+vectDir;
-            }
-          
+            TPoint vMove = aVectRadius.at(i%aVectRadius.size())*(uDir1*cos(a) + uDir2*sin(a));  
+            aMesh.addVertex(vMove + aSkeleton[i]);
+            if(a==0)
+              {
+                firstPoint = vMove + aSkeleton[i]+vectDir;
+              }
+            
           }
     }
   unsigned int nbPtPerFaces = (aMesh.nbVertex()-nbVertexInitial)/aSkeleton.size();

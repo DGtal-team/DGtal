@@ -178,8 +178,25 @@ bool testMeshGeneration()
   trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 352)" << std::endl;
   bool okMeshTube1 = aMesh.nbFaces() == 320 && aMesh.nbVertex() == 352;
 
-  trace.beginBlock("Testing Mesh from Height sequence");
+  trace.beginBlock ( "Testing Tube generation (bis with variable raidii  ..." );
+  Mesh<Z3i::RealPoint> aMeshBis(true);
+  std::vector<double> vectRadii; 
+  vectRadii.push_back(0.5);
+  vectRadii.push_back(1.5);
+  vectRadii.push_back(2.5);
+  Mesh<Z3i::RealPoint>::createTubularMesh(aMeshBis, aSkeleton, vectRadii, 0.2, DGtal::Color::Green);
+  
+  trace.endBlock();
+  trace.info() << "Nb faces: "<< aMeshBis.nbFaces() << " (sould be 320)" << std::endl;
+  trace.info() << "Nb vertices: "<< aMeshBis.nbVertex() << " (sould be 352)" << std::endl;
+  
+  std::ofstream ofbis ("tubeVariableRadiiGeneratedFromTestMesh.off"); 
+  DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(ofbis, aMeshBis, true);
+  ofbis.close();
+  bool okMeshTube1bis = aMeshBis.nbFaces() == 320 && aMeshBis.nbVertex() == 352;
+  
 
+  trace.beginBlock("Testing Mesh from Height sequence");
   //! [testMeshCreateHeightSequence]
   std::vector<double> heightSequence;
   heightSequence.push_back(0.1); 
@@ -203,16 +220,15 @@ bool testMeshGeneration()
   trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 361)" << std::endl;
   bool okMeshTube1AndHF = aMesh.nbFaces() == 324 && aMesh.nbVertex() == 361;
   
-  
   //! [testMeshExport]  
   std::ofstream of ("tubeAndHeighFieldGeneratedFromTestMesh.off"); 
   DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(of, aMesh, true);
+  of.close();
   //! [testMeshExport]  
   
-  ok = ok & okMeshTube1 & okMeshTube1AndHF;  
+  ok = ok & okMeshTube1 & okMeshTube1bis & okMeshTube1AndHF;  
   trace.endBlock();
   return ok;
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////
