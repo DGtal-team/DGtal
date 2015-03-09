@@ -220,21 +220,33 @@ namespace DGtal
    
     
     /**
-     * Return a reference to the vertex of index i.
      * @param i the index of the vertex.
-     * @return the vertex of index i. 
+     * @return a const reference to the vertex of index i. 
      **/
     const TPoint & getVertex(unsigned int i) const;
+
+    /**
+     * @param i the index of the vertex.
+     * @return a reference to the vertex of index i. 
+     **/
+    TPoint & getVertex(unsigned int i);
     
     
     
     /**
-     * Return a reference to a face of index i.
      * @param i the index of the face.
-     * @return the face of index i. 
+     * @return a const reference to the face of index i. 
      **/
     const MeshFace & getFace(unsigned int i) const;
+
     
+    /**
+     * @param i the index of the face.
+     * @return a const reference to the face of index i. 
+     **/
+    MeshFace & getFace(unsigned int i);
+    
+
 
 
     /**
@@ -380,7 +392,7 @@ namespace DGtal
   private:
     FaceStorage  myFaceList;
     VertexStorage myVertexList;
-
+    
     
     ColorStorage myFaceColorList;
     bool mySaveFaceColor;
@@ -396,7 +408,7 @@ namespace DGtal
     
     /**
      * Generates a tube mesh from a set of points representing the
-     * tube skeleton.  Each circular sections are connected with
+     * tube skeleton.  Each circular section is connected with
      * quads.  @note The vertices of circular sections are associated
      * from nearest point according to the tube direction.
      *
@@ -415,7 +427,7 @@ namespace DGtal
 
 
     /**
-     * Generates a surface mesh defined from an sequence of a 2D
+     * Generates a surface mesh defined from a sequence of 2D
      * height values (can be seen as a height map). 
      *
      * @param[out] aMesh the mesh in which the new tube mesh will be created.

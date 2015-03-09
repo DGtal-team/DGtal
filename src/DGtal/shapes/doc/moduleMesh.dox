@@ -26,14 +26,14 @@ namespace DGtal {
 \section sectmoduleMesh1 Simple Mesh Class 
 
 
-The aim of this class is to handle basic simple mesh mainly for the
-task of import/export/display of digital surface. This class is able
+The aim of this class is to handle basic simple mesh mainly for
+basic tasks such as to import/export/display of digital surface. This class is able
 to deal with triangulated, quad or polygonal faces and can include
 specific colors to display faces. It also provides several static
 tools to generate simple shapes like tubular objects or the 3d surface
 from height map.
 
-The mesh object store explicitly each vertex and each face are represented with the list of point index.       
+The mesh object stores explicitly the vertices and each face is represented as a list of vertex indices.       
 
 \subsection subsect2moduleMesh Mesh Construction
 
@@ -43,18 +43,18 @@ header file:
 @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
 
 
-Then the mesh construction is very simple, for instance you can start
-to construct an empty mesh input and specify if you want to store or
+Then the mesh construction is very simple, for instance you start
+ constructing an empty mesh input and specify if you want to store or
 not the vertex colors in the mesh:
 
 @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshConstructor 
 
-Then you can add some vertex mesh:
+Then you can add some vertices mesh:
 
 @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingPoints 
 
 
-and add  some triangular/quad faces from the vertex index:
+and add  some triangular/quad faces from the vertex indices:
 
 @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingBasicFaces 
 
@@ -70,7 +70,7 @@ An example of mesh construction is given here:  mesh3DConstructionAndVisualisati
 
 \subsection subsect2moduleMeshIO Mesh IO
 
-The Mesh object are integrated in the main IO framework of DGtal. You
+The Mesh object is integrated in the main IO framework of DGtal. You
 can for instance display a Mesh object directly through a Viewer3d object:
 
 @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseDisplay
@@ -113,7 +113,7 @@ You will obtain such a tube display:
 
 
 Another example is given in testMesh.cpp which generates an height
-field from a sequence of height. In the same way than the previous
+field from a sequence of height values. In the same way than the previous
 example, you can construct your input height vector:
 
 @snippet tests/shapes/testMesh.cpp testMeshCreateHeightSequence
