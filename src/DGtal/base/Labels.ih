@@ -72,7 +72,7 @@ ConstEnumerator( const Word* address, SizeType firstWord )
   else
     {
       myWord = 0;
-      myLabel = 0;
+      myLabel = -1;
     }
 }
 //-----------------------------------------------------------------------------
@@ -132,7 +132,7 @@ operator++()
       if ( myWordLabel == ( __DGTAL_LABELS_NBWORDS
                             * __DGTAL_WORD_NBDIGITS ) )
         {
-          myLabel = 0;
+          myLabel = -1;
           return *this;
         }
       myWord = *myWordAddress++;
