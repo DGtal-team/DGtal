@@ -562,7 +562,8 @@ LabelledMap( const LabelledMap & other )
     {
       *currentPointer = new __AnyBlock( *nextBlock );
       s += M;
-      currentPointer = & ( currentPointer->data.nextBlock );
+      currentPointer = & ( (*currentPointer)->next );
+      nextBlock = nextBlock->next;
     }
 }
 //-----------------------------------------------------------------------------
@@ -600,6 +601,7 @@ operator=( const LabelledMap & other )
           *currentPointer = new __AnyBlock( *nextBlock );
           s += M;
           currentPointer = & ( (*currentPointer)->next );
+          nextBlock = nextBlock->next;
         }
     }
   return *this;
