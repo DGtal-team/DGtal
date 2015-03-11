@@ -62,6 +62,8 @@
  Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
 
 - *Base Package*
+ - Fix bug with Labels iterator when first index is set (Roland Denis,
+ [#972](https://github.com/DGtal-team/DGtal/pull/972))
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
 
