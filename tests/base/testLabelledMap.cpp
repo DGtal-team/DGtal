@@ -161,7 +161,7 @@ int main()
   
   trace.endBlock();
 
-  // Test related to pull request #??? about copy constructor & operator when using at less 3 blocks.
+  // Test related to pull request #973 about copy constructor & operator when using at less 3 blocks.
   typedef LabelledMap<double, 32, DGtal::uint16_t, 2, 3> MyOtherLabelledMap;
   trace.beginBlock ( "Testing LabelledMap copy constructor and copy operator" );
   MyOtherLabelledMap ll;
