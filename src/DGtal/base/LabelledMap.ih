@@ -552,8 +552,8 @@ template <typename TData, unsigned int L, typename TWord, unsigned int N, unsign
 inline
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 LabelledMap( const LabelledMap & other )
-  : myFirstBlock( other.myFirstBlock ),
-    myLabels( other.myLabels )
+  : myLabels( other.myLabels ),
+    myFirstBlock( other.myFirstBlock )
 {
   const unsigned int theSize = other.size();
   if ( theSize > N + 1 )
