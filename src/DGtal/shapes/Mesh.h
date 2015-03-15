@@ -161,6 +161,19 @@ namespace DGtal
     ~Mesh();
 
 
+   /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    Mesh ( const Mesh & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Mesh & operator= ( const Mesh & other );
+
 
 
     // --------------- CDrawableWithDisplay3D  realization -------------------
@@ -499,22 +512,7 @@ namespace DGtal
 
 
 
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Mesh ( const Mesh & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Mesh & operator= ( const Mesh & other );
+ 
 
     // ------------------------- Internals ------------------------------------
   private:
