@@ -206,6 +206,9 @@ namespace DGtal
      * @param indexVertex2 the index of the second vertex face.
      * @param indexVertex3 the index of the second vertex face.
      * 
+     * @note If you want to follow the OBJ format convention, you have
+     * to order the vertices in CCW (to have the correct normal orientation).
+     *
      **/    
     void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3, 
 			   const DGtal::Color &aColor=DGtal::Color::White);
@@ -217,7 +220,10 @@ namespace DGtal
      * @param indexVertex1 the index of the first vertex face.
      * @param indexVertex2 the index of the second vertex face.
      * @param indexVertex3 the index of the second vertex face.
-     * 
+     *
+     * @note If you want to follow the OBJ format convention, you have
+     * to order the vertices in CCW (to have the correct normal orientation).
+     *
      **/    
     void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
 		     unsigned int indexVertex3, unsigned int indexVertex4,
@@ -226,6 +232,10 @@ namespace DGtal
     
    /**
     * Add a quad face given from index position.
+    *
+    * @note If you want to follow the OBJ format convention, you have
+    * to order the vertices of the face in CCW (to have the correct
+    * normal orientation).
     * 
     **/    
     void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);

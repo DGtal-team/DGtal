@@ -54,6 +54,11 @@
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
  - New methods to generate basic 3D tubular meshes and height fields. New mesh module documentation added.
    (Bertrand Kerautret, [#969](https://github.com/DGtal-team/DGtal/pull/969))
+ - Add of copy constructor and copy operator on Mesh object (and doc adds about vertex ordering for obj format).
+   [#976](https://github.com/DGtal-team/DGtal/pull/976))
+
+
+
 
 ## Bug Fixes
 
