@@ -44,7 +44,7 @@ struct HodgeTester
 
         { // test identity operator
             typedef DGtal::LinearOperator<Calculus, order, DGtal::PRIMAL, order, DGtal::PRIMAL> PrimalIdentity;
-						PrimalIdentity primal_identity = calculus.template identity<order, DGtal::PRIMAL>();
+            PrimalIdentity primal_identity = calculus.template identity<order, DGtal::PRIMAL>();
             if (!is_identity(primal_identity.myContainer, 1)) return false;
 
             typedef DGtal::KForm<Calculus, order, DGtal::PRIMAL> SolveForm;
@@ -98,7 +98,7 @@ struct HodgeTester<Calculus, -1>
 
 template <typename DigitalSet, typename LinearAlgebraBackend>
 void
-test_hodge(int domain_size=5)
+test_hodge(int domain_size)
 {
     BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDigitalSet<DigitalSet> ));
 
@@ -129,17 +129,17 @@ test_hodge(int domain_size=5)
         }
 
         typedef typename Calculus::ConstIterator ConstIterator;
-        typedef typename Calculus::SCell SCell;
+        typedef typename Calculus::Cell Cell;
         typedef typename Calculus::Index Index;
         bool test_result = true;
         for (ConstIterator iter = calculus.begin(), iter_end = calculus.end(); test_result && iter!=iter_end; iter++)
         {
-            const SCell& cell = iter->first;
-            const Index& index = calculus.getSCellIndex(cell);
+            const Cell& cell = iter->first;
+            const Index& index = calculus.getCellIndex(cell);
             test_result &= (iter->second.index == index);
-            const SCell& primal_cell = calculus.getSCell(calculus.myKSpace.sDim(cell), DGtal::PRIMAL, index);
+            const Cell& primal_cell = calculus.getCell(calculus.myKSpace.uDim(cell), DGtal::PRIMAL, index);
             test_result &= (cell == primal_cell);
-            const SCell& dual_cell = calculus.getSCell(calculus.dimension-calculus.myKSpace.sDim(cell), DGtal::DUAL, index);
+            const Cell& dual_cell = calculus.getCell(calculus.dimension-calculus.myKSpace.uDim(cell), DGtal::DUAL, index);
             test_result &= (cell == dual_cell);
         }
         DGtal::trace.endBlock();
@@ -224,7 +224,7 @@ struct DerivativeTester<Calculus, -1>
 
 template <typename DigitalSet, typename LinearAlgebraBackend>
 void
-test_derivative(int domain_size=10)
+test_derivative(int domain_size)
 {
     BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDigitalSet<DigitalSet> ));
 
@@ -245,17 +245,32 @@ test_derivative(int domain_size=10)
     DGtal::trace.info() << "set.size()=" << set.size() << std::endl;
 
     typedef DGtal::DiscreteExteriorCalculus<Domain::Space::dimension, LinearAlgebraBackend> Calculus;
-    Calculus calculus(set);
+
     {
+        DGtal::trace.beginBlock("testing derivative without border");
+        Calculus calculus(set, false);
+
         typename Calculus::Properties properties = calculus.getProperties();
         DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
+
+        bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
+        FATAL_ERROR(test_result);
+
+        DGtal::trace.endBlock();
     }
 
-    DGtal::trace.beginBlock("testing derivative");
-    bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
-    DGtal::trace.endBlock();
+    {
+        DGtal::trace.beginBlock("testing derivative with border");
+        Calculus calculus(set, true);
 
-    FATAL_ERROR(test_result);
+        typename Calculus::Properties properties = calculus.getProperties();
+        DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
+
+        bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
+        FATAL_ERROR(test_result);
+
+        DGtal::trace.endBlock();
+    }
 }
 
 template <typename LinearAlgebraBackend>
@@ -353,25 +368,17 @@ test_hodge_sign()
         typedef DGtal::Z2i::Point Point;
         typedef typename Calculus::KSpace KSpace;
         // primal point, dual cell
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0), KSpace::NEG), DGtal::DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0)), DGtal::DUAL ) == 1 );
         // primal horizontal edge, dual vertical edge
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0), KSpace::POS), DGtal::DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0), KSpace::NEG), DGtal::DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,0)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,0)), DGtal::DUAL ) == -1 );
         // primal vectical edge, dual horizontal edge
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1), KSpace::POS), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1), KSpace::NEG), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1), KSpace::NEG), DGtal::DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1)), DGtal::PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1)), DGtal::DUAL ) == 1 );
         // primal cell, dual point
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1), KSpace::NEG), DGtal::DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,1)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,1)), DGtal::DUAL ) == 1 );
     }
 
     {
@@ -382,41 +389,25 @@ test_hodge_sign()
         typedef DGtal::Z3i::Point Point;
         typedef typename Calculus::KSpace KSpace;
         // primal point, dual cell
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,0), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,0), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,0), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,0), KSpace::NEG), DGtal::DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0,0)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0,0)), DGtal::DUAL ) == 1 );
         // primal edge, dual surfel
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,0), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,0), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,0), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,0), KSpace::NEG), DGtal::DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,0), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,0), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,0), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,0), KSpace::NEG), DGtal::DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,1), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,1), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,1), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,1), KSpace::NEG), DGtal::DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,0,0)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,0,0)), DGtal::DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1,0)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1,0)), DGtal::DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0,1)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0,1)), DGtal::DUAL ) == 1 );
         // primal surfel, dual edge
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,0), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,0), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,0), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,0), KSpace::NEG), DGtal::DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,1), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,1), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,1), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,1), KSpace::NEG), DGtal::DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,1), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,1), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,1), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,1), KSpace::NEG), DGtal::DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,1,0)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,1,0)), DGtal::DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1,1)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1,1)), DGtal::DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,0,1)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,0,1)), DGtal::DUAL ) == 1 );
         // primal cell, dual point
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,1), KSpace::POS), DGtal::PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,1), KSpace::NEG), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,1), KSpace::POS), DGtal::DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,1), KSpace::NEG), DGtal::DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,1,1)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,1,1)), DGtal::DUAL ) == 1 );
     }
 
     DGtal::trace.endBlock();
@@ -440,15 +431,19 @@ test_backend(const int& ntime, const int& maxdim)
         typedef DGtal::HyperRectDomain<Space5> Domain5;
         typedef DGtal::DigitalSetBySTLSet<Domain5> DigitalSet5;
 
-        if (maxdim>=2) test_hodge<DGtal::Z2i::DigitalSet, LinearAlgebraBackend>();
-        if (maxdim>=3) test_hodge<DGtal::Z3i::DigitalSet, LinearAlgebraBackend>();
-        if (maxdim>=4) test_hodge<DigitalSet4, LinearAlgebraBackend>(5);
+        DGtal::trace.beginBlock("testing hodges");
+        if (maxdim>=2) test_hodge<DGtal::Z2i::DigitalSet, LinearAlgebraBackend>(5);
+        if (maxdim>=3) test_hodge<DGtal::Z3i::DigitalSet, LinearAlgebraBackend>(5);
+        if (maxdim>=4) test_hodge<DigitalSet4, LinearAlgebraBackend>(4);
         if (maxdim>=5) test_hodge<DigitalSet5, LinearAlgebraBackend>(3);
+        DGtal::trace.endBlock();
 
-        if (maxdim>=2) test_derivative<DGtal::Z2i::DigitalSet, LinearAlgebraBackend>();
-        if (maxdim>=3) test_derivative<DGtal::Z3i::DigitalSet, LinearAlgebraBackend>();
-        if (maxdim>=4) test_derivative<DigitalSet4, LinearAlgebraBackend>(5);
+        DGtal::trace.beginBlock("testing derivatives");
+        if (maxdim>=2) test_derivative<DGtal::Z2i::DigitalSet, LinearAlgebraBackend>(2);
+        if (maxdim>=3) test_derivative<DGtal::Z3i::DigitalSet, LinearAlgebraBackend>(5);
+        if (maxdim>=4) test_derivative<DigitalSet4, LinearAlgebraBackend>(4);
         if (maxdim>=5) test_derivative<DigitalSet5, LinearAlgebraBackend>(3);
+        DGtal::trace.endBlock();
     }
 
     test_concepts<LinearAlgebraBackend>();

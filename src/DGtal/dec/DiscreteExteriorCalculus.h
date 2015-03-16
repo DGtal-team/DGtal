@@ -112,25 +112,25 @@ namespace DGtal
 
     /**
      * Cells data stuct.
-     * Holds size ratio, indexes and display_flipped for each cell of the structure.
+     * Holds size ratio, indexes and flipped for each cell of the structure.
      */
     struct Property
     {
         Scalar size_ratio;
         Index index;
-        bool display_flipped;
+        bool flipped;
     };
 
     /**
      * Cells properties map typedef.
      */
-    typedef std::map<SCell, Property> Properties;
+    typedef std::map<Cell, Property> Properties;
 
     /**
      * Indices to cells map typedefs.
      */
-    typedef std::vector<SCell> SCells;
-    typedef boost::array<SCells, dim+1> IndexedSCells;
+    typedef std::vector<Cell> Cells;
+    typedef boost::array<Cells, dim+1> IndexedCells;
 
     /**
      * Vector field typedefs.
@@ -239,12 +239,12 @@ namespace DGtal
     /**
      * Manually insert cell into calculus.
      * Be sure to insert all adjacent lower order primal cells.
-     * @param cell the cell to be inserted.
+     * @param signed_cell the signed cell to be inserted.
      * @size_ratio ratio between primal cell size and dual cell size.
      * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
      */
     bool
-    insertSCell(const SCell& cell, const Scalar& size_ratio = 1);
+    insertSCell(const SCell& signed_cell, const Scalar& size_ratio = 1);
 
     /**
      * Manually erase cell from calculus.
@@ -252,11 +252,11 @@ namespace DGtal
      * @return true if cell was removed, false if cell was not in calculus.
      */
     bool
-    eraseSCell(const SCell& cell);
+    eraseCell(const Cell& cell);
 
     /**
      * Get all cells properties.
-     * @return associative container from SCell to Property.
+     * @return associative container from Cell to Property.
      */
     Properties
     getProperties() const;
@@ -338,25 +338,25 @@ namespace DGtal
      * @param order k-form order.
      * @param duality k-form duality.
      * @param index index valid on a k-form container.
-     * @return associated Khalimsky signed cell.
+     * @return associated Khalimsky cell.
      */
-    SCell
-    getSCell(const Order& order, const Duality& duality, const Index& index) const;
+    Cell
+    getCell(const Order& order, const Duality& duality, const Index& index) const;
 
     /**
      * Check if cell is flipped in display.
      * @param cell the tested cell
      */
     bool
-    isSCellFlipped(const SCell& cell) const;
+    isCellFlipped(const Cell& cell) const;
 
     /**
      * Get k-form index from cell.
-     * @param cell Khalimsky signed cell.
+     * @param cell Khalimsky cell.
      * @return associated K-form index.
      */
     Index
-    getSCellIndex(const SCell& cell) const;
+    getCellIndex(const Cell& cell) const;
 
     /**
      * Return number of elements in discrete k-form.
@@ -379,27 +379,19 @@ namespace DGtal
     /**
      * Return sign of hodge operator.
      * Used internally mostly.
-     * @param cell Khalimsky signed cell.
+     * @param cell Khalimsky cell.
      * @param duality duality.
      */
     Scalar
-    hodgeSign(const SCell& cell, const Duality& duality) const;
-
-    /**
-     * Return positive cell.
-     * Useful for looking cells up since all stored cells are positive.
-     * @param cell Khalimsky signed cell.
-     */
-    SCell
-    absoluteSCell(const SCell& cell) const;
+    hodgeSign(const Cell& cell, const Duality& duality) const;
 
     /**
      * Return edge direction relative to primal.
-     * @param cell Khalimsky signed cell.
+     * @param cell Khalimsky cell.
      * @param duality duality.
      */
     Dimension
-    edgeDirection(const SCell& cell, const Duality& duality) const;
+    edgeDirection(const Cell& cell, const Duality& duality) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -419,7 +411,7 @@ namespace DGtal
      * Cells indexed by their order.
      * Usefull for finding cell form index and order.
      */
-    IndexedSCells index_cells;
+    IndexedCells index_cells;
 
     /**
      * Cached flat operator matrix
