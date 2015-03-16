@@ -312,8 +312,8 @@ void test_laplace_operator()
 int
 main()
 {
-    test_linear_structure();
     test_laplace_operator();
+    test_linear_structure();
     return 0;
 }
 
