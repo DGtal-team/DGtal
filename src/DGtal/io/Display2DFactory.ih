@@ -45,17 +45,17 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
     BOOST_STATIC_ASSERT(( dim == 2 ));
 
     typedef DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger> Calculus;
-    typedef typename Calculus::ConstIterator CalculusConstIterator;
-    typedef typename Calculus::SCell CalculusSCell;
+    typedef typename Calculus::ConstIterator ConstIterator;
+    typedef typename Calculus::Cell Cell;
+    typedef typename Calculus::SCell SCell;
+    typedef typename Calculus::KSpace KSpace;
 
-    for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
+    for (ConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
-        const CalculusSCell& cell = ci->first;
-        ASSERT(calculus.myKSpace.sSign(cell) == Calculus::KSpace::POS);
+        const Cell& cell = ci->first;
 
-        const bool& flipped = calculus.isSCellFlipped(cell);
-        CalculusSCell displayed_cell = cell;
-        if (flipped) displayed_cell = calculus.myKSpace.sOpp(cell);
+        const bool& flipped = calculus.isCellFlipped(cell);
+        const SCell displayed_cell = calculus.myKSpace.signs(cell, flipped ? KSpace::NEG : KSpace::POS);
 
         board << displayed_cell;
     }
@@ -132,24 +132,21 @@ void
 DGtal::Display2DFactory::drawWithColorMap(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform, const TColorMap& colormap)
 {
     typedef typename TCalculus::Scalar Scalar;
+    typedef typename TCalculus::Cell Cell;
     typedef typename TCalculus::SCell SCell;
+    typedef typename TCalculus::KSpace KSpace;
 
     for (typename TCalculus::Index index=0; index<kform.myCalculus->kFormLength(order, duality); index++)
     {
-        const SCell& cell = kform.myCalculus->getSCell(order, duality, index);
-        ASSERT(kform.myCalculus->myKSpace.sSign(cell) == TCalculus::KSpace::POS);
+        const Cell cell = kform.myCalculus->getCell(order, duality, index);
 
-        const bool& flipped = kform.myCalculus->isSCellFlipped(cell);
-        SCell displayed_cell = cell;
-        if (flipped) displayed_cell = kform.myCalculus->myKSpace.sOpp(cell);
+        const bool flipped = kform.myCalculus->isCellFlipped(cell);
+        const SCell displayed_cell = kform.myCalculus->myKSpace.signs(cell, flipped ? KSpace::NEG : KSpace::POS);
 
-        Scalar displayed_value = kform.myContainer(index);
-        if (flipped) displayed_value = -displayed_value;
+        const Scalar displayed_value = kform.myContainer(index);
 
-        if (std::isfinite(displayed_value))
-            board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, colormap(displayed_value)));
-        else
-            board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
+        if (std::isfinite(displayed_value)) board << DGtal::CustomStyle(displayed_cell.className(), new DGtal::CustomColors(DGtal::Color::Black, colormap(displayed_value)));
+        else board << DGtal::CustomStyle(displayed_cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
 
         board << displayed_cell;
     }
@@ -180,7 +177,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
 
     for (typename TCalculus::Index index=0; index<vector_field.myCalculus->kFormLength(0, duality); index++)
     {
-        const typename TCalculus::SCell& cell = vector_field.myCalculus->getSCell(0, duality, index);
+        const typename TCalculus::Cell& cell = vector_field.myCalculus->getCell(0, duality, index);
         DGtal::Z2i::RealPoint origin = cell.myCoordinates/2.;
         if (duality == DGtal::PRIMAL)
             origin -= DGtal::Z2i::RealPoint(.5,.5);
