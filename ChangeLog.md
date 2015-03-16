@@ -90,7 +90,10 @@
    and Viewer3D: no more "createNew...List" when setting a new
    color. (David Coeurjolly,
    [#958](https://github.com/DGtal-team/DGtal/pull/958))
-
+ - Radius and resolution of balls have been fixed when used to
+   represent a 3D point in grid mode (David Coeurjolly,
+   [#978](https://github.com/DGtal-team/DGtal/pull/978))
+ 
 
 # DGtal 0.8
 
