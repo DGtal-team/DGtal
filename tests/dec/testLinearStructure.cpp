@@ -41,7 +41,7 @@ void test_linear_structure()
     trace.beginBlock("creating dec problem with neumann border condition");
 
     //! [neumann-creation]
-    const Domain domain(Point(-1,-1), Point(10,10));
+    const Domain domain(Point(0,0), Point(10,10));
 
     typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
