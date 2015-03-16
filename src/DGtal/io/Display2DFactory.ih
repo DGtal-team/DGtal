@@ -186,6 +186,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
         if (!std::isfinite(arrow[0]) || !std::isfinite(arrow[1])) continue;
         const typename TCalculus::Scalar& norm = arrow.norm();
         if (norm <= epsilon) continue;
+        if (norm <= .5) arrow *= .5/norm;
 
         board.drawArrow(origin[0],origin[1],origin[0]+arrow[0],origin[1]+arrow[1]);
     }
