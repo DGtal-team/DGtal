@@ -106,6 +106,7 @@ namespace DGtal
     BOOST_STATIC_CONSTANT( Dimension, dimension = dim );
 
     typedef DGtal::KhalimskySpaceND<dim, TInteger> KSpace;
+    typedef typename KSpace::Cell Cell;
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Point Point;
 
