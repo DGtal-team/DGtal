@@ -719,7 +719,7 @@ namespace DGtal
      * @param aMesh : (return) the mesh containing the elements of the display.
      *
      **/
-    void exportToMesh(Mesh<Display3D::BallD3D> & aMesh ) const;
+    void exportToMesh(Mesh<RealPoint> & aMesh ) const;
 
 
     /**

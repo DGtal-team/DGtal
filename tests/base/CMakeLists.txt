@@ -25,6 +25,7 @@ SET(DGTAL_TESTS_SRC
    testCloneAndAliases
    testClone2
    testOwningOrAliasingPtr
+   testPartialTemplateSpecialization
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
