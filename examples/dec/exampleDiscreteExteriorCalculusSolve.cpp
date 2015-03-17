@@ -36,7 +36,7 @@ void solve2d_laplace()
 
     //! [dirac_definition]
     Calculus::DualForm0 dirac(calculus);
-    dirac.myContainer(calculus.getSCellIndex(calculus.myKSpace.sSpel(Z2i::Point(2,5)))) = 1;
+    dirac.myContainer(calculus.getCellIndex(calculus.myKSpace.uSpel(Z2i::Point(2,5)))) = 1;
     //! [dirac_definition]
 
     {
@@ -217,12 +217,13 @@ void solve2d_dual_decomposition()
 
     //! [2d_dual_decomposition_input_field_definition]
     Calculus::DualVectorField input_vector_field(calculus);
-    for (Calculus::Index ii=0; ii<calculus.kFormLength(0, DUAL); ii++)
+    for (Calculus::Index ii=0; ii<input_vector_field.length(); ii++)
     {
-        const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, DUAL, ii).myCoordinates)/2.;
+        const Z2i::RealPoint cell_center = Z2i::RealPoint(input_vector_field.getCell(ii).myCoordinates)/2.;
         input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
         input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
+    trace.info() << input_vector_field << endl;
 
     const Calculus::DualForm1 input_one_form = calculus.flat(input_vector_field);
     const Calculus::DualForm0 input_one_form_anti_derivated = ad1 * input_one_form;
@@ -340,12 +341,13 @@ void solve2d_primal_decomposition()
 
     //! [2d_primal_decomposition_input_field_definition]
     Calculus::PrimalVectorField input_vector_field(calculus);
-    for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
+    for (Calculus::Index ii=0; ii<input_vector_field.length(); ii++)
     {
-        const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
+        const Z2i::RealPoint cell_center = Z2i::RealPoint(input_vector_field.getCell(ii).myCoordinates)/2.;
         input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
         input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
+    trace.info() << input_vector_field << endl;
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
     const Calculus::PrimalForm0 input_one_form_anti_derivated = ad1 * input_one_form;
@@ -552,13 +554,14 @@ void solve3d_decomposition()
 
     //! [3d_decomposition_input_field_definition]
     Calculus::PrimalVectorField input_vector_field(calculus);
-    for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
+    for (Calculus::Index ii=0; ii<input_vector_field.length(); ii++)
     {
-        const Z3i::RealPoint cell_center = Z3i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
+        const Z3i::RealPoint cell_center = Z3i::RealPoint(input_vector_field.getCell(ii).myCoordinates)/2.;
         input_vector_field.myCoordinates(ii, 0) = -cos(-.3*cell_center[0] + .6*cell_center[1] + .8*cell_center[2]);
         input_vector_field.myCoordinates(ii, 1) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
         input_vector_field.myCoordinates(ii, 2) = -cos(cell_center[2]*.5);
     }
+    trace.info() << input_vector_field << endl;
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
     //! [3d_decomposition_input_field_definition]
