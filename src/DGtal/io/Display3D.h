@@ -971,7 +971,7 @@ namespace DGtal
    **/
   void
   operator>> ( const Display3D<Space , KSpace > &aDisplay3D,
-               DGtal::Mesh< typename Display3D<Space , KSpace >::BallD3D> &aMesh);
+               DGtal::Mesh< typename Display3D<Space , KSpace >::RealPoint > &aMesh);
 
 
   /**
