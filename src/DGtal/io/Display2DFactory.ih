@@ -41,9 +41,9 @@ void
 DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& sk)
 {
     FATAL_ERROR( dim == 2 );
-    const float x = static_cast<float>(sk.myCoordinates[0]) / 2.f;
-    const float y = static_cast<float>(sk.myCoordinates[1]) / 2.f;
-    const float retract = 0.05f;
+    const float x = static_cast<float>(sk.myCoordinates[0] - 1) / 2.f;
+    const float y = static_cast<float>(sk.myCoordinates[1] - 1) / 2.f;
+    const float retract = 0.1f;
     const bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
     const bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
     if (!xodd && !yodd)
@@ -215,7 +215,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
     for (typename TCalculus::Index index=0; index<vector_field.length(); index++)
     {
         const typename TCalculus::Cell& cell = vector_field.getCell(index);
-        DGtal::Z2i::RealPoint origin = cell.myCoordinates/2.;
+        const DGtal::Z2i::RealPoint origin = DGtal::Z2i::RealPoint(cell.myCoordinates[0]-1, cell.myCoordinates[1]-1)/2.;
 
         Arrow arrow = vector_field.getArrow(index);
 
