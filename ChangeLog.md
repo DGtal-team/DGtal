@@ -82,8 +82,7 @@
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
  - Fix issues with SphereFitting and TensorVoting local estimators on
    digital surfaces (Jérémy Levallois, David Coeurjolly
-   [#970](https://github.com/DGtal-team/DGtal/pull/970))
-   
+   [#970](https://github.com/DGtal-team/DGtal/pull/970))   
 
 - *IO Package*
  - Performance improvement of color managment in Display3D, Board3D
