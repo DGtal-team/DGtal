@@ -36,6 +36,7 @@ int main()
 
     typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
+    calculus.initKSpace(domain);
 
     // bottom linear structure
     // left and right Dirichlet boundary condition

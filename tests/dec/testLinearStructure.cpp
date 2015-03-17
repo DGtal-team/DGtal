@@ -45,6 +45,7 @@ void test_linear_structure()
 
     typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
+    calculus.initKSpace(domain);
 
     for (int kk=20; kk>0; kk--)
         calculus.insertSCell(calculus.myKSpace.sCell(Point(0,kk), kk%2 == 1 ? Calculus::KSpace::NEG : Calculus::KSpace::POS));

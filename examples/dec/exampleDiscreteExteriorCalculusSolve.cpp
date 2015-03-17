@@ -448,6 +448,7 @@ void solve3d_decomposition()
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<3, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
+    calculus.initKSpace(domain);
 
     // outer ring
     for (int kk=2; kk<=18; kk++)
@@ -530,7 +531,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("structure");
         (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
@@ -570,7 +571,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("input vector field");
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form);
@@ -598,7 +599,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("curl free solution");
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_curl_free);
@@ -624,7 +625,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("div free solution");
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_div_free);
@@ -639,7 +640,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("harmonic");
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_harmonic);

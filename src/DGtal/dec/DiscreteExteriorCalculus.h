@@ -46,7 +46,6 @@
 #include <list>
 #include <boost/array.hpp>
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/dec/Duality.h"
@@ -200,6 +199,14 @@ namespace DGtal
      */
     DiscreteExteriorCalculus();
 
+    /**
+     * Init Khalimsky space boundaries.
+     * @tparam TDomain type of digital domain.
+     * @param domain domain used to initialize Khalimsky space.
+     */
+    template <typename TDomain>
+    void
+    initKSpace(const TDomain& domain);
 
     // ----------------------- Iterators on property map -----------------------
     /**
