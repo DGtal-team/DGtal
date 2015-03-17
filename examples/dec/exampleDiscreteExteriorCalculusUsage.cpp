@@ -28,7 +28,7 @@ void usage2d()
     //! [usage_calculus_definition_without_border]
     Calculus calculus(generateRingSet(domain), false);
 
-    calculus.eraseSCell(calculus.myKSpace.sSpel(Z2i::Point(8, 5)));
+    calculus.eraseCell(calculus.myKSpace.uSpel(Z2i::Point(8, 5)));
     //! [usage_calculus_definition_without_border]
 
         trace.info() << calculus << endl;
@@ -43,8 +43,8 @@ void usage2d()
     //! [usage_calculus_definition_with_border]
     Calculus calculus(generateRingSet(domain));
 
-    calculus.eraseSCell(calculus.myKSpace.sSpel(Z2i::Point(8, 5)));
-    calculus.eraseSCell(calculus.myKSpace.sCell(Z2i::Point(18, 11)));
+    calculus.eraseCell(calculus.myKSpace.uSpel(Z2i::Point(8, 5)));
+    calculus.eraseCell(calculus.myKSpace.uCell(Z2i::Point(18, 11)));
     //! [usage_calculus_definition_with_border]
 
     trace.info() << calculus << endl;
@@ -65,9 +65,9 @@ void usage2d()
         // create primal 0-form and fill it with euclidian metric
         //! [usage_primal_fill_zero_form]
         Calculus::PrimalForm0 primal_zero_form(calculus);
-        for (Calculus::Index index=0; index<primal_zero_form.myContainer.rows(); index++)
+        for (Calculus::Index index=0; index<primal_zero_form.length(); index++)
         {
-            const Calculus::SCell& cell = primal_zero_form.getSCell(index);
+            const Calculus::Cell& cell = primal_zero_form.getCell(index);
             const Calculus::Scalar& value = Z2i::l2Metric(cell.myCoordinates, center)/2;
             primal_zero_form.myContainer(index) = value;
         }
@@ -140,9 +140,9 @@ void usage2d()
 
         // create dual 0-form and fill it with euclidian metric
         Calculus::DualForm0 dual_zero_form(calculus);
-        for (Calculus::Index index=0; index<dual_zero_form.myContainer.rows(); index++)
+        for (Calculus::Index index=0; index<dual_zero_form.length(); index++)
         {
-            const Calculus::SCell& cell = dual_zero_form.getSCell(index);
+            const Calculus::Cell& cell = dual_zero_form.getCell(index);
             const Calculus::Scalar& value = Z2i::l2Metric(cell.myCoordinates, center)/2;
             dual_zero_form.myContainer(index) = value;
         }

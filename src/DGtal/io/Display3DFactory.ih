@@ -48,19 +48,18 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     BOOST_STATIC_ASSERT(( dim == 3 ));
 
     typedef DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger> Calculus;
-    typedef typename Calculus::ConstIterator CalculusConstIterator;
-    typedef typename Calculus::SCell CalculusSCell;
+    typedef typename Calculus::ConstIterator ConstIterator;
+    typedef typename Calculus::Cell Cell;
+    typedef typename Calculus::SCell SCell;
+    typedef typename Calculus::KSpace KSpace;
 
     display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
 
-    for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
+    for (ConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
-        const CalculusSCell& cell = ci->first;
-        ASSERT(calculus.myKSpace.sSign(cell) == Calculus::KSpace::POS);
-
-        const bool& flipped = calculus.isSCellFlipped(cell);
-        CalculusSCell displayed_cell = cell;
-        if (flipped) displayed_cell = calculus.myKSpace.sOpp(cell);
+        const Cell& cell = ci->first;
+        const bool& flipped = ci->second.flipped;
+        const SCell displayed_cell = calculus.myKSpace.signs(cell, flipped ? KSpace::NEG : KSpace::POS);
 
         display << displayed_cell;
     }
@@ -78,6 +77,8 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     ASSERT( kform.myCalculus );
 
     typedef typename TCalculus::Scalar Scalar;
+    typedef typename TCalculus::KSpace KSpace;
+    typedef typename TCalculus::Cell Cell;
     typedef typename TCalculus::SCell SCell;
     typedef typename TCalculus::Index Index;
 
@@ -96,25 +97,19 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
 
     typedef typename DGtal::HueShadeColorMap<Scalar, 2 > ColorMap;
     const ColorMap colormap(cmap_min, cmap_max);
-                            
-    for (typename TCalculus::Index index=0; index<kform.myCalculus->kFormLength(order, duality); index++)
+
+    for (Index index=0; index<kform.length(); index++)
     {
-        const SCell& cell = kform.myCalculus->getSCell(order, duality, index);
-        ASSERT(kform.myCalculus->myKSpace.sSign(cell) == TCalculus::KSpace::POS);
+        const Cell cell = kform.getCell(index);
+        const bool flipped = kform.myCalculus->isCellFlipped(cell);
+        const SCell displayed_cell = kform.myCalculus->myKSpace.signs(cell, flipped ? KSpace::NEG : KSpace::POS);
 
-        const bool& flipped = kform.myCalculus->isSCellFlipped(cell);
-        SCell displayed_cell = cell;
-        if (flipped) displayed_cell = kform.myCalculus->myKSpace.sOpp(cell);
+        const Scalar displayed_value = kform.myContainer(index);
 
-        Scalar displayed_value = kform.myContainer(index);
-        if (flipped) displayed_value = -displayed_value;
+        display << SetMode3D(displayed_cell.className(), "Basic");
 
-        display << SetMode3D(cell.className(), "Basic");
-
-        if (std::isfinite(displayed_value))
-          display << DGtal::CustomColors3D(DGtal::Color::Black, colormap(displayed_value) );
-        else
-            display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
+        if (std::isfinite(displayed_value)) display << DGtal::CustomColors3D(DGtal::Color::Black, colormap(displayed_value) );
+        else display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
 
         display << displayed_cell;
     }
@@ -128,17 +123,16 @@ void
 DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale, const double& epsilon)
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
+    ASSERT( vector_field.myCalculus );
 
     typedef typename DGtal::VectorField<Calculus, duality>::Arrow Arrow;
 
     display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::Black);
 
-    for (typename Calculus::Index index=0; index<vector_field.myCalculus->kFormLength(0, duality); index++)
+    for (typename Calculus::Index index=0; index<vector_field.length(); index++)
     {
-        const typename Calculus::SCell& cell = vector_field.myCalculus->getSCell(0, duality, index);
-        DGtal::Z3i::RealPoint origin = vector_field.myCalculus->myKSpace.sKCoords(cell)/2.;
-        if (duality == PRIMAL)
-            origin -= DGtal::Z3i::RealPoint(.5,.5,.5);
+        const typename Calculus::Cell& cell = vector_field.getCell(index);
+        DGtal::Z3i::RealPoint origin = cell.myCoordinates/2.;
 
         Arrow arrow = vector_field.getArrow(index);
 
@@ -146,6 +140,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
         if (!std::isfinite(arrow[0]) || !std::isfinite(arrow[1]) || !std::isfinite(arrow[2])) continue;
         const typename Calculus::Scalar& norm = arrow.norm();
         if (norm <= epsilon) continue;
+        if (norm <= .5) arrow *= .5/norm;
 
         display.addCone(origin, origin+arrow);
     }
