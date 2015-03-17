@@ -78,7 +78,7 @@ B<TC>::B( const C& c )
 
 
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   B<int> a(1);
 
