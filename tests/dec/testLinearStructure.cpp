@@ -41,7 +41,7 @@ void test_linear_structure()
     trace.beginBlock("creating dec problem with neumann border condition");
 
     //! [neumann-creation]
-    const Domain domain(Point(0,0), Point(10,10));
+    const Domain domain(Point(-1,-1), Point(10,10));
 
     typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
@@ -247,7 +247,7 @@ void test_laplace_operator()
 {
     trace.beginBlock("testing operators");
 
-    const Domain input_domain(Point(0,0), Point(3,4));
+    const Domain input_domain(Point(0,0), Point(2,3));
     DigitalSet input_set(input_domain);
     input_set.insertNew(Point(1,2));
     input_set.insertNew(Point(1,1));
