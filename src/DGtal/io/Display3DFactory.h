@@ -84,9 +84,9 @@ namespace DGtal
   {
 
     ///The size of the ball radius when used to display a 3D point.
-    constexpr BOOST_STATIC_CONSTANT(double, POINT_AS_BALL_RADIUS = 0.1);
+    constexpr BOOST_STATIC_CONSTANT(double, POINT_AS_BALL_RADIUS = 0.2);
     ///The ball resolution when used to display a point
-    constexpr BOOST_STATIC_CONSTANT(unsigned int, POINT_AS_BALL_RES = 10);
+    constexpr BOOST_STATIC_CONSTANT(unsigned int, POINT_AS_BALL_RES = 5);
     
     typedef TSpace Space;
     typedef TKSpace KSpace;
