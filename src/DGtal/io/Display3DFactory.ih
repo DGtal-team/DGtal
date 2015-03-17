@@ -106,8 +106,6 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
 
         const Scalar displayed_value = kform.myContainer(index);
 
-        display << SetMode3D(displayed_cell.className(), "Basic");
-
         if (std::isfinite(displayed_value)) display << DGtal::CustomColors3D(DGtal::Color::Black, colormap(displayed_value) );
         else display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
 
