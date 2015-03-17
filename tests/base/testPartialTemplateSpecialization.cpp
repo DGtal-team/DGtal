@@ -30,13 +30,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 ///////////////////////////////////////////////////////////////////////////////
-
+#include <boost/type_traits/is_arithmetic.hpp>
+#include <boost/type_traits/is_integral.hpp>
+#include <boost/utility/enable_if.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class cpp11.
 ///////////////////////////////////////////////////////////////////////////////
 
-template< typename TC, unsigned short d = 8 >
+template< typename TC, typename TD >
 class A
 {
 public:
@@ -45,9 +47,9 @@ public:
 	A( const C& c );
 };
 
-template< typename TC, unsigned short d >
+template< typename TC, typename TD >
 inline
-A< TC, d >::A( const C& c )
+A< TC, TD >::A( const C& c )
 {
 	std::cout << "Generic" << std::endl;
 }
@@ -56,18 +58,19 @@ A< TC, d >::A( const C& c )
 
 
 
-template< typename TC >
-class B : public A< TC, 4 >
+template< typename TC > //int specialization
+class B : public A< TC, int >
 {
 public: 
-    typedef A< TC, 4 > Super;
+    typedef A< TC, int > Super;
+	typedef typename Super::C C;
 
-	B( const typename Super::C& c );
+	B( const C& c );
 };
 
 template <typename TC>
 inline
-B<TC>::B( const typename Super::C& c )
+B<TC>::B( const C& c )
   : Super(c) 
 {
 	std::cout << "Specialized" << std::endl;
