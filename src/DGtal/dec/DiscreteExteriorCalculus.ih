@@ -159,6 +159,9 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::insertSCe
         property.flipped = true;
     }
 
+    ASSERT_MSG( myKSpace.uDim(cell) != 0 || !property.flipped , "can't insert negative 0-cells" );
+    ASSERT_MSG( myKSpace.uDim(cell) != dim || !property.flipped , "can't insert negative n-cells" );
+
     typename Properties::iterator iter = my_cell_properties.find(cell);
     const bool need_insert = (iter == my_cell_properties.end());
 
