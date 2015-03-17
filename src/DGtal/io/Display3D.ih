@@ -1370,7 +1370,7 @@ DGtal::operator<< ( std::ostream & out,
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, DGtal::Mesh< typename Display3D< Space ,KSpace >::BallD3D> &aMesh)
+DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, DGtal::Mesh< typename Display3D<Space , KSpace >::RealPoint > &aMesh)
 {
   aDisplay3D.exportToMesh(aMesh);
 }
@@ -1382,7 +1382,7 @@ void
 DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, std::string aFilename)
 {
   // exporting with a mesh containing color (parameter constructor to true):
-  DGtal::Mesh<typename Display3D< Space ,KSpace >::BallD3D> mesh(true);
+  DGtal::Mesh<RealPoint> mesh(true);
   aDisplay3D >> mesh;
   trace.info() << "generating faces done." << std::endl;
   mesh >> aFilename;
