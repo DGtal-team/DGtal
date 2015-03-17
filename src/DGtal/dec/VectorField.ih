@@ -120,7 +120,7 @@ DGtal::VectorField<Calculus, duality>::extractZeroForm(const DGtal::Dimension& d
 }
 
 template <typename Calculus, DGtal::Duality duality>
-typename DGtal::PointVector<Calculus::dimension, typename Calculus::Scalar>
+typename DGtal::VectorField<Calculus, duality>::Arrow
 DGtal::VectorField<Calculus, duality>::getArrow(const Index& index) const
 {
     Arrow arrow;

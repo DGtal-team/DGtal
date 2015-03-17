@@ -667,6 +667,8 @@ namespace DGtal
      * Type of base class.
      */
     typedef ArithmeticalDSL<TCoordinate, TInteger, 4> Super;
+	typedef typename Super::Coordinate Coordinate;
+	typedef typename Super::Integer Integer;
 
   public:
     /**
@@ -676,9 +678,9 @@ namespace DGtal
      * @param aB x-component of the direction vector
      * @param aMu intercept
      */
-    StandardDSL (const typename Super::Coordinate& aA,
-		 const typename Super::Coordinate& aB,
-		 const typename Super::Integer& aMu);
+    StandardDSL (const Coordinate& aA,
+		 const Coordinate& aB,
+		 const Integer& aMu);
 
     /**
      * Copy constructor.
@@ -733,6 +735,8 @@ namespace DGtal
      * Type of base class.
      */
     typedef ArithmeticalDSL<TCoordinate, TInteger, 8> Super;
+	typedef typename Super::Coordinate Coordinate;
+	typedef typename Super::Integer Integer;
 
   public:
     /**
@@ -742,9 +746,9 @@ namespace DGtal
      * @param aB x-component of the direction vector
      * @param aMu intercept
      */
-    NaiveDSL (const typename Super::Coordinate& aA,
-	      const typename Super::Coordinate& aB,
-	      const typename Super::Integer& aMu);
+    NaiveDSL (const Coordinate& aA,
+	      const Coordinate& aB,
+	      const Integer& aMu);
 
 
     /**

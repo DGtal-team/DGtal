@@ -63,7 +63,7 @@ class B : public A< TC, int >
 {
 public: 
     typedef A< TC, int > Super;
-	typedef typename Super::C C;
+	typedef typename Super::C C; //Compile en rajoutant cette ligne (et en changeant les appels à Super::C par C)
 
 	B( const C& c );
 };
