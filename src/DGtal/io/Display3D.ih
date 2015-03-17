@@ -1230,7 +1230,7 @@ DGtal::Display3D< Space ,KSpace >::embedK( const typename KSpace::Cell & cell ) 
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) const
+DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<RealPoint> &aMesh) const
 {
   unsigned int vertexIndex=0;
 
