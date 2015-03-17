@@ -698,7 +698,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
     {
       if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
         {
-          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).size ) /distCam );
+          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam );
         }
       glCallList(myBallSetListId+j);
     }
@@ -1100,7 +1100,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>:
   double phiResolution = aBall.resolution;
   double phiStep= M_PI/phiResolution;
   
-  double radius = aBall.size;
+  double radius = aBall.radius;
   double xCenter = aBall.center[0];
   double yCenter = aBall.center[1];
   double zCenter = aBall.center[2];
