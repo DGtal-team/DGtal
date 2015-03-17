@@ -797,7 +797,7 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealP
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint &p2,
+DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p2, const RealPoint &p1,
                                            double width)
 {
   updateBoundingBox(p1);
