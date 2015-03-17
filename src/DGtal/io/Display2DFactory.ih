@@ -35,6 +35,38 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
+template <DGtal::Dimension dim, typename TInteger>
+inline
+void
+DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& sk)
+{
+    FATAL_ERROR( dim == 2 );
+    const float x = static_cast<float>(sk.myCoordinates[0]) / 2.f;
+    const float y = static_cast<float>(sk.myCoordinates[1]) / 2.f;
+    const float retract = 0.05f;
+    const bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
+    const bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
+    if (!xodd && !yodd)
+    {
+        if (!sk.myPositive) DGtal::trace.warning() << "negative khalimsky 0-cell" << std::endl;
+        board.drawCircle(x, y, retract);
+        return;
+    }
+    if (xodd && !yodd)
+    {
+        if (sk.myPositive) board.drawTriangle(x-.5f, y-retract, x-.5f, y+retract, x+.5f, y);
+        else board.drawTriangle(x+.5f, y+retract, x+.5f, y-retract, x-.5f, y);
+        return;
+    }
+    if (!xodd && yodd)
+    {
+        if (sk.myPositive) board.drawTriangle(x-retract, y-.5f, x+retract, y-.5f, x, y+.5);
+        else board.drawTriangle(x+retract, y+.5f, x-retract, y+.5f, x, y-.5);
+        return;
+    }
+    if (!sk.myPositive) DGtal::trace.warning() << "negative khalimsky 2-cell" << std::endl;
+    board.drawRectangle(x-.5, y+.5, 1, 1);
+}
 
 // DiscreteExteriorCalculus
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
@@ -50,14 +82,19 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::KSpace KSpace;
 
-    for (ConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
-    {
-        const Cell& cell = ci->first;
-        const bool& flipped = ci->second.flipped;
-        const SCell displayed_cell = calculus.myKSpace.signs(cell, flipped ? KSpace::NEG : KSpace::POS);
+    board.setFillColor( DGtal::Color(128,128,128) );
+    board.setLineWidth( .5 );
+    for (int kk=2; kk>=0; kk--)
+        for (ConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
+        {
+            const Cell& cell = ci->first;
+            if (calculus.myKSpace.uDim(cell) != static_cast<DGtal::Dimension>(kk)) continue;
 
-        board << displayed_cell;
-    }
+            const bool& flipped = ci->second.flipped;
+            const SCell displayed_cell = calculus.myKSpace.signs(cell, flipped ? KSpace::NEG : KSpace::POS);
+
+            drawDECSignedKhalimskyCell(board, displayed_cell);
+        }
 }
 // DiscreteExteriorCalculus
 
@@ -102,6 +139,8 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::KForm<TCalculu
         }
     }
 
+    board.setLineWidth( .5 );
+
     if (cmap_repeat < 1 && cmap_preset == DGtal::CMAP_JET)
     {
         typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_JET> ColorMap;
@@ -143,10 +182,10 @@ DGtal::Display2DFactory::drawWithColorMap(DGtal::Board2D& board, const DGtal::KF
 
         const Scalar displayed_value = kform.myContainer(index);
 
-        if (std::isfinite(displayed_value)) board << DGtal::CustomStyle(displayed_cell.className(), new DGtal::CustomColors(DGtal::Color::Black, colormap(displayed_value)));
-        else board << DGtal::CustomStyle(displayed_cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
+        if (std::isfinite(displayed_value)) board.setFillColor( colormap(displayed_value) );
+        else board.setFillColor( DGtal::Color::None );
 
-        board << displayed_cell;
+        drawDECSignedKhalimskyCell(board, displayed_cell);
     }
 }
 // KForm
