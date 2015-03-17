@@ -413,28 +413,28 @@ namespace DGtal
     /**
      * Cells properties.
      */
-    Properties cell_properties;
+    Properties my_cell_properties;
 
     /**
      * Cells indexed by their order.
      * Usefull for finding cell form index and order.
      */
-    IndexedCells index_cells;
+    IndexedCells my_index_cells;
 
     /**
      * Cached flat operator matrix
      */
-    boost::array<boost::array<SparseMatrix, dim>, 2> flat_operator_matrixes;
+    boost::array<boost::array<SparseMatrix, dim>, 2> my_flat_operator_matrixes;
 
     /**
      * Cached sharp operator matrix
      */
-    boost::array<boost::array<SparseMatrix, dim>, 2> sharp_operator_matrixes;
+    boost::array<boost::array<SparseMatrix, dim>, 2> my_sharp_operator_matrixes;
 
     /**
      * Cached operators generation flag
      */
-    bool cached_operators_modified;
+    bool my_cached_operators_modified;
 
     // ------------------------- Hidden services ------------------------------
   protected:
