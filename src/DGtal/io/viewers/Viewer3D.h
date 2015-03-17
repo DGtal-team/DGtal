@@ -223,7 +223,7 @@ namespace DGtal
     }
 
 
-    /// the 3 possible axes for the imaball3Dge direction
+    /// the 3 possible axes for the image direction
     enum ImageDirection {xDirection, yDirection, zDirection, undefDirection };
     /// the modes of representation of an image
     enum TextureMode {RGBMode, GrayScaleMode };
