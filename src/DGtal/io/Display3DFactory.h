@@ -83,13 +83,8 @@ namespace DGtal
   struct Display3DFactory
   {
 
-    ///The size of the ball radius when used to display a 3D point.
-#ifdef WITH_C11
-    constexpr BOOST_STATIC_CONSTANT(double, POINT_AS_BALL_RADIUS = static_cast<double>(0.2));
-#else
-    BOOST_STATIC_CONSTANT(double, POINT_AS_BALL_RADIUS = static_cast<double>(0.2));
-#endif
-    
+    ///The ball radius (the actual radius being 1/POINT_AS_BALL_RADIUS )when used to display a 3D point.
+    BOOST_STATIC_CONSTANT(unsigned int, POINT_AS_BALL_RADIUS = 5);
     ///The ball resolution when used to display a point
     BOOST_STATIC_CONSTANT(unsigned int, POINT_AS_BALL_RES = 5);
     
