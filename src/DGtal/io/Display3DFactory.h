@@ -83,6 +83,11 @@ namespace DGtal
   struct Display3DFactory
   {
 
+    ///The size of the ball radius when used to display a 3D point.
+    constexpr BOOST_STATIC_CONSTANT(double, POINT_AS_BALL_RADIUS = 0.2);
+    ///The ball resolution when used to display a point
+    constexpr BOOST_STATIC_CONSTANT(unsigned int, POINT_AS_BALL_RES = 5);
+    
     typedef TSpace Space;
     typedef TKSpace KSpace;
     typedef Display3DFactory<Space, KSpace> Self;
@@ -624,7 +629,7 @@ namespace DGtal
      */
     static void 
     draw( Display & display, const DGtal::SetSelectCallback3D& aFct );
-
+    
   }; // end of struct Display3DFactory
 
 } // namespace DGtal

@@ -225,7 +225,7 @@ namespace DGtal
       RealPoint center;
       bool isSigned;
       bool signPos;
-      double size;
+      double radius;
       unsigned int resolution;
     };
 
@@ -622,12 +622,12 @@ namespace DGtal
     /**
      * Method to add a point to the current display.
      * @param center ball center x
-     * @param size the ball radius (default 1)
+     * @param radius the ball radius (default 0.5)
      * @param resolution ball resolution (default 30)
      *
      */
     void addBall(const RealPoint &center ,
-                 const double size=1.0,
+                 const double radius=0.5,
                  const unsigned int resolution = 30);
 
 
