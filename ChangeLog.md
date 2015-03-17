@@ -92,6 +92,8 @@
  - Radius and resolution of balls have been fixed when used to
    represent a 3D point in grid mode (David Coeurjolly,
    [#978](https://github.com/DGtal-team/DGtal/pull/978))
+ - Bugfix in quad visualization in BoardD3D and Viewer3D (David
+   Coeurjolly, [#979](https://github.com/DGtal-team/DGtal/pull/979))
  
 
 # DGtal 0.8
