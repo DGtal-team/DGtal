@@ -1382,7 +1382,7 @@ void
 DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, std::string aFilename)
 {
   // exporting with a mesh containing color (parameter constructor to true):
-  DGtal::Mesh<RealPoint> mesh(true);
+  DGtal::Mesh<typename Display3D<Space , KSpace >::RealPoint> mesh(true);
   aDisplay3D >> mesh;
   trace.info() << "generating faces done." << std::endl;
   mesh >> aFilename;
