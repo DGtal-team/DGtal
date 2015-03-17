@@ -107,21 +107,24 @@ void test_linear_structure()
         solved_solution.myContainer /= solved_solution.myContainer.maxCoeff();
 
         Calculus::PrimalForm0 analytic_solution(calculus);
-        for (Calculus::Index kk=0; kk<calculus.kFormLength(0, PRIMAL); kk++)
         {
-            Calculus::Scalar alpha = 1. * (kk)/dirac_position * (kk+1.)/(dirac_position+1.);
-            if (kk>dirac_position)
+            const Calculus::Index length = analytic_solution.length();
+            for (Calculus::Index kk=0; kk<length; kk++)
             {
-                alpha = 1. * (calculus.kFormLength(0, PRIMAL)-kk)/dirac_position * (calculus.kFormLength(0, PRIMAL)-kk-1.)/(dirac_position+1);
-                alpha -= 1. * (calculus.kFormLength(0, PRIMAL)-dirac_position)/dirac_position * (calculus.kFormLength(0, PRIMAL)-dirac_position-1.)/(dirac_position+1);
-                alpha += 1;
+                Calculus::Scalar alpha = 1. * (kk)/dirac_position * (kk+1.)/(dirac_position+1.);
+                if (kk>dirac_position)
+                {
+                    alpha = 1. * (length-kk)/dirac_position * (length-kk-1.)/(dirac_position+1);
+                    alpha -= 1. * (length-dirac_position)/dirac_position * (length-dirac_position-1.)/(dirac_position+1);
+                    alpha += 1;
+                }
+                analytic_solution.myContainer(kk) = alpha;
             }
-            analytic_solution.myContainer(kk) = alpha;
         }
 
         trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
 
-        for (Calculus::Index kk=0; kk<calculus.kFormLength(0, PRIMAL); kk++)
+        for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
         {
             trace.info() << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
             FATAL_ERROR(abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5);
@@ -188,19 +191,22 @@ void test_linear_structure()
         solved_solution.myContainer /= solved_solution.myContainer.maxCoeff();
 
         Calculus::PrimalForm0 analytic_solution(calculus);
-        for (Calculus::Index kk=0; kk<calculus.kFormLength(0, PRIMAL); kk++)
         {
-            Calculus::Scalar alpha = (kk+1.)/(dirac_position+1.);
-            if (kk>dirac_position)
+            const Calculus::Index length = analytic_solution.length();
+            for (Calculus::Index kk=0; kk<length; kk++)
             {
-                alpha = 1. - (kk-dirac_position)/(1.*calculus.kFormLength(0, PRIMAL)-dirac_position);
+                Calculus::Scalar alpha = (kk+1.)/(dirac_position+1.);
+                if (kk>dirac_position)
+                {
+                    alpha = 1. - (kk-dirac_position)/(1.*length-dirac_position);
+                }
+                analytic_solution.myContainer(kk) = alpha;
             }
-            analytic_solution.myContainer(kk) = alpha;
         }
 
         trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
 
-        for (Calculus::Index kk=0; kk<calculus.kFormLength(0, PRIMAL); kk++)
+        for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
         {
             trace.info() << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
             FATAL_ERROR(abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5);

@@ -62,7 +62,7 @@ template <typename Calculus, DGtal::Duality duality>
 void
 DGtal::VectorField<Calculus, duality>::selfDisplay(std::ostream& out) const
 {
-  out << "[VectorField] ";
+  out << "[" << duality << " vector field (" << myCoordinates.rows() << "x" << myCoordinates.cols() << ")]";
 }
 
 template <typename Calculus, DGtal::Duality duality>
@@ -117,6 +117,20 @@ DGtal::VectorField<Calculus, duality>::extractZeroForm(const DGtal::Dimension& d
     ASSERT( zero_form.myContainer.rows() == myCoordinates.rows() );
 
     return zero_form;
+}
+
+template <typename Calculus, DGtal::Duality duality>
+typename DGtal::VectorField<Calculus, duality>::Cell
+DGtal::VectorField<Calculus, duality>::getCell(const typename DGtal::VectorField<Calculus, duality>::Index& index) const
+{
+    return myCalculus->getCell(0, duality, index);
+}
+
+template <typename Calculus, DGtal::Duality duality>
+typename DGtal::VectorField<Calculus, duality>::Index
+DGtal::VectorField<Calculus, duality>::length() const
+{
+    return myCalculus->kFormLength(0, duality);
 }
 
 template <typename Calculus, DGtal::Duality duality>

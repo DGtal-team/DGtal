@@ -69,6 +69,7 @@ template <typename TCalculus, Duality duality>
     typedef TCalculus Calculus;
 
     typedef typename Calculus::Scalar Scalar;
+    typedef typename Calculus::Cell Cell;
     typedef typename Calculus::Index Index;
     typedef typename DGtal::PointVector<Calculus::dimension, Scalar> Arrow;
 
@@ -94,6 +95,19 @@ template <typename TCalculus, Duality duality>
      * @return a reference on 'this'.
      */
     VectorField& operator=(const VectorField& other);
+
+    /**
+     * Get k-cell from index.
+     * @param index the index.
+     * @return associated Khalimsky cell.
+     */
+    Cell getCell(const Index& index) const;
+
+    /**
+     * Get k-form length.
+     * @return k-form length.
+     */
+    Index length() const;
 
     /**
      * Get vector from index.
@@ -145,7 +159,7 @@ template <typename TCalculus, Duality duality>
 
     /**
      * Return the normalized vector field.
-		 * Scale vector field to norm 1 at each point.
+     * Scale vector field to norm 1 at each point.
      * @param epsilon vectors with norm lower than epsilon are set to zero.
      */
     VectorField<TCalculus, duality> normalized(const Scalar& epsilon = 0) const;
