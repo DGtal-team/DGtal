@@ -240,8 +240,54 @@ void test_linear_structure()
 template <typename Operator>
 void display_operator_info(const std::string& name, const Operator& op)
 {
-    trace.info() << name << " " << op << endl << op.myContainer << endl;
+    trace.info() << name << endl << op << endl << op.myContainer << endl;
 }
+
+void test_linear_ring()
+{
+    trace.beginBlock("linear ring");
+
+    const Domain domain(Point(-5,-5), Point(5,5));
+
+    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    Calculus calculus;
+    calculus.initKSpace(domain);
+
+    for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(-8,kk), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG) );
+    for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,10), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG) );
+    for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)) );
+    for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,-8)) );
+    calculus.insertSCell( calculus.myKSpace.sSpel(Point(-4,-4)) );
+    calculus.insertSCell( calculus.myKSpace.sSpel(Point(-4,4)) );
+    calculus.insertSCell( calculus.myKSpace.sSpel(Point(4,4)) );
+    calculus.insertSCell( calculus.myKSpace.sSpel(Point(4,-4)) );
+
+    {
+        trace.info() << calculus << endl;
+        Board2D board;
+        board << domain;
+        board << calculus;
+        board.saveSVG("ring_structure.svg");
+    }
+
+    const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
+    display_operator_info("laplace", laplace);
+
+    const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
+    display_operator_info("primal derivative 0", d0);
+
+    const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
+    display_operator_info("primal derivative 1", d1);
+
+    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
+    display_operator_info("primal hodge 1", h1);
+
+    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
+    display_operator_info("dual derivative 1", d1p);
+
+    trace.endBlock();
+}
+
 
 void test_laplace_operator()
 {
@@ -321,6 +367,7 @@ main()
 {
     test_laplace_operator();
     test_linear_structure();
+    test_linear_ring();
     return 0;
 }
 
