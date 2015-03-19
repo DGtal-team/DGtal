@@ -308,7 +308,8 @@ void test_laplace_operator()
     calculus.insertSCell( calculus.myKSpace.sCell(Point(4,6)) );
 
     // 1-cells
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::NEG) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::POS) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::NEG) ); // test reinserting cell in structure
     calculus.insertSCell( calculus.myKSpace.sCell(Point(2,3), Calculus::KSpace::POS) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(4,3), Calculus::KSpace::NEG) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(3,4), Calculus::KSpace::POS) );
@@ -320,6 +321,8 @@ void test_laplace_operator()
     calculus.insertSCell( calculus.myKSpace.sCell(Point(3,3)) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(3,5)) );
 
+    trace.info() << calculus << endl;
+
     {
         Board2D board;
         board << domain;
@@ -329,10 +332,22 @@ void test_laplace_operator()
 
     const Calculus::Properties properties = calculus.getProperties();
     for (Calculus::ConstIterator iter_property=properties.begin(), iter_property_end=properties.end(); iter_property!=iter_property_end; iter_property++)
-        trace.info() << iter_property->first
-            << " " << iter_property->second.size_ratio
-            << " " << iter_property->second.index
-            << " " << (iter_property->second.flipped ? "flipped" : "normal") << endl;
+    {
+        const Calculus::Cell cell = iter_property->first;
+        const Calculus::Property property = iter_property->second;
+        const Dimension dim = calculus.myKSpace.uDim(cell);
+        const Calculus::SCell signed_cell = calculus.myKSpace.signs(cell, property.flipped ? Calculus::KSpace::NEG : Calculus::KSpace::POS);
+
+        ASSERT( signed_cell == calculus.getSCell(dim, PRIMAL, property.index) );
+
+        trace.info() << cell
+            << " " << dim
+            << " " << signed_cell
+            << " " << property.size_ratio
+            << " " << property.index
+            << " " << (property.flipped ? "flipped" : "normal")
+            << endl;
+    }
 
     trace.beginBlock("base operators");
     const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
