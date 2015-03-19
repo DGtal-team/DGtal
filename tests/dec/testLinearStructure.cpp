@@ -307,15 +307,19 @@ void test_laplace_operator()
     calculus.insertSCell( calculus.myKSpace.sCell(Point(2,6)) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(4,6)) );
 
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(1,2)) ); // insert cell
+
     // 1-cells
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::POS) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::NEG) ); // test reinserting cell in structure
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::POS) ); // insert positive cell
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::NEG) ); // then reinserting negative cell in structure
     calculus.insertSCell( calculus.myKSpace.sCell(Point(2,3), Calculus::KSpace::POS) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(4,3), Calculus::KSpace::NEG) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(3,4), Calculus::KSpace::POS) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(2,5), Calculus::KSpace::NEG) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(4,5), Calculus::KSpace::POS) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(3,6), Calculus::KSpace::NEG) );
+
+    calculus.eraseCell( calculus.myKSpace.uCell(Point(1,2)) ); // then remove it
 
     // 2-cells
     calculus.insertSCell( calculus.myKSpace.sCell(Point(3,3)) );
@@ -350,31 +354,108 @@ void test_laplace_operator()
     }
 
     trace.beginBlock("base operators");
+
     const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
-    display_operator_info("d0", d0);
-    /*
+    {
+        display_operator_info("d0", d0);
+
+        Eigen::MatrixXd d0_th(7, 6);
+        d0_th <<
+             1, -1,  0,  0,  0,  0,
+            -1,  0,  1,  0,  0,  0,
+             0,  1,  0, -1,  0,  0,
+             0,  0, -1,  1,  0,  0,
+             0,  0,  1,  0, -1,  0,
+             0,  0,  0, -1,  0,  1,
+             0,  0,  0,  0,  1, -1;
+
+        FATAL_ERROR( Eigen::MatrixXd(d0.myContainer) == d0_th );
+    }
+
     const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
-    display_operator_info("d1", d1);
-    const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
-    display_operator_info("d0p", d0p);
-    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
-    display_operator_info("d1p", d1p);
+    {
+        display_operator_info("d1", d1);
+
+        Eigen::MatrixXd d1_th(2, 7);
+        d1_th <<
+            -1, -1, -1, -1,  0,  0,  0,
+             0,  0,  0,  1,  1,  1,  1;
+
+        FATAL_ERROR( Eigen::MatrixXd(d1.myContainer) == d1_th );
+    }
+
+    {
+        display_operator_info("d1*d0", d1*d0);
+
+        FATAL_ERROR( Eigen::MatrixXd((d1*d0).myContainer) == Eigen::MatrixXd::Zero(2,6) );
+    }
+
+
     const Calculus::PrimalHodge0 h0 = calculus.primalHodge<0>();
     const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
-    display_operator_info("h0", h0);
-    display_operator_info("h2p", h2p);
-    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
-    const Calculus::DualHodge1 h1p = calculus.dualHodge<1>();
-    display_operator_info("h1", h1);
-    display_operator_info("h1p", h1p);
+    {
+        display_operator_info("h0", h0);
+        display_operator_info("h2p", h2p);
+
+        FATAL_ERROR( Eigen::MatrixXd(h0.myContainer) == Eigen::MatrixXd::Identity(6,6) );
+        FATAL_ERROR( Eigen::MatrixXd(h2p.myContainer) == Eigen::MatrixXd::Identity(6,6) );
+    }
+
     const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
     const Calculus::DualHodge0 h0p = calculus.dualHodge<0>();
-    display_operator_info("h2", h2);
-    display_operator_info("h0p", h0p);
-    */
+    {
+        display_operator_info("h2", h2);
+        display_operator_info("h0p", h0p);
+
+        FATAL_ERROR( Eigen::MatrixXd(h2.myContainer) == Eigen::MatrixXd::Identity(2,2) );
+        FATAL_ERROR( Eigen::MatrixXd(h0p.myContainer) == Eigen::MatrixXd::Identity(2,2) );
+    }
+
+    const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
+    {
+        display_operator_info("d0p", d0p);
+
+        Eigen::MatrixXd d0p_th_transpose(2, 7);
+        d0p_th_transpose <<
+            -1, -1, -1, -1,  0,  0,  0,
+             0,  0,  0,  1,  1,  1,  1;
+
+        FATAL_ERROR( Eigen::MatrixXd(d0p.myContainer) == d0p_th_transpose.transpose() );
+    }
+
+    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
+    {
+        display_operator_info("d1p", d1p);
+
+        Eigen::MatrixXd minus_d1p_th_transpose(7, 6);
+        minus_d1p_th_transpose <<
+             1, -1,  0,  0,  0,  0,
+            -1,  0,  1,  0,  0,  0,
+             0,  1,  0, -1,  0,  0,
+             0,  0, -1,  1,  0,  0,
+             0,  0,  1,  0, -1,  0,
+             0,  0,  0, -1,  0,  1,
+             0,  0,  0,  0,  1, -1;
+
+        FATAL_ERROR( Eigen::MatrixXd(d1p.myContainer) == -minus_d1p_th_transpose.transpose() );
+    }
+
+    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
+    const Calculus::DualHodge1 h1p = calculus.dualHodge<1>();
+    {
+        display_operator_info("h1", h1);
+        display_operator_info("h1p", h1p);
+
+        Eigen::VectorXd h1_th_diag(7);
+        h1_th_diag << 1, -1, -1, 1, -1, -1, 1;
+
+        FATAL_ERROR( Eigen::MatrixXd(h1.myContainer) == Eigen::MatrixXd(h1_th_diag.asDiagonal()) );
+        FATAL_ERROR( Eigen::MatrixXd((h1p*h1).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
+        FATAL_ERROR( Eigen::MatrixXd((h1*h1p).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
+    }
+
     trace.endBlock();
 
-    /*
     trace.beginBlock("anti derivative");
     const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h2p * d1p * h1;
     const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h1p * d0p * h2;
@@ -396,7 +477,6 @@ void test_laplace_operator()
     display_operator_info("lap_beta", lap_beta);
     display_operator_info("lap_betap", lap_betap);
     trace.endBlock();
-    */
 
     trace.endBlock();
 }
