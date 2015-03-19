@@ -73,7 +73,7 @@ namespace DGtal
 
     typedef typename Calculus::DenseVector Container;
     typedef typename Calculus::Scalar Scalar;
-    typedef typename Calculus::Cell Cell;
+    typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
 
     /**
@@ -126,11 +126,11 @@ namespace DGtal
     void clear();
 
     /**
-     * Get k-cell from index.
+     * Get signed k-cell from index.
      * @param index the index.
      * @return associated Khalimsky cell.
      */
-    Cell getCell(const Index& index) const;
+    SCell getSCell(const Index& index) const;
 
     /**
      * Get k-form length.

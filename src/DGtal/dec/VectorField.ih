@@ -120,10 +120,10 @@ DGtal::VectorField<Calculus, duality>::extractZeroForm(const DGtal::Dimension& d
 }
 
 template <typename Calculus, DGtal::Duality duality>
-typename DGtal::VectorField<Calculus, duality>::Cell
-DGtal::VectorField<Calculus, duality>::getCell(const typename DGtal::VectorField<Calculus, duality>::Index& index) const
+typename DGtal::VectorField<Calculus, duality>::SCell
+DGtal::VectorField<Calculus, duality>::getSCell(const typename DGtal::VectorField<Calculus, duality>::Index& index) const
 {
-    return myCalculus->getCell(0, duality, index);
+    return myCalculus->getSCell(0, duality, index);
 }
 
 template <typename Calculus, DGtal::Duality duality>

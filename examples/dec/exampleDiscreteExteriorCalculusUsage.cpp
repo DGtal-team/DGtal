@@ -67,7 +67,7 @@ void usage2d()
         Calculus::PrimalForm0 primal_zero_form(calculus);
         for (Calculus::Index index=0; index<primal_zero_form.length(); index++)
         {
-            const Calculus::Cell& cell = primal_zero_form.getCell(index);
+            const Calculus::SCell& cell = primal_zero_form.getSCell(index);
             const Calculus::Scalar& value = Z2i::l2Metric(cell.myCoordinates, center)/2;
             primal_zero_form.myContainer(index) = value;
         }
@@ -142,7 +142,7 @@ void usage2d()
         Calculus::DualForm0 dual_zero_form(calculus);
         for (Calculus::Index index=0; index<dual_zero_form.length(); index++)
         {
-            const Calculus::Cell& cell = dual_zero_form.getCell(index);
+            const Calculus::SCell& cell = dual_zero_form.getSCell(index);
             const Calculus::Scalar& value = Z2i::l2Metric(cell.myCoordinates, center)/2;
             dual_zero_form.myContainer(index) = value;
         }

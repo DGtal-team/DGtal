@@ -130,17 +130,21 @@ test_hodge(int domain_size)
 
         typedef typename Calculus::ConstIterator ConstIterator;
         typedef typename Calculus::Cell Cell;
+        typedef typename Calculus::SCell SCell;
         typedef typename Calculus::Index Index;
+        typedef typename Calculus::KSpace KSpace;
+
         bool test_result = true;
         for (ConstIterator iter = calculus.begin(), iter_end = calculus.end(); test_result && iter!=iter_end; iter++)
         {
             const Cell& cell = iter->first;
             const Index& index = calculus.getCellIndex(cell);
             test_result &= (iter->second.index == index);
-            const Cell& primal_cell = calculus.getCell(calculus.myKSpace.uDim(cell), DGtal::PRIMAL, index);
-            test_result &= (cell == primal_cell);
-            const Cell& dual_cell = calculus.getCell(calculus.dimension-calculus.myKSpace.uDim(cell), DGtal::DUAL, index);
-            test_result &= (cell == dual_cell);
+            const SCell& signed_cell = calculus.myKSpace.signs(cell, iter->second.flipped ? KSpace::NEG : KSpace::POS);
+            const SCell& primal_signed_cell = calculus.getSCell(calculus.myKSpace.uDim(cell), DGtal::PRIMAL, index);
+            test_result &= (signed_cell == primal_signed_cell);
+            const SCell& dual_signed_cell = calculus.getSCell(calculus.dimension-calculus.myKSpace.uDim(cell), DGtal::DUAL, index);
+            test_result &= (signed_cell == dual_signed_cell);
         }
         DGtal::trace.endBlock();
 

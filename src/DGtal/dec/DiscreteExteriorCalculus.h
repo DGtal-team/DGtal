@@ -129,8 +129,8 @@ namespace DGtal
     /**
      * Indices to cells map typedefs.
      */
-    typedef std::vector<Cell> Cells;
-    typedef boost::array<Cells, dim+1> IndexedCells;
+    typedef std::vector<SCell> SCells;
+    typedef boost::array<SCells, dim+1> IndexedSCells;
 
     /**
      * Vector field typedefs.
@@ -342,14 +342,14 @@ namespace DGtal
     sharp(const KForm<Self, 1, duality>& one_form) const;
 
     /**
-     * Get cell from k-form index.
+     * Get signed cell from k-form index.
      * @param order k-form order.
      * @param duality k-form duality.
      * @param index index valid on a k-form container.
      * @return associated Khalimsky cell.
      */
-    Cell
-    getCell(const Order& order, const Duality& duality, const Index& index) const;
+    SCell
+    getSCell(const Order& order, const Duality& duality, const Index& index) const;
 
     /**
      * Check if cell is flipped in display.
@@ -419,7 +419,7 @@ namespace DGtal
      * Cells indexed by their order.
      * Usefull for finding cell form index and order.
      */
-    IndexedCells my_index_cells;
+    IndexedSCells my_index_signed_cells;
 
     /**
      * Cached flat operator matrix

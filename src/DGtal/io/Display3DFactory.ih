@@ -78,7 +78,6 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
 
     typedef typename TCalculus::Scalar Scalar;
     typedef typename TCalculus::KSpace KSpace;
-    typedef typename TCalculus::Cell Cell;
     typedef typename TCalculus::SCell SCell;
     typedef typename TCalculus::Index Index;
 
@@ -100,10 +99,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
 
     for (Index index=0; index<kform.length(); index++)
     {
-        const Cell cell = kform.getCell(index);
-        const bool flipped = kform.myCalculus->isCellFlipped(cell);
-        const SCell displayed_cell = kform.myCalculus->myKSpace.signs(cell, flipped ? KSpace::NEG : KSpace::POS);
-
+        const SCell displayed_cell = kform.getSCell(index);
         const Scalar displayed_value = kform.myContainer(index);
 
         if (std::isfinite(displayed_value)) display << DGtal::CustomColors3D(DGtal::Color::Black, colormap(displayed_value) );
@@ -129,7 +125,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
 
     for (typename Calculus::Index index=0; index<vector_field.length(); index++)
     {
-        const typename Calculus::Cell& cell = vector_field.getCell(index);
+        const typename Calculus::SCell& cell = vector_field.getSCell(index);
         const DGtal::Z3i::RealPoint origin = DGtal::Z3i::RealPoint(cell.myCoordinates[0]-1, cell.myCoordinates[1]-1, cell.myCoordinates[2]-1)/2.;
 
         Arrow arrow = vector_field.getArrow(index);
