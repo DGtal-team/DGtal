@@ -69,7 +69,7 @@ template <typename TCalculus, Duality duality>
     typedef TCalculus Calculus;
 
     typedef typename Calculus::Scalar Scalar;
-    typedef typename Calculus::Cell Cell;
+    typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
     typedef typename DGtal::PointVector<Calculus::dimension, Scalar> Arrow;
 
@@ -97,11 +97,11 @@ template <typename TCalculus, Duality duality>
     VectorField& operator=(const VectorField& other);
 
     /**
-     * Get k-cell from index.
+     * Get signed k-cell from index.
      * @param index the index.
      * @return associated Khalimsky cell.
      */
-    Cell getCell(const Index& index) const;
+    SCell getSCell(const Index& index) const;
 
     /**
      * Get k-form length.

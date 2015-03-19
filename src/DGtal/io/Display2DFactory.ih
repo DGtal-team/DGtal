@@ -170,16 +170,12 @@ void
 DGtal::Display2DFactory::drawWithColorMap(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform, const TColorMap& colormap)
 {
     typedef typename TCalculus::Scalar Scalar;
-    typedef typename TCalculus::Cell Cell;
     typedef typename TCalculus::SCell SCell;
     typedef typename TCalculus::KSpace KSpace;
 
     for (typename TCalculus::Index index=0; index<kform.length(); index++)
     {
-        const Cell cell = kform.getCell(index);
-        const bool flipped = kform.myCalculus->isCellFlipped(cell);
-        const SCell displayed_cell = kform.myCalculus->myKSpace.signs(cell, flipped ? KSpace::NEG : KSpace::POS);
-
+        const SCell displayed_cell = kform.getSCell(index);
         const Scalar displayed_value = kform.myContainer(index);
 
         if (std::isfinite(displayed_value)) board.setFillColor( colormap(displayed_value) );
@@ -214,7 +210,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
 
     for (typename TCalculus::Index index=0; index<vector_field.length(); index++)
     {
-        const typename TCalculus::Cell& cell = vector_field.getCell(index);
+        const typename TCalculus::SCell& cell = vector_field.getSCell(index);
         const DGtal::Z2i::RealPoint origin = DGtal::Z2i::RealPoint(cell.myCoordinates[0]-1, cell.myCoordinates[1]-1)/2.;
 
         Arrow arrow = vector_field.getArrow(index);
