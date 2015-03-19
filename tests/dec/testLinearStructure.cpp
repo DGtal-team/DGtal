@@ -240,7 +240,7 @@ void test_linear_structure()
 template <typename Operator>
 void display_operator_info(const std::string& name, const Operator& op)
 {
-    trace.info() << name << endl << op << endl << op.myContainer << endl;
+    trace.info() << name << endl << op << endl << Eigen::MatrixXd(op.myContainer) << endl;
 }
 
 void test_linear_ring()
@@ -293,29 +293,51 @@ void test_laplace_operator()
 {
     trace.beginBlock("testing operators");
 
-    const Domain input_domain(Point(0,0), Point(2,3));
-    DigitalSet input_set(input_domain);
-    input_set.insertNew(Point(1,2));
-    input_set.insertNew(Point(1,1));
+    const Domain domain(Point(0,0), Point(2,3));
 
     typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
-    Calculus calculus(input_set);
+    Calculus calculus;
+    calculus.initKSpace(domain);
+
+    // 0-cells
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,2)) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,2)) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,4)) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,4)) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,6)) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,6)) );
+
+    // 1-cells
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::NEG) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,3), Calculus::KSpace::POS) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,3), Calculus::KSpace::NEG) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,4), Calculus::KSpace::POS) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,5), Calculus::KSpace::NEG) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,5), Calculus::KSpace::POS) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,6), Calculus::KSpace::NEG) );
+
+    // 2-cells
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,3)) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,5)) );
 
     {
         Board2D board;
-        board << input_domain;
+        board << domain;
         board << calculus;
         board.saveSVG("laplace_structure.svg");
     }
 
     const Calculus::Properties properties = calculus.getProperties();
     for (Calculus::ConstIterator iter_property=properties.begin(), iter_property_end=properties.end(); iter_property!=iter_property_end; iter_property++)
-        trace.info() << iter_property->first << " " << iter_property->second.size_ratio << " " << iter_property->second.index << endl;
-    trace.info() << endl;
+        trace.info() << iter_property->first
+            << " " << iter_property->second.size_ratio
+            << " " << iter_property->second.index
+            << " " << (iter_property->second.flipped ? "flipped" : "normal") << endl;
 
     trace.beginBlock("base operators");
     const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
     display_operator_info("d0", d0);
+    /*
     const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
     display_operator_info("d1", d1);
     const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
@@ -334,8 +356,10 @@ void test_laplace_operator()
     const Calculus::DualHodge0 h0p = calculus.dualHodge<0>();
     display_operator_info("h2", h2);
     display_operator_info("h0p", h0p);
+    */
     trace.endBlock();
 
+    /*
     trace.beginBlock("anti derivative");
     const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h2p * d1p * h1;
     const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h1p * d0p * h2;
@@ -357,6 +381,7 @@ void test_laplace_operator()
     display_operator_info("lap_beta", lap_beta);
     display_operator_info("lap_betap", lap_betap);
     trace.endBlock();
+    */
 
     trace.endBlock();
 }
@@ -366,8 +391,8 @@ int
 main()
 {
     test_laplace_operator();
-    test_linear_structure();
-    test_linear_ring();
+    //test_linear_structure();
+    //test_linear_ring();
     return 0;
 }
 
