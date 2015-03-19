@@ -48,22 +48,20 @@ void test_linear_structure()
     calculus.initKSpace(domain);
 
     for (int kk=20; kk>0; kk--)
-        calculus.insertSCell(calculus.myKSpace.sCell(Point(0,kk), kk%2 == 1 ? Calculus::KSpace::NEG : Calculus::KSpace::POS));
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(0,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS), kk%2 != 0 ? -1 : 1 );
     for (int kk=0; kk<10; kk++)
-        calculus.insertSCell(calculus.myKSpace.sCell(Point(kk,0)));
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,0)) );
     for (int kk=0; kk<10; kk++)
-        calculus.insertSCell(calculus.myKSpace.sCell(Point(10,kk)));
-    calculus.insertSCell(calculus.myKSpace.sCell(Point(10,10)));
-    calculus.insertSCell(calculus.myKSpace.sCell(Point(9,10), Calculus::KSpace::NEG));
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)), kk%2 != 0 ? -1 : 1 );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(10,10)) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(9,10), Calculus::KSpace::NEG) );
     for (int kk=10; kk<20; kk++)
-        calculus.insertSCell(calculus.myKSpace.sCell(Point(8,kk)));
-    calculus.insertSCell(calculus.myKSpace.sCell(Point(8,20)));
-    calculus.insertSCell(calculus.myKSpace.sCell(Point(9,20)));
-    calculus.insertSCell(calculus.myKSpace.sCell(Point(10,20)));
-    calculus.insertSCell(calculus.myKSpace.sCell(Point(11,20)));
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(8,kk)), kk%2 != 0 ? -1 : 1 );
+    for (int kk=8; kk<12; kk++)
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,20)) );
     for (int kk=20; kk>0; kk--)
-        calculus.insertSCell(calculus.myKSpace.sCell(Point(12,kk), kk%2 == 1 ? Calculus::KSpace::NEG : Calculus::KSpace::POS));
-    calculus.insertSCell(calculus.myKSpace.sCell(Point(12,0)));
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(12,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS), kk%2 != 0 ? -1 : 1 );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(12,0)) );
     //! [neumann-creation]
 
     trace.info() << calculus << endl;
@@ -105,7 +103,8 @@ void test_linear_structure()
         solver.compute(laplace);
         Calculus::PrimalForm0 solved_solution = solver.solve(dirac);
         //! [neumann-solve]
-        solved_solution.myContainer /= solved_solution.myContainer.maxCoeff();
+        solved_solution.myContainer.array() -= solved_solution.myContainer(0);
+        solved_solution.myContainer.array() /= solved_solution.myContainer.maxCoeff();
 
         Calculus::PrimalForm0 analytic_solution(calculus);
         {
@@ -125,10 +124,16 @@ void test_linear_structure()
 
         trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
 
+        {
+            std::ofstream handle("linear_structure_neumann.dat");
+            for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
+                handle << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
+        }
+
         for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
         {
             trace.info() << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
-            FATAL_ERROR(abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5);
+            FATAL_ERROR( abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5 );
         }
 
         {
@@ -189,7 +194,7 @@ void test_linear_structure()
         solver.compute(laplace);
         Calculus::PrimalForm0 solved_solution = solver.solve(dirac);
         //! [dirichlet-solve]
-        solved_solution.myContainer /= solved_solution.myContainer.maxCoeff();
+        solved_solution.myContainer.array() /= solved_solution.myContainer.maxCoeff();
 
         Calculus::PrimalForm0 analytic_solution(calculus);
         {
@@ -207,10 +212,16 @@ void test_linear_structure()
 
         trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
 
+        {
+            std::ofstream handle("linear_structure_dirichlet.dat");
+            for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
+                handle << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
+        }
+
         for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
         {
             trace.info() << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
-            FATAL_ERROR(abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5);
+            FATAL_ERROR( abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5 );
         }
 
         {
@@ -253,14 +264,10 @@ void test_linear_ring()
     Calculus calculus;
     calculus.initKSpace(domain);
 
-    for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(-8,kk), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG) );
+    for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(-8,kk), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG), kk%2 != 0 ? -1 : 1 );
     for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,10), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG) );
-    for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)) );
+    for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)), kk%2 != 0 ? -1 : 1 );
     for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,-8)) );
-    calculus.insertSCell( calculus.myKSpace.sSpel(Point(-4,-4)) );
-    calculus.insertSCell( calculus.myKSpace.sSpel(Point(-4,4)) );
-    calculus.insertSCell( calculus.myKSpace.sSpel(Point(4,4)) );
-    calculus.insertSCell( calculus.myKSpace.sSpel(Point(4,-4)) );
 
     {
         trace.info() << calculus << endl;
@@ -270,22 +277,34 @@ void test_linear_ring()
         board.saveSVG("ring_structure.svg");
     }
 
+    const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
+    display_operator_info("d0", d0);
+
+    const Calculus::PrimalHodge0 h0 = calculus.primalHodge<0>();
+    display_operator_info("h0", h0);
+
+    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
+    display_operator_info("d1p", d1p);
+
+    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
+    display_operator_info("h1", h1);
+
     const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
     display_operator_info("laplace", laplace);
 
-    const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
-    display_operator_info("primal derivative 0", d0);
-
-    const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
-    display_operator_info("primal derivative 1", d1);
-
-    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
-    display_operator_info("primal hodge 1", h1);
-
-    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
-    display_operator_info("dual derivative 1", d1p);
+    const int laplace_size = calculus.kFormLength(0, PRIMAL);
+    Eigen::MatrixXd laplace_th = Eigen::MatrixXd::Zero(laplace_size, laplace_size);
+    for (int ii=0; ii<laplace_size; ii++)
+    for (int jj=0; jj<laplace_size; jj++)
+    {
+        int delta = ii>jj ? ii-jj : jj-ii;
+        if (delta == 0) { laplace_th(ii,jj) = -2; continue; }
+        if (delta == 1 || delta == laplace_size-1) { laplace_th(ii,jj) = 1; continue; }
+    }
 
     trace.endBlock();
+
+    FATAL_ERROR( Eigen::MatrixXd(laplace.myContainer) == laplace_th );
 }
 
 
@@ -486,8 +505,8 @@ int
 main()
 {
     test_laplace_operator();
-    //test_linear_structure();
-    //test_linear_ring();
+    test_linear_ring();
+    test_linear_structure();
     return 0;
 }
 
