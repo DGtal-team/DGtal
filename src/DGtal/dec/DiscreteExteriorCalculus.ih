@@ -251,17 +251,12 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
     // iterate over output form values
     for (Index index_output=0; index_output<_derivative.myContainer.rows(); index_output++)
     {
-        const Cell cell = myKSpace.unsigns(my_index_signed_cells[actualOrder(order+1, duality)][index_output]);
-
-        // find hodge sign
-        Scalar sign = 1;
-        if (duality == DUAL) sign = hodgeSign(cell, PRIMAL);
+        const SCell signed_cell = my_index_signed_cells[actualOrder(order+1, duality)][index_output];
 
         // find cell border
         typedef typename KSpace::SCells Border;
         Border border;
         {
-            const SCell signed_cell = myKSpace.signs(cell, KSpace::POS); //FIXME use sign from properties
             if (duality == PRIMAL) border = myKSpace.sLowerIncident(signed_cell);
             else border = myKSpace.sUpperIncident(signed_cell);
         }
@@ -270,21 +265,20 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
         for (typename Border::const_iterator bi=border.begin(), bie=border.end(); bi!=bie; bi++)
         {
             const SCell signed_cell_border = *bi;
-            const Cell cell_border = myKSpace.unsigns(signed_cell_border);
             ASSERT( myKSpace.sDim(signed_cell_border) == actualOrder(order, duality) );
 
-            const typename Properties::const_iterator iter_property = my_cell_properties.find(cell_border);
+            const typename Properties::const_iterator iter_property = my_cell_properties.find(myKSpace.unsigns(signed_cell_border));
             if ( iter_property == my_cell_properties.end() )
                 continue;
 
             const Index index_input = iter_property->second.index;
             ASSERT( index_input < _derivative.myContainer.cols() );
 
-            Scalar proper_sign = sign * (myKSpace.sSign(signed_cell_border) == KSpace::POS ? -1 : 1);
-            if (duality == DUAL) proper_sign *= hodgeSign(cell_border, PRIMAL);
+            const Scalar flipped_border = ( myKSpace.sSign(signed_cell_border) == KSpace::NEG );
+            const Scalar orientation = ( flipped_border == iter_property->second.flipped ? -1 : 1 );
 
             // fill container with cell sign
-            _derivative.myContainer(index_output, index_input) = proper_sign;
+            _derivative.myContainer(index_output, index_input) = orientation;
         }
     }
 
