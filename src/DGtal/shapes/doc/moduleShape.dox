@@ -182,13 +182,14 @@ parameters which are not specified in the captions).
 
 
 
-\section sectmoduleShape4 Constructive Solid Geometry on Shapes
+\section sectmoduleShape4 Constructive Solid Geometry tree on Shapes
 
-In DGtal, you can also use some CSG on Euclidean (resp. Digital)
+In DGtal, you can also use some CSG operations on Euclidean (resp. Digital)
 Shapes, using EuclideanShapesDecorator (resp. DigitalShapesDecorator).
 
-As a root for your CSG, you need a shape ShapeA, model of CEuclideanBoundedShape
-and CEuclideanOrientedShape (CDigitalBoundedShape and CDigitalOrientedShape).
+As a root for your CSG tree, you need a shape ShapeA, model of
+CEuclideanBoundedShape and CEuclideanOrientedShape (CDigitalBoundedShape and
+CDigitalOrientedShape).
 Then, you can add (plus()), remove (minus()), intersect (intersection()) any
 ShapeB, models of CEuclideanBoundedShape and CEuclideanOrientedShape
 (CDigitalBoundedShape and CDigitalOrientedShape) you want. You can combine
