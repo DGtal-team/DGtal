@@ -308,7 +308,7 @@ void test_linear_ring()
 }
 
 
-void test_laplace_operator()
+void test_manual_operators()
 {
     trace.beginBlock("testing operators");
 
@@ -350,7 +350,7 @@ void test_laplace_operator()
         Board2D board;
         board << domain;
         board << calculus;
-        board.saveSVG("laplace_structure.svg");
+        board.saveSVG("operators_structure.svg");
     }
 
     const Calculus::Properties properties = calculus.getProperties();
@@ -497,6 +497,70 @@ void test_laplace_operator()
     display_operator_info("lap_betap", lap_betap);
     trace.endBlock();
 
+    trace.beginBlock("sharp and flat operator");
+
+    {
+        display_operator_info("#x", calculus.sharpDirectional<PRIMAL, 0>());
+        display_operator_info("#y", calculus.sharpDirectional<PRIMAL, 1>());
+
+        {
+            Calculus::PrimalForm1::Container dx_container(7);
+            dx_container << -1, 0, 0, 1, 0, 0, -1;
+            const Calculus::PrimalForm1 dx(calculus, dx_container);
+            const Calculus::PrimalVectorField dx_field = calculus.sharp(dx);
+
+            {
+                Board2D board;
+                board << domain;
+                board << calculus;
+                board << dx << dx_field;
+                board.saveSVG("operators_dx.svg");
+            }
+
+            FATAL_ERROR( dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
+            FATAL_ERROR( dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
+        }
+
+        {
+            Calculus::PrimalForm1::Container dy_container(7);
+            dy_container << 0, 1, -1, 0, -1, 1, 0;
+            const Calculus::PrimalForm1 dy(calculus, dy_container);
+            const Calculus::PrimalVectorField dy_field = calculus.sharp(dy);
+
+            {
+                Board2D board;
+                board << domain;
+                board << calculus;
+                board << dy << dy_field;
+                board.saveSVG("operators_dy.svg");
+            }
+
+            FATAL_ERROR( dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(6) );
+            FATAL_ERROR( dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(6) );
+        }
+    }
+
+    /*
+    Calculus::PrimalVectorField primal_vector_field(calculus);
+    primal_vector_field.myCoordinates.col(0) = cos(2*M_PI/3) * Eigen::VectorXd::Ones(primal_vector_field.length());
+    primal_vector_field.myCoordinates.col(1) = sin(2*M_PI/3) * Eigen::VectorXd::Ones(primal_vector_field.length());
+
+    Calculus::DualVectorField dual_vector_field(calculus);
+    dual_vector_field.myCoordinates.col(0) = cos(2*M_PI/3) * Eigen::VectorXd::Ones(dual_vector_field.length());
+    dual_vector_field.myCoordinates.col(1) = sin(2*M_PI/3) * Eigen::VectorXd::Ones(dual_vector_field.length());
+
+    {
+        Board2D board;
+        board << domain;
+        board << calculus;
+        board << primal_vector_field;
+        board << dual_vector_field;
+        board.saveSVG("operators_vector_field.svg");
+    }
+    */
+
+    trace.endBlock();
+
     trace.endBlock();
 }
 
@@ -504,9 +568,9 @@ void test_laplace_operator()
 int
 main()
 {
-    test_laplace_operator();
-    test_linear_ring();
-    test_linear_structure();
+    test_manual_operators();
+    //test_linear_ring();
+    //test_linear_structure();
     return 0;
 }
 

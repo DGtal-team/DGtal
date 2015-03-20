@@ -342,6 +342,16 @@ namespace DGtal
     sharp(const KForm<Self, 1, duality>& one_form) const;
 
     /**
+     * Get sharp matrix that transform 1-form into dir coordinates 0-form (dir coordinates of the vector field obtained with sharp).
+     * @tparam duality input 1-form and output 0-form.
+     * @tparam dir dimension of projection.
+     * @return linear operator
+     */
+    template <Duality duality, Dimension dir>
+    LinearOperator<Self, 1, duality, 0, duality>
+    sharpDirectional() const;
+
+    /**
      * Get signed cell from k-form index.
      * @param order k-form order.
      * @param duality k-form duality.
