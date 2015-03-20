@@ -498,7 +498,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
         ++it )
     {
       DGtal::Z3i::RealPoint rp = display.embed((*it) );
-      display.addBall(rp);
+      display.addBall(rp,1.0/static_cast<double>( POINT_AS_BALL_RADIUS), POINT_AS_BALL_RES);
     }
 }
 
@@ -587,7 +587,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
         ++it )
     {
       DGtal::Z3i::RealPoint rp = display.embed((*it) );
-      display.addBall(rp);
+      display.addBall(rp,1.0/static_cast<double>( POINT_AS_BALL_RADIUS), POINT_AS_BALL_RES);
     }
 }
 
@@ -833,7 +833,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingBalls( Display & display
                 {
                   DGtal::Z3i::RealPoint rp = display.embed( DGtal::Z3i::Point(x, y, z) );
                   display.setFillColor(DGtal::Color(255, 0 ,0));
-                  display.addBall(rp);
+                  display.addBall(rp,1.0/static_cast<double>( POINT_AS_BALL_RADIUS), POINT_AS_BALL_RES);
                 }
             }
         }
@@ -981,7 +981,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
         display.setFillColor(DGtal::Color(200, 200, 20, 255));
       }
 
-    display.addBall(rp, 0.05);
+    display.addBall(rp, 1.0/static_cast<double>(POINT_AS_BALL_RADIUS), POINT_AS_BALL_RES);
     break;
   case 1:
     if(mode!=""&& mode!="Basic" && mode!="IllustrationCustomColor")
@@ -1121,7 +1121,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
           else
             display.setFillColor(DGtal::Color(20, 20, 150, 255));
         }
-      display.addBall(rps, 0.05);
+      display.addBall(rps, 1.0/static_cast<double>( POINT_AS_BALL_RADIUS), POINT_AS_BALL_RES);
       break;
     case 1:
       if(mode!="" && mode!="Basic" && mode!="IllustrationCustomColor")
@@ -1245,7 +1245,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
   ASSERT(dim == 3);
   DGtal::Z3i::RealPoint rp = display.embed( p );
   display.setFillColor(display.getLineColor());
-  display.addBall( rp);
+  display.addBall(rp,1.0/static_cast<double>( POINT_AS_BALL_RADIUS), POINT_AS_BALL_RES);
   display.setFillColor(fillColorSave);
 }
 

@@ -92,15 +92,17 @@
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
  - Fix issues with SphereFitting and TensorVoting local estimators on
    digital surfaces (Jérémy Levallois, David Coeurjolly
-   [#970](https://github.com/DGtal-team/DGtal/pull/970))
-
+   [#970](https://github.com/DGtal-team/DGtal/pull/970))   
 
 - *IO Package*
  - Performance improvement of color managment in Display3D, Board3D
    and Viewer3D: no more "createNew...List" when setting a new
    color. (David Coeurjolly,
    [#958](https://github.com/DGtal-team/DGtal/pull/958))
-
+ - Radius and resolution of balls have been fixed when used to
+   represent a 3D point in grid mode (David Coeurjolly,
+   [#978](https://github.com/DGtal-team/DGtal/pull/978))
+ 
 
 # DGtal 0.8
 
@@ -122,7 +124,7 @@
    namespace concepts::, also moving some functors into namespace
    functors:: (Jacques-Olivier Lachaud,
    [#912](https://github.com/DGtal-team/DGtal/pull/912)).
-
+    
 - *DEC Package*
  - DGtal 0.8 contains the first release of the Discrete Exterior
    Calculus Package. DEC provides an easy and efficient way to
@@ -145,7 +147,7 @@
   coariance matrix. Previous estimators (IntegralInvariantMeanCurvatureEstimator
   and IntegralInvariantGaussianCurvatureEstimator) are removed. Please use
   the new ones instead. (Jeremy Levallois, Jacques-Olivier Lachaud,
-  [#803](https://github.com/DGtal-team/DGtal/pull/803)
+  [#803](https://github.com/DGtal-team/DGtal/pull/803) 
   [#856](https://github.com/DGtal-team/DGtal/pull/856)
   [#893](https://github.com/DGtal-team/DGtal/pull/893))
 
@@ -185,9 +187,9 @@
 
 
 - *IO Package*
-  - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the
-   usage of Center-(X,Y,Z) parameters, as described in Vol file
-   specification. (Jérémy Levallois,
+  - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 
+   usage of Center-(X,Y,Z) parameters, as described in Vol file 
+   specification. (Jérémy Levallois, 
    [#879](https://github.com/DGtal-team/DGtal/pull/879))
 
 - *Math Package*
@@ -243,7 +245,7 @@
  - CubicalSudivision has been renamed SpatialCubicalSubdivision and
    moved to "geometry/tools" (David Coeurjolly,
    [#862](https://github.com/DGtal-team/DGtal/pull/862))
-
+ 
 - *IO Package*
   - Better handling of materials in Board3D and OBJ exports. (David
     Coeurjolly,
