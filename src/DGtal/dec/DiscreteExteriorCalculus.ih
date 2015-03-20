@@ -579,10 +579,15 @@ template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TIntege
 typename DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::Scalar
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::hodgeSign(const Cell& cell, const DGtal::Duality& duality) const
 {
+    if (duality == PRIMAL) return 1;
+
     const DGtal::Dimension& primal_dim = myKSpace.uDim(cell);
     const bool apply_sign = ((dimension-primal_dim)*primal_dim % 2 == 1);
-    if (!apply_sign) return 1;
+    if (apply_sign) return -1;
 
+    return 1;
+
+    /*
     typename KSpace::DirIterator di = myKSpace.uDirs(cell);
 
     DGtal::Dimension span_count = 0;
@@ -598,6 +603,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::hodgeSign
 
     const Scalar sign = pow(-1, span_count);
     return sign;
+    */
 }
 
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>

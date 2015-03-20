@@ -48,19 +48,19 @@ void test_linear_structure()
     calculus.initKSpace(domain);
 
     for (int kk=20; kk>0; kk--)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(0,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS), kk%2 != 0 ? -1 : 1 );
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(0,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS) );
     for (int kk=0; kk<10; kk++)
         calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,0)) );
     for (int kk=0; kk<10; kk++)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)), kk%2 != 0 ? -1 : 1 );
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(10,10)) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(9,10), Calculus::KSpace::NEG) );
     for (int kk=10; kk<20; kk++)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(8,kk)), kk%2 != 0 ? -1 : 1 );
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(8,kk)) );
     for (int kk=8; kk<12; kk++)
         calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,20)) );
     for (int kk=20; kk>0; kk--)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(12,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS), kk%2 != 0 ? -1 : 1 );
+        calculus.insertSCell( calculus.myKSpace.sCell(Point(12,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(12,0)) );
     //! [neumann-creation]
 
@@ -90,9 +90,9 @@ void test_linear_structure()
         //! [neumann-laplace-definition]
         const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
         const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
-        trace.info() << "d0=" << d0 << endl;
+        trace.info() << "d0 = " << d0 << endl;
         trace.info() << "laplace = " << laplace << endl;
-        trace.info() << laplace.myContainer << endl;
+        trace.info() << Eigen::MatrixXd(laplace.myContainer) << endl;
         //! [neumann-laplace-definition]
 
         //! [neumann-solve]
@@ -181,9 +181,9 @@ void test_linear_structure()
         //! [dirichlet-laplace-definition]
         const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
         const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
-        trace.info() << "d0=" << d0 << endl;
+        trace.info() << "d0 = " << d0 << endl;
         trace.info() << "laplace = " << laplace << endl;
-        trace.info() << laplace.myContainer << endl;
+        trace.info() << Eigen::MatrixXd(laplace.myContainer) << endl;
         //! [dirichlet-laplace-definition]
 
         //! [dirichlet-solve]
@@ -264,9 +264,9 @@ void test_linear_ring()
     Calculus calculus;
     calculus.initKSpace(domain);
 
-    for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(-8,kk), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG), kk%2 != 0 ? -1 : 1 );
+    for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(-8,kk), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG) );
     for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,10), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG) );
-    for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)), kk%2 != 0 ? -1 : 1 );
+    for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)) );
     for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,-8)) );
 
     {
@@ -465,10 +465,7 @@ void test_manual_operators()
         display_operator_info("h1", h1);
         display_operator_info("h1p", h1p);
 
-        Eigen::VectorXd h1_th_diag(7);
-        h1_th_diag << 1, -1, -1, 1, -1, -1, 1;
-
-        FATAL_ERROR( Eigen::MatrixXd(h1.myContainer) == Eigen::MatrixXd(h1_th_diag.asDiagonal()) );
+        FATAL_ERROR( Eigen::MatrixXd(h1.myContainer) == Eigen::MatrixXd::Identity(7,7) );
         FATAL_ERROR( Eigen::MatrixXd((h1p*h1).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
         FATAL_ERROR( Eigen::MatrixXd((h1*h1p).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
     }
@@ -499,7 +496,7 @@ void test_manual_operators()
 
     trace.beginBlock("sharp and flat operator");
 
-    {
+    { // primal sharp
         display_operator_info("#x", calculus.sharpDirectional<PRIMAL, 0>());
         display_operator_info("#y", calculus.sharpDirectional<PRIMAL, 1>());
 
@@ -514,7 +511,7 @@ void test_manual_operators()
                 board << domain;
                 board << calculus;
                 board << dx << dx_field;
-                board.saveSVG("operators_dx.svg");
+                board.saveSVG("operators_dx_primal.svg");
             }
 
             FATAL_ERROR( dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
@@ -532,11 +529,52 @@ void test_manual_operators()
                 board << domain;
                 board << calculus;
                 board << dy << dy_field;
-                board.saveSVG("operators_dy.svg");
+                board.saveSVG("operators_dy_primal.svg");
             }
 
             FATAL_ERROR( dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(6) );
             FATAL_ERROR( dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(6) );
+        }
+    }
+
+    { // dual sharp
+        display_operator_info("#xp", calculus.sharpDirectional<DUAL, 0>());
+        display_operator_info("#yp", calculus.sharpDirectional<DUAL, 1>());
+
+        {
+            Calculus::DualForm1::Container dx_container(7);
+            dx_container << 0, -1, 1, 0, 1, -1, 0;
+            const Calculus::DualForm1 dx(calculus, dx_container);
+            const Calculus::DualVectorField dx_field = calculus.sharp(dx);
+
+            {
+                Board2D board;
+                board << domain;
+                board << calculus;
+                board << dx << dx_field;
+                board.saveSVG("operators_dx_dual.svg");
+            }
+
+            //FATAL_ERROR( dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
+            //FATAL_ERROR( dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
+        }
+
+        {
+            Calculus::DualForm1::Container dy_container(7);
+            dy_container << -1, 0, 0, 1, 0, 0, -1;
+            const Calculus::DualForm1 dy(calculus, dy_container);
+            const Calculus::DualVectorField dy_field = calculus.sharp(dy);
+
+            {
+                Board2D board;
+                board << domain;
+                board << calculus;
+                board << dy << dy_field;
+                board.saveSVG("operators_dy_dual.svg");
+            }
+
+            FATAL_ERROR( dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(2) );
+            FATAL_ERROR( dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(2) );
         }
     }
 
@@ -569,8 +607,8 @@ int
 main()
 {
     test_manual_operators();
-    //test_linear_ring();
-    //test_linear_structure();
+    test_linear_ring();
+    test_linear_structure();
     return 0;
 }
 
