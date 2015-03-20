@@ -378,8 +378,8 @@ test_hodge_sign()
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,0)), DGtal::PRIMAL ) == 1 );
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,0)), DGtal::DUAL ) == -1 );
         // primal vectical edge, dual horizontal edge
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1)), DGtal::PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1)), DGtal::DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1)), DGtal::PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,1)), DGtal::DUAL ) == -1 );
         // primal cell, dual point
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,1)), DGtal::PRIMAL ) == 1 );
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(1,1)), DGtal::DUAL ) == 1 );
