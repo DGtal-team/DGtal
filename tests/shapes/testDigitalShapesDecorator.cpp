@@ -85,14 +85,14 @@ bool testDigitalShapesDecorator()
 
   typedef DigitalShapesCSG< MyGaussDigitizerA, MyGaussDigitizerA > CSG;
   CSG s_union ( digShapeA );
-  s_union.op_union( digShapeB );
+  s_union.plus( digShapeB );
 
   CSG s_intersec ( digShapeA );
-  s_intersec.op_union( digShapeB );
-  s_intersec.op_intersection( digShapeC );
+  s_intersec.plus( digShapeB );
+  s_intersec.intersection( digShapeC );
 
   CSG s_minus ( digShapeA );
-  s_minus.op_minus( digShapeC );
+  s_minus.minus( digShapeC );
 
 
   nbok += (( s_union.orientation( Point( -12, 0 )) == INSIDE )

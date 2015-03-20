@@ -63,14 +63,14 @@ bool testEuclideanShapesDecorator()
 
   typedef EuclideanShapesCSG< ShapeA, ShapeA > CSG;
   CSG s_union ( shapeA );
-  s_union.op_union( shapeB );
+  s_union.plus( shapeB );
 
   CSG s_intersec ( shapeA );
-  s_intersec.op_union( shapeB );
-  s_intersec.op_intersection( shapeC );
+  s_intersec.plus( shapeB );
+  s_intersec.intersection( shapeC );
 
   CSG s_minus ( shapeA );
-  s_minus.op_minus( shapeC );
+  s_minus.minus( shapeC );
 
 
   nbok += (( s_union.orientation( RealPoint( -5.1, 0.0 )) == INSIDE )
