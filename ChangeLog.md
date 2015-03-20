@@ -43,12 +43,17 @@
    substraction scaling...). Color is now CopyConstructible and
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
- 
+ - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
+   [#961](https://github.com/DGtal-team/DGtal/pull/961)
+
+
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
    ConstIterator and adds a new method to change the color of a
    specific face. (Bertrand Kerautret,
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
+ - New methods to generate basic 3D tubular meshes and height fields. New mesh module documentation added.
+   (Bertrand Kerautret, [#969](https://github.com/DGtal-team/DGtal/pull/969))
  - Refactoring of CSG operations on Euclidean / Digital shapes.
    Can combine easily several operations.
    EuclideanShapesUnion, EuclideanShapesIntersection and 
@@ -59,8 +64,6 @@
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
 
-
-
 ## Bug Fixes
 
 - *Configuration*
@@ -69,6 +72,10 @@
  Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
 
 - *Base Package*
+ - Fix bug with LabelledMap copy constructor and copy iterator. (Roland
+   Denis, [#973](https://github.com/DGtal-team/DGtal/pull/973))
+ - Fix bug with Labels iterator when first index is set (Roland Denis,
+ [#972](https://github.com/DGtal-team/DGtal/pull/972))
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
 
@@ -81,7 +88,12 @@
  - Fix bug of method ArithmeticalDSL::getPoint with negative values
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
- - Fix Bezout Vector computation (Isabelle Sivignon, [#948](https://github.com/DGtal-team/DGtal/pull/948))
+ - Fix Bezout Vector computation (Isabelle Sivignon,
+ [#948](https://github.com/DGtal-team/DGtal/pull/948))
+ - Fix issues with SphereFitting and TensorVoting local estimators on
+   digital surfaces (Jérémy Levallois, David Coeurjolly
+   [#970](https://github.com/DGtal-team/DGtal/pull/970))
+   
 
 - *IO Package*
  - Performance improvement of color managment in Display3D, Board3D

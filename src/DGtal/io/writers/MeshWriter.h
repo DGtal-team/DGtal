@@ -61,11 +61,11 @@ namespace DGtal
    * 
    * Example of typical use: 
    * First you have to add the following include files:
-   * @snippet tests/io/readers/testMeshWriter.cpp MeshWriterUseIncludes
+   * @snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseIncludes
    * Then you create a simple Mesh object:
-   * @snippet tests/io/readers/testMeshWriter.cpp MeshWriterUseMeshCreation
+   * @snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseMeshCreation
    * Finally you can export directly the Mesh object: 
-   * @snippet tests/io/readers/testMeshWriter.cpp MeshWriterUseMeshExport
+   * @snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseMeshExport
    *
    *
    * @see Mesh MeshWriter

@@ -107,10 +107,10 @@ namespace DGtal
      */
     
     
-    Color( unsigned char aRedValue,
-           unsigned char  aGreenValue,
-           unsigned char  aBlueValue,
-	   unsigned char aAlphaValue = 255 )
+    Color( const unsigned char aRedValue,
+           const unsigned char  aGreenValue,
+           const unsigned char  aBlueValue,
+           const unsigned char aAlphaValue = 255 )
       : myRed(aRedValue),myGreen(aGreenValue),myBlue(aBlueValue),myAlpha(aAlphaValue) { }
     
 
@@ -127,18 +127,13 @@ namespace DGtal
 
 
     /**
-     * Constructor.
-     * Constructs a Color with can be either valid or not.
+     * Default Constructor.
      *
-     * @param [in] aValidColor if true, the constructed color is valid.
-    */
+     */
     
-    Color( const bool aValidColor = true )
-      : myRed(-1),myGreen(-1),myBlue(-1), myAlpha(255)
-    { 
-      if ( aValidColor ) {
-	myRed = myGreen = myBlue = 0;
-      }
+    Color( )
+      : myRed(0),myGreen(0),myBlue(0), myAlpha(255)
+    {
     }
     
     Color& setRGBi( const unsigned char aRedValue,
@@ -409,10 +404,10 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    int myRed;      /**< The red component. */
-    int myGreen;    /**< The green component. */
-    int myBlue;      /**< The blue component. */
-    int myAlpha;    /**< The opacity. */
+    unsigned char myRed;      /**< The red component. */
+    unsigned char myGreen;    /**< The green component. */
+    unsigned char myBlue;      /**< The blue component. */
+    unsigned char myAlpha;    /**< The opacity. */
     // ------------------------- Hidden services ------------------------------
   protected:
 
