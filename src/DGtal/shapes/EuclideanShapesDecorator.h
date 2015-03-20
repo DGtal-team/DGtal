@@ -69,7 +69,7 @@ namespace DGtal
   protected:
     enum e_operator
     {
-      e_union,
+      e_plus,
       e_intersection,
       e_minus
     };
@@ -81,26 +81,27 @@ namespace DGtal
     typedef typename ShapeA::Space Space;
     typedef typename ShapeA::RealPoint RealPoint;
 
+    /**
+      * Default constructor. EuclideanShapesCSG will be not valid without setParams(ShapeA).
+      *
+      */
     EuclideanShapesCSG( )
+      : bIsValid(false)
     {}
-
-    EuclideanShapesCSG ( const EuclideanShapesCSG & other )
-      : myShapeA(other.myShapeA), v_shapes(other.v_shapes),
-        myLowerBound(other.myLowerBound), myUpperBound(other.myUpperBound)
-    {}
-
-    EuclideanShapesCSG & operator= ( const EuclideanShapesCSG & other )
-    {
-      myShapeA = other.myShapeA;
-      v_shapes = other.v_shapes;
-
-      myLowerBound = other.myLowerBound;
-      myUpperBound = other.myUpperBound;
-      return *this;
-    }
 
     /**
-      * Constructor.
+      * Copy constructor.
+      *
+      * @param[in] other a EuclideanShapesCSG to copy
+      */
+    EuclideanShapesCSG ( const EuclideanShapesCSG & other )
+      : myShapeA(other.myShapeA), v_shapes(other.v_shapes),
+        myLowerBound(other.myLowerBound), myUpperBound(other.myUpperBound),
+        bIsValid(other.bIsValid)
+    {}
+
+    /**
+      * Constructor. EuclideanShapesCSG will be valid.
       *
       * @param[in] a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
@@ -109,19 +110,63 @@ namespace DGtal
     {
       myLowerBound = myShapeA->getLowerBound();
       myUpperBound = myShapeA->getUpperBound();
+
+      bIsValid = true;
     }
 
     /**
-      * Union between a (ShapeA) and b (ShapeB). If an operation was already set, the
+      * Copy operator.
+      *
+      * @param[in] other a EuclideanShapesCSG to copy
+      *
+      * @return this
+      */
+    EuclideanShapesCSG & operator= ( const EuclideanShapesCSG & other )
+    {
+      myShapeA = other.myShapeA;
+      v_shapes = other.v_shapes;
+
+      myLowerBound = other.myLowerBound;
+      myUpperBound = other.myUpperBound;
+
+      bIsValid = other.bIsValid;
+
+      return *this;
+    }
+
+    /**
+      * Add a (unique) ShapeA for the CSG computation. EuclideanShapesCSG will be valid after. If a ShapeA was already set, the previous one will be override.
+      *
+      * @param[in] a a ShapeA, model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      */
+    void setParams( ConstAlias<ShapeA> a )
+    {
+      myShapeA = a;
+
+      myLowerBound = myShapeA->getLowerBound();
+      myUpperBound = myShapeA->getUpperBound();
+
+      bIsValid = true;
+    }
+
+    /**
+      * Union between a shape (ShapeA, gived at construction) and b (ShapeB). If an operation was already set, the
       * union will be between the CSG shape and b (ShapeB).
       *
-      * @param[in] b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param[in] b a ShapeB, model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
-    void op_union( ConstAlias<ShapeB> b )
+    void plus( ConstAlias<ShapeB> b )
     {
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
-      std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_union, b );
+
+      if( !isValid() )
+      {
+        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        return;
+      }
+
+      std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_plus, b );
 
       for(uint i =0; i < Space::dimension; ++i)
       {
@@ -136,12 +181,19 @@ namespace DGtal
       * Intersection between a (ShapeA) and b (ShapeB). If an operation was already set, the
       * intersection will be between the CSG shape and b (ShapeB).
       *
-      * @param[in] b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param[in] b a ShapeB, model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
-    void op_intersection( ConstAlias<ShapeB> b )
+    void intersection( ConstAlias<ShapeB> b )
     {
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
+
+      if( !isValid() )
+      {
+        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        return;
+      }
+
       std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_intersection, b );
 
       for(uint i=0; i < Space::dimension; ++i)
@@ -157,15 +209,22 @@ namespace DGtal
       * Minus between a (ShapeA) and b (ShapeB). If an operation was already set, the
       * minus will be between the CSG shape and b (ShapeB).
       *
-      * @param[in] b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param[in] b a ShapeB, model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
-    void op_minus( ConstAlias<ShapeB> b )
+    void minus( ConstAlias<ShapeB> b )
     {
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
-      std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_minus, b );
-      v_shapes.push_back(shape); 
 
+      if( !isValid() )
+      {
+        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        return;
+      }
+
+      std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_minus, b );
+
+      v_shapes.push_back(shape);
     }
 
     /**
@@ -174,6 +233,12 @@ namespace DGtal
      */
     RealPoint getLowerBound() const
     {
+      if( !isValid() )
+      {
+        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        return RealPoint();
+      }
+
       return myLowerBound;
     }
 
@@ -183,6 +248,12 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
+      if( !isValid() )
+      {
+        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        return RealPoint();
+      }
+
       return myUpperBound;
     }
 
@@ -196,7 +267,14 @@ namespace DGtal
      */
     Orientation orientation( const RealPoint & p ) const
     {
-      Orientation orient = myShapeA->orientation( p );
+      Orientation orient;
+      if( !isValid() )
+      {
+        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        return orient;
+      }
+
+      orient = myShapeA->orientation( p );
 
       for(unsigned int i = 0; i < v_shapes.size(); ++i)
       {
@@ -226,7 +304,7 @@ namespace DGtal
             orient = OUTSIDE;
           }
         }
-        else /// e_union
+        else /// e_plus
         {
           if (( orient == INSIDE ) || ( v_shapes[i].second->orientation( p ) == INSIDE ))
           {
@@ -258,7 +336,10 @@ namespace DGtal
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    bool isValid() const
+    {
+      return bIsValid;
+    }
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -274,6 +355,9 @@ namespace DGtal
 
     /// Domain upper bound.
     RealPoint myUpperBound;
+
+    /// if the CSG is valid.
+    bool bIsValid;
 
   };
 
