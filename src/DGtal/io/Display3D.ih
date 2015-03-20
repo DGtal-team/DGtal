@@ -286,7 +286,7 @@ template < typename Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center,
-                                           const double size,
+                                           const double radius,
                                            const unsigned int resolution)
 {
   updateBoundingBox(center);
@@ -295,7 +295,7 @@ DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center,
   p.color    = getFillColor();
   p.isSigned = false;
   p.signPos  = false;
-  p.size     = size;
+  p.radius     = radius;
   p.resolution = resolution;
   p.name     = name3d();
   if (myBallSetList.size()== 0)
