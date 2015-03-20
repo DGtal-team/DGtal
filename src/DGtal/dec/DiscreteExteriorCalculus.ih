@@ -255,11 +255,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
 
         // find cell border
         typedef typename KSpace::SCells Border;
-        Border border;
-        {
-            if (duality == PRIMAL) border = myKSpace.sLowerIncident(signed_cell);
-            else border = myKSpace.sUpperIncident(signed_cell);
-        }
+        const Border border = ( duality == PRIMAL ? myKSpace.sLowerIncident(signed_cell) : myKSpace.sUpperIncident(signed_cell) );
 
         // iterate over cell border
         for (typename Border::const_iterator bi=border.begin(), bie=border.end(); bi!=bie; bi++)
