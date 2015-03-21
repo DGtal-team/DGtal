@@ -87,15 +87,11 @@ inline
 DGtal::Mesh<TPoint> &
 DGtal::Mesh<TPoint>::operator= ( const Mesh & other )
 {
-  if(this != other)
-    {
-      myFaceList = other.myFaceList;
-      myVertexList = other.myVertexList;
-      myFaceColorList = other.myFaceColorList;
-      mySaveFaceColor = other.mySaveFaceColor;
-      myDefaultColor = other. myDefaultColor;
-      
-    }
+  myFaceList = other.myFaceList;
+  myVertexList = other.myVertexList;
+  myFaceColorList = other.myFaceColorList;
+  mySaveFaceColor = other.mySaveFaceColor;
+  myDefaultColor = other. myDefaultColor;
   return *this;
 }
 
