@@ -267,14 +267,13 @@ namespace DGtal
      */
     Orientation orientation( const RealPoint & p ) const
     {
-      Orientation orient;
       if( !isValid() )
       {
         trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
-        return orient;
+        return OUTSIDE;
       }
 
-      orient = myShapeA->orientation( p );
+      Orientation orient = myShapeA->orientation( p );
 
       for(unsigned int i = 0; i < v_shapes.size(); ++i)
       {
