@@ -690,7 +690,7 @@ namespace DGtal
      * @param width the width of the cone (default= 0.02)
      */
     void addCone(const RealPoint &p1, const RealPoint &p2,
-                 double width=0.08);
+                 double width=0.02);
 
 
     /**
