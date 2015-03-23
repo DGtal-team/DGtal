@@ -163,6 +163,7 @@ namespace DGtal
       if( !isValid() )
       {
         trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        ASSERT(( isValid() ));
         return;
       }
 
@@ -191,6 +192,7 @@ namespace DGtal
       if( !isValid() )
       {
         trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        ASSERT(( isValid() ));
         return;
       }
 
@@ -219,6 +221,7 @@ namespace DGtal
       if( !isValid() )
       {
         trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        ASSERT(( isValid() ));
         return;
       }
 
@@ -236,6 +239,7 @@ namespace DGtal
       if( !isValid() )
       {
         trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        ASSERT(( isValid() ));
         return RealPoint();
       }
 
@@ -251,6 +255,7 @@ namespace DGtal
       if( !isValid() )
       {
         trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        ASSERT(( isValid() ));
         return RealPoint();
       }
 
@@ -270,6 +275,7 @@ namespace DGtal
       if( !isValid() )
       {
         trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
+        ASSERT(( isValid() ));
         return OUTSIDE;
       }
 
