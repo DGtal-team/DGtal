@@ -271,14 +271,14 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
             ASSERT( index_input < _derivative.myContainer.cols() );
 
             const bool flipped_border = ( myKSpace.sSign(signed_cell_border) == KSpace::NEG );
-            const Scalar orientation = ( flipped_border == iter_property->second.flipped ? -1 : 1 );
+            const Scalar orientation = ( flipped_border == iter_property->second.flipped ? 1 : -1 );
 
             // fill container with cell sign
             _derivative.myContainer(index_output, index_input) = orientation;
         }
     }
 
-    if (duality == DUAL && order == 1) _derivative.myContainer *= -1; // FIXME fix dual derivative for dual 1-form to dual 2-form sign
+    if (duality == DUAL && (order*(dim-order))%2 != 0) _derivative.myContainer *= -1;
     return _derivative;
 }
 
