@@ -160,12 +160,7 @@ namespace DGtal
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
 
-      if( !isValid() )
-      {
-        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
-        ASSERT(( isValid() ));
-        return;
-      }
+      FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
 
       std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_plus, b );
 
@@ -189,12 +184,7 @@ namespace DGtal
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
 
-      if( !isValid() )
-      {
-        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
-        ASSERT(( isValid() ));
-        return;
-      }
+      FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
 
       std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_intersection, b );
 
@@ -218,12 +208,7 @@ namespace DGtal
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
 
-      if( !isValid() )
-      {
-        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
-        ASSERT(( isValid() ));
-        return;
-      }
+      FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
 
       std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_minus, b );
 
@@ -236,12 +221,7 @@ namespace DGtal
      */
     RealPoint getLowerBound() const
     {
-      if( !isValid() )
-      {
-        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
-        ASSERT(( isValid() ));
-        return RealPoint();
-      }
+      FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
 
       return myLowerBound;
     }
@@ -252,12 +232,7 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
-      if( !isValid() )
-      {
-        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
-        ASSERT(( isValid() ));
-        return RealPoint();
-      }
+      FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
 
       return myUpperBound;
     }
@@ -272,12 +247,7 @@ namespace DGtal
      */
     Orientation orientation( const RealPoint & p ) const
     {
-      if( !isValid() )
-      {
-        trace.error() << "Operation unvalid. Maybe you don't set a ShapeA object." << std::endl;
-        ASSERT(( isValid() ));
-        return OUTSIDE;
-      }
+      FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
 
       Orientation orient = myShapeA->orientation( p );
 
