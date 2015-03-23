@@ -444,7 +444,7 @@ void test_manual_operators()
              0,  0,  0,  1,  1,  1,  1;
 
         FATAL_ERROR( Eigen::MatrixXd(primal_d1.myContainer) == d1_th );
-        FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == d1_th );
+        FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == -d1_th );
     }
 
     {
@@ -491,7 +491,7 @@ void test_manual_operators()
     const Calculus::PrimalDerivative0 dual_d0 = dual_calculus.derivative<0, PRIMAL>();
     {
         display_operator_info("primal d0p", primal_d0p);
-        display_operator_info("dual d0p", dual_d0);
+        display_operator_info("dual d0", dual_d0);
 
         Eigen::MatrixXd d0p_th_transpose(2, 7);
         d0p_th_transpose <<
@@ -522,41 +522,31 @@ void test_manual_operators()
         FATAL_ERROR( Eigen::MatrixXd(dual_d1.myContainer) == -minus_d1p_th_transpose.transpose() );
     }
 
-    /*
-
-    const Calculus::PrimalHodge1 h1 = primal_calculus.primalHodge<1>();
-    const Calculus::DualHodge1 h1p = primal_calculus.dualHodge<1>();
+    const Calculus::PrimalHodge1 primal_h1 = primal_calculus.primalHodge<1>();
+    const Calculus::DualHodge1 dual_h1p = dual_calculus.dualHodge<1>();
+    const Calculus::DualHodge1 primal_h1p = primal_calculus.dualHodge<1>();
+    const Calculus::PrimalHodge1 dual_h1 = dual_calculus.primalHodge<1>();
     {
-        display_operator_info("h1", h1);
-        display_operator_info("h1p", h1p);
+        display_operator_info("primal h1", primal_h1);
+        display_operator_info("dual h1p", dual_h1p);
+        display_operator_info("primal h1p", primal_h1p);
+        display_operator_info("dual h1", dual_h1);
 
-        FATAL_ERROR( Eigen::MatrixXd(h1.myContainer) == Eigen::MatrixXd::Identity(7,7) );
-        FATAL_ERROR( Eigen::MatrixXd((h1p*h1).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
-        FATAL_ERROR( Eigen::MatrixXd((h1*h1p).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
+        FATAL_ERROR( Eigen::MatrixXd(primal_h1.myContainer) == Eigen::MatrixXd::Identity(7,7) );
+        FATAL_ERROR( Eigen::MatrixXd(dual_h1p.myContainer) == -Eigen::MatrixXd::Identity(7,7) );
+        FATAL_ERROR( Eigen::MatrixXd((primal_h1p*primal_h1).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
+        FATAL_ERROR( Eigen::MatrixXd((dual_h1*dual_h1p).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
+        FATAL_ERROR( Eigen::MatrixXd((primal_h1*primal_h1p).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
+        FATAL_ERROR( Eigen::MatrixXd((dual_h1p*dual_h1).myContainer) == -Eigen::MatrixXd::Identity(7,7) );
     }
 
     trace.endBlock();
 
-    trace.beginBlock("anti derivative");
-    const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h2p * d1p * h1;
-    const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h1p * d0p * h2;
-    display_operator_info("ad1", ad1);
-    display_operator_info("ad2", ad2);
-    const LinearOperator<Calculus, 1, DUAL, 0, DUAL> ad1p = h2 * d1 * h1p;
-    const LinearOperator<Calculus, 2, DUAL, 1, DUAL> ad2p = h1 * d0 * h2p;
-    display_operator_info("ad1p", ad1p);
-    display_operator_info("ad2p", ad2p);
-    trace.endBlock();
-
     trace.beginBlock("laplace operators");
-    const Calculus::PrimalIdentity0 lap_alpha = ad1 * d0;
-    const Calculus::DualIdentity0 lap_alphap = ad1p * d0p;
-    display_operator_info("lap_alpha", lap_alpha);
-    display_operator_info("lap_alphap", lap_alphap);
-    const Calculus::PrimalIdentity2 lap_beta = d1 * ad2;
-    const Calculus::DualIdentity2 lap_betap = d1p * ad2p;
-    display_operator_info("lap_beta", lap_beta);
-    display_operator_info("lap_betap", lap_betap);
+    display_operator_info("primal laplace", primal_calculus.primalLaplace());
+    display_operator_info("dual laplacep", dual_calculus.dualLaplace());
+    display_operator_info("primal laplacep", primal_calculus.dualLaplace());
+    display_operator_info("dual laplace", dual_calculus.primalLaplace());
     trace.endBlock();
 
     trace.beginBlock("sharp and flat operator");
@@ -642,7 +632,6 @@ void test_manual_operators()
             FATAL_ERROR( dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(2) );
         }
     }
-    */
 
     /*
     Calculus::PrimalVectorField primal_vector_field(primal_calculus);
