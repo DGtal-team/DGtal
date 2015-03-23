@@ -549,108 +549,121 @@ void test_manual_operators()
     display_operator_info("dual laplace", dual_calculus.primalLaplace());
     trace.endBlock();
 
-    trace.beginBlock("sharp and flat operator");
+    trace.beginBlock("sharp operators");
 
     { // primal sharp
-        display_operator_info("#x", primal_calculus.sharpDirectional<PRIMAL, 0>());
-        display_operator_info("#y", primal_calculus.sharpDirectional<PRIMAL, 1>());
+        display_operator_info("primal #x", primal_calculus.sharpDirectional<PRIMAL, 0>());
+        display_operator_info("dual #xp", dual_calculus.sharpDirectional<DUAL, 0>());
+        display_operator_info("primal #y", primal_calculus.sharpDirectional<PRIMAL, 1>());
+        display_operator_info("dual #yp", dual_calculus.sharpDirectional<DUAL, 1>());
 
         {
             Calculus::PrimalForm1::Container dx_container(7);
             dx_container << -1, 0, 0, 1, 0, 0, -1;
-            const Calculus::PrimalForm1 dx(primal_calculus, dx_container);
-            const Calculus::PrimalVectorField dx_field = primal_calculus.sharp(dx);
+            const Calculus::PrimalForm1 primal_dx(primal_calculus, dx_container);
+            const Calculus::PrimalVectorField primal_dx_field = primal_calculus.sharp(primal_dx);
+
+            const Calculus::DualForm1 dual_dx(dual_calculus, dx_container);
+            const Calculus::DualVectorField dual_dx_field = dual_calculus.sharp(dual_dx);
 
             {
                 Board2D board;
                 board << domain;
                 board << primal_calculus;
-                board << dx << dx_field;
+                board << primal_dx << primal_dx_field;
+                board << dual_calculus;
+                board << dual_dx << dual_dx_field;
                 board.saveSVG("operators_dx_primal.svg");
             }
 
-            FATAL_ERROR( dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
-            FATAL_ERROR( dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
+            FATAL_ERROR( primal_dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
+            FATAL_ERROR( primal_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
+            FATAL_ERROR( dual_dx_field.myCoordinates.col(0) == -Eigen::VectorXd::Ones(6) );
+            FATAL_ERROR( dual_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
         }
 
         {
             Calculus::PrimalForm1::Container dy_container(7);
             dy_container << 0, 1, -1, 0, -1, 1, 0;
-            const Calculus::PrimalForm1 dy(primal_calculus, dy_container);
-            const Calculus::PrimalVectorField dy_field = primal_calculus.sharp(dy);
+            const Calculus::PrimalForm1 primal_dy(primal_calculus, dy_container);
+            const Calculus::PrimalVectorField primal_dy_field = primal_calculus.sharp(primal_dy);
+
+            const Calculus::DualForm1 dual_dy(dual_calculus, dy_container);
+            const Calculus::DualVectorField dual_dy_field = dual_calculus.sharp(dual_dy);
 
             {
                 Board2D board;
                 board << domain;
                 board << primal_calculus;
-                board << dy << dy_field;
+                board << primal_dy << primal_dy_field;
+                board << dual_calculus;
+                board << dual_dy << dual_dy_field;
                 board.saveSVG("operators_dy_primal.svg");
             }
 
-            FATAL_ERROR( dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(6) );
-            FATAL_ERROR( dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(6) );
+            FATAL_ERROR( primal_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(6) );
+            FATAL_ERROR( primal_dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(6) );
+            FATAL_ERROR( dual_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(6) );
+            FATAL_ERROR( dual_dy_field.myCoordinates.col(1) == -Eigen::VectorXd::Ones(6) );
         }
     }
 
     { // dual sharp
-        display_operator_info("#xp", primal_calculus.sharpDirectional<DUAL, 0>());
-        display_operator_info("#yp", primal_calculus.sharpDirectional<DUAL, 1>());
+        display_operator_info("primal #xp", primal_calculus.sharpDirectional<DUAL, 0>());
+        display_operator_info("dual #x", dual_calculus.sharpDirectional<PRIMAL, 0>());
+        display_operator_info("primal #yp", primal_calculus.sharpDirectional<DUAL, 1>());
+        display_operator_info("dual #y", dual_calculus.sharpDirectional<PRIMAL, 1>());
 
         {
             Calculus::DualForm1::Container dx_container(7);
             dx_container << 0, -1, 1, 0, 1, -1, 0;
-            const Calculus::DualForm1 dx(primal_calculus, dx_container);
-            const Calculus::DualVectorField dx_field = primal_calculus.sharp(dx);
+            const Calculus::DualForm1 primal_dx(primal_calculus, dx_container);
+            const Calculus::DualVectorField primal_dx_field = primal_calculus.sharp(primal_dx);
+
+            const Calculus::PrimalForm1 dual_dx(dual_calculus, dx_container);
+            const Calculus::PrimalVectorField dual_dx_field = dual_calculus.sharp(dual_dx);
 
             {
                 Board2D board;
                 board << domain;
                 board << primal_calculus;
-                board << dx << dx_field;
+                board << primal_dx << primal_dx_field;
+                board << dual_calculus;
+                board << dual_dx << dual_dx_field;
                 board.saveSVG("operators_dx_dual.svg");
             }
 
-            //FATAL_ERROR( dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
-            //FATAL_ERROR( dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
+            FATAL_ERROR( primal_dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(2) );
+            FATAL_ERROR( primal_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(2) );
+            FATAL_ERROR( dual_dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(2) );
+            FATAL_ERROR( dual_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(2) );
         }
 
         {
             Calculus::DualForm1::Container dy_container(7);
             dy_container << -1, 0, 0, 1, 0, 0, -1;
-            const Calculus::DualForm1 dy(primal_calculus, dy_container);
-            const Calculus::DualVectorField dy_field = primal_calculus.sharp(dy);
+            const Calculus::DualForm1 primal_dy(primal_calculus, dy_container);
+            const Calculus::DualVectorField primal_dy_field = primal_calculus.sharp(primal_dy);
+
+            const Calculus::PrimalForm1 dual_dy(dual_calculus, dy_container);
+            const Calculus::PrimalVectorField dual_dy_field = dual_calculus.sharp(dual_dy);
 
             {
                 Board2D board;
                 board << domain;
                 board << primal_calculus;
-                board << dy << dy_field;
+                board << primal_dy << primal_dy_field;
+                board << dual_calculus;
+                board << dual_dy << dual_dy_field;
                 board.saveSVG("operators_dy_dual.svg");
             }
 
-            FATAL_ERROR( dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(2) );
-            FATAL_ERROR( dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(2) );
+            FATAL_ERROR( primal_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(2) );
+            FATAL_ERROR( primal_dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(2) );
+            FATAL_ERROR( dual_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(2) );
+            FATAL_ERROR( dual_dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(2) );
         }
     }
-
-    /*
-    Calculus::PrimalVectorField primal_vector_field(primal_calculus);
-    primal_vector_field.myCoordinates.col(0) = cos(2*M_PI/3) * Eigen::VectorXd::Ones(primal_vector_field.length());
-    primal_vector_field.myCoordinates.col(1) = sin(2*M_PI/3) * Eigen::VectorXd::Ones(primal_vector_field.length());
-
-    Calculus::DualVectorField dual_vector_field(primal_calculus);
-    dual_vector_field.myCoordinates.col(0) = cos(2*M_PI/3) * Eigen::VectorXd::Ones(dual_vector_field.length());
-    dual_vector_field.myCoordinates.col(1) = sin(2*M_PI/3) * Eigen::VectorXd::Ones(dual_vector_field.length());
-
-    {
-        Board2D board;
-        board << domain;
-        board << primal_calculus;
-        board << primal_vector_field;
-        board << dual_vector_field;
-        board.saveSVG("operators_vector_field.svg");
-    }
-    */
 
     trace.endBlock();
 
