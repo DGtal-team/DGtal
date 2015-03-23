@@ -312,56 +312,94 @@ void test_manual_operators()
 {
     trace.beginBlock("testing operators");
 
-    const Domain domain(Point(0,0), Point(2,3));
+    const Domain domain(Point(0,0), Point(5,4));
 
     typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
-    Calculus calculus;
-    calculus.initKSpace(domain);
 
-    // 0-cells
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,2)) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,2)) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,4)) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,4)) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,6)) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,6)) );
+    Calculus primal_calculus;
+    primal_calculus.initKSpace(domain);
 
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(1,2)) ); // insert cell
+    { // filling primal calculus
+        // 0-cells
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(2,2)) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(4,2)) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(2,4)) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(4,4)) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(2,6)) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(4,6)) );
 
-    // 1-cells
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::POS) ); // insert positive cell
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::NEG) ); // then reinserting negative cell in structure
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,3), Calculus::KSpace::POS) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,3), Calculus::KSpace::NEG) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,4), Calculus::KSpace::POS) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(2,5), Calculus::KSpace::NEG) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(4,5), Calculus::KSpace::POS) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,6), Calculus::KSpace::NEG) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(1,2)) ); // insert cell
 
-    calculus.eraseCell( calculus.myKSpace.uCell(Point(1,2)) ); // then remove it
+        // 1-cells
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::NEG) ); // insert negative cell
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(3,2), Calculus::KSpace::POS) ); // then reinserting negative cell in structure
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(2,3), Calculus::KSpace::NEG) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(4,3), Calculus::KSpace::POS) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(3,4), Calculus::KSpace::NEG) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(2,5), Calculus::KSpace::POS) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(4,5), Calculus::KSpace::NEG) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(3,6), Calculus::KSpace::POS) );
 
-    // 2-cells
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,3)) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(3,5)) );
+        primal_calculus.eraseCell( primal_calculus.myKSpace.uCell(Point(1,2)) ); // then remove it
 
-    trace.info() << calculus << endl;
+        // 2-cells
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(3,3)) );
+        primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(3,5)) );
+
+        trace.info() << primal_calculus << endl;
+    }
+
+    Calculus dual_calculus;
+    dual_calculus.initKSpace(domain);
+
+    { // filling dual calculus
+        // 2-cells
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(7,3)) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(9,3)) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(7,5)) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(9,5)) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(7,7)) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(9,7)) );
+
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(6,3)) ); // insert cell
+
+        // 1-cells
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(8,3), Calculus::KSpace::NEG) ); // insert negative cell
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(8,3), Calculus::KSpace::POS) ); // then reinserting negative cell in structure
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(7,4), Calculus::KSpace::POS) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(9,4), Calculus::KSpace::NEG) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(8,5), Calculus::KSpace::NEG) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(7,6), Calculus::KSpace::NEG) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(9,6), Calculus::KSpace::POS) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(8,7), Calculus::KSpace::POS) );
+
+        dual_calculus.eraseCell( dual_calculus.myKSpace.uCell(Point(6,3)) ); // then remove it
+
+        // 0-cells
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(8,4)) );
+        dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(8,6)) );
+
+        trace.info() << dual_calculus << endl;
+    }
+
 
     {
         Board2D board;
         board << domain;
-        board << calculus;
+        board << primal_calculus;
+        board << dual_calculus;
         board.saveSVG("operators_structure.svg");
     }
 
-    const Calculus::Properties properties = calculus.getProperties();
+    const Calculus::Properties properties = primal_calculus.getProperties();
     for (Calculus::ConstIterator iter_property=properties.begin(), iter_property_end=properties.end(); iter_property!=iter_property_end; iter_property++)
     {
         const Calculus::Cell cell = iter_property->first;
         const Calculus::Property property = iter_property->second;
-        const Dimension dim = calculus.myKSpace.uDim(cell);
-        const Calculus::SCell signed_cell = calculus.myKSpace.signs(cell, property.flipped ? Calculus::KSpace::NEG : Calculus::KSpace::POS);
+        const Dimension dim = primal_calculus.myKSpace.uDim(cell);
+        const Calculus::SCell signed_cell = primal_calculus.myKSpace.signs(cell, property.flipped ? Calculus::KSpace::NEG : Calculus::KSpace::POS);
 
-        ASSERT( signed_cell == calculus.getSCell(dim, PRIMAL, property.index) );
+        ASSERT( signed_cell == primal_calculus.getSCell(dim, PRIMAL, property.index) );
 
         trace.info() << cell
             << " " << dim
@@ -374,9 +412,11 @@ void test_manual_operators()
 
     trace.beginBlock("base operators");
 
-    const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
+    const Calculus::PrimalDerivative0 primal_d0 = primal_calculus.derivative<0, PRIMAL>();
+    const Calculus::DualDerivative0 dual_d0p = dual_calculus.derivative<0, DUAL>();
     {
-        display_operator_info("d0", d0);
+        display_operator_info("primal d0", primal_d0);
+        display_operator_info("dual d0p", dual_d0p);
 
         Eigen::MatrixXd d0_th(7, 6);
         d0_th <<
@@ -388,63 +428,85 @@ void test_manual_operators()
              0,  0,  0, -1,  0,  1,
              0,  0,  0,  0,  1, -1;
 
-        FATAL_ERROR( Eigen::MatrixXd(d0.myContainer) == d0_th );
+        FATAL_ERROR( Eigen::MatrixXd(primal_d0.myContainer) == d0_th );
+        FATAL_ERROR( Eigen::MatrixXd(dual_d0p.myContainer) == -d0_th );
     }
 
-    const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
+    const Calculus::PrimalDerivative1 primal_d1 = primal_calculus.derivative<1, PRIMAL>();
+    const Calculus::DualDerivative1 dual_d1p = dual_calculus.derivative<1, DUAL>();
     {
-        display_operator_info("d1", d1);
+        display_operator_info("primal d1", primal_d1);
+        display_operator_info("dual d1p", dual_d1p);
 
         Eigen::MatrixXd d1_th(2, 7);
         d1_th <<
             -1, -1, -1, -1,  0,  0,  0,
              0,  0,  0,  1,  1,  1,  1;
 
-        FATAL_ERROR( Eigen::MatrixXd(d1.myContainer) == d1_th );
+        FATAL_ERROR( Eigen::MatrixXd(primal_d1.myContainer) == d1_th );
+        FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == d1_th );
     }
 
     {
-        display_operator_info("d1*d0", d1*d0);
+        display_operator_info("primal d1*d0", primal_d1*primal_d0);
+        display_operator_info("dual d1p*d0p", dual_d1p*dual_d0p);
 
-        FATAL_ERROR( Eigen::MatrixXd((d1*d0).myContainer) == Eigen::MatrixXd::Zero(2,6) );
+        FATAL_ERROR( Eigen::MatrixXd((primal_d1*primal_d0).myContainer) == Eigen::MatrixXd::Zero(2,6) );
+        FATAL_ERROR( Eigen::MatrixXd((dual_d1p*dual_d0p).myContainer) == Eigen::MatrixXd::Zero(2,6) );
     }
 
-
-    const Calculus::PrimalHodge0 h0 = calculus.primalHodge<0>();
-    const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
+    const Calculus::PrimalHodge0 primal_h0 = primal_calculus.primalHodge<0>();
+    const Calculus::DualHodge0 dual_h0p = dual_calculus.dualHodge<0>();
+    const Calculus::DualHodge2 primal_h2p = primal_calculus.dualHodge<2>();
+    const Calculus::PrimalHodge2 dual_h2 = dual_calculus.primalHodge<2>();
     {
-        display_operator_info("h0", h0);
-        display_operator_info("h2p", h2p);
+        display_operator_info("primal h0", primal_h0);
+        display_operator_info("dual h0p", dual_h0p);
+        display_operator_info("primal h2p", primal_h2p);
+        display_operator_info("dual h2", dual_h2);
 
-        FATAL_ERROR( Eigen::MatrixXd(h0.myContainer) == Eigen::MatrixXd::Identity(6,6) );
-        FATAL_ERROR( Eigen::MatrixXd(h2p.myContainer) == Eigen::MatrixXd::Identity(6,6) );
+        FATAL_ERROR( Eigen::MatrixXd(primal_h0.myContainer) == Eigen::MatrixXd::Identity(6,6) );
+        FATAL_ERROR( Eigen::MatrixXd(dual_h0p.myContainer) == Eigen::MatrixXd::Identity(6,6) );
+        FATAL_ERROR( Eigen::MatrixXd(primal_h2p.myContainer) == Eigen::MatrixXd::Identity(6,6) );
+        FATAL_ERROR( Eigen::MatrixXd(dual_h2.myContainer) == Eigen::MatrixXd::Identity(6,6) );
     }
 
-    const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
-    const Calculus::DualHodge0 h0p = calculus.dualHodge<0>();
+    const Calculus::PrimalHodge2 primal_h2 = primal_calculus.primalHodge<2>();
+    const Calculus::DualHodge2 dual_h2p = dual_calculus.dualHodge<2>();
+    const Calculus::DualHodge0 primal_h0p = primal_calculus.dualHodge<0>();
+    const Calculus::PrimalHodge0 dual_h0 = dual_calculus.primalHodge<0>();
     {
-        display_operator_info("h2", h2);
-        display_operator_info("h0p", h0p);
+        display_operator_info("primal h2", primal_h2);
+        display_operator_info("dual h2p", dual_h2p);
+        display_operator_info("primal h0p", primal_h0p);
+        display_operator_info("dual h0", dual_h0);
 
-        FATAL_ERROR( Eigen::MatrixXd(h2.myContainer) == Eigen::MatrixXd::Identity(2,2) );
-        FATAL_ERROR( Eigen::MatrixXd(h0p.myContainer) == Eigen::MatrixXd::Identity(2,2) );
+        FATAL_ERROR( Eigen::MatrixXd(primal_h2.myContainer) == Eigen::MatrixXd::Identity(2,2) );
+        FATAL_ERROR( Eigen::MatrixXd(dual_h2p.myContainer) == Eigen::MatrixXd::Identity(2,2) );
+        FATAL_ERROR( Eigen::MatrixXd(primal_h0p.myContainer) == Eigen::MatrixXd::Identity(2,2) );
+        FATAL_ERROR( Eigen::MatrixXd(dual_h0.myContainer) == Eigen::MatrixXd::Identity(2,2) );
     }
 
-    const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
+    const Calculus::DualDerivative0 primal_d0p = primal_calculus.derivative<0, DUAL>();
+    const Calculus::PrimalDerivative0 dual_d0 = dual_calculus.derivative<0, PRIMAL>();
     {
-        display_operator_info("d0p", d0p);
+        display_operator_info("primal d0p", primal_d0p);
+        display_operator_info("dual d0p", dual_d0);
 
         Eigen::MatrixXd d0p_th_transpose(2, 7);
         d0p_th_transpose <<
             -1, -1, -1, -1,  0,  0,  0,
              0,  0,  0,  1,  1,  1,  1;
 
-        FATAL_ERROR( Eigen::MatrixXd(d0p.myContainer) == d0p_th_transpose.transpose() );
+        FATAL_ERROR( Eigen::MatrixXd(primal_d0p.myContainer) == d0p_th_transpose.transpose() );
+        FATAL_ERROR( Eigen::MatrixXd(dual_d0.myContainer) == d0p_th_transpose.transpose() );
     }
 
-    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
+    const Calculus::DualDerivative1 primal_d1p = primal_calculus.derivative<1, DUAL>();
+    const Calculus::PrimalDerivative1 dual_d1 = dual_calculus.derivative<1, PRIMAL>();
     {
-        display_operator_info("d1p", d1p);
+        display_operator_info("primal d1p", primal_d1p);
+        display_operator_info("dual d1", dual_d1);
 
         Eigen::MatrixXd minus_d1p_th_transpose(7, 6);
         minus_d1p_th_transpose <<
@@ -456,11 +518,14 @@ void test_manual_operators()
              0,  0,  0, -1,  0,  1,
              0,  0,  0,  0,  1, -1;
 
-        FATAL_ERROR( Eigen::MatrixXd(d1p.myContainer) == -minus_d1p_th_transpose.transpose() );
+        FATAL_ERROR( Eigen::MatrixXd(primal_d1p.myContainer) == -minus_d1p_th_transpose.transpose() );
+        FATAL_ERROR( Eigen::MatrixXd(dual_d1.myContainer) == -minus_d1p_th_transpose.transpose() );
     }
 
-    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
-    const Calculus::DualHodge1 h1p = calculus.dualHodge<1>();
+    /*
+
+    const Calculus::PrimalHodge1 h1 = primal_calculus.primalHodge<1>();
+    const Calculus::DualHodge1 h1p = primal_calculus.dualHodge<1>();
     {
         display_operator_info("h1", h1);
         display_operator_info("h1p", h1p);
@@ -497,19 +562,19 @@ void test_manual_operators()
     trace.beginBlock("sharp and flat operator");
 
     { // primal sharp
-        display_operator_info("#x", calculus.sharpDirectional<PRIMAL, 0>());
-        display_operator_info("#y", calculus.sharpDirectional<PRIMAL, 1>());
+        display_operator_info("#x", primal_calculus.sharpDirectional<PRIMAL, 0>());
+        display_operator_info("#y", primal_calculus.sharpDirectional<PRIMAL, 1>());
 
         {
             Calculus::PrimalForm1::Container dx_container(7);
             dx_container << -1, 0, 0, 1, 0, 0, -1;
-            const Calculus::PrimalForm1 dx(calculus, dx_container);
-            const Calculus::PrimalVectorField dx_field = calculus.sharp(dx);
+            const Calculus::PrimalForm1 dx(primal_calculus, dx_container);
+            const Calculus::PrimalVectorField dx_field = primal_calculus.sharp(dx);
 
             {
                 Board2D board;
                 board << domain;
-                board << calculus;
+                board << primal_calculus;
                 board << dx << dx_field;
                 board.saveSVG("operators_dx_primal.svg");
             }
@@ -521,13 +586,13 @@ void test_manual_operators()
         {
             Calculus::PrimalForm1::Container dy_container(7);
             dy_container << 0, 1, -1, 0, -1, 1, 0;
-            const Calculus::PrimalForm1 dy(calculus, dy_container);
-            const Calculus::PrimalVectorField dy_field = calculus.sharp(dy);
+            const Calculus::PrimalForm1 dy(primal_calculus, dy_container);
+            const Calculus::PrimalVectorField dy_field = primal_calculus.sharp(dy);
 
             {
                 Board2D board;
                 board << domain;
-                board << calculus;
+                board << primal_calculus;
                 board << dy << dy_field;
                 board.saveSVG("operators_dy_primal.svg");
             }
@@ -538,19 +603,19 @@ void test_manual_operators()
     }
 
     { // dual sharp
-        display_operator_info("#xp", calculus.sharpDirectional<DUAL, 0>());
-        display_operator_info("#yp", calculus.sharpDirectional<DUAL, 1>());
+        display_operator_info("#xp", primal_calculus.sharpDirectional<DUAL, 0>());
+        display_operator_info("#yp", primal_calculus.sharpDirectional<DUAL, 1>());
 
         {
             Calculus::DualForm1::Container dx_container(7);
             dx_container << 0, -1, 1, 0, 1, -1, 0;
-            const Calculus::DualForm1 dx(calculus, dx_container);
-            const Calculus::DualVectorField dx_field = calculus.sharp(dx);
+            const Calculus::DualForm1 dx(primal_calculus, dx_container);
+            const Calculus::DualVectorField dx_field = primal_calculus.sharp(dx);
 
             {
                 Board2D board;
                 board << domain;
-                board << calculus;
+                board << primal_calculus;
                 board << dx << dx_field;
                 board.saveSVG("operators_dx_dual.svg");
             }
@@ -562,13 +627,13 @@ void test_manual_operators()
         {
             Calculus::DualForm1::Container dy_container(7);
             dy_container << -1, 0, 0, 1, 0, 0, -1;
-            const Calculus::DualForm1 dy(calculus, dy_container);
-            const Calculus::DualVectorField dy_field = calculus.sharp(dy);
+            const Calculus::DualForm1 dy(primal_calculus, dy_container);
+            const Calculus::DualVectorField dy_field = primal_calculus.sharp(dy);
 
             {
                 Board2D board;
                 board << domain;
-                board << calculus;
+                board << primal_calculus;
                 board << dy << dy_field;
                 board.saveSVG("operators_dy_dual.svg");
             }
@@ -577,20 +642,21 @@ void test_manual_operators()
             FATAL_ERROR( dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(2) );
         }
     }
+    */
 
     /*
-    Calculus::PrimalVectorField primal_vector_field(calculus);
+    Calculus::PrimalVectorField primal_vector_field(primal_calculus);
     primal_vector_field.myCoordinates.col(0) = cos(2*M_PI/3) * Eigen::VectorXd::Ones(primal_vector_field.length());
     primal_vector_field.myCoordinates.col(1) = sin(2*M_PI/3) * Eigen::VectorXd::Ones(primal_vector_field.length());
 
-    Calculus::DualVectorField dual_vector_field(calculus);
+    Calculus::DualVectorField dual_vector_field(primal_calculus);
     dual_vector_field.myCoordinates.col(0) = cos(2*M_PI/3) * Eigen::VectorXd::Ones(dual_vector_field.length());
     dual_vector_field.myCoordinates.col(1) = sin(2*M_PI/3) * Eigen::VectorXd::Ones(dual_vector_field.length());
 
     {
         Board2D board;
         board << domain;
-        board << calculus;
+        board << primal_calculus;
         board << primal_vector_field;
         board << dual_vector_field;
         board.saveSVG("operators_vector_field.svg");
@@ -607,8 +673,8 @@ int
 main()
 {
     test_manual_operators();
-    test_linear_ring();
-    test_linear_structure();
+    //test_linear_ring();
+    //test_linear_structure();
     return 0;
 }
 
