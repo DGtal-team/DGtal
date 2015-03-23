@@ -279,6 +279,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
     }
 
     if (duality == DUAL && (order*(dim-order))%2 != 0) _derivative.myContainer *= -1;
+
     return _derivative;
 }
 
@@ -405,7 +406,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateSha
             const Index& cell_border_index = iter_property->second.index;
             ASSERT( cell_border_index < static_cast<Index>(my_index_signed_cells[actualOrder(1, duality)].size()) );
 
-            const Scalar orientation = ( iter_property->second.flipped ? -1 : 1 );
+            const Scalar orientation = ( iter_property->second.flipped ? 1 : -1 );
             const DGtal::Dimension direction = edgeDirection(cell_border, duality);
 
             border_indexes[direction].push_back(std::make_pair(cell_border_index, orientation));
@@ -419,7 +420,8 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateSha
                 ASSERT( cell_border_index < static_cast<Index>(my_index_signed_cells[actualOrder(1, duality)].size()) );
                 ASSERT( cell_border_index < kFormLength(1, duality) );
 
-                sharp_operator_matrix[direction](kk, cell_border_index) = cell_border_orientation/border_indexes[direction].size();
+                const Scalar sign = ( duality == DUAL && (direction*(dim-direction))%2 == 0 ? -1 : 1 );
+                sharp_operator_matrix[direction](kk, cell_border_index) = sign * cell_border_orientation/border_indexes[direction].size();
             }
     }
 
