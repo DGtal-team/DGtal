@@ -369,7 +369,6 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::sharpDire
     return Operator(*this, my_sharp_operator_matrixes[static_cast<int>(duality)][direction]);
 }
 
-
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 void
@@ -446,6 +445,20 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::flat(cons
 }
 
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Duality duality, DGtal::Dimension direction>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, 0, duality, 1, duality>
+DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::flatDirectional() const
+{
+    const_cast<Self*>(this)->updateCachedOperators();
+
+    ASSERT( direction < dim );
+
+    typedef LinearOperator<Self, 0, duality, 1, duality> Operator;
+    return Operator(*this, my_flat_operator_matrixes[static_cast<int>(duality)][direction]);
+}
+
+
+template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 void
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateFlatOperator()
@@ -458,23 +471,23 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateFla
     // iterate over edges
     for (Index kk=0; kk<kFormLength(1, duality); kk++)
     {
-        const Cell cell = myKSpace.unsigns(my_index_signed_cells[actualOrder(1, duality)][kk]);
-        const SCell signed_cell = myKSpace.signs(cell, KSpace::POS);
+        const SCell signed_cell = my_index_signed_cells[actualOrder(1, duality)][kk];
+        ASSERT( myKSpace.sDim(signed_cell) == actualOrder(1, duality) );
+        const Cell cell = myKSpace.unsigns(signed_cell);
 
+        const Scalar orientation = ( myKSpace.sSign(signed_cell) == KSpace::NEG ? 1 : -1 );
         const DGtal::Dimension& direction = edgeDirection(cell, duality);
+        const Scalar sign = ( duality == DUAL && (direction*(dim-direction))%2 == 0 ? -1 : 1 );
 
-        typedef typename KSpace::SCells Points;
-        Points points;
-        if (duality == PRIMAL) points = myKSpace.sLowerIncident(signed_cell);
-        else points = myKSpace.sUpperIncident(signed_cell);
+        typedef typename KSpace::Cells Points;
+        const Points points = ( duality == PRIMAL ? myKSpace.uLowerIncident(cell) : myKSpace.uUpperIncident(cell) );
 
         // project vector field along edge from neighboring points
         typedef std::list<Index> BorderIndexes;
         BorderIndexes border_indexes;
         for (typename Points::const_iterator pi=points.begin(), pie=points.end(); pi!=pie; pi++)
         {
-            const SCell signed_cell_border = *pi; //FIXME iterate over unsigned border
-            const Cell cell_border = myKSpace.unsigns(signed_cell_border);
+            const Cell cell_border = *pi;
             ASSERT( myKSpace.uDim(cell_border) == actualOrder(0, duality) );
 
             const typename Properties::const_iterator iter_property = my_cell_properties.find(cell_border);
@@ -483,7 +496,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateFla
 
             const Index& cell_border_index = iter_property->second.index;
             ASSERT( cell_border_index < static_cast<Index>(my_index_signed_cells[actualOrder(0, duality)].size()) );
-            ASSERT( cell_border_index < kFormLength(0, duality) );
+            ASSERT( iter_property->second.flipped == false );
 
             border_indexes.push_back(cell_border_index);
         }
@@ -494,7 +507,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateFla
             ASSERT( cell_border_index < static_cast<Index>(my_index_signed_cells[actualOrder(0, duality)].size()) );
             ASSERT( cell_border_index < kFormLength(0, duality) );
 
-            flat_operator_matrix[direction](kk, cell_border_index) = 1./border_indexes.size();
+            flat_operator_matrix[direction](kk, cell_border_index) = sign*orientation/border_indexes.size();
         }
 
     }
