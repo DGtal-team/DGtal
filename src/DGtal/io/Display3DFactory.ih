@@ -136,7 +136,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
         if (norm <= epsilon) continue;
         if (norm <= .5) arrow *= .5/norm;
 
-        display.addCone(origin, origin+arrow);
+        display.addCone(origin+arrow, origin);
     }
 }
 // VectorField
