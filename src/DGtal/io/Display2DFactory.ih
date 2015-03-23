@@ -54,13 +54,13 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
     }
     if (xodd && !yodd)
     {
-        if (sk.myPositive) board.drawTriangle(x-.5f, y-retract, x-.5f, y+retract, x+.5f, y);
+        if (!sk.myPositive) board.drawTriangle(x-.5f, y-retract, x-.5f, y+retract, x+.5f, y);
         else board.drawTriangle(x+.5f, y+retract, x+.5f, y-retract, x-.5f, y);
         return;
     }
     if (!xodd && yodd)
     {
-        if (sk.myPositive) board.drawTriangle(x-retract, y-.5f, x+retract, y-.5f, x, y+.5);
+        if (!sk.myPositive) board.drawTriangle(x-retract, y-.5f, x+retract, y-.5f, x, y+.5);
         else board.drawTriangle(x+retract, y+.5f, x-retract, y+.5f, x, y-.5);
         return;
     }
