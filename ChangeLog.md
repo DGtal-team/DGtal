@@ -8,8 +8,13 @@
    automatically deployed.  (David Coeurjolly,
    [#955](https://github.com/DGtal-team/DGtal/pull/955))
 
-
 ## Changes
+
+- *DEC Package*
+ - Coherent signed cells support allow lower dimension manifold embedding.
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - Easy k-form and vector field transversal using .length() and .getSCell().
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
 
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a
@@ -28,6 +33,8 @@
    backport from imagene)
 
 - *IO Package*
+ - New 2D DEC board style with orientated cells.
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - Limited interaction added to QGLViewer Viewer3D class. The user
    may assign integer identifiers (OpenGL names) to surfels and
    callback functions, which are called when surfels are
