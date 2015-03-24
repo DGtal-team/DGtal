@@ -68,7 +68,7 @@ void usage2d()
         for (Calculus::Index index=0; index<primal_zero_form.length(); index++)
         {
             const Calculus::SCell& cell = primal_zero_form.getSCell(index);
-            const Calculus::Scalar& value = Z2i::l2Metric(cell.myCoordinates, center)/2;
+            const Calculus::Scalar& value = Z2i::l2Metric(calculus.myKSpace.sKCoords(cell), center)/2;
             primal_zero_form.myContainer(index) = value;
         }
         //! [usage_primal_fill_zero_form]
@@ -143,7 +143,7 @@ void usage2d()
         for (Calculus::Index index=0; index<dual_zero_form.length(); index++)
         {
             const Calculus::SCell& cell = dual_zero_form.getSCell(index);
-            const Calculus::Scalar& value = Z2i::l2Metric(cell.myCoordinates, center)/2;
+            const Calculus::Scalar& value = Z2i::l2Metric(calculus.myKSpace.sKCoords(cell), center)/2;
             dual_zero_form.myContainer(index) = value;
         }
 

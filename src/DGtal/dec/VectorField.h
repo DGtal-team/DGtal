@@ -111,14 +111,14 @@ template <typename TCalculus, Duality duality>
 
     /**
      * Get vector from index.
-     * @index index of the corresponding 0-cell.
+     * @param index of the corresponding 0-cell.
      */
     Arrow getArrow(const Index& index) const;
 
     /**
      * Set vector at index.
-     * @index index of the corresponding 0-cell.
-     * @arrow value of the vector field to set at this index.
+     * @param index of the corresponding 0-cell.
+     * @param arrow value of the vector field to set at this index.
      */
     void setArrow(const Index& index, const Arrow& arrow);
 
