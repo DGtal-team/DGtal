@@ -151,6 +151,21 @@ test_hodge(int domain_size)
         FATAL_ERROR(test_result);
     }
 
+    {
+        DGtal::trace.beginBlock("testing laplace sign");
+
+        const typename Calculus::PrimalIdentity0 primal_laplace = calculus.primalLaplace();
+        DGtal::trace.info() << "primal_laplace_trace=" << primal_laplace.myContainer.diagonal().sum() << std::endl;
+        FATAL_ERROR( ( primal_laplace.myContainer.diagonal().array() >= 0 ).prod() == true );
+
+        const typename Calculus::DualIdentity0 dual_laplace = calculus.dualLaplace();
+        DGtal::trace.info() << "dual_laplace_trace=" << dual_laplace.myContainer.diagonal().sum() << std::endl;
+        if (Calculus::dimension%2 == 0) FATAL_ERROR( ( dual_laplace.myContainer.diagonal().array() <= 0 ).prod() == true );
+        else FATAL_ERROR( ( dual_laplace.myContainer.diagonal().array() >= 0 ).prod() == true );
+
+        DGtal::trace.endBlock();
+    }
+
     DGtal::trace.beginBlock("testing hodge");
     bool test_result = HodgeTester<Calculus, Calculus::dimension>::test(calculus);
     DGtal::trace.endBlock();

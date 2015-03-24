@@ -828,15 +828,20 @@ void solve3d_decomposition()
     //! [3d_decomposition_operator_definition]
 
     {
-        trace.info() << "node degrees" << endl;
         const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
         const Eigen::VectorXd laplace_diag = laplace.myContainer.diagonal();
 
         boost::array<int, 7> degrees;
         std::fill(degrees.begin(), degrees.end(), 0);
         for (int kk=0; kk<laplace_diag.rows(); kk++)
-            degrees[laplace_diag[kk]] ++;
+        {
+            const int degree = laplace_diag[kk];
+            ASSERT( degree >= 0 );
+            ASSERT( degree < degrees.size() );
+            degrees[degree] ++;
+        }
 
+        trace.info() << "node degrees" << endl;
         for (int kk=0; kk<7; kk++)
             trace.info() << kk << " " << degrees[kk] << endl;
     }
