@@ -256,7 +256,7 @@ test_derivative(int domain_size)
     DigitalSet set(domain);
     for (typename Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
     {
-        if (random()%4!=0) continue;
+        if (random()%3!=0) continue;
         const typename Domain::Point& point = *di;
         set.insertNew(point);
     }
@@ -442,6 +442,10 @@ test_backend(const int& ntime, const int& maxdim)
 
     for (int kk=0; kk<ntime; kk++)
     {
+        typedef DGtal::SpaceND<1, int> Space1;
+        typedef DGtal::HyperRectDomain<Space1> Domain1;
+        typedef DGtal::DigitalSetBySTLSet<Domain1> DigitalSet1;
+
         typedef DGtal::SpaceND<4, int> Space4;
         typedef DGtal::HyperRectDomain<Space4> Domain4;
         typedef DGtal::DigitalSetBySTLSet<Domain4> DigitalSet4;
@@ -450,18 +454,32 @@ test_backend(const int& ntime, const int& maxdim)
         typedef DGtal::HyperRectDomain<Space5> Domain5;
         typedef DGtal::DigitalSetBySTLSet<Domain5> DigitalSet5;
 
+        typedef DGtal::SpaceND<6, int> Space6;
+        typedef DGtal::HyperRectDomain<Space6> Domain6;
+        typedef DGtal::DigitalSetBySTLSet<Domain6> DigitalSet6;
+
+        typedef DGtal::SpaceND<7, int> Space7;
+        typedef DGtal::HyperRectDomain<Space7> Domain7;
+        typedef DGtal::DigitalSetBySTLSet<Domain7> DigitalSet7;
+
         DGtal::trace.beginBlock("testing hodges");
+        if (maxdim>=1) test_hodge<DigitalSet1, LinearAlgebraBackend>(10);
         if (maxdim>=2) test_hodge<DGtal::Z2i::DigitalSet, LinearAlgebraBackend>(5);
         if (maxdim>=3) test_hodge<DGtal::Z3i::DigitalSet, LinearAlgebraBackend>(5);
         if (maxdim>=4) test_hodge<DigitalSet4, LinearAlgebraBackend>(4);
         if (maxdim>=5) test_hodge<DigitalSet5, LinearAlgebraBackend>(3);
+        if (maxdim>=6) test_hodge<DigitalSet6, LinearAlgebraBackend>(3);
+        if (maxdim>=7) test_hodge<DigitalSet7, LinearAlgebraBackend>(2);
         DGtal::trace.endBlock();
 
         DGtal::trace.beginBlock("testing derivatives");
-        if (maxdim>=2) test_derivative<DGtal::Z2i::DigitalSet, LinearAlgebraBackend>(2);
+        if (maxdim>=1) test_derivative<DigitalSet1, LinearAlgebraBackend>(10);
+        if (maxdim>=2) test_derivative<DGtal::Z2i::DigitalSet, LinearAlgebraBackend>(5);
         if (maxdim>=3) test_derivative<DGtal::Z3i::DigitalSet, LinearAlgebraBackend>(5);
         if (maxdim>=4) test_derivative<DigitalSet4, LinearAlgebraBackend>(4);
         if (maxdim>=5) test_derivative<DigitalSet5, LinearAlgebraBackend>(3);
+        if (maxdim>=6) test_derivative<DigitalSet6, LinearAlgebraBackend>(3);
+        if (maxdim>=7) test_derivative<DigitalSet7, LinearAlgebraBackend>(2);
         DGtal::trace.endBlock();
     }
 
