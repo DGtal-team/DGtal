@@ -69,7 +69,7 @@ void test_linear_structure()
     //! [input-dirac]
     const Calculus::Index dirac_position = 17;
     Calculus::PrimalForm0 dirac(calculus);
-    dirac.myContainer(dirac_position) = -1;
+    dirac.myContainer(dirac_position) = 1;
     //! [input-dirac]
 
     trace.info() << "dirac_position = " << dirac_position << endl;
@@ -298,8 +298,8 @@ void test_linear_ring()
     for (int jj=0; jj<laplace_size; jj++)
     {
         int delta = ii>jj ? ii-jj : jj-ii;
-        if (delta == 0) { laplace_th(ii,jj) = -2; continue; }
-        if (delta == 1 || delta == laplace_size-1) { laplace_th(ii,jj) = 1; continue; }
+        if (delta == 0) { laplace_th(ii,jj) = 2; continue; }
+        if (delta == 1 || delta == laplace_size-1) { laplace_th(ii,jj) = -1; continue; }
     }
 
     trace.endBlock();
@@ -444,7 +444,7 @@ void test_manual_operators()
              0,  0,  0,  1,  1,  1,  1;
 
         FATAL_ERROR( Eigen::MatrixXd(primal_d1.myContainer) == d1_th );
-        FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == -d1_th );
+        FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == d1_th );
     }
 
     {
@@ -518,7 +518,7 @@ void test_manual_operators()
              0,  0,  0, -1,  0,  1,
              0,  0,  0,  0,  1, -1;
 
-        FATAL_ERROR( Eigen::MatrixXd(primal_d1p.myContainer) == -minus_d1p_th_transpose.transpose() );
+        FATAL_ERROR( Eigen::MatrixXd(primal_d1p.myContainer) == minus_d1p_th_transpose.transpose() );
         FATAL_ERROR( Eigen::MatrixXd(dual_d1.myContainer) == -minus_d1p_th_transpose.transpose() );
     }
 
