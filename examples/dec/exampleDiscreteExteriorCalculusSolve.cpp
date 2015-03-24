@@ -31,18 +31,17 @@ void solve2d_laplace()
 
     //! [laplace_definition]
     Calculus::DualIdentity0 laplace = calculus.dualLaplace() + 0.01 * calculus.identity<0, DUAL>();
-    trace.info() << "laplace = " << laplace << endl;
     //! [laplace_definition]
+    trace.info() << "laplace = " << laplace << endl;
 
     //! [dirac_definition]
     Calculus::DualForm0 dirac(calculus);
-    dirac.myContainer(calculus.getCellIndex(calculus.myKSpace.uSpel(Z2i::Point(2,5)))) = 1;
+    dirac.myContainer(calculus.getCellIndex( calculus.myKSpace.uSpel(Z2i::Point(2,5))) ) = 1;
     //! [dirac_definition]
 
     {
         Board2D board;
         board << domain;
-        board << calculus;
         board << dirac;
         board.saveSVG("solve_laplace_calculus.svg");
     }
@@ -65,7 +64,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_simplicial_llt.svg");
     }
@@ -88,7 +86,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_simplicial_ldlt.svg");
     }
@@ -111,7 +108,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_conjugate_gradient.svg");
     }
@@ -134,7 +130,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_bicgstab.svg");
     }
@@ -157,7 +152,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_sparse_lu.svg");
     }
@@ -180,7 +174,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_sparse_qr.svg");
     }

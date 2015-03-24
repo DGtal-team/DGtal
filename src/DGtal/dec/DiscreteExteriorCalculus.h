@@ -188,7 +188,7 @@ namespace DGtal
      * Constructor.
      * @tparam TDigitalSet type of digital set passed as argument.
      * @param set the initial set copied.
-     * @add_border add border to the computed structure.
+     * @param add_border add border to the computed structure.
      * Set point get attached to primal n-cell <-> dual 0-cell.
      */
     template <typename TDigitalSet>
@@ -248,7 +248,7 @@ namespace DGtal
      * Manually insert cell into calculus.
      * Be sure to insert all adjacent lower order primal cells.
      * @param signed_cell the signed cell to be inserted.
-     * @size_ratio ratio between primal cell size and dual cell size.
+     * @param size_ratio ratio between primal cell size and dual cell size.
      * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
      */
     bool

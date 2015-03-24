@@ -90,10 +90,10 @@ void test_linear_structure()
         //! [neumann-laplace-definition]
         const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
         const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
+        //! [neumann-laplace-definition]
         trace.info() << "d0 = " << d0 << endl;
         trace.info() << "laplace = " << laplace << endl;
         trace.info() << Eigen::MatrixXd(laplace.myContainer) << endl;
-        //! [neumann-laplace-definition]
 
         //! [neumann-solve]
         typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
@@ -161,8 +161,8 @@ void test_linear_structure()
     trace.beginBlock("creating dec problem with dirichlet border condition");
 
     //! [dirichlet-creation]
-    calculus.insertSCell(calculus.myKSpace.sCell(Point(13,0)));
-    calculus.insertSCell(calculus.myKSpace.sCell(Point(1,20), Calculus::KSpace::NEG));
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(13,0)) );
+    calculus.insertSCell( calculus.myKSpace.sCell(Point(1,20), Calculus::KSpace::NEG) );
     //! [dirichlet-creation]
 
     {
@@ -181,10 +181,10 @@ void test_linear_structure()
         //! [dirichlet-laplace-definition]
         const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
         const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
+        //! [dirichlet-laplace-definition]
         trace.info() << "d0 = " << d0 << endl;
         trace.info() << "laplace = " << laplace << endl;
         trace.info() << Eigen::MatrixXd(laplace.myContainer) << endl;
-        //! [dirichlet-laplace-definition]
 
         //! [dirichlet-solve]
         typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;

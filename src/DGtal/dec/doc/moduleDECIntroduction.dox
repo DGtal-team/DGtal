@@ -207,23 +207,26 @@ For example, here is a snippet that define a working two dimensional DEC object.
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_typedef
 
 The DiscreteExteriorCalculus provides a default constructor that initializes an empty structure, ready to be filled with DiscreteExteriorCalculus::SCell through the DiscreteExteriorCalculus.insertSCell member.
-A DiscreteExteriorCalculus object can also be created from a set of points implementing the CDigitalSet concept. This constructor inserts each point as an primal n-cell in the structure and then fills in between k-cells to glue all n-cells together. Borders can be added or removed from the generated structure using the add_border boolean.
+A DiscreteExteriorCalculus object can also be created from a set of points implementing the CDigitalSet concept. This constructor inserts each point as a primal n-cell in the structure and then fills in between k-cells to glue all n-cells together. Borders can be added or removed from the generated structure using the add_border boolean.
 Dual k-cells are created automatically with the right size ratio.
-Note that the structure can be altered after creation to adjust small details (DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseSCell),
-but it should not be modified during the instantiation of any DEC objects or operators.
+Note that the structure can be altered after creation to adjust small details (DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseCell),
+but it should not be modified while any KForm, VectorField or LinearOperator are instancied.
 
 This snippet shows how to create a DEC structure.
-The first call to DiscreteExteriorCalculus.eraseSCell removes the primal n-cell located of the right of the structure.
+The first call to DiscreteExteriorCalculus.eraseCell removes the primal n-cell located of the right of the structure.
 The associated dual 0-cell is destroyed automatically.
 Note that n-cells are created using KhalimskySpaceND.sSpel, and that coordinates of such cells are given in the same system as points from the input set.
 The second call removes a primal 1-cell and opens the hole created by the first call.
 Here coordinates are given in the KhalimskySpaceND signed cell frame of reference.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_with_border
+
+Note moreover that in DEC, **positive** 1-cells are oriented is the **opposite** direction of increasing coordinates.
+
 \image html usage_calculus_with_border.png "Calculus with border."
 
 If you want to have border-less structure, simply reset the add_border boolean.
-The second call to DiscreteExteriorCalculus.eraseSCell isn't needed anymore since the edge was not inserted in the first place.
+The second call to DiscreteExteriorCalculus.eraseCell isn't needed anymore since the edge was not inserted in the first place.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_without_border
 \image html usage_calculus_without_border.png "Calculus without border."
@@ -237,9 +240,10 @@ Therefore the DEC structure shouldn't be modified once DEC operators are created
 
 K-forms are represented by the KForm templated class and vector field are represented by the VectorField templated class.
 Note that DiscreteExteriorCalculus provide handy typedef of common k-forms and vector field, such as DiscreteExteriorCalculus::PrimalForm0, DiscreteExteriorCalculus::DualForm2, DiscreteExteriorCalculus::PrimalVectorField and DiscreteExteriorCalculus::DualVectorField.
-Once a k-form is created, its actual values can by accessed through KForm.myContainer. Cell indexes can be retrieved from cells using DiscreteExteriorCalculus.getSCellIndex and cell can be retrieved from cells using DiscreteExteriorCalculus.getSCell.
+Once a k-form is created, its actual values can by accessed through KForm.myContainer. Cell indexes can be retrieved from cells using DiscreteExteriorCalculus.getSCell and cell can be retrieved from cells using DiscreteExteriorCalculus.getSCell.
 
-Here is a snippet that compute a euclidean distance map (scalar field) on the structure defined above.
+Convenience members KForm.length, VectorField.length, KForm.getSCell and VectorField.getSCell can be used to traverse structures easily.
+Here is a example snippet that compute a euclidean distance map (scalar field) on the structure defined above.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_fill_zero_form
 \image html usage_primal_zero_form.png "Primal 0-form."

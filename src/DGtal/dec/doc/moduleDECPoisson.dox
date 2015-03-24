@@ -112,7 +112,7 @@ The input Dirac can be used as in the Neumann case since no 0-cells has been add
 
 \image html linear_structure_dirichlet_dirac.png "Linear structure with Dirichlet boundary conditions. The input dirac 0-form is displayed, the blue 0-cell is where the non zero point is located. Two dangling edges were added at each ends of the structure."
 
-Laplace operator need to be rebuild, even if the code doesn't change.
+Laplace operator needs to be rebuild, even if the code doesn't change.
 
 \snippet testLinearStructure.cpp dirichlet-laplace-definition
 
@@ -147,7 +147,7 @@ The following illustration represents the dual of the input. Hence,
 since we have specified a dirac on "dual 0-cell", its primal
 representation attaches information to (primal) 2-cells.
 
-\image html solve_laplace_calculus.png "2D DEC structure with input dual 0-form."
+\image html solve_laplace_calculus.png "Input dual 0-form."
 
 We try to solve the problem using EigenLinearAlgebraBackend::SolverSimplicialLLT, but DiscreteExteriorCalculusSolver.isValid reports an error.
 Underlying linear algebra solver DiscreteExteriorCalculusSolver.solver.info reports a <em>numerical_error</em>.
