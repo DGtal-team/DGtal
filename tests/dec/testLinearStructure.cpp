@@ -444,7 +444,7 @@ void test_manual_operators()
              0,  0,  0,  1,  1,  1,  1;
 
         FATAL_ERROR( Eigen::MatrixXd(primal_d1.myContainer) == d1_th );
-        FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == d1_th );
+        FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == -d1_th );
     }
 
     {
@@ -518,7 +518,7 @@ void test_manual_operators()
              0,  0,  0, -1,  0,  1,
              0,  0,  0,  0,  1, -1;
 
-        FATAL_ERROR( Eigen::MatrixXd(primal_d1p.myContainer) == minus_d1p_th_transpose.transpose() );
+        FATAL_ERROR( Eigen::MatrixXd(primal_d1p.myContainer) == -minus_d1p_th_transpose.transpose() );
         FATAL_ERROR( Eigen::MatrixXd(dual_d1.myContainer) == -minus_d1p_th_transpose.transpose() );
     }
 
