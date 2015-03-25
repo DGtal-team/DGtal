@@ -28,6 +28,7 @@
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 
+//#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -307,10 +308,114 @@ void test_linear_ring()
     FATAL_ERROR( Eigen::MatrixXd(laplace.myContainer) == laplace_th );
 }
 
-
-void test_manual_operators()
+void test_manual_operators_3d()
 {
-    trace.beginBlock("testing operators");
+    trace.beginBlock("testing 3d operators");
+
+    const Z3i::Domain domain(Z3i::Point(0,0,0), Z3i::Point(1,1,1));
+
+    typedef DiscreteExteriorCalculus<3, EigenLinearAlgebraBackend> Calculus;
+
+    Calculus calculus;
+    calculus.initKSpace(domain);
+
+    { // filling primal calculus
+        // 0-cells
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(0,0,0)) );
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(2,0,0)) );
+
+        // 1-cells
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(0,1,0), Calculus::KSpace::POS) );
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(0,0,1), Calculus::KSpace::POS) );
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(1,0,0), Calculus::KSpace::POS) );
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(2,1,0), Calculus::KSpace::NEG) );
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(2,0,1), Calculus::KSpace::NEG) );
+
+        // 2-cells
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(0,1,1), Calculus::KSpace::NEG) );
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(1,0,1), Calculus::KSpace::POS) ); //FIXME strange cell orientation
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(2,1,1), Calculus::KSpace::POS) );
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(1,1,0), Calculus::KSpace::NEG) );
+
+        // 3-cells
+        calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(1,1,1)) );
+
+        trace.info() << calculus << endl;
+    }
+
+    trace.beginBlock("base operators");
+
+    {
+        const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
+        const Calculus::DualDerivative2 d2p = calculus.derivative<2, DUAL>();
+        display_operator_info("d0", d0);
+        display_operator_info("d2p", d2p);
+
+        Eigen::MatrixXd d0_th(5, 2);
+        d0_th <<
+            1,  0,
+            1,  0,
+            1, -1,
+            0, -1,
+            0, -1;
+
+        FATAL_ERROR( Eigen::MatrixXd(d0.myContainer) == d0_th );
+        FATAL_ERROR( Eigen::MatrixXd(d2p.myContainer) == d0_th.transpose() );
+    }
+
+    {
+        const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
+        const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
+        display_operator_info("d1", d1);
+        display_operator_info("d1p", d1p);
+
+        Eigen::MatrixXd d1_th(4, 5);
+        d1_th <<
+             1, -1,  0,  0,  0,
+             0,  1, -1,  0,  1,
+             0,  0,  0,  1, -1,
+            -1,  0,  1, -1,  0;
+
+        FATAL_ERROR( Eigen::MatrixXd(d1.myContainer) == d1_th );
+        FATAL_ERROR( Eigen::MatrixXd(d1p.myContainer) == d1_th.transpose() );
+    }
+
+    {
+        const Calculus::PrimalDerivative2 d2 = calculus.derivative<2, PRIMAL>();
+        const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
+        display_operator_info("d2", d2);
+        display_operator_info("d0p", d0p);
+
+        Eigen::MatrixXd d2_th(1, 4);
+        d2_th << -1, -1, -1, -1;
+
+        FATAL_ERROR( Eigen::MatrixXd(d2.myContainer) == d2_th );
+        FATAL_ERROR( Eigen::MatrixXd(d0p.myContainer) == d2_th.transpose() );
+    }
+
+    trace.endBlock();
+
+    /*
+    QApplication app(0, NULL);
+
+    typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+    Viewer* viewer = new Viewer(calculus.myKSpace);
+    viewer->show();
+    viewer->setWindowTitle("structure");
+    (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
+    (*viewer) << domain;
+    Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus);
+    (*viewer) << Viewer::updateDisplay;
+
+    app.exec();
+    */
+
+    trace.endBlock();
+}
+
+void test_manual_operators_2d()
+{
+    trace.beginBlock("testing 2d operators");
 
     const Domain domain(Point(0,0), Point(5,4));
 
@@ -789,7 +894,8 @@ void test_manual_operators()
 int
 main()
 {
-    test_manual_operators();
+    test_manual_operators_3d();
+    test_manual_operators_2d();
     test_linear_ring();
     test_linear_structure();
     return 0;
