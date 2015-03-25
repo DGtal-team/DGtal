@@ -51,8 +51,7 @@
 #include <GL/glu.h>
 #endif
 
-#include <QtGui/qapplication.h>
-
+#include <QApplication>
 
 #include <QGLViewer/qglviewer.h>
 #include <QGLWidget>
@@ -109,7 +108,7 @@ namespace DGtal
    * This class is parametrized by both the Digital and Khalimsky
    * space used to display object. More precisely, embed methods are
    * used to compute the Euclidean coordinate of digital
-   * objects/khalimksy cells. 
+   * objects/khalimksy cells.
    *
    * @tparam Space any model of Digital 3D Space
    * @tparam KSpace any mode of Khalimksky 3D space
@@ -238,7 +237,7 @@ namespace DGtal
     bool myViewWire;
     /// to improve the display of gl line
     double myGLLineMinWidth;
-    
+
     /**
      * Used to display the 2D domain of an image.
      * @note has to be public because of external functions
@@ -729,8 +728,8 @@ namespace DGtal
      * @param pointel the pointel to draw
      */
     void glDrawGLBall ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
-    
- 
+
+
 
     /**
      * Used to manage new key event (wich are added from the default
@@ -1030,12 +1029,12 @@ namespace DGtal
     };
 
 
-    
+
     /**
      *
      * Type associated to the special intern method GLCreateCubeSetList.
      *
-     **/ 
+     **/
     typedef typename std::vector<typename Viewer3D<Space, KSpace>::CubeD3D> VectorCubes;
     typedef typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D> VectorQuad;
     typedef typename std::vector<typename Viewer3D<Space, KSpace>::LineD3D> VectorLine;
@@ -1043,13 +1042,13 @@ namespace DGtal
     typedef typename std::vector<typename Viewer3D<Space, KSpace>::TriangleD3D> VectorTriangle;
     typedef typename std::vector<typename Viewer3D<Space, KSpace>::PolygonD3D> VectorPolygon;
     typedef typename std::vector<typename Viewer3D<Space, KSpace>::TextureImage> VectorTextureImage;
-    
-    
+
+
     typedef typename VectorCubes::iterator ItCube;
-    
+
 
     /**
-     * Creates an OpenGL list of type GL_QUADS from a vector of CubeD3D. 
+     * Creates an OpenGL list of type GL_QUADS from a vector of CubeD3D.
      * @param[in] aVectCubes a vector of cubes (Cube3D) containing the cubes to be displayed.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/
@@ -1058,53 +1057,53 @@ namespace DGtal
 
 
     /**
-     * Creates an OpenGL list of type GL_QUADS from a vector of QuadD3D. 
+     * Creates an OpenGL list of type GL_QUADS from a vector of QuadD3D.
      * @param[in] aVectQuad  a vector of quads (QuadD3D) containing the quads to be displayed.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/
     void glCreateListQuadD3D(const VectorQuad &aVectQuad, unsigned int idList);
-    
+
 
     /**
-     * Creates an OpenGL list of type QL_LINES from a vector of LineD3D. 
+     * Creates an OpenGL list of type QL_LINES from a vector of LineD3D.
      * @param[in] aVectLine  a vector of lines (LineD3D) containing the quads to be displayed.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/
     void glCreateListLines(const VectorLine &aVectLine, unsigned int idList);
-    
-    
+
+
     /**
-     * Creates an OpenGL list of type  GL_POINTS from a vector of BallD3D. 
+     * Creates an OpenGL list of type  GL_POINTS from a vector of BallD3D.
      * @param[in] aVectBall  a vector of balls (BallD3D) containing the points to be displayed.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/
     void glCreateListBalls(const VectorBall &aVectBall, unsigned int idList);
 
-    
+
     /**
      * Creates an OpenGL list of type GL_QUADS from a QuadsMap.  Only
      * one OpenGL list is created but each map compoment (QuadD3D
      * vector) are marked by its identifier through the OpenGl
-     * glPushName() function. 
+     * glPushName() function.
      * See @ref moduleQGLInteraction for more details.
      * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
      * @param[in] idList the Id of the list (should be given by glGenLists).
-     **/    
+     **/
     void glCreateListQuadMaps(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
-    
-    
+
+
     /**
      * Creates an OpenGL list of type GL_LINES from a QuadsMap.  Only
      * one OpenGL list is created but each map compoment (QuadD3D
      * vector) are marked by its identifier through the OpenGl
-     * glPushName() function. 
+     * glPushName() function.
      * See @ref moduleQGLInteraction for more details.
      * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
      * @param[in] idList the Id of the list (should be given by glGenLists).
-     **/    
+     **/
     void glCreateListQuadMapsWired(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
 
-    
+
     /**
      * Creates an OpenGL list of type GL_TRIANGLES from a vector of VectorTriangle.
      * All triangles are displayed in the same list.
@@ -1112,7 +1111,7 @@ namespace DGtal
      * @param[in] idList the Id of the list (should be given by glGenLists).
      * @todo change the structure to support interactions as QuadMap do.
      * See \ref moduleQGLInteraction for more details.
-     **/    
+     **/
     void glCreateListTriangles(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
 
 
@@ -1123,12 +1122,12 @@ namespace DGtal
      * @param[in] idList the Id of the list (should be given by glGenLists).
      * @todo change the structure to support interactions as QuadMap do.
      * See @ref moduleQGLInteraction for more details.
-     **/    
+     **/
     void glCreateListTrianglesWired(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
-    
+
 
     /**
-     * Creates an OpenGL list of type  GL_POLYGON from a vector of VectorPolygon. 
+     * Creates an OpenGL list of type  GL_POLYGON from a vector of VectorPolygon.
      * All polygons are displayed in the same list.
      * @param  aVectPolygon a vector of VectorPolygon containing the points to be displayed.
      * @param idList the Id of the list (should be given by glGenLists).
@@ -1136,10 +1135,10 @@ namespace DGtal
      * See @ref moduleQGLInteraction for more details.
      **/
     void glCreateListPolygons(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
-    
+
 
     /**
-     * Creates an OpenGL list of type  GL_LINES from a vector of VectorPolygon. 
+     * Creates an OpenGL list of type  GL_LINES from a vector of VectorPolygon.
      * All polygons are displayed in the same list.
      * @param[in] aVectPolygon  a vector of vector of polygons (VectorPolygon) containing the points to be displayed.
      * @param[in] idList the Id of the list (should be given by glGenLists).
@@ -1148,18 +1147,18 @@ namespace DGtal
      **/
     void glCreateListPolygonsWired(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
 
-    
+
     /**
-     * Update the container of GLTextureImage object with the given vector of TextureImage. 
-     * @param[in] aVectImage the vector containing 
+     * Update the container of GLTextureImage object with the given vector of TextureImage.
+     * @param[in] aVectImage the vector containing
      *
-     **/    
+     **/
     void glUpdateTextureImages(const VectorTextureImage  &aVectImage);
-    
-    
 
 
-    
+
+
+
 
   public:
     /**
@@ -1213,7 +1212,7 @@ namespace DGtal
 
     /// lists of the list to draw
     //GLuint myListToAff;
-    
+
     GLuint myCubeSetListId;
     GLuint myCubeSetListWiredId;
 
@@ -1222,18 +1221,18 @@ namespace DGtal
 
     GLuint myPolygonSetListId;
     GLuint myPolygonSetListWiredId;
-    
+
     GLuint myLineSetListId;
     GLuint myBallSetListId;
     GLuint myPrismListId;
 
     GLuint myQuadsMapId;
     GLuint myQuadsMapWiredId;
-    
+
     /// number of lists in myListToAff
-    
+
     unsigned int myNbListe;
-    unsigned int myNbCubeSetList;    
+    unsigned int myNbCubeSetList;
     unsigned int myNbLineSetList;
     unsigned int myNbBallSetList;
     unsigned int myNbPrismSetList;
