@@ -160,8 +160,7 @@ test_hodge(int domain_size)
 
         const typename Calculus::DualIdentity0 dual_laplace = calculus.dualLaplace();
         DGtal::trace.info() << "dual_laplace_trace=" << dual_laplace.myContainer.diagonal().sum() << std::endl;
-        if (Calculus::dimension%2 == 0) FATAL_ERROR( ( dual_laplace.myContainer.diagonal().array() <= 0 ).prod() == true );
-        else FATAL_ERROR( ( dual_laplace.myContainer.diagonal().array() >= 0 ).prod() == true );
+        FATAL_ERROR( ( dual_laplace.myContainer.diagonal().array() >= 0 ).prod() == true );
 
         DGtal::trace.endBlock();
     }
