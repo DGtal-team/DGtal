@@ -21,7 +21,7 @@ OPTION(WITH_MAGICK "With GraphicsMagick++." OFF)
 OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_HDF5 "With HDF5." OFF)
-OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
+OPTION(WITH_QGLVIEWER_QT "With LibQGLViewer for 3D visualization (Qt required)." OFF)
 OPTION(WITH_PATATE "With Patate library for geometry OFF (Eigen required)." processing)
 OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
 
@@ -278,7 +278,7 @@ IF(WITH_ITK)
        message( "         Disabling option -ftemplate-depth-xx in CMAKE_CXX_FLAGS." )
        set( CMAKE_CXX_FLAGS_TMP ${CMAKE_CXX_FLAGS} )
        STRING( REGEX REPLACE "-ftemplate-depth-[0-9]*" ""
-	 CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_TMP}" )
+   CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_TMP}" )
        message ("         CMAKE_CXX_FLAGS=" ${CMAKE_CXX_FLAGS} )
      endif (CMAKE_CXX_FLAGS MATCHES "-ftemplate-depth-[0-9]*")
 
@@ -336,43 +336,52 @@ ENDIF(WITH_HDF5)
 # Look for Qt (needed by libqglviewer visualization).
 # -----------------------------------------------------------------------------
 set(QT5_FOUND_DGTAL 0)
-if(WITH_QGLVIEWER)
-  find_package(Qt5 COMPONENTS Widgets OpenGL Xml)
+if (WITH_QGLVIEWER)
+  find_package(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED)
 
   if (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
     set(QT5_FOUND_DGTAL 1)
+    set(QT_USE_QTXML 1)
     message(STATUS "Qt5 (Widgets, OpenGL and Xml modules) found (needed by QGLViewer compiled with Qt5).")
 
     add_definitions("-DWITH_QT5")
 
-    set(DGtalLibDependencies ${DGtalLibDependencies} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES} ${Qt5Xml_LIBRARIES})
-    set(DGtalLibInc ${DGtalLibInc} ${Qt5Widgets_INCLUDES_DIRS} ${Qt5OpenGL_INCLUDES_DIR} ${Qt5Xml_INCLUDES_DIR})
+    set(DGtalLibDependencies ${DGtalLibDependencies}
+                             ${Qt5Widgets_LIBRARIES}
+                             ${Qt5OpenGL_LIBRARIES}
+                             ${Qt5Xml_LIBRARIES})
+    set(DGtalLibInc ${DGtalLibInc}
+                    ${Qt5Widgets_INCLUDES_DIRS}
+                    ${Qt5OpenGL_INCLUDES_DIR}
+                    ${Qt5Xml_INCLUDES_DIR})
 
-  else(Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
+  else (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
    message(STATUS "One of Qt5's modules was not found (needed by QGLViewer).")
-  endif(Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
+  endif (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
 
-endif(WITH_QGLVIEWER)
+endif (WITH_QGLVIEWER)
 
 set(QT4_FOUND_DGTAL 0)
-IF( WITH_QGLVIEWER)
-  find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL)
-  if ( QT4_FOUND )
-    set(QT4_FOUND_DGTAL 1)
-    message(STATUS  "Qt4 found (needed by QGLVIEWER).")
-    set(QT_USE_QTXML 1)
-    ADD_DEFINITIONS("-DWITH_QT4 ")
-    include( ${QT_USE_FILE})
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
-    SET(DGtalLibInc ${DGtalLibInc} ${QT_INCLUDE_DIR})
-  else ( QT4_FOUND )
-    message(STATUS "Qt4 not found (needed by QGLVIEWER compiled with Qt4).")
-  endif ( QT4_FOUND )
-ENDIF( WITH_QGLVIEWER)
+if (WITH_QGLVIEWER AND NOT QT5_FOUND_DGTAL)
+  find_package(Qt4 COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
 
-if(WITH_QGLVIEWER AND NOT QT4_FOUND AND NOT Qt5Widgets_FOUND AND NOT Qt5OpenGL_FOUND AND NOT Qt5Xml_FOUND)
+  if (QT4_FOUND)
+    set(QT4_FOUND_DGTAL 1)
+    message(STATUS  "Qt4 found (needed by QGLVIEWER compiled with Qt4).")
+    set(QT_USE_QTXML 1)
+    add_definitions("-DWITH_QT4")
+    include(${QT_USE_FILE})
+    set(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
+    set(DGtalLibInc ${DGtalLibInc} ${QT_INCLUDE_DIR})
+  else (QT4_FOUND)
+    message(STATUS "Qt4 not found (needed by QGLVIEWER compiled with Qt4).")
+  endif (QT4_FOUND)
+
+endif (WITH_QGLVIEWER AND NOT QT5_FOUND_DGTAL)
+
+if (WITH_QGLVIEWER AND NOT QT4_FOUND AND NOT Qt5Widgets_FOUND AND NOT Qt5OpenGL_FOUND AND NOT Qt5Xml_FOUND)
   message(FATAL_ERROR "Qt4 or Qt5 weren't found.")
-endif(WITH_QGLVIEWER AND NOT QT4_FOUND AND NOT Qt5Widgets_FOUND AND NOT Qt5OpenGL_FOUND AND NOT Qt5Xml_FOUND)
+endif (WITH_QGLVIEWER AND NOT QT4_FOUND AND NOT Qt5Widgets_FOUND AND NOT Qt5OpenGL_FOUND AND NOT Qt5Xml_FOUND)
 
 # -----------------------------------------------------------------------------
 # Look for QGLViewer for 3D display.
