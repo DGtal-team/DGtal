@@ -42,10 +42,11 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class SphericalAccumulator.
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 
 bool testSphericalViewer(int argc, char **argv)
 {
@@ -60,8 +61,8 @@ bool testSphericalViewer(int argc, char **argv)
 
   for(unsigned int i=0; i< 10000; i++)
     accumulator.addDirection( Vector (1+10.0*(rand()-RAND_MAX/2)/(double)RAND_MAX,
-				      (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX,
-				      (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX));
+              (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX,
+              (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX));
 
   Viewer3D<> viewer;
   viewer.show();

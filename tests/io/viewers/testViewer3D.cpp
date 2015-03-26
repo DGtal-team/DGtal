@@ -29,7 +29,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -52,14 +56,14 @@ using namespace Z3i;
 bool testViewer3D()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;  
+  unsigned int nb = 0;
   trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -73,36 +77,36 @@ int main( int argc, char** argv )
  Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
- 
- 
+
+
  trace.beginBlock ( "Testing class for  Viewer3D" );
 
 
  Point p1( 14, 14, 14 );
  Point p2( 27, 27, 27 );
  Domain domain( p1, p2 );
- 
+
  viewer << CustomColors3D(Color(20, 20, 20, 50),Color(20, 0,250,30));
  viewer << SetMode3D(domain.className(), "Grid");
- viewer << domain;  
- 
+ viewer << domain;
+
  DigitalSet shape_set( domain );
  Shapes<Domain>::addNorm1Ball( shape_set, Point( 13, 23, 13 ), 7 );
    viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 50));
- 
+
  viewer << shape_set ;
- DigitalSet shape_set2( domain ); 
+ DigitalSet shape_set2( domain );
  Shapes<Domain>::addNorm1Ball( shape_set2, Point( 24, 15, 12 ), 12 );
  viewer << shape_set2 ;
- 
- DigitalSet shape_set3( domain ); 
+
+ DigitalSet shape_set3( domain );
  Shapes<Domain>::addNorm2Ball( shape_set3, Point( 11, 15, 12 ), 12 );
  viewer << CustomColors3D(Color(250, 20,0, 190),Color(220, 20,20, 250));
  viewer << shape_set3 ;
 
 
- 
- 
+
+
   Point pp1( -1, -1, -2 );
   Point pp2( 2, 2, 3 );
 
@@ -113,11 +117,11 @@ int main( int argc, char** argv )
   Point pp5( -1, 2, 3 );
   Point pp6( 0, 0, 0 );
   Point pp0( 0, 2, 1 );
-  
+
   //viewer<< m;
   viewer <<  SetMode3D( pp1.className(), "Paving" );
   viewer << pp1 << pp2 << pp3;
-  
+
   //viewer <<  SetMode3D( pp1.className(), "Grid" );
   viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   viewer <<  SetMode3D( pp1.className(), "PavingWired" );
@@ -131,7 +135,7 @@ int main( int argc, char** argv )
 
   viewer << SetMode3D(domain.className(), "Paving");
   viewer << domain2 << Display3D<Space, KSpace>::updateDisplay;
- 
+
 
  bool res = application.exec();
  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
