@@ -15,7 +15,8 @@ void propa_2d()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(29,29));
 
     typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
-    const Calculus calculus(generateRingSet(domain), false);
+    //const Calculus calculus(generateRingSet(domain), false);
+    const Calculus calculus(generateDiskSet(domain), false);
 
     {
         Board2D board;
@@ -38,24 +39,28 @@ void propa_2d()
     const Calculus::Scalar cc = 8; // px/s
     const Eigen::VectorXd angular_frequencies = cc * eigen_values.array().sqrt();
 
-    Calculus::DualForm0 initial_wave(calculus);
-    for (int xx=3; xx<7; xx++)
-    for (int yy=10; yy<20; yy++)
+    Eigen::VectorXcd initial_wave(calculus.kFormLength(0, DUAL));
+    //for (int xx=3; xx<7; xx++)
+    //for (int yy=10; yy<20; yy++)
+    for (int xx=13; xx<17; xx++)
+    for (int yy=13; yy<17; yy++)
     {
-        const Calculus::Cell cell = calculus.myKSpace.uSpel(Z2i::Point(xx,yy));
+        const Z2i::Point point(xx,yy);
+        const Calculus::Cell cell = calculus.myKSpace.uSpel(point);
         const Calculus::Index index = calculus.getCellIndex(cell);
-        initial_wave.myContainer(index) = 1;
+        //initial_wave(index) = std::exp(std::complex<double>(0,M_PI/2.*((xx-14.5)/2.-(yy-14.5)/4.)));
+        initial_wave(index) = std::exp(std::complex<double>(0,M_PI/2.*(xx-14.5)/1.5));
     }
 
     {
         Board2D board;
         board << domain;
         board << CustomStyle("KForm", new KFormStyle2D(-1, 1));
-        board << initial_wave;
+        board << Calculus::DualForm0(calculus, (initial_wave.array().conjugate()*initial_wave.array()).real().sqrt());
         board.saveSVG("propagation_wave_initial_coarse.svg");
     }
 
-    Eigen::VectorXd initial_projections = eigen_vectors.transpose() * initial_wave.myContainer;
+    Eigen::VectorXcd initial_projections = eigen_vectors.transpose() * initial_wave;
 
     // low pass
     const Calculus::Scalar lambda_cutoff = 5.;
@@ -71,10 +76,11 @@ void propa_2d()
     trace.info() << "cutted = " << cutted << "/" << initial_projections.rows() << endl;
 
     {
+        const Eigen::VectorXcd wave = eigen_vectors * initial_projections;
         Board2D board;
         board << domain;
         board << CustomStyle("KForm", new KFormStyle2D(-1, 1));
-        board << Calculus::DualForm0(calculus, eigen_vectors * initial_projections);
+        board << Calculus::DualForm0(calculus, (wave.array().conjugate()*wave.array()).real().sqrt());
         board.saveSVG("propagation_wave_initial.svg");
     }
 
@@ -82,7 +88,8 @@ void propa_2d()
     for (int kk=0; kk<100; kk++)
     {
         const Calculus::Scalar time = kk/20.;
-        const Eigen::VectorXd current_projections = (angular_frequencies * time).array().cos() * initial_projections.array();
+        const Eigen::VectorXcd current_projections = (angular_frequencies * std::complex<double>(0,time)).array().exp() * initial_projections.array();
+        const Eigen::VectorXcd current_wave = eigen_vectors * current_projections;
 
         std::stringstream ss;
         ss << "propagation_wave_" << kk << ".svg";
@@ -90,7 +97,7 @@ void propa_2d()
         Board2D board;
         board << domain;
         board << CustomStyle("KForm", new KFormStyle2D(-1, 1));
-        board << Calculus::DualForm0(calculus, eigen_vectors * current_projections);
+        board << Calculus::DualForm0(calculus, (current_wave.array().conjugate()*current_wave.array()).real().sqrt());
         board.saveSVG(ss.str().c_str());
 
         trace.progressBar(kk+1,100);
