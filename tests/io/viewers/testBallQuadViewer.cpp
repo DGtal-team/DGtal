@@ -29,7 +29,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"

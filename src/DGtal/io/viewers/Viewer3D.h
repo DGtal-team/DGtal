@@ -51,7 +51,11 @@
 #include <GL/glu.h>
 #endif
 
-#include <QApplication>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 
 #include <QGLViewer/qglviewer.h>
 #include <QGLWidget>
@@ -346,13 +350,13 @@ namespace DGtal
        * @param img the image
        */
       TextureImage(const TextureImage & img): point1(img.point1), point2(img.point2),
-					      point3(img.point3), point4(img.point4),
-					      myDirection(img.myDirection), myImageWidth(img.myImageWidth),
-					      myImageHeight(img.myImageHeight),
-					      myTabImage(img.myTabImage),
-					      myDrawDomain(img.myDrawDomain),
-					      myIndexDomain(img.myIndexDomain),
-					      myMode(img.myMode)
+                point3(img.point3), point4(img.point4),
+                myDirection(img.myDirection), myImageWidth(img.myImageWidth),
+                myImageHeight(img.myImageHeight),
+                myTabImage(img.myTabImage),
+                myDrawDomain(img.myDrawDomain),
+                myIndexDomain(img.myIndexDomain),
+                myMode(img.myMode)
       {
 
         if(img.myImageHeight>0 && img.myImageWidth>0)
@@ -588,7 +592,7 @@ namespace DGtal
 
     void updateTextureImage(unsigned int imageIndex, const TImageType & image, const TFunctor & aFunctor,
                             double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0,
-			    double rotationAngle=0.0, ImageDirection rotationDir=zDirection);
+          double rotationAngle=0.0, ImageDirection rotationDir=zDirection);
 
 
 
@@ -683,7 +687,7 @@ namespace DGtal
      **/
 
     void  rotateLineD3D(typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine, DGtal::PointVector<3, int> pt,
-			double angleRotation, ImageDirection dirRotation);
+      double angleRotation, ImageDirection dirRotation);
 
 
 
@@ -922,7 +926,7 @@ namespace DGtal
                                                     myBufferHeight(aGLImg.myBufferHeight),
                                                     myTextureName(aGLImg.myTextureName),
                                                     myMode(aGLImg.myMode),
-						    myTextureFitX(aGLImg.myTextureFitX),
+                myTextureFitX(aGLImg.myTextureFitX),
                                                     myTextureFitY(aGLImg.myTextureFitY)
 
       {
@@ -1200,8 +1204,8 @@ namespace DGtal
 
     static
     void  rotatePoint(double &x, double &y, double &z,
-		      double cx, double cy, double cz,
-		      double rotationAngle, ImageDirection rotationDir);
+          double cx, double cy, double cz,
+          double rotationAngle, ImageDirection rotationDir);
 
 
 
