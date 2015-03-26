@@ -27,7 +27,11 @@
 */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <QtGui/QApplication>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/shapes/parametric/Ball3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <iostream>
@@ -53,14 +57,14 @@
  int main(int argc, char** argv)
  {
 
-     
-   
+
+
    // -------------------------------------------------------------------------- Type declaring
    typedef Space::RealPoint RealPoint;
    typedef Ball3D<Space> EuclideanShape;
    typedef GaussDigitizer<Space,EuclideanShape> DigitalShape;
-    
-   
+
+
    // -------------------------------------------------------------------------- Creating the shape
     RealPoint c1(0, 0, 0 );
     EuclideanShape ball1( c1, 12.2 );
@@ -73,7 +77,7 @@
     dshape.init( RealPoint( p1 ), RealPoint( p2 ), 1.0);
     Domain domain = dshape.getDomain();
 
-   
+
    // -------------------------------------------------------------------------- Khalimskhy
     KSpace K;
     bool space_ok = K.init( domain.lowerBound(), domain.upperBound(), true );
@@ -82,7 +86,7 @@
       return 2;
     }
 
-   
+
     // -------------------------------------------------------------------------- Other types
     typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
     typedef KSpace::Surfel Surfel;
@@ -96,7 +100,7 @@
     Surfel bel = Surfaces<KSpace>::findABel( K, dshape, 1000 );
     Surfaces<KSpace>::trackBoundary( theSetOfSurfels.surfelSet(), K, surfAdj, dshape, bel );
 
-    
+
 
     QApplication application(argc,argv);
     Viewer3D<> viewer;
@@ -113,8 +117,8 @@
   double minCurv=1;
   double maxCurv=0;
   CanonicSCellEmbedder<KSpace> midpoint(K);
-  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); 
-	it != it_end; ++it)
+  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
+  it != it_end; ++it)
   {
 
     RealPoint A = midpoint( *it );
@@ -124,11 +128,11 @@
 
     if(a>maxCurv)
     {
-	maxCurv=a;
+  maxCurv=a;
     }
     if(a<minCurv)
     {
-	minCurv=a;
+  minCurv=a;
     }
   }
 
