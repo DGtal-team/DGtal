@@ -342,32 +342,6 @@ ENDIF(WITH_HDF5)
 # -----------------------------------------------------------------------------
 # Look for Qt (needed by libqglviewer visualization).
 # -----------------------------------------------------------------------------
-set(QT5_FOUND_DGTAL 0)
-if (WITH_QGLVIEWER)
-  find_package(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED)
-
-  if (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
-    set(QT5_FOUND_DGTAL 1)
-    set(QT_USE_QTXML 1)
-    message(STATUS "Qt5 (Widgets, OpenGL and Xml modules) found (needed by QGLViewer compiled with Qt5).")
-
-    add_definitions("-DWITH_QT5")
-
-    set(DGtalLibDependencies ${DGtalLibDependencies}
-                             ${Qt5Widgets_LIBRARIES}
-                             ${Qt5OpenGL_LIBRARIES}
-                             ${Qt5Xml_LIBRARIES})
-    set(DGtalLibInc ${DGtalLibInc}
-                    ${Qt5Widgets_INCLUDES_DIRS}
-                    ${Qt5OpenGL_INCLUDES_DIR}
-                    ${Qt5Xml_INCLUDES_DIR})
-
-  else (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
-   message(STATUS "One of Qt5's modules was not found (needed by QGLViewer).")
-  endif (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
-
-endif (WITH_QGLVIEWER)
-
 set(QT4_FOUND_DGTAL 0)
 set(QT5_FOUND_DGTAL 0)
 if (WITH_QGLVIEWER)
