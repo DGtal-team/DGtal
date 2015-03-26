@@ -33,7 +33,11 @@
 //! [MeshUseInclude]
 #include "DGtal/shapes/Mesh.h"
 //! [MeshUseInclude]
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/io/viewers/Viewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -48,12 +52,12 @@ int main( int argc, char** argv )
   //! [MeshUseInitDisplay]
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.show();     
+  viewer.show();
   //! [MeshUseInitDisplay]
 
 
   //! [MeshUseMeshCreation]
-  // A mesh is constructed and faces are added from the vertex set. 
+  // A mesh is constructed and faces are added from the vertex set.
   //! [MeshUseMeshConstructor]
   Mesh<Point> aMesh(true);
   //! [MeshUseMeshConstructor]
@@ -86,8 +90,8 @@ int main( int argc, char** argv )
   listIndex.push_back(8);
   listIndex.push_back(9);
   listIndex.push_back(10);
-  listIndex.push_back(11);  
-  listIndex.push_back(12);  
+  listIndex.push_back(11);
+  listIndex.push_back(12);
   aMesh.addFace(listIndex, Color(150,150,0,54));
   //! [MeshUseMeshAddingPolygonalFaces]
   //! [MeshUseMeshCreation]

@@ -33,7 +33,11 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Mesh.h"
 #include "DGtal/io/viewers/Viewer3D.h"
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 //! [MeshUseInclude]
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -59,7 +63,7 @@ int main( int argc, char** argv )
   //! [MeshUseInitDisplay]
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.show();     
+  viewer.show();
   //! [MeshUseInitDisplay]
 
   //! [MeshUseMeshCreation]
@@ -79,17 +83,17 @@ int main( int argc, char** argv )
   aMesh.addVertex(Point(0,2,2));
   aMesh.addVertex(Point(0,1,2));
   aMesh.addVertex(Point(0,0,1));
-  
+
   aMesh.addTriangularFace(0, 1, 2, Color(150,0,150,104));
   aMesh.addQuadFace(6,5,4,3, Color::Blue);
-  
+
   vector<unsigned int> listIndex;
   listIndex.push_back(7);
   listIndex.push_back(8);
   listIndex.push_back(9);
   listIndex.push_back(10);
-  listIndex.push_back(11);  
-  listIndex.push_back(12);  
+  listIndex.push_back(11);
+  listIndex.push_back(12);
 
   aMesh.addFace(listIndex, Color(150,150,0,54));
   //! [MeshUseMeshCreation]

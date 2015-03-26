@@ -28,7 +28,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
@@ -61,9 +65,9 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-/** 
+/**
  * Set to a given value a random set of @a nb points.
- * 
+ *
  * @param image the  image
  * @param nb the number of random points to insert
  * @param value the value to add at each random point
@@ -81,7 +85,7 @@ void randomSeeds(Image &image, const unsigned int nb, const int value)
     {
       for (unsigned int dim = 0; dim < Image::dimension; dim++)
         p[dim] = rand() % (ext[dim]) +  low[dim];
-    
+
       image.setValue(p, value);
     }
 }
@@ -90,9 +94,9 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-  
+
   std::string inputFilename = examplesPath + "samples/Al.100.vol";
-  
+
   //------------
   QApplication application(argc,argv);
   Viewer3D<> viewer;
@@ -100,7 +104,7 @@ int main( int argc, char** argv )
   viewer.show();
 
 
- 
+
   //Default image selector = STLVector
   typedef ImageSelector<Z3i::Domain, unsigned char>::Type Image;
   Image image = VolReader<Image>::importVol( inputFilename );
@@ -124,18 +128,18 @@ int main( int argc, char** argv )
 
   unsigned int min = 0;
   unsigned int max = 0;
-  for(DTL2::ConstRange::ConstIterator it = dtL2.constRange().begin(), 
+  for(DTL2::ConstRange::ConstIterator it = dtL2.constRange().begin(),
         itend=dtL2.constRange().end();
       it!=itend;
       ++it)
     {
-      if(  (*it) < min )   
+      if(  (*it) < min )
         min=(*it);
-      if( (*it) > max ) 
+      if( (*it) > max )
         max=(*it);
     }
-     
-     
+
+
   GradientColorMap<long> gradient( 0,30);
   gradient.addColor(Color::Red);
   gradient.addColor(Color::Yellow);
@@ -143,30 +147,30 @@ int main( int argc, char** argv )
   gradient.addColor(Color::Cyan);
   gradient.addColor(Color::Blue);
   gradient.addColor(Color::Magenta);
-  gradient.addColor(Color::Red);  
- 
+  gradient.addColor(Color::Red);
+
 
   viewer << SetMode3D( (*(domain.begin())).className(), "Paving" );
-  
+
   for(Z3i::Domain::ConstIterator it = domain.begin(), itend=domain.end();
       it!=itend;
       ++it){
-   
-    double valDist= dtL2( (*it) );     
+
+    double valDist= dtL2( (*it) );
     Color c= gradient(valDist);
-   
+
     if(dtL2(*it)<=30 && image(*it)>0){
-      viewer << CustomColors3D(Color((float)(c.red()), 
+      viewer << CustomColors3D(Color((float)(c.red()),
                                      (float)(c.green()),
-                                     (float)(c.blue(),205)), 
-                               Color((float)(c.red()), 
+                                     (float)(c.blue(),205)),
+                               Color((float)(c.red()),
                                      (float)(c.green()),
                                      (float)(c.blue()),205));
       viewer << *it ;
-    }     
+    }
   }
   viewer<< Viewer3D<>::updateDisplay;
- 
+
   return application.exec();
 }
 //                                                                           //
