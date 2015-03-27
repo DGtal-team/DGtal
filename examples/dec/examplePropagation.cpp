@@ -126,7 +126,7 @@ void propa_2d()
         const Calculus::Scalar lambda_0 = 4*23./5;
         trace.info() << "lambda_0 = " << lambda_0 << endl;
 
-        const Calculus::DualIdentity0 dalembert = (2*M_PI/lambda_0)*(2*M_PI/lambda_0) * calculus.identity<0, DUAL>() - calculus.dualLaplace();
+        const Calculus::DualIdentity0 dalembert = calculus.dualLaplace() - (2*M_PI/lambda_0)*(2*M_PI/lambda_0) * calculus.identity<0, DUAL>();
         trace.info() << "dalembert = " << dalembert << endl;
 
         trace.beginBlock("finding eigen pairs");
@@ -137,7 +137,7 @@ void propa_2d()
         const Eigen::MatrixXd eigen_vectors = eigen_solver.eigenvectors();
         trace.endBlock();
 
-        const Eigen::MatrixXd concentration_to_wave = -1 * eigen_vectors * eigen_values.array().inverse().matrix().asDiagonal() * eigen_vectors.transpose();
+        const Eigen::MatrixXd concentration_to_wave = eigen_vectors * eigen_values.array().inverse().matrix().asDiagonal() * eigen_vectors.transpose();
 
         Calculus::DualForm0 concentration(calculus);
         for (int xx=24; xx<26; xx++)
