@@ -38,12 +38,6 @@
 #include "DGtal/kernel/BasicPointFunctors.h"
 //! [ExampleViewer3D2DImagesExtractImagesNonSliceHeader]
 
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

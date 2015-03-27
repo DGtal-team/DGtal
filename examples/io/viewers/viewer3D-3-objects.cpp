@@ -29,11 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
+
 #include "DGtal/base/Common.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"

@@ -35,12 +35,6 @@
 #include "ConfigExamples.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
-
 //! [ExampleViewer3D2DImagesExtractImagesColorHeader]
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/viewers/DrawWithViewer3DModifier.h"

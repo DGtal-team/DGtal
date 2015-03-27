@@ -47,11 +47,6 @@
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 #include "DGtal/base/BasicFunctors.h"
 
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 

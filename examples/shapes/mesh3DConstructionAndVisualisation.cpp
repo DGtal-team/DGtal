@@ -33,11 +33,6 @@
 //! [MeshUseInclude]
 #include "DGtal/shapes/Mesh.h"
 //! [MeshUseInclude]
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
 #include "DGtal/io/viewers/Viewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 

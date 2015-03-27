@@ -33,11 +33,7 @@
 //! [includeImportOFF]
 #include "DGtal/io/readers/MeshReader.h"
 //! [includeImportOFF]
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
+
 #include "DGtal/io/Display3D.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 
