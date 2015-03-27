@@ -54,13 +54,13 @@ namespace DGtal
   // template class Mesh
   /**
    * Description of template class 'Mesh' <p> \brief Aim: This class
-   * is defined to represent a surface mesh through a set a vertex and
-   * a set of faces represented by its vertex index.  By using the
-   * default constructor, the mesh does not store color information
-   * (can be done by setting the default constructor parameter
-   * saveFaceColor to true).
+   * is defined to represent a surface mesh through a set of vertices
+   * and faces.  By using the default constructor, the mesh does not
+   * store any color information (it can be changed  by setting the default
+   * constructor parameter saveFaceColor to 'true').
    *
-   * The mesh object store explicitly each vertex and each face are represented with the list of point index.   
+   * The mesh object stores explicitly each vertex and each face are
+   * represented with the list of point index.
    *
    * @note This class is a preliminary version of a mesh strucuture
    * (the method to access neigborhing facets or to a given facet are
@@ -70,16 +70,16 @@ namespace DGtal
    * Since it realized the concept of CDrawableWithDisplay3D we can display an Mesh with a Display3D object:
    *
    * First we have to include the following header files:
-   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
    *
    * Prepare display using QGLviewer: Viewer3D
-   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshUseInitDisplay 
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInitDisplay 
    *
    * Construct a Mesh with various faces:
-   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshUseMeshCreation
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshCreation
    
    * Displaying the result:
-   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshUseDisplay
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseDisplay
    *
    * 
    *
@@ -220,21 +220,33 @@ namespace DGtal
    
     
     /**
-     * Return a reference to the vertex of index i.
      * @param i the index of the vertex.
-     * @return the vertex of index i. 
+     * @return a const reference to the vertex of index i. 
      **/
     const TPoint & getVertex(unsigned int i) const;
+
+    /**
+     * @param i the index of the vertex.
+     * @return a reference to the vertex of index i. 
+     **/
+    TPoint & getVertex(unsigned int i);
     
     
     
     /**
-     * Return a reference to a face of index i.
      * @param i the index of the face.
-     * @return the face of index i. 
+     * @return a const reference to the face of index i. 
      **/
     const MeshFace & getFace(unsigned int i) const;
+
     
+    /**
+     * @param i the index of the face.
+     * @return a const reference to the face of index i. 
+     **/
+    MeshFace & getFace(unsigned int i);
+    
+
 
 
     /**
@@ -272,7 +284,7 @@ namespace DGtal
      * 
      **/
     ConstIterator 
-    cVertexBegin() const {
+    vertexBegin() const {
       return myVertexList.begin();
     }
     
@@ -282,7 +294,7 @@ namespace DGtal
      *
      **/
     ConstIterator 
-    cVertexEnd() const {
+    vertexEnd() const {
       return myVertexList.end();
     }
 
@@ -310,24 +322,47 @@ namespace DGtal
     
     
     /**
-     * @return an iterator pointing to the first face of the mesh.  
+     * @return a const iterator pointing to the first face of the mesh.  
      *
      **/
     
     FaceStorage::const_iterator 
-    FaceBegin() const {
+    faceBegin() const {
       return myFaceList.begin();
     }
     
 
 
     /**
-     * @return an iterator pointing after the end of the last face of the mesh.
+     * @return a const iterator pointing after the end of the last face of the mesh.
      *
      **/
     
     FaceStorage::const_iterator 
-    FaceEnd() const {
+    faceEnd() const {
+      return myFaceList.end();
+    }    
+    
+
+    /**
+     * @return a const iterator pointing to the first face of the mesh.  
+     *
+     **/
+    
+    FaceStorage::iterator 
+    faceBegin()  {
+      return myFaceList.begin();
+    }
+    
+
+
+    /**
+     * @return a const iterator pointing after the end of the last face of the mesh.
+     *
+     **/
+    
+    FaceStorage::iterator 
+    faceEnd()  {
       return myFaceList.end();
     }    
     
@@ -371,6 +406,8 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   private:
 
+
+
     
 
 
@@ -378,7 +415,7 @@ namespace DGtal
   private:
     FaceStorage  myFaceList;
     VertexStorage myVertexList;
-
+    
     
     ColorStorage myFaceColorList;
     bool mySaveFaceColor;
@@ -386,13 +423,78 @@ namespace DGtal
     
 
     
-    // ------------------------- Hidden services ------------------------------
-  protected:
 
   
+    // ------------------------- Mesh generation ------------------------------
+
+  public:
+    
+    /**
+     * Generates a tube mesh (of constant radius) from a set of points
+     * representing the tube skeleton.  Each circular section is
+     * connected with quads.  @note The vertices of circular sections
+     * are associated from nearest point according to the tube
+     * direction.
+     *
+     * @param[out] aMesh the mesh in which the new tube mesh will be created.
+     * @param[in] aSkeleton the set of points which defines the tube skeleton.
+     * @param[in] aRadius the tube radius.
+     * @param[in] angleStep the circular precision of the tube approximation. 
+     * @param[in] aMeshColor the color given to the generated tube mesh. 
+     *
+     **/
+    static
+    void
+    createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const double aRadius, 
+                      const double angleStep = 0.2, const DGtal::Color &aMeshColor = DGtal::Color::White );
 
 
-          
+
+    /**
+     * Generates a tube mesh from a tube skeleton and from its
+     * associated circular section radii. Each circular section is
+     * connected with quads.   @note The vertices of circular sections
+     * are associated from nearest point according to the tube
+     * direction.
+     *
+     * @param[out] aMesh the mesh in which the new tube mesh will be created.
+     * @param[in] aSkeleton the set of points which defines the tube skeleton.
+     * @param[in] aVectOfRadius the vector containing all circular sections (if it contains not enougth it value, the next values will be taken from the begining of the vector).
+     * @param[in] angleStep the circular precision of the tube approximation. 
+     * @param[in] aMeshColor the color given to the generated tube mesh. 
+     *
+     **/
+    static
+    void
+    createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const std::vector<double> &aVectOfRadius, 
+                      const double angleStep = 0.2, const DGtal::Color &aMeshColor = DGtal::Color::White );
+
+    
+
+    /**
+     * Generates a surface mesh defined from a sequence of 2D
+     * height values (can be seen as a height map). 
+     *
+     * @param[out] aMesh the mesh in which the new tube mesh will be created.
+     * @param[in] anValueSequence the sequence of values defining the height points.
+     * @param[in] lengthSequence the number of points constituing a line in the height map.
+     * @param[in] stepX the x grid step to define the scale of the resulting mesh. 
+     * @param[in] stepY the y grid step to define the scale of the resulting mesh. 
+     * @param[in] stepZ the z grid step to define the scale of the resulting mesh. 
+     *
+     * @param[in] aMeshColor the color given to the generated tube mesh. 
+     *
+     **/
+    template <typename TValue>
+    static
+    void
+    createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const std::vector<TValue> & anValueSequence, 
+                                 const unsigned int lengthSequence,
+                                 double stepX, double stepY, double stepZ, 
+                                 const DGtal::Color &aMeshColor = DGtal::Color::White );
+    
+    
+    
 
 
 
@@ -436,6 +538,8 @@ namespace DGtal
   template <typename TPoint>
   std::ostream&
   operator<< ( std::ostream & out, const Mesh<TPoint> & object );
+
+
 
 } // namespace DGtal
 

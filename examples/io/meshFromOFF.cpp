@@ -31,15 +31,12 @@
 
 
 //! [includeImportOFF]
-//!
-
-
 #include "DGtal/io/readers/MeshReader.h"
-
+//! [includeImportOFF]
 #include <QtGui/qapplication.h>
 #include "DGtal/io/Display3D.h"
 #include "DGtal/io/viewers/Viewer3D.h"
-//! [includeImportOFF]
+
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
 #include "ConfigExamples.h"
