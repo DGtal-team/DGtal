@@ -16,11 +16,7 @@
 #include <iostream>
 #include <queue>
 #include <QImageReader>
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
+
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"

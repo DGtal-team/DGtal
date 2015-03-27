@@ -34,11 +34,7 @@
 #include <set>
 #include <map>
 #include <queue>
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
+
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"

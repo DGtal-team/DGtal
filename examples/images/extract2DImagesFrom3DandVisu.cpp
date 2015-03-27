@@ -39,14 +39,6 @@
 #include "ConfigExamples.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
-
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
-
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

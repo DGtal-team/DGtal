@@ -32,11 +32,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/viewers/Viewer3D.h"
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 ///////////////////////////////////////////////////////////////////////////////

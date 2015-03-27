@@ -145,6 +145,7 @@ if (@QT5_FOUND_DGTAL@)
   find_package(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED)
   add_definitions("-DWITH_QT5")
   set(WITH_QT5 1)
+  set(Qt5_DIR @Qt5_DIR@)
   set(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS}
                          ${Qt5Widgets_INCLUDE_DIRS}
                          ${Qt5OpenGL_INCLUDE_DIRS}

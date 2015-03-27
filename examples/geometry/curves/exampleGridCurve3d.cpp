@@ -36,11 +36,6 @@
 #include "DGtal/geometry/curves/GridCurve.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
-  #ifdef WITH_QT5
-    #include <QApplication>
-  #else
-    #include <QtGui/qapplication.h>
-  #endif
   #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #endif
 
