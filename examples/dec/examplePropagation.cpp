@@ -26,11 +26,11 @@ void propa_2d()
 
     typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
 
-    const Calculus::Scalar cc = 8; // px/s
-    trace.info() << "cc = " << cc << endl;
-
     {
         trace.beginBlock("solving time dependent equation");
+
+        const Calculus::Scalar cc = 8; // px/s
+        trace.info() << "cc = " << cc << endl;
 
         const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(29,29));
         const Calculus calculus(generateDiskSet(domain), false);
@@ -44,6 +44,7 @@ void propa_2d()
 
         const Eigen::VectorXd eigen_values = eigen_solver.eigenvalues();
         const Eigen::MatrixXd eigen_vectors = eigen_solver.eigenvectors();
+        trace.info() << "eigen_values_range = " << eigen_values.minCoeff() << "/" << eigen_values.maxCoeff() << endl;
         trace.endBlock();
 
         const Eigen::VectorXd angular_frequencies = cc * eigen_values.array().sqrt();
@@ -120,30 +121,24 @@ void propa_2d()
     {
         trace.beginBlock("forced oscillations");
 
-        const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(49,49));
+        const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(50,50));
         const Calculus calculus(generateDiskSet(domain), true);
 
-        const Calculus::Scalar lambda_0 = 4*23./5;
-        trace.info() << "lambda_0 = " << lambda_0 << endl;
-
-        const Calculus::DualIdentity0 dalembert = calculus.dualLaplace() - (2*M_PI/lambda_0)*(2*M_PI/lambda_0) * calculus.identity<0, DUAL>();
-        trace.info() << "dalembert = " << dalembert << endl;
+        const Calculus::DualIdentity0 laplace = calculus.dualLaplace();
+        trace.info() << "laplace = " << laplace << endl;
 
         trace.beginBlock("finding eigen pairs");
         typedef Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> EigenSolverMatrix;
-        const EigenSolverMatrix eigen_solver(dalembert.myContainer);
+        const EigenSolverMatrix eigen_solver(laplace.myContainer);
 
-        const Eigen::VectorXd eigen_values = eigen_solver.eigenvalues();
-        const Eigen::MatrixXd eigen_vectors = eigen_solver.eigenvectors();
+        const Eigen::VectorXd laplace_eigen_values = eigen_solver.eigenvalues();
+        const Eigen::MatrixXd laplace_eigen_vectors = eigen_solver.eigenvectors();
+        trace.info() << "eigen_values_range = " << laplace_eigen_values.minCoeff() << "/" << laplace_eigen_values.maxCoeff() << endl;
         trace.endBlock();
 
-        const Eigen::MatrixXd concentration_to_wave = eigen_vectors * eigen_values.array().inverse().matrix().asDiagonal() * eigen_vectors.transpose();
-
         Calculus::DualForm0 concentration(calculus);
-        for (int xx=24; xx<26; xx++)
-        for (int yy=24; yy<26; yy++)
         {
-            const Z2i::Point point(xx,yy);
+            const Z2i::Point point(25,25);
             const Calculus::Cell cell = calculus.myKSpace.uSpel(point);
             const Calculus::Index index = calculus.getCellIndex(cell);
             concentration.myContainer(index) = 1;
@@ -152,55 +147,64 @@ void propa_2d()
         {
             Board2D board;
             board << domain;
-            board << CustomStyle("KForm", new KFormStyle2D(-1, 1));
             board << concentration;
             board.saveSVG("propagation_forced_concentration.svg");
         }
 
-        const Calculus::DualForm0 wave(calculus, concentration_to_wave * concentration.myContainer);
-
+        for (int ll=0; ll<6; ll++)
         {
-            trace.info() << "saving samples" << endl;
-            const Calculus::Properties properties = calculus.getProperties();
+            const Calculus::Scalar lambda = 4*20.75/(1+2*ll);
+            trace.info() << "lambda = " << lambda << endl;
+
+            const Eigen::VectorXd dalembert_eigen_values = laplace_eigen_values.array() - (2*M_PI/lambda)*(2*M_PI/lambda);
+            const Eigen::MatrixXd concentration_to_wave = laplace_eigen_vectors * dalembert_eigen_values.array().inverse().matrix().asDiagonal() * laplace_eigen_vectors.transpose();
+
+            Calculus::DualForm0 wave(calculus, concentration_to_wave * concentration.myContainer);
+            wave.myContainer /= wave.myContainer(calculus.getCellIndex(calculus.myKSpace.uSpel(Z2i::Point(25,25))));
+
             {
-                std::ofstream handle("propagation_samples_hv.dat");
-                for (int kk=0; kk<50; kk++)
+                trace.info() << "saving samples" << endl;
+                const Calculus::Properties properties = calculus.getProperties();
                 {
-                    const Z2i::Point point_horizontal(kk,24);
-                    const Z2i::Point point_vertical(24,kk);
-                    const Calculus::Scalar xx = kk/49. - .5;
-                    handle << xx << " ";
-                    handle << sample_dual_0_form<Calculus>(properties, wave, point_horizontal) << " ";
-                    handle << sample_dual_0_form<Calculus>(properties, wave, point_vertical) << endl;
+                    std::stringstream ss;
+                    ss << "propagation_forced_samples_hv_" << ll << ".dat";
+                    std::ofstream handle(ss.str().c_str());
+                    for (int kk=0; kk<=50; kk++)
+                    {
+                        const Z2i::Point point_horizontal(kk,25);
+                        const Z2i::Point point_vertical(25,kk);
+                        const Calculus::Scalar xx = 2 * (kk/50. - .5);
+                        handle << xx << " ";
+                        handle << sample_dual_0_form<Calculus>(properties, wave, point_horizontal) << " ";
+                        handle << sample_dual_0_form<Calculus>(properties, wave, point_vertical) << endl;
+                    }
+                }
+
+                {
+                    std::stringstream ss;
+                    ss << "propagation_forced_samples_diag_" << ll << ".dat";
+                    std::ofstream handle(ss.str().c_str());
+                    for (int kk=0; kk<=50; kk++)
+                    {
+                        const Z2i::Point point_diag_pos(kk,kk);
+                        const Z2i::Point point_diag_neg(kk,50-kk);
+                        const Calculus::Scalar xx = 2 * sqrt(2) * (kk/50. - .5);
+                        handle << xx << " ";
+                        handle << sample_dual_0_form<Calculus>(properties, wave, point_diag_pos) << " ";
+                        handle << sample_dual_0_form<Calculus>(properties, wave, point_diag_neg) << endl;
+                    }
                 }
             }
 
             {
-                std::ofstream handle("propagation_samples_diag.dat");
-                for (int kk=0; kk<50; kk++)
-                {
-                    const Z2i::Point point_diag_pos(kk,kk);
-                    const Z2i::Point point_diag_neg(kk,49-kk);
-                    const Calculus::Scalar xx = sqrt(2) * (kk/49. - .5);
-                    handle << xx << " ";
-                    handle << sample_dual_0_form<Calculus>(properties, wave, point_diag_pos) << " ";
-                    handle << sample_dual_0_form<Calculus>(properties, wave, point_diag_neg) << endl;
-                }
+                std::stringstream ss;
+                ss << "propagation_forced_wave_" << ll << ".svg";
+                Board2D board;
+                board << domain;
+                board << wave;
+                board.saveSVG(ss.str().c_str());
             }
         }
-
-        {
-
-            Board2D board;
-            board << domain;
-            board << wave;
-            board.saveSVG("propagation_forced_wave.svg");
-        }
-
-
-        //trace.info() << eigen_values << endl;
-        //trace.info() << ( (eigen_vectors.transpose() * eigen_vectors).array().abs() > 1e-5 ) << endl;
-
 
         trace.endBlock();
     }
