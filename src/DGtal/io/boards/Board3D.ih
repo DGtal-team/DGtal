@@ -519,7 +519,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
             {
               previousCol = aQuad->color;
               
-              unsigned int matid = getMaterialIndex(previousCol);
+              matid = getMaterialIndex(previousCol);
               outOBJ << "usemtl Mat_" << matid << std::endl;
             }
           
