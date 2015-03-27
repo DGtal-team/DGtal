@@ -147,7 +147,7 @@ public:
 
   typedef functors::ConstValueCell<Value, Spel> KernelSpelFunctor;
   typedef ImplicitBall<Space> KernelSupport;
-  typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+  typedef EuclideanShapesCSG< KernelSupport, KernelSupport > EuclideanMinus;
   typedef GaussDigitizer< Space, KernelSupport > DigitalShapeKernel;
   typedef GaussDigitizer< Space, EuclideanMinus > DigitalShape;
 
