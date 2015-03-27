@@ -52,8 +52,9 @@
    ConstIterator and adds a new method to change the color of a
    specific face. (Bertrand Kerautret,
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
- - New methods to generate basic 3D tubular meshes and height fields. New mesh module documentation added.
-   (Bertrand Kerautret, [#969](https://github.com/DGtal-team/DGtal/pull/969))
+ - New methods to generate basic 3D tubular meshes and height
+   fields. New mesh module documentation added. (Bertrand Kerautret,
+   [#969](https://github.com/DGtal-team/DGtal/pull/969))
  - Refactoring of CSG operations on Euclidean / Digital shapes to easily
    combine several operations.
    EuclideanShapesUnion, EuclideanShapesIntersection and
