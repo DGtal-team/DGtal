@@ -105,10 +105,6 @@
  - Bugfix in quad visualization in BoardD3D and Viewer3D (David
    Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
 
-=======
-
->>>>>>> masterDGTal
-
 # DGtal 0.8
 
 
