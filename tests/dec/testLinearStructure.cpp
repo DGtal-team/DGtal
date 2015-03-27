@@ -28,7 +28,7 @@
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
+//#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -395,8 +395,8 @@ void test_manual_operators_3d()
 
     trace.endBlock();
 
-    int argc=0;
-    QApplication app(argc, NULL);
+    /*
+    QApplication app(0, NULL);
 
     typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
     Viewer* viewer = new Viewer(calculus.myKSpace);
@@ -408,7 +408,7 @@ void test_manual_operators_3d()
     (*viewer) << Viewer::updateDisplay;
 
     app.exec();
-    
+    */
 
     trace.endBlock();
 }
@@ -895,9 +895,9 @@ int
 main()
 {
     test_manual_operators_3d();
-    //test_manual_operators_2d();
-    //test_linear_ring();
-    //test_linear_structure();
+    test_manual_operators_2d();
+    test_linear_ring();
+    test_linear_structure();
     return 0;
 }
 
