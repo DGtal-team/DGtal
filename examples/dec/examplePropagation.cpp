@@ -35,15 +35,19 @@ void propa_2d()
         const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(29,29));
         const Calculus calculus(generateDiskSet(domain), false);
 
+        //! [time_laplace]
         const Calculus::DualIdentity0 laplace = calculus.dualLaplace() + 1e-8 * calculus.identity<0, DUAL>();
+        //! [time_laplace]
         trace.info() << "laplace = " << laplace << endl;
 
         trace.beginBlock("finding eigen pairs");
+        //! [time_eigen]
         typedef Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> EigenSolverMatrix;
         const EigenSolverMatrix eigen_solver(laplace.myContainer);
 
         const Eigen::VectorXd eigen_values = eigen_solver.eigenvalues();
         const Eigen::MatrixXd eigen_vectors = eigen_solver.eigenvectors();
+        //! [time_eigen]
         trace.info() << "eigen_values_range = " << eigen_values.minCoeff() << "/" << eigen_values.maxCoeff() << endl;
         trace.endBlock();
 
@@ -71,9 +75,12 @@ void propa_2d()
             board.saveSVG("propagation_time_wave_initial_coarse.svg");
         }
 
+        //! [time_init_proj]
         Eigen::VectorXcd initial_projections = eigen_vectors.transpose() * initial_wave;
+        //! [time_init_proj]
 
         // low pass
+        //! [time_low_pass]
         const Calculus::Scalar lambda_cutoff = 4.5;
         const Calculus::Scalar angular_frequency_cutoff = 2*M_PI * cc / lambda_cutoff;
         int cutted = 0;
@@ -84,6 +91,7 @@ void propa_2d()
             initial_projections(kk) = 0;
             cutted ++;
         }
+        //! [time_low_pass]
         trace.info() << "cutted = " << cutted << "/" << initial_projections.rows() << endl;
 
         {
@@ -98,9 +106,11 @@ void propa_2d()
         trace.progressBar(0,100);
         for (int kk=0; kk<100; kk++)
         {
+            //! [time_solve_time]
             const Calculus::Scalar time = kk/20.;
             const Eigen::VectorXcd current_projections = (angular_frequencies * std::complex<double>(0,time)).array().exp() * initial_projections.array();
             const Eigen::VectorXcd current_wave = eigen_vectors * current_projections;
+            //! [time_solve_time]
 
             std::stringstream ss;
             ss << "propagation_time_wave_solution_" << kk << ".svg";
@@ -153,13 +163,19 @@ void propa_2d()
 
         for (int ll=0; ll<6; ll++)
         {
+            //! [forced_lambda]
             const Calculus::Scalar lambda = 4*20.75/(1+2*ll);
+            //! [forced_lambda]
             trace.info() << "lambda = " << lambda << endl;
 
+            //! [forced_dalembert_eigen]
             const Eigen::VectorXd dalembert_eigen_values = laplace_eigen_values.array() - (2*M_PI/lambda)*(2*M_PI/lambda);
             const Eigen::MatrixXd concentration_to_wave = laplace_eigen_vectors * dalembert_eigen_values.array().inverse().matrix().asDiagonal() * laplace_eigen_vectors.transpose();
+            //! [forced_dalembert_eigen]
 
+            //! [forced_wave]
             Calculus::DualForm0 wave(calculus, concentration_to_wave * concentration.myContainer);
+            //! [forced_wave]
             wave.myContainer /= wave.myContainer(calculus.getCellIndex(calculus.myKSpace.uSpel(Z2i::Point(25,25))));
 
             {

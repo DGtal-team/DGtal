@@ -27,14 +27,30 @@ namespace DGtal {
 Propagation plays a important role in physics as it models a lots a problem ranging from classical oscillators electromagnetics to electromagnetics and quantum mechanics.
 Here we will study the linear propagation of a time dependent scalar field \f$\psi(x,t)\f$, modelled as n-form in the DEC framework.
 
-\f[ \Delta \psi + \frac{1}{c^2} \frac{\partial^2\psi}{\partial t^2} = \rho \f]
+\f[ \Delta \psi + \frac{1}{c^2} \frac{\partial^2\psi}{\partial t^2} = \left( \Delta + \frac{1}{c^2} \frac{\partial^2}{\partial t^2} \right) \psi = \rho \f]
 
 where \f$c\f$ is propagation speed inside the medium and \f$\rho(x,t)\f$ is the concentration field that generate waves.
 As DEC handles only spatial dimensions, we will present classic but useful tricks that can be used to handle the time dependent in many physics problems.
 
+\f[ \Delta \phi_k = k_k^2 \phi_k \f]
+
+\f[ \psi_k = \phi_k e^{i c k_k t} \f]
+
+\f[ \left( \Delta + \frac{1}{c^2} \frac{\partial^2}{\partial t^2} \right) \psi_k = 0 \f]
+
+\f[ \psi = \sum_k p_k \psi_k,\, p_k \in \mathbb{C} \f]
+
+
+
 \section sectDECPropagationTime Temporal resolution with initial condition
 
 In this example, we compute primal and dual Propagation decomposition of an arbitrary vector field on a 2D double ring shape.
+
+\snippet examplePropagation.cpp time_laplace
+\snippet examplePropagation.cpp time_eigen
+\snippet examplePropagation.cpp time_init_proj
+\snippet examplePropagation.cpp time_low_pass
+\snippet examplePropagation.cpp time_solve_time
 
 \section sectDECPropagationForced Forced permanent regime solution
 
@@ -42,15 +58,17 @@ In this example, we show how to compute the Propagation decomposition of a prima
 
 First the calculus structure is filled manually with 0-, 1- and 2-cells to create a torus structure.
 
-\image html propagation_forced_wave_0.png "Forced permanent regime for \f$\lambda = \lambda_0\f$."
-\image html propagation_forced_wave_1.png "Forced permanent regime for \f$\lambda = \lambda_1\f$."
-\image html propagation_forced_wave_2.png "Forced permanent regime for \f$\lambda = \lambda_2\f$."
-\image html propagation_forced_wave_3.png "Forced permanent regime for \f$\lambda = \lambda_3\f$."
-\image html propagation_forced_wave_4.png "Forced permanent regime for \f$\lambda = \lambda_4\f$."
-\image html propagation_forced_wave_5.png "Forced permanent regime for \f$\lambda = \lambda_5\f$."
-\image html propa_samples.png "Forced permanent regime samples along vertical, horizontal and diagonal lines for \f$\lambda_k\f$."
+\snippet examplePropagation.cpp forced_lambda
+\snippet examplePropagation.cpp forced_dalembert_eigen
+\snippet examplePropagation.cpp forced_wave
 
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_structure
+\image html propagation_forced_wave_0.png "Forced permanent regime for lambda = lambda_0."
+\image html propagation_forced_wave_1.png "Forced permanent regime for lambda = lambda_1."
+\image html propagation_forced_wave_2.png "Forced permanent regime for lambda = lambda_2."
+\image html propagation_forced_wave_3.png "Forced permanent regime for lambda = lambda_3."
+\image html propagation_forced_wave_4.png "Forced permanent regime for lambda = lambda_4."
+\image html propagation_forced_wave_5.png "Forced permanent regime for lambda = lambda_5."
+\image html propa_samples.png "Forced permanent regime samples along vertical, horizontal and diagonal lines for lambda_k."
 
 */
 
