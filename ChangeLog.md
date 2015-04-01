@@ -102,7 +102,8 @@
  - Radius and resolution of balls have been fixed when used to
    represent a 3D point in grid mode (David Coeurjolly,
    [#978](https://github.com/DGtal-team/DGtal/pull/978))
-
+ - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
+   (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
 
 # DGtal 0.8
 
