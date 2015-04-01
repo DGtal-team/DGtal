@@ -28,7 +28,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <algorithm>
-#include <QtGui/qapplication.h>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
@@ -56,9 +56,9 @@ struct LessThanOnFace
   Vector N; // expected normal
   Vector P; // origin or first point
   const std::vector< Vector > & pts;
-  inline LessThanOnFace( const Vector & aN, const Vector & aP, 
+  inline LessThanOnFace( const Vector & aN, const Vector & aP,
                          const std::vector< Vector > & aPts )
-    : N( aN ), P( aP ), pts( aPts ) 
+    : N( aN ), P( aP ), pts( aPts )
   {}
   inline bool operator()( unsigned int i1, unsigned int i2 ) const
   {
@@ -70,7 +70,7 @@ struct LessThanOnFace
 // short. Takes care also of polygonal faces.
 template <typename Vector>
 void naiveConvexHull
-( std::vector< std::vector< unsigned int > > & indices,  
+( std::vector< std::vector< unsigned int > > & indices,
   const std::vector<Vector> & points, bool left_handed )
 {
   typedef typename Vector::Component Scalar;
@@ -142,12 +142,12 @@ double rescale( double x )
   return ( x - 1.0 ) * 0.5 + 0.5;
 }
 
-template <typename Viewer, 
+template <typename Viewer,
           typename Vector>
 void viewPolygons
-( Viewer & viewer, 
+( Viewer & viewer,
   const DGtal::Color & color,
-  const std::vector< std::vector< unsigned int > > & indices,  
+  const std::vector< std::vector< unsigned int > > & indices,
   const std::vector<Vector> & points )
 {
   typedef typename Viewer::RealPoint RealPoint;
@@ -204,7 +204,7 @@ Vector upper( const Vector & z, unsigned int k )
 template <typename Vector>
 unsigned int nbLighted( std::map< Vector, bool > & f,
                 const Vector & z )
-{ // z of dim >=2 
+{ // z of dim >=2
   unsigned int d = dim( z );
   if ( d == 0 ) return f[ z ] ? 1 : 0;
   unsigned int i = openDim( z );
@@ -239,7 +239,7 @@ bool lightBetween( std::map< Vector, bool > & f,
         {
           if ( *it == z ) break;
           Point zp = z*2 - *it;
-          // std::cerr << *it << " <--> " << zp << std::endl; 
+          // std::cerr << *it << " <--> " << zp << std::endl;
           if ( lightBetween( f, *it ) && lightBetween( f, zp ) )
             return true;
         }
@@ -272,13 +272,13 @@ bool lightMinMax( std::map< Vector, bool > & f,
 {
   unsigned int d = dim( z );
   if ( d == 0 ) return f[ z ];
-  else 
+  else
     {
       Vector tmp( z );
       bool val = true;
       for ( unsigned i = 0; i < d; ++i )
         {
-          unsigned int k = openDim( tmp ); 
+          unsigned int k = openDim( tmp );
           tmp = lower( tmp, k );
           val = val && ( lightMinMax( f, lower( z, k ) ) || lightMinMax( f, upper( z, k ) ) );
         }
@@ -291,13 +291,13 @@ bool lightMaxMin( std::map< Vector, bool > & f,
 {
   unsigned int d = dim( z );
   if ( d == 0 ) return f[ z ];
-  else 
+  else
     {
       Vector tmp( z );
       bool val = false;
       for ( unsigned i = 0; i < d; ++i )
         {
-          unsigned int k = openDim( tmp ); 
+          unsigned int k = openDim( tmp );
           tmp = lower( tmp, k );
           val = val || ( lightMaxMin( f, lower( z, k ) ) && lightMaxMin( f, upper( z, k ) ) );
         }
@@ -312,20 +312,20 @@ bool lightEpsilon( std::map< Vector, bool > & f,
 {
   unsigned int d = dim( z );
   if ( d == 0 ) return f[ z ];
-  else 
+  else
     {
       Vector tmp( z );
       bool eps_d = ( ( epsilon >> (d-1)) & 1 ) != 0;
       bool val = eps_d ? true : false;
       for ( unsigned i = 0; i < d; ++i )
         {
-          unsigned int k = openDim( tmp ); 
+          unsigned int k = openDim( tmp );
           tmp = lower( tmp, k );
           if ( eps_d )
-            val = val && ( lightEpsilon( f, lower( z, k ), epsilon ) 
+            val = val && ( lightEpsilon( f, lower( z, k ), epsilon )
                            || lightEpsilon( f, upper( z, k ), epsilon ) );
           else
-            val = val || ( lightEpsilon( f, lower( z, k ), epsilon ) 
+            val = val || ( lightEpsilon( f, lower( z, k ), epsilon )
                            && lightEpsilon( f, upper( z, k ), epsilon ) );
         }
       return val;
@@ -339,7 +339,7 @@ void fillCfg( std::map< Vector, bool > & f,
               unsigned int cfg )
 {
   unsigned int d = dim( z );
-  if ( d == 0 ) 
+  if ( d == 0 )
     {
       f[ z ] = (cfg == 1);
       //std::cerr << "f[" << z << "] = " << f[ z ] << std::endl;
@@ -403,7 +403,7 @@ int main( int argc, char** argv )
   DGtal::Color voxelColor( 150, 150, 0, 150 );
 
   std::vector<Vector> pts;
- 
+
   unsigned int cfg = argc > 1 ? atoi( argv[1] ) : 0;
   unsigned int cfg2 = argc > 2 ? atoi( argv[2] ) : 255;
   std::map< Vector, bool > f;
@@ -414,7 +414,7 @@ int main( int argc, char** argv )
         fillCfg( f, offset + Vector( 1, 1, 1 ), cfg );
         Domain domain( offset + Vector( 0, 0, 0), offset + Vector( 2, 2, 2 ) );
         KSpace K;
-        K.init( offset + Vector( 0, 0, 0), offset + Vector( 2, 2, 2 ), true ); 
+        K.init( offset + Vector( 0, 0, 0), offset + Vector( 2, 2, 2 ), true );
         ConfigPointPredicate<Vector> cpp( f, offset );
         CellSet aBoundary;
         Surfaces<KSpace>::uMakeBoundary( aBoundary, K, cpp, Vector( 0, 0, 0), Vector( 1, 1, 1 ) );
