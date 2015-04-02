@@ -14,7 +14,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //! [frontierAndBoundary-basicIncludes]
 #include <iostream>
-#include <QtGui/qapplication.h>
+
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -45,21 +45,21 @@ int main( int argc, char** argv )
   //! [frontierAndBoundary-LabelledImage]
   typedef Space::RealPoint RealPoint;
   typedef ImplicitBall<Space> EuclideanShape;
-  typedef GaussDigitizer<Space,EuclideanShape> DigitalShape; 
+  typedef GaussDigitizer<Space,EuclideanShape> DigitalShape;
   typedef ImageContainerBySTLVector<Domain,DGtal::uint8_t> Image;
   Point c1( 2, 0, 0 );
   int radius1 = 6;
   EuclideanShape ball1( c1, radius1 ); // ball r=6
   DigitalShape shape1;
   shape1.attach( ball1 );
-  shape1.init( RealPoint( -10.0, -10.0, -10.0 ), 
+  shape1.init( RealPoint( -10.0, -10.0, -10.0 ),
                RealPoint( 10.0, 10.0, 10.0 ), 1.0 );
   Point c2( -2, 0, 0 );
   int radius2 = 5;
   EuclideanShape ball2( c2, radius2 ); // ball r=6
   DigitalShape shape2;
   shape2.attach( ball2 );
-  shape2.init( RealPoint( -10.0, -10.0, -10.0 ), 
+  shape2.init( RealPoint( -10.0, -10.0, -10.0 ),
                RealPoint( 10.0, 10.0, 10.0 ), 1.0 );
   Domain domain = shape1.getDomain();
   Image image( domain ); // p1, p2 );
@@ -74,7 +74,7 @@ int main( int argc, char** argv )
     }
   std::cerr << std::endl;
   //! [frontierAndBoundary-LabelledImage]
-  
+
   //! [frontierAndBoundary-KSpace]
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
   KSpace K;
@@ -122,28 +122,28 @@ int main( int argc, char** argv )
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.show(); 
+  viewer.show();
   viewer << SetMode3D( domain.className(), "BoundingBox" )
          << domain;
   Cell dummy;
   // Display frontier between 1 and 0.
   unsigned int nbSurfels10 = 0;
   viewer << CustomColors3D( Color::Red, Color::Red );
-  for ( Frontier::ConstIterator 
+  for ( Frontier::ConstIterator
           it = frontier10.begin(), it_end = frontier10.end();
         it != it_end; ++it, ++nbSurfels10 )
-    viewer << *it; 
+    viewer << *it;
   // Display frontier between 2 and 0.
   unsigned int nbSurfels20 = 0;
   viewer << CustomColors3D( Color::Yellow, Color::Yellow );
-  for ( Frontier::ConstIterator 
+  for ( Frontier::ConstIterator
           it = frontier20.begin(), it_end = frontier20.end();
         it != it_end; ++it, ++nbSurfels20 )
     viewer << *it;
   // Display boundary of 3.
   unsigned int nbSurfels3 = 0;
   viewer << CustomColors3D( Color( 255, 130, 15 ), Color( 255, 130, 15 ) );
-  for ( Boundary::ConstIterator 
+  for ( Boundary::ConstIterator
           it = boundary3.begin(), it_end = boundary3.end();
         it != it_end; ++it, ++nbSurfels3 )
     viewer << *it;
