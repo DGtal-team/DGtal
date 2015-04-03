@@ -1,3 +1,5 @@
+#include <iomanip>
+
 #include "common.h"
 
 #include "DGtal/math/linalg/EigenSupport.h"
@@ -15,6 +17,46 @@ sample_dual_0_form(const typename Calculus::Properties& properties, const typena
 
     const typename Calculus::Index index = iter->second.index;
     return form.myContainer(index);
+}
+
+template <typename Calculus>
+void
+set_initial_phase_dir_yy(Calculus& calculus, Eigen::VectorXcd& initial_wave)
+{
+    typedef typename Calculus::Cell Cell;
+    typedef typename Calculus::Index Index;
+    typedef typename Calculus::Point Point;
+
+    //! [time_phase_yy]
+    for (int xx=9; xx<13; xx++)
+    for (int yy=13; yy<17; yy++)
+    {
+        const Point point(xx,yy);
+        const Cell cell = calculus.myKSpace.uSpel(point);
+        const Index index = calculus.getCellIndex(cell);
+        initial_wave(index) = std::exp(std::complex<double>(0,2*M_PI*(yy-14.5)/8));
+    }
+    //! [time_phase_yy]
+}
+
+template <typename Calculus>
+void
+set_initial_phase_null(Calculus& calculus, Eigen::VectorXcd& initial_wave)
+{
+    typedef typename Calculus::Cell Cell;
+    typedef typename Calculus::Index Index;
+    typedef typename Calculus::Point Point;
+
+    //! [time_phase_null]
+    for (int xx=9; xx<13; xx++)
+    for (int yy=13; yy<17; yy++)
+    {
+        const Point point(xx,yy);
+        const Cell cell = calculus.myKSpace.uSpel(point);
+        const Index index = calculus.getCellIndex(cell);
+        initial_wave(index) = 1;
+    }
+    //! [time_phase_null]
 }
 
 using namespace DGtal;
@@ -51,27 +93,19 @@ void propa_2d()
         trace.info() << "eigen_values_range = " << eigen_values.minCoeff() << "/" << eigen_values.maxCoeff() << endl;
         trace.endBlock();
 
+        //! [time_omega]
         const Eigen::VectorXd angular_frequencies = cc * eigen_values.array().sqrt();
+        //! [time_omega]
 
         Eigen::VectorXcd initial_wave = Eigen::VectorXcd::Zero(calculus.kFormLength(0, DUAL));
-        //for (int xx=3; xx<7; xx++)
-        //for (int yy=10; yy<20; yy++)
-        for (int xx=13; xx<17; xx++)
-        for (int yy=13; yy<17; yy++)
-        {
-            const Z2i::Point point(xx,yy);
-            const Calculus::Cell cell = calculus.myKSpace.uSpel(point);
-            const Calculus::Index index = calculus.getCellIndex(cell);
-            //initial_wave(index) = std::exp(std::complex<double>(0,M_PI/2.*((xx-14.5)/2.-(yy-14.5)/4.)));
-            //initial_wave(index) = std::exp(std::complex<double>(0,M_PI/2.*(xx-14.5)/1.5));
-            initial_wave(index) = 1;
-        }
+        //set_initial_phase_null(calculus, initial_wave);
+        set_initial_phase_dir_yy(calculus, initial_wave);
 
         {
             Board2D board;
             board << domain;
             board << CustomStyle("KForm", new KFormStyle2D(-1, 1));
-            board << Calculus::DualForm0(calculus, (initial_wave.array().conjugate()*initial_wave.array()).real().sqrt());
+            board << Calculus::DualForm0(calculus, initial_wave.real());
             board.saveSVG("propagation_time_wave_initial_coarse.svg");
         }
 
@@ -99,12 +133,13 @@ void propa_2d()
             Board2D board;
             board << domain;
             board << CustomStyle("KForm", new KFormStyle2D(-1, 1));
-            board << Calculus::DualForm0(calculus, (wave.array().conjugate()*wave.array()).real().sqrt());
+            board << Calculus::DualForm0(calculus, wave.real());
             board.saveSVG("propagation_time_wave_initial_smoothed.svg");
         }
 
-        trace.progressBar(0,100);
-        for (int kk=0; kk<100; kk++)
+        const int kk_max = 60;
+        trace.progressBar(0,kk_max);
+        for (int kk=0; kk<kk_max; kk++)
         {
             //! [time_solve_time]
             const Calculus::Scalar time = kk/20.;
@@ -113,15 +148,15 @@ void propa_2d()
             //! [time_solve_time]
 
             std::stringstream ss;
-            ss << "propagation_time_wave_solution_" << kk << ".svg";
+            ss << "propagation_time_wave_solution_" << std::setfill('0') << std::setw(3) << kk << ".svg";
 
             Board2D board;
             board << domain;
             board << CustomStyle("KForm", new KFormStyle2D(-1, 1));
-            board << Calculus::DualForm0(calculus, (current_wave.array().conjugate()*current_wave.array()).real().sqrt());
+            board << Calculus::DualForm0(calculus, current_wave.real());
             board.saveSVG(ss.str().c_str());
 
-            trace.progressBar(kk+1,100);
+            trace.progressBar(kk+1,kk_max);
         }
         trace.info() << endl;
 
