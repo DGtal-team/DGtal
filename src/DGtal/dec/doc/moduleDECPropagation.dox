@@ -37,7 +37,6 @@ For simplicity of notation, we define the propapagation operator \f$\square\f$.
 
 \f[ \square  = \Delta + \frac{1}{c^2} \frac{\partial^2}{\partial t^2} \f]
 
-
 \section sectDECPropagationTime Temporal resolution with initial condition
 
 In this example, we compute the time evolution of a wave given it initial (potentially complex) wave function \f$\psi(x,0)=\psi_0(x)\f$.
@@ -50,8 +49,19 @@ First consider the Laplace operator. Since it is a positive semi definite real v
 \f[ \Delta \phi_i = k_i^2 \, \phi_i \f]
 
 where \f$\phi_i\f$ are eigen vectors and \f$k_i^2\f$ are corresponding eigen values.
-Note that \f$\phi_i\f$ form an orthonormal basis of the Laplace operator solutions.
-Defining \f$\psi_i\f$ as above allows for the construction of an orthonormal basis of solutions of the homogeneous propagation equation since it is easy to check that \f$\square \psi_i = 0\f$.
+The Laplace operator \f$\Delta\f$ is computed using DiscreteExteriorCalculus.dualLaplace.
+A small DiscreteExteriorCalculus.identity to ensure a proper definition of \f$\Delta\f$.
+
+\snippet examplePropagation.cpp time_laplace
+
+\f$k_i^2\f$ and \f$\phi_i\f$ can be computed using Eigen::SelfAdjointEigenSolver for small system.
+\f$\phi_i\f$ is the ith column of the eigen_vectors matrix.
+For larger systems, one can use more advance techniques such as band shift invert resolution.
+
+\snippet examplePropagation.cpp time_eigen
+
+\f$\phi_i\f$ form an orthonormal basis of the Laplace operator solutions.
+One can use this property to define \f$\psi_i\f$ an orthonormal basis of solutions of the homogeneous propagation equation (it is easy to check that \f$\square \psi_i = 0\f$).
 
 \f[ \psi_i(x,t) = \phi_k(x) \, e^{j c k_i t} \f]
 
@@ -69,32 +79,53 @@ We can then write \f$\psi\f$ as
 
 where the summation over \f$i\f$ is implicit.
 Note that for \f$t=0\f$, \f$\psi_i(x,0) = \phi_i(x)\f$.
-To solve the temporal evolution from \f$\psi_0(x)\f$, all we need to do is find its initial projections \f$p_{0i}\f$ and let complex exponentials do the their duty to predict future wave functions.
+To solve the temporal evolution from \f$\psi_0(x)\f$, all we need to do is find its initial projections \f$p_{0i}\f$ and let complex exponentials do the their duty to predict future (and past) wave functions.
 
 \f[ p_{0i} = \left< \psi_0 | \phi_i \right>  \f]
 
-For any other time, \f$\psi\f$ is then computed as
+Those inner product are computed by multiplying the initial wave 0-form container with the transposed eigen_vectors matrix.
+
+\snippet examplePropagation.cpp time_init_proj
+
+For aesthetic reason, initial projections are filtered to keep only low frequency (high wavelength) components.
+
+\snippet examplePropagation.cpp time_low_pass
+
+To get the wave function for any other time \f$t\f$, \f$\psi\f$ is computed as
 
 \f[ \psi(x,t) = p_{0i} \, \psi_i(x,t) = p_{0i} \, \phi_i(x) \, e^{j c k_i t} \f]
 
-\snippet examplePropagation.cpp time_laplace
-\snippet examplePropagation.cpp time_eigen
+This translate to the following code where the term \f$c k_i\f$ is precomputed for all times.
+
 \snippet examplePropagation.cpp time_omega
-\snippet examplePropagation.cpp time_init_proj
-\snippet examplePropagation.cpp time_low_pass
 \snippet examplePropagation.cpp time_solve_time
+
+For real wave functions, knowing the initial wave is not enough the get a unique answer. One would have to know temporal initial wave derivative as well to fully determine the propagation behavior. When one use complex wave functions, the derivative initial conditions are replaced by the phase of the initial wave. By changing the phase field, one would get different behavior. For example if one choose initial wave as described above, one would get a nice uniform propagation of the wave.
 
 \snippet examplePropagation.cpp time_phase_null
 \image html propagation_time_wave_i.gif "Real part of wave propagating from initial conditions with null phase."
+
+If, on the other hand, one starts to mess with the phase on the initial wave and introduce phase variation along y, one would get a directional propagation of the wave along -y.
 
 \snippet examplePropagation.cpp time_phase_yy
 \image html propagation_time_wave_ii.gif "Real part of wave propagating from initial conditions with phase variation along y."
 
 \section sectDECPropagationForced Forced permanent regime solution
 
-In this example, we show how to compute the Propagation decomposition of a primal vector field defined on a 2D toroidal surface embedded in 3D.
+Wavenumber \f$k_p = \frac{2 \pi}{\lambda_p}\f$
+\f[ \rho(x,t) = \rho_p(x) \, e^{j c k_p t} = \rho_p(x) \, e^{\frac{2 \pi c t}{\lambda_p}} \f]
 
-First the calculus structure is filled manually with 0-, 1- and 2-cells to create a torus structure.
+\f[ \psi(x,t) = \psi_p(x) \, e^{j c k_p t} \f]
+
+\f[ \square \psi = \rho \;\Leftrightarrow\; ( \Delta - k_p^2 \, I ) \, \psi_p = \rho_p \;\Leftrightarrow\; \psi_p = ( \Delta - k_p^2 \, I )^{-1} \, \rho_p \f]
+
+\f[ \Delta \phi_i = k_{\Delta i}^2 \, \phi_i \f]
+
+\f[ ( \Delta - k_p^2 \, I )^{-1} \phi_i = \frac{1}{k_{\Delta i}^2-k_p^2} \, \phi_i \f]
+
+\f[ p_{pi} = \left< \psi_p | \phi_i \right>  \; r_{pi} = \left<\rho_p | \phi_i \right> \f]
+
+\f[ p_{pi} = \frac{r_{pi}}{k_{\Delta i}^2 - k_p^2} \f]
 
 \snippet examplePropagation.cpp forced_lambda
 \snippet examplePropagation.cpp forced_dalembert_eigen
