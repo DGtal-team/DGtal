@@ -554,7 +554,7 @@ namespace DGtal
      * Substraction operator.
      * Point - Vector => Point
      *
-     * @param v is the Point that gets added to @a *this.
+     * @param v is the Point that gets substracted to @a *this.
      * @return a new Point that is the subtraction 'this'-[v].
      */
     Self operator- ( const Self & v ) const;

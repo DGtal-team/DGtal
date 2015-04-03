@@ -124,7 +124,7 @@ bool testFitting()
   typedef functors::ConstValue< double > ConvFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, Functor, ConvFunctor> Reporter;
 
-  Functor fitter(embedder,1, normalCache);
+  Functor fitter(embedder,1.0, 5.0, normalCache);
   ConvFunctor convFunc(1.0);
   Reporter reporter;
   reporter.attach(surface);

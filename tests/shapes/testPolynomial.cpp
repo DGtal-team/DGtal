@@ -30,7 +30,11 @@
 
 
 #include <iostream>
-#include <QtGui/QApplication>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -166,7 +170,7 @@ int main( int argc, char** argv )
 //    double a=ishape.gaussianCurvature(A);
     if ( !boost::math::isnan( a ))
     {
-      
+
      if ( a > maxCurv )
       {
         maxCurv = a;
