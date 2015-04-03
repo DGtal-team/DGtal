@@ -25,32 +25,70 @@ namespace DGtal {
 \section sectDECPropagationIntro Intro
 
 Propagation plays a important role in physics as it models a lots a problem ranging from classical oscillators electromagnetics to electromagnetics and quantum mechanics.
-Here we will study the linear propagation of a time dependent scalar field \f$\psi(x,t)\f$, modelled as n-form in the DEC framework.
+Here we will study the linear propagation of a time dependent scalar field \f$\psi(x,t)\f$, modelled as dual 0-form in the example.
 
 \f[ \Delta \psi + \frac{1}{c^2} \frac{\partial^2\psi}{\partial t^2} = \left( \Delta + \frac{1}{c^2} \frac{\partial^2}{\partial t^2} \right) \psi = \rho \f]
 
 where \f$c\f$ is propagation speed inside the medium and \f$\rho(x,t)\f$ is the concentration field that generate waves.
+The \f$+\f$ differs from the classical physics equation since here we consider \f$\Delta\f$ to have positive eigen values,
+which is the opposite of the definition of the Laplace operator in physics.
 As DEC handles only spatial dimensions, we will present classic but useful tricks that can be used to handle the time dependent in many physics problems.
+For simplicity of notation, we define the propapagation operator \f$\square\f$.
 
-\f[ \Delta \phi_k = k_k^2 \phi_k \f]
-
-\f[ \psi_k = \phi_k e^{i c k_k t} \f]
-
-\f[ \left( \Delta + \frac{1}{c^2} \frac{\partial^2}{\partial t^2} \right) \psi_k = 0 \f]
-
-\f[ \psi = \sum_k p_k \psi_k,\, p_k \in \mathbb{C} \f]
-
+\f[ \square  = \Delta + \frac{1}{c^2} \frac{\partial^2}{\partial t^2} \f]
 
 
 \section sectDECPropagationTime Temporal resolution with initial condition
 
-In this example, we compute primal and dual Propagation decomposition of an arbitrary vector field on a 2D double ring shape.
+In this example, we compute the time evolution of a wave given it initial (potentially complex) wave function \f$\psi(x,0)=\psi_0(x)\f$.
+Consider the homogeneous propagation where \f$\rho(x,t) = 0\f$
+
+\f[ \square \psi = 0 \f]
+
+First consider the Laplace operator. Since it is a positive semi definite real valued hermitian operator, its eigen pairs are all real and positive.
+
+\f[ \Delta \phi_i = k_i^2 \, \phi_i \f]
+
+where \f$\phi_i\f$ are eigen vectors and \f$k_i^2\f$ are corresponding eigen values.
+Note that \f$\phi_i\f$ form an orthonormal basis of the Laplace operator solutions.
+Defining \f$\psi_i\f$ as above allows for the construction of an orthonormal basis of solutions of the homogeneous propagation equation since it is easy to check that \f$\square \psi_i = 0\f$.
+
+\f[ \psi_i(x,t) = \phi_k(x) \, e^{j c k_i t} \f]
+
+where \f$j\f$ is the imaginary unit.
+Using this basis, one can project any solution \f$\psi\f$ of the propagation equation on it.
+The (potentially complex) coordinates \f$p_i\f$ in the \f$\psi_i\f$ basis are
+
+\f[ p_i = \left< \psi | \psi_i \right> \f]
+
+where for each \f$t\f$, \f$\left< \bullet | \bullet \right> \f$ is the inner product between dual 0-forms.
+In the DEC framework, such a product can be computed as the scalar product between the discrete value vector KForm.myContainer.
+We can then write \f$\psi\f$ as
+
+\f[ \psi = p_i \, \psi_i \f]
+
+where the summation over \f$i\f$ is implicit.
+Note that for \f$t=0\f$, \f$\psi_i(x,0) = \phi_i(x)\f$.
+To solve the temporal evolution from \f$\psi_0(x)\f$, all we need to do is find its initial projections \f$p_{0i}\f$ and let complex exponentials do the their duty to predict future wave functions.
+
+\f[ p_{0i} = \left< \psi_0 | \phi_i \right>  \f]
+
+For any other time, \f$\psi\f$ is then computed as
+
+\f[ \psi(x,t) = p_{0i} \, \psi_i(x,t) = p_{0i} \, \phi_i(x) \, e^{j c k_i t} \f]
 
 \snippet examplePropagation.cpp time_laplace
 \snippet examplePropagation.cpp time_eigen
+\snippet examplePropagation.cpp time_omega
 \snippet examplePropagation.cpp time_init_proj
 \snippet examplePropagation.cpp time_low_pass
 \snippet examplePropagation.cpp time_solve_time
+
+\snippet examplePropagation.cpp time_phase_null
+\image html propagation_time_wave_i.gif "Real part of wave propagating from initial conditions with null phase."
+
+\snippet examplePropagation.cpp time_phase_yy
+\image html propagation_time_wave_ii.gif "Real part of wave propagating from initial conditions with phase variation along y."
 
 \section sectDECPropagationForced Forced permanent regime solution
 
