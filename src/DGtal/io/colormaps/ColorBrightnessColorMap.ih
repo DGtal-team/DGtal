@@ -149,9 +149,9 @@ DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::getColor( const Color colo
   const double scale = static_cast<double>( value - min ) / range;
   double red, green, blue;
   ColorBrightnessColorMap<PValue,PDefaultColor>::HSVtoRGB( red, green, blue, h, s, v * scale );
-  return DGtal::Color( static_cast<int>( red * 255), 
-        static_cast<int>( green * 255),
-        static_cast<int>( blue * 255) );
+  return DGtal::Color( static_cast<unsigned char>( red * 255),
+        static_cast<unsigned char>( green * 255),
+        static_cast<unsigned char>( blue * 255) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

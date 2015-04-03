@@ -43,6 +43,8 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CUnsignedNumber.h"
+#include "DGtal/kernel/CIntegralNumber.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -69,7 +71,8 @@ namespace DGtal
   class Labels
   {
     BOOST_STATIC_ASSERT(( L >= 1 ));
-    // BOOST_CONCEPT_ASSERT(( CUnsignedInteger<TWord> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber<TWord> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CIntegralNumber<TWord> ));
 
   public:
     typedef TWord Word;

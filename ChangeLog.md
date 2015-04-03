@@ -2,6 +2,13 @@
 
 ## New Features / Critical Changes
 
+- *Configuration*
+ - Continuous integration enabled on both linux and macosx
+   systems. Furthermore, the nightly build documentation is
+   automatically deployed.  (David Coeurjolly,
+   [#955](https://github.com/DGtal-team/DGtal/pull/955))
+
+
 ## Changes
 
 - *Geometry Package*
@@ -12,12 +19,12 @@
   fitting. It requires to have the Patate library installed (and
   WITH_PATATE=true): http://patate.gforge.inria.fr/html/. See
   SphereFittingEstimator (David Coeurjolly,
-  [929](https://github.com/DGtal-team/DGtal/pull/929))
+  [#929](https://github.com/DGtal-team/DGtal/pull/929))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
    linear model estimation of scalar data. (David Coeurjolly, Jérémy
-   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/927),
+   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
 
 - *IO Package*
@@ -32,14 +39,30 @@
  - Viewer3d cleanings with better organisation through the
    separation of all code generating the GL lists. (Bertrand Kerautret)
   ([#945](https://github.com/DGtal-team/DGtal/pull/945))
+ - Operators added to perform computations on Color objects (addition,
+   substraction scaling...). Color is now CopyConstructible and
+   Assignable (David Coeurjolly
+   [#940](https://github.com/DGtal-team/DGtal/pull/940))
+ - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
+   [#961](https://github.com/DGtal-team/DGtal/pull/961)
+
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
    ConstIterator and adds a new method to change the color of a
    specific face. (Bertrand Kerautret,
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
-
-
+ - New methods to generate basic 3D tubular meshes and height fields. New mesh module documentation added.
+   (Bertrand Kerautret, [#969](https://github.com/DGtal-team/DGtal/pull/969))
+ - Refactoring of CSG operations on Euclidean / Digital shapes to easily
+   combine several operations.
+   EuclideanShapesUnion, EuclideanShapesIntersection and
+   EuclideanShapesMinus are now deprecated. Use EuclideanShapesCSG
+   instead.
+   DigitalShapesUnion, DigitalShapesIntersection and
+   DigitalShapesMinus are now deprecated. Use DigitalShapesCSG
+   instead. (Jérémy Levallois
+   [#962](https://github.com/DGtal-team/DGtal/pull/962))
 
 ## Bug Fixes
 
@@ -49,6 +72,10 @@
  Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
 
 - *Base Package*
+ - Fix bug with LabelledMap copy constructor and copy iterator. (Roland
+   Denis, [#973](https://github.com/DGtal-team/DGtal/pull/973))
+ - Fix bug with Labels iterator when first index is set (Roland Denis,
+ [#972](https://github.com/DGtal-team/DGtal/pull/972))
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
 
@@ -62,6 +89,23 @@
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
  - Fix too restrictive asserts of methods ArithmeticalDSSConvexHull::smartCH and ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative positions as input arguments. (Isabelle Sivignon, [#950](https://github.com/DGtal-team/DGtal/pull/950))
+ - Fix Bezout Vector computation (Isabelle Sivignon,
+ [#948](https://github.com/DGtal-team/DGtal/pull/948))
+ - Fix issues with SphereFitting and TensorVoting local estimators on
+   digital surfaces (Jérémy Levallois, David Coeurjolly
+   [#970](https://github.com/DGtal-team/DGtal/pull/970))
+
+- *IO Package*
+ - Performance improvement of color managment in Display3D, Board3D
+   and Viewer3D: no more "createNew...List" when setting a new
+   color. (David Coeurjolly,
+   [#958](https://github.com/DGtal-team/DGtal/pull/958))
+ - Radius and resolution of balls have been fixed when used to
+   represent a 3D point in grid mode (David Coeurjolly,
+   [#978](https://github.com/DGtal-team/DGtal/pull/978))
+ - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
+   (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
+
 
 # DGtal 0.8
 
@@ -83,7 +127,7 @@
    namespace concepts::, also moving some functors into namespace
    functors:: (Jacques-Olivier Lachaud,
    [#912](https://github.com/DGtal-team/DGtal/pull/912)).
-    
+
 - *DEC Package*
  - DGtal 0.8 contains the first release of the Discrete Exterior
    Calculus Package. DEC provides an easy and efficient way to
@@ -106,7 +150,7 @@
   coariance matrix. Previous estimators (IntegralInvariantMeanCurvatureEstimator
   and IntegralInvariantGaussianCurvatureEstimator) are removed. Please use
   the new ones instead. (Jeremy Levallois, Jacques-Olivier Lachaud,
-  [#803](https://github.com/DGtal-team/DGtal/pull/803) 
+  [#803](https://github.com/DGtal-team/DGtal/pull/803)
   [#856](https://github.com/DGtal-team/DGtal/pull/856)
   [#893](https://github.com/DGtal-team/DGtal/pull/893))
 
@@ -146,9 +190,9 @@
 
 
 - *IO Package*
-  - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 
-   usage of Center-(X,Y,Z) parameters, as described in Vol file 
-   specification. (Jérémy Levallois, 
+  - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the
+   usage of Center-(X,Y,Z) parameters, as described in Vol file
+   specification. (Jérémy Levallois,
    [#879](https://github.com/DGtal-team/DGtal/pull/879))
 
 - *Math Package*
@@ -204,7 +248,7 @@
  - CubicalSudivision has been renamed SpatialCubicalSubdivision and
    moved to "geometry/tools" (David Coeurjolly,
    [#862](https://github.com/DGtal-team/DGtal/pull/862))
- 
+
 - *IO Package*
   - Better handling of materials in Board3D and OBJ exports. (David
     Coeurjolly,

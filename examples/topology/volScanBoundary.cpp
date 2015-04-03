@@ -15,7 +15,7 @@
 //! [volScanBoundary-basicIncludes]
 #include <iostream>
 #include <queue>
-#include <QtGui/qapplication.h>
+
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -58,16 +58,16 @@ int main( int argc, char** argv )
   typedef ImageSelector < Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
-  SetFromImage<DigitalSet>::append<Image>(set3d, image, 
+  SetFromImage<DigitalSet>::append<Image>(set3d, image,
                                           minThreshold, maxThreshold);
   trace.endBlock();
   //! [volScanBoundary-readVol]
-  
-  
+
+
   //! [volScanBoundary-KSpace]
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
   KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(), 
+  bool space_ok = ks.init( image.domain().lowerBound(),
                            image.domain().upperBound(), true );
   if (!space_ok)
     {
@@ -81,7 +81,7 @@ int main( int argc, char** argv )
   trace.beginBlock( "Extracting boundary by scanning the space. " );
   KSpace::SCellSet boundary;
   Surfaces<KSpace>::sMakeBoundary( boundary, ks, set3d,
-                                   image.domain().lowerBound(), 
+                                   image.domain().lowerBound(),
                                    image.domain().upperBound() );
   trace.endBlock();
   //! [volScanBoundary-ExtractingSurface]
@@ -90,7 +90,7 @@ int main( int argc, char** argv )
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
   Viewer3D<> viewer( ks );
-  viewer.show(); 
+  viewer.show();
   KSpace::SCell dummy_scell;
   viewer << SetMode3D( dummy_scell.className(), "Basic" );
   viewer << CustomColors3D(Color(250, 0, 0 ), Color( 128, 128, 128 ) );

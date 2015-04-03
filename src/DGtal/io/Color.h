@@ -44,7 +44,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include <boost/lexical_cast.hpp>
-
+#include <algorithm>  
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,8 +55,13 @@ namespace DGtal
   /**
    * Description of class 'Color' <p>
    * 
-   * @brief Structure representing an RGB triple.
-
+   * @brief Structure representing an RGB triple with alpha component.
+   *
+   * @note if compilation flag COLOR_WITH_ALPHA_ARITH is set, then the
+   * arithmetical operations on colors also consider the
+   * alpha-channel. Otherwise, the alpha channel is not changed when
+   * summing up to colors for instance.
+   *
    */
   class Color
   {
@@ -78,10 +83,19 @@ namespace DGtal
      * @param aAlpha color transparency (default value =255);
      */
     
-    Color( const unsigned int aRgb, unsigned char aAlpha = 255 );
+    Color( const unsigned int aRgb,
+           unsigned char aAlpha = 255 );
 
-  
-  
+    /*
+     * Copy Constructor.
+     *
+     * @param aColor the color to copy.
+     */
+    
+    Color( const Color &aColor ):
+      myRed(aColor.myRed),myGreen(aColor.myGreen),
+      myBlue(aColor.myBlue), myAlpha(aColor.myAlpha)
+    {}
 
     /**
      * Constructor from R, G, B and Alpha parameter.
@@ -93,8 +107,10 @@ namespace DGtal
      */
     
     
-    Color( unsigned char aRedValue, unsigned char  aGreenValue, unsigned char  aBlueValue,
-	   unsigned char aAlphaValue = 255 )
+    Color( const unsigned char aRedValue,
+           const unsigned char  aGreenValue,
+           const unsigned char  aBlueValue,
+           const unsigned char aAlphaValue = 255 )
       : myRed(aRedValue),myGreen(aGreenValue),myBlue(aBlueValue),myAlpha(aAlphaValue) { }
     
 
@@ -105,23 +121,19 @@ namespace DGtal
      * @param aAlphaValue color transparency (default value =255);.
      */
     
-    Color( unsigned char aGrayValue, unsigned char aAlphaValue = 255 )
+    Color( unsigned char aGrayValue,
+           unsigned char aAlphaValue = 255 )
       : myRed(aGrayValue),myGreen(aGrayValue), myBlue(aGrayValue), myAlpha(aAlphaValue) { }
 
 
     /**
-     * Constructor.
-     * Constructs a Color with can be either valid or not.
+     * Default Constructor.
      *
-     * @param [in] aValidColor if true, the constructed color is valid.
-    */
+     */
     
-    Color( const bool aValidColor = true )
-      : myRed(-1),myGreen(-1),myBlue(-1), myAlpha(255)
-    { 
-      if ( aValidColor ) {
-	myRed = myGreen = myBlue = 0;
-      }
+    Color( )
+      : myRed(0),myGreen(0),myBlue(0), myAlpha(255)
+    {
     }
     
     Color& setRGBi( const unsigned char aRedValue,
@@ -201,6 +213,151 @@ namespace DGtal
 
     bool operator<( const Color & aColor ) const;
 
+    
+    /**
+     * Addition operator with assignement.
+     *
+     * @note returned components are clamped to [0,255] interval. 
+     *
+     * @param v is the Color that gets added to @a *this.
+     * @return a reference on 'this'.
+     */
+    Color & operator+= ( const Color & v )
+    {
+      this->myRed = clamp((int)this->myRed + (int)v.myRed);
+      this->myBlue =  clamp((int)this->myBlue + (int)v.myBlue);
+      this->myGreen =  clamp((int)this->myGreen + (int)v.myGreen);
+#ifdef COLOR_WITH_ALPHA_ARITH
+      this->myAlpha =  clamp((int)this->myAlpha + (int)v.myAlpha);
+#endif
+      return *this;
+    }
+
+    /**
+     * Addition operator.
+     *
+     * @note returned components are clamped to [0,255] interval. 
+     *
+     *
+     * @param v is the Color that gets added to @a *this.
+     * @return a new Point that is the addition of 'this' to [v].
+     */
+    Color operator+ ( const Color & v ) const
+    {
+      Color c;
+      c.myRed = clamp((int)this->myRed + (int)v.myRed);
+      c.myBlue =clamp((int)this->myBlue + (int)v.myBlue);
+      c.myGreen = clamp((int)this->myGreen + (int)v.myGreen);
+#ifdef COLOR_WITH_ALPHA_ARITH
+      c.myAlpha = clamp((int)this->myAlpha + (int)v.myAlpha);
+#else
+      c.myAlpha = this->myAlpha ;
+#endif
+  return c;
+    }
+
+    /**
+     * Substraction operator with assignement.
+     *
+     * @note returned components are clamped to [0,255] interval. 
+     *
+     *
+     * @param v is the Point that gets substracted to  *this.
+     * @return a reference on 'this'.
+     */
+    Color & operator-= ( const Color & v )
+    {
+      this->myRed = clamp((int)this->myRed - (int)v.myRed);
+      this->myBlue = clamp((int)this->myBlue - (int)v.myBlue);
+      this->myGreen = clamp((int)this->myGreen - (int)v.myGreen);
+#ifdef COLOR_WITH_ALPHA_ARITH
+      this->myAlpha = clamp((int)this->myAlpha - (int)v.myAlpha);
+#endif
+      return *this;
+    }
+
+    /**
+     * Substraction operator.
+     *
+     * @note returned components are clamped to [0,255] interval. 
+     *
+     * @param v is the Color that gets substacted to @a *this.
+     * @return a new Point that is the subtraction 'this'-[v].
+     */
+    Color operator- ( const Color & v ) const
+    {
+      Color c;
+      c.myRed = clamp((int)this->myRed - (int)v.myRed);
+      c.myBlue = clamp((int)this->myBlue - (int)v.myBlue);
+      c.myGreen = clamp((int)this->myGreen - (int)v.myGreen);
+#ifdef COLOR_WITH_ALPHA_ARITH
+      c.myAlpha = clamp((int)this->myAlpha - (int)v.myAlpha);
+#else
+      c.myAlpha = this->myAlpha ;
+#endif
+      return c;
+    }
+
+    /** 
+     * Multiplication by a scalar (component-wise)
+     *
+     * @note returned components are clamped to [0,255] interval. 
+     *
+     * 
+     * @param coeff the scalar
+     * 
+     * @return the scaled color
+     */
+    Color &operator *= ( const double coeff)
+    {
+      this->myRed = clamp((double)this->myRed*coeff);
+      this->myBlue = clamp((double)this->myBlue*coeff);
+      this->myGreen = clamp((double)this->myGreen*coeff);
+#ifdef COLOR_WITH_ALPHA_ARITH
+      this->myAlpha =  clamp((double)this->myAlpha*coeff);
+#endif
+      return *this;
+    }
+
+    /** 
+     * Multiplication by a scalar (component-wise)
+     *
+     * @note returned components are clamped to [0,255] interval. 
+     *
+     * @param coeff the scalar.
+     * @return a scaled color
+     */
+    Color operator * ( const double coeff) const
+    {
+      Color c;
+      c.myRed = clamp((double)this->myRed*coeff);
+      c.myBlue = clamp((double)this->myBlue*coeff);
+      c.myGreen = clamp((double)this->myGreen*coeff);
+#ifdef COLOR_WITH_ALPHA_ARITH
+      c.myAlpha =  clamp((double)this->myAlpha*coeff);
+#else
+      c.myAlpha  = this->myAlpha;
+#endif
+      return c;
+    }
+   
+    /**
+     * Assignement Operator
+     *
+     * @param pv the object to copy.
+     * @return a reference on 'this'.
+     */
+    Color & operator= ( const Color & pv )
+    {
+      this->myRed = pv.myRed;
+      this->myGreen = pv.myGreen;
+      this->myBlue = pv.myBlue;
+      this->myAlpha = pv.myAlpha;
+      return *this;
+    }
+    
+
+    
     void flushPostscript( std::ostream & ) const;
 
     std::string svg() const;
@@ -243,39 +400,31 @@ namespace DGtal
     static const Color Navy;
     static const Color Aqua;
 
-
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    //Color ( const Color & aColor );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    //   Color & operator= ( const Color & aColor );
-
-
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    int myRed;      /**< The red component. */
-    int myGreen;    /**< The green component. */
-    int myBlue;      /**< The blue component. */
-    int myAlpha;    /**< The opacity. */
+    unsigned char myRed;      /**< The red component. */
+    unsigned char myGreen;    /**< The green component. */
+    unsigned char myBlue;      /**< The blue component. */
+    unsigned char myAlpha;    /**< The opacity. */
     // ------------------------- Hidden services ------------------------------
   protected:
 
 
   private:
 
- 
+    /** 
+     * Clamp an int to [0,255]
+     * 
+     * @param [in] value the value to clamp
+     * 
+     * @return the clamped value
+     */
+    unsigned char clamp(const double value)  const
+    {
+      return static_cast<unsigned char>(std::max( std::min(value, 255.0), 0.0));
+    }
 
 
 
@@ -284,10 +433,23 @@ namespace DGtal
 
   }; // end of class Color
 
-  
 
-  
-  
+
+  /**
+     External multiplication operator with a scalar number
+
+     @param coeff is the factor \a Color is multiplied by.
+     @param aColor is the vector that is multiplied by the factor \a coef.
+
+     @return a new Vector that is the multiplication of \a aVector by
+     \a coeff.
+  */
+  Color
+  operator*( const double coeff,
+	     const Color &aColor );
+ 
+ 
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'Color'.
    * @param out the output stream where the object is written.
