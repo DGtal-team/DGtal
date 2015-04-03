@@ -225,7 +225,7 @@ namespace DGtal
       RealPoint center;
       bool isSigned;
       bool signPos;
-      double size;
+      double radius;
       unsigned int resolution;
     };
 
@@ -420,12 +420,12 @@ namespace DGtal
                               DGtal::int32_t min_name, DGtal::int32_t max_name );
 
     /**
-     * @param[in]  name the "OpenGL name" that was selected.
+     * @param[in]  aName the "OpenGL name" that was selected.
      * @param[out] data a pointer that was given setting the callback function.
      * @return the select callback function that match the given \a
      * name, or 0 if none is associated to this name.
      */
-    SelectCallbackFct getSelectCallback3D( DGtal::int32_t name, void*& data ) const;
+    SelectCallbackFct getSelectCallback3D( DGtal::int32_t aName, void*& data ) const;
 
     // ----------------------- Graphical directives ----------------------------------
   public:
@@ -479,12 +479,12 @@ namespace DGtal
      **/
     void createNewCubeList(std::string s= "");
 
-    // /**
-    //  * Used to create a new list containing new 3D objects
-    //  * (useful to use transparency between different objects).
-    //  * @param s name of the new list
-    //  **/
-    // void createNewQuadList(std::string s= "");
+     /**
+      * Used to create a new list containing new 3D objects
+      * (useful to use transparency between different objects).
+      * @return the new key of the map associated to the new list.
+      **/
+    DGtal::int32_t createNewQuadList();
 
     /**
      * Used to create a new list containing new 3D objects
@@ -622,12 +622,12 @@ namespace DGtal
     /**
      * Method to add a point to the current display.
      * @param center ball center x
-     * @param size the ball radius (default 1)
+     * @param radius the ball radius (default 0.5)
      * @param resolution ball resolution (default 30)
      *
      */
     void addBall(const RealPoint &center ,
-                 const double size=1.0,
+                 const double radius=0.5,
                  const unsigned int resolution = 30);
 
 

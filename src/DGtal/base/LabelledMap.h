@@ -72,17 +72,17 @@ namespace DGtal
      V[ 1 ] is the data of the second set label.
      ...
 
-     if less than 3 datas and N = 2
+     if less than 4 datas and N = 3
      +------+------+------+------+------+
      |labels| V[0] | V[1] | ...  |  0   |
      +------+------+------+------+------+
 
-     if only 3 datas and N = 2
+     if only 4 datas and N = 3
      +------+------+------+------+------+
      |labels| V[0] | V[1] | V[2] | V[3] |
      +------+------+------+------+------+
 
-     if more than 3 datas and N = 2, M = 4
+     if more than 4 datas and N = 3, M = 4
      +------+------+------+------+------+        +------+------+------+------+------+
      |labels| V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
      +------+------+------+------+------+        +------+------+------+------+------+

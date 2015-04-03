@@ -31,7 +31,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+
 #include "DGtal/base/Common.h"
 
 #include "DGtal/helpers/StdDefs.h"
@@ -62,24 +62,24 @@ int main( int argc, char** argv )
 {
   // for 3D display with Viewer3D
   QApplication application(argc,argv);
-  
+
   //! [digitalSurfaceSlice-readVol]
   trace.beginBlock( "Reading vol file into an image." );
   typedef ImageSelector < Domain, int>::Type Image;
-  std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
+  std::string inputFilename = examplesPath + "samples/Al.100.vol";
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
-  SetFromImage<DigitalSet>::append<Image>(set3d, image, 
+  SetFromImage<DigitalSet>::append<Image>(set3d, image,
                                           0, 1 );
   Viewer3D<> viewer;
-  viewer.show(); 
+  viewer.show();
   trace.endBlock();
   //! [digitalSurfaceSlice-readVol]
-  
+
   //! [digitalSurfaceSlice-KSpace]
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
   KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(), 
+  bool space_ok = ks.init( image.domain().lowerBound(),
                            image.domain().upperBound(), true );
   if (!space_ok)
     {
@@ -103,14 +103,14 @@ int main( int argc, char** argv )
   MySetOfSurfels theSetOfSurfels( ks, surfAdj );
   Surfaces<KSpace>::sMakeBoundary( theSetOfSurfels.surfelSet(),
                                    ks, set3d,
-                                   image.domain().lowerBound(), 
+                                   image.domain().lowerBound(),
                                    image.domain().upperBound() );
   MyDigitalSurface digSurf( theSetOfSurfels );
   trace.info() << "Digital surface has " << digSurf.size() << " surfels."
                << std::endl;
   trace.endBlock();
   //! [digitalSurfaceSlice-ExtractingSurface]
-  
+
   //! [digitalSurfaceSlice-ExtractingSlice]
   trace.beginBlock( "Extract slices." );
   typedef MyDigitalSurface::DigitalSurfaceTracker MyTracker;
@@ -121,10 +121,10 @@ int main( int argc, char** argv )
   MyTracker* tracker2 = digSurf.container().newTracker( surf );
   // Extract the bondary contour associated to the initial surfel in
   // its first direction
-  My2DSlice slice1( tracker1, *(ks.sDirs( surf )) ); 
+  My2DSlice slice1( tracker1, *(ks.sDirs( surf )) );
   // Extract the bondary contour associated to the initial surfel in
   // its second direction
-  My2DSlice slice2( tracker2, *++(ks.sDirs( surf )) ); 
+  My2DSlice slice2( tracker2, *++(ks.sDirs( surf )) );
   delete tracker1;
   delete tracker2;
   trace.endBlock();
@@ -149,50 +149,50 @@ int main( int argc, char** argv )
   for( MyDigitalSurface::ConstIterator it = theSetOfSurfels.begin(),
          it_end = theSetOfSurfels.end(); it != it_end; ++it )
     viewer<< *it;
-  
+
   // Displaying First surfels cut with gradient colors.;
   GradientColorMap<int> cmap_grad( 0, slice1.size() );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
-  
+
   // Need to avoid surfel superposition (the surfel size in increased)
   viewer << Viewer3D<>::shiftSurfelVisu;
   viewer << SetMode3D( surf.className(), "");
   viewer.setFillColor(Color(180, 200, 25, 255));
-  
+
   int d=0;
   for ( My2DSlice::ConstIterator it = slice1.begin(),
           it_end = slice1.end(); it != it_end; ++it )
-    {        
+    {
       Color col= cmap_grad(d);
       viewer.setFillColor(Color(col.red(),col.green() ,col.blue(), 255));
       viewer<< *it;
       d++;
     }
-  
+
   GradientColorMap<int> cmap_grad2( 0, slice2.size() );
   cmap_grad2.addColor( Color( 50, 50, 255 ) );
   cmap_grad2.addColor( Color( 255, 0, 0 ) );
   cmap_grad2.addColor( Color( 255, 255, 10 ) );
-  
+
   d=0;
   for ( My2DSlice::ConstIterator it = slice2.begin(),
           it_end = slice2.end(); it != it_end; ++it )
-    {        
+    {
       Color col= cmap_grad2(d);
       viewer.setFillColor(Color(col.red(),col.green() ,col.blue(), 255));
       viewer<< *it;
       d++;
     }
-  
+
   // One need once again to avoid superposition.
   viewer << Viewer3D<>::shiftSurfelVisu;
   viewer.setFillColor(Color(18, 200, 25, 255));
   viewer << surf ;
   viewer << Viewer3D<>::updateDisplay;
   trace.endBlock();
-    
+
   return application.exec();
   //! [digitalSurfaceSlice-displayingAll]
 }
