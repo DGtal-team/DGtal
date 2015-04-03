@@ -33,7 +33,6 @@
 #include <set>
 #include <map>
 #include <queue>
-#include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 
@@ -79,7 +78,7 @@ struct VertexSize {
   Vertex v;
   unsigned int size;
   inline VertexSize( const Vertex & aV, unsigned int aSize )
-    : v( aV ), size( aSize ) 
+    : v( aV ), size( aSize )
   {}
 };
 
@@ -87,7 +86,7 @@ inline
 bool operator<( const VertexSize & vs1, const VertexSize & vs2 )
 {
   return vs1.size < vs2.size;
-} 
+}
 //! [greedy-plane-segmentation-ex2-typedefs]
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -97,7 +96,7 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-ex2-parseCommandLine]
    trace.info() << "Segments the surface at given threshold within given volume into digital planes of rational width num/den." << std::endl;
   // Setting default options: ----------------------------------------------
-  // input file used: 
+  // input file used:
    string inputFilename =   examplesPath + "samples/Al.100.vol" ;
     trace.info() << "input file used " << inputFilename << std::endl;
   // parameter threshold
@@ -107,8 +106,8 @@ int main( int argc, char** argv )
    unsigned int widthNum = 1;
    trace.info() << "the numerator of the rational width (a non-null integer) =" << widthNum<< std::endl;
    // parameter widthDen
-   unsigned int widthDen = 1;   
-   trace.info() << "the denominator of the rational width (a non-null integer)= " << widthDen<< std::endl;      
+   unsigned int widthDen = 1;
+   trace.info() << "the denominator of the rational width (a non-null integer)= " << widthDen<< std::endl;
   //! [greedy-plane-segmentation-ex2-parseCommandLine]
 
   //! [greedy-plane-segmentation-ex2-loadVolume]
@@ -128,7 +127,7 @@ int main( int argc, char** argv )
                      set3d.domain().upperBound(), true );
   if ( ! ok ) std::cerr << "[KSpace.init] Failed." << std::endl;
   SurfelAdjacency<KSpace::dimension> surfAdj( true ); // interior in all directions.
-  MyDigitalSurfaceContainer* ptrSurfContainer = 
+  MyDigitalSurfaceContainer* ptrSurfContainer =
     new MyDigitalSurfaceContainer( ks, set3d, surfAdj );
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
   trace.endBlock();
@@ -160,7 +159,7 @@ int main( int argc, char** argv )
           axis = ks.sOrthDir( v );
           p = ks.sCoords( ks.sDirectIncident( v, axis ) );
           bool isExtended = planeComputer.extend( p );
-          if ( isExtended ) 
+          if ( isExtended )
             // surfel is in plane.
             visitor.expand();
           else // surfel is not in plane and should not be used in the visit.
@@ -198,7 +197,7 @@ int main( int argc, char** argv )
               axis = ks.sOrthDir( v );
               p = ks.sCoords( ks.sDirectIncident( v, axis ) );
               bool isExtended = ptrSegment->plane.extend( p );
-              if ( isExtended ) 
+              if ( isExtended )
                 { // surfel is in plane.
                   processedVertices.insert( v );
                   v2plane[ v ] = ptrSegment;
@@ -217,9 +216,9 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-ex2-segment]
 
   //! [greedy-plane-segmentation-ex2-visualization]
-  Viewer3D<> viewer;
-  viewer.show(); 
-  for ( std::map<Vertex,SegmentedPlane*>::const_iterator 
+  Viewer3D<> viewer( ks );
+  viewer.show();
+  for ( std::map<Vertex,SegmentedPlane*>::const_iterator
           it = v2plane.begin(), itE = v2plane.end();
         it != itE; ++it )
     {
@@ -230,8 +229,8 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-ex2-visualization]
 
   //! [greedy-plane-segmentation-ex2-freeMemory]
-  for ( std::vector<SegmentedPlane*>::iterator 
-          it = segmentedPlanes.begin(), itE = segmentedPlanes.end(); 
+  for ( std::vector<SegmentedPlane*>::iterator
+          it = segmentedPlanes.begin(), itE = segmentedPlanes.end();
         it != itE; ++it )
     delete *it;
   segmentedPlanes.clear();

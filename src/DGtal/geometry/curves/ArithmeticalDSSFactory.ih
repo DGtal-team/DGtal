@@ -288,20 +288,12 @@ bezoutVector(const Coordinate& aA,
   IntegerComputer<Coordinate> computer; 
   Vector v = computer.extendedEuclid(aA, -aB, aR); 
   ASSERT( (aA*v[0]-aB*v[1]) == aR );
-  
-  //compute the one whose component
-  //have a sign equal to the direction
-  //vector components
-  // if ( (aB >= 0)&&(v[0] < 0) )
-  //   v += Vector(aB,aA); 
-  // else if ( (aB < 0)&&(v[0] >= 0) )
-  //   v += Vector(aB,aA); 
-  // else if ( ( aA >= 0 )&&(v[1] < 0) )
-  //   v += Vector(aB,aA);
-  // else if ( ( aA < 0 )&&(v[1] >= 0) )
-  //   v += Vector(aB,aA);
 
-  // Erratum: modify v if and only if aB and v[0] or aA and v[1] have strictly different signs
+  // compute the one whose component
+  // have a sign equal to the direction
+  // vector components
+  // modify v if and only if aB and v[0] or aA and v[1] have strictly different signs
+
   if ( (aB > 0)&&(v[0] < 0) )
     v += Vector(aB,aA); 
   else if ( (aB < 0)&&(v[0] > 0) )
@@ -313,11 +305,6 @@ bezoutVector(const Coordinate& aA,
   
   ASSERT( (aA*v[0]-aB*v[1]) == aR );
  
-  // Too restrictive asserts: cases where one v component is null are rejected while they should be accepted. See for instance bezoutVector(-3,-1,-1)
-  //ASSERT( (( aA >= 0 )&&(v[1] >= 0))||(( aA < 0 )&&(v[1] < 0)) ); 
-  //ASSERT( (( aB >= 0 )&&(v[0] >= 0))||(( aB < 0 )&&(v[0] < 0)) ); 
-
-
   // Assert that for the pairs (aA,v[1]) and (aB,v[0]) either one member is null, or they have the same sign
   ASSERT( (aA ==0 || v[1] == 0 || (aA > 0 && v[1] > 0) || (aA < 0 && v[1] <0)) && (aB ==0 || v[0] == 0 || (aB > 0 && v[0] > 0) || (aB < 0 && v[0] <0)));
   

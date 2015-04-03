@@ -76,7 +76,7 @@ bool testEstimatorCache(double h)
 
   typedef functors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
   typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
-  typedef MyIICurvatureFunctor::Value Value;
+//  typedef MyIICurvatureFunctor::Value Value;
 
   double re = 5.0;
   double radius = 5.0;
@@ -154,7 +154,7 @@ bool testEstimatorCache(double h)
   trace.beginBlock( "Timing cache access ...");
   for(MyDigitalSurface::ConstIterator it = surf.begin(), itend=surf.end(); it != itend; ++it)
     {
-      if (  cache.eval(it) == 123456789900 ) //making sure to visit
+      if (  cache.eval(it) == 12345678 ) //making sure to visit
                                              //all surfels
         {
           ok=false;
@@ -169,8 +169,8 @@ bool testEstimatorCache(double h)
   trace.info() << "Value at begin="<< cache2.eval(surf.begin())<<"  expected = "<< curvatureEstimator.eval(surf.begin())<<std::endl;
   for(MyDigitalSurface::ConstIterator it = surf.begin(), itend=surf.end(); it != itend; ++it)
     {
-      if (  cache.eval(it) == 123456789900 ) //making sure to visit
-                                             //all surfels
+      if (  cache.eval(it) == 12345678 ) //making sure to visit
+                                         //all surfels
         {
           ok=false;
           trace.error() << "Incorrect values at "<<*it<<std::endl;
