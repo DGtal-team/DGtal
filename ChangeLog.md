@@ -44,7 +44,12 @@
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
  - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
-   [#961](https://github.com/DGtal-team/DGtal/pull/961)
+ [#961](https://github.com/DGtal-team/DGtal/pull/961)
+ - New colormap adapter to add ticks/iso-contours (regularly spaced or
+ specified by the user) to a given colormap. (David Coeurjolly,
+ [#987](https://github.com/DGtal-team/DGtal/pull/987)
+ 
+ 
 
 
 - *Shapes Package*
