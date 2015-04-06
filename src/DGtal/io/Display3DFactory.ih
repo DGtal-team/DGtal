@@ -195,8 +195,8 @@ DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
           b = b*radius;
           c = c*radius;
           d = d*radius;
-
-          display.setFillColor( cmap(aAccumulator.count(i,j)));
+          
+          display.setFillColor(cmap(aAccumulator.count(i,j)));
           display.addQuad(a, b, c, d);
         }
     }
@@ -226,7 +226,6 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsFaces( Display & display,
 {
   DGtal::Color fillColorSave = display.getFillColor();
   bool useGlobalColor =  !aMesh.isStoringFaceColors();
-  // display.createNewQuadList(aMesh.className());
   for(unsigned int i=0; i< aMesh.nbFaces(); i++)
     {
       typename Mesh<TPoint>::MeshFace aFace = aMesh.getFace(i);

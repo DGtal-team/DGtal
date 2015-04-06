@@ -216,7 +216,7 @@ const DGtal::Color DGtal::Color::Aqua((unsigned char)0,(unsigned char)255,(unsig
 void
 DGtal::Color::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Color] RGBA("<<myRed<<","<<myGreen<<","<<myBlue<<","<<myAlpha<<")";
+  out << "[Color] RGBA("<<(int)myRed<<","<<(int)myGreen<<","<<(int)myBlue<<","<<(int)myAlpha<<")";
 }
 
 /**

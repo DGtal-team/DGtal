@@ -33,6 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/tools/SphericalAccumulator.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/boards/Board3D.h"
 /////////////////////ddzad//////////////////////////////////////////////////////////
 
 using namespace std;
@@ -42,12 +43,6 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class SphericalAccumulator.
 ///////////////////////////////////////////////////////////////////////////////
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
-
 bool testSphericalViewer(int argc, char **argv)
 {
   QApplication application(argc,argv);
@@ -65,11 +60,17 @@ bool testSphericalViewer(int argc, char **argv)
               (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX));
 
   Viewer3D<> viewer;
+  Board3D<> board;
   viewer.show();
   Vector a,b,c,d;
   viewer << accumulator;
+  
+  
+  board << accumulator;
+  board.saveOBJ("testSpherical.obj");
+  
 
-    trace.info() << "Bin values: ";
+  trace.info() << "Bin values: ";
   for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
       it != itend;
       ++it)
