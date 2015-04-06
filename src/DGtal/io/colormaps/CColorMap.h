@@ -50,7 +50,8 @@
 
 namespace DGtal
 {
-
+namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CColorMap
   /**
@@ -113,7 +114,7 @@ Description of \b concept \b 'CColorMap' <p>
     Color myColor;
     Value myMin, myMax, myValue;    
   }; // end of concept CColorMap
-  
+  }//namespace concepts
 } // namespace DGtal
 
 
