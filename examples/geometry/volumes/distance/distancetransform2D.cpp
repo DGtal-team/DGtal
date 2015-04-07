@@ -147,7 +147,7 @@ int main()
   //Explicit export with ticked colormap
   //We compute the maximum DT value on the L2 map
   board.clear();
-  TickedColorMap<double, GradientColorMap<double> > ticked(0.0,maxv2);
+  TickedColorMap<double, GradientColorMap<double> > ticked(0.0,maxv2, Color::White);
   ticked.addRegularTicks(5, 0.5);
   ticked.finalize();
   ticked.colormap()->addColor( Color::Red );

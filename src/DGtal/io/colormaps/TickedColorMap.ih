@@ -17,9 +17,9 @@
 /**
  * @file TickedColorMap.ih
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/19
+ * @date 2015/04/06
  *
  * Implementation of inline methods defined in TickedColorMap.h
  *
@@ -151,6 +151,9 @@ inline
 void DGtal::TickedColorMap<Value,CMAP>::addTick(const Value tick,
                                     const Value thickness)
 {
+  ASSERT( tick >= myMin );
+  ASSERT( tick <= myMax );
+  
   myTicks.push_back(std::make_pair(tick,thickness));
 }
 
