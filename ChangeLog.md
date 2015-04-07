@@ -88,6 +88,7 @@
  - Fix bug of method ArithmeticalDSL::getPoint with negative values
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
+ - Fix too restrictive asserts of methods ArithmeticalDSSConvexHull::smartCH and ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative positions as input arguments. (Isabelle Sivignon, [#950](https://github.com/DGtal-team/DGtal/pull/950))
  - Fix Bezout Vector computation (Isabelle Sivignon,
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
  - Fix issues with SphereFitting and TensorVoting local estimators on
@@ -104,6 +105,7 @@
    [#978](https://github.com/DGtal-team/DGtal/pull/978))
  - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
    (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
+
 
 # DGtal 0.8
 
