@@ -19,9 +19,9 @@
 /**
  * @file TickedColorMap
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/19
+ * @date 2015/04/06
  *
  * Header file for module TickedColorMap.cpp
  *
@@ -67,6 +67,8 @@ namespace DGtal
    * For example, on a colormap, this class can be used to create white
    * ticks with regular spacing, or locate zero-crossing of a curvature map
    * for instance (i.e. with a single tick at zero).
+   *
+   * This class is a model of concepts::CColorMap
    *
    * @tparam TValue The type of the range values.
    * @tparam TColorMap The type of colormap to Adapt (the value type of TColorMap must be TValue).
@@ -137,7 +139,7 @@ namespace DGtal
     
     /**
      * Add a tick at a given position of the
-     * range.
+     * range [myMin, myMax].
      *
      * @param position tick position.
      * @param thickness tick thickness.
@@ -146,7 +148,7 @@ namespace DGtal
                  const Value thickness);
     
     /**
-     * Add regular ticks in the range.
+     * Add regularly spaced ticks in the range [myMin,myMax].
      *
      * @param nbTicks the number of regular ticks.
      * @param thickness ticks thickness.
