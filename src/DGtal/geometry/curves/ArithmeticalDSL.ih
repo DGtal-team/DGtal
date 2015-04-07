@@ -148,7 +148,7 @@ template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
-::sameOctant( const ArithmeticalDSL & aOther, int *theOctant ) const  
+::sameOctant( const ArithmeticalDSL & aOther, typename ArithmeticalDSLKernel<TCoordinate, adjacency>::Octant::first_type *theOctant ) const  
 {
   typename ArithmeticalDSLKernel<TCoordinate, adjacency>::Octant octant, octantOther;
   

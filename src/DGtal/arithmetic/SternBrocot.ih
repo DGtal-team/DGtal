@@ -506,13 +506,12 @@ median(const Fraction & g) const
   return Fraction(this->p()+g.p(),this->q()+g.q());
 }
 
-
 //----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
-fractionOfSmallestDenominatorInBetween(const Fraction & other) const
+simplestFractionInBetween(const Fraction & other) const
 {
   Fraction f(*this);  
   Fraction g(other); 
@@ -525,7 +524,6 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
   Fraction res;
   
   int i = 0;
-  bool minf;
   
   Value uf, ug;
   ConstIterator itf=f.begin(), itg=g.begin();
@@ -533,100 +531,99 @@ fractionOfSmallestDenominatorInBetween(const Fraction & other) const
   if(abs(f.p()*g.q()-f.q()*g.p())==1)
     return  f.median(g);
   
-
-  // Compare each coefficient of the two fractions one by one.
-  for(itf = f.begin(), itg = g.begin(); itf != f.end() && itg != g.end() ; ++itf, ++itg)
+  itf = f.begin(); itg = g.begin(); 
+  uf = *itf; ug = *itg;
+  while(uf.first == ug.first && i != f.k() && i != g.k())
     {
+      res.push_back(std::make_pair(uf.first,i));
+      i++;
+      itf++;itg++;
       uf = *itf;
       ug = *itg;
-      if(uf.first == ug.first)
+    }
+    
+  if(uf.first==ug.first)
+    {
+      if(i == f.k())
 	{
 	  res.push_back(std::make_pair(uf.first,i));
 	  i++;
+	  itg++;
+	  ug = *itg;
+	  res.push_back(std::make_pair(ug.first+1,i)); 
 	}
       else
 	{
-	  int coeff = (uf.first<ug.first)?uf.first:ug.first;
-	  if(i==f.k() && i == g.k())
-	    {
-	      if(abs(uf.first-ug.first) <= 1)
-		return f.median(g);
-	      else
-		{
-		  res.push_back(std::make_pair(coeff+1,i));
-		  return res;
-		}
-	    }	
-	  else
-	    if((i!=f.k() && i !=g.k()) || ( (i==f.k() || i==g.k()) && abs(uf.first-ug.first) > 1))
-	      {
-		res.push_back(std::make_pair(coeff+1,i));
-		return res;
-	      }	
-	    else // we have itf++ = fend or itg++ = gend and exit the loop
-	      res.push_back(std::make_pair(coeff,i));
-	  
+	  res.push_back(std::make_pair(uf.first,i));
+	  i++;
+	  itf++;
+	  uf = *itf;
+	  res.push_back(std::make_pair(uf.first+1,i)); 
 	}
     }
-  
-  // one fraction is the ancestor of the other and f.k() != g.k() (f.k() < g.k())
-  
-  if(itf == f.end()) // either itf == fend, or itg == gend, but not both of them 
-    minf = true;
   else
-    minf = false;
-  
-  if(minf) // f is an ancestor of g: since f < g, g is in the right son of f
     {
-      if(uf.first==ug.first)
-	if(g.k() == f.k()+1)
-	  return f.median(g);
-	else
-	  res.push_back(std::make_pair((*(itg)).first+1,f.k()+1));
+      if(i!=f.k() && i != g.k())
+	(uf.first<ug.first)?res.push_back(std::make_pair(uf.first+1,i)):res.push_back(std::make_pair(ug.first+1,i));
       else
-	if(uf.first>ug.first)
-	  if((*itg).first > 2 || ((*itg).first == 2 && g.k() > f.k()+1))
-	    res.push_back(std::make_pair(1+1,f.k()+1));
-	  else
-	    if(g.k() == f.k()+2)
-	      return f.median(g);
-	    else
-	      {
-		res.push_back(std::make_pair(1,f.k()+1));
-		res.push_back(std::make_pair((*(++itg)).first+1,f.k()+2));
-	      }
-	else // uf.first < ug.first
-	  res.push_back(std::make_pair(1,f.k()+1));
-      
-      
-    }
-  else // g is an ancestor of f
-    {
-      if(uf.first==ug.first)
-	if(f.k() == g.k()+1)
-	  return f.median(g);
+	if(i == f.k() && i == g.k())
+	  (uf.first<ug.first)?res.push_back(std::make_pair(uf.first+1,i)):res.push_back(std::make_pair(ug.first+1,i));
 	else
-	  res.push_back(std::make_pair((*(itf)).first+1,g.k()+1));
-      else
-	if(ug.first>uf.first)
-	  if((*itf).first > 2 || ((*itf).first == 2 && f.k() > g.k()+1))
-	    res.push_back(std::make_pair(1+1,g.k()+1));
+	  if(i==f.k())
+	    {
+	      if(uf.first < ug.first)
+		res.push_back(std::make_pair(uf.first+1,i));
+	      else
+		if(uf.first == ug.first + 1)
+		  {
+		    res.push_back(std::make_pair(ug.first,i));
+		    i++;
+		    itg++;
+		    ug = *itg;
+		    if(ug.first==1)
+		      {
+			res.push_back(std::make_pair(ug.first,i));
+			i++;
+			itg++;
+			ug = *itg;
+			res.push_back(std::make_pair(ug.first+1,i));
+		      }
+		    else
+		      res.push_back(std::make_pair(2,i));
+		  }
+		else
+		  res.push_back(std::make_pair(ug.first+1,i));
+	    }
 	  else
-	    if(f.k() == g.k()+2)
-	      return f.median(g);
-	    else
-	      {
-		res.push_back(std::make_pair(1,g.k()+1));
-		res.push_back(std::make_pair((*(++itf)).first+1,g.k()+2));
-	      }
-	else // uf.first < ug.first
-	  res.push_back(std::make_pair(1,g.k()+1));
-    }
-  
+	    {
+	      if(ug.first < uf.first)
+		res.push_back(std::make_pair(ug.first+1,i));
+	      else
+		if(ug.first == uf.first + 1)
+		  {
+		    res.push_back(std::make_pair(uf.first,i));
+		    i++;
+		    itf++;
+		    uf = *itf;
+		    if(uf.first==1)
+		      {
+			res.push_back(std::make_pair(uf.first,i));
+			i++;
+			itf++;
+			uf = *itf;
+			res.push_back(std::make_pair(uf.first+1,i));
+		      }
+		    else
+		      res.push_back(std::make_pair(2,i));
+		  }
+		else
+		  res.push_back(std::make_pair(uf.first+1,i));
+	      
+	    }
+    } 
+
   return res;
-
 }
-
 
 
 //-----------------------------------------------------------------------------

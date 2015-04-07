@@ -373,10 +373,21 @@ namespace DGtal
    * @return 'true' the two DSLs lie in the same octant, 'false' otherwise
    * @see sameOctant
    */
-  bool sameOctant ( const ArithmeticalDSL & aOther, int *theOctant ) const;
+  bool sameOctant ( const ArithmeticalDSL & aOther, typename ArithmeticalDSLKernel<Coordinate,adjacency>::Octant::first_type *theOctant ) const;
 
 
+  /**
+   * Test if a point is an upper leaning point of *this
+   * @param aPoint a point
+   * @return 'true' if aPoint is an upper leaning point of *this, false otherwise
+   */
   bool isUpperLeaningPoint(const Point& aPoint) const;
+  
+  /**
+   * Test if a point is a lower leaning point of *this
+   * @param aPoint a point
+   * @return 'true' if aPoint is a lower leaning point of *this, false otherwise
+   */
   bool isLowerLeaningPoint(const Point& aPoint) const;
   
 

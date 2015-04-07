@@ -388,6 +388,7 @@ namespace DGtal
        */
 
       Fraction median(const Fraction & g) const;
+      
 
       /** 
        * Compute the fraction of smallest denominator strictly between
@@ -397,8 +398,8 @@ namespace DGtal
        * @return a fraction
        * NB: \f$ O(k) where k is the depth of the output fraction\f$.
        */
-      Fraction fractionOfSmallestDenominatorInBetween(const Fraction & other) const;
-      
+      Fraction simplestFractionInBetween(const Fraction & other) const;
+	
     };
 
   
