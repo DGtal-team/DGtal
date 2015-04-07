@@ -24,7 +24,7 @@ namespace DGtal {
 
 \section sectDECPropagationIntro Propagation equation
 
-Propagation plays a important role in physics as it models a lots a problem ranging from classical oscillators electromagnetics to electromagnetics and quantum mechanics.
+Propagation plays a important role in physics as it models a lots a problem ranging from classical oscillators to electromagnetism, relativistic gravitation and quantum mechanics.
 Here we will study the linear propagation equation of a time dependent scalar wave function \f$\psi(x,t)\f$, modelled as dual 0-form in the DEC framework,
 
 \f[ \Delta \psi + \frac{1}{c^2} \frac{\partial^2\psi}{\partial t^2} = \left( \Delta + \frac{1}{c^2} \frac{\partial^2}{\partial t^2} \right) \psi = \rho \f]
@@ -33,7 +33,7 @@ where \f$c\f$ is propagation speed inside the medium and \f$\rho(x,t)\f$ is the 
 The \f$+\f$ differs from the classical physics equation since here we consider \f$\Delta\f$ to have positive eigen values,
 which is the opposite of the definition of the Laplace operator in physics.
 As DEC handles only spatial dimensions, we will present two classical tricks that can be used to handle the time dependent in many physics problems.
-For simplicity of notation, we define the propapagation operator \f$\square\f$.
+For simplicity of notation, we define the propagation operator \f$\square\f$.
 
 \f[ \square  = \Delta + \frac{1}{c^2} \frac{\partial^2}{\partial t^2} \f]
 
@@ -49,7 +49,7 @@ A small fraction of DiscreteExteriorCalculus.identity is added to ensure a prope
 
 \snippet examplePropagation.cpp time_laplace
 
-Since \f$\Delta\f$ is a positive semi definite real valued hermitian operator, its eigen values are real and positive and its eigen vectors are real.
+Since \f$\Delta\f$ is a positive semi definite real valued Hermitian operator, its eigen values are real and positive and its eigen vectors are real.
 
 \f[ \Delta \phi_i = k_i^2 \, \phi_i \f]
 
@@ -73,7 +73,7 @@ The (potentially complex) coordinates \f$p_i\f$ of \f$\psi\f$ in the \f$\psi_i\f
 
 where, for all \f$t\f$, \f$\left< \bullet | \bullet \right> \f$ is the inner product between dual 0-forms.
 In the DEC framework, such a product can be computed as the scalar product between the discrete value vector KForm.myContainer.
-We can then write \f$\psi\f$ as a linear combinaison of \f$\psi_i\f$
+We can then write \f$\psi\f$ as a linear combination of \f$\psi_i\f$
 
 \f[ \psi = p_i \, \psi_i \f]
 
@@ -119,11 +119,11 @@ product between \f$\rho_p(x)\f$, the spatial part, and \f$e^{j \omega_p t}\f$, t
 
 \f[ \rho(x,t) = \rho_p(x) \, e^{j \omega_p t} = \rho_p(x) \, e^{j c k_p t} = \rho_p(x) \, e^{\frac{2 \pi c t}{\lambda_p}} \f]
 
-The separability applies to \f$\psi(x,t)\f$ too. This lineary of \f$\square\f$ implies that the solution is vibrating at the same frenquency as the excitation.
+The separability applies to \f$\psi(x,t)\f$ too. This linearity of \f$\square\f$ implies that the solution is vibrating at the same frequency as the excitation.
 
 \f[ \psi(x,t) = \psi_p(x) \, e^{j c k_p t} \f]
 
-The propagation operator gives a relation between \f$\psi_p\f$ and \f$\rho_p\f$ throught the \f$(\Delta - k_p^2 I)\f$ operator.
+The propagation operator gives a relation between \f$\psi_p\f$ and \f$\rho_p\f$ through the \f$(\Delta - k_p^2 I)\f$ operator.
 
 \f[ \square \psi = \rho \;\Leftrightarrow\; ( \Delta - k_p^2 \, I ) \, \psi_p = \rho_p \;\Leftrightarrow\; \psi_p = ( \Delta - k_p^2 \, I )^{-1} \, \rho_p \f]
 
@@ -153,7 +153,7 @@ The spatial part of the established wave is computed by applying concentration_t
 
 \snippet examplePropagation.cpp forced_wave
 
-To illustrate this section, we compute the established standing waves on a disk with a ponctual excitation at its center
+To illustrate this section, we compute the established standing waves on a disk with a punctual excitation at its center
 for multiple wavelength \f$\lambda_{pk}\f$ such that a standing wave with \f$k\f$ extremums between center and border is created.
 
 \f[ r = k \frac{\lambda_{pk}}{2} + \frac{\lambda_{pk}}{4} \f]
