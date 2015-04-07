@@ -515,20 +515,22 @@ simplestFractionInBetween(const Fraction & other) const
 {
   Fraction f(*this);  
   Fraction g(other); 
+  Fraction res;
   
   if(f>g)
     {
-      Fraction tmp = f; f = g; g = tmp;
+      res = f; f = g; g = res;
     }
-  
-  Fraction res;
-  
+  res = Fraction();
+   
   int i = 0;
   
   Value uf, ug;
   ConstIterator itf=f.begin(), itg=g.begin();
   
-  if(abs(f.p()*g.q()-f.q()*g.p())==1)
+  DGtal::functors::Abs<TInteger> absComputer;
+
+  if(absComputer(f.p()*g.q()-f.q()*g.p())==NumberTraits<TInteger>::ONE)
     return  f.median(g);
   
   itf = f.begin(); itg = g.begin(); 
@@ -580,7 +582,7 @@ simplestFractionInBetween(const Fraction & other) const
 		    i++;
 		    itg++;
 		    ug = *itg;
-		    if(ug.first==1)
+		    if(ug.first==NumberTraits<TInteger>::ONE)
 		      {
 			res.push_back(std::make_pair(ug.first,i));
 			i++;
@@ -605,7 +607,7 @@ simplestFractionInBetween(const Fraction & other) const
 		    i++;
 		    itf++;
 		    uf = *itf;
-		    if(uf.first==1)
+		    if(uf.first==NumberTraits<TInteger>::ONE)
 		      {
 			res.push_back(std::make_pair(uf.first,i));
 			i++;

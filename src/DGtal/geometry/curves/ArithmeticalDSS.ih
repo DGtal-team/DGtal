@@ -584,7 +584,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 	dir = Vector(0,1); else dir = Vector(1,0);
       
       DGtal::IntegerComputer<Integer> ic;
-      if (deviation <= NumberTraits<Coordinate>::ONE || ic.dotProduct(step,dir) == 0) 
+      if (deviation <= NumberTraits<Coordinate>::ONE || ic.dotProduct(step,dir) == NumberTraits<TInteger>::ZERO) 
 	easyCase = true; else easyCase = false;
     }
   
@@ -607,13 +607,13 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 	  if(easyCase) // the leaning points are updated in constant time
 	    {	      
 	      // if a upper leaning point of myDSL was found on aOther
-	      if(UlPoints.size() !=0)
+	      if(UlPoints.size() != NumberTraits<TInteger>::ZERO)
 		newUl = UlPoints.back(); // update the last upper leaning point with the furthest leaning point found
 	      else
 		newUl = DSS1.Ul();
 	      
 	      // if a lower leaning point of myDSL was found on aOther 
-	      if(LlPoints.size() !=0)
+	      if(LlPoints.size() != NumberTraits<TInteger>::ZERO)
 		newLl = LlPoints.back(); // update the last lower leaning point with the furthest leaning point found
 	      else
 		newLl = DSS1.Ll();
@@ -657,13 +657,13 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 	  if(easyCase)
 	    {
 	      // if a upper leaning point of DSS2 supporting DSL was found on DSS1
-	      if(UfPoints.size() !=0)
+	      if(UfPoints.size() != NumberTraits<TInteger>::ZERO)
 		newUf = UfPoints.front(); // update the first upper leaning point with the first leaning point found
 	      else
 		newUf = DSS2.Uf();
 	      
 	      // if a lower leaning point of DSS2 supporting DSL was found on DSS1 
-	      if(LfPoints.size() !=0)
+	      if(LfPoints.size() != NumberTraits<TInteger>::ZERO)
 		newLf = LfPoints.front(); // update the first lower leaning point with the first leaning point found
 	      else
 		newLf = DSS2.Lf();
@@ -721,7 +721,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   
   if(LPointsInDSL && UPointsInDSL)
     { // four critical points
-      if(DSLUpper.a() != 0 || DSLUpper.b() != 0) // a and b may be null
+      if(DSLUpper.a() != NumberTraits<TInteger>::ZERO || DSLUpper.b() != NumberTraits<TInteger>::ZERO) // a and b may be null
 						 // if Ul and Uf are confounded
 	{
 	  aRes  = DSLUpper.a(); 
@@ -771,14 +771,17 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   Vector Vup = (aLl-shiftRes) - aUf;
   Vector Vlow = aUl - (aLf-shiftRes);
   
-  typedef DGtal::SternBrocot<Integer, Integer> SB; // type of Stern-Brocot tree
+  typedef DGtal::SternBrocot<TInteger, TInteger> SB; // type of Stern-Brocot tree
   typedef typename SB::Fraction Fraction; // type of fraction
-  Integer p = abs(Vlow[0])<abs(Vlow[1])?abs(Vlow[0]):abs(Vlow[1]);
-  Integer q = abs(Vlow[0])<abs(Vlow[1])?abs(Vlow[1]):abs(Vlow[0]);
+  
+  DGtal::functors::Abs<TInteger> absComputer;
+
+  Integer p = absComputer(Vlow[0])<absComputer(Vlow[1])?absComputer(Vlow[0]):absComputer(Vlow[1]);
+  Integer q = absComputer(Vlow[0])<absComputer(Vlow[1])?absComputer(Vlow[1]):absComputer(Vlow[0]);
   Fraction low(p,q); // a fraction p/q is such that p>0, q>0 and p<=q 
   
-  p = abs(Vup[0])<abs(Vup[1])?abs(Vup[0]):abs(Vup[1]);
-  q = abs(Vup[0])<abs(Vup[1])?abs(Vup[1]):abs(Vup[0]);
+  p = absComputer(Vup[0])<absComputer(Vup[1])?absComputer(Vup[0]):absComputer(Vup[1]);
+  q = absComputer(Vup[0])<absComputer(Vup[1])?absComputer(Vup[1]):absComputer(Vup[0]);
   Fraction up(p,q);
   
   // Compute the fraction of smallest denominator between low and up
@@ -786,15 +789,15 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   
   // Replace the result in the good octant
   Integer aFinal,bFinal;
-  if(aRes<0)
-    aFinal = (abs(aRes)<abs(bRes))?-res.p():-res.q();
+  if(aRes < NumberTraits<TInteger>::ZERO)
+    aFinal = (absComputer(aRes)<absComputer(bRes))?-res.p():-res.q();
   else
-    aFinal = (abs(aRes)<abs(bRes))?res.p():res.q();
+    aFinal = (absComputer(aRes)<absComputer(bRes))?res.p():res.q();
   
-  if(bRes<0)
-    bFinal = (abs(aRes)<abs(bRes))?-res.q():-res.p();
+  if(bRes < NumberTraits<TInteger>::ZERO)
+    bFinal = (absComputer(aRes)<absComputer(bRes))?-res.q():-res.p();
   else
-    bFinal = (abs(aRes)<abs(bRes))?res.q():res.p();
+    bFinal = (absComputer(aRes)<absComputer(bRes))?res.q():res.p();
   
   
   if(aUf == aUl)
@@ -806,7 +809,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
       typedef SimpleMatrix<Integer,2,2> Matrix;
       Matrix A; A.clear();
       A.setComponent(0,0,bFinal);A.setComponent(1,0,aFinal);A.setComponent(0,1,(aUf-aUl)[0]);A.setComponent(1,1,(aUf-aUl)[1]);
-      if(DGtal::SimpleMatrixSpecializations<Matrix,2,2>::determinant(A)>0)	
+      if(DGtal::SimpleMatrixSpecializations<Matrix,2,2>::determinant(A)>NumberTraits<TInteger>::ZERO)	
 	DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),aUf);
       else
 	DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),aUl);
