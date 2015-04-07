@@ -465,8 +465,9 @@ inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL) const
 {
+ 
   // Test whether the DSL and the DSS belong to the same octant or not
-  int oc;
+  typename  ArithmeticalDSLKernel<TCoordinate,adjacency>::Octant::first_type oc;
   std::vector<Point> LPoints;
   if(!(myDSL.sameOctant(aDSL, &oc)))
     return false;
@@ -500,7 +501,7 @@ bool
 DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point &outP) const
 {
   // Test whether the DSL and the DSS belong to the same octant or not
-  int oc;
+  typename ArithmeticalDSLKernel<TCoordinate,adjacency>::Octant::first_type oc;
   std::vector<Point> LPoints;
   Ulp.clear(); Llp.clear();
   outP = Point(0,0);
@@ -546,7 +547,8 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::Union(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther) const
 {
-  int oc;
+  
+  typename ArithmeticalDSLKernel<TCoordinate,adjacency>::Octant::first_type oc;
   bool easyCase;
   
   typedef DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
@@ -780,9 +782,9 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   Fraction up(p,q);
   
   // Compute the fraction of smallest denominator between low and up
-  Fraction res = low.fractionOfSmallestDenominatorInBetween(up);
+  Fraction res = low.simplestFractionInBetween(up);
   
-  // Replacethe result in the good octant
+  // Replace the result in the good octant
   Integer aFinal,bFinal;
   if(aRes<0)
     aFinal = (abs(aRes)<abs(bRes))?-res.p():-res.q();

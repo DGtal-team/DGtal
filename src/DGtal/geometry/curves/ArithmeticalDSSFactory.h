@@ -152,6 +152,7 @@ namespace DGtal
    * @param aF first input digital point
    * @param aL second input digital point
    * @param aU upper leaning point
+   * @return a DSS
    *
    * NB: logarithmic-time in the max of the greatest component of the vector
    * starting from @a aU and pointing to @a aL and the greatest

@@ -519,12 +519,12 @@ namespace DGtal
      * Returns a boolean equal to true if 'this' belongs to the DSL @a
      * aDSL, false otherwise. Also returns extra information about the
      * leaning points included in 'this' or a point outside @a aDSL. 
+     * @param [in] aDSL any DSL
+     * @param [in,out] Ulp the list of @a aDSL upper leaning points on 'this', if any
+     * @param [in,out] Llp the list of @a aDSL lower leaning points on 'this', if any
+     * @param [in,out] outP a point of 'this' that does not belong to @a aDSL, if any
      * @return 'true' if 'this' belongs to the DSL @a aDSL.
      * 'false' otherwise.
-     * @param aDSL any DSL
-     * @return Ulp the list of @a aDSL upper leaning points on 'this', if any
-     * @return Llp the list of @a aDSL lower leaning points on 'this', if any
-     * @return outP a point of 'this' that does not belong to @a aDSL, if any
      */
     bool isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point& outP) const;
 
