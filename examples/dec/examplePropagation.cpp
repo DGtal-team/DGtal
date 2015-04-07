@@ -204,8 +204,8 @@ void propa_2d()
             trace.info() << "lambda = " << lambda << endl;
 
             //! [forced_dalembert_eigen]
-            const Eigen::VectorXd dalembert_eigen_values = laplace_eigen_values.array() - (2*M_PI/lambda)*(2*M_PI/lambda);
-            const Eigen::MatrixXd concentration_to_wave = laplace_eigen_vectors * dalembert_eigen_values.array().inverse().matrix().asDiagonal() * laplace_eigen_vectors.transpose();
+            const Eigen::VectorXd dalembert_eigen_values = (laplace_eigen_values.array() - (2*M_PI/lambda)*(2*M_PI/lambda)).array().inverse();
+            const Eigen::MatrixXd concentration_to_wave = laplace_eigen_vectors * dalembert_eigen_values.asDiagonal() * laplace_eigen_vectors.transpose();
             //! [forced_dalembert_eigen]
 
             //! [forced_wave]
@@ -252,6 +252,7 @@ void propa_2d()
                 ss << "propagation_forced_wave_" << ll << ".svg";
                 Board2D board;
                 board << domain;
+                board << CustomStyle("KForm", new KFormStyle2D(-.5, 1));
                 board << wave;
                 board.saveSVG(ss.str().c_str());
             }
