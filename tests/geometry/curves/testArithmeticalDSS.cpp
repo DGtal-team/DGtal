@@ -1502,12 +1502,9 @@ int main( int argc, char** argv )
   
   { // union of two DSSs
     res = res && unionTest();
-    //typedef DGtal::ArithmeticalDSS<DGtal::int64_t> DSS8;
     res = res && unionComparisonTest<DGtal::int64_t,DGtal::int64_t,8>(43577,1276,2000);
-    //res = res && unionComparisonTest<DSS8>(500,100,1000);
-    //typedef DGtal::ArithmeticalDSS<DGtal::int64_t, DGtal::int64_t, 4> DSS4;
     res = res && unionComparisonTest<DGtal::int64_t, DGtal::int64_t, 4>(86731,6648,2000);
-  }
+      }
   
   
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
