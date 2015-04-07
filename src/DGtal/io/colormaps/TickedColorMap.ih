@@ -16,7 +16,7 @@
 
 /**
  * @file TickedColorMap.ih
- * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2015/04/06

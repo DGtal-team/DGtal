@@ -68,7 +68,7 @@ namespace DGtal
    * ticks with regular spacing, or locate zero-crossing of a curvature map
    * for instance (i.e. with a single tick at zero).
    *
-   * This class is a model of concepts::CColorMap
+   * This class is a model of concepts::CColorMap.
    *
    * @tparam TValue The type of the range values.
    * @tparam TColorMap The type of colormap to Adapt (the value type of TColorMap must be TValue).
