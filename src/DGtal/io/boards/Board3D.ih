@@ -491,46 +491,50 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   //OPT quad
   // myQuadList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
-    k = 0; // id of each list 
+    k = 0; // id of each list
+    Color previousCol;
+    std::stringstream matName;
+    //we init the previousCol var.
+    if (Board3D<Space, KSpace>::myQuadsMap.begin() != Board3D<Space, KSpace>::myQuadsMap.end())
+      previousCol = Board3D<Space, KSpace>::myQuadsMap.begin()->second.begin()->color;
+
+
+
+    //Foreach lists
     for (typename Board3D<Space, KSpace>::QuadsMap::const_iterator it = Board3D<Space, KSpace>::myQuadsMap.begin();
          it != Board3D<Space, KSpace>::myQuadsMap.end(); it++)
       {
-        std::ostringstream tmpStream;
-
+        
+        outOBJ << "o  myQuadSetList_" << it->first <<std::endl;
+        //For each list, we force the material
+        unsigned int matid = getMaterialIndex(previousCol);
+        outOBJ << "usemtl Mat_" << matid << std::endl;
+        
+        
+        //We scan the quad of the list
         for (typename std::vector<typename Board3D<Space, KSpace>::QuadD3D>::const_iterator aQuad = it->second.begin();
              aQuad!=it->second.end();aQuad ++)
-	{ 
-            //test if a clipping plane do not cut it
+        {
+            if (previousCol != aQuad->color)
+            {
+              previousCol = aQuad->color;
+              
+              matid = getMaterialIndex(previousCol);
+              outOBJ << "usemtl Mat_" << matid << std::endl;
+            }
+          
             apoint1 = (aQuad->point1 -shift)*scale;
             apoint2 = (aQuad->point2 -shift)*scale;
             apoint3 = (aQuad->point3 -shift)*scale;
             apoint4 = (aQuad->point4 -shift)*scale;
             
-            tmpStream << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << std::endl;
-            tmpStream << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << std::endl;
-            tmpStream << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << std::endl;
-            tmpStream << "v " << apoint4[0]     << " " << apoint4[1]      << " " << apoint4[2] << std::endl;
-            tmpStream << "vn " << aQuad->nx     << " " << aQuad->ny      << " " << aQuad->nz << std::endl;
-
-            tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< std::endl;
+            outOBJ << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << std::endl;
+            outOBJ << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << std::endl;
+            outOBJ << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << std::endl;
+            outOBJ << "v " << apoint4[0]     << " " << apoint4[1]      << " " << apoint4[2] << std::endl;
+            outOBJ << "vn " << aQuad->nx     << " " << aQuad->ny      << " " << aQuad->nz << std::endl;
+            outOBJ << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< std::endl;
         }
-        if (tmpStream.str() != "")
-          {
-            std::stringstream name;
-            name << Board3D<Space, KSpace>::myCubeSetNameList.at(k);
-            if ( name.str() == "")
-              {
-                name << "myQuadSetList_" << k ;
-              }
-
-            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = it->second.begin();
-            unsigned int matid = getMaterialIndex(itBegin->color);
-            std::stringstream matName;
-            matName <<  "Mat_" << matid;
-            outOBJ << "o  " << name.str() << std::endl;
-            outOBJ << "usemtl " << matName.str() << std::endl;
-            outOBJ << tmpStream.str();
-          }
         
       }
   }
