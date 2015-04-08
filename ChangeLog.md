@@ -116,8 +116,9 @@
    (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
 
 - *Kernel Package*
-  - New functor Fix bug when a DomainSubSampler is applied on a domain with non 0 origin.
-    (Bertrand Kerautret, [887](https://github.com/DGtal-team/DGtal/pull/987)).
+  - BasicDomainSubSampler can now handle non 0 origin point. This update also correct
+    the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
+    (Bertrand Kerautret, [987](https://github.com/DGtal-team/DGtal/pull/987)).
 
 
 
