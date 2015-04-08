@@ -65,6 +65,12 @@
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
 
+- New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
+   (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
+
+
+
+
 ## Bug Fixes
 
 - *Configuration*
