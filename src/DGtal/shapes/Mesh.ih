@@ -283,6 +283,34 @@ DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const
     }
 }
 
+
+template<typename TPoint>
+inline
+std::pair<TPoint, TPoint>  
+DGtal::Mesh<TPoint>::getBoundingBox() const
+{
+  std::pair<TPoint, TPoint> theResult;  
+  std::vector<std::vector<typename TPoint::Component> > vectComp;
+  for(unsigned int i=0; i< TPoint::size(); i++){
+    vectComp.push_back(std::vector<typename TPoint::Component>());
+  }
+  for( typename DGtal::Mesh<TPoint>::VertexStorage::const_iterator it = vertexBegin(); 
+       it!= vertexEnd(); it++){
+    for(unsigned int i=0; i< TPoint::size(); i++){
+      vectComp[i].push_back((*it)[i]);
+    }
+  }
+      
+  TPoint lowerBound, upperBound;
+  for(unsigned int i=0; i< TPoint::size(); i++){
+    lowerBound[i] = *(std::min_element(vectComp[i].begin(), vectComp[i].end() ));
+    upperBound[i] = *(std::max_element(vectComp[i].begin(), vectComp[i].end() ));
+  }  
+  theResult.first = lowerBound ;
+  theResult.second = upperBound ;
+  return theResult;
+}
+
 template<typename TPoint>
 inline
 void
