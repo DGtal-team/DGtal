@@ -31,7 +31,7 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include <QtGui/qapplication.h>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"

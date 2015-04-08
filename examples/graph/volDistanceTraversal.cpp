@@ -16,7 +16,7 @@
 #include <iostream>
 #include <queue>
 #include <QImageReader>
-#include <QtGui/qapplication.h>
+
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -66,16 +66,16 @@ int main( int argc, char** argv )
   typedef ImageSelector < Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
-  SetFromImage<DigitalSet>::append<Image>(set3d, image, 
+  SetFromImage<DigitalSet>::append<Image>(set3d, image,
                                           minThreshold, maxThreshold);
   trace.endBlock();
   //! [volDistanceTraversal-readVol]
-  
-  
+
+
   //! [volDistanceTraversal-KSpace]
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
   KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(), 
+  bool space_ok = ks.init( image.domain().lowerBound(),
                            image.domain().upperBound(), true );
   if (!space_ok)
     {
@@ -92,11 +92,11 @@ int main( int argc, char** argv )
 
   //! [volDistanceTraversal-SetUpDigitalSurface]
   trace.beginBlock( "Set up digital surface." );
-  typedef LightImplicitDigitalSurface<KSpace, DigitalSet > 
+  typedef LightImplicitDigitalSurface<KSpace, DigitalSet >
     MyDigitalSurfaceContainer;
   typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
   SCell bel = Surfaces<KSpace>::findABel( ks, set3d, 100000 );
-  MyDigitalSurfaceContainer* ptrSurfContainer = 
+  MyDigitalSurfaceContainer* ptrSurfContainer =
     new MyDigitalSurfaceContainer( ks, set3d, surfAdj, bel );
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
   trace.endBlock();
@@ -113,9 +113,9 @@ int main( int argc, char** argv )
   typedef RealPoint::Coordinate Scalar;
   typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
 
-  typedef std::binder1st< Distance > DistanceToPoint; 
+  typedef std::binder1st< Distance > DistanceToPoint;
   typedef DGtal::functors::Composer<SCellEmbedder, DistanceToPoint, Scalar> VertexFunctor;
-  typedef DistanceBreadthFirstVisitor< MyDigitalSurface, VertexFunctor, std::set<SCell> > 
+  typedef DistanceBreadthFirstVisitor< MyDigitalSurface, VertexFunctor, std::set<SCell> >
     MyDistanceVisitor;
   typedef MyDistanceVisitor::Node MyNode;
   typedef MyDistanceVisitor::Scalar MySize;
@@ -142,7 +142,7 @@ int main( int argc, char** argv )
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
   Viewer3D<> viewer( ks );
-  viewer.show(); 
+  viewer.show();
   HueShadeColorMap<MySize,1> hueShade( 0, maxDist );
   MyDistanceVisitor visitor2( digSurf, vfunctor, bel );
   viewer << SetMode3D( bel.className(), "Basic" );
@@ -152,7 +152,7 @@ int main( int argc, char** argv )
   std::vector< MyDistanceVisitor::Node > layer;
   while ( ! visitor2.finished() )
     {
-      MyNode n = visitor2.current(); 
+      MyNode n = visitor2.current();
       Color c = hueShade( n.second );
       viewer << CustomColors3D( Color::Red, c )
              << n.first;
