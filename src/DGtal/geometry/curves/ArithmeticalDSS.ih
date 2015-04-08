@@ -607,13 +607,13 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 	  if(easyCase) // the leaning points are updated in constant time
 	    {	      
 	      // if a upper leaning point of myDSL was found on aOther
-	      if(UlPoints.size() != NumberTraits<TInteger>::ZERO)
+	      if(!UlPoints.empty())
 		newUl = UlPoints.back(); // update the last upper leaning point with the furthest leaning point found
 	      else
 		newUl = DSS1.Ul();
 	      
 	      // if a lower leaning point of myDSL was found on aOther 
-	      if(LlPoints.size() != NumberTraits<TInteger>::ZERO)
+	      if(!LlPoints.empty())
 		newLl = LlPoints.back(); // update the last lower leaning point with the furthest leaning point found
 	      else
 		newLl = DSS1.Ll();
@@ -657,13 +657,13 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 	  if(easyCase)
 	    {
 	      // if a upper leaning point of DSS2 supporting DSL was found on DSS1
-	      if(UfPoints.size() != NumberTraits<TInteger>::ZERO)
+	      if(!UfPoints.empty())
 		newUf = UfPoints.front(); // update the first upper leaning point with the first leaning point found
 	      else
 		newUf = DSS2.Uf();
 	      
 	      // if a lower leaning point of DSS2 supporting DSL was found on DSS1 
-	      if(LfPoints.size() != NumberTraits<TInteger>::ZERO)
+	      if(!LfPoints.empty()) 
 		newLf = LfPoints.front(); // update the first lower leaning point with the first leaning point found
 	      else
 		newLf = DSS2.Lf();
