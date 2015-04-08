@@ -54,8 +54,9 @@
    ConstIterator and adds a new method to change the color of a
    specific face. (Bertrand Kerautret,
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
- - New methods to generate basic 3D tubular meshes and height fields. New mesh module documentation added.
-   (Bertrand Kerautret, [#969](https://github.com/DGtal-team/DGtal/pull/969))
+ - New methods to generate basic 3D tubular meshes and height
+   fields. New mesh module documentation added. (Bertrand Kerautret,
+   [#969](https://github.com/DGtal-team/DGtal/pull/969))
  - Refactoring of CSG operations on Euclidean / Digital shapes to easily
    combine several operations.
    EuclideanShapesUnion, EuclideanShapesIntersection and
@@ -65,10 +66,14 @@
    DigitalShapesMinus are now deprecated. Use DigitalShapesCSG
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
+- New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
+   (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
 
+	
 - *Arithmetic Package*
  - Algorithm to compute the fraction of smallest denominator in between
 	two irreducible fractions (Isabelle Sivignon [#949](https://github.com/DGtal-team/DGtal/pull/949))
+
 
 ## Bug Fixes
 
@@ -113,9 +118,10 @@
  - Radius and resolution of balls have been fixed when used to
    represent a 3D point in grid mode (David Coeurjolly,
    [#978](https://github.com/DGtal-team/DGtal/pull/978))
+ - Bugfix in quad visualization in BoardD3D and Viewer3D (David
+   Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
  - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
    (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
-
 
 # DGtal 0.8
 
