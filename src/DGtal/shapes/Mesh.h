@@ -278,7 +278,14 @@ namespace DGtal
      * @return the color of the face of index i. 
      **/
     const Color & getFaceColor(unsigned int i) const;
-    
+
+
+
+    /**
+     * @return the bounding box of the mesh represented as a pair of points.
+     **/
+    std::pair<TPoint, TPoint>  getBoundingBox() const;
+
 
     /**
      *  Set the color of a particular face of the mesh. If the mesh

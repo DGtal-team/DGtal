@@ -61,8 +61,7 @@ bool testMesh()
   Point p3=Point(3,2);
   Point p4=Point(3,3);
   Point p5=Point(3,4);
-  Point p6=Point(4,6);
-  
+    
   aMesh.addVertex(p0);
   aMesh.addVertex(p1);
   aMesh.addVertex(p2);
@@ -91,11 +90,10 @@ bool testMesh()
 
   trace.info() << "Face2 points " << endl;
   trace.info() << p0f1 << p1f1 << p2f1<< endl;
-
+  
   
   bool okMeshConstruct =  (p0==p0f0) && (p1==p1f0) && (p2==p2f0) && 
     (p3==p0f1) && (p4==p1f1) && (p5==p2f1) ;
-  
   
   trace.endBlock();
   bool okMeshIterators = true;
@@ -137,6 +135,11 @@ bool testMesh()
   
   trace.endBlock();
   
+  trace.beginBlock ( "Testing Mesh Bouding box  ..." );
+  std::pair<Point, Point> bb = aMesh.getBoundingBox();
+  bool boundingBoxOK = (bb.first == Point(10,5)) && (bb.second == Point(13,9));
+  trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (10,5) (13,9)" <<std::endl;
+
   trace.beginBlock ( "Testing Mesh copy operator  ..." );
   Mesh<Point> aMesh2 = aMesh;
   Mesh<Point> aMesh3 (aMesh2);
@@ -144,7 +147,7 @@ bool testMesh()
                     aMesh.nbFaces() == aMesh3.nbFaces() && aMesh.nbVertex() == aMesh3.nbVertex() &&
                     aMesh.getVertex(0) == aMesh2.getVertex(0) && aMesh.getVertex(0) == aMesh3.getVertex(0);
   trace.endBlock();
-  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy;   
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK;   
   trace.endBlock();
   return ok;
 
