@@ -70,6 +70,32 @@ DGtal::Mesh<TPoint>::~Mesh()
 {
 }
 
+
+template <typename TPoint>
+inline
+DGtal::Mesh<TPoint>::Mesh ( const Mesh & other ): myFaceList(other.myFaceList), 
+                                                  myVertexList(other.myVertexList), 
+                                                  myFaceColorList(other.myFaceColorList),
+                                                  mySaveFaceColor(other.mySaveFaceColor),
+                                                  myDefaultColor(other.myDefaultColor)
+{
+
+}
+
+template <typename TPoint>
+inline
+DGtal::Mesh<TPoint> &
+DGtal::Mesh<TPoint>::operator= ( const Mesh & other )
+{
+  myFaceList = other.myFaceList;
+  myVertexList = other.myVertexList;
+  myFaceColorList = other.myFaceColorList;
+  mySaveFaceColor = other.mySaveFaceColor;
+  myDefaultColor = other. myDefaultColor;
+  return *this;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
