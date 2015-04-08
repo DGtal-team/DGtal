@@ -106,6 +106,11 @@
  - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
    (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
 
+- *Kernel Package*
+  - New functor Fix bug when a DomainSubSampler is applied on a domain with non 0 origin.
+    (Bertrand Kerautret, [887](https://github.com/DGtal-team/DGtal/pull/987)).
+
+
 
 # DGtal 0.8
 
