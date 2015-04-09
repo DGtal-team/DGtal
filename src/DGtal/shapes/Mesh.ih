@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <limits> 
 #include <cstdlib>
+#include <DGtal/kernel/BasicPointPredicates.h>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -283,29 +284,17 @@ DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const
     }
 }
 
-
 template<typename TPoint>
 inline
 std::pair<TPoint, TPoint>  
 DGtal::Mesh<TPoint>::getBoundingBox() const
 {
   std::pair<TPoint, TPoint> theResult;  
-  std::vector<std::vector<typename TPoint::Component> > vectComp;
-  for(unsigned int i=0; i< TPoint::size(); i++){
-    vectComp.push_back(std::vector<typename TPoint::Component>());
-  }
-  for( typename DGtal::Mesh<TPoint>::VertexStorage::const_iterator it = vertexBegin(); 
-       it!= vertexEnd(); it++){
-    for(unsigned int i=0; i< TPoint::size(); i++){
-      vectComp[i].push_back((*it)[i]);
-    }
-  }
-      
-  TPoint lowerBound, upperBound;
-  for(unsigned int i=0; i< TPoint::size(); i++){
-    lowerBound[i] = *(std::min_element(vectComp[i].begin(), vectComp[i].end() ));
-    upperBound[i] = *(std::max_element(vectComp[i].begin(), vectComp[i].end() ));
-  }  
+  struct CompPoints{
+    bool operator() (const TPoint &p1, const TPoint &p2){return DGtal::functors::IsLowerPointPredicate<TPoint>(p2)(p1);};
+  } comp;
+  TPoint lowerBound = *(std::min_element(vertexBegin(), vertexEnd(), comp));
+  TPoint upperBound = *(std::max_element(vertexBegin(), vertexEnd(), comp));
   theResult.first = lowerBound ;
   theResult.second = upperBound ;
   return theResult;
