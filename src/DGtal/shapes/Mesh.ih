@@ -346,6 +346,16 @@ DGtal::Mesh<TPoint>::invertVertexFaceOrder(){
 }
 
     
+template<typename TPoint>
+inline
+void 
+DGtal::Mesh<TPoint>::changeScale(double aScale){
+  for(typename VertexStorage::iterator it = vertexBegin(); it != vertexEnd(); it++)
+    {
+      (*it) *= aScale;
+    }
+}
+
 
 //------------------------------------------------------------------------------
 template<typename TPoint>

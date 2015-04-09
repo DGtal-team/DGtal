@@ -135,10 +135,11 @@ bool testMesh()
   
   trace.endBlock();
   
-  trace.beginBlock ( "Testing Mesh Bouding box  ..." );
+  trace.beginBlock ( "Testing Mesh Bouding box and scale change  ..." );
+  aMesh.changeScale(2.0);
   std::pair<Point, Point> bb = aMesh.getBoundingBox();
-  bool boundingBoxOK = (bb.first == Point(10,5)) && (bb.second == Point(13,9));
-  trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (10,5) (13,9)" <<std::endl;
+  bool boundingBoxOK = (bb.first == Point(20,10)) && (bb.second == Point(26,18));
+  trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;
 
   trace.beginBlock ( "Testing Mesh copy operator  ..." );
   Mesh<Point> aMesh2 = aMesh;

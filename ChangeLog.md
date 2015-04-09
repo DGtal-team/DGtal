@@ -64,8 +64,8 @@
    DigitalShapesMinus are now deprecated. Use DigitalShapesCSG
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
- - Add new method to get mesh bounding box. (Bertrand Kerautret,
-   [#990](https://github.com/DGtal-team/DGtal/pull/990))
+ - Add various methods in the Mesh class to get the bounding box or to change the
+   mesh scale. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990))
 
 - New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
    (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
