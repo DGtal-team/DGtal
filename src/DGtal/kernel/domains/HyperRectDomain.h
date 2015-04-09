@@ -168,7 +168,7 @@ namespace DGtal
      * @pre aPoint must belong to the range.
      */
     ConstIterator begin(const Point& aPoint) const
-    { ASSERT(isInside(aPoint));
+    { ASSERT( myLowerBound - Point::diagonal(1) <= aPoint && aPoint <= myUpperBound + Point::diagonal(1));
       return ConstIterator(aPoint, 
 			   myLowerBound, myUpperBound); }
     
