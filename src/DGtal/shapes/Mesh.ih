@@ -352,6 +352,12 @@ DGtal::Mesh<TPoint>::invertVertexFaceOrder(){
     }
 }
 
+template<typename TPoint> 
+inline     
+void 
+DGtal::Mesh<TPoint>::clearFaces(){
+  myFaceList.clear();
+}
     
 template<typename TPoint>
 inline
@@ -362,6 +368,57 @@ DGtal::Mesh<TPoint>::changeScale(double aScale){
       (*it) *= aScale;
     }
 }
+
+
+template<typename TPoint>
+inline
+double 
+DGtal::Mesh<TPoint>::subDivideTriangularFaces(double minArea){
+  double maxArea = 0;
+  std::vector<Mesh<TPoint>::MeshFace> facesToAdd;
+  for(unsigned int i =0; i< nbFaces(); i++){
+    typename Mesh<TPoint>::MeshFace aFace = getFace(i);
+    if(aFace.size()==3){
+      TPoint p1 = getVertex(aFace[0]);
+      TPoint p2 = getVertex(aFace[1]);
+      TPoint p3 = getVertex(aFace[2]);
+      TPoint c = (p1+p2+p3)/3.0;
+      double a  = ((p2-p1).crossProduct(p3-p1)).norm()/2.0;
+      if (a>maxArea){
+        maxArea = a;
+      }
+
+      if(a>minArea){
+        addVertex(c);
+        MeshFace f1, f2, f3;
+        f1.push_back(aFace[0]); 
+        f1.push_back(aFace[1]);
+        f1.push_back(nbVertex()-1); 
+        facesToAdd.push_back(f1);
+
+        f2.push_back(aFace[1]); 
+        f2.push_back(aFace[2]);
+        f2.push_back(nbVertex()-1); 
+        facesToAdd.push_back(f2);
+
+        f3.push_back(aFace[2]); 
+        f3.push_back(aFace[0]);
+        f3.push_back(nbVertex()-1); 
+        facesToAdd.push_back(f3);
+      }else{
+        facesToAdd.push_back(aFace);
+      }
+
+    }
+  }
+  clearFaces();
+  for(unsigned i=0; i<facesToAdd.size(); i++){
+    addFace(facesToAdd[i]);
+  }
+  return maxArea;
+}
+
+
 
 
 //------------------------------------------------------------------------------
