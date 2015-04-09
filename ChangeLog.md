@@ -114,6 +114,8 @@
    Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
  - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
    (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
+ - Fix warnings message of std::abs in Display3D.    (Bertrand Kerautret,
+   [#991](https://github.com/DGtal-team/DGtal/pull/991))
 
 # DGtal 0.8
 
