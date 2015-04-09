@@ -81,16 +81,17 @@ namespace DGtal
 
 
     /** 
-     * Export Mesh towards a OFF format.
+     * Export Mesh towards a OFF format. By default the face colors are
+     * exported (if they are stored in the Mesh object). 
      * 
      * @param out the output stream of the exported OFF object.
      * @param aMesh the Mesh object to be exported.
-     * @param exportColor true to export colors (default false). 
+     * @param exportColor true to try to export the face colors if they are stored in the Mesh object (default true). 
      * @return true if no errors occur.
      */
     
     static bool export2OFF(std::ostream &out, const  Mesh<TPoint>  &aMesh, 
-      bool exportColor=false) throw(DGtal::IOException);
+                           bool exportColor=true) throw(DGtal::IOException);
   
   
 

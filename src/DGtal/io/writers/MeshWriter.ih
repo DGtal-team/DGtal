@@ -65,12 +65,13 @@ DGtal::MeshWriter<TPoint>::export2OFF(std::ostream & out,
 	  out << indexVertex << " " ;	    
 	}
 	DGtal::Color col = aMesh.getFaceColor(i);
-	if(exportColor){
-	  out << " ";
- 	  out << ((double) col.red())/255.0 << " "
-	      << ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0 
-	      << " " << ((double) col.alpha())/255.0 ;
-	}  
+	if(exportColor && aMesh.isStoringFaceColors() )
+          {
+            out << " ";
+            out << ((double) col.red())/255.0 << " "
+                << ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0 
+                << " " << ((double) col.alpha())/255.0 ;
+          }  
 	out << std::endl;
       }
     }catch( ... )
@@ -131,11 +132,14 @@ DGtal::operator>> (   Mesh<TPoint> & aMesh, const std::string & aFilename ){
   std::string extension = aFilename.substr(aFilename.find_last_of(".") + 1);
   std::ofstream out;
   out.open(aFilename.c_str());
-  if(extension== "off") {
-    return DGtal::MeshWriter<TPoint>::export2OFF(out, aMesh, true);
-  }else if(extension== "obj") {
-    return DGtal::MeshWriter<TPoint>::export2OBJ(out, aMesh);
-  }
+  if(extension== "off") 
+    {
+      return DGtal::MeshWriter<TPoint>::export2OFF(out, aMesh, true);
+    }
+  else if(extension== "obj")
+    {
+      return DGtal::MeshWriter<TPoint>::export2OBJ(out, aMesh);
+    }
   out.close();
   return false;
 } 
