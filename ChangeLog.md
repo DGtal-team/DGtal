@@ -51,7 +51,12 @@
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
  - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
-   [#961](https://github.com/DGtal-team/DGtal/pull/961)
+ [#961](https://github.com/DGtal-team/DGtal/pull/961)
+ - New colormap adapter to add ticks/iso-contours (regularly spaced or
+ specified by the user) to a given colormap. (David Coeurjolly,
+ [#987](https://github.com/DGtal-team/DGtal/pull/987)
+ 
+ 
 
 
 - *Shapes Package*
@@ -59,8 +64,9 @@
    ConstIterator and adds a new method to change the color of a
    specific face. (Bertrand Kerautret,
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
- - New methods to generate basic 3D tubular meshes and height fields. New mesh module documentation added.
-   (Bertrand Kerautret, [#969](https://github.com/DGtal-team/DGtal/pull/969))
+ - New methods to generate basic 3D tubular meshes and height
+   fields. New mesh module documentation added. (Bertrand Kerautret,
+   [#969](https://github.com/DGtal-team/DGtal/pull/969))
  - Refactoring of CSG operations on Euclidean / Digital shapes to easily
    combine several operations.
    EuclideanShapesUnion, EuclideanShapesIntersection and
@@ -109,7 +115,10 @@
  - Radius and resolution of balls have been fixed when used to
    represent a 3D point in grid mode (David Coeurjolly,
    [#978](https://github.com/DGtal-team/DGtal/pull/978))
-
+ - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
+   (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
+ - Bugfix in quad visualization in BoardD3D and Viewer3D (David
+   Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
 
 # DGtal 0.8
 
