@@ -169,8 +169,8 @@ namespace DGtal
     HyperRectDomain_Iterator( const TPoint & p, const TPoint& lower, const TPoint &upper )
       : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 )
     {
-      ASSERT( lower <= upper );
-      ASSERT( lower <= p && p <= upper );
+      ASSERT( lower <= upper + TPoint::diagonal(1) );
+      ASSERT( lower - TPoint::diagonal(1) <= p && p <= upper + TPoint::diagonal(1) );
     }
 
     const TPoint & operator*() const

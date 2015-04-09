@@ -40,7 +40,7 @@ template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
   : myLowerBound(Point::zero),
-    myUpperBound(Point::zero),
+    myUpperBound(Point::zero - Point::diagonal(1)),
     myPredicate( myLowerBound, myUpperBound ),
     myIteratorBegin(myLowerBound,
         myLowerBound,
@@ -65,7 +65,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &lowerPoint,
       myUpperBound)
     
 {
-  ASSERT(myLowerBound<=myUpperBound);
+  ASSERT(myLowerBound <= myUpperBound + Point::diagonal(1));
   
   ++myIteratorEnd;
 }
