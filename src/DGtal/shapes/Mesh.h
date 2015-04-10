@@ -431,7 +431,7 @@ namespace DGtal
     
     /**
      * SubDivide triangular mesh if triangle area is less than the given parameter.
-     * @param[in] aScale the scale factor. 
+     * @param[in] minArea the minimum area factor. 
      * @return the new max triangle area.
      **/
     double subDivideTriangularFaces(const double minArea);
