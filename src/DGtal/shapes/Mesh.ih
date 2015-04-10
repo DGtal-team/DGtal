@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <limits> 
 #include <cstdlib>
+#include <boost/bind.hpp>
 #include <DGtal/kernel/BasicPointPredicates.h>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -269,6 +270,7 @@ DGtal::Mesh<TPoint>::nbVertex() const
   return myVertexList.size();
 }
 
+
 template<typename TPoint>
 inline
 const DGtal::Color & 
@@ -306,6 +308,7 @@ DGtal::Mesh<TPoint>::getBoundingBox() const
   theResult.second = upperBound ;
   return theResult;
 }
+
 
 template<typename TPoint>
 inline
@@ -362,7 +365,7 @@ DGtal::Mesh<TPoint>::clearFaces(){
 template<typename TPoint>
 inline
 void 
-DGtal::Mesh<TPoint>::changeScale(double aScale){
+DGtal::Mesh<TPoint>::changeScale(const double aScale){
   for(typename VertexStorage::iterator it = vertexBegin(); it != vertexEnd(); it++)
     {
       (*it) *= aScale;
@@ -373,7 +376,7 @@ DGtal::Mesh<TPoint>::changeScale(double aScale){
 template<typename TPoint>
 inline
 double 
-DGtal::Mesh<TPoint>::subDivideTriangularFaces(double minArea){
+DGtal::Mesh<TPoint>::subDivideTriangularFaces(const double minArea){
   double maxArea = 0;
   std::vector<Mesh<TPoint>::MeshFace> facesToAdd;
   for(unsigned int i =0; i< nbFaces(); i++)

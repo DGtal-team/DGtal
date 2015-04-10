@@ -157,6 +157,7 @@ bool testMesh()
                       aMeshR.getVertex(aMeshR.nbVertex()-1) == RealPoint(2.0/3.0, 1.0/3.0);
   trace.endBlock();
 
+
   trace.beginBlock ( "Testing Mesh copy operator  ..." );
   Mesh<Point> aMesh2 = aMesh;
   Mesh<Point> aMesh3 (aMesh2);
