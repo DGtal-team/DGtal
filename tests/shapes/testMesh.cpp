@@ -135,7 +135,16 @@ bool testMesh()
   bool okMeshColor = (aMesh.getFaceColor(0)==DGtal::Color::White)
                      && (aMesh.getFaceColor(1)==DGtal::Color::Red) ;
   
-  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor;  
+  trace.endBlock();
+  
+  trace.beginBlock ( "Testing Mesh copy operator  ..." );
+  Mesh<Point> aMesh2 = aMesh;
+  Mesh<Point> aMesh3 (aMesh2);
+  bool okMeshCopy = aMesh.nbFaces() == aMesh2.nbFaces() && aMesh.nbVertex() == aMesh2.nbVertex() &&
+                    aMesh.nbFaces() == aMesh3.nbFaces() && aMesh.nbVertex() == aMesh3.nbVertex() &&
+                    aMesh.getVertex(0) == aMesh2.getVertex(0) && aMesh.getVertex(0) == aMesh3.getVertex(0);
+  trace.endBlock();
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy;   
   trace.endBlock();
   return ok;
 

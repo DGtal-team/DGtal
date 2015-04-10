@@ -70,6 +70,12 @@
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
 
+- New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
+   (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
+
+
+
+
 ## Bug Fixes
 
 - *Configuration*
@@ -94,6 +100,7 @@
  - Fix bug of method ArithmeticalDSL::getPoint with negative values
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
+ - Fix too restrictive asserts of methods ArithmeticalDSSConvexHull::smartCH and ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative positions as input arguments. (Isabelle Sivignon, [#950](https://github.com/DGtal-team/DGtal/pull/950))
  - Fix Bezout Vector computation (Isabelle Sivignon,
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
  - Fix issues with SphereFitting and TensorVoting local estimators on
