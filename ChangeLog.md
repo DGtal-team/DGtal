@@ -119,6 +119,9 @@
    (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
  - Bugfix in quad visualization in BoardD3D and Viewer3D (David
    Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
+ - Fix warnings message of std::abs in Display3D.    (Bertrand Kerautret,
+   [#991](https://github.com/DGtal-team/DGtal/pull/991))
+
 
 # DGtal 0.8
 
