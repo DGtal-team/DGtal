@@ -161,6 +161,19 @@ namespace DGtal
     ~Mesh();
 
 
+   /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    Mesh ( const Mesh & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Mesh & operator= ( const Mesh & other );
+
 
 
     // --------------- CDrawableWithDisplay3D  realization -------------------
@@ -193,6 +206,9 @@ namespace DGtal
      * @param indexVertex2 the index of the second vertex face.
      * @param indexVertex3 the index of the second vertex face.
      * 
+     * @note If you want to follow the OBJ format convention, you have
+     * to order the vertices in CCW (to have the correct normal orientation).
+     *
      **/    
     void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3, 
 			   const DGtal::Color &aColor=DGtal::Color::White);
@@ -204,7 +220,10 @@ namespace DGtal
      * @param indexVertex1 the index of the first vertex face.
      * @param indexVertex2 the index of the second vertex face.
      * @param indexVertex3 the index of the second vertex face.
-     * 
+     *
+     * @note If you want to follow the OBJ format convention, you have
+     * to order the vertices in CCW (to have the correct normal orientation).
+     *
      **/    
     void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
 		     unsigned int indexVertex3, unsigned int indexVertex4,
@@ -213,6 +232,10 @@ namespace DGtal
     
    /**
     * Add a quad face given from index position.
+    *
+    * @note If you want to follow the OBJ format convention, you have
+    * to order the vertices of the face in CCW (to have the correct
+    * normal orientation).
     * 
     **/    
     void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);
@@ -499,22 +522,7 @@ namespace DGtal
 
 
 
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Mesh ( const Mesh & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Mesh & operator= ( const Mesh & other );
+ 
 
     // ------------------------- Internals ------------------------------------
   private:
