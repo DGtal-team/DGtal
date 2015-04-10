@@ -428,7 +428,6 @@ namespace DGtal
      **/
     void changeScale(const double aScale);
     
-    
     /**
      * SubDivide triangular mesh if triangle area is less than the given parameter.
      * @param[in] minArea the minimum area factor. 
@@ -436,8 +435,12 @@ namespace DGtal
      **/
     double subDivideTriangularFaces(const double minArea);
     
-    
-    
+    /**
+     * Transform quad faces of the mesh to triangular one.
+     * @return the number of quads which were transformed.
+     **/
+    unsigned int quadToTriangularFaces();
+        
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
