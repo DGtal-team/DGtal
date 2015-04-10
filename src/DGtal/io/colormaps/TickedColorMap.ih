@@ -106,6 +106,10 @@ inline
 DGtal::Color
 DGtal::TickedColorMap<Value,CMAP>::operator()( const Value & value ) const
 {
+  //If there's no ticks, just return the color.
+  if (myTicks.size()==0)
+    return myColorMap->operator()(value);
+  
   typename std::vector< std::pair<Value,Value> >::const_iterator  up;
   
   //Test the upper bound
