@@ -125,6 +125,13 @@
    [#991](https://github.com/DGtal-team/DGtal/pull/991))
 
 
+- *Kernel Package*
+  - BasicDomainSubSampler can now handle non 0 origin point. This update also correct
+    the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
+    (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
+
+
+
 # DGtal 0.8
 
 
