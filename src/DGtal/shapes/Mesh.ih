@@ -441,20 +441,15 @@ DGtal::Mesh<TPoint>::quadToTriangularFaces(){
       typename Mesh<TPoint>::MeshFace aFace = getFace(i);
       if(aFace.size()==4)
         {
-          TPoint p1 = getVertex(aFace[0]);
-          TPoint p2 = getVertex(aFace[1]);
-          TPoint p3 = getVertex(aFace[2]);
-          TPoint p4 = getVertex(aFace[3]);
-
           MeshFace f1, f2;
           f1.push_back(aFace[0]); 
           f1.push_back(aFace[1]);
           f1.push_back(aFace[2]);
           facesToAdd.push_back(f1);
           
-          f2.push_back(aFace[1]); 
-          f2.push_back(aFace[2]);
-          f2.push_back(aFace[3]);          
+          f2.push_back(aFace[2]); 
+          f2.push_back(aFace[3]);
+          f2.push_back(aFace[0]);          
           facesToAdd.push_back(f2);
           nbQuadT++;
         }
