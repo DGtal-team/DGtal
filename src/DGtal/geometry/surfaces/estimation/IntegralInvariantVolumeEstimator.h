@@ -159,7 +159,7 @@ public:
   typedef double Scalar;
   BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
   BOOST_CONCEPT_ASSERT (( concepts::CUnaryFunctor< VolumeFunctor, Component, Quantity > ));
-  BOOST_STATIC_ASSERT (( ConceptUtils::SameType< typename Convolver::Quantity, 
+  BOOST_STATIC_ASSERT (( concepts::ConceptUtils::SameType< typename Convolver::Quantity, 
                                                  typename VolumeFunctor::Argument >::value ));
 
 
