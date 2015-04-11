@@ -24,7 +24,7 @@
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
    linear model estimation of scalar data. (David Coeurjolly, Jérémy
-   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/935),
+   Levall1ois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
 
 - *IO Package*
@@ -48,7 +48,8 @@
  - New colormap adapter to add ticks/iso-contours (regularly spaced or
  specified by the user) to a given colormap. (David Coeurjolly,
  [#987](https://github.com/DGtal-team/DGtal/pull/987)
- 
+ - New flag (-DWITH_QT5) enables QT5 support in libqglviewer. (Nicolas
+ Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983) 
  
 
 
