@@ -51,10 +51,6 @@
 
 namespace DGtal 
 {
-  
-  /** @namespace DGtal::BasicMathFunctions
-   *  @brief Gather basic mathematical functions.
-   */
   namespace functions
   {
 
