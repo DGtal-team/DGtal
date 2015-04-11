@@ -30,6 +30,8 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <limits> 
 #include <cstdlib>
+#include <boost/bind.hpp>
+#include <DGtal/kernel/BasicPointPredicates.h>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -69,6 +71,32 @@ inline
 DGtal::Mesh<TPoint>::~Mesh()
 {
 }
+
+
+template <typename TPoint>
+inline
+DGtal::Mesh<TPoint>::Mesh ( const Mesh & other ): myFaceList(other.myFaceList), 
+                                                  myVertexList(other.myVertexList), 
+                                                  myFaceColorList(other.myFaceColorList),
+                                                  mySaveFaceColor(other.mySaveFaceColor),
+                                                  myDefaultColor(other.myDefaultColor)
+{
+
+}
+
+template <typename TPoint>
+inline
+DGtal::Mesh<TPoint> &
+DGtal::Mesh<TPoint>::operator= ( const Mesh & other )
+{
+  myFaceList = other.myFaceList;
+  myVertexList = other.myVertexList;
+  myFaceColorList = other.myFaceColorList;
+  mySaveFaceColor = other.mySaveFaceColor;
+  myDefaultColor = other. myDefaultColor;
+  return *this;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -242,6 +270,7 @@ DGtal::Mesh<TPoint>::nbVertex() const
   return myVertexList.size();
 }
 
+
 template<typename TPoint>
 inline
 const DGtal::Color & 
@@ -256,6 +285,30 @@ DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const
       return myDefaultColor;
     }
 }
+
+template<typename TPoint>
+inline
+std::pair<TPoint, TPoint>  
+DGtal::Mesh<TPoint>::getBoundingBox() const
+{
+  std::pair<TPoint, TPoint> theResult;  
+  struct CompPoints
+  {
+    CompPoints(typename TPoint::Dimension d): myDim(d){};
+    bool operator() (const TPoint &p1, const TPoint &p2){return p1[myDim]<p2[myDim];};
+    typename TPoint::Dimension myDim;
+  };
+  TPoint lowerBound, upperBound;
+  for(unsigned int i=0; i< TPoint::size(); i++)
+    {
+      upperBound[i] = (*(std::max_element(vertexBegin(), vertexEnd(), CompPoints(i))))[i];
+      lowerBound[i] = (*(std::min_element(vertexBegin(), vertexEnd(), CompPoints(i))))[i];
+    }
+  theResult.first = lowerBound ;
+  theResult.second = upperBound ;
+  return theResult;
+}
+
 
 template<typename TPoint>
 inline
@@ -302,7 +355,81 @@ DGtal::Mesh<TPoint>::invertVertexFaceOrder(){
     }
 }
 
+template<typename TPoint> 
+inline     
+void 
+DGtal::Mesh<TPoint>::clearFaces(){
+  myFaceList.clear();
+}
     
+template<typename TPoint>
+inline
+void 
+DGtal::Mesh<TPoint>::changeScale(const double aScale){
+  for(typename VertexStorage::iterator it = vertexBegin(); it != vertexEnd(); it++)
+    {
+      (*it) *= aScale;
+    }
+}
+
+
+template<typename TPoint>
+inline
+double 
+DGtal::Mesh<TPoint>::subDivideTriangularFaces(const double minArea){
+  double maxArea = 0;
+  std::vector<Mesh<TPoint>::MeshFace> facesToAdd;
+  for(unsigned int i =0; i< nbFaces(); i++)
+    {
+      typename Mesh<TPoint>::MeshFace aFace = getFace(i);
+      if(aFace.size()==3)
+        {
+          TPoint p1 = getVertex(aFace[0]);
+          TPoint p2 = getVertex(aFace[1]);
+          TPoint p3 = getVertex(aFace[2]);
+          TPoint c = (p1+p2+p3)/3.0;
+          double a  = ((p2-p1).crossProduct(p3-p1)).norm()/2.0;
+          if (a>maxArea)
+            {
+              maxArea = a;
+            }
+        
+          if(a>minArea)
+            {
+              addVertex(c);
+              MeshFace f1, f2, f3;
+              f1.push_back(aFace[0]); 
+              f1.push_back(aFace[1]);
+              f1.push_back(nbVertex()-1); 
+              facesToAdd.push_back(f1);
+          
+              f2.push_back(aFace[1]); 
+              f2.push_back(aFace[2]);
+              f2.push_back(nbVertex()-1); 
+              facesToAdd.push_back(f2);
+          
+              f3.push_back(aFace[2]); 
+              f3.push_back(aFace[0]);
+              f3.push_back(nbVertex()-1); 
+              facesToAdd.push_back(f3);
+            }
+          else
+            {
+              facesToAdd.push_back(aFace);
+            }
+      
+        }
+    }
+  clearFaces();
+  for(unsigned i=0; i<facesToAdd.size(); i++)
+    {
+      addFace(facesToAdd[i]);
+    }
+  return maxArea;
+}
+
+
+
 
 //------------------------------------------------------------------------------
 template<typename TPoint>

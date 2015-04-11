@@ -44,7 +44,12 @@
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
  - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
-   [#961](https://github.com/DGtal-team/DGtal/pull/961)
+ [#961](https://github.com/DGtal-team/DGtal/pull/961)
+ - New colormap adapter to add ticks/iso-contours (regularly spaced or
+ specified by the user) to a given colormap. (David Coeurjolly,
+ [#987](https://github.com/DGtal-team/DGtal/pull/987)
+ 
+ 
 
 
 - *Shapes Package*
@@ -52,8 +57,9 @@
    ConstIterator and adds a new method to change the color of a
    specific face. (Bertrand Kerautret,
    [#937](https://github.com/DGtal-team/DGtal/pull/937))
- - New methods to generate basic 3D tubular meshes and height fields. New mesh module documentation added.
-   (Bertrand Kerautret, [#969](https://github.com/DGtal-team/DGtal/pull/969))
+ - New methods to generate basic 3D tubular meshes and height
+   fields. New mesh module documentation added. (Bertrand Kerautret,
+   [#969](https://github.com/DGtal-team/DGtal/pull/969))
  - Refactoring of CSG operations on Euclidean / Digital shapes to easily
    combine several operations.
    EuclideanShapesUnion, EuclideanShapesIntersection and
@@ -63,6 +69,14 @@
    DigitalShapesMinus are now deprecated. Use DigitalShapesCSG
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
+ - Add various methods in the Mesh class to get the bounding box, to change the
+   mesh scale or to subdivide triangular faces. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990))
+
+- New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
+   (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
+
+
+
 
 ## Bug Fixes
 
@@ -88,6 +102,7 @@
  - Fix bug of method ArithmeticalDSL::getPoint with negative values
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
+ - Fix too restrictive asserts of methods ArithmeticalDSSConvexHull::smartCH and ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative positions as input arguments. (Isabelle Sivignon, [#950](https://github.com/DGtal-team/DGtal/pull/950))
  - Fix Bezout Vector computation (Isabelle Sivignon,
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
  - Fix issues with SphereFitting and TensorVoting local estimators on
@@ -104,6 +119,18 @@
    [#978](https://github.com/DGtal-team/DGtal/pull/978))
  - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
    (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
+ - Bugfix in quad visualization in BoardD3D and Viewer3D (David
+   Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
+ - Fix warnings message of std::abs in Display3D.    (Bertrand Kerautret,
+   [#991](https://github.com/DGtal-team/DGtal/pull/991))
+
+
+- *Kernel Package*
+  - BasicDomainSubSampler can now handle non 0 origin point. This update also correct
+    the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
+    (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
+
+
 
 # DGtal 0.8
 
