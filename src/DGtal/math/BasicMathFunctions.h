@@ -55,7 +55,7 @@ namespace DGtal
   /** @namespace DGtal::BasicMathFunctions
    *  @brief Gather basic mathematical functions.
    */
-  namespace BasicMathFunctions
+  namespace functions
   {
 
     /** 
@@ -148,7 +148,7 @@ namespace DGtal
     T cube( T x )
     { return x * x * x; }
 
-  }  // namespace BasicMathFunctions
+  }  // namespace functions
 } // namespace DGTal
 
 

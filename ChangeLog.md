@@ -93,6 +93,9 @@
  [#972](https://github.com/DGtal-team/DGtal/pull/972))
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
+ - Cleanup of DGtal namespaces. (David Coeurjolly,
+ [#938](https://github.com/DGtal-team/DGtal/pull/938))
+ 
 
 - *Geometry Package*
  - Fix bug occuring in the computation of the Faithful Polygon (class FP)
