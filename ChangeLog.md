@@ -94,7 +94,7 @@
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
  - Cleanup of DGtal namespaces. (David Coeurjolly,
- [#938](https://github.com/DGtal-team/DGtal/pull/938))
+ [#993](https://github.com/DGtal-team/DGtal/pull/993))
  
 
 - *Geometry Package*
