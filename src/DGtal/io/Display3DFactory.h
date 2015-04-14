@@ -107,6 +107,11 @@ namespace DGtal
     static
     void
     draw(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, double cmap_min = 0, double cmap_max = 0);
+
+    template <typename Calculus, DGtal::Order order, DGtal::Duality duality, typename ColorMap>
+    static
+    void
+    drawWithColorMap(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, const ColorMap& colormap);
     // KForm
 
     // VectorField
