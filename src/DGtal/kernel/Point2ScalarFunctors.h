@@ -70,7 +70,7 @@ namespace DGtal {
       {
         Scalar d = 0;
         for ( typename Point::ConstIterator it = p.begin(), itE = p.end(); it != itE; ++it )
-          d += BasicMathFunctions::square( (Scalar) *it );
+          d += functions::square( (Scalar) *it );
         if ( d >= myR2 ) return 0.0;
         d = sqrt( d );
         return myV0 - myV0OverR * d;
@@ -98,7 +98,7 @@ namespace DGtal {
       {
         Scalar d = 0;
         for ( typename Point::ConstIterator it = p.begin(), itE = p.end(); it != itE; ++it )
-          d += BasicMathFunctions::square( (Scalar) *it );
+          d += functions::square( (Scalar) *it );
         return ( d > myR2 ) ? 0.0 : myV0;
       }
     };

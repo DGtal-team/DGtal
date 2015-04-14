@@ -121,7 +121,7 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( COrientationFunctor )
     {
-      ConceptUtils::sameType( myS, T::size ); 
+      concepts::ConceptUtils::sameType( myS, T::size ); 
       myX.init( myA );
     }
     // ------------------------- Private Datas --------------------------------
