@@ -69,10 +69,10 @@ namespace DGtal
  * As other solutions like \cite DebledRennessonBlurred2005 the
  * algorithm given here is based on the height/width computation of
  * the convex hull computed from a given set of points. The actual
- * implementation exploits the height/width maintenance defined from
+ * implementation exploits the height/width update defined from
  * the \cite FaureTangential2008 (see \cite FaureTangential2008 page
  * 363) which reduces the complexity from \f$O(n\ log\ n) \f$ into
- * \f$O( log\ n) \f$.  Note that the convexhull maintenance in linear
+ * \f$O( log\ n) \f$.  Note that the convexhull update in linear
  * time (with point substraction) proposed by Buzer \cite
  * lilianComputing2007 is not yet implemented.
  *
@@ -126,12 +126,19 @@ class AlphaThickSegmentComputer
 
   // ----------------------- public types --------------------------------------
   BOOST_STATIC_ASSERT(( TInputPoint::dimension == 2 ));
-  
+  BOOST_CONCEPT_ASSERT((boost_concepts::ReadableIterator<TConstIterator>)); 
+ 
 public:
+  /**
+   * Type of input point.
+   **/
   typedef TInputPoint InputPoint;
-  typedef InputPoint InputVector;
   
+  /**
+   * The container type of Input Point
+   **/
   typedef std::vector< InputPoint > InputPointContainer;
+  
   typedef typename InputPointContainer::size_type Size;
   typedef typename InputPointContainer::const_iterator ContainerConstIterator;
   typedef typename InputPointContainer::iterator Iterator;
@@ -152,7 +159,7 @@ public:
 
 private: 
   struct State{
-    std::deque<InputPoint> melkmanQueue; /** Melkman algorithm main dequeu */
+    std::deque<InputPoint> melkmanQueue; /** Melkman algorithm main deque */
     InputPoint lastFront; /** the last point added at the front of the alpha thick segment */
     InputPoint lastBack; /** the last point added at the back of the alpha thick segment */
     InputPoint edgePh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
@@ -238,7 +245,7 @@ public:
    *
    *
    */  
-  void init(double aThickness);  
+  void init(const double aThickness);  
   
   
 
@@ -301,13 +308,6 @@ public:
    * @see maxSize
    */
   Size max_size() const;
-
-  
-  /**
-   * same as max_size
-   * @return the maximal allowed number of points in the current alpha thick segment.
-   */
-  Size maxSize() const;  
   
 
 

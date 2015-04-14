@@ -3,8 +3,8 @@
 ## New Features / Critical Changes
 - *Geometry Package*
 
- - New Alpha Thick Segment Computer allowing the recognition of noisy
-   digital segment (from a given thickness parameter). The actual
+ - New Alpha Thick Segment Computer allowing the recognition of thick digital segment,
+   adapted to noisy contours (from a given thickness parameter). The actual
    implementation (mainly a backport from  imagene) is a model of
    CForwardSegmentComputer with a ParallelStrip primitive. The primitive
    follow the  Debled-Rennesson etal 2005  blurred segment with isothetic
