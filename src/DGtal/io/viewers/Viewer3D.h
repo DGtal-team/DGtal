@@ -983,8 +983,8 @@ namespace DGtal
           vectNormal[0] /=norm; vectNormal[1] /=norm; vectNormal[2] /=norm;
         }
 
-        myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
-        myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight);
+        myBufferWidth = functions::roundToUpperPowerOfTwo(myImageWidth);
+        myBufferHeight = functions::roundToUpperPowerOfTwo(myImageHeight);
 
         if(myMode== 1)
           {
