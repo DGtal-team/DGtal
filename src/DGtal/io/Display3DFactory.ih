@@ -73,12 +73,7 @@ inline
 void
 DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::KForm<TCalculus, order, duality>& kform, double cmap_min, double cmap_max)
 {
-    BOOST_STATIC_ASSERT(( TCalculus::dimension == 3 ));
-    ASSERT( kform.myCalculus );
-
     typedef typename TCalculus::Scalar Scalar;
-    typedef typename TCalculus::KSpace KSpace;
-    typedef typename TCalculus::SCell SCell;
     typedef typename TCalculus::Index Index;
 
     if (cmap_min == 0 && cmap_max == 0)
@@ -95,7 +90,24 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     }
 
     typedef typename DGtal::HueShadeColorMap<Scalar, 2 > ColorMap;
-    const ColorMap colormap(cmap_min, cmap_max);
+    const ColorMap color_map(cmap_min, cmap_max);
+
+    drawWithColorMap(display, kform, color_map);
+}
+
+template <typename Space, typename KSpace>
+template <typename Calculus, DGtal::Order order, DGtal::Duality duality, typename ColorMap>
+inline
+void
+DGtal::Display3DFactory<Space, KSpace>::drawWithColorMap(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, const ColorMap& colormap)
+{
+    BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
+    ASSERT( kform.myCalculus );
+
+    typedef typename Calculus::Scalar Scalar;
+    typedef typename Calculus::KSpace KSpace;
+    typedef typename Calculus::SCell SCell;
+    typedef typename Calculus::Index Index;
 
     for (Index index=0; index<kform.length(); index++)
     {
