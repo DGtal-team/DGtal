@@ -221,16 +221,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::max_size() const
 
 
 
-//-----------------------------------------------------------------------------
-template < typename TInputPoint, typename TConstIterator>
-inline
-typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::Size
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::maxSize() const 
-{
-  return myPointContainer.max_size();
-}
-
-
 
 
 
@@ -239,7 +229,7 @@ template < typename TInputPoint, typename TConstIterator>
 inline
 void
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
-init(double aThickness)  
+init(const double aThickness)  
 {
   myNbPointsAddedFromIterators = 0;
   myIsStoringPoints = true;
