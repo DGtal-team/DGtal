@@ -147,7 +147,7 @@ public:
   
   /**
    * Type of embedded points 
-   * @see getBasicBoundingBox, getRealBoudingBox, getBoundingBoxFromExtremPoints
+   * @see getBoundingBox, getBoundingBoxFromExtremPoints
    */
   typedef DGtal::PointVector<2, double> PointD; 
 
@@ -425,7 +425,7 @@ public:
   
  
    /**
-   * @return the segment length defined from the bouding box (@see getBasicBoundingBox).
+   * @return the segment length defined from the bouding box (@see getBoundingBox).
    **/
   double getSegmentLength() const;
   
