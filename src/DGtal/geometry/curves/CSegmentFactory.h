@@ -99,8 +99,8 @@ Description of \b concept '\b CSegmentFactory' <p>
     // Methods
     BOOST_CONCEPT_USAGE( CSegmentFactory )
     {
-      ConceptUtils::sameType( myT, myT.getSelf() );
-      ConceptUtils::sameType( myRT, myT.getReverse() );
+      concepts::ConceptUtils::sameType( myT, myT.getSelf() );
+      concepts::ConceptUtils::sameType( myRT, myT.getReverse() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

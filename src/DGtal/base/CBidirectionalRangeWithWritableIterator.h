@@ -98,7 +98,7 @@ ImageContainerBySTLVector::Range
 
     BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIterator )
     {
-      ConceptUtils::sameType( myOutput, myX.routputIterator( ) );
+      concepts::ConceptUtils::sameType( myOutput, myX.routputIterator( ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:

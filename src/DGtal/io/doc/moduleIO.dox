@@ -38,6 +38,15 @@ offer better colormap for scientific visualisation purposes.
 \image html colormaps.png "Example of predefined colormaps" 
 \image latex colormaps.png "Example of predefined colormaps" width=5cm
 
+Beside colormaps, TickedColorMap is a colormap adapter that adds ticks. For example, you can adapt a Black-Red gradient colormap to add regular white ticks (see usage in @href testTickedColorMap):
+
+\image html testTicked-gradient-regular.png "Colormaps with regular ticks" 
+\image latex testTicked-gradient-regular.png "Colormaps with regular ticks" width=10cm
+Ticks can be regularly spaced or explicitly given by the user.
+
+
+
+
 In some situations, we may have to convert colors into   scalar
 values (see below). In this case, basic conversion functors are
 available in the DGtal::functors namespace. For
@@ -382,7 +391,7 @@ instance generate some exports in pdf like this example:
 
 
 
-(see this pdf file:  https://liris.cnrs.fr/dgtal/wordpress/wp-content/uploads/2010/10/3dKSSurfaceExtractionExport.pdf )
+(see this pdf file:  http://dgtal.org/wp/wp-content/uploads/2010/10/3dKSSurfaceExtractionExport.pdf )
 
 
 */
