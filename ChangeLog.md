@@ -124,6 +124,8 @@
    Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
  - Fix warnings message of std::abs in Display3D.    (Bertrand Kerautret,
    [#991](https://github.com/DGtal-team/DGtal/pull/991))
+ - Fix memory leaks present in the Viewer3d.  (Bertrand Kerautret,
+   [#995](https://github.com/DGtal-team/DGtal/pull/995))
 
 
 - *Kernel Package*
