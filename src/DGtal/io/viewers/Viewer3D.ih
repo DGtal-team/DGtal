@@ -989,7 +989,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glDeleteLists(myBallSetListId, myNbBallSetList);
   glDeleteLists(myTriangleSetListId, 1);
   glDeleteLists(myTriangleSetListWiredId, 1);
-  glDeleteLists(myCubeSetListId, 1);
+  glDeleteLists(myPrismListId, 1);
   glDeleteLists(myCubeSetListWiredId, 1);
   glDeleteLists(myPolygonSetListId, 1);
   glDeleteLists(myPolygonSetListWiredId, 1);
