@@ -394,15 +394,15 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isValid()  const
 template < typename TInputPoint, typename TConstIterator>
 inline
 std::pair<TInputPoint, TInputPoint >
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>:: getExtremityPoints()  const
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getExtremityPoints()  const
 {
   std::pair<TInputPoint, TInputPoint> r;
-  r.first =  myState.lastFront;
-  r.second =  myState.lastBack;
+  r.first = myState.lastBack;
+  r.second = myState.lastFront;
   computeExtremaPoints(myState.melkmanQueue.begin(), myState.melkmanQueue.end() , r.first, r.second);
-    
   return r;
 }
+
 
 
 

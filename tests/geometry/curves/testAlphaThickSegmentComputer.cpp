@@ -129,7 +129,11 @@ bool testAlphaThickSegmentConvexHullAndBox()
   trace.beginBlock("Testing access to extremity points");
   trace.info() << "First extremity point: " << anAlphaThickSegmentComputer.getExtremityPoints().first << 
     " ( should be " << *(aContour.begin())<<  ")" << std::endl;
-  res = anAlphaThickSegmentComputer.getExtremityPoints().first == *(aContour.begin());
+  trace.info() << "Second extremity point: " << anAlphaThickSegmentComputer.getExtremityPoints().second << 
+    " ( should be (80, 18) )" << std::endl;
+
+  res = anAlphaThickSegmentComputer.getExtremityPoints().first == *(aContour.begin())&&
+        anAlphaThickSegmentComputer.getExtremityPoints().second == Z2i::Point(80,18);
   nbok += res ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
