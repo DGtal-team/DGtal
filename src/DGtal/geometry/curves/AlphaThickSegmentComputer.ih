@@ -365,9 +365,10 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::selfDisplay(std:
 {
   out << "[Alpha Thick Segment Computer]" << std::endl; 
   out << "Inside points: "<< std::endl;
-  for ( ConstIterator it = myPointContainer.begin(); it != myPointContainer.end(); ++it){
-    out << *it << " ";
-  }
+  for ( ConstIterator it = myPointContainer.begin(); it != myPointContainer.end(); ++it)
+    {
+      out << *it << " ";
+    }
   out << std::endl << "is well melkman init ?" << (myState.isMelkmanInitialized? " OK ": "NO"); 
   out << std::endl << "Convexhull height: " << myState.convexHullHeight << std::endl;  
   out << std::endl << "Segment thickness : " << myState.actualThickness << std::endl;
@@ -608,9 +609,10 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanIsConvexValid() 
 {
-  if (!myState.isMelkmanInitialized){
-    return true;
-  } 
+  if (!myState.isMelkmanInitialized)
+    {
+      return true;
+    } 
   myState.actualThickness = melkmanUpdateMainHeight(); 
   return myState.actualThickness <= myMaximalThickness;
 }
@@ -635,11 +637,14 @@ DGtal::AlphaThickSegmentComputer< TInputPoint,
 template < typename TInputPoint, typename TConstIterator>
 inline
 std::vector<TInputPoint>
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getConvexHull() const{
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getConvexHull() const
+{
   std::vector<InputPoint> aResult;
-  for (typename std::deque<InputPoint>::const_iterator it = myState.melkmanQueue.begin(); it != myState.melkmanQueue.end(); it++){
-    aResult.push_back(*it);
-  }
+  for (typename std::deque<InputPoint>::const_iterator it = myState.melkmanQueue.begin(); 
+       it != myState.melkmanQueue.end(); it++)
+    {
+      aResult.push_back(*it);
+    }
   return aResult;
 }
 
@@ -654,49 +659,53 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
                                                                                                PointD &pt2LongestSegment1,
                                                                                                PointD &pt3LongestSegment2,
                                                                                                PointD &pt4LongestSegment2,
-                                                                                               double minVisibleWidthBounds) const{
+                                                                                               double minVisibleWidthBounds) const
+{
   
   // Special case, blurred segment composed only of aligned points. 
   // In this cas the bounding box is restrained to a eplison width rectangle.
-  if(myState.convexHullHeight==0.0){
-    PointD vectPQ (aFirstPt[0]- aLastPt[0], aFirstPt[1]- aLastPt[1]); 
-    double normPQ = vectPQ.norm();
-    PointD vectUnitPerpPQ (-vectPQ[1]/normPQ, vectPQ[0]/normPQ);
-    pt1LongestSegment1[0]= aFirstPt[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt1LongestSegment1[1]= aFirstPt[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+  if(myState.convexHullHeight==0.0)
+    {
+      PointD vectPQ (aFirstPt[0]- aLastPt[0], aFirstPt[1]- aLastPt[1]); 
+      double normPQ = vectPQ.norm();
+      PointD vectUnitPerpPQ (-vectPQ[1]/normPQ, vectPQ[0]/normPQ);
+      pt1LongestSegment1[0]= aFirstPt[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+      pt1LongestSegment1[1]= aFirstPt[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-    pt2LongestSegment1[0]= aLastPt[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt2LongestSegment1[1]= aLastPt[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+      pt2LongestSegment1[0]= aLastPt[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+      pt2LongestSegment1[1]= aLastPt[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-    pt3LongestSegment2[0]= aLastPt[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt3LongestSegment2[1]= aLastPt[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+      pt3LongestSegment2[0]= aLastPt[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+      pt3LongestSegment2[1]= aLastPt[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-    pt4LongestSegment2[0]=  aFirstPt[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
-    pt4LongestSegment2[1]=  aFirstPt[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
+      pt4LongestSegment2[0]=  aFirstPt[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
+      pt4LongestSegment2[1]=  aFirstPt[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
     
-  }else{
-    PointD projF, projL, projS ;
-    projetOnStraightLine(myState.edgePh, myState.edgeQh, aFirstPt, projF);
-    projetOnStraightLine(myState.edgePh, myState.edgeQh, aLastPt, projL);
-    projetOnStraightLine(myState.edgePh, myState.edgeQh, myState.vertexSh, projS);
+    }
+  else
+    {
+      PointD projF, projL, projS ;
+      projetOnStraightLine(myState.edgePh, myState.edgeQh, aFirstPt, projF);
+      projetOnStraightLine(myState.edgePh, myState.edgeQh, aLastPt, projL);
+      projetOnStraightLine(myState.edgePh, myState.edgeQh, myState.vertexSh, projS);
     
-    // Shift of the projection of PQ to define the other part of bounds.
-    PointD dep (myState.vertexSh[0]-projS[0], myState.vertexSh[1]-projS[1]);
-    PointD projF2(projF[0]+dep[0], projF[1]+dep[1] );
-    PointD projL2(projL[0]+dep[0], projL[1]+dep[1] );
+      // Shift of the projection of PQ to define the other part of bounds.
+      PointD dep (myState.vertexSh[0]-projS[0], myState.vertexSh[1]-projS[1]);
+      PointD projF2(projF[0]+dep[0], projF[1]+dep[1] );
+      PointD projL2(projL[0]+dep[0], projL[1]+dep[1] );
     
-    pt1LongestSegment1[0]=projF[0];
-    pt1LongestSegment1[1]=projF[1];
+      pt1LongestSegment1[0]=projF[0];
+      pt1LongestSegment1[1]=projF[1];
     
-    pt2LongestSegment1[0]=projL[0];
-    pt2LongestSegment1[1]=projL[1];
+      pt2LongestSegment1[0]=projL[0];
+      pt2LongestSegment1[1]=projL[1];
     
-    pt3LongestSegment2[0]=projL2[0];
-    pt3LongestSegment2[1]=projL2[1];
+      pt3LongestSegment2[0]=projL2[0];
+      pt3LongestSegment2[1]=projL2[1];
     
-    pt4LongestSegment2[0]=projF2[0];
-    pt4LongestSegment2[1]=projF2[1];      
-  }
+      pt4LongestSegment2[0]=projF2[0];
+      pt4LongestSegment2[1]=projF2[1];      
+    }
 }
 
 
@@ -717,9 +726,10 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBox(P
   getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
                                  pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);
 
-  if(myState.convexHullHeight==0.0){
-    return;
-  }
+  if(myState.convexHullHeight==0.0)
+    {
+      return;
+    }
   
   InputPoint extremF =  myState.lastFront;
   InputPoint extremL =  myState.lastBack;
@@ -735,7 +745,8 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBox(P
 template < typename TInputPoint, typename TConstIterator>
 inline
 std::string 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::className() const{
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::className() const
+{
   return "AlphaThickSegment";
 }
 
@@ -744,7 +755,8 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::className() cons
 template < typename TInputPoint, typename TConstIterator>
 inline
 double 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSegmentLength() const{
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSegmentLength() const
+{
   InputPoint pt1, pt2, pt3, pt4;
   getBoundingBox(pt1, pt2, pt3, pt4);
   return (pt2-pt1).norm();
@@ -757,7 +769,8 @@ inline
 void 
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParalellStripParams(double &mu, 
                                                                                            PointD &N, 
-                                                                                           double &nu) const{
+                                                                                           double &nu) const
+{
   PointD dirSeg =  myState.edgeQh - myState.edgePh; 
   // Normal dir oriented inside the segment
   if (melkmanIsLeft(myState.edgePh, myState.edgeQh, myState.vertexSh)>=0){
@@ -777,7 +790,8 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParalellS
 template < typename TInputPoint, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isStoringSegmentPoints() const{
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isStoringSegmentPoints() const
+{
   return myIsStoringPoints;
 }
 
@@ -786,7 +800,8 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isStoringSegment
 template < typename TInputPoint, typename TConstIterator>
 inline
 unsigned int 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNumberSegmentPoints() const{
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNumberSegmentPoints() const
+{
   return myNbPointsAddedFromIterators+myPointContainer.size();
 }
 
@@ -799,22 +814,25 @@ bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::projetOnStraightLine(const TPointD & ptA,
                                                                                      const TPointD & ptB,
                                                                                      const TPointD & ptC,
-                                                                                     PointD & ptProjected) const {
-  if (ptA==ptC){
-    ptProjected=ptA;
-    return true;
-  }
-  if (ptB==ptC){
-    ptProjected=ptB;
-    return true ;
-  }
-
+                                                                                     PointD & ptProjected) const
+{
+  if (ptA==ptC)
+    {
+      ptProjected=ptA;
+      return true;
+    }
+  if (ptB==ptC)
+    {
+      ptProjected=ptB;
+      return true ;
+    }
+  
   TPointD vAB (ptB[0]- ptA[0], ptB[1]- ptA[1]);
   PointD vABn ((double)vAB[0], (double)vAB[1]);
   vABn = vABn/vABn.norm();
   PointD vAC (ptC[0]-ptA[0], ptC[1]-ptA[1]);
   double distPtA_Proj = vAC.dot(vABn);
-
+  
   ptProjected[0]= ptA[0]+vABn[0]*(distPtA_Proj);
   ptProjected[1] = ptA[1]+vABn[1]*(distPtA_Proj);  
   return  (distPtA_Proj>=0 && (ptProjected-ptA).norm() <= vAB.norm()); 
@@ -829,12 +847,11 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
 computeExtremaPoints(const TConstIteratorG & itBegin,
                      const TConstIteratorG & itEnd,
                      InputPoint & aFirstExtrPt,
-                     InputPoint & aLastExtrPt) const{
+                     InputPoint & aLastExtrPt) const
+{
   // To be changed with saved point added by push front/push back
-  
   InputPoint extremF = myState.lastBack;
   InputPoint extremL = myState.lastFront;
-
  
   PointD projExtremF;
   PointD projExtremL;
@@ -847,22 +864,25 @@ computeExtremaPoints(const TConstIteratorG & itBegin,
     {
       InputPoint p = *it;
       PointD pointEnvConv = PointD(p[0], p[1]);
-      //InputPoint  pointEnvConv = *it;
       PointD projPointEnvConv;
       bool isNewExtrema = !projetOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
-      if(isNewExtrema){
-	double distFirst = (projPointEnvConv-projExtremF).norm(); 
-	double distLast = (projPointEnvConv- projExtremL).norm(); 
-	if(distFirst>= distLast){
-	  aLastExtrPt = pointEnvConv;
-	  projExtremL = projPointEnvConv;	  
-	}else{
-	  aFirstExtrPt = pointEnvConv;
-	  projExtremF = projPointEnvConv;	 
-	}
-      }      
+      if(isNewExtrema)
+        {
+          double distFirst = (projPointEnvConv-projExtremF).norm(); 
+          double distLast = (projPointEnvConv- projExtremL).norm(); 
+          if(distFirst>= distLast)
+            {
+              aLastExtrPt = pointEnvConv;
+              projExtremL = projPointEnvConv;	  
+            }
+          else
+            {
+              aFirstExtrPt = pointEnvConv;
+              projExtremF = projPointEnvConv;	 
+            }
+        }      
     }
- 
+  
 }
 
 
