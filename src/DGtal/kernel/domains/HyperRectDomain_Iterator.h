@@ -167,7 +167,7 @@ namespace DGtal
 
 
     HyperRectDomain_Iterator( const TPoint & p, const TPoint& lower, const TPoint &upper )
-      : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 )
+      : myPoint( p ), mylower( lower ), myupper( upper )
       {
         ASSERT_MSG( // For an empty domain, lower = upper + diag(1) so that begin() == end().
             lower.isLower(upper) || lower == upper + TPoint::diagonal(1),
@@ -224,21 +224,20 @@ namespace DGtal
      **/
     void nextLexicographicOrder()
       {
-        ++myPoint[myCurrentPos];
-        if (( myCurrentPos < TPoint::dimension - 1 ) &&
-            ( myPoint[myCurrentPos] > myupper[myCurrentPos] ) )
+        ++myPoint[0];
+        if (( TPoint::dimension > 1 ) &&
+            ( myPoint[0] > myupper[0] ) )
           {
+            Dimension current_pos = 0;
             do
               {
-                myPoint[myCurrentPos] = mylower[myCurrentPos];
-                myCurrentPos++;
-                if ( myCurrentPos < TPoint::dimension )
-                  ++myPoint[myCurrentPos];
+                myPoint[current_pos] = mylower[current_pos];
+                current_pos++;
+                if ( current_pos < TPoint::dimension )
+                  ++myPoint[current_pos];
               }
-            while (( myCurrentPos < TPoint::dimension - 1 ) &&
-                ( myPoint[myCurrentPos]  >  myupper[ myCurrentPos ] ) );
-
-            myCurrentPos = 0;
+            while (( current_pos < TPoint::dimension - 1 ) &&
+                ( myPoint[ current_pos ]  >  myupper[ current_pos ] ) );
           }
       }
 
@@ -268,21 +267,20 @@ namespace DGtal
      **/
     void prevLexicographicOrder()
       {
-        --myPoint[ myCurrentPos ];
-        if (( myCurrentPos < TPoint::dimension - 1 ) &&
-            ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) )
+        --myPoint[0];
+        if (( TPoint::dimension > 1 ) &&
+            ( myPoint[0]  <  mylower[0] ) )
           {
+            Dimension current_pos = 0;
             do
               {
-                myPoint[ myCurrentPos ] = myupper[ myCurrentPos ];
-                ++myCurrentPos;
-                if ( myCurrentPos < TPoint::dimension )
-                  --myPoint[ myCurrentPos ];
+                myPoint[ current_pos ] = myupper[ current_pos ];
+                ++current_pos;
+                if ( current_pos < TPoint::dimension )
+                  --myPoint[ current_pos ];
               }
-            while (( myCurrentPos < TPoint::dimension - 1 ) &&
-                ( myPoint[ myCurrentPos ]  <  mylower[ myCurrentPos ] ) );
-
-            myCurrentPos = 0;
+            while (( current_pos < TPoint::dimension - 1 ) &&
+                ( myPoint[ current_pos ]  <  mylower[ current_pos ] ) );
           }
       }
 
@@ -311,8 +309,6 @@ namespace DGtal
     TPoint myPoint;
     ///Copies of the Domain limits
     TPoint mylower, myupper;
-    ///Second index of the iterator position
-    Dimension myCurrentPos;
   }; // End of class HyperRectDomain_Iterator
 
   /////////////////////////////////////////////////////////////////////////////
@@ -336,7 +332,7 @@ namespace DGtal
     HyperRectDomain_subIterator(const TPoint & p, const TPoint& lower,
         const TPoint &upper,
         std::initializer_list<Dimension> subDomain)
-      : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 )
+      : myPoint( p ), mylower( lower ), myupper( upper )
       {
         ASSERT_MSG( // For an empty domain, lower = upper + diag(1) so that begin() == end().
             lower.isLower(upper) || lower == upper + TPoint::diagonal(0).partialCopy( TPoint::diagonal(1), subDomain),
@@ -365,7 +361,7 @@ namespace DGtal
     HyperRectDomain_subIterator(const TPoint & p, const TPoint& lower,
         const TPoint &upper,
         const std::vector<Dimension> &subDomain)
-      : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 )
+      : myPoint( p ), mylower( lower ), myupper( upper )
       {
         ASSERT_MSG( // For an empty domain, lower = upper + diag(1) so that begin() == end().
             lower.isLower(upper) || lower == upper + TPoint::diagonal(0).partialCopy( TPoint::diagonal(1), subDomain ),
@@ -439,26 +435,25 @@ namespace DGtal
      **/
     void nextSubDomainOrder()
       {
-        ASSERT( myCurrentPos < mySubDomain.size() );
-        ++myPoint[ mySubDomain[myCurrentPos] ];
+        ASSERT( mySubDomain.size() > 0 );
+        ++myPoint[ mySubDomain[0] ];
 
-        if ( myCurrentPos < mySubDomain.size() - 1 &&
-            myPoint[ mySubDomain[myCurrentPos] ] >
-            myupper[ mySubDomain[myCurrentPos] ] )
+        if ( mySubDomain.size() > 1 &&
+            myPoint[ mySubDomain[0] ] >
+            myupper[ mySubDomain[0] ] )
           {
+            Dimension current_pos = 0;
             do
               {
-                myPoint[ mySubDomain[myCurrentPos] ] =
-                  mylower[ mySubDomain[myCurrentPos] ];
-                ++myCurrentPos;
-                if ( myCurrentPos < mySubDomain.size() )
-                  ++myPoint[ mySubDomain[myCurrentPos] ];
+                myPoint[ mySubDomain[current_pos] ] =
+                  mylower[ mySubDomain[current_pos] ];
+                ++current_pos;
+                if ( current_pos < mySubDomain.size() )
+                  ++myPoint[ mySubDomain[current_pos] ];
               }
-            while (( myCurrentPos < mySubDomain.size() - 1  ) &&
-                ( myPoint[ mySubDomain[myCurrentPos] ]  >
-                  myupper[ mySubDomain[myCurrentPos] ] ) );
-
-            myCurrentPos = 0;
+            while (( current_pos < mySubDomain.size() - 1  ) &&
+                ( myPoint[ mySubDomain[current_pos] ]  >
+                  myupper[ mySubDomain[current_pos] ] ) );
           }
       }
 
@@ -488,26 +483,25 @@ namespace DGtal
      **/
     void prevSubDomainOrder()
       {
-        ASSERT( myCurrentPos < mySubDomain.size() );
-        --myPoint[ mySubDomain[myCurrentPos] ];
+        ASSERT( mySubDomain.size() > 0 );
+        --myPoint[ mySubDomain[0] ];
 
-        if (  myCurrentPos < mySubDomain.size() - 1 &&
-            myPoint[ mySubDomain[myCurrentPos] ]  <
-            mylower[ mySubDomain[myCurrentPos] ] )
+        if (  mySubDomain.size() > 1 &&
+            myPoint[ mySubDomain[0] ]  <
+            mylower[ mySubDomain[0] ] )
           {
+            Dimension current_pos = 0;
             do
               {
-                myPoint[ mySubDomain[myCurrentPos] ] =
-                  myupper[ mySubDomain[myCurrentPos] ];
-                ++myCurrentPos;
-                if ( myCurrentPos < mySubDomain.size() )
-                  --myPoint[ mySubDomain[myCurrentPos] ];
+                myPoint[ mySubDomain[current_pos] ] =
+                  myupper[ mySubDomain[current_pos] ];
+                ++current_pos;
+                if ( current_pos < mySubDomain.size() )
+                  --myPoint[ mySubDomain[current_pos] ];
               }
-            while (( myCurrentPos < mySubDomain.size() - 1 ) &&
-                ( myPoint[ mySubDomain[myCurrentPos] ]  <
-                  mylower[ mySubDomain[myCurrentPos] ] ) );
-
-            myCurrentPos = 0;
+            while (( current_pos < mySubDomain.size() - 1 ) &&
+                ( myPoint[ mySubDomain[current_pos] ]  <
+                  mylower[ mySubDomain[current_pos] ] ) );
           }
       }
 
@@ -536,8 +530,6 @@ namespace DGtal
     TPoint myPoint;
     ///Copies of the Domain limits
     TPoint mylower, myupper;
-    ///Second index of the iterator position
-    Dimension myCurrentPos;
     ///Vector of subDomain on dimension, to fix the order in which dimensions
     /// are considered.
     std::vector<Dimension> mySubDomain;
