@@ -121,11 +121,20 @@ bool testAlphaThickSegmentConvexHullAndBox()
   aBoard.saveEPS("testAlphaThickSegmentComputer_Convexhull.eps"); 
   trace.info() << " Alpha Thick with alpha 5, size (awaited be 41) = " << anAlphaThickSegmentComputer.getNumberSegmentPoints();
   res = anAlphaThickSegmentComputer.getNumberSegmentPoints()==41;
-  
   nbok += res ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
+  
+  trace.beginBlock("Testing access to extremity points");
+  trace.info() << "First extremity point: " << anAlphaThickSegmentComputer.getExtremityPoints().first << 
+    " ( should be " << *(aContour.begin())<<  ")" << std::endl;
+  res = anAlphaThickSegmentComputer.getExtremityPoints().first == *(aContour.begin());
+  nbok += res ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  trace.endBlock();
+  
   return nbok == nb;
 }
 
