@@ -62,8 +62,8 @@ introduce the notion blurred segment of width \f$ \nu \f$
 isothetic thickness of a set of points, ie. the minimum value between
 its vertical and horizontal thicknesses (see figure below).
 
-@image html convexHullVT_HT.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness" 
-@image latex convexHullVT_HT.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness" width=5cm
+@image html convexHullVT_HT.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and S are the antipodal pair." 
+@image latex convexHullVT_HT.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and S are the antipodal pair." width=5cm
 
 From this notion of isothetic thickness follows the \b blurred \b segment definition \cite DebledRennessonBlurred2005 :
 

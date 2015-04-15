@@ -403,8 +403,7 @@ public:
    */
   bool isValid() const;
   
-  
-
+ 
   /**
    * Get the extremity points of the segment. These points are not
    * necessary the last point of the segment.
@@ -412,8 +411,19 @@ public:
    **/
   std::pair<InputPoint, InputPoint>  getExtremityPoints() const;
   
-  
 
+  /**
+   * @return the antipodal leaning points of the segment (given in the
+   * convexhull). The result is given as a pair for which the first
+   * element is the pair containing the edge antipodal points and the
+   * second element is the vertex of the antipodal pair (see section \ref
+   * moduleAlphaThickSegmentRecoIntro for an illustration of such an
+   * antipodal pair).
+   **/
+  std::pair<std::pair<InputPoint, InputPoint>, InputPoint>
+  getAntipodalLeaningPoints() const;
+  
+  
   /**
    * Computes the paralell strip params from the current state of the segment.
    * @param[out] mu the minimal value of N.X (with N is the normal vector of the segment).
