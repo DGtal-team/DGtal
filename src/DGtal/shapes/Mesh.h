@@ -240,7 +240,6 @@ namespace DGtal
     **/    
     void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);
     
-   
     
     /**
      * @param i the index of the vertex.
@@ -278,7 +277,14 @@ namespace DGtal
      * @return the color of the face of index i. 
      **/
     const Color & getFaceColor(unsigned int i) const;
-    
+
+
+
+    /**
+     * @return the bounding box of the mesh represented as a pair of points.
+     **/
+    std::pair<TPoint, TPoint>  getBoundingBox() const;
+
 
     /**
      *  Set the color of a particular face of the mesh. If the mesh
@@ -408,9 +414,27 @@ namespace DGtal
     /**
      * Invert the face order (useful when normal is deducted from vertex order).
      *
-     **/
-    
+     **/    
     void invertVertexFaceOrder();
+    
+    /**
+     * Clear all faces of the mesh.
+     **/
+    void clearFaces();
+    
+    /**
+     * Change the scale of the mesh (i.e all vertex coordinates are multiplied by a given factor aScale).
+     * @param[in] aScale the scale factor. 
+     **/
+    void changeScale(const double aScale);
+    
+    
+    /**
+     * SubDivide triangular mesh if triangle area is less than the given parameter.
+     * @param[in] minArea the minimum area factor. 
+     * @return the new max triangle area.
+     **/
+    double subDivideTriangularFaces(const double minArea);
     
     
     

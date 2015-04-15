@@ -116,9 +116,9 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( C2x2DetComputer )
     {
-      ConceptUtils::sameType( myR, myX( myA, myB, myC, myD ) );
+      concepts::ConceptUtils::sameType( myR, myX( myA, myB, myC, myD ) );
       myX.init(myA, myB); 
-      ConceptUtils::sameType( myR, myX( myA, myB ) );
+      concepts::ConceptUtils::sameType( myR, myX( myA, myB ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:

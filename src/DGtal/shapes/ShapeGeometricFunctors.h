@@ -46,7 +46,9 @@
 
 namespace DGtal
 {
-
+  namespace functors
+  {
+    
   namespace ShapeGeometricFunctors 
   {
 
@@ -207,7 +209,8 @@ namespace DGtal
       CountedConstPtrOrConstPtr<Shape> myShape;
     };
     
-  } // namespace ShapeGeometricFunctors 
+  } // namespace ShapeGeometricFunctors
+  }
 } // namespace DGtal
 
 

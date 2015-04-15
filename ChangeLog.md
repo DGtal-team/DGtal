@@ -24,7 +24,7 @@
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
    linear model estimation of scalar data. (David Coeurjolly, Jérémy
-   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/935),
+   Levall1ois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
 
 - *IO Package*
@@ -44,7 +44,13 @@
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
  - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
-   [#961](https://github.com/DGtal-team/DGtal/pull/961)
+ [#961](https://github.com/DGtal-team/DGtal/pull/961)
+ - New colormap adapter to add ticks/iso-contours (regularly spaced or
+ specified by the user) to a given colormap. (David Coeurjolly,
+ [#987](https://github.com/DGtal-team/DGtal/pull/987)
+ - New flag (-DWITH_QT5) enables QT5 support in libqglviewer. (Nicolas
+ Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983) 
+ 
 
 
 - *Shapes Package*
@@ -64,6 +70,8 @@
    DigitalShapesMinus are now deprecated. Use DigitalShapesCSG
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
+ - Add various methods in the Mesh class to get the bounding box, to change the
+   mesh scale or to subdivide triangular faces. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990))
 
 - New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
    (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
@@ -85,6 +93,9 @@
  [#972](https://github.com/DGtal-team/DGtal/pull/972))
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
+ - Cleanup of DGtal namespaces. (David Coeurjolly,
+ [#993](https://github.com/DGtal-team/DGtal/pull/993))
+ 
 
 - *Geometry Package*
  - Fix bug occuring in the computation of the Faithful Polygon (class FP)
@@ -110,10 +121,20 @@
  - Radius and resolution of balls have been fixed when used to
    represent a 3D point in grid mode (David Coeurjolly,
    [#978](https://github.com/DGtal-team/DGtal/pull/978))
- - Bugfix in quad visualization in BoardD3D and Viewer3D (David
-   Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
  - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
    (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
+ - Bugfix in quad visualization in BoardD3D and Viewer3D (David
+   Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
+ - Fix warnings message of std::abs in Display3D.    (Bertrand Kerautret,
+   [#991](https://github.com/DGtal-team/DGtal/pull/991))
+
+
+- *Kernel Package*
+  - BasicDomainSubSampler can now handle non 0 origin point. This update also correct
+    the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
+    (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
+
+
 
 # DGtal 0.8
 

@@ -119,7 +119,7 @@ namespace DGtal
      */
     typedef ArithmeticalDSS<Coordinate, Integer, adjacency> DSS; 
     //we expect that the iterator type returned DGtal points, used in the DSS representation
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename DSS::Point >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Point, typename DSS::Point >::value ));
 
     /**
      * Type of primitive representation, defined as an alias of DSS 
