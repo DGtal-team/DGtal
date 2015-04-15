@@ -159,7 +159,9 @@ namespace DGtal
      * @return ConstIterator on the beginning of the range.
      */
     const ConstIterator& begin() const
-    { return myIteratorBegin; }
+      { 
+        return myIteratorBegin;
+      }
     
     /*
      * begin method from a given point.
@@ -169,7 +171,11 @@ namespace DGtal
      */
     ConstIterator begin(const Point& aPoint) const
       { 
-        ASSERT_MSG( isInside(aPoint) || aPoint == myLowerBound || aPoint == myUpperBound, "The point must be inside the domain or be equal to one of his bound." );
+        ASSERT_MSG(
+            isInside(aPoint) || aPoint == myLowerBound || aPoint == myUpperBound,
+            "The point must be inside the domain or be equal to one of his bound."
+        );
+
         return ConstIterator(aPoint, myLowerBound, myUpperBound);
       }
     
@@ -178,14 +184,18 @@ namespace DGtal
      * @return ConstIterator on the end of the range.
      */
     const ConstIterator& end() const
-    { return myIteratorEnd; }
+      { 
+        return myIteratorEnd;
+      }
     
     /*
      * reverse begin method.
      * @return ConstIterator on the beginning of the reverse range.
      */
     ConstReverseIterator rbegin() const
-    { return ConstReverseIterator(end()); }
+      { 
+        return ConstReverseIterator(end());
+      }
     
     /*
      * reverse begin method from a given point.
@@ -195,7 +205,11 @@ namespace DGtal
      */
     ConstReverseIterator rbegin(const Point& aPoint) const
       {  
-        ASSERT_MSG( isInside(aPoint) || aPoint == myLowerBound || aPoint == myUpperBound, "The point must be inside the domain or be equal to one of his bound." );
+        ASSERT_MSG(
+            isInside(aPoint) || aPoint == myLowerBound || aPoint == myUpperBound,
+            "The point must be inside the domain or be equal to one of his bound."
+        );
+
         ConstIterator it(begin(aPoint)); ++it;
         return ConstReverseIterator(it);
       }
@@ -205,7 +219,9 @@ namespace DGtal
      * @return ConstIterator on the end of the reverse range.
      */
     ConstReverseIterator rend() const
-    { return ConstReverseIterator(begin()); }
+      { 
+        return ConstReverseIterator(begin());
+      }
     
     /**
      * Description of class 'ConstSubRange' <p> \brief Aim:
@@ -229,17 +245,19 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-        const std::vector<Dimension> & permutation,
-        const Point & startingPoint)
+          const std::vector<Dimension> & permutation,
+          const Point & startingPoint)
         : myLowerBound(domain.myLowerBound),
           myUpperBound(domain.myUpperBound),
           myStartingPoint(startingPoint)
         {
-          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+          ASSERT_MSG(
+              domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound,
+              "The point must be inside the given domain or be equal to one of his bound."
+          );
 
           myPermutation.reserve( permutation.size() );
-          std::copy(permutation.begin(),permutation.end(),
-            std::back_inserter(myPermutation));
+          std::copy(permutation.begin(), permutation.end(), std::back_inserter(myPermutation));
           myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
           myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
         }
@@ -254,13 +272,16 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-        std::initializer_list<Dimension> permutation,
-        const Point & startingPoint)
+          std::initializer_list<Dimension> permutation,
+          const Point & startingPoint)
         : myLowerBound(domain.myLowerBound),
           myUpperBound(domain.myUpperBound),
           myStartingPoint(startingPoint)
         {
-          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+          ASSERT_MSG(
+              domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, 
+              "The point must be inside the given domain or be equal to one of his bound."
+          );
 
           myPermutation.reserve( permutation.size() );
           for ( const unsigned int *c = permutation.begin(); c != permutation.end(); ++c )
@@ -286,7 +307,10 @@ namespace DGtal
           myUpperBound(domain.myUpperBound),
           myStartingPoint(startingPoint)
         {
-          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+          ASSERT_MSG(
+              domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound,
+              "The point must be inside the given domain or be equal to one of his bound."
+          );
 
           myPermutation.push_back( adim );
           myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
@@ -308,7 +332,10 @@ namespace DGtal
           myUpperBound(domain.myUpperBound),
           myStartingPoint(startingPoint)
         {
-          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+          ASSERT_MSG(
+              domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound,
+              "The point must be inside the given domain or be equal to one of his bound."
+          );
 
           myPermutation.push_back( adim1 );
           myPermutation.push_back( adim2 );
@@ -332,7 +359,10 @@ namespace DGtal
           myUpperBound(domain.myUpperBound),
           myStartingPoint(startingPoint)
         {
-          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+          ASSERT_MSG(
+              domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound,
+              "The point must be inside the given domain or be equal to one of his bound."
+          );
           
           myPermutation.push_back( adim1 );
           myPermutation.push_back( adim2 );
@@ -346,8 +376,9 @@ namespace DGtal
        * @return ConstIterator on the beginning of the range.
        */
       ConstIterator begin() const
-      {  return ConstIterator(myLowerBound, myLowerBound,
-			      myUpperBound, myPermutation); }
+        {
+          return ConstIterator(myLowerBound, myLowerBound, myUpperBound, myPermutation);
+        }
       
       /*
        * begin method from a given point.
@@ -371,19 +402,20 @@ namespace DGtal
        * @return ConstIterator on the end of the range.
        */
       ConstIterator end() const
-      {
-	ConstIterator it = ConstIterator(myUpperBound, myLowerBound,
-					 myUpperBound, myPermutation);
-	++it;
-	return it;
-      }
+        {
+          ConstIterator it = ConstIterator(myUpperBound, myLowerBound, myUpperBound, myPermutation);
+          ++it;
+          return it;
+        }
 
       /*
        * reverse begin method.
        * @return ConstIterator on the beginning of the reverse range.
        */
       ConstReverseIterator rbegin() const
-      { return ConstReverseIterator(end()); }
+        {
+          return ConstReverseIterator(end());
+        }
 
       /*
        * reverse begin method from a given point.
@@ -392,15 +424,20 @@ namespace DGtal
        * @pre aPoint must belong to the range.
        */
       ConstReverseIterator rbegin(const Point& aPoint) const
-      { ConstIterator it(begin(aPoint)); ++it;
-	return ConstReverseIterator(it); }
+        { 
+          ConstIterator it(begin(aPoint));
+          ++it;
+          return ConstReverseIterator(it);
+        }
 
       /*
        * reverse end method.
        * @return ConstIterator on the end of the reverse range.
        */
       ConstReverseIterator rend() const
-      { return ConstReverseIterator(begin()); }
+        { 
+          return ConstReverseIterator(begin());
+        }
 
     private:
       /// Lower bound of the subrange.
@@ -420,7 +457,9 @@ namespace DGtal
      * @return a sub-range of the domain for the given permutation.
      */
     ConstSubRange subRange(const std::vector<Dimension> & permutation) const
-    { return ConstSubRange(*this, permutation, myLowerBound); }
+      { 
+        return ConstSubRange(*this, permutation, myLowerBound);
+      }
 
     /**
      * get a subRange from an initial point.
@@ -431,8 +470,10 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(const std::vector<Dimension> & permutation,
-			   const Point & startingPoint) const
-    { return ConstSubRange(*this, permutation, startingPoint); }
+        const Point & startingPoint) const
+      {
+        return ConstSubRange(*this, permutation, startingPoint);
+      }
     
     /**
      * get a subRange of one dimension.
@@ -442,8 +483,10 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(Dimension adim,
-			   const Point & startingPoint) const
-    { return ConstSubRange(*this, adim, startingPoint); }
+        const Point & startingPoint) const
+      { 
+        return ConstSubRange(*this, adim, startingPoint);
+      }
     
     /**
      * get a subRange of two dimensions.
@@ -454,8 +497,10 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(Dimension adim1, Dimension adim2,
-			   const Point & startingPoint) const
-    { return ConstSubRange(*this, adim1, adim2, startingPoint); }
+        const Point & startingPoint) const
+      { 
+        return ConstSubRange(*this, adim1, adim2, startingPoint);
+      }
     
     /**
      * get a subRange of three dimensions.
@@ -467,8 +512,10 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(Dimension adim1, Dimension adim2, Dimension adim3,
-			   const Point & startingPoint) const
-    { return ConstSubRange(*this, adim1, adim2, adim3, startingPoint); }
+        const Point & startingPoint) const
+      { 
+        return ConstSubRange(*this, adim1, adim2, adim3, startingPoint);
+      }
     
 #ifdef CPP11_INITIALIZER_LIST
     /**
@@ -478,7 +525,9 @@ namespace DGtal
      * @return a sub-range of the domain for the given permutation.
      */
     ConstSubRange subRange(std::initializer_list<Dimension> permutation)
-    { return ConstSubRange(*this, permutation, myLowerBound); }
+      { 
+        return ConstSubRange(*this, permutation, myLowerBound);
+      }
 
     /**
      * get a subRange from an initial point.
@@ -489,8 +538,10 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(std::initializer_list<Dimension> permutation,
-			   const Point & startingPoint)
-    { return ConstSubRange(*this, permutation, startingPoint); }
+        const Point & startingPoint)
+      { 
+        return ConstSubRange(*this, permutation, startingPoint);
+      }
 #endif
     
     // ----------------------- Interface --------------------------------------
@@ -501,18 +552,17 @@ namespace DGtal
      *
      **/
     Size size() const
-    {
-      Size res = 1;
-      Point p = Point::diagonal(1);
-      Vector e =  (myUpperBound - myLowerBound) + p;
-      typename Vector::ConstIterator it, itEnd; 
-      for ( it = e.begin(), itEnd = e.end(); 
-	    it != itEnd; ++it)
-	{
-	  res *= *it; 
-	}
-      return res; 
-    }
+      {
+        Size res = 1;
+        Point p = Point::diagonal(1);
+        Vector e =  (myUpperBound - myLowerBound) + p;
+        typename Vector::ConstIterator it, itEnd; 
+        for ( it = e.begin(), itEnd = e.end(); it != itEnd; ++it)
+          {
+            res *= *it; 
+          }
+        return res; 
+      }
 
     /**
      * Returns the lowest point of the space diagonal.
