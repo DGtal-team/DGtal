@@ -159,6 +159,20 @@ bool testAlphaThickSegmentConvexHullAndBox()
   nbok += res ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  
+  
+  trace.beginBlock("Testing getter of segment parameters");
+  Z2i::RealPoint  normalDir =   anAlphaThickSegmentComputer.getNormal();
+  double mu = anAlphaThickSegmentComputer.getMu();
+  double omega = anAlphaThickSegmentComputer.getOmega();
+  
+  //  trace.info() << "Segment param: normal " << normalDir<< ",mu " << mu << ", omega: "<< omega << std::endl; 
+  //  trace.info() << "Should be  " << Z2i::Point(78,16) << " " << Z2i::Point(79,6) << Z2i::Point(83,13) <<std::endl;
+
+  res = p==Z2i::Point(78,16) && q==Z2i::Point(79,6) && s == Z2i::Point(83,13);
+  nbok += res ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
   return nbok == nb;
 }

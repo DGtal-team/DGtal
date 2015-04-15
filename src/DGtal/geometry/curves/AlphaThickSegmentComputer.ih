@@ -787,18 +787,59 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParalellS
 {
   PointD dirSeg =  myState.edgeQh - myState.edgePh; 
   // Normal dir oriented inside the segment
-  if (melkmanIsLeft(myState.edgePh, myState.edgeQh, myState.vertexSh)>=0){
-    N[0] = -dirSeg[1];
-    N[1] = dirSeg[0];
-  }else{
-    N[0] = dirSeg[1];
-    N[1] = -dirSeg[0];
-  }
-  mu = (N[0]*myState.edgePh[0]+N[1]*myState.edgePh[1]);
-  nu = (N[0]*myState.vertexSh[0]+N[1]*myState.vertexSh[1] - mu);
+  if (melkmanIsLeft(myState.edgePh, myState.edgeQh, myState.vertexSh)>=0)
+    {
+      N[0] = -dirSeg[1];
+      N[1] = dirSeg[0];
+    }
+  else
+    {
+      N[0] = dirSeg[1];
+      N[1] = -dirSeg[0];
+      
+      mu = (N[0]*myState.edgePh[0]+N[1]*myState.edgePh[1]);
+      nu = (N[0]*myState.vertexSh[0]+N[1]*myState.vertexSh[1] - mu);
+    }
 }
 
-  
+ 
+
+template < typename TInputPoint, typename TConstIterator>
+inline
+typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::PointD 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNormal() const 
+{
+  PointD r;
+  double mu, nu;
+  computeParalellStripParams(mu, r,nu);
+  return r;
+}
+
+ 
+template < typename TInputPoint, typename TConstIterator>
+inline
+double 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getMu() const 
+{
+  PointD r;
+  double mu, nu;
+  computeParalellStripParams(mu, r,nu);
+  return mu;
+}
+
+
+template < typename TInputPoint, typename TConstIterator>
+inline
+double 
+  DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getOmega() const 
+{
+  PointD r;
+  double mu, nu;
+  computeParalellStripParams(mu, r,nu);
+  return nu;
+}
+
+   
 
 
 template < typename TInputPoint, typename TConstIterator>

@@ -433,7 +433,27 @@ public:
    **/
   void computeParalellStripParams(double &mu, PointD &N, double &nu) const;
   
+  
+  /**
+   * @return the two values of the normal vector given as a Point(a,b)
+   * (the normal is oriented toward the segment by considering the
+   * edge PQ of the convexhull antipodal pair)..
+   **/
+  
+  PointD getNormal() const;
+
+  /**
+   * @return the mu parameter of the current segment.
+   **/
+  double getMu() const;
  
+ 
+  /**
+   * @return the omega parameter the of the current segment.
+   **/
+  double getOmega() const;
+   
+  
    /**
    * @return the segment length defined from the bouding box (@see getBoundingBox).
    **/
