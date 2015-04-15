@@ -449,9 +449,9 @@ public:
  
  
   /**
-   * @return the omega parameter the of the current segment.
+   * @return the nu parameter the of the current segment.
    **/
-  double getOmega() const;
+  double getNu() const;
    
   
    /**

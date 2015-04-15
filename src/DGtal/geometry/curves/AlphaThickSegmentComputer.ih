@@ -796,10 +796,9 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParalellS
     {
       N[0] = dirSeg[1];
       N[1] = -dirSeg[0];
-      
-      mu = (N[0]*myState.edgePh[0]+N[1]*myState.edgePh[1]);
-      nu = (N[0]*myState.vertexSh[0]+N[1]*myState.vertexSh[1] - mu);
     }
+  mu = (N[0]*myState.edgePh[0]+N[1]*myState.edgePh[1]);
+  nu = (N[0]*myState.vertexSh[0]+N[1]*myState.vertexSh[1] - mu);
 }
 
  
@@ -831,7 +830,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getMu() const
 template < typename TInputPoint, typename TConstIterator>
 inline
 double 
-  DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getOmega() const 
+  DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNu() const 
 {
   PointD r;
   double mu, nu;
