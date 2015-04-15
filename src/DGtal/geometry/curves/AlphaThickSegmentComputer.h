@@ -403,6 +403,16 @@ public:
    */
   bool isValid() const;
   
+  
+
+  /**
+   * Get the extremity points of the segment. These points are not
+   * necessary the last point of the segment.
+   *
+   **/
+  std::pair<InputPoint, InputPoint>  getExtremityPoints() const;
+  
+  
 
   /**
    * Computes the paralell strip params from the current state of the segment.
@@ -415,7 +425,7 @@ public:
   
  
    /**
-   * @return the segment length defined from the basic bouding box (@see getBasicBoundingBox).
+   * @return the segment length defined from the bouding box (@see getBasicBoundingBox).
    **/
   double getBasicLength() const;
 

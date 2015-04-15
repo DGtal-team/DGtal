@@ -390,6 +390,22 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isValid()  const
 }
 
 
+//-----------------------------------------------------------------------------
+template < typename TInputPoint, typename TConstIterator>
+inline
+std::pair<TInputPoint, TInputPoint >
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>:: getExtremityPoints()  const
+{
+  std::pair<TInputPoint, TInputPoint> r;
+  r.first =  myState.lastFront;
+  r.second =  myState.lastBack;
+  computeExtremaPoints(myState.melkmanQueue.begin(), myState.melkmanQueue.end() , r.first, r.second);
+    
+  return r;
+}
+
+
+
 
 
 
@@ -721,12 +737,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getRealBoundingB
   InputPoint extremL =  myState.lastBack;
 
   std::deque<InputPoint> dSegment = myState.melkmanQueue;
-  if (myIsStoringPoints){
-    computeExtremaPoints(myPointContainer.begin(), myPointContainer.end() , extremL, extremF);
-  }else{ 
-    computeExtremaPoints(begin(), end() , extremL, extremF);
-  }
-  
+  computeExtremaPoints(myState.melkmanQueue.begin(), myState.melkmanQueue.end() , extremL, extremF);
   getBoundingBoxFromExtremPoints(extremF, extremL, pt1LongestSegment1, pt2LongestSegment1, 
                                  pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);  
 }
