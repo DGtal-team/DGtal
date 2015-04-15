@@ -168,9 +168,10 @@ namespace DGtal
      * @pre aPoint must belong to the range.
      */
     ConstIterator begin(const Point& aPoint) const
-    { ASSERT( myLowerBound - Point::diagonal(1) <= aPoint && aPoint <= myUpperBound + Point::diagonal(1));
-      return ConstIterator(aPoint, 
-			   myLowerBound, myUpperBound); }
+      { 
+        ASSERT_MSG( isInside(aPoint) || aPoint == myLowerBound || aPoint == myUpperBound, "The point must be inside the domain or be equal to one of his bound." );
+        return ConstIterator(aPoint, myLowerBound, myUpperBound);
+      }
     
     /*
      * end method.
@@ -193,9 +194,11 @@ namespace DGtal
      * @pre aPoint must belong to the range.
      */
     ConstReverseIterator rbegin(const Point& aPoint) const
-    {  ASSERT(isInside(aPoint));
-      ConstIterator it(begin(aPoint)); ++it;
-      return ConstReverseIterator(it); }
+      {  
+        ASSERT_MSG( isInside(aPoint) || aPoint == myLowerBound || aPoint == myUpperBound, "The point must be inside the domain or be equal to one of his bound." );
+        ConstIterator it(begin(aPoint)); ++it;
+        return ConstReverseIterator(it);
+      }
     
     /*
      * reverse end method.
@@ -226,18 +229,20 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    const std::vector<Dimension> & permutation,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
-      {
-	myPermutation.reserve( permutation.size() );
-	std::copy(permutation.begin(),permutation.end(),
-		  std::back_inserter(myPermutation));
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
-      }
+        const std::vector<Dimension> & permutation,
+        const Point & startingPoint)
+        : myLowerBound(domain.myLowerBound),
+          myUpperBound(domain.myUpperBound),
+          myStartingPoint(startingPoint)
+        {
+          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+
+          myPermutation.reserve( permutation.size() );
+          std::copy(permutation.begin(),permutation.end(),
+            std::back_inserter(myPermutation));
+          myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+          myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+        }
 
 #ifdef CPP11_INITIALIZER_LIST
       /**
@@ -249,21 +254,22 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    std::initializer_list<Dimension> permutation,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
-      {
-	myPermutation.reserve( permutation.size() );
-	for ( const unsigned int *c = permutation.begin();
-	      c != permutation.end(); ++c )
-	  {
-	    myPermutation.push_back( *c );
-	  }
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
-      }
+        std::initializer_list<Dimension> permutation,
+        const Point & startingPoint)
+        : myLowerBound(domain.myLowerBound),
+          myUpperBound(domain.myUpperBound),
+          myStartingPoint(startingPoint)
+        {
+          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+
+          myPermutation.reserve( permutation.size() );
+          for ( const unsigned int *c = permutation.begin(); c != permutation.end(); ++c )
+            {
+              myPermutation.push_back( *c );
+            }
+          myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+          myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+        }
 #endif
 
       /**
@@ -274,16 +280,18 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    Dimension adim,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
-      {
-	myPermutation.push_back( adim );
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
-      }
+          Dimension adim,
+          const Point & startingPoint)
+        : myLowerBound(domain.myLowerBound),
+          myUpperBound(domain.myUpperBound),
+          myStartingPoint(startingPoint)
+        {
+          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+
+          myPermutation.push_back( adim );
+          myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+          myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+        }
       
       /**
        * ConstSubRange constructor from a given domain for two dimensions.
@@ -294,17 +302,19 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    Dimension adim1, Dimension adim2,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
-      {
-	myPermutation.push_back( adim1 );
-	myPermutation.push_back( adim2 );
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
-      }
+          Dimension adim1, Dimension adim2,
+          const Point & startingPoint)
+        : myLowerBound(domain.myLowerBound),
+          myUpperBound(domain.myUpperBound),
+          myStartingPoint(startingPoint)
+        {
+          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+
+          myPermutation.push_back( adim1 );
+          myPermutation.push_back( adim2 );
+          myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+          myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+        }
       
       /**
        * ConstSubRange constructor from a given domain for two dimensions.
@@ -316,18 +326,20 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-		    Dimension adim1, Dimension adim2, Dimension adim3,
-		    const Point & startingPoint)
-	: myLowerBound(domain.myLowerBound),
-	  myUpperBound(domain.myUpperBound),
-	  myStartingPoint(startingPoint)
-      {
-	myPermutation.push_back( adim1 );
-	myPermutation.push_back( adim2 );
-	myPermutation.push_back( adim3 );
-	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
-      }
+          Dimension adim1, Dimension adim2, Dimension adim3,
+          const Point & startingPoint)
+        : myLowerBound(domain.myLowerBound),
+          myUpperBound(domain.myUpperBound),
+          myStartingPoint(startingPoint)
+        {
+          ASSERT_MSG( domain.isInside(startingPoint) || startingPoint == myLowerBound || startingPoint == myUpperBound, "The point must be inside the given domain or be equal to one of his bound.");
+          
+          myPermutation.push_back( adim1 );
+          myPermutation.push_back( adim2 );
+          myPermutation.push_back( adim3 );
+          myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+          myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+        }
       
       /*
        * begin method.
@@ -344,12 +356,15 @@ namespace DGtal
        * @pre aPoint must belong to the range.
        */
       ConstIterator begin(const Point& aPoint) const
-      { 
-	ASSERT(aPoint.partialEqualInv(myLowerBound, myPermutation) );
-	ASSERT(myLowerBound<=aPoint && aPoint<=myUpperBound);
-	return ConstIterator(aPoint, myLowerBound,
-			     myUpperBound, myPermutation);
-      }
+        { 
+          ASSERT(aPoint.partialEqualInv(myLowerBound, myPermutation) );
+          ASSERT_MSG( 
+            ( myLowerBound.isLower(aPoint) && aPoint.isLower(myUpperBound) ) || aPoint == myLowerBound || aPoint == myUpperBound,
+            "The point must be inside the given domain or be equal to one of his bound."
+          );
+
+          return ConstIterator(aPoint, myLowerBound, myUpperBound, myPermutation);
+        }
 
       /*
        * end method.
@@ -396,7 +411,7 @@ namespace DGtal
       Point                  myStartingPoint;
       /// Permutation on dimensions used in the subrange.
       std::vector<Dimension> myPermutation;
-    };
+    }; // ConstSubRange
 
     /**
      * get a subRange.
@@ -516,6 +531,11 @@ namespace DGtal
      * @return 'true' if point [p] is inside this domain.
      */
     bool isInside( const Point & p ) const;
+
+    /**
+     * @return true if the domain is empty.
+     */
+    bool isEmpty() const;
 
     /**
      * @return a const reference to the "IsInside" predicate.

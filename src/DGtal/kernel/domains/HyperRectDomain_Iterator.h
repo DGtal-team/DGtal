@@ -169,18 +169,22 @@ namespace DGtal
     HyperRectDomain_Iterator( const TPoint & p, const TPoint& lower, const TPoint &upper )
       : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 )
     {
-      ASSERT( lower <= upper + TPoint::diagonal(1) );
-      ASSERT( lower - TPoint::diagonal(1) <= p && p <= upper + TPoint::diagonal(1) );
+      ASSERT_MSG( // For an empty domain, lower = upper + diag(1) so that begin() == end().
+        lower.isLower(upper) || lower == upper + TPoint::diagonal(1),
+        "The lower bound must be lower than the upper bound or, for an empty domain, be equal to the upper bound + diagonal(1)."
+      );
+
+      ASSERT_MSG( ( lower.isLower(p) && p.isLower(upper) ) || p == lower || p == upper, "The point must be inside the domain or be equal to one of his bound." ); 
     }
 
     const TPoint & operator*() const
     {
-      ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
+      ASSERT_MSG( mylower.isLower(myPoint) && myPoint.isLower(myupper), "The iterator points outside the domain." ); // we must be between [begin,end]
       return myPoint;
     }
     TPoint & operator*()
     {
-      ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
+      ASSERT_MSG( mylower.isLower(myPoint) && myPoint.isLower(myupper), "The iterator points outside the domain." ); // we must be between [begin,end]
       return myPoint;
       }
 
@@ -319,9 +323,14 @@ namespace DGtal
         std::initializer_list<Dimension> subDomain)
       : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 )
     {
-      ASSERT( lower <= upper );
-      ASSERT( lower <= p && p <= upper );
+      ASSERT_MSG( // For an empty domain, lower = upper + diag(1) so that begin() == end().
+        lower.isLower(upper) || lower == upper + TPoint::diagonal(0).partialCopy( TPoint::diagonal(1), subDomain),
+        "The lower bound must be lower than the upper bound or, for an empty domain, be equal to the upper bound + diagonal(1)."
+      );
+
+      ASSERT_MSG( ( lower.isLower(p) && p.isLower(upper) ) || p == lower || p == upper, "The point must be inside the domain or be equal to one of his bound." ); 
       ASSERT( subDomain.size() <= TPoint::dimension );
+
       mySubDomain.reserve( subDomain.size() );
       for ( const unsigned int *c = subDomain.begin();
             c != subDomain.end(); ++c )
@@ -338,9 +347,14 @@ namespace DGtal
            const std::vector<Dimension> &subDomain)
       : myPoint( p ), mylower( lower ), myupper( upper ),  myCurrentPos( 0 )
     {
-      ASSERT( lower <= upper );
-      ASSERT( lower <= p && p <= upper );
+      ASSERT_MSG( // For an empty domain, lower = upper + diag(1) so that begin() == end().
+        lower.isLower(upper) || lower == upper + TPoint::diagonal(0).partialCopy( TPoint::diagonal(1), subDomain ),
+        "The lower bound must be lower than the upper bound or, for an empty domain, be equal to the upper bound + diagonal(1)."
+      );
+
+      ASSERT_MSG( ( lower.isLower(p) && p.isLower(upper) ) || p == lower || p == upper, "The point must be inside the domain or be equal to one of his bound." ); 
       ASSERT( subDomain.size() <= TPoint::dimension );
+      
       mySubDomain.reserve( subDomain.size() );
       for ( typename std::vector<Dimension>::const_iterator it = subDomain.begin();
             it != subDomain.end(); ++it )
@@ -355,12 +369,12 @@ namespace DGtal
 
     const TPoint & operator*() const
     {
-      ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
+      ASSERT_MSG( mylower.isLower(myPoint) && myPoint.isLower(myupper), "The iterator points outside the domain." ); // we must be between [begin,end]
       return myPoint;
     }
     TPoint & operator*()
     {
-      ASSERT(mylower<=myPoint && myPoint<=myupper); // we must be between [begin,end]
+      ASSERT_MSG( mylower.isLower(myPoint) && myPoint.isLower(myupper), "The iterator points outside the domain." ); // we must be between [begin,end]
       return myPoint;
     }
 
