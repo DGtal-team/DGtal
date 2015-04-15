@@ -427,14 +427,7 @@ public:
    /**
    * @return the segment length defined from the bouding box (@see getBasicBoundingBox).
    **/
-  double getBasicLength() const;
-
-
-  /**
-   * @return the segment length defined from the real bouding box (@see getRealBoudingBox).
-   *
-   **/
-  double getRealLength() const;
+  double getSegmentLength() const;
   
 
   /**
@@ -484,9 +477,10 @@ public:
   
   
   /**
-   * Computes the basic segment bounding box according to the segment
-   * extremity points (the last points added to the front and to the
-   * back).
+   * Computes the segment bounding box defined from the extremity
+   * points computed after a scan of the current convexhull. Note that
+   * this bouding box differs from the begin/end points bounding box
+   * when a large amount of noise are give in the initial curve.
    *
    * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
@@ -497,33 +491,12 @@ public:
    * out parameters pt1LongestSegment1, pt2LongestSegment1,
    * pt3LongestSegment1, pt4LongestSegment1.
    **/
-  void getBasicBoundingBox(PointD &pt1LongestSegment1,
-                           PointD &pt2LongestSegment1,
-                           PointD &pt3LongestSegment2,
-                           PointD &pt4LongestSegment2) const;
+  void getBoundingBox(PointD &pt1LongestSegment1,
+                      PointD &pt2LongestSegment1,
+                      PointD &pt3LongestSegment2,
+                      PointD &pt4LongestSegment2) const;
   
-  
-  /**
-   * Computes the real bounding box according to the real extremity
-   * points of the segment. The real extremity points are computed
-   * after a scan of all the segment points. The real bounding box can
-   * differs of the basic bounding box when a large amount of noise
-   * are give in the initial curve.
-   *
-   * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
-   * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
-   * @param[out] pt3LongestSegment2 the first point of one of the second longest segment.
-   * @param[out] pt4LongestSegment2 the second point of one of the second longest segment.
-   *
-   * @note the segment bounding box can be drawn with the sequence of
-   * out parameters pt1LongestSegment1, pt2LongestSegment1,
-   * pt3LongestSegment1, pt4LongestSegment1.
-   **/
-  void  getRealBoundingBox(PointD &pt1LongestSegment1,
-                          PointD &pt2LongestSegment1,
-                          PointD &pt3LongestSegment2,
-                          PointD &pt4LongestSegment2) const;
-  
+    
   
   
 

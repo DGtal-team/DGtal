@@ -393,7 +393,7 @@ void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
   typedef DGtal::PointVector<2,double> PointD;
 
   PointD topLeft, topRight, bottomRight, bottomLeft;
-  anAlphaThickSegment.getRealBoundingBox(topLeft, topRight, bottomRight, bottomLeft);
+  anAlphaThickSegment.getBoundingBox(topLeft, topRight, bottomRight, bottomLeft);
   //draw bounding box
   aBoard.drawLine(topLeft[0],topLeft[1],topRight[0],topRight[1]);
   aBoard.drawLine(topRight[0],topRight[1],bottomRight[0], bottomRight[1] );

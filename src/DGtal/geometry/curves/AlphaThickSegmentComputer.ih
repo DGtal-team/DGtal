@@ -372,7 +372,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::selfDisplay(std:
   out << std::endl << "Convexhull height: " << myState.convexHullHeight << std::endl;  
   out << std::endl << "Segment thickness : " << myState.actualThickness << std::endl;
   PointD pt1, pt2, pt3, pt4;
-  getBasicBoundingBox(pt1, pt2, pt3, pt4);
+  getBoundingBox(pt1, pt2, pt3, pt4);
   out << std::endl << "Bounding box:" << pt1 << " " << pt2 << " " << pt3 << " " << pt4 << std::endl;
 
 }
@@ -701,34 +701,22 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
 
 
 
-template < typename TInputPoint, typename TConstIterator>
-inline
-void
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBasicBoundingBox(PointD &pt1LongestSegment1,
-                                                                                    PointD &pt2LongestSegment1,
-                                                                                    PointD &pt3LongestSegment2,
-                                                                                    PointD &pt4LongestSegment2) const{ 
-  // To be changed with saved point added by push front/push back
-  InputPoint fp = myState.lastBack;
-  InputPoint lp = myState.lastFront;
-  getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
-                                 pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);
-}
-
 
 
 
 template < typename TInputPoint, typename TConstIterator>
 inline
 void 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getRealBoundingBox(PointD &pt1LongestSegment1,
-                                                                                   PointD &pt2LongestSegment1,
-                                                                                   PointD &pt3LongestSegment2,
-                                                                                   PointD &pt4LongestSegment2 ) const
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBox(PointD &pt1LongestSegment1,
+                                                                               PointD &pt2LongestSegment1,
+                                                                               PointD &pt3LongestSegment2,
+                                                                               PointD &pt4LongestSegment2 ) const
 {  
-  
-  getBasicBoundingBox(pt1LongestSegment1, pt2LongestSegment1, 
-                      pt3LongestSegment2, pt4LongestSegment2);
+  InputPoint fp = myState.lastBack;
+  InputPoint lp = myState.lastFront;
+  getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
+                                 pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);
+
   if(myState.convexHullHeight==0.0){
     return;
   }
@@ -756,9 +744,9 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::className() cons
 template < typename TInputPoint, typename TConstIterator>
 inline
 double 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBasicLength() const{
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSegmentLength() const{
   InputPoint pt1, pt2, pt3, pt4;
-  getBasicBoundingBox(pt1, pt2, pt3, pt4);
+  getBoundingBox(pt1, pt2, pt3, pt4);
   return (pt2-pt1).norm();
 }
 
@@ -783,17 +771,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParalellS
   nu = (N[0]*myState.vertexSh[0]+N[1]*myState.vertexSh[1] - mu);
 }
 
-
-
-
-template < typename TInputPoint, typename TConstIterator>
-inline
-double 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getRealLength() const{
-  InputPoint pt1, pt2, pt3, pt4;
-  getRealBoundingBox(pt1, pt2, pt3, pt4);
-  return (pt2-pt1).norm();
-}
   
 
 
