@@ -390,6 +390,20 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isValid()  const
   return true;
 }
 
+//-----------------------------------------------------------------------------
+template < typename TInputPoint, typename TConstIterator>
+inline
+std::pair<std::pair<TInputPoint, TInputPoint>, TInputPoint>
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getAntipodalLeaningPoints() const
+  {
+    std::pair<std::pair<TInputPoint, TInputPoint>, TInputPoint> r;
+    std::pair<TInputPoint, TInputPoint> edgePair;
+    edgePair.first = myState.edgePh;
+    edgePair.second = myState.edgeQh;
+    r.first = edgePair;
+    r.second = myState.vertexSh;
+    return r;
+  }
 
 //-----------------------------------------------------------------------------
 template < typename TInputPoint, typename TConstIterator>
