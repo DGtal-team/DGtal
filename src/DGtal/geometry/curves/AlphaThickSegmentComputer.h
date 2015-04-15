@@ -303,9 +303,7 @@ public:
 
 
   /**
-   * NB: std version.
    * @return the maximal allowed number of points in the current alpha thick segment.
-   * @see maxSize
    */
   Size max_size() const;
   
