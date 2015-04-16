@@ -344,13 +344,20 @@ namespace DGtal
             "The point must be inside the domain or be equal to one of his bound."
         );
 
-        ASSERT( subDomain.size() <= TPoint::dimension );
+        ASSERT_MSG( 
+            subDomain.size() <= TPoint::dimension,
+            "The sub-range cannot have more dimensions than the ambiant space."
+        );
 
         mySubDomain.reserve( subDomain.size() );
         for ( const unsigned int *c = subDomain.begin();
             c != subDomain.end(); ++c )
           {
-            ASSERT( *c <= TPoint::dimension );
+            ASSERT_MSG( 
+                *c <= TPoint::dimension,
+                "Invalid dimension in the sub-range."
+            );
+            
             mySubDomain.push_back( *c );
           }
 
@@ -373,13 +380,19 @@ namespace DGtal
             "The point must be inside the domain or be equal to one of his bound."
         );
 
-        ASSERT( subDomain.size() <= TPoint::dimension );
+        ASSERT_MSG( 
+            subDomain.size() <= TPoint::dimension,
+            "The sub-range cannot have more dimensions than the ambiant space."
+        );
 
         mySubDomain.reserve( subDomain.size() );
         for ( typename std::vector<Dimension>::const_iterator it = subDomain.begin();
             it != subDomain.end(); ++it )
           {
-            ASSERT( *it <= TPoint::dimension );
+            ASSERT_MSG( 
+                *it <= TPoint::dimension,
+                "Invalid dimension in the sub-range."
+            );
             mySubDomain.push_back( *it );
           }
 
