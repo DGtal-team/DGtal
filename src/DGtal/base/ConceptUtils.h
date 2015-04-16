@@ -94,6 +94,8 @@ namespace DGtal
  * \brief Aim: Gathers several functions useful for concept checks.
  *
  */
+  namespace concepts
+  {
 namespace ConceptUtils
 {
   /**
@@ -208,7 +210,7 @@ namespace ConceptUtils
 
 
 } // end of namespace ConceptUtils
-
+  } //end of namespace concepts.
 } // namespace DGtal
 
 //                                                                           //

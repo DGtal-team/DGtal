@@ -87,7 +87,7 @@ namespace DGtal
     typedef TColorMap ColorMap;
     
     BOOST_CONCEPT_ASSERT(( concepts::CColorMap<ColorMap> )) ;
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Value, typename ColorMap::Value>::value));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Value, typename ColorMap::Value>::value));
     
     // ----------------------- Standard services ------------------------------
   public:
