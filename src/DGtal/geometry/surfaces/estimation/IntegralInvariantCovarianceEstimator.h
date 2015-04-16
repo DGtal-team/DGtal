@@ -161,7 +161,7 @@ public:
   typedef double Scalar;
   BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
   BOOST_CONCEPT_ASSERT (( concepts::CUnaryFunctor< CovarianceMatrixFunctor, Matrix, Quantity > ));
-  BOOST_STATIC_ASSERT (( ConceptUtils::SameType< typename Convolver::CovarianceMatrix, 
+  BOOST_STATIC_ASSERT (( concepts::ConceptUtils::SameType< typename Convolver::CovarianceMatrix, 
                                                  typename CovarianceMatrixFunctor::Argument >::value ));
 
 
