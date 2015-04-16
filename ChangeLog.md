@@ -133,6 +133,8 @@
   - BasicDomainSubSampler can now handle non 0 origin point. This update also correct
     the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
     (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
+  - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
+    of lexicographical order in comparison operators of PointVector. (Roland Denis, [#996](https://github.com/DGtal-team/DGtal/pull/996))
 
 
 
