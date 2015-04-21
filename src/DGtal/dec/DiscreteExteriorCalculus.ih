@@ -251,6 +251,9 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
     ASSERT( _derivative.myContainer.cols() == kFormLength(order, duality) );
 
     // iterate over output form values
+#ifdef WITH_OPENMP
+#pragma omp parallel for default(none) shared(_derivative)
+#endif
     for (Index index_output=0; index_output<_derivative.myContainer.rows(); index_output++)
     {
         const SCell signed_cell = myIndexSignedCells[actualOrder(order+1, duality)][index_output];
@@ -275,8 +278,13 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
             const bool flipped_border = ( myKSpace.sSign(signed_cell_border) == KSpace::NEG );
             const Scalar orientation = ( flipped_border == iter_property->second.flipped ? 1 : -1 );
 
-            // fill container with cell sign
-            _derivative.myContainer(index_output, index_input) = orientation;
+#ifdef WITH_OPENMP
+#pragma omp critical
+#endif
+            {
+                // fill container with cell sign
+                _derivative.myContainer(index_output, index_input) = orientation;
+            }
         }
     }
 
