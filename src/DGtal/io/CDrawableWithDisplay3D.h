@@ -104,11 +104,11 @@ An object x satisfying this concept may then be used as:
   BOOST_CONCEPT_USAGE( CDrawableWithDisplay3D )
     {
       //Drawable model should have a className() returning a string
-      ConceptUtils::sameType( myS, myT.className() );
+      concepts::ConceptUtils::sameType( myS, myT.className() );
 
       //Drawable model should be associated to global functions draw and defaultStyle.
       //draw(myD3D, myT);
-      //ConceptUtils::sameType( myD, defaultStyle( myT) );
+      //concepts::ConceptUtils::sameType( myD, defaultStyle( myT) );
     }
 
     // ------------------------- Private Datas --------------------------------

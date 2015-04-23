@@ -83,8 +83,8 @@ smartCH(const PointVector& aFirstPoint,
 	const PositionFunctor& aPositionFunctor, 
 	OutputIterator uIto, OutputIterator lIto)
 {
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
   BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
   BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
 
@@ -252,11 +252,11 @@ reversedSmartCH(PointVector U, PointVector L, PointVector V,
 	       const PositionFunctor& aPositionFunctor, 
 	       OutputIterator uIto, OutputIterator lIto)
 {
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
   BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
   BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
   typedef typename PointVector::Coordinate Coordinate; 
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
   ASSERT( aFirstPosition <= aLastPosition ); 
   ASSERT( (V[0]*(L-U)[1] - V[1]*(L-U)[0]) == NumberTraits<Coordinate>::ONE ); //eq. 6 
 

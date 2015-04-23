@@ -104,7 +104,7 @@ namespace DGtal
     typedef typename Pair::first_type Point;
 
     //Pair::first_type and Pair::second_type should be the same type;
-    BOOST_STATIC_ASSERT( ( ConceptUtils::SameType
+    BOOST_STATIC_ASSERT( ( concepts::ConceptUtils::SameType
                            < typename Pair::first_type, typename Pair::second_type >
                            ::value ) );
 
