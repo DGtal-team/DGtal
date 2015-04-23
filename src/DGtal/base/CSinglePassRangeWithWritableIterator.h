@@ -93,7 +93,7 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( CSinglePassRangeWithWritableIterator )
     {
-      ConceptUtils::sameType( myOutput, myX.outputIterator( ) );
+      concepts::ConceptUtils::sameType( myOutput, myX.outputIterator( ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:

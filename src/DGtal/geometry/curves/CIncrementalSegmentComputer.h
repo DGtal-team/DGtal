@@ -117,8 +117,8 @@ for ( ConstIterator it = s.begin(),
     {
       myX.init(myI);     
 
-      ConceptUtils::sameType( myB, myX.isExtendableFront() );
-      ConceptUtils::sameType( myB, myX.extendFront() );
+      concepts::ConceptUtils::sameType( myB, myX.isExtendableFront() );
+      concepts::ConceptUtils::sameType( myB, myX.extendFront() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

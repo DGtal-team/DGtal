@@ -102,7 +102,7 @@ An object x satisfying this concept may then be used as:
   BOOST_CONCEPT_USAGE( CDrawableWithViewer3D )
     {
       //Drawable model should have a className() returning a string
-      ConceptUtils::sameType( myS, myT.className() );
+      concepts::ConceptUtils::sameType( myS, myT.className() );
 
     }
 

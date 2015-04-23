@@ -93,8 +93,8 @@ Description of \b concept '\b CBidirectionalSegmentComputer' <p>
     // Methods
     BOOST_CONCEPT_USAGE( CBidirectionalSegmentComputer )
     {
-      ConceptUtils::sameType( myB, myX.isExtendableBack() );
-      ConceptUtils::sameType( myB, myX.extendBack() );
+      concepts::ConceptUtils::sameType( myB, myX.isExtendableBack() );
+      concepts::ConceptUtils::sameType( myB, myX.extendBack() );
     }
     // ------------------------- Private Datas --------------------------------
   private:
