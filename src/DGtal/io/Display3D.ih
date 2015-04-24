@@ -1085,7 +1085,7 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
       double norm = sqrt(a*a+b*b+c*c);
       double dec=0.1;
       // Z dominant projection of the upper face
-      if(abs(c)>=abs(b) && abs(c) >= abs(a))
+      if(std::abs(c)>=std::abs(b) && std::abs(c) >= std::abs(a))
 	{
 	  x1= myBoundingPtUp[0]+a*dec/norm; y1= myBoundingPtUp[1]+b*dec/norm;
 	  z1 = c*dec/norm +(-d-a*myBoundingPtUp[0]-b*myBoundingPtUp[1])/c;
@@ -1105,7 +1105,7 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
 		      RealPoint(x3,y3,z3), RealPoint(x4,y4,z4));
 	    }
 	}// Y dominant projection of the upper face
-      else if(abs(b)>=abs(c) && abs(b) >= abs(a))
+      else if(std::abs(b)>=std::abs(c) && std::abs(b) >= std::abs(a))
 	{
 	  x1= myBoundingPtUp[0]+a*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
 	  y1= b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtUp[2])/b;
@@ -1125,7 +1125,7 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
 		      RealPoint(x3,y3,z3), RealPoint(x4,y4,z4));
 	    }
 	}// X dominant projection of the upper face
-      else if(abs(a)>=abs(c) && abs(a) >= abs(b))
+      else if(std::abs(a)>=std::abs(c) && std::abs(a) >= std::abs(b))
 	{
 	  y1= myBoundingPtUp[1]+b*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
 	  x1= a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtUp[2])/a;

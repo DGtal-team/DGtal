@@ -531,7 +531,7 @@ getIncludedDigitalPoints( DigitalSet & aSet ) const
 {
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSet > ));
   typedef typename DigitalSet::Domain DigitalSetDomain;
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< DigitalSetDomain, Domain >::value ));
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< DigitalSetDomain, Domain >::value ));
   typedef typename DigitalSetDomain::ConstIterator DomainConstIterator;
   typedef typename DigitalSet::Iterator DigitalSetIterator;
   aSet.clear();

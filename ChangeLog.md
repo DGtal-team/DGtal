@@ -29,7 +29,7 @@
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
    linear model estimation of scalar data. (David Coeurjolly, Jérémy
-   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/935),
+   Levall1ois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
 
 - *IO Package*
@@ -55,7 +55,8 @@
  - New colormap adapter to add ticks/iso-contours (regularly spaced or
  specified by the user) to a given colormap. (David Coeurjolly,
  [#987](https://github.com/DGtal-team/DGtal/pull/987)
- 
+ - New flag (-DWITH_QT5) enables QT5 support in libqglviewer. (Nicolas
+ Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983) 
  
 
 
@@ -76,6 +77,14 @@
    DigitalShapesMinus are now deprecated. Use DigitalShapesCSG
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
+ - Add various methods in the Mesh class to get the bounding box, to change the
+   mesh scale or to subdivide triangular faces. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990))
+
+- New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
+   (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
+
+
+
 
 ## Bug Fixes
 
@@ -91,6 +100,9 @@
  [#972](https://github.com/DGtal-team/DGtal/pull/972))
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
+ - Cleanup of DGtal namespaces. (David Coeurjolly,
+ [#993](https://github.com/DGtal-team/DGtal/pull/993))
+ 
 
 - *Geometry Package*
  - Fix bug occuring in the computation of the Faithful Polygon (class FP)
@@ -101,6 +113,7 @@
  - Fix bug of method ArithmeticalDSL::getPoint with negative values
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
+ - Fix too restrictive asserts of methods ArithmeticalDSSConvexHull::smartCH and ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative positions as input arguments. (Isabelle Sivignon, [#950](https://github.com/DGtal-team/DGtal/pull/950))
  - Fix Bezout Vector computation (Isabelle Sivignon,
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
  - Fix issues with SphereFitting and TensorVoting local estimators on
@@ -119,6 +132,16 @@
    (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
  - Bugfix in quad visualization in BoardD3D and Viewer3D (David
    Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
+ - Fix warnings message of std::abs in Display3D.    (Bertrand Kerautret,
+   [#991](https://github.com/DGtal-team/DGtal/pull/991))
+
+
+- *Kernel Package*
+  - BasicDomainSubSampler can now handle non 0 origin point. This update also correct
+    the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
+    (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
+
+
 
 # DGtal 0.8
 

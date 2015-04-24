@@ -161,6 +161,19 @@ namespace DGtal
     ~Mesh();
 
 
+   /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    Mesh ( const Mesh & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Mesh & operator= ( const Mesh & other );
+
 
 
     // --------------- CDrawableWithDisplay3D  realization -------------------
@@ -193,6 +206,9 @@ namespace DGtal
      * @param indexVertex2 the index of the second vertex face.
      * @param indexVertex3 the index of the second vertex face.
      * 
+     * @note If you want to follow the OBJ format convention, you have
+     * to order the vertices in CCW (to have the correct normal orientation).
+     *
      **/    
     void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3, 
 			   const DGtal::Color &aColor=DGtal::Color::White);
@@ -204,7 +220,10 @@ namespace DGtal
      * @param indexVertex1 the index of the first vertex face.
      * @param indexVertex2 the index of the second vertex face.
      * @param indexVertex3 the index of the second vertex face.
-     * 
+     *
+     * @note If you want to follow the OBJ format convention, you have
+     * to order the vertices in CCW (to have the correct normal orientation).
+     *
      **/    
     void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
 		     unsigned int indexVertex3, unsigned int indexVertex4,
@@ -213,11 +232,14 @@ namespace DGtal
     
    /**
     * Add a quad face given from index position.
+    *
+    * @note If you want to follow the OBJ format convention, you have
+    * to order the vertices of the face in CCW (to have the correct
+    * normal orientation).
     * 
     **/    
     void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);
     
-   
     
     /**
      * @param i the index of the vertex.
@@ -255,7 +277,14 @@ namespace DGtal
      * @return the color of the face of index i. 
      **/
     const Color & getFaceColor(unsigned int i) const;
-    
+
+
+
+    /**
+     * @return the bounding box of the mesh represented as a pair of points.
+     **/
+    std::pair<TPoint, TPoint>  getBoundingBox() const;
+
 
     /**
      *  Set the color of a particular face of the mesh. If the mesh
@@ -385,9 +414,27 @@ namespace DGtal
     /**
      * Invert the face order (useful when normal is deducted from vertex order).
      *
-     **/
-    
+     **/    
     void invertVertexFaceOrder();
+    
+    /**
+     * Clear all faces of the mesh.
+     **/
+    void clearFaces();
+    
+    /**
+     * Change the scale of the mesh (i.e all vertex coordinates are multiplied by a given factor aScale).
+     * @param[in] aScale the scale factor. 
+     **/
+    void changeScale(const double aScale);
+    
+    
+    /**
+     * SubDivide triangular mesh if triangle area is less than the given parameter.
+     * @param[in] minArea the minimum area factor. 
+     * @return the new max triangle area.
+     **/
+    double subDivideTriangularFaces(const double minArea);
     
     
     
@@ -499,22 +546,7 @@ namespace DGtal
 
 
 
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Mesh ( const Mesh & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Mesh & operator= ( const Mesh & other );
+ 
 
     // ------------------------- Internals ------------------------------------
   private:

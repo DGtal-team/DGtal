@@ -61,8 +61,7 @@ bool testMesh()
   Point p3=Point(3,2);
   Point p4=Point(3,3);
   Point p5=Point(3,4);
-  Point p6=Point(4,6);
-  
+    
   aMesh.addVertex(p0);
   aMesh.addVertex(p1);
   aMesh.addVertex(p2);
@@ -91,11 +90,10 @@ bool testMesh()
 
   trace.info() << "Face2 points " << endl;
   trace.info() << p0f1 << p1f1 << p2f1<< endl;
-
+  
   
   bool okMeshConstruct =  (p0==p0f0) && (p1==p1f0) && (p2==p2f0) && 
     (p3==p0f1) && (p4==p1f1) && (p5==p2f1) ;
-  
   
   trace.endBlock();
   bool okMeshIterators = true;
@@ -135,7 +133,39 @@ bool testMesh()
   bool okMeshColor = (aMesh.getFaceColor(0)==DGtal::Color::White)
                      && (aMesh.getFaceColor(1)==DGtal::Color::Red) ;
   
-  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor;  
+  trace.endBlock();
+  
+  trace.beginBlock ( "Testing Mesh Bouding box and scale change  ..." );
+  aMesh.changeScale(2.0);
+  std::pair<Point, Point> bb = aMesh.getBoundingBox();
+  bool boundingBoxOK = (bb.first == Point(20,10)) && (bb.second == Point(26,18));
+  trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;
+  trace.endBlock();
+  trace.beginBlock ( "Testing mesh subdivision  ..." );
+  Mesh<RealPoint> aMeshR;
+  RealPoint pr0 (0,0);
+  RealPoint pr1 (1,0);
+  RealPoint pr2 (1,1);
+  aMeshR.addVertex(pr0);   aMeshR.addVertex(pr1);   aMeshR.addVertex(pr2);
+  aMeshR.addTriangularFace(0,1,2);
+  unsigned int nbFaces = aMeshR.subDivideTriangularFaces(0.5); 
+
+  trace.info() << "nb vertex after subdivision: " << aMeshR.nbVertex() << std::endl;
+  trace.info() << "nb faces after subdivision: " << aMeshR.nbFaces() << std::endl;  
+  trace.info() << "New point: " << aMeshR.getVertex(aMeshR.nbVertex()-1) << std::endl;    
+  bool okSubDivide =  aMeshR.nbVertex()==4 && aMeshR.nbFaces()==3 && 
+                      aMeshR.getVertex(aMeshR.nbVertex()-1) == RealPoint(2.0/3.0, 1.0/3.0);
+  trace.endBlock();
+
+
+  trace.beginBlock ( "Testing Mesh copy operator  ..." );
+  Mesh<Point> aMesh2 = aMesh;
+  Mesh<Point> aMesh3 (aMesh2);
+  bool okMeshCopy = aMesh.nbFaces() == aMesh2.nbFaces() && aMesh.nbVertex() == aMesh2.nbVertex() &&
+                    aMesh.nbFaces() == aMesh3.nbFaces() && aMesh.nbVertex() == aMesh3.nbVertex() &&
+                    aMesh.getVertex(0) == aMesh2.getVertex(0) && aMesh.getVertex(0) == aMesh3.getVertex(0);
+  trace.endBlock();
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK && okSubDivide;   
   trace.endBlock();
   return ok;
 
