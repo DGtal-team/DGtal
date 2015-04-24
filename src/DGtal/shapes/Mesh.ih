@@ -286,23 +286,26 @@ DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const
     }
 }
 
+template <typename TPoint>
+struct MeshBoundingBoxCompPoints
+{
+MeshBoundingBoxCompPoints(typename TPoint::Dimension d): myDim(d){};
+bool operator() (const TPoint &p1, const TPoint &p2){return p1[myDim]<p2[myDim];};
+typename TPoint::Dimension myDim;
+};
+
 template<typename TPoint>
 inline
 std::pair<TPoint, TPoint>  
 DGtal::Mesh<TPoint>::getBoundingBox() const
 {
   std::pair<TPoint, TPoint> theResult;  
-  struct CompPoints
-  {
-    CompPoints(typename TPoint::Dimension d): myDim(d){};
-    bool operator() (const TPoint &p1, const TPoint &p2){return p1[myDim]<p2[myDim];};
-    typename TPoint::Dimension myDim;
-  };
   TPoint lowerBound, upperBound;
   for(unsigned int i=0; i< TPoint::size(); i++)
     {
-      upperBound[i] = (*(std::max_element(vertexBegin(), vertexEnd(), CompPoints(i))))[i];
-      lowerBound[i] = (*(std::min_element(vertexBegin(), vertexEnd(), CompPoints(i))))[i];
+      const MeshBoundingBoxCompPoints<TPoint> cmp_points(i);
+      upperBound[i] = (*(std::max_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
+      lowerBound[i] = (*(std::min_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
     }
   theResult.first = lowerBound ;
   theResult.second = upperBound ;
