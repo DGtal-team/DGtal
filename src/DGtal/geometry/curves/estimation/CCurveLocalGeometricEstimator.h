@@ -114,8 +114,8 @@ namespace DGtal
       //init method
       myX.init( myH, myItb, myIte ); 
 
-      ConceptUtils::sameType( myQ, myX.eval( myItb ) );
-      ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
+      concepts::ConceptUtils::sameType( myQ, myX.eval( myItb ) );
+      concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
     }
 
     // ------------------------- Private Datas --------------------------------
