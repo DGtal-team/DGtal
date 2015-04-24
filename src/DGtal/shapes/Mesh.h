@@ -550,7 +550,14 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-
+    
+    struct CompPoints
+    {
+      CompPoints(typename TPoint::Dimension d): myDim(d){};
+      bool operator() (const TPoint &p1, const TPoint &p2){return p1[myDim]<p2[myDim];};
+      typename TPoint::Dimension myDim;
+    };
+ 
 
     
     

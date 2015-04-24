@@ -292,12 +292,6 @@ std::pair<TPoint, TPoint>
 DGtal::Mesh<TPoint>::getBoundingBox() const
 {
   std::pair<TPoint, TPoint> theResult;  
-  struct CompPoints
-  {
-    CompPoints(typename TPoint::Dimension d): myDim(d){};
-    bool operator() (const TPoint &p1, const TPoint &p2){return p1[myDim]<p2[myDim];};
-    typename TPoint::Dimension myDim;
-  };
   TPoint lowerBound, upperBound;
   for(unsigned int i=0; i< TPoint::size(); i++)
     {
