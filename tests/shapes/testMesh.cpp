@@ -148,7 +148,7 @@ bool testMesh()
   RealPoint pr2 (1,1);
   aMeshR.addVertex(pr0);   aMeshR.addVertex(pr1);   aMeshR.addVertex(pr2);
   aMeshR.addTriangularFace(0,1,2);
-  unsigned int nbFaces = aMeshR.subDivideTriangularFaces(0.5); 
+  //unsigned int nbFaces = aMeshR.subDivideTriangularFaces(0.5);
 
   trace.info() << "nb vertex after subdivision: " << aMeshR.nbVertex() << std::endl;
   trace.info() << "nb faces after subdivision: " << aMeshR.nbFaces() << std::endl;  
