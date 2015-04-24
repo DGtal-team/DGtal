@@ -89,7 +89,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
         }
     }
 
-    typedef typename DGtal::HueShadeColorMap<Scalar, 2 > ColorMap;
+    typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_JET> ColorMap;
     const ColorMap color_map(cmap_min, cmap_max);
 
     drawWithColorMap(display, kform, color_map);
