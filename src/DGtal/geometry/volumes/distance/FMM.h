@@ -61,7 +61,7 @@
 namespace DGtal
 {
 
-  namespace details
+  namespace detail
   {
   /////////////////////////////////////////////////////////////////////////////
   // template class PointValueCompare
@@ -183,7 +183,7 @@ namespace DGtal
     //intern data types
     typedef std::pair<Point, Value> PointValue; 
     typedef std::set<PointValue,
-		     details::PointValueCompare<PointValue> > CandidatePointSet; 
+		     detail::PointValueCompare<PointValue> > CandidatePointSet; 
     typedef unsigned long Area;
 
     // ------------------------- Private Datas --------------------------------

@@ -70,7 +70,7 @@ namespace DGtal
    * This class is said to be exact in the sense that the power @a p
    * is computed without approximation (exponentiation by squaring in
    * @f$ O(log(p))@f$ per computation, see
-   * BasicMathFunctions::power). As a consequence, @a hiddenBy and
+   * functions::power). As a consequence, @a hiddenBy and
    * @a closest methods are error free if the capacity of the template
    * type @a TPromoted allows to store sums of @f$ |x_i-y_i|^p@f$
    * quantities.
