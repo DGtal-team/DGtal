@@ -166,7 +166,7 @@ inline
 bool
 DGtal::ImageContainerBySTLVector<Domain, T>::isValid() const
 {
-  return (this != NULL);
+  return true;
 }
 
 
