@@ -136,6 +136,9 @@
     the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
     (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
 
+- *Topology  Package*
+  - Fix loop bug in extractAllConnectedSCell of Surfaces from helpers.
+    (Bertrand Kerautret, [994](https://github.com/DGtal-team/DGtal/pull/994)).
 
 
 # DGtal 0.8
