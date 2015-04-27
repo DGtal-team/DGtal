@@ -71,9 +71,8 @@
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
  - Add various methods in the Mesh class to get the bounding box, to change the
-   mesh scale or to subdivide triangular faces. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990))
-
-- New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
+   mesh scale or to subdivide triangular faces. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990) and  [#992](https://github.com/DGtal-team/DGtal/pull/992))
+ - New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
    (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
 
 
