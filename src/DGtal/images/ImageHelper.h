@@ -198,10 +198,11 @@ namespace DGtal
    * @param aImg1 the image to fill
    * @param aImg2 the image to copy
    *
-   * @tparam I any model of CImage
+   * @tparam I1 any model of CImage
+   * @tparam I2 any model of CConstImage
    */
-  template<typename I>
-  void imageFromImage(I& aImg1, const I& aImg2); 
+  template<typename I1, typename I2>
+  void imageFromImage(I1& aImg1, const I2& aImg2); 
 
   /**
    * Insert @a aPoint in @a aSet and if (and only if)
