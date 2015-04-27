@@ -294,18 +294,26 @@ namespace DGtal
     derivative() const;
 
     /**
-     * Primal Laplace operator form dual 0-forms to dual 0-forms.
+     * Primal Laplace operator from dual 0-forms to dual 0-forms.
      * @return primal Laplace operator.
      */
     PrimalIdentity0
     primalLaplace() const;
 
     /**
-     * Dual Laplace operator form dual 0-forms to dual 0-forms.
+     * Dual Laplace operator from dual 0-forms to dual 0-forms.
      * @return dual Laplace operator.
      */
     DualIdentity0
     dualLaplace() const;
+
+    /**
+     * Laplace operator from duality 0-forms to duality 0-forms.
+     * @return Laplace operator.
+     */
+    template <Duality duality>
+    LinearOperator<Self, 0, duality, 0, duality>
+    laplace() const;
 
     /**
      * Primal hodge duality operator from primal order-forms to dual (dim_embedded-order)-forms.
@@ -450,7 +458,7 @@ namespace DGtal
 
     /**
      * Cells indexed by their order.
-     * Usefull for finding cell form index and order.
+     * Usefull for finding cell from index and order.
      */
     IndexedSCells myIndexSignedCells;
 
