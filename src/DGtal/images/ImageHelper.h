@@ -351,7 +351,7 @@ namespace DGtal
     typedef typename Image::Point Point;
     typedef TValue Value;
     
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
     BOOST_CONCEPT_ASSERT(( CQuantity<Value> ));
     
@@ -386,7 +386,7 @@ namespace DGtal
      * 
      * @return val between _ZERO_ or aVal
      */
-    Value operator()( const Point &aPoint )
+    Value operator()( const Point &aPoint ) const
     {
       if ((myImage->domain().isInside(aPoint)))
       {
