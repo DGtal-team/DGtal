@@ -36,7 +36,7 @@ is_identity(const Container& container, const Value& value)
 template <typename Calculus, int order>
 struct HodgeTester
 {
-    BOOST_STATIC_ASSERT(( order <= Calculus::dimension ));
+    BOOST_STATIC_ASSERT(( order <= Calculus::dimension_embedded ));
 
     static bool test(const Calculus& calculus)
     {
@@ -62,25 +62,25 @@ struct HodgeTester
             if (!is_identity(dual_identity.myContainer, 1)) return false;
         }
 
-        typedef DGtal::LinearOperator<Calculus, order, DGtal::PRIMAL, Calculus::dimension-order, DGtal::DUAL> PrimalHodge;
-        typedef DGtal::LinearOperator<Calculus, Calculus::dimension-order, DGtal::DUAL, order, DGtal::PRIMAL> DualHodge;
+        typedef DGtal::LinearOperator<Calculus, order, DGtal::PRIMAL, Calculus::dimension_embedded-order, DGtal::DUAL> PrimalHodge;
+        typedef DGtal::LinearOperator<Calculus, Calculus::dimension_embedded-order, DGtal::DUAL, order, DGtal::PRIMAL> DualHodge;
         const PrimalHodge primal_hodge = calculus.template primalHodge<order>();
-        const DualHodge dual_hodge = calculus.template dualHodge<Calculus::dimension-order>();
+        const DualHodge dual_hodge = calculus.template dualHodge<Calculus::dimension_embedded-order>();
 
         DGtal::trace.info() << "testing primal to primal hodge composition order " << order << std::endl;
 
         { // test primal to primal composition
             typedef DGtal::LinearOperator<Calculus, order, DGtal::PRIMAL, order, DGtal::PRIMAL> PrimalPrimal;
             PrimalPrimal primal_primal = dual_hodge * primal_hodge;
-            if (!is_identity(primal_primal.myContainer, pow(-1, order*(Calculus::dimension-order)))) return false;
+            if (!is_identity(primal_primal.myContainer, pow(-1, order*(Calculus::dimension_embedded-order)))) return false;
         }
 
         DGtal::trace.info() << "testing dual to dual hodge composition order " << order << std::endl;
 
         { // test dual to dual composition
-            typedef DGtal::LinearOperator<Calculus, Calculus::dimension-order, DGtal::DUAL, Calculus::dimension-order, DGtal::DUAL> DualDual;
+            typedef DGtal::LinearOperator<Calculus, Calculus::dimension_embedded-order, DGtal::DUAL, Calculus::dimension_embedded-order, DGtal::DUAL> DualDual;
             DualDual dual_dual = primal_hodge * dual_hodge;
-            if (!is_identity(dual_dual.myContainer, pow(-1, order*(Calculus::dimension-order)))) return false;
+            if (!is_identity(dual_dual.myContainer, pow(-1, order*(Calculus::dimension_embedded-order)))) return false;
         }
 
         return HodgeTester<Calculus, order-1>::test(calculus);
@@ -118,7 +118,7 @@ test_hodge(int domain_size)
     DGtal::trace.info() << "domain.size()=" << domain.size() << std::endl;
     DGtal::trace.info() << "set.size()=" << set.size() << std::endl;
 
-    typedef DGtal::DiscreteExteriorCalculus<Domain::Space::dimension, LinearAlgebraBackend> Calculus;
+    typedef DGtal::DiscreteExteriorCalculus<Domain::Space::dimension, Domain::Space::dimension, LinearAlgebraBackend> Calculus;
     Calculus calculus(set);
     {
         DGtal::trace.beginBlock("testing indexes");
@@ -143,7 +143,7 @@ test_hodge(int domain_size)
             const SCell& signed_cell = calculus.myKSpace.signs(cell, iter->second.flipped ? KSpace::NEG : KSpace::POS);
             const SCell& primal_signed_cell = calculus.getSCell(calculus.myKSpace.uDim(cell), DGtal::PRIMAL, index);
             test_result &= (signed_cell == primal_signed_cell);
-            const SCell& dual_signed_cell = calculus.getSCell(calculus.dimension-calculus.myKSpace.uDim(cell), DGtal::DUAL, index);
+            const SCell& dual_signed_cell = calculus.getSCell(Calculus::dimension_embedded-calculus.myKSpace.uDim(cell), DGtal::DUAL, index);
             test_result &= (signed_cell == dual_signed_cell);
         }
         DGtal::trace.endBlock();
@@ -166,7 +166,7 @@ test_hodge(int domain_size)
     }
 
     DGtal::trace.beginBlock("testing hodge");
-    bool test_result = HodgeTester<Calculus, Calculus::dimension>::test(calculus);
+    bool test_result = HodgeTester<Calculus, Calculus::dimension_embedded>::test(calculus);
     DGtal::trace.endBlock();
 
     FATAL_ERROR(test_result);
@@ -176,7 +176,7 @@ test_hodge(int domain_size)
 template <typename Calculus, int order>
 struct DerivativeTester
 {
-    BOOST_STATIC_ASSERT(( order < (int)Calculus::dimension - 1 ));
+    BOOST_STATIC_ASSERT(( order < (int)Calculus::dimension_embedded - 1 ));
 
     static bool test(const Calculus& calculus)
     {
@@ -262,7 +262,7 @@ test_derivative(int domain_size)
     DGtal::trace.info() << "domain.size()=" << domain.size() << std::endl;
     DGtal::trace.info() << "set.size()=" << set.size() << std::endl;
 
-    typedef DGtal::DiscreteExteriorCalculus<Domain::Space::dimension, LinearAlgebraBackend> Calculus;
+    typedef DGtal::DiscreteExteriorCalculus<Domain::Space::dimension, Domain::Space::dimension, LinearAlgebraBackend> Calculus;
 
     {
         DGtal::trace.beginBlock("testing derivative without border");
@@ -271,7 +271,7 @@ test_derivative(int domain_size)
         typename Calculus::Properties properties = calculus.getProperties();
         DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
 
-        bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
+        bool test_result = DerivativeTester<Calculus, Calculus::dimension_embedded-2>::test(calculus);
         FATAL_ERROR(test_result);
 
         DGtal::trace.endBlock();
@@ -284,7 +284,7 @@ test_derivative(int domain_size)
         typename Calculus::Properties properties = calculus.getProperties();
         DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
 
-        bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
+        bool test_result = DerivativeTester<Calculus, Calculus::dimension_embedded-2>::test(calculus);
         FATAL_ERROR(test_result);
 
         DGtal::trace.endBlock();
@@ -297,8 +297,42 @@ test_concepts()
 {
     DGtal::trace.beginBlock("concepts");
 
+    //FIXME add 1d
+
     { // 2d
-        typedef DGtal::DiscreteExteriorCalculus<2, LinearAlgebraBackend> Calculus;
+        typedef DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend> Calculus;
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm0> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm1> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm2> ));
+
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalVectorField> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualVectorField> ));
+
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative1> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative1> ));
+
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge0> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge1> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge2> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge0> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
+
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
+    }
+
+    { // 2d embedded in 3d
+        typedef DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend> Calculus;
         BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
         BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
         BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
@@ -330,7 +364,7 @@ test_concepts()
     }
 
     { // 3d
-        typedef DGtal::DiscreteExteriorCalculus<3, LinearAlgebraBackend> Calculus;
+        typedef DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend> Calculus;
         BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
         BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
         BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
@@ -379,7 +413,7 @@ test_hodge_sign()
     DGtal::trace.beginBlock("testing hodge sign");
 
     {
-        typedef DGtal::DiscreteExteriorCalculus<2, LinearAlgebraBackend> Calculus;
+        typedef DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend> Calculus;
         const DGtal::Z2i::Domain domain;
         const DGtal::Z2i::DigitalSet set(domain);
         const Calculus calculus(set);
@@ -400,7 +434,7 @@ test_hodge_sign()
     }
 
     {
-        typedef DGtal::DiscreteExteriorCalculus<3, LinearAlgebraBackend> Calculus;
+        typedef DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend> Calculus;
         const DGtal::Z3i::Domain domain;
         const DGtal::Z3i::DigitalSet set(domain);
         const Calculus calculus(set);
