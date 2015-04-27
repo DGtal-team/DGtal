@@ -342,7 +342,7 @@ DGtal::findAndGetValue(const I& aImg, const S& aSet,
 		       typename I::Value& aValue ) 
 {
   
-  BOOST_CONCEPT_ASSERT(( concepts::CImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CConstImage<I> )); 
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<S> )); 
   BOOST_STATIC_ASSERT(( boost::is_same< typename I::Point, typename S::Point >::value ));
 

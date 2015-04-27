@@ -311,7 +311,7 @@ namespace DGtal
    * @return 'true' if a new point is found and the value read 
    * but 'false' otherwise
    *
-   * @tparam I any model of CImage
+   * @tparam I any model of CConstImage
    * @tparam S any model of CDigitalSet
    *
    * The general behavior is like: 
