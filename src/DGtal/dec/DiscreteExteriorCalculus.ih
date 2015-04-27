@@ -350,6 +350,34 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
 }
 
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Order order, DGtal::Duality duality>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, order, duality, dim_embedded-order, DGtal::OppositeDuality<duality>::duality>
+DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::hodge() const
+{
+    BOOST_STATIC_ASSERT(( order >= 0 ));
+    BOOST_STATIC_ASSERT(( order <= dim_embedded ));
+
+    typedef LinearOperator<Self, order, duality, dim_embedded-order, OppositeDuality<duality>::duality> Hodge;
+    Hodge hodge(*this);
+    ASSERT( hodge.myContainer.rows() == hodge.myContainer.cols() );
+    ASSERT( hodge.myContainer.rows() == kFormLength(order, duality) );
+
+    // iterate over output form values
+    for (Index index=0; index<hodge.myContainer.rows(); index++)
+    {
+        const Cell cell = myKSpace.unsigns(myIndexSignedCells[actualOrder(order, duality)][index]);
+
+        const typename Properties::const_iterator iter_property = myCellProperties.find(cell);
+        ASSERT(iter_property != myCellProperties.end());
+
+        const Scalar size_ratio = duality == DGtal::PRIMAL ? iter_property->second.size_ratio : 1/iter_property->second.size_ratio;
+        hodge.myContainer(index, index) = hodgeSign(cell, duality) * size_ratio;
+    }
+
+    return hodge;
+}
+
+template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, duality>
 DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::sharp(const DGtal::KForm<Self, 1, duality>& one_form) const
