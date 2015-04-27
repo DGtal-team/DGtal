@@ -240,6 +240,23 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
 }
 
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Duality duality>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
+DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::laplace() const
+{
+    typedef DGtal::LinearOperator<Self, 0, duality, 1, duality> FirstDerivative;
+    typedef DGtal::LinearOperator<Self, 1, duality, dim_embedded-1, OppositeDuality<duality>::duality> FirstHodge;
+    typedef DGtal::LinearOperator<Self, dim_embedded-1, OppositeDuality<duality>::duality, dim_embedded, OppositeDuality<duality>::duality> SecondDerivative;
+    typedef DGtal::LinearOperator<Self, dim_embedded, OppositeDuality<duality>::duality, 0, duality> SecondHodge;
+    const FirstDerivative d_first = derivative<0, duality>();
+    const FirstHodge h_first = hodge<1, duality>();
+    const SecondDerivative d_second = derivative<dim_embedded-1, OppositeDuality<duality>::duality>();
+    const SecondHodge h_second = hodge<dim_embedded, OppositeDuality<duality>::duality>();
+    const Scalar sign = ( dim_ambient%2 == 0 ? -1 : 1 );
+    return sign * h_second * d_second * h_first * d_first;
+}
+
+template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, order, duality, order+1, duality>
 DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::derivative() const
@@ -370,7 +387,7 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
         const typename Properties::const_iterator iter_property = myCellProperties.find(cell);
         ASSERT(iter_property != myCellProperties.end());
 
-        const Scalar size_ratio = duality == DGtal::PRIMAL ? iter_property->second.size_ratio : 1/iter_property->second.size_ratio;
+        const Scalar size_ratio = ( duality == DGtal::PRIMAL ? iter_property->second.size_ratio : 1/iter_property->second.size_ratio );
         hodge.myContainer(index, index) = hodgeSign(cell, duality) * size_ratio;
     }
 
