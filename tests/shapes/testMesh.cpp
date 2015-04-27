@@ -157,6 +157,21 @@ bool testMesh()
                       aMeshR.getVertex(aMeshR.nbVertex()-1) == RealPoint(2.0/3.0, 1.0/3.0);
   trace.endBlock();
 
+  trace.beginBlock ( "Testing mesh quad transform  ..." );
+  Mesh<RealPoint> aMeshQ;
+  RealPoint pq0 (0,0);
+  RealPoint pq1 (1,0);
+  RealPoint pq2 (1,1);
+  RealPoint pq3 (0,1);
+  aMeshQ.addVertex(pq0);   aMeshQ.addVertex(pq1);   aMeshQ.addVertex(pq2);
+  aMeshQ.addVertex(pq3);
+  aMeshQ.addQuadFace(0,1,2,3);
+  unsigned int nQTr = aMeshQ.quadToTriangularFaces(); 
+  
+  trace.info() << "nb faces after quad to triangle transform: " << aMeshQ.nbFaces() << std::endl;  
+  bool okQuadToTrans =  aMeshQ.nbFaces() == 2;
+  trace.endBlock();
+
 
   trace.beginBlock ( "Testing Mesh copy operator  ..." );
   Mesh<Point> aMesh2 = aMesh;
@@ -165,7 +180,8 @@ bool testMesh()
                     aMesh.nbFaces() == aMesh3.nbFaces() && aMesh.nbVertex() == aMesh3.nbVertex() &&
                     aMesh.getVertex(0) == aMesh2.getVertex(0) && aMesh.getVertex(0) == aMesh3.getVertex(0);
   trace.endBlock();
-  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK && okSubDivide;   
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK && 
+       okSubDivide && okQuadToTrans;   
   trace.endBlock();
   return ok;
 
