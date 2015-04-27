@@ -465,11 +465,20 @@ test_hodge_sign()
     DGtal::trace.endBlock();
 }
 
+void
+test_duality()
+{
+    BOOST_STATIC_ASSERT(( DGtal::OppositeDuality<DGtal::PRIMAL>::duality == DGtal::DUAL ));
+    BOOST_STATIC_ASSERT(( DGtal::OppositeDuality<DGtal::DUAL>::duality == DGtal::PRIMAL ));
+}
+
 template <typename LinearAlgebraBackend>
 void
 test_backend(const int& ntime, const int& maxdim)
 {
     srandom(0);
+
+    test_duality();
 
     test_hodge_sign<LinearAlgebraBackend>();
 
