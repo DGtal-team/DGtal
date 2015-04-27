@@ -326,6 +326,15 @@ namespace DGtal
     dualHodge() const;
 
     /**
+     * Hodge operator from duality order-form to opposite duality (dim_embedded-order)-forms.
+     * @tparam order order of input k-form.
+     * @return hodge operator.
+     */
+    template <Order order, Duality duality>
+    LinearOperator<Self, order, duality, dim_embedded-order, OppositeDuality<duality>::duality>
+    hodge() const;
+
+    /**
      * Construct 1-form from vector field.
      * @tparam duality input vector field and output 1-form duality.
      * @param vector_field vector field.
