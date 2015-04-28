@@ -159,8 +159,9 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     property.size_ratio = _primal_size;
     property.flipped = ( myKSpace.sSign(_signed_cell) == KSpace::NEG );
 
-    ASSERT_MSG( myKSpace.uDim(cell) != 0 || !property.flipped , "can't insert negative 0-cells" );
-    ASSERT_MSG( myKSpace.uDim(cell) != dim || !property.flipped , "can't insert negative n-cells" );
+    ASSERT_MSG( cell_dim >= 0 && cell_dim <= dim_embedded, "wrong cell dimension");
+    ASSERT_MSG( cell_dim != 0 || !property.flipped , "can't insert negative 0-cells" );
+    ASSERT_MSG( cell_dim != dim_ambient || !property.flipped , "can't insert negative n-cells" );
 
     typename Properties::iterator iter = myCellProperties.find(cell);
     const bool need_insert = (iter == myCellProperties.end());
