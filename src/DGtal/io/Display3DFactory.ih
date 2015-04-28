@@ -40,14 +40,14 @@
 
 // DiscreteExteriorCalculus
 template <typename Space, typename KSpace>
-template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
 inline
 void
-DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus)
+DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>& calculus)
 {
-    BOOST_STATIC_ASSERT(( dim == 3 ));
+    BOOST_STATIC_ASSERT(( dim_ambient == 3 ));
 
-    typedef DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger> Calculus;
+    typedef DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::ConstIterator ConstIterator;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
@@ -101,7 +101,7 @@ inline
 void
 DGtal::Display3DFactory<Space, KSpace>::drawWithColorMap(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, const ColorMap& colormap)
 {
-    BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
+    BOOST_STATIC_ASSERT(( Calculus::dimension_ambient == 3 ));
     ASSERT( kform.myCalculus );
 
     typedef typename Calculus::Scalar Scalar;
@@ -128,7 +128,7 @@ template <typename Calculus, DGtal::Duality duality>
 void
 DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale, const double& epsilon)
 {
-    BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
+    BOOST_STATIC_ASSERT(( Calculus::dimension_ambient == 3 ));
     ASSERT( vector_field.myCalculus );
 
     typedef typename DGtal::VectorField<Calculus, duality>::Arrow Arrow;
