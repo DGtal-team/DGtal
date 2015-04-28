@@ -304,44 +304,12 @@ namespace DGtal
     antiderivative() const;
 
     /**
-     * Primal Laplace operator from dual 0-forms to dual 0-forms.
-     * @return primal Laplace operator.
-     */
-    PrimalIdentity0
-    primalLaplace() const;
-
-    /**
-     * Dual Laplace operator from dual 0-forms to dual 0-forms.
-     * @return dual Laplace operator.
-     */
-    DualIdentity0
-    dualLaplace() const;
-
-    /**
      * Laplace operator from duality 0-forms to duality 0-forms.
      * @return Laplace operator.
      */
     template <Duality duality>
     LinearOperator<Self, 0, duality, 0, duality>
     laplace() const;
-
-    /**
-     * Primal hodge duality operator from primal order-forms to dual (dim_embedded-order)-forms.
-     * @tparam order order of input primal k-form.
-     * @return primal hodge operator.
-     */
-    template <Order order>
-    LinearOperator<Self, order, PRIMAL, dim_embedded-order, DUAL>
-    primalHodge() const;
-
-    /**
-     * Dual hodge duality operator from primal order-forms to dual (dim_embedded-order)-forms.
-     * @tparam order order of input dual k-form.
-     * @return dual hodge operator.
-     */
-    template <Order order>
-    LinearOperator<Self, order, DUAL, dim_embedded-order, PRIMAL>
-    dualHodge() const;
 
     /**
      * Hodge operator from duality order-form to opposite duality (dim_embedded-order)-forms.

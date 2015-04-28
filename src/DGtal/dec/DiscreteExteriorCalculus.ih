@@ -217,30 +217,6 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
 }
 
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, 0, DGtal::PRIMAL, 0, DGtal::PRIMAL>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::primalLaplace() const
-{
-    const PrimalDerivative0 d0 = derivative<0, PRIMAL>();
-    const LinearOperator<Self, dim_embedded-1, DUAL, dim_embedded, DUAL> d1p = derivative<dim_embedded-1, DUAL>();
-    const PrimalHodge1 h1 = primalHodge<1>();
-    const LinearOperator<Self, dim_embedded, DUAL, 0, PRIMAL> h2p = dualHodge<dim_embedded>();
-    const Scalar sign = ( dim_ambient%2 == 0 ? -1 : 1 );
-    return sign * h2p * d1p * h1 * d0;
-}
-
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, 0, DGtal::DUAL, 0, DGtal::DUAL>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::dualLaplace() const
-{
-    const DualDerivative0 d0 = derivative<0, DUAL>();
-    const LinearOperator<Self, dim_embedded-1, PRIMAL, dim_embedded, PRIMAL> d1p = derivative<dim_embedded-1, PRIMAL>();
-    const DualHodge1 h1 = dualHodge<1>();
-    const LinearOperator<Self, dim_embedded, PRIMAL, 0, DUAL> h2p = primalHodge<dim_embedded>();
-    const Scalar sign = ( dim_ambient%2 == 0 ? -1 : 1 );
-    return sign * h2p * d1p * h1 * d0;
-}
-
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
 DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::laplace() const
@@ -321,63 +297,9 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
         }
     }
 
-    if (duality == DUAL && (order*(dim_embedded-order))%2 != 0) _derivative.myContainer *= -1;
+    if (duality == DUAL && ((dim_ambient-dim_embedded+order)*(dim_embedded-order))%2 != 0) _derivative.myContainer *= -1;
 
     return _derivative;
-}
-
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-template <DGtal::Order order>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, order, DGtal::PRIMAL, dim_embedded-order, DGtal::DUAL>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::primalHodge() const
-{
-    BOOST_STATIC_ASSERT(( order >= 0 ));
-    BOOST_STATIC_ASSERT(( order <= dim_embedded ));
-
-    typedef LinearOperator<Self, order, PRIMAL, dim_embedded-order, DUAL> PrimalHodge;
-    PrimalHodge primal_hodge(*this);
-    ASSERT( primal_hodge.myContainer.rows() == primal_hodge.myContainer.cols() );
-    ASSERT( primal_hodge.myContainer.rows() == kFormLength(order, PRIMAL) );
-
-    // iterate over output form values
-    for (Index index=0; index<primal_hodge.myContainer.rows(); index++)
-    {
-        const Cell cell = myKSpace.unsigns(myIndexSignedCells[order][index]);
-
-        const typename Properties::const_iterator iter_property = myCellProperties.find(cell);
-        ASSERT(iter_property != myCellProperties.end());
-
-        primal_hodge.myContainer(index, index) = hodgeSign(cell, PRIMAL)*iter_property->second.size_ratio;
-    }
-
-    return primal_hodge;
-}
-
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-template <DGtal::Order order>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, order, DGtal::DUAL, dim_embedded-order, DGtal::PRIMAL>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::dualHodge() const
-{
-    BOOST_STATIC_ASSERT(( order >= 0 ));
-    BOOST_STATIC_ASSERT(( order <= dim_embedded ));
-
-    typedef LinearOperator<Self, order, DUAL, dim_embedded-order, PRIMAL> DualHodge;
-    DualHodge dual_hodge(*this);
-    ASSERT( dual_hodge.myContainer.rows() == dual_hodge.myContainer.cols() );
-    ASSERT( dual_hodge.myContainer.rows() == kFormLength(order, DUAL) );
-
-    // iterate over output form values
-    for (Index index=0; index<dual_hodge.myContainer.rows(); index++)
-    {
-        const Cell cell = myKSpace.unsigns(myIndexSignedCells[dim_embedded-order][index]);
-
-        const typename Properties::const_iterator iter_property = myCellProperties.find(cell);
-        ASSERT(iter_property != myCellProperties.end());
-
-        dual_hodge.myContainer(index, index) = hodgeSign(cell, DUAL)/iter_property->second.size_ratio;
-    }
-
-    return dual_hodge;
 }
 
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
