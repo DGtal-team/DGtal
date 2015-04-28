@@ -291,6 +291,29 @@ Lastly, if your compiler supports C++0X initializer list, there is a custom subR
 #endif  
 @endcode    
 
+\subsection sectDomEmpty Empty domains
+
+Since version 0.9 of DGtal, HyperRectDomain can model an empty domain and it is what the default constructor returns now.
+
+An empty domain is so that the difference between his lower bound and his upper bound has every component equal to 1.
+For example, here is some equivalent definitions of an empty domain:
+@code
+  typedef SpaceND<3> TSpace;
+  typedef TSpace::Point TPoint;
+  TPoint a = TPoint::diagonal(5);
+  
+  HyperRectDomain<TSpace> empty_domain1;
+  HyperRectDomain<TSpace> empty_domain2( TPoint(1, 1, 1), TPoint(0, 0, 0) );
+  HyperRectDomain<TSpace> empty_domain3( a, a - TPoint::diagonal(1) );
+@endcode
+
+Furthermore, a new method, HyperRectDomain::isEmpty, returns `true` if the domain is empty, `false` otherwise.
+
+As expected, the following properties are observed if `domain` is an empty domain:
+- `domain.size()` returns 0,
+- `domain.isInside(p)` returns `false` for every point `p`,
+- `domain.begin() == domain.end()` is `true`, and similarly for the reverse iterators,
+- `domain.subRange(v, domain.lowerBound()).begin() == domain.subRange(v, domain.lowerBound()).end()` is `true` for every subset `v` of dimensions, and similarly for the reverse iterators.
 
 */
 

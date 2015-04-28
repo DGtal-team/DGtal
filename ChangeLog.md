@@ -51,7 +51,9 @@
  - New flag (-DWITH_QT5) enables QT5 support in libqglviewer. (Nicolas
  Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983) 
  
-
+- *Kernel Package*
+  - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
+    of lexicographical order in comparison operators of PointVector. (Roland Denis, [#996](https://github.com/DGtal-team/DGtal/pull/996))
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
@@ -134,8 +136,6 @@
   - BasicDomainSubSampler can now handle non 0 origin point. This update also correct
     the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
     (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
-  - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
-    of lexicographical order in comparison operators of PointVector. (Roland Denis, [#996](https://github.com/DGtal-team/DGtal/pull/996))
 
 - *Topology  Package*
   - Fix loop bug in extractAllConnectedSCell of Surfaces from helpers.
