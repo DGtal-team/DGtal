@@ -66,7 +66,7 @@ void propa_2d()
 {
     trace.beginBlock("2d propagation");
 
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
 
     {
         trace.beginBlock("solving time dependent equation");
@@ -78,7 +78,7 @@ void propa_2d()
         const Calculus calculus(generateDiskSet(domain), false);
 
         //! [time_laplace]
-        const Calculus::DualIdentity0 laplace = calculus.dualLaplace() + 1e-8 * calculus.identity<0, DUAL>();
+        const Calculus::DualIdentity0 laplace = calculus.laplace<DUAL>() + 1e-8 * calculus.identity<0, DUAL>();
         //! [time_laplace]
         trace.info() << "laplace = " << laplace << endl;
 
@@ -169,7 +169,7 @@ void propa_2d()
         const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(50,50));
         const Calculus calculus(generateDiskSet(domain), true);
 
-        const Calculus::DualIdentity0 laplace = calculus.dualLaplace();
+        const Calculus::DualIdentity0 laplace = calculus.laplace<DUAL>();
         trace.info() << "laplace = " << laplace << endl;
 
         trace.beginBlock("finding eigen pairs");

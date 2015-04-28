@@ -24,13 +24,13 @@ void solve2d_laplace()
 
     // create discrete exterior calculus from set
     //! [calculus_creation]
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus(generateRingSet(domain));
     //! [calculus_creation]
     trace.info() << calculus << endl;
 
     //! [laplace_definition]
-    Calculus::DualIdentity0 laplace = calculus.dualLaplace() + 0.01 * calculus.identity<0, DUAL>();
+    Calculus::DualIdentity0 laplace = calculus.laplace<DUAL>() + 0.01 * calculus.identity<0, DUAL>();
     //! [laplace_definition]
     trace.info() << "laplace = " << laplace << endl;
 
@@ -188,7 +188,7 @@ void solve2d_dual_decomposition()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
@@ -200,10 +200,10 @@ void solve2d_dual_decomposition()
     const Calculus::DualDerivative1 d1 = calculus.derivative<1, DUAL>();
     const Calculus::PrimalDerivative0 d0p = calculus.derivative<0, PRIMAL>();
     const Calculus::PrimalDerivative1 d1p = calculus.derivative<1, PRIMAL>();
-    const Calculus::DualHodge1 h1 = calculus.dualHodge<1>();
-    const Calculus::DualHodge2 h2 = calculus.dualHodge<2>();
-    const Calculus::PrimalHodge1 h1p = calculus.primalHodge<1>();
-    const Calculus::PrimalHodge2 h2p = calculus.primalHodge<2>();
+    const Calculus::DualHodge1 h1 = calculus.hodge<1, DUAL>();
+    const Calculus::DualHodge2 h2 = calculus.hodge<2, DUAL>();
+    const Calculus::PrimalHodge1 h1p = calculus.hodge<1, PRIMAL>();
+    const Calculus::PrimalHodge2 h2p = calculus.hodge<2, PRIMAL>();
     const LinearOperator<Calculus, 1, DUAL, 0, DUAL> ad1 = h2p * d1p * h1;
     const LinearOperator<Calculus, 2, DUAL, 1, DUAL> ad2 = h1p * d0p * h2;
     //! [2d_dual_decomposition_operator_definition]
@@ -312,7 +312,7 @@ void solve2d_primal_decomposition()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
@@ -324,10 +324,10 @@ void solve2d_primal_decomposition()
     const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
     const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
     const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
-    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
-    const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
-    const Calculus::DualHodge1 h1p = calculus.dualHodge<1>();
-    const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
+    const Calculus::PrimalHodge1 h1 = calculus.hodge<1, PRIMAL>();
+    const Calculus::PrimalHodge2 h2 = calculus.hodge<2, PRIMAL>();
+    const Calculus::DualHodge1 h1p = calculus.hodge<1, DUAL>();
+    const Calculus::DualHodge2 h2p = calculus.hodge<2, DUAL>();
     const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h2p * d1p * h1;
     const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h1p * d0p * h2;
     //! [2d_primal_decomposition_operator_definition]
@@ -439,7 +439,7 @@ void solve3d_decomposition()
 
     //! [3d_decomposition_structure]
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<3, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<3, 3, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
     calculus.initKSpace(domain);
 
@@ -819,16 +819,16 @@ void solve3d_decomposition()
     const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
     const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
     const Calculus::DualDerivative2 d2p = calculus.derivative<2, DUAL>();
-    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
-    const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
-    const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
-    const Calculus::DualHodge3 h3p = calculus.dualHodge<3>();
+    const Calculus::PrimalHodge1 h1 = calculus.hodge<1, PRIMAL>();
+    const Calculus::PrimalHodge2 h2 = calculus.hodge<2, PRIMAL>();
+    const Calculus::DualHodge2 h2p = calculus.hodge<2, DUAL>();
+    const Calculus::DualHodge3 h3p = calculus.hodge<3, DUAL>();
     const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h3p * d2p * h1;
     const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h2p * d1p * h2;
     //! [3d_decomposition_operator_definition]
 
     {
-        const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
+        const Calculus::PrimalIdentity0 laplace = calculus.laplace<PRIMAL>();
         const Eigen::VectorXd laplace_diag = laplace.myContainer.diagonal();
 
         boost::array<int, 7> degrees;
