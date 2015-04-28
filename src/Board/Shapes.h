@@ -1158,9 +1158,13 @@ struct QuadraticBezierCurve : public Triangle {
    * @param y2 Second coordinate of the middle point.
    * @param x3 First coordinate of the end point.
    * @param y3 Second coordinate of the end point.
-   * @param color The color of the line.
+   * @param pen Color of the curve.
+   * @param fill Color of the interior.
    * @param lineWidth The line thickness.
-   * @param depth The depth of the line.
+   * @param style Curve style 
+   * @param cap Curve cap
+   * @param join Curve join
+   * @param depthValue The depth of the line.
    */
   inline QuadraticBezierCurve( double x1, double y1, double x2, double y2, double x3, double y3,  
          DGtal::Color pen,
