@@ -675,7 +675,7 @@ public:
           double angle = 0.0 );
 
   /** 
-   * Save the drawing in an EPS, XFIG of SVG file depending 
+   * Save the drawing in an EPS, XFIG or SVG file depending 
    * on the filename extension. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 
@@ -686,7 +686,7 @@ public:
   void save( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const; 
   
   /** 
-   * Save the drawing in an EPS, XFIG of SVG file depending 
+   * Save the drawing in an EPS, XFIG or SVG file depending 
    * on the filename extension. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 

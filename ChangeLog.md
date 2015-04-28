@@ -80,9 +80,8 @@
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
  - Add various methods in the Mesh class to get the bounding box, to change the
-   mesh scale or to subdivide triangular faces. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990))
-
-- New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
+   mesh scale or to subdivide triangular faces. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990) and  [#992](https://github.com/DGtal-team/DGtal/pull/992))
+ - New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
    (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
 
 
@@ -136,6 +135,8 @@
    Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
  - Fix warnings message of std::abs in Display3D.    (Bertrand Kerautret,
    [#991](https://github.com/DGtal-team/DGtal/pull/991))
+ - Fix memory leaks present in the Viewer3d.  (Bertrand Kerautret,
+   [#995](https://github.com/DGtal-team/DGtal/pull/995))
 
 
 - *Kernel Package*
@@ -143,6 +144,9 @@
     the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
     (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
 
+- *Topology  Package*
+  - Fix loop bug in extractAllConnectedSCell of Surfaces from helpers.
+    (Bertrand Kerautret, [994](https://github.com/DGtal-team/DGtal/pull/994)).
 
 
 # DGtal 0.8

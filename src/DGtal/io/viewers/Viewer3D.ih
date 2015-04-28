@@ -989,17 +989,20 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glDeleteLists(myBallSetListId, myNbBallSetList);
   glDeleteLists(myTriangleSetListId, 1);
   glDeleteLists(myTriangleSetListWiredId, 1);
-  glDeleteLists(myCubeSetListId, 1);
+  glDeleteLists(myPrismListId, 1);
   glDeleteLists(myCubeSetListWiredId, 1);
   glDeleteLists(myPolygonSetListId, 1);
   glDeleteLists(myPolygonSetListWiredId, 1);
   glDeleteLists(myQuadsMapId, 1);
   glDeleteLists(myQuadsMapWiredId, 1);
-    
+  
   // Storing ID for each list
   myCubeSetListId = glGenLists(Viewer3D<Space, KSpace>::myCubeSetList.size()); 
+  myNbCubeSetList  = Viewer3D<Space, KSpace>::myCubeSetList.size();
   myLineSetListId = glGenLists(Viewer3D<Space, KSpace>::myLineSetList.size());
+  myNbLineSetList =  Viewer3D<Space, KSpace>::myLineSetList.size();
   myBallSetListId = glGenLists(Viewer3D<Space, KSpace>::myBallSetList.size()); 
+  myNbBallSetList = Viewer3D<Space, KSpace>::myBallSetList.size();
   myTriangleSetListId = glGenLists(1); 
   myTriangleSetListWiredId = glGenLists(1); 
   myCubeSetListWiredId = glGenLists(1);
@@ -1017,16 +1020,10 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEnable ( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
-  std::vector<ItCube> listIt;
-  std::vector<ItCube> listEnd;
-
   
   for( unsigned int i = 0; i <   Viewer3D<Space, KSpace>::myCubeSetList.size(); i++){
-    if (Viewer3D<Space, KSpace>::myCubeSetList.at(i).size() > 0  )
-        {
-          glCreateListCubes(Viewer3D<Space, KSpace>::myCubeSetList.at(i), myCubeSetListId+i);
-        }
-      myNbListe++;  
+    glCreateListCubes(Viewer3D<Space, KSpace>::myCubeSetList.at(i), myCubeSetListId+i);
+    myNbListe++;  
   }
      
   
@@ -1070,9 +1067,10 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glCreateListPolygonsWired(Viewer3D<Space, KSpace>::myPolygonSetList, myPolygonSetListWiredId);  
   myNbListe++;
 
+  
   // Seventh list: Textured images.
   glUpdateTextureImages(myGSImageList);
-
+  
   
   if ( needToUpdateBoundingBox )
     {
@@ -1086,8 +1084,6 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
     }
   glPopMatrix();  
 }
-
-
 
 
 
@@ -1605,12 +1601,16 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListPolygonsWired(const std::vector<Vect
 template< typename Space, typename KSpace>
 void 
 DGtal::Viewer3D<Space, KSpace>::glUpdateTextureImages(const  VectorTextureImage &aVectImage){
+
+  for(unsigned int j=0; j<myVectTextureImage.size(); j++){
+    glDeleteTextures(1,&(myVectTextureImage[j].myTextureName));
+  }
   myVectTextureImage.clear();
   for(unsigned int j=0; j<aVectImage.size(); j++)
     {
       typename Viewer3D<Space, KSpace>::TextureImage  aGSImage = aVectImage.at(j);
       GLTextureImage textureImg(aGSImage);
-
+      
       glGenTextures(1, &textureImg.myTextureName);
       glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
 
