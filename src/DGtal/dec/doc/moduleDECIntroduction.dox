@@ -213,11 +213,13 @@ This section provides an overview on structures and classes that compose the DEC
 \subsection sectDECIntroduction3 Main DEC object creation
 
 In this package, the main DEC object is DiscreteExteriorCalculus.
-The first template parameter is the dimension of the embedding space, and
-therefore must be at least equals to the dimension of object one would like to represent.
-The second template parameter is a linear algebra backend used internally.
+The first template parameter is the dimension of the embedded structure one wants to represent.
+The second template parameter is the dimension of the ambient space in which the structure in embedded.
+For obvious reasons, the ambient dimension must be equal or greater than the embedded dimension.
+The ambient dimension is used internally by DiscreteExteriorCalculus.myKSpace and therefore is the dimension of cells and points used to fill the DEC object.
+The third template parameter is a linear algebra backend used internally to specify containers and solvers.
 By now, there is only one available backend: EigenLinearAlgebraBackend.
-For example, here is a snippet that define a working two dimensional DEC object.
+For example, here is a snippet that define a working two dimensional DEC object embedded in a two dimensional ambient space.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_typedef
 
