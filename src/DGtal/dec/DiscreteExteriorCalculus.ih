@@ -245,16 +245,29 @@ template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
 DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::laplace() const
 {
-    typedef DGtal::LinearOperator<Self, 0, duality, 1, duality> FirstDerivative;
-    typedef DGtal::LinearOperator<Self, 1, duality, dim_embedded-1, OppositeDuality<duality>::duality> FirstHodge;
-    typedef DGtal::LinearOperator<Self, dim_embedded-1, OppositeDuality<duality>::duality, dim_embedded, OppositeDuality<duality>::duality> SecondDerivative;
-    typedef DGtal::LinearOperator<Self, dim_embedded, OppositeDuality<duality>::duality, 0, duality> SecondHodge;
-    const FirstDerivative d_first = derivative<0, duality>();
-    const FirstHodge h_first = hodge<1, duality>();
-    const SecondDerivative d_second = derivative<dim_embedded-1, OppositeDuality<duality>::duality>();
-    const SecondHodge h_second = hodge<dim_embedded, OppositeDuality<duality>::duality>();
-    const Scalar sign = ( dim_ambient%2 == 0 ? -1 : 1 );
-    return sign * h_second * d_second * h_first * d_first;
+    typedef DGtal::LinearOperator<Self, 0, duality, 1, duality> Derivative;
+    typedef DGtal::LinearOperator<Self, 1, duality, 0, duality> Antiderivative;
+    const Derivative d = derivative<0, duality>();
+    const Antiderivative ad = antiderivative<1, duality>();
+    return ad * d;
+}
+
+template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Order order, DGtal::Duality duality>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, order, duality, order-1, duality>
+DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::antiderivative() const
+{
+    BOOST_STATIC_ASSERT(( order > 0 ));
+    BOOST_STATIC_ASSERT(( order <= dim_embedded ));
+
+    typedef DGtal::LinearOperator<Self, order, duality, dim_embedded-order, OppositeDuality<duality>::duality> FirstHodge;
+    typedef DGtal::LinearOperator<Self, dim_embedded-order, OppositeDuality<duality>::duality, dim_embedded-order+1, OppositeDuality<duality>::duality> Derivative;
+    typedef DGtal::LinearOperator<Self, dim_embedded-order+1, OppositeDuality<duality>::duality, order-1, duality> SecondHodge;
+    const FirstHodge h_first = hodge<order, duality>();
+    const Derivative d = derivative<dim_embedded-order, OppositeDuality<duality>::duality>();
+    const SecondHodge h_second = hodge<dim_embedded-order+1, OppositeDuality<duality>::duality>();
+    const Scalar sign = ( order*(dim_ambient-order)%2 == 0 ? 1 : -1 );
+    return sign * h_second * d * h_first;
 }
 
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>

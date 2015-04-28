@@ -284,7 +284,7 @@ namespace DGtal
     identity() const;
 
     /**
-     * Exterior derivative operator from order-forms to (order+1)-forms.
+     * Derivative operator from order-forms to (order+1)-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.
      * @return derivative operator.
@@ -292,6 +292,16 @@ namespace DGtal
     template <Order order, Duality duality>
     LinearOperator<Self, order, duality, order+1, duality>
     derivative() const;
+
+    /**
+     * Antiderivative operator from order-forms to (order-1) forms.
+     * @tparam order order of input k-form.
+     * @tparam duality duality of input k-form.
+     * @return antiderivative operator.
+     */
+    template <Order order, Duality duality>
+    LinearOperator<Self, order, duality, order-1, duality>
+    antiderivative() const;
 
     /**
      * Primal Laplace operator from dual 0-forms to dual 0-forms.
