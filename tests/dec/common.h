@@ -77,15 +77,12 @@ struct HodgeTester
 
         typedef DGtal::LinearOperator<Calculus, order, DGtal::PRIMAL, Calculus::dimension_embedded-order, DGtal::DUAL> PrimalHodge;
         typedef DGtal::LinearOperator<Calculus, Calculus::dimension_embedded-order, DGtal::DUAL, order, DGtal::PRIMAL> DualHodge;
-        const PrimalHodge primal_hodge_prime = calculus.template hodge<order, DGtal::PRIMAL>();
-        const PrimalHodge primal_hodge = calculus.template primalHodge<order>();
-        const DualHodge dual_hodge_prime = calculus.template hodge<Calculus::dimension_embedded-order, DGtal::DUAL>();
-        const DualHodge dual_hodge = calculus.template dualHodge<Calculus::dimension_embedded-order>();
+        const PrimalHodge primal_hodge = calculus.template hodge<order, DGtal::PRIMAL>();
+        const DualHodge dual_hodge= calculus.template hodge<Calculus::dimension_embedded-order, DGtal::DUAL>();
 
         DGtal::trace.info() << "testing primal to primal hodge composition order " << order << std::endl;
 
         { // test primal to primal composition
-            if (!equal(primal_hodge_prime.myContainer, primal_hodge.myContainer)) return false;
             typedef DGtal::LinearOperator<Calculus, order, DGtal::PRIMAL, order, DGtal::PRIMAL> PrimalPrimal;
             PrimalPrimal primal_primal = dual_hodge * primal_hodge;
             if (!is_identity(primal_primal.myContainer, pow(-1, order*(Calculus::dimension_embedded-order)))) return false;
@@ -94,7 +91,6 @@ struct HodgeTester
         DGtal::trace.info() << "testing dual to dual hodge composition order " << order << std::endl;
 
         { // test dual to dual composition
-            if (!equal(dual_hodge_prime.myContainer, dual_hodge.myContainer)) return false;
             typedef DGtal::LinearOperator<Calculus, Calculus::dimension_embedded-order, DGtal::DUAL, Calculus::dimension_embedded-order, DGtal::DUAL> DualDual;
             DualDual dual_dual = primal_hodge * dual_hodge;
             if (!is_identity(dual_dual.myContainer, pow(-1, order*(Calculus::dimension_embedded-order)))) return false;
@@ -171,16 +167,12 @@ test_hodge(int domain_size)
     {
         DGtal::trace.beginBlock("testing laplace sign");
 
-        const typename Calculus::PrimalIdentity0 primal_laplace_prime = calculus.template laplace<DGtal::PRIMAL>();
-        const typename Calculus::PrimalIdentity0 primal_laplace = calculus.primalLaplace();
+        const typename Calculus::PrimalIdentity0 primal_laplace = calculus.template laplace<DGtal::PRIMAL>();
         DGtal::trace.info() << "primal_laplace_trace=" << primal_laplace.myContainer.diagonal().sum() << std::endl;
-        FATAL_ERROR( equal(primal_laplace.myContainer, primal_laplace_prime.myContainer) );
         FATAL_ERROR( ( primal_laplace.myContainer.diagonal().array() >= 0 ).prod() == true );
 
-        const typename Calculus::DualIdentity0 dual_laplace_prime = calculus.template laplace<DGtal::DUAL>();
-        const typename Calculus::DualIdentity0 dual_laplace = calculus.dualLaplace();
+        const typename Calculus::DualIdentity0 dual_laplace = calculus.template laplace<DGtal::DUAL>();
         DGtal::trace.info() << "dual_laplace_trace=" << dual_laplace.myContainer.diagonal().sum() << std::endl;
-        FATAL_ERROR( equal(dual_laplace.myContainer, dual_laplace_prime.myContainer) );
         FATAL_ERROR( ( dual_laplace.myContainer.diagonal().array() >= 0 ).prod() == true );
 
         DGtal::trace.endBlock();
