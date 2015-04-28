@@ -44,7 +44,7 @@ void test_linear_structure()
     //! [neumann-creation]
     const Domain domain(Point(-1,-1), Point(10,10));
 
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<1, 2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
     calculus.initKSpace(domain);
 
@@ -90,7 +90,7 @@ void test_linear_structure()
 
         //! [neumann-laplace-definition]
         const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
-        const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
+        const Calculus::PrimalIdentity0 laplace = calculus.laplace<PRIMAL>();
         //! [neumann-laplace-definition]
         trace.info() << "d0 = " << d0 << endl;
         trace.info() << "laplace = " << laplace << endl;
@@ -181,7 +181,7 @@ void test_linear_structure()
 
         //! [dirichlet-laplace-definition]
         const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
-        const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
+        const Calculus::PrimalIdentity0 laplace = calculus.laplace<PRIMAL>();
         //! [dirichlet-laplace-definition]
         trace.info() << "d0 = " << d0 << endl;
         trace.info() << "laplace = " << laplace << endl;
@@ -261,7 +261,7 @@ void test_linear_ring()
 
     const Domain domain(Point(-5,-5), Point(5,5));
 
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<1, 2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
     calculus.initKSpace(domain);
 
@@ -281,16 +281,16 @@ void test_linear_ring()
     const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
     display_operator_info("d0", d0);
 
-    const Calculus::PrimalHodge0 h0 = calculus.primalHodge<0>();
+    const Calculus::PrimalHodge0 h0 = calculus.hodge<0, PRIMAL>();
     display_operator_info("h0", h0);
 
-    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
-    display_operator_info("d1p", d1p);
+    const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
+    display_operator_info("d0p", d0p);
 
-    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
+    const Calculus::PrimalHodge1 h1 = calculus.hodge<1, PRIMAL>();
     display_operator_info("h1", h1);
 
-    const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
+    const Calculus::PrimalIdentity0 laplace = calculus.laplace<PRIMAL>();
     display_operator_info("laplace", laplace);
 
     const int laplace_size = calculus.kFormLength(0, PRIMAL);
@@ -314,7 +314,7 @@ void test_manual_operators_3d()
 
     const Z3i::Domain domain(Z3i::Point(0,0,0), Z3i::Point(1,1,1));
 
-    typedef DiscreteExteriorCalculus<3, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<3, 3, EigenLinearAlgebraBackend> Calculus;
 
     Calculus calculus;
     calculus.initKSpace(domain);
@@ -419,7 +419,7 @@ void test_manual_operators_2d()
 
     const Domain domain(Point(0,0), Point(5,4));
 
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
 
     Calculus primal_calculus;
     primal_calculus.initKSpace(domain);
@@ -560,10 +560,10 @@ void test_manual_operators_2d()
         FATAL_ERROR( Eigen::MatrixXd((dual_d1p*dual_d0p).myContainer) == Eigen::MatrixXd::Zero(2,6) );
     }
 
-    const Calculus::PrimalHodge0 primal_h0 = primal_calculus.primalHodge<0>();
-    const Calculus::DualHodge0 dual_h0p = dual_calculus.dualHodge<0>();
-    const Calculus::DualHodge2 primal_h2p = primal_calculus.dualHodge<2>();
-    const Calculus::PrimalHodge2 dual_h2 = dual_calculus.primalHodge<2>();
+    const Calculus::PrimalHodge0 primal_h0 = primal_calculus.hodge<0, PRIMAL>();
+    const Calculus::DualHodge0 dual_h0p = dual_calculus.hodge<0, DUAL>();
+    const Calculus::DualHodge2 primal_h2p = primal_calculus.hodge<2, DUAL>();
+    const Calculus::PrimalHodge2 dual_h2 = dual_calculus.hodge<2, PRIMAL>();
     {
         display_operator_info("primal h0", primal_h0);
         display_operator_info("dual h0p", dual_h0p);
@@ -576,10 +576,10 @@ void test_manual_operators_2d()
         FATAL_ERROR( Eigen::MatrixXd(dual_h2.myContainer) == Eigen::MatrixXd::Identity(6,6) );
     }
 
-    const Calculus::PrimalHodge2 primal_h2 = primal_calculus.primalHodge<2>();
-    const Calculus::DualHodge2 dual_h2p = dual_calculus.dualHodge<2>();
-    const Calculus::DualHodge0 primal_h0p = primal_calculus.dualHodge<0>();
-    const Calculus::PrimalHodge0 dual_h0 = dual_calculus.primalHodge<0>();
+    const Calculus::PrimalHodge2 primal_h2 = primal_calculus.hodge<2, PRIMAL>();
+    const Calculus::DualHodge2 dual_h2p = dual_calculus.hodge<2, DUAL>();
+    const Calculus::DualHodge0 primal_h0p = primal_calculus.hodge<0, DUAL>();
+    const Calculus::PrimalHodge0 dual_h0 = dual_calculus.hodge<0, PRIMAL>();
     {
         display_operator_info("primal h2", primal_h2);
         display_operator_info("dual h2p", dual_h2p);
@@ -627,10 +627,10 @@ void test_manual_operators_2d()
         FATAL_ERROR( Eigen::MatrixXd(dual_d1.myContainer) == -minus_d1p_th_transpose.transpose() );
     }
 
-    const Calculus::PrimalHodge1 primal_h1 = primal_calculus.primalHodge<1>();
-    const Calculus::DualHodge1 dual_h1p = dual_calculus.dualHodge<1>();
-    const Calculus::DualHodge1 primal_h1p = primal_calculus.dualHodge<1>();
-    const Calculus::PrimalHodge1 dual_h1 = dual_calculus.primalHodge<1>();
+    const Calculus::PrimalHodge1 primal_h1 = primal_calculus.hodge<1, PRIMAL>();
+    const Calculus::DualHodge1 dual_h1p = dual_calculus.hodge<1, DUAL>();
+    const Calculus::DualHodge1 primal_h1p = primal_calculus.hodge<1, DUAL>();
+    const Calculus::PrimalHodge1 dual_h1 = dual_calculus.hodge<1, PRIMAL>();
     {
         display_operator_info("primal h1", primal_h1);
         display_operator_info("dual h1p", dual_h1p);
@@ -648,10 +648,10 @@ void test_manual_operators_2d()
     trace.endBlock();
 
     trace.beginBlock("laplace operators");
-    display_operator_info("primal laplace", primal_calculus.primalLaplace());
-    display_operator_info("dual laplacep", dual_calculus.dualLaplace());
-    display_operator_info("primal laplacep", primal_calculus.dualLaplace());
-    display_operator_info("dual laplace", dual_calculus.primalLaplace());
+    display_operator_info("primal laplace", primal_calculus.laplace<PRIMAL>());
+    display_operator_info("dual laplacep", dual_calculus.laplace<DUAL>());
+    display_operator_info("primal laplacep", primal_calculus.laplace<DUAL>());
+    display_operator_info("dual laplace", dual_calculus.laplace<PRIMAL>());
     trace.endBlock();
 
     trace.beginBlock("sharp operators");
