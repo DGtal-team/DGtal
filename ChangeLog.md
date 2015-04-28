@@ -49,8 +49,9 @@
  specified by the user) to a given colormap. (David Coeurjolly,
  [#987](https://github.com/DGtal-team/DGtal/pull/987)
  - New flag (-DWITH_QT5) enables QT5 support in libqglviewer. (Nicolas
- Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983) 
- 
+ Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983)
+ - Board2D now supports quadratic Bezier curve drawing. (Tristan Roussillon,
+  [#1002](https://github.com/DGtal-team/DGtal/pull/1002)
 
 
 - *Shapes Package*

@@ -1109,7 +1109,7 @@ struct Triangle : public Polyline {
    * 
    * @return object name
    */
-  virtual const std::string & name() const;
+  const std::string & name() const;
 
   Triangle rotated( double angle ) const;
 
