@@ -44,7 +44,8 @@ Consider the homogeneous propagation equation, where \f$\rho(x,t) = 0\f$,
 
 \f[ \square \psi = 0 \f]
 
-The Laplace operator \f$\Delta\f$ is computed using DiscreteExteriorCalculus.dualLaplace.
+The Laplace operator \f$\Delta\f$ is computed using DiscreteExteriorCalculus.laplace.
+Note that the problem is expressed on the dual structure.
 A small fraction of DiscreteExteriorCalculus.identity is added to ensure a proper definition of \f$\Delta\f$.
 
 \snippet examplePropagation.cpp time_laplace
