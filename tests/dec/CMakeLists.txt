@@ -15,7 +15,7 @@ if(WITH_EIGEN)
 
     add_executable(testEmbedding testEmbedding)
     target_link_libraries(testEmbedding DGtal DGtalIO)
-    add_test(testEmbedding tesEmbedding)
+    add_test(testEmbedding testEmbedding)
 
 endif(WITH_EIGEN)
 
