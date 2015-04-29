@@ -134,7 +134,7 @@ void test_linear_structure()
         for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
         {
             trace.info() << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
-            FATAL_ERROR( abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5 );
+            FATAL_ERROR( std::abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5 );
         }
 
         {
@@ -222,7 +222,7 @@ void test_linear_structure()
         for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
         {
             trace.info() << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
-            FATAL_ERROR( abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5 );
+            FATAL_ERROR( std::abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5 );
         }
 
         {
