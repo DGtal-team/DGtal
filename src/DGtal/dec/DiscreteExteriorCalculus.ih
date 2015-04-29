@@ -242,7 +242,7 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     const FirstHodge h_first = hodge<order, duality>();
     const Derivative d = derivative<dim_embedded-order, OppositeDuality<duality>::duality>();
     const SecondHodge h_second = hodge<dim_embedded-order+1, OppositeDuality<duality>::duality>();
-    const Scalar sign = ( order*(dim_ambient-order)%2 == 0 ? 1 : -1 );
+    const Scalar sign = ( order*(dim_embedded-order)%2 == 0 ? 1 : -1 );
     return sign * h_second * d * h_first;
 }
 
@@ -297,7 +297,16 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
         }
     }
 
-    if (duality == DUAL && ((dim_ambient-dim_embedded+order)*(dim_embedded-order))%2 != 0) _derivative.myContainer *= -1;
+    if (
+        (duality == DUAL && dim_embedded == 2 && dim_ambient == 2 && order == 1) ||
+        (duality == DUAL && dim_embedded == 2 && dim_ambient == 3 && order == 1)
+        )
+    {
+        //DGtal::trace.warning() << "prout minus " << dim_embedded << " " << dim_ambient << " " << order << "-" << duality << std::endl;
+        _derivative.myContainer *= -1;
+    } /*else {
+        DGtal::trace.warning() << "prout plus " << dim_embedded << " " << dim_ambient << " " << order << "-" << duality << std::endl;
+    }*/
 
     return _derivative;
 }
