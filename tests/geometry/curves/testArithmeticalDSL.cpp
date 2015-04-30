@@ -441,6 +441,7 @@ int main( int argc, char** argv )
   
   // ---------------- octant tests -------------------------
   
+  {
   typedef ArithmeticalDSL<DGtal::int32_t, DGtal::int32_t, 8> DSL;
   typedef DSL::Octant Octant;
   
@@ -458,7 +459,7 @@ int main( int argc, char** argv )
     && testOctant<DSL>(-1,-1) == Octant(4,5)
     ; 
 
-
+  }
 
 #ifdef WITH_BIGINTEGER
   {
