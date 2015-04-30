@@ -13,17 +13,26 @@
 - *DEC Package*
  - Coherent signed cells support allow lower dimension manifold embedding.
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - OppositeDuality struct allows generic hodge and laplace definition.
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - Easy k-form and vector field transversal using .length() and .getSCell().
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - Unified operators interface :
-   .hodge<order, duality>() replace primalHodge() and dualHodge(),
+   .hodge<order, duality>() replace primalHodge<order>() and dualHodge<order>(),
    .laplace<duality>() replace primalLaplace() and dualLaplace().
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - New antiderivative<order, duality>() operator.
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - New flatDirectional<duality, direction>() and sharpDirectional<duality, direction>()
+   operators defined as flat(vector_field_along_direction) and sharp(1-form).extractZeroForm(direction).
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - DiscreteExteriorCalculus<dim_embedded, dim_ambient, Backend>
    takes 2 dimension template parameters for embedding
    manifold in ambient euclidean space.
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - Basic openmp support for derivative computation.
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - New propagation example and extended embedding tests.
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
 
 - *Geometry Package*
