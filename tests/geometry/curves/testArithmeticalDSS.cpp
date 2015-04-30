@@ -899,7 +899,7 @@ bool unionTest()
   trace.info() << "octant 0\n";
   DSS DSS1(1,2,Point(2,2),Point(6,4),Point(2,2),Point(6,4),Point(3,2),Point(5,3));
   DSS DSS2(3,5,Point(-2,-1),Point(9,6),Point(2,2),Point(7,5),Point(0,0),Point(5,3));
-  DSS res=DSS1.Union(DSS2);
+  DSS res=DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS2)?1:0;
   
@@ -909,7 +909,7 @@ bool unionTest()
   assert(DSS1.isValid());
   DSS2 = DSS(5,3,Point(-1,-2),Point(6,9),Point(0,0),Point(3,5),Point(2,2),Point(5,7));
   assert(DSS2.isValid());
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS2)?1:0;
 
@@ -919,7 +919,7 @@ bool unionTest()
   assert(DSS1.isValid());
   DSS2 = DSS(5,-3,Point(1,-2),Point(-6,9),Point(-2,2),Point(-5,7),Point(0,0),Point(-3,5));
   assert(DSS2.isValid());
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS2)?1:0;
 
@@ -929,7 +929,7 @@ bool unionTest()
   assert(DSS1.isValid());
   DSS2 = DSS(3,-5,Point(2,-1),Point(-9,6),Point(0,0),Point(-5,3),Point(-2,2),Point(-7,5));
   assert(DSS2.isValid());
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS2)?1:0;
 
@@ -939,7 +939,7 @@ bool unionTest()
   assert(DSS1.isValid());
   DSS2 = DSS(-3,-5,Point(2,1),Point(-9,-6),Point(-2,-2),Point(-7,-5),Point(0,0),Point(-5,-3));
   assert(DSS2.isValid());
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS2)?1:0;
 
@@ -953,7 +953,7 @@ bool unionTest()
   trace.info() << "octant 0\n";
   DSS1 = DSS(3,5,Point(-2,-1),Point(9,6),Point(2,2),Point(7,5),Point(0,0),Point(5,3));
   DSS2 = DSS(1,2,Point(2,2),Point(6,4),Point(2,2),Point(6,4),Point(3,2),Point(5,3));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS1)?1:0;
   
@@ -966,7 +966,7 @@ bool unionTest()
   trace.info() << "octant 0 - no new leaning points\n";
   DSS1 = DSS(3,7,Point(1,3),Point(12,7),Point(3,4),Point(10,7),Point(5,4),Point(12,7));
   DSS2 = DSS(1,2,Point(14,8),Point(16,9),Point(15,9),Point(15,9),Point(14,8),Point(16,9));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(3,7,Point(1,3),Point(16,9),Point(3,4),Point(10,7),Point(5,4),Point(12,7)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -975,7 +975,7 @@ bool unionTest()
   trace.info() << "octant 0 - new leaning points in DSS2\n";
   DSS1 = DSS(3,7,Point(1,3),Point(10,7),Point(3,4),Point(10,7),Point(5,4),Point(5,4));
   DSS2 = DSS(1,2,Point(12,7),Point(17,10),Point(13,8),Point(17,10),Point(12,7),Point(16,9));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(3,7,Point(1,3),Point(17,10),Point(3,4),Point(17,10),Point(5,4),Point(12,7)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -984,7 +984,7 @@ bool unionTest()
   trace.info() << "octant 0 - new leaning points between DSS1 and DSS2\n";
   DSS1 = DSS(3,7,Point(1,3),Point(10,7),Point(3,4),Point(10,7),Point(5,4),Point(5,4));
   DSS2 = DSS(1,2,Point(13,8),Point(15,9),Point(13,8),Point(15,9),Point(14,8),Point(14,8));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(3,7,Point(1,3),Point(15,9),Point(3,4),Point(10,7),Point(5,4),Point(12,7)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -1005,7 +1005,7 @@ bool unionTest()
   trace.info() << "octant 2";
   DSS1 = DSS(1,5,Point(0,1),Point(5,2),Point(1,2),Point(1,2),Point(0,1),Point(5,2));
   DSS2 = DSS(1,4,Point(9,2),Point(14,3),Point(11,3),Point(11,3),Point(10,2),Point(14,3));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(1,10,Point(0,1),Point(14,3),Point(1,2),Point(11,3),Point(0,1),Point(10,2)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -1020,7 +1020,7 @@ bool unionTest()
   trace.info() << "octant 0\n";
   DSS1 = DSS(1,5,Point(0,1),Point(5,2),Point(1,2),Point(1,2),Point(0,1),Point(5,2));
   DSS2 = DSS(1,4,Point(9,2),Point(14,3),Point(11,3),Point(11,3),Point(10,2),Point(14,3));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(1,10,Point(0,1),Point(14,3),Point(1,2),Point(11,3),Point(0,1),Point(10,2)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -1028,7 +1028,7 @@ bool unionTest()
  
   DSS1 = DSS(1,6,Point(0,1),Point(6,2),Point(1,2),Point(1,2),Point(0,1),Point(6,2));
   DSS2 = DSS(0,1,Point(13,3),Point(18,3),Point(13,3),Point(18,3),Point(13,3),Point(18,3));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(1,9,Point(0,1),Point(18,3),Point(1,2),Point(10,3),Point(0,1),Point(18,3)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -1038,7 +1038,7 @@ bool unionTest()
 
   DSS1 = DSS(6,-1,Point(-1,0),Point(-2,6),Point(-2,1),Point(-2,1),Point(-1,0),Point(-2,6));
   DSS2 = DSS(1,0,Point(-3,13),Point(-3,18),Point(-3,13),Point(-3,18),Point(-3,13),Point(-3,18));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(9,-1,Point(-1,0),Point(-3,18),Point(-2,1),Point(-3,10),Point(-1,0),Point(-3,18)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -1058,7 +1058,7 @@ bool unionTest()
   
   DSS1 = DSS(1,3,Point(0,0),Point(3,1),Point(0,0),Point(3,1),Point(2,0),Point(2,0));
   DSS2 = DSS(1,-3,Point(6,2),Point(9,1),Point(6,2),Point(9,1),Point(8,2),Point(8,2));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(Point(0,0)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -1069,7 +1069,7 @@ bool unionTest()
   
   DSS1 = DSS(1,3,Point(0,0),Point(4,2),Point(1,1),Point(4,2),Point(0,0),Point(3,1));
   DSS2 = DSS(1,5,Point(4,2),Point(9,3),Point(4,2),Point(9,3),Point(8,2),Point(8,2));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(Point(0,0)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -1081,7 +1081,7 @@ bool unionTest()
   
   DSS1 = DSS(-3,-1,Point(0,0),Point(-2,-5),Point(0,0),Point(-1,-3),Point(-1,-1),Point(-2,-4));
   DSS2 = DSS(-3,-1,Point(-2,-8),Point(-3,-11),Point(-2,-10),Point(-2,-10),Point(-2,-8),Point(-3,-11));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(Point(0,0)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -1092,7 +1092,7 @@ bool unionTest()
 
   DSS1 = DSS(-3,-1,Point(0,0),Point(-2,-5),Point(0,0),Point(-1,-3),Point(-1,-1),Point(-2,-4));
   DSS2 = DSS(-3,-1,Point(-5,-8),Point(-6,-11),Point(-5,-10),Point(-5,-10),Point(-5,-8),Point(-6,-11));
-  res = DSS1.Union(DSS2);
+  res = DSS1.computeUnion(DSS2);
   nb++;
   nbok +=(res==DSS(Point(0,0)))?1:0;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -1216,7 +1216,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 
 		  nb++;
 		  // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
-		  DSS DSSres = DSS1.Union(DSS2);
+		  DSS DSSres = DSS1.computeUnion(DSS2);
 		  
 		  
 		  // Compare the result with Arithmetical DSS recognition algorithm for easy cases

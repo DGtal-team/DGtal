@@ -105,10 +105,6 @@ namespace DGtal
      * Type of the step vectors, defined as a STL pair of Vector
      */
     typedef std::pair<Vector, Vector> Steps;
-    /**
-     * Type of the octant values, defined as a STL pair of int
-     */
-    typedef std::pair<unsigned char, unsigned char> Octant;
 
     
     // ----------------------- static members ---------------------------------
@@ -186,19 +182,6 @@ namespace DGtal
     template<typename TInteger>
     static TInteger norm(const TInteger& a, const TInteger& b);
 
-    /**
-     * Returns the octants of the DSL of parameters @a a and @a b as a
-     * pair of integers. If the parameters are such that \f$ abs(@a a) =
-     * abs(@a b) \f$ or \f$ @a = 0 \f$ or \f$ @a b = 0 \f$, it returns
-     * two octants (for instance octants 0 and 7 if \f$ @a a = 0 \f$).  
-     *
-     * @param a a-parameter
-     * @param b b-parameter
-     * @tparam TInteger a model of integer for the parameters @a a and @a b
-     * @return the octants as a pair of integers
-     */
-    template<typename TInteger>
-    static Octant octant(const TInteger& a, const TInteger& b);
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -211,7 +194,7 @@ namespace DGtal
     typedef SpaceND<2, TCoordinate> Space;
     typedef typename Space::Vector Vector;
     typedef std::pair<Vector, Vector> Steps;
-    typedef std::pair<unsigned char, unsigned char> Octant;
+    
     
     // ----------------------- static members ---------------------------------
   public:
@@ -233,8 +216,7 @@ namespace DGtal
     static Steps steps(const TInteger& a, const TInteger& b);
     template<typename TInteger>
     static TInteger norm(const TInteger& a, const TInteger& b);
-    template<typename TInteger>
-    static Octant octant(const TInteger& a, const TInteger& b);
+    
   };
 
 } // namespace DGtal

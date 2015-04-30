@@ -467,7 +467,7 @@ DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL)
 {
  
   // Test whether the DSL and the DSS belong to the same octant or not
-  typename  ArithmeticalDSLKernel<TCoordinate,adjacency>::Octant::first_type oc;
+  typename  ArithmeticalDSL<TCoordinate,TInteger,adjacency>::Octant::first_type oc;
   std::vector<Point> LPoints;
   if(!(myDSL.sameOctant(aDSL, &oc)))
     return false;
@@ -501,7 +501,7 @@ bool
 DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point &outP) const
 {
   // Test whether the DSL and the DSS belong to the same octant or not
-  typename ArithmeticalDSLKernel<TCoordinate,adjacency>::Octant::first_type oc;
+  typename ArithmeticalDSL<TCoordinate,TInteger,adjacency>::Octant::first_type oc;
   std::vector<Point> LPoints;
   Ulp.clear(); Llp.clear();
   outP = Point(0,0);
@@ -545,10 +545,10 @@ template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
-::Union(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther) const
+::computeUnion(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther) const
 {
   
-  typename ArithmeticalDSLKernel<TCoordinate,adjacency>::Octant::first_type oc;
+  typename ArithmeticalDSL<TCoordinate,TInteger,adjacency>::Octant::first_type oc;
   bool easyCase;
   
   typedef DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
