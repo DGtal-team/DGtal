@@ -695,9 +695,9 @@ extractAllConnectedSCell
   bool forceOrientCellExterior ) 
 {
   std::set<SCell> bdry;
-
   sMakeBoundary( bdry, aKSpace, pp,
-                 aKSpace.lowerBound(), aKSpace.upperBound() );
+                 aKSpace.uCoords(aKSpace.lowerCell()), 
+                 aKSpace.uCoords(aKSpace.upperCell()) );
   aVectConnectedSCell.clear();
   while(!bdry.empty()){
     std::set<SCell>  aConnectedSCellSet;

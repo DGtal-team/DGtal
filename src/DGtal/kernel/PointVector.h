@@ -97,7 +97,9 @@ namespace DGtal
    * @tparam TContainer specifies the container to be used to store
    * the point coordinates. At this point, such container must be a
    * random access bidirectionnal a-la STL containers (e.g. vector,
-   * boost/array).
+   * boost/array). If TContainer implements comparison operators == !=
+   * < <= > <=, then PointVector will also implements it and with the
+   * exact same behaviour.
    *
    *
    * If TEuclideanRing is a Integer type (built-in integers,
@@ -444,6 +446,8 @@ namespace DGtal
      * @param pv Point/Vector to compare to this.
      *
      * @return true iff points are equal.
+     *
+     * @warning It inherits from operator== of TContainer.
      */
     bool operator== ( const Self & pv ) const;
 
@@ -453,6 +457,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this differs from pv, false otherwise.
+     *
+     * @warning It inherits from operator!= of TContainer.
      */
     bool operator!= ( const Self & pv ) const;
 
@@ -462,6 +468,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this < pv, false otherwise.
+     *
+     * @warning It inherits from operator< of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator< ( const Self & pv ) const;
 
@@ -471,6 +479,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this <= pv, false otherwise.
+     *
+     * @warning It inherits from operator<= of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator<= ( const Self & pv ) const;
 
@@ -480,6 +490,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this > pv, false otherwise.
+     *
+     * @warning It inherits from operator> of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator> ( const Self & pv ) const;
     
@@ -489,6 +501,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this >= pv, false otherwise.
+     *
+     * @warning It inherits from operator>= of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator>= ( const Self & pv ) const;
 
