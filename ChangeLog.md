@@ -15,6 +15,16 @@
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - Easy k-form and vector field transversal using .length() and .getSCell().
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - Unified operators interface :
+   .hodge<order, duality>() replace primalHodge() and dualHodge(),
+   .laplace<duality>() replace primalLaplace() and dualLaplace().
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - New antiderivative<order, duality>() operator.
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - DiscreteExteriorCalculus<dim_embedded, dim_ambient, Backend>
+   takes 2 dimension template parameters for embedding
+   manifold in ambient euclidean space.
+   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
 
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a
