@@ -341,7 +341,7 @@ bool sameOctantTest(const DSL& dsl1, const DSL& dsl2)
   trace.beginBlock ( "Test same octant" );
   trace.info() << dsl1  << " " << dsl2 << std::endl; 
   
-  int oc;
+  typename DSL::Octant::first_type oc;
   
   return dsl1.sameOctant(dsl2,&oc);
 
@@ -349,6 +349,20 @@ bool sameOctantTest(const DSL& dsl1, const DSL& dsl2)
 
 
 }
+
+
+template <typename DSL>
+typename DSL::Octant testOctant(const typename DSL::Coordinate & a, const typename DSL::Coordinate & b)
+{
+  
+  DSL aDSL(a,b,0);
+  trace.info() << aDSL << std::endl;
+  
+  return aDSL.octant();
+  
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
@@ -423,9 +437,28 @@ int main( int argc, char** argv )
       && sameOctantTest(DSL(5,-8,16),DSL(0,-2,3))==true 
       && sameOctantTest(DSL(5,8,16),DSL(-2,1,3))==false
       ;
-    
-
   }
+  
+  // ---------------- octant tests -------------------------
+  
+  typedef ArithmeticalDSL<DGtal::int32_t, DGtal::int32_t, 8> DSL;
+  typedef DSL::Octant Octant;
+  
+  trace.beginBlock("Test octant computation");
+  
+  res = res 
+    && testOctant<DSL>(0,0) == Octant(-1,-1)
+    && testOctant<DSL>(0,5) == Octant(0,7)
+    && testOctant<DSL>(0,-5) == Octant(3,4)
+    && testOctant<DSL>(5,0) == Octant(1,2)
+    && testOctant<DSL>(-5,0) == Octant(5,6)
+    && testOctant<DSL>(1,1) == Octant(0,1)
+    && testOctant<DSL>(1,-1) == Octant(2,3)
+    && testOctant<DSL>(-1,1) == Octant(6,7)
+    && testOctant<DSL>(-1,-1) == Octant(4,5)
+    ; 
+
+
 
 #ifdef WITH_BIGINTEGER
   {
