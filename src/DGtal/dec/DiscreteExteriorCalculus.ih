@@ -254,16 +254,12 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order < dim_embedded ));
 
-    typedef LinearOperator<Self, order, duality, order+1, duality> Derivative;
-    Derivative _derivative(*this);
-    ASSERT( _derivative.myContainer.rows() == kFormLength(order+1, duality) );
-    ASSERT( _derivative.myContainer.cols() == kFormLength(order, duality) );
+    typedef typename TLinearAlgebraBackend::Triplet Triplet;
+    typedef std::vector<Triplet> Triplets;
+    Triplets triplets;
 
     // iterate over output form values
-#if defined(WITH_OPENMP) && defined(NDEBUG)
-#pragma omp parallel for default(none) shared(_derivative) schedule(static, 64)
-#endif
-    for (Index index_output=0; index_output<_derivative.myContainer.rows(); index_output++)
+    for (Index index_output=0; index_output<kFormLength(order+1, duality); index_output++)
     {
         const SCell signed_cell = myIndexSignedCells[actualOrder(order+1, duality)][index_output];
 
@@ -282,20 +278,21 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
                 continue;
 
             const Index index_input = iter_property->second.index;
-            ASSERT( index_input < _derivative.myContainer.cols() );
+            ASSERT( index_input < kFormLength(order, duality) );
 
             const bool flipped_border = ( myKSpace.sSign(signed_cell_border) == KSpace::NEG );
             const Scalar orientation = ( flipped_border == iter_property->second.flipped ? 1 : -1 );
 
-#if defined(WITH_OPENMP) && defined(NDEBUG)
-#pragma omp critical
-#endif
-            {
-                // fill container with cell sign
-                _derivative.myContainer(index_output, index_input) = orientation;
-            }
+            triplets.push_back( Triplet(index_output, index_input, orientation) );
+
         }
     }
+
+    typedef LinearOperator<Self, order, duality, order+1, duality> Derivative;
+    Derivative _derivative(*this);
+    ASSERT( _derivative.myContainer.rows() == kFormLength(order+1, duality) );
+    ASSERT( _derivative.myContainer.cols() == kFormLength(order, duality) );
+    _derivative.myContainer.setFromTriplets(triplets.begin(), triplets.end());
 
     if (
         (duality == DUAL && dim_embedded == 2 && dim_ambient == 2 && order == 1) ||
@@ -319,13 +316,12 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order <= dim_embedded ));
 
-    typedef LinearOperator<Self, order, duality, dim_embedded-order, OppositeDuality<duality>::duality> Hodge;
-    Hodge _hodge(*this);
-    ASSERT( _hodge.myContainer.rows() == _hodge.myContainer.cols() );
-    ASSERT( _hodge.myContainer.rows() == kFormLength(order, duality) );
+    typedef typename TLinearAlgebraBackend::Triplet Triplet;
+    typedef std::vector<Triplet> Triplets;
+    Triplets triplets;
 
     // iterate over output form values
-    for (Index index=0; index<_hodge.myContainer.rows(); index++)
+    for (Index index=0; index<kFormLength(order, duality); index++)
     {
         const Cell cell = myKSpace.unsigns(myIndexSignedCells[actualOrder(order, duality)][index]);
 
@@ -333,8 +329,14 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
         ASSERT(iter_property != myCellProperties.end());
 
         const Scalar size_ratio = ( duality == DGtal::PRIMAL ? iter_property->second.size_ratio : 1/iter_property->second.size_ratio );
-        _hodge.myContainer(index, index) = hodgeSign(cell, duality) * size_ratio;
+        triplets.push_back( Triplet(index, index, hodgeSign(cell, duality) * size_ratio) );
     }
+
+    typedef LinearOperator<Self, order, duality, dim_embedded-order, OppositeDuality<duality>::duality> Hodge;
+    Hodge _hodge(*this);
+    ASSERT( _hodge.myContainer.rows() == _hodge.myContainer.cols() );
+    ASSERT( _hodge.myContainer.rows() == kFormLength(order, duality) );
+    _hodge.myContainer.setFromTriplets(triplets.begin(), triplets.end());
 
     return _hodge;
 }
@@ -377,10 +379,10 @@ template <DGtal::Duality duality>
 void
 DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::updateSharpOperator()
 {
-    boost::array<SparseMatrix, dim_ambient> sharp_operator_matrix;
+    typedef typename TLinearAlgebraBackend::Triplet Triplet;
+    typedef std::vector<Triplet> Triplets;
 
-    for (DGtal::Dimension direction=0; direction<dim_ambient; direction++)
-        sharp_operator_matrix[direction] = SparseMatrix(kFormLength(0, duality), kFormLength(1, duality));
+    boost::array<Triplets, dim_ambient> triplets;
 
     // iterate over points
     for (Index kk=0; kk<kFormLength(0, duality); kk++)
@@ -423,8 +425,16 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
                 ASSERT( cell_border_index < kFormLength(1, duality) );
 
                 const Scalar sign = ( duality == DUAL && (direction*(dim_ambient-direction))%2 == 0 ? -1 : 1 );
-                sharp_operator_matrix[direction](kk, cell_border_index) = sign_pt * sign * cell_border_orientation/border_indexes[direction].size();
+                triplets[direction].push_back( Triplet(kk, cell_border_index, sign_pt * sign * cell_border_orientation/border_indexes[direction].size()) );
             }
+    }
+
+    boost::array<SparseMatrix, dim_ambient> sharp_operator_matrix;
+
+    for (DGtal::Dimension direction=0; direction<dim_ambient; direction++)
+    {
+        sharp_operator_matrix[direction] = SparseMatrix(kFormLength(0, duality), kFormLength(1, duality));
+        sharp_operator_matrix[direction].setFromTriplets(triplets[direction].begin(), triplets[direction].end());
     }
 
     mySharpOperatorMatrixes[static_cast<int>(duality)] = sharp_operator_matrix;
@@ -465,10 +475,10 @@ template <DGtal::Duality duality>
 void
 DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::updateFlatOperator()
 {
-    boost::array<SparseMatrix, dim_ambient> flat_operator_matrix;
+    typedef typename TLinearAlgebraBackend::Triplet Triplet;
+    typedef std::vector<Triplet> Triplets;
 
-    for (DGtal::Dimension direction=0; direction<dim_ambient; direction++)
-        flat_operator_matrix[direction] = SparseMatrix(kFormLength(1, duality), kFormLength(0, duality));
+    boost::array<Triplets, dim_ambient> triplets;
 
     // iterate over edges
     for (Index kk=0; kk<kFormLength(1, duality); kk++)
@@ -511,9 +521,17 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
             ASSERT( cell_border_index < static_cast<Index>(myIndexSignedCells[actualOrder(0, duality)].size()) );
             ASSERT( cell_border_index < kFormLength(0, duality) );
 
-            flat_operator_matrix[direction](kk, cell_border_index) = sign*cell_border_sign*orientation/border_infos.size();
+            triplets[direction].push_back( Triplet(kk, cell_border_index, sign*cell_border_sign*orientation/border_infos.size()) );
         }
 
+    }
+
+    boost::array<SparseMatrix, dim_ambient> flat_operator_matrix;
+
+    for (DGtal::Dimension direction=0; direction<dim_ambient; direction++)
+    {
+        flat_operator_matrix[direction] = SparseMatrix(kFormLength(1, duality), kFormLength(0, duality));
+        flat_operator_matrix[direction].setFromTriplets(triplets[direction].begin(), triplets[direction].end());
     }
 
     myFlatOperatorMatrixes[static_cast<int>(duality)] = flat_operator_matrix;
