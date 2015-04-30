@@ -544,7 +544,7 @@ namespace DGtal
 	have the same ordinate (or abscissa). Otherwise, runs in
 	O(log(n)) where n is the total length of the union.
      */
-    ArithmeticalDSS Union(const ArithmeticalDSS & aOther) const;
+    ArithmeticalDSS computeUnion(const ArithmeticalDSS & aOther) const;
 
 
     // ----------------------- Iterator services -------------------------------

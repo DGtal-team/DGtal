@@ -152,6 +152,13 @@ namespace DGtal
      */
     typedef Coordinate Position;
 
+  /**
+   * Type of the octant values, defined as a STL pair of int
+   */
+  typedef std::pair<unsigned char, unsigned char> Octant;
+
+  
+
     /**
      * \brief Aim: This class aims at representing an iterator
      * that provides a way to scan the points of a DSL.
@@ -373,7 +380,7 @@ namespace DGtal
    * @return 'true' the two DSLs lie in the same octant, 'false' otherwise
    * @see sameOctant
    */
-  bool sameOctant ( const ArithmeticalDSL & aOther, typename ArithmeticalDSLKernel<Coordinate,adjacency>::Octant::first_type *theOctant ) const;
+  bool sameOctant ( const ArithmeticalDSL & aOther, typename Octant::first_type *theOctant ) const;
 
 
   /**
@@ -390,6 +397,20 @@ namespace DGtal
    */
   bool isLowerLeaningPoint(const Point& aPoint) const;
   
+
+  /**
+   * Returns the octants of the DSL of parameters @a a and @a b as a
+   * pair of integers. If the parameters are such that \f$ abs(@a a) =
+   * abs(@a b) \f$ or \f$ @a = 0 \f$ or \f$ @a b = 0 \f$, it returns
+   * two octants (for instance octants 0 and 7 if \f$ @a a = 0 \f$).  
+   *
+   * @param a a-parameter
+   * @param b b-parameter
+   * @tparam TInteger a model of integer for the parameters @a a and @a b
+   * @return the octants as a pair of integers
+   */
+  
+  Octant octant(const TInteger& a, const TInteger& b) const;
 
 
     /**

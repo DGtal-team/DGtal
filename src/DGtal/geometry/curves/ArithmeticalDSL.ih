@@ -148,12 +148,12 @@ template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
-::sameOctant( const ArithmeticalDSL & aOther, typename ArithmeticalDSLKernel<TCoordinate, adjacency>::Octant::first_type *theOctant ) const  
+::sameOctant( const ArithmeticalDSL & aOther, typename ArithmeticalDSL<TCoordinate, TInteger,adjacency>::Octant::first_type *theOctant ) const  
 {
-  typename ArithmeticalDSLKernel<TCoordinate, adjacency>::Octant octant, octantOther;
+  Octant octant, octantOther;
   
-  octant = ArithmeticalDSLKernel<TCoordinate, adjacency>::octant(myA,myB);
-  octantOther = ArithmeticalDSLKernel<TCoordinate, adjacency>::octant(aOther.myA,aOther.myB);
+  octant = DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::octant(myA,myB);
+  octantOther = DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::octant(aOther.myA,aOther.myB);
   
   if(octant.first==octantOther.first || octant.first==octantOther.second)
     {
@@ -170,6 +170,116 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
       return false;
 }  
   
+
+
+
+// ----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+typename DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::Octant
+DGtal::ArithmeticalDSL<TCoordinate,TInteger, adjacency>
+::octant(const TInteger& a, const TInteger& b) const
+{
+  Octant res;
+  
+  if (b == NumberTraits<TInteger>::ZERO)
+    {
+      if (a == NumberTraits<TInteger>::ZERO) 
+	{ //no octant
+	  res = std::make_pair(-1,-1);
+	}
+      else if (a > NumberTraits<TInteger>::ZERO)
+	{ //octant 1,2
+	  res = std::make_pair(1,2);
+	}
+      else // (a < 0)
+	{ //octant 5,6
+	  res = std::make_pair(5,6);
+	}	    
+    }
+  else if (b > NumberTraits<TInteger>::ZERO)
+    {
+      if (a == NumberTraits<TInteger>::ZERO)
+	{ //octant 0,7
+	  res = std::make_pair(0,7);
+	}
+      else if (a > NumberTraits<TInteger>::ZERO)
+	{
+	  if (b == a)
+	    { //octant 0,1
+	      res = std::make_pair(0,1);
+	    }
+	  else if (b > a)
+	    { //octant 0
+	      res = std::make_pair(0,0);
+	    }
+	  else // (b < a)
+	    { //octant 1
+	      res = std::make_pair(1,1);
+	    }
+	}
+      else //(a < 0)
+	{ 
+	  if (b == -a)
+	    {
+	      res = std::make_pair(6,7);
+	    }
+	  else if (b > -a)
+	    { //octant 7
+	      res = std::make_pair(7,7);
+	    }
+	  else // (b < -a)
+	    { //octant 6
+	      res = std::make_pair(6,6);
+	    }
+	}	    
+    }
+  else // (b < 0)
+    { 
+      if (a == NumberTraits<TInteger>::ZERO)
+	{ //octant 3,4
+	  res = std::make_pair(3,4);
+	}
+      else if (a > NumberTraits<TInteger>::ZERO)
+	{
+	  if (-b == a)
+	    {
+	      res = std::make_pair(2,3);
+	    }
+	  else if (-b > a)
+	    { //octant 3
+	      res = std::make_pair(3,3);
+	    }
+	  else // (-b < a)
+	    { //octant 2
+	      res = std::make_pair(2,2);
+	    }	    
+	}
+      else // (a < 0)
+	{
+	  if (-b == -a)
+	    {
+	      res = std::make_pair(4,5);
+	    }
+	  else if (-b > -a)
+	    { //octant 4
+	      res = std::make_pair(4,4);
+	    }
+	  else // (-b < -a)
+	    { //octant 5
+	      res = std::make_pair(5,5);
+	    }
+	}
+    }
+
+
+  return res;
+  
+
+}
+
+
+
 
 
 //-----------------------------------------------------------------------------
