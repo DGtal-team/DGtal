@@ -17,32 +17,32 @@
 #pragma once
 
 /**
- * @file CVector.h
+ * @file CSparseMatrix.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/03/20
+ * @date 2014/03/21
  *
- * Header file for concept CVector.cpp
+ * Header file for concept CSparseMatrix.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CVector_RECURSES)
-#error Recursive header files inclusion detected in CVector.h
-#else // defined(CVector_RECURSES)
+#if defined(CSparseMatrix_RECURSES)
+#error Recursive header files inclusion detected in CSparseMatrix.h
+#else // defined(CSparseMatrix_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CVector_RECURSES
+#define CSparseMatrix_RECURSES
 
-#if !defined CVector_h
+#if !defined CSparseMatrix_h
 /** Prevents repeated inclusion of headers. */
-#define CVector_h
+#define CSparseMatrix_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CVectorSpace.h"
+#include "DGtal/math/linalg/CMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,23 +50,22 @@ namespace DGtal
 namespace concepts
 {
 /////////////////////////////////////////////////////////////////////////////
-// class CVector
+// class CSparseMatrix
 /**
-Description of \b concept '\b CVector' <p>
+Description of \b concept '\b CSparseMatrix' <p>
 @ingroup Concepts
 @brief Aim:
-Represent any static or dynamic sized column vector having sparse or dense representation.
+Represent any dynamic or static sized matrix having sparse representation.
 
 ### Refinement of
- - CVectorSpace
+ - CMatrix
 
 ### Associated types
+ - Triplet triplet type
 
 ### Notation
- - \c Vector : A type that is a model of CVector
- - \e x : const object of type \c Vector
- - \e z : object of type \c Vector
- - \e i : object of type \c Vector::Index
+ - \c SparseMatrix : A type that is a model of CSparseMatrix
+ - \e ti, \e te : Instances of type that is a model of boost::InputIterator<Triplet>
 
 ### Definitions
 
@@ -74,52 +73,48 @@ Represent any static or dynamic sized column vector having sparse or dense repre
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Number of rows      | \a x.rows()           |                   |  \c Index            |              |  Returns the size of the vector       |                |            |
+| Fill from triplets      | \a x.setFromTriplets(ti,te)           |                   |           |              |           |                |            |
 
 ### Invariants
 
 ### Models
-
- EigenLinearAlgebraBackend::DenseVector, SimpleMatrix::Vector
+ - SimpleMatrix
 
 ### Notes
 
-@tparam T the type that should be a model of CVector.
+@tparam T the type that should be a model of CSparseMatrix.
+@tparam TripletInterator the type that should be a model of boost::InputIterator<Triplet>
  */
-template <typename T>
-struct CVector : CVectorSpace<T>
+template <typename T, typename TripletInterator>
+struct CSparseMatrix : CMatrix<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    typedef typename T::Scalar Scalar;
     typedef typename T::Index Index;
 
-    BOOST_CONCEPT_USAGE( CVector )
-    {
-        checkConstConstraints();
-    }
+    BOOST_CONCEPT_ASSERT(( boost::InputIterator<TripletInterator> ));
 
-    void checkConstConstraints() const
+    BOOST_CONCEPT_USAGE( CSparseMatrix )
     {
-        ConceptUtils::sameType(i, z.rows());
+        z.setFromTriplets(ti, te);
     }
 
     // ------------------------- Private Datas --------------------------------
 private:
-  T z;
-  Index i;
+    T z;
+    TripletInterator ti, te;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CVector
+}; // end of concept CSparseMatrix
 }
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CVector_h
+#endif // !defined CSparseMatrix_h
 
-#undef CVector_RECURSES
-#endif // else defined(CVector_RECURSES)
+#undef CSparseMatrix_RECURSES
+#endif // else defined(CSparseMatrix_RECURSES)
