@@ -16,7 +16,7 @@ is_all_zero(const Container& container)
 {
     for (typename Container::Index ii=0; ii<container.rows(); ii++)
         for (typename Container::Index jj=0; jj<container.cols(); jj++)
-            if (container(ii,jj) != 0)
+            if (container.coeff(ii,jj) != 0)
                 return false;
     return true;
 }
@@ -29,7 +29,7 @@ equal(const Container& aa, const Container& bb)
     if (aa.cols() != bb.cols()) return false;
     for (typename Container::Index ii=0; ii<aa.rows(); ii++)
         for (typename Container::Index jj=0; jj<aa.cols(); jj++)
-            if (aa(ii,jj) != bb(ii,jj))
+            if (aa.coeff(ii,jj) != bb.coeff(ii,jj))
                 return false;
     return true;
 }
@@ -40,8 +40,11 @@ is_identity(const Container& container, const Value& value)
 {
     for (typename Container::Index ii=0; ii<container.rows(); ii++)
         for (typename Container::Index jj=0; jj<container.cols(); jj++)
-            if ((ii != jj && container(ii,jj) != 0) || (ii == jj && container(ii,jj) != value))
+        {
+            const Value foo = container.coeff(ii,jj);
+            if ((ii != jj && foo != 0) || (ii == jj && foo != value))
                 return false;
+        }
     return true;
 }
 
