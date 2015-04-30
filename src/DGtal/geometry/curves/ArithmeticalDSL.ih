@@ -150,20 +150,20 @@ bool
 DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
 ::sameOctant( const ArithmeticalDSL & aOther, typename ArithmeticalDSL<TCoordinate, TInteger,adjacency>::Octant::first_type *theOctant ) const  
 {
-  Octant octant, octantOther;
+  Octant octantThis, octantOther;
   
-  octant = this->octant();
+  octantThis = this->octant();
   octantOther = aOther.octant();
     
-  if(octant.first==octantOther.first || octant.first==octantOther.second)
+  if(octantThis.first==octantOther.first || octantThis.first==octantOther.second)
     {
-      *theOctant = octant.first;
+      *theOctant = octantThis.first;
       return true;
     }
   else
-    if(octant.second==octantOther.first || octant.second == octantOther.second)
+    if(octantThis.second==octantOther.first || octantThis.second == octantOther.second)
       {
-	*theOctant = octant.second;
+	*theOctant = octantThis.second;
 	return true;
       }
     else
