@@ -17,32 +17,32 @@
 #pragma once
 
 /**
- * @file CVector.h
+ * @file CDenseVector.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/03/20
+ * @date 2014/03/21
  *
- * Header file for concept CVector.cpp
+ * Header file for concept CDenseVector.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CVector_RECURSES)
-#error Recursive header files inclusion detected in CVector.h
-#else // defined(CVector_RECURSES)
+#if defined(CDenseVector_RECURSES)
+#error Recursive header files inclusion detected in CDenseVector.h
+#else // defined(CDenseVector_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CVector_RECURSES
+#define CDenseVector_RECURSES
 
-#if !defined CVector_h
+#if !defined CDenseVector_h
 /** Prevents repeated inclusion of headers. */
-#define CVector_h
+#define CDenseVector_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CVectorSpace.h"
+#include "DGtal/math/linalg/CVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,23 +50,21 @@ namespace DGtal
 namespace concepts
 {
 /////////////////////////////////////////////////////////////////////////////
-// class CVector
+// class CDenseVector
 /**
-Description of \b concept '\b CVector' <p>
+Description of \b concept '\b CDenseVector' <p>
 @ingroup Concepts
 @brief Aim:
-Represent any static or dynamic sized column vector having sparse or dense representation.
+Represent any dynamic or static sized matrix having dense representation.
 
 ### Refinement of
- - CVectorSpace
+ - CVector
 
 ### Associated types
 
 ### Notation
- - \c Vector : A type that is a model of CVector
- - \e x : const object of type \c Vector
- - \e z : object of type \c Vector
- - \e i : object of type \c Vector::Index
+ - \c DenseVector : A type that is a model of CDenseVector
+ - \e i : object of type \c DenseVector::Index
 
 ### Definitions
 
@@ -74,52 +72,56 @@ Represent any static or dynamic sized column vector having sparse or dense repre
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Number of rows      | \a x.rows()           |                   |  \c Index            |              |  Returns the size of the vector       |                |            |
+| Constant ref random accessor      | \a x(i)           |                   | \c const Scalar&              |              |           |                |            |
+| Ref random accessor      | \a z(i)           |                   | \c Scalar&              |              |           |                |            |
 
 ### Invariants
 
 ### Models
-
- EigenLinearAlgebraBackend::DenseVector, SimpleMatrix::Vector
+ - SimpleVector
 
 ### Notes
 
-@tparam T the type that should be a model of CVector.
+@tparam T the type that should be a model of CDenseVector.
  */
 template <typename T>
-struct CVector : CVectorSpace<T>
+struct CDenseVector : CVector<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    typedef typename T::Scalar Scalar;
     typedef typename T::Index Index;
+    typedef typename T::Scalar Scalar;
 
-    BOOST_CONCEPT_USAGE( CVector )
+    BOOST_CONCEPT_USAGE( CDenseVector )
     {
+				Scalar& aa = z(i);
+				aa = aa; // to avoid compiler warning
+
         checkConstConstraints();
     }
 
     void checkConstConstraints() const
     {
-        ConceptUtils::sameType(i, z.rows());
+				Scalar aa = z(i);
+				aa = aa; // to avoid compiler warning
     }
 
     // ------------------------- Private Datas --------------------------------
 private:
-  T z;
-  Index i;
+    T z;
+    Index i;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CVector
+}; // end of concept CDenseVector
 }
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CVector_h
+#endif // !defined CDenseVector_h
 
-#undef CVector_RECURSES
-#endif // else defined(CVector_RECURSES)
+#undef CDenseVector_RECURSES
+#endif // else defined(CDenseVector_RECURSES)
