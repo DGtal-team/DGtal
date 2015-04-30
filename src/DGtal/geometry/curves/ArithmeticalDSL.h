@@ -399,17 +399,15 @@ namespace DGtal
   
 
   /**
-   * Returns the octants of the DSL of parameters @a a and @a b as a
-   * pair of integers. If the parameters are such that \f$ abs(@a a) =
-   * abs(@a b) \f$ or \f$ @a = 0 \f$ or \f$ @a b = 0 \f$, it returns
-   * two octants (for instance octants 0 and 7 if \f$ @a a = 0 \f$).  
+   * Returns the octants of the DSL  as a
+   * pair of integers. If the parameters are such that \f$ abs(@a myA) =
+   * abs(@a myB) \f$ or \f$ @a myA = 0 \f$ or \f$ @a myB = 0 \f$, it returns
+   * two octants (for instance octants 0 and 7 if \f$ @a myA = 0 \f$).  
    *
-   * @param a a-parameter
-   * @param b b-parameter
    * @return the octants as a pair of integers
    */
   
-  Octant octant(const TInteger& a, const TInteger& b) const;
+  Octant octant() const;
 
 
     /**
