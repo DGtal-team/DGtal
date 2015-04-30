@@ -288,10 +288,81 @@ bool testSTLCompat()
   return myHyperRectDomain4D.isValid();
 }
 
+bool testEmptyDomain()
+{
+  typedef SpaceND<3> TSpace;
+  typedef TSpace::Point TPoint;
+  typedef HyperRectDomain<TSpace> TDomain;
+
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  
+  trace.beginBlock( "Test empty domain." );
+  
+  const TDomain nonempty_domain( TPoint::diagonal(0), TPoint::diagonal(0) );
+  ++nb; nbok += nonempty_domain.isEmpty() ? 0 : 1;
+  trace.info() << "(" << nbok << "/" << nb << ") Creating non-empty domain & checking isEmpty." << std::endl;
+  
+  const TDomain default_domain;
+  ++nb; nbok += default_domain.isEmpty() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Creating default empty domain & checking isEmpty." << std::endl;
+
+  const TDomain domain( TPoint::diagonal(1), TPoint::diagonal(0) );
+  ++nb; nbok += domain.isEmpty() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Creating default custom domain & checking isEmpty." << std::endl;
+
+  ++nb; nbok += domain.size() == 0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Empty domain has size = " << domain.size() << std::endl;
+
+  ++nb; nbok += domain.begin() == domain.end() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that begin() == end()" << std::endl;
+
+  ++nb; nbok += domain.rbegin() == domain.rend() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that rbegin() == rend()" << std::endl;
+
+  TDomain::ConstSubRange range = domain.subRange( 0, 1, 2, domain.lowerBound()  );
+  ++nb; nbok += range.begin() == range.end() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that begin() == end() for sub-range {0,1,2}" << std::endl;
+
+  ++nb; nbok += range.rbegin() == range.rend() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that rbegin() == rend() for sub-range {0,1,2}" << std::endl;
+  
+  range = domain.subRange( 2, 1, 0, domain.lowerBound()  );
+  ++nb; nbok += range.begin() == range.end() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that begin() == end() for sub-range {2,1,0}" << std::endl;
+
+  ++nb; nbok += range.rbegin() == range.rend() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that rbegin() == rend() for sub-range {2,1,0}" << std::endl;
+
+  range = domain.subRange( 0, 2, domain.lowerBound()  );
+  ++nb; nbok += range.begin() == range.end() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that begin() == end() for sub-range {0,2}" << std::endl;
+
+  ++nb; nbok += range.rbegin() == range.rend() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that rbegin() == rend() for sub-range {0,2}" << std::endl;
+  
+  range = domain.subRange( 2, 0, domain.lowerBound()  );
+  ++nb; nbok += range.begin() == range.end() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that begin() == end() for sub-range {2,0}" << std::endl;
+
+  ++nb; nbok += range.rbegin() == range.rend() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that rbegin() == rend() for sub-range {2,0}" << std::endl;
+  
+  range = domain.subRange( 1, domain.lowerBound()  );
+  ++nb; nbok += range.begin() == range.end() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that begin() == end() for sub-range {1}" << std::endl;
+
+  ++nb; nbok += range.rbegin() == range.rend() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Checking that rbegin() == rend() for sub-rang {1}" << std::endl;
+
+  trace.endBlock();
+  return nb == nbok;
+  
+}
 
 int main()
 {
-  if ( testSimpleHyperRectDomain() && testIterator() && testReverseIterator() && testSTLCompat() )
+  if ( testSimpleHyperRectDomain() && testIterator() && testReverseIterator() && testSTLCompat() && testEmptyDomain() )
     return 0;
   else
     return 1;
