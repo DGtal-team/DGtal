@@ -406,7 +406,6 @@ namespace DGtal
    *
    * @param a a-parameter
    * @param b b-parameter
-   * @tparam TInteger a model of integer for the parameters @a a and @a b
    * @return the octants as a pair of integers
    */
   
