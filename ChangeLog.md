@@ -60,7 +60,9 @@
  - New flag (-DWITH_QT5) enables QT5 support in libqglviewer. (Nicolas
  Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983) 
  
-
+- *Kernel Package*
+  - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
+    of lexicographical order in comparison operators of PointVector. (Roland Denis, [#996](https://github.com/DGtal-team/DGtal/pull/996))
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
