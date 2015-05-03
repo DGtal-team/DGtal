@@ -169,11 +169,12 @@ Other examples with other input types are given here: exampleAlphaThickSegment.c
 
 \subsection moduleAlphaThickSegmentRecoDetails-CodeInitIter AlphaThickSegmentComputer with a point iterator
 
-Since the  AlphaThickSegmentComputer class is a model of
+Since the AlphaThickSegmentComputer class is a model of
 CForwardSegmentComputer, you can initialize it from a given input
-point iterator. Then, the computer will not store the segment points.
-With such an initialization the segment computer can be used in a quite
-similar way than in the previous example:
+point iterator. Then, the computer will not store the segment points
+(but the convexhull points are always stored).  With such an initialization
+the segment computer can be used in a quite similar way than in the
+previous example:
 
  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco2 
 
