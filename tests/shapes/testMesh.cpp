@@ -166,7 +166,6 @@ bool testMesh()
   aMeshQ.addVertex(pq0);   aMeshQ.addVertex(pq1);   aMeshQ.addVertex(pq2);
   aMeshQ.addVertex(pq3);
   aMeshQ.addQuadFace(0,1,2,3);
-  unsigned int nQTr = aMeshQ.quadToTriangularFaces(); 
   
   trace.info() << "nb faces after quad to triangle transform: " << aMeshQ.nbFaces() << std::endl;  
   bool okQuadToTrans =  aMeshQ.nbFaces() == 2;
