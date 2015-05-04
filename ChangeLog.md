@@ -27,6 +27,10 @@
    Levall1ois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
 
+- *Image Package*
+ - Adding copy between images of different types. (Roland Denis [#1001]
+   (https://github.com/DGtal-team/DGtal/pull/1001))
+
 - *IO Package*
  - Limited interaction added to QGLViewer Viewer3D class. The user
    may assign integer identifiers (OpenGL names) to surfels and
