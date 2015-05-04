@@ -109,7 +109,6 @@ public:
 private:
     T z;
     Index i, j;
-  Scalar a,aa;
 
     // ------------------------- Internals ------------------------------------
 private:
