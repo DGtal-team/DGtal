@@ -27,6 +27,10 @@
    Levall1ois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
 
+- *Image Package*
+ - Adding copy between images of different types. (Roland Denis [#1001]
+   (https://github.com/DGtal-team/DGtal/pull/1001))
+
 - *IO Package*
  - Limited interaction added to QGLViewer Viewer3D class. The user
    may assign integer identifiers (OpenGL names) to surfels and
@@ -53,6 +57,9 @@
  - Board2D now supports quadratic Bezier curve drawing. (Tristan Roussillon,
   [#1002](https://github.com/DGtal-team/DGtal/pull/1002)
 
+- *Kernel Package*
+  - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
+    of lexicographical order in comparison operators of PointVector. (Roland Denis, [#996](https://github.com/DGtal-team/DGtal/pull/996))
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
