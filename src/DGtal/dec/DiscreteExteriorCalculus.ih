@@ -294,17 +294,7 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     ASSERT( _derivative.myContainer.cols() == kFormLength(order, duality) );
     _derivative.myContainer.setFromTriplets(triplets.begin(), triplets.end());
 
-    if (
-        (duality == DUAL && dim_embedded == 2 && dim_ambient == 2 && order == 1) ||
-        (duality == DUAL && dim_embedded == 2 && dim_ambient == 3 && order == 1)
-        )
-    {
-        //DGtal::trace.warning() << "prout minus " << dim_embedded << " " << dim_ambient << " " << order << "-" << duality << std::endl;
-        _derivative.myContainer *= -1;
-    } /*else {
-        DGtal::trace.warning() << "prout plus " << dim_embedded << " " << dim_ambient << " " << order << "-" << duality << std::endl;
-    }*/
-
+    if ( duality == DUAL && order*(dim_embedded-order)%2 != 0 ) return -1 * _derivative;
     return _derivative;
 }
 
@@ -609,7 +599,7 @@ template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename 
 DGtal::Order
 DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::actualOrder(const DGtal::Order& order, const DGtal::Duality& duality) const
 {
-    return (duality == PRIMAL) ? order : dim_embedded-order;
+    return duality == PRIMAL ? order : dim_embedded-order;
 }
 
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
@@ -619,9 +609,7 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     if (duality == PRIMAL) return 1;
 
     const DGtal::Dimension& primal_dim = myKSpace.uDim(cell);
-    const bool apply_sign = ((dim_embedded-primal_dim)*primal_dim % 2 == 1);
-
-    return apply_sign ? -1 : 1;
+    return (dim_embedded-primal_dim)*primal_dim % 2 != 0 ? -1 : 1;
 }
 
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
