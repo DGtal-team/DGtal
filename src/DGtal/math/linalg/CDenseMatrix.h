@@ -102,8 +102,8 @@ public:
 
     void checkConstConstraints() const
     {
-				Scalar aa = z(i, j);
-				aa = aa; // to avoid compiler warning
+				Scalar bb = z(i, j);
+				bb = bb; // to avoid compiler warning
     }
 
     // ------------------------- Private Datas --------------------------------
