@@ -39,8 +39,8 @@
 #define DiscreteExteriorCalculusFactory_h
 
 //////////////////////////////////////////////////////////////////////////////
-// Inclusions
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
+#include "DGtal/topology/DigitalSurface.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -71,6 +71,20 @@ public:
     static
     DiscreteExteriorCalculus<TDigitalSet::Point::dimension, TDigitalSet::Point::dimension, TLinearAlgebraBackend, TInteger>
     createFromDigitalSet(const TDigitalSet& set, const bool add_border = true);
+
+    /**
+     * Create DEC structure range of signed n-cells.
+     * DEC embedded dimension is equal to n.
+     * DEC ambient dimension is equal to n-cells kspace dimension.
+     * n-cells get attached to primal n-cell <-> dual 0-cell.
+     * @tparam TDigitalSurfaceContainer type of digital surface container. must be a model of concepts::CDigitalSurfaceContainer.
+     * @param surface the digital surface from which to build to DEC structure.
+     * @param add_border add border to the computed structure.
+     */
+    template <Dimension dim_embedded, typename TNSCellConstIterator>
+    static
+    DiscreteExteriorCalculus<dim_embedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
+    createFromNSCells(const TNSCellConstIterator begin, const TNSCellConstIterator end, const bool add_border = true);
 
     // ----------------------- Interface --------------------------------------
 public:

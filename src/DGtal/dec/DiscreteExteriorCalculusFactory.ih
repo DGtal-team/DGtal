@@ -35,6 +35,7 @@ DGtal::DiscreteExteriorCalculus<TDigitalSet::Point::dimension, TDigitalSet::Poin
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromDigitalSet(const TDigitalSet& _set, const bool add_border)
 {
     BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDigitalSet<TDigitalSet> ));
+
     typedef DGtal::DiscreteExteriorCalculus<TDigitalSet::Point::dimension, TDigitalSet::Point::dimension, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
@@ -72,7 +73,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     {
         const Cell& cell = csi->first;
         const DGtal::Dimension dual_dim = Calculus::dimension_embedded-calculus.myKSpace.uDim(cell);
-        const Scalar factor = 1/pow(2, dual_dim);
+        const Scalar factor = pow(.5, dual_dim);
 
         const Scalar normalized_size = csi->second * factor;
         ASSERT(normalized_size > 0 && normalized_size <= 1);
@@ -98,6 +99,69 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         calculus.myIndexSignedCells[cell_dim].push_back(signed_cell);
     }
 
+    return calculus;
+}
+
+template <typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dim_embedded, typename TNSCellConstIterator>
+DGtal::DiscreteExteriorCalculus<dim_embedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
+DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator begin, const TNSCellConstIterator end, const bool add_border)
+{
+    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<TNSCellConstIterator> ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<TNSCellConstIterator> ));
+
+    typedef DGtal::DiscreteExteriorCalculus<dim_embedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger> Calculus;
+    typedef typename Calculus::Cell Cell;
+    typedef typename Calculus::SCell SCell;
+    typedef typename Calculus::Scalar Scalar;
+    typedef typename Calculus::Point Point;
+    typedef typename Calculus::Property Property;
+    typedef typename Calculus::Properties Properties;
+    typedef typename Calculus::KSpace KSpace;
+    typedef typename KSpace::Cells Cells;
+
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<typename TNSCellConstIterator::value_type, SCell>::value ));
+
+    Calculus calculus;
+
+    // compute border cells
+    typedef std::map<Cell, int> AccumBorder;
+    AccumBorder border_accum;
+    for (TNSCellConstIterator ci=begin; ci!=end; ++ci)
+    {
+        const SCell cell_signed = *ci;
+        const Dimension cell_dim = calculus.myKSpace.sDim(cell_signed);
+        ASSERT_MSG( cell_dim == dim_embedded, "wrong n-cell dimension" );
+
+        calculus.insertSCell(cell_signed);
+
+        const Cell cell = calculus.myKSpace.unsigns(cell_signed);
+        const Cells border = calculus.myKSpace.uLowerIncident(cell);
+        for (typename Cells::ConstIterator bi=border.begin(), be=border.end(); bi!=be; bi++)
+        {
+            const Cell cell_border = *bi;
+            if (border_accum.find(cell_border) == border_accum.end()) border_accum[cell_border] = 0;
+            border_accum[cell_border]++;
+        }
+    }
+
+    // normalize cell size and set flipped flag
+    for (typename AccumBorder::const_iterator bi=border_accum.begin(), be=border_accum.end(); bi!=be; ++bi)
+    {
+        const Cell cell = bi->first;
+        const DGtal::Dimension dual_dim = Calculus::dimension_embedded-calculus.myKSpace.uDim(cell);
+        const Scalar factor = pow(.5, dual_dim);
+
+        const Scalar size_ratio = bi->second * factor;
+        ASSERT(size_ratio > 0 && size_ratio <= 1);
+
+        if (!add_border && size_ratio < 1) continue;
+
+        const SCell cell_signed = calculus.myKSpace.signs(cell, KSpace::POS);
+        calculus.insertSCell(cell_signed, size_ratio);
+    }
+
+        //DGtal::trace.warning() << "prout " << cell << " " << bi->second << " " << factor << " " << size_ratio << std::endl;
     return calculus;
 }
 
