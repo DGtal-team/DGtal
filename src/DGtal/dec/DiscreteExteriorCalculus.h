@@ -62,6 +62,9 @@
 
 namespace DGtal
 {
+  // forward factory declaration
+  template <typename TLinearAlgebraBackend, typename TInteger>
+  class DiscreteExteriorCalculusFactory;
 
   /////////////////////////////////////////////////////////////////////////////
   // template class DiscreteExteriorCalculus
@@ -83,6 +86,8 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
+
+    friend class DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>;
 
     typedef DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger> Self;
 
@@ -187,16 +192,6 @@ namespace DGtal
     typedef LinearOperator<Self, 1, DUAL, 1, DUAL> DualIdentity1;
     typedef LinearOperator<Self, 2, DUAL, 2, DUAL> DualIdentity2;
     typedef LinearOperator<Self, 3, DUAL, 3, DUAL> DualIdentity3;
-
-    /**
-     * Constructor.
-     * @tparam TDigitalSet type of digital set passed as argument.
-     * @param set the initial set copied.
-     * @param add_border add border to the computed structure.
-     * Set point get attached to primal n-cell <-> dual 0-cell.
-     */
-    template <typename TDigitalSet>
-    DiscreteExteriorCalculus(const TDigitalSet& set, const bool& add_border = true);
 
     /**
      * Constructor.
@@ -457,13 +452,6 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DiscreteExteriorCalculus(const DiscreteExteriorCalculus& other);
 
     // ------------------------- Internals ------------------------------------
   private:
