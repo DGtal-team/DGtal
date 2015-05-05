@@ -6,6 +6,7 @@
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
+#include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/GenericReader.h"
@@ -21,12 +22,13 @@ void usage2d()
 
     //! [usage_calculus_typedef]
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
+		typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
     //! [usage_calculus_typedef]
 
     // create discrete exterior calculus from set without border
     {
     //! [usage_calculus_definition_without_border]
-    Calculus calculus(generateRingSet(domain), false);
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateRingSet(domain), false);
 
     calculus.eraseCell(calculus.myKSpace.uSpel(Z2i::Point(8, 5)));
     //! [usage_calculus_definition_without_border]
@@ -41,7 +43,7 @@ void usage2d()
 
     // create discrete exterior calculus from set with border
     //! [usage_calculus_definition_with_border]
-    Calculus calculus(generateRingSet(domain));
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateRingSet(domain), true);
 
     calculus.eraseCell(calculus.myKSpace.uSpel(Z2i::Point(8, 5)));
     calculus.eraseCell(calculus.myKSpace.uCell(Z2i::Point(18, 11)));

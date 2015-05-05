@@ -5,6 +5,7 @@
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
+#include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 #include "DGtal/io/boards/Board2D.h"
 
 template <typename Calculus>
@@ -67,6 +68,7 @@ void propa_2d()
     trace.beginBlock("2d propagation");
 
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
+		typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
 
     {
         trace.beginBlock("solving time dependent equation");
@@ -75,7 +77,7 @@ void propa_2d()
         trace.info() << "cc = " << cc << endl;
 
         const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(29,29));
-        const Calculus calculus(generateDiskSet(domain), false);
+        const Calculus calculus = CalculusFactory::createFromDigitalSet(generateDiskSet(domain), false);
 
         //! [time_laplace]
         const Calculus::DualIdentity0 laplace = calculus.laplace<DUAL>() + 1e-8 * calculus.identity<0, DUAL>();
@@ -167,7 +169,7 @@ void propa_2d()
         trace.beginBlock("forced oscillations");
 
         const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(50,50));
-        const Calculus calculus(generateDiskSet(domain), true);
+        const Calculus calculus = CalculusFactory::createFromDigitalSet(generateDiskSet(domain), false);
 
         const Calculus::DualIdentity0 laplace = calculus.laplace<DUAL>();
         trace.info() << "laplace = " << laplace << endl;
