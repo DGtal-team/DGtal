@@ -179,9 +179,9 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
             accumulateAllLowerIncidentCells(calculus.myKSpace, cell_border, lower_accum);
         }
     }
-    DGtal::trace.warning() << "add_border=" <<  add_border << std::endl;
-    DGtal::trace.warning() << "border_accum_size=" <<  border_accum.size() << std::endl;
-    DGtal::trace.warning() << "lower_accum_size=" <<  lower_accum.size() << std::endl;
+    //DGtal::trace.warning() << "add_border=" <<  add_border << std::endl;
+    //DGtal::trace.warning() << "border_accum_size=" <<  border_accum.size() << std::endl;
+    //DGtal::trace.warning() << "lower_accum_size=" <<  lower_accum.size() << std::endl;
     ASSERT( !add_border || add_border && border_accum.empty() );
 
     typedef std::set<Cell> CellsSet;
@@ -193,9 +193,8 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         if (bai->second == 2) continue;
         insertAllLowerIncidentCells(calculus.myKSpace, bai->first, border);
     }
-    DGtal::trace.warning() << "border_size=" <<  border.size() << std::endl;
+    //DGtal::trace.warning() << "border_size=" <<  border.size() << std::endl;
     ASSERT( !add_border || add_border && border.empty() );
-
 
     // normalize cell size and set flipped flag
     for (typename CellsAccum::const_iterator lai=lower_accum.begin(), lae=lower_accum.end(); lai!=lae; ++lai)
@@ -209,14 +208,13 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
         const Scalar factor = pow(.5, 2*dual_dim-1);
         const Scalar size_ratio = lai->second * factor;
-        DGtal::trace.warning() << "    " << cell << " " << dual_dim << " " << size_ratio << " = " << lai->second << "*" << factor << std::endl;
+        //DGtal::trace.warning() << "    " << cell << " " << dual_dim << " " << size_ratio << " = " << lai->second << "*" << factor << std::endl;
         ASSERT(size_ratio > 0 && size_ratio <= 1);
 
         const SCell cell_signed = calculus.myKSpace.signs(cell, KSpace::POS);
         calculus.insertSCell(cell_signed, size_ratio);
     }
 
-        //DGtal::trace.warning() << "prout " << cell << " " << bi->second << " " << factor << " " << size_ratio << std::endl;
     return calculus;
 }
 
