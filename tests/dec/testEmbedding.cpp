@@ -41,6 +41,13 @@ int main(int argc, char* argv[])
     viewer2.camera()->setUpVector( Vec(0,0,2), false );
     viewer2.camera()->lookAt( Vec(0,0,0) );
 
+    Viewer viewer3(kspace_3d);
+    viewer3.show();
+    viewer3.setWindowTitle("embedding_2d_calculus_3d_no_border");
+    viewer3.camera()->setPosition( Vec(2,2,2) );
+    viewer3.camera()->setUpVector( Vec(0,0,2), false );
+    viewer3.camera()->lookAt( Vec(0,0,0) );
+
     {
         trace.beginBlock("1d manifold embedding");
 
@@ -260,7 +267,6 @@ int main(int argc, char* argv[])
 
         trace.endBlock();
 
-
         trace.endBlock();
     }
 
@@ -312,7 +318,7 @@ int main(int argc, char* argv[])
 
         {
             Board2D board;
-            board << Z2i::Domain(Z2i::Point(-1,-1), Z2i::Point(2,10));
+            board << Z2i::Domain(Z2i::Point(-1,-1), Z2i::Point(10,10));
             board << calculus_2d_manual;
             board.saveSVG("embedding_2d_calculus_2d.svg");
         }
@@ -324,102 +330,137 @@ int main(int argc, char* argv[])
         calculus_2d_factory.resetSizeRatios();
         trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
 
-        Calculus3D calculus_3d;
+        Calculus3D calculus_3d_manual;
         {
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
-                calculus_3d.insertSCell( calculus_3d.myKSpace.sCell(Z3i::Point(xx,yy,0)) );
+                calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,yy,0)) );
 
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
-                calculus_3d.insertSCell( calculus_3d.myKSpace.sCell(Z3i::Point(xx,4,yy)) );
+                calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,4,yy)) );
 
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
-                calculus_3d.insertSCell( calculus_3d.myKSpace.sCell(Z3i::Point(xx,4-yy,4),
+                calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,4-yy,4),
                     xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
                     yy%2 != 0 ? Calculus3D::KSpace::NEG : // y-edge
                     Calculus3D::KSpace::POS) );
 
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
-                calculus_3d.insertSCell( calculus_3d.myKSpace.sCell(Z3i::Point(xx,-yy,4),
+                calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,-yy,4),
                     xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
                     yy%2 != 0 ? Calculus3D::KSpace::NEG : // y-edge
                     Calculus3D::KSpace::POS) );
 
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
-                calculus_3d.insertSCell( calculus_3d.myKSpace.sCell(Z3i::Point(xx,-4,4-yy),
+                calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,-4,4-yy),
                     xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
                     yy%2 != 0 ? Calculus3D::KSpace::NEG : // y-edge
                     Calculus3D::KSpace::POS) );
 
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
-                calculus_3d.insertSCell( calculus_3d.myKSpace.sCell(Z3i::Point(4,yy,-xx),
+                calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,yy,-xx),
                     xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::POS : // surfels
                     xx%2 != 0 ? Calculus3D::KSpace::NEG : // x-edge
                     Calculus3D::KSpace::POS) );
 
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
-                calculus_3d.insertSCell( calculus_3d.myKSpace.sCell(Z3i::Point(4-xx,yy,-4),
+                calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4-xx,yy,-4),
                     xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
                     xx%2 != 0 ? Calculus3D::KSpace::NEG : // x-edge
                     Calculus3D::KSpace::POS) );
 
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
-                calculus_3d.insertSCell( calculus_3d.myKSpace.sCell(Z3i::Point(-xx,yy,-4),
+                calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(-xx,yy,-4),
                     xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
                     xx%2 != 0 ? Calculus3D::KSpace::NEG : // x-edge
                     Calculus3D::KSpace::POS) );
 
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
-                calculus_3d.insertSCell( calculus_3d.myKSpace.sCell(Z3i::Point(-4,yy,-4+xx),
+                calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(-4,yy,-4+xx),
                     xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
                     xx%2 != 0 ? Calculus3D::KSpace::POS : // x-edge
                     Calculus3D::KSpace::POS) );
         }
-        trace.info() << "calculus_3d=" << calculus_3d << endl;
+        trace.info() << "calculus_3d_manual=" << calculus_3d_manual << endl;
 
-        Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer2, calculus_3d);
+        Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer2, calculus_3d_manual);
         viewer2 << Viewer::updateDisplay;
+
+        typedef std::list<Calculus3D::SCell> SCells3D;
+        SCells3D cells_3d;
+        for (int kk=0; kk<calculus_3d_manual.kFormLength(2, PRIMAL); kk++) cells_3d.push_back( calculus_3d_manual.getSCell(2, PRIMAL, kk) );
+        Calculus3D calculus_3d_factory = CalculusFactory::createFromNSCells<2>(cells_3d.begin(), cells_3d.end(), true);
+        calculus_3d_factory.resetSizeRatios();
+        trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
+
+        trace.beginBlock("checking operators");
 
         { // check primal operators
             const Calculus2D::PrimalIdentity0 primal_laplace_2d = calculus_2d_manual.laplace<PRIMAL>();
-            const Calculus3D::PrimalIdentity0 primal_laplace_3d = calculus_3d.laplace<PRIMAL>();
+            const Calculus3D::PrimalIdentity0 primal_laplace_3d = calculus_3d_manual.laplace<PRIMAL>();
             trace.info() << "primal_laplace_2d=" << primal_laplace_2d << endl;
             trace.info() << "primal_laplace_3d=" << primal_laplace_3d << endl;
             trace.info() << "primal_laplace_container=" << endl << MatrixXd(primal_laplace_2d.myContainer) << endl;
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<0,PRIMAL>(), calculus_3d.hodge<0,PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<1,PRIMAL>(), calculus_3d.hodge<1,PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<2,PRIMAL>(), calculus_3d.hodge<2,PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.derivative<0,PRIMAL>(), calculus_3d.derivative<0,PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.derivative<1,PRIMAL>(), calculus_3d.derivative<1,PRIMAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.hodge<0,PRIMAL>(), calculus_3d_manual.hodge<0,PRIMAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.hodge<1,PRIMAL>(), calculus_3d_manual.hodge<1,PRIMAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.hodge<2,PRIMAL>(), calculus_3d_manual.hodge<2,PRIMAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.derivative<0,PRIMAL>(), calculus_3d_manual.derivative<0,PRIMAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.derivative<1,PRIMAL>(), calculus_3d_manual.derivative<1,PRIMAL>()) );
             FATAL_ERROR( equal(primal_laplace_2d, primal_laplace_3d) );
         }
 
         { // check dual operators
             const Calculus2D::DualIdentity0 dual_laplace_2d = calculus_2d_manual.laplace<DUAL>();
-            const Calculus3D::DualIdentity0 dual_laplace_3d = calculus_3d.laplace<DUAL>();
+            const Calculus3D::DualIdentity0 dual_laplace_3d = calculus_3d_manual.laplace<DUAL>();
             trace.info() << "dual_laplace_2d=" << dual_laplace_2d << endl;
             trace.info() << "dual_laplace_3d=" << dual_laplace_3d << endl;
             trace.info() << "dual_laplace_container=" << endl << MatrixXd(dual_laplace_2d.myContainer) << endl;
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<0,DUAL>(), calculus_3d.hodge<0,DUAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<1,DUAL>(), calculus_3d.hodge<1,DUAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<2,DUAL>(), calculus_3d.hodge<2,DUAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.derivative<0,DUAL>(), calculus_3d.derivative<0,DUAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.derivative<1,DUAL>(), calculus_3d.derivative<1,DUAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.hodge<0,DUAL>(), calculus_3d_manual.hodge<0,DUAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.hodge<1,DUAL>(), calculus_3d_manual.hodge<1,DUAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.hodge<2,DUAL>(), calculus_3d_manual.hodge<2,DUAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.derivative<0,DUAL>(), calculus_3d_manual.derivative<0,DUAL>()) );
+            FATAL_ERROR( equal(calculus_2d_manual.derivative<1,DUAL>(), calculus_3d_manual.derivative<1,DUAL>()) );
             FATAL_ERROR( equal(dual_laplace_2d, dual_laplace_3d) );
         }
 
         { // checking dual laplace factory calculus vs manual calculus
             FATAL_ERROR( equal(calculus_2d_manual.laplace<DUAL>(), calculus_2d_factory.laplace<DUAL>()) );
-            //FATAL_ERROR( equal(calculus_3d_manual.laplace<DUAL>(), calculus_3d_factory.laplace<DUAL>()) );
+            FATAL_ERROR( equal(calculus_3d_manual.laplace<DUAL>(), calculus_3d_factory.laplace<DUAL>()) );
         }
+
+        trace.endBlock();
+
+        trace.beginBlock("checking border");
+
+        { // 2d ambient border
+            const Calculus2D calculus_2d_factory_no_border = CalculusFactory::createFromNSCells<2>(cells_2d.begin(), cells_2d.end(), false);
+            trace.info() << "calculus_2d_factory_no_border=" << calculus_2d_factory_no_border << endl;
+            trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
+
+            Board2D board;
+            board << Z2i::Domain(Z2i::Point(-1,-1), Z2i::Point(10,10));
+            board << calculus_2d_factory_no_border;
+            board.saveSVG("embedding_2d_calculus_2d_no_border.svg");
+        }
+
+        { // 3d ambient border
+            const Calculus3D calculus_3d_factory_no_border = CalculusFactory::createFromNSCells<2>(cells_3d.begin(), cells_3d.end(), false);
+            trace.info() << "calculus_3d_factory_no_border=" << calculus_3d_factory_no_border << endl;
+            trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
+
+            Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer3, calculus_3d_factory_no_border);
+            viewer3 << Viewer::updateDisplay;
+        }
+
+        trace.endBlock();
 
         trace.endBlock();
     }

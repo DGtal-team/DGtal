@@ -103,17 +103,32 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 }
 
 template <typename TLinearAlgebraBackend, typename TInteger>
-template <typename KSpace, typename CellsContainer>
+template <typename KSpace, typename CellsSet>
 void
-DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsContainer::value_type& cell, CellsContainer& cells)
+DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsSet::value_type& cell, CellsSet& cells_set)
 {
     typedef typename KSpace::Cells Cells;
 
-    cells.insert(cell);
+    cells_set.insert(cell);
 
     const Cells border = kspace.uLowerIncident(cell);
     for (typename Cells::ConstIterator bi=border.begin(), be=border.end(); bi!=be; bi++)
-        insertAllLowerIncidentCells(kspace, *bi, cells);
+        insertAllLowerIncidentCells(kspace, *bi, cells_set);
+}
+
+template <typename TLinearAlgebraBackend, typename TInteger>
+template <typename KSpace, typename CellsAccum>
+void
+DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumulateAllLowerIncidentCells(const KSpace& kspace, const typename CellsAccum::key_type& cell, CellsAccum& cells_accum)
+{
+    typedef typename KSpace::Cells Cells;
+
+    if (cells_accum.find(cell) == cells_accum.end()) cells_accum[cell] = 0;
+    cells_accum[cell]++;
+
+    const Cells border = kspace.uLowerIncident(cell);
+    for (typename Cells::ConstIterator bi=border.begin(), be=border.end(); bi!=be; bi++)
+        accumulateAllLowerIncidentCells(kspace, *bi, cells_accum);
 }
 
 
@@ -140,8 +155,9 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     Calculus calculus;
 
     // compute dim_embedded-1 cells border
-    typedef std::map<Cell, int> AccumBorder;
-    AccumBorder border_accum;
+    typedef std::map<Cell, int> CellsAccum;
+    CellsAccum border_accum;
+    CellsAccum lower_accum;
     for (TNSCellConstIterator ci=begin; ci!=end; ++ci)
     {
         const SCell cell_signed = *ci;
@@ -155,35 +171,46 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         for (typename Cells::ConstIterator bi=border.begin(), be=border.end(); bi!=be; bi++)
         {
             const Cell cell_border = *bi;
-            if (border_accum.find(cell_border) == border_accum.end()) border_accum[cell_border] = 0;
-            border_accum[cell_border]++;
+            if (!add_border)
+            {
+                if (border_accum.find(cell_border) == border_accum.end()) border_accum[cell_border] = 0;
+                border_accum[cell_border]++;
+            }
+            accumulateAllLowerIncidentCells(calculus.myKSpace, cell_border, lower_accum);
         }
     }
+    DGtal::trace.warning() << "add_border=" <<  add_border << std::endl;
+    DGtal::trace.warning() << "border_accum_size=" <<  border_accum.size() << std::endl;
+    DGtal::trace.warning() << "lower_accum_size=" <<  lower_accum.size() << std::endl;
+    ASSERT( !add_border || add_border && border_accum.empty() );
 
-    typedef std::set<Cell> Border;
-    Border border;
-    for (typename AccumBorder::const_iterator bai=border_accum.begin(), bae=border_accum.end(); bai!=bae; bai++)
+    typedef std::set<Cell> CellsSet;
+    CellsSet border;
+    for (typename CellsAccum::const_iterator bai=border_accum.begin(), bae=border_accum.end(); bai!=bae; bai++)
     {
         ASSERT( bai->second > 0 );
         ASSERT( bai->second < 3 );
         if (bai->second == 2) continue;
-
         insertAllLowerIncidentCells(calculus.myKSpace, bai->first, border);
     }
     DGtal::trace.warning() << "border_size=" <<  border.size() << std::endl;
+    ASSERT( !add_border || add_border && border.empty() );
 
 
     // normalize cell size and set flipped flag
-    for (typename AccumBorder::const_iterator bi=border_accum.begin(), be=border_accum.end(); bi!=be; ++bi)
+    for (typename CellsAccum::const_iterator lai=lower_accum.begin(), lae=lower_accum.end(); lai!=lae; ++lai)
     {
-        const Cell cell = bi->first;
+        const Cell cell = lai->first;
+        if (border.find(cell) != border.end()) continue;
+
         const DGtal::Dimension dual_dim = Calculus::dimension_embedded-calculus.myKSpace.uDim(cell);
-        const Scalar factor = pow(.5, dual_dim);
+        ASSERT( dual_dim > 0 );
+        ASSERT( dual_dim <= Calculus::dimension_embedded );
 
-        const Scalar size_ratio = bi->second * factor;
+        const Scalar factor = pow(.5, 2*dual_dim-1);
+        const Scalar size_ratio = lai->second * factor;
+        DGtal::trace.warning() << "    " << cell << " " << dual_dim << " " << size_ratio << " = " << lai->second << "*" << factor << std::endl;
         ASSERT(size_ratio > 0 && size_ratio <= 1);
-
-        if (!add_border && size_ratio < 1) continue;
 
         const SCell cell_signed = calculus.myKSpace.signs(cell, KSpace::POS);
         calculus.insertSCell(cell_signed, size_ratio);

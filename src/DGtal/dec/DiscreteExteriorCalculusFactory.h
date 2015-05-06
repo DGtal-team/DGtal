@@ -97,10 +97,15 @@ private:
     // ------------------------- Hidden services ------------------------------
 protected:
 
-    template <typename KSpace, typename CellsContainer>
+    template <typename KSpace, typename CellsSet>
     static
     void
-    insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsContainer::value_type& cell, CellsContainer& cells);
+    insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsSet::value_type& cell, CellsSet& cells_set);
+
+    template <typename KSpace, typename CellsAccum>
+    static
+    void
+    accumulateAllLowerIncidentCells(const KSpace& kspace, const typename CellsAccum::key_type& cell, CellsAccum& cells_accum);
 
 private:
 
