@@ -126,6 +126,14 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
 }
 
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+void
+DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::resetSizeRatios()
+{
+    for (typename Properties::iterator iter=myCellProperties.begin(), end=myCellProperties.end(); iter!=end; iter++)
+        iter->second.size_ratio = 1;
+}
+
+template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
 std::string
 DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::className() const
 {
@@ -491,6 +499,13 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     const SCell& signed_cell = myIndexSignedCells[actual_order][index];
     ASSERT( myKSpace.sDim(signed_cell) == actual_order );
     return signed_cell;
+}
+
+template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+bool
+DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::containsCell(const Cell& cell) const
+{
+    return myCellProperties.find(cell) != myCellProperties.end();
 }
 
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>

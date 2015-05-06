@@ -367,10 +367,17 @@ namespace DGtal
 
     /**
      * Check if cell is flipped in display.
-     * @param cell the tested cell
+     * @param cell the tested cell.
      */
     bool
     isCellFlipped(const Cell& cell) const;
+
+    /**
+     * Check is structure contains cell.
+     * @param cell the tested cell.
+     */
+    bool
+    containsCell(const Cell& cell) const;
 
     /**
      * Get k-form index from cell.
@@ -416,10 +423,17 @@ namespace DGtal
     edgeDirection(const Cell& cell, const Duality& duality) const;
 
     /**
+     * Reset all primal to dual cell size ratios to 1.
+     */
+    void
+    resetSizeRatios();
+
+    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    bool
+    isValid() const;
 
     // ------------------------- Private Datas --------------------------------
   private:
