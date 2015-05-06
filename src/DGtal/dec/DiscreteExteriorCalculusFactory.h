@@ -97,6 +97,11 @@ private:
     // ------------------------- Hidden services ------------------------------
 protected:
 
+    template <typename KSpace, typename CellsContainer>
+    static
+    void
+    insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsContainer::value_type& cell, CellsContainer& cells);
+
 private:
 
     /**

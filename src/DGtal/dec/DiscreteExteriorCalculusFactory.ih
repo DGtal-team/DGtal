@@ -103,6 +103,21 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 }
 
 template <typename TLinearAlgebraBackend, typename TInteger>
+template <typename KSpace, typename CellsContainer>
+void
+DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsContainer::value_type& cell, CellsContainer& cells)
+{
+    typedef typename KSpace::Cells Cells;
+
+    cells.insert(cell);
+
+    const Cells border = kspace.uLowerIncident(cell);
+    for (typename Cells::ConstIterator bi=border.begin(), be=border.end(); bi!=be; bi++)
+        insertAllLowerIncidentCells(kspace, *bi, cells);
+}
+
+
+template <typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Dimension dim_embedded, typename TNSCellConstIterator>
 DGtal::DiscreteExteriorCalculus<dim_embedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator begin, const TNSCellConstIterator end, const bool add_border)
@@ -124,7 +139,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
     Calculus calculus;
 
-    // compute border cells
+    // compute dim_embedded-1 cells border
     typedef std::map<Cell, int> AccumBorder;
     AccumBorder border_accum;
     for (TNSCellConstIterator ci=begin; ci!=end; ++ci)
@@ -144,6 +159,19 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
             border_accum[cell_border]++;
         }
     }
+
+    typedef std::set<Cell> Border;
+    Border border;
+    for (typename AccumBorder::const_iterator bai=border_accum.begin(), bae=border_accum.end(); bai!=bae; bai++)
+    {
+        ASSERT( bai->second > 0 );
+        ASSERT( bai->second < 3 );
+        if (bai->second == 2) continue;
+
+        insertAllLowerIncidentCells(calculus.myKSpace, bai->first, border);
+    }
+    DGtal::trace.warning() << "border_size=" <<  border.size() << std::endl;
+
 
     // normalize cell size and set flipped flag
     for (typename AccumBorder::const_iterator bi=border_accum.begin(), be=border_accum.end(); bi!=be; ++bi)
