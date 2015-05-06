@@ -198,10 +198,11 @@ namespace DGtal
    * @param aImg1 the image to fill
    * @param aImg2 the image to copy
    *
-   * @tparam I any model of CImage
+   * @tparam I1 any model of CImage
+   * @tparam I2 any model of CConstImage
    */
-  template<typename I>
-  void imageFromImage(I& aImg1, const I& aImg2); 
+  template<typename I1, typename I2>
+  void imageFromImage(I1& aImg1, const I2& aImg2); 
 
   /**
    * Insert @a aPoint in @a aSet and if (and only if)
@@ -310,7 +311,7 @@ namespace DGtal
    * @return 'true' if a new point is found and the value read 
    * but 'false' otherwise
    *
-   * @tparam I any model of CImage
+   * @tparam I any model of CConstImage
    * @tparam S any model of CDigitalSet
    *
    * The general behavior is like: 
@@ -350,7 +351,7 @@ namespace DGtal
     typedef typename Image::Point Point;
     typedef TValue Value;
     
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
     BOOST_CONCEPT_ASSERT(( CQuantity<Value> ));
     
@@ -385,7 +386,7 @@ namespace DGtal
      * 
      * @return val between _ZERO_ or aVal
      */
-    Value operator()( const Point &aPoint )
+    Value operator()( const Point &aPoint ) const
     {
       if ((myImage->domain().isInside(aPoint)))
       {

@@ -114,7 +114,7 @@ bool testImageFromSet()
 
   Image image3 = image;
   //fill image3 from image2
-  imageFromImage(image3, image2);
+  imageFromImage(image3, const_cast<Image const&>(image2));
   //image2 and image3 should be equal,
   //but both different from image
   Image::ConstRange rimg = image.constRange();
