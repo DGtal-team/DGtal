@@ -267,6 +267,44 @@ int main(int argc, char* argv[])
 
         trace.endBlock();
 
+        trace.beginBlock("checking area");
+
+        {
+            const Calculus2D::Scalar area_th = calculus_2d_factory.kFormLength(0, DUAL);
+            const Calculus2D::Scalar area_primal = (
+                calculus_2d_factory.hodge<0, PRIMAL>() *
+                Calculus2D::PrimalForm0(calculus_2d_factory, Eigen::VectorXd::Ones(calculus_2d_factory.kFormLength(0, PRIMAL)))
+                ).myContainer.array().sum();
+            const Calculus2D::Scalar area_dual = (
+                calculus_2d_factory.hodge<0, DUAL>() *
+                Calculus2D::DualForm0(calculus_2d_factory, Eigen::VectorXd::Ones(calculus_2d_factory.kFormLength(0, DUAL)))
+                ).myContainer.array().sum();
+            trace.info() << "area_2d_th=" << area_th << endl;
+            trace.info() << "area_2d_primal=" << area_primal << endl;
+            trace.info() << "area_2d_dual=" << area_dual << endl;
+            FATAL_ERROR( area_th == area_primal );
+            FATAL_ERROR( area_th == area_dual );
+        }
+
+        {
+            const Calculus3D::Scalar area_th = calculus_3d_factory.kFormLength(0, DUAL);
+            const Calculus3D::Scalar area_primal = (
+                calculus_3d_factory.hodge<0, PRIMAL>() *
+                Calculus3D::PrimalForm0(calculus_3d_factory, Eigen::VectorXd::Ones(calculus_3d_factory.kFormLength(0, PRIMAL)))
+                ).myContainer.array().sum();
+            const Calculus3D::Scalar area_dual = (
+                calculus_3d_factory.hodge<0, DUAL>() *
+                Calculus3D::DualForm0(calculus_3d_factory, Eigen::VectorXd::Ones(calculus_3d_factory.kFormLength(0, DUAL)))
+                ).myContainer.array().sum();
+            trace.info() << "area_3d_th=" << area_th << endl;
+            trace.info() << "area_3d_primal=" << area_primal << endl;
+            trace.info() << "area_3d_dual=" << area_dual << endl;
+            FATAL_ERROR( area_th == area_primal );
+            FATAL_ERROR( area_th == area_dual );
+        }
+
+        trace.endBlock();
+
         trace.endBlock();
     }
 
@@ -326,7 +364,8 @@ int main(int argc, char* argv[])
         typedef std::list<Calculus2D::SCell> SCells2D;
         SCells2D cells_2d;
         for (int kk=0; kk<calculus_2d_manual.kFormLength(2, PRIMAL); kk++) cells_2d.push_back( calculus_2d_manual.getSCell(2, PRIMAL, kk) );
-        Calculus2D calculus_2d_factory = CalculusFactory::createFromNSCells<2>(cells_2d.begin(), cells_2d.end(), true);
+        const Calculus2D calculus_2d_factory_weighed = CalculusFactory::createFromNSCells<2>(cells_2d.begin(), cells_2d.end(), true);
+        Calculus2D calculus_2d_factory = calculus_2d_factory_weighed;
         calculus_2d_factory.resetSizeRatios();
         trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
 
@@ -397,7 +436,8 @@ int main(int argc, char* argv[])
         typedef std::list<Calculus3D::SCell> SCells3D;
         SCells3D cells_3d;
         for (int kk=0; kk<calculus_3d_manual.kFormLength(2, PRIMAL); kk++) cells_3d.push_back( calculus_3d_manual.getSCell(2, PRIMAL, kk) );
-        Calculus3D calculus_3d_factory = CalculusFactory::createFromNSCells<2>(cells_3d.begin(), cells_3d.end(), true);
+        const Calculus3D calculus_3d_factory_weighed = CalculusFactory::createFromNSCells<2>(cells_3d.begin(), cells_3d.end(), true);
+        Calculus3D calculus_3d_factory = calculus_3d_factory_weighed;
         calculus_3d_factory.resetSizeRatios();
         trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
 
@@ -458,6 +498,44 @@ int main(int argc, char* argv[])
 
             Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer3, calculus_3d_factory_no_border);
             viewer3 << Viewer::updateDisplay;
+        }
+
+        trace.endBlock();
+
+        trace.beginBlock("checking area");
+
+        {
+            const Calculus2D::Scalar area_th = calculus_2d_factory_weighed.kFormLength(0, DUAL);
+            const Calculus2D::Scalar area_primal = (
+                calculus_2d_factory_weighed.hodge<0, PRIMAL>() *
+                Calculus2D::PrimalForm0(calculus_2d_factory_weighed, Eigen::VectorXd::Ones(calculus_2d_factory_weighed.kFormLength(0, PRIMAL)))
+                ).myContainer.array().sum();
+            const Calculus2D::Scalar area_dual = (
+                calculus_2d_factory_weighed.hodge<0, DUAL>() *
+                Calculus2D::DualForm0(calculus_2d_factory_weighed, Eigen::VectorXd::Ones(calculus_2d_factory_weighed.kFormLength(0, DUAL)))
+                ).myContainer.array().sum();
+            trace.info() << "area_2d_th=" << area_th << endl;
+            trace.info() << "area_2d_primal=" << area_primal << endl;
+            trace.info() << "area_2d_dual=" << area_dual << endl;
+            FATAL_ERROR( area_th == area_primal );
+            FATAL_ERROR( area_th == area_dual );
+        }
+
+        {
+            const Calculus3D::Scalar area_th = calculus_3d_factory_weighed.kFormLength(0, DUAL);
+            const Calculus3D::Scalar area_primal = (
+                calculus_3d_factory_weighed.hodge<0, PRIMAL>() *
+                Calculus3D::PrimalForm0(calculus_3d_factory_weighed, Eigen::VectorXd::Ones(calculus_3d_factory_weighed.kFormLength(0, PRIMAL)))
+                ).myContainer.array().sum();
+            const Calculus3D::Scalar area_dual = (
+                calculus_3d_factory_weighed.hodge<0, DUAL>() *
+                Calculus3D::DualForm0(calculus_3d_factory_weighed, Eigen::VectorXd::Ones(calculus_3d_factory_weighed.kFormLength(0, DUAL)))
+                ).myContainer.array().sum();
+            trace.info() << "area_3d_th=" << area_th << endl;
+            trace.info() << "area_3d_primal=" << area_primal << endl;
+            trace.info() << "area_3d_dual=" << area_dual << endl;
+            FATAL_ERROR( area_th == area_primal );
+            FATAL_ERROR( area_th == area_dual );
         }
 
         trace.endBlock();
