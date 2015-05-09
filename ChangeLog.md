@@ -25,12 +25,18 @@
   WITH_PATATE=true): http://patate.gforge.inria.fr/html/. See
   SphereFittingEstimator (David Coeurjolly,
   [#929](https://github.com/DGtal-team/DGtal/pull/929))
+ - Algorithm to compute the union of two DSSs in
+	logarithmic time (Isabelle Sivignon, [#949](https://github.com/DGtal-team/DGtal/pull/949))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
    linear model estimation of scalar data. (David Coeurjolly, Jérémy
    Levall1ois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
+
+- *Image Package*
+ - Adding copy between images of different types. (Roland Denis [#1001]
+   (https://github.com/DGtal-team/DGtal/pull/1001))
 
 - *IO Package*
  - New 2D DEC board style with orientated cells.
@@ -56,9 +62,13 @@
  specified by the user) to a given colormap. (David Coeurjolly,
  [#987](https://github.com/DGtal-team/DGtal/pull/987)
  - New flag (-DWITH_QT5) enables QT5 support in libqglviewer. (Nicolas
- Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983) 
- 
+ Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983)
+ - Board2D now supports quadratic Bezier curve drawing. (Tristan Roussillon,
+  [#1002](https://github.com/DGtal-team/DGtal/pull/1002)
 
+- *Kernel Package*
+  - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
+    of lexicographical order in comparison operators of PointVector. (Roland Denis, [#996](https://github.com/DGtal-team/DGtal/pull/996))
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
@@ -78,12 +88,14 @@
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
  - Add various methods in the Mesh class to get the bounding box, to change the
-   mesh scale or to subdivide triangular faces. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990))
+   mesh scale or to subdivide triangular faces. (Bertrand Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990) and  [#992](https://github.com/DGtal-team/DGtal/pull/992))
 
-- New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
+ - New copy constructor and copy operator on Mesh object (and documentation added about vertex ordering for obj format).
    (Bertrand Kerautret, [#976](https://github.com/DGtal-team/DGtal/pull/976))
 
-
+- *Arithmetic Package*
+ - Algorithm to compute the fraction of smallest denominator in between
+	two irreducible fractions (Isabelle Sivignon [#949](https://github.com/DGtal-team/DGtal/pull/949))
 
 
 ## Bug Fixes
@@ -113,7 +125,11 @@
  - Fix bug of method ArithmeticalDSL::getPoint with negative values
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
- - Fix too restrictive asserts of methods ArithmeticalDSSConvexHull::smartCH and ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative positions as input arguments. (Isabelle Sivignon, [#950](https://github.com/DGtal-team/DGtal/pull/950))
+ - Fix too restrictive asserts of methods
+	ArithmeticalDSSConvexHull::smartCH and
+	ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative
+	positions as input arguments. (Isabelle Sivignon,
+	[#950](https://github.com/DGtal-team/DGtal/pull/950)) 	 
  - Fix Bezout Vector computation (Isabelle Sivignon,
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
  - Fix issues with SphereFitting and TensorVoting local estimators on
@@ -134,6 +150,8 @@
    Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
  - Fix warnings message of std::abs in Display3D.    (Bertrand Kerautret,
    [#991](https://github.com/DGtal-team/DGtal/pull/991))
+ - Fix memory leaks present in the Viewer3d.  (Bertrand Kerautret,
+   [#995](https://github.com/DGtal-team/DGtal/pull/995))
 
 
 - *Kernel Package*
@@ -141,6 +159,9 @@
     the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
     (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
 
+- *Topology  Package*
+  - Fix loop bug in extractAllConnectedSCell of Surfaces from helpers.
+    (Bertrand Kerautret, [994](https://github.com/DGtal-team/DGtal/pull/994)).
 
 
 # DGtal 0.8

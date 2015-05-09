@@ -148,13 +148,28 @@ bool testMesh()
   RealPoint pr2 (1,1);
   aMeshR.addVertex(pr0);   aMeshR.addVertex(pr1);   aMeshR.addVertex(pr2);
   aMeshR.addTriangularFace(0,1,2);
-  //unsigned int nbFaces = aMeshR.subDivideTriangularFaces(0.5);
+  aMeshR.subDivideTriangularFaces(0.5); 
 
   trace.info() << "nb vertex after subdivision: " << aMeshR.nbVertex() << std::endl;
   trace.info() << "nb faces after subdivision: " << aMeshR.nbFaces() << std::endl;  
   trace.info() << "New point: " << aMeshR.getVertex(aMeshR.nbVertex()-1) << std::endl;    
   bool okSubDivide =  aMeshR.nbVertex()==4 && aMeshR.nbFaces()==3 && 
                       aMeshR.getVertex(aMeshR.nbVertex()-1) == RealPoint(2.0/3.0, 1.0/3.0);
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing mesh quad transform  ..." );
+  Mesh<RealPoint> aMeshQ;
+  RealPoint pq0 (0,0);
+  RealPoint pq1 (1,0);
+  RealPoint pq2 (1,1);
+  RealPoint pq3 (0,1);
+  aMeshQ.addVertex(pq0);   aMeshQ.addVertex(pq1);   aMeshQ.addVertex(pq2);
+  aMeshQ.addVertex(pq3);
+  aMeshQ.addQuadFace(0,1,2,3);
+  aMeshQ.quadToTriangularFaces(); 
+
+  trace.info() << "nb faces after quad to triangle transform: " << aMeshQ.nbFaces() << std::endl;  
+  bool okQuadToTrans =  aMeshQ.nbFaces() == 2;
   trace.endBlock();
 
 
@@ -165,7 +180,8 @@ bool testMesh()
                     aMesh.nbFaces() == aMesh3.nbFaces() && aMesh.nbVertex() == aMesh3.nbVertex() &&
                     aMesh.getVertex(0) == aMesh2.getVertex(0) && aMesh.getVertex(0) == aMesh3.getVertex(0);
   trace.endBlock();
-  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK && okSubDivide;   
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK && 
+       okSubDivide && okQuadToTrans;   
   trace.endBlock();
   return ok;
 

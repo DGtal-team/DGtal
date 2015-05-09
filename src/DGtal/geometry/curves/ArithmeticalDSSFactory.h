@@ -128,7 +128,7 @@ namespace DGtal
      */
     static DSS createPattern(const Point& aF, const Point& aL);
 
-    /**
+  /**
      * @brief Method that creates a DSS that is a reversed pattern
      * or a repetition of a reversed pattern from two input digital points,
      * viewed as lower leaning points. Creates the pattern from
@@ -142,7 +142,27 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the vector
      * starting from @a aF and pointing to @a aL
      */
-    static DSS createReversedPattern(const Point& aF, const Point& aL);
+  static DSS createReversedPattern(const Point& aF, const Point& aL);
+  
+  /**
+   * @brief Method that creates a DSS from a direction vector, a first and last point and one upper leaning point 
+   *
+   * @param aA y-component of the direction vector
+   * @param aB x-component of the direction vector
+   * @param aF first input digital point
+   * @param aL second input digital point
+   * @param aU upper leaning point
+   * @return a DSS
+   *
+   * NB: logarithmic-time in the max of the greatest component of the vector
+   * starting from @a aU and pointing to @a aL and the greatest
+   * component of the vector starting from @a aF and pointing to @a
+   * aU. 
+   */
+  
+  static DSS createDSS(const Coordinate& aA, const Coordinate& aB, const Point& aF, const Point& aL, const Point& aU);
+  
+
 
     // ----------------------- Internals -------------------------------------
   private:
