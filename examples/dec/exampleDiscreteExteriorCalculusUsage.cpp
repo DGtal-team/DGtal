@@ -20,7 +20,7 @@ void usage2d()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(9,9));
 
     //! [usage_calculus_typedef]
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
     //! [usage_calculus_typedef]
 
     // create discrete exterior calculus from set without border
@@ -118,7 +118,7 @@ void usage2d()
 
         // create dual gradient vector field and hodge*d dual one form
         //! [usage_primal_hodge_gradient]
-        const Calculus::PrimalHodge1 primal_one_hodge = calculus.primalHodge<1>();
+        const Calculus::PrimalHodge1 primal_one_hodge = calculus.hodge<1, PRIMAL>();
         const Calculus::DualForm1 dual_one_form = primal_one_hodge * primal_zero_derivative * primal_zero_form;
         const Calculus::DualVectorField dual_vector_field = calculus.sharp(dual_one_form);
         //! [usage_primal_hodge_gradient]
@@ -183,7 +183,7 @@ void usage2d()
         }
 
         // create primal gradient vector field and hodge*d primal one form
-        const Calculus::DualHodge1 dual_one_hodge = calculus.dualHodge<1>();
+        const Calculus::DualHodge1 dual_one_hodge = calculus.hodge<1, DUAL>();
         const Calculus::PrimalForm1 primal_one_form = dual_one_hodge * dual_zero_derivative * dual_zero_form;
         const Calculus::PrimalVectorField primal_vector_field = calculus.sharp(primal_one_form);
 

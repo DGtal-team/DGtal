@@ -71,7 +71,7 @@ template <typename TCalculus, Duality duality>
     typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
-    typedef typename DGtal::PointVector<Calculus::dimension, Scalar> Arrow;
+    typedef typename DGtal::PointVector<Calculus::dimension_ambient, Scalar> Arrow;
 
     typedef typename Calculus::DenseMatrix Coordinates;
     typedef Coordinates Container;
@@ -148,9 +148,9 @@ template <typename TCalculus, Duality duality>
 
     /**
      * Create zero form by projecting the vector field along basis vector.
-     * @param dim dimension along wich the vector field is projected.
+     * @param dir direction along wich the vector field is projected.
      */
-    KForm<Calculus, 0, duality> extractZeroForm(const Dimension& dim) const;
+    KForm<Calculus, 0, duality> extractZeroForm(const Dimension& dir) const;
 
     /**
      * Clear current vector field.

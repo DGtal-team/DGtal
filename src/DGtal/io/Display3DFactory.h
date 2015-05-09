@@ -96,10 +96,10 @@ namespace DGtal
     typedef typename Display::RealVector RealVector;
 
     // DiscreteExteriorCalculus
-    template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+    template <Dimension dim_embedded, Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
     static
     void
-    draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus);
+    draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>& calculus);
     // DiscreteExteriorCalculus
 
     // KForm
