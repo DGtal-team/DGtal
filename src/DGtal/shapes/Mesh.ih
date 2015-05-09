@@ -303,9 +303,9 @@ DGtal::Mesh<TPoint>::getBoundingBox() const
   TPoint lowerBound, upperBound;
   for(unsigned int i=0; i< TPoint::size(); i++)
     {
-      const MeshBoundingBoxCompPoints<TPoint> cmp_points(i);
-      upperBound[i] = (*(std::max_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
-      lowerBound[i] = (*(std::min_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
+      CompPoints c(i);
+      upperBound[i] = (*(std::max_element(vertexBegin(), vertexEnd(), c)))[i];
+      lowerBound[i] = (*(std::min_element(vertexBegin(), vertexEnd(), c)))[i];
     }
   theResult.first = lowerBound ;
   theResult.second = upperBound ;
@@ -432,6 +432,44 @@ DGtal::Mesh<TPoint>::subDivideTriangularFaces(const double minArea){
 }
 
 
+
+template<typename TPoint>
+inline
+unsigned int  
+DGtal::Mesh<TPoint>::quadToTriangularFaces(){
+  unsigned int nbQuadT=0;
+  std::vector<Mesh<TPoint>::MeshFace> facesToAdd;
+  for(unsigned int i =0; i< nbFaces(); i++)
+    {
+      typename Mesh<TPoint>::MeshFace aFace = getFace(i);
+      if(aFace.size()==4)
+        {
+          MeshFace f1, f2;
+          f1.push_back(aFace[0]); 
+          f1.push_back(aFace[1]);
+          f1.push_back(aFace[2]);
+          facesToAdd.push_back(f1);
+          
+          f2.push_back(aFace[2]); 
+          f2.push_back(aFace[3]);
+          f2.push_back(aFace[0]);          
+          facesToAdd.push_back(f2);
+          nbQuadT++;
+        }
+          else
+            {
+              facesToAdd.push_back(aFace);
+            }
+    }
+  clearFaces();
+  for(unsigned i=0; i<facesToAdd.size(); i++)
+    {
+      addFace(facesToAdd[i]);
+    }
+  return nbQuadT;
+}
+
+    
 
 
 //------------------------------------------------------------------------------
