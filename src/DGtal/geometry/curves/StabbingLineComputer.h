@@ -206,6 +206,12 @@ namespace DGtal
     Point Ll() const;
 
     /**
+     * @return the preimage
+     */
+    
+    PreimagePtr getPreimage() const;
+
+    /**
      * @return 'true' if CW, 'false' if CCW
      */
     bool isClockwiseOriented() const;

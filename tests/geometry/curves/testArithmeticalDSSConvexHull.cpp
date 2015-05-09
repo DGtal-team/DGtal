@@ -434,11 +434,11 @@ bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b
 	    nbok++;
 	  nb++; 
 	}
-
+      
     }
-
+  
   trace.endBlock(); 
-
+  
   return (nb == nbok); 
 }
 
