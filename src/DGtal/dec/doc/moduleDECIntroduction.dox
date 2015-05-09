@@ -98,8 +98,7 @@ From the equation above, one can show that 4 \f$\star\f$ always contract to iden
 
 \f[ \star \star \star \star x = x \f]
 
-Primal Hodge operators \f$\star_k\f$ are generated using DiscreteExteriorCalculus.primalHodge with k as template parameter.
-Dual Hodge operators \f$\star_k'\f$ are generated using DiscreteExteriorCalculus.dualHodge with k as template parameter.
+Primal Hodge operators \f$\star_k\f$ and dual Hodge operators \f$\star_k'\f$) are generated using DiscreteExteriorCalculus.hodge with k as the first template parameter and duality as the second template parameter.
 See <a href="https://en.wikipedia.org/wiki/Hodge_dual">wikipedia page</a> for more details.
 
 \subsubsection sectDECOperatorDerivative Exterior derivative
@@ -119,6 +118,20 @@ Applying any exterior derivative twice always vanishes.
 This rules out many buildable complex linear operators as one has to switch duality every time a derivative is applied.
 In the DEC package, exterior derivative operators are generated using DiscreteExteriorCalculus.derivative with input k-form order as the first template parameter and duality as the second template parameter.
 See <a href="https://en.wikipedia.org/wiki/Exterior_derivative">wikipedia page</a> for more details.
+
+\subsubsection sectDECOperatorAntiderivative Antiderivative
+
+Antiderivative operators are shorthand operators that appears in many DEC problem.
+They take k-forms as inputs and create (k-1)-forms.
+Input and output forms keep the same duality.
+Here is the definition of \f$\delta\f$, the antiderivative acting on k-forms.
+
+\f[ \delta = \star' d' \star \f]
+
+In the DEC package, antiderivative operator are generated using DiscreteExteriorCalculus.antiderivative.
+As for \f$d\f$, applying any antiderivative twice vanishes.
+
+\f[ \delta \delta x = 0 \f]
 
 \subsubsection sectDECoperatorMusical Sharp and flat
 
@@ -140,11 +153,11 @@ Classical vector analysis operators such as gradient \f$\nabla\f$, divergence \f
 
 \f[\nabla x = ( d x )^\sharp \f]
 
-\f[\nabla\cdot x = \star d \star x^\flat \f]
+\f[\nabla\cdot x = \star d \star x^\flat = \delta x \f]
 
 \f[\nabla\wedge x = ( \star d x^\flat )^\sharp \f]
 
-\f[\Delta x = \star d \star d x \f]
+\f[\Delta x = \star d \star d x = \delta d x \f]
 
 Note that each basic operators changes with the dimension of the structure \f$n\f$ and duality of the input k-form vector space.
 
@@ -154,20 +167,22 @@ In order to find the right operators to use, one could draw a figure similar to 
 Using this figure together with the definition of vector analysis operators provided in the above section, the order and duality of each operator become easy to figure out.
 For example, one can easily figure out the precise definition of the primal Laplace operator \f$\Delta\f$ and the dual Laplace operator \f$\Delta'\f$ in 3D dimension.
 Paths taken by those operators are highlighted in Figure \ref three.
+\f$\Delta\f$ can be expressed using derivative and antiderivative.
 
-\f[ \Delta = \star_3' d_2' \star_1 d_0 \f]
+\f[ \Delta = \star_3' d_2' \star_1 d_0 = \delta_1 d_0 \f]
 
-\f[ \Delta' = \star_3 d_2 \star_1' d_0' \f]
+\f[ \Delta' = \star_3 d_2 \star_1' d_0'= \delta_1' d_0' \f]
 
 \anchor three
 \image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted primal Laplace operator (green), dual Laplace operator (blue) together with its constituting basic DEC operators (red)."
 
 If the dimension of the DEC structure changes, the definition of the primal Laplace operator changes slightly.
 For example, here is the definition of the primal Laplace operator in 2D.
+Note that the expression using antiderivative do not change.
 
-\f[ \Delta = \star_2' d_1' \star_1 d_0 \f]
+\f[ \Delta = \star_2' d_1' \star_1 d_0 = \delta_1 d_0 \f]
 
-Note that DiscreteExteriorCalculus provides two DiscreteExteriorCalculus.primalLaplace and DiscreteExteriorCalculus.dualLaplace to conveniently compute Laplace operators.
+Note that DiscreteExteriorCalculus provides DiscreteExteriorCalculus.laplace to conveniently compute Laplace operators.
 Of course, one could still built Laplace operator of basic Hodge and derivative (see \ref sectDECHelmoltz2D).
 
 \subsection sectDECLinearProblem DEC linear problem
@@ -177,7 +192,7 @@ Using the DEC package, one can solve any equation of the type:
 \f[ f(x) = y \f]
 
 where \f$x\f$ and \f$y\f$ are k-forms, with potentially different orders and dualities, and \f$f\f$ is a linear operator between k-forms.
-One can create linear operators by manually filling LinearOperator.myContainer, but it's often easier to combine derivative \f$d\f$ and duality operators \f$\star\f$ computed by DiscreteExteriorCalculus.derivative, DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge.
+One can create linear operators by manually filling LinearOperator.myContainer, but it's often easier to combine derivative \f$d\f$ and duality operators \f$\star\f$ computed by DiscreteExteriorCalculus.derivative and DiscreteExteriorCalculus.hodge.
 
 Recall that \f$\flat\f$ and \f$\sharp\f$ are operators that turn a vector field into a 1-form and the other way around.
 Those operators are linear but do not transform k-forms into k-forms and therefore can't be represented by LinearOperator.
@@ -198,11 +213,13 @@ This section provides an overview on structures and classes that compose the DEC
 \subsection sectDECIntroduction3 Main DEC object creation
 
 In this package, the main DEC object is DiscreteExteriorCalculus.
-The first template parameter is the dimension of the embedding space, and
-therefore must be at least equals to the dimension of object one would like to represent.
-The second template parameter is a linear algebra backend used internally.
+The first template parameter is the dimension of the embedded structure one wants to represent.
+The second template parameter is the dimension of the ambient space in which the structure in embedded.
+For obvious reasons, the ambient dimension must be equal or greater than the embedded dimension.
+The ambient dimension is used internally by DiscreteExteriorCalculus.myKSpace and therefore is the dimension of cells and points used to fill the DEC object.
+The third template parameter is a linear algebra backend used internally to specify containers and solvers.
 By now, there is only one available backend: EigenLinearAlgebraBackend.
-For example, here is a snippet that define a working two dimensional DEC object.
+For example, here is a snippet that define a working two dimensional DEC object embedded in a two dimensional ambient space.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_typedef
 
@@ -288,7 +305,7 @@ Depending on the linear solver used, this will factorize the problem or do preco
 This speed up the resolution of problems that share the same linear operator.
 Input k-form \f$y\f$ is passed to the solver via DiscreteExteriorCalculusSolver.solve which return the solution k-form \f$x\f$.
 If the resolution was successful, then DiscreteExteriorCalculusSolver.isValid will return true.
-If there was a problem, it can be further investigated by direct access to the linear algebra solver DiscreteExteriorCalculusSolver.solver. 
+If there was a problem, it can be further investigated by direct access to the linear algebra solver DiscreteExteriorCalculusSolver.solver.
 
 Choosing the right solver for the right problem has a direct impact on overall performances.
 The EigenLinearAlgebraBackend provide wrapper for all linear algebra solvers included in the Eigen library.
