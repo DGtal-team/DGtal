@@ -40,14 +40,14 @@
 
 // DiscreteExteriorCalculus
 template <typename Space, typename KSpace>
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 inline
 void
-DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>& calculus)
+DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& calculus)
 {
-    BOOST_STATIC_ASSERT(( dim_ambient == 3 ));
+    BOOST_STATIC_ASSERT(( dimAmbient == 3 ));
 
-    typedef DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger> Calculus;
+    typedef DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::ConstIterator ConstIterator;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
@@ -101,7 +101,7 @@ inline
 void
 DGtal::Display3DFactory<Space, KSpace>::drawWithColorMap(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, const ColorMap& colormap)
 {
-    BOOST_STATIC_ASSERT(( Calculus::dimension_ambient == 3 ));
+    BOOST_STATIC_ASSERT(( Calculus::dimensionAmbient == 3 ));
     ASSERT( kform.myCalculus );
 
     typedef typename Calculus::Scalar Scalar;
@@ -128,10 +128,10 @@ template <typename Calculus, DGtal::Duality duality>
 void
 DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale, const double& epsilon)
 {
-    BOOST_STATIC_ASSERT(( Calculus::dimension_ambient == 3 ));
+    BOOST_STATIC_ASSERT(( Calculus::dimensionAmbient == 3 ));
     ASSERT( vector_field.myCalculus );
 
-    typedef typename DGtal::VectorField<Calculus, duality>::Arrow Arrow;
+    typedef typename DGtal::VectorField<Calculus, duality>::Vector Vector;
 
     display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::Black);
 
@@ -140,15 +140,15 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
         const typename Calculus::SCell& cell = vector_field.getSCell(index);
         const DGtal::Z3i::RealPoint origin = DGtal::Z3i::RealPoint(cell.myCoordinates[0]-1, cell.myCoordinates[1]-1, cell.myCoordinates[2]-1)/2.;
 
-        Arrow arrow = vector_field.getArrow(index);
+        Vector vector = vector_field.getVector(index);
 
-        arrow *= scale;
-        if (!std::isfinite(arrow[0]) || !std::isfinite(arrow[1]) || !std::isfinite(arrow[2])) continue;
-        const typename Calculus::Scalar& norm = arrow.norm();
+        vector *= scale;
+        if (!std::isfinite(vector[0]) || !std::isfinite(vector[1]) || !std::isfinite(vector[2])) continue;
+        const typename Calculus::Scalar& norm = vector.norm();
         if (norm <= epsilon) continue;
-        if (norm <= .5) arrow *= .5/norm;
+        if (norm <= .5) vector *= .5/norm;
 
-        display.addCone(origin+arrow, origin);
+        display.addCone(origin+vector, origin);
     }
 }
 // VectorField

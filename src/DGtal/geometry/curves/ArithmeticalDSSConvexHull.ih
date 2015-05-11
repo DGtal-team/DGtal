@@ -48,7 +48,7 @@ smartCH(const DSL& aDSL,
   typedef typename DSL::Coordinate Coordinate;
   ASSERT( aDSL.isValid() ); 
   ASSERT( aLength >= NumberTraits<Position>::ONE ); 
-
+ 
   //position functor
   functors::PositionFunctorFrom2DPoint<Vector,Position> position(aDSL.shift());     
 
@@ -62,6 +62,7 @@ smartCH(const DSL& aDSL,
   Coordinate intercept = DSL::toCoordinate( aDSL.mu() - aDSL.remainder(aFirstPoint) ); 
 
   Position lastPosition = position(aFirstPoint) + aLength; 
+ 
   return smartCH(aFirstPoint, intercept, lastPosition, step, rStep, shift, rShift, position, uIto, lIto); 
 }
 
@@ -86,7 +87,6 @@ smartCH(const PointVector& aFirstPoint,
   BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
   BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
   BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
-  
 
   //----------------- init --------------------//
   //functors

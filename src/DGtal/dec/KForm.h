@@ -69,7 +69,7 @@ namespace DGtal
     typedef TCalculus Calculus;
 
     BOOST_STATIC_ASSERT(( order >= 0 ));
-    BOOST_STATIC_ASSERT(( order <= Calculus::dimension_embedded ));
+    BOOST_STATIC_ASSERT(( order <= Calculus::dimensionEmbedded ));
 
     typedef typename Calculus::DenseVector Container;
     typedef typename Calculus::Scalar Scalar;

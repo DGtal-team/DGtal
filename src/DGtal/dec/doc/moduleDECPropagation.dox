@@ -24,13 +24,13 @@ namespace DGtal {
 
 \section sectDECPropagationIntro Propagation equation
 
-Propagation plays a important role in physics as it models a lots a problem ranging from classical oscillators to electromagnetism, relativistic gravitation and quantum mechanics.
+Propagation plays a important role in physics as it models a lot a problem ranging from classical oscillators to electromagnetism, relativistic gravitation and quantum mechanics.
 Here we will study the linear propagation equation of a time dependent scalar wave function \f$\psi(x,t)\f$, modelled as dual 0-form in the DEC framework,
 
 \f[ \Delta \psi + \frac{1}{c^2} \frac{\partial^2\psi}{\partial t^2} = \left( \Delta + \frac{1}{c^2} \frac{\partial^2}{\partial t^2} \right) \psi = \rho \f]
 
-where \f$c\f$ is propagation speed inside the medium and \f$\rho(x,t)\f$ is the scalar concentration field that generate waves.
-The \f$+\f$ differs from the classical physics equation since here we consider \f$\Delta\f$ to have positive eigen values,
+where \f$c\f$ is propagation speed inside the medium and \f$\rho(x,t)\f$ is the scalar concentration field that generates waves.
+The \f$+\f$ differs from the classical physics equation since here we consider \f$\Delta\f$ to have positive eigenvalues,
 which is the opposite of the definition of the Laplace operator in physics.
 As DEC handles only spatial dimensions, we will present two classical tricks that can be used to handle the time dependent in many physics problems.
 For simplicity of notation, we define the propagation operator \f$\square\f$.
@@ -39,7 +39,7 @@ For simplicity of notation, we define the propagation operator \f$\square\f$.
 
 \section sectDECPropagationTime Temporal resolution with initial condition
 
-In this example, we compute the time evolution of a wave given initial (potentially complex) wave function \f$\psi(x,0)=\psi_0(x)\f$.
+In this example, we compute the time evolution of a wave given the initial (potentially complex) wave function \f$\psi(x,0)=\psi_0(x)\f$.
 Consider the homogeneous propagation equation, where \f$\rho(x,t) = 0\f$,
 
 \f[ \square \psi = 0 \f]
@@ -50,11 +50,11 @@ A small fraction of DiscreteExteriorCalculus.identity is added to ensure a prope
 
 \snippet examplePropagation.cpp time_laplace
 
-Since \f$\Delta\f$ is a positive semi definite real valued Hermitian operator, its eigen values are real and positive and its eigen vectors are real.
+Since \f$\Delta\f$ is a positive semi definite real valued Hermitian operator, its eigenvalues are real and positive and its eigenvectors are real.
 
 \f[ \Delta \phi_i = k_i^2 \, \phi_i \f]
 
-where \f$\phi_i\f$ are eigen vectors and \f$k_i^2\f$ are corresponding eigen values.
+where \f$\phi_i\f$ are eigenvectors and \f$k_i^2\f$ are corresponding eigenvalues.
 Eigen pairs can be computed using Eigen::SelfAdjointEigenSolver for small system;
 \f$\phi_i\f$ is then the ith column of the eigen_vectors matrix.
 For larger systems, one can use more advance techniques such as band shift invert resolution.
@@ -67,7 +67,7 @@ One can use this property to define \f$\psi_i\f$ an orthonormal basis of solutio
 \f[ \psi_i(x,t) = \phi_k(x) \, e^{j c k_i t} \f]
 
 where \f$j\f$ is the imaginary unit.
-One can project any solution \f$\psi\f$ of the propagation equation on this basis.
+One can project any solution \f$\psi\f$ of the propagation equation onto this basis.
 The (potentially complex) coordinates \f$p_i\f$ of \f$\psi\f$ in the \f$\psi_i\f$ basis are
 
 \f[ p_i = \left< \psi | \psi_i \right> \f]
@@ -80,7 +80,7 @@ We can then write \f$\psi\f$ as a linear combination of \f$\psi_i\f$
 
 where the summation over \f$i\f$ is implicit.
 Note that for \f$t=0\f$, \f$\psi_i(x,0) = \phi_i(x)\f$.
-To solve the temporal evolution from \f$\psi_0(x)\f$, all we need to do is find its initial projections \f$p_{0i}\f$ and let complex exponentials do the their duty to predict future (and past) wave functions.
+To solve the temporal evolution from \f$\psi_0(x)\f$, all we need to do is to find its initial projections \f$p_{0i}\f$ and let complex exponentials do the their duty to predict future (and past) wave functions.
 
 \f[ p_{0i} = \left< \psi_0 | \phi_i \right>  \f]
 
@@ -134,7 +134,7 @@ If \f$(\phi_i, k_{\Delta i}^2)\f$ are eigen pairs of \f$\Delta\f$,
 \f[ \Delta \phi_i = k_{\Delta i}^2 \, \phi_i \f]
 
 it is easy to show that \f$(\phi_i, \frac{1}{k_{\Delta i}^2 - k_p^2})\f$ are eigen pairs of \f$(\Delta - k_p^2 I)^{-1}\f$.
-Eigen vectors stay the same, only eigen values are changed.
+Eigenvectors stay the same, only eigenvalues are changed.
 
 \f[ ( \Delta - k_p^2 \, I )^{-1} \phi_i = \frac{1}{k_{\Delta i}^2-k_p^2} \, \phi_i \f]
 

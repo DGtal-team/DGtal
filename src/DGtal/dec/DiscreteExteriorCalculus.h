@@ -53,6 +53,7 @@
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/LinearOperator.h"
 #include "DGtal/dec/VectorField.h"
+#include "DGtal/base/ConstAlias.h"
 
 #include <DGtal/kernel/sets/CDigitalSet.h>
 #include <DGtal/math/linalg/CDynamicMatrix.h>
@@ -76,12 +77,12 @@ namespace DGtal
    * This is used to describe the space on which the dec is build and to compute various operators.
    * Once operators or kforms are created, this structure should not be modified.
    *
-   * @tparam dim_embedded dimension of emmbedded manifold.
-   * @tparam dim_ambient dimension of ambient manifold.
+   * @tparam dimEmbedded dimension of emmbedded manifold.
+   * @tparam dimAmbient dimension of ambient manifold.
    * @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
    * @tparam TInteger integer type forwarded to khalimsky space.
    */
-  template <Dimension dim_embedded, Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger = DGtal::int32_t>
+  template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger = DGtal::int32_t>
   class DiscreteExteriorCalculus
   {
     // ----------------------- Standard services ------------------------------
@@ -89,7 +90,7 @@ namespace DGtal
 
     friend class DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>;
 
-    typedef DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger> Self;
+    typedef DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger> Self;
 
     typedef TLinearAlgebraBackend LinearAlgebraBackend;
     typedef typename LinearAlgebraBackend::DenseVector::Index Index;
@@ -109,19 +110,32 @@ namespace DGtal
     /**
      * Static dimensions.
      */
-    BOOST_STATIC_ASSERT(( dim_ambient >=  dim_embedded ));
+    BOOST_STATIC_ASSERT(( dimAmbient >=  dimEmbedded ));
 
-    BOOST_STATIC_CONSTANT( Dimension, dimension_embedded = dim_embedded );
-    BOOST_STATIC_CONSTANT( Dimension, dimension_ambient = dim_ambient );
+    BOOST_STATIC_CONSTANT( Dimension, dimensionEmbedded = dimEmbedded );
+    BOOST_STATIC_CONSTANT( Dimension, dimensionAmbient = dimAmbient );
 
-    typedef DGtal::KhalimskySpaceND<dim_ambient, TInteger> KSpace;
+    typedef DGtal::KhalimskySpaceND<dimAmbient, TInteger> KSpace;
     typedef typename KSpace::Cell Cell;
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Point Point;
 
     /**
-     * Cells data stuct.
-     * Holds size ratio, indexes and flipped for each cell of the structure.
+     * @struct Property
+     * @brief Holds size 'ratio', 'index' and 'flipped' for each cell of the DEC object.
+     * To avoid inserting both positive and negative cells in a DEC object,
+     * only non signed cells are stored internally.
+     * @var Properties::flipped
+     * To retrieve the sign of the cell, one must look at the 'flipped' boolean:
+     * if 'flipped' is true, the associated signed cell is negative,
+     * if 'flipped' is false, the associated signed cell is positive.
+     * @var Property::index
+     * 'index' give the index of the discrete k-form value in the k-form container.
+     * @var Property::size_ratio
+     * 'size_ratio' is used when computing hodge operator for the associated cell:
+     * primal hodge operator multiplies primal value by 'size_ratio' to produce dual value,
+     * dual hodge operator divides dual value by 'size_ratio' to produce primal value.
+     * In the DEC framework, size_ratio should hold the ratio of dual cell size over primal cell size for the embedding the be correct.
      */
     struct Property
     {
@@ -139,7 +153,7 @@ namespace DGtal
      * Indices to cells map typedefs.
      */
     typedef std::vector<SCell> SCells;
-    typedef boost::array<SCells, dim_embedded+1> IndexedSCells;
+    typedef boost::array<SCells, dimEmbedded+1> IndexedSCells;
 
     /**
      * Vector field typedefs.
@@ -172,14 +186,14 @@ namespace DGtal
     /**
      * Hodge duality linear operator typedefs.
      */
-    typedef LinearOperator<Self, 0, PRIMAL, dim_embedded-0, DUAL> PrimalHodge0;
-    typedef LinearOperator<Self, 1, PRIMAL, dim_embedded-1, DUAL> PrimalHodge1;
-    typedef LinearOperator<Self, 2, PRIMAL, dim_embedded-2, DUAL> PrimalHodge2;
-    typedef LinearOperator<Self, 3, PRIMAL, dim_embedded-3, DUAL> PrimalHodge3;
-    typedef LinearOperator<Self, 0, DUAL, dim_embedded-0, PRIMAL> DualHodge0;
-    typedef LinearOperator<Self, 1, DUAL, dim_embedded-1, PRIMAL> DualHodge1;
-    typedef LinearOperator<Self, 2, DUAL, dim_embedded-2, PRIMAL> DualHodge2;
-    typedef LinearOperator<Self, 3, DUAL, dim_embedded-3, PRIMAL> DualHodge3;
+    typedef LinearOperator<Self, 0, PRIMAL, dimEmbedded-0, DUAL> PrimalHodge0;
+    typedef LinearOperator<Self, 1, PRIMAL, dimEmbedded-1, DUAL> PrimalHodge1;
+    typedef LinearOperator<Self, 2, PRIMAL, dimEmbedded-2, DUAL> PrimalHodge2;
+    typedef LinearOperator<Self, 3, PRIMAL, dimEmbedded-3, DUAL> PrimalHodge3;
+    typedef LinearOperator<Self, 0, DUAL, dimEmbedded-0, PRIMAL> DualHodge0;
+    typedef LinearOperator<Self, 1, DUAL, dimEmbedded-1, PRIMAL> DualHodge1;
+    typedef LinearOperator<Self, 2, DUAL, dimEmbedded-2, PRIMAL> DualHodge2;
+    typedef LinearOperator<Self, 3, DUAL, dimEmbedded-3, PRIMAL> DualHodge3;
 
     /**
      * Identity linear operator typedefs.
@@ -206,7 +220,7 @@ namespace DGtal
      */
     template <typename TDomain>
     void
-    initKSpace(const TDomain& domain);
+    initKSpace(ConstAlias<TDomain> domain);
 
     // ----------------------- Iterators on property map -----------------------
     /**
@@ -247,7 +261,7 @@ namespace DGtal
      * Manually insert cell into calculus.
      * Be sure to insert all adjacent lower order primal cells.
      * @param signed_cell the signed cell to be inserted.
-     * @param size_ratio ratio between primal cell size and dual cell size.
+     * @param size_ratio ratio of dual cell size over primal cell size.
      * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
      */
     bool
@@ -307,12 +321,12 @@ namespace DGtal
     laplace() const;
 
     /**
-     * Hodge operator from duality order-form to opposite duality (dim_embedded-order)-forms.
+     * Hodge operator from duality order-form to opposite duality (dimEmbedded-order)-forms.
      * @tparam order order of input k-form.
      * @return hodge operator.
      */
     template <Order order, Duality duality>
-    LinearOperator<Self, order, duality, dim_embedded-order, OppositeDuality<duality>::duality>
+    LinearOperator<Self, order, duality, dimEmbedded-order, OppositeDuality<duality>::duality>
     hodge() const;
 
     /**
@@ -326,7 +340,8 @@ namespace DGtal
     flat(const VectorField<Self, duality>& vector_field) const;
 
     /**
-     * Get flat operator that transform dir coordinates 0-form into 1-form;
+     * Get directional flat operator that transforms 0-form containing vector field coordinates along direction dir into 1-form.
+     * Opposite of sharp(1-form).extractZeroForm(dir).
      * @tparam duality input 0-form and output 1-form duality.
      * @tparam dir direction of projection.
      * @return linear operator.
@@ -346,7 +361,8 @@ namespace DGtal
     sharp(const KForm<Self, 1, duality>& one_form) const;
 
     /**
-     * Get sharp operator that transform 1-form into dir coordinates 0-form (dir coordinates of the vector field obtained with sharp).
+     * Get directional sharp operator that transforms 1-form into 0-form containing vector field coordinates along direction dir.
+     * Equivalent to sharp(1-form).extractZeroForm(dir).
      * @tparam duality input 1-form and output 0-form duality.
      * @tparam dir direction of projection.
      * @return linear operator.
@@ -400,7 +416,7 @@ namespace DGtal
      * Used internally mostly.
      * @param order order.
      * @param duality duality.
-     * @return order if primal, dim_embedded-order if dual.
+     * @return order if primal, dimEmbedded-order if dual.
      */
     Order
     actualOrder(const Order& order, const Duality& duality) const;
@@ -452,12 +468,12 @@ namespace DGtal
     /**
      * Cached flat operator matrix
      */
-    boost::array<boost::array<SparseMatrix, dim_ambient>, 2> myFlatOperatorMatrixes;
+    boost::array<boost::array<SparseMatrix, dimAmbient>, 2> myFlatOperatorMatrixes;
 
     /**
      * Cached sharp operator matrix
      */
-    boost::array<boost::array<SparseMatrix, dim_ambient>, 2> mySharpOperatorMatrixes;
+    boost::array<boost::array<SparseMatrix, dimAmbient>, 2> mySharpOperatorMatrixes;
 
     /**
      * Cached operators generation flag
@@ -490,9 +506,9 @@ namespace DGtal
    * @param object the object of class 'DiscreteExteriorCalculus' to write.
    * @return the output stream after the writing.
    */
-  template <Dimension dim_embedded, Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+  template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
   std::ostream&
-  operator<<(std::ostream& out, const DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>& object);
+  operator<<(std::ostream& out, const DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& object);
 
 } // namespace DGtal
 
