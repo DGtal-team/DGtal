@@ -56,7 +56,8 @@ namespace DGtal
   /**
    * Description of template class 'VectorField' <p>
    * \brief Aim:
-   * VectorField represents vector field in the dec package.
+   * VectorField represents a discrete vector field in the dec package.
+	 * Vector field values are attached to 0-cells with the same duality as the vector field.
    *
    * @tparam TCalculus should be DiscreteExteriorCalculus.
    * @tparam duality is the duality of the vector field.
@@ -71,7 +72,7 @@ template <typename TCalculus, Duality duality>
     typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
-    typedef typename DGtal::PointVector<Calculus::dimensionAmbient, Scalar> Arrow;
+    typedef typename DGtal::PointVector<Calculus::dimensionAmbient, Scalar> Vector;
 
     typedef typename Calculus::DenseMatrix Coordinates;
     typedef Coordinates Container;
@@ -113,14 +114,14 @@ template <typename TCalculus, Duality duality>
      * Get vector from index.
      * @param index of the corresponding 0-cell.
      */
-    Arrow getArrow(const Index& index) const;
+    Vector getVector(const Index& index) const;
 
     /**
      * Set vector at index.
      * @param index of the corresponding 0-cell.
-     * @param arrow value of the vector field to set at this index.
+     * @param vector value of the vector field to set at this index.
      */
-    void setArrow(const Index& index, const Arrow& arrow);
+    void setVector(const Index& index, const Vector& vector);
 
     // ----------------------- Interface --------------------------------------
   public:

@@ -94,13 +94,13 @@ DGtal::VectorField<Calculus, duality>::normalized(const typename Calculus::Scala
 
     for (typename Calculus::Index index=0; index<myCalculus->kFormLength(0, duality); index++)
     {
-        Arrow arrow = getArrow(index);
+        Vector vector = getVector(index);
 
-        const typename Calculus::Scalar& norm = arrow.norm();
+        const typename Calculus::Scalar& norm = vector.norm();
         if (norm <= epsilon) continue;
-        arrow /= norm;
+        vector /= norm;
 
-        normalized_vector_field.setArrow(index, arrow);
+        normalized_vector_field.setVector(index, vector);
     }
 
     return normalized_vector_field;
@@ -135,22 +135,22 @@ DGtal::VectorField<Calculus, duality>::length() const
 
 template <typename Calculus, DGtal::Duality duality>
 typename DGtal::PointVector<Calculus::dimensionAmbient, typename Calculus::Scalar>
-DGtal::VectorField<Calculus, duality>::getArrow(const Index& index) const
+DGtal::VectorField<Calculus, duality>::getVector(const Index& index) const
 {
-    Arrow arrow;
+    Vector vector;
 
     for (DGtal::Dimension dim=0; dim<Calculus::dimensionAmbient; dim++)
-        arrow[dim] = myCoordinates(index, dim);
+        vector[dim] = myCoordinates(index, dim);
 
-    return arrow;
+    return vector;
 }
 
 template <typename Calculus, DGtal::Duality duality>
 void
-DGtal::VectorField<Calculus, duality>::setArrow(const Index& index, const Arrow& arrow)
+DGtal::VectorField<Calculus, duality>::setVector(const Index& index, const Vector& vector)
 {
     for (DGtal::Dimension dim=0; dim<Calculus::dimensionAmbient; dim++)
-        myCoordinates(index, dim) = arrow[dim];
+        myCoordinates(index, dim) = vector[dim];
 }
 
 ///////////////////////////////////////////////////////////////////////////////

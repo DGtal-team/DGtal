@@ -131,7 +131,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     BOOST_STATIC_ASSERT(( Calculus::dimensionAmbient == 3 ));
     ASSERT( vector_field.myCalculus );
 
-    typedef typename DGtal::VectorField<Calculus, duality>::Arrow Arrow;
+    typedef typename DGtal::VectorField<Calculus, duality>::Vector Vector;
 
     display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::Black);
 
@@ -140,15 +140,15 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
         const typename Calculus::SCell& cell = vector_field.getSCell(index);
         const DGtal::Z3i::RealPoint origin = DGtal::Z3i::RealPoint(cell.myCoordinates[0]-1, cell.myCoordinates[1]-1, cell.myCoordinates[2]-1)/2.;
 
-        Arrow arrow = vector_field.getArrow(index);
+        Vector vector = vector_field.getVector(index);
 
-        arrow *= scale;
-        if (!std::isfinite(arrow[0]) || !std::isfinite(arrow[1]) || !std::isfinite(arrow[2])) continue;
-        const typename Calculus::Scalar& norm = arrow.norm();
+        vector *= scale;
+        if (!std::isfinite(vector[0]) || !std::isfinite(vector[1]) || !std::isfinite(vector[2])) continue;
+        const typename Calculus::Scalar& norm = vector.norm();
         if (norm <= epsilon) continue;
-        if (norm <= .5) arrow *= .5/norm;
+        if (norm <= .5) vector *= .5/norm;
 
-        display.addCone(origin+arrow, origin);
+        display.addCone(origin+vector, origin);
     }
 }
 // VectorField
