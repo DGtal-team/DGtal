@@ -101,7 +101,7 @@ inline
 void
 DGtal::Display3DFactory<Space, KSpace>::drawWithColorMap(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, const ColorMap& colormap)
 {
-    BOOST_STATIC_ASSERT(( Calculus::dimension_ambient == 3 ));
+    BOOST_STATIC_ASSERT(( Calculus::dimensionAmbient == 3 ));
     ASSERT( kform.myCalculus );
 
     typedef typename Calculus::Scalar Scalar;
@@ -128,7 +128,7 @@ template <typename Calculus, DGtal::Duality duality>
 void
 DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale, const double& epsilon)
 {
-    BOOST_STATIC_ASSERT(( Calculus::dimension_ambient == 3 ));
+    BOOST_STATIC_ASSERT(( Calculus::dimensionAmbient == 3 ));
     ASSERT( vector_field.myCalculus );
 
     typedef typename DGtal::VectorField<Calculus, duality>::Arrow Arrow;

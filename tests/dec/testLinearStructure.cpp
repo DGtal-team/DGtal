@@ -46,7 +46,7 @@ void test_linear_structure()
 
     typedef DiscreteExteriorCalculus<1, 2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
-    calculus.initKSpace(domain);
+    calculus.initKSpace<Domain>(domain);
 
     for (int kk=20; kk>0; kk--)
         calculus.insertSCell( calculus.myKSpace.sCell(Point(0,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS) );
@@ -263,7 +263,7 @@ void test_linear_ring()
 
     typedef DiscreteExteriorCalculus<1, 2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
-    calculus.initKSpace(domain);
+    calculus.initKSpace<Domain>(domain);
 
     for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(-8,kk), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG) );
     for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,10), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG) );
@@ -317,7 +317,7 @@ void test_manual_operators_3d()
     typedef DiscreteExteriorCalculus<3, 3, EigenLinearAlgebraBackend> Calculus;
 
     Calculus calculus;
-    calculus.initKSpace(domain);
+    calculus.initKSpace<Z3i::Domain>(domain);
 
     { // filling primal calculus
         // 0-cells
@@ -422,7 +422,7 @@ void test_manual_operators_2d()
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
 
     Calculus primal_calculus;
-    primal_calculus.initKSpace(domain);
+    primal_calculus.initKSpace<Domain>(domain);
 
     { // filling primal calculus
         // 0-cells
@@ -455,7 +455,7 @@ void test_manual_operators_2d()
     }
 
     Calculus dual_calculus;
-    dual_calculus.initKSpace(domain);
+    dual_calculus.initKSpace<Domain>(domain);
 
     { // filling dual calculus
         // 2-cells
