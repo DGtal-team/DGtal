@@ -69,14 +69,14 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
 }
 
 // DiscreteExteriorCalculus
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 inline
 void
-DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>& calculus)
+DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& calculus)
 {
-    BOOST_STATIC_ASSERT(( dim_ambient == 2 ));
+    BOOST_STATIC_ASSERT(( dimAmbient == 2 ));
 
-    typedef DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger> Calculus;
+    typedef DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::ConstIterator ConstIterator;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
