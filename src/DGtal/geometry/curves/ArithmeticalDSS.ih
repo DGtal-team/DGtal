@@ -42,7 +42,8 @@ template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Point& aPoint)
-  : myF(aPoint), myL(aPoint), 
+: 
+myF(aPoint), myL(aPoint), 
     myUf(aPoint), myUl(aPoint), 
     myLf(aPoint), myLl(aPoint), 
     myDSL( NumberTraits<TCoordinate>::ZERO, 
@@ -101,6 +102,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   myDSL( aA, aB, DSL::remainder( aA, aB, aUf ) )
 {
 }
+
 
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
@@ -455,6 +457,367 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isInDSS(const Point& a
   else 
     return false; 
 }
+
+
+//----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+bool
+DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL) const
+{
+ 
+  // Test whether the DSL and the DSS belong to the same octant or not
+  typename  ArithmeticalDSL<TCoordinate,TInteger,adjacency>::Octant::first_type oc;
+  std::vector<Point> LPoints;
+  if(!(myDSL.sameOctant(aDSL, &oc)))
+    return false;
+  
+  // Consider the leaning points of 'this'.
+  LPoints.push_back(myUf);
+  LPoints.push_back(myLf);
+  LPoints.push_back(myUl);
+  LPoints.push_back(myLl);
+  
+  typename std::vector<Point>::const_iterator it = LPoints.begin();
+  Point p;
+  bool inDSL = true;
+  while(it != LPoints.end() && inDSL)
+    {
+      p = *it;
+      if(!aDSL.isInDSL(p))
+	inDSL = false;
+      ++it;
+    }
+
+  return inDSL;
+}
+
+
+
+//----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+bool
+DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point &outP) const
+{
+  // Test whether the DSL and the DSS belong to the same octant or not
+  typename ArithmeticalDSL<TCoordinate,TInteger,adjacency>::Octant::first_type oc;
+  std::vector<Point> LPoints;
+  Ulp.clear(); Llp.clear();
+  outP = Point(0,0);
+  if(!(myDSL.sameOctant(aDSL, &oc)))
+    return false;
+  
+  // Consider the leaning points of 'this' 
+  LPoints.push_back(myLf);
+  LPoints.push_back(myUf);
+  LPoints.push_back(myLl);
+  LPoints.push_back(myUl);
+  
+  typename std::vector<Point>::const_iterator it = LPoints.begin();
+  Point p;
+  bool inDSL = true;
+  while(it != LPoints.end() && inDSL)
+    {
+      p = *it;
+      if(!aDSL.isInDSL(p))
+	inDSL = false;
+      else
+	{
+	  // store the points of the DSS that are leaning points for the DSL
+	  if(aDSL.isUpperLeaningPoint(p))
+	    Ulp.push_back(p); 
+	  if(aDSL.isLowerLeaningPoint(p))
+	    Llp.push_back(p); 	  
+	  ++it;
+	}
+    }
+
+  if(!inDSL)
+    outP = *it; 
+  return inDSL;
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::computeUnion(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther) const
+{
+  
+  typename ArithmeticalDSL<TCoordinate,TInteger,adjacency>::Octant::first_type oc;
+  bool easyCase;
+  
+  typedef DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
+  typedef DGtal::ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency> Factory;
+  
+  DSS DSSres(Point(0,0)),DSS1(Point(0,0)),DSS2(Point(0,0));
+  
+  // Test whether the two DSSs belong to the same octant or not
+  if(!(myDSL.sameOctant(aOther.dsl(), &oc)))
+    return ArithmeticalDSS(Point(0,0));
+  
+  if(beforeOrEqual(myL,aOther.front()))
+    {
+      DSS1 = DSS(*this);
+      DSS2 = DSS(aOther);
+    }
+  else
+    {
+      DSS1 = DSS(aOther);
+      DSS2 = DSS(*this);
+    }
+  
+  // Test connectivity
+  if(beforeOrEqual(DSS2.back(),DSS1.front()))
+     easyCase = true;
+  else
+    {
+      Vector step = DSS2.back() - DSS1.front(); 
+      Coordinate deviation = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::norm(step[0], step[1]);
+      
+      Vector dir;
+      if(oc == 0 || oc == 3 || oc == 4 || oc == 7)
+	dir = Vector(0,1); else dir = Vector(1,0);
+      
+      DGtal::IntegerComputer<Integer> ic;
+      if (deviation <= NumberTraits<Coordinate>::ONE || ic.dotProduct(step,dir) == NumberTraits<TInteger>::ZERO) 
+	easyCase = true; else easyCase = false;
+    }
+  
+  
+  Point newUf, newUl, newLf, newLl;
+  std::vector<Point> LPoints;
+  
+  // Test whether DSS2 belongs to the DSL supporting DSS1  
+  std::vector<Point> UlPoints, LlPoints;
+  Point outP;
+  bool inDSL = DSS2.isInDSL(DSS1.dsl(),UlPoints,LlPoints,outP);
+  
+  if(inDSL) // DSS2 in included in the DSL supporting DSS1
+    {
+      // if DSS1 is totally included into DSS2
+      if(beforeOrEqual(DSS2.back(),DSS1.back()))
+	DSSres = DSS2;
+      else
+	{
+	  if(easyCase) // the leaning points are updated in constant time
+	    {	      
+	      // if a upper leaning point of myDSL was found on aOther
+	      if(!UlPoints.empty())
+		newUl = UlPoints.back(); // update the last upper leaning point with the furthest leaning point found
+	      else
+		newUl = DSS1.Ul();
+	      
+	      // if a lower leaning point of myDSL was found on aOther 
+	      if(!LlPoints.empty())
+		newLl = LlPoints.back(); // update the last lower leaning point with the furthest leaning point found
+	      else
+		newLl = DSS1.Ll();
+	      DSSres = ArithmeticalDSS<TCoordinate,TInteger,adjacency>(DSS1.a(),DSS1.b(),DSS1.back(),DSS2.front(),DSS1.Uf(),newUl,DSS1.Lf(),newLl);
+	      
+	    }
+	  else // leaning points may lie between DSS1 and DSS2
+	    DSSres = Factory::createDSS(DSS1.a(),DSS1.b(),DSS1.back(),DSS2.front(),DSS1.Uf());
+	}
+      return DSSres;
+    }
+  
+  // If DSS2 does not belong to the DSL supporting DSS1, the
+  // remainder of the "out" point is used to infer the two candidate
+  // critical points. 
+  Point aUf, aLf;
+  // Candidate critical points are stored in Lf, Ll, Uf, Ul
+  if(DSS1.remainder(outP)>=(DSS1.dsl()).myUpperBound+1) // lower exterior point -> the slope decreases
+    {
+      aUf = DSS1.Ul();
+      aLf = DSS1.Lf();
+	}
+  else // remainder(outP) < 0: upper exterior point -> the slope increases
+    {
+      aUf = DSS1.Uf();
+      aLf = DSS1.Ll();
+    }
+  
+  
+  // Test whether DSS1 belongs to the supporting DSL of DSS2
+  std::vector<Point> UfPoints, LfPoints;
+  inDSL = DSS1.isInDSL(DSS2.dsl(),UfPoints,LfPoints,outP);
+  
+  if(inDSL) // DSS1 in included in the DSL supporting DSS2
+    {
+      // if DSS1 is totally included into DSS2
+      if(beforeOrEqual(DSS2.back(),DSS1.back()))
+	DSSres = DSS2;
+      else
+	{
+	  if(easyCase)
+	    {
+	      // if a upper leaning point of DSS2 supporting DSL was found on DSS1
+	      if(!UfPoints.empty())
+		newUf = UfPoints.front(); // update the first upper leaning point with the first leaning point found
+	      else
+		newUf = DSS2.Uf();
+	      
+	      // if a lower leaning point of DSS2 supporting DSL was found on DSS1 
+	      if(!LfPoints.empty()) 
+		newLf = LfPoints.front(); // update the first lower leaning point with the first leaning point found
+	      else
+		newLf = DSS2.Lf();
+	      DSSres = ArithmeticalDSS<TCoordinate,TInteger,adjacency>(DSS2.a(),DSS2.b(),DSS1.back(),DSS2.front(),newUf,DSS2.Ul(),newLf,DSS2.Ll());
+	    }
+	  else
+	    DSSres = Factory::createDSS(DSS2.a(),DSS2.b(),DSS1.back(),DSS2.front(),DSS2.Ul());
+	}
+      return DSSres;
+    } 
+  
+  // If DSS1 does not belong to the DSL supporting DSS2, the
+  // remainder of the "out" point is used to infer the two candidate
+  // critical points. 
+  Point aUl, aLl;
+  
+  if(DSS2.remainder(outP)>=(DSS2.dsl()).myUpperBound+1) // lower exterior point -> the slope increases
+    {
+      aUl = DSS2.Uf();
+      aLl = DSS2.Ll();
+    }
+  else // remainder(outP) < 0: upper exterior point -> the slope decreases
+    {
+      aUl = DSS2.Ul();
+      aLl = DSS2.Lf();
+    }
+
+  // Four candidate critical points are known in Uf, Lf, Ul, Ll
+  // If only two different candidates, no solution
+  if(aUf==aUl && aLf==aLl)
+    return ArithmeticalDSS(Point(0,0));
+  
+  // Otherwise, compute the exact critical points 
+  Integer aB = aLl[0]-aLf[0];
+  Integer aA = aLl[1]-aLf[1];
+  Vector shiftRes = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::shift(aA,aB);
+  Integer aMu = -DSL::remainder(aA,aB,shiftRes) + 1 + DSL::remainder(aA,aB,aLf); 
+  DSL DSLLower(aA,aB,aMu); // DSL defined by the two candidate lower
+			// leaning points
+  
+  aB = aUl[0]-aUf[0];
+  aA = aUl[1]-aUf[1];
+  aMu = DSL::remainder(aA,aB,aUf);
+  DSL DSLUpper(aA,aB,aMu);    // DSL defined by the two candidate upper
+			   // leaning points
+  
+  bool LPointsInDSL = DSLUpper.isInDSL(aLf) && DSLUpper.isInDSL(aLl);
+  bool UPointsInDSL = DSLLower.isInDSL(aUf) && DSLLower.isInDSL(aUl);
+  
+  // DSS1 \cup DSS2 is not part of a DSL
+  if((aUf == aUl && !UPointsInDSL) || (aLf==aLl && !LPointsInDSL) || (!LPointsInDSL && !UPointsInDSL)) 
+    return ArithmeticalDSS(Point(0,0));
+  
+  Integer aRes, bRes;
+  
+  if(LPointsInDSL && UPointsInDSL)
+    { // four critical points
+      if(DSLUpper.a() != NumberTraits<TInteger>::ZERO || DSLUpper.b() != NumberTraits<TInteger>::ZERO) // a and b may be null
+						 // if Ul and Uf are confounded
+	{
+	  aRes  = DSLUpper.a(); 
+	  bRes =  DSLUpper.b(); 
+	}
+      else
+	{
+	  aRes  = DSLLower.a(); 
+	  bRes =  DSLLower.b(); 
+	}
+    }
+  else
+    { // three critical points only
+      if(LPointsInDSL)
+	{
+	  aRes = DSLUpper.a();
+	  bRes = DSLUpper.b();
+	  // test which one of Lf or Ll is closer from the DSL defined by the two
+	  // upper leaning points
+	  
+	  if(DSLUpper.remainder(aLf) > DSLUpper.remainder(aLl))
+	    aLl = aLf; // Ll is not a critical point
+	  else
+	    aLf = aLl; // Lf is not a critical point
+	}
+      else // UPointsInDSL == true
+	{
+	  aRes = DSLLower.a();
+	  bRes = DSLLower.b();
+	  // test which one of Uf or Ul is closer from the DSL defined by the two
+	  // lower leaning points
+	  if(DSLLower.remainder(aUf) < DSLLower.remainder(aUl))
+	    aUl = aUf;
+	  else
+	    aUf = aUl;
+	}
+    }
+  
+  // if the two DSSs are connected, or DSS1 last point and DSS2 first
+  // point have the same abscissa (or ordinate, depending on the octant) we are done.
+  if(easyCase)
+    return ArithmeticalDSS<TCoordinate, TInteger, adjacency>(aRes,bRes,DSS1.back(),DSS2.front(),aUf,aUl,aLf,aLl);
+  
+  
+  // Compute vectors of maximal and minimal slope
+  shiftRes = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::shift(aRes,bRes);
+  Vector Vup = (aLl-shiftRes) - aUf;
+  Vector Vlow = aUl - (aLf-shiftRes);
+  
+  typedef DGtal::SternBrocot<TInteger, TInteger> SB; // type of Stern-Brocot tree
+  typedef typename SB::Fraction Fraction; // type of fraction
+  
+  DGtal::functors::Abs<TInteger> absComputer;
+
+  Integer p = absComputer(Vlow[0])<absComputer(Vlow[1])?absComputer(Vlow[0]):absComputer(Vlow[1]);
+  Integer q = absComputer(Vlow[0])<absComputer(Vlow[1])?absComputer(Vlow[1]):absComputer(Vlow[0]);
+  Fraction low(p,q); // a fraction p/q is such that p>0, q>0 and p<=q 
+  
+  p = absComputer(Vup[0])<absComputer(Vup[1])?absComputer(Vup[0]):absComputer(Vup[1]);
+  q = absComputer(Vup[0])<absComputer(Vup[1])?absComputer(Vup[1]):absComputer(Vup[0]);
+  Fraction up(p,q);
+  
+  // Compute the fraction of smallest denominator between low and up
+  Fraction res = low.simplestFractionInBetween(up);
+  
+  // Replace the result in the good octant
+  Integer aFinal,bFinal;
+  if(aRes < NumberTraits<TInteger>::ZERO)
+    aFinal = (absComputer(aRes)<absComputer(bRes))?-res.p():-res.q();
+  else
+    aFinal = (absComputer(aRes)<absComputer(bRes))?res.p():res.q();
+  
+  if(bRes < NumberTraits<TInteger>::ZERO)
+    bFinal = (absComputer(aRes)<absComputer(bRes))?-res.q():-res.p();
+  else
+    bFinal = (absComputer(aRes)<absComputer(bRes))?res.q():res.p();
+  
+  
+  if(aUf == aUl)
+    {
+      DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),aUf);
+    }
+  else
+    {
+      typedef SimpleMatrix<Integer,2,2> Matrix;
+      Matrix A; A.clear();
+      A.setComponent(0,0,bFinal);A.setComponent(1,0,aFinal);A.setComponent(0,1,(aUf-aUl)[0]);A.setComponent(1,1,(aUf-aUl)[1]);
+      if(DGtal::SimpleMatrixSpecializations<Matrix,2,2>::determinant(A)>NumberTraits<TInteger>::ZERO)	
+	DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),aUf);
+      else
+	DSSres = Factory::createDSS(aFinal,bFinal,DSS1.back(),DSS2.front(),aUl);
+    }
+
+  return DSSres;
+}
+
 
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>

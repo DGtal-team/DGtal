@@ -235,17 +235,17 @@ namespace DGtal
     PointVector( std::initializer_list<Component> init );
 #endif // CPP11_INITIALIZER_LIST
 
-    /** Constructor taking apoint and a functor as parameters.
+    /** Constructor taking two points and a functor as parameters.
      *  The new point is initialized by the result of functor f
-     *  for each coordinate of apoint1 and apoint2
+     *  applied for each pair of coordinates of apoint1 and apoint2
      */
     template<typename BinaryFunctor>
     PointVector( const Self& apoint1, const Self& apoint2,
 		 const BinaryFunctor& f );
 
-    /** Constructor taking apoint and a unary functor as parameters.
-     *  The new point is initialized by the result of functor f
-     *  for each coordinate of apoint1
+    /** Constructor taking a point and a unary functor as parameters.
+     *  The new point is initialized by the result of functor f for
+     *  each coordinate of apoint1
      */
     template<typename UnaryFunctor>
     PointVector( const Self& apoint1, 

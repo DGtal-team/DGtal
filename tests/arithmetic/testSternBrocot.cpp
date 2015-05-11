@@ -805,6 +805,62 @@ testAncestors()
   return D1.slope() == Fraction( 1, 1 );
 }
 
+
+//-------------------------------------------
+template <typename SB>
+bool
+testSimplestFractionInBetween()
+{
+  typedef typename SB::Fraction Fraction;
+  Fraction f,g;
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  
+  trace.beginBlock("Testing block: simplest fraction between two fractions");
+  // When the two fractions are not ancestors of one other
+  f = Fraction(1,5); g = Fraction(3,4);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(1,2) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+  
+  f = Fraction(4,7); g = Fraction(5,7);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(2,3) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  f = Fraction(3,8); g = Fraction(7,4);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(1,1) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  f = Fraction(11,7); g = Fraction(7,4);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(5,3) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+  
+  f = Fraction(8,13); g = Fraction(7,11);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(5,8) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  // When f is an ancestor of g or conversely
+  f = Fraction(2,5); g = Fraction(4,9);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(3,7) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+  
+  f = Fraction(2,3); g = Fraction(8,11);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(5,7) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  f = Fraction(1,2); g = Fraction(5,9);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(6,11) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  f = Fraction(5,9); g = Fraction(2,3);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(3,5) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  trace.endBlock();
+  return nbok == nb;
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -822,7 +878,8 @@ int main( int , char** )
     && testPattern<SB>()
     && testSubStandardDSLQ0<Fraction>()
     && testContinuedFractions<SB>()
-    && testAncestors<SB>();
+    && testAncestors<SB>()
+    && testSimplestFractionInBetween<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
