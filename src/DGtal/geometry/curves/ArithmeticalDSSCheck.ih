@@ -81,15 +81,15 @@ checkPointsRemainder(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS
   else if (aDSS.remainder(aDSS.Ul()) != aDSS.mu()) 
     isValid = false;
   else if (aDSS.remainder(aDSS.Lf()) != aDSS.mu()+aDSS.omega()-1) 
-    isValid = false;
+    { isValid = false; std::cout << aDSS.remainder(aDSS.Lf()) << " " << aDSS.mu()+aDSS.omega()-1 << std::endl;} 
   else if (aDSS.remainder(aDSS.Ll()) != aDSS.mu()+aDSS.omega()-1) 
-    isValid = false;
+    { isValid = false; std::cout << aDSS.remainder(aDSS.Ll()) << " " << aDSS.mu()+aDSS.omega()-1 << std::endl;}
   else if (aDSS.isInDSL(aDSS.front()))
-    isValid = true; 
+    isValid = true;
   else if (aDSS.isInDSL(aDSS.back()))
     isValid = true; 
   else 
-    isValid = false; 
+    isValid = false;
 
   return isValid; 
 }

@@ -116,7 +116,7 @@ bool specialCases(const Integer& a, const Integer& b)
     {
       if ( (steps.first == Vector(0,0)) 
 	   && (steps.second == Vector(0,0)) 
-	   && (shift == Vector(0,0)) )
+	   && (shift == Vector(0,0)))
 	nbok++; 
       nb++; 
     }
@@ -126,7 +126,7 @@ bool specialCases(const Integer& a, const Integer& b)
 	{
 	  if ( (steps.first != Vector(0,0)) 
 	       && (steps.second == Vector(0,0)) 
-	       && (shift != Vector(0,0)) )
+	       && (shift != Vector(0,0)))
 	    nbok++; 
 	  nb++; 
 	}
@@ -158,6 +158,7 @@ bool specialCases(const Integer& a, const Integer& b)
   return nbok == nb;
 
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -220,6 +221,10 @@ int main( int argc, char** argv )
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(-1,1)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(-1,-1)
     ; 
+
+
+
+
 
 #ifdef WITH_BIGINTEGER
   res = res 
