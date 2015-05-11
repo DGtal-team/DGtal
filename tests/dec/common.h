@@ -53,7 +53,7 @@ is_identity(const Container& container, const Value& value)
 template <typename Calculus, int order>
 struct HodgeTester
 {
-    BOOST_STATIC_ASSERT(( order <= Calculus::dimension_embedded ));
+    BOOST_STATIC_ASSERT(( order <= Calculus::dimensionEmbedded ));
 
     static bool test(const Calculus& calculus)
     {
@@ -79,25 +79,25 @@ struct HodgeTester
             if (!is_identity(dual_identity.myContainer, 1)) return false;
         }
 
-        typedef DGtal::LinearOperator<Calculus, order, DGtal::PRIMAL, Calculus::dimension_embedded-order, DGtal::DUAL> PrimalHodge;
-        typedef DGtal::LinearOperator<Calculus, Calculus::dimension_embedded-order, DGtal::DUAL, order, DGtal::PRIMAL> DualHodge;
+        typedef DGtal::LinearOperator<Calculus, order, DGtal::PRIMAL, Calculus::dimensionEmbedded-order, DGtal::DUAL> PrimalHodge;
+        typedef DGtal::LinearOperator<Calculus, Calculus::dimensionEmbedded-order, DGtal::DUAL, order, DGtal::PRIMAL> DualHodge;
         const PrimalHodge primal_hodge = calculus.template hodge<order, DGtal::PRIMAL>();
-        const DualHodge dual_hodge= calculus.template hodge<Calculus::dimension_embedded-order, DGtal::DUAL>();
+        const DualHodge dual_hodge= calculus.template hodge<Calculus::dimensionEmbedded-order, DGtal::DUAL>();
 
         DGtal::trace.info() << "testing primal to primal hodge composition order " << order << std::endl;
 
         { // test primal to primal composition
             typedef DGtal::LinearOperator<Calculus, order, DGtal::PRIMAL, order, DGtal::PRIMAL> PrimalPrimal;
             PrimalPrimal primal_primal = dual_hodge * primal_hodge;
-            if (!is_identity(primal_primal.myContainer, pow(-1, order*(Calculus::dimension_embedded-order)))) return false;
+            if (!is_identity(primal_primal.myContainer, pow(-1, order*(Calculus::dimensionEmbedded-order)))) return false;
         }
 
         DGtal::trace.info() << "testing dual to dual hodge composition order " << order << std::endl;
 
         { // test dual to dual composition
-            typedef DGtal::LinearOperator<Calculus, Calculus::dimension_embedded-order, DGtal::DUAL, Calculus::dimension_embedded-order, DGtal::DUAL> DualDual;
+            typedef DGtal::LinearOperator<Calculus, Calculus::dimensionEmbedded-order, DGtal::DUAL, Calculus::dimensionEmbedded-order, DGtal::DUAL> DualDual;
             DualDual dual_dual = primal_hodge * dual_hodge;
-            if (!is_identity(dual_dual.myContainer, pow(-1, order*(Calculus::dimension_embedded-order)))) return false;
+            if (!is_identity(dual_dual.myContainer, pow(-1, order*(Calculus::dimensionEmbedded-order)))) return false;
         }
 
         return HodgeTester<Calculus, order-1>::test(calculus);
@@ -160,7 +160,7 @@ test_hodge(int domain_size)
             const SCell& signed_cell = calculus.myKSpace.signs(cell, iter->second.flipped ? KSpace::NEG : KSpace::POS);
             const SCell& primal_signed_cell = calculus.getSCell(calculus.myKSpace.uDim(cell), DGtal::PRIMAL, index);
             test_result &= (signed_cell == primal_signed_cell);
-            const SCell& dual_signed_cell = calculus.getSCell(Calculus::dimension_embedded-calculus.myKSpace.uDim(cell), DGtal::DUAL, index);
+            const SCell& dual_signed_cell = calculus.getSCell(Calculus::dimensionEmbedded-calculus.myKSpace.uDim(cell), DGtal::DUAL, index);
             test_result &= (signed_cell == dual_signed_cell);
         }
         DGtal::trace.endBlock();
@@ -183,7 +183,7 @@ test_hodge(int domain_size)
     }
 
     DGtal::trace.beginBlock("testing hodge");
-    bool test_result = HodgeTester<Calculus, Calculus::dimension_embedded>::test(calculus);
+    bool test_result = HodgeTester<Calculus, Calculus::dimensionEmbedded>::test(calculus);
     DGtal::trace.endBlock();
 
     FATAL_ERROR(test_result);
@@ -193,7 +193,7 @@ test_hodge(int domain_size)
 template <typename Calculus, int order>
 struct DerivativeTester
 {
-    BOOST_STATIC_ASSERT(( order < (int)Calculus::dimension_embedded - 1 ));
+    BOOST_STATIC_ASSERT(( order < (int)Calculus::dimensionEmbedded - 1 ));
 
     static bool test(const Calculus& calculus)
     {
@@ -289,7 +289,7 @@ test_derivative(int domain_size)
         typename Calculus::Properties properties = calculus.getProperties();
         DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
 
-        bool test_result = DerivativeTester<Calculus, Calculus::dimension_embedded-2>::test(calculus);
+        bool test_result = DerivativeTester<Calculus, Calculus::dimensionEmbedded-2>::test(calculus);
         FATAL_ERROR(test_result);
 
         DGtal::trace.endBlock();
@@ -302,7 +302,7 @@ test_derivative(int domain_size)
         typename Calculus::Properties properties = calculus.getProperties();
         DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
 
-        bool test_result = DerivativeTester<Calculus, Calculus::dimension_embedded-2>::test(calculus);
+        bool test_result = DerivativeTester<Calculus, Calculus::dimensionEmbedded-2>::test(calculus);
         FATAL_ERROR(test_result);
 
         DGtal::trace.endBlock();

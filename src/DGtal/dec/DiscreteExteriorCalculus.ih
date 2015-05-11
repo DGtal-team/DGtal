@@ -33,31 +33,31 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::DiscreteExteriorCalculus()
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::DiscreteExteriorCalculus()
     : myKSpace(), myCachedOperatorsModified(true)
 {
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <typename TDomain>
 void
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::initKSpace(const TDomain& _domain)
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::initKSpace(DGtal::ConstAlias<TDomain> _domain)
 {
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
 
     // FIXME borders are removed from set => better not initialize kspace
     // FIXME should be open or closed? => closed = true
-    const bool kspace_init_ok = const_cast<KSpace&>(myKSpace).init(_domain.lowerBound(), _domain.upperBound(), true);
+    const bool kspace_init_ok = const_cast<KSpace&>(myKSpace).init(_domain->lowerBound(), _domain->upperBound(), true);
     ASSERT(kspace_init_ok);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::eraseCell(const Cell& _cell)
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::eraseCell(const Cell& _cell)
 {
     typename Properties::iterator iter_property = myCellProperties.find(_cell);
     if (iter_property == myCellProperties.end())
@@ -86,9 +86,9 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     return true;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& _signed_cell, const Scalar& _primal_size)
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& _signed_cell, const Scalar& _primal_size)
 {
     const Cell cell = myKSpace.unsigns(_signed_cell);
     const DGtal::Dimension cell_dim = myKSpace.uDim(cell);
@@ -96,9 +96,9 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     property.size_ratio = _primal_size;
     property.flipped = ( myKSpace.sSign(_signed_cell) == KSpace::NEG );
 
-    ASSERT_MSG( cell_dim >= 0 && cell_dim <= dim_embedded, "wrong cell dimension");
+    ASSERT_MSG( cell_dim >= 0 && cell_dim <= dimEmbedded, "wrong cell dimension");
     ASSERT_MSG( cell_dim != 0 || !property.flipped , "can't insert negative 0-cells" );
-    ASSERT_MSG( cell_dim != dim_ambient || !property.flipped , "can't insert negative n-cells" );
+    ASSERT_MSG( cell_dim != dimAmbient || !property.flipped , "can't insert negative n-cells" );
 
     typename Properties::iterator iter = myCellProperties.find(cell);
     const bool need_insert = (iter == myCellProperties.end());
@@ -125,35 +125,35 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     return need_insert;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 void
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::resetSizeRatios()
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::resetSizeRatios()
 {
     for (typename Properties::iterator iter=myCellProperties.begin(), end=myCellProperties.end(); iter!=end; iter++)
         iter->second.size_ratio = 1;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 std::string
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::className() const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::className() const
 {
     return "Calculus";
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 void
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::selfDisplay(std::ostream & os) const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::selfDisplay(std::ostream & os) const
 {
     os << "[dec";
-    for (DGtal::Order order=0; order<=dim_embedded; order++)
-        os << " | primal " << order << "-cells <-> dual " << dim_embedded-order << "-cells (" << kFormLength(order, PRIMAL) << ")";
+    for (DGtal::Order order=0; order<=dimEmbedded; order++)
+        os << " | primal " << order << "-cells <-> dual " << dimEmbedded-order << "-cells (" << kFormLength(order, PRIMAL) << ")";
     os << "]";
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Order order, DGtal::Duality duality>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, order, duality, order, duality>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::identity() const
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::identity() const
 {
     typedef LinearOperator<Self, order, duality, order, duality> Operator;
     Operator id(*this);
@@ -161,10 +161,10 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     return id;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::laplace() const
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::laplace() const
 {
     typedef DGtal::LinearOperator<Self, 0, duality, 1, duality> Derivative;
     typedef DGtal::LinearOperator<Self, 1, duality, 0, duality> Antiderivative;
@@ -173,31 +173,31 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     return ad * d;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Order order, DGtal::Duality duality>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, order, duality, order-1, duality>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::antiderivative() const
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order-1, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::antiderivative() const
 {
     BOOST_STATIC_ASSERT(( order > 0 ));
-    BOOST_STATIC_ASSERT(( order <= dim_embedded ));
+    BOOST_STATIC_ASSERT(( order <= dimEmbedded ));
 
-    typedef DGtal::LinearOperator<Self, order, duality, dim_embedded-order, OppositeDuality<duality>::duality> FirstHodge;
-    typedef DGtal::LinearOperator<Self, dim_embedded-order, OppositeDuality<duality>::duality, dim_embedded-order+1, OppositeDuality<duality>::duality> Derivative;
-    typedef DGtal::LinearOperator<Self, dim_embedded-order+1, OppositeDuality<duality>::duality, order-1, duality> SecondHodge;
+    typedef DGtal::LinearOperator<Self, order, duality, dimEmbedded-order, OppositeDuality<duality>::duality> FirstHodge;
+    typedef DGtal::LinearOperator<Self, dimEmbedded-order, OppositeDuality<duality>::duality, dimEmbedded-order+1, OppositeDuality<duality>::duality> Derivative;
+    typedef DGtal::LinearOperator<Self, dimEmbedded-order+1, OppositeDuality<duality>::duality, order-1, duality> SecondHodge;
     const FirstHodge h_first = hodge<order, duality>();
-    const Derivative d = derivative<dim_embedded-order, OppositeDuality<duality>::duality>();
-    const SecondHodge h_second = hodge<dim_embedded-order+1, OppositeDuality<duality>::duality>();
-    const Scalar sign = ( order*(dim_embedded-order)%2 == 0 ? 1 : -1 );
+    const Derivative d = derivative<dimEmbedded-order, OppositeDuality<duality>::duality>();
+    const SecondHodge h_second = hodge<dimEmbedded-order+1, OppositeDuality<duality>::duality>();
+    const Scalar sign = ( order*(dimEmbedded-order)%2 == 0 ? 1 : -1 );
     return sign * h_second * d * h_first;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Order order, DGtal::Duality duality>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, order, duality, order+1, duality>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::derivative() const
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order+1, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::derivative() const
 {
     BOOST_STATIC_ASSERT(( order >= 0 ));
-    BOOST_STATIC_ASSERT(( order < dim_embedded ));
+    BOOST_STATIC_ASSERT(( order < dimEmbedded ));
 
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
@@ -239,17 +239,17 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     ASSERT( _derivative.myContainer.cols() == kFormLength(order, duality) );
     _derivative.myContainer.setFromTriplets(triplets.begin(), triplets.end());
 
-    if ( duality == DUAL && order*(dim_embedded-order)%2 != 0 ) return -1 * _derivative;
+    if ( duality == DUAL && order*(dimEmbedded-order)%2 != 0 ) return -1 * _derivative;
     return _derivative;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Order order, DGtal::Duality duality>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, order, duality, dim_embedded-order, DGtal::OppositeDuality<duality>::duality>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::hodge() const
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, dimEmbedded-order, DGtal::OppositeDuality<duality>::duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::hodge() const
 {
     BOOST_STATIC_ASSERT(( order >= 0 ));
-    BOOST_STATIC_ASSERT(( order <= dim_embedded ));
+    BOOST_STATIC_ASSERT(( order <= dimEmbedded ));
 
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
@@ -267,7 +267,7 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
         triplets.push_back( Triplet(index, index, hodgeSign(cell, duality) * size_ratio) );
     }
 
-    typedef LinearOperator<Self, order, duality, dim_embedded-order, OppositeDuality<duality>::duality> Hodge;
+    typedef LinearOperator<Self, order, duality, dimEmbedded-order, OppositeDuality<duality>::duality> Hodge;
     Hodge _hodge(*this);
     ASSERT( _hodge.myContainer.rows() == _hodge.myContainer.cols() );
     ASSERT( _hodge.myContainer.rows() == kFormLength(order, duality) );
@@ -276,48 +276,48 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     return _hodge;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
-DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, duality>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::sharp(const DGtal::KForm<Self, 1, duality>& one_form) const
+DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharp(const DGtal::KForm<Self, 1, duality>& one_form) const
 {
     const_cast<Self*>(this)->updateCachedOperators();
 
-    const boost::array<SparseMatrix, dim_ambient>& sharp_operator_matrix = mySharpOperatorMatrixes[static_cast<int>(duality)];
+    const boost::array<SparseMatrix, dimAmbient>& sharp_operator_matrix = mySharpOperatorMatrixes[static_cast<int>(duality)];
 
     typedef VectorField<Self, duality> Field;
     Field field(*this);
-    ASSERT( field.myCoordinates.cols() == dim_ambient);
+    ASSERT( field.myCoordinates.cols() == dimAmbient);
     ASSERT( field.myCoordinates.rows() == kFormLength(0, duality));
-    for (DGtal::Dimension direction=0; direction<dim_ambient; direction++)
+    for (DGtal::Dimension direction=0; direction<dimAmbient; direction++)
         field.myCoordinates.col(direction) = sharp_operator_matrix[direction]*one_form.myContainer;
 
     return field;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality, DGtal::Dimension direction>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, 1, duality, 0, duality>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::sharpDirectional() const
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 1, duality, 0, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharpDirectional() const
 {
     const_cast<Self*>(this)->updateCachedOperators();
 
-    ASSERT( direction < dim_ambient );
+    ASSERT( direction < dimAmbient );
 
     typedef LinearOperator<Self, 1, duality, 0, duality> Operator;
     return Operator(*this, mySharpOperatorMatrixes[static_cast<int>(duality)][direction]);
 }
 
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 void
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::updateSharpOperator()
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateSharpOperator()
 {
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
 
-    boost::array<Triplets, dim_ambient> triplets;
+    boost::array<Triplets, dimAmbient> triplets;
 
     // iterate over points
     for (Index kk=0; kk<kFormLength(0, duality); kk++)
@@ -331,7 +331,7 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
         const Edges edges = ( duality == PRIMAL ? myKSpace.uUpperIncident(cell) : myKSpace.uLowerIncident(cell) );
 
         // collect 1-form values over neighboring edges
-        typedef boost::array< std::list< std::pair<Index, Scalar> >, dim_ambient > BorderIndexes;
+        typedef boost::array< std::list< std::pair<Index, Scalar> >, dimAmbient > BorderIndexes;
         BorderIndexes border_indexes;
         for (typename Edges::const_iterator ei=edges.begin(), eie=edges.end(); ei!=eie; ei++)
         {
@@ -351,7 +351,7 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
             border_indexes[direction].push_back(std::make_pair(cell_border_index, orientation));
         }
 
-        for (DGtal::Dimension direction=0; direction<dim_ambient; direction++)
+        for (DGtal::Dimension direction=0; direction<dimAmbient; direction++)
             for (typename std::list< std::pair<Index, Scalar> >::const_iterator bi=border_indexes[direction].begin(), bie=border_indexes[direction].end(); bi!=bie; bi++)
             {
                 const Index cell_border_index = bi->first;
@@ -359,14 +359,14 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
                 ASSERT( cell_border_index < static_cast<Index>(myIndexSignedCells[actualOrder(1, duality)].size()) );
                 ASSERT( cell_border_index < kFormLength(1, duality) );
 
-                const Scalar sign = ( duality == DUAL && (direction*(dim_ambient-direction))%2 == 0 ? -1 : 1 );
+                const Scalar sign = ( duality == DUAL && (direction*(dimAmbient-direction))%2 == 0 ? -1 : 1 );
                 triplets[direction].push_back( Triplet(kk, cell_border_index, sign_pt * sign * cell_border_orientation/border_indexes[direction].size()) );
             }
     }
 
-    boost::array<SparseMatrix, dim_ambient> sharp_operator_matrix;
+    boost::array<SparseMatrix, dimAmbient> sharp_operator_matrix;
 
-    for (DGtal::Dimension direction=0; direction<dim_ambient; direction++)
+    for (DGtal::Dimension direction=0; direction<dimAmbient; direction++)
     {
         sharp_operator_matrix[direction] = SparseMatrix(kFormLength(0, duality), kFormLength(1, duality));
         sharp_operator_matrix[direction].setFromTriplets(triplets[direction].begin(), triplets[direction].end());
@@ -375,45 +375,45 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     mySharpOperatorMatrixes[static_cast<int>(duality)] = sharp_operator_matrix;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
-DGtal::KForm<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, 1, duality>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::flat(const DGtal::VectorField<Self, duality>& vector_field) const
+DGtal::KForm<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 1, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flat(const DGtal::VectorField<Self, duality>& vector_field) const
 {
     const_cast<Self*>(this)->updateCachedOperators();
 
-    const boost::array<SparseMatrix, dim_ambient>& flat_operator_matrix = myFlatOperatorMatrixes[static_cast<int>(duality)];
+    const boost::array<SparseMatrix, dimAmbient>& flat_operator_matrix = myFlatOperatorMatrixes[static_cast<int>(duality)];
 
     typedef KForm<Self, 1, duality> OneForm;
     OneForm one_form(*this);
-    for (DGtal::Dimension direction=0; direction<dim_ambient; direction++)
+    for (DGtal::Dimension direction=0; direction<dimAmbient; direction++)
         one_form.myContainer += flat_operator_matrix[direction]*vector_field.myCoordinates.col(direction);
 
     return one_form;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality, DGtal::Dimension direction>
-DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>, 0, duality, 1, duality>
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::flatDirectional() const
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 1, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flatDirectional() const
 {
     const_cast<Self*>(this)->updateCachedOperators();
 
-    ASSERT( direction < dim_ambient );
+    ASSERT( direction < dimAmbient );
 
     typedef LinearOperator<Self, 0, duality, 1, duality> Operator;
     return Operator(*this, myFlatOperatorMatrixes[static_cast<int>(duality)][direction]);
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 void
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::updateFlatOperator()
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateFlatOperator()
 {
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
 
-    boost::array<Triplets, dim_ambient> triplets;
+    boost::array<Triplets, dimAmbient> triplets;
 
     // iterate over edges
     for (Index kk=0; kk<kFormLength(1, duality); kk++)
@@ -424,7 +424,7 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
 
         const Scalar orientation = ( myKSpace.sSign(signed_cell) == KSpace::NEG ? 1 : -1 );
         const DGtal::Dimension& direction = edgeDirection(cell, duality);
-        const Scalar sign = ( duality == DUAL && (direction*(dim_ambient-direction))%2 == 0 ? -1 : 1 );
+        const Scalar sign = ( duality == DUAL && (direction*(dimAmbient-direction))%2 == 0 ? -1 : 1 );
 
         typedef typename KSpace::Cells Points;
         const Points points = ( duality == PRIMAL ? myKSpace.uLowerIncident(cell) : myKSpace.uUpperIncident(cell) );
@@ -461,9 +461,9 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
 
     }
 
-    boost::array<SparseMatrix, dim_ambient> flat_operator_matrix;
+    boost::array<SparseMatrix, dimAmbient> flat_operator_matrix;
 
-    for (DGtal::Dimension direction=0; direction<dim_ambient; direction++)
+    for (DGtal::Dimension direction=0; direction<dimAmbient; direction++)
     {
         flat_operator_matrix[direction] = SparseMatrix(kFormLength(1, duality), kFormLength(0, duality));
         flat_operator_matrix[direction].setFromTriplets(triplets[direction].begin(), triplets[direction].end());
@@ -472,9 +472,9 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     myFlatOperatorMatrixes[static_cast<int>(duality)] = flat_operator_matrix;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 void
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::updateCachedOperators()
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateCachedOperators()
 {
     if (!myCachedOperatorsModified) return;
     updateFlatOperator<PRIMAL>();
@@ -484,16 +484,16 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     myCachedOperatorsModified = false;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-typename DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::Properties
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::getProperties() const
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Properties
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getProperties() const
 {
     return myCellProperties;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-typename DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::SCell
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::getSCell(const Order& order, const Duality& duality, const Index& index) const
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::SCell
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getSCell(const Order& order, const Duality& duality, const Index& index) const
 {
     const Order& actual_order = actualOrder(order, duality);
     const SCell& signed_cell = myIndexSignedCells[actual_order][index];
@@ -501,72 +501,72 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     return signed_cell;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::containsCell(const Cell& cell) const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::containsCell(const Cell& cell) const
 {
     return myCellProperties.find(cell) != myCellProperties.end();
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::isCellFlipped(const Cell& cell) const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::isCellFlipped(const Cell& cell) const
 {
     const typename Properties::const_iterator iter_property = myCellProperties.find(cell);
     ASSERT( iter_property != myCellProperties.end() );
     return iter_property->second.flipped;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-typename DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::Index
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::getCellIndex(const Cell& cell) const
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Index
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getCellIndex(const Cell& cell) const
 {
     const typename Properties::const_iterator iter_property = myCellProperties.find(cell);
     ASSERT( iter_property != myCellProperties.end() );
     return iter_property->second.index;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-typename DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::ConstIterator
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::begin() const
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::ConstIterator
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::begin() const
 {
     return myCellProperties.begin();
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-typename DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::ConstIterator
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::end() const
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::ConstIterator
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::end() const
 {
     return myCellProperties.end();
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-typename DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::Index
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::kFormLength(const DGtal::Order& order, const DGtal::Duality& duality) const
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Index
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::kFormLength(const DGtal::Order& order, const DGtal::Duality& duality) const
 {
     return myIndexSignedCells[actualOrder(order, duality)].size();
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 DGtal::Order
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::actualOrder(const DGtal::Order& order, const DGtal::Duality& duality) const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::actualOrder(const DGtal::Order& order, const DGtal::Duality& duality) const
 {
-    return duality == PRIMAL ? order : dim_embedded-order;
+    return duality == PRIMAL ? order : dimEmbedded-order;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
-typename DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::Scalar
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::hodgeSign(const Cell& cell, const DGtal::Duality& duality) const
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Scalar
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::hodgeSign(const Cell& cell, const DGtal::Duality& duality) const
 {
     if (duality == PRIMAL) return 1;
 
     const DGtal::Dimension& primal_dim = myKSpace.uDim(cell);
-    return (dim_embedded-primal_dim)*primal_dim % 2 != 0 ? -1 : 1;
+    return (dimEmbedded-primal_dim)*primal_dim % 2 != 0 ? -1 : 1;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 typename DGtal::Dimension
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::edgeDirection(const Cell& cell, const DGtal::Duality& duality) const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::edgeDirection(const Cell& cell, const DGtal::Duality& duality) const
 {
     ASSERT( myKSpace.uDim(cell) == actualOrder(1, duality) );
 
@@ -577,14 +577,14 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
     const DGtal::Dimension direction = *di;
     ++di;
     //ASSERT( !(di != 0) ); //FIXME multiple edge direction with embedding
-    ASSERT( direction < dim_ambient );
+    ASSERT( direction < dimAmbient );
 
     return direction;
 }
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::isValid() const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::isValid() const
 {
     return true;
 }
@@ -592,9 +592,9 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 std::ostream&
-DGtal::operator<<(std::ostream & out, const DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>& object)
+DGtal::operator<<(std::ostream & out, const DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& object)
 {
   object.selfDisplay(out);
   return out;

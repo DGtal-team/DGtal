@@ -48,6 +48,8 @@
 #include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSConvexHull.h"
+#include "DGtal/arithmetic/SternBrocot.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -211,7 +213,7 @@ namespace DGtal
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl);
-
+    
     /**
      * Constructor.
      * Minimal set of parameters to build the DSS
@@ -237,6 +239,9 @@ namespace DGtal
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl);
+
+    
+
 
     /**
      * Construction of a sequence of patterns 
@@ -497,14 +502,49 @@ namespace DGtal
      * @param aPoint any point
      */
     bool isInDSS(const Point& aPoint) const; 
-
-    /**
-     * @return 'true' if @a aPoint is in the DSS
-     * 'false' otherwise. 
-     * @param aPoint any point
-     * @see isInDSS
-     */
+    
     bool operator()(const Point& aPoint) const; 
+    
+    
+    /** 
+     * Returns a boolean equal to true if 'this' belongs to the DSL @a aDSL, false otherwise.
+     * @return 'true' if 'this' belongs to the DSL @a aDSL.
+     * 'false' otherwise.
+     * @param aDSL any DSL
+     */
+    bool isInDSL(const DSL& aDSL) const;
+
+ 
+    /** 
+     * Returns a boolean equal to true if 'this' belongs to the DSL @a
+     * aDSL, false otherwise. Also returns extra information about the
+     * leaning points included in 'this' or a point outside @a aDSL. 
+     * @param [in] aDSL any DSL
+     * @param [in,out] Ulp the list of @a aDSL upper leaning points on 'this', if any
+     * @param [in,out] Llp the list of @a aDSL lower leaning points on 'this', if any
+     * @param [in,out] outP a point of 'this' that does not belong to @a aDSL, if any
+     * @return 'true' if 'this' belongs to the DSL @a aDSL.
+     * 'false' otherwise.
+     */
+    bool isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point& outP) const;
+
+    
+   
+    /** Compute the union of two DSSs. If the union belongs to a DSL,
+	returns the DSS of minimal characteristics that includes the two
+	DSSs. Otherwise, returns the void DSS (DSS(Point(0,0)). See
+	Sivignon 2014  \cite SivignonDGCI2014). 
+	
+	@param aOther a DSS
+	@return a DSS
+	
+	nb: runs in O(1) when: 1) the union of the two DSSs is
+	not part of a DSL, 2) the two DSSs are connected, 3) the last
+	point of the first DSS and the first point of the second DSS
+	have the same ordinate (or abscissa). Otherwise, runs in
+	O(log(n)) where n is the total length of the union.
+     */
+    ArithmeticalDSS computeUnion(const ArithmeticalDSS & aOther) const;
 
 
     // ----------------------- Iterator services -------------------------------

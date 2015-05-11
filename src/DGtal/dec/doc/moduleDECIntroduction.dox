@@ -121,14 +121,14 @@ See <a href="https://en.wikipedia.org/wiki/Exterior_derivative">wikipedia page</
 
 \subsubsection sectDECOperatorAntiderivative Antiderivative
 
-Antiderivative operators are shorthand operators that appears in many DEC problem.
+Antiderivative operators are shorthand operators that appear in many DEC problems.
 They take k-forms as inputs and create (k-1)-forms.
 Input and output forms keep the same duality.
 Here is the definition of \f$\delta\f$, the antiderivative acting on k-forms.
 
 \f[ \delta = \star' d' \star \f]
 
-In the DEC package, antiderivative operator are generated using DiscreteExteriorCalculus.antiderivative.
+In the DEC package, antiderivative operators are generated using DiscreteExteriorCalculus.antiderivative.
 As for \f$d\f$, applying any antiderivative twice vanishes.
 
 \f[ \delta \delta x = 0 \f]

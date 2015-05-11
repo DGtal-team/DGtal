@@ -69,14 +69,14 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
 }
 
 // DiscreteExteriorCalculus
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 inline
 void
-DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>& calculus)
+DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& calculus)
 {
-    BOOST_STATIC_ASSERT(( dim_ambient == 2 ));
+    BOOST_STATIC_ASSERT(( dimAmbient == 2 ));
 
-    typedef DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger> Calculus;
+    typedef DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::ConstIterator ConstIterator;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
@@ -104,7 +104,7 @@ inline
 void
 DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform)
 {
-    BOOST_STATIC_ASSERT(( TCalculus::dimension_ambient == 2 ));
+    BOOST_STATIC_ASSERT(( TCalculus::dimensionAmbient == 2 ));
     ASSERT( kform.myCalculus );
 
     typedef typename TCalculus::Scalar Scalar;
@@ -191,10 +191,10 @@ template <typename TCalculus, DGtal::Duality duality>
 void
 DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TCalculus, duality>& vector_field)
 {
-    BOOST_STATIC_ASSERT(( TCalculus::dimension_ambient == 2 ));
+    BOOST_STATIC_ASSERT(( TCalculus::dimensionAmbient == 2 ));
     ASSERT( vector_field.myCalculus );
 
-    typedef typename DGtal::VectorField<TCalculus, duality>::Arrow Arrow;
+    typedef typename DGtal::VectorField<TCalculus, duality>::Vector Vector;
 
     typename TCalculus::Scalar scale = .25;
     typename TCalculus::Scalar epsilon = 1e-8;
@@ -213,15 +213,15 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
         const typename TCalculus::SCell& cell = vector_field.getSCell(index);
         const DGtal::Z2i::RealPoint origin = DGtal::Z2i::RealPoint(cell.myCoordinates[0]-1, cell.myCoordinates[1]-1)/2.;
 
-        Arrow arrow = vector_field.getArrow(index);
+        Vector vector = vector_field.getVector(index);
 
-        arrow *= scale;
-        if (!std::isfinite(arrow[0]) || !std::isfinite(arrow[1])) continue;
-        const typename TCalculus::Scalar& norm = arrow.norm();
+        vector *= scale;
+        if (!std::isfinite(vector[0]) || !std::isfinite(vector[1])) continue;
+        const typename TCalculus::Scalar& norm = vector.norm();
         if (norm <= epsilon) continue;
-        if (norm <= .5) arrow *= .5/norm;
+        if (norm <= .5) vector *= .5/norm;
 
-        board.drawArrow(origin[0],origin[1],origin[0]+arrow[0],origin[1]+arrow[1]);
+        board.drawArrow(origin[0],origin[1],origin[0]+vector[0],origin[1]+vector[1]);
     }
 
 }
