@@ -302,11 +302,8 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
         (duality == DUAL && dim_embedded == 2 && dim_ambient == 3 && order == 1)
         )
     {
-        //DGtal::trace.warning() << "prout minus " << dim_embedded << " " << dim_ambient << " " << order << "-" << duality << std::endl;
         _derivative.myContainer *= -1;
-    } /*else {
-        DGtal::trace.warning() << "prout plus " << dim_embedded << " " << dim_ambient << " " << order << "-" << duality << std::endl;
-    }*/
+    }
 
     return _derivative;
 }
