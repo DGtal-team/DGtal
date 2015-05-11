@@ -115,8 +115,21 @@ namespace DGtal
     typedef typename KSpace::Point Point;
 
     /**
-     * Cells data stuct.
-     * Holds size ratio, indexes and flipped for each cell of the structure.
+     * @struct Property
+     * @brief Holds size 'ratio', 'index' and 'flipped' for each cell of the DEC object.
+     * To avoid inserting both positive and negative cells in a DEC object,
+     * only non signed cells are stored internally.
+     * @var Properties::flipped
+     * To retrieve the sign of the cell, one must look at the 'flipped' boolean:
+     * if 'flipped' is true, the associated signed cell is negative,
+     * if 'flipped' is false, the associated signed cell is positive.
+     * @var Property::index
+     * 'index' give the index of the discrete k-form value in the k-form container.
+     * @var Property::size_ratio
+     * 'size_ratio' is used when computing hodge operator for the associated cell:
+     * primal hodge operator multiplies primal value by 'size_ratio' to produce dual value,
+     * dual hodge operator divides dual value by 'size_ratio' to produce primal value.
+     * In the DEC framework, size_ratio should hold the ratio of dual cell size over primal cell size for the embedding the be correct.
      */
     struct Property
     {
@@ -252,7 +265,7 @@ namespace DGtal
      * Manually insert cell into calculus.
      * Be sure to insert all adjacent lower order primal cells.
      * @param signed_cell the signed cell to be inserted.
-     * @param size_ratio ratio between primal cell size and dual cell size.
+     * @param size_ratio ratio of dual cell size over primal cell size.
      * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
      */
     bool
