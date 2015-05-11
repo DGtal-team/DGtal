@@ -97,10 +97,10 @@ drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCe
 		public:
 
 // DiscreteExteriorCalculus
-template <Dimension dim_embedded, Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 static
 void
-draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>& calculus);
+draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& calculus);
 // DiscreteExteriorCalculus
 
 // KForm

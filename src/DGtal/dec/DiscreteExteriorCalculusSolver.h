@@ -71,9 +71,9 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
     BOOST_STATIC_ASSERT(( order_in  >= 0 ));
-    BOOST_STATIC_ASSERT(( order_in  <= TCalculus::dimension_embedded ));
+    BOOST_STATIC_ASSERT(( order_in  <= TCalculus::dimensionEmbedded ));
     BOOST_STATIC_ASSERT(( order_out >= 0 ));
-    BOOST_STATIC_ASSERT(( order_out <= TCalculus::dimension_embedded ));
+    BOOST_STATIC_ASSERT(( order_out <= TCalculus::dimensionEmbedded ));
 
     typedef TCalculus Calculus;
     typedef TLinearAlgebraSolver LinearAlgebraSolver;

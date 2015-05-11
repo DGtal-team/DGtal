@@ -144,6 +144,144 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
   return !( operator==(aOther) ); 
 }
 
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+bool
+DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>
+::sameOctant( const ArithmeticalDSL & aOther, typename ArithmeticalDSL<TCoordinate, TInteger,adjacency>::Octant::first_type *theOctant ) const  
+{
+  Octant octantThis, octantOther;
+  
+  octantThis = this->octant();
+  octantOther = aOther.octant();
+    
+  if(octantThis.first==octantOther.first || octantThis.first==octantOther.second)
+    {
+      *theOctant = octantThis.first;
+      return true;
+    }
+  else
+    if(octantThis.second==octantOther.first || octantThis.second == octantOther.second)
+      {
+	*theOctant = octantThis.second;
+	return true;
+      }
+    else
+      return false;
+}  
+  
+
+
+
+// ----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+typename DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::Octant
+DGtal::ArithmeticalDSL<TCoordinate,TInteger, adjacency>
+::octant() const
+{
+  Octant res;
+  
+  if (myB== NumberTraits<TInteger>::ZERO)
+    {
+      if (myA == NumberTraits<TInteger>::ZERO) 
+	{ //no octant
+	  res = std::make_pair(-1,-1);
+	}
+      else if (myA > NumberTraits<TInteger>::ZERO)
+	{ //octant 1,2
+	  res = std::make_pair(1,2);
+	}
+      else // (myA < 0)
+	{ //octant 5,6
+	  res = std::make_pair(5,6);
+	}	    
+    }
+  else if (myB> NumberTraits<TInteger>::ZERO)
+    {
+      if (myA == NumberTraits<TInteger>::ZERO)
+	{ //octant 0,7
+	  res = std::make_pair(0,7);
+	}
+      else if (myA > NumberTraits<TInteger>::ZERO)
+	{
+	  if (myB== myA)
+	    { //octant 0,1
+	      res = std::make_pair(0,1);
+	    }
+	  else if (myB> myA)
+	    { //octant 0
+	      res = std::make_pair(0,0);
+	    }
+	  else // (myB< myA)
+	    { //octant 1
+	      res = std::make_pair(1,1);
+	    }
+	}
+      else //(myA < 0)
+	{ 
+	  if (myB== -myA)
+	    {
+	      res = std::make_pair(6,7);
+	    }
+	  else if (myB> -myA)
+	    { //octant 7
+	      res = std::make_pair(7,7);
+	    }
+	  else // (myB< -myA)
+	    { //octant 6
+	      res = std::make_pair(6,6);
+	    }
+	}	    
+    }
+  else // (myB< 0)
+    { 
+      if (myA == NumberTraits<TInteger>::ZERO)
+	{ //octant 3,4
+	  res = std::make_pair(3,4);
+	}
+      else if (myA > NumberTraits<TInteger>::ZERO)
+	{
+	  if (-myB == myA)
+	    {
+	      res = std::make_pair(2,3);
+	    }
+	  else if (-myB > myA)
+	    { //octant 3
+	      res = std::make_pair(3,3);
+	    }
+	  else // (-myB < myA)
+	    { //octant 2
+	      res = std::make_pair(2,2);
+	    }	    
+	}
+      else // (myA < 0)
+	{
+	  if (-myB== -myA)
+	    {
+	      res = std::make_pair(4,5);
+	    }
+	  else if (-myB> -myA)
+	    { //octant 4
+	      res = std::make_pair(4,4);
+	    }
+	  else // (-myB< -myA)
+	    { //octant 5
+	      res = std::make_pair(5,5);
+	    }
+	}
+    }
+
+
+  return res;
+  
+
+}
+
+
+
+
+
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
@@ -376,6 +514,25 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::isInDSL(const Point& a
 {
   Integer r = remainder(aPoint);
   return ( (r >= myLowerBound)&&(r <= myUpperBound) );
+}
+
+
+//------------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+bool
+DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::isUpperLeaningPoint(const Point& aPoint) const
+{
+  return (remainder(aPoint)==myLowerBound);
+}
+
+//----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+bool
+DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::isLowerLeaningPoint(const Point& aPoint) const
+{
+  return (remainder(aPoint)==myUpperBound);
 }
 
 
