@@ -34,12 +34,12 @@ The Poisson equation can be viewed as the heat equation when steady state is rea
 \f$f\f$ is then the constant spatial heating power applied to the structure and \f$\phi\f$ is the temperature reached in steady state (up to a spatial constant).
 Here we choose \f$f\f$ to be a Dirac delta function \f$\delta\f$ to simulate a punctual heating on the structure.
 
-Depending on border conditions, \f$\Delta\f$ may have some null eigen values.
+Depending on border conditions, \f$\Delta\f$ may have some null eigenvalues.
 In order to make it solvable, we use a regularized version of the Laplace operator \f$\Delta_\mathrm{reg}\f$, defined below
 
 \f[ \Delta_\mathrm{reg} = \Delta + \lambda I \f]
 
-where \f$I\f$ is the identity operator and \f$\lambda\f$ is the regularization scalar, chosen small with respect to \f$\Delta\f$ eigen values.
+where \f$I\f$ is the identity operator and \f$\lambda\f$ is the regularization scalar, chosen small with respect to \f$\Delta\f$ eigenvalues.
 Linear regularized solution are the same solution as least square problem solution of the non regularized problem. 
 \f$I\f$ is generated using DiscreteExteriorCalculus.identity. 
 
