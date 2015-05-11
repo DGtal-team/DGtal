@@ -303,15 +303,9 @@ DGtal::Mesh<TPoint>::getBoundingBox() const
   TPoint lowerBound, upperBound;
   for(unsigned int i=0; i< TPoint::size(); i++)
     {
-<<<<<<< HEAD
-      CompPoints c(i);
-      upperBound[i] = (*(std::max_element(vertexBegin(), vertexEnd(), c)))[i];
-      lowerBound[i] = (*(std::min_element(vertexBegin(), vertexEnd(), c)))[i];
-=======
       const MeshBoundingBoxCompPoints<TPoint> cmp_points(i);
       upperBound[i] = (*(std::max_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
       lowerBound[i] = (*(std::min_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
->>>>>>> f23f8beb6dc1b831a0c008fb75254e57dfd547c9
     }
   theResult.first = lowerBound ;
   theResult.second = upperBound ;
