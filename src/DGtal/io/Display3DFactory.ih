@@ -40,14 +40,14 @@
 
 // DiscreteExteriorCalculus
 template <typename Space, typename KSpace>
-template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 inline
 void
-DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>& calculus)
+DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& calculus)
 {
-    BOOST_STATIC_ASSERT(( dim_ambient == 3 ));
+    BOOST_STATIC_ASSERT(( dimAmbient == 3 ));
 
-    typedef DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger> Calculus;
+    typedef DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::ConstIterator ConstIterator;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
