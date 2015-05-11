@@ -77,15 +77,15 @@ public:
      * DEC embedded dimension is equal to n.
      * DEC ambient dimension is equal to n-cells kspace dimension.
      * n-cells get attached to primal n-cell <-> dual 0-cell.
-     * @tparam dim_embedded dimension of emmbedded manifold.
+     * @tparam dimEmbedded dimension of emmbedded manifold.
      * @tparam TNSCellConstIterator signed cells collection const iterator type.
      * @param begin beginning of iteration range.
      * @param end end of iteration range.
      * @param add_border add border to the computed structure.
      */
-    template <Dimension dim_embedded, typename TNSCellConstIterator>
+    template <Dimension dimEmbedded, typename TNSCellConstIterator>
     static
-    DiscreteExteriorCalculus<dim_embedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
+    DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
     createFromNSCells(const TNSCellConstIterator begin, const TNSCellConstIterator end, const bool add_border = true);
 
     // ----------------------- Interface --------------------------------------
