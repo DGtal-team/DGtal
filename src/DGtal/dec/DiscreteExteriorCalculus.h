@@ -53,6 +53,7 @@
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/LinearOperator.h"
 #include "DGtal/dec/VectorField.h"
+#include "DGtal/base/ConstAlias.h"
 
 #include <DGtal/kernel/sets/CDigitalSet.h>
 #include <DGtal/math/linalg/CDynamicMatrix.h>
@@ -224,7 +225,7 @@ namespace DGtal
      */
     template <typename TDomain>
     void
-    initKSpace(const TDomain& domain);
+    initKSpace(ConstAlias<TDomain> domain);
 
     // ----------------------- Iterators on property map -----------------------
     /**

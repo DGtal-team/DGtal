@@ -42,7 +42,7 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
 
     BOOST_STATIC_ASSERT(( dim_embedded == dim_ambient ));
 
-    initKSpace(_set.domain());
+    this->template initKSpace<typename TDigitalSet::Domain>(_set.domain());
 
     // compute raw cell size
     typedef std::map<Cell, Scalar> Accum;
@@ -105,13 +105,13 @@ DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend
 template <DGtal::Dimension dim_embedded, DGtal::Dimension dim_ambient, typename TLinearAlgebraBackend, typename TInteger>
 template <typename TDomain>
 void
-DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::initKSpace(const TDomain& _domain)
+DGtal::DiscreteExteriorCalculus<dim_embedded, dim_ambient, TLinearAlgebraBackend, TInteger>::initKSpace(DGtal::ConstAlias<TDomain> _domain)
 {
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
 
     // FIXME borders are removed from set => better not initialize kspace
     // FIXME should be open or closed? => closed = true
-    const bool kspace_init_ok = const_cast<KSpace&>(myKSpace).init(_domain.lowerBound(), _domain.upperBound(), true);
+    const bool kspace_init_ok = const_cast<KSpace&>(myKSpace).init(_domain->lowerBound(), _domain->upperBound(), true);
     ASSERT(kspace_init_ok);
 }
 
