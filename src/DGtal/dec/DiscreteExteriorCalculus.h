@@ -345,7 +345,8 @@ namespace DGtal
     flat(const VectorField<Self, duality>& vector_field) const;
 
     /**
-     * Get flat operator that transform dir coordinates 0-form into 1-form;
+     * Get directional flat operator that transforms 0-form containing vector field coordinates along direction dir into 1-form.
+     * Opposite of sharp(1-form).extractZeroForm(dir).
      * @tparam duality input 0-form and output 1-form duality.
      * @tparam dir direction of projection.
      * @return linear operator.
@@ -365,7 +366,8 @@ namespace DGtal
     sharp(const KForm<Self, 1, duality>& one_form) const;
 
     /**
-     * Get sharp operator that transform 1-form into dir coordinates 0-form (dir coordinates of the vector field obtained with sharp).
+     * Get directional sharp operator that transforms 1-form into 0-form containing vector field coordinates along direction dir.
+     * Equivalent to sharp(1-form).extractZeroForm(dir).
      * @tparam duality input 1-form and output 0-form duality.
      * @tparam dir direction of projection.
      * @return linear operator.
