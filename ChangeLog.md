@@ -11,7 +11,7 @@
 ## Changes
 
 - *DEC Package*
- - Coherent signed cells support allow lower dimension manifold embedding.
+ - Coherent signed cells support allows lower dimension manifold embedding.
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - OppositeDuality struct allows generic hodge and laplace definition.
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
