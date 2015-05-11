@@ -28,6 +28,7 @@
 
 #include <DGtal/io/Style2DFactory.h>
 #include <DGtal/io/colormaps/GradientColorMap.h>
+#include <DGtal/topology/CanonicSCellEmbedder.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -41,8 +42,11 @@ void
 DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& sk)
 {
     FATAL_ERROR( dim == 2 );
-    const float x = static_cast<float>(sk.myCoordinates[0] - 1) / 2.f;
-    const float y = static_cast<float>(sk.myCoordinates[1] - 1) / 2.f;
+    typedef DGtal::CanonicSCellEmbedder<DGtal::Z2i::KSpace> Embedder;
+    const Embedder embedder;
+    const Embedder::RealPoint coords = embedder(sk);
+    const float x = coords[0];
+    const float y = coords[1];
     const float retract = 0.1f;
     const bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
     const bool yodd = ( sk.myCoordinates[ 1 ] & 1 );

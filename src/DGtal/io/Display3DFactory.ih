@@ -138,7 +138,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     for (typename Calculus::Index index=0; index<vector_field.length(); index++)
     {
         const typename Calculus::SCell& cell = vector_field.getSCell(index);
-        const DGtal::Z3i::RealPoint origin = DGtal::Z3i::RealPoint(cell.myCoordinates[0]-1, cell.myCoordinates[1]-1, cell.myCoordinates[2]-1)/2.;
+        const DGtal::Z3i::RealPoint origin = display.sCellEmbedder()(cell);
 
         Vector vector = vector_field.getVector(index);
 
