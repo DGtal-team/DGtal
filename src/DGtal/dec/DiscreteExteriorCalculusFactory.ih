@@ -46,7 +46,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     typedef typename Calculus::KSpace KSpace;
 
     Calculus calculus;
-    calculus.initKSpace(_set.domain());
+    calculus.template initKSpace<typename TDigitalSet::Domain>(_set.domain());
 
     // compute raw cell size
     typedef std::map<Cell, Scalar> Accum;
@@ -56,7 +56,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         const Point& point = *ri;
         const Cell cell_point = calculus.myKSpace.uSpel(point);
 
-        typedef DGtal::SpaceND<Calculus::dimension_ambient, TInteger> Space;
+        typedef DGtal::SpaceND<Calculus::dimensionAmbient, TInteger> Space;
         typedef DGtal::HyperRectDomain<Space> Neighborbood;
         const Point cell_coords = calculus.myKSpace.uKCoords(cell_point);
         const Neighborbood neighborhood(cell_coords-Point::diagonal(1), cell_coords+Point::diagonal(1));
@@ -72,7 +72,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     for (typename Accum::const_iterator csi=cell_size_accum.begin(), csie=cell_size_accum.end(); csie!=csi; csi++)
     {
         const Cell& cell = csi->first;
-        const DGtal::Dimension dual_dim = Calculus::dimension_embedded-calculus.myKSpace.uDim(cell);
+        const DGtal::Dimension dual_dim = Calculus::dimensionEmbedded-calculus.myKSpace.uDim(cell);
         const Scalar factor = pow(.5, dual_dim);
 
         const Scalar normalized_size = csi->second * factor;
@@ -133,14 +133,14 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumul
 
 
 template <typename TLinearAlgebraBackend, typename TInteger>
-template <DGtal::Dimension dim_embedded, typename TNSCellConstIterator>
-DGtal::DiscreteExteriorCalculus<dim_embedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
+template <DGtal::Dimension dimEmbedded, typename TNSCellConstIterator>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator begin, const TNSCellConstIterator end, const bool add_border)
 {
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<TNSCellConstIterator> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<TNSCellConstIterator> ));
 
-    typedef DGtal::DiscreteExteriorCalculus<dim_embedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger> Calculus;
+    typedef DGtal::DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Scalar Scalar;
@@ -154,7 +154,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
     Calculus calculus;
 
-    // compute dim_embedded-1 cells border
+    // compute dimEmbedded-1 cells border
     typedef std::map<Cell, int> CellsAccum;
     CellsAccum border_accum;
     CellsAccum lower_accum;
@@ -162,7 +162,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     {
         const SCell cell_signed = *ci;
         const Dimension cell_dim = calculus.myKSpace.sDim(cell_signed);
-        ASSERT_MSG( cell_dim == dim_embedded, "wrong n-cell dimension" );
+        ASSERT_MSG( cell_dim == dimEmbedded, "wrong n-cell dimension" );
 
         calculus.insertSCell(cell_signed);
 
@@ -202,9 +202,9 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         const Cell cell = lai->first;
         if (border.find(cell) != border.end()) continue;
 
-        const DGtal::Dimension dual_dim = Calculus::dimension_embedded-calculus.myKSpace.uDim(cell);
+        const DGtal::Dimension dual_dim = Calculus::dimensionEmbedded-calculus.myKSpace.uDim(cell);
         ASSERT( dual_dim > 0 );
-        ASSERT( dual_dim <= Calculus::dimension_embedded );
+        ASSERT( dual_dim <= Calculus::dimensionEmbedded );
 
         const Scalar factor = pow(.5, 2*dual_dim-1);
         const Scalar size_ratio = lai->second * factor;
