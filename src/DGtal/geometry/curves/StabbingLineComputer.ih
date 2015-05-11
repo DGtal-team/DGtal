@@ -206,6 +206,17 @@ DGtal::StabbingLineComputer<TConstIterator>::Ll() const
   return myPreimagePtr->Ll();
 }
 
+
+template <typename TConstIterator>
+inline
+typename DGtal::StabbingLineComputer<TConstIterator>::PreimagePtr
+DGtal::StabbingLineComputer<TConstIterator>::getPreimage() const
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  return myPreimagePtr;
+}
+
+
 template <typename TConstIterator>
 inline
 bool
