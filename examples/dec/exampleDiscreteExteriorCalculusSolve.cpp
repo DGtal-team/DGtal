@@ -441,7 +441,7 @@ void solve3d_decomposition()
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<3, 3, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
-    calculus.initKSpace(domain);
+    calculus.initKSpace<Z3i::Domain>(domain);
 
     // outer ring
     for (int kk=2; kk<=18; kk++)
