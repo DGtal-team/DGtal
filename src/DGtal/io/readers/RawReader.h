@@ -151,13 +151,7 @@ namespace DGtal
      */
     template <typename Word>
     static
-    FILE* read_word( FILE* fin, Word& aValue )
-    {
-      aValue = 0;
-      for (unsigned size = 0; size < sizeof( Word ); ++size)
-  aValue |= getc(fin) << (8 * size);
-      return fin;
-    }
+    FILE* read_word( FILE* fin, Word& aValue );
 
 
   }; // end of class RawReader
