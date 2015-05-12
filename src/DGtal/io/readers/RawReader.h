@@ -132,7 +132,7 @@ namespace DGtal
              const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
 
     /**
-     * Method to import a Raw (unsigned 16bits little endian, uint32_t, unsigned int) into an instance of the
+     * Method to import a Raw (unsigned 16bits little endian, uint16_t, unsigned short) into an instance of the
      * template parameter ImageContainer.
      *
      * @param filename the file name to import.
@@ -140,7 +140,7 @@ namespace DGtal
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
      * default set to functors::Cast < TImageContainer::Value > ).
-     * aFunctor must accept uint32_t as input.
+     * aFunctor must accept uint16_t as input.
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importRaw16(const std::string & filename,
