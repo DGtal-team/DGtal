@@ -30,78 +30,66 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <fstream>
-#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-template<typename I,typename C>
+template <typename I,typename C>
+template <typename Word>
 bool
-DGtal::RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
-         const Functor & aFunctor)
+DGtal::RawWriter<I, C>::exportRaw(const std::string& filename, const I& aImage, const Functor& aFunctor)
 {
-  BOOST_CONCEPT_ASSERT((  DGtal::concepts::CUnaryFunctor<Functor, typename I::Value, unsigned char> )) ;
+  BOOST_CONCEPT_ASSERT((  DGtal::concepts::CUnaryFunctor<Functor, Value, Word> ));
+
   std::ofstream out;
-
-
   typename I::Domain domain = aImage.domain();
   typename I::Value val;
 
   out.open(filename.c_str(), std::ios_base::binary);
 
   //We scan the domain
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
-      it!=itend;
-      ++it)
-    {
-      val = aImage( (*it) );
-      out.put( static_cast<unsigned char>(aFunctor (val) ) );
-    }
+  for (typename I::Domain::ConstIterator it=domain.begin(), itend=domain.end(); it!=itend; ++it)
+  {
+      val = aImage(*it);
+      write_word<Word>(out, aFunctor(val));
+  }
 
   out.close();
 
-  ///@todo catch IOerror excpetion
+  ///@todo catch IOerror exception
   return true;
 }
 
-
-template<typename I,typename C>
+template <typename I,typename C>
 bool
-DGtal::RawWriter<I,C>::exportRaw32(const std::string & filename, const I & aImage,
-         const Functor & aFunctor)
+DGtal::RawWriter<I, C>::exportRaw8(const std::string& filename, const I& aImage, const Functor& aFunctor)
 {
+    return exportRaw<uint8_t>(filename, aImage, aFunctor);
+}
 
-  BOOST_CONCEPT_ASSERT((  DGtal::concepts::CUnaryFunctor<Functor, typename I::Value, unsigned int> )) ;
-  std::ofstream out;
-  typename I::Domain domain = aImage.domain();
-  typename I::Value val;
+template <typename I,typename C>
+bool
+DGtal::RawWriter<I, C>::exportRaw16(const std::string& filename, const I& aImage, const Functor& aFunctor)
+{
+    return exportRaw<uint16_t>(filename, aImage, aFunctor);
+}
 
-  out.open(filename.c_str(), std::ios_base::binary);
-
-  //We scan the domain
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
-      it!=itend;
-      ++it)
-    {
-      val = aImage( (*it) );
-      write_word(out,aFunctor(val));
-    }
-
-  out.close();
-
-  ///@todo catch IOerror excpetion
-  return true;
+template <typename I,typename C>
+bool
+DGtal::RawWriter<I, C>::exportRaw32(const std::string& filename, const I& aImage, const Functor& aFunctor)
+{
+    return exportRaw<uint32_t>(filename, aImage, aFunctor);
 }
 
 template<typename I,typename C>
 template <typename Word>
 std::ostream&
-DGtal::RawWriter<I, C>::write_word( std::ostream& outs, Word value )
+DGtal::RawWriter<I, C>::write_word(std::ostream& outs, Word value)
 {
-    for (unsigned size = sizeof( Word ); size; --size, value >>= 8)
-        outs.put( static_cast <char> (value & 0xFF) );
+    for (unsigned size = sizeof(Word); size; --size, value >>= 8)
+        outs.put(static_cast<unsigned char>(value & 0xFF));
     return outs;
 }
 
