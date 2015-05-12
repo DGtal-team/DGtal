@@ -669,10 +669,10 @@ namespace DGtal
      *
      * @param p1  the cone apex
      * @param p2  the cone base
-     * @param width the width of the cone (default= 0.02)
+     * @param width the width of the cone (default= 0.08)
      */
     void addCone(const RealPoint &p1, const RealPoint &p2,
-                 double width=0.02);
+                 double width=0.08);
 
 
     /**

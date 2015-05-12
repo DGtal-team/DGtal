@@ -523,9 +523,9 @@ namespace DGtal
 //
 
 // DiscreteExteriorCalculus
-template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& /*object*/, std::string /*mode*/ = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& /*object*/, std::string /*mode*/ = "" )
 {
   return new DGtal::CalculusStyle2D();
 }

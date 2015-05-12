@@ -69,11 +69,12 @@ namespace DGtal
     typedef TCalculus Calculus;
 
     BOOST_STATIC_ASSERT(( order >= 0 ));
-    BOOST_STATIC_ASSERT(( order <= Calculus::dimension ));
+    BOOST_STATIC_ASSERT(( order <= Calculus::dimensionEmbedded ));
 
     typedef typename Calculus::DenseVector Container;
     typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::SCell SCell;
+    typedef typename Calculus::Index Index;
 
     /**
      * Constructor.
@@ -125,11 +126,17 @@ namespace DGtal
     void clear();
 
     /**
-     * Get k-cell from index.
+     * Get signed k-cell from index.
      * @param index the index.
-     * @return associated Khalimsky signed cell.
+     * @return associated Khalimsky cell.
      */
-    SCell getSCell(const typename Calculus::Index& index) const;
+    SCell getSCell(const Index& index) const;
+
+    /**
+     * Get k-form length.
+     * @return k-form length.
+     */
+    Index length() const;
 
     /**
      * Checks the validity/consistency of the object.
