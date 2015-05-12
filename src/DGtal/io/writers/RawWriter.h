@@ -107,16 +107,7 @@ namespace DGtal
      */
     template <typename Word>
     static
-    std::ostream& write_word( std::ostream& outs, Word value )
-    {
-      for (unsigned size = sizeof( Word ); size; --size, value >>= 8)
-  outs.put( static_cast <char> (value & 0xFF) );
-      return outs;
-    }
-
-
-
-
+    std::ostream& write_word( std::ostream& outs, Word value );
 
   };
 }//namespace

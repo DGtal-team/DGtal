@@ -37,14 +37,12 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-
-namespace DGtal {
 template<typename I,typename C>
 bool
-RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
+DGtal::RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
          const Functor & aFunctor)
 {
-  BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<Functor, typename I::Value, unsigned char> )) ;
+  BOOST_CONCEPT_ASSERT((  DGtal::concepts::CUnaryFunctor<Functor, typename I::Value, unsigned char> )) ;
   std::ofstream out;
 
 
@@ -71,11 +69,11 @@ RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
 
 template<typename I,typename C>
 bool
-RawWriter<I,C>::exportRaw32(const std::string & filename, const I & aImage,
+DGtal::RawWriter<I,C>::exportRaw32(const std::string & filename, const I & aImage,
          const Functor & aFunctor)
 {
 
-  BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<Functor, typename I::Value, unsigned int> )) ;
+  BOOST_CONCEPT_ASSERT((  DGtal::concepts::CUnaryFunctor<Functor, typename I::Value, unsigned int> )) ;
   std::ofstream out;
   typename I::Domain domain = aImage.domain();
   typename I::Value val;
@@ -97,4 +95,13 @@ RawWriter<I,C>::exportRaw32(const std::string & filename, const I & aImage,
   return true;
 }
 
-}//namespace
+template<typename I,typename C>
+template <typename Word>
+std::ostream&
+DGtal::RawWriter<I, C>::write_word( std::ostream& outs, Word value )
+{
+    for (unsigned size = sizeof( Word ); size; --size, value >>= 8)
+        outs.put( static_cast <char> (value & 0xFF) );
+    return outs;
+}
+

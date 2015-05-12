@@ -145,3 +145,14 @@ DGtal::RawReader<T, TFunctor >::importRaw32 (const std::string & filename, const
     return image;
 }
 
+template <typename T, typename TFunctor>
+template <typename Word>
+inline
+FILE*
+DGtal::RawReader<T, TFunctor>::read_word( FILE* fin, Word& aValue )
+{
+    aValue = 0;
+    for (unsigned size = 0; size < sizeof( Word ); ++size)
+        aValue |= getc(fin) << (8 * size);
+    return fin;
+}
