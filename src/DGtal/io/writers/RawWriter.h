@@ -72,10 +72,10 @@ namespace DGtal
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    
 
-    
-    /** 
+
+
+    /**
      * Export an Image to  Raw format (8bits, unsigned char).
      *
      * @param filename name of the output file
@@ -83,26 +83,26 @@ namespace DGtal
      * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */
-    static bool exportRaw8(const std::string & filename, const Image &aImage, 
-			   const Functor & aFunctor = Functor());
-    
-    /** 
+    static bool exportRaw8(const std::string & filename, const Image &aImage,
+         const Functor & aFunctor = Functor());
+
+    /**
      * Export an Image to  Raw format (32bits, DGtal::uint32_t, binary format in little-endian).
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */
-    static bool exportRaw32(const std::string & filename, const Image &aImage, 
+    static bool exportRaw32(const std::string & filename, const Image &aImage,
                             const Functor & aFunctor = Functor());
-    
-  private: 
-    /** 
+
+  private:
+    /**
      * Generic write word (binary mode) in little-endian.
-     * 
+     *
      * @param outs output stream.
      * @param value value to write.
-     * 
+     *
      * @return modified stream.
      */
     template <typename Word>
@@ -110,14 +110,14 @@ namespace DGtal
     std::ostream& write_word( std::ostream& outs, Word value )
     {
       for (unsigned size = sizeof( Word ); size; --size, value >>= 8)
-	outs.put( static_cast <char> (value & 0xFF) );
+  outs.put( static_cast <char> (value & 0xFF) );
       return outs;
     }
-    
 
-    
-  
-    
+
+
+
+
   };
 }//namespace
 
