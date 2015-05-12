@@ -56,7 +56,8 @@ namespace DGtal
   /**
    * Description of template class 'VectorField' <p>
    * \brief Aim:
-   * VectorField represents vector field in the dec package.
+   * VectorField represents a discrete vector field in the dec package.
+	 * Vector field values are attached to 0-cells with the same duality as the vector field.
    *
    * @tparam TCalculus should be DiscreteExteriorCalculus.
    * @tparam duality is the duality of the vector field.
@@ -69,8 +70,9 @@ template <typename TCalculus, Duality duality>
     typedef TCalculus Calculus;
 
     typedef typename Calculus::Scalar Scalar;
+    typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
-    typedef typename DGtal::PointVector<Calculus::dimension, Scalar> Arrow;
+    typedef typename DGtal::PointVector<Calculus::dimensionAmbient, Scalar> Vector;
 
     typedef typename Calculus::DenseMatrix Coordinates;
     typedef Coordinates Container;
@@ -96,17 +98,30 @@ template <typename TCalculus, Duality duality>
     VectorField& operator=(const VectorField& other);
 
     /**
-     * Get vector from index.
-     * @index index of the corresponding 0-cell.
+     * Get signed k-cell from index.
+     * @param index the index.
+     * @return associated Khalimsky cell.
      */
-    Arrow getArrow(const Index& index) const;
+    SCell getSCell(const Index& index) const;
+
+    /**
+     * Get k-form length.
+     * @return k-form length.
+     */
+    Index length() const;
+
+    /**
+     * Get vector from index.
+     * @param index of the corresponding 0-cell.
+     */
+    Vector getVector(const Index& index) const;
 
     /**
      * Set vector at index.
-     * @index index of the corresponding 0-cell.
-     * @arrow value of the vector field to set at this index.
+     * @param index of the corresponding 0-cell.
+     * @param vector value of the vector field to set at this index.
      */
-    void setArrow(const Index& index, const Arrow& arrow);
+    void setVector(const Index& index, const Vector& vector);
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -134,9 +149,9 @@ template <typename TCalculus, Duality duality>
 
     /**
      * Create zero form by projecting the vector field along basis vector.
-     * @param dim dimension along wich the vector field is projected.
+     * @param dir direction along wich the vector field is projected.
      */
-    KForm<Calculus, 0, duality> extractZeroForm(const Dimension& dim) const;
+    KForm<Calculus, 0, duality> extractZeroForm(const Dimension& dir) const;
 
     /**
      * Clear current vector field.
@@ -145,7 +160,7 @@ template <typename TCalculus, Duality duality>
 
     /**
      * Return the normalized vector field.
-		 * Scale vector field to norm 1 at each point.
+     * Scale vector field to norm 1 at each point.
      * @param epsilon vectors with norm lower than epsilon are set to zero.
      */
     VectorField<TCalculus, duality> normalized(const Scalar& epsilon = 0) const;
