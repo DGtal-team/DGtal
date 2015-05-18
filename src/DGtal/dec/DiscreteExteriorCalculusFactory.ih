@@ -135,7 +135,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumul
 template <typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Dimension dimEmbedded, typename TNSCellConstIterator>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
-DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator begin, const TNSCellConstIterator end, const bool add_border)
+DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, const bool add_border)
 {
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<TNSCellConstIterator> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<TNSCellConstIterator> ));
