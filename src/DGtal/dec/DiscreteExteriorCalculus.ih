@@ -129,8 +129,10 @@ template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TL
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::resetSizeRatios()
 {
-    for (typename Properties::iterator iter=myCellProperties.begin(), end=myCellProperties.end(); iter!=end; iter++)
-        iter->second.size_ratio = 1;
+    for (typename Properties::iterator pi=myCellProperties.begin(), pe=myCellProperties.end(); pi!=pe; pi++)
+        pi->second.size_ratio = 1;
+
+    myCachedOperatorsModified = true;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
