@@ -26,7 +26,7 @@ void solve2d_laplace()
     // create discrete exterior calculus from set
     //! [calculus_creation]
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
-		typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
     Calculus calculus = CalculusFactory::createFromDigitalSet(generateRingSet(domain));
     //! [calculus_creation]
     trace.info() << calculus << endl;
@@ -191,7 +191,7 @@ void solve2d_dual_decomposition()
 
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
-		typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
     Calculus calculus = CalculusFactory::createFromDigitalSet(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
@@ -316,7 +316,7 @@ void solve2d_primal_decomposition()
 
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
-		typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
     Calculus calculus = CalculusFactory::createFromDigitalSet(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
