@@ -149,7 +149,10 @@ Contrary to Hodge operators and exterior derivative, sharp and flat operators do
 
 \subsubsection sectDECOperatorClassical Classical vector analysis
 
-Classical vector analysis operators such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$ can be expressed with basic DEC operators, \f$\star\f$, \f$d\f$, \f$\sharp\f$ and \f$\flat\f$.
+Classical vector analysis operators such as gradient \f$\nabla\f$, divergence
+\f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$
+can be expressed with basic DEC operators, \f$\star\f$, \f$d\f$, \f$\sharp\f$
+and \f$\flat\f$.
 
 \f[\nabla x = ( d x )^\sharp \f]
 
@@ -192,13 +195,21 @@ Using the DEC package, one can solve any equation of the type:
 \f[ f(x) = y \f]
 
 where \f$x\f$ and \f$y\f$ are k-forms, with potentially different orders and dualities, and \f$f\f$ is a linear operator between k-forms.
-One can create linear operators by manually filling LinearOperator.myContainer, but it's often easier to combine derivative \f$d\f$ and duality operators \f$\star\f$ computed by DiscreteExteriorCalculus.derivative and DiscreteExteriorCalculus.hodge.
+One can create linear operators by manually filling
+LinearOperator.myContainer, but it's often easier to combine derivative
+\f$d\f$ and duality operators \f$\star\f$ computed by
+DiscreteExteriorCalculus.derivative and DiscreteExteriorCalculus.hodge.
 
 Recall that \f$\flat\f$ and \f$\sharp\f$ are operators that turn a vector field into a 1-form and the other way around.
 Those operators are linear but do not transform k-forms into k-forms and therefore can't be represented by LinearOperator.
-However DiscreteExteriorCalculus allows us to apply those transformations on associated k-forms and vector fields, namely DiscreteExteriorCalculus.flat and DiscreteExteriorCalculus.sharp.
-These operators are cached in the DiscreteExteriorCalculus object and support intense load, as Hodge and derivative operators do.
-We chose to disable \f$\flat\f$ and \f$\sharp\f$ representation because the quantity of information stored in the associated 1-form is always bigger than the quantity of information stored in the vector field.
+However DiscreteExteriorCalculus allows us to apply those transformations on
+associated k-forms and vector fields, namely DiscreteExteriorCalculus.flat and
+DiscreteExteriorCalculus.sharp.
+These operators are cached in the DiscreteExteriorCalculus object and support
+intense load, as Hodge and derivative operators do.
+We chose to disable \f$\flat\f$ and \f$\sharp\f$ representation because the
+quantity of information stored in the associated 1-form is always bigger than
+the quantity of information stored in the vector field.
 
 \subsection sectDECIntroductionFurther Further reading
 
@@ -219,23 +230,38 @@ In this package, the main DEC object is DiscreteExteriorCalculus.
 The first template parameter is the dimension of the embedded structure one wants to represent.
 The second template parameter is the dimension of the ambient space in which the structure in embedded.
 For obvious reasons, the ambient dimension must be equal or greater than the embedded dimension.
-The ambient dimension is used internally by DiscreteExteriorCalculus.myKSpace and therefore is the dimension of cells and points used to fill the DEC object.
+The ambient dimension is used internally by DiscreteExteriorCalculus.myKSpace
+and therefore is the dimension of cells and points used to fill the DEC
+object.
 The third template parameter is a linear algebra backend used internally to specify containers and solvers.
 By now, there is only one available backend: EigenLinearAlgebraBackend.
-For example, here is a snippet that define a working two dimensional DEC object embedded in a two dimensional ambient space along with the corresponding factory type.
+For example, here is a snippet that define a working two dimensional DEC
+object embedded in a two dimensional ambient space along with the
+corresponding factory type.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_typedef
 
-The DiscreteExteriorCalculus provides a default constructor that initializes an empty structure, ready to be filled with DiscreteExteriorCalculus::SCell through the DiscreteExteriorCalculus.insertSCell member.
-A DiscreteExteriorCalculus object can also be created from a set of points implementing the CDigitalSet concept using DiscreteExteriorCalculusFactory::createFromDigitalSet. This factory static member inserts each point as a primal n-cell in the structure and then fills in between k-cells to glue all n-cells together. Borders can be added or removed from the generated structure using the add_border boolean.
+The DiscreteExteriorCalculus provides a default constructor that initializes
+an empty structure, ready to be filled with DiscreteExteriorCalculus::SCell
+through the DiscreteExteriorCalculus.insertSCell member.
+A DiscreteExteriorCalculus object can also be created from a set of points
+implementing the CDigitalSet concept using
+DiscreteExteriorCalculusFactory::createFromDigitalSet. This factory static
+member inserts each point as a primal n-cell in the structure and then fills
+in between k-cells to glue all n-cells together. Borders can be added or
+removed from the generated structure using the add_border boolean.
 Dual k-cells are created automatically with the right size ratio.
-Note that the structure can be altered after creation to adjust small details (DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseCell),
+Note that the structure can be altered after creation to adjust small details
+(DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseCell),
 but it should not be modified while any KForm, VectorField or LinearOperator are instancied.
 
 This snippet shows how to create a DEC structure.
-The first call to DiscreteExteriorCalculus.eraseCell removes the primal n-cell located of the right of the structure.
+The first call to DiscreteExteriorCalculus.eraseCell removes the primal n-cell
+located of the right of the structure.
 The associated dual 0-cell is destroyed automatically.
-Note that n-cells are created using KhalimskySpaceND.sSpel, and that coordinates of such cells are given in the same system as points from the input set.
+Note that n-cells are created using KhalimskySpaceND.sSpel, and that
+coordinates of such cells are given in the same system as points from the
+input set.
 The second call removes a primal 1-cell and opens the hole created by the first call.
 Here coordinates are given in the KhalimskySpaceND signed cell frame of reference.
 
@@ -251,7 +277,8 @@ The second call to DiscreteExteriorCalculus.eraseCell isn't needed anymore since
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_without_border
 \image html usage_calculus_without_border.png "Calculus without border."
 
-Sometime one doesn't want to create DEC structure from higher order cells using the set factory of \ref DiscreteExteriorCalculusFactory.
+Sometime one doesn't want to create DEC structure from higher order cells
+using the set factory of \ref DiscreteExteriorCalculusFactory.
 It is possible to insert cells manually into the DEC structure using DiscreteExteriorCalculus.insertSCell.
 Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
 Therefore the DEC structure shouldn't be modified once DEC operators are created.
@@ -259,8 +286,15 @@ Therefore the DEC structure shouldn't be modified once DEC operators are created
 \subsection sectDECIntroduction4 KForm and VectorField manipulation
 
 K-forms are represented by the KForm templated class and vector field are represented by the VectorField templated class.
-Note that DiscreteExteriorCalculus provide handy typedef of common k-forms and vector field, such as DiscreteExteriorCalculus::PrimalForm0, DiscreteExteriorCalculus::DualForm2, DiscreteExteriorCalculus::PrimalVectorField and DiscreteExteriorCalculus::DualVectorField.
-Once a k-form is created, its actual values can by accessed through KForm.myContainer. Cell indexes can be retrieved from cells using DiscreteExteriorCalculus.getSCell and cell can be retrieved from cells using DiscreteExteriorCalculus.getSCell.
+Note that DiscreteExteriorCalculus provide handy typedef of common k-forms and
+vector field, such as DiscreteExteriorCalculus::PrimalForm0,
+DiscreteExteriorCalculus::DualForm2,
+DiscreteExteriorCalculus::PrimalVectorField and
+DiscreteExteriorCalculus::DualVectorField.
+Once a k-form is created, its actual values can by accessed through
+KForm.myContainer. Cell indexes can be retrieved from cells using
+DiscreteExteriorCalculus.getSCell and cell can be retrieved from cells using
+DiscreteExteriorCalculus.getSCell.
 
 Convenience members KForm.length, VectorField.length, KForm.getSCell and VectorField.getSCell can be used to traverse structures easily.
 Here is a example snippet that compute a euclidean distance map (scalar field) on the structure defined above.
