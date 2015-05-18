@@ -209,6 +209,9 @@ We chose to disable \f$\flat\f$ and \f$\sharp\f$ representation because the quan
 \section sectDECHandsOn Hands on the DEC package
 
 This section provides an overview on structures and classes that compose the DEC package.
+Here is a typical list of headers needed to use the DEC package.
+
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_headers
 
 \subsection sectDECIntroduction3 Main DEC object creation
 
@@ -219,12 +222,12 @@ For obvious reasons, the ambient dimension must be equal or greater than the emb
 The ambient dimension is used internally by DiscreteExteriorCalculus.myKSpace and therefore is the dimension of cells and points used to fill the DEC object.
 The third template parameter is a linear algebra backend used internally to specify containers and solvers.
 By now, there is only one available backend: EigenLinearAlgebraBackend.
-For example, here is a snippet that define a working two dimensional DEC object embedded in a two dimensional ambient space.
+For example, here is a snippet that define a working two dimensional DEC object embedded in a two dimensional ambient space along with the corresponding factory type.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_typedef
 
 The DiscreteExteriorCalculus provides a default constructor that initializes an empty structure, ready to be filled with DiscreteExteriorCalculus::SCell through the DiscreteExteriorCalculus.insertSCell member.
-A DiscreteExteriorCalculus object can also be created from a set of points implementing the CDigitalSet concept. This constructor inserts each point as a primal n-cell in the structure and then fills in between k-cells to glue all n-cells together. Borders can be added or removed from the generated structure using the add_border boolean.
+A DiscreteExteriorCalculus object can also be created from a set of points implementing the CDigitalSet concept using DiscreteExteriorCalculusFactory::createFromDigitalSet. This factory static member inserts each point as a primal n-cell in the structure and then fills in between k-cells to glue all n-cells together. Borders can be added or removed from the generated structure using the add_border boolean.
 Dual k-cells are created automatically with the right size ratio.
 Note that the structure can be altered after creation to adjust small details (DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseCell),
 but it should not be modified while any KForm, VectorField or LinearOperator are instancied.
@@ -248,7 +251,7 @@ The second call to DiscreteExteriorCalculus.eraseCell isn't needed anymore since
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_without_border
 \image html usage_calculus_without_border.png "Calculus without border."
 
-Sometime one doesn't want to create DEC structure from higher order cells using the set constructor of \ref DiscreteExteriorCalculus.
+Sometime one doesn't want to create DEC structure from higher order cells using the set factory of \ref DiscreteExteriorCalculusFactory.
 It is possible to insert cells manually into the DEC structure using DiscreteExteriorCalculus.insertSCell.
 Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
 Therefore the DEC structure shouldn't be modified once DEC operators are created.
