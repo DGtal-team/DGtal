@@ -97,7 +97,7 @@ namespace DGtal
     typedef typename Sequence::difference_type difference_type;
     typedef Pointer pointer;
     typedef const value_type& reference;
-    typedef const reference const_reference;
+    typedef reference const_reference;
     typedef std::input_iterator_tag iterator_category;
 
     // ----------------------- Standard services ------------------------------
