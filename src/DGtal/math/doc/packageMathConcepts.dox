@@ -149,7 +149,8 @@ digraph GMath {
 	Histogram -> CBinner [label="tparam",style=dashed];
 	Histogram -> CEuclideanRing [label="tparam",style=dashed];
 	Histogram -> boost_InputIterator [label="use",style=dashed];
-        SimpleMatrix -> CStaticMatrix;
+  SimpleMatrix -> CStaticMatrix;
+  SimpleMatrix -> CDenseMatrix;
 
         
 }
