@@ -33,6 +33,10 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/math/linalg/CLinearAlgebraSolver.h"
+#include "DGtal/math/linalg/CSparseMatrix.h"
+#include "DGtal/math/linalg/CDynamicMatrix.h"
+#include "DGtal/math/linalg/CDenseVector.h"
+#include "DGtal/math/linalg/CDynamicVector.h"
 #include "DGtal/math/linalg/EigenSupport.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -51,6 +55,14 @@ bool testEigenSolverConcepts()
     typedef EigenLinearAlgebraBackend LAB;
     typedef LAB::DenseVector Vector;
     typedef LAB::SparseMatrix Matrix;
+    typedef LAB::Triplet Triplet;
+    typedef std::vector<Triplet> TripletsVector;
+    typedef std::list<Triplet> TripletsList;
+    BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<Vector> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDenseVector<Vector> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<Matrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSparseMatrix<Matrix, TripletsVector::const_iterator> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSparseMatrix<Matrix, TripletsList::const_iterator> ));
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLLT, Vector, Matrix> ));
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLDLT, Vector, Matrix> ));
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverConjugateGradient, Vector, Matrix> ));
