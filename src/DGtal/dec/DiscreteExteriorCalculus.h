@@ -99,6 +99,8 @@ namespace DGtal
     typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
     typedef typename LinearAlgebraBackend::SparseMatrix SparseMatrix;
 
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
+
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<DenseVector> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<DenseMatrix> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<SparseMatrix> ));
