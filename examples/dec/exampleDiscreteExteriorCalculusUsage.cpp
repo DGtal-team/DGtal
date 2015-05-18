@@ -2,11 +2,13 @@
 
 #include "common.h"
 
+//! [usage_calculus_headers]
 // always include EigenSupport.h before any other Eigen headers
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
+//! [usage_calculus_headers]
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/GenericReader.h"
@@ -22,7 +24,7 @@ void usage2d()
 
     //! [usage_calculus_typedef]
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
-		typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
     //! [usage_calculus_typedef]
 
     // create discrete exterior calculus from set without border
