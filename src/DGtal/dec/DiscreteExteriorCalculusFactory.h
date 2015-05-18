@@ -50,7 +50,11 @@ namespace DGtal
 // class DiscreteExteriorCalculusFactory
 /**
  * Description of class 'DiscreteExteriorCalculusFactory' <p>
- * \brief Aim: This class provides static members to create DEC structures from various other DGtal structures.
+ * \brief Aim:
+ * This class provides static members to create DEC structures from various other DGtal structures.
+ *
+ * @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
+ * @tparam TInteger integer type forwarded to khalimsky space.
  */
 
 template <typename TLinearAlgebraBackend, typename TInteger = DGtal::int32_t>
@@ -59,13 +63,25 @@ class DiscreteExteriorCalculusFactory
     // ----------------------- Standard services ------------------------------
 public:
 
+    typedef typename TLinearAlgebraBackend::DenseVector DenseVector;
+    typedef typename TLinearAlgebraBackend::DenseMatrix DenseMatrix;
+    typedef typename TLinearAlgebraBackend::SparseMatrix SparseMatrix;
+
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
+
+    BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<DenseVector> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<DenseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<SparseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, SparseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, DenseMatrix> ));
+
     /**
      * Create DEC structure from digital set.
      * DEC embedded and ambient dimensions are equal to digital set point dimension.
-     * Set points get attached to primal n-cell <-> dual 0-cell.
+     * Points of the set get attached to primal n-cell <-> dual 0-cell.
      * @tparam TDigitalSet type of digital set passed as argument. must be a model of concepts::CDigitalSet.
      * @param set the set from which to build to DEC structure.
-     * @param add_border add border to the computed structure.
+     * @param add_border add border to the computed structure. For a precise definition see section \ref borderdefinition.
      */
     template <typename TDigitalSet>
     static
@@ -81,12 +97,12 @@ public:
      * @tparam TNSCellConstIterator signed cells collection const iterator type.
      * @param begin beginning of iteration range.
      * @param end end of iteration range.
-     * @param add_border add border to the computed structure.
+     * @param add_border add border to the computed structure. For a precise definition see section \ref borderdefinition.
      */
     template <Dimension dimEmbedded, typename TNSCellConstIterator>
     static
     DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
-    createFromNSCells(const TNSCellConstIterator begin, const TNSCellConstIterator end, const bool add_border = true);
+    createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, const bool add_border = true);
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -99,11 +115,30 @@ private:
     // ------------------------- Hidden services ------------------------------
 protected:
 
+    /**
+     * Insert recursively all lower incident cells in cells set, starting from cell.
+     * Internal use only.
+     * @tparam KSpace Khalimsky space type.
+     * @tparam CellsSet cells set type, should be similar to std::set<KSpace::Cell> or std::set<KSpace::SCell>.
+     * @param kspace Khalimsky space instance.
+     * @param cell starting cell.
+     * @param cells_set cells set in which lower incident cells get inserted.
+     */
     template <typename KSpace, typename CellsSet>
     static
     void
     insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsSet::value_type& cell, CellsSet& cells_set);
 
+    /**
+     * Insert and count recursively all lower incident cells in cells accumulator, starting from cell.
+     * Internal use only.
+     * @tparam KSpace Khalimsky space type.
+     * @tparam CellsAccum cells accumulator type, should be similar to std::map<KSpace::Cell, int> or std::map<KSpace::SCell, int>.
+     * Counts are stored as values, cells are stored as keys.
+     * @param kspace Khalimsky space instance.
+     * @param cell starting cell.
+     * @param cells_accum cells accumulator in which lower incident cells get inserted and counted.
+     */
     template <typename KSpace, typename CellsAccum>
     static
     void
