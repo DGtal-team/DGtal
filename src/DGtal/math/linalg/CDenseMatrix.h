@@ -17,32 +17,32 @@
 #pragma once
 
 /**
- * @file CVector.h
+ * @file CDenseMatrix.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/03/20
+ * @date 2014/03/21
  *
- * Header file for concept CVector.cpp
+ * Header file for concept CDenseMatrix.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CVector_RECURSES)
-#error Recursive header files inclusion detected in CVector.h
-#else // defined(CVector_RECURSES)
+#if defined(CDenseMatrix_RECURSES)
+#error Recursive header files inclusion detected in CDenseMatrix.h
+#else // defined(CDenseMatrix_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CVector_RECURSES
+#define CDenseMatrix_RECURSES
 
-#if !defined CVector_h
+#if !defined CDenseMatrix_h
 /** Prevents repeated inclusion of headers. */
-#define CVector_h
+#define CDenseMatrix_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CVectorSpace.h"
+#include "DGtal/math/linalg/CMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,23 +50,21 @@ namespace DGtal
 namespace concepts
 {
 /////////////////////////////////////////////////////////////////////////////
-// class CVector
+// class CDenseMatrix
 /**
-Description of \b concept '\b CVector' <p>
+Description of \b concept '\b CDenseMatrix' <p>
 @ingroup Concepts
 @brief Aim:
-Represent any static or dynamic sized column vector having sparse or dense representation.
+Represent any dynamic or static sized matrix having dense representation.
 
 ### Refinement of
- - CVectorSpace
+ - CMatrix
 
 ### Associated types
 
 ### Notation
- - \c Vector : A type that is a model of CVector
- - \e x : const object of type \c Vector
- - \e z : object of type \c Vector
- - \e i : object of type \c Vector::Index
+ - \c DenseMatrix : A type that is a model of CDenseMatrix
+ - \e i, \e j : object of type \c DenseMatrix::Index
 
 ### Definitions
 
@@ -74,52 +72,56 @@ Represent any static or dynamic sized column vector having sparse or dense repre
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Number of rows      | \a x.rows()           |                   |  \c Index            |              |  Returns the size of the vector       |                |            |
+| Constant ref random accessor      | \a x(i, j)           |                   | \c const Scalar&              |              |           |                |            |
+| Ref random accessor      | \a z(i, j)           |                   | \c Scalar&              |              |           |                |            |
 
 ### Invariants
 
 ### Models
-
- EigenLinearAlgebraBackend::DenseVector, SimpleMatrix::Vector
+ - SimpleMatrix
 
 ### Notes
 
-@tparam T the type that should be a model of CVector.
+@tparam T the type that should be a model of CDenseMatrix.
  */
 template <typename T>
-struct CVector : CVectorSpace<T>
+struct CDenseMatrix : CMatrix<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    typedef typename T::Scalar Scalar;
     typedef typename T::Index Index;
+    typedef typename T::Scalar Scalar;
 
-    BOOST_CONCEPT_USAGE( CVector )
+    BOOST_CONCEPT_USAGE( CDenseMatrix )
     {
+				Scalar& aa = z(i, j);
+				aa = aa; // to avoid compiler warning
+
         checkConstConstraints();
     }
 
     void checkConstConstraints() const
     {
-        ConceptUtils::sameType(i, z.rows());
+				Scalar bb = z(i, j);
+				bb = bb; // to avoid compiler warning
     }
 
     // ------------------------- Private Datas --------------------------------
 private:
-  T z;
-  Index i;
+    T z;
+    Index i, j;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CVector
+}; // end of concept CDenseMatrix
 }
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CVector_h
+#endif // !defined CDenseMatrix_h
 
-#undef CVector_RECURSES
-#endif // else defined(CVector_RECURSES)
+#undef CDenseMatrix_RECURSES
+#endif // else defined(CDenseMatrix_RECURSES)

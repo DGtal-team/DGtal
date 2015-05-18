@@ -34,6 +34,9 @@
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - New propagation example and extended embedding tests.
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - Improved operator generation using new CSparseMatrix concepts.
+   (Pierre Gueth [#1007](https://github.com/DGtal-team/DGtal/pull/1007))
+
 
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a
@@ -52,6 +55,8 @@
    linear model estimation of scalar data. (David Coeurjolly, Jérémy
    Levall1ois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
+ - New linear algebra concepts: CDenseVector, CDenseMatrix, CSparseMatrix.
+   (Pierre Gueth [#1007](https://github.com/DGtal-team/DGtal/pull/1007))
 
 - *Image Package*
  - Adding copy between images of different types. (Roland Denis [#1001]

@@ -84,9 +84,14 @@ digraph GMath {
                  CMatrix [ label="CMatrix" URL="\ref CMatrix" ];
                  CStaticMatrix [ label="CStaticMatrix" URL="\ref concepts::CStaticMatrix" ];
                  CDynamicMatrix [ label="CDynamicMatrix" URL="\ref concepts::CDynamicMatrix" ];
+                 CDenseMatrix [ label="CDenseMatrix" URL="\ref concepts::CDenseMatrix" ];
+                 CSparseMatrix [ label="CSparseMatrix" URL="\ref concepts::CSparseMatrix" ];
+
                  CVector [ label="CVector" URL="\ref CVector" ];
                  CStaticVector [ label="CStaticVector" URL="\ref concepts::CStaticVector" ];
                  CDynamicVector [ label="CDynamicVector" URL="\ref concepts::CDynamicVector" ];
+                 CDenseVector [ label="CDenseVector" URL="\ref concepts::CDenseVector" ];
+
                  CLinearAlgebra [ label="CLinearAlgebra" URL="\ref concepts::CLinearAlgebra" ];
                  CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref concepts::CLinearAlgebraSolver" ];
         }
@@ -95,10 +100,14 @@ digraph GMath {
         CStaticVector -> CVector;
         CStaticVector -> boost_DefaultConstructible;
         CDynamicVector -> CVector;
+        CDenseVector -> CVector;
+
         CMatrix -> CVectorSpace;
         CStaticMatrix -> CMatrix;
         CStaticMatrix -> boost_DefaultConstructible;
         CDynamicMatrix -> CMatrix;
+        CDenseMatrix -> CMatrix;
+        CSparseMatrix -> CMatrix;
 
         CLinearAlgebra -> CMatrix;
         CLinearAlgebra -> CVector;
@@ -140,7 +149,8 @@ digraph GMath {
 	Histogram -> CBinner [label="tparam",style=dashed];
 	Histogram -> CEuclideanRing [label="tparam",style=dashed];
 	Histogram -> boost_InputIterator [label="use",style=dashed];
-        SimpleMatrix -> CStaticMatrix;
+  SimpleMatrix -> CStaticMatrix;
+  SimpleMatrix -> CDenseMatrix;
 
         
 }

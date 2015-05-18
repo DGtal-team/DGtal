@@ -32,7 +32,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/math/linalg/SimpleMatrix.h"
 #include "DGtal/math/linalg/CStaticMatrix.h"
+#include "DGtal/math/linalg/CDenseMatrix.h"
 #include "DGtal/math/linalg/CStaticVector.h"
+#include "DGtal/math/linalg/CDenseVector.h"
 #include "DGtal/math/linalg/CLinearAlgebra.h"
 #include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,7 +67,7 @@ bool testSimpleMatrix()
   nbok += (m34d(1,2) == 0.5) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+         << "true == true" << std::endl;
 
   M34d matrix;
   bool res=true;
@@ -78,7 +80,7 @@ bool testSimpleMatrix()
   nbok += res ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "all equals to 12.3" << std::endl;
+         << "all equals to 12.3" << std::endl;
 
 
   trace.endBlock();
@@ -119,18 +121,18 @@ bool testArithm()
   nbok += ((m34d + m34dbis) == resadd) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "ok" << std::endl;
+         << "ok" << std::endl;
   nbok += ((m34dbis + m34d) == resadd) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "ok commutative" << std::endl;
+         << "ok commutative" << std::endl;
 
   M34d other;
   other += m34d;
   nbok += (other == m34d) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "ok +=" << std::endl;
+         << "ok +=" << std::endl;
 
   trace.endBlock();
 
@@ -141,7 +143,7 @@ bool testArithm()
   trace.info()<<m34d - m34dbis<<std::endl;
 
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "ok simple" << std::endl;
+         << "ok simple" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing scalar product/divide ..." );
@@ -149,13 +151,13 @@ bool testArithm()
   nb++;
   trace.info()<<ressub<<std::endl;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << " [2]*2 == [4]" << std::endl;
+         << " [2]*2 == [4]" << std::endl;
 
   nbok += ( two == four/2.0) ? 1 : 0;
   nb++;
   trace.info()<<ressub<<std::endl;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << " [2]= [4]/2" << std::endl;
+         << " [2]= [4]/2" << std::endl;
   trace.endBlock();
 
 
@@ -164,7 +166,7 @@ bool testArithm()
   nbok += (transp.transpose() == m34d) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << "ok idem potent" << std::endl;
+           << "ok idem potent" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing product ..." );
@@ -178,7 +180,7 @@ bool testArithm()
   nbok += (two * one  == eight33) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << " [2]*[1] = [8]" << std::endl;
+           << " [2]*[1] = [8]" << std::endl;
   trace.endBlock();
 
 
@@ -205,7 +207,7 @@ bool testColRow()
   nbok += (row[1] == 2 ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << " row value" << std::endl;
+           << " row value" << std::endl;
   trace.endBlock();
 
   trace.beginBlock("Get Col");
@@ -215,7 +217,7 @@ bool testColRow()
   nbok += (col[1] == 2 ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << " col value" << std::endl;
+           << " col value" << std::endl;
   trace.endBlock();
 
 
@@ -231,7 +233,7 @@ bool testColRow()
   nbok += (c == expected) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << " mat*row^t" << std::endl;
+           << " mat*row^t" << std::endl;
   trace.endBlock();
 
   return nbok == nb;
@@ -253,7 +255,7 @@ bool testDetCofactor()
   nbok += (mat2.determinant() == 2) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << " 2" << std::endl;
+           << " 2" << std::endl;
   trace.endBlock();
 
   typedef DGtal::SimpleMatrix<double,3,3> MAT;
@@ -267,7 +269,7 @@ bool testDetCofactor()
   nbok += (mat.determinant() == 8) ? 1 : 0;
    nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << " 8" << std::endl;
+           << " 8" << std::endl;
   trace.endBlock();
 
 
@@ -284,7 +286,7 @@ bool testDetCofactor()
   nbok += (mat44.determinant() == 32) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << " 32" << std::endl;
+           << " 32" << std::endl;
   trace.endBlock();
 
 
@@ -320,7 +322,7 @@ bool testInverse()
   nbok += (( mat2 * mat2.inverse() )== Id2 ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << " M*M^-1=Id" << std::endl;
+           << " M*M^-1=Id" << std::endl;
 
   trace.endBlock();
 
@@ -351,16 +353,17 @@ bool testInverse()
 
 bool testConcepts()
 {
-  /*
   typedef DGtal::SimpleMatrix<double,3,3> Matrix;
   typedef Matrix::ColumnVector Vector;
-  BOOST_CONCEPT_ASSERT(( CStaticVector<Vector> ));
-  BOOST_CONCEPT_ASSERT(( CStaticMatrix<Matrix> ));
-  BOOST_CONCEPT_ASSERT(( CLinearAlgebra<Vector, Matrix> ));
 
-  BOOST_CONCEPT_ASSERT(( CVector<DGtal::Z3i::Space::Vector> ));
-  */
-  
+  BOOST_CONCEPT_ASSERT(( concepts::CStaticVector<Vector> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDenseVector<Vector> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CStaticMatrix<Matrix> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDenseMatrix<Matrix> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<Vector, Matrix> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CStaticVector<DGtal::Z3i::Space::Vector> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDenseVector<DGtal::Z3i::Space::Vector> ));
+
   return true;
 }
 
