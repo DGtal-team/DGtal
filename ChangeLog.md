@@ -36,7 +36,10 @@
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - Improved operator generation using new CSparseMatrix concepts.
    (Pierre Gueth [#1007](https://github.com/DGtal-team/DGtal/pull/1007))
-
+ - DEC constructors are replaced by static factory functions:
+   DiscreteExteriorCalculusFactory::createFromDigitalSet and
+   DiscreteExteriorCalculusFactory::createFromNSCells.
+   (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
 
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a
