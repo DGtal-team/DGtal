@@ -25,18 +25,13 @@ namespace DGtal {
 
 \section sectDECEmbedding Embedding
 
-Discrete Exterior Calculus (DEC) provides a nice way to represent discrete scalar and vector fields, as well as linear vector analysis operators.
-It can be potentially applied to a large number of field theory problem, such as electrodynamics, thermodynamics or really any linear physics problem.
-
-DEC extends efficiently continuous Riemannian geometry vector fields and differential forms to the discrete world.
-Discretization of differential forms induces a natural discretization of linear operators between them.
-This allows easy and fast resolution of linear problem over complex geometric objects.
-
-\subsection sectDECFactory DEC factory
+\section sectDECFactory DEC factory
 
 \snippet testEmbedding.cpp embedding_factory
 
 \section sectDECBorderDefinition Border definition
+
+\section sectDECEmbeddingExample1D 1D examples
 
 \snippet testEmbedding.cpp embedding_1d_typedef
 
@@ -53,6 +48,8 @@ This allows easy and fast resolution of linear problem over complex geometric ob
 \image html embedding_1d_calculus_3d.png "1D discrete manifold embedded in 3D ambient space."
 
 \snippet testEmbedding.cpp embedding_2d_typedef
+
+\section sectDECEmbeddingExample2D 2D examples
 
 \snippet testEmbedding.cpp embedding_2d_cells_2d
 \snippet testEmbedding.cpp embedding_2d_factory_2d
