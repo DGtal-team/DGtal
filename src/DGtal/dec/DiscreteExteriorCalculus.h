@@ -127,7 +127,7 @@ namespace DGtal
      * @brief Holds size 'ratio', 'index' and 'flipped' for each cell of the DEC object.
      * To avoid inserting both positive and negative cells in a DEC object,
      * only non signed cells are stored internally.
-     * @var Properties::flipped
+     * @var Property::flipped
      * To retrieve the sign of the cell, one must look at the 'flipped' boolean:
      * if 'flipped' is true, the associated signed cell is negative,
      * if 'flipped' is false, the associated signed cell is positive.

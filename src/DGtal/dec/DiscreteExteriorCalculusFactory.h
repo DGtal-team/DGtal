@@ -81,7 +81,7 @@ public:
      * Points of the set get attached to primal n-cell <-> dual 0-cell.
      * @tparam TDigitalSet type of digital set passed as argument. must be a model of concepts::CDigitalSet.
      * @param set the set from which to build to DEC structure.
-     * @param add_border add border to the computed structure. For a precise definition see section \ref borderdefinition.
+     * @param add_border add border to the computed structure. For a precise definition see section \ref sectDECBorderDefinition.
      */
     template <typename TDigitalSet>
     static
@@ -91,12 +91,12 @@ public:
     /**
      * Create DEC structure from a range of signed n-cells, where n is the embedded dimension.
      * Signed n-cells live in a ambient Khalimsky space whose dimension will determine the ambient dimension of the returned DEC structure.
-     * n-cells get attached to primal n-cell <-> dual 0-cell. See section \ref decembedding for more information.
+     * N-cells get attached to primal n-cell <-> dual 0-cell. See section \ref sectDECEmbedding for more information.
      * @tparam dimEmbedded dimension of emmbedded manifold. All input n-cells must have their dimension equal to dimEmbedded.
      * @tparam TNSCellConstIterator signed cells collection const iterator type.
      * @param begin beginning of iteration range.
      * @param end end of iteration range.
-     * @param add_border add border to the computed structure. For a precise definition see section \ref borderdefinition.
+     * @param add_border add border to the computed structure. For a precise definition see section \ref sectDECBorderDefinition.
      */
     template <Dimension dimEmbedded, typename TNSCellConstIterator>
     static
