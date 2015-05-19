@@ -37,8 +37,15 @@ This allows easy and fast resolution of linear problem over complex geometric ob
 \section sectDECBorderDefinition Border definition
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_fill_zero_form
-\image html usage_primal_zero_form.png "Primal 0-form."
+\image html embedding_1d_calculus_1d.png "1D discrete manifold embedded in 1D ambient space."
+\image html embedding_1d_calculus_2d.png "1D discrete manifold embedded in 2D ambient space."
+\image html embedding_1d_calculus_3d.png "1D discrete manifold embedded in 3D ambient space."
 
+\image html embedding_2d_calculus_2d.png "2D discrete manifold embedded in 2D ambient space with border."
+\image html embedding_2d_calculus_3d.png "2D discrete manifold embedded in 3D ambient space with border."
+
+\image html embedding_2d_calculus_2d_no_border.png "2D discrete manifold embedded in 2D ambient space without border."
+\image html embedding_2d_calculus_3d_no_border.png "2D discrete manifold embedded in 3D ambient space without border."
 */
 
 }
