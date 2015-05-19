@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
 
     QApplication app(argc, argv);
     Z3i::KSpace kspace_3d;
+    Z2i::KSpace kspace_2d;
 
     Viewer viewer1(kspace_3d);
     viewer1.show();
@@ -67,6 +68,19 @@ int main(int argc, char* argv[])
             if (kk%2 != 0) cells_1d.insert(cell);
         }
         trace.info() << "calculus_1d_manual=" << calculus_1d_manual << endl;
+
+        {
+            Board2D board;
+            board << Z2i::Domain(Z2i::Point(-1,-1), Z2i::Point(15,0));
+            board.setFillColor( DGtal::Color(128,128,128) );
+            for (Calculus1D::ConstIterator ii=calculus_1d_manual.begin(), ie=calculus_1d_manual.end(); ii!=ie; ii++)
+            {
+                const Z2i::Point point(calculus_1d_manual.myKSpace.uKCoord(ii->first, 0), 0);
+                const Z2i::KSpace::SCell cell = kspace_2d.sCell(point);
+                Display2DFactory::drawDECSignedKhalimskyCell(board, cell);
+            }
+            board.saveSVG("embedding_1d_calculus_1d.svg");
+        }
 
         const Calculus1D calculus_1d_factory = CalculusFactory::createFromNSCells<1>(cells_1d.begin(), cells_1d.end(), true);
         trace.info() << "calculus_1d_factory=" << calculus_1d_factory << endl;
