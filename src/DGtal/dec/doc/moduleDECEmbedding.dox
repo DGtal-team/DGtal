@@ -32,19 +32,40 @@ DEC extends efficiently continuous Riemannian geometry vector fields and differe
 Discretization of differential forms induces a natural discretization of linear operators between them.
 This allows easy and fast resolution of linear problem over complex geometric objects.
 
-\subsection sectDECFactory Factory
+\subsection sectDECFactory DEC factory
+
+\snippet testEmbedding.cpp embedding_factory
 
 \section sectDECBorderDefinition Border definition
 
-\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_fill_zero_form
+\snippet testEmbedding.cpp embedding_1d_typedef
+
+\snippet testEmbedding.cpp embedding_1d_cells_1d
+\snippet testEmbedding.cpp embedding_1d_factory_1d
 \image html embedding_1d_calculus_1d.png "1D discrete manifold embedded in 1D ambient space."
+
+\snippet testEmbedding.cpp embedding_1d_cells_2d
+\snippet testEmbedding.cpp embedding_1d_factory_2d
 \image html embedding_1d_calculus_2d.png "1D discrete manifold embedded in 2D ambient space."
+
+\snippet testEmbedding.cpp embedding_1d_cells_3d
+\snippet testEmbedding.cpp embedding_1d_factory_3d
 \image html embedding_1d_calculus_3d.png "1D discrete manifold embedded in 3D ambient space."
 
+\snippet testEmbedding.cpp embedding_2d_typedef
+
+\snippet testEmbedding.cpp embedding_2d_cells_2d
+\snippet testEmbedding.cpp embedding_2d_factory_2d
 \image html embedding_2d_calculus_2d.png "2D discrete manifold embedded in 2D ambient space with border."
+
+\snippet testEmbedding.cpp embedding_2d_cells_3d
+\snippet testEmbedding.cpp embedding_2d_factory_3d
 \image html embedding_2d_calculus_3d.png "2D discrete manifold embedded in 3D ambient space with border."
 
+\snippet testEmbedding.cpp embedding_2d_factory_2d_no_border
 \image html embedding_2d_calculus_2d_no_border.png "2D discrete manifold embedded in 2D ambient space without border."
+
+\snippet testEmbedding.cpp embedding_2d_factory_3d_no_border
 \image html embedding_2d_calculus_3d_no_border.png "2D discrete manifold embedded in 3D ambient space without border."
 */
 
