@@ -231,7 +231,7 @@ The first template parameter is the dimension of the embedded structure one want
 The second template parameter is the dimension of the ambient space in which the structure in embedded.
 For obvious reasons, the ambient dimension must be equal or greater than the embedded dimension.
 The ambient dimension is used internally by DiscreteExteriorCalculus.myKSpace
-and therefore is the dimension of cells and points used to fill the DEC
+and therefore is the maximum dimension of cells and points used to fill the DEC
 object.
 The third template parameter is a linear algebra backend used internally to specify containers and solvers.
 By now, there is only one available backend: EigenLinearAlgebraBackend.
@@ -254,6 +254,7 @@ Dual k-cells are created automatically with the right size ratio.
 Note that the structure can be altered after creation to adjust small details
 (DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseCell),
 but it should not be modified while any KForm, VectorField or LinearOperator are instancied.
+See \ref sectDECEmbedding for a discussion about manifold embedding.
 
 This snippet shows how to create a DEC structure.
 The first call to DiscreteExteriorCalculus.eraseCell removes the primal n-cell
@@ -272,6 +273,7 @@ Note moreover that in DEC, **positive** 1-cells are oriented is the **opposite**
 \image html usage_calculus_with_border.png "Calculus with border."
 
 If you want to have border-less structure, simply reset the add_border boolean.
+See \ref sectDECBorderDefinition for a discussion about border definition.
 The second call to DiscreteExteriorCalculus.eraseCell isn't needed anymore since the edge was not inserted in the first place.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_without_border
