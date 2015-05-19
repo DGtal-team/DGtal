@@ -89,11 +89,10 @@ public:
     createFromDigitalSet(const TDigitalSet& set, const bool add_border = true);
 
     /**
-     * Create DEC structure range of signed n-cells.
-     * DEC embedded dimension is equal to n.
-     * DEC ambient dimension is equal to n-cells kspace dimension.
-     * n-cells get attached to primal n-cell <-> dual 0-cell.
-     * @tparam dimEmbedded dimension of emmbedded manifold.
+     * Create DEC structure from a range of signed n-cells, where n is the embedded dimension.
+     * Signed n-cells live in a ambient Khalimsky space whose dimension will determine the ambient dimension of the returned DEC structure.
+     * n-cells get attached to primal n-cell <-> dual 0-cell. See section \ref decembedding for more information.
+     * @tparam dimEmbedded dimension of emmbedded manifold. All input n-cells must have their dimension equal to dimEmbedded.
      * @tparam TNSCellConstIterator signed cells collection const iterator type.
      * @param begin beginning of iteration range.
      * @param end end of iteration range.
