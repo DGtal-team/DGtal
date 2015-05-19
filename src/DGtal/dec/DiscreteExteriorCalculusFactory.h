@@ -53,7 +53,7 @@ namespace DGtal
  * \brief Aim:
  * This class provides static members to create DEC structures from various other DGtal structures.
  *
- * @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
+ * @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenLinearAlgebraBackend).
  * @tparam TInteger integer type forwarded to khalimsky space.
  */
 
