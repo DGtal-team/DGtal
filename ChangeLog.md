@@ -53,7 +53,7 @@
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
    linear model estimation of scalar data. (David Coeurjolly, Jérémy
-   Levall1ois [#935](https://github.com/DGtal-team/DGtal/pull/935),
+   Levallois [#935](https://github.com/DGtal-team/DGtal/pull/935),
    backport from imagene)
  - New linear algebra concepts: CDenseVector, CDenseMatrix, CSparseMatrix.
    (Pierre Gueth [#1007](https://github.com/DGtal-team/DGtal/pull/1007))
@@ -81,14 +81,14 @@
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
  - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
- [#961](https://github.com/DGtal-team/DGtal/pull/961)
+ [#961](https://github.com/DGtal-team/DGtal/pull/961))
  - New colormap adapter to add ticks/iso-contours (regularly spaced or
  specified by the user) to a given colormap. (David Coeurjolly,
- [#987](https://github.com/DGtal-team/DGtal/pull/987)
+ [#987](https://github.com/DGtal-team/DGtal/pull/987))
  - New flag (-DWITH_QT5) enables QT5 support in libqglviewer. (Nicolas
- Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983)
+ Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983))
  - Board2D now supports quadratic Bezier curve drawing. (Tristan Roussillon,
-  [#1002](https://github.com/DGtal-team/DGtal/pull/1002)
+  [#1002](https://github.com/DGtal-team/DGtal/pull/1002))
 
 - *Kernel Package*
   - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
