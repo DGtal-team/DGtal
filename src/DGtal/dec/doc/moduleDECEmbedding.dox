@@ -73,6 +73,7 @@ are not inserted.
 \section sectDECEmbeddingExample1D 1D examples
 
 In this example, we show how to embed linear structure into different ambient spaces.
+See testEmbedding.cpp for details.
 First, let's start be defining types of DEC structures used in this example.
 
 \snippet testEmbedding.cpp embedding_1d_typedef
@@ -101,6 +102,7 @@ Operators generated from these structures are all identical.
 \section sectDECEmbeddingExample2D 2D examples
 
 In this example, we show how to discrete curved surface into different ambient spaces.
+See testEmbedding.cpp for details.
 First, let's start be defining types of DEC structures used in this example.
 
 \snippet testEmbedding.cpp embedding_2d_typedef

@@ -58,6 +58,7 @@ Boundary conditions effect are illustrated for the two classical boundary condit
 - Dirichlet boundary condition connects borders of the structure to null potential. With our heat analogy, this means that the start and the end of the linear structure are connected to thermostat, which are given the null temperature.
 
 Boundary conditions are changed from Neumann to Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
+Snippets are taken from testLinearStructure.cpp.
 
 \subsection sectDECPoisson1DNeumann Neumann boundary condition
 
@@ -131,6 +132,7 @@ Numerical values of the solution fit analytic values with at least a relative pr
 
 In this example, we create a 2D ring structure and we solve a regularized Poisson equation on this structure.
 First the structure is created from a digital set.
+Snippets are taken from exampleDiscreteExteriorCalculusSolve.cpp.
 
 \snippet exampleDiscreteExteriorCalculusSolve.cpp calculus_creation
 
