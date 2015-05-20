@@ -220,6 +220,7 @@ the quantity of information stored in the vector field.
 \section sectDECHandsOn Hands on the DEC package
 
 This section provides an overview on structures and classes that compose the DEC package.
+All snippets are taken from exampleDiscreteExteriorCalculusUsage.cpp.
 Here is a typical list of headers needed to use the DEC package.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_headers
