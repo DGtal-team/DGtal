@@ -299,7 +299,7 @@ DiscreteExteriorCalculus.getSCell and cell can be retrieved from cells using
 DiscreteExteriorCalculus.getSCell.
 
 Convenience members KForm.length, VectorField.length, KForm.getSCell and VectorField.getSCell can be used to traverse structures easily.
-Here is a example snippet that compute a euclidean distance map (scalar field) on the structure defined above.
+Here is a example snippet that compute a Euclidean distance map (scalar field) on the structure defined above.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_fill_zero_form
 \image html usage_primal_zero_form.png "Primal 0-form."
