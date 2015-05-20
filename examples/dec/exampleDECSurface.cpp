@@ -83,6 +83,42 @@ int main(int argc, char* argv[])
     DisplayFactory::draw(viewer3, calculus);
     viewer3 << Viewer::updateDisplay;
 
+    using DGtal::PRIMAL;
+    using DGtal::DUAL;
+
+    const Calculus::PrimalForm2 primal_surfel_area = calculus.hodge<0, DUAL>() *
+        Calculus::DualForm0(calculus, Eigen::VectorXd::Ones(calculus.kFormLength(0, DUAL)));
+
+    const Calculus::DualForm2 dual_surfel_area = calculus.hodge<0, PRIMAL>() *
+        Calculus::PrimalForm0(calculus, Eigen::VectorXd::Ones(calculus.kFormLength(0, PRIMAL)));
+
+    const double area_th = calculus.kFormLength(2, PRIMAL);
+    const double area_primal = dual_surfel_area.myContainer.sum();
+    const double area_dual = primal_surfel_area.myContainer.sum();
+    trace.info() << "area_th=" << area_th << endl;
+    trace.info() << "area_primal=" << area_primal << endl;
+    trace.info() << "area_dual=" << area_dual << endl;
+    FATAL_ERROR( area_th == area_primal );
+    FATAL_ERROR( area_th == area_dual );
+
+    const Calculus::DualForm1 dual_edge_length = calculus.hodge<1, PRIMAL>() *
+        Calculus::PrimalForm1(calculus, Eigen::VectorXd::Ones(calculus.kFormLength(1, PRIMAL)));
+
+    const bool dual_edge_length_match = dual_edge_length.myContainer == Eigen::VectorXd::Ones(calculus.kFormLength(1, DUAL)) ;
+    trace.info() << "dual_edge_length_match=" << dual_edge_length_match << endl;
+    FATAL_ERROR( dual_edge_length_match );
+
+    trace.beginBlock("dual surfel area");
+
+    for (Calculus::Index index=0; index<dual_surfel_area.length(); index++)
+    {
+        const Calculus::SCell cell = dual_surfel_area.getSCell(index);
+        const Calculus::Scalar area = dual_surfel_area.myContainer(index);
+        trace.info() << index << " " << cell << " " << area << endl;
+    }
+
+    trace.endBlock();
+
     trace.endBlock();
 
     return app.exec();
