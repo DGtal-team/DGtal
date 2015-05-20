@@ -76,7 +76,7 @@ public:
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, DenseMatrix> ));
 
     /**
-     * Create DEC structure from digital set.
+     * Create a DEC structure from digital set.
      * DEC embedded and ambient dimensions are equal to digital set point dimension.
      * Points of the set get attached to primal n-cell <-> dual 0-cell.
      * @tparam TDigitalSet type of digital set passed as argument. must be a model of concepts::CDigitalSet.
@@ -89,8 +89,8 @@ public:
     createFromDigitalSet(const TDigitalSet& set, const bool add_border = true);
 
     /**
-     * Create DEC structure from a range of signed n-cells, where n is the embedded dimension.
-     * Signed n-cells live in a ambient Khalimsky space whose dimension will determine the ambient dimension of the returned DEC structure.
+     * Create a DEC structure from a range of signed n-cells, where n is the embedded dimension.
+		 * Signed n-cells may live in an ambient Khamlisky space with dimension greater than n.
      * N-cells get attached to primal n-cell <-> dual 0-cell. See section \ref sectDECEmbedding for more information.
      * @tparam dimEmbedded dimension of emmbedded manifold. All input n-cells must have their dimension equal to dimEmbedded.
      * @tparam TNSCellConstIterator signed cells collection const iterator type.
@@ -115,7 +115,7 @@ private:
 protected:
 
     /**
-     * Insert recursively all lower incident cells in cells set, starting from cell.
+     * Insert recursively all lower incident cells into cells set, starting from cell.
      * Internal use only.
      * @tparam KSpace Khalimsky space type.
      * @tparam CellsSet cells set type, should be similar to std::set<KSpace::Cell> or std::set<KSpace::SCell>.
@@ -129,7 +129,7 @@ protected:
     insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsSet::value_type& cell, CellsSet& cells_set);
 
     /**
-     * Insert and count recursively all lower incident cells in cells accumulator, starting from cell.
+     * Insert and count recursively all lower incident cells into cells accumulator, starting from cell.
      * Internal use only.
      * @tparam KSpace Khalimsky space type.
      * @tparam CellsAccum cells accumulator type, should be similar to std::map<KSpace::Cell, int> or std::map<KSpace::SCell, int>.

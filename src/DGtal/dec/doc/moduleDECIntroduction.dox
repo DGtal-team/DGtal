@@ -254,7 +254,7 @@ Dual k-cells are created automatically with the right size ratio.
 Note that the structure can be altered after creation to adjust small details
 (DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseCell),
 but it should not be modified while any KForm, VectorField or LinearOperator are instancied.
-See \ref sectDECEmbedding for a discussion about manifold embedding.
+See \ref moduleDECEmbedding for a discussion about manifold embedding.
 
 This snippet shows how to create a DEC structure.
 The first call to DiscreteExteriorCalculus.eraseCell removes the primal n-cell
@@ -288,7 +288,7 @@ Therefore the DEC structure shouldn't be modified once DEC operators are created
 \subsection sectDECIntroduction4 KForm and VectorField manipulation
 
 K-forms are represented by the KForm templated class and vector field are represented by the VectorField templated class.
-Note that DiscreteExteriorCalculus provide handy typedef of common k-forms and
+Note that DiscreteExteriorCalculus provides handy typedef of common k-forms and
 vector field, such as DiscreteExteriorCalculus::PrimalForm0,
 DiscreteExteriorCalculus::DualForm2,
 DiscreteExteriorCalculus::PrimalVectorField and
