@@ -40,6 +40,8 @@ For simplicity of notation, we define the propagation operator \f$\square\f$.
 \section sectDECPropagationTime Temporal resolution with initial condition
 
 In this example, we compute the time evolution of a wave given the initial (potentially complex) wave function \f$\psi(x,0)=\psi_0(x)\f$.
+Snippets are taken from examplePropagation.cpp.
+
 Consider the homogeneous propagation equation, where \f$\rho(x,t) = 0\f$,
 
 \f[ \square \psi = 0 \f]

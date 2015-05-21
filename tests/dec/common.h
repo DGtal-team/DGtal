@@ -289,7 +289,7 @@ test_derivative(int domain_size)
         typename Calculus::Properties properties = calculus.getProperties();
         DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
 
-        bool test_result = DerivativeTester<Calculus, Calculus::dimensionEmbedded-2>::test(calculus);
+        bool test_result = DerivativeTester<Calculus, (int)Calculus::dimensionEmbedded-2>::test(calculus);
         FATAL_ERROR(test_result);
 
         DGtal::trace.endBlock();
@@ -302,7 +302,7 @@ test_derivative(int domain_size)
         typename Calculus::Properties properties = calculus.getProperties();
         DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
 
-        bool test_result = DerivativeTester<Calculus, Calculus::dimensionEmbedded-2>::test(calculus);
+        bool test_result = DerivativeTester<Calculus, (int)Calculus::dimensionEmbedded-2>::test(calculus);
         FATAL_ERROR(test_result);
 
         DGtal::trace.endBlock();

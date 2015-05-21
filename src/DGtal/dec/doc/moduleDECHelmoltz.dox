@@ -53,6 +53,7 @@ The interest of the Helmoltz decomposition is that \f$\gamma\f$ has a strong con
 \section sectDECHelmoltz2D 2D Helmoltz decomposition
 
 In this example, we compute primal and dual Helmoltz decomposition of an arbitrary vector field on a 2D double ring shape.
+Snippets are taken from exampleDiscreteExteriorCalculusSolve.cpp.
 
 Here is the definition of objects used during the primal decomposition.
 
@@ -105,6 +106,7 @@ Computation of the dual harmonic component \f$\omega\f$.
 \section sectDECHelmoltz3D 3D Helmoltz decomposition
 
 In this example, we show how to compute the Helmoltz decomposition of a primal vector field defined on a 2D toroidal surface embedded in 3D.
+Snippets are taken from exampleDiscreteExteriorCalculusSolve.cpp.
 
 First the calculus structure is filled manually with 0-, 1- and 2-cells to create a torus structure.
 

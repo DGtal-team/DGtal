@@ -48,16 +48,25 @@ Discrete exterior calculus (DEC) provides an easy and efficient way to describe 
 Basic operators, such as Hodge duality operator or exterior derivative, can be combined to create classical vector analysis operator such as gradient, curl and divergence.
 
 @b Modules
-
 - \ref moduleDECIntroduction
+- \ref moduleDECEmbedding
 - \ref moduleDECPoisson
 - \ref moduleDECHelmoltz
 - \ref moduleDECPropagation
 
 @b Package @b Concepts @b Overview
- - \ref packageDECConcepts
+- \ref packageDECConcepts
 
 @b Related @b documentation @b pages
+
+@b Related @b examples
+- testDiscreteExteriorCalculus.cpp
+- exampleDiscreteExteriorCalculusUsage.cpp
+- exampleDiscreteExteriorCalculusSolve.cpp
+- examplePropagation.cpp
+- testLinearStructure.cpp
+- testEmbedding.cpp
+- exampleDECSurface.cpp
 
 */
 

@@ -220,6 +220,7 @@ the quantity of information stored in the vector field.
 \section sectDECHandsOn Hands on the DEC package
 
 This section provides an overview on structures and classes that compose the DEC package.
+All snippets are taken from exampleDiscreteExteriorCalculusUsage.cpp.
 Here is a typical list of headers needed to use the DEC package.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_headers
@@ -231,7 +232,7 @@ The first template parameter is the dimension of the embedded structure one want
 The second template parameter is the dimension of the ambient space in which the structure in embedded.
 For obvious reasons, the ambient dimension must be equal or greater than the embedded dimension.
 The ambient dimension is used internally by DiscreteExteriorCalculus.myKSpace
-and therefore is the dimension of cells and points used to fill the DEC
+and therefore is the maximum dimension of cells and points used to fill the DEC
 object.
 The third template parameter is a linear algebra backend used internally to specify containers and solvers.
 By now, there is only one available backend: EigenLinearAlgebraBackend.
@@ -254,6 +255,7 @@ Dual k-cells are created automatically with the right size ratio.
 Note that the structure can be altered after creation to adjust small details
 (DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseCell),
 but it should not be modified while any KForm, VectorField or LinearOperator are instancied.
+See \ref moduleDECEmbedding for a discussion about manifold embedding.
 
 This snippet shows how to create a DEC structure.
 The first call to DiscreteExteriorCalculus.eraseCell removes the primal n-cell
@@ -272,6 +274,7 @@ Note moreover that in DEC, **positive** 1-cells are oriented is the **opposite**
 \image html usage_calculus_with_border.png "Calculus with border."
 
 If you want to have border-less structure, simply reset the add_border boolean.
+See \ref sectDECBorderDefinition for a discussion about border definition.
 The second call to DiscreteExteriorCalculus.eraseCell isn't needed anymore since the edge was not inserted in the first place.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_without_border
@@ -286,7 +289,7 @@ Therefore the DEC structure shouldn't be modified once DEC operators are created
 \subsection sectDECIntroduction4 KForm and VectorField manipulation
 
 K-forms are represented by the KForm templated class and vector field are represented by the VectorField templated class.
-Note that DiscreteExteriorCalculus provide handy typedef of common k-forms and
+Note that DiscreteExteriorCalculus provides handy typedef of common k-forms and
 vector field, such as DiscreteExteriorCalculus::PrimalForm0,
 DiscreteExteriorCalculus::DualForm2,
 DiscreteExteriorCalculus::PrimalVectorField and
@@ -297,7 +300,7 @@ DiscreteExteriorCalculus.getSCell and cell can be retrieved from cells using
 DiscreteExteriorCalculus.getSCell.
 
 Convenience members KForm.length, VectorField.length, KForm.getSCell and VectorField.getSCell can be used to traverse structures easily.
-Here is a example snippet that compute a euclidean distance map (scalar field) on the structure defined above.
+Here is a example snippet that compute a Euclidean distance map (scalar field) on the structure defined above.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_fill_zero_form
 \image html usage_primal_zero_form.png "Primal 0-form."
