@@ -53,7 +53,7 @@ namespace DGtal
  * \brief Aim:
  * This class provides static members to create DEC structures from various other DGtal structures.
  *
- * @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
+ * @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenLinearAlgebraBackend).
  * @tparam TInteger integer type forwarded to khalimsky space.
  */
 
@@ -76,12 +76,12 @@ public:
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, DenseMatrix> ));
 
     /**
-     * Create DEC structure from digital set.
+     * Create a DEC structure from digital set.
      * DEC embedded and ambient dimensions are equal to digital set point dimension.
      * Points of the set get attached to primal n-cell <-> dual 0-cell.
      * @tparam TDigitalSet type of digital set passed as argument. must be a model of concepts::CDigitalSet.
      * @param set the set from which to build to DEC structure.
-     * @param add_border add border to the computed structure. For a precise definition see section \ref borderdefinition.
+     * @param add_border add border to the computed structure. For a precise definition see section \ref sectDECBorderDefinition.
      */
     template <typename TDigitalSet>
     static
@@ -89,15 +89,14 @@ public:
     createFromDigitalSet(const TDigitalSet& set, const bool add_border = true);
 
     /**
-     * Create DEC structure range of signed n-cells.
-     * DEC embedded dimension is equal to n.
-     * DEC ambient dimension is equal to n-cells kspace dimension.
-     * n-cells get attached to primal n-cell <-> dual 0-cell.
-     * @tparam dimEmbedded dimension of emmbedded manifold.
+     * Create a DEC structure from a range of signed n-cells, where n is the embedded dimension.
+		 * Signed n-cells may live in an ambient Khamlisky space with dimension greater than n.
+     * N-cells get attached to primal n-cell <-> dual 0-cell. See section \ref sectDECEmbedding for more information.
+     * @tparam dimEmbedded dimension of emmbedded manifold. All input n-cells must have their dimension equal to dimEmbedded.
      * @tparam TNSCellConstIterator signed cells collection const iterator type.
      * @param begin beginning of iteration range.
      * @param end end of iteration range.
-     * @param add_border add border to the computed structure. For a precise definition see section \ref borderdefinition.
+     * @param add_border add border to the computed structure. For a precise definition see section \ref sectDECBorderDefinition.
      */
     template <Dimension dimEmbedded, typename TNSCellConstIterator>
     static
@@ -116,7 +115,7 @@ private:
 protected:
 
     /**
-     * Insert recursively all lower incident cells in cells set, starting from cell.
+     * Insert recursively all lower incident cells into cells set, starting from cell.
      * Internal use only.
      * @tparam KSpace Khalimsky space type.
      * @tparam CellsSet cells set type, should be similar to std::set<KSpace::Cell> or std::set<KSpace::SCell>.
@@ -130,7 +129,7 @@ protected:
     insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsSet::value_type& cell, CellsSet& cells_set);
 
     /**
-     * Insert and count recursively all lower incident cells in cells accumulator, starting from cell.
+     * Insert and count recursively all lower incident cells into cells accumulator, starting from cell.
      * Internal use only.
      * @tparam KSpace Khalimsky space type.
      * @tparam CellsAccum cells accumulator type, should be similar to std::map<KSpace::Cell, int> or std::map<KSpace::SCell, int>.

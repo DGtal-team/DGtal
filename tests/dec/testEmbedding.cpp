@@ -3,7 +3,11 @@
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 
+#define NOVIEWER // comment to enable 3d viewers
+
+#if !defined(NOVIEWER)
 #include "DGtal/io/viewers/Viewer3D.h"
+#endif
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -21,12 +25,20 @@ equal(const OperatorAA& aa, const OperatorBB& bb)
 
 int main(int argc, char* argv[])
 {
+#if !defined(NOVIEWER)
     typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+#endif
+    //! [embedding_factory]
     typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    //! [embedding_factory]
 
+#if !defined(NOVIEWER)
     QApplication app(argc, argv);
     Z3i::KSpace kspace_3d;
+#endif
+    Z2i::KSpace kspace_2d;
 
+#if !defined(NOVIEWER)
     Viewer viewer1(kspace_3d);
     viewer1.show();
     viewer1.setWindowTitle("embedding_1d_calculus_3d");
@@ -47,17 +59,22 @@ int main(int argc, char* argv[])
     viewer3.camera()->setPosition( Vec(2,2,2) );
     viewer3.camera()->setUpVector( Vec(0,0,2), false );
     viewer3.camera()->lookAt( Vec(0,0,0) );
+#endif
 
     {
         trace.beginBlock("1d manifold embedding");
 
+        //! [embedding_1d_typedef]
         typedef DiscreteExteriorCalculus<1, 1, EigenLinearAlgebraBackend> Calculus1D;
         typedef DiscreteExteriorCalculus<1, 2, EigenLinearAlgebraBackend> Calculus2D;
         typedef DiscreteExteriorCalculus<1, 3, EigenLinearAlgebraBackend> Calculus3D;
+        //! [embedding_1d_typedef]
 
+        //! [embedding_1d_cells_1d]
         typedef std::set<Calculus1D::SCell> SCells1D;
-        Calculus1D calculus_1d_manual;
         SCells1D cells_1d;
+        //! [embedding_1d_cells_1d]
+        Calculus1D calculus_1d_manual;
         for (int kk=0; kk<31; kk++)
         {
             Calculus1D::KSpace::Point point;
@@ -68,7 +85,22 @@ int main(int argc, char* argv[])
         }
         trace.info() << "calculus_1d_manual=" << calculus_1d_manual << endl;
 
+        {
+            Board2D board;
+            board << Z2i::Domain(Z2i::Point(-1,-1), Z2i::Point(15,0));
+            board.setFillColor( DGtal::Color(128,128,128) );
+            for (Calculus1D::ConstIterator ii=calculus_1d_manual.begin(), ie=calculus_1d_manual.end(); ii!=ie; ii++)
+            {
+                const Z2i::Point point(calculus_1d_manual.myKSpace.uKCoord(ii->first, 0), 0);
+                const Z2i::KSpace::SCell cell = kspace_2d.sCell(point);
+                Display2DFactory::drawDECSignedKhalimskyCell(board, cell);
+            }
+            board.saveSVG("embedding_1d_calculus_1d.svg");
+        }
+
+        //! [embedding_1d_factory_1d]
         const Calculus1D calculus_1d_factory = CalculusFactory::createFromNSCells<1>(cells_1d.begin(), cells_1d.end(), true);
+        //! [embedding_1d_factory_1d]
         trace.info() << "calculus_1d_factory=" << calculus_1d_factory << endl;
 
         Calculus2D calculus_2d_manual;
@@ -114,8 +146,10 @@ int main(int argc, char* argv[])
             board.saveSVG("embedding_1d_calculus_2d.svg");
         }
 
+        //! [embedding_1d_cells_2d]
         typedef std::list<Calculus2D::SCell> SCells2D;
         SCells2D cells_2d;
+        //! [embedding_1d_cells_2d]
         {
             cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,1), Calculus2D::KSpace::POS) );
             cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(7,2), Calculus2D::KSpace::POS) );
@@ -133,7 +167,9 @@ int main(int argc, char* argv[])
             cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,1), Calculus2D::KSpace::NEG) );
             cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,0), Calculus2D::KSpace::NEG) );
         }
-        const Calculus2D calculus_2d_factory = CalculusFactory::createFromNSCells<1>(cells_2d.begin(), cells_2d.end());
+        //! [embedding_1d_factory_2d]
+        const Calculus2D calculus_2d_factory = CalculusFactory::createFromNSCells<1>(cells_2d.begin(), cells_2d.end(), true);
+        //! [embedding_1d_factory_2d]
         trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
 
         Calculus3D calculus_3d_manual;
@@ -172,11 +208,15 @@ int main(int argc, char* argv[])
         }
         trace.info() << "calculus_3d_manual=" << calculus_3d_manual << endl;
 
+#if !defined(NOVIEWER)
         Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer1, calculus_3d_manual);
         viewer1 << Viewer::updateDisplay;
+#endif
 
+        //! [embedding_1d_cells_3d]
         typedef std::vector<Calculus3D::SCell> SCells3D;
         SCells3D cells_3d;
+        //! [embedding_1d_cells_3d]
         {
             cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,0,0), Calculus3D::KSpace::POS) );
             cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(3,0,0), Calculus3D::KSpace::POS) );
@@ -194,7 +234,9 @@ int main(int argc, char* argv[])
             cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,5,-2), Calculus3D::KSpace::NEG) );
             cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,-2), Calculus3D::KSpace::NEG) );
         }
+        //! [embedding_1d_factory_3d]
         const Calculus3D calculus_3d_factory = CalculusFactory::createFromNSCells<1>(cells_3d.begin(), cells_3d.end(), true);
+        //! [embedding_1d_factory_3d]
         trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
 
         trace.beginBlock("checking operators");
@@ -311,8 +353,10 @@ int main(int argc, char* argv[])
     {
         trace.beginBlock("2d manifold embedding");
 
+        //! [embedding_2d_typedef]
         typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus2D;
         typedef DiscreteExteriorCalculus<2, 3, EigenLinearAlgebraBackend> Calculus3D;
+        //! [embedding_2d_typedef]
 
         Calculus2D calculus_2d_manual;
         {
@@ -361,10 +405,14 @@ int main(int argc, char* argv[])
             board.saveSVG("embedding_2d_calculus_2d.svg");
         }
 
+        //! [embedding_2d_cells_2d]
         typedef std::list<Calculus2D::SCell> SCells2D;
         SCells2D cells_2d;
+        //! [embedding_2d_cells_2d]
         for (int kk=0; kk<calculus_2d_manual.kFormLength(2, PRIMAL); kk++) cells_2d.push_back( calculus_2d_manual.getSCell(2, PRIMAL, kk) );
+        //! [embedding_2d_factory_2d]
         const Calculus2D calculus_2d_factory_weighed = CalculusFactory::createFromNSCells<2>(cells_2d.begin(), cells_2d.end(), true);
+        //! [embedding_2d_factory_2d]
         Calculus2D calculus_2d_factory = calculus_2d_factory_weighed;
         calculus_2d_factory.resetSizeRatios();
         trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
@@ -430,13 +478,19 @@ int main(int argc, char* argv[])
         }
         trace.info() << "calculus_3d_manual=" << calculus_3d_manual << endl;
 
+#if !defined(NOVIEWER)
         Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer2, calculus_3d_manual);
         viewer2 << Viewer::updateDisplay;
+#endif
 
+        //! [embedding_2d_cells_3d]
         typedef std::list<Calculus3D::SCell> SCells3D;
         SCells3D cells_3d;
+        //! [embedding_2d_cells_3d]
         for (int kk=0; kk<calculus_3d_manual.kFormLength(2, PRIMAL); kk++) cells_3d.push_back( calculus_3d_manual.getSCell(2, PRIMAL, kk) );
+        //! [embedding_2d_factory_3d]
         const Calculus3D calculus_3d_factory_weighed = CalculusFactory::createFromNSCells<2>(cells_3d.begin(), cells_3d.end(), true);
+        //! [embedding_2d_factory_3d]
         Calculus3D calculus_3d_factory = calculus_3d_factory_weighed;
         calculus_3d_factory.resetSizeRatios();
         trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
@@ -481,7 +535,9 @@ int main(int argc, char* argv[])
         trace.beginBlock("checking border");
 
         { // 2d ambient border
+            //! [embedding_2d_factory_2d_no_border]
             const Calculus2D calculus_2d_factory_no_border = CalculusFactory::createFromNSCells<2>(cells_2d.begin(), cells_2d.end(), false);
+            //! [embedding_2d_factory_2d_no_border]
             trace.info() << "calculus_2d_factory_no_border=" << calculus_2d_factory_no_border << endl;
             trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
 
@@ -492,12 +548,16 @@ int main(int argc, char* argv[])
         }
 
         { // 3d ambient border
+            //! [embedding_2d_factory_3d_no_border]
             const Calculus3D calculus_3d_factory_no_border = CalculusFactory::createFromNSCells<2>(cells_3d.begin(), cells_3d.end(), false);
+            //! [embedding_2d_factory_3d_no_border]
             trace.info() << "calculus_3d_factory_no_border=" << calculus_3d_factory_no_border << endl;
             trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
 
+#if !defined(NOVIEWER)
             Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer3, calculus_3d_factory_no_border);
             viewer3 << Viewer::updateDisplay;
+#endif
         }
 
         trace.endBlock();
@@ -543,6 +603,10 @@ int main(int argc, char* argv[])
         trace.endBlock();
     }
 
+#if !defined(NOVIEWER)
     return app.exec();
+#else
+    return 0;
+#endif
 }
 

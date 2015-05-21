@@ -46,6 +46,9 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
     const float retract = 0.1f;
     const bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
     const bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
+    board.setLineWidth( .5 );
+    board.setPenColor( DGtal::Color::Black );
+    board.setLineStyle( Board2D::Shape::SolidStyle );
     if (!xodd && !yodd)
     {
         if (!sk.myPositive) DGtal::trace.warning() << "negative khalimsky 0-cell" << std::endl;
@@ -83,7 +86,6 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
     typedef typename Calculus::KSpace KSpace;
 
     board.setFillColor( DGtal::Color(128,128,128) );
-    board.setLineWidth( .5 );
     for (int kk=2; kk>=0; kk--)
         for (ConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
         {

@@ -88,13 +88,12 @@ namespace DGtal
  */
   struct Display2DFactory
  {
+		public:
 
-		private:
 template <Dimension dim, typename TInteger>
 static
 void
 drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& cell);
-		public:
 
 // DiscreteExteriorCalculus
 template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
