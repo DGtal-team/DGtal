@@ -150,7 +150,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     typedef typename Calculus::KSpace KSpace;
     typedef typename KSpace::Cells Cells;
 
-    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<typename TNSCellConstIterator::value_type, const SCell>::value ));
+    BOOST_STATIC_ASSERT(( boost::is_convertible<typename TNSCellConstIterator::value_type, const SCell>::value ));
 
     Calculus calculus;
 
