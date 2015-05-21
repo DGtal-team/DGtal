@@ -1,6 +1,6 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SurfelAdjacency.h"
-#include "DGtal/topology/DigitalSetBoundary.h"
+#include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
@@ -42,11 +42,13 @@ int main(int argc, char* argv[])
     viewer1 << Viewer::updateDisplay;
 
     //! [surface_digital_surface]
+    const DGtal::Z3i::KSpace::SCell cell_bel = DGtal::Surfaces<DGtal::Z3i::KSpace>::findABel(kspace, input_set);
+
     typedef DGtal::SurfelAdjacency<3> SurfelAdjacency;
     const SurfelAdjacency surfel_adjacency(true);
 
-    typedef DGtal::DigitalSetBoundary<DGtal::Z3i::KSpace, DGtal::Z3i::DigitalSet> DigitalSurfaceContainer;
-    const DigitalSurfaceContainer digital_surface_container(kspace, input_set, surfel_adjacency);
+    typedef DGtal::LightImplicitDigitalSurface<DGtal::Z3i::KSpace, DGtal::Z3i::DigitalSet> DigitalSurfaceContainer;
+    const DigitalSurfaceContainer digital_surface_container(kspace, input_set, surfel_adjacency, cell_bel);
 
     typedef DGtal::DigitalSurface<DigitalSurfaceContainer> DigitalSurface;
     const DigitalSurface digital_surface(digital_surface_container);
