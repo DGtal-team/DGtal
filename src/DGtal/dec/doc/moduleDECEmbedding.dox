@@ -55,7 +55,8 @@ use DiscreteExteriorCalculusFactory::createFromDigitalSet.
 Similarly to DiscreteExteriorCalculusFactory::createFromNSCells, incident lower dimension cells
 are automatically inserted with proper hodge ratios.
 Each point of the set is inserted in the DEC structure as a primal n-cell.
-Note that DiscreteExteriorCalculusFactory::createFromNSCells is compatible with iterator over DigitalSurface.
+
+@note DiscreteExteriorCalculusFactory::createFromNSCells is compatible with iterators over DigitalSurface.
 
 To define a DEC factory, one must pass the linear algebra backend as the first template parameter.
 Here is a snippet that define a factory using EigenLinearAlgebraBackend.
@@ -70,6 +71,11 @@ Cell belonging to the border are (n-1)-cells incident with to one n-cell, along 
 lower incident k-cells counterparts.
 When passing @a add_border=false to DEC factory static functions, cells belonging to the border
 are not inserted.
+
+@note Choosing to add borders or not changes boundary condition of the DEC problems generated with the structure.
+@a add_border=true enforces Neumann boundary condition on primal operators.
+@a add_border=false enforces Dirichlet boudary condition on primal operators.
+See \ref sectDECPoisson1D for an example.
 
 \section sectDECEmbeddingExample1D 1D examples
 
