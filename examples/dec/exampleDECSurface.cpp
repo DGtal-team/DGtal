@@ -25,12 +25,14 @@ int main(int argc, char* argv[])
     DGtal::Z3i::KSpace kspace;
     kspace.init(input_domain.lowerBound(), input_domain.upperBound(), false);
 
+    //! [surface_input_set]
     DGtal::Z3i::DigitalSet input_set(input_domain);
     input_set.insert( DGtal::Z3i::Point(0,0,0) );
     input_set.insert( DGtal::Z3i::Point(1,0,0) );
     input_set.insert( DGtal::Z3i::Point(1,1,0) );
     input_set.insert( DGtal::Z3i::Point(0,1,0) );
     input_set.insert( DGtal::Z3i::Point(0,0,1) );
+    //! [surface_input_set]
     trace.info() << "input_set_size=" << input_set.size() << endl;
 
     Viewer viewer1(kspace);
@@ -39,8 +41,17 @@ int main(int argc, char* argv[])
     viewer1 << input_set;
     viewer1 << Viewer::updateDisplay;
 
+    //! [surface_digital_surface]
     typedef DGtal::SurfelAdjacency<3> SurfelAdjacency;
     const SurfelAdjacency surfel_adjacency(true);
+
+    typedef DGtal::DigitalSetBoundary<DGtal::Z3i::KSpace, DGtal::Z3i::DigitalSet> DigitalSurfaceContainer;
+    const DigitalSurfaceContainer digital_surface_container(kspace, input_set, surfel_adjacency);
+
+    typedef DGtal::DigitalSurface<DigitalSurfaceContainer> DigitalSurface;
+    const DigitalSurface digital_surface(digital_surface_container);
+    //! [surface_digital_surface]
+
     trace.info() << "surfel_adjacency=" << endl;
     for (int ii=0; ii<3; ii++)
     {
@@ -50,12 +61,8 @@ int main(int argc, char* argv[])
         trace.info() << ss.str() << endl;
     }
 
-    typedef DGtal::DigitalSetBoundary<DGtal::Z3i::KSpace, DGtal::Z3i::DigitalSet> DigitalSurfaceContainer;
-    const DigitalSurfaceContainer digital_surface_container(kspace, input_set, surfel_adjacency);
     trace.info() << "digital_surface_container=" << digital_surface_container << endl;
 
-    typedef DGtal::DigitalSurface<DigitalSurfaceContainer> DigitalSurface;
-    const DigitalSurface digital_surface(digital_surface_container);
     trace.info() << "digital_surface_size=" << digital_surface.size() << endl;
 
     Viewer viewer2(kspace);
@@ -72,9 +79,11 @@ int main(int argc, char* argv[])
 
     trace.beginBlock("discrete exterior calculus");
 
+    //! [surface_calculus]
     typedef DGtal::DiscreteExteriorCalculusFactory<DGtal::EigenLinearAlgebraBackend> CalculusFactory;
     typedef DGtal::DiscreteExteriorCalculus<2, 3, DGtal::EigenLinearAlgebraBackend> Calculus;
     const Calculus calculus = CalculusFactory::createFromNSCells<2>(digital_surface.begin(), digital_surface.end());
+    //! [surface_calculus]
     trace.info() << "calculus=" << calculus << endl;
 
     Viewer viewer3(kspace);
