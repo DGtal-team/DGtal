@@ -52,9 +52,10 @@ the embedded dimension of the generated manifold.
 
 When the ambient space has the same dimension as the embedded manifold, one could
 use DiscreteExteriorCalculusFactory::createFromDigitalSet.
-Similarly to DiscreteExteriorCalculusFactory::createNScells, incident lower dimension cells
+Similarly to DiscreteExteriorCalculusFactory::createFromNSCells, incident lower dimension cells
 are automatically inserted with proper hodge ratios.
 Each point of the set is inserted in the DEC structure as a primal n-cell.
+Note that DiscreteExteriorCalculusFactory::createFromNSCells is compatible with iterator over DigitalSurface.
 
 To define a DEC factory, one must pass the linear algebra backend as the first template parameter.
 Here is a snippet that define a factory using EigenLinearAlgebraBackend.
@@ -131,6 +132,23 @@ with third parameter equals to false.
 \image html embedding_2d_calculus_3d_no_border.png "2D discrete manifold embedded in 3D ambient space without border."
 
 Embedding structure in higher dimension ambient space does not affect generated operators.
+
+\section sectDECEmbeddingExampleDigitalSurface Digital surface examples
+
+In this example, we show how to import a DigitalSurface into a DEC structure.
+See exampleDECSurface.cpp for details.
+First, let's define the input set whose boundary will be used to define the digital surface.
+
+\snippet exampleDECSurface.cpp surface_input_set
+\image html embedding_surface_input_set.png "Input digital set."
+
+Let's then define the digital surface as the boundary of the input set, oriented positive inward.
+\snippet exampleDECSurface.cpp surface_digital_surface
+
+The DEC structure is created by calling DiscreteExteriorCalculusFactory::createFromNSCells with iterators DigitalSurface.begin() and DigitalSurface.end().
+Incident lower cells are added automatically as well as Hodge weights.
+\snippet exampleDECSurface.cpp surface_calculus
+\image html embedding_surface_calculus.png "DEC structure from boundary digital set."
 
 */
 
