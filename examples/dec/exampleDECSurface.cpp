@@ -49,6 +49,7 @@ alcapone_3d()
 
     trace.beginBlock("digital surface");
 
+    //! [alcapone_surface]
     typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, bool> Image;
     typedef DGtal::functors::Cast<bool> Functor;
     const Image image = DGtal::VolReader<Image, Functor>::importVol(filename, Functor());
@@ -72,6 +73,7 @@ alcapone_3d()
 
     typedef DGtal::DigitalSurface<DigitalSurfaceContainer> DigitalSurface;
     const DigitalSurface digital_surface(digital_surface_container);
+    //! [alcapone_surface]
 
     trace.info() << "digital_surface_size=" << digital_surface.size() << endl;
 
@@ -91,11 +93,11 @@ alcapone_3d()
 
     trace.beginBlock("discrete exterior calculus");
 
-    //! [surface_calculus]
+    //! [alcapone_calculus]
     typedef DGtal::DiscreteExteriorCalculusFactory<DGtal::EigenLinearAlgebraBackend> CalculusFactory;
     typedef DGtal::DiscreteExteriorCalculus<2, 3, DGtal::EigenLinearAlgebraBackend> Calculus;
     const Calculus calculus = CalculusFactory::createFromNSCells<2>(digital_surface.begin(), digital_surface.end(), false);
-    //! [surface_calculus]
+    //! [alcapone_calculus]
     trace.info() << "calculus=" << calculus << endl;
 
     {
@@ -108,6 +110,49 @@ alcapone_3d()
 
     using DGtal::PRIMAL;
     using DGtal::DUAL;
+
+    trace.endBlock();
+
+    trace.beginBlock("poisson equation");
+
+    //! [alcapone_rho]
+    Calculus::DualForm0 rho(calculus);
+    for (int index=0; index<rho.length(); index++)
+    {
+        const Calculus::SCell cell = rho.getSCell(index);
+        const Calculus::Point point = kspace.sKCoords(cell);
+        if (point[2]>1) continue;
+        rho.myContainer(index) = point[1]>100 ? 1 : -1;
+    }
+    trace.info() << "rho_range=" << rho.myContainer.minCoeff() << "/" << rho.myContainer.maxCoeff() << endl;
+    //! [alcapone_rho]
+
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("alcapone poisson rho");
+        DisplayFactory::draw(*viewer, rho);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    //! [alcapone_phi]
+    const Calculus::DualIdentity0 laplace = calculus.laplace<DUAL>();
+
+    typedef DGtal::EigenLinearAlgebraBackend::SolverSparseLU LinearAlgebraSolver;
+    typedef DGtal::DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> PoissonSolver;
+    PoissonSolver solver;
+    solver.compute(laplace);
+    const Calculus::DualForm0 phi = solver.solve(rho);
+    trace.info() << "phi_range=" << phi.myContainer.minCoeff() << "/" << phi.myContainer.maxCoeff() << endl;
+    //! [alcapone_phi]
+
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("alcapone poisson phi");
+        DisplayFactory::draw(*viewer, phi);
+        (*viewer) << Viewer::updateDisplay;
+    }
 
     trace.endBlock();
 
