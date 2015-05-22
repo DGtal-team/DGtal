@@ -40,6 +40,8 @@
    DiscreteExteriorCalculusFactory::createFromDigitalSet and
    DiscreteExteriorCalculusFactory::createFromNSCells.
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
+ - Mutable iterator on DiscreteExteriorCalculus.
+   (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
 
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a

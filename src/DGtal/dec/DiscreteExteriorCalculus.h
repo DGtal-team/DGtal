@@ -225,6 +225,7 @@ namespace DGtal
     initKSpace(ConstAlias<TDomain> domain);
 
     // ----------------------- Iterators on property map -----------------------
+
     /**
      * Const iterator typedef.
      */
@@ -239,6 +240,21 @@ namespace DGtal
      * End const iterator.
      */
     ConstIterator end() const;
+
+    /**
+     * Iterator typedef.
+     */
+    typedef typename Properties::iterator Iterator;
+
+    /**
+     * Begin iterator.
+     */
+    Iterator begin();
+
+    /**
+     * End iterator.
+     */
+    Iterator end();
 
     // ----------------------- Interface --------------------------------------
   public:
