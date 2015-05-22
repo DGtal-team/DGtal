@@ -1,3 +1,4 @@
+#include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
@@ -7,8 +8,84 @@
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 
+#include "ConfigExamples.h"
+
 typedef DGtal::Viewer3D<DGtal::Z3i::Space, DGtal::Z3i::KSpace> Viewer;
 typedef DGtal::Display3DFactory<DGtal::Z3i::Space, DGtal::Z3i::KSpace> DisplayFactory;
+
+void
+alcapone_3d()
+{
+    using std::endl;
+    using DGtal::trace;
+
+    trace.beginBlock("alcapone");
+
+    const std::string filename = examplesPath + "samples/Al.100.vol";
+
+    trace.beginBlock("digital surface");
+
+    typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, bool> Image;
+    typedef DGtal::functors::Cast<bool> Functor;
+    const Image image = DGtal::VolReader<Image, Functor>::importVol(filename, Functor());
+    const DGtal::Z3i::Domain domain = image.domain();
+
+    trace.info() << "domain=" << domain << endl;
+
+    DGtal::Z3i::KSpace kspace;
+    kspace.init(domain.lowerBound(), domain.upperBound(), false);
+
+    const DGtal::Z3i::KSpace::SCell cell_bel = DGtal::Surfaces<DGtal::Z3i::KSpace>::findABel(kspace, image);
+
+    typedef DGtal::SurfelAdjacency<3> SurfelAdjacency;
+    const SurfelAdjacency surfel_adjacency(true);
+
+    typedef DGtal::LightImplicitDigitalSurface<DGtal::Z3i::KSpace, Image> DigitalSurfaceContainer;
+    const DigitalSurfaceContainer digital_surface_container(kspace, image, surfel_adjacency, cell_bel);
+
+    typedef DGtal::DigitalSurface<DigitalSurfaceContainer> DigitalSurface;
+    const DigitalSurface digital_surface(digital_surface_container);
+
+    trace.info() << "digital_surface_size=" << digital_surface.size() << endl;
+
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("alcapone surface");
+        for (DigitalSurface::ConstIterator si=digital_surface.begin(), se=digital_surface.end(); si!=se; si++)
+        {
+            const DGtal::Z3i::KSpace::SCell cell = *si;
+            (*viewer) << cell;
+        }
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    trace.endBlock();
+
+    trace.beginBlock("discrete exterior calculus");
+
+    //! [surface_calculus]
+    typedef DGtal::DiscreteExteriorCalculusFactory<DGtal::EigenLinearAlgebraBackend> CalculusFactory;
+    typedef DGtal::DiscreteExteriorCalculus<2, 3, DGtal::EigenLinearAlgebraBackend> Calculus;
+    const Calculus calculus = CalculusFactory::createFromNSCells<2>(digital_surface.begin(), digital_surface.end(), false);
+    //! [surface_calculus]
+    trace.info() << "calculus=" << calculus << endl;
+
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("alcapone calculus");
+        DisplayFactory::draw(*viewer, calculus);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    using DGtal::PRIMAL;
+    using DGtal::DUAL;
+
+    trace.endBlock();
+
+    trace.endBlock();
+}
 
 void
 pyramid_3d()
@@ -147,6 +224,7 @@ int main(int argc, char* argv[])
     QApplication app(argc, argv);
 
     pyramid_3d();
+    alcapone_3d();
 
     return app.exec();
 }
