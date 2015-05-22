@@ -10,12 +10,13 @@
 typedef DGtal::Viewer3D<DGtal::Z3i::Space, DGtal::Z3i::KSpace> Viewer;
 typedef DGtal::Display3DFactory<DGtal::Z3i::Space, DGtal::Z3i::KSpace> DisplayFactory;
 
-int main(int argc, char* argv[])
+void
+pyramid_3d()
 {
     using std::endl;
     using DGtal::trace;
 
-    QApplication app(argc, argv);
+    trace.beginBlock("pyramid example");
 
     trace.beginBlock("digital surface");
 
@@ -35,11 +36,13 @@ int main(int argc, char* argv[])
     //! [surface_input_set]
     trace.info() << "input_set_size=" << input_set.size() << endl;
 
-    Viewer viewer1(kspace);
-    viewer1.show();
-    viewer1.setWindowTitle("input set");
-    viewer1 << input_set;
-    viewer1 << Viewer::updateDisplay;
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("input set");
+        (*viewer) << input_set;
+        (*viewer) << Viewer::updateDisplay;
+    }
 
     //! [surface_digital_surface]
     const DGtal::Z3i::KSpace::SCell cell_bel = DGtal::Surfaces<DGtal::Z3i::KSpace>::findABel(kspace, input_set);
@@ -67,15 +70,17 @@ int main(int argc, char* argv[])
 
     trace.info() << "digital_surface_size=" << digital_surface.size() << endl;
 
-    Viewer viewer2(kspace);
-    viewer2.show();
-    viewer2.setWindowTitle("digital surface");
-    for (DigitalSurface::ConstIterator si=digital_surface.begin(), se=digital_surface.end(); si!=se; si++)
     {
-        const DGtal::Z3i::KSpace::SCell cell = *si;
-        viewer2 << cell;
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("digital surface");
+        for (DigitalSurface::ConstIterator si=digital_surface.begin(), se=digital_surface.end(); si!=se; si++)
+        {
+            const DGtal::Z3i::KSpace::SCell cell = *si;
+            (*viewer) << cell;
+        }
+        (*viewer) << Viewer::updateDisplay;
     }
-    viewer2 << Viewer::updateDisplay;
 
     trace.endBlock();
 
@@ -88,11 +93,13 @@ int main(int argc, char* argv[])
     //! [surface_calculus]
     trace.info() << "calculus=" << calculus << endl;
 
-    Viewer viewer3(kspace);
-    viewer3.show();
-    viewer3.setWindowTitle("discrete exterior calculus");
-    DisplayFactory::draw(viewer3, calculus);
-    viewer3 << Viewer::updateDisplay;
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("discrete exterior calculus");
+        DisplayFactory::draw(*viewer, calculus);
+        (*viewer) << Viewer::updateDisplay;
+    }
 
     using DGtal::PRIMAL;
     using DGtal::DUAL;
@@ -131,6 +138,15 @@ int main(int argc, char* argv[])
     trace.endBlock();
 
     trace.endBlock();
+
+    trace.endBlock();
+}
+
+int main(int argc, char* argv[])
+{
+    QApplication app(argc, argv);
+
+    pyramid_3d();
 
     return app.exec();
 }
