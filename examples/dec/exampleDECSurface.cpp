@@ -1,3 +1,4 @@
+#include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
@@ -7,15 +8,164 @@
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 
+#include "ConfigExamples.h"
+
 typedef DGtal::Viewer3D<DGtal::Z3i::Space, DGtal::Z3i::KSpace> Viewer;
 typedef DGtal::Display3DFactory<DGtal::Z3i::Space, DGtal::Z3i::KSpace> DisplayFactory;
 
-int main(int argc, char* argv[])
+template <typename Predicate, typename Domain>
+struct FalseOutsideDomain
+{
+    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CPointPredicate<Predicate> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDomain<Domain> ));
+
+    typedef typename Predicate::Point Point;
+
+    FalseOutsideDomain(DGtal::ConstAlias<Predicate> predicate, DGtal::ConstAlias<Domain> domain) :
+        predicate(&predicate), domain(&domain)
+    {
+    }
+
+    bool
+    operator()(const Point& point) const
+    {
+        if (!domain->isInside(point)) return false;
+        return (*predicate)(point);
+    }
+
+    const Predicate* predicate;
+    const Domain* domain;
+};
+
+void
+alcapone_3d()
 {
     using std::endl;
     using DGtal::trace;
 
-    QApplication app(argc, argv);
+    trace.beginBlock("alcapone");
+
+    const std::string filename = examplesPath + "samples/Al.100.vol";
+
+    trace.beginBlock("digital surface");
+
+    //! [alcapone_surface]
+    typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, bool> Image;
+    typedef DGtal::functors::Cast<bool> Functor;
+    const Image image = DGtal::VolReader<Image, Functor>::importVol(filename, Functor());
+    const DGtal::Z3i::Domain domain = image.domain();
+
+    trace.info() << "domain=" << domain << endl;
+
+    typedef FalseOutsideDomain<Image, DGtal::Z3i::Domain> ImageExtended;
+    const ImageExtended image_extended(image, domain);
+
+    DGtal::Z3i::KSpace kspace;
+    kspace.init(domain.lowerBound(), domain.upperBound()+DGtal::Z3i::Point(0,0,1), false);
+
+    const DGtal::Z3i::KSpace::SCell cell_bel = DGtal::Surfaces<DGtal::Z3i::KSpace>::findABel(kspace, image_extended);
+
+    typedef DGtal::SurfelAdjacency<3> SurfelAdjacency;
+    const SurfelAdjacency surfel_adjacency(true);
+
+    typedef DGtal::LightImplicitDigitalSurface<DGtal::Z3i::KSpace, ImageExtended> DigitalSurfaceContainer;
+    const DigitalSurfaceContainer digital_surface_container(kspace, image_extended, surfel_adjacency, cell_bel);
+
+    typedef DGtal::DigitalSurface<DigitalSurfaceContainer> DigitalSurface;
+    const DigitalSurface digital_surface(digital_surface_container);
+    //! [alcapone_surface]
+
+    trace.info() << "digital_surface_size=" << digital_surface.size() << endl;
+
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("alcapone surface");
+        for (DigitalSurface::ConstIterator si=digital_surface.begin(), se=digital_surface.end(); si!=se; si++)
+        {
+            const DGtal::Z3i::KSpace::SCell cell = *si;
+            (*viewer) << cell;
+        }
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    trace.endBlock();
+
+    trace.beginBlock("discrete exterior calculus");
+
+    //! [alcapone_calculus]
+    typedef DGtal::DiscreteExteriorCalculusFactory<DGtal::EigenLinearAlgebraBackend> CalculusFactory;
+    typedef DGtal::DiscreteExteriorCalculus<2, 3, DGtal::EigenLinearAlgebraBackend> Calculus;
+    const Calculus calculus = CalculusFactory::createFromNSCells<2>(digital_surface.begin(), digital_surface.end(), false);
+    //! [alcapone_calculus]
+    trace.info() << "calculus=" << calculus << endl;
+
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("alcapone calculus");
+        DisplayFactory::draw(*viewer, calculus);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    using DGtal::PRIMAL;
+    using DGtal::DUAL;
+
+    trace.endBlock();
+
+    trace.beginBlock("poisson equation");
+
+    //! [alcapone_rho]
+    Calculus::DualForm0 rho(calculus);
+    for (int index=0; index<rho.length(); index++)
+    {
+        const Calculus::SCell cell = rho.getSCell(index);
+        const Calculus::Point point = kspace.sKCoords(cell);
+        if (point[2]>1) continue;
+        rho.myContainer(index) = point[1]>100 ? 1 : -1;
+    }
+    trace.info() << "rho_range=" << rho.myContainer.minCoeff() << "/" << rho.myContainer.maxCoeff() << endl;
+    //! [alcapone_rho]
+
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("alcapone poisson rho");
+        DisplayFactory::draw(*viewer, rho);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    //! [alcapone_phi]
+    const Calculus::DualIdentity0 laplace = calculus.laplace<DUAL>();
+
+    typedef DGtal::EigenLinearAlgebraBackend::SolverSparseLU LinearAlgebraSolver;
+    typedef DGtal::DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> PoissonSolver;
+    PoissonSolver solver;
+    solver.compute(laplace);
+    const Calculus::DualForm0 phi = solver.solve(rho);
+    trace.info() << "phi_range=" << phi.myContainer.minCoeff() << "/" << phi.myContainer.maxCoeff() << endl;
+    //! [alcapone_phi]
+
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("alcapone poisson phi");
+        DisplayFactory::draw(*viewer, phi);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    trace.endBlock();
+
+    trace.endBlock();
+}
+
+void
+pyramid_3d()
+{
+    using std::endl;
+    using DGtal::trace;
+
+    trace.beginBlock("pyramid example");
 
     trace.beginBlock("digital surface");
 
@@ -35,11 +185,13 @@ int main(int argc, char* argv[])
     //! [surface_input_set]
     trace.info() << "input_set_size=" << input_set.size() << endl;
 
-    Viewer viewer1(kspace);
-    viewer1.show();
-    viewer1.setWindowTitle("input set");
-    viewer1 << input_set;
-    viewer1 << Viewer::updateDisplay;
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("input set");
+        (*viewer) << input_set;
+        (*viewer) << Viewer::updateDisplay;
+    }
 
     //! [surface_digital_surface]
     const DGtal::Z3i::KSpace::SCell cell_bel = DGtal::Surfaces<DGtal::Z3i::KSpace>::findABel(kspace, input_set);
@@ -67,15 +219,17 @@ int main(int argc, char* argv[])
 
     trace.info() << "digital_surface_size=" << digital_surface.size() << endl;
 
-    Viewer viewer2(kspace);
-    viewer2.show();
-    viewer2.setWindowTitle("digital surface");
-    for (DigitalSurface::ConstIterator si=digital_surface.begin(), se=digital_surface.end(); si!=se; si++)
     {
-        const DGtal::Z3i::KSpace::SCell cell = *si;
-        viewer2 << cell;
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("digital surface");
+        for (DigitalSurface::ConstIterator si=digital_surface.begin(), se=digital_surface.end(); si!=se; si++)
+        {
+            const DGtal::Z3i::KSpace::SCell cell = *si;
+            (*viewer) << cell;
+        }
+        (*viewer) << Viewer::updateDisplay;
     }
-    viewer2 << Viewer::updateDisplay;
 
     trace.endBlock();
 
@@ -88,11 +242,13 @@ int main(int argc, char* argv[])
     //! [surface_calculus]
     trace.info() << "calculus=" << calculus << endl;
 
-    Viewer viewer3(kspace);
-    viewer3.show();
-    viewer3.setWindowTitle("discrete exterior calculus");
-    DisplayFactory::draw(viewer3, calculus);
-    viewer3 << Viewer::updateDisplay;
+    {
+        Viewer* viewer = new Viewer(kspace);
+        viewer->show();
+        viewer->setWindowTitle("discrete exterior calculus");
+        DisplayFactory::draw(*viewer, calculus);
+        (*viewer) << Viewer::updateDisplay;
+    }
 
     using DGtal::PRIMAL;
     using DGtal::DUAL;
@@ -131,6 +287,16 @@ int main(int argc, char* argv[])
     trace.endBlock();
 
     trace.endBlock();
+
+    trace.endBlock();
+}
+
+int main(int argc, char* argv[])
+{
+    QApplication app(argc, argv);
+
+    //pyramid_3d();
+    alcapone_3d();
 
     return app.exec();
 }
