@@ -41,6 +41,11 @@
 #include <algorithm>
 #include <string>
 
+#ifdef WITH_C11
+#include <unordered_set>
+#endif
+
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -50,6 +55,7 @@
 #include "DGtal/kernel/domains/CDomainArchetype.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetByAssociativeContainer.h"
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
@@ -371,6 +377,20 @@ bool testDigitalSetConcept()
   return true;
 }
 
+
+namespace std {
+  template <> struct hash< SpaceND<4>::Point  > {
+    size_t operator()(const SpaceND<4>::Point& h) const {
+      hash<int> int_hash;
+      size_t hq = int_hash(h[0]);
+      size_t hr = int_hash(h[1]);
+      return hq ^ (hr + 0x9e3779b9 + (hq << 6) + (hq >> 2));
+    }
+  };
+}
+
+
+
 int main()
 {
   typedef SpaceND<4> Space4Type;
@@ -407,6 +427,24 @@ int main()
   bool okMap = testDigitalSet< DigitalSetFromMap<Map> >( setFromMap, setFromMap2 );
   trace.endBlock();
 
+  trace.beginBlock( "DigitalSetByAssociativeContainer" );
+  typedef std::set<Point> Container;
+  bool okAssoctestSet = testDigitalSet< DigitalSetByAssociativeContainer<Domain,Container> >
+  ( DigitalSetByAssociativeContainer<Domain, Container>(domain), DigitalSetByAssociativeContainer<Domain, Container>(domain) );
+  trace.endBlock();
+  
+#ifdef WITH_C11
+  trace.beginBlock( "DigitalSetByUnorderedSet" );
+  typedef std::unordered_set<Point> ContainerU;
+  bool okUnorderedSet = testDigitalSet< DigitalSetByAssociativeContainer<Domain,ContainerU> >
+  ( DigitalSetByAssociativeContainer<Domain, ContainerU>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU>(domain) );
+  trace.endBlock();
+#endif
+  
+
+  
+  
+  
   bool okSelectorSmall = testDigitalSetSelector
       < Domain, SMALL_DS + LOW_VAR_DS + LOW_ITER_DS + LOW_BEL_DS >
       ( domain, "Small set" );
