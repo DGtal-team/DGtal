@@ -13,6 +13,30 @@
 typedef DGtal::Viewer3D<DGtal::Z3i::Space, DGtal::Z3i::KSpace> Viewer;
 typedef DGtal::Display3DFactory<DGtal::Z3i::Space, DGtal::Z3i::KSpace> DisplayFactory;
 
+template <typename Predicate, typename Domain>
+struct FalseOutsideDomain
+{
+    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CPointPredicate<Predicate> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDomain<Domain> ));
+
+    typedef typename Predicate::Point Point;
+
+    FalseOutsideDomain(DGtal::ConstAlias<Predicate> predicate, DGtal::ConstAlias<Domain> domain) :
+        predicate(&predicate), domain(&domain)
+    {
+    }
+
+    bool
+    operator()(const Point& point) const
+    {
+        if (!domain->isInside(point)) return false;
+        return (*predicate)(point);
+    }
+
+    const Predicate* predicate;
+    const Domain* domain;
+};
+
 void
 alcapone_3d()
 {
@@ -32,16 +56,19 @@ alcapone_3d()
 
     trace.info() << "domain=" << domain << endl;
 
-    DGtal::Z3i::KSpace kspace;
-    kspace.init(domain.lowerBound(), domain.upperBound(), false);
+    typedef FalseOutsideDomain<Image, DGtal::Z3i::Domain> ImageExtended;
+    const ImageExtended image_extended(image, domain);
 
-    const DGtal::Z3i::KSpace::SCell cell_bel = DGtal::Surfaces<DGtal::Z3i::KSpace>::findABel(kspace, image);
+    DGtal::Z3i::KSpace kspace;
+    kspace.init(domain.lowerBound(), domain.upperBound()+DGtal::Z3i::Point(0,0,1), false);
+
+    const DGtal::Z3i::KSpace::SCell cell_bel = DGtal::Surfaces<DGtal::Z3i::KSpace>::findABel(kspace, image_extended);
 
     typedef DGtal::SurfelAdjacency<3> SurfelAdjacency;
     const SurfelAdjacency surfel_adjacency(true);
 
-    typedef DGtal::LightImplicitDigitalSurface<DGtal::Z3i::KSpace, Image> DigitalSurfaceContainer;
-    const DigitalSurfaceContainer digital_surface_container(kspace, image, surfel_adjacency, cell_bel);
+    typedef DGtal::LightImplicitDigitalSurface<DGtal::Z3i::KSpace, ImageExtended> DigitalSurfaceContainer;
+    const DigitalSurfaceContainer digital_surface_container(kspace, image_extended, surfel_adjacency, cell_bel);
 
     typedef DGtal::DigitalSurface<DigitalSurfaceContainer> DigitalSurface;
     const DigitalSurface digital_surface(digital_surface_container);
@@ -223,7 +250,7 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    pyramid_3d();
+    //pyramid_3d();
     alcapone_3d();
 
     return app.exec();
