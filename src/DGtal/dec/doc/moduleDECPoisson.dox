@@ -165,7 +165,7 @@ This time DiscreteExteriorCalculusSolver.isValid is true after computing problem
 
 \section sectDECPoissonAlcapone Embedded 2D Poisson problem
 
-In this example, we create a embedded 2D structure from a DigitalSurface and we solve a dual Poisson equation with Neumann boundaries condition.
+In this example, we create an embedded 2D structure from a DigitalSurface and we solve a dual Poisson equation with Neumann boundaries condition.
 Snippets are taken from exampleDECSurface.cpp.
 
 First we load the Alcapone image and extract its boundary surface.
@@ -180,7 +180,7 @@ Borders are **not** added to the structure.
 \image html alcapone_calculus.png "Alcapone DEC structure."
 
 Dual 0-form \f$\rho\f$ is the input of the Poisson problem.
-Left feet has positive value and right feet has negative value.
+Left foot has positive value and right foot has negative value.
 
 \snippet exampleDECSurface.cpp alcapone_rho
 \image html alcapone_rho.png "Input dual 0-form."
