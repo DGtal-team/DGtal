@@ -61,7 +61,7 @@ alcapone_3d()
     const ImageExtended image_extended(image, domain);
 
     DGtal::Z3i::KSpace kspace;
-    kspace.init(domain.lowerBound(), domain.upperBound()+DGtal::Z3i::Point(0,0,1), false);
+    kspace.init(domain.lowerBound(), domain.upperBound()+DGtal::Z3i::Point(0,0,1), true);
 
     const DGtal::Z3i::KSpace::SCell cell_bel = DGtal::Surfaces<DGtal::Z3i::KSpace>::findABel(kspace, image_extended);
 
@@ -173,7 +173,7 @@ pyramid_3d()
     trace.info() << "input_domain=" << input_domain << endl;
 
     DGtal::Z3i::KSpace kspace;
-    kspace.init(input_domain.lowerBound(), input_domain.upperBound(), false);
+    kspace.init(input_domain.lowerBound(), input_domain.upperBound(), true);
 
     //! [surface_input_set]
     DGtal::Z3i::DigitalSet input_set(input_domain);

@@ -186,8 +186,8 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     for (typename CellsAccum::const_iterator bai=border_accum.begin(), bae=border_accum.end(); bai!=bae; bai++)
     {
         ASSERT( bai->second > 0 );
-        ASSERT( bai->second < 3 );
-        if (bai->second == 2) continue;
+        //ASSERT( bai->second < 3 );
+        if (bai->second >= 2) continue;
         insertAllLowerIncidentCells(calculus.myKSpace, bai->first, border);
     }
     ASSERT( !add_border || add_border && border.empty() );
@@ -204,7 +204,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
         const Scalar factor = pow(.5, 2*dual_dim-1);
         const Scalar size_ratio = lai->second * factor;
-        ASSERT(size_ratio > 0 && size_ratio <= 1);
+        ASSERT( size_ratio > 0 );
 
         const SCell cell_signed = calculus.myKSpace.signs(cell, KSpace::POS);
         calculus.insertSCell(cell_signed, size_ratio);
