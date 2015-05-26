@@ -91,8 +91,7 @@ namespace DGtal
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
+   
     
     BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) || 
        (TImage::Domain::dimension == 3));
@@ -100,17 +99,21 @@ namespace DGtal
     /** 
      * Export an Image with PGM format. 
      * 
-     * @param filename name of the output file
-     * @param aImage the image to export
-     * @param aFunctor  functor used to cast image values
-     * @param saveASCII used to save image with ASCII pixel value and with white space. 
+     * @param[in] filename name of the output file
+     * @param[in] aImage the image to export
+     * @param[in] aFunctor  functor used to cast image values
+     * @param[in] saveASCII used to save image with ASCII pixel value and with white space. 
      *        (default= false since ASCII mode is not efficient).     
+     * @param[in] compMax used to automatically compute the maximal
+     * image value used in pgm header instead to use the default value
+     * 255.
      * 
      * @return true if no errors occur.
      */
     static bool exportPGM(const std::string & filename, const Image &aImage, 
 			  const Functor & aFunctor = Functor(),  
-			  bool saveASCII=false, bool topbotomOrder=true);
+			  const bool saveASCII=false, const bool topbotomOrder=true,  
+                          const bool compMax = false);
   
 
     /** 
@@ -119,11 +122,15 @@ namespace DGtal
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor  functor used to cast image values
+     * @param[in] compMax used to automatically compute the maximal
+     * image value used in pgm header instead to use the default value
+     * 255.
      * 
      * @return true if no errors occur.
      */
     static bool exportPGM3D(const std::string & filename, const Image &aImage, 
-			    const Functor & aFunctor = Functor(), bool saveASCII=false);
+			    const Functor & aFunctor = Functor(), const bool saveASCII=false, 
+                            const bool compMax = false);
     
   };
 }//namespace

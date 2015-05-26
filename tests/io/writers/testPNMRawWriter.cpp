@@ -83,10 +83,15 @@ bool testPNMWriter()
   Image image(Domain(a,b));
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
-
+  
   PPMWriter<Image,Hue>::exportPPM("export-hue.ppm",image, Hue(0,255) );
   PPMWriter<Image,HueTwice>::exportPPM("export-hue-twice.ppm",image,HueTwice(0,255));
   PGMWriter<Image>::exportPGM("export-hue-twice.pgm",image);
+  PGMWriter<Image, functors::Rescaling<unsigned char, 
+                                       unsigned char> >::exportPGM("export-hue-twiceScale0-10.pgm",
+                                                                   image, functors::Rescaling<unsigned char, 
+                                                                   unsigned char>(0,255, 0, 10), true, true, true);
+  
   PPMWriter<Image,Gray>::exportPPM("export-gray.ppm",image, Gray(0,255));
   PPMWriter<Image,Jet>::exportPPM("export-jet.ppm",image,Jet(0,255));
   PPMWriter<Image,RedShade1>::exportPPM("export-red1.ppm",image,RedShade1(0,255));
