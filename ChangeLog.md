@@ -127,6 +127,8 @@
  - Fix issue #925, detection of Eigen3 (3.1 minimum) and also issue
  #924, DGtal configuration file when using Eigen3.  (Jacques-Olivier
  Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
+ - Backport of changes in google/benchmarck API for micro-benchmarking
+   (David Coeurjolly, [#1014](https://github.com/DGtal-team/DGtal/pull/1014))
 
 - *Base Package*
  - Fix bug with LabelledMap copy constructor and copy iterator. (Roland
