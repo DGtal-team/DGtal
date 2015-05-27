@@ -63,6 +63,9 @@
 
 namespace DGtal
 {
+  // forward factory declaration
+  template <typename TLinearAlgebraBackend, typename TInteger>
+  class DiscreteExteriorCalculusFactory;
 
   /////////////////////////////////////////////////////////////////////////////
   // template class DiscreteExteriorCalculus
@@ -85,6 +88,8 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
+    friend class DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>;
+
     typedef DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger> Self;
 
     typedef TLinearAlgebraBackend LinearAlgebraBackend;
@@ -93,6 +98,8 @@ namespace DGtal
     typedef typename LinearAlgebraBackend::DenseVector DenseVector;
     typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
     typedef typename LinearAlgebraBackend::SparseMatrix SparseMatrix;
+
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
 
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<DenseVector> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<DenseMatrix> ));
@@ -120,7 +127,7 @@ namespace DGtal
      * @brief Holds size 'ratio', 'index' and 'flipped' for each cell of the DEC object.
      * To avoid inserting both positive and negative cells in a DEC object,
      * only non signed cells are stored internally.
-     * @var Properties::flipped
+     * @var Property::flipped
      * To retrieve the sign of the cell, one must look at the 'flipped' boolean:
      * if 'flipped' is true, the associated signed cell is negative,
      * if 'flipped' is false, the associated signed cell is positive.
@@ -204,16 +211,6 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @tparam TDigitalSet type of digital set passed as argument.
-     * @param set the initial set copied.
-     * @param add_border add border to the computed structure.
-     * Set point get attached to primal n-cell <-> dual 0-cell.
-     */
-    template <typename TDigitalSet>
-    DiscreteExteriorCalculus(const TDigitalSet& set, const bool& add_border = true);
-
-    /**
-     * Constructor.
      * Initialize empty discrete exterior calculus.
      */
     DiscreteExteriorCalculus();
@@ -228,6 +225,7 @@ namespace DGtal
     initKSpace(ConstAlias<TDomain> domain);
 
     // ----------------------- Iterators on property map -----------------------
+
     /**
      * Const iterator typedef.
      */
@@ -242,6 +240,21 @@ namespace DGtal
      * End const iterator.
      */
     ConstIterator end() const;
+
+    /**
+     * Iterator typedef.
+     */
+    typedef typename Properties::iterator Iterator;
+
+    /**
+     * Begin iterator.
+     */
+    Iterator begin();
+
+    /**
+     * End iterator.
+     */
+    Iterator end();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -388,10 +401,17 @@ namespace DGtal
 
     /**
      * Check if cell is flipped in display.
-     * @param cell the tested cell
+     * @param cell the tested cell.
      */
     bool
     isCellFlipped(const Cell& cell) const;
+
+    /**
+     * Check is structure contains cell.
+     * @param cell the tested cell.
+     */
+    bool
+    containsCell(const Cell& cell) const;
 
     /**
      * Get k-form index from cell.
@@ -437,10 +457,17 @@ namespace DGtal
     edgeDirection(const Cell& cell, const Duality& duality) const;
 
     /**
+     * Reset all primal to dual cell size ratios to 1.
+     */
+    void
+    resetSizeRatios();
+
+    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    bool
+    isValid() const;
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -473,13 +500,6 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DiscreteExteriorCalculus(const DiscreteExteriorCalculus& other);
 
     // ------------------------- Internals ------------------------------------
   private:

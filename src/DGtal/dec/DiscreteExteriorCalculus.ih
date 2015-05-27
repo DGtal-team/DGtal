@@ -34,69 +34,6 @@
 // ----------------------- Standard services ------------------------------
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
-template <typename TDigitalSet>
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::DiscreteExteriorCalculus(const TDigitalSet& _set, const bool& add_border)
-    : myKSpace(), myCachedOperatorsModified(true)
-{
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSet> ));
-
-    BOOST_STATIC_ASSERT(( dimEmbedded == dimAmbient ));
-
-    this->template initKSpace<typename TDigitalSet::Domain>(_set.domain());
-
-    // compute raw cell size
-    typedef std::map<Cell, Scalar> Accum;
-    Accum cell_size_accum;
-    for (typename TDigitalSet::ConstIterator ri=_set.begin(), rie=_set.end(); ri!=rie; ri++)
-    {
-        const Point& point = *ri;
-        const Cell cell_point = myKSpace.uSpel(point);
-
-        typedef DGtal::SpaceND<dimAmbient, TInteger> Space;
-        typedef DGtal::HyperRectDomain<Space> Neighborbood;
-        const Point cell_coords = myKSpace.uKCoords(cell_point);
-        const Neighborbood neighborhood(cell_coords-Point::diagonal(1), cell_coords+Point::diagonal(1));
-        for (typename Neighborbood::ConstIterator pi=neighborhood.begin(), pie=neighborhood.end(); pi!=pie; pi++)
-        {
-            const Cell cell = myKSpace.uCell(*pi);
-            if (cell_size_accum.find(cell) == cell_size_accum.end()) cell_size_accum[cell] = 0;
-            cell_size_accum[cell] += 1;
-        }
-    }
-
-    // normalize cell size and set flipped flag
-    for (typename Accum::const_iterator csi=cell_size_accum.begin(), csie=cell_size_accum.end(); csie!=csi; csi++)
-    {
-        const Cell& cell = csi->first;
-        const DGtal::Dimension dual_dim = dimAmbient-myKSpace.uDim(cell);
-        const Scalar factor = 1/pow(2, dual_dim);
-
-        const Scalar normalized_size = csi->second * factor;
-        ASSERT(normalized_size > 0 && normalized_size <= 1);
-
-        if (!add_border && normalized_size < 1) continue;
-
-        Property property;
-        property.flipped = false;
-        property.size_ratio = normalized_size;
-
-        myCellProperties[cell] = property;
-    }
-
-    // compute cell index
-    for (typename Properties::iterator csi=myCellProperties.begin(), csie=myCellProperties.end(); csie!=csi; csi++)
-    {
-        const Cell& cell = csi->first;
-        const DGtal::Dimension cell_dim = myKSpace.uDim(cell);
-
-        csi->second.index = myIndexSignedCells[cell_dim].size();
-
-        const SCell& signed_cell = myKSpace.signs(cell, KSpace::POS);
-        myIndexSignedCells[cell_dim].push_back(signed_cell);
-    }
-}
-
-template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::DiscreteExteriorCalculus()
     : myKSpace(), myCachedOperatorsModified(true)
 {
@@ -186,6 +123,16 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     if (need_insert) myCachedOperatorsModified = true;
 
     return need_insert;
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+void
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::resetSizeRatios()
+{
+    for (typename Properties::iterator pi=myCellProperties.begin(), pe=myCellProperties.end(); pi!=pe; pi++)
+        pi->second.size_ratio = 1;
+
+    myCachedOperatorsModified = true;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
@@ -558,6 +505,13 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::containsCell(const Cell& cell) const
+{
+    return myCellProperties.find(cell) != myCellProperties.end();
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+bool
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::isCellFlipped(const Cell& cell) const
 {
     const typename Properties::const_iterator iter_property = myCellProperties.find(cell);
@@ -584,6 +538,20 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::ConstIterator
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::end() const
+{
+    return myCellProperties.end();
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Iterator
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::begin()
+{
+    return myCellProperties.begin();
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Iterator
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::end()
 {
     return myCellProperties.end();
 }
