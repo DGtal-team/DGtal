@@ -205,7 +205,7 @@ DGtal::operator>> (   Mesh<TPoint> & aMesh, const std::string & aFilename ){
       if(aMesh.isStoringFaceColors()){
         std::fstream exportObjMtl;
         std::string nameMtl = (aFilename.substr(0,aFilename.find_last_of("."))).append(".mtl");
-        exportObjMtl.open(nameMtl, std::fstream::out);
+        exportObjMtl.open(nameMtl.c_str(), std::fstream::out);
         return DGtal::MeshWriter<TPoint>::export2OBJ_colors(out, exportObjMtl, nameMtl, aMesh);
       }else{
         return DGtal::MeshWriter<TPoint>::export2OBJ(out, aMesh);
