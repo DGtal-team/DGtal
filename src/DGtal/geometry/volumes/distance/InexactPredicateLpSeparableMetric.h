@@ -44,6 +44,7 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/CEuclideanRing.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -65,7 +66,7 @@ namespace DGtal
  * \sum_{i=0}^{n-1} |x_i-y_i|^p\right)^{1/p}@f$
  *
  * This class is said to be inexact in the sense that the power @a p a
- * floating number (@a double) and the power is given by std::pow on
+ * real number (of type TValue, e.g. @a double or @a float) and the power is given by std::pow on
  * double numbers. As a consequence, @a hiddenBy and @a closest
  * methods may be inexact (numerical issues).
  *
@@ -73,10 +74,12 @@ namespace DGtal
  *
  * @tparam TSpace the model of CSpace on which the metric is
  * defined.
+ * @tparam TValue value type of the distance computation (e.g. float
+ * or double --defaut--). Model of CEuclideanRing.
  */
-  template <typename TSpace>
+  template <typename TSpace, typename TValue = double>
   class InexactPredicateLpSeparableMetric
-    : public std::binary_function< typename TSpace::Point, typename TSpace::Point, double >
+    : public std::binary_function< typename TSpace::Point, typename TSpace::Point, TValue >
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -85,6 +88,7 @@ namespace DGtal
     typedef TSpace Space;
 
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<TValue> ));
 
     ///Type for points
     typedef typename Space::Point Point;
@@ -93,9 +97,9 @@ namespace DGtal
     ///Type for vectors
     typedef typename Space::Vector Vector;
     ///Type for distance values
-    typedef double Value;
+    typedef TValue Value;
     ///Type for raw distance values
-    typedef double RawValue;
+    typedef TValue RawValue;
     
     /**
      * Constructor.
@@ -220,7 +224,7 @@ namespace DGtal
      *
      * @return the power p of the l_p distance between aP and aQ.
      */
-    double distanceLp(const Point &aP, const Point &aQ) const;
+    Value distanceLp(const Point &aP, const Point &aQ) const;
 
 
     /**
@@ -256,15 +260,6 @@ namespace DGtal
     ///Exponent value
     Value myExponent;
 
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-  private:
-
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
   }; // end of class InexactPredicateLpSeparableMetric
 
   /**
@@ -273,9 +268,9 @@ namespace DGtal
    * @param object the object of class 'InexactPredicateLpSeparableMetric' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename T, typename V>
   std::ostream&
-  operator<< ( std::ostream & out, const InexactPredicateLpSeparableMetric<T> & object );
+  operator<< ( std::ostream & out, const InexactPredicateLpSeparableMetric<T,V> & object );
 
 } // namespace DGtal
 

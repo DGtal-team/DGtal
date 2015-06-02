@@ -47,8 +47,12 @@
   WITH_PATATE=true): http://patate.gforge.inria.fr/html/. See
   SphereFittingEstimator (David Coeurjolly,
   [#929](https://github.com/DGtal-team/DGtal/pull/929))
- - Algorithm to compute the union of two DSSs in
-	logarithmic time (Isabelle Sivignon, [#949](https://github.com/DGtal-team/DGtal/pull/949))
+ - Algorithm to compute the union of two DSSs in logarithmic time
+	(Isabelle Sivignon,
+	[#949](https://github.com/DGtal-team/DGtal/pull/949))
+ - InexactPredicateLpSeparableMetric class is now templated by an
+   EuclideanRing type. (David Coeurjolly,
+   [#XXX](https://github.com/DGtal-team/DGtal/pull/XXX))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
