@@ -52,7 +52,7 @@
 	[#949](https://github.com/DGtal-team/DGtal/pull/949))
  - InexactPredicateLpSeparableMetric class is now templated by an
    EuclideanRing type. (David Coeurjolly,
-   [#XXX](https://github.com/DGtal-team/DGtal/pull/XXX))
+   [#1017](https://github.com/DGtal-team/DGtal/pull/1017))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
