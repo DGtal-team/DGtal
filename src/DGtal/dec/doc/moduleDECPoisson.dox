@@ -40,14 +40,14 @@ In order to make it solvable, we use a regularized version of the Laplace operat
 \f[ \Delta_\mathrm{reg} = \Delta + \lambda I \f]
 
 where \f$I\f$ is the identity operator and \f$\lambda\f$ is the regularization scalar, chosen small with respect to \f$\Delta\f$ eigenvalues.
-Linear regularized solution are the same solution as least square problem solution of the non regularized problem. 
-\f$I\f$ is generated using DiscreteExteriorCalculus.identity. 
+Linear regularized solution are the same solution as least square problem solution of the non regularized problem.
+\f$I\f$ is generated using DiscreteExteriorCalculus.identity.
 
 One can use the general Laplace operator definition.
 
 \f[ \Delta = \star d \star d = \delta d \f]
 
-However, for convenience DiscreteExteriorCalculus provides a method to get the Laplace operator directly. 
+However, for convenience DiscreteExteriorCalculus provides a method to get the Laplace operator directly.
 
 \section sectDECPoisson1D 1D Poisson resolution
 
@@ -58,6 +58,7 @@ Boundary conditions effect are illustrated for the two classical boundary condit
 - Dirichlet boundary condition connects borders of the structure to null potential. With our heat analogy, this means that the start and the end of the linear structure are connected to thermostat, which are given the null temperature.
 
 Boundary conditions are changed from Neumann to Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
+Snippets are taken from testLinearStructure.cpp.
 
 \subsection sectDECPoisson1DNeumann Neumann boundary condition
 
@@ -130,6 +131,7 @@ Numerical values of the solution fit analytic values with at least a relative pr
 \section sectDECPoisson2D 2D Poisson problem
 
 In this example, we create a 2D ring structure and we solve a regularized Poisson equation on this structure.
+Snippets are taken from exampleDiscreteExteriorCalculusSolve.cpp.
 First the structure is created from a digital set.
 
 \snippet exampleDiscreteExteriorCalculusSolve.cpp calculus_creation
@@ -160,6 +162,35 @@ This time DiscreteExteriorCalculusSolver.isValid is true after computing problem
 
 \snippet exampleDiscreteExteriorCalculusSolve.cpp solve_ldlt
 \image html solve_laplace_simplicial_ldlt.png "Poisson problem solution computed with simplicial LDLT solver. Solver solution is valid."
+
+\section sectDECPoissonAlcapone Embedded 2D Poisson problem
+
+In this example, we create an embedded 2D structure from a DigitalSurface and we solve a dual Poisson equation with Neumann boundaries condition.
+Snippets are taken from exampleDECSurface.cpp.
+
+First we load the Alcapone image and extract its boundary surface.
+Note that the Khalimsky space domain opens the surface under the feet of Alcapone.
+
+\snippet exampleDECSurface.cpp alcapone_surface
+
+The DEC structure is then create using DiscreteExteriorCalculusFactory::createFromNSCells.
+Borders are **not** added to the structure.
+
+\snippet exampleDECSurface.cpp alcapone_calculus
+\image html alcapone_calculus.png "Alcapone DEC structure."
+
+Dual 0-form \f$\rho\f$ is the input of the Poisson problem.
+Left foot has positive value and right foot has negative value.
+
+\snippet exampleDECSurface.cpp alcapone_rho
+\image html alcapone_rho.png "Input dual 0-form."
+
+Dual Laplace operator is computed and passed to the solver using DiscreteExteriorCalculusSolver.compute.
+The dual 0-form solution \f$\phi\f$ is returned by DiscreteExteriorCalculusSolver.solve.
+
+\snippet exampleDECSurface.cpp alcapone_phi
+\image html alcapone_phi.png "Solution dual 0-form."
+
 
 */
 
