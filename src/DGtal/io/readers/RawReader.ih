@@ -70,7 +70,7 @@ throw(DGtal::IOException)
 
     while ((fin) && (it != itend))
     {
-        read_word(fin, val);
+        raw_reader_read_word(fin, val);
         image.setValue(*it, aFunctor(val));
         it++;
         count++;
@@ -111,10 +111,9 @@ throw(DGtal::IOException)
     return importRaw<uint32_t>(filename, extent, aFunctor);
 }
 
-template <typename T, typename TFunctor>
 template <typename Word>
 FILE*
-DGtal::RawReader<T, TFunctor>::read_word( FILE* fin, Word& aValue )
+DGtal::raw_reader_read_word( FILE* fin, Word& aValue )
 {
     aValue = 0;
     for (unsigned size = 0; size < sizeof( Word ); ++size)
