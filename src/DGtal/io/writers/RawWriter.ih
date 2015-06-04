@@ -53,7 +53,7 @@ DGtal::RawWriter<I, C>::exportRaw(const std::string& filename, const I& aImage, 
   for (typename I::Domain::ConstIterator it=domain.begin(), itend=domain.end(); it!=itend; ++it)
   {
       val = aImage(*it);
-      write_word<Word>(out, aFunctor(val));
+      raw_writer_write_word<Word>(out, aFunctor(val));
   }
 
   out.close();
@@ -83,10 +83,23 @@ DGtal::RawWriter<I, C>::exportRaw32(const std::string& filename, const I& aImage
     return exportRaw<uint32_t>(filename, aImage, aFunctor);
 }
 
-template<typename I,typename C>
+namespace DGtal
+{
+
+template <>
+inline
+std::ostream&
+raw_writer_write_word<uint8_t>(std::ostream& outs, uint8_t value)
+{
+    outs.put(value);
+    return outs;
+}
+
+}
+
 template <typename Word>
 std::ostream&
-DGtal::RawWriter<I, C>::write_word(std::ostream& outs, Word value)
+DGtal::raw_writer_write_word(std::ostream& outs, Word value)
 {
     for (unsigned size = sizeof(Word); size; --size, value >>= 8)
         outs.put(static_cast<unsigned char>(value & 0xFF));
