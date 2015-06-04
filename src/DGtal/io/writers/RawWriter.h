@@ -124,19 +124,20 @@ namespace DGtal
          const Functor& aFunctor = Functor());
 
   private:
-    /**
-     * Generic write word (binary mode) in little-endian.
-     *
-     * @param outs output stream.
-     * @param value value to write.
-     *
-     * @return modified stream.
-     */
-    template <typename Word>
-    static
-    std::ostream& write_word( std::ostream& outs, Word value );
 
   };
+
+  /**
+   * Generic write word (binary mode) in little-endian.
+   *
+   * @param outs output stream.
+   * @param value value to write.
+   *
+   * @return modified stream.
+   */
+  template <typename Word>
+  std::ostream& raw_writer_write_word(std::ostream& outs, Word value);
+
 }//namespace
 
 ///////////////////////////////////////////////////////////////////////////////
