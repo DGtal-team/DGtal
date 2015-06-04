@@ -166,21 +166,18 @@ namespace DGtal
 
   private:
 
-    /**
-     * Generic read word (binary mode) in little-endian mode.
-     *
-     * @param fin input FILE.
-     * @param aValue value to write.
-     *
-     * @return modified stream.
-     */
-    template <typename Word>
-    static
-    FILE* read_word( FILE* fin, Word& aValue );
-
-
   }; // end of class RawReader
 
+  /**
+   * Generic read word (binary mode) in little-endian mode.
+   *
+   * @param fin input FILE.
+   * @param aValue value to write.
+   *
+   * @return modified stream.
+   */
+  template <typename Word>
+  FILE* raw_reader_read_word( FILE* fin, Word& aValue );
 
 } // namespace DGtal
 
