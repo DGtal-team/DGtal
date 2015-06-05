@@ -89,12 +89,18 @@ namespace DGtal
  */
   struct Display2DFactory
  {
+		public:
 
-// DiscreteExteriorCalculus
-template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+template <Dimension dim, typename TInteger>
 static
 void
-draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus);
+drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& cell);
+
+// DiscreteExteriorCalculus
+template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+static
+void
+draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& calculus);
 // DiscreteExteriorCalculus
 
 // KForm
@@ -103,12 +109,10 @@ static
 void
 draw(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform);
 
-		 private:
 template <typename TCalculus, DGtal::Order order, DGtal::Duality duality, typename TColorMap>
 static
 void
 drawWithColorMap(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform, const TColorMap& colormap);
-		 public:
 // KForm
     
 // VectorField

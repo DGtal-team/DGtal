@@ -1,6 +1,8 @@
 if (WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
 
     set(DGTAL_EXAMPLES_SRC_DEC
+        exampleDECSurface
+        examplePropagation
         exampleDiscreteExteriorCalculusUsage
         exampleDiscreteExteriorCalculusSolve
         exampleDiscreteExteriorCalculusChladni

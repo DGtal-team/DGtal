@@ -98,8 +98,7 @@ From the equation above, one can show that 4 \f$\star\f$ always contract to iden
 
 \f[ \star \star \star \star x = x \f]
 
-Primal Hodge operators \f$\star_k\f$ are generated using DiscreteExteriorCalculus.primalHodge with k as template parameter.
-Dual Hodge operators \f$\star_k'\f$ are generated using DiscreteExteriorCalculus.dualHodge with k as template parameter.
+Primal Hodge operators \f$\star_k\f$ and dual Hodge operators \f$\star_k'\f$) are generated using DiscreteExteriorCalculus.hodge with k as the first template parameter and duality as the second template parameter.
 See <a href="https://en.wikipedia.org/wiki/Hodge_dual">wikipedia page</a> for more details.
 
 \subsubsection sectDECOperatorDerivative Exterior derivative
@@ -120,6 +119,20 @@ This rules out many buildable complex linear operators as one has to switch dual
 In the DEC package, exterior derivative operators are generated using DiscreteExteriorCalculus.derivative with input k-form order as the first template parameter and duality as the second template parameter.
 See <a href="https://en.wikipedia.org/wiki/Exterior_derivative">wikipedia page</a> for more details.
 
+\subsubsection sectDECOperatorAntiderivative Antiderivative
+
+Antiderivative operators are shorthand operators that appear in many DEC problems.
+They take k-forms as inputs and create (k-1)-forms.
+Input and output forms keep the same duality.
+Here is the definition of \f$\delta\f$, the antiderivative acting on k-forms.
+
+\f[ \delta = \star' d' \star \f]
+
+In the DEC package, antiderivative operators are generated using DiscreteExteriorCalculus.antiderivative.
+As for \f$d\f$, applying any antiderivative twice vanishes.
+
+\f[ \delta \delta x = 0 \f]
+
 \subsubsection sectDECoperatorMusical Sharp and flat
 
 Sharp \f$\sharp\f$ and flat \f$\flat\f$, called <em>musical isomorphisms</em> in \cite goes2013digital, transform 1-form into vector field and the other way around.
@@ -136,15 +149,18 @@ Contrary to Hodge operators and exterior derivative, sharp and flat operators do
 
 \subsubsection sectDECOperatorClassical Classical vector analysis
 
-Classical vector analysis operators such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$ can be expressed with basic DEC operators, \f$\star\f$, \f$d\f$, \f$\sharp\f$ and \f$\flat\f$.
+Classical vector analysis operators such as gradient \f$\nabla\f$, divergence
+\f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$
+can be expressed with basic DEC operators, \f$\star\f$, \f$d\f$, \f$\sharp\f$
+and \f$\flat\f$.
 
 \f[\nabla x = ( d x )^\sharp \f]
 
-\f[\nabla\cdot x = \star d \star x^\flat \f]
+\f[\nabla\cdot x = \star d \star x^\flat = \delta x \f]
 
 \f[\nabla\wedge x = ( \star d x^\flat )^\sharp \f]
 
-\f[\Delta x = \star d \star d x \f]
+\f[\Delta x = \star d \star d x = \delta d x \f]
 
 Note that each basic operators changes with the dimension of the structure \f$n\f$ and duality of the input k-form vector space.
 
@@ -154,20 +170,22 @@ In order to find the right operators to use, one could draw a figure similar to 
 Using this figure together with the definition of vector analysis operators provided in the above section, the order and duality of each operator become easy to figure out.
 For example, one can easily figure out the precise definition of the primal Laplace operator \f$\Delta\f$ and the dual Laplace operator \f$\Delta'\f$ in 3D dimension.
 Paths taken by those operators are highlighted in Figure \ref three.
+\f$\Delta\f$ can be expressed using derivative and antiderivative.
 
-\f[ \Delta = \star_3' d_2' \star_1 d_0 \f]
+\f[ \Delta = \star_3' d_2' \star_1 d_0 = \delta_1 d_0 \f]
 
-\f[ \Delta' = \star_3 d_2 \star_1' d_0' \f]
+\f[ \Delta' = \star_3 d_2 \star_1' d_0'= \delta_1' d_0' \f]
 
 \anchor three
 \image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted primal Laplace operator (green), dual Laplace operator (blue) together with its constituting basic DEC operators (red)."
 
 If the dimension of the DEC structure changes, the definition of the primal Laplace operator changes slightly.
 For example, here is the definition of the primal Laplace operator in 2D.
+Note that the expression using antiderivative do not change.
 
-\f[ \Delta = \star_2' d_1' \star_1 d_0 \f]
+\f[ \Delta = \star_2' d_1' \star_1 d_0 = \delta_1 d_0 \f]
 
-Note that DiscreteExteriorCalculus provides two DiscreteExteriorCalculus.primalLaplace and DiscreteExteriorCalculus.dualLaplace to conveniently compute Laplace operators.
+Note that DiscreteExteriorCalculus provides DiscreteExteriorCalculus.laplace to conveniently compute Laplace operators.
 Of course, one could still built Laplace operator of basic Hodge and derivative (see \ref sectDECHelmoltz2D).
 
 \subsection sectDECLinearProblem DEC linear problem
@@ -177,13 +195,21 @@ Using the DEC package, one can solve any equation of the type:
 \f[ f(x) = y \f]
 
 where \f$x\f$ and \f$y\f$ are k-forms, with potentially different orders and dualities, and \f$f\f$ is a linear operator between k-forms.
-One can create linear operators by manually filling LinearOperator.myContainer, but it's often easier to combine derivative \f$d\f$ and duality operators \f$\star\f$ computed by DiscreteExteriorCalculus.derivative, DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge.
+One can create linear operators by manually filling
+LinearOperator.myContainer, but it's often easier to combine derivative
+\f$d\f$ and duality operators \f$\star\f$ computed by
+DiscreteExteriorCalculus.derivative and DiscreteExteriorCalculus.hodge.
 
 Recall that \f$\flat\f$ and \f$\sharp\f$ are operators that turn a vector field into a 1-form and the other way around.
 Those operators are linear but do not transform k-forms into k-forms and therefore can't be represented by LinearOperator.
-However DiscreteExteriorCalculus allows us to apply those transformations on associated k-forms and vector fields, namely DiscreteExteriorCalculus.flat and DiscreteExteriorCalculus.sharp.
-These operators are cached in the DiscreteExteriorCalculus object and support intense load, as Hodge and derivative operators do.
-We chose to disable \f$\flat\f$ and \f$\sharp\f$ representation because the quantity of information stored in the associated 1-form is always bigger than the quantity of information stored in the vector field.
+However DiscreteExteriorCalculus allows us to apply those transformations on
+associated k-forms and vector fields, namely DiscreteExteriorCalculus.flat and
+DiscreteExteriorCalculus.sharp.
+These operators are cached in the DiscreteExteriorCalculus object and support
+intense load, as Hodge and derivative operators do.
+We chose to disable \f$\flat\f$ and \f$\sharp\f$ representation because the
+quantity of information stored in the associated 1-form is always bigger than
+the quantity of information stored in the vector field.
 
 \subsection sectDECIntroductionFurther Further reading
 
@@ -194,41 +220,68 @@ We chose to disable \f$\flat\f$ and \f$\sharp\f$ representation because the quan
 \section sectDECHandsOn Hands on the DEC package
 
 This section provides an overview on structures and classes that compose the DEC package.
+All snippets are taken from exampleDiscreteExteriorCalculusUsage.cpp.
+Here is a typical list of headers needed to use the DEC package.
+
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_headers
 
 \subsection sectDECIntroduction3 Main DEC object creation
 
 In this package, the main DEC object is DiscreteExteriorCalculus.
-The first template parameter is the dimension of the embedding space, and
-therefore must be at least equals to the dimension of object one would like to represent.
-The second template parameter is a linear algebra backend used internally.
+The first template parameter is the dimension of the embedded structure one wants to represent.
+The second template parameter is the dimension of the ambient space in which the structure in embedded.
+For obvious reasons, the ambient dimension must be equal or greater than the embedded dimension.
+The ambient dimension is used internally by DiscreteExteriorCalculus.myKSpace
+and therefore is the maximum dimension of cells and points used to fill the DEC
+object.
+The third template parameter is a linear algebra backend used internally to specify containers and solvers.
 By now, there is only one available backend: EigenLinearAlgebraBackend.
-For example, here is a snippet that define a working two dimensional DEC object.
+For example, here is a snippet that define a working two dimensional DEC
+object embedded in a two dimensional ambient space along with the
+corresponding factory type.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_typedef
 
-The DiscreteExteriorCalculus provides a default constructor that initializes an empty structure, ready to be filled with DiscreteExteriorCalculus::SCell through the DiscreteExteriorCalculus.insertSCell member.
-A DiscreteExteriorCalculus object can also be created from a set of points implementing the CDigitalSet concept. This constructor inserts each point as an primal n-cell in the structure and then fills in between k-cells to glue all n-cells together. Borders can be added or removed from the generated structure using the add_border boolean.
+The DiscreteExteriorCalculus provides a default constructor that initializes
+an empty structure, ready to be filled with DiscreteExteriorCalculus::SCell
+through the DiscreteExteriorCalculus.insertSCell member.
+A DiscreteExteriorCalculus object can also be created from a set of points
+implementing the CDigitalSet concept using
+DiscreteExteriorCalculusFactory::createFromDigitalSet. This factory static
+member inserts each point as a primal n-cell in the structure and then fills
+in between k-cells to glue all n-cells together. Borders can be added or
+removed from the generated structure using the add_border boolean.
 Dual k-cells are created automatically with the right size ratio.
-Note that the structure can be altered after creation to adjust small details (DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseSCell),
-but it should not be modified during the instantiation of any DEC objects or operators.
+Note that the structure can be altered after creation to adjust small details
+(DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseCell),
+but it should not be modified while any KForm, VectorField or LinearOperator are instancied.
+See \ref moduleDECEmbedding for a discussion about manifold embedding.
 
 This snippet shows how to create a DEC structure.
-The first call to DiscreteExteriorCalculus.eraseSCell removes the primal n-cell located of the right of the structure.
+The first call to DiscreteExteriorCalculus.eraseCell removes the primal n-cell
+located of the right of the structure.
 The associated dual 0-cell is destroyed automatically.
-Note that n-cells are created using KhalimskySpaceND.sSpel, and that coordinates of such cells are given in the same system as points from the input set.
+Note that n-cells are created using KhalimskySpaceND.sSpel, and that
+coordinates of such cells are given in the same system as points from the
+input set.
 The second call removes a primal 1-cell and opens the hole created by the first call.
 Here coordinates are given in the KhalimskySpaceND signed cell frame of reference.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_with_border
+
+Note moreover that in DEC, **positive** 1-cells are oriented is the **opposite** direction of increasing coordinates.
+
 \image html usage_calculus_with_border.png "Calculus with border."
 
 If you want to have border-less structure, simply reset the add_border boolean.
-The second call to DiscreteExteriorCalculus.eraseSCell isn't needed anymore since the edge was not inserted in the first place.
+See \ref sectDECBorderDefinition for a discussion about border definition.
+The second call to DiscreteExteriorCalculus.eraseCell isn't needed anymore since the edge was not inserted in the first place.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_without_border
 \image html usage_calculus_without_border.png "Calculus without border."
 
-Sometime one doesn't want to create DEC structure from higher order cells using the set constructor of \ref DiscreteExteriorCalculus.
+Sometime one doesn't want to create DEC structure from higher order cells
+using the set factory of \ref DiscreteExteriorCalculusFactory.
 It is possible to insert cells manually into the DEC structure using DiscreteExteriorCalculus.insertSCell.
 Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
 Therefore the DEC structure shouldn't be modified once DEC operators are created.
@@ -236,10 +289,18 @@ Therefore the DEC structure shouldn't be modified once DEC operators are created
 \subsection sectDECIntroduction4 KForm and VectorField manipulation
 
 K-forms are represented by the KForm templated class and vector field are represented by the VectorField templated class.
-Note that DiscreteExteriorCalculus provide handy typedef of common k-forms and vector field, such as DiscreteExteriorCalculus::PrimalForm0, DiscreteExteriorCalculus::DualForm2, DiscreteExteriorCalculus::PrimalVectorField and DiscreteExteriorCalculus::DualVectorField.
-Once a k-form is created, its actual values can by accessed through KForm.myContainer. Cell indexes can be retrieved from cells using DiscreteExteriorCalculus.getSCellIndex and cell can be retrieved from cells using DiscreteExteriorCalculus.getSCell.
+Note that DiscreteExteriorCalculus provides handy typedef of common k-forms and
+vector field, such as DiscreteExteriorCalculus::PrimalForm0,
+DiscreteExteriorCalculus::DualForm2,
+DiscreteExteriorCalculus::PrimalVectorField and
+DiscreteExteriorCalculus::DualVectorField.
+Once a k-form is created, its actual values can by accessed through
+KForm.myContainer. Cell indexes can be retrieved from cells using
+DiscreteExteriorCalculus.getSCell and cell can be retrieved from cells using
+DiscreteExteriorCalculus.getSCell.
 
-Here is a snippet that compute a euclidean distance map (scalar field) on the structure defined above.
+Convenience members KForm.length, VectorField.length, KForm.getSCell and VectorField.getSCell can be used to traverse structures easily.
+Here is a example snippet that compute a Euclidean distance map (scalar field) on the structure defined above.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_fill_zero_form
 \image html usage_primal_zero_form.png "Primal 0-form."
@@ -284,7 +345,7 @@ Depending on the linear solver used, this will factorize the problem or do preco
 This speed up the resolution of problems that share the same linear operator.
 Input k-form \f$y\f$ is passed to the solver via DiscreteExteriorCalculusSolver.solve which return the solution k-form \f$x\f$.
 If the resolution was successful, then DiscreteExteriorCalculusSolver.isValid will return true.
-If there was a problem, it can be further investigated by direct access to the linear algebra solver DiscreteExteriorCalculusSolver.solver. 
+If there was a problem, it can be further investigated by direct access to the linear algebra solver DiscreteExteriorCalculusSolver.solver.
 
 Choosing the right solver for the right problem has a direct impact on overall performances.
 The EigenLinearAlgebraBackend provide wrapper for all linear algebra solvers included in the Eigen library.

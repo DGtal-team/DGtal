@@ -75,9 +75,16 @@ DGtal::KForm<Calculus, order, duality>::className() const
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
 typename DGtal::KForm<Calculus, order, duality>::SCell
-DGtal::KForm<Calculus, order, duality>::getSCell(const typename Calculus::Index& index) const
+DGtal::KForm<Calculus, order, duality>::getSCell(const typename DGtal::KForm<Calculus, order, duality>::Index& index) const
 {
     return myCalculus->getSCell(order, duality, index);
+}
+
+template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+typename DGtal::KForm<Calculus, order, duality>::Index
+DGtal::KForm<Calculus, order, duality>::length() const
+{
+    return myCalculus->kFormLength(order, duality);
 }
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>

@@ -28,7 +28,7 @@ Helmoltz decomposition states that any 1-form \f$\omega\f$ can be uniquely expre
 
 \f[ \omega = d\alpha + \delta\beta + \gamma \f]
 
-where \f$d\f$ is the exterior derivative from 0-form to 1-form and \f$\delta = \star d \star \f$ is the exterior anti-derivative from 2-form to 1-form.
+where \f$d\f$ is the exterior derivative from 0-form to 1-form and \f$\delta = \star d \star \f$ is the exterior antiderivative from 2-form to 1-form.
 \f$\alpha\f$ is a 0-form scalar potential and \f$d\alpha\f$ is the curl free term.
 
 \f[ \nabla \wedge (d \alpha) = ( \star d d \alpha )^\sharp = 0 \f]
@@ -38,7 +38,7 @@ where \f$d\f$ is the exterior derivative from 0-form to 1-form and \f$\delta = \
 \f[ \nabla \cdot (\delta \beta) = \star d \star \delta \beta = \delta \delta \beta = 0 \f]
 
 The remaining part \f$\gamma\f$ is the 1-form harmonic part.
-\f$\gamma\f$ has null anti-derivative and null derivative since if they were not null, they would be part of \f$d\alpha\f$ and \f$\delta\beta\f$.
+\f$\gamma\f$ has null antiderivative and null derivative since if they were not null, they would be part of \f$d\alpha\f$ and \f$\delta\beta\f$.
 
 \f[ \delta \gamma = d \gamma = 0 \f]
 
@@ -53,6 +53,7 @@ The interest of the Helmoltz decomposition is that \f$\gamma\f$ has a strong con
 \section sectDECHelmoltz2D 2D Helmoltz decomposition
 
 In this example, we compute primal and dual Helmoltz decomposition of an arbitrary vector field on a 2D double ring shape.
+Snippets are taken from exampleDiscreteExteriorCalculusSolve.cpp.
 
 Here is the definition of objects used during the primal decomposition.
 
@@ -105,6 +106,7 @@ Computation of the dual harmonic component \f$\omega\f$.
 \section sectDECHelmoltz3D 3D Helmoltz decomposition
 
 In this example, we show how to compute the Helmoltz decomposition of a primal vector field defined on a 2D toroidal surface embedded in 3D.
+Snippets are taken from exampleDiscreteExteriorCalculusSolve.cpp.
 
 First the calculus structure is filled manually with 0-, 1- and 2-cells to create a torus structure.
 
@@ -118,7 +120,7 @@ Harmonic vector fields are aligned with natural map direction on the structure.
 
 \image html helmoltz_3d_structure.png "Manually created tore structure and input vector field."
 
-Linear operators are then defined. Note the expression of anti-derivative computed from Hodge operators and dual exterior derivative.
+Linear operators are then defined. Note the expression of antiderivative computed from Hodge operators and dual exterior derivative.
 
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_operator_definition
 

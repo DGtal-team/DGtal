@@ -72,9 +72,9 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
     typedef TCalculus Calculus;
 
     BOOST_STATIC_ASSERT(( order_in >= 0 ));
-    BOOST_STATIC_ASSERT(( order_in <= Calculus::dimension ));
+    BOOST_STATIC_ASSERT(( order_in <= Calculus::dimensionEmbedded ));
     BOOST_STATIC_ASSERT(( order_out >= 0 ));
-    BOOST_STATIC_ASSERT(( order_out <= Calculus::dimension ));
+    BOOST_STATIC_ASSERT(( order_out <= Calculus::dimensionEmbedded ));
 
     ///Container typr
     typedef typename Calculus::SparseMatrix Container;

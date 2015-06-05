@@ -74,8 +74,7 @@ Represent any static or dynamic sized matrix having sparse or dense representati
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Constant ref random accessor      | \a x(i, j)           |                   | \c const Scalar&              |              |           |                |            |
-| Ref random accessor      | \a z(i, j)           |                   | \c Scalar&              |              |           |                |            |
+| Identity setter |  | \a x.setIdentity() |              |              |           |                |            |
 | Number of rows      | \a x.rows()           |                   |  \c Index            |              |           |                |            |
 | Number of columns      |  \a x.cols()           |                   | \c Index              |              |           |                |            |
 
@@ -98,22 +97,18 @@ public:
     BOOST_CONCEPT_USAGE( CMatrix )
     {
         z.setIdentity();
-	Scalar& a_ref = z(i, j);
-	a_ref=a_ref;
         checkConstConstraints();
     }
 
     void checkConstConstraints() const
     {
-	ConceptUtils::sameType(aa, z(i,j));
-	ConceptUtils::sameType(i, z.rows());
+        ConceptUtils::sameType(i, z.rows());
         ConceptUtils::sameType(j, z.cols());
     }
     // ------------------------- Private Datas --------------------------------
 private:
     T z;
     Index i, j;
-  Scalar a,aa;
 
     // ------------------------- Internals ------------------------------------
 private:

@@ -74,8 +74,6 @@ Represent any static or dynamic sized column vector having sparse or dense repre
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Constant ref random accessor      | \a x(i)           |                   | \c const Scalar&              |              |  Retruns a const reference to the ith component         |                |            |
-| Ref random accessor      | \a z(i)           |                   | \c Scalar&              |              |  Retruns the ith component         |                |            |
 | Number of rows      | \a x.rows()           |                   |  \c Index            |              |  Returns the size of the vector       |                |            |
 
 ### Invariants
@@ -98,15 +96,11 @@ public:
 
     BOOST_CONCEPT_USAGE( CVector )
     {
-      Scalar &aa =  z(i);
-      aa = aa;//to avoid compiler warning
-      checkConstConstraints();
+        checkConstConstraints();
     }
 
     void checkConstConstraints() const
     {
-	Scalar aa =z(i);
-	aa = aa;//to avoid compiler warning
         ConceptUtils::sameType(i, z.rows());
     }
 

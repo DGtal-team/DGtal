@@ -894,7 +894,7 @@ DGtal::Viewer3D<Space, KSpace>::sortTriangleFromCamera()
   comp.posCam= camera()->position();
   for (typename std::vector<std::vector< typename Viewer3D<Space, KSpace>::TriangleD3D> >::iterator it = Viewer3D<Space, KSpace>::myTriangleSetList.begin(); it != Viewer3D<Space, KSpace>::myTriangleSetList.end(); it++)
     {
-      DGtal::trace.info() << "sort triangle size" << it->size() << std::endl;
+      //DGtal::trace.info() << "sort triangle size" << it->size() << std::endl;
       sort ( it->begin(), it->end(), comp );
     }
 
