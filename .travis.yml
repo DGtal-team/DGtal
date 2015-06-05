@@ -68,8 +68,8 @@ script:
   - echo $DOC
   - echo $BTYPE
   - if [ $NEEDBUILD == "true" ]; then  make DGtal && make DGtalIO; fi
-  - if [ $NEEDBUILD == "true" ]; then  cd examples && make  ; fi
-  - if [ $NEEDBUILD == "true" ]; then  cd ../tests &&  make &&  cd .. ; fi
+  - if [ $NEEDBUILD == "true" ]; then  cd examples && make  -j 3 ; fi
+  - if [ $NEEDBUILD == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
   - if [ $NEEDBUILD == "true" ]; then  make test;  fi
 
 ############

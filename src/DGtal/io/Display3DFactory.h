@@ -96,10 +96,10 @@ namespace DGtal
     typedef typename Display::RealVector RealVector;
 
     // DiscreteExteriorCalculus
-    template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+    template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
     static
     void
-    draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus);
+    draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& calculus);
     // DiscreteExteriorCalculus
 
     // KForm
@@ -107,6 +107,11 @@ namespace DGtal
     static
     void
     draw(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, double cmap_min = 0, double cmap_max = 0);
+
+    template <typename Calculus, DGtal::Order order, DGtal::Duality duality, typename ColorMap>
+    static
+    void
+    drawWithColorMap(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, const ColorMap& colormap);
     // KForm
 
     // VectorField

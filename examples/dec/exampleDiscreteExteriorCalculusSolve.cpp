@@ -8,6 +8,7 @@
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
+#include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -24,25 +25,25 @@ void solve2d_laplace()
 
     // create discrete exterior calculus from set
     //! [calculus_creation]
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
-    Calculus calculus(generateRingSet(domain));
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateRingSet(domain));
     //! [calculus_creation]
     trace.info() << calculus << endl;
 
     //! [laplace_definition]
-    Calculus::DualIdentity0 laplace = calculus.dualLaplace() + 0.01 * calculus.identity<0, DUAL>();
-    trace.info() << "laplace = " << laplace << endl;
+    Calculus::DualIdentity0 laplace = calculus.laplace<DUAL>() + 0.01 * calculus.identity<0, DUAL>();
     //! [laplace_definition]
+    trace.info() << "laplace = " << laplace << endl;
 
     //! [dirac_definition]
     Calculus::DualForm0 dirac(calculus);
-    dirac.myContainer(calculus.getSCellIndex(calculus.myKSpace.sSpel(Z2i::Point(2,5)))) = 1;
+    dirac.myContainer(calculus.getCellIndex( calculus.myKSpace.uSpel(Z2i::Point(2,5))) ) = 1;
     //! [dirac_definition]
 
     {
         Board2D board;
         board << domain;
-        board << calculus;
         board << dirac;
         board.saveSVG("solve_laplace_calculus.svg");
     }
@@ -65,7 +66,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_simplicial_llt.svg");
     }
@@ -88,7 +88,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_simplicial_ldlt.svg");
     }
@@ -111,7 +110,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_conjugate_gradient.svg");
     }
@@ -134,7 +132,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_bicgstab.svg");
     }
@@ -157,7 +154,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_sparse_lu.svg");
     }
@@ -180,7 +176,6 @@ void solve2d_laplace()
 
         Board2D board;
         board << domain;
-        board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_sparse_qr.svg");
     }
@@ -195,8 +190,9 @@ void solve2d_dual_decomposition()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
-    Calculus calculus(generateDoubleRingSet(domain));
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
     // choose linear solver
@@ -207,22 +203,23 @@ void solve2d_dual_decomposition()
     const Calculus::DualDerivative1 d1 = calculus.derivative<1, DUAL>();
     const Calculus::PrimalDerivative0 d0p = calculus.derivative<0, PRIMAL>();
     const Calculus::PrimalDerivative1 d1p = calculus.derivative<1, PRIMAL>();
-    const Calculus::DualHodge1 h1 = calculus.dualHodge<1>();
-    const Calculus::DualHodge2 h2 = calculus.dualHodge<2>();
-    const Calculus::PrimalHodge1 h1p = calculus.primalHodge<1>();
-    const Calculus::PrimalHodge2 h2p = calculus.primalHodge<2>();
+    const Calculus::DualHodge1 h1 = calculus.hodge<1, DUAL>();
+    const Calculus::DualHodge2 h2 = calculus.hodge<2, DUAL>();
+    const Calculus::PrimalHodge1 h1p = calculus.hodge<1, PRIMAL>();
+    const Calculus::PrimalHodge2 h2p = calculus.hodge<2, PRIMAL>();
     const LinearOperator<Calculus, 1, DUAL, 0, DUAL> ad1 = h2p * d1p * h1;
     const LinearOperator<Calculus, 2, DUAL, 1, DUAL> ad2 = h1p * d0p * h2;
     //! [2d_dual_decomposition_operator_definition]
 
     //! [2d_dual_decomposition_input_field_definition]
     Calculus::DualVectorField input_vector_field(calculus);
-    for (Calculus::Index ii=0; ii<calculus.kFormLength(0, DUAL); ii++)
+    for (Calculus::Index ii=0; ii<input_vector_field.length(); ii++)
     {
-        const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, DUAL, ii).myCoordinates)/2.;
+        const Z2i::RealPoint cell_center = Z2i::RealPoint(input_vector_field.getSCell(ii).myCoordinates)/2.;
         input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
         input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
+    trace.info() << input_vector_field << endl;
 
     const Calculus::DualForm1 input_one_form = calculus.flat(input_vector_field);
     const Calculus::DualForm0 input_one_form_anti_derivated = ad1 * input_one_form;
@@ -318,8 +315,9 @@ void solve2d_primal_decomposition()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
-    Calculus calculus(generateDoubleRingSet(domain));
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
     // choose linear solver
@@ -330,22 +328,23 @@ void solve2d_primal_decomposition()
     const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
     const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
     const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
-    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
-    const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
-    const Calculus::DualHodge1 h1p = calculus.dualHodge<1>();
-    const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
+    const Calculus::PrimalHodge1 h1 = calculus.hodge<1, PRIMAL>();
+    const Calculus::PrimalHodge2 h2 = calculus.hodge<2, PRIMAL>();
+    const Calculus::DualHodge1 h1p = calculus.hodge<1, DUAL>();
+    const Calculus::DualHodge2 h2p = calculus.hodge<2, DUAL>();
     const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h2p * d1p * h1;
     const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h1p * d0p * h2;
     //! [2d_primal_decomposition_operator_definition]
 
     //! [2d_primal_decomposition_input_field_definition]
     Calculus::PrimalVectorField input_vector_field(calculus);
-    for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
+    for (Calculus::Index ii=0; ii<input_vector_field.length(); ii++)
     {
-        const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
+        const Z2i::RealPoint cell_center = Z2i::RealPoint(input_vector_field.getSCell(ii).myCoordinates)/2.;
         input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
         input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
+    trace.info() << input_vector_field << endl;
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
     const Calculus::PrimalForm0 input_one_form_anti_derivated = ad1 * input_one_form;
@@ -444,83 +443,365 @@ void solve3d_decomposition()
 
     //! [3d_decomposition_structure]
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<3, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<3, 3, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
+    calculus.initKSpace<Z3i::Domain>(domain);
 
     // outer ring
     for (int kk=2; kk<=18; kk++)
         for (int ll=4; ll<=36; ll++)
         {
-            Calculus::SCell cell;
+            { // bottom
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(ll,4,kk));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(ll,4,kk));
-            calculus.insertSCell(cell); // may be flipped
+            { // top
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(ll,36,kk));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(ll,36,kk));
-            calculus.insertSCell(cell);
+            { // left
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(4,ll,kk));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = ( *calculus.myKSpace.uDirs(cell) == 2 ? Calculus::KSpace::NEG : Calculus::KSpace::POS );
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(4,ll,kk));
-            calculus.insertSCell(cell); // may be flipped
+            { // right
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(36,ll,kk));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = ( *calculus.myKSpace.uDirs(cell) == 2 ? Calculus::KSpace::POS : Calculus::KSpace::NEG );
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(36,ll,kk));
-            calculus.insertSCell(cell);
         }
 
     // inner ring
     for (int kk=2; kk<=18; kk++)
         for (int ll=16; ll<=24; ll++)
         {
-            Calculus::SCell cell;
+            { // bottom
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(ll,16,kk));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = ( *calculus.myKSpace.uDirs(cell) == 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS );
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(ll,16,kk));
-            calculus.insertSCell(cell);
+            { // top
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(ll,24,kk));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = ( *calculus.myKSpace.uDirs(cell) == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG );
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(ll,24,kk));
-            calculus.insertSCell(cell); // may be flipped
+            { // left
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(16,ll,kk));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(16,ll,kk));
-            calculus.insertSCell(cell);
-
-            cell = calculus.myKSpace.sCell(Z3i::Point(24,ll,kk));
-            calculus.insertSCell(cell); // may be flipped
+            { // right
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(24,ll,kk));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
         }
 
-    // top and bottom
+    // back and front
     for (int kk=4; kk<=36; kk++)
         for (int ll=0; ll<=12; ll++)
         {
-            Calculus::SCell cell;
+            { // back
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(4+ll,kk,2));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(4+ll,kk,2));
-            calculus.insertSCell(cell); // may be flipped
+            { // front
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(4+ll,kk,18));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(4+ll,kk,18));
-            calculus.insertSCell(cell);
+            { // back
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(24+ll,kk,2));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(24+ll,kk,2));
-            calculus.insertSCell(cell); // may be flipped
-
-            cell = calculus.myKSpace.sCell(Z3i::Point(24+ll,kk,18));
-            calculus.insertSCell(cell);
+            { // front
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(24+ll,kk,18));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
         }
 
-    // top and bottom
+    // back and front
     for (int kk=0; kk<=12; kk++)
         for (int ll=16; ll<=24; ll++)
         {
-            Calculus::SCell cell;
+            { // back
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(ll,4+kk,2));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(ll,4+kk,2));
-            calculus.insertSCell(cell); // may be flipped
+            { // front
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(ll,4+kk,18));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(ll,4+kk,18));
-            calculus.insertSCell(cell);
+            { // back
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(ll,24+kk,2));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
 
-            cell = calculus.myKSpace.sCell(Z3i::Point(ll,24+kk,2));
-            calculus.insertSCell(cell); // may be flipped
-
-            cell = calculus.myKSpace.sCell(Z3i::Point(ll,24+kk,18));
-            calculus.insertSCell(cell);
+            { // front
+                const Calculus::Cell cell = calculus.myKSpace.uCell(Z3i::Point(ll,24+kk,18));
+                const Dimension dim = calculus.myKSpace.uDim(cell);
+                Calculus::KSpace::Sign sign = Calculus::KSpace::POS;
+                switch (dim)
+                {
+                    case 0:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    case 1:
+                        sign = Calculus::KSpace::NEG;
+                        break;
+                    case 2:
+                        sign = Calculus::KSpace::POS;
+                        break;
+                    default:
+                        break;
+                }
+                calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
+            }
         }
     //! [3d_decomposition_structure]
 
@@ -528,7 +809,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("structure");
         (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
@@ -542,23 +823,43 @@ void solve3d_decomposition()
     const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
     const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
     const Calculus::DualDerivative2 d2p = calculus.derivative<2, DUAL>();
-    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
-    const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
-    const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
-    const Calculus::DualHodge3 h3p = calculus.dualHodge<3>();
+    const Calculus::PrimalHodge1 h1 = calculus.hodge<1, PRIMAL>();
+    const Calculus::PrimalHodge2 h2 = calculus.hodge<2, PRIMAL>();
+    const Calculus::DualHodge2 h2p = calculus.hodge<2, DUAL>();
+    const Calculus::DualHodge3 h3p = calculus.hodge<3, DUAL>();
     const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h3p * d2p * h1;
     const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h2p * d1p * h2;
     //! [3d_decomposition_operator_definition]
 
+    {
+        const Calculus::PrimalIdentity0 laplace = calculus.laplace<PRIMAL>();
+        const Eigen::VectorXd laplace_diag = laplace.myContainer.diagonal();
+
+        boost::array<int, 7> degrees;
+        std::fill(degrees.begin(), degrees.end(), 0);
+        for (int kk=0; kk<laplace_diag.rows(); kk++)
+        {
+            const int degree = laplace_diag[kk];
+            ASSERT( degree >= 0 );
+            ASSERT( degree < degrees.size() );
+            degrees[degree] ++;
+        }
+
+        trace.info() << "node degrees" << endl;
+        for (int kk=0; kk<7; kk++)
+            trace.info() << kk << " " << degrees[kk] << endl;
+    }
+
     //! [3d_decomposition_input_field_definition]
     Calculus::PrimalVectorField input_vector_field(calculus);
-    for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
+    for (Calculus::Index ii=0; ii<input_vector_field.length(); ii++)
     {
-        const Z3i::RealPoint cell_center = Z3i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
+        const Z3i::RealPoint cell_center = Z3i::RealPoint(input_vector_field.getSCell(ii).myCoordinates)/2.;
         input_vector_field.myCoordinates(ii, 0) = -cos(-.3*cell_center[0] + .6*cell_center[1] + .8*cell_center[2]);
         input_vector_field.myCoordinates(ii, 1) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
         input_vector_field.myCoordinates(ii, 2) = -cos(cell_center[2]*.5);
     }
+    trace.info() << input_vector_field << endl;
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
     //! [3d_decomposition_input_field_definition]
@@ -567,7 +868,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("input vector field");
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form);
@@ -595,7 +896,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("curl free solution");
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_curl_free);
@@ -621,7 +922,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("div free solution");
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_div_free);
@@ -636,7 +937,7 @@ void solve3d_decomposition()
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
+        Viewer* viewer = new Viewer(calculus.myKSpace);
         viewer->show();
         viewer->setWindowTitle("harmonic");
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_harmonic);

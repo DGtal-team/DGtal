@@ -8,6 +8,7 @@ SET(DGTAL_TESTS_SRC
    dgtalBoard3D-2-ks
    dgtalBoard3D-6-clipping
    logoDGtal
+   exampleBezierCurve
    )
 
 

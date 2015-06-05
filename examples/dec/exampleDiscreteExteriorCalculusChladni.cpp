@@ -34,8 +34,9 @@ int main()
 
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(10,10));
 
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
+    calculus.initKSpace<Z2i::Domain>(domain);
 
     // bottom linear structure
     // left and right Dirichlet boundary condition
@@ -60,7 +61,7 @@ int main()
 
     trace.beginBlock("building laplace");
 
-    Calculus::DualIdentity0 laplace = -1 * calculus.dualLaplace();
+    Calculus::DualIdentity0 laplace = -1 * calculus.laplace<DUAL>();
     trace.info() << "laplace=" << laplace << endl;
 
     {
