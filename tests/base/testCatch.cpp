@@ -48,7 +48,7 @@ TEST_CASE( "Point Vector Unit tests" )
       REQUIRE( a == c );
     }
   
-  SECTION("No side-effects on global variable in section scopes")
+  SECTION("No side-effects on global variables in section scopes")
     {
       REQUIRE( a == 5 );
     }
