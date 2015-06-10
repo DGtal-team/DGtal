@@ -68,6 +68,9 @@
    (https://github.com/DGtal-team/DGtal/pull/1001))
 
 - *IO Package*
+ - Fix RawWriter and RawReader. Added templated generic RawReader::importRaw
+   and RawWriter::exportRaw.
+   (Pierre Gueth [#1010](https://github.com/DGtal-team/DGtal/pull/1010))
  - New 2D DEC board style with orientated cells.
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - Limited interaction added to QGLViewer Viewer3D class. The user
