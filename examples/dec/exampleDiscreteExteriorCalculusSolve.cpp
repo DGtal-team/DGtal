@@ -8,6 +8,7 @@
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
+#include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -25,7 +26,8 @@ void solve2d_laplace()
     // create discrete exterior calculus from set
     //! [calculus_creation]
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
-    Calculus calculus(generateRingSet(domain));
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateRingSet(domain));
     //! [calculus_creation]
     trace.info() << calculus << endl;
 
@@ -189,7 +191,8 @@ void solve2d_dual_decomposition()
 
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
-    Calculus calculus(generateDoubleRingSet(domain));
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
     // choose linear solver
@@ -313,7 +316,8 @@ void solve2d_primal_decomposition()
 
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
-    Calculus calculus(generateDoubleRingSet(domain));
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
     // choose linear solver

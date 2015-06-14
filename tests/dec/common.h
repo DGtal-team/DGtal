@@ -3,6 +3,7 @@
 
 #include <list>
 
+#include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/math/linalg/EigenSupport.h"
@@ -135,7 +136,7 @@ test_hodge(int domain_size)
     DGtal::trace.info() << "set.size()=" << set.size() << std::endl;
 
     typedef DGtal::DiscreteExteriorCalculus<Domain::Space::dimension, Domain::Space::dimension, LinearAlgebraBackend> Calculus;
-    Calculus calculus(set);
+    Calculus calculus = DGtal::DiscreteExteriorCalculusFactory<LinearAlgebraBackend>::createFromDigitalSet(set);
     {
         DGtal::trace.beginBlock("testing indexes");
 
@@ -278,16 +279,17 @@ test_derivative(int domain_size)
     DGtal::trace.info() << "domain.size()=" << domain.size() << std::endl;
     DGtal::trace.info() << "set.size()=" << set.size() << std::endl;
 
+    typedef DGtal::DiscreteExteriorCalculusFactory<LinearAlgebraBackend> CalculusFactory;
     typedef DGtal::DiscreteExteriorCalculus<Domain::Space::dimension, Domain::Space::dimension, LinearAlgebraBackend> Calculus;
 
     {
         DGtal::trace.beginBlock("testing derivative without border");
-        Calculus calculus(set, false);
+        Calculus calculus = CalculusFactory::createFromDigitalSet(set, false);
 
         typename Calculus::Properties properties = calculus.getProperties();
         DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
 
-        bool test_result = DerivativeTester<Calculus, Calculus::dimensionEmbedded-2>::test(calculus);
+        bool test_result = DerivativeTester<Calculus, (int)Calculus::dimensionEmbedded-2>::test(calculus);
         FATAL_ERROR(test_result);
 
         DGtal::trace.endBlock();
@@ -295,12 +297,12 @@ test_derivative(int domain_size)
 
     {
         DGtal::trace.beginBlock("testing derivative with border");
-        Calculus calculus(set, true);
+        Calculus calculus = CalculusFactory::createFromDigitalSet(set, true);
 
         typename Calculus::Properties properties = calculus.getProperties();
         DGtal::trace.info() << "properties.size()=" << properties.size() << std::endl;
 
-        bool test_result = DerivativeTester<Calculus, Calculus::dimensionEmbedded-2>::test(calculus);
+        bool test_result = DerivativeTester<Calculus, (int)Calculus::dimensionEmbedded-2>::test(calculus);
         FATAL_ERROR(test_result);
 
         DGtal::trace.endBlock();
@@ -426,13 +428,15 @@ template <typename LinearAlgebraBackend>
 void
 test_hodge_sign()
 {
+    typedef DGtal::DiscreteExteriorCalculusFactory<LinearAlgebraBackend> CalculusFactory;
+
     DGtal::trace.beginBlock("testing hodge sign");
 
     {
         typedef DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend> Calculus;
         const DGtal::Z2i::Domain domain;
         const DGtal::Z2i::DigitalSet set(domain);
-        const Calculus calculus(set);
+        const Calculus calculus = CalculusFactory::createFromDigitalSet(set);
         typedef DGtal::Z2i::Point Point;
         typedef typename Calculus::KSpace KSpace;
         // primal point, dual cell
@@ -453,7 +457,7 @@ test_hodge_sign()
         typedef DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend> Calculus;
         const DGtal::Z3i::Domain domain;
         const DGtal::Z3i::DigitalSet set(domain);
-        const Calculus calculus(set);
+        const Calculus calculus = CalculusFactory::createFromDigitalSet(set);
         typedef DGtal::Z3i::Point Point;
         typedef typename Calculus::KSpace KSpace;
         // primal point, dual cell
