@@ -64,10 +64,7 @@ namespace std {
   {
     size_t operator()(const DGtal::PointVector<dim,EuclideanRing,Container> & p) const
     {
-      std::hash<int> int_hash;
-      size_t hq = int_hash(p[0]);
-      size_t hr = int_hash(p[1])+ (int_hash(p[2])<<3);;
-      return hq ^ (hr + 0x9e3779b9 + (hq << 6) + (hq >> 2));
+      return boost::hash_range(p.begin(), p.end());
     }
   };
 }
@@ -80,10 +77,7 @@ namespace boost {
   {
     size_t operator()(const DGtal::PointVector<dim,EuclideanRing,Container> & p) const
     {
-      boost::hash<int> int_hash;
-      size_t hq = int_hash(p[0]);
-      size_t hr = int_hash(p[1])+ (int_hash(p[2])<<3);;
-      return hq ^ (hr + 0x9e3779b9 + (hq << 6) + (hq >> 2));
+      return boost::hash_range(p.begin(), p.end());
     }
   };
 }

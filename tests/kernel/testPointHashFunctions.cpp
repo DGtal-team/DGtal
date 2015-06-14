@@ -37,7 +37,7 @@
 #include "catch.hpp"
 
 #include "DGtal/kernel/PointVector.h"
-#incldue "DGtal/helpers/StdDefs.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/PointHashFunctions.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -65,8 +65,7 @@ TEST_CASE("Hash functions on DGtal::Point")
       
 #ifdef WITH_C11
       REQUIRE( myhashcpp11(p) == myhashcpp11(p_copy) );
-#endif
-      
+#endif      
     }
 
   
@@ -76,9 +75,31 @@ TEST_CASE("Hash functions on DGtal::Point")
       
 #ifdef WITH_C11
       REQUIRE( myhashcpp11(p) != myhashcpp11(q) );
-#endif
-      
-  
+#endif 
     }
-  
+    
+  SECTION("Higher dimension identity test")
+    {
+      typedef PointVector<26,int> Point26;
+      Point26 pp=Point26::diagonal(12),
+        qq=(Point26::diagonal(11) + Point26::diagonal(1)),
+        rr=Point26::diagonal(13);
+
+      boost::hash<Point26> myhash26;
+      
+#ifdef WITH_C11
+      std::hash<Point26> myhash26cpp11;
+#endif
+ 
+      REQUIRE( myhash26(pp) == myhash26(qq) );
+      
+#ifdef WITH_C11
+      REQUIRE( myhash26cpp11(pp) == myhash26cpp11(qq) );
+#endif
+      REQUIRE( myhash26(pp) != myhash26(rr) );
+      
+#ifdef WITH_C11
+      REQUIRE( myhash26cpp11(pp) != myhash26cpp11(rr) );
+#endif 
+    }
 }
