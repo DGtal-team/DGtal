@@ -11,6 +11,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testBasicPointFunctors
    testEmbedder
    testPointPredicateConcepts
+   testPointHashFunctions
    )
 
 
@@ -19,6 +20,20 @@ FOREACH(FILE ${DGTAL_TESTS_SRC_KERNEL})
   target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
+
+
+IF(WITH_BENCHMARK)
+  SET(DGTAL_BENCH_SRC
+    benchmarkSetContainer
+    )
+  #Benchmark target
+  FOREACH(FILE ${DGTAL_BENCH_SRC})
+    add_executable(${FILE} ${FILE})
+    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
+    ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
+  ENDFOREACH(FILE)
+ENDIF(WITH_BENCHMARK)
 
 
 #-----------------------

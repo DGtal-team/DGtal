@@ -76,7 +76,7 @@ namespace DGtal
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
     //typedef boost::bidirectional_iterator_archetype<Point> Iterator;
-    typedef CBidirectionalIteratorArchetype<Point> Iterator;
+    typedef CSinglePassIteratorArchetype<Point> Iterator;
     typedef Iterator ConstIterator;
 
     // ----------------------- Standard services ------------------------------
