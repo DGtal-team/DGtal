@@ -114,7 +114,7 @@ template<typename Q>
 static void BM_RangeScan(benchmark::State& state)
 {
   std::set<typename Q::Point> data = ConstructRandomSet<typename Q::Point>(state.range_x(),state.range_x());
-
+  int sum=0;
   while (state.KeepRunning())
     {
       state.PauseTiming();
@@ -127,9 +127,11 @@ static void BM_RangeScan(benchmark::State& state)
       state.ResumeTiming();
       for(typename Q::Range::ConstIterator it = image.range().begin(), itend=image.range().end();
           it != itend; ++it)
-        CHECK( *it   != std::numeric_limits<int>::max()); //to prevent
-                                                          //compiler optimization
+        benchmark::DoNotOptimize(sum += *it);   //to prevent compiler optimization
     }
+  std::stringstream ss;
+  ss << sum;
+  state.SetLabel(ss.str());
 }
 BENCHMARK_TEMPLATE(BM_RangeScan, ImageVector2)->Range(1<<3 , 1 << 10);
 BENCHMARK_TEMPLATE(BM_RangeScan, ImageMap2)->Range(1<<3 , 1 << 10);
@@ -138,7 +140,7 @@ template<typename Q>
 static void BM_DomainScan(benchmark::State& state)
 {
   std::set<typename Q::Point> data = ConstructRandomSet<typename Q::Point>(state.range_x(),state.range_x());
-
+  int sum=0;
   while (state.KeepRunning())
     {
       state.PauseTiming();
@@ -151,9 +153,11 @@ static void BM_DomainScan(benchmark::State& state)
       state.ResumeTiming();
       for(typename Q::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
           it != itend; ++it)
-        CHECK( image(*it)   != std::numeric_limits<int>::max()); //to prevent
-      //compiler optimization
+        benchmark::DoNotOptimize( sum ++ );
     }
+  std::stringstream ss;
+  ss << sum;
+  state.SetLabel(ss.str());
 }
 BENCHMARK_TEMPLATE(BM_DomainScan, ImageVector2)->Range(1<<3 , 1 << 10);
 BENCHMARK_TEMPLATE(BM_DomainScan, ImageMap2)->Range(1<<3 , 1 << 10);

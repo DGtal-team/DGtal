@@ -42,14 +42,19 @@ void
 DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& sk)
 {
     FATAL_ERROR( dim == 2 );
+    //FIXME: as for Display3D models, embedder should be factorized
+    //and not instantiated at each call.
     typedef DGtal::CanonicSCellEmbedder<DGtal::Z2i::KSpace> Embedder;
-    const Embedder embedder;
+    const Embedder embedder((DGtal::Z2i::KSpace()));
     const Embedder::RealPoint coords = embedder(sk);
     const float x = coords[0];
     const float y = coords[1];
     const float retract = 0.1f;
     const bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
     const bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
+    board.setLineWidth( .5 );
+    board.setPenColor( DGtal::Color::Black );
+    board.setLineStyle( Board2D::Shape::SolidStyle );
     if (!xodd && !yodd)
     {
         if (!sk.myPositive) DGtal::trace.warning() << "negative khalimsky 0-cell" << std::endl;
@@ -87,7 +92,6 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
     typedef typename Calculus::KSpace KSpace;
 
     board.setFillColor( DGtal::Color(128,128,128) );
-    board.setLineWidth( .5 );
     for (int kk=2; kk>=0; kk--)
         for (ConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
         {
