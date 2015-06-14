@@ -30,6 +30,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <benchmark/benchmark.h>
+
+
+#undef WITH_C11
+
 #ifdef WITH_C11
 #include <unordered_set>
 #else
@@ -53,7 +57,7 @@
 
 using namespace std;
 using namespace DGtal;
-/////// Micro Bench
+
 
 typedef DGtal::DigitalSetBySTLSet< Z2i::Domain> FromSet;
 typedef DGtal::DigitalSetBySTLVector< Z2i::Domain> FromVector;
