@@ -166,8 +166,8 @@ void solve2d_laplace()
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplace);
-        Calculus::DualForm0 solution = solver.solve(dirac);
+        solver.compute(-laplace);
+        Calculus::DualForm0 solution = -solver.solve(dirac);
         //! [solve_sparse_qr]
 
         trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;

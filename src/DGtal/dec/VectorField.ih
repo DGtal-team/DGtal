@@ -187,6 +187,13 @@ DGtal::operator*(const typename Calculus::Scalar& _scalar, const DGtal::VectorFi
     return DGtal::VectorField<Calculus, duality>(*_vector_field.myCalculus, _scalar * _vector_field.myCoordinates);
 }
 
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::operator-(const DGtal::VectorField<Calculus, duality>& _vector_field)
+{
+    return DGtal::VectorField<Calculus, duality>(*_vector_field.myCalculus, -_vector_field.myCoordinates);
+}
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

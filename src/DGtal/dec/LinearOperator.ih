@@ -139,5 +139,13 @@ DGtal::operator*(const DGtal::LinearOperator<Calculus, order_fold, duality_fold,
     return OutputOperator(*operator_left.myCalculus, operator_left.myContainer * operator_right.myContainer);
 }
 
+template <typename Calculus, DGtal::Order order_in, DGtal::Duality duality_in, DGtal::Order order_out, DGtal::Duality duality_out>
+DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
+DGtal::operator-(const DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator)
+{
+    typedef DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> OutputOperator;
+    return OutputOperator(*linear_operator.myCalculus, -linear_operator.myContainer);
+}
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

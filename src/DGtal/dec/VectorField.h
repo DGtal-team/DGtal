@@ -230,6 +230,15 @@ template <typename TCalculus, Duality duality>
   VectorField<Calculus, duality>
   operator*(const typename Calculus::Scalar& scalar, const VectorField<Calculus, duality>& vector_field);
 
+  /**
+   * Overloads 'operator-' for unary additive inverse of objects of class 'VectorField'.
+   * @param vector_field operant
+   * @return -vector_field
+   */
+  template <typename Calculus, Duality duality>
+  VectorField<Calculus, duality>
+  operator-(const VectorField<Calculus, duality>& vector_field);
+
 } // namespace DGtal
 
 
