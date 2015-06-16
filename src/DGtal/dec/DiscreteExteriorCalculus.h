@@ -262,7 +262,7 @@ namespace DGtal
     /**
      * Associated Khalimsky space.
      */
-    const KSpace myKSpace;
+    KSpace myKSpace;
 
     /**
      * Writes/Displays the object on an output stream.
