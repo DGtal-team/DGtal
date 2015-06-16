@@ -42,6 +42,8 @@
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
  - Mutable iterator on DiscreteExteriorCalculus.
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
+ - Unary minus operators for k-forms, vector fields and linear operators.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
 
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a
