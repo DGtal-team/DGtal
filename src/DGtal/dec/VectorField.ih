@@ -117,7 +117,7 @@ DGtal::VectorField<Calculus, duality>::intensity(const typename Vector::NormType
     for (typename Calculus::Index index=0; index<zero_form.length(); index++)
     {
         const Vector vector = getVector(index);
-        zero_form.setVector(index, vector.norm(norm_type));
+        zero_form.myContainer(index) = vector.norm(norm_type);
     }
 
     return zero_form;
