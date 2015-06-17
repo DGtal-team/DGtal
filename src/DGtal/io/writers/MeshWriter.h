@@ -97,7 +97,7 @@ namespace DGtal
 
 
     /** 
-     * Export a Mesh towards a OBJ format.
+     * Export a Mesh towards a OBJ format (colors are exported).
      * 
      * @param out the output stream of the exported OBJ object.
      * @param aMesh the Mesh object to be exported.
@@ -105,7 +105,21 @@ namespace DGtal
      */
     
     static bool export2OBJ(std::ostream &out, const  Mesh<TPoint>  &aMesh) throw(DGtal::IOException);
-       
+
+    /** 
+     * Export a Mesh towards a OBJ format including face colors.
+     * 
+     * @param[out] out the output stream of the exported OBJ object.
+     * @param[out] outMTL the output stream associated to the material file.
+     * @param[in] nameMTLFile the file name of the material file.
+     * @param[in] aMesh the Mesh object to be exported.
+     * @return true if no errors occur.
+     */
+    
+    static bool export2OBJ_colors(std::ostream &out, std::ostream &outMTL,
+                                  const std::string nameMTLFile,
+                                  const  Mesh<TPoint>  &aMesh) throw(DGtal::IOException);
+    
     
   };
   

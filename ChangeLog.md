@@ -97,6 +97,8 @@
  Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983))
  - Board2D now supports quadratic Bezier curve drawing. (Tristan Roussillon,
   [#1002](https://github.com/DGtal-team/DGtal/pull/1002))
+ - MeshWriter class can now export OBJ file including colors. (Bertrand Kerautret,
+  [#1016](https://github.com/DGtal-team/DGtal/pull/1016))
 
 - *Kernel Package*
   - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
