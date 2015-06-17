@@ -30,6 +30,13 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
+template <DGtal::Dimension dim, typename TInteger>
+size_t
+DGtal::hash_value(const DGtal::KhalimskyCell<dim, TInteger>& cell)
+{
+    return boost::hash_range(cell.myCoordinates.begin(), cell.myCoordinates.end());
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
