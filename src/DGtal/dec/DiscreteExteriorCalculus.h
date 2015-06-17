@@ -287,6 +287,7 @@ namespace DGtal
 
     /**
      * Manually insert cell into calculus.
+     * Should call updateIndexes() when structure modification is finished.
      * Be sure to insert all adjacent lower order primal cells.
      * @param signed_cell the signed cell to be inserted.
      * @param size_ratio ratio of dual cell size over primal cell size.
@@ -297,6 +298,7 @@ namespace DGtal
 
     /**
      * Manually erase cell from calculus.
+     * Should call updateIndexes() when structure modification is finished.
      * @param cell the cell to be removed.
      * @return true if cell was removed, false if cell was not in calculus.
      */
@@ -305,6 +307,7 @@ namespace DGtal
 
     /**
      * Update indexes for all cells.
+     * Cell insertion order == index may not be preserved.
      */
     void
     updateIndexes();
