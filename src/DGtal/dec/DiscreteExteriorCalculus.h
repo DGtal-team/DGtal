@@ -304,6 +304,12 @@ namespace DGtal
     eraseCell(const Cell& cell);
 
     /**
+     * Update indexes for all cells.
+     */
+    void
+    updateIndexes();
+
+    /**
      * Get all cells properties.
      * @return associative container from Cell to Property.
      */
@@ -494,19 +500,25 @@ namespace DGtal
     IndexedSCells myIndexSignedCells;
 
     /**
-     * Cached flat operator matrix
+     * Cached flat operator matrix.
      */
     boost::array<boost::array<SparseMatrix, dimAmbient>, 2> myFlatOperatorMatrixes;
 
     /**
-     * Cached sharp operator matrix
+     * Cached sharp operator matrix.
      */
     boost::array<boost::array<SparseMatrix, dimAmbient>, 2> mySharpOperatorMatrixes;
 
     /**
-     * Cached operators generation flag
+     * Cached flat and sharp operators generation flag.
      */
-    bool myCachedOperatorsModified;
+    bool myCachedOperatorsNeedUpdate;
+
+    /**
+     * Indexes generation flag.
+     */
+    bool myIndexesNeedUpdate;
+
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -514,13 +526,24 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
+    /**
+     * Update sharp and flat operators cache.
+     */
     void
     updateCachedOperators();
 
+    /**
+     * Update flat operator cache.
+     * @tparam duality duality of updated flat operator.
+     */
     template <Duality duality>
     void
     updateFlatOperator();
 
+    /**
+     * Update sharp operator cache.
+     * @tparam duality duality of updated sharp operator.
+     */
     template <Duality duality>
     void
     updateSharpOperator();
