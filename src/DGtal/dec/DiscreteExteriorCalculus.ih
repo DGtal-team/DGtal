@@ -96,6 +96,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     ASSERT_MSG( cell_dim != dimAmbient || !property.flipped , "can't insert negative n-cells" );
 
     std::pair<typename Properties::iterator, bool> insert_pair = myCellProperties.insert(std::make_pair(cell, property));
+    if (!insert_pair.second) insert_pair.first->second = property;
 
     ASSERT( insert_pair.first->first == cell );
     ASSERT( insert_pair.first->second.index == property.index );
