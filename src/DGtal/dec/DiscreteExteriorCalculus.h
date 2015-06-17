@@ -45,6 +45,7 @@
 #include <map>
 #include <list>
 #include <boost/array.hpp>
+#include <boost/unordered_map.hpp>
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/base/Common.h"
@@ -66,6 +67,15 @@ namespace DGtal
   // forward factory declaration
   template <typename TLinearAlgebraBackend, typename TInteger>
   class DiscreteExteriorCalculusFactory;
+
+  /**
+   * Hash function for Khalimsky unsigned cells.
+   * @param cell input signed cell.
+   * @return hash value.
+   */
+  template <Dimension dim, typename TInteger>
+  size_t
+  hash_value(const KhalimskyCell<dim, TInteger>& cell);
 
   /////////////////////////////////////////////////////////////////////////////
   // template class DiscreteExteriorCalculus
@@ -149,7 +159,7 @@ namespace DGtal
     /**
      * Cells properties map typedef.
      */
-    typedef std::map<Cell, Property> Properties;
+    typedef boost::unordered_map<Cell, Property> Properties;
 
     /**
      * Indices to cells map typedefs.
