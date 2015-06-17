@@ -74,20 +74,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     const Index index = iter_property->second.index;
     myCellProperties.erase(iter_property);
 
-    typename SCells::iterator iter_index = myIndexSignedCells[cell_dim].begin() + index;
-    ASSERT( myKSpace.unsigns(*iter_index) == _cell );
-    iter_index = myIndexSignedCells[cell_dim].erase(iter_index);
-
-    for (typename SCells::const_iterator iter_index_end = myIndexSignedCells[cell_dim].end(); iter_index!= iter_index_end; iter_index++)
-    {
-        const SCell signed_cell_next = *iter_index;
-        const Cell cell_next = myKSpace.unsigns(signed_cell_next);
-        typename Properties::iterator iter_property_next = myCellProperties.find(cell_next);
-        ASSERT( iter_property_next != myCellProperties.end() );
-        ASSERT( iter_property_next->second.index > index );
-        iter_property_next->second.index -= 1;
-    }
-
+    myIndexesNeedUpdate = true;
     myCachedOperatorsNeedUpdate = true;
 
     return true;
@@ -95,41 +82,30 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& _signed_cell, const Scalar& _primal_size)
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& _signed_cell, const Scalar& _size_ratio)
 {
     const Cell cell = myKSpace.unsigns(_signed_cell);
     const DGtal::Dimension cell_dim = myKSpace.uDim(cell);
     Property property;
-    property.size_ratio = _primal_size;
+    property.index = std::numeric_limits<Index>::max();
+    property.size_ratio = _size_ratio;
     property.flipped = ( myKSpace.sSign(_signed_cell) == KSpace::NEG );
 
     ASSERT_MSG( cell_dim >= 0 && cell_dim <= dimEmbedded, "wrong cell dimension");
     ASSERT_MSG( cell_dim != 0 || !property.flipped , "can't insert negative 0-cells" );
     ASSERT_MSG( cell_dim != dimAmbient || !property.flipped , "can't insert negative n-cells" );
 
-    typename Properties::iterator iter = myCellProperties.find(cell);
-    const bool need_insert = (iter == myCellProperties.end());
+    std::pair<typename Properties::iterator, bool> insert_pair = myCellProperties.insert(std::make_pair(cell, property));
 
-    if (need_insert) // new cell new index computation
-    {
-        property.index = myIndexSignedCells[cell_dim].size();
-        myIndexSignedCells[cell_dim].push_back(_signed_cell);
-        myCellProperties[cell] = property;
-        iter = myCellProperties.find(cell);
-    }
-    else
-    {
-        property.index = iter->second.index;
-        myIndexSignedCells[cell_dim][property.index] = _signed_cell;
-    }
+    ASSERT( insert_pair.first->first == cell );
+    ASSERT( insert_pair.first->second.index == property.index );
+    ASSERT( insert_pair.first->second.size_ratio == property.size_ratio );
+    ASSERT( insert_pair.first->second.flipped == property.flipped );
 
-    ASSERT( property.index == iter->second.index );
+    myIndexesNeedUpdate = true;
+    myCachedOperatorsNeedUpdate = true;
 
-    iter->second = property;
-
-    if (need_insert) myCachedOperatorsNeedUpdate = true;
-
-    return need_insert;
+    return insert_pair.second;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>

@@ -201,6 +201,8 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         calculus.insertSCell(cell_signed, size_ratio);
     }
 
+    calculus.updateIndexes();
+
     return calculus;
 }
 
