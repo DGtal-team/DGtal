@@ -65,6 +65,7 @@ void test_linear_structure()
     // fill calculus
     const Domain domain(Point(-1,-1), Point(10,10));
 
+    // create DEC structure
     Calculus calculus;
     calculus.initKSpace<Domain>(domain);
     for (SCells::const_iterator ci=cells.begin(), ce=cells.end(); ci!=ce; ci++) calculus.insertSCell( *ci );
