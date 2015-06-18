@@ -49,6 +49,8 @@
    (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
  - Transpose of linear operators.
    (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Intensity operator on vector fields.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
  - Reorder operators to remap indexes.
    (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
 
