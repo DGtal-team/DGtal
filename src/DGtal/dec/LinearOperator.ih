@@ -79,6 +79,13 @@ DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::s
 }
 
 template <typename Calculus, DGtal::Order order_in, DGtal::Duality duality_in, DGtal::Order order_out, DGtal::Duality duality_out>
+DGtal::LinearOperator<Calculus, order_out, duality_out, order_in, duality_in>
+DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::transpose() const
+{
+    return TransposedLinearOperator(*myCalculus, myContainer.transpose());
+}
+
+template <typename Calculus, DGtal::Order order_in, DGtal::Duality duality_in, DGtal::Order order_out, DGtal::Duality duality_out>
 bool
 DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::isValid() const
 {
