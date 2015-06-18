@@ -137,6 +137,40 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Order order, DGtal::Duality duality, typename TConstIterator>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::reorder(const TConstIterator& begin_range, const TConstIterator& end_range) const
+{
+    BOOST_STATIC_ASSERT(( boost::is_convertible<typename TConstIterator::value_type, const SCell>::value ));
+
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+
+    typedef typename TLinearAlgebraBackend::Triplet Triplet;
+    typedef std::list<Triplet> Triplets;
+    Triplets triplets;
+
+    Index original_index = 0;
+    for (TConstIterator ci=begin_range; ci!=end_range; ci++)
+    {
+        const SCell signed_cell = *ci;
+        const Dimension dim = myKSpace.sDim(signed_cell);
+        if (dim != actualOrder(order, duality)) continue;
+        const Cell cell = myKSpace.unsigns(signed_cell);
+        const Index calculus_index = getCellIndex(cell);
+        triplets.push_back( Triplet(original_index, calculus_index, 1) );
+        original_index++;
+    }
+
+    const Index length = kFormLength(order, duality);
+    ASSERT( triplets.size() == length );
+    SparseMatrix reorder_matrix(length, length);
+    reorder_matrix.setFromTriplets(triplets.begin(), triplets.end());
+
+    typedef LinearOperator<Self, order, duality, order, duality> ReorderOperator;
+    return ReorderOperator(*this, reorder_matrix);
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::identity() const
