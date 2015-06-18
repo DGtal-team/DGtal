@@ -84,6 +84,9 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
     typedef KForm<Calculus, order_in, duality_in> InputKForm;
     ///Output KForm type
     typedef KForm<Calculus, order_out, duality_out> OutputKForm;
+    ///Transposed operator type
+    typedef LinearOperator<Calculus, order_out, duality_out, order_in, duality_in> TransposedLinearOperator;
+
 
     /**
      * Constructor.
@@ -125,7 +128,12 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
     void selfDisplay(std::ostream& out) const;
 
     /**
-     * Clear current kform.
+     * Transpose operator.
+     */
+    TransposedLinearOperator transpose() const;
+
+    /**
+     * Clear current linear operator.
      */
     void clear();
 
