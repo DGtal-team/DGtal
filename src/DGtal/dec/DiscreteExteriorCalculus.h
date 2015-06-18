@@ -320,6 +320,18 @@ namespace DGtal
     getProperties() const;
 
     /**
+     * Reorder operator from order-forms to order-forms.
+     * Reorder indexes from internal order to order induced by iterator range traversal.
+     * @tparam order input and output order of reorder operator.
+     * @tparam duality input and output duality of reorder operator.
+     * @tparam TConstIterator iterator type.
+     * @return identity operator.
+     */
+    template <Order order, Duality duality, typename TConstIterator>
+    LinearOperator<Self, order, duality, order, duality>
+    reorder(const TConstIterator& begin_range, const TConstIterator& end_range) const;
+
+    /**
      * Identity operator from order-forms to order-forms.
      * @tparam order input and output order of identity operator.
      * @tparam duality input and output duality of identity operator.
