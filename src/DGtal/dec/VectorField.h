@@ -155,7 +155,7 @@ template <typename TCalculus, Duality duality>
 
     /**
      * Create zero from with field intensity.
-     * @param norm norm type.
+     * @param norm_type norm type.
      */
     KForm<Calculus, 0, duality> intensity(const typename Vector::NormType norm_type = Vector::L_2) const;
 
