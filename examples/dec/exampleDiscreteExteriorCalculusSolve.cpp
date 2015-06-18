@@ -803,6 +803,8 @@ void solve3d_decomposition()
                 calculus.insertSCell( calculus.myKSpace.signs(cell, sign) );
             }
         }
+
+    calculus.updateIndexes();
     //! [3d_decomposition_structure]
 
     trace.info() << calculus << endl;
