@@ -316,8 +316,18 @@ namespace DGtal
      * Get all cells properties.
      * @return associative container from Cell to Property.
      */
-    Properties
+    const Properties&
     getProperties() const;
+
+    /**
+     * Get all signed cells with specific dimension and duality in index order.
+     * @tparam order order of signed cells.
+     * @tparam duality duality of signed cells.
+     * @return index ordered signed cells.
+     */
+    template <Order order, Duality duality>
+    const SCells&
+    getIndexedSCells() const;
 
     /**
      * Reorder operator from order-forms to order-forms.
