@@ -196,6 +196,16 @@ namespace DGtal
     typedef LinearOperator<Self, 2, DUAL, 3, DUAL> DualDerivative2;
 
     /**
+     * Antiderivative linear operator typedefs.
+     */
+    typedef LinearOperator<Self, 1, PRIMAL, 0, PRIMAL> PrimalAntiderivative1;
+    typedef LinearOperator<Self, 2, PRIMAL, 1, PRIMAL> PrimalAntiderivative2;
+    typedef LinearOperator<Self, 3, PRIMAL, 2, PRIMAL> PrimalAntiderivative3;
+    typedef LinearOperator<Self, 1, DUAL, 0, DUAL> DualAntiderivative1;
+    typedef LinearOperator<Self, 2, DUAL, 1, DUAL> DualAntiderivative2;
+    typedef LinearOperator<Self, 3, DUAL, 2, DUAL> DualAntiderivative3;
+
+    /**
      * Hodge duality linear operator typedefs.
      */
     typedef LinearOperator<Self, 0, PRIMAL, dimEmbedded-0, DUAL> PrimalHodge0;
