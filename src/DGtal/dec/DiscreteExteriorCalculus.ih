@@ -308,6 +308,8 @@ template <DGtal::Duality duality>
 DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharp(const DGtal::KForm<Self, 1, duality>& one_form) const
 {
+    ASSERT( one_form.myCalculus == this );
+
     const_cast<Self*>(this)->updateCachedOperators();
     ASSERT( !myCachedOperatorsNeedUpdate );
 
@@ -412,6 +414,8 @@ template <DGtal::Duality duality>
 DGtal::KForm<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 1, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flat(const DGtal::VectorField<Self, duality>& vector_field) const
 {
+    ASSERT( vector_field.myCalculus == this );
+
     const_cast<Self*>(this)->updateCachedOperators();
     ASSERT( !myCachedOperatorsNeedUpdate );
 
