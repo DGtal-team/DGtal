@@ -78,11 +78,11 @@ bool testBoard3D()
   board2 << SetMode3D(domain.className(), "Paving");
   board2 << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   board2 << p1 ;
- /* board2 << CustomColors3D(Color(0, 255,0),Color(0, 0,255));
+  board2 << CustomColors3D(Color(0, 255,0),Color(0, 0,255));
   board2 << p2 << p3;
   board2 <<  CustomColors3D(Color(0, 0,255),Color(0, 0,255));
   board2 << p6;
- */
+ 
   board2.saveOBJ("dgtalBoard3D-1bis-points.obj");
 
   nbok += true ? 1 : 0;
