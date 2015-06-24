@@ -49,6 +49,17 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // List of basic archetypes, grouped in this file.
 
+ 
+  /**
+     Description of \b archetype '\b CSinglePassIteratorArchetype' <p>
+     @ingroup Archetypes
+     @brief An archetype of SingePassIterator.
+  */
+  template <typename T> 
+  struct CSinglePassIteratorArchetype : 
+    public boost::input_iterator_archetype<T>
+  {};
+
   /**
      Description of \b archetype '\b CBidirectionalIteratorArchetype' <p>
      @ingroup Archetypes
