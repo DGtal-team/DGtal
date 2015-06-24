@@ -47,6 +47,7 @@
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
 #include "DGtal/geometry/curves/StandardDSS6Computer.h"
+#include "DGtal/geometry/curves/Naive3DDSSComputer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -190,6 +191,42 @@ namespace DGtal
     template <typename TIterator, typename TInteger, int connectivity>
     static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
     // StandardDSS6Computer
+
+
+    // naive3DDSSComputer
+    /**
+     * Default drawing style object.
+     * @param str the name of the class
+     * @param arithm the arithm to draw
+     * @return the dyn. alloc. default style for this object.
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+    /**
+     * Method to draw Naive3DDSSComputer as Balls.
+     * @param viewer the viewer where to draw
+     * @param arithm the arithm to draw
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static void drawAsBalls( Viewer3D<Space,KSpace> & viewer, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+    /**
+     * Method to draw Naive3DDSSComputer as BoundingBox.
+     * @param viewer the viewer where to draw
+     * @param arithm the arithm to draw
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static void drawAsBoundingBox( Viewer3D<Space,KSpace> & viewer, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+    /**
+     * Method to draw Naive3DDSSComputer.
+     * @param viewer the viewer where to draw
+     * @param arithm the arithm to draw
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+    // Naive3DDSSComputer
 
 
     // DigitalSetBySTLSet

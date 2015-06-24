@@ -54,6 +54,8 @@
   [#929](https://github.com/DGtal-team/DGtal/pull/929))
  - Algorithm to compute the union of two DSSs in
 	logarithmic time (Isabelle Sivignon, [#949](https://github.com/DGtal-team/DGtal/pull/949))
+ - Lambda-MST tangent estimator 2D/3D
+ - NaiveDSS3DComputer - segmentation of digital curve by DSS. This particular algorithm uses only valid 2D projections.
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential

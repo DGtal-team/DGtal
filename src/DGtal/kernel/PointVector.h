@@ -541,6 +541,13 @@ namespace DGtal
     Self crossProduct( const Self &v) const;
 
     /**
+     * Angle between two vectors
+     * @param v a vector that is creates an angle with *this.
+     * @return
+     */
+    double cosineSimilarity ( const Self & v ) const;
+
+    /**
      * Addition operator with assignement.
      *
      * @param v is the Point that gets added to @a *this.

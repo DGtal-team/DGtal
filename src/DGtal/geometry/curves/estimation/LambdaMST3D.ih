@@ -1,0 +1,163 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file LambdaMST3D.ih
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
+ *
+ * @date 2014/10/06
+ *
+ * This file is part of the DGtal library.
+ */
+
+template < typename TSpace, typename TSegmentation, typename Functor >
+inline
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::LambdaMST3DEstimator() :
+myBegin(), myEnd(), dssSegments ( 0 ), myFunctor() {}
+
+
+template < typename TSpace, typename TSegmentation, typename Functor >
+inline
+void
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::init ( const ConstIterator& itb, const ConstIterator& ite ) 
+{
+  myBegin = itb;
+  myEnd = ite;
+}
+
+template < typename TSpace, typename TSegmentation, typename Functor >
+inline
+void
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::attach ( const TSegmentation & aSC )
+{
+  dssSegments = &aSC;
+}
+
+template < typename TSpace, typename TSegmentation, typename Functor >
+inline
+bool
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::isValid () const
+{
+  return ( dssSegments != 0 );
+}
+
+template < typename TSpace, typename TSegmentation, typename Functor >
+inline
+typename DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::RealVector
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval 
+( const typename DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::Point & point )
+{
+  assert ( isValid() );
+  typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
+  typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
+  Value tangent, partial, prev;
+  
+  for ( ; DSS != lastDSS; ++DSS )
+  {
+    if ( DSS->isInDSS ( point ) )
+    {
+      unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
+      prev = partial;
+      unsigned int pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), point ) ) + 1;
+      SegmentComputer comp ( *DSS );
+      partial = myFunctor ( comp, pos, dssLen );
+      if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
+	partial.first = -partial.first;
+      tangent += partial;
+    }
+  }
+  if ( tangent.second != 0. )
+    return tangent.first / tangent.second;
+  else
+    return tangent.first;
+}
+
+template < typename TSpace, typename TSegmentation, typename Functor >
+template < typename Containter >
+inline
+void
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval ( std::back_insert_iterator < Containter > result )
+{
+  assert ( myBegin != myEnd && isValid() );
+  std::multimap < Point, Value > outValues;
+  typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
+  typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
+  
+  for(; DSS != lastDSS; ++DSS)
+  {
+    unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() );
+    SegmentComputer comp ( *DSS );
+    for ( unsigned int indexOfPointInDSS = 0; indexOfPointInDSS < dssLen; indexOfPointInDSS++ )
+      outValues.insert ( std::make_pair ( *(DSS.begin() + indexOfPointInDSS), myFunctor ( comp, indexOfPointInDSS+1, dssLen+1 ) ) );
+  }
+  accumulate< Containter >( outValues, result );
+}
+
+template < typename TSpace, typename TSegmentation, typename Functor >
+template < typename Containter >
+inline
+void
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::accumulate 
+( std::multimap < Point, Value > & outValues, std::back_insert_iterator < Containter > result )
+{
+  Value prev = outValues.begin()->second;
+  for ( ConstIterator itt = myBegin; itt != myEnd; ++itt )
+  {
+    typename std::multimap< Point, Value >::const_iterator it  = outValues.lower_bound ( *itt );
+    typename std::multimap< Point, Value >::const_iterator it2 = outValues.upper_bound ( *itt );
+    Value tangent;
+    for (; it != it2; it++ )
+    {
+      Value partial = it->second;
+      if (  prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
+	partial.first = -partial.first;
+      prev = partial;
+      tangent += partial;
+    }
+    outValues.erase ( *itt );
+    if ( tangent.second != 0 )
+      result = ( tangent.first / tangent.second );
+    else
+      result = tangent.first;
+  }
+}
+
+template<typename DSS, typename LambdaFunction>
+inline
+typename DGtal::TangentFromDSS3DFunctor< DSS, LambdaFunction>::Value
+DGtal::TangentFromDSS3DFunctor<DSS, LambdaFunction>::operator() 
+( const DSS& aDSS, const int & indexOfPointInDSS, const int & dssLen ) const
+{
+  Value result;
+  typename DSS::Point3d directionZ3;
+  Vector direction;
+  typename DSS::PointD3d intercept;
+  typename DSS::PointD3d thikness;
+  
+  aDSS.getParameters ( directionZ3, intercept, thikness );
+  direction[0] = directionZ3[0];
+  direction[1] = directionZ3[1];
+  direction[2] = directionZ3[2];
+  
+  result.second = lambdaFunctor ( (double)indexOfPointInDSS / (double)dssLen );
+  
+  double norm = direction.norm();
+  if ( norm != 0. )
+    direction /= norm;
+  result.first = direction * result.second;
+  return result;
+}

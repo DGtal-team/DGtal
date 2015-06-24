@@ -540,6 +540,17 @@ DGtal::PointVector<dim, TComponent, TContainer>::dot( const Self& v ) const
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
+double
+DGtal::PointVector<dim, TComponent, TContainer>::cosineSimilarity( const Self& v ) const
+{
+    double angle = std::acos ( this->dot ( v ) / ( this->norm() * v.norm() ) );
+    if ( std::isnan ( angle ) )
+        angle = 0.0;
+    return angle;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+inline
 typename DGtal::PointVector<dim, TComponent, TContainer>
 DGtal::PointVector<dim, TComponent, TContainer>::crossProduct( const Self& v ) const
 {
