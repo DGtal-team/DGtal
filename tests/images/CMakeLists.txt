@@ -31,7 +31,6 @@ IF(WITH_BENCHMARK)
   SET(DGTAL_BENCH_SRC
     benchmarkImageContainer
     )
-
   #Benchmark target
   FOREACH(FILE ${DGTAL_BENCH_SRC})
     add_executable(${FILE} ${FILE})

@@ -107,11 +107,8 @@ namespace DGtal
     
     ///Concept checks
     BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
-    //BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< TContainer > ));
-    //BOOST_CONCEPT_ASSERT(( concepts::ConceptUtils::sameType<value_type, Point >::value ));
-
-      
-      
+    BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< TContainer > ));
+    
     // ----------------------- Standard services ------------------------------
   public:
 

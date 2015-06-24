@@ -44,6 +44,7 @@
 #ifdef WITH_C11
 #include <unordered_set>
 #endif
+#include <boost/unordered_set.hpp>
 
 
 #include "DGtal/base/Common.h"
@@ -66,6 +67,7 @@
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/io/boards/Board2D.h"
+
 
 
 using namespace DGtal;
@@ -378,12 +380,27 @@ bool testDigitalSetConcept()
 }
 
 
+#ifdef WITH_C11
+//Redefining a dumb hash function for std::unorderd_set
 namespace std {
   template <> struct hash< SpaceND<4>::Point  > {
     size_t operator()(const SpaceND<4>::Point& h) const {
       hash<int> int_hash;
       size_t hq = int_hash(h[0]);
-      size_t hr = int_hash(h[1]);
+      size_t hr = int_hash(h[1]) + (int_hash(h[2])<<3);
+      return hq ^ (hr + 0x9e3779b9 + (hq << 6) + (hq >> 2));
+    }
+  };
+}
+#endif
+
+//Redefining a dumb hash function for boost::unorderd_set
+namespace boost {
+  template <> struct hash< SpaceND<4>::Point  > {
+    size_t operator()(const SpaceND<4>::Point& h) const {
+      hash<int> int_hash;
+      size_t hq = int_hash(h[0]);
+      size_t hr = int_hash(h[1])+ (int_hash(h[2])<<3);;
       return hq ^ (hr + 0x9e3779b9 + (hq << 6) + (hq >> 2));
     }
   };
@@ -433,15 +450,22 @@ int main()
   ( DigitalSetByAssociativeContainer<Domain, Container>(domain), DigitalSetByAssociativeContainer<Domain, Container>(domain) );
   trace.endBlock();
   
-#ifdef WITH_C11
   trace.beginBlock( "DigitalSetByUnorderedSet" );
+#ifdef WITH_C11
   typedef std::unordered_set<Point> ContainerU;
+#else
+  typedef boost::unordered_set<Point> ContainerU;
+#endif
   bool okUnorderedSet = testDigitalSet< DigitalSetByAssociativeContainer<Domain,ContainerU> >
   ( DigitalSetByAssociativeContainer<Domain, ContainerU>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU>(domain) );
   trace.endBlock();
-#endif
   
-
+  trace.beginBlock( "DigitalSetByBoostUnorderedSet" );
+  typedef boost::unordered_set<Point> ContainerU2;
+  bool okUnorderedSet2 = testDigitalSet< DigitalSetByAssociativeContainer<Domain,ContainerU2> >
+  ( DigitalSetByAssociativeContainer<Domain, ContainerU2>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU2>(domain) );
+  trace.endBlock();
+  
   
   
   
