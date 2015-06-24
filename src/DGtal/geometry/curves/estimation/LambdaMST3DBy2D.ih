@@ -1,0 +1,229 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file LambdaMST3DBy2D.ih
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
+ *
+ * @date 2015/06/16
+ *
+ * This file is part of the DGtal library.
+ */
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+inline
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::LambdaMST3DBy2DEstimator() : myBegin(), myEnd()
+{
+  //projections
+  std::vector<DGtal::Dimension> v1,v2,v3;
+  v1.push_back(0);
+  v1.push_back(1);
+  v2.push_back(0);
+  v2.push_back(2);
+  v3.push_back(1);
+  v3.push_back(2);
+  myProjXY.init(v1.begin(),v1.end());
+  myProjXZ.init(v2.begin(),v2.end());
+  myProjYZ.init(v3.begin(),v3.end());
+}
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+inline
+void
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::init 
+( const Iterator3D & itB, const Iterator3D & itE )
+{
+  myBegin = itB;
+  myEnd = itE;
+}
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+inline
+bool
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::isValid() const
+{
+  return ( myBegin != myEnd );
+}
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+inline
+typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector3D
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval
+( const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point3D & point )
+{
+  assert ( isValid() );
+  Iterator3D it = std::find ( myBegin, myEnd, point );
+  TCurve2D tXY, tXZ, tYZ;
+  ExtendBack ( tXY, tXZ, tYZ, it );
+  ExtendFront ( tXY, tXZ, tYZ, it );
+  MAIN_AXIS axis = detectMainAxis ( tXY, tXZ, tYZ, point );
+  if ( axis == MAIN_AXIS::X )
+    return myFunctor ( MAIN_AXIS::X, Estimate2DTangent ( tXY, myProjXY ( *it ) ), Estimate2DTangent ( tXZ, myProjXZ ( *it ) ) );
+  else if ( axis == MAIN_AXIS::Y )
+    return myFunctor ( MAIN_AXIS::Y, Estimate2DTangent ( tXY, myProjXY ( *it ) ), Estimate2DTangent ( tYZ, myProjYZ ( *it ) ) );
+  else
+    return myFunctor ( MAIN_AXIS::Z, Estimate2DTangent ( tXZ, myProjXZ ( *it ) ), Estimate2DTangent ( tYZ, myProjYZ ( *it ) ) );
+}
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+template < typename Containter >
+inline
+void
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval
+( std::back_insert_iterator < Containter > result )
+{
+  assert ( isValid() );
+  for( Iterator3D it = myBegin; it != myEnd; ++it )
+    result = eval ( *it );
+}
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+void 
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::ExtendFront
+( DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXY,
+  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXZ,
+  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveYZ,
+  const Iterator3D & it )
+{
+  Iterator3D front = it;
+  bool status = true, xy = true, xz = true, yz = true;
+  while ( status && front >= myBegin && front < myEnd )
+  {
+    unsigned int test = 0;
+    if ( xy && myProjXY (*front) != curveXY.front() )
+    {
+      curveXY.push_front ( myProjXY ( *front ) );
+      test++;
+    }
+    else
+      xy = false;
+    if ( xz && myProjXZ (*front) != curveXZ.front() )
+    {
+      curveXZ.push_front ( myProjXZ ( *front ) );
+      test++;
+    }
+    else
+      xz = false;
+    if ( yz && myProjYZ (*front) != curveYZ.front() )
+    {
+      curveYZ.push_front ( myProjYZ ( *front ) );
+      test++;
+    }
+    else
+      yz = false;
+    if ( test >= 2 )
+    {
+      --front;
+      status = true;
+    }
+    else
+      status = false;
+  }
+}
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+void 
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::ExtendBack
+( DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXY,
+  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXZ,
+  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveYZ,
+  const Iterator3D & it )
+{
+  Iterator3D back = it; ++back;
+  bool status = true, xy = true, xz = true, yz = true;
+  while ( status && back > myBegin && back < myEnd )
+  {
+    unsigned int test = 0;
+    if ( xy && myProjXY (*back) != curveXY.back() )
+    {
+      curveXY.push_back ( myProjXY ( *back ) );
+      test++;
+    }
+    else
+      xy = false;
+    if ( xz && myProjXZ (*back) != curveXZ.back() )
+    {
+      curveXZ.push_back ( myProjXZ ( *back ) );
+      test++;
+    }
+    else
+      xz = false;
+    if ( yz && myProjYZ (*back) != curveYZ.back() )
+    {
+      curveYZ.push_back ( myProjYZ ( *back ) );
+      test++;
+    }
+    else
+      yz = false;
+    if ( test >= 2 )
+    {
+      ++back;
+      status = true;
+    }
+    else
+      status = false;
+  }
+}
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+inline
+typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::MAIN_AXIS
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::detectMainAxis
+( const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & tXY,
+  const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & tXZ,
+  const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & tYZ,
+  const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point3D & point )
+{
+  unsigned int rankXY = CurveRank ( tXY, myProjXY ( point ) );
+  unsigned int rankXZ = CurveRank ( tXZ, myProjXZ ( point ) );
+  unsigned int rankYZ = CurveRank ( tYZ, myProjYZ ( point ) );
+  if ( rankXY > rankYZ && rankXZ > rankYZ )
+    return MAIN_AXIS::X;
+  else if ( rankXY > rankXZ && rankYZ > rankXZ )
+    return MAIN_AXIS::Y;
+  else
+    return MAIN_AXIS::Z;
+}
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+inline
+unsigned int
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::CurveRank
+( const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curve,
+  const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point2D & point )
+{
+  unsigned int rank = 0;
+  Segmentation2D segmenter ( curve.begin(), curve.end(), SegmentComputer2D() );
+  for ( typename Segmentation2D::SegmentComputerIterator it = segmenter.begin(); it != segmenter.end(); ++it )
+    if ( it->isInDSS ( point ) )
+      rank += std::distance ( it->begin(), it->end() );
+    return rank;
+}
+
+template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+inline
+typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector2D
+DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Estimate2DTangent 
+( const DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curve,
+  const DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point2D & point )
+{
+  typedef DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Segmentation2D Segmentation2D;
+  Segmentation2D segmenter ( curve.begin(), curve.end(), SegmentComputer2D() );
+  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TEstimator lmst;
+  lmst.attach ( segmenter );
+  return lmst.eval ( point );
+}
