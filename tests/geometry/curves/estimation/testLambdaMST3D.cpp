@@ -37,7 +37,6 @@
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/geometry/curves/Naive3DDSSComputer.h"
 #include "DGtal/geometry/curves/estimation/LambdaMST3D.h"
-#include "DGtal/geometry/curves/estimation/LambdaMST3DBy2D.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 
 #ifdef __GNUC__
@@ -118,27 +117,6 @@ public:
     }
     return true;
   }
-  bool lambda64By2D()
-  {
-    LambdaMST3DBy2D < typename Range::const_iterator > lmst64;
-    lmst64.init ( curve.begin(), curve.end() );
-    lmst64.eval ( curve.front() );
-    return true;
-  }
-  
-  bool lambda64By2DBoth()
-  {
-    LambdaMST3DBy2D < typename Range::const_iterator > lmst64;
-    lmst64.init ( curve.begin(), curve.end() );
-    vector < RealVector > tangent;
-    lmst64.eval < vector < RealVector > > ( back_inserter ( tangent ) );
-    for ( unsigned int i = 0; i < curve.size(); i++ )
-    {
-      if ( lmst64.eval ( curve[i] ) != tangent[i] )
-	return false;
-    }
-    return true;
-  }
 };
 
 
@@ -164,14 +142,6 @@ int main( int , char**  )
         trace.beginBlock ( "Testing values obtained from the both methods." );
            res &= testLMST.lambda64Both();
         trace.endBlock();
-    trace.endBlock();
-    trace.beginBlock ( "Testing LambdaMST3DBy2D" );
-	trace.beginBlock ( "Testing point only calculation" );
-	    res &= testLMST.lambda64By2D();
-	trace.endBlock();
-	trace.beginBlock ( "Testing values obtained from the both methods." );
-	    res &= testLMST.lambda64By2DBoth();
-	trace.endBlock();
     trace.endBlock();
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     return res ? 0 : 1;
