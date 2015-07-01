@@ -133,7 +133,7 @@ namespace DGtal {
     typedef struct t_Value
     {
       RealVector first;
-      double second = 0.0;
+      double second;
       t_Value () : second ( 0. ) {}
       t_Value & operator+= ( const t_Value & ch )
       {
