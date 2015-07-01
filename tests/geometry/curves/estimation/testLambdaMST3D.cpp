@@ -82,7 +82,7 @@ public:
   }
   bool lambda64ByPoint ()
   {
-    Segmentation segmenter ( curve.cbegin(), curve.cend(), SegmentComputer() );
+    Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
     LambdaMST3D < Segmentation > lmst64;
     lmst64.attach ( segmenter );
     lmst64.init ( curve.begin(), curve.end() );
@@ -94,7 +94,7 @@ public:
   }
   bool lambda64()
   {
-    Segmentation segmenter ( curve.cbegin(), curve.cend(), SegmentComputer() );
+    Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
     LambdaMST3D < Segmentation > lmst64;
     lmst64.attach ( segmenter );
     lmst64.init ( curve.begin(), curve.end() );
@@ -104,7 +104,7 @@ public:
   }
   bool lambda64Both()
   {
-    Segmentation segmenter ( curve.cbegin(), curve.cend(), SegmentComputer() );
+    Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
     LambdaMST3D < Segmentation > lmst64;
     lmst64.attach ( segmenter );
     lmst64.init ( curve.begin(), curve.end() );
