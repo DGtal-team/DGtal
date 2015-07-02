@@ -67,7 +67,7 @@ public:
   testLambdaMST2D ()
   {
     fstream inputStream;
-    inputStream.open ( testPath + "samples/sinus2D4.dat", ios::in );
+    inputStream.open ( (testPath + "samples/sinus2D4.dat").c_str(), ios::in );
     try {
       curve = PointListReader<Point>::getPointsFromInputStream ( inputStream );
       if ( curve.size() == 0) throw IOException();

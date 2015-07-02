@@ -72,7 +72,7 @@ public:
   testLambdaMST3D ()
   {
     fstream inputStream;
-    inputStream.open ( testPath + "samples/sinus3D.dat", std::ios::in );
+    inputStream.open ( (testPath + "samples/sinus3D.dat").c_str(), std::ios::in );
     try {
       curve = PointListReader<Point>::getPointsFromInputStream ( inputStream );
       if ( curve.size() == 0) throw IOException();
