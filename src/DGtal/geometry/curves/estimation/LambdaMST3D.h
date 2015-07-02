@@ -72,15 +72,15 @@ namespace DGtal {
     
     /**
      * Initialisation.
-     * @param itb, begin iterator
-     * @param ite, end iterator
+     * @param itb begin iterator
+     * @param ite end iterator
      */
     void init ( const ConstIterator& itb, const ConstIterator& ite );
     
     /**
-     * @param segment - DSS segmentation algorithm
+     * @param segmentComputer - DSS segmentation algorithm
      */
-    void attach ( const TSegmentation & aSC );
+    void attach ( const TSegmentation & segmentComputer );
     
     /**
      * Checks the validity/consistency of the object.
@@ -89,16 +89,14 @@ namespace DGtal {
     bool isValid() const;
     
     /**
-     * @param point to calculate A and B for it
-     * @return A and B
+     * @param point of the underlying curve to calculate a tangent to it
+     * @return tangent direction
      */
     RealVector eval ( const Point & point );
     
     /**
-     * @param result output iterator on the estimated quantity
-     *
-     * @return the estimated quantity
-     * from itb till ite (excluded)
+     * More efficient way to compute tangent for all points of a curve.
+     * @param result back_insert_iterator to insert element to underlying container.
      */
     template < typename Containter >
     void eval ( std::back_insert_iterator < Containter > result );
