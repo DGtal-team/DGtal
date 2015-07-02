@@ -128,7 +128,6 @@
  - Algorithm to compute the fraction of smallest denominator in between
 	two irreducible fractions (Isabelle Sivignon [#949](https://github.com/DGtal-team/DGtal/pull/949))
 
-
 ## Bug Fixes
 
 - *Configuration*
@@ -185,6 +184,8 @@
    [#991](https://github.com/DGtal-team/DGtal/pull/991))
  - Fix memory leaks present in the Viewer3d.  (Bertrand Kerautret,
    [#995](https://github.com/DGtal-team/DGtal/pull/995))
+ - Fix issues in OBJ color export when exporting voxels. (David
+   Coeurjolly, [#1022](https://github.com/DGtal-team/DGtal/pull/1022))
 
 
 - *Kernel Package*
