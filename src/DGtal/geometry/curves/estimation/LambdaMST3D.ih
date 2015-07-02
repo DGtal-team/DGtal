@@ -42,9 +42,9 @@ DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::init ( const Cons
 template < typename TSpace, typename TSegmentation, typename Functor >
 inline
 void
-DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::attach ( const TSegmentation & aSC )
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::attach ( const TSegmentation & segmentComputer )
 {
-  dssSegments = &aSC;
+  dssSegments = &segmentComputer;
 }
 
 template < typename TSpace, typename TSegmentation, typename Functor >
