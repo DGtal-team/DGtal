@@ -78,7 +78,7 @@ namespace DGtal {
     void init ( const ConstIterator & itb, const ConstIterator & ite );
     
     /**
-     * @param segment - DSS segmentation algorithm
+     * @param SegmentComputer - DSS segmentation algorithm
      */
     void attach ( const TSegmentation & SegmentComputer );
     
