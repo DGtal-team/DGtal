@@ -543,7 +543,7 @@ namespace DGtal
     /**
      * Angle between two vectors
      * @param v a vector that is creates an angle with *this.
-     * @return
+     * @return angle
      */
     double cosineSimilarity ( const Self & v ) const;
 
