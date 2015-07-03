@@ -44,7 +44,7 @@
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
  - Unary minus operators for k-forms, vector fields and linear operators.
    (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
- - Introduction of .updateIndexes() that need to be called after any
+ - Introduction of .updateIndexes() that needs to be called after any
    call to .insertSCell() or .eraseCell().
    (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
  - Transpose of linear operators.
