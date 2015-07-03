@@ -31,9 +31,6 @@
 #include <iostream>
 #include <benchmark/benchmark.h>
 
-
-#undef WITH_C11
-
 #ifdef WITH_C11
 #include <unordered_set>
 #else

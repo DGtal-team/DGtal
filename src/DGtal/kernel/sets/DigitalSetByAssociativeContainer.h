@@ -83,7 +83,7 @@ namespace DGtal
     domain remains valid during the lifetime of your set.
    
    * @tparam TDomain type of domain on which the set will be defined (model of concepts::CDomain).
-   * @tparam TContainer STL associative container to store points (model of boost::AssociativeContainer).
+   * @tparam TContainer STL associative container to store points (model of boost::SimpleAssociativeContainer).
    *
    */
   template <typename TDomain, typename TContainer >
@@ -107,7 +107,7 @@ namespace DGtal
     
     ///Concept checks
     BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
-    BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< TContainer > ));
+    BOOST_CONCEPT_ASSERT(( boost::SimpleAssociativeContainer< TContainer > ));
     
     // ----------------------- Standard services ------------------------------
   public:
