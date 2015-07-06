@@ -466,9 +466,6 @@ int main()
   ( DigitalSetByAssociativeContainer<Domain, ContainerU2>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU2>(domain) );
   trace.endBlock();
   
-  
-  
-  
   bool okSelectorSmall = testDigitalSetSelector
       < Domain, SMALL_DS + LOW_VAR_DS + LOW_ITER_DS + LOW_BEL_DS >
       ( domain, "Small set" );

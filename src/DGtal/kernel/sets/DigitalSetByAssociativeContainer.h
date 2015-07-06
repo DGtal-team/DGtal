@@ -57,6 +57,7 @@
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/base/CSTLAssociativeContainer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 //#include "DGtal/io/Display3D.h"
@@ -83,7 +84,7 @@ namespace DGtal
     domain remains valid during the lifetime of your set.
    
    * @tparam TDomain type of domain on which the set will be defined (model of concepts::CDomain).
-   * @tparam TContainer STL associative container to store points (model of boost::SimpleAssociativeContainer).
+   * @tparam TContainer STL associative container to store points (model of concepts::CSTLAssociativeContainer).
    *
    */
   template <typename TDomain, typename TContainer >
@@ -107,7 +108,7 @@ namespace DGtal
     
     ///Concept checks
     BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
-    BOOST_CONCEPT_ASSERT(( boost::SimpleAssociativeContainer< TContainer > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TContainer > ));
     
     // ----------------------- Standard services ------------------------------
   public:
