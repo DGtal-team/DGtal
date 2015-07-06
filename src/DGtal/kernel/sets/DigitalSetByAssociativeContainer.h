@@ -71,10 +71,8 @@ namespace DGtal
   /**
     Description of template class 'DigitalSetByAssociativeContainer' <p>
 
-    \brief Aim: A container class for storing sets of digital points
-    within some given domain.
-
-    This class is a generic facade to any STL associative container.
+    \brief Aim: A wrapper class around a STL associative container for
+    storing sets of digital points within some given domain.
    
     Model of CDigitalSet.
 
