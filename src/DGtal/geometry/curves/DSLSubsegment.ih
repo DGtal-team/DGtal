@@ -133,7 +133,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
       val3 = (Number) Q[0]*s - (Number) Q[1];
 
-      if(fabs(val3) <= myPrecision)
+      if(std::abs(val3) <= myPrecision)
 	return (Integer) ceil(val);
       else
 	return (Integer) floor(val);
@@ -519,7 +519,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer 
 
   while(ok)
     {
-      if(fabs(v[0]*normal[0]+v[1]*normal[1]) <= myPrecision)
+      if(std::abs(v[0]*normal[0]+v[1]*normal[1]) <= myPrecision)
 	{
 	  ok = false;
 	  found = true;
@@ -534,7 +534,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer 
 		vv *= alpha;
 		A += vv;
 		// test if A is on the slope
-		if(fabs(A[0]*normal[0]+A[1]*normal[1]) <= myPrecision)
+		if(std::abs(A[0]*normal[0]+A[1]*normal[1]) <= myPrecision)
 		  {
 		    ok = false;
 		    v = A;
@@ -559,7 +559,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer 
 		vv *= alpha;
 		B += vv;
 		// test if B is on the slope
-		if(fabs(B[0]*normal[0]+B[1]*normal[1]) <= myPrecision)
+		if(std::abs(B[0]*normal[0]+B[1]*normal[1]) <= myPrecision)
 		  {
 		    ok = false;
 		    v = B;
@@ -680,7 +680,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<T
 {
   Number v = -alpha*r.x + r.y - beta;
 
-  if(fabs(v) <= myPrecision )
+  if(std::abs(v) <= myPrecision )
     {
       return ONTO;
     }
