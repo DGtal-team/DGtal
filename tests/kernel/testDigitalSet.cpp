@@ -486,7 +486,8 @@ int main()
 
   bool res = okVector && okSet && okMap 
       && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
-      && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet;
+      && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet
+    && okUnorderedSet2 && okUnorderedSet && okAssoctestSet;
   trace.endBlock();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   return res ? 0 : 1;
