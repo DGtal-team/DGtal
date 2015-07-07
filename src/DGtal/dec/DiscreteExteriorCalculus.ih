@@ -146,7 +146,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
 
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
-    typedef std::list<Triplet> Triplets;
+    typedef std::vector<Triplet> Triplets;
     Triplets triplets;
 
     Index original_index = 0;
