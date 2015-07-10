@@ -147,6 +147,8 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::KForm<TCalculu
         }
     }
 
+    if (cmap_min == cmap_max) cmap_max += 1;
+
     board.setLineWidth( .5 );
 
     if (cmap_repeat < 1 && cmap_preset == DGtal::CMAP_JET)
@@ -186,7 +188,7 @@ DGtal::Display2DFactory::drawWithColorMap(DGtal::Board2D& board, const DGtal::KF
         const Scalar displayed_value = kform.myContainer(index);
 
         if (std::isfinite(displayed_value)) board.setFillColor( colormap(displayed_value) );
-        else board.setFillColor( DGtal::Color::None );
+        else continue;
 
         drawDECSignedKhalimskyCell(board, displayed_cell);
     }
