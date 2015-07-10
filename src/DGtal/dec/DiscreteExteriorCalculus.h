@@ -296,7 +296,7 @@ namespace DGtal
     std::string className() const;
 
     /**
-     * Manually insert cell into calculus.
+     * Manually insert signed cell into calculus.
      * Should call updateIndexes() when structure modification is finished.
      * Be sure to insert all adjacent lower order primal cells.
      * @param signed_cell the signed cell to be inserted.
@@ -330,7 +330,7 @@ namespace DGtal
     getProperties() const;
 
     /**
-     * Get all signed cells with specific dimension and duality in index order.
+     * Get all signed cells with specific @a order and @a duality in index order.
      * @tparam order order of signed cells.
      * @tparam duality duality of signed cells.
      * @return index ordered signed cells.
@@ -340,11 +340,11 @@ namespace DGtal
     getIndexedSCells() const;
 
     /**
-     * Reorder operator from order-forms to order-forms.
-     * Reorder indexes from internal order to order induced by iterator range traversal.
+     * Reorder operator from <em>order</em>-forms to <em>order</em>-forms.
+     * Reorder indexes from internal index order to iterator range traversal induced order.
      * @tparam order input and output order of reorder operator.
      * @tparam duality input and output duality of reorder operator.
-     * @tparam TConstIterator iterator type.
+     * @tparam TConstIterator const iterator to signed cell type.
      * @return identity operator.
      */
     template <Order order, Duality duality, typename TConstIterator>
@@ -352,7 +352,7 @@ namespace DGtal
     reorder(const TConstIterator& begin_range, const TConstIterator& end_range) const;
 
     /**
-     * Identity operator from order-forms to order-forms.
+     * Identity operator from <em>order</em>-forms to <em>order</em>-forms.
      * @tparam order input and output order of identity operator.
      * @tparam duality input and output duality of identity operator.
      * @return identity operator.
@@ -362,7 +362,7 @@ namespace DGtal
     identity() const;
 
     /**
-     * Derivative operator from order-forms to (order+1)-forms.
+     * Derivative operator from <em>order</em>-forms to <em>(order+1)</em>-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.
      * @return derivative operator.
@@ -372,7 +372,7 @@ namespace DGtal
     derivative() const;
 
     /**
-     * Antiderivative operator from order-forms to (order-1) forms.
+     * Antiderivative operator from <em>order</em>-forms to <em>(order-1)</em>-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.
      * @return antiderivative operator.
@@ -390,8 +390,9 @@ namespace DGtal
     laplace() const;
 
     /**
-     * Hodge operator from duality order-form to opposite duality (dimEmbedded-order)-forms.
+     * Hodge operator from duality <em>order</em>-form to opposite duality <em>(dimEmbedded-order)</em>-forms.
      * @tparam order order of input k-form.
+     * @tparam duality duality of input k-form.
      * @return hodge operator.
      */
     template <Order order, Duality duality>
@@ -410,7 +411,7 @@ namespace DGtal
 
     /**
      * Get directional flat operator that transforms 0-form containing vector field coordinates along direction dir into 1-form.
-     * Opposite of sharp(1-form).extractZeroForm(dir).
+     * Invert of sharp(1-form).extractZeroForm(dir).
      * @tparam duality input 0-form and output 1-form duality.
      * @tparam dir direction of projection.
      * @return linear operator.
@@ -467,7 +468,7 @@ namespace DGtal
     /**
      * Get k-form index from cell.
      * @param cell Khalimsky cell.
-     * @return associated K-form index.
+     * @return associated k-form index.
      */
     Index
     getCellIndex(const Cell& cell) const;
