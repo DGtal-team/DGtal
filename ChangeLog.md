@@ -52,8 +52,12 @@
   WITH_PATATE=true): http://patate.gforge.inria.fr/html/. See
   SphereFittingEstimator (David Coeurjolly,
   [#929](https://github.com/DGtal-team/DGtal/pull/929))
- - Algorithm to compute the union of two DSSs in
-	logarithmic time (Isabelle Sivignon, [#949](https://github.com/DGtal-team/DGtal/pull/949))
+ - Algorithm to compute the union of two DSSs in logarithmic time
+	(Isabelle Sivignon,
+	[#949](https://github.com/DGtal-team/DGtal/pull/949))
+ - InexactPredicateLpSeparableMetric class is now templated by an
+   EuclideanRing type. (David Coeurjolly,
+   [#1017](https://github.com/DGtal-team/DGtal/pull/1017))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
@@ -130,7 +134,6 @@
  - Algorithm to compute the fraction of smallest denominator in between
 	two irreducible fractions (Isabelle Sivignon [#949](https://github.com/DGtal-team/DGtal/pull/949))
 
-
 ## Bug Fixes
 
 - *Configuration*
@@ -187,6 +190,8 @@
    [#991](https://github.com/DGtal-team/DGtal/pull/991))
  - Fix memory leaks present in the Viewer3d.  (Bertrand Kerautret,
    [#995](https://github.com/DGtal-team/DGtal/pull/995))
+ - Fix issues in OBJ color export when exporting voxels. (David
+   Coeurjolly, [#1022](https://github.com/DGtal-team/DGtal/pull/1022))
 
 
 - *Kernel Package*
