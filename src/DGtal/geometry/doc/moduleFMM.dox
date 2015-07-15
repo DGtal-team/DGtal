@@ -297,4 +297,28 @@ The result is displayed below.
 
 */
 
+/**
+   Example of use the FMM (fast marching method) class in 2D.
+@see \ref moduleFMM
+
+This program outputs this image:
+
+@image html DTbyFMM-25.png
+
+\example geometry/volumes/distance/exampleFMM2D.cpp
+*/
+
+
+/**
+
+   Example of use the FMM (fast marching method) class in 3D.
+@see \ref moduleFMM
+
+This program outputs this image:
+@image html exampleFMM3D.png
+
+\example geometry/volumes/distance/exampleFMM3D.cpp
+*/
+
+
 }
