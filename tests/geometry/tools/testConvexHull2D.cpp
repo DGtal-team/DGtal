@@ -136,13 +136,13 @@ bool testConvexHull2D()
   g.push_back( Point(4,-3) );
 
   //geometric predicate
-  typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int64_t> Functor;  
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor;  
   Functor functor; 
   typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
   Predicate predicate( functor ); 
 
   //namespace
-  using namespace Hull2D; 
+  using namespace functions::Hull2D; 
 
   //andrew algorithm
   trace.info() << " andrew algorithm " << std::endl; 
@@ -160,7 +160,7 @@ bool testConvexHull2D()
   //graham algorithm
   res.clear(); 
   trace.info() << " graham algorithm " << std::endl;
-  PolarPointComparatorBy2x2DetComputer<Point> comparator;  
+  functors::PolarPointComparatorBy2x2DetComputer<Point> comparator;  
   grahamConvexHullAlgorithm( data.begin(), data.end(), back_inserter( res ), predicate, comparator );
 
   copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) ); 

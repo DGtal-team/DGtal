@@ -60,7 +60,26 @@ namespace DGtal
   // template class MelkmanConvexHull
   /**
    * Description of template class 'MelkmanConvexHull' <p>
-   * \brief Aim:
+   * \brief Aim: This class implements the on-line algorithm
+   * of Melkman for the computation of the convex hull of 
+   * a simple polygonal line (without self-intersection) 
+   * [Melkman, 1979 : \cite Melkman1987].
+   *
+   * This algorithm is based on a deque, which stores the vertices 
+   * of the convex hull (for convenience, the first and last vertex 
+   * contained in the deque are the same point). Since we assume 
+   * that the input points form a simple polygonal line, if a new point
+   * is located outide the current convex hull, then the first (and last) 
+   * vertex of the deque is visible from the new point. As a consequence, 
+   * it is enough to update the convex hull by an algorithm like Graham's 
+   * scan (also known as 3 coins algorithm) from the front and/or from the back 
+   * of the deque; it is never required to remove/insert points at the middle 
+   * of the container. 
+   *
+   * @see Hull2D::updateHullWithAdaptedStack
+   * 
+   * Note that is the input points do not form a simple polygonal line, 
+   * the behavior is not defined. 
    *
    * @tparam TPoint a model of point
    * @tparam TOrientationFunctor a model of COrientationFunctor2
@@ -172,10 +191,27 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const MelkmanConvexHull<TPoint, TOrientationFunctor> & object );
 
+  namespace functions
+  {
   namespace Hull2D
   {
     /**
+     * @brief Procedure that retrieves the vertices
+     * of the hull of a set of 2D points given by 
+     * the range [ @a itb , @a ite ). 
+     * This procedure follows the well-known Melkman algorithm
+     * [Melkman, 1979 : \cite Melkman1987]
      *
+     * @see MelkmanConvexHull
+     *
+     * @param itb begin iterator
+     * @param ite end iterator 
+     * @param res output iterator used to export the retrieved points
+     * @param aFunctor aFunctor  
+     * 
+     * @tparam ForwardIterator a model of forward and readable iterator
+     * @tparam OutputIterator a model of incrementable and writable iterator   
+     * @tparam Functor a model of COrientationFunctor2
      */
     template <typename ForwardIterator, 
 	      typename OutputIterator, 
@@ -184,7 +220,8 @@ namespace DGtal
 				    const ForwardIterator& ite,  
 				    OutputIterator res, 
 				    Functor& aFunctor ); 
-  }
+  } //namespace Hull2D
+  } //namespace functions
 
 } // namespace DGtal
 

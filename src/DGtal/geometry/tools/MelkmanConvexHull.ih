@@ -53,7 +53,7 @@ void
 DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::add(const Point& aPoint)
 {
 
-  using namespace DGtal::Hull2D; 
+  using namespace DGtal::functions::Hull2D; 
 
   if (myContainer.size() < 4)
     {
@@ -85,13 +85,10 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::add(const Point& aPoint)
 	     !myForwardPredicate( *boost::next(myContainer.begin()), myContainer.front(), aPoint ) ) )
 	{
 	  //backward scan
-	  // Point frontPoint = myContainer.front(); 
-	  // myContainer.pop_front(); //required to prevent its deletion by the below procedure
 	  updateHullWithAdaptedStack( backStack(myContainer), aPoint, myBackwardPredicate );
 	  myContainer.push_back( aPoint ); 
 	  
 	  //forward scan
-	  // myContainer.push_front( frontPoint ); 
 	  updateHullWithAdaptedStack( frontStack(myContainer), aPoint, myForwardPredicate );
 	  myContainer.push_front( aPoint ); 
 	}
@@ -164,9 +161,10 @@ template <typename ForwardIterator,
 	  typename OutputIterator, 
 	  typename Functor >
 inline
-void DGtal::Hull2D::melkmanConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
-					       OutputIterator res, 
-					       Functor& aFunctor )
+void DGtal::functions::Hull2D::
+melkmanConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
+			   OutputIterator res, 
+			   Functor& aFunctor )
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
   BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 

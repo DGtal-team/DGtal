@@ -92,7 +92,7 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( CStack )
     {
-      ConceptUtils::sameType( myV, myX.top() ); 
+      concepts::ConceptUtils::sameType( myV, myX.top() ); 
       myX.push( myV );
       myX.pop(); 
 
@@ -101,9 +101,9 @@ namespace DGtal
     }
     void checkConstConstraints() const
     {
-      ConceptUtils::sameType( myS, myX.size() );
-      ConceptUtils::sameType( myB, myX.empty() );
-      ConceptUtils::sameType( myV, myX.top() );
+      concepts::ConceptUtils::sameType( myS, myX.size() );
+      concepts::ConceptUtils::sameType( myB, myX.empty() );
+      concepts::ConceptUtils::sameType( myV, myX.top() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

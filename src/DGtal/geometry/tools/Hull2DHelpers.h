@@ -61,6 +61,8 @@
 namespace DGtal
 {
 
+  namespace functions
+  {
   /**
    * @namespace Hull2D gathers useful functions to compute 
    * and return the convex hull or the alpha-shape of a range 
@@ -352,6 +354,7 @@ namespace DGtal
 
   } // namespace convexHull2D
 
+  } // namespace functions
 
 } // namespace DGtal
 
