@@ -558,93 +558,6 @@ bool exampleTiledImageFromHDF5_10blocks3D()
   
   return true;
 }
-
-/*bool exampleOLDTiledImage3D()
- {
- int i, j, k;
- 
- trace.beginBlock("OLD example : ImageFactoryFromHDF5 (3D)");
- 
- typedef ImageContainerBySTLVector<Z3i::Domain, DGtal::uint8_t> ImageV;
- typedef ImageV::Domain DomainV;
- typedef ImageV::Point PointV;
- DomainV domainV(PointV(0,0,0), PointV(NX_3D_TILED-1, NY_3D_TILED-1, NZ_3D_TILED-1));
- ImageV imageV(domainV);
- 
- for(k = 0; k < NZ_3D_TILED; k++)
- for(j = 0; j < NY_3D_TILED; j++)
- for(i = 0; i < NX_3D_TILED; i++)
- if (i>=15 && j>=15 && k>=15 && i<35 && j<35 && k<35)
- imageV.setValue(PointV(i,j,k), 1);
- else
- imageV.setValue(PointV(i,j,k), 0);
- 
- typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
- 
- typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
- MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D);
- 
- typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
- 
- //typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
- typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyLAST;
- typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
- //MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 3);
- MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);
- MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
- 
- typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
- //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
- MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 5);
- MyTiledImage tiledImage1block(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 1);
- 
- typedef MyTiledImage::OutputImage OutputImage;
- OutputImage::Value aValue;
- 
- int cpt=0;
- trace.beginBlock("Counting ones in the original image (domain)");
- for(Image::Domain::ConstIterator it = imageV.domain().begin(), itend = imageV.domain().end();
- it != itend; ++it)
- if (imageV( *it ) == 1)
- cpt++;
- trace.info() << "imageV cpt: " << cpt << endl;
- trace.endBlock();
- 
- cpt=0;
- trace.beginBlock("Counting ones in the original image (range)");
- for(Image::Range::ConstIterator it = imageV.range().begin(), itend = imageV.range().end();
- it != itend; ++it)
- if (( *it ) == 1)
- cpt++;
- trace.info() << "imageV cpt: " << cpt << endl;
- trace.endBlock();
- 
- trace.info() << tiledImage1block << std::endl;
- 
- cpt=0;
- trace.beginBlock("Counting ones in the tiled image - 1x1x1 blocks - LAST/WT");
- for(Image::Domain::ConstIterator it = tiledImage1block.domain().begin(), itend = tiledImage1block.domain().end();
- it != itend; ++it)
- if (tiledImage1block(*it) == 1)
- cpt++;
- trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage1block.getCacheMissRead() << " - cacheMissWrite:" << tiledImage1block.getCacheMissWrite() << endl;
- trace.endBlock();
- 
- cpt=0;
- trace.beginBlock("Counting ones in the tiled image - 5x5x5 blocks - LAST/WT");
- for(Image::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
- it != itend; ++it)
- if (tiledImage(*it) == 1)
- cpt++;
- trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.getCacheMissRead() << " - cacheMissWrite:" << tiledImage.getCacheMissWrite() << endl;
- trace.endBlock();
- 
- trace.endBlock();
- trace.info() << endl;
- 
- return true;
- }*/
-
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -653,7 +566,7 @@ int main( /*int argc, char** argv*/ )
   //if (argc==1)
   writeHDF5_3D_TILED();
   
-  /*exampleOLDTiledImage3D() && */exampleImage3D();
+  exampleImage3D();
   
   exampleTiledImageFromImage_1block3D();
   exampleTiledImageFromHDF5_1block3D();
