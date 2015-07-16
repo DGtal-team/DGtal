@@ -275,6 +275,8 @@ namespace DGtal
 //#include "DGtal/images/ImageViewIterator.ih"
 #include "ImageViewIterator.ih"
 
+#else // __cplusplus >= 201103L
+#error ImageViewIterator.h requires C++11.
 #endif // __cplusplus >= 201103L
 
 //                                                                           //

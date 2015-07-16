@@ -528,6 +528,8 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#else // __cplusplus >= 201103L
+#error ArrayImageView.h requires C++11.
 #endif // __cplusplus >= 201103L
 
 //                                                                           //
