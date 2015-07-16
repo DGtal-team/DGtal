@@ -50,6 +50,8 @@
 namespace DGtal
 {
 
+  namespace functors {
+
   /////////////////////////////////////////////////////////////////////////////
   // template class PolarPointComparatorBy2x2DetComputer
   /**
@@ -108,7 +110,7 @@ namespace DGtal
      * Type of the object that returns a bool from the determinant returned 
      * by @a myDetComputer.   
      */
-    typedef Thresholder<ResultInteger, false, false> CustomThresholder; 
+    typedef functors::Thresholder<ResultInteger, false, false> CustomThresholder; 
 
 
     // ----------------------- Standard services ------------------------------
@@ -243,6 +245,8 @@ namespace DGtal
   template <typename TPoint, typename TDetComputer>
   std::ostream&
   operator<< ( std::ostream & out, const PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer> & object );
+
+  } //namespace functors
 
 } // namespace DGtal
 

@@ -109,7 +109,7 @@ namespace DGtal
     {
       // const method dummyConst should take parameter myA of type A and return
       // something of type B
-      ConceptUtils::sameType( myB, myX( myP, myP ) );
+      concepts::ConceptUtils::sameType( myB, myX( myP, myP ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:

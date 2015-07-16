@@ -34,7 +34,7 @@
 #include "DGtal/geometry/tools/Hull2DHelpers.h"
 
 #include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
-#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -56,13 +56,13 @@ bool testHullFunctions2D()
   typedef std::vector<Point> Container; 
 
   //orientation functor and predicate
-  typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int32_t> OrientationFunctor; 
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> OrientationFunctor; 
   OrientationFunctor orientationFunctor;
   PredicateFromOrientationFunctor2<OrientationFunctor> 
     predicate( orientationFunctor ); 
 
   //functions namespace
-  using namespace Hull2D;
+  using namespace functions::Hull2D;
 
   trace.beginBlock ( "Testing openGrahamScan" );
 

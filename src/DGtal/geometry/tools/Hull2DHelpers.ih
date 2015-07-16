@@ -36,6 +36,8 @@
 
 namespace DGtal
 {
+  namespace functions
+  {
   namespace Hull2D
   {
 
@@ -256,7 +258,7 @@ namespace DGtal
       //define a default comparator
       typedef typename Point::Coordinate Integer; 
       typedef AvnaimEtAl2x2DetSignComputer<Integer> DetComputer; 
-      typedef PolarPointComparatorBy2x2DetComputer<Point, DetComputer> Comparator; 
+      typedef functors::PolarPointComparatorBy2x2DetComputer<Point, DetComputer> Comparator; 
       Comparator comparator; 
 
       //call overloaded version
@@ -309,7 +311,7 @@ namespace DGtal
     }
 
   } // namespace convexHull2D
-
+  } // namespace functions
 } // namespace DGtal
 
 //                                                                           //

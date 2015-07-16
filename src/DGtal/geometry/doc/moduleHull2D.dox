@@ -28,13 +28,14 @@ implementations provide exact results as long as the underlying
 geometric predicates are robust (see @ref moduleGeometricPredicates 
 for more details about geometric predicates).
 
-Related example is exampleAlphaShape.cpp. 
+A related example is exampleAlphaShape.cpp. 
 
 \section sectmoduleHull2D1 Convex hull
 
-Two convex hull algorithms are available: 
+Three convex hull algorithms are available: 
 - Hull2D::andrewConvexHullAlgorithm [Andrew, 1979 : \cite Andrew1979]
 - Hull2D::grahamConvexHullAlgorithm [Graham, 1972 : \cite Graham1972]
+- Hull2D::melkmanConvexHullAlgorithm [Melkman, 1987 : \cite Melkman1987]
 
 They both use the basic procedures Hull2D::buildHullWithStack
 (the object having a stack interface is passed by reference) 
@@ -49,13 +50,17 @@ Let us recall that a polygon is a WEVP if for every point on it,
 there exists an infinite half-line beginning at this point, which 
 does not intersect the polygon at anywhere else. 
 
+@note The two first algorithms compute the convex hull of any set
+of $\f n $\f 2D points in \f$ O(n\log{(n)}) \f$, 
+whereas the third one compute the convex hull of a simple polygonal line, 
+ie. without self-intersection in linear-time. 
  
-Before calling these procedures, you must use the Hull2D namespace
+Before calling these algoritms, you must use the functions::Hull2D namespace
 defined in the file Hull2DHelpers.h. 
 @snippet geometry/tools/exampleAlphaShape.cpp Hull2D-Include
 @snippet geometry/tools/exampleAlphaShape.cpp Hull2D-Namespace
 
-Moreover, you need to create an orientation predicate  
+Moreover, you need to create an orientation functor or predicate  
 (see @ref moduleGeometricPredicates for more details about geometric predicates). 
 @snippet geometry/tools/exampleAlphaShape.cpp Hull2D-Functor
 @snippet geometry/tools/exampleAlphaShape.cpp Hull2D-StrictPredicateCCW
@@ -68,6 +73,7 @@ Moreover, you need to create an orientation predicate
 @note The above predicate adapts the above functor in order to return 'true' for 
 striclty positive values. The last two template arguments means that neither the 
 strictly negative values, nor the null values are accepted. 
+
 
 \subsection subsectmoduleHull2D11 Andrew's algorithm
 
@@ -130,6 +136,9 @@ You may call the procedure Hull2D::grahamConvexHullAlgorithm as follows:
 @warning You must choose a predicate returning 'true' for counter-clockwise oriented 3-point sets, 
 because the sorting step is done with a counter-clockwise orientation.  
 
+\subsection subsectmoduleHull2D13 Melkman's algorithm
+
+TODO
 
 \section sectmoduleHull2D2 Alpha-shape
 
