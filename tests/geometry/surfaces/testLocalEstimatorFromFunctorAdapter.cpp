@@ -47,6 +47,7 @@
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/CLocalEstimatorFromSurfelFunctor.h"
 
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/topology/DigitalSurface.h"
 
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
 
@@ -100,9 +101,10 @@ bool testLocalEstimatorFromFunctorAdapter()
 
   using namespace Z3i;
   typedef ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
-  typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> Surface;
-  typedef Surface::SurfelConstIterator ConstIterator;
-  typedef Surface::Surfel Surfel;
+  typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> SurfaceContainer;
+  typedef DigitalSurface< SurfaceContainer > Surface;
+  typedef SurfaceContainer::SurfelConstIterator ConstIterator;
+  typedef SurfaceContainer::Surfel Surfel;
 
 
   trace.beginBlock("Creating Surface");
@@ -115,8 +117,9 @@ bool testLocalEstimatorFromFunctorAdapter()
                << "K.init() is ok" << std::endl;
   ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
   Surfel bel = Surfaces<KSpace>::findABel( K, ellipse, 10000 );
-  Surface surface( K, ellipse,
-                    SurfelAdjacency<KSpace::dimension>( true ), bel );
+  SurfaceContainer* surfaceContainer = new SurfaceContainer
+    ( K, ellipse, SurfelAdjacency<KSpace::dimension>( true ), bel );
+  Surface surface( surfaceContainer ); // acquired
   unsigned int nbsurfels = 0;
   for ( ConstIterator it = surface.begin(), it_end = surface.end();
        it != it_end; ++it )
@@ -127,32 +130,40 @@ bool testLocalEstimatorFromFunctorAdapter()
   trace.endBlock();
 
   trace.beginBlock("Creating  adapter");
-  typedef DummyEstimatorFromSurfels<Surfel, CanonicSCellEmbedder<KSpace> > Functor;
-  typedef ConstValueFunctor< double > ConvFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor, ConvFunctor> Reporter;
+  typedef DGtal::functors::DummyEstimatorFromSurfels<Surfel, CanonicSCellEmbedder<KSpace> > Functor;
+  typedef DGtal::functors::ConstValue< double > ConvFunctor;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, 
+                                                 Functor, ConvFunctor> Reporter;
 
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor, GaussianKernelFunctor> ReporterGaussian;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, 
+                                                 Functor, DGtal::functors::GaussianKernel> ReporterGaussian;
 
-  CanonicSCellEmbedder<KSpace> embedder(surface.space());
+  CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   Functor estimator(embedder, 1);
 
   ConvFunctor convFunc(1.0);
-  Reporter reporter(surface, l2Metric, estimator , convFunc);
+  Reporter reporter;//(surface,l2Metric,estimator,convFunc);
+  reporter.attach(surface);
+  reporter.setParams(l2Metric,estimator,convFunc, 5);
 
   //We just test the init for Gaussian
-  GaussianKernelFunctor gaussKernelFunc(1.0);
-  ReporterGaussian reporterGaussian(surface, l2Metric, estimator , gaussKernelFunc);
-  reporterGaussian.init(1,5);
+  DGtal::functors::GaussianKernel gaussKernelFunc(1.0);
+  ReporterGaussian reporterGaussian;
+  reporterGaussian.attach(surface);
+  reporterGaussian.setParams(l2Metric,estimator,gaussKernelFunc, 5.0);
+  reporterGaussian.init(1, surface.begin(), surface.end());
 
-  reporter.init(1.0, 5.0);
+  reporter.init(1.0, surface.begin(), surface.end());
   Functor::Quantity val = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 5= "<<val << std::endl;
   nbok += ((fabs((double)val - 124.0)) < 40) ? 1 : 0;
   nb++;
 
-  reporter.init(1, 20);
+  reporter.setParams(l2Metric,estimator,convFunc, 20.0);
+  reporter.init(1, surface.begin(), surface.end());
   Functor::Quantity val2 = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 20= "<<val2 << std::endl;
+
   nbok += ((fabs((double)val2 - 398.0)) < 120) ? 1 : 0;
   nb++;
 
@@ -173,14 +184,14 @@ bool testConcepts()
   typedef Z3i::KSpace::Surfel Surfel;
   typedef CanonicSCellEmbedder<Z3i::KSpace> Embedder;
   trace.beginBlock("Checking concepts");
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< DummyEstimatorFromSurfels<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< functors::DummyEstimatorFromSurfels<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< functors::ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
 
 #ifdef WITH_CGAL
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< MongeJetFittingMeanCurvatureEstimator<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< MongeJetFittingGaussianCurvatureEstimator<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< LinearLeastSquareFittingNormalVectorEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingMeanCurvatureEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingGaussianCurvatureEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::LinearLeastSquareFittingNormalVectorEstimator<Surfel,Embedder > >));
 #endif
 
   trace.endBlock();

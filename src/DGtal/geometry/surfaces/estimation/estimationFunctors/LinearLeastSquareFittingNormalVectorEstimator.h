@@ -60,6 +60,8 @@
 
 namespace DGtal
 {
+  namespace functors
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class LinearLeastSquareFittingNormalVectorEstimator
   /**
@@ -152,7 +154,7 @@ namespace DGtal
 
 
   }; // end of class LinearLeastSquareFittingNormalVectorEstimator
-
+  }
 } // namespace DGtal
 
 

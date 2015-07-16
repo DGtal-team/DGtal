@@ -160,6 +160,21 @@ public:
      int depthValue = -1 );
 
   /** 
+   * Draws a quadratic Bezier curve from (x1,y1) to (x3,y3), 
+   * with (x2,y2) as middle control point. 
+   * 
+   * @param x1 First coordinate of the first point.
+   * @param y1 Second coordinate of the first point.
+   * @param x2 First coordinate of the middle point.
+   * @param y2 Second coordinate of the middle point.
+   * @param x3 First coordinate of the last point.
+   * @param y3 Second coordinate of the last point.
+   * @param depthValue Depth of the line.
+   */
+  void drawQuadraticBezierCurve( double x1, double y1, double x2, double y2, double x3, double y3,  
+     int depthValue = -1 ); 
+
+  /** 
    * Draws a line from (x1,y1) to (x2,y2) with an arrow at (x2,y2).
    * 
    * @param x1 First coordinate of the first extremity.
@@ -675,7 +690,7 @@ public:
           double angle = 0.0 );
 
   /** 
-   * Save the drawing in an EPS, XFIG of SVG file depending 
+   * Save the drawing in an EPS, XFIG or SVG file depending 
    * on the filename extension. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 
@@ -686,7 +701,7 @@ public:
   void save( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const; 
   
   /** 
-   * Save the drawing in an EPS, XFIG of SVG file depending 
+   * Save the drawing in an EPS, XFIG or SVG file depending 
    * on the filename extension. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 

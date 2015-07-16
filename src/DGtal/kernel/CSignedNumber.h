@@ -51,7 +51,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CSignedNumber
   /**
@@ -111,7 +112,7 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
     typename NumberTraits<T>::IsSigned myIsSigned;
 
   }; // end of concept CSignedNumber
-  
+  } 
 } // namespace DGtal
 
 

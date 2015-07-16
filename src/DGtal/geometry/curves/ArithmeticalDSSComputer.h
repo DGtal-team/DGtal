@@ -106,20 +106,20 @@ namespace DGtal
      * Type of coordinate
      */
     typedef typename IteratorCirculatorTraits<TIterator>::Value::Coordinate Coordinate; 
-    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
 
     /**
      * Type of integer, devoted to remainders (and intercepts)
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
 
     /**
      * Type of objects that represents DSSs 
      */
     typedef ArithmeticalDSS<Coordinate, Integer, adjacency> DSS; 
     //we expect that the iterator type returned DGtal points, used in the DSS representation
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename DSS::Point >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Point, typename DSS::Point >::value ));
 
     /**
      * Type of primitive representation, defined as an alias of DSS 

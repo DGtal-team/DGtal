@@ -62,6 +62,11 @@
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
+#include "DGtal/dec/VectorField.h"
+#include "DGtal/dec/KForm.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

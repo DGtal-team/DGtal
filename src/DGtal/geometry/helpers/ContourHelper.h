@@ -64,13 +64,28 @@ public:
   /**
    * Compute the barycenter of the 2D contour.  
    * 
-   * @param contour the vector containing the 2D contour coordinates
-   *
+   * @param aContour the vector containing the 2D contour coordinates.
+   * @return the resulting mean point. 
    **/
-  
-  static Z2i::Point getMeanPoint(std::vector<Z2i::Point> contour);
+  template <typename TPoint>
+  static 
+  TPoint getMeanPoint(const std::vector<TPoint> & aContour);
   
 
+  /**
+   * Checks if a contour given as a sequence of point is clockwise oriented or not.
+   *
+   * @param aContour the vector containing the 2D contour coordinates.
+   * @return 'true' if the contour is counter clockwise oriented, 'false' otherwise.
+   **/
+
+  template <typename TPoint> 
+  static
+  bool
+  isCounterClockWise(const std::vector<TPoint> & aContour);
+
+   
+  
 
     // ----------------------- Standard services ------------------------------
 public:

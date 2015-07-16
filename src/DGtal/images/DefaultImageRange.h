@@ -59,7 +59,7 @@ namespace DGtal
 
   /**
    * @brief Aim: model of CConstBidirectionalRangeFromPoint and 
-   * CBidirectionalOutputRangeFromPoint that adapts the domain 
+   * CBidirectionalRangeWithWritableIteratorFromPoint that adapts the domain 
    * of an image in order to iterate over the values associated
    * to its domain points
    * (in a read-only as well as a write-only manner).  
@@ -80,13 +80,13 @@ namespace DGtal
     // ------------------------- inner types --------------------------------
   public: 
   
-    BOOST_CONCEPT_ASSERT(( CTrivialImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CTrivialImage<TImage> ));
     typedef typename TImage::Domain Domain; 
     typedef typename TImage::Point Point; 
     typedef typename TImage::Value Value; 
 
     /// constant iterator types 
-    BOOST_CONCEPT_ASSERT(( CDomain<Domain> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> )); 
     typedef ConstIteratorAdapter<typename Domain::ConstIterator,TImage,Value> ConstIterator; 
     typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 

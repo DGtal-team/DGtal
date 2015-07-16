@@ -317,6 +317,22 @@ namespace DGtal
       }
     }
 
+    inline const T* operator->() const {
+      switch( myParam ) {
+      case CONST_LEFT_VALUE_REF: 
+      case CONST_PTR:
+	return static_cast< const T* >( myPtr );
+      case COUNTED_PTR:
+	return ( static_cast< const CountedPtr<T>* >( myPtr ) )->operator->();
+      case COUNTED_PTR_OR_PTR:
+	return ( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) )->operator->();
+      case COUNTED_CONST_PTR_OR_CONST_PTR:
+	return ( static_cast< const CountedConstPtrOrConstPtr<T>* >( myPtr ) )->operator->();
+      default: ASSERT( false && "[ConstAlias::operator->() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
+        return 0;
+      }
+    }
+
     // ------------------------- Private Datas --------------------------------
   private:
     /// Characterizes the type of the input parameter at clone instanciation.

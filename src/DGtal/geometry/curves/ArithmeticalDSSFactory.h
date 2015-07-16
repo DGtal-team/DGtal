@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/curves/ArithmeticalDSL.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -76,16 +77,44 @@ namespace DGtal
   public:
 
     typedef TCoordinate Coordinate;
+    typedef Coordinate Position;
     typedef TInteger Integer;
-
     typedef DGtal::PointVector<2, Coordinate> Point;
     typedef Point Vector;
     typedef std::pair<Vector,Vector> Steps;
 
     typedef ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
+    typedef ArithmeticalDSL<TCoordinate,TInteger,adjacency> DSL;
 
     // ----------------------- Creation methods ------------------------------
+
   public:
+
+    /**
+     * Construction of the subsegment of minimal parameters of a given DSL. 
+     *
+     * @param aDSL bounding DSL
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses smartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+     */
+    static DSS createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL);
+
+    /**
+     * Construction of the subsegment of minimal parameters of a greater DSS. 
+     *
+     * @param aDSS bounding DSS
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reversedSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014].
+     *
+     * @see createLeftSubsegment
+     */
+    static DSS createSubsegment(const DSS& aDSS, const Point& aF, const Point& aL);
 
     /**
      * @brief Method that creates a DSS that is a pattern
@@ -99,7 +128,7 @@ namespace DGtal
      */
     static DSS createPattern(const Point& aF, const Point& aL);
 
-    /**
+  /**
      * @brief Method that creates a DSS that is a reversed pattern
      * or a repetition of a reversed pattern from two input digital points,
      * viewed as lower leaning points. Creates the pattern from
@@ -113,10 +142,42 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the vector
      * starting from @a aF and pointing to @a aL
      */
-    static DSS createReversedPattern(const Point& aF, const Point& aL);
+  static DSS createReversedPattern(const Point& aF, const Point& aL);
+  
+  /**
+   * @brief Method that creates a DSS from a direction vector, a first and last point and one upper leaning point 
+   *
+   * @param aA y-component of the direction vector
+   * @param aB x-component of the direction vector
+   * @param aF first input digital point
+   * @param aL second input digital point
+   * @param aU upper leaning point
+   * @return a DSS
+   *
+   * NB: logarithmic-time in the max of the greatest component of the vector
+   * starting from @a aU and pointing to @a aL and the greatest
+   * component of the vector starting from @a aF and pointing to @a
+   * aU. 
+   */
+  
+  static DSS createDSS(const Coordinate& aA, const Coordinate& aB, const Point& aF, const Point& aL, const Point& aU);
+  
+
 
     // ----------------------- Internals -------------------------------------
   private:
+
+    /**
+     * Construction of the left subsegment of minimal parameters of a greater DSS. 
+     * It is bound by the first point of @a aDSS on the left and by @a aL on the right. 
+     *
+     * @param aDSS bounding DSS
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reversedSmartCH algorithm [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+     */
+    static DSS createLeftSubsegment(const DSS& aDSS, const Point& aL);
 
     /**
      * Returns the bezout vector (u,v) of a given

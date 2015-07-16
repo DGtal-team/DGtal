@@ -44,11 +44,12 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/CEuclideanRing.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-  
+
 /////////////////////////////////////////////////////////////////////////////
 // template class InexactPredicateLpSeparableMetric
 /**
@@ -59,13 +60,13 @@ namespace DGtal
  * Given a parameter p, the class implement classical l_p
  * metric as a model of CSeparableMetric. Hence, given two points
  * @f$ x=(x_0...x_{n-1})@f$, @f$ y=(y_0...y_{n-1})@f$ in the given digital space (see
- * below), we define a metric such that: 
+ * below), we define a metric such that:
  *
  * @f$ distance(x,y)= \left(
  * \sum_{i=0}^{n-1} |x_i-y_i|^p\right)^{1/p}@f$
  *
  * This class is said to be inexact in the sense that the power @a p a
- * floating number (@a double) and the power is given by std::pow on
+ * real number (of type TValue, e.g. @a double or @a float) and the power is given by std::pow on
  * double numbers. As a consequence, @a hiddenBy and @a closest
  * methods may be inexact (numerical issues).
  *
@@ -73,44 +74,49 @@ namespace DGtal
  *
  * @tparam TSpace the model of CSpace on which the metric is
  * defined.
+ * @tparam TValue value type of the distance computation (e.g. float
+ * or double --defaut--). Model of CEuclideanRing.
  */
-  template <typename TSpace>
+  template <typename TSpace, typename TValue = double>
   class InexactPredicateLpSeparableMetric
-    : public std::binary_function< typename TSpace::Point, typename TSpace::Point, double >
+    : public std::binary_function< typename TSpace::Point, typename TSpace::Point, TValue >
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     ///Copy the space type
     typedef TSpace Space;
 
-BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<TValue> ));
 
     ///Type for points
     typedef typename Space::Point Point;
     ///Type for points
     typedef typename Point::Coordinate Abscissa;
     ///Type for vectors
-    typedef typename Space::Vector Vector;     
+    typedef typename Space::Vector Vector;
     ///Type for distance values
-    typedef double Value;
-       
+    typedef TValue Value;
+    ///Type for raw distance values
+    typedef TValue RawValue;
+    
     /**
      * Constructor.
      */
     InexactPredicateLpSeparableMetric( const double anExponent );
 
-   
+
     /**
      * Destructor.
      */
     ~InexactPredicateLpSeparableMetric();
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    InexactPredicateLpSeparableMetric ( const InexactPredicateLpSeparableMetric & other ) 
+    InexactPredicateLpSeparableMetric ( const InexactPredicateLpSeparableMetric & other )
     {
       myExponent = other.myExponent;
     }
@@ -120,7 +126,7 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    InexactPredicateLpSeparableMetric & operator= ( const InexactPredicateLpSeparableMetric & other ) 
+    InexactPredicateLpSeparableMetric & operator= ( const InexactPredicateLpSeparableMetric & other )
     {
       myExponent = other.myExponent;
       return *this;
@@ -129,45 +135,42 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
     // ----------------------- Interface --------------------------------------
   public:
 
-    // ----------------------- CLocalMetric --------------------------------------
-    /** 
-     * Compute the local distance between @a aP and its displacement
-     * along the direction @a aDir. 
-     * 
-     * @param aP a point.
-     * @param aDir a direction.
-     * 
-     * @return the distance between @a aP and @a aP+@a aDir. 
-     */
-    Value local(const Point & aP, const Vector &aDir) const;
-
-   
     // ----------------------- CMetric --------------------------------------
-    /** 
+    /**
      * Compute the distance between @a aP and @a aQ.
-     * 
+     *
      * @param aP a first point.
      * @param aQ a second point.
-     * 
+     *
      * @return the distance between aP and aQ.
      */
     Value operator()(const Point & aP, const Point &aQ) const;
-    
-    /** 
+
+    /**
+     * Compute the raw distance between @a aP and @a aQ.
+     *
+     * @param aP a first point.
+     * @param aQ a second point.
+     *
+     * @return the distance between aP and aQ.
+     */
+    RawValue rawDistance(const Point & aP, const Point &aQ) const;
+
+    /**
      * Given an origin and two points, this method decides which one
      * is closest to the origin. This method should be faster than
      * comparing distance values.
-     * 
+     *
      * @param origin the origin
      * @param first  the first point
      * @param second the second point
-     * 
+     *
      * @return a Closest enum: FIRST, SECOND or BOTH.
-     */  
-    Closest closest(const Point &origin, 
+     */
+    Closest closest(const Point &origin,
 		    const Point &first,
 		    const Point &second) const;
-    
+
       // ----------------------- CSeparableMetric --------------------------------------
     /**
      * Given three sites (u,v,w) and a straight segment
@@ -176,7 +179,7 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
      * straight line.
      *
      * This method is in @f$ O(log(n))@f$ if @a n is the size of the
-     * straight segment. 
+     * straight segment.
      *
      * @pre u,v and w must be such that u[dim] < v[dim] < w[dim]
      *
@@ -188,10 +191,10 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
      * @param dim direction of the straight line
      *
      * @return true if (u,w) hides v (strictly).
-     */ 
-    bool hiddenBy(const Point &u, 
+     */
+    bool hiddenBy(const Point &u,
                   const Point &v,
-                  const Point &w, 
+                  const Point &w,
                   const Point &startingPoint,
                   const Point &endPoint,
                   const typename Point::UnsignedComponent dim) const;
@@ -200,7 +203,7 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
-     */    
+     */
     void selfDisplay ( std::ostream & out ) const;
 
     /**
@@ -212,18 +215,18 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
     // ------------------------- Protected Datas ------------------------------
   private:
 
-    /** 
+    /**
      * Compute the Lp distance without the computation of the power
      * 1/p. I.e. only @f$ \sum |p_i- q_i|^p@f$ is given.
-     * 
+     *
      * @param aP a first point
      * @param aQ a second point
-     * 
+     *
      * @return the power p of the l_p distance between aP and aQ.
-     */    
-    double distanceLp(const Point &aP, const Point &aQ) const;
+     */
+    Value distanceLp(const Point &aP, const Point &aQ) const;
 
-  
+
     /**
      * Perform a binary search on the interval [lower,upper] to
      * detect the mid-point between u and v according to the l_p
@@ -250,21 +253,12 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
                                 const Abscissa &lower,
                                 const Abscissa &upper) const;
 
-      
+
     // ------------------------- Private Datas --------------------------------
   private:
 
-    ///Exponent value 
+    ///Exponent value
     Value myExponent;
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-  private:
-
-   
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class InexactPredicateLpSeparableMetric
 
@@ -274,9 +268,9 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
    * @param object the object of class 'InexactPredicateLpSeparableMetric' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename T, typename V>
   std::ostream&
-  operator<< ( std::ostream & out, const InexactPredicateLpSeparableMetric<T> & object );
+  operator<< ( std::ostream & out, const InexactPredicateLpSeparableMetric<T,V> & object );
 
 } // namespace DGtal
 

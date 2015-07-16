@@ -1,6 +1,7 @@
 SET(DGTAL_EXAMPLES_TOPO_SRC
   ctopo-1
   ctopo-2
+  ctopo-fillContours
   khalimskySpaceScanner
   volMarchingCubes
   volToOFF  

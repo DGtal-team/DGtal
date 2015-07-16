@@ -259,7 +259,7 @@ inline
 void
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::computeSurfels()
 {
-  // Since 0.6, models of CDigitalSet are models of CPointPredicate.
+  // Since 0.6, models of CDigitalSet are models of concepts::CPointPredicate.
   // SetPredicate<DigitalSet> isInSet( myDigitalSet );
   mySurfels.clear();
   std::back_insert_iterator<SurfelStorage> output_it =

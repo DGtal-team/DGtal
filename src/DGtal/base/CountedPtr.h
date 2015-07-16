@@ -56,6 +56,22 @@ namespace DGtal
   /**
    * Description of template class 'CountedPtr' <p>
    * \brief Aim: Smart pointer based on reference counts.
+   * 
+   * It is a standard smart pointer by reference counts. Of course,
+   * only dynamically allocated objects may be pointed by a smart
+   * pointer. The CountedPtr<T> holds a pointer to a
+   * CountedPtr::Counter object. This Counter object holds the pointer
+   * to the dynamically allocated object and an integer representing
+   * the number of smart pointers currently pointing to this Counter.
+   *
+   * @code
+   * struct A{};
+   * CountedPtr<A> smart_p1( new A );
+   * CountedPtr<A> smart_p2( new A );
+   * smart_p2 = smart_p1;  // second object is freed, first object is now shared.
+   * @endcode
+   *
+   * @tparam T any data type.
    *
    * Taken from http://ootips.org/yonat/4dev/smart-pointers.html
    */
@@ -63,63 +79,202 @@ namespace DGtal
   class CountedPtr
   {
   public:
+
+    /// Friend class which needs to access to CountedPtr.myCounter.
     friend class CountedPtrOrPtr<T>;
+    /// Friend class which needs to access to CountedPtr.myCounter.
     friend class CountedConstPtrOrConstPtr<T>;
 
     // ----------------------- Standard services ------------------------------
   public:
+    /// Internal structure for storing a smart pointer. Counts the
+    /// number of references to some dynamically allocated object of
+    /// type T in memory.
     struct Counter {
-        Counter(T* p = 0, unsigned c = 1) : ptr(p), count(c) {}
-        T*          ptr;
-        unsigned    count;
+      /**
+       * Builds a counter, i.e. a pair pointer/integer.
+       *
+       * @param p either 0 and the counter is invalid, or a pointer to
+       * some dynamically allocated object of type T.
+       *
+       * @param c the number of CountedPtr currently pointing to this
+       * counter.
+       */
+      Counter(T* p = 0, unsigned c = 1) : ptr(p), count(c) {}
+      /// A pointer to a (shared) dynamically allocated object of type T.
+      T*          ptr;
+      /// The number of CountedPtr pointing to this counter.
+      unsigned    count;
     };
 
-    typedef T element_type;
-
-    explicit CountedPtr(T* p = 0) // allocate a new counter
-        : myCounter(0) { if (p) myCounter = new Counter(p);}
-    ~CountedPtr()
-        {release();}
-    CountedPtr(const CountedPtr& r) throw()
-        {acquire(r.myCounter);}
-    CountedPtr& operator=(const CountedPtr& r)
-    {
-        if (this != &r) {
-            release();
-            acquire(r.myCounter);
-        }
-        return *this;
-    }
-
-    T& operator*()  const throw()   {return *myCounter->ptr;}
-    T* operator->() const throw()   {return myCounter->ptr;}
-    T* get()        const throw()   {return myCounter ? myCounter->ptr : 0;}
-    bool unique()   const throw()
-    {return (myCounter ? myCounter->count == 1 : true);}
 
     /**
-     * For debug.
+     * Default Constructor and constructor from pointer.
+     *
+     * Creates a new CountedPtr, either null if \a p is 0 or pointing
+     * to the given address \a p.
+     *
+     * @param p either 0 or a pointer on a dynamically allocated object of type T.
      */
-    unsigned int count() const      {return myCounter->count;}
+    explicit CountedPtr(T* p = 0) : myCounter(0) 
+    { 
+      if (p) myCounter = new Counter(p);
+    }
 
+    /**
+     * Destructor. If it was the last CountedPtr pointing on the
+     * object, delete it.
+     */
+    ~CountedPtr()
+    { 
+      release(); 
+    }
+
+    /**
+     * Copy Constructor.
+     *
+     * Performs a smart copy. The CountedPtr only references the same
+     * object as \a r. There is now one more reference on the same
+     * object.
+     * 
+     * @param r the object to copy.
+     */
+    CountedPtr(const CountedPtr& r) throw()
+    {
+      acquire(r.myCounter);
+    }
+
+    /**
+     * Assignment.
+     *
+     * Performs a smart assignment. The current referenced object is
+     * dropped (and possibly freed if it was the last smart pointer
+     * pointing on it). Then, this CountedPtr only references the same
+     * object as \a r. There is now one more reference on the same
+     * object.
+     * 
+     * @param r the object to copy.
+     * @return a reference on 'this'.
+     */
+   CountedPtr& operator=(const CountedPtr& r)
+    {
+      if (this != &r)
+        {
+          release();
+          acquire(r.myCounter);
+        }
+      return *this;
+    }
+
+    /**
+     * Dereferencing operator. 
+     * @return a reference on the object that is pointed by the smart pointer.
+     * @pre 'isValid()' is true
+     */
+    T& operator*()  const throw()   
+    {
+      return *myCounter->ptr;
+    }
+
+    /**
+     * Member access operator. 
+     * @return a pointer on the object that is pointed by the smart pointer.
+     * @pre 'isValid()' is true
+     */
+    T* operator->() const throw()   
+    {
+      return myCounter->ptr;
+    }
+
+    /**
+     * Secured member access operator. 
+     *
+     * @return a pointer on the object that is pointed by the smart
+     * pointer or 0 if the object is not valid ('isValid()' is false).
+     */
+    T* get()        const throw()   
+    {
+      return myCounter ? myCounter->ptr : 0;
+    }
+
+    /**
+     * @return 'true' iff the smart pointer is the sole one pointing
+     * on this object or if the smart pointer is invalid ('isValid()' is false).
+     */
+    bool unique()   const throw()
+    {
+      return (myCounter ? myCounter->count == 1 : true);
+    }
+
+    /**
+       Equality operator ==
+       
+       @param other any other pointer.
+       @return 'true' if 'this' points to \a other.
+    */
+    bool operator==( const T* other ) const
+    {
+      return get() == other;
+    }
+
+    /**
+       Inequality operator !=
+       
+       @param other any other pointer.
+       @return 'true' if 'this' points to a different address than \a other.
+    */
+    bool operator!=( const T* other ) const
+    {
+      return get() != other;
+    }
+
+    /**
+     * @note For debug.
+     *
+     * @return the number of smart pointers pointing to the same object as 'this'.
+     */
+    unsigned int count() const      
+    {
+      return myCounter->count;
+    }
+
+    /**
+     * Gives back the pointer without deleting him. Deletes only the
+     * Counter.
+     *
+     * @return the address that was pointed by this smart pointer
+     * @note Use with care.
+     * @pre 'isValid()' and 'unique()'.
+     */
     inline T* drop() 
-    { // Gives back the pointer without deleting him. Delete only the Counter.
+    { 
+      ASSERT( isValid() );
+      ASSERT( unique() );
       T* tmp = myCounter->ptr;
-      ASSERT( myCounter->count == 1 );
       delete myCounter;
       myCounter = 0; 
       return tmp;
     }
 private:
-
-    Counter* myCounter;
-
+    /**
+     * Tells this smart pointer that it should reference the counter
+     * \a c. If \a c is not null, the number of reference counts is
+     * incremented.
+     * @param c any counter (except this.myCounter).
+     */
     void acquire(Counter* c) throw()
     { // increment the count
         myCounter = c;
         if (c) ++c->count;
     }
 
+    /**
+     * Tells this smart pointer to that it should release its current
+     * counter. If this counter was shared then the number of
+     * reference counts is decremented, else both the object pointed
+     * by the counter and the counter are freed.
+     * In all cases, this smart pointer becomes invalid.
+     */
     void release()
     { // decrement the count, delete if it is 0
         if (myCounter) {
@@ -149,6 +304,9 @@ private:
 
     // ------------------------- Protected Datas ------------------------------
   private:
+    /// The counter object pointed by this smart pointer.
+    Counter* myCounter;
+
     // ------------------------- Private Datas --------------------------------
   private:
 

@@ -42,7 +42,7 @@
 
 #include "DGtal/geometry/tools/determinant/COrientationFunctor2.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBy2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -575,7 +575,7 @@ bool randomTest30All()
   {
     srand(seed); 
     std::cout << "3x3-int32-int64 "; 
-    typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int64_t> F; 
+    typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -587,7 +587,7 @@ bool randomTest30All()
   { 
     srand(seed); 
     std::cout << "3x3-int32-BigInt "; 
-    typedef InHalfPlaneBySimpleMatrix<Point, DGtal::BigInteger> F; 
+    typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::BigInteger> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -708,7 +708,7 @@ bool randomTest52All()
     srand(seed); 
     std::cout << "3x3-double-BigInt ";  
     typedef PointVector<2, double> Point; 
-    typedef InHalfPlaneBySimpleMatrix<Point, DGtal::BigInteger> F; 
+    typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::BigInteger> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -846,7 +846,7 @@ bool randomTest62All()
     srand(seed); 
     std::cout << "3x3-BigInt-BigInt ";  
     typedef PointVector<2, DGtal::BigInteger> Point; 
-    typedef InHalfPlaneBySimpleMatrix<Point, DGtal::BigInteger> F; 
+    typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::BigInteger> F; 
     randomTest( F(), signedRandomBigInt62 );
     nullSameVectorsTest( F(), signedRandomBigInt62 );
     nullZeroVectorTest( F(), signedRandomBigInt62 ); 

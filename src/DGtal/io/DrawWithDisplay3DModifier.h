@@ -175,16 +175,16 @@ struct ClippingPlane : public DrawWithDisplay3DModifier
    * @brief class to modify the position and scale to construct better illustration mode.
    * @todo add a constructor to automatically define the shift and the scale according a given associated SCell.
    */
-struct TransformedSurfelPrism : public DrawWithDisplay3DModifier
+struct TransformedPrism : public DrawWithDisplay3DModifier
 {
   /**
      * Constructor.
      *
      * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
      * @param aShift the shift distance (positive or negative).
-     * @param aSizeFactor use to change the SurfelPrism size (1.0 initial size).
+     * @param aSizeFactor use to change the Prism size (1.0 initial size).
      */
-  TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
                           double aShift, double aSizeFactor=1.0 ):mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
   {
   }
@@ -196,9 +196,9 @@ struct TransformedSurfelPrism : public DrawWithDisplay3DModifier
      * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
      * @param aVoxel a  DGtal::Z3i::SCell represent the voxel for which the surfel is associated. It permits to determine automatically the shift parameter (the surfel is automatically shifted towards this voxel).
      * @param aShift the shift distance (positive or negative (default 0.05)).
-     * @param aSizeFactor use to change the SurfelPrism size (default 0.75).
+     * @param aSizeFactor use to change the Prism size (default 0.75).
      */
-  TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
                           const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel,
                           double aShift=0.05, double aSizeFactor=0.75  )
   {
@@ -227,7 +227,49 @@ struct TransformedSurfelPrism : public DrawWithDisplay3DModifier
 };
 
 
+  /**
+   * This structure is used to set the "OpenGL name" (an integer
+   * identifier) of the following display command(s).
+   * You may use it like
+   * \code
+   * SCell surfel = ... ;
+   * viewer << SetName3D( 100 );
+   * viewer << surfel; // surfel is identified with name 100 when clicked.
+   * \endcode
+   */
+  struct SetName3D : public DrawWithDisplay3DModifier {
+    /// Sets the "OpenGL name" of future display command(s).
+    /// @param aName any integer: an identifier for later selection or -1 for none.
+    SetName3D( DGtal::int32_t aName = -1 ) : name( aName ) {} 
+    /// @return the class name as a string.
+    std::string className() const { return "SetName3D"; }
+    /// the "OpenGL name" for selection, or -1 for none.
+    DGtal::int32_t name;
+  };
 
+  /**
+   * This structure is used to pass callback functions to the
+   * viewer. These callback functions are called when specific
+   * graphical objects are selected by the user (@see SetName3D).
+   */
+  struct SetSelectCallback3D : public DrawWithDisplay3DModifier {
+    /// The prototype for a callback function. It is called with a
+    /// pointer to the viewer, the "OpenGL name" of the selected
+    /// graphical element and a pointer toward the data that was given
+    /// at construction of SetSelectCallback3D.
+    typedef int (*CallbackFct)( void* viewer, DGtal::int32_t name, void* data );
+    SetSelectCallback3D( CallbackFct f, 
+                         void* data,
+                         DGtal::int32_t min = 0, DGtal::int32_t max = 0x7fffffff ) 
+      : myFct( f ), myData( data ), myMin( min ), myMax( max ) {}
+    /// @return the class name as a string.
+    std::string className() const { return "SetSelectCallback3D"; }
+    /// The callback function associated to the selection of an element.
+    CallbackFct myFct;
+    void* myData;
+    DGtal::int32_t myMin;
+    DGtal::int32_t myMax;
+  };
 } // namespace DGtal
 
 

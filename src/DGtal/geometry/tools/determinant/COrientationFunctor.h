@@ -98,9 +98,9 @@ namespace DGtal
      ### Valid expressions and semantics
 
      | Name            | Expression | Type requirements       | Return type | Precondition | Semantics                           | Post condition | Complexity      |
-     |-----------------+------------+-------------------------+-------------+--------------+-------------------------------------+----------------+-----------------|
+     |-----------------|------------|-------------------------|-------------|--------------|-------------------------------------|----------------|-----------------|
      | array dimension | X::size    |                         | SizeArray   |              | size of the array, equal to k       |                |                 |
-     | initialization  | x.init(a)  | a is of type PointArray | void        |              | implicitely set the algebraic curve |                | model-dependant |
+     | initialization  | x.init(a)  | a is of type PointArray | void        |              | implicitely set the algebraic curve |                | model-dependent |
 
 
      ### Models
@@ -109,19 +109,19 @@ namespace DGtal
      @tparam T the type that should be a model of COrientationFunctor.
   */
   template <typename T>
-  struct COrientationFunctor : CPointFunctor<T>
+  struct COrientationFunctor : concepts::CPointFunctor<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
 
-    BOOST_CONCEPT_ASSERT(( CSignedNumber< typename T::Value > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber< typename T::Value > ));
     
     typedef typename T::PointArray PointArray; 
     typedef typename T::SizeArray SizeArray; 
 
     BOOST_CONCEPT_USAGE( COrientationFunctor )
     {
-      ConceptUtils::sameType( myS, T::size ); 
+      concepts::ConceptUtils::sameType( myS, T::size ); 
       myX.init( myA );
     }
     // ------------------------- Private Datas --------------------------------

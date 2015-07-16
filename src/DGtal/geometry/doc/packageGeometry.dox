@@ -60,7 +60,6 @@ of arbitrary dimension, by the means of separable and incremental distance trans
   - \ref moduleArithDSSReco (Tristan Roussillon) 
   - \ref moduleFrechetShortcut (Isabelle Sivignon)
 
-
 - \ref modulePlaneRecognition (Jacques-Olivier Lachaud)
  - \ref moduleCOBANaivePlaneRecognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
  - Chord algorithm for plane recognition (Jacques-Olivier Lachaud, Yan Gerard, Isabelle Debled-Rennesson, Paul Zimmermann) --- documentation coming soon ---
@@ -69,9 +68,16 @@ of arbitrary dimension, by the means of separable and incremental distance trans
   - DSS / DCA / .. based estimators      --- documentation coming soon but have a look to models of CSegmentComputerEstimator ---
   - \ref moduleIntegralInvariant <!--Integral invariant curvature estimator 2D/3D--> (Jérémy Levallois, David Coeurjolly, Jacques-Olivier Lachaud)
   - \ref LocalEstimatorsFromSurfel (David Coeurjolly)
+  - \ref moduleVCM (Louis Cuel, Jacques-Olivier Lachaud, Quentin Mérigot, Boris Thibert)
 
+- Volumetric analysis
+  - \ref moduleMetrics (David Coeurjolly)
+  - \ref moduleVolumetric (David Coeurjolly)
+  - \ref moduleFMM (Tristan Roussillon) 
 
-- \ref moduleVolumetric (David Coeurjolly)
+- Tools 
+  - \ref moduleGeometricPredicates (Tristan Roussillon)
+
 
 @b Package @b Concepts @b Overview
 

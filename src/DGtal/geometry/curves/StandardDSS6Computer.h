@@ -79,7 +79,7 @@ namespace DGtal
 
 
     //entier
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     typedef TInteger Integer;
 
 
@@ -102,7 +102,7 @@ namespace DGtal
     typedef DGtal::PointVector<3,double> VectorD3d;
         
     // adapters for iterator
-    typedef Projector<SpaceND<2,Coordinate> > Projector2d;
+    typedef functors::Projector<SpaceND<2,Coordinate> > Projector2d;
     
     typedef ConstIteratorAdapter<ConstIterator,Projector2d,Point2d> IteratorAdapter; 
     

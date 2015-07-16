@@ -75,7 +75,7 @@ namespace DGtal
   public:
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
     < TDigitalSurfaceEmbedder, TNormalVectorEstimator > Self;
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
 
     typedef TDigitalSurfaceEmbedder DigitalSurfaceEmbedder;
     typedef TNormalVectorEstimator NormalVectorEstimator;
@@ -92,8 +92,8 @@ namespace DGtal
     typedef typename NormalVectorEstimator::Quantity Quantity;
     typedef typename NormalVectorEstimator::DigitalSurface NVESurface;
 
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealVector, Quantity >::value ));
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Surface, NVESurface >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< RealVector, Quantity >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Surface, NVESurface >::value ));
 
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<DigitalSurfaceEmbedder,NormalVectorEstimator> GradientMap;
 
@@ -217,7 +217,7 @@ namespace DGtal
   {
   public:
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder,TNormalVectorEstimator> Self;
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
 
     typedef TDigitalSurfaceEmbedder DigitalSurfaceEmbedder;
     typedef TNormalVectorEstimator NormalVectorEstimator;

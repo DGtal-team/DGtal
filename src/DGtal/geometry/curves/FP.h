@@ -54,7 +54,7 @@
 namespace DGtal
 {
 
-  namespace details 
+  namespace detail 
   {
     /////////////////////////////////////////////////////////////////////////////
     /**
@@ -242,7 +242,7 @@ namespace DGtal
       bool isInConvexPart() const { return false; }
     };
 
-  } //end namespace details
+  } //end namespace detail
   /////////////////////////////////////////////////////////////////////////////
 
 
@@ -296,7 +296,7 @@ namespace DGtal
   public:
 
 
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     
     typedef DGtal::PointVector<2,TInteger> Point;
     typedef DGtal::PointVector<2,TInteger> Vector;

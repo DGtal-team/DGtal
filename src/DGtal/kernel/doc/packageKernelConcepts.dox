@@ -61,17 +61,17 @@ digraph GKERNEL {
       node [style=filled,color=white];
       label="kernel (main concepts)";
       
-      CPointPredicate [label="CPointPredicate" URL="@ref  CPointPredicate"];
-      CPointFunctor [label="CPointFunctor" URL="@ref CPointFunctor"];
-      CSpace [label="CSpace" ULR="@ref CSpace"];
-      CInteger [label="CInteger" URL="@ref CInteger"];
-      CUnsignedNumber [label="CUnsignedNumber" URL="@ref CUnsignedNumber"];
-      CSignedNumber [label="CSignedNumber" URL="@ref CSignedNumber"];
-      CIntegralNumber [label="CIntegralNumber" URL="@ref CIntegralNumber"];
-      CBoundedNumber [label="CBoundedNumber" URL="@ref CBoundedNumber"];
-      CEuclideanRing [label="CEuclideanRing" URL="@ref CEuclideanRing"];
-      CCommutativeRing [label="CCommutativeRing" URL="@ref CCommutativeRing"];
-      CDomain [label="CDomain" URL="@ref CDomain"];
+      CPointPredicate [label="CPointPredicate" URL="@ref  concepts::CPointPredicate"];
+      CPointFunctor [label="CPointFunctor" URL="@ref concepts::CPointFunctor"];
+      CSpace [label="CSpace" ULR="@ref concepts::CSpace"];
+      CInteger [label="CInteger" URL="@ref concepts::CInteger"];
+      CUnsignedNumber [label="CUnsignedNumber" URL="@ref concepts::CUnsignedNumber"];
+      CSignedNumber [label="CSignedNumber" URL="@ref concepts::CSignedNumber"];
+      CIntegralNumber [label="CIntegralNumber" URL="@ref concepts::CIntegralNumber"];
+      CBoundedNumber [label="CBoundedNumber" URL="@ref concepts::CBoundedNumber"];
+      CEuclideanRing [label="CEuclideanRing" URL="@ref concepts::CEuclideanRing"];
+      CCommutativeRing [label="CCommutativeRing" URL="@ref concepts::CCommutativeRing"];
+      CDomain [label="CDomain" URL="@ref concepts::CDomain"];
     
       CPointFunctor -> CUnaryFunctor;
       CPointPredicate -> CPredicate;
@@ -113,8 +113,8 @@ digraph GKERNEL {
         DigitalSetBySTLSet [ label="DigitalSetBySTLSet" URL="\ref DigitalSetBySTLSet" ] ;
         DigitalSetBySTLVector [ label="DigitalSetBySTLVector" URL="\ref DigitalSetBySTLVector" ] ;
         DigitalSetFromMap [ label="DigitalSetFromMap" URL="\ref DigitalSetFromMap" ] ;
-	SetPredicate [ label="SetPredicate" URL="\ref SetPredicate" ] ;
-	DomainPredicate [ label="DomainPredicate" URL="\ref DomainPredicate" ] ;
+	SetPredicate [ label="SetPredicate" URL="\ref deprecated::SetPredicate" ] ;
+	DomainPredicate [ label="DomainPredicate" URL="\ref functors::DomainPredicate" ] ;
      }
      
    SpaceND ->CSpace;

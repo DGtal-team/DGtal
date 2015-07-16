@@ -10,7 +10,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -33,7 +33,7 @@ axis extraction.
 
 For decades, distance transformation (DT) and geometrical skeleton
 extraction have been classic tools for shape analysis
-@cite Rosenfeld1966 
+@cite Rosenfeld1966
 @cite Rosenfeld1968 . The DT of a shape consists in
 labelling object grid points with the distance to the closest
 background pixel. From the DT values, we thus have information on the
@@ -68,10 +68,13 @@ tools can be used on a wider class of metrics (see  @cite Hirata1996  or
 @cite Maurer2003PAMI). For instance, all weighted \f$l_p\f$ metrics defined in
 @f$R^n@f$ by
  \f[  d_{L_p} (u,v) = \left ( \sum_{i=0}^n w_i|u_i-v_i |^p \right )^{\frac{1}{p}}\f]
-can be considered. 
+can be considered.
 
 In DGtal, we have chosen to implement such volumetric tools such
 that the underlying metric could be specified independently.
+
+For a complete discussion of metric concepts in DGtal, please refer to @ref moduleMetrics.
+
 
 \section voronoiSect Digital Voronoi Diagram Computation
 
@@ -100,7 +103,7 @@ In DGtal, the class VoronoiMap implements such digital Vornoi map
 extraction. Such class is parametrized by the following types:
 - a type representing the underlying digital space (model of CSpace);
 - a type representing the object @f$ X @f$ as a point predicate (model
- of CPointPredicate)  ;
+ of concepts::CPointPredicate)  ;
 - a type representing the underlying metric (model of
 CSeparableMetric, see below)
 - and an optional image container to store the resulting Voronoi map
@@ -126,7 +129,7 @@ predicate definition domain.
 Once the VoronoiMap object is created, the voronoi map is computed and
 the class itself is a model of CConstImage. In other words, you can
 access to the VoronoiMap value at a point @a p and iterate of values
-using image ranges (see @ref moduleImages). For example 
+using image ranges (see @ref moduleImages). For example
 
 @code
   VoronoiMap<....> myVoronoiMap( .... ); //object construction
@@ -207,7 +210,7 @@ As discussed earlier, the distance transformation is given by
 computing distances once the Voronoi map is obtained. In DGtal, the
 class DistanceTransformation simply adapts the VoronoiMap class in
 order to override output image getters to return the distance for the
-given metric to the closest site instead of the vector. 
+given metric to the closest site instead of the vector.
 
 As a consequence, the DistanceTransformation class simply  inherits from  the
 VoronoiMap class and overrides  methods required by
@@ -270,15 +273,15 @@ remaps the PowerMap vectors to map the power metric to the closest
 weighted site.
 
 As a consequence, for the Euclidean @f$ l_2 @f$ metric, if we consider
-a set of balls @f$ B_i(p_i,r_i) @f$ and if we create an WiehgtImage
-whose domain would be the set of points @f$\{ p_i \}@f$ and with
+a set of balls @f$ B_i(p_i,r_i) @f$ and if we create an WeightImage
+whose domain contains points @f$\{ p_i \}@f$ and with
 values @f$ r_i^2@f$, negative (strictly) values of the
 ReverseDistanceTransformation will correspond to digital points
 belonging to the union @f$ \bigcup \{B_i\}@f$ (see @cite dcoeurjo_pami_RDMA).
 
 ReverseDistanceTransformation can thus be used to reconstructed a
 binary shape from a given Medial Axis or any set of balls. Another
-consequence is that given a binary shape, the pipeline 
+consequence is that given a binary shape, the pipeline
 @f[  Shape \rightarrow DT \rightarrow ReverseDT \rightarrow \text{ strictly negative values }@f]
 for the same metric/power metric, returns the input binary shape.
 
@@ -286,120 +289,8 @@ for the same metric/power metric, returns the input binary shape.
 
 @note Power separable metrics are formalized in CPowerMetric and
 CSeparablePowerMetric concepts whose main concept is
-ExactLpPowerSeparableMetric.
+ExactLpPowerSeparableMetric, see @ref moduleMetrics
 
-
-@section metricSec Metric and Separable Metric concepts
-
-As discussed, several models of metrics can be used in the separable
-algorithms such as the VoronoiMap. In this section, we discuss about
-these concepts.
-
-@subsection subConcepts Main concepts
-
-Beside separable algorithms, metrics in DGtal have been structured in
-terms of concepts:
-
-@dot
-digraph metric_concepts_2_vor {
-    CLocalPremetric [ label="CLocalPremetric"  URL="\ref CLocalPremetric" ];
-    CMetric [label="CMetric" URL="@ref CMetric"];
-    CSeparableMetric [label="CSeparableMetric" URL="@ref CSeparableMetric"];
-    CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];
-    CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref CPowerSeparableMetric"];
-
-    CMetric -> CLocalPremetric;
-    CSeparableMetric -> CMetric;
-    CPowerSeparableMetric -> CPowerMetric;
-
-    label="Main metric concepts";
-  }
-@enddot
-
-For instance, CLocalPremetric models only requires that a local metric
-is defined (@e i.e. between a point and a neighboring point in a given
-direction). CMetric requires to have a binary operator to compute the
-distance between any two points of the digital space. Furthermore, it
-requires to have a method he @a closest(p,q) which returns the closest
-point from @a p and @a q to the origin. Such closest method can be
-easily implemented from the binary distance operator. However, for
-some metric, more efficient implementation can be obtained to answer
-to @a closest() requests.
-
-
-
-
-@subsection subSepMetrics SeparableMetric models
-
-The Separable metric concept is a refinement of the CMetric
-(resp. CPowerMetric) concept in which we require models to implement a
-method 
-@a  hiddenBy(u,v,w,startingPoint,endPoint,dim): given three digital points 
-@a u, @a v, @a w and an isothetic segment defined by the pair
-[@a startingPoint, @a endPoint] along the dimension @a dim, such method
-returns true if Voronoi cells of @a u and @a w @e hide the Voronoi
-cell if @a v on the segment. Such predicate can be illustrated as
-follows:
-
-
-@image html hiddenBy.png "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
-@image latex hiddenBy.png  "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
-
-This predicate (with the @a closest() one as discussed above) is
-crucial for separable VoronoiMap/DistanceTransformation algorithms. The next section discusses about complexity of such volumetric algorithm with respect to computation costs of the two predicates.
-
-CPowerSeparableMetric concepts is a similar refinement of the CPowerMetric concept. Indeed, CPowerSeparableMetric models must implement an @a  hiddenByPower(u, wu,v,wv,w,ww,startingPoint,endPoint,dim) on triplet of weighted points {(u,wu),(v,wv),(w,ww)}.
-
-
-The class of metrics for which such @a hiddenBy method can be defined and for which the VoronoiMap will be exact is quite large. This class contains 
-
-- all @f$ l_p @f$ metrics (ExactPredicateLpSeparableMetric and InexactPredicateLpSeparableMetric)
-- all local metric inducing a norm (chamfer norms, some of the neighborhood sequences, ...) (see @cite Hirata1996 for more details).
-- ...
-
-More formally, any @e monotonic metric can lead to such an @a hiddenBy
-predicate definition with exact VoronoiMap/DistanceTransformation
-algorithms. In dimension 2, consider two points @f$ p(x,y)@f$,
-@f$q(x',y')@f$ with @f$x<x'@f$. Let @f$r( x'',0)@f$ be a point on the
-x-axis such that @f$d(p,r) = d(q,r)@f$ and @f$ s(u,0)@f$ be another
-point on the x-axis. A metric @f$ d@f$ is @e monotonic if
-    
-@f[     u < x'' \implies d(p,s) \leq d(q,s) @f]
-and
-@f[    u > x'' \implies d(p,s) \geq d(q,s) @f]
-
-
-The class SeparableMetricAdapter adapts any model of CMetic which is
-monotonic to a model of CSeparableMetric. Please refer to the
-following table for computational costs.
-
-
-@section CostSec Computational Costs 
-
-
-As discussed, both VoronoiMap and PowerMap (and their associated
-subclasses) are parametrized by a generic separable metric (model of CSeparableMetric or CPowerSeparableMetric). If @f$ C
-@f$ corresponds to the cost of the @a closest() or @a
-closestPower() methods for the given metric, and @f$ H @f$ the cost
-of the @a hiddenBy() or @a hiddenByWeigthed(), the computational costs
-of the separable metrics can be summarized as follows:
-
-| Models of CSeparableMetric/CPowerSeparableMetric| C | H | Note |
-|-------------------------------------------------|---|---|------|
-| ExactPredicateLpSeparableMetric<p>              | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
-| ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
-| ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Exact computations|
-| InexactPredicateLpSeparableMetric with p at construction | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
-| ExactPredicateLpPowerSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
-| ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
-| SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(mlog(n)) @f$ | relies on aMetric(p,q) computations |
-
-
-Following this table, VoronoiMap, DistanceTransformation, PowerMap, ReverseDistanceTransformation have the following computational cost:
-
- \f[  O(d\cdot n^d\cdot (C+H))  \f]
-
-For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ \Theta(dn^d)@f$.
 
 */
 
@@ -428,6 +319,29 @@ This program outputs this image:
 @image html example-DT-3D.png
 
 \example geometry/volumes/distance/distancetransform3D.cpp
+*/
+
+/**
+   Example of use the FMM (fast marching method) class in 2D.
+@see \ref moduleVolumetric
+
+This program outputs this image:
+
+@image html exampleFMM2D.png
+
+\example geometry/volumes/distance/exampleFMM2D.cpp
+*/
+
+
+/**
+
+   Example of use the FMM (fast marching method) class in 3D.
+@see \ref moduleVolumetric
+
+This program outputs this image:
+@image html exampleFMM3D.png
+
+\example geometry/volumes/distance/exampleFMM3D.cpp
 */
 
 

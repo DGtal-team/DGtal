@@ -95,7 +95,7 @@ algorithm(const TIterator& itb,
 
   //std::cerr << "First MS" << std::endl << longestDSS << std::endl; 
 	
-  typedef details::DSSDecorator<DSSComputer> DSSDecorator; 
+  typedef detail::DSSDecorator<DSSComputer> DSSDecorator; 
   DSSDecorator* adapter = 0; //adapter for the current DSS
 	
   if (longestDSS.end() != ite) 
@@ -130,7 +130,7 @@ algorithm(const TIterator& itb,
       //the curve is assumed to be convex
       //if it is straight
       myPolygon = vTmpU;
-      adapter = new details::DSSDecorator4ConvexPart<DSSComputer>(longestDSS);
+      adapter = new detail::DSSDecorator4ConvexPart<DSSComputer>(longestDSS);
       ASSERT(adapter);
     }
 
@@ -171,18 +171,17 @@ algorithm(const TIterator& itb,
   //backward extension
   while ( currentDSS.extendBack() ) {}
 
-  //std::cerr << "First MS" << std::endl << currentDSS << std::endl; 
-
   //local convexity
-  typedef details::DSSDecorator<DSSComputer> DSSDecorator; 
+  typedef detail::DSSDecorator<DSSComputer> DSSDecorator; 
   DSSDecorator* adapter = 0; //adapter for the current DSS
   adapter = initConvexityConcavity<DSSDecorator>( currentDSS );
 
-  //stopping point 
-  Point stoppingPoint = adapter->lastLeaningPoint(); 
-  if (adapter->firstLeaningPoint() == stoppingPoint) {
-    myPolygon.push_back( stoppingPoint );
+  if (adapter->firstLeaningPoint() == adapter->lastLeaningPoint()) {
+    myPolygon.push_back( adapter->lastLeaningPoint() );
   }//stored in removingStep function otherwise
+
+  //first MS
+  DSSComputer firstMS = currentDSS; 
 
   //since there are more than 2 MS (closed case)
   //but no more than 2 MS sharing a leaning point
@@ -203,9 +202,9 @@ algorithm(const TIterator& itb,
 	  throw InputException();
 	}
       addingStep( adapter );
-      if ( adapter->lastLeaningPoint() == stoppingPoint )
+      if (currentDSS == firstMS)
 	{ //stop and remove the last point to avoid a repetition
-	  if (adapter->firstLeaningPoint() == stoppingPoint) {
+	  if (adapter->firstLeaningPoint() == myPolygon.front()) {
 	    ASSERT( myPolygon.size() > 0 ); 
 	    myPolygon.pop_back();
 	  }          
@@ -228,12 +227,12 @@ DGtal::FP<TIterator,TInteger,connectivity>
 
   if ( aDSS.remainder( aDSS.end() ) < (aDSS.mu()) ) 
     {      //concave part
-      return new details
+      return new detail
 	::DSSDecorator4ConcavePart<typename Adapter::DSS>(aDSS);
     } 
   else 
     {     //convex part
-      return new details
+      return new detail
 	::DSSDecorator4ConvexPart<typename Adapter::DSS>(aDSS);
     }
 }
@@ -245,8 +244,6 @@ bool
 DGtal::FP<TIterator,TInteger,connectivity>
 ::removingStep( Adapter* adapter )
 {
-
-  //std::cerr << "Removing step " << currentDSS << std::endl; 
 
   ASSERT( adapter->isExtendableFront() == false ); 
 
@@ -283,8 +280,6 @@ DGtal::FP<TIterator,TInteger,connectivity>
 	      const typename Adapter::DSS::ConstIterator& itEnd ) 
 {
 
-  //std::cerr << "Adding step " << currentDSS << std::endl; 
-
   ASSERT( adapter->isExtendableFront() == true ); 
 
   //remove the last leaning point 
@@ -314,8 +309,6 @@ void
 DGtal::FP<TIterator,TInteger,connectivity>
 ::addingStep( Adapter* adapter ) 
 {
-
-  //std::cerr << "Adding step " << currentDSS << std::endl; 
 
   ASSERT( adapter->isExtendableFront() == true ); 
 

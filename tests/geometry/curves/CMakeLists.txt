@@ -20,6 +20,7 @@ SET(DGTAL_TESTS_SRC
   testArithmeticalDSL
   testDSLSubsegment
   testArithDSSIterator
+  testArithmeticalDSSConvexHull
   )
 
 

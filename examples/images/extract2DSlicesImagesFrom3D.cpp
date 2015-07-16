@@ -49,17 +49,18 @@ int main( )
 {
    typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
    typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
-   typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::Projector<Z3i::Space>,
-   				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+   typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::functors::Projector<Z3i::Space>,
+                                    Image3D::Value,  DGtal::functors::Identity >  SliceImageAdapter;
+   
 
-   DGtal::Projector<Z2i::Space >  proj(2);
+   DGtal::functors::Projector<Z2i::Space >  proj(2);
 
    // Importing a 3D image
    std::string filename = examplesPath + "samples/lobster.vol";
    Image3D image = VolReader<Image3D>::importVol( filename );
    DGtal::Z2i::Domain domain(proj(image.domain().lowerBound()),
 			     proj(image.domain().upperBound()));
-   DGtal::DefaultFunctor idV;
+   DGtal::functors::Identity idV;
 
    trace.beginBlock ( "Example extract2DImagesFrom3D" );
 
@@ -67,7 +68,7 @@ int main( )
    for (unsigned int i=0; i<30; i+=10){
      std::stringstream name;
      name << "lobsterSliceZ_"  << i << ".pgm";
-     DGtal::Projector<Z3i::Space> aSliceFunctor(i); aSliceFunctor.initAddOneDim(2);
+     DGtal::functors::Projector<Z3i::Space> aSliceFunctor(i); aSliceFunctor.initAddOneDim(2);
      SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
      PGMWriter<SliceImageAdapter>::exportPGM(name.str(), sliceImageZ);
    }

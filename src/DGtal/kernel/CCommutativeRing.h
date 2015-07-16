@@ -50,7 +50,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CCommutativeRing
   /**
@@ -96,7 +97,7 @@ Opposite operator                    | - @e x     |                    | @a X   
 @tparam T the type that should be a model of commutative ring.
    */
   template <typename T>
-  struct CCommutativeRing : CSignedNumber<T>
+  struct CCommutativeRing : concepts::CSignedNumber<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -119,6 +120,7 @@ Opposite operator                    | - @e x     |                    | @a X   
     T a,b,c;
 
   };
+  }
 } // namespace DGtal
 
 

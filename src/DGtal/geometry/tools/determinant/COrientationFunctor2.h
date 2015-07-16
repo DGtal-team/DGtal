@@ -70,7 +70,7 @@ namespace DGtal
      ### Valid expressions and semantics
 
      | Name           | Expression  | Type requirements  | Return type | Precondition | Semantics   | Post condition | Complexity |
-     |----------------+-------------+--------------------+-------------+--------------+-------------+----------------+------------|
+     |----------------|-------------|--------------------|-------------|--------------|-------------|----------------|------------|
      | initialization | x.init(a,b) | a and b are points |             |              |             |                | constant   |
 
      ### Models

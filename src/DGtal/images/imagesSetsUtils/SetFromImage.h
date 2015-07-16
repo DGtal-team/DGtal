@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
-#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
+#include "DGtal/images/IntervalForegroundPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,14 +63,11 @@ namespace DGtal
   struct SetFromImage
   {
     typedef TSet Set;
-  
-    
-    //BOOST_CONCEPT_ASSERT(( CDigitalSet<Set> ));
-        
-    
+   
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Set> ));
+         
     /** 
-      * Append a Set to an existing image. Only points in the Set
-     * contained in the image domain are considered. 
+     * Append an Image value set  to an existing Set (maybe empty).
      * @pre the ForegroundPredicate instance must have been created on the image aImage.
      *
      * @param aSet the set (maybe empty) to which points are added.
@@ -107,15 +104,15 @@ namespace DGtal
 		typename Image::Domain::ConstIterator itBegin, 
 		typename Image::Domain::ConstIterator itEnd)
     {
-      IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
+      functors::IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       
       append(aSet, isForeground,itBegin,itEnd);
     }
 
     /** 
-     * Append a Set to an existing image. Only points in the Set
-     * contained in the image domain are considered. 
-     * @pre the ForegroundPredicate instance must have been created on the image aImage.
+     * Append an Image value set  to an existing Set (maybe empty).
+     * @pre the ForegroundPredicate instance must have been created on
+     * the image @a aImage.
      *
      * @param aSet the set (maybe empty) to which points are added.
      * @param aImage image to convert to a Set.
@@ -132,8 +129,7 @@ namespace DGtal
     }
 
     /** 
-     * Append a Set to an existing image. Only points in the Set
-     * contained in the image domain are considered. 
+     * Append an Image value set  to an existing Set (maybe empty).
      * This method will construct a default ForegroundPredicate
      * instance as a simple thresholding (SimpleForegroundPredicate)
      * of values in ]minVal,maxVal].
@@ -150,7 +146,7 @@ namespace DGtal
 		const typename Image::Value minVal,
 		const typename Image::Value maxVal)
     {
-      IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
+      functors::IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
       append(aSet,aImage,isForeground);
     }
 

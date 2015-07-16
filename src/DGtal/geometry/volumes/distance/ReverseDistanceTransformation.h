@@ -47,7 +47,6 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/geometry/volumes/distance/CPowerSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
 #include "DGtal/images/DefaultConstImageRange.h"
@@ -105,7 +104,7 @@ namespace DGtal
 
     ///Image Container type
     typedef TImageContainer ImageContainer;
-    BOOST_CONCEPT_ASSERT(( CImage<ImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<ImageContainer> ));
 
     ///Separable Metric type value type
     typedef typename PowerSeparableMetric::Value Value;

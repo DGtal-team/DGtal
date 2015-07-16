@@ -49,7 +49,7 @@
 namespace DGtal
 {
   // 2013/02/02: JOL: Since 0.6, models of CDigitalSet are also models
-  // of CPointPredicate. Therefore, this facade to models of
+  // of concepts::CPointPredicate. Therefore, this facade to models of
   // CDigitalSet is no longer useful.
   namespace deprecated {
 
@@ -62,9 +62,9 @@ namespace DGtal
      predicate and not cloned, which means that the lifetime of the
      set should exceed the lifetime of the predicate.
 
-     Model of CPointPredicate.
+     Model of concepts::CPointPredicate.
      
-     @deprecated Since 0.6, digital sets are also models of CPointPredicate,
+     @deprecated Since 0.6, digital sets are also models of concepts::CPointPredicate,
      hence using a SetPredicate is therefore no more
      useful. 
 

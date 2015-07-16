@@ -49,6 +49,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -80,15 +81,18 @@ namespace DGtal
    * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
    * @tparam Tdim the dimension of the container (by default given by the container).
    * @tparam TValue the value type of data contained in the image (by default given by the container) 
-   * @tparam TFunctor a functor type to apply image transformation before saving the image (by default set to DefaultFunctor).
+   * @tparam TFunctor a functor type to apply image transformation before saving the image (by default set to functors::Identity).
    *
    *
    */
 
-  template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TValue = typename TContainer::Value, typename TFunctor = DefaultFunctor >
+  template <typename TContainer, 
+            int Tdim=TContainer::Point::dimension,
+            typename TValue = typename TContainer::Value, 
+            typename TFunctor = functors::Identity >
   struct GenericWriter
   {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;    
     /**
      * Export an  image.
      * @param filename the filename of the saved image (with a extension name). 
@@ -96,8 +100,9 @@ namespace DGtal
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exportFile(const std::string &filename, const TContainer &anImage,  
-		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+    static bool exportFile(const std::string &filename, 
+                           const TContainer &anImage,  
+                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
   };
 
   /**
@@ -107,8 +112,8 @@ namespace DGtal
   template <typename TContainer, typename TFunctor>
   struct GenericWriter<TContainer, 3 , unsigned char,  TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned char> )) ;    
-    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned char> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;    
     
     /**
      * Export a volume image.
@@ -125,14 +130,39 @@ namespace DGtal
   
   /**
    * GenericWriter
+   * Template partial specialisation for volume images of dimension 3 and DGtal::uint32_t value type (which allows to export raw file format).
+   **/
+  template <typename TContainer, typename TFunctor>
+  struct GenericWriter<TContainer, 3 , DGtal::uint32_t,  TFunctor>
+  {
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned int> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;    
+    
+    /**
+     * Export a volume image.
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved.
+     * @param datasetName the dataset name to export.
+     * @param aFunctor to apply image transformation before saving. 
+     *
+     **/
+    static bool exportFile(const std::string &filename,  
+                           const TContainer &anImage, 
+                           const std::string &datasetName="UInt32Array3D",
+                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+    
+  };
+  
+  /**
+   * GenericWriter
    * Template partial specialisation for volume images of dimension 3 and DGtal::uint64_t value type (which allows to export longvol file format).
    **/
   template <typename TContainer, typename TFunctor>
   struct GenericWriter<TContainer, 3 , DGtal::uint64_t,  TFunctor>
   {
 
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::uint64_t > )) ;    
-    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::uint64_t > )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;    
    
 
     /**
@@ -155,7 +185,7 @@ namespace DGtal
   template <typename TContainer, typename TValue, typename TFunctor>
   struct GenericWriter<TContainer, 3 , TValue, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;    
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name). 
@@ -164,8 +194,10 @@ namespace DGtal
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exportFile(const std::string &filename,  const TContainer &anImage, const std::string &datasetName="UInt8Array3D",
-		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+    static bool exportFile(const std::string &filename,  
+                           const TContainer &anImage, 
+                           const std::string &datasetName="UInt8Array3D",
+                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
   };
 
@@ -176,16 +208,46 @@ namespace DGtal
   template <typename TContainer, typename TValue,  typename TFunctor>
   struct GenericWriter<TContainer, 2, TValue, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;    
     
     /**
-     * Write a volume image file.  
+     * Export the 2D image file.  
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved.
+     * @param aFunctor to apply image transformation before saving. 
+     *
+     **/
+
+    static bool exportFile(const std::string &filename, 
+                           const TContainer &anImage,
+                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+
+  }; 
+
+  /**
+   * GenericWriter
+   * Template partial specialisation for images of dimension 2 and Functor returning a Color object 
+   **/
+  template <typename TContainer, typename TValue >
+  struct GenericWriter<TContainer, 2, TValue, HueShadeColorMap<TValue>  >
+  {
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;    
+    
+    /**
+     * Export the 2D image file.  
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved.
+     * @param aFunctor to apply image transformation before saving: transform scalar value to Color by using HueShadeColorMap. 
+     *
+     **/
+    /**
+     * Export image with specific scalar->Color functor: .
      *
      **/
 
     static bool exportFile(const std::string &filename, const TContainer &anImage,
-		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
-
+                           const HueShadeColorMap<TValue> & aFunctor )  throw(DGtal::IOException);
+    
   }; 
   
   /**
@@ -195,12 +257,36 @@ namespace DGtal
   template <typename TContainer,  typename TFunctor>
   struct GenericWriter<TContainer, 2, unsigned char, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;    
     /**
-     * Write a volume image file.  
+     * Export the 2D image file.  
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved.
+     * @param aFunctor to apply image transformation before saving. 
      *
      **/
+    static bool exportFile(const std::string &filename, const TContainer &anImage,
+		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
+  }; 
+
+
+  /**
+   * GenericWriter Template partial specialisation for images of
+   * dimension 2 and DGtal::uint32_tvalue type (which allows to export
+   * raw 32 bits file format ).
+   **/
+  template <typename TContainer,  typename TFunctor>
+  struct GenericWriter<TContainer, 2, DGtal::uint32_t, TFunctor>
+  {
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;    
+    /**
+     * Export the 2D image file.  
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved.
+     * @param aFunctor to apply image transformation before saving. 
+     *
+     **/
     static bool exportFile(const std::string &filename, const TContainer &anImage,
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 

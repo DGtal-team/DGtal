@@ -307,9 +307,9 @@ bool testRecognition()
     //checking if the circle is separating
     bool flag = true;
     typedef CircleFrom3Points<KSpace::Point> Circle; 
-    typedef Point2ShapePredicate<Circle,false,true> 
+    typedef functors::Point2ShapePredicate<Circle,false,true> 
       FirstInCirclePred; 
-    typedef Point2ShapePredicate<Circle,true,true> 
+    typedef functors::Point2ShapePredicate<Circle,true,true> 
       SecondInCirclePred; 
     for (ConstIterator it = s.begin(); ((it != s.end()) && flag) ; ++it)
     {

@@ -250,14 +250,14 @@ namespace DGtal
   template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
   {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
 
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
     AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
-                                 ConstAlias<TFunctor> aFunctor,
+                                 Clone<TFunctor> aFunctor,
                                  typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my2DImage(&anImage),
                                                                                          myFunctor(aFunctor),
                                                                                          myMode(aMode)
@@ -265,7 +265,7 @@ namespace DGtal
 
     }
     const TImageType *my2DImage;
-    const TFunctor &myFunctor;
+    const TFunctor myFunctor;
     typename Viewer3D< Space, KSpace>::TextureMode myMode;
   };
 
@@ -296,14 +296,14 @@ namespace DGtal
   template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage3DWithFunctor : public DrawWithViewer3DModifier
   {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
 
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
     AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
-                                 ConstAlias<TFunctor> aFunctor,
+                                 Clone<TFunctor> aFunctor,
                                  typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my3DImage(&anImage),
                                                                                          myFunctor(aFunctor),
                                                                                          myMode(aMode)
@@ -311,7 +311,7 @@ namespace DGtal
 
     }
     const TImageType *my3DImage;
-    const TFunctor &myFunctor;
+    const TFunctor myFunctor;
     typename Viewer3D<Space, KSpace>::TextureMode myMode;
   };
 
@@ -359,7 +359,7 @@ namespace DGtal
    * possibility to translate it (optional).
    *
    */
-  template<typename TImageType, typename TFunctor= CastFunctor<unsigned int> >
+  template<typename TImageType, typename TFunctor= functors::Cast<unsigned int> >
   struct UpdateImageData : public DrawWithViewer3DModifier
   {
 

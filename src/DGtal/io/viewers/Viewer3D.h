@@ -51,6 +51,11 @@
 #include <GL/glu.h>
 #endif
 
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 
 #include <QGLViewer/qglviewer.h>
 #include <QGLWidget>
@@ -74,11 +79,11 @@ namespace DGtal
   // class Viewer3D
   /**
    * Description of class 'Viewer3D' <p>
-   * Aim: Display 3D
-   * primitive (like PointVector, DigitalSetBySTLSet, Object ...). This
-   * class uses the libQGLViewer library (@see http://www.libqglviewer.com ). It inherits of the
-   * class Display3D and permits to display object using a simple
-   * stream mechanism of "<<".
+   * Aim: Display 3D primitive (like PointVector, DigitalSetBySTLSet,
+   * Object ...). This class uses the libQGLViewer library (@see
+   * http://www.libqglviewer.com ). It inherits of the class Display3D
+   * and displays objects using a simple stream mechanism of
+   * "<<".
    *
    * For instance you can display objects as follows:
    *
@@ -107,11 +112,14 @@ namespace DGtal
    * This class is parametrized by both the Digital and Khalimsky
    * space used to display object. More precisely, embed methods are
    * used to compute the Euclidean coordinate of digital
-   * obejects/khalimksy cells.
+   * objects/khalimksy cells.
    *
    * @tparam Space any model of Digital 3D Space
    * @tparam KSpace any mode of Khalimksky 3D space
    *
+   * @note You *must* provide a Khalimksy space at instanciation if
+   * you wish to display cells with the viewer. If you are not going
+   * to display cells, then it is not compulsory to provide it.
    *
    * @see Display3D, Board3DTo2D
    */
@@ -120,9 +128,17 @@ namespace DGtal
   class Viewer3D : public QGLViewer, public Display3D<Space, KSpace>
   {
 
-    BOOST_CONCEPT_ASSERT((CSpace<Space>));
+    BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
 
     //---------------overwritting some functions of Display3D -------------------
+
+    // ----------------------- public types ------------------------------
+  public:
+
+    typedef Display3D<Space, KSpace> Display;
+    typedef typename Display::SelectCallbackFct SelectCallbackFct;
+    using Display::getSelectCallback3D;
+    typedef typename Display::RealPoint RealPoint;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -221,22 +237,23 @@ namespace DGtal
     DGtal::Color myDefaultColor;
     /// true if the background is default
     bool myIsBackgroundDefault;
-
-    bool myViewWire;/// objects have shadows which follow the camera if false
+    /// objects have shadows which follow the camera if false
+    bool myViewWire;
+    /// to improve the display of gl line
+    double myGLLineMinWidth;
 
     /**
      * Used to display the 2D domain of an image.
-     *
+     * @note has to be public because of external functions
      **/
-    //have to be public because of external functions
     struct Image2DDomainD3D
     {
 
       /// The image domain coordinates
-      DGtal::Z3i::RealPoint point1;
-      DGtal::Z3i::RealPoint point2;
-      DGtal::Z3i::RealPoint point3;
-      DGtal::Z3i::RealPoint point4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
       /// The image domain color
       DGtal::Color color;
       /// the width of the image domain
@@ -263,7 +280,7 @@ namespace DGtal
       Image2DDomainD3D( TDomain aDomain, Viewer3D::ImageDirection normalDir=zDirection,
                         double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox")
       {
-        BOOST_CONCEPT_ASSERT(( CDomain < TDomain >));
+        BOOST_CONCEPT_ASSERT(( concepts::CDomain < TDomain >));
         myMode = mode;
         myDirection=normalDir;
         myDomainWidth = (aDomain.upperBound())[0]-(aDomain.lowerBound())[0]+1;
@@ -304,10 +321,10 @@ namespace DGtal
     struct TextureImage
     {
 
-      DGtal::Z3i::RealPoint point1;
-      DGtal::Z3i::RealPoint point2;
-      DGtal::Z3i::RealPoint point3;
-      DGtal::Z3i::RealPoint point4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
 
       ImageDirection myDirection; /// direction of the image (x, y or z axe)
 
@@ -333,13 +350,13 @@ namespace DGtal
        * @param img the image
        */
       TextureImage(const TextureImage & img): point1(img.point1), point2(img.point2),
-					      point3(img.point3), point4(img.point4),
-					      myDirection(img.myDirection), myImageWidth(img.myImageWidth),
-					      myImageHeight(img.myImageHeight),
-					      myTabImage(img.myTabImage),
-					      myDrawDomain(img.myDrawDomain),
-					      myIndexDomain(img.myIndexDomain),
-					      myMode(img.myMode)
+                point3(img.point3), point4(img.point4),
+                myDirection(img.myDirection), myImageWidth(img.myImageWidth),
+                myImageHeight(img.myImageHeight),
+                myTabImage(img.myTabImage),
+                myDrawDomain(img.myDrawDomain),
+                myIndexDomain(img.myIndexDomain),
+                myMode(img.myMode)
       {
 
         if(img.myImageHeight>0 && img.myImageWidth>0)
@@ -383,8 +400,8 @@ namespace DGtal
                     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
                     TextureMode aMode= 1)
       {
-        BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
-        BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
+        BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
+        BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
         myDrawDomain=false;
         myDirection=normalDir;
         myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
@@ -416,10 +433,10 @@ namespace DGtal
        * @param aPoint4 the fourth image point (lower bound point in first dimension and upper in the second dimentsion)
        */
       void
-      updateImage3DEmbedding( DGtal::Z3i::RealPoint aPoint1,
-                              DGtal::Z3i::RealPoint aPoint2,
-                              DGtal::Z3i::RealPoint aPoint3,
-                              DGtal::Z3i::RealPoint aPoint4)
+      updateImage3DEmbedding( RealPoint aPoint1,
+                              RealPoint aPoint2,
+                              RealPoint aPoint3,
+                              RealPoint aPoint4)
       {
         point1 = aPoint1;  point2 = aPoint2; point3 = aPoint3;   point4 = aPoint4;
         myDirection=undefDirection;
@@ -445,10 +462,10 @@ namespace DGtal
       void updateImageDataAndParam(const TImageType & image, const TFunctor &aFunctor, double xTranslation=0.0,
                                    double yTranslation=0.0, double zTranslation=0.0)
       {
-        BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
-        BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
-        assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth &&
-                 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
+        BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
+        BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
+        assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== static_cast<int>(myImageWidth) &&
+                 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== static_cast<int>(myImageHeight));
 
         point1[0] += xTranslation; point1[1] += yTranslation; point1[2] += zTranslation;
         point2[0] += xTranslation; point2[1] +=yTranslation; point2[2] += zTranslation;
@@ -465,7 +482,7 @@ namespace DGtal
       }
 
       /**
-       * return the class name to implment the CDrawableWithViewer3D concept.
+       * return the class name to implement the CDrawableWithViewer3D concept.
        **/
       std::string className() const;
 
@@ -575,7 +592,7 @@ namespace DGtal
 
     void updateTextureImage(unsigned int imageIndex, const TImageType & image, const TFunctor & aFunctor,
                             double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0,
-			    double rotationAngle=0.0, ImageDirection rotationDir=zDirection);
+          double rotationAngle=0.0, ImageDirection rotationDir=zDirection);
 
 
 
@@ -670,7 +687,7 @@ namespace DGtal
      **/
 
     void  rotateLineD3D(typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine, DGtal::PointVector<3, int> pt,
-			double angleRotation, ImageDirection dirRotation);
+      double angleRotation, ImageDirection dirRotation);
 
 
 
@@ -708,23 +725,13 @@ namespace DGtal
      * @param needToUpdateBoundingBox flag to update the bounding box
      */
     void updateList ( bool needToUpdateBoundingBox=true );
-
-
-    /**
-     * Draw a linel by using the [gluCylinder] primitive.
-     * @param aLinel the linel to draw
-     **/
-    void glDrawGLLinel ( typename Viewer3D<Space,KSpace>::LineD3D aLinel );
-
-
-
-
+    
+    
     /**
      * Draw a linel by using the [gluCShere] primitive.
      * @param pointel the pointel to draw
      */
-    void glDrawGLPointel ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
-
+    void glDrawGLBall ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
 
 
 
@@ -810,8 +817,8 @@ namespace DGtal
       bool operator() ( typename Viewer3D<Space,KSpace>::PolygonD3D q1,
                         typename Viewer3D<Space,KSpace>::PolygonD3D q2 )
       {
-        double c1x, c1y, c1z=0.0;
-        double c2x, c2y, c2z=0.0;
+        double c1x=0.0, c1y=0.0, c1z=0.0;
+        double c2x=0.0, c2y=0.0, c2z=0.0;
         for(unsigned int i=0; i< q1.vertices.size(); i++){
           c1x+=q1.vertices.at(i)[0];
           c1y+=q1.vertices.at(i)[1];
@@ -875,10 +882,10 @@ namespace DGtal
     struct GLTextureImage
     {
       /// coordinates
-      DGtal::Z3i::RealPoint point1;
-      DGtal::Z3i::RealPoint point2;
-      DGtal::Z3i::RealPoint point3;
-      DGtal::Z3i::RealPoint point4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
 
       typename Viewer3D<Space, KSpace>::ImageDirection myDirection;
       unsigned int myImageWidth;
@@ -919,7 +926,7 @@ namespace DGtal
                                                     myBufferHeight(aGLImg.myBufferHeight),
                                                     myTextureName(aGLImg.myTextureName),
                                                     myMode(aGLImg.myMode),
-						    myTextureFitX(aGLImg.myTextureFitX),
+                myTextureFitX(aGLImg.myTextureFitX),
                                                     myTextureFitY(aGLImg.myTextureFitY)
 
       {
@@ -966,8 +973,18 @@ namespace DGtal
         vectNormal[0]= (myDirection == Viewer3D<Space, KSpace>::xDirection)? 1.0: 0.0;
         vectNormal[1]= (myDirection == Viewer3D<Space, KSpace>::yDirection)? -1.0: 0.0;
         vectNormal[2]= (myDirection == Viewer3D<Space, KSpace>::zDirection)? 1.0: 0.0;
-        myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
-        myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight);
+        if(myDirection==undefDirection){
+          RealPoint v1 = point2-point1;
+          RealPoint v2 = point4-point1;
+          vectNormal[0] = v1[1]*v2[2] - v1[2]*v2[1];
+          vectNormal[1] = v1[2]*v2[0] - v1[0]*v2[2];
+          vectNormal[2] = v1[0]*v2[1] - v1[1]*v2[0];
+          double norm = sqrt(vectNormal[0]*vectNormal[0]+vectNormal[1]*vectNormal[1]+vectNormal[2]*vectNormal[2]);
+          vectNormal[0] /=norm; vectNormal[1] /=norm; vectNormal[2] /=norm;
+        }
+
+        myBufferWidth = functions::roundToUpperPowerOfTwo(myImageWidth);
+        myBufferHeight = functions::roundToUpperPowerOfTwo(myImageHeight);
 
         if(myMode== 1)
           {
@@ -1017,6 +1034,136 @@ namespace DGtal
 
 
 
+    /**
+     *
+     * Type associated to the special intern method GLCreateCubeSetList.
+     *
+     **/
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::CubeD3D> VectorCubes;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D> VectorQuad;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::LineD3D> VectorLine;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::BallD3D> VectorBall;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::TriangleD3D> VectorTriangle;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::PolygonD3D> VectorPolygon;
+    typedef typename std::vector<typename Viewer3D<Space, KSpace>::TextureImage> VectorTextureImage;
+
+
+    typedef typename VectorCubes::iterator ItCube;
+
+
+    /**
+     * Creates an OpenGL list of type GL_QUADS from a vector of CubeD3D.
+     * @param[in] aVectCubes a vector of cubes (Cube3D) containing the cubes to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListCubes( const VectorCubes & aVectCubes,
+                              unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type GL_QUADS from a vector of QuadD3D.
+     * @param[in] aVectQuad  a vector of quads (QuadD3D) containing the quads to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListQuadD3D(const VectorQuad &aVectQuad, unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type QL_LINES from a vector of LineD3D.
+     * @param[in] aVectLine  a vector of lines (LineD3D) containing the quads to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListLines(const VectorLine &aVectLine, unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type  GL_POINTS from a vector of BallD3D.
+     * @param[in] aVectBall  a vector of balls (BallD3D) containing the points to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListBalls(const VectorBall &aVectBall, unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type GL_QUADS from a QuadsMap.  Only
+     * one OpenGL list is created but each map compoment (QuadD3D
+     * vector) are marked by its identifier through the OpenGl
+     * glPushName() function.
+     * See @ref moduleQGLInteraction for more details.
+     * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListQuadMaps(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type GL_LINES from a QuadsMap.  Only
+     * one OpenGL list is created but each map compoment (QuadD3D
+     * vector) are marked by its identifier through the OpenGl
+     * glPushName() function.
+     * See @ref moduleQGLInteraction for more details.
+     * @param[in] aQuadMap  a map of quad (QuadsMap) associating a name to a vector of QuadD3D.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     **/
+    void glCreateListQuadMapsWired(const typename Display3D<Space, KSpace>::QuadsMap &aQuadMap, unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type GL_TRIANGLES from a vector of VectorTriangle.
+     * All triangles are displayed in the same list.
+     * @param[in] aVectTriangle  a vector of VectorTriangle containing the set of triangles to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     * @todo change the structure to support interactions as QuadMap do.
+     * See \ref moduleQGLInteraction for more details.
+     **/
+    void glCreateListTriangles(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type GL_LINES defines from a vector of VectorTriangle.
+     * All triangles are displayed in the same list.
+     * @param[in] aVectTriangle  a vector of VectorTriangle containing the set of triangles to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     * @todo change the structure to support interactions as QuadMap do.
+     * See @ref moduleQGLInteraction for more details.
+     **/
+    void glCreateListTrianglesWired(const std::vector<VectorTriangle>  &aVectTriangle, unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type  GL_POLYGON from a vector of VectorPolygon.
+     * All polygons are displayed in the same list.
+     * @param  aVectPolygon a vector of VectorPolygon containing the points to be displayed.
+     * @param idList the Id of the list (should be given by glGenLists).
+     * @todo change the structure to support interactions as QuadMap do.
+     * See @ref moduleQGLInteraction for more details.
+     **/
+    void glCreateListPolygons(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
+
+
+    /**
+     * Creates an OpenGL list of type  GL_LINES from a vector of VectorPolygon.
+     * All polygons are displayed in the same list.
+     * @param[in] aVectPolygon  a vector of vector of polygons (VectorPolygon) containing the points to be displayed.
+     * @param[in] idList the Id of the list (should be given by glGenLists).
+     * @todo change the structure to support interactions as QuadMap do.
+     * See @ref moduleQGLInteraction for more details.
+     **/
+    void glCreateListPolygonsWired(const std::vector<VectorPolygon>  &aVectPolygon, unsigned int idList);
+
+
+    /**
+     * Update the container of GLTextureImage object with the given vector of TextureImage.
+     * @param[in] aVectImage the vector containing
+     *
+     **/
+    void glUpdateTextureImages(const VectorTextureImage  &aVectImage);
+
+
+
+
+
+
   public:
     /**
      * Rotate Image2DDomainD3D or TextureImage  vertex from a given
@@ -1057,8 +1204,8 @@ namespace DGtal
 
     static
     void  rotatePoint(double &x, double &y, double &z,
-		      double cx, double cy, double cz,
-		      double rotationAngle, ImageDirection rotationDir);
+          double cx, double cy, double cz,
+          double rotationAngle, ImageDirection rotationDir);
 
 
 
@@ -1068,9 +1215,33 @@ namespace DGtal
   private:
 
     /// lists of the list to draw
-    GLuint myListToAff;
+    //GLuint myListToAff;
+
+    GLuint myCubeSetListId;
+    GLuint myCubeSetListWiredId;
+
+    GLuint myTriangleSetListId;
+    GLuint myTriangleSetListWiredId;
+
+    GLuint myPolygonSetListId;
+    GLuint myPolygonSetListWiredId;
+
+    GLuint myLineSetListId;
+    GLuint myBallSetListId;
+    GLuint myPrismListId;
+
+    GLuint myQuadsMapId;
+    GLuint myQuadsMapWiredId;
+
     /// number of lists in myListToAff
+
     unsigned int myNbListe;
+    unsigned int myNbCubeSetList;
+    unsigned int myNbLineSetList;
+    unsigned int myNbBallSetList;
+    unsigned int myNbPrismSetList;
+
+
     /// information linked to the navigation in the viewer
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
     /// a point selected with postSelection @see postSelection
@@ -1099,7 +1270,6 @@ namespace DGtal
     std::vector<TextureImage> myGSImageList;
     /// Used to store all the domains
     std::vector<Image2DDomainD3D> myImageDomainList;
-
 
   }; // end of class Viewer3D
 

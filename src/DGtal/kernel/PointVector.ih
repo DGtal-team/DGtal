@@ -297,7 +297,7 @@ DGtal::operator*( TComponent coeff,
 		  const PointVector<dim, TComponent,TContainer> & aVector )
 {
   return PointVector<dim, TComponent,TContainer>
-    ( aVector, MultiplicationByScalarFunctor<TComponent>( coeff ) );
+    ( aVector, functors::MultiplicationByScalar<TComponent>( coeff ) );
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -518,8 +518,8 @@ DGtal::PointVector<dim,TComponent, TContainer>::operator/= ( const Component coe
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim,typename TComponent, typename TContainer>
 inline
-DGtal::PointVector<dim,TComponent, TContainer> 
-DGtal::PointVector<dim,TComponent, TContainer>::operator/ ( const Component coeff )
+DGtal::PointVector<dim,TComponent, TContainer>
+DGtal::PointVector<dim,TComponent, TContainer>::operator/ ( const Component coeff ) const
 {
   Self p;
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
@@ -540,10 +540,22 @@ DGtal::PointVector<dim, TComponent, TContainer>::dot( const Self& v ) const
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
+typename DGtal::PointVector<dim, TComponent, TContainer>
+DGtal::PointVector<dim, TComponent, TContainer>::crossProduct( const Self& v ) const
+{
+  Self crossprod;
+  for ( DGtal::Dimension i = 0; i < dim; ++i )
+    crossprod[i] = this->myArray[ (i+1)%dim ]*v[ (i+2)%dim ] - 
+      this->myArray[ (i+2)%dim ]*v[ (i+1)%dim ];
+  return crossprod;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+inline
 DGtal::PointVector<dim, TComponent, TContainer>
 DGtal::PointVector<dim, TComponent, TContainer>::operator- ( const Self& v ) const
 {
-  return Self(*this, v, MinusFunctor<Component>());
+  return Self(*this, v, functors::Minus<Component>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -551,7 +563,7 @@ inline
 DGtal::PointVector<dim, TComponent,TContainer>
 DGtal::PointVector<dim, TComponent,TContainer>::operator-() const
 {
-  return Self(*this, UnaryMinusFunctor<Component>());
+  return Self(*this, functors::UnaryMinus<Component>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -568,7 +580,7 @@ inline
 DGtal::PointVector<dim, TComponent, TContainer>
 DGtal::PointVector<dim, TComponent, TContainer>::inf( const Self& apoint ) const
 {
-  return Self(*this, apoint, MinFunctor<Component>());
+  return Self(*this, apoint, functors::Min<Component>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -576,7 +588,7 @@ inline
 DGtal::PointVector<dim, TComponent, TContainer>
 DGtal::PointVector<dim, TComponent, TContainer>::sup( const Self& apoint ) const
 {
-  return Self(*this, apoint, MaxFunctor<Component>());
+  return Self(*this, apoint, functors::Max<Component>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>

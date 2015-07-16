@@ -52,7 +52,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CInteger
   /**
@@ -88,7 +89,7 @@ BigInteger,  short, int, long long, int16_t, int32_t, int64_t, ...
     
 
   }; // end of concept CInteger
-  
+  }  
 } // namespace DGtal
 
 

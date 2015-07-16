@@ -127,6 +127,7 @@ bool testMetrics()
   return nbok == nb;
 }
 
+template <typename Value>
 bool testInexactMetrics()
 {
   unsigned int nbok = 0;
@@ -137,7 +138,7 @@ bool testInexactMetrics()
   Z2i::Point a( 0,0), b(5, 0), bb(5,-10), bbb(5,5),c(10,0);
   Z2i::Point starting( 0, 5), endpoint(10,5);
   
-  InexactPredicateLpSeparableMetric<Z2i::Space> metric (2.1);
+  InexactPredicateLpSeparableMetric<Z2i::Space, Value> metric (2.1);
 
   trace.info()<< "a= "<<a<<std::endl;
   trace.info()<< "b= "<<b<<std::endl;
@@ -169,7 +170,7 @@ bool testInexactMetrics()
   trace.beginBlock ( "Testing inexact predicate separable metrics l_3.1 ..." );
 
    
-  InexactPredicateLpSeparableMetric<Z2i::Space> metric3(3.1);
+  InexactPredicateLpSeparableMetric<Z2i::Space,Value> metric3(3.1);
  
   trace.info()<< "a= "<<a<<std::endl;
   trace.info()<< "b= "<<b<<std::endl;
@@ -200,6 +201,8 @@ bool testInexactMetrics()
   
   return nbok == nb;
 }
+
+
 bool testPowerMetrics()
 {
   unsigned int nbok = 0;
@@ -287,7 +290,7 @@ bool testBinarySearch()
   unsigned int nb = 0;
  
   trace.beginBlock ( "Testing binary search of Voronoi abscissa..." );
-  ExactPredicateLpSeparableMetric<Z2i::Space, 1>::Promoted partialA, partialB;
+  ExactPredicateLpSeparableMetric<Z2i::Space, 1>::RawValue partialA, partialB;
   ExactPredicateLpSeparableMetric<Z2i::Space, 1> metric;
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 1>::Abscissa Abscissa;
   
@@ -467,9 +470,9 @@ bool testSpecialCasesL2()
 
 bool testConcepts()
 {
-  BOOST_CONCEPT_ASSERT(( CSeparableMetric<ExactPredicateLpSeparableMetric<Z2i::Space, 2> > ));
-  BOOST_CONCEPT_ASSERT(( CPowerSeparableMetric<ExactPredicateLpPowerSeparableMetric<Z2i::Space, 2> > ));
-  BOOST_CONCEPT_ASSERT(( CSeparableMetric<InexactPredicateLpSeparableMetric<Z2i::Space> > ));  
+  BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<ExactPredicateLpSeparableMetric<Z2i::Space, 2> > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPowerSeparableMetric<ExactPredicateLpPowerSeparableMetric<Z2i::Space, 2> > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<InexactPredicateLpSeparableMetric<Z2i::Space> > ));  
   return true;
 }
 
@@ -485,7 +488,8 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = testMetrics()
-    && testInexactMetrics()
+    && testInexactMetrics<double>()
+    && testInexactMetrics<float>()
     && testPowerMetrics()
     && testBinarySearch()
     && testSpecialCasesL2()

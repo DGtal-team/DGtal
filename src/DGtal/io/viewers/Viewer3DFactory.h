@@ -465,7 +465,7 @@ namespace DGtal
      */
     template < typename TIterator, typename TSCell>
     static void draw( DGtal::Viewer3D<Space, KSpace> & viewer,
-                      const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & aRangeAdapter );
+                      const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & aRangeAdapter );
     // SCellsRange
 
     // PointsRange
@@ -476,7 +476,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Viewer3D<Space,KSpace> & viewer,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
     // PointsRange
 
     // MidPointsRange
@@ -498,7 +498,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Viewer3D<Space, KSpace> & viewer,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & aRangeAdapter );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToArrow<TKSpace>, std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & aRangeAdapter );
     // ArrowsRange
 
     // InnerPointsRange
@@ -509,7 +509,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Viewer3D<Space,KSpace> & viewer,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
     // InnerPointsRange
 
     // OuterPointsRange
@@ -520,7 +520,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Viewer3D<Space,KSpace> & viewer,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
     // OuterPointsRange
 
     // IncidentPointsRange
@@ -531,7 +531,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Viewer3D<Space,KSpace> & viewer,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>,std::pair<typename TKSpace::Point, typename TKSpace::Point > > & aRangeAdapter );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<TKSpace>,std::pair<typename TKSpace::Point, typename TKSpace::Point > > & aRangeAdapter );
     // IncidentPointsRange
 
 
@@ -751,12 +751,30 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::UpdateImageData<TImageType, TFunctor> & anUpdate);
 
     /**
-     * Method to draw TransformedSurfelPrism
+     * Method to draw TransformedPrism
      * @param viewer the viewer where to draw
-     * @param aTransformedSurfelPrism the transformed surfelprism to draw
+     * @param aTransformedPrism the transformed surfelprism to draw
      */
     static void
-    draw( Viewer3D<Space,KSpace> & viewer, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism);
+    draw( Viewer3D<Space,KSpace> & viewer, const DGtal::TransformedPrism & aTransformedPrism);
+
+    /**
+     * Set the "OpenGL name" of future graphical commands.
+     * @param viewer the viewer where to draw
+     * @param aName3d an object storing the "OpenGL" name.
+     */
+    static void 
+    draw( Viewer3D<Space,KSpace> & viewer, const DGtal::SetName3D& aName3d );
+
+    /**
+     * Set the callback function when selecting an object (e.g. shift
+     * + left click in QGLViewer).
+     *
+     * @param viewer the viewer where to draw
+     * @param aFct an object storing the callback function.
+     */
+    static void 
+    draw( Viewer3D<Space,KSpace> & viewer, const DGtal::SetSelectCallback3D& aFct );
 
     // end heritage
     //----------------------------------------------------------------------------------------------

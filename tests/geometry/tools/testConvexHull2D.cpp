@@ -35,7 +35,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/tools/Hull2DHelpers.h"
 #include "DGtal/geometry/tools/PolarPointComparatorBy2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 #include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
 ///////////////////////////////////////////////////////////////////////////////
 

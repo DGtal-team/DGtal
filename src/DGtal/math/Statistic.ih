@@ -17,7 +17,7 @@
 /**
  * @file Statistics.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et SystÃ¨mes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/06/24
  *
@@ -336,8 +336,11 @@ DGtal::Statistic<TQuantity>::selfDisplay
              << " var=" << variance()
              << " uvar=" << unbiasedVariance()
              << " min=" << min()
-             << " max=" << max()
-             << "]";
+             << " max=" << max();
+  if(myIsTerminated){    
+    thatStream << " median =" << myMedian;
+  }
+  thatStream << "]";
 }
 
 

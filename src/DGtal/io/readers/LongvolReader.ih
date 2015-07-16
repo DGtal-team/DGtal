@@ -134,6 +134,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
   }
 
   int sx = 0, sy = 0, sz=0;
+  int cx = 0, cy = 0, cz=0;
 
   getHeaderValueAsInt( "X", &sx, header );
   getHeaderValueAsInt( "Y", &sy, header );
@@ -179,19 +180,33 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
   }
 
   //Raw Data
-  long count = 0;
+  
+  if( getHeaderValueAsInt( "Center-X", &cx, header ) == 0 )
+  {
+    getHeaderValueAsInt( "Center-Y", &cy, header );
+    getHeaderValueAsInt( "Center-Z", &cz, header );
 
-  firstPoint = T::Point::zero;
-  lastPoint[0] = sx - 1;
-  lastPoint[1] = sy - 1;
-  lastPoint[2] = sz - 1;
+    firstPoint[0] = cx - (sx - 1)/2;
+    firstPoint[1] = cy - (sy - 1)/2;
+    firstPoint[2] = cz - (sz - 1)/2;
+    lastPoint[0] = cx + sx/2;
+    lastPoint[1] = cy + sy/2;
+    lastPoint[2] = cz + sz/2;
+  }
+  else
+  {
+    firstPoint = T::Point::zero;
+    lastPoint[0] = sx - 1;
+    lastPoint[1] = sy - 1;
+    lastPoint[2] = sz - 1;
+  }
   typename T::Domain domain( firstPoint, lastPoint );
 
   try
   {
     T image( domain);
 
-    count = 0;
+    long count = 0;
     DGtal::uint64_t val=0;
     
     typename T::Domain::ConstIterator it = domain.begin();
@@ -274,6 +289,6 @@ DGtal::LongvolReader<T, TFunctor>::getHeaderValueAsInt( const char *type, int *d
   if ( i == -1 )
     return 1;
 
-  return sscanf( header[i].value, "%d", dest ) != 0;
+  return sscanf( header[i].value, "%d", dest ) == 0;
 }
 

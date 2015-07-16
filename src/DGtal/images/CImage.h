@@ -45,12 +45,13 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/base/CConstBidirectionalRangeFromPoint.h"
-#include "DGtal/base/CBidirectionalOutputRangeFromPoint.h"
+#include "DGtal/base/CBidirectionalRangeWithWritableIteratorFromPoint.h"
 #include "DGtal/images/CTrivialImage.h"
 
 namespace DGtal
 {
-
+namespace concepts
+{
 /////////////////////////////////////////////////////////////////////////////
 // struct CImage
 /**
@@ -105,7 +106,7 @@ public:
 
     typedef typename I::Range Range;
     BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<Range>));
-    BOOST_CONCEPT_ASSERT((CBidirectionalOutputRangeFromPoint<Range, typename
+    BOOST_CONCEPT_ASSERT((CBidirectionalRangeWithWritableIteratorFromPoint<Range, typename
     I::Value>));
 
 public:
@@ -121,6 +122,7 @@ private:
     Range myR;
 
 };
+}
 } // namespace DGtal
 
 //                                                                           //

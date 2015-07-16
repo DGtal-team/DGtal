@@ -14,3 +14,4 @@
 #include <string>
 
 #define DGTAL_VERSION "@DGtal_VERSION_MAJOR@.@DGtal_VERSION_MINOR@.@DGtal_VERSION_PATCH@"
+#cmakedefine DGTAL_NO_ESCAPED_CHAR_IN_TRACE

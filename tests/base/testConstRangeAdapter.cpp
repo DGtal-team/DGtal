@@ -42,7 +42,7 @@
 #include "DGtal/topology/SCellsFunctors.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
 
-
+#include "DGtal/base/IteratorFunctions.h"
 
 using namespace std;
 using namespace DGtal;
@@ -86,6 +86,11 @@ bool testRange(const Range &aRange)
     trace.info() << "Circulator" << endl;
     typename Range::ConstCirculator c = aRange.c();
     typename Range::ConstCirculator cend = aRange.c();
+
+    trace.info() << "c is valid: "<< (int)c.isValid() << " --  " << *c << std::endl;
+    trace.info() << "cend is valid: "<< (int)cend.isValid() << " --   " << *cend << std::endl;
+    
+
     if (isNotEmpty(c,cend)) 
       {
 	do 
@@ -104,12 +109,12 @@ bool testRange(const Range &aRange)
     typename Range::ConstReverseCirculator cend = aRange.rc();
     if (isNotEmpty(c,cend)) 
       {
-	do 
-	  {
-	    cout << *c << " ";
-	    l4.push_back(*c);
-	    c++;
-	  } while (c!=cend); 
+        do 
+          {
+            cout << *c << " ";
+            l4.push_back(*c);
+            c++;
+          } while (c!=cend); 
       }
     cout << endl; 
   }
@@ -145,14 +150,14 @@ int main( int argc, char** argv )
   for (int i = 1; i < n; ++i) 
       *ito++ = i;
 
-  typedef ConstRangeAdapter<std::vector<int>::iterator, DefaultFunctor, int > SimpleRange; 
-  DefaultFunctor df; 
+  typedef ConstRangeAdapter<std::vector<int>::iterator, functors::Identity, int > SimpleRange; 
+  functors::Identity df; 
   SimpleRange r1(v.begin(), v.end(), df); 
 
 
   //2) thresholded range of integers
-  typedef ConstRangeAdapter<std::vector<int>::iterator, Thresholder<int>, bool > BoolRange; 
-  Thresholder<int> t(n/2);  
+  typedef ConstRangeAdapter<std::vector<int>::iterator, DGtal::functors::Thresholder<int>, bool > BoolRange;
+  DGtal::functors::Thresholder<int> t(n/2);
   BoolRange r2(v.begin(), v.end(), t); 
 
   //3) range of signed cells...
@@ -167,12 +172,15 @@ int main( int argc, char** argv )
   //which are projected into 2d points
   typedef SpaceND<2> S;
   typedef S::Point Point2; 
-  SCellToInnerPoint<K> f(ks); 
-  Projector<S> p; 
-  Composer<SCellToInnerPoint<K>,Projector<S>,Point2> c(f,p); 
+  functors::SCellToInnerPoint<K> f(ks); 
 
-  typedef ConstRangeAdapter<std::vector<K::SCell>::iterator, 
-    Composer<SCellToInnerPoint<K>,Projector<S>,Point2>, Point2 > PointRange; 
+  functors::Projector<S> p;
+  functors::Composer< functors::SCellToInnerPoint<K>,
+                      functors::Projector<S>, Point2 > c(f,p);
+
+  typedef ConstRangeAdapter< std::vector<K::SCell>::iterator, 
+                             functors::Composer< functors::SCellToInnerPoint<K>,
+                                                 functors::Projector<S>, Point2 >, Point2 > PointRange;
   PointRange r3(v3.begin(), v3.end(), c); 
  
   /////////// concept checking

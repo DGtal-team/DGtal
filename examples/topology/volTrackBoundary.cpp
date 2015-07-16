@@ -15,8 +15,7 @@
 //! [volTrackBoundary-basicIncludes]
 #include <iostream>
 #include <queue>
-#include <QImageReader>
-#include <QtGui/qapplication.h>
+#include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -96,8 +95,9 @@ int main( int argc, char** argv )
   //! [volTrackBoundary-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
-  Viewer3D<> viewer;
+  Viewer3D<> viewer( ks );
   viewer.show(); 
+  viewer << SetMode3D( bel.className(), "Basic" );
   viewer << CustomColors3D(Color(250, 0, 0 ), Color( 128, 128, 128 ) );
   unsigned long nbSurfels = 0;
   for ( KSpace::SCellSet::const_iterator it = boundary.begin(),

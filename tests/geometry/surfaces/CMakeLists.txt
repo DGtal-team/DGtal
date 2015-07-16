@@ -10,10 +10,12 @@ ENDFOREACH(FILE)
 
 SET(TESTS_SURFACES_SRC
   testNormalVectorEstimatorEmbedder
-  testIntegralInvariantCurvatureEstimator2D
-  testIntegralInvariantMeanCurvatureEstimator3D
-  testIntegralInvariantGaussianCurvatureEstimator3D
+  testIntegralInvariantVolumeEstimator
+  testIntegralInvariantCovarianceEstimator
   testLocalEstimatorFromFunctorAdapter
+  ##testVoronoiCovarianceMeasureOnSurface
+  testTensorVoting
+  testEstimatorCache
   )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})
@@ -36,13 +38,26 @@ endif ( WITH_CGAL )
 
 if (  WITH_VISU3D_QGLVIEWER )
   SET(QGLVIEWER_TESTS_SRC
-    testLocalConvolutionNormalVectorEstimator )
+    testLocalConvolutionNormalVectorEstimator
+    testTensorVotingViewer)
 
   FOREACH(FILE ${QGLVIEWER_TESTS_SRC})
     add_executable(${FILE} ${FILE})
     target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
   ENDFOREACH(FILE)
 endif ( WITH_VISU3D_QGLVIEWER   )
+
+
+
+if ( WITH_PATATE )
+    SET(PATATE_TESTS_SRC
+      testSphereFitting )
+    FOREACH(FILE ${PATATE_TESTS_SRC})
+      add_executable(${FILE} ${FILE})
+      target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+      add_test(${FILE} ${FILE})
+    ENDFOREACH(FILE)
+endif()
 
 #-----------------------
 #GMP based tests

@@ -31,6 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/writers/MeshWriter.h"
 #include "DGtal/shapes/Mesh.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -43,15 +44,16 @@ using namespace DGtal::Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class Mesh.
 ///////////////////////////////////////////////////////////////////////////////
+
 /**
- * Example of a test. To be completed.
- *
+ * Test the mesh object construction.
  */
 bool testMesh()
 {
   
   trace.beginBlock ( "Testing Mesh  ..." );
-
+  bool ok = true;
+  trace.beginBlock ( "Testing Mesh contruction  ..." );
   Mesh<Point> aMesh;
   Point p0=Point(0,0);
   Point p1=Point(0,1);
@@ -59,8 +61,7 @@ bool testMesh()
   Point p3=Point(3,2);
   Point p4=Point(3,3);
   Point p5=Point(3,4);
-  Point p6=Point(4,6);
-  
+    
   aMesh.addVertex(p0);
   aMesh.addVertex(p1);
   aMesh.addVertex(p2);
@@ -91,8 +92,189 @@ bool testMesh()
   trace.info() << p0f1 << p1f1 << p2f1<< endl;
   
   
-  return (p0==p0f0) && (p1==p1f0) && (p2==p2f0) && 
+  bool okMeshConstruct =  (p0==p0f0) && (p1==p1f0) && (p2==p2f0) && 
     (p3==p0f1) && (p4==p1f1) && (p5==p2f1) ;
+  
+  trace.endBlock();
+  bool okMeshIterators = true;
+  trace.beginBlock ( "Testing Mesh iterator  ..." );
+  unsigned int nb=0;
+  // just testing nb iterations on const iterator
+  for(  Mesh<Point>::VertexStorage::const_iterator it = aMesh.vertexBegin(); 
+       it !=aMesh.vertexEnd(); 
+       it++){
+    nb++;    
+  }
+  okMeshIterators = nb == aMesh.nbVertex();
+  // testing to change vertex  on  iterator
+  for(  Mesh<Point>::VertexStorage::iterator it = aMesh.vertexBegin(); 
+       it !=aMesh.vertexEnd(); 
+       it++){
+    (*it)[0]+=10.0; (*it)[1]+=5.0;
+  }
+  // just testing nb iterations on const iterator
+  for(  Mesh<Point>::FaceStorage::const_iterator it = aMesh.faceBegin(); 
+       it !=aMesh.faceEnd(); 
+       it++){
+    nb++;    
+  }
+  okMeshIterators = nb == aMesh.nbFaces();
+  nb=0;
+  // just testing nb iterations on const iterator
+  for(  Mesh<Point>::FaceStorage::iterator it = aMesh.faceBegin(); 
+       it !=aMesh.faceEnd(); 
+       it++){
+    nb++;
+  }
+  okMeshIterators =  nb == aMesh.nbFaces() &&  (aMesh.getVertex(5))[0]==13;
+
+  // testing changing color of individual face:
+  aMesh.setFaceColor(1, DGtal::Color::Red);
+  bool okMeshColor = (aMesh.getFaceColor(0)==DGtal::Color::White)
+                     && (aMesh.getFaceColor(1)==DGtal::Color::Red) ;
+  
+  trace.endBlock();
+  
+  trace.beginBlock ( "Testing Mesh Bouding box and scale change  ..." );
+  aMesh.changeScale(2.0);
+  std::pair<Point, Point> bb = aMesh.getBoundingBox();
+  bool boundingBoxOK = (bb.first == Point(20,10)) && (bb.second == Point(26,18));
+  trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;
+  trace.endBlock();
+  trace.beginBlock ( "Testing mesh subdivision  ..." );
+  Mesh<RealPoint> aMeshR;
+  RealPoint pr0 (0,0);
+  RealPoint pr1 (1,0);
+  RealPoint pr2 (1,1);
+  aMeshR.addVertex(pr0);   aMeshR.addVertex(pr1);   aMeshR.addVertex(pr2);
+  aMeshR.addTriangularFace(0,1,2);
+  aMeshR.subDivideTriangularFaces(0.5); 
+
+  trace.info() << "nb vertex after subdivision: " << aMeshR.nbVertex() << std::endl;
+  trace.info() << "nb faces after subdivision: " << aMeshR.nbFaces() << std::endl;  
+  trace.info() << "New point: " << aMeshR.getVertex(aMeshR.nbVertex()-1) << std::endl;    
+  bool okSubDivide =  aMeshR.nbVertex()==4 && aMeshR.nbFaces()==3 && 
+                      aMeshR.getVertex(aMeshR.nbVertex()-1) == RealPoint(2.0/3.0, 1.0/3.0);
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing mesh quad transform  ..." );
+  Mesh<RealPoint> aMeshQ;
+  RealPoint pq0 (0,0);
+  RealPoint pq1 (1,0);
+  RealPoint pq2 (1,1);
+  RealPoint pq3 (0,1);
+  aMeshQ.addVertex(pq0);   aMeshQ.addVertex(pq1);   aMeshQ.addVertex(pq2);
+  aMeshQ.addVertex(pq3);
+  aMeshQ.addQuadFace(0,1,2,3);
+  aMeshQ.quadToTriangularFaces(); 
+
+  trace.info() << "nb faces after quad to triangle transform: " << aMeshQ.nbFaces() << std::endl;  
+  bool okQuadToTrans =  aMeshQ.nbFaces() == 2;
+  trace.endBlock();
+
+
+  trace.beginBlock ( "Testing Mesh copy operator  ..." );
+  Mesh<Point> aMesh2 = aMesh;
+  Mesh<Point> aMesh3 (aMesh2);
+  bool okMeshCopy = aMesh.nbFaces() == aMesh2.nbFaces() && aMesh.nbVertex() == aMesh2.nbVertex() &&
+                    aMesh.nbFaces() == aMesh3.nbFaces() && aMesh.nbVertex() == aMesh3.nbVertex() &&
+                    aMesh.getVertex(0) == aMesh2.getVertex(0) && aMesh.getVertex(0) == aMesh3.getVertex(0);
+  trace.endBlock();
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK && 
+       okSubDivide && okQuadToTrans;   
+  trace.endBlock();
+  return ok;
+
+}
+
+
+
+/**
+ * Test mesh generation from static fonctions.
+ */
+bool testMeshGeneration()
+{
+  
+  trace.beginBlock ( "Testing Mesh generation  ..." );
+  bool ok = true;
+
+  trace.beginBlock ( "Testing Tube generation  ..." );
+  //! [testMeshCreateSkeleton]
+  std::vector<Z3i::RealPoint> aSkeleton;  
+  aSkeleton.push_back(Z3i::RealPoint(0.0, 0.0, 0.0));
+  aSkeleton.push_back(Z3i::RealPoint(10.0, 0.0, 0.0));
+  aSkeleton.push_back(Z3i::RealPoint(20.0, 0.0, 0.0));
+  aSkeleton.push_back(Z3i::RealPoint(30.0, 0.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(35.0, 5.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 10.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 20.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 30.0, 0.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 35.0, 5.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 40.0, 10.0));  
+  aSkeleton.push_back(Z3i::RealPoint(40.0, 40.0, 20.0));  
+  //! [testMeshCreateSkeleton]
+
+  //! [testMeshCreateTubeMesh]  
+  Mesh<Z3i::RealPoint> aMesh(true);
+  Mesh<Z3i::RealPoint>::createTubularMesh(aMesh, aSkeleton, 0.5, 0.2, DGtal::Color::Blue);
+  //! [testMeshCreateTubeMesh]  
+
+  trace.endBlock();
+  trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (sould be 320)" << std::endl;
+  trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 352)" << std::endl;
+  bool okMeshTube1 = aMesh.nbFaces() == 320 && aMesh.nbVertex() == 352;
+
+  trace.beginBlock ( "Testing Tube generation (bis with variable raidii  ..." );
+  Mesh<Z3i::RealPoint> aMeshBis(true);
+  std::vector<double> vectRadii; 
+  vectRadii.push_back(0.5);
+  vectRadii.push_back(1.5);
+  vectRadii.push_back(2.5);
+  Mesh<Z3i::RealPoint>::createTubularMesh(aMeshBis, aSkeleton, vectRadii, 0.2, DGtal::Color::Green);
+  
+  trace.endBlock();
+  trace.info() << "Nb faces: "<< aMeshBis.nbFaces() << " (sould be 320)" << std::endl;
+  trace.info() << "Nb vertices: "<< aMeshBis.nbVertex() << " (sould be 352)" << std::endl;
+  
+  std::ofstream ofbis ("tubeVariableRadiiGeneratedFromTestMesh.off"); 
+  DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(ofbis, aMeshBis, true);
+  ofbis.close();
+  bool okMeshTube1bis = aMeshBis.nbFaces() == 320 && aMeshBis.nbVertex() == 352;
+  
+
+  trace.beginBlock("Testing Mesh from Height sequence");
+  //! [testMeshCreateHeightSequence]
+  std::vector<double> heightSequence;
+  heightSequence.push_back(0.1); 
+  heightSequence.push_back(0.2); 
+  heightSequence.push_back(0.15);
+
+  heightSequence.push_back(1.1); 
+  heightSequence.push_back(2.2); 
+  heightSequence.push_back(1.15);
+
+  heightSequence.push_back(0.1); 
+  heightSequence.push_back(0.2); 
+  heightSequence.push_back(0.15);
+  //! [testMeshCreateHeightSequence]
+  
+  //! [testMeshCreateSequenceMesh]  
+  Mesh<Z3i::RealPoint>::createMeshFromHeightSequence(aMesh, heightSequence, 3, 10, 10, 3, DGtal::Color::Yellow);
+  //! [testMeshCreateSequenceMesh]  
+  
+  trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (sould be 324)" << std::endl;
+  trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 361)" << std::endl;
+  bool okMeshTube1AndHF = aMesh.nbFaces() == 324 && aMesh.nbVertex() == 361;
+  
+  //! [testMeshExport]  
+  std::ofstream of ("tubeAndHeighFieldGeneratedFromTestMesh.off"); 
+  DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(of, aMesh, true);
+  of.close();
+  //! [testMeshExport]  
+  
+  ok = ok & okMeshTube1 & okMeshTube1bis & okMeshTube1AndHF;  
+  trace.endBlock();
+  return ok;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -106,7 +288,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMesh(); // && ... other tests
+  bool res = testMesh() && testMeshGeneration(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

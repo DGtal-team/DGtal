@@ -63,7 +63,7 @@ inline
 bool
 DGtal::CowPtr<T>::isValid() const
 {
-    return myPtr->isValid();
+    return myPtr.isValid();
 }
 
 

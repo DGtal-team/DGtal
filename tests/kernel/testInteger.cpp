@@ -52,8 +52,8 @@ bool testInteger()
   unsigned int nb = 0;
   
   trace.beginBlock ( "Checking CInteger models ..." );
-  BOOST_CONCEPT_ASSERT(( CInteger<int> ));
-  BOOST_CONCEPT_ASSERT(( CInteger<DGtal::int16_t> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CInteger<int> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CInteger<DGtal::int16_t> ));
 
   nbok += true ? 1 : 0; 
   nb++;
@@ -88,7 +88,7 @@ bool testInteger()
   trace.endBlock();
 
   trace.beginBlock ( "Checking CUnsignedInteger models ..." );
-  BOOST_CONCEPT_ASSERT(( CUnsignedNumber<unsigned int> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber<unsigned int> ));
   // These tests fail : int is not a model of CUnsignedInteger.
   // BOOST_CONCEPT_ASSERT(( CUnsignedInteger<int> ));
   nbok += true ? 1 : 0; 

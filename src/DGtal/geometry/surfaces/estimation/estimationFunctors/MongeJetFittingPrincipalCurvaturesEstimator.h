@@ -47,8 +47,6 @@
 #include <DGtal/base/Common.h>
 #include <DGtal/topology/SCellsFunctors.h>
 
-#include <DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h>
-
 #ifndef WITH_CGAL
 #error You need to have activated CGAL (WITH_CGAL) to include this file.
 #endif
@@ -62,6 +60,8 @@
 
 namespace DGtal
 {
+  namespace functors
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class MongeJetFittingPrincipalCurvaturesEstimator
   /**
@@ -80,7 +80,7 @@ namespace DGtal
 
     typedef TSurfel Surfel;
     typedef TEmbedder SCellEmbedder;
-    typedef CurvatureInformations Quantity;
+    typedef std::pair<double, double> Quantity;
     typedef typename SCellEmbedder::RealPoint RealPoint;
 
     typedef CGAL::Cartesian<double> CGALKernel;
@@ -133,8 +133,8 @@ namespace DGtal
       double k1 = monge_form.principal_curvatures ( 0 );
       double k2 = monge_form.principal_curvatures ( 1 );
       Quantity result;
-      result.k1 = k1;
-      result.k2 = k2;
+      result.first = k1;
+      result.second = k2;
       return result;
     }
 
@@ -164,7 +164,7 @@ namespace DGtal
 
 
   }; // end of class MongeJetFittingPrincipalCurvaturesEstimator
-
+  }
 } // namespace DGtal
 
 
