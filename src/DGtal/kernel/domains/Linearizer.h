@@ -47,14 +47,14 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   
   /** 
-   * @brief Tag (empty struct) specifying a row-major storage order.
+   * @brief Tag (empty structure) specifying a row-major storage order.
    *
    * @see Linearizer
    */
   struct RowMajorStorage {};
 
   /** 
-   * @brief Tag (empty struct) specifying a col-major storage order.
+   * @brief Tag (empty structure) specifying a col-major storage order.
    *
    * @see Linearizer
    */
@@ -87,9 +87,10 @@ namespace DGtal
   struct Linearizer< HyperRectDomain<TSpace>, TStorageOrder >
     {
       // Usefull typedefs  
-      typedef typename TDomain::Point Point;
+      typedef HyperRectDomain<TSpace> Domain;
+      typedef typename TSpace::Point Point;
       typedef Point Extent;
-      typedef typename TDomain::Size  Size;
+      typedef typename TSpace::Size  Size;
 
       /** Linearized index of a point, given the domain lower-bound and extent.
        *
@@ -119,7 +120,7 @@ namespace DGtal
        * @return the linearized index of the point.
        */
       static inline
-      Size getIndex( Point aPoint, TDomain const& aDomain );
+      Size getIndex( Point aPoint, Domain const& aDomain );
       
       /** De-linearization of an index, given the domain lower-bound and extent.
        *
@@ -149,7 +150,7 @@ namespace DGtal
        * @return  the point whose linearized index is anIndex.
        */
       static inline
-      Point getPoint( Size anIndex, TDomain const& aDomain );
+      Point getPoint( Size anIndex, Domain const& aDomain );
   
   }; // end of class Linearizer
 
@@ -158,7 +159,8 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/domains/Linearizer.ih"
+// #include "DGtal/kernel/domains/Linearizer.ih"
+#include "Linearizer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
