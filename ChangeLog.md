@@ -58,6 +58,9 @@
  - InexactPredicateLpSeparableMetric class is now templated by an
    EuclideanRing type. (David Coeurjolly,
    [#1017](https://github.com/DGtal-team/DGtal/pull/1017))
+ - Main example files of geometry/curves are introduced in the list of examples
+   and briefly described.
+   (Tristan Roussillon, [#1026](https://github.com/DGtal-team/DGtal/pull/1026))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
