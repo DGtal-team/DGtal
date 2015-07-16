@@ -48,9 +48,9 @@
 #include <type_traits>
 
 #include <DGtal/images/CConstImage.h>
-#include "ImageViewIterator.h"
-#include "IteratorCompletion.h"
-#include "Linearizer.h"
+#include <DGtal/images/ImageViewIterator.h>
+#include <DGtal/base/IteratorCompletion.h>
+#include <DGtal/kernel/domains/Linearizer.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -423,7 +423,7 @@ namespace DGtal
             }
 
         private:
-          const Domain myDomain; ///< Stored domain to avoid iterator corruption if domain changesd.
+          Domain myDomain; ///< Stored domain to avoid iterator corruption if domain changesd.
         };
 
     }; // end of specialized class IteratorCompletionTraits
