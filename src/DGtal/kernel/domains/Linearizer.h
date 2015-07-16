@@ -159,8 +159,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-// #include "DGtal/kernel/domains/Linearizer.ih"
-#include "Linearizer.ih"
+#include "DGtal/kernel/domains/Linearizer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
