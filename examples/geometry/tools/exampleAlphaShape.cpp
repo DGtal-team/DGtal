@@ -38,7 +38,7 @@
 //! [Hull2D-Include]
 #include "DGtal/geometry/tools/PolarPointComparatorBy2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/AvnaimEtAl2x2DetSignComputer.h"
-#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 #include "DGtal/geometry/tools/determinant/InGeneralizedDiskOfGivenRadius.h"
 
 #include "DGtal/shapes/ShapeFactory.h"
@@ -104,157 +104,6 @@ void drawPolygon(const ForwardIterator& itb, const ForwardIterator& ite,
 }
 
 
-/**
- * Algorithms that computes the convex hull
- * of a point set
- */
-void convexHull()
-{
-  //Digitization of a disk of radius 6
-  Ball2D<Z2i::Space> ball(Z2i::Point(0,0), 6);
-  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
-  Z2i::DigitalSet pointSet(domain);   
-  Shapes<Z2i::Domain>::euclideanShaper(pointSet, ball);
-
-  //! [Hull2D-Namespace]
-  using namespace Hull2D; 
-  //! [Hull2D-Namespace]
-
-  //! [Hull2D-Functor]
-  typedef InHalfPlaneBySimpleMatrix<Z2i::Point, DGtal::int64_t> Functor;  
-  Functor functor; 
-  //! [Hull2D-Functor]
-
-  { //convex hull in counter-clockwise order
-    vector<Z2i::Point> res; 
-
-    //! [Hull2D-StrictPredicateCCW]
-    typedef PredicateFromOrientationFunctor2<Functor, false, false> StrictPredicate; 
-    StrictPredicate predicate( functor ); 
-    //! [Hull2D-StrictPredicateCCW]
-    //according to the last two template arguments, neither strictly negative values, nor zeros are accepted: 
-    //the predicate returns 'true' only for strictly positive values returned by the underlying functor. 
-
-    //! [Hull2D-AndrewAlgo]
-    andrewConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
-    //! [Hull2D-AndrewAlgo]
-
-    //display
-    Board2D board;
-    drawPolygon( res.begin(), res.end(), board ); 
-    board.saveSVG( "ConvexHullCCW.svg" );  
-#ifdef WITH_CAIRO
-    board.saveCairo("ConvexHullCCW.png", Board2D::CairoPNG);
-#endif
-  }
-
-  { //convex hull in counter-clockwise order with all the points lying on the edges
-    vector<Z2i::Point> res; 
-
-    //! [Hull2D-LargePredicateCCW]
-    typedef PredicateFromOrientationFunctor2<Functor, false, true> LargePredicate; 
-    LargePredicate predicate( functor ); 
-    //! [Hull2D-LargePredicateCCW]
-    //according to the last template argument, zeros are accepted so that  
-    //the predicate returns 'true' for all the positive values returned by the underlying functor. 
-
-    //andrew algorithm
-    andrewConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
-
-    //display
-    Board2D board;
-    drawPolygon( res.begin(), res.end(), board ); 
-    board.saveSVG( "ConvexHullCCWWithPointsOnEdges.svg" );  
-#ifdef WITH_CAIRO
-    board.saveCairo("ConvexHullCCWWithPointsOnEdges.png", Board2D::CairoPNG);
-#endif
-
-  }
-
-  { //convex hull in clockwise order
-    vector<Z2i::Point> res; 
-
-    //! [Hull2D-StrictPredicateCW]
-    typedef PredicateFromOrientationFunctor2<Functor, true, false> StrictPredicate; 
-    StrictPredicate predicate( functor );
-    //! [Hull2D-StrictPredicateCW]
-    //according to the last two argument template, 
-    //the predicate returns 'true' only for strictly negative values returned by the underlying functor. 
-
-    //andrew algorithm
-    andrewConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
-
-    //display
-    Board2D board;
-    drawPolygon( res.begin(), res.end(), board ); 
-    board.saveSVG( "ConvexHullCW.svg" );  
-#ifdef WITH_CAIRO
-    board.saveCairo("ConvexHullCW.png", Board2D::CairoPNG);
-#endif
-  }
-
-  { //convex hull in counter-clockwise order
-    vector<Z2i::Point> res; 
-
-    //geometric predicate
-    typedef PredicateFromOrientationFunctor2<Functor, false, false> StrictPredicate; 
-    StrictPredicate predicate( functor ); 
-
-    //! [Hull2D-GrahamAlgo]
-    grahamConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate ); 
-    //! [Hull2D-GrahamAlgo]
-
-    //display
-    Board2D board;
-    drawPolygon( res.begin(), res.end(), board ); 
-    board.saveSVG( "ConvexHullCCWbis.svg" );  
-#ifdef WITH_CAIRO
-    board.saveCairo("ConvexHullCCWbis.png", Board2D::CairoPNG);
-#endif
-  }
-
-  { //order of the points for andrew algorithm
-    vector<Z2i::Point> res; 
-    std::copy( pointSet.begin(), pointSet.end(), back_inserter( res ) ); 
-
-    std::sort( res.begin(), res.end() ); 
-
-    //display
-    Board2D board;
-    drawPolygon( res.begin(), res.end(), board, false ); 
-    board.saveSVG( "AndrewWEVP.svg" );  
-#ifdef WITH_CAIRO
-    board.saveCairo("AndrewWEVP.png", Board2D::CairoPNG);
-#endif
-  }
-
-  { //order of the points for graham algorithm
-    vector<Z2i::Point> res; 
-    std::copy( pointSet.begin(), pointSet.end(), back_inserter( res ) ); 
-
-    //find an extremal point
-    //NB: we choose the point of greatest x-coordinate
-    //so that the sort step (by a polar comparator) 
-    //returns a weakly externally visible polygon
-    typename std::vector<Z2i::Point>::iterator itMax 
-      = std::max_element( res.begin(), res.end() ); 
-
-    //sort around this point with a polar comparator
-    PolarPointComparatorBy2x2DetComputer<Z2i::Point> comparator;  
-    comparator.setPole( *itMax );
-    std::sort( res.begin(), res.end(), comparator ); 
-
-    //display
-    Board2D board;
-    drawPolygon( res.begin(), res.end(), board, false ); 
-    board.saveSVG( "GrahamWEVP.svg" );  
-#ifdef WITH_CAIRO
-    board.saveCairo("GrahamWEVP.png", Board2D::CairoPNG);
-#endif
-  }
-
-
-}
 
 /**
  * Algorithms that computes the alpha-shape
@@ -294,7 +143,7 @@ void alphaShape()
   unique_copy( pointsRange.begin(), pointsRange.end(), back_inserter( border ) ); 
 
   //namespace for hull functions
-  using namespace Hull2D; 
+  using namespace functions::Hull2D; 
 
   { //alpha = 0
     trace.info() << " alpha == 0 " << endl; 
@@ -327,7 +176,7 @@ void alphaShape()
     vector<Z2i::Point> res; 
     
     //comparator and functor
-    typedef InHalfPlaneBySimpleMatrix<Z2i::Point, DGtal::int64_t> Functor;  
+    typedef InHalfPlaneBySimple3x3Matrix<Z2i::Point, DGtal::int64_t> Functor;  
     Functor functor; 
     typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
     Predicate predicate( functor ); 
@@ -483,8 +332,6 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-
-  convexHull(); 
 
   alphaShape(); 
 

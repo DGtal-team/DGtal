@@ -174,19 +174,10 @@ melkmanConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& it
 
   if ( itb != ite )
     {
-      //container
-      std::vector<Point> container;
-      std::copy( itb, ite, std::back_inserter( container ) );
- 
-      //sort according to the x-coordinate
-      std::sort( container.begin(), container.end() ); 
 
       //convex hull computation with Melkman's algorithm
       DGtal::MelkmanConvexHull<Point, Functor> ch( aFunctor ); 
-      for (typename std::vector<Point>::const_iterator 
-	     it = container.begin(), 
-	     itEnd = container.end(); 
-	   it != itEnd; ++it)
+      for (ForwardIterator it = itb; it != ite; ++it)
 	ch.add( *it ); 
 
       std::copy( ch.begin(), ch.end(), res );
