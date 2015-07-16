@@ -43,7 +43,7 @@
 #include <ostream>
 #include <type_traits>
 #include <boost/iterator/iterator_facade.hpp>
-#include "Linearizer.h"
+#include <DGtal/kernel/domains/Linearizer.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
