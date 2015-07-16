@@ -94,7 +94,7 @@ namespace DGtal
  *  
  */
   template <typename TImageContainer, 
-	    typename TFunctor=BasicColorToScalarFunctors::ColorRGBEncoder<typename TImageContainer::Value> >
+	    typename TFunctor=functors::ColorRGBEncoder<typename TImageContainer::Value> >
   struct PPMReader
   {
     // ----------------------- Standard services ------------------------------
@@ -107,7 +107,7 @@ namespace DGtal
     
     enum MagicNumber {P1,P2,P3,P4,P5,P6};
 
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor,  DGtal::Color, Value> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor,  DGtal::Color, Value> )) ;    
 
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
                          (ImageContainer::Domain::dimension == 3));
@@ -126,7 +126,7 @@ namespace DGtal
      * @return an instance of the ImageContainer.
      */
     static  ImageContainer importPPM(const std::string & aFilename, 
-                                     const Functor & aFunctor =  BasicColorToScalarFunctors::ColorRGBEncoder<Value>(), 
+                                     const Functor & aFunctor =  functors::ColorRGBEncoder<Value>(), 
 				     bool topbotomOrder = true) throw(DGtal::IOException);
 
 

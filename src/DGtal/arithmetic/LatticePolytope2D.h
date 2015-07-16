@@ -82,7 +82,7 @@ namespace DGtal
              typename TSequence = std::list< typename TSpace::Point > >
   class LatticePolytope2D 
   {
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
     BOOST_CONCEPT_ASSERT(( boost::Sequence< TSequence > ));
 
@@ -115,15 +115,15 @@ namespace DGtal
 
     // The sequence must contain points.
     BOOST_STATIC_ASSERT
-    (( ConceptUtils::SameType< Value, Point >::value ));
+    (( concepts::ConceptUtils::SameType< Value, Point >::value ));
     
     // Point2I and Point should be the same type.
     typedef typename MyIntegerComputer::Point2I Point2I;
     typedef typename MyIntegerComputer::Vector2I Vector2I;
     typedef typename MyIntegerComputer::Point3I Point3I;
     typedef typename MyIntegerComputer::Vector3I Vector3I;
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point2I, Point >::value ));
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Vector2I, Vector >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Point2I, Point >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Vector2I, Vector >::value ));
 
     // ----------------------- Standard services ------------------------------
   public:

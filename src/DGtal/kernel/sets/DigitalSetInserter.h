@@ -66,7 +66,7 @@ namespace DGtal
     public std::iterator<std::output_iterator_tag,void,void,void,void>
 {
 
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TDigitalSet> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSet> )); 
 
     // ----------------------- Standard services ------------------------------
   public:

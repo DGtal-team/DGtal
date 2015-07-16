@@ -57,9 +57,12 @@ OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
 OPTION(BUILD_TESTING "Build testing." OFF)
 OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
 OPTION(VERBOSE "Verbose messages." OFF)
+OPTION(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
+OPTION(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 
 SET(VERBOSE_DGTAL 0)
 SET(DEBUG_VERBOSE_DGTAL 0)
+SET(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
 
 IF (DEBUG_VERBOSE)
   SET(DEBUG_VERBOSE_DGTAL 1)
@@ -71,6 +74,11 @@ IF (VERBOSE)
   ADD_DEFINITIONS(-DVERBOSE)
   MESSAGE(STATUS "Verbose mode activated")
 ENDIF(VERBOSE)
+
+IF(COLOR_WITH_ALPHA_ARITH)
+  SET(COLOR_WITH_ALPHA_ARITH_DGTAL 1)
+  ADD_DEFINITIONS(-DCOLOR_WITH_ALPHA_ARITH)
+ENDIF(COLOR_WITH_ALPHA_ARITH)
 
 # -----------------------------------------------------------------------------
 # Benchmark target
@@ -96,3 +104,13 @@ IF(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
   MESSAGE(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
 d build outside the sources (for example 'mkdir build ; cmake <DGTAL_DIR>'.")
 ENDIF(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
+
+
+# -----------------------------------------------------------------------------
+# Debug specific options
+# -----------------------------------------------------------------------------
+OPTION(WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
+IF (WARNING_AS_ERROR)
+  SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror")
+  MESSAGE(STATUS "Warnings as Errors ENABLED.")
+ENDIF(WARNING_AS_ERROR)

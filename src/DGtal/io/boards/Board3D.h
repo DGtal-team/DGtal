@@ -125,8 +125,11 @@ namespace DGtal
     /**
      * Save a OBJ image.
      * @param filename filename of the image to save.
+     * @param isNormalized if true, we use the bounding box to scale
+     * all objects such that they fit in [-1/2,1/2]^3 domain (default false),
      */
-    void saveOBJ(const std::string & filename);
+    void saveOBJ(const std::string & filename, 
+                 const bool isNormalized = false);
 
 
 
@@ -167,9 +170,27 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /**
+     * Check if the material associated woth the color exists. If it
+     * does, the method returns the material index. Otherwise, the new
+     * material is created.
+     *
+     * @param aColor a color
+     *
+     * @return the material index associated  with the color
+     */
+    unsigned int getMaterialIndex(const DGtal::Color &aColor);
+
     // ------------------------- Private Datas --------------------------------
   private:
 
+
+    ///Material Map
+    std::map<DGtal::Color,unsigned int> myMaterialMap;
+    ///Last Material index
+    unsigned int myMaterialIndex;
+    ///Material buffer
+    std::stringstream myMTLBuffer;
 
 
   protected :

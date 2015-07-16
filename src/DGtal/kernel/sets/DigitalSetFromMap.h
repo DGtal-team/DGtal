@@ -85,7 +85,7 @@ namespace DGtal
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
 
-    typedef Pair1st<Point> Functor; 
+    typedef functors::Pair1st<Point> Functor; 
     typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> ConstIterator;
     typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> Iterator;
 
@@ -278,7 +278,7 @@ namespace DGtal
     Self & operator+=
     ( const TDigitalSet & aSet );
 
-    // ----------------------- Model of CPointPredicate -----------------------------
+    // ----------------------- Model of concepts::CPointPredicate -----------------------------
   public:
 
     /**

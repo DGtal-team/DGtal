@@ -1048,7 +1048,7 @@ public:
        initialized with a polynomial of type MPolynomial<n-1, Ring>.
     */
     inline MPolynomial( const MPolyNM1 & pdm1, 
-                        const Alloc & allocator = Alloc() )
+                        const Alloc & /*allocator = Alloc()*/ )
       : myValue( 1, pdm1 )
     {}
 

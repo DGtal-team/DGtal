@@ -97,7 +97,9 @@ namespace DGtal
    * @tparam TContainer specifies the container to be used to store
    * the point coordinates. At this point, such container must be a
    * random access bidirectionnal a-la STL containers (e.g. vector,
-   * boost/array).
+   * boost/array). If TContainer implements comparison operators == !=
+   * < <= > <=, then PointVector will also implements it and with the
+   * exact same behaviour.
    *
    *
    * If TEuclideanRing is a Integer type (built-in integers,
@@ -142,7 +144,7 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
     
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing<TEuclideanRing> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<TEuclideanRing> ) );
     
     ///We cannot check the TContainer since boost::array is not a
     ///model of boost::RandomAccessContainer
@@ -165,6 +167,9 @@ namespace DGtal
     ///Copy of the static dimension of the Point/Vector.
     static const Dimension dimension = dim;
 
+		///Types needed by CLinearAlgebraContainer
+		typedef Component Scalar;
+		typedef Dimension Index;
 
     ///Copy of the container type
     typedef TContainer Container;
@@ -230,17 +235,17 @@ namespace DGtal
     PointVector( std::initializer_list<Component> init );
 #endif // CPP11_INITIALIZER_LIST
 
-    /** Constructor taking apoint and a functor as parameters.
+    /** Constructor taking two points and a functor as parameters.
      *  The new point is initialized by the result of functor f
-     *  for each coordinate of apoint1 and apoint2
+     *  applied for each pair of coordinates of apoint1 and apoint2
      */
     template<typename BinaryFunctor>
     PointVector( const Self& apoint1, const Self& apoint2,
 		 const BinaryFunctor& f );
 
-    /** Constructor taking apoint and a unary functor as parameters.
-     *  The new point is initialized by the result of functor f
-     *  for each coordinate of apoint1
+    /** Constructor taking a point and a unary functor as parameters.
+     *  The new point is initialized by the result of functor f for
+     *  each coordinate of apoint1
      */
     template<typename UnaryFunctor>
     PointVector( const Self& apoint1, 
@@ -408,9 +413,9 @@ namespace DGtal
     /**
      * Returns the size of the vector (i.e. the number of its
      * coefficients).
-     * Same as getDimension
      */
     static Dimension size();
+		inline Dimension rows() const { return dim; }
 
     /**
      * Returns the  @a i-th coefficient of the vector.
@@ -420,6 +425,7 @@ namespace DGtal
      * @param i is the index of the retrieved coefficient.
      */
     const Component& operator[]( Dimension i ) const;
+    inline const Component& operator()( Dimension i ) const { return (*this)[i]; }
 
     /**
      * Returns a non-const reference to the @a i-th element of the
@@ -430,6 +436,7 @@ namespace DGtal
      * @param i is the index of the retrieved coefficient.
      */
     Component& operator[](Dimension i );
+    Component& operator()(Dimension i ) { return (*this)[i]; }
 
     // ----------------------- Comparison operations --------------------------
   public:
@@ -439,6 +446,8 @@ namespace DGtal
      * @param pv Point/Vector to compare to this.
      *
      * @return true iff points are equal.
+     *
+     * @warning It inherits from operator== of TContainer.
      */
     bool operator== ( const Self & pv ) const;
 
@@ -448,6 +457,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this differs from pv, false otherwise.
+     *
+     * @warning It inherits from operator!= of TContainer.
      */
     bool operator!= ( const Self & pv ) const;
 
@@ -457,6 +468,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this < pv, false otherwise.
+     *
+     * @warning It inherits from operator< of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator< ( const Self & pv ) const;
 
@@ -466,6 +479,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this <= pv, false otherwise.
+     *
+     * @warning It inherits from operator<= of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator<= ( const Self & pv ) const;
 
@@ -475,6 +490,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this > pv, false otherwise.
+     *
+     * @warning It inherits from operator> of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator> ( const Self & pv ) const;
     
@@ -484,6 +501,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this >= pv, false otherwise.
+     *
+     * @warning It inherits from operator>= of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator>= ( const Self & pv ) const;
 
@@ -514,6 +533,14 @@ namespace DGtal
     Component dot( const Self &v) const;
 
     /**
+     * cross product with a PointVector
+     *
+     * @param v a vector that is cross-producted to *this.
+     * @return the cross product product 
+     */
+    Self crossProduct( const Self &v) const;
+
+    /**
      * Addition operator with assignement.
      *
      * @param v is the Point that gets added to @a *this.
@@ -541,7 +568,7 @@ namespace DGtal
      * Substraction operator.
      * Point - Vector => Point
      *
-     * @param v is the Point that gets added to @a *this.
+     * @param v is the Point that gets substracted to @a *this.
      * @return a new Point that is the subtraction 'this'-[v].
      */
     Self operator- ( const Self & v ) const;
@@ -577,7 +604,7 @@ namespace DGtal
      * @param coeff is the factor @a *this get divided by.
      * @return the component division of *this by coeff.
      */
-    Self operator/ ( const Component coeff );
+    Self operator/ ( const Component coeff ) const;
     
     /**
      * Divides @a *this by the @a coeff scalar number.
@@ -603,6 +630,11 @@ namespace DGtal
      * Resets all the values to zero.
      */
     void reset();
+
+    /**
+     * Resets all the values to zero. Needed by CLinearAlgebraContainer.
+     */
+		inline void clear() { reset(); }
 
     /**
      * Implements the infimum (or greatest lower bound). It means the

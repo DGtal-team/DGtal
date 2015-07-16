@@ -49,7 +49,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CDomain
   /**
@@ -170,7 +171,7 @@ namespace DGtal
   private:
     
   }; // end of concept CDomain
-  
+  }
 } // namespace DGtal
 
 //                                                                           //

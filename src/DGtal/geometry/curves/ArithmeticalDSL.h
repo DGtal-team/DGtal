@@ -46,6 +46,7 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CSignedNumber.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
@@ -56,6 +57,7 @@
 
 namespace DGtal
 {
+
   //forward declaration of ArithmeticalDSS for the friendship
   template <typename TCoordinate,
 	    typename TInteger,
@@ -123,13 +125,12 @@ namespace DGtal
      * and the slope parameters.
      */
     typedef TCoordinate Coordinate;
-    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
     /**
      * Type used for the intercepts and the remainders.
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ));
-
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
     /**
      * Type of digital plane.
      */
@@ -146,6 +147,17 @@ namespace DGtal
      * Type of step vectors, defined as STL pair of vectors.
      */
     typedef std::pair<Vector,Vector> Steps;
+    /**
+     * Type used for the position of a point in the DSL.
+     */
+    typedef Coordinate Position;
+
+  /**
+   * Type of the octant values, defined as a STL pair of int
+   */
+  typedef std::pair<unsigned char, unsigned char> Octant;
+
+  
 
     /**
      * \brief Aim: This class aims at representing an iterator
@@ -165,12 +177,14 @@ namespace DGtal
     class ConstIterator
       : public boost::iterator_facade<ConstIterator, //derived type, the ConstIterator class itself
 				      Point const,   //value type
-				      boost::bidirectional_traversal_tag, //traversal tag
-				      Point const    //reference type
+				      boost::random_access_traversal_tag, //traversal tag
+				      Point const,    //reference type
 				      //NB: since there is no underlying container,
 				      //we cannot return a reference.
+				      Position  //difference type
 				      >
     {
+
       // ------------------------- Private data -----------------------
     private:
 
@@ -220,6 +234,14 @@ namespace DGtal
        * Destructor. Does nothing.
        */
       ~ConstIterator();
+ 
+      // ------------------------- useful services -------------------------
+   public: 
+      /**
+       * @return the remainder of the current point
+       * (without any computation)
+       */
+      Integer remainder() const;
 
       // ------------------------- iteration services -------------------------
     private:
@@ -250,6 +272,23 @@ namespace DGtal
        * @return 'true' if their current points coincide.
        */
       bool equal(const ConstIterator& aOther) const;
+
+      /**
+       * Moves @a myCurrentPoint lying at position i to the 
+       * point of the DSL lying at position i + @a aShift
+       * @param aShift position difference
+       * NB: in O(1)
+       */
+      void advance(const Position& aShift);
+
+      /**
+       * Computes the distance between *this and @a aOther, ie.
+       * the difference between their positions
+       * @param aOther any other iterator 
+       * @return distance between the two iterators
+       */
+      Position distance_to(const ConstIterator& aOther) const; 
+
     };
 
     /**
@@ -335,6 +374,42 @@ namespace DGtal
      */
     bool operator!= ( const ArithmeticalDSL & aOther ) const;
 
+  /**
+   * Test if DSLs lie in the same octant.
+   * @param aOther the object to compare with.
+   * @return 'true' the two DSLs lie in the same octant, 'false' otherwise
+   * @see sameOctant
+   */
+  bool sameOctant ( const ArithmeticalDSL & aOther, typename Octant::first_type *theOctant ) const;
+
+
+  /**
+   * Test if a point is an upper leaning point of *this
+   * @param aPoint a point
+   * @return 'true' if aPoint is an upper leaning point of *this, false otherwise
+   */
+  bool isUpperLeaningPoint(const Point& aPoint) const;
+  
+  /**
+   * Test if a point is a lower leaning point of *this
+   * @param aPoint a point
+   * @return 'true' if aPoint is a lower leaning point of *this, false otherwise
+   */
+  bool isLowerLeaningPoint(const Point& aPoint) const;
+  
+
+  /**
+   * Returns the octants of the DSL  as a
+   * pair of integers. If the parameters are such that \f$ abs(@a myA) =
+   * abs(@a myB) \f$ or \f$ @a myA = 0 \f$ or \f$ @a myB = 0 \f$, it returns
+   * two octants (for instance octants 0 and 7 if \f$ @a myA = 0 \f$).  
+   *
+   * @return the octants as a pair of integers
+   */
+  
+  Octant octant() const;
+
+
     /**
      * Destructor.
      */
@@ -384,8 +459,15 @@ namespace DGtal
 
     /**
      * @return the arithmetical thickness \f$ \omega \f$
+     * @see patternLength
      */
     Integer omega() const;
+
+    /**
+     * @return the pattern length (equal to \f$ omega \f$)
+     * @see omega
+     */
+    Position patternLength() const;
 
     /**
      * @return the shift vector (translating a point
@@ -407,8 +489,8 @@ namespace DGtal
      * @param aPoint any point
      * @return remainder of @a aPoint
      */
-    static Integer remainder(const Integer& aA,
-			     const Integer& aB,
+    static Integer remainder(const Coordinate& aA,
+			     const Coordinate& aB,
 			     const Point& aPoint);
 
     /**
@@ -436,7 +518,24 @@ namespace DGtal
      * @param aPoint the point whose position is returned
      * @return the position
      */
-    Integer position(const Point& aPoint) const;
+    Position position(const Point& aPoint) const;
+
+    /**
+     * Returns the unique point of the DSL located at position zero
+     * in O(1). 
+     * @pre the arithmetical thickness is not equal to zero
+     * @return the point of the DSL located at position zero
+     */
+    Point getPoint() const;
+
+    /**
+     * Returns the unique point of the DSL located at position @a aPosition
+     * in O(1). 
+     * @pre the arithmetical thickness is not equal to zero
+     * @param aPosition position of the returned point
+     * @return the point of the DSL located at position @a aPosition
+     */
+    Point getPoint(const Position& aPosition) const;
 
     /**
      * Returns a boolean equal to 'true' if @a aP1 is
@@ -469,6 +568,8 @@ namespace DGtal
      */
     bool isInDSL(const Point& aPoint) const;
 
+  
+  
     /**
      * @return 'true' if @a aPoint is in the DSL
      * 'false' otherwise.
@@ -481,7 +582,7 @@ namespace DGtal
     // ----------------------- Iterator services -------------------------------
     /**
      * @param aPoint any point of the DSL
-     * @pre aPoint sould belongs to the DSL
+     * @pre aPoint should belong to the DSL
      * @return begin iterator,
      * which points to @a aPoint
      */
@@ -489,7 +590,7 @@ namespace DGtal
 
     /**
      * @param aPoint any point of the DSL
-     * @pre aPoint sould belongs to the DSL
+     * @pre aPoint should belong to the DSL
      * @return end iterator,
      * which points to the point located after @a aPoint
      */
@@ -511,6 +612,10 @@ namespace DGtal
      */
     ConstReverseIterator rend(const Point& aPoint) const;
 
+
+    // ------------------------- Other services ------------------------------
+  public:
+    static Coordinate toCoordinate(const Integer& aI); 
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -703,6 +808,68 @@ namespace DGtal
   };
 } // namespace DGtal
 
+///////////////////////////////////////////////////////////////////////////////
+// Tools
+namespace DGtal
+{
+  namespace detail {
+    
+    /**
+     * Description of template class 'functors::CastForSignedIntegers' <p>
+     * \brief Aim: Define a simple functor that can cast 
+     * a signed integer (possibly a DGtal::BigInteger) into another.
+     *
+     * @tparam TInput type of the input value
+     * @tparam TOutput type of the return value
+     */
+    template <typename TInput, typename TOutput >
+    struct toCoordinateImpl
+    {
+      BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber<TInput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TOutput> ));
+      /**
+       * cast operator
+       * @return the conversion of @a aInput into an object of type TOutput.
+       */
+      inline
+      static TOutput cast(const TInput& aInput) 
+      {
+	return static_cast<TOutput>(aInput);
+      }
+    };
+#ifdef WITH_BIGINTEGER
+    //specialized versions for DGtal::BigInteger
+    template <typename TOutput>
+    struct toCoordinateImpl<DGtal::BigInteger, TOutput>
+    {
+      BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TOutput> ));
+
+      inline
+      static TOutput cast(const DGtal::BigInteger& aInput)
+      {
+	ASSERT( (aInput <= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::max())) &&
+		(aInput >= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::min())) ); 
+	return static_cast<TOutput>(aInput.get_si()); 
+      }
+    };
+    template <>
+    struct toCoordinateImpl<DGtal::BigInteger, DGtal::BigInteger>
+    {
+
+      inline
+      static DGtal::BigInteger cast(const DGtal::BigInteger& aInput)
+      {
+	return aInput; 
+      }
+    };
+#endif
+
+  } //namespace detail
+
+} // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.

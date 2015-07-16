@@ -45,8 +45,9 @@
 #include "DGtal/kernel/BasicPointPredicates.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class SurfelSetPredicate
@@ -107,6 +108,7 @@ namespace DGtal
   }; // end of struct SurfelSetPredicate
 
 
+} // namespace functors
 } // namespace DGtal
 
 

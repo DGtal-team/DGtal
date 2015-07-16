@@ -62,7 +62,7 @@ namespace DGtal
   {
 
     //Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
   public:
     typedef TInteger Integer;
@@ -147,7 +147,7 @@ namespace DGtal
   struct SignedKhalimskyCell
   {
     //Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
   public:
     typedef TInteger Integer;
@@ -335,7 +335,7 @@ namespace DGtal
   class KhalimskySpaceND
   {
     //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
   public:
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.
@@ -517,7 +517,7 @@ namespace DGtal
      *
      * @param kp an integer point (Khalimsky coordinates of cell).
      * @param sign the sign of the cell (either POS or NEG).
-     * @return the unsigned cell.
+     * @return the signed cell.
      */
     SCell sCell( const Point & kp, Sign sign = POS ) const;
 
@@ -1467,6 +1467,16 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+    /**
+       Used by uFaces for computing incident faces.
+    */
+    void uAddFaces( Cells& faces, const Cell& c, Dimension axis ) const;
+
+    /**
+       Used by uCoFaces for computing incident cofaces.
+    */
+    void uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const;
+
 
   }; // end of class KhalimskySpaceND
 

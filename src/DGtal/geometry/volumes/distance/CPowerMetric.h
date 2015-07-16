@@ -48,6 +48,8 @@
 
 namespace DGtal
 {
+namespace concepts
+{
 
 /////////////////////////////////////////////////////////////////////////////
 // class CPowerMetric
@@ -128,7 +130,7 @@ private:
 private:
 
 }; // end of concept CPowerMetric
-
+}
 } // namespace DGtal
 
 //                                                                           //

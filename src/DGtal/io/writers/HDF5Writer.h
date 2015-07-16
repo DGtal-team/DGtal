@@ -64,7 +64,7 @@ namespace DGtal
    * @tparam TImage the Image type.
    * @tparam TFunctor the type of functor used in the export.
    */
-  template <typename TImage, typename TFunctor = DefaultFunctor>
+  template <typename TImage, typename TFunctor = functors::Identity>
   struct HDF5Writer
   {
     // ----------------------- Standard services ------------------------------
@@ -72,7 +72,7 @@ namespace DGtal
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
     
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
     BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
 
     /** 

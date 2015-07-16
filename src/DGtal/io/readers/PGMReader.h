@@ -88,11 +88,11 @@ namespace DGtal
  *
  * @tparam TImageContainer the type of the image container
  *
- * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>) .
+ * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
  *
  */
   template <typename TImageContainer, 
-	    typename TFunctor = CastFunctor< typename TImageContainer::Value > >
+	    typename TFunctor = functors::Cast< typename TImageContainer::Value > >
   struct PGMReader
   {
     // ----------------------- Standard services ------------------------------
@@ -106,7 +106,7 @@ namespace DGtal
     
     enum MagicNumber {P1,P2,P3,P4,P5,P6};
 
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
 
     
 
@@ -120,7 +120,7 @@ namespace DGtal
      * @param aFilename the file name to import.  
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
-     * default set to CastFunctor < TImageContainer::Value > .
+     * default set to functors::Cast < TImageContainer::Value > .
      *
      * @param topbotomOrder
      * if true, the point of coordinate (0,0) will be the bottom left
@@ -142,7 +142,7 @@ namespace DGtal
      * @param aFilename the file name to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
-     * default set to CastFunctor < TImageContainer::Value > .
+     * default set to functors::Cast < TImageContainer::Value > .
      *
      * @return an instance of the ImageContainer.
      */

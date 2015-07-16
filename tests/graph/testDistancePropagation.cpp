@@ -47,6 +47,7 @@
 
 using namespace std;
 using namespace DGtal;
+using namespace DGtal::concepts;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing objects as graph.
@@ -101,7 +102,7 @@ bool testDistancePropagation()
   typedef RealPoint::Coordinate Scalar;
   typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
   typedef std::binder1st< Distance > DistanceToPoint; 
-  typedef Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
+  typedef DGtal::functors::Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceBreadthFirstVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
 
   BOOST_CONCEPT_ASSERT(( CGraphVisitor<Visitor> ));

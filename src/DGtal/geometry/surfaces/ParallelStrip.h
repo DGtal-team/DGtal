@@ -65,7 +65,7 @@ namespace DGtal
      strip is the quantity \f$|\nu / N_i|\f$ where \f$|N_i|\f$ is the
      greatest component.
 
-     \b Models: A ParallelStrip is a model of CPointPredicate.
+     \b Models: A ParallelStrip is a model of concepts::CPointPredicate.
 
      \note Parallel strips of axis width smaller than 1 are not naive
      digital planes since their parameters are floating-point
@@ -89,7 +89,7 @@ namespace DGtal
   template <typename TSpace, bool muIncluded = true, bool muPlusNuIncluded = true>
   class ParallelStrip
   {
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
 
     // ----------------------- public types ------------------------------
   public:
@@ -203,12 +203,12 @@ namespace DGtal
      */
     void getBounds( Scalar & mu, Scalar & mu_plus_nu ) const;
 
-    //-------------------- model of CPointPredicate -----------------------------
+    //-------------------- model of concepts::CPointPredicate -----------------------------
   public:
 
     /**
      * Checks if the digital point \a p is in this strip. Therefore, a
-     * ParallelStrip is a model of CPointPredicate.
+     * ParallelStrip is a model of concepts::CPointPredicate.
      *
      * @param p any 3D digital point.
      *

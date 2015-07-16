@@ -38,11 +38,11 @@
 
 
 
-template <typename TContainer, int TDim>
+template <typename TContainer, int TDim, typename TValue>
 inline
 TContainer
-DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename,
-                                               std::vector<unsigned int> dimSpace)  throw(DGtal::IOException){
+DGtal::GenericReader<TContainer, TDim, TValue>::import(const std::string &filename,
+                                                       std::vector<unsigned int> dimSpace)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
   if(extension!="raw")
@@ -63,11 +63,11 @@ DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename,
 
 
 
-template <typename TContainer>
+template <typename TContainer, typename TValue>
 inline
 TContainer
-DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
-                                            unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException)
+DGtal::GenericReader<TContainer, 3, TValue>::import(const std::string &filename,
+                                                    unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -102,7 +102,34 @@ DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
 template <typename TContainer>
 inline
 TContainer
-DGtal::GenericReader<TContainer, 2>::import(const std::string &filename)  throw(DGtal::IOException)
+DGtal::GenericReader<TContainer, 3, DGtal::uint32_t>::import(const std::string &filename,
+                                                             unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException)
+{
+  DGtal::IOException dgtalio;
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+
+  if(extension=="longvol")
+    return  LongvolReader<TContainer>::importLongvol( filename );
+
+  if(extension=="raw")
+    {
+      ASSERT(x!=0 && y!=0 && z!=0);
+      typename TContainer::Point pt (x,y,z);
+      return RawReader< TContainer >::importRaw32 ( filename, pt  );
+    }
+
+
+  trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+  throw dgtalio;
+}
+
+
+
+template <typename TContainer, typename TValue>
+inline
+TContainer
+DGtal::GenericReader<TContainer, 2, TValue>::import(const std::string &filename,
+                                                    unsigned int x, unsigned int y)  throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
   //Getting image extension
@@ -113,6 +140,12 @@ DGtal::GenericReader<TContainer, 2>::import(const std::string &filename)  throw(
 
   if(extension=="ppm")
     return PPMReader<TContainer>::importPPM(filename);
+
+  if(extension=="raw"){
+    ASSERT(x!=0 && y!=0);
+    typename TContainer::Point pt (x,y);
+    return RawReader< TContainer >::importRaw8 ( filename, pt  );
+  }
 
 
 #ifdef WITH_HDF5
@@ -130,6 +163,46 @@ DGtal::GenericReader<TContainer, 2>::import(const std::string &filename)  throw(
        throw dgtalio;
 #endif
      }
+
+   trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+   throw dgtalio;
+}
+
+
+
+template <typename TContainer>
+inline
+TContainer
+DGtal::GenericReader<TContainer, 2, DGtal::uint32_t>::import(const std::string &filename, 
+                                                             unsigned int x, unsigned int y) 
+  throw(DGtal::IOException)
+{
+  DGtal::IOException dgtalio;
+  //Getting image extension
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+
+  if(extension=="ppm")
+    return PPMReader<TContainer>::importPPM(filename);
+
+  if(extension=="pgm")
+    return PGMReader<TContainer>::importPGM(filename);
+
+  if(extension=="raw"){
+    ASSERT(x!=0 && y!=0);
+    typename TContainer::Point pt (x,y);
+    return RawReader< TContainer >::importRaw32 ( filename, pt  );
+  }
+
+  if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp")
+    {
+#ifdef WITH_MAGICK
+      MagickReader<TContainer> reader;
+      return reader.importImage( filename );
+#else
+      trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
+      throw dgtalio;
+#endif
+    }
 
    trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
    throw dgtalio;

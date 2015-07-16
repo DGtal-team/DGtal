@@ -47,11 +47,11 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/Clone.h"
-#include "DGtal/kernel/CCellFunctor.h"
+#include "DGtal/topology/CCellFunctor.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/SCellsFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -97,8 +97,8 @@ public:
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -112,6 +112,12 @@ public:
   * @param[in] space space in which the shape is defined.
   */
   DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
+
+  /**
+  * Copy constructor.
+  * @param other the object to clone.
+  */
+  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
 
   /**
@@ -171,7 +177,7 @@ public:
   * @return the estimated quantity at *it : (f*g)(t)
   */
   template< typename SurfelIterator >
-  Quantity eval ( const SurfelIterator & it );
+  Quantity eval ( const SurfelIterator & it ) const;
 
 
   /**
@@ -187,7 +193,7 @@ public:
   */
   template< typename SurfelIterator, typename EvalFunctor >
   typename EvalFunctor::Value eval ( const SurfelIterator & it,
-                                     EvalFunctor functor );
+                                     EvalFunctor functor ) const;
 
 
   /**
@@ -203,7 +209,7 @@ public:
   template< typename SurfelIterator, typename OutputIterator >
   void eval ( const SurfelIterator & itbegin,
               const SurfelIterator & itend,
-              OutputIterator & result );
+              OutputIterator & result ) const;
 
   /**
   * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
@@ -221,7 +227,7 @@ public:
   void eval ( const SurfelIterator & itbegin,
               const SurfelIterator & itend,
               OutputIterator & result,
-              EvalFunctor functor );
+              EvalFunctor functor ) const;
 
 
   /**
@@ -234,7 +240,7 @@ public:
   * @return the covariance matrix at *it
   */
   template< typename SurfelIterator >
-  CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it );
+  CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it ) const;
 
   /**
   * Convolve the kernel at a position \a it and applies the functor \a functor on the result.
@@ -249,7 +255,7 @@ public:
   */
   template< typename SurfelIterator, typename EvalFunctor >
   typename EvalFunctor::Value evalCovarianceMatrix ( const SurfelIterator & it,
-                                                     EvalFunctor functor );
+                                                     EvalFunctor functor ) const;
 
   /**
   * Convolve the kernel at all positions of the range [itBegin, itEnd[ and outputs results sequentially with \a result iterator.
@@ -264,7 +270,7 @@ public:
   template< typename SurfelIterator, typename OutputIterator >
   void evalCovarianceMatrix ( const SurfelIterator & itbegin,
                               const SurfelIterator & itend,
-                              OutputIterator & result );
+                              OutputIterator & result ) const;
 
   /**
   * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
@@ -282,7 +288,7 @@ public:
   void evalCovarianceMatrix ( const SurfelIterator & itbegin,
                               const SurfelIterator & itend,
                               OutputIterator & result,
-                              EvalFunctor functor );
+                              EvalFunctor functor ) const;
 
 
   /**
@@ -303,7 +309,7 @@ protected:
    * ]
    * @param[out] aCovarianceMatrix the result covariance matrix
    */
-  void computeCovarianceMatrix( const Quantity * aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+  void computeCovarianceMatrix( const Quantity * aMomentMatrix, CovarianceMatrix & aCovarianceMatrix ) const;
 
   /**
    * @brief fillMoments fill the matrix of moments with a given spel.
@@ -316,7 +322,7 @@ protected:
    * @param[in] aSpel current spel
    * @param[in] direction true if we add the current spel, false if we remove it.
    */
-  void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction );
+  void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction ) const;
 
   static const int nbMoments; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2 (see method fillMoments())
   static Spel defaultInnerSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
@@ -348,7 +354,7 @@ protected:
                    Spel & lastInnerSpel = defaultInnerSpel,
                    Spel & lastOuterSpel = defaultOuterSpel,
                    Quantity & lastInnerSum = defaultInnerSum,
-                   Quantity & lastOuterSum = defaultOuterSum );
+                   Quantity & lastOuterSum = defaultOuterSum ) const;
 
   /**
    * @brief core_evalCovarianceMatrix method used ( in intern by evalCovarianceMatrix() ) to compute the covariance matrix on a given surfel (*it)
@@ -372,7 +378,7 @@ protected:
                                    Spel & lastInnerSpel = defaultInnerSpel,
                                    Spel & lastOuterSpel = defaultOuterSpel,
                                    Quantity * lastInnerMoments = defaultInnerMoments,
-                                   Quantity * lastOuterMoments = defaultOuterMoments );
+                                   Quantity * lastOuterMoments = defaultOuterMoments ) const;
 
 
 
@@ -410,13 +416,6 @@ protected:
   DigitalSurfaceConvolver ();
 
 private:
-
-  /**
-  * Copy constructor.
-  * @param other the object to clone.
-  * Forbidden by default.
-  */
-  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
   /**
   * Assignment.
@@ -459,8 +458,8 @@ public:
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -475,6 +474,11 @@ public:
   */
   DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
 
+  /**
+  * Copy constructor.
+  * @param other the object to clone.
+  */
+  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
   /**
   * Destructor.
@@ -533,7 +537,7 @@ public:
   * @return the estimated quantity at *it : (f*g)(t)
   */
   template< typename SurfelIterator >
-  Quantity eval ( const SurfelIterator & it );
+  Quantity eval ( const SurfelIterator & it ) const;
 
 
   /**
@@ -549,7 +553,7 @@ public:
   */
   template< typename SurfelIterator, typename EvalFunctor >
   typename EvalFunctor::Value eval ( const SurfelIterator & it,
-                                     EvalFunctor functor );
+                                     EvalFunctor functor ) const;
 
 
   /**
@@ -565,7 +569,7 @@ public:
   template< typename SurfelIterator, typename OutputIterator >
   void eval ( const SurfelIterator & itbegin,
               const SurfelIterator & itend,
-              OutputIterator & result );
+              OutputIterator & result ) const;
 
   /**
   * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
@@ -583,7 +587,7 @@ public:
   void eval ( const SurfelIterator & itbegin,
               const SurfelIterator & itend,
               OutputIterator & result,
-              EvalFunctor functor );
+              EvalFunctor functor ) const;
 
 
   /**
@@ -596,7 +600,7 @@ public:
   * @return the covariance matrix at *it
   */
   template< typename SurfelIterator >
-  CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it );
+  CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it ) const;
 
   /**
   * Convolve the kernel at a position \a it and applies the functor \a functor on the result.
@@ -611,7 +615,7 @@ public:
   */
   template< typename SurfelIterator, typename EvalFunctor >
   typename EvalFunctor::Value evalCovarianceMatrix ( const SurfelIterator & it,
-                                                     EvalFunctor functor );
+                                                     EvalFunctor functor ) const;
 
   /**
   * Convolve the kernel at all positions of the range [itBegin, itEnd[ and outputs results sequentially with \a result iterator.
@@ -626,7 +630,7 @@ public:
   template< typename SurfelIterator, typename OutputIterator >
   void evalCovarianceMatrix ( const SurfelIterator & itbegin,
                               const SurfelIterator & itend,
-                              OutputIterator & result );
+                              OutputIterator & result ) const;
 
   /**
   * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
@@ -644,7 +648,7 @@ public:
   void evalCovarianceMatrix ( const SurfelIterator & itbegin,
                               const SurfelIterator & itend,
                               OutputIterator & result,
-                              EvalFunctor functor );
+                              EvalFunctor functor ) const;
 
 
   /**
@@ -665,7 +669,7 @@ protected:
    * ]
    * @param[out] aCovarianceMatrix the result covariance matrix
    */
-  void computeCovarianceMatrix( const Quantity * aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+  void computeCovarianceMatrix( const Quantity * aMomentMatrix, CovarianceMatrix & aCovarianceMatrix ) const;
 
   /**
    * @brief fillMoments fill the matrix of moments with a given spel.
@@ -678,7 +682,7 @@ protected:
    * @param[in] aSpel current spel
    * @param[in] direction true if we add the current spel, false if we remove it.
    */
-  void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction );
+  void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction ) const;
 
   static const int nbMoments; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2. (see method fillMoments())
   static Spel defaultInnerSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
@@ -710,7 +714,7 @@ protected:
                    Spel & lastInnerSpel = defaultInnerSpel,
                    Spel & lastOuterSpel = defaultOuterSpel,
                    Quantity & lastInnerSum = defaultInnerSum,
-                   Quantity & lastOuterSum = defaultOuterSum );
+                   Quantity & lastOuterSum = defaultOuterSum ) const;
 
   /**
    * @brief core_evalCovarianceMatrix method used ( in intern by evalCovarianceMatrix() ) to compute the covariance matrix on a given surfel (*it)
@@ -734,7 +738,7 @@ protected:
                                    Spel & lastInnerSpel = defaultInnerSpel,
                                    Spel & lastOuterSpel = defaultOuterSpel,
                                    Quantity * lastInnerMoments = defaultInnerMoments,
-                                   Quantity * lastOuterMoments = defaultOuterMoments );
+                                   Quantity * lastOuterMoments = defaultOuterMoments ) const;
 
 
 
@@ -774,13 +778,6 @@ protected:
   DigitalSurfaceConvolver ();
 
 private:
-
-  /**
-  * Copy constructor.
-  * @param other the object to clone.
-  * Forbidden by default.
-  */
-  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
   /**
   * Assignment.
@@ -824,8 +821,8 @@ public:
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -842,6 +839,11 @@ public:
                             ConstAlias< KernelFunctor > g,
                             ConstAlias< KSpace > space );
 
+  /**
+  * Copy constructor.
+  * @param other the object to clone.
+  */
+  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
   /**
   * Destructor.
@@ -900,7 +902,7 @@ public:
   * @return the estimated quantity at *it : (f*g)(t)
   */
   template< typename SurfelIterator >
-  Quantity eval ( const SurfelIterator & it );
+  Quantity eval ( const SurfelIterator & it ) const;
 
 
   /**
@@ -916,7 +918,7 @@ public:
   */
   template< typename SurfelIterator, typename EvalFunctor >
   typename EvalFunctor::Value eval ( const SurfelIterator & it,
-                                     EvalFunctor functor );
+                                     EvalFunctor functor ) const;
 
 
   /**
@@ -932,7 +934,7 @@ public:
   template< typename SurfelIterator, typename OutputIterator >
   void eval ( const SurfelIterator & itbegin,
               const SurfelIterator & itend,
-              OutputIterator & result );
+              OutputIterator & result ) const;
 
   /**
   * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
@@ -950,7 +952,7 @@ public:
   void eval ( const SurfelIterator & itbegin,
               const SurfelIterator & itend,
               OutputIterator & result,
-              EvalFunctor functor );
+              EvalFunctor functor ) const;
 
 
   /**
@@ -963,7 +965,7 @@ public:
   * @return the covariance matrix at *it
   */
   template< typename SurfelIterator >
-  CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it );
+  CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it ) const;
 
   /**
   * Convolve the kernel at a position \a it and applies the functor \a functor on the result.
@@ -978,7 +980,7 @@ public:
   */
   template< typename SurfelIterator, typename EvalFunctor >
   typename EvalFunctor::Value evalCovarianceMatrix ( const SurfelIterator & it,
-                                                     EvalFunctor functor );
+                                                     EvalFunctor functor ) const;
 
   /**
   * Convolve the kernel at all positions of the range [itBegin, itEnd[ and outputs results sequentially with \a result iterator.
@@ -993,7 +995,7 @@ public:
   template< typename SurfelIterator, typename OutputIterator >
   void evalCovarianceMatrix ( const SurfelIterator & itbegin,
                               const SurfelIterator & itend,
-                              OutputIterator & result );
+                              OutputIterator & result ) const;
 
   /**
   * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
@@ -1011,7 +1013,7 @@ public:
   void evalCovarianceMatrix ( const SurfelIterator & itbegin,
                               const SurfelIterator & itend,
                               OutputIterator & result,
-                              EvalFunctor functor );
+                              EvalFunctor functor ) const;
 
   /**
    * Checks the validity/consistency of the object.
@@ -1032,7 +1034,7 @@ protected:
    * ]
    * @param[out] aCovarianceMatrix the result covariance matrix
    */
-  void computeCovarianceMatrix ( const Quantity * aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+  void computeCovarianceMatrix ( const Quantity * aMomentMatrix, CovarianceMatrix & aCovarianceMatrix ) const;
 
   /**
    * @brief fillMoments fill the matrix of moments with a given spel.
@@ -1046,7 +1048,7 @@ protected:
    * @param[in] aSpel current spel
    * @param[in] direction true if we add the current spel, false if we remove it.
    */
-  void fillMoments ( Quantity * aMomentMatrix, const Spel & aSpel, double direction );
+  void fillMoments ( Quantity * aMomentMatrix, const Spel & aSpel, double direction ) const;
 
   static const int nbMoments; ///< the number of moments is dependent to the dimension. In 3D, they are 10 moments such that p+q+s <= 2 (see method fillMoments())
   static Spel defaultInnerSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
@@ -1078,7 +1080,7 @@ protected:
                    Spel & lastInnerSpel = defaultInnerSpel,
                    Spel & lastOuterSpel = defaultOuterSpel,
                    Quantity & lastInnerSum = defaultInnerSum,
-                   Quantity & lastOuterSum = defaultOuterSum );
+                   Quantity & lastOuterSum = defaultOuterSum ) const;
 
   /**
    * @brief core_evalCovarianceMatrix method used ( in intern by evalCovarianceMatrix() ) to compute the covariance matrix on a given surfel (*it)
@@ -1102,7 +1104,7 @@ protected:
                                    Spel & lastInnerSpel = defaultInnerSpel,
                                    Spel & lastOuterSpel = defaultOuterSpel,
                                    Quantity * lastInnerMoments = defaultInnerMoments,
-                                   Quantity * lastOuterMoments = defaultOuterMoments );
+                                   Quantity * lastOuterMoments = defaultOuterMoments ) const;
 
 
   // ------------------------- Private Datas --------------------------------
@@ -1141,13 +1143,6 @@ protected:
   DigitalSurfaceConvolver ();
 
 private:
-
-  /**
-  * Copy constructor.
-  * @param other the object to clone.
-  * Forbidden by default.
-  */
-  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
   /**
   * Assignment.

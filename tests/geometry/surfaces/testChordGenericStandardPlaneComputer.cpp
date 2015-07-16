@@ -57,7 +57,7 @@ Integer getRandomInteger( const Integer & first, const Integer & after_last )
 template <typename Domain>
 std::vector<typename Domain::Point> pointsInStandardPlane
 ( const Domain & domain,
-  typename Domain::Integer a, 
+  typename Domain::Integer a,
   typename Domain::Integer b,
   typename Domain::Integer c,
   typename Domain::Integer mu )
@@ -104,16 +104,16 @@ bool checkChordGenericStandardPlaneComputer
       computer.init( 1, 1 );
       ++nb, nbok += computer.extend( pts.begin(), pts.end() ) ? 1 : 0;
       trace.info() << "Primitive=" << computer.primitive() << std::endl;
-      trace.info() << "(" << nbok << "/" << nb << ") extend " 
-                   << pts.size() << " points of plane " 
+      trace.info() << "(" << nbok << "/" << nb << ") extend "
+                   << pts.size() << " points of plane "
                    << mu << " <= " << a << "*x+" << b << "*y+" << c << "*z+"
                    << " < " << (mu+a+b+c) << std::endl;
       computer.init( 1, 1 );
       std::random_shuffle( pts.begin(), pts.end() );
       ++nb, nbok += computer.extend( pts.begin(), pts.end() ) ? 1 : 0;
       trace.info() << "Primitive=" << computer.primitive() << std::endl;
-      trace.info() << "(" << nbok << "/" << nb << ") extend " 
-                   << pts.size() << " shuffled points of plane " 
+      trace.info() << "(" << nbok << "/" << nb << ") extend "
+                   << pts.size() << " shuffled points of plane "
                    << mu << " <= " << a << "*x+" << b << "*y+" << c << "*z+"
                    << " < " << (mu+a+b+c) << std::endl;
     }
@@ -125,9 +125,9 @@ int main( int /*argc*/, char** /*argv*/ )
 {
   using namespace Z3i;
 
-  typedef ChordGenericStandardPlaneComputer<Space, Point, int64_t> 
+  typedef ChordGenericStandardPlaneComputer<Space, Point, DGtal::int64_t>
     PlaneComputer;
-  
+
   bool ok;
   PlaneComputer plane;
   plane.init( 1, 1 );

@@ -60,10 +60,10 @@ namespace DGtal
    * @note L. Dorst & A.W.M. Smeulders "Length Estimators for
    * Digitized Contours", Computer Vision, Graphics, and Image
    * Processing, vol 40, pp.311-333, 1987
-   * 
-   * Model of @href CGlobalCurveGeometricEstimator.
    *
-   * @tparam TConstIterator a model of CConstIteratorOnArrows. 
+   * Model of  CGlobalCurveGeometricEstimator
+   *
+   * @tparam TConstIterator a model of CConstIteratorOnArrows.
    */
   template <typename TConstIterator>
   class BLUELocalLengthEstimator: public DGtal::TwoStepLocalLengthEstimator<TConstIterator>
@@ -75,7 +75,7 @@ namespace DGtal
     ///@todo CONCEPT CHECK sur ConstIterator
     typedef TConstIterator ConstIterator;
     typedef double Quantity;
-  
+
 
     /**
      * Default Constructor.
@@ -83,12 +83,12 @@ namespace DGtal
     BLUELocalLengthEstimator():
       TwoStepLocalLengthEstimator<TConstIterator>(0.948,1.343)
     {}
-    
-    
-  
+
+
+
     // ----------------------- Interface --------------------------------------
   public:
- 
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -96,13 +96,13 @@ namespace DGtal
     void selfDisplay ( std::ostream & out ) const
     {
       out << "[BLUELocalLengthEstimator]";
-      if (this->myIsInitBefore) 
+      if (this->myIsInitBefore)
   out <<" myH="<< this->myH;
       else
   out<< " not initialized";
   }
 
-    
+
   private:
 
     /**

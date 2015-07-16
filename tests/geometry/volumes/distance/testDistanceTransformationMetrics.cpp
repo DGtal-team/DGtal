@@ -97,7 +97,7 @@ bool testCompareExactBruteForce(unsigned int size, unsigned int nb)
   typedef HyperRectDomain<Space> Domain;
   typedef typename Space::Point Point;
   typedef DigitalSetBySTLSet<Domain> Set;
-  typedef NotPointPredicate<Set> NegPredicate;
+  typedef functors::NotPointPredicate<Set> NegPredicate;
   
   Point low=Point::diagonal(0),
   up=Point::diagonal(size);
@@ -139,7 +139,7 @@ bool testCompareInexactBruteForce(double norm, unsigned int size, unsigned int n
   typedef HyperRectDomain<Space> Domain;
   typedef typename Space::Point Point;
   typedef DigitalSetBySTLSet<Domain> Set;
-  typedef NotPointPredicate<Set> NegPredicate;
+  typedef functors::NotPointPredicate<Set> NegPredicate;
   
   Point low=Point::diagonal(0),
   up=Point::diagonal(size);

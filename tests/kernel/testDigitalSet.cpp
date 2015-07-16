@@ -100,7 +100,7 @@ bool testDigitalSetBoardSnippet()
   Domain domain( p1, p2 );
   typedef DigitalSetSelector < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
 
-  BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< SpecificSet > ));
 
   SpecificSet mySet( domain );
 
@@ -143,7 +143,7 @@ bool testDigitalSetBoardSnippet()
 template < typename DigitalSetType >
 bool testDigitalSet( const DigitalSetType& aSet1, const DigitalSetType& aSet2 )
 {
-  BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSetType > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSetType > ));
 
   typedef typename DigitalSetType::Domain Domain;
   typedef typename Domain::Point Point;
@@ -278,7 +278,7 @@ bool testDigitalSetDraw()
   typedef DigitalSetSelector
   < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
 
-  BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< SpecificSet > ));
   SpecificSet disk( domain );
   Point c(  0, 0  );
 
@@ -318,7 +318,7 @@ bool testDigitalSetDomain()
   Domain domain( p1, p2 );
   typedef DigitalSetSelector
   < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
-  BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< SpecificSet > ));
 
   SpecificSet disk( domain );
   Point c(  0, 0  );
@@ -339,7 +339,7 @@ bool testDigitalSetDomain()
   trace.endBlock();
 
   typedef DigitalSetDomain< SpecificSet > RestrictedDomain;
-  BOOST_CONCEPT_ASSERT(( CDomain< RestrictedDomain > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDomain< RestrictedDomain > ));
 
   RestrictedDomain disk_domain( disk );
   trace.beginBlock ( "Iterating over disk domain ..." );
@@ -360,13 +360,13 @@ bool testDigitalSetDomain()
 
 bool testDigitalSetConcept()
 {
-  BOOST_CONCEPT_ASSERT(( CDigitalSet<Z2i::DigitalSet> ));
-  BOOST_CONCEPT_ASSERT(( CDigitalSet<Z3i::DigitalSet> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Z2i::DigitalSet> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Z3i::DigitalSet> ));
 
   typedef Z2i::Space Space;
-  BOOST_CONCEPT_ASSERT(( CDomain< CDomainArchetype< Space > > ));
-  typedef CDigitalSetArchetype<Z2i::Domain> DigitalSetArchetype;
-  BOOST_CONCEPT_ASSERT(( CDigitalSet<DigitalSetArchetype> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDomain< concepts::CDomainArchetype< Space > > ));
+  typedef concepts::CDigitalSetArchetype<Z2i::Domain> DigitalSetArchetype;
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<DigitalSetArchetype> ));
   
   return true;
 }

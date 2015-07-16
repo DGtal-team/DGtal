@@ -52,10 +52,10 @@ involved:
 
 Concept name   | Short description | Model examples
 ---------------|-------------------|--------------
- CSignedNumber | Signed numbers                  | DGtal::int32_t, double, ....
- CUnsignedNumber|Unsigned numbers  | DGtal::uint32_t,...
- CBoundedNumber | Numbers with bounded capacity | DGtal::int64_t, ... (but not BigInteger)
- CIntegralNumber | Integral numbers | DGtal::int64_t, BigInteger,...
+ concepts::CSignedNumber | Signed numbers                  | DGtal::int32_t, double, ....
+ concepts::CUnsignedNumber|Unsigned numbers  | DGtal::uint32_t,...
+ concepts::CBoundedNumber | Numbers with bounded capacity | DGtal::int64_t, ... (but not BigInteger)
+ concepts::CIntegralNumber | Integral numbers | DGtal::int64_t, BigInteger,...
  
 When we want to perform some computations on these numbers, we may use
 the following concepts:
@@ -63,9 +63,9 @@ the following concepts:
 
 Concept name   | Short description | Model examples
 ---------------|-------------------|--------------
- CCommutativeRing | the model can be associated to a commutative ring (operators +,-,*, ....)                  | DGtal::int32_t, double, ....
- CEuclideanRing | Refinement of CCommutativeRing with a "/" operator | DGtal::int32_t, double, .....
- CInteger | Refinement of both CEuclideanRing and CIntegralNumber | DGtal::int32_t, .....
+ concepts::CCommutativeRing | the model can be associated to a commutative ring (operators +,-,*, ....)                  | DGtal::int32_t, double, ....
+ concepts::CEuclideanRing | Refinement of concepts::CCommutativeRing with a "/" operator | DGtal::int32_t, double, .....
+ concepts::CInteger | Refinement of both concepts::CEuclideanRing and concepts::CIntegralNumber | DGtal::int32_t, .....
  
 
 
@@ -73,12 +73,12 @@ Concept name   | Short description | Model examples
 
 First of all, BasicTypes refines in DGtal classical built-in integer
 types such as DGtal::uint64_t or DGtal::int32_t. However, not all
-these types are models of the concept CCommutativeRing. Indeed,
+these types are models of the concept concepts::CCommutativeRing. Indeed,
 DGtal::uint64_t has no inverse for the addition operator.
 
 Hence, if we have a templated class SpaceND with two arguments: a
 static dimension and a type of integer. And if we add a constraint
-that the integer type must be a model of CCommutativeRing, the
+that the integer type must be a model of concepts::CCommutativeRing, the
 following code:
 @code
 typedef DGtal::SpaceND<2, DGtal::uint64_t> MySpace;
@@ -102,7 +102,7 @@ If you want to use your own integer type in DGtal, two things have to
 be done:
 
 - Create a facade or a wrapper to make sure that your own type is a
-  model of the CCommutativeRing concept.
+  model of the concepts::CCommutativeRing concept.
 - Add a specialization for your type in the NumberTraits structure.
 
 */

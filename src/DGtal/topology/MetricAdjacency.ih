@@ -280,7 +280,7 @@ namespace DGtal {
   template <typename TSpace>
   class MetricAdjacency<TSpace, 2, 2>
   {
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency
@@ -408,7 +408,7 @@ namespace DGtal {
   template <typename TSpace>
   class MetricAdjacency<TSpace, 1, 2>
   {
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency
@@ -523,7 +523,7 @@ namespace DGtal {
   template <typename TSpace>
   class MetricAdjacency<TSpace, 3, 3>
   {
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency
@@ -700,7 +700,7 @@ namespace DGtal {
   template <typename TSpace>
   class MetricAdjacency<TSpace, 2, 3>
   {
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency
@@ -857,7 +857,7 @@ namespace DGtal {
   template <typename TSpace>
   class MetricAdjacency<TSpace, 1, 3>
   {
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency

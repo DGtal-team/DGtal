@@ -21,10 +21,7 @@
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @date 2012/02/23
  *
- * @brief The aim of this example
- * is to use the FMM (fast marching method) class
- * in order to extrapolate a speed field out of an interface, 
- * such that the extended field is constant on rays normal to the interface.  
+ * @brief Computation of a distance field from a given point  
  *
  * This file is part of the DGtal library.
  */
@@ -33,6 +30,7 @@
 #include <iostream>
 #include <iomanip>
 #include <functional>
+#include <iostream>
 
 #include "DGtal/base/Common.h"
 
@@ -43,12 +41,18 @@
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/topology/SCellsFunctors.h"
 
-//tracking
+//shape and tracking
+#include "DGtal/shapes/ShapeFactory.h"
+#include "DGtal/shapes/Shapes.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/shapes/GaussDigitizer.h"
 
 
 //FMM
+//! [FMMHeader]
 #include "DGtal/geometry/volumes/distance/FMM.h"
+//! [FMMHeader]
 
 //Display
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
@@ -61,166 +65,98 @@ using namespace DGtal;
 
 
 //////////////////////////////////////////////////////////////////////////////
-// ball
-template <typename TPoint>
-class BallPredicate 
+/**
+ * Function that displays an image with Board2D
+ * @param aImg an image
+ * @param aMaxValue maximal value used in the color map
+ * @param aBasename base name of the file
+ * @tparam TImage a model of CImage
+ */
+template< typename TImage >
+void draw( const TImage aImg, const int& aMaxValue, std::string aBasename) 
 {
-public:
-  typedef TPoint Point;
-
-public: 
-
-  BallPredicate(double aCx, double aCy, double aR ): 
-    myCx(aCx), myCy(aCy), myR(aR)
-  { ASSERT(myR > 0); }; 
-
-  bool operator()(const TPoint& aPoint) const 
-  {
-    double d = std::sqrt( std::pow( (myCx-aPoint[0] ), 2) 
-			  + std::pow( (myCy-aPoint[1] ), 2) );  
-    if (d <= myR) return true; 
-    else return false; 
-  };
-private: 
-  double myCx, myCy, myR; 
-};
-
-template <typename TPoint>
-class BallFunctor 
-{
-public:
-  typedef TPoint Point;
-  typedef double Value; 
-public: 
-
-  BallFunctor(double aCx, double aCy, double aR ): 
-    myCx(aCx), myCy(aCy), myR(aR)
-  { ASSERT(myR > 0); }; 
-
-  Value operator()(const TPoint& aPoint) const 
-  {
-    double d = std::sqrt( std::pow( (myCx-aPoint[0] ), 2) 
-			  + std::pow( (myCy-aPoint[1] ), 2) );  
-    return (d - myR);
-  };
-private: 
-  double myCx, myCy, myR; 
-};
-
-template< typename TIterator >
-void draw( const TIterator& itb, const TIterator& ite, const int& size, std::string basename) 
-{
-  typedef typename std::iterator_traits<TIterator>::value_type Pair; 
-  typedef typename Pair::first_type Point; 
-  typedef typename Pair::second_type Value; 
-  HueShadeColorMap<unsigned char, 2> colorMap(0,3*size);
+  typedef typename TImage::Domain::ConstIterator ConstIteratorOnPoints; 
+  typedef typename TImage::Domain::Point Point; 
+  HueShadeColorMap<unsigned char, 2> colorMap(0,aMaxValue);
 
   Board2D b; 
   b.setUnit ( LibBoard::Board::UCentimeter );
  
-  for (TIterator it = itb; it != ite; ++it)
+  for (ConstIteratorOnPoints it = aImg.domain().begin(), itEnd = aImg.domain().end();
+       it != itEnd; ++it)
     {
-      Point p = it->first;
-      b << CustomStyle( p.className(), new CustomFillColor( colorMap( it->second) ) );
+      Point p = *it; 
+      b << CustomStyle( p.className(), new CustomFillColor( colorMap( aImg(p) ) ) );
       b << p;
     }
 
-  std::stringstream s; 
-  s << basename << ".eps"; 
-  b.saveEPS(s.str().c_str());
+  {
+    std::stringstream s; 
+    s << aBasename << ".eps"; 
+    b.saveEPS(s.str().c_str());
+  }
+  #ifdef WITH_CAIRO
+  {
+    std::stringstream s; 
+    s << aBasename << ".png"; 
+    b.saveCairo(s.str().c_str(), Board2D::CairoPNG);
+  }
+  #endif
 } 
 
-
 //////////////////////////////////////////////////////////////////////////////
-// main task
-bool perform()
+/**
+ * @brief We use FMM to compute a distance field from a given point. 
+ */
+void example()
 {
 
-  static const DGtal::Dimension dimension = 2; 
+  trace.beginBlock ( "DT by FMM from one point" );
 
-  //Domain
-  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
-  typedef Domain::Point Point; 
-  int size = 50; 
-  Domain d(Point::diagonal(-size), Point::diagonal(size)); 
-  double h = 1.0/(double)size; 
+  //Typedefs
+  //! [FMMSimpleTypeDef]
+  typedef ImageContainerBySTLMap<Z2i::Domain,double> DistanceImage; 
+  typedef DigitalSetFromMap<DistanceImage> AcceptedPointSet; 
+  typedef Z2i::Domain::Predicate DomainPredicate;
+  typedef FMM<DistanceImage, AcceptedPointSet, DomainPredicate> FMM;
+  //! [FMMSimpleTypeDef]
 
-  //Predicate, which implicitely define the interface
-  int radius = (size/2);
-  typedef BallPredicate<Point> Predicate; 
-  Predicate predicate( 0, 0, radius ); 
-  trace.info() << " # circle of radius 0.5 "
-	       << "digitized in a square of size 1 "
-	       << "at step h=" << h << endl; 
+  //Constructions
+  int size = 25; 
+  //! [FMMSimpleExternalData]
+  Z2i::Domain domain(Z2i::Point::diagonal(-size), 
+		     Z2i::Point::diagonal(size) ); 
+  DistanceImage distanceImage( domain ); 
+  AcceptedPointSet set( distanceImage );
+  //! [FMMSimpleExternalData]
 
-  //Digital circle generation
-  typedef KhalimskySpaceND< dimension, int > KSpace; 
-  KSpace K; K.init( Point::diagonal(-size), Point::diagonal(size), true); 
-  SurfelAdjacency<KSpace::dimension> SAdj( true );
-  KSpace::SCell bel = Surfaces<KSpace>::findABel( K, predicate, 10000 );
-  std::vector<KSpace::SCell> vSCells;
-  Surfaces<KSpace>::track2DBoundary( vSCells, K, SAdj, predicate, bel );
+  //! [FMMSimpleInit]
+  Z2i::Point origin = Z2i::Point::diagonal(0); 
+  set.insert( origin ); 
+  distanceImage.setValue( origin, 0.0 ); 
+  //! [FMMSimpleInit]
 
-  //Image of distance values and associated set
-  typedef ImageContainerBySTLMap<Domain,double> DistanceImage; 
-  typedef DigitalSetFromMap<DistanceImage> Set; 
-  DistanceImage dmap( d ); 
-  Set set(dmap); 
+  //! [FMMSimpleCtor]
+  FMM fmm( distanceImage, set, domain.predicate() ); 
+  //! [FMMSimpleCtor]
 
-  //initialisation
-  //! [FMMFullDef]
-  typedef L2SecondOrderLocalDistance<DistanceImage, Set> Distance; 
-  typedef FMM<DistanceImage, Set, Domain::Predicate, Distance > FMM;
-  //! [FMMFullDef]
+  trace.info() << "Init: " << fmm << std::endl;
 
-  typedef BallFunctor<Point> Functor; 
-  Functor functor( 0, 0, radius ); 
-  FMM::initFromBelsRange( K, 
-			  vSCells.begin(), vSCells.end(), 
-			  functor, dmap, set ); 
+  //! [FMMSimpleComputation]
+  fmm.compute(); 
+  //! [FMMSimpleComputation]
 
-  //Image of speed values
-  typedef ImageContainerBySTLMap<Domain,double> SpeedImage; 
-  SpeedImage smap(d, 0.0); 
+  trace.info() << "End: " << fmm << std::endl;
 
-  SCellToIncidentPoints<KSpace> belToPair( K );
-  for (std::vector<KSpace::SCell>::const_iterator it = vSCells.begin(),
-	 itEnd = vSCells.end(); it != itEnd; ++it) 
-    {
-      SCellToIncidentPoints<KSpace>::Output pair = belToPair( *it );
-      Point in = pair.first; 
-      Point out = pair.second; 
-      //speed equal to the x-coordinate
-      smap.setValue( in, in[0] ); 
-      smap.setValue( out, out[0] ); 
-    }
-
-
-  //Extrapolating speed away from the interface 
-  SpeedExtrapolator<DistanceImage, Set, SpeedImage> speedFunctor(dmap, set, smap); 
-  const double maxWidth = 10.0; 
-  Distance distFunctor(dmap, set); 
-  FMM fmm(dmap, set, d.predicate(), d.size(), maxWidth, distFunctor ); 
-  Point lastPt = Point::diagonal(0);      //last point
-  double lastDist = 0.0;                  //its distance
-  while ( (fmm.computeOneStep( lastPt, lastDist )) 
-	  && (std::abs( lastDist ) < maxWidth) )
-    {
-      //new speed value
-      smap.setValue( lastPt, speedFunctor( lastPt ) ); 
-    }
-
-  trace.info() << fmm << std::endl;
-
-  //display - you should see constant colors 
-  //on rays normal to the interface. 
+  //display - you should see concentric circles
+  //around the center point. 
   std::stringstream s; 
-  s << "SpeedExt-" << radius; 
-  draw(smap.begin(), smap.end(), size, s.str());
+  s << "DTbyFMM-" << size; 
+  draw(distanceImage, fmm.max(), s.str());
 
-  return true; 
-
+  trace.endBlock();
 }
+
 
 
 
@@ -238,7 +174,7 @@ int main ( int argc, char** argv )
   trace.info() << endl;
 
   //computation
-  perform(); 
+  example(); 
 
   trace.endBlock();
   return 1;

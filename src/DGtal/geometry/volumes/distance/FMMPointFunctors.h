@@ -71,7 +71,7 @@ namespace DGtal
    * The computed value is such that the upwind gradient of the 
    * distance map is one, ie. it is the minimum solution \f$ \Phi \f$ 
    * over all quadrants, verifying the following quadratic equation:
-   * \f$ \sum_{i = 1 \ldots d } ( \Phi - \Phi_i )^2 \f$
+   * \f$ \sum_{i = 1 \ldots d } ( \Phi - \Phi_i )^2 = 1 \f$
    * where \f$ \Phi_i \f$ is the distance value of the point preceeding
    * or following p along the \f$ i \f$ axis. 
    *
@@ -97,13 +97,13 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
     /// set
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
@@ -232,13 +232,13 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
     /// set
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
@@ -360,13 +360,13 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
     /// set
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
@@ -475,13 +475,13 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
     /// set
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
@@ -707,17 +707,17 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( CImage<TDistanceImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TDistanceImage> ));
     typedef TDistanceImage DistanceImage;
     typedef typename DistanceImage::Point Point;
     typedef typename DistanceImage::Value DistanceValue;
-    BOOST_CONCEPT_ASSERT(( CPointFunctor<TSpeedFunctor> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<TSpeedFunctor> ));
     typedef TSpeedFunctor SpeedFunctor;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename SpeedFunctor::Point >::value ));
     typedef typename SpeedFunctor::Value Value; 
 
     /// set
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
   

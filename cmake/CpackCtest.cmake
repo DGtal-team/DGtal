@@ -9,7 +9,7 @@ INCLUDE(InstallRequiredSystemLibraries)
 
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DGtal Project")
 SET(CPACK_PACKAGE_VENDOR ".")
-SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
+SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 SET(CPACK_PACKAGE_CONTACT "dgtal@liris.cnrs.fr" )
 SET(CPACK_NSIS_CONTACT "dgtal@liris.cnrs.fr")
@@ -35,7 +35,7 @@ endif(WIN32)
 INCLUDE(CPack)
 
 # -----------------------------------------------------------------------------
-# CTest options
+# CTest/Debug options
 # -----------------------------------------------------------------------------
 if (BUILD_TESTING)
   ENABLE_TESTING()
@@ -43,7 +43,7 @@ if (BUILD_TESTING)
   message(STATUS "Build test files ENABLED")
   if (CMAKE_COMPILER_IS_GNUCXX)
     SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -pedantic -W -Wshadow -Wunused-variable  -Wunused-parameter -Wunused-function        -Wunused  -Wno-long-long -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
-  endif (CMAKE_COMPILER_IS_GNUCXX)
+  endif(CMAKE_COMPILER_IS_GNUCXX)
   if (CMAKE_COMPILER_IS_GNUCC)
     SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -Wno-long-long -pedantic -fprofile-arcs -ftest-coverage")
   endif (CMAKE_COMPILER_IS_GNUCC)

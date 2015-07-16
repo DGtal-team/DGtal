@@ -30,7 +30,14 @@
 
 #ifdef WITH_CAIRO
 // cairo
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#endif
 #include <cairo.h>
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 #endif
 
 #ifndef M_PI
@@ -513,6 +520,8 @@ protected:
   double _x;      /**< First coordinate of the dot. */
   double _y;      /**< Second coordinate of the dot. */
 };
+
+
 
 /**
  * The line structure.
@@ -1134,6 +1143,68 @@ private:
 protected:
 };
 
+/**
+ * @brief A quadratic Bezier curve having 3 control points. 
+ * NB. It is also a parabola arc. 
+ */
+struct QuadraticBezierCurve : public Triangle { 
+  
+  /** 
+   * Constructs a curve.
+   * 
+   * @param x1 First coordinate of the start point.
+   * @param y1 Second coordinate of the start point.
+   * @param x2 First coordinate of the middle point.
+   * @param y2 Second coordinate of the middle point.
+   * @param x3 First coordinate of the end point.
+   * @param y3 Second coordinate of the end point.
+   * @param pen Color of the curve.
+   * @param fill Color of the interior.
+   * @param lineWidth The line thickness.
+   * @param style Curve style 
+   * @param cap Curve cap
+   * @param join Curve join
+   * @param depthValue The depth of the line.
+   */
+  inline QuadraticBezierCurve( double x1, double y1, double x2, double y2, double x3, double y3,  
+         DGtal::Color pen,
+         DGtal::Color fill,
+         double lineWidth,
+         const LineStyle style = SolidStyle,
+         const LineCap cap = ButtCap,
+         const LineJoin join = MiterJoin,
+         int depthValue = -1 )
+    : Triangle(x1, y1, x2, y2, x3, y3, pen, fill, lineWidth, style, cap, join, depthValue) {}
+
+  void flushPostscript( std::ostream & stream,
+      const TransformEPS & transform ) const;
+  
+  void flushFIG( std::ostream & stream,
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
+
+  void flushSVG( std::ostream & stream,
+     const TransformSVG & transform ) const;
+
+#ifdef WITH_CAIRO
+  void flushCairo( cairo_t *cr,
+     const TransformCairo & transform ) const;
+#endif
+
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
+  /** 
+   * Returns the name of the shape (QuadraticBezierCurve)
+   * 
+   * @return object name
+   */
+  const std::string & name() const;
+
+private:
+  static const std::string _name; /**< name of the shape. */
+
+};
 
 /**
  * The GouraudTriangle structure.

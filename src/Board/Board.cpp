@@ -32,10 +32,17 @@
 
 #ifdef WITH_CAIRO
 // cairo
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#endif
 #include <cairo.h>
 #include <cairo-pdf.h>
 #include <cairo-ps.h>
 #include <cairo-svg.h>
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 // cairo
 #endif
 
@@ -370,6 +377,22 @@ Board::drawLine( double x1, double y1, double x2, double y2,
     _shapes.push_back( new Line( _state.unit(x1), _state.unit(y1),
          _state.unit(x2), _state.unit(y2),
          _state.penColor, _state.lineWidth,
+         _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
+}
+
+void
+Board::drawQuadraticBezierCurve( double x1, double y1, double x2, double y2, double x3, double y3,  
+     int depthValue /* = -1 */  )
+{
+  if ( depthValue != -1 ) 
+    _shapes.push_back( new QuadraticBezierCurve( _state.unit(x1), _state.unit(y1),
+         _state.unit(x2), _state.unit(y2), _state.unit(x3), _state.unit(y3),
+         _state.penColor, _state.fillColor, _state.lineWidth,
+         _state.lineStyle, _state.lineCap, _state.lineJoin, depthValue ) );
+  else
+    _shapes.push_back( new QuadraticBezierCurve( _state.unit(x1), _state.unit(y1),
+         _state.unit(x2), _state.unit(y2), _state.unit(x3), _state.unit(y3),
+         _state.penColor, _state.fillColor, _state.lineWidth,
          _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
 }
 

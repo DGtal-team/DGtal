@@ -54,7 +54,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSet
   /////////////////////////////////////////////////////////////////////////////
@@ -70,12 +71,12 @@ namespace DGtal
      
  ### Refinement of 
    - boost::CopyConstructible
-   - CPointPredicate
+   - concepts::CPointPredicate
 
 @todo add boost::Container ? Not for now, since coding style do not
  match with STL (e.g. Iterator instead of iterator).
 
-@note It is also a refinement of boost::Assignable from CPointPredicate.
+@note It is also a refinement of boost::Assignable from concepts::CPointPredicate.
     
  ### Associated types :
 
@@ -86,7 +87,7 @@ namespace DGtal
      boost_concepts::ReadableIteratorConcept) and allow bidirectional
      traversal (model of
      boost_concepts::BidirectionalTraversalConcept). Its value has
-     type \c Point (defined in CPointPredicate).
+     type \c Point (defined in concepts::CPointPredicate).
    - \c ConstIterator: the type for visiting elements of the set. Note
      that types for Iterator and ConstIterator should be the same,
      similarly to STL simple associative containers.
@@ -136,7 +137,7 @@ namespace DGtal
   template <typename T> 
   struct CDigitalSet :
     boost::CopyConstructible< T >, 
-    CPointPredicate< T >
+    concepts::CPointPredicate< T >
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -147,7 +148,7 @@ namespace DGtal
     typedef typename T::Iterator Iterator;
     typedef typename T::ConstIterator ConstIterator;
 
-    BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator > ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<ConstIterator > ));
     //following the STL concept of simple associative container 
@@ -219,7 +220,7 @@ namespace DGtal
   private:
     
   }; // end of concept CDigitalSet
-  
+  }  
 } // namespace DGtal
 
 

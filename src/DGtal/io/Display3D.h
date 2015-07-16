@@ -93,79 +93,112 @@ namespace DGtal
   {
   public:
 
-    BOOST_CONCEPT_ASSERT((CSpace<Space>));
+    BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
   public:
-    //RealPoint
-    typedef typename DGtal::Z3i::RealPoint RealPoint;
 
+    typedef Display3D<Space,KSpace> Self;
+    /// RealPoint type
+    typedef typename Space::RealPoint RealPoint;
+    /// RealVector type
+    typedef typename Space::RealVector RealVector;
+    typedef CanonicEmbedder<Space> Embedder;
+    typedef CanonicCellEmbedder<KSpace> CellEmbedder;
+    typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
+
+    /// Select callback function type.
+    typedef int (*SelectCallbackFct)( void* viewer, DGtal::int32_t name, void* data );
 
   protected:
 
+    /// Structure for storing select callback functions. The select
+    /// callback function is called whenever the user select a
+    /// graphical object with "OpenGL name" in [min,max]. The order
+    /// relation is used to find quickly the correct function.
+    struct SelectCallbackFctStore {
+      SelectCallbackFctStore( SelectCallbackFct _fct, 
+                              void* _data,
+                              DGtal::int32_t _min, DGtal::int32_t _max )
+        : fct( _fct ), data( _data ), min( _min ), max( _max ) {}
+      bool operator<( const SelectCallbackFctStore& other ) const
+      { 
+        return ( min < other.min ); // simple since there is no overlap.
+      }
+      bool isSelected( DGtal::int32_t name ) const
+      { return ( min <= name ) && ( name <= max ); }
+
+      SelectCallbackFct fct;
+      void*             data;
+      DGtal::int32_t    min;
+      DGtal::int32_t    max;
+    };
 
     /**
-     * structure used to display line in 3D
+     * Common data to most graphical structures used in Display3D.
      */
-    struct LineD3D{
+    struct CommonD3D {
+      DGtal::Color   color; ///< Color used for displaying the graphical structure 
+      DGtal::int32_t name;  ///< The "OpenGL name" associated with the graphical structure, used for selecting it (-1 is none).
+    };
+
+    /**
+     * The graphical structure that represents a 3D line segment in Display3D.
+     */
+    struct LineD3D : public CommonD3D {
       RealPoint point1;
       RealPoint point2;
       double width;
-      DGtal::Color color;
       bool isSigned;
       bool signPos;
     };
 
     /**
-     * Defines the 3D cube.
+     * The graphical structure that represents a 3D cube in Display3D.
      */
-    struct CubeD3D{
+    struct CubeD3D : public CommonD3D {
       /// The center coordinate of the cube.
-      ///
       RealPoint center;
-      /// The display color of the cube.
-      ///
-      DGtal::Color color;
-
       /// The width of a cube face
-      ///
       double width;
     };
 
     /**
-     * Used to define clipping planes (it uses the quadD3D structure)
+     * The graphical structure that represents a clipping plane (it
+     * uses the quadD3D structure)
+     *
      * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
-     **/
-    struct ClippingPlaneD3D{
+     */
+    struct ClippingPlaneD3D : public CommonD3D {
       double a,b,c,d;
     };
 
 
     /**
-     * This structure is used to display clipping planes and the
-     * components of the mySurfelPrismList (allowing to set normal and
-     * color).
+     * The graphical structure that represents a quadrilateral in the
+     * space. It is used to display clipping planes and the components
+     * of the myPrismList (allowing to set normal and color).
+     *
      * @see Display3D, Viewer3D, Board3DTo2D
-     **/
-    struct QuadD3D{
+     */
+    struct QuadD3D : public CommonD3D {
       RealPoint point1;
       RealPoint point2;
       RealPoint point3;
       RealPoint point4;
       double nx, ny, nz;
-      DGtal::Color color;
     };
 
 
 
     /**
-     * This structure is used to display triangle faces.
+     * The graphical structure that represents a triangle in the space.
+     *
      * @see Display3D, Viewer3D, Board3DTo2D
-     **/
-    struct TriangleD3D{
+     */
+    struct TriangleD3D : public CommonD3D {
       RealPoint point1;
       RealPoint point2;
       RealPoint point3;
       double nx, ny, nz;
-      DGtal::Color color;
     };
 
 
@@ -177,7 +210,7 @@ namespace DGtal
     /// @see addBall
     ///
     //have to be public because of external functions
-    struct BallD3D
+    struct BallD3D : public CommonD3D
     {
       const double & operator[]( unsigned int i ) const
       {
@@ -190,10 +223,10 @@ namespace DGtal
         return center[i];
       };
       RealPoint center;
-      DGtal::Color color;
       bool isSigned;
       bool signPos;
-      double size;
+      double radius;
+      unsigned int resolution;
     };
 
 
@@ -201,7 +234,7 @@ namespace DGtal
      * This structure is used to display polygonal faces in 3d.
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
-    struct PolygonD3D
+    struct PolygonD3D : public CommonD3D
     {
       std::vector<RealPoint> vertices;
       double nx, ny, nz;
@@ -211,13 +244,19 @@ namespace DGtal
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
 
+
+  public:
+    // The type that maps identifier name -> vector of QuadD3D.
+    typedef std::map<DGtal::int32_t, std::vector< QuadD3D > > QuadsMap;
+
+
   protected:
     /// an embeder from a dgtal space point to a real space point
-    CanonicEmbedder< Space > *myEmbedder;
+    Embedder *myEmbedder;
     /// an embeder from a unsigned khalimsky space point to a real space point
-    CanonicCellEmbedder< KSpace > *myCellEmbedder;
+    CellEmbedder *myCellEmbedder;
     /// an embeder from a signed khalimsky space point to a real space point
-    CanonicSCellEmbedder< KSpace > *mySCellEmbedder;
+    SCellEmbedder *mySCellEmbedder;
 
 
 
@@ -246,9 +285,9 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myEmbedder= new CanonicEmbedder<Space>();
-      myCellEmbedder = new CanonicCellEmbedder<KSpace >();
-      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >();
+      myEmbedder= new Embedder();
+      myCellEmbedder = new CellEmbedder();
+      mySCellEmbedder = new SCellEmbedder();
 
     }
 
@@ -261,9 +300,9 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myEmbedder= new CanonicEmbedder<Space>();
-      myCellEmbedder = new CanonicCellEmbedder<KSpace >(KSEmb);
-      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >(KSEmb);
+      myEmbedder= new Embedder();
+      myCellEmbedder = new CellEmbedder(KSEmb);
+      mySCellEmbedder = new SCellEmbedder(KSEmb);
     };
 
     /**
@@ -276,14 +315,30 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myEmbedder = new CanonicEmbedder<Space >(Semb);
-      myCellEmbedder = new CanonicCellEmbedder<KSpace >(KSEmb);
-      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >(KSEmb);
+      myEmbedder = new Embedder(Semb);
+      myCellEmbedder = new CellEmbedder(KSEmb);
+      mySCellEmbedder = new SCellEmbedder(KSEmb);
     };
 
 
     // ----------------------- Interface --------------------------------------
   public:
+
+    /// @return the embedder Point -> RealPoint
+    const Embedder& embedder() const 
+    { return *myEmbedder; }
+
+    /// @return the embedder Cell -> RealPoint
+    const CellEmbedder& cellEmbedder() const 
+    { return *myCellEmbedder; }
+
+    /// @return the embedder SCell -> RealPoint
+    const SCellEmbedder& sCellEmbedder() const 
+    { return *mySCellEmbedder; }
+
+    /// @return the cellular grid space.
+    const KSpace& space() const 
+    { return mySCellEmbedder->space(); }
 
     /**
      * Used to set the current fill color
@@ -324,22 +379,56 @@ namespace DGtal
      * Used to change the default embedder for point of the Digital 3D Space
      * @param anEmbedder the new CanonicEmbedder
      **/
-    virtual void  setSpaceEmbedder(CanonicEmbedder<Space> *anEmbedder);
+    virtual void  setSpaceEmbedder(Embedder *anEmbedder);
 
     /**
      *  Used to change the default embedder for unsigned cell of Khalimsky 3D Space.
      * @param anEmbedder the new CanonicCellEmbedder
      **/
-    virtual void  setKSpaceEmbedder(CanonicCellEmbedder<KSpace> *anEmbedder);
+    virtual void  setKSpaceEmbedder(CellEmbedder *anEmbedder);
 
     /**
      * Used to change the default embedder for signed cell of Khalimsky 3D Space.
      * @param anEmbedder the new CanonicSCellEmbedder
      **/
-    virtual void  setSKSpaceEmbedder(CanonicSCellEmbedder<KSpace> *anEmbedder);
+    virtual void  setSKSpaceEmbedder(SCellEmbedder *anEmbedder);
 
 
+    /**
+     * Sets the "OpenGL name" for next graphical directives.
+     * @param name the "OpenGL name", an integer identifier or -1 for none.
+     */
+    void setName3d( DGtal::int32_t name = -1 );
 
+    /**
+     * @return the current "OpenGL name", an integer identifier or -1 if none was set.
+     */
+    DGtal::int32_t name3d() const;
+
+    /**
+     * Sets the callback function called when selecting a graphical
+     * object with "OpenGL name" between \a min_name and \a max_name.
+     * Note that ranges should not overlap. If several functions can
+     * be called, behavior is undefined afterwards.
+     *
+     * @param fct any function.
+     * @param data an arbitrary pointer that is given when calling the callback function.
+     * @param min_name the first "OpenGL name" for which \a fct should be called.
+     * @param max_name the last "OpenGL name" for which \a fct should be called.
+     */
+    void setSelectCallback3D( SelectCallbackFct fct, void* data,
+                              DGtal::int32_t min_name, DGtal::int32_t max_name );
+
+    /**
+     * @param[in]  aName the "OpenGL name" that was selected.
+     * @param[out] data a pointer that was given setting the callback function.
+     * @return the select callback function that match the given \a
+     * name, or 0 if none is associated to this name.
+     */
+    SelectCallbackFct getSelectCallback3D( DGtal::int32_t aName, void*& data ) const;
+
+    // ----------------------- Graphical directives ----------------------------------
+  public:
 
 
     /**
@@ -390,12 +479,12 @@ namespace DGtal
      **/
     void createNewCubeList(std::string s= "");
 
-    /**
-     * Used to create a new list containing new 3D objects
-     * (useful to use transparency between different objects).
-     * @param s name of the new list
-     **/
-    void createNewQuadList(std::string s= "");
+     /**
+      * Used to create a new list containing new 3D objects
+      * (useful to use transparency between different objects).
+      * @return the new key of the map associated to the new list.
+      **/
+    DGtal::int32_t createNewQuadList();
 
     /**
      * Used to create a new list containing new 3D objects
@@ -413,13 +502,85 @@ namespace DGtal
 
 
     /**
-     * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
+     * Method to add a specific quad (used by @a addClippingPlane or
+     * to represent basic surfels from Khalimsky space). The normal is
+     * computed from the vertex order.
+     *
      * @param p1 the 1st point
      * @param p2 the 2nd point
      * @param p3 the 3rd point
      * @param p4  the 4th point
+     *
      */
-    void addQuad(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4);
+    void addQuad(const RealPoint &p1, const RealPoint &p2,
+                 const RealPoint &p3, const RealPoint &p4);
+
+    /**
+     * Method to add a specific quad. The normal vector is specified
+     * by the user. Depending on @a enableReorientation, Quad points
+     * can be reordered to make its orientation constistant with the
+     * normal direction.
+     *
+     * @param p1 the 1st point
+     * @param p2 the 2nd point
+     * @param p3 the 3rd point
+     * @param p4  the 4th point
+     * @param n the normal vector
+     * @param enableReorientation if true,  the quad orientation will
+     * match with prescribed normal vector (dot product between the
+     * normal and the canonical one is >0).
+     * @param enableDoubleFace if true, two quad (with opposite normal
+     * vector) will be drawn.
+     *
+     */
+    void addQuadWithNormal(const RealPoint &p1, const RealPoint &p2,
+                           const RealPoint &p3, const RealPoint &p4,
+                           const RealPoint &n,
+                           const bool enableReorientation,
+                           const bool enableDoubleFace = false);
+
+    /**
+     * Method to add a quad representing a surfel given from its center and its orientation.
+     *
+     * @param baseQuadCenter the surfel center.
+     * @param xSurfel indicates that the sufel is in the x axis direction
+     * @param ySurfel indicates that the sufel is in the y axis direction
+     * @param zSurfel indicates that the sufel is in the z axis direction
+     *
+     **/
+    void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, 
+                                 bool xSurfel, bool ySurfel, bool zSurfel);
+
+
+
+    /**
+     * Method to add a quad representing a surfel given from its
+     * center and its orientation, and attach a unitary normal vector
+     * to it.  Depending on @a enableReorientation, Quad points can be
+     * reordered to make its orientation constistant with the normal
+     * direction.
+     *
+     * @param baseQuadCenter the surfel center.
+     * @param xSurfel indicates that the sufel is in the x axis direction
+     * @param ySurfel indicates that the sufel is in the y axis direction
+     * @param zSurfel indicates that the sufel is in the z axis
+     * direction
+     * @param aNormal a unitary normal vector to attach to the quad.
+     * @param enableReorientation if true,  the quad orientation will
+     * match with prescribed normal vector (dot product between the
+     * normal and the canonical one is >0).
+     * @param sign if enableReorientation is true, we use this bool to
+     * get the surfel sign
+     * @param enableDoubleFace if true, two quad (with opposite normal
+     * vector) will be drawn.
+     *
+     **/
+    void addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel,
+                                           const RealVector &aNormal,
+                                           const bool enableReorientation,
+                                           const bool sign,
+                                           const bool enableDoubleFace = false);
+
 
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
@@ -446,7 +607,7 @@ namespace DGtal
      *
      */
 
-    void addLine(const RealPoint &p1, const RealPoint &p2, double width=0.03);
+    void addLine(const RealPoint &p1, const RealPoint &p2, const double width=0.03);
 
 
     /**
@@ -462,10 +623,13 @@ namespace DGtal
     /**
      * Method to add a point to the current display.
      * @param center ball center x
-     * @param size the point width
+     * @param radius the ball radius (default 0.5)
+     * @param resolution ball resolution (default 30)
      *
      */
-    void addBall(const RealPoint &center , double size=0.05);
+    void addBall(const RealPoint &center ,
+                 const double radius=0.5,
+                 const unsigned int resolution = 30);
 
 
 
@@ -482,27 +646,22 @@ namespace DGtal
      * @param aSign if @ref isSigned is true it will be used to apply a different displays
      * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
-    void addSurfelPrism(const RealPoint &baseQuadCenter,
+    void addPrism(const RealPoint &baseQuadCenter,
                         bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                         double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
+
+
     /**
-     * Specific to display a surfel from Kahlimsky space in basic mode.
+     * Specific to display a surfel from Kahlimsky space from a basic way.
      *
      * @param baseQuadCenter  base quad center point
      * @param xSurfel true if the surfel has its main face in the direction of the x-axis
      * @param ySurfel true if the surfel has its main face in the direction of the y-axis
      * @param zSurfel true if the surfel has its main face in the direction of the z-axis
-     * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
-     * @param sizeFactor set the difference between the upper face of the prism and the down face
-     * @param isSigned to specify if we want to display an signed or unsigned Cell.
-     * @param aSign if @ref isSigned is true it will be used to apply a different displays
-     * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
-    void addQuad(const RealPoint &baseQuadCenter,
-                 bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
-                 double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
-
+    void addBasicSurfel(const RealPoint &baseQuadCenter,
+                        bool xSurfel, bool ySurfel, bool zSurfel);
 
 
     /**
@@ -510,10 +669,10 @@ namespace DGtal
      *
      * @param p1  the cone apex
      * @param p2  the cone base
-     * @param width the width of the cone (default= 0.02)
+     * @param width the width of the cone (default= 0.08)
      */
     void addCone(const RealPoint &p1, const RealPoint &p2,
-                 double width=0.02);
+                 double width=0.08);
 
 
     /**
@@ -572,20 +731,26 @@ namespace DGtal
     bool isValid() const;
 
 
+    /**
+     * Removes all sent data.
+     */
+    void clear();
+
+
 
     /**
      * Use to embed a DGtal point into space
      * @param dp a DGtal Point
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicEmbedder<Space >::RealPoint embed(const typename Space::Point & dp) const ;
+    RealPoint embed(const typename Space::Point & dp) const ;
 
     /**
      * Use to embed a signed DGtal kahlimsky cell into space
      * @param cell a kahlimsky cell
      * @return the cell embeded in real space
      */
-    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const typename KSpace::SCell & cell ) const;
+    RealPoint embedKS( const typename KSpace::SCell & cell ) const;
 
 
     /**
@@ -593,7 +758,7 @@ namespace DGtal
      * @param aTrans a transformed surfel prism
      * @return the cell embeded in real space
      */
-    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const DGtal::TransformedSurfelPrism& aTrans ) const;
+    RealPoint embedKS( const DGtal::TransformedPrism& aTrans ) const;
 
 
     /**
@@ -601,7 +766,7 @@ namespace DGtal
      * @param cell kahlimsky cell
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint embedK( const typename KSpace::Cell & cell ) const;
+    RealPoint embedK( const typename KSpace::Cell & cell ) const;
 
     //---end interface
 
@@ -649,7 +814,7 @@ namespace DGtal
 
     /// Used to specialized visualisation with KSpace surfels/cubes.
     ///
-    double myCurrentfShiftVisuSurfelPrisms;
+    double myCurrentfShiftVisuPrisms;
 
     /// Used to represent all the list used in the display.
     ///
@@ -667,12 +832,15 @@ namespace DGtal
     ///
     std::vector< ClippingPlaneD3D > myClippingPlaneList;
 
-    /// For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
+    /// Represent truncated prism object to represent surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
-    std::vector< QuadD3D > mySurfelPrismList;
+    std::vector< QuadD3D > myPrismList;
 
-    /// Represents all the planes drawn in the Display3D
-    std::vector<std::vector< QuadD3D > > myQuadSetList;
+    /// Represents all the planes drawn in the Display3D or to display
+    /// Khalimsky Space Cell.  The map int --> vector< QuadD3D>
+    /// associates to a vector of quads to an integer identifier
+    /// (OpenGL name)
+    QuadsMap myQuadsMap;
 
     /// Represents all the triangles drawn in the Display3D
     std::vector<std::vector< TriangleD3D > > myTriangleSetList;
@@ -695,9 +863,9 @@ namespace DGtal
     ///
     std::vector<std::string> myClippingPlaneNameList;
 
-    /// names of the lists in mySurfelPrismList
+    /// names of the lists in myPrismList
     ///
-    std::vector<std::string> mySurfelPrismNameList;
+    std::vector<std::string> myPrismNameList;
 
     /// names of the lists in myQuadList
     ///
@@ -711,8 +879,13 @@ namespace DGtal
     ///
     std::vector<std::string> myPolygonSetNameList;
 
+    /// the "OpenGL name", used for instance by QGLViewer for selecting objects.
+    ///
+    DGtal::int32_t myName3d;
 
-
+    /// Stores the callback functions called when selecting a graphical object.
+    ///
+    std::set<SelectCallbackFctStore> mySelectCallBackFcts;
 
     //----end of protected datas
 

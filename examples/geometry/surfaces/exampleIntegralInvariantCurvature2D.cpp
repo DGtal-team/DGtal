@@ -39,11 +39,11 @@
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
+ #include "DGtal/images/ImageHelper.h"
 
-// Integral Invariant includes
-#include "DGtal/images/ImageHelper.h"
-#include "DGtal/geometry/surfaces/FunctorOnCells.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
+/// Estimator
+#include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 
 // Drawing
 #include "DGtal/io/boards/Board2D.h"
@@ -51,7 +51,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,23 +61,21 @@ int main( int argc, char** argv )
     trace.info() << "Args:";
     for ( int i = 0; i < argc; ++i )
         trace.info() << " " << argv[ i ];
-    trace.info() << endl;
+    trace.info() << std::endl;
 
     /// Construction of the shape + digitalization
     double h = 0.5;
 
     typedef Flower2D< Z2i::Space > MyShape;
     typedef GaussDigitizer< Z2i::Space, MyShape > MyGaussDigitizer;
-    typedef Z2i::KSpace::Surfel Surfel;
-    typedef Z2i::KSpace::SCell SCell;
     typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > LightImplicitDigSurface;
     typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
 
-    MyShape shape( 0, 0, 20.00000124, 10.0000123, 4, 3.0 );
+    MyShape shape( 0, 0, 20.00000124, 10.0000123, 6, 3.0 );
 
     MyGaussDigitizer digShape;
     digShape.attach( shape );
-    digShape.init( shape.getLowerBound(), shape.getUpperBound(), h );
+    digShape.init( shape.getLowerBound() + Z2i::Point::diagonal(-1), shape.getUpperBound() + Z2i::Point::diagonal(1), h );
     Z2i::Domain domainShape = digShape.getDomain();
     Z2i::KSpace KSpaceShape;
     bool space_ok = KSpaceShape.init( domainShape.lowerBound(), domainShape.upperBound(), true );
@@ -93,7 +90,7 @@ int main( int argc, char** argv )
     DGtal::imageFromRangeAndValue( domainShape.begin(), domainShape.end(), image );
 
     SurfelAdjacency<Z2i::KSpace::dimension> SAdj( true );
-    Surfel bel = Surfaces<Z2i::KSpace>::findABel( KSpaceShape, digShape, 100000 );
+    Z2i::KSpace::Surfel bel = Surfaces<Z2i::KSpace>::findABel( KSpaceShape, digShape, 100000 );
     LightImplicitDigSurface LightImplDigSurf( KSpaceShape, digShape, SAdj, bel );
     MyDigitalSurface digSurf( LightImplDigSurf );
 
@@ -105,28 +102,30 @@ int main( int argc, char** argv )
     SurfelConstIterator abegin = range.begin();
     SurfelConstIterator aend = range.end();
 
-    typedef ImageToConstantFunctor< Image, MyGaussDigitizer > MyPointFunctor;
-    MyPointFunctor pointFunctor( &image, &digShape, 1 );
-
     /// Integral Invariant stuff
     //! [IntegralInvariantUsage]
     double re_convolution_kernel = 4.5; // Euclidean radius of the convolution kernel. Set by user.
 
-    typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
-    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyCellFunctor > MyCurvatureEstimator; // mean curvature estimator
+    typedef functors::IICurvatureFunctor<Z2i::Space> MyIICurvatureFunctor;
+    typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, MyGaussDigitizer, MyIICurvatureFunctor > MyIICurvatureEstimator;
+    typedef MyIICurvatureFunctor::Value Value;
 
-    MyCellFunctor functor ( pointFunctor, KSpaceShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
-    MyCurvatureEstimator estimator ( KSpaceShape, functor );
-    estimator.init( h, re_convolution_kernel ); // Initialisation for a grid step h and a given Euclidean radius of convolution kernel re
-    std::vector< double > results;
-    back_insert_iterator< std::vector< double > > resultsIterator( results ); // output iterator for results of Integral Invariant curvature computation
-    estimator.eval ( abegin, aend, resultsIterator ); // Computation of the estimator between two iterators of surfels on the digitized shape border
+    MyIICurvatureFunctor curvatureFunctor; /// Functor used to convert volume -> curvature
+    curvatureFunctor.init( h, re_convolution_kernel ); // Initialisation for a grid step and a given Euclidean radius of convolution kernel
+
+    MyIICurvatureEstimator curvatureEstimator( curvatureFunctor ); 
+    curvatureEstimator.attach( KSpaceShape, digShape ); /// Setting a KSpace and a predicate on the object to evaluate
+    curvatureEstimator.setParams( re_convolution_kernel/h ); /// Setting the digital radius of the convolution kernel
+    curvatureEstimator.init( h, abegin, aend ); /// Initialisation for a given h
+
+    std::vector< Value > results;
+    std::back_insert_iterator< std::vector< Value > > resultsIt( results ); /// output iterator for results of Integral Invariant curvature computation
+    curvatureEstimator.eval( abegin, aend, resultsIt ); /// Computation
     //! [IntegralInvariantUsage]
 
     /// Drawing results
-    typedef MyCurvatureEstimator::Quantity Quantity;
-    Quantity min = numeric_limits < Quantity >::max();
-    Quantity max = numeric_limits < Quantity >::min();
+    Value min = std::numeric_limits < Value >::max();
+    Value max = std::numeric_limits < Value >::min();
     for ( unsigned int i = 0; i < results.size(); ++i )
     {
         if ( results[ i ] < min )
@@ -142,17 +141,17 @@ int main( int argc, char** argv )
     VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
     abegin = range2.begin();
 
-    typedef GradientColorMap< Quantity > Gradient;
+    typedef GradientColorMap< Value > Gradient;
     Gradient cmap_grad( min, max );
     cmap_grad.addColor( Color( 50, 50, 255 ) );
     cmap_grad.addColor( Color( 255, 0, 0 ) );
     cmap_grad.addColor( Color( 255, 255, 10 ) );
 
     board << SetMode( (*abegin).className(), "Paving" );
-    string specificStyle = (*abegin).className() + "/Paving";
+    std::string specificStyle = (*abegin).className() + "/Paving";
     for ( unsigned int i = 0; i < results.size(); ++i )
     {
-        SCell currentCell = KSpaceShape.sIndirectIncident( *abegin, *KSpaceShape.sOrthDirs( *abegin ) ); // We apply the color to the inner spel (more visible than surfel)
+        Z2i::KSpace::SCell currentCell = KSpaceShape.sIndirectIncident( *abegin, *KSpaceShape.sOrthDirs( *abegin ) ); // We apply the color to the inner spel (more visible than surfel)
         board << CustomStyle( specificStyle, new CustomColors( Color::Black, cmap_grad( results[ i ] )))
               << currentCell;
         ++abegin;

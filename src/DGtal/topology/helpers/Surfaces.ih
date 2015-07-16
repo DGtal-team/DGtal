@@ -66,7 +66,7 @@ findABel
   const PointPredicate & pp,
   unsigned int nbtries) throw (DGtal::InputException)
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
 
   DGtal::InputException dgtalerror;
   Point sizes = K.upperBound() - K.lowerBound();
@@ -103,7 +103,7 @@ findABel
   const PointPredicate & pp,
   Point x1, Point x2 )
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
   // (1) Checks the two candidates in the space.
   bool val_v1 = pp( x1 ); // dset.find( x1 ) != dset.end();
   ASSERT( val_v1 != pp( x2 ) );
@@ -142,12 +142,8 @@ findABel
   // (3) Check result.
   for ( Dimension i = 0; i < K.dimension; ++i )
     {
-      if ( ( i == d ) && ( x1[ i ] == x2[ i ] ) )
-        std::cerr << "[DGtal::Surfaces::findABel] Error 1a along " 
-                  << i << std::endl;
-      if ( ( i != d ) && ( x1[ i ] != x2[ i ] ) )
-        std::cerr << "[DGtal::Surfaces::findABel] Error 1b along "
-                  << i << std::endl;
+      ASSERT( ! ( ( i == d ) && ( x1[ i ] == x2[ i ] ) ) && "[DGtal::Surfaces::findABel] Same position on the main axis." ); 
+      ASSERT( ! ( ( i != d ) && ( x1[ i ] != x2[ i ] ) ) && "[DGtal::Surfaces::findABel] Different position on other axis." );
     }
   
   // (4) Dichotomy
@@ -167,21 +163,15 @@ findABel
   // (5) Check result.
   for ( Dimension i = 0; i < K.dimension; ++i )
     {
-      // std::cerr << "i=" << i << " x1=" << x1[ i ] << " x2=" << x2[ i ]
-      //     << std::endl;
-      if ( ( i == d ) && ( x1[ i ] != x2[ i ] - 1 ) )
-        std::cerr << "[DGtal::Surfaces::findABel] Error 2a along " 
-                  << i << std::endl;
-      if ( ( i != d ) && ( x1[ i ] != x2[ i ] ) )
-        std::cerr << "[DGtal::Surfaces::findABel] Error 2a along "
-                  << i << std::endl;
+      ASSERT( ! ( ( i == d ) && ( x1[ i ] != x2[ i ] - 1 ) && ( x1[ i ] != x2[ i ] + 1 ) )
+              && "[DGtal::Surfaces::findABel] Points should be adjacent on main axis." );
+      ASSERT( ! ( ( i != d ) && ( x1[ i ] != x2[ i ] ) ) 
+              && "[DGtal::Surfaces::findABel] Points should have the same coordinates on other axes." );
     }
 
   // (6) Computes bel.
-  if ( val_v1 )
-    return K.sIncident( K.sSpel( x1, K.POS ), d, true );
-  else
-    return K.sIncident( K.sSpel( x1, K.NEG ), d, true );
+  SCell spel1 = K.sSpel( x1, val_v1 ? K.POS : K.NEG );
+  return K.sIncident( spel1, d, ( x1[ d ] == x2[ d ] - 1 ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -194,7 +184,7 @@ trackBoundary( SCellSet & surface,
                const PointPredicate & pp,
                const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
 
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
@@ -247,7 +237,7 @@ trackSurface( SCellSet & surface,
               const SurfelPredicate & sp,
               const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
 
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
@@ -301,7 +291,7 @@ trackClosedSurface( SCellSet & surface,
                     const SurfelPredicate & sp,
                     const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
 
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
@@ -348,7 +338,7 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
   const PointPredicate & pp,
   const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
   ASSERT( K.dimension == 2 );
 
   SCell b= start_surfel;  // current surfel
@@ -421,7 +411,7 @@ DGtal::Surfaces<TKSpace>::track2DSliceBoundary
   const PointPredicate & pp,
   const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -492,7 +482,7 @@ track2DSurface( std::vector<SCell> & aSCellContour,
 		const SurfelPredicate & sp,
 		const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
   ASSERT( KSpace::dimension == 2 );
 
   SCell b= start_surfel;  // current surfel
@@ -556,7 +546,7 @@ track2DSliceSurface( std::vector<SCell> & aSCellContour,
 		     const SurfelPredicate & sp,
 		     const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -705,9 +695,9 @@ extractAllConnectedSCell
   bool forceOrientCellExterior ) 
 {
   std::set<SCell> bdry;
-
   sMakeBoundary( bdry, aKSpace, pp,
-                 aKSpace.lowerBound(), aKSpace.upperBound() );
+                 aKSpace.uCoords(aKSpace.lowerCell()), 
+                 aKSpace.uCoords(aKSpace.upperCell()) );
   aVectConnectedSCell.clear();
   while(!bdry.empty()){
     std::set<SCell>  aConnectedSCellSet;
@@ -988,7 +978,128 @@ sWriteBoundary( OutputIterator & out_it,
   //     while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
   //   }
 }
-          
+
+template <typename TKSpace>
+template <typename SurfelPredicate, typename TImageContainer>
+unsigned int
+DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace, 
+                                         const SurfelPredicate & aSurfPred,
+                                         TImageContainer & anImage,
+                                         const typename TImageContainer::Value & aValue,
+                                         bool empty_is_inside, 
+                                         bool incrementMode)
+{
+  unsigned int numberCellFilled = 0;
+  std::deque<Cell> pixels;      
+  Cell p =  aKSpace.uFirst(aKSpace.uCell(Point(1,1)));  
+  bool in_mode = empty_is_inside;   
+  do 
+    {
+      if ( p != aKSpace.uGetMax( p, 0 ) )
+        { 
+          pixels.push_front( p );
+          SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
+          if ( aSurfPred( b )  )
+            {
+              while ( ! pixels.empty() )
+                {
+                  Point aPoint = aKSpace.uCoords(pixels.front());
+                  anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
+                  pixels.pop_front();
+                  numberCellFilled++;
+                }
+              in_mode = false;
+            }
+          else if ( aSurfPred( aKSpace.sOpp( b ) )  )
+            {
+               pixels.clear();
+              in_mode = true;
+
+            }
+        }
+      else
+	{
+	  pixels.push_front( p );
+	  if ( in_mode )
+	    {
+	      while ( ! pixels.empty() )
+		{
+                  Point aPoint = aKSpace.uCoords(pixels.front());
+                  anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
+		  pixels.pop_front();
+                  numberCellFilled++;
+		}
+	    }
+	  else
+	    pixels.clear();
+	  in_mode = empty_is_inside;
+	}
+    }  while ( aKSpace.uNext(p, aKSpace.lowerCell(), aKSpace.upperCell())  );
+
+  return numberCellFilled;
+}
+
+
+
+
+template <typename TKSpace>
+template <typename SurfelPredicate, typename TImageContainer>
+unsigned int 
+DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace, 
+                                         const SurfelPredicate & aSurfPred,
+                                         TImageContainer & anImage,
+                                         const typename TImageContainer::Value & aValue,
+                                         bool empty_is_outside, 
+                                         bool incrementMode)
+{
+  unsigned int numberCellFilled=0;
+  std::deque<Cell> pixels;      
+  Cell p =  aKSpace.uFirst(aKSpace.uCell(Point(1,1)));  
+  bool in_mode = empty_is_outside;   
+  do 
+    {
+      if ( p != aKSpace.uGetMax( p, 0 ) )
+        { 
+          pixels.push_front( p );
+          SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
+          if ( aSurfPred( b ) )
+            {
+              pixels.clear();
+              in_mode = true;
+            }
+          else if ( aSurfPred( aKSpace.sOpp( b ) )  )
+            {
+              while ( ! pixels.empty() )
+                {
+                  Point aPoint = aKSpace.uCoords(pixels.front());
+                  anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
+                  pixels.pop_front();
+                  numberCellFilled++;
+                }
+              in_mode = false;
+            }
+        }
+      else
+	{
+	  pixels.push_front( p );
+	  if ( in_mode )
+	    {
+	      while ( ! pixels.empty() )
+		{
+                  Point aPoint = aKSpace.uCoords(pixels.front());
+                  anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
+                  pixels.pop_front();
+                  numberCellFilled++;
+                }
+	    }
+	  else
+	    pixels.clear();
+	  in_mode = empty_is_outside;
+	}
+    }  while ( aKSpace.uNext(p, aKSpace.lowerCell(), aKSpace.upperCell())  );
+  return numberCellFilled;
+}
+
 
 
 

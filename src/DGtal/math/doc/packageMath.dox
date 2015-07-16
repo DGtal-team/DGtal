@@ -55,6 +55,7 @@ polynomials, and some classes for simple statistic analysis.
  - \ref packageMathConcepts
 
 @b Related @b documentation @b pages
+ - Classes that computes the determinant of small matrices are available in \ref packageGeometry. See \ref moduleGeometricPredicates. 
 
 @b Related @b examples
 

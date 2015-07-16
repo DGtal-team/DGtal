@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
 /////////////////////////////////////////////////////////////////////////////
 // class CWithGradientMap
 /**
@@ -113,7 +114,7 @@ private:
 private:
 
 }; // end of concept CWithGradientMap
-
+  }
 } // namespace DGtal
 
 //                                                                           //

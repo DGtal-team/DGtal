@@ -23,7 +23,7 @@
  *
  * @date 2011/03/19
  *
- * Header file for module Surfaces.cpp
+ * Header file for module Surfaces
  *
  * This file is part of the DGtal library.
  */
@@ -92,13 +92,13 @@ namespace DGtal
     /**
        Find a bel in some digital set by random tries then dichotomy.
 
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
 
        @param K any cellular grid space.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape,
        which should be at least partially included in the bounds of
        space [K].
@@ -114,17 +114,21 @@ namespace DGtal
     SCell findABel( const KSpace & K,
         const PointPredicate & pp,
         unsigned int nbtries = 1000 ) throw (DGtal::InputException);
+
     /**
        Find a bel in some digital set given two hints (one point
        inside, one point outside).
 
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
 
+       @pre we must have pp( x1 ) != pp( x2 ), i.e. one point should
+       satisfy the predicate while the other not.
+
        @param K any cellular grid space.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape,
        which should be at least partially included in the bounds of
        space [K].
@@ -136,14 +140,13 @@ namespace DGtal
        != pp( x2 ).
 
        @return a signed surfel separating a digital point in [dset]
-       from a face adjacent digital point outside [dset] or throws an
-       InputException if none was found after [nbtries] iterations.
+       from a face adjacent digital point outside [dset].
     */
     template <typename PointPredicate>
     static
     SCell findABel( const KSpace & K,
-        const PointPredicate & pp,
-        Point x1, Point x2 );
+                    const PointPredicate & pp,
+                    Point x1, Point x2 );
 
     /**
        Function that extracts the boundary of a nD digital shape
@@ -157,7 +160,7 @@ namespace DGtal
        
        @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
 
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -167,7 +170,7 @@ namespace DGtal
        @param K any space.
        @param surfel_adj the surfel adjacency chosen for the tracking.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape,
        which should be at least partially included in the bounds of
        space [K].
@@ -198,7 +201,7 @@ namespace DGtal
        
        @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
 
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -208,7 +211,7 @@ namespace DGtal
        @param K any space.
        @param surfel_adj the surfel adjacency chosen for the tracking.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape,
        which should be at least partially included in the bounds of
        space [K].
@@ -306,7 +309,7 @@ namespace DGtal
        of the shape by starting from the given [start_surfel]. It only
        tracks the boundary of a 2D shape.
        
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -318,7 +321,7 @@ namespace DGtal
 
        @param surfel_adj the surfel adjacency chosen for the tracking.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape,
        which should be at least partially included in the bounds of
        space [K].
@@ -351,7 +354,7 @@ namespace DGtal
        directions [trackDir] and the orthogonal direction of
        [start_surfel].
        
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -367,7 +370,7 @@ namespace DGtal
 
        @param surfel_adj the surfel adjacency chosen for the tracking.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape,
        which should be at least partially included in the bounds of
        space [K].
@@ -496,7 +499,7 @@ namespace DGtal
 
        @param surfel_adj the surfel adjacency chosen for the tracking.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape,
        which should be at least partially included in the bounds of
        space [K].
@@ -524,7 +527,7 @@ namespace DGtal
        points defined by the sequence of pointels extracted from the
        boundary surfels. Calls extractAll2DSCellContours.
        
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -534,7 +537,7 @@ namespace DGtal
        
        @param aKSpace any space.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
 
        @param aSAdj the surfel adjacency chosen for the tracking.
@@ -557,7 +560,7 @@ namespace DGtal
        a digital shape defined by the predicate [pp]. The algorithms
        tracks surfels along the boundary of the shape.
        
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -569,7 +572,7 @@ namespace DGtal
        
        @param aSurfelAdj the surfel adjacency chosen for the tracking.
        
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
     */
     template <typename PointPredicate>
@@ -588,7 +591,7 @@ namespace DGtal
        orientation of the resulting SCell indicates the exterior
        orientation according the positive axis.
        
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
 
@@ -600,7 +603,7 @@ namespace DGtal
        
        @param aSurfelAdj the surfel adjacency chosen for the tracking.
        
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
        
        @param forceOrientCellExterior if 'true', used to change the
@@ -631,7 +634,7 @@ namespace DGtal
        =false). This is used only for displaying cells with
        Viewer3D. This mechanism should evolve shortly.
 
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
 
@@ -640,7 +643,7 @@ namespace DGtal
        
        @param aKSpace any space.
        
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
        
     */
@@ -661,7 +664,7 @@ namespace DGtal
        [pp].
        
        @tparam CellSet a model of a set of Cell (e.g., std::set<Cell>).
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -669,7 +672,7 @@ namespace DGtal
        the boundary component of [aSpelSet].
        
        @param aKSpace any space.
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
 
        @param aLowerBound and @param aUpperBound points giving the
@@ -689,7 +692,7 @@ namespace DGtal
        [pp].
        
        @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -697,7 +700,7 @@ namespace DGtal
        the boundary component of [aSpelSet].
        
        @param aKSpace any space.
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
 
        @param aLowerBound and @param aUpperBound points giving the
@@ -719,7 +722,7 @@ namespace DGtal
        @tparam OutputIterator any output iterator (like
        std::back_insert_iterator< std::vector<Cell> >).
 
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -727,7 +730,7 @@ namespace DGtal
        
        @param aKSpace any space.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
 
        @param aLowerBound and @param aUpperBound points giving the
@@ -749,7 +752,7 @@ namespace DGtal
        @tparam OutputIterator any output iterator (like
        std::back_insert_iterator< std::vector<SCell> >).
 
-       @tparam PointPredicate a model of CPointPredicate describing
+       @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
@@ -757,7 +760,7 @@ namespace DGtal
        
        @param aKSpace any space.
 
-       @param pp an instance of a model of CPointPredicate, for
+       @param pp an instance of a model of concepts::CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
 
        @param aLowerBound and @param aUpperBound points giving the
@@ -775,6 +778,65 @@ namespace DGtal
     
 
 
+    /**
+     * Given a boundary surface [aSurfPred] in [aKSpace] (given as
+     * SurfelPredicate), fills its interior in a given image [anImage]
+     * by a specific value [aValue] (considered as increment if
+     * [incrementMode] is set to true). The technique is to fill line
+     * by line and tests the intersection with the surface. Note that
+     * the set of the surfel of the boundary has to be a closed
+     * surface.
+     * 
+     * 
+     * @param aKSpace the digital space.
+     * @param aSurfPred the digital Jordan surface.
+     * @param anImage the image to be filled.
+     * @param aValue the value to fill the image.
+     * @param empty_is_inside when 'true', an empty line is considered
+     * interior, otherwise exterior (set by default to false).
+     * @param incrementMode if set to 'true' the image value is incremented by [aValue] instead to be set to [aValue]  (default).
+     * @return the number of cells filled in the image.
+     */
+    template < typename TSurfelPredicate, typename TImageContainer> 
+    unsigned int
+    static
+    uFillInterior( const KSpace & aKSpace, 
+                   const TSurfelPredicate & aSurfPred,
+                   TImageContainer & anImage,
+                   const typename TImageContainer::Value & aValue,
+                   bool empty_is_inside=false,
+                   bool incrementMode=true );
+
+
+    /**
+     * Given a boundary surface [aSurfPred] in [aKSpace] (given as
+     * SurfelPredicate), fills its exterior in a given image [anImage]
+     * by a specific value [aValue] (considered as increment if
+     * [incrementMode] is set to true). The technique is to fill line
+     * by line and tests the intersection with the surface. Note that
+     * the set of the surfel of the boundary has to be a closed
+     * surface.
+     *
+     * @param aKSpace the digital space.
+     * @param aSurfPred the digital Jordan surface.
+     * @param anImage the image to be filled.
+     * @param aValue the value to fill the image.
+     * @param empty_is_outside when 'true', an empty line is considered
+     * exterior, otherwise interior.
+     * @param incrementMode if set to 'true' the image value is incremented by [aValue] instead to be set to [aValue]  (default).
+     * @return the number of cells filled in the image.
+     */
+    template < typename SurfelPredicate, typename TImageContainer> 
+    unsigned int
+    static
+    uFillExterior( const KSpace & aKSpace, 
+                   const SurfelPredicate & aSurfPred,
+                   TImageContainer & anImage,
+                   const typename TImageContainer::Value & aValue,
+                   bool empty_is_outside=true,
+                   bool incrementMode=true );
+
+    
     
 
     // ----------------------- Standard services ------------------------------

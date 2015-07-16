@@ -689,24 +689,24 @@ Image::flushCairo( cairo_t *cr,
 {
   int w, h;
   cairo_surface_t *image;
-  
   cairo_save (cr);
-
-    image = cairo_image_surface_create_from_png (_filename.c_str());
-    assert(cairo_surface_status (image) == CAIRO_STATUS_SUCCESS);
-    w = cairo_image_surface_get_width (image);
-    h = cairo_image_surface_get_height (image);
-
-    // tr
-    cairo_translate (cr, transform.mapX( _path[0].x ), transform.mapY( _path[0].y ));
-    //cairo_scale (cr, transform.scale( _path[1].x - _path[0].x )/w, transform.scale( _path[0].y - _path[3].y )/h);
-    cairo_scale (cr, transform.scale( (_path[1] - _path[0]).norm() )/w, transform.scale( (_path[0] - _path[3]).norm() )/h);
-    // tr
-
-    cairo_set_source_surface (cr, image, 0, 0);
-    cairo_paint_with_alpha(cr, _alpha);
-    cairo_surface_destroy (image);
-    
+  std::string extension = _filename.substr(_filename.find_last_of(".") + 1);
+  ASSERT(extension=="png");
+  image = cairo_image_surface_create_from_png (_filename.c_str());
+  assert(cairo_surface_status (image) == CAIRO_STATUS_SUCCESS);
+  w = cairo_image_surface_get_width (image);
+  h = cairo_image_surface_get_height (image);
+  
+  // tr
+  cairo_translate (cr, transform.mapX( _path[0].x ), transform.mapY( _path[0].y ));
+  //cairo_scale (cr, transform.scale( _path[1].x - _path[0].x )/w, transform.scale( _path[0].y - _path[3].y )/h);
+  cairo_scale (cr, transform.scale( (_path[1] - _path[0]).norm() )/w, transform.scale( (_path[0] - _path[3]).norm() )/h);
+  // tr
+  
+  cairo_set_source_surface (cr, image, 0, 0);
+  cairo_paint_with_alpha(cr, _alpha);
+  cairo_surface_destroy (image);
+  
   cairo_restore (cr);
 }
 #endif
@@ -2375,6 +2375,174 @@ Triangle *
 Triangle::clone() const {
     return new Triangle(*this);
 }
+
+/*
+ * QuadraticBezierCurve
+ */
+const std::string QuadraticBezierCurve::_name("QuadraticBezierCurve");
+
+const std::string &
+QuadraticBezierCurve::name() const
+{
+    return _name;
+}
+
+void
+QuadraticBezierCurve::flushPostscript( std::ostream & stream,
+                           const TransformEPS & transform ) const
+{
+  double x1, y1, x2, y2, x3, y3, x4, y4; //coordinates of the control points
+  _path[ 0 ].get(x1, y1);
+  _path[ 1 ].get(x3, y3);
+  _path[ 2 ].get(x4, y4);
+  //we compute the two middle control points of a cubic Bezier curve
+  //from the three control points of the quadratic Bezier curve
+  x2 = x1 + 2/3.0*(x3-x1); 
+  y2 = y1 + 2/3.0*(y3-y1); 
+  x3 = x2 + 1/3.0*(x4-x1); 
+  y3 = y2 + 1/3.0*(y4-y1); 
+
+  stream << std::endl << "% Bezier curve" << std::endl;
+  if ( _fillColor != DGtal::Color::None ) {
+    stream << "n "
+	   << transform.mapX( x1 ) << " "
+	   << transform.mapY( y1 ) << " "
+	   << "m "
+	   << transform.mapX( x2 ) << " "
+	   << transform.mapY( y2 ) << " "
+	   << transform.mapX( x3 ) << " "
+	   << transform.mapY( y3 ) << " "
+	   << transform.mapX( x4 ) << " "
+	   << transform.mapY( y4 ) << " "
+	   << "curveto ";  
+      _fillColor.flushPostscript( stream );
+      stream << " " << postscriptProperties();
+      stream << " fill" << std::endl;
+  }
+  if ( _penColor != DGtal::Color::None ) {
+    stream << " " << postscriptProperties() << " "; 
+    stream << "n "
+	   << transform.mapX( x1 ) << " "
+	   << transform.mapY( y1 ) << " "
+	   << "m "
+	   << transform.mapX( x2 ) << " "
+	   << transform.mapY( y2 ) << " "
+	   << transform.mapX( x3 ) << " "
+	   << transform.mapY( y3 ) << " "
+	   << transform.mapX( x4 ) << " "
+	   << transform.mapY( y4 ) << " "
+	   << "curveto ";  
+    _penColor.flushPostscript( stream );
+    stream << " stroke" << std::endl;
+  }
+}
+
+void
+QuadraticBezierCurve::flushFIG( std::ostream & stream,
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const
+{
+  stream << "#FIXME: quadratic Bezier curve unimplemented" << std::endl; 
+  Triangle::flushFIG(stream, transform, colormap); 
+}
+
+void
+QuadraticBezierCurve::flushSVG( std::ostream & stream,
+                           const TransformSVG & transform ) const
+{
+  double x1, y1, x2, y2, x3, y3; //coordinates of the control points
+  _path[ 0 ].get(x1, y1);
+  _path[ 1 ].get(x2, y2);
+  _path[ 2 ].get(x3, y3);
+
+  stream << "<path ";
+  stream << svgProperties( transform ) << " ";
+  //first point 
+  stream << "d='M " << transform.mapX( x1 );
+  stream << "," << transform.mapY( y1 );
+  //arc
+  stream << " Q " << transform.mapX( x2 ) << "," << transform.mapY( y2 );
+  //last point
+  stream << " " << transform.mapX( x3 );
+  stream << "," << transform.mapY( y3 );
+  stream << "' />";
+}
+
+#ifdef WITH_CAIRO
+void
+QuadraticBezierCurve::flushCairo( cairo_t *cr,
+     const TransformCairo & transform ) const
+{
+  double x1, y1, x2, y2, x3, y3, x4, y4; //coordinates of the control points
+  _path[ 0 ].get(x1, y1);
+  _path[ 1 ].get(x3, y3);
+  _path[ 2 ].get(x4, y4);
+  //we compute the two middle control points of a cubic Bezier curve
+  //from the three control points of the quadratic Bezier curve
+  x2 = x1 + 2/3.0*(x3-x1); 
+  y2 = y1 + 2/3.0*(y3-y1); 
+  x3 = x2 + 1/3.0*(x4-x1); 
+  y3 = y2 + 1/3.0*(y4-y1); 
+
+  cairo_save (cr);
+
+  cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
+
+  cairo_move_to( cr, transform.mapX( x1 ), transform.mapY( y1 ) ); 
+  cairo_curve_to( cr, transform.mapX( x2 ), transform.mapY( y2 ), 
+		  transform.mapX( x3 ), transform.mapY( y3 ), 
+		  transform.mapX( x4 ), transform.mapY( y4 ) ); 
+
+  if ( filled() )
+    {
+      if ( _penColor != DGtal::Color::None )
+  	cairo_fill_preserve (cr);
+      else
+  	cairo_fill (cr);
+    }
+      
+  if ( _penColor != DGtal::Color::None )
+    {
+      cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
+    
+      cairo_set_line_width (cr, _lineWidth);
+      cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
+      cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
+      setCairoDashStyle (cr, _lineStyle);
+
+      cairo_stroke (cr);
+    }
+    
+  cairo_restore (cr);
+}
+#endif
+
+void
+QuadraticBezierCurve::flushTikZ( std::ostream & stream,
+                           const TransformTikZ & transform ) const
+{
+  double x1, y1, x2, y2, x3, y3, x4, y4; //coordinates of the control points
+  _path[ 0 ].get(x1, y1);
+  _path[ 1 ].get(x3, y3);
+  _path[ 2 ].get(x4, y4);
+  //we compute the two middle control points of a cubic Bezier curve
+  //from the three control points of the quadratic Bezier curve
+  x2 = x1 + 2/3.0*(x3-x1); 
+  y2 = y1 + 2/3.0*(y3-y1); 
+  x3 = x2 + 1/3.0*(x4-x1); 
+  y3 = y2 + 1/3.0*(y4-y1); 
+
+  stream << "\\draw[" << tikzProperties(transform) << "] ("
+	 << transform.mapX( x1 ) << ',' << transform.mapY( y1 )
+	 << ") .. controls ("
+	 << transform.mapX( x2 ) << ',' << transform.mapY( y2 )
+	 << ") and ("
+	 << transform.mapX( x3 ) << ',' << transform.mapY( y3 )
+	 << ") .. ("
+	 << transform.mapX( x4 ) << ',' << transform.mapY( y4 )
+	 << ");" << std::endl;
+}
+
 
 /*
  * Text

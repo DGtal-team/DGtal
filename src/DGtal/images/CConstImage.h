@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // struct CConstImage
   /**
@@ -97,7 +98,7 @@ namespace DGtal
 
     //Inner types
     typedef typename I::Domain Domain;
-    BOOST_CONCEPT_ASSERT((CDomain<Domain>));
+    BOOST_CONCEPT_ASSERT((concepts::CDomain<Domain>));
 
     typedef typename I::ConstRange ConstRange;
     BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<ConstRange>));
@@ -114,6 +115,7 @@ namespace DGtal
     ConstRange r;
 
   };
+  }
 } // namespace DGtal
 
 //                                                                           //

@@ -61,7 +61,7 @@
 namespace DGtal
 {
 
-  namespace details
+  namespace detail
   {
   /////////////////////////////////////////////////////////////////////////////
   // template class PointValueCompare
@@ -83,7 +83,7 @@ namespace DGtal
        *
        * @return true if a < b but false otherwise
        */
-      bool operator()(const T& a, const T& b) 
+      bool operator()(const T& a, const T& b) const
       {
 	if ( std::abs(a.second) == std::abs(b.second) ) 
 	  { //point comparison
@@ -116,7 +116,6 @@ namespace DGtal
    * However, you are free to use L2SecondOrderLocalDistance, which provides
    * more accurate distance values, L1LocalDistance and 
    * LInfLocalDistance for other norms. 
-   * @see FMMPointFunctors.h
    *
    * Then the point of smallest tentative value is added to the set of
    * accepted points. The tentative values of the candidates adjacent 
@@ -127,16 +126,19 @@ namespace DGtal
    *
    * @tparam TImage  any model of CImage
    * @tparam TSet  any model of CDigitalSet
-   * @tparam TPointPredicate  any model of CPointPredicate, 
+   * @tparam TPointPredicate  any model of concepts::CPointPredicate, 
    * used to bound the computation within a domain 
    * @tparam TPointFunctor  any model of CPointFunctor,
    * used to compute the new distance value
    *
    * You can define the FMM type as follows: 
-   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMDef
+   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMSimpleTypeDef3D
    *
-   * You can run the algorithm as follows (d is a domain): 
-   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMUsage
+   * You can construct and initialize the external data structures as follows: 
+   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMSimpleInit3D
+   *
+   * Then, the algorithm is ran as follows: 
+   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMUsage3D
    *
    * @see exampleFMM2D.cpp
    * @see exampleFMM3D.cpp
@@ -152,10 +154,10 @@ namespace DGtal
 
 
     //concept assert
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CPointFunctor<TPointFunctor> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<TPointFunctor> ));
 
     typedef TImage Image; 
     typedef TSet AcceptedPointSet; 
@@ -181,7 +183,7 @@ namespace DGtal
     //intern data types
     typedef std::pair<Point, Value> PointValue; 
     typedef std::set<PointValue,
-		     details::PointValueCompare<PointValue> > CandidatePointSet; 
+		     detail::PointValueCompare<PointValue> > CandidatePointSet; 
     typedef unsigned long Area;
 
     // ------------------------- Private Datas --------------------------------

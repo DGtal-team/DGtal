@@ -70,7 +70,7 @@ namespace DGtal
   @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
   for the cellular grid space.
   
-  @tparam TPointPredicate a model of CPointPredicate: this functor
+  @tparam TPointPredicate a model of concepts::CPointPredicate: this functor
   defines the inside of a shape on points where it is true.
 
      @remark Being a CDigitalSurfaceContainer, it is a model of
@@ -202,11 +202,11 @@ namespace DGtal
     typedef typename KSpace::SCell Surfel;
     /// Type for sizes (unsigned integral type).
     typedef typename KSpace::Size Size;
-    // Model of CPointPredicate
+    // Model of concepts::CPointPredicate
     typedef TPointPredicate PointPredicate;
 
     // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
 
     // ----------------------- other types ------------------------------
   public:

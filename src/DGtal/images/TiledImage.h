@@ -82,10 +82,10 @@ namespace DGtal
     typedef TiledImage<TImageContainer, TImageFactory, TImageCacheReadPolicy, TImageCacheWritePolicy> Self;
 
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));
-    BOOST_CONCEPT_ASSERT(( CImageCacheReadPolicy<TImageCacheReadPolicy> ));
-    BOOST_CONCEPT_ASSERT(( CImageCacheWritePolicy<TImageCacheWritePolicy> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageCacheReadPolicy<TImageCacheReadPolicy> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImageCacheWritePolicy<TImageCacheWritePolicy> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
@@ -718,7 +718,9 @@ namespace DGtal
         {
           myImageCache->incCacheMissRead();
           Domain d;
-
+#ifdef DEBUG_VERBOSE
+          trace.info()<<"+";
+#endif 
           d = findSubDomain(aPoint);
 
           myImageCache->update(d);

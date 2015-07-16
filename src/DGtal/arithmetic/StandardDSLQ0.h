@@ -70,7 +70,7 @@ namespace DGtal
   @param TFraction the type chosen to represent fractions, a model
   of CFraction. You may use SternBrocot<>::Fraction for instance.
 
-  Model of boost::CopyConstructible, boost::Assignable, CPointPredicate
+  Model of boost::CopyConstructible, boost::Assignable, concepts::CPointPredicate
 
   @see dgtal_digstraighness_sec3
   */
@@ -92,7 +92,7 @@ namespace DGtal
     typedef typename IC::Vector2I Vector2I;
     typedef typename IC::Point2I Point2I;
 
-    // Model of CPointPredicate
+    // Model of concepts::CPointPredicate
     typedef typename IC::Point2I Point;
 
     /**

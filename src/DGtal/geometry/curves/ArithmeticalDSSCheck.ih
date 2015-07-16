@@ -43,7 +43,7 @@
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSSCheck::
+DGtal::functions::
 checkOnePoint(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
   ASSERT(aDSS.front()==aDSS.back()); 
@@ -68,7 +68,7 @@ checkOnePoint(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSSCheck::
+DGtal::functions::
 checkPointsRemainder(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
   ASSERT(aDSS.front()!=aDSS.back()); 
@@ -81,15 +81,15 @@ checkPointsRemainder(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS
   else if (aDSS.remainder(aDSS.Ul()) != aDSS.mu()) 
     isValid = false;
   else if (aDSS.remainder(aDSS.Lf()) != aDSS.mu()+aDSS.omega()-1) 
-    isValid = false;
+    { isValid = false; std::cout << aDSS.remainder(aDSS.Lf()) << " " << aDSS.mu()+aDSS.omega()-1 << std::endl;} 
   else if (aDSS.remainder(aDSS.Ll()) != aDSS.mu()+aDSS.omega()-1) 
-    isValid = false;
+    { isValid = false; std::cout << aDSS.remainder(aDSS.Ll()) << " " << aDSS.mu()+aDSS.omega()-1 << std::endl;}
   else if (aDSS.isInDSL(aDSS.front()))
-    isValid = true; 
+    isValid = true;
   else if (aDSS.isInDSL(aDSS.back()))
     isValid = true; 
   else 
-    isValid = false; 
+    isValid = false;
 
   return isValid; 
 }
@@ -98,7 +98,7 @@ checkPointsRemainder(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSSCheck::
+DGtal::functions::
 checkPointsPosition(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
   ASSERT(aDSS.front()!=aDSS.back()); 
@@ -136,7 +136,7 @@ checkPointsPosition(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSSCheck::
+DGtal::functions::
 checkAll(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 { 
   //'true' if valid, 'false' otherwise

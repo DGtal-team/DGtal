@@ -67,7 +67,7 @@ namespace DGtal
   template <typename TSpace>
   class RegularPointEmbedder
   {
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -91,7 +91,7 @@ namespace DGtal
     RegularPointEmbedder();
 
     /**
-     * Assignment. Required by CPointPredicate.
+     * Assignment. Required by concepts::CPointPredicate.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */

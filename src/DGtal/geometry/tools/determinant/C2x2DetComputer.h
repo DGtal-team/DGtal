@@ -82,10 +82,10 @@ namespace DGtal
      ### Valid expressions and semantics
 
      | Name               | Expression        | Type requirements | Return type   | Precondition | Semantics         | Post condition | Complexity      |
-     |--------------------+-------------------+-------------------+---------------+--------------+-------------------+----------------+-----------------|
-     | full operator()    | r = x(a, b, c, d) |                   | ResultInteger |              | (sign of) ad - bc |                | model dependant |
+     |--------------------|-------------------|-------------------|---------------|--------------|-------------------|----------------|-----------------|
+     | full operator()    | r = x(a, b, c, d) |                   | ResultInteger |              | (sign of) ad - bc |                | model dependent |
      | initialization     | x.init(a,b)       |                   | void          |              | memorizes a and b |                | constant        |
-     | partial operator() | r = x(c, d)       |                   | ResultInteger |              | (sign of) ad - bc |                | model dependant |
+     | partial operator() | r = x(c, d)       |                   | ResultInteger |              | (sign of) ad - bc |                | model dependent |
 
      ### Notes
 
@@ -98,7 +98,7 @@ namespace DGtal
 
      ### Models
 
-     Simple2x2DetComputer, SimpleIncremental2x2DetComputer, AvnaimEtAl2x2DetComputer, Filtred2x2DetComputer
+     Simple2x2DetComputer, SimpleIncremental2x2DetComputer, AvnaimEtAl2x2DetSignComputer, Filtered2x2DetComputer
 
 
      @tparam T the type that should be a model of C2x2DetComputer.
@@ -109,16 +109,16 @@ namespace DGtal
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::ArgumentInteger ArgumentType;
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing< ArgumentType > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing< ArgumentType > ));
 
     typedef typename T::ResultInteger ResultType;
-    BOOST_CONCEPT_ASSERT(( CSignedNumber< ResultType > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber< ResultType > ));
 
     BOOST_CONCEPT_USAGE( C2x2DetComputer )
     {
-      ConceptUtils::sameType( myR, myX( myA, myB, myC, myD ) );
+      concepts::ConceptUtils::sameType( myR, myX( myA, myB, myC, myD ) );
       myX.init(myA, myB); 
-      ConceptUtils::sameType( myR, myX( myA, myB ) );
+      concepts::ConceptUtils::sameType( myR, myX( myA, myB ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:

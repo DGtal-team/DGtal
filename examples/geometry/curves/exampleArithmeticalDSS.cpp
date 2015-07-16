@@ -208,6 +208,23 @@ void exampleConstructors()
     trace.info() << segment << std::endl; 
   }
 
+  {
+    //! [ArithmeticalDSSNaiveCtorDSL]
+    // Construct a naive DSS as a DSL subsegment
+    NaiveDSS8<Integer> segment( NaiveDSL<Integer>(5,8,0), Point(0,0), Point(8,5) ); 
+    //! [ArithmeticalDSSNaiveCtorDSL]
+    trace.info() << segment << std::endl; 
+  }
+
+  {
+    NaiveDSS8<Integer> bigDSS( NaiveDSL<Integer>(5,8,0), Point(-8,-5), Point(16,10) );  
+    //! [ArithmeticalDSSNaiveCtorDSS]
+    // Construct a naive DSS as a subsegment of a greater DSS
+    NaiveDSS8<Integer> segment( bigDSS, Point(0,0), Point(8,5) ); 
+    //! [ArithmeticalDSSNaiveCtorDSS]
+    trace.info() << segment << std::endl; 
+  }
+
   std::vector<Point> r; //container for DSS points
   {
     //! [ArithmeticalDSSNaiveCtorParam]
