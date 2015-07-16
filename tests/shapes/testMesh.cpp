@@ -105,7 +105,7 @@ bool testMesh()
        it++){
     nb++;    
   }
-  okMeshIterators = nb == aMesh.nbVertex();
+  okMeshIterators = okMeshIterators && (nb == aMesh.nbVertex());
   // testing to change vertex  on  iterator
   for(  Mesh<Point>::VertexStorage::iterator it = aMesh.vertexBegin(); 
        it !=aMesh.vertexEnd(); 
@@ -118,7 +118,7 @@ bool testMesh()
        it++){
     nb++;    
   }
-  okMeshIterators = nb == aMesh.nbFaces();
+  okMeshIterators = okMeshIterators && (nb == aMesh.nbFaces());
   nb=0;
   // just testing nb iterations on const iterator
   for(  Mesh<Point>::FaceStorage::iterator it = aMesh.faceBegin(); 
@@ -126,7 +126,7 @@ bool testMesh()
        it++){
     nb++;
   }
-  okMeshIterators =  nb == aMesh.nbFaces() &&  (aMesh.getVertex(5))[0]==13;
+  okMeshIterators =  okMeshIterators && (nb == aMesh.nbFaces()) &&  (aMesh.getVertex(5))[0]==13;
 
   // testing changing color of individual face:
   aMesh.setFaceColor(1, DGtal::Color::Red);
