@@ -477,7 +477,7 @@ is quite similar.
 */
 
 /**
-   This example shows the basic usage of a 8-connected and 4-connected 
+   This example shows the basic usage of a 8-connected and a 4-connected 
 arithmetical DSS.  
 
 @see \ref moduleArithDSSReco
