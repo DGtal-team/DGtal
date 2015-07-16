@@ -159,69 +159,63 @@ namespace DGtal
   } // anonymous namespace
 
   /// Linearized index of a point, given the domain lower-bound and extent.
-  template <TSpace, TStorageOrder>
-  static
+  template <typename TSpace, typename TStorageOrder>
   typename Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::Size
   Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::
       getIndex( Point aPoint, Point const& aLowerBound, Extent const& anExtent )
     {
       aPoint -= aLowerBound;
-      return linearizer_impl<Size, TStorageOrder, TDomain::dimension>::apply(aPoint, anExtent);
+      return linearizer_impl<Size, TStorageOrder, Domain::dimension>::apply(aPoint, anExtent);
     }
   
   /// Linearized index of a point, given the domain extent.
-  template <TSpace, TStorageOrder>
-  static
+  template <typename TSpace, typename TStorageOrder>
   typename Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::Size
   Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::
       getIndex( Point aPoint, Extent const& anExtent )
     {
-      return linearizer_impl<Size, TStorageOrder, TDomain::dimension>::apply(aPoint, anExtent);
+      return linearizer_impl<Size, TStorageOrder, Domain::dimension>::apply(aPoint, anExtent);
     }
 
   /// Linearized index of a point, given a domain.
-  template <TSpace, TStorageOrder>
-  static
+  template <typename TSpace, typename TStorageOrder>
   typename Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::Size
   Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::
-      getIndex( Point aPoint, TDomain const& aDomain )
+      getIndex( Point aPoint, Domain const& aDomain )
     {
-      return linearizer_impl<Size, TStorageOrder, TDomain::dimension>::apply(aPoint - aDomain.lowerBound(), aDomain.upperBound()-aDomain.lowerBound()+Point::diagonal(1));
+      return linearizer_impl<Size, TStorageOrder, Domain::dimension>::apply(aPoint - aDomain.lowerBound(), aDomain.upperBound()-aDomain.lowerBound()+Point::diagonal(1));
     }
 
   /// De-linearization of an index, given the domain lower-bound and extent.
-  template <TSpace, TStorageOrder>
-  static
+  template <typename TSpace, typename TStorageOrder>
   typename Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::Point
   Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::
       getPoint( Size anIndex, Point const& aLowerBound, Extent const& anExtent )
     {
       Point point{};
-      delinearizer_impl<TStorageOrder, TDomain::dimension>::apply(point, anExtent, anIndex);
+      delinearizer_impl<TStorageOrder, Domain::dimension>::apply(point, anExtent, anIndex);
       return point + aLowerBound;
     }
 
   /// De-linearization of an index, given the domain extent.
-  template <TSpace, TStorageOrder>
-  static
+  template <typename TSpace, typename TStorageOrder>
   typename Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::Point
   Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::
       getPoint( Size anIndex, Extent const& anExtent )
     {
       Point point{};
-      delinearizer_impl<TStorageOrder, TDomain::dimension>::apply(point, anExtent, anIndex);
+      delinearizer_impl<TStorageOrder, Domain::dimension>::apply(point, anExtent, anIndex);
       return point;
     }
 
   /// De-linearization of an index, given a domain.
-  template <TSpace, TStorageOrder>
-  static
+  template <typename TSpace, typename TStorageOrder>
   typename Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::Point
   Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::
-      getPoint( Size anIndex, TDomain const& aDomain ) noexcept
+      getPoint( Size anIndex, Domain const& aDomain )
     {
       Point point{};
-      linearizer_impl<Size, TStorageOrder, TDomain::dimension>::apply(point, aDomain.upperBound()-aDomain.lowerBound()+Point::diagonal(1), anIndex);
+      linearizer_impl<Size, TStorageOrder, Domain::dimension>::apply(point, aDomain.upperBound()-aDomain.lowerBound()+Point::diagonal(1), anIndex);
       return point + aDomain.lowerBound();
     }
   
