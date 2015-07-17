@@ -28,14 +28,14 @@ implementations provide exact results as long as the underlying
 geometric predicates are robust (see @ref moduleGeometricPredicates 
 for more details about geometric predicates).
 
-Related example are exampleConvexHull2D and exampleAlphaShape.cpp. 
+Related examples are exampleConvexHull2D.cpp and exampleAlphaShape.cpp. 
 
 \section sectmoduleHull2D1 Convex hull
 
 Three convex hull algorithms are available: 
-- Hull2D::andrewConvexHullAlgorithm [Andrew, 1979 : \cite Andrew1979]
-- Hull2D::grahamConvexHullAlgorithm [Graham, 1972 : \cite Graham1972]
-- Hull2D::melkmanConvexHullAlgorithm [Melkman, 1987 : \cite Melkman1987]
+- functions::Hull2D::andrewConvexHullAlgorithm [Andrew, 1979 : \cite Andrew1979]
+- functions::Hull2D::grahamConvexHullAlgorithm [Graham, 1972 : \cite Graham1972]
+- functions::Hull2D::melkmanConvexHullAlgorithm [Melkman, 1987 : \cite Melkman1987]
 
 They both use the basic procedures Hull2D::buildHullWithStack
 (the object having a stack interface is passed by reference) 
@@ -50,20 +50,15 @@ Let us recall that a polygon is a WEVP if for every point on it,
 there exists an infinite half-line beginning at this point, which 
 does not intersect the polygon at anywhere else. 
 
-@note The two first algorithms compute the convex hull of any set
-of $\f n $\f 2D points in \f$ O(n\log{(n)}) \f$, 
-whereas the third one compute the convex hull of a simple polygonal line, 
-ie. without self-intersection in linear-time. 
- 
 Before calling these algoritms, you must use the functions::Hull2D namespace
 defined in the file Hull2DHelpers.h. 
-@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-Include
-@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-Namespace
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Include
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Namespace
 
 Moreover, you need to create an orientation functor...   
-@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-Functor
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Functor
 ... and, if required, a predicate
-@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-StrictPredicateCCW
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-StrictPredicateCCW
 
 See @ref moduleGeometricPredicates for more details about geometric predicates. 
 
@@ -92,8 +87,8 @@ The overall time complexity is \f$ O(n\log{(n)}) \f$ for a 2D point set of size 
 Note that the starting point is depicted in red and that the arrows show the point order. 
 
 In order to retrieve the extremal points of a range of points, 
-you may call the procedure Hull2D::andrewConvexHullAlgorithm as follows:  
-@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-AndrewAlgo
+you may call the procedure andrewConvexHullAlgorithm as follows:  
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-AndrewAlgo
 Note that in this example the extremal points are pushed to a back insertion sequence called 'res'.
 
 @image html ConvexHullCCW.png "Convex hull of the digitization of a disk"
@@ -101,14 +96,14 @@ Note that in this example the extremal points are pushed to a back insertion seq
 
 You can however change the predicate to accept aligned points and therefore all
 points lying on the boundary of the convex hull.  
-@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-LargePredicateCCW
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-LargePredicateCCW
 
 @image html ConvexHullCCWWithPointsOnEdges.png "All points lying on the boundary of the convex hull of the digitization of a disk"
 @image latex ConvexHullCCWWithPointsOnEdges.png "All points lying on the boundary of the convex hull of the digitization of a disk" width=5cm
 
 You can also change the predicate so that the resulting list of vertices
 is clockwise-oriented. 
-@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-StrictPredicateCW
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-StrictPredicateCW
 
 @image html ConvexHullCW.png "Clockwise-oriented list of extremal points of the digitization of a disk"
 @image latex ConvexHullCW.png "Clockwise-oriented list of extremal points of the digitization of a disk" width=5cm
@@ -132,48 +127,52 @@ such a pole produces again a WEVP.
 The main advantage of Graham's algorithm over Andrew's one is that only one scan is required 
 instead of two to retrieve the whole convex hull. 
 
-You may call the procedure Hull2D::grahamConvexHullAlgorithm as follows:  
-@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-GrahamAlgo
+You may call the procedure grahamConvexHullAlgorithm as follows:  
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-GrahamAlgo
 
 @warning You must choose a predicate returning 'true' for counter-clockwise oriented 3-point sets, 
 because the sorting step is done with a counter-clockwise orientation.  
 
 \subsection subsectmoduleHull2D13 Melkman's algorithm
 
-The two previous algorithms compute the convex hull of any set
-of $\f n $\f 2D points in \f$ O(n\log{(n)}) \f$, 
-whereas Melkman's algorithm computes the convex hull of a simple polygonal line, 
-ie. without self-intersection, in linear-time. 
+The two previous algorithms are off-line and compute the convex hull of any set
+of \f$ n \f$ 2D points in \f$ O(n\log{(n)}) \f$.  
+Melkman's algorithm is on-line and computes the convex hull of a simple polygonal line, 
+ie. without self-intersection, in linear-time (amortized constant time per update). 
 
-Note that Graham's scan, used by the two previous algorithms, runs in linear-time, 
+Note that Graham scan, used by the two previous algorithms, runs in linear-time 
 on weakly externally visible polygons, which is a subset of simple polygonal lines.
-As a consequence, Graham's scan may fail for simple polygonal lines that are not 
+As a consequence, Graham scan may fail for simple polygonal lines that are not 
 weakly externally visible.    
 
-In exampleConvexHull2D, you may find a minimal example: 
+In exampleConvexHull2D.cpp, you may find a minimal example: 
 
 @image html SimplePolygonalLine.png "A simple polygonal line that is not weakly externally visible"
 @image latex SimplePolygonalLine.png "A simple polygonal line that is not weakly externally visible" width=5cm
 
-On such example, Graham's scan fails because the polygonal line is not weakly externally visible. 
+On such example, Graham scan fails because the polygonal line is not weakly externally visible. 
 However, Melkman's algorithm produces the right output: 
 
 @image html SimplePolygonalLineMelkman.png "Output for Melkman's algorithm "
 @image latex SimplePolygonalLineMelkman.png "Output for Melkman's algorithm " width=5cm
 
-Melkman's algorithm works fine because it is based on a double ended queue. 
-Since the input points are assumed to form a simple polygonal line, any new point
- that is located outide the current convex hull, must be visible from the ends 
-of the queue. As a consequence, it is enough to update the convex hull by an algorithm 
-like Graham's scan from the front and/or from the back of the deque; it is never required 
-to remove/insert points at the middle of the queue.  
+Melkman's algorithm works fine because it is based on a double ended queue and it  
+assumes that the input points form a simple polygonal line. Due to this assumption, 
+any new point cannot be located in the cone formed by the first and last edge of the 
+current convex hull (in red in the figure below). As a consequence, it is enough to 
+update the convex hull by a Graham scan from the front and/or from the back of the 
+deque and it is never required to remove/insert points in the middle of the deque.  
+ 
+@image html MelkmanHowTo.png "Consequence of the no self-intersection hypothesis"
+@image latex MelkmanHowTo.png "Consequence of the no self-intersection hypothesis" width=5cm
 
-You may call the off-line procedure Hull2D::melkmanConvexHullAlgorithm as follows:  
-@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-OffLineMelkmanAlgo
-
-In addition, you may use Melkman class in an on-line way: 
+You may use MelkmanConvexHull class as follows: 
 @snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-OnLineMelkmanAlgo
 
+In addition, you may call the off-line procedure melkmanConvexHullAlgorithm as follows:  
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-OffLineMelkmanAlgo
+
+@warning The behavior is undefined if the input points do not form a simple polygonal line. 
 
 \section sectmoduleHull2D2 Alpha-shape
 
@@ -248,8 +247,8 @@ As a consequence, we did not implement any algorithm to compute the alpha-shape 
 Such an algorithm would have required to compute the closest point and farthest point Delaunay triangulation. 
 Though, we provide procedures, based on the 3-coins algorithm, which compute in linear-time the alpha-shape 
 of specific polygons, for which the two above properties remain true: 
-Hull2D::closedGrahamScanFromVertex (the starting point is expected to be extremal) 
-and Hull2D::closedGrahamScanFromAnyPoint (no assumption about the starting point is required). 
+closedGrahamScanFromVertex (the starting point is expected to be extremal) 
+and closedGrahamScanFromAnyPoint (no assumption about the starting point is required). 
 
 This class of polygons is the set of simple polygons such that: 
 - The distance between any two consecutive vertices is smaller than \f$ 2/\alpha \f$ if 
@@ -269,7 +268,7 @@ In such cases, you can perform the computation in two steps.
 First, you must define a predicate from an instance of InGeneralizedDiskOfGivenRadius as follows: 
 @snippet geometry/tools/exampleAlphaShape.cpp Hull2D-RadiusPredicateInf
 
-Then, you can call the procedure Hull2D::closedGrahamScanFromAnyPoint as follows: 
+Then, you can call the procedure closedGrahamScanFromAnyPoint as follows: 
 @snippet geometry/tools/exampleAlphaShape.cpp Hull2D-ClosedGrahamScan
 
 In order to create an instance of InGeneralizedDiskOfGivenRadius, you must provide the value of \f$ 1/\alpha \f$ by three arguments: 
@@ -284,10 +283,10 @@ The above illustrations are generated by the program written in exampleAlphaShap
 */
 
 /**
-Computation of the convex hull of a set 2D points by different algorithms: 
-- Hull2D::andrewConvexHullAlgorithm \cite Andrew1979
-- Hull2D::grahamConvexHullAlgorithm \cite Graham1972
-- Hull2D::melkmanConvexHullAlgorithm \cite Melkman1987
+Computation of the convex hull of a planar point set by different algorithms: 
+- functions::Hull2D::andrewConvexHullAlgorithm \cite Andrew1979
+- functions::Hull2D::grahamConvexHullAlgorithm \cite Graham1972
+- functions::Hull2D::melkmanConvexHullAlgorithm \cite Melkman1987
 
 @see \ref moduleHull2D
 
@@ -296,7 +295,7 @@ Computation of the convex hull of a set 2D points by different algorithms:
 */
 
 /**
-Computation of the alpha shape of the border of digital shape. 
+Computation of the alpha shape of the border of a digital shape. 
 
 @see \ref moduleHull2D
 

@@ -175,6 +175,7 @@ bool testConvexHull2D()
   //melkman algorithm
   res.clear(); 
   trace.info() << " melkman algorithm " << std::endl;
+  sort( data.begin(), data.end() ); 
   melkmanConvexHullAlgorithm( data.begin(), data.end(), back_inserter( res ), functor );
 
   copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) ); 
@@ -212,6 +213,7 @@ bool testConvexHull2D()
       trace.info() << "(" << nbok << "/" << nb << ") " << endl;
       //another computation
       res2.clear(); 
+      sort( randomData.begin(), randomData.end() ); 
       melkmanConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res2 ), functor );   
       //comparison
       if ( (res1.size() == res2.size()) && 

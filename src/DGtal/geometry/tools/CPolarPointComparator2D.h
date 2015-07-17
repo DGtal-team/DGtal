@@ -57,7 +57,7 @@ namespace DGtal
      More precisely, they compare the oriented angles lying between the horizontal line
      passing by \f$ O \$f and the rays \f$ [OP) \f$ and \f$ [OQ) \f$ 
      (in a counter-clockwise orientation). This is equivalent to compare the angle in radians 
-     from \f$ 0 \f$ (included) to \f$ 2 \pi \f$ (excluded).
+     from 0 (included) to 2 &pi; (excluded).
      
      The main method is the operator() applied on two points. It returns 'true' if the first 
      point is located strictly before the second one, 'false' otherwise. A point \f$ P \f$ 
