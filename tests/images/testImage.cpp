@@ -44,10 +44,6 @@
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/Image.h"
 
-#if __cplusplus >= 201103L
-  #include <new>
-  #include "DGtal/images/ArrayImageView.h"
-#endif
 
 using namespace DGtal;
 using namespace std;
@@ -186,16 +182,6 @@ int main( int argc, char** argv )
 
     // LImage li( new VImage(d) );
     // res = res && testImage(li);
-    
-#if __cplusplus >= 201103L
-    cout << "IWH" << endl;
-    using ArrayImage = ArrayImageView<Value*, Domain>;
-    Value* data = new Value[ d.size() ];
-    ArrayImage ai( data, d );
-    res = res &&  testImage(ai);
-    delete[] data;
-
-#endif
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
