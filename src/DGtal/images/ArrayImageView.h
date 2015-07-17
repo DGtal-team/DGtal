@@ -36,7 +36,9 @@
 /** Prevents repeated inclusion of headers. */
 #define ArrayImageView_h
 
-#if __cplusplus >= 201103L
+#if __cplusplus < 201103L
+  #error ArrayImageView.h requires C++11.
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -56,6 +58,22 @@
 
 namespace DGtal
 {
+
+  /////////////////////////////////////////////////////////////////////////////
+  /** 
+   * @brief Aim: Image view for generic arrays.
+   *
+   * Description of template class 'ImageViewIterator' <p>
+   * It is an empty class that is specialized for HyperRectDomain (see corresponding documentation page).
+   *
+   * @tparam TArrayIterator Type of a random-access iterator over the datas (can be a T* pointer).
+   * @tparam TDomain  Type of the domain (must be an HyperRectDomain).
+   */
+  template < 
+    typename TArrayIterator,
+    typename TDomain
+  >
+  class ArrayImageView;
 
   /////////////////////////////////////////////////////////////////////////////
   /** 
@@ -87,13 +105,12 @@ namespace DGtal
    *
    * const Domain domain{ {0, 1}, {4, 3} };
    *
-   *
    * Value* data = new Value[ domain.size() ];
    *
    * // Convert this allocated memory to a CImage model. 
    * ArrayImageView< Value*, Domain > image( data, domain );
    * // Alternative syntax using the helpers:
-   * // auto image = make_ArrayImageViewFromIterator( data, domain );
+   * // auto image = makeArrayImageViewFromIterator( data, domain );
    * 
    * // Fill the image with first coordinate of the point
    * for ( auto it = image.begin(); it != image.end(); ++it )
@@ -120,19 +137,14 @@ namespace DGtal
    *
    * @warning The array must be column-major ordered.
    * @warning The domain must be an HyperRectDomain.
-   * @warning C++11 needs to be enable in order to use this class.
+   * @warning C++11 needs to be enabled in order to use this class.
    *
    * @tparam TArrayIterator Type of a random-access iterator over the datas (can be a T* pointer).
-   * @tparam TDomain  Type of the domain (must be an HyperRectDomain).
+   * @tparam TSpace Type of the space associated to the HyperRectDomain (auto-deduced from TDomain template, see ArrayImageView).
    *
-   *
+   * @see makeArrayImageViewFromIterator
+   * @see makeArrayImageViewFromImage
    */
-  template < 
-    typename TArrayIterator,
-    typename TDomain
-  >
-  class ArrayImageView;
-
   template <
     typename TArrayIterator,
     typename TSpace
@@ -542,11 +554,6 @@ namespace DGtal
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
-
-#else // __cplusplus >= 201103L
-#error ArrayImageView.h requires C++11.
-#endif // __cplusplus >= 201103L
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

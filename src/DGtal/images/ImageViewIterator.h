@@ -36,7 +36,9 @@
 /** Prevents repeated inclusion of headers. */
 #define ImageViewIterator_h
 
-#if __cplusplus >= 201103L
+#if __cplusplus < 201103L
+  #error ImageViewIterator.h requires C++11.
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -65,11 +67,13 @@ namespace DGtal
    *
    * In addition, the iterable class must have Domain typedef.
    *
-   * For an usage example, \see ArrayImageView.h .
+   * For an usage example, see ArrayImageView.h .
    *
    * @tparam TIterableClass   Type of the iterable class.
    *
-   * @warning C++11 needs to be enable in order to use this class.
+   * @warning C++11 needs to be enabled in order to use this class.
+   *
+   * @see ArrayImageView.h
    */
   template <
     typename TIterableClass
@@ -273,10 +277,6 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #include "DGtal/images/ImageViewIterator.ih"
-
-#else // __cplusplus >= 201103L
-#error ImageViewIterator.h requires C++11.
-#endif // __cplusplus >= 201103L
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

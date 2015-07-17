@@ -62,16 +62,14 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * @brief Aim: Linearization and de-linearization interface for HyperRectDomain.
+   * @brief Aim: Linearization and de-linearization interface for domains.
    *
    * Description of class 'Linearizer' <p>
+   * This class is empty but there is a specialization for HyperRectDomain.
    *
-   * This is a static class that provides point linearization (point to index) and de-linearization (index to point) for storages working on HyperRectDomain.
-   *
-   * The storage order can be specified by template (default is colum-major ordered).
-   *
-   * @tparam  TDomain       Type of the HyperRectDomain.
+   * @tparam  TDomain       Type of the domain.
    * @tparam  TStorageOrder Storage Order (RowMajorStorage of ColMajorStorage).
+   *
    */
   template <
       typename TDomain,
@@ -79,7 +77,29 @@ namespace DGtal
     >
   struct Linearizer;
 
-  // Specialization for HyperRectDomain.
+  /**
+   * @brief Aim: Linearization and de-linearization interface for HyperRectDomain.
+   *
+   * This is a static class that provides point linearization (point to index) and de-linearization (index to point) for storages working on HyperRectDomain.
+   *
+   * The storage order can be specified by template (default is colum-major ordered).
+   *
+   * Example:
+   * @code
+   * typedef SpaceND<2>             Space;
+   * tydedef HyperRectDomain<Space> Domain;
+   * typedef typename Space::Point  Point;
+   *
+   * const Domain domain( Point(0, 1), Point(4, 3) );
+   *
+   * size_t id = Linearizer<Domain>::getIndex( Point(2, 2), domain ); // returns 7.
+   *
+   * Point pt = Linearizer<Domain>::getPoint( 7, domain); // returns Point(2,2).
+   * @endcode
+   *
+   * @tparam  TSpace       Type of the space of the HyperRectDomain (auto-deduced from TDomain template, see Linearizer).
+   * @tparam  TStorageOrder Storage Order (RowMajorStorage of ColMajorStorage).
+   */
   template <
       typename TSpace,
       typename TStorageOrder
