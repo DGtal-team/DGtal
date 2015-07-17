@@ -54,7 +54,9 @@ addons:
     - libgraphicsmagick++1-dev
     - libboost-system-dev
     - lcov
-##libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev lcov
+    - libgmp-dev
+    - libgdcm2-dev 
+## libqglviewer-qt4-dev libinsighttoolkit3-dev 
 
 
 
