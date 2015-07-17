@@ -73,6 +73,9 @@ namespace DGtal
    * Some helpers are available (see make_ArrayImageViewFromIterator and make_ArrayImageViewFromImage)
    * for easy construction (with template deduction) from an iterator or an CConstImage model.
    *
+   * It is important to note that, since this class only provides a view on a independant storage, all 
+   * copy operations (constructor and operator) lead to shallow copies.
+   *
    * The following code snippet demonstrates how to use ArrayImageView from converting a C-array to an image:
    * @code
    * using Space = SpaceND<2>;
@@ -197,6 +200,8 @@ namespace DGtal
         }
 
       /** Copy constructor with other viewable domain.
+       *
+       * @warning Since this class in only a view on a independant storage, it does a shallow copy.
        *
        * @param other         An another ArrayImageView instance.
        * @param aViewDomain   A new viewable domain for this image.
