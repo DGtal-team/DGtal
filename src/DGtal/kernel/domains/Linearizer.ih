@@ -111,7 +111,6 @@ namespace DGtal
 
     /** Templated static structure for de-linearization of a point index.
      *
-     * @tparam TSize  Typdde of the linearizared index.
      * @tparam TStorageOrder  Storage order (RowMajorStorage of ColMajorStorage).
      * @tparam N      Dimension of the space.
      * @tparam I      Current step.

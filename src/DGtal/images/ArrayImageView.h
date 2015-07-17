@@ -352,7 +352,6 @@ namespace DGtal
 
       /** Dereference of a mutable iterator.
        *
-       * @param[in] aPoint      A point lying in the full domain (unused).
        * @param[in] aFullIndex  Linearized index of the point.
        * @return a mutable reference to the value associated to the point.
        */
@@ -368,7 +367,6 @@ namespace DGtal
 
       /** Dereference of a constant iterator.
        *
-       * @param[in] aPoint      A point lying in the full domain (unused).
        * @param[in] aFullIndex  Linearized index of the point.
        * @return a constant reference to the value associated to the point.
        */
