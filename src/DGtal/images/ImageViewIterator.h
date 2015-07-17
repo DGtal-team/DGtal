@@ -54,12 +54,12 @@ namespace DGtal
    * @brief Aim: Random access iterator over an image given his definition domain and viewable domain.
    *
    * Description of template class 'ImageViewIterator' <p>
-   * This iterator spans the viewable domain using a given iterator than spans
-   * the whole definition domain of the iterable class. This iterator provides access to the iterable class through classical iterator syntax and, in addition, exposes current point to which the iterator point to. 
+   * This iterator spans a viewable domain given an iterable image-like class (see below) defined
+   * on a specified full domain. This iterator provides access to the iterable class through classical iterator syntax and, in addition, exposes current point to which the iterator point to. 
    * Thus, when it is needed to iterate over an image while knowing the current point ( for example, when filling an image with a formulae that depends on the point), it is faster to use this iterator instead of a classical domain iterator and the use of operator() and setValue. 
    *
    * In order to work, the iterable class must expose a dereference method that,
-   * given a point and an index (column-major ordered), return:
+   * given a point and his linearized index (column-major ordered), returns:
    * - a mutable reference to the corresponding value for a mutable iterator.
    * - a copy or a constant reference to the corresponding value for a constant iterator.
    *
