@@ -54,7 +54,7 @@ bool testPolarPointComparatorBy2x2DetComputer()
   typedef PointVector<2,DGtal::int32_t> Point;
  
   Point origin(0,0); 
-  PolarPointComparatorBy2x2DetComputer<Point> comp( origin ); 
+  functors::PolarPointComparatorBy2x2DetComputer<Point> comp( origin ); 
   trace.info() << comp << endl;
 
   //same half-plane
@@ -226,7 +226,7 @@ bool testSort()
   g.push_back( Point(4,-3) );
   
   //sort
-  PolarPointComparatorBy2x2DetComputer<Point> comp( origin ); 
+  functors::PolarPointComparatorBy2x2DetComputer<Point> comp( origin ); 
   std::sort(v.begin(), v.end(), comp); 
   std::copy(v.begin(), v.end(), ostream_iterator<Point>( std::cout, " " ) ); 
   std::cout << std::endl; 

@@ -59,7 +59,6 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class MelkmanConvexHull
   /**
-   * Description of template class 'MelkmanConvexHull' <p>
    * \brief Aim: This class implements the on-line algorithm
    * of Melkman for the computation of the convex hull of 
    * a simple polygonal line (without self-intersection) 
@@ -68,15 +67,14 @@ namespace DGtal
    * This algorithm is based on a deque, which stores the vertices 
    * of the convex hull (for convenience, the first and last vertex 
    * contained in the deque are the same point). Since we assume 
-   * that the input points form a simple polygonal line, if a new point
-   * is located outide the current convex hull, then the first (and last) 
-   * vertex of the deque is visible from the new point. As a consequence, 
-   * it is enough to update the convex hull by an algorithm like Graham's 
-   * scan (also known as 3 coins algorithm) from the front and/or from the back 
-   * of the deque; it is never required to remove/insert points at the middle 
-   * of the container. 
+   * that the input points form a simple polygonal line, a new point
+   * cannot be localed in the cone formed by the first and last edges
+   * of the current convex hull. As a consequence, it is enough to update
+   * the convex hull by a Graham scan from the front and/or from the back 
+   * of the deque; it is never required to remove/insert points in the middle 
+   * of the container. See \ref moduleHull2D for more details. 
    *
-   * @see Hull2D::updateHullWithAdaptedStack
+   * @see functions::Hull2D::updateHullWithAdaptedStack
    * 
    * Note that is the input points do not form a simple polygonal line, 
    * the behavior is not defined. 
