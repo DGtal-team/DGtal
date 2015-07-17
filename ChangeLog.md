@@ -103,6 +103,9 @@
   [#1002](https://github.com/DGtal-team/DGtal/pull/1002))
  - MeshWriter class can now export OBJ file including colors. (Bertrand Kerautret,
   [#1016](https://github.com/DGtal-team/DGtal/pull/1016))
+ - Viewer3D: Shift-L / L key binding added to save and restore camera settings. (Bertrand Kerautret,
+  [#1024](https://github.com/DGtal-team/DGtal/pull/1024))
+
 
 - *Kernel Package*
   - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
