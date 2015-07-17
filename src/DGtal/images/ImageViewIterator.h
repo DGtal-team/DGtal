@@ -114,7 +114,6 @@ namespace DGtal
        * @param anIterableClassPtr  Pointer to the iterable class instance.
        * @param aFullDomain         Full domain of the image.
        * @param aViewDomain         Viewable domain that the iterator will span.
-       * @param aPoint              Point to which the iterator will point.
        */
       ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain );
       
@@ -122,7 +121,6 @@ namespace DGtal
        *
        * @param anIterableClassPtr  Pointer to the iterable class instance.
        * @param aFullDomain         Full domain of the image.
-       * @param aPoint              Point to which the iterator will point.
        */
       ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain );
 
@@ -131,7 +129,6 @@ namespace DGtal
        * @param anIterableClassPtr  Pointer to the iterable class instance.
        * @param aFullDomain         Full domain of the image.
        * @param aViewDomain         Viewable domain that the iterator will span.
-       * @param aPoint              Point to which the iterator will point.
        */
       ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, bool /* last */ ); 
 
@@ -139,7 +136,6 @@ namespace DGtal
        *
        * @param anIterableClassPtr  Pointer to the iterable class instance.
        * @param aFullDomain         Full domain of the image.
-       * @param aPoint              Point to which the iterator will point.
        */
       ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, bool /* last */ );
       
@@ -231,8 +227,8 @@ namespace DGtal
     private:
       
       // Friendship
-      template <class> friend class ImageViewIterator; //< Friendship of interoperability. \see http://www.boost.org/doc/libs/1_58_0/libs/iterator/doc/iterator_facade.html
-      friend class boost::iterator_core_access; //< Friendship of interoperability. \see http://www.boost.org/doc/libs/1_58_0/libs/iterator/doc/iterator_facade.html
+      template <class> friend class ImageViewIterator; ///< Friendship of interoperability. \see http://www.boost.org/doc/libs/1_58_0/libs/iterator/doc/iterator_facade.html
+      friend class boost::iterator_core_access; ///< Friendship of interoperability. \see http://www.boost.org/doc/libs/1_58_0/libs/iterator/doc/iterator_facade.html
 
       /// Increment of one step.
       void increment();
