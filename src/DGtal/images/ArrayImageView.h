@@ -47,6 +47,7 @@
 #include <iterator>
 #include <type_traits>
 
+#include <DGtal/base/Common.h>
 #include <DGtal/images/CConstImage.h>
 #include <DGtal/images/ImageViewIterator.h>
 #include <DGtal/base/IteratorCompletion.h>
@@ -150,10 +151,18 @@ namespace DGtal
       using Reference = typename std::iterator_traits<ArrayIterator>::reference;
       using ConstReference = const Reference;
 
-      using Domain = HyperRectDomain<TSpace>;
-      using Point = typename Domain::Point;
-      using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; ///< Linearization of the points.
+      // DGtal typedefs and constant
+      using Domain    = HyperRectDomain<TSpace>;
+      using Point     = typename Domain::Point;
+      using Dimension = typename Domain::Dimension;
+      using Size      = typename Domain::Size;
+      using Vector    = typename Domain::Vector;
+      using Vertex    = Point;
+      using Integer   = typename Domain::Integer;
+      BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::dimension );
 
+      using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; ///< Linearization of the points.
+      
       // Iterators & Ranges
       template <class> friend class ImageViewIterator;
       using Iterator = typename IteratorCompletionTraits<Self>::Iterator; ///< Mutable iterator.
@@ -465,7 +474,7 @@ namespace DGtal
     typename TDomain
   >
   ArrayImageView< TArrayIterator, TDomain >
-  make_ArrayImageViewFromIterator( TArrayIterator anArrayIterator, TDomain const& aFullDomain, TDomain const& aViewDomain )
+  makeArrayImageViewFromIterator( TArrayIterator anArrayIterator, TDomain const& aFullDomain, TDomain const& aViewDomain )
     {
       return { anArrayIterator, aFullDomain, aViewDomain };
     }
@@ -483,7 +492,7 @@ namespace DGtal
     typename TDomain
   >
   ArrayImageView< TArrayIterator, TDomain >
-  make_ArrayImageViewFromIterator( TArrayIterator anArrayIterator, TDomain const& aFullDomain )
+  makeArrayImageViewFromIterator( TArrayIterator anArrayIterator, TDomain const& aFullDomain )
     {
       return { anArrayIterator, aFullDomain, aFullDomain };
     }
@@ -500,7 +509,7 @@ namespace DGtal
   // We use decltype on begin() iterator because it returns the constant iterator
   //  if the image is constant while ::Iterator typedef returns the mutable iterator.
   ArrayImageView< decltype( ((TImage*)nullptr)->begin() ), TDomain >
-  make_ArrayImageViewFromImage( TImage & anImage, TDomain const& aViewDomain )
+  makeArrayImageViewFromImage( TImage & anImage, TDomain const& aViewDomain )
     {
       // Remove constness because CConstImage requires assignability.
       BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >) );
@@ -521,7 +530,7 @@ namespace DGtal
   // We use decltype on begin() iterator because it returns the constant iterator
   //  if the image is constant while ::Iterator typedef returns the mutable iterator.
   ArrayImageView< decltype( ((TImage*)nullptr)->begin() ), TDomain >
-  make_ArrayImageViewFromImage( TImage & anImage )
+  makeArrayImageViewFromImage( TImage & anImage )
     {
       // Remove constness because CConstImage requires assignability.
       BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >) ); 

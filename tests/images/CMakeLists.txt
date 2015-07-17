@@ -20,6 +20,10 @@ if( WITH_HDF5 )
   testImageFactoryFromHDF5)
 endif( WITH_HDF5 )
 
+if( WITH_C11 )
+  SET(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC}
+  testArrayImageView)
+endif( WITH_C11 )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
