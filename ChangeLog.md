@@ -58,6 +58,8 @@
  - InexactPredicateLpSeparableMetric class is now templated by an
    EuclideanRing type. (David Coeurjolly,
    [#1017](https://github.com/DGtal-team/DGtal/pull/1017))
+ - New algorithms to compute the convex hull of planar point sets.
+   (Tristan Roussillon, [#1028](https://github.com/DGtal-team/DGtal/pull/1028))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
