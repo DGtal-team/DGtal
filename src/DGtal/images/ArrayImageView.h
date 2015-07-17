@@ -66,12 +66,13 @@ namespace DGtal
    * that spans an array of data, and two domains:
    * - the definition (full) domain whose size is equal to the data size.
    * - the viewable domain, a subset of the full-domain, on which the image is accessible.
+   * This image view is writable iff the given iterator is mutable.
    *
    * The available iterators for this image can return the corresponding point and are
    * faster than using an iterator over the domain (see ImageViewIterator). 
    * Reverse iterators and ranges are defined in the inherited class IteratorCompletion.
    *
-   * Some helpers are available (see make_ArrayImageViewFromIterator and make_ArrayImageViewFromImage)
+   * Some helpers are available (see makeArrayImageViewFromIterator and makeArrayImageViewFromImage)
    * for easy construction (with template deduction) from an iterator or an CConstImage model.
    *
    * It is important to note that, since this class only provides a view on a independant storage, all 
@@ -104,7 +105,7 @@ namespace DGtal
    * const Domain sub_domain{ {1, 1}, {3, 2} };
    * ArrayImageView< Value const*, Domain > cst_image( data, domain, sub_domain );
    * // Alternative syntax using the helpers:
-   * // auto cst_image = make_ArrayImageViewFromImage( image, sub_domain );
+   * // auto cst_image = makeArrayImageViewFromImage( image, sub_domain );
    *
    * // Display it.
    * for ( auto value : cst_image )
