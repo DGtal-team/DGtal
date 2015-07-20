@@ -413,12 +413,12 @@ namespace DGtal
      * Get directional flat operator that transforms 0-form containing vector field coordinates along direction dir into 1-form.
      * Invert of sharp(1-form).extractZeroForm(dir).
      * @tparam duality input 0-form and output 1-form duality.
-     * @tparam dir direction of projection.
+     * @param dir direction of projection.
      * @return linear operator.
      */
-    template <Duality duality, Dimension dir>
+    template <Duality duality>
     LinearOperator<Self, 0, duality, 1, duality>
-    flatDirectional() const;
+    flatDirectional(const Dimension& dir) const;
 
     /**
      * Construct vector field from 1-form.
@@ -434,12 +434,12 @@ namespace DGtal
      * Get directional sharp operator that transforms 1-form into 0-form containing vector field coordinates along direction dir.
      * Equivalent to sharp(1-form).extractZeroForm(dir).
      * @tparam duality input 1-form and output 0-form duality.
-     * @tparam dir direction of projection.
+     * @param dir direction of projection.
      * @return linear operator.
      */
-    template <Duality duality, Dimension dir>
+    template <Duality duality>
     LinearOperator<Self, 1, duality, 0, duality>
-    sharpDirectional() const;
+    sharpDirectional(const Dimension& dim) const;
 
     /**
      * Get signed cell from k-form index.

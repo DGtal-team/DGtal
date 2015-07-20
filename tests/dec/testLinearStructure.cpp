@@ -709,10 +709,10 @@ void test_manual_operators_2d()
     trace.beginBlock("sharp operators");
 
     { // primal sharp
-        display_operator_info("primal #x", primal_calculus.sharpDirectional<PRIMAL, 0>());
-        display_operator_info("dual #xp", dual_calculus.sharpDirectional<DUAL, 0>());
-        display_operator_info("primal #y", primal_calculus.sharpDirectional<PRIMAL, 1>());
-        display_operator_info("dual #yp", dual_calculus.sharpDirectional<DUAL, 1>());
+        display_operator_info("primal #x", primal_calculus.sharpDirectional<PRIMAL>(0));
+        display_operator_info("dual #xp", dual_calculus.sharpDirectional<DUAL>(0));
+        display_operator_info("primal #y", primal_calculus.sharpDirectional<PRIMAL>(1));
+        display_operator_info("dual #yp", dual_calculus.sharpDirectional<DUAL>(1));
 
         {
             Calculus::PrimalForm1::Container dx_container(7);
@@ -770,10 +770,10 @@ void test_manual_operators_2d()
     }
 
     { // dual sharp
-        display_operator_info("primal #xp", primal_calculus.sharpDirectional<DUAL, 0>());
-        display_operator_info("dual #x", dual_calculus.sharpDirectional<PRIMAL, 0>());
-        display_operator_info("primal #yp", primal_calculus.sharpDirectional<DUAL, 1>());
-        display_operator_info("dual #y", dual_calculus.sharpDirectional<PRIMAL, 1>());
+        display_operator_info("primal #xp", primal_calculus.sharpDirectional<DUAL>(0));
+        display_operator_info("dual #x", dual_calculus.sharpDirectional<PRIMAL>(0));
+        display_operator_info("primal #yp", primal_calculus.sharpDirectional<DUAL>(1));
+        display_operator_info("dual #y", dual_calculus.sharpDirectional<PRIMAL>(1));
 
         {
             Calculus::DualForm1::Container dx_container(7);
@@ -835,10 +835,10 @@ void test_manual_operators_2d()
     trace.beginBlock("flat operators");
 
     { // primal flat
-        display_operator_info("primal bx", primal_calculus.flatDirectional<PRIMAL, 0>());
-        display_operator_info("dual bxp", dual_calculus.flatDirectional<DUAL, 0>());
-        display_operator_info("primal by", primal_calculus.flatDirectional<PRIMAL, 1>());
-        display_operator_info("dual byp", dual_calculus.flatDirectional<DUAL, 1>());
+        display_operator_info("primal bx", primal_calculus.flatDirectional<PRIMAL>(0));
+        display_operator_info("dual bxp", dual_calculus.flatDirectional<DUAL>(0));
+        display_operator_info("primal by", primal_calculus.flatDirectional<PRIMAL>(1));
+        display_operator_info("dual byp", dual_calculus.flatDirectional<DUAL>(1));
 
         Calculus::PrimalVectorField::Coordinates dx_coords(6,2);
         dx_coords.col(0) = Eigen::VectorXd::Ones(6);
@@ -894,10 +894,10 @@ void test_manual_operators_2d()
     }
 
     { // dual flat
-        display_operator_info("primal bxp", primal_calculus.flatDirectional<DUAL, 0>());
-        display_operator_info("dual bx", dual_calculus.flatDirectional<PRIMAL, 0>());
-        display_operator_info("primal byp", primal_calculus.flatDirectional<DUAL, 1>());
-        display_operator_info("dual by", dual_calculus.flatDirectional<PRIMAL, 1>());
+        display_operator_info("primal bxp", primal_calculus.flatDirectional<DUAL>(0));
+        display_operator_info("dual bx", dual_calculus.flatDirectional<PRIMAL>(0));
+        display_operator_info("primal byp", primal_calculus.flatDirectional<DUAL>(1));
+        display_operator_info("dual by", dual_calculus.flatDirectional<PRIMAL>(1));
 
         Calculus::PrimalVectorField::Coordinates dx_coords(2,2);
         dx_coords.col(0) = Eigen::VectorXd::Ones(2);

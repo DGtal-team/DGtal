@@ -326,9 +326,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
-template <DGtal::Duality duality, DGtal::Dimension direction>
+template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 1, duality, 0, duality>
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharpDirectional() const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharpDirectional(const DGtal::Dimension& direction) const
 {
     const_cast<Self*>(this)->updateCachedOperators();
     ASSERT( !myCachedOperatorsNeedUpdate );
@@ -430,9 +430,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
-template <DGtal::Duality duality, DGtal::Dimension direction>
+template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 1, duality>
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flatDirectional() const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flatDirectional(const DGtal::Dimension& direction) const
 {
     const_cast<Self*>(this)->updateCachedOperators();
     ASSERT( !myCachedOperatorsNeedUpdate );
