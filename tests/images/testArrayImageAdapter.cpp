@@ -38,7 +38,7 @@
 #include <DGtal/images/CConstImage.h>
 #include <DGtal/images/CImage.h>
 
-#include <DGtal/images/ArrayImageView.h>
+#include <DGtal/images/ArrayImageAdapter.h>
 
 using namespace DGtal;
 using namespace std;
@@ -116,9 +116,9 @@ void fastFillImageWithPointFn ( ImageContainerBySTLVector<TDomain, TValue>& anIm
 }
 
 template < typename TIterator, typename TDomain, typename TFunction >
-void fastFillImageWithPointFn ( ArrayImageView<TIterator, TDomain>& anImage, TFunction const& aFunction )
+void fastFillImageWithPointFn ( ArrayImageAdapter<TIterator, TDomain>& anImage, TFunction const& aFunction )
 {
-  using Image = ArrayImageView<TIterator, TDomain>;
+  using Image = ArrayImageAdapter<TIterator, TDomain>;
   using Value = typename Image::Value;
   for ( auto imgit = anImage.begin(); imgit != anImage.end(); ++imgit )
     {
@@ -195,7 +195,7 @@ bool checkImage( TImage& anImage )
 
   // Partial fill with counter
     {
-      auto sub_image = makeArrayImageViewFromImage( anImage, sub_domain );
+      auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
       fillImageWithCounter( ref_image, sub_domain );
       fillImageWithCounter( sub_image );
       nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
@@ -204,7 +204,7 @@ bool checkImage( TImage& anImage )
 
   // Partial increment with function
     {
-      auto sub_image = makeArrayImageViewFromImage( anImage, sub_domain );
+      auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
       incrementImageWithPointFn( ref_image, fn, sub_domain );
       incrementImageWithPointFn( sub_image, fn );
       nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
@@ -213,7 +213,7 @@ bool checkImage( TImage& anImage )
 
   // Fast partial fill with function
     {
-      auto sub_image = makeArrayImageViewFromImage( anImage, sub_domain );
+      auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
       fillImageWithPointFn( ref_image, fn,  sub_domain );
       fastFillImageWithPointFn( sub_image, fn );
       nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
@@ -229,7 +229,7 @@ int main()
   using Domain = HyperRectDomain<Space>;
   using Value = double;
 
-  trace.beginBlock("Testing ArrayImageView class");
+  trace.beginBlock("Testing ArrayImageAdapter class");
 
   const Domain domain{ {0, 1, 2}, {12, 8, 11} };
   const Domain sub_domain{ {0, 2, 4}, {8, 7, 10} };
@@ -238,35 +238,35 @@ int main()
   size_t nbok = 0;
 
   {
-    trace.beginBlock("Checking ArrayImageView with raw pointer");
+    trace.beginBlock("Checking ArrayImageAdapter with raw pointer");
     Value* data = new Value[domain.size()];
-    auto image = makeArrayImageViewFromIterator( data, domain );
+    auto image = makeArrayImageAdapterFromIterator( data, domain );
     nb++; nbok += checkImage(image) ? 1 : 0;
     delete[] data;
     trace.endBlock();
   }
 
   {
-    trace.beginBlock("Checking ArrayImageView with raw pointer on sub-domain");
+    trace.beginBlock("Checking ArrayImageAdapter with raw pointer on sub-domain");
     Value* data = new Value[domain.size()];
-    auto image = makeArrayImageViewFromIterator( data, domain, sub_domain );
+    auto image = makeArrayImageAdapterFromIterator( data, domain, sub_domain );
     nb++; nbok += checkImage(image) ? 1 : 0;
     delete[] data;
     trace.endBlock();
   }
 
   {
-    trace.beginBlock("Checking ArrayImageView with ImageContainerBySTLVector");
+    trace.beginBlock("Checking ArrayImageAdapter with ImageContainerBySTLVector");
     ImageContainerBySTLVector<Domain, Value> image(domain);
-    auto image_view = makeArrayImageViewFromImage( image );
+    auto image_view = makeArrayImageAdapterFromImage( image );
     nb++; nbok += checkImage(image_view) ? 1 : 0;
     trace.endBlock();
   }
 
   {
-    trace.beginBlock("Checking ArrayImageView with ImageContainerBySTLVector on sub-domain");
+    trace.beginBlock("Checking ArrayImageAdapter with ImageContainerBySTLVector on sub-domain");
     ImageContainerBySTLVector<Domain, Value> image(domain);
-    auto image_view = makeArrayImageViewFromImage( image, sub_domain );
+    auto image_view = makeArrayImageAdapterFromImage( image, sub_domain );
     nb++; nbok += checkImage(image_view) ? 1 : 0;
     trace.endBlock();
   }

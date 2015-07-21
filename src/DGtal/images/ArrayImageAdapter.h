@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file ArrayImageView.h
+ * @file ArrayImageAdapter.h
  * @author Roland Denis (\c roland.denis@univ-smb.fr )
  * LAboratory of MAthematics - LAMA (CNRS, UMR 5127), University of Savoie, France
  *
@@ -26,18 +26,18 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(ArrayImageView_RECURSES)
-#error Recursive header files inclusion detected in ArrayImageView.h
-#else // defined(ArrayImageView_RECURSES)
+#if defined(ArrayImageAdapter_RECURSES)
+#error Recursive header files inclusion detected in ArrayImageAdapter.h
+#else // defined(ArrayImageAdapter_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ArrayImageView_RECURSES
+#define ArrayImageAdapter_RECURSES
 
-#if !defined ArrayImageView_h
+#if !defined ArrayImageAdapter_h
 /** Prevents repeated inclusion of headers. */
-#define ArrayImageView_h
+#define ArrayImageAdapter_h
 
 #if __cplusplus < 201103L
-  #error ArrayImageView.h requires C++11.
+  #error ArrayImageAdapter.h requires C++11.
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@
 
 #include <DGtal/base/Common.h>
 #include <DGtal/images/CConstImage.h>
-#include <DGtal/images/ImageViewIterator.h>
+#include <DGtal/images/ImageAdapterIterator.h>
 #include <DGtal/base/IteratorCompletion.h>
 #include <DGtal/kernel/domains/Linearizer.h>
 //////////////////////////////////////////////////////////////////////////////
@@ -61,9 +61,9 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   /** 
-   * @brief Aim: Image view for generic arrays.
+   * @brief Aim: Image adapter for generic arrays with sub-domain view capability.
    *
-   * Description of template class 'ImageViewIterator' <p>
+   * Description of template class 'ArrayImageAdapter' <p>
    * It is an empty class that is specialized for HyperRectDomain (see corresponding documentation page).
    *
    * @tparam TArrayIterator Type of a random-access iterator over the datas (can be a T* pointer).
@@ -73,30 +73,30 @@ namespace DGtal
     typename TArrayIterator,
     typename TDomain
   >
-  class ArrayImageView;
+  class ArrayImageAdapter;
 
   /////////////////////////////////////////////////////////////////////////////
   /** 
-   * @brief Aim: Image view for generic arrays.
+   * @brief Aim: Image adapter for generic arrays with sub-domain view capability.
    *
-   * Description of template class 'ImageViewIterator' <p>
-   * This creates an image (concepts::CImage compatible) given a random-access iterator 
-   * that spans an array of data, and two domains:
+   * Description of template class 'ArrayImageAdapter' <p>
+   * This creates an image (concepts::CImage compatible) given a random-access iterator (that can be a T* pointer)
+   * that fully spans an array of data, and two domains:
    * - the definition (full) domain whose size is equal to the data size.
    * - the viewable domain, a subset of the full-domain, on which the image is accessible.
-   * This image view is writable iff the given iterator is mutable.
+   * This adapted image is writable iff the given iterator is mutable.
    *
    * The available iterators for this image can return the corresponding point and are
-   * faster than using an iterator over the domain (see ImageViewIterator). 
+   * faster than using an iterator over the domain (see ImageAdapterIterator). 
    * Reverse iterators and ranges are defined in the inherited class IteratorCompletion.
    *
-   * Some helpers are available (see makeArrayImageViewFromIterator and makeArrayImageViewFromImage)
+   * Some helpers are available (see makeArrayImageAdapterFromIterator and makeArrayImageAdapterFromImage)
    * for easy construction (with template deduction) from an iterator or an CConstImage model.
    *
-   * It is important to note that, since this class only provides a view on a independant storage, all 
+   * It is important to note that, since this class only adapts an already existing storage to an image, all 
    * copy operations (constructor and operator) lead to shallow copies.
    *
-   * The following code snippet demonstrates how to use ArrayImageView from converting a C-array to an image:
+   * The following code snippet demonstrates how to use ArrayImageAdapter from converting a native C-array to an image:
    * @code
    * using Space = SpaceND<2>;
    * using Domain = HyperRectDomain<Space>;
@@ -108,9 +108,9 @@ namespace DGtal
    * Value* data = new Value[ domain.size() ];
    *
    * // Convert this allocated memory to a CImage model. 
-   * ArrayImageView< Value*, Domain > image( data, domain );
+   * ArrayImageAdapter< Value*, Domain > image( data, domain );
    * // Alternative syntax using the helpers:
-   * // auto image = makeArrayImageViewFromIterator( data, domain );
+   * // auto image = makeArrayImageAdapterFromIterator( data, domain );
    * 
    * // Fill the image with first coordinate of the point
    * for ( auto it = image.begin(); it != image.end(); ++it )
@@ -120,9 +120,9 @@ namespace DGtal
    *
    * // Get a constant view on a sub-domain.
    * const Domain sub_domain{ {1, 1}, {3, 2} };
-   * ArrayImageView< Value const*, Domain > cst_image( data, domain, sub_domain );
+   * ArrayImageAdapter< Value const*, Domain > cst_image( data, domain, sub_domain );
    * // Alternative syntax using the helpers:
-   * // auto cst_image = makeArrayImageViewFromImage( image, sub_domain );
+   * // auto cst_image = makeArrayImageAdapterFromImage( image, sub_domain );
    *
    * // Display it.
    * for ( auto value : cst_image )
@@ -135,22 +135,22 @@ namespace DGtal
    *
    * @remark The given random-access iterator can be either mutable or constant.
    *
-   * @warning The array must be column-major ordered.
+   * @warning The array must be column-major ordered (but row-major order could be later accepted via template parameter, if needed ?)
    * @warning The domain must be an HyperRectDomain.
    * @warning C++11 needs to be enabled in order to use this class.
    *
    * @tparam TArrayIterator Type of a random-access iterator over the datas (can be a T* pointer).
-   * @tparam TSpace Type of the space associated to the HyperRectDomain (auto-deduced from TDomain template, see ArrayImageView).
+   * @tparam TSpace Type of the space associated to the HyperRectDomain (auto-deduced from TDomain template, see ArrayImageAdapter).
    *
-   * @see makeArrayImageViewFromIterator
-   * @see makeArrayImageViewFromImage
+   * @see makeArrayImageAdapterFromIterator
+   * @see makeArrayImageAdapterFromImage
    */
   template <
     typename TArrayIterator,
     typename TSpace
   >
-  class ArrayImageView< TArrayIterator, HyperRectDomain<TSpace> >
-      : public IteratorCompletion< ArrayImageView< TArrayIterator, HyperRectDomain<TSpace> > >
+  class ArrayImageAdapter< TArrayIterator, HyperRectDomain<TSpace> >
+      : public IteratorCompletion< ArrayImageAdapter< TArrayIterator, HyperRectDomain<TSpace> > >
     {
 
     // Checks Random-access iterator concept on TArrayIterator
@@ -158,11 +158,11 @@ namespace DGtal
 
     public:
       // Typedefs
-      using Self = ArrayImageView<TArrayIterator, HyperRectDomain<TSpace> >;
-      using ArrayIterator = TArrayIterator;
-      using Value = typename std::iterator_traits<ArrayIterator>::value_type;
-      using Reference = typename std::iterator_traits<ArrayIterator>::reference;
-      using ConstReference = const Reference;
+      using Self = ArrayImageAdapter<TArrayIterator, HyperRectDomain<TSpace> >;
+      using ArrayIterator   = TArrayIterator;
+      using Value           = typename std::iterator_traits<ArrayIterator>::value_type;
+      using Reference       = typename std::iterator_traits<ArrayIterator>::reference;
+      using ConstReference  = const Reference;
 
       // DGtal typedefs and constant
       using Domain    = HyperRectDomain<TSpace>;
@@ -177,15 +177,15 @@ namespace DGtal
       using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; ///< Linearization of the points.
       
       // Iterators & Ranges
-      template <class> friend class ImageViewIterator;
-      using Iterator = typename IteratorCompletionTraits<Self>::Iterator; ///< Mutable iterator.
+      template <class> friend class ImageAdapterIterator;
+      using Iterator      = typename IteratorCompletionTraits<Self>::Iterator;      ///< Mutable iterator.
       using ConstIterator = typename IteratorCompletionTraits<Self>::ConstIterator; ///< Constant iterator.
 
       /** Default constructor.
        *
        * Empty allocated memory on empty domains.
        */
-      ArrayImageView()
+      ArrayImageAdapter()
         : myArrayIterator{nullptr}
         , myFullDomain{}
         , myViewDomain{}
@@ -197,7 +197,7 @@ namespace DGtal
        * @param aFullDomain       The domain span by the given iterator.
        * @param aViewDomain       The viewable domain of this image.
        */
-      ArrayImageView( ArrayIterator anArrayIterator, Domain const& aFullDomain, Domain const& aViewDomain )
+      ArrayImageAdapter( ArrayIterator anArrayIterator, Domain const& aFullDomain, Domain const& aViewDomain )
           : myArrayIterator(anArrayIterator)
           , myFullDomain{ aFullDomain }
           , myViewDomain{ aViewDomain }
@@ -216,8 +216,8 @@ namespace DGtal
        * @param anArrayIterator   A random-access iterator on the datas.
        * @param aFullDomain       The domain span by the given iterator.
        */
-      ArrayImageView( ArrayIterator anArrayIterator, Domain const& aFullDomain )
-          : ArrayImageView( anArrayIterator, aFullDomain, aFullDomain )
+      ArrayImageAdapter( ArrayIterator anArrayIterator, Domain const& aFullDomain )
+          : ArrayImageAdapter( anArrayIterator, aFullDomain, aFullDomain )
         {
         }
 
@@ -225,11 +225,11 @@ namespace DGtal
        *
        * @warning Since this class in only a view on a independant storage, it does a shallow copy.
        *
-       * @param other         An another ArrayImageView instance.
+       * @param other         An another ArrayImageAdapter instance.
        * @param aViewDomain   A new viewable domain for this image.
        */
-      ArrayImageView( Self const& other, Domain const& aViewDomain )
-          : ArrayImageView( other.myArrayIterator, other.myFullDomain, aViewDomain )
+      ArrayImageAdapter( Self const& other, Domain const& aViewDomain )
+          : ArrayImageAdapter( other.myArrayIterator, other.myFullDomain, aViewDomain )
         {}
 
       /**
@@ -348,7 +348,7 @@ namespace DGtal
         }
         
 
-    public: // Should be private since ImageViewIterator is a friend but g++ 4.9.1 don't care ... (no prob with clang++ 3.5.0)
+    public: // Should be private since ImageAdapterIterator is a friend but g++ 4.9.1 don't care ... (no prob with clang++ 3.5.0)
 
       /** Dereference of a mutable iterator.
        *
@@ -388,7 +388,7 @@ namespace DGtal
        */
       void selfDisplay ( std::ostream & out ) const
         {
-          out << "[ArrayImageView] with full domain " << myFullDomain << " and viewable domain " << myViewDomain;
+          out << "[ArrayImageAdapter] with full domain " << myFullDomain << " and viewable domain " << myViewDomain;
         }
 
       /**
@@ -406,9 +406,9 @@ namespace DGtal
       Domain myFullDomain;  ///< Definition (full) domain.
       Domain myViewDomain;  ///< Viewable domain.
 
-    }; // end of class ArrayImageView
+    }; // end of class ArrayImageAdapter
 
-  /** Iterator traits specialized for ArrayImageView.
+  /** Iterator traits specialized for ArrayImageAdapter.
    *
    * \see IteratorCompletion
    */
@@ -416,12 +416,12 @@ namespace DGtal
     typename TArrayIterator,
     typename TDomain
   >
-  class IteratorCompletionTraits< ArrayImageView<TArrayIterator, TDomain> >
+  class IteratorCompletionTraits< ArrayImageAdapter<TArrayIterator, TDomain> >
     {
     public:
-      using Self = ArrayImageView<TArrayIterator, TDomain>;
-      using Iterator = ImageViewIterator<Self>; ///< Mutable iterator.
-      using ConstIterator = ImageViewIterator<const Self>; ///< Constant iterator.
+      using Self = ArrayImageAdapter<TArrayIterator, TDomain>;
+      using Iterator = ImageAdapterIterator<Self>; ///< Mutable iterator.
+      using ConstIterator = ImageAdapterIterator<const Self>; ///< Constant iterator.
 
       /** Functor that returns the distance between the domain's lower bound and a given point.
        *
@@ -434,8 +434,8 @@ namespace DGtal
           using Point = typename Self::Point;
           using Difference = typename Self::Difference;
 
-          DistanceFunctor( Self const* anImageView )
-            : myDomain( anImageView->domain() )
+          DistanceFunctor( Self const* anImage )
+            : myDomain( anImage->domain() )
             {}
 
           Difference operator() ( Point const& aPoint ) const
@@ -454,9 +454,9 @@ namespace DGtal
     }; // end of specialized class IteratorCompletionTraits
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ImageViewIterator'.
+   * Overloads 'operator<<' for displaying objects of class 'ImageAdapterIterator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ImageViewIterator' to write.
+   * @param object the object of class 'ImageAdapterIterator' to write.
    * @return the output stream after the writing.
    */
   template <
@@ -464,51 +464,51 @@ namespace DGtal
     typename TDomain
   >
   std::ostream&
-  operator<< ( std::ostream & out, const ArrayImageView<TArrayIterator, TDomain> & object )
+  operator<< ( std::ostream & out, const ArrayImageAdapter<TArrayIterator, TDomain> & object )
     {
       object.selfDisplay( out );
       return out;
     }
   
   
-  // ------------------ ArrayImageView construction helpers ----------------
+  // ------------------ ArrayImageAdapter construction helpers ----------------
   
-  /** Returns an ArrayImageView from an iterator, a full domain and a viewable domain.
+  /** Returns an ArrayImageAdapter from an iterator, a full domain and a viewable domain.
    *
    * @param anArrayIterator   A random-access iterator on the datas.
    * @param aFullDomain       The domain span by the given iterator.
    * @param aViewDomain       The viewable domain of this image.
-   * @return an ArrayImageView instance.
+   * @return an ArrayImageAdapter instance.
    */
   template <
     typename TArrayIterator,
     typename TDomain
   >
-  ArrayImageView< TArrayIterator, TDomain >
-  makeArrayImageViewFromIterator( TArrayIterator anArrayIterator, TDomain const& aFullDomain, TDomain const& aViewDomain )
+  ArrayImageAdapter< TArrayIterator, TDomain >
+  makeArrayImageAdapterFromIterator( TArrayIterator anArrayIterator, TDomain const& aFullDomain, TDomain const& aViewDomain )
     {
       return { anArrayIterator, aFullDomain, aViewDomain };
     }
   
-  /** Returns an ArrayImageView from an iterator and a full domain.
+  /** Returns an ArrayImageAdapter from an iterator and a full domain.
    *
    * The viewable domain will be the same as the full domain.
    *
    * @param anArrayIterator   A random-access iterator on the datas.
    * @param aFullDomain       The domain span by the given iterator.
-   * @return an ArrayImageView instance.
+   * @return an ArrayImageAdapter instance.
    */
   template <
     typename TArrayIterator,
     typename TDomain
   >
-  ArrayImageView< TArrayIterator, TDomain >
-  makeArrayImageViewFromIterator( TArrayIterator anArrayIterator, TDomain const& aFullDomain )
+  ArrayImageAdapter< TArrayIterator, TDomain >
+  makeArrayImageAdapterFromIterator( TArrayIterator anArrayIterator, TDomain const& aFullDomain )
     {
       return { anArrayIterator, aFullDomain, aFullDomain };
     }
 
-  /** Returns an ArrayImageView from an image and a viewable domain.
+  /** Returns an ArrayImageAdapter from an image and a viewable domain.
    *
    * @param anImage       The image that models the CConstImage concept.
    * @param aViewDomain   The viewable domain of this image.
@@ -519,8 +519,8 @@ namespace DGtal
   >
   // We use decltype on begin() iterator because it returns the constant iterator
   //  if the image is constant while ::Iterator typedef returns the mutable iterator.
-  ArrayImageView< decltype( ((TImage*)nullptr)->begin() ), TDomain >
-  makeArrayImageViewFromImage( TImage & anImage, TDomain const& aViewDomain )
+  ArrayImageAdapter< decltype( ((TImage*)nullptr)->begin() ), TDomain >
+  makeArrayImageAdapterFromImage( TImage & anImage, TDomain const& aViewDomain )
     {
       // Remove constness because CConstImage requires assignability.
       BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >) );
@@ -528,7 +528,7 @@ namespace DGtal
       return { anImage.begin(), anImage.domain(), aViewDomain };
     }
   
-  /** Returns an ArrayImageView from an image.
+  /** Returns an ArrayImageAdapter from an image.
    *
    * The viewable domain will be the same as the given image domain.
    *
@@ -540,8 +540,8 @@ namespace DGtal
   >
   // We use decltype on begin() iterator because it returns the constant iterator
   //  if the image is constant while ::Iterator typedef returns the mutable iterator.
-  ArrayImageView< decltype( ((TImage*)nullptr)->begin() ), TDomain >
-  makeArrayImageViewFromImage( TImage & anImage )
+  ArrayImageAdapter< decltype( ((TImage*)nullptr)->begin() ), TDomain >
+  makeArrayImageAdapterFromImage( TImage & anImage )
     {
       // Remove constness because CConstImage requires assignability.
       BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >) ); 
@@ -555,10 +555,10 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ArrayImageView_h
+#endif // !defined ArrayImageAdapter_h
 
-#undef ArrayImageView_RECURSES
-#endif // else defined(ArrayImageView_RECURSES)
+#undef ArrayImageAdapter_RECURSES
+#endif // else defined(ArrayImageAdapter_RECURSES)
 
 /* GNU coding style */
 /* vim: set ts=2 sw=2 expandtab cindent cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1 : */

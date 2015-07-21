@@ -55,7 +55,9 @@ namespace DGtal
    * - a typedef ConstIterator corresponding to the derived class constant iterator.
    * - a class DistanceFunctor, constructible from a pointer to the derived class and 
    *   that behaves like a distance functor from the begin() iterator to a given point.
-   *   (\see SimpleRandomAccessRangeFromPoint and SimpleRandomAccessConstRangeFromPoint)
+   *   (see SimpleRandomAccessRangeFromPoint and SimpleRandomAccessConstRangeFromPoint)
+   *
+   * \see the specialization of IteratorCompletionTraits for ArrayImageView.
    */
   template < typename TDerived >
   class IteratorCompletionTraits;

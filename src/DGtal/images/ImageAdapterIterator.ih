@@ -15,7 +15,7 @@
  **/
 
 /*
- * @file ImageViewIterator.ih
+ * @file ImageAdapterIterator.ih
  * @author Roland Denis (\c roland.denis@univ-smb.fr )
  * LAboratory of MAthematics - LAMA (CNRS, UMR 5127), University of Savoie, France
  *
@@ -40,16 +40,16 @@
 //------------------------------------------------------------------------------
 /// Default constructor.
 template <typename TIterableClass>
-DGtal::ImageViewIterator<TIterableClass>::
-ImageViewIterator()
+DGtal::ImageAdapterIterator<TIterableClass>::
+ImageAdapterIterator()
   : myIterableClassPtr(nullptr)
 {}
 
 //------------------------------------------------------------------------------
 /// Iterator from a point.
 template <typename TIterableClass>
-DGtal::ImageViewIterator<TIterableClass>::
-ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, Point const& aPoint )
+DGtal::ImageAdapterIterator<TIterableClass>::
+ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, Point const& aPoint )
   : myIterableClassPtr( anIterableClassPtr )
   , myFullDomain{ aFullDomain }
   , myViewDomain{ aViewDomain }
@@ -72,25 +72,25 @@ ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain,
 //------------------------------------------------------------------------------
 /// Iterator pointing to the first value.
 template <typename TIterableClass>
-DGtal::ImageViewIterator<TIterableClass>::
-ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain )
-  : ImageViewIterator{ anIterableClassPtr, aFullDomain, aViewDomain, aViewDomain.lowerBound() }
+DGtal::ImageAdapterIterator<TIterableClass>::
+ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain )
+  : ImageAdapterIterator{ anIterableClassPtr, aFullDomain, aViewDomain, aViewDomain.lowerBound() }
 {}
  
 //------------------------------------------------------------------------------
 /// Iterator pointing to the first value and spanning the whole domain.
 template <typename TIterableClass>
-DGtal::ImageViewIterator<TIterableClass>::
-ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain )
-  : ImageViewIterator{ anIterableClassPtr, aFullDomain, aFullDomain }
+DGtal::ImageAdapterIterator<TIterableClass>::
+ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain )
+  : ImageAdapterIterator{ anIterableClassPtr, aFullDomain, aFullDomain }
 {}
 
 //------------------------------------------------------------------------------
 /// Iterator pointing after the last value of the viewable domain.
 template <typename TIterableClass>
-DGtal::ImageViewIterator<TIterableClass>::
-ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, bool /* last */ )
-  : ImageViewIterator{ anIterableClassPtr, aFullDomain, aViewDomain, aViewDomain.upperBound() }
+DGtal::ImageAdapterIterator<TIterableClass>::
+ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, bool /* last */ )
+  : ImageAdapterIterator{ anIterableClassPtr, aFullDomain, aViewDomain, aViewDomain.upperBound() }
 {
   increment();
 }
@@ -98,18 +98,18 @@ ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain,
 //------------------------------------------------------------------------------
 /// Iterator pointing after the last value of the whole domain.
 template <typename TIterableClass>
-DGtal::ImageViewIterator<TIterableClass>::
-ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, bool /* last */ )
-  : ImageViewIterator{ anIterableClassPtr, aFullDomain, aFullDomain, true }
+DGtal::ImageAdapterIterator<TIterableClass>::
+ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, bool /* last */ )
+  : ImageAdapterIterator{ anIterableClassPtr, aFullDomain, aFullDomain, true }
 {}
 
 //------------------------------------------------------------------------------
 /// Copy constructor with type interoperability.
 template <typename TIterableClass>
 template <typename TOtherIterableClass>
-DGtal::ImageViewIterator<TIterableClass>::
-ImageViewIterator( 
-    ImageViewIterator<TOtherIterableClass> const& other,
+DGtal::ImageAdapterIterator<TIterableClass>::
+ImageAdapterIterator( 
+    ImageAdapterIterator<TOtherIterableClass> const& other,
     typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* 
 )
   : myIterableClassPtr( other.myIterableClassPtr )
@@ -125,9 +125,9 @@ ImageViewIterator(
 /// Move constructor with type interoperability.
 template <typename TIterableClass>
 template <typename TOtherIterableClass>
-DGtal::ImageViewIterator<TIterableClass>::
-ImageViewIterator( 
-    ImageViewIterator<TOtherIterableClass> && other,
+DGtal::ImageAdapterIterator<TIterableClass>::
+ImageAdapterIterator( 
+    ImageAdapterIterator<TOtherIterableClass> && other,
     typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* 
 ) noexcept
   : myIterableClassPtr( std::move(other.myIterableClassPtr) )
@@ -142,8 +142,8 @@ ImageViewIterator(
 //------------------------------------------------------------------------------
 /// Destructor.
 template <typename TIterableClass>
-DGtal::ImageViewIterator<TIterableClass>::
-~ImageViewIterator()
+DGtal::ImageAdapterIterator<TIterableClass>::
+~ImageAdapterIterator()
 {}
 
 //------------------------------------------------------------------------------
@@ -152,9 +152,9 @@ template <typename TIterableClass>
 template <typename TOtherIterableClass>
 typename std::enable_if<
     std::is_convertible<TOtherIterableClass*, TIterableClass*>::value,
-    typename DGtal::ImageViewIterator<TIterableClass>::Self&>::type
-DGtal::ImageViewIterator<TIterableClass>::
-operator= ( ImageViewIterator<TOtherIterableClass> const& other )
+    typename DGtal::ImageAdapterIterator<TIterableClass>::Self&>::type
+DGtal::ImageAdapterIterator<TIterableClass>::
+operator= ( ImageAdapterIterator<TOtherIterableClass> const& other )
 {
   myIterableClassPtr = other.myIterableClassPtr;
   myFullDomain = other.myFullDomain;
@@ -172,9 +172,9 @@ template <typename TIterableClass>
 template <typename TOtherIterableClass>
 typename std::enable_if<
     std::is_convertible<TOtherIterableClass*, TIterableClass*>::value,
-    typename DGtal::ImageViewIterator<TIterableClass>::Self&>::type
-DGtal::ImageViewIterator<TIterableClass>::
-operator= ( ImageViewIterator<TOtherIterableClass> && other )
+    typename DGtal::ImageAdapterIterator<TIterableClass>::Self&>::type
+DGtal::ImageAdapterIterator<TIterableClass>::
+operator= ( ImageAdapterIterator<TOtherIterableClass> && other )
 {
   myIterableClassPtr = std::move(other.myIterableClassPtr);
   myFullDomain = std::move(other.myFullDomain);
@@ -193,8 +193,8 @@ operator= ( ImageViewIterator<TOtherIterableClass> && other )
 /// Return the point behind this iterator.
 template <typename TIterableClass>
 inline
-typename DGtal::ImageViewIterator<TIterableClass>::Point const& 
-DGtal::ImageViewIterator<TIterableClass>::
+typename DGtal::ImageAdapterIterator<TIterableClass>::Point const& 
+DGtal::ImageAdapterIterator<TIterableClass>::
     getPoint() const noexcept
 {
   return myPoint;
@@ -205,7 +205,7 @@ DGtal::ImageViewIterator<TIterableClass>::
 template <typename TIterableClass>
 inline
 std::ptrdiff_t 
-DGtal::ImageViewIterator<TIterableClass>::
+DGtal::ImageAdapterIterator<TIterableClass>::
 distance_to( Point const& aPoint ) const noexcept
 {
   BOOST_ASSERT_MSG(
@@ -222,10 +222,10 @@ distance_to( Point const& aPoint ) const noexcept
 template <typename TIterableClass>
 inline
 void
-DGtal::ImageViewIterator<TIterableClass>::
+DGtal::ImageAdapterIterator<TIterableClass>::
     selfDisplay ( std::ostream & out ) const
 {
-  out << "[ImageViewIterator] pointing to " << getPoint();
+  out << "[ImageAdapterIterator] pointing to " << getPoint();
 }
 
 //------------------------------------------------------------------------------
@@ -233,7 +233,7 @@ DGtal::ImageViewIterator<TIterableClass>::
 template <typename TIterableClass>
 inline
 bool
-DGtal::ImageViewIterator<TIterableClass>::isValid() const
+DGtal::ImageAdapterIterator<TIterableClass>::isValid() const
 {
     return myIterableClassPtr != nullptr;
 }
@@ -246,7 +246,7 @@ DGtal::ImageViewIterator<TIterableClass>::isValid() const
 /// Increment of one step.
 template <typename TIterableClass>
 void 
-DGtal::ImageViewIterator<TIterableClass>::
+DGtal::ImageAdapterIterator<TIterableClass>::
 increment()
 {
   ++myFullIndex;
@@ -267,7 +267,7 @@ increment()
 /// Decrement of one step.
 template <typename TIterableClass>
 void 
-DGtal::ImageViewIterator<TIterableClass>::
+DGtal::ImageAdapterIterator<TIterableClass>::
 decrement()
 {
   --myFullIndex;
@@ -289,7 +289,7 @@ decrement()
 template <typename TIterableClass>
 inline
 bool 
-DGtal::ImageViewIterator<TIterableClass>::
+DGtal::ImageAdapterIterator<TIterableClass>::
 equal( Self const& other ) const
 {
   return myFullIndex == other.myFullIndex;
@@ -299,8 +299,8 @@ equal( Self const& other ) const
 /// Dereference.
 template <typename TIterableClass>
 inline
-typename DGtal::ImageViewIterator<TIterableClass>::Reference 
-DGtal::ImageViewIterator<TIterableClass>::
+typename DGtal::ImageAdapterIterator<TIterableClass>::Reference 
+DGtal::ImageAdapterIterator<TIterableClass>::
 dereference() const
 {
   return myIterableClassPtr->dereference( myPoint, myFullIndex );
@@ -311,7 +311,7 @@ dereference() const
 template <typename TIterableClass>
 inline
 std::ptrdiff_t 
-DGtal::ImageViewIterator<TIterableClass>::
+DGtal::ImageAdapterIterator<TIterableClass>::
 distance_to( Self const& other ) const
 {
   return distance_to( other.myPoint );
@@ -321,7 +321,7 @@ distance_to( Self const& other ) const
 /// Advance by n steps. 
 template <typename TIterableClass>
 void
-DGtal::ImageViewIterator<TIterableClass>::
+DGtal::ImageAdapterIterator<TIterableClass>::
 advance( std::ptrdiff_t n )
 {
   const auto pos = Self::Linearizer::getIndex( myPoint, myViewDomain.lowerBound(), myViewExtent );
@@ -337,7 +337,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const ImageViewIterator<T> & object )
+		  const ImageAdapterIterator<T> & object )
 {
   object.selfDisplay( out );
   return out;

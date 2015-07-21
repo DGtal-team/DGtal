@@ -22,7 +22,7 @@ endif( WITH_HDF5 )
 
 if( WITH_C11 )
   SET(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC}
-  testArrayImageView)
+      testArrayImageAdapter)
 endif( WITH_C11 )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
