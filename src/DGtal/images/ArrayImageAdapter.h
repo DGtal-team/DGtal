@@ -51,7 +51,7 @@
 
 #include <DGtal/base/Common.h>
 #include <DGtal/images/CConstImage.h>
-#include <DGtal/images/ImageAdapterIterator.h>
+#include <DGtal/images/ArrayImageIterator.h>
 #include <DGtal/base/IteratorCompletion.h>
 #include <DGtal/kernel/domains/Linearizer.h>
 //////////////////////////////////////////////////////////////////////////////
@@ -87,7 +87,7 @@ namespace DGtal
    * This adapted image is writable iff the given iterator is mutable.
    *
    * The available iterators for this image can return the corresponding point and are
-   * faster than using an iterator over the domain (see ImageAdapterIterator). 
+   * faster than using an iterator over the domain (see ArrayImageIterator). 
    * Reverse iterators and ranges are defined in the inherited class IteratorCompletion.
    *
    * Some helpers are available (see makeArrayImageAdapterFromIterator and makeArrayImageAdapterFromImage)
@@ -177,7 +177,7 @@ namespace DGtal
       using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; ///< Linearization of the points.
       
       // Iterators & Ranges
-      template <class> friend class ImageAdapterIterator;
+      template <class> friend class ArrayImageIterator;
       using Iterator      = typename IteratorCompletionTraits<Self>::Iterator;      ///< Mutable iterator.
       using ConstIterator = typename IteratorCompletionTraits<Self>::ConstIterator; ///< Constant iterator.
 
@@ -348,7 +348,7 @@ namespace DGtal
         }
         
 
-    public: // Should be private since ImageAdapterIterator is a friend but g++ 4.9.1 don't care ... (no prob with clang++ 3.5.0)
+    public: // Should be private since ArrayImageIterator is a friend but g++ 4.9.1 don't care ... (no prob with clang++ 3.5.0)
 
       /** Dereference of a mutable iterator.
        *
@@ -420,8 +420,8 @@ namespace DGtal
     {
     public:
       using Self = ArrayImageAdapter<TArrayIterator, TDomain>;
-      using Iterator = ImageAdapterIterator<Self>; ///< Mutable iterator.
-      using ConstIterator = ImageAdapterIterator<const Self>; ///< Constant iterator.
+      using Iterator = ArrayImageIterator<Self>; ///< Mutable iterator.
+      using ConstIterator = ArrayImageIterator<const Self>; ///< Constant iterator.
 
       /** Functor that returns the distance between the domain's lower bound and a given point.
        *
@@ -454,9 +454,9 @@ namespace DGtal
     }; // end of specialized class IteratorCompletionTraits
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ImageAdapterIterator'.
+   * Overloads 'operator<<' for displaying objects of class 'ArrayImageIterator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ImageAdapterIterator' to write.
+   * @param object the object of class 'ArrayImageIterator' to write.
    * @return the output stream after the writing.
    */
   template <
