@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file ImageViewIterator.h
+ * @file ImageAdapterIterator.h
  * @author Roland Denis (\c roland.denis@univ-smb.fr )
  * LAboratory of MAthematics - LAMA (CNRS, UMR 5127), University of Savoie, France
  *
@@ -26,18 +26,18 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(ImageViewIterator_RECURSES)
-#error Recursive header files inclusion detected in ImageViewIterator.h
-#else // defined(ImageViewIterator_RECURSES)
+#if defined(ImageAdapterIterator_RECURSES)
+#error Recursive header files inclusion detected in ImageAdapterIterator.h
+#else // defined(ImageAdapterIterator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ImageViewIterator_RECURSES
+#define ImageAdapterIterator_RECURSES
 
-#if !defined ImageViewIterator_h
+#if !defined ImageAdapterIterator_h
 /** Prevents repeated inclusion of headers. */
-#define ImageViewIterator_h
+#define ImageAdapterIterator_h
 
 #if __cplusplus < 201103L
-  #error ImageViewIterator.h requires C++11.
+  #error ImageAdapterIterator.h requires C++11.
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
@@ -55,7 +55,7 @@ namespace DGtal
   /**
    * @brief Aim: Random access iterator over an image given his definition domain and viewable domain.
    *
-   * Description of template class 'ImageViewIterator' <p>
+   * Description of template class 'ImageAdapterIterator' <p>
    * This iterator spans a viewable domain given an iterable image-like class (see below) defined
    * on a specified full domain. This iterator provides access to the iterable class through classical iterator syntax and, in addition, exposes current point to which the iterator point to. 
    * Thus, when it is needed to iterate over an image while knowing the current point ( for example, when filling an image with a formulae that depends on the point), it is faster to use this iterator instead of a classical domain iterator and the use of operator() and setValue. 
@@ -67,20 +67,20 @@ namespace DGtal
    *
    * In addition, the iterable class must have Domain typedef.
    *
-   * For an usage example, see ArrayImageView.h .
+   * For an usage example, see ArrayImageAdapter.h .
    *
    * @tparam TIterableClass   Type of the iterable class.
    *
    * @warning C++11 needs to be enabled in order to use this class.
    *
-   * @see ArrayImageView.h
+   * @see ArrayImageAdapter.h
    */
   template <
     typename TIterableClass
   >
-  class ImageViewIterator
+  class ImageAdapterIterator
     : public boost::iterator_facade <
-        ImageViewIterator<TIterableClass>,
+        ImageAdapterIterator<TIterableClass>,
         typename TIterableClass::Value,
         std::random_access_iterator_tag,
         decltype( ((TIterableClass*)nullptr)->dereference( TIterableClass::Point::diagonal(0), typename TIterableClass::Point::Coordinate(0) ) )
@@ -90,7 +90,7 @@ namespace DGtal
     public:
 
       // Typedefs
-      using Self = ImageViewIterator<TIterableClass>; 
+      using Self = ImageAdapterIterator<TIterableClass>; 
       using IterableClass = TIterableClass; 
       using Domain = typename IterableClass::Domain; // or in template with default value ?
       using Point = typename Domain::Point;
@@ -98,7 +98,7 @@ namespace DGtal
       using Reference = decltype( ((IterableClass*)nullptr)->dereference( Point::diagonal(0), typename Point::Coordinate(0) ) );
 
       /// Default constructor.
-      ImageViewIterator();  
+      ImageAdapterIterator();  
 
       /** Iterator from a point.
        *
@@ -107,7 +107,7 @@ namespace DGtal
        * @param aViewDomain         Viewable domain that the iterator will span.
        * @param aPoint              Point to which the iterator will point.
        */
-      ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, Point const& aPoint );
+      ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, Point const& aPoint );
 
       /** Iterator pointing to the first value.
        *
@@ -115,14 +115,14 @@ namespace DGtal
        * @param aFullDomain         Full domain of the image.
        * @param aViewDomain         Viewable domain that the iterator will span.
        */
-      ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain );
+      ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain );
       
       /** Iterator pointing to the first value and spanning the whole domain.
        *
        * @param anIterableClassPtr  Pointer to the iterable class instance.
        * @param aFullDomain         Full domain of the image.
        */
-      ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain );
+      ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain );
 
       /** Iterator pointing after the last value of the viewable domain.
        *
@@ -130,22 +130,22 @@ namespace DGtal
        * @param aFullDomain         Full domain of the image.
        * @param aViewDomain         Viewable domain that the iterator will span.
        */
-      ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, bool /* last */ ); 
+      ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, bool /* last */ ); 
 
       /** Iterator pointing after the last value of the whole domain.
        *
        * @param anIterableClassPtr  Pointer to the iterable class instance.
        * @param aFullDomain         Full domain of the image.
        */
-      ImageViewIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, bool /* last */ );
+      ImageAdapterIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, bool /* last */ );
       
       /** Copy constructor with type interoperability.
        *
        * @param other An another iterator whose iterable class pointer is convertible to the current iterable class pointer type.
        */
       template < typename TOtherIterableClass >
-      ImageViewIterator( 
-          ImageViewIterator<TOtherIterableClass> const& other,
+      ImageAdapterIterator( 
+          ImageAdapterIterator<TOtherIterableClass> const& other,
           typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* = 0 
       );
             
@@ -154,13 +154,13 @@ namespace DGtal
        * @param other An another iterator whose iterable class pointer is convertible to the current iterable class pointer type.
        */
       template < typename TOtherIterableClass >
-      ImageViewIterator( 
-          ImageViewIterator<TOtherIterableClass> && other,
+      ImageAdapterIterator( 
+          ImageAdapterIterator<TOtherIterableClass> && other,
           typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* = 0 
       ) noexcept;
       
       /// Destructor.
-      ~ImageViewIterator(); 
+      ~ImageAdapterIterator(); 
 
       /** Copy assignment with type interoperability.
        *
@@ -171,7 +171,7 @@ namespace DGtal
           std::is_convertible<TOtherIterableClass*, IterableClass*>::value, 
           Self& >::type
       operator= ( 
-          ImageViewIterator<TOtherIterableClass> const& other
+          ImageAdapterIterator<TOtherIterableClass> const& other
       );
 
       /** Move assignment constructor with type interoperability.
@@ -183,7 +183,7 @@ namespace DGtal
           std::is_convertible<TOtherIterableClass*, IterableClass*>::value, 
           Self& >::type
       operator= ( 
-          ImageViewIterator<TOtherIterableClass> && other
+          ImageAdapterIterator<TOtherIterableClass> && other
       );
       
 
@@ -227,7 +227,7 @@ namespace DGtal
     private:
       
       // Friendship
-      template <class> friend class ImageViewIterator; ///< Friendship of interoperability. \see http://www.boost.org/doc/libs/1_58_0/libs/iterator/doc/iterator_facade.html
+      template <class> friend class ImageAdapterIterator; ///< Friendship of interoperability. \see http://www.boost.org/doc/libs/1_58_0/libs/iterator/doc/iterator_facade.html
       friend class boost::iterator_core_access; ///< Friendship of interoperability. \see http://www.boost.org/doc/libs/1_58_0/libs/iterator/doc/iterator_facade.html
 
       /// Increment of one step.
@@ -254,32 +254,32 @@ namespace DGtal
        */
       void advance( std::ptrdiff_t n ); 
       
-    }; // end of class ImageViewIterator
+    }; // end of class ImageAdapterIterator
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ImageViewIterator'.
+   * Overloads 'operator<<' for displaying objects of class 'ImageAdapterIterator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ImageViewIterator' to write.
+   * @param object the object of class 'ImageAdapterIterator' to write.
    * @return the output stream after the writing.
    */
   template <typename TIterableClass>
   std::ostream&
-  operator<< ( std::ostream & out, const ImageViewIterator<TIterableClass> & object );
+  operator<< ( std::ostream & out, const ImageAdapterIterator<TIterableClass> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/images/ImageViewIterator.ih"
+#include "DGtal/images/ImageAdapterIterator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ImageViewIterator_h
+#endif // !defined ImageAdapterIterator_h
 
-#undef ImageViewIterator_RECURSES
-#endif // else defined(ImageViewIterator_RECURSES)
+#undef ImageAdapterIterator_RECURSES
+#endif // else defined(ImageAdapterIterator_RECURSES)
 /* GNU coding style */
 /* vim: set ts=2 sw=2 expandtab cindent cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1 : */
