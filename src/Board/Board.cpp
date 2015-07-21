@@ -380,9 +380,11 @@ Board::drawLine( double x1, double y1, double x2, double y2,
          _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
 }
 
+  //FIXME uncomment this (related to tristan's PR)
+  /*
 void
 Board::drawQuadraticBezierCurve( double x1, double y1, double x2, double y2, double x3, double y3,  
-     int depthValue /* = -1 */  )
+     int depthValue  = -1  )
 {
   if ( depthValue != -1 ) 
     _shapes.push_back( new QuadraticBezierCurve( _state.unit(x1), _state.unit(y1),
@@ -394,7 +396,7 @@ Board::drawQuadraticBezierCurve( double x1, double y1, double x2, double y2, dou
          _state.unit(x2), _state.unit(y2), _state.unit(x3), _state.unit(y3),
          _state.penColor, _state.fillColor, _state.lineWidth,
          _state.lineStyle, _state.lineCap, _state.lineJoin, _nextDepth-- ) );
-}
+}*/
 
 void
 Board::drawArrow( double x1, double y1, double x2, double y2, 

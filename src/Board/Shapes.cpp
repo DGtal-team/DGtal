@@ -2379,7 +2379,7 @@ Triangle::clone() const {
 /*
  * QuadraticBezierCurve
  */
-const std::string QuadraticBezierCurve::_name("QuadraticBezierCurve");
+/*const std::string QuadraticBezierCurve::_name("QuadraticBezierCurve");
 
 const std::string &
 QuadraticBezierCurve::name() const
@@ -2542,7 +2542,7 @@ QuadraticBezierCurve::flushTikZ( std::ostream & stream,
 	 << transform.mapX( x4 ) << ',' << transform.mapY( y4 )
 	 << ");" << std::endl;
 }
-
+*/
 
 /*
  * Text

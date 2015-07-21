@@ -39,7 +39,7 @@
 #include "catch.hpp"
 
 
-TEST_CASE( GJK unit tests" )
+TEST_CASE( "GJK unit tests" )
 {
   SECTION("Comparisons")
   {
