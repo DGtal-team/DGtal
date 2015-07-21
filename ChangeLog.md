@@ -217,6 +217,10 @@
   - Fix loop bug in extractAllConnectedSCell of Surfaces from helpers.
     (Bertrand Kerautret, [994](https://github.com/DGtal-team/DGtal/pull/994)).
 
+- *DEC  Package*
+  - Fix missing include in testEigenSolver and forces Eigen 3.2.1 minimum (for a bug fix).
+    (Jacques-Olivier Lachaud, [1032](https://github.com/DGtal-team/DGtal/pull/1032)).
+
 
 # DGtal 0.8
 
