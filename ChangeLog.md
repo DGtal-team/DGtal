@@ -42,6 +42,17 @@
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
  - Mutable iterator on DiscreteExteriorCalculus.
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
+ - Unary minus operators for k-forms, vector fields and linear operators.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Introduction of .updateIndexes() that needs to be called after any
+   call to .insertSCell() or .eraseCell().
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Transpose of linear operators.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Intensity operator on vector fields.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Reorder operators to remap indexes.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
 
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a
