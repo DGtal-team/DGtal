@@ -340,7 +340,7 @@ namespace DGtal
     getIndexedSCells() const;
 
     /**
-     * Reorder operator from <em>order</em>-forms to <em>order</em>-forms.
+     * Reorder operator from _order_-forms to _order_-forms.
      * Reorder indexes from internal index order to iterator range traversal induced order.
      * @tparam order input and output order of reorder operator.
      * @tparam duality input and output duality of reorder operator.
@@ -352,7 +352,7 @@ namespace DGtal
     reorder(const TConstIterator& begin_range, const TConstIterator& end_range) const;
 
     /**
-     * Identity operator from <em>order</em>-forms to <em>order</em>-forms.
+     * Identity operator from _order_-forms to _order_-forms.
      * @tparam order input and output order of identity operator.
      * @tparam duality input and output duality of identity operator.
      * @return identity operator.
@@ -362,7 +362,7 @@ namespace DGtal
     identity() const;
 
     /**
-     * Derivative operator from <em>order</em>-forms to <em>(order+1)</em>-forms.
+     * Derivative operator from _order_-forms to _(order+1)_-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.
      * @return derivative operator.
@@ -372,7 +372,7 @@ namespace DGtal
     derivative() const;
 
     /**
-     * Antiderivative operator from <em>order</em>-forms to <em>(order-1)</em>-forms.
+     * Antiderivative operator from _order_-forms to _(order-1)_-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.
      * @return antiderivative operator.
@@ -390,7 +390,7 @@ namespace DGtal
     laplace() const;
 
     /**
-     * Hodge operator from duality <em>order</em>-form to opposite duality <em>(dimEmbedded-order)</em>-forms.
+     * Hodge operator from duality _order_-form to opposite duality _(dimEmbedded-order)_-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.
      * @return hodge operator.
@@ -411,7 +411,7 @@ namespace DGtal
 
     /**
      * Get directional flat operator that transforms 0-form containing vector field coordinates along direction dir into 1-form.
-     * Invert of sharp(1-form).extractZeroForm(dir).
+     * Invert of sharp(1-form).coordAlongDirection(dir).
      * @tparam duality input 0-form and output 1-form duality.
      * @param dir direction of projection.
      * @return linear operator.
@@ -432,14 +432,14 @@ namespace DGtal
 
     /**
      * Get directional sharp operator that transforms 1-form into 0-form containing vector field coordinates along direction dir.
-     * Equivalent to sharp(1-form).extractZeroForm(dir).
+     * Equivalent to sharp(1-form).coordAlongDirection(dir).
      * @tparam duality input 1-form and output 0-form duality.
      * @param dir direction of projection.
      * @return linear operator.
      */
     template <Duality duality>
     LinearOperator<Self, 1, duality, 0, duality>
-    sharpDirectional(const Dimension& dim) const;
+    sharpDirectional(const Dimension& dir) const;
 
     /**
      * Get signed cell from k-form index.
