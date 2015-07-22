@@ -980,7 +980,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator()
       //distance value
       DistanceValue d = 0; 
       bool flag = findAndGetValue( *myDistImgPtr, *mySetPtr, aPoint, d );
-      ASSERT( flag ); 
+      ASSERT( flag ); boost::ignore_unused_variable_warning( flag );
 
       //neighbors
       *it1 = (c+1); 
