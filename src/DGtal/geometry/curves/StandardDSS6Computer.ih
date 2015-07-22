@@ -235,6 +235,9 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::extendFront()
     bool XZflag = myXZalgo.extendFront();
     bool YZflag = myYZalgo.extendFront();
     ASSERT( (XYflag)&&(XZflag)&&(YZflag) );
+    boost::ignore_unused_variable_warning(XYflag);
+    boost::ignore_unused_variable_warning(XZflag);
+    boost::ignore_unused_variable_warning(YZflag);
 
     myEnd++;
     return true;

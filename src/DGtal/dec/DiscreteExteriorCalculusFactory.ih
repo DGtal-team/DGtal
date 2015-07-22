@@ -144,9 +144,9 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Scalar Scalar;
-    typedef typename Calculus::Point Point;
-    typedef typename Calculus::Property Property;
-    typedef typename Calculus::Properties Properties;
+    //typedef typename Calculus::Point Point;
+    //typedef typename Calculus::Property Property;
+    //typedef typename Calculus::Properties Properties;
     typedef typename Calculus::KSpace KSpace;
     typedef typename KSpace::Cells Cells;
 
