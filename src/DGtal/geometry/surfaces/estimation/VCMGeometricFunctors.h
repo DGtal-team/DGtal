@@ -163,7 +163,8 @@ namespace DGtal {
         ASSERT( myVCMOnDigitalSurface != 0 );
         RealVector lambda;
         bool ok = myVCMOnDigitalSurface->getChiVCMEigenvalues( lambda, s );
-        ASSERT( ok );
+        ASSERT( ok ); boost::ignore_unused_variable_warning( ok );
+
         // The last eigenvalue l1 is approximately the mixed "area" 8pi R^3 r / 3
         // The curvature is related to the first eigenvalue l0.
         // k1^2 = 3*l0 / (l1*r^2)

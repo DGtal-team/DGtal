@@ -1577,7 +1577,8 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display, const DGtal
   bool zodd = ( aTransformedPrism.mySurfel.myCoordinates[ 2 ] & 1 );
 
   unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
-  ASSERT(spaceDim==2);
+  ASSERT(spaceDim ==2 );
+  boost::ignore_unused_variable_warning(spaceDim);
 
   //display.addSurfelPrism(rps[0], rps[1], rps[2],! xodd, !yodd, !zodd, factorVolSurfel, aTransformedSurfelPrism.mySizeFactor, true, aTransformedSurfelPrism.mySurfel.myPositive );
   display.addPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, aTransformedPrism.mySurfel.myPositive );
