@@ -336,8 +336,6 @@ bool rangeTest(const DSL& dsl)
 template <typename DSL>
 bool sameOctantTest(const DSL& dsl1, const DSL& dsl2)
 {
-  typedef typename DSL::Point Point; 
-
   trace.beginBlock ( "Test same octant" );
   trace.info() << dsl1  << " " << dsl2 << std::endl; 
   
