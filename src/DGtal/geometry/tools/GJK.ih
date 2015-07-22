@@ -279,6 +279,8 @@ bool DGtal::GJK::isDigitalHyperplane(ConstIterator &setInBegin,
     findSupportPoint(normal, setInBegin, setInEnd, setAboveBegin, setAboveEnd,
                      setBelowBegin, setBelowEnd, supportPoint, distance);
     
+    //FIXME check what dim is
+    
     if (previousSimplex.size() == dim + 1  ||
         normal.norm() < 1e-12 ||
         Eigen::internal::isApprox(normal.dot(supportPoint),
