@@ -105,7 +105,6 @@ DGtal::Display3DFactory<Space, KSpace>::drawWithColorMap(Display3D<Space, KSpace
     ASSERT( kform.myCalculus );
 
     typedef typename Calculus::Scalar Scalar;
-    typedef typename Calculus::KSpace KSpace;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
 
