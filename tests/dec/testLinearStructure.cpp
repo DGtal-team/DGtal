@@ -470,7 +470,8 @@ void test_manual_operators_2d()
             trace.info() << cell
                 << " " << dim
                 << " " << signed_cell
-                << " " << property.size_ratio
+                << " " << property.primal_size
+                << " " << property.dual_size
                 << " " << property.index
                 << " " << (property.flipped ? "negative" : "positive")
                 << endl;
@@ -525,7 +526,8 @@ void test_manual_operators_2d()
             trace.info() << cell
                 << " " << dim
                 << " " << signed_cell
-                << " " << property.size_ratio
+                << " " << property.primal_size
+                << " " << property.dual_size
                 << " " << property.index
                 << " " << (property.flipped ? "negative" : "positive")
                 << endl;
