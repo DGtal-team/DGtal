@@ -82,14 +82,15 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& _signed_cell, const Scalar& _size_ratio)
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& signed_cell, const Scalar& primal_size, const Scalar& dual_size)
 {
-    const Cell cell = myKSpace.unsigns(_signed_cell);
+    const Cell cell = myKSpace.unsigns(signed_cell);
     const DGtal::Dimension cell_dim = myKSpace.uDim(cell);
     Property property;
+    property.primal_size = primal_size;
+    property.dual_size = dual_size;
     property.index = std::numeric_limits<Index>::max();
-    property.size_ratio = _size_ratio;
-    property.flipped = ( myKSpace.sSign(_signed_cell) == KSpace::NEG );
+    property.flipped = ( myKSpace.sSign(signed_cell) == KSpace::NEG );
 
     ASSERT_MSG( cell_dim >= 0 && cell_dim <= dimEmbedded, "wrong cell dimension");
     ASSERT_MSG( cell_dim != 0 || !property.flipped , "can't insert negative 0-cells" );
@@ -99,8 +100,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     if (!insert_pair.second) insert_pair.first->second = property;
 
     ASSERT( insert_pair.first->first == cell );
+    ASSERT( insert_pair.first->second.dual_size == property.dual_size );
+    ASSERT( insert_pair.first->second.primal_size == property.primal_size );
     ASSERT( insert_pair.first->second.index == property.index );
-    ASSERT( insert_pair.first->second.size_ratio == property.size_ratio );
     ASSERT( insert_pair.first->second.flipped == property.flipped );
 
     myIndexesNeedUpdate = true;
@@ -111,12 +113,15 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 void
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::resetSizeRatios()
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::resetSizes()
 {
     for (typename Properties::iterator pi=myCellProperties.begin(), pe=myCellProperties.end(); pi!=pe; pi++)
-        pi->second.size_ratio = 1;
+    {
+        pi->second.primal_size = 1;
+        pi->second.dual_size = 1;
+    }
 
-    myCachedOperatorsNeedUpdate = true; // FIXME not sure if needed
+    myCachedOperatorsNeedUpdate = true;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
@@ -290,7 +295,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
         ASSERT( iter_property != myCellProperties.end() );
         ASSERT( iter_property->second.index == index );
 
-        const Scalar size_ratio = ( duality == DGtal::PRIMAL ? iter_property->second.size_ratio : 1/iter_property->second.size_ratio );
+        const Scalar size_ratio = ( duality == DGtal::PRIMAL ?
+            iter_property->second.dual_size/iter_property->second.primal_size :
+            iter_property->second.primal_size/iter_property->second.dual_size );
         triplets.push_back( Triplet(index, index, hodgeSign(cell, duality) * size_ratio) );
     }
 
