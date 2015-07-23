@@ -40,6 +40,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Scalar Scalar;
+    typedef typename Calculus::Index Index;
     typedef typename Calculus::Point Point;
     typedef typename Calculus::Property Property;
     typedef typename Calculus::Properties Properties;
@@ -81,8 +82,10 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         if (!add_border && normalized_size < 1) continue;
 
         Property property;
+        property.primal_size = 1;
+        property.dual_size = normalized_size;
+        property.index = std::numeric_limits<Index>::max();
         property.flipped = false;
-        property.size_ratio = normalized_size;
 
         calculus.myCellProperties[cell] = property;
     }
