@@ -552,7 +552,7 @@ int main(int argc, char* argv[])
         const Calculus2D calculus_2d_factory_weighed = CalculusFactory::createFromNSCells<2>(ncells_2d_factory.begin(), ncells_2d_factory.end(), true);
         //! [embedding_2d_factory_2d]
         Calculus2D calculus_2d_factory = calculus_2d_factory_weighed;
-        calculus_2d_factory.resetSizeRatios();
+        calculus_2d_factory.resetSizes();
         trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
 
         SCells2D cells_2d_manual;
@@ -718,7 +718,7 @@ int main(int argc, char* argv[])
         const Calculus3D calculus_3d_factory_weighed = CalculusFactory::createFromNSCells<2>(ncells_3d_factory.begin(), ncells_3d_factory.end(), true);
         //! [embedding_2d_factory_3d]
         Calculus3D calculus_3d_factory = calculus_3d_factory_weighed;
-        calculus_3d_factory.resetSizeRatios();
+        calculus_3d_factory.resetSizes();
         trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
 
         SCells3D cells_3d_manual;
