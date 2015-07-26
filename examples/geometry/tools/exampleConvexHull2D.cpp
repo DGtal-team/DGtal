@@ -45,7 +45,7 @@
 
 #include "DGtal/topology/DigitalSetBoundary.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/topology/DepthFirstVisitor.h"
+#include "DGtal/graph/DepthFirstVisitor.h"
 
 #include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
