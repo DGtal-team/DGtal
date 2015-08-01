@@ -96,7 +96,7 @@ script:
 # Coverage
 ############
 after_script:
-  - if [ $COVERAGE == "true" ]; then make lcov; fi
+  - if [ $COVERAGE == "true" ]; then rm tests/geometry/curves/CMakeFiles/testArithmeticalDSL.dir/testArithmeticalDSL.cpp.gcda ; make lcov; fi
   - if [ $COVERAGE == "true" ]; then coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info; fi
 
 
