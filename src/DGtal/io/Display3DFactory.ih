@@ -89,6 +89,8 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
         }
     }
 
+    if (cmap_min == cmap_max) cmap_max += 1;
+
     typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_JET> ColorMap;
     const ColorMap color_map(cmap_min, cmap_max);
 
@@ -105,7 +107,6 @@ DGtal::Display3DFactory<Space, KSpace>::drawWithColorMap(Display3D<Space, KSpace
     ASSERT( kform.myCalculus );
 
     typedef typename Calculus::Scalar Scalar;
-    typedef typename Calculus::KSpace KSpace;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
 
@@ -115,7 +116,7 @@ DGtal::Display3DFactory<Space, KSpace>::drawWithColorMap(Display3D<Space, KSpace
         const Scalar displayed_value = kform.myContainer(index);
 
         if (std::isfinite(displayed_value)) display << DGtal::CustomColors3D(DGtal::Color::Black, colormap(displayed_value) );
-        else display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
+        else continue;
 
         display << displayed_cell;
     }

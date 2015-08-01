@@ -108,7 +108,24 @@ DGtal::VectorField<Calculus, duality>::normalized(const typename Calculus::Scala
 
 template <typename Calculus, DGtal::Duality duality>
 DGtal::KForm<Calculus, 0, duality>
-DGtal::VectorField<Calculus, duality>::extractZeroForm(const DGtal::Dimension& dim) const
+DGtal::VectorField<Calculus, duality>::intensity(const typename Vector::NormType norm_type) const
+{
+    typedef KForm<Calculus, 0, duality> ZeroForm;
+
+    ZeroForm zero_form(*myCalculus);
+
+    for (typename Calculus::Index index=0; index<zero_form.length(); index++)
+    {
+        const Vector vector = getVector(index);
+        zero_form.myContainer(index) = vector.norm(norm_type);
+    }
+
+    return zero_form;
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::KForm<Calculus, 0, duality>
+DGtal::VectorField<Calculus, duality>::coordAlongDirection(const DGtal::Dimension& dim) const
 {
     ASSERT( dim < Calculus::dimensionAmbient );
 
@@ -185,6 +202,13 @@ DGtal::VectorField<Calculus, duality>
 DGtal::operator*(const typename Calculus::Scalar& _scalar, const DGtal::VectorField<Calculus, duality>& _vector_field)
 {
     return DGtal::VectorField<Calculus, duality>(*_vector_field.myCalculus, _scalar * _vector_field.myCoordinates);
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::operator-(const DGtal::VectorField<Calculus, duality>& _vector_field)
+{
+    return DGtal::VectorField<Calculus, duality>(*_vector_field.myCalculus, -_vector_field.myCoordinates);
 }
 
 //                                                                           //

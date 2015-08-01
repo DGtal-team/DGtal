@@ -42,6 +42,17 @@
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
  - Mutable iterator on DiscreteExteriorCalculus.
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
+ - Unary minus operators for k-forms, vector fields and linear operators.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Introduction of .updateIndexes() that needs to be called after any
+   call to .insertSCell() or .eraseCell().
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Transpose of linear operators.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Intensity operator on vector fields.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Reorder operators to remap indexes.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
 
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a
@@ -52,8 +63,12 @@
   WITH_PATATE=true): http://patate.gforge.inria.fr/html/. See
   SphereFittingEstimator (David Coeurjolly,
   [#929](https://github.com/DGtal-team/DGtal/pull/929))
- - Algorithm to compute the union of two DSSs in
-	logarithmic time (Isabelle Sivignon, [#949](https://github.com/DGtal-team/DGtal/pull/949))
+ - Algorithm to compute the union of two DSSs in logarithmic time
+	(Isabelle Sivignon,
+	[#949](https://github.com/DGtal-team/DGtal/pull/949))
+ - InexactPredicateLpSeparableMetric class is now templated by an
+   EuclideanRing type. (David Coeurjolly,
+   [#1017](https://github.com/DGtal-team/DGtal/pull/1017))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
@@ -68,6 +83,9 @@
    (https://github.com/DGtal-team/DGtal/pull/1001))
 
 - *IO Package*
+ - Fix RawWriter and RawReader. Added templated generic RawReader::importRaw
+   and RawWriter::exportRaw.
+   (Pierre Gueth [#1010](https://github.com/DGtal-team/DGtal/pull/1010))
  - New 2D DEC board style with orientated cells.
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - Limited interaction added to QGLViewer Viewer3D class. The user
@@ -94,6 +112,11 @@
  Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983))
  - Board2D now supports quadratic Bezier curve drawing. (Tristan Roussillon,
   [#1002](https://github.com/DGtal-team/DGtal/pull/1002))
+ - MeshWriter class can now export OBJ file including colors. (Bertrand Kerautret,
+  [#1016](https://github.com/DGtal-team/DGtal/pull/1016))
+ - Viewer3D: Shift-L / L key binding added to save and restore camera settings. (Bertrand Kerautret,
+  [#1024](https://github.com/DGtal-team/DGtal/pull/1024))
+
 
 - *Kernel Package*
   - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
@@ -125,7 +148,6 @@
  - Algorithm to compute the fraction of smallest denominator in between
 	two irreducible fractions (Isabelle Sivignon [#949](https://github.com/DGtal-team/DGtal/pull/949))
 
-
 ## Bug Fixes
 
 - *Configuration*
@@ -134,7 +156,9 @@
  Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
  - Backport of changes in google/benchmarck API for micro-benchmarking
    (David Coeurjolly, [#1014](https://github.com/DGtal-team/DGtal/pull/1014))
-
+ - New travis configuration file to enable new travis Docker based
+   container system (David Coeurjolly, [#1030](https://github.com/DGtal-team/DGtal/pull/1030))
+   
 - *Base Package*
  - Fix bug with LabelledMap copy constructor and copy iterator. (Roland
    Denis, [#973](https://github.com/DGtal-team/DGtal/pull/973))
@@ -182,6 +206,8 @@
    [#991](https://github.com/DGtal-team/DGtal/pull/991))
  - Fix memory leaks present in the Viewer3d.  (Bertrand Kerautret,
    [#995](https://github.com/DGtal-team/DGtal/pull/995))
+ - Fix issues in OBJ color export when exporting voxels. (David
+   Coeurjolly, [#1022](https://github.com/DGtal-team/DGtal/pull/1022))
 
 
 - *Kernel Package*
