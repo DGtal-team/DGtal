@@ -198,6 +198,7 @@ namespace DGtal
      (potential) hyperplan) lying below setIn
      \param[out] result         the furthest point wrt. searchDirection
      \param[out] distance       the distance to the origin
+     \param[out] nbIn           the number of points in the SetIn
      */
     template <typename ConstIteratorOnPoints>
     void findSupportPoint(const Vector & searchDirection,
@@ -208,7 +209,8 @@ namespace DGtal
                           ConstIteratorOnPoints & setBelowBegin,
                           ConstIteratorOnPoints & setBelowEnd,
                           Point & result,
-                          double & distance);
+                          double & distance,
+                          unsigned int nbIn);
   };
   
   
