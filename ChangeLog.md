@@ -156,7 +156,9 @@
  Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
  - Backport of changes in google/benchmarck API for micro-benchmarking
    (David Coeurjolly, [#1014](https://github.com/DGtal-team/DGtal/pull/1014))
-
+ - New travis configuration file to enable new travis Docker based
+   container system (David Coeurjolly, [#1030](https://github.com/DGtal-team/DGtal/pull/1030))
+   
 - *Base Package*
  - Fix bug with LabelledMap copy constructor and copy iterator. (Roland
    Denis, [#973](https://github.com/DGtal-team/DGtal/pull/973))
