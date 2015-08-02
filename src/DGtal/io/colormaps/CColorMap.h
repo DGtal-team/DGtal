@@ -118,10 +118,6 @@ Description of \b concept \b 'CColorMap' <p>
 } // namespace DGtal
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/io/colormaps/CColorMap.ih"
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
