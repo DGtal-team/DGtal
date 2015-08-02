@@ -15,15 +15,14 @@
  **/
 
 /**
- * @file digitalSurfaceSlice.cpp
- * @ingroup Examples
+ * @file exampleGridCurve3d-2.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/06/03
  *
- * An example file for GridCurve ranges in 3d.
+ * An example file for GridCurve, defined as a sequence of 2-scells, in a 3d Khalimsky space.
  *
  * This file is part of the DGtal library.
  */
@@ -62,9 +61,13 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  trace.info() <<  "exampleGridCurve3d: the type can be changed in example source code with  <gridcurve>, <inner>, <outer>, <incident> " << std::endl;
+  trace.info() << "exampleGridCurve3d-2: the type of data to be displayed "
+	       << "may be given as argument as follows: "
+	       << argv[0] << " inner" << endl; 
+  trace.info() << "Available types are: gridcurve (default), inner, outer, incident" << endl;
 
-  string type = "gridcurve";
+  string type = (argc > 1) ? string(argv[1]) : "gridcurve";
+  trace.info() << "Chosen type: " << type << endl; 
 
   //vol reading and digital set construction
   trace.beginBlock( "Reading vol file into an image." );
@@ -79,13 +82,6 @@ int main( int argc, char** argv )
   //Khalimsky space construction
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
   KSpace ks;
-/*  bool space_ok = ks.init( image.domain().lowerBound(),
-                           image.domain().upperBound(), true );
-  if (!space_ok)
-    {
-      trace.error() << "Error in the Khamisky space construction."<<std::endl;
-      return 2;
-    }*/
   trace.endBlock();
 
   //digital surface construction
@@ -131,7 +127,7 @@ int main( int argc, char** argv )
   // for 3D display with Viewer3D
   QApplication application(argc,argv);
   trace.beginBlock( "Display all with QGLViewer." );
-  Viewer3D<> viewer;
+  Viewer3D<Space, KSpace> viewer(ks);
   viewer.show();
   // Displaying all the surfels in transparent mode
   viewer << SetMode3D( surf.className(), "Transparent");
@@ -141,7 +137,7 @@ int main( int argc, char** argv )
 
 
   // Displaying slice
-  viewer << Viewer3D<>::shiftSurfelVisu;
+  viewer << Viewer3D<Space, KSpace>::shiftSurfelVisu;
   viewer << SetMode3D( surf.className(), "");
   viewer.setFillColor( Color( 50, 50, 255 ) );
 
@@ -163,10 +159,10 @@ int main( int argc, char** argv )
     }
   else
     {
-      trace.info() << "Display type not known. Use option -h" << std::endl;
+      trace.info() << "Display type not known." << std::endl;
     }
 
-  viewer << Viewer3D<>::updateDisplay;
+  viewer << Viewer3D<Space, KSpace>::updateDisplay;
   trace.endBlock();
 
   return application.exec();

@@ -135,6 +135,13 @@ DGtal::operator*(const typename Calculus::Scalar& scalar, const DGtal::KForm<Cal
     return DGtal::KForm<Calculus, order, duality>(*form.myCalculus, scalar * form.myContainer);
 }
 
+template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+DGtal::KForm<Calculus, order, duality>
+DGtal::operator-(const DGtal::KForm<Calculus, order, duality>& form)
+{
+    return DGtal::KForm<Calculus, order, duality>(*form.myCalculus, -form.myContainer);
+}
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -22,7 +22,7 @@
  *
  * @date 2012/06/03
  *
- * @brief An example file for GridCurve in 3d.
+ * An example file for GridCurve, defined as a sequence of 1-scells, in a 3d Khalimsky space.
  *
  * This file is part of the DGtal library.
  */
@@ -36,7 +36,7 @@
 #include "DGtal/geometry/curves/GridCurve.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
-  #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -52,10 +52,13 @@ int main( int argc, char** argv )
 {
 
 
-   trace.info() <<  "exampleGridCurve3d: the type can be changed in example source code with  <gridcurve>, <inner>, <outer>, <incident> " << std::endl;
+  trace.info() << "exampleGridCurve3d: the type of data to be displayed "
+	       << "may be given as argument as follows: "
+	       << argv[0] << " scells" << endl; 
+  trace.info() << "Available types are: gridcurve (default), scells, points, midpoints, arrows" << endl;
 
-  string type = "gridcurve";
-
+  string type = (argc > 1) ? string(argv[1]) : "gridcurve";
+  trace.info() << "Chosen type: " << type << endl; 
 
   //curve
   string sinus = examplesPath + "samples/sinus.dat";
@@ -79,9 +82,9 @@ int main( int argc, char** argv )
   //! [GridCurveFromDataFile]
 
   bool flag = false;
-  #ifdef WITH_VISU3D_QGLVIEWER
+#ifdef WITH_VISU3D_QGLVIEWER
   QApplication application(argc,argv);
-  Viewer3D<> viewer;
+  Viewer3D<Space,K3> viewer(ks);
   viewer.show();
 
   if (type == "gridcurve")
@@ -106,11 +109,11 @@ int main( int argc, char** argv )
     }
   else
     {
-      trace.info() << "Display type not known. Use option -h" << std::endl;
+      trace.info() << "Display type not known." << std::endl;
     }
-  viewer << Viewer3D<>::updateDisplay;
+  viewer << Viewer3D<Space,K3>::updateDisplay;
   flag = application.exec();
-   #endif
+#endif
 
   return flag;
 }

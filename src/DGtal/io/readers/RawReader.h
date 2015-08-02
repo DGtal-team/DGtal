@@ -57,7 +57,7 @@ namespace DGtal
    * Description of template class 'RawReader' <p>
    * \brief Aim: implements methods to read a "Vol" file format.
    *
-   * The main import method "importRaw8" returns an instance of the template 
+   * The main import method "importRaw8" returns an instance of the template
    * parameter TImageContainer.
    *
    * Example usage:
@@ -69,7 +69,7 @@ namespace DGtal
    *
    * //Default image container = STLVector
    * typedef ImageSelector<TDomain, int>::Type Image;
-   * 
+   *
    * RawReader<Image> reader;
    * Image image = reader.importRaw8("data.raw");
    *
@@ -77,91 +77,107 @@ namespace DGtal
    * ...
    * @endcode
    *
-   * @tparam TImageContainer the image container to use. 
+   * @tparam TImageContainer the image container to use.
    *
    * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
    *
    * @see testRawReader.cpp
    */
   template <typename TImageContainer,
-	    typename TFunctor = functors::Cast< typename TImageContainer::Value > >
+      typename TFunctor = functors::Cast< typename TImageContainer::Value > >
   struct RawReader
   {
     // ----------------------- Standard services ------------------------------
   public:
 
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Value Value;    
+    typedef typename TImageContainer::Value Value;
     typedef typename TImageContainer::Domain::Vector Vector;
     typedef TFunctor Functor;
 
+    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || (ImageContainer::Domain::dimension == 3) );
 
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;        
-    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
-       (ImageContainer::Domain::dimension == 3));
-
-
-
-    /** 
-     * Main method to import a Raw (8bits) into an instance of the 
+    /**
+     * Method to import a Raw into an instance of the
      * template parameter ImageContainer.
-     * 
+     *
+     * @tparam Word read pixel type.
      * @param filename the file name to import.
      * @param extent the size of the raw data set.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
-     * default set to functors::Cast < TImageContainer::Value > .
+     * default set to functors::Cast < TImageContainer::Value > ).
+     * aFunctor must accept Word as input.
+     * @return an instance of the ImageContainer.
+     */
+    template <typename Word>
+    static ImageContainer importRaw(const std::string & filename,
+             const Vector & extent,
+             const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+
+    /**
+     * Method to import a Raw (unsigned 8bits little endian, uint8_t, unsigned char) into an instance of the
+     * template parameter ImageContainer.
      *
- 
+     * @param filename the file name to import.
+     * @param extent the size of the raw data set.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (by
+     * default set to functors::Cast < TImageContainer::Value > ).
+     * aFunctor must accept uint8_t as input.
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importRaw8(const std::string & filename,
-				     const Vector & extent,
-				     const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+             const Vector & extent,
+             const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
 
-
-    /** 
-     * Main method to import a Raw (32bits) into an instance of the 
+    /**
+     * Method to import a Raw (unsigned 16bits little endian, uint16_t, unsigned short) into an instance of the
      * template parameter ImageContainer.
-     * 
+     *
      * @param filename the file name to import.
      * @param extent the size of the raw data set.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
-     * default set to functors::Cast < TImageContainer::Value > .
+     * default set to functors::Cast < TImageContainer::Value > ).
+     * aFunctor must accept uint16_t as input.
+     * @return an instance of the ImageContainer.
+     */
+    static ImageContainer importRaw16(const std::string & filename,
+             const Vector & extent,
+             const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+
+    /**
+     * Method to import a Raw (unsigned 32bits little endian, uint32_t, unsigned int) into an instance of the
+     * template parameter ImageContainer.
      *
- 
+     * @param filename the file name to import.
+     * @param extent the size of the raw data set.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (by
+     * default set to functors::Cast < TImageContainer::Value > ).
+     * aFunctor must accept uint32_t as input.
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importRaw32(const std::string & filename,
-				     const Vector & extent,
-				     const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+             const Vector & extent,
+             const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
 
 
-    
   private:
 
-    /** 
-     * Generic read word (binary mode) in little-endian mode.
-     * 
-     * @param fin input FILE.
-     * @param aValue value to write.
-     * 
-     * @return modified stream.
-     */
-    template <typename Word>
-    static
-    FILE* read_word( FILE* fin, Word& aValue )
-    {
-      aValue = 0;
-      for (unsigned size = 0; size < sizeof( Word ); ++size)
-	aValue |= getc(fin) << (8 * size);
-      return fin;
-    }
-
-    
   }; // end of class RawReader
 
+  /**
+   * Generic read word (binary mode) in little-endian mode.
+   *
+   * @param fin input FILE.
+   * @param aValue value to write.
+   *
+   * @return modified stream.
+   */
+  template <typename Word>
+  FILE* raw_reader_read_word( FILE* fin, Word& aValue );
 
 } // namespace DGtal
 
