@@ -179,7 +179,6 @@ DGtal::Display2DFactory::drawWithColorMap(DGtal::Board2D& board, const DGtal::KF
 {
     typedef typename TCalculus::Scalar Scalar;
     typedef typename TCalculus::SCell SCell;
-    typedef typename TCalculus::KSpace KSpace;
 
     for (typename TCalculus::Index index=0; index<kform.length(); index++)
     {

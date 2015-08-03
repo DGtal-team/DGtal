@@ -95,7 +95,7 @@
 #define UNUSED(identifier) /* identifier */
 #else
 #define UNUSED_PARAM  param
-#define UNUSED(identifier)  identifier
+#define UNUSED(identifier) /* identifier */
 #endif
 
 
