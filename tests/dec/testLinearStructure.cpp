@@ -42,38 +42,42 @@ void test_linear_structure()
     trace.beginBlock("creating dec problem with neumann border condition");
 
     //! [neumann-creation]
+    typedef DiscreteExteriorCalculus<1, 2, EigenLinearAlgebraBackend> Calculus;
+
+    typedef std::list<Calculus::SCell> SCells;
+    SCells cells;
+
+    // fill cells container
+    {
+        const Calculus::KSpace kspace;
+
+        for (int kk=20; kk>0; kk--) cells.push_back( kspace.sCell(Point(0,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS) );
+        for (int kk=0; kk<10; kk++) cells.push_back( kspace.sCell(Point(kk,0)) );
+        for (int kk=0; kk<10; kk++) cells.push_back( kspace.sCell(Point(10,kk)) );
+        cells.push_back( kspace.sCell(Point(10,10)) );
+        cells.push_back( kspace.sCell(Point(9,10), Calculus::KSpace::NEG) );
+        for (int kk=10; kk<20; kk++) cells.push_back( kspace.sCell(Point(8,kk)) );
+        for (int kk=8; kk<12; kk++) cells.push_back( kspace.sCell(Point(kk,20)) );
+        for (int kk=20; kk>0; kk--) cells.push_back( kspace.sCell(Point(12,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS) );
+        cells.push_back( kspace.sCell(Point(12,0)) );
+    }
+
+    // fill calculus
     const Domain domain(Point(-1,-1), Point(10,10));
 
-    typedef DiscreteExteriorCalculus<1, 2, EigenLinearAlgebraBackend> Calculus;
+    // create DEC structure
     Calculus calculus;
     calculus.initKSpace<Domain>(domain);
-
-    for (int kk=20; kk>0; kk--)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(0,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS) );
-    for (int kk=0; kk<10; kk++)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,0)) );
-    for (int kk=0; kk<10; kk++)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(10,10)) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(9,10), Calculus::KSpace::NEG) );
-    for (int kk=10; kk<20; kk++)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(8,kk)) );
-    for (int kk=8; kk<12; kk++)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,20)) );
-    for (int kk=20; kk>0; kk--)
-        calculus.insertSCell( calculus.myKSpace.sCell(Point(12,kk), kk%2 != 0 ? Calculus::KSpace::NEG : Calculus::KSpace::POS) );
-    calculus.insertSCell( calculus.myKSpace.sCell(Point(12,0)) );
+    for (SCells::const_iterator ci=cells.begin(), ce=cells.end(); ci!=ce; ci++) calculus.insertSCell( *ci );
+    calculus.updateIndexes();
     //! [neumann-creation]
 
     trace.info() << calculus << endl;
 
     //! [input-dirac]
-    const Calculus::Index dirac_position = 17;
     Calculus::PrimalForm0 dirac(calculus);
-    dirac.myContainer(dirac_position) = 1;
+    dirac.myContainer(25) = 1;
     //! [input-dirac]
-
-    trace.info() << "dirac_position = " << dirac_position << endl;
 
     {
         Board2D board;
@@ -89,12 +93,13 @@ void test_linear_structure()
         trace.beginBlock("solving problem with neumann border condition using sparse qr solver");
 
         //! [neumann-laplace-definition]
-        const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
         const Calculus::PrimalIdentity0 laplace = calculus.laplace<PRIMAL>();
         //! [neumann-laplace-definition]
-        trace.info() << "d0 = " << d0 << endl;
         trace.info() << "laplace = " << laplace << endl;
-        trace.info() << Eigen::MatrixXd(laplace.myContainer) << endl;
+
+        const Calculus::PrimalIdentity0 reorder = calculus.reorder<0, PRIMAL>(cells.begin(), cells.end());
+        const Calculus::PrimalIdentity0 laplace_ordered = reorder * laplace * reorder.transpose();
+        trace.info() << Eigen::MatrixXd(laplace_ordered.myContainer) << endl;
 
         //! [neumann-solve]
         typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
@@ -104,11 +109,13 @@ void test_linear_structure()
         solver.compute(laplace);
         Calculus::PrimalForm0 solved_solution = solver.solve(dirac);
         //! [neumann-solve]
-        solved_solution.myContainer.array() -= solved_solution.myContainer(0);
+        solved_solution.myContainer.array() -= solved_solution.myContainer(38);
         solved_solution.myContainer.array() /= solved_solution.myContainer.maxCoeff();
+        const Calculus::PrimalForm0 solved_solution_ordered = reorder * solved_solution;
 
         Calculus::PrimalForm0 analytic_solution(calculus);
         {
+            const Calculus::Index dirac_position = 17;
             const Calculus::Index length = analytic_solution.length();
             for (Calculus::Index kk=0; kk<length; kk++)
             {
@@ -128,14 +135,10 @@ void test_linear_structure()
         {
             std::ofstream handle("linear_structure_neumann.dat");
             for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
-                handle << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
+                handle << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
         }
 
-        for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
-        {
-            trace.info() << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
-            FATAL_ERROR( std::abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5 );
-        }
+        FATAL_ERROR( (solved_solution_ordered-analytic_solution).myContainer.array().abs().maxCoeff() < 1e-5 );
 
         {
             Board2D board;
@@ -146,7 +149,7 @@ void test_linear_structure()
         }
 
         {
-            Calculus::PrimalForm1 solved_solution_gradient = d0 * solved_solution;
+            Calculus::PrimalForm1 solved_solution_gradient = calculus.derivative<0, PRIMAL>() * solved_solution;
             Board2D board;
             board << domain;
             board << calculus;
@@ -164,6 +167,7 @@ void test_linear_structure()
     //! [dirichlet-creation]
     calculus.insertSCell( calculus.myKSpace.sCell(Point(13,0)) );
     calculus.insertSCell( calculus.myKSpace.sCell(Point(1,20), Calculus::KSpace::NEG) );
+    calculus.updateIndexes();
     //! [dirichlet-creation]
 
     {
@@ -180,12 +184,13 @@ void test_linear_structure()
         trace.beginBlock("solving problem with dirichlet border condition using sparse qr solver");
 
         //! [dirichlet-laplace-definition]
-        const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
         const Calculus::PrimalIdentity0 laplace = calculus.laplace<PRIMAL>();
         //! [dirichlet-laplace-definition]
-        trace.info() << "d0 = " << d0 << endl;
         trace.info() << "laplace = " << laplace << endl;
-        trace.info() << Eigen::MatrixXd(laplace.myContainer) << endl;
+
+        const Calculus::PrimalIdentity0 reorder = calculus.reorder<0, PRIMAL>(cells.begin(), cells.end());
+        const Calculus::PrimalIdentity0 laplace_ordered = reorder * laplace * reorder.transpose();
+        trace.info() << Eigen::MatrixXd(laplace_ordered.myContainer) << endl;
 
         //! [dirichlet-solve]
         typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
@@ -196,9 +201,11 @@ void test_linear_structure()
         Calculus::PrimalForm0 solved_solution = solver.solve(dirac);
         //! [dirichlet-solve]
         solved_solution.myContainer.array() /= solved_solution.myContainer.maxCoeff();
+        const Calculus::PrimalForm0 solved_solution_ordered = reorder * solved_solution;
 
         Calculus::PrimalForm0 analytic_solution(calculus);
         {
+            const Calculus::Index dirac_position = 17;
             const Calculus::Index length = analytic_solution.length();
             for (Calculus::Index kk=0; kk<length; kk++)
             {
@@ -216,14 +223,10 @@ void test_linear_structure()
         {
             std::ofstream handle("linear_structure_dirichlet.dat");
             for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
-                handle << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
+                handle << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
         }
 
-        for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
-        {
-            trace.info() << solved_solution.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
-            FATAL_ERROR( std::abs(solved_solution.myContainer(kk) - analytic_solution.myContainer(kk)) < 1e-5 );
-        }
+        FATAL_ERROR( (solved_solution_ordered-analytic_solution).myContainer.array().abs().maxCoeff() < 1e-5 );
 
         {
             Board2D board;
@@ -234,7 +237,7 @@ void test_linear_structure()
         }
 
         {
-            Calculus::PrimalForm1 solved_solution_gradient = d0 * solved_solution;
+            Calculus::PrimalForm1 solved_solution_gradient = calculus.derivative<0, PRIMAL>() * solved_solution;
 
             Board2D board;
             board << domain;
@@ -269,6 +272,7 @@ void test_linear_ring()
     for (int kk=-8; kk<10; kk++) calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,10), kk%2 == 0 ? Calculus::KSpace::POS : Calculus::KSpace::NEG) );
     for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(10,kk)) );
     for (int kk=10; kk>-8; kk--) calculus.insertSCell( calculus.myKSpace.sCell(Point(kk,-8)) );
+    calculus.updateIndexes();
 
     {
         trace.info() << calculus << endl;
@@ -294,18 +298,15 @@ void test_linear_ring()
     display_operator_info("laplace", laplace);
 
     const int laplace_size = calculus.kFormLength(0, PRIMAL);
-    Eigen::MatrixXd laplace_th = Eigen::MatrixXd::Zero(laplace_size, laplace_size);
+    const Eigen::MatrixXd laplace_dense(laplace.myContainer);
+
     for (int ii=0; ii<laplace_size; ii++)
-    for (int jj=0; jj<laplace_size; jj++)
-    {
-        int delta = ii>jj ? ii-jj : jj-ii;
-        if (delta == 0) { laplace_th(ii,jj) = 2; continue; }
-        if (delta == 1 || delta == laplace_size-1) { laplace_th(ii,jj) = -1; continue; }
-    }
+        FATAL_ERROR( laplace_dense(ii,ii) == 2 );
+
+    FATAL_ERROR( laplace_dense.array().rowwise().sum().abs().sum() == 0 );
+    FATAL_ERROR( laplace_dense.transpose() == laplace_dense );
 
     trace.endBlock();
-
-    FATAL_ERROR( Eigen::MatrixXd(laplace.myContainer) == laplace_th );
 }
 
 void test_manual_operators_3d()
@@ -340,6 +341,8 @@ void test_manual_operators_3d()
         // 3-cells
         calculus.insertSCell( calculus.myKSpace.sCell(Z3i::Point(1,1,1)) );
 
+        calculus.updateIndexes();
+
         trace.info() << calculus << endl;
     }
 
@@ -353,11 +356,11 @@ void test_manual_operators_3d()
 
         Eigen::MatrixXd d0_th(5, 2);
         d0_th <<
-            1,  0,
-            1,  0,
-            1, -1,
-            0, -1,
-            0, -1;
+           -1,  0,
+           -1,  0,
+           -1,  1,
+            0,  1,
+            0,  1;
 
         FATAL_ERROR( Eigen::MatrixXd(d0.myContainer) == d0_th );
         FATAL_ERROR( Eigen::MatrixXd(d2p.myContainer) == d0_th.transpose() );
@@ -371,10 +374,10 @@ void test_manual_operators_3d()
 
         Eigen::MatrixXd d1_th(4, 5);
         d1_th <<
-             1, -1,  0,  0,  0,
-             0,  1, -1,  0,  1,
-             0,  0,  0,  1, -1,
-            -1,  0,  1, -1,  0;
+             0, -1,  1,  0, -1,
+             1,  0, -1,  1,  0,
+             0,  0,  0, -1,  1,
+            -1,  1,  0,  0,  0;
 
         FATAL_ERROR( Eigen::MatrixXd(d1.myContainer) == d1_th );
         FATAL_ERROR( Eigen::MatrixXd(d1p.myContainer) == d1_th.transpose() );
@@ -451,8 +454,30 @@ void test_manual_operators_2d()
         primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(3,3)) );
         primal_calculus.insertSCell( primal_calculus.myKSpace.sCell(Point(3,5)) );
 
+        primal_calculus.updateIndexes();
+
+        trace.beginBlock("primal calculus");
         trace.info() << primal_calculus << endl;
+        for (Calculus::ConstIterator iter_property=primal_calculus.begin(), iter_property_end=primal_calculus.end(); iter_property!=iter_property_end; iter_property++)
+        {
+            const Calculus::Cell cell = iter_property->first;
+            const Calculus::Property property = iter_property->second;
+            const Dimension dim = primal_calculus.myKSpace.uDim(cell);
+            const Calculus::SCell signed_cell = primal_calculus.myKSpace.signs(cell, property.flipped ? Calculus::KSpace::NEG : Calculus::KSpace::POS);
+
+            ASSERT( signed_cell == primal_calculus.getSCell(dim, PRIMAL, property.index) );
+
+            trace.info() << cell
+                << " " << dim
+                << " " << signed_cell
+                << " " << property.size_ratio
+                << " " << property.index
+                << " " << (property.flipped ? "negative" : "positive")
+                << endl;
+        }
+        trace.endBlock();
     }
+
 
     Calculus dual_calculus;
     dual_calculus.initKSpace<Domain>(domain);
@@ -484,9 +509,29 @@ void test_manual_operators_2d()
         dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(8,4)) );
         dual_calculus.insertSCell( dual_calculus.myKSpace.sCell(Point(8,6)) );
 
-        trace.info() << dual_calculus << endl;
-    }
+        dual_calculus.updateIndexes();
 
+        trace.beginBlock("dual calculus");
+        trace.info() << dual_calculus << endl;
+        for (Calculus::ConstIterator iter_property=dual_calculus.begin(), iter_property_end=dual_calculus.end(); iter_property!=iter_property_end; iter_property++)
+        {
+            const Calculus::Cell cell = iter_property->first;
+            const Calculus::Property property = iter_property->second;
+            const Dimension dim = dual_calculus.myKSpace.uDim(cell);
+            const Calculus::SCell signed_cell = dual_calculus.myKSpace.signs(cell, property.flipped ? Calculus::KSpace::NEG : Calculus::KSpace::POS);
+
+            ASSERT( signed_cell == dual_calculus.getSCell(dim, PRIMAL, property.index) );
+
+            trace.info() << cell
+                << " " << dim
+                << " " << signed_cell
+                << " " << property.size_ratio
+                << " " << property.index
+                << " " << (property.flipped ? "negative" : "positive")
+                << endl;
+        }
+        trace.endBlock();
+    }
 
     {
         Board2D board;
@@ -494,25 +539,6 @@ void test_manual_operators_2d()
         board << primal_calculus;
         board << dual_calculus;
         board.saveSVG("operators_structure.svg");
-    }
-
-    const Calculus::Properties properties = primal_calculus.getProperties();
-    for (Calculus::ConstIterator iter_property=properties.begin(), iter_property_end=properties.end(); iter_property!=iter_property_end; iter_property++)
-    {
-        const Calculus::Cell cell = iter_property->first;
-        const Calculus::Property property = iter_property->second;
-        const Dimension dim = primal_calculus.myKSpace.uDim(cell);
-        const Calculus::SCell signed_cell = primal_calculus.myKSpace.signs(cell, property.flipped ? Calculus::KSpace::NEG : Calculus::KSpace::POS);
-
-        ASSERT( signed_cell == primal_calculus.getSCell(dim, PRIMAL, property.index) );
-
-        trace.info() << cell
-            << " " << dim
-            << " " << signed_cell
-            << " " << property.size_ratio
-            << " " << property.index
-            << " " << (property.flipped ? "flipped" : "normal")
-            << endl;
     }
 
     trace.beginBlock("base operators");
@@ -525,16 +551,25 @@ void test_manual_operators_2d()
 
         Eigen::MatrixXd d0_th(7, 6);
         d0_th <<
-             1, -1,  0,  0,  0,  0,
-            -1,  0,  1,  0,  0,  0,
-             0,  1,  0, -1,  0,  0,
+            -1,  1,  0,  0,  0,  0,
+             1,  0,  0, -1,  0,  0,
+             0,  0,  1,  0,  0, -1,
+             0,  0,  0,  0, -1,  1,
+             0, -1,  1,  0,  0,  0,
              0,  0, -1,  1,  0,  0,
-             0,  0,  1,  0, -1,  0,
-             0,  0,  0, -1,  0,  1,
-             0,  0,  0,  0,  1, -1;
-
+             0,  0,  0, -1,  1,  0;
         FATAL_ERROR( Eigen::MatrixXd(primal_d0.myContainer) == d0_th );
-        FATAL_ERROR( Eigen::MatrixXd(dual_d0p.myContainer) == -d0_th );
+
+        Eigen::MatrixXd d0p_th(7, 6);
+        d0p_th <<
+             1, -1,  0,  0,  0,  0,
+             0,  0, -1,  1,  0,  0,
+             0,  1,  0, -1,  0,  0,
+             0,  0,  1,  0, -1,  0,
+             0,  0,  0,  0,  1, -1,
+            -1,  0,  1,  0,  0,  0,
+             0,  0,  0, -1,  0,  1;
+        FATAL_ERROR( Eigen::MatrixXd(dual_d0p.myContainer) == d0p_th );
     }
 
     const Calculus::PrimalDerivative1 primal_d1 = primal_calculus.derivative<1, PRIMAL>();
@@ -545,11 +580,15 @@ void test_manual_operators_2d()
 
         Eigen::MatrixXd d1_th(2, 7);
         d1_th <<
-            -1, -1, -1, -1,  0,  0,  0,
-             0,  0,  0,  1,  1,  1,  1;
-
+             1,  1,  0,  0,  1,  1,  0,
+             0,  0, -1, -1,  0, -1, -1;
         FATAL_ERROR( Eigen::MatrixXd(primal_d1.myContainer) == d1_th );
-        FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == -d1_th );
+
+        Eigen::MatrixXd d1p_th(2, 7);
+        d1p_th <<
+            -1, -1, -1,  0,  0, -1,  0,
+             0,  1,  0,  1,  1,  0,  1;
+        FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == d1p_th );
     }
 
     {
@@ -600,11 +639,15 @@ void test_manual_operators_2d()
 
         Eigen::MatrixXd d0p_th_transpose(2, 7);
         d0p_th_transpose <<
-            -1, -1, -1, -1,  0,  0,  0,
-             0,  0,  0,  1,  1,  1,  1;
-
+             1,  1,  0,  0,  1,  1,  0,
+             0,  0, -1, -1,  0, -1, -1;
         FATAL_ERROR( Eigen::MatrixXd(primal_d0p.myContainer) == d0p_th_transpose.transpose() );
-        FATAL_ERROR( Eigen::MatrixXd(dual_d0.myContainer) == d0p_th_transpose.transpose() );
+
+        Eigen::MatrixXd minus_d0_th_transpose(2, 7);
+        minus_d0_th_transpose <<
+            -1, -1, -1,  0,  0, -1,  0,
+             0,  1,  0,  1,  1,  0,  1;
+        FATAL_ERROR( Eigen::MatrixXd(dual_d0.myContainer) == -minus_d0_th_transpose.transpose() );
     }
 
     const Calculus::DualDerivative1 primal_d1p = primal_calculus.derivative<1, DUAL>();
@@ -615,16 +658,25 @@ void test_manual_operators_2d()
 
         Eigen::MatrixXd minus_d1p_th_transpose(7, 6);
         minus_d1p_th_transpose <<
-             1, -1,  0,  0,  0,  0,
-            -1,  0,  1,  0,  0,  0,
-             0,  1,  0, -1,  0,  0,
+            -1,  1,  0,  0,  0,  0,
+             1,  0,  0, -1,  0,  0,
+             0,  0,  1,  0,  0, -1,
+             0,  0,  0,  0, -1,  1,
+             0, -1,  1,  0,  0,  0,
              0,  0, -1,  1,  0,  0,
-             0,  0,  1,  0, -1,  0,
-             0,  0,  0, -1,  0,  1,
-             0,  0,  0,  0,  1, -1;
-
+             0,  0,  0, -1,  1,  0;
         FATAL_ERROR( Eigen::MatrixXd(primal_d1p.myContainer) == -minus_d1p_th_transpose.transpose() );
-        FATAL_ERROR( Eigen::MatrixXd(dual_d1.myContainer) == -minus_d1p_th_transpose.transpose() );
+
+        Eigen::MatrixXd d1_th_transpose(7, 6);
+        d1_th_transpose <<
+             1, -1,  0,  0,  0,  0,
+             0,  0, -1,  1,  0,  0,
+             0,  1,  0, -1,  0,  0,
+             0,  0,  1,  0, -1,  0,
+             0,  0,  0,  0,  1, -1,
+            -1,  0,  1,  0,  0,  0,
+             0,  0,  0, -1,  0,  1;
+        FATAL_ERROR( Eigen::MatrixXd(dual_d1.myContainer) == d1_th_transpose.transpose() );
     }
 
     const Calculus::PrimalHodge1 primal_h1 = primal_calculus.hodge<1, PRIMAL>();
@@ -657,18 +709,20 @@ void test_manual_operators_2d()
     trace.beginBlock("sharp operators");
 
     { // primal sharp
-        display_operator_info("primal #x", primal_calculus.sharpDirectional<PRIMAL, 0>());
-        display_operator_info("dual #xp", dual_calculus.sharpDirectional<DUAL, 0>());
-        display_operator_info("primal #y", primal_calculus.sharpDirectional<PRIMAL, 1>());
-        display_operator_info("dual #yp", dual_calculus.sharpDirectional<DUAL, 1>());
+        display_operator_info("primal #x", primal_calculus.sharpDirectional<PRIMAL>(0));
+        display_operator_info("dual #xp", dual_calculus.sharpDirectional<DUAL>(0));
+        display_operator_info("primal #y", primal_calculus.sharpDirectional<PRIMAL>(1));
+        display_operator_info("dual #yp", dual_calculus.sharpDirectional<DUAL>(1));
 
         {
             Calculus::PrimalForm1::Container dx_container(7);
-            dx_container << -1, 0, 0, 1, 0, 0, -1;
+            dx_container << -1, 0, 0, -1, 0, 1, 0;
             const Calculus::PrimalForm1 primal_dx(primal_calculus, dx_container);
             const Calculus::PrimalVectorField primal_dx_field = primal_calculus.sharp(primal_dx);
 
-            const Calculus::DualForm1 dual_dx(dual_calculus, dx_container);
+            Calculus::PrimalForm1::Container dxp_container(7);
+            dxp_container << 1, -1, 0, 0, 1, 0, 0;
+            const Calculus::DualForm1 dual_dx(dual_calculus, dxp_container);
             const Calculus::DualVectorField dual_dx_field = dual_calculus.sharp(dual_dx);
 
             {
@@ -683,17 +737,19 @@ void test_manual_operators_2d()
 
             FATAL_ERROR( primal_dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
             FATAL_ERROR( primal_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
-            FATAL_ERROR( dual_dx_field.myCoordinates.col(0) == -Eigen::VectorXd::Ones(6) );
+            FATAL_ERROR( dual_dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
             FATAL_ERROR( dual_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
         }
 
         {
             Calculus::PrimalForm1::Container dy_container(7);
-            dy_container << 0, 1, -1, 0, -1, 1, 0;
+            dy_container << 0, 1, 1, 0, -1, 0, -1;
             const Calculus::PrimalForm1 primal_dy(primal_calculus, dy_container);
             const Calculus::PrimalVectorField primal_dy_field = primal_calculus.sharp(primal_dy);
 
-            const Calculus::DualForm1 dual_dy(dual_calculus, dy_container);
+            Calculus::PrimalForm1::Container dyp_container(7);
+            dyp_container << 0, 0, 1, 1, 0, -1, -1;
+            const Calculus::DualForm1 dual_dy(dual_calculus, dyp_container);
             const Calculus::DualVectorField dual_dy_field = dual_calculus.sharp(dual_dy);
 
             {
@@ -709,23 +765,25 @@ void test_manual_operators_2d()
             FATAL_ERROR( primal_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(6) );
             FATAL_ERROR( primal_dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(6) );
             FATAL_ERROR( dual_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(6) );
-            FATAL_ERROR( dual_dy_field.myCoordinates.col(1) == -Eigen::VectorXd::Ones(6) );
+            FATAL_ERROR( dual_dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(6) );
         }
     }
 
     { // dual sharp
-        display_operator_info("primal #xp", primal_calculus.sharpDirectional<DUAL, 0>());
-        display_operator_info("dual #x", dual_calculus.sharpDirectional<PRIMAL, 0>());
-        display_operator_info("primal #yp", primal_calculus.sharpDirectional<DUAL, 1>());
-        display_operator_info("dual #y", dual_calculus.sharpDirectional<PRIMAL, 1>());
+        display_operator_info("primal #xp", primal_calculus.sharpDirectional<DUAL>(0));
+        display_operator_info("dual #x", dual_calculus.sharpDirectional<PRIMAL>(0));
+        display_operator_info("primal #yp", primal_calculus.sharpDirectional<DUAL>(1));
+        display_operator_info("dual #y", dual_calculus.sharpDirectional<PRIMAL>(1));
 
         {
             Calculus::DualForm1::Container dx_container(7);
-            dx_container << 0, -1, 1, 0, 1, -1, 0;
+            dx_container << 0, -1, -1, 0, 1, 0, 1;
             const Calculus::DualForm1 primal_dx(primal_calculus, dx_container);
             const Calculus::DualVectorField primal_dx_field = primal_calculus.sharp(primal_dx);
 
-            const Calculus::PrimalForm1 dual_dx(dual_calculus, dx_container);
+            Calculus::DualForm1::Container dxp_container(7);
+            dxp_container << 0, 0, 1, 1, 0, -1, -1;
+            const Calculus::PrimalForm1 dual_dx(dual_calculus, dxp_container);
             const Calculus::PrimalVectorField dual_dx_field = dual_calculus.sharp(dual_dx);
 
             {
@@ -746,11 +804,13 @@ void test_manual_operators_2d()
 
         {
             Calculus::DualForm1::Container dy_container(7);
-            dy_container << -1, 0, 0, 1, 0, 0, -1;
+            dy_container << -1, 0, 0, -1, 0 , 1, 0;
             const Calculus::DualForm1 primal_dy(primal_calculus, dy_container);
             const Calculus::DualVectorField primal_dy_field = primal_calculus.sharp(primal_dy);
 
-            const Calculus::PrimalForm1 dual_dy(dual_calculus, dy_container);
+            Calculus::DualForm1::Container dyp_container(7);
+            dyp_container << -1, 1, 0, 0, -1, 0, 0;
+            const Calculus::PrimalForm1 dual_dy(dual_calculus, dyp_container);
             const Calculus::PrimalVectorField dual_dy_field = dual_calculus.sharp(dual_dy);
 
             {
@@ -775,10 +835,10 @@ void test_manual_operators_2d()
     trace.beginBlock("flat operators");
 
     { // primal flat
-        display_operator_info("primal bx", primal_calculus.flatDirectional<PRIMAL, 0>());
-        display_operator_info("dual bxp", dual_calculus.flatDirectional<DUAL, 0>());
-        display_operator_info("primal by", primal_calculus.flatDirectional<PRIMAL, 1>());
-        display_operator_info("dual byp", dual_calculus.flatDirectional<DUAL, 1>());
+        display_operator_info("primal bx", primal_calculus.flatDirectional<PRIMAL>(0));
+        display_operator_info("dual bxp", dual_calculus.flatDirectional<DUAL>(0));
+        display_operator_info("primal by", primal_calculus.flatDirectional<PRIMAL>(1));
+        display_operator_info("dual byp", dual_calculus.flatDirectional<DUAL>(1));
 
         Calculus::PrimalVectorField::Coordinates dx_coords(6,2);
         dx_coords.col(0) = Eigen::VectorXd::Ones(6);
@@ -819,21 +879,25 @@ void test_manual_operators_2d()
         }
 
         Calculus::PrimalForm1::Container dx_container(7);
-        dx_container << -1, 0, 0, 1, 0, 0, -1;
-        Calculus::PrimalForm1::Container dy_container(7);
-        dy_container << 0, 1, -1, 0, -1, 1, 0;
-
+        dx_container << -1, 0, 0, -1, 0, 1, 0;
+        Calculus::PrimalForm1::Container dxp_container(7);
+        dxp_container << 1, -1, 0, 0, 1, 0, 0;
         FATAL_ERROR( primal_dx.myContainer == dx_container );
-        FATAL_ERROR( dual_dx.myContainer == -dx_container );
+        FATAL_ERROR( dual_dx.myContainer == dxp_container );
+
+        Calculus::PrimalForm1::Container dy_container(7);
+        dy_container << 0, 1, 1, 0, -1, 0, -1;
+        Calculus::PrimalForm1::Container dyp_container(7);
+        dyp_container << 0, 0, 1, 1, 0, -1, -1;
         FATAL_ERROR( primal_dy.myContainer == dy_container );
-        FATAL_ERROR( dual_dy.myContainer == -dy_container );
+        FATAL_ERROR( dual_dy.myContainer == dyp_container );
     }
 
     { // dual flat
-        display_operator_info("primal bxp", primal_calculus.flatDirectional<DUAL, 0>());
-        display_operator_info("dual bx", dual_calculus.flatDirectional<PRIMAL, 0>());
-        display_operator_info("primal byp", primal_calculus.flatDirectional<DUAL, 1>());
-        display_operator_info("dual by", dual_calculus.flatDirectional<PRIMAL, 1>());
+        display_operator_info("primal bxp", primal_calculus.flatDirectional<DUAL>(0));
+        display_operator_info("dual bx", dual_calculus.flatDirectional<PRIMAL>(0));
+        display_operator_info("primal byp", primal_calculus.flatDirectional<DUAL>(1));
+        display_operator_info("dual by", dual_calculus.flatDirectional<PRIMAL>(1));
 
         Calculus::PrimalVectorField::Coordinates dx_coords(2,2);
         dx_coords.col(0) = Eigen::VectorXd::Ones(2);
@@ -874,14 +938,18 @@ void test_manual_operators_2d()
         }
 
         Calculus::PrimalForm1::Container dx_container(7);
-        dx_container << 0, 1, -1, 0, -1, 1, 0;
-        Calculus::PrimalForm1::Container dy_container(7);
-        dy_container << -1, 0, 0, 1, 0, 0, -1;
+        dx_container << 0, -1, -1, 0, 1, 0, 1;
+        Calculus::PrimalForm1::Container dxp_container(7);
+        dxp_container << 0, 0, 1, 1, 0, -1, -1;
+        FATAL_ERROR( primal_dx.myContainer == dx_container );
+        FATAL_ERROR( dual_dx.myContainer == dxp_container );
 
-        FATAL_ERROR( primal_dx.myContainer == -dx_container );
-        FATAL_ERROR( dual_dx.myContainer == -dx_container );
+        Calculus::PrimalForm1::Container dy_container(7);
+        dy_container << -1, 0, 0, -1, 0, 1, 0;
+        Calculus::PrimalForm1::Container dyp_container(7);
+        dyp_container << -1, 1, 0, 0, -1, 0, 0;
         FATAL_ERROR( primal_dy.myContainer == dy_container );
-        FATAL_ERROR( dual_dy.myContainer == dy_container );
+        FATAL_ERROR( dual_dy.myContainer == dyp_container );
     }
 
     trace.endBlock();

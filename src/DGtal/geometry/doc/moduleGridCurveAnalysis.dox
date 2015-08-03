@@ -660,6 +660,118 @@ Moreover, note that @f$ \Sigma_{1 \leq i \leq n} L_i @f$ may be equal to
 
 */
 
+/**
+   This snippet shows how to construct, scan and display a 2d grid curve. 
+
+@see \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleGridCurve2d.cpp
+*/
+
+/**
+   This example outputs a greedy segmentation of a closed and 4-connected digital curve into DSSs. 
+
+@verbatim
+$ ./examples/geometry/curves/greedy-dss-decomposition
+@endverbatim
+
+@image html greedy-dss-decomposition.png "Greedy segmentation into DSSs"
+@image latex greedy-dss-decomposition.png "Greedy segmentation into DSSs"
+
+
+@see \ref moduleArithDSSReco and \ref moduleGridCurveAnalysis
+
+\example geometry/curves/greedy-dss-decomposition.cpp
+*/
+
+/**
+   This example outputs a greedy segmentation of an open and 6-connected 3d digital curve into DSSs. 
+
+@verbatim
+$ ./examples/geometry/curves/exampleArithDSS3d
+@endverbatim
+
+@image html exampleArithDSS3d.png "Greedy segmentation of a 3d digital curve into DSSs"
+@image latex exampleArithDSS3d.png "Greedy segmentation of a 3d digital curve into DSSs"
+
+
+@see \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleArithDSS3d.cpp
+*/
+
+/**
+   This example outputs the cover of an open digital curve by maximal DSSs. 
+Maximal DSSs are displayed in blue, green, yellow in convex, concave, inflexion parts respectively. 
+Ends are black. 
+Convex (resp. concave) parts are defined as sequences of maximal DSSs of increasing (resp. decreasing) slope. 
+
+@verbatim
+$ ./examples/geometry/curves/convex-and-concave-parts
+@endverbatim
+
+Note that the chain code of the input digital curve may be passed as argument as follows: 
+@verbatim
+$ ./examples/geometry/curves/convex-and-concave-parts 0300303303033030303000010101011010110100000303303033030303
+@endverbatim
+
+
+@image html convex-and-concave-parts.png "Decomposition into convex and concave parts"
+@image latex convex-and-concave-parts.png "Decomposition into convex and concave parts"
+
+
+@see \ref moduleArithDSSReco and \ref moduleGridCurveAnalysis
+
+\example geometry/curves/convex-and-concave-parts.cpp
+*/
+
+/**
+   This example shows how to use GridCurve as a sequence of 1-scells in a 3d Khalimsky space. 
+
+@verbatim
+$ ./examples/geometry/curves/exampleGridCurve3d
+@endverbatim
+
+Note that the data type you want to display may be passed as argument as follows: 
+@verbatim
+$ ./examples/geometry/curves/exampleGridCurve3d points
+@endverbatim
+
+This command line produces the following output (points are displayed as voxels): 
+
+@image html exampleGridCurveSinus.png "3d digital curve"
+@image latex exampleGridCurveSinus.png "3d digital curve"
+
+
+@see \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleGridCurve3d.cpp
+*/
+
+/**
+   This example shows how to use GridCurve as a sequence of 2-scells in a 3d Khalimsky space. 
+
+@verbatim
+$ ./examples/geometry/curves/exampleGridCurve3d-2
+@endverbatim
+
+Note that the data type you want to display may be passed as argument as follows: 
+@verbatim
+$ ./examples/geometry/curves/exampleGridCurve3d-2 gridcurve
+@endverbatim
+
+This command line produces the following output: 
+
+@image html exampleGridCurveCat.png "Slice of a digital surface"
+@image latex exampleGridCurveCat.png "Slice of a digital surface"
+
+
+@see \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleGridCurve3d-2.cpp
+*/
+
+
 }
 
 

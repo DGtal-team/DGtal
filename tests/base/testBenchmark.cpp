@@ -108,7 +108,7 @@ static void BM_CalculatePi(benchmark::State& state) {
   static const int depth = 1024;
   double pi  = 0.0;
   while (state.KeepRunning()) {
-    pi = CalculatePi(depth);
+    benchmark::DoNotOptimize( pi = CalculatePi(depth) );
   }
 }
 BENCHMARK(BM_CalculatePi)->Threads(8);

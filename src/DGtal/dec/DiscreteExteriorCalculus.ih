@@ -30,12 +30,19 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
+template <DGtal::Dimension dim, typename TInteger>
+size_t
+DGtal::hash_value(const DGtal::KhalimskyCell<dim, TInteger>& cell)
+{
+    return boost::hash_range(cell.myCoordinates.begin(), cell.myCoordinates.end());
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::DiscreteExteriorCalculus()
-    : myKSpace(), myCachedOperatorsModified(true)
+    : myKSpace(), myCachedOperatorsNeedUpdate(true), myIndexesNeedUpdate(false)
 {
 }
 
@@ -67,62 +74,39 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     const Index index = iter_property->second.index;
     myCellProperties.erase(iter_property);
 
-    typename SCells::iterator iter_index = myIndexSignedCells[cell_dim].begin() + index;
-    ASSERT( myKSpace.unsigns(*iter_index) == _cell );
-    iter_index = myIndexSignedCells[cell_dim].erase(iter_index);
-
-    for (typename SCells::const_iterator iter_index_end = myIndexSignedCells[cell_dim].end(); iter_index!= iter_index_end; iter_index++)
-    {
-        const SCell signed_cell_next = *iter_index;
-        const Cell cell_next = myKSpace.unsigns(signed_cell_next);
-        typename Properties::iterator iter_property_next = myCellProperties.find(cell_next);
-        ASSERT( iter_property_next != myCellProperties.end() );
-        ASSERT( iter_property_next->second.index > index );
-        iter_property_next->second.index -= 1;
-    }
-
-    myCachedOperatorsModified = true;
+    myIndexesNeedUpdate = true;
+    myCachedOperatorsNeedUpdate = true;
 
     return true;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& _signed_cell, const Scalar& _primal_size)
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& _signed_cell, const Scalar& _size_ratio)
 {
     const Cell cell = myKSpace.unsigns(_signed_cell);
     const DGtal::Dimension cell_dim = myKSpace.uDim(cell);
     Property property;
-    property.size_ratio = _primal_size;
+    property.index = std::numeric_limits<Index>::max();
+    property.size_ratio = _size_ratio;
     property.flipped = ( myKSpace.sSign(_signed_cell) == KSpace::NEG );
 
     ASSERT_MSG( cell_dim >= 0 && cell_dim <= dimEmbedded, "wrong cell dimension");
     ASSERT_MSG( cell_dim != 0 || !property.flipped , "can't insert negative 0-cells" );
     ASSERT_MSG( cell_dim != dimAmbient || !property.flipped , "can't insert negative n-cells" );
 
-    typename Properties::iterator iter = myCellProperties.find(cell);
-    const bool need_insert = (iter == myCellProperties.end());
+    std::pair<typename Properties::iterator, bool> insert_pair = myCellProperties.insert(std::make_pair(cell, property));
+    if (!insert_pair.second) insert_pair.first->second = property;
 
-    if (need_insert) // new cell new index computation
-    {
-        property.index = myIndexSignedCells[cell_dim].size();
-        myIndexSignedCells[cell_dim].push_back(_signed_cell);
-        myCellProperties[cell] = property;
-        iter = myCellProperties.find(cell);
-    }
-    else
-    {
-        property.index = iter->second.index;
-        myIndexSignedCells[cell_dim][property.index] = _signed_cell;
-    }
+    ASSERT( insert_pair.first->first == cell );
+    ASSERT( insert_pair.first->second.index == property.index );
+    ASSERT( insert_pair.first->second.size_ratio == property.size_ratio );
+    ASSERT( insert_pair.first->second.flipped == property.flipped );
 
-    ASSERT( property.index == iter->second.index );
+    myIndexesNeedUpdate = true;
+    myCachedOperatorsNeedUpdate = true;
 
-    iter->second = property;
-
-    if (need_insert) myCachedOperatorsModified = true;
-
-    return need_insert;
+    return insert_pair.second;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
@@ -132,7 +116,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     for (typename Properties::iterator pi=myCellProperties.begin(), pe=myCellProperties.end(); pi!=pe; pi++)
         pi->second.size_ratio = 1;
 
-    myCachedOperatorsModified = true;
+    myCachedOperatorsNeedUpdate = true; // FIXME not sure if needed
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
@@ -153,10 +137,46 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Order order, DGtal::Duality duality, typename TConstIterator>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::reorder(const TConstIterator& begin_range, const TConstIterator& end_range) const
+{
+    BOOST_STATIC_ASSERT(( boost::is_convertible<typename TConstIterator::value_type, const SCell>::value ));
+
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+
+    typedef typename TLinearAlgebraBackend::Triplet Triplet;
+    typedef std::vector<Triplet> Triplets;
+    Triplets triplets;
+
+    Index original_index = 0;
+    for (TConstIterator ci=begin_range; ci!=end_range; ci++)
+    {
+        const SCell signed_cell = *ci;
+        const Dimension dim = myKSpace.sDim(signed_cell);
+        if (dim != actualOrder(order, duality)) continue;
+        const Cell cell = myKSpace.unsigns(signed_cell);
+        const Index calculus_index = getCellIndex(cell);
+        triplets.push_back( Triplet(original_index, calculus_index, 1) );
+        original_index++;
+    }
+
+    const Index length = kFormLength(order, duality);
+    ASSERT( triplets.size() == length );
+    SparseMatrix reorder_matrix(length, length);
+    reorder_matrix.setFromTriplets(triplets.begin(), triplets.end());
+
+    typedef LinearOperator<Self, order, duality, order, duality> ReorderOperator;
+    return ReorderOperator(*this, reorder_matrix);
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::identity() const
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+
     typedef LinearOperator<Self, order, duality, order, duality> Operator;
     Operator id(*this);
     id.myContainer.setIdentity();
@@ -200,6 +220,8 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 {
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order < dimEmbedded ));
+
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
 
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
@@ -253,6 +275,8 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order <= dimEmbedded ));
 
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
     Triplets triplets;
@@ -263,7 +287,8 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
         const Cell cell = myKSpace.unsigns(myIndexSignedCells[actualOrder(order, duality)][index]);
 
         const typename Properties::const_iterator iter_property = myCellProperties.find(cell);
-        ASSERT(iter_property != myCellProperties.end());
+        ASSERT( iter_property != myCellProperties.end() );
+        ASSERT( iter_property->second.index == index );
 
         const Scalar size_ratio = ( duality == DGtal::PRIMAL ? iter_property->second.size_ratio : 1/iter_property->second.size_ratio );
         triplets.push_back( Triplet(index, index, hodgeSign(cell, duality) * size_ratio) );
@@ -283,7 +308,10 @@ template <DGtal::Duality duality>
 DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharp(const DGtal::KForm<Self, 1, duality>& one_form) const
 {
+    ASSERT( one_form.myCalculus == this );
+
     const_cast<Self*>(this)->updateCachedOperators();
+    ASSERT( !myCachedOperatorsNeedUpdate );
 
     const boost::array<SparseMatrix, dimAmbient>& sharp_operator_matrix = mySharpOperatorMatrixes[static_cast<int>(duality)];
 
@@ -298,11 +326,12 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
-template <DGtal::Duality duality, DGtal::Dimension direction>
+template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 1, duality, 0, duality>
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharpDirectional() const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharpDirectional(const DGtal::Dimension& direction) const
 {
     const_cast<Self*>(this)->updateCachedOperators();
+    ASSERT( !myCachedOperatorsNeedUpdate );
 
     ASSERT( direction < dimAmbient );
 
@@ -316,6 +345,9 @@ template <DGtal::Duality duality>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateSharpOperator()
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+    ASSERT( myCachedOperatorsNeedUpdate );
+
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
 
@@ -382,7 +414,10 @@ template <DGtal::Duality duality>
 DGtal::KForm<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 1, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flat(const DGtal::VectorField<Self, duality>& vector_field) const
 {
+    ASSERT( vector_field.myCalculus == this );
+
     const_cast<Self*>(this)->updateCachedOperators();
+    ASSERT( !myCachedOperatorsNeedUpdate );
 
     const boost::array<SparseMatrix, dimAmbient>& flat_operator_matrix = myFlatOperatorMatrixes[static_cast<int>(duality)];
 
@@ -395,11 +430,12 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
-template <DGtal::Duality duality, DGtal::Dimension direction>
+template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 1, duality>
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flatDirectional() const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flatDirectional(const DGtal::Dimension& direction) const
 {
     const_cast<Self*>(this)->updateCachedOperators();
+    ASSERT( !myCachedOperatorsNeedUpdate );
 
     ASSERT( direction < dimAmbient );
 
@@ -412,6 +448,9 @@ template <DGtal::Duality duality>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateFlatOperator()
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+    ASSERT( myCachedOperatorsNeedUpdate );
+
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
 
@@ -476,27 +515,64 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 void
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateIndexes()
+{
+    if (!myIndexesNeedUpdate) return;
+
+    // clear index signed cells
+    for (DGtal::Dimension dim=0; dim<dimEmbedded+1; dim++)
+        myIndexSignedCells[dim].clear();
+
+    // compute cell index
+    for (typename Properties::iterator csi=myCellProperties.begin(), csie=myCellProperties.end(); csie!=csi; csi++)
+    {
+        const Cell& cell = csi->first;
+        const DGtal::Dimension cell_dim = myKSpace.uDim(cell);
+
+        csi->second.index = myIndexSignedCells[cell_dim].size();
+
+        const SCell& signed_cell = myKSpace.signs(cell, csi->second.flipped ? KSpace::NEG : KSpace::POS);
+        myIndexSignedCells[cell_dim].push_back(signed_cell);
+    }
+
+    myIndexesNeedUpdate = false;
+    myCachedOperatorsNeedUpdate = true;
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateCachedOperators()
 {
-    if (!myCachedOperatorsModified) return;
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+    if (!myCachedOperatorsNeedUpdate) return;
     updateFlatOperator<PRIMAL>();
     updateFlatOperator<DUAL>();
     updateSharpOperator<PRIMAL>();
     updateSharpOperator<DUAL>();
-    myCachedOperatorsModified = false;
+    myCachedOperatorsNeedUpdate = false;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
-typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Properties
+const typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Properties&
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getProperties() const
 {
     return myCellProperties;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Order order, DGtal::Duality duality>
+const typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::SCells&
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getIndexedSCells() const
+{
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+    return myIndexSignedCells[actualOrder(order, duality)];
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::SCell
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getSCell(const Order& order, const Duality& duality, const Index& index) const
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
     const Order& actual_order = actualOrder(order, duality);
     const SCell& signed_cell = myIndexSignedCells[actual_order][index];
     ASSERT( myKSpace.sDim(signed_cell) == actual_order );
@@ -523,6 +599,7 @@ template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TL
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Index
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getCellIndex(const Cell& cell) const
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
     const typename Properties::const_iterator iter_property = myCellProperties.find(cell);
     ASSERT( iter_property != myCellProperties.end() );
     return iter_property->second.index;
@@ -532,6 +609,7 @@ template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TL
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::ConstIterator
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::begin() const
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
     return myCellProperties.begin();
 }
 
@@ -539,6 +617,7 @@ template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TL
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::ConstIterator
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::end() const
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
     return myCellProperties.end();
 }
 
@@ -546,6 +625,7 @@ template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TL
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Iterator
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::begin()
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
     return myCellProperties.begin();
 }
 
@@ -553,6 +633,7 @@ template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TL
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Iterator
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::end()
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
     return myCellProperties.end();
 }
 
@@ -560,6 +641,7 @@ template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TL
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Index
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::kFormLength(const DGtal::Order& order, const DGtal::Duality& duality) const
 {
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
     return myIndexSignedCells[actualOrder(order, duality)].size();
 }
 
