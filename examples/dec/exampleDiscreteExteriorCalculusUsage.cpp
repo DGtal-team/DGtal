@@ -33,6 +33,8 @@ void usage2d()
     Calculus calculus = CalculusFactory::createFromDigitalSet(generateRingSet(domain), false);
 
     calculus.eraseCell(calculus.myKSpace.uSpel(Z2i::Point(8, 5)));
+
+    calculus.updateIndexes();
     //! [usage_calculus_definition_without_border]
 
         trace.info() << calculus << endl;
@@ -49,6 +51,8 @@ void usage2d()
 
     calculus.eraseCell(calculus.myKSpace.uSpel(Z2i::Point(8, 5)));
     calculus.eraseCell(calculus.myKSpace.uCell(Z2i::Point(18, 11)));
+
+    calculus.updateIndexes();
     //! [usage_calculus_definition_with_border]
 
     trace.info() << calculus << endl;
@@ -175,14 +179,14 @@ void usage2d()
 
         // test primal flat and sharp
         const Calculus::DualForm1 flat_sharp_dual_one_form = calculus.flat(dual_vector_field);
-        const Calculus::DualVectorField sharp_flat_dual_vector_field = calculus.sharp(flat_sharp_dual_one_form);
+        const Calculus::DualVectorField sharp_flat_dual_vector_field = -calculus.sharp(flat_sharp_dual_one_form);
 
         {
             Board2D board;
             board << domain;
             board << calculus;
             board << flat_sharp_dual_one_form;
-            board << sharp_flat_dual_vector_field;
+            board << -sharp_flat_dual_vector_field;
             board.saveSVG("usage_dual_one_form_sharp_flat.svg");
         }
 

@@ -201,6 +201,15 @@ namespace DGtal
   KForm<Calculus, order, duality>
   operator*(const typename Calculus::Scalar& scalar, const KForm<Calculus, order, duality>& form);
 
+  /**
+   * Overloads 'operator-' for unary additive inverse of objects of class 'KForm'.
+   * @param form operant
+   * @return -form.
+   */
+  template <typename Calculus, Order order, Duality duality>
+  KForm<Calculus, order, duality>
+  operator-(const KForm<Calculus, order, duality>& form);
+
 } // namespace DGtal
 
 
