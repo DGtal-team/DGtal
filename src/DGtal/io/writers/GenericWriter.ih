@@ -136,7 +136,7 @@ DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const s
 #else
 DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const std::string &filename,
                                                                          const TContainer &anImage,
-                                                                         const std::string &UNUSED(datasetName),
+                                                                         const std::string &datasetName,
                                                                          const TFunctor & aFunctor )  throw(DGtal::IOException)
 #endif
 {
@@ -144,17 +144,25 @@ DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const s
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
 #ifdef WITH_HDF5
-  if (extension=="h5"){
-    return  HDF5Writer<TContainer,TFunctor>::exportHDF5_3D(filename, anImage, datasetName, aFunctor);
-  } else
+  if (extension=="h5")
+    {
+      return  HDF5Writer<TContainer,TFunctor>::exportHDF5_3D(filename, anImage, datasetName, aFunctor);
+    } else
+#else
+    boost::ignore_unused_variable_warning(datasetName);
 #endif
-  if (extension=="vol"){
-    return  VolWriter<TContainer,TFunctor>::exportVol(filename, anImage, aFunctor);
-  } else if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d" || extension=="pgm" ){
+  if (extension=="vol")
+    {
+      return  VolWriter<TContainer,TFunctor>::exportVol(filename, anImage, aFunctor);
+    } else if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d" || extension=="pgm" )
+    {
     return   PGMWriter<TContainer, TFunctor>::exportPGM3D(filename, anImage, aFunctor);
-  } else  if(extension=="raw"){
+  } else  if(extension=="raw" )
+    {
     return RawWriter< TContainer, TFunctor >::exportRaw8(filename, anImage, aFunctor);
-  } else {
+  }
+  else
+    {
     trace.error() << "Extension " << extension<< " not yet implemented in DGtal." << std::endl;
     throw dgtalio;
   }
