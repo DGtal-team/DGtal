@@ -167,8 +167,11 @@ template <typename TContainer, typename TFunctor>
 inline
 bool
 DGtal::GenericWriter<TContainer, 3, unsigned int, TFunctor>::exportFile(const std::string &filename,
-                                                                         const TContainer &anImage, const std::string & UNUSED(datasetName),
-                                                                         const TFunctor & aFunctor )  throw(DGtal::IOException){
+                                                                         const TContainer &anImage, const std::string & datasetName,
+                                                                         const TFunctor & aFunctor )  throw(DGtal::IOException)
+{
+  boost::ignore_unused_variable_warning(datasetName);
+  
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
  if(extension=="raw"){
@@ -229,8 +232,9 @@ template <typename TContainer, typename TFunctor >
 inline
 bool
 DGtal::GenericWriter<TContainer, 2, unsigned char, TFunctor>::exportFile(const std::string &filename,
-						      const TContainer &anImage,
-						      const TFunctor & aFunctor )  throw(DGtal::IOException){
+                                                                         const TContainer &anImage,
+                                                                         const TFunctor & aFunctor )  throw(DGtal::IOException)
+{
   DGtal::IOException dgtalio;
   //Getting image extension
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -252,7 +256,8 @@ inline
 bool
 DGtal::GenericWriter<TContainer, 2, DGtal::uint32_t, TFunctor>::exportFile(const std::string &filename,
                                                                            const TContainer &anImage,
-                                                                           const TFunctor & aFunctor )  throw(DGtal::IOException){
+                                                                           const TFunctor & aFunctor )  throw(DGtal::IOException)
+{
   DGtal::IOException dgtalio;
   //Getting image extension
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -273,7 +278,8 @@ DGtal::GenericWriter<TContainer, 2, DGtal::uint32_t, TFunctor>::exportFile(const
 template <typename TImageContainer >
 inline
 bool
-DGtal::operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException){
+DGtal::operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException)
+{
   return DGtal::GenericWriter<TImageContainer >::exportFile(aFilename, aContainer);
 }
 

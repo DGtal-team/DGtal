@@ -107,8 +107,9 @@ struct HodgeTester
 template <typename Calculus>
 struct HodgeTester<Calculus, -1>
 {
-  static bool test(const Calculus& UNUSED(calculus))
+  static bool test(const Calculus& calculus)
   {
+    boost::ignore_unused_variable_warning( calculus );
     return true;
   }
 };

@@ -121,11 +121,12 @@ namespace DGtal
 
     /**
      * Assignment. (Assignable concept)
-     * UNUSED_PARAM other the object to copy.
+     * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & /*other*/ )
+    SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & other )
     {
+      ///FIXME this->myMetric = other.myMetric;
       return *this;
     }
 
