@@ -311,7 +311,7 @@ namespace DGtal
 
     /**
      * Assignment.
-     * @param other the object to copy.
+     * @param other the object to copy (unused).
      * @return a reference on 'this'.
      */
     Self & operator= ( const Self & other )
@@ -442,12 +442,6 @@ namespace DGtal
                                 const Abscissa &lower,
                                 const Abscissa &upper) const;
 
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class ExactPredicateLpSeparableMetric
 
