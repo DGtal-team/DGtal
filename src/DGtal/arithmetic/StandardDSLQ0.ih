@@ -365,7 +365,7 @@ reversedSmartDSS( Point U1, Point U2,
 #ifdef TRACE_DSL
       std::cerr << "  - greatest:" << subpattern.rE() << " at " << startPos << endl;
 #endif
-      ASSERT( n );
+      ASSERT( n ); boost::ignore_unused_variable_warning(n);
       Point NU( U1 + startPos );
       Integer nmu = subpattern.slope().p() * NU[ 0 ]
         - subpattern.slope().q() * NU[ 1 ];
@@ -424,7 +424,7 @@ DSSWithinTwoPatterns( Point U1, Point U2,
               bool n = patLU.getGreatestIncludedSubpattern
                 ( subpattern, nb, startPos, 
                   ( A - U1 ).norm1(), ( Um - U1 ).norm1(), false );
-              ASSERT( n );
+              ASSERT( n ); boost::ignore_unused_variable_warning(n);
               readyLU = true;
             }
           patLU = subpattern;
@@ -440,7 +440,7 @@ DSSWithinTwoPatterns( Point U1, Point U2,
               bool n = patRU.getGreatestIncludedSubpattern
                 ( subpattern, nb, startPos, 
                    0, ( B - Um ).norm1(), false );
-              ASSERT( n );
+              ASSERT( n ); boost::ignore_unused_variable_warning(n);
               readyRU = true;
             }
           patRU = subpattern;
@@ -457,7 +457,7 @@ DSSWithinTwoPatterns( Point U1, Point U2,
             {
               bool n = patL.getGreatestIncludedSubpattern
                 ( subpattern, nb, startPos, posA, posB, true );
-              ASSERT( n );
+              ASSERT( n ); boost::ignore_unused_variable_warning(n);
               patL = subpattern;
               readyL = true;
             }

@@ -23,7 +23,7 @@ equal(const OperatorAA& aa, const OperatorBB& bb)
     return MatrixXd(aa.myContainer) == MatrixXd(bb.myContainer);
 }
 
-int main(int argc, char* argv[])
+int main(int , char** )
 {
 #if !defined(NOVIEWER)
     typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;

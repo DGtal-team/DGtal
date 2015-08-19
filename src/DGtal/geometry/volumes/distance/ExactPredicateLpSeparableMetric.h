@@ -128,19 +128,21 @@ namespace DGtal
 
     /**
      * Copy constructor.
-     * UNUSED_PARAM other the object to clone.
+     * @param other the object to clone (not used).
      */
-    ExactPredicateLpSeparableMetric ( const Self & UNUSED(other) )
+    ExactPredicateLpSeparableMetric ( const Self & other )
     {
+      boost::ignore_unused_variable_warning( other );
     }
 
     /**
      * Assignment.
-     * UNUSED_PARAM other the object to copy.
+     * @param other other the object to copy (not used).
      * @return a reference on 'this'.
      */
-    Self & operator= ( const Self & UNUSED(other) )
+    Self & operator= ( const Self & other )
     {
+      boost::ignore_unused_variable_warning( other );
       return *this;
     }
 
@@ -300,16 +302,23 @@ namespace DGtal
 
     /**
      * Copy constructor.
-     * UNUSED_PARAM other the object to clone.
+     * @param  other the object to clone (not used).
      */
-    ExactPredicateLpSeparableMetric ( const Self & UNUSED(other) ) {}
+    ExactPredicateLpSeparableMetric ( const Self & other )
+    {
+      boost::ignore_unused_variable_warning( other );
+    }
 
     /**
      * Assignment.
-     * UNUSED_PARAM other the object to copy.
+     * @param other the object to copy (unused).
      * @return a reference on 'this'.
      */
-    Self & operator= ( const Self & UNUSED(other) ) { return *this;}
+    Self & operator= ( const Self & other )
+    {  
+      boost::ignore_unused_variable_warning( other );
+      return *this;
+    }
 
 
     // ----------------------- Interface --------------------------------------
@@ -433,12 +442,6 @@ namespace DGtal
                                 const Abscissa &lower,
                                 const Abscissa &upper) const;
 
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class ExactPredicateLpSeparableMetric
 
