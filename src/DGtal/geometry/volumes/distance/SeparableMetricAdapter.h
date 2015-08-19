@@ -44,7 +44,7 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/volumes/distance/CMetricSpace.h"
-#include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/Alias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -103,9 +103,9 @@ namespace DGtal
      * Constructor from a CMetric model instance.
      * The metric is aliased in this class.
      *
-     * @param [in] aMetric any model of CMetric which is monotinic.
+     * @param [in] aMetric any model of CMetric which is monotonic.
      */
-    SeparableMetricAdapter(ConstAlias<Metric> aMetric): myMetric(aMetric)
+    SeparableMetricAdapter(Alias<Metric> aMetric): myMetric(aMetric)
     {}
 
     /**
@@ -126,7 +126,7 @@ namespace DGtal
      */
     SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & other )
     {
-      ///FIXME this->myMetric = other.myMetric;
+      this->myMetric = other.myMetric;
       return *this;
     }
 
@@ -247,7 +247,7 @@ namespace DGtal
 
     // ------------------------- Private members ------------------------------
   private:
-    const Metric &myMetric;
+    Metric &myMetric;
 
   }; // end of class SeparableMetricAdapter
 
