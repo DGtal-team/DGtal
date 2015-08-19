@@ -242,8 +242,9 @@ DGtal::Histogram<TQuantity, TBinner>::isValid() const
 template <typename TQuantity, typename TBinner>
 inline
 void
-DGtal::Histogram<TQuantity, TBinner>::prepare( Bin UNUSED(aSize) )
+DGtal::Histogram<TQuantity, TBinner>::prepare( Bin aSize )
 {
+  boost::ignore_unused_variable_warning( aSize );
   myHistogram.resize( myBinner->size(), 0 );
   myCumulativeHistogram.resize( myBinner->size(), 0 );
 }

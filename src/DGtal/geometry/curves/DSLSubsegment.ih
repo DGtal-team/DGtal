@@ -866,12 +866,6 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
      }
 
-   //std::cout << r;
-
-// #ifdef DEBUG
-//    std::cout << r << std::endl;
-// #endif
-
    return r;
 }
 
@@ -879,8 +873,9 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu, Integer UNUSED(n))
+typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu, Integer n)
 {
+  boost::ignore_unused_variable_warning( n );
   BOOST_CONCEPT_ASSERT((concepts::CInteger<Number>));
   Number alpha = slope(fp, fq,r,a,b,mu);
   
@@ -1233,12 +1228,6 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
       	  gq = next[0];
       	}
 
-
-// #ifdef DEBUG
-//       std::cout << "fractions = " << fp << " " << fq << " " << gp << " " << gq << std::endl;
-// #endif
-
-
       bool found;
 
       // Find the height in the ladder
@@ -1267,9 +1256,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
 
       Integer resAlphaP=0, resAlphaQ=0, resBetaP=0;
       findSolutionWithoutFractions(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
-      //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP);
-
-
+  
       myA = resAlphaP;
       myB = resAlphaQ;
       myMu = resBetaP - myA*A[0] + myB*A[1];
