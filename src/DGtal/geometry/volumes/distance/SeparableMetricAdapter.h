@@ -44,7 +44,7 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/volumes/distance/CMetricSpace.h"
-#include "DGtal/base/Alias.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -105,7 +105,7 @@ namespace DGtal
      *
      * @param [in] aMetric any model of CMetric which is monotonic.
      */
-    SeparableMetricAdapter(Alias<Metric> aMetric): myMetric(aMetric)
+    SeparableMetricAdapter(ConstAlias<Metric> aMetric): myMetric(&aMetric)
     {}
 
     /**
@@ -126,7 +126,7 @@ namespace DGtal
      */
     SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & other )
     {
-      this->myMetric = other.myMetric;
+      myMetric = other.myMetric;
       return *this;
     }
 
@@ -144,7 +144,7 @@ namespace DGtal
      */
     Value operator()(const Point & aP, const Point &aQ) const
     {
-      return myMetric.operator()(aP,aQ);
+      return myMetric->operator()(aP,aQ);
     }
 
     /**
@@ -157,7 +157,7 @@ namespace DGtal
      */
     RawValue rawDistance(const Point & aP, const Point &aQ) const
     {
-      return myMetric.rawDistance(aP,aQ);
+      return myMetric->rawDistance(aP,aQ);
     }
     /**
      * Given an origin and two points, this method decides which one
@@ -174,7 +174,7 @@ namespace DGtal
                     const Point &first,
                     const Point &second) const
     {
-      return myMetric.closest(origin,first,second);
+      return myMetric->closest(origin,first,second);
     }
 
     // ----------------------- CSeparableMetric --------------------------------------
@@ -218,7 +218,7 @@ namespace DGtal
      */
     bool isValid() const
     {
-      return myMetric.isValid();
+      return myMetric->isValid();
     }
 
 
@@ -247,7 +247,7 @@ namespace DGtal
 
     // ------------------------- Private members ------------------------------
   private:
-    Metric &myMetric;
+    const Metric *myMetric;
 
   }; // end of class SeparableMetricAdapter
 
