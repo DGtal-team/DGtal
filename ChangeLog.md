@@ -42,6 +42,17 @@
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
  - Mutable iterator on DiscreteExteriorCalculus.
    (Pierre Gueth [#1008](https://github.com/DGtal-team/DGtal/pull/1008))
+ - Unary minus operators for k-forms, vector fields and linear operators.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Introduction of .updateIndexes() that needs to be called after any
+   call to .insertSCell() or .eraseCell().
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Transpose of linear operators.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Intensity operator on vector fields.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
+ - Reorder operators to remap indexes.
+   (Pierre Gueth [#1020](https://github.com/DGtal-team/DGtal/pull/1020))
 
 - *Geometry Package*
  - New EstimatorCache class to cache quantities estimated by a
@@ -58,6 +69,9 @@
  - InexactPredicateLpSeparableMetric class is now templated by an
    EuclideanRing type. (David Coeurjolly,
    [#1017](https://github.com/DGtal-team/DGtal/pull/1017))
+ - Main example files of geometry/curves are introduced in the list of examples
+   and briefly described.
+   (Tristan Roussillon, [#1026](https://github.com/DGtal-team/DGtal/pull/1026))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
@@ -103,6 +117,9 @@
   [#1002](https://github.com/DGtal-team/DGtal/pull/1002))
  - MeshWriter class can now export OBJ file including colors. (Bertrand Kerautret,
   [#1016](https://github.com/DGtal-team/DGtal/pull/1016))
+ - Viewer3D: Shift-L / L key binding added to save and restore camera settings. (Bertrand Kerautret,
+  [#1024](https://github.com/DGtal-team/DGtal/pull/1024))
+
 
 - *Kernel Package*
   - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
@@ -142,7 +159,14 @@
  Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
  - Backport of changes in google/benchmarck API for micro-benchmarking
    (David Coeurjolly, [#1014](https://github.com/DGtal-team/DGtal/pull/1014))
-
+ - New travis configuration file to enable new travis Docker based
+   container system (David Coeurjolly,
+   [#1030](https://github.com/DGtal-team/DGtal/pull/1030))
+ - Various fixes of compiler warnings due to unused paramters (David
+   Coeurjolly, Roland Denis,
+   [#1034](https://github.com/DGtal-team/DGtal/pull/1030))
+   
+   
 - *Base Package*
  - Fix bug with LabelledMap copy constructor and copy iterator. (Roland
    Denis, [#973](https://github.com/DGtal-team/DGtal/pull/973))
@@ -150,7 +174,7 @@
  [#972](https://github.com/DGtal-team/DGtal/pull/972))
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
- - Cleanup of DGtal namespaces. (David Coeurjolly,
+ - Cleanup of DGtal namespaces (David Coeurjolly,
  [#993](https://github.com/DGtal-team/DGtal/pull/993))
  
 

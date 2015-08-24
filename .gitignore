@@ -2,8 +2,8 @@ CMakeLists.txt.user
 CMakeLists.txt.user.
 CMakeLists.txt.user.1.3
 CTestConfig.cmake.user
+xcode*/
 build*/
-build-debug/
 cmake/Install.cmake.user
 qtcreatorbuild/
 *.orig
@@ -11,3 +11,5 @@ install
 *~
 *.swp
 *.bak
+
+*.h#

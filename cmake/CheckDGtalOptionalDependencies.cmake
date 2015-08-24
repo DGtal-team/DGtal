@@ -45,6 +45,17 @@ endif()
 MESSAGE(STATUS " ")
 #---------------------------------
 
+#----------------------------------
+# Removing -frounding-math compile flag for clang
+#----------------------------------
+IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    MESSAGE( STATUS "Removing -frounding-math flag when compiling with Clang" )
+    STRING( REPLACE "-frounding-math" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} )
+    MESSAGE( STATUS " " )
+ENDIF()
+#---------------------------------
+
+
 IF(WITH_C11)
 SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
 message(STATUS "      WITH_C11           true    (C++ compiler C11 features)")

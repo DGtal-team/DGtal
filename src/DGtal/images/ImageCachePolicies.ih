@@ -172,8 +172,9 @@ DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::writeInPage(TIma
 template <typename TImageContainer, typename TImageFactory>
 inline
 void
-DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::flushPage(TImageContainer * UNUSED(anImageContainer))
+DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::flushPage(TImageContainer * anImageContainer)
 {
+  boost::ignore_unused_variable_warning(anImageContainer);
 }
 
 // ----------------------- Specialization DGtal::CACHE_WRITE_POLICY_WB ------------------------------
