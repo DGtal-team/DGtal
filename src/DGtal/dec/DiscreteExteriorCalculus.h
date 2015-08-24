@@ -45,6 +45,7 @@
 #include <map>
 #include <list>
 #include <boost/array.hpp>
+#include <boost/unordered_map.hpp>
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/base/Common.h"
@@ -66,6 +67,15 @@ namespace DGtal
   // forward factory declaration
   template <typename TLinearAlgebraBackend, typename TInteger>
   class DiscreteExteriorCalculusFactory;
+
+  /**
+   * Hash function for Khalimsky unsigned cells.
+   * @param cell input signed cell.
+   * @return hash value.
+   */
+  template <Dimension dim, typename TInteger>
+  size_t
+  hash_value(const KhalimskyCell<dim, TInteger>& cell);
 
   /////////////////////////////////////////////////////////////////////////////
   // template class DiscreteExteriorCalculus
@@ -149,7 +159,7 @@ namespace DGtal
     /**
      * Cells properties map typedef.
      */
-    typedef std::map<Cell, Property> Properties;
+    typedef boost::unordered_map<Cell, Property> Properties;
 
     /**
      * Indices to cells map typedefs.
@@ -184,6 +194,16 @@ namespace DGtal
     typedef LinearOperator<Self, 0, DUAL, 1, DUAL> DualDerivative0;
     typedef LinearOperator<Self, 1, DUAL, 2, DUAL> DualDerivative1;
     typedef LinearOperator<Self, 2, DUAL, 3, DUAL> DualDerivative2;
+
+    /**
+     * Antiderivative linear operator typedefs.
+     */
+    typedef LinearOperator<Self, 1, PRIMAL, 0, PRIMAL> PrimalAntiderivative1;
+    typedef LinearOperator<Self, 2, PRIMAL, 1, PRIMAL> PrimalAntiderivative2;
+    typedef LinearOperator<Self, 3, PRIMAL, 2, PRIMAL> PrimalAntiderivative3;
+    typedef LinearOperator<Self, 1, DUAL, 0, DUAL> DualAntiderivative1;
+    typedef LinearOperator<Self, 2, DUAL, 1, DUAL> DualAntiderivative2;
+    typedef LinearOperator<Self, 3, DUAL, 2, DUAL> DualAntiderivative3;
 
     /**
      * Hodge duality linear operator typedefs.
@@ -262,7 +282,7 @@ namespace DGtal
     /**
      * Associated Khalimsky space.
      */
-    const KSpace myKSpace;
+    KSpace myKSpace;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -276,7 +296,8 @@ namespace DGtal
     std::string className() const;
 
     /**
-     * Manually insert cell into calculus.
+     * Manually insert signed cell into calculus.
+     * Should call updateIndexes() when structure modification is finished.
      * Be sure to insert all adjacent lower order primal cells.
      * @param signed_cell the signed cell to be inserted.
      * @param size_ratio ratio of dual cell size over primal cell size.
@@ -287,6 +308,7 @@ namespace DGtal
 
     /**
      * Manually erase cell from calculus.
+     * Should call updateIndexes() when structure modification is finished.
      * @param cell the cell to be removed.
      * @return true if cell was removed, false if cell was not in calculus.
      */
@@ -294,14 +316,43 @@ namespace DGtal
     eraseCell(const Cell& cell);
 
     /**
+     * Update indexes for all cells.
+     * Cell insertion order == index may not be preserved.
+     */
+    void
+    updateIndexes();
+
+    /**
      * Get all cells properties.
      * @return associative container from Cell to Property.
      */
-    Properties
+    const Properties&
     getProperties() const;
 
     /**
-     * Identity operator from order-forms to order-forms.
+     * Get all signed cells with specific @a order and @a duality in index order.
+     * @tparam order order of signed cells.
+     * @tparam duality duality of signed cells.
+     * @return index ordered signed cells.
+     */
+    template <Order order, Duality duality>
+    const SCells&
+    getIndexedSCells() const;
+
+    /**
+     * Reorder operator from _order_-forms to _order_-forms.
+     * Reorder indexes from internal index order to iterator range traversal induced order.
+     * @tparam order input and output order of reorder operator.
+     * @tparam duality input and output duality of reorder operator.
+     * @tparam TConstIterator const iterator to signed cell type.
+     * @return identity operator.
+     */
+    template <Order order, Duality duality, typename TConstIterator>
+    LinearOperator<Self, order, duality, order, duality>
+    reorder(const TConstIterator& begin_range, const TConstIterator& end_range) const;
+
+    /**
+     * Identity operator from _order_-forms to _order_-forms.
      * @tparam order input and output order of identity operator.
      * @tparam duality input and output duality of identity operator.
      * @return identity operator.
@@ -311,7 +362,7 @@ namespace DGtal
     identity() const;
 
     /**
-     * Derivative operator from order-forms to (order+1)-forms.
+     * Derivative operator from _order_-forms to _(order+1)_-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.
      * @return derivative operator.
@@ -321,7 +372,7 @@ namespace DGtal
     derivative() const;
 
     /**
-     * Antiderivative operator from order-forms to (order-1) forms.
+     * Antiderivative operator from _order_-forms to _(order-1)_-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.
      * @return antiderivative operator.
@@ -339,8 +390,9 @@ namespace DGtal
     laplace() const;
 
     /**
-     * Hodge operator from duality order-form to opposite duality (dimEmbedded-order)-forms.
+     * Hodge operator from duality _order_-form to opposite duality _(dimEmbedded-order)_-forms.
      * @tparam order order of input k-form.
+     * @tparam duality duality of input k-form.
      * @return hodge operator.
      */
     template <Order order, Duality duality>
@@ -359,14 +411,14 @@ namespace DGtal
 
     /**
      * Get directional flat operator that transforms 0-form containing vector field coordinates along direction dir into 1-form.
-     * Opposite of sharp(1-form).extractZeroForm(dir).
+     * Invert of sharp(1-form).coordAlongDirection(dir).
      * @tparam duality input 0-form and output 1-form duality.
-     * @tparam dir direction of projection.
+     * @param dir direction of projection.
      * @return linear operator.
      */
-    template <Duality duality, Dimension dir>
+    template <Duality duality>
     LinearOperator<Self, 0, duality, 1, duality>
-    flatDirectional() const;
+    flatDirectional(const Dimension& dir) const;
 
     /**
      * Construct vector field from 1-form.
@@ -380,14 +432,14 @@ namespace DGtal
 
     /**
      * Get directional sharp operator that transforms 1-form into 0-form containing vector field coordinates along direction dir.
-     * Equivalent to sharp(1-form).extractZeroForm(dir).
+     * Equivalent to sharp(1-form).coordAlongDirection(dir).
      * @tparam duality input 1-form and output 0-form duality.
-     * @tparam dir direction of projection.
+     * @param dir direction of projection.
      * @return linear operator.
      */
-    template <Duality duality, Dimension dir>
+    template <Duality duality>
     LinearOperator<Self, 1, duality, 0, duality>
-    sharpDirectional() const;
+    sharpDirectional(const Dimension& dir) const;
 
     /**
      * Get signed cell from k-form index.
@@ -416,7 +468,7 @@ namespace DGtal
     /**
      * Get k-form index from cell.
      * @param cell Khalimsky cell.
-     * @return associated K-form index.
+     * @return associated k-form index.
      */
     Index
     getCellIndex(const Cell& cell) const;
@@ -484,19 +536,25 @@ namespace DGtal
     IndexedSCells myIndexSignedCells;
 
     /**
-     * Cached flat operator matrix
+     * Cached flat operator matrix.
      */
     boost::array<boost::array<SparseMatrix, dimAmbient>, 2> myFlatOperatorMatrixes;
 
     /**
-     * Cached sharp operator matrix
+     * Cached sharp operator matrix.
      */
     boost::array<boost::array<SparseMatrix, dimAmbient>, 2> mySharpOperatorMatrixes;
 
     /**
-     * Cached operators generation flag
+     * Cached flat and sharp operators generation flag.
      */
-    bool myCachedOperatorsModified;
+    bool myCachedOperatorsNeedUpdate;
+
+    /**
+     * Indexes generation flag.
+     */
+    bool myIndexesNeedUpdate;
+
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -504,13 +562,24 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
+    /**
+     * Update sharp and flat operators cache.
+     */
     void
     updateCachedOperators();
 
+    /**
+     * Update flat operator cache.
+     * @tparam duality duality of updated flat operator.
+     */
     template <Duality duality>
     void
     updateFlatOperator();
 
+    /**
+     * Update sharp operator cache.
+     * @tparam duality duality of updated sharp operator.
+     */
     template <Duality duality>
     void
     updateSharpOperator();

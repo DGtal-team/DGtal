@@ -23,7 +23,7 @@ equal(const OperatorAA& aa, const OperatorBB& bb)
     return MatrixXd(aa.myContainer) == MatrixXd(bb.myContainer);
 }
 
-int main(int argc, char* argv[])
+int main(int , char** )
 {
 #if !defined(NOVIEWER)
     typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
@@ -72,17 +72,20 @@ int main(int argc, char* argv[])
 
         //! [embedding_1d_cells_1d]
         typedef std::set<Calculus1D::SCell> SCells1D;
-        SCells1D cells_1d;
+        SCells1D ncells_1d_factory;
         //! [embedding_1d_cells_1d]
+        SCells1D cells_1d_manual;
         Calculus1D calculus_1d_manual;
         for (int kk=0; kk<31; kk++)
         {
             Calculus1D::KSpace::Point point;
             point[0] = kk;
             const Calculus1D::SCell cell = calculus_1d_manual.myKSpace.sCell(point);
-            calculus_1d_manual.insertSCell( cell, kk == 0 || kk == 30 ? 1/2. : 1 );
-            if (kk%2 != 0) cells_1d.insert(cell);
+            calculus_1d_manual.insertSCell(cell, kk == 0 || kk == 30 ? 1/2. : 1);
+            cells_1d_manual.insert(cell);
+            if (kk%2 != 0) ncells_1d_factory.insert(cell);
         }
+        calculus_1d_manual.updateIndexes();
         trace.info() << "calculus_1d_manual=" << calculus_1d_manual << endl;
 
         {
@@ -99,7 +102,7 @@ int main(int argc, char* argv[])
         }
 
         //! [embedding_1d_factory_1d]
-        const Calculus1D calculus_1d_factory = CalculusFactory::createFromNSCells<1>(cells_1d.begin(), cells_1d.end(), true);
+        const Calculus1D calculus_1d_factory = CalculusFactory::createFromNSCells<1>(ncells_1d_factory.begin(), ncells_1d_factory.end(), true);
         //! [embedding_1d_factory_1d]
         trace.info() << "calculus_1d_factory=" << calculus_1d_factory << endl;
 
@@ -136,6 +139,7 @@ int main(int argc, char* argv[])
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,0)) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,0), Calculus2D::KSpace::NEG) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(0,0)), 1/2.);
+            calculus_2d_manual.updateIndexes();
         }
         trace.info() << "calculus_2d_manual=" << calculus_2d_manual << endl;
 
@@ -148,29 +152,65 @@ int main(int argc, char* argv[])
 
         //! [embedding_1d_cells_2d]
         typedef std::list<Calculus2D::SCell> SCells2D;
-        SCells2D cells_2d;
+        SCells2D ncells_2d_factory;
         //! [embedding_1d_cells_2d]
+
         {
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,1), Calculus2D::KSpace::POS) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(7,2), Calculus2D::KSpace::POS) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(8,1), Calculus2D::KSpace::NEG) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(8,-1), Calculus2D::KSpace::NEG) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(7,-2), Calculus2D::KSpace::NEG) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(5,-2), Calculus2D::KSpace::NEG) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(3,-2), Calculus2D::KSpace::NEG) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,-2), Calculus2D::KSpace::NEG) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-1,-2), Calculus2D::KSpace::NEG) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-2,-1), Calculus2D::KSpace::POS) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-2,1), Calculus2D::KSpace::POS) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-1,2), Calculus2D::KSpace::POS) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,2), Calculus2D::KSpace::POS) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,1), Calculus2D::KSpace::NEG) );
-            cells_2d.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,0), Calculus2D::KSpace::NEG) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,1), Calculus2D::KSpace::POS) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(7,2), Calculus2D::KSpace::POS) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(8,1), Calculus2D::KSpace::NEG) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(8,-1), Calculus2D::KSpace::NEG) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(7,-2), Calculus2D::KSpace::NEG) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(5,-2), Calculus2D::KSpace::NEG) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(3,-2), Calculus2D::KSpace::NEG) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,-2), Calculus2D::KSpace::NEG) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-1,-2), Calculus2D::KSpace::NEG) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-2,-1), Calculus2D::KSpace::POS) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-2,1), Calculus2D::KSpace::POS) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-1,2), Calculus2D::KSpace::POS) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,2), Calculus2D::KSpace::POS) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,1), Calculus2D::KSpace::NEG) );
+            ncells_2d_factory.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,0), Calculus2D::KSpace::NEG) );
         }
         //! [embedding_1d_factory_2d]
-        const Calculus2D calculus_2d_factory = CalculusFactory::createFromNSCells<1>(cells_2d.begin(), cells_2d.end(), true);
+        const Calculus2D calculus_2d_factory = CalculusFactory::createFromNSCells<1>(ncells_2d_factory.begin(), ncells_2d_factory.end(), true);
         //! [embedding_1d_factory_2d]
         trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
+
+        SCells2D cells_2d_manual;
+        {
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,0)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,1), Calculus2D::KSpace::POS) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(7,2), Calculus2D::KSpace::POS) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(8,2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(8,1), Calculus2D::KSpace::NEG) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(8,0)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(8,-1), Calculus2D::KSpace::NEG) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(8,-2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(7,-2), Calculus2D::KSpace::NEG) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,-2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(5,-2), Calculus2D::KSpace::NEG) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(4,-2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(3,-2), Calculus2D::KSpace::NEG) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,-2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,-2), Calculus2D::KSpace::NEG) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(0,-2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-1,-2), Calculus2D::KSpace::NEG) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-2,-2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-2,-1), Calculus2D::KSpace::POS) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-2,0)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-2,1), Calculus2D::KSpace::POS) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-2,2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(-1,2), Calculus2D::KSpace::POS) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(0,2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,2), Calculus2D::KSpace::POS) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,2)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,1), Calculus2D::KSpace::NEG) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,0)) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,0), Calculus2D::KSpace::NEG) );
+            cells_2d_manual.push_back( calculus_2d_manual.myKSpace.sCell(Z2i::Point(0,0)) );
+        }
 
         Calculus3D calculus_3d_manual;
         {
@@ -205,6 +245,7 @@ int main(int argc, char* argv[])
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,4,-2)) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,-2), Calculus3D::KSpace::NEG) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,-2)), 1/2. );
+            calculus_3d_manual.updateIndexes();
         }
         trace.info() << "calculus_3d_manual=" << calculus_3d_manual << endl;
 
@@ -215,72 +256,167 @@ int main(int argc, char* argv[])
 
         //! [embedding_1d_cells_3d]
         typedef std::vector<Calculus3D::SCell> SCells3D;
-        SCells3D cells_3d;
+        SCells3D ncells_3d_factory;
         //! [embedding_1d_cells_3d]
         {
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,0,0), Calculus3D::KSpace::POS) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(3,0,0), Calculus3D::KSpace::POS) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,1,0), Calculus3D::KSpace::POS) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,3,0), Calculus3D::KSpace::POS) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(3,4,0), Calculus3D::KSpace::NEG) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,4,0), Calculus3D::KSpace::NEG) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,3,0), Calculus3D::KSpace::NEG) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,2,0), Calculus3D::KSpace::POS) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,1), Calculus3D::KSpace::POS) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,2), Calculus3D::KSpace::POS) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,5,2), Calculus3D::KSpace::POS) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,6,1), Calculus3D::KSpace::NEG) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,6,-1), Calculus3D::KSpace::NEG) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,5,-2), Calculus3D::KSpace::NEG) );
-            cells_3d.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,-2), Calculus3D::KSpace::NEG) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,0,0), Calculus3D::KSpace::POS) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(3,0,0), Calculus3D::KSpace::POS) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,1,0), Calculus3D::KSpace::POS) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,3,0), Calculus3D::KSpace::POS) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(3,4,0), Calculus3D::KSpace::NEG) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,4,0), Calculus3D::KSpace::NEG) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,3,0), Calculus3D::KSpace::NEG) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,2,0), Calculus3D::KSpace::POS) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,1), Calculus3D::KSpace::POS) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,2), Calculus3D::KSpace::POS) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,5,2), Calculus3D::KSpace::POS) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,6,1), Calculus3D::KSpace::NEG) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,6,-1), Calculus3D::KSpace::NEG) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,5,-2), Calculus3D::KSpace::NEG) );
+            ncells_3d_factory.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,-2), Calculus3D::KSpace::NEG) );
         }
         //! [embedding_1d_factory_3d]
-        const Calculus3D calculus_3d_factory = CalculusFactory::createFromNSCells<1>(cells_3d.begin(), cells_3d.end(), true);
+        const Calculus3D calculus_3d_factory = CalculusFactory::createFromNSCells<1>(ncells_3d_factory.begin(), ncells_3d_factory.end(), true);
         //! [embedding_1d_factory_3d]
         trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
 
+        SCells3D cells_3d_manual;
+        {
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,0,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,0,0), Calculus3D::KSpace::POS) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,0,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(3,0,0), Calculus3D::KSpace::POS) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,0,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,1,0), Calculus3D::KSpace::POS) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,2,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,3,0), Calculus3D::KSpace::POS) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,4,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(3,4,0), Calculus3D::KSpace::NEG) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,4,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,4,0), Calculus3D::KSpace::NEG) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,4,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,3,0), Calculus3D::KSpace::NEG) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,2,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,2,0), Calculus3D::KSpace::POS) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,1), Calculus3D::KSpace::POS) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,2)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,2), Calculus3D::KSpace::POS) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,4,2)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,5,2), Calculus3D::KSpace::POS) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,6,2)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,6,1), Calculus3D::KSpace::NEG) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,6,0)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,6,-1), Calculus3D::KSpace::NEG) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,6,-2)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,5,-2), Calculus3D::KSpace::NEG) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,4,-2)) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,-2), Calculus3D::KSpace::NEG) );
+            cells_3d_manual.push_back( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,-2)) );
+        }
         trace.beginBlock("checking operators");
 
+        const Calculus1D::PrimalIdentity0 reorder_0cell_1d = calculus_1d_manual.reorder<0, PRIMAL>(cells_1d_manual.begin(), cells_1d_manual.end());
+        const Calculus2D::PrimalIdentity0 reorder_0cell_2d = calculus_2d_manual.reorder<0, PRIMAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::PrimalIdentity0 reorder_0cell_3d = calculus_3d_manual.reorder<0, PRIMAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+        const Calculus1D::PrimalIdentity1 reorder_1cell_1d = calculus_1d_manual.reorder<1, PRIMAL>(cells_1d_manual.begin(), cells_1d_manual.end());
+        const Calculus2D::PrimalIdentity1 reorder_1cell_2d = calculus_2d_manual.reorder<1, PRIMAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::PrimalIdentity1 reorder_1cell_3d = calculus_3d_manual.reorder<1, PRIMAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+        const Calculus1D::DualIdentity0 reorder_0cellp_1d = calculus_1d_manual.reorder<0, DUAL>(cells_1d_manual.begin(), cells_1d_manual.end());
+        const Calculus2D::DualIdentity0 reorder_0cellp_2d = calculus_2d_manual.reorder<0, DUAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::DualIdentity0 reorder_0cellp_3d = calculus_3d_manual.reorder<0, DUAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+        const Calculus1D::DualIdentity1 reorder_1cellp_1d = calculus_1d_manual.reorder<1, DUAL>(cells_1d_manual.begin(), cells_1d_manual.end());
+        const Calculus2D::DualIdentity1 reorder_1cellp_2d = calculus_2d_manual.reorder<1, DUAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::DualIdentity1 reorder_1cellp_3d = calculus_3d_manual.reorder<1, DUAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+
         { // testing primal operators
-            const Calculus1D::PrimalIdentity0 primal_laplace_1d = calculus_1d_manual.laplace<PRIMAL>();
-            const Calculus2D::PrimalIdentity0 primal_laplace_2d = calculus_2d_manual.laplace<PRIMAL>();
-            const Calculus3D::PrimalIdentity0 primal_laplace_3d = calculus_3d_manual.laplace<PRIMAL>();
+            const Calculus1D::PrimalIdentity0 primal_laplace_1d = reorder_0cell_1d * calculus_1d_manual.laplace<PRIMAL>() * reorder_0cell_1d.transpose();
+            const Calculus2D::PrimalIdentity0 primal_laplace_2d = reorder_0cell_2d * calculus_2d_manual.laplace<PRIMAL>() * reorder_0cell_2d.transpose();
+            const Calculus3D::PrimalIdentity0 primal_laplace_3d = reorder_0cell_3d * calculus_3d_manual.laplace<PRIMAL>() * reorder_0cell_3d.transpose();
             trace.info() << "primal_laplace_1d=" << primal_laplace_1d << endl;
             trace.info() << "primal_laplace_2d=" << primal_laplace_2d << endl;
             trace.info() << "primal_laplace_3d=" << primal_laplace_3d << endl;
             trace.info() << "primal_laplace_container=" << endl << MatrixXd(primal_laplace_1d.myContainer) << endl;
-            FATAL_ERROR( equal(calculus_1d_manual.hodge<0, PRIMAL>(), calculus_2d_manual.hodge<0, PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.hodge<0, PRIMAL>(), calculus_3d_manual.hodge<0, PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.hodge<1, PRIMAL>(), calculus_2d_manual.hodge<1, PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.hodge<1, PRIMAL>(), calculus_3d_manual.hodge<1, PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.derivative<0, PRIMAL>(), calculus_3d_manual.derivative<0, PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.derivative<0, PRIMAL>(), calculus_2d_manual.derivative<0, PRIMAL>()) );
+            FATAL_ERROR( equal(
+                        reorder_1cellp_1d * calculus_1d_manual.hodge<0, PRIMAL>() * reorder_0cell_1d.transpose(),
+                        reorder_1cellp_2d * calculus_2d_manual.hodge<0, PRIMAL>() * reorder_0cell_2d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cellp_1d * calculus_1d_manual.hodge<0, PRIMAL>() * reorder_0cell_1d.transpose(),
+                        reorder_1cellp_3d * calculus_3d_manual.hodge<0, PRIMAL>() * reorder_0cell_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_0cellp_1d * calculus_1d_manual.hodge<1, PRIMAL>() * reorder_1cell_1d.transpose(),
+                        reorder_0cellp_2d * calculus_2d_manual.hodge<1, PRIMAL>() * reorder_1cell_2d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_0cellp_1d * calculus_1d_manual.hodge<1, PRIMAL>() * reorder_1cell_1d.transpose(),
+                        reorder_0cellp_3d * calculus_3d_manual.hodge<1, PRIMAL>() * reorder_1cell_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cell_1d * calculus_1d_manual.derivative<0, PRIMAL>() * reorder_0cell_1d.transpose(),
+                        reorder_1cell_2d * calculus_2d_manual.derivative<0, PRIMAL>() * reorder_0cell_2d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cell_1d * calculus_1d_manual.derivative<0, PRIMAL>() * reorder_0cell_1d.transpose(),
+                        reorder_1cell_3d * calculus_3d_manual.derivative<0, PRIMAL>() * reorder_0cell_3d.transpose()
+                        ) );
             FATAL_ERROR( equal(primal_laplace_1d, primal_laplace_2d) );
             FATAL_ERROR( equal(primal_laplace_1d, primal_laplace_3d) );
         }
 
         { // testing dual operators
-            const Calculus1D::DualIdentity0 dual_laplace_1d = calculus_1d_manual.laplace<DUAL>();
-            const Calculus2D::DualIdentity0 dual_laplace_2d = calculus_2d_manual.laplace<DUAL>();
-            const Calculus3D::DualIdentity0 dual_laplace_3d = calculus_3d_manual.laplace<DUAL>();
+            const Calculus1D::DualIdentity0 dual_laplace_1d = reorder_0cellp_1d * calculus_1d_manual.laplace<DUAL>() * reorder_0cellp_1d.transpose();
+            const Calculus2D::DualIdentity0 dual_laplace_2d = reorder_0cellp_2d * calculus_2d_manual.laplace<DUAL>() * reorder_0cellp_2d.transpose();
+            const Calculus3D::DualIdentity0 dual_laplace_3d = reorder_0cellp_3d * calculus_3d_manual.laplace<DUAL>() * reorder_0cellp_3d.transpose();
             trace.info() << "dual_laplace_1d=" << dual_laplace_1d << endl;
             trace.info() << "dual_laplace_2d=" << dual_laplace_2d << endl;
             trace.info() << "dual_laplace_3d=" << dual_laplace_3d << endl;
             trace.info() << "dual_laplace_container=" << endl << MatrixXd(dual_laplace_1d.myContainer) << endl;
-            FATAL_ERROR( equal(calculus_1d_manual.hodge<0, DUAL>(), calculus_2d_manual.hodge<0, DUAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.hodge<0, DUAL>(), calculus_3d_manual.hodge<0, DUAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.hodge<1, DUAL>(), calculus_2d_manual.hodge<1, DUAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.hodge<1, DUAL>(), calculus_3d_manual.hodge<1, DUAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.derivative<0, DUAL>(), calculus_2d_manual.derivative<0, DUAL>()) );
-            FATAL_ERROR( equal(calculus_1d_manual.derivative<0, DUAL>(), calculus_3d_manual.derivative<0, DUAL>()) );
+            FATAL_ERROR( equal(
+                        reorder_1cell_1d * calculus_1d_manual.hodge<0, DUAL>() * reorder_0cellp_1d.transpose(),
+                        reorder_1cell_2d * calculus_2d_manual.hodge<0, DUAL>() * reorder_0cellp_2d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cell_1d * calculus_1d_manual.hodge<0, DUAL>() * reorder_0cellp_1d.transpose(),
+                        reorder_1cell_3d * calculus_3d_manual.hodge<0, DUAL>() * reorder_0cellp_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_0cell_1d * calculus_1d_manual.hodge<1, DUAL>() * reorder_1cellp_1d.transpose(),
+                        reorder_0cell_2d * calculus_2d_manual.hodge<1, DUAL>() * reorder_1cellp_2d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_0cell_1d * calculus_1d_manual.hodge<1, DUAL>() * reorder_1cellp_1d.transpose(),
+                        reorder_0cell_3d * calculus_3d_manual.hodge<1, DUAL>() * reorder_1cellp_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cellp_1d * calculus_1d_manual.derivative<0, DUAL>() * reorder_0cellp_1d.transpose(),
+                        reorder_1cellp_2d * calculus_2d_manual.derivative<0, DUAL>() * reorder_0cellp_2d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cellp_1d * calculus_1d_manual.derivative<0, DUAL>() * reorder_0cellp_1d.transpose(),
+                        reorder_1cellp_3d * calculus_3d_manual.derivative<0, DUAL>() * reorder_0cellp_3d.transpose()
+                        ) );
             FATAL_ERROR( equal(dual_laplace_1d, dual_laplace_2d) );
             FATAL_ERROR( equal(dual_laplace_1d, dual_laplace_3d) );
         }
 
         { // checking dual laplace factory calculus vs manual calculus
-            FATAL_ERROR( equal(calculus_1d_manual.laplace<DUAL>(), calculus_1d_factory.laplace<DUAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.laplace<DUAL>(), calculus_2d_factory.laplace<DUAL>()) );
-            FATAL_ERROR( equal(calculus_3d_manual.laplace<DUAL>(), calculus_3d_factory.laplace<DUAL>()) );
+            const Calculus1D::DualIdentity0 reorder_0cellp_1d_factory = calculus_1d_factory.reorder<0, DUAL>(cells_1d_manual.begin(), cells_1d_manual.end());
+            const Calculus2D::DualIdentity0 reorder_0cellp_2d_factory = calculus_2d_factory.reorder<0, DUAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+            const Calculus3D::DualIdentity0 reorder_0cellp_3d_factory = calculus_3d_factory.reorder<0, DUAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+            FATAL_ERROR( equal(
+                        reorder_0cellp_1d * calculus_1d_manual.laplace<DUAL>() * reorder_0cellp_1d.transpose(),
+                        reorder_0cellp_1d_factory * calculus_1d_factory.laplace<DUAL>() * reorder_0cellp_1d_factory.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_0cellp_2d * calculus_2d_manual.laplace<DUAL>() * reorder_0cellp_2d.transpose(),
+                        reorder_0cellp_2d_factory * calculus_2d_factory.laplace<DUAL>() * reorder_0cellp_2d_factory.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_0cellp_3d * calculus_3d_manual.laplace<DUAL>() * reorder_0cellp_3d.transpose(),
+                        reorder_0cellp_3d_factory * calculus_3d_factory.laplace<DUAL>() * reorder_0cellp_3d_factory.transpose()
+                        ) );
         }
 
         trace.endBlock();
@@ -288,7 +424,7 @@ int main(int argc, char* argv[])
         trace.beginBlock("checking border");
 
         { // 2d ambient border
-            const Calculus2D calculus_2d_factory_no_border = CalculusFactory::createFromNSCells<1>(cells_2d.begin(), cells_2d.end(), false);
+            const Calculus2D calculus_2d_factory_no_border = CalculusFactory::createFromNSCells<1>(ncells_2d_factory.begin(), ncells_2d_factory.end(), false);
             trace.info() << "calculus_2d_factory_no_border=" << calculus_2d_factory_no_border << endl;
             trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
             FATAL_ERROR( calculus_2d_factory.containsCell(calculus_2d_factory.myKSpace.uCell(Z2i::Point(6,0))) );
@@ -298,7 +434,7 @@ int main(int argc, char* argv[])
         }
 
         { // 3d ambient border
-            const Calculus3D calculus_3d_factory_no_border = CalculusFactory::createFromNSCells<1>(cells_3d.begin(), cells_3d.end(), false);
+            const Calculus3D calculus_3d_factory_no_border = CalculusFactory::createFromNSCells<1>(ncells_3d_factory.begin(), ncells_3d_factory.end(), false);
             trace.info() << "calculus_3d_factory_no_border=" << calculus_3d_factory_no_border << endl;
             trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
             FATAL_ERROR( calculus_3d_factory.containsCell(calculus_3d_factory.myKSpace.uCell(Z3i::Point(2,2,-2))) );
@@ -395,6 +531,8 @@ int main(int argc, char* argv[])
             for (int xx=0; xx<=4; xx++)
             for (int yy=0; yy<=4; yy++)
                 calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx+16,yy)) );
+
+            calculus_2d_manual.updateIndexes();
         }
         trace.info() << "calculus_2d_manual=" << calculus_2d_manual << endl;
 
@@ -407,15 +545,101 @@ int main(int argc, char* argv[])
 
         //! [embedding_2d_cells_2d]
         typedef std::list<Calculus2D::SCell> SCells2D;
-        SCells2D cells_2d;
+        SCells2D ncells_2d_factory;
         //! [embedding_2d_cells_2d]
-        for (int kk=0; kk<calculus_2d_manual.kFormLength(2, PRIMAL); kk++) cells_2d.push_back( calculus_2d_manual.getSCell(2, PRIMAL, kk) );
+        for (int kk=0; kk<calculus_2d_manual.kFormLength(2, PRIMAL); kk++) ncells_2d_factory.push_back( calculus_2d_manual.getSCell(2, PRIMAL, kk) );
         //! [embedding_2d_factory_2d]
-        const Calculus2D calculus_2d_factory_weighed = CalculusFactory::createFromNSCells<2>(cells_2d.begin(), cells_2d.end(), true);
+        const Calculus2D calculus_2d_factory_weighed = CalculusFactory::createFromNSCells<2>(ncells_2d_factory.begin(), ncells_2d_factory.end(), true);
         //! [embedding_2d_factory_2d]
         Calculus2D calculus_2d_factory = calculus_2d_factory_weighed;
         calculus_2d_factory.resetSizeRatios();
         trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
+
+        SCells2D cells_2d_manual;
+        {
+            std::set<Calculus2D::SCell> already_inserted;
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus2D::SCell cell = calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx,yy));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_2d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus2D::SCell cell = calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx,yy+4));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_2d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus2D::SCell cell = calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx,yy+8));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_2d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus2D::SCell cell = calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx,yy+12));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_2d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus2D::SCell cell = calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx,yy+16));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_2d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus2D::SCell cell = calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx+4,yy));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_2d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus2D::SCell cell = calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx+8,yy));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_2d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus2D::SCell cell = calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx+12,yy));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_2d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus2D::SCell cell = calculus_2d_manual.myKSpace.sCell(Z2i::Point(xx+16,yy));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_2d_manual.push_back(cell);
+            }
+        }
 
         Calculus3D calculus_3d_manual;
         {
@@ -475,6 +699,8 @@ int main(int argc, char* argv[])
                     xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
                     xx%2 != 0 ? Calculus3D::KSpace::POS : // x-edge
                     Calculus3D::KSpace::POS) );
+
+            calculus_3d_manual.updateIndexes();
         }
         trace.info() << "calculus_3d_manual=" << calculus_3d_manual << endl;
 
@@ -485,49 +711,209 @@ int main(int argc, char* argv[])
 
         //! [embedding_2d_cells_3d]
         typedef std::list<Calculus3D::SCell> SCells3D;
-        SCells3D cells_3d;
+        SCells3D ncells_3d_factory;
         //! [embedding_2d_cells_3d]
-        for (int kk=0; kk<calculus_3d_manual.kFormLength(2, PRIMAL); kk++) cells_3d.push_back( calculus_3d_manual.getSCell(2, PRIMAL, kk) );
+        for (int kk=0; kk<calculus_3d_manual.kFormLength(2, PRIMAL); kk++) ncells_3d_factory.push_back( calculus_3d_manual.getSCell(2, PRIMAL, kk) );
         //! [embedding_2d_factory_3d]
-        const Calculus3D calculus_3d_factory_weighed = CalculusFactory::createFromNSCells<2>(cells_3d.begin(), cells_3d.end(), true);
+        const Calculus3D calculus_3d_factory_weighed = CalculusFactory::createFromNSCells<2>(ncells_3d_factory.begin(), ncells_3d_factory.end(), true);
         //! [embedding_2d_factory_3d]
         Calculus3D calculus_3d_factory = calculus_3d_factory_weighed;
         calculus_3d_factory.resetSizeRatios();
         trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
 
+        SCells3D cells_3d_manual;
+        {
+            std::set<Calculus3D::SCell> already_inserted;
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus3D::SCell cell = calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,yy,0));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_3d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus3D::SCell cell = calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,4,yy));
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_3d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus3D::SCell cell = calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,4-yy,4),
+                    xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
+                    yy%2 != 0 ? Calculus3D::KSpace::NEG : // y-edge
+                    Calculus3D::KSpace::POS);
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_3d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus3D::SCell cell = calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,-yy,4),
+                    xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
+                    yy%2 != 0 ? Calculus3D::KSpace::NEG : // y-edge
+                    Calculus3D::KSpace::POS);
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_3d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus3D::SCell cell = calculus_3d_manual.myKSpace.sCell(Z3i::Point(xx,-4,4-yy),
+                    xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
+                    yy%2 != 0 ? Calculus3D::KSpace::NEG : // y-edge
+                    Calculus3D::KSpace::POS);
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_3d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus3D::SCell cell = calculus_3d_manual.myKSpace.sCell(Z3i::Point(4,yy,-xx),
+                    xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::POS : // surfels
+                    xx%2 != 0 ? Calculus3D::KSpace::NEG : // x-edge
+                    Calculus3D::KSpace::POS);
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_3d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus3D::SCell cell = calculus_3d_manual.myKSpace.sCell(Z3i::Point(4-xx,yy,-4),
+                    xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
+                    xx%2 != 0 ? Calculus3D::KSpace::NEG : // x-edge
+                    Calculus3D::KSpace::POS);
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_3d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus3D::SCell cell = calculus_3d_manual.myKSpace.sCell(Z3i::Point(-xx,yy,-4),
+                    xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
+                    xx%2 != 0 ? Calculus3D::KSpace::NEG : // x-edge
+                    Calculus3D::KSpace::POS);
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_3d_manual.push_back(cell);
+            }
+
+            for (int xx=0; xx<=4; xx++)
+            for (int yy=0; yy<=4; yy++)
+            {
+                const Calculus3D::SCell cell = calculus_3d_manual.myKSpace.sCell(Z3i::Point(-4,yy,-4+xx),
+                    xx%2 != 0 && yy%2 != 0 ? Calculus3D::KSpace::NEG : // surfels
+                    xx%2 != 0 ? Calculus3D::KSpace::POS : // x-edge
+                    Calculus3D::KSpace::POS);
+                if (already_inserted.find(cell) != already_inserted.end()) continue;
+                already_inserted.insert(cell);
+                cells_3d_manual.push_back(cell);
+            }
+        }
+
         trace.beginBlock("checking operators");
+        trace.info() << calculus_3d_manual << endl;
+        trace.info() << cells_3d_manual.size() << endl;
+
+        const Calculus2D::PrimalIdentity0 reorder_0cell_2d = calculus_2d_manual.reorder<0, PRIMAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::PrimalIdentity0 reorder_0cell_3d = calculus_3d_manual.reorder<0, PRIMAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+        const Calculus2D::PrimalIdentity1 reorder_1cell_2d = calculus_2d_manual.reorder<1, PRIMAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::PrimalIdentity1 reorder_1cell_3d = calculus_3d_manual.reorder<1, PRIMAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+        const Calculus2D::PrimalIdentity2 reorder_2cell_2d = calculus_2d_manual.reorder<2, PRIMAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::PrimalIdentity2 reorder_2cell_3d = calculus_3d_manual.reorder<2, PRIMAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+        const Calculus2D::DualIdentity0 reorder_0cellp_2d = calculus_2d_manual.reorder<0, DUAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::DualIdentity0 reorder_0cellp_3d = calculus_3d_manual.reorder<0, DUAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+        const Calculus2D::DualIdentity1 reorder_1cellp_2d = calculus_2d_manual.reorder<1, DUAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::DualIdentity1 reorder_1cellp_3d = calculus_3d_manual.reorder<1, DUAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+        const Calculus2D::DualIdentity2 reorder_2cellp_2d = calculus_2d_manual.reorder<2, DUAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+        const Calculus3D::DualIdentity2 reorder_2cellp_3d = calculus_3d_manual.reorder<2, DUAL>(cells_3d_manual.begin(), cells_3d_manual.end());
 
         { // check primal operators
-            const Calculus2D::PrimalIdentity0 primal_laplace_2d = calculus_2d_manual.laplace<PRIMAL>();
-            const Calculus3D::PrimalIdentity0 primal_laplace_3d = calculus_3d_manual.laplace<PRIMAL>();
+            const Calculus2D::PrimalIdentity0 primal_laplace_2d = reorder_0cell_2d * calculus_2d_manual.laplace<PRIMAL>() * reorder_0cell_2d.transpose();
+            const Calculus3D::PrimalIdentity0 primal_laplace_3d = reorder_0cell_3d * calculus_3d_manual.laplace<PRIMAL>() * reorder_0cell_3d.transpose();
             trace.info() << "primal_laplace_2d=" << primal_laplace_2d << endl;
             trace.info() << "primal_laplace_3d=" << primal_laplace_3d << endl;
             trace.info() << "primal_laplace_container=" << endl << MatrixXd(primal_laplace_2d.myContainer) << endl;
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<0,PRIMAL>(), calculus_3d_manual.hodge<0,PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<1,PRIMAL>(), calculus_3d_manual.hodge<1,PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<2,PRIMAL>(), calculus_3d_manual.hodge<2,PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.derivative<0,PRIMAL>(), calculus_3d_manual.derivative<0,PRIMAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.derivative<1,PRIMAL>(), calculus_3d_manual.derivative<1,PRIMAL>()) );
+            FATAL_ERROR( equal(
+                        reorder_2cellp_2d * calculus_2d_manual.hodge<0, PRIMAL>() * reorder_0cell_2d.transpose(),
+                        reorder_2cellp_3d * calculus_3d_manual.hodge<0, PRIMAL>() * reorder_0cell_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cellp_2d * calculus_2d_manual.hodge<1, PRIMAL>() * reorder_1cell_2d.transpose(),
+                        reorder_1cellp_3d * calculus_3d_manual.hodge<1, PRIMAL>() * reorder_1cell_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_0cellp_2d * calculus_2d_manual.hodge<2, PRIMAL>() * reorder_2cell_2d.transpose(),
+                        reorder_0cellp_3d * calculus_3d_manual.hodge<2, PRIMAL>() * reorder_2cell_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cell_2d * calculus_2d_manual.derivative<0, PRIMAL>() * reorder_0cell_2d.transpose(),
+                        reorder_1cell_3d * calculus_3d_manual.derivative<0, PRIMAL>() * reorder_0cell_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_2cell_2d * calculus_2d_manual.derivative<1, PRIMAL>() * reorder_1cell_2d.transpose(),
+                        reorder_2cell_3d * calculus_3d_manual.derivative<1, PRIMAL>() * reorder_1cell_3d.transpose()
+                        ) );
             FATAL_ERROR( equal(primal_laplace_2d, primal_laplace_3d) );
         }
 
         { // check dual operators
-            const Calculus2D::DualIdentity0 dual_laplace_2d = calculus_2d_manual.laplace<DUAL>();
-            const Calculus3D::DualIdentity0 dual_laplace_3d = calculus_3d_manual.laplace<DUAL>();
+            const Calculus2D::DualIdentity0 dual_laplace_2d = reorder_0cellp_2d * calculus_2d_manual.laplace<DUAL>() * reorder_0cellp_2d.transpose();
+            const Calculus3D::DualIdentity0 dual_laplace_3d = reorder_0cellp_3d * calculus_3d_manual.laplace<DUAL>() * reorder_0cellp_3d.transpose();
             trace.info() << "dual_laplace_2d=" << dual_laplace_2d << endl;
             trace.info() << "dual_laplace_3d=" << dual_laplace_3d << endl;
             trace.info() << "dual_laplace_container=" << endl << MatrixXd(dual_laplace_2d.myContainer) << endl;
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<0,DUAL>(), calculus_3d_manual.hodge<0,DUAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<1,DUAL>(), calculus_3d_manual.hodge<1,DUAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.hodge<2,DUAL>(), calculus_3d_manual.hodge<2,DUAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.derivative<0,DUAL>(), calculus_3d_manual.derivative<0,DUAL>()) );
-            FATAL_ERROR( equal(calculus_2d_manual.derivative<1,DUAL>(), calculus_3d_manual.derivative<1,DUAL>()) );
+            FATAL_ERROR( equal(
+                        reorder_2cell_2d * calculus_2d_manual.hodge<0, DUAL>() * reorder_0cellp_2d.transpose(),
+                        reorder_2cell_3d * calculus_3d_manual.hodge<0, DUAL>() * reorder_0cellp_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cell_2d * calculus_2d_manual.hodge<1, DUAL>() * reorder_1cellp_2d.transpose(),
+                        reorder_1cell_3d * calculus_3d_manual.hodge<1, DUAL>() * reorder_1cellp_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_0cell_2d * calculus_2d_manual.hodge<2, DUAL>() * reorder_2cellp_2d.transpose(),
+                        reorder_0cell_3d * calculus_3d_manual.hodge<2, DUAL>() * reorder_2cellp_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_1cellp_2d * calculus_2d_manual.derivative<0, DUAL>() * reorder_0cellp_2d.transpose(),
+                        reorder_1cellp_3d * calculus_3d_manual.derivative<0, DUAL>() * reorder_0cellp_3d.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_2cellp_2d * calculus_2d_manual.derivative<1, DUAL>() * reorder_1cellp_2d.transpose(),
+                        reorder_2cellp_3d * calculus_3d_manual.derivative<1, DUAL>() * reorder_1cellp_3d.transpose()
+                        ) );
             FATAL_ERROR( equal(dual_laplace_2d, dual_laplace_3d) );
         }
 
         { // checking dual laplace factory calculus vs manual calculus
-            FATAL_ERROR( equal(calculus_2d_manual.laplace<DUAL>(), calculus_2d_factory.laplace<DUAL>()) );
-            FATAL_ERROR( equal(calculus_3d_manual.laplace<DUAL>(), calculus_3d_factory.laplace<DUAL>()) );
+            const Calculus2D::DualIdentity0 reorder_0cellp_2d_factory = calculus_2d_factory.reorder<0, DUAL>(cells_2d_manual.begin(), cells_2d_manual.end());
+            const Calculus3D::DualIdentity0 reorder_0cellp_3d_factory = calculus_3d_factory.reorder<0, DUAL>(cells_3d_manual.begin(), cells_3d_manual.end());
+            FATAL_ERROR( equal(
+                        reorder_0cellp_2d * calculus_2d_manual.laplace<DUAL>() * reorder_0cellp_2d.transpose(),
+                        reorder_0cellp_2d_factory * calculus_2d_factory.laplace<DUAL>() * reorder_0cellp_2d_factory.transpose()
+                        ) );
+            FATAL_ERROR( equal(
+                        reorder_0cellp_3d * calculus_3d_manual.laplace<DUAL>() * reorder_0cellp_3d.transpose(),
+                        reorder_0cellp_3d_factory * calculus_3d_factory.laplace<DUAL>() * reorder_0cellp_3d_factory.transpose()
+                        ) );
         }
 
         trace.endBlock();
@@ -536,7 +922,7 @@ int main(int argc, char* argv[])
 
         { // 2d ambient border
             //! [embedding_2d_factory_2d_no_border]
-            const Calculus2D calculus_2d_factory_no_border = CalculusFactory::createFromNSCells<2>(cells_2d.begin(), cells_2d.end(), false);
+            const Calculus2D calculus_2d_factory_no_border = CalculusFactory::createFromNSCells<2>(ncells_2d_factory.begin(), ncells_2d_factory.end(), false);
             //! [embedding_2d_factory_2d_no_border]
             trace.info() << "calculus_2d_factory_no_border=" << calculus_2d_factory_no_border << endl;
             trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
@@ -549,7 +935,7 @@ int main(int argc, char* argv[])
 
         { // 3d ambient border
             //! [embedding_2d_factory_3d_no_border]
-            const Calculus3D calculus_3d_factory_no_border = CalculusFactory::createFromNSCells<2>(cells_3d.begin(), cells_3d.end(), false);
+            const Calculus3D calculus_3d_factory_no_border = CalculusFactory::createFromNSCells<2>(ncells_3d_factory.begin(), ncells_3d_factory.end(), false);
             //! [embedding_2d_factory_3d_no_border]
             trace.info() << "calculus_3d_factory_no_border=" << calculus_3d_factory_no_border << endl;
             trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;

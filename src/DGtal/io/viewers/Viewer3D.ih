@@ -849,6 +849,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_W, "Switch display with and without wired view of triangle and quad faces." );
   setKeyDescription ( Qt::Key_T, "Sort elements for display improvements." );
   setKeyDescription ( Qt::Key_L, "Load last visualisation settings." );
+  setKeyDescription ( Qt::ShiftModifier+Qt::Key_L, "Save visualisation settings." );
   setKeyDescription ( Qt::Key_B, "Switch background color with White/Black colors." );
   setKeyDescription ( Qt::Key_C, "Show camera informations." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
@@ -1185,10 +1186,15 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
         }
       updateGL();
     }
-  if ( ( e->key() ==Qt::Key_L ) )
+ 
+ if ( ( e->key() ==Qt::Key_L ) )
     {
-      restoreStateFromFile();
-      updateGL();
+      if(e->modifiers()==Qt::ShiftModifier){
+        saveStateToFile();
+      }else{
+        restoreStateFromFile();
+        updateGL();
+      }
     }
   if ( ( e->key() ==Qt::Key_C ) ) 
    {
