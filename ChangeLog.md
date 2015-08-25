@@ -69,6 +69,9 @@
  - InexactPredicateLpSeparableMetric class is now templated by an
    EuclideanRing type. (David Coeurjolly,
    [#1017](https://github.com/DGtal-team/DGtal/pull/1017))
+ - Main example files of geometry/curves are introduced in the list of examples
+   and briefly described.
+   (Tristan Roussillon, [#1026](https://github.com/DGtal-team/DGtal/pull/1026))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
@@ -158,7 +161,14 @@
     Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
  - Backport of changes in google/benchmarck API for micro-benchmarking
    (David Coeurjolly, [#1014](https://github.com/DGtal-team/DGtal/pull/1014))
-
+ - New travis configuration file to enable new travis Docker based
+   container system (David Coeurjolly,
+   [#1030](https://github.com/DGtal-team/DGtal/pull/1030))
+ - Various fixes of compiler warnings due to unused paramters (David
+   Coeurjolly, Roland Denis,
+   [#1034](https://github.com/DGtal-team/DGtal/pull/1030))
+   
+   
 - *Base Package*
  - Fix bug with LabelledMap copy constructor and copy iterator. (Roland
    Denis, [#973](https://github.com/DGtal-team/DGtal/pull/973))
@@ -166,7 +176,7 @@
  [#972](https://github.com/DGtal-team/DGtal/pull/972))
  - Iterator category fix for boost > 1.57 (David Coeurjolly,
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
- - Cleanup of DGtal namespaces. (David Coeurjolly,
+ - Cleanup of DGtal namespaces (David Coeurjolly,
  [#993](https://github.com/DGtal-team/DGtal/pull/993))
  
 
