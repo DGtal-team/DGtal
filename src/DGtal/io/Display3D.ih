@@ -532,6 +532,7 @@ DGtal::Display3D< Space ,KSpace >::addPrism(const RealPoint &baseQuadCenter,
 
 
   ASSERT( xSurfel || ySurfel || zSurfel );
+  boost::ignore_unused_variable_warning( xSurfel );
 
   if(zSurfel)
     {
@@ -695,9 +696,9 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenter(const RealPoint &base
 {
   updateBoundingBox(baseQuadCenter);
   ASSERT( xSurfel || ySurfel || zSurfel );
-  double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
+  boost::ignore_unused_variable_warning( xSurfel );
 
-  ASSERT( xSurfel || ySurfel || zSurfel );
+  double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
 
   if(zSurfel)
     {
@@ -738,9 +739,9 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealP
 {
   updateBoundingBox(baseQuadCenter);
   ASSERT( xSurfel || ySurfel || zSurfel );
+  boost::ignore_unused_variable_warning( xSurfel );
+  
   double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
-
-  ASSERT( xSurfel || ySurfel || zSurfel );
 
   if(zSurfel)
     {
