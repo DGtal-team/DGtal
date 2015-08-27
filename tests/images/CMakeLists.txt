@@ -11,7 +11,7 @@ SET(DGTAL_TESTS_SRC
   testHashTree
   testSliceImageFromFunctor
 #  testImageContainerByHashTree
-  testRigidTransformation2D
+#  testRigidTransformation2D
   testRigidTransformation3D
   )
 
