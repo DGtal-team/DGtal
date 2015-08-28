@@ -26,8 +26,8 @@
  */
 
 /**
- * Description of test_trace' <p>
- * Aim: simple test of \ref MeasureOfStraighLines
+ * Description of testPointVector-catch' <p>
+ * Aim: simple test of \ref PointVector with Catch unit test framework.
  */
 
 

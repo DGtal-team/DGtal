@@ -26,8 +26,8 @@
  */
 
 /**
- * Description of test_trace' <p>
- * Aim: simple test of \ref MeasureOfStraighLines
+ * Description of testCatch' <p>
+ * Aim: simple test of \ref Catch unit test framework
  */
 
 
