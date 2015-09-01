@@ -37,50 +37,50 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
-DGtal::InexactPredicateLpSeparableMetric<T>::InexactPredicateLpSeparableMetric(const double anExponent):
+DGtal::InexactPredicateLpSeparableMetric<T,V>::InexactPredicateLpSeparableMetric(const double anExponent):
   myExponent(anExponent)
 {
 }
 //------------------------------------------------------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
-DGtal::InexactPredicateLpSeparableMetric<T>::~InexactPredicateLpSeparableMetric()
+DGtal::InexactPredicateLpSeparableMetric<T,V>::~InexactPredicateLpSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
-double
-DGtal::InexactPredicateLpSeparableMetric<T>::rawDistance (const Point &aP,
+typename DGtal::InexactPredicateLpSeparableMetric<T,V>::Value
+DGtal::InexactPredicateLpSeparableMetric<T,V>::rawDistance (const Point &aP,
                                                           const Point &aQ) const
 {
-  double res= 0.0;
+  Value res= 0.0;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
     {
-      res += std::pow(static_cast<double>(abs(aP[d]-aQ[d])), myExponent);
+      res += std::pow(static_cast<Value>(abs(aP[d]-aQ[d])), myExponent);
     }
   return res;
 }
 //------------------------------------------------------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
-typename DGtal::InexactPredicateLpSeparableMetric<T>::Value
-DGtal::InexactPredicateLpSeparableMetric<T>::operator() (const Point &aP,
+typename DGtal::InexactPredicateLpSeparableMetric<T,V>::Value
+DGtal::InexactPredicateLpSeparableMetric<T,V>::operator() (const Point &aP,
                                                        const Point &aQ) const
 {
   return std::pow( rawDistance(aP,aQ) , 1.0/myExponent);
 }
 //------------------------------------------------------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
 DGtal::Closest
-DGtal::InexactPredicateLpSeparableMetric<T>::closest (const Point &origin,
+DGtal::InexactPredicateLpSeparableMetric<T,V>::closest (const Point &origin,
                                                       const Point &first,
                                                       const Point &second) const
 {
-  double a=0.0, b=0.0;
+  Value a=0.0, b=0.0;
 
   a = rawDistance(origin,first);
   b = rawDistance(origin,second);
@@ -94,25 +94,25 @@ DGtal::InexactPredicateLpSeparableMetric<T>::closest (const Point &origin,
       return ClosestBOTH;
 }
 //------------------------------------------------------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
-typename DGtal::InexactPredicateLpSeparableMetric<T>::Abscissa
-DGtal::InexactPredicateLpSeparableMetric<T>::binarySearchHidden(const Abscissa &udim,
+typename DGtal::InexactPredicateLpSeparableMetric<T,V>::Abscissa
+DGtal::InexactPredicateLpSeparableMetric<T,V>::binarySearchHidden(const Abscissa &udim,
                                                                 const Abscissa &vdim,
                                                                 const Value &nu,
                                                                 const Value &nv,
                                                                 const Abscissa &lower,
                                                                 const Abscissa &upper) const
 {
-  ASSERT(  (nu +  std::pow( static_cast<double>(abs( udim - lower)),  myExponent)) <
-           (nv +  std::pow( static_cast<double>(abs( vdim - lower)), myExponent)));
+  ASSERT(  (nu +  std::pow( static_cast<Value>(abs( udim - lower)),  myExponent)) <
+           (nv +  std::pow( static_cast<Value>(abs( vdim - lower)), myExponent)));
 
   //Recurrence stop
   if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
     {
       //testing upper
-      double nuUpdated = nu +  std::pow( static_cast<double>(abs( udim - upper )), myExponent);
-      double nvUpdated = nv +  std::pow( static_cast<double>(abs( vdim - upper )), myExponent);
+      Value nuUpdated = nu +  std::pow( static_cast<Value>(abs( udim - upper )), myExponent);
+      Value nvUpdated = nv +  std::pow( static_cast<Value>(abs( vdim - upper )), myExponent);
       if (nuUpdated < nvUpdated)
         return upper;
       else
@@ -120,8 +120,8 @@ DGtal::InexactPredicateLpSeparableMetric<T>::binarySearchHidden(const Abscissa &
     }
 
   Abscissa mid = (lower + upper)/2;
-  double nuUpdated = nu +  std::pow( static_cast<double>(abs( udim - mid )), myExponent);
-  double nvUpdated = nv +  std::pow( static_cast<double>(abs( vdim - mid )), myExponent);
+  Value nuUpdated = nu +  std::pow( static_cast<Value>(abs( udim - mid )), myExponent);
+  Value nvUpdated = nv +  std::pow( static_cast<Value>(abs( vdim - mid )), myExponent);
 
   //Recursive call
   if ( nuUpdated < nvUpdated)
@@ -131,10 +131,10 @@ DGtal::InexactPredicateLpSeparableMetric<T>::binarySearchHidden(const Abscissa &
 
 }
 //------------------------------------------------------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
 bool
-DGtal::InexactPredicateLpSeparableMetric<T>::hiddenBy(const Point &u,
+DGtal::InexactPredicateLpSeparableMetric<T,V>::hiddenBy(const Point &u,
                                                       const Point &v,
                                                       const Point &w,
                                                       const Point &startingPoint,
@@ -146,25 +146,25 @@ DGtal::InexactPredicateLpSeparableMetric<T>::hiddenBy(const Point &u,
   Abscissa upper = endPoint[dim];
 
   //Partial norm computation (sum_{i!=dim}  |u_i-v_i|^p
-  double nu = 0.0;
-  double nv = 0.0;
-  double nw = 0.0;
+  Value nu = 0.0;
+  Value nv = 0.0;
+  Value nw = 0.0;
   for(DGtal::Dimension i  = 0 ; i < Point::dimension ; i++)
     if (i != dim)
       {
-        nu += std::pow( static_cast<double>(abs(u[i] - startingPoint[i])), myExponent);
-        nv += std::pow( static_cast<double>(abs(v[i] - startingPoint[i])), myExponent);
-        nw += std::pow( static_cast<double>(abs(w[i] - startingPoint[i])), myExponent);
+        nu += std::pow( static_cast<Value>(abs(u[i] - startingPoint[i])), myExponent);
+        nv += std::pow( static_cast<Value>(abs(v[i] - startingPoint[i])), myExponent);
+        nw += std::pow( static_cast<Value>(abs(w[i] - startingPoint[i])), myExponent);
       }
 
   //Abscissa of voronoi edges
   Abscissa uv,vw;
-  double dv,dw,du,ddv,ddw;
+  Value dv,dw,du,ddv,ddw;
 
   //checking distances to lower bound
-  du = nu + std::pow( static_cast<double>(abs( u[dim] - lower)), myExponent);
-  dv = nv + std::pow( static_cast<double>(abs( v[dim] - lower)), myExponent);
-  dw = nw + std::pow( static_cast<double>(abs( w[dim] - lower)), myExponent);
+  du = nu + std::pow( static_cast<Value>(abs( u[dim] - lower)), myExponent);
+  dv = nv + std::pow( static_cast<Value>(abs( v[dim] - lower)), myExponent);
+  dw = nw + std::pow( static_cast<Value>(abs( w[dim] - lower)), myExponent);
 
   //Precondition of binarySearchHidden is true
   if (du < dv )
@@ -186,8 +186,8 @@ DGtal::InexactPredicateLpSeparableMetric<T>::hiddenBy(const Point &u,
           if (uv == upper) return true;
 
           //distances at uv+1
-          ddv = nv + std::pow( static_cast<double>(abs( v[dim] - uv -1)), myExponent);
-          ddw = nw + std::pow( static_cast<double>(abs( w[dim] - uv -1)), myExponent);
+          ddv = nv + std::pow( static_cast<Value>(abs( v[dim] - uv -1)), myExponent);
+          ddw = nw + std::pow( static_cast<Value>(abs( w[dim] - uv -1)), myExponent);
           if (ddw < ddv)
             return true;
           else
@@ -203,27 +203,27 @@ DGtal::InexactPredicateLpSeparableMetric<T>::hiddenBy(const Point &u,
     }
 }
 //------------------------------------------------------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
 void
-DGtal::InexactPredicateLpSeparableMetric<T>::selfDisplay ( std::ostream & out ) const
+DGtal::InexactPredicateLpSeparableMetric<T,V>::selfDisplay ( std::ostream & out ) const
 {
   out << "[InexactPredicateLpSeparableMetric] p="<<myExponent;
 }
 //------------------------------------------------------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
 bool
-DGtal::InexactPredicateLpSeparableMetric<T>::isValid() const
+DGtal::InexactPredicateLpSeparableMetric<T,V>::isValid() const
 {
   return true;
 }
 //------------------------------------------------------------------------------
-template <typename T>
+template <typename T, typename V>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const InexactPredicateLpSeparableMetric<T> & object )
+                    const InexactPredicateLpSeparableMetric<T,V> & object )
 {
   object.selfDisplay( out );
   return out;
