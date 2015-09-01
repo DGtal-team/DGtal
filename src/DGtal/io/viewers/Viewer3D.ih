@@ -858,7 +858,12 @@ DGtal::Viewer3D<Space, KSpace>::init()
 
   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
+#if !defined (QGLVIEWER_VERSION) || QGLVIEWER_VERSION < 0x020500
   setMouseBindingDescription ( Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list." );
+#else
+  setMouseBindingDescription ( Qt::Key(0), Qt::ShiftModifier, Qt::RightButton, "Delete the mouse selected list." );
+#endif
+
   setManipulatedFrame ( new ManipulatedFrame() );
 }
 
