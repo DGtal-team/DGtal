@@ -29,11 +29,6 @@
  * Description of testPointVector-catch' <p>
  * Aim: simple test of \ref PointVector with Catch unit test framework.
  */
-
-
-#define CATCH_CONFIG_MAIN 
-#include "catch.hpp"
-
 #include <cstdio>
 #include <cmath>
 #include <iostream>
@@ -41,6 +36,8 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+
+#include "DGtalCatch.h"
 
 using namespace DGtal;
 using namespace std;
