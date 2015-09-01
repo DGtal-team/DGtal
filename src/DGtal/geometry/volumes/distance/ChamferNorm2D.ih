@@ -122,6 +122,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerRayIntersection(const Vector
 {
   ASSERT(Lmin[aDimension] < Lmax[aDimension]);
   ASSERT(Lmin[(aDimension+1) %2] == Lmax[(aDimension+1)%2]);
+  boost::ignore_unused_variable_warning(Lmax);
   
   double slope, y;
   if (aDimension == 1)
@@ -175,6 +176,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getUpperRayIntersection(const Vector
 {
   ASSERT(Lmin[aDimension] < Lmax[aDimension]);
   ASSERT(Lmin[(aDimension+1) %2] == Lmax[(aDimension+1)%2]);
+  boost::ignore_unused_variable_warning(Lmax);
 
   double slope, y;
   if (aDimension == 1)

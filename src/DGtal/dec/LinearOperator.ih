@@ -79,6 +79,13 @@ DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::s
 }
 
 template <typename Calculus, DGtal::Order order_in, DGtal::Duality duality_in, DGtal::Order order_out, DGtal::Duality duality_out>
+DGtal::LinearOperator<Calculus, order_out, duality_out, order_in, duality_in>
+DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::transpose() const
+{
+    return TransposedLinearOperator(*myCalculus, myContainer.transpose());
+}
+
+template <typename Calculus, DGtal::Order order_in, DGtal::Duality duality_in, DGtal::Order order_out, DGtal::Duality duality_out>
 bool
 DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::isValid() const
 {
@@ -137,6 +144,14 @@ DGtal::operator*(const DGtal::LinearOperator<Calculus, order_fold, duality_fold,
     ASSERT( operator_right.myCalculus == operator_right.myCalculus );
     typedef DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> OutputOperator;
     return OutputOperator(*operator_left.myCalculus, operator_left.myContainer * operator_right.myContainer);
+}
+
+template <typename Calculus, DGtal::Order order_in, DGtal::Duality duality_in, DGtal::Order order_out, DGtal::Duality duality_out>
+DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
+DGtal::operator-(const DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator)
+{
+    typedef DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> OutputOperator;
+    return OutputOperator(*linear_operator.myCalculus, -linear_operator.myContainer);
 }
 
 //                                                                           //

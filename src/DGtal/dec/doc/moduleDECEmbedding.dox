@@ -77,6 +77,11 @@ are not inserted.
 @a add_border=false enforces Dirichlet boudary condition on primal operators.
 See \ref sectDECPoisson1D for an example.
 
+| @a add_border | boundary condition of primal operators                          | boundary condition of dual operators                            |
+|---------------|-----------------------------------------------------------------|-----------------------------------------------------------------|
+| @a true       | Neumann \f$\Delta f(x) \cdot n(x)=0~\forall x \in \partial M\f$ | Dirichlet \f$f(x)=0~\forall x \in \partial M\f$                 |
+| @a false      | Dirichlet \f$f(x)=0~\forall x \in \partial M\f$                 | Neumann \f$\Delta f(x) \cdot n(x)=0~\forall x \in \partial M\f$ |
+
 \section sectDECEmbeddingExample1D 1D examples
 
 In this example, we show how to embed linear structure into different ambient spaces.
