@@ -154,9 +154,11 @@
 ## Bug Fixes
 
 - *Configuration*
- - Fix issue #925, detection of Eigen3 (3.1 minimum) and also issue
- #924, DGtal configuration file when using Eigen3.  (Jacques-Olivier
- Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
+  - Forces Eigen 3.2.1 minimum (for a bug fix).
+    (Jacques-Olivier Lachaud, [1032](https://github.com/DGtal-team/DGtal/pull/1032)).
+  - Fix issue #925, detection of Eigen3 (3.1 minimum) and also issue
+    #924, DGtal configuration file when using Eigen3.  (Jacques-Olivier
+    Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
  - Backport of changes in google/benchmarck API for micro-benchmarking
    (David Coeurjolly, [#1014](https://github.com/DGtal-team/DGtal/pull/1014))
  - New travis configuration file to enable new travis Docker based
@@ -226,6 +228,10 @@
 - *Topology  Package*
   - Fix loop bug in extractAllConnectedSCell of Surfaces from helpers.
     (Bertrand Kerautret, [994](https://github.com/DGtal-team/DGtal/pull/994)).
+
+- *DEC  Package*
+  - Fix missing include in testEigenSolver.
+    (Jacques-Olivier Lachaud, [1032](https://github.com/DGtal-team/DGtal/pull/1032)).
 
 
 # DGtal 0.8
