@@ -725,8 +725,8 @@ namespace DGtal
      * @param needToUpdateBoundingBox flag to update the bounding box
      */
     void updateList ( bool needToUpdateBoundingBox=true );
-    
-    
+
+
     /**
      * Draw a linel by using the [gluCShere] primitive.
      * @param pointel the pointel to draw
