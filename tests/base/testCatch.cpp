@@ -30,9 +30,7 @@
  * Aim: simple test of \ref Catch unit test framework
  */
 
-
-#define CATCH_CONFIG_MAIN 
-#include "catch.hpp"
+#include "DGtalCatch.h"
 
 TEST_CASE( "Point Vector Unit tests" )
 {
