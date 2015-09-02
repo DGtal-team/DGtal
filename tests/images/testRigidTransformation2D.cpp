@@ -39,6 +39,14 @@
 #include "DGtal/images/RigidTransformation2D.h"
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
+
+
+#ifdef __GNUC__
+   #ifndef NDEBUG
+      #include <cfenv>
+   #endif
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -84,13 +92,14 @@ public:
       binary.setValue ( Point ( 4,4 ), 255 );
       
       binary >> "binary.pgm";
-      gray >> "gray.pgm";
+      gray >> "gray.pgm"; 
     }
     
     bool forwardTransformationBinary ()
     {
       Bounds bounds = domainForwardTrans ( binary.domain() );
-      Image transformed ( Domain ( bounds.first, bounds.second ) );
+      Domain d ( bounds.first, bounds.second );
+      Image transformed ( d );
       for ( Domain::ConstIterator it = binary.domain().begin(); it != binary.domain().end(); ++it )
       {
 	transformed.setValue ( forwardTrans ( *it ), binary ( *it ) );
@@ -102,7 +111,8 @@ public:
     bool backwardTransformationBinary ()
     {
       Bounds bounds = domainForwardTrans ( binary.domain() );
-      MyImageBackwardAdapter adapter ( binary,  Domain ( bounds.first, bounds.second ) , backwardTrans, idD );
+      Domain d ( bounds.first, bounds.second );
+      MyImageBackwardAdapter adapter ( binary, d, backwardTrans, idD );
       adapter >> "binary_after_backward.pgm";
       return true;
     }
@@ -110,7 +120,8 @@ public:
     bool backwardTransformationGray ()
     {
       Bounds bounds = domainForwardTrans ( gray.domain() );
-      MyImageBackwardAdapter adapter ( gray, Domain ( bounds.first, bounds.second ) , backwardTrans, idD );
+      Domain d ( bounds.first, bounds.second );
+      MyImageBackwardAdapter adapter ( gray, d, backwardTrans, idD );
       adapter >> "gray_after_backward.pgm";
       return true;
     }
@@ -118,7 +129,8 @@ public:
     bool forwardTransformationGray ()
     {
       Bounds bounds = domainForwardTrans ( gray.domain() );
-      Image transformed ( Domain ( bounds.first, bounds.second ) );
+      Domain d ( bounds.first, bounds.second );
+      Image transformed ( d );
       for ( Domain::ConstIterator it = gray.domain().begin(); it != gray.domain().end(); ++it )
       {
 	transformed.setValue ( forwardTrans ( *it ), gray ( *it ) );
@@ -133,13 +145,19 @@ public:
 
 int main( int, char** )
 {
+#ifdef __GNUC__
+   #ifndef NDEBUG
+    fetestexcept ( FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW | FE_UNDERFLOW );
+   #endif
+#endif
+  
   bool res = true;
   testRigidTransformation2D rigidTest;
   trace.beginBlock ( "Testing RigidTransformation2D" );
     res &= rigidTest.forwardTransformationBinary();
     res &= rigidTest.backwardTransformationBinary();
-    res &= rigidTest.forwardTransformationGray();
     res &= rigidTest.backwardTransformationGray();
+    res &= rigidTest.forwardTransformationGray();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
