@@ -41,13 +41,6 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 
-
-#ifdef __GNUC__
-   #ifndef NDEBUG
-      #include <cfenv>
-   #endif
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -112,12 +105,6 @@ public:
 
 int main( int, char** )
 {
-#ifdef __GNUC__
-   #ifndef NDEBUG
-    fetestexcept ( FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW | FE_UNDERFLOW );
-   #endif
-#endif  
-  
   bool res = true;
   testRigidTransformation3D rigidTest;
   trace.beginBlock ( "Testing RigidTransformation3D" );
