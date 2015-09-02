@@ -702,6 +702,14 @@ DGtal::Viewer3D<Space, KSpace>::draw()
         }
       glCallList(myBallSetListId+j);
     }
+ for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
+	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
+    {
+      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
+        {
+          glDrawGLBall ( *it_s );
+        }
+    }
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
     {
@@ -743,15 +751,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList(myPolygonSetListWiredId);
     }
 
-  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
-	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
-    {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
-        {
-          glDrawGLBall ( *it_s );
-        }
-    }
-
+ 
   for(unsigned int j=0; j< myVectTextureImage.size(); j++)
     {
       GLTextureImage &textureImg = myVectTextureImage.at(j);
