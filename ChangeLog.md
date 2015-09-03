@@ -218,7 +218,10 @@
    [#995](https://github.com/DGtal-team/DGtal/pull/995))
  - Fix issues in OBJ color export when exporting voxels. (David
    Coeurjolly, [#1022](https://github.com/DGtal-team/DGtal/pull/1022))
-
+ - Fix compilation issue on gentoo system related to MeshWriter (gcc version 4.9.2-r2). (Van Tho Nguyen,
+	[#1035](https://github.com/DGtal-team/DGtal/pull/1035))
+ - Fix deprecated usage of setMouseBindingDescription with QGLViewer >= 2.5.0.
+   (Roland Denis, [#1036](https://github.com/DGtal-team/DGtal/pull/1036))
 
 - *Kernel Package*
   - BasicDomainSubSampler can now handle non 0 origin point. This update also correct
