@@ -53,7 +53,7 @@ bool testCubicalComplex()
   typedef KhalimskySpaceND<3>              KSpace;
   typedef KSpace::Point                    Point;
   typedef KSpace::Cell                     Cell;
-  typedef CubicalComplex<KSpace, std::map<Cell,CubicalCellData>, CubicalCellData > CC;
+  typedef CubicalComplex< KSpace, std::map<Cell,CubicalCellData> > CC;
 
   trace.beginBlock ( "Testing Cubical complex creation" );
   KSpace K;

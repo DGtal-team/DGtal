@@ -84,8 +84,7 @@ namespace DGtal
   * boost::CopyConstructible.
   */
   template < typename TKSpace, 
-             typename TCellContainer = std::map< typename TKSpace::Cell, CubicalCellData >, 
-             typename TData = CubicalCellData >
+             typename TCellContainer = std::map< typename TKSpace::Cell, CubicalCellData > >
   class CubicalComplex
   {
     // ----------------------- associated types ------------------------------
@@ -94,11 +93,13 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< TCellContainer > ));
     BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
-    BOOST_STATIC_ASSERT (( boost::is_base_of< CubicalCellData, TData >::value ));
 
     typedef TKSpace KSpace;
     typedef TCellContainer CellContainer;
-    typedef TData Data;
+    typedef typename CellContainer::mapped_type Data;
+
+    BOOST_STATIC_ASSERT (( boost::is_base_of< CubicalCellData, Data >::value ));
+    BOOST_STATIC_ASSERT (( boost::is_same< typename TKSpace::Cell, typename CellContainer::key_type >::value ));
 
     /// The dimension of the embedding space.
     static const Dimension dimension = KSpace::dimension;
@@ -203,10 +204,10 @@ namespace DGtal
    * @param object the object of class 'CubicalComplex' to write.
    * @return the output stream after the writing.
    */
-  template <typename TKSpace, typename TCellContainer, typename TData>
+  template <typename TKSpace, typename TCellContainer>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const CubicalComplex<TKSpace, TCellContainer, TData> & object );
+               const CubicalComplex<TKSpace, TCellContainer> & object );
 
 } // namespace DGtal
 
