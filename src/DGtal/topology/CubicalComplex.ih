@@ -93,6 +93,25 @@ dim() const
   return 0;
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+insertCell( const Cell& aCell, const Data& data )
+{
+  insertCell( myKSpace->uDim( aCell ), aCell, data );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+insertCell( Dimension d, const Cell& aCell, const Data& data )
+{
+  myCells[ d ][ aCell ] = data;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
@@ -105,7 +124,10 @@ inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[CubicalComplex dim=" << dim() << "]";
+  out << "[CubicalComplex dim=" << dim();
+  for ( Dimension i = 0; i < myCells.size(); ++i )
+    out << " #" << i << "=" << myCells[ i ].size();
+  out << "]";
 }
 
 /**

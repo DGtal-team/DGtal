@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
@@ -45,7 +46,7 @@ using namespace DGtal;
  * Example of a test. To be completed.
  *
  */
-bool testCubicalComplex()
+bool testCubicalComplexWithMap()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -59,6 +60,63 @@ bool testCubicalComplex()
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 10,10,10 ), true );
   CC complex( K );
+  for ( int n = 0; n < 1000000; ++n )
+    {
+      Point p( rand() % 512, rand() % 512, rand() % 512 );
+      Cell cell = K.uCell( p );
+      complex.insertCell( cell );
+    }
+  trace.info() << complex << std::endl;
+  nbok += true ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
+namespace std {
+  template < DGtal::Dimension dim,
+             typename TInteger >
+  struct hash< DGtal::KhalimskyCell<dim, TInteger> >{
+    typedef DGtal::KhalimskyCell<dim, TInteger> Key;
+    typedef Key argument_type;
+    typedef std::size_t result_type;
+    inline hash() {}
+    inline result_type operator()( const argument_type& cell ) const
+    {
+      result_type h = cell.myCoordinates[ 0 ];
+      static const result_type mult[ 8 ] = { 1, 1733, 517237, 935783132, 305, 43791, 12846764, 56238719 };
+      // static const result_type shift[ 8 ] = { 0, 13, 23, 7, 19, 11, 25, 4 };
+      for ( DGtal::Dimension i = 1; i < dim; ++i )
+        h += cell.myCoordinates[ i ] * mult[ i & 0x7 ];
+      // h += cell.myCoordinates[ i ] << shift[ i & 0x7 ];
+      return h;
+    }
+  };
+}
+
+bool testCubicalComplexWithHashMap()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  typedef KhalimskySpaceND<3>              KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Cell                     Cell;
+  typedef CubicalComplex< KSpace, std::unordered_map<Cell,CubicalCellData> > CC;
+
+  trace.beginBlock ( "Testing Cubical complex creation" );
+  KSpace K;
+  K.init( Point( 0,0,0 ), Point( 10,10,10 ), true );
+  CC complex( K );
+  for ( int n = 0; n < 1000000; ++n )
+    {
+      Point p( rand() % 512, rand() % 512, rand() % 512 );
+      Cell cell = K.uCell( p );
+      complex.insertCell( cell );
+    }
   trace.info() << complex << std::endl;
   nbok += true ? 1 : 0; 
   nb++;
@@ -75,7 +133,9 @@ bool testCubicalComplex()
 int main( int argc, char** argv )
 {
   trace.beginBlock ( "Testing class CubicalComplex" );
-  bool res = testCubicalComplex(); // && ... other tests
+  bool res = 
+    testCubicalComplexWithMap()
+    && testCubicalComplexWithHashMap();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
