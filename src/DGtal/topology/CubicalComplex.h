@@ -58,6 +58,7 @@ namespace DGtal
   * values.
   */
   struct CubicalCellData {
+    inline CubicalCellData() : data( 0 ) {}
     uint32_t data;
   };
 
@@ -75,9 +76,12 @@ namespace DGtal
   * @tparam TKSpace any model of concepts::CCellularGridSpaceND, i.e. a type
   * that models a Khalimsky space.
   *
-  * @tparam TCellContainer any model of
-  * boost::UniqueAssociativeContainer and
-  * boost::PairAssociativeContainer, mapping a KSpace::Cell to a TData
+  * @tparam TCellContainer any model of associative container, mapping
+  * a KSpace::Cell to a CubicalCellData or any type deriving from
+  * it. It could be for instance a std::map or a
+  * std::unordered_map. Note that unfortunately, unordered_map are
+  * (strangely) not models of boost::AssociativeContainer, hence we
+  * cannot check concepts here.
   *
   * @tparam TData any type deriving from CubicalCellData that is
   * boost::DefaultConstructible, boost::Assignable,
@@ -91,8 +95,8 @@ namespace DGtal
   public:
     
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
-    BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< TCellContainer > ));
-    BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
+    // BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< TCellContainer > ));
+    // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
 
     typedef TKSpace KSpace;
     typedef TCellContainer CellContainer;
@@ -149,6 +153,23 @@ namespace DGtal
     */
     Dimension dim() const;
 
+    /**
+     * Insert cell [aCell] into CubicalComplex and assign to it the value [data].
+     *
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @param data any value.
+     */
+    void insertCell( const Cell& aCell, const Data& data = Data() );
+
+    /**
+     * Insert cell [aCell] into CubicalComplex and assign to it the
+     * value [data]. Faster than the other insertCell method.
+     *
+     * @param d the dimension of cell [aCell].
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @param data any value.
+     */
+    void insertCell( Dimension d, const Cell& aCell, const Data& data = Data() );
     
     // ----------------------- Interface --------------------------------------
   public:
