@@ -154,7 +154,7 @@ namespace DGtal
     Dimension dim() const;
 
     /**
-     * Insert cell [aCell] into CubicalComplex and assign to it the value [data].
+     * Insert cell \a aCell into CubicalComplex and assign to it the value \a data.
      *
      * @param aCell any cell valid in the Khalimsky space associated to the complex.
      * @param data any value.
@@ -162,15 +162,65 @@ namespace DGtal
     void insertCell( const Cell& aCell, const Data& data = Data() );
 
     /**
-     * Insert cell [aCell] into CubicalComplex and assign to it the
-     * value [data]. Faster than the other insertCell method.
+     * Insert cell \a aCell into CubicalComplex and assign to it the
+     * value \a data. Faster than the other insertCell method.
      *
-     * @param d the dimension of cell [aCell].
+     * @param d the dimension of cell \a aCell.
      * @param aCell any cell valid in the Khalimsky space associated to the complex.
      * @param data any value.
      */
     void insertCell( Dimension d, const Cell& aCell, const Data& data = Data() );
     
+    /**
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @return 'true' if and only if \a aCell belongs to this complex.
+     */
+    bool belongs( const Cell& aCell ) const;
+
+    /**
+     * @param d the dimension of cell \a aCell.
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @return 'true' if and only if \a aCell belongs to this complex.
+     */
+    bool belongs( Dimension d, const Cell& aCell ) const;
+
+    /**
+     * Outputs all the cells that are proper faces of \a aCell with output iterator \a it.
+     *
+     * @param outIt the output iterator on Cell that is used for outputing faces.
+     * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+     *
+     * @tparam CellOutputIterator any model of boost::OutputIterator, with value_type Cell.
+     *
+     * @note all returned cells belong to this complex, while it is
+     * not compulsory for \a aCell to belong to it.
+     */
+    template <typename CellOutputIterator>
+    void faces( CellOutputIterator& outIt, const Cell& aCell );
+
+    /**
+     * @param d any valid dimension.
+     * @return a const iterator pointing on the first cell of dimension \a d of this.
+     */
+    CellMapConstIterator begin( Dimension d ) const;
+
+    /**
+     * @param d any valid dimension.
+     * @return a const iterator pointing after the last cell of dimension \a d of this.
+     */
+    CellMapConstIterator end( Dimension d ) const;
+
+    /**
+     * Close the whole complex.
+     */
+    void close();
+
+    /**
+     * Close all cells of dimension less or equal to \a k.
+     * @param k any strictly positive integer.
+     */
+    void close( Dimension k );
+
     // ----------------------- Interface --------------------------------------
   public:
 
