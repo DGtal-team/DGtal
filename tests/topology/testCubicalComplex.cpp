@@ -39,43 +39,6 @@
 using namespace std;
 using namespace DGtal;
 
-///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class CubicalComplex.
-///////////////////////////////////////////////////////////////////////////////
-/**
- * Example of a test. To be completed.
- *
- */
-bool testCubicalComplexWithMap()
-{
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  typedef KhalimskySpaceND<3>              KSpace;
-  typedef KSpace::Point                    Point;
-  typedef KSpace::Cell                     Cell;
-  typedef CubicalComplex< KSpace, std::map<Cell,CubicalCellData> > CC;
-
-  trace.beginBlock ( "Testing Cubical complex creation" );
-  KSpace K;
-  K.init( Point( 0,0,0 ), Point( 10,10,10 ), true );
-  CC complex( K );
-  for ( int n = 0; n < 1000000; ++n )
-    {
-      Point p( rand() % 512, rand() % 512, rand() % 512 );
-      Cell cell = K.uCell( p );
-      complex.insertCell( cell );
-    }
-  trace.info() << complex << std::endl;
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
-  
-  return nbok == nb;
-}
-
 namespace std {
   template < DGtal::Dimension dim,
              typename TInteger >
@@ -95,21 +58,59 @@ namespace std {
       return h;
     }
   };
+  template < typename TInteger >
+  struct hash< DGtal::KhalimskyCell<2, TInteger> >{
+    typedef DGtal::KhalimskyCell<3, TInteger> Key;
+    typedef Key argument_type;
+    typedef std::size_t result_type;
+    inline hash() {}
+    inline result_type operator()( const argument_type& cell ) const
+    {
+      result_type h = cell.myCoordinates[ 0 ];
+      h += cell.myCoordinates[ 1 ] * 1733;
+      return h;
+    }
+  };
+  template < typename TInteger >
+  struct hash< DGtal::KhalimskyCell<3, TInteger> >{
+    typedef DGtal::KhalimskyCell<3, TInteger> Key;
+    typedef Key argument_type;
+    typedef std::size_t result_type;
+    inline hash() {}
+    inline result_type operator()( const argument_type& cell ) const
+    {
+      result_type h = cell.myCoordinates[ 0 ];
+      h += cell.myCoordinates[ 1 ] * 1733;
+      h += cell.myCoordinates[ 2 ] * 517237;
+      return h;
+    }
+  };
 }
 
-bool testCubicalComplexWithHashMap()
+
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class CubicalComplex.
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Example of a test. To be completed.
+ *
+ */
+template <typename KSpace, typename Map>
+bool testCubicalComplexWithMap( const std::string& str )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  typedef KhalimskySpaceND<3>              KSpace;
-  typedef KSpace::Point                    Point;
-  typedef KSpace::Cell                     Cell;
-  typedef CubicalComplex< KSpace, std::unordered_map<Cell,CubicalCellData> > CC;
+  typedef typename KSpace::Point         Point;
+  typedef typename KSpace::Cell             Cell;
+  typedef CubicalComplex< KSpace, Map >     CC;
+  typedef typename CC::CellMapConstIterator CellMapConstIterator;
 
-  trace.beginBlock ( "Testing Cubical complex creation" );
+  srand( 0 );
+  std::string s1 = "[" + str + "]" + "Testing Cubical complex creation";
+  trace.beginBlock ( s1.c_str() );
   KSpace K;
-  K.init( Point( 0,0,0 ), Point( 10,10,10 ), true );
+  K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
   CC complex( K );
   for ( int n = 0; n < 1000000; ++n )
     {
@@ -124,8 +125,36 @@ bool testCubicalComplexWithHashMap()
 	       << "true == true" << std::endl;
   trace.endBlock();
   
+  std::string s2 = "[" + str + "]" + "Testing faces computation";
+  trace.beginBlock ( s2.c_str() );
+  std::vector<Cell> faces;
+  std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+  for ( CellMapConstIterator it = complex.begin( 3 ), itE = complex.end( 3 );
+        it != itE; ++it )
+    {
+      complex.faces( outIt, it->first );
+    }
+  trace.info() << "#Faces of maximal cells = " << faces.size() << std::endl;
+  nbok += true ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+
+  std::string s3 = "[" + str + "]" + "Testing close operation";
+  trace.beginBlock ( s3.c_str() );
+  complex.close();
+  trace.info() << complex << std::endl;
+  nbok += true ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+
+  
   return nbok == nb;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -133,9 +162,12 @@ bool testCubicalComplexWithHashMap()
 int main( int argc, char** argv )
 {
   trace.beginBlock ( "Testing class CubicalComplex" );
+  typedef KhalimskySpaceND<3> K3;
+  typedef K3::Cell Cell;
   bool res = 
-    testCubicalComplexWithMap()
-    && testCubicalComplexWithHashMap();
+    testCubicalComplexWithMap< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
+    && 
+    testCubicalComplexWithMap< K3, std::unordered_map<Cell, CubicalCellData> >( "3D, std::unordered_map" );
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

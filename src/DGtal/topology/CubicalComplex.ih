@@ -111,6 +111,90 @@ insertCell( Dimension d, const Cell& aCell, const Data& data )
 {
   myCells[ d ][ aCell ] = data;
 }
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+bool
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+belongs( const Cell& aCell ) const
+{
+  return belongs( myKSpace->uDim( aCell ), aCell );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+bool
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+belongs( Dimension d, const Cell& aCell ) const
+{
+  ASSERT( d <= dimension+1 );
+  CellMapConstIterator it = myCells[ d ].find( aCell );
+  return it != myCells[ d ].end();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+template <typename CellOutputIterator>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+faces( CellOutputIterator& outIt, const Cell& aCell )
+{
+  Cells all_proper_faces = myKSpace->uFaces( aCell );
+  for ( typename Cells::ConstIterator it = all_proper_faces.begin(), 
+          itE = all_proper_faces.end(); it != itE; ++it )
+    if ( belongs( *it ) )
+      *outIt++ = *it;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapConstIterator
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+begin( Dimension d ) const
+{
+  return myCells[ d ].begin();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapConstIterator
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+end( Dimension d ) const
+{
+  return myCells[ d ].end();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+close()
+{
+  close( dim() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+close( Dimension k )
+{
+  if ( k <= 0 ) return;
+  Dimension l = k - 1;
+  for ( CellMapConstIterator it = begin( k ), itE = end( k ); 
+        it != itE; ++it )
+    {
+      Cells direct_faces = myKSpace->uLowerIncident( it->first );
+      for ( typename Cells::const_iterator cells_it = direct_faces.begin(), 
+              cells_it_end = direct_faces.end(); cells_it != cells_it_end; ++cells_it )
+        insertCell( l, *cells_it );
+    }
+  close( l );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
