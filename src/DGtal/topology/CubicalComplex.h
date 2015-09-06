@@ -148,10 +148,32 @@ namespace DGtal
     CubicalComplex & operator= ( const CubicalComplex & other );
 
     /**
+     * Clears the cubical complex, which becomes empty.
+     */
+    void clear();
+
+    /**
+     * Clears all cells of dimension \a d of the cubical complex.
+     * @param d the dimension of cell \a aCell.
+     */
+    void clear( Dimension d );
+
+    /**
     * @return the maximal dimension of a cell in the complex, 0 if
     * the complex is empty.
     */
     Dimension dim() const;
+
+    /**
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @return the dimension of the cell \a aCell.
+     */
+    Dimension dim( const Cell& aCell ) const;
+
+    /**
+     * @return a reference to the Khalimsky space associated to this complex.
+     */
+    const KSpace& space() const;
 
     /**
      * Insert cell \a aCell into CubicalComplex and assign to it the value \a data.
@@ -170,6 +192,29 @@ namespace DGtal
      * @param data any value.
      */
     void insertCell( Dimension d, const Cell& aCell, const Data& data = Data() );
+
+    /**
+     * Insert the cells within range [it,itE) into the
+     * CubicalComplex. The value associated to each cell is the
+     * default.
+     *
+     * @param it an iterator pointing at the beginning of a range of (arbitrary) cells.
+     * @param itE an iterator pointing after the end of a range of (arbitrary) cells.
+     */
+    template <typename CellConstIterator>
+    void insertCells( CellConstIterator it, CellConstIterator itE );
+
+    /**
+     * Insert the cells within range [it,itE) into the
+     * CubicalComplex. The value associated to each cell is the
+     * default.
+     *
+     * @param d the dimension of all cells in the range [it,itE).
+     * @param it an iterator pointing at the beginning of a range of (arbitrary) cells.
+     * @param itE an iterator pointing after the end of a range of (arbitrary) cells.
+     */
+    template <typename CellConstIterator>
+    void insertCells( Dimension d, CellConstIterator it, CellConstIterator itE );
     
     /**
      * @param aCell any cell valid in the Khalimsky space associated to the complex.
@@ -189,6 +234,9 @@ namespace DGtal
      *
      * @param outIt the output iterator on Cell that is used for outputing faces.
      * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+     * @param hintClosed when 'true', this hint tells that the complex
+     * is closed, so this speeds up this method, otherwise, the
+     * complex may be arbitrary.
      *
      * @tparam CellOutputIterator any model of boost::OutputIterator, with value_type Cell.
      *
@@ -196,7 +244,67 @@ namespace DGtal
      * not compulsory for \a aCell to belong to it.
      */
     template <typename CellOutputIterator>
-    void faces( CellOutputIterator& outIt, const Cell& aCell );
+    void faces( CellOutputIterator& outIt, const Cell& aCell, 
+                bool hintClosed = false );
+
+    /**
+     * Outputs all the cells that are direct faces of \a aCell with
+     * output iterator \a it (direct faces are lower incident cells
+     * with a dimension just one below).
+     *
+     * @param outIt the output iterator on Cell that is used for outputing faces.
+     * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+     * @param hintClosed when 'true', this hint tells that the complex
+     * is closed, so this speeds up this method, otherwise, the
+     * complex may be arbitrary.
+     *
+     * @tparam CellOutputIterator any model of boost::OutputIterator, with value_type Cell.
+     *
+     * @note all returned cells belong to this complex, while it is
+     * not compulsory for \a aCell to belong to it.
+     */
+    template <typename CellOutputIterator>
+    void directFaces( CellOutputIterator& outIt, const Cell& aCell,
+                      bool hintClosed = false );
+
+    /**
+     * Outputs all the cells that are proper co-faces of \a aCell with
+     * output iterator \a it.
+     *
+     * @param outIt the output iterator on Cell that is used for outputing faces.
+     * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+     * @param hintOpen when 'true', this hint tells that the complex
+     * is open, so this speeds up this method, otherwise, the
+     * complex may be arbitrary.
+     *
+     * @tparam CellOutputIterator any model of boost::OutputIterator, with value_type Cell.
+     *
+     * @note all returned cells belong to this complex, while it is
+     * not compulsory for \a aCell to belong to it.
+     */
+    template <typename CellOutputIterator>
+    void coFaces( CellOutputIterator& outIt, const Cell& aCell,
+                  bool hintOpen = false );
+
+    /**
+     * Outputs all the cells that are direct co-faces of \a aCell with
+     * output iterator \a it (direct faces are upper incident cells
+     * with a dimension just one above).
+     *
+     * @param outIt the output iterator on Cell that is used for outputing faces.
+     * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+     * @param hintOpen when 'true', this hint tells that the complex
+     * is open, so this speeds up this method, otherwise, the
+     * complex may be arbitrary.
+     *
+     * @tparam CellOutputIterator any model of boost::OutputIterator, with value_type Cell.
+     *
+     * @note all returned cells belong to this complex, while it is
+     * not compulsory for \a aCell to belong to it.
+     */
+    template <typename CellOutputIterator>
+    void directCoFaces( CellOutputIterator& outIt, const Cell& aCell,
+                        bool hintOpen = false );
 
     /**
      * @param d any valid dimension.
@@ -209,6 +317,32 @@ namespace DGtal
      * @return a const iterator pointing after the last cell of dimension \a d of this.
      */
     CellMapConstIterator end( Dimension d ) const;
+
+    /**
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @return an iterator pointing on the pair (aCell,data) if the cell belongs to the complex, or end( dim( aCell ) ) 
+     */
+    CellMapConstIterator find( const Cell& aCell ) const;
+
+    /**
+     * @param d the dimension of cell \a aCell.
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @return an iterator pointing on the pair (aCell,data) if the cell belongs to the complex, or end( d ) 
+     */
+    CellMapConstIterator find( Dimension d, const Cell& aCell ) const;
+
+    /**
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @return an iterator pointing on the pair (aCell,data) if the cell belongs to the complex, or end( dim( aCell ) ) 
+     */
+    CellMapIterator find( const Cell& aCell );
+
+    /**
+     * @param d the dimension of cell \a aCell.
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @return an iterator pointing on the pair (aCell,data) if the cell belongs to the complex, or end( d ) 
+     */
+    CellMapIterator find( Dimension d, const Cell& aCell );
 
     /**
      * Close the whole complex.
