@@ -112,9 +112,9 @@ bool testCubicalComplexWithMap( const std::string& str )
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
   CC complex( K );
-  for ( int n = 0; n < 1000000; ++n )
+  for ( int n = 0; n < 100000; ++n )
     {
-      Point p( rand() % 512, rand() % 512, rand() % 512 );
+      Point p( (rand() % 512) | 0x1, (rand() % 512) | 0x1, (rand() % 512) | 0x1 );
       Cell cell = K.uCell( p );
       complex.insertCell( cell );
     }
@@ -151,6 +151,93 @@ bool testCubicalComplexWithMap( const std::string& str )
 	       << "true == true" << std::endl;
   trace.endBlock();
 
+  std::string s4 = "[" + str + "]" + "Testing direct co-faces.";
+  trace.beginBlock ( s4.c_str() );
+  std::vector<int>  nbCoFaces( 4, 0 );
+  for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+        it != itE; ++it )
+    {
+      std::vector<Cell> faces;
+      std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+      complex.directCoFaces( outIt, it->first );
+      int n = faces.size();
+      if ( n >= 3 ) n = 3; // should not happen
+      nbCoFaces[ n ]++;
+    }
+  trace.info() << "Direct co-Faces of 2-cells, #0=" << nbCoFaces[ 0 ]
+               << " #1=" << nbCoFaces[ 1 ]
+               << " #2=" << nbCoFaces[ 2 ]
+               << " #>2=" << nbCoFaces[ 3 ] << std::endl;
+  nbok += nbCoFaces[ 0 ] == 0 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "nbCoFaces[ 0 ] == 0" << std::endl;
+  nbok += nbCoFaces[ 1 ] > 10*nbCoFaces[ 2 ] ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "nbCoFaces[ 1 ] > 10*nbCoFaces[ 2 ]" << std::endl;
+  nbok += nbCoFaces[ 3 ] == 0 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "nbCoFaces[ >2 ] == 0" << std::endl;
+  trace.endBlock();
+
+  {
+    std::string s5 = "[" + str + "]" + "Testing direct faces with hint.";
+    trace.beginBlock ( s5.c_str() );
+    std::vector<int>  nbFaces( 6, 0 );
+    for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+          it != itE; ++it )
+      {
+        std::vector<Cell> faces;
+        std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+        complex.directFaces( outIt, it->first, true );
+        int n = faces.size();
+        if ( n < 4 ) n = 3; // should not happen
+        if ( n > 4 ) n = 5; // should not happen
+        nbFaces[ n ]++;
+      }
+    trace.info() << "Direct faces of 2-cells, #<4=" << nbFaces[ 3 ]
+                 << " #4=" << nbFaces[ 4 ]
+                 << " #>4=" << nbFaces[ 5 ] << std::endl;
+    nbok += nbFaces[ 3 ] == 0 ? 1 : 0; 
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "nbFaces[ <4 ] == 0" << std::endl;
+    nbok += nbFaces[ 5 ] == 0 ? 1 : 0; 
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "nbFaces[ >4 ] == 0" << std::endl;
+    trace.endBlock();
+  }
+  {
+    std::string s6 = "[" + str + "]" + "Testing direct faces without hint.";
+    trace.beginBlock ( s6.c_str() );
+    std::vector<int>  nbFaces( 6, 0 );
+    for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+          it != itE; ++it )
+      {
+        std::vector<Cell> faces;
+        std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+        complex.directFaces( outIt, it->first );
+        int n = faces.size();
+        if ( n < 4 ) n = 3; // should not happen
+        if ( n > 4 ) n = 5; // should not happen
+        nbFaces[ n ]++;
+      }
+    trace.info() << "Direct faces of 2-cells, #<4=" << nbFaces[ 3 ]
+                 << " #4=" << nbFaces[ 4 ]
+                 << " #>4=" << nbFaces[ 5 ] << std::endl;
+    nbok += nbFaces[ 3 ] == 0 ? 1 : 0; 
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "nbFaces[ <4 ] == 0" << std::endl;
+    nbok += nbFaces[ 5 ] == 0 ? 1 : 0; 
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "nbFaces[ >4 ] == 0" << std::endl;
+    trace.endBlock();
+  }
   
   return nbok == nb;
 }
