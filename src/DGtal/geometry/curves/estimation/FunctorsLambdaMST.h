@@ -23,8 +23,6 @@
  *
  * @date 2014/10/08
  *
- * Header file for module FunctorsLambdaMST.cpp
- *
  * This file is part of the DGtal library.
  */
 
@@ -46,16 +44,25 @@
 
 namespace DGtal
 {
-
 /////////////////////////////////////////////////////////////////////////////
-// class FunctorsLambdaMST
 /**
- * Description of class 'FunctorsLambdaMST' <p>
- * \brief Aim:
- */
+  * Description: Extension of namespace functors by functors related to L-MST.
+  * \brief Aim: Provide various lambda functions.
+  * A lambda function F() - maps fro [0,1] \in \mathbb{R}_+ with F(0) = F(1) = 0
+  * and F() > 0 elsewhere and need to satisfy convexity/concavity property.
+  * For more information see 
+  * J.-O. Lachaud, A. Vialard, and F. de Vieilleville. 
+  * Fast, accurate and convergent tangent estimation on digital contours.
+  * Image Vision Comput. , 25(10):1572–1587, 2007
+  * 
+*/
 
 namespace functors
 {
+  /**
+   * Polynomial functor
+   * 
+   */
   struct Lambda64Function : std::unary_function < double, double >
   {
       double operator() (double x) const
@@ -65,7 +72,10 @@ namespace functors
           return 64.0 * ( -e3 * e3 + 3.0 * e3 * e2 - 3.0 * e2 * e2 + e3 );
       }
   };
-
+  /**
+   * Sine lambda-functor
+   * 
+   */
   struct LambdaSinFromPiFunction : std::unary_function < double, double >
   {
       double operator() (double x) const
@@ -74,6 +84,10 @@ namespace functors
       }
   };
 
+  /**
+   * Exponential lambda-functor
+   * 
+   */
   struct LambdaExponentialFunction : std::unary_function < double, double >
   {
       double operator() (double x) const
