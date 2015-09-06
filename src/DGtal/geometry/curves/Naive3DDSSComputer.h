@@ -57,11 +57,40 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class Naive3DDSSComputer
 /**
- * Description of class 'Standard3DDSSComputer' <p>
+ * Description of class 'Naive3DDSSComputer' <p>
  * \brief Aim:
  * Dynamic recognition of a 3d-digital straight segment (DSS)
 
  */
+
+/////////////////////////////////////////////////////////////////////////////
+// class ArithmeticalDSSComputer
+/**
+ * \brief Aim: This class is a wrapper around ArithmeticalDSSComputer that is devoted 
+ * to the dynamic recognition of digital straight segments (DSS) along any 
+ * sequence of digital points.
+ *
+ * In basis algorithm project 3d curve onto three orthogonal planes. Then each projection
+ * is segmented by using ArithmeticalDSSComputer as long as at least two segmentation
+ * for 2d planes are valid. By valid we understand there is no at least two 3d points which
+ * have same projection onto one of orthogonal 2d planes.
+ *
+ * @tparam TIterator type of iterator on 3d digital points,
+ * readable and forward. 
+ * @tparam TInteger type of integers used for the computation of remainders,
+ * which is a model of CInteger.
+ * @tparam adjacency an unsigned integer equal to 4 for standard 
+ * (simply 4-connected) DSS or 8 for naive (simply 8-connected) DSS (default).
+ * Corresponds to adjacency of 2d projections (see above). Notice that choosing 8-adjacency for
+ * each 2d projection onto orthogonal planes means that 3d curve is 26-connected. While 4-adjacency
+ * means that 3d curve is 6-connected.
+ *
+ * This class is a model of CForwardSegmentComputer. 
+ * It is also default constructible, copy constructible, assignable and equality comparable.
+ *
+ * @see exampleNaive3DDSSComputer.cpp
+ */
+
 template <typename TIterator, typename TInteger, int connectivity = 8>
 class Naive3DDSSComputer
 {
@@ -189,8 +218,8 @@ class Naive3DDSSComputer
 
     /**
      * Tests whether the current DSS can be extended at the front.
-     * Computes the parameters of the extended DSS if yes.
-     * with the adding point if true.
+     * Computes the parameters of the extended DSS if yes
+     * and adds the point to the current DSS in this case.
      * @return 'true' if yes, 'false' otherwise.
      */
     bool extendFront();
@@ -214,7 +243,6 @@ class Naive3DDSSComputer
      * @param thickness thickness
      */
     void getParameters ( Vector3d& direction, PointD3d& intercept, PointD3d& thickness ) const;
-    void get2DSegmentsLength ( unsigned int & pLenXY, unsigned int & pLenXZ, unsigned int & pLenYZ ) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -278,6 +306,19 @@ class Naive3DDSSComputer
      */
     void selfDisplay ( std::ostream & out ) ;
 
+    // ------------------------- Hidden services ------------------------------
+  private:
+    /**
+     * Tests whether the current 2d-DSS can be extended at the front.
+     * Computes the parameters of the extended 2d-DSS if yes
+     * and adds the point to the current 2d-DSS in this case.
+     * Used internally to simplify extendFront().
+     * @param DSS2D reference to 2d-DSSComputer
+     * @param blocked reference to status of DSS2D
+     * updated if DSS2D cannot be extended at the front.
+     * @return 'true' if yes, 'false' otherwise.
+     */
+    bool extendFront ( ArithmeticalDSSComputer2d & DSS2D, bool & blocked );
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -286,11 +327,15 @@ class Naive3DDSSComputer
     Projector2d myProjXY, myProjXZ, myProjYZ;
 
     /// 2d-arithmeticalDSS recognition algorithms
-    ArithmeticalDSSComputer2d myXYalgo;
-    ArithmeticalDSSComputer2d myXZalgo;
-    ArithmeticalDSSComputer2d myYZalgo;
+    ArithmeticalDSSComputer2d myXYalgo, myXZalgo,myYZalgo;
+    
+    /**
+     * Used internally to store information which 2d-arithemticalDSS
+     * should not be any more extended. This happened when two successive 3D points
+     * have same projections onto respective 2d plane.
+     */
     bool blockXY, blockXZ, blockYZ;
-    unsigned int lenXY, lenXZ, lenYZ;
+    
     /// begin and end iterators
     ConstIterator myBegin, myEnd;
 }; // end of class Naive3DDSSComputer
