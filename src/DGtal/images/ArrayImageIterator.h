@@ -90,12 +90,12 @@ namespace DGtal
     public:
 
       // Typedefs
-      using Self = ArrayImageIterator<TIterableClass>; 
-      using IterableClass = TIterableClass; 
-      using Domain = typename IterableClass::Domain; // or in template with default value ?
-      using Point = typename Domain::Point;
-      using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; // hard-coded, but must be later set as template.
-      using Reference = decltype( ((IterableClass*)nullptr)->dereference( Point::diagonal(0), typename Point::Coordinate(0) ) );
+      using Self = ArrayImageIterator<TIterableClass>;  ///< Self type.
+      using IterableClass = TIterableClass;             ///< Iterable class type.
+      using Domain = typename IterableClass::Domain;    ///< Domain type. \todo or in template with default value ?
+      using Point = typename Domain::Point;             ///< Point type.
+      using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; ///< Linearizer type. \todo hard-coded, but must be later set as template.
+      using Reference = decltype( ((IterableClass*)nullptr)->dereference( Point::diagonal(0), typename Point::Coordinate(0) ) ); ///< Return type when dereferencing this iterator. 
 
       /// Default constructor.
       ArrayImageIterator();  
@@ -163,8 +163,10 @@ namespace DGtal
       ~ArrayImageIterator(); 
 
       /** Copy assignment with type interoperability.
-       *
+       * 
+       * @tparam TOtherIterableClass  The type of the other iterable class (auto-deduced).
        * @param other An another iterator whose iterable class pointer is convertible to the current iterable class pointer type.
+       * @return a reference to this class instance.
        */
       template < typename TOtherIterableClass >
       typename std::enable_if< 
@@ -176,7 +178,9 @@ namespace DGtal
 
       /** Move assignment constructor with type interoperability.
        *
+       * @tparam TOtherIterableClass  The type of the other iteratable class (auto-deduced).
        * @param other An another iterator whose iterable class pointer is convertible to the current iterable class pointer type.
+       * @return a reference to this class instance.
        */
       template < typename TOtherIterableClass >
       typename std::enable_if< 
@@ -197,6 +201,7 @@ namespace DGtal
 
       /**
        * @return the distance from this iterator to a given point.
+       * @param aPoint  The point.
        */
       inline
       std::ptrdiff_t distance_to( Point const& aPoint ) const noexcept;
@@ -236,7 +241,9 @@ namespace DGtal
       /// Decrement of one step.
       void decrement(); 
 
-      /// Equality.
+      /** Test equality with other iterator.
+       * @param other The other iterator.
+       */
       inline
       bool equal( Self const& other ) const;
       
@@ -244,12 +251,15 @@ namespace DGtal
       inline
       Reference dereference() const;
 
-      /// Distance to other iterator.
+      /** Calculate the distance to other iterator.
+       * @param other The other iterator.
+       * @return the distance.
+       */
       inline
       std::ptrdiff_t distance_to( Self const& other ) const ;
       
       /** Advance by n steps. 
-       *
+       * @param n The number of steps.
        * \todo Find a more efficient implementation ...
        */
       void advance( std::ptrdiff_t n ); 
