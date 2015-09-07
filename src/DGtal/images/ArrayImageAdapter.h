@@ -158,21 +158,21 @@ namespace DGtal
 
     public:
       // Typedefs
-      using Self = ArrayImageAdapter<TArrayIterator, HyperRectDomain<TSpace> >;
-      using ArrayIterator   = TArrayIterator;
-      using Value           = typename std::iterator_traits<ArrayIterator>::value_type;
-      using Reference       = typename std::iterator_traits<ArrayIterator>::reference;
-      using ConstReference  = const Reference;
+      using Self = ArrayImageAdapter<TArrayIterator, HyperRectDomain<TSpace> >;           ///< Self type.
+      using ArrayIterator   = TArrayIterator;                                             ///< The given random-access iterator's type.
+      using Value           = typename std::iterator_traits<ArrayIterator>::value_type;   ///< The value type stored in the image.
+      using Reference       = typename std::iterator_traits<ArrayIterator>::reference;    ///< Mutable reference type.
+      using ConstReference  = const Reference;                                            ///< Constant reference type.
 
       // DGtal typedefs and constant
-      using Domain    = HyperRectDomain<TSpace>;
-      using Point     = typename Domain::Point;
-      using Dimension = typename Domain::Dimension;
-      using Size      = typename Domain::Size;
-      using Vector    = typename Domain::Vector;
-      using Vertex    = Point;
-      using Integer   = typename Domain::Integer;
-      BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::dimension );
+      using Domain    = HyperRectDomain<TSpace>;      ///< Domain type.
+      using Point     = typename Domain::Point;       ///< Point type.
+      using Dimension = typename Domain::Dimension;   ///< Dimension type.
+      using Size      = typename Domain::Size;        ///< Size type.
+      using Vector    = typename Domain::Vector;      ///< Vector type.
+      using Vertex    = Point;                        ///< Vertex type.
+      using Integer   = typename Domain::Integer;     ///< Integer type.
+      BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::dimension );  ///< Rank of the space.
 
       using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; ///< Linearization of the points.
       
@@ -430,14 +430,21 @@ namespace DGtal
       class DistanceFunctor
         {
         public:
-          using Domain = typename Self::Domain;
-          using Point = typename Self::Point;
-          using Difference = typename Self::Difference;
+          using Domain = typename Self::Domain;         ///< Domain type.
+          using Point = typename Self::Point;           ///< Point type.
+          using Difference = typename Self::Difference; ///< Type of the difference between two iterators.
 
+          /** Constructor from an image.
+           * @param anImage Constant pointer to an image.
+           */
           DistanceFunctor( Self const* anImage )
             : myDomain( anImage->domain() )
             {}
 
+          /** Return the distance between the domain's lower bound and the given point.
+           * @param aPoint  The point.
+           * @return the distance.
+           */
           Difference operator() ( Point const& aPoint ) const
             {
               BOOST_ASSERT_MSG(
