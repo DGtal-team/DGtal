@@ -142,10 +142,10 @@ bool checkImage( TImage& anImage )
   using Dimension = typename Point::Dimension;
   using Coordinate = typename Point::Coordinate;
   using RefImage = ImageContainerBySTLVector<Domain, Value>;
-  
+
   size_t nb = 0;
   size_t nbok = 0;
-  
+
   // Full domain
   auto const domain = anImage.domain();
 
@@ -174,7 +174,7 @@ bool checkImage( TImage& anImage )
   fillImageWithPointFn( anImage, fn );
   nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Filling with point dependant function." << std::endl;
-  
+
   // Fill with counter
   fillImageWithCounter( ref_image );
   fillImageWithCounter( anImage );

@@ -76,7 +76,7 @@ DGtal::ArrayImageIterator<TIterableClass>::
 ArrayImageIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain )
   : ArrayImageIterator{ anIterableClassPtr, aFullDomain, aViewDomain, aViewDomain.lowerBound() }
 {}
- 
+
 //------------------------------------------------------------------------------
 /// Iterator pointing to the first value and spanning the whole domain.
 template <typename TIterableClass>
@@ -108,9 +108,9 @@ ArrayImageIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain
 template <typename TIterableClass>
 template <typename TOtherIterableClass>
 DGtal::ArrayImageIterator<TIterableClass>::
-ArrayImageIterator( 
+ArrayImageIterator(
     ArrayImageIterator<TOtherIterableClass> const& other,
-    typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* 
+    typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type*
 )
   : myIterableClassPtr( other.myIterableClassPtr )
   , myFullDomain{ other.myFullDomain }
@@ -126,9 +126,9 @@ ArrayImageIterator(
 template <typename TIterableClass>
 template <typename TOtherIterableClass>
 DGtal::ArrayImageIterator<TIterableClass>::
-ArrayImageIterator( 
+ArrayImageIterator(
     ArrayImageIterator<TOtherIterableClass> && other,
-    typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* 
+    typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type*
 ) noexcept
   : myIterableClassPtr( std::move(other.myIterableClassPtr) )
   , myFullDomain{ std::move(other.myFullDomain) }
@@ -193,7 +193,7 @@ operator= ( ArrayImageIterator<TOtherIterableClass> && other )
 /// Return the point behind this iterator.
 template <typename TIterableClass>
 inline
-typename DGtal::ArrayImageIterator<TIterableClass>::Point const& 
+typename DGtal::ArrayImageIterator<TIterableClass>::Point const&
 DGtal::ArrayImageIterator<TIterableClass>::
     getPoint() const noexcept
 {
@@ -204,7 +204,7 @@ DGtal::ArrayImageIterator<TIterableClass>::
 /// Return the distance from this iterator to a given point.
 template <typename TIterableClass>
 inline
-std::ptrdiff_t 
+std::ptrdiff_t
 DGtal::ArrayImageIterator<TIterableClass>::
 distance_to( Point const& aPoint ) const noexcept
 {
@@ -212,7 +212,7 @@ distance_to( Point const& aPoint ) const noexcept
       myViewDomain.isInside(aPoint),
       "The point is outside the viewable domain !"
       );
-  return 
+  return
     static_cast<std::ptrdiff_t>( Linearizer::getIndex(aPoint, myViewDomain.lowerBound(), myViewExtent) )
     - static_cast<std::ptrdiff_t>( Linearizer::getIndex(myPoint, myViewDomain.lowerBound(), myViewExtent) );
 }
@@ -245,7 +245,7 @@ DGtal::ArrayImageIterator<TIterableClass>::isValid() const
 //------------------------------------------------------------------------------
 /// Increment of one step.
 template <typename TIterableClass>
-void 
+void
 DGtal::ArrayImageIterator<TIterableClass>::
 increment()
 {
@@ -266,7 +266,7 @@ increment()
 //------------------------------------------------------------------------------
 /// Decrement of one step.
 template <typename TIterableClass>
-void 
+void
 DGtal::ArrayImageIterator<TIterableClass>::
 decrement()
 {
@@ -288,7 +288,7 @@ decrement()
 /// Equality.
 template <typename TIterableClass>
 inline
-bool 
+bool
 DGtal::ArrayImageIterator<TIterableClass>::
 equal( Self const& other ) const
 {
@@ -299,7 +299,7 @@ equal( Self const& other ) const
 /// Dereference.
 template <typename TIterableClass>
 inline
-typename DGtal::ArrayImageIterator<TIterableClass>::Reference 
+typename DGtal::ArrayImageIterator<TIterableClass>::Reference
 DGtal::ArrayImageIterator<TIterableClass>::
 dereference() const
 {
@@ -310,7 +310,7 @@ dereference() const
 /// Distance to other iterator.
 template <typename TIterableClass>
 inline
-std::ptrdiff_t 
+std::ptrdiff_t
 DGtal::ArrayImageIterator<TIterableClass>::
 distance_to( Self const& other ) const
 {
@@ -318,7 +318,7 @@ distance_to( Self const& other ) const
 }
 
 //------------------------------------------------------------------------------
-/// Advance by n steps. 
+/// Advance by n steps.
 template <typename TIterableClass>
 void
 DGtal::ArrayImageIterator<TIterableClass>::
@@ -326,7 +326,7 @@ advance( std::ptrdiff_t n )
 {
   const auto pos = Self::Linearizer::getIndex( myPoint, myViewDomain.lowerBound(), myViewExtent );
   myPoint = Self::Linearizer::getPoint( pos + n, myViewDomain.lowerBound(), myViewExtent );
-  myFullIndex = Self::Linearizer::getIndex( myPoint, myFullDomain.lowerBound(), myFullExtent ); 
+  myFullIndex = Self::Linearizer::getIndex( myPoint, myFullDomain.lowerBound(), myFullExtent );
 }
 
 
@@ -336,8 +336,8 @@ advance( std::ptrdiff_t n )
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
-		  const ArrayImageIterator<T> & object )
+DGtal::operator<< ( std::ostream & out,
+    const ArrayImageIterator<T> & object )
 {
   object.selfDisplay( out );
   return out;

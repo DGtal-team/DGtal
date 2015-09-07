@@ -47,13 +47,13 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  /** 
+  /**
    * @brief Aim: Traits that must be specialized for each IteratorCompletion derived class.
    *
    * This traits must shown:
    * - a typedef Iterator corresponding to the derived class mutable iterator.
    * - a typedef ConstIterator corresponding to the derived class constant iterator.
-   * - a class DistanceFunctor, constructible from a pointer to the derived class and 
+   * - a class DistanceFunctor, constructible from a pointer to the derived class and
    *   that behaves like a distance functor from the begin() iterator to a given point.
    *   (see SimpleRandomAccessRangeFromPoint and SimpleRandomAccessConstRangeFromPoint)
    *
@@ -77,7 +77,7 @@ namespace DGtal
    *
    * \see ArrayImageView.h for usage example.
    */
-  template < 
+  template <
     typename TDerived
   >
   class IteratorCompletion
@@ -112,7 +112,7 @@ namespace DGtal
         {
           return ConstReverseIterator{ static_cast<TDerived*>(this)->end() };
         }
-      
+
       /**
        * @return  a constant reverse-iterator pointing to the last value (C++11).
        * @warning the derived class must have a cend() method that return a constant bidirectional iterator.
@@ -122,7 +122,7 @@ namespace DGtal
         {
           return ConstReverseIterator{ static_cast<TDerived*>(this)->cend() };
         }
-      
+
       /**
        * @return  a mutable reverse-iterator pointing before the first value.
        * @warning the derived class must have a begin() method that return a mutable bidirectional iterator.
@@ -142,7 +142,7 @@ namespace DGtal
         {
           return ConstReverseIterator{ static_cast<TDerived*>(this)->begin() };
         }
-      
+
       /**
        * @return  a constant reverse-iterator pointing before the first value (C++11).
        * @warning the derived class must have a cbegin() method that return a constant bidirectional iterator.
@@ -162,8 +162,8 @@ namespace DGtal
       Range range()
         {
           TDerived* const derived = static_cast<TDerived*>(this);
-          return { 
-              derived->begin(), 
+          return {
+              derived->begin(),
               derived->end(),
               typename IteratorCompletionTraits<TDerived>::DistanceFunctor( derived )
           };
@@ -178,9 +178,9 @@ namespace DGtal
       ConstRange constRange() const
         {
           TDerived const* const derived = static_cast<TDerived const*>(this);
-          return { 
-              derived->begin(), 
-              derived->end(), 
+          return {
+              derived->begin(),
+              derived->end(),
               typename IteratorCompletionTraits<TDerived>::DistanceFunctor( derived )
           };
         }

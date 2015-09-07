@@ -45,15 +45,15 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  
-  /** 
+
+  /**
    * @brief Tag (empty structure) specifying a row-major storage order.
    *
    * @see Linearizer
    */
   struct RowMajorStorage {};
 
-  /** 
+  /**
    * @brief Tag (empty structure) specifying a col-major storage order.
    *
    * @see Linearizer
@@ -106,7 +106,7 @@ namespace DGtal
     >
   struct Linearizer< HyperRectDomain<TSpace>, TStorageOrder >
     {
-      // Usefull typedefs  
+      // Usefull typedefs
       typedef HyperRectDomain<TSpace> Domain; ///< The domain type.
       typedef typename TSpace::Point Point;   ///< The point type.
       typedef Point Extent;                   ///< The domain's extent type.
@@ -141,7 +141,7 @@ namespace DGtal
        */
       static inline
       Size getIndex( Point aPoint, Domain const& aDomain );
-      
+
       /** De-linearization of an index, given the domain lower-bound and extent.
        *
        * @param[in] anIndex     The linearized index.
@@ -171,7 +171,7 @@ namespace DGtal
        */
       static inline
       Point getPoint( Size anIndex, Domain const& aDomain );
-  
+
   }; // end of class Linearizer
 
 } // namespace DGtal
