@@ -107,10 +107,10 @@ namespace DGtal
   struct Linearizer< HyperRectDomain<TSpace>, TStorageOrder >
     {
       // Usefull typedefs  
-      typedef HyperRectDomain<TSpace> Domain;
-      typedef typename TSpace::Point Point;
-      typedef Point Extent;
-      typedef typename TSpace::Size  Size;
+      typedef HyperRectDomain<TSpace> Domain; ///< The domain type.
+      typedef typename TSpace::Point Point;   ///< The point type.
+      typedef Point Extent;                   ///< The domain's extent type.
+      typedef typename TSpace::Size  Size;    ///< The space's size type.
 
       /** Linearized index of a point, given the domain lower-bound and extent.
        *
