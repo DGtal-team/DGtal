@@ -5,6 +5,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testHyperRectDomain-snippet
    testInteger
    testPointVector
+   testPointVector-catch
    testPointVectorContainers
    testLinearAlgebra
    testImagesSetsUtilities

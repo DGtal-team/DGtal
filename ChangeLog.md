@@ -2,11 +2,17 @@
 
 ## New Features / Critical Changes
 
-- *Configuration*
+- *Configuration/General*
  - Continuous integration enabled on both linux and macosx
    systems. Furthermore, the nightly build documentation is
    automatically deployed.  (David Coeurjolly,
    [#955](https://github.com/DGtal-team/DGtal/pull/955))
+ - New unit test framework based on
+   [catch](https://github.com/philsquared/Catch). Catch allows to
+   design quick and efficient unit tests with nice trace
+   outputs. (David Coeurjolly,
+   [#1019](https://github.com/DGtal-team/DGtal/pull/1019)
+
 
 ## Changes
 
