@@ -50,15 +50,15 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   /**
    * @brief Aim: Random access iterator over an image given his definition domain and viewable domain.
    *
    * Description of template class 'ArrayImageIterator' <p>
    * This iterator spans a viewable domain given an iterable image-like class (see below) defined
-   * on a specified full domain. This iterator provides access to the iterable class through classical iterator syntax and, in addition, exposes current point to which the iterator point to. 
-   * Thus, when it is needed to iterate over an image while knowing the current point ( for example, when filling an image with a formulae that depends on the point), it is faster to use this iterator instead of a classical domain iterator and the use of operator() and setValue. 
+   * on a specified full domain. This iterator provides access to the iterable class through classical iterator syntax and, in addition, exposes current point to which the iterator point to.
+   * Thus, when it is needed to iterate over an image while knowing the current point ( for example, when filling an image with a formulae that depends on the point), it is faster to use this iterator instead of a classical domain iterator and the use of operator() and setValue.
    *
    * In order to work, the iterable class must expose a dereference method that,
    * given a point and his linearized index (column-major ordered), returns:
@@ -95,10 +95,10 @@ namespace DGtal
       using Domain = typename IterableClass::Domain;    ///< Domain type. \todo or in template with default value ?
       using Point = typename Domain::Point;             ///< Point type.
       using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; ///< Linearizer type. \todo hard-coded, but must be later set as template.
-      using Reference = decltype( ((IterableClass*)nullptr)->dereference( Point::diagonal(0), typename Point::Coordinate(0) ) ); ///< Return type when dereferencing this iterator. 
+      using Reference = decltype( ((IterableClass*)nullptr)->dereference( Point::diagonal(0), typename Point::Coordinate(0) ) ); ///< Return type when dereferencing this iterator.
 
       /// Default constructor.
-      ArrayImageIterator();  
+      ArrayImageIterator();
 
       /** Iterator from a point.
        *
@@ -116,7 +116,7 @@ namespace DGtal
        * @param aViewDomain         Viewable domain that the iterator will span.
        */
       ArrayImageIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain );
-      
+
       /** Iterator pointing to the first value and spanning the whole domain.
        *
        * @param anIterableClassPtr  Pointer to the iterable class instance.
@@ -130,7 +130,7 @@ namespace DGtal
        * @param aFullDomain         Full domain of the image.
        * @param aViewDomain         Viewable domain that the iterator will span.
        */
-      ArrayImageIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, bool /* last */ ); 
+      ArrayImageIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, Domain const& aViewDomain, bool /* last */ );
 
       /** Iterator pointing after the last value of the whole domain.
        *
@@ -138,41 +138,41 @@ namespace DGtal
        * @param aFullDomain         Full domain of the image.
        */
       ArrayImageIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain, bool /* last */ );
-      
+
       /** Copy constructor with type interoperability.
        *
        * @param other An another iterator whose iterable class pointer is convertible to the current iterable class pointer type.
        */
       template < typename TOtherIterableClass >
-      ArrayImageIterator( 
+      ArrayImageIterator(
           ArrayImageIterator<TOtherIterableClass> const& other,
-          typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* = 0 
+          typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* = 0
       );
-            
+
       /** Move constructor with type interoperability.
        *
        * @param other An another iterator whose iterable class pointer is convertible to the current iterable class pointer type.
        */
       template < typename TOtherIterableClass >
-      ArrayImageIterator( 
+      ArrayImageIterator(
           ArrayImageIterator<TOtherIterableClass> && other,
-          typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* = 0 
+          typename std::enable_if< std::is_convertible<TOtherIterableClass*, IterableClass*>::value >::type* = 0
       ) noexcept;
-      
+
       /// Destructor.
-      ~ArrayImageIterator(); 
+      ~ArrayImageIterator();
 
       /** Copy assignment with type interoperability.
-       * 
+       *
        * @tparam TOtherIterableClass  The type of the other iterable class (auto-deduced).
        * @param other An another iterator whose iterable class pointer is convertible to the current iterable class pointer type.
        * @return a reference to this class instance.
        */
       template < typename TOtherIterableClass >
-      typename std::enable_if< 
-          std::is_convertible<TOtherIterableClass*, IterableClass*>::value, 
+      typename std::enable_if<
+          std::is_convertible<TOtherIterableClass*, IterableClass*>::value,
           Self& >::type
-      operator= ( 
+      operator= (
           ArrayImageIterator<TOtherIterableClass> const& other
       );
 
@@ -183,17 +183,17 @@ namespace DGtal
        * @return a reference to this class instance.
        */
       template < typename TOtherIterableClass >
-      typename std::enable_if< 
-          std::is_convertible<TOtherIterableClass*, IterableClass*>::value, 
+      typename std::enable_if<
+          std::is_convertible<TOtherIterableClass*, IterableClass*>::value,
           Self& >::type
-      operator= ( 
+      operator= (
           ArrayImageIterator<TOtherIterableClass> && other
       );
-      
+
 
       // ----------------------- Interface --------------------------------------
     public:
-      
+
       /**
        * @return the point behind this iterator.
        */
@@ -205,7 +205,7 @@ namespace DGtal
        */
       inline
       std::ptrdiff_t distance_to( Point const& aPoint ) const noexcept;
-      
+
       /**
        * Writes/Displays the object on an output stream.
        * @param out the output stream where the object is written.
@@ -230,7 +230,7 @@ namespace DGtal
 
       // ------------------------- Hidden services ------------------------------
     private:
-      
+
       // Friendship
       template <class> friend class ArrayImageIterator; ///< Friendship of interoperability. \see http://www.boost.org/doc/libs/1_58_0/libs/iterator/doc/iterator_facade.html
       friend class boost::iterator_core_access; ///< Friendship of interoperability. \see http://www.boost.org/doc/libs/1_58_0/libs/iterator/doc/iterator_facade.html
@@ -239,14 +239,14 @@ namespace DGtal
       void increment();
 
       /// Decrement of one step.
-      void decrement(); 
+      void decrement();
 
       /** Test equality with other iterator.
        * @param other The other iterator.
        */
       inline
       bool equal( Self const& other ) const;
-      
+
       /// Dereference.
       inline
       Reference dereference() const;
@@ -257,13 +257,13 @@ namespace DGtal
        */
       inline
       std::ptrdiff_t distance_to( Self const& other ) const ;
-      
-      /** Advance by n steps. 
+
+      /** Advance by n steps.
        * @param n The number of steps.
        * \todo Find a more efficient implementation ...
        */
-      void advance( std::ptrdiff_t n ); 
-      
+      void advance( std::ptrdiff_t n );
+
     }; // end of class ArrayImageIterator
 
 

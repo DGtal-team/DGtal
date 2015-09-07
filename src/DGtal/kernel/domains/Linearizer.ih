@@ -41,7 +41,7 @@ namespace DGtal
   {
 
     /** Helper that calculates the dimension index given the current linearization step.
-     * 
+     *
      * The step I is always decrementing from N-1 to 0.
      *
      * @tparam TStorageOrder  Storage order (RowMajorStorage of ColMajorStorage).
@@ -87,8 +87,8 @@ namespace DGtal
         static inline
         TSize apply( TPoint const& aPoint, TExtent const& anExtent )
           {
-            return 
-                aPoint[ linearizer_helper<TStorageOrder, N, I>::dim ] 
+            return
+                aPoint[ linearizer_helper<TStorageOrder, N, I>::dim ]
               + anExtent[ linearizer_helper<TStorageOrder, N, I>::dim ] * linearizer_impl< TSize, TStorageOrder, N, I-1 >::apply( aPoint, anExtent );
           }
       };
@@ -166,7 +166,7 @@ namespace DGtal
       aPoint -= aLowerBound;
       return linearizer_impl<Size, TStorageOrder, Domain::dimension>::apply(aPoint, anExtent);
     }
-  
+
   /// Linearized index of a point, given the domain extent.
   template <typename TSpace, typename TStorageOrder>
   typename Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::Size
@@ -217,7 +217,7 @@ namespace DGtal
       linearizer_impl<Size, TStorageOrder, Domain::dimension>::apply(point, aDomain.upperBound()-aDomain.lowerBound()+Point::diagonal(1), anIndex);
       return point + aDomain.lowerBound();
     }
-  
+
 } // namespace DGtal
 
 /* GNU coding style */

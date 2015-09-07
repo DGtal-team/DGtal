@@ -60,7 +60,7 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  /** 
+  /**
    * @brief Aim: Image adapter for generic arrays with sub-domain view capability.
    *
    * Description of template class 'ArrayImageAdapter' <p>
@@ -69,14 +69,14 @@ namespace DGtal
    * @tparam TArrayIterator Type of a random-access iterator over the datas (can be a T* pointer).
    * @tparam TDomain  Type of the domain (must be an HyperRectDomain).
    */
-  template < 
+  template <
     typename TArrayIterator,
     typename TDomain
   >
   class ArrayImageAdapter;
 
   /////////////////////////////////////////////////////////////////////////////
-  /** 
+  /**
    * @brief Aim: Image adapter for generic arrays with sub-domain view capability.
    *
    * Description of template class 'ArrayImageAdapter' <p>
@@ -87,13 +87,13 @@ namespace DGtal
    * This adapted image is writable iff the given iterator is mutable.
    *
    * The available iterators for this image can return the corresponding point and are
-   * faster than using an iterator over the domain (see ArrayImageIterator). 
+   * faster than using an iterator over the domain (see ArrayImageIterator).
    * Reverse iterators and ranges are defined in the inherited class IteratorCompletion.
    *
    * Some helpers are available (see makeArrayImageAdapterFromIterator and makeArrayImageAdapterFromImage)
    * for easy construction (with template deduction) from an iterator or an CConstImage model.
    *
-   * It is important to note that, since this class only adapts an already existing storage to an image, all 
+   * It is important to note that, since this class only adapts an already existing storage to an image, all
    * copy operations (constructor and operator) lead to shallow copies.
    *
    * The following code snippet demonstrates how to use ArrayImageAdapter from converting a native C-array to an image:
@@ -107,11 +107,11 @@ namespace DGtal
    *
    * Value* data = new Value[ domain.size() ];
    *
-   * // Convert this allocated memory to a CImage model. 
+   * // Convert this allocated memory to a CImage model.
    * ArrayImageAdapter< Value*, Domain > image( data, domain );
    * // Alternative syntax using the helpers:
    * // auto image = makeArrayImageAdapterFromIterator( data, domain );
-   * 
+   *
    * // Fill the image with first coordinate of the point
    * for ( auto it = image.begin(); it != image.end(); ++it )
    *   {
@@ -175,7 +175,7 @@ namespace DGtal
       BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::dimension );  ///< Rank of the space.
 
       using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; ///< Linearization of the points.
-      
+
       // Iterators & Ranges
       template <class> friend class ArrayImageIterator;
       using Iterator      = typename IteratorCompletionTraits<Self>::Iterator;      ///< Mutable iterator.
@@ -249,7 +249,7 @@ namespace DGtal
         {
           return myFullDomain;
         }
-      
+
       /** Reads a value given a point lying inside the full domain.
        *
        * @param[in] aPoint  The point.
@@ -301,7 +301,7 @@ namespace DGtal
         {
           return Iterator{ this, myFullDomain, myViewDomain };
         }
-      
+
       /**
        * @return a constant iterator pointing to the lower bound of the viewable domain.
        */
@@ -310,7 +310,7 @@ namespace DGtal
         {
           return ConstIterator{ this, myFullDomain, myViewDomain };
         }
-      
+
       /**
        * @return a constant iterator pointing to the lower bound of the viewable domain (C++11).
        */
@@ -328,7 +328,7 @@ namespace DGtal
         {
           return Iterator{ this, myFullDomain, myViewDomain, true };
         }
-      
+
       /**
        * @return a constant iterator pointing after the upper bound of the viewable domain.
        */
@@ -337,7 +337,7 @@ namespace DGtal
         {
           return ConstIterator{ this, myFullDomain, myViewDomain, true };
         }
-      
+
       /**
        * @return a constant iterator pointing after the upper bound of the viewable domain (C++11).
        */
@@ -346,7 +346,7 @@ namespace DGtal
         {
           return ConstIterator{ this, myFullDomain, myViewDomain, true };
         }
-        
+
 
     public: // Should be private since ArrayImageIterator is a friend but g++ 4.9.1 don't care ... (no prob with clang++ 3.5.0)
 
@@ -476,10 +476,10 @@ namespace DGtal
       object.selfDisplay( out );
       return out;
     }
-  
-  
+
+
   // ------------------ ArrayImageAdapter construction helpers ----------------
-  
+
   /** Returns an ArrayImageAdapter from an iterator, a full domain and a viewable domain.
    *
    * @param anArrayIterator   A random-access iterator on the datas.
@@ -496,7 +496,7 @@ namespace DGtal
     {
       return { anArrayIterator, aFullDomain, aViewDomain };
     }
-  
+
   /** Returns an ArrayImageAdapter from an iterator and a full domain.
    *
    * The viewable domain will be the same as the full domain.
@@ -531,10 +531,10 @@ namespace DGtal
     {
       // Remove constness because CConstImage requires assignability.
       BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >) );
-      
+
       return { anImage.begin(), anImage.domain(), aViewDomain };
     }
-  
+
   /** Returns an ArrayImageAdapter from an image.
    *
    * The viewable domain will be the same as the given image domain.
@@ -551,7 +551,7 @@ namespace DGtal
   makeArrayImageAdapterFromImage( TImage & anImage )
     {
       // Remove constness because CConstImage requires assignability.
-      BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >) ); 
+      BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >) );
 
       return { anImage.begin(), anImage.domain(), anImage.domain() };
     }
