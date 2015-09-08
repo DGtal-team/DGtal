@@ -57,7 +57,9 @@ namespace DGtal
    *   that behaves like a distance functor from the begin() iterator to a given point.
    *   (see SimpleRandomAccessRangeFromPoint and SimpleRandomAccessConstRangeFromPoint)
    *
-   * \see the specialization of IteratorCompletionTraits for ArrayImageView.
+   * @see the specialization of IteratorCompletionTraits for ArrayImageView.
+   *
+   * @tparam TDerived Type of the derived class (CRTP).
    */
   template < typename TDerived >
   class IteratorCompletionTraits;
@@ -75,7 +77,9 @@ namespace DGtal
    * Each derived class of IteratorCompletion must specialized IteratorCompletionTraits in order to provide
    * enough informations on his iterators.
    *
-   * \see ArrayImageView.h for usage example.
+   * @see ArrayImageView.h for usage example.
+   *
+   * @tparam TDerived Type of the derived class (CRTP).
    */
   template <
     typename TDerived
@@ -84,15 +88,15 @@ namespace DGtal
     {
     public:
 
-      typedef typename IteratorCompletionTraits<TDerived>::Iterator           Iterator;
-      typedef typename IteratorCompletionTraits<TDerived>::ConstIterator      ConstIterator;
-      typedef typename IteratorCompletionTraits<TDerived>::DistanceFunctor    DistanceFunctor;
+      typedef typename IteratorCompletionTraits<TDerived>::Iterator           Iterator;         ///< Mutable iterator type.
+      typedef typename IteratorCompletionTraits<TDerived>::ConstIterator      ConstIterator;    ///< Constant iterator type.
+      typedef typename IteratorCompletionTraits<TDerived>::DistanceFunctor    DistanceFunctor;  ///< Type of the functor calculating the distance between iterators.
 
-      typedef boost::reverse_iterator<Iterator>       ReverseIterator;
-      typedef boost::reverse_iterator<ConstIterator>  ConstReverseIterator;
-      typedef SimpleRandomAccessRangeFromPoint< ConstIterator, Iterator, DistanceFunctor >  Range;
-      typedef SimpleRandomAccessConstRangeFromPoint< ConstIterator, DistanceFunctor >       ConstRange;
-      typedef std::ptrdiff_t    Difference;
+      typedef boost::reverse_iterator<Iterator>       ReverseIterator;      ///< Mutable reverse iterator type.
+      typedef boost::reverse_iterator<ConstIterator>  ConstReverseIterator; ///< Constant reverse iterator type.
+      typedef SimpleRandomAccessRangeFromPoint< ConstIterator, Iterator, DistanceFunctor >  Range;      ///< Mutable range type.
+      typedef SimpleRandomAccessConstRangeFromPoint< ConstIterator, DistanceFunctor >       ConstRange; ///< Constant range type.
+      typedef std::ptrdiff_t    Difference;   ///< Type of the distance between two iterators.
 
       /**
        * @return  a mutable reverse-iterator pointing to the last value.
