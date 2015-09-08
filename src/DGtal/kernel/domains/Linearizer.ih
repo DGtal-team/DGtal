@@ -133,7 +133,7 @@ namespace DGtal
         static inline
         void apply( TPoint& aPoint, TExtent const& anExtent, TSize anIndex )
           {
-            const auto dim_extent = anExtent[ linearizer_helper<TStorageOrder, N, I>::dim ];
+            typename TExtent::Scalar const dim_extent = anExtent[ linearizer_helper<TStorageOrder, N, I>::dim ];
             aPoint[ linearizer_helper<TStorageOrder, N, I>::dim ] = anIndex % dim_extent;
             delinearizer_impl< TStorageOrder, N, I-1 >::apply( aPoint, anExtent, anIndex / dim_extent );
           }
@@ -191,7 +191,7 @@ namespace DGtal
   Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::
       getPoint( Size anIndex, Point const& aLowerBound, Extent const& anExtent )
     {
-      Point point{};
+      Point point;
       delinearizer_impl<TStorageOrder, Domain::dimension>::apply(point, anExtent, anIndex);
       return point + aLowerBound;
     }
@@ -202,7 +202,7 @@ namespace DGtal
   Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::
       getPoint( Size anIndex, Extent const& anExtent )
     {
-      Point point{};
+      Point point;
       delinearizer_impl<TStorageOrder, Domain::dimension>::apply(point, anExtent, anIndex);
       return point;
     }
@@ -213,7 +213,7 @@ namespace DGtal
   Linearizer< HyperRectDomain<TSpace>, TStorageOrder >::
       getPoint( Size anIndex, Domain const& aDomain )
     {
-      Point point{};
+      Point point;
       linearizer_impl<Size, TStorageOrder, Domain::dimension>::apply(point, aDomain.upperBound()-aDomain.lowerBound()+Point::diagonal(1), anIndex);
       return point + aDomain.lowerBound();
     }
