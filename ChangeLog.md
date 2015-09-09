@@ -159,7 +159,9 @@
 
 ## Bug Fixes
 
-- *Configuration*
+- *Configuration* 
+  - Removing code coverage with coverall.io (David Coeurjolly,
+  [1040](https://github.com/DGtal-team/DGtal/pull/1032)).
   - Forces Eigen 3.2.1 minimum (for a bug fix).
     (Jacques-Olivier Lachaud, [1032](https://github.com/DGtal-team/DGtal/pull/1032)).
   - Fix issue #925, detection of Eigen3 (3.1 minimum) and also issue
