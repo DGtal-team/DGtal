@@ -144,103 +144,6 @@ namespace
   };
 }
 
-// Test for Linearizer with dimension parameter
-template < DGtal::Dimension N >
-class LinearizerTester
-{
-public:
-  typedef SpaceND<N>              Space;
-  typedef HyperRectDomain<Space>  Domain;
-  typedef typename Space::Point   Point;
-
-  typedef linearizer<Domain, N>   RefLinearizer;
-  typedef Linearizer<Domain, ColMajorStorage>   NewLinearizer;
-
-private:
-  Domain myDomain;
-
-public:
-  /// Construct a test domain whose size is near the given size.
-  LinearizerTester( std::size_t size = 1e5 )
-    {
-      Point lowerBound;
-      for ( std::size_t i = 0 ; i < N ; ++i )
-        lowerBound[i] = 1 + 7*i;
-
-      std::size_t dim_size = std::size_t( std::pow( double(size), 1./N ) + 0.5 );
-      Point upperBound;
-      for ( std::size_t i = 0; i < N ; ++i )
-        upperBound[i] = lowerBound[i] + dim_size + i;
-
-      myDomain = Domain( lowerBound, upperBound );
-    }
-
-  /// Test getIndex( Point, Point, Extent ) syntax
-  bool testGetIndexFromPPE()
-    {
-      const Point lowerBound = myDomain.lowerBound();
-      const Point extent = myDomain.upperBound() - lowerBound + Point::diagonal(1);
-
-      bool success = true;
-      for ( typename Domain::ConstIterator it = myDomain.begin(), it_end = myDomain.end(); it != it_end && success ; ++it )
-        {
-          if ( RefLinearizer::apply( *it, lowerBound, extent ) != NewLinearizer::getIndex( *it, lowerBound, extent ) )
-            {
-              FAIL( "Index is different for " << *it );
-              success = false;
-            }
-        }
-
-      return success;
-    }
-
-  /// Test getIndex( Point, Extent ) syntax
-  bool testGetIndexFromPE()
-    {
-      const Point lowerBound = myDomain.lowerBound();
-      const Point extent = myDomain.upperBound() - lowerBound + Point::diagonal(1);
-
-      bool success = true;
-      for ( typename Domain::ConstIterator it = myDomain.begin(), it_end = myDomain.end(); it != it_end && success ; ++it )
-        {
-          if ( RefLinearizer::apply( *it, lowerBound, extent ) != NewLinearizer::getIndex( *it - lowerBound, extent ) )
-            {
-              FAIL( "Index is different for " << *it );
-              success = false;
-            }
-        }
-
-      return success;
-    }
-
-  /// Test getIndex( Point, Domain ) syntax
-  bool testGetIndexFromPD()
-    {
-      const Point lowerBound = myDomain.lowerBound();
-      const Point extent = myDomain.upperBound() - lowerBound + Point::diagonal(1);
-
-      bool success = true;
-      for ( typename Domain::ConstIterator it = myDomain.begin(), it_end = myDomain.end(); it != it_end && success ; ++it )
-        {
-          if ( RefLinearizer::apply( *it, lowerBound, extent ) != NewLinearizer::getIndex( *it, myDomain ) )
-            {
-              FAIL( "Index is different for " << *it );
-              success = false;
-            }
-        }
-
-      return success;
-    }
-
-  /// Test getPoint( Size, Point, Extent ) syntax
-  bool testGetPointFromSPE()
-    {
-      const Point lowerBound = myDomain.lowerBound();
-      const Point extent = myDomain.upperBound() - lowerBound + Point::diagonal(1);
-      return true;
-
-    }
-};
 
 /// Converter between col-major and row-major storage order.
 template < typename StorageOrder >
@@ -278,7 +181,7 @@ TEST_CASE( "Testing Linearizer in dimension " #N " with " #ORDER, "[test][dim" #
 \
   typedef SpaceND<N>              Space;\
   typedef HyperRectDomain<Space>  Domain;\
-  typedef typename Space::Point   Point;\
+  typedef Space::Point   Point;\
 \
   typedef linearizer<Domain, N>   RefLinearizer;\
   typedef Linearizer<Domain, ORDER>   NewLinearizer;\
@@ -304,19 +207,19 @@ TEST_CASE( "Testing Linearizer in dimension " #N " with " #ORDER, "[test][dim" #
 \
   SECTION( "Testing getIndex(Point, Point, Extent) syntax" )\
     {\
-      for ( typename Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
-          REQUIRE( RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it, lowerBound, extent ) );\
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
+          REQUIRE(( RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it, lowerBound, extent ) ));\
     }\
 \
   SECTION( "Testing getIndex(Point, Extent) syntax" )\
     {\
-      for ( typename Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
           REQUIRE( RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it - lowerBound, extent ) );\
     }\
 \
   SECTION( "Testing getIndex(Point, Domain) syntax" )\
     {\
-      for ( typename Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
           REQUIRE( RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it, domain ) );\
     }\
 \
@@ -345,7 +248,7 @@ TEST_CASE( "Benchmarking Linearizer in dimension " #N " with " #ORDER, "[.bench]
 \
   typedef SpaceND<N>              Space;\
   typedef HyperRectDomain<Space>  Domain;\
-  typedef typename Space::Point   Point;\
+  typedef Space::Point   Point;\
 \
   typedef linearizer<Domain, N>   RefLinearizer;\
   typedef Linearizer<Domain, ORDER>   NewLinearizer;\
@@ -371,32 +274,32 @@ TEST_CASE( "Benchmarking Linearizer in dimension " #N " with " #ORDER, "[.bench]
 \
   std::size_t sum = 0;\
 \
-  for ( typename Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
+  for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
       sum += RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent );\
   REQUIRE( sum > 0 );\
   sum = 0;\
 \
   SECTION( "Benchmarking reference linearizer" )\
     {\
-      for ( typename Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
           sum += RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent );\
     }\
 \
   SECTION( "Benchmarking getIndex(Point, Point, Extent) syntax" )\
     {\
-      for ( typename Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
           sum += NewLinearizer::getIndex( *it, lowerBound, extent );\
     }\
 \
   SECTION( "Benchmarking getIndex(Point, Extent) syntax" )\
     {\
-      for ( typename Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
           sum += NewLinearizer::getIndex( *it, extent );\
     }\
 \
   SECTION( "Benchmarking getIndex(Point, Domain) syntax" )\
     {\
-      for ( typename Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
           sum += NewLinearizer::getIndex( *it, domain );\
     }\
 \
