@@ -214,7 +214,7 @@ namespace DGtal
       getPoint( Size anIndex, Domain const& aDomain )
     {
       Point point;
-      linearizer_impl<Size, TStorageOrder, Domain::dimension>::apply(point, aDomain.upperBound()-aDomain.lowerBound()+Point::diagonal(1), anIndex);
+      delinearizer_impl<TStorageOrder, Domain::dimension>::apply(point, aDomain.upperBound()-aDomain.lowerBound()+Point::diagonal(1), anIndex);
       return point + aDomain.lowerBound();
     }
 
