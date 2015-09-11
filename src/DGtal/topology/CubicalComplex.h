@@ -278,6 +278,22 @@ namespace DGtal
                       bool hintClosed = false );
 
     /**
+     * Outputs all the iterators on cells that are direct faces of \a aCell with
+     * output iterator \a it (direct faces are lower incident cells
+     * with a dimension just one below).
+     *
+     * @param outIt the output iterator on CellMapIterator that is used for outputing face iterators.
+     * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+     *
+     * @tparam CellMapIteratorOutputIterator any model of boost::OutputIterator, with value_type CellMapIterator.
+     *
+     * @note all returned cells belong to this complex, while it is
+     * not compulsory for \a aCell to belong to it.
+     */
+    template <typename CellMapIteratorOutputIterator>
+    void directFacesIterators( CellMapIteratorOutputIterator& outIt, const Cell& aCell );
+
+    /**
      * Outputs all the cells that are proper co-faces of \a aCell with
      * output iterator \a it.
      *
@@ -315,6 +331,22 @@ namespace DGtal
     template <typename CellOutputIterator>
     void directCoFaces( CellOutputIterator& outIt, const Cell& aCell,
                         bool hintOpen = false );
+
+    /**
+     * Outputs all the iterators on cells that are direct co-faces of \a aCell with
+     * output iterator \a it (direct faces are upper incident cells
+     * with a dimension just one above).
+     *
+     * @param outIt the output iterator on CellMapIterator that is used for outputing face iterators.
+     * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+     *
+     * @tparam CellMapIteratorOutputIterator any model of boost::OutputIterator, with value_type CellMapIterator.
+     *
+     * @note all returned cells belong to this complex, while it is
+     * not compulsory for \a aCell to belong to it.
+     */
+    template <typename CellMapIteratorOutputIterator>
+    void directCoFacesIterators( CellMapIteratorOutputIterator& outIt, const Cell& aCell );
 
     /**
      * @param d any valid dimension.
@@ -365,6 +397,25 @@ namespace DGtal
      */
     void close( Dimension k );
 
+
+    /**
+    * Collapse a subcomplex of this, collapsing cells following
+    * priority [priority], in a decreasing sequence. [S] provides the
+    * starting cells, generally (but not compulsory) maximal cells.
+    * Note: cells that have been marked as FIXED are not removed.  only
+    * cells that are in the closure of [S] may be removed, and only if
+    * they are not marked as FIXED.
+    *
+    * @param S a subset of cells of [K]
+    * @param S_closed indicates if [S] is a closed set (faster in this case)
+    * @param priority the object that assign a priority to each cell.
+    */
+    template <typename CellIterator, typename CellMapIteratorPriority>
+    void collapse( CellIterator S_itb, CellIterator S_itE, 
+                   const CellMapIteratorPriority& priority, 
+                   bool hintIsSClosed = false, bool hintIsKClosed = false );
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -409,6 +460,26 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+
+    /**
+    * Given a cell [c], tells if it is a maximal cell in the complex
+    * (return 0), or if it is a free face of the cell pointed by
+    * [it_cell_up] (return 1) or if it is not a free face.
+    *
+    * The complex must be closed. In computing the 1-up-incident
+    * cells, this method ignores cell marked as REMOVED. Furthermore,
+    * if one 1-up-incident cell is not marked as COLLAPSIBLE, the
+    * method returns 2.
+    *
+    * @param c a cubical cell (belonging to 'this')
+    *
+    * @param it_cell_up (returns) a pointer on a cell d if c is a
+    * free face of d.
+    *
+    * @return 0 if the cell is maximal, 1 if the cell is a free face,
+    * 2 otherwise.
+    */
+    uint32_t computeCellType( Dimension n, const Cell& c, CellMapIterator& it_cell_up );
 
   }; // end of class CubicalComplex
 
