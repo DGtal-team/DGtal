@@ -92,7 +92,7 @@ namespace DGtal
    *
    * const Domain domain( Point(0, 1), Point(4, 3) );
    *
-   * size_t id = Linearizer<Domain>::getIndex( Point(2, 2), domain ); // returns 7.
+   * typename Linearizer<Domain>::Size id = Linearizer<Domain>::getIndex( Point(2, 2), domain ); // returns 7.
    *
    * Point pt = Linearizer<Domain>::getPoint( 7, domain); // returns Point(2,2).
    * @endcode
@@ -189,5 +189,3 @@ namespace DGtal
 #undef Linearizer_RECURSES
 #endif // else defined(Linearizer_RECURSES)
 
-/* GNU coding style */
-/* vim: set ts=2 sw=2 expandtab cindent cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1 : */
