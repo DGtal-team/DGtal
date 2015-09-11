@@ -182,62 +182,62 @@ bool testCubicalComplexWithMap( const std::string& str )
 	       << "nbCoFaces[ >2 ] == 0" << std::endl;
   trace.endBlock();
 
-  {
-    std::string s5 = "[" + str + "]" + "Testing direct faces with hint.";
-    trace.beginBlock ( s5.c_str() );
-    std::vector<int>  nbFaces( 6, 0 );
-    for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
-          it != itE; ++it )
-      {
-        std::vector<Cell> faces;
-        std::back_insert_iterator< std::vector<Cell> > outIt( faces );
-        complex.directFaces( outIt, it->first, true );
-        int n = faces.size();
-        if ( n < 4 ) n = 3; // should not happen
-        if ( n > 4 ) n = 5; // should not happen
-        nbFaces[ n ]++;
-      }
-    trace.info() << "Direct faces of 2-cells, #<4=" << nbFaces[ 3 ]
-                 << " #4=" << nbFaces[ 4 ]
-                 << " #>4=" << nbFaces[ 5 ] << std::endl;
-    nbok += nbFaces[ 3 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbFaces[ <4 ] == 0" << std::endl;
-    nbok += nbFaces[ 5 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbFaces[ >4 ] == 0" << std::endl;
-    trace.endBlock();
-  }
-  {
-    std::string s6 = "[" + str + "]" + "Testing direct faces without hint.";
-    trace.beginBlock ( s6.c_str() );
-    std::vector<int>  nbFaces( 6, 0 );
-    for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
-          it != itE; ++it )
-      {
-        std::vector<Cell> faces;
-        std::back_insert_iterator< std::vector<Cell> > outIt( faces );
-        complex.directFaces( outIt, it->first );
-        int n = faces.size();
-        if ( n < 4 ) n = 3; // should not happen
-        if ( n > 4 ) n = 5; // should not happen
-        nbFaces[ n ]++;
-      }
-    trace.info() << "Direct faces of 2-cells, #<4=" << nbFaces[ 3 ]
-                 << " #4=" << nbFaces[ 4 ]
-                 << " #>4=" << nbFaces[ 5 ] << std::endl;
-    nbok += nbFaces[ 3 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbFaces[ <4 ] == 0" << std::endl;
-    nbok += nbFaces[ 5 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbFaces[ >4 ] == 0" << std::endl;
-    trace.endBlock();
-  }
+  std::string s5 = "[" + str + "]" + "Testing direct faces with hint.";
+  trace.beginBlock ( s5.c_str() );
+  std::vector<int>  nbFaces( 6, 0 );
+  for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+        it != itE; ++it )
+    {
+      std::vector<Cell> faces;
+      std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+      complex.directFaces( outIt, it->first, true );
+      int n = faces.size();
+      if ( n < 4 ) n = 3; // should not happen
+      if ( n > 4 ) n = 5; // should not happen
+      nbFaces[ n ]++;
+    }
+  trace.info() << "Direct faces of 2-cells, #<4=" << nbFaces[ 3 ]
+               << " #4=" << nbFaces[ 4 ]
+               << " #>4=" << nbFaces[ 5 ] << std::endl;
+  nbok += nbFaces[ 3 ] == 0 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "nbFaces[ <4 ] == 0" << std::endl;
+  nbok += nbFaces[ 5 ] == 0 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "nbFaces[ >4 ] == 0" << std::endl;
+  trace.endBlock();
+  std::string s6 = "[" + str + "]" + "Testing direct faces without hint.";
+  trace.beginBlock ( s6.c_str() );
+  std::vector<int>  nbFaces2( 6, 0 );
+  for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+        it != itE; ++it )
+    {
+      std::vector<Cell> faces;
+      std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+      complex.directFaces( outIt, it->first );
+      int n = faces.size();
+      if ( n < 4 ) n = 3; // should not happen
+      if ( n > 4 ) n = 5; // should not happen
+      nbFaces2[ n ]++;
+    }
+  trace.info() << "Direct faces of 2-cells, #<4=" << nbFaces2[ 3 ]
+               << " #4=" << nbFaces2[ 4 ]
+               << " #>4=" << nbFaces2[ 5 ] << std::endl;
+  nbok += nbFaces2[ 3 ] == 0 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "nbFaces2[ <4 ] == 0" << std::endl;
+  nbok += nbFaces2[ 5 ] == 0 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "nbFaces2[ >4 ] == 0" << std::endl;
+  nbok += nbFaces[ 4 ] == nbFaces2[ 4 ] ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "nbFaces[ 4 ] == nbFaces2[ 4 ]" << std::endl;
+  trace.endBlock();
   
   return nbok == nb;
 }

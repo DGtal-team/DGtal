@@ -62,6 +62,7 @@ namespace DGtal
     uint32_t data;
   };
 
+
   /////////////////////////////////////////////////////////////////////////////
   // template class CubicalComplex
   /**
@@ -117,6 +118,15 @@ namespace DGtal
     typedef CellContainer                CellMap;
     typedef typename CellMap::const_iterator CellMapConstIterator;
     typedef typename CellMap::iterator   CellMapIterator;
+
+    /// Flag Used to indicate in a cell data that this cell has been (virtually) removed.
+    static const uint32_t REMOVED     = 0x10000000;
+    /// Flag Used to indicate in a cell data that this cell is collapsible.
+    static const uint32_t COLLAPSIBLE = 0x20000000;
+    /// Flag Used to indicate in a cell data that this cell is fixed.
+    static const uint32_t FIXED       = 0x40000000;
+    /// User flag for a cell.
+    static const uint32_t USER1       = 0x80000000;
 
     // ----------------------- Standard services ------------------------------
   public:
