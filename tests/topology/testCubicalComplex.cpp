@@ -107,8 +107,10 @@ bool testCubicalComplexWithMap( const std::string& str )
   typedef typename CC::CellMapConstIterator CellMapConstIterator;
 
   srand( 0 );
-  std::string s1 = "[" + str + "]" + "Testing Cubical complex creation";
-  trace.beginBlock ( s1.c_str() );
+  std::string s = "Cubical Complex: " + str;
+  trace.beginBlock( s.c_str() );
+
+  trace.beginBlock ( "Testing Cubical complex creation" );
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
   CC complex( K );
@@ -125,8 +127,7 @@ bool testCubicalComplexWithMap( const std::string& str )
 	       << "true == true" << std::endl;
   trace.endBlock();
   
-  std::string s2 = "[" + str + "]" + "Testing faces computation";
-  trace.beginBlock ( s2.c_str() );
+  trace.beginBlock ( "Testing faces computation" );
   std::vector<Cell> faces;
   std::back_insert_iterator< std::vector<Cell> > outIt( faces );
   for ( CellMapConstIterator it = complex.begin( 3 ), itE = complex.end( 3 );
@@ -135,14 +136,13 @@ bool testCubicalComplexWithMap( const std::string& str )
       complex.faces( outIt, it->first );
     }
   trace.info() << "#Faces of maximal cells = " << faces.size() << std::endl;
-  nbok += true ? 1 : 0; 
+  nbok += ( faces.size() == 0 ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+	       << "( faces.size() == 0 )" << std::endl;
   trace.endBlock();
 
-  std::string s3 = "[" + str + "]" + "Testing close operation";
-  trace.beginBlock ( s3.c_str() );
+  trace.beginBlock ( "Testing close operation" );
   complex.close();
   trace.info() << complex << std::endl;
   nbok += true ? 1 : 0; 
@@ -151,8 +151,7 @@ bool testCubicalComplexWithMap( const std::string& str )
 	       << "true == true" << std::endl;
   trace.endBlock();
 
-  std::string s4 = "[" + str + "]" + "Testing direct co-faces.";
-  trace.beginBlock ( s4.c_str() );
+  trace.beginBlock ( "Testing direct co-faces." );
   std::vector<int>  nbCoFaces( 4, 0 );
   for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
         it != itE; ++it )
@@ -182,8 +181,7 @@ bool testCubicalComplexWithMap( const std::string& str )
 	       << "nbCoFaces[ >2 ] == 0" << std::endl;
   trace.endBlock();
 
-  std::string s5 = "[" + str + "]" + "Testing direct faces with hint.";
-  trace.beginBlock ( s5.c_str() );
+  trace.beginBlock ( "Testing direct faces with hint." );
   std::vector<int>  nbFaces( 6, 0 );
   for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
         it != itE; ++it )
@@ -208,8 +206,8 @@ bool testCubicalComplexWithMap( const std::string& str )
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "nbFaces[ >4 ] == 0" << std::endl;
   trace.endBlock();
-  std::string s6 = "[" + str + "]" + "Testing direct faces without hint.";
-  trace.beginBlock ( s6.c_str() );
+
+  trace.beginBlock ( "Testing direct faces without hint." );
   std::vector<int>  nbFaces2( 6, 0 );
   for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
         it != itE; ++it )
@@ -237,6 +235,8 @@ bool testCubicalComplexWithMap( const std::string& str )
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "nbFaces[ 4 ] == nbFaces2[ 4 ]" << std::endl;
+  trace.endBlock();
+
   trace.endBlock();
   
   return nbok == nb;
