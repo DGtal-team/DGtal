@@ -419,7 +419,7 @@ namespace DGtal
   class IteratorCompletionTraits< ArrayImageAdapter<TArrayIterator, TDomain> >
     {
     public:
-      using Self = ArrayImageAdapter<TArrayIterator, TDomain>;
+      using Self = ArrayImageAdapter<TArrayIterator, TDomain>;  ///< Self type.
       using Iterator = ArrayImageIterator<Self>; ///< Mutable iterator.
       using ConstIterator = ArrayImageIterator<const Self>; ///< Constant iterator.
 
@@ -455,7 +455,7 @@ namespace DGtal
             }
 
         private:
-          Domain myDomain; ///< Stored domain to avoid iterator corruption if domain changesd.
+          Domain myDomain; ///< Stored domain to avoid iterator corruption if domain changed.
         };
 
     }; // end of specialized class IteratorCompletionTraits

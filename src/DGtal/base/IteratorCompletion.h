@@ -77,7 +77,7 @@ namespace DGtal
    * Each derived class of IteratorCompletion must specialized IteratorCompletionTraits in order to provide
    * enough informations on his iterators.
    *
-   * @see ArrayImageView.h for usage example.
+   * @see ArrayImageAdapter.h for usage example.
    *
    * @tparam TDerived Type of the derived class (CRTP).
    */
