@@ -38,6 +38,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <DGtal/kernel/domains/Linearizer.h>
 //////////////////////////////////////////////////////////////////////////////
 
 //------------------------------------------------------------------------------
@@ -179,112 +180,6 @@ DGtal::ImageContainerBySTLVector<D, V>::className() const
   return "ImageContainerBySTLVector";
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Helper classes defined in the compilation unit (anonymous namespace)
-
-namespace
-{
-
-  /**
-   * Class template for linearization of the coordinates of a Point.
-   * This class template is to be specialized for efficiency for dimensions 1,
-   * 2 and 3 to prevent the use of a loop in these cases.
-   *
-   * @tparam Domain an instance of HyperRectDomain
-   * @tparam dimension domain dimension
-   */
-  template < typename Domain, int dimension>
-  struct linearizer
-  {
-
-    typedef typename Domain::Point Point;
-    typedef typename Domain::Size Size;
-
-    /**
-     * Compute the linearized offset of a point in a vector container.
-     *
-     * @param aPoint a point
-     * @param lowerBound lower bound of the image domain.
-     * @param extent extension of the image domain.
-     *
-     * @return the index
-     */
-    static Size apply( const Point & aPoint, const Point & lowerBound,
-        const Point & extent )
-    {
-      Size pos = aPoint[ 0 ] - lowerBound[ 0 ] ;
-      Size multiplier = 1;
-      for (typename Domain::Dimension k = 1 ; k < dimension ; ++k)
-      {
-        multiplier *= extent[ k-1  ];
-        pos += multiplier * ( aPoint[ k ] - lowerBound[ k ] );
-      }
-      return pos;
-    }
-  };
-
-  /**
-   * Specialization of the linearizer class for dimension 1.
-   *
-   */
-  template < typename Domain >
-  struct linearizer< Domain, 1 >
-  {
-    typedef typename Domain::Point Point;
-    typedef typename Domain::Size Size;
-
-    static Size apply( const Point & aPoint,
-        const Point & lowerBound,
-        const Point & /*extent*/ )
-    {
-      return aPoint[ 0 ] - lowerBound[ 0 ];
-    }
-  };
-
-  /**
-   * Specialization of the linearizer class for dimension 2.
-   *
-   */
-  template < typename Domain >
-  struct linearizer< Domain, 2 >
-  {
-    typedef typename Domain::Point Point;
-    typedef typename Domain::Size Size;
-
-    static Size apply( const Point & aPoint,
-        const Point & lowerBound,
-        const Point & extent )
-    {
-      return ( aPoint[ 0 ] - lowerBound[ 0 ] ) + extent[ 0 ] *
-	(aPoint[ 1 ] - lowerBound[ 1 ] );
-    }
-  };
-
-  /**
-   * Specialization of the linearizer class for dimension 3.
-   *
-   */
-  template < typename Domain >
-  struct linearizer< Domain, 3 >
-  {
-    typedef typename Domain::Point Point;
-    typedef typename Domain::Size Size;
-
-    static Size apply( const Point & aPoint,
-        const Point & lowerBound,
-        const Point & extent )
-    {
-      Size res = aPoint[ 0 ] - lowerBound[ 0 ];
-      Size multiplier = extent[ 0 ];
-      res += multiplier * ( aPoint[ 1 ] - lowerBound[ 1 ] );
-      multiplier *= extent[ 1 ];
-      res += multiplier * ( aPoint[ 2 ] - lowerBound[ 2 ] );
-      return res;
-    }
-  };
-}
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :
@@ -293,9 +188,7 @@ inline
 typename DGtal::ImageContainerBySTLVector<Domain, T>::Size
 DGtal::ImageContainerBySTLVector<Domain, T>::linearized(const Point &aPoint) const
 {
-  return linearizer<Domain, Domain::dimension >::apply( aPoint,
-							myDomain.lowerBound(),
-							myExtent );
+  return DGtal::Linearizer<Domain, ColMajorStorage>::getIndex( aPoint, myDomain.lowerBound(), myExtent );
 }
 
 
