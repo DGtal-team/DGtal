@@ -242,6 +242,48 @@ bool testCubicalComplexWithMap( const std::string& str )
   return nbok == nb;
 }
 
+template <typename KSpace, typename Map>
+bool testCollapse( const std::string& str )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  typedef typename KSpace::Integer          Integer;
+  typedef typename KSpace::Point            Point;
+  typedef typename KSpace::Cell             Cell;
+  typedef CubicalComplex< KSpace, Map >     CC;
+  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+
+  srand( 0 );
+  std::string s = "Cubical Complex: " + str;
+  trace.beginBlock( s.c_str() );
+  
+  trace.beginBlock( "Creating Cubical Complex" );
+  KSpace K;
+  K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
+  CC complex( K );
+  std::vector<Cell> S;
+  for ( Integer x = 0; x < 3; ++x )
+    for ( Integer y = 0; y < 3; ++y )
+      for ( Integer z = 0; z < 3; ++z )
+        {
+          S.push_back( K.uSpel( Point( x, y, z ) ) );
+          bool fixed = ( ( x == 0 ) &&( y == 0 ) && ( z == 0 ) )
+            || ( ( x == 2 ) && ( y == 2 ) && ( z == 2 ) );
+          complex.insertCell( S.back(), fixed ? CC::FIXED : 0 );
+        }
+  complex.close();
+  trace.info() << "After close: " << complex << std::endl;
+  trace.endBlock();
+  trace.beginBlock( "Collapsing complex" );
+  typename CC::CellMapIteratorDefaultPriority P;
+  complex.collapse( S.begin(), S.end(), P, false, true );
+  trace.info() << "After collapse: " << complex << std::endl;
+  trace.endBlock();
+  
+  trace.endBlock();
+  return true;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -252,9 +294,12 @@ int main( int argc, char** argv )
   typedef KhalimskySpaceND<3> K3;
   typedef K3::Cell Cell;
   bool res = 
-    testCubicalComplexWithMap< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
-    && 
-    testCubicalComplexWithMap< K3, std::unordered_map<Cell, CubicalCellData> >( "3D, std::unordered_map" );
+    // testCubicalComplexWithMap< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
+    // && 
+    // testCubicalComplexWithMap< K3, std::unordered_map<Cell, CubicalCellData> >( "3D, std::unordered_map" )
+    // && 
+    testCollapse< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" );
+    
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

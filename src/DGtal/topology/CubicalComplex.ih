@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <queue>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -121,6 +122,15 @@ dim() const
         it != itE; ++it, --d )
     if ( ! it->empty() ) return d;
   return 0;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+DGtal::Dimension
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+dim( const Cell& c ) const
+{
+  return myKSpace->uDim( c );
 }
 
 //-----------------------------------------------------------------------------
@@ -314,6 +324,26 @@ end( Dimension d ) const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapIterator
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+begin( Dimension d )
+{
+  return myCells[ d ].begin();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapIterator
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+end( Dimension d )
+{
+  return myCells[ d ].end();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 close()
@@ -387,7 +417,6 @@ find( Dimension d, const Cell& aCell )
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 template <typename CellIterator, typename CellMapIteratorPriority>
-inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 collapse( CellIterator S_itb, CellIterator S_itE, 
@@ -397,8 +426,6 @@ collapse( CellIterator S_itb, CellIterator S_itE,
   using namespace std;
   // NB : a maximal k-cell is collapsible if it has a free incident k-1-cell.
   Dimension n = dim();
-  typedef typename CellSet::const_iterator const_iterator;
-  typedef typename CellSet::iterator iterator;
   vector< CellMapIterator > S;
   vector< CellMapIterator > Q_low;
   vector< CellMapIterator > Q_collapsible;
@@ -439,8 +466,8 @@ collapse( CellIterator S_itb, CellIterator S_itE,
           }
         vector<Cell> cells;
         back_insert_iterator< vector<Cell> > back_it( cells );
-        this->faces( back_it, *S_it, hintIsKClosed );
-        for ( vector<Cell>::const_iterator it = cells.begin(), itE = cells.end();
+        this->faces( back_it, c, hintIsKClosed );
+        for ( typename vector<Cell>::const_iterator it = cells.begin(), itE = cells.end();
               it != itE; ++it )
           {
             it_c = find( *it );
@@ -465,10 +492,11 @@ collapse( CellIterator S_itb, CellIterator S_itE,
   while ( ! S.empty() ) 
     {
       cout << "[CC::collapse]---+ Pass " << ++nb_pass << ", Card(PQ)=";
-      for ( vector< CellMapIterator > it = S.begin(), itE = S.end(); it != itE; ++it )
+      for ( typename vector< CellMapIterator >::const_iterator it = S.begin(), itE = S.end();
+            it != itE; ++it )
 	{
 	  PQ.push( *it );
-	  (*it)->second |= USER1;
+	  (*it)->second.data |= USER1;
 	}
       S.clear();
       cout << PQ.size() << " elements, " << "nb_exam=" << nb_examined << endl;
@@ -495,20 +523,23 @@ collapse( CellIterator S_itb, CellIterator S_itE,
 	  bool found_pair = false;
 	  CellMapIterator it_cell_c;
 	  CellMapIterator it_cell_d;
+          // trace.info() << "  - Cell " << cur_c << " Dim=" << dim( cur_c ) << " Type=" << cur_c_type << std::endl;
 	  if ( cur_c_type == 0 )
 	    { // maximal cell... must find a free face
 	      // check faces to find a free face.
               back_insert_iterator< vector<CellMapIterator> > back_it( Q_low );
               directFacesIterators( back_it, cur_c );
-	      iterator best_free_face_it = end( 0 );
-	      for ( vector<CellMapIterator>::const_iterator it = Q_low.begin(), itE = Q_low.end();
+	      CellMapIterator best_free_face_it = end( 0 );
+	      for ( typename vector<CellMapIterator>::const_iterator it = Q_low.begin(), itE = Q_low.end();
                     it != itE; ++it )
 		{
                   CellMapIterator low_ic = *it;
                   uint32_t& data = low_ic->second.data;
+                  // trace.info() << "    + Cell " << low_ic->first << " data=" << data << std::endl;
 		  if ( ( data & REMOVED ) || ! ( data & COLLAPSIBLE ) ) continue;
-		  const CubicalCell & cur_d = low_ic->first;
+		  const Cell& cur_d = low_ic->first;
 		  uint cur_d_type = computeCellType( n, cur_d, itup );
+                  // trace.info() << "      + Type=" << cur_d_type << std::endl;
 		  if ( cur_d_type == 1 )
 		    { // found a free n-1-face ic
 		      if ( ( best_free_face_it == end( 0 ) )
@@ -528,7 +559,7 @@ collapse( CellIterator S_itb, CellIterator S_itE,
 	    }
 	  else if ( cur_c_type == 1 )
 	    { // free face... check that its 1-up-incident face is maximal.
-	      const CubicalCell & cur_d = itup->first;
+	      const Cell& cur_d = itup->first;
 	      CellMapIterator it_up_up;
 	      uint32_t cur_d_type = computeCellType( n, cur_d, it_up_up );
 	      if ( cur_d_type == 0 )
@@ -548,31 +579,30 @@ collapse( CellIterator S_itb, CellIterator S_itE,
 	      it_cell_d->second.data |= REMOVED;
 
 	      // Incident cells have to be checked again.
-	      while ( ! Q_low.empty() )
-		{
-                  CellMapIterator it = Q_low.front();
-                  Q_low.pop_front();
-		  uint32_t& data_qlow = it->second.data;
+	      for ( typename vector<CellMapIterator>::const_iterator it = Q_low.begin(), itE = Q_low.end();
+                    it != itE; ++it )
+                {
+                  CellMapIterator it_cell = *it;
+		  uint32_t& data_qlow = it_cell->second.data;
 		  if ( ( ! ( data_qlow & REMOVED ) )
 		       && ( data_qlow & COLLAPSIBLE )
 		       && ( ! ( data_qlow & USER1 ) ) )
 		    {
-		      S.push_back( Q_low.front() ); // WARNING, was "insert"
+		      S.push_back( it_cell ); // WARNING, was "insert"
 		    }
 		}
 	    }
-	  else
-	    Q_low.clear();
+          Q_low.clear();
 	} // while ( ! PQ.empty() )
     } // while ( ! S.empty() ) 
 
   // Now clean the complex so that removed cells are effectively
   // removed and no more cell is tagged as collapsible.
-  for ( vector< CellMapIterator >::const_iterator it = Q_collapsible.begin(),
+  for ( typename vector< CellMapIterator >::const_iterator it = Q_collapsible.begin(),
           itE = Q_collapsible.end(); it != itE; ++it )
     {
       if ( (*it)->second.data & REMOVED ) 
-        myCells[ dim( (*it)->first ) ].erase( it );
+        myCells[ dim( (*it)->first ) ].erase( *it );
       else
 	(*it)->second.data &= ~COLLAPSIBLE;
     }
@@ -609,14 +639,14 @@ computeCellType( Dimension n, const Cell& c, CellMapIterator& it_cell_up )
   
   std::vector< CellMapIterator > Q_up;
   std::back_insert_iterator< std::vector< CellMapIterator > > back_it( Q_up );
-  this->directCoFacesIterators( c, Q_up );
+  this->directCoFacesIterators( back_it, c );
   
   // Filtering unwanted up-incident cells.
   uint32_t nb = 0;
-  for ( std::vector< CellMapIterator >::const_iterator it = Q_up.begin(), itE = Q_up.end();
+  for ( typename std::vector< CellMapIterator >::const_iterator it = Q_up.begin(), itE = Q_up.end();
         it != itE; ++it )
     {
-      CubicalCellData& data = (*it)->second;
+      uint32_t& data = (*it)->second.data;
       if ( ! ( data & COLLAPSIBLE ) ) return 2;
       if ( ! ( data & REMOVED ) )
 	{
