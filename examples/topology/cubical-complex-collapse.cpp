@@ -83,7 +83,7 @@ int main( int argc, char** argv )
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
   CC complex( K );
-  Integer m = 100;
+  Integer m = 10;
   std::vector<Cell> S;
   for ( Integer x = 0; x <= m; ++x )
     for ( Integer y = 0; y <= m; ++y )
@@ -112,6 +112,24 @@ int main( int argc, char** argv )
   trace.info() << "After close: " << complex << std::endl;
   trace.endBlock();
 
+  // for 3D display with Viewer3D
+  QApplication application(argc,argv);
+  typedef Viewer3D<Space, KSpace> MyViewer;
+
+  {
+    MyViewer viewer(K);
+    viewer.show();
+    typedef CC::CellMapConstIterator CellMapConstIterator;
+    for ( Dimension d = 0; d <= 3; ++d )
+      for ( CellMapConstIterator it = complex.begin( d ), itE = complex.end( d );
+            it != itE; ++it )
+        {
+          viewer << it->first;
+        }
+    viewer<< MyViewer::updateDisplay;
+    application.exec();
+  }
+  
   trace.beginBlock( "Collapsing complex" );
   CC::DefaultCellMapIteratorPriority P;
   //DiagonalPriority<CC> P( complex );
@@ -119,21 +137,18 @@ int main( int argc, char** argv )
   trace.info() << "After collapse: " << complex << std::endl;
   trace.endBlock();
 
-  // for 3D display with Viewer3D
-  QApplication application(argc,argv);
-
-  typedef Viewer3D<Space, KSpace> MyViewer;
-  MyViewer viewer(K);
-  viewer.show();
-  typedef CC::CellMapConstIterator CellMapConstIterator;
-  for ( Dimension d = 0; d <= 3; ++d )
-    for ( CellMapConstIterator it = complex.begin( d ), itE = complex.end( d );
-          it != itE; ++it )
-      {
-        viewer << it->first;
-      }
-  viewer<< MyViewer::updateDisplay;
-  return application.exec();
-
+  {
+    MyViewer viewer(K);
+    viewer.show();
+    typedef CC::CellMapConstIterator CellMapConstIterator;
+    for ( Dimension d = 0; d <= 3; ++d )
+      for ( CellMapConstIterator it = complex.begin( d ), itE = complex.end( d );
+            it != itE; ++it )
+        {
+          viewer << it->first;
+        }
+    viewer<< MyViewer::updateDisplay;
+    return application.exec();
+  }
 }
 ///////////////////////////////////////////////////////////////////////////////
