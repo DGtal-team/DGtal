@@ -59,6 +59,7 @@ namespace DGtal
   */
   struct CubicalCellData {
     inline CubicalCellData() : data( 0 ) {}
+    CubicalCellData( uint32_t d ) : data( d ) {}
     uint32_t data;
   };
 
@@ -127,7 +128,19 @@ namespace DGtal
     static const uint32_t FIXED       = 0x40000000;
     /// User flag for a cell.
     static const uint32_t USER1       = 0x80000000;
+    /// Value for a cell.
+    static const uint32_t VALUE       = 0x0fffffff;
 
+    // ----------------------- inner types ------------------------------------
+    struct DefaultCellMapIteratorPriority {
+      bool operator()( const CellMapIterator& it1, const CellMapIterator& it2 ) const
+      {
+        uint32_t v1 = it1->second.data & VALUE; 
+        uint32_t v2 = it2->second.data & VALUE; 
+        return ( v1 < v2 ) 
+          || ( ( v1 == v2 ) && ( it1->first < it2->first ) );
+      }
+    };
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -359,6 +372,18 @@ namespace DGtal
      * @return a const iterator pointing after the last cell of dimension \a d of this.
      */
     CellMapConstIterator end( Dimension d ) const;
+
+    /**
+     * @param d any valid dimension.
+     * @return an iterator pointing on the first cell of dimension \a d of this.
+     */
+    CellMapIterator begin( Dimension d );
+
+    /**
+     * @param d any valid dimension.
+     * @return an iterator pointing after the last cell of dimension \a d of this.
+     */
+    CellMapIterator end( Dimension d );
 
     /**
      * @param aCell any cell valid in the Khalimsky space associated to the complex.
