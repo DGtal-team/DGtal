@@ -83,7 +83,7 @@ int main( int argc, char** argv )
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
   CC complex( K );
-  Integer m = 50;
+  Integer m = 20;
   std::vector<Cell> S;
   for ( Integer x = 0; x <= m; ++x )
     for ( Integer y = 0; y <= m; ++y )
@@ -91,9 +91,11 @@ int main( int argc, char** argv )
         {
           Point k1 = Point( x, y, z ); 
           S.push_back( K.uCell( k1 ) );
-          double d1 = Point::diagonal( 1 ).dot( k1 ) / sqrt( (double) KSpace::dimension );
-          RealPoint v1( k1[ 0 ] - d1 * k1[ 0 ], k1[ 1 ] - d1 * k1[ 1 ], k1[ 2 ] - d1 * k1[ 2 ] );
-          double n1 = v1.dot( v1 );
+          double d1 = Point::diagonal( 1 ).dot( k1 ) / (double) KSpace::dimension; // sqrt( (double) KSpace::dimension );
+          RealPoint v1( k1[ 0 ], k1[ 1 ], k1[ 2 ] );
+          v1 -= d1 * RealPoint::diagonal( 1.0 );
+          //RealPoint v1( k1[ 0 ] - d1 * k1[ 0 ], k1[ 1 ] - d1 * k1[ 1 ], k1[ 2 ] - d1 * k1[ 2 ] );
+          double n1 = v1.norm();
           bool fixed = ( ( x == 0 ) && ( y == 0 ) && ( z == 0 ) )
             || ( ( x == 0 ) && ( y == m ) && ( z == 0 ) )
             || ( ( x == m ) && ( y == 0 ) && ( z == 0 ) )
@@ -109,7 +111,7 @@ int main( int argc, char** argv )
             || ( ( z == m ) && ( y == m ) );
           complex.insertCell( S.back(), 
                               fixed ? CC::FIXED 
-                              : (uint32_t) floor(64.0 * sqrt( n1 ) ) // This is the priority for collapse 
+                              : (uint32_t) floor(64.0 * n1 ) // This is the priority for collapse 
                               );
         }
   //complex.close();
@@ -128,6 +130,9 @@ int main( int argc, char** argv )
       for ( CellMapConstIterator it = complex.begin( d ), itE = complex.end( d );
             it != itE; ++it )
         {
+          bool fixed = (it->second.data == CC::FIXED);
+          if ( fixed ) viewer.setFillColor( Color::Red );
+          else         viewer.setFillColor( Color::White );
           viewer << it->first;
         }
     viewer<< MyViewer::updateDisplay;
@@ -136,8 +141,7 @@ int main( int argc, char** argv )
   
   trace.beginBlock( "Collapsing complex" );
   CC::DefaultCellMapIteratorPriority P;
-  //DiagonalPriority<CC> P( complex );
-  complex.collapse( S.begin(), S.end(), P, true, true );
+  complex.collapse( S.begin(), S.end(), P, true, true, true );
   trace.info() << "After collapse: " << complex << std::endl;
   trace.endBlock();
 
@@ -149,6 +153,9 @@ int main( int argc, char** argv )
       for ( CellMapConstIterator it = complex.begin( d ), itE = complex.end( d );
             it != itE; ++it )
         {
+          bool fixed = (it->second.data == CC::FIXED);
+          if ( fixed ) viewer.setFillColor( Color::Red );
+          else         viewer.setFillColor( Color::White );
           viewer << it->first;
         }
     viewer<< MyViewer::updateDisplay;

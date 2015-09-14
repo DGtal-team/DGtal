@@ -109,6 +109,29 @@ clear( Dimension d )
 {
   myCells[ d ].clear();
 }
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+fillData( Data data )
+{
+  for ( Dimension d = 0; d <= dimension; ++d )
+    clearData( d, data );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+fillData( Dimension d, Data data )
+{
+  ASSERT( d <= dimension );
+  for ( CellMapIterator it = begin( d ), itE = end( d ); it != itE; ++it )
+    {
+      it->second = data;
+    }
+}
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
@@ -416,12 +439,12 @@ find( Dimension d, const Cell& aCell )
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
-template <typename CellIterator, typename CellMapIteratorPriority>
+template <typename CellConstIterator, typename CellMapIteratorPriority>
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-collapse( CellIterator S_itb, CellIterator S_itE, 
+collapse( CellConstIterator S_itB, CellConstIterator S_itE, 
           const CellMapIteratorPriority& priority, 
-          bool hintIsSClosed, bool hintIsKClosed )
+          bool hintIsSClosed, bool hintIsKClosed, bool verbose )
 {
   using namespace std;
   // NB : a maximal k-cell is collapsible if it has a free incident k-1-cell.
@@ -433,10 +456,10 @@ collapse( CellIterator S_itb, CellIterator S_itE,
   typename vector< CellMapIterator >::const_iterator itlow;
   typename vector< CellMapIterator >::const_iterator itqup;
 
-  cout << "[CC::collapse]-+ tag collapsible elements... " << flush;
+  if ( verbose ) trace.info() << "[CC::collapse]-+ tag collapsible elements... " << flush;
   // Restricts the set of elements that are collapsible.
   if ( hintIsSClosed )
-    for ( CellIterator S_it = S_itb; S_it != S_itE; ++S_it )
+    for ( CellConstIterator S_it = S_itB; S_it != S_itE; ++S_it )
       {
         Cell c = *S_it;
         Dimension k = dim( c );
@@ -451,7 +474,7 @@ collapse( CellIterator S_itb, CellIterator S_itE,
 	  }
       }
   else // not ( hintIsSClosed )
-    for ( CellIterator S_it = S_itb; S_it != S_itE; ++S_it )
+    for ( CellConstIterator S_it = S_itB; S_it != S_itE; ++S_it )
       {
         Cell c = *S_it;
         Dimension k = dim( c );
@@ -479,19 +502,18 @@ collapse( CellIterator S_itb, CellIterator S_itE,
               }
           }
       }
-  cout << " " << Q_collapsible.size() << " found." << endl;
+  if ( verbose ) trace.info() << " " << Q_collapsible.size() << " found." << endl;
 
   // Fill queue
   priority_queue
     < CellMapIterator, vector<CellMapIterator>, CellMapIteratorPriority > PQ( priority );
 
   
-  cout << "[CC::collapse]-+ entering collapsing loop. " << endl;
+  if ( verbose ) trace.info() << "[CC::collapse]-+ entering collapsing loop. " << endl;
   uint64_t nb_pass = 0;
   uint64_t nb_examined = 0;
   while ( ! S.empty() ) 
     {
-      cout << "[CC::collapse]---+ Pass " << ++nb_pass << ", Card(PQ)=";
       for ( typename vector< CellMapIterator >::const_iterator it = S.begin(), itE = S.end();
             it != itE; ++it )
 	{
@@ -499,7 +521,8 @@ collapse( CellIterator S_itb, CellIterator S_itE,
 	  (*it)->second.data |= USER1;
 	}
       S.clear();
-      cout << PQ.size() << " elements, " << "nb_exam=" << nb_examined << endl;
+      if ( verbose ) trace.info() << "[CC::collapse]---+ Pass " << ++nb_pass 
+                                  << ", Card(PQ)=" << PQ.size() << " elements, " << "nb_exam=" << nb_examined << endl;
       
       // Try to collapse elements according to priority queue.
       while ( ! PQ.empty() )
@@ -595,6 +618,8 @@ collapse( CellIterator S_itb, CellIterator S_itE,
           Q_low.clear();
 	} // while ( ! PQ.empty() )
     } // while ( ! S.empty() ) 
+
+  if ( verbose ) trace.info() << "[CC::collapse]-+ cleaning complex." << std::endl;
 
   // Now clean the complex so that removed cells are effectively
   // removed and no more cell is tagged as collapsible.
