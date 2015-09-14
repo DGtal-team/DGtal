@@ -125,6 +125,7 @@
   [#1016](https://github.com/DGtal-team/DGtal/pull/1016))
  - Viewer3D: Shift-L / L key binding added to save and restore camera settings. (Bertrand Kerautret,
   [#1024](https://github.com/DGtal-team/DGtal/pull/1024))
+ - Viewer3D:  change the chronological order to diplay primitives (in the draw function) in order to see see textured image primitives trough the transparency of other 3D primitives. (Bertrand Kerautret,  [#1041](https://github.com/DGtal-team/DGtal/pull/1041))
 
 
 - *Kernel Package*
