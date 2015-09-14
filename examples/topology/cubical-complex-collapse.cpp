@@ -83,7 +83,7 @@ int main( int argc, char** argv )
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
   CC complex( K );
-  Integer m = 10;
+  Integer m = 50;
   std::vector<Cell> S;
   for ( Integer x = 0; x <= m; ++x )
     for ( Integer y = 0; y <= m; ++y )
@@ -102,7 +102,11 @@ int main( int argc, char** argv )
             || ( ( x == 0 ) && ( y == 0 ) && ( z == m ) )
             || ( ( x == 0 ) && ( y == m ) && ( z == m ) )
             || ( ( x == m ) && ( y == 0 ) && ( z == m ) )
-            || ( ( x == m ) && ( y == m ) && ( z == m ) );
+            || ( ( x == m ) && ( y == m ) && ( z == m ) )
+            || ( ( x == 0 ) && ( y == m ) )
+            || ( ( x == m ) && ( y == m ) )
+            || ( ( z == 0 ) && ( y == m ) )
+            || ( ( z == m ) && ( y == m ) );
           complex.insertCell( S.back(), 
                               fixed ? CC::FIXED 
                               : (uint32_t) floor(64.0 * sqrt( n1 ) ) // This is the priority for collapse 
