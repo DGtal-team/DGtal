@@ -2,11 +2,17 @@
 
 ## New Features / Critical Changes
 
-- *Configuration*
+- *Configuration/General*
  - Continuous integration enabled on both linux and macosx
    systems. Furthermore, the nightly build documentation is
    automatically deployed.  (David Coeurjolly,
    [#955](https://github.com/DGtal-team/DGtal/pull/955))
+ - New unit test framework based on
+   [catch](https://github.com/philsquared/Catch). Catch allows to
+   design quick and efficient unit tests with nice trace
+   outputs. (David Coeurjolly,
+   [#1019](https://github.com/DGtal-team/DGtal/pull/1019)
+
 
 ## Changes
 
@@ -124,6 +130,8 @@
 - *Kernel Package*
   - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)). Warning about the use 
     of lexicographical order in comparison operators of PointVector. (Roland Denis, [#996](https://github.com/DGtal-team/DGtal/pull/996))
+  - Adds generic linearization (point to index) and reverse process (index to point), specialized for HyperRectDomain.
+    (Roland Denis, [#1039](https://github.com/DGtal-team/DGtal/pull/1039))
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
