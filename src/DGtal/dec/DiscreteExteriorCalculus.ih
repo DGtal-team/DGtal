@@ -400,7 +400,6 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
         {
             const Scalar edge_sign = ( duality == DUAL && (direction*(dimAmbient-direction))%2 == 0 ? -1 : 1 );
             const Scalar edge_length_sum = edge_indexes[direction].first;
-            ASSERT( edge_length_sum > 0 );
 
             for (typename std::list< std::pair<Index, Scalar> >::const_iterator ei=edge_indexes[direction].second.begin(), ee=edge_indexes[direction].second.end(); ei!=ee; ei++)
             {
@@ -408,6 +407,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
                 const Scalar edge_orientation = ei->second;
                 ASSERT( edge_index < static_cast<Index>(myIndexSignedCells[actualOrder(1, duality)].size()) );
                 ASSERT( edge_index < kFormLength(1, duality) );
+                ASSERT( edge_length_sum > 0 );
 
                 triplets[direction].push_back( Triplet(point_index, edge_index, point_orientation*edge_sign*edge_orientation/edge_length_sum) );
             }
