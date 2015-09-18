@@ -70,10 +70,10 @@ TEST_CASE("Hash functions on DGtal::Point")
   
   SECTION("Difference test")
     {
-      REQUIRE( myhash(p) != myhash(q) );
+      REQUIRE( (myhash(p) != myhash(q)) );
       
 #ifdef WITH_C11
-      REQUIRE( myhashcpp11(p) != myhashcpp11(q) );
+      REQUIRE( (myhashcpp11(p) != myhashcpp11(q)) );
 #endif 
     }
     
