@@ -416,10 +416,10 @@ find( Dimension d, const Cell& aCell )
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
-template <typename CellIterator, typename CellMapIteratorPriority>
+template <typename CellConstIterator, typename CellMapIteratorPriority>
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-collapse( CellIterator S_itb, CellIterator S_itE, 
+collapse( CellConstIterator S_itb, CellConstIterator S_itE, 
           const CellMapIteratorPriority& priority, 
           bool hintIsSClosed, bool hintIsKClosed )
 {
@@ -436,7 +436,7 @@ collapse( CellIterator S_itb, CellIterator S_itE,
   cout << "[CC::collapse]-+ tag collapsible elements... " << flush;
   // Restricts the set of elements that are collapsible.
   if ( hintIsSClosed )
-    for ( CellIterator S_it = S_itb; S_it != S_itE; ++S_it )
+    for ( CellConstIterator S_it = S_itb; S_it != S_itE; ++S_it )
       {
         Cell c = *S_it;
         Dimension k = dim( c );
@@ -451,7 +451,7 @@ collapse( CellIterator S_itb, CellIterator S_itE,
 	  }
       }
   else // not ( hintIsSClosed )
-    for ( CellIterator S_it = S_itb; S_it != S_itE; ++S_it )
+    for ( CellConstIterator S_it = S_itb; S_it != S_itE; ++S_it )
       {
         Cell c = *S_it;
         Dimension k = dim( c );

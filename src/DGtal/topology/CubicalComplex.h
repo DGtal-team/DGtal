@@ -56,6 +56,15 @@ namespace DGtal
   * data, which must derive from this class. Its basic usage is to
   * store flags associated to the cells, but it may store other
   * values.
+  *
+  * @note Predefined flags are CubicalComplex::REMOVED,
+  * CubicalComplex::COLLAPSIBLE, CubicalComplex::FIXED,
+  * CubicalComplex::USER1. Other bits can be used to associate an
+  * integer to the cell. The corresponding mask is
+  * CubicalComplex::VALUE. 
+  *
+  * @note Such data is notably used in collapse operation
+  * (CubicalComplex::collapse).
   */
   struct CubicalCellData {
     inline CubicalCellData() : data( 0 ) {}
@@ -427,7 +436,8 @@ namespace DGtal
     * Collapse a subcomplex of this, collapsing cells following
     * priority [priority], in a decreasing sequence. [S] provides the
     * starting cells, generally (but not compulsory) maximal cells.
-    * Note: cells that have been marked as FIXED are not removed.  only
+    *
+    * @Note Cells that have been marked as FIXED are not removed. Only
     * cells that are in the closure of [S] may be removed, and only if
     * they are not marked as FIXED.
     *
@@ -435,8 +445,8 @@ namespace DGtal
     * @param S_closed indicates if [S] is a closed set (faster in this case)
     * @param priority the object that assign a priority to each cell.
     */
-    template <typename CellIterator, typename CellMapIteratorPriority>
-    void collapse( CellIterator S_itb, CellIterator S_itE, 
+    template <typename CellConstIterator, typename CellMapIteratorPriority>
+    void collapse( CellConstIterator S_itb, CellConstIterator S_itE, 
                    const CellMapIteratorPriority& priority, 
                    bool hintIsSClosed = false, bool hintIsKClosed = false );
 
