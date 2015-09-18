@@ -45,6 +45,17 @@ endif()
 MESSAGE(STATUS " ")
 #---------------------------------
 
+#----------------------------------
+# Removing -frounding-math compile flag for clang
+#----------------------------------
+IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    MESSAGE( STATUS "Removing -frounding-math flag when compiling with Clang" )
+    STRING( REPLACE "-frounding-math" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} )
+    MESSAGE( STATUS " " )
+ENDIF()
+#---------------------------------
+
+
 IF(WITH_C11)
 SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
 message(STATUS "      WITH_C11           true    (C++ compiler C11 features)")
@@ -436,14 +447,14 @@ ENDIF(WITH_OPENMP)
 # -----------------------------------------------------------------------------
 SET(EIGEN_FOUND_DGTAL 0)
 IF(WITH_EIGEN)
-  FIND_PACKAGE(Eigen3 3.1.1 REQUIRED)
+  FIND_PACKAGE(Eigen3 3.2.1 REQUIRED)
   IF(EIGEN3_FOUND)
     SET(EIGEN_FOUND_DGTAL 1)
     ADD_DEFINITIONS("-DWITH_EIGEN ")
     include_directories( ${EIGEN3_INCLUDE_DIR})
     message(STATUS "Eigen3 (version ${EIGEN3_VERSION}) found.")
   ELSE(EIGEN3_FOUND)
-    message(FATAL_ERROR "Eigen3 is not found or the installed version (${EIGEN3_VERSION}) is below 3.1.1. ")
+    message(FATAL_ERROR "Eigen3 is not found or the installed version (${EIGEN3_VERSION}) is below 3.2.1. ")
   ENDIF(EIGEN3_FOUND)
 ENDIF(WITH_EIGEN)
 

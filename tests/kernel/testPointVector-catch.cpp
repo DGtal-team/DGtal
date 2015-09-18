@@ -26,14 +26,9 @@
  */
 
 /**
- * Description of test_trace' <p>
- * Aim: simple test of \ref MeasureOfStraighLines
+ * Description of testPointVector-catch' <p>
+ * Aim: simple test of \ref PointVector with Catch unit test framework.
  */
-
-
-#define CATCH_CONFIG_MAIN 
-#include "catch.hpp"
-
 #include <cstdio>
 #include <cmath>
 #include <iostream>
@@ -41,6 +36,8 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+
+#include "DGtalCatch.h"
 
 using namespace DGtal;
 using namespace std;
@@ -63,7 +60,7 @@ TEST_CASE( "Point Vector Unit tests" )
 
   SECTION("Comparisons")
     {
-      REQUIRE( p1 == p1bis );
+      REQUIRE( (p1 == p1bis) );
       REQUIRE( p1 < p2 );
       
 #ifdef CPP11_INITIALIZER_LIST
@@ -74,10 +71,10 @@ TEST_CASE( "Point Vector Unit tests" )
   
   SECTION("Min/Max of vector components")
     {
-      REQUIRE( p3.max() == 2.0 );
-      REQUIRE( p3.min() == -2.0 );
-      REQUIRE( *p3.maxElement() == 2.0 );
-      REQUIRE( *p3.minElement() == -2.0 );
+      REQUIRE( (p3.max() == 2.0) );
+      REQUIRE( (p3.min() == -2.0) );
+      REQUIRE( (*p3.maxElement() == 2.0) );
+      REQUIRE( (*p3.minElement() == -2.0) );
     }
 
   Point  aPoint;
@@ -90,12 +87,12 @@ TEST_CASE( "Point Vector Unit tests" )
     {
       RealPoint normalized = aPoint.getNormalized();
       CAPTURE( normalized );
-      REQUIRE( aPoint.norm ( Point::L_1 ) == 6 );
-      REQUIRE( aPoint.norm ( Point::L_infty ) == 3 );
-      REQUIRE( normalized[0] == Approx( 0.801784) );
-      REQUIRE( normalized[1] == Approx( -0.267261) );
-      REQUIRE( normalized[2] == Approx( 0.534522) );
-      REQUIRE( normalized[3] == Approx( 0.0) );
+      REQUIRE( (aPoint.norm ( Point::L_1 ) == 6) );
+      REQUIRE( (aPoint.norm ( Point::L_infty ) == 3) );
+      REQUIRE( (normalized[0] == Approx( 0.801784)) );
+      REQUIRE( (normalized[1] == Approx( -0.267261)) );
+      REQUIRE( (normalized[2] == Approx( 0.534522)) );
+      REQUIRE( (normalized[3] == Approx( 0.0)) );
     }
 
   SECTION("PointVector Iterator")
@@ -110,19 +107,19 @@ TEST_CASE( "Point Vector Unit tests" )
       
       CAPTURE(aPoint25);
       CAPTURE(sum);
-      REQUIRE( sum == 300);
+      REQUIRE( (sum == 300) );
     }
 
   SECTION("Arithmetical Operators")
     {
-      REQUIRE( (p1 + p2) == Point(6,6,6,6) );
-      REQUIRE( (p1 - p2) == Point(-4,-2,0,2) );
-      REQUIRE( (p1*2) == Point(2,4,6,8) );
-      REQUIRE( (2*p1) == Point(2,4,6,8) );
-      REQUIRE( (-p1) == Point(-1,-2,-3,-4) );
-      REQUIRE( p1.inf(p2) == Point(1,2,3,2) );
-      REQUIRE( p1.sup(p2) == Point(5,4,3,4) );
-      REQUIRE( p1.dot(p2) == 30 );
+      REQUIRE( ((p1 + p2) == Point(6,6,6,6)) );
+      REQUIRE( ((p1 - p2) == Point(-4,-2,0,2)) );
+      REQUIRE( ((p1*2) == Point(2,4,6,8)) );
+      REQUIRE( ((2*p1) == Point(2,4,6,8)) );
+      REQUIRE( ((-p1) == Point(-1,-2,-3,-4)) );
+      REQUIRE( (p1.inf(p2) == Point(1,2,3,2)) );
+      REQUIRE( (p1.sup(p2) == Point(5,4,3,4)) );
+      REQUIRE( (p1.dot(p2) == 30) );
     }
 
 }

@@ -15,26 +15,43 @@
  **/
 
 /**
- * @file testDiscreteExteriorCalculusExtended.cpp
+ * @file testCatch
  * @ingroup Tests
- * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ *
+ *
+ * @date 2015/08/06
  *
  * This file is part of the DGtal library
  */
 
+/**
+ * Description of testCatch' <p>
+ * Aim: simple test of \ref Catch unit test framework
+ */
 
-#include "common.h"
+#include "DGtalCatch.h"
 
-int
-main(int , char**)
+TEST_CASE( "Point Vector Unit tests" )
 {
-    DGtal::trace.beginBlock("testing sparse eigen backend");
-    test_backend<DGtal::EigenLinearAlgebraBackend>(2, 7);
-    const double sparse_eigen_time = DGtal::trace.endBlock();
+  
+  int a = 5;
+  int b = 3+2;
+  int c = a+1;
+  
+  SECTION("Comparisons")
+    {
+      REQUIRE( (a == b) );
+      a=6;
+      REQUIRE( (a == c) );
+    }
+  
+  SECTION("No side-effects on global variables in section scopes")
+    {
+      REQUIRE( (a == 5) );
+    }
 
-    DGtal::trace.info() << "sparse_eigen_time=" << sparse_eigen_time << std::endl;
-
-    return 0;
 }
+
+
+/** @ingroup Tests **/

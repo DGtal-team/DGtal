@@ -11,3 +11,5 @@ install
 *~
 *.swp
 *.bak
+
+*.h#
