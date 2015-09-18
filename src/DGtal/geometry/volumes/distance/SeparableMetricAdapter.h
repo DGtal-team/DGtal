@@ -103,9 +103,9 @@ namespace DGtal
      * Constructor from a CMetric model instance.
      * The metric is aliased in this class.
      *
-     * @param [in] aMetric any model of CMetric which is monotinic.
+     * @param [in] aMetric any model of CMetric which is monotonic.
      */
-    SeparableMetricAdapter(ConstAlias<Metric> aMetric): myMetric(aMetric)
+    SeparableMetricAdapter(ConstAlias<Metric> aMetric): myMetric(&aMetric)
     {}
 
     /**
@@ -121,11 +121,12 @@ namespace DGtal
 
     /**
      * Assignment. (Assignable concept)
-     * UNUSED_PARAM other the object to copy.
+     * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & /*other*/ )
+    SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & other )
     {
+      myMetric = other.myMetric;
       return *this;
     }
 
@@ -143,7 +144,7 @@ namespace DGtal
      */
     Value operator()(const Point & aP, const Point &aQ) const
     {
-      return myMetric.operator()(aP,aQ);
+      return myMetric->operator()(aP,aQ);
     }
 
     /**
@@ -156,7 +157,7 @@ namespace DGtal
      */
     RawValue rawDistance(const Point & aP, const Point &aQ) const
     {
-      return myMetric.rawDistance(aP,aQ);
+      return myMetric->rawDistance(aP,aQ);
     }
     /**
      * Given an origin and two points, this method decides which one
@@ -173,7 +174,7 @@ namespace DGtal
                     const Point &first,
                     const Point &second) const
     {
-      return myMetric.closest(origin,first,second);
+      return myMetric->closest(origin,first,second);
     }
 
     // ----------------------- CSeparableMetric --------------------------------------
@@ -217,7 +218,7 @@ namespace DGtal
      */
     bool isValid() const
     {
-      return myMetric.isValid();
+      return myMetric->isValid();
     }
 
 
@@ -246,7 +247,7 @@ namespace DGtal
 
     // ------------------------- Private members ------------------------------
   private:
-    const Metric &myMetric;
+    const Metric *myMetric;
 
   }; // end of class SeparableMetricAdapter
 
