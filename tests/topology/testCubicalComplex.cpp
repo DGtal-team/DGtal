@@ -276,7 +276,7 @@ bool testCollapse( const std::string& str )
   trace.info() << "After close: " << complex << std::endl;
   trace.endBlock();
   trace.beginBlock( "Collapsing complex" );
-  typename CC::CellMapIteratorDefaultPriority P;
+  typename CC::DefaultCellMapIteratorPriority P;
   complex.collapse( S.begin(), S.end(), P, false, true );
   trace.info() << "After collapse: " << complex << std::endl;
   trace.endBlock();
