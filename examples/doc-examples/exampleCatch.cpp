@@ -33,6 +33,10 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
 
+#include <vector>
+#include <list>
+#include <set>
+
 //! [exampleCatch-include]
 #include "DGtalCatch.h"
 //! [exampleCatch-include]
@@ -87,4 +91,27 @@ TEST_CASE( "Point Vector Unit tests" )
 
 }
 //! [exampleCatch-example1]
+
+
+//! [exampleCatch-example2]
+TEMPLATE_TEST_CASE_3("STL Container test", "Description", T,
+                     std::list<int>, std::vector<int>, std::set<int>)
+{
+  T defaultConstructed;
+
+  SECTION("Size of the default constructed container")
+    {
+      REQUIRE( ( defaultConstructed.size() == 0 ) ); 
+    }
+
+  //Adding a value
+  defaultConstructed.insert( defaultConstructed.begin(),  5 );
+  
+  SECTION("Size after one insert")
+    {
+      REQUIRE( ( defaultConstructed.size() == 1 ) ); 
+    }
+}
+//! [exampleCatch-example2]
+
 

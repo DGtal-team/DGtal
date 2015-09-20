@@ -1,6 +1,6 @@
 /*
  *  Catch v1.2.1
- *  Generated: 2015-06-30 18:23:27.961086
+ *  Generated: 2015-09-20 14:36:59.757340
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -637,6 +637,119 @@ private:
         void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ )::test()
 
 #endif
+
+///////////////////////////////////////////////////////////////////////////////
+// Type-parameterised tests via test case templates
+// See https://github.com/philsquared/Catch/issues/46
+// and https://github.com/philsquared/Catch/issues/357
+
+#define INTERNAL_CATCH_TEST_CASE_TEMPLATE_DECL( T ) \
+    template<typename T> \
+    static void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_TE____T_E_S_T____ )();
+
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( Tn ) \
+        INTERNAL_CATCH_SECTION( #Tn, "" ) \
+        { \
+            INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_TE____T_E_S_T____ )<Tn>(); \
+        }
+
+#define INTERNAL_CATCH_TEST_CASE_TEMPLATE_DEFN( T ) \
+    template<typename T> \
+    static void INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_TE____T_E_S_T____ )()
+
+// Simple repetition, which could be accomplished more tersely with some extra preprocessor magic
+
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_1( name, description, T, T1 ) \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DECL( T ) \
+    INTERNAL_CATCH_TESTCASE( name, description ) \
+    { \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T1 ) \
+    } \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DEFN( T )
+
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_2( name, description, T, T1, T2 ) \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DECL( T ) \
+    INTERNAL_CATCH_TESTCASE( name, description ) \
+    { \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T1 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T2 ) \
+    } \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DEFN( T )
+
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_3( name, description, T, T1, T2, T3 ) \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DECL( T ) \
+    INTERNAL_CATCH_TESTCASE( name, description ) \
+    { \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T1 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T2 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T3 ) \
+    } \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DEFN( T )
+
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_4( name, description, T, T1, T2, T3, T4 ) \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DECL( T ) \
+    INTERNAL_CATCH_TESTCASE( name, description ) \
+    { \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T1 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T2 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T3 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T4 ) \
+    } \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DEFN( T )
+
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_5( name, description, T, T1, T2, T3, T4, T5 ) \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DECL( T ) \
+    INTERNAL_CATCH_TESTCASE( name, description ) \
+    { \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T1 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T2 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T3 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T4 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T5 ) \
+    } \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DEFN( T )
+
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_6( name, description, T, T1, T2, T3, T4, T5, T6 ) \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DECL( T ) \
+    INTERNAL_CATCH_TESTCASE( name, description ) \
+    { \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T1 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T2 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T3 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T4 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T5 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T6 ) \
+    } \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DEFN( T )
+
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_7( name, description, T, T1, T2, T3, T4, T5, T6, T7 ) \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DECL( T ) \
+    INTERNAL_CATCH_TESTCASE( name, description ) \
+    { \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T1 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T2 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T3 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T4 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T5 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T6 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T7 ) \
+    } \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DEFN( T )
+
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_8( name, description, T, T1, T2, T3, T4, T5, T6, T7, T8 ) \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DECL( T ) \
+    INTERNAL_CATCH_TESTCASE( name, description ) \
+    { \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T1 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T2 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T3 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T4 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T5 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T6 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T7 ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( T8 ) \
+    } \
+    INTERNAL_CATCH_TEST_CASE_TEMPLATE_DEFN( T )
 
 // #included from: internal/catch_capture.hpp
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
@@ -1571,7 +1684,7 @@ namespace Catch {
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
         try { \
-            ( __catchResult <= expr ).endExpression(); \
+            ( __catchResult <= (expr) ).endExpression(); \
         } \
         catch( ... ) { \
             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
@@ -5797,6 +5910,7 @@ namespace Catch {
         std::vector<TestCase> m_functionsInOrder;
         std::vector<TestCase> m_nonHiddenFunctions;
         size_t m_unnamedCount;
+        std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
     };
 
     ///////////////////////////////////////////////////////////////////////////
@@ -9308,6 +9422,15 @@ int main (int argc, char * const argv[]) {
 #endif
 #define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
 
+#define CATCH_TEMPLATE_TEST_CASE_1(name, description, T, T1) INTERNAL_CATCH_TEMPLATE_TEST_CASE_1(name, description, T, T1)
+#define CATCH_TEMPLATE_TEST_CASE_2(name, description, T, T1, T2) INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(name, description, T, T1, T2)
+#define CATCH_TEMPLATE_TEST_CASE_3(name, description, T, T1, T2, T3) INTERNAL_CATCH_TEMPLATE_TEST_CASE_3(name, description, T, T1, T2, T3)
+#define CATCH_TEMPLATE_TEST_CASE_4(name, description, T, T1, T2, T3, T4) INTERNAL_CATCH_TEMPLATE_TEST_CASE_4(name, description, T, T1, T2, T3, T4)
+#define CATCH_TEMPLATE_TEST_CASE_5(name, description, T, T1, T2, T3, T4, T5) INTERNAL_CATCH_TEMPLATE_TEST_CASE_5(name, description, T, T1, T2, T3, T4, T5)
+#define CATCH_TEMPLATE_TEST_CASE_6(name, description, T, T1, T2, T3, T4, T5, T6) INTERNAL_CATCH_TEMPLATE_TEST_CASE_6(name, description, T, T1, T2, T3, T4, T5, T6)
+#define CATCH_TEMPLATE_TEST_CASE_7(name, description, T, T1, T2, T3, T4, T5, T6, T7) INTERNAL_CATCH_TEMPLATE_TEST_CASE_7(name, description, T, T1, T2, T3, T4, T5, T6, T7)
+#define CATCH_TEMPLATE_TEST_CASE_8(name, description, T, T1, T2, T3, T4, T5, T6, T7, T8) INTERNAL_CATCH_TEMPLATE_TEST_CASE_8(name, description, T, T1, T2, T3, T4, T5, T6, T7, T8)
+
 #define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define CATCH_REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )
 
@@ -9372,6 +9495,15 @@ int main (int argc, char * const argv[]) {
     #define SUCCEED( msg ) INTERNAL_CATCH_MSG( Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, "SUCCEED", msg )
 #endif
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE( "", "" )
+
+#define TEMPLATE_TEST_CASE_1(name, description, T, T1) INTERNAL_CATCH_TEMPLATE_TEST_CASE_1(name, description, T, T1)
+#define TEMPLATE_TEST_CASE_2(name, description, T, T1, T2) INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(name, description, T, T1, T2)
+#define TEMPLATE_TEST_CASE_3(name, description, T, T1, T2, T3) INTERNAL_CATCH_TEMPLATE_TEST_CASE_3(name, description, T, T1, T2, T3)
+#define TEMPLATE_TEST_CASE_4(name, description, T, T1, T2, T3, T4) INTERNAL_CATCH_TEMPLATE_TEST_CASE_4(name, description, T, T1, T2, T3, T4)
+#define TEMPLATE_TEST_CASE_5(name, description, T, T1, T2, T3, T4, T5) INTERNAL_CATCH_TEMPLATE_TEST_CASE_5(name, description, T, T1, T2, T3, T4, T5)
+#define TEMPLATE_TEST_CASE_6(name, description, T, T1, T2, T3, T4, T5, T6) INTERNAL_CATCH_TEMPLATE_TEST_CASE_6(name, description, T, T1, T2, T3, T4, T5, T6)
+#define TEMPLATE_TEST_CASE_7(name, description, T, T1, T2, T3, T4, T5, T6, T7) INTERNAL_CATCH_TEMPLATE_TEST_CASE_7(name, description, T, T1, T2, T3, T4, T5, T6, T7)
+#define TEMPLATE_TEST_CASE_8(name, description, T, T1, T2, T3, T4, T5, T6, T7, T8) INTERNAL_CATCH_TEMPLATE_TEST_CASE_8(name, description, T, T1, T2, T3, T4, T5, T6, T7, T8)
 
 #define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 #define REGISTER_LEGACY_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_LEGACY_REPORTER( name, reporterType )

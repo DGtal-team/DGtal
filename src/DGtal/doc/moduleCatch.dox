@@ -80,11 +80,52 @@ with sections and test cases allowing to only run specific tests.
 
 
 
-@section sectCatch2 Advanced usages
+@section sectCatch3 Advanced usages
+
+In Catch, experimental macros exist to describe templated tests. For
+instance, the following code tests some STL containers.
+
+@snippet exampleCatch.cpp exampleCatch-example2
+
+In this example, 6 test sections are automatically generated. The
+resulting output (with timings) is:
+
+@code
+./exampleCatch  "STL Container test"  -d yes
+Size of the default constructed container completed in 3.3e-05s
+std::list<int> completed in 0.000124s
+STL Container test completed in 0.0002s
+Size after one insert completed in 9e-06s
+std::list<int> completed in 3.5e-05s
+STL Container test completed in 7.7e-05s
+Size of the default constructed container completed in 1.5e-05s
+std::vector<int> completed in 8.4e-05s
+STL Container test completed in 0.000133s
+Size after one insert completed in 1.2e-05s
+std::vector<int> completed in 5.2e-05s
+STL Container test completed in 0.000112s
+Size of the default constructed container completed in 1e-05s
+std::set<int> completed in 7.2e-05s
+STL Container test completed in 0.000134s
+Size after one insert completed in 1.5e-05s
+std::set<int> completed in 5.7e-05s
+STL Container test completed in 0.000116s
+=========================================================
+@endcode
+
+@note In the current Catch version, the number of templated types must
+be specified explicitly in the macro name (up to 8 templated types per
+test case).
+
+*/
 
 
+/**
+DGtal/Catch examples
 
+@see \ref moduleCatch
 
+\example doc-exmples/exampleCatch.cpp
 */
 
 }
