@@ -133,13 +133,17 @@
 
 
 - *Kernel Package*
-  - HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)).
+- HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)).
     Warning about the use of lexicographical order in comparison operators of
     PointVector. (Roland Denis,
     [#996](https://github.com/DGtal-team/DGtal/pull/996))
   - Adds generic linearization (point to index) and reverse process (index to
     point), specialized for HyperRectDomain. (Roland Denis,
     [#1039](https://github.com/DGtal-team/DGtal/pull/1039))
+ - HyperRectDomain can now be empty (lowerBound == upperBound +
+    diagonal(1)). Warning about the use of lexicographical order in
+    comparison operators of PointVector. (Roland Denis,
+    [#996](https://github.com/DGtal-team/DGtal/pull/
 
 - *Shapes Package*
  - Adds a vertex Iterator in the Mesh class in addition to the
@@ -158,25 +162,27 @@
    DigitalShapesMinus are now deprecated. Use DigitalShapesCSG
    instead. (Jérémy Levallois
    [#962](https://github.com/DGtal-team/DGtal/pull/962))
- - Add various methods in the Mesh class to get the bounding box, to change the
-   mesh scale or to subdivide triangular faces. (Bertrand Kerautret,
-   [#990](https://github.com/DGtal-team/DGtal/pull/990) and
+ - Add various methods in the Mesh class to get the bounding box, to
+   change the mesh scale or to subdivide triangular faces. (Bertrand
+   Kerautret, [#990](https://github.com/DGtal-team/DGtal/pull/990) and
    [#992](https://github.com/DGtal-team/DGtal/pull/992))
- - New copy constructor and copy operator on Mesh object (and documentation
-   added about vertex ordering for obj format). (Bertrand Kerautret,
+ - New copy constructor and copy operator on Mesh object (and
+   documentation added about vertex ordering for obj format).
+   (Bertrand Kerautret,
    [#976](https://github.com/DGtal-team/DGtal/pull/976))
 
 - *Arithmetic Package*
- - Algorithm to compute the fraction of smallest denominator in between
-   two irreducible fractions (Isabelle Sivignon
-   [#949](https://github.com/DGtal-team/DGtal/pull/949))
+ - Algorithm to compute the fraction of smallest denominator in
+	between two irreducible fractions (Isabelle Sivignon
+	[#949](https://github.com/DGtal-team/DGtal/pull/949))
 
 ## Bug Fixes
 
-- *Configuration*
-  - Forces Eigen 3.2.1 minimum (for a bug fix).
-    (Jacques-Olivier Lachaud,
-    [1032](https://github.com/DGtal-team/DGtal/pull/1032)).
+- *Configuration* 
+  - Removing code coverage with coverall.io (David Coeurjolly,
+  [1040](https://github.com/DGtal-team/DGtal/pull/1032)).
+  - Forces Eigen 3.2.1 minimum (for a bug fix).  (Jacques-Olivier
+    Lachaud, [1032](https://github.com/DGtal-team/DGtal/pull/1032)).
   - Fix issue #925, detection of Eigen3 (3.1 minimum) and also issue
     #924, DGtal configuration file when using Eigen3.  (Jacques-Olivier
     Lachaud, [#926](https://github.com/DGtal-team/DGtal/pull/926))
