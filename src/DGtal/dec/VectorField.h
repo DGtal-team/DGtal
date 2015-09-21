@@ -57,7 +57,7 @@ namespace DGtal
    * Description of template class 'VectorField' <p>
    * \brief Aim:
    * VectorField represents a discrete vector field in the dec package.
-	 * Vector field values are attached to 0-cells with the same duality as the vector field.
+   * Vector field values are attached to 0-cells with the same duality as the vector field.
    *
    * @tparam TCalculus should be DiscreteExteriorCalculus.
    * @tparam duality is the duality of the vector field.
@@ -151,7 +151,13 @@ template <typename TCalculus, Duality duality>
      * Create zero form by projecting the vector field along basis vector.
      * @param dir direction along wich the vector field is projected.
      */
-    KForm<Calculus, 0, duality> extractZeroForm(const Dimension& dir) const;
+    KForm<Calculus, 0, duality> coordAlongDirection(const Dimension& dir) const;
+
+    /**
+     * Create zero from with field intensity.
+     * @param norm_type norm type.
+     */
+    KForm<Calculus, 0, duality> intensity(const typename Vector::NormType norm_type = Vector::L_2) const;
 
     /**
      * Clear current vector field.
@@ -229,6 +235,15 @@ template <typename TCalculus, Duality duality>
   template <typename Calculus, Duality duality>
   VectorField<Calculus, duality>
   operator*(const typename Calculus::Scalar& scalar, const VectorField<Calculus, duality>& vector_field);
+
+  /**
+   * Overloads 'operator-' for unary additive inverse of objects of class 'VectorField'.
+   * @param vector_field operant
+   * @return -vector_field
+   */
+  template <typename Calculus, Duality duality>
+  VectorField<Calculus, duality>
+  operator-(const VectorField<Calculus, duality>& vector_field);
 
 } // namespace DGtal
 
