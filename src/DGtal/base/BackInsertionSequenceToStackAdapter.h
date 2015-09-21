@@ -56,7 +56,7 @@ namespace DGtal
    * of a model of back insertion sequence in order to get 
    * a stack interface. 
    * This class is a model of CStack. 
-   * @tparam TSequence a model of back insertion sequence
+   * @tparam TSequence a model of boost::BackInsertionSequence
    */
   template <typename TSequence>
   class BackInsertionSequenceToStackAdapter
@@ -119,6 +119,13 @@ namespace DGtal
      * @return reference to the top element of the stack
      */
     Value& top();
+    /**
+     * Access to the top element, ie. the element 
+     * available at the back of the underlying container. 
+     * This method indeed calls method @a back of the 
+     * underlying container. 
+     * @return reference to the top element of the stack
+     */
     const Value& top() const; 
 
     /**

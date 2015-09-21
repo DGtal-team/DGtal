@@ -76,11 +76,12 @@ namespace DGtal
    *
    * @see functions::Hull2D::updateHullWithAdaptedStack
    * 
-   * Note that is the input points do not form a simple polygonal line, 
+   * Note that if the input points do not form a simple polygonal line, 
    * the behavior is not defined. 
    *
    * @tparam TPoint a model of point
    * @tparam TOrientationFunctor a model of COrientationFunctor2
+   * (whose inner type 'Point' match to 'TPoint')
    */
   template <typename TPoint, 
 	    typename TOrientationFunctor >

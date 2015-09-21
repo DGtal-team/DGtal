@@ -66,7 +66,7 @@ namespace DGtal
    *
    * \note We do not use any approximating function like atan, but only exact computations
    * involving the evaluation of determinants of 2x2 matrices. With the default
-   * template parameters, the result is guaranteed to be exact for point coordinates
+   * template parameters, the result is guaranteed to be exact for integral point coordinates
    * lying whithin the range ]-2^30,2^30[. 
    *
    * @tparam TPoint type of points to compare
