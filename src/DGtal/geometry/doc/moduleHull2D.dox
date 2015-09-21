@@ -32,23 +32,23 @@ Related examples are exampleConvexHull2D.cpp and exampleAlphaShape.cpp.
 
 \section sectmoduleHull2D1 Convex hull
 
-Three convex hull algorithms are available: 
-- functions::Hull2D::andrewConvexHullAlgorithm [Andrew, 1979 : \cite Andrew1979]
-- functions::Hull2D::grahamConvexHullAlgorithm [Graham, 1972 : \cite Graham1972]
-- functions::Hull2D::melkmanConvexHullAlgorithm [Melkman, 1987 : \cite Melkman1987]
+Let us recall that a polygon is a weakly externally visible polygon (WEVP)
+ if for every point on it, there exists an infinite half-line beginning at 
+this point, which does not intersect the polygon at anywhere else. 
 
-They both use the basic procedures Hull2D::buildHullWithStack
+The two basic procedures Hull2D::buildHullWithStack
 (the object having a stack interface is passed by reference) 
-or Hull2D::buildHullWithAdaptedStack (the object having a stack 
-interface is passed by copy). These procedures retrieves the 
-extremal vertices of a weakly externally visible polygon (WEVP) 
+and Hull2D::buildHullWithAdaptedStack (the object having a stack 
+interface is passed by copy) retrieve the extremal vertices of a WEVP 
 in linear-time. This is an implementation of a well-known method, 
 called Sklansky's scan, Graham's scan or 3-coins algorithm, 
 which has been proven to correctly retrieve the convex hull
-of any WEVP [Toussaint and Avis, 1982 : \cite ToussaintAvis1982].  
-Let us recall that a polygon is a WEVP if for every point on it, 
-there exists an infinite half-line beginning at this point, which 
-does not intersect the polygon at anywhere else. 
+of any WEVP [Toussaint and Avis, 1982: \cite ToussaintAvis1982].  
+
+Three convex hull algorithms use this basic procedure:  
+- functions::Hull2D::andrewConvexHullAlgorithm [Andrew, 1979: \cite Andrew1979]
+- functions::Hull2D::grahamConvexHullAlgorithm [Graham, 1972: \cite Graham1972]
+- functions::Hull2D::melkmanConvexHullAlgorithm [Melkman, 1987: \cite Melkman1987]
 
 Before calling these algoritms, you must use the functions::Hull2D namespace
 defined in the file Hull2DHelpers.h. 
@@ -67,14 +67,14 @@ See @ref moduleGeometricPredicates for more details about geometric predicates.
 - a strictly positive value for counter-clockwise oriented points
 - a strictly negative value for clockwise oriented points
 
-@note The above predicate adapts the above functor in order to return 'true' for 
-striclty positive values. The last two template arguments means that neither the 
-strictly negative values, nor the null values are accepted. 
-
+@note In this example, the predicate is an object that adapts the functor in 
+order to return 'true' for striclty positive values. The last two template 
+arguments means that neither the strictly negative values, nor the null values 
+are accepted. 
 
 \subsection subsectmoduleHull2D11 Andrew's algorithm
 
-The more versatile algorithm is Andrew's one [Andrew, 1979 : \cite Andrew1979],
+The more versatile algorithm is Andrew's one [Andrew, 1979: \cite Andrew1979],
  also known to be the monotone-chain algorithm. First, points are sorted along 
 the horizontal axis. Then, the lower and upper convex hulls are computed by a 
 simple Graham scan from left to right and from right to left. The resulting 
@@ -112,13 +112,13 @@ is clockwise-oriented.
 \subsection subsectmoduleHull2D12 Graham's algorithm
 
 Graham's algorithm is another well-known algorithm to compute the convex hull of 
-a 2D point set of size \f$ n \f$ in \f$ O(n\log{(n)}) \f$ [Graham, 1972 : \cite Graham1972]. 
-The method can be coarsely describe as follows: 
-- choose a pole and sort the points in order of increasing angle about the pole
+a 2D point set of size \f$ n \f$ in \f$ O(n\log{(n)}) \f$ [Graham, 1972: \cite Graham1972]. 
+The method can be coarsely described as follows: 
+- choose a pole and sort the points by increasing angle about the pole
 - apply a simple Graham's scan on the sorted list of points. 
 
 We have chosen the point of maximal x-coordinate (and maximal y-coordinate) to be the pole. 
-Hence, the algorithm is correct because sorting the points in order of increasing angle about 
+Hence, the algorithm is correct since sorting the points by increasing angle about 
 such a pole produces again a WEVP. 
  
 @image html GrahamWEVP.png "Sorting step of Graham's algorithm produces a WEVP"
@@ -140,9 +140,9 @@ of \f$ n \f$ 2D points in \f$ O(n\log{(n)}) \f$.
 Melkman's algorithm is on-line and computes the convex hull of a simple polygonal line, 
 ie. without self-intersection, in linear-time (amortized constant time per update). 
 
-Note that Graham scan, used by the two previous algorithms, runs in linear-time 
+Note that Graham's scan, used by the two previous algorithms, runs in linear-time 
 on weakly externally visible polygons, which is a subset of simple polygonal lines.
-As a consequence, Graham scan may fail for simple polygonal lines that are not 
+As a consequence, Graham's scan may fail for simple polygonal lines that are not 
 weakly externally visible.    
 
 In exampleConvexHull2D.cpp, you may find a minimal example: 
@@ -150,7 +150,7 @@ In exampleConvexHull2D.cpp, you may find a minimal example:
 @image html SimplePolygonalLine.png "A simple polygonal line that is not weakly externally visible"
 @image latex SimplePolygonalLine.png "A simple polygonal line that is not weakly externally visible" width=5cm
 
-On such example, Graham scan fails because the polygonal line is not weakly externally visible. 
+On such example, Graham's scan fails because the polygonal line is not weakly externally visible. 
 However, Melkman's algorithm produces the right output: 
 
 @image html SimplePolygonalLineMelkman.png "Output for Melkman's algorithm "
@@ -160,7 +160,7 @@ Melkman's algorithm works fine because it is based on a double ended queue and i
 assumes that the input points form a simple polygonal line. Due to this assumption, 
 any new point cannot be located in the cone formed by the first and last edge of the 
 current convex hull (in red in the figure below). As a consequence, it is enough to 
-update the convex hull by a Graham scan from the front and/or from the back of the 
+update the convex hull by a Graham's scan from the front and/or from the back of the 
 deque and it is never required to remove/insert points in the middle of the deque.  
  
 @image html MelkmanHowTo.png "Consequence of the no self-intersection hypothesis"
@@ -169,7 +169,10 @@ deque and it is never required to remove/insert points in the middle of the dequ
 You may use MelkmanConvexHull class as follows: 
 @snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-OnLineMelkmanAlgo
 
-In addition, you may call the off-line procedure melkmanConvexHullAlgorithm as follows:  
+The class MelkmanConvexHull provides an on-line way of computing the convex hull of a 
+sequence of points, which form a simple polygonal line: each time a point is added, 
+the current convex hull is updated accordingly. However, if you are not interested in 
+the on-line feature, you may call the off-line procedure melkmanConvexHullAlgorithm as follows:  
 @snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-OffLineMelkmanAlgo
 
 @warning The behavior is undefined if the input points do not form a simple polygonal line. 
@@ -177,7 +180,7 @@ In addition, you may call the off-line procedure melkmanConvexHullAlgorithm as f
 \section sectmoduleHull2D2 Alpha-shape
 
 The alpha-shape of a finite set of points has been introduced in 
-[Edelsbrunner et. al., 1983 : \cite Edelsbrunner1983]. This geometric
+[Edelsbrunner et. al., 1983: \cite Edelsbrunner1983]. This geometric
 structure is based on the following concept of generalized disk.  
 For an arbitrary real \f$ \alpha \f$, a @e generalized @e disk of radius \f$ 1/\alpha \f$
 is defined as 
@@ -191,8 +194,8 @@ with \f$ P, Q \f$ on its boundary and such that \f$ P, Q \f$ and its center are 
 oriented (resp. clockwise oriented).
 
 The @e \f$\alpha\f$-hull of a point set is the intersection of all closed generalized disks
-of \f$ 1/\alpha \f$ that contains the point set. 
-A point \f$ P \f$ of this point set is @a \f$\alpha\f$-extreme is there exists a closed 
+of radius \f$ 1/\alpha \f$ that contains the point set. 
+A point \f$ P \f$ of this point set is @a \f$\alpha\f$-extreme if there exists a closed 
 generalized disk of radius \f$ 1/\alpha \f$ such that \f$ P \f$ lies on its boundary 
 and which contains all the other points.  
 The @e \f$\alpha\f$-shape is the straight-line graph whose vertices are the 
@@ -243,7 +246,7 @@ if \f$ R \f$ belongs to the direct generalized disk of radius \f$ 1/\alpha \f$ p
 then \f$ P \f$ belongs to the direct generalized disk of radius \f$ 1/\alpha \f$ passing by \f$ Q \f$ and \f$ R \f$
 and \f$ Q \f$ belongs to the direct generalized disk of radius \f$ 1/\alpha \f$ passing by \f$ R \f$ and \f$ P \f$. 
 
-As a consequence, we did not implement any algorithm to compute the alpha-shape of an arbitrary set of points.
+As a consequence, the current implementation cannot compute the alpha-shape of an arbitrary set of points.
 Such an algorithm would have required to compute the closest point and farthest point Delaunay triangulation. 
 Though, we provide procedures, based on the 3-coins algorithm, which compute in linear-time the alpha-shape 
 of specific polygons, for which the two above properties remain true: 
@@ -272,7 +275,7 @@ Then, you can call the procedure closedGrahamScanFromAnyPoint as follows:
 @snippet geometry/tools/exampleAlphaShape.cpp Hull2D-ClosedGrahamScan
 
 In order to create an instance of InGeneralizedDiskOfGivenRadius, you must provide the value of \f$ 1/\alpha \f$ by three arguments: 
-- a boolean giving the sign of \f$ \alpha \f$ ('true' if \f$ \alpha \geq 0 \f$, 'false' if \f$ \alpha < 0 \f$),
+- a boolean to set the sign of \f$ \alpha \f$ ('true' if \f$ \alpha \geq 0 \f$, 'false' if \f$ \alpha < 0 \f$),
 - the squared numerator of \f$ 1/\alpha \f$ 
 - the squared denominator of \f$ 1/\alpha \f$. As shown above, \f$ \alpha = 0 \f$ if this third argument is zero.  
 

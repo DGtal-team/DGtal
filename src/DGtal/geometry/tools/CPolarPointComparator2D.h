@@ -55,7 +55,7 @@ namespace DGtal
      @brief Aim: This concept gathers classes that are able to 
      compare the position of two given points \f$ P, Q \f$ around a pole \f$ O \f$. 
      More precisely, they compare the oriented angles lying between the horizontal line
-     passing by \f$ O \$f and the rays \f$ [OP) \f$ and \f$ [OQ) \f$ 
+     passing by \f$ O \f$ and the rays \f$ [OP) \f$ and \f$ [OQ) \f$ 
      (in a counter-clockwise orientation). This is equivalent to compare the angle in radians 
      from 0 (included) to 2 &pi; (excluded).
      

@@ -80,6 +80,10 @@ namespace DGtal
      | pop   | x.pop()    |                   | void                   |              | removes the top element            |                | O(1)       |
 
 
+     ### Models
+
+     std::stack, BackInsertionSequenceToStackAdapter, FrontInsertionSequenceToStackAdapter are the usual models of CStack.
+
      @tparam T the type that should be a model of CStack.
   */
   template <typename T>
