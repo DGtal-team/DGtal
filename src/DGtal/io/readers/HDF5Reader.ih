@@ -153,7 +153,7 @@ template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer
 DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & aFilename, const std::string & aDataset,
-                                               const Functor & UNUSED(aFunctor)) throw(DGtal::IOException)
+                                               const Functor & aFunctor) throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
 
@@ -273,17 +273,13 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   }
   HyperRectDomain<TSpace> domain(a,b);
 
-  /*std::vector<typename TSpace::Dimension> v(ddim);
-  for(d=0; d<ddim; d++)
-    v[d]=d;*/
-
   int p=0;
   for( typename HyperRectDomain<TSpace>/*::ConstSubRange*/::ConstIterator
         it = domain/*.subRange(v, a)*/.begin(), itend = domain/*.subRange(v, a)*/.end();
       it != itend;
       ++it)
   {
-    outputImage.setValue((*it), data_out[ p++ ]);
+    outputImage.setValue((*it), aFunctor(data_out[ p++ ]));
   }
 
   H5Sclose(memspace);

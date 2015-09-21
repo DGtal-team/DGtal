@@ -349,4 +349,13 @@ An output using the DGtal::Board mecanism is provided (see example above to outp
 
 */
 
+
+/**
+   This snippet segments a digital curve into Frechet shortcuts.  
+
+@see \ref moduleFrechetShortcut and \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleFrechetShortcut.cpp
+*/
+
 }
