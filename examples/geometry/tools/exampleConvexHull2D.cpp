@@ -232,7 +232,7 @@ void convexHull()
 
     //! [Hull2D-OnLineMelkmanAlgo]
     DGtal::MelkmanConvexHull<Z2i::Point, Functor> ch( functor ); 
-    for (typename std::vector<Z2i::Point>::const_iterator 
+    for (std::vector<Z2i::Point>::const_iterator 
 	   it = polygonalLine.begin(), 
 	   itEnd = polygonalLine.end(); 
 	 it != itEnd; ++it)
@@ -293,7 +293,7 @@ void convexHull()
     //NB: we choose the point of greatest x-coordinate
     //so that the sort step (by a polar comparator) 
     //returns a weakly externally visible polygon
-    typename std::vector<Z2i::Point>::iterator itMax 
+    std::vector<Z2i::Point>::iterator itMax 
       = std::max_element( res.begin(), res.end() ); 
 
     //sort around this point with a polar comparator
