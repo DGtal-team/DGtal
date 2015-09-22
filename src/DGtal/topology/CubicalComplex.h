@@ -240,6 +240,12 @@ namespace DGtal
     Dimension dim( const Cell& aCell ) const;
 
     /**
+    * @param d the dimension of cells.
+    * @return the number of cells of dimension \a d in this complex.
+    */
+    Size nbCells( Dimension d ) const;
+
+    /**
     * @return a reference to the Khalimsky space associated to this complex.
     */
     const KSpace& space() const;
@@ -299,6 +305,15 @@ namespace DGtal
     bool belongs( Dimension d, const Cell& aCell ) const;
 
     /**
+    * Makes CubicalComplex a functor Cell -> boolean, which represents
+    * the characteristic cell function.
+    *
+    * @param aCell any cell valid in the Khalimsky space associated to the complex.
+    * @return 'true' if and only if \a aCell belongs to this complex.
+    */
+    bool operator()( const Cell& aCell ) const;
+
+    /**
     * Outputs all the cells that are proper faces of \a aCell with output iterator \a it.
     *
     * @param outIt the output iterator on Cell that is used for outputing faces.
@@ -314,7 +329,7 @@ namespace DGtal
     */
     template <typename CellOutputIterator>
     void faces( CellOutputIterator& outIt, const Cell& aCell, 
-                bool hintClosed = false );
+                bool hintClosed = false ) const;
 
     /**
     * Outputs all the cells that are direct faces of \a aCell with
@@ -334,7 +349,7 @@ namespace DGtal
     */
     template <typename CellOutputIterator>
     void directFaces( CellOutputIterator& outIt, const Cell& aCell,
-                      bool hintClosed = false );
+                      bool hintClosed = false ) const;
 
     /**
     * Outputs all the iterators on cells that are direct faces of \a aCell with
@@ -369,7 +384,7 @@ namespace DGtal
     */
     template <typename CellOutputIterator>
     void coFaces( CellOutputIterator& outIt, const Cell& aCell,
-                  bool hintOpen = false );
+                  bool hintOpen = false ) const;
 
     /**
     * Outputs all the cells that are direct co-faces of \a aCell with
@@ -389,7 +404,7 @@ namespace DGtal
     */
     template <typename CellOutputIterator>
     void directCoFaces( CellOutputIterator& outIt, const Cell& aCell,
-                        bool hintOpen = false );
+                        bool hintOpen = false ) const;
 
     /**
     * Outputs all the iterators on cells that are direct co-faces of \a aCell with
@@ -457,6 +472,115 @@ namespace DGtal
     */
     CellMapIterator find( Dimension d, const Cell& aCell );
 
+    // ----------------------- local operations for extracting specific subcomplexes --------------------------------
+  public:
+
+    /**
+    * Returns the boundary of the cell \a aCell as a cell collection,
+    * i.e. all the cells that are proper faces of \a aCell. Generally
+    * faster than method \ref faces, which outputs cells with an
+    * output iterator.
+    *
+    * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+    * @param hintClosed when 'true', this hint tells that the complex
+    * is (locally) closed, so this speeds up this method, otherwise, the
+    * complex may be arbitrary.
+    *
+    * @return the collection of cells that defines the boundary of \a aCell, i.e. its proper faces.
+    *
+    * @note all returned cells belong to this complex, while it is
+    * not compulsory for \a aCell to belong to it.
+    */
+    Cells cellBoundary( const Cell& aCell, bool hintClosed = false ) const;
+
+    /**
+    * Returns the co-boundary of the cell \a aCell as a cell collection,
+    * i.e. all the cells that are proper co-faces of \a aCell. Generally
+    * faster than method \ref coFaces, which outputs cells with an
+    * output iterator.
+    *
+    * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+    * @param hintOpen when 'true', this hint tells that the complex
+    * is (locally) open, so this speeds up this method, otherwise, the
+    * complex may be arbitrary.
+    *
+    * @return the collection of cells that defines the co-boundary of \a aCell, i.e. its proper co-faces.
+    *
+    * @note all returned cells belong to this complex, while it is
+    * not compulsory for \a aCell to belong to it.
+    */
+    Cells cellCoBoundary( const Cell& aCell, bool hintOpen = false ) const;
+
+    /**
+    * Returns the ring of the cell \a aCell as a cell collection,
+    * i.e. the closure of the cell star minus the cell all the cells that are proper co-faces of \a aCell. Generally
+    * faster than method \ref coFaces, which outputs cells with an
+    * output iterator.
+    *
+    * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+    * @param hintOpen when 'true', this hint tells that the complex
+    * is (locally) open, so this speeds up this method, otherwise, the
+    * complex may be arbitrary.
+    *
+    * @return the collection of cells that defines the star of \a aCell, i.e. its proper co-faces.
+    *
+    * @note all returned cells belong to this complex, while it is
+    * not compulsory for \a aCell to belong to it.
+    */
+    Cells cellStar( const Cell& aCell, bool hintOpen = false ) const;
+
+    // ----------------------- Standard subcomplexes --------------------------------------
+  public:
+    
+    /**
+    * Returns the closure of the cells in \a S within this complex,
+    * i.e. the smallest subcomplex that contains each cell in \a S.
+    *
+    * @tparam CellAssociativeContainer any simple associative container with key Cell.
+    * @param S any collection of cells of this complex.
+    * @param hintClosed when 'true', this hint tells that the complex
+    * is (locally around \a S) closed, so this speeds up this method, otherwise, the
+    * complex may be arbitrary.
+    * @return the closure of \a S within this complex.
+    */
+    template <typename CellAssociativeContainer>
+    CellAssociativeContainer closure( const CellAssociativeContainer& S, bool hintClosed = false ) const;
+
+    /**
+    * Returns the star of the cells in \a S within this complex, i.e. the
+    * set of all cells of this complex that have any faces in \a S.
+    *
+    * @tparam CellAssociativeContainer any simple associative container with key Cell.
+    * @param S any collection of cells of this complex.
+    * @param hintOpen when 'true', this hint tells that the complex
+    * is (locally around \a S) open, so this speeds up this method, otherwise, the
+    * complex may be arbitrary.
+    * @return the star of \a S within this complex.
+    */
+    template <typename CellAssociativeContainer>
+    CellAssociativeContainer star( const CellAssociativeContainer& S, bool hintOpen = false ) const;
+
+    /**
+    * Returns the link of the cells in \a S within this complex,
+    * i.e. the closed star of \a S minus the stars of all faces of \a
+    * S.
+    *
+    * @tparam CellAssociativeContainer any simple associative container with key Cell.
+    * @param S any collection of cells of this complex.
+    * @param hintClosed when 'true', this hint tells that the complex
+    * is (locally around \a S) closed, so this speeds up this method, otherwise, the
+    * complex may be arbitrary.
+    * @param hintOpen when 'true', this hint tells that the complex
+    * is (locally around \a S) open, so this speeds up this method, otherwise, the
+    * complex may be arbitrary.
+    * @return the link of \a S within this complex.
+    */
+    template <typename CellAssociativeContainer>
+    CellAssociativeContainer link( const CellAssociativeContainer& S, bool hintClosed = false, bool hintOpen = false ) const;
+
+    // ----------------------- global operations on complexes --------------------------------------
+  public:
+
     /**
     * Close the whole complex.
     */
@@ -468,12 +592,13 @@ namespace DGtal
     */
     void close( Dimension k );
 
-
     /**
-    * Collapse a subcomplex of this, collapsing cells following
-    * priority [priority], in a decreasing sequence until no more
-    * collapse is feasible. The range [\a S_itb,\a S_itE) provides the
-    * starting cells, generally (but not compulsory) maximal cells.
+    * Collapse a user-specified part of this complex, collapsing cells
+    * following priority [priority], in a decreasing sequence until no
+    * more collapse is feasible. The range [\a S_itb,\a S_itE)
+    * provides the starting cells, generally (but not compulsory)
+    * maximal cells. The resulting complex is guaranteed to keep the
+    * same homotopy type (a kind of topology equivalence).
     *
     * @note Cells whose data has been marked as FIXED are not removed.
     *
