@@ -38,8 +38,9 @@ template <typename TPoint, bool boolCst>
 inline
 bool
 DGtal::functors::ConstantPointPredicate<TPoint,boolCst>
-::operator()( const Point & UNUSED(p) ) const
+::operator()( const Point & p ) const
 {
+  boost::ignore_unused_variable_warning(p);
   return boolCst;
 }
 //------------------------------------------------------------------------------

@@ -13,6 +13,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testEmbedder
    testPointPredicateConcepts
    testPointHashFunctions
+   testLinearizer
    )
 
 

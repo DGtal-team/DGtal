@@ -160,7 +160,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::
 algorithm(const TIterator& itb, 
 	  const TIterator& ite, CirculatorType ) throw( InputException ) 
 {
-  ASSERT(isNotEmpty(itb,ite)); 
+  ASSERT(isNotEmpty(itb,ite)); boost::ignore_unused_variable_warning(ite);
 
   /////////////////////////// closed
   //first maximal DSS
