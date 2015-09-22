@@ -99,14 +99,15 @@ namespace DGtal
     typedef DigitalSetByAssociativeContainer<Domain, Container> Self;
     typedef typename Domain::Space Space;
     typedef typename Domain::Point Point;
-    typedef typename Domain::Size Size;
     typedef typename Container::iterator Iterator;
     typedef typename Container::const_iterator ConstIterator;
     typedef typename Container::value_type value_type;
+    typedef typename Container::size_type Size;
     
     ///Concept checks
     BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TContainer > ));
+    BOOST_STATIC_ASSERT(( boost::is_same<typename Container::key_type, Point>::value ));
     
     // ----------------------- Standard services ------------------------------
   public:
@@ -347,12 +348,6 @@ namespace DGtal
 
     // --------------- CDrawableWithBoard2D realization ---------------------
   public:
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.

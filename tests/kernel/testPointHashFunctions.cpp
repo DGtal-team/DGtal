@@ -33,8 +33,7 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 
-#define CATCH_CONFIG_MAIN 
-#include "catch.hpp"
+#include "DGtalCatch.h"
 
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/helpers/StdDefs.h"
