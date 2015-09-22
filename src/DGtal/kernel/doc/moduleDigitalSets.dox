@@ -62,6 +62,19 @@ set).
   existing map Point -> Value. Elements of the digital set are by
   definition the keys of the map.
 
+- DigitalSetByAssociativeContainer: it is a generic container which
+  adapts any associative container (e.g. from the
+  [STL](https://www.sgi.com/tech/stl/AssociativeContainer.html) or
+  from boost). For example, if you instantiate such digital set on a
+  @c std::set, this class exactly matches with DigitalSetBySTLSet. The
+  main advantage of this container is its ability to adapt hash
+  function based containers such as @c std::unordered_set (for C++11
+  enabled build) or @c boost::unordered_set.  Compared to
+  DigitalSetBySTLSet, DigitalSetByAssociativeContainer on
+  @c std::unordered_set is expected to be 20% - 50% faster when accessing
+  or inserting points in the set.
+  
+
 You may choose yourself your representation of digital set, or let
 DGtal chooses for you the best suited representation with the class
 DigitalSetSelector. This is done by choosing among the following
