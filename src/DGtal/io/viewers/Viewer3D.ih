@@ -693,6 +693,30 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   double distCam =sqrt ( ( posCam.x-centerS.x ) * ( posCam.x-centerS.x ) +
                          ( posCam.y-centerS.y ) * ( posCam.y-centerS.y ) +
                          ( posCam.z-centerS.z ) * ( posCam.z-centerS.z ) );
+  for(unsigned int j=0; j< myVectTextureImage.size(); j++)
+    {
+      GLTextureImage &textureImg = myVectTextureImage.at(j);
+      glPushName ( textureImg.myTextureName );
+      glEnable(GL_LIGHTING);
+      glEnable(GL_TEXTURE_2D);
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+      glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
+      glBegin(GL_QUADS);
+      glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
+      glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
+
+      glTexCoord2f(0, 0);
+      glVertex3f(textureImg.point1[0], textureImg.point1[1], textureImg.point1[2]);
+      glTexCoord2f(textureImg.myTextureFitX, 0.0);
+      glVertex3f(textureImg.point2[0], textureImg.point2[1], textureImg.point2[2]);
+      glTexCoord2f(textureImg.myTextureFitX, textureImg.myTextureFitY);
+      glVertex3f(textureImg.point3[0], textureImg.point3[1], textureImg.point3[2]);
+      glTexCoord2f(0.0, textureImg.myTextureFitY);
+      glVertex3f(textureImg.point4[0], textureImg.point4[1], textureImg.point4[2]);
+      glEnd();
+      glDisable(GL_TEXTURE_2D);
+
+    }
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
@@ -701,6 +725,14 @@ DGtal::Viewer3D<Space, KSpace>::draw()
           glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam );
         }
       glCallList(myBallSetListId+j);
+    }
+ for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
+	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
+    {
+      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
+        {
+          glDrawGLBall ( *it_s );
+        }
     }
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
@@ -743,39 +775,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList(myPolygonSetListWiredId);
     }
 
-  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
-	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
-    {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
-        {
-          glDrawGLBall ( *it_s );
-        }
-    }
-
-  for(unsigned int j=0; j< myVectTextureImage.size(); j++)
-    {
-      GLTextureImage &textureImg = myVectTextureImage.at(j);
-      glPushName ( textureImg.myTextureName );
-      glEnable(GL_LIGHTING);
-      glEnable(GL_TEXTURE_2D);
-      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-      glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
-      glBegin(GL_QUADS);
-      glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
-      glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
-
-      glTexCoord2f(0, 0);
-      glVertex3f(textureImg.point1[0], textureImg.point1[1], textureImg.point1[2]);
-      glTexCoord2f(textureImg.myTextureFitX, 0.0);
-      glVertex3f(textureImg.point2[0], textureImg.point2[1], textureImg.point2[2]);
-      glTexCoord2f(textureImg.myTextureFitX, textureImg.myTextureFitY);
-      glVertex3f(textureImg.point3[0], textureImg.point3[1], textureImg.point3[2]);
-      glTexCoord2f(0.0, textureImg.myTextureFitY);
-      glVertex3f(textureImg.point4[0], textureImg.point4[1], textureImg.point4[2]);
-      glEnd();
-      glDisable(GL_TEXTURE_2D);
-
-    }
+ 
    glPopMatrix();
    glPopMatrix();
    drawLight(GL_LIGHT1);
