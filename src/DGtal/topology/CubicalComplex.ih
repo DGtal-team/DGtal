@@ -554,9 +554,10 @@ link( const CellAssociativeContainer& S, bool hintClosed, bool hintOpen ) const
 {
   CellAssociativeContainer cl_star_S = closure( star   ( S, hintOpen   ), hintClosed );
   CellAssociativeContainer star_cl_S = star   ( closure( S, hintClosed ), hintOpen   );
-  for ( typename CellAssociativeContainer::const_iterator it = star_cl_S.begin(), 
-          itE = star_cl_S.end(); it != itE; ++it )
-    cl_star_S.erase( *it );
+
+  // Calls a specializable difference of sets operation.
+  detail::SetOperation< CellAssociativeContainer, IsOrderedAssociativeContainer< CellAssociativeContainer >::value >
+    ::difference( cl_star_S, star_cl_S );
   return cl_star_S;
 }
 
