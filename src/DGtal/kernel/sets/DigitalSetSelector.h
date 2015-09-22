@@ -46,8 +46,15 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetByAssociativeContainer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
+
+#include "DGtal/kernel/PointHashFunctions.h"
+#ifdef WITH_C11
+#include <unordered_set>
+#else
+#include <boost/unordered_set.hpp>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -88,8 +95,11 @@ namespace DGtal
     /**
      * Adequate digital set representation for the given preferences.
      */
-    typedef DigitalSetBySTLSet<Domain> Type;
-
+#ifdef WITH_C11
+    typedef DigitalSetByAssociativeContainer<Domain, std::unordered_set< typename Domain::Point> > Type;
+#else
+    typedef DigitalSetByAssociativeContainer<Domain, boost::unordered_set< typename Domain::Point> > Type;
+#endif
 
   }; // end of class DigitalSetSelector
 

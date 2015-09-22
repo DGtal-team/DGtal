@@ -43,6 +43,10 @@
 
 #include "DGtal/base/Common.h"
 
+#include "DGtal/kernel/sets/DigitalSetByAssociativeContainer.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
+
 #include "DGtal/math/AngleLinearMinimizer.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
@@ -181,7 +185,13 @@ static void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
 template<typename Domain, typename Compare>
 static void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & );
 // DigitalSetBySTLSet
-    
+
+   
+// DigitalSetByAssociativeContainer
+template<typename Domain, typename Container>
+static void draw( DGtal::Board2D & board, const DGtal::DigitalSetByAssociativeContainer<Domain,Container> & );
+// DigitalSetByAssociativeContainer
+   
     
 // DigitalSetBySTLVector
 template<typename Domain>

@@ -35,6 +35,7 @@
 #include "DGtal/geometry/volumes/distance/ReducedMedialAxis.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -57,13 +58,13 @@ bool testReducedMedialAxis()
   Z2i::Domain domain(Z2i::Point(0,0),Z2i::Point(10,10));
   Z2i::Domain domainLarge(Z2i::Point(0,0),Z2i::Point(10,10));
 
-  Z2i::DigitalSet set(domain);
+  DigitalSetBySTLSet<Z2i::Domain > set(domain);
   set.insertNew(Z2i::Point(3,3)); 
   //set.insertNew(Z2i::Point(3,7)); 
   set.insertNew(Z2i::Point(7,7));
-  DigitalSetDomain<Z2i::DigitalSet> setDomain(set); 
+  DigitalSetDomain<DigitalSetBySTLSet<Z2i::Domain > > setDomain(set); 
   
-  typedef ImageContainerBySTLMap<DigitalSetDomain<Z2i::DigitalSet> , DGtal::int64_t> Image;
+  typedef ImageContainerBySTLMap<DigitalSetDomain<DigitalSetBySTLSet<Z2i::Domain > > , DGtal::int64_t> Image;
   Image image(setDomain);
   
   //Setting some values

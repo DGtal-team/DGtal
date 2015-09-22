@@ -10,6 +10,7 @@
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/CDiscreteExteriorCalculusVectorSpace.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 
 template <typename Container>
 bool

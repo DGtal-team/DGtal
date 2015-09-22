@@ -215,6 +215,21 @@ namespace DGtal
   };
   // DigitalSetBySTLSet
 
+  // DigitalSetByAssociativeContainer
+  /**
+   * Default style.
+   */
+  struct DefaultDrawStyle_DigitalSetByAssociativeContainer : public DrawableWithBoard2D
+  {
+    virtual void setStyle(Board2D & aBoard) const
+    {
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setFillColorRGBi(160,160,160);
+      aBoard.setPenColorRGBi(80,80,80);
+    }
+  };
+  // DigitalSetByAssociativeContainer
+
 
   // DigitalSetBySTLVector
   /**
@@ -614,6 +629,16 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DigitalSetBySTLSet<Domain,
 }
 // DigitalSetBySTLSet
 
+// DigitalSetByAssociativeContainer
+template<typename Domain, typename Container>
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & /*s*/,
+                                         std::string mode = "" )
+{
+  boost::ignore_unused_variable_warning(mode);
+  return new DGtal::DefaultDrawStyle_DigitalSetByAssociativeContainer;
+}
+// DigitalSetBySTLSet
 
 // DigitalSetBySTLVector
 template<typename Domain>
