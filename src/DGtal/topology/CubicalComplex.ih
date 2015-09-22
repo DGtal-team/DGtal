@@ -165,6 +165,24 @@ nbCells( Dimension d ) const
 {
   return myCells[ d ].size();
 }
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Integer
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+euler() const
+{
+  Integer n = 0;
+  bool pos = true;
+  for ( typename std::vector<CellMap>::const_iterator it = myCells.begin(), itE = myCells.end();
+        it != itE; ++it ) 
+    {
+      n += pos ? (Integer) it->size() : -(Integer) it->size();
+      pos = ! pos;
+    }
+  return n;
+}
+
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
@@ -536,8 +554,9 @@ link( const CellAssociativeContainer& S, bool hintClosed, bool hintOpen ) const
 {
   CellAssociativeContainer cl_star_S = closure( star   ( S, hintOpen   ), hintClosed );
   CellAssociativeContainer star_cl_S = star   ( closure( S, hintClosed ), hintOpen   );
-  
-  cl_star_S.erase( star_cl_S.begin(), star_cl_S.end() );
+  for ( typename CellAssociativeContainer::const_iterator it = star_cl_S.begin(), 
+          itE = star_cl_S.end(); it != itE; ++it )
+    cl_star_S.erase( *it );
   return cl_star_S;
 }
 
@@ -801,7 +820,7 @@ inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[CubicalComplex dim=" << dim();
+  out << "[CubicalComplex dim=" << dim() << " chi=" << euler();
   for ( Dimension i = 0; i < myCells.size(); ++i )
     out << " #" << i << "=" << myCells[ i ].size();
   out << "]";
