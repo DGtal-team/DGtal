@@ -50,8 +50,8 @@ DGtal::SeparableMetricAdapter<TM>::binarySearchHidden(const Point &u,
   if ( (upper[dim] - lower[dim]) <= NumberTraits<Abscissa>::ONE)
   {
     //testing upper
-    Value du = myMetric.operator()(u, upper);
-    Value dv = myMetric.operator()(v, upper);
+    Value du = myMetric->operator()(u, upper);
+    Value dv = myMetric->operator()(v, upper);
     if (du < dv)
       return upper[dim];
     else
@@ -61,8 +61,8 @@ DGtal::SeparableMetricAdapter<TM>::binarySearchHidden(const Point &u,
   Point mid = lower;
   mid[dim] = (lower[dim] + upper[dim])/2;
   
-  Value duUpdated = myMetric.operator()(u, mid);
-  Value dvUpdated = myMetric.operator()(v, mid);
+  Value duUpdated = myMetric->operator()(u, mid);
+  Value dvUpdated = myMetric->operator()(v, mid);
   
   //Recursive call
   if ( duUpdated < dvUpdated)
@@ -87,9 +87,9 @@ DGtal::SeparableMetricAdapter<TM>::hiddenBy(const Point &u,
   Value dv,dw,du,ddv,ddw;
 
   //checking distances to lower bound
-  du = myMetric.operator()(u, startingPoint);
-  dv = myMetric.operator()(v, startingPoint);
-  dw = myMetric.operator()(w, startingPoint);
+  du = myMetric->operator()(u, startingPoint);
+  dv = myMetric->operator()(v, startingPoint);
+  dw = myMetric->operator()(w, startingPoint);
   
   //Precondition of binarySearchHidden is true
   if (du < dv )
@@ -112,8 +112,8 @@ DGtal::SeparableMetricAdapter<TM>::hiddenBy(const Point &u,
           //distances at uv+1
           Point p = startingPoint;
           p[dim] = uv + 1;
-          ddv = myMetric.operator()(v, p);
-          ddw = myMetric.operator()(w, p);
+          ddv = myMetric->operator()(v, p);
+          ddw = myMetric->operator()(w, p);
           
           if (ddw < ddv)
             return true;

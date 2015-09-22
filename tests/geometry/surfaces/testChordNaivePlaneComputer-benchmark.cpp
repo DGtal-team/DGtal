@@ -106,7 +106,7 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
 
 template <typename NaivePlaneComputer>
 bool
-checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbpoints )
+checkPlanes( unsigned int nbplanes, unsigned int diameter, unsigned int nbpoints )
 {
   //using namespace Z3i;
   typedef typename NaivePlaneComputer::InternalScalar Integer;

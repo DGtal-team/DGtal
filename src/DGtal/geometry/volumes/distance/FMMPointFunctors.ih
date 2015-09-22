@@ -133,7 +133,7 @@ DGtal::L2FirstOrderLocalDistance<TImage, TSet>::operator()
       *it2 = (c-1);
 
       //neighboring values
-      Value d, d1, d2 = 0; 
+      Value d = 0, d1 = 0, d2 = 0; 
       bool flag1 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor1, d1 );
       bool flag2 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor2, d2 );
       if ( flag1 || flag2 ) 
@@ -318,7 +318,7 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::operator()
       double coeff = 1.0; 
       ++(*it1); 
       --(*it2);
-      Value d, d1, d2 = 0; 
+      Value d = 0, d1 = 0, d2 = 0; 
       bool flag1 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor1, d1 );
       bool flag2 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor2, d2 );
       if ( flag1 || flag2 ) 
@@ -326,7 +326,7 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::operator()
 	  /// second-order
 	  ++(*it1); 
 	  --(*it2);
-	  Value d12, d22 = 0; 
+	  Value d12 = 0, d22 = 0; 
 	  bool flag12 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor1, d12 );
 	  bool flag22 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor2, d22 );
 
@@ -530,7 +530,7 @@ DGtal::LInfLocalDistance<TImage, TSet>::operator()
       *it2 = (c-1);
 
       //neighboring values
-      Value d, d1, d2 = 0; 
+      Value d = 0, d1 = 0, d2 = 0; 
       bool flag1 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor1, d1 );
       bool flag2 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor2, d2 );
       if ( flag1 || flag2 ) 
@@ -668,7 +668,7 @@ DGtal::L1LocalDistance<TImage, TSet>::operator()
       *it2 = (c-1);
 
       //neighboring values
-      Value d1, d2 = 0; 
+      Value d1 = 0, d2 = 0; 
       bool flag1 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor1, d1 );
       bool flag2 = findAndGetValue( *myImgPtr, *mySetPtr, neighbor2, d2 );
       if (flag1) v.push_back( d1 );
@@ -980,7 +980,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator()
       //distance value
       DistanceValue d = 0; 
       bool flag = findAndGetValue( *myDistImgPtr, *mySetPtr, aPoint, d );
-      ASSERT( flag ); 
+      ASSERT( flag ); boost::ignore_unused_variable_warning( flag );
 
       //neighbors
       *it1 = (c+1); 
@@ -988,7 +988,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator()
       //neighboring speed value
       Value s = 0; 
       //neighboring distance values
-      DistanceValue d0, d1, d2 = 0; 
+      DistanceValue d0 = 0, d1 = 0, d2 = 0; 
       bool flag1 = findAndGetValue( *myDistImgPtr, *mySetPtr, neighbor1, d1 );
       bool flag2 = findAndGetValue( *myDistImgPtr, *mySetPtr, neighbor2, d2 );
       if ( flag1 || flag2 ) 

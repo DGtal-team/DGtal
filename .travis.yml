@@ -1,5 +1,7 @@
 language: cpp
 
+sudo: false
+
 compiler:
   - gcc
   - clang
@@ -7,8 +9,6 @@ compiler:
 os:
   - linux
   - osx
-
-osx_image: xcode61
 
 cache: apt
 
@@ -19,13 +19,12 @@ notifications:
 # matrix details:
 #    - one build for the documentation on macosx (clang) and only for commits on
 #      DGtal-team repo (no pull request). Encrypted var. required.
-#    - code coverage only for gcc on linux and first config (Magick, GMP)
 #    - No gcc on macosx
 #    - Otherwise, 2 os x 2 configs
 #
 ########
 env:
-  - CONFIG="Debug,Magick,GMP,Coverage"
+  - CONFIG="Debug,Magick,GMP"
   - CONFIG="Debug,Cairo,QGLviewer,HDF5"
   - CONFIG="Documentation,Debug,Cairo,GMP"
 
@@ -40,13 +39,28 @@ matrix:
     - os: osx
       compiler: gcc
 
+addons:
+  apt:
+    packages:
+    - libhdf5-serial-dev
+    - libboost-program-options-dev
+    - libcairo2-dev
+    - doxygen
+    - graphviz
+    - libboost-system-dev
+    - libgmp-dev
+    - libgdcm2-dev 
+    - libgraphicsmagick++1-dev
+    - libqglviewer-qt4-dev
+
+##libinsighttoolkit3-dev pending: https://github.com/travis-ci/apt-package-whitelist/issues/429
+
+
 before_install:
-  - COVERAGE="false"
   - DOC="false"
   - NEEDBUILD="true";
   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDBUILD="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
-  
-  - if [ $CONFIG == "Debug,Magick,GMP,Coverage" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"; COVERAGE="true"; fi
+  - if [ $CONFIG == "Debug,Magick,GMP" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF";   fi
   - if [ $DOC == "true" ]; then  BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="true"; fi
 
@@ -55,8 +69,7 @@ before_install:
 # Deps.
 ########
 before_script:
-  - if [ $TRAVIS_OS_NAME == linux ]; then  sudo apt-get -qq update &&  sudo apt-get -qq install libhdf5-serial-dev libboost-program-options-dev libcairo2-dev doxygen graphviz libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev lcov;  fi
-  - if [ $COVERAGE == "true" ]; then  gem install coveralls-lcov; fi
+  - if [ $TRAVIS_OS_NAME == linux ]; then echo "All done.";   fi
   - if [ $TRAVIS_OS_NAME == osx ]; then brew update; brew install boost doxygen homebrew/science/hdf5 graphviz graphicsmagick  gmp libqglviewer; echo "done";fi
 
 
@@ -71,14 +84,6 @@ script:
   - if [ $NEEDBUILD == "true" ]; then  cd examples && make  -j 3 ; fi
   - if [ $NEEDBUILD == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
   - if [ $NEEDBUILD == "true" ]; then  make test;  fi
-
-############
-# Coverage
-############
-after_script:
-  - if [ $COVERAGE == "true" ]; then make lcov; fi
-  - if [ $COVERAGE == "true" ]; then coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info; fi
-
 
 ###########
 ## Building the documentation
