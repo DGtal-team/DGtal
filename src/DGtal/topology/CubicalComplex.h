@@ -132,7 +132,24 @@ namespace DGtal
     static const uint32_t VALUE       = 0x0fffffff;
 
     // ----------------------- inner types ------------------------------------
+
+    /**
+    * This structure is used to order cells (represented by their
+    * iterator in the CubicalComplex container) in a priority queue.
+    * By default, it compares the values associated to each cell (the
+    * value is the cell data masked by VALUE).
+    */
     struct DefaultCellMapIteratorPriority {
+
+      /**
+      * This operator compares two cells specified by their iterators
+      * \a it1 and \a it2 and returns true whenever \a it1 has
+      * smallest data & VALUE than \a it2.
+      *
+      * @param it1 any iterator on a cell of this cubical complex.
+      * @param it2 any iterator on a cell of this cubical complex.
+      * @return 'true' iff the value part of the data of \a it1 is smaller than the one of \a it2.
+      */
       bool operator()( const CellMapIterator& it1, const CellMapIterator& it2 ) const
       {
         uint32_t v1 = it1->second.data & VALUE; 
@@ -150,7 +167,9 @@ namespace DGtal
     ~CubicalComplex();
 
     /**
-    * Constructor of empty complex.
+    * Constructor of empty complex. Needs a space to represents
+    * cubical cells.
+    *
     * @param aK a Khalimsky space.
     */
     CubicalComplex ( ConstAlias<KSpace> aK );
