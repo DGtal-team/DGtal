@@ -830,7 +830,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::isBackpathOk()
   Point firstP = Point(*myBegin);
   Point P = Point(*(myEnd+1));
   
-  int q = Tools::computeQuadrant(firstP,P);
+  int q = Tools::computeOctant(firstP,P);
   
   
   // to handle non simple curves (a point is visited twice)

@@ -32,10 +32,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-#ifndef UNUSED_ARGUMENT
-#define UNUSED_ARGUMENT(x) (void)x
-#endif
-
 namespace DGtal
 {
   // DiscreteExteriorCalculus
@@ -576,8 +572,10 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DiscreteExteriorCalculus<d
 // KForm
 template <typename TCalculus, DGtal::Order order, DGtal::Duality duality>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::KForm<TCalculus, order, duality>& UNUSED(object), std::string /*mode*/ = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::KForm<TCalculus, order, duality>& object, std::string mode = "" )
 {
+  boost::ignore_unused_variable_warning( mode );
+  boost::ignore_unused_variable_warning( object );
   return new DGtal::KFormStyle2D();
 }
 // KForm
@@ -595,7 +593,7 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::VectorField<TCalculus, dua
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AngleLinearMinimizer & /*a*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   //only one style actually...
   return new DGtal::DefaultDrawStyleCircular_AngleLinearMinimizer;
 }
@@ -644,7 +642,7 @@ template <typename TPoint>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::CircleFrom2Points<TPoint> & /*cf2p*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DrawableWithBoard2D;
 }
 // CircleFrom2Points
@@ -655,7 +653,7 @@ template <typename TPoint>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::CircleFrom3Points<TPoint> & /*cf3p*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DrawableWithBoard2D;
 }
 // CircleFrom3Points
@@ -666,7 +664,7 @@ template<typename Domain, typename Compare>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DigitalSetBySTLSet<Domain, Compare> & /*s*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DefaultDrawStyle_DigitalSetBySTLSet;
 }
 // DigitalSetBySTLSet
@@ -677,7 +675,7 @@ template<typename Domain>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DigitalSetBySTLVector<Domain> & /*v*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DefaultDrawStyle_DigitalSetBySTLVector;
 }
 // DigitalSetBySTLVector
@@ -689,7 +687,7 @@ inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FP<TIterator,TInteger,connectivity> & /*fp*/,
                                          std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning( mode );
   return new DGtal::DefaultDrawStyle_FP;
 }
 // FP
@@ -715,7 +713,7 @@ inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StabbingLineComputer<TConstIterator> & /*g*/,
                                          std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DefaultDrawStyle_StabbingLineComputer;
 }
 // StabbingLineComputer
@@ -726,7 +724,7 @@ inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StabbingCircleComputer<TConstIterator> & /*g*/,
            std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DefaultDrawStyle_StabbingCircleComputer;
 }
 // StabbingCircleComputer
@@ -736,7 +734,7 @@ template <typename TIterator, typename TInteger>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FrechetShortcut<TIterator,TInteger> & /*f*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DefaultDrawStyle_FrechetShortcut;
 }
 // // FrechetShortcut
@@ -749,7 +747,7 @@ DGtal::DrawableWithBoard2D*
 defaultStyle(const DGtal::GridCurve<TKSpace> & /*object*/,
              std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DrawableWithBoard2D;
 }
 // GridCurve
@@ -760,7 +758,7 @@ DGtal::DrawableWithBoard2D*
 defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & /*object*/, 
              std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DrawableWithBoard2D;
 }
 // SCellsRange
@@ -771,7 +769,7 @@ DGtal::DrawableWithBoard2D*
 defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToPoint<TKSpace>, typename TKSpace::Point> & /*object*/,
              std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DrawableWithBoard2D;
 }
 // PointsRange
@@ -783,7 +781,7 @@ defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::CanonicSCellEmbedd
              typename TKSpace::Space::RealPoint> & /*object*/,
              std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning( mode );
   return new DGtal::DrawableWithBoard2D;
 }
 // MidPointsRange
@@ -795,7 +793,7 @@ defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToA
              std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & /*object*/,
              std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DrawableWithBoard2D;
 }
 // ArrowsRange
@@ -806,7 +804,7 @@ DGtal::DrawableWithBoard2D*
 defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & /*object*/,
              std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DrawableWithBoard2D;
 }
 // InnerPointsRange
@@ -817,7 +815,7 @@ DGtal::DrawableWithBoard2D*
 defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & /*object*/,
              std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning( mode );
   return new DGtal::DrawableWithBoard2D;
 }
 // OuterPointsRange
@@ -829,7 +827,7 @@ defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToI
              std::pair<typename TKSpace::Point, typename TKSpace::Point> > & /*object*/,
              std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DrawableWithBoard2D;
 }
 // IncidentPointsRange
@@ -852,7 +850,7 @@ template <typename Domain, typename Value, typename HashKey  >
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::experimental::ImageContainerByHashTree<Domain, Value, HashKey > & /*icbht*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DefaultDrawStyle_ImageContainerByHashTree;
 }
 // ImageContainerByHashTree
@@ -863,7 +861,7 @@ template <typename D, typename V>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ImageContainerBySTLVector<D, V> & /*icbsv*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning( mode );
   return new DGtal::DefaultDrawStyle_ImageContainerBySTLVector;
 }
 // ImageContainerBySTLVector
@@ -874,7 +872,7 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::KhalimskyCell<dim, TInteger> & /*k*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DefaultDrawStyle_KhalimskyCell;
 }
 // KhalimskyCell
@@ -885,7 +883,7 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::Object<TDigitalTopology, TDigitalSet> & /*o*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DefaultDrawStyle_Object;
 }
 // Object
@@ -909,7 +907,7 @@ template <typename Shape>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::Preimage2D<Shape> & /*p*/, std::string mode = "")
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning(mode);
   return new DGtal::DrawableWithBoard2D;
 }
 // Preimage2D
@@ -920,7 +918,7 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::SignedKhalimskyCell<dim, TInteger> & /*sk*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning( mode );
   return new DGtal::DefaultDrawStyle_SignedKhalimskyCell;
 }
 // SignedKhalimskyCell
@@ -931,7 +929,7 @@ template <typename TPoint>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StraightLineFrom2Points<TPoint> & /*slf2p*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning( mode );
   return new DGtal::DrawableWithBoard2D;
 }
 // StraightLineFrom2Points
@@ -956,14 +954,14 @@ defaultStyle( const DGtal::LatticePolytope2D<TSpace,TSequence> & /*cip*/,
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::CustomStyle & /*cs*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning( mode );
   return 0;
 }
 
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::SetMode & /*sm*/, std::string mode = "" )
 {
-  UNUSED_ARGUMENT(mode);
+  boost::ignore_unused_variable_warning( mode );
   return 0;
 }
 

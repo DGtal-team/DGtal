@@ -55,13 +55,14 @@ int main()
             calculus.insertSCell( calculus.myKSpace.sCell(Z2i::Point(kk, ll)) );
         }
 
+    calculus.updateIndexes();
     trace.info() << calculus << endl;
 
     trace.endBlock();
 
     trace.beginBlock("building laplace");
 
-    Calculus::DualIdentity0 laplace = -1 * calculus.laplace<DUAL>();
+    const Calculus::DualIdentity0 laplace = calculus.laplace<DUAL>();
     trace.info() << "laplace=" << laplace << endl;
 
     {

@@ -236,7 +236,7 @@ namespace DGtal
                 if ( current_pos < TPoint::dimension )
                   ++myPoint[current_pos];
               }
-            while (( current_pos < TPoint::dimension - 1 ) &&
+            while (( current_pos + 1 < TPoint::dimension ) &&
                 ( myPoint[ current_pos ]  >  myupper[ current_pos ] ) );
           }
       }
@@ -279,7 +279,7 @@ namespace DGtal
                 if ( current_pos < TPoint::dimension )
                   --myPoint[ current_pos ];
               }
-            while (( current_pos < TPoint::dimension - 1 ) &&
+            while (( current_pos + 1 < TPoint::dimension ) &&
                 ( myPoint[ current_pos ]  <  mylower[ current_pos ] ) );
           }
       }
@@ -464,7 +464,7 @@ namespace DGtal
                 if ( current_pos < mySubDomain.size() )
                   ++myPoint[ mySubDomain[current_pos] ];
               }
-            while (( current_pos < mySubDomain.size() - 1  ) &&
+            while (( current_pos + 1 < mySubDomain.size() ) &&
                 ( myPoint[ mySubDomain[current_pos] ]  >
                   myupper[ mySubDomain[current_pos] ] ) );
           }
@@ -512,7 +512,7 @@ namespace DGtal
                 if ( current_pos < mySubDomain.size() )
                   --myPoint[ mySubDomain[current_pos] ];
               }
-            while (( current_pos < mySubDomain.size() - 1 ) &&
+            while (( current_pos + 1 < mySubDomain.size() ) &&
                 ( myPoint[ mySubDomain[current_pos] ]  <
                   mylower[ mySubDomain[current_pos] ] ) );
           }
