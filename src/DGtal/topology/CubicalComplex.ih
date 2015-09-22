@@ -159,6 +159,16 @@ dim( const Cell& c ) const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+nbCells( Dimension d ) const
+{
+  return myCells[ d ].size();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 insertCell( const Cell& aCell, const Data& data )
@@ -225,7 +235,7 @@ template <typename CellOutputIterator>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-faces( CellOutputIterator& outIt, const Cell& aCell, bool hintClosed )
+faces( CellOutputIterator& outIt, const Cell& aCell, bool hintClosed ) const
 {
   Cells all_proper_faces = myKSpace->uFaces( aCell );
   if ( hintClosed )
@@ -242,7 +252,7 @@ template <typename CellOutputIterator>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-coFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintOpen )
+coFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintOpen ) const
 {
   Cells all_proper_co_faces = myKSpace->uCoFaces( aCell );
   if ( hintOpen )
@@ -259,7 +269,7 @@ template <typename CellOutputIterator>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-directFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintClosed )
+directFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintClosed ) const
 {
   Cells all_direct_faces = myKSpace->uLowerIncident( aCell );
   if ( hintClosed )
@@ -294,7 +304,7 @@ template <typename CellOutputIterator>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-directCoFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintOpen )
+directCoFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintOpen ) const
 {
   Cells all_direct_co_faces = myKSpace->uUpperIncident( aCell );
   if ( hintOpen )
@@ -436,6 +446,100 @@ find( Dimension d, const Cell& aCell )
 
 
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Cells
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+cellBoundary( const Cell& aCell, bool hintClosed ) const
+{
+  if ( hintClosed ) return myKSpace->uFaces( aCell );
+  Cells proper_faces = myKSpace->uFaces( aCell );
+  // NB: (JOL) do not use std::remove_if since predicate is passed by value.
+  typename Cells::iterator first  = proper_faces.begin();
+  typename Cells::iterator last   = proper_faces.end();
+  typename Cells::iterator result = first;
+  for ( ; first != last; ++first )
+    {
+      if ( belongs( *first ) ) 
+        *result = std::move( *first );
+      ++result;
+    }
+  proper_faces.resize( result - proper_faces.begin() );
+  return proper_faces;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Cells
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+cellCoBoundary( const Cell& aCell, bool hintOpen ) const
+{
+  if ( hintOpen ) return myKSpace->uCoFaces( aCell );
+  Cells proper_cofaces = myKSpace->uCoFaces( aCell );
+  // NB: (JOL) do not use std::remove_if since predicate is passed by value.
+  typename Cells::iterator first  = proper_cofaces.begin();
+  typename Cells::iterator last   = proper_cofaces.end();
+  typename Cells::iterator result = first;
+  for ( ; first != last; ++first )
+    {
+      if ( belongs( *first ) ) 
+        *result = std::move( *first );
+      ++result;
+    }
+  proper_cofaces.resize( result - proper_cofaces.begin() );
+  return proper_cofaces;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+template <typename CellAssociativeContainer>
+inline
+CellAssociativeContainer
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+closure( const CellAssociativeContainer& S, bool hintClosed ) const
+{
+  CellAssociativeContainer cl_S = S;
+  for ( typename CellAssociativeContainer::const_iterator it = S.begin(),
+          itE = S.end(); it != itE; ++it )
+    {
+      Cells faces = cellBoundary( *it, hintClosed );
+      cl_S.insert( faces.begin(), faces.end() );
+    }
+  return cl_S;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+template <typename CellAssociativeContainer>
+inline
+CellAssociativeContainer
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+star( const CellAssociativeContainer& S, bool hintOpen ) const
+{
+  CellAssociativeContainer star_S = S;
+  for ( typename CellAssociativeContainer::const_iterator it = S.begin(),
+          itE = S.end(); it != itE; ++it )
+    {
+      Cells faces = cellCoBoundary( *it, hintOpen );
+      star_S.insert( faces.begin(), faces.end() );
+    }
+  return star_S;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+template <typename CellAssociativeContainer>
+inline
+CellAssociativeContainer
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+link( const CellAssociativeContainer& S, bool hintClosed, bool hintOpen ) const
+{
+  CellAssociativeContainer cl_star_S = closure( star   ( S, hintOpen   ), hintClosed );
+  CellAssociativeContainer star_cl_S = star   ( closure( S, hintClosed ), hintOpen   );
+  
+  cl_star_S.erase( star_cl_S.begin(), star_cl_S.end() );
+  return cl_star_S;
+}
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
