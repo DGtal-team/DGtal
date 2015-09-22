@@ -23,6 +23,10 @@
  * Groupe de Recherche en Informatique, Image, Automatique et
  * Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire LIRIS  (CNRS, UMR 5205), Université de Lyon, France
+ *
+ *
  * @date 2010/07/01
  *
  * Implementation of inline methods defined in DigitalSetByAssociativeContainer.h
@@ -61,7 +65,7 @@ template <typename Domain, typename Container>
 inline
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::DigitalSetByAssociativeContainer
 ( Clone<Domain> d)
-  : myDomain( d )
+: myDomain( d )
 {
 }
 
@@ -72,7 +76,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::DigitalSetByAssociat
 template <typename Domain, typename Container>
 inline
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::DigitalSetByAssociativeContainer( const DigitalSetByAssociativeContainer<Domain, Container> & other )
-  : myDomain( other.myDomain ), mySet( other.mySet )
+: myDomain( other.myDomain ), mySet( other.mySet )
 {
 }
 
@@ -87,8 +91,8 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container> &
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::operator= ( const DigitalSetByAssociativeContainer<Domain, Container> & other )
 {
   ASSERT( ( domain().lowerBound() <= other.domain().lowerBound() )
-    && ( domain().upperBound() >= other.domain().upperBound() )
-    && "This domain should include the domain of the other set in case of assignment." );
+         && ( domain().upperBound() >= other.domain().upperBound() )
+         && "This domain should include the domain of the other set in case of assignment." );
   mySet = other.mySet;
   return *this;
 }
@@ -107,7 +111,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::domain() const
 
 template <typename Domain, typename Container>
 inline
-DGtal::CowPtr<Domain> 
+DGtal::CowPtr<Domain>
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::domainPointer() const
 {
   return myDomain;
@@ -127,7 +131,7 @@ inline
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Size
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::size() const
 {
-  return (unsigned int)mySet.size();
+  return mySet.size();
 }
 
 /**
@@ -169,7 +173,8 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insert( const Point 
 template <typename Domain, typename Container>
 template <typename PointInputIterator>
 void
-DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insert( PointInputIterator first, PointInputIterator last )
+DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insert( PointInputIterator first,
+                                                                   PointInputIterator last )
 {
   mySet.insert( first, last );
 }
@@ -223,7 +228,7 @@ template <typename Domain, typename Container>
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Size
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::erase( const Point & p )
 {
-  return (unsigned int)mySet.erase( p );
+  return mySet.erase( p );
 }
 
 /**
@@ -330,16 +335,16 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container> &
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::operator+=( const DigitalSetByAssociativeContainer<Domain, Container> & aSet )
 {
   if ( this != &aSet )
-    {
-      Iterator it_dst = end();
-      for ( ConstIterator it_src = aSet.begin();
-      it_src != aSet.end();
-      ++it_src )
   {
-    // Use hint it_dst to go faster.
-    it_dst = mySet.insert( it_dst, *it_src );
-  }
+    Iterator it_dst = end();
+    for ( ConstIterator it_src = aSet.begin();
+         it_src != aSet.end();
+         ++it_src )
+    {
+      // Use hint it_dst to go faster.
+      it_dst = mySet.insert( it_dst, *it_src );
     }
+  }
   return *this;
 }
 
@@ -365,8 +370,10 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::computeComplement(TO
 {
   typename Domain::ConstIterator itPoint = domain().begin();
   typename Domain::ConstIterator itEnd = domain().end();
-  while ( itPoint != itEnd ) {
-    if ( find( *itPoint ) == end() ) {
+  while ( itPoint != itEnd )
+  {
+    if ( find( *itPoint ) == end() )
+    {
       *ito++ = *itPoint;
     }
     ++itPoint;
@@ -388,8 +395,10 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::assignFromComplement
   clear();
   typename Domain::ConstIterator itPoint = domain().begin();
   typename Domain::ConstIterator itEnd = domain().end();
-  while ( itPoint != itEnd ) {
-    if ( other_set.find( *itPoint ) == other_set.end() ) {
+  while ( itPoint != itEnd )
+  {
+    if ( other_set.find( *itPoint ) == other_set.end() )
+    {
       insert( *itPoint );
     }
     ++itPoint;
@@ -414,7 +423,8 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::computeBoundingBox
   upper = domain().lowerBound();
   ConstIterator it = begin();
   ConstIterator itEnd = end();
-  while ( it != itEnd ) {
+  while ( it != itEnd )
+  {
     lower = lower.inf( *it );
     upper = upper.sup( *it );
     ++it;

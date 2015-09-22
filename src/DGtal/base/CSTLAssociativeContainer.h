@@ -74,6 +74,7 @@ namespace DGtal
        - key_type: the key type
        - iterator: the iterator type
        - const_iterator: a const iterator type
+       - size_type: a size type
  
 
        ### Notation:
