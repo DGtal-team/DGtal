@@ -936,11 +936,12 @@ namespace DGtal
     }
   }; // end of class NumberTraits<long double>.
 
+  
 
   /**
    * Specialization for <unsigned long>.
    */
-  template <>
+  /*  template <>
   struct NumberTraits<unsigned long>
   {
     typedef TagTrue IsIntegral;
@@ -991,7 +992,7 @@ namespace DGtal
       return static_cast<double>(aT);
     }
   }; // end of class NumberTraits<unsigned long>.
-
+  */
   
 
 #ifdef WITH_BIGINTEGER
