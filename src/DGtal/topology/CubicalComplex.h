@@ -56,6 +56,15 @@ namespace DGtal
   * data, which must derive from this class. Its basic usage is to
   * store flags associated to the cells, but it may store other
   * values.
+  *
+  * @note Predefined flags are CubicalComplex::REMOVED,
+  * CubicalComplex::COLLAPSIBLE, CubicalComplex::FIXED,
+  * CubicalComplex::USER1. Other bits can be used to associate an
+  * integer to the cell. The corresponding mask is
+  * CubicalComplex::VALUE. 
+  *
+  * @note Such data is notably used in collapse operation
+  * (CubicalComplex::collapse).
   */
   struct CubicalCellData {
     inline CubicalCellData() : data( 0 ) {}
@@ -468,8 +477,8 @@ namespace DGtal
     *
     * @note Cells whose data has been marked as FIXED are not removed.
     *
-    * @note Only cells that are in the closure of [S] may be removed, and
-    * only if they are not marked as FIXED.
+    * @note Only cells that are in the closure of [\a S_itb,\a S_itE)
+    * may be removed, and only if they are not marked as FIXED.
     *
     * @advanced If you use a DefaultCellMapIteratorPriority object as
     * \a priority, then the VALUE part of each cell data defines the
@@ -483,15 +492,15 @@ namespace DGtal
     * operator()( const Cell&, const Cell&) const'. Defines the order
     * in which cells are collapsed. @see DefaultCellMapIteratorPriority
     *
-    * @param S_itb the start of a range of cells which is included in [K].
+    * @param S_itB the start of a range of cells which is included in [K].
     * @param S_itE the end of a range of cells which is included in [K].
     * @param priority the object that assign a priority to each cell.
     * @param hintIsSclosed indicates if [\a S_itb,\a S_ite) is a closed set (faster in this case).
     * @param hintIsKclosed indicates that this complex is closed.
     * @param verbose outputs some information during processing when 'true'.
     */
-    template <typename CellIterator, typename CellMapIteratorPriority>
-    void collapse( CellIterator S_itB, CellIterator S_itE, 
+    template <typename CellConstIterator, typename CellMapIteratorPriority>
+    void collapse( CellConstIterator S_itB, CellConstIterator S_itE, 
                    const CellMapIteratorPriority& priority, 
                    bool hintIsSClosed = false, bool hintIsKClosed = false,
                    bool verbose = false );
