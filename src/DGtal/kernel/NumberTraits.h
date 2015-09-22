@@ -936,6 +936,62 @@ namespace DGtal
     }
   }; // end of class NumberTraits<long double>.
 
+
+  /**
+   * Specialization for <unsigned long>.
+   */
+  template <>
+  struct NumberTraits<unsigned long>
+  {
+    typedef TagTrue IsIntegral;
+    typedef TagTrue IsBounded;
+    typedef TagTrue IsUnsigned;
+    typedef TagFalse IsSigned;
+    typedef TagTrue IsSpecialized;
+    typedef long SignedVersion;
+    typedef unsigned long UnsignedVersion;
+    typedef unsigned long ReturnType;
+    typedef boost::call_traits<unsigned long>::param_type ParamType;
+    static const unsigned long ZERO;
+    static const unsigned long ONE;
+    static ReturnType zero()
+    {
+      return 0;
+    }
+    static ReturnType one()
+    {
+      return 1;
+    }
+    static ReturnType min()
+    {
+      return boost::integer_traits<unsigned long>::const_min;
+    }
+    static ReturnType max()
+    {
+      return boost::integer_traits<unsigned long>::const_max;
+    }
+    static unsigned int digits()
+    {
+      return boost::integer_traits<unsigned long>::digits;
+    }
+    static BoundEnum isBounded()
+    {
+      return BOUNDED;
+    }
+    static SignEnum isSigned()
+    {
+      return SIGNED;
+    }
+   static DGtal::int64_t castToInt64_t(const unsigned long & aT)
+    {
+      return static_cast<int64_t>( aT );
+    }
+    static double castToDouble(const unsigned long & aT)
+    {
+      return static_cast<double>(aT);
+    }
+  }; // end of class NumberTraits<unsigned long>.
+
   
 
 #ifdef WITH_BIGINTEGER

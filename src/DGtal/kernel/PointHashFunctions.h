@@ -41,6 +41,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/base/BasicTypes.h"
 #include <boost/functional/hash.hpp>
 #ifdef WITH_C11
 #include <functional>
@@ -58,8 +60,8 @@
 #ifdef WITH_C11
 namespace std {
   template <DGtal::Dimension dim,
-            typename EuclideanRing,
-            typename Container>
+  typename EuclideanRing,
+  typename Container>
   struct hash< DGtal::PointVector<dim,EuclideanRing,Container> >
   {
     size_t operator()(const DGtal::PointVector<dim,EuclideanRing,Container> & p) const
@@ -71,8 +73,8 @@ namespace std {
 #endif
 namespace boost {
   template <DGtal::Dimension dim,
-            typename EuclideanRing,
-            typename Container>
+  typename EuclideanRing,
+  typename Container>
   struct hash< DGtal::PointVector<dim,EuclideanRing,Container> >
   {
     size_t operator()(const DGtal::PointVector<dim,EuclideanRing,Container> & p) const
@@ -81,6 +83,33 @@ namespace boost {
     }
   };
 }
+
+#ifdef WITH_GMP
+#ifdef WITH_C11
+namespace std
+{
+  template <>
+  struct hash< DGtal::BigInteger >
+  {
+    size_t operator()(const DGtal::BigInteger & p) const
+    {
+      return DGtal::NumberTraits<DGtal::BigInteger>::castToInt64_t( p );
+    }
+  };
+}
+#endif
+namespace boost
+{
+  template <>
+  struct hash< DGtal::BigInteger >
+  {
+    size_t operator()(const DGtal::BigInteger & p) const
+    {
+      return DGtal::NumberTraits<DGtal::BigInteger>::castToInt64_t( p );
+    }
+  };
+}
+#endif
 
 
 

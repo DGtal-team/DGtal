@@ -79,7 +79,7 @@ namespace DGtal
    * Note that the default value (returned for points that are not
    * stored in the underlying STL map) can be chosen by the user. 
    *
-   * As a model of CImage, this class provides two ways of accessing values: 
+   * As a model of concepts::CImage, this class provides two ways of accessing values: 
    * - through the range of points returned by the domain() method 
    * combined with the operator() that takes a point and returns its associated value. 
    * - through the range of values returned by the range() method, 
@@ -121,8 +121,6 @@ namespace DGtal
     /// range of values
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     typedef TValue Value;
-    //obsolete:
-    //typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange;  
     typedef DefaultConstImageRange<Self> ConstRange; 
     typedef DefaultImageRange<Self> Range; 
 

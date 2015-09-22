@@ -140,7 +140,7 @@ namespace DGtal
     typedef typename Domain::Dimension Dimension;
     typedef Point Vertex;
 
-    BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::dimension ); 
+    BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::Space::dimension ); 
 
     /// domain should be rectangular
     BOOST_STATIC_ASSERT ( ( boost::is_same< Domain,
