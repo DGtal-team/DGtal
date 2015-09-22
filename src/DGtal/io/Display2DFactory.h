@@ -75,7 +75,6 @@
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 
-//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 
 //////////////////////////////////////////////////////////////////////////////
