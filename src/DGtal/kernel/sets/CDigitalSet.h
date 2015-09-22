@@ -128,7 +128,7 @@ namespace DGtal
     
  ### Models
 
-- DigitalSetBySTLVector, DigitalSetBySTLSet, DigitalSetFromMap
+- DigitalSetBySTLVector, DigitalSetBySTLSet, DigitalSetFromMap, DigitalSetFromAssociativeContainer
     
  ### Notes
 
