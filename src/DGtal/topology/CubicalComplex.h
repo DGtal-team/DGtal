@@ -246,6 +246,15 @@ namespace DGtal
     Size nbCells( Dimension d ) const;
 
     /**
+    * @note For instance, all Platonician solids have euler number
+    * equal to one, while their surface have euler number equal to
+    * two.
+    *
+    * @return the Euler number of this complex which equals nbCells( 0 ) - nbCells( 1 ) + nbCells( 2 ) - ...
+    */
+    Integer euler() const;
+
+    /**
     * @return a reference to the Khalimsky space associated to this complex.
     */
     const KSpace& space() const;

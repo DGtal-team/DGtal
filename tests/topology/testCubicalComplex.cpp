@@ -371,6 +371,73 @@ bool testCollapse( const std::string& str )
   return true;
 }
 
+template <typename KSpace, typename Map>
+bool testLink( const std::string& str )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  typedef typename KSpace::Integer          Integer;
+  typedef typename KSpace::Point            Point;
+  typedef typename KSpace::Cell             Cell;
+  typedef CubicalComplex< KSpace, Map >     CC;
+  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+
+  srand( 0 );
+  std::string s = "Cubical Complex: " + str;
+  trace.beginBlock( s.c_str() );
+  
+  trace.beginBlock( "Creating Cubical Complex" );
+  KSpace K;
+  K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
+  CC complex( K );
+  std::set<Cell> S;
+  for ( Integer x = 0; x < 20; ++x )
+    for ( Integer y = 0; y < 20; ++y )
+      for ( Integer z = 0; z < 20; ++z )
+        {
+          Cell c = K.uSpel( Point( x, y, z ) );
+          if ( x*y*z != 0 )
+            S.insert( K.uPointel( Point( x, y, z ) ) );
+          complex.insertCell( c );
+        }
+  complex.close();
+  trace.info() << "After close: " << complex << std::endl;
+  trace.endBlock();
+  
+  {
+    trace.beginBlock( "Compute link without hint" );
+    std::set<Cell> linkS1 = complex.link( S );
+    trace.endBlock();
+    CC link_complex( K );
+    link_complex.insertCells( linkS1.begin(), linkS1.end() );
+    trace.info() << link_complex << std::endl;
+    
+    nbok += link_complex.euler() == 2 ? 1 : 0; 
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "link_complex.euler() == 2" << std::endl;
+  }
+  {
+    trace.beginBlock( "Compute link with hint true,true" );
+    std::set<Cell> linkS1 = complex.link( S, true, true );
+    trace.endBlock();
+    CC link_complex( K );
+    link_complex.insertCells( linkS1.begin(), linkS1.end() );
+    trace.info() << link_complex << std::endl;
+    
+    nbok += link_complex.euler() == 2 ? 1 : 0; 
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "link_complex.euler() == 2" << std::endl;
+  }
+  
+  trace.endBlock();
+  return true;
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -393,6 +460,8 @@ int main( int argc, char** argv )
     && testContainerTraits( boost::unordered_set<int>(), "boost::unordered_set<int>" )
     && testContainerTraits( std::map<int,int>(), "std::map<int,int>" )
     && testContainerTraits( boost::unordered_map<int,int>(), "boost::unordered_map<int,int>" )
+    && 
+    testLink< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
     ;
     
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
