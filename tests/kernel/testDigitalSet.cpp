@@ -381,35 +381,6 @@ bool testDigitalSetConcept()
   return true;
 }
 
-//
-//#ifdef WITH_C11
-////Redefining a dumb hash function for std::unorderd_set
-//namespace std {
-//  template <> struct hash< SpaceND<4>::Point  > {
-//    size_t operator()(const SpaceND<4>::Point& h) const {
-//      hash<int> int_hash;
-//      size_t hq = int_hash(h[0]);
-//      size_t hr = int_hash(h[1]) + (int_hash(h[2])<<3);
-//      return hq ^ (hr + 0x9e3779b9 + (hq << 6) + (hq >> 2));
-//    }
-//  };
-//}
-//#endif
-//
-////Redefining a dumb hash function for boost::unorderd_set
-//namespace boost {
-//  template <> struct hash< SpaceND<4>::Point  > {
-//    size_t operator()(const SpaceND<4>::Point& h) const {
-//      hash<int> int_hash;
-//      size_t hq = int_hash(h[0]);
-//      size_t hr = int_hash(h[1])+ (int_hash(h[2])<<3);;
-//      return hq ^ (hr + 0x9e3779b9 + (hq << 6) + (hq >> 2));
-//    }
-//  };
-//}
-//
-
-
 int main()
 {
   typedef SpaceND<4> Space4Type;
