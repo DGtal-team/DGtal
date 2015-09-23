@@ -190,7 +190,7 @@ namespace DGtal
     typedef UnorderedMultimapAssociativeCategory Category;
   };
 
-#ifdef WITH_CPP11_UNORDERED_SET
+#ifdef CPP11_UNORDERED_SET
   /// Defines container traits for std::unordered_set<>.
   template < class Key, class Hash, class Pred, class Alloc >
   struct ContainerTraits< std::unordered_set<Key, Hash, Pred, Alloc> >
@@ -205,7 +205,7 @@ namespace DGtal
     typedef UnorderedMultisetAssociativeCategory Category;
   };
 #endif
-#ifdef WITH_CPP11_UNORDERED_MAP
+#ifdef CPP11_UNORDERED_MAP
   /// Defines container traits for std::unordered_map<>.
   template < class Key, class T, class Hash, class Pred, class Alloc >
   struct ContainerTraits< std::unordered_map<Key, T, Hash, Pred, Alloc> >
