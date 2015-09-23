@@ -33,7 +33,6 @@
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/ContainerTraits.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -89,30 +88,6 @@ namespace boost {
   };
 }
 
-template <typename Container>
-bool testContainerTraits( Container C, string name )
-{
-  string str = "Testing ContainerTraits for: " + name;
-  trace.beginBlock ( name.c_str() );
-  trace.info() << "- IsSequenceContainer<>::value = " << ( IsSequenceContainer< Container >::value ? "true" : "false" )
-               << std::endl;
-  trace.info() << "- IsAssociativeContainer<>::value = " << ( IsAssociativeContainer< Container >::value ? "true" : "false" )
-               << std::endl;
-  trace.info() << "- IsOrderedAssociativeContainer<>::value = " << ( IsOrderedAssociativeContainer< Container >::value ? "true" : "false" )
-               << std::endl;
-  trace.info() << "- IsUnorderedAssociativeContainer<>::value = " << ( IsUnorderedAssociativeContainer< Container >::value ? "true" : "false" )
-               << std::endl;
-  trace.info() << "- IsSimpleAssociativeContainer<>::value = " << ( IsSimpleAssociativeContainer< Container >::value ? "true" : "false" )
-               << std::endl;
-  trace.info() << "- IsPairAssociativeContainer<>::value = " << ( IsPairAssociativeContainer< Container >::value ? "true" : "false" )
-               << std::endl;
-  trace.info() << "- IsUniqueAssociativeContainer<>::value = " << ( IsUniqueAssociativeContainer< Container >::value ? "true" : "false" )
-               << std::endl;
-  trace.info() << "- IsMultipleAssociativeContainer<>::value = " << ( IsMultipleAssociativeContainer< Container >::value ? "true" : "false" )
-               << std::endl;
-  trace.endBlock();
-  return true;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class CubicalComplex.
@@ -452,14 +427,6 @@ int main( int argc, char** argv )
     testCubicalComplexWithMap< K3, boost::unordered_map<Cell, CubicalCellData> >( "3D, std::unordered_map" )
     && 
     testCollapse< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
-    && testContainerTraits( int(), "int" )
-    && testContainerTraits( std::vector<int>(), "std::vector<int>" )
-    && testContainerTraits( std::list<int>(), "std::list<int>" )
-    && testContainerTraits( std::deque<int>(), "std::deque<int>" )
-    && testContainerTraits( std::set<int>(), "std::set<int>" )
-    && testContainerTraits( boost::unordered_set<int>(), "boost::unordered_set<int>" )
-    && testContainerTraits( std::map<int,int>(), "std::map<int,int>" )
-    && testContainerTraits( boost::unordered_map<int,int>(), "boost::unordered_map<int,int>" )
     && 
     testLink< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
     ;
