@@ -746,8 +746,9 @@ namespace DGtal
      * a unitary vector on double.
      * 
      * @return a unitary vector with double as coordiante type. 
+     * @advanced the point container is forced to boost::array<double,dim> 
      */
-    PointVector<dim, double, Container> getNormalized() const;
+    PointVector<dim, double, boost::array<double,dim> > getNormalized() const;
     
 
     // ------------------------- Standard vectors ------------------------------
