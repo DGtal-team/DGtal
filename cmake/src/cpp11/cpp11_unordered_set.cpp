@@ -20,5 +20,5 @@
 int main()
 {
   std::unordered_set<int> myset;
-  std::unordered_multiset<int> myset;
+  std::unordered_multiset<int> mymset;
 }

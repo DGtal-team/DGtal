@@ -15,10 +15,10 @@
  **/
 
 #include <iostream>
-#include <unordered_set>
+#include <unordered_map>
 
 int main()
 {
   std::unordered_map<int,int> mymap;
-  std::unordered_multimap<int,int> mymap;
+  std::unordered_multimap<int,int> mymmap;
 }
