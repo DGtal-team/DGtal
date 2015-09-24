@@ -301,94 +301,59 @@ SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex,co
   }
 }
 
-template <typename KSpace, typename Map>
-bool testLink( const std::string& str )
+SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex,link]" )
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  typedef typename KSpace::Integer          Integer;
+  typedef KhalimskySpaceND<3>               KSpace;
   typedef typename KSpace::Point            Point;
   typedef typename KSpace::Cell             Cell;
+  typedef typename KSpace::Integer          Integer;
+  typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
   typedef typename CC::CellMapConstIterator CellMapConstIterator;
 
   srand( 0 );
-  std::string s = "Cubical Complex: " + str;
-  trace.beginBlock( s.c_str() );
-  
-  trace.beginBlock( "Creating Cubical Complex" );
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
-  CC complex( K );
-  std::set<Cell> S;
-  for ( Integer x = 0; x < 20; ++x )
-    for ( Integer y = 0; y < 20; ++y )
-      for ( Integer z = 0; z < 20; ++z )
-        {
-          Cell c = K.uSpel( Point( x, y, z ) );
-          if ( x*y*z != 0 )
-            S.insert( K.uPointel( Point( x, y, z ) ) );
-          complex.insertCell( c );
-        }
-  complex.close();
-  trace.info() << "After close: " << complex << std::endl;
-  trace.endBlock();
-  
-  {
-    trace.beginBlock( "Compute link without hint" );
-    std::set<Cell> linkS1 = complex.link( S );
-    trace.endBlock();
-    CC link_complex( K );
-    link_complex.insertCells( linkS1.begin(), linkS1.end() );
-    trace.info() << link_complex << std::endl;
-    
-    nbok += link_complex.euler() == 2 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "link_complex.euler() == 2" << std::endl;
+
+  GIVEN( "A closed cubical complex made of 20x20x20 voxels with their incident cells" ) {
+    CC complex( K );
+    std::set<Cell> S;
+    for ( Integer x = 0; x < 20; ++x )
+      for ( Integer y = 0; y < 20; ++y )
+        for ( Integer z = 0; z < 20; ++z )
+          {
+            Cell c = K.uSpel( Point( x, y, z ) );
+            if ( x*y*z != 0 )
+              S.insert( K.uPointel( Point( x, y, z ) ) );
+            complex.insertCell( c );
+          }
+    complex.close();
+    THEN( "It has Euler characteristic 1" ) {
+      REQUIRE( complex.euler() == 1 );
+    }
+     
+    WHEN( "Computing the link of its inner pointels without hint" ) {
+      std::set<Cell> linkS1 = complex.link( S );
+      CC linkS1_complex( K );
+      linkS1_complex.insertCells( linkS1.begin(), linkS1.end() );
+
+      THEN( "This link is homeomorphic to a sphere and has euler characteristic 2" ) {
+        REQUIRE( linkS1_complex.euler() == 2 );
+      }
+    }
+
+    WHEN( "Computing the link of its inner pointels with full hints" ) {
+      std::set<Cell> linkS2 = complex.link( S, true, true );
+      CC linkS2_complex( K );
+      linkS2_complex.insertCells( linkS2.begin(), linkS2.end() );
+
+      THEN( "This link is again homeomorphic to a sphere and has euler characteristic 2" ) {
+        REQUIRE( linkS2_complex.euler() == 2 );
+      }
+    }
   }
-  {
-    trace.beginBlock( "Compute link with hint true,true" );
-    std::set<Cell> linkS1 = complex.link( S, true, true );
-    trace.endBlock();
-    CC link_complex( K );
-    link_complex.insertCells( linkS1.begin(), linkS1.end() );
-    trace.info() << link_complex << std::endl;
-    
-    nbok += link_complex.euler() == 2 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "link_complex.euler() == 2" << std::endl;
-  }
-  
-  trace.endBlock();
-  return true;
 }
 
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
-
-// int main( int argc, char** argv )
-// {
-//   trace.beginBlock ( "Testing class CubicalComplex" );
-//   typedef KhalimskySpaceND<3> K3;
-//   typedef K3::Cell Cell;
-//   bool res = 
-//     testCubicalComplexWithMap< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
-//     && 
-//     testCubicalComplexWithMap< K3, boost::unordered_map<Cell, CubicalCellData> >( "3D, std::unordered_map" )
-//     && 
-//     testCollapse< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
-//     && 
-//     testLink< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
-//     ;
-    
-//   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-//   trace.endBlock();
-//   return res ? 0 : 1;
-// }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
