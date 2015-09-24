@@ -59,7 +59,7 @@ using namespace DGtal;
 using namespace std;
 
 
-TEST_CASE( "std::vector<> container traits", "[vector,traits]" )
+TEST_CASE( "std::vector<> container traits", "[vector][traits]" )
 {
   typedef std::vector<int> Container;
   SECTION( "Checking container traits" )
@@ -75,7 +75,7 @@ TEST_CASE( "std::vector<> container traits", "[vector,traits]" )
     }
 }
 
-TEST_CASE( "std::list<> container traits", "[list,traits]" )
+TEST_CASE( "std::list<> container traits", "[list][traits]" )
 {
   typedef std::list<int> Container;
   SECTION( "Checking container traits" )
@@ -91,7 +91,7 @@ TEST_CASE( "std::list<> container traits", "[list,traits]" )
     }
 }
 
-TEST_CASE( "std::deque<> container traits", "[deque,traits]" )
+TEST_CASE( "std::deque<> container traits", "[deque][traits]" )
 {
   typedef std::deque<int> Container;
   SECTION( "Checking container traits" )
@@ -108,7 +108,7 @@ TEST_CASE( "std::deque<> container traits", "[deque,traits]" )
 }
 
 #ifdef CPP11_FORWARD_LIST
-TEST_CASE( "std::forward_list<> container traits", "[forward_list,traits]" )
+TEST_CASE( "std::forward_list<> container traits", "[forward_list][traits]" )
 {
   typedef std::forward_list<int> Container;
   SECTION( "Checking container traits" )
@@ -126,7 +126,7 @@ TEST_CASE( "std::forward_list<> container traits", "[forward_list,traits]" )
 #endif
 
 #ifdef CPP1_ARRAY
-TEST_CASE( "std::array<> container traits", "[array,traits]" )
+TEST_CASE( "std::array<> container traits", "[array][traits]" )
 {
   typedef std::array<int> Container;
   SECTION( "Checking container traits" )
@@ -143,7 +143,7 @@ TEST_CASE( "std::array<> container traits", "[array,traits]" )
 }
 #endif
 
-TEST_CASE( "std::set<> container traits", "[set,traits]" )
+TEST_CASE( "std::set<> container traits", "[set][traits]" )
 {
   typedef std::set<int> Container;
   SECTION( "Checking container traits" )
@@ -159,7 +159,7 @@ TEST_CASE( "std::set<> container traits", "[set,traits]" )
     }
 }
 
-TEST_CASE( "std::multiset<> container traits", "[multiset,traits]" )
+TEST_CASE( "std::multiset<> container traits", "[multiset][traits]" )
 {
   typedef std::multiset<int> Container;
   SECTION( "Checking container traits" )
@@ -175,7 +175,7 @@ TEST_CASE( "std::multiset<> container traits", "[multiset,traits]" )
     }
 }
 
-TEST_CASE( "std::map<> container traits", "[map,traits]" )
+TEST_CASE( "std::map<> container traits", "[map][traits]" )
 {
   typedef std::map<int,int> Container;
   SECTION( "Checking container traits" )
@@ -191,7 +191,7 @@ TEST_CASE( "std::map<> container traits", "[map,traits]" )
     }
 }
 
-TEST_CASE( "std::multimap<> container traits", "[multimap,traits]" )
+TEST_CASE( "std::multimap<> container traits", "[multimap][traits]" )
 {
   typedef std::multimap<int,int> Container;
   SECTION( "Checking container traits" )
@@ -207,7 +207,7 @@ TEST_CASE( "std::multimap<> container traits", "[multimap,traits]" )
     }
 }
 
-TEST_CASE( "boost::unordered_set<> container traits", "[unordered_set,traits]" )
+TEST_CASE( "boost::unordered_set<> container traits", "[unordered_set][traits]" )
 {
   typedef boost::unordered_set<int> Container;
   SECTION( "Checking container traits" )
@@ -223,7 +223,7 @@ TEST_CASE( "boost::unordered_set<> container traits", "[unordered_set,traits]" )
     }
 }
 
-TEST_CASE( "boost::unordered_map<> container traits", "[unordered_map,traits]" )
+TEST_CASE( "boost::unordered_map<> container traits", "[unordered_map][traits]" )
 {
   typedef boost::unordered_map<int,int> Container;
   SECTION( "Checking container traits" )
@@ -239,7 +239,7 @@ TEST_CASE( "boost::unordered_map<> container traits", "[unordered_map,traits]" )
     }
 }
 
-TEST_CASE( "boost::unordered_multiset<> container traits", "[unordered_multiset,traits]" )
+TEST_CASE( "boost::unordered_multiset<> container traits", "[unordered_multiset][traits]" )
 {
   typedef boost::unordered_multiset<int> Container;
   SECTION( "Checking container traits" )
@@ -255,7 +255,7 @@ TEST_CASE( "boost::unordered_multiset<> container traits", "[unordered_multiset,
     }
 }
 
-TEST_CASE( "boost::unordered_multimap<> container traits", "[unordered_multimap,traits]" )
+TEST_CASE( "boost::unordered_multimap<> container traits", "[unordered_multimap][traits]" )
 {
   typedef boost::unordered_multimap<int,int> Container;
   SECTION( "Checking container traits" )
@@ -272,7 +272,7 @@ TEST_CASE( "boost::unordered_multimap<> container traits", "[unordered_multimap,
 }
 
 #ifdef CPP11_UNORDERED_SET
-TEST_CASE( "std::unordered_set<> container traits", "[unordered_set,traits]" )
+TEST_CASE( "std::unordered_set<> container traits", "[unordered_set][traits]" )
 {
   typedef std::unordered_set<int> Container;
   SECTION( "Checking container traits" )
@@ -287,7 +287,7 @@ TEST_CASE( "std::unordered_set<> container traits", "[unordered_set,traits]" )
       REQUIRE( (IsMultipleAssociativeContainer< Container >::value == false) );
     }
 }
-TEST_CASE( "std::unordered_multiset<> container traits", "[unordered_multiset,traits]" )
+TEST_CASE( "std::unordered_multiset<> container traits", "[unordered_multiset][traits]" )
 {
   typedef std::unordered_multiset<int> Container;
   SECTION( "Checking container traits" )
@@ -305,7 +305,7 @@ TEST_CASE( "std::unordered_multiset<> container traits", "[unordered_multiset,tr
 #endif
 
 #ifdef CPP11_UNORDERED_MAP
-TEST_CASE( "std::unordered_map<> container traits", "[unordered_map,traits]" )
+TEST_CASE( "std::unordered_map<> container traits", "[unordered_map][traits]" )
 {
   typedef std::unordered_map<int,int> Container;
   SECTION( "Checking container traits" )
@@ -320,7 +320,7 @@ TEST_CASE( "std::unordered_map<> container traits", "[unordered_map,traits]" )
       REQUIRE( (IsMultipleAssociativeContainer< Container >::value == false) );
     }
 }
-TEST_CASE( "std::unordered_multimap<> container traits", "[unordered_multimap,traits]" )
+TEST_CASE( "std::unordered_multimap<> container traits", "[unordered_multimap][traits]" )
 {
   typedef std::unordered_multimap<int,int> Container;
   SECTION( "Checking container traits" )

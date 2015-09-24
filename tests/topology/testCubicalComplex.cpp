@@ -97,7 +97,7 @@ namespace boost {
 
 static const int NBCELLS = 10000;
 
-SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubical_complex,incidence]" )
+SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubical_complex][incidence]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
   typedef typename KSpace::Point            Point;
@@ -240,7 +240,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
   }
 }
 
-SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex,collapse]" )
+SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex][collapse]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
   typedef typename KSpace::Point            Point;
@@ -301,7 +301,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex,co
   }
 }
 
-SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex,link]" )
+SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex][link]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
   typedef typename KSpace::Point            Point;
