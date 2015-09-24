@@ -35,6 +35,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
+#include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -89,261 +90,215 @@ namespace boost {
 }
 
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class CubicalComplex.
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Example of a test. To be completed.
- *
- */
-template <typename KSpace, typename Map>
-bool testCubicalComplexWithMap( const std::string& str )
+
+static const int NBCELLS = 10000;
+
+SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubical_complex,incidence]" )
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  typedef typename KSpace::Point         Point;
-  typedef typename KSpace::Cell             Cell;
-  typedef CubicalComplex< KSpace, Map >     CC;
-  typedef typename CC::CellMapConstIterator CellMapConstIterator;
-
-  srand( 0 );
-  std::string s = "Cubical Complex: " + str;
-  trace.beginBlock( s.c_str() );
-
-  trace.beginBlock ( "Testing Cubical complex creation" );
-  KSpace K;
-  K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
-  CC complex( K );
-  for ( int n = 0; n < 10000; ++n )
-    {
-      Point p( (rand() % 512) | 0x1, (rand() % 512) | 0x1, (rand() % 512) | 0x1 );
-      Cell cell = K.uCell( p );
-      complex.insertCell( cell );
-    }
-  trace.info() << complex << std::endl;
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
-  
-  trace.beginBlock ( "Testing faces computation" );
-  std::vector<Cell> faces;
-  std::back_insert_iterator< std::vector<Cell> > outIt( faces );
-  for ( CellMapConstIterator it = complex.begin( 3 ), itE = complex.end( 3 );
-        it != itE; ++it )
-    {
-      complex.faces( outIt, it->first );
-    }
-  trace.info() << "#Faces of maximal cells = " << faces.size() << std::endl;
-  nbok += ( faces.size() == 0 ) ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "( faces.size() == 0 )" << std::endl;
-  trace.endBlock();
-
-  trace.beginBlock ( "Testing close operation" );
-  complex.close();
-  trace.info() << complex << std::endl;
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
-
-  trace.beginBlock ( "Testing direct co-faces." );
-  std::vector<int>  nbCoFaces( 4, 0 );
-  for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
-        it != itE; ++it )
-    {
-      std::vector<Cell> faces;
-      std::back_insert_iterator< std::vector<Cell> > outIt( faces );
-      complex.directCoFaces( outIt, it->first );
-      int n = faces.size();
-      if ( n >= 3 ) n = 3; // should not happen
-      nbCoFaces[ n ]++;
-    }
-  trace.info() << "Direct co-Faces of 2-cells, #0=" << nbCoFaces[ 0 ]
-               << " #1=" << nbCoFaces[ 1 ]
-               << " #2=" << nbCoFaces[ 2 ]
-               << " #>2=" << nbCoFaces[ 3 ] << std::endl;
-  nbok += nbCoFaces[ 0 ] == 0 ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "nbCoFaces[ 0 ] == 0" << std::endl;
-  nbok += nbCoFaces[ 1 ] > 10*nbCoFaces[ 2 ] ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "nbCoFaces[ 1 ] > 10*nbCoFaces[ 2 ]" << std::endl;
-  nbok += nbCoFaces[ 3 ] == 0 ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "nbCoFaces[ >2 ] == 0" << std::endl;
-  trace.endBlock();
-
-  {
-    trace.beginBlock ( "Testing direct faces with hint." );
-    std::vector<int>  nbFaces( 6, 0 );
-    for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
-          it != itE; ++it )
-      {
-        std::vector<Cell> faces;
-        std::back_insert_iterator< std::vector<Cell> > outIt( faces );
-        complex.directFaces( outIt, it->first, true );
-        int n = faces.size();
-        if ( n < 4 ) n = 3; // should not happen
-        if ( n > 4 ) n = 5; // should not happen
-        nbFaces[ n ]++;
-      }
-    trace.info() << "Direct faces of 2-cells, #<4=" << nbFaces[ 3 ]
-                 << " #4=" << nbFaces[ 4 ]
-                 << " #>4=" << nbFaces[ 5 ] << std::endl;
-    nbok += nbFaces[ 3 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbFaces[ <4 ] == 0" << std::endl;
-    nbok += nbFaces[ 5 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbFaces[ >4 ] == 0" << std::endl;
-    trace.endBlock();
-    
-    trace.beginBlock ( "Testing direct faces without hint." );
-    std::vector<int>  nbFaces2( 6, 0 );
-    for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
-          it != itE; ++it )
-      {
-        std::vector<Cell> faces;
-        std::back_insert_iterator< std::vector<Cell> > outIt( faces );
-        complex.directFaces( outIt, it->first );
-        int n = faces.size();
-        if ( n < 4 ) n = 3; // should not happen
-        if ( n > 4 ) n = 5; // should not happen
-        nbFaces2[ n ]++;
-      }
-    trace.info() << "Direct faces of 2-cells, #<4=" << nbFaces2[ 3 ]
-                 << " #4=" << nbFaces2[ 4 ]
-                 << " #>4=" << nbFaces2[ 5 ] << std::endl;
-    nbok += nbFaces2[ 3 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbFaces2[ <4 ] == 0" << std::endl;
-    nbok += nbFaces2[ 5 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbFaces2[ >4 ] == 0" << std::endl;
-    nbok += nbFaces[ 4 ] == nbFaces2[ 4 ] ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbFaces[ 4 ] == nbFaces2[ 4 ]" << std::endl;
-    trace.endBlock();
-  }
-
-  {
-    trace.beginBlock ( "Testing boundary with hint." );
-    std::vector<int>  nbBdry( 10, 0 );
-    for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
-          it != itE; ++it )
-      {
-        typename CC::Cells faces = complex.cellBoundary( it->first, true );
-        int n = faces.size();
-        if ( n < 8 ) n = 7; // should not happen
-        if ( n > 8 ) n = 9; // should not happen
-        nbBdry[ n ]++;
-      }
-    trace.info() << "Boundary of 2-cells, #<8=" << nbBdry[ 7 ]
-                 << " #8=" << nbBdry[ 8 ]
-                 << " #>8=" << nbBdry[ 9 ] << std::endl;
-    nbok += nbBdry[ 7 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbBdry[ <8 ] == 0" << std::endl;
-    nbok += nbBdry[ 9 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbBdry[ >8 ] == 0" << std::endl;
-    trace.endBlock();
-
-    trace.beginBlock ( "Testing boundary without hint." );
-    std::vector<int>  nbBdry2( 10, 0 );
-    for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
-          it != itE; ++it )
-      {
-        typename CC::Cells faces = complex.cellBoundary( it->first, false );
-        int n = faces.size();
-        if ( n < 8 ) n = 7; // should not happen
-        if ( n > 8 ) n = 9; // should not happen
-        nbBdry2[ n ]++;
-      }
-    trace.info() << "Boundary of 2-cells, #<8=" << nbBdry2[ 7 ]
-                 << " #8=" << nbBdry2[ 8 ]
-                 << " #>8=" << nbBdry2[ 9 ] << std::endl;
-    nbok += nbBdry2[ 7 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbBdry2[ <8 ] == 0" << std::endl;
-    nbok += nbBdry2[ 9 ] == 0 ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbBdry2[ >8 ] == 0" << std::endl;
-    nbok += nbBdry2[ 8 ] == nbBdry[ 8 ] ? 1 : 0; 
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "nbBdry2[ 8 ] == nbBdry[ 8 ]" << std::endl;
-    trace.endBlock();
-  }
-
-
-  trace.endBlock();
-  
-  return nbok == nb;
-}
-
-template <typename KSpace, typename Map>
-bool testCollapse( const std::string& str )
-{
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  typedef typename KSpace::Integer          Integer;
+  typedef KhalimskySpaceND<3>               KSpace;
   typedef typename KSpace::Point            Point;
   typedef typename KSpace::Cell             Cell;
+  typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
   typedef typename CC::CellMapConstIterator CellMapConstIterator;
 
   srand( 0 );
-  std::string s = "Cubical Complex: " + str;
-  trace.beginBlock( s.c_str() );
-  
-  trace.beginBlock( "Creating Cubical Complex" );
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
-  CC complex( K );
-  std::vector<Cell> S;
-  for ( Integer x = 0; x < 3; ++x )
-    for ( Integer y = 0; y < 3; ++y )
-      for ( Integer z = 0; z < 3; ++z )
-        {
-          S.push_back( K.uSpel( Point( x, y, z ) ) );
-          bool fixed = ( ( x == 0 ) &&( y == 0 ) && ( z == 0 ) )
-            || ( ( x == 2 ) && ( y == 2 ) && ( z == 2 ) );
-          complex.insertCell( S.back(), fixed ? CC::FIXED : 0 );
-        }
-  complex.close();
-  trace.info() << "After close: " << complex << std::endl;
-  trace.endBlock();
-  trace.beginBlock( "Collapsing complex" );
-  typename CC::DefaultCellMapIteratorPriority P;
-  complex.collapse( S.begin(), S.end(), P, false, true );
-  trace.info() << "After collapse: " << complex << std::endl;
-  nbok += ( complex.nbCells( 3 ) == 0 ) ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-               << "( complex.nbCells( 3 ) == 0 )" << std::endl;  trace.endBlock();
+  std::vector<int>  nbCoFaces( 4, 0 );
+  std::vector<int>  nbFaces( 6, 0 );
+  std::vector<int>  nbFaces2( 6, 0 );
+  std::vector<int>  nbBdry( 10, 0 );
+  std::vector<int>  nbBdry2( 10, 0 );
+
+  GIVEN( "A cubical complex with random 3-cells" ) {
+    CC complex( K );
+    for ( int n = 0; n < NBCELLS; ++n )
+      {
+        Point p( (rand() % 512) | 0x1, (rand() % 512) | 0x1, (rand() % 512) | 0x1 );
+        Cell cell = K.uCell( p );
+        complex.insertCell( cell );
+      }
+    THEN( "It has only 3-cells and no other type of cells" ) {
+      REQUIRE( complex.nbCells( 0 ) == 0 );
+      REQUIRE( complex.nbCells( 1 ) == 0 );
+      REQUIRE( complex.nbCells( 2 ) == 0 );
+      REQUIRE( complex.nbCells( 3 ) > 0 );
+    }
   
-  trace.endBlock();
-  return true;
+    WHEN( "Computing proper faces of these 3-cells" ) {
+      std::vector<Cell> faces;
+      std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+      for ( CellMapConstIterator it = complex.begin( 3 ), itE = complex.end( 3 );
+            it != itE; ++it )
+        complex.faces( outIt, it->first );
+      THEN( "There are no proper faces within this complex" ) {
+        REQUIRE( faces.size() == 0 );
+      }
+    }
+
+    WHEN( "Closing the cubical complex" ) {
+      complex.close();
+      THEN( "It has cells of all dimensions." ) {
+        REQUIRE( complex.nbCells( 0 ) > 0 );
+        REQUIRE( complex.nbCells( 1 ) > 0 );
+        REQUIRE( complex.nbCells( 2 ) > 0 );
+      }
+
+      WHEN( "Computing the direct co-faces of 2-cells" ) {
+        for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+              it != itE; ++it )
+          {
+            std::vector<Cell> faces;
+            std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+            complex.directCoFaces( outIt, it->first );
+            int n = faces.size();
+            if ( n >= 3 ) n = 3; // should not happen
+            nbCoFaces[ n ]++;
+          }
+        THEN( "None of them are incident to zero 3-cells" ) {
+          REQUIRE( nbCoFaces[ 0 ] == 0 );
+        } AND_THEN ( "Most of them are incident to one 3-cells and some of them to two 3-cells" ) {
+          REQUIRE( nbCoFaces[ 1 ] > 10*nbCoFaces[ 2 ] );
+        } AND_THEN ("None of them are incident to three or more 3-cells" ) {
+          REQUIRE( nbCoFaces[ 3 ] == 0 );
+        }
+      }
+
+      WHEN( "Computing direct faces of 2-cells" ) {
+        for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+              it != itE; ++it )
+          {
+            std::vector<Cell> faces;
+            std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+            complex.directFaces( outIt, it->first, true );
+            int n = faces.size();
+            if ( n < 4 ) n = 3; // should not happen
+            if ( n > 4 ) n = 5; // should not happen
+            nbFaces[ n ]++;
+          }
+        for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+              it != itE; ++it )
+          {
+            std::vector<Cell> faces;
+            std::back_insert_iterator< std::vector<Cell> > outIt( faces );
+            complex.directFaces( outIt, it->first );
+            int n = faces.size();
+            if ( n < 4 ) n = 3; // should not happen
+            if ( n > 4 ) n = 5; // should not happen
+            nbFaces2[ n ]++;
+          }
+        THEN( "All of them have exactly 4 incident 1-cells when computed with hint closed" ) {
+          REQUIRE( nbFaces[ 3 ] == 0 );
+          REQUIRE( nbFaces[ 4 ] > 0 );
+          REQUIRE( nbFaces[ 5 ] == 0 );
+        } AND_THEN( "All of them have exactly 4 incident 1-cells when computed without hint" ) {
+          REQUIRE( nbFaces2[ 3 ] == 0 );
+          REQUIRE( nbFaces2[ 4 ] > 0 );
+          REQUIRE( nbFaces2[ 5 ] == 0 );
+        } AND_THEN( "It gives the same number of incident cells with or without hint" ) {
+          REQUIRE( nbFaces[ 4 ] == nbFaces2[ 4 ] );
+        }
+      }
+      
+      WHEN( "Computing boundaries of 2-cells" ) {
+        for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+              it != itE; ++it )
+          {
+            typename CC::Cells faces = complex.cellBoundary( it->first, true );
+            int n = faces.size();
+            if ( n < 8 ) n = 7; // should not happen
+            if ( n > 8 ) n = 9; // should not happen
+            nbBdry[ n ]++;
+          }
+        for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
+              it != itE; ++it )
+          {
+            typename CC::Cells faces = complex.cellBoundary( it->first, false );
+            int n = faces.size();
+            if ( n < 8 ) n = 7; // should not happen
+            if ( n > 8 ) n = 9; // should not happen
+            nbBdry2[ n ]++;
+          }        
+        THEN( "All of them contain exactly 8 cells when computed with hint closed" ) {
+          REQUIRE( nbBdry[ 7 ] == 0 );
+          REQUIRE( nbBdry[ 8 ] > 0 );
+          REQUIRE( nbBdry[ 9 ] == 0 );
+        } AND_THEN( "All of them contain exactly 8 cells when computed without hint" ) {
+          REQUIRE( nbBdry2[ 7 ] == 0 );
+          REQUIRE( nbBdry2[ 8 ] > 0 );
+          REQUIRE( nbBdry2[ 9 ] == 0 );
+        } AND_THEN( "It gives the same number of incident cells with or without hint" ) {
+          REQUIRE( nbBdry[ 8 ] == nbBdry2[ 8 ] );
+        }
+      }
+    }  // WHEN( "Closing the cubical complex" ) {    
+  }
+}
+
+SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex,collapse]" )
+{
+  typedef KhalimskySpaceND<3>               KSpace;
+  typedef typename KSpace::Point            Point;
+  typedef typename KSpace::Cell             Cell;
+  typedef typename KSpace::Integer          Integer;
+  typedef std::map<Cell, CubicalCellData>   Map;
+  typedef CubicalComplex< KSpace, Map >     CC;
+  typedef typename CC::CellMapIterator      CellMapIterator;
+
+  srand( 0 );
+  KSpace K;
+  K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
+
+  GIVEN( "A closed cubical complex made of 3x3x3 voxels with their incident cells" ) {
+    CC complex( K );
+    std::vector<Cell> S;
+    for ( Integer x = 0; x < 3; ++x )
+      for ( Integer y = 0; y < 3; ++y )
+        for ( Integer z = 0; z < 3; ++z )
+          {
+            S.push_back( K.uSpel( Point( x, y, z ) ) );
+            complex.insertCell( S.back() );
+          }
+    complex.close();
+    CAPTURE( complex.nbCells( 0 ) );
+    CAPTURE( complex.nbCells( 1 ) );
+    CAPTURE( complex.nbCells( 2 ) );
+    CAPTURE( complex.nbCells( 3 ) );
+
+    THEN( "It has Euler characteristic 1" ) {
+      REQUIRE( complex.euler() == 1 );
+    }
+
+    WHEN( "Fixing two vertices of this big cube and collapsing it" ) {
+      CellMapIterator it1 = complex.find( 0, K.uCell( Point( 0, 0, 0 ) ) );
+      CellMapIterator it2 = complex.find( 0, K.uCell( Point( 4, 4, 4 ) ) );
+      REQUIRE( it1 != complex.end( 0 ) );
+      REQUIRE( it2 != complex.end( 0 ) );
+      it1->second.data |= CC::FIXED;
+      it2->second.data |= CC::FIXED;
+      typename CC::DefaultCellMapIteratorPriority P;
+      complex.collapse( S.begin(), S.end(), P, false, true );
+      CAPTURE( complex.nbCells( 0 ) );
+      CAPTURE( complex.nbCells( 1 ) );
+      CAPTURE( complex.nbCells( 2 ) );
+      CAPTURE( complex.nbCells( 3 ) );
+
+      THEN( "It keeps its topology so its euler characteristic is 1" ) {
+       REQUIRE( complex.euler() == 1 );
+      } AND_THEN( "It has no more 2-cells and 3-cells" ) {
+        REQUIRE( complex.nbCells( 2 ) == 0 );
+        REQUIRE( complex.nbCells( 3 ) == 0 );
+      } AND_THEN( "It has only 0-cells and 1-cells" ) {
+        REQUIRE( complex.nbCells( 0 ) > 0 );
+        REQUIRE( complex.nbCells( 1 ) > 0 );
+      }
+    }
+  }
 }
 
 template <typename KSpace, typename Map>
@@ -416,24 +371,24 @@ bool testLink( const std::string& str )
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
-{
-  trace.beginBlock ( "Testing class CubicalComplex" );
-  typedef KhalimskySpaceND<3> K3;
-  typedef K3::Cell Cell;
-  bool res = 
-    testCubicalComplexWithMap< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
-    && 
-    testCubicalComplexWithMap< K3, boost::unordered_map<Cell, CubicalCellData> >( "3D, std::unordered_map" )
-    && 
-    testCollapse< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
-    && 
-    testLink< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
-    ;
+// int main( int argc, char** argv )
+// {
+//   trace.beginBlock ( "Testing class CubicalComplex" );
+//   typedef KhalimskySpaceND<3> K3;
+//   typedef K3::Cell Cell;
+//   bool res = 
+//     testCubicalComplexWithMap< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
+//     && 
+//     testCubicalComplexWithMap< K3, boost::unordered_map<Cell, CubicalCellData> >( "3D, std::unordered_map" )
+//     && 
+//     testCollapse< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
+//     && 
+//     testLink< K3, std::map<Cell, CubicalCellData> >( "3D, std::map" )
+//     ;
     
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  trace.endBlock();
-  return res ? 0 : 1;
-}
+//   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+//   trace.endBlock();
+//   return res ? 0 : 1;
+// }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
