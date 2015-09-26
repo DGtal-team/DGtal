@@ -155,15 +155,11 @@ namespace DGtal
     //the nested types Iterator and ConstIterator should be the same type
     BOOST_STATIC_ASSERT(( boost::is_same<Iterator,ConstIterator>::value ));  
 
-    // To test if two types A and Y are equals, use
-    // BOOST_STATIC_ASSERT( ConceptUtils::sameType<A,X>::value );    
-
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CDigitalSet )
     {
       checkConstConstraints();
       checkNonConstConstraints();
-      // look at CInteger.h for testing tags.
     }
     /**
        This method checks const methods when a non-const version exist.
