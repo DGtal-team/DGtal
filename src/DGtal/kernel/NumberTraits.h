@@ -938,10 +938,11 @@ namespace DGtal
 
   
 
+#ifdef APPLE
   /**
    * Specialization for <unsigned long>.
    */
-  /*  template <>
+  template <>
   struct NumberTraits<unsigned long>
   {
     typedef TagTrue IsIntegral;
@@ -992,7 +993,7 @@ namespace DGtal
       return static_cast<double>(aT);
     }
   }; // end of class NumberTraits<unsigned long>.
-  */
+#endif
   
 
 #ifdef WITH_BIGINTEGER
