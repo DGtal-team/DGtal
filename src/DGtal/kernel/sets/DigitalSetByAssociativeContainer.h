@@ -149,8 +149,6 @@ namespace DGtal
     CowPtr<Domain> domainPointer() const;
 
     // ----------------------- Standard Set services --------------------------
-  public:
-
     /**
      * @return the number of elements in the set.
      */
@@ -283,7 +281,6 @@ namespace DGtal
     bool operator()( const Point & p ) const;
 
     // ----------------------- Other Set services -----------------------------
-  public:
 
     /**
      * Computes the complement in the domain of this set
@@ -313,8 +310,7 @@ namespace DGtal
 
 
     // ----------------------- Interface --------------------------------------
-  public:
-
+    
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -341,11 +337,6 @@ namespace DGtal
      */
     Container mySet;
 
-
-  public:
-
-
-
     // --------------- CDrawableWithBoard2D realization ---------------------
   public:
 
@@ -363,13 +354,6 @@ namespace DGtal
      * Forbidden since a Domain is necessary for defining a set.
      */
     DigitalSetByAssociativeContainer();
-
-  private:
-
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
 
   }; // end of class DigitalSetByAssociativeContainer
 

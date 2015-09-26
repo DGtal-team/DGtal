@@ -151,10 +151,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator > ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator > ));
-    //following the STL concept of simple associative container 
-    //the nested types Iterator and ConstIterator should be the same type
-    BOOST_STATIC_ASSERT(( boost::is_same<Iterator,ConstIterator>::value ));  
-
+    
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CDigitalSet )
     {
