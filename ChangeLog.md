@@ -12,6 +12,8 @@
    design quick and efficient unit tests with nice trace
    outputs. (David Coeurjolly,
    [#1019](https://github.com/DGtal-team/DGtal/pull/1019)
+ - Documentation added for Catch. (David Coeurjolly,
+   [#1042](https://github.com/DGtal-team/DGtal/pull/1042)
 
 
 - *Kernel*
