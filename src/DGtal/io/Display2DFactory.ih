@@ -634,7 +634,6 @@ inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
                                     const DGtal::DigitalSetByAssociativeContainer<Domain,Container> & s )
 {
-  typedef typename Domain::Point Point;
   typedef typename DigitalSetByAssociativeContainer<Domain,Container>::ConstIterator ConstIterator;
 
   BOOST_STATIC_ASSERT(Domain::Space::dimension == 2);
