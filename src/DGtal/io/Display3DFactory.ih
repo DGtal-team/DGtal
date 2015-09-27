@@ -453,20 +453,20 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsBalls( Display & display,
 
   // Draw points
   display << CustomColors3D( display.getLineColor(), display.getFillColor() );
-  for (ConstIterator i = a.begin(); i != a.end(); ++i)
+  for (ConstIterator it = a.begin(); it != a.end(); ++it)
     {
-      display << *i;
+      display << *it;
     }
 
   // Draw a linking polygonal line if the voxels are drawn as points.
   if(display.getMode("PointVector")=="Grid")
     {
-      ConstIterator k = a.begin();
-      Point3d prevp = *k;
+      ConstIterator it = a.begin();
+      Point3d prevp = *it;
       DGtal::Z3i::RealPoint rprevp = display.embed( prevp);
-      ++k;
-      for ( ; k != a.end(); ++k) {
-        Point3d p = *k;
+      ++it;
+      for ( ; it != a.end(); ++it) {
+        Point3d p = *it;
         DGtal::Z3i::RealPoint rp = display.embed( p );
 
         display.addLine(rprevp,rp);
@@ -503,7 +503,7 @@ DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display & display,
   VectorD3d u = VectorD3d(NumberTraits<Integer>::castToDouble(v[0]),
                           NumberTraits<Integer>::castToDouble(v[1]),
                           NumberTraits<Integer>::castToDouble(v[2]) );
-  //L2 norm of u
+  //Squared L2 norm of u
   double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
 
   //first and last points
