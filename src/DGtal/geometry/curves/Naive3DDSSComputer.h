@@ -57,7 +57,7 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class Naive3DDSSComputer
 /**
- * Description of class 'Naive3DDSSComputer' <p>
+ * Description of class 'Naive3DDSSComputer' model of CForwardSegmentComputer <p>
  * \brief Aim:
  * Dynamic recognition of a 3d-digital straight segment (DSS)
 
