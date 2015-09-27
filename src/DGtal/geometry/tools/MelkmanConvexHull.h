@@ -173,6 +173,17 @@ namespace DGtal
      */
     Self & operator= ( const Self & mch );
 
+    /**
+     * @return the @a i-th point of the convex hull queue. 
+     * @param i the index of the considered point.
+     */
+    const Point & operator[](unsigned int i) const;
+    
+    /**
+     * @return the nomber of points constituing the convex hull.
+     **/
+    unsigned int size() const;
+    
     
     // ------------------------- Private Datas --------------------------------
   private:

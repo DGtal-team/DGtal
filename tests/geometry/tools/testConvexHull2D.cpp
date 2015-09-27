@@ -199,24 +199,26 @@ bool testConvexHull2D()
       trace.info() << *it ;
     };
   trace.info() << std::endl;
-  if(res.size() == cvSize)
+
+  if(res.size() == cvSize && (cvSize == ch.size()))
     nbok++;
   nb++;
+
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;  
-  // test copy operator on convex hull size:
-  trace.info() << "test copy operator on convex hull:" << std::endl;
+  // test copy and [] operator on convex hull:
+  trace.info() << "test copy and [] operator on convex hull:" << std::endl;
   DGtal::MelkmanConvexHull<Point, Functor> ch2 = ch;
   unsigned int cvSize2 = 0;
   for(DGtal::MelkmanConvexHull<Point, Functor>::ConstIterator it = ch.begin(); it != ch.end(); it++, cvSize2++)
     {
       trace.info() << *it ;
     };
-   if(res.size() == cvSize2)
+   if(res.size() == cvSize2 && ch[0] == ch2[0])
     nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;  
   trace.endBlock();
-  
+
 
   trace.beginBlock ( "Random Tests..." );
   vector<Point> randomData, res1, res2; 

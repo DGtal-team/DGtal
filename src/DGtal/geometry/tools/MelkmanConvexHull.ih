@@ -151,6 +151,25 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::operator= (const Self & m
     return *this;
 }
 
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
+const TPoint & 
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::operator[](unsigned int i) const
+{
+  ASSERT( i < myContainer.size() );
+  return myContainer[i];
+}
+
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
+unsigned int 
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::size() const
+{
+  // by definition the first and last points of the deque are the same.
+  return myContainer.size()-1;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
