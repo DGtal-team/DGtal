@@ -89,6 +89,12 @@ namespace DGtal
   {
     // ----------------------- Types ------------------------------------------
   public:
+
+    /**
+     * Self type
+     */
+    typedef MelkmanConvexHull<TPoint, TOrientationFunctor> Self;
+
     /**
      * Type of point
      */
@@ -159,6 +165,15 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /**
+     * Assignement Operator
+     *
+     * @param mch the object to copy.
+     * @return a reference on 'this'.
+     */
+    Self & operator= ( const Self & mch );
+
+    
     // ------------------------- Private Datas --------------------------------
   private:
     /**
