@@ -49,6 +49,16 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull( Alias<
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TOrientationFunctor>
 inline
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull(  )
+  : myContainer(), 
+    myBackwardPredicate( TOrientationFunctor() ), 
+    myForwardPredicate( TOrientationFunctor() )
+{
+}
+
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
 void
 DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::add(const Point& aPoint)
 {

@@ -125,6 +125,7 @@ namespace DGtal
   public:
 
     MelkmanConvexHull( Alias<Functor> aFunctor ); 
+    MelkmanConvexHull(  ); 
 
     // ----------------------- Interface --------------------------------------
   public:
