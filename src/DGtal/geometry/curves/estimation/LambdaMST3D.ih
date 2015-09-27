@@ -42,7 +42,7 @@ DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::init ( const Cons
 template < typename TSpace, typename TSegmentation, typename Functor >
 inline
 void
-DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::attach ( const TSegmentation & segmentComputer )
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::attach ( ConstAlias<TSegmentation> segmentComputer )
 {
   dssSegments = &segmentComputer;
 }
@@ -87,10 +87,10 @@ DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval
 }
 
 template < typename TSpace, typename TSegmentation, typename Functor >
-template < typename Containter >
+template < typename Container >
 inline
 void
-DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval ( std::back_insert_iterator < Containter > result )
+DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval ( std::back_insert_iterator < Container > result )
 {
   assert ( myBegin != myEnd && isValid() );
   std::multimap < Point, Value > outValues;
@@ -104,15 +104,15 @@ DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval ( std::back_
     for ( unsigned int indexOfPointInDSS = 0; indexOfPointInDSS < dssLen; indexOfPointInDSS++ )
       outValues.insert ( std::make_pair ( *(DSS.begin() + indexOfPointInDSS), myFunctor ( comp, indexOfPointInDSS+1, dssLen+1 ) ) );
   }
-  accumulate< Containter >( outValues, result );
+  accumulate< Container >( outValues, result );
 }
 
 template < typename TSpace, typename TSegmentation, typename Functor >
-template < typename Containter >
+template < typename Container >
 inline
 void
 DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::accumulate 
-( std::multimap < Point, Value > & outValues, std::back_insert_iterator < Containter > result )
+( std::multimap < Point, Value > & outValues, std::back_insert_iterator < Container > result )
 {
   Value prev = outValues.begin()->second;
   for ( ConstIterator itt = myBegin; itt != myEnd; ++itt )
@@ -134,30 +134,4 @@ DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::accumulate
     else
       result = tangent.first;
   }
-}
-
-template<typename DSS, typename LambdaFunction>
-inline
-typename DGtal::TangentFromDSS3DFunctor< DSS, LambdaFunction>::Value
-DGtal::TangentFromDSS3DFunctor<DSS, LambdaFunction>::operator() 
-( const DSS& aDSS, const int & indexOfPointInDSS, const int & dssLen ) const
-{
-  Value result;
-  typename DSS::Point3d directionZ3;
-  Vector direction;
-  typename DSS::PointD3d intercept;
-  typename DSS::PointD3d thikness;
-  
-  aDSS.getParameters ( directionZ3, intercept, thikness );
-  direction[0] = directionZ3[0];
-  direction[1] = directionZ3[1];
-  direction[2] = directionZ3[2];
-  
-  result.second = lambdaFunctor ( (double)indexOfPointInDSS / (double)dssLen );
-  
-  double norm = direction.norm();
-  if ( norm != 0. )
-    direction /= norm;
-  result.first = direction * result.second;
-  return result;
 }
