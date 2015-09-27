@@ -733,10 +733,10 @@ DGtal::PointVector<dim, TComponent, TContainer>::normInfinity() const
 
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
-typename DGtal::PointVector<dim, double, TContainer>
+typename DGtal::PointVector<dim, double, boost::array<double,dim> >
 DGtal::PointVector<dim, TComponent, TContainer>::getNormalized() const
 {
-  PointVector<dim,double,Container> normalized =(*this);
+  PointVector<dim,double,boost::array<double,dim> > normalized =(*this);
   normalized /= normalized.norm();
   return normalized;
 }
