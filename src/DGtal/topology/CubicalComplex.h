@@ -286,9 +286,10 @@ namespace DGtal
     *
     * @param it an iterator pointing at the beginning of a range of (arbitrary) cells.
     * @param itE an iterator pointing after the end of a range of (arbitrary) cells.
+    * @param data any value.
     */
     template <typename CellConstIterator>
-    void insertCells( CellConstIterator it, CellConstIterator itE );
+    void insertCells( CellConstIterator it, CellConstIterator itE, const Data& data = Data() );
 
     /**
     * Insert the cells within range [it,itE) into the
@@ -298,9 +299,10 @@ namespace DGtal
     * @param d the dimension of all cells in the range [it,itE).
     * @param it an iterator pointing at the beginning of a range of (arbitrary) cells.
     * @param itE an iterator pointing after the end of a range of (arbitrary) cells.
+    * @param data any value.
     */
     template <typename CellConstIterator>
-    void insertCells( Dimension d, CellConstIterator it, CellConstIterator itE );
+    void insertCells( Dimension d, CellConstIterator it, CellConstIterator itE, const Data& data = Data() );
     
     /**
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
