@@ -141,6 +141,16 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::isValid() const
     return true;
 }
 
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>&  
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::operator= (const Self & mch)
+{
+    myContainer = mch.myContainer;
+    return *this;
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
