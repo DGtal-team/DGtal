@@ -40,7 +40,7 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::init ( const Cons
 template < typename TSpace, typename TSegmentation, typename Functor >
 inline
 void
-DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::attach ( const TSegmentation & segmentComputer )
+DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::attach ( ConstAlias<TSegmentation>  segmentComputer )
 {
   dssSegments = &segmentComputer;
 }
@@ -80,10 +80,10 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( const type
 }
 
 template < typename TSpace, typename TSegmentation, typename Functor >
-template < typename Containter >
+template < typename Container >
 inline
 void
-DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( std::back_insert_iterator < Containter > result )
+DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( std::back_insert_iterator < Container > result )
 {
   assert ( myBegin != myEnd && isValid() );
   std::vector < Value > outValues ( std::distance ( myBegin, myEnd ) );
@@ -100,11 +100,11 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( std::back_
 }
 
 template < typename TSpace, typename TSegmentation, typename Functor >
-template < typename Containter >
+template < typename Container >
 inline
 void
 DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::accumulate ( std::vector < Value > & outValues,
-									    std::back_insert_iterator < Containter > result )
+									    std::back_insert_iterator < Container > result )
 {
   for ( unsigned int i = 0; i < outValues.size(); i++ )
   {
