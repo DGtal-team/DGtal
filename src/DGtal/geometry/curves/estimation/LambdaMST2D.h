@@ -42,21 +42,25 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/geometry/curves/CIncrementalSegmentComputer.h"
 #include "DGtal/geometry/curves/estimation/FunctorsLambdaMST.h"
-
-/**
- * Aim: Implement Lambda MST tangent estimator.
- */
+#include "DGtal/geometry/curves/CForwardSegmentComputer.h"
+#include "DGtal/geometry/curves/estimation/CLMSTTangentFromDSS.h"
 
 namespace DGtal {
+  /**
+   * Aim: Implementation of Lambda MST tangent estimator.
+   * @tparam TSpace model of CSpace
+   * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
+   * @tparam Functor model of CLMSTTangentFrom2DSS
+   */
   template < typename TSpace, typename TSegmentation, typename Functor >
   class LambdaMST2DEstimator
   {
-    ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
+    //Checking concepts
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
-    BOOST_CONCEPT_ASSERT(( CIncrementalSegmentComputer<typename TSegmentation::SegmentComputer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS<Functor> ));
+    BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<typename TSegmentation::SegmentComputer> ));
     // ----------------------- Types ------------------------------
   public: 
     typedef TSegmentation Segmentation;
@@ -68,32 +72,34 @@ namespace DGtal {
     
     // ----------------------- Interface --------------------------------------
   public:
+    //! Default constructor.
     LambdaMST2DEstimator();
     
     /**
-     * Initialisation.
+     * Initialization.
      * @param itb begin iterator
      * @param ite end iterator
      */
     void init ( const ConstIterator & itb, const ConstIterator & ite );
     
     /**
+     * Attach tangential cover computer.
      * @param SegmentComputer - DSS segmentation algorithm
      */
-    void attach ( const TSegmentation & SegmentComputer );
+    void attach ( ConstAlias<TSegmentation> SegmentComputer );
     
     /**
-     * @param point of the underlying curve to calculate a tangent to it
+     * @param point of the underlying curve to calculate a tangent at it
      * @return tangent direction
      */
     RealVector eval ( const Point & point );
     
     /**
-     * More efficient way to compute tangent for all points of a curve.
+     * More efficient way to compute tangent directions for all points of a curve.
      * @param result back_insert_iterator to insert element to underlying container.
      */
-    template < typename Containter >
-    void eval ( std::back_insert_iterator < Containter > result );
+    template < typename Container >
+    void eval ( std::back_insert_iterator < Container > result );
     
     // ----------------------- Standard services ------------------------------
   public:
@@ -106,66 +112,47 @@ namespace DGtal {
     // ------------------------- Internals ------------------------------------
   protected:
     
-    // Accumulation of partial results
-    template < typename Containter >
-    void accumulate ( std::vector < Value > & outValues, std::back_insert_iterator < Containter > result );
+    /**
+     * @brief Accumulate partial results obtained for each point.
+     * 
+     * @tparam Container type of container which stores estimated tangent directions.
+     * @param outValues partial results for each point.
+     * @param result back_insert_iterator over Container which stores estimated tangent directions.
+     */
+    template < typename Container >
+    void accumulate ( std::vector < Value > & outValues, std::back_insert_iterator < Container > result );
     
     // ------------------------- Private Datas --------------------------------
   private:
     
+    /**
+     * Iterator which corresponds to the beginning of a valid range - [myBegin, myEnd)
+     */
     ConstIterator myBegin;
+    /**
+     * Iterator which corresponds to the end of a valid range - [myBegin, myEnd)
+     */
     ConstIterator myEnd;
+    /**
+     * Functor which takes:
+     * reference to digital straight segment - DSS, position of given point in DSS and length of DSS
+     * and returns DSS's direction and the eccentricity of the point in the DSS.
+     */
     Functor myFunctor;
+    /**
+     * Constant pointer to a curve segmentation algorithm.
+     */
     const TSegmentation * dssSegments;
     
-  }; // end of class LambdaTangentFromDSSEstimator 
-  
-  /**
-   * Description of class 'LambdaTangentFromDSS' <p> Aim:
-   */
-  template<typename DSS, typename LambdaFunction>
-  class TangentFromDSS2DFunctor
-  {
-    // ----------------------- Types ------------------------------
-  public:
-    typedef PointVector<2, double> RealVector;
-    
-    typedef struct t_Value
-    {
-      RealVector first;
-      double second;
-      t_Value () : second ( 0. ) {}
-      t_Value & operator+= ( const t_Value & ch )
-      {
-	this->first += ch.first;
-	this->second += ch.second;
-	return *this;
-      }
-    } Value;
-    
-    
-    // ----------------------- Interface --------------------------------------
-  public:
-    Value operator() ( const DSS& aDSS, const int & indexOfPointInDSS, const int & dssLen ) const
-    {
-      Value result;
-      double norm = std::sqrt ( aDSS.a() * aDSS.a() + aDSS.b() * aDSS.b() );
-      result.second = lambdaFunctor( (double)indexOfPointInDSS / (double)dssLen );
-      result.first[0] = result.second * aDSS.a () / norm;
-      result.first[1] = result.second * aDSS.b () / norm;
-      return result;
-    }
-  private:
-    // ------------------------- Private Datas --------------------------------
-    LambdaFunction lambdaFunctor;
-  };
+  }; // end of class LambdaMST2DEstimator
   
   //-------------------------------------------------------------------------------------------
   
   // Template class LambdaMST2D
   /**
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
-   *
+   * @tparam DSSSegmentationComputer tangential cover obtained by segmentation of a 2D digital curve by maximal straight segments
+   * @tparam LambdaFunction @see FunctorsLambdaMST.h and @see CLambdaFunctor.h
    */
   template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function >
   class LambdaMST2D: 
