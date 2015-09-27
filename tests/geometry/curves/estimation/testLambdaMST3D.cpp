@@ -39,11 +39,6 @@
 #include "DGtal/geometry/curves/estimation/LambdaMST3D.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 
-#ifdef __GNUC__
-   #ifndef NDEBUG
-      #include <fenv.h>
-   #endif
-#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -125,11 +120,6 @@ public:
 
 int main( int , char**  )
 {
-#ifdef __GNUC__
-   #ifndef NDEBUG
-    fetestexcept ( FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW | FE_UNDERFLOW );
-   #endif
-#endif
     bool res = true;
     testLambdaMST3D testLMST;
     trace.beginBlock ( "Testing LambdaMST3D" );
