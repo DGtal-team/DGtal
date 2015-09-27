@@ -209,10 +209,10 @@ template <typename CellConstIterator>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-insertCells( CellConstIterator it, CellConstIterator itE )
+insertCells( CellConstIterator it, CellConstIterator itE, const Data& data )
 {
   for ( ; it != itE; ++it )
-    insertCell( *it );
+    insertCell( *it, data );
 }
 
 //-----------------------------------------------------------------------------
@@ -221,10 +221,10 @@ template <typename CellConstIterator>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-insertCells( Dimension d, CellConstIterator it, CellConstIterator itE )
+insertCells( Dimension d, CellConstIterator it, CellConstIterator itE, const Data& data )
 {
   for ( ; it != itE; ++it )
-    insertCell( d, *it );
+    insertCell( d, *it, data );
 }
 
 //-----------------------------------------------------------------------------
