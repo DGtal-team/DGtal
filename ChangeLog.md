@@ -23,6 +23,10 @@
    function based containers), speed-up up to 40% can be measured when
    processing digital sets. (David Coeurjolly,
    [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ - By default, Z2i::DigitalSet, Z3i::DigitalSet and digital set from
+   DigitalSetSelector use the new hash function based
+   container. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
  - Specializations of std::hash (c++11) and boost::hash to define a hash
    functions on DGtal points. (David Coeurjolly,
    [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
