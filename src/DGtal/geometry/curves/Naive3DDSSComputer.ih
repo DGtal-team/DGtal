@@ -458,7 +458,7 @@ inline
 const typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::arithmeticalDSS2d( Dimension i ) const
 {
-  ASSERT( ( 0 <= i ) && ( i < 3 ) );
+  ASSERT( i < 3 );
   switch ( i ) {
   case 0: return myYZalgo; break;
   case 1: return myXZalgo; break;
@@ -471,7 +471,7 @@ inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::validArithmeticalDSS2d( Dimension i ) const
 {
-  ASSERT( ( 0 <= i ) && ( i < 3 ) );
+  ASSERT( i < 3 );
   unsigned int lenXY = std::distance ( myXYalgo.begin(), myXYalgo.end() );
   unsigned int lenXZ = std::distance ( myXZalgo.begin(), myXZalgo.end() );
   unsigned int lenYZ = std::distance ( myYZalgo.begin(), myYZalgo.end() );
