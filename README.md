@@ -26,4 +26,4 @@ More Information
 
 * Release 0.8 DOI [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11586.png)](http://dx.doi.org/10.5281/zenodo.11586)
 * [![Build Status](https://travis-ci.org/DGtal-team/DGtal.svg?branch=master)](https://travis-ci.org/DGtal-team/DGtal)
-* [![Coverage Status](https://img.shields.io/coveralls/DGtal-team/DGtal.svg)](https://coveralls.io/r/DGtal-team/DGtal?branch=master)
+
