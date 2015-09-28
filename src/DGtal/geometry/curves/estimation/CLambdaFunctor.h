@@ -56,7 +56,7 @@ namespace concepts
    * @ingroup Concepts
    * @brief Aim: Defines the concept describing a lambda function.
    * 
-   * A lambda function \lambda() - maps from [0,1] \in \mathbb{R}_+ with F(0) = F(1) = 0
+   * A lambda function \f$\lambda()\f$ - maps from [0,1] \f$\in \mathbb{R}_+\f$ with F(0) = F(1) = 0
    * and F() > 0 elsewhere and need to satisfy convexity/concavity property.
    * For more information see 
    * J.-O. Lachaud, A. Vialard, and F. de Vieilleville. 

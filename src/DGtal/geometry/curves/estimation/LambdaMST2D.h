@@ -152,7 +152,7 @@ namespace DGtal {
   /**
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
    * @tparam DSSSegmentationComputer tangential cover obtained by segmentation of a 2D digital curve by maximal straight segments
-   * @tparam LambdaFunction @see FunctorsLambdaMST.h and @see CLambdaFunctor.h
+   * @tparam LambdaFunction model of CLambdaFunctor @see FunctorsLambdaMST.h and @see CLambdaFunctor.h
    */
   template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function >
   class LambdaMST2D: 

@@ -97,7 +97,7 @@ namespace functors
  * Aim: Provide a functor which calculate from digital straight segment 
  * its direction and eccentricity around a given point.
  * @tparam DSS digital straight segment recognition algorithm
- * @tparam LambdaFunction @see FunctorsLambdaMST.h
+ * @tparam LambdaFunction model of CLambdaFunctor @see CLambdaFunctor.h
  */
 template<typename DSS, typename LambdaFunction>
 class TangentFromDSS2DFunctor
@@ -149,7 +149,7 @@ private:
  * Aim: Provide a functor which calculate from digital straight segment 
  * its direction and eccentricity around a given point.
  * @tparam DSS digital straight segment recognition algorithm
- * @tparam LambdaFunction @see FunctorsLambdaMST.h
+ * @tparam LambdaFunction model of CLambdaFunctor @see CLambdaFunctor.h
  */
 template<typename DSS, typename LambdaFunction>
 class TangentFromDSS3DFunctor
