@@ -79,8 +79,8 @@ namespace DGtal
  * readable and forward. 
  * @tparam TInteger type of integers used for the computation of remainders,
  * which is a model of CInteger.
- * @tparam adjacency an unsigned integer equal to 4 for standard 
- * (simply 4-connected) DSS or 8 for naive (simply 8-connected) DSS (default).
+ * @tparam connectivity an unsigned integer equal to 4 for standard 
+ * (simply 4-connected) curve or 8 for naive (simply 8-connected) curve (default).
  * Corresponds to adjacency of 2d projections (see above). Notice that choosing 8-adjacency for
  * each 2d projection onto orthogonal planes means that 3d curve is 26-connected. While 4-adjacency
  * means that 3d curve is 6-connected.
