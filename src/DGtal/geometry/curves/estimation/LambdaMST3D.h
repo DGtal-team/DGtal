@@ -116,7 +116,7 @@ namespace DGtal {
      * @brief Accumulate partial results obtained for each point.
      * In 3D it can happen that DSSs' direction vectors over same point are opposite.
      * To avoid this problem we measure angle between segments' direction vectors and if this angle
-     * is bigger than \pi/2, then one of the vectors is reversed. 
+     * is bigger than \f$\pi/2\f$, then one of the vectors is reversed. 
      * Finally, tangent direction is estimated and stored.
      * 
      * @tparam Container type of container which stores estimated tangent directions.
@@ -155,16 +155,16 @@ namespace DGtal {
   /**
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
    * @tparam DSSSegmentationComputer tangential cover obtained by segmentation of a 2D digital curve by maximal straight segments
-   * @tparam LambdaFunction @see FunctorsLambdaMST.h and @see CLambdaFunctor.h
+   * @tparam LambdaFunction model of CLambdaFunctor @see FunctorsLambdaMST.h and @see CLambdaFunctor.h
    */
-  template < typename DSSSegmentationComputer, typename lambdaFunction = functors::Lambda64Function>
+  template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function>
   class LambdaMST3D:
   public LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
-    TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, lambdaFunction> >
+    TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction> >
     {
       typedef 
       LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
-      TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, lambdaFunction> > Super;
+      TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction> > Super;
       
     public: 
       /**

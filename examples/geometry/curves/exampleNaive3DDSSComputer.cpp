@@ -93,9 +93,9 @@ int main()
   
   
   //! [Naive3DDSSComputerStandardParams]
-  typename DSSComputer::Point3d directionZ3;
-  typename DSSComputer::PointD3d intercept;
-  typename DSSComputer::PointD3d thikness;
+  DSSComputer::Point3d directionZ3;
+  DSSComputer::PointD3d intercept;
+  DSSComputer::PointD3d thikness;
   theDSSComputer.getParameters ( directionZ3, intercept, thikness );
   //! [Naive3DDSSComputerStandardParams]
   
