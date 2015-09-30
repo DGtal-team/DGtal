@@ -3,7 +3,8 @@ SET(DGTAL_DOC_EX_SRC
   kernelDomain
   range
   labelledMapBestParameters
-)
+  exampleCatch
+  )
 
 if( WITH_VISU3D_QGLVIEWER  )
   SET(DGTAL_DOC_EX_SRC_QGL
