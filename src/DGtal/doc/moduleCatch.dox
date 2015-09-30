@@ -26,8 +26,8 @@ namespace DGtal {
 \section sectCatch1 Introduction
 
 [Catch](https://github.com/philsquared/Catch) Is a C++ framework to
-help unit test design. More precisely, thanks to couple of C++, Catch
-enabled unit test are easy to write and easy to review.
+help unit test design. More precisely, thanks to couple of C++ macros,
+Catch enabled unit test are easy to write and easy to review.
 
 In this documentation page, we just describe how to write such test
 files in DGtal. For a complete documentation of Catch, please refer to
