@@ -621,7 +621,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display & d
 {
   typedef typename Domain::Point Point;
   typedef typename std::set<Point>::const_iterator ConstIterator;
-
+ 
   ASSERT(Domain::Space::dimension == 3);
 
   display.createNewCubeList( s.className());
@@ -641,7 +641,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
 							  const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
   typedef typename Domain::Point Point;
-  typedef typename std::set<Point>::const_iterator ConstIterator;
+  typedef typename DGtal::DigitalSetBySTLSet<Domain, Compare>::ConstIterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
 
@@ -662,7 +662,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
 							const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
   typedef typename Domain::Point Point;
-  typedef typename std::set<Point>::const_iterator ConstIterator;
+  typedef typename DGtal::DigitalSetBySTLSet<Domain, Compare>::ConstIterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
 
@@ -699,6 +699,96 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
     }
 }
 // DigitalSetBySTLSet
+
+
+// DigitalSetByAssociativeContainer
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display & display,
+								     const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
+{
+  typedef typename Domain::Point Point;
+  typedef typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator ConstIterator;
+
+  ASSERT(Domain::Space::dimension == 3);
+
+  display.createNewCubeList( s.className());
+  for ( ConstIterator it = s.begin();
+        it != s.end();
+        ++it )
+    {
+      DGtal::Z3i::RealPoint rp = display.embed((*it) );
+      display.addCube(rp);
+    }
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
+							  const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
+{
+  typedef typename Domain::Point Point;
+  typedef typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator ConstIterator;
+
+  ASSERT(Domain::Space::dimension == 3);
+
+  display.createNewCubeList( s.className());
+  for ( ConstIterator it = s.begin();
+        it != s.end();
+        ++it )
+    {
+      DGtal::Z3i::RealPoint rp = display.embed((*it) );
+      display.addCube(rp);
+    }
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
+							const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
+{
+  typedef typename Domain::Point Point;
+  typedef typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator ConstIterator;
+
+
+  ASSERT(Domain::Space::dimension == 3);
+
+  for ( ConstIterator it = s.begin();
+        it != s.end();
+        ++it )
+    {
+      DGtal::Z3i::RealPoint rp = display.embed((*it) );
+      display.addBall(rp,1.0/static_cast<double>( POINT_AS_BALL_RADIUS), POINT_AS_BALL_RES);
+    }
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
+						  const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
+{
+  ASSERT(Domain::Space::dimension == 3);
+
+  std::string mode = display.getMode( s.className() );
+  ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
+
+  if ( mode == "Paving" || ( mode == "" ) )
+    drawAsPaving( display, s );
+  else if ( mode == "PavingTransp" )
+    drawAsPavingTransparent( display, s );
+  else if ( mode == "Grid" )
+    drawAsGrid( display, s );
+  else if ( ( mode == "Both" ) )
+    {
+      drawAsPaving( display, s );
+      drawAsGrid( display, s );
+    }
+}
+// DigitalSetByAssociativeContainer
 
 
 // DigitalSetBySTLVector

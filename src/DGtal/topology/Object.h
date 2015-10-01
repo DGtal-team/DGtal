@@ -83,7 +83,7 @@ namespace DGtal
    * \b Model of CUndirectedSimpleLocalGraph and CUndirectedSimpleGraph.
    * 
    * @tparam TDigitalTopology any realization of DigitalTopology.
-   * @tparam TDigitalSet any model of CDigitalSet.*
+   * @tparam TDigitalSet any model of CDigitalSet.
    *
    *  @see testObject.cpp
    *  @see testObject-benchmark.cpp
@@ -91,9 +91,12 @@ namespace DGtal
   template <typename TDigitalTopology, typename TDigitalSet>
   class Object
   {
-      // ----------------------- Standard services ------------------------------
-    public:
-      typedef TDigitalSet DigitalSet;
+    // ----------------------- Standard services ------------------------------
+  public:
+    typedef TDigitalSet DigitalSet;
+    
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< TDigitalSet > ));
+    
       typedef TDigitalTopology DigitalTopology;
       typedef typename DigitalTopology::ReverseTopology ReverseTopology;
       typedef typename DigitalSet::Size Size;
@@ -105,7 +108,7 @@ namespace DGtal
       typedef typename Domain::Space Space;
       typedef
       typename DigitalSetSelector < Domain,
-      SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
+                                    SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
       typedef typename DigitalTopology::ForegroundAdjacency ForegroundAdjacency;
       typedef typename DigitalTopology::BackgroundAdjacency BackgroundAdjacency;
       typedef Object<ReverseTopology, DigitalSet> ComplementObject;
@@ -387,10 +390,18 @@ namespace DGtal
 
       // ----------------------- Graph services ------------------------------
     public:
-      
+    
+    /**
+     * @return a ConstIterator to the first element (begin).
+     */
       ConstIterator begin() const;
       
-      ConstIterator end() const;
+    
+    /**
+     * @return a ConstIterator corresponding to the "end" of 
+     * the object element range.
+     */
+    ConstIterator end() const;
       
       /** 
        * @param v any vertex of the object
@@ -513,34 +524,14 @@ namespace DGtal
       mutable Connectedness myConnectedness;
       
 
-      // ------------------------- Hidden services ------------------------------
-    protected:
-
-    private:
-    
-
-    
-
       // --------------- CDrawableWithBoard2D realization ------------------
     public:
-
-      /**
-       * Default drawing style object.
-       * @return the dyn. alloc. default style for this object.
-       */
-      //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
-
       /**
        * @return the style name used for drawing this object.
        */
       std::string className() const;
 
-    
-
-  private:
-
-      // ------------------------- internals ------------------------------------
-
+ 
   }; // end of class Object
 
 
