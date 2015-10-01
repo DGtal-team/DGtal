@@ -64,22 +64,22 @@ namespace DGtal
  */
 
 /////////////////////////////////////////////////////////////////////////////
-// class ArithmeticalDSSComputer
+// class Naive3DDSSComputer
 /**
  * \brief Aim: This class is a wrapper around ArithmeticalDSSComputer that is devoted 
- * to the dynamic recognition of digital straight segments (DSS) along any 
+ * to the dynamic recognition of digital straight segments in 2D (DSS), along any 
  * sequence of digital points.
  *
- * In basis algorithm project 3d curve onto three orthogonal planes. Then each projection
- * is segmented by using ArithmeticalDSSComputer as long as at least two segmentation
- * for 2d planes are valid. By valid we understand there is no at least two 3d points which
- * have same projection onto one of orthogonal 2d planes.
+ * Naive3DDSSComputer projects 3d curve onto three orthogonal planes. Then each projection
+ * is segmented while using ArithmeticalDSSComputer, as long as at least two such segmentations
+ * along projected curves are valid. By valid we understand, there is no---at least---two 3d points which
+ * have same projection onto one of the orthogonal 2d planes.
  *
  * @tparam TIterator type of iterator on 3d digital points,
  * readable and forward. 
  * @tparam TInteger type of integers used for the computation of remainders,
  * which is a model of CInteger.
- * @tparam connectivity an unsigned integer equal to 4 for standard 
+ * @tparam connectivity of the projected DSS
  * (simply 4-connected) curve or 8 for naive (simply 8-connected) curve (default).
  * Corresponds to adjacency of 2d projections (see above). Notice that choosing 8-adjacency for
  * each 2d projection onto orthogonal planes means that 3d curve is 26-connected. While 4-adjacency
@@ -94,38 +94,38 @@ namespace DGtal
 template <typename TIterator, typename TInteger, int connectivity = 8>
 class Naive3DDSSComputer
 {
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     // ----------------------- Types ------------------------------
   public:
-    //entier
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
+     /// Type of integer, devoted to remainders (and intercepts)
     typedef TInteger Integer;
-
-
-    //requiered types
+    /// Type of iterator, at least readable and forward
     typedef TIterator ConstIterator;
+    ///Self type
     typedef Naive3DDSSComputer<ConstIterator,TInteger,connectivity> Self;
+    ///Reverse type
     typedef Naive3DDSSComputer<ReverseIterator<ConstIterator>,TInteger,connectivity> Reverse;
-
-
-    //points and vectors
+    /// Type of 3d digital point
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
+    /// Type of 3d digital vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector3d;
+    /// Type of 3d digital point coordinate
     typedef typename Point3d::Coordinate Coordinate;
-
+    /// Type of 2d digital point
     typedef DGtal::PointVector<2,Coordinate> Point2d;
+    /// Type of 2d digital vector
     typedef DGtal::PointVector<2,Coordinate> Vector2d;
-
+    /// Type of 2d real point
     typedef DGtal::PointVector<2,double> PointD2d;
+    /// Type of 3d real point
     typedef DGtal::PointVector<3,double> PointD3d;
+    /// Type of 3d real vector
     typedef DGtal::PointVector<3,double> VectorD3d;
-
-    // adapters for iterator
+    /// Adapter for iterators
     typedef functors::Projector<SpaceND<2,Coordinate> > Projector2d;
-
+    /// Iterator over adapter
     typedef ConstIteratorAdapter<ConstIterator,Projector2d,Point2d> IteratorAdapter;
-
-
-    //2d-arithmeticalDSS recognition algorithm
+    /// 2D arithmetical DSS recognition algorithm
     typedef DGtal::ArithmeticalDSSComputer<IteratorAdapter,TInteger,connectivity> ArithmeticalDSSComputer2d;
 
     // ----------------------- Standard services ------------------------------
@@ -238,9 +238,9 @@ class Naive3DDSSComputer
      * Computes the parameters
      * (direction, intercept, thickness)
      * of the DSS
-     * @param direction direction
-     * @param intercept intercept
-     * @param thickness thickness
+     * @param direction direction vector calculated from 2D valid DSS.
+     * @param intercept intercept calculated from mu-parameters of 2D valid DSS.
+     * @param thickness thickness calculated from omega-parameters of 2D valid DSS.
      */
     void getParameters ( Vector3d& direction, PointD3d& intercept, PointD3d& thickness ) const;
 
@@ -323,11 +323,19 @@ class Naive3DDSSComputer
     // ------------------------- Protected Datas ------------------------------
   protected:
 
-    /// projectors
-    Projector2d myProjXY, myProjXZ, myProjYZ;
+    /// Projector for XY-plane.
+    Projector2d myProjXY;
+    /// Projector for XZ-plane.
+    Projector2d myProjXZ;
+    /// Projector for YZ-plane.
+    Projector2d myProjYZ;
 
-    /// 2d-arithmeticalDSS recognition algorithms
-    ArithmeticalDSSComputer2d myXYalgo, myXZalgo,myYZalgo;
+    /// 2d-arithmeticalDSS recognition algorithms for XY-plane.
+    ArithmeticalDSSComputer2d myXYalgo;
+    /// 2d-arithmeticalDSS recognition algorithms for XZ-plane.
+    ArithmeticalDSSComputer2d myXZalgo;
+    /// 2d-arithmeticalDSS recognition algorithms for YZ-plane.
+    ArithmeticalDSSComputer2d myYZalgo;
     
     /**
      * Used internally to store information which 2d-arithemticalDSS
