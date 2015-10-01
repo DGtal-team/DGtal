@@ -79,8 +79,10 @@
  - Main example files of geometry/curves are introduced in the list of examples
    and briefly described.
    (Tristan Roussillon, [#1026](https://github.com/DGtal-team/DGtal/pull/1026))
- - Lambda-MST tangent estimator 2D/3D
- - NaiveDSS3DComputer - segmentation of digital curve by DSS. This particular algorithm uses only valid 2D projections.
+ - Lambda maximal segment tangent direction estimator 2D/3D: LambdaMST2D, LambdaMST3D.
+   (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
+ - Segmentation of 3D digital curves by valid 2D projections onto base planes: NaiveDSS3DComputer.
+   (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
