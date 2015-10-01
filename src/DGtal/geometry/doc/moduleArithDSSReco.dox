@@ -467,8 +467,11 @@ is quite similar.
 
 \subsection moduleArithDSSReco-DSSRec-Computers3D Naive3DDSSComputer 
 
-Recognition of a 3D straight line segments bases on a projection of the corresponding 3D digital curve onto three base planes.
-Then these projections are segmented iteratively as long as at least two such 2D segmentation remains valid. By valid we understand that there are no two points of 3D curve which have same projection onto a 2D plane.
+Recognition of a 3D straight line segments is based on a projection of the 
+corresponding 3D digital curve onto three base planes. Then these projections 
+are segmented iteratively as long as at least two such 2D segmentation remains valid. 
+By valid we understand that there are no two points of 3D curve which have 
+the same projection onto a 2D plane.
 
 As a model of CForwardSegmentComputer, its main methods are: 
 - Naive3DDSSComputer.init()
@@ -481,7 +484,8 @@ As a model of CForwardSegmentComputer, its main methods are:
   - Naive3DDSSComputer::extendFront()
  
 Moreover, Naive3DDSSComputer::arithmeticalDSS2d( Dimension ) returns an object of 
-type Naive3DDSSComputer::ArithmeticalDSSComputer2d that is actually the current 2D DSS. 
+type Naive3DDSSComputer::ArithmeticalDSSComputer2d that is actually the current 
+2D DSS in a given projection. 
 
 Before using a 3D DSS Computer, you must include the following header: 
 @snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerHeader
@@ -512,7 +516,9 @@ This section contains several examples of application of straight line recogniti
 
 \subsection moduleArithDSSReco-DSSRec-Computers3DTangent Estimation of tangent direction
 
-Below example shows how to estimate tangent directions of a digital curve while using Lambda Maximal Segment Tangent estimation introduced by Lachaud et. al. \cite LachaudIVC2007.
+Example below shows how to estimate tangent directions of a digital curve 
+while using Lambda Maximal Segment Tangent estimation introduced
+by Lachaud et. al. \cite LachaudIVC2007.
 
 Before using the LMST 2D estimator, you must include the following headers: 
 @snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DHeader
@@ -520,7 +526,8 @@ Before using the LMST 2D estimator, you must include the following headers:
 Then, you can construct estimator as follows: 
 @snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DStandardCtor 
 
-Notice that by default polynomial lambda function is used. Another ones are implemented in FunctorsLambdaMST.h  
+Notice that by default polynomial lambda function is used. Another ones are 
+implemented in FunctorsLambdaMST.h  
 
 We need also to generate a tangential cover:
 @snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DTangential 
@@ -528,7 +535,8 @@ We need also to generate a tangential cover:
 Finally, we can estimate tangent direction point-by-point:
 @snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DPoint
 
-or when we want to calculate tangent directions for a range of points better choice is to do this in following way:
+or when we want to calculate tangent directions for a range of points better 
+choice is to do this in following way:
 @snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DFast
 
 
@@ -575,6 +583,32 @@ an object devoted to the on-line recognition of 4-connected standard DSSs.
 @see \ref moduleArithDSSReco
 
 \example geometry/curves/exampleArithmeticalDSSComputer.cpp
+*/
+
+/**
+   This example shows the basic usage of a naive 3D DSS recognition. 
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleNaive3DDSSComputer.cpp
+*/
+
+/**
+   This example shows the basic usage of the Lambda maximal segment tangent estimation
+   in 2D.
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/estimation/exampleLMST2D.cpp
+*/
+
+/**
+   This example shows the basic usage of the Lambda maximal segment tangent estimation
+   in 3D.
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/estimation/exampleLMST3D.cpp
 */
 
 }
