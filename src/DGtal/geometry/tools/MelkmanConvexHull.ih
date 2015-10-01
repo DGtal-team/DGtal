@@ -39,9 +39,9 @@
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TOrientationFunctor>
 inline
-DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull( Alias<Functor> aFunctor )
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull( Alias<Functor> aFunctor  )
   : myContainer(), 
-    myBackwardPredicate( aFunctor ), 
+    myBackwardPredicate( aFunctor ),
     myForwardPredicate( aFunctor )
 {
 }
@@ -49,11 +49,11 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull( Alias<
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TOrientationFunctor>
 inline
-DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull(  )
-  : myContainer(), 
-    myBackwardPredicate( TOrientationFunctor() ), 
-    myForwardPredicate( TOrientationFunctor() )
-{
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull()
+  : myContainer(),
+    myBackwardPredicate(myDefaultFunctor), 
+    myForwardPredicate(myDefaultFunctor)
+{  
 }
 
 // ----------------------------------------------------------------------------
