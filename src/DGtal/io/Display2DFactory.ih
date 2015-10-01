@@ -628,6 +628,21 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 // DigitalSetBySTLSet
 
 
+// DigitalSetByAssociativeContainer
+template<typename Domain, typename Container>
+inline
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
+                                    const DGtal::DigitalSetByAssociativeContainer<Domain,Container> & s )
+{
+  typedef typename DigitalSetByAssociativeContainer<Domain,Container>::ConstIterator ConstIterator;
+
+  BOOST_STATIC_ASSERT(Domain::Space::dimension == 2);
+  for(ConstIterator it =  s.begin(); it != s.end(); ++it)
+    draw(board, *it);
+}
+// DigitalSetByAssociativeContainer
+
+
 // DigitalSetBySTLVector
 template<typename Domain>
 inline

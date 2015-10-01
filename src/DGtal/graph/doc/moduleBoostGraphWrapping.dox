@@ -135,7 +135,7 @@ for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g );
    it works.
 
 @code
-unsigned long nbEdges = 0;
+unsigned int nbEdges = 0;
 for ( std::pair<edge_iterator, edge_iterator> ve = boost::edges( g ); 
       ve.first != ve.second; ++ve.first, ++nbEdges )
   {
@@ -244,7 +244,7 @@ creating your property map, as follows.
 
 @code
   // get the property map for storing distances
-  typedef std::map< vertex_descriptor, unsigned long > StdDistanceMap;
+  typedef std::map< vertex_descriptor, unsigned int > StdDistanceMap;
   StdDistanceMap distanceMap;
   boost::associative_property_map< StdDistanceMap > propDistanceMap( distanceMap );
   boost::queue< vertex_descriptor > Q;            // std::queue does not have top().
@@ -262,12 +262,12 @@ creating your property map, as follows.
   possible from \c start.
 
 @code
-  unsigned long maxD = 0;
+  unsigned int maxD = 0;
   vertex_descriptor furthest = start;
   for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g ); 
         vp.first != vp.second; ++vp.first )
     {
-      unsigned long d = boost::get( propDistanceMap, *vp.first );
+      unsigned int d = boost::get( propDistanceMap, *vp.first );
       if ( d > maxD ) 
         {
           maxD = d;
