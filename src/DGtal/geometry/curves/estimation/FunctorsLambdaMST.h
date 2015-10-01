@@ -40,22 +40,26 @@
 // Inclusions
 #include <functional>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/estimation/CLambdaFunctor.h"
+#include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 /////////////////////////////////////////////////////////////////////////////
 /**
-  * Description: Extension of namespace functors by functors related to L-MST.
-  * \brief Aim: Provide various lambda functions and others L-MST related functors.
-  * 
+* Description: Extension of namespace functors by functors related to L-MST.
+* \brief Aim: Provide various lambda functions and others L-MST related functors.
+* 
+* A lambda function \f$\lambda()\f$ - maps from [0,1] \f$\in \mathbb{R}_+\f$ with F(0) = F(1) = 0
+* and F() > 0 elsewhere and need to satisfy convexity/concavity property.
+* For more information see J.-O. Lachaud et el \cite LachaudIVC2007.
+* 
 */
-
 namespace functors
 {
   /**
-   * Model of CLambdaFunctor -- polynomial functor
+   *  Polynomial lambda functor \cite LachaudIVC2007.
+   * \f$ 64 ( -x^6 + 3 x^5 - 3 x^4 + x^3 ) \$
    * 
    */
   struct Lambda64Function : std::unary_function < double, double >
@@ -68,7 +72,8 @@ namespace functors
       }
   };
   /**
-   * Model of CLambdaFunctor -- sine lambda-functor
+   * Sine Lambda functor \cite LachaudIVC2007.
+   * \f$ \sin x \pi \$
    * 
    */
   struct LambdaSinFromPiFunction : std::unary_function < double, double >
@@ -80,7 +85,8 @@ namespace functors
   };
 
   /**
-   * Model of CLambdaFunctor -- exponential lambda-functor
+   * Exponential Lambda functor \cite LachaudIVC2007.
+   * \f$ \frac{2}{\exp ( 15 (x- \frac{1}{2} ) ) + \exp(15(\frac{1}{2}-x)) } \f$
    * 
    */
   struct LambdaExponentialFunction : std::unary_function < double, double >
@@ -102,6 +108,7 @@ namespace functors
 template<typename DSS, typename LambdaFunction>
 class TangentFromDSS2DFunctor
 {
+  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor < LambdaFunction, double, double > ));
   // ----------------------- Types ------------------------------
 public:
   typedef PointVector<2, double> RealVector;
@@ -154,7 +161,7 @@ private:
 template<typename DSS, typename LambdaFunction>
 class TangentFromDSS3DFunctor
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CLambdaFunctor<LambdaFunction> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor < LambdaFunction, double, double > ));
 public:
   // ----------------------- Types ------------------------------
   typedef PointVector<3, double> RealVector;
