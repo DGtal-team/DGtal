@@ -16,6 +16,21 @@
    [#1042](https://github.com/DGtal-team/DGtal/pull/1042)
 
 
+- *Kernel*
+ - New template class DigitalSetlByAssociativeContainer allows to
+   define digital sets from any associative container of the STL. For
+   instance, using std::unordered_set (c++11) or boost::unordered_set (hash
+   function based containers), speed-up up to 40% can be measured when
+   processing digital sets. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ - By default, Z2i::DigitalSet, Z3i::DigitalSet and digital set from
+   DigitalSetSelector use the new hash function based
+   container. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ - Specializations of std::hash (c++11) and boost::hash to define a hash
+   functions on DGtal points. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ 
 ## Changes
 
 - *DEC Package*

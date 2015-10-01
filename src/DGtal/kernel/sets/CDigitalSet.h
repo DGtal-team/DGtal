@@ -84,9 +84,9 @@ namespace DGtal
    - \c Size: the type for couting elements of the set.
    - \c Iterator: the iterator type for visiting elements of the set, as
      well as modify the set. The iterator should be readable (model of
-     boost_concepts::ReadableIteratorConcept) and allow bidirectional
+     boost_concepts::ReadableIteratorConcept) and should allow single pass
      traversal (model of
-     boost_concepts::BidirectionalTraversalConcept). Its value has
+     boost_concepts::SinglePassIteratorConcept). Its value has
      type \c Point (defined in concepts::CPointPredicate).
    - \c ConstIterator: the type for visiting elements of the set. Note
      that types for Iterator and ConstIterator should be the same,
@@ -128,7 +128,7 @@ namespace DGtal
     
  ### Models
 
-- DigitalSetBySTLVector, DigitalSetBySTLSet, DigitalSetFromMap
+- DigitalSetBySTLVector, DigitalSetBySTLSet, DigitalSetFromMap, DigitalSetFromAssociativeContainer
     
  ### Notes
 
@@ -150,20 +150,13 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator > ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<ConstIterator > ));
-    //following the STL concept of simple associative container 
-    //the nested types Iterator and ConstIterator should be the same type
-    BOOST_STATIC_ASSERT(( boost::is_same<Iterator,ConstIterator>::value ));  
-
-    // To test if two types A and Y are equals, use
-    // BOOST_STATIC_ASSERT( ConceptUtils::sameType<A,X>::value );    
-
+    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator > ));
+    
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CDigitalSet )
     {
       checkConstConstraints();
       checkNonConstConstraints();
-      // look at CInteger.h for testing tags.
     }
     /**
        This method checks const methods when a non-const version exist.
@@ -222,11 +215,6 @@ namespace DGtal
   }; // end of concept CDigitalSet
   }  
 } // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/kernel/sets/CDigitalSet.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
