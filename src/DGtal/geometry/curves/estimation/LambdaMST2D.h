@@ -62,12 +62,18 @@ namespace DGtal {
     BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS<Functor> ));
     BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<typename TSegmentation::SegmentComputer> ));
     // ----------------------- Types ------------------------------
-  public: 
+  public:
+    /// Tangential cover algorithm
     typedef TSegmentation Segmentation;
+    /// Curve segmentation algorithm
     typedef typename TSegmentation::SegmentComputer SegmentComputer;
+    /// Type of iterator, at least readable and forward
     typedef typename SegmentComputer::ConstIterator ConstIterator;
+    /// Type returned by model of CLMSTTangentFrom2DSS
     typedef typename Functor::Value Value;
+    /// Type of 3d real vector
     typedef typename TSpace::RealVector RealVector;
+    /// Type of 3d real point
     typedef typename TSpace::Point Point;
     
     // ----------------------- Interface --------------------------------------
@@ -89,10 +95,10 @@ namespace DGtal {
     void attach ( ConstAlias<TSegmentation> SegmentComputer );
     
     /**
-     * @param point of the underlying curve to calculate a tangent at it
+     * @param it ConstIterator defined over the underlying curve
      * @return tangent direction
      */
-    RealVector eval ( const Point & point );
+    RealVector eval ( ConstIterator it );
     
     /**
      * More efficient way to compute tangent directions for all points of a curve.
@@ -152,7 +158,7 @@ namespace DGtal {
   /**
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
    * @tparam DSSSegmentationComputer tangential cover obtained by segmentation of a 2D digital curve by maximal straight segments
-   * @tparam LambdaFunction model of CLambdaFunctor @see FunctorsLambdaMST.h and @see CLambdaFunctor.h
+   * @tparam LambdaFunction Lambda functor @see FunctorsLambdaMST.h
    */
   template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function >
   class LambdaMST2D: 
