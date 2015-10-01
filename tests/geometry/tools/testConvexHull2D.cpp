@@ -188,11 +188,13 @@ bool testConvexHull2D()
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   // melkman on line construction of  convex hull:
   trace.info() << "on line convex hull construction" << std::endl;
-  DGtal::MelkmanConvexHull<Point, Functor> ch( functor ); 
+  DGtal::MelkmanConvexHull<Point, Functor> ch; 
   for(vector<Point>::const_iterator it = data.begin(); it != data.end(); it++)
     {
       ch.add(*it);
     }
+
+
   unsigned int cvSize = 0;
   for(DGtal::MelkmanConvexHull<Point, Functor>::ConstIterator it = ch.begin(); it != ch.end(); it++, cvSize++)
     {

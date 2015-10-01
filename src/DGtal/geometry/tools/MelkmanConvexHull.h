@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Alias.h"
+#include "DGtal/base/CountedConstPtrOrConstPtr.h"
 #include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/base/FrontInsertionSequenceToStackAdapter.h"
 #include "DGtal/base/BackInsertionSequenceToStackAdapter.h"
@@ -124,9 +125,9 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
-    MelkmanConvexHull( Alias<Functor> aFunctor ); 
-    MelkmanConvexHull(  ); 
-
+    MelkmanConvexHull( Alias<Functor> aFunctor); 
+    MelkmanConvexHull(); 
+    
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -201,10 +202,14 @@ namespace DGtal
      * Predicate devoted to the forward scan
      */
     ForwardPredicate myForwardPredicate; 
+    /**
+     * Used to define a default functor to allow default constructor
+     **/
+    Functor myDefaultFunctor;
 
     // ------------------------- Internals ------------------------------------
   private:
-
+    
   }; // end of class MelkmanConvexHull
 
   /**
