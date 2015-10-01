@@ -62,7 +62,7 @@ bool testBoard3D()
   Point p6(-3, -6, 0 );
   Point p7( 5, 2 , 3);
 
-  Domain domain(p4, p5);
+  Domain domain(p6, p7);
   DigitalSet shape_set( domain );
   shape_set.insertNew(p6);
   shape_set.insertNew(p7);
