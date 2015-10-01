@@ -75,8 +75,8 @@ public:
     Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
     LambdaMST2D < Segmentation > lmst64;
     lmst64.attach ( segmenter );
-    for ( unsigned int i = 0; i < curve.size(); i++ )
-      lmst64.eval ( curve[i] );
+    for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
+      lmst64.eval ( it );
     return true;
   }
   bool lambda64()
@@ -97,8 +97,8 @@ public:
     lmst64.init ( curve.begin(), curve.end() );
     vector < RealVector > tangent;
     lmst64.eval < vector < RealVector > > ( back_inserter ( tangent ) );
-    for ( unsigned int i = 0; i < curve.size(); i++ )
-      if ( lmst64.eval ( curve[i] ) != tangent[i] )
+    for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
+      if ( lmst64.eval ( it ) != tangent[ distance< ConstIterator >( curve.begin(), it ) ] )
 	return false;
       return true;
   }

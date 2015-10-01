@@ -80,8 +80,8 @@ int main()
   //! [LambdaMST3DTangential]
   
   //! [LambdaMST3DPoint]
-  for ( unsigned int i = 0; i < contour.size(); i++ )
-    lmst.eval ( contour[i] );
+  for ( ConstIterator it = contour.begin(); it != contour.end(); ++it )
+    lmst.eval ( it );
   //! [LambdaMST3DPoint]
   
   //! [LambdaMST3DFast]

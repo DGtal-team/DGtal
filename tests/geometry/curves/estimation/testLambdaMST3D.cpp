@@ -31,6 +31,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <iterator>
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -81,9 +82,9 @@ public:
     LambdaMST3D < Segmentation > lmst64;
     lmst64.attach ( segmenter );
     lmst64.init ( curve.begin(), curve.end() );
-    for ( unsigned int i = 0; i < curve.size(); i++ )
+    for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
     {
-      lmst64.eval ( curve[i] );
+      lmst64.eval ( it );
     }
     return true;
   }
@@ -105,9 +106,9 @@ public:
     lmst64.init ( curve.begin(), curve.end() );
     vector < RealVector > tangent;
     lmst64.eval < vector < RealVector > > ( back_inserter ( tangent ) );
-    for ( unsigned int i = 0; i < curve.size(); i++ )
+    for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
     {
-      if ( lmst64.eval ( curve[i] ) != tangent[i] )
+      if ( lmst64.eval ( it ) != tangent[ distance< ConstIterator >( curve.begin(), it ) ] )
 	return false;
     }
     return true;
