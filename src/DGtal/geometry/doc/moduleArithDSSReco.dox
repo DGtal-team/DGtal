@@ -552,6 +552,8 @@ Note that the 3D extension provides similar interface:
 
 @snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DFast
 
+Notice that both LmabdaMST2D and LambdaMST3D are models of CCurveLocalGeometricEstimator.
+
 Both examples are in exampleLMST2D.cpp and exampleLMST3D.cpp
 
 */
