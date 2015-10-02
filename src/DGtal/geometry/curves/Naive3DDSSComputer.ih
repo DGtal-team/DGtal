@@ -413,11 +413,11 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
       
       Integer mu1 = myYZalgo.mu();
       Integer mu2 = myXZalgo.mu();
-      intercept[0] = std::make_pair ( mu1, c2 ); intercept[1] = std::make_pair ( mu2, c1 ); intercept[2] = std::make_pair ( 0, 1 );
+      intercept[0] = std::make_pair ( mu2, c1 ); intercept[1] = std::make_pair ( mu1, c2 ); intercept[2] = std::make_pair ( 0, 1 );
       
       Integer omega1 = myYZalgo.omega()-1;
       Integer omega2 = myXZalgo.omega()-1;
-      thickness[0] = std::make_pair ( omega1, c2 ); thickness[1] = std::make_pair ( omega2, c1 ); thickness[2] = std::make_pair ( 0, 1);
+      thickness[0] = std::make_pair ( omega2, c1 ); thickness[1] = std::make_pair ( omega1, c2 ); thickness[2] = std::make_pair ( 0, 1);
     }
   }
 }
