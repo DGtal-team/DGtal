@@ -89,19 +89,6 @@ public:
     lmst64.eval < back_insert_iterator< vector < RealVector > > > ( curve.begin(), curve.end(),  back_inserter ( tangent ) );
     return true;
   }
-  bool lambda64Both()
-  {
-    Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
-    LambdaMST2D < Segmentation > lmst64;
-    lmst64.attach ( segmenter );
-    lmst64.init ( curve.begin(), curve.end() );
-    vector < RealVector > tangent;
-    lmst64.eval < back_insert_iterator< vector < RealVector > > > ( curve.begin(), curve.end(), back_inserter ( tangent ) );
-    for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
-      if ( lmst64.eval ( it ) != tangent[ distance< ConstIterator >( curve.begin(), it ) ] )
-	return false;
-      return true;
-  }
 };
 
 
@@ -118,9 +105,6 @@ int main( int , char**  )
         trace.endBlock();
         trace.beginBlock ( "Testing calculation for whole curve" );
            res &= testLMST.lambda64();
-        trace.endBlock();
-        trace.beginBlock ( "Testing values obtined from the both methods." );
-           res &= testLMST.lambda64Both();
         trace.endBlock();
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
