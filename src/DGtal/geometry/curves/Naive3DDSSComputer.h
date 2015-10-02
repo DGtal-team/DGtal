@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include <list>
+#include <utility>
+#include <boost/array.hpp>
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
@@ -99,34 +101,30 @@ class Naive3DDSSComputer
   public:
      /// Type of integer, devoted to remainders (and intercepts)
     typedef TInteger Integer;
+    /// Type which represent quotient of two integers first/second.
+    typedef std::pair <Integer, Integer> Quotient;
     /// Type of iterator, at least readable and forward
     typedef TIterator ConstIterator;
     ///Self type
-    typedef Naive3DDSSComputer<ConstIterator,TInteger,connectivity> Self;
+    typedef Naive3DDSSComputer< ConstIterator, TInteger, connectivity > Self;
     ///Reverse type
-    typedef Naive3DDSSComputer<ReverseIterator<ConstIterator>,TInteger,connectivity> Reverse;
+    typedef Naive3DDSSComputer< ReverseIterator< ConstIterator >,TInteger, connectivity > Reverse;
     /// Type of 3d digital point
-    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
+    typedef typename IteratorCirculatorTraits< ConstIterator >::Value Point3d;
     /// Type of 3d digital vector
-    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector3d;
+    typedef typename IteratorCirculatorTraits< ConstIterator >::Value Vector3d;
     /// Type of 3d digital point coordinate
     typedef typename Point3d::Coordinate Coordinate;
     /// Type of 2d digital point
-    typedef DGtal::PointVector<2,Coordinate> Point2d;
-    /// Type of 2d digital vector
-    typedef DGtal::PointVector<2,Coordinate> Vector2d;
-    /// Type of 2d real point
-    typedef DGtal::PointVector<2,double> PointD2d;
-    /// Type of 3d real point
-    typedef DGtal::PointVector<3,double> PointD3d;
-    /// Type of 3d real vector
-    typedef DGtal::PointVector<3,double> VectorD3d;
+    typedef DGtal::PointVector< 2, Coordinate > Point2d;
+    /// Type of 3d rational point
+    typedef boost::array< Quotient, 3 > PointR3d;
     /// Adapter for iterators
-    typedef functors::Projector<SpaceND<2,Coordinate> > Projector2d;
+    typedef functors::Projector< SpaceND< 2, Coordinate > > Projector2d;
     /// Iterator over adapter
-    typedef ConstIteratorAdapter<ConstIterator,Projector2d,Point2d> IteratorAdapter;
+    typedef ConstIteratorAdapter< ConstIterator, Projector2d, Point2d > IteratorAdapter;
     /// 2D arithmetical DSS recognition algorithm
-    typedef DGtal::ArithmeticalDSSComputer<IteratorAdapter,TInteger,connectivity> ArithmeticalDSSComputer2d;
+    typedef DGtal::ArithmeticalDSSComputer< IteratorAdapter, TInteger, connectivity > ArithmeticalDSSComputer2d;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -242,7 +240,7 @@ class Naive3DDSSComputer
      * @param intercept intercept calculated from mu-parameters of 2D valid DSS.
      * @param thickness thickness calculated from omega-parameters of 2D valid DSS.
      */
-    void getParameters ( Vector3d& direction, PointD3d& intercept, PointD3d& thickness ) const;
+    void getParameters ( Vector3d& direction, PointR3d& intercept, PointR3d& thickness ) const;
 
     /**
      * Checks the validity/consistency of the object.
