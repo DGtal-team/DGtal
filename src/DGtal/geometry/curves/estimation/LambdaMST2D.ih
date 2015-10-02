@@ -90,7 +90,7 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( const type
 {
   assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
   dssSegments->setSubRange ( itb, ite );
-  std::vector < Value > outValues ( std::distance ( myBegin, myEnd ) );
+  std::vector < Value > outValues ( std::distance ( itb, ite ) );
   typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
   typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
   for ( ; DSS != lastDSS; ++DSS )
@@ -98,7 +98,7 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( const type
     unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() );
     SegmentComputer comp ( *DSS );
     for ( unsigned int i = 0; i < dssLen; i++ )
-      outValues[ std::distance ( myBegin, DSS.begin() ) + i ] += myFunctor ( comp, i, dssLen );
+      outValues[ std::distance ( itb, DSS.begin() ) + i ] += myFunctor ( comp, i, dssLen );
   }
   accumulate ( outValues, result );
   return result;
