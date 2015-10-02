@@ -50,7 +50,7 @@
 
 namespace DGtal {
   /**
-   * Aim: Implement Lambda MST tangent estimator.
+   * Aim: Implement Lambda MST tangent estimators. This class is a model of CCurveLocalGeometricEstimator.
    * @tparam TSpace model of CSpace
    * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
    * @tparam Functor model of CLMSTTangentFrom2DSS
@@ -94,7 +94,7 @@ namespace DGtal {
     /**
      * @param segmentComputer - DSS segmentation algorithm
      */
-    void attach ( ConstAlias<TSegmentation> segmentComputer );
+    void attach ( Alias<TSegmentation> segmentComputer );
     
     /**
      * Checks the validity/consistency of the object.
@@ -106,14 +106,18 @@ namespace DGtal {
      * @param it ConstIterator defined over the underlying curve
      * @return tangent direction
      */
-    RealVector eval ( ConstIterator it );
+    RealVector eval ( const ConstIterator & it );
     
     /**
+     * @tparam OutputIterator writable iterator.
      * More efficient way to compute tangent directions for all points of a curve.
-     * @param result back_insert_iterator to insert element to underlying container.
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param result writable iterator over a container which stores estimated tangent directions.
      */
-    template < typename Container >
-    void eval ( std::back_insert_iterator < Container > result );
+    template <typename OutputIterator>
+    OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
+                        OutputIterator result);
     
     // ------------------------- Internals ------------------------------------
   protected:
@@ -125,12 +129,14 @@ namespace DGtal {
      * is bigger than \f$\pi/2\f$, then one of the vectors is reversed. 
      * Finally, tangent direction is estimated and stored.
      * 
-     * @tparam Container type of container which stores estimated tangent directions.
+     * @tparam OutputIterator writable iterator.
      * @param outValues partial results for each point
-     * @param result back_insert_iterator over Container which stores estimated tangent directions.
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param result writable iterator over a container which stores estimated tangent directions.
      */
-    template < typename Container >
-    void accumulate ( std::multimap < Point, Value > & outValues, std::back_insert_iterator < Container > result );
+    template <typename OutputIterator>
+    void accumulate ( std::multimap < Point, Value > & outValues, const ConstIterator& itb, const ConstIterator& ite, OutputIterator & result );
     
     // ------------------------- Private Datas --------------------------------
   private:
@@ -143,9 +149,9 @@ namespace DGtal {
      */
     ConstIterator myEnd;
     /**
-     * Constant pointer to a curve segmentation algorithm.
+     * Pointer to a curve segmentation algorithm.
      */
-    const TSegmentation * dssSegments;
+    TSegmentation * dssSegments;
     /**
      * Functor which takes:
      * reference to digital straight segment - DSS, position of given point in DSS and length of DSS

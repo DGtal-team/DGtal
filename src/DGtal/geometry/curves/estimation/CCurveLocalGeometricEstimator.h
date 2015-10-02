@@ -87,7 +87,7 @@ namespace DGtal
      ### Models
 
      - MostCenteredMaximalSegmentEstimator, TrueLocalEstimatorOnPoints, BinomialConvolverEstimator
-     - concept refined by CSegmentComputerEstimator
+     - concept refined by CSegmentComputerEstimator, LambdaMST2D, LambdaMST3D
 
      ### Notes
 
