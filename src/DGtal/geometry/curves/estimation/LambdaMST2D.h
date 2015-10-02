@@ -108,8 +108,8 @@ namespace DGtal {
      * @param result writable iterator over a container which stores estimated tangent directions.
      */
     template <typename OutputIterator>
-    OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
-                        OutputIterator result);
+    OutputIterator eval ( const ConstIterator & itb, const ConstIterator & ite, 
+                         OutputIterator result );
     
     // ----------------------- Standard services ------------------------------
   public:
