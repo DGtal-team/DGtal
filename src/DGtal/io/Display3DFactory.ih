@@ -651,7 +651,6 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
 							  const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
-  typedef typename Domain::Point Point;
   typedef typename DGtal::DigitalSetBySTLSet<Domain, Compare>::ConstIterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
@@ -672,7 +671,6 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
 							const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
-  typedef typename Domain::Point Point;
   typedef typename DGtal::DigitalSetBySTLSet<Domain, Compare>::ConstIterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
@@ -719,7 +717,6 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display & display,
 								     const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
 {
-  typedef typename Domain::Point Point;
   typedef typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
@@ -740,7 +737,6 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
 							  const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
 {
-  typedef typename Domain::Point Point;
   typedef typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
@@ -761,7 +757,6 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
 							const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
 {
-  typedef typename Domain::Point Point;
   typedef typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator ConstIterator;
 
 
