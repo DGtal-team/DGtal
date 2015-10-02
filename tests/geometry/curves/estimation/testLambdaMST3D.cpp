@@ -95,7 +95,7 @@ public:
     lmst64.attach ( segmenter );
     lmst64.init ( curve.begin(), curve.end() );
     vector < RealVector > tangent;
-    lmst64.eval < vector < RealVector > > ( back_inserter ( tangent ) );
+    lmst64.eval < back_insert_iterator< vector < RealVector > > > ( curve.begin(), curve.end(), back_insert_iterator< vector < RealVector > > ( tangent ) );
     return true;
   }
   bool lambda64Both()
@@ -105,7 +105,7 @@ public:
     lmst64.attach ( segmenter );
     lmst64.init ( curve.begin(), curve.end() );
     vector < RealVector > tangent;
-    lmst64.eval < vector < RealVector > > ( back_inserter ( tangent ) );
+    lmst64.eval < back_insert_iterator< vector < RealVector > > > ( curve.begin(), curve.end(), back_insert_iterator< vector < RealVector > > ( tangent ) );
     for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
     {
       if ( lmst64.eval ( it ) != tangent[ distance< ConstIterator >( curve.begin(), it ) ] )

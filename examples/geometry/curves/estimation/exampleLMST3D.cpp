@@ -87,7 +87,7 @@ int main()
   //! [LambdaMST3DFast]
     lmst.init ( contour.begin(), contour.end() );
     std::vector < RealVector > tangent;
-    lmst.eval < vector < RealVector > > (  back_inserter ( tangent ) );
+    lmst.eval < std::back_insert_iterator< std::vector < RealVector > > > ( contour.begin(), contour.end(), std::back_insert_iterator< vector < RealVector > > ( tangent ) );
   //! [LambdaMST3DFast]
   
   return 1;

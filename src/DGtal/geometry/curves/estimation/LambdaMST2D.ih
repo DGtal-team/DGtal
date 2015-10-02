@@ -40,7 +40,7 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::init ( const Cons
 template < typename TSpace, typename TSegmentation, typename Functor >
 inline
 void
-DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::attach ( ConstAlias<TSegmentation>  segmentComputer )
+DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::attach ( Alias<TSegmentation>  segmentComputer )
 {
   dssSegments = &segmentComputer;
 }
@@ -57,7 +57,7 @@ template < typename TSpace, typename TSegmentation, typename Functor >
 inline
 typename TSpace::RealVector
 DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval 
-( DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::ConstIterator it )
+( const DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::ConstIterator & it )
 {
   assert ( dssSegments != 0 );
   typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
@@ -81,12 +81,15 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval
 }
 
 template < typename TSpace, typename TSegmentation, typename Functor >
-template < typename Container >
+template <typename OutputIterator>
 inline
-void
-DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( std::back_insert_iterator < Container > result )
+OutputIterator
+DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( const typename DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::ConstIterator & itb, 
+								      const typename DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::ConstIterator & ite, 
+                                                                      OutputIterator result )
 {
-  assert ( myBegin != myEnd && isValid() );
+  assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
+  dssSegments->setSubRange ( itb, ite );
   std::vector < Value > outValues ( std::distance ( myBegin, myEnd ) );
   typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
   typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
@@ -98,21 +101,21 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( std::back_
       outValues[ std::distance ( myBegin, DSS.begin() ) + i ] += myFunctor ( comp, i, dssLen );
   }
   accumulate ( outValues, result );
+  return result;
 }
 
 template < typename TSpace, typename TSegmentation, typename Functor >
-template < typename Container >
+template <typename OutputIterator>
 inline
 void
-DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::accumulate ( std::vector < Value > & outValues,
-									    std::back_insert_iterator < Container > result )
+DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::accumulate ( std::vector < Value > & outValues, OutputIterator & result  )
 {
   for ( unsigned int i = 0; i < outValues.size(); i++ )
   {
     Value & tangent = outValues[i];
     if ( tangent.second != 0. )
-      result = ( tangent.first / tangent.second );
+      *result++ = ( tangent.first / tangent.second );
     else
-      result = tangent.first;
+      *result++ = tangent.first;
   }
 }
