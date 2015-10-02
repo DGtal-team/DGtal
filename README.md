@@ -22,7 +22,7 @@ More Information
   
 * Project homepage http://dgtal.org
 
-
+* Related DGtalTools project: https://github.com/DGtal-team/DGtalTools
 
 * Release 0.8 DOI [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11586.png)](http://dx.doi.org/10.5281/zenodo.11586)
 * Continuous Integration [![Build Status](https://travis-ci.org/DGtal-team/DGtal.svg?branch=master)](https://travis-ci.org/DGtal-team/DGtal)
