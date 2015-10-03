@@ -46,6 +46,7 @@
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/geometry/curves/StandardDSS6Computer.h"
+#include "DGtal/geometry/curves/Naive3DDSSComputer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -196,7 +197,43 @@ namespace DGtal
     static void draw( Display & display, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & anObject );
     // StandardDSS6Computer
 
+    // Naive3DDSSComputer
+    /**
+     * @brief defaultStyle
+     * Default drawing style object.
+     * @param str the name of the class
+     * @param anObject the object to draw
+     * @return the dyn. alloc. default style for this object.
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & anObject );
 
+    /**
+     * @brief drawAsBalls
+     * @param display the display where to draw
+     * @param anObject the object to draw
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static void drawAsBalls( Display & display, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & anObject );
+
+    /**
+     * @brief drawAsBoundingBox
+     * @param display the display where to draw
+     * @param anObject the object to draw
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static void drawAsBoundingBox( Display & display, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & anObject );
+    
+    /**
+     * @brief draw
+     * @param display the display where to draw
+     * @param anObject the object to draw
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static void draw( Display & display, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & anObject );
+    // Naive3DDSSComputer 
+   
+    
     // DigitalSetByAssociativeContainer
     /**
      * @brief defaultStyle
@@ -239,7 +276,6 @@ namespace DGtal
     template<typename Domain, typename Container>
     static void draw( Display & display, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & anObject );
     // DigitalSetByAssociativeContainer
-
 
     
     // DigitalSetBySTLSet
