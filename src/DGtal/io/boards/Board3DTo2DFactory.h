@@ -47,6 +47,7 @@
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/boards/DrawWithBoard3DTo2DModifier.h"
 #include "DGtal/geometry/curves/StandardDSS6Computer.h"
+#include "DGtal/geometry/curves/Naive3DDSSComputer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetByAssociativeContainer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
@@ -195,6 +196,46 @@ namespace DGtal
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
   // StandardDSS6Computer
+  
+  
+    // Naive3DDSSComputer
+  /**
+   * Default drawing style object.
+   * @param str the name of the class
+   * @param arithm the arithm to draw
+   *  @return the dyn. alloc. default style for this object.
+   */
+  template <typename TIterator, typename TInteger, int connectivity>
+  static DGtal::DrawableWithBoard3DTo2D *
+  defaultStyle( std::string str, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+  template <typename TIterator, typename TInteger, int connectivity>
+  /**
+   * @brief drawAsBalls
+   * @param board the board where to draw
+   * @param arithm the arithm to draw
+   */
+  static void
+  drawAsBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+  /**
+   * @brief drawAsBoundingBox
+   * @param board the board where to draw
+   * @param arithm the arithm to draw
+   */
+  template <typename TIterator, typename TInteger, int connectivity>
+  static void
+  drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+  template <typename TIterator, typename TInteger, int connectivity>
+  /**
+   * @brief draw
+   * @param board the board where to draw
+   * @param arithm the arithm to draw
+   */
+  static void
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+  // Naive3DDSSComputer
 
 
     // DigitalSetBySTLSet
