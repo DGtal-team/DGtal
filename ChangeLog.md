@@ -21,8 +21,25 @@
    design quick and efficient unit tests with nice trace
    outputs. (David Coeurjolly,
    [#1019](https://github.com/DGtal-team/DGtal/pull/1019)
+ - Documentation added for Catch. (David Coeurjolly,
+   [#1042](https://github.com/DGtal-team/DGtal/pull/1042)
 
 
+- *Kernel*
+ - New template class DigitalSetlByAssociativeContainer allows to
+   define digital sets from any associative container of the STL. For
+   instance, using std::unordered_set (c++11) or boost::unordered_set (hash
+   function based containers), speed-up up to 40% can be measured when
+   processing digital sets. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ - By default, Z2i::DigitalSet, Z3i::DigitalSet and digital set from
+   DigitalSetSelector use the new hash function based
+   container. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ - Specializations of std::hash (c++11) and boost::hash to define a hash
+   functions on DGtal points. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ 
 ## Changes
 
 - *DEC Package*
@@ -38,9 +55,10 @@
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - New antiderivative<order, duality>() operator.
    (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
- - New flatDirectional<duality, direction>() and sharpDirectional<duality, direction>()
-   operators defined as flat(vector_field_along_direction) and sharp(1-form).extractZeroForm(direction).
-   (Pierre Gueth [#977](https://github.com/DGtal-team/DGtal/pull/977))
+ - New flatDirectional<duality, direction>() and sharpDirectional<duality,
+   direction>() operators defined as flat(vector_field_along_direction) and
+   sharp(1-form).extractZeroForm(direction). (Pierre Gueth
+   [#977](https://github.com/DGtal-team/DGtal/pull/977))
  - DiscreteExteriorCalculus<dim_embedded, dim_ambient, Backend>
    takes 2 dimension template parameters for embedding
    manifold in ambient euclidean space.
@@ -87,6 +105,16 @@
  - Main example files of geometry/curves are introduced in the list of examples
    and briefly described.
    (Tristan Roussillon, [#1026](https://github.com/DGtal-team/DGtal/pull/1026))
+ - Lambda maximal segment tangent direction estimator 2D/3D: LambdaMST2D, LambdaMST3D.
+   A fast tangent direction estimator which uses maximal digital straight segments. 
+   (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
+ - Segmentation of 3D digital curves by a combination of the segmentations of its 2D 
+   projections onto 2D base planes: XY, XZ, YZ. Notice that, only valid projections
+   are used. By valid one understands that there are no two 3D points which are projected
+   onto the same 2D point. A segment is computed as long as is extendable and at least 
+   two projections are valid.
+ : NaiveDSS3DComputer.
+   (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential
@@ -122,29 +150,31 @@
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
  - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
- [#961](https://github.com/DGtal-team/DGtal/pull/961))
+   [#961](https://github.com/DGtal-team/DGtal/pull/961))
  - New colormap adapter to add ticks/iso-contours (regularly spaced or
- specified by the user) to a given colormap. (David Coeurjolly,
- [#987](https://github.com/DGtal-team/DGtal/pull/987))
+   specified by the user) to a given colormap. (David Coeurjolly,
+   [#987](https://github.com/DGtal-team/DGtal/pull/987))
  - New flag (-DWITH_QT5) enables QT5 support in libqglviewer. (Nicolas
- Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983))
- - Board2D now supports quadratic Bezier curve drawing. (Tristan
-  Roussillon, [#1002](https://github.com/DGtal-team/DGtal/pull/1002))
- - MeshWriter class can now export OBJ file including
-  colors. (Bertrand Kerautret,
-  [#1016](https://github.com/DGtal-team/DGtal/pull/1016))
- - Viewer3D: Shift-L / L key binding added to save and restore camera
-  settings. (Bertrand Kerautret,
-  [#1024](https://github.com/DGtal-team/DGtal/pull/1024))
+   Aubry, [#983](https://github.com/DGtal-team/DGtal/pull/983))
+ - Board2D now supports quadratic Bezier curve drawing. (Tristan Roussillon,
+   [#1002](https://github.com/DGtal-team/DGtal/pull/1002))
+ - MeshWriter class can now export OBJ file including colors.
+   (Bertrand Kerautret, [#1016](https://github.com/DGtal-team/DGtal/pull/1016))
+ - Viewer3D: Shift-L / L key binding added to save and restore camera settings.
+   (Bertrand Kerautret, [#1024](https://github.com/DGtal-team/DGtal/pull/1024))
+ - Viewer3D:  change the chronological order to diplay primitives (in the draw
+   function) in order to see see textured image primitives through the
+   transparency of other 3D primitives. (Bertrand Kerautret,
+   [#1041](https://github.com/DGtal-team/DGtal/pull/1041))
 
 
 - *Kernel Package*
- - HyperRectDomain can now be empty (lowerBound == upperBound +
-    diagonal(1)). Warning about the use of lexicographical order in
-    comparison operators of PointVector. (Roland Denis,
+- HyperRectDomain can now be empty (lowerBound == upperBound + diagonal(1)).
+    Warning about the use of lexicographical order in comparison operators of
+    PointVector. (Roland Denis,
     [#996](https://github.com/DGtal-team/DGtal/pull/996))
- - Adds generic linearization (point to index) and reverse process
-    (index to point), specialized for HyperRectDomain.  (Roland Denis,
+  - Adds generic linearization (point to index) and reverse process (index to
+    point), specialized for HyperRectDomain. (Roland Denis,
     [#1039](https://github.com/DGtal-team/DGtal/pull/1039))
  - HyperRectDomain can now be empty (lowerBound == upperBound +
     diagonal(1)). Warning about the use of lexicographical order in
@@ -200,8 +230,8 @@
  - Various fixes of compiler warnings due to unused paramters (David
    Coeurjolly, Roland Denis,
    [#1034](https://github.com/DGtal-team/DGtal/pull/1030))
-   
-   
+
+
 - *Base Package*
  - Fix bug with LabelledMap copy constructor and copy iterator. (Roland
    Denis, [#973](https://github.com/DGtal-team/DGtal/pull/973))
@@ -211,7 +241,7 @@
  [#938](https://github.com/DGtal-team/DGtal/pull/938))
  - Cleanup of DGtal namespaces (David Coeurjolly,
  [#993](https://github.com/DGtal-team/DGtal/pull/993))
- 
+
 
 - *Geometry Package*
  - Fix bug occuring in the computation of the Faithful Polygon (class FP)
@@ -226,7 +256,7 @@
 	ArithmeticalDSSConvexHull::smartCH and
 	ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative
 	positions as input arguments. (Isabelle Sivignon,
-	[#950](https://github.com/DGtal-team/DGtal/pull/950)) 	 
+	[#950](https://github.com/DGtal-team/DGtal/pull/950))
  - Fix Bezout Vector computation (Isabelle Sivignon,
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
  - Fix issues with SphereFitting and TensorVoting local estimators on
@@ -241,8 +271,9 @@
  - Radius and resolution of balls have been fixed when used to
    represent a 3D point in grid mode (David Coeurjolly,
    [#978](https://github.com/DGtal-team/DGtal/pull/978))
- - Change in the mesh export in OFF format: now it tries by default to export colors (if stored).
-   (Bertrand Kerautret, [#985](https://github.com/DGtal-team/DGtal/pull/985))
+ - Change in the mesh export in OFF format: now it tries by default to export
+   colors (if stored). (Bertrand Kerautret,
+   [#985](https://github.com/DGtal-team/DGtal/pull/985))
  - Bugfix in quad visualization in BoardD3D and Viewer3D (David
    Coeurjolly, [#980](https://github.com/DGtal-team/DGtal/pull/980))
  - Fix warnings message of std::abs in Display3D.    (Bertrand Kerautret,
@@ -251,15 +282,17 @@
    [#995](https://github.com/DGtal-team/DGtal/pull/995))
  - Fix issues in OBJ color export when exporting voxels. (David
    Coeurjolly, [#1022](https://github.com/DGtal-team/DGtal/pull/1022))
- - Fix compilation issue on gentoo system related to MeshWriter (gcc version 4.9.2-r2). (Van Tho Nguyen,
-	[#1035](https://github.com/DGtal-team/DGtal/pull/1035))
+ - Fix compilation issue on gentoo system related to MeshWriter
+   (gcc version 4.9.2-r2). (Van Tho Nguyen,
+   [#1035](https://github.com/DGtal-team/DGtal/pull/1035))
  - Fix deprecated usage of setMouseBindingDescription with QGLViewer >= 2.5.0.
    (Roland Denis, [#1036](https://github.com/DGtal-team/DGtal/pull/1036))
 
 - *Kernel Package*
-  - BasicDomainSubSampler can now handle non 0 origin point. This update also correct
-    the search of point which are outside the source domain (it is now checked in testBasicPointFunctors).
-    (Bertrand Kerautret, [989](https://github.com/DGtal-team/DGtal/pull/989)).
+  - BasicDomainSubSampler can now handle non 0 origin point. This update also
+    correct the search of point which are outside the source domain (it is now
+    checked in testBasicPointFunctors). (Bertrand Kerautret,
+    [989](https://github.com/DGtal-team/DGtal/pull/989)).
 
 - *Topology  Package*
   - Fix loop bug in extractAllConnectedSCell of Surfaces from helpers.
@@ -267,7 +300,8 @@
 
 - *DEC  Package*
   - Fix missing include in testEigenSolver.
-    (Jacques-Olivier Lachaud, [1032](https://github.com/DGtal-team/DGtal/pull/1032)).
+    (Jacques-Olivier Lachaud,
+    [1032](https://github.com/DGtal-team/DGtal/pull/1032)).
 
 
 # DGtal 0.8
@@ -445,7 +479,8 @@
   Coeurjolly, [#871](https://github.com/DGtal-team/DGtal/pull/871))
 
 - *Topology Package*
-  - Surfaces::findABell accepts now arbitrary pair of points (Jacques-Olivier Lachaud, David Coeurjolly,
+  - Surfaces::findABell accepts now arbitrary pair of points (Jacques-Olivier
+    Lachaud, David Coeurjolly,
     [#851](https://github.com/DGtal-team/DGtal/pull/851))
 
 
@@ -474,14 +509,17 @@
 - *Topology Package*
   - small fix in ImplicitDigitalSurface. (Jacques-Olivier Lachaud,
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
-  - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+  - fix examples volTrackBoundary and volScanBoundary for DEBUG mode
+    (Jacques-Olivier Lachaud, David Coeurjolly,
     [#851](https://github.com/DGtal-team/DGtal/pull/851))
-  - New methods to fill the interior/exterior of digital contours (in the Surface class of topology/helpers).  (Bertrand Kerautret   [#827](https://github.com/DGtal-team/DGtal/pull/827))
+  - New methods to fill the interior/exterior of digital contours
+    (in the Surface class of topology/helpers).  (Bertrand Kerautret
+    [#827](https://github.com/DGtal-team/DGtal/pull/827))
 
 
 - *Graph Package*
-  - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
-    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+  - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud,
+    David Coeurjolly, [#851](https://github.com/DGtal-team/DGtal/pull/851))
 
 - *Image Package*
   - Fixing template types in ImageAdapter (David Coeurjolly,
@@ -496,7 +534,8 @@
    [#853](https://github.com/DGtal-team/DGtal/pull/853))
   - Renaming BasicColorToScalarFunctors namespace to functors:: (David
     Coeurjolly,  [#857](https://github.com/DGtal-team/DGtal/pull/857))
-  - Fix OpenGL warnings by redefining openGL primitive (glSphere) (Bertrand Kerautret [#981](https://github.com/DGtal-team/DGtal/pull/891))
+  - Fix OpenGL warnings by redefining openGL primitive (glSphere) (Bertrand
+    Kerautret [#981](https://github.com/DGtal-team/DGtal/pull/891))
 
 === DGtal 0.7 ===
 
@@ -529,9 +568,11 @@
 
     - New basic functors:
 	- SliceRotator2D: to rotate 2D Slice images from 3D volume.
-	- Point2DEmbedderIn3D: a simple functor to embed in 3d a 2d points (useful to extract 2D image from 3D volume).
+	- Point2DEmbedderIn3D: a simple functor to embed in 3d a 2d points
+	  (useful to extract 2D image from 3D volume).
 
-    - Sets have been updated to own their domain with a copy-on-write pointer, in order to avoid some inconsistencies.
+    - Sets have been updated to own their domain with a copy-on-write pointer,
+      in order to avoid some inconsistencies.
 
 *Topology Package*
 
@@ -546,12 +587,13 @@
 
     - New classes to deal with arithmetical digital straight segments.
       Now the representation of the primitives and their recognition
-      along a discrete structure are separated. The unique class ArithmeticalDSS,
-      which was a segment computer, has been replaced by mainly three classes:
-      ArithmeticalDSL, ArithmeticalDSS and ArithmeticalDSSComputer.
-      This is described in a doc page of the geometry package.
-      Note that Backward/Forward suffixes have been renamed into Back/Front.
-      Moreover, get prefixes for data members accessors have been removed.
+      along a discrete structure are separated. The unique class
+      ArithmeticalDSS,  which was a segment computer, has been replaced by
+      mainly three classes: ArithmeticalDSL, ArithmeticalDSS and
+      ArithmeticalDSSComputer. This is described in a doc page of the geometry
+      package. Note that Backward/Forward suffixes have been renamed into
+      Back/Front. Moreover, get prefixes for data members accessors have been
+      removed.
 
     - Generic adapter to transform a metric (model of CMetric) with
       monotonic (see doc) properties to a separable metric (model of
@@ -561,8 +603,8 @@
     - New possibility to access the 3 2D ArithmeticDSS object within an
       ArithmeticDSS3d.
 
-    - New local estimator adapter to make easy implementation of locally defined differential
-      estimator on digital surfaces.
+    - New local estimator adapter to make easy implementation of locally defined
+      differential estimator on digital surfaces.
 
     - New documentation on local estimators from digital surface
       patches and surfel functors. New normal vector estimator from
@@ -575,7 +617,8 @@
 
     - Minor improvements in the spherical accumulator.
 
-    - Improvement of integral invariant estimators (better memory footprint, ...).
+    - Improvement of integral invariant estimators (better memory footprint,
+	...).
       They also allow to estimate principal curvatures using Covariance matrix.
       Covariance matrix is also "masks" based, so the computation is efficient.
 
@@ -587,17 +630,21 @@
     - Chord algorithm for (naive) plane recognition and width computation.
 
     - New organization for computing primitives. Introduction of the concept
-      of PrimitiveComputer and specialization. COBA algorithm and Chord algorithm
-      are now models of AdditivePrimitiveComputer.
+      of PrimitiveComputer and specialization. COBA algorithm and Chord
+      algorithm are now models of AdditivePrimitiveComputer.
 
-    - Introduction of the primitive ParallelStrip, computed by COBA and Chord algorithms
+    - Introduction of the primitive ParallelStrip, computed by COBA and Chord
+      algorithms
 
-    - New documentation for planarity decision, plane recognition and width computation.
+    - New documentation for planarity decision, plane recognition and width
+      computation.
       Quantitative and qualitative evaluation of COBA and Chord algorithm.
 
-    - Bug fix in COBA algorithm when extending an empty computer with a group of points.
+    - Bug fix in COBA algorithm when extending an empty computer with a group of
+      points.
 
-    - add standard plane recognition with adapter classes both for COBA and Chord algorithm.
+    - add standard plane recognition with adapter classes both for COBA and
+      Chord algorithm.
 
 *Shape Package*
 
@@ -607,21 +654,25 @@
 
 *Topology Package*
 
-    - The class SCellToMidPoint is now deprecated. Use CanonicSCellEmbedder instead
-      to map a signed cell to its corresponding point in the Euclidean space
+    - The class SCellToMidPoint is now deprecated. Use CanonicSCellEmbedder
+      instead to map a signed cell to its corresponding point in the Euclidean
+      space
 
 *IO Package*
 
     - Complete refactoring of 3D viewers and boards (Viewer3D, Board3DTo2D).
     - New Board3D to export 3D displays to OBJ 3D vector format.
     - A new display of 2D and 3D image in Viewer3D.
-    - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
+    - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and
+      24-bit truecolor with INTERLACE_PIXEL).
     - New GenericReader and Generic Writer for both 2D, 3D and ND images.
-    - Adding a Table Reader to extract objets given in a specific column from a text file.
+    - Adding a Table Reader to extract objets given in a specific column from a
+      text file.
     - Adding missing PPM Reader.
     - Adding missing DICOM reader (with ITK library)
     - Adding ITK reader and ITK writer
-    - OpenInventor (SOQT/Coin3D) based viewer has been removed (please consider release <=0.6 if interested).
+    - OpenInventor (SOQT/Coin3D) based viewer has been removed (please consider
+      release <=0.6 if interested).
 
 *Image Package*
 
@@ -688,8 +739,8 @@
  *Image Package*
     - Update on image writers (no colormap required for scalar only writers).
       Documentation updated.
-    - New image adapters to adapt both domains and values of an image (ImageAdapter
-      and ConstImageAdapter).
+    - New image adapters to adapt both domains and values of an image
+      (ImageAdapter and ConstImageAdapter).
     - several enhancements of the main image concept and its image
       container models
 
@@ -923,17 +974,20 @@ Posted on April 4, 2011 by David Coeurjolly
 === DGtal 0.3.0 ===
 Posted on April 1, 2011 by David Coeurjolly
 
-Beside the DGtal presentation at DGCI 2011, we are pleased to announce a new DGtal release 0.3.0.
+Beside the DGtal presentation at DGCI 2011, we are pleased to announce a new
+DGtal release 0.3.0.
 
 New features:
 
     User-guide added (based on doxygen system)
-    Kernel: new concepts and controls to enhance the Interger type management, new iterators (Range/SubRange) on HyperRectDomains.
+    Kernel: new concepts and controls to enhance the Interger type management,
+            new iterators (Range/SubRange) on HyperRectDomains.
     Topology: interpixel model added (cells, boundary tracking mechanisms,…)
-    Geometry 2D: 2D curve primitive decomposition, tangential cover, convexity/concavity decomposition.
+    Geometry 2D: 2D curve primitive decomposition, tangential cover,
+                 convexity/concavity decomposition.
     Geometry nD: reverse Euclidean distance transformation
-    Visualisation: stream mechanism to visualize 3D DGtal objects with libQGLViewer (optional)
-    Shape generator factory added in nD
+    Visualisation: stream mechanism to visualize 3D DGtal objects with
+	           libQGLViewer (optional) Shape generator factory added in nD
 
 BugFixes, enhancements:
 
@@ -942,8 +996,9 @@ BugFixes, enhancements:
 
 Known problems:
 
-    For technical reasons, we haven’t be able to verify that this release also compile on Windows Visual Studio systems (see ticket #87). A new release will fix this problem as soon as possible.
-    All open tickets
+    For technical reasons, we haven’t be able to verify that this release also
+    compile on Windows Visual Studio systems (see ticket #87). A new release
+    will fix this problem as soon as possible. 
 
 
 
@@ -990,12 +1045,14 @@ Known problems:
   * Many bug fixes for VS compatibility
 
 2010-05-15 dcoeurjo
-  * Assert.h: added macro ASSERT() added based on the boost/assert.hpp (TODO: implement a nice callback)
+  * Assert.h: added macro ASSERT() added based on the boost/assert.hpp (TODO:
+	      implement a nice callback)
   * Point and Vector templated classes added
   * Space.*: skeleton of a DGtal::Space added
 
 2010-03-03 dcoeurjo
-	* math/MeasureOfStraightLines: new class to compute the measure of a set of Straight lines defined as a polygon in the (a,b) parameter space.
+	* math/MeasureOfStraightLines: new class to compute the measure of a set
+	of Straight lines defined as a polygon in the (a,b) parameter space.
 	* test_measure: added
 
 2010-02-17 dcoeurjo
@@ -1007,15 +1064,21 @@ Known problems:
   * Trace/Clock: minor edit and bug report
 
 2010-01-05 dcoeurjo
-  * Trace can be initialized on diffrent output stream (e.g. std::cerr or a file stream)
+  * Trace can be initialized on diffrent output stream (e.g. std::cerr or a file
+	  stream)
   * test_trace: update to test the new API
 
 2010-01-04 dcoeurjo
-  * Clock: no more static variables and methods (in order to have several running clocks)
-  * Trace: new interface and the endBlock displays and returns the ellapsed time within the block
+  * Clock: no more static variables and methods (in order to have several
+	   running clocks)
+  * Trace: new interface and the endBlock displays and returns the
+	   ellapsed time within the block
 
 2009-12-28 dcoeurjo
-  * Trace: a new class to trace out messages to the standard output. Four type of messages are possible: info, debug, error and "emphased". On color linux terminal, messages appears with an appropriate color foreground.
+  * Trace: a new class to trace out messages to the standard output. Four type
+	   of messages are possible: info, debug, error and "emphased". On
+	   color linux terminal, messages appears with an appropriate color
+	   foreground.
   * test_trace: an illustration of the Trace interface
 
 2009-12-14 dcoeurjo

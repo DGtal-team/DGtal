@@ -40,8 +40,9 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
 #include "DGtal/base/Common.h"
+#include "boost/concept_check.hpp"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/CConstBidirectionalRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -81,26 +82,27 @@ PointVector
 
 @tparam T the type that is checked. T should be a model of CBidirectionalRange.
 
-   */
+*/
   template <typename T>
   struct CBidirectionalRange : public CConstBidirectionalRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::ReverseIterator ReverseIterator;
-
+    
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
-
+    
     BOOST_CONCEPT_USAGE(CBidirectionalRange)
     {
- ReverseIterator it2=i.rbegin();
- it2=i.rend();
+      concepts::ConceptUtils::sameType( it, i.rbegin() );
+      concepts::ConceptUtils::sameType( it, i.rend() );
     };
-
+    
   private:
     T i;
+    ReverseIterator it;
   }; // end of concept CBidirectionalRange
-
+  
 } // namespace DGtal
 
 
