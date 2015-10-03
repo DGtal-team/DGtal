@@ -40,7 +40,9 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
+#include "DGtal/base/Common.h"
+#include "boost/concept_check.hpp"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -82,20 +84,25 @@ Description of \b concept '\b CConstBidirectionalRange'
 template <typename T>
 struct CConstBidirectionalRange: CConstSinglePassRange<T>
 {
- // ----------------------- Concept checks ------------------------------
+  // ----------------------- Concept checks ------------------------------
 public:
- typedef typename T::ConstReverseIterator ConstReverseIterator;
-
- BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
-
- BOOST_CONCEPT_USAGE(CConstBidirectionalRange)
- {
-  ConstReverseIterator it=i.rbegin();
-  it=i.rend();
- };
-
+  typedef typename T::ConstReverseIterator ConstReverseIterator;
+  
+  BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
+  
+  BOOST_CONCEPT_USAGE(CConstBidirectionalRange)
+  {
+    checkConstConstraints();
+  }
+  void checkConstConstraints() const
+  {
+    concepts::ConceptUtils::sameType( it, i.rbegin() );
+    concepts::ConceptUtils::sameType( it, i.rend() );
+  }
+  
 private:
- T i;
+  T i;
+  ConstReverseIterator it;
 }; // end of concept CConstBidirectionalRange
 
 } // namespace DGtal

@@ -41,6 +41,12 @@
 #include <algorithm>
 #include <string>
 
+#ifdef WITH_C11
+#include <unordered_set>
+#endif
+#include <boost/unordered_set.hpp>
+
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -50,6 +56,7 @@
 #include "DGtal/kernel/domains/CDomainArchetype.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetByAssociativeContainer.h"
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
@@ -60,6 +67,9 @@
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/io/boards/Board2D.h"
+
+#include "DGtal/kernel/PointHashFunctions.h"
+
 
 
 using namespace DGtal;
@@ -407,6 +417,28 @@ int main()
   bool okMap = testDigitalSet< DigitalSetFromMap<Map> >( setFromMap, setFromMap2 );
   trace.endBlock();
 
+  trace.beginBlock( "DigitalSetByAssociativeContainer" );
+  typedef std::set<Point> Container;
+  bool okAssoctestSet = testDigitalSet< DigitalSetByAssociativeContainer<Domain,Container> >
+  ( DigitalSetByAssociativeContainer<Domain, Container>(domain), DigitalSetByAssociativeContainer<Domain, Container>(domain) );
+  trace.endBlock();
+  
+  trace.beginBlock( "DigitalSetByUnorderedSet" );
+#ifdef WITH_C11
+  typedef std::unordered_set<Point> ContainerU;
+#else
+  typedef boost::unordered_set<Point> ContainerU;
+#endif
+  bool okUnorderedSet = testDigitalSet< DigitalSetByAssociativeContainer<Domain,ContainerU> >
+  ( DigitalSetByAssociativeContainer<Domain, ContainerU>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU>(domain) );
+  trace.endBlock();
+  
+  trace.beginBlock( "DigitalSetByBoostUnorderedSet" );
+  typedef boost::unordered_set<Point> ContainerU2;
+  bool okUnorderedSet2 = testDigitalSet< DigitalSetByAssociativeContainer<Domain,ContainerU2> >
+  ( DigitalSetByAssociativeContainer<Domain, ContainerU2>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU2>(domain) );
+  trace.endBlock();
+  
   bool okSelectorSmall = testDigitalSetSelector
       < Domain, SMALL_DS + LOW_VAR_DS + LOW_ITER_DS + LOW_BEL_DS >
       ( domain, "Small set" );
@@ -427,7 +459,8 @@ int main()
 
   bool res = okVector && okSet && okMap 
       && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
-      && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet;
+      && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet
+    && okUnorderedSet2 && okUnorderedSet && okAssoctestSet;
   trace.endBlock();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   return res ? 0 : 1;
