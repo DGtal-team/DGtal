@@ -97,8 +97,7 @@ contains loop. Open or closed contours can be processed by the segment
 computer (if you use contour iterator in the initialisation you have just to
 check manually the end condition or the iterator type).
 
-@note Contrary to the implementation proposed in \cite
-DebledRennessonBlurred2005 the input points doesn't need to have
+@note Contrary to the implementation proposed in \cite DebledRennessonBlurred2005 the input points do not need to have
   axis increasing coordinates.
 
 As illustration, the alpha thick segments can be recognized on such contours:
@@ -107,7 +106,7 @@ As illustration, the alpha thick segments can be recognized on such contours:
 
 
 
-And the example of contour containing loops can produce some errors:
+And the example of non-simple contour can produce some errors:
 @image html alphThickSegmentInputPointsLoop.png "Example of input contour (1) containing loop which produce incorrect convexhull (2)." 
 @image latex alphThickSegmentInputPointsLoop.png "Example of input contour (1) containing loop which produce incorrect convexhull (2)." width=5cm
 
@@ -120,8 +119,8 @@ To recognize an alpha thick segment, you need first to include the AlphaThickSeg
 
 
 Afterwards, you have to set the type of the primitive by choosing the
-input point type. For instance, if you have to recognize input points
-with floating coordinates, you can define:
+input point type. For instance, if you have to recognize input
+floating-points, you can define:
 
  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyTypedef
 
@@ -172,7 +171,7 @@ Since the AlphaThickSegmentComputer class is a model of
 CForwardSegmentComputer, you can initialize it from a given input
 point iterator. Then, the computer will not store the segment points
 (but the convexhull points are always stored).  With such an initialization
-the segment computer can be used in a quite similar way than in the
+the segment computer can be used in a quite similar way as in the
 previous example:
 
  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco2 
