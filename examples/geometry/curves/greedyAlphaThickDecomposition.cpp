@@ -35,7 +35,7 @@
 #include "DGtal/geometry/curves/AlphaThickSegmentComputer.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/geometry/curves/GreedySegmentation.h"
-#include <DGtal/io/readers/GenericReader.h>
+#include "DGtal/io/readers/GenericReader.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

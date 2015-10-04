@@ -34,7 +34,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/curves/AlphaThickSegmentComputer.h"
 #include "DGtal/io/boards/Board2D.h"
-#include <DGtal/io/readers/PointListReader.h>
+#include "DGtal/io/readers/PointListReader.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

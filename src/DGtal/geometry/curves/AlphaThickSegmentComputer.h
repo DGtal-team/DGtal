@@ -59,43 +59,45 @@ namespace DGtal
 /**
  * Description of class 'AlphaThickSegmentComputer' <p>
  *
- * \brief Aim: This class is devoted to the recognition of the alpha
- * thick segment as described in \cite FaureTangential2008 . From a
- * maximal diagonal alphaMax thickness, it allows to apply the recognition
- * of a thick segment with the ability to take into accounts some
- * noise. Moreover the segment can be detected from points not
- * necessary connected and/or with floating coordinates.
+ * \brief Aim: This class is devoted to the recognition of alpha thick
+ * segments as described in \cite FaureTangential2008 . From a maximal
+ * diagonal alphaMax thickness, it recognizes thick segments and may
+ * thus take into account some noise in the input contour. Moreover
+ * points of the segment may not be (digitally) connected and may have
+ * floating point coordinates. Connection is only given by the order
+ * of the points.
  *
  * As other solutions like \cite DebledRennessonBlurred2005 the
  * algorithm given here is based on the height/width computation of
  * the convex hull computed from a given set of points. The actual
- * implementation exploits the height/width update defined from
+ * implementation exploits the height/width update defined in
  * the \cite FaureTangential2008 (see \cite FaureTangential2008 page
- * 363) which reduces the complexity from \f$O(n\ log\ n) \f$ into
+ * 363) which reduces the complexity from \f$O(n\ log\ n) \f$ in
  * \f$O( log\ n) \f$.  Note that the convexhull update in linear
  * time (with point substraction) proposed by Buzer \cite
  * lilianComputing2007 is not yet implemented.
  *
  *
  *
- * @tparam TInputPoint the type of the input point which have to be of
- * dimension 2.
- * 
+ * @tparam TInputPoint the type of input points: their dimension must
+ * be two but their components may be integers or floating-point
+ * values.
+ *
  * @tparam TConstIterator the type of iterator of candidate points
- * (used in the init with iterator) which should be readable and
- * forward. By default the iterator is set to the const_iterator of std::vector< TInputPoint > .
+ * (used in initialization) which should be readable and forward. By
+ * default the iterator is set to the const_iterator of std::vector<
+ * TInputPoint > .
  *
  *
- * This class is a model of ForwardContainer and  CForwardSegmentComputer.  
+ * This class is a model of boost::ForwardContainer and  CForwardSegmentComputer.  
  * It is also default constructible, copy  constructible, assignable and equality comparable.
  *
  *
- * A typical application of an alpha thick segment recognition can be
- * done as follows:
+ * Alpha thick segment recognition may be typically done as follows:
  * - If you consider input point with floating coordinates, you can define this type:
  *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyTypedef
  *
- * - Then import eventually a vector containing the input points by using the PointListReader class:
+ * - Then import possibly a vector containing the input points by using the PointListReader class:
  *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyReadFile 
  * 
  * - Finally apply the segment recognition (here of maximal thickness 15)  by adding the sequence (forward) of contour points: 
@@ -238,8 +240,8 @@ public:
    *
    * @note By using this initialisation the computer will store the
    * internal points (needed for length computation and display). To
-   * avoid this storage, you can use the initialisation given from the
-   * an iterator @see init().
+   * avoid this storage, you can use the initialisation method using
+   * two iterators (see @init).
    *
    * @param[in] aThickness the maximal thickness of the alpha thick segment (alpha_max).
    *
@@ -287,7 +289,7 @@ public:
 
   /**
    * @return a const iterator pointing on the first point of the
-   * current alpha thick segment. Usefull only if the initialisation was
+   * current alpha thick segment. Useful only if the initialisation was
    * done with a contour iterator (else, it is empty).
    */
   ConstIterator begin() const;
@@ -295,7 +297,7 @@ public:
 
   /**
    * @returns a const iterator pointing after the last point stored in
-   * the current alpha thick segment container. Usefull only if the
+   * the current alpha thick segment container. Useful only if the
    * initialisation was done with a contour iterator (else, it is
    * empty).
    */
@@ -429,7 +431,7 @@ public:
    * @param[out] nu the width of the strip. 
    *
    **/
-  void computeParalellStripParams(double &mu, PointD &N, double &nu) const;
+  void computeParallelStripParams(double &mu, PointD &N, double &nu) const;
   
   
   /**
@@ -508,7 +510,7 @@ public:
    * Computes the segment bounding box defined from the extremity
    * points computed after a scan of the current convexhull. Note that
    * this bouding box differs from the begin/end points bounding box
-   * when a large amount of noise are give in the initial curve.
+   * when a large amount of noise is present in the initial curve.
    *
    * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
@@ -655,8 +657,8 @@ protected:
    * @return true if ptProjected is inside the segment [A,B].
    **/
   template<typename TPointD>
-  bool projetOnStraightLine(const TPointD & ptA, const TPointD & ptB,
-                            const TPointD & ptC, PointD & ptProjected) const;
+  bool projectOnStraightLine(const TPointD & ptA, const TPointD & ptB,
+                             const TPointD & ptC, PointD & ptProjected) const;
   
 
   /**

@@ -3,12 +3,14 @@
 ## New Features / Critical Changes
 - *Geometry Package*
 
- - New Alpha Thick Segment Computer allowing the recognition of thick digital segment,
-   adapted to noisy contours (from a given thickness parameter). The actual
-   implementation (mainly a backport from  imagene) is a model of
-   CForwardSegmentComputer with a ParallelStrip primitive. The primitive
-   follow the  Debled-Rennesson etal 2005  blurred segment with isothetic
-   thickness. (Bertrand Kerautret, [#963](https://github.com/DGtal-team/DGtal/pull/963))
+- New segment computer allowing the recognition of thick digital segments,
+  adapted to noisy contours (from a given thickness parameter). The current
+  implementation (mainly a backport from imagene) is a model of
+  CForwardSegmentComputer with a ParallelStrip primitive. This primitive is
+  similar to the blurred segment of [Debled-Rennesson etal 2005] with isothetic
+  thickness. It is also an implementation of the alpha-thick segment of Alexandre
+  Faure and Fabien Feschet.
+  (Bertrand Kerautret,  [#963](https://github.com/DGtal-team/DGtal/pull/963))
 
 
 - *Configuration/General*
