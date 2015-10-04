@@ -162,7 +162,7 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::empty() const 
 {  
-  return myPointContainer.size()!=0;
+  return myPointContainer.empty();
 }
 
 
@@ -329,7 +329,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront()
     }
     myNbPointsAddedFromIterators++;
     myState.lastFront = *myEnd;
-    myEnd++;
+    ++myEnd;
     return true;
   }else{
     myState = _state;
@@ -350,7 +350,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::primitive()  con
 {
   PointD vectNormal;
   double mu, nu;
-  computeParalellStripParams(mu, vectNormal, nu);
+  computeParallelStripParams(mu, vectNormal, nu);
   return Primitive(mu,vectNormal,nu);  
 }
 
@@ -460,7 +460,11 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanUpdateMai
   while( !stop )
     {
       /* Use vectorial product to ckeck angle */
-      stop = ( ( R[0] - S[0] ) * ( Q[1] - P[1] ) - ( R[1] - S[1] ) * ( Q[0] - P[0] ) ) >= 0;
+      PointVector<3, typename TInputPoint::Component> ptR(R[0], R[1], 0);
+      PointVector<3, typename TInputPoint::Component> ptS(S[0], S[1], 0);
+      PointVector<3, typename TInputPoint::Component> ptQ(Q[0], Q[1], 0);
+      PointVector<3, typename TInputPoint::Component> ptP(P[0], P[1], 0);
+      stop = (ptR-ptS).crossProduct(ptQ-ptP)[2] >= 0;
       /* If not stop, move forward */
       if( !stop )
         {
@@ -514,7 +518,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanUpdateMai
     
   double thickness, mu;
   PointD normal;
-  computeParalellStripParams(mu, normal, thickness);
+  computeParallelStripParams(mu, normal, thickness);
   return thickness/normal.norm();
 }
 
@@ -699,9 +703,9 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
   else
     {
       PointD projF, projL, projS ;
-      projetOnStraightLine(myState.edgePh, myState.edgeQh, aFirstPt, projF);
-      projetOnStraightLine(myState.edgePh, myState.edgeQh, aLastPt, projL);
-      projetOnStraightLine(myState.edgePh, myState.edgeQh, myState.vertexSh, projS);
+      projectOnStraightLine(myState.edgePh, myState.edgeQh, aFirstPt, projF);
+      projectOnStraightLine(myState.edgePh, myState.edgeQh, aLastPt, projL);
+      projectOnStraightLine(myState.edgePh, myState.edgeQh, myState.vertexSh, projS);
     
       // Shift of the projection of PQ to define the other part of bounds.
       PointD dep (myState.vertexSh[0]-projS[0], myState.vertexSh[1]-projS[1]);
@@ -781,7 +785,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSegmentLength
 template < typename TInputPoint, typename TConstIterator>
 inline
 void 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParalellStripParams(double &mu, 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParallelStripParams(double &mu, 
                                                                                            PointD &N, 
                                                                                            double &nu) const
 {
@@ -810,7 +814,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNormal() cons
 {
   PointD r;
   double mu, nu;
-  computeParalellStripParams(mu, r,nu);
+  computeParallelStripParams(mu, r,nu);
   return r;
 }
 
@@ -822,7 +826,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getMu() const
 {
   PointD r;
   double mu, nu;
-  computeParalellStripParams(mu, r,nu);
+  computeParallelStripParams(mu, r,nu);
   return mu;
 }
 
@@ -834,7 +838,7 @@ double
 {
   PointD r;
   double mu, nu;
-  computeParalellStripParams(mu, r,nu);
+  computeParallelStripParams(mu, r,nu);
   return nu;
 }
 
@@ -865,7 +869,7 @@ template < typename TInputPoint, typename TConstIterator>
 template<typename TPointD>
 inline
 bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::projetOnStraightLine(const TPointD & ptA,
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::projectOnStraightLine(const TPointD & ptA,
                                                                                      const TPointD & ptB,
                                                                                      const TPointD & ptC,
                                                                                      PointD & ptProjected) const
@@ -910,8 +914,8 @@ computeExtremaPoints(const TConstIteratorG & itBegin,
   PointD projExtremF;
   PointD projExtremL;
   
-  projetOnStraightLine(myState.edgePh, myState.edgeQh, extremF, projExtremF);
-  projetOnStraightLine(myState.edgePh, myState.edgeQh, extremL, projExtremL);  
+  projectOnStraightLine(myState.edgePh, myState.edgeQh, extremF, projExtremF);
+  projectOnStraightLine(myState.edgePh, myState.edgeQh, extremL, projExtremL);  
  
 
   for(TConstIteratorG it = itBegin; it != itEnd; it++)
@@ -919,7 +923,7 @@ computeExtremaPoints(const TConstIteratorG & itBegin,
       InputPoint p = *it;
       PointD pointEnvConv = PointD(p[0], p[1]);
       PointD projPointEnvConv;
-      bool isNewExtrema = !projetOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
+      bool isNewExtrema = !projectOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
       if(isNewExtrema)
         {
           double distFirst = (projPointEnvConv-projExtremF).norm(); 

@@ -13,23 +13,22 @@ Part of the \ref packageGeometry.
 
 
 
-The primitive of the Digital Straight Segment (described here: @ref
+The Digital Straight Segment primitive (described here: @ref
 moduleArithDSSReco) is commonly used to extract geometric information
 from digital contours. It is exploited in various estimators as for
-instance in tangent \cite LachaudIVC2007 or curvature estimation
- \cite KerautretLachaud2009 . However, this primitive is not efficient to
-directly process real contours with the potential presence of noise. To
-overcome this limitation the primitive of blurred segment was first
-introduced by Debled-Rennesson \i etal \cite debledFuzzy2005 allowing to handle noise or contour
-irregularities.
+instance in tangent \cite LachaudIVC2007 or curvature estimation \cite
+KerautretLachaud2009 . However, this primitive is not efficient to
+directly process real contours with the potential presence of
+noise. To overcome this limitation the blurred segments was first
+introduced by Debled-Rennesson \i etal \cite debledFuzzy2005 which
+handle noise or contour irregularities.
 
 
-We present here the implementation of the recognition of the alpha
-thick segment as described in \cite FaureTangential2008. From a
-maximal thickness, it permits the recognition of a thick segment
-with the possibility to take into accounts some noise. Moreover the
-segment can be detected from points which are not necessary connected
-or with floating coordinates.
+We present here the recognition of alpha thick segments as described in
+\cite FaureTangential2008. From a maximal thickness, it permits the
+recognition of a thick segment with the possibility to take into
+accounts some noise. Moreover the segment can be detected from points
+which are not necessary connected or with floating-point.
 
 @note The proposed implementation is mainly a backport from
  [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
@@ -41,8 +40,8 @@ or with floating coordinates.
 
 \section moduleAlphaThickSegmentRecoIntro  Alpha Thick Segment
 
-The first definition of \b blurred \b segment  \cite debledFuzzy2005
-relies on the definition of the digital straight line (@ref
+The first definition of \b blurred \b segment  \cite debledFuzzy2005 
+relies on the definition of the digital straight lines (@ref
 moduleArithDSSReco):
 
 A set \f$ \mathcal{S}_f \f$ of consecutive points (\f$ \mathcal{S}_f
@@ -57,7 +56,7 @@ Following this definition, the authors also propose an incremental
 linear time algorithm to segment a digital curve into blurred segments
 of order \f$ d \f$. The main drawback of such a decomposition is the
 non optimality (it implies over segmentation).  Then the author
-introduce the notion blurred segment of width \f$ \nu \f$ 
+introduce the notion of blurred segment of width \f$ \nu \f$ 
 \cite debledrennessonblurred2005. The width \f$ \nu \f$ is associated to the
 isothetic thickness of a set of points, ie. the minimum value between
 its vertical and horizontal thicknesses (see figure below).
@@ -74,14 +73,14 @@ blurred segment of width \f$ \nu \f$ if and only if its optimal
 bounding line has an isothetic distance less or equal to \f$ \nu \f$.
 
 
-The actual implementation proposed here, relies on the convex hull
-computed incrementally with the melkman algorithm in linear time \cite melkmanLine1987.  
-It allows to add point on the front of the current
+The implementation proposed here relies on the convex hull computed
+incrementally with the Melkman algorithm in linear time \cite
+melkmanLine1987.  It allows to add point on the front of the current
 segment and to update the value of vertical/horizontal thickness with
-a coast of \f$O( log\ n) \f$ (instead \f$O(n\ log\ n) \f$ thanks to the
-Buzer optimization \cite lilianComputing2007 ).  Note that the
-convex hull maintenance in linear time with point subtraction
-proposed by Buzer \cite lilianComputing2007 is not yet implemented.
+a coast of \f$O( log\ n) \f$ (instead \f$O(n\ log\ n) \f$ thanks to an
+optimization of Buzer \cite lilianComputing2007 ).  Note that the
+convex hull maintenance in linear time with point subtraction proposed
+by Buzer \cite lilianComputing2007 is not yet implemented.
 
 
 
@@ -90,7 +89,7 @@ proposed by Buzer \cite lilianComputing2007 is not yet implemented.
 
 \subsection moduleAlphaThickSegmentRecoDetails-TypeInputContours Type of Input Points 
 
-This implementation of the Alpha thick segment can take as input
+This implementation of the alpha-thick segments can take as input
 different types of points which just need to be given in the template
 parameter (TInputPoint). The input points are not necessary connected
 but the important constraint is that the sequence of point should not
@@ -117,21 +116,21 @@ And the example of contour containing loops can produce some errors:
 \subsection moduleAlphaThickSegmentRecoDetails-Code Recognizing an Alpha Thick Segment
 
 To recognize an alpha thick segment, you need first to include the AlphaThickSegmentComputer header (with eventually the different namespace defined in StdDefs.h):
- @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyInclude
+ @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyInclude
 
 
 Afterwards, you have to set the type of the primitive by choosing the
 input point type. For instance, if you have to recognize input points
 with floating coordinates, you can define:
 
- @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyTypedef
+ @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyTypedef
 
 
 To import an input contour you can use the the PointListReader class:
-  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyReadFile 
+  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyReadFile 
 
 Then, you can define and initialize a new segment with maximal thickness set to 15:
-  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInit
+  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInit
 
 @note The maximal thickness given in initialization is the same than
 the width given by the method width() of the ParallelStrip primitive
@@ -139,11 +138,11 @@ the width given by the method width() of the ParallelStrip primitive
 
 
 You can extend the segment by adding point to the front:
-  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco 
+  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco 
 
 
 The final alpha thick segment can also be displayed with a Board3D as other 2D geometric primitives:
-@snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementDisplay
+@snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentDisplay
 
 As described in the Board3D documentation  (@ref dgtal_dgtalboard_sec14), this primitive has two main display modes:
 - default: the input point are displayed with its bounding box (the mode of the displayed points can also be changed).
@@ -152,7 +151,7 @@ As described in the Board3D documentation  (@ref dgtal_dgtalboard_sec14), this p
 
 
 You can also customize the segment color by using the CustomStyle object:
-@snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisCustomColor 
+@snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisCustomColor 
 
 As illustration the segment recognition given in
 exampleAlphaThickSegmentNoisy.cpp produces such a display:
@@ -176,7 +175,7 @@ point iterator. Then, the computer will not store the segment points
 the segment computer can be used in a quite similar way than in the
 previous example:
 
- @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco2 
+ @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco2 
 
 
 Since the iterator is defined from an open contour, we check that we
