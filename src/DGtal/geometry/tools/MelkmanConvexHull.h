@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Alias.h"
+#include "DGtal/base/CountedConstPtrOrConstPtr.h"
 #include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/base/FrontInsertionSequenceToStackAdapter.h"
 #include "DGtal/base/BackInsertionSequenceToStackAdapter.h"
@@ -89,6 +90,12 @@ namespace DGtal
   {
     // ----------------------- Types ------------------------------------------
   public:
+
+    /**
+     * Self type
+     */
+    typedef MelkmanConvexHull<TPoint, TOrientationFunctor> Self;
+
     /**
      * Type of point
      */
@@ -118,8 +125,9 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
-    MelkmanConvexHull( Alias<Functor> aFunctor ); 
-
+    MelkmanConvexHull( Alias<Functor> aFunctor); 
+    MelkmanConvexHull(); 
+    
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -159,6 +167,26 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /**
+     * Assignement Operator
+     *
+     * @param mch the object to copy.
+     * @return a reference on 'this'.
+     */
+    Self & operator= ( const Self & mch );
+
+    /**
+     * @return the @a i-th point of the convex hull queue. 
+     * @param i the index of the considered point.
+     */
+    const Point & operator[](unsigned int i) const;
+    
+    /**
+     * @return the nomber of points constituing the convex hull.
+     **/
+    unsigned int size() const;
+    
+    
     // ------------------------- Private Datas --------------------------------
   private:
     /**
@@ -174,10 +202,14 @@ namespace DGtal
      * Predicate devoted to the forward scan
      */
     ForwardPredicate myForwardPredicate; 
+    /**
+     * Used to define a default functor to allow default constructor
+     **/
+    Functor myDefaultFunctor;
 
     // ------------------------- Internals ------------------------------------
   private:
-
+    
   }; // end of class MelkmanConvexHull
 
   /**

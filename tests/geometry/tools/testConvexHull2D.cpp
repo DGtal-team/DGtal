@@ -186,8 +186,41 @@ bool testConvexHull2D()
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+  // melkman on line construction of  convex hull:
+  trace.info() << "on line convex hull construction" << std::endl;
+  DGtal::MelkmanConvexHull<Point, Functor> ch; 
+  for(vector<Point>::const_iterator it = data.begin(); it != data.end(); it++)
+    {
+      ch.add(*it);
+    }
 
+
+  unsigned int cvSize = 0;
+  for(DGtal::MelkmanConvexHull<Point, Functor>::ConstIterator it = ch.begin(); it != ch.end(); it++, cvSize++)
+    {
+      trace.info() << *it ;
+    };
+  trace.info() << std::endl;
+
+  if(res.size() == cvSize && (cvSize == ch.size()))
+    nbok++;
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;  
+  // test copy and [] operator on convex hull:
+  trace.info() << "test copy and [] operator on convex hull:" << std::endl;
+  DGtal::MelkmanConvexHull<Point, Functor> ch2 = ch;
+  unsigned int cvSize2 = 0;
+  for(DGtal::MelkmanConvexHull<Point, Functor>::ConstIterator it = ch.begin(); it != ch.end(); it++, cvSize2++)
+    {
+      trace.info() << *it ;
+    };
+   if(res.size() == cvSize2 && ch[0] == ch2[0])
+    nbok++;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;  
   trace.endBlock();
+
 
   trace.beginBlock ( "Random Tests..." );
   vector<Point> randomData, res1, res2; 

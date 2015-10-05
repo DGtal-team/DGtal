@@ -39,11 +39,21 @@
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TOrientationFunctor>
 inline
-DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull( Alias<Functor> aFunctor )
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull( Alias<Functor> aFunctor  )
   : myContainer(), 
-    myBackwardPredicate( aFunctor ), 
+    myBackwardPredicate( aFunctor ),
     myForwardPredicate( aFunctor )
 {
+}
+
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::MelkmanConvexHull()
+  : myContainer(),
+    myBackwardPredicate(myDefaultFunctor), 
+    myForwardPredicate(myDefaultFunctor)
+{  
 }
 
 // ----------------------------------------------------------------------------
@@ -141,6 +151,35 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::isValid() const
     return true;
 }
 
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>&  
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::operator= (const Self & mch)
+{
+    myContainer = mch.myContainer;
+    return *this;
+}
+
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
+const TPoint & 
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::operator[](unsigned int i) const
+{
+  ASSERT( i < myContainer.size() );
+  return myContainer[i];
+}
+
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
+unsigned int 
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::size() const
+{
+  // by definition the first and last points of the deque are the same.
+  return myContainer.size()-1;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
