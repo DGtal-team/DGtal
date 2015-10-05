@@ -21,7 +21,9 @@ namespace DGtal {
 @writers Tristan Roussillon
 
 Several algorithms of the \ref packageGeometry rely on geometric predicates. 
-For instance, any convex hull algorithm relies on an orientation test. 
+For instance, any convex hull algorithm relies on an orientation test
+(see @ref moduleHull2D for algorithms computing the convex hull of a finite 
+planar set of points).  
 If the test is not exact or if it is not robust to possible overflows, 
 the algorithm can return an incorrect result or can even infinitely loop. 
 We provide below several solutions to cope with such problems. 

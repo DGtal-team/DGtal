@@ -33,12 +33,13 @@
 #include "DGtal/kernel/PointVector.h"
 
 #include "DGtal/geometry/tools/determinant/Simple2x2DetComputer.h"
+#include "DGtal/geometry/tools/determinant/AvnaimEtAl2x2DetSignComputer.h"
 
 #include "DGtal/geometry/tools/determinant/COrientationFunctor2.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBy2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 
-#include "DGtal/geometry/tools/determinant/RadiusFunctor.h"
+#include "DGtal/geometry/tools/determinant/InGeneralizedDiskOfGivenRadius.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -93,22 +94,22 @@ bool testInHalfPlane(OrientationFunctor f)
 /**
  * Example of a test. To be completed.
  */
-bool testRadiusFunctor()
+bool testInGeneralizedDiskOfGivenRadius()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
   typedef PointVector<2, DGtal::int16_t> Point; 
-  typedef Simple2x2DetComputer<DGtal::int16_t, DGtal::int64_t> DetComputer; 
-  typedef RadiusFunctor<Point, DetComputer> RadiusFunctor; 
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2<RadiusFunctor> )); 
-  typedef RadiusFunctor::Value Value; 
+  typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
+  typedef InGeneralizedDiskOfGivenRadius<Point, DetComputer> Functor; 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2<Functor> )); 
+  typedef Functor::Value Value; 
 
   Value res; 
 
   trace.beginBlock ( "Infinite radius..." );
 
-  RadiusFunctor f_inf; //infinite radius by default 
+  Functor f_inf; //infinite radius by default 
   trace.info() << f_inf << " " << f_inf.isValid() << endl; 
 
   f_inf.init( Point(0,0), Point(5,2) );
@@ -135,7 +136,7 @@ bool testRadiusFunctor()
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  RadiusFunctor f_inf2(false); //infinite radius too, but with another orientation 
+  Functor f_inf2(false); //infinite radius too, but with another orientation 
   trace.info() << f_inf2 << " " << f_inf2.isValid() << endl; 
 
   f_inf2.init( Point(0,0), Point(5,2) );
@@ -166,42 +167,49 @@ bool testRadiusFunctor()
 
   trace.beginBlock ( "Finite radius..." );
 
-  RadiusFunctor f5(true, 25, 1); //radius 5 with positive orientation 
+  Functor f5(true, 25, 1); //radius 5 with positive orientation 
   trace.info() << f5 << " " << f5.isValid() << endl; 
 
   f5.init( Point(5,0), Point(0,5) );
-  res = f5( Point(4,1) ); 
+  res = f5( Point(-4,1) ); 
   trace.info() << res << " > 0 " << std::endl; 
   if ( res > NumberTraits<Value>::ZERO )
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f5( Point(3,1) ); 
-  trace.info() << res << " > 0 " << std::endl; 
-  if ( res > NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-
-  res = f5( Point(5,1) ); 
+  res = f5( Point(-5,1) ); 
   trace.info() << res << " < 0 " << std::endl; 
   if ( res < NumberTraits<Value>::ZERO )
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f5( Point(3,4) ); 
+  res = f5( Point(-3,4) ); 
   trace.info() << res << " == 0 " << std::endl; 
   if ( res == NumberTraits<Value>::ZERO )
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  RadiusFunctor f52(false, 25, 1); //radius 5 with negative orientation 
+  res = f5( Point(-1,6) ); 
+  trace.info() << res << " < 0 " << std::endl; 
+  if ( res < NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  res = f5( Point(-1,7) ); 
+  trace.info() << res << " < 0 " << std::endl; 
+  if ( res < NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  Functor f52(false, 25, 1); //radius 5 with negative orientation 
   trace.info() << f52 << " " << f52.isValid() << endl; 
 
-  f52.init( Point(5,0), Point(0,5) );
+  f52.init( Point(-5,0), Point(0,5) );
   res = f52( Point(4,1) ); 
   trace.info() << res << " < 0 " << std::endl; 
   if ( res < NumberTraits<Value>::ZERO )
@@ -237,6 +245,20 @@ bool testRadiusFunctor()
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
+  res = f52( Point(1,6) ); 
+  trace.info() << res << " > 0 " << std::endl; 
+  if ( res > NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  res = f52( Point(1,7) ); 
+  trace.info() << res << " > 0 " << std::endl; 
+  if ( res > NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
   trace.endBlock();
 
   
@@ -263,7 +285,7 @@ int main( int argc, char** argv )
   typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor2; 
   res = res && testInHalfPlane( Functor2() );
 
-  res = res && testRadiusFunctor(); 
+  res = res && testInGeneralizedDiskOfGivenRadius(); 
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
