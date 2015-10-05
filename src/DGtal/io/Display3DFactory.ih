@@ -512,14 +512,14 @@ DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display & display,
   a.getParameters ( v, muR, omegaR );
   
   PointD3d mu;
-  mu[0] = (double) NumberTraits<Integer>::castToInt64_t ( muR[0].first ) / (double) NumberTraits<Integer>::castToInt64_t ( muR[0].second );
-  mu[1] = (double) NumberTraits<Integer>::castToInt64_t ( muR[1].first ) / (double) NumberTraits<Integer>::castToInt64_t ( muR[1].second );
-  mu[2] = (double) NumberTraits<Integer>::castToInt64_t ( muR[2].first ) / (double) NumberTraits<Integer>::castToInt64_t ( muR[2].second );
+  mu[0] = NumberTraits<Integer>::castToDouble ( muR[0].first ) / NumberTraits<Integer>::castToDouble ( muR[0].second );
+  mu[1] = NumberTraits<Integer>::castToDouble ( muR[1].first ) / NumberTraits<Integer>::castToDouble ( muR[1].second );
+  mu[2] = NumberTraits<Integer>::castToDouble ( muR[2].first ) / NumberTraits<Integer>::castToDouble ( muR[2].second );
   
   PointD3d omega;
-  omega[0] = (double) NumberTraits<Integer>::castToInt64_t ( omegaR[0].first ) / (double) NumberTraits<Integer>::castToInt64_t ( omegaR[0].second );
-  omega[1] = (double) NumberTraits<Integer>::castToInt64_t ( omegaR[1].first ) / (double) NumberTraits<Integer>::castToInt64_t ( omegaR[1].second );
-  omega[2] = (double) NumberTraits<Integer>::castToInt64_t ( omegaR[2].first ) / (double) NumberTraits<Integer>::castToInt64_t ( omegaR[2].second );
+  omega[0] = NumberTraits<Integer>::castToDouble ( omegaR[0].first ) / NumberTraits<Integer>::castToDouble ( omegaR[0].second );
+  omega[1] = NumberTraits<Integer>::castToDouble ( omegaR[1].first ) / NumberTraits<Integer>::castToDouble ( omegaR[1].second );
+  omega[2] = NumberTraits<Integer>::castToDouble ( omegaR[2].first ) / NumberTraits<Integer>::castToDouble ( omegaR[2].second );
 
   //casting coordinates of v in double
   VectorD3d u = VectorD3d(NumberTraits<Integer>::castToDouble(v[0]),
