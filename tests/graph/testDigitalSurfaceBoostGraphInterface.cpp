@@ -214,7 +214,7 @@ bool testDigitalSurfaceBoostGraphInterface()
   StdColorMap colorMap;
   boost::associative_property_map< StdColorMap > propColorMap( colorMap );
   // get the property map for storing distances
-  typedef std::map< vertex_descriptor, unsigned long > StdDistanceMap;
+  typedef std::map< vertex_descriptor, uint64_t > StdDistanceMap;
   StdDistanceMap distanceMap;
   boost::associative_property_map< StdDistanceMap > propDistanceMap( distanceMap );
   boost::queue< vertex_descriptor > Q; // std::queue does not have top().
@@ -230,13 +230,13 @@ bool testDigitalSurfaceBoostGraphInterface()
 
   // Display results
   trace.beginBlock ( "Display breadth_first_visit result ..." );
-  unsigned long maxD = 0;
+  uint64_t maxD = 0;
   vertex_descriptor furthest = start;
-  unsigned long nbV = 0;
+  uint64_t nbV = 0;
   for ( std::pair<vertex_iterator, vertex_iterator>
           vp = boost::vertices( digSurf ); vp.first != vp.second; ++vp.first, ++nbV )
     {
-      unsigned long d = boost::get( propDistanceMap, *vp.first );
+      uint64_t d = boost::get( propDistanceMap, *vp.first );
       if ( d > maxD ) 
         {
           maxD = d;
@@ -313,8 +313,8 @@ bool testDigitalSurfaceBoostGraphInterface()
       .vertex_index_map( propVertexIndexMap )
       );
   trace.info() << "- total weight = " << total_weight << std::endl;
-  unsigned long nb0 = 0;
-  unsigned long nb1 = 0;
+  uint64_t nb0 = 0;
+  uint64_t nb1 = 0;
   for ( std::pair<vertex_iterator, vertex_iterator> 
            vp = boost::vertices( digSurf ); vp.first != vp.second; ++vp.first, ++idxV )
      {
@@ -353,7 +353,7 @@ bool testDigitalSurfaceBoostGraphInterface()
   StdPredecessorMap predecessorMap;
   boost::associative_property_map< StdPredecessorMap > propPredecessorMap( predecessorMap );
   // We already have vertex color map, vertex distance map and vertex index map.
-  unsigned long nbEdges = 0;
+  uint64_t nbEdges = 0;
   // The weight is smaller for edges traversing plane z=0 than anywhere else.
   // The min cut thus cuts the sphere in two approximate halves.
   for ( std::pair<edge_iterator, edge_iterator>

@@ -4,6 +4,8 @@ SET(DGTAL_TESTS_SRC
   testEstimatorComparator
   testSegmentComputerEstimators
   testMostCenteredMSEstimator
+  testLambdaMST2D
+  testLambdaMST3D
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

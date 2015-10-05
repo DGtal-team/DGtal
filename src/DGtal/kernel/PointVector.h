@@ -541,6 +541,13 @@ namespace DGtal
     Self crossProduct( const Self &v) const;
 
     /**
+     * Positive angle between two vectors, deduced from their scalar product.
+     * @param v any vector
+     * @return the angle between *this and v in [0,pi].
+     */
+    double cosineSimilarity ( const Self & v ) const;
+
+    /**
      * Addition operator with assignement.
      *
      * @param v is the Point that gets added to @a *this.
