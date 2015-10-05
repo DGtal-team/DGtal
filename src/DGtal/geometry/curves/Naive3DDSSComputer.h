@@ -277,14 +277,20 @@ class Naive3DDSSComputer
     const ArithmeticalDSSComputer2d & arithmeticalDSS2dYZ () const;
 
     /**
-       @param i the axis orthogonal to the plane
+       @param i the axis orthogonal to the plane 
+       i = 0 -> YZ-plane
+       i = 1 -> XZ-plane
+       i = 2 -> XY-plane
        @return a const-reference on the arithmetical DSS recognition
        algorithm along the plane orthogonal to the \a i-th axis.
     */
     const ArithmeticalDSSComputer2d & arithmeticalDSS2d( Dimension i ) const;
     
     /**
-       @ param i the axis orthogonal to the plane
+       @param i the axis orthogonal to the plane 
+       i = 0 -> YZ-plane
+       i = 1 -> XZ-plane
+       i = 2 -> XY-plane
        @return true if given 2D DSS along orthogonal axis is valid
      */
     bool validArithmeticalDSS2d ( Dimension i ) const;
