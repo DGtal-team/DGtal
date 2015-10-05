@@ -315,7 +315,7 @@ DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display & display,
 
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
   typedef DGtal::PointVector<3,double> PointD3d;
-  typedef typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::PointR3d PointR3d;
+  typedef typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::PointR3d PointR3d;
 
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector3d;
   typedef DGtal::PointVector<3,double> VectorD3d;
