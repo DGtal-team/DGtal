@@ -68,7 +68,7 @@ namespace DGtal
    * of the convex hull (for convenience, the first and last vertex 
    * contained in the deque are the same point). Since we assume 
    * that the input points form a simple polygonal line, a new point
-   * cannot be localed in the cone formed by the first and last edges
+   * cannot be located in the cone formed by the first and last edges
    * of the current convex hull. As a consequence, it is enough to update
    * the convex hull by a Graham scan from the front and/or from the back 
    * of the deque; it is never required to remove/insert points in the middle 
