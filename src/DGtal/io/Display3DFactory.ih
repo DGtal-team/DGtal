@@ -315,6 +315,7 @@ DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display & display,
 
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
   typedef DGtal::PointVector<3,double> PointD3d;
+  typedef typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::PointR3d PointR3d;
 
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector3d;
   typedef DGtal::PointVector<3,double> VectorD3d;
@@ -323,9 +324,19 @@ DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display & display,
 
   //get DSS parameters
   Vector3d v; //direction vector
-  PointD3d mu; //intercept
-  PointD3d omega; //thickness
-  a.getParameters(v,mu,omega);
+  PointR3d muR; //intercept
+  PointR3d omegaR; //thickness
+  a.getParameters ( v, muR, omegaR );
+  
+  PointD3d mu;
+  mu[0] = (double) NumberTraits<Integer>::castToInt64_t ( muR[0].first ) / (double) NumberTraits<Integer>::castToInt64_t ( muR[0].second );
+  mu[1] = (double) NumberTraits<Integer>::castToInt64_t ( muR[1].first ) / (double) NumberTraits<Integer>::castToInt64_t ( muR[1].second );
+  mu[2] = (double) NumberTraits<Integer>::castToInt64_t ( muR[2].first ) / (double) NumberTraits<Integer>::castToInt64_t ( muR[2].second );
+  
+  PointD3d omega;
+  omega[0] = (double) NumberTraits<Integer>::castToInt64_t ( omegaR[0].first ) / (double) NumberTraits<Integer>::castToInt64_t ( omegaR[0].second );
+  omega[1] = (double) NumberTraits<Integer>::castToInt64_t ( omegaR[1].first ) / (double) NumberTraits<Integer>::castToInt64_t ( omegaR[1].second );
+  omega[2] = (double) NumberTraits<Integer>::castToInt64_t ( omegaR[2].first ) / (double) NumberTraits<Integer>::castToInt64_t ( omegaR[2].second );
 
   //casting coordinates of v in double
   VectorD3d u = VectorD3d(NumberTraits<Integer>::castToDouble(v[0]),
