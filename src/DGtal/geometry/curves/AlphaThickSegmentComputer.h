@@ -491,7 +491,7 @@ public:
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
    * @param[out] pt3LongestSegment2 the first point of one of the second longest segment.
    * @param[out] pt4LongestSegment2 the second point of one of the second longest segment.
-   * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue).
+   * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue when the segment thickness is 0).
    *
    * @note the segment bounding box can be drawn with the sequence of
    * out parameters pt1LongestSegment1, pt2LongestSegment1,
