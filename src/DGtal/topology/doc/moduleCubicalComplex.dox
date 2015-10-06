@@ -36,7 +36,19 @@ faces of a cell of \a K belong also to \a K.
 
 To create a cubical complex, we need to specify in which Khalimsky
 space it lives and also, optionally, the type of container used for
-storing cells.
+storing cells. By default it is \c std::map but \c boost::unordered_map
+or \c std::unordered_map is also possible.
+
+\code
+using namespace DGtal;
+typedef KhalimskySpaceND<2,int>           KSpace; // ZxZ
+typedef std::map<Cell, CubicalCellData>   Map;    // each cell must store at least a CubicalCellData
+typedef CubicalComplex< KSpace, Map >     CC;     // the type of cubical complex
+
+KSpace K;                                         // The cellular grid space
+K.init( Point( 0,0 ), Point( 100,100 ), true );   // Limits of the grid space
+C complex( K );                                   // The complex C
+\endcode
 
 */
 
