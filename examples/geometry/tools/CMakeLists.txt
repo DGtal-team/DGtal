@@ -2,6 +2,8 @@ add_subdirectory(determinant)
 
 SET(DGTAL_EXAMPLES_SRC
   examplePreimage
+  exampleConvexHull2D
+  exampleAlphaShape
 )
 
 

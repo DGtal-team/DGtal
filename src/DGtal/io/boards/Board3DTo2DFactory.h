@@ -47,7 +47,9 @@
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/boards/DrawWithBoard3DTo2DModifier.h"
 #include "DGtal/geometry/curves/StandardDSS6Computer.h"
+#include "DGtal/geometry/curves/Naive3DDSSComputer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetByAssociativeContainer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -194,55 +196,143 @@ namespace DGtal
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
   // StandardDSS6Computer
+  
+  
+    // Naive3DDSSComputer
+  /**
+   * Default drawing style object.
+   * @param str the name of the class
+   * @param arithm the arithm to draw
+   *  @return the dyn. alloc. default style for this object.
+   */
+  template <typename TIterator, typename TInteger, int connectivity>
+  static DGtal::DrawableWithBoard3DTo2D *
+  defaultStyle( std::string str, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+  template <typename TIterator, typename TInteger, int connectivity>
+  /**
+   * @brief drawAsBalls
+   * @param board the board where to draw
+   * @param arithm the arithm to draw
+   */
+  static void
+  drawAsBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+  /**
+   * @brief drawAsBoundingBox
+   * @param board the board where to draw
+   * @param arithm the arithm to draw
+   */
+  template <typename TIterator, typename TInteger, int connectivity>
+  static void
+  drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+  template <typename TIterator, typename TInteger, int connectivity>
+  /**
+   * @brief draw
+   * @param board the board where to draw
+   * @param arithm the arithm to draw
+   */
+  static void
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+  // Naive3DDSSComputer
 
 
-  // DigitalSetBySTLSet
+    // DigitalSetBySTLSet
+    /**
+     * Default drawing style object.
+     * @param str the name of the class
+     * @param aSet the set to draw
+     * @return the dyn. alloc. default style for this object.
+     */
+    template<typename Domain, typename Compare>
+    static DGtal::DrawableWithBoard3DTo2D *
+    defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
+    
+    /**
+     * @brief drawAsPavingTransparent
+     * @param board the board where to draw
+     * @param aSet the set to draw
+     */
+    template<typename Domain, typename Compare>
+    static void
+    drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
+    
+    /**
+     * @brief drawAsPaving
+     * @param board the board where to draw
+     * @param aSet the set to draw
+     */
+    template<typename Domain, typename Compare>
+    static void
+    drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
+    
+    /**
+     * @brief drawAsGrid
+     * @param board the board where to draw
+     * @param aSet the set to draw
+     */
+    template<typename Domain, typename Compare>
+    static void
+    drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
+    
+    /**
+     * @brief draw
+     * @param board the board where to draw
+     * @param aSet the set to draw
+     */
+    template<typename Domain, typename Compare>
+    static void
+    draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
+    // DigitalSetBySTLSet
+
+    // DigitalSetByAssociativeContainer
   /**
    * Default drawing style object.
    * @param str the name of the class
    * @param aSet the set to draw
    * @return the dyn. alloc. default style for this object.
    */
-  template<typename Domain, typename Compare>
+  template<typename Domain, typename Container>
   static DGtal::DrawableWithBoard3DTo2D *
-  defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
+  defaultStyle( std::string str, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
 
   /**
    * @brief drawAsPavingTransparent
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Compare>
+  template<typename Domain, typename Container>
   static void
-  drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
+  drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
 
   /**
    * @brief drawAsPaving
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Compare>
+  template<typename Domain, typename Container>
   static void
-  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
+  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
 
   /**
    * @brief drawAsGrid
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Compare>
+  template<typename Domain, typename Container>
   static void
-  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
+  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
 
   /**
    * @brief draw
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Compare>
+  template<typename Domain, typename Container>
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
-  // DigitalSetBySTLSet
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
+  // DigitalSetByAssociativeContainer
 
 
   // DigitalSetBySTLVector

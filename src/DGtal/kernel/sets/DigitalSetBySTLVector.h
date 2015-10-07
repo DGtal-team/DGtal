@@ -336,12 +336,6 @@ namespace DGtal
   public:
 
     /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object. 
-     */
-    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
-
-    /**
      * @return the style name used for drawing this object.
      */
     std::string className() const;
