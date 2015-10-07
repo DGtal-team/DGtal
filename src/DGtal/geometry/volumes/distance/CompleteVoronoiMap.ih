@@ -1,0 +1,262 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file CompleteVoronoiMap.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/08/14
+ *
+ * Implementation of inline methods defined in CompleteVoronoiMap.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#ifdef VERBOSE
+#include <boost/lexical_cast.hpp>
+#endif
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+
+/**
+ * Destructor.
+ */
+template <typename S, typename P,typename TSep, typename TImage>
+inline
+DGtal::CompleteVoronoiMap<S, P,TSep, TImage>::~CompleteVoronoiMap()
+{
+}
+
+
+template <typename S, typename P, typename TSep, typename TImage>
+inline
+typename DGtal::CompleteVoronoiMap<S,P, TSep, TImage>::Self &
+DGtal::CompleteVoronoiMap<S,P, TSep, TImage>::operator=(const Self &aOtherCompleteVoronoiMap )
+{
+  if (this != &aOtherCompleteVoronoiMap)
+    {
+      myMetricPtr = aOtherCompleteVoronoiMap.myMetricPtr;
+      myImagePtr = aOtherCompleteVoronoiMap.myImagePtr;
+      myPointPredicatePtr = aOtherCompleteVoronoiMap.myPointPredicatePtr;
+      myDomainPtr = aOtherCompleteVoronoiMap.myDomainPtr;
+      myInfinity = aOtherCompleteVoronoiMap.myInfinity;
+      myLowerBoundCopy = aOtherCompleteVoronoiMap.myLowerBoundCopy;
+      myUpperBoundCopy = aOtherCompleteVoronoiMap.myUpperBoundCopy;
+    }
+  return *this;
+}
+
+template <typename S, typename P, typename TSep, typename TImage>
+inline
+void
+DGtal::CompleteVoronoiMap<S,P, TSep, TImage>::compute( )
+{
+  //We copy the image extent
+  myLowerBoundCopy = myDomainPtr->lowerBound();
+  myUpperBoundCopy = myDomainPtr->upperBound();
+
+  //Point outside the domain
+  myInfinity = myDomainPtr->upperBound() + Point::diagonal(1);
+
+  //Init
+  for(typename Domain::ConstIterator it = myDomainPtr->begin(), itend = myDomainPtr->end();
+      it != itend;
+      ++it)
+    if ( (*myPointPredicatePtr)( *it ))
+      myImagePtr->setValue ( *it, myInfinity );
+    else
+      myImagePtr->setValue ( *it, *it );
+
+  //We process the remaining dimensions
+  for ( Dimension dim = 0;  dim< S::dimension ; dim++ )
+    computeOtherSteps ( dim );
+}
+
+template <typename S, typename P,typename TSep, typename TImage>
+inline
+void
+DGtal::CompleteVoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
+{
+#ifdef VERBOSE
+  std::string title = "Voro dimension " +  boost::lexical_cast<std::string>( dim ) ;
+  trace.beginBlock ( title );
+#endif
+
+  typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
+
+  //We setup the subdomain iterator
+  //the iterator will scan dimension using the order:
+  // {n-1, n-2, ... 1} (we skip the '0' dimension).
+  std::vector<Size> subdomain;
+  subdomain.reserve(S::dimension - 1);
+  for ( int k = 0; k < (int)S::dimension ; k++)
+    if ( static_cast<Dimension>(((int)S::dimension - 1 - k)) != dim)
+      subdomain.push_back( (int)S::dimension - 1 - k );
+
+  Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
+
+#ifdef WITH_OPENMP
+  //Parallel loop
+  std::vector<Point> subRangePoints;
+  //Starting point precomputation
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).end();
+       it != itend; ++it)
+    subRangePoints.push_back( *it );
+  //We run the 1D problems in //
+#pragma omp parallel for schedule(dynamic)
+  for (size_t i = 0; i < subRangePoints.size(); ++i)
+    computeOtherStep1D ( subRangePoints[i], dim);
+
+#else
+  //We solve the 1D problems sequentially
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).end();
+       it != itend; ++it)
+    computeOtherStep1D ( *it, dim);
+#endif
+
+#ifdef VERBOSE
+  trace.endBlock();
+#endif
+}
+
+// //////////////////////////////////////////////////////////////////////:
+// ////////////////////////// Other Phases
+template <typename S,typename P, typename TSep, typename TImage>
+void
+DGtal::CompleteVoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingPoint,
+                                                  const Size dim) const
+{
+  Point point = startingPoint;
+  Point endpoint = startingPoint;
+  Point psite;
+  int nbSites = -1;
+  std::vector<Point> Sites;
+
+  ASSERT(dim < S::dimension);
+
+  //Reserve
+  Sites.reserve( myUpperBoundCopy[dim] - myLowerBoundCopy[dim] +1);
+
+  //endpoint of the 1D row
+  endpoint[dim] = myUpperBoundCopy[dim];
+
+  //Pruning the list of sites (dim=0 implies no hibben sites)
+  if (dim==0)
+    {
+      for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+	{
+	  psite = myImagePtr->operator()(point);
+	  if ( psite != myInfinity )
+	    {
+	      nbSites++;
+	      Sites.push_back( psite );
+	    }
+	  point[dim] ++;
+	}
+    }
+  else
+    {
+      //Pruning the list of sites
+      for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+	{
+	  psite = myImagePtr->operator()(point);
+	  if ( psite != myInfinity )
+	    {
+	      while ((nbSites >= 1) &&
+		     ( myMetricPtr->hiddenBy(Sites[nbSites-1], Sites[nbSites] ,
+                                             psite, startingPoint, endpoint, dim) ))
+		{
+                  nbSites --;
+                  Sites.pop_back();
+		}
+	      nbSites++;
+              Sites.push_back( psite );
+            }
+	  point[dim] ++;
+	}
+    }
+
+  //No sites found
+  if (nbSites == -1)
+    return;
+
+  int k = 0;
+
+  //Rewriting
+  point[dim] = myLowerBoundCopy[dim];
+  for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+    {
+      while ( (k < nbSites) &&
+	      ( myMetricPtr->closest(point, Sites[k], Sites[k+1])
+		!= DGtal::ClosestFIRST ))
+        k++;
+
+      myImagePtr->setValue(point, Sites[k]);
+      point[dim]++;
+    }
+}
+
+
+/**
+ * Constructor.
+ */
+template <typename S,typename P,typename TSep, typename TImage>
+inline
+DGtal::CompleteVoronoiMap<S,P, TSep, TImage>::CompleteVoronoiMap( ConstAlias<Domain> aDomain,
+                                          ConstAlias<PointPredicate> aPredicate,
+                                          ConstAlias<SeparableMetric> aMetric):
+  myDomainPtr(&aDomain), myPointPredicatePtr(&aPredicate),
+  myMetricPtr(&aMetric)
+{
+  myImagePtr = CountedPtr<OutputImage>( new OutputImage(aDomain) );
+  compute();
+}
+
+template <typename S,typename P,typename TSep, typename TImage>
+inline
+void
+DGtal::CompleteVoronoiMap<S,P, TSep, TImage>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[CompleteVoronoiMap] separable metric=" << *myMetricPtr ;
+}
+
+
+// //                                                                           //
+// ///////////////////////////////////////////////////////////////////////////////
+
+template <typename S,typename P,typename TSep, typename TImage>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+		    const CompleteVoronoiMap<S,P,TSep, TImage> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
