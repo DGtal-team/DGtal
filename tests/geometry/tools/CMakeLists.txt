@@ -3,7 +3,10 @@ add_subdirectory(determinant)
 SET(DGTAL_TESTS_SRC
   testRayIntersection
   testPreimage
-  testSphericalAccumulator)
+  testSphericalAccumulator
+  testHullFunctions2D
+  testPolarPointComparatorBy2x2DetComputer
+  testConvexHull2D)
 
 SET(DGTAL_TESTS_QSRC
   testSphericalAccumulatorQGL)
