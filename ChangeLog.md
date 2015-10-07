@@ -16,6 +16,21 @@
    [#1042](https://github.com/DGtal-team/DGtal/pull/1042)
 
 
+- *Kernel*
+ - New template class DigitalSetlByAssociativeContainer allows to
+   define digital sets from any associative container of the STL. For
+   instance, using std::unordered_set (c++11) or boost::unordered_set (hash
+   function based containers), speed-up up to 40% can be measured when
+   processing digital sets. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ - By default, Z2i::DigitalSet, Z3i::DigitalSet and digital set from
+   DigitalSetSelector use the new hash function based
+   container. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ - Specializations of std::hash (c++11) and boost::hash to define a hash
+   functions on DGtal points. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ 
 ## Changes
 
 - *DEC Package*
@@ -81,6 +96,18 @@
  - Main example files of geometry/curves are introduced in the list of examples
    and briefly described.
    (Tristan Roussillon, [#1026](https://github.com/DGtal-team/DGtal/pull/1026))
+ - New algorithms to compute the convex hull of planar point sets.
+   (Tristan Roussillon, [#1028](https://github.com/DGtal-team/DGtal/pull/1028))
+ - Lambda maximal segment tangent direction estimator 2D/3D: LambdaMST2D, LambdaMST3D.
+   A fast tangent direction estimator which uses maximal digital straight segments. 
+   (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
+ - Segmentation of 3D digital curves by a combination of the segmentations of its 2D 
+   projections onto 2D base planes: XY, XZ, YZ. Notice that, only valid projections
+   are used. By valid one understands that there are no two 3D points which are projected
+   onto the same 2D point. A segment is computed as long as is extendable and at least 
+   two projections are valid.
+ : NaiveDSS3DComputer.
+   (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential

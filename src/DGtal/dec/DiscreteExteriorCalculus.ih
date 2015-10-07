@@ -71,7 +71,6 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     if (iter_property == myCellProperties.end())
         return false;
 
-    const DGtal::Dimension cell_dim = myKSpace.uDim(_cell);
     const Index index = iter_property->second.index;
     myCellProperties.erase(iter_property);
 

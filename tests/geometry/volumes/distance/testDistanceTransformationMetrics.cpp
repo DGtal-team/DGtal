@@ -35,6 +35,7 @@
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

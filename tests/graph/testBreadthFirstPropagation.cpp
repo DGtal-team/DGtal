@@ -85,8 +85,8 @@ void testBreadthFirstPropagation()
   
   Board2D board;
   board << SetMode( domain.className(), "Paving" )
-  << domain
-  << SetMode( p1.className(), "Paving" );
+        << domain
+        << SetMode( p1.className(), "Paving" );
   
   Image image = ImageFromSet<Image>::create(shape_set, 1);
   
@@ -104,34 +104,34 @@ void testBreadthFirstPropagation()
   string specificStyle = p1.className() + "/Paving";
   
   for ( DigitalSet::ConstIterator it = shape_set.begin();
-  it != shape_set.end();
-  ++it )
-  {
-    if( image(*it) == 0)
+        it != shape_set.end();
+        ++it )
     {
-      board << CustomStyle( specificStyle,
-        new CustomColors( Color::Black,
-        Color::Red ) )
-      << *it;
-    }
-    else
-    {
-      if( image(*it) > 0 )
-      {
-	board << CustomStyle( specificStyle,
-	  new CustomColors( Color::Black,
-	  cmap_grad( image(*it) ) ) )
-	<< *it;
-      }
+      if( image(*it) == 0)
+        {
+          board << CustomStyle( specificStyle,
+                                new CustomColors( Color::Black,
+                                                  Color::Red ) )
+                << *it;
+        }
       else
-      {
-	board << CustomStyle( specificStyle,
-	  new CustomColors( Color::Black,
-	  cmap_grad( 0 ) ) )
-	<< *it;
-      }
+        {
+          if( image(*it) > 0 )
+            {
+              board << CustomStyle( specificStyle,
+                                    new CustomColors( Color::Black,
+                                                      cmap_grad( image(*it) ) ) )
+                    << *it;
+            }
+          else
+            {
+              board << CustomStyle( specificStyle,
+                                    new CustomColors( Color::Black,
+                                                      cmap_grad( 0 ) ) )
+                    << *it;
+            }
+        }
     }
-  }
   
   board.saveEPS("testBreadthFirstPropagation.eps");
 }
