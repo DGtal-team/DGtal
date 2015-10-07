@@ -1,0 +1,320 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file Hull2DHelpers.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/12/02
+ *
+ * Implementation of inline methods defined in Hull2DHelpers.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+namespace DGtal
+{
+  namespace functions
+  {
+  namespace Hull2D
+  {
+
+    //----------------------------------------------------------------------------
+    template <typename Stack, typename Point, typename Predicate>
+    inline
+    void updateHullWithStack(Stack& aStack, const Point& aNewPoint, const Predicate& aPredicate)
+    {
+      BOOST_CONCEPT_ASSERT(( CStack<Stack> ));
+
+      Point Q = aStack.top(); 
+      aStack.pop(); 
+      if (aStack.size() != 0) 
+	{
+	  Point P = aStack.top(); 
+	  while ( ( !aPredicate(P,Q,aNewPoint) )&&(aStack.size() != 0) )
+	    {
+	      //remove Q
+	      //std::cerr << Q << " removed " << std::endl; 
+	      Q = P; 
+	      aStack.pop(); 
+	      if (aStack.size() != 0) 
+		P = aStack.top(); 
+	    }
+	  //add Q
+	  aStack.push(Q); 
+	}
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename Stack, typename Point, typename Predicate>
+    inline
+    void updateHullWithAdaptedStack(Stack aStack, const Point& aNewPoint, const Predicate& aPredicate)
+    {
+      updateHullWithStack( aStack, aNewPoint, aPredicate ); 
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename Stack, typename ForwardIterator, typename Predicate>
+    inline
+    void buildHullWithStack(Stack& aStack, 
+			    const ForwardIterator& itb, const ForwardIterator& ite,
+			    const Predicate& aPredicate)
+    {
+      BOOST_CONCEPT_ASSERT(( CStack<Stack> ));
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+
+      //for all points
+      for(ForwardIterator it = itb; it != ite; ++it)
+	{
+	  if(aStack.size() < 2)
+	    {
+	      aStack.push( *it ); 
+	    }
+	  else
+	    {
+	      //we update the hull so that the predicate returns 'true'
+	      //for each sets of three consecutive points
+	      updateHullWithStack(aStack, *it, aPredicate); 
+	      //add new point
+	      aStack.push( *it ); 
+	    }
+	}//end for all points
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename Stack, typename ForwardIterator, typename Predicate>
+    inline
+    void buildHullWithAdaptedStack(Stack aStack, 
+				   const ForwardIterator& itb, const ForwardIterator& ite,
+				   const Predicate& aPredicate)
+    {
+      buildHullWithStack( aStack, itb, ite, aPredicate ); 
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename ForwardIterator, typename OutputIterator, typename Predicate>
+    inline
+    void openGrahamScan(const ForwardIterator& itb, const ForwardIterator& ite,  
+			OutputIterator res, const Predicate& aPredicate)
+    {
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
+
+      //container
+      std::deque<Point> container; 
+
+      //hull computation
+      buildHullWithAdaptedStack( backStack(container), itb, ite, aPredicate ); 
+  
+      //Copy
+      std::copy(container.begin(), container.end(), res); 
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename ForwardIterator, typename OutputIterator, typename Predicate>
+    inline
+    void closedGrahamScanFromVertex(const ForwardIterator& itb, const ForwardIterator& ite,  
+				    OutputIterator res, const Predicate& aPredicate)
+    {
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
+
+      //container
+      std::deque<Point> container; 
+
+      //hull computation
+      buildHullWithAdaptedStack( backStack(container), itb, ite, aPredicate); 
+
+      //we update the hull to take into account the starting point
+      if ( container.size() > 3 )
+	updateHullWithAdaptedStack( backStack(container), container.front(), aPredicate ); 
+      
+      std::copy(container.begin(), container.end(), res); 
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename ForwardIterator, typename OutputIterator, typename Predicate>
+    inline
+    void closedGrahamScanFromAnyPoint(const ForwardIterator& itb, const ForwardIterator& ite,  
+				      OutputIterator res, const Predicate& aPredicate)
+    {
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
+
+      //container
+      std::deque<Point> container; 
+
+      //hull computation
+      buildHullWithAdaptedStack( backStack(container), itb, ite, aPredicate); 
+
+      //we update the hull to take into account the starting point
+      if ( container.size() > 3 )
+	{
+	  updateHullWithAdaptedStack( backStack(container), container.front(), aPredicate ); 
+	  //we move forward the starting point
+	  container.push_back( container.front() ); 
+	  container.pop_front(); 
+	}
+
+      //while the last two points and the first one are not correctly oriented, we update the hull
+      while ( (container.size() > 3)&&
+	      !aPredicate( *boost::next(container.rbegin()), container.back(), container.front() ) )
+	{
+	  updateHullWithAdaptedStack( backStack(container), container.front(), aPredicate ); 
+	  //we move forward the starting point
+	  container.push_back( container.front() ); 
+	  container.pop_front(); 
+	}
+
+      std::copy(container.begin(), container.end(), res); 
+    }
+
+
+    //----------------------------------------------------------------------------
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate, 
+	      typename PolarComparator >
+    inline
+    void grahamConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
+				   OutputIterator res, 
+				   const Predicate& aPredicate, 
+				   PolarComparator& aPolarComparator)
+    { 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
+      BOOST_CONCEPT_ASSERT(( CPolarPointComparator2D<PolarComparator> )); 
+
+      if ( itb != ite )
+	{
+	  //container
+	  std::vector<Point> container;
+	  std::copy( itb, ite, std::back_inserter( container ) ); 
+
+	  //find an extremal point
+	  //NB: we choose the point of greatest x-coordinate
+	  //so that the sort step (by a polar comparator) 
+	  //returns a weakly externally visible polygon
+	  typename std::vector<Point>::iterator itMax 
+	    = std::max_element( container.begin(), container.end() ); 
+
+	  //sort around this point
+	  aPolarComparator.setPole( *itMax );
+	  std::sort( container.begin(), container.end(), aPolarComparator ); 
+
+	  //scan from an extremal point
+	  closedGrahamScanFromVertex( container.begin(), container.end(), res, aPredicate ); 
+	}
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate>
+    inline
+    void grahamConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
+				   OutputIterator res, 
+				   const Predicate& aPredicate)
+    { 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
+
+      //define a default comparator
+      typedef typename Point::Coordinate Integer; 
+      typedef AvnaimEtAl2x2DetSignComputer<Integer> DetComputer; 
+      typedef functors::PolarPointComparatorBy2x2DetComputer<Point, DetComputer> Comparator; 
+      Comparator comparator; 
+
+      //call overloaded version
+      grahamConvexHullAlgorithm( itb, ite, res, aPredicate, comparator ); 
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate >
+    inline
+    void andrewConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
+				   OutputIterator res, 
+				   const Predicate& aPredicate )
+    {
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
+
+      if ( itb != ite )
+	{
+	  //containers
+	  std::vector<Point> container;
+	  std::copy( itb, ite, std::back_inserter( container ) );
+	  std::vector<Point> upperHull, lowerHull;
+ 
+	  //sort according to the x-coordinate
+	  std::sort( container.begin(), container.end() ); 
+
+	  //lower hull computation
+	  openGrahamScan( container.begin(), container.end(), std::back_inserter(lowerHull), aPredicate ); 
+
+	  //upper hull computation
+	  openGrahamScan( container.rbegin(), container.rend(), std::back_inserter(upperHull), aPredicate );
+
+	  //lower hull output
+	  typename std::vector<Point>::iterator lowerHullStart = lowerHull.begin(); 
+	  if ( lowerHull.front() == upperHull.back() ) 
+	    lowerHullStart++;  
+	  std::copy( lowerHullStart, lowerHull.end(), res );
+
+	  //upper hull output
+	  typename std::vector<Point>::iterator upperHullStart = upperHull.begin(); 
+	  if ( lowerHull.back() == upperHull.front() ) 
+	    upperHullStart++; 
+	  std::copy( upperHullStart, upperHull.end(), res );
+	}
+    }
+
+  } // namespace convexHull2D
+  } // namespace functions
+} // namespace DGtal
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
