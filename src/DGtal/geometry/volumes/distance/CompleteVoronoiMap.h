@@ -281,6 +281,28 @@ namespace DGtal
     void computeOtherStep1D (const Point &row, 
 			     const Size dim) const;
     
+    
+    /**
+     * Insert a new site @a aSite to the list of site
+     * at position @a aPos.
+     *
+     * @param [in] aPos the position of the list to extend.
+     * @param [in] aSite the site to insert.
+     */
+    void insertSite(const Point &aPos, const Point &aSite) const;
+    
+    
+    /**
+     * Return the closest site in the list at position
+     * @a aPos. If the list is empty, the boolean @a isEmpty is
+     * set to true (and the returned point has unspecified coordinates).
+     *
+     * @param [in] aPos the position of the list to extend.
+     * @param [out] isEmpty true if the list at @a aPos is empty, false otherwise.
+     * @return the closest site at position @a aPos.
+     */
+    Point getSite(const Point &aPos, bool isEmpty) const;
+    
     // ------------------- protected methods ------------------------
   protected:
 
@@ -308,6 +330,9 @@ namespace DGtal
     
     ///Value to act as a +infinity value
     Point myInfinity;
+    
+    ///Extent of the domain
+    Point myExtent;
 
   protected:
 
