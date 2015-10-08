@@ -53,7 +53,6 @@ void checkDistance(const VMap & voronoi, const Set &pointset)
   typedef typename VMap::SeparableMetric::RawValue RawValue;
   const typename VMap::SeparableMetric d = *voronoi.metric();
   typename Set::Point site;
-  bool ok = true;
   
   for(typename VMap::Domain::ConstIterator it = voronoi.domain().begin(), itend = voronoi.domain().end();
       it != itend ; ++it )
@@ -71,13 +70,12 @@ void checkDistance(const VMap & voronoi, const Set &pointset)
         site = *itset;
       }
     }
-    ok = (val == d.rawDistance( *it, voronoi(*it)));
     CAPTURE( *it );
-    CAPTURE( voronoi(*it));
-    CAPTURE( d.rawDistance(*it, voronoi(*it)));
+    CAPTURE( *(voronoi(*it).begin()));
+    CAPTURE( d.rawDistance(*it, *(voronoi(*it).begin())));
     CAPTURE( val );
     CAPTURE( site );
-    REQUIRE(( val == d.rawDistance(*it, voronoi(*it)) ));
+    REQUIRE(( val == d.rawDistance(*it, *(voronoi(*it).begin()))));
   }
 }
 
@@ -116,6 +114,13 @@ TEMPLATE_TEST_CASE_2("Testing Complete Voronoi Map in 2D",
   {
     //We first check the closest point distance
     checkDistance<CVMap,Set>(voronoi,pointset);
+  }
+
+  SECTION("   all points have a site")
+  {
+    for(Domain::ConstIterator it=domain.begin(), itend=domain.end();
+        it != itend; ++it)
+      REQUIRE(( voronoi(*it).empty() == false ));
   }
 
   SECTION("   Check assignments")
