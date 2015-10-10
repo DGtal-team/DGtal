@@ -49,7 +49,7 @@ build_script:
   #- msbuild gdcm.sln /m /p:Configuration=%config% /toolsversion:14.0 /p:Platform=x64 /p:PlatformToolset=v140
   # Do not run Test=Update/Configure, only Start/Build/Test/Submit (TODO: Coverage)
 
-  - msbuild /m /p:Configuration=%CONFIG% /p:Platform=%B_NAME% 
+  - msbuild /m /p:Configuration=%CONFIG% /p:Platform=%B_NAME% DGtal.sln 
 
 # - ctest -D ExperimentalStart -C %CONFIG%
  # - ctest -D ExperimentalBuild -j2 -C %CONFIG%
