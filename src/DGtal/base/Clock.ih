@@ -145,7 +145,6 @@ DGtal::Clock::restartClock()
 }
 
 
-
 /**
  * Destructor.
  */
