@@ -54,4 +54,3 @@ build_script:
 
 test: off
 deploy: off
->>>>>>> appveyor
