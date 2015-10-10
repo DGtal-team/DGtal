@@ -43,6 +43,10 @@
 
 #include "DGtal/base/Common.h"
 
+#include "DGtal/kernel/sets/DigitalSetByAssociativeContainer.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
+
 #include "DGtal/math/AngleLinearMinimizer.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
@@ -71,7 +75,6 @@
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 
-//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -88,12 +91,18 @@ namespace DGtal
  */
   struct Display2DFactory
  {
+		public:
 
-// DiscreteExteriorCalculus
-template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+template <Dimension dim, typename TInteger>
 static
 void
-draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus);
+drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& cell);
+
+// DiscreteExteriorCalculus
+template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+static
+void
+draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>& calculus);
 // DiscreteExteriorCalculus
 
 // KForm
@@ -102,12 +111,10 @@ static
 void
 draw(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform);
 
-		 private:
 template <typename TCalculus, DGtal::Order order, DGtal::Duality duality, typename TColorMap>
 static
 void
 drawWithColorMap(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform, const TColorMap& colormap);
-		 public:
 // KForm
     
 // VectorField
@@ -177,7 +184,13 @@ static void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
 template<typename Domain, typename Compare>
 static void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & );
 // DigitalSetBySTLSet
-    
+
+   
+// DigitalSetByAssociativeContainer
+template<typename Domain, typename Container>
+static void draw( DGtal::Board2D & board, const DGtal::DigitalSetByAssociativeContainer<Domain,Container> & );
+// DigitalSetByAssociativeContainer
+   
     
 // DigitalSetBySTLVector
 template<typename Domain>

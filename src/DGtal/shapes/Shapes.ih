@@ -251,9 +251,9 @@ DGtal::Shapes<TDomain>::makeSetFromPointPredicate
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSet > ));
   BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
   BOOST_STATIC_ASSERT
-    (( ConceptUtils::SameType< Domain, typename DigitalSet::Domain >::value ));
+    (( concepts::ConceptUtils::SameType< Domain, typename DigitalSet::Domain >::value ));
   BOOST_STATIC_ASSERT
-    (( ConceptUtils::SameType< Point, typename PointPredicate::Point >::value ));
+    (( concepts::ConceptUtils::SameType< Point, typename PointPredicate::Point >::value ));
 
   typedef typename Domain::ConstIterator ConstIterator;
   for ( ConstIterator it = aSet.domain().begin(),

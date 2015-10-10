@@ -584,9 +584,9 @@ namespace DGtal
 	 @param p and @param q two points
 	 @return an int
       */
-    static int computeQuadrant(Point p, Point q)
+    static int computeOctant(Point p, Point q)
     {
-      int d;
+      int d = 0;
       Coordinate x = q[0]-p[0];
       Coordinate y = q[1]-p[1];
       

@@ -66,7 +66,7 @@ namespace DGtal
     typedef typename TImage::Value Value;
   
     
-    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
     
 
     /** 

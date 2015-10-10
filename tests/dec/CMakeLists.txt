@@ -13,5 +13,9 @@ if(WITH_EIGEN)
     target_link_libraries(testDiscreteExteriorCalculusExtended DGtal)
     #add_test(testDiscreteExteriorCalculusExtended testDiscreteExteriorCalculusExtended)
 
+    add_executable(testEmbedding testEmbedding)
+    target_link_libraries(testEmbedding DGtal DGtalIO)
+    add_test(testEmbedding testEmbedding)
+
 endif(WITH_EIGEN)
 

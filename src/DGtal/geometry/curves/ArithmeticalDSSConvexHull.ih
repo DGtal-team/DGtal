@@ -48,7 +48,7 @@ smartCH(const DSL& aDSL,
   typedef typename DSL::Coordinate Coordinate;
   ASSERT( aDSL.isValid() ); 
   ASSERT( aLength >= NumberTraits<Position>::ONE ); 
-
+ 
   //position functor
   functors::PositionFunctorFrom2DPoint<Vector,Position> position(aDSL.shift());     
 
@@ -62,6 +62,7 @@ smartCH(const DSL& aDSL,
   Coordinate intercept = DSL::toCoordinate( aDSL.mu() - aDSL.remainder(aFirstPoint) ); 
 
   Position lastPosition = position(aFirstPoint) + aLength; 
+ 
   return smartCH(aFirstPoint, intercept, lastPosition, step, rStep, shift, rShift, position, uIto, lIto); 
 }
 
@@ -82,11 +83,10 @@ smartCH(const PointVector& aFirstPoint,
 	const PositionFunctor& aPositionFunctor, 
 	OutputIterator uIto, OutputIterator lIto)
 {
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
   BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
   BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
-  ASSERT( aPositionBound > NumberTraits<Position>::ZERO ); 
 
   //----------------- init --------------------//
   //functors
@@ -165,7 +165,6 @@ smartCHNextVertex(const Position& positionBound,
 		  const TruncationFunctor1& f1, 
 		  const TruncationFunctor2& f2)
 {
-  ASSERT( positionBound > NumberTraits<Position>::ZERO ); 
   ASSERT( rV != NumberTraits<Coordinate>::ZERO ); 
   ASSERT( ((V[0]*(X-Y)[1] - V[1]*(X-Y)[0]) == 1)||
 	  ((V[0]*(X-Y)[1] - V[1]*(X-Y)[0]) == -1) ); 
@@ -253,11 +252,11 @@ reversedSmartCH(PointVector U, PointVector L, PointVector V,
 	       const PositionFunctor& aPositionFunctor, 
 	       OutputIterator uIto, OutputIterator lIto)
 {
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
   BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
   BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
   typedef typename PointVector::Coordinate Coordinate; 
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
   ASSERT( aFirstPosition <= aLastPosition ); 
   ASSERT( (V[0]*(L-U)[1] - V[1]*(L-U)[0]) == NumberTraits<Coordinate>::ONE ); //eq. 6 
 

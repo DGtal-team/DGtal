@@ -35,9 +35,6 @@
 #include "ConfigExamples.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 
-#include <QtGui/qapplication.h>
-
-
 //! [ExampleViewer3D2DImagesExtractImagesColorHeader]
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
@@ -79,12 +76,12 @@ int main( int argc, char** argv )
   // Extracting the 2D images from the 3D one and from a given dimension.
   // First image  the teenth Z slice (dim=2)
   typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::functors::Projector< DGtal::Z3i::Space>,
-				   Image3D::Value,  DGtal::functors::Identity >  MySliceImageAdapter;
- 
+           Image3D::Value,  DGtal::functors::Identity >  MySliceImageAdapter;
+
   // Define the functor to recover a 2D domain from the 3D one in the Z direction (2):
   DGtal::functors::Projector<DGtal::Z2i::Space>  transTo2DdomainFunctorZ; transTo2DdomainFunctorZ.initRemoveOneDim(2);
   DGtal::Z2i::Domain domain2DZ(transTo2DdomainFunctorZ(imageVol.domain().lowerBound()),
-			       transTo2DdomainFunctorZ(imageVol.domain().upperBound()));
+             transTo2DdomainFunctorZ(imageVol.domain().upperBound()));
 
   // Define the functor to associate 2D coordinates to the 3D one by giving the direction Z (2) and the slide numnber (10):
   DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctorZ(10); aSliceFunctorZ.initAddOneDim(2);
@@ -96,7 +93,7 @@ int main( int argc, char** argv )
   // Define the functor to recover a 2D domain from the 3D one in the Y direction (1):
   DGtal::functors::Projector<DGtal::Z2i::Space>  transTo2DdomainFunctorY; transTo2DdomainFunctorY.initRemoveOneDim(1);
   DGtal::Z2i::Domain domain2DY(transTo2DdomainFunctorY(imageVol.domain().lowerBound()),
-			       transTo2DdomainFunctorY(imageVol.domain().upperBound()));
+             transTo2DdomainFunctorY(imageVol.domain().upperBound()));
 
   // Define the functor to associate 2D coordinates to the 3D one by giving the direction Y (1) and the slide numnber (50):
   DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctorY(50); aSliceFunctorY.initAddOneDim(1);

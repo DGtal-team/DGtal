@@ -29,7 +29,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -47,20 +51,20 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
- 
+
 
  QApplication application(argc,argv);
  Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
  trace.beginBlock ( "Testing class 3DDomain2DView" );
- 
+
  Z2i::Point p1( 0, 0 );
  Z2i::Point p2( 10, 15 );
- 
+
  Z3i::Point p13D( 0, 0, 0 );
  Z3i::Point p23D( 10, 15, 0 );
- 
+
  Z3i::Point p13Dt( 20, 20, 20 );
  Z3i::Point p23Dt( 30, 35, 20 );
 
@@ -98,16 +102,16 @@ int main( int argc, char** argv )
  viewer << Update2DDomainPosition<Space, KSpace>(7, Viewer3D<Space, KSpace>::yDirection, 0, 0, 0);
  viewer << Update2DDomainPosition<Space, KSpace>(8, Viewer3D<Space, KSpace>::zDirection, 0, 0, 0);
 
- viewer << DGtal::Translate2DDomain(3, 20, 20 ,20);  
- viewer << DGtal::Translate2DDomain(4, 20, 20 ,20);  
- viewer << DGtal::Translate2DDomain(5, 20, 20 ,20);  
+ viewer << DGtal::Translate2DDomain(3, 20, 20 ,20);
+ viewer << DGtal::Translate2DDomain(4, 20, 20 ,20);
+ viewer << DGtal::Translate2DDomain(5, 20, 20 ,20);
 
- viewer << DGtal::Translate2DDomain(6, 40, 20 ,20);  
- viewer << DGtal::Translate2DDomain(7, 40, 20 ,20);  
- viewer << DGtal::Translate2DDomain(8, 40, 20 ,20);  
+ viewer << DGtal::Translate2DDomain(6, 40, 20 ,20);
+ viewer << DGtal::Translate2DDomain(7, 40, 20 ,20);
+ viewer << DGtal::Translate2DDomain(8, 40, 20 ,20);
 
  viewer <<  Viewer3D<>::updateDisplay;
- 
+
  bool res = application.exec();
  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
  trace.endBlock();

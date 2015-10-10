@@ -321,28 +321,5 @@ This program outputs this image:
 \example geometry/volumes/distance/distancetransform3D.cpp
 */
 
-/**
-   Example of use the FMM (fast marching method) class in 2D.
-@see \ref moduleVolumetric
-
-This program outputs this image:
-
-@image html exampleFMM2D.png
-
-\example geometry/volumes/distance/exampleFMM2D.cpp
-*/
-
-
-/**
-
-   Example of use the FMM (fast marching method) class in 3D.
-@see \ref moduleVolumetric
-
-This program outputs this image:
-@image html exampleFMM3D.png
-
-\example geometry/volumes/distance/exampleFMM3D.cpp
-*/
-
 
 }

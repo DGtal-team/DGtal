@@ -87,7 +87,7 @@ namespace DGtal
      ### Models
 
      - MostCenteredMaximalSegmentEstimator, TrueLocalEstimatorOnPoints, BinomialConvolverEstimator
-     - concept refined by CSegmentComputerEstimator
+     - concept refined by CSegmentComputerEstimator, LambdaMST2D, LambdaMST3D
 
      ### Notes
 
@@ -114,8 +114,8 @@ namespace DGtal
       //init method
       myX.init( myH, myItb, myIte ); 
 
-      ConceptUtils::sameType( myQ, myX.eval( myItb ) );
-      ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
+      concepts::ConceptUtils::sameType( myQ, myX.eval( myItb ) );
+      concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
     }
 
     // ------------------------- Private Datas --------------------------------

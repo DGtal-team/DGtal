@@ -51,7 +51,6 @@
 // Drawing
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include <QtGui/QApplication>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -118,8 +117,8 @@ int main( int argc, char** argv )
 
     typedef functors::IIMeanCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
     typedef IntegralInvariantVolumeEstimator< Z3i::KSpace, ImagePredicate, MyIICurvatureFunctor > MyIICurvatureEstimator;
-    
-    // For computing Gaussian curvature instead, for example, change the two typedef above by : 
+
+    // For computing Gaussian curvature instead, for example, change the two typedef above by :
     // typedef functors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
     // typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, ImagePredicate, MyIICurvatureFunctor > MyIICurvatureEstimator;
     // and it's done. The following part is exactly the same.
@@ -129,7 +128,7 @@ int main( int argc, char** argv )
     MyIICurvatureFunctor curvatureFunctor; // Functor used to convert volume -> curvature
     curvatureFunctor.init( h, radius ); // Initialisation for a grid step and a given Euclidean radius of convolution kernel
 
-    MyIICurvatureEstimator curvatureEstimator( curvatureFunctor ); 
+    MyIICurvatureEstimator curvatureEstimator( curvatureFunctor );
     curvatureEstimator.attach( KSpaceShape, predicate ); // Setting a KSpace and a predicate on the object to evaluate
     curvatureEstimator.setParams( radius / h ); // Setting the digital radius of the convolution kernel
     curvatureEstimator.init( h, abegin, aend ); // Initialisation for a given h, and a range of surfels

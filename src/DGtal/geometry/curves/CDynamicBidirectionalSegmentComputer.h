@@ -87,7 +87,7 @@ Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
     // Methods
     BOOST_CONCEPT_USAGE( CDynamicBidirectionalSegmentComputer )
     {
-      ConceptUtils::sameType( myB, myX.retractFront() );
+      concepts::ConceptUtils::sameType( myB, myX.retractFront() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

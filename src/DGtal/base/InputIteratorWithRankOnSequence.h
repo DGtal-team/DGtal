@@ -89,15 +89,15 @@ namespace DGtal
     typedef typename Sequence::value_type SequenceValue;
     typedef std::pair<SequenceValue,Rank> Value;
     typedef typename Sequence::const_iterator ConstIterator;
-    typedef const Value* Pointer;
+    typedef Value* Pointer;
 
     // ----------------------- std types ----------------------------------
     typedef Value value_type;
     typedef typename Sequence::size_type size_type;
     typedef typename Sequence::difference_type difference_type;
     typedef Pointer pointer;
-    typedef const value_type& reference;
-    typedef const reference const_reference;
+    typedef value_type& reference;
+    typedef reference const_reference;
     typedef std::input_iterator_tag iterator_category;
 
     // ----------------------- Standard services ------------------------------

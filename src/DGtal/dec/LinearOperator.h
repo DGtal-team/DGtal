@@ -72,9 +72,9 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
     typedef TCalculus Calculus;
 
     BOOST_STATIC_ASSERT(( order_in >= 0 ));
-    BOOST_STATIC_ASSERT(( order_in <= Calculus::dimension ));
+    BOOST_STATIC_ASSERT(( order_in <= Calculus::dimensionEmbedded ));
     BOOST_STATIC_ASSERT(( order_out >= 0 ));
-    BOOST_STATIC_ASSERT(( order_out <= Calculus::dimension ));
+    BOOST_STATIC_ASSERT(( order_out <= Calculus::dimensionEmbedded ));
 
     ///Container typr
     typedef typename Calculus::SparseMatrix Container;
@@ -84,6 +84,9 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
     typedef KForm<Calculus, order_in, duality_in> InputKForm;
     ///Output KForm type
     typedef KForm<Calculus, order_out, duality_out> OutputKForm;
+    ///Transposed operator type
+    typedef LinearOperator<Calculus, order_out, duality_out, order_in, duality_in> TransposedLinearOperator;
+
 
     /**
      * Constructor.
@@ -125,7 +128,12 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
     void selfDisplay(std::ostream& out) const;
 
     /**
-     * Clear current kform.
+     * Transpose operator.
+     */
+    TransposedLinearOperator transpose() const;
+
+    /**
+     * Clear current linear operator.
      */
     void clear();
 
@@ -218,6 +226,15 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
   KForm<Calculus, order_out, duality_out>
   operator*(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator,
             const KForm<Calculus, order_in, duality_in>& input_form);
+
+  /**
+   * Overloads 'operator-' for unary additive inverse of objects of class 'LinearOperator'.
+   * @param linear_operator operant
+   * @return -linear_operator.
+   */
+  template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+  LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
+  operator-(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator);
 
 } // namespace DGtal
 

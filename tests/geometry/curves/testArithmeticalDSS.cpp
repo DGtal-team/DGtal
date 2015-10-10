@@ -34,6 +34,7 @@
 #include "DGtal/base/CConstBidirectionalRange.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
+#include "DGtal/geometry/curves/StabbingLineComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -839,7 +840,7 @@ bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b
   DSL aDSL(a, b, 0); 
   for (typename DSL::Integer mu = 0; ( (mu-1 >= -aDSL.omega())&&(nbok == nb) ); --mu)
     {
-      trace.info() << "mu=" << mu << std::endl; 
+      //trace.info() << "mu=" << mu << std::endl; 
 
       typedef typename DSL::Point Point; 
       typedef typename DSL::Coordinate Coordinate; 
@@ -855,11 +856,11 @@ bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b
 
       for (typename DSL::Position l = 0; ( (l <= 2*aDSL.patternLength())&&(nbok == nb) ); ++l)
 	{
-	  trace.info() << "l=" << l << std::endl; 
+	  //trace.info() << "l=" << l << std::endl; 
 
 	  for (typename DSL::Position k = 0; ( (k <= l)&&(nbok == nb) ); ++k)
 	    {
-	      trace.info() << "k=" << k << std::endl; 
+	      //trace.info() << "k=" << k << std::endl; 
 
 	      if (comparisonSubsegment(dss, k, l))
 		nbok++;
@@ -875,6 +876,483 @@ bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b
   return (nb == nbok); 
 }
 
+//---------------------------------------------------------------------------
+bool unionTest()
+{
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  
+  typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
+  typedef DSS::Point Point;
+  
+  trace.beginBlock("Testing union of two DSSs");
+
+  // Different tests to cover all possible configurations
+  
+  //-------------------------------------------------
+  //---------- Union is part of a DSL----------------
+
+  // DSS1 included in DSS2
+  
+  trace.beginBlock("Simplest inclusion: DSS1 in DSS2");
+  // octant 0
+  trace.info() << "octant 0\n";
+  DSS DSS1(1,2,Point(2,2),Point(6,4),Point(2,2),Point(6,4),Point(3,2),Point(5,3));
+  DSS DSS2(3,5,Point(-2,-1),Point(9,6),Point(2,2),Point(7,5),Point(0,0),Point(5,3));
+  DSS res=DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+  
+  // octant 1
+  trace.info() << "octant 1\n";
+  DSS1 = DSS(2,1,Point(2,2),Point(4,6),Point(2,3),Point(3,5),Point(2,2),Point(4,6));
+  assert(DSS1.isValid());
+  DSS2 = DSS(5,3,Point(-1,-2),Point(6,9),Point(0,0),Point(3,5),Point(2,2),Point(5,7));
+  assert(DSS2.isValid());
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+
+  // octant 2
+  trace.info() << "octant 2\n";
+  DSS1 = DSS(2,-1,Point(-2,2),Point(-4,6),Point(-2,2),Point(-4,6),Point(-2,3),Point(-3,5));
+  assert(DSS1.isValid());
+  DSS2 = DSS(5,-3,Point(1,-2),Point(-6,9),Point(-2,2),Point(-5,7),Point(0,0),Point(-3,5));
+  assert(DSS2.isValid());
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+
+  // octant 3
+  trace.info() << "octant 3\n";
+  DSS1 = DSS(1,-2,Point(-2,2),Point(-6,4),Point(-3,2),Point(-5,3),Point(-2,2),Point(-6,4));
+  assert(DSS1.isValid());
+  DSS2 = DSS(3,-5,Point(2,-1),Point(-9,6),Point(0,0),Point(-5,3),Point(-2,2),Point(-7,5));
+  assert(DSS2.isValid());
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+
+  // octant 4
+  trace.info() << "octant 4\n";
+  DSS1 = DSS(-1,-2,Point(-2,-2),Point(-6,-4),Point(-2,-2),Point(-6,-4),Point(-3,-2),Point(-5,-3));
+  assert(DSS1.isValid());
+  DSS2 = DSS(-3,-5,Point(2,1),Point(-9,-6),Point(-2,-2),Point(-7,-5),Point(0,0),Point(-5,-3));
+  assert(DSS2.isValid());
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS2)?1:0;
+
+  // octant 5 - take octant3 - DSS(a,b...) -> DSS(-a,b...) + Point(x,y) -> Point(x,-y) + inverse lower and upper leaning points
+
+  trace.endBlock();
+  
+  // DSS2 included in DSS1 + see unionComparisonTest below
+  trace.beginBlock("Simplest inclusion: DSS2 in DSS1");
+  // octant 0
+  trace.info() << "octant 0\n";
+  DSS1 = DSS(3,5,Point(-2,-1),Point(9,6),Point(2,2),Point(7,5),Point(0,0),Point(5,3));
+  DSS2 = DSS(1,2,Point(2,2),Point(6,4),Point(2,2),Point(6,4),Point(3,2),Point(5,3));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS1)?1:0;
+  
+  trace.endBlock();
+  
+  // DSS2 belongs to DSS1's supporting DSL
+
+  trace.beginBlock("DSS2 belongs to DSS1's supporting DSL");
+  // octant 0
+  trace.info() << "octant 0 - no new leaning points\n";
+  DSS1 = DSS(3,7,Point(1,3),Point(12,7),Point(3,4),Point(10,7),Point(5,4),Point(12,7));
+  DSS2 = DSS(1,2,Point(14,8),Point(16,9),Point(15,9),Point(15,9),Point(14,8),Point(16,9));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(3,7,Point(1,3),Point(16,9),Point(3,4),Point(10,7),Point(5,4),Point(12,7)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+
+  trace.info() << "octant 0 - new leaning points in DSS2\n";
+  DSS1 = DSS(3,7,Point(1,3),Point(10,7),Point(3,4),Point(10,7),Point(5,4),Point(5,4));
+  DSS2 = DSS(1,2,Point(12,7),Point(17,10),Point(13,8),Point(17,10),Point(12,7),Point(16,9));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(3,7,Point(1,3),Point(17,10),Point(3,4),Point(17,10),Point(5,4),Point(12,7)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+  trace.info() << "octant 0 - new leaning points between DSS1 and DSS2\n";
+  DSS1 = DSS(3,7,Point(1,3),Point(10,7),Point(3,4),Point(10,7),Point(5,4),Point(5,4));
+  DSS2 = DSS(1,2,Point(13,8),Point(15,9),Point(13,8),Point(15,9),Point(14,8),Point(14,8));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(3,7,Point(1,3),Point(15,9),Point(3,4),Point(10,7),Point(5,4),Point(12,7)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+  trace.endBlock();
+  
+  // DSS1 belongs to DSS2 supporting DSL
+
+  // DSS1 and DSS2 connected and union is part of a DSL -> see
+  // unionComparisonTest below
+  
+  // DSS1 and DSS2 not connected but easy case and union is part of a
+  // DSL -> see unionComparisonTest below
+
+  trace.beginBlock("Not connected but easy case");
+
+  trace.info() << "octant 2";
+  DSS1 = DSS(1,5,Point(0,1),Point(5,2),Point(1,2),Point(1,2),Point(0,1),Point(5,2));
+  DSS2 = DSS(1,4,Point(9,2),Point(14,3),Point(11,3),Point(11,3),Point(10,2),Point(14,3));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(1,10,Point(0,1),Point(14,3),Point(1,2),Point(11,3),Point(0,1),Point(10,2)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+
+  trace.endBlock();
+  
+  // DSS1 and DSS2 not connected and union is part of a DSL
+  
+  trace.beginBlock("Not connected case");
+
+  trace.info() << "octant 0\n";
+  DSS1 = DSS(1,5,Point(0,1),Point(5,2),Point(1,2),Point(1,2),Point(0,1),Point(5,2));
+  DSS2 = DSS(1,4,Point(9,2),Point(14,3),Point(11,3),Point(11,3),Point(10,2),Point(14,3));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(1,10,Point(0,1),Point(14,3),Point(1,2),Point(11,3),Point(0,1),Point(10,2)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+ 
+  DSS1 = DSS(1,6,Point(0,1),Point(6,2),Point(1,2),Point(1,2),Point(0,1),Point(6,2));
+  DSS2 = DSS(0,1,Point(13,3),Point(18,3),Point(13,3),Point(18,3),Point(13,3),Point(18,3));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(1,9,Point(0,1),Point(18,3),Point(1,2),Point(10,3),Point(0,1),Point(18,3)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+ 
+  trace.info() << "octant 2\n";
+
+  DSS1 = DSS(6,-1,Point(-1,0),Point(-2,6),Point(-2,1),Point(-2,1),Point(-1,0),Point(-2,6));
+  DSS2 = DSS(1,0,Point(-3,13),Point(-3,18),Point(-3,13),Point(-3,18),Point(-3,13),Point(-3,18));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(9,-1,Point(-1,0),Point(-3,18),Point(-2,1),Point(-3,10),Point(-1,0),Point(-3,18)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+
+
+  trace.endBlock();
+
+  //-------------------------------------------------
+  //---------- Union is not part of a DSL -----------
+
+  trace.beginBlock("Union is not part of a DSL");
+  
+  // DSS1 and DSS2 not in the same octant
+  trace.info() << "DSS1 and DSS2 are not in the same octant\n";
+  
+  DSS1 = DSS(1,3,Point(0,0),Point(3,1),Point(0,0),Point(3,1),Point(2,0),Point(2,0));
+  DSS2 = DSS(1,-3,Point(6,2),Point(9,1),Point(6,2),Point(9,1),Point(8,2),Point(8,2));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(Point(0,0)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+  // DSS1 and DSS2 connected and union is not part of a DSL
+  trace.info() << "DSS1 and DSS2 are in the same octant and connected\n";
+  
+  DSS1 = DSS(1,3,Point(0,0),Point(4,2),Point(1,1),Point(4,2),Point(0,0),Point(3,1));
+  DSS2 = DSS(1,5,Point(4,2),Point(9,3),Point(4,2),Point(9,3),Point(8,2),Point(8,2));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(Point(0,0)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+
+  // DSS1 and DSS2 not connected but easy case and union is not part of a DSL
+  trace.info() << "DSS1 and DSS1 are in the same octant, not connected but easy case anyway\n";
+  
+  DSS1 = DSS(-3,-1,Point(0,0),Point(-2,-5),Point(0,0),Point(-1,-3),Point(-1,-1),Point(-2,-4));
+  DSS2 = DSS(-3,-1,Point(-2,-8),Point(-3,-11),Point(-2,-10),Point(-2,-10),Point(-2,-8),Point(-3,-11));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(Point(0,0)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+  // DSS1 and DSS2 not connected and union is not part of a DSL
+  trace.info() << "DSS1 and DSS2 are in the same octant but not connected\n";
+
+  DSS1 = DSS(-3,-1,Point(0,0),Point(-2,-5),Point(0,0),Point(-1,-3),Point(-1,-1),Point(-2,-4));
+  DSS2 = DSS(-3,-1,Point(-5,-8),Point(-6,-11),Point(-5,-10),Point(-5,-10),Point(-5,-8),Point(-6,-11));
+  res = DSS1.computeUnion(DSS2);
+  nb++;
+  nbok +=(res==DSS(Point(0,0)))?1:0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
+  
+
+  trace.endBlock();
+  
+  return (nb==nbok);
+  
+}
+
+int max(int a, int b)
+{
+  return ((a>b)?a:b);
+}
+
+// General random test of the union of two DSSs 
+// - compare the result with ArithmeticalDSS recognition algorithm for easy cases (connected or first point of
+// DSS2 and last point of DSS1 have the same ordinate) and inclusion cases
+// - otherwise, check DSS result validity + check that computed leaning points belong to the DSL when they should (when they are between A and B or between C and D)
+template <typename TCoordinate,typename TInteger, unsigned short adjacency>
+//template <typename DSS>
+bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
+{
+  typedef ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
+  typedef typename DSS::DSL DSL;
+  typedef typename DSS::Point Point;
+  typedef typename DSS::Integer Integer;
+  typedef typename DSS::Vector Vector;
+
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  unsigned int nbEasy = 0;
+ 
+  DGtal::IntegerComputer<Integer> ic;
+
+  trace.beginBlock("General random test results");
+  trace.emphase() << "Adjacency: " << adjacency << std::endl;
+  
+  for ( unsigned int i = 0; i < nbtries; ++i )
+    {
+      // Pick up a random DSL slope
+      Integer b( random() % modb + 1 );
+      Integer a( random() % b +1);
+      while(ic.gcd(a,b) !=1)
+	a =random()%b +1; // |a| < |b|
+      
+      // Pick-up random signs for a and b
+      a = a*((random()%2==0)?1:-1);
+      b = b*((random()%2==0)?1:-1);
+
+      if ( ic.gcd( a, b ) == 1 )
+        {
+	  
+          for ( unsigned int j = 0; j < 5; ++j )
+            {
+	      // Pick up the DSL intercept
+              Integer mu = random() % (2*modb);
+	      DSL baseDSL(a,b,-mu);
+	      
+	      for (Integer x = 0; x < 10; ++x )
+                {
+		  Integer elemMove = (b>0)?1:-1;
+
+		  // modx modulates the length of the subsegments
+		  // Pick up the beginning of the first subsegment
+		  Integer x1 = random() % modx;
+		  // Pick up the end of the first subsegment
+		  Integer x2 = x1 + (modx + (random() % modx))*elemMove;
+		  
+		  /************************************************/
+		  
+		  // Connected DSSs: The beginning of the second
+		  //subsegment is randomly set between x1 and x2 or just
+		  //after x2. 
+		  //Integer x3 = x1 + (random() % (x2-x1+1))*elemMove;
+
+		  // Disonnected DSSs: The beginning of the second subsegment is randomly set after x2. 
+		  //Integer x3 = x2 + (random() % (modb))*elemMove;
+		  
+		  // General Case
+		  Integer x3 = x1 + (random() % (2*modb))*elemMove;
+
+		  // The length of the second segment is set to modx
+		  Integer x4 = x3 + modx*elemMove;
+		  
+		  Integer y1,y2,y3,y4;
+		  if(baseDSL.shift()[1] < 0)
+		    {
+		       y1 = ic.floorDiv(a*x1+mu,b);  y2 = ic.floorDiv(a*x2+mu,b);
+		       y3 = ic.floorDiv(a*x3+mu,b);  y4 = ic.floorDiv(a*x4+mu,b);
+		    }
+		  else
+		    {
+		       y1 = ic.ceilDiv(a*x1+mu,b);  y2 = ic.ceilDiv(a*x2+mu,b);
+		       y3 = ic.ceilDiv(a*x3+mu,b);  y4 = ic.ceilDiv(a*x4+mu,b);
+		    }
+		  
+		  Point A,B,C,D;
+		  DSL aDSL(baseDSL);
+		  //Randomly switch a and b to cover cases where |a| > |b|
+		  if(random()%2)
+		    {
+		      aDSL = DSL(b,-a,-mu);
+		      A = Point(-y1,x1); B = Point(-y2,x2);
+		      C = Point(-y3,x3); D = Point(-y4,x4);
+		    }
+		  else
+		    {
+		      A = Point(x1,y1); B = Point(x2,y2);
+		      C = Point(x3,y3); D = Point(x4,y4);
+		    }
+		  
+		  // Computation of the parameters of the two segments
+		  // using the subsegment algorithm of [Roussillon,
+		  // 2014] 
+		  
+		  DSS DSS1(aDSL,A,B);
+		  DSS DSS2(aDSL,C,D);
+
+		  nb++;
+		  // Computation of DSS1 \cup DSS2 using the union algorithm [Sivignon, 2014]
+		  DSS DSSres = DSS1.computeUnion(DSS2);
+		  
+		  
+		  // Compare the result with Arithmetical DSS recognition algorithm for easy cases
+		  Vector dir;
+		  if(abs(aDSL.a())<=abs(aDSL.b()))
+		     dir = Vector(0,1);
+		  else
+		    dir = Vector(1,0);
+
+		  if(aDSL.beforeOrEqual(C,B) || ic.dotProduct(C-B,dir)==0 ||  DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::norm((C-B)[0], (C-B)[1])<=1 )
+		    {
+		      nbEasy++;
+		      // Computation of DSS1 \cup DSS2 using the
+		      // Arithmetical DSS algorithm: add points from B++
+		      // until D
+		      DSS DSSGroundTruth(DSS1);
+		      if(aDSL.before(B,D)) // otherwise [CD] is included
+					   // in [AB]
+			{
+			  typename DSS::ConstIterator itbegin = aDSL.begin(B);
+			  typename DSS::ConstIterator itend = aDSL.end(D);
+			  typename DSS::ConstIterator it = itbegin++;
+			  while(it != itend)
+			    {
+			      DSSGroundTruth.extendFront(*it);
+			      it++;
+			    }
+			}
+		      
+		      if(DSSres != DSSGroundTruth)
+			{
+			  
+			  trace.info() << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
+			  trace.info() << DSSres << std::endl;
+			  trace.info() << DSSGroundTruth << std::endl;
+			  trace.info() << "------------------\n";
+			}
+		      nbok+=(DSSres == DSSGroundTruth)?1:0;
+		      
+		    }
+		  else
+		    { // for disconnected cases, check that all the leaning points of DSSres that are between A anb B or between C and D are in the DSL
+		      
+		      bool error = false;
+		      if((aDSL.beforeOrEqual(DSSres.Uf(),B) && !aDSL.isInDSL(DSSres.Uf())) || (!aDSL.before(DSSres.Uf(),C) && !aDSL.isInDSL(DSSres.Uf()))) 
+			error = true;
+		      if((aDSL.beforeOrEqual(DSSres.Ul(),B) && !aDSL.isInDSL(DSSres.Ul())) || (!aDSL.before(DSSres.Ul(),C) && !aDSL.isInDSL(DSSres.Ul()))) 
+			error = true;
+		      if((aDSL.beforeOrEqual(DSSres.Lf(),B) && !aDSL.isInDSL(DSSres.Lf())) || (!aDSL.before(DSSres.Lf(),C) && !aDSL.isInDSL(DSSres.Lf()))) 
+			error = true;
+		      if((aDSL.beforeOrEqual(DSSres.Ll(),B) && !aDSL.isInDSL(DSSres.Ll())) || (!aDSL.before(DSSres.Ll(),C) && !aDSL.isInDSL(DSSres.Ll()))) 
+			error = true;
+		      
+		      if(error || !DSSres.isValid() || DSSres==DSS(Point(0,0)))
+			{
+			  trace.info() << "disconnected\n";
+			  trace.info() << "DSS1 " << DSS1 << "\n" << "DSS2 " << DSS2 << std::endl; 
+		      	  trace.info() << DSSres << std::endl;
+			  trace.info() << "--------------------------------\n";
+			}
+		      else
+			nbok++;
+		      
+		    }
+		  
+		  
+		}
+	    }
+	  
+	}
+    }
+  
+  
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << nbEasy << " easy cases." << std::endl;
+  trace.endBlock();
+  return (nb==nbok);
+}
+
+
+
+//---------------------------------------------------------------------------
+bool createDSSTest()
+{
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  
+  trace.beginBlock("Testing creation of a DSS from direction vector, two endpoints and one upper leaning point");
+  
+  typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8;
+  typedef DSS8::Point Point;
+  typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory;
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(-6,-4),Point(14,8),Point(5,3)) == DSS8(3,5,Point(-6,-4),Point(14,8),Point(-5,-3),Point(10,6),Point(-2,-2),Point(13,7)))?1:0;
+
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(0,0),Point(14,8),Point(3,2)) == DSS8(3,5,Point(0,0),Point(14,8),Point(3,2),Point(13,8),Point(1,0),Point(11,6)))?1:0;
+
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(-3,-2),Point(14,8),Point(3,2)) == DSS8(3,5,Point(-3,-2),Point(14,8),Point(-2,-1),Point(13,8),Point(1,0),Point(11,6)))?1:0;
+
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(0,0),Point(14,8),Point(3,2)) == DSS8(3,5,Point(0,0),Point(14,8),Point(3,2),Point(13,8),Point(1,0),Point(11,6)))?1:0;
+
+  nb++;
+  nbok += (Factory::createDSS(3,5,Point(0,0),Point(14,8),Point(3,2)) == DSS8(3,5,Point(0,0),Point(14,8),Point(3,2),Point(13,8),Point(1,0),Point(11,6)))?1:0;
+								   
+  trace.endBlock();
+ 
+  return (nb==nbok);
+}
+
+
+bool testPatchCreatePattern()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock("Test patch bezoutVector/CreatePattern");
+
+  typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory;
+  typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8;
+  typedef DSS8::Point Point;
+  DSS8 dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(-1,-3));
+  nb++;
+  nbok += (dss == DSS8(-3,-1,Point(0,0), Point(-1,-3), Point(0,0), Point(-1,-3), Point(-1,-1), Point(-1,-1)));
+  
+  dss = Factory::createPattern(DSS8::Point(0,0), DSS8::Point(10,-1));
+  nb++;
+  nbok += (dss == DSS8(-1,10, Point(0,0), Point(10,-1), Point(0,0), Point(10,-1), Point(1,-1), Point(1,-1)));
+  
+  trace.endBlock();
+  
+  return (nb == nbok);
+  
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -970,7 +1448,7 @@ int main( int argc, char** argv )
       && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(0,-5)) )
       ;
   }
-
+  
   res = res
     && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
 #ifdef WITH_BIGINTEGER
@@ -1013,7 +1491,22 @@ int main( int argc, char** argv )
 #endif
       ;
   }
-
+  
+  { // createDSS
+    res = res && createDSSTest();
+  }
+  
+  { // Patch BezoutVector / CreatePattern
+    res = res && testPatchCreatePattern();
+  }
+  
+  { // union of two DSSs
+    res = res && unionTest();
+    res = res && unionComparisonTest<DGtal::int64_t,DGtal::int64_t,8>(43577,1276,2000);
+    res = res && unionComparisonTest<DGtal::int64_t, DGtal::int64_t, 4>(86731,6648,2000);
+      }
+  
+  
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

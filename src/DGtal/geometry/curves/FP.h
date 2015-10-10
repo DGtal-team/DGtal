@@ -54,7 +54,7 @@
 namespace DGtal
 {
 
-  namespace details 
+  namespace detail 
   {
     /////////////////////////////////////////////////////////////////////////////
     /**
@@ -242,7 +242,7 @@ namespace DGtal
       bool isInConvexPart() const { return false; }
     };
 
-  } //end namespace details
+  } //end namespace detail
   /////////////////////////////////////////////////////////////////////////////
 
 

@@ -62,7 +62,7 @@ bool testBoard3D()
   Point p6(-3, -6, 0 );
   Point p7( 5, 2 , 3);
 
-  Domain domain(p4, p5);
+  Domain domain(p6, p7);
   DigitalSet shape_set( domain );
   shape_set.insertNew(p6);
   shape_set.insertNew(p7);
@@ -78,10 +78,11 @@ bool testBoard3D()
   board2 << SetMode3D(domain.className(), "Paving");
   board2 << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   board2 << p1 ;
-  board2 << CustomColors3D(Color(0, 255,0),Color(0, 0,255));
+  board2 << CustomColors3D(Color(0, 255,0),Color(0, 255,0));
   board2 << p2 << p3;
-  board2 <<  CustomColors3D(Color(250, 0,0),Color(250, 0,0));
+  board2 <<  CustomColors3D(Color(0, 0,255),Color(0, 0,255));
   board2 << p6;
+ 
   board2.saveOBJ("dgtalBoard3D-1bis-points.obj");
 
   nbok += true ? 1 : 0;
@@ -97,7 +98,7 @@ bool testQuadNorm()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  trace.beginBlock ( "Testing Board3D ..." );
+  trace.beginBlock ( "Testing Board3D Quads ..." );
 
 
 

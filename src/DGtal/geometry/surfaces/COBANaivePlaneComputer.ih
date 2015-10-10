@@ -680,7 +680,7 @@ void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
 {
   double min, max;
-  double N[ 3 ];
+  double N[] = {0., 0., 0.};
   out << "[COBANaivePlaneComputer"
       << " axis=" << myAxis << " w=" << myWidth[ 0 ] << "/" << myWidth[ 1 ]
       << " size=" << size() << " complexity=" << complexity() << " N=" << myState.N << ": ";

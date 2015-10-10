@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC_ARITH
        testModuloComputer
-       testPattern )
+       testPattern 
+              )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_ARITH})
   add_executable(${FILE} ${FILE})

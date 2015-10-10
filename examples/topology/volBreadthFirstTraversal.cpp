@@ -16,7 +16,7 @@
 #include <iostream>
 #include <queue>
 #include <QImageReader>
-#include <QtGui/qapplication.h>
+
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -61,16 +61,16 @@ int main( int argc, char** argv )
   typedef ImageSelector < Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
-  SetFromImage<DigitalSet>::append<Image>(set3d, image, 
+  SetFromImage<DigitalSet>::append<Image>(set3d, image,
                                           minThreshold, maxThreshold);
   trace.endBlock();
   //! [volBreadthFirstTraversal-readVol]
-  
-  
+
+
   //! [volBreadthFirstTraversal-KSpace]
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
   KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(), 
+  bool space_ok = ks.init( image.domain().lowerBound(),
                            image.domain().upperBound(), true );
   if (!space_ok)
     {
@@ -87,11 +87,11 @@ int main( int argc, char** argv )
 
   //! [volBreadthFirstTraversal-SetUpDigitalSurface]
   trace.beginBlock( "Set up digital surface." );
-  typedef LightImplicitDigitalSurface<KSpace, DigitalSet > 
+  typedef LightImplicitDigitalSurface<KSpace, DigitalSet >
     MyDigitalSurfaceContainer;
   typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
   SCell bel = Surfaces<KSpace>::findABel( ks, set3d, 100000 );
-  MyDigitalSurfaceContainer* ptrSurfContainer = 
+  MyDigitalSurfaceContainer* ptrSurfContainer =
     new MyDigitalSurfaceContainer( ks, set3d, surfAdj, bel );
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
   trace.endBlock();
@@ -119,7 +119,7 @@ int main( int argc, char** argv )
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.show(); 
+  viewer.show();
   HueShadeColorMap<MySize,1> hueShade( 0, maxDist );
   MyBreadthFirstVisitor visitor2( digSurf, bel );
   viewer << CustomColors3D( Color::Black, Color::White )

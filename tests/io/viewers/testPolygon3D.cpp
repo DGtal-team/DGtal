@@ -27,7 +27,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -50,14 +54,14 @@ using namespace Z3i;
 bool testViewer3D()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;  
+  unsigned int nb = 0;
   trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -73,21 +77,21 @@ int main( int argc, char** argv )
  viewer.show();
  trace.beginBlock ( "Testing Polygon 3D display in Viewer3D" );
  std::vector<Z3i::RealPoint> polyg1;
- 
+
  polyg1.push_back(Z3i::RealPoint(0,0,0));
  polyg1.push_back(Z3i::RealPoint(0,1,0));
  polyg1.push_back(Z3i::RealPoint(1,1,0));
- 
+
  viewer.addPolygon(polyg1);
 
  viewer.createNewPolygonList("hop");
 
  std::vector<Z3i::RealPoint> polyg2;
- 
+
  polyg2.push_back(Z3i::RealPoint(0,10,0));
  polyg2.push_back(Z3i::RealPoint(0,11,0));
  polyg2.push_back(Z3i::RealPoint(11,11,0));
- 
+
  viewer.addPolygon(polyg2);
 
  viewer << Viewer3D<>::updateDisplay;

@@ -50,7 +50,11 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 
 
 #include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
@@ -139,8 +143,8 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
         viewer.addLine ( center,
                          DGtal::Z3i::RealPoint(center[0]-3*normal[0],
-					       center[1]-3*normal[1],
-					       center[2]-3*normal[2]) );
+                 center[1]-3*normal[1],
+                 center[2]-3*normal[2]) );
     }
     viewer.setLineColor( lineColorSave);
     viewer<< Viewer3D<>::updateDisplay;
@@ -170,8 +174,8 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
         MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval ( itbis );
         viewer.addLine ( center,
                          DGtal::Z3i::RealPoint(center[0]-3*normal[0],
-					       center[1]-3*normal[1],
-					       center[2]-3*normal[2]) );
+                 center[1]-3*normal[1],
+                 center[2]-3*normal[2]) );
     }
     viewer.setLineColor( lineColorSave);
     viewer<< Viewer3D<>::updateDisplay;

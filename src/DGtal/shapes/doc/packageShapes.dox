@@ -54,6 +54,7 @@ make concrete such objects in a given grid step grid.
 @b Modules
 
 - \ref moduleShape (Jacques-Olivier Lachaud, David Coeurjolly)
+- \ref moduleMesh (Bertrand Kerautret)
 
 @b Package @b Concepts @b Overview
 

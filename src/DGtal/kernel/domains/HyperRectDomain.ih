@@ -40,15 +40,18 @@ template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
   : myLowerBound(Point::zero),
-    myUpperBound(Point::zero),
+    myUpperBound(Point::zero - Point::diagonal(1)), // So that it gives an empty domain.
     myPredicate( myLowerBound, myUpperBound ),
     myIteratorBegin(myLowerBound,
         myLowerBound,
         myUpperBound),
     myIteratorEnd(myUpperBound,
-      myLowerBound,
-      myUpperBound)
-{ ++myIteratorEnd; }
+        myLowerBound,
+        myUpperBound)
+{ 
+  ++myIteratorEnd;
+}
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -63,17 +66,24 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &lowerPoint,
     myIteratorEnd(myUpperBound,
       myLowerBound,
       myUpperBound)
-    
 {
-  ASSERT(myLowerBound<=myUpperBound);
+  ASSERT_MSG( // For an empty domain, lower = upper + diag(1) so that begin() == end().
+      myLowerBound.isLower(myUpperBound) || myLowerBound == myUpperBound + Point::diagonal(1),
+      "The lower bound must be lower than the upper bound or, for an empty domain, be equal to the upper bound + diagonal(1)."
+  );
+  ASSERT_MSG( // Check that begin() == end() for empty domains.
+      ConstIterator(myUpperBound+Point::diagonal(1), myUpperBound+Point::diagonal(1), myUpperBound) == ++ConstIterator(myUpperBound, myUpperBound+Point::diagonal(1), myUpperBound),
+      "ConstIterator is not compatible with the definition of an empty domain."
+  ); 
   
   ++myIteratorEnd;
 }
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
-DGtal::HyperRectDomain<TSpace>::HyperRectDomain
-( const typename DGtal::HyperRectDomain<TSpace> &aDomain) :
+DGtal::HyperRectDomain<TSpace>
+::HyperRectDomain( const typename DGtal::HyperRectDomain<TSpace> &aDomain) :
     myLowerBound(aDomain.lowerBound()),
     myUpperBound(aDomain.upperBound()),
     myPredicate( myLowerBound, myUpperBound ),
@@ -83,30 +93,35 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain
     myIteratorEnd(myUpperBound,
       myLowerBound,
       myUpperBound)
-{ ++myIteratorEnd; }
+{ 
+  ++myIteratorEnd; 
+}
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::~HyperRectDomain()
 {}
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace> &
-DGtal::HyperRectDomain<TSpace>::operator=
-( const typename DGtal::HyperRectDomain<TSpace> & other )
+DGtal::HyperRectDomain<TSpace>
+::operator= ( const typename DGtal::HyperRectDomain<TSpace> & other )
 {
   if ( this != &other )
-  {
-    myLowerBound = other.myLowerBound;
-    myUpperBound = other.myUpperBound;
-    myPredicate = other.myPredicate;    
-    new(&myIteratorBegin) ConstIterator(myLowerBound,myLowerBound,myUpperBound);
-    new(&myIteratorEnd) ConstIterator(myUpperBound,myLowerBound,myUpperBound);
-    ++myIteratorEnd;
-  }
+    {
+      myLowerBound = other.myLowerBound;
+      myUpperBound = other.myUpperBound;
+      myPredicate = other.myPredicate;    
+      new(&myIteratorBegin) ConstIterator(myLowerBound,myLowerBound,myUpperBound);
+      new(&myIteratorEnd) ConstIterator(myUpperBound,myLowerBound,myUpperBound);
+      ++myIteratorEnd;
+    }
   return *this;
 }
+
 //-----------------------------------------------------------------------------
 
 
@@ -118,6 +133,7 @@ DGtal::HyperRectDomain<TSpace>::lowerBound() const
 {
   return myLowerBound;
 }
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -125,8 +141,17 @@ bool
 DGtal::HyperRectDomain<TSpace>::isInside( const Point & p ) const
 {
   return myPredicate( p );
-  //LowerBound.isLower( p ) && myUpperBound.isUpper( p );
 }
+
+//-----------------------------------------------------------------------------
+template<typename TSpace>
+inline
+bool
+DGtal::HyperRectDomain<TSpace>::isEmpty() const
+{
+  return ! myLowerBound.isLower(myUpperBound);
+}
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -135,6 +160,7 @@ DGtal::HyperRectDomain<TSpace>::predicate() const
 {
   return myPredicate;
 }
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -143,6 +169,7 @@ DGtal::HyperRectDomain<TSpace>::upperBound() const
 {
   return myUpperBound;
 }
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -150,8 +177,9 @@ void
 DGtal::HyperRectDomain<TSpace>::selfDisplay ( std::ostream & out ) const
 {
   out << "[HyperRectDomain] = [" << myLowerBound << "]x["
-  << myUpperBound << "]";
+      << myUpperBound << "]";
 }
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -180,6 +208,7 @@ DGtal::operator<< ( std::ostream & out,
   object.selfDisplay ( out );
   return out;
 }
+
 ///////////////////////////////////////////////////////////////////////////////
 
 

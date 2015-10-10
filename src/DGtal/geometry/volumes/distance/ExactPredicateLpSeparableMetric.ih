@@ -58,7 +58,7 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::rawDistance (const Point &aP,
   RawValue res= NumberTraits<RawValue>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
     {
-      res += BasicMathFunctions::power(static_cast<RawValue>(abs(aP[d]-aQ[d])), p);
+      res += functions::power(static_cast<RawValue>(abs(aP[d]-aQ[d])), p);
     }
   return res;
 }
@@ -104,15 +104,15 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa
                                                                   const Abscissa &lower,
                                                                   const Abscissa &upper) const
 {
-  ASSERT(  (nu +  BasicMathFunctions::power( static_cast<RawValue>(abs( udim - lower)),  p)) <
-           (nv +  BasicMathFunctions::power( static_cast<RawValue>(abs( vdim - lower)), p)));
+  ASSERT(  (nu +  functions::power( static_cast<RawValue>(abs( udim - lower)),  p)) <
+           (nv +  functions::power( static_cast<RawValue>(abs( vdim - lower)), p)));
 
   //Recurrence stop
   if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
     {
       //testing upper
-      RawValue nuUpdated = nu +  BasicMathFunctions::power( static_cast<RawValue>(abs( udim - upper )), p);
-      RawValue nvUpdated = nv +  BasicMathFunctions::power( static_cast<RawValue>(abs( vdim - upper )), p);
+      RawValue nuUpdated = nu +  functions::power( static_cast<RawValue>(abs( udim - upper )), p);
+      RawValue nvUpdated = nv +  functions::power( static_cast<RawValue>(abs( vdim - upper )), p);
       if (nuUpdated < nvUpdated)
         return upper;
       else
@@ -120,8 +120,8 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa
     }
 
   Abscissa mid = (lower + upper)/2;
-  RawValue nuUpdated = nu +  BasicMathFunctions::power( static_cast<RawValue>(abs( udim - mid )), p);
-  RawValue nvUpdated = nv +  BasicMathFunctions::power( static_cast<RawValue>(abs( vdim - mid )), p);
+  RawValue nuUpdated = nu +  functions::power( static_cast<RawValue>(abs( udim - mid )), p);
+  RawValue nvUpdated = nv +  functions::power( static_cast<RawValue>(abs( vdim - mid )), p);
 
   //Recursive call
   if ( nuUpdated < nvUpdated)
@@ -152,9 +152,9 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u,
   for(DGtal::Dimension i  = 0 ; i < Point::dimension ; i++)
     if (i != dim)
       {
-        nu += BasicMathFunctions::power ( static_cast<RawValue>(abs(u[i] - startingPoint[i])), p);
-        nv += BasicMathFunctions::power ( static_cast<RawValue>(abs(v[i] - startingPoint[i])), p);
-        nw += BasicMathFunctions::power ( static_cast<RawValue>(abs(w[i] - startingPoint[i])), p);
+        nu += functions::power ( static_cast<RawValue>(abs(u[i] - startingPoint[i])), p);
+        nv += functions::power ( static_cast<RawValue>(abs(v[i] - startingPoint[i])), p);
+        nw += functions::power ( static_cast<RawValue>(abs(w[i] - startingPoint[i])), p);
       }
 
   //Abscissa of voronoi edges
@@ -162,9 +162,9 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u,
   RawValue dv,dw,du,ddv,ddw;
 
   //checking distances to lower bound
-  du = nu + BasicMathFunctions::power( static_cast<RawValue>(abs( u[dim] - lower)), p);
-  dv = nv + BasicMathFunctions::power( static_cast<RawValue>(abs( v[dim] - lower)), p);
-  dw = nw + BasicMathFunctions::power( static_cast<RawValue>(abs( w[dim] - lower)), p);
+  du = nu + functions::power( static_cast<RawValue>(abs( u[dim] - lower)), p);
+  dv = nv + functions::power( static_cast<RawValue>(abs( v[dim] - lower)), p);
+  dw = nw + functions::power( static_cast<RawValue>(abs( w[dim] - lower)), p);
 
   //Precondition of binarySearchHidden is true
   if (du < dv )
@@ -186,8 +186,8 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u,
           if (uv == upper) return true;
 
           //distances at uv+1
-          ddv = nv + BasicMathFunctions::power( static_cast<RawValue>(abs( v[dim] - uv -1)), p);
-          ddw = nw + BasicMathFunctions::power( static_cast<RawValue>(abs( w[dim] - uv -1)), p);
+          ddv = nv + functions::power( static_cast<RawValue>(abs( v[dim] - uv -1)), p);
+          ddw = nw + functions::power( static_cast<RawValue>(abs( w[dim] - uv -1)), p);
           if (ddw < ddv)
             return true;
           else

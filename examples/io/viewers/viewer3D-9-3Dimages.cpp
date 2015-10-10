@@ -35,7 +35,6 @@
 #include "DGtal/images/Image.h"
 #include "ConfigExamples.h"
 
-#include <QtGui/qapplication.h>
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/io/viewers/Viewer3D.h"

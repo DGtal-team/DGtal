@@ -8,33 +8,39 @@
 #
 
 find_path(QGLVIEWER_INCLUDE_DIR 
-          NAMES QGLViewer/qglviewer.h
-          PATHS /usr/include
-                /usr/local/include
-                ENV QGLVIEWERROOT 
-         )
+  NAMES QGLViewer/qglviewer.h
+  PATHS /usr/include
+  /usr/local/include
+  /usr/local/lib/
+  /Library/Frameworks/
+  ENV QGLVIEWERROOT 
+  )
+
 
 find_library(QGLVIEWER_LIBRARY_RELEASE 
-             NAMES qglviewer-qt4 qglviewer QGLViewer QGLViewer2
-             PATHS 
-		   /usr/lib
-                   /usr/local/lib
-                   ENV QGLVIEWERROOT
-                   ENV LD_LIBRARY_PATH
-                   ENV LIBRARY_PATH
-             PATH_SUFFIXES QGLViewer QGLViewer/release
-            )
+  NAMES qglviewer-qt4 qglviewer QGLViewer QGLViewer2
+  PATHS 
+  /usr/lib
+  /usr/local/lib
+  /Library/Frameworks/
+  ENV QGLVIEWERROOT
+  ENV LD_LIBRARY_PATH
+  ENV LIBRARY_PATH
+  PATH_SUFFIXES QGLViewer QGLViewer/release
+  )
 
 find_library(QGLVIEWER_LIBRARY_DEBUG
-             NAMES dqglviewer dQGLViewer dQGLViewer2
-             PATHS
-		   /usr/lib
-                   /usr/local/lib
-                   ENV QGLVIEWERROOT
-                   ENV LD_LIBRARY_PATH
-                    ENV LIBRARY_PATH
-             PATH_SUFFIXES QGLViewer QGLViewer/debug      
-            )
+  NAMES dqglviewer dQGLViewer dQGLViewer2
+  PATHS
+  /usr/lib
+  /usr/local/lib
+  /usr/local/lib/QGLViewer.framework
+  /Library/Frameworks/QGLViewer.framework
+  ENV QGLVIEWERROOT
+  ENV LD_LIBRARY_PATH
+  ENV LIBRARY_PATH
+  PATH_SUFFIXES QGLViewer QGLViewer/debug      
+  )
 
 if(QGLVIEWER_LIBRARY_RELEASE)
   if(QGLVIEWER_LIBRARY_DEBUG)
@@ -48,12 +54,12 @@ if(QGLVIEWER_LIBRARY_RELEASE)
 endif()
 
 IF(QGLVIEWER_INCLUDE_DIR AND QGLVIEWER_LIBRARIES)
-   SET(QGLVIEWER_FOUND TRUE)
+  SET(QGLVIEWER_FOUND TRUE)
 ENDIF(QGLVIEWER_INCLUDE_DIR AND QGLVIEWER_LIBRARIES)
 
 IF(QGLVIEWER_FOUND)
   IF(NOT QGLViewer_FIND_QUIETLY)
-   # MESSAGE(STATUS "Found QGLViewer: ${QGLVIEWER_LIBRARIES}")
+    #MESSAGE(STATUS "Found QGLViewer: ${QGLVIEWER_LIBRARIES}")
   ENDIF(NOT QGLViewer_FIND_QUIETLY)
 ELSE(QGLVIEWER_FOUND)
   IF(QGLViewer_FIND_REQUIRED)

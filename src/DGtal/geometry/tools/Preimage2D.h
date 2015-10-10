@@ -99,11 +99,12 @@ namespace DGtal
 
     typedef typename Shape::Point Point;
     typedef typename Shape::Point Vector;
+    //container of points
+    typedef std::list<Point> Container;
+    
 
   private:
 
-    //container of points
-    typedef std::list<Point> Container;
     //Iterators on the container
     typedef typename std::list<Point>::iterator ForwardIterator;
     typedef typename std::list<Point>::reverse_iterator BackwardIterator;

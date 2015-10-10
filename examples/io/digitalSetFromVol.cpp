@@ -29,7 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/Display3D.h"
@@ -50,10 +50,10 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-  std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
+  std::string inputFilename = examplesPath + "samples/Al.100.vol";
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.show(); 
+  viewer.show();
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());

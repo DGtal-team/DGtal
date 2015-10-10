@@ -105,7 +105,7 @@ public:
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE ( CBidirectionalRangeFromPoint )
     {
-        ConceptUtils::sameType ( myIt, myX.rbegin ( myPoint ) );
+        concepts::ConceptUtils::sameType ( myIt, myX.rbegin ( myPoint ) );
     }
 
     // ------------------------- Private Datas --------------------------------

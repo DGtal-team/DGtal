@@ -57,10 +57,12 @@ OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
 OPTION(BUILD_TESTING "Build testing." OFF)
 OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
 OPTION(VERBOSE "Verbose messages." OFF)
-option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
+OPTION(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
+OPTION(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 
 SET(VERBOSE_DGTAL 0)
 SET(DEBUG_VERBOSE_DGTAL 0)
+SET(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
 
 IF (DEBUG_VERBOSE)
   SET(DEBUG_VERBOSE_DGTAL 1)
@@ -72,6 +74,11 @@ IF (VERBOSE)
   ADD_DEFINITIONS(-DVERBOSE)
   MESSAGE(STATUS "Verbose mode activated")
 ENDIF(VERBOSE)
+
+IF(COLOR_WITH_ALPHA_ARITH)
+  SET(COLOR_WITH_ALPHA_ARITH_DGTAL 1)
+  ADD_DEFINITIONS(-DCOLOR_WITH_ALPHA_ARITH)
+ENDIF(COLOR_WITH_ALPHA_ARITH)
 
 # -----------------------------------------------------------------------------
 # Benchmark target

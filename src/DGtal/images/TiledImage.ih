@@ -51,7 +51,7 @@ inline
 void
 DGtal::TiledImage<TImageContainer, TImageFactory, TImageCacheReadPolicy, TImageCacheWritePolicy>::selfDisplay ( std::ostream & out ) const
 {
-    out << "[TiledImage] -> Domain: " << myImageFactory->domain();
+out << "[TiledImage] -> Domain: " << myImageFactory->domain()<< ", Number of tiles (per dim): "<< myN ;
 }
 
 

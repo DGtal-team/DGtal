@@ -103,7 +103,7 @@ ImageContainerBySTLVector::Range
     {
  // const method dummyConst should take parameter myA of type A and return
  // something of type B
- ConceptUtils::sameType( myB, myX.rbegin( myPoint ) );
+      concepts::ConceptUtils::sameType( myB, myX.rbegin( myPoint ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:

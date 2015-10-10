@@ -152,7 +152,7 @@ inline
 bool
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::isValid() const
 {
-  return (this != NULL);
+  return true;
 }
 
 //------------------------------------------------------------------------------

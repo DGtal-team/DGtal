@@ -40,8 +40,8 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
 #include "DGtal/base/Common.h"
+#include "boost/concept_check.hpp"
 #include "DGtal/base/ConceptUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -94,15 +94,20 @@ namespace DGtal
     typedef typename T::ConstIterator ConstIterator;
     
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator> ));
-
+    
     BOOST_CONCEPT_USAGE(CConstSinglePassRange)
     {
-      ConstIterator it=i.begin();
-      it=i.end();
-    };
-
+      checkConstConstraints();
+    }
+    void checkConstConstraints() const
+    {
+      concepts::ConceptUtils::sameType( it, i.begin() );
+      concepts::ConceptUtils::sameType( it, i.end() );
+    }
+    
   private:
     T i;
+    ConstIterator it;
   }; // end of concept CConstSinglePassRange
   
 } // namespace DGtal

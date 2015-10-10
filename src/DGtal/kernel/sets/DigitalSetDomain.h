@@ -71,6 +71,7 @@ namespace DGtal
     typedef typename Domain::Dimension Dimension;
     typedef typename DigitalSet::ConstIterator ConstIterator;
     typedef DigitalSet Predicate; // since 0.6, DigitalSet are PointPredicate
+
     // ----------------------- Standard services ------------------------------
   public:
 

@@ -28,7 +28,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -72,7 +71,7 @@ int main( int argc, char** argv )
 
   //! [DVCM3D-typedefs]
   typedef ExactPredicateLpSeparableMetric<Space, 2> Metric;          // L2-metric type
-  typedef functors::HatPointFunction<Point,double>  KernelFunction;  // chi function type 
+  typedef functors::HatPointFunction<Point,double>  KernelFunction;  // chi function type
   typedef VoronoiCovarianceMeasureOnDigitalSurface< DigitalSurfaceContainer, Metric,
                                                     KernelFunction > VCMOnSurface;
   typedef VCMOnSurface::Surfel2Normals::const_iterator S2NConstIterator;
@@ -106,17 +105,17 @@ int main( int argc, char** argv )
                            image.domain().upperBound(), true );
   SurfelAdjacency<KSpace::dimension> surfAdj( true ); // interior in all directions.
   Surfel bel = Surfaces<KSpace>::findABel( ks, thresholdedImage, 10000 );
-  DigitalSurfaceContainer* container = 
+  DigitalSurfaceContainer* container =
     new DigitalSurfaceContainer( ks, thresholdedImage, surfAdj, bel, false  );
   DigitalSurface< DigitalSurfaceContainer > surface( container ); //acquired
   trace.info() << "Digital surface has " << surface.size() << " surfels." << std::endl;
   trace.endBlock();
 
   //! [DVCM3D-instantiation]
-  Surfel2PointEmbedding embType = Pointels; // Could be Pointels|InnerSpel|OuterSpel; 
-  Metric l2;                                // Euclidean L2 metric 
+  Surfel2PointEmbedding embType = Pointels; // Could be Pointels|InnerSpel|OuterSpel;
+  Metric l2;                                // Euclidean L2 metric
   KernelFunction chi( 1.0, r );             // hat function with support of radius r
-  VCMOnSurface vcm_surface( surface, embType, R, r, 
+  VCMOnSurface vcm_surface( surface, embType, R, r,
                             chi, trivial_r, l2, true /* verbose */ );
   //! [DVCM3D-instantiation]
 
@@ -133,7 +132,7 @@ int main( int argc, char** argv )
   grad.addColor( Color( 255, 255, 0 ) );
   grad.addColor( Color( 255, 0, 0 ) );
   RealVector lambda; // eigenvalues of chi-vcm
-  for ( S2NConstIterator it = vcm_surface.mapSurfel2Normals().begin(), 
+  for ( S2NConstIterator it = vcm_surface.mapSurfel2Normals().begin(),
           itE = vcm_surface.mapSurfel2Normals().end(); it != itE; ++it )
     {
       Surfel s = it->first;
@@ -141,7 +140,7 @@ int main( int argc, char** argv )
       RealPoint rp( 0.5 * (double) kp[ 0 ], 0.5 * (double) kp[ 1 ], 0.5 * (double) kp[ 2 ] );
       RealVector n = it->second.vcmNormal;
       vcm_surface.getChiVCMEigenvalues( lambda, s );
-      double ratio = lambda[ 1 ] / ( lambda[ 0 ] + lambda[ 1 ] + lambda[ 2 ] ); 
+      double ratio = lambda[ 1 ] / ( lambda[ 0 ] + lambda[ 1 ] + lambda[ 2 ] );
       viewer.setFillColor( grad( ratio > T ? T : ratio ) );
       viewer << ks.unsigns( s );
       n *= size;

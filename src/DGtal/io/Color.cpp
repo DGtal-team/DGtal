@@ -192,7 +192,7 @@ DGtal::Color::~Color()
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-const DGtal::Color DGtal::Color::None(false);
+const DGtal::Color DGtal::Color::None(0,0,0,0);
 const DGtal::Color DGtal::Color::Black((unsigned char)0,(unsigned char)0,(unsigned char)0);
 const DGtal::Color DGtal::Color::Gray((unsigned char)128,(unsigned char)128,(unsigned char)128);
 const DGtal::Color DGtal::Color::White((unsigned char)255,(unsigned char)255,(unsigned char)255);
@@ -216,7 +216,7 @@ const DGtal::Color DGtal::Color::Aqua((unsigned char)0,(unsigned char)255,(unsig
 void
 DGtal::Color::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Color] ("<<myRed<<","<<myGreen<<","<<myBlue<<")";
+  out << "[Color] RGBA("<<(int)myRed<<","<<(int)myGreen<<","<<(int)myBlue<<","<<(int)myAlpha<<")";
 }
 
 /**

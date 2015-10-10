@@ -235,6 +235,9 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::extendFront()
     bool XZflag = myXZalgo.extendFront();
     bool YZflag = myYZalgo.extendFront();
     ASSERT( (XYflag)&&(XZflag)&&(YZflag) );
+    boost::ignore_unused_variable_warning(XYflag);
+    boost::ignore_unused_variable_warning(XZflag);
+    boost::ignore_unused_variable_warning(YZflag);
 
     myEnd++;
     return true;
@@ -315,9 +318,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
-::getParameters(Point3d& direction,
-		PointD3d& intercept,
-		PointD3d& thickness) const
+::getParameters ( Point3d& direction, PointR3d& intercept, PointR3d& thickness ) const
 {
 
   //let us take the pair of projection planes for which
@@ -334,15 +335,11 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
 
     Integer mu1 = myXYalgo.mu();
     Integer mu2 = myXZalgo.mu();
-    double y = (double) -NumberTraits<TInteger>::castToInt64_t(mu1) / a1;
-    double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / a2;
-    intercept = PointD3d(0,y,z);
+    intercept[0] = std::make_pair ( 0, 1 ); intercept[1] = std::make_pair ( -mu1, a1 ); intercept[2] = std::make_pair ( -mu2, a2 );
 
     Integer omega1 = myXYalgo.omega()-1;
     Integer omega2 = myXZalgo.omega()-1;
-    double ty = (double) -NumberTraits<TInteger>::castToInt64_t(omega1) / a1;
-    double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / a2;
-    thickness = PointD3d(0,ty,tz);
+    thickness[0] = std::make_pair ( 0, 1 ); thickness[1] = std::make_pair ( -omega1, a1 ); thickness[2] = std::make_pair ( -omega2, a2 );
 
   } else {                     
 
@@ -357,15 +354,11 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
 
       Integer mu1 = myXYalgo.mu();
       Integer mu2 = myYZalgo.mu();
-      double x = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / b1;
-      double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / b2;
-      intercept = PointD3d(x,0,z);
+      intercept[0] = std::make_pair ( mu1, b1 ); intercept[1] = std::make_pair ( 0, 1 ); intercept[2] = std::make_pair ( -mu2, b2 );
 
       Integer omega1 = myXYalgo.omega()-1;
       Integer omega2 = myYZalgo.omega()-1;
-      double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
-      double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
-      thickness = PointD3d(tx,0,tz);
+      thickness[0] = std::make_pair ( omega1, b1 ); thickness[1] = std::make_pair ( 0, 1 ); thickness[2] = std::make_pair ( -omega2, b2 );
 
     } else {                  
 
@@ -378,24 +371,20 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
         Integer a2 = myXZalgo.b();
         Integer c1 = myXZalgo.a();
 
-        direction = Point3d(c2*a2,c1*b2,c1*c2);	
+        direction = Point3d(c2*a2,c1*b2,c1*c2);
 
         Integer mu1 = myYZalgo.mu();
         Integer mu2 = myXZalgo.mu();
-        double y = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / c2;
-        double x = (double) NumberTraits<TInteger>::castToInt64_t(mu2) / c1;
-        intercept = PointD3d(x,y,0);
+        intercept[0] = std::make_pair ( mu2, c1 ); intercept[1] = std::make_pair ( mu1, c2 ); intercept[2] = std::make_pair ( 0, 1 );
 
         Integer omega1 = myYZalgo.omega()-1;
         Integer omega2 = myXZalgo.omega()-1;
-        double ty = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / c2;
-        double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega2) / c1;
-        thickness = PointD3d(tx,ty,0);
+        thickness[0] = std::make_pair ( omega2, c1 ); thickness[1] = std::make_pair ( omega1, c2 ); thickness[2] = std::make_pair ( 0, 1);
 
       } else {//degenerated case
-        direction = Point3d(0,0,0);		
-        intercept = PointD3d(0,0,0);
-        thickness = PointD3d(0,0,0);		
+        direction = Point3d(0,0,0);
+        intercept[0] = std::make_pair ( 0, 1 ); intercept[1] = std::make_pair ( 0, 1 ); intercept[2] = std::make_pair ( 0, 1 );
+        thickness[0] = std::make_pair ( 0, 1 ); thickness[1] = std::make_pair ( 0, 1 ); thickness[2] = std::make_pair ( 0, 1);
       }
     } 
   }

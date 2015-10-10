@@ -423,21 +423,22 @@ bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b
   DSL aDSL(a, b, 0); 
   for (typename DSL::Integer mu = 0; ( (mu-1 >= -aDSL.omega())&&(nbok == nb) ); --mu)
     {
-      trace.info() << "mu=" << mu << std::endl; 
-
+      //trace.info() << "mu=" << mu << std::endl; 
+     
+      typename DSL::Position f = -aDSL.patternLength(); 
       for (typename DSL::Position l = 1; ( (l <= 2*aDSL.patternLength())&&(nbok == nb) ); ++l)
 	{
-	  trace.info() << "l=" << l << std::endl; 
-
-	  if (comparisonSubsegment(DSL(a, b, mu), 0, l))
+	  //trace.info() << "f=" << f << " l=" << l << std::endl; 
+	    
+	  if (comparisonSubsegment(DSL(a, b, mu), f, f+l))
 	    nbok++;
 	  nb++; 
 	}
-
+      
     }
-
+  
   trace.endBlock(); 
-
+  
   return (nb == nbok); 
 }
 

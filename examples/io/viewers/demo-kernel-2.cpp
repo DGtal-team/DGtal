@@ -28,7 +28,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -55,7 +55,7 @@ int main( int argc, char** argv )
   MyDomain domain( p1, p2 );
   Viewer3D<> viewer; // for 3D visualization
   viewer.show();
-  viewer << domain;  
+  viewer << domain;
   viewer << p1 << p2 << p3;
   viewer<< Viewer3D<>::updateDisplay;
   return application.exec();

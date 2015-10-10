@@ -29,7 +29,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
@@ -45,7 +49,7 @@
 
 #include "ConfigTest.h"
 
-#include <limits> 
+#include <limits>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -65,14 +69,14 @@ using namespace Z3i;
 bool testViewer3D()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;  
+  unsigned int nb = 0;
   trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -99,26 +103,26 @@ int main( int argc, char** argv )
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
  trace.beginBlock("Testing Viewer with 3D Image View ");
- 
+
  Point p1( 0, 0, 0 );
  Point p2( 125, 188, 0 );
  Point p3( 30, 30, 30 );
 
  std::string filename =  testPath + "samples/church-small.pgm";
  std::string filename3 =  testPath + "samples/color64.ppm";
- 
- imageNG image = DGtal::PGMReader<imageNG>::importPGM(filename); 
- imageNG image2 = DGtal::GenericReader<imageNG>::import(filename); 
- imageCol image3 = DGtal::GenericReader<imageCol>::import(filename3); 
+
+ imageNG image = DGtal::PGMReader<imageNG>::importPGM(filename);
+ imageNG image2 = DGtal::GenericReader<imageNG>::import(filename);
+ imageCol image3 = DGtal::GenericReader<imageCol>::import(filename3);
  hueFct huefct;
   functors::Identity defaultfunctor;
- 
+
  viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct , Z3i::Space, Z3i::KSpace>(image2, huefct, Viewer3D<>::RGBMode );
  viewer << image;
   viewer << DGtal::AddTextureImage2DWithFunctor<imageCol,  functors::Identity, Z3i::Space, Z3i::KSpace>(image3, defaultfunctor, Viewer3D<>::RGBMode );
  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(0, Viewer3D<>::xDirection,  50, 50, 50 );
  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(2, Viewer3D<>::yDirection,  0, 0, 0);
- 
+
  viewer << SetMode3D( image.domain().className(), "BoundingBox" );
  viewer << image.domain();
  viewer << DGtal::Update2DDomainPosition<Z3i::Space, Z3i::KSpace>(0, Viewer3D<>::xDirection, 0, 0, 0);
@@ -132,7 +136,7 @@ int main( int argc, char** argv )
    }else if(i%4==3){
      viewer << SetMode3D( image.className(), "InterGrid" );
    }
-   viewer << image; 
+   viewer << image;
    viewer << DGtal::UpdateImageData<imageNG>(i+3, image,  i*50, i*50, i*50);
  }
 
