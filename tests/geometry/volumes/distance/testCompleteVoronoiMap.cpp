@@ -32,6 +32,7 @@
 
 #include <iostream>
 #include <limits>
+#include <string>
 
 #include "DGtalCatch.h"
 #include "DGtal/base/Common.h"
@@ -43,7 +44,31 @@
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 
+
 using namespace DGtal;
+
+
+//Helper function to export the map
+template <typename VMap>
+void exportVoronoi(const VMap &voronoi, Board2D &board, const std::string filename)
+{
+  board << voronoi.domain();
+  typedef typename VMap::Point Point;
+  Point p;
+  for(typename VMap::Domain::ConstIterator it = voronoi.domain().begin(),
+      itend = voronoi.domain().end() ; it != itend ; ++it)
+  {
+    if (!voronoi(*it).empty() )
+    {
+      p  = *voronoi(*it).begin() ;
+      if (*it == p)
+        board << p;
+      else
+        board.drawArrow( (*it)[0], (*it)[1], p[0], p[1]);
+    }
+  }
+  board.saveSVG(filename.c_str());
+}
 
 //Helper function to check the Voronoi map distances using
 //brute-force approach
@@ -93,7 +118,7 @@ TEMPLATE_TEST_CASE_2("Testing Complete Voronoi Map in 2D",
   const Domain domain(Point(0,0), Point(32,32));
   const Metric metric;
   Set pointset( domain );
-  pointset.insertNew( Point (0,16));
+  pointset.insertNew( Point (16,0));
   pointset.insertNew( Point(8,20));
   pointset.insertNew( Point(24,20));
   Board2D board;
@@ -103,6 +128,8 @@ TEMPLATE_TEST_CASE_2("Testing Complete Voronoi Map in 2D",
   typedef CompleteVoronoiMap<Space, functors::NotPointPredicate< Set >, Metric> CVMap;
   CVMap voronoi( domain, notInSet, metric);
 
+  exportVoronoi(voronoi, board, "voromap.svg");
+  
   SECTION("   Init")
   {
     //Validity check

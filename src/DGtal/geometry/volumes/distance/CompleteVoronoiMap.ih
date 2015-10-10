@@ -78,6 +78,7 @@ void
 DGtal::CompleteVoronoiMap<S,P, TSep, TImage>::insertSite( const Point &aPos, const Point &aSite ) const
 {
   size_t idx = DGtal::Linearizer<Domain, ColMajorStorage>::getIndex( aPos, myDomainPtr->lowerBound(), myExtent );
+  trace.info() << " inserting "<<aSite<<" at position "<< aPos<< std::endl;
   (*myImagePtr)[idx].insert(aSite);
 }
 
@@ -113,7 +114,7 @@ DGtal::CompleteVoronoiMap<S,P, TSep, TImage>::compute( )
       insertSite(*it, *it);
   
   //We process the remaining dimensions
-  for ( Dimension dim = 0;  dim< S::dimension ; dim++ )
+  for ( Dimension dim = 0;  dim < 1; ++dim)//dim< S::dimension ; dim++ )
     computeOtherSteps ( dim );
 }
 
@@ -194,9 +195,9 @@ DGtal::CompleteVoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &s
     for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
     {
       psite = this->getSite(point, isEmpty);
-      
       if ( !isEmpty )
       {
+        trace.info()<<"     read "<<psite<<" "@std::endl;
         nbSites++;
         Sites.push_back( psite );
       }
@@ -253,8 +254,8 @@ DGtal::CompleteVoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &s
 template <typename S,typename P,typename TSep, typename TImage>
 inline
 DGtal::CompleteVoronoiMap<S,P, TSep, TImage>::CompleteVoronoiMap( ConstAlias<Domain> aDomain,
-                                                                 ConstAlias<PointPredicate> aPredicate,
-                                                                 ConstAlias<SeparableMetric> aMetric):
+                                                                  ConstAlias<PointPredicate> aPredicate,
+                                                                  ConstAlias<SeparableMetric> aMetric):
 myDomainPtr(&aDomain), myPointPredicatePtr(&aPredicate),
 myMetricPtr(&aMetric)
 {
