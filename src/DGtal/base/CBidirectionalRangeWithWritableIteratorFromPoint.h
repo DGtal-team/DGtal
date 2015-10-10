@@ -98,7 +98,7 @@ ImageContainerBySTLVector::Range
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIteratorFromPoint )
     {
-       ConceptUtils::sameType( myIt, myX.routputIterator( myPoint ) );
+       concepts::ConceptUtils::sameType( myIt, myX.routputIterator( myPoint ) );
     }
 
     // ------------------------- Private Datas --------------------------------

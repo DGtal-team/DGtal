@@ -68,8 +68,11 @@ namespace DGtal
      * Description of template class 'SphereFittingEstimator' <p>
      * \brief Aim: Use Patate library to perform a local sphere fitting.
      *
-     * model of CLocalEstimatorFromSurfelFunctor.
+     * Given a kernel radius, this functor performs a sphere fitting
+     * and outputs the parameters of an AlgebraicSphere (please see
+     * Patate documentation for details).
      *
+     * Model of CLocalEstimatorFromSurfelFunctor.
      *
      * @tparam TSurfel type of surfels
      * @tparam TEmbedder type of functors which embed surfel to @f$
@@ -148,15 +151,19 @@ namespace DGtal
        *
        * @param [in] anEmbedder embedder to map surfel to R^n.
        * @param [in] h gridstep.
+       * @param [in] radius  radius of the convolution kernel (in
+       * @f$\mathbb{Z}^n@f$ space).
+       * @param [in] anEstimator normal vector estimator on the surface.
        */
       SphereFittingEstimator(ConstAlias<SCellEmbedder> anEmbedder,
                              const double h,
+                             const double radius,
                              ConstAlias<NormalVectorEstimatorCache> anEstimator):
         myEmbedder(&anEmbedder), myH(h), myNormalEsitmatorCache(&anEstimator)
       {
         //From Mellado's example
         myFit = new Fit();
-        myWeightFunction = new WeightFunc(100.0);
+        myWeightFunction = new WeightFunc(radius);
         myFit->setWeightFunc(*myWeightFunction);
       }
 
@@ -193,7 +200,14 @@ namespace DGtal
         normal(1) = norm[1];
         normal(2) = norm[2];
         PatatePoint point(pp,  normal);
-        myFit->addNeighbor(point);
+        if (myFirstPoint)
+          {
+            myFirstPoint = false;
+            myFit->init(pp);
+          }
+        else
+          myFit->addNeighbor(point);
+        
 #ifdef DEBUG_VERBOSE
         trace.info() <<"#";
 #endif
@@ -253,6 +267,7 @@ namespace DGtal
       {
         delete myFit;
         myFit = new Fit();
+        myFirstPoint = true;
         myFit->setWeightFunc(*myWeightFunction);
      }
 
@@ -268,6 +283,9 @@ namespace DGtal
       ///Grid step
       double myH;
 
+      ///Boolean for initial point
+      bool myFirstPoint;
+      
       ///NormalVectorCache
       const NormalVectorEstimatorCache *myNormalEsitmatorCache;
 

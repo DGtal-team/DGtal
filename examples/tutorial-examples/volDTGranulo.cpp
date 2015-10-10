@@ -21,9 +21,9 @@
  *
  *
  * @date 2010/10/17
- * 
+ *
  * @brief An example of generating a grid curve from a parametric shape
- * and estimating its length. 
+ * and estimating its length.
  *
  * This file is part of the DGtal library.
  */
@@ -47,7 +47,6 @@
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 #include "DGtal/base/BasicFunctors.h"
 
-#include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 
@@ -89,7 +88,7 @@ int main(int argc, char ** argv)
   QApplication application2(argc,argv);
   Viewer3D<> viewer2;
   viewer2.show();
-  DT::Value maxDT = (*std::max_element(distancemap.constRange().begin(), 
+  DT::Value maxDT = (*std::max_element(distancemap.constRange().begin(),
                                        distancemap.constRange().end()));
   GradientColorMap<DT::Value> gradient( 0, maxDT);
   gradient.addColor(DGtal::Color::Blue);
@@ -99,16 +98,16 @@ int main(int argc, char ** argv)
   trace.info() << "we display the dt map"<<std::endl;
   int cpt=0;
   viewer2 << DGtal::ClippingPlane(1,0,0,-10.1);
-  
+
   for(DT::Domain::ConstIterator it = distancemap.domain().begin(),
-	itend = distancemap.domain().end(); it != itend;
+  itend = distancemap.domain().end(); it != itend;
       ++it)
     if (distancemap(*it) > 0)
       {
-	DT::Value  val= distancemap( *it );     
-	DGtal::Color c= gradient(val);
-	
-	viewer2 <<  DGtal::CustomColors3D(c,c) << *it    ; 
+  DT::Value  val= distancemap( *it );
+  DGtal::Color c= gradient(val);
+
+  viewer2 <<  DGtal::CustomColors3D(c,c) << *it    ;
         cpt++;
       }
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
@@ -137,21 +136,21 @@ int main(int argc, char ** argv)
           Z3i::Point low = center - Z3i::Point::diagonal( radius+1 );
           Z3i::Point up = center + Z3i::Point::diagonal( radius+1 );
           Z3i::Domain dom(low,up);
-          
-          
+
+
           for(Z3i::Domain::ConstIterator itball = dom.begin(), itendball= dom.end();
               itball != itendball; itball++)
             if (imageGranulo.domain().isInside(*itball) &&
                 ( ball(*itball) > 0) &&
                 (imageGranulo(*itball) < radius))
               imageGranulo.setValue(*itball, radius);
-          
+
           cpt++;
         }
     }
 
   trace.info() << "Granulometry ok nbBalls="<<cpt<< std::endl;
-  VolWriter<Image, functors::Cast<unsigned char> >::exportVol("granulo.vol", imageGranulo);      
+  VolWriter<Image, functors::Cast<unsigned char> >::exportVol("granulo.vol", imageGranulo);
   trace.info() << "Save OK"<< std::endl;
 
 
@@ -159,7 +158,7 @@ int main(int argc, char ** argv)
   QApplication application3(argc,argv);
   Viewer3D<> viewer3;
   viewer3.show();
-  Image::Value maxG = (*std::max_element(imageGranulo.constRange().begin(), 
+  Image::Value maxG = (*std::max_element(imageGranulo.constRange().begin(),
                                          imageGranulo.constRange().end()));
   GradientColorMap<Image::Value> gradient2( 0, maxG);
   gradient2.addColor(DGtal::Color::Blue);
@@ -169,13 +168,13 @@ int main(int argc, char ** argv)
   viewer3 << DGtal::ClippingPlane(1,0,0,-10.1);
   cpt=0;
   for(Image::Domain::ConstIterator it = imageGranulo.domain().begin(),
-	itend = imageGranulo.domain().end(); it != itend;
+  itend = imageGranulo.domain().end(); it != itend;
       ++it)
     if (imageGranulo(*it) > 0)
       {
-	Image::Value  val= imageGranulo( *it );     
-	DGtal::Color c = gradient2(val);
-	viewer3 <<  DGtal::CustomColors3D(c,c) << *it    ; 
+  Image::Value  val= imageGranulo( *it );
+  DGtal::Color c = gradient2(val);
+  viewer3 <<  DGtal::CustomColors3D(c,c) << *it    ;
         cpt++;
       }
   trace.info() << "Got "<<cpt<<" points."<<std::endl;

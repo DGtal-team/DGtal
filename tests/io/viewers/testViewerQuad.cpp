@@ -29,7 +29,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -87,7 +91,7 @@ int main( int argc, char** argv )
 
   Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel3, n2.getNormalized());
 
-  
+
 
 
 
@@ -95,11 +99,11 @@ int main( int argc, char** argv )
 
   bool res = application.exec();
 
-  
-  
 
 
-  
+
+
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

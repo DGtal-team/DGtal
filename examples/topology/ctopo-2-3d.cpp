@@ -32,7 +32,6 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/helpers/StdDefs.h"
-#include <QtGui/qapplication.h>
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 
@@ -89,13 +88,13 @@ int main( int argc, char** argv )
 
   // Extract the bondary contour associated to the initial surfel in its first direction
   Surfaces<Z3i::KSpace>::track2DSliceBoundary( vectBdrySCell,
-					       ks, *(ks.sDirs( aCell )), SAdj,
-					       set3d, aCell );
+                 ks, *(ks.sDirs( aCell )), SAdj,
+                 set3d, aCell );
 
   // Extract the bondary contour associated to the initial surfel in its second direction
   Surfaces<Z3i::KSpace>::track2DSliceBoundary( vectBdrySCell2,
-					       ks, *(++(ks.sDirs( aCell ))), SAdj,
-					       set3d, aCell );
+                 ks, *(++(ks.sDirs( aCell ))), SAdj,
+                 set3d, aCell );
 
 
   // Displaying all the surfels in transparent mode

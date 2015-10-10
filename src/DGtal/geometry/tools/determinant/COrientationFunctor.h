@@ -104,7 +104,7 @@ namespace DGtal
 
 
      ### Models
-     InHalfPlaneBy2x2DetComputer InHalfPlaneBySimple3x3Matrix RadiusFunctor
+     InHalfPlaneBy2x2DetComputer InHalfPlaneBySimpleMatrix InGeneralizedDiskOfGivenRadius
 
      @tparam T the type that should be a model of COrientationFunctor.
   */
@@ -121,7 +121,7 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( COrientationFunctor )
     {
-      ConceptUtils::sameType( myS, T::size ); 
+      concepts::ConceptUtils::sameType( myS, T::size ); 
       myX.init( myA );
     }
     // ------------------------- Private Datas --------------------------------

@@ -91,7 +91,7 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
     // Methods
     BOOST_CONCEPT_USAGE( CDynamicSegmentComputer )
     {
-      ConceptUtils::sameType( myB, myX.retractBack() );
+      concepts::ConceptUtils::sameType( myB, myX.retractBack() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

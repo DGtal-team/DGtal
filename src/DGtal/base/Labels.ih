@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <algorithm>
+#include <limits>
 #include "DGtal/base/Bits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -72,7 +73,7 @@ ConstEnumerator( const Word* address, SizeType firstWord )
   else
     {
       myWord = 0;
-      myLabel = 0;
+      myLabel = std::numeric_limits<Label>::max();
     }
 }
 //-----------------------------------------------------------------------------
@@ -132,7 +133,7 @@ operator++()
       if ( myWordLabel == ( __DGTAL_LABELS_NBWORDS
                             * __DGTAL_WORD_NBDIGITS ) )
         {
-          myLabel = 0;
+          myLabel = std::numeric_limits<Label>::max();
           return *this;
         }
       myWord = *myWordAddress++;

@@ -68,30 +68,15 @@ int main( int argc, char** argv )
     //! [EuclideanShapesDecoratorUsage]
     typedef ImplicitBall< Z2i::Space > MyEuclideanShapeA;
     typedef ImplicitBall< Z2i::Space > MyEuclideanShapeB;
-    MyEuclideanShapeA shapeA( Z2i::RealPoint( 0.0, 0.0 ), 14 );
-    MyEuclideanShapeB shapeB( Z2i::RealPoint( 1.0, 0.0 ), 14 );
+    MyEuclideanShapeA shapeA( Z2i::RealPoint( 0.0, 0.0 ), 15 );
+    MyEuclideanShapeB shapeB( Z2i::RealPoint( 0.0, 0.0 ), 10 );
+    MyEuclideanShapeB shapeC( Z2i::RealPoint( -5.0, 0.0 ), 5 );
 
-    typedef EuclideanShapesMinus< MyEuclideanShapeA, MyEuclideanShapeB > Minus;
-    Minus s_minus ( shapeA, shapeB );
+    typedef EuclideanShapesCSG< MyEuclideanShapeA, MyEuclideanShapeB > Minus;
+    Minus s_minus ( shapeA );
+    s_minus.minus( shapeB );
+    s_minus.plus( shapeC );
     //! [EuclideanShapesDecoratorUsage]
-
-    typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeA;
-    MyGaussDigitizerShapeA digShapeA;
-    digShapeA.attach( shapeA );
-    digShapeA.init( shapeA.getLowerBound(), shapeA.getUpperBound(), h );
-    Z2i::Domain domainShapeA = digShapeA.getDomain();
-
-    Z2i::DigitalSet aSetA( domainShapeA );
-    Shapes<Z2i::Domain>::digitalShaper( aSetA, digShapeA );
-
-    typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeB;
-    MyGaussDigitizerShapeB digShapeB;
-    digShapeB.attach( shapeB );
-    digShapeB.init( shapeB.getLowerBound(), shapeB.getUpperBound(), h );
-    Z2i::Domain domainShapeB = digShapeB.getDomain();
-
-    Z2i::DigitalSet aSetB( domainShapeB );
-    Shapes<Z2i::Domain>::digitalShaper( aSetB, digShapeB );
 
     typedef GaussDigitizer< Z2i::Space, Minus > MyGaussDigitizer;
     MyGaussDigitizer digShape;
@@ -105,15 +90,7 @@ int main( int argc, char** argv )
     board << SetMode( domainShape.className(), "Paving" )
           << domainShape;
 
-    Color dgreen  ( 0,    192,  0,  50  );
-    Color dred    ( 192,  0,    0,  50  );
     Color dorange ( 255,  136,  0,  220 );
-
-    board << CustomStyle( aSetA.className(), new CustomFillColor( dgreen ));
-    board << aSetA;
-
-    board << CustomStyle( aSetB.className(), new CustomFillColor( dred ));
-    board << aSetB;
 
     board << CustomStyle( aSet.className(), new CustomFillColor( dorange ));
     board << aSet;

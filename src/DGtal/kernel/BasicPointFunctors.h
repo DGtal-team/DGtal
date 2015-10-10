@@ -612,14 +612,14 @@ namespace functors
                                                      myGridShift(aGridShift),
                                                      myGridSize(aGridSize)
     {
-      Point domainUpperBound;
+      Point domainUpperBound=aSourceDomain.upperBound();
+      Point domainLowerBound=aSourceDomain.lowerBound();
+
       for (Dimension dim=0; dim< Space::dimension; dim++){
-        Dimension sizeInDim = (aSourceDomain.upperBound()[dim] - 
-                               aSourceDomain.lowerBound()[dim]+1)/aGridSize[dim]-1;
-        domainUpperBound[dim]=sizeInDim;
+        domainLowerBound[dim] /= aGridSize[dim];
+        domainUpperBound[dim] /= aGridSize[dim];
       }
-      domainUpperBound + aSourceDomain.lowerBound();
-      myNewDomain = TDomain(aSourceDomain.lowerBound(), 
+      myNewDomain = TDomain(domainLowerBound, 
                             domainUpperBound);
       Point upperGrid;
       for (Dimension dim=0; dim < Space::dimension; dim++)
@@ -636,8 +636,8 @@ namespace functors
      * returns a point belonging to the source domain. If such a point
      * does not exits it return the point with null coordinates.
      *
-     * @param aPoint a point which should  elong to the new domain.  
-     * @return the point to be taken in the * subsampled domain.
+     * @param aPoint a point which should  belong to the new domain.  
+     * @return the point to be taken in the subsampled domain.
      *
      */
     
@@ -660,8 +660,8 @@ namespace functors
         // we are looking for a point inside the domain
         for(typename TDomain::ConstIterator it = myGridSampleDomain.begin();
             it!= myGridSampleDomain.end(); it++){
-          if (mySourceDomain.isInside(*it))
-            return *it;
+          if (mySourceDomain.isInside(ptRes+(*it)))
+            return ptRes+(*it);
         }
       }
       return ptRes;

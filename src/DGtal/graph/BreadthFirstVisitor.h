@@ -103,7 +103,8 @@ namespace DGtal
     typedef Size Data; ///< Data attached to each Vertex is the topological distance to the seed.
 
     // Cannot check this since some types using it are incomplete.
-    //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
+    ///FIXME
+    // BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleLocalGraph< Graph > ));
     // BOOST_CONCEPT_ASSERT(( CSet< MarkSet, Vertex > ));
 
     // ----------------------- defined types ------------------------------

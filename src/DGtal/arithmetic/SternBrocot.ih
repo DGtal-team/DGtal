@@ -61,7 +61,7 @@ Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
   // std::cerr << "(" << p1 << "/" << q1 << "," << u1 << "," << k1 << ")";
 }
 
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 // DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient>
@@ -496,6 +496,138 @@ end() const
   static CFracSequence dummy;
   return ConstIterator( 0, dummy.end() );
 }
+
+template <typename TInteger, typename TQuotient>
+inline
+typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
+DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
+median(const Fraction & g) const
+{
+  return Fraction(this->p()+g.p(),this->q()+g.q());
+}
+
+//----------------------------------------------------------------------------
+template <typename TInteger, typename TQuotient>
+inline
+typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
+DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
+simplestFractionInBetween(const Fraction & other) const
+{
+  Fraction f(*this);  
+  Fraction g(other); 
+  Fraction res;
+  
+  if(f>g)
+    {
+      res = f; f = g; g = res;
+    }
+  res = Fraction();
+   
+  int i = 0;
+  
+  Value uf, ug;
+  ConstIterator itf=f.begin(), itg=g.begin();
+  
+  DGtal::functors::Abs<TInteger> absComputer;
+
+  if(absComputer(f.p()*g.q()-f.q()*g.p())==NumberTraits<TInteger>::ONE)
+    return  f.median(g);
+  
+  itf = f.begin(); itg = g.begin(); 
+  uf = *itf; ug = *itg;
+  while(uf.first == ug.first && i != f.k() && i != g.k())
+    {
+      res.push_back(std::make_pair(uf.first,i));
+      i++;
+      itf++;itg++;
+      uf = *itf;
+      ug = *itg;
+    }
+    
+  if(uf.first==ug.first)
+    {
+      if(i == f.k())
+	{
+	  res.push_back(std::make_pair(uf.first,i));
+	  i++;
+	  itg++;
+	  ug = *itg;
+	  res.push_back(std::make_pair(ug.first+1,i)); 
+	}
+      else
+	{
+	  res.push_back(std::make_pair(uf.first,i));
+	  i++;
+	  itf++;
+	  uf = *itf;
+	  res.push_back(std::make_pair(uf.first+1,i)); 
+	}
+    }
+  else
+    {
+      if(i!=f.k() && i != g.k())
+	(uf.first<ug.first)?res.push_back(std::make_pair(uf.first+1,i)):res.push_back(std::make_pair(ug.first+1,i));
+      else
+	if(i == f.k() && i == g.k())
+	  (uf.first<ug.first)?res.push_back(std::make_pair(uf.first+1,i)):res.push_back(std::make_pair(ug.first+1,i));
+	else
+	  if(i==f.k())
+	    {
+	      if(uf.first < ug.first)
+		res.push_back(std::make_pair(uf.first+1,i));
+	      else
+		if(uf.first == ug.first + 1)
+		  {
+		    res.push_back(std::make_pair(ug.first,i));
+		    i++;
+		    itg++;
+		    ug = *itg;
+		    if(ug.first==NumberTraits<TInteger>::ONE)
+		      {
+			res.push_back(std::make_pair(ug.first,i));
+			i++;
+			itg++;
+			ug = *itg;
+			res.push_back(std::make_pair(ug.first+1,i));
+		      }
+		    else
+		      res.push_back(std::make_pair(2,i));
+		  }
+		else
+		  res.push_back(std::make_pair(ug.first+1,i));
+	    }
+	  else
+	    {
+	      if(ug.first < uf.first)
+		res.push_back(std::make_pair(ug.first+1,i));
+	      else
+		if(ug.first == uf.first + 1)
+		  {
+		    res.push_back(std::make_pair(uf.first,i));
+		    i++;
+		    itf++;
+		    uf = *itf;
+		    if(uf.first==NumberTraits<TInteger>::ONE)
+		      {
+			res.push_back(std::make_pair(uf.first,i));
+			i++;
+			itf++;
+			uf = *itf;
+			res.push_back(std::make_pair(uf.first+1,i));
+		      }
+		    else
+		      res.push_back(std::make_pair(2,i));
+		  }
+		else
+		  res.push_back(std::make_pair(uf.first+1,i));
+	      
+	    }
+    } 
+
+  return res;
+}
+
+
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient>
 inline

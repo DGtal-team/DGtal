@@ -64,7 +64,7 @@ template < typename Space ,typename KSpace >
 inline
 void
 DGtal::Viewer3D<Space, KSpace>::rotateDomain(Image2DDomainD3D &anDom, double angleRotation,
-					     ImageDirection rotationDir){
+                                             ImageDirection rotationDir){
   DGtal::PointVector<3, int> pt;
   pt[0] = (int) (anDom.point1[0]+anDom.point2[0]+anDom.point3[0]+anDom.point4[0])/4.0;
   pt[1] = (int) (anDom.point1[1]+anDom.point2[1]+anDom.point3[1]+anDom.point4[1])/4.0;
@@ -84,7 +84,7 @@ template < typename Space ,typename KSpace >
 inline
 void
 DGtal::Viewer3D<Space, KSpace>::rotatePoint(double &x, double &y, double &z, double cx, double cy, double cz,
-					    double angleRotation, ImageDirection rotationDir){
+                                            double angleRotation, ImageDirection rotationDir){
   double dx = x-cx; double dy = y-cy; double dz = z-cz;
   if(rotationDir  == zDirection){
     x = cx+dx*cos(angleRotation)-dy*sin(angleRotation);
@@ -107,8 +107,8 @@ template < typename Space ,typename KSpace >
 inline
 void
 DGtal::Viewer3D<Space, KSpace>::rotateLineD3D(typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine,
-					      DGtal::PointVector<3, int> pt,
-					      double angleRotation, ImageDirection dirRotation){
+                                              DGtal::PointVector<3, int> pt,
+                                              double angleRotation, ImageDirection dirRotation){
   double dx1 = aLine.point1[0] - pt[0]; double dy1 = aLine.point1[1] - pt[1]; double dz1 = aLine.point1[2] - pt[2];
   double dx2 = aLine.point2[0] - pt[0]; double dy2 = aLine.point2[1] - pt[1]; double dz2 = aLine.point2[2] - pt[2];
   if(dirRotation==zDirection){
@@ -177,22 +177,22 @@ inline
 void
 DGtal::Viewer3D< Space ,KSpace >::updateTextureImage(unsigned int imageIndex, const TImageType & image, const TFunctor & aFunctor,
                                                      double xTranslation, double yTranslation, double zTranslation,
-						     double rotationAngle, ImageDirection rotationDir)
+                                                     double rotationAngle, ImageDirection rotationDir)
 {
   BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
   typename Viewer3D< Space ,KSpace >::TextureImage &anImage = myGSImageList.at(imageIndex);
   Display::updateBoundingBox(RealPoint(anImage.point1[0]+xTranslation,
-                                                   anImage.point1[1]+yTranslation, 
+                                                   anImage.point1[1]+yTranslation,
                                                    anImage.point1[2]+zTranslation));
   Display::updateBoundingBox(RealPoint(anImage.point2[0]+xTranslation,
-                                                   anImage.point2[1]+yTranslation, 
+                                                   anImage.point2[1]+yTranslation,
                                                    anImage.point2[2]+zTranslation));
   Display::updateBoundingBox(RealPoint(anImage.point3[0]+xTranslation,
-                                                   anImage.point3[1]+yTranslation, 
+                                                   anImage.point3[1]+yTranslation,
                                                    anImage.point3[2]+zTranslation));
-  Display::updateBoundingBox(RealPoint(anImage.point4[0]+xTranslation, 
-                                                   anImage.point4[1]+yTranslation, 
+  Display::updateBoundingBox(RealPoint(anImage.point4[0]+xTranslation,
+                                                   anImage.point4[1]+yTranslation,
                                                    anImage.point4[2]+zTranslation));
   anImage.updateImageDataAndParam(image, aFunctor, xTranslation, yTranslation, zTranslation);
   if(anImage.myDrawDomain)
@@ -211,8 +211,8 @@ template < typename Space ,typename KSpace >
 inline
 void
 DGtal::Viewer3D< Space ,KSpace >::updateOrientationTextureImage(unsigned int imageIndex,
-                                                                double xPosition, 
-                                                                double yPosition, 
+                                                                double xPosition,
+                                                                double yPosition,
                                                                 double zPosition,
                                                                 ImageDirection newDirection)
 {
@@ -226,7 +226,7 @@ DGtal::Viewer3D< Space ,KSpace >::updateOrientationTextureImage(unsigned int ima
   if(anImage.myDrawDomain)
     {
       *this << DGtal::Update2DDomainPosition<Space ,KSpace >(anImage.myIndexDomain,
-                                                             newDirection, 
+                                                             newDirection,
                                                              xPosition,
                                                              yPosition, zPosition);
     }
@@ -326,7 +326,7 @@ template < typename Space ,typename KSpace >
 template < typename TDomain>
 void
 DGtal::Viewer3D< Space ,KSpace >::addImage2DDomainD3D(const TDomain &aDomain,
-                                                      std::string mode, 
+                                                      std::string mode,
                                                       const DGtal::Color &aColor)
 {
   typename DGtal::Viewer3D< Space ,KSpace >::Image2DDomainD3D anImageDomain(aDomain);
@@ -638,7 +638,7 @@ DGtal::Viewer3D<Space, KSpace>::drawWithNames()
   // selection is left clic + shift key.
   // JOL: 2014/10/15. This is my addition for interacting with
   // quads. Seems to work well.
-  
+
   glCallList ( myQuadsMapId );
   // JOL: 2014/10/15. I leave the remaining code, but I am not
   // confident that it works reliably.
@@ -693,14 +693,46 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   double distCam =sqrt ( ( posCam.x-centerS.x ) * ( posCam.x-centerS.x ) +
                          ( posCam.y-centerS.y ) * ( posCam.y-centerS.y ) +
                          ( posCam.z-centerS.z ) * ( posCam.z-centerS.z ) );
+  for(unsigned int j=0; j< myVectTextureImage.size(); j++)
+    {
+      GLTextureImage &textureImg = myVectTextureImage.at(j);
+      glPushName ( textureImg.myTextureName );
+      glEnable(GL_LIGHTING);
+      glEnable(GL_TEXTURE_2D);
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+      glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
+      glBegin(GL_QUADS);
+      glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
+      glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
+
+      glTexCoord2f(0, 0);
+      glVertex3f(textureImg.point1[0], textureImg.point1[1], textureImg.point1[2]);
+      glTexCoord2f(textureImg.myTextureFitX, 0.0);
+      glVertex3f(textureImg.point2[0], textureImg.point2[1], textureImg.point2[2]);
+      glTexCoord2f(textureImg.myTextureFitX, textureImg.myTextureFitY);
+      glVertex3f(textureImg.point3[0], textureImg.point3[1], textureImg.point3[2]);
+      glTexCoord2f(0.0, textureImg.myTextureFitY);
+      glVertex3f(textureImg.point4[0], textureImg.point4[1], textureImg.point4[2]);
+      glEnd();
+      glDisable(GL_TEXTURE_2D);
+
+    }
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
       if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
         {
-          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).size ) /distCam );
+          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam );
         }
       glCallList(myBallSetListId+j);
+    }
+ for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
+	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
+    {
+      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
+        {
+          glDrawGLBall ( *it_s );
+        }
     }
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
@@ -711,14 +743,14 @@ DGtal::Viewer3D<Space, KSpace>::draw()
         }
       glCallList(myLineSetListId+j);
     }
-  
+
   glCallList(myPrismListId);
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myCubeSetList.size() ; j++ )
     {
       glCallList( myCubeSetListId+j);
     }
-  
-  
+
+
   glDisable(GL_CULL_FACE);
   glCallList(myQuadsMapId);
   if(myViewWire)
@@ -742,40 +774,8 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glLineWidth (max(myGLLineMinWidth,  Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam ));
       glCallList(myPolygonSetListWiredId);
     }
-  
-  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
-	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
-    {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
-        {
-          glDrawGLBall ( *it_s );
-        }
-    }
 
-  for(unsigned int j=0; j< myVectTextureImage.size(); j++)
-    {
-      GLTextureImage &textureImg = myVectTextureImage.at(j);
-      glPushName ( textureImg.myTextureName );
-      glEnable(GL_LIGHTING);
-      glEnable(GL_TEXTURE_2D);
-      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-      glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
-      glBegin(GL_QUADS);
-      glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
-      glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
-      
-      glTexCoord2f(0, 0);
-      glVertex3f(textureImg.point1[0], textureImg.point1[1], textureImg.point1[2]);
-      glTexCoord2f(textureImg.myTextureFitX, 0.0);
-      glVertex3f(textureImg.point2[0], textureImg.point2[1], textureImg.point2[2]);
-      glTexCoord2f(textureImg.myTextureFitX, textureImg.myTextureFitY);
-      glVertex3f(textureImg.point3[0], textureImg.point3[1], textureImg.point3[2]);
-      glTexCoord2f(0.0, textureImg.myTextureFitY);
-      glVertex3f(textureImg.point4[0], textureImg.point4[1], textureImg.point4[2]);
-      glEnd();
-      glDisable(GL_TEXTURE_2D);
-
-    }
+ 
    glPopMatrix();
    glPopMatrix();
    drawLight(GL_LIGHT1);
@@ -820,7 +820,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myGLScaleFactorY=1.0;
   myGLScaleFactorZ=1.0;
   myGLLineMinWidth=1.5;
-  
+
   myIsDoubleFaceRendering=true;
   Viewer3D<Space, KSpace>::createNewCubeList ( );
   vector<typename Viewer3D<Space, KSpace>::LineD3D> listeLine;
@@ -849,6 +849,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_W, "Switch display with and without wired view of triangle and quad faces." );
   setKeyDescription ( Qt::Key_T, "Sort elements for display improvements." );
   setKeyDescription ( Qt::Key_L, "Load last visualisation settings." );
+  setKeyDescription ( Qt::ShiftModifier+Qt::Key_L, "Save visualisation settings." );
   setKeyDescription ( Qt::Key_B, "Switch background color with White/Black colors." );
   setKeyDescription ( Qt::Key_C, "Show camera informations." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
@@ -857,7 +858,12 @@ DGtal::Viewer3D<Space, KSpace>::init()
 
   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
+#if !defined (QGLVIEWER_VERSION) || QGLVIEWER_VERSION < 0x020500
   setMouseBindingDescription ( Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list." );
+#else
+  setMouseBindingDescription ( Qt::ShiftModifier, Qt::RightButton, "Delete the mouse selected list." );
+#endif
+
   setManipulatedFrame ( new ManipulatedFrame() );
 }
 
@@ -894,7 +900,7 @@ DGtal::Viewer3D<Space, KSpace>::sortTriangleFromCamera()
   comp.posCam= camera()->position();
   for (typename std::vector<std::vector< typename Viewer3D<Space, KSpace>::TriangleD3D> >::iterator it = Viewer3D<Space, KSpace>::myTriangleSetList.begin(); it != Viewer3D<Space, KSpace>::myTriangleSetList.end(); it++)
     {
-      DGtal::trace.info() << "sort triangle size" << it->size() << std::endl;
+      //DGtal::trace.info() << "sort triangle size" << it->size() << std::endl;
       sort ( it->begin(), it->end(), comp );
     }
 
@@ -909,7 +915,7 @@ DGtal::Viewer3D<Space, KSpace>::sortQuadFromCamera()
   CompFarthestSurfelFromCamera comp;
   comp.posCam= camera()->position();
 
-  for (typename Viewer3D<Space, KSpace>::QuadsMap::iterator it = Viewer3D<Space, KSpace>::myQuadsMap.begin(), itE = Viewer3D<Space, KSpace>::myQuadsMap.end(); 
+  for (typename Viewer3D<Space, KSpace>::QuadsMap::iterator it = Viewer3D<Space, KSpace>::myQuadsMap.begin(), itE = Viewer3D<Space, KSpace>::myQuadsMap.end();
        it != itE; ++it )
     {
       DGtal::trace.info() << "sort quad size" << it->second.size() << std::endl;
@@ -982,32 +988,35 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 {
-  
+
   // glDeleteLists
   glDeleteLists(myCubeSetListId, myNbCubeSetList);
   glDeleteLists(myLineSetListId, myNbLineSetList);
   glDeleteLists(myBallSetListId, myNbBallSetList);
   glDeleteLists(myTriangleSetListId, 1);
   glDeleteLists(myTriangleSetListWiredId, 1);
-  glDeleteLists(myCubeSetListId, 1);
+  glDeleteLists(myPrismListId, 1);
   glDeleteLists(myCubeSetListWiredId, 1);
   glDeleteLists(myPolygonSetListId, 1);
   glDeleteLists(myPolygonSetListWiredId, 1);
   glDeleteLists(myQuadsMapId, 1);
   glDeleteLists(myQuadsMapWiredId, 1);
-    
+
   // Storing ID for each list
-  myCubeSetListId = glGenLists(Viewer3D<Space, KSpace>::myCubeSetList.size()); 
+  myCubeSetListId = glGenLists(Viewer3D<Space, KSpace>::myCubeSetList.size());
+  myNbCubeSetList  = Viewer3D<Space, KSpace>::myCubeSetList.size();
   myLineSetListId = glGenLists(Viewer3D<Space, KSpace>::myLineSetList.size());
-  myBallSetListId = glGenLists(Viewer3D<Space, KSpace>::myBallSetList.size()); 
-  myTriangleSetListId = glGenLists(1); 
-  myTriangleSetListWiredId = glGenLists(1); 
+  myNbLineSetList =  Viewer3D<Space, KSpace>::myLineSetList.size();
+  myBallSetListId = glGenLists(Viewer3D<Space, KSpace>::myBallSetList.size());
+  myNbBallSetList = Viewer3D<Space, KSpace>::myBallSetList.size();
+  myTriangleSetListId = glGenLists(1);
+  myTriangleSetListWiredId = glGenLists(1);
   myCubeSetListWiredId = glGenLists(1);
-  myPolygonSetListId = glGenLists(1); 
-  myPolygonSetListWiredId = glGenLists(1); 
-  myQuadsMapId = glGenLists(1); 
-  myQuadsMapWiredId = glGenLists(1); 
-  myPrismListId = glGenLists(1);   
+  myPolygonSetListId = glGenLists(1);
+  myPolygonSetListWiredId = glGenLists(1);
+  myQuadsMapId = glGenLists(1);
+  myQuadsMapWiredId = glGenLists(1);
+  myPrismListId = glGenLists(1);
 
 
   myNbListe=0;
@@ -1017,35 +1026,29 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEnable ( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
-  std::vector<ItCube> listIt;
-  std::vector<ItCube> listEnd;
 
-  
   for( unsigned int i = 0; i <   Viewer3D<Space, KSpace>::myCubeSetList.size(); i++){
-    if (Viewer3D<Space, KSpace>::myCubeSetList.at(i).size() > 0  )
-        {
-          glCreateListCubes(Viewer3D<Space, KSpace>::myCubeSetList.at(i), myCubeSetListId+i);
-        }
-      myNbListe++;  
+    glCreateListCubes(Viewer3D<Space, KSpace>::myCubeSetList.at(i), myCubeSetListId+i);
+    myNbListe++;
   }
-     
-  
+
+
   glCreateListQuadD3D(Viewer3D<Space, KSpace>::myPrismList, myPrismListId);
-  myNbListe++;  
+  myNbListe++;
 
   for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
     {
       glCreateListLines(Viewer3D<Space, KSpace>::myLineSetList.at(j),  myLineSetListId+j);
       myNbListe++;
     }
-  
+
   for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
       glCreateListBalls(Viewer3D<Space, KSpace>::myBallSetList.at (j), myBallSetListId+j);
-      myNbListe++;    
+      myNbListe++;
     }
-  
-  
+
+
   // First list: quad faces.
   glCreateListQuadMaps(Viewer3D<Space, KSpace>::myQuadsMap, myQuadsMapId);
   myNbListe++;
@@ -1053,41 +1056,40 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   // Second list: Wired version of quad face.
   glCreateListQuadMapsWired(Viewer3D<Space, KSpace>::myQuadsMap,myQuadsMapWiredId);
   myNbListe++;
-  
+
   // Third list: Triangle faces.
   glCreateListTriangles( Viewer3D<Space, KSpace>::myTriangleSetList, myTriangleSetListId);
   myNbListe++;
 
   // Fourth list: Wired version of triangle face.
-  glCreateListTrianglesWired(Viewer3D<Space, KSpace>::myTriangleSetList, myTriangleSetListWiredId);  
-  myNbListe++;  
+  glCreateListTrianglesWired(Viewer3D<Space, KSpace>::myTriangleSetList, myTriangleSetListWiredId);
+  myNbListe++;
 
-  // Fifth list: Polygonal faces.  
-  glCreateListPolygons(Viewer3D<Space, KSpace>::myPolygonSetList, myPolygonSetListId); 
+  // Fifth list: Polygonal faces.
+  glCreateListPolygons(Viewer3D<Space, KSpace>::myPolygonSetList, myPolygonSetListId);
   myNbListe++;
 
   // Sixth list: Wired version of polygonal face.
-  glCreateListPolygonsWired(Viewer3D<Space, KSpace>::myPolygonSetList, myPolygonSetListWiredId);  
+  glCreateListPolygonsWired(Viewer3D<Space, KSpace>::myPolygonSetList, myPolygonSetListWiredId);
   myNbListe++;
+
 
   // Seventh list: Textured images.
   glUpdateTextureImages(myGSImageList);
 
-  
+
   if ( needToUpdateBoundingBox )
     {
       setSceneBoundingBox ( qglviewer::Vec ( Viewer3D<Space, KSpace>::myBoundingPtLow[0],
                                              Viewer3D<Space, KSpace>::myBoundingPtLow[1],
                                              Viewer3D<Space, KSpace>::myBoundingPtLow[2] ),
-                            qglviewer::Vec ( Viewer3D<Space, KSpace>::myBoundingPtUp[0], 
-                                             Viewer3D<Space, KSpace>::myBoundingPtUp[1], 
+                            qglviewer::Vec ( Viewer3D<Space, KSpace>::myBoundingPtUp[0],
+                                             Viewer3D<Space, KSpace>::myBoundingPtUp[1],
                                              Viewer3D<Space, KSpace>::myBoundingPtUp[2] ) );
       showEntireScene();
     }
-  glPopMatrix();  
+  glPopMatrix();
 }
-
-
 
 
 
@@ -1099,12 +1101,12 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>:
   double thetaStep= (2.0*M_PI)/thetaResolution;
   double phiResolution = aBall.resolution;
   double phiStep= M_PI/phiResolution;
-  
-  double radius = aBall.size;
+
+  double radius = aBall.radius;
   double xCenter = aBall.center[0];
   double yCenter = aBall.center[1];
   double zCenter = aBall.center[2];
-  
+
   for(unsigned int j =0; j < phiResolution; j++){
     double phi0 = M_PI/2.0-j*phiStep;
     double phi1 = M_PI/2.0-(j+1)*phiStep;
@@ -1113,12 +1115,12 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>:
       double theta0 =  i * thetaStep;
       glColor4ub ( aBall.color.red(), aBall.color.green(), aBall.color.blue(), aBall.color.alpha() );
       glNormal3f(cos(phi0)*cos(theta0), cos(phi0)*sin(theta0), sin(phi0));
-      glVertex3f(xCenter+cos(phi0)*cos(theta0)*radius,yCenter+ cos(phi0)*sin(theta0)*radius, zCenter+ sin(phi0)*radius);      
+      glVertex3f(xCenter+cos(phi0)*cos(theta0)*radius,yCenter+ cos(phi0)*sin(theta0)*radius, zCenter+ sin(phi0)*radius);
       glNormal3f(cos(phi1)*cos(theta0), cos(phi1)*sin(theta0), sin(phi1));
-      glVertex3f(xCenter+cos(phi1)*cos(theta0)*radius,yCenter+ cos(phi1)*sin(theta0)*radius, zCenter+ sin(phi1)*radius);      
+      glVertex3f(xCenter+cos(phi1)*cos(theta0)*radius,yCenter+ cos(phi1)*sin(theta0)*radius, zCenter+ sin(phi1)*radius);
     }
      glEnd();
-  }  
+  }
 }
 
 
@@ -1189,12 +1191,17 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
         }
       updateGL();
     }
-  if ( ( e->key() ==Qt::Key_L ) )
+
+ if ( ( e->key() ==Qt::Key_L ) )
     {
-      restoreStateFromFile();
-      updateGL();
+      if(e->modifiers()==Qt::ShiftModifier){
+        saveStateToFile();
+      }else{
+        restoreStateFromFile();
+        updateGL();
+      }
     }
-  if ( ( e->key() ==Qt::Key_C ) ) 
+  if ( ( e->key() ==Qt::Key_C ) )
    {
       handled=true;
       GLint Viewport[4];
@@ -1275,17 +1282,17 @@ DGtal::Viewer3D<Space, KSpace>::helpString() const
 
 
 template< typename Space, typename KSpace>
-void 
+void
 DGtal::Viewer3D<Space, KSpace>::glCreateListCubes( const VectorCubes & aVectCubes,
-                                                   unsigned int idList){  
+                                                   unsigned int idList){
   glNewList ( idList , GL_COMPILE );
   glPushName ( myNbListe );
-  glEnable ( GL_DEPTH_TEST );  
+  glEnable ( GL_DEPTH_TEST );
   glBegin ( GL_QUADS );
-  
-  for (typename  VectorCubes::const_iterator c_it =  aVectCubes.begin(); 
+
+  for (typename  VectorCubes::const_iterator c_it =  aVectCubes.begin();
        c_it != aVectCubes.end(); ++c_it ){
-    
+
     typename Viewer3D<Space, KSpace>::CubeD3D cube = (*c_it);
     glColor4ub ( cube.color.red(), cube.color.green(), cube.color.blue(), cube.color.alpha() );
     double _width= cube.width;
@@ -1333,10 +1340,10 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListCubes( const VectorCubes & aVectCube
 
 
 template< typename Space, typename KSpace>
-void 
+void
 DGtal::Viewer3D<Space, KSpace>::glCreateListQuadD3D(const VectorQuad &aVectQuad,
                                                     unsigned int idList){
-  glNewList ( idList, GL_COMPILE );  
+  glNewList ( idList, GL_COMPILE );
   glPushName ( myNbListe );
   glEnable ( GL_DEPTH_TEST );
   glEnable ( GL_BLEND );
@@ -1345,10 +1352,10 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListQuadD3D(const VectorQuad &aVectQuad,
   glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
   glBegin ( GL_QUADS );
-  for ( typename  VectorQuad::const_iterator s_it = aVectQuad.begin(); 
+  for ( typename  VectorQuad::const_iterator s_it = aVectQuad.begin();
         s_it != aVectQuad.end(); ++s_it )
     {
-      glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), 
+      glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(),
                    ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
       glNormal3f ( ( *s_it ).nx, ( *s_it ).ny, ( *s_it ).nz );
       glVertex3f ( ( *s_it ).point1[0], ( *s_it ).point1[1] , ( *s_it ).point1[2] );
@@ -1360,17 +1367,17 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListQuadD3D(const VectorQuad &aVectQuad,
   glEndList();
 }
 
-    
+
 
 template< typename Space, typename KSpace>
-void 
-DGtal::Viewer3D<Space, KSpace>::glCreateListLines(const VectorLine &aVectLine, 
+void
+DGtal::Viewer3D<Space, KSpace>::glCreateListLines(const VectorLine &aVectLine,
                                                   unsigned int idList){
   glNewList ( idList, GL_COMPILE );
   glDisable ( GL_LIGHTING );
   glPushName ( myNbListe );
   glBegin ( GL_LINES );
-  for (typename  VectorLine::const_iterator s_it =  aVectLine.begin(); 
+  for (typename  VectorLine::const_iterator s_it =  aVectLine.begin();
        s_it != aVectLine.end(); ++s_it )
     {
       glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(),
@@ -1386,7 +1393,7 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListLines(const VectorLine &aVectLine,
 
 
 template< typename Space, typename KSpace>
-void 
+void
 DGtal::Viewer3D<Space, KSpace>::glCreateListBalls(const VectorBall &aVectBall,
                                                   unsigned int idList){
   glNewList ( idList, GL_COMPILE );
@@ -1394,7 +1401,7 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListBalls(const VectorBall &aVectBall,
   glDisable ( GL_TEXTURE_2D );
   glDisable ( GL_POINT_SMOOTH );
   glDisable ( GL_LIGHTING );
-  
+
   glPushName ( myNbListe );
   glBegin ( GL_POINTS );
   for ( typename VectorBall::const_iterator s_it = aVectBall.begin(); s_it != aVectBall.end(); ++s_it )
@@ -1411,19 +1418,19 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListBalls(const VectorBall &aVectBall,
 
 
 template< typename Space, typename KSpace>
-void 
+void
 DGtal::Viewer3D<Space, KSpace>::glCreateListQuadMaps(const typename DGtal::Display3D<Space, KSpace>::QuadsMap &aQuadMap,
                                                     unsigned int idList){
   glNewList ( idList, GL_COMPILE );
 
-  for (typename DGtal::Display3D<Space, KSpace>::QuadsMap::const_iterator it = aQuadMap.begin(), itE = aQuadMap.end(); 
+  for (typename DGtal::Display3D<Space, KSpace>::QuadsMap::const_iterator it = aQuadMap.begin(), itE = aQuadMap.end();
        it != itE; ++it )
     {
       glPushName ( it->first );
       glEnable ( GL_LIGHTING );
       glBegin ( GL_QUADS );
-      
-      for (typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::const_iterator  it_s = it->second.begin(); 
+
+      for (typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::const_iterator  it_s = it->second.begin();
            it_s != it->second.end(); it_s++)
         {
           glColor4ub ( it_s->color.red(), it_s->color.green(), it_s->color.blue(), it_s->color.alpha() );
@@ -1437,25 +1444,25 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListQuadMaps(const typename DGtal::Displ
       glPopName();
     }
   glEndList();
-  
+
 }
 
 
 
 
 template< typename Space, typename KSpace>
-void 
+void
 DGtal::Viewer3D<Space, KSpace>::glCreateListQuadMapsWired(const typename DGtal::Display3D<Space, KSpace>::QuadsMap &aQuadMap,
                                                          unsigned int idList){
-  glNewList ( idList, GL_COMPILE );  
+  glNewList ( idList, GL_COMPILE );
   glPushName ( myNbListe );
   glDisable ( GL_LIGHTING );
   glBegin ( GL_LINES );
 
-  for (typename DGtal::Display3D<Space, KSpace>::QuadsMap::const_iterator it = aQuadMap.begin(), itE = aQuadMap.end(); 
+  for (typename DGtal::Display3D<Space, KSpace>::QuadsMap::const_iterator it = aQuadMap.begin(), itE = aQuadMap.end();
        it != itE; ++it )
     {
-      for (typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::const_iterator  it_s = it->second.begin(); 
+      for (typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::const_iterator  it_s = it->second.begin();
            it_s != it->second.end(); it_s++)
         {
           glColor4ub ( 150.0,150.0,150.0,255.0 );
@@ -1467,29 +1474,29 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListQuadMapsWired(const typename DGtal::
           glVertex3f ( it_s->point2[0], it_s->point2[1], it_s->point2[2] );
           glVertex3f ( it_s->point2[0], it_s->point2[1], it_s->point2[2] );
           glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(),
-                       Viewer3D<Space, KSpace>::myCurrentLineColor.green(), 
+                       Viewer3D<Space, KSpace>::myCurrentLineColor.green(),
                        Viewer3D<Space, KSpace>::myCurrentLineColor.blue(),
                        Viewer3D<Space, KSpace>::myCurrentLineColor.alpha() );
           glVertex3f ( it_s->point3[0], it_s->point3[1], it_s->point3[2] );
           glVertex3f ( it_s->point3[0], it_s->point3[1], it_s->point3[2] );
           glVertex3f ( it_s->point4[0], it_s->point4[1], it_s->point4[2] );
           glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(),
-                       Viewer3D<Space, KSpace>::myCurrentLineColor.green(), 
+                       Viewer3D<Space, KSpace>::myCurrentLineColor.green(),
                        Viewer3D<Space, KSpace>::myCurrentLineColor.blue(),
                        Viewer3D<Space, KSpace>::myCurrentLineColor.alpha() );
           glVertex3f ( it_s->point4[0], it_s->point4[1], it_s->point4[2] );
-	  glVertex3f(it_s->point1[0], it_s->point1[1], it_s->point1[2]);
+          glVertex3f ( it_s->point1[0], it_s->point1[1], it_s->point1[2] );
         }
     }
   glEnd();
   glEndList();
-  
+
 }
 
 
 template< typename Space, typename KSpace>
-void 
-DGtal::Viewer3D<Space, KSpace>::glCreateListTriangles(const std::vector<VectorTriangle> &aVectTriangle, 
+void
+DGtal::Viewer3D<Space, KSpace>::glCreateListTriangles(const std::vector<VectorTriangle> &aVectTriangle,
                                                      unsigned int idList){
   glNewList ( idList, GL_COMPILE );
   glPushName ( myNbListe );
@@ -1512,20 +1519,20 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListTriangles(const std::vector<VectorTr
 
 
 template< typename Space, typename KSpace>
-void 
-DGtal::Viewer3D<Space, KSpace>::glCreateListTrianglesWired(const std::vector<VectorTriangle> &aVectTriangle, 
-                                                          unsigned int idList){  
+void
+DGtal::Viewer3D<Space, KSpace>::glCreateListTrianglesWired(const std::vector<VectorTriangle> &aVectTriangle,
+                                                          unsigned int idList){
   glNewList ( idList, GL_COMPILE );
   glPushName ( myNbListe );
   glDisable ( GL_LIGHTING );
   glBegin ( GL_LINES );
-  for (typename std::vector<VectorTriangle >::const_iterator it = aVectTriangle.begin(); 
+  for (typename std::vector<VectorTriangle >::const_iterator it = aVectTriangle.begin();
        it != aVectTriangle.end(); it++)
     {
       for (typename VectorTriangle::const_iterator it_s = it->begin(); it_s != it->end(); it_s++)
         {
           glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(),
-                       Viewer3D<Space, KSpace>::myCurrentLineColor.green(), 
+                       Viewer3D<Space, KSpace>::myCurrentLineColor.green(),
                        Viewer3D<Space, KSpace>::myCurrentLineColor.blue(),
                        Viewer3D<Space, KSpace>::myCurrentLineColor.alpha() );
           glVertex3f (it_s->point1[0],it_s->point1[1],it_s->point1[2] );
@@ -1544,8 +1551,8 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListTrianglesWired(const std::vector<Vec
 
 
 template< typename Space, typename KSpace>
-void 
-DGtal::Viewer3D<Space, KSpace>::glCreateListPolygons(const std::vector<VectorPolygon>  &aVectPolygon, 
+void
+DGtal::Viewer3D<Space, KSpace>::glCreateListPolygons(const std::vector<VectorPolygon>  &aVectPolygon,
                                                     unsigned int idList){
   glNewList ( idList, GL_COMPILE );
   glPushName ( myNbListe );
@@ -1571,8 +1578,8 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListPolygons(const std::vector<VectorPol
 
 
 template< typename Space, typename KSpace>
-void 
-DGtal::Viewer3D<Space, KSpace>::glCreateListPolygonsWired(const std::vector<VectorPolygon>  &aVectPolygon, 
+void
+DGtal::Viewer3D<Space, KSpace>::glCreateListPolygonsWired(const std::vector<VectorPolygon>  &aVectPolygon,
                                                          unsigned int idList){
   glNewList ( idList, GL_COMPILE );
   glPushName ( myNbListe );
@@ -1585,13 +1592,13 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListPolygonsWired(const std::vector<Vect
          {
            glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(),
                         Viewer3D<Space, KSpace>::myCurrentLineColor.green(),
-                        Viewer3D<Space, KSpace>::myCurrentLineColor.blue() , 
+                        Viewer3D<Space, KSpace>::myCurrentLineColor.blue() ,
                         Viewer3D<Space, KSpace>::myCurrentLineColor.alpha() );
            for(unsigned int j=0;j < (it_s->vertices).size();j++)
              {
                glVertex3f ( (it_s->vertices).at(j)[0], (it_s->vertices).at(j)[1], (it_s->vertices).at ( j )[2] );
-               glVertex3f ( (it_s->vertices).at((j+1)%(it_s->vertices).size())[0], 
-                            (it_s->vertices).at((j+1)%(it_s->vertices).size())[1], 
+               glVertex3f ( (it_s->vertices).at((j+1)%(it_s->vertices).size())[0],
+                            (it_s->vertices).at((j+1)%(it_s->vertices).size())[1],
                             (it_s->vertices).at ( (j+1)%(it_s->vertices).size() )[2] );
             }
          }
@@ -1603,8 +1610,12 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListPolygonsWired(const std::vector<Vect
 
 
 template< typename Space, typename KSpace>
-void 
+void
 DGtal::Viewer3D<Space, KSpace>::glUpdateTextureImages(const  VectorTextureImage &aVectImage){
+
+  for(unsigned int j=0; j<myVectTextureImage.size(); j++){
+    glDeleteTextures(1,&(myVectTextureImage[j].myTextureName));
+  }
   myVectTextureImage.clear();
   for(unsigned int j=0; j<aVectImage.size(); j++)
     {

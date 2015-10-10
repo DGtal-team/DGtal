@@ -109,8 +109,8 @@ predicate remains true.
     // Methods
     BOOST_CONCEPT_USAGE( CSegment )
     {
-      ConceptUtils::sameType( it, myX.begin() );
-      ConceptUtils::sameType( it, myX.end() );      
+      concepts::ConceptUtils::sameType( it, myX.begin() );
+      concepts::ConceptUtils::sameType( it, myX.end() );      
     }
     // ------------------------- Private Datas --------------------------------
   private:

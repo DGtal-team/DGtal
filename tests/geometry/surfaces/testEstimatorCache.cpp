@@ -76,7 +76,7 @@ bool testEstimatorCache(double h)
 
   typedef functors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
   typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
-  typedef MyIICurvatureFunctor::Value Value;
+//  typedef MyIICurvatureFunctor::Value Value;
 
   double re = 5.0;
   double radius = 5.0;

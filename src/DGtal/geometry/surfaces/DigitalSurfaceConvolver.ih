@@ -497,15 +497,23 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Di
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::core_eval
-( const SurfelIterator & UNUSED(it),
-  Quantity & UNUSED(innerSum),
-  Quantity & UNUSED(outerSum),
-  bool UNUSED(useLastResults),
-  Spel & UNUSED(lastInnerSpel),
-  Spel & UNUSED(lastOuterSpel),
-  Quantity & UNUSED(lastInnerSum),
-  Quantity & UNUSED(lastOuterSum) ) const
+( const SurfelIterator & it,
+  Quantity & innerSum,
+  Quantity & outerSum,
+  bool useLastResults,
+  Spel & lastInnerSpel,
+  Spel & lastOuterSpel,
+  Quantity & lastInnerSum,
+  Quantity & lastOuterSum ) const
 {
+  boost::ignore_unused_variable_warning( it );
+  boost::ignore_unused_variable_warning( innerSum );
+  boost::ignore_unused_variable_warning( outerSum);
+  boost::ignore_unused_variable_warning(useLastResults);
+  boost::ignore_unused_variable_warning(lastInnerSum);
+  boost::ignore_unused_variable_warning(lastOuterSum);
+  boost::ignore_unused_variable_warning(lastInnerSpel);
+  boost::ignore_unused_variable_warning(lastOuterSpel);
   trace.error() << "Unavailable yet." << std::endl;
   return false;
 }
@@ -515,15 +523,23 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Di
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::core_evalCovarianceMatrix
-( const SurfelIterator & UNUSED(it),
-  CovarianceMatrix & UNUSED(innerMatrix),
-  CovarianceMatrix & UNUSED(outerMatrix),
-  bool UNUSED(useLastResults),
-  Spel & UNUSED(lastInnerSpel),
-  Spel & UNUSED(lastOuterSpel),
-  Quantity * UNUSED(lastInnerMoments),
-  Quantity * UNUSED(lastOuterMoments) ) const
+( const SurfelIterator & it,
+  CovarianceMatrix & innerMatrix,
+  CovarianceMatrix & outerMatrix,
+  bool useLastResults,
+  Spel & lastInnerSpel,
+  Spel & lastOuterSpel,
+  Quantity * lastInnerMoments,
+  Quantity * lastOuterMoments ) const
 {
+  boost::ignore_unused_variable_warning(it);
+  boost::ignore_unused_variable_warning(innerMatrix);
+  boost::ignore_unused_variable_warning(outerMatrix);
+  boost::ignore_unused_variable_warning(useLastResults);
+  boost::ignore_unused_variable_warning(lastOuterMoments);
+  boost::ignore_unused_variable_warning(lastInnerMoments);
+  boost::ignore_unused_variable_warning(lastInnerSpel);
+  boost::ignore_unused_variable_warning(lastOuterSpel);
   trace.error() << "Unavailable yet." << std::endl;
   return false;
 }

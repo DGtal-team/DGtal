@@ -106,7 +106,7 @@ Description of \b concept '\b CConvolutionWeights' <p>
     BOOST_CONCEPT_USAGE( CConvolutionWeights )
     {
 
-      ConceptUtils::sameType( myB, myX( myA ) );
+      concepts::ConceptUtils::sameType( myB, myX( myA ) );
     }
 
     // ------------------------- Private Datas --------------------------------

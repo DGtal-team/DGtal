@@ -79,7 +79,7 @@ namespace DGtal {
     typedef typename Image::Value Value;
     // KSpace::Point same type as Image::Point
     BOOST_STATIC_ASSERT
-    (( ConceptUtils::SameType< typename KSpace::Point,
+    (( concepts::ConceptUtils::SameType< typename KSpace::Point,
        typename Image::Point>::value ));
 	      
 

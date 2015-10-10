@@ -29,7 +29,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
+#ifdef WITH_QT5
+  #include <QApplication>
+#else
+  #include <QtGui/qapplication.h>
+#endif
 #include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -60,14 +64,14 @@ using namespace Z3i;
 bool testViewer3D()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;  
+  unsigned int nb = 0;
   trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -77,7 +81,7 @@ inline
   {
     HueShadeColorMap<unsigned int>  hueShade(0,255);
     DGtal::Color col = hueShade(aVal);
-    return  col.getRGB(); 
+    return  col.getRGB();
   }
 };
 ///////////////////////////////////////////////////////////////////////////////
@@ -91,37 +95,37 @@ int main( int argc, char** argv )
  Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
- trace.beginBlock("Testing Viewer with display of 3D Image  "); 
- 
+ trace.beginBlock("Testing Viewer with display of 3D Image  ");
+
  Point p1( 0, 0, 0 );
  Point p2( 125, 188, 0 );
  Point p3( 30, 30, 30 );
- 
+
  std::string filename =  testPath + "samples/lobsterCroped.vol";
  hueFct huefct;
- 
+
  viewer.setFillTransparency(150);
- Image3D image3d =  VolReader<Image3D>::importVol(filename); 
+ Image3D image3d =  VolReader<Image3D>::importVol(filename);
  viewer << SetMode3D(image3d.className(), "BoundingBox");
- 
+
  viewer << DGtal::AddTextureImage3DWithFunctor<Image3D,  hueFct , Space, KSpace>(image3d, huefct, Viewer3D<>::RGBMode );
  viewer.setFillTransparency(255);
  // Extract some slice images:
  // Get the 2D domain of the slice:
  DGtal::functors::Projector<DGtal::Z2i::Space>  invFunctor; invFunctor.initRemoveOneDim(2);
  DGtal::Z2i::Domain domain2D(invFunctor(image3d.domain().lowerBound()),
-			     invFunctor(image3d.domain().upperBound()));
-  
+           invFunctor(image3d.domain().upperBound()));
+
  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::functors::Projector< Z3i::Space>,
                                   Image3D::Value,  functors::Identity >  SliceImageAdapter;
  functors::Identity idV;
  functors::Projector<DGtal::Z3i::Space> aSliceFunctorZ(5); aSliceFunctorZ.initAddOneDim(2);
- 
+
  SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorZ, idV);
 
   viewer << sliceImageZ;
   viewer <<  DGtal::UpdateImagePosition<Space, KSpace>(6, Viewer3D<>::zDirection, 0.0, 0.0, -10.0);
- 
+
  viewer << p1 << p2 << p3;
  viewer << Viewer3D<>::updateDisplay;
 

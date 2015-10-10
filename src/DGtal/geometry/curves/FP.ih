@@ -95,7 +95,7 @@ algorithm(const TIterator& itb,
 
   //std::cerr << "First MS" << std::endl << longestDSS << std::endl; 
 	
-  typedef details::DSSDecorator<DSSComputer> DSSDecorator; 
+  typedef detail::DSSDecorator<DSSComputer> DSSDecorator; 
   DSSDecorator* adapter = 0; //adapter for the current DSS
 	
   if (longestDSS.end() != ite) 
@@ -130,7 +130,7 @@ algorithm(const TIterator& itb,
       //the curve is assumed to be convex
       //if it is straight
       myPolygon = vTmpU;
-      adapter = new details::DSSDecorator4ConvexPart<DSSComputer>(longestDSS);
+      adapter = new detail::DSSDecorator4ConvexPart<DSSComputer>(longestDSS);
       ASSERT(adapter);
     }
 
@@ -160,7 +160,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::
 algorithm(const TIterator& itb, 
 	  const TIterator& ite, CirculatorType ) throw( InputException ) 
 {
-  ASSERT(isNotEmpty(itb,ite)); 
+  ASSERT(isNotEmpty(itb,ite)); boost::ignore_unused_variable_warning(ite);
 
   /////////////////////////// closed
   //first maximal DSS
@@ -172,7 +172,7 @@ algorithm(const TIterator& itb,
   while ( currentDSS.extendBack() ) {}
 
   //local convexity
-  typedef details::DSSDecorator<DSSComputer> DSSDecorator; 
+  typedef detail::DSSDecorator<DSSComputer> DSSDecorator; 
   DSSDecorator* adapter = 0; //adapter for the current DSS
   adapter = initConvexityConcavity<DSSDecorator>( currentDSS );
 
@@ -227,12 +227,12 @@ DGtal::FP<TIterator,TInteger,connectivity>
 
   if ( aDSS.remainder( aDSS.end() ) < (aDSS.mu()) ) 
     {      //concave part
-      return new details
+      return new detail
 	::DSSDecorator4ConcavePart<typename Adapter::DSS>(aDSS);
     } 
   else 
     {     //convex part
-      return new details
+      return new detail
 	::DSSDecorator4ConvexPart<typename Adapter::DSS>(aDSS);
     }
 }

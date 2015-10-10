@@ -225,7 +225,7 @@ namespace DGtal
       RealPoint center;
       bool isSigned;
       bool signPos;
-      double size;
+      double radius;
       unsigned int resolution;
     };
 
@@ -512,7 +512,8 @@ namespace DGtal
      * @param p4  the 4th point
      *
      */
-    void addQuad(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4);
+    void addQuad(const RealPoint &p1, const RealPoint &p2,
+                 const RealPoint &p3, const RealPoint &p4);
 
     /**
      * Method to add a specific quad. The normal vector is specified
@@ -622,12 +623,12 @@ namespace DGtal
     /**
      * Method to add a point to the current display.
      * @param center ball center x
-     * @param size the ball radius (default 1)
+     * @param radius the ball radius (default 0.5)
      * @param resolution ball resolution (default 30)
      *
      */
     void addBall(const RealPoint &center ,
-                 const double size=1.0,
+                 const double radius=0.5,
                  const unsigned int resolution = 30);
 
 
@@ -663,34 +664,15 @@ namespace DGtal
                         bool xSurfel, bool ySurfel, bool zSurfel);
 
 
-    // /**
-    //  * Specific to display a surfel from Kahlimsky space in basic mode.
-    //  *
-    //  * @param baseQuadCenter  base quad center point
-    //  * @param xSurfel true if the surfel has its main face in the direction of the x-axis
-    //  * @param ySurfel true if the surfel has its main face in the direction of the y-axis
-    //  * @param zSurfel true if the surfel has its main face in the direction of the z-axis
-    //  * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
-    //  * @param sizeFactor set the difference between the upper face of the prism and the down face
-    //  * @param isSigned to specify if we want to display an signed or unsigned Cell.
-    //  * @param aSign if @ref isSigned is true it will be used to apply a different displays
-    //  * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
-    //  */
-    // void addQuad(const RealPoint &baseQuadCenter,
-    //              bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
-    //              double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
-
-
-
     /**
      * Add a signed KSLinel from the Kahlimsky space. Display it as a cone.
      *
      * @param p1  the cone apex
      * @param p2  the cone base
-     * @param width the width of the cone (default= 0.02)
+     * @param width the width of the cone (default= 0.08)
      */
     void addCone(const RealPoint &p1, const RealPoint &p2,
-                 double width=0.02);
+                 double width=0.08);
 
 
     /**
@@ -853,9 +835,6 @@ namespace DGtal
     /// Represent truncated prism object to represent surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
     std::vector< QuadD3D > myPrismList;
-
-    // Represents all the planes drawn in the Display3D or to display Khalimsky Space Cell.
-    std::vector<std::vector< QuadD3D > > myQuadSetList;
 
     /// Represents all the planes drawn in the Display3D or to display
     /// Khalimsky Space Cell.  The map int --> vector< QuadD3D>

@@ -28,7 +28,6 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -48,27 +47,27 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  std::string inputFilename = examplesPath + "samples/pointList3d.pl"; 
+  std::string inputFilename = examplesPath + "samples/pointList3d.pl";
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.show();     
+  viewer.show();
   // Importing the 3d set of points  contained with the default index (0, 1, 2);
-  vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename); 
+  vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename);
   for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
-  
+
   // Importing the 3d set of points with another index definition  (0, 2, 1);
   vector<unsigned int> vPos;
   vPos.push_back(0);
   vPos.push_back(2);
   vPos.push_back(1);
-  vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos); 
-  viewer<< CustomColors3D(Color(255,0,0), Color(255,0,0)); 
+  vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos);
+  viewer<< CustomColors3D(Color(255,0,0), Color(255,0,0));
   for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
-  
+
   viewer   << Viewer3D<>::updateDisplay;
   return application.exec();
 }

@@ -106,17 +106,19 @@ namespace DGtal
      */
     typedef std::pair<Vector, Vector> Steps;
 
+    
     // ----------------------- static members ---------------------------------
   public:
     /**
      * Adjacency used for the DSL
      */
-    static const unsigned short ForegroundAdjacency = 8;  //adjacency
+    BOOST_STATIC_CONSTANT(unsigned short, ForegroundAdjacency = 8); // adjacency
+    
     /**
      * Adjacency used for the complement
      */
-    static const unsigned short BackgroundAdjacency = 4; //complementary adjacency
-
+    BOOST_STATIC_CONSTANT(unsigned short, BackgroundAdjacency = 4); // complementary adjacency
+    
     // ----------------------- static methods ---------------------------------
   public:
     /**
@@ -179,6 +181,7 @@ namespace DGtal
      */
     template<typename TInteger>
     static TInteger norm(const TInteger& a, const TInteger& b);
+
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -191,11 +194,19 @@ namespace DGtal
     typedef SpaceND<2, TCoordinate> Space;
     typedef typename Space::Vector Vector;
     typedef std::pair<Vector, Vector> Steps;
-
+    
+    
     // ----------------------- static members ---------------------------------
   public:
-    static const unsigned short ForegroundAdjacency = 4;  //adjacency
-    static const unsigned short BackgroundAdjacency = 8; //complementary adjacency
+        /**
+     * Adjacency used for the DSL
+     */
+    BOOST_STATIC_CONSTANT(unsigned short, ForegroundAdjacency = 4); // adjacency
+    
+    /**
+     * Adjacency used for the complement
+     */
+    BOOST_STATIC_CONSTANT(unsigned short, BackgroundAdjacency = 8); // complementary adjacency
 
     // ----------------------- static methods ---------------------------------
   public:
@@ -205,6 +216,7 @@ namespace DGtal
     static Steps steps(const TInteger& a, const TInteger& b);
     template<typename TInteger>
     static TInteger norm(const TInteger& a, const TInteger& b);
+    
   };
 
 } // namespace DGtal

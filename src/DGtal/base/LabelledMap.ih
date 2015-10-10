@@ -552,17 +552,22 @@ template <typename TData, unsigned int L, typename TWord, unsigned int N, unsign
 inline
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 LabelledMap( const LabelledMap & other )
-  : myFirstBlock( other.myFirstBlock )
+  : myLabels( other.myLabels ),
+    myFirstBlock( other.myFirstBlock )
 {
-  unsigned int s = N + 1; // there is one more stored data in the last block.
-  const __AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
-  __AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
-  myLabels = other.myLabels;
-  while ( s < size() )
+  const unsigned int theSize = other.size();
+  if ( theSize > N + 1 )
     {
-      *currentPointer = new __AnyBlock( *nextBlock );
-      s += M;
-      currentPointer = & ( currentPointer->data.nextBlock );
+      unsigned int s = N;
+      const __AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
+      __AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
+      while ( s < theSize )
+        {
+          *currentPointer = new __AnyBlock( *nextBlock );
+          s += M;
+          currentPointer = & ( (*currentPointer)->next );
+          nextBlock = nextBlock->next;
+        }
     }
 }
 //-----------------------------------------------------------------------------
@@ -589,17 +594,21 @@ operator=( const LabelledMap & other )
     {
       blockClear( size() );
       myLabels = other.myLabels;
-      unsigned int theSize = other.size();
       myFirstBlock = other.myFirstBlock;
-      // there is one more stored data in the last block.
-      unsigned int s = N + 1; 
-      const __AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
-      __AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
-      while ( s < theSize  )
+
+      const unsigned int theSize = other.size();
+      if ( theSize > N + 1 )
         {
-          *currentPointer = new __AnyBlock( *nextBlock );
-          s += M;
-          currentPointer = & ( (*currentPointer)->next );
+          unsigned int s = N; 
+          const __AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
+          __AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
+          while ( s < theSize  )
+            {
+              *currentPointer = new __AnyBlock( *nextBlock );
+              s += M;
+              currentPointer = & ( (*currentPointer)->next );
+              nextBlock = nextBlock->next;
+            }
         }
     }
   return *this;

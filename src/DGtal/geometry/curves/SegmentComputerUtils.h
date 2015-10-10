@@ -206,7 +206,9 @@ void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin,
  * Specialization for Circulator type
  */
 template <typename SC>
-void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& UNUSED(begin), CirculatorType ) {
+void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin, CirculatorType )
+{
+  boost::ignore_unused_variable_warning( begin );
   //stop if the segment is the whole range
   const typename SC::ConstIterator newBegin( s.end() ); 
   while ( (s.extendBack())
@@ -266,9 +268,12 @@ bool maximalSymmetricExtension(SC& s,
  */
 template <typename SC>
 bool maximalSymmetricExtension(SC& s, 
-                               const typename SC::ConstIterator& UNUSED(begin), 
-                               const typename SC::ConstIterator& UNUSED(end), 
-                               CirculatorType ) {
+                               const typename SC::ConstIterator& begin, 
+                               const typename SC::ConstIterator& end, 
+                               CirculatorType )
+{
+  boost::ignore_unused_variable_warning( begin );
+  boost::ignore_unused_variable_warning( end );
 
   bool flagOk = true; 
   bool flagForward = true; 
