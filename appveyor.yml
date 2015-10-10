@@ -48,9 +48,12 @@ build_script:
   # msbuild /m => parallel
   #- msbuild gdcm.sln /m /p:Configuration=%config% /toolsversion:14.0 /p:Platform=x64 /p:PlatformToolset=v140
   # Do not run Test=Update/Configure, only Start/Build/Test/Submit (TODO: Coverage)
-  - ctest -D ExperimentalStart -C %CONFIG%
-  - ctest -D ExperimentalBuild -j2 -C %CONFIG%
-  - ctest -D ExperimentalTest -j2 -C %CONFIG% 
+
+  - msbuild /m /p:Configuration=%CONFIG% /p:Platform=%B_NAME% 
+
+# - ctest -D ExperimentalStart -C %CONFIG%
+ # - ctest -D ExperimentalBuild -j2 -C %CONFIG%
+ # - ctest -D ExperimentalTest -j2 -C %CONFIG% 
 
 test: off
 deploy: off
