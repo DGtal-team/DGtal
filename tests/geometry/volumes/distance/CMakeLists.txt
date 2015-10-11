@@ -13,7 +13,7 @@ SET(DGTAL_TESTS_SRC
   testChamferDT
   testChamferVoro
   testDigitalMetricAdapter
-  testCompleteVoronoiMap
+#  testCompleteVoronoiMap
   )
 
 
