@@ -419,7 +419,7 @@ namespace DGtal
      * @param[in] itb begin iterator on the convex hull points.
      * @param[in] ite end iterator on the convex hull points.
      * @param[in] def definition of the thickness used in the estimation (i.e HorizontalVerticalThickness or EuclideanThickness)
-     * @param[out] antipodalBest the anti podal pair associated to the minimal value of convex hull thickness. 
+     * @param[out] antipodalPair the anti podal pair associated to the minimal value of convex hull thickness. 
      *
      * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
      **/
@@ -429,7 +429,7 @@ namespace DGtal
                                 const ForwardIterator& ite,
                                 const ThicknessDefinition& def,
                                 std::pair<TInputPoint, std::pair<TInputPoint, 
-                                TInputPoint> >& antiPodalPair);
+                                TInputPoint> >& antipodalPair);
 
 
     /**

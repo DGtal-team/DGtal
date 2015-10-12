@@ -331,7 +331,7 @@ namespace DGtal
                                   const ThicknessDefinition &def, 
                                   typename std::pair<TInputPoint,
                                   std::pair<TInputPoint,
-                                  TInputPoint> > & resAnti){
+                                  TInputPoint> > & antipodalPair){
         struct WrapIt{
           WrapIt(const ForwardIterator &b, const ForwardIterator &e): myB(b), myE(e), mySize(std::distance(b, e)){}
           TInputPoint operator[](unsigned int i){
@@ -353,9 +353,9 @@ namespace DGtal
         double th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], aConvexHull[j], def);
         if(th<resThickness){
           resThickness = th;
-          resAnti.first = aConvexHull[j];
-          resAnti.second.first = aConvexHull[i];
-          resAnti.second.second = aConvexHull[i+1];
+          antipodalPair.first = aConvexHull[j];
+          antipodalPair.second.first = aConvexHull[i];
+          antipodalPair.second.second = aConvexHull[i+1];
         }
         i++;
         while(i < size){        
@@ -367,9 +367,9 @@ namespace DGtal
                                            aConvexHull[j], def);
             if(th<resThickness){
               resThickness = th;
-              resAnti.first = aConvexHull[j];
-              resAnti.second.first = aConvexHull[i];
-              resAnti.second.second = aConvexHull[i+1];
+              antipodalPair.first = aConvexHull[j];
+              antipodalPair.second.first = aConvexHull[i];
+              antipodalPair.second.second = aConvexHull[i+1];
             }
             if(getAngle(aConvexHull[i], aConvexHull[i+1], 
                         aConvexHull[j], aConvexHull[j+1])==M_PI){
@@ -378,9 +378,9 @@ namespace DGtal
                                              aConvexHull[j+1], def);
               if(th<resThickness){
                 resThickness = th;
-                resAnti.first = aConvexHull[j+1];
-                resAnti.second.first = aConvexHull[i];
-                resAnti.second.second = aConvexHull[i+1];
+                antipodalPair.first = aConvexHull[j+1];
+                antipodalPair.second.first = aConvexHull[i];
+                antipodalPair.second.second = aConvexHull[i+1];
               }
             }
             i++;
