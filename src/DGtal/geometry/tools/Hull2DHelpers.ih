@@ -363,8 +363,8 @@ namespace DGtal
                       aConvexHull[j], aConvexHull[j+1])<M_PI){
             j++;
           }else{            
-            double th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], 
-                                                  aConvexHull[j], def);
+            th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], 
+                                           aConvexHull[j], def);
             if(th<resThickness){
               resThickness = th;
               resAnti.first = aConvexHull[j];

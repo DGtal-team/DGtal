@@ -143,10 +143,10 @@ void convexHull()
 
     //![Hull2D-Caliper-computeAnti]
     std::pair<Z2i::Point, std::pair<Z2i::Point, Z2i::Point> > antipodalBest;
-    double th2 = DGtal::functions::Hull2D::computeHullThickness(res.begin(), res.end(), DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
+    th = DGtal::functions::Hull2D::computeHullThickness(res.begin(), res.end(), DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
     //![Hull2D-Caliper-computeAnti]
 
-
+    
     trace.info() <<" ConvexHull HV thickness: " << th << std::endl;
     //display
     Board2D board;
