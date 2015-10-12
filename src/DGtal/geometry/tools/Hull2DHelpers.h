@@ -389,14 +389,14 @@ namespace DGtal
     template <typename ForwardIterator, 
               typename TDeterminantComputer= DGtal::Simple2x2DetComputer<DGtal::int8_t>,
               typename TInputPoint = typename std::iterator_traits<ForwardIterator>::value_type>
-    double computeHullThickness(const ForwardIterator &itb, 
-                                const ForwardIterator &ite,
-                                const ThicknessDefinition &def,
+    double computeHullThickness(const ForwardIterator& itb, 
+                                const ForwardIterator& ite,
+                                const ThicknessDefinition& def,
                                 std::pair<TInputPoint, std::pair<TInputPoint, 
-                                TInputPoint> >  &antiPodalPair);
+                                TInputPoint> >& antiPodalPair);
 
     /**
-     * Computes the angle between the line (a,b) and (c,d)
+     * Computes the angle between the line (@a a,@a b) and (@a c,@a d)
      * @param[in] a one of point defining the first line. 
      * @param[in] b a second point defining the first line. 
      * @param[in] c a third point defining the second line. 
@@ -405,19 +405,19 @@ namespace DGtal
      **/
     template<typename TInputPoint>
     inline
-    double getAngle(const TInputPoint &a, const TInputPoint &b,const TInputPoint &c,const  TInputPoint &d);
+    double getAngle(const TInputPoint& a, const TInputPoint& b,const TInputPoint& c,const  TInputPoint& d);
     
     /**
      * Computes the thickness of an anti podal pair (represented by
-     * the segment [@p, @q] and vertex @r) according the given
+     * the segment [ @a p , @a q ] and vertex @a r) according the given
      * distance @def definition.  
      *
      * If the distance definition is @HorizontalVerticalThickness, it
      * returns the minimal distance between the vertical/horizontal
-     * projection of @r on (@p,@q).
+     * projection of @r on ( @a p , @a q ).
      *
      * If the distance definition is @EuclideanThickness, it returns
-     * the distance between r and its projection on the line (@p,@q).
+     * the distance between r and its projection on the line ( @a p ,@a q ).
      *
      * @param[in] p the first point of the edge anti podal pair.
      * @param[in] q the second point of the edge anti podal pair.
@@ -426,51 +426,51 @@ namespace DGtal
      *
      **/
     template<typename TInputPoint>
-    double getThicknessAntipodalPair(const TInputPoint &p, const TInputPoint &q, 
-                                     const TInputPoint &r, const ThicknessDefinition &def);
+    double getThicknessAntipodalPair(const TInputPoint& p, const TInputPoint& q, 
+                                     const TInputPoint& r, const ThicknessDefinition& def);
 
     /**
-     * Computes the horizontal distance a point @c according the segment [@a, @b].
-     * (i.e the horizontal projection distance of @c on [@a,@b]. 
-     * @note: if the segment [@a, @b] is horizontal (i.e a[1]==b[1]) then an infinite value is returned. 
+     * Computes the horizontal distance a point @c according the segment [ @a a , @a b ].
+     * (i.e the horizontal projection distance of @c on [ @a a , @a b ]). 
+     * @note if the segment [@a a, @a b] is horizontal (i.e @a a [1]==@a b[1]) then an infinite value is returned. 
      *
      *  @param[in] a one point of the segment.
-     *  @param[in] a second point of the segment.
-     *  @param[in] the point for which the horizontal distance is computed.
+     *  @param[in] b a second point of the segment.
+     *  @param[in] c the point for which the horizontal distance is computed.
      *  @param[out] isInside indicates if the projected point is inside the segment or not.
      **/    
     template< typename TInputPoint>
     double
-    computeHProjDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, bool &isInside );
+    computeHProjDistance(const TInputPoint& a, const TInputPoint& b, const TInputPoint& c, bool& isInside );
 
 
     /**
-     * Computes the vertical distance a point @c according the segment [@a, @b].
-     * (i.e the vertical projection distance of @c on [@a,@b]. 
-     * @note: if the segment [@a, @b] is vertical (i.e a[0]==b[0]) then an infinite value is returned. 
+     * Computes the vertical distance a point @c according the segment [@a a, @a b].
+     * (i.e the vertical projection distance of @c on [@a a,@a b]. 
+     * @note if the segment [@a a, @a b] is vertical (i.e @a a [0]== @a b [0]) then an infinite value is returned. 
      *
      *  @param[in] a one point of the segment.
-     *  @param[in] a second point of the segment.
-     *  @param[in] the point for which the vertical distance is computed.
+     *  @param[in] b a second point of the segment.
+     *  @param[in] c the point for which the vertical distance is computed.
      *  @param[out] isInside indicates if the projected point is inside the segment or not.
      **/    
     template< typename TInputPoint>
     double
-    computeVProjDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, bool &isInside );
+    computeVProjDistance(const TInputPoint& a, const TInputPoint& b, const TInputPoint& c, bool& isInside );
 
 
     /**
-     * Computes the euclidean distance a point @c according the segment [@a, @b].
-     * (i.e the distance between @c and its projected point on [@a,@b]. 
+     * Computes the euclidean distance a point @a c according the segment [@a a, @a b].
+     * (i.e the distance between @a c and its projected point on [@a a,@a b]. 
      *
      *  @param[in] a one point of the segment.
-     *  @param[in] a second point of the segment.
-     *  @param[in] the point for which the vertical distance is computed.
+     *  @param[in] b a second point of the segment.
+     *  @param[in] c the point for which the vertical distance is computed.
      *  @param[out] isInside indicates if the projected point is inside the segment or not.
      **/
     template< typename TInputPoint>
     double
-    computeEuclideanDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, bool &isInside );
+    computeEuclideanDistance(const TInputPoint& a, const TInputPoint& b, const TInputPoint& c, bool& isInside );
     
       
 
