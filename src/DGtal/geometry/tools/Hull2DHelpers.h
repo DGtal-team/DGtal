@@ -379,10 +379,13 @@ namespace DGtal
      *  ch.add(Point(1,4));
      *  double th = computeHullThickness(ch.begin(), ch.end(), 
      *                                   DGtal::functions::Hull2D::EuclideanThickness);
+     * @endcode  
      * @param[in] itb begin iterator on the convex hull points.
      * @param[in] ite end iterator on the convex hull points.
      * @param[in] def definition of the thickness used in the estimation (i.e HorizontalVerticalThickness or EuclideanThickness)
-     * @endcode  
+     *
+     *
+     * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
      **/
     template <typename ForwardIterator, 
               typename TDeterminantComputer= DGtal::Simple2x2DetComputer<DGtal::int8_t>,
@@ -411,15 +414,16 @@ namespace DGtal
      *  ch.add(Point(4,5));
      *  ch.add(Point(2,6));
      *  ch.add(Point(1,4));
-     * std::pair<Point, std::pair<Point, Point> > antipodalBest;
-  
+     * std::pair<Point, std::pair<Point, Point> > antipodalBest;  
      *  double th = computeHullThickness(ch.begin(), ch.end(), 
      *                                   DGtal::functions::Hull2D::EuclideanThickness, antipodalBest);
+     * @endcode       
      * @param[in] itb begin iterator on the convex hull points.
      * @param[in] ite end iterator on the convex hull points.
      * @param[in] def definition of the thickness used in the estimation (i.e HorizontalVerticalThickness or EuclideanThickness)
      * @param[out] antipodalBest the anti podal pair associated to the minimal value of convex hull thickness. 
-     * @endcode  
+     *
+     * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
      **/
     template <typename ForwardIterator, 
               typename TDeterminantComputer= DGtal::Simple2x2DetComputer<DGtal::int8_t>,
