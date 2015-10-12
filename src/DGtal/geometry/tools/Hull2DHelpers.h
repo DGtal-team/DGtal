@@ -71,6 +71,10 @@ namespace DGtal
   namespace Hull2D
   {
 
+    
+    /// the 3 possible axes for the image direction
+    enum ThicknessDefinition {horizontalVerticalThickness, euclideanThickness};
+
 
     /**
      * @brief Procedure that updates the hull when
@@ -351,6 +355,38 @@ namespace DGtal
 				   OutputIterator res, 
 				   const Predicate& aPredicate ); 
 
+
+    /**
+     * 
+     **/
+
+    template <typename ForwardIterator, 
+              typename TDeterminantComputer= DGtal::Simple2x2DetComputer<DGtal::int8_t>,
+              typename TInputPoint = typename std::iterator_traits<ForwardIterator>::value_type>
+    double computeHullThickness(const ForwardIterator &itb, 
+                                const ForwardIterator &ite,
+                                const ThicknessDefinition &def,
+                                std::pair<TInputPoint, std::pair<TInputPoint, 
+                                TInputPoint> >  &antiPodalPair);
+
+    template<typename TInputPoint>
+    inline
+    double getAngle(const TInputPoint &a, const TInputPoint &b,const TInputPoint &c,const  TInputPoint &d);
+    
+    template<typename TInputPoint>
+    double getThicknessAntipodalPair(const TInputPoint &p, const TInputPoint &q, 
+                                     const TInputPoint &r);
+
+    template< typename TInputPoint>
+    double
+    computeHProjDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, bool &isInside );
+
+
+    template< typename TInputPoint>
+    double
+    computeVProjDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, bool &isInside );
+
+      
 
   } // namespace convexHull2D
 
