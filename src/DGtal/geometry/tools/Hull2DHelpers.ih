@@ -312,8 +312,7 @@ namespace DGtal
       
       
       
-      template <typename ForwardIterator,
-                typename TDeterminantComputer>
+      template <typename ForwardIterator>
       inline
       double computeHullThickness(const ForwardIterator &itb, 
                                   const ForwardIterator &ite,
@@ -325,8 +324,7 @@ namespace DGtal
         return computeHullThickness(itb, ite, def, resAnti);
       }
       template <typename ForwardIterator,
-                typename TInputPoint,
-                typename TDeterminantComputer>
+                typename TInputPoint>
       inline
       double computeHullThickness(const ForwardIterator &itb, 
                                   const ForwardIterator &ite,
