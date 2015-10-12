@@ -147,13 +147,13 @@ namespace DGtal
      * Rationale: we do not want to iterate over the same point, 
      * duplicated at the begin and at the end of the container.  
      */
-    ConstIterator begin();
+    ConstIterator begin() const;
 
     /**
      * End iterator 
      * @return a const iterator to the end of the container
      */
-    ConstIterator end();
+    ConstIterator end() const;
 
     /**
      * Writes/Displays the object on an output stream.
