@@ -385,7 +385,6 @@ namespace DGtal
      * @param[out] antipodalBest the anti podal pair associated to the minimal value of convex hull thickness. 
      * @endcode  
      **/
-
     template <typename ForwardIterator, 
               typename TDeterminantComputer= DGtal::Simple2x2DetComputer<DGtal::int8_t>,
               typename TInputPoint = typename std::iterator_traits<ForwardIterator>::value_type>
