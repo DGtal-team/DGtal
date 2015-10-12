@@ -318,6 +318,19 @@ namespace DGtal
       inline
       double computeHullThickness(const ForwardIterator &itb, 
                                   const ForwardIterator &ite,
+                                  const ThicknessDefinition &def)
+      {
+        
+        std::pair<TInputPoint, std::pair<TInputPoint,
+                                         TInputPoint> > resAnti;
+        return computeHullThickness(itb, ite, def, resAnti);
+      }
+      template <typename ForwardIterator,
+                typename TDeterminantComputer,
+                typename TInputPoint>
+      inline
+      double computeHullThickness(const ForwardIterator &itb, 
+                                  const ForwardIterator &ite,
                                   const ThicknessDefinition &def, 
                                   typename std::pair<TInputPoint,
                                   std::pair<TInputPoint,

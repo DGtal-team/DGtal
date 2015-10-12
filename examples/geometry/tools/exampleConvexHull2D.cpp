@@ -137,12 +137,16 @@ void convexHull()
     //! [Hull2D-AndrewAlgo]
     andrewConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
     //! [Hull2D-AndrewAlgo]
-    //![Hull2D-Caliper-compute]
+    //![Hull2D-Caliper-computeBasic]
+    double th = DGtal::functions::Hull2D::computeHullThickness(res.begin(), res.end(), DGtal::functions::Hull2D::HorizontalVerticalThickness);
+    //![Hull2D-Caliper-computeBasic]
+
+    //![Hull2D-Caliper-computeAnti]
     std::pair<Z2i::Point, std::pair<Z2i::Point, Z2i::Point> > antipodalBest;
-    double th = DGtal::functions::Hull2D::computeHullThickness(res.begin(), res.end(),
-                                                               DGtal::functions::Hull2D::HorizontalVerticalThickness, 
-                                                               antipodalBest);
-    //![Hull2D-Caliper-compute]
+    double th2 = DGtal::functions::Hull2D::computeHullThickness(res.begin(), res.end(), DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
+    //![Hull2D-Caliper-computeAnti]
+
+
     trace.info() <<" ConvexHull HV thickness: " << th << std::endl;
     //display
     Board2D board;
