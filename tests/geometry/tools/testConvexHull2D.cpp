@@ -289,11 +289,11 @@ bool testConvexHullCompThickness()
   ch.add(Point(1,4));
   std::pair<Point, std::pair<Point, Point> > antipodalBest;
   std::vector<std::pair<Point, std::pair<Point, Point> > > vectAnti;
-  double thicknessE = computeHullThickness(ch.begin(), ch.end(), 
+  double thicknessE = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                            DGtal::functions::Hull2D::EuclideanThickness, antipodalBest);
-  double thicknessHV = computeHullThickness(ch.begin(), ch.end(), 
+  double thicknessHV = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                             DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
-  double thicknessHVb = computeHullThickness(ch.begin(), ch.end(), 
+  double thicknessHVb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                             DGtal::functions::Hull2D::HorizontalVerticalThickness);
   
   
