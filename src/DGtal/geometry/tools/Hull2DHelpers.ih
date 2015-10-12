@@ -340,7 +340,7 @@ namespace DGtal
         while(getAngle(aConvexHull[i], aConvexHull[i+1], aConvexHull[j], aConvexHull[j+1]) < M_PI ){
           j++;
         }
-        double th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], aConvexHull[j]);
+        double th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], aConvexHull[j], def);
         if(th<resThickness){
           resThickness = th;
           resAnti.first = aConvexHull[j];
@@ -354,7 +354,7 @@ namespace DGtal
             j++;
           }else{            
             double th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], 
-                                                  aConvexHull[j]);
+                                                  aConvexHull[j], def);
             if(th<resThickness){
               resThickness = th;
               resAnti.first = aConvexHull[j];
@@ -365,7 +365,7 @@ namespace DGtal
                         aConvexHull[j], aConvexHull[j+1])==M_PI){
               
               th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], 
-                                                    aConvexHull[j+1]);
+                                             aConvexHull[j+1], def);
               if(th<resThickness){
                 resThickness = th;
                 resAnti.first = aConvexHull[j+1];
@@ -389,20 +389,26 @@ namespace DGtal
         return  ( r < 0) ? 2*M_PI+r :r;        
       }
       
+
       template<typename TInputPoint>
       inline
       double getThicknessAntipodalPair(const TInputPoint &p, const TInputPoint &q,
-                                       const TInputPoint &r){
+                                       const TInputPoint &r, const ThicknessDefinition &def){
         bool isInside;
-        double dH = computeHProjDistance(p, q, r, isInside);
-        double dV = computeVProjDistance(p, q, r, isInside);
-        return dH > dV ? dV : dH;
+        if(def == HorizontalVerticalThickness){
+          double dH = computeHProjDistance(p, q, r, isInside);
+          double dV = computeVProjDistance(p, q, r, isInside);
+          return dH > dV ? dV : dH;
+        }else{
+          return computeEuclideanDistance(p, q, r, isInside);
+        }
       }
       
       template< typename TInputPoint>
       inline
       double
-      computeHProjDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, bool &isInside )
+      computeHProjDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, 
+                           bool &isInside )
       {
         if(a[1]==b[1])
           {
@@ -413,16 +419,13 @@ namespace DGtal
             double k = -(a[0]-b[0])*c[1]-(b[0]*a[1]-a[0]*b[1]);
             TInputPoint p (k/(b[1]-a[1]), c[1]);
             isInside  = (b-a).dot(p)*(b-a).dot(p)>0;
-            if(!isInside) 
-              return std::numeric_limits<double>::max();
             return fabs((k/(b[1]-a[1])) - c[0]);
           }
-      }
-      
+      }      
       
       template< typename TInputPoint>
-      double
       inline 
+      double
       computeVProjDistance(const TInputPoint &a, const TInputPoint &b, 
                            const TInputPoint &c, bool &isInside )
       {
@@ -434,13 +437,26 @@ namespace DGtal
           {
             double k = -(b[1]-a[1])*c[0]-(b[0]*a[1]-a[0]*b[1]);
             TInputPoint p (k/(a[0]-b[0]), c[0]);
-            isInside  = (b-a).dot(p)*(b-a).dot(p)>0;
-            if(!isInside) 
-              return std::numeric_limits<double>::max();
-          
+            isInside  = (b-a).dot(p-a)*(b-a).dot(p-a)>0;          
             return fabs((k/(a[0]-b[0])) - c[1]);
           }
       }
+
+      
+    template< typename TInputPoint>
+    inline 
+    double
+    computeEuclideanDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, 
+                            bool &isInside )
+    {
+      double dy =  b[1]-a[1];
+      double dx =  a[0]-b[0];
+      double dc = b[0]*a[1]-a[0]*b[1];
+      isInside = (b-a).dot(c-a)*(b-a).dot(c-a)>0; 
+      return fabs(dy*c[0]+dx*c[1]+dc)/(sqrt(dy*dy+dx*dx));
+    }
+
+
       
     } // namespace convexHull2D
   } // namespace functions

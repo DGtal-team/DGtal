@@ -289,8 +289,10 @@ bool testConvexHullCompThickness()
   ch.add(Point(1,4));
   std::pair<Point, std::pair<Point, Point> > antipodalBest;
   std::vector<std::pair<Point, std::pair<Point, Point> > > vectAnti;
-  double thickness = computeHullThickness(ch.begin(), ch.end(), 
-                                          DGtal::functions::Hull2D::horizontalVerticalThickness, antipodalBest);
+  double thicknessE = computeHullThickness(ch.begin(), ch.end(), 
+                                           DGtal::functions::Hull2D::EuclideanThickness, antipodalBest);
+  double thicknessHV = computeHullThickness(ch.begin(), ch.end(), 
+                                            DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
   
   
   Board2D aBoard;
@@ -313,11 +315,14 @@ bool testConvexHullCompThickness()
   aBoard.drawCircle(antipodalQ[0], antipodalQ[1], 1.0);
   
   aBoard.drawLine(antipodalP[0], antipodalP[1], antipodalQ[0], antipodalQ[1]);
-  double awaitedTh = DGtal::functions::Hull2D::getThicknessAntipodalPair(Point(0,0), Point(11,1), Point(2,6));
-  trace.info() << "Thickness = " << thickness << std::endl;
-  trace.info() << "Thickness awaited = " << awaitedTh << std::endl;
+  double awaitedThHV = DGtal::functions::Hull2D::getThicknessAntipodalPair(Point(0,0), Point(11,1), Point(2,6), DGtal::functions::Hull2D::HorizontalVerticalThickness );
+  double awaitedThE = DGtal::functions::Hull2D::getThicknessAntipodalPair(Point(0,0), Point(11,1), Point(2,6), DGtal::functions::Hull2D::EuclideanThickness );
+  trace.info() << "Thickness HV = " << thicknessHV << std::endl;
+  trace.info() << "Thickness HV awaited = " << awaitedThHV << std::endl;
+  trace.info() << "Thickness Euclidean = " << thicknessE << std::endl;
+  trace.info() << "Thickness Euclidean awaited = " << awaitedThE << std::endl;
   aBoard.saveEPS("testConvexHull2D_Thickness.eps");
-  nbok += thickness == awaitedTh;
+  nbok += thicknessHV == awaitedThHV && thicknessE == awaitedThE;
   nb++;
   
   return nb==nbok;
