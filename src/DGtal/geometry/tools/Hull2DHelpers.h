@@ -387,8 +387,7 @@ namespace DGtal
      *
      * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
      **/
-    template <typename ForwardIterator, 
-              typename TDeterminantComputer= DGtal::Simple2x2DetComputer<DGtal::int8_t> >
+    template <typename ForwardIterator >
     double computeHullThickness(const ForwardIterator& itb, 
                                 const ForwardIterator& ite,
                                 const ThicknessDefinition& def);
@@ -425,8 +424,7 @@ namespace DGtal
      * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
      **/
     template <typename ForwardIterator, 
-              typename TInputPoint,
-              typename TDeterminantComputer= DGtal::Simple2x2DetComputer<DGtal::int8_t> >
+              typename TInputPoint >
     double computeHullThickness(const ForwardIterator& itb, 
                                 const ForwardIterator& ite,
                                 const ThicknessDefinition& def,
