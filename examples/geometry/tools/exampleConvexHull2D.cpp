@@ -137,10 +137,28 @@ void convexHull()
     //! [Hull2D-AndrewAlgo]
     andrewConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
     //! [Hull2D-AndrewAlgo]
-
+    //![Hull2D-Caliper-compute]
+    std::pair<Z2i::Point, std::pair<Z2i::Point, Z2i::Point> > antipodalBest;
+    double th = DGtal::functions::Hull2D::computeHullThickness(res.begin(), res.end(),
+                                                               DGtal::functions::Hull2D::HorizontalVerticalThickness, 
+                                                               antipodalBest);
+    //![Hull2D-Caliper-compute]
+    trace.info() <<" ConvexHull HV thickness: " << th << std::endl;
     //display
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
+    //![Hull2D-Caliper-display]
+    Z2i::Point antipodalP = antipodalBest.second.first;
+    Z2i::Point antipodalQ = antipodalBest.second.second;
+    Z2i::Point antipodalS = antipodalBest.first;
+    board.setPenColor(DGtal::Color::Red);
+    board.drawCircle( antipodalS[0], antipodalS[1], 0.2) ;
+    board.setPenColor(DGtal::Color::Blue);
+    board.drawCircle(antipodalP[0], antipodalP[1], 0.2);
+    board.drawCircle(antipodalQ[0], antipodalQ[1], 0.2);
+    board.drawLine(antipodalP[0], antipodalP[1], antipodalQ[0], antipodalQ[1]);
+    //![Hull2D-Caliper-display]
+    
     board.saveSVG( "ConvexHullCCW.svg" );  
 #ifdef WITH_CAIRO
     board.saveCairo("ConvexHullCCW.png", Board2D::CairoPNG);

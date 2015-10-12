@@ -18,7 +18,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page moduleHull2D Convex hull and alpha-shape in the plane
-@writers Tristan Roussillon
+@writers Tristan Roussillon, Bertrand Kerautret)
 [TOC]
 
 In this part of the manual, we describe how to compute 
@@ -176,6 +176,28 @@ the on-line feature, you may call the off-line procedure melkmanConvexHullAlgori
 @snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-OffLineMelkmanAlgo
 
 @warning The behavior is undefined if the input points do not form a simple polygonal line. 
+
+
+\subsection subsectmoduleHull2D14 Convex Hull Thickness
+
+From a convex hull it can be useful to compute its associated
+thickness. We propose the implementation of the well known rotating
+caliper algorithm allowing to compute all the antipodal pairs in
+linear time [Shamos , 1978: \cite Shamos1978]. 
+
+Two definitions of thickness can be computed from an iterator on the
+convex hull. The first one is the vertical/horizontal thickness
+obtained by projection on the main x-y axis from anti podal pairs. The
+second one is given from the normal projection on the edge of the same
+anti podal pairs.
+
+
+
+
+
+
+
+
 
 \section sectmoduleHull2D2 Alpha-shape
 
