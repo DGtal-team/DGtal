@@ -267,7 +267,8 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFron
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
-  melkmanAddPoint(myPointContainer.size()-1);
+  myState.melkmanCH.add(aPoint);
+  //melkmanAddPoint(myPointContainer.size()-1);
   bool aResult = melkmanIsConvexValid();
   myPointContainer.pop_back();
   myState = _state;
@@ -284,8 +285,8 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(cons
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
-  
-  melkmanAddPoint(aPoint);
+  myState.melkmanCH.add(aPoint);
+  //  melkmanAddPoint(aPoint);
   if (melkmanIsConvexValid()){
     if (myPointContainer.size()==1){
       myState.lastBack = aPoint;
@@ -306,7 +307,8 @@ bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFront() 
 {
   _state = myState;
-  melkmanAddPoint(*myEnd);
+  //melkmanAddPoint(*myEnd);
+  myState.melkmanCH.add(*myEnd);
   bool aResult = melkmanIsConvexValid();
   myState = _state;
   return aResult;      
@@ -321,7 +323,8 @@ bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront() 
 {
   _state = myState;
-  melkmanAddPoint(*myEnd);
+  //melkmanAddPoint(*myEnd);
+  myState.melkmanCH.add(*myEnd);
   
   if (melkmanIsConvexValid()){
     if (myEnd==myBegin){
@@ -440,6 +443,7 @@ inline
 double
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanUpdateMainHeight()  
 {
+  
   int queueSize = myState.melkmanQueue.size();
   InputPoint P, Q, R, S;
   int q,s; /* [pq] is an edge and s a vertex */
@@ -529,93 +533,30 @@ inline
 void
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanAddPoint(const InputPoint &aPoint)
 {
-  /* The  melkman algorithm is well initialize when we have 3 non aligned points  */
-  if (myState.melkmanQueue.size() ==  2){
-    if(  melkmanIsLeft( myState.melkmanQueue[0], 
-                        myState.melkmanQueue[1],
-                        aPoint ) !=0){
-      myState.melkmanQueue.push_back(aPoint);
-      melkmanInit();
+  
+  if(myState.initMelkmanQeue.size()<2){
+    myState.initMelkmanQeue.push_back(aPoint);
+  }else if(myState.initMelkmanQeue.size() ==2){
+    if( melkmanIsLeft( myState.initMelkmanQeue[0], 
+                        myState.initMelkmanQeue[1],
+                       aPoint ) !=0){
+      myState.initMelkmanQeue.push_back(aPoint);
+      myState.melkmanCh.add(myState.initMelkmanQeue[0]);
+      myState.melkmanCh.add(myState.initMelkmanQeue[1]);
+      myState.melkmanCh.add(myState.initMelkmanQeue[2]);
       myState.isMelkmanInitialized=true;
       return;
     }else{
-      myState.melkmanQueue.pop_back();
-      myState.melkmanQueue.push_back(aPoint);
-      return;
+      myState.initMelkmanQeue.pop_back();
+      myState.initMelkmanQeue.push_back(aPoint);
     }
-  }else if (myState.melkmanQueue.size() < 2){
-    myState.melkmanQueue.push_back(aPoint);
-    return;
+  }else{
+    myState.melkmanCh.add(aPoint);
   }
   
-  /** incrementally add an exterior vertex to the deque hull
-   *  get the rightmore tangent at the deque bottom
-   */
-  if( myState.melkmanQueue.size() == 3 && melkmanIsLeft( myState.melkmanQueue[0], myState.melkmanQueue[1], aPoint ) == 0 
-      && melkmanIsLeft( myState.melkmanQueue[1], myState.melkmanQueue[2], aPoint ) == 0 )
-    {
-      myState.melkmanQueue.pop_front();
-      myState.melkmanQueue.push_front( aPoint );
-      myState.melkmanQueue.pop_back();
-      myState.melkmanQueue.push_back( aPoint );
-    }
-
-  /* Test if next vertex is inside the deque Hull */
-  else if( melkmanIsLeft( myState.melkmanQueue[0], myState.melkmanQueue[1], aPoint ) > 0
-           && melkmanIsLeft( myState.melkmanQueue[int(myState.melkmanQueue.size())-2], 
-                             myState.melkmanQueue[int(myState.melkmanQueue.size())-1], aPoint ) > 0 )
-    return;   /* skip an interior vertex */
-  else //if( IsLeft( D[0], D[1], P ) < 0 || IsLeft( D[n-2], D[n-1], P ) < 0 )
-    {
-      while( melkmanIsLeft( myState.melkmanQueue[0], myState.melkmanQueue[1], aPoint ) <= 0 )
-        myState.melkmanQueue.pop_front();    /* remove bottom of deque */
-
-      myState.melkmanQueue.push_front( aPoint );  /* insert id at bottom of deque */
-
-      while( melkmanIsLeft( myState.melkmanQueue[int(myState.melkmanQueue.size())-2], 
-                            myState.melkmanQueue[int(myState.melkmanQueue.size())-1], aPoint ) <= 0 )
-        myState.melkmanQueue.pop_back();     /* pop top of deque */
-
-      myState.melkmanQueue.push_back( aPoint );   /* push id onto top of deque */
-    }
 }
 
 
-
-template < typename TInputPoint, typename TConstIterator>
-inline
-void
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
-melkmanInit() 
-{
-  InputPoint aPoint1 = myState.melkmanQueue[0];
-  InputPoint aPoint2 = myState.melkmanQueue[1];
-  InputPoint aPoint3 = myState.melkmanQueue[2];
-  myState.melkmanQueue.clear();
-
-  if( melkmanIsLeft( aPoint1, aPoint2, aPoint3 ) == 0.0 )
-    {
-      myState.melkmanQueue.push_back(aPoint3);
-      myState.melkmanQueue.push_back(aPoint1);
-      myState.melkmanQueue.push_back(aPoint3);
-    }
-  else
-    {
-      myState.melkmanQueue.push_front(aPoint3);
-      /* ccw vertices are: 2,0,1,2 */
-      if( melkmanIsLeft( aPoint1, aPoint2, aPoint3 ) > 0 )    
-        {
-          myState.melkmanQueue.push_back(aPoint1);
-          myState.melkmanQueue.push_back(aPoint2); 
-        }
-      else /* ccw vertices are: 2,1,0,2 */
-        {
-          myState.melkmanQueue.push_back(aPoint2);
-          myState.melkmanQueue.push_back(aPoint1); 
-        }  
-      myState.melkmanQueue.push_back(aPoint3);
-    }   
-}
 
 
 
@@ -657,9 +598,9 @@ inline
 std::vector<TInputPoint>
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getConvexHull() const
 {
-  std::vector<InputPoint> aResult;
-  for (typename std::deque<InputPoint>::const_iterator it = myState.melkmanQueue.begin(); 
-       it != myState.melkmanQueue.end(); it++)
+  std::vector<TInputPoint> aResult;
+  for (typename DGtal::MelkmanConvexHull<TInputPoint, Functor>::ConstIterator it = myState.melkmanCH.begin(); 
+       it != myState.melkmanCH.end(); it++)
     {
       aResult.push_back(*it);
     }

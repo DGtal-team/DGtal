@@ -49,6 +49,8 @@
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/surfaces/ParallelStrip.h"
+#include "DGtal/geometry/tools/MelkmanConvexHull.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -155,12 +157,14 @@ public:
 
   typedef AlphaThickSegmentComputer<InputPoint, ConstIterator> Self; 
   typedef AlphaThickSegmentComputer<InputPoint, ReverseIterator<ConstIterator> > Reverse; 
-
+  typedef DGtal::InHalfPlaneBySimple3x3Matrix<InputPoint, DGtal::int64_t> Functor;  
 
   // ----------------------- internal types --------------------------------------
 
 private: 
   struct State{
+    DGtal::MelkmanConvexHull<InputPoint, Functor> melkmanCH;  
+    std::deque<InputPoint>  initMelkmanQeue; /** to initialize 3 non aligned  points */
     std::deque<InputPoint> melkmanQueue; /** Melkman algorithm main deque */
     InputPoint lastFront; /** the last point added at the front of the alpha thick segment */
     InputPoint lastBack; /** the last point added at the back of the alpha thick segment */
@@ -171,6 +175,7 @@ private:
     double convexHullHeight;  /** Used in melkmanMainDiagonal() */
     double actualThickness; /*the actual thickness of the current segment*/
   };
+
     
   
   // ----------------------- Standard services ------------------------------
@@ -622,12 +627,6 @@ protected:
    */
   void melkmanAddPoint(const InputPoint  &aPoint );
 
-
-
-  /**
-   * Init melkman algorithm with the main queue and the 3 input first points.
-   **/
-  void melkmanInit( ) ; 
 
 
   /**
