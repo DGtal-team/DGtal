@@ -378,6 +378,42 @@ namespace DGtal
      *  ch.add(Point(2,6));
      *  ch.add(Point(1,4));
      *  double th = computeHullThickness(ch.begin(), ch.end(), 
+     *                                   DGtal::functions::Hull2D::EuclideanThickness);
+     * @param[in] itb begin iterator on the convex hull points.
+     * @param[in] ite end iterator on the convex hull points.
+     * @param[in] def definition of the thickness used in the estimation (i.e HorizontalVerticalThickness or EuclideanThickness)
+     * @endcode  
+     **/
+    template <typename ForwardIterator, 
+              typename TDeterminantComputer= DGtal::Simple2x2DetComputer<DGtal::int8_t>,
+              typename TInputPoint = typename std::iterator_traits<ForwardIterator>::value_type>
+    double computeHullThickness(const ForwardIterator& itb, 
+                                const ForwardIterator& ite,
+                                const ThicknessDefinition& def);
+
+
+    /**
+     *  @brief Procedure to compute the convex hull thickness given
+     *  from differents definitions (Horizontal/vertical or Euclidean
+     *  distances). It takes as input the vertices of the hull given
+     *  by the range [@a itbn, @a ite).  The procedure applies the
+     *  classic rotating caliper to recover all the anti-podal pairs.
+     *
+     * Typical use:
+     * @code 
+     *  typedef PointVector<2,DGtal::int32_t> Point;
+     *  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor;  
+     *  DGtal::MelkmanConvexHull<Point, Functor> ch; 
+     *  ch.add(Point(0,0));
+     *  ch.add(Point(11,1));
+     *  ch.add(Point(12,3));
+     *  ch.add(Point(8,3));
+     *  ch.add(Point(4,5));
+     *  ch.add(Point(2,6));
+     *  ch.add(Point(1,4));
+     * std::pair<Point, std::pair<Point, Point> > antipodalBest;
+  
+     *  double th = computeHullThickness(ch.begin(), ch.end(), 
      *                                   DGtal::functions::Hull2D::EuclideanThickness, antipodalBest);
      * @param[in] itb begin iterator on the convex hull points.
      * @param[in] ite end iterator on the convex hull points.
@@ -393,6 +429,7 @@ namespace DGtal
                                 const ThicknessDefinition& def,
                                 std::pair<TInputPoint, std::pair<TInputPoint, 
                                 TInputPoint> >& antiPodalPair);
+
 
     /**
      * Computes the angle between the line (@a a,@a b) and (@a c,@a d)

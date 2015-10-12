@@ -293,6 +293,8 @@ bool testConvexHullCompThickness()
                                            DGtal::functions::Hull2D::EuclideanThickness, antipodalBest);
   double thicknessHV = computeHullThickness(ch.begin(), ch.end(), 
                                             DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
+  double thicknessHVb = computeHullThickness(ch.begin(), ch.end(), 
+                                            DGtal::functions::Hull2D::HorizontalVerticalThickness);
   
   
   Board2D aBoard;
@@ -322,9 +324,8 @@ bool testConvexHullCompThickness()
   trace.info() << "Thickness Euclidean = " << thicknessE << std::endl;
   trace.info() << "Thickness Euclidean awaited = " << awaitedThE << std::endl;
   aBoard.saveEPS("testConvexHull2D_Thickness.eps");
-  nbok += thicknessHV == awaitedThHV && thicknessE == awaitedThE;
+  nbok += thicknessHV == awaitedThHV && thicknessE == awaitedThE && thicknessHVb == thicknessHV;
   nb++;
-  
   return nb==nbok;
 }
 

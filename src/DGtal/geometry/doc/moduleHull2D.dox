@@ -178,7 +178,7 @@ the on-line feature, you may call the off-line procedure melkmanConvexHullAlgori
 @warning The behavior is undefined if the input points do not form a simple polygonal line. 
 
 
-\subsection subsectmoduleHull2D14 Convex Hull Thickness
+\subsection subsectmoduleHull2D14 Convex hull thickness
 
 From a convex hull it can be useful to compute its associated
 thickness. We propose the implementation of the well known rotating
@@ -187,9 +187,42 @@ linear time [Shamos , 1978: \cite Shamos1978].
 
 Two definitions of thickness can be computed from an iterator on the
 convex hull. The first one is the vertical/horizontal thickness
-obtained by projection on the main x-y axis from anti podal pairs. The
+obtained by projection on the main x-y axis from antipodal pairs. The
 second one is given from the normal projection on the edge of the same
-anti podal pairs.
+antipodal pairs. The two definitions are illustrated on the following figures:
+
+
+@image html exampleConvexHullHV.png  "Example of the definitiion of horizontal/vertical thickness defined from the convexhull antipodal pair ((P,Q), S)."
+@image latex MelkmanHowTo.png "Example of the definitiion of horizontal/vertical thickness defined from the convexhull antipodal pair ((P,Q), S)."
+
+@image html exampleConvexHullEucl.png  "Example of the definitiion of Euclidean thickness defined from the convexhull antipodal pair ((P,Q), S)."
+@image latex MelkmanHowTo.png "Example of the definitiion of horizontal/vertical thickness defined from the convexhull antipodal pair ((P,Q), S)"
+
+
+To compute the thickness of a convexhull you have simply to call the computeHullThickness procedure:
+
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Caliper-computeBasic
+
+
+To recover the antipodal pairs presenting the minimal thickness you
+can also use the same method with an antipodal pair:
+
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Caliper-computeAnti
+
+And display the result:
+@snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Caliper-display
+
+
+By using the sequence of points of the first example, you will obtain a thickness of 12 with the following antipodal pair:
+
+
+@image html ConvexHullCCWAntiPodal.png  "Example of antipodal pair obtained from the computation of the horizontal/vertical thickness. The edge (P, Q) of the antipodal pair is represented in blue and its vertex R  is given in red."
+@image latex ConvexHullCCWAntiPodal.png "Example of antipodal pair obtained from the computation of the horizontal/vertical thickness. The edge (P, Q) of the antipodal pair is represented in blue and its vertex R  is given in red."
+
+
+
+
+
 
 
 
