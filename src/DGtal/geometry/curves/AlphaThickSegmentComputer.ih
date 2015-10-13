@@ -424,9 +424,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getExtremityPoin
 
 
 
-
-
-
 //-----------------------------------------------------------------------------
 template < typename TInputPoint, typename TConstIterator>
 inline
@@ -446,16 +443,17 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeight
   // Todo:
   // - compute height.
   // - update antipodal pairs.
-  typedef std::pair<&InputPoint, std::pair<&InputPoint, &InputPoint> > AntiPodalPair;  
-  DGtal::functions::Hull2D::computeHullThickness(myState.melkmanCH.begin(),
-                                                 myState.melkmanCH.end(), 
-                                                 DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
   
-
+  //double chThickness = DGtal::functions::Hull2D::computeHullThickness(myState.melkmanCH.begin(),
+  //                                                                myState.melkmanCH.end(), 
+  //                                                                 DGtal::functions::Hull2D::HorizontalVerticalThickness, 
+  //                                                                 mystate.edgePh,
+  //                                                                 mystate.edgeQh, mystate.vertexSh);
+  
   double thickness, mu;
   PointD normal;
   computeParallelStripParams(mu, normal, thickness);
-  return thickness/normal.norm();
+  return 0.0;// chThickness;//thickness/normal.norm();
 }
 
 
@@ -484,8 +482,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanAddPoint(
     }
   }else{
     myState.melkmanCh.add(aPoint);
-  }
-  
+  }  
 }
 
 
@@ -504,7 +501,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanIsConvexV
     {
       return true;
     } 
-  myState.actualThickness = melkmanUpdateMainHeight(); 
+  myState.actualThickness = updateMainHeightAndAntiPodal(); 
   return myState.actualThickness <= myMaximalThickness;
 }
 

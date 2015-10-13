@@ -396,7 +396,7 @@ public:
   */
   Primitive primitive() const;
   
-  
+
 
   
     // ----------------------- Interface --------------------------------------
@@ -611,9 +611,7 @@ protected:
    * @return 'true' if the segment contains at least 3 non aligned points. 
    **/     
    bool melkmanIsWellInitialized() const;
-
-  
-  
+    
   /**
    * Adds a point in the convex set  using one step of Melkman algorithm.
    *
@@ -622,11 +620,19 @@ protected:
   void melkmanAddPoint(const InputPoint  &aPoint );
 
 
-
   /**
    * Depending on connexity, return true if a convex is valid.
    */
   bool melkmanIsConvexValid() ;
+  
+
+  /**
+   *  Updates the main height of the melkman convex
+   *  set and update the antipodal pairs.
+   * 
+   * @return the thickness of the segment. 
+   **/
+  double updateMainHeightAndAntiPodal();   
   
   
   /**
@@ -638,6 +644,8 @@ protected:
    */
   typename TInputPoint::Component melkmanIsLeft(const InputPoint &aPoint0, const InputPoint &aPoint1, const InputPoint &aPoint2) const;
   
+
+
   
   /**
    * Computes the projection of a Point \a ptC on the real line defined by the two points (\a ptA, \a ptB), and
