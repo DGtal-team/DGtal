@@ -109,7 +109,7 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::add(const Point& aPoint)
 template <typename TPoint, typename TOrientationFunctor>
 inline
 typename DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::ConstIterator
-DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::begin()
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::begin() const
 {
   if (myContainer.size() == 0)
     return myContainer.end(); 
@@ -121,7 +121,7 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::begin()
 template <typename TPoint, typename TOrientationFunctor>
 inline
 typename DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::ConstIterator
-DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::end()
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::end() const
 {
   return myContainer.end(); 
 }
