@@ -142,8 +142,8 @@ void convexHull()
     //![Hull2D-Caliper-computeBasic]
 
     //![Hull2D-Caliper-computeAnti]
-    std::pair<Z2i::Point, std::pair<Z2i::Point, Z2i::Point> > antipodalBest;
-    th = DGtal::functions::Hull2D::computeHullThickness(res.begin(), res.end(), DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
+    Z2i::Point antipodalP, antipodalQ, antipodalS;
+    th = DGtal::functions::Hull2D::computeHullThickness(res.begin(), res.end(), DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalP, antipodalQ, antipodalS);
     //![Hull2D-Caliper-computeAnti]
 
     
@@ -152,9 +152,6 @@ void convexHull()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     //![Hull2D-Caliper-display]
-    Z2i::Point antipodalP = antipodalBest.second.first;
-    Z2i::Point antipodalQ = antipodalBest.second.second;
-    Z2i::Point antipodalS = antipodalBest.first;
     board.setPenColor(DGtal::Color::Red);
     board.drawCircle( antipodalS[0], antipodalS[1], 0.2) ;
     board.setPenColor(DGtal::Color::Blue);

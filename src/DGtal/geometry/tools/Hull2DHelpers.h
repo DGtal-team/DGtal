@@ -412,14 +412,16 @@ namespace DGtal
      *  ch.add(Point(4,5));
      *  ch.add(Point(2,6));
      *  ch.add(Point(1,4));
-     * std::pair<Point, std::pair<Point, Point> > antipodalBest;  
+     *  Point p, q, s;
      *  double th = computeHullThickness(ch.begin(), ch.end(), 
-     *                                   DGtal::functions::Hull2D::EuclideanThickness, antipodalBest);
+     *                                   DGtal::functions::Hull2D::EuclideanThickness, p, q, s);
      * @endcode       
      * @param[in] itb begin iterator on the convex hull points.
      * @param[in] ite end iterator on the convex hull points.
      * @param[in] def definition of the thickness used in the estimation (i.e HorizontalVerticalThickness or EuclideanThickness)
-     * @param[out] antipodalPair the anti podal pair associated to the minimal value of convex hull thickness. 
+     * @param[out] antipodalEdgeP one point of the antipodal edge associated to the minimal value of convex hull thickness. 
+     * @param[out] antipodalEdgeQ one point of the antipodal edge associated to the minimal value of convex hull thickness. 
+     * @param[out] antipodalVertexR the vertex of the antipodal pair associated to the minimal value of convex hull thickness. 
      *
      * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
      **/
@@ -428,8 +430,9 @@ namespace DGtal
     double computeHullThickness(const ForwardIterator& itb, 
                                 const ForwardIterator& ite,
                                 const ThicknessDefinition& def,
-                                std::pair<TInputPoint, std::pair<TInputPoint, 
-                                TInputPoint> >& antipodalPair);
+                                TInputPoint& antipodalEdgeP,
+                                TInputPoint& antipodalEdgeQ,
+                                TInputPoint& antipodalVertexR);
 
 
     /**

@@ -220,7 +220,7 @@ By using the sequence of points of the first example, you will obtain a thicknes
 @image latex ConvexHullCCWAntiPodal.png "Example of antipodal pair obtained from the computation of the horizontal/vertical thickness. The edge (P, Q) of the antipodal pair is represented in blue and its vertex R  is given in red."
 
 
-@warning The convex hull should be oriented in counter clockwise else it will return wrong result.e.
+@warning The convex hull should be oriented in counter clockwise else it will return wrong result.
 
 
 

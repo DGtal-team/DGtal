@@ -319,19 +319,20 @@ namespace DGtal
                                   const ThicknessDefinition &def)
       {
         typedef typename std::iterator_traits<ForwardIterator>::value_type TInputPoint;
-        std::pair<TInputPoint, std::pair<TInputPoint,
-                                         TInputPoint> > resAnti;
-        return computeHullThickness(itb, ite, def, resAnti);
+        TInputPoint p, q, r;
+        return computeHullThickness(itb, ite, def, p, q, r);
       }
+
+
       template <typename ForwardIterator,
                 typename TInputPoint>
       inline
       double computeHullThickness(const ForwardIterator &itb, 
                                   const ForwardIterator &ite,
                                   const ThicknessDefinition &def, 
-                                  typename std::pair<TInputPoint,
-                                  std::pair<TInputPoint,
-                                  TInputPoint> > & antipodalPair){
+                                  TInputPoint& antipodalEdgeP,
+                                  TInputPoint& antipodalEdgeQ,
+                                  TInputPoint& antipodalVertexR){
         struct WrapIt{
           WrapIt(const ForwardIterator &b, const ForwardIterator &e): myB(b), myE(e), mySize(std::distance(b, e)){}
           TInputPoint operator[](unsigned int i){
@@ -353,9 +354,9 @@ namespace DGtal
         double th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], aConvexHull[j], def);
         if(th<resThickness){
           resThickness = th;
-          antipodalPair.first = aConvexHull[j];
-          antipodalPair.second.first = aConvexHull[i];
-          antipodalPair.second.second = aConvexHull[i+1];
+          antipodalVertexR = aConvexHull[j];
+          antipodalEdgeP = aConvexHull[i];
+          antipodalEdgeQ = aConvexHull[i+1];
         }
         i++;
         while(i < size){        
@@ -367,9 +368,9 @@ namespace DGtal
                                            aConvexHull[j], def);
             if(th<resThickness){
               resThickness = th;
-              antipodalPair.first = aConvexHull[j];
-              antipodalPair.second.first = aConvexHull[i];
-              antipodalPair.second.second = aConvexHull[i+1];
+              antipodalVertexR = aConvexHull[j];
+              antipodalEdgeP = aConvexHull[i];
+              antipodalEdgeQ = aConvexHull[i+1];
             }
             if(getAngle(aConvexHull[i], aConvexHull[i+1], 
                         aConvexHull[j], aConvexHull[j+1])==M_PI){
@@ -378,9 +379,9 @@ namespace DGtal
                                              aConvexHull[j+1], def);
               if(th<resThickness){
                 resThickness = th;
-                antipodalPair.first = aConvexHull[j+1];
-                antipodalPair.second.first = aConvexHull[i];
-                antipodalPair.second.second = aConvexHull[i+1];
+                antipodalVertexR = aConvexHull[j+1];
+                antipodalEdgeP = aConvexHull[i];
+                antipodalEdgeP = aConvexHull[i+1];
               }
             }
             i++;
