@@ -441,85 +441,17 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanIsWellIni
 template < typename TInputPoint, typename TConstIterator>
 inline
 double
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanUpdateMainHeight()  
-{
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeightAndAntiPodal()  
+{  
+  // Todo:
+  // - compute height.
+  // - update antipodal pairs.
+  typedef std::pair<&InputPoint, std::pair<&InputPoint, &InputPoint> > AntiPodalPair;  
+  DGtal::functions::Hull2D::computeHullThickness(myState.melkmanCH.begin(),
+                                                 myState.melkmanCH.end(), 
+                                                 DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
   
-  int queueSize = myState.melkmanQueue.size();
-  InputPoint P, Q, R, S;
-  int q,s; /* [pq] is an edge and s a vertex */
-  bool stop = false; /* Default is false */
-  double tmpheight, k, dMinus, dPlus;
-  double maxDoubleValue =  std::numeric_limits<int>::max();
 
-  /* Take the first edge and find the corresponding point of support */
-  P =  myState.melkmanQueue[ 0 ] ;
-  q = 1;
-  Q = myState.melkmanQueue[ q++ ] ;
-  /** To find s, start at q+1 and move until angle between the edge at s 
-   *  and the line pq is positive.
-   */
-  s = q;
-  S = myState.melkmanQueue[ s++ ];
-  R = myState.melkmanQueue[ s++ ];
-  while( !stop )
-    {
-      /* Use vectorial product to ckeck angle */
-      PointVector<3, typename TInputPoint::Component> ptR(R[0], R[1], 0);
-      PointVector<3, typename TInputPoint::Component> ptS(S[0], S[1], 0);
-      PointVector<3, typename TInputPoint::Component> ptQ(Q[0], Q[1], 0);
-      PointVector<3, typename TInputPoint::Component> ptP(P[0], P[1], 0);
-      stop = (ptR-ptS).crossProduct(ptQ-ptP)[2] >= 0;
-      /* If not stop, move forward */
-      if( !stop )
-        {
-          S = R;
-          R =  myState.melkmanQueue[ s++ ];
-        }
-    }
-  /* Initialize the diagonal distance */
-  k = ( Q[1] - P[1] ) * S[0] - ( Q[0] - P[0] ) * S[1] - ( Q[1] * P[0] - Q[0] * P[1] );
-  dMinus = fabs( k / (  ( Q[0] - P[0] ) + ( Q[1] - P[1] ) ) );
-  dPlus = fabs( k / (  ( Q[0] - P[0] ) - ( Q[1] - P[1] ) ) );
-  myState.convexHullHeight = ( dPlus <= dMinus ) ? dPlus : dMinus;
-  myState.edgePh = P; myState.edgeQh = Q; myState.vertexSh = S;
-  /* We have found the first (edge,vertex) pair. Go on until cycling. */
-  s--;   /* R is untouch */
-  P = Q;
-  Q = myState.melkmanQueue[ q ] ;
-  do
-    {
-      /** Rotate until one edge touch the border
-       *  To do this, replicate the border and compute the sign of the angle
-       */
-      while( ( Q[0] - P[0] ) * ( R[1] - S[1] )  - ( Q[1] - P[1] ) * ( R[0] - S[0] ) >= 0 )
-        {
-          S = R;
-          s = ( s + 1 ) % queueSize;
-          R = myState.melkmanQueue[ s ] ;
-        }
-      /* Update height if necessary */
-      k = ( Q[1] - P[1] ) * S[0] - ( Q[0] - P[0] ) * S[1] - ( Q[1] * P[0] - Q[0] * P[1] );
-      if( ( Q[1] - P[1] ) - ( Q[0] - P[0] ) == 0 )
-        dMinus = maxDoubleValue;
-      else
-        dMinus = fabs( k / (  ( Q[1] - P[1] ) - ( Q[0] - P[0] ) ) );
-      if( ( Q[1] - P[1] ) + ( Q[0] - P[0] ) == 0 )
-        dPlus = maxDoubleValue;
-      else
-        dPlus = fabs( k / (  ( Q[1] - P[1] ) + ( Q[0] - P[0] ) ) );
-      /* Compute new diagonal distance / sqrt(2) */
-      tmpheight = ( dPlus <= dMinus ) ? dPlus : dMinus;
-      if( tmpheight < myState.convexHullHeight )
-        {
-          myState.convexHullHeight = tmpheight;
-          myState.edgePh = P; myState.edgeQh = Q; myState.vertexSh = S;
-        }
-      /* Go to next point */
-      P = Q;
-      q = ( q + 1 ) % queueSize;
-      Q = myState.melkmanQueue[ q ] ;
-    }while( q != 0 );
-    
   double thickness, mu;
   PointD normal;
   computeParallelStripParams(mu, normal, thickness);

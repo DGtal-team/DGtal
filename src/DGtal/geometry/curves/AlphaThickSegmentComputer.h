@@ -159,6 +159,7 @@ public:
   typedef AlphaThickSegmentComputer<InputPoint, ReverseIterator<ConstIterator> > Reverse; 
   typedef DGtal::InHalfPlaneBySimple3x3Matrix<InputPoint, DGtal::int64_t> Functor;  
 
+  
   // ----------------------- internal types --------------------------------------
 
 private: 
@@ -611,13 +612,6 @@ protected:
    **/     
    bool melkmanIsWellInitialized() const;
 
-
-  /**
-   *  Updates the main height of the melkman convex set and return the new thickness of the segment.
-   * 
-   * @return the thickness of the segment. 
-   **/     
-  double melkmanUpdateMainHeight();
   
   
   /**
