@@ -287,12 +287,16 @@ bool testConvexHullCompThickness()
   ch.add(Point(4,5));
   ch.add(Point(2,6));
   ch.add(Point(1,4));
-  std::pair<Point, std::pair<Point, Point> > antipodalBest;
-  std::vector<std::pair<Point, std::pair<Point, Point> > > vectAnti;
+
+  Point antipodalP, antipodalQ, antipodalS;
   double thicknessE = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
-                                           DGtal::functions::Hull2D::EuclideanThickness, antipodalBest);
+                                                                     DGtal::functions::Hull2D::EuclideanThickness, 
+                                                                     antipodalP,
+                                                                     antipodalQ,
+                                                                     antipodalS);
   double thicknessHV = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
-                                            DGtal::functions::Hull2D::HorizontalVerticalThickness, antipodalBest);
+                                                                      DGtal::functions::Hull2D::HorizontalVerticalThickness,
+                                                                      antipodalP, antipodalQ, antipodalS);
   double thicknessHVb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                             DGtal::functions::Hull2D::HorizontalVerticalThickness);
   
@@ -307,9 +311,6 @@ bool testConvexHullCompThickness()
     aBoard << *it;
   }
   
-  Point antipodalP = antipodalBest.second.first;
-  Point antipodalQ = antipodalBest.second.second;
-  Point antipodalS = antipodalBest.first;
   aBoard.setPenColor(DGtal::Color::Red);
   aBoard.drawCircle( antipodalS[0], antipodalS[1], 1.0) ;
   aBoard.setPenColor(DGtal::Color::Blue);
