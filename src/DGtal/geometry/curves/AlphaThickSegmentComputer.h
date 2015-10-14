@@ -165,15 +165,13 @@ public:
 private: 
   struct State{
     DGtal::MelkmanConvexHull<InputPoint, Functor> melkmanCH;  
-    std::deque<InputPoint>  initMelkmanQeue; /** to initialize 3 non aligned  points */
-    std::deque<InputPoint> melkmanQueue; /** Melkman algorithm main deque */
+    std::deque<InputPoint>  initMelkmanQeue; /** to initialize 3 non aligned  points */   
     InputPoint lastFront; /** the last point added at the front of the alpha thick segment */
     InputPoint lastBack; /** the last point added at the back of the alpha thick segment */
     InputPoint edgePh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint edgeQh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint vertexSh; /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
     bool isMelkmanInitialized; /** well initialized when at least 3 points are given.  */ 
-    double convexHullHeight;  /** Used in melkmanMainDiagonal() */
     double actualThickness; /*the actual thickness of the current segment*/
   };
 
