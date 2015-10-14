@@ -265,8 +265,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFron
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
-  myState.melkmanCH.add(aPoint);
-  //melkmanAddPoint(myPointContainer.size()-1);
+  melkmanAddPoint(myPointContainer.size()-1);
   bool aResult = melkmanIsConvexValid();
   myPointContainer.pop_back();
   myState = _state;
@@ -283,8 +282,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(cons
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
-  myState.melkmanCH.add(aPoint);
-  //  melkmanAddPoint(aPoint);
+  melkmanAddPoint(aPoint);
   if (melkmanIsConvexValid()){
     if (myPointContainer.size()==1){
       myState.lastBack = aPoint;
@@ -305,8 +303,7 @@ bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFront() 
 {
   _state = myState;
-  //melkmanAddPoint(*myEnd);
-  myState.melkmanCH.add(*myEnd);
+  melkmanAddPoint(*myEnd);
   bool aResult = melkmanIsConvexValid();
   myState = _state;
   return aResult;      
@@ -321,9 +318,8 @@ bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront() 
 {
   _state = myState;
-  //melkmanAddPoint(*myEnd);
-  myState.melkmanCH.add(*myEnd);
-  
+  melkmanAddPoint(*myEnd);
+   
   if (melkmanIsConvexValid()){
     if (myEnd==myBegin){
       myState.lastBack = *myEnd;
@@ -468,9 +464,9 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanAddPoint(
                         myState.initMelkmanQeue[1],
                        aPoint ) !=0){
       myState.initMelkmanQeue.push_back(aPoint);
-      myState.melkmanCh.add(myState.initMelkmanQeue[0]);
-      myState.melkmanCh.add(myState.initMelkmanQeue[1]);
-      myState.melkmanCh.add(myState.initMelkmanQeue[2]);
+      myState.melkmanCH.add(myState.initMelkmanQeue[0]);
+      myState.melkmanCH.add(myState.initMelkmanQeue[1]);
+      myState.melkmanCH.add(myState.initMelkmanQeue[2]);
       myState.isMelkmanInitialized=true;
       return;
     }else{
@@ -478,7 +474,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanAddPoint(
       myState.initMelkmanQeue.push_back(aPoint);
     }
   }else{
-    myState.melkmanCh.add(aPoint);
+    myState.melkmanCH.add(aPoint);
   }  
 }
 
