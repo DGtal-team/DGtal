@@ -223,6 +223,8 @@ namespace DGtal
 
       /** Copy constructor with other viewable domain.
        *
+       * The full domain will be the same as the copied ArrayImageAdapter. Only the viewable domain will be modified.
+       *
        * @warning Since this class in only a view on a independant storage, it does a shallow copy.
        *
        * @param other         An another ArrayImageAdapter instance.
@@ -567,5 +569,3 @@ namespace DGtal
 #undef ArrayImageAdapter_RECURSES
 #endif // else defined(ArrayImageAdapter_RECURSES)
 
-/* GNU coding style */
-/* vim: set ts=2 sw=2 expandtab cindent cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1 : */

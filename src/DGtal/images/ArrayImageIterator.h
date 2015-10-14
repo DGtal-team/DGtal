@@ -291,5 +291,4 @@ namespace DGtal
 
 #undef ArrayImageIterator_RECURSES
 #endif // else defined(ArrayImageIterator_RECURSES)
-/* GNU coding style */
-/* vim: set ts=2 sw=2 expandtab cindent cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1 : */
+
