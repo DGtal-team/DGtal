@@ -122,7 +122,7 @@ namespace DGtal
    * const Domain sub_domain{ {1, 1}, {3, 2} };
    * ArrayImageAdapter< Value const*, Domain > cst_image( data, domain, sub_domain );
    * // Alternative syntax using the helpers:
-   * // auto cst_image = makeArrayImageAdapterFromImage( image, sub_domain );
+   * // auto const cst_image = makeArrayImageAdapterFromImage( image, sub_domain );
    *
    * // Display it.
    * for ( auto value : cst_image )
