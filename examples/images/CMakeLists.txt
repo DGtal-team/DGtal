@@ -28,6 +28,11 @@ SET(DGTAL_EXAMPLES_SRC
   exampleRigidtransformation3d
 )
 
+if( WITH_C11 )
+  SET(DGTAL_EXAMPLES_SRC ${DGTAL_EXAMPLES_SRC}
+      exampleArrayImageAdapter)
+endif( WITH_C11 )
+
 if( WITH_HDF5 )
   SET(DGTAL_EXAMPLES_SRC ${DGTAL_EXAMPLES_SRC} 
   raw2HDF5

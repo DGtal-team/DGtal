@@ -143,6 +143,9 @@ bool checkImage( TImage& anImage )
   using Coordinate = typename Point::Coordinate;
   using RefImage = ImageContainerBySTLVector<Domain, Value>;
 
+  // Checks CImage concept.
+  BOOST_CONCEPT_ASSERT( (DGtal::concepts::CImage<TImage>) );
+
   size_t nb = 0;
   size_t nbok = 0;
 
