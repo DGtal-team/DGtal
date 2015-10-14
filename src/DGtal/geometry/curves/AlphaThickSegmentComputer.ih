@@ -234,7 +234,6 @@ init(const double aThickness)
   myNbPointsAddedFromIterators = 0;
   myIsStoringPoints = true;
   myMaximalThickness = aThickness;
-  myState.convexHullHeight  = 0.0;
   myState.actualThickness = 0.0;
   myState.isMelkmanInitialized = false;
 }
@@ -251,7 +250,6 @@ init(const ConstIterator &it, double aThickness)
   myBegin = it;
   myEnd = it;
   myMaximalThickness = aThickness;
-  myState.convexHullHeight  = 0.0;
   myState.actualThickness = 0.0;
   myState.isMelkmanInitialized = false;
 }
@@ -373,7 +371,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::selfDisplay(std:
       out << *it << " ";
     }
   out << std::endl << "is well melkman init ?" << (myState.isMelkmanInitialized? " OK ": "NO"); 
-  out << std::endl << "Convexhull height: " << myState.convexHullHeight << std::endl;  
   out << std::endl << "Segment thickness : " << myState.actualThickness << std::endl;
   PointD pt1, pt2, pt3, pt4;
   getBoundingBox(pt1, pt2, pt3, pt4);
@@ -417,7 +414,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getExtremityPoin
   std::pair<TInputPoint, TInputPoint> r;
   r.first = myState.lastBack;
   r.second = myState.lastFront;
-  computeExtremaPoints(myState.melkmanQueue.begin(), myState.melkmanQueue.end() , r.first, r.second);
+  computeExtremaPoints(myState.melkmanCH.begin(), myState.melkmanCH.end() , r.first, r.second);
   return r;
 }
 
@@ -552,7 +549,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
   
   // Special case, blurred segment composed only of aligned points. 
   // In this cas the bounding box is restrained to a eplison width rectangle.
-  if(myState.convexHullHeight==0.0)
+  if(myState.actualThickness==0.0)
     {
       PointD vectPQ (aFirstPt[0]- aLastPt[0], aFirstPt[1]- aLastPt[1]); 
       double normPQ = vectPQ.norm();
@@ -614,7 +611,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBox(P
   getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
                                  pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);
 
-  if(myState.convexHullHeight==0.0)
+  if(myState.actualThickness==0.0)
     {
       return;
     }
@@ -622,8 +619,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBox(P
   InputPoint extremF =  myState.lastFront;
   InputPoint extremL =  myState.lastBack;
 
-  std::deque<InputPoint> dSegment = myState.melkmanQueue;
-  computeExtremaPoints(myState.melkmanQueue.begin(), myState.melkmanQueue.end() , extremL, extremF);
+  computeExtremaPoints(myState.melkmanCH.begin(), myState.melkmanCH.end() , extremL, extremF);
   getBoundingBoxFromExtremPoints(extremF, extremL, pt1LongestSegment1, pt2LongestSegment1, 
                                  pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);  
 }
