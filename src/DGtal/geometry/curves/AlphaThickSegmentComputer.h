@@ -157,7 +157,7 @@ public:
 
   typedef AlphaThickSegmentComputer<InputPoint, ConstIterator> Self; 
   typedef AlphaThickSegmentComputer<InputPoint, ReverseIterator<ConstIterator> > Reverse; 
-  typedef DGtal::InHalfPlaneBySimple3x3Matrix<InputPoint, DGtal::int64_t> Functor;  
+  typedef DGtal::InHalfPlaneBySimple3x3Matrix<InputPoint, InputPoint::Component> Functor;  
 
   
   // ----------------------- internal types --------------------------------------
