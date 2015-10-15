@@ -449,7 +449,7 @@ namespace DGtal
     
     /**
      * Computes the thickness of an anti podal pair (represented by
-     * the segment [ @a p , @a q ] and vertex @a r) according the given
+     * the segment [ @a p , @a q ] and vertex @a r) according to the given
      * distance @def definition.  
      *
      * If the distance definition is @HorizontalVerticalThickness, it
@@ -470,7 +470,7 @@ namespace DGtal
                                      const TInputPoint& r, const ThicknessDefinition& def);
 
     /**
-     * Computes the horizontal distance a point @c according the segment [ @a a , @a b ].
+     * Computes the horizontal distance a point @c according to the segment [ @a a , @a b ].
      * (i.e the horizontal projection distance of @c on [ @a a , @a b ]). 
      * @note if the segment [@a a, @a b] is horizontal (i.e @a a [1]==@a b[1]) then an infinite value (std::numerics<double>::max()) is returned. 
      *
@@ -485,7 +485,7 @@ namespace DGtal
 
 
     /**
-     * Computes the vertical distance a point @c according the segment [@a a, @a b].
+     * Computes the vertical distance a point @c according to the segment [@a a, @a b].
      * (i.e the vertical projection distance of @c on [@a a,@a b]. 
      * @note if the segment [@a a, @a b] is vertical (i.e @a a [0]== @a b [0]) then an infinite value (std::numerics<double>::max()) is returned. 
      *
@@ -500,7 +500,7 @@ namespace DGtal
 
 
     /**
-     * Computes the euclidean distance a point @a c according the segment [@a a, @a b].
+     * Computes the euclidean distance a point @a c according to the segment [@a a, @a b].
      * (i.e the distance between @a c and its projected point on [@a a,@a b]. 
      *
      *  @param[in] a one point of the segment.
