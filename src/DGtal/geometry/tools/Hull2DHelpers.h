@@ -384,7 +384,7 @@ namespace DGtal
      * @param[in] ite end iterator on the convex hull points.
      * @param[in] def definition of the thickness used in the estimation (i.e HorizontalVerticalThickness or EuclideanThickness)
      *
-     *
+     * @note If the convex hull contains 0, 1 or 2 points the thickness of 0 is returned.
      * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
      **/
     template <typename ForwardIterator >
@@ -422,7 +422,7 @@ namespace DGtal
      * @param[out] antipodalEdgeP one point of the antipodal edge associated to the minimal value of convex hull thickness. 
      * @param[out] antipodalEdgeQ one point of the antipodal edge associated to the minimal value of convex hull thickness. 
      * @param[out] antipodalVertexR the vertex of the antipodal pair associated to the minimal value of convex hull thickness. 
-     *
+     * @note If the convex hull contains 0, 1 or 2 points the thickness of 0 is returned and the antipodal points are updated with the first points (if they exist).
      * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
      **/
     template <typename ForwardIterator, 
