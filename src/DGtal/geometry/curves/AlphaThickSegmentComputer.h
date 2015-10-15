@@ -165,13 +165,11 @@ public:
 private: 
   struct State{
     DGtal::MelkmanConvexHull<InputPoint, Functor> melkmanCH;  
-    std::deque<InputPoint>  initMelkmanQeue; /** to initialize 3 non aligned  points */   
     InputPoint lastFront; /** the last point added at the front of the alpha thick segment */
     InputPoint lastBack; /** the last point added at the back of the alpha thick segment */
     InputPoint edgePh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint edgeQh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint vertexSh; /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
-    bool isMelkmanInitialized; /** well initialized when at least 3 points are given.  */ 
     double actualThickness; /*the actual thickness of the current segment*/
   };
 
@@ -441,7 +439,7 @@ public:
   /**
    * @return the two values of the normal vector given as a Point(a,b)
    * (the normal is oriented toward the segment by considering the
-   * edge PQ of the convexhull antipodal pair)..
+   * edge PQ of the convexhull antipodal pair).
    **/
   
   PointD getNormal() const;
@@ -547,8 +545,6 @@ public:
   std::string className() const;
 
 
-
-  
   /**
    * Writes/Displays the object on an output stream.
    *
@@ -559,8 +555,7 @@ public:
     // ------------------------- Protected Datas ------------------------------
 protected:
   
-  
-  
+ 
   /**
    * begin iterator (associated to input data)
    **/
@@ -610,20 +605,6 @@ private:
 protected:
 
   
-  /**
-   *  Used to check if the initialisation with 3 non aligned points is well done.
-   *
-   * @return 'true' if the segment contains at least 3 non aligned points. 
-   **/     
-   bool melkmanIsWellInitialized() const;
-    
-  /**
-   * Adds a point in the convex set  using one step of Melkman algorithm.
-   *
-   * @param[in] aPoint the point to be added.
-   */
-  void melkmanAddPoint(const InputPoint  &aPoint );
-
 
   /**
    * Depending on connexity, return true if a convex is valid.

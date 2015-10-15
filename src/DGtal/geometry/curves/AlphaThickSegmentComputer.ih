@@ -64,7 +64,6 @@ template < typename TInputPoint, typename TConstIterator>
 inline
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::AlphaThickSegmentComputer(): myBegin(), myEnd()
 { 
-  myState.isMelkmanInitialized = false;
   myMaximalThickness = 1.0;
 }
 
@@ -235,7 +234,6 @@ init(const double aThickness)
   myIsStoringPoints = true;
   myMaximalThickness = aThickness;
   myState.actualThickness = 0.0;
-  myState.isMelkmanInitialized = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -251,7 +249,6 @@ init(const ConstIterator &it, double aThickness)
   myEnd = it;
   myMaximalThickness = aThickness;
   myState.actualThickness = 0.0;
-  myState.isMelkmanInitialized = false;
 }
 
 
@@ -265,7 +262,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFron
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
-  melkmanAddPoint(myPointContainer.size()-1);
+  myState.melkmanCH.add(aPoint);
   bool aResult = melkmanIsConvexValid();
   myPointContainer.pop_back();
   myState = _state;
@@ -282,7 +279,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(cons
 {
   _state = myState;
   myPointContainer.push_back(aPoint);  
-  melkmanAddPoint(aPoint);
+  myState.melkmanCH.add(aPoint);
   if (melkmanIsConvexValid()){
     if (myPointContainer.size()==1){
       myState.lastBack = aPoint;
@@ -303,7 +300,7 @@ bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFront() 
 {
   _state = myState;
-  melkmanAddPoint(*myEnd);
+  myState.melkmanCH.add(*myEnd);
   bool aResult = melkmanIsConvexValid();
   myState = _state;
   return aResult;      
@@ -318,7 +315,7 @@ bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront() 
 {
   _state = myState;
-  melkmanAddPoint(*myEnd);
+  myState.melkmanCH.add(*myEnd);
    
   if (melkmanIsConvexValid()){
     if (myEnd==myBegin){
@@ -366,7 +363,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::selfDisplay(std:
     {
       out << *it << " ";
     }
-  out << std::endl << "is well melkman init ?" << (myState.isMelkmanInitialized? " OK ": "NO"); 
   out << std::endl << "Segment thickness : " << myState.actualThickness << std::endl;
   PointD pt1, pt2, pt3, pt4;
   getBoundingBox(pt1, pt2, pt3, pt4);
@@ -416,17 +412,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getExtremityPoin
 
 
 
-
-//-----------------------------------------------------------------------------
-template < typename TInputPoint, typename TConstIterator>
-inline
-bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanIsWellInitialized()  const
-{
-  return myState.isMelkmanInitialized;
-}
-
-
 //-----------------------------------------------------------------------------
 template < typename TInputPoint, typename TConstIterator>
 inline
@@ -447,36 +432,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeight
 }
 
 
-//-----------------------------------------------------------------------------
-template < typename TInputPoint, typename TConstIterator>
-inline
-void
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanAddPoint(const InputPoint &aPoint)
-{
-  
-  if(myState.initMelkmanQeue.size()<2){
-    myState.initMelkmanQeue.push_back(aPoint);
-  }else if(myState.initMelkmanQeue.size() ==2){
-    if( melkmanIsLeft( myState.initMelkmanQeue[0], 
-                        myState.initMelkmanQeue[1],
-                       aPoint ) !=0){
-      myState.initMelkmanQeue.push_back(aPoint);
-      myState.melkmanCH.add(myState.initMelkmanQeue[0]);
-      myState.melkmanCH.add(myState.initMelkmanQeue[1]);
-      myState.melkmanCH.add(myState.initMelkmanQeue[2]);
-      myState.isMelkmanInitialized=true;
-      return;
-    }else{
-      myState.initMelkmanQeue.pop_back();
-      myState.initMelkmanQeue.push_back(aPoint);
-    }
-  }else{
-    myState.melkmanCH.add(aPoint);
-  }  
-}
-
-
-
 
 
 
@@ -487,10 +442,6 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanIsConvexValid() 
 {
-  if (!myState.isMelkmanInitialized)
-    {
-      return true;
-    } 
   myState.actualThickness = updateMainHeightAndAntiPodal(); 
   return myState.actualThickness <= myMaximalThickness;
 }
