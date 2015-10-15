@@ -450,7 +450,7 @@ public:
   /**
    * @return the thickness of the current segment.
    **/  
-  double getThickness const;
+  double getThickness() const;
 
 
   /**
