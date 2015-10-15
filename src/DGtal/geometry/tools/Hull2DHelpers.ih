@@ -56,7 +56,6 @@ namespace DGtal
             while ( ( !aPredicate(P,Q,aNewPoint) )&&(aStack.size() != 0) )
               {
                 //remove Q
-                //std::cerr << Q << " removed " << std::endl;
                 Q = P;
                 aStack.pop();
                 if (aStack.size() != 0)

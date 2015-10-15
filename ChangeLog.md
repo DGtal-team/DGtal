@@ -4,7 +4,7 @@
 ## New Features / Critical Changes
 - *Geometry Package*
  - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
-   the width (vertical/horizontal or euclidean) of a convex hull.
+   the width (vertical/horizontal or Euclidean) of a convex hull.
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
 # DGtal 0.9
