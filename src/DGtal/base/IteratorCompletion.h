@@ -57,6 +57,7 @@ namespace DGtal
    *   that behaves like a distance functor from the begin() iterator to a given point.
    *   (see SimpleRandomAccessRangeFromPoint and SimpleRandomAccessConstRangeFromPoint)
    *
+   * @see IteratorCompletion
    * @see the specialization of IteratorCompletionTraits for ArrayImageView.
    *
    * @tparam TDerived Type of the derived class (CRTP).
@@ -72,14 +73,42 @@ namespace DGtal
    *
    * More precisely, it provides:
    * - reverse iterators if the class provides a bidirectional iterator,
-   * - ranges if the class provides a random access iterator and a distance functor from a point.
+   * - ranges if the class provides a random access iterator and a distance functor from a point,
+   * - constant normal and reverse iterators from C++11 if the class provides cbegin and cend methods.
    *
    * Each derived class of IteratorCompletion must specialized IteratorCompletionTraits in order to provide
    * enough informations on his iterators.
    *
-   * @see ArrayImageAdapter.h for usage example.
-   *
    * @tparam TDerived Type of the derived class (CRTP).
+   *
+   * The following snippets illustrate how to use it to easily made a concepts::CImage model from a C-style array
+   * (better use ArrayImageAdapter for that purpose).
+   *
+   * After common includes:
+   * @snippet exampleIteratorCompletion.cpp includes
+   * we start with the head of our class, including typedefs, constructor and destructor:
+   * @snippet exampleIteratorCompletion.cpp MyImageHeader
+   * As you can see, the MyImage class inherits from IteratorCompletion templated with his own type (CRTP).
+   * The public inheritance is necessary is order to make visible the methods and typedef provided by IteratorCompletion.
+   * 
+   * Then, we add the basic interface needed for images:
+   * @snippet exampleIteratorCompletion.cpp CImageBasicInterface
+   * and the minimal iterator accessors:
+   * @snippet exampleIteratorCompletion.cpp BasicIteratorInterface
+   *
+   * The class is finally closed with the private members:
+   * @snippet exampleIteratorCompletion.cpp PrivateMembers
+   * 
+   * A specialization of IteratorCompletionTraits is needed in order to provide IteratorCompletion with
+   * the Iterator and ConstIterator type, and a DistanceFunctor that returns the distance from the begin 
+   * iterator to a given point (see SimpleRandomAccessRangeFromPoint and SimpleRandomAccessConstRangeFromPoint):
+   * @snippet exampleIteratorCompletion.cpp IteratorCompletionTraits
+   *
+   * We have now a concepts::CImage model that can be used like any image:
+   * @snippet exampleIteratorCompletion.cpp UsageExample
+   *
+   * @see ArrayImageAdapter.h
+   * @see exampleIteratorCompletion.cpp
    */
   template <
     typename TDerived
@@ -100,7 +129,7 @@ namespace DGtal
 
       /**
        * @return  a mutable reverse-iterator pointing to the last value.
-       * @warning the derived class must have a end() method that return a mutable bidirectional iterator.
+       * @warning the derived class must have a end() method that returns a mutable bidirectional iterator.
        */
       ReverseIterator rbegin()
         {
@@ -109,7 +138,7 @@ namespace DGtal
 
       /**
        * @return  a constant reverse-iterator pointing to the last value.
-       * @warning the derived class must have a end() method that return a constant bidirectional iterator.
+       * @warning the derived class must have a end() method that returns a constant bidirectional iterator.
        */
       inline
       ConstReverseIterator rbegin() const
@@ -119,7 +148,7 @@ namespace DGtal
 
       /**
        * @return  a constant reverse-iterator pointing to the last value (C++11).
-       * @warning the derived class must have a cend() method that return a constant bidirectional iterator.
+       * @warning the derived class must have a cend() method that returns a constant bidirectional iterator.
        */
       inline
       ConstReverseIterator crbegin() const
@@ -129,7 +158,7 @@ namespace DGtal
 
       /**
        * @return  a mutable reverse-iterator pointing before the first value.
-       * @warning the derived class must have a begin() method that return a mutable bidirectional iterator.
+       * @warning the derived class must have a begin() method that returns a mutable bidirectional iterator.
        */
       inline
       ReverseIterator rend()
@@ -139,7 +168,7 @@ namespace DGtal
 
       /**
        * @return  a constant reverse-iterator pointing before the first value.
-       * @warning the derived class must have a begin() method that return a constant bidirectional iterator.
+       * @warning the derived class must have a begin() method that returns a constant bidirectional iterator.
        */
       inline
       ConstReverseIterator rend() const
@@ -149,7 +178,7 @@ namespace DGtal
 
       /**
        * @return  a constant reverse-iterator pointing before the first value (C++11).
-       * @warning the derived class must have a cbegin() method that return a constant bidirectional iterator.
+       * @warning the derived class must have a cbegin() method that returns a constant bidirectional iterator.
        */
       inline
       ConstReverseIterator crend() const
@@ -159,7 +188,7 @@ namespace DGtal
 
       /**
        * @return  a mutable range over the derived class values.
-       * @warning the derived class must have begin() and end() methods that returns mutable random-access iterators.
+       * @warning the derived class must have begin() and end() methods that return mutable random-access iterators.
        * @warning In addition, the class must provide a distance functor to a point.
        */
       inline
@@ -175,7 +204,7 @@ namespace DGtal
 
       /**
        * @return  a constant range over the derived class values.
-       * @warning the derived class must have begin() and end() methods that returns constant random-access iterators.
+       * @warning the derived class must have begin() and end() methods that return constant random-access iterators.
        * @warning In addition, the class must provide a distance functor to a point.
        */
       inline

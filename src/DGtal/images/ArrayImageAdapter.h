@@ -99,6 +99,8 @@ namespace DGtal
    * The following code snippet demonstrates how to use ArrayImageAdapter from converting a native C-array to an image:
    * @snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapter_example
    *
+   * Another usage example is illustrated in the image module documentation, \ref arrayimageadat.
+   *
    * @remark The given random-access iterator can be either mutable or constant.
    *
    * @warning The array must be column-major ordered (but row-major order could be later accepted via template parameter, if needed ?)
@@ -110,6 +112,7 @@ namespace DGtal
    *
    * @see makeArrayImageAdapterFromIterator
    * @see makeArrayImageAdapterFromImage
+   * @see exampleArrayImageAdapter.cpp
    */
   template <
     typename TArrayIterator,
@@ -144,8 +147,8 @@ namespace DGtal
 
       // Iterators & Ranges
       template <class> friend class ArrayImageIterator;
-      using Iterator      = typename IteratorCompletionTraits<Self>::Iterator;      ///< Mutable iterator.
-      using ConstIterator = typename IteratorCompletionTraits<Self>::ConstIterator; ///< Constant iterator.
+      using Iterator      = typename IteratorCompletionTraits<Self>::Iterator;      ///< Mutable iterator based on ArrayImageIterator.
+      using ConstIterator = typename IteratorCompletionTraits<Self>::ConstIterator; ///< Constant iterator base on ArrayImageIterator.
 
       /** Default constructor.
        *
@@ -376,6 +379,8 @@ namespace DGtal
 
     }; // end of class ArrayImageAdapter
 
+  //! [IteratorCompletionTraits]
+
   /** Iterator traits specialized for ArrayImageAdapter.
    *
    * \see IteratorCompletion
@@ -427,6 +432,8 @@ namespace DGtal
         };
 
     }; // end of specialized class IteratorCompletionTraits
+
+  //! [IteratorCompletionTraits]
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'ArrayImageIterator'.
