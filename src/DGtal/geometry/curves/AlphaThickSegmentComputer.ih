@@ -443,10 +443,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeight
   //                                                                 mystate.edgePh,
   //                                                                 mystate.edgeQh, mystate.vertexSh);
   
-  double thickness, mu;
-  PointD normal;
-  computeParallelStripParams(mu, normal, thickness);
-  return 0.0;// chThickness;//thickness/normal.norm();
+  return chThickness;//thickness/normal.norm();
 }
 
 
@@ -652,32 +649,28 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParallelS
                                                                                            double &nu) const
 {
   PointD dirSeg =  myState.edgeQh - myState.edgePh; 
-  // Normal dir oriented inside the segment
-  if (melkmanIsLeft(myState.edgePh, myState.edgeQh, myState.vertexSh)>=0)
-    {
-      N[0] = -dirSeg[1];
-      N[1] = dirSeg[0];
-    }
-  else
-    {
-      N[0] = dirSeg[1];
-      N[1] = -dirSeg[0];
-    }
+  N[0] = -dirSeg[1];
+  N[1] = dirSeg[0];
   mu = (N[0]*myState.edgePh[0]+N[1]*myState.edgePh[1]);
-  nu = (N[0]*myState.vertexSh[0]+N[1]*myState.vertexSh[1] - mu);
+  nu = N[0]*myState.vertexSh[0]+N[1]*myState.vertexSh[1] - mu;
 }
 
  
+template < typename TInputPoint, typename TConstIterator>
+inline
+double 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getThickness() const 
+{
+  return myState.actualThickness;
+}
+
 
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::PointD 
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNormal() const 
 {
-  PointD r;
-  double mu, nu;
-  computeParallelStripParams(mu, r,nu);
-  return r;
+  return primitive.normal();
 }
 
  
@@ -686,10 +679,7 @@ inline
 double 
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getMu() const 
 {
-  PointD r;
-  double mu, nu;
-  computeParallelStripParams(mu, r,nu);
-  return mu;
+  return primitive.mu();
 }
 
 
@@ -698,15 +688,10 @@ inline
 double 
   DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNu() const 
 {
-  PointD r;
-  double mu, nu;
-  computeParallelStripParams(mu, r,nu);
-  return nu;
+  return primitive().nu();
 }
 
    
-
-
 template < typename TInputPoint, typename TConstIterator>
 inline
 bool

@@ -446,14 +446,21 @@ public:
   
   PointD getNormal() const;
 
+
   /**
-   * @return the mu parameter of the current segment.
+   * @return the thickness of the current segment.
+   **/  
+  double getThickness const;
+
+
+  /**
+   * @return the mu parameter of the current segment (given from the segment ParalellStrip primitive).
    **/
   double getMu() const;
  
  
   /**
-   * @return the nu parameter the of the current segment.
+   * @return the nu parameter the of the current segment (given from the segment ParalellStrip primitive).
    **/
   double getNu() const;
    
@@ -534,10 +541,10 @@ public:
   
   
 
-   /**
-     * @return the style name used for drawing this object.
-     */
-    std::string className() const;
+  /**
+   * @return the style name used for drawing this object.
+   */
+  std::string className() const;
 
 
 
