@@ -97,41 +97,7 @@ namespace DGtal
    * copy operations (constructor and operator) lead to shallow copies.
    *
    * The following code snippet demonstrates how to use ArrayImageAdapter from converting a native C-array to an image:
-   * @code
-   * using Space = SpaceND<2>;
-   * using Domain = HyperRectDomain<Space>;
-   * using Point = typename Space::Point;
-   * using Value = double;
-   *
-   * const Domain domain{ {0, 1}, {4, 3} };
-   *
-   * Value* data = new Value[ domain.size() ];
-   *
-   * // Convert this allocated memory to a CImage model.
-   * ArrayImageAdapter< Value*, Domain > image( data, domain );
-   * // Alternative syntax using the helpers:
-   * // auto image = makeArrayImageAdapterFromIterator( data, domain );
-   *
-   * // Fill the image with first coordinate of the point
-   * for ( auto it = image.begin(); it != image.end(); ++it )
-   *   {
-   *     *it = it.getPoint()[0];
-   *   }
-   *
-   * // Get a constant view on a sub-domain.
-   * const Domain sub_domain{ {1, 1}, {3, 2} };
-   * ArrayImageAdapter< Value const*, Domain > cst_image( data, domain, sub_domain );
-   * // Alternative syntax using the helpers:
-   * // auto const cst_image = makeArrayImageAdapterFromImage( image, sub_domain );
-   *
-   * // Display it.
-   * for ( auto value : cst_image )
-   *   {
-   *     std::cout << value << " ";
-   *   }
-   * std::cout << std::endl;
-   *
-   * @endcode
+   * @snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapter_example
    *
    * @remark The given random-access iterator can be either mutable or constant.
    *
