@@ -360,10 +360,10 @@ namespace DGtal
 
     /**
      *  @brief Procedure to compute the convex hull thickness given
-     *  from differents definitions (Horizontal/vertical or Euclidean
+     *  from different definitions (Horizontal/vertical or Euclidean
      *  distances). It takes as input the vertices of the hull given
      *  by the range [@a itbn, @a ite).  The procedure applies the
-     *  classic rotating caliper to recover all the anti-podal pairs.
+     *  classic rotating caliper to recover all anti-podal pairs.
      *
      * Typical use:
      * @code 
@@ -395,10 +395,10 @@ namespace DGtal
 
     /**
      *  @brief Procedure to compute the convex hull thickness given
-     *  from differents definitions (Horizontal/vertical or Euclidean
+     *  from different definitions (Horizontal/vertical or Euclidean
      *  distances). It takes as input the vertices of the hull given
      *  by the range [@a itbn, @a ite).  The procedure applies the
-     *  classic rotating caliper to recover all the anti-podal pairs.
+     *  classic rotating caliper to recover all anti-podal pairs.
      *
      * Typical use:
      * @code 
@@ -472,7 +472,7 @@ namespace DGtal
     /**
      * Computes the horizontal distance a point @c according the segment [ @a a , @a b ].
      * (i.e the horizontal projection distance of @c on [ @a a , @a b ]). 
-     * @note if the segment [@a a, @a b] is horizontal (i.e @a a [1]==@a b[1]) then an infinite value is returned. 
+     * @note if the segment [@a a, @a b] is horizontal (i.e @a a [1]==@a b[1]) then an infinite value (std::numerics<double>::max()) is returned. 
      *
      *  @param[in] a one point of the segment.
      *  @param[in] b a second point of the segment.
@@ -487,7 +487,7 @@ namespace DGtal
     /**
      * Computes the vertical distance a point @c according the segment [@a a, @a b].
      * (i.e the vertical projection distance of @c on [@a a,@a b]. 
-     * @note if the segment [@a a, @a b] is vertical (i.e @a a [0]== @a b [0]) then an infinite value is returned. 
+     * @note if the segment [@a a, @a b] is vertical (i.e @a a [0]== @a b [0]) then an infinite value (std::numerics<double>::max()) is returned. 
      *
      *  @param[in] a one point of the segment.
      *  @param[in] b a second point of the segment.
