@@ -82,7 +82,7 @@ int main( /*int argc, char** argv*/ )
 
   aBoard.clear();
   Display2DFactory::drawImage<HueShadeDouble>(aBoard, image, 0, domain.size()-1);
-  aBoard.saveSVG("image.svg");
+  aBoard.saveSVG("ArrayImageAdapter_image.svg");
 
   trace.endBlock();
 
@@ -95,7 +95,7 @@ int main( /*int argc, char** argv*/ )
 
   aBoard.clear();
   Display2DFactory::drawImage<HueShadeDouble>(aBoard, constSubImage, 0, domain.size()-1);
-  aBoard.saveSVG("subImage.svg");
+  aBoard.saveSVG("ArrayImageAdapter_subImage.svg");
 
   trace.endBlock();
 
@@ -121,7 +121,7 @@ int main( /*int argc, char** argv*/ )
 
   aBoard.clear();
   Display2DFactory::drawImage<HueShadeDouble>(aBoard, image, 0, domain.size()-1);
-  aBoard.saveSVG("subImage_modifByDomain.svg");
+  aBoard.saveSVG("ArrayImageAdapter_subImage_modifByDomain.svg");
   
   trace.endBlock();
   
@@ -136,7 +136,7 @@ int main( /*int argc, char** argv*/ )
 
   aBoard.clear();
   Display2DFactory::drawImage<HueShadeDouble>(aBoard, image, 0, domain.size()-1);
-  aBoard.saveSVG("subImage_modifByImage.svg");
+  aBoard.saveSVG("ArrayImageAdapter_subImage_modifByImage.svg");
   
   trace.endBlock();
 
@@ -166,10 +166,11 @@ int main( /*int argc, char** argv*/ )
 
   aBoard.clear();
   Display2DFactory::drawImage<HueShadeDouble>(aBoard, anIterableImage, 0, domain.size()-1);
-  aBoard.saveSVG("subImage_copyToImageSTL.svg");
+  aBoard.saveSVG("ArrayImageAdapter_subImage_copyToImageSTL.svg");
   
   trace.endBlock();
 
+  delete[] data;
   return 0;
 }
 //                                                                           //
