@@ -440,10 +440,10 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeight
   //double chThickness = DGtal::functions::Hull2D::computeHullThickness(myState.melkmanCH.begin(),
   //                                                                myState.melkmanCH.end(), 
   //                                                                 DGtal::functions::Hull2D::HorizontalVerticalThickness, 
-  //                                                                 mystate.edgePh,
-  //                                                                 mystate.edgeQh, mystate.vertexSh);
+  //                                                                 myState.edgePh,
+  //                                                                 myState.edgeQh, myState.vertexSh);
   
-  return chThickness;//thickness/normal.norm();
+  return 0.0;//chThickness;
 }
 
 
@@ -670,7 +670,7 @@ inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::PointD 
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNormal() const 
 {
-  return primitive.normal();
+  return primitive().normal();
 }
 
  
@@ -679,7 +679,7 @@ inline
 double 
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getMu() const 
 {
-  return primitive.mu();
+  return primitive().mu();
 }
 
 
