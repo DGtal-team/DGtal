@@ -274,6 +274,10 @@ in mind that each time operator() or setValue() methods are called,
 such functors are evaluated (with potential side-effects depending on
 the functors).
 
+In addition, ArrayImageAdapter allows to convert any iterable storage
+(like a C-style array or some DGtal image models), to a CImage (or CConstImage) model 
+with the possibility to restrict his  to a sub-domain
+of the definition domain.
 
 \subsection constimage  ConstImageAdapter 
 
@@ -393,6 +397,16 @@ The values associated to writing the points are adapted
  setValue() is @a img.setValue(g(aPoint), f-1(aValue)).
 
 The use is the same that for ConstImageAdapter.
+
+\subsection arrayimageadat ArrayImageAdapter
+The ArrayImageAdapter class is less generic than ImageAdapter but is able to adapt
+any storage that have a random-access iterator to a CImage model.
+It is thus usable on C-style array but also on STL container like std::vector 
+(and therefore on ImageContainerBySTLVector) and on an another ArrayImageAdapter instance.
+
+In addition, this class allows us to restrict the 
+
+
 
  \section dgtalImagesFunctions Useful classes and functions
 
