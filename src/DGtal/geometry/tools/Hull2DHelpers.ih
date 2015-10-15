@@ -347,6 +347,15 @@ namespace DGtal
         unsigned int i = 0;
         unsigned int j = 1;
         unsigned int size = aConvexHull.mySize;
+         if(size<3){
+           if(size>0){
+             antipodalEdgeP = aConvexHull[0];
+             antipodalEdgeQ = aConvexHull[size==1?0:2];
+             antipodalVertexR = aConvexHull[size==1?0:2];
+           }
+           return 0.0;
+        }
+
         if(size==1){
           antipodalVertexR = aConvexHull[0];
           antipodalEdgeP = aConvexHull[0];
