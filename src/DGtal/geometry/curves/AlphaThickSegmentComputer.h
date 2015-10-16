@@ -178,12 +178,18 @@ private:
   // ----------------------- Standard services ------------------------------
 public:
   
+  /**
+   * /. 
+   */
 
   /**
    * Constructor.
+   * @param[in] thickCompPrecision To adjust the precision of the
+   * thickness estimation used in the comparison during the segment
+   * extension (default set to 1e-6).
    */
-  AlphaThickSegmentComputer();
-
+  AlphaThickSegmentComputer(const double thickCompPrecision=1e-6);
+  
 
   /**
    * Destructor.
@@ -581,6 +587,11 @@ private:
    * The maximal thickness of the segment.
    */
   double myMaximalThickness;  
+
+  /**
+   * To adjust the precision of the thickness estimation used in the comparison during the segment extension. 
+   */
+  double myThicknessCompPrecision;
 
   /**
    * State of the actual computer
