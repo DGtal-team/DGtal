@@ -442,7 +442,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeight
   // //##### TO MERGE ####
   //double chThickness = DGtal::functions::Hull2D::computeHullThickness(myState.melkmanCH.begin(),
   //                                                                myState.melkmanCH.end(), 
-  //                                                                 DGtal::functions::Hull2D::HorizontalVerticalThickness, 
+  //                                                                 myThicknessDefinition, 
   //                                                                 myState.edgePh,
   //                                                                 myState.edgeQh, myState.vertexSh);
   // 
