@@ -162,19 +162,22 @@ bool testAlphaThickSegmentConvexHullAndBox()
   
   
   trace.beginBlock("Testing getter of segment parameters");
-  Z2i::RealPoint  normalDir =   anAlphaThickSegmentComputer4.getNormal();
-  double mu = anAlphaThickSegmentComputer4.getMu();
-  double nu = anAlphaThickSegmentComputer4.getNu();
+  pairAntipodal =  anAlphaThickSegmentComputer4.getAntipodalLeaningPoints();
+  p = pairAntipodal.first.first; 
+  q = pairAntipodal.first.second; 
+  s = pairAntipodal.second;   
   
-  trace.info() << "Segment4 params: normal: " << normalDir<< ",mu: " << mu << ", nu: "<< nu << std::endl; 
-  trace.info() << "Should be: normal  " << Z2i::RealPoint(1,-1) << ",mu: " <<  72 << ", nu: "<< 1 <<std::endl;
+  Z2i::RealPoint  vectDir =   (p-q)[0]>0? p-q: q-p;
+  
+  trace.info() << "Segment4 params: vect Dir: " << vectDir << std::endl; 
+  trace.info() << "Should be:   " << Z2i::RealPoint(1,1)  <<std::endl;
 
-  res = normalDir == Z2i::RealPoint(1,-1) && mu==72 && nu==1;
+  res = vectDir == Z2i::RealPoint(1,1);
   nbok += res ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
-  return true; //nbok == nb;
+  return nbok == nb;
 }
 
 
@@ -226,22 +229,20 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
       aBoard << *it; 
     }    
   }
-  trace.info() << "Nb contour points in the segment parallel strip (awaited 36)  = " << nbInStrip << std::endl;
+  trace.info() << "Nb contour points in the segment parallel strip (awaited 32)  = " << nbInStrip << std::endl;
 
-  nbok += nbInStrip==36;
+  nbok += nbInStrip==32;
   nb++;
   
-  nbok += anAlphaThickSegmentComputer.getNumberSegmentPoints()==35 ? 1 : 0; 
+  nbok += anAlphaThickSegmentComputer.getNumberSegmentPoints()==31 ? 1 : 0; 
   nb++;
  
-  trace.info() << "Segment size (awaited 35): " << anAlphaThickSegmentComputer.getNumberSegmentPoints() << std::endl;  
+  trace.info() << "Segment size (awaited 31): " << anAlphaThickSegmentComputer.getNumberSegmentPoints() << std::endl;  
   aBoard.saveEPS("testAlphaThickSegmentComputer_FloatingPt.eps"); 
   
-  nbok += anAlphaThickSegmentComputer.getNumberSegmentPoints()==35 ? 1 : 0; 
-  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock(); 
-  return true; //nbok == nb;
+  return nbok == nb;
 }
 
 
@@ -301,17 +302,17 @@ bool testAlphaThickSegmentFreeman()
   aBoard.setPenColor(DGtal::Color::Green);
   aBoard.fillCircle( (*(fc.begin()))[0],(*(fc.begin()))[1], 1.0) ;
       
-  trace.info() << "Nb contour points in the segment parallel strip  (awaited 766)  = " << nbInStrip << std::endl;
+  trace.info() << "Nb contour points in the segment parallel strip  (awaited 818)  = " << nbInStrip << std::endl;
 
 
-  nbok +=  nbInStrip==766 ? 1 : 0; 
+  nbok +=  nbInStrip==818 ? 1 : 0; 
   nb++;
   
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
   aBoard.saveEPS("testAlphaThickSegmentComputer_Freeman.eps"); 
   
-  return true; //nbok == nb; 
+  return nbok == nb; 
 
 }
 
@@ -363,7 +364,7 @@ bool testAlphaThickSpecialInit()
   trace.endBlock();
   aBoard.saveEPS("testSpecialInit.eps");
     
-  return true;//nbok==nb;
+  return nbok==nb;
 }
 
 
@@ -383,11 +384,13 @@ bool testMultiWidth()
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
   HueShadeColorMap<double> hueMap(0.0, 10);
   unsigned int pos=0;
+  unsigned int nbTotalAdded=0;
   for (double width=0.5; width<10; width+= 0.2, pos += 1) {
     AlphaThickSegmentComputer2D anAlphaThickSegmentComputer;
     anAlphaThickSegmentComputer.init(aContour.begin()+pos, width);
     while (anAlphaThickSegmentComputer.end()!= aContour.end() &&
            anAlphaThickSegmentComputer.extendFront()){
+      nbTotalAdded++;
     }
     aBoard << SetMode((*anAlphaThickSegmentComputer.begin()).className(), "Grid");
     
@@ -395,12 +398,128 @@ bool testMultiWidth()
                           new CustomColors( hueMap(width), DGtal::Color::None   ) );
     aBoard << anAlphaThickSegmentComputer;
   }
+  trace.info() << "Nb total points added: " << nbTotalAdded << "(awaited:  2300) " << std::endl; 
+  trace.endBlock();
   aBoard.saveEPS("testMultiWidth.eps");
   nb++;
-  nbok++;
-  return nb==nbok;
-  
+  nbok += nbTotalAdded == 2300;
+  return nb==nbok;  
 }
+
+
+
+
+// // //##### TO MERGE ####
+// /**
+//  * Test euclidean two thickness definitions
+//  **/
+// bool 
+// testThicknessDefinitions(){
+//   Board2D aBoardHVthickness;
+//   Board2D aBoardEuclthickness;
+//   typedef  AlphaThickSegmentComputer<Z2i::RealPoint> AlphaThickSegmentComputer2D;
+//   unsigned nb=0;
+//   unsigned nbok =0;
+//   trace.beginBlock ( "Testing alpha thick segment with different thickness definitions:" );
+
+//   AlphaThickSegmentComputer2D anAlphaSegmentHV(functions::Hull2D::HorizontalVerticalThickness);
+//   AlphaThickSegmentComputer2D anAlphaSegmentEucl(functions::Hull2D::EuclideanThickness);
+
+//   Z2i::Domain adom(Z2i::Point(99,45), Z2i::Point(106,55));
+//   aBoardEuclthickness << adom;
+//   aBoardHVthickness << adom;
+
+//   std::vector<Z2i::RealPoint> aVect;
+//   aVect.push_back(Z2i::RealPoint(104, 54));
+//   aVect.push_back(Z2i::RealPoint(104, 53));
+//   aVect.push_back(Z2i::RealPoint(103, 53));
+//   aVect.push_back(Z2i::RealPoint(103, 52));
+//   aVect.push_back(Z2i::RealPoint(102, 52));
+//   aVect.push_back(Z2i::RealPoint(102, 51));
+//   aVect.push_back(Z2i::RealPoint(102, 50));
+//   aVect.push_back(Z2i::RealPoint(101, 50));
+//   aVect.push_back(Z2i::RealPoint(101, 49));
+//   aVect.push_back(Z2i::RealPoint(101, 48));
+//   aVect.push_back(Z2i::RealPoint(100, 48));
+//   aVect.push_back(Z2i::RealPoint(100, 47));
+//  // Display the input curve
+//   aBoardEuclthickness << SetMode((*aVect.begin()).className(), "Grid");
+//   aBoardHVthickness << SetMode((*aVect.begin()).className(), "Grid");
+//   for (std::vector<Z2i::RealPoint>::const_iterator it = aVect.begin(); 
+//        it != aVect.end(); it++){
+//     aBoardHVthickness << *it;
+//     aBoardEuclthickness << *it;
+//     if (it+1 != aVect.end()){
+//       Z2i::Point next = *(it+1);
+//       aBoardEuclthickness.setPenColor(DGtal::Color::Gray);
+//       aBoardHVthickness.setPenColor(DGtal::Color::Gray);
+//       aBoardEuclthickness.drawLine((*it)[0], (*it)[1], next[0], next[1]);
+//       aBoardHVthickness.drawLine((*it)[0], (*it)[1], next[0], next[1]);
+//     }
+//   }
+  
+//   anAlphaSegmentEucl.init(aVect.begin(), 1.35);  
+//   while(anAlphaSegmentEucl.extendFront()){
+//   }
+//   anAlphaSegmentHV.init(aVect.begin(), 1.35);  
+//   while(anAlphaSegmentHV.extendFront()){
+//   }
+
+  
+//   trace.info() << "Euclidean thickness based segment, th= " << anAlphaSegmentEucl.getThickness() << std::endl;
+//   trace.info() << "Horizontal/Vertical thickness based segment, th= " << anAlphaSegmentHV.getThickness() << std::endl;
+
+  
+//   aBoardHVthickness  << CustomStyle( anAlphaSegmentEucl.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );  
+//   aBoardEuclthickness  << CustomStyle( anAlphaSegmentHV.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );  
+//   aBoardHVthickness << anAlphaSegmentHV;    
+//   aBoardEuclthickness << anAlphaSegmentEucl;    
+  
+//   std::vector<Z2i::RealPoint> hullHV = anAlphaSegmentHV.getConvexHull();
+//   std::vector<Z2i::RealPoint> hullEucl = anAlphaSegmentEucl.getConvexHull();
+//   aBoardEuclthickness.setLineWidth(5);
+//   aBoardHVthickness.setLineWidth(5);
+//   aBoardEuclthickness.setPenColor(DGtal::Color::Purple);
+//   aBoardHVthickness.setPenColor(DGtal::Color::Purple);
+//   for (unsigned int i = 0; i < hullEucl.size(); i++){
+//     aBoardEuclthickness.drawLine(hullEucl.at(i)[0], hullEucl.at(i)[1], 
+//                                  hullEucl.at((i+1)%hullEucl.size())[0],
+//                                  hullEucl.at((i+1)%hullEucl.size())[1]);    
+//   } 
+//   for (unsigned int i = 0; i < hullHV.size(); i++){
+//     aBoardHVthickness.drawLine(hullHV.at(i)[0], hullHV.at(i)[1], 
+//                                hullHV.at((i+1)%hullHV.size())[0],
+//                                hullHV.at((i+1)%hullHV.size())[1]);    
+//   }
+  
+//   Z2i::RealPoint pEucl = anAlphaSegmentEucl.getAntipodalLeaningPoints().first.first;
+//   Z2i::RealPoint qEucl = anAlphaSegmentEucl.getAntipodalLeaningPoints().first.second;  
+//   Z2i::RealPoint sEucl = anAlphaSegmentEucl.getAntipodalLeaningPoints().second;  
+
+//   Z2i::RealPoint pHV = anAlphaSegmentHV.getAntipodalLeaningPoints().first.first;
+//   Z2i::RealPoint qHV = anAlphaSegmentHV.getAntipodalLeaningPoints().first.second;  
+//   Z2i::RealPoint sHV = anAlphaSegmentHV.getAntipodalLeaningPoints().second;  
+//   aBoardEuclthickness.setPenColor(DGtal::Color::Red);
+//   aBoardHVthickness.setPenColor(DGtal::Color::Red);
+
+//   aBoardEuclthickness.drawCircle( pEucl[0], pEucl[1], 0.25);
+//   aBoardHVthickness.drawCircle( pHV[0], pHV[1], 0.25);
+  
+//   aBoardEuclthickness.drawCircle( qEucl[0], qEucl[1], 0.25);
+//   aBoardHVthickness.drawCircle( qHV[0], qHV[1], 0.25);
+
+//   aBoardEuclthickness.setPenColor(DGtal::Color::Green);
+//   aBoardHVthickness.setPenColor(DGtal::Color::Green);
+
+//   aBoardEuclthickness.drawCircle( sEucl[0], sEucl[1], 0.25);
+//   aBoardHVthickness.drawCircle( sHV[0], sHV[1], 0.25);
+
+//   aBoardEuclthickness.saveEPS("testAlphaThickEucl.eps");
+//   aBoardHVthickness.saveEPS("testAlphaThickHV.eps");
+  
+//   trace.endBlock();
+//   return nb==nbok;
+// }
 
 
 
@@ -417,7 +536,9 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = testAlphaThickSegmentConvexHullAndBox() && testAlphaThickSegmentComputerFloatingPointContour() && 
-    testAlphaThickSegmentFreeman() && testAlphaThickSpecialInit() && testMultiWidth();
+    testAlphaThickSegmentFreeman() && testAlphaThickSpecialInit() && testMultiWidth() ;
+  // // //##### TO MERGE ####
+  //&& testThicknessDefinitions();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
