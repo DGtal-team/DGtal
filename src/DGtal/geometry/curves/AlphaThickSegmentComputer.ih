@@ -62,8 +62,10 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::~AlphaThickSegme
 //-----------------------------------------------------------------------------
 template < typename TInputPoint, typename TConstIterator>
 inline
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::AlphaThickSegmentComputer(): myBegin(), myEnd()
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::AlphaThickSegmentComputer(const double thickCompPrecision): 
+  myBegin(), myEnd()
 { 
+  myThicknessCompPrecision = thickCompPrecision;
   myMaximalThickness = 1.0;
 }
 
@@ -73,7 +75,8 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::AlphaThickSegmen
 template < typename TInputPoint, typename TConstIterator>
 inline
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
-AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ):myMaximalThickness(other.myMaximalThickness), 
+AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ):myMaximalThickness(other.myMaximalThickness),
+                                                                     myThicknessCompPrecision(other.myThicknessCompPrecision),
                                                                      myPointContainer(other.myPointContainer),
                                                                      myState(other.myState), _state(other._state), 
                                                                      myIsStoringPoints(other.myIsStoringPoints),
@@ -91,6 +94,7 @@ operator= ( const AlphaThickSegmentComputer & other )
   if ( this != &other )
     {
       myMaximalThickness = other.myMaximalThickness;
+      myThicknessCompPrecision = other.myThicknessCompPrecision;
       myPointContainer = other.myPointContainer;
       myState = other.myState;
       _state = other._state;
@@ -418,16 +422,18 @@ inline
 double
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeightAndAntiPodal()  
 {  
-  // Todo:
-  // - compute height.
-  // - update antipodal pairs.
   
+
+  // ##### TO MERGE ####
   //double chThickness = DGtal::functions::Hull2D::computeHullThickness(myState.melkmanCH.begin(),
   //                                                                myState.melkmanCH.end(), 
   //                                                                 DGtal::functions::Hull2D::HorizontalVerticalThickness, 
   //                                                                 myState.edgePh,
   //                                                                 myState.edgeQh, myState.vertexSh);
-  
+  // 
+  // return floor(chThickness / myThicknessCompPrecision + 0.5) * myThicknessCompPrecision;
+  // ##################
+
   return 0.0;//chThickness;
 }
 
