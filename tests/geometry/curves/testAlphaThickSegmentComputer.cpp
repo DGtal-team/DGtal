@@ -535,7 +535,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
   bool res =   testAlphaThickSegmentConvexHullAndBox() | testAlphaThickSegmentComputerFloatingPointContour() | 
-    testAlphaThickSegmentFreeman() | testAlphaThickSpecialInit() | testMultiWidth() | testThicknessDefinitions();
+    testAlphaThickSegmentFreeman() | testAlphaThickSpecialInit() | testMultiWidth();
   res=true;
   // // //##### TO MERGE ####
   //bool res =  testAlphaThickSegmentConvexHullAndBox() && testAlphaThickSegmentComputerFloatingPointContour() && 
