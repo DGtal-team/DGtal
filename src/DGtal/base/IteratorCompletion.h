@@ -51,8 +51,8 @@ namespace DGtal
    * @brief Aim: Traits that must be specialized for each IteratorCompletion derived class.
    *
    * This traits must shown:
-   * - a typedef Iterator corresponding to the derived class mutable iterator.
-   * - a typedef ConstIterator corresponding to the derived class constant iterator.
+   * - a typedef Iterator corresponding to the derived class mutable random-access iterator.
+   * - a typedef ConstIterator corresponding to the derived class constant random-access iterator.
    * - a class DistanceFunctor, constructible from a pointer to the derived class and
    *   that behaves like a distance functor from the begin() iterator to a given point.
    *   (see SimpleRandomAccessRangeFromPoint and SimpleRandomAccessConstRangeFromPoint)
@@ -69,19 +69,19 @@ namespace DGtal
    * @brief Aim: Class that uses CRTP to add reverse iterators and ranges to a derived class.
    *
    * Description of template class 'IteratorCompletionTraits' <p>
-   * This class adds new iterators to a given class if it provides a minimal set of iterators.
+   * This class adds new iterators to a given class if it provides a minimal interface for random-access iterators related to points.
    *
    * More precisely, it provides:
-   * - reverse iterators if the class provides a bidirectional iterator,
-   * - ranges if the class provides a random access iterator and a distance functor from a point,
+   * - reverse mutable and constant iterators,
+   * - mutable and constant ranges,
    * - constant normal and reverse iterators from C++11 if the class provides cbegin and cend methods.
    *
-   * Each derived class of IteratorCompletion must specialized IteratorCompletionTraits in order to provide
-   * enough informations on his iterators.
+   * Each derived class of IteratorCompletion must specialize IteratorCompletionTraits in order to provide
+   * enough informations on his iterators, especially a distance functor between a given point and the begin iterator.
    *
    * @tparam TDerived Type of the derived class (CRTP).
    *
-   * The following snippets illustrate how to use it to easily made a concepts::CImage model from a C-style array
+   * The following snippets illustrate how to use it to easily build a concepts::CImage model from a C-style array
    * (better use ArrayImageAdapter for that purpose).
    *
    * After common includes:
