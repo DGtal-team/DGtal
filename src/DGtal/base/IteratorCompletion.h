@@ -89,7 +89,7 @@ namespace DGtal
    * we start with the head of our class, including typedefs, constructor and destructor:
    * @snippet exampleIteratorCompletion.cpp MyImageHeader
    * As you can see, the MyImage class inherits from IteratorCompletion templated with his own type (CRTP).
-   * The public inheritance is necessary is order to make visible the methods and typedef provided by IteratorCompletion.
+   * The public inheritance is necessary is order to make visible the methods and typedefs provided by IteratorCompletion.
    * 
    * Then, we add the basic interface needed for images:
    * @snippet exampleIteratorCompletion.cpp CImageBasicInterface
