@@ -321,9 +321,9 @@ bool testConvexHullCompThickness()
   double awaitedThHV = DGtal::functions::Hull2D::getThicknessAntipodalPair(Point(0,0), Point(11,1), Point(2,6), DGtal::functions::Hull2D::HorizontalVerticalThickness );
   double awaitedThE = DGtal::functions::Hull2D::getThicknessAntipodalPair(Point(0,0), Point(11,1), Point(2,6), DGtal::functions::Hull2D::EuclideanThickness );
   trace.info() << "Thickness HV = " << thicknessHV << std::endl;
-  trace.info() << "Thickness HV awaited = " << awaitedThHV << std::endl;
+  trace.info() << "Expected Thickness HV  = " << awaitedThHV << std::endl;
   trace.info() << "Thickness Euclidean = " << thicknessE << std::endl;
-  trace.info() << "Thickness Euclidean awaited = " << awaitedThE << std::endl;
+  trace.info() << "Expected Euclidean Thickness  = " << awaitedThE << std::endl;
   aBoard.saveEPS("testConvexHull2D_Thickness.eps");
   nbok += thicknessHV == awaitedThHV && thicknessE == awaitedThE && thicknessHVb == thicknessHV;
   nb++;
