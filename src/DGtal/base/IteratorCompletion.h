@@ -133,7 +133,7 @@ namespace DGtal
        */
       ReverseIterator rbegin()
         {
-          return ReverseIterator{ static_cast<TDerived*>(this)->end() };
+          return ReverseIterator( static_cast<TDerived*>(this)->end() );
         }
 
       /**
@@ -143,7 +143,7 @@ namespace DGtal
       inline
       ConstReverseIterator rbegin() const
         {
-          return ConstReverseIterator{ static_cast<TDerived*>(this)->end() };
+          return ConstReverseIterator( static_cast<TDerived*>(this)->end() );
         }
 
       /**
@@ -153,7 +153,7 @@ namespace DGtal
       inline
       ConstReverseIterator crbegin() const
         {
-          return ConstReverseIterator{ static_cast<TDerived*>(this)->cend() };
+          return ConstReverseIterator( static_cast<TDerived*>(this)->cend() );
         }
 
       /**
@@ -163,7 +163,7 @@ namespace DGtal
       inline
       ReverseIterator rend()
         {
-          return ReverseIterator{ static_cast<TDerived*>(this)->begin() };
+          return ReverseIterator( static_cast<TDerived*>(this)->begin() );
         }
 
       /**
@@ -173,7 +173,7 @@ namespace DGtal
       inline
       ConstReverseIterator rend() const
         {
-          return ConstReverseIterator{ static_cast<TDerived*>(this)->begin() };
+          return ConstReverseIterator( static_cast<TDerived*>(this)->begin() );
         }
 
       /**
@@ -183,7 +183,7 @@ namespace DGtal
       inline
       ConstReverseIterator crend() const
         {
-          return ConstReverseIterator{ static_cast<TDerived*>(this)->cbegin() };
+          return ConstReverseIterator( static_cast<TDerived*>(this)->cbegin() );
         }
 
       /**
@@ -195,11 +195,11 @@ namespace DGtal
       Range range()
         {
           TDerived* const derived = static_cast<TDerived*>(this);
-          return {
+          return Range(
               derived->begin(),
               derived->end(),
               typename IteratorCompletionTraits<TDerived>::DistanceFunctor( derived )
-          };
+          );
         }
 
       /**
@@ -211,11 +211,11 @@ namespace DGtal
       ConstRange constRange() const
         {
           TDerived const* const derived = static_cast<TDerived const*>(this);
-          return {
+          return ConstRange(
               derived->begin(),
               derived->end(),
               typename IteratorCompletionTraits<TDerived>::DistanceFunctor( derived )
-          };
+          );
         }
 
     protected:
