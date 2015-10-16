@@ -142,9 +142,11 @@ public:
    * The container type of Input Point
    **/
   typedef std::vector< InputPoint > InputPointContainer;
-  
   typedef typename InputPointContainer::size_type Size;
   typedef typename InputPointContainer::const_iterator ContainerConstIterator;
+  // //##### TO MERGE ####
+  // typedef typename DGtal::functions::Hull2D::ThicknessDefinition ThicknessDef;
+  // //###################
   typedef typename InputPointContainer::iterator Iterator;
   typedef TConstIterator ConstIterator;
   typedef ParallelStrip< SpaceND< 2,  DGtal::int32_t > ,true,true> Primitive;  
@@ -172,23 +174,34 @@ private:
     InputPoint vertexSh; /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
     double actualThickness; /*the actual thickness of the current segment*/
   };
-
     
   
   // ----------------------- Standard services ------------------------------
 public:
   
-  /**
-   * /. 
-   */
+
+  // //##### TO MERGE ####
+  // /**
+  //  * Constructor.
+  //  * @param[in] thicknessDefinition the definition of the thickness used in the segment extension (can be DGtal::functions::Hull2D::HorizontalVerticalThickness (default) or DGtal::functions::Hull2D::EuclideanThickness). 
+  //  * @param[in] thickCompPrecision to adjust the precision of the
+  //  * thickness estimation used in the comparison during the segment
+  //  * extension (default set to 1e-6).
+  //  */
+  // AlphaThickSegmentComputer(const ThicknessDef &thicknessDefinition = ThicknessDef::HorizontalVerticalThickness, 
+  //                           const double thickCompPrecision=1e-6);
+  // //##### TO MERGE ####
+  
+
 
   /**
    * Constructor.
-   * @param[in] thickCompPrecision To adjust the precision of the
+   * @param[in] thickCompPrecision to adjust the precision of the
    * thickness estimation used in the comparison during the segment
    * extension (default set to 1e-6).
    */
   AlphaThickSegmentComputer(const double thickCompPrecision=1e-6);
+
   
 
   /**
@@ -593,6 +606,13 @@ private:
    */
   double myThicknessCompPrecision;
 
+  //   // //##### TO MERGE ####
+  // /**
+  //  * To set a specific thickness definition.
+  //  */
+  // ThicknessDef myThicknessDefinition;
+
+  
   /**
    * State of the actual computer
    **/ 
@@ -602,7 +622,6 @@ private:
    * Previous saved computer state
    **/   
   mutable State _state;
-
   
   bool myIsStoringPoints;
   
@@ -611,6 +630,8 @@ private:
    **/
   unsigned int myNbPointsAddedFromIterators;
 
+  
+  
 
     // ------------------------- Hidden services ------------------------------
 protected:
