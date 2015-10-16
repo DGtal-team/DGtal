@@ -208,7 +208,7 @@ int main()
 
   // Filling
   Value i = 0;
-  for ( typename My2DImage::Iterator it = image.begin(), it_end = image.end() ; it != it_end; ++it )
+  for ( My2DImage::Iterator it = image.begin(), it_end = image.end() ; it != it_end; ++it )
     {
       *it = ++i;
     }
@@ -217,7 +217,7 @@ int main()
   image.setValue( Point(1,1), -1 );
 
   // Forward reading using range
-  typename My2DImage::ConstRange range = image.constRange();
+  My2DImage::ConstRange range = image.constRange();
   copy( range.begin(), range.end(), ostream_iterator<Value>( cout, " " ) );
   cout << endl;
 
