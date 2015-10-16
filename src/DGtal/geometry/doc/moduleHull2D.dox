@@ -192,19 +192,19 @@ second one is given from the normal projection on the edge of the same
 antipodal pairs. The two definitions are illustrated on the following figures:
 
 
-@image html exampleConvexHullHV.png  "Example of the definitiion of horizontal/vertical thickness defined from the convexhull antipodal pair ((P,Q), S)."
-@image latex MelkmanHowTo.png "Example of the definitiion of horizontal/vertical thickness defined from the convexhull antipodal pair ((P,Q), S)."
+@image html exampleConvexHullHV.png  "Example of the definitiion of horizontal/vertical thickness defined from the convex hull antipodal pair ((P,Q), S)."
+@image latex MelkmanHowTo.png "Example of the definitiion of horizontal/vertical thickness defined from the convex hull antipodal pair ((P,Q), S)."
 
-@image html exampleConvexHullEucl.png  "Example of the definitiion of Euclidean thickness defined from the convexhull antipodal pair ((P,Q), S)."
-@image latex MelkmanHowTo.png "Example of the definitiion of horizontal/vertical thickness defined from the convexhull antipodal pair ((P,Q), S)"
+@image html exampleConvexHullEucl.png  "Example of the definitiion of Euclidean thickness defined from the convex hull antipodal pair ((P,Q), S)."
+@image latex MelkmanHowTo.png "Example of the definitiion of horizontal/vertical thickness defined from the convex hull antipodal pair ((P,Q), S)"
 
 
-To compute the thickness of a convexhull you have simply to call the computeHullThickness procedure:
+To compute the thickness of a convex hull you have simply to call the computeHullThickness procedure:
 
 @snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Caliper-computeBasic
 
 
-To recover the antipodal pairs presenting the minimal thickness you
+To recover the antipodal pairs for which the thickness is minimal you
 can also use the same method with an antipodal pair:
 
 @snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Caliper-computeAnti
