@@ -7,6 +7,16 @@
    the width (vertical/horizontal or Euclidean) of a convex hull.
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
+## Changes
+
+## Bug Fixes
+
+- *Configuration/General*
+ - catch unit test framework upgraded to the develop version. (David
+ Coeurjolly, [#10XX](https://github.com/DGtal-team/DGtal/pull/1052))
+
+
+
 # DGtal 0.9
 
 ## New Features / Critical Changes
