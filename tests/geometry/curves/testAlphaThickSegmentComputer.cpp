@@ -80,14 +80,20 @@ bool testAlphaThickSegmentConvexHullAndBox()
 
     
   // Display convexhull
-  std::vector<Z2i::Point> aVect = anAlphaThickSegmentComputer.getConvexHull();
   aBoard.setLineWidth(5);
   aBoard.setPenColor(DGtal::Color::Purple);
-  for (unsigned int i = 0; i < aVect.size(); i++){
-    aBoard.drawLine(aVect.at(i)[0], aVect.at(i)[1], 
-                    aVect.at((i+1)%aVect.size())[0],
-                    aVect.at((i+1)%aVect.size())[1]);    
-  } 
+  for (AlphaThickSegmentComputer2D::ConvexhullConstIterator it = anAlphaThickSegmentComputer.convexhullBegin();
+       it != anAlphaThickSegmentComputer.convexhullEnd(); it++){
+    if ((it+1) != anAlphaThickSegmentComputer.convexhullEnd()){
+      aBoard.drawLine((*it)[0], (*it)[1], 
+                      (*(it+1))[0],
+                      (*(it+1))[1]);    
+    }else{
+      aBoard.drawLine((*it)[0], (*it)[1], 
+                      (*(anAlphaThickSegmentComputer.convexhullBegin()))[0],
+                      (*(anAlphaThickSegmentComputer.convexhullBegin()))[1]);
+    }
+  }
 
   
   // Display boundingbox

@@ -213,6 +213,28 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::containerEnd() c
 
 
 
+//-----------------------------------------------------------------------------
+template < typename TInputPoint, typename TConstIterator>
+inline
+typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ConvexhullConstIterator
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::convexhullBegin() const 
+{
+  return myState.melkmanCH.begin();
+}
+
+
+
+//-----------------------------------------------------------------------------
+template < typename TInputPoint, typename TConstIterator>
+inline
+typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ConvexhullConstIterator
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::convexhullEnd() const 
+{
+  return myState.melkmanCH.end();
+}
+
+
+
 
 //-----------------------------------------------------------------------------
 template < typename TInputPoint, typename TConstIterator>
@@ -433,8 +455,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeight
   return floor(chThickness / myThicknessCompPrecision + 0.5) * myThicknessCompPrecision;
   
 }
-
-
 
 
 
