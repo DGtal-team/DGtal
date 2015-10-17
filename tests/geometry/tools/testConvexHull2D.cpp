@@ -37,10 +37,14 @@
 #include "DGtal/geometry/tools/PolarPointComparatorBy2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 #include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
+#include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing the functions devoted to convex hull computations.
@@ -89,6 +93,7 @@ bool circularlyEqual(const ForwardIterator& first1, const ForwardIterator& last1
 
     }
 }
+
 
 /**
  * Testing functions that computes the convex hull of a range of points
@@ -261,6 +266,70 @@ bool testConvexHull2D()
   return nbok == nb;
 }
 
+
+/**
+ * Testing functions that computes the convex hull thickness.
+ * @return 'true' if passed. 
+ */
+bool testConvexHullCompThickness()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  typedef PointVector<2,DGtal::int32_t> Point;
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor;  
+  
+  trace.beginBlock ( "One simple test..." );
+  DGtal::MelkmanConvexHull<Point, Functor> ch; 
+  ch.add(Point(0,0));
+  ch.add(Point(11,1));
+  ch.add(Point(12,3));
+  ch.add(Point(8,3));
+  ch.add(Point(4,5));
+  ch.add(Point(2,6));
+  ch.add(Point(1,4));
+
+  Point antipodalP, antipodalQ, antipodalS;
+  double thicknessE = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+                                                                     DGtal::functions::Hull2D::EuclideanThickness, 
+                                                                     antipodalP,
+                                                                     antipodalQ,
+                                                                     antipodalS);
+  double thicknessHV = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+                                                                      DGtal::functions::Hull2D::HorizontalVerticalThickness,
+                                                                      antipodalP, antipodalQ, antipodalS);
+  double thicknessHVb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+                                            DGtal::functions::Hull2D::HorizontalVerticalThickness);
+  
+  
+  Board2D aBoard;
+  for(DGtal::MelkmanConvexHull<Point, Functor>::ConstIterator it = ch.begin(); it != ch.end(); it++){
+    if(it != ch.end()-1)
+      aBoard.drawLine((*it)[0], (*it)[1], (*(it+1))[0], (*(it+1))[1]);
+    else{
+      aBoard.drawLine((*it)[0], (*it)[1], (*(ch.begin()))[0], (*(ch.begin()))[1]);
+    }
+    aBoard << *it;
+  }
+  
+  aBoard.setPenColor(DGtal::Color::Red);
+  aBoard.drawCircle( antipodalS[0], antipodalS[1], 1.0) ;
+  aBoard.setPenColor(DGtal::Color::Blue);
+  aBoard.drawCircle(antipodalP[0], antipodalP[1], 1.0);
+  aBoard.drawCircle(antipodalQ[0], antipodalQ[1], 1.0);
+  
+  aBoard.drawLine(antipodalP[0], antipodalP[1], antipodalQ[0], antipodalQ[1]);
+  double awaitedThHV = DGtal::functions::Hull2D::getThicknessAntipodalPair(Point(0,0), Point(11,1), Point(2,6), DGtal::functions::Hull2D::HorizontalVerticalThickness );
+  double awaitedThE = DGtal::functions::Hull2D::getThicknessAntipodalPair(Point(0,0), Point(11,1), Point(2,6), DGtal::functions::Hull2D::EuclideanThickness );
+  trace.info() << "Thickness HV = " << thicknessHV << std::endl;
+  trace.info() << "Expected Thickness HV  = " << awaitedThHV << std::endl;
+  trace.info() << "Thickness Euclidean = " << thicknessE << std::endl;
+  trace.info() << "Expected Euclidean Thickness  = " << awaitedThE << std::endl;
+  aBoard.saveEPS("testConvexHull2D_Thickness.eps");
+  nbok += thicknessHV == awaitedThHV && thicknessE == awaitedThE && thicknessHVb == thicknessHV;
+  nb++;
+  return nb==nbok;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -272,7 +341,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testConvexHull2D();
+  bool res = testConvexHull2D() &&testConvexHullCompThickness();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
