@@ -60,21 +60,20 @@ int main(  )
   aBoard << fc;
 
   //construction of an AlphaThickSegmentComputer2D from the freemanchain iterator
-  AlphaThickSegmentComputer2D anAlphaSegment, anAlphaSegment2, anAlphaSegment3;
-  anAlphaSegment.init(fc.begin(), 15);                           
+  AlphaThickSegmentComputer2D anAlphaSegment(15), anAlphaSegment2(5), anAlphaSegment3(2);
+  anAlphaSegment.init(fc.begin());                           
   while (anAlphaSegment.end() != fc.end() && 
          anAlphaSegment.extendFront()) {
   }
   aBoard << anAlphaSegment;  
   
-  anAlphaSegment2.init(fc.begin(), 5);
+  anAlphaSegment2.init(fc.begin());
   while (anAlphaSegment2.end() != fc.end() && anAlphaSegment2.extendFront()) {
   }
   aBoard  << CustomStyle( anAlphaSegment2.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );  
   aBoard << anAlphaSegment2;
   
   FCConstIterator fcIt = fc.begin();
-  anAlphaSegment3.init(2);
   while (anAlphaSegment3.extendFront(*fcIt)) {
     fcIt++;
   }

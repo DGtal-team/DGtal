@@ -60,13 +60,15 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::~AlphaThickSegme
 //-----------------------------------------------------------------------------
 template < typename TInputPoint, typename TConstIterator>
 inline
- DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::AlphaThickSegmentComputer(const ThicknessDef &thicknessDefinition,
-                                                                                           const double thickCompPrecision): 
+DGtal::AlphaThickSegmentComputer< TInputPoint, 
+                                  TConstIterator>::AlphaThickSegmentComputer(const double maximalThickness,
+                                                                             const ThicknessDef &thicknessDefinition,
+                                                                             const double thickCompPrecision): 
   myBegin(), myEnd()
 { 
   myThicknessDefinition = thicknessDefinition;
   myThicknessCompPrecision = thickCompPrecision;
-  myMaximalThickness = 1.0;
+  myMaximalThickness = maximalThickness;
 }
 
 
@@ -262,6 +264,7 @@ init(const double aThickness)
   myIsStoringPoints = true;
   myMaximalThickness = aThickness;
   myState.actualThickness = 0.0;
+  myState.melkmanCH =  DGtal::MelkmanConvexHull<InputPoint, Functor>();
 }
 
 //-----------------------------------------------------------------------------
@@ -269,14 +272,14 @@ template < typename TInputPoint, typename TConstIterator>
 inline
 void 
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
-init(const ConstIterator &it, double aThickness)
+init(const ConstIterator &it)
 {
   myNbPointsAddedFromIterators = 0;
   myIsStoringPoints = false;
   myBegin = it;
   myEnd = it;
-  myMaximalThickness = aThickness;
   myState.actualThickness = 0.0;
+  myState.melkmanCH =  DGtal::MelkmanConvexHull<InputPoint, Functor>();
 }
 
 

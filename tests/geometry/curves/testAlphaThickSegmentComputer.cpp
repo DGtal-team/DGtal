@@ -59,14 +59,14 @@ bool testAlphaThickSegmentConvexHullAndBox()
   std::string fileContour = testPath + "samples/contourNoiseSample.sdp";
   aContour = PointListReader<Z2i::Point>::getPointsFromFile(fileContour);
   bool res = true;
-  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer;
-  anAlphaThickSegmentComputer.init(aContour.begin(),5);
-  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer2;
-  anAlphaThickSegmentComputer2.init(aContour.begin(), 10);
-  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer3;
-  anAlphaThickSegmentComputer3.init(aContour.begin(), 2);
-  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer4;
-  anAlphaThickSegmentComputer4.init(aContour.begin(), 1);
+  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer(5);
+  anAlphaThickSegmentComputer.init(aContour.begin());
+  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer2(10);
+  anAlphaThickSegmentComputer2.init(aContour.begin());
+  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer3(2);
+  anAlphaThickSegmentComputer3.init(aContour.begin());
+  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer4(1);
+  anAlphaThickSegmentComputer4.init(aContour.begin());
   
   
   while (anAlphaThickSegmentComputer.end() != aContour.end() && 
@@ -204,8 +204,8 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
   std::string fileContour = testPath + "samples/contourNoiseSample2.sdp";
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
   
-  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer;
-  anAlphaThickSegmentComputer.init(aContour.begin()+10, 2);
+  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer(2);
+  anAlphaThickSegmentComputer.init(aContour.begin()+10);
   
   while (anAlphaThickSegmentComputer.end()!= aContour.end() && 
          anAlphaThickSegmentComputer.extendFront()){
@@ -280,8 +280,8 @@ bool testAlphaThickSegmentFreeman()
   aBoard << fc;
   
   
-  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer;
-  anAlphaThickSegmentComputer.init(fc.begin(),  70.0);
+  AlphaThickSegmentComputer2D anAlphaThickSegmentComputer(70.0);
+  anAlphaThickSegmentComputer.init(fc.begin());
   while (anAlphaThickSegmentComputer.end() != fc.end() && 
          anAlphaThickSegmentComputer.extendFront()){
   }
@@ -334,13 +334,13 @@ bool testAlphaThickSpecialInit()
   typedef  AlphaThickSegmentComputer< Z2i::RealPoint> AlphaThickSegmentComputer2D;
   trace.beginBlock ( "Test special cases on various initialisations ..." );
   
-  AlphaThickSegmentComputer2D segment;
+  AlphaThickSegmentComputer2D segment(1.3);
   std::vector<Z2i::RealPoint> aContour;
   aContour.push_back(Z2i::RealPoint(29,20));
   aContour.push_back(Z2i::RealPoint(30,20.01 ));
   aContour.push_back(Z2i::RealPoint(31, 21));
   aContour.push_back(Z2i::RealPoint(32,20));
-  segment.init(aContour.begin(), 1.3);
+  segment.init(aContour.begin());
   segment.extendFront();
   while (segment.end()!= aContour.end() &&
          segment.extendFront()){
@@ -392,8 +392,8 @@ bool testMultiWidth()
   unsigned int pos=0;
   unsigned int nbTotalAdded=0;
   for (double width=0.5; width<10; width+= 0.2, pos += 1) {
-    AlphaThickSegmentComputer2D anAlphaThickSegmentComputer;
-    anAlphaThickSegmentComputer.init(aContour.begin()+pos, width);
+    AlphaThickSegmentComputer2D anAlphaThickSegmentComputer(width);
+    anAlphaThickSegmentComputer.init(aContour.begin()+pos);
     while (anAlphaThickSegmentComputer.end()!= aContour.end() &&
            anAlphaThickSegmentComputer.extendFront()){
       nbTotalAdded++;
@@ -428,8 +428,8 @@ testThicknessDefinitions(){
   unsigned nbok =0;
   trace.beginBlock ( "Testing alpha thick segment with different thickness definitions:" );
 
-  AlphaThickSegmentComputer2D anAlphaSegmentHV(functions::Hull2D::HorizontalVerticalThickness);
-  AlphaThickSegmentComputer2D anAlphaSegmentEucl(functions::Hull2D::EuclideanThickness);
+  AlphaThickSegmentComputer2D anAlphaSegmentHV(1.35, functions::Hull2D::HorizontalVerticalThickness);
+  AlphaThickSegmentComputer2D anAlphaSegmentEucl(1.35, functions::Hull2D::EuclideanThickness);
 
   Z2i::Domain adom(Z2i::Point(99,45), Z2i::Point(106,55));
   aBoardEuclthickness << adom;
@@ -464,10 +464,10 @@ testThicknessDefinitions(){
     }
   }
   
-  anAlphaSegmentEucl.init(aVect.begin(), 1.35);  
+  anAlphaSegmentEucl.init(aVect.begin());  
   while(anAlphaSegmentEucl.extendFront()){
   }
-  anAlphaSegmentHV.init(aVect.begin(), 1.35);  
+  anAlphaSegmentHV.init(aVect.begin());  
   while(anAlphaSegmentHV.extendFront()){
   }
 
