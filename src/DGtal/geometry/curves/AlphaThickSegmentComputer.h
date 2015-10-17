@@ -159,7 +159,7 @@ public:
   typedef AlphaThickSegmentComputer<InputPoint, ConstIterator> Self; 
   typedef AlphaThickSegmentComputer<InputPoint, ReverseIterator<ConstIterator> > Reverse; 
   typedef DGtal::InHalfPlaneBySimple3x3Matrix<InputPoint, typename InputPoint::Component> Functor;  
-
+  typedef typename  DGtal::MelkmanConvexHull<InputPoint, Functor>::ConstIterator ConvexhullConstIterator;
   
   // ----------------------- internal types --------------------------------------
 
@@ -192,7 +192,6 @@ public:
   
   
   
-
   /**
    * Destructor.
    */
@@ -296,6 +295,18 @@ public:
    */
   ContainerConstIterator containerEnd() const;
 
+  /**
+   * @return a const iterator pointing on the first point of the
+   * convex hull associated to the current alpha thick segment.
+   */
+  ConvexhullConstIterator convexhullBegin() const;
+
+  
+  /**
+   * @return a const iterator pointing after the last point of the
+   * convex hull associated to the current alpha thick segment.
+   */
+  ConvexhullConstIterator convexhullEnd() const;
 
   /**
    * @return a const iterator pointing on the first point of the
@@ -449,7 +460,7 @@ public:
    * (the normal is oriented toward the segment by considering the
    * edge PQ of the convexhull antipodal pair).
    **/
-  
+ 
   PointD getNormal() const;
 
 
@@ -634,25 +645,16 @@ protected:
   
 
   /**
-   *  Updates the main height of the melkman convex
-   *  set and update the antipodal pairs.
+   *  Updates the main height of the melkman convex hull
+   *   and update the antipodal pairs.
    * 
-   * @return the thickness of the segment. 
+   * @return the thickness of the segment (thickness defined by
+   * default as the vertical/horizontal width (see @ref
+   * moduleAlphaThickSegmentReco for more details).
    **/
   double updateMainHeightAndAntiPodal();   
   
-  
-  /**
-   * Tests if the point \a aPoint2 is Left|On|Right of an infinite line (defined from two points \a  aPoint0 and \a aPoint1).
-   *
-   * @param[in] aPoint0 the first point defining the line.
-   * @param[in] aPoint1 the second point defining the line.
-   * @param[in] aPoint2 the point to be tested.
-   */
-  typename TInputPoint::Component melkmanIsLeft(const InputPoint &aPoint0, const InputPoint &aPoint1, const InputPoint &aPoint2) const;
-  
-
-
+ 
   
   /**
    * Computes the projection of a Point \a ptC on the real line defined by the two points (\a ptA, \a ptB), and
