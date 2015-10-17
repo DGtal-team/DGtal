@@ -182,12 +182,14 @@ public:
 
   /**
    * Constructor.
+   * @param[in] maximalThickness the maximal thickness of the segment (default 1).
    * @param[in] thicknessDefinition the definition of the thickness used in the segment extension (can be DGtal::functions::Hull2D::HorizontalVerticalThickness (default) or DGtal::functions::Hull2D::EuclideanThickness). 
    * @param[in] thickCompPrecision to adjust the precision of the
    * thickness estimation used in the comparison during the segment
    * extension (default set to 1e-6).
    */
-  AlphaThickSegmentComputer(const ThicknessDef &thicknessDefinition = functions::Hull2D::HorizontalVerticalThickness, 
+  AlphaThickSegmentComputer(const double maximalThickness = 1.0, 
+                            const ThicknessDef &thicknessDefinition = functions::Hull2D::HorizontalVerticalThickness, 
                             const double thickCompPrecision=1e-6);
   
   
@@ -343,9 +345,8 @@ public:
    * the width of the ParallelStrip primitive (set to 1 by default).
    *
    * @param[in] it an iterator on input points.
-   * @param[in] aThickness the thickness of the alpha thick segment (default 1.0).
    */  
-  void init(const ConstIterator &it, double aThickness=1.0);    
+  void init(const ConstIterator &it);    
   
   
   /**
