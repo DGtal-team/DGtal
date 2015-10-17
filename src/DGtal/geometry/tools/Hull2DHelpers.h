@@ -21,7 +21,9 @@
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2013/12/02
+ * @author Bertrand Kerautret (\c bertrand.kerautret@univ-lorraine.fr)
+ * LORIA (CNRS, UMR 7503), University of Lorraine, France
+ * @date 2015/12/10
  *
  * Header file for module Hull2DHelpers.cpp
  *
@@ -70,6 +72,10 @@ namespace DGtal
    */
   namespace Hull2D
   {
+
+    
+    /// The 2 thickness definitions.
+    enum ThicknessDefinition {HorizontalVerticalThickness, EuclideanThickness};
 
 
     /**
@@ -351,6 +357,162 @@ namespace DGtal
 				   OutputIterator res, 
 				   const Predicate& aPredicate ); 
 
+
+    /**
+     *  @brief Procedure to compute the convex hull thickness given
+     *  from different definitions (Horizontal/vertical or Euclidean
+     *  distances). It takes as input the vertices of the hull given
+     *  by the range [@a itbn, @a ite).  The procedure applies the
+     *  classic rotating caliper to recover all anti-podal pairs.
+     *
+     * Typical use:
+     * @code 
+     *  typedef PointVector<2,DGtal::int32_t> Point;
+     *  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor;  
+     *  DGtal::MelkmanConvexHull<Point, Functor> ch; 
+     *  ch.add(Point(0,0));
+     *  ch.add(Point(11,1));
+     *  ch.add(Point(12,3));
+     *  ch.add(Point(8,3));
+     *  ch.add(Point(4,5));
+     *  ch.add(Point(2,6));
+     *  ch.add(Point(1,4));
+     *  double th = computeHullThickness(ch.begin(), ch.end(), 
+     *                                   DGtal::functions::Hull2D::EuclideanThickness);
+     * @endcode  
+     * @param[in] itb begin iterator on the convex hull points.
+     * @param[in] ite end iterator on the convex hull points.
+     * @param[in] def definition of the thickness used in the estimation (i.e HorizontalVerticalThickness or EuclideanThickness)
+     *
+     * @note If the convex hull contains 0, 1 or 2 points the thickness of 0 is returned.
+     * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
+     **/
+    template <typename ForwardIterator >
+    double computeHullThickness(const ForwardIterator& itb, 
+                                const ForwardIterator& ite,
+                                const ThicknessDefinition& def);
+
+
+    /**
+     *  @brief Procedure to compute the convex hull thickness given
+     *  from different definitions (Horizontal/vertical or Euclidean
+     *  distances). It takes as input the vertices of the hull given
+     *  by the range [@a itbn, @a ite).  The procedure applies the
+     *  classic rotating caliper to recover all anti-podal pairs.
+     *
+     * Typical use:
+     * @code 
+     *  typedef PointVector<2,DGtal::int32_t> Point;
+     *  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor;  
+     *  DGtal::MelkmanConvexHull<Point, Functor> ch; 
+     *  ch.add(Point(0,0));
+     *  ch.add(Point(11,1));
+     *  ch.add(Point(12,3));
+     *  ch.add(Point(8,3));
+     *  ch.add(Point(4,5));
+     *  ch.add(Point(2,6));
+     *  ch.add(Point(1,4));
+     *  Point p, q, s;
+     *  double th = computeHullThickness(ch.begin(), ch.end(), 
+     *                                   DGtal::functions::Hull2D::EuclideanThickness, p, q, s);
+     * @endcode       
+     * @param[in] itb begin iterator on the convex hull points.
+     * @param[in] ite end iterator on the convex hull points.
+     * @param[in] def definition of the thickness used in the estimation (i.e HorizontalVerticalThickness or EuclideanThickness)
+     * @param[out] antipodalEdgeP one point of the antipodal edge associated to the minimal value of convex hull thickness. 
+     * @param[out] antipodalEdgeQ one point of the antipodal edge associated to the minimal value of convex hull thickness. 
+     * @param[out] antipodalVertexR the vertex of the antipodal pair associated to the minimal value of convex hull thickness. 
+     * @note If the convex hull contains 0, 1 or 2 points the thickness of 0 is returned and the antipodal points are updated with the first points (if they exist).
+     * @warning The convex hull should be oriented in counter clockwise else it will return wrong result.
+     **/
+    template <typename ForwardIterator, 
+              typename TInputPoint >
+    double computeHullThickness(const ForwardIterator& itb, 
+                                const ForwardIterator& ite,
+                                const ThicknessDefinition& def,
+                                TInputPoint& antipodalEdgeP,
+                                TInputPoint& antipodalEdgeQ,
+                                TInputPoint& antipodalVertexR);
+
+
+    /**
+     * Computes the angle between the line (@a a,@a b) and (@a c,@a d)
+     * @param[in] a one of point defining the first line. 
+     * @param[in] b a second point defining the first line. 
+     * @param[in] c a third point defining the second line. 
+     * @param[in] d a third point defining the second line. 
+     
+     **/
+    template<typename TInputPoint>
+    inline
+    double getAngle(const TInputPoint& a, const TInputPoint& b,const TInputPoint& c,const  TInputPoint& d);
+    
+    /**
+     * Computes the thickness of an anti podal pair (represented by
+     * the segment [ @a p , @a q ] and vertex @a r) according to the given
+     * distance @def definition.  
+     *
+     * If the distance definition is @HorizontalVerticalThickness, it
+     * returns the minimal distance between the vertical/horizontal
+     * projection of @r on ( @a p , @a q ).
+     *
+     * If the distance definition is @EuclideanThickness, it returns
+     * the distance between r and its projection on the line ( @a p ,@a q ).
+     *
+     * @param[in] p the first point of the edge anti podal pair.
+     * @param[in] q the second point of the edge anti podal pair.
+     * @param[in] r the vertex of the anti podal pair.
+     * @param[in] def definition of the thickness used in the estimation (i.e HorizontalVerticalThickness or EuclideanThickness).
+     *
+     **/
+    template<typename TInputPoint>
+    double getThicknessAntipodalPair(const TInputPoint& p, const TInputPoint& q, 
+                                     const TInputPoint& r, const ThicknessDefinition& def);
+
+    /**
+     * Computes the horizontal distance a point @c according to the segment [ @a a , @a b ].
+     * (i.e the horizontal projection distance of @c on [ @a a , @a b ]). 
+     * @note if the segment [@a a, @a b] is horizontal (i.e @a a [1]==@a b[1]) then an infinite value (std::numerics<double>::max()) is returned. 
+     *
+     *  @param[in] a one point of the segment.
+     *  @param[in] b a second point of the segment.
+     *  @param[in] c the point for which the horizontal distance is computed.
+     *  @param[out] isInside indicates if the projected point is inside the segment or not.
+     **/    
+    template< typename TInputPoint>
+    double
+    computeHProjDistance(const TInputPoint& a, const TInputPoint& b, const TInputPoint& c, bool& isInside );
+
+
+    /**
+     * Computes the vertical distance a point @c according to the segment [@a a, @a b].
+     * (i.e the vertical projection distance of @c on [@a a,@a b]. 
+     * @note if the segment [@a a, @a b] is vertical (i.e @a a [0]== @a b [0]) then an infinite value (std::numerics<double>::max()) is returned. 
+     *
+     *  @param[in] a one point of the segment.
+     *  @param[in] b a second point of the segment.
+     *  @param[in] c the point for which the vertical distance is computed.
+     *  @param[out] isInside indicates if the projected point is inside the segment or not.
+     **/    
+    template< typename TInputPoint>
+    double
+    computeVProjDistance(const TInputPoint& a, const TInputPoint& b, const TInputPoint& c, bool& isInside );
+
+
+    /**
+     * Computes the euclidean distance a point @a c according to the segment [@a a, @a b].
+     * (i.e the distance between @a c and its projected point on [@a a,@a b]. 
+     *
+     *  @param[in] a one point of the segment.
+     *  @param[in] b a second point of the segment.
+     *  @param[in] c the point for which the vertical distance is computed.
+     *  @param[out] isInside indicates if the projected point is inside the segment or not.
+     **/
+    template< typename TInputPoint>
+    double
+    computeEuclideanDistance(const TInputPoint& a, const TInputPoint& b, const TInputPoint& c, bool& isInside );
+    
+      
 
   } // namespace convexHull2D
 
