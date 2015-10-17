@@ -77,7 +77,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 - Tools 
   - \ref moduleGeometricPredicates (Tristan Roussillon)
-  - \ref moduleHull2D (Tristan Roussillon)
+  - \ref moduleHull2D (Tristan Roussillon, Bertrand Kerautret)
 
 
 @b Package @b Concepts @b Overview
