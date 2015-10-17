@@ -68,15 +68,19 @@ TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (basic convex hull)" )
    
    SECTION("Testing computation of horizontal/vertical thickness of ConvexHull2D")
      {
-       REQUIRE( (thicknessHV == 1.0) );
-       REQUIRE(  (pHV == Point(0,0)) && (qHV==Point(1,0)) && sHV==Point(1,1) );
+       REQUIRE( (thicknessHV == 1.0));
+       REQUIRE(  (pHV == Point(0,0)));
+       REQUIRE((qHV==Point(1,0)));
+       REQUIRE((sHV==Point(1,1)));
      }
    
 
    SECTION("Testing computation of euclidean thickness of ConvexHull2D")
      {
        REQUIRE( (floor(thicknessEucl/0.0000001)*0.0000001 == floor((std::sqrt(2.0)/2.0)/0.0000001)*0.0000001) );
-       REQUIRE( (pE == Point(1,1)) && (qE==Point(0,0)) && (sE==Point(1,0)) );
+       REQUIRE( (pE == Point(1,1)));
+       REQUIRE((qE==Point(0,0)) );
+       REQUIRE( (sE==Point(1,0)) );
      }
    
 }
@@ -114,11 +118,15 @@ TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (convex hull with floating 
   
    SECTION("Testing antipodal points of ConvexHull2D")
      {
-       REQUIRE(  (pHV == Point(101.2, 48.2)) && (qHV==Point(104.2, 53.2)) && sHV==Point(102.3, 52.3) );
+       REQUIRE((pHV == Point(101.2, 48.2)));
+       REQUIRE((qHV==Point(104.2, 53.2)));
+       REQUIRE((sHV==Point(102.3, 52.3)));
      }
    SECTION("Testing antipodal points of ConvexHull2D")
      {
-       REQUIRE(  (pE == Point(101.2, 48.2)) && (qE==Point(104.2, 53.2)) && sE==Point(102.3, 52.3) );
+       REQUIRE((pE == Point(101.2, 48.2)));
+       REQUIRE((qE==Point(104.2, 53.2)));
+       REQUIRE((sE==Point(102.3, 52.3)));
      }
 }
 
