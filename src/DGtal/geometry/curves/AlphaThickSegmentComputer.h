@@ -144,9 +144,8 @@ public:
   typedef std::vector< InputPoint > InputPointContainer;
   typedef typename InputPointContainer::size_type Size;
   typedef typename InputPointContainer::const_iterator ContainerConstIterator;
-  // //##### TO MERGE ####
-  // typedef typename DGtal::functions::Hull2D::ThicknessDefinition ThicknessDef;
-  // //###################
+  typedef typename DGtal::functions::Hull2D::ThicknessDefinition ThicknessDef;
+  
   typedef typename InputPointContainer::iterator Iterator;
   typedef TConstIterator ConstIterator;
   typedef ParallelStrip< SpaceND< 2,  DGtal::int32_t > ,true,true> Primitive;  
@@ -180,28 +179,18 @@ private:
 public:
   
 
-  // //##### TO MERGE ####
-  // /**
-  //  * Constructor.
-  //  * @param[in] thicknessDefinition the definition of the thickness used in the segment extension (can be DGtal::functions::Hull2D::HorizontalVerticalThickness (default) or DGtal::functions::Hull2D::EuclideanThickness). 
-  //  * @param[in] thickCompPrecision to adjust the precision of the
-  //  * thickness estimation used in the comparison during the segment
-  //  * extension (default set to 1e-6).
-  //  */
-  // AlphaThickSegmentComputer(const ThicknessDef &thicknessDefinition = ThicknessDef::HorizontalVerticalThickness, 
-  //                           const double thickCompPrecision=1e-6);
-  // //##### TO MERGE ####
-  
-
 
   /**
    * Constructor.
+   * @param[in] thicknessDefinition the definition of the thickness used in the segment extension (can be DGtal::functions::Hull2D::HorizontalVerticalThickness (default) or DGtal::functions::Hull2D::EuclideanThickness). 
    * @param[in] thickCompPrecision to adjust the precision of the
    * thickness estimation used in the comparison during the segment
    * extension (default set to 1e-6).
    */
-  AlphaThickSegmentComputer(const double thickCompPrecision=1e-6);
-
+  AlphaThickSegmentComputer(const ThicknessDef &thicknessDefinition = ThicknessDef::HorizontalVerticalThickness, 
+                            const double thickCompPrecision=1e-6);
+  
+  
   
 
   /**
@@ -606,11 +595,11 @@ private:
    */
   double myThicknessCompPrecision;
 
-  //   // //##### TO MERGE ####
-  // /**
-  //  * To set a specific thickness definition.
-  //  */
-  // ThicknessDef myThicknessDefinition;
+
+  /**
+   * To set a specific thickness definition.
+   */
+  ThicknessDef myThicknessDefinition;
 
   
   /**

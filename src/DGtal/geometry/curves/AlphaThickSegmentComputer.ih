@@ -58,24 +58,13 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::~AlphaThickSegme
 }
 
 //-----------------------------------------------------------------------------
-// // //##### TO MERGE ####
-// template < typename TInputPoint, typename TConstIterator>
-// inline
-//  DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::AlphaThickSegmentComputer(const ThicknessDef &thicknessDefinition,
-//                                                                                            const double thickCompPrecision): 
-//   myBegin(), myEnd()
-// { 
-//   myThicknessDefinition = thicknessDefinition;
-//   myThicknessCompPrecision = thickCompPrecision;
-//   myMaximalThickness = 1.0;
-// }
-
-
 template < typename TInputPoint, typename TConstIterator>
 inline
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::AlphaThickSegmentComputer(const double thickCompPrecision): 
+ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::AlphaThickSegmentComputer(const ThicknessDef &thicknessDefinition,
+                                                                                           const double thickCompPrecision): 
   myBegin(), myEnd()
 { 
+  myThicknessDefinition = thicknessDefinition;
   myThicknessCompPrecision = thickCompPrecision;
   myMaximalThickness = 1.0;
 }
@@ -87,8 +76,7 @@ template < typename TInputPoint, typename TConstIterator>
 inline
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
 AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ):myMaximalThickness(other.myMaximalThickness),
-                                                                     // //##### TO MERGE ####
-                                                                     //myThicknessDefinition(other.myThicknessDefinition),
+                                                                     myThicknessDefinition(other.myThicknessDefinition),
                                                                      myThicknessCompPrecision(other.myThicknessCompPrecision),
                                                                      myPointContainer(other.myPointContainer),
                                                                      myState(other.myState), _state(other._state), 
@@ -106,8 +94,7 @@ operator= ( const AlphaThickSegmentComputer & other )
 {
   if ( this != &other )
     {
-      // //##### TO MERGE ####
-      //myThicknessDefinition = other.myThicknessDefinition;
+      myThicknessDefinition = other.myThicknessDefinition;
       myMaximalThickness = other.myMaximalThickness;
       myThicknessCompPrecision = other.myThicknessCompPrecision;
       myPointContainer = other.myPointContainer;
@@ -437,19 +424,14 @@ inline
 double
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeightAndAntiPodal()  
 {  
+  double chThickness = DGtal::functions::Hull2D::computeHullThickness(myState.melkmanCH.begin(),
+                                                                 myState.melkmanCH.end(), 
+                                                                  myThicknessDefinition, 
+                                                                  myState.edgePh,
+                                                                  myState.edgeQh, myState.vertexSh);
   
-
-  // //##### TO MERGE ####
-  //double chThickness = DGtal::functions::Hull2D::computeHullThickness(myState.melkmanCH.begin(),
-  //                                                                myState.melkmanCH.end(), 
-  //                                                                 myThicknessDefinition, 
-  //                                                                 myState.edgePh,
-  //                                                                 myState.edgeQh, myState.vertexSh);
-  // 
-  // return floor(chThickness / myThicknessCompPrecision + 0.5) * myThicknessCompPrecision;
-  // //##################
-
-  return 0.0;
+  return floor(chThickness / myThicknessCompPrecision + 0.5) * myThicknessCompPrecision;
+  
 }
 
 
