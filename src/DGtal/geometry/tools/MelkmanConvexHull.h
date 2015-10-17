@@ -63,7 +63,7 @@ namespace DGtal
    * \brief Aim: This class implements the on-line algorithm
    * of Melkman for the computation of the convex hull of 
    * a simple polygonal line (without self-intersection) 
-   * [Melkman, 1979 : \cite Melkman1987].
+   * [Melkman, 1987: \cite Melkman1987].
    *
    * This algorithm is based on a deque, which stores the vertices 
    * of the convex hull (for convenience, the first and last vertex 
