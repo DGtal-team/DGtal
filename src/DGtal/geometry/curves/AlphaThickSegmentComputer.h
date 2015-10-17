@@ -187,7 +187,7 @@ public:
    * thickness estimation used in the comparison during the segment
    * extension (default set to 1e-6).
    */
-  AlphaThickSegmentComputer(const ThicknessDef &thicknessDefinition = ThicknessDef::HorizontalVerticalThickness, 
+  AlphaThickSegmentComputer(const ThicknessDef &thicknessDefinition = functions::Hull2D::HorizontalVerticalThickness, 
                             const double thickCompPrecision=1e-6);
   
   
