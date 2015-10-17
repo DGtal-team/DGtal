@@ -77,7 +77,7 @@ TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (basic convex hull)" )
 
    SECTION("Testing computation of euclidean thickness of ConvexHull2D")
      {
-       REQUIRE( (floor(thicknessEucl/0.0000001)*0.0000001 == floor((std::sqrt(2.0)/2.0)/0.0000001)*0.0000001) );
+       REQUIRE( (thicknessEucl == Approx(std::sqrt(2.0)/2.0)) );
        REQUIRE( (pE == Point(1,1)));
        REQUIRE((qE==Point(0,0)) );
        REQUIRE( (sE==Point(1,0)) );
