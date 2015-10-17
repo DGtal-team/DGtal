@@ -181,6 +181,15 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::size() const
   return myContainer.size()-1;
 }
 
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
+void
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::clear()
+{
+  myContainer.clear();
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
