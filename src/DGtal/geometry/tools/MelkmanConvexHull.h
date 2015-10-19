@@ -186,6 +186,11 @@ namespace DGtal
      **/
     unsigned int size() const;
     
+    /**
+     * clear the current content of the convex hull.
+     **/
+    void clear();
+    
     
     // ------------------------- Private Datas --------------------------------
   private:
