@@ -264,7 +264,7 @@ init(const double aThickness)
   myIsStoringPoints = true;
   myMaximalThickness = aThickness;
   myState.actualThickness = 0.0;
-  myState.melkmanCH =  DGtal::MelkmanConvexHull<InputPoint, Functor>();
+  myState.melkmanCH.clear();
 }
 
 //-----------------------------------------------------------------------------
