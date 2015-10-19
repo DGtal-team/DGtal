@@ -40,6 +40,8 @@
 
 #include <DGtal/images/ArrayImageAdapter.h>
 
+#include "DGtalCatch.h"
+
 using namespace DGtal;
 using namespace std;
 
@@ -133,7 +135,7 @@ void fastFillImageWithPointFn ( ArrayImageAdapter<TIterator, TDomain>& anImage, 
 }
 
 template < typename TImage >
-bool checkImage( TImage& anImage )
+void checkImage( TImage& anImage )
 {
   using Image = TImage;
   using Value = typename Image::Value;
@@ -163,8 +165,7 @@ bool checkImage( TImage& anImage )
   auto const sub_domain = Domain( lowerPt, upperPt );
 
   // Checks that sub domain is not empty and different of full domain
-  nb++; nbok += ( !sub_domain.isEmpty() && sub_domain.size() != domain.size() ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") Checking sub-domain." << std::endl;
+  REQUIRE( (!sub_domain.isEmpty() && sub_domain.size() != domain.size()) );
 
   // Reference image
   RefImage ref_image( domain );
@@ -173,111 +174,125 @@ bool checkImage( TImage& anImage )
   auto const fn = [] (size_t i, Coordinate x) { return cos( static_cast<Value>(pow(100, i)*x ) ); };
 
   // Fill with function
-  fillImageWithPointFn( ref_image, fn );
-  fillImageWithPointFn( anImage, fn );
-  nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") Filling with point dependant function." << std::endl;
+  SECTION( "Filling with point dependant function" )
+    {
+      fillImageWithPointFn( ref_image, fn );
+      fillImageWithPointFn( anImage, fn );
+      REQUIRE( std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) );
+    }
 
   // Fill with counter
-  fillImageWithCounter( ref_image );
-  fillImageWithCounter( anImage );
-  nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") Filling with counter." << std::endl;
+  SECTION( "Filling with counter" )
+    {
+      fillImageWithCounter( ref_image );
+      fillImageWithCounter( anImage );
+      REQUIRE( std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) );
+    }
 
   // Fast filling with function
-  fastFillImageWithPointFn( ref_image, fn );
-  fastFillImageWithPointFn( anImage, fn );
-  nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") Fast filling with point dependant function." << std::endl;
-
-  // Increment with function
-  incrementImageWithPointFn( ref_image, fn );
-  incrementImageWithPointFn( anImage, fn );
-  nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") Incrementing with point dependant function." << std::endl;
-
-  // Partial fill with counter
+  SECTION( "Fast filling with point dependant function" )
     {
-      auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
-      fillImageWithCounter( ref_image, sub_domain );
-      fillImageWithCounter( sub_image );
-      nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
-      trace.info() << "(" << nbok << "/" << nb << ") Partial filling with counter." << std::endl;
+      fastFillImageWithPointFn( ref_image, fn );
+      fastFillImageWithPointFn( anImage, fn );
+      REQUIRE( std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) );
     }
 
-  // Partial increment with function
+  // Tests that need images to be initialized.
+  SECTION( "Tests on initialized images" )
     {
-      auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
-      incrementImageWithPointFn( ref_image, fn, sub_domain );
-      incrementImageWithPointFn( sub_image, fn );
-      nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
-      trace.info() << "(" << nbok << "/" << nb << ") Partial increment with point dependant function." << std::endl;
-    }
+      fastFillImageWithPointFn( ref_image, fn );
+      fastFillImageWithPointFn( anImage, fn );
+      REQUIRE( std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) );
 
-  // Fast partial fill with function
-    {
-      auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
-      fillImageWithPointFn( ref_image, fn,  sub_domain );
-      fastFillImageWithPointFn( sub_image, fn );
-      nb++; nbok += std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) ? 1 : 0;
-      trace.info() << "(" << nbok << "/" << nb << ") Fast partial filling with point dependant function." << std::endl;
-    }
+      // Increment with function
+      SECTION( "Incrementing with point dependant function" )
+        {
+          incrementImageWithPointFn( ref_image, fn );
+          incrementImageWithPointFn( anImage, fn );
+          REQUIRE( std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) );
+        }
 
-  return nb == nbok;
+      // Partial fill with counter
+      SECTION( "Partial filling with counter" )
+        {
+          auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
+          fillImageWithCounter( ref_image, sub_domain );
+          fillImageWithCounter( sub_image );
+          REQUIRE( std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) );
+        }
+
+      // Partial increment with function
+      SECTION( "Partial increment with point dependant function" )
+        {
+          auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
+          incrementImageWithPointFn( ref_image, fn, sub_domain );
+          incrementImageWithPointFn( sub_image, fn );
+          REQUIRE( std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) );
+        }
+
+      // Fast partial fill with function
+      SECTION( "Fast partial filling with point dependand function" )
+        {
+          auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
+          fillImageWithPointFn( ref_image, fn,  sub_domain );
+          fastFillImageWithPointFn( sub_image, fn );
+          REQUIRE( std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) );
+        }
+    }
 }
 
-int main()
+// Context for each image test
+template < DGtal::Dimension N >
+struct TestImage
 {
-  using Space = SpaceND<3>;
+  using Space = SpaceND<N>;
   using Domain = HyperRectDomain<Space>;
   using Value = double;
 
-  trace.beginBlock("Testing ArrayImageAdapter class");
+  template < typename TImage >
+  static 
+  void checkThat( TImage & anImage )
+    {
+      checkImage(anImage);
+    }
 
-  const Domain domain{ {0, 1, 2}, {12, 8, 11} };
-  const Domain sub_domain{ {0, 2, 4}, {8, 7, 10} };
+  static const Domain domain;
+  static const Domain subDomain;
+};
 
-  size_t nb = 0;
-  size_t nbok = 0;
+// Context data for 3D image tests
+using TestImage3D = TestImage<3>;
+template <> const TestImage3D::Domain TestImage3D::domain{ {0, 1, 2}, {12, 8, 11} };
+template <> const TestImage3D::Domain TestImage3D::subDomain{ {0, 2, 4}, {8, 7, 10} };
 
-  {
-    trace.beginBlock("Checking ArrayImageAdapter with raw pointer");
-    Value* data = new Value[domain.size()];
-    auto image = makeArrayImageAdapterFromIterator( data, domain );
-    nb++; nbok += checkImage(image) ? 1 : 0;
-    delete[] data;
-    trace.endBlock();
-  }
+// Test cases
+TEST_CASE_METHOD( TestImage3D, "Checking ArrayImageAdapter with C-style array", "[CArray][FullDomain]" )
+{
+  Value* data = new Value[domain.size()];
+  auto image = makeArrayImageAdapterFromIterator( data, domain );
+  checkThat(image);
+  delete[] data;
+}
 
-  {
-    trace.beginBlock("Checking ArrayImageAdapter with raw pointer on sub-domain");
-    Value* data = new Value[domain.size()];
-    auto image = makeArrayImageAdapterFromIterator( data, domain, sub_domain );
-    nb++; nbok += checkImage(image) ? 1 : 0;
-    delete[] data;
-    trace.endBlock();
-  }
+TEST_CASE_METHOD( TestImage3D, "Checking ArrayImageAdapter with C-style array on sub-domain", "[CArray][SubDomain]" )
+{
+  Value* data = new Value[domain.size()];
+  auto image = makeArrayImageAdapterFromIterator( data, domain, subDomain );
+  checkThat(image);
+  delete[] data;
+}
 
-  {
-    trace.beginBlock("Checking ArrayImageAdapter with ImageContainerBySTLVector");
-    ImageContainerBySTLVector<Domain, Value> image(domain);
-    auto image_view = makeArrayImageAdapterFromImage( image );
-    nb++; nbok += checkImage(image_view) ? 1 : 0;
-    trace.endBlock();
-  }
+TEST_CASE_METHOD( TestImage3D, "Checking ArrayImageAdapter with ImageContainerBySTLVector", "[ImageSTL][FullDomain]" )
+{
+  ImageContainerBySTLVector<Domain, Value> image(domain);
+  auto image_view = makeArrayImageAdapterFromImage( image );
+  checkThat(image_view);
+}
 
-  {
-    trace.beginBlock("Checking ArrayImageAdapter with ImageContainerBySTLVector on sub-domain");
-    ImageContainerBySTLVector<Domain, Value> image(domain);
-    auto image_view = makeArrayImageAdapterFromImage( image, sub_domain );
-    nb++; nbok += checkImage(image_view) ? 1 : 0;
-    trace.endBlock();
-  }
-
-  bool res = nb == nbok;
-
-  trace.endBlock();
-  trace.emphase() << ( res ? "Passed." : "Failed." ) << endl;
-  return res ? 0 : 1;
+TEST_CASE_METHOD( TestImage3D, "Checking ArrayImageAdapter with ImageContainerBySTLVector on sub-domain", "[ImageSTL][SubDomain]" )
+{
+  ImageContainerBySTLVector<Domain, Value> image(domain);
+  auto image_view = makeArrayImageAdapterFromImage( image, subDomain );
+  checkThat(image_view);
 }
 
