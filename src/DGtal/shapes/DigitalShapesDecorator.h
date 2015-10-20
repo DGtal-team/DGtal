@@ -165,7 +165,7 @@ namespace DGtal
 
       std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_plus, b );
 
-      for(uint i =0; i < Space::dimension; ++i)
+      for(unsigned int i =0; i < Space::dimension; ++i)
       {
         myLowerBound[i] = std::min(myLowerBound[i], b->getLowerBound()[i]);
         myUpperBound[i] = std::max(myUpperBound[i], b->getUpperBound()[i]);
@@ -189,7 +189,7 @@ namespace DGtal
 
       std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_intersection, b );
 
-      for(uint i=0; i < Space::dimension; ++i)
+      for(unsigned int i=0; i < Space::dimension; ++i)
       {
         myLowerBound[i] = std::max(myLowerBound[i], b->getLowerBound()[i]);
         myUpperBound[i] = std::min(myUpperBound[i], b->getUpperBound()[i]);

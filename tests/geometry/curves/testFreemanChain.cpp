@@ -31,7 +31,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <boost/program_options.hpp>
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -580,13 +579,9 @@ int main( int argc, char** argv )
     testStaticServices() &&
     testDisplay();
 
-  //res = PtestFreemanChainIterator(chain) && testFreemanChain(chain);
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
-  //std::string filename = testPath + "samples/contourS.fc";
-  //std::cout << filename << std::endl;
-  //testDisplayFreemanChain(filename);
-  //trace.endBlock();
+  trace.endBlock();
   
   return res ? 0 : 1;
 }
