@@ -34,7 +34,6 @@
 #include <fstream>
 #include <sstream>
 #include <exception>
-#include <boost/program_options.hpp>
 
 #include "DGtal/base/Common.h"
 
