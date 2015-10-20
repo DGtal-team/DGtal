@@ -151,7 +151,7 @@ DGtal::VectorField<Calculus, duality>::length() const
 }
 
 template <typename Calculus, DGtal::Duality duality>
-typename DGtal::PointVector<Calculus::dimensionAmbient, typename Calculus::Scalar>
+typename DGtal::VectorField<Calculus, duality>::Vector
 DGtal::VectorField<Calculus, duality>::getVector(const Index& index) const
 {
     Vector vector;
