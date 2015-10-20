@@ -178,11 +178,6 @@ namespace DGtal
     //! Returns non-zero if failure
     static     int getHeaderValueAsInt( const char *type, int *dest , const HeaderField * header);
 
-
-    //! Maximum number of fields in a .longvol file header
-    static const int MAX_HEADERNUMLINES;
-    
-    
     //! Internal method which returns the index of a field or -1 if not found.
     static int getHeaderField( const char *type, const HeaderField * header ) ;
     
