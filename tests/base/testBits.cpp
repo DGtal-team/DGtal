@@ -72,7 +72,7 @@ int main()
 
   for ( unsigned int i = 0; i < 100; ++i )
     {
-      DGtal::uint16_t n = (DGtal::uint16_t) ( random() % 65536 ); 
+      DGtal::uint16_t n = (DGtal::uint16_t) ( rand() % 65536 ); 
       for ( unsigned int b = 0; b < 16; ++b )
 	++nb, nbok += Bits::indexInSetBits( n, b ) == index( n, b ) ? 1 : 0;
     }
@@ -80,11 +80,11 @@ int main()
   std::cerr << "(" << nbok << "/" << nb << ")" << " tests." << std::endl;
 
   trace.beginBlock ( "Testing speed of loop version of indexInSetBits" );
-  srandom( 0 );
+  srand( 0 );
   unsigned int val = 0;
   for ( unsigned int i = 0; i < 100000; ++i )
     {
-      DGtal::uint32_t n = (DGtal::uint32_t) random();
+      DGtal::uint32_t n = (DGtal::uint32_t) rand();
       for ( unsigned int b = 0; b < 32; ++b )
 	val += index( n, b );
     }
@@ -92,11 +92,11 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "Testing speed of look-up table version of indexInSetBits" );
-  srandom( 0 );
+  srand( 0 );
   unsigned int val2 = 0;
   for ( unsigned int i = 0; i < 100000; ++i )
     {
-      DGtal::uint32_t n = (DGtal::uint32_t) random();
+      DGtal::uint32_t n = (DGtal::uint32_t) rand();
       for ( unsigned int b = 0; b < 32; ++b )
 	val2 += Bits::indexInSetBits( n, b );
     }
