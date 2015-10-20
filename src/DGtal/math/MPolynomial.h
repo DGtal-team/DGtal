@@ -794,8 +794,7 @@ public:
   public:
     typedef TAlloc Alloc;
     typedef typename std::vector<typename Alloc::pointer, typename Alloc::template rebind<typename Alloc::pointer>::other>::size_type Size;
-    //typedef DGtal::uint64_t Size;
-
+   
   private:
     Alloc myAllocator;
     std::vector<typename Alloc::pointer, typename Alloc::template rebind<typename Alloc::pointer>::other> myVec;
