@@ -1270,10 +1270,10 @@ className() const
 template <typename TCoordinate, typename TInteger>
 inline
 DGtal::StandardDSS4<TCoordinate, TInteger>::
-StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
-	     const typename Super::Point& aF, const typename Super::Point& aL,
-	     const typename Super::Point& aUf, const typename Super::Point& aUl,
-	     const typename Super::Point& aLf, const typename Super::Point& aLl)
+StandardDSS4(const Coordinate& aA, const Coordinate& aB, 
+	     const Point& aF, const Point& aL,
+	     const Point& aUf, const Point& aUl,
+	     const Point& aLf, const Point& aLl)
   : Super(aA, aB, aF, aL, aUf, aUl, aLf, aLl) 
 {}
 
@@ -1281,7 +1281,7 @@ StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordin
 template <typename TCoordinate, typename TInteger>
 inline
 DGtal::StandardDSS4<TCoordinate, TInteger>::
-StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL, 
+StandardDSS4(const Point& aF, const Point& aL, 
 	     const bool& isOnTheUpperLine)
   : Super(aF, aL, isOnTheUpperLine) 
 {}
@@ -1290,8 +1290,8 @@ StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL,
 template <typename TCoordinate, typename TInteger>
 inline
 DGtal::StandardDSS4<TCoordinate, TInteger>::
-StandardDSS4(const typename Super::DSL& aDSL, 
-	     const typename Super::Point& aF, const typename Super::Point& aL)
+StandardDSS4(const DSL& aDSL, 
+	     const Point& aF, const Point& aL)
   : Super(aDSL, aF, aL) 
 {}
 
@@ -1300,7 +1300,7 @@ template <typename TCoordinate, typename TInteger>
 inline
 DGtal::StandardDSS4<TCoordinate, TInteger>::
 StandardDSS4(const StandardDSS4<TCoordinate, TInteger>& aDSS, 
-	     const typename Super::Point& aF, const typename Super::Point& aL)
+	     const Point& aF, const Point& aL)
   : Super(aDSS, aF, aL) 
 {}
 
@@ -1337,10 +1337,10 @@ operator= ( const StandardDSS4 & aOther )
 template <typename TCoordinate, typename TInteger>
 inline
 DGtal::NaiveDSS8<TCoordinate, TInteger>::
-NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
-	     const typename Super::Point& aF, const typename Super::Point& aL,
-	     const typename Super::Point& aUf, const typename Super::Point& aUl,
-	     const typename Super::Point& aLf, const typename Super::Point& aLl)
+NaiveDSS8(const Coordinate& aA, const Coordinate& aB, 
+	     const Point& aF, const Point& aL,
+	     const Point& aUf, const Point& aUl,
+	     const Point& aLf, const Point& aLl)
   : Super(aA, aB, aF, aL, aUf, aUl, aLf, aLl) 
 {}
 
@@ -1348,7 +1348,7 @@ NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate
 template <typename TCoordinate, typename TInteger>
 inline
 DGtal::NaiveDSS8<TCoordinate, TInteger>::
-NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL, 
+NaiveDSS8(const Point& aF, const Point& aL, 
 	  const bool& isOnTheUpperLine)
   : Super(aF, aL, isOnTheUpperLine) 
 {}
@@ -1357,8 +1357,8 @@ NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL,
 template <typename TCoordinate, typename TInteger>
 inline
 DGtal::NaiveDSS8<TCoordinate, TInteger>::
-NaiveDSS8(const typename Super::DSL& aDSL,
-	  const typename Super::Point& aF, const typename Super::Point& aL)
+NaiveDSS8(const DSL& aDSL,
+	  const Point& aF, const Point& aL)
   : Super(aDSL, aF, aL) 
 {}
 
@@ -1367,7 +1367,7 @@ template <typename TCoordinate, typename TInteger>
 inline
 DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8(const NaiveDSS8<TCoordinate, TInteger>& aDSS,
-	  const typename Super::Point& aF, const typename Super::Point& aL)
+	  const Point& aF, const Point& aL)
   : Super(aDSS, aF, aL) 
 {}
 

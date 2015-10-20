@@ -139,7 +139,7 @@ DGtal::Mesh<TPoint>::isValid() const
 
 template<typename TPoint>
 inline
-DGtal::Mesh<TPoint>::Mesh(const DGtal::Mesh<TPoint>::VertexStorage &vertexSet)
+DGtal::Mesh<TPoint>::Mesh(const VertexStorage &vertexSet)
 {
   mySaveFaceColor=false;
   for(int i =0; i< vertexSet.size(); i++)

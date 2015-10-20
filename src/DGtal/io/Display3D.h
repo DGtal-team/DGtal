@@ -701,7 +701,7 @@ namespace DGtal
      * @param aMesh : (return) the mesh containing the elements of the display.
      *
      **/
-    void exportToMesh(Mesh<Display3D::BallD3D> & aMesh ) const;
+    void exportToMesh(Mesh<RealPoint> & aMesh ) const;
 
 
     /**
@@ -950,7 +950,7 @@ namespace DGtal
    **/
   void
   operator>> ( const Display3D<Space , KSpace > &aDisplay3D,
-               DGtal::Mesh< typename Display3D<Space , KSpace >::BallD3D> &aMesh);
+               DGtal::Mesh< typename Display3D<Space , KSpace >::RealPoint > &aMesh);
 
 
   /**
