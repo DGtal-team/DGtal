@@ -38,6 +38,11 @@
 #include "DGtal/arithmetic/LightSternBrocot.h"
 #include "DGtal/arithmetic/LighterSternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
+
+#include <boost/version.hpp>
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_smallint.hpp>
+#include <boost/random/variate_generator.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -98,15 +103,20 @@ testPatterns()
   f1.selfDisplay( std::cerr );
   std::cerr << endl;
   IntegerComputer<unsigned  int > ic;
+  boost::random::mt19937 rng;
+  rng.seed( 0 );
+  boost::random::uniform_smallint<> diceL(0, 999);
+
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
-      unsigned int p = std::rand() % 1000;
-      unsigned int q = std::rand() % 1000; 
+      unsigned int p = diceL(rng);
+      unsigned int q = diceL(rng);
       unsigned int g = ic.gcd( p, q );
       p /= g; q /= g;
       std::cerr << "*- p / q = " << p << "/" << q << std::endl;
       f1 = Fraction1( p, q );
-      ++nb, nbok += testPattern<Fraction1,Fraction2>( f1 ) ? 1 : 0;
+      ++nb;
+	  nbok += testPattern<Fraction1,Fraction2>( f1 ) ? 1 : 0;
       std::cerr << "(" << nbok << "/" << nb << ") f1=";
       f1.selfDisplay( std::cerr );
       std::cerr << endl;

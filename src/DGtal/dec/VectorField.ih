@@ -138,7 +138,7 @@ DGtal::VectorField<Calculus, duality>::coordAlongDirection(const DGtal::Dimensio
 
 template <typename Calculus, DGtal::Duality duality>
 typename DGtal::VectorField<Calculus, duality>::SCell
-DGtal::VectorField<Calculus, duality>::getSCell(const typename DGtal::VectorField<Calculus, duality>::Index& index) const
+DGtal::VectorField<Calculus, duality>::getSCell(const Index& index) const
 {
     return myCalculus->getSCell(0, duality, index);
 }

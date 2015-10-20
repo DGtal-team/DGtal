@@ -454,7 +454,7 @@ StandardDSS4Computer()
 template <typename TIterator, typename TInteger>
 inline
 DGtal::StandardDSS4Computer<TIterator,TInteger>::
-StandardDSS4Computer(const typename Super::ConstIterator& it)
+StandardDSS4Computer(const ConstIterator& it)
   : Super(it)
 {
 }
@@ -494,7 +494,7 @@ NaiveDSS8Computer()
 template <typename TIterator, typename TInteger>
 inline
 DGtal::NaiveDSS8Computer<TIterator,TInteger>::
-NaiveDSS8Computer(const typename Super::ConstIterator& it)
+NaiveDSS8Computer(const ConstIterator& it)
   : Super(it)
 {
 }

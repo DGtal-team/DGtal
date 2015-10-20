@@ -654,7 +654,7 @@ namespace DGtal
     template <typename TIterator>
     static void draw( Display & display,
                       const DGtal::ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<KSpace>,
-                      std::pair<typename TKSpace::Point, typename TKSpace::Point > > & anObject );
+                      std::pair<typename KSpace::Point, typename KSpace::Point > > & anObject );
     // IncidentPointsRange
 
     /**
