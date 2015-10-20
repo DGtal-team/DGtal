@@ -103,7 +103,7 @@ testPatterns()
   f1.selfDisplay( std::cerr );
   std::cerr << endl;
   IntegerComputer<unsigned  int > ic;
-  boost::random::mt19937 rng;
+  boost::mt19937 rng;
   rng.seed( 0 );
   boost::random::uniform_smallint<> diceL(0, 999);
 
