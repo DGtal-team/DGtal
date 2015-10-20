@@ -103,14 +103,11 @@ testPatterns()
   f1.selfDisplay( std::cerr );
   std::cerr << endl;
   IntegerComputer<unsigned  int > ic;
-  boost::mt19937 rng;
-  rng.seed( 0 );
-  boost::random::uniform_smallint<> diceL(0, 999);
 
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
-      unsigned int p = diceL(rng);
-      unsigned int q = diceL(rng);
+      unsigned int p = std::rand() % 999;
+      unsigned int q = std::rand() % 999
       unsigned int g = ic.gcd( p, q );
       p /= g; q /= g;
       std::cerr << "*- p / q = " << p << "/" << q << std::endl;
