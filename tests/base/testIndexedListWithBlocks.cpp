@@ -62,8 +62,8 @@ checkInsert( VContainer1 & v, LContainer2 & l,
 {
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int idx = random() % ( l.size() + 1 );
-      double val = ( (double)random() ) / RAND_MAX;
+      unsigned int idx = rand() % ( l.size() + 1 );
+      double val = ( (double)rand() ) / RAND_MAX;
       insert( v, l, idx, val );
     }
   return isEqual( v, l );
@@ -83,7 +83,7 @@ checkErase( VContainer1 & v, LContainer2 & l,
 {
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int idx = random() % ( l.size() );
+      unsigned int idx = rand() % ( l.size() );
       erase( v, l, idx );
     }
   return isEqual( v, l );

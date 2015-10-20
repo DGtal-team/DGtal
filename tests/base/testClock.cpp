@@ -109,6 +109,8 @@ bool test_RestartClock()
   c_total.startClock();
   c_accum.startClock();
 
+#if !defined(WIN32)
+  
   for (unsigned int i=0 ; i< 4334450; i++)
     tmp = cos(tmp+i);
 	usleep(20000);
@@ -133,6 +135,7 @@ bool test_RestartClock()
               << " Delta = "<<delta << endl;
 
   //return delta>=0 && delta<1e-4;
+#endif
   return true;
 }
 
