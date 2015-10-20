@@ -33,6 +33,7 @@
 #include <boost/type_traits/is_arithmetic.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/utility/enable_if.hpp>
+#include "DGtal/base/Common.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class cpp11.
@@ -44,17 +45,16 @@ class A
 public:
 	typedef TC C; 
 
-	A( const C&  );
+  A( const C& c );
 };
 
 template< typename TC, typename TD >
 inline
-A< TC, TD >::A( const C&  )
+A< TC, TD >::A( const C& c )
 {
-	std::cout << "Generic" << std::endl;
+  boost::ignore_unused_variable_warning( c );
+  std::cout << "Generic" << std::endl;
 }
-
-
 
 
 
