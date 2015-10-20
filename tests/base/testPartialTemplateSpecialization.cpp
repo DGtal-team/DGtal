@@ -70,10 +70,9 @@ public:
 
 template <typename TC>
 inline
-B<TC>::B( const C& c)
-  : Super(c) 
+B<TC>::B( const C& c) : Super(c) 
 {
-	std::cout << "Specialized" << std::endl;
+  std::cout << "Specialized" << std::endl;
 }
 
 
