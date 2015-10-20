@@ -44,12 +44,12 @@ class A
 public:
 	typedef TC C; 
 
-	A( const C& c );
+	A( const C&  );
 };
 
 template< typename TC, typename TD >
 inline
-A< TC, TD >::A( const C& c )
+A< TC, TD >::A( const C&  )
 {
 	std::cout << "Generic" << std::endl;
 }
@@ -65,12 +65,12 @@ public:
     typedef A< TC, int > Super;
 	typedef typename Super::C C; //Compile en rajoutant cette ligne (et en changeant les appels à Super::C par C)
 
-	B( const C& c );
+	B( const C&  );
 };
 
 template <typename TC>
 inline
-B<TC>::B( const C& c )
+B<TC>::B( const C&  )
   : Super(c) 
 {
 	std::cout << "Specialized" << std::endl;
