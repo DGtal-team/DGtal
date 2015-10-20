@@ -882,7 +882,7 @@ bool unionTest()
   unsigned int nb = 0;
   unsigned int nbok = 0;
   
-  typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
+  typedef DGtal::ArithmeticalDSS<DGtal::int32_t,DGtal::int32_t,8> DSS;
   typedef DSS::Point Point;
   
   trace.beginBlock("Testing union of two DSSs");
