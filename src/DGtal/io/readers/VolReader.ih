@@ -36,7 +36,7 @@
 // Interface - public :
 
 
-#define MAX_HEADERNUMLINES 64;
+#define MAX_HEADERNUMLINES 64
 
 
 

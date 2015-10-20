@@ -33,7 +33,7 @@
 
 
 //! Maximum number of fields in a .longvol file header
-#define MAX_HEADERNUMLINES 64;
+#define MAX_HEADERNUMLINES 64
 
 
 ///////////////////////////////////////////////////////////////////////////////
