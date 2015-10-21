@@ -483,8 +483,8 @@ namespace functors
     {
       Point pt = myOriginPointEmbeddedIn3D;
       for( Dimension i=0; i<pt.size(); i++){
-        pt[i] = pt[i]+aPoint[0]*myFirstAxisEmbeddedDirection[i];
-        pt[i] = pt[i]+aPoint[1]*mySecondAxisEmbeddedDirection[i];
+        pt[i] = pt[i]+static_cast<typename Point::Component>(aPoint[0]*myFirstAxisEmbeddedDirection[i]);
+        pt[i] = pt[i]+static_cast<typename Point::Component>(aPoint[1]*mySecondAxisEmbeddedDirection[i]);
       }
 
       if(myDomain.isInside(pt)|| !chechInsideDomain)
