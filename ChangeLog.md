@@ -16,7 +16,7 @@
  Coeurjolly, [#1055](https://github.com/DGtal-team/DGtal/pull/1055))
  - Fixing boost include path issue when building tools using DGtal and
    its cmake DGtalConfig.cmake. (David Coeurjolly,
-   [#1057](https://github.com/DGtal-team/DGtal/pull/1057))
+   [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
  
 
 
