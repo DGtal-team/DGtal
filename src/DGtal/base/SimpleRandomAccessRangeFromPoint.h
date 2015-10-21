@@ -92,9 +92,12 @@ namespace DGtal
       typedef TIterator OutputIterator;
       typedef std::reverse_iterator<Iterator> ReverseOutputIterator;
 
-      // typedef Circulator<Iterator> Circulator;
-      // typedef std::reverse_iterator<Circulator> ReverseCirculator;
+      typedef DGtal::Circulator<Iterator> Circulator;
+      typedef std::reverse_iterator<Circulator> ReverseCirculator;
 
+      typedef DGtal::Circulator<ConstIterator> ConstCirculator;
+      typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+      
       // ------------------------- standard services --------------------------------
 
       /**
@@ -350,23 +353,41 @@ namespace DGtal
         return ConstReverseIterator ( this->begin() );
       }
 
-      // /**
-      //  * Circulator service.
-      //  * @return a circulator
-      //  */
-      // Circulator c() const
-      // {
-      //   return Circulator ( this->begin(), this->begin(), this->end() );
-      // }
+      /**
+       * Mutable circulator service.
+       * @return a circulator
+       */
+      Circulator c()
+      {
+        return Circulator ( this->begin(), this->begin(), this->end() );
+      }
 
-      // /**
-      //  * Circulator service.
-      //  * @return a reverse circulator
-      //  */
-      // ReverseCirculator rc() const
-      // {
-      //   return ReverseCirculator ( this->c() );
-      // }
+      /**
+       * Reverse mutable circulator service.
+       * @return a reverse circulator
+       */
+      ReverseCirculator rc()
+      {
+        return ReverseCirculator ( this->c() );
+      }
+      
+      /**
+       * Constant circulator service.
+       * @return a constant circulator
+       */
+      ConstCirculator c() const
+      {
+        return ConstCirculator ( this->begin(), this->begin(), this->end() );
+      }
+
+      /**
+       * Reverse constant circulator service.
+       * @return a reverse constant circulator
+       */
+      ConstReverseCirculator rc() const
+      {
+        return ConstReverseCirculator ( this->c() );
+      }
 
   }; //end class SimpleRandomAccessRangeFromPoint
 
