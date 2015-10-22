@@ -8,6 +8,9 @@
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
 ## Changes
+- *Base Package*
+ - Enabling circulators in SimpleRandomAccessRangeFromPoint.
+   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
 
 ## Bug Fixes
 
@@ -15,7 +18,10 @@
  - catch unit test framework upgraded to the develop version. (David
  Coeurjolly, [#10XX](https://github.com/DGtal-team/DGtal/pull/1052))
 
-
+- *Base Package*
+ - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
+   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
+   
 
 # DGtal 0.9
 
