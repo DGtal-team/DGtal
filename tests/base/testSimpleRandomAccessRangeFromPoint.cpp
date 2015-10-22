@@ -223,7 +223,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
 
       REQUIRE( ( std::equal(range.begin(), range.end(), refImage.begin()) ) );
     }
-  
+
   SECTION( "Testing reverse output iterators" )
     {
       Range range = image.range();
@@ -235,7 +235,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
           ++cnt;
         }
 
-      std::copy( refImage.rend(), refImage.rbegin(), range.routputIterator() );
+      std::copy( refImage.rbegin(), refImage.rend(), range.routputIterator() );
 
       REQUIRE( ( std::equal(range.rbegin(), range.rend(), refImage.rbegin()) ) );
     }
@@ -251,11 +251,197 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
           ++cnt;
         }
 
-      std::copy( refImage.rbegin() - (domain.size() - Linearizer::getIndex(aPoint, domain) - 1), refImage.rend(), range.routputIterator(aPoint) );
+      std::copy( refImage.rbegin() + (domain.size() - Linearizer::getIndex(aPoint, domain) - 1), refImage.rend(), range.routputIterator(aPoint) );
       
       REQUIRE( ( std::equal(range.rbegin(), range.rend(), refImage.rbegin()) ) );
     }
 
+  SECTION( "Testing constant forward circulators" )
+    {
+      // Reference sum
+      Value refSum = 0;
+      for ( Image::ConstIterator it = refImage.begin(), it_end = refImage.end(); it != it_end; ++it )
+        {
+          refSum += 2 * (*it);
+        }
+      
+      // Sum in forward way
+      const Range range = image.range();
+      Value sum = 0;
+      cnt = 1;
+      for ( Range::ConstCirculator it = range.c(); cnt <= 2*domain.size(); ++it )
+        {
+          sum += *it;
+          ++cnt;
+        }
+      REQUIRE( sum == Approx(refSum) );
+      REQUIRE( std::equal( refImage.begin(), refImage.end(), range.c() ) );
 
+      // Sum in backward way
+      sum = 0;
+      cnt = 1;
+      for ( Range::ConstCirculator it = range.c(); cnt <= 2*domain.size(); --it )
+        {
+          sum += *it;
+          ++cnt;
+        }
+      REQUIRE( sum == Approx(refSum) );
+
+      // Sum in forward way
+      ConstRange crange = image.constRange();
+      sum = 0;
+      cnt = 1;
+      for ( Range::ConstCirculator it = crange.c(); cnt <= 2*domain.size(); ++it )
+        {
+          sum += *it;
+          ++cnt;
+        }
+      REQUIRE( sum == Approx(refSum) );
+      REQUIRE( std::equal( refImage.begin(), refImage.end(), crange.c() ) );
+
+      // Sum in backward way
+      sum = 0;
+      cnt = 1;
+      for ( Range::ConstCirculator it = crange.c(); cnt <= 2*domain.size(); --it )
+        {
+          sum += *it;
+          ++cnt;
+        }
+      REQUIRE( sum == Approx(refSum) );
+    }
+  
+  SECTION( "Testing constant reverse circulators" )
+    {
+      // Reference sum
+      Value refSum = 0;
+      for ( Image::ConstIterator it = refImage.begin(), it_end = refImage.end(); it != it_end; ++it )
+        {
+          refSum += 2 * (*it);
+        }
+      
+      // Sum in forward way
+      const Range range = image.range();
+      Value sum = 0;
+      cnt = 1;
+      for ( Range::ConstReverseCirculator it = range.rc(); cnt <= 2*domain.size(); ++it )
+        {
+          sum += *it;
+          ++cnt;
+        }
+      REQUIRE( sum == Approx(refSum) );
+      REQUIRE( std::equal( refImage.rbegin(), refImage.rend(), range.rc() ) );
+
+      // Sum in backward way
+      sum = 0;
+      cnt = 1;
+      for ( Range::ConstReverseCirculator it = range.rc(); cnt <= 2*domain.size(); --it )
+        {
+          sum += *it;
+          ++cnt;
+        }
+      REQUIRE( sum == Approx(refSum) );
+
+      // Sum in forward way
+      ConstRange crange = image.constRange();
+      sum = 0;
+      cnt = 1;
+      for ( Range::ConstReverseCirculator it = crange.rc(); cnt <= 2*domain.size(); ++it )
+        {
+          sum += *it;
+          ++cnt;
+        }
+      REQUIRE( sum == Approx(refSum) );
+      REQUIRE( std::equal( refImage.rbegin(), refImage.rend(), crange.rc() ) );
+
+      // Sum in backward way
+      sum = 0;
+      cnt = 1;
+      for ( Range::ConstReverseCirculator it = crange.rc(); cnt <= 2*domain.size(); --it )
+        {
+          sum += *it;
+          ++cnt;
+        }
+      REQUIRE( sum == Approx(refSum) );
+    }
+
+  SECTION( "Testing mutable circulators in forward way" )
+    {
+      Range range = image.range();
+
+      cnt = 1;
+      for ( Range::Circulator it = range.c(); cnt <= 2*domain.size(); ++it )
+        {
+          *it += cnt++;
+        }
+
+      cnt = 1;
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it) + 2*cnt + domain.size());
+          ++cnt;
+        }
+
+      REQUIRE( std::equal( range.begin(), range.end(), refImage.begin() ) );
+    }
+  
+  SECTION( "Testing mutable circulators in backward way" )
+    {
+      Range range = image.range();
+
+      cnt = 1;
+      for ( Range::Circulator it = --range.c(); cnt <= 2*domain.size(); --it )
+        {
+          *it += cnt++;
+        }
+
+      cnt = 1;
+      for ( Domain::ConstReverseIterator it = domain.rbegin(), it_end = domain.rend(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it) + 2*cnt + domain.size());
+          ++cnt;
+        }
+
+      REQUIRE( std::equal( range.begin(), range.end(), refImage.begin() ) );
+    }
+  
+  SECTION( "Testing mutable reverse circulators in forward way" )
+    {
+      Range range = image.range();
+
+      cnt = 1;
+      for ( Range::ReverseCirculator it = range.rc(); cnt <= 2*domain.size(); ++it )
+        {
+          *it += cnt++;
+        }
+
+      cnt = 1;
+      for ( Domain::ConstReverseIterator it = domain.rbegin(), it_end = domain.rend(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it) + 2*cnt + domain.size());
+          ++cnt;
+        }
+
+      REQUIRE( std::equal( range.begin(), range.end(), refImage.begin() ) );
+    }
+  
+  SECTION( "Testing mutable reverse circulators in backward way" )
+    {
+      Range range = image.range();
+
+      cnt = 1;
+      for ( Range::ReverseCirculator it = --range.rc(); cnt <= 2*domain.size(); --it )
+        {
+          *it += cnt++;
+        }
+
+      cnt = 1;
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it) + 2*cnt + domain.size());
+          ++cnt;
+        }
+
+      REQUIRE( std::equal( range.begin(), range.end(), refImage.begin() ) );
+    }
 }
 
