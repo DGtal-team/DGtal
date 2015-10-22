@@ -79,7 +79,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
       const Range range = image.range();
       REQUIRE( range.end() - range.begin(aPoint) == domain.size() - Linearizer::getIndex(aPoint, domain) );
       REQUIRE( std::equal( range.begin(aPoint), range.end(), refImage.begin() + Linearizer::getIndex(aPoint, domain) ) );
-      
+
       ConstRange crange = image.constRange();
       REQUIRE( crange.end() - crange.begin(aPoint) == domain.size() - Linearizer::getIndex(aPoint, domain) );
       REQUIRE( std::equal( crange.begin(aPoint), crange.end(), refImage.begin() + Linearizer::getIndex(aPoint, domain) ) );
@@ -105,7 +105,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
 
       REQUIRE( ( std::equal(range.begin(), range.end(), refImage.begin()) ) );
     }
-  
+
   SECTION( "Testing mutable forward iterators from a point" )
     {
       Range range = image.range();
@@ -143,12 +143,12 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
       const Range range = image.range();
       REQUIRE( range.rend() - range.rbegin(aPoint) == Linearizer::getIndex(aPoint, domain) + 1 );
       REQUIRE( std::equal( range.rbegin(aPoint), range.rend(), refImage.rbegin() + (domain.size() - Linearizer::getIndex(aPoint, domain) - 1) ) );
-      
+
       ConstRange crange = image.constRange();
       REQUIRE( crange.rend() - crange.rbegin(aPoint) == Linearizer::getIndex(aPoint, domain) + 1 );
       REQUIRE( std::equal( crange.rbegin(aPoint), crange.rend(), refImage.rbegin() + (domain.size() - Linearizer::getIndex(aPoint, domain) - 1) ) );
     }
-  
+
   SECTION( "Testing mutable reverse iterators" )
     {
       Range range = image.range();
@@ -169,7 +169,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
 
       REQUIRE( ( std::equal(range.rbegin(), range.rend(), refImage.rbegin()) ) );
     }
-  
+
   SECTION( "Testing mutable reverse iterators from a point" )
     {
       Range range = image.range();
@@ -207,7 +207,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
 
       REQUIRE( ( std::equal(range.begin(), range.end(), refImage.begin()) ) );
     }
-  
+
   SECTION( "Testing forward output iterators from a point" )
     {
       Range range = image.range();
@@ -239,7 +239,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
 
       REQUIRE( ( std::equal(range.rbegin(), range.rend(), refImage.rbegin()) ) );
     }
-  
+
   SECTION( "Testing reverse output iterators from a point" )
     {
       Range range = image.range();
@@ -252,7 +252,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
         }
 
       std::copy( refImage.rbegin() + (domain.size() - Linearizer::getIndex(aPoint, domain) - 1), refImage.rend(), range.routputIterator(aPoint) );
-      
+
       REQUIRE( ( std::equal(range.rbegin(), range.rend(), refImage.rbegin()) ) );
     }
 
@@ -264,7 +264,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
         {
           refSum += 2 * (*it);
         }
-      
+
       // Sum in forward way
       const Range range = image.range();
       Value sum = 0;
@@ -309,7 +309,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
         }
       REQUIRE( sum == Approx(refSum) );
     }
-  
+
   SECTION( "Testing constant reverse circulators" )
     {
       // Reference sum
@@ -318,7 +318,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
         {
           refSum += 2 * (*it);
         }
-      
+
       // Sum in forward way
       const Range range = image.range();
       Value sum = 0;
@@ -383,7 +383,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
 
       REQUIRE( std::equal( range.begin(), range.end(), refImage.begin() ) );
     }
-  
+
   SECTION( "Testing mutable circulators in backward way" )
     {
       Range range = image.range();
@@ -403,7 +403,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
 
       REQUIRE( std::equal( range.begin(), range.end(), refImage.begin() ) );
     }
-  
+
   SECTION( "Testing mutable reverse circulators in forward way" )
     {
       Range range = image.range();
@@ -423,7 +423,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
 
       REQUIRE( std::equal( range.begin(), range.end(), refImage.begin() ) );
     }
-  
+
   SECTION( "Testing mutable reverse circulators in backward way" )
     {
       Range range = image.range();

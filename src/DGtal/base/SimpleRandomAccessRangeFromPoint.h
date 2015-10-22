@@ -97,7 +97,7 @@ namespace DGtal
 
       typedef DGtal::Circulator<ConstIterator> ConstCirculator;
       typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
-      
+
       // ------------------------- standard services --------------------------------
 
       /**
@@ -216,7 +216,7 @@ namespace DGtal
         return Iterator ( myBegin ) + myDistance ( aPoint );
       }
 
-       /**
+      /**
        * Iterator service.
        * @return begin iterator
        */
@@ -292,8 +292,6 @@ namespace DGtal
         return ReverseOutputIterator ( myBegin + myDistance ( aPoint ) + 1 ) ;
       }
 
-
-
       /**
        * Iterator service.
        * @return rbegin iterator
@@ -335,7 +333,7 @@ namespace DGtal
 
       /**
        * Iterator service.
-      * @param aPoint a Point
+       * @param aPoint a Point
        * @return rbegin iterator at aPoint
        */
       ConstReverseIterator rbegin ( const Point &aPoint ) const
@@ -370,7 +368,7 @@ namespace DGtal
       {
         return ReverseCirculator ( this->c() );
       }
-      
+
       /**
        * Constant circulator service.
        * @return a constant circulator
