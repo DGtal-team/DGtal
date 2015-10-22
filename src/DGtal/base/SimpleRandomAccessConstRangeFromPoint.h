@@ -227,7 +227,7 @@ namespace DGtal
        */
       ConstReverseIterator rbegin ( const Point &aPoint ) const
       {
-        return ConstReverseIterator ( this->end() + myDistance ( aPoint ) );
+        return ConstReverseIterator ( myBegin + myDistance ( aPoint ) + 1 );
       }
 
 
@@ -237,7 +237,7 @@ namespace DGtal
        */
       ConstReverseIterator rend() const
       {
-        return ConstReverseIterator ( this->begin() );
+        return ConstReverseIterator ( myBegin );
       }
 
       /**
