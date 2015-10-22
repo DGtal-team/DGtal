@@ -55,12 +55,12 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
   Image refImage(domain);
 
   // Initialization
-  const double electricity = 1.21; // gigawatts. Great Scott!
+  const double hour = 4.29; // Oups
   std::size_t cnt = 0;
   for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end; ++it, ++cnt )
     {
-      image.setValue(*it, cnt*electricity);
-      refImage.setValue(*it, cnt*electricity);
+      image.setValue(*it, cnt*hour);
+      refImage.setValue(*it, cnt*hour);
     }
 
   SECTION( "Testing constant forward iterators" )
@@ -88,15 +88,19 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
   SECTION( "Testing mutable forward iterators" )
     {
       Range range = image.range();
+      REQUIRE( range.end() - range.begin() == domain.size() );
 
+      cnt = 1;
       for ( Range::Iterator it = range.begin(), it_end = range.end(); it != it_end; ++it )
         {
-          *it += 1;
+          *it += cnt++;
         }
 
+      cnt = 1;
       for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end; ++it )
         {
-          refImage.setValue( *it, refImage(*it)+1 );
+          refImage.setValue( *it, refImage(*it)+cnt );
+          ++cnt;
         }
 
       REQUIRE( ( std::equal(range.begin(), range.end(), refImage.begin()) ) );
@@ -105,15 +109,19 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
   SECTION( "Testing mutable forward iterators from a point" )
     {
       Range range = image.range();
+      REQUIRE( range.end() - range.begin(aPoint) == domain.size() - Linearizer::getIndex(aPoint, domain) );
 
+      cnt = 1;
       for ( Range::Iterator it = range.begin(aPoint), it_end = range.end(); it != it_end; ++it )
         {
-          *it += 1;
+          *it += cnt++;
         }
 
+      cnt = 1;
       for ( Domain::ConstIterator it = domain.begin(aPoint), it_end = domain.end(); it != it_end; ++it )
         {
-          refImage.setValue( *it, refImage(*it)+1 );
+          refImage.setValue( *it, refImage(*it)+cnt );
+          ++cnt;
         }
 
       REQUIRE( ( std::equal(range.begin(), range.end(), refImage.begin()) ) );
@@ -129,6 +137,125 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
       REQUIRE( crange.rend() - crange.rbegin() == domain.size() );
       REQUIRE( ( std::equal(crange.rbegin(), crange.rend(), refImage.rbegin()) ) );
     }
+
+  SECTION( "Testing constant reverse iterators from a point" )
+    {
+      const Range range = image.range();
+      REQUIRE( range.rend() - range.rbegin(aPoint) == Linearizer::getIndex(aPoint, domain) + 1 );
+      REQUIRE( std::equal( range.rbegin(aPoint), range.rend(), refImage.rbegin() + (domain.size() - Linearizer::getIndex(aPoint, domain) - 1) ) );
+      
+      ConstRange crange = image.constRange();
+      REQUIRE( crange.rend() - crange.rbegin(aPoint) == Linearizer::getIndex(aPoint, domain) + 1 );
+      REQUIRE( std::equal( crange.rbegin(aPoint), crange.rend(), refImage.rbegin() + (domain.size() - Linearizer::getIndex(aPoint, domain) - 1) ) );
+    }
+  
+  SECTION( "Testing mutable reverse iterators" )
+    {
+      Range range = image.range();
+      REQUIRE( range.rend() - range.rbegin() == domain.size() );
+
+      cnt = 1;
+      for ( Range::ReverseIterator it = range.rbegin(), it_end = range.rend(); it != it_end; ++it )
+        {
+          *it += cnt++;
+        }
+
+      cnt = 1;
+      for ( Domain::ConstReverseIterator it = domain.rbegin(), it_end = domain.rend(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it)+cnt );
+          ++cnt;
+        }
+
+      REQUIRE( ( std::equal(range.rbegin(), range.rend(), refImage.rbegin()) ) );
+    }
+  
+  SECTION( "Testing mutable reverse iterators from a point" )
+    {
+      Range range = image.range();
+      REQUIRE( range.rend() - range.rbegin(aPoint) == Linearizer::getIndex(aPoint, domain) + 1 );
+
+      cnt = 1;
+      for ( Range::ReverseIterator it = range.rbegin(aPoint), it_end = range.rend(); it != it_end; ++it )
+        {
+          *it += cnt++;
+        }
+
+
+      cnt = 1;
+      for ( Domain::ConstReverseIterator it = domain.rbegin(aPoint), it_end = domain.rend(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it)+cnt );
+          ++cnt;
+        }
+
+      REQUIRE( ( std::equal(range.rbegin(), range.rend(), refImage.rbegin()) ) );
+    }
+
+  SECTION( "Testing forward output iterators" )
+    {
+      Range range = image.range();
+
+      cnt = 1;
+      for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it)+cnt );
+          ++cnt;
+        }
+
+      std::copy( refImage.begin(), refImage.end(), range.outputIterator() );
+
+      REQUIRE( ( std::equal(range.begin(), range.end(), refImage.begin()) ) );
+    }
+  
+  SECTION( "Testing forward output iterators from a point" )
+    {
+      Range range = image.range();
+
+      cnt = 1;
+      for ( Domain::ConstIterator it = domain.begin(aPoint), it_end = domain.end(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it)+cnt );
+          ++cnt;
+        }
+
+      std::copy( refImage.begin() + Linearizer::getIndex(aPoint, domain), refImage.end(), range.outputIterator(aPoint) );
+
+      REQUIRE( ( std::equal(range.begin(), range.end(), refImage.begin()) ) );
+    }
+  
+  SECTION( "Testing reverse output iterators" )
+    {
+      Range range = image.range();
+
+      cnt = 1;
+      for ( Domain::ConstReverseIterator it = domain.rbegin(), it_end = domain.rend(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it)+cnt );
+          ++cnt;
+        }
+
+      std::copy( refImage.rend(), refImage.rbegin(), range.routputIterator() );
+
+      REQUIRE( ( std::equal(range.rbegin(), range.rend(), refImage.rbegin()) ) );
+    }
+  
+  SECTION( "Testing reverse output iterators from a point" )
+    {
+      Range range = image.range();
+
+      cnt = 1;
+      for ( Domain::ConstReverseIterator it = domain.rbegin(aPoint), it_end = domain.rend(); it != it_end; ++it )
+        {
+          refImage.setValue( *it, refImage(*it)+cnt );
+          ++cnt;
+        }
+
+      std::copy( refImage.rbegin() - (domain.size() - Linearizer::getIndex(aPoint, domain) - 1), refImage.rend(), range.routputIterator(aPoint) );
+      
+      REQUIRE( ( std::equal(range.rbegin(), range.rend(), refImage.rbegin()) ) );
+    }
+
 
 }
 

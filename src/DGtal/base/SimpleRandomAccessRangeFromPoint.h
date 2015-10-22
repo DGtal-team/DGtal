@@ -256,7 +256,7 @@ namespace DGtal
 
       /**
        * OutputIterator service.
-       * @return an output itertor on the first elements
+       * @return an output iterator on the first elements
        */
       OutputIterator outputIterator()
       {
@@ -266,7 +266,7 @@ namespace DGtal
       /**
        * OutputIterator service.
        * @param aPoint a point
-       * @return an output itertor on the point
+       * @return an output iterator on the point
        */
       OutputIterator outputIterator ( const Point &aPoint )
       {
@@ -279,17 +279,17 @@ namespace DGtal
       */
       ReverseOutputIterator routputIterator()
       {
-        return ReverseOutputIterator ( myBegin );
+        return ReverseOutputIterator ( this->end() );
       }
 
       /**
        * ReverseOutputIterator service.
        * @param aPoint a point
-       * @return an output itertor on the point
+       * @return an output iterator on the point
        */
       ReverseOutputIterator routputIterator ( const Point &aPoint )
       {
-        return ReverseOutputIterator ( myBegin ) + myDistance ( aPoint ) ;
+        return ReverseOutputIterator ( myBegin + myDistance ( aPoint ) + 1 ) ;
       }
 
 
@@ -310,7 +310,7 @@ namespace DGtal
        */
       ReverseIterator rbegin ( const Point &aPoint )
       {
-        return ReverseIterator ( this->end() + myDistance ( aPoint ) );
+        return ReverseIterator ( myBegin + myDistance ( aPoint ) + 1 );
       }
 
 
@@ -320,7 +320,7 @@ namespace DGtal
        */
       ReverseIterator rend()
       {
-        return ReverseIterator ( this->begin() );
+        return ReverseIterator ( myBegin );
       }
 
 
@@ -340,7 +340,7 @@ namespace DGtal
        */
       ConstReverseIterator rbegin ( const Point &aPoint ) const
       {
-        return ConstReverseIterator ( this->end() + myDistance ( aPoint ) );
+        return ConstReverseIterator ( myBegin + myDistance ( aPoint ) + 1 );
       }
 
 
@@ -350,7 +350,7 @@ namespace DGtal
        */
       ConstReverseIterator rend() const
       {
-        return ConstReverseIterator ( this->begin() );
+        return ConstReverseIterator ( myBegin );
       }
 
       /**
