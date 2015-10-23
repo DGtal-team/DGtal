@@ -77,15 +77,16 @@ DGtal::AlphaThickSegmentComputer< TInputPoint,
 template < typename TInputPoint, typename TConstIterator>
 inline
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
-AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ): myPointContainer(other.myPointContainer),
+AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ): myBegin(other.myBegin), myEnd(other.myEnd),
+                                                                      myPointContainer(other.myPointContainer),
                                                                       myMaximalThickness(other.myMaximalThickness),
                                                                       myThicknessCompPrecision(other.myThicknessCompPrecision),
                                                                       myThicknessDefinition(other.myThicknessDefinition),
                                                                       myState(other.myState),
                                                                       _state(other._state), 
                                                                       myIsStoringPoints(other.myIsStoringPoints),
-                                                                      myNbPointsAddedFromIterators(other.myNbPointsAddedFromIterators), 
-                                                                     myBegin(other.myBegin), myEnd(other.myEnd)
+                                                                      myNbPointsAddedFromIterators(other.myNbPointsAddedFromIterators) 
+   
 { 
 }
 
