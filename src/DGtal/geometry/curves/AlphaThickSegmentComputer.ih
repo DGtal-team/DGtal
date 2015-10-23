@@ -66,9 +66,9 @@ DGtal::AlphaThickSegmentComputer< TInputPoint,
                                                                              const double thickCompPrecision): 
   myBegin(), myEnd()
 { 
-  myThicknessDefinition = thicknessDefinition;
   myThicknessCompPrecision = thickCompPrecision;
-  myMaximalThickness = maximalThickness;
+  myMaximalThickness = maximalThickness; 
+  myThicknessDefinition = thicknessDefinition;
 }
 
 
@@ -77,14 +77,15 @@ DGtal::AlphaThickSegmentComputer< TInputPoint,
 template < typename TInputPoint, typename TConstIterator>
 inline
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
-AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ):myMaximalThickness(other.myMaximalThickness),
-                                                                     myThicknessDefinition(other.myThicknessDefinition),
-                                                                     myThicknessCompPrecision(other.myThicknessCompPrecision),
-                                                                     myPointContainer(other.myPointContainer),
-                                                                     myState(other.myState), _state(other._state), 
-                                                                     myIsStoringPoints(other.myIsStoringPoints),
-                                                                     myNbPointsAddedFromIterators(other.myNbPointsAddedFromIterators), 
-  myBegin(other.myBegin), myEnd(other.myEnd)
+AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ): myPointContainer(other.myPointContainer),
+                                                                      myMaximalThickness(other.myMaximalThickness),
+                                                                      myThicknessCompPrecision(other.myThicknessCompPrecision),
+                                                                      myThicknessDefinition(other.myThicknessDefinition),
+                                                                      myState(other.myState),
+                                                                      _state(other._state), 
+                                                                      myIsStoringPoints(other.myIsStoringPoints),
+                                                                      myNbPointsAddedFromIterators(other.myNbPointsAddedFromIterators), 
+                                                                     myBegin(other.myBegin), myEnd(other.myEnd)
 { 
 }
 
