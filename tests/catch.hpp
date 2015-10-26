@@ -2066,17 +2066,50 @@ namespace Catch {
     resultBuilder.react();
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
-    do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
-        try { \
-            ( __catchResult <= expr ).endExpression(); \
-        } \
-        catch( ... ) { \
-            __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
-        } \
-        INTERNAL_CATCH_REACT( __catchResult ) \
-    } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+#ifdef __GNUC__
+#  include <features.h>
+#  if __GNUC_PREREQ(4, 8)
+#    define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
+       do { \
+           Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+           try { \
+               ( __catchResult <= expr ).endExpression(); \
+           } \
+           catch( ... ) { \
+               __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
+           } \
+           INTERNAL_CATCH_REACT( __catchResult ) \
+       } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+#  else
+#    define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
+       _Pragma("GCC diagnostic push") \
+       _Pragma("GCC diagnostic ignored \"-Wparentheses\"") \
+       do { \
+           Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+           try { \
+               ( __catchResult <= expr ).endExpression(); \
+           } \
+           catch( ... ) { \
+               __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
+           } \
+           INTERNAL_CATCH_REACT( __catchResult ) \
+       } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look \
+       _Pragma("GCC diagnostic pop")
+#  endif
+#else
+#  define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
+     do { \
+         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+         try { \
+             ( __catchResult <= expr ).endExpression(); \
+         } \
+         catch( ... ) { \
+             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
+         } \
+         INTERNAL_CATCH_REACT( __catchResult ) \
+     } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+#endif  
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
