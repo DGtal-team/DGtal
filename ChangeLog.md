@@ -2,12 +2,22 @@
 # DGtal 0.9.1
 
 ## New Features / Critical Changes
+
+- *Configuration/General*
+ - DGtal core now compiles on Microsoft Windows, Visual Studio. Many
+   issues have been fixed for compatibility with 'cl' compiler. (David
+   Coeurjolly, [XXX](XXXX))
+
 - *Geometry Package*
  - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
    the width (vertical/horizontal or Euclidean) of a convex hull.
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
 ## Changes
+
+- *Base*
+ - Deprecated OldAlias, OldClone, OldConstAlias have been removed. (David
+   Coeurjolly, [XXX](XXXX))
 
 ## Bug Fixes
 
