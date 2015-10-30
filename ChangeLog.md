@@ -13,7 +13,11 @@
 
 - *Configuration/General*
  - catch unit test framework upgraded to the develop version. (David
- Coeurjolly, [#10XX](https://github.com/DGtal-team/DGtal/pull/1052))
+ Coeurjolly, [#1055](https://github.com/DGtal-team/DGtal/pull/1055))
+ - Fixing boost include path issue when building tools using DGtal and
+   its cmake DGtalConfig.cmake. (David Coeurjolly,
+   [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
+ 
 
 
 
