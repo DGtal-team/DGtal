@@ -80,11 +80,12 @@ namespace DGtal
     typedef THashKey HashKey;
     typedef TPoint Point;
     typedef typename Point::Coordinate Coordinate;
-    static const Dimension dimension ;    
 
     BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber<THashKey> ));
     BOOST_CONCEPT_ASSERT(( concepts::CIntegralNumber<THashKey> ));
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
+
+	BOOST_STATIC_CONSTANT(Dimension, dimension = TPoint::dimension);
 
     /**
      * Constructor

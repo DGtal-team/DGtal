@@ -58,6 +58,10 @@ namespace DGtal
   {
   public:  enum{ VALUE = X };
   };
+  template <int X > class POW<X, 0>
+  {
+  public:  enum { VALUE = 1 };
+  };
 
   /**
    * Template metaprogramming to compute at compilation time a log2.
