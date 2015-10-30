@@ -1238,9 +1238,13 @@ namespace Catch {
                         char const* secondArg = "" );
 
         template<typename T>
+        ExpressionLhs<T const&> operator >> ( T const& operand );
+        ExpressionLhs<bool> operator >> ( bool value );
+
+        template<typename T>
         ExpressionLhs<T const&> operator <= ( T const& operand );
         ExpressionLhs<bool> operator <= ( bool value );
-
+        
         template<typename T>
         ResultBuilder& operator << ( T const& value ) {
             m_stream.oss << value;
@@ -1899,6 +1903,15 @@ namespace Catch {
     inline ExpressionLhs<bool> ResultBuilder::operator <= ( bool value ) {
         return ExpressionLhs<bool>( *this, value );
     }
+    
+    template<typename T>
+    inline ExpressionLhs<T const&> ResultBuilder::operator >> ( T const& operand ) {
+        return ExpressionLhs<T const&>( *this, operand );
+    }
+
+    inline ExpressionLhs<bool> ResultBuilder::operator >> ( bool value ) {
+        return ExpressionLhs<bool>( *this, value );
+    }
 
 } // namespace Catch
 
@@ -2066,9 +2079,19 @@ namespace Catch {
     resultBuilder.react();
 
 ///////////////////////////////////////////////////////////////////////////////
-#ifdef __GNUC__
-#  include <features.h>
-#  if __GNUC_PREREQ(4, 8)
+#ifdef __GCC__
+#    define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
+       do { \
+           Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+           try { \
+               ( __catchResult >> expr ).endExpression(); \
+           } \
+           catch( ... ) { \
+               __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
+           } \
+           INTERNAL_CATCH_REACT( __catchResult ) \
+       } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
+#else
 #    define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
        do { \
            Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
@@ -2080,36 +2103,7 @@ namespace Catch {
            } \
            INTERNAL_CATCH_REACT( __catchResult ) \
        } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
-#  else
-#    define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
-       _Pragma("GCC diagnostic push") \
-       _Pragma("GCC diagnostic ignored \"-Wparentheses\"") \
-       do { \
-           Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
-           try { \
-               ( __catchResult <= expr ).endExpression(); \
-           } \
-           catch( ... ) { \
-               __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
-           } \
-           INTERNAL_CATCH_REACT( __catchResult ) \
-       } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look \
-       _Pragma("GCC diagnostic pop")
-#  endif
-#else
-#  define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
-     do { \
-         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
-         try { \
-             ( __catchResult <= expr ).endExpression(); \
-         } \
-         catch( ... ) { \
-             __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
-         } \
-         INTERNAL_CATCH_REACT( __catchResult ) \
-     } while( Catch::isTrue( false && (expr) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
-#endif  
-
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( expr, resultDisposition, macroName ) \
