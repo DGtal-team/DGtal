@@ -193,7 +193,11 @@ IF(WITH_C11)
   ELSE()
     MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler of disable this WITH_C11 option.")
   ENDIF()
+ELSE(WITH_C11)
+    ADD_DEFINITIONS("-DCATCH_CONFIG_NO_CPP11 ")  
 ENDIF(WITH_C11)
+
+
 
 # -----------------------------------------------------------------------------
 # Look for GMP (The GNU Multiple Precision Arithmetic Library)
