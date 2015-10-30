@@ -691,14 +691,6 @@ namespace functors
  };
 
 
-
-
-
-
-
-
-
-
   /**
    * Description of template class 'FlipDomainAxis' <p> \brief Aim:
    * Functor that flips the domain coordinate system from some 
