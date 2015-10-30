@@ -2079,12 +2079,15 @@ namespace Catch {
     resultBuilder.react();
 
 ///////////////////////////////////////////////////////////////////////////////
-#ifdef __GCC__
+#ifdef __clang__
 #    define INTERNAL_CATCH_TEST( expr, resultDisposition, macroName ) \
        do { \
            Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
            try { \
+               _Pragma("clang diagnostic push") \
+               _Pragma("clang diagnostic ignored \"-Woverloaded-shift-op-parentheses\"") \
                ( __catchResult >> expr ).endExpression(); \
+               _Pragma("clang diagnostic pop") \
            } \
            catch( ... ) { \
                __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
@@ -2096,7 +2099,7 @@ namespace Catch {
        do { \
            Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
            try { \
-               ( __catchResult <= expr ).endExpression(); \
+               ( __catchResult >> expr ).endExpression(); \
            } \
            catch( ... ) { \
                __catchResult.useActiveException( Catch::ResultDisposition::Normal ); \
