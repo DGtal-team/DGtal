@@ -23,8 +23,8 @@ OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_HDF5 "With HDF5." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt4 required)." OFF)
 OPTION(WITH_PATATE "With Patate library for geometry OFF (Eigen required)." processing)
-OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
 OPTION(WITH_QT5 "Using Qt5." OFF)
+OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
 
 #----------------------------------
 # Checking clang version on APPLE
