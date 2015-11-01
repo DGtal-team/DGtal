@@ -287,6 +287,7 @@ namespace DGtal
     * @param it an iterator pointing at the beginning of a range of (arbitrary) cells.
     * @param itE an iterator pointing after the end of a range of (arbitrary) cells.
     * @param data any value.
+    * @tparam CellConstIterator any model of a forward const iterator on Cell.
     */
     template <typename CellConstIterator>
     void insertCells( CellConstIterator it, CellConstIterator itE, const Data& data = Data() );
@@ -300,6 +301,7 @@ namespace DGtal
     * @param it an iterator pointing at the beginning of a range of (arbitrary) cells.
     * @param itE an iterator pointing after the end of a range of (arbitrary) cells.
     * @param data any value.
+    * @tparam CellConstIterator any model of a forward const iterator on Cell.
     */
     template <typename CellConstIterator>
     void insertCells( Dimension d, CellConstIterator it, CellConstIterator itE, const Data& data = Data() );
@@ -316,6 +318,59 @@ namespace DGtal
     * @return 'true' if and only if \a aCell belongs to this complex.
     */
     bool belongs( Dimension d, const Cell& aCell ) const;
+
+    /**
+    * Erases cell \a aCell from the complex.
+    * @param aCell any cell valid in the Khalimsky space associated to the complex.
+    * @return the number of cells effectively removed from the cubical complex.
+    */
+    Size eraseCell( const Cell& aCell );
+
+    /**
+    * Erases cell \a aCell from the complex.
+    * @param d the dimension of cell \a aCell.
+    * @param aCell any cell valid in the Khalimsky space associated to the complex.
+    * @return the number of cells effectively removed from the cubical complex.
+    */
+    Size eraseCell( Dimension d, const Cell& aCell );
+
+    /**
+    * Erases cell pointed by iterator \a it.
+    * @param it any valid iterator on a cell of this complex.
+    */
+    void eraseCell( CellMapIterator it );
+
+    /**
+    * Erases cells in range [\a it, \a itE).
+    * @param it any valid iterator on the first element of range of cells of this complex.
+    * @param itE any valid iterator after the last element of range of cells of this complex.
+    */
+    void eraseCells( CellMapIterator it, CellMapIterator itE );
+
+    /**
+    * Erases the cells stored in range [it,itE) from the
+    * CubicalComplex. 
+    *
+    * @param it an iterator pointing at the beginning of a range of (arbitrary) cells.
+    * @param itE an iterator pointing after the end of a range of (arbitrary) cells.
+    * @return the number of cells effectively removed from the cubical complex.
+    * @tparam CellConstIterator any model of a forward const iterator on Cell.
+    */
+    template <typename CellConstIterator>
+    Size eraseCells( CellConstIterator it, CellConstIterator itE );
+
+    /**
+    * Erases the cells of dimension \a d stored in range [it,itE) from the
+    * CubicalComplex. 
+    *
+    * @param d the dimension of every cell in range [it,itE).
+    * @param it an iterator pointing at the beginning of a range of (arbitrary) cells.
+    * @param itE an iterator pointing after the end of a range of (arbitrary) cells.
+    * @return the number of cells effectively removed from the cubical complex.
+    * @tparam CellConstIterator any model of a forward const iterator on Cell.
+    */
+    template <typename CellConstIterator>
+    Size eraseCells( Dimension d, CellConstIterator it, CellConstIterator itE );
 
     /**
     * Makes CubicalComplex a functor Cell -> boolean, which represents
@@ -485,7 +540,7 @@ namespace DGtal
     */
     CellMapIterator find( Dimension d, const Cell& aCell );
 
-    // ----------------------- local operations for extracting specific subcomplexes --------------------------------
+    // ---------- local operations for extracting specific subcomplexes ---------------
   public:
 
     /**
@@ -499,7 +554,8 @@ namespace DGtal
     * is (locally) closed, so this speeds up this method, otherwise, the
     * complex may be arbitrary.
     *
-    * @return the collection of cells that defines the boundary of \a aCell, i.e. its proper faces.
+    * @return the collection of cells that defines the boundary of \a
+    * aCell, i.e. its proper faces.
     *
     * @note all returned cells belong to this complex, while it is
     * not compulsory for \a aCell to belong to it.
@@ -524,23 +580,6 @@ namespace DGtal
     */
     Cells cellCoBoundary( const Cell& aCell, bool hintOpen = false ) const;
 
-    /**
-    * Returns the ring of the cell \a aCell as a cell collection,
-    * i.e. the closure of the cell star minus the cell all the cells that are proper co-faces of \a aCell. Generally
-    * faster than method \ref coFaces, which outputs cells with an
-    * output iterator.
-    *
-    * @param aCell any cell valid in the Khalimsky space associated to the complex. 
-    * @param hintOpen when 'true', this hint tells that the complex
-    * is (locally) open, so this speeds up this method, otherwise, the
-    * complex may be arbitrary.
-    *
-    * @return the collection of cells that defines the star of \a aCell, i.e. its proper co-faces.
-    *
-    * @note all returned cells belong to this complex, while it is
-    * not compulsory for \a aCell to belong to it.
-    */
-    Cells cellStar( const Cell& aCell, bool hintOpen = false ) const;
 
     // ----------------------- Standard subcomplexes --------------------------------------
   public:
