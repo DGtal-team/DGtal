@@ -9,6 +9,10 @@
 
 ## Changes
 
+- *IO*
+ - Small improvements of default settings in Viewer3D. (David
+   Coeurjolly, [](https://))
+
 ## Bug Fixes
 
 - *Configuration/General*
