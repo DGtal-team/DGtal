@@ -230,6 +230,74 @@ insertCells( Dimension d, CellConstIterator it, CellConstIterator itE, const Dat
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+eraseCell( const Cell& aCell )
+{
+  return erase( myKSpace->uDim( aCell ), aCell );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+eraseCell( Dimension d, const Cell& aCell )
+{
+  return (Size) myCells[ d ].erase( aCell );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+eraseCell( CellMapIterator it )
+{
+  Dimension d = myKSpace->uDim( it->first );
+  myCells[ d ].erase( it );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+eraseCells( CellMapIterator it, CellMapIterator itE )
+{
+  for ( ; it != itE; ++it )
+    eraseCell( it );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+template <typename CellConstIterator>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+eraseCells( CellConstIterator it, CellConstIterator itE )
+{
+  Size nb = 0;
+  for ( ; it != itE; ++it )
+    nb += eraseCell( *it );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+template <typename CellConstIterator>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+eraseCells( Dimension d, CellConstIterator it, CellConstIterator itE )
+{
+  Size nb = 0;
+  for ( ; it != itE; ++it )
+    nb += eraseCell( d, *it );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 belongs( const Cell& aCell ) const
