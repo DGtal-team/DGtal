@@ -10,8 +10,8 @@
 ## Changes
 
 - *IO*
- - Small improvements of default settings in Viewer3D. (David
-   Coeurjolly, [](https://))
+ - Minor improvements of default settings in Viewer3D. (David
+   Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
 
 ## Bug Fixes
 
