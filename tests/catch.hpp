@@ -1242,10 +1242,6 @@ namespace Catch {
         ExpressionLhs<bool> operator >> ( bool value );
 
         template<typename T>
-        ExpressionLhs<T const&> operator <= ( T const& operand );
-        ExpressionLhs<bool> operator <= ( bool value );
-        
-        template<typename T>
         ResultBuilder& operator << ( T const& value ) {
             m_stream.oss << value;
             return *this;
@@ -1895,15 +1891,6 @@ private:
 
 namespace Catch {
 
-    template<typename T>
-    inline ExpressionLhs<T const&> ResultBuilder::operator <= ( T const& operand ) {
-        return ExpressionLhs<T const&>( *this, operand );
-    }
-
-    inline ExpressionLhs<bool> ResultBuilder::operator <= ( bool value ) {
-        return ExpressionLhs<bool>( *this, value );
-    }
-    
     template<typename T>
     inline ExpressionLhs<T const&> ResultBuilder::operator >> ( T const& operand ) {
         return ExpressionLhs<T const&>( *this, operand );
