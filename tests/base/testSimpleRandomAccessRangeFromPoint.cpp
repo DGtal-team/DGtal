@@ -361,7 +361,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
           sum += *it;
           ++cnt;
         }
-      REQUIRE( sum == Approx(refSum) );
+      REQUIRE(( sum == Approx(refSum) ));
     }
 
   SECTION( "Testing mutable circulators in forward way" )
