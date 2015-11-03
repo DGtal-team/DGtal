@@ -147,7 +147,9 @@ namespace DGtal
      * Constructor
      */
     Viewer3D() :QGLViewer(), Display3D<Space, KSpace>()
-    {};
+    {
+      resize(800,600);
+    };
 
     /**
      *Constructor with a khalimsky space
