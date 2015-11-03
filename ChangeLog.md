@@ -16,13 +16,13 @@
 ## Bug Fixes
 
 - *Configuration/General*
- - catch unit test framework upgraded to the develop version.
-   (David Coeurjolly, [#1055](https://github.com/DGtal-team/DGtal/pull/1055))
+ - catch unit test framework upgraded to the develop version. (David
+ Coeurjolly, [#1055](https://github.com/DGtal-team/DGtal/pull/1055))
  - Fixing boost include path issue when building tools using DGtal and
    its cmake DGtalConfig.cmake. (David Coeurjolly,
    [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
- - Fixing parenthese warnings in Catch. Waiting for an official fix.
-   (Roland Denis, [#1067](https://github.com/DGtal-team/DGtal/pull/1067))
+ 
+
 
 
 # DGtal 0.9
