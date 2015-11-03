@@ -13,6 +13,11 @@
  - Minor improvements of default settings in Viewer3D. (David
    Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
 
+ - New possibility to move the light source according to the mouse move in
+   Viewer3D.
+   (Bertrand Kerautret [#1070](https://github.com/DGtal-team/DGtal/pull/1070))
+
+
 ## Bug Fixes
 
 - *Configuration/General*
