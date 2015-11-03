@@ -871,7 +871,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_D, "Enable/Disable the two side face rendering." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
 #if !defined (QGLVIEWER_VERSION) || QGLVIEWER_VERSION < 0x020500
-  setMouseBindingDescription(Qt::ControlModifier|Qt::ShiftModifier + Qt::LeftButton, "move light source position (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination angle) of the light source).");
+  setMouseBindingDescription((Qt::ControlModifier|Qt::ShiftModifier) + Qt::LeftButton, "move light source position (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination angle) of the light source).");
 #else
   setMouseBindingDescription(Qt::ControlModifier|Qt::ShiftModifier, Qt::LeftButton, "move light source position (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination angle) of the light source).");
 #endif
