@@ -1,0 +1,133 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+@page moduleCubicalComplex  Cubical Complex
+
+@writers Jacques-Olivier Lachaud
+
+Part of the \ref packageTopology.
+  
+This part of the manual describes how to represent and process
+arbitrary cubical complexes. 
+
+@note Collapse operation is a backport from <a
+href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. \cite
+ImaGene 
+
+[TOC]
+
+
+The following programs are related to this documentation:
+cubical-complex-collapse.cpp, testCubicalComplex.cpp,
+
+@section dgtal_ccomplex_sec1  Introduction to cubical complexes
+
+We define a \b cubical \b complex \a C as a collection of cells living
+in some Khalimsky space. Two cells of \a C are \b incident if and only
+if they are incident in the Khalimsky space. 
+
+@note Contrarily to simplical complex, we do not require that all
+faces of a cell of \a K belong also to \a K.
+
+To create a cubical complex, we need to specify in which Khalimsky
+space it lives and also, optionally, the type of container used for
+storing cells. By default it is \c std::map but \c boost::unordered_map
+or \c std::unordered_map is also possible.
+
+\code
+using namespace DGtal;
+typedef KhalimskySpaceND<2,int>           KSpace; // ZxZ
+typedef std::map<Cell, CubicalCellData>   Map;    // each cell must store at least a CubicalCellData
+typedef CubicalComplex< KSpace, Map >     CC;     // the type of cubical complex
+
+KSpace K;                                         // The cellular grid space
+K.init( Point( 0,0 ), Point( 100,100 ), true );   // Limits of the grid space
+CC complex( K );                                  // The complex
+\endcode
+
+Cells may be inserted through methods CubicalComplex::insertCell and
+CubicalComplex::insertCells. Cells are easily created with a model of
+CCellularGridSpaceND, for instance by specifying Khalimsky coordinates
+(see \ref moduleCellularTopology). The small piece of code below creates a
+ring around a pixel.
+
+\code
+typedef KSpace::Point                     Point;   // the type of each digital point.
+complex.insertCell( 0, K.uCell( Point( 0, 0 ) ) ); // it is optional (but slightly faster)
+complex.insertCell( 1, K.uCell( Point( 1, 0 ) ) ); // to specify the dimension of the cell
+complex.insertCell( 0, K.uCell( Point( 2, 0 ) ) ); // at insertion.
+complex.insertCell( 1, K.uCell( Point( 2, 1 ) ) );
+complex.insertCell( 0, K.uCell( Point( 2, 2 ) ) );
+complex.insertCell( 1, K.uCell( Point( 1, 2 ) ) );
+complex.insertCell( 0, K.uCell( Point( 0, 2 ) ) );
+complex.insertCell( 1, K.uCell( Point( 0, 1 ) ) );
+trace.info() << "Euler number is " << complex.euler() << std::endl; // Should be 0
+\endcode
+
+Method CubicalComplex::insertCells accepts any range of iterators on
+cells as input, hence you may for instance directly create a cubical
+complex from a digital surface (see \ref moduleDigitalSurfaces).
+
+You have also methods to remove some cells (CubicalComplex::eraseCell,
+CubicalComplex::eraseCells) and methods to check if a cell belongs to
+the complex (CubicalComplex::belongs).
+
+@section dgtal_ccomplex_sec2  Incidence within a cubical complex
+
+Two cells of a cubical complex are incident if and only if they are
+incident in the Khalimsky space. From this relation, one can define
+faces, co-faces, as well as the boundary and co-boundary of a cell.
+
+You have methods to get the faces, the co-faces, the direct faces or
+co-faces of a cell \a c, which are outputed with an output iterator:
+
+- CubicalComplex::faces: outputs the faces of \a c, i.e. all cells of
+  lesser dimension than \a c and incident to \a c. You may specify
+  that the complex is closed (if it is, at least locally) to speed-up
+  this function.
+
+- CubicalComplex::directFaces: outputs the direct faces of \a c,
+  i.e. all cells of dimension one less than \a c and incident to \a
+  c. You may specify that the complex is closed (if it is, at least
+  locally) to speed-up this function.
+
+- CubicalComplex::coFaces: outputs the co-faces of \a c, i.e. all
+  cells of greater dimension than \a c and incident to \a c. You may
+  specify that the complex is open (if it is, at least locally) to
+  speed-up this function.
+
+- CubicalComplex::directCoFaces: outputs the direct co-faces of \a c,
+  i.e. all cells of dimension one more than \a c and incident to \a
+  c. You may specify that the complex is open (if it is, at least
+  locally) to speed-up this function.
+
+There are also versions of these methods that return the iterators on
+these cells, if you need to access them directly in the complex
+afterwards.
+
+If you wish to get a vector of cells that contains all the proper
+faces of some cell, then CubicalComplex::cellBoundary does the job. It
+is in general slightly faster than using CubicalComplex::faces.
+
+If you wish to get a vector of cells that contains all the proper
+co-faces of some cell, then CubicalComplex::cellCoBoundary does the
+job. Again it is in general slightly faster than using
+CubicalComplex::coFaces.
+
+@section dgtal_ccomplex_sec3  Closure, star and link of cells of a complex
+
+You have three methods to compute these "subcomplexes". In each case,
+you must give a set \a S (or any associative container) containing the
+cells for which you wish to compute the closure, star or link.
+
+Returns the closure of the cells in \a S within this complex,
+i.e. the smallest subcomplex that contains each cell in \a S.
+
+*/
+
+}
