@@ -1282,7 +1282,7 @@ namespace DGtal
     float myLightTheta; /// the light position (inclination)
     float myLightPhi; /// the light position (azimuth)
     float myLightR; /// the light position (distance)
-    
+    GLfloat myLightPosition [4]; // the light position in cartesian coordinates
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
 
