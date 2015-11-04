@@ -14,7 +14,7 @@
    Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
 
  - New possibility to move the light source using the mouse move in
-   Viewer3D.
+   Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on mac)).
    (Bertrand Kerautret [#1070](https://github.com/DGtal-team/DGtal/pull/1070))
 
 
