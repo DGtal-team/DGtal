@@ -697,7 +697,6 @@ DGtal::Viewer3D<Space, KSpace>::draw()
     {
       GLTextureImage &textureImg = myVectTextureImage.at(j);
       glPushName ( textureImg.myTextureName );
-      glEnable(GL_LIGHTING);
       glEnable(GL_TEXTURE_2D);
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
       glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
@@ -778,7 +777,6 @@ DGtal::Viewer3D<Space, KSpace>::draw()
  
    glPopMatrix();
    glPopMatrix();
-   drawLight(GL_LIGHT1);
 }
 
 
@@ -797,22 +795,24 @@ DGtal::Viewer3D<Space, KSpace>::isValid() const
   return true;
 }
 
-
-
-#if defined( max )
-#undef max
-#define _HAS_MSVC_MAX_ true
-#endif
-
-#if defined( min )
-#undef min
-#define _HAS_MSVC_MIN_ true
-#endif
-
 template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::init()
 {
+  GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+  GLfloat mat_shininess[] = { 50.0 };
+  GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+  glClearColor (0.0, 0.0, 0.0, 0.0);
+  glShadeModel (GL_SMOOTH);
+  
+  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+  glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+  
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_DEPTH_TEST);
+  
   Viewer3D<Space, KSpace>::myMeshDefaultLineWidth=10.0;
   myNbListe=0;
   myViewWire=false;
@@ -820,7 +820,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myGLScaleFactorY=1.0;
   myGLScaleFactorZ=1.0;
   myGLLineMinWidth=1.5;
-
+  setBackgroundColor ( QColor ( 217, 228, 255 ) );
   myIsDoubleFaceRendering=true;
   Viewer3D<Space, KSpace>::createNewCubeList ( );
   vector<typename Viewer3D<Space, KSpace>::LineD3D> listeLine;
@@ -866,14 +866,6 @@ DGtal::Viewer3D<Space, KSpace>::init()
 
   setManipulatedFrame ( new ManipulatedFrame() );
 }
-
-#if defined( _HAS_MSVC_MAX_ )
-#define max(A,B) ((A)>(B)?(A):(B))
-#endif
-
-#if defined( _HAS_MSVC_MIN_ )
-#define min(A,B) ((A)<(B)?(A):(B))
-#endif
 
 
 template< typename Space, typename KSpace>
@@ -1187,7 +1179,7 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
         }
       else
         {
-          setBackgroundColor ( QColor ( 51, 51, 51 ) );
+          setBackgroundColor ( QColor ( 217, 228, 255 ) );
         }
       updateGL();
     }

@@ -101,7 +101,7 @@ int main( int argc, char** argv )
 
 
   QApplication application(argc,argv);
-  Viewer3D<> viewer;
+  Viewer3D<> viewer (K);
   viewer.show();
 
 
