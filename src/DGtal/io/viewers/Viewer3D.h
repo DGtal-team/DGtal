@@ -1293,11 +1293,13 @@ namespace DGtal
     float myGLScaleFactorX;
     float myGLScaleFactorY;
     float myGLScaleFactorZ;
+
     // Used to apply interactive light rotation
-    float myLigthRotationStep;
-    int myRefMouseXPos;
-    int myRefMouseYPos;
-    bool myIsMovingLight;
+    float myLigthRotationStep; /// the angle rotation increment used for interactive light move
+    int myRefMouseXPos; /// the reference mouse x-position used to determince the light position change (azimuth)
+    int myRefMouseYPos; /// the reference mouse y-position used to determince the light position change (inclination)
+    bool myIsMovingLight; /// flag to display the ligth source when it is moved by the user
+
     /// Used to store all displayed images
     std::vector<TextureImage> myGSImageList;
     /// Used to store all the domains
