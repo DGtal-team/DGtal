@@ -877,7 +877,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
 #if !defined (QGLVIEWER_VERSION) || QGLVIEWER_VERSION < 0x020500
   setMouseBindingDescription((Qt::ControlModifier|Qt::ShiftModifier) + Qt::LeftButton, "move light source position defined in the main coordinate system (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
 #else
-  setMouseBindingDescription(Qt::ControlModifier|Qt::ShiftModifier, Qt::LeftButton, "move light source position (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
+  setMouseBindingDescription(Qt::ControlModifier|Qt::ShiftModifier, Qt::LeftButton, "move light source position defined in the main coordinate system (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
 #endif
 
 
