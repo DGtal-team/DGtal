@@ -70,7 +70,7 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
       REQUIRE( std::equal(range.begin(), range.end(), refImage.begin())  );
 
       ConstRange crange = image.constRange();
-      REQUIRE(( crange.end() - crange.begin() == domain.size() ));
+      REQUIRE(( static_cast<Domain::Size>(crange.end() - crange.begin()) == domain.size() ));
       REQUIRE( std::equal(crange.begin(), crange.end(), refImage.begin()) );
     }
 
