@@ -8,6 +8,9 @@
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
 ## Changes
+- *Base Package*
+ - Enabling circulators in SimpleRandomAccessRangeFromPoint.
+   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
 
 - *IO*
  - Minor improvements of default settings in Viewer3D. (David
@@ -23,6 +26,10 @@
    [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
  
 
+
+- *Base Package*
+ - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
+   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
 
 
 # DGtal 0.9
