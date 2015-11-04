@@ -24,11 +24,12 @@ introduced by Debled-Rennesson \i etal \cite debledFuzzy2005 which
 handle noise or contour irregularities.
 
 
-We present here the recognition of alpha thick segments as described in
-\cite FaureTangential2008. From a maximal thickness, it permits the
-recognition of a thick segment with the possibility to take into
-accounts some noise. Moreover the segment can be detected from points
-which are not necessary connected or with floating-point.
+We present here the recognition of alpha thick segments as described
+in \cite debledFuzzy2005 and \cite FaureTangential2008. From a maximal
+thickness, it permits the recognition of a thick segment with the
+possibility to take into accounts some noise. Moreover the segment can
+be detected from points which are not necessary connected or with
+floating-point.
 
 @note The proposed implementation is mainly a backport from
  [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
@@ -61,8 +62,10 @@ introduce the notion of blurred segment of width \f$ \nu \f$
 isothetic thickness of a set of points, ie. the minimum value between
 its vertical and horizontal thicknesses (see figure below).
 
-@image html convexHullVT_HT.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and S are the antipodal pair." 
-@image latex convexHullVT_HT.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and S are the antipodal pair." width=5cm
+
+@image html exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and S are the antipodal pair." 
+@image latex exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and S are the antipodal pair." width=5cm
+
 
 From this notion of isothetic thickness follows the \b blurred \b segment definition \cite DebledRennessonBlurred2005 :
 
