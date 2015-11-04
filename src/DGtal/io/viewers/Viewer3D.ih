@@ -664,10 +664,13 @@ inline
 void
 DGtal::Viewer3D<Space, KSpace>::draw()
 {
+  
+  
   glPushMatrix();
   glMultMatrixd ( manipulatedFrame()->matrix() );
   glPushMatrix();
   glScalef(myGLScaleFactorX, myGLScaleFactorY, myGLScaleFactorZ);
+  glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
   unsigned int i = 0;
   typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
   
@@ -813,16 +816,17 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myLightTheta = M_PI/8.0; 
   myLightPhi = M_PI/4.0; 
   myLightR = 1.0; 
-  GLfloat light_position[] = {myLightR*cos(myLightTheta)*cos(myLightPhi),
-                              myLightR*cos(myLightTheta)*sin(myLightPhi),
-                              myLightR*cos(myLightTheta), 0.0};
+  myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
+  myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
+  myLightPosition[2] = myLightR*sin(myLightTheta);
+  myLightPosition[3] = 0.0;
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
   glShadeModel (GL_SMOOTH);
   
   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+  glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
   
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
@@ -871,7 +875,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_D, "Enable/Disable the two side face rendering." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
 #if !defined (QGLVIEWER_VERSION) || QGLVIEWER_VERSION < 0x020500
-  setMouseBindingDescription((Qt::ControlModifier|Qt::ShiftModifier) + Qt::LeftButton, "move light source position (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
+  setMouseBindingDescription((Qt::ControlModifier|Qt::ShiftModifier) + Qt::LeftButton, "move light source position defined in the main coordinate system (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
 #else
   setMouseBindingDescription(Qt::ControlModifier|Qt::ShiftModifier, Qt::LeftButton, "move light source position (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
 #endif
@@ -1168,10 +1172,12 @@ DGtal::Viewer3D<Space, KSpace>::mouseMoveEvent ( QMouseEvent *e )
     int varY = e->y() - myRefMouseYPos; 
     myLightPhi += varX*myLigthRotationStep;
     myLightTheta += varY*myLigthRotationStep/2.0;
-    GLfloat light_position [] = {myLightR*cos(myLightTheta)*cos(myLightPhi),
-                                 myLightR*cos(myLightTheta)*sin(myLightPhi),
-                                 myLightR*sin(myLightTheta), 0.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
+    myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
+    myLightPosition[2] = myLightR*sin(myLightTheta);
+    myLightPosition[3] = 0.0;
+    
+    glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
     myRefMouseXPos = e->x();
     myRefMouseYPos = e->y();
     updateGL();
