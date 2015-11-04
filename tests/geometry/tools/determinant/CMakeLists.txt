@@ -9,12 +9,12 @@ FOREACH(FILE ${DGTAL_TESTS_SRC})
 ENDFOREACH(FILE)
 
 
-SET(DGTAL_BENCH_SRC
-   testInHalfPlane-benchmark
-  )
 
 #Benchmark target
 IF(BUILD_BENCHMARKS)
+  SET(DGTAL_BENCH_SRC
+    testInHalfPlane-benchmark
+    )
   FOREACH(FILE ${DGTAL_BENCH_SRC})
     add_executable(${FILE} ${FILE})
     target_link_libraries (${FILE} DGtal DGtalIO)
