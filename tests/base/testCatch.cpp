@@ -50,7 +50,6 @@ TEST_CASE( "Point Vector Unit tests" )
     {
       REQUIRE( (a == 5) );
     }
-
 }
 
 
