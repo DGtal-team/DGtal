@@ -208,37 +208,37 @@ TEST_CASE( "Testing Linearizer in dimension " #N " with " #ORDER, "[test][dim" #
   SECTION( "Testing getIndex(Point, Point, Extent) syntax" )\
     {\
       for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
-          REQUIRE(( RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it, lowerBound, extent ) ));\
+          REQUIRE(  RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it, lowerBound, extent )  );\
     }\
 \
   SECTION( "Testing getIndex(Point, Extent) syntax" )\
     {\
       for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
-          REQUIRE(( RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it - lowerBound, extent ) ));\
+          REQUIRE(  RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it - lowerBound, extent )  );\
     }\
 \
   SECTION( "Testing getIndex(Point, Domain) syntax" )\
     {\
       for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end(); it != it_end ; ++it )\
-          REQUIRE(( RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it, domain ) ));\
+          REQUIRE(  RefLinearizer::apply( RefConverter::apply(*it), refLowerBound, refExtent ) == NewLinearizer::getIndex( *it, domain )  );\
     }\
 \
   SECTION( "Testing getPoint(Index, Point, Extent) syntax" )\
     {\
       for ( std::size_t i = 0; i < domain.size(); ++i )\
-          REQUIRE(( RefLinearizer::apply( RefConverter::apply( NewLinearizer::getPoint( i, lowerBound, extent ) ), refLowerBound, refExtent ) == i ));\
+          REQUIRE(  RefLinearizer::apply( RefConverter::apply( NewLinearizer::getPoint( i, lowerBound, extent ) ), refLowerBound, refExtent ) == i  );\
     }\
 \
   SECTION( "Testing getPoint(Index, Extent) syntax" )\
     {\
       for ( std::size_t i = 0; i < domain.size(); ++i )\
-          REQUIRE(( RefLinearizer::apply( RefConverter::apply( NewLinearizer::getPoint( i, extent ) + lowerBound ), refLowerBound, refExtent ) == i ));\
+          REQUIRE(  RefLinearizer::apply( RefConverter::apply( NewLinearizer::getPoint( i, extent ) + lowerBound ), refLowerBound, refExtent ) == i  );\
     }\
 \
   SECTION( "Testing getPoint(Index, Domain) syntax" )\
     {\
       for ( std::size_t i = 0; i < domain.size(); ++i )\
-          REQUIRE(( RefLinearizer::apply( RefConverter::apply( NewLinearizer::getPoint( i, domain ) ), refLowerBound, refExtent ) == i ));\
+          REQUIRE(  RefLinearizer::apply( RefConverter::apply( NewLinearizer::getPoint( i, domain ) ), refLowerBound, refExtent ) == i  );\
     }\
 }
 
