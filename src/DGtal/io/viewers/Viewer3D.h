@@ -755,8 +755,28 @@ namespace DGtal
      * @param e the QKeyEvent
      **/
     virtual void keyPressEvent ( QKeyEvent *e );
-
-
+    
+    /**
+     * Used to manage a mouse move event (to handle light move).
+     *
+     * @param e the QMouseEvent
+     **/
+    virtual void mouseMoveEvent ( QMouseEvent *e );
+    
+    /**
+     * Used to manage a mouse press event (to handle light move).
+     *
+     * @param e the QMouseEvent
+     **/
+    virtual void mousePressEvent ( QMouseEvent *e );
+    
+    /**
+     * Used to manage a mouse release event (to handle light move).
+     *
+     * @param e the QMouseEvent
+     **/
+    virtual void mouseReleaseEvent ( QMouseEvent *e );
+    
     /**
      * Used to sort pixel from camera
      **/
@@ -1194,6 +1214,7 @@ namespace DGtal
 
     /**
      * Rotate a vertex from a given angle, a center point and a rotation direction.
+     * @tparam TValues the type of coordinate to be rotated.
      * @param  x the x coordinate of the point to rotated (return).
      * @param  y the y coordinate of the point to rotated (return).
      * @param  z the z coordinate of the point to rotated (return).
@@ -1203,9 +1224,10 @@ namespace DGtal
      * @param rotationAngle the angle of the rotation.
      * @param rotationDir the rotation is applied around this axis direction.
      **/
-
+    
+    template <typename TValues>
     static
-    void  rotatePoint(double &x, double &y, double &z,
+    void  rotatePoint(TValues &x, TValues &y, TValues &z,
           double cx, double cy, double cz,
           double rotationAngle, ImageDirection rotationDir);
 
@@ -1257,6 +1279,10 @@ namespace DGtal
     double camera_direction[3]; ///< camera direction
     double camera_upVector[3]; ///< camera up-vector
 
+    float myLightTheta; /// the light position (inclination)
+    float myLightPhi; /// the light position (azimuth)
+    float myLightR; /// the light position (distance)
+    GLfloat myLightPosition [4]; // the light position in cartesian coordinates
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
 
@@ -1267,6 +1293,12 @@ namespace DGtal
     float myGLScaleFactorX;
     float myGLScaleFactorY;
     float myGLScaleFactorZ;
+
+    // Used to apply interactive light rotation
+    float myLigthRotationStep; /// the angle rotation increment used for interactive light move
+    int myRefMouseXPos; /// the reference mouse x-position used to determince the light position change (azimuth)
+    int myRefMouseYPos; /// the reference mouse y-position used to determince the light position change (inclination)
+    bool myIsMovingLight; /// flag to display the ligth source when it is moved by the user
 
     /// Used to store all displayed images
     std::vector<TextureImage> myGSImageList;

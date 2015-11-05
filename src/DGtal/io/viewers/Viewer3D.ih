@@ -81,9 +81,10 @@ DGtal::Viewer3D<Space, KSpace>::rotateDomain(Image2DDomainD3D &anDom, double ang
 
 
 template < typename Space ,typename KSpace >
+template <typename TValues>
 inline
 void
-DGtal::Viewer3D<Space, KSpace>::rotatePoint(double &x, double &y, double &z, double cx, double cy, double cz,
+DGtal::Viewer3D<Space, KSpace>::rotatePoint(TValues &x, TValues &y, TValues &z, double cx, double cy, double cz,
                                             double angleRotation, ImageDirection rotationDir){
   double dx = x-cx; double dy = y-cy; double dz = z-cz;
   if(rotationDir  == zDirection){
@@ -663,13 +664,16 @@ inline
 void
 DGtal::Viewer3D<Space, KSpace>::draw()
 {
+  
+  
   glPushMatrix();
   glMultMatrixd ( manipulatedFrame()->matrix() );
   glPushMatrix();
   glScalef(myGLScaleFactorX, myGLScaleFactorY, myGLScaleFactorZ);
+  glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
   unsigned int i = 0;
   typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
-
+  
   // OpenGL can't draw more than GL_MAX_CLIP_PLANES clipping plane
   while ( i < GL_MAX_CLIP_PLANES && it !=Viewer3D<Space, KSpace>::myClippingPlaneList.end() )
     {
@@ -774,7 +778,10 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList(myPolygonSetListWiredId);
     }
 
- 
+  if(myIsMovingLight){
+    drawLight(GL_LIGHT0);
+  }
+  
    glPopMatrix();
    glPopMatrix();
 }
@@ -801,13 +808,25 @@ DGtal::Viewer3D<Space, KSpace>::init()
 {
   GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
   GLfloat mat_shininess[] = { 50.0 };
-  GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+  
+  myIsMovingLight=false;
+  myLigthRotationStep = 0.01;
+  myRefMouseXPos=0;
+  myRefMouseYPos=0;
+  myLightTheta = M_PI/8.0; 
+  myLightPhi = M_PI/4.0; 
+  myLightR = 1.0; 
+  myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
+  myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
+  myLightPosition[2] = myLightR*sin(myLightTheta);
+  myLightPosition[3] = 0.0;
+
   glClearColor (0.0, 0.0, 0.0, 0.0);
   glShadeModel (GL_SMOOTH);
   
   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+  glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
   
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
@@ -855,6 +874,12 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
   setKeyDescription ( Qt::Key_D, "Enable/Disable the two side face rendering." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
+#if !defined (QGLVIEWER_VERSION) || QGLVIEWER_VERSION < 0x020500
+  setMouseBindingDescription((Qt::ControlModifier|Qt::ShiftModifier) + Qt::LeftButton, "move light source position defined in the main coordinate system (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
+#else
+  setMouseBindingDescription(Qt::ControlModifier|Qt::ShiftModifier, Qt::LeftButton, "move light source position defined in the main coordinate system (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
+#endif
+
 
   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
@@ -892,7 +917,6 @@ DGtal::Viewer3D<Space, KSpace>::sortTriangleFromCamera()
   comp.posCam= camera()->position();
   for (typename std::vector<std::vector< typename Viewer3D<Space, KSpace>::TriangleD3D> >::iterator it = Viewer3D<Space, KSpace>::myTriangleSetList.begin(); it != Viewer3D<Space, KSpace>::myTriangleSetList.end(); it++)
     {
-      //DGtal::trace.info() << "sort triangle size" << it->size() << std::endl;
       sort ( it->begin(), it->end(), comp );
     }
 
@@ -1114,6 +1138,55 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>:
      glEnd();
   }
 }
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::mousePressEvent ( QMouseEvent *e )
+{
+  if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier)){
+    myIsMovingLight=true;
+    myRefMouseXPos = e->x();
+    myRefMouseYPos = e->y();
+  }else{
+    QGLViewer::mousePressEvent(e);
+  }
+}
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::mouseReleaseEvent ( QMouseEvent *e )
+{
+  if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier) || myIsMovingLight){
+    myIsMovingLight=false;
+    updateGL();
+  }else{
+    QGLViewer::mouseReleaseEvent(e);
+  }
+}
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::mouseMoveEvent ( QMouseEvent *e )
+{
+  if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier)){
+    int varX = e->x() - myRefMouseXPos; 
+    int varY = e->y() - myRefMouseYPos; 
+    myLightPhi += varX*myLigthRotationStep;
+    myLightTheta += varY*myLigthRotationStep/2.0;
+    myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
+    myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
+    myLightPosition[2] = myLightR*sin(myLightTheta);
+    myLightPosition[3] = 0.0;
+    
+    glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
+    myRefMouseXPos = e->x();
+    myRefMouseYPos = e->y();
+    updateGL();
+  }else{
+    QGLViewer::mouseMoveEvent(e);
+  }
+}
+
+
 
 
 template< typename Space, typename KSpace>
