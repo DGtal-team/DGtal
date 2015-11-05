@@ -16,8 +16,8 @@ Part of the \ref packageGeometry.
 The Digital Straight Segment primitive (described here: @ref
 moduleArithDSSReco) is commonly used to extract geometric information
 from digital contours. It is exploited in various estimators as for
-instance in tangent \cite LachaudIVC2007 or curvature estimation \cite
-KerautretLachaud2009 . However, this primitive is not efficient to
+instance in tangent \cite LachaudIVC2007 or curvature estimation 
+\cite KerautretLachaud2009 . However, this primitive is not efficient to
 directly process real contours with the potential presence of
 noise. To overcome this limitation the blurred segments was first
 introduced by Debled-Rennesson \i etal \cite debledFuzzy2005 which
@@ -63,8 +63,8 @@ isothetic thickness of a set of points, ie. the minimum value between
 its vertical and horizontal thicknesses (see figure below).
 
 
-@image html exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and S are the antipodal pair." 
-@image latex exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and S are the antipodal pair." width=5cm
+@image html exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and R are the antipodal pair." 
+@image latex exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and R are the antipodal pair." width=5cm
 
 
 From this notion of isothetic thickness follows the \b blurred \b segment definition \cite DebledRennessonBlurred2005 :
@@ -77,13 +77,20 @@ bounding line has an isothetic distance less or equal to \f$ \nu \f$.
 
 
 The implementation proposed here relies on the convex hull computed
-incrementally with the Melkman algorithm in linear time \cite
-melkmanLine1987.  It allows to add point on the front of the current
-segment and to update the value of vertical/horizontal thickness with
-a coast of \f$O( log\ n) \f$ (instead \f$O(n\ log\ n) \f$ thanks to an
-optimization of Buzer \cite lilianComputing2007 ).  Note that the
-convex hull maintenance in linear time with point subtraction proposed
-by Buzer \cite lilianComputing2007 is not yet implemented.
+incrementally with the Melkman algorithm in linear time 
+\cite melkmanLine1987 (by using the MelkmanConvexHull class, see the module
+main documentation: @ref subsectmoduleHull2D13). It allows to add
+point on the front of the current segment and the value of
+vertical/horizontal thickness are computed in linear time by using the
+rotating caliper algorithm.  The Buzer optimisation 
+\cite lilianComputing2007 to update the convex hull thickness with a coast
+of \f$O(log\ n) \f$ or the linear time point substraction are not yet
+implemented.  Note that you can use also the Euclidean thickness (see
+illustration below) defined from the rotating caliper algorithm.
+
+
+@image html exampleConvexHullEucl.png "Illustration of the Euclidean thickness (dE) of the convexhull defined from antipodal pair (P,Q) and R." 
+@image latex exampleConvexHullEucl.png "Illustration of the Euclidean thickness (dE) of the convexhull defined from antipodal pair (P,Q) and R." width=5cm
 
 
 
@@ -134,9 +141,7 @@ To import an input contour you can use the the PointListReader class:
 Then, you can define and initialize a new segment with maximal thickness set to 15:
   @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInit
 
-@note The maximal thickness given in initialization is the same than
-the width given by the method width() of the ParallelStrip primitive
-(not the vertical/horizontal width of the convex hull).
+@note The maximal thickness given in initialization is by default the Vertical/horizontal thickness.
 
 
 You can extend the segment by adding point to the front:
@@ -184,10 +189,16 @@ Since the iterator is defined from an open contour, we check that we
 are not at the end of the input contour before applying any extension.
 
 
+\subsection moduleAlphaThickSegmentRecoDetails-ChangeThicknessDef Changing the thickness definition 
+
+The thickness definition can be changed at the AlphaThickSegmentComputer construction:
+@snippet examples/geometry/curves/exampleAlphaThickSegment.cpp  exampleAlphaThickSegmentEuclDef
+
+
 
 \section moduleAlphaThickSegmentRecoGreedy  Example of greedy segmentation into Alpha Thick Segment
 
-The greedy segmentation of a digital contour can easily  be done as follows:
+To apply the greedy segmentation of a digital contour, we can use the GreedySegmentation class  (since the AlphaThickSegmentComputer class  is a model of the concept  CForwardSegmentComputer):
  @snippet examples/geometry/curves/greedyAlphaThickDecomposition.cpp greedyAlphaThickDecompositionAlgo 
 
 

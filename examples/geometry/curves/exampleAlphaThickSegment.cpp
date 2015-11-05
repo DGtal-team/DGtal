@@ -73,6 +73,21 @@ int main(  )
   aBoard  << CustomStyle( anAlphaSegment2.className(), new CustomColors( DGtal::Color::Blue, DGtal::Color::None ) );  
   aBoard << anAlphaSegment2;
   
+  // Example of thickness definition change: usin the euclidean thickness definition.
+  //! [exampleAlphaThickSegmentEuclDef]
+  AlphaThickSegmentComputer2D anAlphaSegment2Eucl(5, functions::Hull2D::EuclideanThickness);
+  //! [exampleAlphaThickSegmentEuclDef]
+
+  anAlphaSegment2Eucl.init(fc.begin());
+  while (anAlphaSegment2Eucl.end() != fc.end() && 
+         anAlphaSegment2Eucl.extendFront()) {
+  }
+
+  aBoard << CustomStyle( anAlphaSegment2Eucl.className(), 
+                         new CustomColors( DGtal::Color(20, 250, 255), DGtal::Color::None ) ); 
+  aBoard << anAlphaSegment2Eucl;
+
+  
   FCConstIterator fcIt = fc.begin();
   while (anAlphaSegment3.extendFront(*fcIt)) {
     fcIt++;
@@ -82,7 +97,7 @@ int main(  )
   aBoard  << CustomStyle( anAlphaSegment3.className(), new CustomColors( DGtal::Color::Green, DGtal::Color::None ) );  
   aBoard << anAlphaSegment3;
   
-
+ 
 
   aBoard.saveEPS("exampleAlphaThickSegment.eps");
 
