@@ -24,8 +24,8 @@
  - Fixing boost include path issue when building tools using DGtal and
    its cmake DGtalConfig.cmake. (David Coeurjolly,
    [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
- 
-
+ - Fixing parenthese warnings in Catch. Waiting for an official fix.
+   (Roland Denis, [#1069](https://github.com/DGtal-team/DGtal/pull/1069))
 
 - *Base Package*
  - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
