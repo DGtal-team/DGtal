@@ -63,8 +63,8 @@ isothetic thickness of a set of points, ie. the minimum value between
 its vertical and horizontal thicknesses (see figure below).
 
 
-@image html exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and R are the antipodal pair." 
-@image latex exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (VT) and horizontal (HT) thickness. The points P,Q and R are the antipodal pair." width=5cm
+@image html exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (dV) and horizontal (dH) thickness. The points P,Q and R are the antipodal pair." 
+@image latex exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (dV) and horizontal (dH) thickness. The points P,Q and R are the antipodal pair." width=5cm
 
 
 From this notion of isothetic thickness follows the \b blurred \b segment definition \cite DebledRennessonBlurred2005 :
@@ -82,11 +82,11 @@ incrementally with the Melkman algorithm in linear time
 main documentation: @ref subsectmoduleHull2D13). It allows to add
 point on the front of the current segment and the value of
 vertical/horizontal thickness are computed in linear time by using the
-rotating caliper algorithm.  The Buzer optimisation 
+rotating caliper algorithm (see @ref subsectmoduleHull2D14).  The Buzer optimisation 
 \cite lilianComputing2007 to update the convex hull thickness with a coast
 of \f$O(log\ n) \f$ or the linear time point substraction are not yet
 implemented.  Note that you can use also the Euclidean thickness (see
-illustration below) defined from the rotating caliper algorithm.
+illustration below) also defined from the rotating caliper algorithm.
 
 
 @image html exampleConvexHullEucl.png "Illustration of the Euclidean thickness (dE) of the convexhull defined from antipodal pair (P,Q) and R." 
