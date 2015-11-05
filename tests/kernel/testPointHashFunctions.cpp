@@ -59,21 +59,21 @@ TEST_CASE("Hash functions on DGtal::Point")
   
   SECTION("Identity test")
     {
-      REQUIRE( (myhash(p) == myhash(p_copy)) );
+      REQUIRE( myhash(p) == myhash(p_copy) );
       CAPTURE( myhash(p) );
       
 #ifdef WITH_C11
-      REQUIRE( (myhashcpp11(p) == myhashcpp11(p_copy)) );
+      REQUIRE( myhashcpp11(p) == myhashcpp11(p_copy) );
 #endif      
     }
 
   
   SECTION("Difference test")
     {
-      REQUIRE( (myhash(p) != myhash(q)) );
+      REQUIRE( myhash(p) != myhash(q) );
       
 #ifdef WITH_C11
-      REQUIRE( (myhashcpp11(p) != myhashcpp11(q)) );
+      REQUIRE( myhashcpp11(p) != myhashcpp11(q) );
 #endif 
     }
     
@@ -90,15 +90,15 @@ TEST_CASE("Hash functions on DGtal::Point")
       std::hash<Point26> myhash26cpp11;
 #endif
  
-      REQUIRE( (myhash26(pp) == myhash26(qq)) );
+      REQUIRE( myhash26(pp) == myhash26(qq) );
       
 #ifdef WITH_C11
-      REQUIRE( (myhash26cpp11(pp) == myhash26cpp11(qq)) );
+      REQUIRE( myhash26cpp11(pp) == myhash26cpp11(qq) );
 #endif
-      REQUIRE( (myhash26(pp) != myhash26(rr)) );
+      REQUIRE( myhash26(pp) != myhash26(rr) );
       
 #ifdef WITH_C11
-      REQUIRE( (myhash26cpp11(pp) != myhash26cpp11(rr)) );
+      REQUIRE( myhash26cpp11(pp) != myhash26cpp11(rr) );
 #endif 
     }
 }
