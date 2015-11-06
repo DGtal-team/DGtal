@@ -253,22 +253,6 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::max_size() const
 
 
 
-
-
-//-----------------------------------------------------------------------------
-template < typename TInputPoint, typename TConstIterator>
-inline
-void
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
-init(const double aThickness)  
-{
-  myNbPointsAddedFromIterators = 0;
-  myIsStoringPoints = true;
-  myMaximalThickness = aThickness;
-  myState.actualThickness = 0.0;
-  myState.melkmanCH.clear();
-}
-
 //-----------------------------------------------------------------------------
 template < typename TInputPoint, typename TConstIterator>
 inline
@@ -276,15 +260,13 @@ void
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
 init(const ConstIterator &it)
 {
+  myState.melkmanCH.clear();
   myNbPointsAddedFromIterators = 0;
   myIsStoringPoints = false;
   myBegin = it;
   myEnd = it;
-  myState.actualThickness = 0.0;
-  myState.melkmanCH =  DGtal::MelkmanConvexHull<InputPoint, Functor>();
+  extendFront();
 }
-
-
 
 
 //-----------------------------------------------------------------------------
@@ -412,7 +394,7 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isValid()  const
 {
-  return true;
+  return isNotEmpty(myBegin,myEnd);
 }
 
 //-----------------------------------------------------------------------------
