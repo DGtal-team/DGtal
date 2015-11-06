@@ -394,6 +394,7 @@ bool testMultiWidth()
   for (double width=0.5; width<10; width+= 0.2, pos += 1) {
     AlphaThickSegmentComputer2D anAlphaThickSegmentComputer(width);
     anAlphaThickSegmentComputer.init(aContour.begin()+pos);
+    nbTotalAdded++;
     while (anAlphaThickSegmentComputer.end()!= aContour.end() &&
            anAlphaThickSegmentComputer.extendFront()){
       nbTotalAdded++;
