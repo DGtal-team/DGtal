@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testConvexHull2DThickness.cpp
+ * @file testConvexHullReverse.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2015/10/16
+ * @date 2015/11/07
  *
- * Functions for testing class ConvexHull2D-catch.
+ * Functions for testing class ConvexHull2D.
  *
  * This file is part of the DGtal library.
  */
@@ -34,6 +34,7 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/tools/Hull2DHelpers.h"
+#include "DGtal/geometry/tools/MelkmanConvexHull.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 
 
@@ -43,70 +44,33 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class ConvexHull2D-catch.
+// Functions for testing class ConvexHull2D 
 ///////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (basic convex hull)" )
-{
-  typedef PointVector<2,DGtal::int32_t> Point;
-  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor;  
-   DGtal::MelkmanConvexHull<Point, Functor> ch; 
-   ch.add(Point(0,0));
-   ch.add(Point(1,0));
-   ch.add(Point(1,1));
-
-   Point pHV,qHV,sHV, pE,qE,sE;
-   double thicknessHV = 
-     DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
-                                                    DGtal::functions::Hull2D::HorizontalVerticalThickness,
-                                                    pHV, qHV, sHV);
-   
-   double thicknessEucl = 
-     DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
-                                                    DGtal::functions::Hull2D::EuclideanThickness,
-                                                    pE, qE, sE);
-   
-   SECTION("Testing computation of horizontal/vertical thickness of ConvexHull2D")
-     {
-       REQUIRE( thicknessHV == 1.0 );
-       REQUIRE( pHV == Point(0,0) );
-       REQUIRE( qHV==Point(1,0) );
-       REQUIRE( sHV==Point(1,1) );
-     }
-   
-
-   SECTION("Testing computation of euclidean thickness of ConvexHull2D")
-     {
-       REQUIRE( thicknessEucl == Approx(std::sqrt(2.0)/2.0) );
-       REQUIRE( pE == Point(1,1) );
-       REQUIRE( qE==Point(0,0) );
-       REQUIRE( sE==Point(1,0) );
-     }
-   
-}
-
-
-TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (convex hull with floating coordinates)" )
+TEST_CASE( "Testing MelkmanConvexHull insertion from front and back using reverse()" )
 {
   typedef PointVector<2, double_t> Point;
   typedef InHalfPlaneBySimple3x3Matrix<Point, double> Functor;  
   DGtal::MelkmanConvexHull<Point, Functor> ch; 
   
-  ch.add(Point(104.0, 54.2));
-  ch.add(Point(104.2, 53.2));
-  ch.add(Point(103.2, 53.4));
-  ch.add(Point(103.3, 52.3));
-  ch.add(Point(102.3, 52.3));
-  ch.add(Point(102.2, 51.0));
+  // sequence of points splited from test testConvexHull2D_Thickness:
+  //  using  reverse() should produce the same convex hull.
+
   ch.add(Point(102.2, 50.2));
   ch.add(Point(101.0, 50.0));
   ch.add(Point(101.0, 49.1));
   ch.add(Point(101.2, 48.2));
   ch.add(Point(100.0, 48.2));
   ch.add(Point(100.4, 47.4));
+  ch.reverse();
+  ch.add(Point(102.2, 51.0));
+  ch.add(Point(102.3, 52.3));
+  ch.add(Point(103.3, 52.3));
+  ch.add(Point(103.2, 53.4));
+  ch.add(Point(104.2, 53.2));
+  ch.add(Point(104.0, 54.2));
   
   Point pHV,qHV,sHV, pE,qE,sE;
-
   double thicknessHV = 
     DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                                    DGtal::functions::Hull2D::HorizontalVerticalThickness,
