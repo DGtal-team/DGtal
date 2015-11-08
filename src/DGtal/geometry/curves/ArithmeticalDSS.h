@@ -830,7 +830,10 @@ namespace DGtal
     public ArithmeticalDSS<TCoordinate, TInteger, 4>
   {
   public: 
-    typedef ArithmeticalDSS<TCoordinate, TInteger, 4> Super; 
+    typedef ArithmeticalDSS<TCoordinate, TInteger, 4> Super;
+	typedef typename Super::Point Point;
+	typedef typename Super::Coordinate Coordinate;
+	typedef typename Super::DSL DSL;
 
   public: 
 
@@ -851,10 +854,10 @@ namespace DGtal
      * @param aLf the first lower point
      * @param aLl the last lower point
      */
-    StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB,
-		 const typename Super::Point& aF, const typename Super::Point& aL,
-		 const typename Super::Point& aUf, const typename Super::Point& aUl,
-		 const typename Super::Point& aLf, const typename Super::Point& aLl);
+    StandardDSS4(const Coordinate& aA, const Coordinate& aB,
+		 const Point& aF, const Point& aL,
+		 const Point& aUf, const Point& aUl,
+		 const Point& aLf, const Point& aLl);
 
     /**
      * Construction of a sequence of patterns 
@@ -869,7 +872,7 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the vector
      * starting from @a aF and pointing to @a aL
      */
-    StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL,
+    StandardDSS4(const Point& aF, const Point& aL,
 		 const bool& isOnTheUpperLine = true);
 
     /**
@@ -882,8 +885,8 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the direction vector
      * of the subsegment. Uses smartCH algorithm. 
      */
-    StandardDSS4(const typename Super::DSL& aDSL, 
-		 const typename Super::Point& aF, const typename Super::Point& aL);
+    StandardDSS4(const DSL& aDSL, 
+		 const Point& aF, const Point& aL);
 
     /**
      * Construction as the subsegment of minimal parameters of a greater DSS. 
@@ -897,7 +900,7 @@ namespace DGtal
      * @see ArithmeticalDSSFactory
      */
     StandardDSS4(const StandardDSS4& aDSS, 
-		 const typename Super::Point& aF, const typename Super::Point& aL);
+		 const Point& aF, const Point& aL);
 
     /**
      * Construction from a range of iterators on points. 
@@ -966,7 +969,10 @@ namespace DGtal
     public ArithmeticalDSS<TCoordinate, TInteger, 8>
   {
   public: 
-    typedef ArithmeticalDSS<TCoordinate, TInteger, 8> Super; 
+    typedef ArithmeticalDSS<TCoordinate, TInteger, 8> Super;
+	typedef typename Super::Point Point;
+	typedef typename Super::Coordinate Coordinate;
+	typedef typename Super::DSL DSL;
 
   public: 
     /**
@@ -986,10 +992,10 @@ namespace DGtal
      * @param aLf the first lower point
      * @param aLl the last lower point
      */
-    NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB,
-	      const typename Super::Point& aF, const typename Super::Point& aL,
-	      const typename Super::Point& aUf, const typename Super::Point& aUl,
-	      const typename Super::Point& aLf, const typename Super::Point& aLl);
+    NaiveDSS8(const Coordinate& aA, const Coordinate& aB,
+	      const Point& aF, const Point& aL,
+	      const Point& aUf, const Point& aUl,
+	      const Point& aLf, const Point& aLl);
 
 
     /**
@@ -1005,7 +1011,7 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the vector
      * starting from @a aF and pointing to @a aL
      */
-    NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL,
+    NaiveDSS8(const Point& aF, const Point& aL,
 	      const bool& isOnTheUpperLine = true);
 
     /**
@@ -1018,8 +1024,8 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the direction vector
      * of the subsegment. Uses smartCH algorithm. 
      */
-    NaiveDSS8(const typename Super::DSL& aDSL, 
-	      const typename Super::Point& aF, const typename Super::Point& aL);
+    NaiveDSS8(const DSL& aDSL, 
+	      const Point& aF, const Point& aL);
 
     /**
      * Construction as the subsegment of minimal parameters of a greater DSS. 
@@ -1033,7 +1039,7 @@ namespace DGtal
      * @see ArithmeticalDSSFactory
      */
     NaiveDSS8(const NaiveDSS8& aDSS, 
-	      const typename Super::Point& aF, const typename Super::Point& aL);
+	      const Point& aF, const Point& aL);
 
     /**
      * Construction from a range of iterators on points. 

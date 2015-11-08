@@ -53,8 +53,6 @@ Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
     myOrigin( _origin )
 {
   ASSERT( p >= NumberTraits<Integer>::ONE );
-  //  if ( k == 0 )
-  // std::cerr << "(" << p1 << "/" << q1 << "," << u1 << "," << k1 << ")";
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient, typename TMap>
@@ -84,8 +82,8 @@ child( Quotient v )
       ++( instance().nbFractions );
       return newNode;
     }
-  long int _v = NumberTraits<Quotient>::castToInt64_t( v );
-  long int _u = NumberTraits<Quotient>::castToInt64_t( this->u );
+  long int _v = static_cast<long int>(NumberTraits<Quotient>::castToInt64_t( v ));
+  long int _u = static_cast<long int>(NumberTraits<Quotient>::castToInt64_t( this->u ));
   Integer _pp = origin() == instance().myOneOverZero 
     ? NumberTraits<Integer>::ONE
     : origin()->p;
@@ -158,7 +156,7 @@ Fraction( Integer aP, Integer aQ, Fraction )
       Integer _quot, _rem;
       IntegerComputer<Integer> ic;
       ic.getEuclideanDiv( _quot, _rem, aP, aQ );
-      Quotient v = NumberTraits<Integer>::castToInt64_t( _quot );
+      Quotient v = static_cast<Quotient>(NumberTraits<Integer>::castToInt64_t( _quot ));
       // std::cerr << "[u=" << v << "]";
       aP = aQ;
       aQ = _rem;
@@ -166,8 +164,8 @@ Fraction( Integer aP, Integer aQ, Fraction )
         {
           node = node->child( v + 1 );
           ic.getEuclideanDiv( _quot, _rem, aP, aQ );
-          v = NumberTraits<Integer>::castToInt64_t( _quot );
-          // std::cerr << "[u=" << v << "]";
+          v = static_cast<Quotient>(NumberTraits<Integer>::castToInt64_t( _quot ));
+
           aP = aQ;
           aQ = _rem;
         }

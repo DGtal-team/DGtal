@@ -466,7 +466,8 @@ namespace DGtal
     /**
      * Base class
      */
-    typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super; 
+    typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super;
+	typedef typename Super::ConstIterator ConstIterator;
 
   public: 
 
@@ -480,7 +481,7 @@ namespace DGtal
      * Constructor with initialisation
      * @param it an iterator on 2d points
      */
-    StandardDSS4Computer(const typename Super::ConstIterator& it);
+    StandardDSS4Computer(const ConstIterator& it);
 
     /**
      * Copy constructor.
@@ -527,6 +528,7 @@ namespace DGtal
      * Base class
      */
     typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super; 
+	typedef typename Super::ConstIterator ConstIterator;
 
   public: 
 
@@ -540,7 +542,7 @@ namespace DGtal
      * Constructor with initialisation
      * @param it an iterator on 2d points
      */
-    NaiveDSS8Computer(const typename Super::ConstIterator& it);
+    NaiveDSS8Computer(const ConstIterator& it);
 
     /**
      * Copy constructor.

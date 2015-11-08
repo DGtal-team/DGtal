@@ -483,6 +483,7 @@ namespace functors
     {
       Point pt = myOriginPointEmbeddedIn3D;
       for( Dimension i=0; i<pt.size(); i++){
+
         pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[0])
                                                  *myFirstAxisEmbeddedDirection[i]));
         pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[1])
@@ -688,14 +689,6 @@ namespace functors
     Point myGridShift;
     std::vector<TValue> myGridSize;    
  };
-
-
-
-
-
-
-
-
 
 
   /**
