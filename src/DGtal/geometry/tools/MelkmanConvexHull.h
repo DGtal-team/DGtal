@@ -63,7 +63,7 @@ namespace DGtal
    * \brief Aim: This class implements the on-line algorithm
    * of Melkman for the computation of the convex hull of 
    * a simple polygonal line (without self-intersection) 
-   * [Melkman, 1979 : \cite Melkman1987].
+   * [Melkman, 1987: \cite Melkman1987].
    *
    * This algorithm is based on a deque, which stores the vertices 
    * of the convex hull (for convenience, the first and last vertex 
@@ -147,13 +147,13 @@ namespace DGtal
      * Rationale: we do not want to iterate over the same point, 
      * duplicated at the begin and at the end of the container.  
      */
-    ConstIterator begin();
+    ConstIterator begin() const;
 
     /**
      * End iterator 
      * @return a const iterator to the end of the container
      */
-    ConstIterator end();
+    ConstIterator end() const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -185,6 +185,11 @@ namespace DGtal
      * @return the nomber of points constituing the convex hull.
      **/
     unsigned int size() const;
+    
+    /**
+     * clear the current content of the convex hull.
+     **/
+    void clear();
     
     
     // ------------------------- Private Datas --------------------------------
