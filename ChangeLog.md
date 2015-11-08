@@ -6,7 +6,7 @@
 - *Configuration/General*
  - DGtal core now compiles on Microsoft Windows, Visual Studio. Many
    issues have been fixed for compatibility with 'cl' compiler. (David
-   Coeurjolly, Jérémy Levallois, [1074](https://github.com/DGtal-team/DGtal/pull/1074))
+   Coeurjolly, Jérémy Levallois, [#1074](https://github.com/DGtal-team/DGtal/pull/1074))
 
 - *Geometry Package*
  - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
@@ -20,7 +20,7 @@
 
 - *Base*
  - Deprecated OldAlias, OldClone, OldConstAlias have been removed. (David
-   Coeurjolly, [XXX](XXXX))
+   Coeurjolly, [#1074](https://github.com/DGtal-team/DGtal/pull/1074))
 
 - *IO*
  - Minor improvements of default settings in Viewer3D. (David
