@@ -1,3 +1,44 @@
+
+# DGtal 0.9.1
+
+## New Features / Critical Changes
+- *Geometry Package*
+ - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
+   the width (vertical/horizontal or Euclidean) of a convex hull.
+   (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
+
+## Changes
+- *Base Package*
+ - Enabling circulators in SimpleRandomAccessRangeFromPoint.
+   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
+
+- *IO*
+ - Minor improvements of default settings in Viewer3D. (David
+   Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
+
+ - New possibility to move the light source direction using the mouse move
+   in Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on mac)). The light source
+   direction is now defined according the main coordinate system (no more from
+   the camera center).
+   (Bertrand Kerautret [#1070](https://github.com/DGtal-team/DGtal/pull/1070))
+
+
+## Bug Fixes
+
+- *Configuration/General*
+ - catch unit test framework upgraded to the develop version. (David
+ Coeurjolly, [#1055](https://github.com/DGtal-team/DGtal/pull/1055))
+ - Fixing boost include path issue when building tools using DGtal and
+   its cmake DGtalConfig.cmake. (David Coeurjolly,
+   [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
+ - Fixing parenthese warnings in Catch. Waiting for an official fix.
+   (Roland Denis, [#1069](https://github.com/DGtal-team/DGtal/pull/1069))
+
+- *Base Package*
+ - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
+   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
+
+
 # DGtal 0.9
 
 ## New Features / Critical Changes
@@ -11,9 +52,9 @@
    [catch](https://github.com/philsquared/Catch). Catch allows to
    design quick and efficient unit tests with nice trace
    outputs. (David Coeurjolly,
-   [#1019](https://github.com/DGtal-team/DGtal/pull/1019)
+   [#1019](https://github.com/DGtal-team/DGtal/pull/1019))
  - Documentation added for Catch. (David Coeurjolly,
-   [#1042](https://github.com/DGtal-team/DGtal/pull/1042)
+   [#1042](https://github.com/DGtal-team/DGtal/pull/1042))
 
 
 - *Kernel*

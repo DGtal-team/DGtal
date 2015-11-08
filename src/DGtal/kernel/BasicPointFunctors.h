@@ -475,7 +475,7 @@ namespace functors
      * The operator just recover the 3D Point associated to the Point2DEmbederIn3D parameters.
      * @param[in] aPoint point of the input domain (of dimension 2).
      * 
-     * @return the point of dimension 3.
+     * @return the digital point of dimension 3 (value rounded downward with floor).
      */
     template <typename TPoint2D>
     inline
@@ -483,8 +483,10 @@ namespace functors
     {
       Point pt = myOriginPointEmbeddedIn3D;
       for( Dimension i=0; i<pt.size(); i++){
-        pt[i] = pt[i]+aPoint[0]*myFirstAxisEmbeddedDirection[i];
-        pt[i] = pt[i]+aPoint[1]*mySecondAxisEmbeddedDirection[i];
+        pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[0])
+                                                 *myFirstAxisEmbeddedDirection[i]));
+        pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[1])
+                                                 *mySecondAxisEmbeddedDirection[i]));
       }
 
       if(myDomain.isInside(pt)|| !chechInsideDomain)
