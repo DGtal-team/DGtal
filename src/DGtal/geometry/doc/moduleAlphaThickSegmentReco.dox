@@ -216,6 +216,69 @@ The whole example can be found in \ref greedyAlphaThickDecomposition.cpp.
 
 
 
+\section moduleAlphaThickSegmentTgtCover  Computing the tangential cover 
+
+\subsection moduleAlphaThickSegmentTgtCoverSaturated Tangential cover with SaturatedSegmentation
+
+To compute the tangential cover of a single contour, a first
+possibility is to use the SaturatedSegmentation class.  As in the
+previous section, since the AlphaThickSegmentComputer is a model of
+the concept CForwardSegmentComputer, we can compute a saturated
+segmentation of the contour from maximal AlphaThickSegment (i.e a
+tangential cover) by using the SaturatedSegmentation class.
+
+@see This section is illustrated by using the example @ref exampleAlphaThickSegmentTgtCover.cpp.
+
+To obtain the complete tangential cover of a closed contour, we need to
+define a Circulator from the input contour. Thus, we have to include the 
+the following headers:
+
+@snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp  SaturatedAlphaThickCoverHeader
+
+Then, we can define this following types:
+
+@snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp  SaturatedAlphaThickCoverTypes
+
+
+The contour @ref Circulator is constructed from the a simple contour iterators:
+
+@snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp  SaturatedAlphaThickCoverCirculator
+
+The segmentation object can now be constructed as follows:
+
+@snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp  SaturatedAlphaThickCoverComputerSeg
+
+Finally we can access to the complete tangential cover and display it:
+
+@snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp  SaturatedAlphaThickCoverDisplay
+
+You will obtain such a resulting visualization:
+
+   @image html exampleAlphaThickSegmentTgtCover.png "Tangential cover with alpha thick segments with alpha = 4"
+   @image latex exampleAlphaThickSegmentTgtCover.png "Tangential cover with alpha thick segments with alpha = 4" width=6c
+
+
+\subsection moduleAlphaThickSegmentTgtCoverSingle Tangential cover on a single point
+
+Alternatively, if you only want the tangential cover associated to a
+single point, you can use the functions of the @ref SegmentComputerUtils:
+
+@snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp SaturatedAlphaThickCoverHeaderSingle
+
+In particular, the function @ref firstMaximalSegment and
+ @ref lastMaximalSegment permit to compute the maximal segment covering a particular point:
+
+@snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp SaturatedAlphaThickCoverSingleInit
+
+Then you will be able to access to all the maximal segments covering the point by
+using the function @ref nextMaximalSegment :
+@snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp SaturatedAlphaThickCoverDisplaySingle
+
+
+You will obtain for instance such a resulting cover:
+   @image html exampleAlphaThickSegmentTgtCoverSingle.png "Tangential cover with alpha thick segments with alpha = 4 for a point of index 80 (in blue)"
+   @image latex exampleAlphaThickSegmentTgtCoverSingle.png "Tangential cover with alpha thick segments with alpha = 4 for a point of index 80 (in blue)" width=6cm
+
 
 
 */
@@ -251,6 +314,18 @@ The whole example can be found in \ref greedyAlphaThickDecomposition.cpp.
    @image html examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segments with alpha = 4"
    @image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segment with alpha = 4" width=6cm
    \example geometry/curves/greedyAlphaThickDecomposition.cpp
+*/
+
+
+
+
+/**
+   This example shows the tangential conver of an noisy contour from the alpha thick segment primitive with alpha = 4.
+   @see \ref moduleAlphaThickSegmentReco
+
+   @image html exampleAlphaThickSegmentTgtCoverAll_Single.png "Tangential cover with alpha thick segments with alpha = 4"
+   @image latex exampleAlphaThickSegmentTgtCoverAll_Single.png "Tangential cover with alpha thick segments with alpha = 4" width=6cm
+   \example geometry/curves/exampleAlphaThickSegmentTgtCover.cpp
 */
 
 

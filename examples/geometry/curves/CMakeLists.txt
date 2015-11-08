@@ -6,6 +6,7 @@ SET(DGTAL_EXAMPLES_SRC
   convex-and-concave-parts
   exampleAlphaThickSegment
   exampleAlphaThickSegmentNoisy
+  exampleAlphaThickSegmentTgtCover
   exampleGridCurve2d
   exampleStabbingLineComputer
   exampleStabbingCircleComputer
