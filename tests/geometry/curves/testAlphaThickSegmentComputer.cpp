@@ -424,7 +424,7 @@ bool
 testThicknessDefinitions(){
   Board2D aBoardHVthickness;
   Board2D aBoardEuclthickness;
-  typedef  AlphaThickSegmentComputer<Z2i::RealPoint> AlphaThickSegmentComputer2D;
+  typedef  AlphaThickSegmentComputer<Z2i::Point> AlphaThickSegmentComputer2D;
   unsigned nb=0;
   unsigned nbok =0;
   trace.beginBlock ( "Testing alpha thick segment with different thickness definitions:" );
@@ -436,23 +436,23 @@ testThicknessDefinitions(){
   aBoardEuclthickness << adom;
   aBoardHVthickness << adom;
 
-  std::vector<Z2i::RealPoint> aVect;
-  aVect.push_back(Z2i::RealPoint(104, 54));
-  aVect.push_back(Z2i::RealPoint(104, 53));
-  aVect.push_back(Z2i::RealPoint(103, 53));
-  aVect.push_back(Z2i::RealPoint(103, 52));
-  aVect.push_back(Z2i::RealPoint(102, 52));
-  aVect.push_back(Z2i::RealPoint(102, 51));
-  aVect.push_back(Z2i::RealPoint(102, 50));
-  aVect.push_back(Z2i::RealPoint(101, 50));
-  aVect.push_back(Z2i::RealPoint(101, 49));
-  aVect.push_back(Z2i::RealPoint(101, 48));
-  aVect.push_back(Z2i::RealPoint(100, 48));
-  aVect.push_back(Z2i::RealPoint(100, 47));
+  std::vector<Z2i::Point> aVect;
+  aVect.push_back(Z2i::Point(104, 54));
+  aVect.push_back(Z2i::Point(104, 53));
+  aVect.push_back(Z2i::Point(103, 53));
+  aVect.push_back(Z2i::Point(103, 52));
+  aVect.push_back(Z2i::Point(102, 52));
+  aVect.push_back(Z2i::Point(102, 51));
+  aVect.push_back(Z2i::Point(102, 50));
+  aVect.push_back(Z2i::Point(101, 50));
+  aVect.push_back(Z2i::Point(101, 49));
+  aVect.push_back(Z2i::Point(101, 48));
+  aVect.push_back(Z2i::Point(100, 48));
+  aVect.push_back(Z2i::Point(100, 47));
  // Display the input curve
   aBoardEuclthickness << SetMode((*aVect.begin()).className(), "Grid");
   aBoardHVthickness << SetMode((*aVect.begin()).className(), "Grid");
-  for (std::vector<Z2i::RealPoint>::const_iterator it = aVect.begin(); 
+  for (std::vector<Z2i::Point>::const_iterator it = aVect.begin();
        it != aVect.end(); it++){
     aBoardHVthickness << *it;
     aBoardEuclthickness << *it;
@@ -466,10 +466,12 @@ testThicknessDefinitions(){
   }
   
   anAlphaSegmentEucl.init(aVect.begin());  
-  while(anAlphaSegmentEucl.extendFront()){
+  while(anAlphaSegmentEucl.end() != aVect.end()
+        && anAlphaSegmentEucl.extendFront()){
   }
   anAlphaSegmentHV.init(aVect.begin());  
-  while(anAlphaSegmentHV.extendFront()){
+  while(anAlphaSegmentHV.end() != aVect.end()
+        && anAlphaSegmentHV.extendFront()){
   }
 
   
@@ -482,8 +484,8 @@ testThicknessDefinitions(){
   aBoardHVthickness << anAlphaSegmentHV;    
   aBoardEuclthickness << anAlphaSegmentEucl;    
   
-  std::vector<Z2i::RealPoint> hullHV = anAlphaSegmentHV.getConvexHull();
-  std::vector<Z2i::RealPoint> hullEucl = anAlphaSegmentEucl.getConvexHull();
+  std::vector<Z2i::Point> hullHV = anAlphaSegmentHV.getConvexHull();
+  std::vector<Z2i::Point> hullEucl = anAlphaSegmentEucl.getConvexHull();
   aBoardEuclthickness.setLineWidth(5);
   aBoardHVthickness.setLineWidth(5);
   aBoardEuclthickness.setPenColor(DGtal::Color::Purple);
@@ -499,13 +501,13 @@ testThicknessDefinitions(){
                                hullHV.at((i+1)%hullHV.size())[1]);    
   }
   
-  Z2i::RealPoint pEucl = anAlphaSegmentEucl.getAntipodalLeaningPoints().first.first;
-  Z2i::RealPoint qEucl = anAlphaSegmentEucl.getAntipodalLeaningPoints().first.second;  
-  Z2i::RealPoint sEucl = anAlphaSegmentEucl.getAntipodalLeaningPoints().second;  
+  Z2i::Point pEucl = anAlphaSegmentEucl.getAntipodalLeaningPoints().first.first;
+  Z2i::Point qEucl = anAlphaSegmentEucl.getAntipodalLeaningPoints().first.second;
+  Z2i::Point sEucl = anAlphaSegmentEucl.getAntipodalLeaningPoints().second;
 
-  Z2i::RealPoint pHV = anAlphaSegmentHV.getAntipodalLeaningPoints().first.first;
-  Z2i::RealPoint qHV = anAlphaSegmentHV.getAntipodalLeaningPoints().first.second;  
-  Z2i::RealPoint sHV = anAlphaSegmentHV.getAntipodalLeaningPoints().second;  
+  Z2i::Point pHV = anAlphaSegmentHV.getAntipodalLeaningPoints().first.first;
+  Z2i::Point qHV = anAlphaSegmentHV.getAntipodalLeaningPoints().first.second;
+  Z2i::Point sHV = anAlphaSegmentHV.getAntipodalLeaningPoints().second;  
   aBoardEuclthickness.setPenColor(DGtal::Color::Red);
   aBoardHVthickness.setPenColor(DGtal::Color::Red);
 

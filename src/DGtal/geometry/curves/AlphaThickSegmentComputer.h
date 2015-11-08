@@ -244,23 +244,7 @@ public:
    * 'true' otherwise
    */
   bool operator!=( const AlphaThickSegmentComputer & other ) const;
-
-  /**
-   * Initialisation from a maximal thickness. The maximal thickness
-   * corresponds to the width of the ParallelStrip primitive. 
-   *
-   * @note By using this initialisation the computer will store the
-   * internal points (needed for length computation and display). To
-   * avoid this storage, you can use the initialisation method using
-   * two iterators (see @init).
-   *
-   * @param[in] aThickness the maximal thickness of the alpha thick segment (alpha_max).
-   *
-   *
-   */  
-  void init(const double aThickness);  
-  
-  
+    
 
 
   //-------------------- model of ForwardContainer -----------------------------
