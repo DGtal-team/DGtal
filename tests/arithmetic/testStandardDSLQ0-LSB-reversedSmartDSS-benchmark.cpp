@@ -73,17 +73,17 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
   std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
-      Integer a( random() % moda + 1 );
-      Integer b( random() % modb + 1 );
+      Integer a( rand() % moda + 1 );
+      Integer b( rand() % modb + 1 );
       if ( ic.gcd( a, b ) == 1 )
         {
           for ( Integer mu = 0; mu < 5; ++mu )
             {
-              DSL D( a, b, random() % (moda+modb) );
+              DSL D( a, b, rand() % (moda+modb) );
               for ( Integer x = 0; x < 10; ++x )
                 {
-                  Integer x1 = random() % modx;
-                  Integer x2 = x1 + 1 + ( random() % modx );
+                  Integer x1 = rand() % modx;
+                  Integer x2 = x1 + 1 + ( rand() % modx );
                   Point A = D.lowestY( x1 );
                   Point B = D.lowestY( x2 );
                   checkSubStandardDSLQ0<DSL>( D, A, B );

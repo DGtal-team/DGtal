@@ -26,9 +26,11 @@ SET(DGTAL_BENCH_SRC
 
 
 #Benchmark target
-FOREACH(FILE ${DGTAL_BENCH_SRC})
-add_executable(${FILE} ${FILE})
-target_link_libraries (${FILE} DGtal DGtalIO)
-add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
-ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
-ENDFOREACH(FILE)
+IF (BUILD_BENCHMARKS)
+  FOREACH(FILE ${DGTAL_BENCH_SRC})
+    add_executable(${FILE} ${FILE})
+    target_link_libraries (${FILE} DGtal DGtalIO)
+    add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
+    ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
+  ENDFOREACH(FILE)
+ENDIF(BUILD_BENCHMARKS)

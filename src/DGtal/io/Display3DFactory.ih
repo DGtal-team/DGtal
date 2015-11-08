@@ -1704,10 +1704,10 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
 // MidPointsRange
 
 // ArrowsRange
-template <typename Space, typename KSpace>
+template <typename TSpace, typename TKSpace>
 template <typename TIterator>
 inline
-void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
+void DGtal::Display3DFactory<TSpace,TKSpace>::draw( Display & display,
 						  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToArrow<KSpace>,
 						  std::pair<typename KSpace::Point, typename KSpace::Vector> > & object )
 {

@@ -138,10 +138,10 @@ public:
   typedef int Value;
 
   /// A wrapper around point predicate (functor Point -> bool) that
-  /// transforms it into a functor Point -> uint (0 or 1).
+  /// transforms it into a functor Point -> unsigned int (0 or 1).
   typedef functors::PointFunctorFromPointPredicateAndDomain< PointPredicate, Domain, unsigned int > ShapePointFunctor;
-  /// Adapts the a functor Point -> uint (0 or 1) to a functor Cell ->
-  /// uint (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
+  /// Adapts the a functor Point -> unsigned int (0 or 1) to a functor Cell ->
+  /// unsigned int (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
   typedef FunctorOnCells< ShapePointFunctor, KSpace > ShapeSpelFunctor;
 
 

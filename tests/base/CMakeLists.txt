@@ -27,6 +27,7 @@ SET(DGTAL_TESTS_SRC
    testOwningOrAliasingPtr
    testCatch
    testSimpleRandomAccessRangeFromPoint
+   testPartialTemplateSpecialization
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

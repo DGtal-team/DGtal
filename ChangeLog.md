@@ -2,6 +2,12 @@
 # DGtal 0.9.1
 
 ## New Features / Critical Changes
+
+- *Configuration/General*
+ - DGtal core now compiles on Microsoft Windows, Visual Studio. Many
+   issues have been fixed for compatibility with 'cl' compiler. (David
+   Coeurjolly, Jérémy Levallois, [1074](https://github.com/DGtal-team/DGtal/pull/1074))
+
 - *Geometry Package*
  - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
    the width (vertical/horizontal or Euclidean) of a convex hull.
@@ -11,6 +17,10 @@
 - *Base Package*
  - Enabling circulators in SimpleRandomAccessRangeFromPoint.
    (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
+
+- *Base*
+ - Deprecated OldAlias, OldClone, OldConstAlias have been removed. (David
+   Coeurjolly, [XXX](XXXX))
 
 - *IO*
  - Minor improvements of default settings in Viewer3D. (David
