@@ -216,9 +216,9 @@ The whole example can be found in \ref greedyAlphaThickDecomposition.cpp.
 
 
 
-\section moduleAlphaThickSegmentTgtCover  Computing the tangential cover 
+\section moduleAlphaThickSegmentTgtCover  Computing AlphaThickSegment tangential cover 
 
-\subsection moduleAlphaThickSegmentTgtCoverSaturated Tangential cover with SaturatedSegmentation
+\subsection moduleAlphaThickSegmentTgtCoverSaturated Tangential cover from saturated segmentation
 
 To compute the tangential cover of a single contour, a first
 possibility is to use the SaturatedSegmentation class.  As in the
@@ -266,7 +266,7 @@ single point, you can use the functions of the @ref SegmentComputerUtils:
 @snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp SaturatedAlphaThickCoverHeaderSingle
 
 In particular, the function @ref firstMaximalSegment and
- @ref lastMaximalSegment permit to compute the maximal segment covering a particular point:
+ @ref lastMaximalSegment permit to compute respectively the first and last maximal segment covering a particular point:
 
 @snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp SaturatedAlphaThickCoverSingleInit
 
@@ -320,7 +320,7 @@ You will obtain for instance such a resulting cover:
 
 
 /**
-   This example shows the tangential conver of an noisy contour from the alpha thick segment primitive with alpha = 4.
+   This example shows the tangential cover of an noisy contour from the alpha thick segment primitive with alpha = 4.
    @see \ref moduleAlphaThickSegmentReco
 
    @image html exampleAlphaThickSegmentTgtCoverAll_Single.png "Tangential cover with alpha thick segments with alpha = 4"
