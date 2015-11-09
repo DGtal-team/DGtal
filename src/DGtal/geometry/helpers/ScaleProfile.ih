@@ -45,19 +45,19 @@
 
 DGtal::ScaleProfile::~ScaleProfile()
 {
-  if ( m_scales != 0 ) delete m_scales;
-  if ( m_stats != 0 ) delete m_stats; 
+  if ( myScales != 0 ) delete myScales;
+  if ( myStats != 0 ) delete myStats; 
 }
 
 DGtal::ScaleProfile::ScaleProfile()
-  : m_scales( 0 ), m_stats( 0 ), m_profileDef(MEAN), m_storeValInStats(false)
+  : myScales( 0 ), myStats( 0 ), myProfileDef(MEAN), m_storeValInStats(false)
 {
 }
 
 
 
 DGtal::ScaleProfile::ScaleProfile(ProfileComputingType type)
-  : m_scales( 0 ), m_stats( 0 ), m_profileDef(type), m_storeValInStats(false)
+  : myScales( 0 ), myStats( 0 ), myProfileDef(type), m_storeValInStats(false)
 {
 }
 
@@ -66,50 +66,49 @@ DGtal::ScaleProfile::ScaleProfile(ProfileComputingType type)
 void 
 DGtal::ScaleProfile::clear()
 {
-  if ( m_scales != 0 ) 
+  if ( myScales != 0 ) 
     {
-      delete m_scales;
-      m_scales = 0;
+      delete myScales;
+      myScales = 0;
     }
-  if ( m_stats != 0 ) 
+  if ( myStats != 0 ) 
     {
-      delete m_stats;
-      m_stats = 0;
+      delete myStats;
+      myStats = 0;
     }
   
 }
 
 
 void 
-DGtal::ScaleProfile::init( uint nb, bool storeValsInStats )
+DGtal::ScaleProfile::init(unsigned int nb, const bool storeValsInStats )
 {
   clear();
-  m_scales = new std::vector<float>( nb );
-  m_stats = new std::vector< Statistic<float> >;
+  myScales = new std::vector<float>( nb );
+  myStats = new std::vector< Statistic<float> >;
   m_storeValInStats= storeValsInStats;
-  for ( uint i = 0; i < nb; ++i ){
-    (*m_scales)[ i ] = (float) ( i + 1 );
-    m_stats->push_back(Statistic<float>(storeValsInStats));
+  for ( unsigned int i = 0; i < nb; ++i ){
+    (*myScales)[ i ] = (float) ( i + 1 );
+    myStats->push_back(Statistic<float>(storeValsInStats));
   }
 }
 
 
 
 void
-DGtal::ScaleProfile::addValue( uint idx_scale, float value )
+DGtal::ScaleProfile::addValue( unsigned int idxScale, float value )
 {
-  ASSERT( isValid() && ( idx_scale < m_scales->size() ) );
-  (*m_stats)[ idx_scale ].addValue( value );
-
+  ASSERT( isValid() && ( idxScale < myScales->size() ) );
+  (*myStats)[ idxScale ].addValue( value );
 }
 
 
 void
 DGtal::ScaleProfile::addStatistic
-( uint idx_scale, const Statistic<float> & stat )
+( unsigned int idxScale, const Statistic<float> & stat )
 {
-  ASSERT( isValid() && ( idx_scale < m_scales->size() ) );
-  (*m_stats)[ idx_scale ] += stat;
+  ASSERT( isValid() && ( idxScale < myScales->size() ) );
+  (*myStats)[ idxScale ] += stat;
 }
 
 
@@ -119,22 +118,22 @@ DGtal::ScaleProfile::getProfile
 ( std::vector<double> & x, std::vector<double> & y ) const
 {
   ASSERT( isValid() );
-  for ( uint i = 0; i < m_scales->size(); ++i) 
+  for ( unsigned int i = 0; i < myScales->size(); ++i) 
     {
-      x.push_back( log( (*m_scales)[ i ] ) );
-      switch (m_profileDef){
+      x.push_back( log( (*myScales)[ i ] ) );
+      switch (myProfileDef){
       case MAX:
-	y.push_back( log( (*m_stats)[ i ].max() ) );
+	y.push_back( log( (*myStats)[ i ].max() ) );
 	break;
       case MIN:
-	y.push_back( log( (*m_stats)[ i ].min() ) );
+	y.push_back( log( (*myStats)[ i ].min() ) );
 	break;
       case MEDIAN:
-	y.push_back (log( (*m_stats)[ i ].median() ));
+	y.push_back (log( (*myStats)[ i ].median() ));
 	break;
       case MEAN:
       default: 
-        y.push_back( log( (*m_stats)[ i ].mean() ) );
+        y.push_back( log( (*myStats)[ i ].mean() ) );
 	break;
 
       }
@@ -143,24 +142,24 @@ DGtal::ScaleProfile::getProfile
 
 
 void 
-DGtal::ScaleProfile::meaningfulScales
-( std::vector< std::pair< uint, uint > > & intervals,
-  uint min_width,
-  double max_slope,
-  double min_slope ) const
+DGtal::ScaleProfile::meaningfulScales ( std::vector< std::pair< unsigned int,
+                                        unsigned int > > & intervals,
+                                        const unsigned int minSize,
+                                        const double maxSlope,
+                                        const double minSlope ) const
 {
   std::vector<double> x;
   std::vector<double> y;
   this->getProfile( x, y );
-  uint l = 0;
-  for ( uint k = 1; k < x.size(); ++k )
+  unsigned int l = 0;
+  for ( unsigned int k = 1; k < x.size(); ++k )
     {
       double slope = ( y[ k ] - y[ k - 1 ] ) / ( x[ k ] - x[ k - 1 ] );
-      if ( ( slope > max_slope ) 
-	   || ( slope < min_slope ) 
+      if ( ( slope > maxSlope ) 
+	   || ( slope < minSlope ) 
 	   || ( (k+1) == x.size() ) )
 	{
-	  if ( ( k - 1 - l ) >= min_width )
+	  if ( ( k - 1 - l ) >= minSize )
 	    intervals.push_back( std::make_pair( l+1, k ) );
 	  l = k;
 	}
@@ -170,10 +169,12 @@ DGtal::ScaleProfile::meaningfulScales
 
 
 std::pair<bool, double> 
-DGtal::ScaleProfile::getSlopeFromMeaningfulScales(double max_slope, double min_slope, uint min_size) const {
+DGtal::ScaleProfile::getSlopeFromMeaningfulScales(const double maxSlope, 
+                                                  const double minSlope,
+                                                  const unsigned int minSize) const {
   std::pair<bool, double> resuSlope(false, 0.0);
-  std::vector< std::pair< uint, uint > > vectIntervals;
-  this->meaningfulScales(vectIntervals, min_size,max_slope, min_slope);
+  std::vector< std::pair< unsigned int, unsigned int > > vectIntervals;
+  this->meaningfulScales(vectIntervals, minSize, maxSlope, minSlope);
   std::vector<double> vx;
   std::vector<double> vy;
 
@@ -183,17 +184,15 @@ DGtal::ScaleProfile::getSlopeFromMeaningfulScales(double max_slope, double min_s
   if(vectIntervals.size()!=0 && vectIntervals.at(0).first<vectIntervals.at(0).second ){
     resuSlope.first=true;
   }else{
-    std::pair<uint, uint> interAll(1, vx.size());
+    std::pair<unsigned int, unsigned int> interAll(1, vx.size());
     vectIntervals.push_back(interAll); 
   }
   SimpleLinearRegression SLR;
 
-
-  uint mfsBeg = vectIntervals.at(0).first-1;
-  uint mfsEnd = vectIntervals.at(0).second-1;
-
-
-// Only two sampled points
+  unsigned int mfsBeg = vectIntervals.at(0).first-1;
+  unsigned int mfsEnd = vectIntervals.at(0).second-1;
+  
+  // Only two sampled points
   if ( mfsEnd-mfsBeg == 1 ){
     Z2i::RealPoint pt1(vx.at(mfsBeg),vy.at(mfsBeg));
     Z2i::RealPoint pt2(vx.at(mfsEnd),vy.at(mfsEnd));
@@ -206,43 +205,40 @@ DGtal::ScaleProfile::getSlopeFromMeaningfulScales(double max_slope, double min_s
   }
   SLR.computeRegression();
   resuSlope.second = SLR.slope();
-
   return resuSlope;
 }
 
-uint
-DGtal::ScaleProfile::noiseLevel
-( uint min_width,
-  double max_slope,
-  double min_slope ) const
+unsigned int
+DGtal::ScaleProfile::noiseLevel ( const unsigned int minSize,
+                                  const double maxSlope,
+                                  const double minSlope ) const
 {
-  std::vector< std::pair< uint, uint > > intervals;
-  this->meaningfulScales( intervals, min_width, max_slope, min_slope );
+  std::vector< std::pair< unsigned int, unsigned int > > intervals;
+  this->meaningfulScales( intervals, minSize, maxSlope, minSlope );
   return ( intervals.size() != 0 )
     ? intervals[ 0 ].first
     : 0;
 }
 
 
-uint
-DGtal::ScaleProfile::lowerBoundedNoiseLevel
-( uint min_width,
-  double max_slope,
-  double min_slope,
-  double lower_bound_at_scale_1,
-  double lower_bound_slope ) const
+unsigned int
+DGtal::ScaleProfile::lowerBoundedNoiseLevel( const unsigned int minSize,
+                                             const double maxSlope,
+                                             const double minSlope,
+                                             const double lowerBoundAtScale1,
+                                             const double lowerBoundSlope ) const
 {
-  std::vector< std::pair< uint, uint > > intervals;
-  this->meaningfulScales( intervals, min_width, max_slope, min_slope );
+  std::vector< std::pair< unsigned int, unsigned int > > intervals;
+  this->meaningfulScales( intervals, minSize, maxSlope, minSlope );
   std::vector<double> x;
   std::vector<double> y;
   this->getProfile( x, y );
-  for ( uint i = 0; i < intervals.size(); ++i )
+  for ( unsigned int i = 0; i < intervals.size(); ++i )
     {
       bool above = true;
-      for ( uint k = intervals[ i ].first; ( k <= intervals[ i ].second ); ++k )
+      for ( unsigned int k = intervals[ i ].first; ( k <= intervals[ i ].second ); ++k )
 	{
-	  if ( y[ k ] < ( lower_bound_at_scale_1 + lower_bound_slope*x[ k ] ) )
+	  if ( y[ k ] < ( lowerBoundAtScale1 + lowerBoundSlope*x[ k ] ) )
 	    {
 	      above = false;
 	      break;
@@ -259,28 +255,27 @@ DGtal::ScaleProfile::lowerBoundedNoiseLevel
 void 
 DGtal::ScaleProfile::stopStatsSaving()
 {
-  for ( uint i = 0; i < m_stats->size(); ++i ){
-    ((*m_stats).at( i )).terminate();
+  for ( unsigned int i = 0; i < myStats->size(); ++i ){
+    ((*myStats).at( i )).terminate();
   } 
-
 }
 
 
 inline
 DGtal::ScaleProfile::ScaleProfile( const ScaleProfile & other ){
-  if(other.m_stats!=0 && other.m_scales!=0){
-    m_scales = new std::vector<float>( other.m_scales->size() );
-    m_stats = new std::vector< Statistic<float> > ( other.m_scales->size());
-    m_profileDef = other.m_profileDef;
+  if(other.myStats!=0 && other.myScales!=0){
+    myScales = new std::vector<float>( other.myScales->size() );
+    myStats = new std::vector< Statistic<float> > ( other.myScales->size());
+    myProfileDef = other.myProfileDef;
     m_storeValInStats= other.m_storeValInStats;
-    for ( uint i = 0; i < other.m_scales->size(); ++i ){
-      (*m_scales)[ i ] = (*other.m_scales)[i];
-      (*m_stats)[ i ] = (*other.m_stats)[i];
+    for ( unsigned int i = 0; i < other.myScales->size(); ++i ){
+      (*myScales)[ i ] = (*other.myScales)[i];
+      (*myStats)[ i ] = (*other.myStats)[i];
     }
   }else{
-    m_stats=0;
-    m_scales=0;
-    m_profileDef = other.m_profileDef;
+    myStats=0;
+    myScales=0;
+    myProfileDef = other.myProfileDef;
     m_storeValInStats = false;
   }
 }
@@ -292,19 +287,19 @@ DGtal::ScaleProfile::operator=
 ( const DGtal::ScaleProfile & other )
 {
   if ( this != &other ) {
-  if(other.m_stats!=0 && other.m_scales!=0){
-    m_scales = new std::vector<float>( other.m_scales->size() );
-    m_stats = new std::vector< Statistic<float> > ( other.m_scales->size());
-    m_profileDef = other.m_profileDef;
+  if(other.myStats!=0 && other.myScales!=0){
+    myScales = new std::vector<float>( other.myScales->size() );
+    myStats = new std::vector< Statistic<float> > ( other.myScales->size());
+    myProfileDef = other.myProfileDef;
     m_storeValInStats= other.m_storeValInStats;
-    for ( uint i = 0; i < other.m_scales->size(); ++i ){
-      (*m_scales)[ i ] = (*other.m_scales)[i];
-      (*m_stats)[ i ] = (*other.m_stats)[i];
+    for ( unsigned int i = 0; i < other.myScales->size(); ++i ){
+      (*myScales)[ i ] = (*other.myScales)[i];
+      (*myStats)[ i ] = (*other.myStats)[i];
     }
   }else{
-    m_stats=0;
-    m_scales=0;
-    m_profileDef = other.m_profileDef;
+    myStats=0;
+    myScales=0;
+    myProfileDef = other.myProfileDef;
     m_storeValInStats=false;
   }
   }
@@ -318,33 +313,34 @@ DGtal::ScaleProfile::operator=
 template <typename Iterator>
 inline
 void 
-DGtal::ScaleProfile::init( Iterator begin_scale, Iterator end_scale, bool storeValsInStats )
+DGtal::ScaleProfile::init( const Iterator &beginScale, const Iterator &endScale,
+                           const bool storeValsInStats )
 {
   clear();
   m_storeValInStats= storeValsInStats;
-  m_scales = new std::vector<float>;
-  m_stats = new std::vector< Statistic<float> >;
+  myScales = new std::vector<float>;
+  myStats = new std::vector< Statistic<float> >;
   
-  uint nb = 0;
-  for ( ; begin_scale != end_scale; ++begin_scale, ++nb ){
-    m_scales->push_back( *begin_scale );
-    m_stats->push_back(Statistic<float>( m_storeValInStats));
+  unsigned int nb = 0;
+  for ( ; beginScale != endScale; ++beginScale, ++nb ){
+    myScales->push_back( *beginScale );
+    myStats->push_back(Statistic<float>( m_storeValInStats));
   }
 }
 
 
 
 void 
-DGtal::ScaleProfile::selfDisplay( std::ostream& that_stream ) const
+DGtal::ScaleProfile::selfDisplay( std::ostream& out ) const
 {
-  that_stream << "[ScaleProfile]";
+  out << "[ScaleProfile]";
 }
 
 
 bool
 DGtal::ScaleProfile::isValid() const
 {
-  return m_scales != 0;
+  return myScales != 0;
 }
 
 
@@ -370,8 +366,8 @@ DGtal::operator<< ( std::ostream & out,
 inline
 void 
 DGtal::ScaleProfile::setProfileDef(ProfileComputingType type){
-  ASSERT(m_profileDef==MEAN || m_profileDef==MAX || m_profileDef==MIN || m_profileDef==MEDIAN);
-  m_profileDef = type; 
+  ASSERT(myProfileDef==MEAN || myProfileDef==MAX || myProfileDef==MIN || myProfileDef==MEDIAN);
+  myProfileDef = type; 
 }
     
 
