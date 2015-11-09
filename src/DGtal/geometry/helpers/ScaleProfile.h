@@ -144,7 +144,7 @@ namespace DGtal
      * @param nb an integer number strictly positive.
      */
     void init( uint nb, bool storeValsInStats=false );
-
+    
 
     /**
      * Adds some sample value at the given scale.

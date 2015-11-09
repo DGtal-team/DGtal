@@ -46,7 +46,7 @@ using namespace DGtal;
 TEST_CASE( "Testing ScaleProfile" )
 {
   
-  ScaleProfile sp(ScaleProfile::ProfileComputingType::MEAN);
+  ScaleProfile sp(ScaleProfile::MEAN);
   sp.init(5);
   
   SECTION("Testing basic add of ScaleProfile")
