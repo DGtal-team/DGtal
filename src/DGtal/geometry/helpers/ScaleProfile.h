@@ -93,21 +93,21 @@ namespace DGtal
 
     /**
      * Constructor. The object is not valid.
-     * @param type allows to specify the used to computes the profile points from the added samples.
+     * @param[in] type allows to specify the used to computes the profile points from the added samples.
      */
     ScaleProfile(ProfileComputingType type);
     
 
     /**
      * Copy constructor.
-     * @param other the object to clone.
+     * @param[in] other the object to clone.
      */
     ScaleProfile( const ScaleProfile & other );
 
 
     /**
      * Assignment.
-     * @param other the object to copy.
+     * @param[in] other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
@@ -127,13 +127,15 @@ namespace DGtal
      * scales of the profile (generally an iterator on a sequence
      * (1,2,3,4,...N)).
      *
-     * @param an iterator pointing on the first scale (some
+     * @param[in] beginScale an iterator pointing on the first scale (some
      * floating-point convertible value).
-     *
-     * @param an iterator pointing after the last scale.
+     * @param[in] endScale an iterator pointing after the last scale.
+     * @param[in] storeValsInStats flat to store values in statistics (in order to be
+     * able to access to the median value  (default false)). 
      */
     template <typename Iterator>
-    void init( Iterator begin_scale, Iterator end_scale, bool storeValsInStats=false );
+    void init( const Iterator &beginScale, const Iterator &endScale, 
+               const bool storeValsInStats=false );
 
 
 
@@ -141,29 +143,31 @@ namespace DGtal
      * Initializer. Must be called before adding datas. Specifies the
      * scales of the profile as the sequence (1,2,3,4,...,nb).
      *
-     * @param nb an integer number strictly positive.
+     * @param[in] nb an integer number strictly positive.
+     * @param[in] storeValsInStats flat to store values in statistics (in order to be
+     * able to access to the median value  (default false)). 
      */
-    void init( uint nb, bool storeValsInStats=false );
+    void init( unsigned int nb, bool storeValsInStats=false );
     
 
     /**
      * Adds some sample value at the given scale.
      *
-     * @param idx_scale some valid index (according to init).
-     * @param value any value.
+     * @param[in] idxScale some valid index (according to init).
+     * @param[in] value any value.
      */
-    void addValue( uint idx_scale, float value );
+    void addValue( unsigned int idxScale, float value );
 
 
     /**
      * Adds some statistic at the given scale.
      *
-     * @param idx_scale some valid index (according to init).
+     * @param idxScale some valid index (according to init).
      *
      * @param stat any statistic (which is added to the current
      * statistic object).
      */
-    void addStatistic( uint idx_scale, const Statistic<float> & stat );
+    void addStatistic( unsigned int idxScale, const Statistic<float> & stat );
 
 
 
@@ -197,28 +201,27 @@ namespace DGtal
      * the samples of scale statistics.
      *
      * @param type the method applied to the statistics samples: MEAN, MAX, MIN.
-     **/
-    
-    
+     **/    
     void setProfileDef(ProfileComputingType type);
     
 
     
     /**
      * Used by boost to Serialize. 
-     *
+     * @param[out] ar the archive to serialized.
+     * @param[in] version the version.
      **/
    
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version){
-      ar & m_scales & m_stats;
+      ar & myScales & myStats;
     }
 
     /**
-     * @param x (modified) adds the x-value of the profile (log(scale))
+     * @param[out] x (modified) adds the x-value of the profile (log(scale))
      * to the back of the vector.
      *
-     * @param y (modified) adds the y-value of the profile
+     * @param[out] y (modified) adds the y-value of the profile
      * (log(Exp(samples))) to the back of the vector.
      */
     void getProfile( std::vector<double> & x, 
@@ -231,16 +234,16 @@ namespace DGtal
      * below [max_slope] and above [min_slope]. This method returns
      * the sequence of meaningful scales for surfel [idx].
      *
-     * @param intervals (returns) a list of meaningful scales.
-     * @param min_width the minimum length for the meaningful scales.
-     * @param max_slope the maximum allowed slope for length evolution.
-     * @param min_slope the minimum allowed slope for length evolution.
+     * @param[out] intervals (returns) a list of meaningful scales.
+     * @param[in] minSize the minimum length for the meaningful scales.
+     * @param[in] maxSlope the maximum allowed slope for length evolution.
+     * @param[in] minSlope the minimum allowed slope for length evolution.
      */
     void 
-    meaningfulScales( std::vector< std::pair< uint, uint > > & intervals,
-		      uint min_width = 1,
-		      double max_slope = -0.2,
-		      double min_slope = -1e10 ) const;
+    meaningfulScales( std::vector< std::pair< unsigned int, unsigned int > > & intervals,
+		      const unsigned int minWidth = 1,
+		      const double maxSlope = -0.2,
+		      const double minSlope = -1e10 ) const;
 
     /**
      *  Compute the profile slope of the first meaningful scale
@@ -251,20 +254,17 @@ namespace DGtal
      * scale interval was found, it simply return the slope obtained
      * from the linear regression. 
      *
-     * @param min_slope the  minimum allowed slope for length evolution.  
-     * @param max_slope the  maximum allowed slope for length evolution.
+     * @param[in] maxSlope the  maximum allowed slope for length evolution.
+     * @param[in] minSlope the  minimum allowed slope for length evolution.  
+     * @param[in] minSize the minimum length for the meaningful scales.
      * 
      **/
-
-    
     std::pair<bool, double> 
-    getSlopeFromMeaningfulScales(double max_slope=-0.2, double min_slope=-1e10, uint min_size=2) const ;
+    getSlopeFromMeaningfulScales(const double maxSlope=-0.2,
+                                 const double minSlope=-1e10,
+                                 const unsigned int minSize=2) const ;
     
 
-
-
-
-   
     
     /**
      * The noise level is the first scale of the first meaningful
@@ -272,41 +272,41 @@ namespace DGtal
      * smaller than [min_width] and in which the profile has slopes
      * below [max_slope]. 
      *
-     * @param min_width the minimum length for the meaningful scales.
-     * @param max_slope the maximum allowed slope for length evolution.
-     * @param min_slope the minimum allowed slope for length evolution.
+     * @param[in] minSize the minimum length for the meaningful scales.
+     * @param[in] maxSlope the maximum allowed slope for length evolution.
+     * @param[in] minSlope the minimum allowed slope for length evolution.
      * @return the noise level or zero is none was found.
      * @see meaningfulScales
      */
-    uint
-    noiseLevel( uint min_width = 1,
-		double max_slope = -0.2,
-		double min_slope = -1e10 ) const;
+    unsigned int
+    noiseLevel( const unsigned int minSize = 1,
+		const double maxSlope = -0.2,
+		const double minSlope = -1e10 ) const;
 
 
     /**
      * The noise level is the first scale of the first meaningful
      * scale. A meaningful scale is an interval of scales of length no
-     * smaller than [min_width] and in which the profile has slopes
-     * below [max_slope]. The lower bounded noise level also requires
+     * smaller than [minWidth] and in which the profile has slopes
+     * below [maxSlope]. The lower bounded noise level also requires
      * minimum lenghs for different scales. Therefore the profile must
      * be greater that
      * [lower_bound_at_scale_1]+[lower_bound_slope]*scale.
      *
-     * @param min_width the minimum length for the meaningful scales.
-     * @param max_slope the maximum allowed slope for length evolution.
-     * @param min_slope the minimum allowed slope for length evolution.
-     * @param lower_bound_at_scale_1 the lower bound for the profile at scale 1.
-     * @param lower_bound_slope the slope of the lower bound for the profile (for instance -1 for digital contours, -3 for digital image graphs since area values are divided by (scale)^3.
+     * @param[in] minSize the minimum length for the meaningful scales.
+     * @param[in] maxSlope the maximum allowed slope for length evolution.
+     * @param[in] minSlope the minimum allowed slope for length evolution.
+     * @param[in] lowerBoundAtScale1 the lower bound for the profile at scale 1.
+     * @param[in] lowerBoundSlope the slope of the lower bound for the profile (for instance -1 for digital contours, -3 for digital image graphs since area values are divided by (scale)^3.
      * @return the noise level or zero is none was found.
      * @see meaningfulScales
      */
-    uint
-    lowerBoundedNoiseLevel( uint min_width = 1,
-			    double max_slope = -0.2,
-			    double min_slope = -1e10,
-			    double lower_bound_at_scale_1 = 1.0,
-			    double lower_bound_slope = -2.0 ) const;
+    unsigned int
+    lowerBoundedNoiseLevel( const unsigned int minSize = 1,
+			    const double maxSlope = -0.2,
+			    const double minSlope = -1e10,
+			    const double lowerBoundAtScale1 = 1.0,
+			    const double lowerBoundSlope = -2.0 ) const;
 
 
 
@@ -318,7 +318,7 @@ namespace DGtal
 
     /**
      * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
+     * @param[out] out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
 
@@ -336,19 +336,19 @@ namespace DGtal
     /**
      * The vector containing the different scales for the analysis.
      */
-    std::vector<float>* m_scales;
+    std::vector<float>* myScales;
 
     /**
      * The vector containing the different statistics for the analysis.
      */
-    std::vector< Statistic<float> >* m_stats;
+    std::vector< Statistic<float> >* myStats;
 
     /**
      * Used to define the method to compute the scale profile: several choice are possible:
      * MEAN (default), MAX, MIN (not efficient)
      */
     
-    ProfileComputingType m_profileDef;
+    ProfileComputingType myProfileDef;
     
 
 
