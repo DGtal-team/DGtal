@@ -241,7 +241,7 @@ namespace DGtal
      */
     void 
     meaningfulScales( std::vector< std::pair< unsigned int, unsigned int > > & intervals,
-		      const unsigned int minWidth = 1,
+		      const unsigned int minSize = 1,
 		      const double maxSlope = -0.2,
 		      const double minSlope = -1e10 ) const;
 
