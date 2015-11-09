@@ -201,7 +201,7 @@ DGtal::ScaleProfile::getSlopeFromMeaningfulScales(double max_slope, double min_s
     resuSlope.second = slope;
     return resuSlope;
   }
-  for(int i=mfsBeg; i<=mfsEnd; i++){
+  for(unsigned int i=mfsBeg; i<=mfsEnd; i++){
     SLR.addSample(vx.at(i), vy.at(i));
   }
   SLR.computeRegression();
