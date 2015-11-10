@@ -7,6 +7,14 @@
    the width (vertical/horizontal or Euclidean) of a convex hull.
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
+ - ScaleProfile: new class to represent a (multi)scale profile i.e. a sequence
+   of statistics on digital lengths parameterized by a scale.
+   (Backport of the ScaleProfile class of
+   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
+   (Bertrand Kerautret, Jacques-Olivier Lachaud
+   [#1075](https://github.com/DGtal-team/DGtal/pull/1075))
+
+
 ## Changes
 - *Base Package*
  - Enabling circulators in SimpleRandomAccessRangeFromPoint.

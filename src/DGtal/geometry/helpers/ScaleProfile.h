@@ -134,8 +134,8 @@ namespace DGtal
      * able to access to the median value  (default false)). 
      */
     template <typename Iterator>
-    void init( const Iterator &beginScale, const Iterator &endScale, 
-               const bool storeValsInStats=false );
+    void init(  Iterator beginScale,  Iterator endScale, 
+                const bool storeValsInStats=false );
 
 
 
