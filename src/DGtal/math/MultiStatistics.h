@@ -339,54 +339,54 @@ private:
     /**
      * Number of statistical variables.
      */
-    unsigned int m_nb;
+    unsigned int myNb;
 
     /**
      * For each variable, number of samples
      */
-    unsigned int* m_samples;
+    unsigned int* mySamples;
 
     /**
      * For each variable, stores the sum of sample values for
      * computing sample mean.
      */
-    double* m_exp;
+    double* myExp;
 
     /**
      * For each variable, stores the sum of squared sample values for
      * computing sample variance.
      */
-    double* m_exp2;
+    double* myExp2;
 
     /**
      * For each variable, stores the sample variance.
      */
-    double* m_var;
+    double* myVar;
 
     /**
      * For each variable, stores the unbiased sample variance.
      */
-    double* m_unbiased_var;
+    double* myUnbiasedVar;
     
     /**
      * For each variable, stores the maximal sample value.
      */
-    double* m_max;
+    double* myMax;
 
     /**
      * For each variable, stores the indice of the maximal sample value.
      */
-    unsigned int* m_indice_max;
+    unsigned int* myIndiceMax;
 
     /**
      * For each variable, stores the minimal sample value.
      */
-    double* m_min;
+    double* myMin;
 
     /**
      * For each variable, stores the indice of the minimal sample value.
      */
-    unsigned int* m_indice_min;
+    unsigned int* myIndiceMin;
 
     /**
      * Tells if values must be stored or not.
@@ -397,7 +397,7 @@ private:
      * For each variable, stores the sample values if
      * [m_store_samples] is 'true'.
      */
-    std::vector<double>* m_values;
+    std::vector<double>* myValues;
 
 
 
