@@ -51,11 +51,10 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class MultiStatistics
 /**
- * Description of class 'MultiStatistics' <p>
- * \brief Aim: This class stores a
- * set of sample values for several variables and can then compute
- * different statistics, like sample mean, sample variance, sample
- * unbiased variance, etc.
+ * Description of class 'MultiStatistics' <p> \brief Aim: This class
+ * stores a set of sample values for several variables and can then
+ * compute different statistics, like sample mean, sample variance,
+ * sample unbiased variance, etc.
  *
  *
  * The proposed implementation is mainly a backport from
@@ -391,11 +390,11 @@ private:
     /**
      * Tells if values must be stored or not.
      */
-    bool m_store_samples;
+    bool myStoreSamples;
 
     /**
      * For each variable, stores the sample values if
-     * [m_store_samples] is 'true'.
+     * [myStoreSamples] is 'true'.
      */
     std::vector<double>* myValues;
 

@@ -186,7 +186,7 @@ inline
 double
 DGtal::MultiStatistics::value( const unsigned int k, const unsigned int i ) const
 {
-  if ( m_store_samples ) {
+  if ( myStoreSamples ) {
     ASSERT( ( k < myNb )
 		       && ( myValues != 0 ) 
 		       && ( i < mySamples[ k ] ) );
@@ -220,7 +220,7 @@ DGtal::MultiStatistics::addValue( unsigned int k, double v )
     myMin[ k ] = v;
     myIndiceMin[k]=mySamples[k]-1;
   }
-  if ( m_store_samples )
+  if ( myStoreSamples )
     myValues[ k ].push_back( v );
 }
 
@@ -265,8 +265,8 @@ DGtal::MultiStatistics::init( unsigned int size, bool storeSamples )
   myMin = new double[ size ];
   myIndiceMax = new unsigned int[ size ];
   myIndiceMin = new unsigned int[ size ];
-  m_store_samples = storeSamples;
-  if ( m_store_samples )
+  myStoreSamples = storeSamples;
+  if ( myStoreSamples )
     myValues = new std::vector<double>[ size ];
   clear();
 }
@@ -290,7 +290,7 @@ DGtal::MultiStatistics::clear()
       myIndiceMin[ i ] = 0;
       myIndiceMax[ i ] = 0;
       
-      if ( m_store_samples ) {
+      if ( myStoreSamples ) {
 	myValues[ i ].clear();
 	myValues[ i ].reserve( 128 );
       }
@@ -325,7 +325,7 @@ DGtal::MultiStatistics::erase()
   myIndiceMax = 0;  
   myValues = 0;
  
-  m_store_samples = false;
+  myStoreSamples = false;
 }
 
 
@@ -335,7 +335,7 @@ DGtal::MultiStatistics::covariance( const unsigned int x, const unsigned int y,
                                     const unsigned int s, unsigned int e ) const
 {
   ASSERT( ( x < myNb ) && ( y < myNb ) && ( x != y )
-		     && m_store_samples 
+		     && myStoreSamples 
 		     && ( samples( x ) == samples( y ) ) );
   unsigned int size = samples( x );
   double coVariance = 0.0;
@@ -363,7 +363,7 @@ std::pair<double,double>
 DGtal::MultiStatistics::linearRegression( const unsigned int x, const unsigned int y ) const
 {
   ASSERT( ( x < myNb ) && ( y < myNb ) && ( x != y )
-		     && m_store_samples 
+		     && myStoreSamples 
 		     && ( samples( x ) == samples( y ) ) );
 
   double cov = covariance( x, y );
@@ -377,7 +377,7 @@ DGtal::MultiStatistics::linearRegression( const unsigned int x, const unsigned i
 double
 DGtal::MultiStatistics::median( unsigned int k ) 
 {
-  ASSERT( m_store_samples );
+  ASSERT( myStoreSamples );
   
   nth_element( myValues[ k ].begin(), myValues[ k ].begin()+(myValues[k].size()/2), 
 	       myValues[ k ].end());
