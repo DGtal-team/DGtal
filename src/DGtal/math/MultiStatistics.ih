@@ -19,6 +19,7 @@
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
+ * @author Jacques-Olivier Lachaud
  * @date 2015/11/09
  *
  * Implementation of inline methods defined in MultiStatistics.h
@@ -43,8 +44,8 @@
 
 
 inline
-DGtal::MultiStatistics::MultiStatistics( unsigned int size, 
-                               bool store_samples )
+DGtal::MultiStatistics::MultiStatistics( const unsigned int size, 
+                                         const bool storeSamples )
 {
   m_samples = 0;
   m_exp = 0;
@@ -56,7 +57,7 @@ DGtal::MultiStatistics::MultiStatistics( unsigned int size,
   m_values = 0;
   m_indice_max = 0;
   m_indice_min = 0;
-  init( size, store_samples );
+  init( size, storeSamples );
 }
 
 
@@ -116,7 +117,7 @@ DGtal::MultiStatistics::nb() const
 
 inline
 unsigned int
-DGtal::MultiStatistics::samples( unsigned int k ) const
+DGtal::MultiStatistics::samples( const unsigned int k ) const
 {
   return m_samples[ k ];
 }
@@ -124,7 +125,7 @@ DGtal::MultiStatistics::samples( unsigned int k ) const
 
 inline
 double 
-DGtal::MultiStatistics::mean( unsigned int k ) const
+DGtal::MultiStatistics::mean( const unsigned int k ) const
 {
   return m_exp[ k ];
 }
@@ -133,7 +134,7 @@ DGtal::MultiStatistics::mean( unsigned int k ) const
 
 inline
 double 
-DGtal::MultiStatistics::variance( unsigned int k ) const
+DGtal::MultiStatistics::variance( const unsigned int k ) const
 {
   return m_var[ k ];
 }
@@ -142,7 +143,7 @@ DGtal::MultiStatistics::variance( unsigned int k ) const
 
 inline
 double 
-DGtal::MultiStatistics::unbiasedVariance( unsigned int k ) const
+DGtal::MultiStatistics::unbiasedVariance( const unsigned int k ) const
 {
   return m_unbiased_var[ k ];
 }
@@ -150,7 +151,7 @@ DGtal::MultiStatistics::unbiasedVariance( unsigned int k ) const
 
 inline
 double 
-DGtal::MultiStatistics::max( unsigned int k ) const
+DGtal::MultiStatistics::max( const unsigned int k ) const
 {
   return m_max[ k ];
 }
@@ -158,7 +159,7 @@ DGtal::MultiStatistics::max( unsigned int k ) const
 
 inline
 unsigned int
-DGtal::MultiStatistics::maxIndice( unsigned int k ) const
+DGtal::MultiStatistics::maxIndice( const unsigned int k ) const
 {
   return m_indice_max[ k ];
 }
@@ -167,25 +168,23 @@ DGtal::MultiStatistics::maxIndice( unsigned int k ) const
 
 inline
 double 
-DGtal::MultiStatistics::min( unsigned int k ) const
+DGtal::MultiStatistics::min( const unsigned int k ) const
 {
   return m_min[ k ];
 }
 
 inline
 unsigned int 
-DGtal::MultiStatistics::minIndice( unsigned int k ) const
+DGtal::MultiStatistics::minIndice( const unsigned int k ) const
 {
   return m_indice_min[ k ];
 }
 
 
 
-
-
 inline
 double
-DGtal::MultiStatistics::value( unsigned int k, unsigned int i ) const
+DGtal::MultiStatistics::value( const unsigned int k, const unsigned int i ) const
 {
   if ( m_store_samples ) {
     ASSERT( ( k < m_nb )
@@ -196,16 +195,6 @@ DGtal::MultiStatistics::value( unsigned int k, unsigned int i ) const
   return 0.0;
 }
 
-
-
-template <class Iter>
-inline
-void
-DGtal::MultiStatistics::addValues( unsigned int k, Iter b, Iter e )
-{
-  for ( ; b != e; ++b )
-    addValue( k, *b );
-}
 
 inline 
 void
@@ -236,10 +225,21 @@ DGtal::MultiStatistics::addValue( unsigned int k, double v )
 }
 
 
+template <class Iter>
+inline
+void
+DGtal::MultiStatistics::addValues( const unsigned int k, Iter b, Iter e )
+{
+  for ( ; b != e; ++b )
+    addValue( k, *b );
+}
+
+
+
 void 
 DGtal::MultiStatistics::terminate()
 {
-  for ( uint k = 0; k < m_nb; ++k )
+  for ( unsigned int k = 0; k < m_nb; ++k )
     {
       m_exp[ k ] /= m_samples[ k ];
       m_exp2[ k ] /= m_samples[ k ];
@@ -251,7 +251,7 @@ DGtal::MultiStatistics::terminate()
 
 
 void 
-DGtal::MultiStatistics::init( unsigned int size, bool store_samples )
+DGtal::MultiStatistics::init( unsigned int size, bool storeSamples )
 {
   erase();
   if ( size == 0 ) return;
@@ -265,7 +265,7 @@ DGtal::MultiStatistics::init( unsigned int size, bool store_samples )
   m_min = new double[ size ];
   m_indice_max = new unsigned int[ size ];
   m_indice_min = new unsigned int[ size ];
-  m_store_samples = store_samples;
+  m_store_samples = storeSamples;
   if ( m_store_samples )
     m_values = new std::vector<double>[ size ];
   clear();
@@ -331,8 +331,8 @@ DGtal::MultiStatistics::erase()
 
 
 double
-DGtal::MultiStatistics::covariance( unsigned int x, unsigned int y,
-				 unsigned int s, unsigned int e ) const
+DGtal::MultiStatistics::covariance( const unsigned int x, const unsigned int y,
+                                    const unsigned int s, unsigned int e ) const
 {
   ASSERT( ( x < m_nb ) && ( y < m_nb ) && ( x != y )
 		     && m_store_samples 
@@ -341,10 +341,7 @@ DGtal::MultiStatistics::covariance( unsigned int x, unsigned int y,
   double coVariance = 0.0;
   double mx = 0.0;
   double my = 0.0;
-  // for( unsigned int k = 0; k < size; ++k )
-  //   coVariance += ( value( x, k ) - mean( x ) )
-  //     * ( value( y, k ) - mean( y ) );
-  // coVariance = coVariance / size;
+
   if ( e == 0 ) e = size;
   ASSERT( e > s );
   for( unsigned int k = s; k != e; ++k )
@@ -363,7 +360,7 @@ DGtal::MultiStatistics::covariance( unsigned int x, unsigned int y,
 
 
 std::pair<double,double> 
-DGtal::MultiStatistics::linearRegression( unsigned int x, unsigned int y ) const
+DGtal::MultiStatistics::linearRegression( const unsigned int x, const unsigned int y ) const
 {
   ASSERT( ( x < m_nb ) && ( y < m_nb ) && ( x != y )
 		     && m_store_samples 
@@ -396,9 +393,9 @@ DGtal::MultiStatistics::median( unsigned int k )
 
 
 void 
-DGtal::MultiStatistics::selfDisplay( std::ostream& that_stream ) const
+DGtal::MultiStatistics::selfDisplay( std::ostream& out ) const
 {
-  that_stream << "[Statistics] nb=" << nb() << std::endl;
+  out << "[Statistics] nb=" << nb() << std::endl;
 }
 
 
