@@ -78,12 +78,11 @@ public:
    /** 
      * Creates an object for computing [size] statistics.
      * 
-     * @param size the number of statistical variables.
-     *
-     * @param store_samples when 'true', stores each given sample,
+     * @param[in] size the number of statistical variables.
+     * @param[in] storeSamples when 'true', stores each given sample,
      * default is 'false'
      */    
-    MultiStatistics( uint size, bool store_samples = false );
+    MultiStatistics( const unsigned int size, const bool storeSamples = false );
 
 
 
@@ -94,12 +93,12 @@ public:
      * 1 }, then samples( 0 ) will contain the third column, samples( 1 ),
      * the fourth column and samples( 2 ) the first column.
      *
-     * @param in (modified) the input stream.
-     * @param samples (updates) stores the data.
-     * @param indices specifies in which columns data are read.
+     * @param[out] in (modified) the input stream.
+     * @param[out] samples (updates) stores the data.
+     * @param[in] indices specifies in which columns data are read.
      */
      static void read( std::istream & in, MultiStatistics & samples,
-		      const std::vector<uint> & indices );
+                       const std::vector<unsigned int> & indices );
 
 
 
@@ -113,29 +112,29 @@ public:
 
 
     /** 
-     * @param k the statistical variable.
+     * @param[in] k the statistical variable.
      * 
      * @return the number of samples for this variable.
      */
-    inline unsigned int samples( unsigned int k ) const;
+    inline unsigned int samples( const unsigned int k ) const;
 
     /** 
-     * @param k the statistical variable.
+     * @param[in] k the statistical variable.
      * 
      * @return the sample mean for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
      */
-    inline double mean( unsigned int k ) const;
+    inline double mean( const unsigned int k ) const;
 
     /** 
-     * @param k the statistical variable.
+     * @param[in] k the statistical variable.
      * 
      * @return the sample variance for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
      */
-    inline double variance( unsigned int k ) const;
+    inline double variance( const unsigned int k ) const;
 
     /** 
      * @param k the statistical variable.
@@ -144,20 +143,20 @@ public:
      * @pre method 'terminate' must have been called.
      * @see terminate
      */
-    inline double unbiasedVariance( unsigned int k ) const;
+    inline double unbiasedVariance( const unsigned int k ) const;
 
     /** 
-     * @param k the statistical variable.
+     * @param[in] k the statistical variable.
      * 
      * @return the maximal value for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
      */
-    inline double max( unsigned int k ) const;
+    inline double max( const unsigned int k ) const;
 
 
     /** 
-     * @param k the statistical variable.
+     * @param[in] k the statistical variable.
      * 
      * @return the indice of the maximal value for this variable.
      * @pre method 'terminate' must have been called.
@@ -168,24 +167,24 @@ public:
 
 
     /** 
-     * @param k the statistical variable.
+     * @param[in] k the statistical variable.
      * 
      * @return the minimal value for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
      */
-    inline double min( unsigned int k ) const;
+    inline double min( const unsigned int k ) const;
 
 
 
     /** 
-     * @param k the statistical variable.
+     * @param[in] k the statistical variable.
      * 
      * @return the indice of the minimal value for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
      */
-    inline unsigned int minIndice( unsigned int k ) const;
+    inline unsigned int minIndice(const unsigned int k ) const;
 
 
 
@@ -193,23 +192,23 @@ public:
      * Returns a stored sample value that was added before. The object
      * should have been initialized with 'store_samples = true'.
      *
-     * @param k the statistical variable.
+     * @param[in] k the statistical variable.
      *
-     * @param i the index of the sample value, '0<=i<samples(k)'.
+     * @param[in] i the index of the sample value, '0<=i<samples(k)'.
      * 
      * @return the [i]-th value for this variable.
      *
      * @see MultiStatistics, init
      */
-    inline double value( unsigned int k, unsigned int i ) const;
+    inline double value( const unsigned int k, const unsigned int i ) const;
   
 
 
     /** 
      * Adds a new sample value [v] for the variable [k].
      * 
-     * @param k the statistical variable.
-     * @param v the new sample value.
+     * @param[in] k the statistical variable.
+     * @param[in] v the new sample value.
      */
     void addValue( unsigned int k, double v );
 
@@ -225,12 +224,12 @@ public:
      stats.addValue( x + 4, x + 10 );
      @endcode
      *
-     * @param k the statistical variable.
-     * @param b an iterator on the starting point.
-     * @param e an iterator after the last point.
+     * @param[in] k the statistical variable.
+     * @param[in] b an iterator on the starting point.
+     * @param[in] e an iterator after the last point.
      */
     template <class Iter>
-    void addValues( unsigned int k, Iter b, Iter e );
+    void addValues(const  unsigned int k, Iter b, Iter e );
 
     /** 
      * Once all sample values have been added to this object, computes
@@ -247,13 +246,13 @@ public:
      * variables. All preceding sample values and statistics are
      * lost. Calls 'erase()'.
      * 
-     * @param size the number of statistical variables.
+     * @param[in] size the number of statistical variables.
      *
-     * @param store_samples when 'true', stores each given sample,
+     * @param[in] storeSamples when 'true', stores each given sample,
      *
      * @see erase
      */
-    void init( unsigned int size, bool store_samples );
+    void init( unsigned int size, bool storeSamples );
 
 
     /** 
@@ -276,27 +275,28 @@ public:
      * 'MultiStatistics' object should have stored its values and
      * 'terminate' should have been called.
      *
-     * @param x the index of the x-variable (should be valid )
-     * @param y the index of the y-variable (should be valid )
-     * @param s the starting value index (default is 0 )
-     * @param e the after-the-end value index (default is 0, meaning all )
+     * @param[in] x the index of the x-variable (should be valid )
+     * @param[in] y the index of the y-variable (should be valid )
+     * @param[in] s the starting value index (default is 0 )
+     * @param[in] e the after-the-end value index (default is 0, meaning all )
      *
      * @return the covariance of [x],[y] from indices [s] to [e].
      */
-    double covariance( unsigned int x, unsigned int y, 
-		       unsigned int s = 0, unsigned int e = 0 ) const;
-
+  double covariance( const unsigned int x, const unsigned int y, 
+                     const unsigned int s = 0, unsigned int e = 0 ) const;
+  
     /**
      * Computes the linear regression of the ([x],[y]) variables. The
      * 'MultiStatistics' object should have stored its values and
      * 'terminate' should have been called.
      *
-     * @param x the index of the x-variable (should be valid )
-     * @param y the index of the y-variable (should be valid )
+     * @param[in] x the index of the x-variable (should be valid )
+     * @param[in] y the index of the y-variable (should be valid )
      *
      * @return the pair (slope, shift at origin )
      */
-    std::pair<double,double> linearRegression( unsigned int x, unsigned int y ) const;
+    std::pair<double,double> linearRegression( const unsigned int x, 
+                                               const unsigned int y ) const;
 
 
 
@@ -305,11 +305,11 @@ public:
      * 'MultiStatistics' object should have stored its values and 'terminate'
      * should have been called.
      *
-     * @param k
+     * @param[in] k
      *
      * @return the median value for the variable k.
      */
-    double median( unsigned int k );
+    double median( const unsigned int k );
 
 
 
@@ -320,7 +320,7 @@ public:
 
     /**
      * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
+     * @param[out] out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
 
