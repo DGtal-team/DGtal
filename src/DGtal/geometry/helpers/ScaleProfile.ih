@@ -313,7 +313,7 @@ DGtal::ScaleProfile::operator=
 template <typename Iterator>
 inline
 void 
-DGtal::ScaleProfile::init( const Iterator &beginScale, const Iterator &endScale,
+DGtal::ScaleProfile::init( Iterator beginScale, Iterator endScale,
                            const bool storeValsInStats )
 {
   clear();

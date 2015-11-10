@@ -65,6 +65,33 @@ TEST_CASE( "Testing ScaleProfile" )
     }
 
   sp.clear();
+
+  
+  SECTION("Testing noise level detect of ScaleProfile with iterator init ")
+    {
+      std::vector<double> scales;
+      for(unsigned int i =0; i < 6; i++){
+        scales.push_back(5+i);
+      }
+      sp.init(scales.begin(), scales.end());  
+      sp.addValue(0,22);
+      sp.addValue(1,15);
+      sp.addValue(2,8);
+      sp.addValue(3,17);
+      sp.addValue(4,7);
+      sp.addValue(5,2);      
+      std::vector< std::pair<uint, uint> > interval;
+      sp.meaningfulScales(interval, 1);
+      uint n = sp.noiseLevel();
+      REQUIRE( (interval[0].first == 6) );
+      REQUIRE( (interval[0].second == 8) );
+      REQUIRE( (interval[1].first == 9) );
+      REQUIRE( (n == 6) );
+    }
+
+
+
+  sp.clear();
   sp.init(6);
   SECTION("Testing noise level detect of ScaleProfile")
     {
