@@ -77,7 +77,7 @@ TEST_CASE( "Testing MultiStatistics" )
     }
   stats2.terminate();
 
-  SECTION("Testing feature math of MultiStatistics without saving data")
+  SECTION("Testing feature math of MultiStatistics with saving data")
     {
       unsigned int val = 12;
       REQUIRE( (stats2.max(val) == val) );      
@@ -90,6 +90,35 @@ TEST_CASE( "Testing MultiStatistics" )
       REQUIRE( (stats2.mean(val) == val/2.0 ) );      
       REQUIRE( (stats2.median(val) == ((val+1)/2) ));            
     }
+
+
+  MultiStatistics stats3 (100, true);
+  for(unsigned int i = 0; i< 100; i++)
+    {
+      std::vector<double> vectValues; 
+      for(unsigned int j = 0; j<= i; j++)
+        {
+          vectValues.push_back(j);
+        }
+      stats3.addValues(i, vectValues.begin(), vectValues.end());
+    }
+  stats3.terminate();
+
+  SECTION("Testing feature math of MultiStatistics with saving data")
+    {
+      unsigned int val = 12;
+      REQUIRE( (stats3.max(val) == val) );      
+      REQUIRE( (stats3.min(val) == 0) );      
+      REQUIRE( (stats3.mean(val) == val/2.0 ) );      
+      REQUIRE( (stats3.median(val) == ((val+1)/2) ) );      
+      val = 33;
+      REQUIRE( (stats3.max(val) == val) );      
+      REQUIRE( (stats3.min(val) == 0) );      
+      REQUIRE( (stats3.mean(val) == val/2.0 ) );      
+      REQUIRE( (stats3.median(val) == ((val+1)/2) ));            
+    }
+
+
 }
 
 /** @ingroup Tests **/

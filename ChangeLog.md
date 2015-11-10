@@ -7,6 +7,11 @@
    the width (vertical/horizontal or Euclidean) of a convex hull.
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
+ - MultiStatistics: new class to compute different statistics (like mean
+   variance, median) on multiple variables.
+   (Bertrand Kerautret, [#1076](https://github.com/DGtal-team/DGtal/pull/1076))
+
+
 ## Changes
 - *Base Package*
  - Enabling circulators in SimpleRandomAccessRangeFromPoint.
