@@ -7,6 +7,8 @@
    the width (vertical/horizontal or Euclidean) of a convex hull.
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
+
+- *Math Package*
  - MultiStatistics: new class to compute different statistics (like mean
    variance, median) on multiple variables.
    (Backport of the Statistics class of
