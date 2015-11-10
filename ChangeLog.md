@@ -5,7 +5,10 @@
 - *Geometry Package*
  - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
    the width (vertical/horizontal or Euclidean) of a convex hull.
-   (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
+   (Backport of the Statistics class of
+   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
+   (Bertrand Kerautret, Jacques-Olivier Lachaud)
+   [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
  - MultiStatistics: new class to compute different statistics (like mean
    variance, median) on multiple variables.
