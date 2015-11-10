@@ -305,7 +305,7 @@ public:
      * 'MultiStatistics' object should have stored its values and 'terminate'
      * should have been called.
      *
-     * @param[in] k
+     * @param[in] k the statistical variable.
      *
      * @return the median value for the variable k.
      */
