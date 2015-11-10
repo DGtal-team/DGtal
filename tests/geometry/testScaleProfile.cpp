@@ -64,6 +64,28 @@ TEST_CASE( "Testing ScaleProfile" )
       REQUIRE( (y[3] == log(10.0)) );
     }
 
+
+
+  sp.clear();
+  sp.init(6);
+  SECTION("Testing noise level detect of ScaleProfile")
+    {
+      sp.addValue(0,22);
+      sp.addValue(1,15);
+      sp.addValue(2,8);
+      sp.addValue(3,17);
+      sp.addValue(4,7);
+      sp.addValue(5,2);      
+      std::vector< std::pair<uint, uint> > interval;
+      sp.meaningfulScales(interval, 1);
+      uint n = sp.noiseLevel();
+      REQUIRE( (interval[0].first == 1) );
+      REQUIRE( (interval[0].second == 3) );
+      REQUIRE( (interval[1].first == 4) );
+      REQUIRE( (n == 1) );
+    }
+
+
   sp.clear();
 
   
@@ -80,39 +102,13 @@ TEST_CASE( "Testing ScaleProfile" )
       sp.addValue(3,17);
       sp.addValue(4,7);
       sp.addValue(5,2);      
-      std::vector< std::pair<uint, uint> > interval;
-      sp.meaningfulScales(interval, 1);
-      uint n = sp.noiseLevel();
-      REQUIRE( (interval[0].first == 6) );
-      REQUIRE( (interval[0].second == 8) );
-      REQUIRE( (interval[1].first == 9) );
-      REQUIRE( (n == 6) );
+      std::vector<double> x,y;
+      sp.getProfile(x,y); 
+      REQUIRE( (x[0] == log(5)) );
+      REQUIRE( (y[0] == log(22)) );
+      REQUIRE( (x[3] == log(8)) );
+      REQUIRE( (y[3] == log(17)) );
     }
-
-
-
-  sp.clear();
-  sp.init(6);
-  SECTION("Testing noise level detect of ScaleProfile")
-    {
-      sp.addValue(0,22);
-      sp.addValue(1,15);
-      sp.addValue(2,8);
-      sp.addValue(3,17);
-      sp.addValue(4,7);
-      sp.addValue(5,2);      
-      std::vector< std::pair<uint, uint> > interval;
-      sp.meaningfulScales(interval, 1);
-      for(unsigned int i = 0; i<interval.size(); i++){
-        trace.info() << interval[i].first << " "  << interval[i].second << std::endl;
-      }
-      uint n = sp.noiseLevel();
-      REQUIRE( (interval[0].first == 1) );
-      REQUIRE( (interval[0].second == 3) );
-      REQUIRE( (interval[1].first == 4) );
-      REQUIRE( (n == 1) );
-    }
-
 
 }
 
