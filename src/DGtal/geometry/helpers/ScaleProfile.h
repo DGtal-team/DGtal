@@ -77,7 +77,7 @@ namespace DGtal
      * (used in @ref getProfile())
      * 
      **/
-    enum ProfileComputingType{MEAN, MAX, MIN, MEDIAN};
+    enum ScaleProfileType{MEAN, MAX, MIN, MEDIAN};
 
 
     /**
@@ -95,7 +95,7 @@ namespace DGtal
      * Constructor. The object is not valid.
      * @param[in] type allows to specify the used to computes the profile points from the added samples.
      */
-    ScaleProfile(ProfileComputingType type);
+    ScaleProfile(ScaleProfileType type);
     
 
     /**
@@ -130,8 +130,8 @@ namespace DGtal
      * @param[in] beginScale an iterator pointing on the first scale (some
      * floating-point convertible value).
      * @param[in] endScale an iterator pointing after the last scale.
-     * @param[in] storeValsInStats flat to store values in statistics (in order to be
-     * able to access to the median value  (default false)). 
+     * @param[in] storeValsInStats flag to store values in statistics (so that 
+     *    the median value is accessible (default false)). 
      */
     template <typename Iterator>
     void init(  Iterator beginScale,  Iterator endScale, 
@@ -144,8 +144,8 @@ namespace DGtal
      * scales of the profile as the sequence (1,2,3,4,...,nb).
      *
      * @param[in] nb an integer number strictly positive.
-     * @param[in] storeValsInStats flat to store values in statistics (in order to be
-     * able to access to the median value  (default false)). 
+     * @param[in] storeValsInStats flag to store values in statistics (so that 
+     *   the median value is accessible (default false)). 
      */
     void init( unsigned int nb, bool storeValsInStats=false );
     
@@ -173,7 +173,7 @@ namespace DGtal
 
     /**
      * It stops and Erase the stats saved values. It must be called to
-     * avoid to store all statistics values when we have to acess to
+     * avoid to store all statistics values when we have to access to
      * the median value.  Typically if you nedd to access to the
      * median value of the profile, you need to follow this example:
      * @code
@@ -185,7 +185,7 @@ namespace DGtal
      *  ...
      * // When all values have been added you can stop to store them again
      * sp.stopStatsSaving();
-     * // before to erase the statistics sample values the median is computed and stored.
+     * // before erasing all statistics data, the median is computed and stored.
      * @endcode
      **/
     void stopStatsSaving() ;    
@@ -202,7 +202,7 @@ namespace DGtal
      *
      * @param type the method applied to the statistics samples: MEAN, MAX, MIN.
      **/    
-    void setProfileDef(ProfileComputingType type);
+    void setType(ScaleProfileType type);
     
 
     
@@ -250,7 +250,7 @@ namespace DGtal
      *  interval computed by a simple linear regression model.
      *
      * @return a pair<bool, double> giving the slope and indicating if
-     * the a meaningful scale was well found or not. If no meaningful
+     * a meaningful scale was  found or not. If no meaningful
      * scale interval was found, it simply return the slope obtained
      * from the linear regression. 
      *
@@ -348,7 +348,7 @@ namespace DGtal
      * MEAN (default), MAX, MIN (not efficient)
      */
     
-    ProfileComputingType myProfileDef;
+    ScaleProfileType myProfileDef;
     
 
 
@@ -358,7 +358,7 @@ namespace DGtal
      * to false and the median is not available. 
      * @see setStoreStats
      */
-    bool m_storeValInStats;
+    bool myStoreValInStats;
     
 
 

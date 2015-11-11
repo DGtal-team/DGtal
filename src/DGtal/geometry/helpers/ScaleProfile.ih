@@ -19,7 +19,7 @@
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @Jacques-Olivier Lachaud
+ * @author Jacques-Olivier Lachaud
  * 
  * @date 2015/11/08
  *
@@ -50,14 +50,14 @@ DGtal::ScaleProfile::~ScaleProfile()
 }
 
 DGtal::ScaleProfile::ScaleProfile()
-  : myScales( 0 ), myStats( 0 ), myProfileDef(MEAN), m_storeValInStats(false)
+  : myScales( 0 ), myStats( 0 ), myProfileDef(MEAN), myStoreValInStats(false)
 {
 }
 
 
 
-DGtal::ScaleProfile::ScaleProfile(ProfileComputingType type)
-  : myScales( 0 ), myStats( 0 ), myProfileDef(type), m_storeValInStats(false)
+DGtal::ScaleProfile::ScaleProfile(ScaleProfileType type)
+  : myScales( 0 ), myStats( 0 ), myProfileDef(type), myStoreValInStats(false)
 {
 }
 
@@ -86,7 +86,7 @@ DGtal::ScaleProfile::init(unsigned int nb, const bool storeValsInStats )
   clear();
   myScales = new std::vector<float>( nb );
   myStats = new std::vector< Statistic<float> >;
-  m_storeValInStats= storeValsInStats;
+  myStoreValInStats= storeValsInStats;
   for ( unsigned int i = 0; i < nb; ++i ){
     (*myScales)[ i ] = (float) ( i + 1 );
     myStats->push_back(Statistic<float>(storeValsInStats));
@@ -267,7 +267,7 @@ DGtal::ScaleProfile::ScaleProfile( const ScaleProfile & other ){
     myScales = new std::vector<float>( other.myScales->size() );
     myStats = new std::vector< Statistic<float> > ( other.myScales->size());
     myProfileDef = other.myProfileDef;
-    m_storeValInStats= other.m_storeValInStats;
+    myStoreValInStats= other.myStoreValInStats;
     for ( unsigned int i = 0; i < other.myScales->size(); ++i ){
       (*myScales)[ i ] = (*other.myScales)[i];
       (*myStats)[ i ] = (*other.myStats)[i];
@@ -276,7 +276,7 @@ DGtal::ScaleProfile::ScaleProfile( const ScaleProfile & other ){
     myStats=0;
     myScales=0;
     myProfileDef = other.myProfileDef;
-    m_storeValInStats = false;
+    myStoreValInStats = false;
   }
 }
 
@@ -291,7 +291,7 @@ DGtal::ScaleProfile::operator=
     myScales = new std::vector<float>( other.myScales->size() );
     myStats = new std::vector< Statistic<float> > ( other.myScales->size());
     myProfileDef = other.myProfileDef;
-    m_storeValInStats= other.m_storeValInStats;
+    myStoreValInStats= other.myStoreValInStats;
     for ( unsigned int i = 0; i < other.myScales->size(); ++i ){
       (*myScales)[ i ] = (*other.myScales)[i];
       (*myStats)[ i ] = (*other.myStats)[i];
@@ -300,7 +300,7 @@ DGtal::ScaleProfile::operator=
     myStats=0;
     myScales=0;
     myProfileDef = other.myProfileDef;
-    m_storeValInStats=false;
+    myStoreValInStats=false;
   }
   }
    
@@ -317,14 +317,14 @@ DGtal::ScaleProfile::init( Iterator beginScale, Iterator endScale,
                            const bool storeValsInStats )
 {
   clear();
-  m_storeValInStats= storeValsInStats;
+  myStoreValInStats= storeValsInStats;
   myScales = new std::vector<float>;
   myStats = new std::vector< Statistic<float> >;
   
   unsigned int nb = 0;
   for ( ; beginScale != endScale; ++beginScale, ++nb ){
     myScales->push_back( *beginScale );
-    myStats->push_back(Statistic<float>( m_storeValInStats));
+    myStats->push_back(Statistic<float>( myStoreValInStats));
   }
 }
 
@@ -365,7 +365,7 @@ DGtal::operator<< ( std::ostream & out,
 
 inline
 void 
-DGtal::ScaleProfile::setProfileDef(ProfileComputingType type){
+DGtal::ScaleProfile::setType(ScaleProfileType type){
   ASSERT(myProfileDef==MEAN || myProfileDef==MAX || myProfileDef==MIN || myProfileDef==MEDIAN);
   myProfileDef = type; 
 }
