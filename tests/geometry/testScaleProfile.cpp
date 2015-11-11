@@ -60,8 +60,8 @@ TEST_CASE( "Testing ScaleProfile" )
       std::vector<double> y;
       sp.getProfile(x, y);
 
-      REQUIRE( (x[3] == log(4)) );
-      REQUIRE( (y[3] == log(10.0)) );
+      REQUIRE( (x[3] == Approx(log(4))) );
+      REQUIRE( (y[3] == Approx(log(10.0))) );
     }
 
 
@@ -104,10 +104,10 @@ TEST_CASE( "Testing ScaleProfile" )
       sp.addValue(5,2);      
       std::vector<double> x,y;
       sp.getProfile(x,y); 
-      REQUIRE( (x[0] == log(5)) );
-      REQUIRE( (y[0] == log(22)) );
-      REQUIRE( (x[3] == log(8)) );
-      REQUIRE( (y[3] == log(17)) );
+      REQUIRE( (x[0] == Approx(log(5))) );
+      REQUIRE( (y[0] == Approx(log(22))) );
+      REQUIRE( (x[3] == Approx(log(8))) );
+      REQUIRE( (y[3] == Approx(log(17))) );
     }
 
 }
