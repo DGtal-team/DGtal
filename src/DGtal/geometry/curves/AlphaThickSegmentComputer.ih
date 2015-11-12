@@ -579,7 +579,7 @@ inline
 double 
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSegmentLength() const
 {
-  InputPoint pt1, pt2, pt3, pt4;
+  PointD pt1, pt2, pt3, pt4;
   getBoundingBox(pt1, pt2, pt3, pt4);
   return (pt2-pt1).norm();
 }
