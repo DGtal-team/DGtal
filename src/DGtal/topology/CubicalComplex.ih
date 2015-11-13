@@ -67,6 +67,25 @@ CubicalComplex( const CubicalComplex& other )
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
+template <typename TDigitalSet>
+inline
+void DGtal::CubicalComplex<TKSpace, TCellContainer>::
+construct( const TDigitalSet & set ) 
+{
+  assert ( TDigitalSet::Domain::dimension == dimension );
+  for ( typename TDigitalSet::ConstIterator it = set.begin(); it != set.end(); ++it )
+  {
+    typedef typename TKSpace::Cells CellsCollection;
+    typename TKSpace::Cell cell = myKSpace->uSpel ( *it );
+    insertCell ( cell );
+    CellsCollection n = myKSpace->uFaces ( cell );
+    for ( typename CellsCollection::ConstIterator itt = n.begin() ; itt < n.end(); ++itt )
+      insertCell ( *itt );
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
 inline
 const typename DGtal::CubicalComplex<TKSpace, TCellContainer>::KSpace &
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
