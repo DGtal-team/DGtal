@@ -46,69 +46,82 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
+
+  //! [cubical-complex-illustrations-X]
   using namespace DGtal::Z2i;
   typedef CubicalComplex< KSpace >     CC;
 
-  trace.beginBlock( "Creating Cubical Complex" );
   KSpace K;
   K.init( Point( 0,0 ), Point( 5,3 ), true );
-  CC complex( K );
+  trace.beginBlock( "Creating Cubical Complex" );
+  CC X( K );
   Domain domain( Point( 0,0 ), Point( 5,3 ) );
-  complex.insertCell( K.uSpel( Point(1,1) ) );
-  complex.insertCell( K.uSpel( Point(2,1) ) );
-  complex.insertCell( K.uSpel( Point(3,1) ) );
-  complex.insertCell( K.uSpel( Point(2,2) ) );
-  complex.insertCell( K.uSpel( Point(3,2) ) );
-  complex.insertCell( K.uSpel( Point(4,2) ) );
-  complex.close();
+  X.insertCell( K.uSpel( Point(1,1) ) );
+  X.insertCell( K.uSpel( Point(2,1) ) );
+  X.insertCell( K.uSpel( Point(3,1) ) );
+  X.insertCell( K.uSpel( Point(2,2) ) );
+  X.insertCell( K.uSpel( Point(3,2) ) );
+  X.insertCell( K.uSpel( Point(4,2) ) );
+  X.close();
   trace.endBlock();
   
+  trace.beginBlock( "Displays Cubical Complex" );
   Board2D board;
   board << domain;
-  board << CustomStyle( complex.className(), 
+  board << CustomStyle( X.className(), 
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
-        << complex;
-  board.saveTikZ( "cubical-complex-illustrations-1.tikz" );
+        << X;
+  board.saveTikZ( "cubical-complex-illustrations-X.tikz" );
+  trace.endBlock();
+  //! [cubical-complex-illustrations-X]
 
+  //! [cubical-complex-illustrations-S]
   CC S( K );
   S.insertCell( K.uCell( Point( 5, 4 ) ) ); // a linel
   S.insertCell( K.uCell( Point( 4, 4 ) ) ); // a pointel
   S.insertCell( K.uCell( Point( 7, 5 ) ) ); // a pixel
-  board << CustomStyle( complex.className(), 
+  board << CustomStyle( X.className(), 
                         new CustomColors( Color::Black, Color(60,60,60) ) )
         << S;
-  board.saveTikZ( "cubical-complex-illustrations-2.tikz" );
+  board.saveTikZ( "cubical-complex-illustrations-S.tikz" );
   board.clear();
+  //! [cubical-complex-illustrations-S]
 
+  //! [cubical-complex-illustrations-closure]
   board << domain;
-  board << CustomStyle( complex.className(), 
+  board << CustomStyle( X.className(), 
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
-        << complex;
-  board << CustomStyle( complex.className(), 
+        << X;
+  board << CustomStyle( X.className(), 
                         new CustomColors( Color::Red, Color(255,120,120) ) )
-        << complex.closure( S );
-  board.saveTikZ( "cubical-complex-illustrations-3.tikz" );
+        << X.closure( S );
+  board.saveTikZ( "cubical-complex-illustrations-closure.tikz" );
   board.clear();
+  //! [cubical-complex-illustrations-closure]
 
+  //! [cubical-complex-illustrations-star]
   board << domain;
-  board << CustomStyle( complex.className(), 
+  board << CustomStyle( X.className(), 
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
-        << complex;
-  board << CustomStyle( complex.className(), 
+        << X;
+  board << CustomStyle( X.className(), 
                         new CustomColors( Color::Blue, Color(120,120,255) ) )
-        << complex.star( S );
-  board.saveTikZ( "cubical-complex-illustrations-4.tikz" );
+        << X.star( S );
+  board.saveTikZ( "cubical-complex-illustrations-star.tikz" );
   board.clear();
+  //! [cubical-complex-illustrations-star]
 
+  //! [cubical-complex-illustrations-link]
   board << domain;
-  board << CustomStyle( complex.className(), 
+  board << CustomStyle( X.className(), 
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
-        << complex;
-  board << CustomStyle( complex.className(), 
+        << X;
+  board << CustomStyle( X.className(), 
                         new CustomColors( Color::Green, Color(120,255,120) ) )
-        << complex.link( S );
-  board.saveTikZ( "cubical-complex-illustrations-5.tikz" );
+        << X.link( S );
+  board.saveTikZ( "cubical-complex-illustrations-link.tikz" );
   board.clear();
+  //! [cubical-complex-illustrations-link]
   
   
   
