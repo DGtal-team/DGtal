@@ -72,13 +72,14 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
    
 @section manueldev Manual pages for DGtal developers
   - \ref moduleFAQGit
+  - \ref moduleCatch
   
   
   
 @section links_sec_dgtal Links
   
    <ul>
-   <li>Visit the <a href="http://libdgtal.org/">DGtal homepage</a>.</li>
+   <li>Visit the <a href="http://dgtal.org/">DGtal homepage</a>.</li>
     <li> LibBoard section page   </li>
    </ul>
   

@@ -1,3 +1,44 @@
+
+# DGtal 0.9.1
+
+## New Features / Critical Changes
+- *Geometry Package*
+ - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
+   the width (vertical/horizontal or Euclidean) of a convex hull.
+   (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
+
+## Changes
+- *Base Package*
+ - Enabling circulators in SimpleRandomAccessRangeFromPoint.
+   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
+
+- *IO*
+ - Minor improvements of default settings in Viewer3D. (David
+   Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
+
+ - New possibility to move the light source direction using the mouse move
+   in Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on mac)). The light source
+   direction is now defined according the main coordinate system (no more from
+   the camera center).
+   (Bertrand Kerautret [#1070](https://github.com/DGtal-team/DGtal/pull/1070))
+
+
+## Bug Fixes
+
+- *Configuration/General*
+ - catch unit test framework upgraded to the develop version. (David
+ Coeurjolly, [#1055](https://github.com/DGtal-team/DGtal/pull/1055))
+ - Fixing boost include path issue when building tools using DGtal and
+   its cmake DGtalConfig.cmake. (David Coeurjolly,
+   [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
+ - Fixing parenthese warnings in Catch. Waiting for an official fix.
+   (Roland Denis, [#1069](https://github.com/DGtal-team/DGtal/pull/1069))
+
+- *Base Package*
+ - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
+   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
+
+
 # DGtal 0.9
 
 ## New Features / Critical Changes
@@ -11,9 +52,26 @@
    [catch](https://github.com/philsquared/Catch). Catch allows to
    design quick and efficient unit tests with nice trace
    outputs. (David Coeurjolly,
-   [#1019](https://github.com/DGtal-team/DGtal/pull/1019)
+   [#1019](https://github.com/DGtal-team/DGtal/pull/1019))
+ - Documentation added for Catch. (David Coeurjolly,
+   [#1042](https://github.com/DGtal-team/DGtal/pull/1042))
 
 
+- *Kernel*
+ - New template class DigitalSetlByAssociativeContainer allows to
+   define digital sets from any associative container of the STL. For
+   instance, using std::unordered_set (c++11) or boost::unordered_set (hash
+   function based containers), speed-up up to 40% can be measured when
+   processing digital sets. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ - By default, Z2i::DigitalSet, Z3i::DigitalSet and digital set from
+   DigitalSetSelector use the new hash function based
+   container. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ - Specializations of std::hash (c++11) and boost::hash to define a hash
+   functions on DGtal points. (David Coeurjolly,
+   [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
+ 
 ## Changes
 
 - *DEC Package*
@@ -79,6 +137,18 @@
  - Main example files of geometry/curves are introduced in the list of examples
    and briefly described.
    (Tristan Roussillon, [#1026](https://github.com/DGtal-team/DGtal/pull/1026))
+ - New algorithms to compute the convex hull of planar point sets.
+   (Tristan Roussillon, [#1028](https://github.com/DGtal-team/DGtal/pull/1028))
+ - Lambda maximal segment tangent direction estimator 2D/3D: LambdaMST2D, LambdaMST3D.
+   A fast tangent direction estimator which uses maximal digital straight segments. 
+   (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
+ - Segmentation of 3D digital curves by a combination of the segmentations of its 2D 
+   projections onto 2D base planes: XY, XZ, YZ. Notice that, only valid projections
+   are used. By valid one understands that there are no two 3D points which are projected
+   onto the same 2D point. A segment is computed as long as is extendable and at least 
+   two projections are valid.
+ : NaiveDSS3DComputer.
+   (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
 
 - *Math Package*
  - Utilities added (OrderedLinearRegression) to perform sequential

@@ -196,6 +196,7 @@ namespace DGtal
 
       /**
        * Iterator service.
+       * @param aPoint a Point
        * @return begin iterator
        */
       ConstIterator begin ( const Point &aPoint ) const
@@ -223,11 +224,12 @@ namespace DGtal
 
       /**
        * Iterator service.
+       * @param aPoint  a Point
        * @return rbegin iterator
        */
       ConstReverseIterator rbegin ( const Point &aPoint ) const
       {
-        return ConstReverseIterator ( this->end() + myDistance ( aPoint ) );
+        return ConstReverseIterator ( myBegin + myDistance ( aPoint ) + 1 );
       }
 
 
@@ -237,7 +239,7 @@ namespace DGtal
        */
       ConstReverseIterator rend() const
       {
-        return ConstReverseIterator ( this->begin() );
+        return ConstReverseIterator ( myBegin );
       }
 
       /**

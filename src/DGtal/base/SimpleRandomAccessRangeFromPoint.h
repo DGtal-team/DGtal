@@ -92,8 +92,11 @@ namespace DGtal
       typedef TIterator OutputIterator;
       typedef std::reverse_iterator<Iterator> ReverseOutputIterator;
 
-      // typedef Circulator<Iterator> Circulator;
-      // typedef std::reverse_iterator<Circulator> ReverseCirculator;
+      typedef DGtal::Circulator<Iterator> Circulator;
+      typedef std::reverse_iterator<Circulator> ReverseCirculator;
+
+      typedef DGtal::Circulator<ConstIterator> ConstCirculator;
+      typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
       // ------------------------- standard services --------------------------------
 
@@ -213,7 +216,7 @@ namespace DGtal
         return Iterator ( myBegin ) + myDistance ( aPoint );
       }
 
-       /**
+      /**
        * Iterator service.
        * @return begin iterator
        */
@@ -253,7 +256,7 @@ namespace DGtal
 
       /**
        * OutputIterator service.
-       * @return an output itertor on the first elements
+       * @return an output iterator on the first elements
        */
       OutputIterator outputIterator()
       {
@@ -263,7 +266,7 @@ namespace DGtal
       /**
        * OutputIterator service.
        * @param aPoint a point
-       * @return an output itertor on the point
+       * @return an output iterator on the point
        */
       OutputIterator outputIterator ( const Point &aPoint )
       {
@@ -276,20 +279,18 @@ namespace DGtal
       */
       ReverseOutputIterator routputIterator()
       {
-        return ReverseOutputIterator ( myBegin );
+        return ReverseOutputIterator ( this->end() );
       }
 
       /**
        * ReverseOutputIterator service.
        * @param aPoint a point
-       * @return an output itertor on the point
+       * @return an output iterator on the point
        */
       ReverseOutputIterator routputIterator ( const Point &aPoint )
       {
-        return ReverseOutputIterator ( myBegin ) + myDistance ( aPoint ) ;
+        return ReverseOutputIterator ( myBegin + myDistance ( aPoint ) + 1 ) ;
       }
-
-
 
       /**
        * Iterator service.
@@ -307,7 +308,7 @@ namespace DGtal
        */
       ReverseIterator rbegin ( const Point &aPoint )
       {
-        return ReverseIterator ( this->end() + myDistance ( aPoint ) );
+        return ReverseIterator ( myBegin + myDistance ( aPoint ) + 1 );
       }
 
 
@@ -317,7 +318,7 @@ namespace DGtal
        */
       ReverseIterator rend()
       {
-        return ReverseIterator ( this->begin() );
+        return ReverseIterator ( myBegin );
       }
 
 
@@ -332,12 +333,12 @@ namespace DGtal
 
       /**
        * Iterator service.
-      * @param aPoint a Point
+       * @param aPoint a Point
        * @return rbegin iterator at aPoint
        */
       ConstReverseIterator rbegin ( const Point &aPoint ) const
       {
-        return ConstReverseIterator ( this->end() + myDistance ( aPoint ) );
+        return ConstReverseIterator ( myBegin + myDistance ( aPoint ) + 1 );
       }
 
 
@@ -347,26 +348,44 @@ namespace DGtal
        */
       ConstReverseIterator rend() const
       {
-        return ConstReverseIterator ( this->begin() );
+        return ConstReverseIterator ( myBegin );
       }
 
-      // /**
-      //  * Circulator service.
-      //  * @return a circulator
-      //  */
-      // Circulator c() const
-      // {
-      //   return Circulator ( this->begin(), this->begin(), this->end() );
-      // }
+      /**
+       * Mutable circulator service.
+       * @return a circulator
+       */
+      Circulator c()
+      {
+        return Circulator ( this->begin(), this->begin(), this->end() );
+      }
 
-      // /**
-      //  * Circulator service.
-      //  * @return a reverse circulator
-      //  */
-      // ReverseCirculator rc() const
-      // {
-      //   return ReverseCirculator ( this->c() );
-      // }
+      /**
+       * Reverse mutable circulator service.
+       * @return a reverse circulator
+       */
+      ReverseCirculator rc()
+      {
+        return ReverseCirculator ( this->c() );
+      }
+
+      /**
+       * Constant circulator service.
+       * @return a constant circulator
+       */
+      ConstCirculator c() const
+      {
+        return ConstCirculator ( this->begin(), this->begin(), this->end() );
+      }
+
+      /**
+       * Reverse constant circulator service.
+       * @return a reverse constant circulator
+       */
+      ConstReverseCirculator rc() const
+      {
+        return ConstReverseCirculator ( this->c() );
+      }
 
   }; //end class SimpleRandomAccessRangeFromPoint
 
