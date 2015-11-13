@@ -275,8 +275,8 @@ SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex][c
     }
 
     WHEN( "Fixing two vertices of this big cube and collapsing it" ) {
-      CellMapIterator it1 = complex.find( 0, K.uCell( Point( 0, 0, 0 ) ) );
-      CellMapIterator it2 = complex.find( 0, K.uCell( Point( 4, 4, 4 ) ) );
+      CellMapIterator it1 = complex.findCell( 0, K.uCell( Point( 0, 0, 0 ) ) );
+      CellMapIterator it2 = complex.findCell( 0, K.uCell( Point( 4, 4, 4 ) ) );
       REQUIRE( it1 != complex.end( 0 ) );
       REQUIRE( it2 != complex.end( 0 ) );
       it1->second.data |= CC::FIXED;
@@ -316,8 +316,8 @@ SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex][link]
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
 
   GIVEN( "A closed cubical complex made of 20x20x20 voxels with their incident cells" ) {
-    CC complex( K );
-    std::set<Cell> S;
+    CC X( K );
+    CC S( K );
     for ( Integer x = 0; x < 20; ++x )
       for ( Integer y = 0; y < 20; ++y )
         for ( Integer z = 0; z < 20; ++z )
@@ -325,30 +325,26 @@ SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex][link]
             Cell c = K.uSpel( Point( x, y, z ) );
             if ( x*y*z != 0 )
               S.insert( K.uPointel( Point( x, y, z ) ) );
-            complex.insertCell( c );
+            X.insertCell( c );
           }
-    complex.close();
+    X.close();
     THEN( "It has Euler characteristic 1" ) {
-      REQUIRE( complex.euler() == 1 );
+      REQUIRE( X.euler() == 1 );
     }
      
     WHEN( "Computing the link of its inner pointels without hint" ) {
-      std::set<Cell> linkS1 = complex.link( S );
-      CC linkS1_complex( K );
-      linkS1_complex.insertCells( linkS1.begin(), linkS1.end() );
+      CC link_S_v1 = X.link( S );
 
       THEN( "This link is homeomorphic to a sphere and has euler characteristic 2" ) {
-        REQUIRE( linkS1_complex.euler() == 2 );
+        REQUIRE( link_S_v1.euler() == 2 );
       }
     }
 
     WHEN( "Computing the link of its inner pointels with full hints" ) {
-      std::set<Cell> linkS2 = complex.link( S, true, true );
-      CC linkS2_complex( K );
-      linkS2_complex.insertCells( linkS2.begin(), linkS2.end() );
+      CC link_S_v2 = X.link( S, true, true );
 
       THEN( "This link is again homeomorphic to a sphere and has euler characteristic 2" ) {
-        REQUIRE( linkS2_complex.euler() == 2 );
+        REQUIRE( link_S_v2.euler() == 2 );
       }
     }
   }

@@ -48,6 +48,7 @@
 #include <boost/iterator/iterator_facade.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/Alias.h"
 #include "DGtal/base/ContainerTraits.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
