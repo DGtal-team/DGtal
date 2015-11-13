@@ -1372,6 +1372,39 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 }
 // Object
 
+// CubicalComplex
+template < typename TKSpace, typename TCellContainer >
+inline 
+void 
+DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
+             const DGtal::CubicalComplex<TKSpace, TCellContainer> & cc )
+{
+  FATAL_ERROR( cc.dimension == 2);
+  typedef DGtal::CubicalComplex<TKSpace, TCellContainer> CC;
+  typedef typename CC::KSpace               KSpace;
+  typedef typename CC::Point                Point;
+  typedef typename CC::Cell                 Cell;
+  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+  typedef typename CC::ConstIterator        ConstIterator;
+  typedef typename KSpace::Integer          Integer;
+  for ( ConstIterator it = cc.begin(), itE = cc.end(); it != itE; ++it )
+    { // We are not using operator << for cells in order to use the
+      // style specified for the cubical complex.
+      Point kx = cc.space().uKCoords( *it );
+      float x = (float) ( NumberTraits<Integer>::castToInt64_t( kx[0] ) >> 1 );
+      float y = (float) ( NumberTraits<Integer>::castToInt64_t( kx[1] ) >> 1 );
+      float retract = 0.05f;
+      bool xodd = ( kx[ 0 ] & 1 );
+      bool yodd = ( kx[ 1 ] & 1 );
+      float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+      float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+      board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
+                           !yodd ? y + retract - 0.5 : y - retract + 0.5,
+                           dx, dy );
+    }
+}
+// CubicalComplex
+
 
 // PointVector
 template<DGtal::Dimension dim, typename TComponent>

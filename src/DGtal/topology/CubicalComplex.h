@@ -42,8 +42,10 @@
 // Inclusions
 #include <iostream>
 #include <vector>
+#include <string>
 #include <algorithm>
 #include <boost/type_traits.hpp>
+#include <boost/iterator/iterator_facade.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/ContainerTraits.h"
@@ -169,6 +171,213 @@ namespace DGtal
           || ( ( v1 == v2 ) && ( it1->first < it2->first ) );
       }
     };
+
+    /**
+     * An non-mutable iterator class to visit all the cells (and not their datas)
+     * of the complex. A model of boost::ForwardIterator.
+     */
+    struct ConstIterator 
+      : public boost::iterator_facade< ConstIterator, Cell const, 
+                                       std::forward_iterator_tag >
+    {
+      friend class CubicalComplex;
+
+      typedef boost::iterator_facade< ConstIterator, Cell const, 
+                                      std::forward_iterator_tag > Base;
+      typedef ConstIterator                  Self;
+      typedef typename Base::value_type      Value;
+      typedef typename Base::pointer         Pointer;
+      typedef typename Base::reference       Reference;
+      typedef typename Base::difference_type DifferenceType;
+      
+      /// Default iterator. Invalid.
+      ConstIterator() : myCC( 0 ), myD( -1 ) {}
+
+      /**
+       * Constructor from complex \a cc and cell dimension \a d.
+       * If the dimension is lower or equal to the dimension of the complex, 
+       *
+       * @param cc any valid cubical complex that is aliased in the iterator.
+       * @param d the dimension of the starting cell.
+       *
+       */
+      ConstIterator( ConstAlias<CubicalComplex> cc, Dimension d )
+        : myCC( &cc ), myD( d )
+      {
+        ASSERT( myD >= 0 );
+        if ( myD <= myCC->dimension )
+          {
+            myIt    = myCC->begin( myD );
+            myItEnd = myCC->end( myD );
+            nextDimension();
+          }
+        else
+          {
+            myD     = myCC->dimension + 1;
+            myIt    = myCC->end( myCC->dimension );
+            myItEnd = myCC->end( myCC->dimension );
+          }
+      }
+
+      /**
+       * Detailed constructor from complex \a cc, cell dimension \a d and iterators.
+       *
+       * @param cc any valid cubical complex that is aliased in the iterator.
+       * @param d the dimension of the starting cell (0<=d<=dimension).
+       * @param it an iterator pointing on a cell of the complex.
+       */
+      ConstIterator( ConstAlias<CubicalComplex> cc, Dimension d, 
+                     CellMapConstIterator it )
+        : myCC( &cc ), myD( d ), myIt( it )
+      {
+        ASSERT( myD >= 0 );
+        ASSERT( d <= myCC->dimension );
+        myItEnd = myCC->end( d );
+        nextDimension();
+      }
+      
+    private:
+      friend class boost::iterator_core_access;
+      
+      void nextDimension() 
+      {
+        while ( myIt == myItEnd )
+          {
+            if ( ++myD > myCC->dimension ) break;
+            myIt    = myCC->begin( myD );
+            myItEnd = myCC->end( myD );
+          }
+      }
+
+      void increment()
+      {
+        ++myIt;
+        nextDimension();
+      }
+
+      bool equal( const ConstIterator& other ) const
+      { 
+        return ( myD == other.myD ) && ( myIt == other.myIt );
+      }
+
+      Cell const& dereference() const
+      { 
+        return myIt->first;
+      }
+      
+    private:
+      const CubicalComplex* myCC;
+      Dimension myD;
+      CellMapConstIterator myIt;
+      CellMapConstIterator myItEnd;
+    };
+
+    /**
+     * A mutable iterator class to visit all the cells (and not their
+     * datas) of the complex. A model of boost::ForwardIterator. Note
+     * that, as for associative container, values are not modifiable.
+     */
+    struct Iterator 
+      : public boost::iterator_facade< Iterator, Cell const, 
+                                       std::forward_iterator_tag >
+    {
+      friend class CubicalComplex;
+
+      typedef boost::iterator_facade< Iterator, Cell const, 
+                                      std::forward_iterator_tag > Base;
+      typedef Iterator                       Self;
+      typedef typename Base::value_type      Value;
+      typedef typename Base::pointer         Pointer;
+      typedef typename Base::reference       Reference;
+      typedef typename Base::difference_type DifferenceType;
+      
+      /// Default iterator. Invalid.
+      Iterator() : myCC( 0 ), myD( -1 ) {}
+
+      /**
+       * Constructor from complex \a cc and cell dimension \a d.
+       *
+       * @param cc any valid cubical complex that is aliased in the iterator.
+       * @param d the dimension of the starting cell.
+       *
+       */
+      Iterator( Alias<CubicalComplex> cc, Dimension d )
+        : myCC( &cc ), myD( d )
+      {
+        ASSERT( myD >= 0 );
+        if ( myD <= myCC->dimension )
+          {
+            myIt    = myCC->begin( myD );
+            myItEnd = myCC->end( myD );
+            nextDimension();
+          }
+        else
+          {
+            myD     = myCC->dimension + 1;
+            myIt    = myCC->end( myCC->dimension );
+            myItEnd = myCC->end( myCC->dimension );
+          }
+      }
+
+      /**
+       * Detailed constructor from complex \a cc, cell dimension \a d and iterators.
+       *
+       * @param cc any valid cubical complex that is aliased in the iterator.
+       * @param d the dimension of the starting cell (0<=d<=dimension).
+       * @param it an iterator pointing on a cell of the complex.
+       */
+      Iterator( Alias<CubicalComplex> cc, Dimension d, 
+                CellMapIterator it )
+        : myCC( &cc ), myD( d ), myIt( it )
+      {
+        ASSERT( myD >= 0 );
+        ASSERT( d <= myCC->dimension );
+        myItEnd = myCC->end( d );
+        nextDimension();
+      }
+
+    private:
+      friend class boost::iterator_core_access;
+
+      void nextDimension() 
+      {
+        while ( myIt == myItEnd )
+          {
+            if ( ++myD > myCC->dimension ) break;
+            myIt    = myCC->begin( myD );
+            myItEnd = myCC->end( myD );
+          }
+      }
+
+      void increment()
+      {
+        ++myIt;
+        nextDimension();
+      }
+
+      bool equal( const Iterator& other ) const
+      { 
+        return ( myD == other.myD ) && ( myIt == other.myIt );
+      }
+
+      Cell const& dereference() const
+      { 
+        return myIt->first;
+      }
+      
+    private:
+      CubicalComplex* myCC;
+      Dimension myD;
+      CellMapIterator myIt;
+      CellMapIterator myItEnd;
+    };
+
+
+
+    // Renaming for STL-type of iterator.
+    typedef ConstIterator const_iterator;
+    typedef Iterator      iterator;
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -268,6 +477,126 @@ namespace DGtal
     * @return a reference to the Khalimsky space associated to this complex.
     */
     const KSpace& space() const;
+
+    // ---------- cell container operations ---------------
+  public:
+
+    /// @return an iterator pointing on the first cell of this complex
+    /// (lower dimensional cells come first).
+    ConstIterator begin() const;
+
+    /// @return an iterator pointing after the last cell of this complex
+    /// (upper dimensional cells arrive last).
+    ConstIterator end() const;
+
+    /// @return an iterator pointing on the first cell of this complex
+    /// (lower dimensional cells come first).
+    Iterator begin();
+
+    /// @return an iterator pointing after the last cell of this complex
+    /// (upper dimensional cells arrive last).
+    Iterator end();
+
+    /**
+     * @param aCell any cell.
+     * @return the number of matches for \a aCell, which is thus zero (not present) or one (present).
+     */
+    Size count( const Cell& aCell ) const;
+
+    /// @return the total number of cells in this complex.
+    Size size() const;
+
+    /// @return 'true' if and only if the complex does not hold any cell.
+    bool empty() const;
+    
+    /**
+     * Get range of equal elements to \a aCell. Because all elements
+     * in a set container are unique, the range returned will contain
+     * a single element at most.
+     *
+     * @param aCell any cell.
+     *
+     * @return the bounds of a range that includes all the elements in
+     * the container that are equivalent to val.
+     */
+    std::pair< ConstIterator, ConstIterator > equal_range( const Cell& aCell ) const;
+
+    /**
+     * Get range of equal elements to \a aCell. Because all elements
+     * in a set container are unique, the range returned will contain
+     * a single element at most.
+     *
+     * @param aCell any cell.
+     *
+     * @return the bounds of a range that includes all the elements in
+     * the container that are equivalent to val.
+     */
+    std::pair< Iterator, Iterator > equal_range( const Cell& aCell );
+
+    /**
+     * Erase element pointed by iterator \a it.
+     * @param it any iterator on a valid cell.
+     */
+    void erase( Iterator position );
+
+    /**
+     * Erases cell \a aCell from the complex (STL version, see eraseCell).
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @return the number of cells effectively removed from the cubical complex.
+     */
+    Size erase( const Cell& val );
+
+    /**
+     * Erases range of cells [\a first, \a last ).
+     * @param first an iterator on the beginning of a range of cells within this complex.
+     * @param last an iterator on the end of a range of cells within this complex.
+     */
+    void erase( Iterator first, Iterator last );
+
+    /**
+    * @param aCell any cell valid in the Khalimsky space associated to the complex.
+    * @return an iterator pointing on the cell or end() if not found.
+    */
+    ConstIterator find( const Cell& aCell ) const;
+
+    /**
+    * @param aCell any cell valid in the Khalimsky space associated to the complex.
+    * @return an iterator pointing on the cell or end() if not found.
+    */
+    Iterator find( const Cell& aCell );
+
+    /**
+     * Insert element \a aCell into the complex. 
+     *
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     *
+     * @return a pair with an iterator pointing on the inserted
+     * element and a boolean that is true whenever this was indeed a
+     * new element in the complex.
+     */
+    std::pair< Iterator, bool > insert( const Cell& aCell );
+    
+    /**
+     * Insert element \a aCell into the complex with possible hint given by position.
+     *
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @param position an hint for the position where the element can be inserted.
+     * @return  an iterator pointing on the inserted element.
+     */
+    Iterator insert( Iterator position, const Cell& aCell );
+
+    /**
+     * Insert a range of cells [first, last).
+     *
+     * @tparam InputIterator any model of boost::InputIterator where elements are Cell.
+     * @param first the beginning of the range.
+     * @param last the end of the range.
+     */
+    template <class InputIterator>
+    void insert( InputIterator first, InputIterator last );
+
+    // ---------- enhanced container operations ---------------
+  public:
 
     /**
     * Insert cell \a aCell into CubicalComplex and assign to it the value \a data.
@@ -526,27 +855,27 @@ namespace DGtal
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     * @return an iterator pointing on the pair (aCell,data) if the cell belongs to the complex, or end( dim( aCell ) ) 
     */
-    CellMapConstIterator find( const Cell& aCell ) const;
+    CellMapConstIterator findCell( const Cell& aCell ) const;
 
     /**
     * @param d the dimension of cell \a aCell.
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     * @return an iterator pointing on the pair (aCell,data) if the cell belongs to the complex, or end( d ) 
     */
-    CellMapConstIterator find( Dimension d, const Cell& aCell ) const;
+    CellMapConstIterator findCell( Dimension d, const Cell& aCell ) const;
 
     /**
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     * @return an iterator pointing on the pair (aCell,data) if the cell belongs to the complex, or end( dim( aCell ) ) 
     */
-    CellMapIterator find( const Cell& aCell );
+    CellMapIterator findCell( const Cell& aCell );
 
     /**
     * @param d the dimension of cell \a aCell.
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     * @return an iterator pointing on the pair (aCell,data) if the cell belongs to the complex, or end( d ) 
     */
-    CellMapIterator find( Dimension d, const Cell& aCell );
+    CellMapIterator findCell( Dimension d, const Cell& aCell );
 
     // ---------- local operations for extracting specific subcomplexes ---------------
   public:
@@ -596,47 +925,41 @@ namespace DGtal
     * Returns the closure of the cells in \a S within this complex,
     * i.e. the smallest subcomplex that contains each cell in \a S.
     *
-    * @tparam CellAssociativeContainer any simple associative container with key Cell.
-    * @param S any collection of cells of this complex.
+    * @param S any complex the cells of which belong to this complex.
     * @param hintClosed when 'true', this hint tells that the complex
     * is (locally around \a S) closed, so this speeds up this method, otherwise, the
     * complex may be arbitrary.
-    * @return the closure of \a S within this complex.
+    * @return the closure of \a S within this complex as a cubical complex.
     */
-    template <typename CellAssociativeContainer>
-    CellAssociativeContainer closure( const CellAssociativeContainer& S, bool hintClosed = false ) const;
+    CubicalComplex closure( const CubicalComplex& S, bool hintClosed = false ) const;
 
     /**
     * Returns the star of the cells in \a S within this complex, i.e. the
     * set of all cells of this complex that have any faces in \a S.
     *
-    * @tparam CellAssociativeContainer any simple associative container with key Cell.
-    * @param S any collection of cells of this complex.
+    * @param S any complex the cells of which belong to this complex.
     * @param hintOpen when 'true', this hint tells that the complex
     * is (locally around \a S) open, so this speeds up this method, otherwise, the
     * complex may be arbitrary.
-    * @return the star of \a S within this complex.
+    * @return the star of \a S within this complex as a cubical complex.
     */
-    template <typename CellAssociativeContainer>
-    CellAssociativeContainer star( const CellAssociativeContainer& S, bool hintOpen = false ) const;
+    CubicalComplex star( const CubicalComplex& S, bool hintOpen = false ) const;
 
     /**
     * Returns the link of the cells in \a S within this complex,
     * i.e. the closed star of \a S minus the stars of all faces of \a
     * S.
     *
-    * @tparam CellAssociativeContainer any simple associative container with key Cell.
-    * @param S any collection of cells of this complex.
+    * @param S any complex the cells of which belong to this complex.
     * @param hintClosed when 'true', this hint tells that the complex
     * is (locally around \a S) closed, so this speeds up this method, otherwise, the
     * complex may be arbitrary.
     * @param hintOpen when 'true', this hint tells that the complex
     * is (locally around \a S) open, so this speeds up this method, otherwise, the
     * complex may be arbitrary.
-    * @return the link of \a S within this complex.
+    * @return the link of \a S within this complex as a cubical complex.
     */
-    template <typename CellAssociativeContainer>
-    CellAssociativeContainer link( const CellAssociativeContainer& S, bool hintClosed = false, bool hintOpen = false ) const;
+    CubicalComplex link( const CubicalComplex& S, bool hintClosed = false, bool hintOpen = false ) const;
 
     // ----------------------- global operations on complexes --------------------------------------
   public:
@@ -705,6 +1028,13 @@ namespace DGtal
     * @return 'true' if the object is valid, 'false' otherwise.
     */
     bool isValid() const;
+
+    // --------------- CDrawableWithBoard2D realization ------------------
+  public:
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
 
     // ------------------------- Protected Datas ------------------------------
   protected:
