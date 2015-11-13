@@ -751,7 +751,7 @@ typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 findCell( Dimension d, const Cell& aCell )
 {
-  return myCells[ d ].findCell( aCell );
+  return myCells[ d ].find( aCell );
 }
 
 
@@ -795,7 +795,6 @@ cellCoBoundary( const Cell& aCell, bool hintOpen ) const
   typename Cells::iterator result = first;
   for ( ; first != last; ++first )
     {
-      trace.info() << " - " << *first << " is " << belongs( *first ) << std::endl;
       if ( belongs( *first ) )
         {
           *result = std::move( *first );
