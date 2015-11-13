@@ -461,6 +461,44 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, co
 // StandardDSS6Computer
 
 
+// Naive3DDSSComputer
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::DrawableWithViewer3D *
+DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm )
+{
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, arithm);
+}
+
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsBalls( Viewer3D<Space, KSpace> & viewer, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm )
+{
+  DGtal::Display3DFactory<Space,KSpace>::drawAsBalls(viewer, arithm);
+}
+
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsBoundingBox( Viewer3D<Space, KSpace> & viewer, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm )
+{
+  DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox(viewer, arithm);
+}
+
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm )
+{
+  DGtal::Display3DFactory<Space,KSpace>::draw(viewer , arithm);
+}
+// Naive3DDSSComputer
+
 // DigitalSetBySTLSet
 template <typename Space, typename KSpace>
 template<typename Domain, typename Compare>
@@ -508,6 +546,53 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, co
 }
 // DigitalSetBySTLSet
 
+
+// DigitalSetByAssociativeContainer
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+DGtal::DrawableWithViewer3D *
+DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet )
+{
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aSet);
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsPavingTransparent( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet )
+{
+  DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent(viewer, aSet);
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsPaving( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet )
+{
+  DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( viewer, aSet);
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsGrid( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet )
+{
+  DGtal::Display3DFactory<Space,KSpace>::drawAsGrid(viewer, aSet);
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet )
+{
+  DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aSet);
+}
+// DigitalSetByAssociativeContainer
 
 // DigitalSetBySTLVector
 template <typename Space, typename KSpace>

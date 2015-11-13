@@ -50,7 +50,7 @@ set).
   simple associative container \c std::set (a model of
   boost::SimpleAssociativeContainer). All find, insertion and deletion
   requests are \f$ O(\log n) \f$ complexity. Internal order can be 
-  changed by specifiing another Compare functor as template paramater.
+  changed by specifiing another Compare functor as template parameter.
 
 - DigitalSetBySTLVector: this representation is suited for very small
   set of points (for instance a neighborhood). The container is the standard
@@ -61,6 +61,19 @@ set).
 - DigitalSetFromMap: it is \b not a container but an \b adapter to an
   existing map Point -> Value. Elements of the digital set are by
   definition the keys of the map.
+
+- DigitalSetByAssociativeContainer: it is a generic container which
+  adapts any associative container (e.g. from the
+  [STL](https://www.sgi.com/tech/stl/AssociativeContainer.html) or
+  from boost). For example, if you instantiate such digital set on a
+  @c std::set, this class exactly matches with DigitalSetBySTLSet. The
+  main advantage of this container is its ability to adapt hash
+  function based containers such as @c std::unordered_set (for C++11
+  enabled build) or @c boost::unordered_set.  Compared to
+  DigitalSetBySTLSet, DigitalSetByAssociativeContainer on
+  @c std::unordered_set is expected to be 20% - 50% faster when accessing
+  or inserting points in the set.
+
 
 You may choose yourself your representation of digital set, or let
 DGtal chooses for you the best suited representation with the class
@@ -79,6 +92,11 @@ properties:
   set with enum DigitalSetBelongTestability, few times is \c
   LOW_BEL_DS, many times is \c HIGH_BEL_DS.
 
+@note By default, Z2i::DigitalSet and Z3i::DigitalSet in StdDefs.h
+refer to the associative container with hash functions (fastest on
+large sets).
+
+
 The following lines selects a rather generic representation for
 digital sets, since the set may be big, will be iterated many times
 and points will be tested many times:
@@ -87,8 +105,9 @@ and points will be tested many times:
   typedef SpaceND<2> Z2;
   typedef HyperRectDomain<Z2> Domain;
   typedef DigitalSetSelector < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
-  // here SpecificSet is DigitalSetBySTLSet<Domain>.
+  // here SpecificSet is DigitalSetByAssociativeContainer<(boost or std)::unordered_set<Point>, Domain>.
 @endcode
+
 
 @section digital_sets_3 Using digital sets
 

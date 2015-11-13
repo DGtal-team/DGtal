@@ -41,16 +41,15 @@ TEST_CASE( "Point Vector Unit tests" )
   
   SECTION("Comparisons")
     {
-      REQUIRE( (a == b) );
+      REQUIRE( a == b );
       a=6;
-      REQUIRE( (a == c) );
+      REQUIRE( a == c );
     }
   
   SECTION("No side-effects on global variables in section scopes")
     {
-      REQUIRE( (a == 5) );
+      REQUIRE( a == 5 );
     }
-
 }
 
 

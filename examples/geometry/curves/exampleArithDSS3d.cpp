@@ -36,7 +36,6 @@
 
 #include <iostream>
 
-#include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board3DTo2D.h"
 

@@ -315,6 +315,7 @@ DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display & display,
 
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
   typedef DGtal::PointVector<3,double> PointD3d;
+  typedef typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::PointR3d PointR3d;
 
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector3d;
   typedef DGtal::PointVector<3,double> VectorD3d;
@@ -323,9 +324,19 @@ DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display & display,
 
   //get DSS parameters
   Vector3d v; //direction vector
-  PointD3d mu; //intercept
-  PointD3d omega; //thickness
-  a.getParameters(v,mu,omega);
+  PointR3d muR; //intercept
+  PointR3d omegaR; //thickness
+  a.getParameters ( v, muR, omegaR );
+  
+  PointD3d mu;
+  mu[0] = NumberTraits<Integer>::castToDouble ( muR[0].first ) / NumberTraits<Integer>::castToDouble ( muR[0].second );
+  mu[1] = NumberTraits<Integer>::castToDouble ( muR[1].first ) / NumberTraits<Integer>::castToDouble ( muR[1].second );
+  mu[2] = NumberTraits<Integer>::castToDouble ( muR[2].first ) / NumberTraits<Integer>::castToDouble ( muR[2].second );
+  
+  PointD3d omega;
+  omega[0] = NumberTraits<Integer>::castToDouble ( omegaR[0].first ) / NumberTraits<Integer>::castToDouble ( omegaR[0].second );
+  omega[1] = NumberTraits<Integer>::castToDouble ( omegaR[1].first ) / NumberTraits<Integer>::castToDouble ( omegaR[1].second );
+  omega[2] = NumberTraits<Integer>::castToDouble ( omegaR[2].first ) / NumberTraits<Integer>::castToDouble ( omegaR[2].second );
 
   //casting coordinates of v in double
   VectorD3d u = VectorD3d(NumberTraits<Integer>::castToDouble(v[0]),
@@ -440,6 +451,189 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
 // StandardDSS6Computer
 
 
+// Naive3DDSSComputer
+
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::drawAsBalls( Display & display,
+                             const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & a )
+{
+  typedef TIterator ConstIterator;
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
+
+  // Draw points
+  display << CustomColors3D( display.getLineColor(), display.getFillColor() );
+  for (ConstIterator it = a.begin(); it != a.end(); ++it)
+    {
+      display << *it;
+    }
+
+  // Draw a linking polygonal line if the voxels are drawn as points.
+  if(display.getMode("PointVector")=="Grid")
+    {
+      ConstIterator it = a.begin();
+      Point3d prevp = *it;
+      DGtal::Z3i::RealPoint rprevp = display.embed( prevp);
+      ++it;
+      for ( ; it != a.end(); ++it) {
+        Point3d p = *it;
+        DGtal::Z3i::RealPoint rp = display.embed( p );
+
+        display.addLine(rprevp,rp);
+        rprevp = rp;
+      }
+    }
+}
+
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display & display,
+							  const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & a )
+{
+
+  typedef TIterator ConstIterator;
+
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
+  typedef DGtal::PointVector<3,double> PointD3d;
+  typedef typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::PointR3d PointR3d;
+
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector3d;
+  typedef DGtal::PointVector<3,double> VectorD3d;
+
+  typedef TInteger Integer;
+
+  //get DSS parameters
+  Vector3d v; //direction vector
+  PointR3d muR; //intercept
+  PointR3d omegaR; //thickness
+  a.getParameters ( v, muR, omegaR );
+  
+  PointD3d mu;
+  mu[0] = NumberTraits<Integer>::castToDouble ( muR[0].first ) / NumberTraits<Integer>::castToDouble ( muR[0].second );
+  mu[1] = NumberTraits<Integer>::castToDouble ( muR[1].first ) / NumberTraits<Integer>::castToDouble ( muR[1].second );
+  mu[2] = NumberTraits<Integer>::castToDouble ( muR[2].first ) / NumberTraits<Integer>::castToDouble ( muR[2].second );
+  
+  PointD3d omega;
+  omega[0] = NumberTraits<Integer>::castToDouble ( omegaR[0].first ) / NumberTraits<Integer>::castToDouble ( omegaR[0].second );
+  omega[1] = NumberTraits<Integer>::castToDouble ( omegaR[1].first ) / NumberTraits<Integer>::castToDouble ( omegaR[1].second );
+  omega[2] = NumberTraits<Integer>::castToDouble ( omegaR[2].first ) / NumberTraits<Integer>::castToDouble ( omegaR[2].second );
+
+  //casting coordinates of v in double
+  VectorD3d u = VectorD3d(NumberTraits<Integer>::castToDouble(v[0]),
+                          NumberTraits<Integer>::castToDouble(v[1]),
+                          NumberTraits<Integer>::castToDouble(v[2]) );
+  //Squared L2 norm of u
+  double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
+
+  //first and last points
+  Point3d first = *a.begin();
+  Point3d last = *(--a.end());
+  PointD3d f = PointD3d(NumberTraits<Integer>::castToDouble(first[0]),
+                        NumberTraits<Integer>::castToDouble(first[1]),
+                        NumberTraits<Integer>::castToDouble(first[2]) );
+  PointD3d l = PointD3d(NumberTraits<Integer>::castToDouble(last[0]),
+                        NumberTraits<Integer>::castToDouble(last[1]),
+                        NumberTraits<Integer>::castToDouble(last[2]) );
+
+  if (n != 0) {
+
+    //last coefficient of the normal plane to the DSS direction
+    //passing trough f and l
+    double df = -u[0]*f[0] -u[1]*f[1] -u[2]*f[2];
+    double dl = -u[0]*l[0] -u[1]*l[1] -u[2]*l[2];
+
+    //omega masks
+    PointD3d omega1, omega2;
+    if (omega[0] == 0) {
+      omega1 = PointD3d(0,omega[1],0);
+      omega2 = PointD3d(0,0,omega[2]);
+    } else {
+      if (omega[1] == 0) {
+        omega1 = PointD3d(omega[0],0,0);
+        omega2 = PointD3d(0,0,omega[2]);
+      } else {//omega[2] == 0
+        omega1 = PointD3d(omega[0],0,0);
+        omega2 = PointD3d(0,omega[1],0);
+      }
+    }
+
+    double m1 = u[0]*mu[0] + u[1]*mu[1] + u[2]*mu[2];
+    double m2 = u[0]*(mu[0]+omega1[0]) + u[1]*(mu[1]+omega1[1]) + u[2]*(mu[2]+omega1[2]);
+    double m3 = u[0]*(mu[0]+omega2[0]) + u[1]*(mu[1]+omega2[1]) + u[2]*(mu[2]+omega2[2]);
+    double m4 = u[0]*(mu[0]+omega[0]) + u[1]*(mu[1]+omega[1]) + u[2]*(mu[2]+omega[2]);
+
+    //4 lines
+    PointD3d pf = PointD3d( mu[0] - ( (m1+df)*u[0] )/n,
+                            mu[1] - ( (m1+df)*u[1] )/n,
+                            mu[2] - ( (m1+df)*u[2] )/n );
+    PointD3d pl = PointD3d( mu[0] - ( (m1+dl)*u[0] )/n,
+                            mu[1] - ( (m1+dl)*u[1] )/n,
+                            mu[2] - ( (m1+dl)*u[2] )/n );
+
+    display.addLine(pf, pl);
+
+    PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n,
+                            (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n,
+                            (mu[2]+omega1[2]) - ( (m2+df)*u[2] )/n );
+    PointD3d pl2 = PointD3d((mu[0]+omega1[0]) - ( (m2+dl)*u[0] )/n,
+                            (mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n,
+                            (mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n );
+
+    display.addLine(pf2, pl2);
+
+    PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n,
+                            (mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n,
+                            (mu[2]+omega2[2]) - ( (m3+df)*u[2] )/n );
+    PointD3d pl3 = PointD3d((mu[0]+omega2[0]) - ( (m3+dl)*u[0] )/n,
+                            (mu[1]+omega2[1]) - ( (m3+dl)*u[1] )/n,
+                            (mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n );
+
+    display.addLine(pf3, pl3);
+
+    PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n,
+                            (mu[1]+omega[1]) - ( (m4+df)*u[1] )/n,
+                            (mu[2]+omega[2]) - ( (m4+df)*u[2] )/n );
+    PointD3d pl4 = PointD3d((mu[0]+omega[0]) - ( (m4+dl)*u[0] )/n,
+                            (mu[1]+omega[1]) - ( (m4+dl)*u[1] )/n,
+                            (mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n );
+
+    display.addLine(pf4, pl4);
+
+    //two end facets
+    display.addLine(pf, pf2); 
+    display.addLine(pf2,pf4); 
+    display.addLine(pf4, pf3); 
+    display.addLine(pf3, pf); 
+
+    display.addLine(pl, pl2); 
+    display.addLine(pl2, pl4); 
+    display.addLine(pl4, pl3); 
+    display.addLine(pl3, pl); 
+  }
+}
+
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
+						  const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & a )
+{
+  std::string mode = display.getMode( a.className() );
+  if ( mode == "BoundingBox" )
+    drawAsBoundingBox( display, a );
+  else if ( mode == "Points" )
+    drawAsBalls( display, a );
+  else if ( ( mode == "" ) )
+    {
+      drawAsBalls( display, a );
+    }
+}
+// Naive3DDSSComputer
+
+
 // DigitalSetBySTLSet
 template <typename Space, typename KSpace>
 template<typename Domain, typename Compare>
@@ -449,7 +643,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display & d
 {
   typedef typename Domain::Point Point;
   typedef typename std::set<Point>::const_iterator ConstIterator;
-
+ 
   ASSERT(Domain::Space::dimension == 3);
 
   display.createNewCubeList( s.className());
@@ -468,8 +662,7 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
 							  const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
-  typedef typename Domain::Point Point;
-  typedef typename std::set<Point>::const_iterator ConstIterator;
+  typedef typename DGtal::DigitalSetBySTLSet<Domain, Compare>::ConstIterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
 
@@ -489,8 +682,7 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
 							const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
-  typedef typename Domain::Point Point;
-  typedef typename std::set<Point>::const_iterator ConstIterator;
+  typedef typename DGtal::DigitalSetBySTLSet<Domain, Compare>::ConstIterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
 
@@ -527,6 +719,93 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
     }
 }
 // DigitalSetBySTLSet
+
+
+// DigitalSetByAssociativeContainer
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display & display,
+								     const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
+{
+  typedef typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator ConstIterator;
+
+  ASSERT(Domain::Space::dimension == 3);
+
+  display.createNewCubeList( s.className());
+  for ( ConstIterator it = s.begin();
+        it != s.end();
+        ++it )
+    {
+      DGtal::Z3i::RealPoint rp = display.embed((*it) );
+      display.addCube(rp);
+    }
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
+							  const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
+{
+  typedef typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator ConstIterator;
+
+  ASSERT(Domain::Space::dimension == 3);
+
+  display.createNewCubeList( s.className());
+  for ( ConstIterator it = s.begin();
+        it != s.end();
+        ++it )
+    {
+      DGtal::Z3i::RealPoint rp = display.embed((*it) );
+      display.addCube(rp);
+    }
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
+							const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
+{
+  typedef typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator ConstIterator;
+
+
+  ASSERT(Domain::Space::dimension == 3);
+
+  for ( ConstIterator it = s.begin();
+        it != s.end();
+        ++it )
+    {
+      DGtal::Z3i::RealPoint rp = display.embed((*it) );
+      display.addBall(rp,1.0/static_cast<double>( POINT_AS_BALL_RADIUS), POINT_AS_BALL_RES);
+    }
+}
+
+template <typename Space, typename KSpace>
+template<typename Domain, typename Container>
+inline
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
+						  const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & s )
+{
+  ASSERT(Domain::Space::dimension == 3);
+
+  std::string mode = display.getMode( s.className() );
+  ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
+
+  if ( mode == "Paving" || ( mode == "" ) )
+    drawAsPaving( display, s );
+  else if ( mode == "PavingTransp" )
+    drawAsPavingTransparent( display, s );
+  else if ( mode == "Grid" )
+    drawAsGrid( display, s );
+  else if ( ( mode == "Both" ) )
+    {
+      drawAsPaving( display, s );
+      drawAsGrid( display, s );
+    }
+}
+// DigitalSetByAssociativeContainer
 
 
 // DigitalSetBySTLVector
