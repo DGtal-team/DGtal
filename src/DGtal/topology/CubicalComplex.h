@@ -191,6 +191,14 @@ namespace DGtal
     * Forbidden by default.
     */
     CubicalComplex ( const CubicalComplex & other );
+    
+    /**
+    * Constructor a complex from a digital set.
+    * @param set - a digital set from which to create a complex. 
+    * Set has to be of the same dimension as a Khalimsky space.
+    */
+    template < typename TDigitalSet >
+    void construct ( const TDigitalSet & set );
 
     /**
     * Assignment.

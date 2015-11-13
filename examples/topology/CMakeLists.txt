@@ -8,6 +8,7 @@ SET(DGTAL_EXAMPLES_TOPO_SRC
   trackImplicitPolynomialSurfaceToOFF
   generateSimplicityTables2D
   generateSimplicityTables3D
+  digitalSetToCubicalComplexes2D
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_TOPO_SRC}) 
