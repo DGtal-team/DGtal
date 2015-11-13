@@ -23,7 +23,8 @@ ImaGene
 
 
 The following programs are related to this documentation:
-cubical-complex-collapse.cpp, testCubicalComplex.cpp,
+cubical-complex-collapse.cpp, cubical-complex-illustrations.cpp,
+testCubicalComplex.cpp,
 
 @section dgtal_ccomplex_sec1  Introduction to cubical complexes
 
@@ -77,7 +78,20 @@ You have also methods to remove some cells (CubicalComplex::eraseCell,
 CubicalComplex::eraseCells) and methods to check if a cell belongs to
 the complex (CubicalComplex::belongs).
 
-@section dgtal_ccomplex_sec2  Incidence within a cubical complex
+@section dgtal_ccomplex_sec2  Displaying a 2D cubical complex
+
+2D cubical complex are displayable on a Board (see \ref
+moduleBoard2D). You just have to output the complex with the stream
+operator of a board. You may adjust the default style before. The
+following snippet creates and outputs a 2D complex.
+
+@snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-X
+
+@image html cubical-complex-illustrations-X.png "Displaying a 2D cubical complex on a Board."
+@image latex cubical-complex-illustrations-X.png "Displaying a 2D cubical complex on a Board." width=5cm
+
+
+@section dgtal_ccomplex_sec3  Incidence within a cubical complex
 
 Two cells of a cubical complex are incident if and only if they are
 incident in the Khalimsky space. From this relation, one can define
@@ -119,14 +133,43 @@ co-faces of some cell, then CubicalComplex::cellCoBoundary does the
 job. Again it is in general slightly faster than using
 CubicalComplex::coFaces.
 
-@section dgtal_ccomplex_sec3  Closure, star and link of cells of a complex
+@section dgtal_ccomplex_sec4  Closure, star and link of cells of a complex
 
-You have three methods to compute these "subcomplexes". In each case,
-you must give a set \a S (or any associative container) containing the
-cells for which you wish to compute the closure, star or link.
+You have three methods to compute these "subcomplexes" of a complex \a
+X. In each case, you must give a subcomplex \a S of \a X which defines
+the cells for which you wish to compute the closure, star or link.
 
-Returns the closure of the cells in \a S within this complex,
-i.e. the smallest subcomplex that contains each cell in \a S.
+@image html cubical-complex-illustrations-S.png "Cubical complex \a X in metallic grey and subcomplex \a S in dark grey."
+@image latex cubical-complex-illustrations-S.png "Cubical complex \a X in metallic grey and subcomplex \a S in dark grey." width=5cm
+
+
+- CubicalComplex::closure: returns the closure of the cells of \a S
+  within this complex, i.e. the smallest subcomplex of \a X that
+  contains each cell in \a S.
+
+  @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-closure
+
+  @image html cubical-complex-illustrations-closure.png "Closure of \a S in \a X, displayed in red."
+  @image latex cubical-complex-illustrations-closure.png "Closure of \a S in \a X, displayed in red." width=5cm
+
+- CubicalComplex::star: returns the star of the cells of \a S
+  within this complex, i.e. the union of the star (co-faces + cell) in \a X of every cell of \a S.
+
+  @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-star
+
+  @image html cubical-complex-illustrations-star.png "Star of \a S in \a X, displayed in red."
+  @image latex cubical-complex-illustrations-star.png "Star of \a S in \a X, displayed in red." width=5cm
+
+- CubicalComplex::link: returns the link of the cells of \a S within
+  this complex, i.e. the closure of the star of \a S in \a X minus the
+  star of the closure of \a S in \a X.
+
+  @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-link
+
+  @image html cubical-complex-illustrations-link.png "Link of \a S in \a X, displayed in red."
+  @image latex cubical-complex-illustrations-link.png "Link of \a S in \a X, displayed in red." width=5cm
+  
+
 
 */
 
