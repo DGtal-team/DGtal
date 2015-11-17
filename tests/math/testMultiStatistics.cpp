@@ -77,7 +77,7 @@ TEST_CASE( "Testing MultiStatistics" )
     }
   stats2.terminate();
 
-  SECTION("Testing feature math of MultiStatistics with saving data")
+  SECTION("Testing multiStatics estimated quantities with saving the data")
     {
       unsigned int val = 12;
       REQUIRE( stats2.max(val) == val );      
