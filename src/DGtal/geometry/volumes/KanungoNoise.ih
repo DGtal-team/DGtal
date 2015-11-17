@@ -51,8 +51,13 @@ DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAli
   std::mt19937 rng;
   std::uniform_real_distribution<double> dis(0.0, 1.0);
 #else
+#ifdef BOOST_RANDOM_OLD
+  boost::mt19937 rng;
+  boost::random::uniform_real dis;
+#else
   boost::random::mt19937 rng;
   boost::random::uniform_real_distribution<double> dis(0.0, 1.0);
+#endif
 #endif
   
   ASSERT(alpha>0 && alpha < 1);
