@@ -222,7 +222,7 @@ namespace DGtal
     /**
      * first point used to reverse the convexhull container.
      **/
-    TPoint myFirst; 
+    Point myFirstPoint; 
 
     // ------------------------- Internals ------------------------------------
   private:
