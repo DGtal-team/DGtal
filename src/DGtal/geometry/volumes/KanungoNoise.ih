@@ -29,6 +29,11 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#ifdef WITH_C11
+#include <random>
+#else
+#include <boost/random.hpp>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,6 +47,13 @@ inline
 DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAlias<Domain> aDomain, const double alpha):
   myPredicate(aPredicate), myDomain(aDomain), myAlpha(alpha)
 {
+#ifdef WITH_C11
+  std::mt19937 rng;
+  std::uniform_real_distribution<> dis(0, 1);
+#else
+  boost::mt19937 rng;
+  boost::uniform_real_distribution<> dis(0, 1);
+#endif
   
   ASSERT(alpha>0 && alpha < 1);
   double p;
@@ -63,7 +75,7 @@ DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAli
   for(typename Domain::ConstIterator it = myDomain.begin(), itend = myDomain.end();
       it != itend; ++it)
   {
-    p = (double)rand()/(RAND_MAX+1.0);
+    p = dis(rng);
     if ( myPredicate(*it) )
     {
       if ( p >= std::pow( alpha, 1.0+DTin(*it) ) )
