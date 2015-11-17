@@ -56,6 +56,9 @@ namespace DGtal
  * compute different statistics, like sample mean, sample variance,
  * sample unbiased variance, etc.
  *
+ * @note the method @ref terminate() should be called before accessing
+ * to the quantities like mean, variance, etc.
+ * 
  *
  * The proposed implementation is mainly a backport from
  * [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
@@ -398,8 +401,12 @@ private:
      */
     std::vector<double>* myValues;
 
-
-
+  /**
+   * To prevent that terminate() is called before using statistics like mean,
+   *  variance etc.
+   **/
+  bool myIsTerminate;
+  
     // ------------------------- Hidden services ------------------------------
 protected:
 
