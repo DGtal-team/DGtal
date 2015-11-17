@@ -57,6 +57,7 @@ DGtal::MultiStatistics::MultiStatistics( const unsigned int size,
   myValues = 0;
   myIndiceMax = 0;
   myIndiceMin = 0;
+  myIsTerminate = false;
   init( size, storeSamples );
 }
 
@@ -127,6 +128,7 @@ inline
 double 
 DGtal::MultiStatistics::mean( const unsigned int k ) const
 {
+  ASSERT(myIsTerminate);
   return myExp[ k ];
 }
 
@@ -136,6 +138,7 @@ inline
 double 
 DGtal::MultiStatistics::variance( const unsigned int k ) const
 {
+  ASSERT(myIsTerminate);
   return myVar[ k ];
 }
 
@@ -145,6 +148,7 @@ inline
 double 
 DGtal::MultiStatistics::unbiasedVariance( const unsigned int k ) const
 {
+  ASSERT(myIsTerminate);
   return myUnbiasedVar[ k ];
 }
 
@@ -222,6 +226,7 @@ DGtal::MultiStatistics::addValue( unsigned int k, double v )
   }
   if ( myStoreSamples )
     myValues[ k ].push_back( v );
+  myIsTerminate = false;
 }
 
 
@@ -232,6 +237,7 @@ DGtal::MultiStatistics::addValues( const unsigned int k, Iter b, Iter e )
 {
   for ( ; b != e; ++b )
     addValue( k, *b );
+  myIsTerminate = false;
 }
 
 
@@ -247,6 +253,7 @@ DGtal::MultiStatistics::terminate()
       myUnbiasedVar[ k ] = mySamples[ k ] * myVar[ k ] 
 	/ ( mySamples[ k ] - 1 );
     }
+    myIsTerminate = true;
 }
 
 
@@ -269,6 +276,7 @@ DGtal::MultiStatistics::init( unsigned int size, bool storeSamples )
   if ( myStoreSamples )
     myValues = new std::vector<double>[ size ];
   clear();
+  myIsTerminate = false;
 }
 
 
@@ -295,6 +303,7 @@ DGtal::MultiStatistics::clear()
 	myValues[ i ].reserve( 128 );
       }
     }
+  myIsTerminate = false;
 }
 
 

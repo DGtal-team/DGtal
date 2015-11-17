@@ -55,7 +55,7 @@ TEST_CASE( "Testing MultiStatistics" )
     }
   stats.terminate();
     
-  SECTION("Testing feature math of MultiStatistics without saving data")
+  SECTION("Testing multiStatics estimated quantities without saving the data")
     {
       unsigned int val = 50;
       REQUIRE( stats.max(val) == val );      
