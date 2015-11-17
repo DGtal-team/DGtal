@@ -32,7 +32,11 @@
 #ifdef WITH_C11
 #include <random>
 #else
+#ifdef BOOST_RANDOM_OLD
+#include <boost/random/uniform_real.hpp>
+#endif
 #include <boost/random.hpp>
+
 #endif
 //////////////////////////////////////////////////////////////////////////////
 
@@ -53,7 +57,7 @@ DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAli
 #else
 #ifdef BOOST_RANDOM_OLD
   boost::mt19937 rng;
-  boost::random::uniform_real dis;
+  boost::uniform_real dis;
 #else
   boost::random::mt19937 rng;
   boost::random::uniform_real_distribution<double> dis(0.0, 1.0);
