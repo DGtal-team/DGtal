@@ -17,6 +17,7 @@ if ( Boost_FOUND )
   include_directories( ${Boost_INCLUDE_DIRS} )
   SET(DGtalLibInc ${DGtalLibInc} ${Boost_INCLUDE_DIRS})
 
+  ## Checking boost/random
   STRING (COMPARE LESS "${Boost_VERSION}" 1.47.0 BOOST_RANDOM_OLD)
   IF (BOOST_RANDOM_OLD)
     message(STATUS "   Old boost::random found")
