@@ -177,8 +177,14 @@ the on-line feature, you may call the off-line procedure melkmanConvexHullAlgori
 
 @warning The behavior is undefined if the input points do not form a simple polygonal line. 
 
-\subsubsection subsectmoduleHull2D131 Constructing a Melkman convex hull from front and back.
-If you want to construction a convex hull by considering the front and back of a contour you will need to use the @red reverse() method. For instance, to recover the convex hull of the point P0 of the following figure, you will need to do as follows: 
+\subsubsection subsectmoduleHull2D131 Constructing a Melkman convex hull from both sides.
+
+If you want to construction a convex hull by considering the front and
+back of a contour you will need to use the @red reverse() method. For
+instance, to recover the convex hull of the point P0 of the following
+figure, you will need to do as follows:
+
+ 
 @code
 typedef InHalfPlaneBySimple3x3Matrix<Z2i::RealPoint, double> Functor;
 typedef MelkmanConvexHull<Z2i::RealPoint, Functor> MelkmanCV;

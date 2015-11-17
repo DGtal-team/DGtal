@@ -69,7 +69,7 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::add(const Point& aPoint)
     {
       if (myContainer.size() == 0)
 	{
-    myFirst = aPoint;
+    myFirstPoint = aPoint;
 
     myContainer.push_back( aPoint );
 	  myContainer.push_front( aPoint ); 
@@ -198,19 +198,19 @@ inline
 void
 DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::reverse()
 {
-  // if convexhull is reducted to a simgle segment non need to reverse anything.
+  // if convexhull is reduced into a single segment no need to reverse anything.
   if(myContainer.size()<=3)
     return;
   TPoint theLast = myContainer.back();
   myContainer.pop_back();
-  bool foundFirst = myContainer.back() == myFirst;
+  bool foundFirst = myContainer.back() == myFirstPoint;
   while(!foundFirst){
     myContainer.push_front(myContainer.back());
     myContainer.pop_back();
-    foundFirst = myContainer.back() == myFirst;
+    foundFirst = myContainer.back() == myFirstPoint;
   }
   myContainer.push_front(myContainer.back());
-  myFirst = theLast;
+  myFirstPoint = theLast;
 }
 
 
