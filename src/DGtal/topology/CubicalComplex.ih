@@ -51,6 +51,15 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::
 template <typename TKSpace, typename TCellContainer>
 inline
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
+CubicalComplex()
+  : myKSpace( 0 ), myCells( dimension+1 )
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
 CubicalComplex( ConstAlias<KSpace> aK )
   : myKSpace( &aK ), myCells( dimension+1 )
 {
@@ -393,7 +402,13 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::
 insert( Iterator position, const Cell& aCell )
 {
   Dimension d = myKSpace->uDim( aCell );
-  myCells[ d ].insert( position.myIt, std::make_pair( aCell, Data() ) );
+  if ( position.dimension() == d )
+    return Iterator( *this, d, 
+                     myCells[ d ].insert( position.myIt, 
+                                          std::make_pair( aCell, Data() ) ) );
+  else
+    return Iterator( *this, d, 
+                     myCells[ d ].insert( std::make_pair( aCell, Data() ) ).first );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
@@ -405,6 +420,22 @@ insert( InputIterator first, InputIterator last )
 {
   for ( ; first != last; ++first )
     insert( *first );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+swap( CubicalComplex& other )
+{
+  if ( other != *this )
+    { // Swap space with special care of invalid complexes.
+      if ( myKSpace == 0 ) myKSpace = other.myKSpace;
+      else if ( other.myKSpace == 0 ) other.myKSpace = myKSpace;
+      else std::swap( myKSpace, other.myKSpace );
+      myCells.swap( other.myCells );
+    }
 }
 
 
@@ -847,7 +878,9 @@ link( const CubicalComplex& S, bool hintClosed, bool hintOpen ) const
   CubicalComplex star_cl_S = star   ( closure( S, hintClosed ), hintOpen   );
 
   // Calls a specializable difference of sets operation.
-  detail::SetOperation< CubicalComplex, IsOrderedAssociativeContainer< CubicalComplex >::value >::difference( cl_star_S, star_cl_S );
+  detail::SetOperation< CubicalComplex, 
+                        IsOrderedAssociativeContainer< CubicalComplex >::value >
+    ::difference( cl_star_S, star_cl_S );
   return cl_star_S;
 }
 
