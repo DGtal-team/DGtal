@@ -66,4 +66,16 @@ TEMPLATE_TEST_CASE_3( "SetFunctions module unit tests", "[set_functions]",
   REQUIRE( C1_union_C2.size() == C2_union_C1.size() );
   REQUIRE( ( C1_minus_C2 | C2 ).size() == (C2_minus_C1 | C1 ).size() );
 
+  Container C1_intersection_C2 = C1 & C2;
+  Container C2_intersection_C1 = C2 & C1;
+  REQUIRE( C1_intersection_C2.size() == 3 );
+  REQUIRE( C1_intersection_C2.size() == C2_intersection_C1.size() );
+
+  REQUIRE( ( C1_minus_C2 | C1_intersection_C2 | C2_minus_C1 ).size() == C1_union_C2.size() );
+
+  Container C1_symdiff_C2 = C1 ^ C2;
+  Container C2_symdiff_C1 = C2 ^ C1;
+  REQUIRE( C1_symdiff_C2.size() == C2_symdiff_C1.size() );
+  REQUIRE( C1_symdiff_C2.size() == ( C1_union_C2 - C1_intersection_C2 ).size() );
+  REQUIRE( C1_symdiff_C2.size() == ( C1_minus_C2 | C2_minus_C1 ).size() );
 }
