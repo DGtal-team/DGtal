@@ -1163,9 +1163,7 @@ namespace DGtal
       {
         AssociativeContainer S;
         std::swap( S, S1 );
-        std::cout << "S ended with size " << S1.size() << std::endl;
-        std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), std::inserter( S1, S1.end() ) );
-        std::cout << "Difference ended with size " << S1.size() << std::endl;
+        std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), std::inserter( S1, S1.end() ), S.value_comp() );
       }
     };
 
