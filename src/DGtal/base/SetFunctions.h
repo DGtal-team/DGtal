@@ -91,7 +91,6 @@ namespace DGtal
        */
       static Container& assignUnion( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, false, false>::union" << std::endl;
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
         Vector V1( S1.begin(), S1.end() );
@@ -112,7 +111,6 @@ namespace DGtal
        */
       static Container& assignIntersection( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, false, false>::intersection" << std::endl;
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
         Vector V1( S1.begin(), S1.end() );
@@ -133,7 +131,6 @@ namespace DGtal
        */
       static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, false, false>::sym_difference" << std::endl;
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
         Vector V1( S1.begin(), S1.end() );
@@ -177,7 +174,6 @@ namespace DGtal
        */
       static Container& assignUnion( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, true, false>::union" << std::endl;
         typename Container::iterator itS1 = S1.end();
         for ( typename Container::const_iterator it = S2.begin(), 
                 itE = S2.end(); it != itE; ++it )
@@ -193,7 +189,6 @@ namespace DGtal
        */
       static Container& assignIntersection( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, true, false>::intersection" << std::endl;
         for ( typename Container::iterator it = S1.begin(), 
                 itE = S1.end(); it != itE; )
           {
@@ -213,7 +208,6 @@ namespace DGtal
        */
       static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, true, false>::sym_difference" << std::endl;
         Container S12( S1 );
         assignIntersection( S12, S2 );
         assignUnion( S1, S2 );
@@ -236,7 +230,6 @@ namespace DGtal
        */
       static Container& assignDifference( Container& S1, const Container& S2 )
       {
-        // std::cout << "SetFunctionsImpl<Container, true, true >" << std::endl;
         Container S;
         std::swap( S, S1 );
         std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
@@ -252,7 +245,6 @@ namespace DGtal
        */
       static Container& assignUnion( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, true, true>::union" << std::endl;
         Container S;
         std::swap( S, S1 );
         std::set_union( S.begin(), S.end(), S2.begin(), S2.end(), 
@@ -268,7 +260,6 @@ namespace DGtal
        */
       static Container& assignIntersection( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, true, true>::intersection" << std::endl;
         Container S;
         std::swap( S, S1 );
         std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(), 
@@ -284,7 +275,6 @@ namespace DGtal
        */
       static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, true, true>::sym_difference" << std::endl;
         Container S;
         std::swap( S, S1 );
         std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
@@ -322,7 +312,6 @@ namespace DGtal
        */
       static Container& assignUnion( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, false, true>::union" << std::endl;
         Container S;
         std::swap( S, S1 );
         std::set_union( S.begin(), S.end(), S2.begin(), S2.end(), 
@@ -338,7 +327,6 @@ namespace DGtal
        */
       static Container& assignIntersection( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, false, true>::intersection" << std::endl;
         Container S;
         std::swap( S, S1 );
         std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(), 
@@ -354,7 +342,6 @@ namespace DGtal
        */
       static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
       {
-        std::cout << "SetFunctionsImpl<Container, false, true>::sym_difference" << std::endl;
         Container S;
         std::swap( S, S1 );
         std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
