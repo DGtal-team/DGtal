@@ -50,6 +50,7 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ContainerTraits.h"
+#include "DGtal/base/SetFunctions.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -1122,7 +1123,7 @@ namespace DGtal
   }; // end of class CubicalComplex
 
   /**
-   * Specialization of ContainterTraits for CubicalComplex.
+   * Specialization of ContainerTraits for CubicalComplex.
    */
   template < typename TKSpace, 
              typename TCellContainer >
@@ -1131,43 +1132,6 @@ namespace DGtal
     typedef UnknownContainerCategory Category;
   };
 
-
-
-  namespace detail 
-  {
-    template <typename AssociativeContainer, bool ordered>
-    struct SetOperation {
-      /** 
-      * Updates the set S1 as S1 - S2. This version does not use the
-      * fact that the container is ordered.
-      * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
-      * @param[in] S2 another input set.
-      */
-      static void difference( AssociativeContainer& S1, const AssociativeContainer& S2 )
-      {
-        for ( typename AssociativeContainer::const_iterator it = S2.begin(), 
-          itE = S2.end(); it != itE; ++it )
-          S1.erase( *it );
-      }
-    };
-
-    template <typename AssociativeContainer>
-    struct SetOperation< AssociativeContainer, true > {
-      /** 
-      * Updates the set S1 as S1 - S2. This version uses the fact that
-      * the container is ordered.
-      * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
-      * @param[in] S2 another input set.
-      */
-      static void difference( AssociativeContainer& S1, const AssociativeContainer& S2 )
-      {
-        AssociativeContainer S;
-        std::swap( S, S1 );
-        std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), std::inserter( S1, S1.end() ), S.value_comp() );
-      }
-    };
-
-  }
 
   /**
   * Overloads 'operator<<' for displaying objects of class 'CubicalComplex'.
