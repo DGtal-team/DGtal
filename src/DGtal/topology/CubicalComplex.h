@@ -89,6 +89,11 @@ namespace DGtal
   * incident in the surrounding Khalimsky space. In other words,
   * cubical complexes are defined here as subsets of Khalimsky spaces. 
   *
+  * A cubical complex is also a (immutable) model of boost::Container
+  * and offers forward iterators to enumerate elements. It is close
+  * from being an AssociativeContainer, but values are not sorted
+  * (they are sorted per dimension), and not modifiable.
+  *
   * @tparam TKSpace any model of concepts::CCellularGridSpaceND, i.e. a type
   * that models a Khalimsky space.
   *
@@ -265,7 +270,12 @@ namespace DGtal
       { 
         return myIt->first;
       }
-      
+
+      Dimension dimension() const
+      { 
+        return myD;
+      }
+
     private:
       const CubicalComplex* myCC;
       Dimension myD;
@@ -365,6 +375,11 @@ namespace DGtal
       { 
         return myIt->first;
       }
+
+      Dimension dimension() const
+      { 
+        return myD;
+      }
       
     private:
       CubicalComplex* myCC;
@@ -373,11 +388,17 @@ namespace DGtal
       CellMapIterator myItEnd;
     };
 
-
+    // ----------------------- STL inner types ------------------------------
+  public:
 
     // Renaming for STL-type of iterator.
-    typedef ConstIterator const_iterator;
-    typedef Iterator      iterator;
+    typedef ConstIterator                           const_iterator;
+    typedef Iterator                                iterator;
+    typedef Cell const                              value_type;
+    typedef Cell const&                             reference;
+    typedef Cell const&                             const_reference;
+    typedef typename CellContainer::size_type       size_type; 
+    typedef typename CellContainer::difference_type difference_type;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -386,6 +407,11 @@ namespace DGtal
     * Destructor.
     */
     ~CubicalComplex();
+
+    /**
+    * Constructor. The cubical complex is not valid.
+    */
+    CubicalComplex();
 
     /**
     * Constructor of empty complex. Needs a space to represents
@@ -595,6 +621,15 @@ namespace DGtal
      */
     template <class InputIterator>
     void insert( InputIterator first, InputIterator last );
+
+    /**
+     * Swaps complex \a other with \a this.  Note that complexes must
+     * live in the same space. If one complex is invalid then it is
+     * initialized with the space of the other.
+     *
+     * @param other a complex living in the same space. 
+     */
+    void swap( CubicalComplex& other );
 
     // ---------- enhanced container operations ---------------
   public:
@@ -1055,11 +1090,6 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-    * Constructor.
-    * Forbidden by default (protected to avoid g++ warnings).
-    */
-    CubicalComplex();
 
   private:
 
@@ -1091,6 +1121,18 @@ namespace DGtal
 
   }; // end of class CubicalComplex
 
+  /**
+   * Specialization of ContainterTraits for CubicalComplex.
+   */
+  template < typename TKSpace, 
+             typename TCellContainer >
+  struct ContainerTraits< CubicalComplex< TKSpace, TCellContainer > >
+  {
+    typedef UnknownContainerCategory Category;
+  };
+
+
+
   namespace detail 
   {
     template <typename AssociativeContainer, bool ordered>
@@ -1120,8 +1162,10 @@ namespace DGtal
       static void difference( AssociativeContainer& S1, const AssociativeContainer& S2 )
       {
         AssociativeContainer S;
-        std::swap( S,S1 );
+        std::swap( S, S1 );
+        std::cout << "S ended with size " << S1.size() << std::endl;
         std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), std::inserter( S1, S1.end() ) );
+        std::cout << "Difference ended with size " << S1.size() << std::endl;
       }
     };
 
