@@ -64,12 +64,12 @@ namespace DGtal
     struct SetFunctionsImpl
     {
       /** 
-       * Updates the set S1 as S1 - S2. This version does not use the
+       * Updates the set \a S1 as \f$ S1 - S2 \f$. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
        * @param[in] S2 another input set.
        */
-      static void difference( Container& S1, const Container& S2 )
+      static Container& assignDifference( Container& S1, const Container& S2 )
       {
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
@@ -80,7 +80,30 @@ namespace DGtal
         S1.clear();
         std::set_difference( V1.begin(), V1.end(), V2.begin(), V2.end(),
                              std::inserter( S1, S1.end() ) );
+        return S1;
       }
+
+      /** 
+       * Updates the set \a S1 as \f$ S1 \cup S2 \f$. This version does not use the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignUnion( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, false, false>::union" << std::endl;
+        typedef typename Container::value_type value_type;
+        typedef std::vector<value_type> Vector;
+        Vector V1( S1.begin(), S1.end() );
+        Vector V2( S2.begin(), S2.end() );
+        std::sort( V1.begin(), V1.end() );
+        std::sort( V2.begin(), V2.end() );
+        S1.clear();
+        std::set_union( V1.begin(), V1.end(), V2.begin(), V2.end(),
+                        std::inserter( S1, S1.end() ) );
+        return S1;
+      }
+
     };
     
     /**
@@ -95,11 +118,28 @@ namespace DGtal
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
        * @param[in] S2 another input set.
        */
-      static void difference( Container& S1, const Container& S2 )
+      static Container& assignDifference( Container& S1, const Container& S2 )
       {
         for ( typename Container::const_iterator it = S2.begin(), 
                 itE = S2.end(); it != itE; ++it )
           S1.erase( *it );
+        return S1;
+      }
+
+      /** 
+       * Updates the set \a S1 as \f$ S1 \cup S2 \f$. This version does not use the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignUnion( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, true, false>::union" << std::endl;
+        typename Container::iterator itS1 = S1.end();
+        for ( typename Container::const_iterator it = S2.begin(), 
+                itE = S2.end(); it != itE; ++it )
+          itS1 = S1.insert( itS1, *it );
+        return S1;
       }
     };
 
@@ -115,14 +155,32 @@ namespace DGtal
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
        * @param[in] S2 another input set.
        */
-      static void difference( Container& S1, const Container& S2 )
+      static Container& assignDifference( Container& S1, const Container& S2 )
       {
         // std::cout << "SetFunctionsImpl<Container, true, true >" << std::endl;
         Container S;
         std::swap( S, S1 );
         std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
                              std::inserter( S1, S1.end() ), S.value_comp() );
+        return S1;
       }
+
+      /** 
+       * Updates the set \a S1 as \f$ S1 \cup S2 \f$. This version uses the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignUnion( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, true, true>::union" << std::endl;
+        Container S;
+        std::swap( S, S1 );
+        std::set_union( S.begin(), S.end(), S2.begin(), S2.end(), 
+                        std::inserter( S1, S1.end() ), S.value_comp() );
+        return S1;
+      }
+
     };
 
     /**
@@ -137,13 +195,31 @@ namespace DGtal
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
        * @param[in] S2 another input set.
        */
-      static void difference( Container& S1, const Container& S2 )
+      static Container& assignDifference( Container& S1, const Container& S2 )
       {
         Container S;
         std::swap( S, S1 );
         std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
                              std::inserter( S1, S1.end() ) );
+        return S1;
       }
+
+      /** 
+       * Updates the set \a S1 as \f$ S1 \cup S2 \f$. This version uses the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignUnion( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, false, true>::union" << std::endl;
+        Container S;
+        std::swap( S, S1 );
+        std::set_union( S.begin(), S.end(), S2.begin(), S2.end(), 
+                        std::inserter( S1, S1.end() ) );
+        return S1;
+      }
+
     };
     
   } // detail
@@ -175,7 +251,7 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static void getDifference( Container& S1, const Container& S2 )
+    static Container& assignDifference( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
@@ -183,8 +259,8 @@ namespace DGtal
         ( bool, isOrdered = ordered 
           || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
 
-      DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
-        ::difference( S1, S2 );
+      return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+        ::assignDifference( S1, S2 );
     }
 
     /** 
@@ -196,15 +272,15 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static void getDifference( Container& S1, const Container& S2 )
+    static Container& assignDifference( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
         ( bool, isOrdered = isAssociative && IsOrderedAssociativeContainer< Container >::value );
 
-      DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
-        ::difference( S1, S2 );
+      return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+        ::assignDifference( S1, S2 );
     }
 
     /** 
@@ -223,10 +299,10 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static Container difference( const Container& S1, const Container& S2 )
+    static Container makeDifference( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
-      getDifference( S, S2 );
+      assignDifference<Container, ordered>( S, S2 );
       return S;
     }
 
@@ -241,13 +317,164 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static Container difference( const Container& S1, const Container& S2 )
+    static Container makeDifference( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
-      getDifference( S, S2 );
+      assignDifference( S, S2 );
       return S;
     }
 
+
+    /** 
+     * Set union operation. Updates the set \a S1 as \f$ S1 \cup S2 \f$.
+     * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
+     * @param[in] S2 another input set.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     *
+     * @tparam ordered when 'true', the user indicates that
+     * values are ordered (e.g. a sorted vector), otherwise, depending
+     * on the container type, the compiler may still determine that
+     * values are ordered.
+     */
+    template <typename Container, bool ordered>
+    static Container& assignUnion( Container& S1, const Container& S2 )
+    {
+      BOOST_STATIC_CONSTANT
+        ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+      BOOST_STATIC_CONSTANT
+        ( bool, isOrdered = ordered 
+          || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
+
+      return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+        ::assignUnion( S1, S2 );
+    }
+
+    /** 
+     * Set union operation. Updates the set \a S1 as \f$ S1 \cup S2 \f$.
+     * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
+     * @param[in] S2 another input set.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     */
+    template <typename Container>
+    static Container& assignUnion( Container& S1, const Container& S2 )
+    {
+      BOOST_STATIC_CONSTANT
+        ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+      BOOST_STATIC_CONSTANT
+        ( bool, isOrdered = isAssociative && IsOrderedAssociativeContainer< Container >::value );
+
+      return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+        ::assignUnion( S1, S2 );
+    }
+
+    /** 
+     * Set union operation. Returns the set \f$ S1 \cup S2 \f$.
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     * @return the set \f$ S1 \cup S2 \f$.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     *
+     * @tparam ordered when 'true', the user indicates that
+     * values are ordered (e.g. a sorted vector), otherwise, depending
+     * on the container type, the compiler may still determine that
+     * values are ordered.
+     */
+    template <typename Container, bool ordered>
+    static Container makeUnion( const Container& S1, const Container& S2 )
+    {
+      Container S( S1 );
+      assignUnion<Container, ordered>( S, S2 );
+      return S;
+    }
+
+    /** 
+     * Set union operation. Returns the set \f$ S1 \cup S2 \f$.
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     * @return the set \f$ S1 \cup S2 \f$.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     */
+    template <typename Container>
+    static Container makeUnion( const Container& S1, const Container& S2 )
+    {
+      Container S( S1 );
+      assignUnion( S, S2 );
+      return S;
+    }
+
+    /**
+     * Contains operator |,&,-,^ for sets.
+     */
+    namespace setops {
+
+      /** 
+       * Set difference operation. Updates the set S1 as S1 - S2. 
+       * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
+       * @param[in] S2 another input set.
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      static Container& operator-=( Container& S1, const Container& S2 )
+      {
+        return assignDifference( S1, S2 );
+      }
+      
+      /** 
+       * Set difference operation. Returns the difference of \a S1 - \a S2.
+       * @param[in] S1 an input set
+       * @param[in] S2 another input set.
+       *
+       * @return the set \a S1 - \a S2. 
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      static inline Container operator-( const Container& S1, const Container& S2 )
+      {
+        return makeDifference( S1, S2 );
+      }
+
+      /** 
+       * Set union operation. Returns the set \f$ S1 \cup S2 \f$.
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return the set \f$ S1 \cup S2 \f$.
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      static inline Container operator|( const Container& S1, const Container& S2 )
+      {
+        return makeUnion( S1, S2 );
+      }
+
+      /** 
+       * Set union operation. Updates the set \a S1 as \f$ S1 \cup S2 \f$.
+       * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
+       * @param[in] S2 another input set.
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      static Container& operator|=( Container& S1, const Container& S2 )
+      {
+        return assignUnion( S1, S2 );
+      }
+
+    }
   }
 
 

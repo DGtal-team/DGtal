@@ -38,6 +38,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace DGtal;
+using namespace DGtal::functions;
+using namespace DGtal::functions::setops;
 
 TEMPLATE_TEST_CASE_3( "SetFunctions module unit tests", "[set_functions]",
                       Container, 
@@ -50,8 +52,18 @@ TEMPLATE_TEST_CASE_3( "SetFunctions module unit tests", "[set_functions]",
   int S2[ 6 ]  = { 17, 14, 19, 2, 3, 4 };
   Container C1( S1, S1 + 10 );
   Container C2( S2, S2 + 6 );
-  Container C3 = functions::difference( C1, C2 );
-  REQUIRE( C3.size() == 7 );
-  Container C4 = functions::difference( C2, C1 );
-  REQUIRE( C4.size() == 3 );
+  Container C1_minus_C2 = C1 - C2;
+  REQUIRE( C1_minus_C2.size() == 7 );
+  Container C2_minus_C1 = C2 - C1;
+  REQUIRE( C2_minus_C1.size() == 3 );
+  REQUIRE( ( C1_minus_C2 - C1 ).size() == 0 );
+  REQUIRE( ( C2_minus_C1 - C2 ).size() == 0 );
+  REQUIRE( ( C1_minus_C2 - C2 ).size() == C1_minus_C2.size() );
+  REQUIRE( ( C2_minus_C1 - C1 ).size() == C2_minus_C1.size() );
+  Container C1_union_C2 = C1 | C2;
+  Container C2_union_C1 = C2 | C1;
+  REQUIRE( C1_union_C2.size() == 13 );
+  REQUIRE( C1_union_C2.size() == C2_union_C1.size() );
+  REQUIRE( ( C1_minus_C2 | C2 ).size() == (C2_minus_C1 | C1 ).size() );
+
 }
