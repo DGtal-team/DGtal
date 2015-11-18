@@ -878,9 +878,10 @@ link( const CubicalComplex& S, bool hintClosed, bool hintOpen ) const
   CubicalComplex star_cl_S = star   ( closure( S, hintClosed ), hintOpen   );
 
   // Calls a specializable difference of sets operation.
-  detail::SetOperation< CubicalComplex, 
-                        IsOrderedAssociativeContainer< CubicalComplex >::value >
-    ::difference( cl_star_S, star_cl_S );
+  for ( Dimension i = 0; i <= dimension; ++i )
+    detail::SetOperation< CellContainer, 
+                          IsOrderedAssociativeContainer< CellContainer >::value >
+      ::difference( cl_star_S.myCells[ i ], star_cl_S.myCells[ i ] );
   return cl_star_S;
 }
 
