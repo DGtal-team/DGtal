@@ -104,6 +104,49 @@ namespace DGtal
         return S1;
       }
 
+      /** 
+       * Updates the set \a S1 as \f$ S1 \cap S2 \f$. This version does not use the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignIntersection( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, false, false>::intersection" << std::endl;
+        typedef typename Container::value_type value_type;
+        typedef std::vector<value_type> Vector;
+        Vector V1( S1.begin(), S1.end() );
+        Vector V2( S2.begin(), S2.end() );
+        std::sort( V1.begin(), V1.end() );
+        std::sort( V2.begin(), V2.end() );
+        S1.clear();
+        std::set_intersection( V1.begin(), V1.end(), V2.begin(), V2.end(),
+                               std::inserter( S1, S1.end() ) );
+        return S1;
+      }
+
+      /** 
+       * Updates the set \a S1 as \f$ S1 \Delta S2 \f$. This version does not use the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, false, false>::sym_difference" << std::endl;
+        typedef typename Container::value_type value_type;
+        typedef std::vector<value_type> Vector;
+        Vector V1( S1.begin(), S1.end() );
+        Vector V2( S2.begin(), S2.end() );
+        std::sort( V1.begin(), V1.end() );
+        std::sort( V2.begin(), V2.end() );
+        S1.clear();
+        std::set_symmetric_difference( V1.begin(), V1.end(), V2.begin(), V2.end(),
+                                       std::inserter( S1, S1.end() ) );
+        return S1;
+      }
+
+
     };
     
     /**
@@ -141,6 +184,42 @@ namespace DGtal
           itS1 = S1.insert( itS1, *it );
         return S1;
       }
+
+      /** 
+       * Updates the set \a S1 as \f$ S1 \cap S2 \f$. This version does not use the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignIntersection( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, true, false>::intersection" << std::endl;
+        for ( typename Container::iterator it = S1.begin(), 
+                itE = S1.end(); it != itE; )
+          {
+            typename Container::iterator itNext = it; ++itNext;
+            if ( S2.find( *it ) == S2.end() )
+              S1.erase( *it );
+            it = itNext;
+          }
+        return S1;
+      }
+
+      /** 
+       * Updates the set \a S1 as \f$ S1 \Delta S2 \f$. This version does not use the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, true, false>::sym_difference" << std::endl;
+        Container S12( S1 );
+        assignIntersection( S12, S2 );
+        assignUnion( S1, S2 );
+        return assignDifference( S1, S12 );
+      }
+
     };
 
     /**
@@ -181,6 +260,37 @@ namespace DGtal
         return S1;
       }
 
+      /** 
+       * Updates the set \a S1 as \f$ S1 \cap S2 \f$. This version uses the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignIntersection( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, true, true>::intersection" << std::endl;
+        Container S;
+        std::swap( S, S1 );
+        std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(), 
+                               std::inserter( S1, S1.end() ), S.value_comp() );
+        return S1;
+      }
+
+      /** 
+       * Updates the set \a S1 as \f$ S1 \Delta S2 \f$. This version uses the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, true, true>::sym_difference" << std::endl;
+        Container S;
+        std::swap( S, S1 );
+        std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
+                                       std::inserter( S1, S1.end() ), S.value_comp() );
+        return S1;
+      }
     };
 
     /**
@@ -220,6 +330,38 @@ namespace DGtal
         return S1;
       }
 
+      /** 
+       * Updates the set \a S1 as \f$ S1 \cap S2 \f$. This version uses the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignIntersection( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, false, true>::intersection" << std::endl;
+        Container S;
+        std::swap( S, S1 );
+        std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(), 
+                               std::inserter( S1, S1.end() ) );
+        return S1;
+      }
+
+      /** 
+       * Updates the set \a S1 as \f$ S1 \Delta S2 \f$. This version uses the
+       * fact that the container is ordered.
+       * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
+       * @param[in] S2 another input set.
+       */
+      static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
+      {
+        std::cout << "SetFunctionsImpl<Container, false, true>::sym_difference" << std::endl;
+        Container S;
+        std::swap( S, S1 );
+        std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
+                                       std::inserter( S1, S1.end() ) );
+        return S1;
+      }
+
     };
     
   } // detail
@@ -227,16 +369,9 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SetFunctions
 
-  /**
-   * Description of template class 'SetFunctions' <p> \brief Aim:
-   * Specialize set operations (union, intersection, difference,
-   * symmetric_difference) according to the given type of
-   * container. It uses standard algorithms when containers are
-   * ordered, otherwise it provides a default implementation.
-   *
-   */
   namespace functions {
 
+    //////////////////////// SET DIFFERENCE /////////////////////////
     /** 
      * Set difference operation. Updates the set S1 as S1 - S2. 
      * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
@@ -325,6 +460,8 @@ namespace DGtal
     }
 
 
+    //////////////////////// SET UNION /////////////////////////
+
     /** 
      * Set union operation. Updates the set \a S1 as \f$ S1 \cup S2 \f$.
      * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
@@ -410,8 +547,193 @@ namespace DGtal
       return S;
     }
 
+
+    //////////////////////// SET INTERSECTION /////////////////////////
+
+    /** 
+     * Set intersection operation. Updates the set \a S1 as \f$ S1 \cap S2 \f$.
+     * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
+     * @param[in] S2 another input set.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     *
+     * @tparam ordered when 'true', the user indicates that
+     * values are ordered (e.g. a sorted vector), otherwise, depending
+     * on the container type, the compiler may still determine that
+     * values are ordered.
+     */
+    template <typename Container, bool ordered>
+    static Container& assignIntersection( Container& S1, const Container& S2 )
+    {
+      BOOST_STATIC_CONSTANT
+        ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+      BOOST_STATIC_CONSTANT
+        ( bool, isOrdered = ordered 
+          || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
+
+      return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+        ::assignIntersection( S1, S2 );
+    }
+
+    /** 
+     * Set intersection operation. Updates the set \a S1 as \f$ S1 \cap S2 \f$.
+     * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
+     * @param[in] S2 another input set.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     */
+    template <typename Container>
+    static Container& assignIntersection( Container& S1, const Container& S2 )
+    {
+      BOOST_STATIC_CONSTANT
+        ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+      BOOST_STATIC_CONSTANT
+        ( bool, isOrdered = isAssociative && IsOrderedAssociativeContainer< Container >::value );
+
+      return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+        ::assignIntersection( S1, S2 );
+    }
+
+    /** 
+     * Set intersection operation. Returns the set \f$ S1 \cap S2 \f$.
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     * @return the set \f$ S1 \cap S2 \f$.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     *
+     * @tparam ordered when 'true', the user indicates that
+     * values are ordered (e.g. a sorted vector), otherwise, depending
+     * on the container type, the compiler may still determine that
+     * values are ordered.
+     */
+    template <typename Container, bool ordered>
+    static Container makeIntersection( const Container& S1, const Container& S2 )
+    {
+      Container S( S1 );
+      assignIntersection<Container, ordered>( S, S2 );
+      return S;
+    }
+
+    /** 
+     * Set intersection operation. Returns the set \f$ S1 \cap S2 \f$.
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     * @return the set \f$ S1 \cap S2 \f$.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     */
+    template <typename Container>
+    static Container makeIntersection( const Container& S1, const Container& S2 )
+    {
+      Container S( S1 );
+      assignIntersection( S, S2 );
+      return S;
+    }
+
+
+    //////////////////////// SET SYMMETRIC DIFFERENCE /////////////////////////
+
+    /** 
+     * Set symmetric difference operation. Updates the set \a S1 as
+     * \f$ S1 \Delta S2 \f$.
+     *
+     * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
+     * @param[in] S2 another input set.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     *
+     * @tparam ordered when 'true', the user indicates that
+     * values are ordered (e.g. a sorted vector), otherwise, depending
+     * on the container type, the compiler may still determine that
+     * values are ordered.
+     */
+    template <typename Container, bool ordered>
+    static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
+    {
+      BOOST_STATIC_CONSTANT
+        ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+      BOOST_STATIC_CONSTANT
+        ( bool, isOrdered = ordered 
+          || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
+
+      return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+        ::assignSymmetricDifference( S1, S2 );
+    }
+
+    /** 
+     * Set symmetric difference operation. Updates the set \a S1 as \f$ S1 \Delta S2 \f$.
+     * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
+     * @param[in] S2 another input set.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     */
+    template <typename Container>
+    static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
+    {
+      BOOST_STATIC_CONSTANT
+        ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+      BOOST_STATIC_CONSTANT
+        ( bool, isOrdered = isAssociative && IsOrderedAssociativeContainer< Container >::value );
+
+      return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+        ::assignSymmetricDifference( S1, S2 );
+    }
+
+    /** 
+     * Set symmetric difference operation. Returns the set \f$ S1 \Delta S2 \f$.
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     * @return the set \f$ S1 \Delta S2 \f$.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     *
+     * @tparam ordered when 'true', the user indicates that
+     * values are ordered (e.g. a sorted vector), otherwise, depending
+     * on the container type, the compiler may still determine that
+     * values are ordered.
+     */
+    template <typename Container, bool ordered>
+    static Container makeSymmetricDifference( const Container& S1, const Container& S2 )
+    {
+      Container S( S1 );
+      assignSymmetricDifference<Container, ordered>( S, S2 );
+      return S;
+    }
+
+    /** 
+     * Set symmetric difference operation. Returns the set \f$ S1 \Delta S2 \f$.
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     * @return the set \f$ S1 \Delta S2 \f$.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     */
+    template <typename Container>
+    static Container makeSymmetricDifference( const Container& S1, const Container& S2 )
+    {
+      Container S( S1 );
+      assignSymmetricDifference( S, S2 );
+      return S;
+    }
+
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // OVERLOADING SET OPERATIONS
+    ///////////////////////////////////////////////////////////////////////////
+
     /**
-     * Contains operator |,&,-,^ for sets.
+     * Contains set operator union |, intersection &, difference -,
+     * symmetric difference ^.
      */
     namespace setops {
 
@@ -472,6 +794,67 @@ namespace DGtal
       static Container& operator|=( Container& S1, const Container& S2 )
       {
         return assignUnion( S1, S2 );
+      }
+
+      /** 
+       * Set intersection operation. Returns the set \f$ S1 \cap S2 \f$.
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return the set \f$ S1 \cap S2 \f$.
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      static inline Container operator&( const Container& S1, const Container& S2 )
+      {
+        return makeIntersection( S1, S2 );
+      }
+
+      /** 
+       * Set intersection operation. Updates the set \a S1 as \f$ S1 \cap S2 \f$.
+       * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
+       * @param[in] S2 another input set.
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      static Container& operator&=( Container& S1, const Container& S2 )
+      {
+        return assignIntersection( S1, S2 );
+      }
+
+      /** 
+       * Set symmetric difference operation. Returns the set \f$ S1 \Delta S2 \f$.
+       *
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return the set \f$ S1 \Delta S2 \f$.
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      static inline Container operator^( const Container& S1, const Container& S2 )
+      {
+        return makeSymmetricDifference( S1, S2 );
+      }
+
+      /** 
+       * Set symmetric difference operation. Updates the set \a S1 as
+       * \f$ S1 \Delta S2 \f$.
+       *
+       * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
+       * @param[in] S2 another input set.
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      static Container& operator^=( Container& S1, const Container& S2 )
+      {
+        return assignSymmetricDifference( S1, S2 );
       }
 
     }
