@@ -60,7 +60,43 @@ namespace DGtal
    * represents what happens at one place, not everywhere on the
    * contour. All further computations in the scale profile are
    * done in logspace.
+   *
+   * For instance, to use a ScaleProfile on 10 scale levels (from 1 to
+   * 10) you can start to construct and initialize a ScaleProfile as
+   * follows:
+   *
+   * @code 
+   * ScaleProfile sp;
+   * sp.init(10);
+   * @endcode 
    * 
+   * Alternatively you can customize the scale definition by using an iterator in the initialization:
+   *
+   * @code
+   * std::vector<double> scale;
+   * for (double i = 0.5; i < 5; i=i+0.5){
+   *     scale.push_back(i);
+   * }   
+   * ScaleProfile sp;
+   * sp.init(scale.begin(), scale.end());
+   * @endcode
+   *
+   * Then, you can fill the values associated to each scale:
+   * @code
+   * scale.addValue(0, 23.0);
+   * scale.addValue(0, 20.0);
+   * scale.addValue(1, 20.2);
+   * scale.addValue(2, 10.4);
+   * ...
+   * scale.addValue(9, 20);
+   * // then you can get a scale profile (in log scale):
+   * std::vector<double> x; 
+   * std::vector<double> y;
+   * sp.getProfile(x, y); 
+   * // or compute the noise level (the first scale starting from 0 index with max slope < -0.2):
+   * unsigned int  noiseLevel = sp.noise();
+   * 
+   * @endcode
    * The proposed implementation is mainly a backport from
    * [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
    * various refactoring.
