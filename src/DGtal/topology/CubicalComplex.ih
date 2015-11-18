@@ -879,9 +879,7 @@ link( const CubicalComplex& S, bool hintClosed, bool hintOpen ) const
 
   // Calls a specializable difference of sets operation.
   for ( Dimension i = 0; i <= dimension; ++i )
-    detail::SetOperation< CellContainer, 
-                          IsOrderedAssociativeContainer< CellContainer >::value >
-      ::difference( cl_star_S.myCells[ i ], star_cl_S.myCells[ i ] );
+    functions::getDifference( cl_star_S.myCells[ i ], star_cl_S.myCells[ i ] );
   return cl_star_S;
 }
 
