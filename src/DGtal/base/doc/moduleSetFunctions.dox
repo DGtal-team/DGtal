@@ -1,0 +1,113 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+@page moduleSetFunctions  Set operations on arbitrary containers
+
+@writers Jacques-Olivier Lachaud
+
+Part of the \ref packageBase.
+  
+This part of the manual describes how to perform set operations
+(union, intersection, difference, symmetric difference) on arbitrary
+containers.
+
+[TOC]
+
+
+The following programs are related to this documentation:
+testSetFunctions.cpp
+
+@section dgtal_setfunctions_sec1  Motivation for a common framework for set operations
+
+The STL library provides algorithm for performing set operations
+(std::set_union, std::set_intersection, std::set_difference,
+std::set_symmetric_difference). These algorithms are generic given
+iterators on an ordered range and an output iterator. So, in
+circumstances where you have two sorted vectors with unique elements,
+you could/should use directly STL set operations. You could also do
+this when you have two sets.
+
+However, there are several cases when you cannot use them
+straightforwardly:
+
+- if you wish to assign the result to one of the input set, you must
+  use a temporary container.
+- if your set is represented with some unordered_set variant, you must
+  build intermediate vectors.
+- if you wish to perform set operations on keys of datas stored in two
+  maps, you have also to specify the comparison operator.
+- if you are in templated class where the Container type is generic
+  (could be a set or unordered_set for instance) then your code must
+  be adapted to each variant.
+- the syntax is heavier than just using binary operators |, &, -, ^ or
+  |=, &=, -=, ^=.
+
+Therefore we propose functions to perform set operations on arbitrary
+containers. At compile time, the compiler chooses the most adequate
+way to compute the set operations, depending on the container type. It
+uses the traits class ContainerTraits to determine the type of
+container and to select the appropriate code. For the user, this is
+totally transparent, at least when he uses the binary operators |, &,
+-, ^ or |=, &=, -=, ^=.
+
+@section dgtal_setfunctions_sec2  Performing set operations
+
+It is enough to include module SetFunctions.h and then write `using
+namespace DGtal::functions::setops` to use binary operators directly
+on your containers. The following snippet shows an example:
+
+\code
+#include "DGtal/base/SetFunctions.h"
+...
+using namespace DGtal::functions::setops;
+
+typedef std::list<int> Container; // could be boost::unordered_set<int>, etc
+int S1[ 10 ] = { 4, 15, 20, 17, 9, 7, 13, 12, 1, 3 }; 
+int S2[ 6 ]  = { 17, 14, 19, 2, 3, 4 };
+Container A( S1, S1 + 10 );
+Container B( S2, S2 + 6 );
+Container AorB    = A | B; // union
+Container AandB   = A & B; // intersection
+Container AxorB   = A ^ B; // symmetric difference
+Container AminusB = A - B; // difference
+Container BminusA = B - A; // difference
+A |= B;                    // assign union
+B &= A;                    // assign intersection
+A ^= B;                    // assign symmetric difference
+B -= A;                    // assign difference
+\endcode
+
+If you dislike operators, you may also use functions (defined in
+namespace DGtal::functions):
+- union: functions::assignUnion, functions::makeUnion
+- intersection: functions::assignIntersection, functions::makeIntersection
+- difference: functions::assignDifference, functions::makeDifference
+- symmetric difference: functions::assignSymmetricDifference, functions::makeSymmetricDifference.
+
+There are templated versions of these functions that are useful if you
+know that, at this point in the program, your container is sorted (for
+instance your list or vector is already sorted). You may thus give the
+hint to set operations at this point.
+
+\code
+using namespace DGtal::functions;
+typedef std::vector<int> Container; // could be boost::unordered_set<int>, etc
+int S1[ 10 ] = { 1, 3, 4, 7, 9, 12, 13, 15, 17, 20 };
+int S2[ 6 ]  = { 2, 3, 4, 14, 17, 19 };
+Container A( S1, S1 + 10 );
+Container B( S2, S2 + 6 );
+Container AorB = makeUnion<Container,true>( A, B ); 
+\endcode
+
+@section dgtal_setfunctions_sec3  Benchmark for set operations
+
+
+
+*/
+
+}
