@@ -836,6 +836,33 @@ cellCoBoundary( const Cell& aCell, bool hintOpen ) const
   return proper_cofaces;
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+bool
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+isCellInterior( const Cell& aCell ) const
+{
+  Cells proper_cofaces = myKSpace->uCoFaces( aCell );
+  typename Cells::iterator first  = proper_cofaces.begin();
+  typename Cells::iterator last   = proper_cofaces.end();
+  for ( ; first != last; ++first )
+    {
+      if ( ! belongs( *first ) ) return false;
+    }
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+bool
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+isCellBoundary( const Cell& aCell ) const
+{
+  return ! isCellInterior( aCell );
+}
+
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
@@ -874,14 +901,14 @@ typename DGtal::CubicalComplex<TKSpace, TCellContainer>
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 link( const CubicalComplex& S, bool hintClosed, bool hintOpen ) const
 {
-  using namespace ::DGtal::functions::setops;
+  using namespace ::DGtal::functions::ccops;
   CubicalComplex cl_star_S = closure( star   ( S, hintOpen   ), hintClosed );
   CubicalComplex star_cl_S = star   ( closure( S, hintClosed ), hintOpen   );
 
   // Calls a specializable difference of sets operation.
-  for ( Dimension i = 0; i <= dimension; ++i )
-    cl_star_S.myCells[ i ] -= star_cl_S.myCells[ i ]; // set difference
-  return cl_star_S;
+  // for ( Dimension i = 0; i <= dimension; ++i )
+  //   cl_star_S.myCells[ i ] -= star_cl_S.myCells[ i ]; // set difference
+  return cl_star_S - star_cl_S;
 }
 
 //-----------------------------------------------------------------------------

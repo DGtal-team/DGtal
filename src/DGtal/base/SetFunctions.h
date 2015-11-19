@@ -733,7 +733,7 @@ namespace DGtal
        * set, an unordered_set, a map, etc).
        */
       template <typename Container>
-      static Container& operator-=( Container& S1, const Container& S2 )
+      inline Container& operator-=( Container& S1, const Container& S2 )
       {
         return assignDifference( S1, S2 );
       }
@@ -749,7 +749,7 @@ namespace DGtal
        * set, an unordered_set, a map, etc).
        */
       template <typename Container>
-      static inline Container operator-( const Container& S1, const Container& S2 )
+      inline Container operator-( const Container& S1, const Container& S2 )
       {
         return makeDifference( S1, S2 );
       }
@@ -764,7 +764,7 @@ namespace DGtal
        * set, an unordered_set, a map, etc).
        */
       template <typename Container>
-      static inline Container operator|( const Container& S1, const Container& S2 )
+      inline Container operator|( const Container& S1, const Container& S2 )
       {
         return makeUnion( S1, S2 );
       }
@@ -778,7 +778,7 @@ namespace DGtal
        * set, an unordered_set, a map, etc).
        */
       template <typename Container>
-      static Container& operator|=( Container& S1, const Container& S2 )
+      inline Container& operator|=( Container& S1, const Container& S2 )
       {
         return assignUnion( S1, S2 );
       }
@@ -793,7 +793,7 @@ namespace DGtal
        * set, an unordered_set, a map, etc).
        */
       template <typename Container>
-      static inline Container operator&( const Container& S1, const Container& S2 )
+      inline Container operator&( const Container& S1, const Container& S2 )
       {
         return makeIntersection( S1, S2 );
       }
@@ -807,7 +807,7 @@ namespace DGtal
        * set, an unordered_set, a map, etc).
        */
       template <typename Container>
-      static Container& operator&=( Container& S1, const Container& S2 )
+      inline Container& operator&=( Container& S1, const Container& S2 )
       {
         return assignIntersection( S1, S2 );
       }
@@ -823,7 +823,7 @@ namespace DGtal
        * set, an unordered_set, a map, etc).
        */
       template <typename Container>
-      static inline Container operator^( const Container& S1, const Container& S2 )
+      inline Container operator^( const Container& S1, const Container& S2 )
       {
         return makeSymmetricDifference( S1, S2 );
       }
@@ -839,7 +839,7 @@ namespace DGtal
        * set, an unordered_set, a map, etc).
        */
       template <typename Container>
-      static Container& operator^=( Container& S1, const Container& S2 )
+      inline Container& operator^=( Container& S1, const Container& S2 )
       {
         return assignSymmetricDifference( S1, S2 );
       }

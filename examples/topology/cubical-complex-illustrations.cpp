@@ -122,6 +122,20 @@ int main( int argc, char** argv )
   board.saveTikZ( "cubical-complex-illustrations-link.tikz" );
   board.clear();
   //! [cubical-complex-illustrations-link]
+
+  //! [cubical-complex-illustrations-bd]
+  using namespace functions::ccops;
+  CC bdX = X - !X.star( S );
+  board << domain;
+  board << CustomStyle( X.className(), 
+                        new CustomColors( Color(80,80,100), Color(180,180,200) ) )
+        << X;
+  board << CustomStyle( X.className(), 
+                        new CustomColors( Color::Magenta, Color(255,120,255) ) )
+        << bdX;
+  board.saveTikZ( "cubical-complex-illustrations-bd.tikz" );
+  board.clear();
+  //! [cubical-complex-illustrations-bd]
   
   
   

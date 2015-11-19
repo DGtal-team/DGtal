@@ -78,7 +78,45 @@ namespace DGtal
     uint32_t data;
   };
 
-
+  template < typename TKSpace, typename TCellContainer >
+  class CubicalComplex;
+  
+  namespace functions {
+    namespace ccops {
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >&
+      operator|=( CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >&
+      operator&=( CubicalComplex< TKSpace, TCellContainer >&,
+                                 const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >&
+      operator^=( CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >&
+      operator-=( CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >
+      operator| ( const CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >
+      operator& ( const CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >
+      operator^ ( const CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >
+      operator- ( const CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+    } // namespace ccops
+  } // namespace functions
   /////////////////////////////////////////////////////////////////////////////
   // template class CubicalComplex
   /**
@@ -115,10 +153,20 @@ namespace DGtal
   {
     // ----------------------- associated types ------------------------------
   public:
+    typedef CubicalComplex< TKSpace, TCellContainer > Self;
     
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     // BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< TCellContainer > ));
     // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
+
+    friend Self& DGtal::functions::ccops::operator|=<>( Self&, const Self& );
+    friend Self& DGtal::functions::ccops::operator&=<>( Self&, const Self& );
+    friend Self& DGtal::functions::ccops::operator^=<>( Self&, const Self& );
+    friend Self& DGtal::functions::ccops::operator-=<>( Self&, const Self& );
+    friend Self  DGtal::functions::ccops::operator| <>( const Self&, const Self& );
+    friend Self  DGtal::functions::ccops::operator& <>( const Self&, const Self& );
+    friend Self  DGtal::functions::ccops::operator^ <>( const Self&, const Self& );
+    friend Self  DGtal::functions::ccops::operator- <>( const Self&, const Self& );
 
     typedef TKSpace KSpace;
     typedef TCellContainer CellContainer;
@@ -636,6 +684,15 @@ namespace DGtal
   public:
 
     /**
+    * Makes CubicalComplex a functor Cell -> boolean, which represents
+    * the characteristic cell function.
+    *
+    * @param aCell any cell valid in the Khalimsky space associated to the complex.
+    * @return 'true' if and only if \a aCell belongs to this complex.
+    */
+    bool operator()( const Cell& aCell ) const;
+
+    /**
     * Insert cell \a aCell into CubicalComplex and assign to it the value \a data.
     *
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
@@ -745,15 +802,6 @@ namespace DGtal
     */
     template <typename CellConstIterator>
     Size eraseCells( Dimension d, CellConstIterator it, CellConstIterator itE );
-
-    /**
-    * Makes CubicalComplex a functor Cell -> boolean, which represents
-    * the characteristic cell function.
-    *
-    * @param aCell any cell valid in the Khalimsky space associated to the complex.
-    * @return 'true' if and only if \a aCell belongs to this complex.
-    */
-    bool operator()( const Cell& aCell ) const;
 
     /**
     * Outputs all the cells that are proper faces of \a aCell with output iterator \a it.
@@ -914,7 +962,7 @@ namespace DGtal
     */
     CellMapIterator findCell( Dimension d, const Cell& aCell );
 
-    // ---------- local operations for extracting specific subcomplexes ---------------
+    // ---------- local operations for extracting specific subcomplexes -------------
   public:
 
     /**
@@ -955,7 +1003,27 @@ namespace DGtal
     Cells cellCoBoundary( const Cell& aCell, bool hintOpen = false ) const;
 
 
-    // ----------------------- Standard subcomplexes --------------------------------------
+    // ---------------------- local properties --------------------------------------
+  public:
+    /**
+     * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+     *
+     * @return 'true' if and only if \a aCell is interior to the
+     * complex, which means that it has the same co-faces in the Khalimsky
+     * space as in this complex.
+     */
+    bool isCellInterior( const Cell& aCell ) const;
+
+    /**
+     * @param aCell any cell valid in the Khalimsky space associated to the complex. 
+     *
+     * @return 'true' if and only if \a aCell is not interior to the
+     * complex, which means that it has more co-faces in the Khalimsky
+     * space than in this complex.
+     */
+    bool isCellBoundary( const Cell& aCell ) const;
+
+    // ----------------------- Standard subcomplexes --------------------------------
   public:
     
     /**
@@ -998,7 +1066,7 @@ namespace DGtal
     */
     CubicalComplex link( const CubicalComplex& S, bool hintClosed = false, bool hintOpen = false ) const;
 
-    // ----------------------- global operations on complexes --------------------------------------
+    // ----------------------- global operations on complexes -----------------------
   public:
 
     /**
@@ -1132,6 +1200,167 @@ namespace DGtal
     typedef UnknownContainerCategory Category;
   };
 
+
+  namespace functions {
+    /// CubicalComplex operators.
+    namespace ccops {
+
+      /** 
+       * Cubical Complex close operation. 
+       * @param[in] S1 an input cubical complex
+       * @return a new cubical complex that is the closed S1.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer > 
+      operator!( const CubicalComplex< TKSpace, TCellContainer >& S1 )
+      {
+        CubicalComplex< TKSpace, TCellContainer > S( S1 );
+        S.close();
+        return S;
+      }
+
+      /** 
+       * Cubical Complex difference operation. Updates the cubical complex S1 as S1 - S2. 
+       * @param[in,out] S1 an input cubical complex, \a S1 - \a S2 as output.
+       * @param[in] S2 another input cubical complex.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer >& 
+      operator-=( CubicalComplex< TKSpace, TCellContainer >& S1, 
+                  const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          setops::operator-=( S1.myCells[ i ],S2.myCells[ i ] );
+        return S1;
+      }
+      
+      /** 
+       * Cubical Complex difference operation. Returns the difference of \a S1 - \a S2.
+       * @param[in] S1 an input cubical complex
+       * @param[in] S2 another input cubical complex.
+       *
+       * @return the cubical complex \a S1 - \a S2. 
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer > 
+      operator-( const CubicalComplex< TKSpace, TCellContainer >& S1, 
+                 const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        CC S( S1 );
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          setops::operator-=( S.myCells[ i ],S2.myCells[ i ] );
+        return S;
+      }
+
+      /** 
+       * Cubical Complex union operation. Returns the cubical complex \f$ S1 \cup S2 \f$.
+       * @param[in] S1 an input cubical complex.
+       * @param[in] S2 another input cubical complex.
+       * @return the cubical complex \f$ S1 \cup S2 \f$.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer > 
+      operator|( const CubicalComplex< TKSpace, TCellContainer >& S1, 
+                 const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        CC S( S1 );
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          setops::operator|=( S.myCells[ i ],S2.myCells[ i ] );
+        return S;
+      }
+
+      /** 
+       * Cubical Complex union operation. Updates the cubical complex \a S1 as \f$ S1 \cup S2 \f$.
+       * @param[in,out] S1 an input cubical complex, \f$ S1 \cup S2 \f$ as output.
+       * @param[in] S2 another input cubical complex.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer >& 
+      operator|=( CubicalComplex< TKSpace, TCellContainer >& S1, 
+                  const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          setops::operator|=( S1.myCells[ i ], S2.myCells[ i ] );
+        return S1;
+      }
+
+      /** 
+       * Cubical Complex intersection operation. Returns the cubical complex \f$ S1 \cap S2 \f$.
+       * @param[in] S1 an input cubical complex.
+       * @param[in] S2 another input cubical complex.
+       * @return the cubical complex \f$ S1 \cap S2 \f$.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer > 
+      operator&( const CubicalComplex< TKSpace, TCellContainer >& S1, 
+                 const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        CC S( S1 );
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          setops::operator&=( S.myCells[ i ], S2.myCells[ i ] );
+        return S;
+      }
+
+      /** 
+       * Cubical Complex intersection operation. Updates the cubical complex \a S1 as \f$ S1 \cap S2 \f$.
+       * @param[in,out] S1 an input cubical complex, \f$ S1 \cap S2 \f$ as output.
+       * @param[in] S2 another input cubical complex.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer >& 
+      operator&=( CubicalComplex< TKSpace, TCellContainer >& S1, 
+                  const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          setops::operator&=( S1.myCells[ i ], S2.myCells[ i ] );
+        return S1;
+      }
+
+      /** 
+       * Cubical Complex symmetric difference operation. Returns the cubical complex \f$ S1 \Delta S2 \f$.
+       *
+       * @param[in] S1 an input cubical complex.
+       * @param[in] S2 another input cubical complex.
+       * @return the cubical complex \f$ S1 \Delta S2 \f$.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer > 
+      operator^( const CubicalComplex< TKSpace, TCellContainer >& S1, 
+                 const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        CC S( S1 );
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          setops::operator^=( S.myCells[ i ], S2.myCells[ i ] );
+        return S;
+      }
+
+      /** 
+       * Cubical Complex symmetric difference operation. Updates the cubical complex \a S1 as
+       * \f$ S1 \Delta S2 \f$.
+       *
+       * @param[in,out] S1 an input cubical complex, \f$ S1 \Delta S2 \f$ as output.
+       * @param[in] S2 another input cubical complex.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer >& 
+      operator^=( CubicalComplex< TKSpace, TCellContainer >& S1, 
+                  const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          setops::operator^=( S1.myCells[ i ], S2.myCells[ i ] );
+        return S1;
+      }
+      
+    } // namespace ccops
+  } // namespace functions
 
   /**
   * Overloads 'operator<<' for displaying objects of class 'CubicalComplex'.

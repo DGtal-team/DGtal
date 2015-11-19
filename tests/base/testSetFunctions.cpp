@@ -82,7 +82,7 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
   REQUIRE( C1_symdiff_C2.size() == ( C1_minus_C2 | C2_minus_C1 ).size() );
 }
 
-static const int NB = 10000000;
+static const int NB = 10000;
 
 ////////////////////////////// operator | //////////////////////////////
 TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator | (sequences)", "[set_functions]",
