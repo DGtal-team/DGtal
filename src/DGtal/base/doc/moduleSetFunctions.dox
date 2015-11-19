@@ -106,7 +106,59 @@ Container AorB = makeUnion<Container,true>( A, B );
 
 @section dgtal_setfunctions_sec3  Benchmark for set operations
 
+We benchmark set operations for different kind of containers. In each
+case, we do not take into account the time for constructing containers
+A and B, we only measure the time to perform the operation. For each
+container, we compare the running time of our implementation and the
+running time obtained by first converting the container to a vector
+and perform STL set operation and converting back. Running times are
+in milliseconds.
 
+
+| N = approx. size of A,B|    10000 |   100000 |  1000000 | 10000000 |
+|------------------------|----------|----------|----------|----------|
+| vector<int>  union     |      0.6 |      7.6 |     91.1 |   1039.2 |
+| (conversion) union     |      0.7 |      7.7 |     90.7 |   1034.3 |
+| vector<int>  inter     |      0.6 |      7.1 |     86.4 |    986.5 |
+| (conversion) inter     |      0.6 |      7.1 |     86.6 |    981.0 |
+| vector<int>  diff      |      0.6 |      7.0 |     84.8 |    991.0 |
+| (conversion) diff      |      0.6 |      7.3 |     83.9 |    986.1 |
+| vector<int>  sym_diff  |      0.6 |      7.2 |     85.2 |    987.1 |
+| (conversion) sym_diff  |      0.6 |      7.1 |     84.4 |    982.4 |
+|                        |          |          |          |          |
+| set<int>     union     |      2.0 |     25.8 |    308.7 |   3402.6 |
+| (conversion) union     |      2.1 |     27.0 |    322.3 |   3559.7 |
+| set<int>     inter     |      1.5 |     17.3 |    202.0 |   2269.4 |
+| (conversion) inter     |      1.7 |     19.3 |    241.8 |   2515.9 |
+| set<int>     diff      |      1.3 |     14.5 |    171.0 |   1821.7 |
+| (conversion) diff      |      1.4 |     16.5 |    203.3 |   2135.7 |
+| set<int>     sym_diff  |      1.7 |     18.6 |    213.8 |   2403.7 |
+| (conversion) sym_diff  |      1.6 |     20.0 |    242.6 |   2660.7 |
+|                        |          |          |          |          |
+| un_set<int>  union     |      1.0 |     10.5 |    176.2 |   2464.1 |
+| (conversion) union     |      2.5 |     28.5 |    439.3 |   5855.7 |
+| un_set<int>  inter     |      0.8 |     10.6 |    171.4 |   2036.6 |
+| (conversion) inter     |      2.1 |     21.3 |    321.3 |   3929.2 |
+| un_set<int>  diff      |      0.9 |     11.8 |    203.6 |   2429.1 |
+| (conversion) diff      |      1.9 |     19.7 |    290.2 |   3523.1 |
+| un_set<int>  sym_diff  |      2.5 |     29.5 |    428.5 |   5855.4 |
+| (conversion) sym_diff  |      2.1 |     22.1 |    339.4 |   4025.6 |
+
+@note It is worthy to note that the genericity offered by these
+functions does not slow down direct set operations on vectors, as can
+be seen on the upper part of the table. A second remark is that our
+set operations are almost always faster for set and unordered_set
+structures. In fact, for container set, it uses STL set
+operations. The only case where you could consider converting a
+container is when performing symmetric difference on an unordered set.
+
+@note An unordered_set is slightly faster than a set for union and
+intersection, slightly slower for difference, much slower for
+symmetric difference.
+
+@note Container A and B are built by inserting N elements whose values
+are in \f$ \{0,...,N-1\} \f$. Hence, both A and B have less than N
+elements but are of the order of N.
 
 */
 
