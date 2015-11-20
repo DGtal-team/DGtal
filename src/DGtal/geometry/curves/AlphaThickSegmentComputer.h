@@ -166,12 +166,18 @@ public:
 private: 
   struct State{
     DGtal::MelkmanConvexHull<InputPoint, Functor> melkmanCH;  
-    InputPoint lastFront; /** the last point added at the front of the alpha thick segment */
-    InputPoint lastBack; /** the last point added at the back of the alpha thick segment */
-    InputPoint edgePh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
-    InputPoint edgeQh; /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
-    InputPoint vertexSh; /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
-    double actualThickness; /*the actual thickness of the current segment*/
+    /** the last point added at the front of the alpha thick segment */
+    InputPoint lastFront;
+    /** the last point added at the back of the alpha thick segment */
+    InputPoint lastBack;
+    /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */ 
+    InputPoint edgePh;
+    /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */ 
+    InputPoint edgeQh;
+    /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
+    InputPoint vertexSh; 
+    /*the actual thickness of the current segment*/
+    double actualThickness; 
   };
     
   
@@ -606,7 +612,7 @@ private:
   /**
    * Previous saved computer state
    **/   
-  mutable State _state;
+  mutable State myPreviousState;
   
   bool myIsStoringPoints;
   

@@ -83,7 +83,7 @@ AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ): myBegin(ot
                                                                       myThicknessCompPrecision(other.myThicknessCompPrecision),
                                                                       myThicknessDefinition(other.myThicknessDefinition),
                                                                       myState(other.myState),
-                                                                      _state(other._state), 
+                                                                      myPreviousState(other.myPreviousState), 
                                                                       myIsStoringPoints(other.myIsStoringPoints),
                                                                       myNbPointsAddedFromIterators(other.myNbPointsAddedFromIterators) 
    
@@ -103,7 +103,7 @@ operator= ( const AlphaThickSegmentComputer & other )
       myThicknessCompPrecision = other.myThicknessCompPrecision;
       myPointContainer = other.myPointContainer;
       myState = other.myState;
-      _state = other._state;
+      myPreviousState = other.myPreviousState;
       myIsStoringPoints = other.myIsStoringPoints;
       myNbPointsAddedFromIterators = other.myNbPointsAddedFromIterators;
       myBegin = other.myBegin;
@@ -275,12 +275,12 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFront(const InputPoint &aPoint ) 
 {
-  _state = myState;
+  myPreviousState = myState;
   myPointContainer.push_back(aPoint);  
   myState.melkmanCH.add(aPoint);
   bool aResult = melkmanIsConvexValid();
   myPointContainer.pop_back();
-  myState = _state;
+  myState = myPreviousState;
   return aResult;      
 }
 
@@ -292,7 +292,7 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(const InputPoint &aPoint) 
 {
-  _state = myState;
+  myPreviousState = myState;
   myPointContainer.push_back(aPoint);  
   myState.melkmanCH.add(aPoint);
   if (melkmanIsConvexValid()){
@@ -303,7 +303,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(cons
     return true;
   }else{
     myPointContainer.pop_back();    
-    myState = _state;
+    myState = myPreviousState;
     return false;
   }
 }
@@ -314,10 +314,10 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFront() 
 {
-  _state = myState;
+  myPreviousState = myState;
   myState.melkmanCH.add(*myEnd);
   bool aResult = melkmanIsConvexValid();
-  myState = _state;
+  myState = myPreviousState;
   return aResult;      
 }
 
@@ -329,7 +329,7 @@ inline
 bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront() 
 {
-  _state = myState;
+  myPreviousState = myState;
   myState.melkmanCH.add(*myEnd);
    
   if (melkmanIsConvexValid()){
@@ -341,7 +341,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront()
     ++myEnd;
     return true;
   }else{
-    myState = _state;
+    myState = myPreviousState;
     return false;
   }
 }
