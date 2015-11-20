@@ -5,7 +5,7 @@ namespace DGtal {
 
 /**
    
-@page moduleAlphaThickSegmentReco Alpha-thick Segment recognition   
+@page moduleAlphaThickSegmentReco Alpha-thick Segment Recognition   
 
 @writers Bertrand Kerautret 
 
@@ -19,7 +19,7 @@ from digital contours. It is exploited in various estimators as for
 instance in tangent \cite LachaudIVC2007 or curvature estimation 
 \cite KerautretLachaud2009 . However, this primitive is not efficient to
 directly process real contours with the potential presence of
-noise. To overcome this limitation the Alpha-thick segments (called
+noise. To overcome this limitation the alpha-thick segments (called
 initially Blurred Segments) were first introduced by Debled-Rennesson 
 \i et al \cite debledFuzzy2005 which handle noise or contour
 irregularities.
@@ -40,7 +40,7 @@ necessarily digital points (RealPoint for instance).
 [TOC]
 
 
-\section moduleAlphaThickSegmentRecoIntro  Alpha Thick Segment
+\section moduleAlphaThickSegmentRecoIntro  Alpha-thick Segment
 
 The first definition of \b blurred \b segment  \cite debledFuzzy2005 
 relies on the definition of the digital straight lines (@ref
@@ -95,7 +95,7 @@ illustration below) also defined from the rotating caliper algorithm.
 
 
 
-\section moduleAlphaThickSegmentRecoDetails   Alpha Thick Segment Recognition
+\section moduleAlphaThickSegmentRecoDetails   Alpha-thick Segment Recognition
 
 
 \subsection moduleAlphaThickSegmentRecoDetails-TypeInputContours Type of Input Points 
@@ -111,9 +111,9 @@ check manually the end condition or the iterator type).
 @note Contrary to the implementation proposed in \cite DebledRennessonBlurred2005 the input points do not need to have
   axis increasing coordinates.
 
-As illustration, the alpha thick segments can be recognized on such contours:
-@image html alphThickSegmentInputPoints.png "Examples of different input coutours which can be used with the alpha thick segment. (1) Input contour with non increasing axis coordinates, (2) contour with non connected points, (3) polygonal contour with floating points. " 
-@image latex alphThickSegmentInputPoints.png "Examples of different input coutours which can be used with the alpha thick segment. (1) Input contour with non increasing axis coordinates, (2) contour with non connected points, (3) polygonal contour with floating points. " width=5cm
+As illustration, the alpha-thick segments can be recognized on such contours:
+@image html alphThickSegmentInputPoints.png "Examples of different input coutours which can be used with the alpha-thick segment. (1) Input contour with non increasing axis coordinates, (2) contour with non connected points, (3) polygonal contour with floating points. " 
+@image latex alphThickSegmentInputPoints.png "Examples of different input coutours which can be used with the alpha-thick segment. (1) Input contour with non increasing axis coordinates, (2) contour with non connected points, (3) polygonal contour with floating points. " width=5cm
 
 
 
@@ -123,7 +123,7 @@ And the example of non-simple contour can produce some errors:
 
 
 
-\subsection moduleAlphaThickSegmentRecoDetails-Code Recognizing an Alpha Thick Segment
+\subsection moduleAlphaThickSegmentRecoDetails-Code Recognizing an Alpha-thick Segment
 
 To recognize an alpha-thick segment, you need first to include the AlphaThickSegmentComputer header (with eventually the different namespace defined in StdDefs.h):
  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyInclude
@@ -288,7 +288,7 @@ You will obtain for instance such a resulting cover:
 
 
 /**
-   This example a simple Alpha Thick segment recognition given from a freeman chain contour.
+   This example a simple alpha-thick segment recognition given from a freeman chain contour.
    @see \ref moduleAlphaThickSegmentReco
 
    @image html exampleAlphaThickSegment.png "Simple example of some alpha-thick segments recognition with alpha = 2, 5  and 15."
@@ -299,7 +299,7 @@ You will obtain for instance such a resulting cover:
 
 
 /**
-   This example shows a simple alpha thick segment recognition given from a noisy input contour with floating point coordinates.
+   This example shows a simple alpha-thick segment recognition given from a noisy input contour with floating point coordinates.
    @see \ref moduleAlphaThickSegmentReco
 
    @image html exampleAlphaThickSegmentNoisy.png "Simple example of some alpha-thick segments recognition with alpha = 2, 9  and 15."

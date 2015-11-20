@@ -45,7 +45,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Test the convexhull and box of a the alpha thick segment computer.
+ * Test the convexhull and box of a the alpha-thick segment computer.
  */
 bool testAlphaThickSegmentConvexHullAndBox()
 {
@@ -54,7 +54,7 @@ bool testAlphaThickSegmentConvexHullAndBox()
 
   Board2D aBoard;
   typedef  AlphaThickSegmentComputer< Z2i::Point > AlphaThickSegmentComputer2D;
-  trace.beginBlock ( "Testing convexhull and boxes of alphaThick segment on noisy discrete contour." );
+  trace.beginBlock ( "Testing convexhull and boxes of alpha-thick segment on noisy discrete contour." );
   std::vector<Z2i::Point> aContour;
   std::string fileContour = testPath + "samples/contourNoiseSample.sdp";
   aContour = PointListReader<Z2i::Point>::getPointsFromFile(fileContour);
@@ -199,7 +199,7 @@ bool testAlphaThickSegmentComputerFloatingPointContour()
   typedef  AlphaThickSegmentComputer< Z2i::RealPoint> AlphaThickSegmentComputer2D;
   typedef  AlphaThickSegmentComputer< Z2i::RealPoint>::Primitive Primitive;
 
-  trace.beginBlock ( "Testing alpha thick segment on contour composed of floating coords ..." );
+  trace.beginBlock ( "Testing alpha-thick segment on contour composed of floating coords ..." );
   std::vector<Z2i::RealPoint> aContour;
   std::string fileContour = testPath + "samples/contourNoiseSample2.sdp";
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
@@ -384,7 +384,7 @@ bool testMultiWidth()
   typedef  AlphaThickSegmentComputer< Z2i::RealPoint> AlphaThickSegmentComputer2D;
   unsigned nb=0;
   unsigned nbok =0;
-  trace.beginBlock ( "Testing alpha thick segment with multi width ..." );
+  trace.beginBlock ( "Testing alpha-thick segment with multi width ..." );
   std::vector<Z2i::RealPoint> aContour;
   std::string fileContour = testPath + "samples/contourNoiseSample2.sdp";
   aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile(fileContour);
@@ -427,7 +427,7 @@ testThicknessDefinitions(){
   typedef  AlphaThickSegmentComputer<Z2i::Point> AlphaThickSegmentComputer2D;
   unsigned nb=0;
   unsigned nbok =0;
-  trace.beginBlock ( "Testing alpha thick segment with different thickness definitions:" );
+  trace.beginBlock ( "Testing alpha-thick segment with different thickness definitions:" );
 
   AlphaThickSegmentComputer2D anAlphaSegmentHV(1.35, functions::Hull2D::HorizontalVerticalThickness);
   AlphaThickSegmentComputer2D anAlphaSegmentEucl(1.35, functions::Hull2D::EuclideanThickness);
