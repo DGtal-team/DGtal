@@ -46,6 +46,7 @@ addons:
     - libboost-program-options-dev
     - libcairo2-dev
     - doxygen
+    - doxygen-latex
     - graphviz
     - libboost-system-dev
     - libgmp-dev
