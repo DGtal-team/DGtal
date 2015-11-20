@@ -24,7 +24,7 @@ notifications:
 #
 ########
 env:
-  - CONFIG="Debug,Magick,GMP"
+  - CONFIG="Debug,Magick,GMP,ITK"
   - CONFIG="Debug,Cairo,QGLviewer,HDF5"
   - CONFIG="Documentation,Debug,Cairo,GMP"
 
@@ -46,21 +46,21 @@ addons:
     - libboost-program-options-dev
     - libcairo2-dev
     - doxygen
+    - doxygen-latex
     - graphviz
     - libboost-system-dev
     - libgmp-dev
     - libgdcm2-dev 
     - libgraphicsmagick++1-dev
     - libqglviewer-qt4-dev
-
-##libinsighttoolkit3-dev pending: https://github.com/travis-ci/apt-package-whitelist/issues/429
+    - libinsighttoolkit3-dev 
 
 
 before_install:
   - DOC="false"
   - NEEDBUILD="true";
   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDBUILD="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
-  - if [ $CONFIG == "Debug,Magick,GMP" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
+  - if [ $CONFIG == "Debug,Magick,GMP,ITK" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF";   fi
   - if [ $DOC == "true" ]; then  BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="true"; fi
 
