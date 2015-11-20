@@ -59,7 +59,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 - \ref moduleGridCurveAnalysis  (Tristan Roussillon)
   - \ref moduleArithDSSReco (Tristan Roussillon) 
   - \ref moduleFrechetShortcut (Isabelle Sivignon)
-
+  - \ref moduleAlphaThickSegmentReco (Bertrand Kerautret, Alexandre Faure, Fabien Feschet,  Mohammad Said, Jacques-Olivier Lachaud))
 - \ref modulePlaneRecognition (Jacques-Olivier Lachaud)
  - \ref moduleCOBANaivePlaneRecognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
  - Chord algorithm for plane recognition (Jacques-Olivier Lachaud, Yan Gerard, Isabelle Debled-Rennesson, Paul Zimmermann) --- documentation coming soon ---
