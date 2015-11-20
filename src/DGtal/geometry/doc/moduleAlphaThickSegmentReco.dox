@@ -5,7 +5,7 @@ namespace DGtal {
 
 /**
    
-@page moduleAlphaThickSegmentReco Alpha Thick Segment recognition   
+@page moduleAlphaThickSegmentReco Alpha-thick Segment recognition   
 
 @writers Bertrand Kerautret 
 
@@ -19,17 +19,18 @@ from digital contours. It is exploited in various estimators as for
 instance in tangent \cite LachaudIVC2007 or curvature estimation 
 \cite KerautretLachaud2009 . However, this primitive is not efficient to
 directly process real contours with the potential presence of
-noise. To overcome this limitation the blurred segments was first
-introduced by Debled-Rennesson \i etal \cite debledFuzzy2005 which
-handle noise or contour irregularities.
+noise. To overcome this limitation the Alpha-thick segments (called
+initially Blurred Segments) were first introduced by Debled-Rennesson 
+\i et al \cite debledFuzzy2005 which handle noise or contour
+irregularities.
 
 
-We present here the recognition of alpha thick segments as described
+We present here the recognition of alpha-thick segments as described
 in \cite debledFuzzy2005 and \cite FaureTangential2008. From a maximal
 thickness, it permits the recognition of a thick segment with the
 possibility to take into accounts some noise. Moreover the segment can
-be detected from points which are not necessary connected or with
-floating-point.
+be detected from points which are not necessarily connected nor
+necessarily digital points (RealPoint for instance).
 
 @note The proposed implementation is mainly a backport from
  [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
@@ -124,13 +125,13 @@ And the example of non-simple contour can produce some errors:
 
 \subsection moduleAlphaThickSegmentRecoDetails-Code Recognizing an Alpha Thick Segment
 
-To recognize an alpha thick segment, you need first to include the AlphaThickSegmentComputer header (with eventually the different namespace defined in StdDefs.h):
+To recognize an alpha-thick segment, you need first to include the AlphaThickSegmentComputer header (with eventually the different namespace defined in StdDefs.h):
  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyInclude
 
 
 Afterwards, you have to set the type of the primitive by choosing the
 input point type. For instance, if you have to recognize input
-floating-points, you can define:
+non digital points (e.g. Space::RealPoint), you can define:
 
  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyTypedef
 
@@ -148,7 +149,7 @@ You can extend the segment by adding point to the front:
   @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco 
 
 
-The final alpha thick segment can also be displayed with a Board3D as other 2D geometric primitives:
+The final alpha-thick segment can also be displayed with a Board3D as other 2D geometric primitives:
 @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentDisplay
 
 As described in the Board3D documentation  (@ref dgtal_dgtalboard_sec14), this primitive has two main display modes:
@@ -163,8 +164,8 @@ You can also customize the segment color by using the CustomStyle object:
 As illustration the segment recognition given in
 exampleAlphaThickSegmentNoisy.cpp produces such a display:
 
-@image html exampleAlphaThickSegmentNoisy.png "Simple example of some alpha thick segments recognition with alpha = 2, 9  and 15."
-@image latex exampleAlphaThickSegmentNoisy.png "Simple example of some alpha thick segments recognition with alpha = 2, 9  and 15." width=6cm
+@image html exampleAlphaThickSegmentNoisy.png "Simple example of some alpha-thick segments recognition with alpha = 2, 9  and 15."
+@image latex exampleAlphaThickSegmentNoisy.png "Simple example of some alpha-thick segments recognition with alpha = 2, 9  and 15." width=6cm
 
 
 
@@ -196,7 +197,7 @@ The thickness definition can be changed at the AlphaThickSegmentComputer constru
 
 
 
-\section moduleAlphaThickSegmentRecoGreedy  Example of greedy segmentation into Alpha Thick Segment
+\section moduleAlphaThickSegmentRecoGreedy  Example of greedy segmentation into Alpha-thick Segment
 
 To apply the greedy segmentation of a digital contour, we can use the GreedySegmentation class  (since the AlphaThickSegmentComputer class  is a model of the concept  CForwardSegmentComputer):
  @snippet examples/geometry/curves/greedyAlphaThickDecomposition.cpp greedyAlphaThickDecompositionAlgo 
@@ -207,8 +208,8 @@ The resulting set of segments can be displayed using the bounding box mode:
 
 You should obtain such a visualization:
 
-@image html examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segments with alpha = 4"
-@image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segment with alpha = 4" width=6cm
+@image html examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha-thick segments with alpha = 4"
+@image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha-thick segment with alpha = 4" width=6cm
 
 
 The whole example can be found in \ref greedyAlphaThickDecomposition.cpp.
@@ -254,8 +255,8 @@ Finally we can access to the complete tangential cover and display it:
 
 You will obtain such a resulting visualization:
 
-   @image html exampleAlphaThickSegmentTgtCover.png "Tangential cover with alpha thick segments with alpha = 4"
-   @image latex exampleAlphaThickSegmentTgtCover.png "Tangential cover with alpha thick segments with alpha = 4" width=6c
+   @image html exampleAlphaThickSegmentTgtCover.png "Tangential cover with alpha-thick segments with alpha = 4"
+   @image latex exampleAlphaThickSegmentTgtCover.png "Tangential cover with alpha-thick segments with alpha = 4" width=6c
 
 
 \subsection moduleAlphaThickSegmentTgtCoverSingle Tangential cover on a single point
@@ -276,8 +277,8 @@ using the function @ref nextMaximalSegment :
 
 
 You will obtain for instance such a resulting cover:
-   @image html exampleAlphaThickSegmentTgtCoverSingle.png "Tangential cover with alpha thick segments with alpha = 4 for a point of index 80 (in blue)"
-   @image latex exampleAlphaThickSegmentTgtCoverSingle.png "Tangential cover with alpha thick segments with alpha = 4 for a point of index 80 (in blue)" width=6cm
+   @image html exampleAlphaThickSegmentTgtCoverSingle.png "Tangential cover with alpha-thick segments with alpha = 4 for a point of index 80 (in blue)"
+   @image latex exampleAlphaThickSegmentTgtCoverSingle.png "Tangential cover with alpha-thick segments with alpha = 4 for a point of index 80 (in blue)" width=6cm
 
 
 
@@ -290,8 +291,8 @@ You will obtain for instance such a resulting cover:
    This example a simple Alpha Thick segment recognition given from a freeman chain contour.
    @see \ref moduleAlphaThickSegmentReco
 
-   @image html exampleAlphaThickSegment.png "Simple example of some alpha thick segments recognition with alpha = 2, 5  and 15."
-   @image latex exampleAlphaThickSegment.png "Simple example of some alpha thick segments recognition with alpha = 2, 5  and 15." width=6cm
+   @image html exampleAlphaThickSegment.png "Simple example of some alpha-thick segments recognition with alpha = 2, 5  and 15."
+   @image latex exampleAlphaThickSegment.png "Simple example of some alpha-thick segments recognition with alpha = 2, 5  and 15." width=6cm
    \example geometry/curves/exampleAlphaThickSegment.cpp
 */
 
@@ -301,18 +302,18 @@ You will obtain for instance such a resulting cover:
    This example shows a simple alpha thick segment recognition given from a noisy input contour with floating point coordinates.
    @see \ref moduleAlphaThickSegmentReco
 
-   @image html exampleAlphaThickSegmentNoisy.png "Simple example of some alpha thick segments recognition with alpha = 2, 9  and 15."
-   @image latex exampleAlphaThickSegmentNoisy.png "Simple example of some alpha thick segments recognition with alpha = 2, 9  and 15." width=6cm
+   @image html exampleAlphaThickSegmentNoisy.png "Simple example of some alpha-thick segments recognition with alpha = 2, 9  and 15."
+   @image latex exampleAlphaThickSegmentNoisy.png "Simple example of some alpha-thick segments recognition with alpha = 2, 9  and 15." width=6cm
    \example geometry/curves/exampleAlphaThickSegmentNoisy.cpp
 */
 
 
 /**
-   This example shows the greedy decomposition of an noisy contour from the alpha thick segment primitive with alpha = 4.
+   This example shows the greedy decomposition of an noisy contour from the alpha-thick segment primitive with alpha = 4.
    @see \ref moduleAlphaThickSegmentReco
 
-   @image html examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segments with alpha = 4"
-   @image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha thick segment with alpha = 4" width=6cm
+   @image html examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha-thick segments with alpha = 4"
+   @image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha-thick segment with alpha = 4" width=6cm
    \example geometry/curves/greedyAlphaThickDecomposition.cpp
 */
 
@@ -320,16 +321,13 @@ You will obtain for instance such a resulting cover:
 
 
 /**
-   This example shows the tangential cover of an noisy contour from the alpha thick segment primitive with alpha = 4.
+   This example shows the tangential cover of an noisy contour from the alpha-thick segment primitive with alpha = 4.
    @see \ref moduleAlphaThickSegmentReco
 
-   @image html exampleAlphaThickSegmentTgtCoverAll_Single.png "Tangential cover with alpha thick segments with alpha = 4"
-   @image latex exampleAlphaThickSegmentTgtCoverAll_Single.png "Tangential cover with alpha thick segments with alpha = 4" width=6cm
+   @image html exampleAlphaThickSegmentTgtCoverAll_Single.png "Tangential cover with alpha-thick segments with alpha = 4"
+   @image latex exampleAlphaThickSegmentTgtCoverAll_Single.png "Tangential cover with alpha-thick segments with alpha = 4" width=6cm
    \example geometry/curves/exampleAlphaThickSegmentTgtCover.cpp
 */
-
-
-
 
 
 
