@@ -7,6 +7,10 @@
    the width (vertical/horizontal or Euclidean) of a convex hull.
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
+ - MelkmanConvexHull: new reverse method to allow point insertions and convex
+   hull computation on both side of a point sequence.
+   (Bertrand Kerautret, [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
+
 ## Changes
 - *Base Package*
  - Enabling circulators in SimpleRandomAccessRangeFromPoint.
