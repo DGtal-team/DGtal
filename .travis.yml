@@ -53,8 +53,7 @@ addons:
     - libgdcm2-dev 
     - libgraphicsmagick++1-dev
     - libqglviewer-qt4-dev
-
-##libinsighttoolkit3-dev pending: https://github.com/travis-ci/apt-package-whitelist/issues/429
+    - libinsighttoolkit3-dev 
 
 
 before_install:
