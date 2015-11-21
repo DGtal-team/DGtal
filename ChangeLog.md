@@ -11,8 +11,7 @@
    hull computation on both side of a point sequence.
    (Bertrand Kerautret, [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
 
-
- - ScaleProfile: new class to represent a (multi)scale profile i.e. a sequence
+ - LogScaleProfile: new class to represent a (multi)scale profile e.g. a sequence
    of statistics on digital lengths parameterized by a scale.
    (Backport of the ScaleProfile class of
    [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
