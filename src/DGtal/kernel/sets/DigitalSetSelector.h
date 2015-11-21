@@ -50,11 +50,7 @@
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 
 #include "DGtal/kernel/PointHashFunctions.h"
-#ifdef WITH_C11
 #include <unordered_set>
-#else
-#include <boost/unordered_set.hpp>
-#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
