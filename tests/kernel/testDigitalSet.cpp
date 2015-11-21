@@ -40,12 +40,7 @@
 #include <fstream>
 #include <algorithm>
 #include <string>
-
-#ifdef WITH_C11
 #include <unordered_set>
-#endif
-#include <boost/unordered_set.hpp>
-
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
@@ -424,11 +419,7 @@ int main()
   trace.endBlock();
   
   trace.beginBlock( "DigitalSetByUnorderedSet" );
-#ifdef WITH_C11
   typedef std::unordered_set<Point> ContainerU;
-#else
-  typedef boost::unordered_set<Point> ContainerU;
-#endif
   bool okUnorderedSet = testDigitalSet< DigitalSetByAssociativeContainer<Domain,ContainerU> >
   ( DigitalSetByAssociativeContainer<Domain, ContainerU>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU>(domain) );
   trace.endBlock();
