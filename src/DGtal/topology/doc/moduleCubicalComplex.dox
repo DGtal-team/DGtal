@@ -166,10 +166,37 @@ the cells for which you wish to compute the closure, star or link.
 
   @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-link
 
-  @image html cubical-complex-illustrations-link.png "Link of \a S in \a X, displayed in red."
-  @image latex cubical-complex-illustrations-link.png "Link of \a S in \a X, displayed in red." width=5cm
-  
+  @image html cubical-complex-illustrations-link.png "Link of \a S in \a X, displayed in green."
+  @image latex cubical-complex-illustrations-link.png "Link of \a S in \a X, displayed in green." width=5cm
 
+@section dgtal_ccomplex_sec5  Interior, boundary of a complex
+
+You have three methods for computing the interior or the boundary of a
+complex. Note that the boundary and the interior of a complex have an
+empty intersection:
+
+- CubicalComplex::interior: returns the (topological) interior of this complex \a X,
+  i.e. the cells whose star are homeomorphic to a ball of maximal
+  dimension.
+
+  @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-int
+
+  @image html cubical-complex-illustrations-int.png "Interior of \a X, displayed in cyan."
+  @image latex cubical-complex-illustrations-int.png "Interior of \a X, displayed in cyan." width=5cm
+  
+- CubicalComplex::boundary: returns the (topological) boundary of this
+  complex \a X, i.e. the closure of \a X minus the interior of \a
+  X. It is worthy to note that the boundary complex may contain cells
+  that are not in \a X.
+
+  @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-bd
+
+  @image html cubical-complex-illustrations-bd.png "Boundary of \a X, displayed in magenta."
+  @image latex cubical-complex-illustrations-bd.png "Boundary of \a X, displayed in magenta." width=5cm
+  
+- CubicalComplex::getInteriorAndBoundary: returns both the boundary
+  and the interior of X, faster then computing both separately if you
+  need both.
 
 */
 

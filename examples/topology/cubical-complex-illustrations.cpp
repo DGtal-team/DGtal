@@ -123,24 +123,29 @@ int main( int argc, char** argv )
   board.clear();
   //! [cubical-complex-illustrations-link]
 
-  //! [cubical-complex-illustrations-int-bd]
-  CC intX, bdX;
-  X.getInteriorAndBoundary( intX, bdX );
-  // CC bdX  = X.boundary();
-  // CC intX = X.interior();
+  //! [cubical-complex-illustrations-bd]
   board << domain;
+  board << CustomStyle( X.className(), 
+                        new CustomColors( Color(80,80,100), Color(180,180,200) ) )
+        << X;
   board << CustomStyle( X.className(), 
                         new CustomColors( Color::Magenta, Color(255,120,255) ) )
-        << bdX;
+        << X.boundary();
   board.saveTikZ( "cubical-complex-illustrations-bd.tikz" );
   board.clear();
+  //! [cubical-complex-illustrations-bd]
+
+  //! [cubical-complex-illustrations-int]
   board << domain;
   board << CustomStyle( X.className(), 
-                        new CustomColors( Color(100,80,100), Color(200,180,200) ) )
-        << intX;
+                        new CustomColors( Color(80,80,100), Color(180,180,200) ) )
+        << X;
+  board << CustomStyle( X.className(), 
+                        new CustomColors( Color::Cyan, Color(120,255,255) ) )
+        << X.interior();
   board.saveTikZ( "cubical-complex-illustrations-int.tikz" );
   board.clear();
-  //! [cubical-complex-illustrations-int-bd]
+  //! [cubical-complex-illustrations-int]
   
   
   
