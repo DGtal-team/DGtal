@@ -7,7 +7,8 @@ SET(DGTAL_TESTS_SRC
   testHullFunctions2D
   testPolarPointComparatorBy2x2DetComputer
   testConvexHull2D
-  testConvexHull2DThickness)
+  testConvexHull2DThickness
+  testConvexHull2DReverse)
 
 SET(DGTAL_TESTS_QSRC
   testSphericalAccumulatorQGL)
