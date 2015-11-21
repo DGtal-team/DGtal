@@ -41,7 +41,7 @@
 - *Geometry Package*
  - Fix pseudo-random number generator in KanungoNoise (David
    Coeurjolly,
-   [#100XXX](https://github.com/DGtal-team/DGtal/pull/1060))
+   [#1078](https://github.com/DGtal-team/DGtal/pull/1078))
    
 
 # DGtal 0.9
