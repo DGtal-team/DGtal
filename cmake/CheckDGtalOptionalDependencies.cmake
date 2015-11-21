@@ -12,7 +12,6 @@ message(STATUS "   cmake frontend, or define cmake commandline variables")
 message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "")
 
-OPTION(WITH_C11 "With C++ compiler C11 features." OFF)
 OPTION(WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 OPTION(WITH_EIGEN "With Eigen3 Linear Algebra Library." OFF)
@@ -25,25 +24,6 @@ OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt4 required)." O
 OPTION(WITH_PATATE "With Patate library for geometry OFF (Eigen required)." processing)
 OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
 OPTION(WITH_QT5 "Using Qt5." OFF)
-
-#----------------------------------
-# Checking clang version on APPLE
-#
-# When using clang 5.0, DGtal must
-# be compiled with C11 features
-#----------------------------------
-IF (APPLE)
-  if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    EXECUTE_PROCESS( COMMAND ${CMAKE_CXX_COMPILER} --version OUTPUT_VARIABLE clang_full_version_string )
-    string (REGEX REPLACE ".*LLVM version ([0-9]).*" "\\1" CLANG_VERSION_STRING ${clang_full_version_string})
-    if (CLANG_VERSION_STRING VERSION_GREATER 4)
-      SET(WITH_C11 ON)
-      MESSAGE(STATUS "You are using Clang >= 5.0, I'm forcing the WITH_C11 option")
-    endif()
-  endif()
-endif()
-MESSAGE(STATUS " ")
-#---------------------------------
 
 #----------------------------------
 # Removing -frounding-math compile flag for clang
@@ -151,51 +131,6 @@ message(STATUS "      WITH_BENCHMARK     false   (Google Benchmark)")
 ENDIF(WITH_BENCHMARK)
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
-
-# -----------------------------------------------------------------------------
-# Check CPP11
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-SET(C11_FOUND_DGTAL 0)
-SET(C11_AUTO_DGTAL 0)
-SET(C11_FORWARD_DGTAL 0)
-SET(C11_INITIALIZER_DGTAL 0)
-SET(C11_ARRAY 0)
-IF(WITH_C11)
-  INCLUDE(CheckCPP11)
-  IF (CPP11_INITIALIZER_LIST OR CPP11_AUTO OR CP11_FORWARD_LIST)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ")
-    SET(C11_FOUND_DGTAL 1)
-    IF (CPP11_AUTO)
-      SET(C11_AUTO_DGTAL 1)
-      SET(C11_FEATURES "${C11_FEATURES} auto")
-    ENDIF()
-    IF (CPP11_INITIALIZER_LIST)
-      SET(C11_INITIALIZER_DGTAL 1)
-      SET(C11_FEATURES "${C11_FEATURES} initializer-list")
-    ENDIF()
-    IF (CPP11_FORWARD_LIST)
-      SET(C11_FORWARD_DGTAL 1)
-      SET(C11_FEATURES "${C11_FEATURES} std::forward-list")
-    ENDIF()
-    IF (CPP11_ARRAY)
-      SET(C11_ARRAY 1)
-      SET(C11_FEATURES "${C11_FEATURES} std::array")
-    ENDIF()
-    IF (CPP11_RREF_MOVE)
-      SET(C11_RREF_MOVE 1)
-      SET(C11_FEATURES "${C11_FEATURES} std::move rvalue-reference(&&)")
-    ENDIF()
-    MESSAGE(STATUS "Supported c++11 features: [${C11_FEATURES} ]")
-    ADD_DEFINITIONS("-DWITH_C11 ")
-  ELSE()
-    MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler of disable this WITH_C11 option.")
-  ENDIF()
-ELSE(WITH_C11)
-    ADD_DEFINITIONS("-DCATCH_CONFIG_NO_CPP11 ")  
-ENDIF(WITH_C11)
-
-
 
 # -----------------------------------------------------------------------------
 # Look for GMP (The GNU Multiple Precision Arithmetic Library)
