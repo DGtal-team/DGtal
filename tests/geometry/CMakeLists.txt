@@ -7,7 +7,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -g")
 
 SET(DGTAL_TESTS_SRC 
   testContourHelper
-  testScaleProfile)
+  testLogScaleProfile)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
