@@ -1,0 +1,377 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file LogScaleProfile.ih
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @author Jacques-Olivier Lachaud
+ * 
+ * @date 2015/11/08
+ *
+ * Implementation of inline methods defined in LogScaleProfile.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include "DGtal/math/SimpleLinearRegression.h"
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+DGtal::LogScaleProfile::~LogScaleProfile()
+{
+  if ( myScales != 0 ) delete myScales;
+  if ( myStats != 0 ) delete myStats; 
+}
+
+DGtal::LogScaleProfile::LogScaleProfile()
+  : myScales( 0 ), myStats( 0 ), myProfileDef(MEAN), myStoreValInStats(false)
+{
+}
+
+
+
+DGtal::LogScaleProfile::LogScaleProfile(LogScaleProfileType type)
+  : myScales( 0 ), myStats( 0 ), myProfileDef(type), myStoreValInStats(false)
+{
+}
+
+
+
+void 
+DGtal::LogScaleProfile::clear()
+{
+  if ( myScales != 0 ) 
+    {
+      delete myScales;
+      myScales = 0;
+    }
+  if ( myStats != 0 ) 
+    {
+      delete myStats;
+      myStats = 0;
+    }
+  
+}
+
+
+void 
+DGtal::LogScaleProfile::init(unsigned int nb, const bool storeValsInStats )
+{
+  clear();
+  myScales = new std::vector<float>( nb );
+  myStats = new std::vector< Statistic<float> >;
+  myStoreValInStats= storeValsInStats;
+  for ( unsigned int i = 0; i < nb; ++i ){
+    (*myScales)[ i ] = (float) ( i + 1 );
+    myStats->push_back(Statistic<float>(storeValsInStats));
+  }
+}
+
+
+
+void
+DGtal::LogScaleProfile::addValue( unsigned int idxScale, float value )
+{
+  ASSERT( isValid() && ( idxScale < myScales->size() ) );
+  (*myStats)[ idxScale ].addValue( value );
+}
+
+
+void
+DGtal::LogScaleProfile::addStatistic
+( unsigned int idxScale, const Statistic<float> & stat )
+{
+  ASSERT( isValid() && ( idxScale < myScales->size() ) );
+  (*myStats)[ idxScale ] += stat;
+}
+
+
+
+void
+DGtal::LogScaleProfile::getProfile
+( std::vector<double> & x, std::vector<double> & y ) const
+{
+  ASSERT( isValid() );
+  for ( unsigned int i = 0; i < myScales->size(); ++i) 
+    {
+      x.push_back( log( (*myScales)[ i ] ) );
+      switch (myProfileDef){
+      case MAX:
+	y.push_back( log( (*myStats)[ i ].max() ) );
+	break;
+      case MIN:
+	y.push_back( log( (*myStats)[ i ].min() ) );
+	break;
+      case MEDIAN:
+	y.push_back (log( (*myStats)[ i ].median() ));
+	break;
+      case MEAN:
+      default: 
+        y.push_back( log( (*myStats)[ i ].mean() ) );
+	break;
+
+      }
+    }
+}
+
+
+void 
+DGtal::LogScaleProfile::meaningfulScales ( std::vector< std::pair< unsigned int,
+                                        unsigned int > > & intervals,
+                                        const unsigned int minSize,
+                                        const double maxSlope,
+                                        const double minSlope ) const
+{
+  std::vector<double> x;
+  std::vector<double> y;
+  this->getProfile( x, y );
+  unsigned int l = 0;
+  for ( unsigned int k = 1; k < x.size(); ++k )
+    {
+      double slope = ( y[ k ] - y[ k - 1 ] ) / ( x[ k ] - x[ k - 1 ] );
+      if ( ( slope > maxSlope ) 
+	   || ( slope < minSlope ) 
+	   || ( (k+1) == x.size() ) )
+	{
+	  if ( ( k - 1 - l ) >= minSize )
+	    intervals.push_back( std::make_pair( l+1, k ) );
+	  l = k;
+	}
+    }
+}
+
+
+
+std::pair<bool, double> 
+DGtal::LogScaleProfile::getSlopeFromMeaningfulScales(const double maxSlope, 
+                                                  const double minSlope,
+                                                  const unsigned int minSize) const {
+  std::pair<bool, double> resuSlope(false, 0.0);
+  std::vector< std::pair< unsigned int, unsigned int > > vectIntervals;
+  this->meaningfulScales(vectIntervals, minSize, maxSlope, minSlope);
+  std::vector<double> vx;
+  std::vector<double> vy;
+
+  this->getProfile( vx, vy );
+  // no meaningfulScale interval: 
+  
+  if(vectIntervals.size()!=0 && vectIntervals.at(0).first<vectIntervals.at(0).second ){
+    resuSlope.first=true;
+  }else{
+    std::pair<unsigned int, unsigned int> interAll(1, vx.size());
+    vectIntervals.push_back(interAll); 
+  }
+  SimpleLinearRegression SLR;
+
+  unsigned int mfsBeg = vectIntervals.at(0).first-1;
+  unsigned int mfsEnd = vectIntervals.at(0).second-1;
+  
+  // Only two sampled points
+  if ( mfsEnd-mfsBeg == 1 ){
+    Z2i::RealPoint pt1(vx.at(mfsBeg),vy.at(mfsBeg));
+    Z2i::RealPoint pt2(vx.at(mfsEnd),vy.at(mfsEnd));
+    double slope = (pt2[1] - pt1[1])/(pt2[0] -pt1[0]);
+    resuSlope.second = slope;
+    return resuSlope;
+  }
+  for(unsigned int i=mfsBeg; i<=mfsEnd; i++){
+    SLR.addSample(vx.at(i), vy.at(i));
+  }
+  SLR.computeRegression();
+  resuSlope.second = SLR.slope();
+  return resuSlope;
+}
+
+unsigned int
+DGtal::LogScaleProfile::noiseLevel ( const unsigned int minSize,
+                                  const double maxSlope,
+                                  const double minSlope ) const
+{
+  std::vector< std::pair< unsigned int, unsigned int > > intervals;
+  this->meaningfulScales( intervals, minSize, maxSlope, minSlope );
+  return ( intervals.size() != 0 )
+    ? intervals[ 0 ].first
+    : 0;
+}
+
+
+unsigned int
+DGtal::LogScaleProfile::lowerBoundedNoiseLevel( const unsigned int minSize,
+                                             const double maxSlope,
+                                             const double minSlope,
+                                             const double lowerBoundAtScale1,
+                                             const double lowerBoundSlope ) const
+{
+  std::vector< std::pair< unsigned int, unsigned int > > intervals;
+  this->meaningfulScales( intervals, minSize, maxSlope, minSlope );
+  std::vector<double> x;
+  std::vector<double> y;
+  this->getProfile( x, y );
+  for ( unsigned int i = 0; i < intervals.size(); ++i )
+    {
+      bool above = true;
+      for ( unsigned int k = intervals[ i ].first; ( k <= intervals[ i ].second ); ++k )
+	{
+	  if ( y[ k ] < ( lowerBoundAtScale1 + lowerBoundSlope*x[ k ] ) )
+	    {
+	      above = false;
+	      break;
+	    }
+	}
+      if ( above ) return intervals[ i ].first;
+    }
+  // Failure. No detected noise level.
+  return 0;
+}
+
+
+
+void 
+DGtal::LogScaleProfile::stopStatsSaving()
+{
+  for ( unsigned int i = 0; i < myStats->size(); ++i ){
+    ((*myStats).at( i )).terminate();
+  } 
+}
+
+
+inline
+DGtal::LogScaleProfile::LogScaleProfile( const LogScaleProfile & other ){
+  if(other.myStats!=0 && other.myScales!=0){
+    myScales = new std::vector<float>( other.myScales->size() );
+    myStats = new std::vector< Statistic<float> > ( other.myScales->size());
+    myProfileDef = other.myProfileDef;
+    myStoreValInStats= other.myStoreValInStats;
+    for ( unsigned int i = 0; i < other.myScales->size(); ++i ){
+      (*myScales)[ i ] = (*other.myScales)[i];
+      (*myStats)[ i ] = (*other.myStats)[i];
+    }
+  }else{
+    myStats=0;
+    myScales=0;
+    myProfileDef = other.myProfileDef;
+    myStoreValInStats = false;
+  }
+}
+
+
+inline
+DGtal::LogScaleProfile & 
+DGtal::LogScaleProfile::operator=
+( const DGtal::LogScaleProfile & other )
+{
+  if ( this != &other ) {
+  if(other.myStats!=0 && other.myScales!=0){
+    myScales = new std::vector<float>( other.myScales->size() );
+    myStats = new std::vector< Statistic<float> > ( other.myScales->size());
+    myProfileDef = other.myProfileDef;
+    myStoreValInStats= other.myStoreValInStats;
+    for ( unsigned int i = 0; i < other.myScales->size(); ++i ){
+      (*myScales)[ i ] = (*other.myScales)[i];
+      (*myStats)[ i ] = (*other.myStats)[i];
+    }
+  }else{
+    myStats=0;
+    myScales=0;
+    myProfileDef = other.myProfileDef;
+    myStoreValInStats=false;
+  }
+  }
+   
+  return *this;
+}
+
+
+
+
+template <typename Iterator>
+inline
+void 
+DGtal::LogScaleProfile::init( Iterator beginScale, Iterator endScale,
+                           const bool storeValsInStats )
+{
+  clear();
+  myStoreValInStats= storeValsInStats;
+  myScales = new std::vector<float>;
+  myStats = new std::vector< Statistic<float> >;
+  
+  unsigned int nb = 0;
+  for ( ; beginScale != endScale; ++beginScale, ++nb ){
+    myScales->push_back( *beginScale );
+    myStats->push_back(Statistic<float>( myStoreValInStats));
+  }
+}
+
+
+
+void 
+DGtal::LogScaleProfile::selfDisplay( std::ostream& out ) const
+{
+  out << "[LogScaleProfile]";
+}
+
+
+bool
+DGtal::LogScaleProfile::isValid() const
+{
+  return myScales != 0;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'LogScaleProfile'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'LogScaleProfile' to write.
+ * @return the output stream after the writing.
+ */
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const LogScaleProfile & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+inline
+void 
+DGtal::LogScaleProfile::setType(LogScaleProfileType type){
+  ASSERT(myProfileDef==MEAN || myProfileDef==MAX || myProfileDef==MIN || myProfileDef==MEDIAN);
+  myProfileDef = type; 
+}
+    
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
