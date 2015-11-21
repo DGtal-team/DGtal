@@ -863,6 +863,74 @@ isCellBoundary( const Cell& aCell ) const
   return ! isCellInterior( aCell );
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+DGtal::CubicalComplex<TKSpace, TCellContainer>
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+interior() const
+{
+  CubicalComplex I( space() );
+  for ( Dimension d = 0; d <= dimension; ++d )
+    {
+      for ( CellMapConstIterator it = begin( d ), itE = end( d ); it != itE; ++it )
+        {
+          if ( isCellInterior( it->first ) )
+            I.insertCell( d, it->first, it->second );
+        }
+    }
+  return I;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+DGtal::CubicalComplex<TKSpace, TCellContainer>
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+boundary( bool hintClosed ) const
+{
+  CubicalComplex B( *this );
+  if ( ! hintClosed ) B.close();
+  for ( Dimension d = 0; d <= dimension; ++d )
+    {
+      CellMapIterator itNext;
+      for ( CellMapIterator it = B.begin( d ), itE = B.end( d ); it != itE; )
+        {
+          itNext = it; ++itNext;
+          if ( B.isCellInterior( it->first ) )
+            B.eraseCell( it );
+          it = itNext;
+        }
+    }
+  return B;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+getInteriorAndBoundary( CubicalComplex& intcc, CubicalComplex& bdcc, 
+                        bool hintClosed ) const
+{
+  intcc = *this;
+  bdcc  = CubicalComplex( this->space() );
+  if ( ! hintClosed ) intcc.close();
+  for ( Dimension d = 0; d <= dimension; ++d )
+    {
+      CellMapIterator itNext;
+      for ( CellMapIterator it = intcc.begin( d ), itE = intcc.end( d ); it != itE; )
+        {
+          itNext = it; ++itNext;
+          if ( ! intcc.isCellInterior( it->first ) )
+            {
+              intcc.eraseCell( it );
+              bdcc.insertCell( d, it->first, it->second );
+            }
+          it = itNext;
+        }
+    }
+}
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
