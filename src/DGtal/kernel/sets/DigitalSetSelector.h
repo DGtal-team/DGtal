@@ -95,12 +95,7 @@ namespace DGtal
     /**
      * Adequate digital set representation for the given preferences.
      */
-#ifdef WITH_C11
     typedef DigitalSetByAssociativeContainer<Domain, std::unordered_set< typename Domain::Point> > Type;
-#else
-    typedef DigitalSetByAssociativeContainer<Domain, boost::unordered_set< typename Domain::Point> > Type;
-#endif
-
   }; // end of class DigitalSetSelector
 
 
