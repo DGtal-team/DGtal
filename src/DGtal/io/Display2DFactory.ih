@@ -1504,7 +1504,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   FATAL_ERROR(dim == 2);
 
   board.drawArrow((float)apoint[0], (float) apoint[1],
-      (float) apoint[0] + p.myArray[0], (float)apoint[1] + p.myArray[1],
+      (float) apoint[0] + p[0], (float)apoint[1] + p[1],
       true);
 }
 // PointVector
