@@ -1027,6 +1027,41 @@ namespace DGtal
   public:
     
     /**
+     * Computes the (topological) interior to this complex.
+     * @return the subcomplex of this composed of its interior cells.
+     */
+    CubicalComplex interior() const;
+
+    /**
+     * Computes the (topological) boundary of this complex (say X),
+     * hence it may not be a subcomplex of X, but it is a subcomplex
+     * of Cl(X).
+     * 
+     * @param hintClosed when 'true', this hint tells that the complex
+     * is closed, so this speeds up this method, otherwise, the
+     * complex may be arbitrary.
+     *
+     * @return the subcomplex of this composed of its boundary cells.
+     */
+    CubicalComplex boundary( bool hintClosed = false ) const;
+
+    /**
+     * Computes the (topological) interior \a intcc and the
+     * (topological) boundary \bdcc of this complex. Note that \bdcc
+     * is not necessarily a subcomplex.
+     *
+     * @param[out] intcc returns the interior subcomplex of this complex.
+     * @param[out] bdcc returns the boundary of this complex.
+     *
+     * @param hintClosed when 'true', this hint tells that the complex
+     * is closed, so this speeds up this method, otherwise, the
+     * complex may be arbitrary.
+     */
+    void getInteriorAndBoundary( CubicalComplex& intcc, 
+                                 CubicalComplex& bdcc,
+                                 bool hintClosed = false ) const;
+
+    /**
     * Returns the closure of the cells in \a S within this complex,
     * i.e. the smallest subcomplex that contains each cell in \a S.
     *
