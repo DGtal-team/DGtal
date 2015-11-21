@@ -7,6 +7,10 @@
    the width (vertical/horizontal or Euclidean) of a convex hull.
    (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
+ - MelkmanConvexHull: new reverse method to allow point insertions and convex
+   hull computation on both side of a point sequence.
+   (Bertrand Kerautret, [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
+
 
 - *Math Package*
  - MultiStatistics: new class to compute different statistics (like mean
@@ -15,7 +19,6 @@
    [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
    (Bertrand Kerautret, Jacques-Olivier Lachaud
    [#1076](https://github.com/DGtal-team/DGtal/pull/1076))
-
 
 ## Changes
 - *Base Package*
@@ -52,6 +55,17 @@
 # DGtal 0.9
 
 ## New Features / Critical Changes
+- *Geometry Package*
+
+- New segment computer allowing the recognition of thick digital segments,
+  adapted to noisy contours (from a given thickness parameter). The current
+  implementation (mainly a backport from imagene) is a model of
+  CForwardSegmentComputer with a ParallelStrip primitive. This primitive is
+  similar to the blurred segment of [Debled-Rennesson etal 2005] with isothetic
+  thickness. It is also an implementation of the alpha-thick segment of Alexandre
+  Faure and Fabien Feschet.
+  (Bertrand Kerautret,  [#963](https://github.com/DGtal-team/DGtal/pull/963))
+
 
 - *Configuration/General*
  - Continuous integration enabled on both linux and macosx

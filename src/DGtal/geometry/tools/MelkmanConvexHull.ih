@@ -69,7 +69,9 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::add(const Point& aPoint)
     {
       if (myContainer.size() == 0)
 	{
-	  myContainer.push_back( aPoint ); 
+    myFirstPoint = aPoint;
+
+    myContainer.push_back( aPoint );
 	  myContainer.push_front( aPoint ); 
 	}
       else if (myContainer.size() == 2)
@@ -179,8 +181,8 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::size() const
 {
   // by definition the first and last points of the deque are the same.
   return myContainer.size()-1;
-}
 
+}
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TOrientationFunctor>
 inline
@@ -188,6 +190,27 @@ void
 DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::clear()
 {
   myContainer.clear();
+}
+
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TOrientationFunctor>
+inline
+void
+DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::reverse()
+{
+  // if convexhull is reduced into a single segment no need to reverse anything.
+  if(myContainer.size()<=3)
+    return;
+  TPoint theLast = myContainer.back();
+  myContainer.pop_back();
+  bool foundFirst = myContainer.back() == myFirstPoint;
+  while(!foundFirst){
+    myContainer.push_front(myContainer.back());
+    myContainer.pop_back();
+    foundFirst = myContainer.back() == myFirstPoint;
+  }
+  myContainer.push_front(myContainer.back());
+  myFirstPoint = theLast;
 }
 
 

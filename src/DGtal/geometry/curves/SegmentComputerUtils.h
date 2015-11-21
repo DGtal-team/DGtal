@@ -760,7 +760,7 @@ typename DGtal::SegmentComputerTraits<SC>::Category() );
  * (s is assumed to be maximal)
  * @param end any end ConstIterator
  * @tparam SC any model of CForwardSegmentComputer
- * @note fistMaximalSegment of s.end()
+ * @note firstMaximalSegment of s.end()
  */
 template <typename SC>
 void nextMaximalSegment(SC& s, 
@@ -775,7 +775,7 @@ void nextMaximalSegment(SC& s,
  * (s is assumed to be maximal)
  * @param end end ConstIterator
  * @tparam SC any model of CBidirectionalSegmentComputer
- * @note fistMaximalSegment of s.end()
+ * @note firstMaximalSegment of s.end()
  */
 template <typename SC>
 void nextMaximalSegment(SC& s, 
