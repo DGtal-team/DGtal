@@ -48,8 +48,8 @@
 
 
 /**
- * Extend std and boost namespaces to define a std::hash (or
- * boost::hash) functiono on DGtal::PointVector.
+ * Extend std and boost namespaces to define a std::hash function on
+ * DGtal::PointVector.
  *
  */
 
