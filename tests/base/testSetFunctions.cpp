@@ -42,14 +42,15 @@ using namespace DGtal;
 using namespace DGtal::functions;
 using namespace DGtal::functions::setops;
 
+////////////////////////////// unit tests /////////////////////////////////
 TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
-                      Container, 
-                      std::vector<int>, 
+                      Container,
+                      std::vector<int>,
                       std::list<int>, 
                       std::set<int>, 
                       boost::unordered_set<int> )
+
 {
-  // typedef vector<int> Container;
   int S1[ 10 ] = { 4, 15, 20, 17, 9, 7, 13, 12, 1, 3 }; 
   int S2[ 6 ]  = { 17, 14, 19, 2, 3, 4 };
   Container C1( S1, S1 + 10 );
@@ -84,6 +85,18 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
   // JOL: catch relation operator overloading interacts too much with
   //      our own set operator overloading. We call the exact
   //      operations.
+  // std::cout << "C1 D C2 = ";
+  // for ( auto e : C1_symdiff_C2 ) std::cout << e << ' ';
+  // std::cout << std::endl;
+  // std::cout << "C1 | C2 - C1 & C2  = ";
+  // for ( auto e : C1_union_C2 - C1_intersection_C2 ) std::cout << e << ' ';
+  // std::cout << std::endl;
+  REQUIRE( (DGtal::functions::setops::operator==( C1_symdiff_C2, 
+                                                  C1_union_C2 - C1_intersection_C2 )) );
+  REQUIRE( (DGtal::functions::setops::operator==( C1_symdiff_C2, 
+                                                  C1_minus_C2 | C2_minus_C1 )) );
+  REQUIRE( (DGtal::functions::setops::operator==( C1_minus_C2 | C1_intersection_C2 | C2_minus_C1,
+                                                  C1_union_C2 )) );
   REQUIRE(   (DGtal::functions::setops::operator<=( C1_minus_C2,  C1 ) ) );
   REQUIRE( ! (DGtal::functions::setops::operator<=( C1_minus_C2, C2 ) ) );
   REQUIRE(   (DGtal::functions::setops::operator<=( C2_minus_C1, C2 )) );
@@ -96,6 +109,7 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
   REQUIRE( ! (DGtal::functions::setops::operator<=( C1, C1_symdiff_C2 )) );
   REQUIRE( ! (DGtal::functions::setops::operator<=( C2, C1_symdiff_C2 )) );
 }
+
 
 static const int NB = 10000;
 
