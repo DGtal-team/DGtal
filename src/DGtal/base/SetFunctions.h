@@ -64,6 +64,26 @@ namespace DGtal
     struct SetFunctionsImpl
     {
       /** 
+       * Inclusion test. This version does not use the
+       * fact that the container is ordered.
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is a subset of \a S2.
+       */
+      static bool isSubset( const Container& S1, const Container& S2 )
+      {
+        // Checks size first.
+        if ( S1.size() > S2.size() ) return false;
+        typedef typename Container::value_type value_type;
+        typedef std::vector<value_type> Vector;
+        Vector V1( S1.begin(), S1.end() );
+        Vector V2( S2.begin(), S2.end() );
+        std::sort( V1.begin(), V1.end() );
+        std::sort( V2.begin(), V2.end() );
+        return std::includes( V2.begin(), V2.end(), V1.begin(), V1.end() );
+      }
+
+      /** 
        * Updates the set \a S1 as \f$ S1 - S2 \f$. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
@@ -153,6 +173,23 @@ namespace DGtal
     struct SetFunctionsImpl<Container, true, false>
     {
       /** 
+       * Inclusion test. This version does not use the
+       * fact that the container is ordered.
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is a subset of \a S2.
+       */
+      static bool isSubset( const Container& S1, const Container& S2 )
+      {
+        // Checks size first.
+        if ( S1.size() > S2.size() ) return false;
+        for ( typename Container::const_iterator it = S1.begin(), 
+                itE = S1.end(); it != itE; ++it )
+          if ( S2.find( *it ) == S2.end() ) return false;
+        return true;
+      }
+
+      /** 
        * Updates the set S1 as S1 - S2. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
@@ -223,6 +260,23 @@ namespace DGtal
     struct SetFunctionsImpl<Container, true, true >
     {
       /** 
+       * Inclusion test. This version uses the fact that the container
+       * is ordered.
+       *
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is a subset of \a S2.
+       */
+      static bool isSubset( const Container& S1, const Container& S2 )
+      {
+        // Checks size first.
+        if ( S1.size() > S2.size() ) return false;
+        return std::includes( S2.begin(), S2.end(), 
+                              S1.begin(), S1.end(), S1.value_comp() ); 
+      }
+
+
+      /** 
        * Updates the set S1 as S1 - S2. This version uses the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
@@ -289,6 +343,21 @@ namespace DGtal
     template <typename Container >
     struct SetFunctionsImpl< Container, false, true >
     {
+      /** 
+       * Inclusion test. This version uses the fact that the container
+       * is ordered.
+       *
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is a subset of \a S2.
+       */
+      static bool isSubset( const Container& S1, const Container& S2 )
+      {
+        // Checks size first.
+        if ( S1.size() > S2.size() ) return false;
+        return std::includes( S2.begin(), S2.end(), S1.begin(), S1.end() ); 
+      }
+
       /** 
        * Updates the set S1 as S1 - S2. This version uses the
        * fact that the container is ordered.
@@ -358,6 +427,57 @@ namespace DGtal
 
   namespace functions {
 
+    //////////////////////// INCLUSION /////////////////////////
+    /** 
+     * Inclusion test.
+     *
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     * @return true iff \a S1 is a subset of \a S2.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     *
+     * @tparam ordered when 'true', the user indicates that
+     * values are ordered (e.g. a sorted vector), otherwise, depending
+     * on the container type, the compiler may still determine that
+     * values are ordered.
+     */
+    template <typename Container, bool ordered>
+    bool isSubset( const Container& S1, const Container& S2 )
+      {
+        BOOST_STATIC_CONSTANT
+          ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+        BOOST_STATIC_CONSTANT
+          ( bool, isOrdered = ordered 
+            || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
+        
+        return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+          ::isSubset( S1, S2 );
+      }
+
+    /** 
+     * Inclusion test.
+     *
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     * @return true iff \a S1 is a subset of \a S2.
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     */
+    template <typename Container>
+    bool isSubset( const Container& S1, const Container& S2 )
+      {
+        BOOST_STATIC_CONSTANT
+          ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+        BOOST_STATIC_CONSTANT
+          ( bool, isOrdered = isAssociative && IsOrderedAssociativeContainer< Container >::value );
+        
+        return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+          ::isSubset( S1, S2 );
+      }
+
     //////////////////////// SET DIFFERENCE /////////////////////////
     /** 
      * Set difference operation. Updates the set S1 as S1 - S2. 
@@ -373,7 +493,7 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static Container& assignDifference( Container& S1, const Container& S2 )
+    Container& assignDifference( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
@@ -394,7 +514,7 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static Container& assignDifference( Container& S1, const Container& S2 )
+    Container& assignDifference( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
@@ -421,7 +541,7 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static Container makeDifference( const Container& S1, const Container& S2 )
+    Container makeDifference( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
       assignDifference<Container, ordered>( S, S2 );
@@ -439,7 +559,7 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static Container makeDifference( const Container& S1, const Container& S2 )
+    Container makeDifference( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
       assignDifference( S, S2 );
@@ -463,7 +583,7 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static Container& assignUnion( Container& S1, const Container& S2 )
+    Container& assignUnion( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
@@ -484,7 +604,7 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static Container& assignUnion( Container& S1, const Container& S2 )
+    Container& assignUnion( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
@@ -510,7 +630,7 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static Container makeUnion( const Container& S1, const Container& S2 )
+    Container makeUnion( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
       assignUnion<Container, ordered>( S, S2 );
@@ -527,7 +647,7 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static Container makeUnion( const Container& S1, const Container& S2 )
+    Container makeUnion( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
       assignUnion( S, S2 );
@@ -551,7 +671,7 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static Container& assignIntersection( Container& S1, const Container& S2 )
+    Container& assignIntersection( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
@@ -572,7 +692,7 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static Container& assignIntersection( Container& S1, const Container& S2 )
+    Container& assignIntersection( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
@@ -598,7 +718,7 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static Container makeIntersection( const Container& S1, const Container& S2 )
+    Container makeIntersection( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
       assignIntersection<Container, ordered>( S, S2 );
@@ -615,7 +735,7 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static Container makeIntersection( const Container& S1, const Container& S2 )
+    Container makeIntersection( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
       assignIntersection( S, S2 );
@@ -641,7 +761,7 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
+    Container& assignSymmetricDifference( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
@@ -662,7 +782,7 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
+    Container& assignSymmetricDifference( Container& S1, const Container& S2 )
     {
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
@@ -688,7 +808,7 @@ namespace DGtal
      * values are ordered.
      */
     template <typename Container, bool ordered>
-    static Container makeSymmetricDifference( const Container& S1, const Container& S2 )
+    Container makeSymmetricDifference( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
       assignSymmetricDifference<Container, ordered>( S, S2 );
@@ -705,7 +825,7 @@ namespace DGtal
      * set, an unordered_set, a map, etc).
      */
     template <typename Container>
-    static Container makeSymmetricDifference( const Container& S1, const Container& S2 )
+    Container makeSymmetricDifference( const Container& S1, const Container& S2 )
     {
       Container S( S1 );
       assignSymmetricDifference( S, S2 );
@@ -724,6 +844,23 @@ namespace DGtal
      */
     namespace setops {
 
+      //////////////////////// INCLUSION /////////////////////////
+      /** 
+       * Inclusion test.
+       *
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is a subset of \a S2.
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      bool operator<=( const Container& S1, const Container& S2 )
+      {
+        return isSubset( S1, S2 );
+      }
+      
       /** 
        * Set difference operation. Updates the set S1 as S1 - S2. 
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.

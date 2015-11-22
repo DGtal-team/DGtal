@@ -80,6 +80,21 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
   REQUIRE( C1_symdiff_C2.size() == C2_symdiff_C1.size() );
   REQUIRE( C1_symdiff_C2.size() == ( C1_union_C2 - C1_intersection_C2 ).size() );
   REQUIRE( C1_symdiff_C2.size() == ( C1_minus_C2 | C2_minus_C1 ).size() );
+
+  // JOL: catch relation operator overloading interacts too much with
+  //      our own set operator overloading. We call the exact
+  //      operations.
+  REQUIRE(   (DGtal::functions::setops::operator<=( C1_minus_C2,  C1 ) ) );
+  REQUIRE( ! (DGtal::functions::setops::operator<=( C1_minus_C2, C2 ) ) );
+  REQUIRE(   (DGtal::functions::setops::operator<=( C2_minus_C1, C2 )) );
+  REQUIRE( ! (DGtal::functions::setops::operator<=( C2_minus_C1, C1 )) );
+  REQUIRE(   (DGtal::functions::setops::operator<=( C1, C1_union_C2 )) );
+  REQUIRE(   (DGtal::functions::setops::operator<=( C2, C1_union_C2 )) );
+  REQUIRE(   (DGtal::functions::setops::operator<=( C1_intersection_C2, C1 )) );
+  REQUIRE(   (DGtal::functions::setops::operator<=( C1_intersection_C2, C2 )) );
+  REQUIRE(   (DGtal::functions::setops::operator<=( C1_symdiff_C2, C1_union_C2 )) );
+  REQUIRE( ! (DGtal::functions::setops::operator<=( C1, C1_symdiff_C2 )) );
+  REQUIRE( ! (DGtal::functions::setops::operator<=( C2, C1_symdiff_C2 )) );
 }
 
 static const int NB = 10000;
