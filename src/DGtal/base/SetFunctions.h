@@ -49,6 +49,16 @@ namespace DGtal
 {
 
   namespace detail {
+    template <typename LessThan, typename T> 
+    struct EqualPredicateFromLessThanComparator {
+      LessThan compare;
+      EqualPredicateFromLessThanComparator( LessThan aCompare )
+        : compare( aCompare ) {}
+      bool operator()( const T& t1, const T& t2 ) const
+      {
+        return ( ! compare( t1, t2 ) ) && ( ! compare( t2, t1 ) );
+      }
+    };
 
     /**
      * Description of template class 'SetFunctions' <p> \brief Aim:
@@ -63,6 +73,26 @@ namespace DGtal
     template <typename Container, bool associative, bool ordered>
     struct SetFunctionsImpl
     {
+      /** 
+       * Equality test. This version does not use the
+       * fact that the container is ordered.
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is equal to \a S2 (seen as sets).
+       */
+      static bool isEqual( const Container& S1, const Container& S2 )
+      {
+        // Checks size first.
+        if ( S1.size() != S2.size() ) return false;
+        typedef typename Container::value_type value_type;
+        typedef std::vector<value_type> Vector;
+        Vector V1( S1.begin(), S1.end() );
+        Vector V2( S2.begin(), S2.end() );
+        std::sort( V1.begin(), V1.end() );
+        std::sort( V2.begin(), V2.end() );
+        return std::equal( V1.begin(), V1.end(), V2.begin() );
+      }
+
       /** 
        * Inclusion test. This version does not use the
        * fact that the container is ordered.
@@ -172,6 +202,25 @@ namespace DGtal
     template <typename Container>
     struct SetFunctionsImpl<Container, true, false>
     {
+
+      /** 
+       * Equality test. This version does not use the
+       * fact that the container is ordered.
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is equal to \a S2 (seen as sets).
+       */
+      static bool isEqual( const Container& S1, const Container& S2 )
+      {
+        // Checks size first.
+        if ( S1.size() != S2.size() ) return false;
+        // Note that it is critical here that all elements are distinct.
+        for ( typename Container::const_iterator it = S1.begin(), 
+                itE = S1.end(); it != itE; ++it )
+          if ( S2.find( *it ) == S2.end() ) return false;
+        return true;
+      }
+
       /** 
        * Inclusion test. This version does not use the
        * fact that the container is ordered.
@@ -259,6 +308,27 @@ namespace DGtal
     template <typename Container>
     struct SetFunctionsImpl<Container, true, true >
     {
+
+      /** 
+       * Equality test. This version uses the fact that the container is ordered.
+       *
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is equal to \a S2 (seen as sets).
+       */
+      static bool isEqual( const Container& S1, const Container& S2 )
+      {
+        // Checks size first.
+        if ( S1.size() != S2.size() ) return false;
+        // One has to be careful for comparing keys in set-like
+        // structure, we only have an operator<. Hence a == b is defined as 
+        // ( ! a<b ) && ( ! b<a ).
+        typedef detail::EqualPredicateFromLessThanComparator
+          < typename Container::key_compare, typename Container::key_type > Predicate;
+        return std::equal( S1.begin(), S1.end(), S2.begin(), 
+                           Predicate( S1.key_comp() ) ); 
+      }
+
       /** 
        * Inclusion test. This version uses the fact that the container
        * is ordered.
@@ -272,7 +342,7 @@ namespace DGtal
         // Checks size first.
         if ( S1.size() > S2.size() ) return false;
         return std::includes( S2.begin(), S2.end(), 
-                              S1.begin(), S1.end(), S1.value_comp() ); 
+                              S1.begin(), S1.end(), S1.key_comp() ); 
       }
 
 
@@ -287,7 +357,7 @@ namespace DGtal
         Container S;
         std::swap( S, S1 );
         std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
-                             std::inserter( S1, S1.end() ), S.value_comp() );
+                             std::inserter( S1, S1.end() ), S.key_comp() );
         return S1;
       }
 
@@ -302,7 +372,7 @@ namespace DGtal
         Container S;
         std::swap( S, S1 );
         std::set_union( S.begin(), S.end(), S2.begin(), S2.end(), 
-                        std::inserter( S1, S1.end() ), S.value_comp() );
+                        std::inserter( S1, S1.end() ), S.key_comp() );
         return S1;
       }
 
@@ -317,7 +387,7 @@ namespace DGtal
         Container S;
         std::swap( S, S1 );
         std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(), 
-                               std::inserter( S1, S1.end() ), S.value_comp() );
+                               std::inserter( S1, S1.end() ), S.key_comp() );
         return S1;
       }
 
@@ -332,7 +402,7 @@ namespace DGtal
         Container S;
         std::swap( S, S1 );
         std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
-                                       std::inserter( S1, S1.end() ), S.value_comp() );
+                                       std::inserter( S1, S1.end() ), S.key_comp() );
         return S1;
       }
     };
@@ -343,6 +413,20 @@ namespace DGtal
     template <typename Container >
     struct SetFunctionsImpl< Container, false, true >
     {
+      /** 
+       * Equality test. This version uses the fact that the container is ordered.
+       *
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is equal to \a S2 (seen as sets).
+       */
+      static bool isEqual( const Container& S1, const Container& S2 )
+      {
+        // Checks size first.
+        if ( S1.size() != S2.size() ) return false;
+        return std::equal( S1.begin(), S1.end(), S2.begin() ); 
+      }
+
       /** 
        * Inclusion test. This version uses the fact that the container
        * is ordered.
@@ -426,6 +510,62 @@ namespace DGtal
   // template class SetFunctions
 
   namespace functions {
+
+    //////////////////////// EQUALITY /////////////////////////
+    /** 
+     * Equality test.
+     *
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     *
+     * @return true iff \a S1 is equal to \a S2 (i.e. \a S1 is a
+     * subset of \a S2 and \a S2 is a subset of \a S1).
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     *
+     * @tparam ordered when 'true', the user indicates that
+     * values are ordered (e.g. a sorted vector), otherwise, depending
+     * on the container type, the compiler may still determine that
+     * values are ordered.
+     */
+    template <typename Container, bool ordered>
+    bool isEqual( const Container& S1, const Container& S2 )
+      {
+        BOOST_STATIC_CONSTANT
+          ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+        BOOST_STATIC_CONSTANT
+          ( bool, isOrdered = ordered 
+            || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
+        
+        return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+          ::isEqual( S1, S2 );
+      }
+
+    /** 
+     * Equality test.
+     *
+     * @param[in] S1 an input set.
+     * @param[in] S2 another input set.
+     *
+     * @return true iff \a S1 is equal to \a S2 (i.e. \a S1 is a
+     * subset of \a S2 and \a S2 is a subset of \a S1).
+     *
+     * @tparam Container any type of container (even a sequence, a
+     * set, an unordered_set, a map, etc).
+     */
+    template <typename Container>
+    bool isEqual( const Container& S1, const Container& S2 )
+      {
+        BOOST_STATIC_CONSTANT
+          ( bool, isAssociative = IsAssociativeContainer< Container >::value );
+        BOOST_STATIC_CONSTANT
+          ( bool, isOrdered = isAssociative && IsOrderedAssociativeContainer< Container >::value );
+        
+        return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
+          ::isEqual( S1, S2 );
+      }
+
 
     //////////////////////// INCLUSION /////////////////////////
     /** 
@@ -844,9 +984,48 @@ namespace DGtal
      */
     namespace setops {
 
+      //////////////////////// EQUALITY /////////////////////////
+      /** 
+       * Equality test.
+       *
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       *
+       * @return true iff \a S1 is equal to \a S2 (i.e. \a S1 is a
+       * subset of \a S2 and \a S2 is a subset of \a S1).
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      bool operator==( const Container& S1, const Container& S2 )
+      {
+        return isEqual( S1, S2 );
+      }
+
+      //////////////////////// DIFFERENT /////////////////////////
+      /** 
+       * Difference test.
+       *
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       *
+       * @return true iff \a S1 is not equal to \a S2 (i.e. either \a
+       * S1 is not a subset of \a S2 or \a S2 is not a subset of \a
+       * S1).
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      bool operator!=( const Container& S1, const Container& S2 )
+      {
+        return ! isEqual( S1, S2 );
+      }
+
       //////////////////////// INCLUSION /////////////////////////
       /** 
-       * Inclusion test.
+       * Inclusion test (subset of).
        *
        * @param[in] S1 an input set.
        * @param[in] S2 another input set.
@@ -859,6 +1038,22 @@ namespace DGtal
       bool operator<=( const Container& S1, const Container& S2 )
       {
         return isSubset( S1, S2 );
+      }
+
+      /** 
+       * Inclusion test (supset of).
+       *
+       * @param[in] S1 an input set.
+       * @param[in] S2 another input set.
+       * @return true iff \a S1 is a subset of \a S2.
+       *
+       * @tparam Container any type of container (even a sequence, a
+       * set, an unordered_set, a map, etc).
+       */
+      template <typename Container>
+      bool operator>=( const Container& S1, const Container& S2 )
+      {
+        return isSubset( S2, S1 );
       }
       
       /** 
