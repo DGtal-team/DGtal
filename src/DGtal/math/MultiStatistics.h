@@ -277,8 +277,8 @@ public:
      * 'MultiStatistics' object should have stored its values and
      * 'terminate' should have been called.
      *
-     * @param[in] x the index of the x-variable (should be valid )
-     * @param[in] y the index of the y-variable (should be valid )
+     * @param[in] x the index of the statistics to be used as the x-variable (should be valid)
+     * @param[in] y the index of the statistics to be used as the y-variable (should be valid)
      * @param[in] s the starting value index (default is 0 )
      * @param[in] e the after-the-end value index (default is 0, meaning all )
      *
