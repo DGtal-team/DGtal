@@ -18,7 +18,7 @@ if ( Boost_FOUND )
   SET(DGtalLibInc ${DGtalLibInc} ${Boost_INCLUDE_DIRS})
 
   ## Checking boost/random ( <1.47)
-  STRING (COMPARE LESS "${Boost_MINOR_VERSION}" 47 BOOST_RANDOM_OLD)
+  STRING (COMPARE LESS "${Boost_VERSION}" 104700 BOOST_RANDOM_OLD)
   IF (BOOST_RANDOM_OLD)
     message(STATUS "   Old boost::random found, I define BOOST_RANDOM_OLD")
     ADD_DEFINITIONS("-DBOOST_RANDOM_OLD")
