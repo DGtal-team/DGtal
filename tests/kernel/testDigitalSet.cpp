@@ -423,13 +423,7 @@ int main()
   bool okUnorderedSet = testDigitalSet< DigitalSetByAssociativeContainer<Domain,ContainerU> >
   ( DigitalSetByAssociativeContainer<Domain, ContainerU>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU>(domain) );
   trace.endBlock();
-  
-  trace.beginBlock( "DigitalSetByBoostUnorderedSet" );
-  typedef boost::unordered_set<Point> ContainerU2;
-  bool okUnorderedSet2 = testDigitalSet< DigitalSetByAssociativeContainer<Domain,ContainerU2> >
-  ( DigitalSetByAssociativeContainer<Domain, ContainerU2>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU2>(domain) );
-  trace.endBlock();
-  
+    
   bool okSelectorSmall = testDigitalSetSelector
       < Domain, SMALL_DS + LOW_VAR_DS + LOW_ITER_DS + LOW_BEL_DS >
       ( domain, "Small set" );
@@ -451,7 +445,7 @@ int main()
   bool res = okVector && okSet && okMap 
       && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
       && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet
-    && okUnorderedSet2 && okUnorderedSet && okAssoctestSet;
+     && okUnorderedSet && okAssoctestSet;
   trace.endBlock();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   return res ? 0 : 1;
