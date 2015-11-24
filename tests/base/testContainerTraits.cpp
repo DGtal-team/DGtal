@@ -59,11 +59,29 @@ using namespace DGtal;
 using namespace std;
 
 
+TEST_CASE( "int container traits", "[int][traits]" )
+{
+  typedef int Container;
+  SECTION( "Checking container traits" )
+    {
+      REQUIRE( (IsContainer< Container >::value == false) );
+      REQUIRE( (IsSequenceContainer< Container >::value == false) );
+      REQUIRE( (IsAssociativeContainer< Container >::value == false) );
+      REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
+      REQUIRE( (IsUnorderedAssociativeContainer< Container >::value == false) );
+      REQUIRE( (IsSimpleAssociativeContainer< Container >::value == false) );
+      REQUIRE( (IsPairAssociativeContainer< Container >::value == false) );
+      REQUIRE( (IsUniqueAssociativeContainer< Container >::value == false) );
+      REQUIRE( (IsMultipleAssociativeContainer< Container >::value == false) );
+    }
+}
+
 TEST_CASE( "std::vector<> container traits", "[vector][traits]" )
 {
   typedef std::vector<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == true) );
       REQUIRE( (IsAssociativeContainer< Container >::value == false) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -80,6 +98,7 @@ TEST_CASE( "std::list<> container traits", "[list][traits]" )
   typedef std::list<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == true) );
       REQUIRE( (IsAssociativeContainer< Container >::value == false) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -96,6 +115,7 @@ TEST_CASE( "std::deque<> container traits", "[deque][traits]" )
   typedef std::deque<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == true) );
       REQUIRE( (IsAssociativeContainer< Container >::value == false) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -113,6 +133,7 @@ TEST_CASE( "std::forward_list<> container traits", "[forward_list][traits]" )
   typedef std::forward_list<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == true) );
       REQUIRE( (IsAssociativeContainer< Container >::value == false) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -131,6 +152,7 @@ TEST_CASE( "std::array<> container traits", "[array][traits]" )
   typedef std::array<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == true) );
       REQUIRE( (IsAssociativeContainer< Container >::value == false) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -148,6 +170,7 @@ TEST_CASE( "std::set<> container traits", "[set][traits]" )
   typedef std::set<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == true) );
@@ -164,6 +187,7 @@ TEST_CASE( "std::multiset<> container traits", "[multiset][traits]" )
   typedef std::multiset<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == true) );
@@ -180,6 +204,7 @@ TEST_CASE( "std::map<> container traits", "[map][traits]" )
   typedef std::map<int,int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == true) );
@@ -196,6 +221,7 @@ TEST_CASE( "std::multimap<> container traits", "[multimap][traits]" )
   typedef std::multimap<int,int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == true) );
@@ -212,6 +238,7 @@ TEST_CASE( "boost::unordered_set<> container traits", "[unordered_set][traits]" 
   typedef boost::unordered_set<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -228,6 +255,7 @@ TEST_CASE( "boost::unordered_map<> container traits", "[unordered_map][traits]" 
   typedef boost::unordered_map<int,int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -244,6 +272,7 @@ TEST_CASE( "boost::unordered_multiset<> container traits", "[unordered_multiset]
   typedef boost::unordered_multiset<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -260,6 +289,7 @@ TEST_CASE( "boost::unordered_multimap<> container traits", "[unordered_multimap]
   typedef boost::unordered_multimap<int,int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -277,6 +307,7 @@ TEST_CASE( "std::unordered_set<> container traits", "[unordered_set][traits]" )
   typedef std::unordered_set<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -292,6 +323,7 @@ TEST_CASE( "std::unordered_multiset<> container traits", "[unordered_multiset][t
   typedef std::unordered_multiset<int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -310,6 +342,7 @@ TEST_CASE( "std::unordered_map<> container traits", "[unordered_map][traits]" )
   typedef std::unordered_map<int,int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );
@@ -325,6 +358,7 @@ TEST_CASE( "std::unordered_multimap<> container traits", "[unordered_multimap][t
   typedef std::unordered_multimap<int,int> Container;
   SECTION( "Checking container traits" )
     {
+      REQUIRE( (IsContainer< Container >::value == true) );
       REQUIRE( (IsSequenceContainer< Container >::value == false) );
       REQUIRE( (IsAssociativeContainer< Container >::value == true) );
       REQUIRE( (IsOrderedAssociativeContainer< Container >::value == false) );

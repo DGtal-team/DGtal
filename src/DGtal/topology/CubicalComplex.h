@@ -128,10 +128,12 @@ namespace DGtal
   * incident in the surrounding Khalimsky space. In other words,
   * cubical complexes are defined here as subsets of Khalimsky spaces. 
   *
-  * A cubical complex is also a (immutable) model of boost::Container
-  * and offers forward iterators to enumerate elements. It is close
-  * from being an AssociativeContainer, but values are not sorted
-  * (they are sorted per dimension), and not modifiable.
+  * A cubical complex is almost an (immutable) model of
+  * boost::Container and offers forward iterators to enumerate
+  * elements. It is close from being an AssociativeContainer, but
+  * values are not sorted (they are sorted per dimension), and not
+  * modifiable. It is not exactly a container because it cannot be
+  * constructed by default and be valid.
   *
   * @tparam TKSpace any model of concepts::CCellularGridSpaceND, i.e. a type
   * that models a Khalimsky space.
@@ -1226,13 +1228,15 @@ namespace DGtal
   }; // end of class CubicalComplex
 
   /**
-   * Specialization of ContainerTraits for CubicalComplex.
+   * Specialization of ContainerTraits for CubicalComplex.  A cubical
+   * complex is close to being a container, but is not, essentially
+   * because it requires a Khalimsky space to be valid.
    */
   template < typename TKSpace, 
              typename TCellContainer >
   struct ContainerTraits< CubicalComplex< TKSpace, TCellContainer > >
   {
-    typedef UnknownContainerCategory Category;
+    typedef NotContainerCategory Category;
   };
 
 

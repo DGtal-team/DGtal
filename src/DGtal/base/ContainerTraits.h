@@ -1,32 +1,32 @@
 /**
-*  This program is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU Lesser General Public License as
-*  published by the Free Software Foundation, either version 3 of the
-*  License, or  (at your option) any later version.
-*
-*  This program is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  You should have received a copy of the GNU General Public License
-*  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
-**/
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 
 #pragma once
 
 /**
-* @file ContainerTraits.h
-* @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
-* Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
-*
-* @date 2015/09/22
-*
-* Header file for module ContainerTraits.cpp
-*
-* This file is part of the DGtal library.
-*/
+ * @file ContainerTraits.h
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2015/09/22
+ *
+ * Header file for module ContainerTraits.cpp
+ *
+ * This file is part of the DGtal library.
+ */
 
 #if defined(ContainerTraits_RECURSES)
 #error Recursive header files inclusion detected in ContainerTraits.h
@@ -69,8 +69,8 @@ namespace DGtal
 {
 
   // Tag classes for containers
-  struct UnknownContainerCategory {};
-  struct ContainerCategory :  UnknownContainerCategory {};
+  struct NotContainerCategory {};
+  struct ContainerCategory {};
   struct SequenceCategory :  ContainerCategory {};
   struct AssociativeCategory :  ContainerCategory {};
   struct SimpleAssociativeCategory :  AssociativeCategory {};
@@ -92,7 +92,7 @@ namespace DGtal
   template <typename TContainer>
   struct ContainerTraits 
   {
-    typedef UnknownContainerCategory Category;
+    typedef NotContainerCategory Category;
   };
 
   /// Defines container traits for std::vector<>.
@@ -226,14 +226,14 @@ namespace DGtal
 
     /////////////////////////////////////////////////////////////////////////////
     /**
-    * Description of template class 'HasNestedTypeCategory' <p>
-    * \brief Aim: 
-    *  Checks whether type @a T has a nested type called 'Category' or not.
-    *  NB: from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
-    *  NB: to avoid various compiler issues, we use BOOST_STATIC_CONSTANT according to 
-    *  http://www.boost.org/development/int_const_guidelines.html
-    *  @tparam T any type.
-    */
+     * Description of template class 'HasNestedTypeCategory' <p>
+     * \brief Aim: 
+     *  Checks whether type @a T has a nested type called 'Category' or not.
+     *  NB: from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
+     *  NB: to avoid various compiler issues, we use BOOST_STATIC_CONSTANT according to 
+     *  http://www.boost.org/development/int_const_guidelines.html
+     *  @tparam T any type.
+     */
     template <typename T> 
     struct HasNestedTypeCategory 
     {
@@ -250,64 +250,73 @@ namespace DGtal
     };
 
     /**
-    * This class is used by IsSequenceContainer to determine if the container category is a sequence.
-    */
+     * This class is used by IsContainer to determine if the container
+     * category corresponds indeed to a container.
+     */
+    template <typename TCategory>
+    struct IsContainerFromCategory {
+      BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<ContainerCategory,TCategory>::value ) );
+    };
+
+    /**
+     * This class is used by IsSequenceContainer to determine if the container category is a sequence.
+     */
     template <typename TCategory>
     struct IsSequenceContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<SequenceCategory,TCategory>::value ) );
     };
 
     /**
-    * This class is used by IsAssociativeContainer to determine if the container category is  associative.
-    */
+     * This class is used by IsAssociativeContainer to determine if the container category is  associative.
+     */
     template <typename TCategory>
     struct IsAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<AssociativeCategory,TCategory>::value ) );
     };
 
     /**
-    * This class is used by IsOrderedAssociativeContainer to determine if the container category is ordered associative.
-    */
+     * This class is used by IsOrderedAssociativeContainer to determine if the container category is ordered associative.
+     */
     template <typename TCategory>
     struct IsOrderedAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<OrderedAssociativeCategory,TCategory>::value ) );
     };
 
     /**
-    * This class is used by IsUnorderedAssociativeContainer to determine if the container category is ordered associative.
-    */
+     * This class is used by IsUnorderedAssociativeContainer to determine if the container category is ordered associative.
+     */
     template <typename TCategory>
     struct IsUnorderedAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<UnorderedAssociativeCategory,TCategory>::value ) );
     };
 
     /**
-    * This class is used by IsSimpleAssociativeContainer to determine if the container category is simple associative.
-    */
+     * This class is used by IsSimpleAssociativeContainer to determine if the container category is simple associative.
+     */
     template <typename TCategory>
     struct IsSimpleAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<SimpleAssociativeCategory,TCategory>::value ) );
     };
     
     /**
-    * This class is used by IsPairAssociativeContainer to determine if the container category is pair associative.
-    */
+     * This class is used by IsPairAssociativeContainer to determine if the container category is pair associative.
+     */
     template <typename TCategory>
     struct IsPairAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<PairAssociativeCategory,TCategory>::value ) );
     };
     
     /**
-    * This class is used by IsUniqueAssociativeContainer to determine if the container category is unique associative.
-    */
+     * This class is used by IsUniqueAssociativeContainer to determine if the container category is unique associative.
+     */
     template <typename TCategory>
     struct IsUniqueAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<UniqueAssociativeCategory,TCategory>::value ) );
     };
     
     /**
-    * This class is used by IsMultipleAssociativeContainer to determine if the container category is multiple associative.
-    */
+     * This class is used by IsMultipleAssociativeContainer to determine if the container category is multiple associative.
+     */
     template <typename TCategory>
     struct IsMultipleAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<MultipleAssociativeCategory,TCategory>::value ) );
@@ -315,85 +324,96 @@ namespace DGtal
     
   }
 
-/**
-* Determines at compile time if the given type \a T corresponds to an associative container.
-*/
-template <typename T>
-struct IsSequenceContainer {
-  BOOST_STATIC_CONSTANT( bool, 
-                         value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
-                                   && detail::IsSequenceContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
-};
+  /**
+   * Determines at compile time if the given type \a T corresponds to a
+   * (defined) container.
+   */
+  template <typename T>
+  struct IsContainer {
+    BOOST_STATIC_CONSTANT( bool, 
+                           value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
+                                     && detail::IsContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
+  };
 
-/**
-* Determines at compile time if the given type \a T corresponds to an associative container.
-*/
-template <typename T>
-struct IsAssociativeContainer {
-  BOOST_STATIC_CONSTANT( bool, 
-                         value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
-                                   && detail::IsAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
-};
+  /**
+   * Determines at compile time if the given type \a T corresponds to an associative container.
+   */
+  template <typename T>
+  struct IsSequenceContainer {
+    BOOST_STATIC_CONSTANT( bool, 
+                           value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
+                                     && detail::IsSequenceContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
+  };
 
-/**
-* Determines at compile time if the given type \a T corresponds to an ordered associative container.
-*/
-template <typename T>
-struct IsOrderedAssociativeContainer {
-  BOOST_STATIC_CONSTANT( bool, 
-                         value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
-                                   && detail::IsOrderedAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
-};
+  /**
+   * Determines at compile time if the given type \a T corresponds to an associative container.
+   */
+  template <typename T>
+  struct IsAssociativeContainer {
+    BOOST_STATIC_CONSTANT( bool, 
+                           value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
+                                     && detail::IsAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
+  };
 
-/**
-* Determines at compile time if the given type \a T corresponds to an unordered associative container.
-*/
-template <typename T>
-struct IsUnorderedAssociativeContainer {
-  BOOST_STATIC_CONSTANT( bool, 
-                         value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
-                                   && detail::IsUnorderedAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
-};
+  /**
+   * Determines at compile time if the given type \a T corresponds to an ordered associative container.
+   */
+  template <typename T>
+  struct IsOrderedAssociativeContainer {
+    BOOST_STATIC_CONSTANT( bool, 
+                           value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
+                                     && detail::IsOrderedAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
+  };
 
-/**
-* Determines at compile time if the given type \a T corresponds to a simple associative container.
-*/
-template <typename T>
-struct IsSimpleAssociativeContainer {
-  BOOST_STATIC_CONSTANT( bool, 
-                         value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
-                                   && detail::IsSimpleAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
-};
+  /**
+   * Determines at compile time if the given type \a T corresponds to an unordered associative container.
+   */
+  template <typename T>
+  struct IsUnorderedAssociativeContainer {
+    BOOST_STATIC_CONSTANT( bool, 
+                           value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
+                                     && detail::IsUnorderedAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
+  };
 
-/**
-* Determines at compile time if the given type \a T corresponds to a pair associative container.
-*/
-template <typename T>
-struct IsPairAssociativeContainer {
-  BOOST_STATIC_CONSTANT( bool, 
-                         value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
-                                   && detail::IsPairAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
-};
+  /**
+   * Determines at compile time if the given type \a T corresponds to a simple associative container.
+   */
+  template <typename T>
+  struct IsSimpleAssociativeContainer {
+    BOOST_STATIC_CONSTANT( bool, 
+                           value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
+                                     && detail::IsSimpleAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
+  };
 
-/**
-* Determines at compile time if the given type \a T corresponds to a unique associative container.
-*/
-template <typename T>
-struct IsUniqueAssociativeContainer {
-  BOOST_STATIC_CONSTANT( bool, 
-                         value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
-                                   && detail::IsUniqueAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
-};
+  /**
+   * Determines at compile time if the given type \a T corresponds to a pair associative container.
+   */
+  template <typename T>
+  struct IsPairAssociativeContainer {
+    BOOST_STATIC_CONSTANT( bool, 
+                           value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
+                                     && detail::IsPairAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
+  };
 
-/**
-* Determines at compile time if the given type \a T corresponds to a multiple associative container.
-*/
-template <typename T>
-struct IsMultipleAssociativeContainer {
-  BOOST_STATIC_CONSTANT( bool, 
-                         value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
-                                   && detail::IsMultipleAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
-};
+  /**
+  * Determines at compile time if the given type \a T corresponds to a unique associative container.
+  */
+  template <typename T>
+  struct IsUniqueAssociativeContainer {
+    BOOST_STATIC_CONSTANT( bool, 
+                           value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
+                                     && detail::IsUniqueAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
+  };
+
+  /**
+   * Determines at compile time if the given type \a T corresponds to a multiple associative container.
+   */
+  template <typename T>
+  struct IsMultipleAssociativeContainer {
+    BOOST_STATIC_CONSTANT( bool, 
+                           value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
+                                     && detail::IsMultipleAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
+  };
 
 
 } // namespace DGtal
