@@ -710,6 +710,15 @@ namespace DGtal
   public:
 
     /**
+    * Access or change the data associated to \a aCell. Note that if
+    * \a aCell was not in this complex, then it is inserted.
+    *
+    * @param aCell any cell valid in the Khalimsky space associated to the complex.
+    * @return a reference on the data associated with \a aCell.
+    */
+    Data& operator[]( const Cell& aCell );
+
+    /**
     * Makes CubicalComplex a functor Cell -> boolean, which represents
     * the characteristic cell function.
     *
