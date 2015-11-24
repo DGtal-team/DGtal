@@ -456,6 +456,28 @@ swap( CubicalComplex& other )
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Data&
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+operator[]( const Cell& aCell )
+{
+  Dimension d = space().uDim( aCell );
+  return myCells[ d ][ aCell ];
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+bool
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+operator()( const Cell& aCell ) const
+{
+  Dimension d = space().uDim( aCell );
+  return findCell( d, aCell ) != end( d );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 insertCell( const Cell& aCell, const Data& data )

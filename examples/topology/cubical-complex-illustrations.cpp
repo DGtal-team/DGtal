@@ -36,6 +36,7 @@
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
+#include "DGtal/topology/CubicalComplexFunctions.h"
 #include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -146,9 +147,28 @@ int main( int argc, char** argv )
   board.saveTikZ( "cubical-complex-illustrations-int.tikz" );
   board.clear();
   //! [cubical-complex-illustrations-int]
-  
-  
-  
+
+  //! [cubical-complex-illustrations-collapse]
+  board << domain;
+  board << CustomStyle( X.className(), 
+                        new CustomColors( Color(80,80,100), Color(180,180,200) ) )
+        << X;
+  Cell p1 = K.uCell( Point(2,2) );
+  Cell p2 = K.uCell( Point(10,6) );
+  X[ p1 ] = CC::FIXED;
+  X[ p2 ] = CC::FIXED;
+  CC::DefaultCellMapIteratorPriority P;
+  functions::collapse( X, X.begin(), X.end(), P, true, true, true );
+  board << CustomStyle( X.className(), 
+                        new CustomColors( Color(255,120,20), Color(255,150,50) ) )
+        << X
+        << CustomStyle( p1.className(), 
+                        new CustomColors( Color::Blue, Color(120,120,255) ) )
+        << p1 << p2;
+  board.saveTikZ( "cubical-complex-illustrations-collapse.tikz" );
+  board.clear();
+  //! [cubical-complex-illustrations-collapse]
+
   return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
