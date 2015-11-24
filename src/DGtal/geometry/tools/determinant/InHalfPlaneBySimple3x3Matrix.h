@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <array>
 #include "DGtal/base/Common.h"
 
 #include "DGtal/kernel/NumberTraits.h"
@@ -100,7 +101,7 @@ namespace DGtal
     /**
      * Type of point array
      */
-    typedef boost::array<Point,2> PointArray;
+    typedef std::array<Point,2> PointArray;
     /**
      * Type used to represent the size of the array
      */
