@@ -257,6 +257,19 @@ size() const
     n += myCells[ d ].size();
   return n;
 }
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+max_size() const
+{
+  ASSERT( isValid() );
+  Point p = space().uKCoords( space().upperCell() )
+    - space().uKCoords( space().lowerCell() );
+  Size n = (Size) p.norm( Point::L_1 );
+  return n;
+}
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>

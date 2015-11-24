@@ -90,7 +90,7 @@ namespace DGtal
       template < typename TKSpace, typename TCellContainer >
       CubicalComplex< TKSpace, TCellContainer >&
       operator&=( CubicalComplex< TKSpace, TCellContainer >&,
-                                 const CubicalComplex< TKSpace, TCellContainer >& );
+                  const CubicalComplex< TKSpace, TCellContainer >& );
       template < typename TKSpace, typename TCellContainer >
       CubicalComplex< TKSpace, TCellContainer >&
       operator^=( CubicalComplex< TKSpace, TCellContainer >&,
@@ -117,6 +117,8 @@ namespace DGtal
                   const CubicalComplex< TKSpace, TCellContainer >& );
     } // namespace ccops
   } // namespace functions
+
+
   /////////////////////////////////////////////////////////////////////////////
   // template class CubicalComplex
   /**
@@ -128,12 +130,12 @@ namespace DGtal
   * incident in the surrounding Khalimsky space. In other words,
   * cubical complexes are defined here as subsets of Khalimsky spaces. 
   *
-  * A cubical complex is almost an (immutable) model of
-  * boost::Container and offers forward iterators to enumerate
-  * elements. It is close from being an AssociativeContainer, but
-  * values are not sorted (they are sorted per dimension), and not
-  * modifiable. It is not exactly a container because it cannot be
-  * constructed by default and be valid.
+  * A cubical complex is a (immutable) model of boost::Container and
+  * offers forward iterators to enumerate elements. It is close from
+  * being an AssociativeContainer, but values are not sorted (they are
+  * sorted per dimension), and are not modifiable. It is not exactly a
+  * container in the usual sense because it cannot be constructed by
+  * default, and because iterators may not modified values.
   *
   * @tparam TKSpace any model of concepts::CCellularGridSpaceND, i.e. a type
   * that models a Khalimsky space.
@@ -158,6 +160,10 @@ namespace DGtal
     typedef CubicalComplex< TKSpace, TCellContainer > Self;
     
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
+    BOOST_STATIC_ASSERT( IsPairAssociativeContainer< TCellContainer >::value );
+
+    // JOL: Not used, because unordered_set and unordered_map do not pass
+    // these concept checks.
     // BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< TCellContainer > ));
     // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
 
@@ -176,6 +182,7 @@ namespace DGtal
 
     BOOST_STATIC_ASSERT (( boost::is_base_of< CubicalCellData, Data >::value ));
     BOOST_STATIC_ASSERT (( boost::is_same< typename TKSpace::Cell, typename CellContainer::key_type >::value ));
+
 
     /// The dimension of the embedding space.
     static const Dimension dimension = KSpace::dimension;
@@ -445,11 +452,13 @@ namespace DGtal
     // Renaming for STL-type of iterator.
     typedef ConstIterator                           const_iterator;
     typedef Iterator                                iterator;
-    typedef Cell const                              value_type;
+    typedef Cell                                    value_type;
     typedef Cell const&                             reference;
     typedef Cell const&                             const_reference;
     typedef typename CellContainer::size_type       size_type; 
     typedef typename CellContainer::difference_type difference_type;
+    typedef Cell const*                             pointer;
+    typedef Cell const*                             const_pointer;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -459,10 +468,14 @@ namespace DGtal
     */
     ~CubicalComplex();
 
+  protected:
     /**
-    * Constructor. The cubical complex is not valid.
+    * Constructor. The cubical complex is not valid. A user may not
+    * instantiate an empty CubicalComplex, because it needs the
+    * Khalimsky space.
     */
     CubicalComplex();
+  public:
 
     /**
     * Constructor of empty complex. Needs a space to represents
@@ -583,6 +596,10 @@ namespace DGtal
 
     /// @return the total number of cells in this complex.
     Size size() const;
+
+    /// @return the maximal number of cells in this complex (i.e., the
+    /// number of cells of the Khalimsky space).
+    Size max_size() const;
 
     /// @return 'true' if and only if the complex does not hold any cell.
     bool empty() const;
@@ -1236,7 +1253,8 @@ namespace DGtal
              typename TCellContainer >
   struct ContainerTraits< CubicalComplex< TKSpace, TCellContainer > >
   {
-    typedef NotContainerCategory Category;
+    //typedef typename ContainerTraits< TCellContainer >::Category Category;
+    typedef SequenceCategory Category;
   };
 
 
