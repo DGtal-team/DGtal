@@ -160,6 +160,28 @@ symmetric difference.
 are in \f$ \{0,...,N-1\} \f$. Hence, both A and B have less than N
 elements but are of the order of N.
 
+@section dgtal_setfunctions_sec4 Set relations
+
+We also provide a few set relations by overloading operators ==
+(equality), <= (subset), >= (supset), != (difference). Be careful, <=
+is a partial order relation.
+
+\code
+using namespace DGtal::functions::setops;
+typedef std::vector<int> Container; // could be boost::unordered_set<int>, etc
+int S1[ 10 ] = { 1, 3, 4, 7, 9, 12, 13, 15, 17, 20 };
+int S2[ 6 ]  = { 2, 3, 4, 14, 17, 19 };
+Container A( S1, S1 + 10 );
+Container B( S2, S2 + 6 );
+if ( A <= ( A | B ) ) std::cout << "ok" << std::endl; 
+else                  std::cout << "erreur" << std::endl; 
+if ( ( A & B ) <= B ) std::cout << "ok" << std::endl; 
+else                  std::cout << "erreur" << std::endl; 
+if ( ( A | B ) - ( A & B ) == ( A ^ B ) )
+    std::cout << "ok" << std::endl; 
+else                  std::cout << "erreur" << std::endl; 
+\endcode
+
 */
 
 }
