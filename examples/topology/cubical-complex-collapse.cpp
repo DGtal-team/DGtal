@@ -38,6 +38,7 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
+#include "DGtal/topology/CubicalComplexFunctions.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -194,7 +195,9 @@ int main( int argc, char** argv )
   
   trace.beginBlock( "Collapsing complex" );
   CC::DefaultCellMapIteratorPriority P;
-  complex.collapse( S.begin(), S.end(), P, true, true, true );
+  uint64_t removed 
+    = functions::collapse( complex, S.begin(), S.end(), P, true, true, true );
+  trace.info() << "Collapse removed " << removed << " cells." << std::endl;
   trace.info() << "After collapse: " << complex << std::endl;
   trace.endBlock();
 

@@ -196,6 +196,14 @@ namespace DGtal
     typedef typename CellMap::const_iterator CellMapConstIterator;
     typedef typename CellMap::iterator   CellMapIterator;
 
+
+    /// Possible cell types within a complex. 
+    enum CellType { 
+      Maximal /**< The cell has no proper coface */, 
+      Free    /**< The cell has 1 proper coface */,
+      Any     /**< The cell has strictly more than 2 proper cofaces.*/
+    };
+
     /// Flag Used to indicate in a cell data that this cell has been (virtually) removed.
     static const uint32_t REMOVED     = 0x10000000;
     /// Flag Used to indicate in a cell data that this cell is collapsible.
@@ -1041,6 +1049,33 @@ namespace DGtal
      */
     bool isCellBoundary( const Cell& aCell ) const;
 
+    /**
+    * Given a cell [c], tells if it is a maximal cell in the complex
+    * (return 0), or if it is a free face of the cell pointed by
+    * [it_cell_up] (return 1) or if it is not a free face.
+    *
+    * The complex must be closed. In computing the 1-up-incident
+    * cells, this method ignores cell marked as REMOVED. Furthermore,
+    * if one 1-up-incident cell is not marked as COLLAPSIBLE, the
+    * method returns 2.
+    *
+    * @param[in] c a cubical cell (belonging to 'this')
+    *
+    * @param[out] it_cell_up (returns) a pointer on a cell d if c is a
+    * free face of d.
+    *
+    * param[in] n the maximal dimension of a cell in this
+    * complex. Default to \ref dimension, but can be less in some
+    * cases: for instance, you know that your subcomplex is a digital
+    * surface in Z3, hence you can pass 2 for \a n.
+    *
+    * @return \ref Maximal if the cell is maximal, \ref Free if the
+    * cell is a free face, \ref Any otherwise.
+    */
+    CellType computeCellType( const Cell& c, CellMapIterator& it_cell_up,
+                              Dimension n = dimension );
+
+
     // ----------------------- Standard subcomplexes --------------------------------
   public:
     
@@ -1133,44 +1168,6 @@ namespace DGtal
     */
     void close( Dimension k );
 
-    /**
-    * Collapse a user-specified part of this complex, collapsing cells
-    * following priority [priority], in a decreasing sequence until no
-    * more collapse is feasible. The range [\a S_itb,\a S_itE)
-    * provides the starting cells, generally (but not compulsory)
-    * maximal cells. The resulting complex is guaranteed to keep the
-    * same homotopy type (a kind of topology equivalence).
-    *
-    * @note Cells whose data has been marked as FIXED are not removed.
-    *
-    * @note Only cells that are in the closure of [\a S_itb,\a S_itE)
-    * may be removed, and only if they are not marked as FIXED.
-    *
-    * @advanced If you use a DefaultCellMapIteratorPriority object as
-    * \a priority, then the VALUE part of each cell data defines the
-    * priority (the highest value the soonest are these cells
-    * collapsed). You may thus fill these cell values before calling
-    * this method.
-    *
-    * @tparam CellConstIterator any forward const iterator on Cell.
-    *
-    * @tparam CellMapIteratorPriority any type defining a method 'bool
-    * operator()( const Cell&, const Cell&) const'. Defines the order
-    * in which cells are collapsed. @see DefaultCellMapIteratorPriority
-    *
-    * @param S_itB the start of a range of cells which is included in [K].
-    * @param S_itE the end of a range of cells which is included in [K].
-    * @param priority the object that assign a priority to each cell.
-    * @param hintIsSclosed indicates if [\a S_itb,\a S_ite) is a closed set (faster in this case).
-    * @param hintIsKclosed indicates that this complex is closed.
-    * @param verbose outputs some information during processing when 'true'.
-    */
-    template <typename CellConstIterator, typename CellMapIteratorPriority>
-    void collapse( CellConstIterator S_itB, CellConstIterator S_itE, 
-                   const CellMapIteratorPriority& priority, 
-                   bool hintIsSClosed = false, bool hintIsKClosed = false,
-                   bool verbose = false );
-
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -1218,27 +1215,6 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-
-    /**
-    * Given a cell [c], tells if it is a maximal cell in the complex
-    * (return 0), or if it is a free face of the cell pointed by
-    * [it_cell_up] (return 1) or if it is not a free face.
-    *
-    * The complex must be closed. In computing the 1-up-incident
-    * cells, this method ignores cell marked as REMOVED. Furthermore,
-    * if one 1-up-incident cell is not marked as COLLAPSIBLE, the
-    * method returns 2.
-    *
-    * @param c a cubical cell (belonging to 'this')
-    *
-    * @param it_cell_up (returns) a pointer on a cell d if c is a
-    * free face of d.
-    *
-    * @return 0 if the cell is maximal, 1 if the cell is a free face,
-    * 2 otherwise.
-    */
-    uint32_t computeCellType( Dimension n, const Cell& c, CellMapIterator& it_cell_up );
-
 
 
   }; // end of class CubicalComplex
