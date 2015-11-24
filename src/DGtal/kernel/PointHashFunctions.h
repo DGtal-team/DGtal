@@ -44,6 +44,7 @@
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/base/BasicTypes.h"
 #include <functional>
+#include <boost/functional/hash.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 
