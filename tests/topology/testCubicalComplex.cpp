@@ -95,7 +95,7 @@ namespace boost {
 // Functions for testing class CubicalComplex.
 ///////////////////////////////////////////////////////////////////////////////
 
-static const int NBCELLS = 10000;
+static const int NBCELLS = 1000;
 
 SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > unit tests (incidence,...)", "[cubical_complex][incidence]" )
 {
@@ -315,12 +315,12 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > link tests", "[cubical_co
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
 
-  GIVEN( "A closed cubical complex made of 20x20x20 voxels with their incident cells" ) {
+  GIVEN( "A closed cubical complex made of 10x10x10 voxels with their incident cells" ) {
     CC X( K );
     CC S( K );
-    for ( Integer x = 0; x < 20; ++x )
-      for ( Integer y = 0; y < 20; ++y )
-        for ( Integer z = 0; z < 20; ++z )
+    for ( Integer x = 0; x < 10; ++x )
+      for ( Integer y = 0; y < 10; ++y )
+        for ( Integer z = 0; z < 10; ++z )
           {
             Cell c = K.uSpel( Point( x, y, z ) );
             if ( x*y*z != 0 )
@@ -575,12 +575,12 @@ SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex][link]
   KSpace K;
   K.init( Point( 0,0,0 ), Point( 512,512,512 ), true );
 
-  GIVEN( "A closed cubical complex made of 20x20x20 voxels with their incident cells" ) {
+  GIVEN( "A closed cubical complex made of 10x10x10 voxels with their incident cells" ) {
     CC X( K );
     CC S( K );
-    for ( Integer x = 0; x < 20; ++x )
-      for ( Integer y = 0; y < 20; ++y )
-        for ( Integer z = 0; z < 20; ++z )
+    for ( Integer x = 0; x < 10; ++x )
+      for ( Integer y = 0; y < 10; ++y )
+        for ( Integer z = 0; z < 10; ++z )
           {
             Cell c = K.uSpel( Point( x, y, z ) );
             if ( x*y*z != 0 )
