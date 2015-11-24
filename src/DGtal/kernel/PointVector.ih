@@ -732,7 +732,7 @@ inline
 typename DGtal::PointVector<dim, double, std::array<double,dim> >
 DGtal::PointVector<dim, TComponent, TContainer>::getNormalized() const
 {
-  PointVector<dim,double,boost::array<double,dim> > normalized =(*this);
+  PointVector<dim,double,std::array<double,dim> > normalized =(*this);
   normalized /= normalized.norm();
   return normalized;
 }
