@@ -10,6 +10,8 @@ namespace DGtal {
 
 @writers Jacques-Olivier Lachaud
 
+@since 0.9.1
+
 Part of the \ref packageBase.
   
 This part of the manual describes how to perform set operations

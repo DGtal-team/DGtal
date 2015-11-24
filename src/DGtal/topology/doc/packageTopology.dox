@@ -57,11 +57,16 @@ package, especially to define curves and surfaces.
 Since 0.4.1, high-level classes are provided to navigate onto digital
 surfaces and to represent the topology on the surface.
 
+Since 0.9.1, a class for representing cubical complexes is provided
+and offers many services (incidence, closure, link, star, collapse,
+boundary, union, etc).
+
 @b Modules
  - \ref moduleDigitalTopology (Jacques-Olivier Lachaud, Bertrand Kerautret)
  - \ref moduleCellularTopology (Jacques-Olivier Lachaud)
  - \ref moduleDigitalSurfaces (Jacques-Olivier Lachaud)
  - \ref moduleDigitalSurfaceHelpers (Jacques-Olivier Lachaud, Bertrand Kerautret)
+ - \ref moduleCubicalComplex (Jacques-Olivier Lachaud)
 
 
  @b Package @b Concepts @b Overview
