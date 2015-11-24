@@ -59,6 +59,138 @@ namespace DGtal
         return ( ! compare( t1, t2 ) ) && ( ! compare( t2, t1 ) );
       }
     };
+    template <typename KeyComparator, typename PairKeyData> 
+    struct KeyComparatorForPairKeyData {
+      KeyComparator compare;
+      KeyComparatorForPairKeyData( KeyComparator aCompare )
+        : compare( aCompare ) {}
+      bool operator()( const PairKeyData& t1, const PairKeyData& t2 ) const
+      {
+        return compare( t1.first, t2.first );
+      }
+    };
+
+    /// Default container (like vector or list), takes value_type and standard
+    /// value comparators.
+    template <typename Container, bool associative, bool ordered, bool pair>
+    struct ComparatorAdapter
+    {
+      typedef typename Container::value_type value_type;
+      typedef std::less< value_type >           LessThanPredicate;
+      typedef std::equal_to< value_type >       EqualPredicate;
+      static LessThanPredicate less( const Container& /* C */ )
+      {
+        return LessThanPredicate();
+      }
+      static EqualPredicate equal_to( const Container& /* C */ )
+      {
+        return EqualPredicate();
+      }
+      static inline const value_type& key( const value_type& value )
+      {
+        return value;
+      }
+      
+    };
+
+    /// Set-like adapter.
+    template <typename Container>
+    struct ComparatorAdapter< Container, true, true, false > 
+    {
+      typedef typename Container::value_type  value_type;
+      typedef typename Container::key_type    key_type;
+      typedef typename Container::key_compare key_compare;
+      typedef key_compare                     LessThanPredicate;
+      typedef EqualPredicateFromLessThanComparator< LessThanPredicate, value_type >
+                                              EqualPredicate;
+      static LessThanPredicate less( const Container& C )
+      {
+        return C.key_comp();
+      }
+      static EqualPredicate equal_to( const Container& C )
+      {
+        return EqualPredicate( C.key_comp() );
+      }
+      static inline const key_type& key( const value_type& value )
+      {
+        return value;
+      }
+    };
+
+    /// Map-like adapter.
+    template <typename Container>
+    struct ComparatorAdapter< Container, true, true, true > 
+    {
+      typedef typename Container::value_type  value_type;
+      typedef typename Container::key_type    key_type;
+      typedef typename Container::key_compare key_compare;
+      typedef KeyComparatorForPairKeyData< key_compare, value_type >
+                                              LessThanPredicate;
+      typedef EqualPredicateFromLessThanComparator< LessThanPredicate, value_type >
+                                              EqualPredicate;
+      static LessThanPredicate less( const Container& C )
+      {
+        return LessThanPredicate( C.key_comp() );
+      }
+      static EqualPredicate equal_to( const Container& C )
+      {
+        return EqualPredicate( less( C ) );
+      }
+      static inline const key_type& key( const value_type& value )
+      {
+        return value.first;
+      }
+    };
+
+    /// unordered set-like adapter.
+    template <typename Container>
+    struct ComparatorAdapter< Container, true, false, false > 
+    {
+      typedef typename Container::value_type  value_type;
+      typedef typename Container::key_type    key_type;
+      typedef std::less< key_type >           LessThanPredicate;
+      typedef std::equal_to< key_type >       EqualPredicate;
+      static LessThanPredicate less( const Container& /* C */ )
+      {
+        return LessThanPredicate();
+      }
+      static EqualPredicate equal_to( const Container& /* C */ )
+      {
+        return EqualPredicate();
+      }
+      static inline const key_type& key( const value_type& value )
+      {
+        return value;
+      }
+    };
+
+    /// unordered map-like adapter.
+    template <typename Container>
+    struct ComparatorAdapter< Container, true, false, true > 
+    {
+      typedef typename Container::value_type      value_type;
+      typedef typename Container::key_type        key_type;
+      typedef KeyComparatorForPairKeyData
+        < std::less< key_type >, value_type >     LessThanPredicate;
+      typedef KeyComparatorForPairKeyData
+        < std::equal_to< key_type >, value_type > EqualPredicate;
+
+      static LessThanPredicate less( const Container& /* C */ )
+      {
+        return LessThanPredicate( std::less< key_type >() );
+      }
+      static EqualPredicate equal_to( const Container& /* C */ )
+      {
+        return EqualPredicate( std::equal_to< key_type >() );
+      }
+      static inline const key_type& key( const value_type& value )
+      {
+        return value.first;
+      }
+
+    };
+
+
 
     /**
      * Description of template class 'SetFunctions' <p> \brief Aim:
@@ -68,7 +200,31 @@ namespace DGtal
      * ordered, otherwise it provides a default implementation.
      *
      * @tparam Container any type of container.
-     * @tparam associative tells if the container is associative.
+     *
+     * @tparam associative tells if the container is associative
+     * (e.g. set, map, unordered_set, unordered_map).
+     *
+     * @tparam ordered tells if the container is ordered (e.g., set, map).
+     *
+     *
+     * Specialized implementations are marked with (S) in the list below.
+     *
+     * |--------------------|-------------|----------|----------|
+     * | Container          | associative | ordered  |  pair    |
+     * |--------------------|-------------|----------|----------|
+     * | vector             |   false     |  false   |  false   |
+     * | list               |   false     |  false   |  false   |
+     * | (to avoid)         |   false     |  false   |  true    |
+     * | sorted vector (S)  |   false     |  true    |  false   |
+     * | sorted list (S)    |   false     |  true    |  false   |
+     * | set (S)            |    true     |  true    |  false   |
+     * | map (S)            |    true     |  true    |  true    |
+     * | unordered_set (S)  |    true     |  false   |  false   |
+     * | unordered_map (S)  |    true     |  false   |  true    |
+     *
+     * @note For pair containers (like map and unordered_map), the
+     * data is not taken into account, which means that it can be lost
+     * in some (modifier) operations.
      */
     template <typename Container, bool associative, bool ordered>
     struct SetFunctionsImpl
@@ -86,11 +242,16 @@ namespace DGtal
         if ( S1.size() != S2.size() ) return false;
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
+        typedef ComparatorAdapter< Container, associative, ordered,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Vector V1( S1.begin(), S1.end() );
         Vector V2( S2.begin(), S2.end() );
-        std::sort( V1.begin(), V1.end() );
-        std::sort( V2.begin(), V2.end() );
-        return std::equal( V1.begin(), V1.end(), V2.begin() );
+        std::sort( V1.begin(), V1.end(), CompAdapter::less( S1 ) );
+        std::sort( V2.begin(), V2.end(), CompAdapter::less( S1 ) );
+        return std::equal( V1.begin(), V1.end(), V2.begin(),
+                           CompAdapter::equal_to( S1 ) );
       }
 
       /** 
@@ -106,11 +267,16 @@ namespace DGtal
         if ( S1.size() > S2.size() ) return false;
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
+        typedef ComparatorAdapter< Container, associative, ordered,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Vector V1( S1.begin(), S1.end() );
         Vector V2( S2.begin(), S2.end() );
-        std::sort( V1.begin(), V1.end() );
-        std::sort( V2.begin(), V2.end() );
-        return std::includes( V2.begin(), V2.end(), V1.begin(), V1.end() );
+        std::sort( V1.begin(), V1.end(), CompAdapter::less( S1 ) );
+        std::sort( V2.begin(), V2.end(), CompAdapter::less( S1 ) );
+        return std::includes( V2.begin(), V2.end(), V1.begin(), V1.end(),
+                              CompAdapter::less( S1 ) );
       }
 
       /** 
@@ -123,13 +289,17 @@ namespace DGtal
       {
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
+        typedef ComparatorAdapter< Container, associative, ordered,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Vector V1( S1.begin(), S1.end() );
         Vector V2( S2.begin(), S2.end() );
-        std::sort( V1.begin(), V1.end() );
-        std::sort( V2.begin(), V2.end() );
+        std::sort( V1.begin(), V1.end(), CompAdapter::less( S1 ) );
+        std::sort( V2.begin(), V2.end(), CompAdapter::less( S1 ) );
         S1.clear();
         std::set_difference( V1.begin(), V1.end(), V2.begin(), V2.end(),
-                             std::inserter( S1, S1.end() ) );
+                             std::inserter( S1, S1.end() ), CompAdapter::less( S1 ) );
         return S1;
       }
 
@@ -143,13 +313,17 @@ namespace DGtal
       {
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
+        typedef ComparatorAdapter< Container, associative, ordered,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Vector V1( S1.begin(), S1.end() );
         Vector V2( S2.begin(), S2.end() );
-        std::sort( V1.begin(), V1.end() );
-        std::sort( V2.begin(), V2.end() );
+        std::sort( V1.begin(), V1.end(), CompAdapter::less( S1 ) );
+        std::sort( V2.begin(), V2.end(), CompAdapter::less( S1 ) );
         S1.clear();
         std::set_union( V1.begin(), V1.end(), V2.begin(), V2.end(),
-                        std::inserter( S1, S1.end() ) );
+                        std::inserter( S1, S1.end() ), CompAdapter::less( S1 ) );
         return S1;
       }
 
@@ -163,13 +337,18 @@ namespace DGtal
       {
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
+        typedef ComparatorAdapter< Container, associative, ordered,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Vector V1( S1.begin(), S1.end() );
         Vector V2( S2.begin(), S2.end() );
-        std::sort( V1.begin(), V1.end() );
-        std::sort( V2.begin(), V2.end() );
+        std::sort( V1.begin(), V1.end(), CompAdapter::less( S1 )  );
+        std::sort( V2.begin(), V2.end(), CompAdapter::less( S1 )  );
         S1.clear();
         std::set_intersection( V1.begin(), V1.end(), V2.begin(), V2.end(),
-                               std::inserter( S1, S1.end() ) );
+                               std::inserter( S1, S1.end() ), 
+                               CompAdapter::less( S1 )  );
         return S1;
       }
 
@@ -183,13 +362,18 @@ namespace DGtal
       {
         typedef typename Container::value_type value_type;
         typedef std::vector<value_type> Vector;
+        typedef ComparatorAdapter< Container, associative, ordered,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Vector V1( S1.begin(), S1.end() );
         Vector V2( S2.begin(), S2.end() );
-        std::sort( V1.begin(), V1.end() );
-        std::sort( V2.begin(), V2.end() );
+        std::sort( V1.begin(), V1.end(), CompAdapter::less( S1 )  );
+        std::sort( V2.begin(), V2.end(), CompAdapter::less( S1 )  );
         S1.clear();
         std::set_symmetric_difference( V1.begin(), V1.end(), V2.begin(), V2.end(),
-                                       std::inserter( S1, S1.end() ) );
+                                       std::inserter( S1, S1.end() ), 
+                                       CompAdapter::less( S1 )  );
         return S1;
       }
 
@@ -197,7 +381,8 @@ namespace DGtal
     };
     
     /**
-     * Specialization for associative, unordered containers.
+     * Specialization for associative, unordered containers
+     * (unordered_set, unordered_map).
      */
     template <typename Container>
     struct SetFunctionsImpl<Container, true, false>
@@ -212,12 +397,16 @@ namespace DGtal
        */
       static bool isEqual( const Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, true, false,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         // Checks size first.
         if ( S1.size() != S2.size() ) return false;
         // Note that it is critical here that all elements are distinct.
         for ( typename Container::const_iterator it = S1.begin(), 
                 itE = S1.end(); it != itE; ++it )
-          if ( S2.find( *it ) == S2.end() ) return false;
+          if ( S2.find( CompAdapter::key( *it ) ) == S2.end() ) return false;
         return true;
       }
 
@@ -230,11 +419,15 @@ namespace DGtal
        */
       static bool isSubset( const Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, true, false,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         // Checks size first.
         if ( S1.size() > S2.size() ) return false;
         for ( typename Container::const_iterator it = S1.begin(), 
                 itE = S1.end(); it != itE; ++it )
-          if ( S2.find( *it ) == S2.end() ) return false;
+          if ( S2.find( CompAdapter::key( *it ) ) == S2.end() ) return false;
         return true;
       }
 
@@ -246,9 +439,13 @@ namespace DGtal
        */
       static Container& assignDifference( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, true, false,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         for ( typename Container::const_iterator it = S2.begin(), 
                 itE = S2.end(); it != itE; ++it )
-          S1.erase( *it );
+          S1.erase( CompAdapter::key( *it ) );
         return S1;
       }
 
@@ -275,12 +472,16 @@ namespace DGtal
        */
       static Container& assignIntersection( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, true, false,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         for ( typename Container::iterator it = S1.begin(), 
                 itE = S1.end(); it != itE; )
           {
             typename Container::iterator itNext = it; ++itNext;
             if ( S2.find( *it ) == S2.end() )
-              S1.erase( *it );
+              S1.erase( CompAdapter::key( *it ) );
             it = itNext;
           }
         return S1;
@@ -323,10 +524,12 @@ namespace DGtal
         // One has to be careful for comparing keys in set-like
         // structure, we only have an operator<. Hence a == b is defined as 
         // ( ! a<b ) && ( ! b<a ).
-        typedef detail::EqualPredicateFromLessThanComparator
-          < typename Container::key_compare, typename Container::key_type > Predicate;
+        typedef ComparatorAdapter< Container, true, true,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         return std::equal( S1.begin(), S1.end(), S2.begin(), 
-                           Predicate( S1.key_comp() ) ); 
+                           CompAdapter::equal_to( S1 ) );
       }
 
       /** 
@@ -341,8 +544,12 @@ namespace DGtal
       {
         // Checks size first.
         if ( S1.size() > S2.size() ) return false;
+        typedef ComparatorAdapter< Container, true, true,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         return std::includes( S2.begin(), S2.end(), 
-                              S1.begin(), S1.end(), S1.key_comp() ); 
+                              S1.begin(), S1.end(), CompAdapter::less( S1 ) );
       }
 
 
@@ -354,10 +561,15 @@ namespace DGtal
        */
       static Container& assignDifference( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, true, true,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Container S;
         std::swap( S, S1 );
         std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
-                             std::inserter( S1, S1.end() ), S.key_comp() );
+                             std::inserter( S1, S1.end() ),
+                             CompAdapter::less( S1 ) );
         return S1;
       }
 
@@ -369,10 +581,15 @@ namespace DGtal
        */
       static Container& assignUnion( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, true, true,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Container S;
         std::swap( S, S1 );
         std::set_union( S.begin(), S.end(), S2.begin(), S2.end(), 
-                        std::inserter( S1, S1.end() ), S.key_comp() );
+                        std::inserter( S1, S1.end() ),
+                        CompAdapter::less( S1 ) );
         return S1;
       }
 
@@ -384,10 +601,15 @@ namespace DGtal
        */
       static Container& assignIntersection( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, true, true,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Container S;
         std::swap( S, S1 );
         std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(), 
-                               std::inserter( S1, S1.end() ), S.key_comp() );
+                               std::inserter( S1, S1.end() ), 
+                               CompAdapter::less( S1 ) );
         return S1;
       }
 
@@ -399,16 +621,22 @@ namespace DGtal
        */
       static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, true, true,
+                                   IsPairAssociativeContainer< Container >::value >
+          CompAdapter;
+
         Container S;
         std::swap( S, S1 );
         std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
-                                       std::inserter( S1, S1.end() ), S.key_comp() );
+                                       std::inserter( S1, S1.end() ),
+                                       CompAdapter::less( S1 ) );
         return S1;
       }
     };
 
     /**
-     * Specialization for non-associative, ordered containers.
+     * Specialization for non-associative, ordered containers. Could
+     * be a sorted std::vector or std::list.
      */
     template <typename Container >
     struct SetFunctionsImpl< Container, false, true >
@@ -422,9 +650,13 @@ namespace DGtal
        */
       static bool isEqual( const Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, false, true, false >
+          CompAdapter;
+
         // Checks size first.
         if ( S1.size() != S2.size() ) return false;
-        return std::equal( S1.begin(), S1.end(), S2.begin() ); 
+        return std::equal( S1.begin(), S1.end(), S2.begin(), 
+                           CompAdapter::equal_to( S1 ) ); 
       }
 
       /** 
@@ -437,9 +669,13 @@ namespace DGtal
        */
       static bool isSubset( const Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, false, true, false >
+          CompAdapter;
+
         // Checks size first.
         if ( S1.size() > S2.size() ) return false;
-        return std::includes( S2.begin(), S2.end(), S1.begin(), S1.end() ); 
+        return std::includes( S2.begin(), S2.end(), S1.begin(), S1.end(), 
+                              CompAdapter::less( S1 ) ); 
       }
 
       /** 
@@ -450,10 +686,14 @@ namespace DGtal
        */
       static Container& assignDifference( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, false, true, false >
+          CompAdapter;
+
         Container S;
         std::swap( S, S1 );
         std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
-                             std::inserter( S1, S1.end() ) );
+                             std::inserter( S1, S1.end() ), 
+                             CompAdapter::less( S1 ) );
         return S1;
       }
 
@@ -465,10 +705,14 @@ namespace DGtal
        */
       static Container& assignUnion( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, false, true, false >
+          CompAdapter;
+
         Container S;
         std::swap( S, S1 );
         std::set_union( S.begin(), S.end(), S2.begin(), S2.end(), 
-                        std::inserter( S1, S1.end() ) );
+                        std::inserter( S1, S1.end() ), 
+                        CompAdapter::less( S1 ) );
         return S1;
       }
 
@@ -480,10 +724,14 @@ namespace DGtal
        */
       static Container& assignIntersection( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, false, true, false >
+          CompAdapter;
+
         Container S;
         std::swap( S, S1 );
         std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(), 
-                               std::inserter( S1, S1.end() ) );
+                               std::inserter( S1, S1.end() ), 
+                               CompAdapter::less( S1 ) );
         return S1;
       }
 
@@ -495,10 +743,14 @@ namespace DGtal
        */
       static Container& assignSymmetricDifference( Container& S1, const Container& S2 )
       {
+        typedef ComparatorAdapter< Container, false, true, false >
+          CompAdapter;
+
         Container S;
         std::swap( S, S1 );
         std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
-                                       std::inserter( S1, S1.end() ) );
+                                       std::inserter( S1, S1.end() ), 
+                                       CompAdapter::less( S1 ) );
         return S1;
       }
 
@@ -532,6 +784,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     bool isEqual( const Container& S1, const Container& S2 )
       {
+        BOOST_STATIC_ASSERT( IsContainer< Container >::value );
         BOOST_STATIC_CONSTANT
           ( bool, isAssociative = IsAssociativeContainer< Container >::value );
         BOOST_STATIC_CONSTANT
@@ -557,6 +810,7 @@ namespace DGtal
     template <typename Container>
     bool isEqual( const Container& S1, const Container& S2 )
       {
+        BOOST_STATIC_ASSERT( IsContainer< Container >::value );
         BOOST_STATIC_CONSTANT
           ( bool, isAssociative = IsAssociativeContainer< Container >::value );
         BOOST_STATIC_CONSTANT
@@ -586,6 +840,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     bool isSubset( const Container& S1, const Container& S2 )
       {
+        BOOST_STATIC_ASSERT( IsContainer< Container >::value );
         BOOST_STATIC_CONSTANT
           ( bool, isAssociative = IsAssociativeContainer< Container >::value );
         BOOST_STATIC_CONSTANT
@@ -609,6 +864,7 @@ namespace DGtal
     template <typename Container>
     bool isSubset( const Container& S1, const Container& S2 )
       {
+        BOOST_STATIC_ASSERT( IsContainer< Container >::value );
         BOOST_STATIC_CONSTANT
           ( bool, isAssociative = IsAssociativeContainer< Container >::value );
         BOOST_STATIC_CONSTANT
@@ -635,6 +891,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     Container& assignDifference( Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
@@ -656,6 +913,7 @@ namespace DGtal
     template <typename Container>
     Container& assignDifference( Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
@@ -683,6 +941,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     Container makeDifference( const Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       Container S( S1 );
       assignDifference<Container, ordered>( S, S2 );
       return S;
@@ -701,6 +960,7 @@ namespace DGtal
     template <typename Container>
     Container makeDifference( const Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       Container S( S1 );
       assignDifference( S, S2 );
       return S;
@@ -725,6 +985,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     Container& assignUnion( Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
@@ -746,6 +1007,7 @@ namespace DGtal
     template <typename Container>
     Container& assignUnion( Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
@@ -772,6 +1034,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     Container makeUnion( const Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       Container S( S1 );
       assignUnion<Container, ordered>( S, S2 );
       return S;
@@ -789,6 +1052,7 @@ namespace DGtal
     template <typename Container>
     Container makeUnion( const Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       Container S( S1 );
       assignUnion( S, S2 );
       return S;
@@ -813,6 +1077,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     Container& assignIntersection( Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
@@ -834,6 +1099,7 @@ namespace DGtal
     template <typename Container>
     Container& assignIntersection( Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
@@ -860,6 +1126,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     Container makeIntersection( const Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       Container S( S1 );
       assignIntersection<Container, ordered>( S, S2 );
       return S;
@@ -877,6 +1144,7 @@ namespace DGtal
     template <typename Container>
     Container makeIntersection( const Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       Container S( S1 );
       assignIntersection( S, S2 );
       return S;
@@ -903,6 +1171,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     Container& assignSymmetricDifference( Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
@@ -924,6 +1193,7 @@ namespace DGtal
     template <typename Container>
     Container& assignSymmetricDifference( Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
@@ -950,6 +1220,7 @@ namespace DGtal
     template <typename Container, bool ordered>
     Container makeSymmetricDifference( const Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       Container S( S1 );
       assignSymmetricDifference<Container, ordered>( S, S2 );
       return S;
@@ -967,6 +1238,7 @@ namespace DGtal
     template <typename Container>
     Container makeSymmetricDifference( const Container& S1, const Container& S2 )
     {
+      BOOST_STATIC_ASSERT( IsContainer< Container >::value );
       Container S( S1 );
       assignSymmetricDifference( S, S2 );
       return S;
