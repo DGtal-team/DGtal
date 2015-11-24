@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <queue>
+#include "DGtal/base/SetFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -982,14 +983,14 @@ typename DGtal::CubicalComplex<TKSpace, TCellContainer>
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 link( const CubicalComplex& S, bool hintClosed, bool hintOpen ) const
 {
-  using namespace ::DGtal::functions::ccops;
+  using namespace ::DGtal::functions::setops;
   CubicalComplex cl_star_S = closure( star   ( S, hintOpen   ), hintClosed );
   CubicalComplex star_cl_S = star   ( closure( S, hintClosed ), hintOpen   );
 
   // Calls a specializable difference of sets operation.
-  // for ( Dimension i = 0; i <= dimension; ++i )
-  //   cl_star_S.myCells[ i ] -= star_cl_S.myCells[ i ]; // set difference
-  return cl_star_S - star_cl_S;
+  for ( Dimension i = 0; i <= dimension; ++i )
+    cl_star_S.myCells[ i ] -= star_cl_S.myCells[ i ]; // set difference
+  return cl_star_S;
 }
 
 //-----------------------------------------------------------------------------

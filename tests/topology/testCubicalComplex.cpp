@@ -35,6 +35,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
+#include "DGtal/topology/CubicalComplexFunctions.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
