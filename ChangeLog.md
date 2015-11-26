@@ -2,6 +2,21 @@
 # DGtal 0.9.1
 
 ## New Features / Critical Changes
+- *Base Package*
+ - Traits class for containers in order to probe their category at compile time.
+   (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+ - Generic set operations for arbitrary containers. You may use overloaded operators
+   like &, |, -, ^ on arbitrary containers (list, vector, unordered_set, map, etc).
+   (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+
+- *Topology Package*
+ - New class CubicalComplex and functions associated to
+   it. Arbitrary cubical complexes can be represented, displayed and
+   multiple operations are defined onto them: incidence, closing,
+   opening, closure, star, link, interior, boundary, set operations
+   and relations, as a collapse operation.
+   (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+
 - *Geometry Package*
  - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
    the width (vertical/horizontal or Euclidean) of a convex hull.
@@ -71,7 +86,7 @@
  - Specializations of std::hash (c++11) and boost::hash to define a hash
    functions on DGtal points. (David Coeurjolly,
    [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
- 
+
 ## Changes
 
 - *DEC Package*
