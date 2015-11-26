@@ -840,7 +840,11 @@ cellBoundary( const Cell& aCell, bool hintClosed ) const
     {
       if ( belongs( *first ) ) 
         {
+#ifdef WITH_C11
           *result = std::move( *first );
+#else
+          *result = *first;
+#endif
           ++result;
         }
     }
@@ -864,8 +868,11 @@ cellCoBoundary( const Cell& aCell, bool hintOpen ) const
     {
       if ( belongs( *first ) )
         {
+#ifdef WITH_C11
           *result = std::move( *first );
-          ++result;
+#else
+          *result = *first;
+#endif
         }
     }
   proper_cofaces.resize( result - proper_cofaces.begin() );

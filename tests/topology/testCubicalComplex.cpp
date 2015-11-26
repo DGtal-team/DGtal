@@ -33,6 +33,7 @@
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/topology/CubicalComplexFunctions.h"
@@ -626,5 +627,40 @@ SCENARIO( "CubicalComplex< K3,std::map<> > concept check tests", "[cubical_compl
   BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<typename CC::ConstIterator> ));
 }
 
+
+SCENARIO( "CubicalComplex< K3,std::map<> > set operations and relations", "[cubical_complex][ccops]" )
+{
+  typedef KhalimskySpaceND<3>               KSpace;
+  typedef typename KSpace::Space            Space;
+  typedef HyperRectDomain<Space>            Domain;
+  typedef typename KSpace::Point            Point;
+  typedef typename KSpace::Cell             Cell;
+  typedef typename KSpace::Integer          Integer;
+  typedef std::map<Cell, CubicalCellData>   Map;
+  typedef CubicalComplex< KSpace, Map >     CC;
+  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+
+  using namespace DGtal::functions::ccops;
+
+  KSpace K;
+  K.init( Point( 0,0 ), Point( 5,3 ), true );
+  Domain domain( Point( 0,0 ), Point( 5,3 ) );
+  CC X1( K );
+  X1.insertCell( K.uSpel( Point(1,1) ) );
+  X1.insertCell( K.uSpel( Point(2,1) ) );
+  X1.insertCell( K.uSpel( Point(3,1) ) );
+  X1.insertCell( K.uSpel( Point(2,2) ) );
+  X1.close();
+
+  CC X2( K );
+  X2.insertCell( K.uSpel( Point(2,2) ) );
+  X2.insertCell( K.uSpel( Point(3,2) ) );
+  X2.insertCell( K.uSpel( Point(4,2) ) );
+  X2.close();
+  bool c = 1 <= 2;
+  CAPTURE( c );
+  REQUIRE( ( X1 & X2 ).size() < X1.size() );
+  
+}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
