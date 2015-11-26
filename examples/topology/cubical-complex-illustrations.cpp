@@ -169,37 +169,6 @@ int main( int argc, char** argv )
   board.clear();
   //! [cubical-complex-illustrations-collapse]
 
-  {
-    KSpace K;
-    K.init( Point( 0,0 ), Point( 11,11 ), true );
-    CC X( K );
-    CC S( K );
-    for ( Integer x = 0; x < 10; ++x )
-      for ( Integer y = 0; y < 10; ++y )
-        {
-          Cell c = K.uSpel( Point( x, y ) );
-          if ( x*y != 0 )
-            S.insert( K.uPointel( Point( x, y ) ) );
-          X.insertCell( c );
-        }
-    X.close();
-    trace.info() << "X.euler() = " << X.euler() << " [ == 1 ]" << std::endl;
-    CC link_S = X.link( S ); //X.link( S );
-    trace.info() << "link = " << link_S << " [ euler == 0 ]" << std::endl;
-    board << CustomStyle( X.className(), 
-                          new CustomColors( Color(120,120,120), Color(150,150,150) ) )
-          << X
-          << CustomStyle( S.className(), 
-                          new CustomColors( Color::Blue, Color(120,120,255) ) )
-          << S
-          << CustomStyle( link_S.className(), 
-                          new CustomColors( Color::Red, Color(255,120,120) ) )
-          << link_S;
-    board.saveEPS( "cubical-complex-illustrations-check.eps" );
-    board.saveTikZ( "cubical-complex-illustrations-check.tikz" );
-    board.clear();
-  }
-
   return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////

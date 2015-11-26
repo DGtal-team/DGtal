@@ -1213,7 +1213,7 @@ namespace DGtal
     void open();
 
     /**
-    * Open all cells of dimension greater or equal to \a k.
+    * Open all cells of dimension less or or equal to \a k.
     * @param k any strictly positive integer.
     */
     void open( Dimension k );

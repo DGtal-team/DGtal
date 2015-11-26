@@ -670,6 +670,12 @@ SCENARIO( "CubicalComplex< K2,std::map<> > set operations and relations", "[cubi
   REQUIRE( X1_and_X2_included_in_X1 );
   REQUIRE( X1c_and_X2c_included_in_X1c );
   REQUIRE( cl_X1_and_X2_equal_to_X1c_and_X2c );
+
+  CC X1bd = X1c - *X1c;
+  CAPTURE( X1bd );
+  CAPTURE( X1.boundary() );
+  bool X1bd_equal_X1boundary = X1bd == X1.boundary();
+  REQUIRE( X1bd_equal_X1boundary );
   
 }
 //                                                                           //

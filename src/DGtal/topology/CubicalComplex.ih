@@ -788,7 +788,7 @@ void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 open()
 {
-  open( 0 );
+  open( dim() );
 }
 
 //-----------------------------------------------------------------------------
@@ -798,24 +798,26 @@ void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 open( Dimension k )
 {
-  if ( k >= dimension ) return;
-  Dimension l = k + 1;
-  for ( CellMapIterator it = begin( k ), itE = end( k ); it != itE; )
+  if ( k < dimension )
     {
-      Cells direct_cofaces = myKSpace->uUpperIncident( it->first );
-      bool is_open = true;
-      for ( typename Cells::const_iterator cells_it = direct_cofaces.begin(), 
-              cells_it_end = direct_cofaces.end(); cells_it != cells_it_end; ++cells_it )
-        if ( ! belongs( l, *cells_it ) ) 
-          {
-            is_open = false;
-            break;
-          }
-      CellMapIterator itMem = it; 
-      ++it;
-      if ( ! is_open ) myCells[ k ].erase( itMem );
+      Dimension l = k + 1;
+      for ( CellMapIterator it = begin( k ), itE = end( k ); it != itE; )
+        {
+          Cells direct_cofaces = myKSpace->uUpperIncident( it->first );
+          bool is_open = true;
+          for ( typename Cells::const_iterator cells_it = direct_cofaces.begin(), 
+                  cells_it_end = direct_cofaces.end(); cells_it != cells_it_end; ++cells_it )
+            if ( ! belongs( l, *cells_it ) ) 
+              {
+                is_open = false;
+                break;
+              }
+          CellMapIterator itMem = it; 
+          ++it;
+          if ( ! is_open ) myCells[ k ].erase( itMem );
+        }
     }
-  open( l );
+  if ( k > 0 ) open( k - 1 );
 }
 
 //-----------------------------------------------------------------------------
