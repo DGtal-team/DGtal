@@ -212,9 +212,16 @@ of the templated parameter CellContainer of CubicalComplex, it is
 better to use operations and relations defined in
 DGtal::function::ccops, for instance as follows:
 
+\code
+using namespace DGtal::functions::ccops;
+CC X( K );            // creates the cubical complex
+CC Xc  = ~X;          // closing of X
+CC Xco = *Xc;         // opening of Xc (interior of X).
+CC Xbd = Xc - Xco;    // boundary of X.
+\endcode
 
 
-@section dgtal_ccomplex_sec7 Collapsing a complex
+@section dgtal_ccomplex_sec7 Topological operations: closing, opening, collapsing a complex
 
 @image html cubical-complex-illustrations-collapse.png "Homotopic collapse of \a X, displayed in orange, with fixed points marked in blue."
 @image latex cubical-complex-illustrations-collapse.png "Homotopic collapse of \a X, displayed in orange, with fixed points marked in blue." width=5cm
