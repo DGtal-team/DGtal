@@ -218,13 +218,101 @@ CC X( K );            // creates the cubical complex
 CC Xc  = ~X;          // closing of X
 CC Xco = *Xc;         // opening of Xc (interior of X).
 CC Xbd = Xc - Xco;    // boundary of X.
+CC Xbd2= X.boundary();// same result for pure complex. 
 \endcode
 
+You have the following operations:
+- functions::ccops::operator|  : union of two complexes.
+- functions::ccops::operator|= : assignment union with another complex.
+- functions::ccops::operator&  : intersection of two complexes.
+- functions::ccops::operator&= : assignment intersection with another complex.
+- functions::ccops::operator-  : set difference of two complexes.
+- functions::ccops::operator-= : assignment set difference with another complex.
+- functions::ccops::operator^  : symmetric set difference of two complexes.
+- functions::ccops::operator^= : assignment symmetric set difference with another complex.
+- functions::ccops::operator~  : closing of a complex (smallest closed complex containg input complex).
+- functions::ccops::operator*  : opening of a complex (greatest open complex contained in input complex).
+
+And the following relations:
+- functions::ccops::operator<=  : inclusion of two complexes (subset).
+- functions::ccops::operator>=  : inclusion of two complexes (supset).
+- functions::ccops::operator==  : equality of two complexes (both subset and supset).
+- functions::ccops::operator!=  : non-equality of two complexes (equal is false).
+
+All these operations are at most \b linear in the sum of the number of
+cells of input complexes, but they are generally exponential in the
+dimension of complexes.
 
 @section dgtal_ccomplex_sec7 Topological operations: closing, opening, collapsing a complex
 
+You may \b close a complex (CubicalComplex::close), i.e. adding cells
+such that the faces of every cell belongs to the complex. The complex
+is then said to be closed. The updated complex corresponds to the
+smallest closed complex containing it.
+
+You may \b open a complex (CubicalComplex::open), i.e. removing cells
+such that the co-faces of every cell belongs to the complex. The complex
+is then said to be open. The updated complex corresponds to the
+greatest open complex contained in it.
+
+A more difficult topological operation is the \b collapse
+(functions::collapse). A collapse transforms a complex by removing
+cells, but at the end the complex has the same homotopy type as the
+initial complex. The topology is preserved since only free pairs are
+removed. The following snippet shows how to collapse complex X, while
+keeping two cells \a fixed.
+
+@snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-collapse
+
+As you can see, when collapsing a complex X, you precise:
+- the subcomplex of X that can be collapsed (should be closed,
+  otherwise it is closed).
+- a priority object that tells in which order cell are collapsed. If
+  you use CubicalComplex::DefaultCellMapIteratorPriority, then the
+  order follows the values stored in the data associated with each
+  cell. You may use CubicalComplex::operator[] to change this value
+  for each cell.
+- various hints to speed up the process.
+
+Example topology/cubical-complex-collapse.cpp shows that it works also in 3D (in fact, it is nD).
+
 @image html cubical-complex-illustrations-collapse.png "Homotopic collapse of \a X, displayed in orange, with fixed points marked in blue."
 @image latex cubical-complex-illustrations-collapse.png "Homotopic collapse of \a X, displayed in orange, with fixed points marked in blue." width=5cm
+
+*/
+
+/** 
+Collapse of 3D cubical complex that is made of 20x20x20 voxels with
+their faces.  Fixed cells were marked in red. It was the eight
+vertices, plus all border linels on the upper faces plus a random
+linel within the complex. The priority was the distance to the
+diagonal.  Note that the Euler characteristic of the complex is
+unchanged after collapse.
+
+@see \ref dgtal_ccomplex_sec7
+
+@verbatim
+$ ./examples/topology/cubical-complex-collapse
+New Block [Creating Cubical Complex]
+  After close: [CubicalComplex dim=3 chi=1 #0=9261 #1=26460 #2=25200 #3=8000]
+EndBlock [Creating Cubical Complex] (12.088 ms)
+New Block [Collapsing complex]
+  [CC::collapse]-+ tag collapsible elements...    68756 found.
+  [CC::collapse]-+ entering collapsing loop. 
+  [CC::collapse]---+ Pass 1, Card(PQ)=68921 elements, nb_exam=0
+  [CC::collapse]---+ Pass 2, Card(PQ)=16219 elements, nb_exam=68921
+  [CC::collapse]---+ Pass 3, Card(PQ)=7956 elements, nb_exam=85140
+  [CC::collapse]---+ Pass 4, Card(PQ)=36 elements, nb_exam=93096
+  [CC::collapse]-+ cleaning complex.
+  Collapse removed 64066 cells.
+  After collapse: [CubicalComplex dim=2 chi=1 #0=1268 #1=2427 #2=1160 #3=0]
+EndBlock [Collapsing complex] (162.069 ms)
+$
+@endverbatim
+
+@image html cubical-complex-collapse-snapshot.png "Collapse of a cubical complex made of 20x20x20 voxels with some cells marked as fixed (in red)."
+@image latex cubical-complex-collapse-snapshot.png "Collapse of a cubical complex made of 20x20x20 voxels with some cells marked as fixed (in red)." width=5cm
+\example topology/cubical-complex-collapse.cpp
 
 */
 
