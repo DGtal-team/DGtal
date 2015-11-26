@@ -170,9 +170,6 @@ namespace DGtal
   * (strangely) not models of boost::AssociativeContainer, hence we
   * cannot check concepts here.
   *
-  * @tparam TData any type deriving from CubicalCellData that is
-  * boost::DefaultConstructible, boost::Assignable,
-  * boost::CopyConstructible.
   */
   template < typename TKSpace, 
              typename TCellContainer = std::map< typename TKSpace::Cell, CubicalCellData > >
@@ -667,7 +664,7 @@ namespace DGtal
 
     /**
      * Erase element pointed by iterator \a it.
-     * @param it any iterator on a valid cell.
+     * @param position any iterator on a valid cell.
      */
     void erase( Iterator position );
 
@@ -676,7 +673,7 @@ namespace DGtal
      * @param aCell any cell valid in the Khalimsky space associated to the complex.
      * @return the number of cells effectively removed from the cubical complex.
      */
-    Size erase( const Cell& val );
+    Size erase( const Cell& aCell );
 
     /**
      * Erases range of cells [\a first, \a last ).
@@ -1108,8 +1105,8 @@ namespace DGtal
     * cases: for instance, you know that your subcomplex is a digital
     * surface in Z3, hence you can pass 2 for \a n.
     *
-    * @return \ref Maximal if the cell is maximal, \ref Free if the
-    * cell is a free face, \ref Any otherwise.
+    * @return CellType::Maximal if the cell is maximal, CellType::Free if the
+    * cell is a free face, CellType::Any otherwise.
     */
     CellType computeCellType( const Cell& c, CellMapIterator& it_cell_up,
                               Dimension n = dimension );

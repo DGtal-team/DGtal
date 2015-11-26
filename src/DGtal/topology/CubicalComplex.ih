@@ -1025,8 +1025,8 @@ closure( const CubicalComplex& S, bool hintClosed ) const
   CubicalComplex cl_S = S;
   for ( ConstIterator it = S.begin(), itE = S.end(); it != itE; ++it )
     {
-      Cells faces = cellBoundary( *it, hintClosed );
-      cl_S.insert( faces.begin(), faces.end() );
+      Cells cell_faces = cellBoundary( *it, hintClosed );
+      cl_S.insert( cell_faces.begin(), cell_faces.end() );
     }
   return cl_S;
 }
@@ -1040,8 +1040,8 @@ star( const CubicalComplex& S, bool hintOpen ) const
   CubicalComplex star_S = S;
   for ( ConstIterator it = S.begin(), itE = S.end(); it != itE; ++it )
     {
-      Cells faces = cellCoBoundary( *it, hintOpen );
-      star_S.insert( faces.begin(), faces.end() );
+      Cells cell_cofaces = cellCoBoundary( *it, hintOpen );
+      star_S.insert( cell_cofaces.begin(), cell_cofaces.end() );
     }
   return star_S;
 }
