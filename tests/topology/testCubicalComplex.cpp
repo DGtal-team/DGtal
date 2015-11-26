@@ -628,9 +628,9 @@ SCENARIO( "CubicalComplex< K3,std::map<> > concept check tests", "[cubical_compl
 }
 
 
-SCENARIO( "CubicalComplex< K3,std::map<> > set operations and relations", "[cubical_complex][ccops]" )
+SCENARIO( "CubicalComplex< K2,std::map<> > set operations and relations", "[cubical_complex][ccops]" )
 {
-  typedef KhalimskySpaceND<3>               KSpace;
+  typedef KhalimskySpaceND<2>               KSpace;
   typedef typename KSpace::Space            Space;
   typedef HyperRectDomain<Space>            Domain;
   typedef typename KSpace::Point            Point;
@@ -650,16 +650,26 @@ SCENARIO( "CubicalComplex< K3,std::map<> > set operations and relations", "[cubi
   X1.insertCell( K.uSpel( Point(2,1) ) );
   X1.insertCell( K.uSpel( Point(3,1) ) );
   X1.insertCell( K.uSpel( Point(2,2) ) );
-  X1.close();
+  CC X1c = ~ X1;
 
   CC X2( K );
   X2.insertCell( K.uSpel( Point(2,2) ) );
   X2.insertCell( K.uSpel( Point(3,2) ) );
   X2.insertCell( K.uSpel( Point(4,2) ) );
   X2.close();
-  bool c = 1 <= 2;
-  CAPTURE( c );
+  CC X2c = ~ X2;
   REQUIRE( ( X1 & X2 ).size() < X1.size() );
+  bool X1_and_X2_included_in_X1 = ( X1 & X2 ) <= X1;
+  bool X1c_and_X2c_included_in_X1c = ( X1c & X2c ) <= X1c;
+  CC A = ~( X1 & X2 );
+  CC B = ~( *(X1c & X2c) );
+  CAPTURE( A );
+  CAPTURE( B );
+  bool cl_X1_and_X2_equal_to_X1c_and_X2c = A == B;
+
+  REQUIRE( X1_and_X2_included_in_X1 );
+  REQUIRE( X1c_and_X2c_included_in_X1c );
+  REQUIRE( cl_X1_and_X2_equal_to_X1c_and_X2c );
   
 }
 //                                                                           //

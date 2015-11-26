@@ -784,6 +784,43 @@ close( Dimension k )
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+open()
+{
+  open( 0 );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+open( Dimension k )
+{
+  if ( k >= dimension ) return;
+  Dimension l = k + 1;
+  for ( CellMapIterator it = begin( k ), itE = end( k ); it != itE; )
+    {
+      Cells direct_cofaces = myKSpace->uUpperIncident( it->first );
+      bool is_open = true;
+      for ( typename Cells::const_iterator cells_it = direct_cofaces.begin(), 
+              cells_it_end = direct_cofaces.end(); cells_it != cells_it_end; ++cells_it )
+        if ( ! belongs( l, *cells_it ) ) 
+          {
+            is_open = false;
+            break;
+          }
+      CellMapIterator itMem = it; 
+      ++it;
+      if ( ! is_open ) myCells[ k ].erase( itMem );
+    }
+  open( l );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapConstIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 findCell( const Cell& aCell ) const
@@ -873,6 +910,7 @@ cellCoBoundary( const Cell& aCell, bool hintOpen ) const
 #else
           *result = *first;
 #endif
+          ++result;
         }
     }
   proper_cofaces.resize( result - proper_cofaces.begin() );
@@ -1012,14 +1050,15 @@ typename DGtal::CubicalComplex<TKSpace, TCellContainer>
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 link( const CubicalComplex& S, bool hintClosed, bool hintOpen ) const
 {
-  using namespace ::DGtal::functions::setops;
+  using namespace ::DGtal::functions::ccops;
   CubicalComplex cl_star_S = closure( star   ( S, hintOpen   ), hintClosed );
   CubicalComplex star_cl_S = star   ( closure( S, hintClosed ), hintOpen   );
 
   // Calls a specializable difference of sets operation.
-  for ( Dimension i = 0; i <= dimension; ++i )
-    cl_star_S.myCells[ i ] -= star_cl_S.myCells[ i ]; // set difference
-  return cl_star_S;
+  return cl_star_S - star_cl_S;
+  // for ( Dimension i = 0; i <= dimension; ++i )
+  //   cl_star_S.myCells[ i ] -= star_cl_S.myCells[ i ]; // set difference
+  // return cl_star_S;
 }
 
 //-----------------------------------------------------------------------------

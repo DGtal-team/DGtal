@@ -114,6 +114,30 @@ namespace DGtal
       CubicalComplex< TKSpace, TCellContainer >
       operator- ( const CubicalComplex< TKSpace, TCellContainer >&,
                   const CubicalComplex< TKSpace, TCellContainer >& );
+
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >
+      operator~ ( const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      CubicalComplex< TKSpace, TCellContainer >
+      operator* ( const CubicalComplex< TKSpace, TCellContainer >& );
+
+      template < typename TKSpace, typename TCellContainer >
+      bool
+      operator==( const CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      bool
+      operator!=( const CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      bool
+      operator<=( const CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
+      template < typename TKSpace, typename TCellContainer >
+      bool
+      operator>=( const CubicalComplex< TKSpace, TCellContainer >&,
+                  const CubicalComplex< TKSpace, TCellContainer >& );
     } // namespace ccops
   } // namespace functions
 
@@ -174,6 +198,12 @@ namespace DGtal
     friend Self  DGtal::functions::ccops::operator& <>( const Self&, const Self& );
     friend Self  DGtal::functions::ccops::operator^ <>( const Self&, const Self& );
     friend Self  DGtal::functions::ccops::operator- <>( const Self&, const Self& );
+    friend Self  DGtal::functions::ccops::operator~ <>( const Self& );
+    friend Self  DGtal::functions::ccops::operator* <>( const Self& );
+    friend bool  DGtal::functions::ccops::operator==<>( const Self&, const Self& );
+    friend bool  DGtal::functions::ccops::operator!=<>( const Self&, const Self& );
+    friend bool  DGtal::functions::ccops::operator<=<>( const Self&, const Self& );
+    friend bool  DGtal::functions::ccops::operator>=<>( const Self&, const Self& );
 
     typedef TKSpace KSpace;
     typedef TCellContainer CellContainer;
@@ -1167,7 +1197,7 @@ namespace DGtal
   public:
 
     /**
-    * Close the whole complex.
+    * Close the whole complex (see also DGtal::functions::ccops::operator~).
     */
     void close();
 
@@ -1176,6 +1206,17 @@ namespace DGtal
     * @param k any strictly positive integer.
     */
     void close( Dimension k );
+
+    /**
+    * Open the whole complex  (see also DGtal::functions::ccops::operator*).
+    */
+    void open();
+
+    /**
+    * Open all cells of dimension greater or equal to \a k.
+    * @param k any strictly positive integer.
+    */
+    void open( Dimension k );
 
 
     // ----------------------- Interface --------------------------------------

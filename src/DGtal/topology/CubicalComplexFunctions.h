@@ -54,14 +54,28 @@ namespace DGtal
       /** 
        * Cubical Complex close operation. 
        * @param[in] S1 an input cubical complex
-       * @return a new cubical complex that is the closed S1.
+       * @return a new cubical complex that is the closing of S1.
        */
       template <typename TKSpace, typename TCellContainer>
       inline CubicalComplex< TKSpace, TCellContainer > 
-      operator!( const CubicalComplex< TKSpace, TCellContainer >& S1 )
+      operator~( const CubicalComplex< TKSpace, TCellContainer >& S1 )
       {
         CubicalComplex< TKSpace, TCellContainer > S( S1 );
         S.close();
+        return S;
+      }
+
+      /** 
+       * Cubical Complex open operation. 
+       * @param[in] S1 an input cubical complex
+       * @return a new cubical complex that is the opening of S1.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      inline CubicalComplex< TKSpace, TCellContainer > 
+      operator*( const CubicalComplex< TKSpace, TCellContainer >& S1 )
+      {
+        CubicalComplex< TKSpace, TCellContainer > S( S1 );
+        S.open();
         return S;
       }
 
@@ -188,8 +202,8 @@ namespace DGtal
       }
 
       /** 
-       * Cubical Complex symmetric difference operation. Updates the cubical complex \a S1 as
-       * \f$ S1 \Delta S2 \f$.
+       * Cubical Complex symmetric difference operation. Updates the
+       * cubical complex \a S1 as \f$ S1 \Delta S2 \f$.
        *
        * @param[in,out] S1 an input cubical complex, \f$ S1 \Delta S2 \f$ as output.
        * @param[in] S2 another input cubical complex.
@@ -203,6 +217,94 @@ namespace DGtal
         for ( Dimension i = 0; i <= CC::dimension; ++i )
           setops::operator^=( S1.myCells[ i ], S2.myCells[ i ] );
         return S1;
+      }
+
+      //////////////////////// EQUALITY /////////////////////////
+      /** 
+       * Equality test.
+       *
+       * @param[in] S1 an input cubical complex.
+       * @param[in] S2 another input cubical complex.
+       *
+       * @return true iff \a S1 is equal to \a S2 (i.e. \a S1 is a
+       * subcomplex of \a S2 and \a S2 is a subcomplex of \a S1).
+       */
+      template <typename TKSpace, typename TCellContainer>
+      bool
+      operator==( const CubicalComplex< TKSpace, TCellContainer >& S1, 
+                  const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        ASSERT( &(S1.space()) == &(S2.space()) );
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          if ( setops::operator!=( S1.myCells[ i ], S2.myCells[ i ] ) )
+            return false;
+        return true;
+      }
+
+      //////////////////////// DIFFERENT /////////////////////////
+      /** 
+       * Difference test.
+       *
+       * @param[in] S1 an input cubical complex.
+       * @param[in] S2 another input cubical complex.
+       *
+       * @return true iff \a S1 is not equal to \a S2 (i.e. either \a
+       * S1 is not a subcomplex of \a S2 or \a S2 is not a subcomplex
+       * of \a S1).
+       */
+      template <typename TKSpace, typename TCellContainer>
+      bool
+      operator!=( const CubicalComplex< TKSpace, TCellContainer >& S1, 
+                  const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        ASSERT( &(S1.space()) == &(S2.space()) );
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          if ( setops::operator!=( S1.myCells[ i ], S2.myCells[ i ] ) )
+            return true;
+        return false;
+      }
+
+      //////////////////////// INCLUSION /////////////////////////
+      /** 
+       * Inclusion test (subset of).
+       *
+       * @param[in] S1 an input cubical complex.
+       * @param[in] S2 another input cubical complex.
+       * @return true iff \a S1 is a subcomplex of \a S2.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      bool
+      operator<=( const CubicalComplex< TKSpace, TCellContainer >& S1, 
+                  const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        ASSERT( &(S1.space()) == &(S2.space()) );
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          if ( ! setops::operator<=( S1.myCells[ i ], S2.myCells[ i ] ) )
+            return false;
+        return true;
+      }
+
+      /** 
+       * Inclusion test (supset of).
+       *
+       * @param[in] S1 an input cubical complex.
+       * @param[in] S2 another input cubical complex.
+       * @return true iff \a S2 is a subcomplex of \a S1.
+       */
+      template <typename TKSpace, typename TCellContainer>
+      bool
+      operator>=( const CubicalComplex< TKSpace, TCellContainer >& S1, 
+                  const CubicalComplex< TKSpace, TCellContainer >& S2 )
+      {
+        typedef CubicalComplex< TKSpace, TCellContainer > CC;
+        ASSERT( &(S1.space()) == &(S2.space()) );
+        for ( Dimension i = 0; i <= CC::dimension; ++i )
+          if ( ! setops::operator<=( S2.myCells[ i ], S1.myCells[ i ] ) )
+            return false;
+        return true;
       }
       
     } // namespace ccops
