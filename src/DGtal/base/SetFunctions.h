@@ -1317,7 +1317,7 @@ namespace DGtal
        *
        * @param[in] S1 an input set.
        * @param[in] S2 another input set.
-       * @return true iff \a S1 is a subset of \a S2.
+       * @return true iff \a S2 is a subset of \a S1.
        *
        * @tparam Container any type of container (even a sequence, a
        * set, an unordered_set, a map, etc).
