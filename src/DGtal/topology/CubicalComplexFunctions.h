@@ -337,12 +337,12 @@ namespace DGtal
     * operator()( const Cell&, const Cell&) const'. Defines the order
     * in which cells are collapsed. @see DefaultCellMapIteratorPriority
     *
-    * @param K[in,out] the complex that is collapsed.
+    * @param[in,out] K the complex that is collapsed.
     * @param S_itB the start of a range of cells which is included in [K].
     * @param S_itE the end of a range of cells which is included in [K].
     * @param priority the object that assign a priority to each cell.
-    * @param hintIsSclosed indicates if [\a S_itb,\a S_ite) is a closed set (faster in this case).
-    * @param hintIsKclosed indicates that complex \a K is closed.
+    * @param hintIsSClosed indicates if [\a S_itb,\a S_ite) is a closed set (faster in this case).
+    * @param hintIsKClosed indicates that complex \a K is closed.
     * @param verbose outputs some information during processing when 'true'.
     * @return the number of cells removed from complex \a K.
     */
