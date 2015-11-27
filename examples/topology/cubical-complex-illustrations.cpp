@@ -30,7 +30,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <map>
-#include <unordered_map>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -45,7 +44,7 @@ using namespace std;
 using namespace DGtal;
 
 
-int main( int argc, char** argv )
+int main( int /* argc */, char** /* argv */ )
 {
 
   //! [cubical-complex-illustrations-X]
