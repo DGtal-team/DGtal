@@ -31,7 +31,11 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#ifdef WITH_C11
 #include <random>
+#else
+#include <cstdlib>
+#endif
 #include <boost/unordered_set.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/SetFunctions.h"
@@ -113,6 +117,15 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
 
 static const int NB = 10000;
 
+int randomNB( int n )
+{
+#ifdef WITH_C11
+  return random() % NB;
+#else
+  return rand() % NB;
+#endif
+}
+
 ////////////////////////////// operator | //////////////////////////////
 TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator | (sequences)", "[set_functions]",
                       Container, 
@@ -120,9 +133,9 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator | (sequences)", "[set_fun
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( random() % NB );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AorB;
@@ -147,9 +160,9 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator | (sets)", "[set_function
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AorB;
@@ -171,9 +184,9 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator & (sequences)", "[set_fun
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AandB;
@@ -198,9 +211,9 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator & (sets)", "[set_function
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AandB;
@@ -223,9 +236,9 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator - (sequences)", "[set_fun
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AminusB;
@@ -250,9 +263,9 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator - (sets)", "[set_function
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AminusB;
@@ -275,9 +288,9 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator ^ (sequences)", "[set_fun
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AxorB;
@@ -302,9 +315,9 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator ^ (sets)", "[set_function
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( random() % NB );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AxorB;
