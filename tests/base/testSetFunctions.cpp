@@ -120,9 +120,9 @@ static const int NB = 10000;
 int randomNB( int n )
 {
 #ifdef WITH_C11
-  return random() % NB;
+  return random() % n;
 #else
-  return rand() % NB;
+  return rand() % n;
 #endif
 }
 
