@@ -100,11 +100,11 @@ DGtal::functions::collapse( CubicalComplex< TKSpace, TCellContainer >& K,
         for ( typename vector<Cell>::const_iterator 
                 it = cells.begin(), itE = cells.end(); it != itE; ++it )
           {
-            it_cell          = K.findCell( *it );
-            uint32_t& ccdata = it_cell->second.data;
-            if ( ! ( ccdata & (CC::FIXED | CC::COLLAPSIBLE ) ) )
+            it_cell           = K.findCell( *it );
+            uint32_t& ccdata2 = it_cell->second.data;
+            if ( ! ( ccdata2 & (CC::FIXED | CC::COLLAPSIBLE ) ) )
               {
-                ccdata |= CC::COLLAPSIBLE;
+                ccdata2 |= CC::COLLAPSIBLE;
                 Q_collapsible.push_back( it_cell );
               }
           }
@@ -139,11 +139,14 @@ DGtal::functions::collapse( CubicalComplex< TKSpace, TCellContainer >& K,
           uint32_t& cur_data    = itcur->second.data;
 	  PQ.pop();
 	  ++nb_examined;
-	  ASSERT( cur_data & CC::USER1 );
-          cur_data             &= ~CC::USER1;
 	  // Check if the cell is removable
 	  if ( ( cur_data & CC::REMOVED ) || ( ! ( cur_data & CC::COLLAPSIBLE ) ) )
             continue;
+          // Check if the cell was several time in the queue and is already processed.
+          if ( ! ( cur_data & CC::USER1 ) )
+            continue;
+	  ASSERT( cur_data & CC::USER1 );
+          cur_data             &= ~CC::USER1;
 
 	  // Cell may be removable.
 	  // Check if it is a maximal cell
@@ -210,8 +213,8 @@ DGtal::functions::collapse( CubicalComplex< TKSpace, TCellContainer >& K,
 	      for ( CMIVectorConstIterator it = Q_low.begin(), itE = Q_low.end();
                     it != itE; ++it )
                 {
-                  CellMapIterator it_cell = *it;
-		  uint32_t&     data_qlow = it_cell->second.data;
+                  it_cell             = *it;
+		  uint32_t& data_qlow = it_cell->second.data;
 		  if ( ( ! ( data_qlow & CC::REMOVED ) )
 		       && ( data_qlow & CC::COLLAPSIBLE )
 		       && ( ! ( data_qlow & CC::USER1 ) ) )

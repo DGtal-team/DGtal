@@ -102,11 +102,11 @@ static const int NBCELLS = 1000;
 SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > unit tests (incidence,...)", "[cubical_complex][incidence]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
-  typedef typename KSpace::Point            Point;
-  typedef typename KSpace::Cell             Cell;
+  typedef KSpace::Point            Point;
+  typedef KSpace::Cell             Cell;
   typedef boost::unordered_map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+  typedef CC::CellMapConstIterator CellMapConstIterator;
 
   srand( 0 );
   KSpace K;
@@ -211,7 +211,7 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > unit tests (incidence,...
         for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
               it != itE; ++it )
           {
-            typename CC::Cells faces = complex.cellBoundary( it->first, true );
+            CC::Cells faces = complex.cellBoundary( it->first, true );
             int n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
@@ -220,7 +220,7 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > unit tests (incidence,...
         for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
               it != itE; ++it )
           {
-            typename CC::Cells faces = complex.cellBoundary( it->first, false );
+            CC::Cells faces = complex.cellBoundary( it->first, false );
             int n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
@@ -245,12 +245,12 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > unit tests (incidence,...
 SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > collapse tests", "[cubical_complex][collapse]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
-  typedef typename KSpace::Point            Point;
-  typedef typename KSpace::Cell             Cell;
-  typedef typename KSpace::Integer          Integer;
+  typedef KSpace::Point            Point;
+  typedef KSpace::Cell             Cell;
+  typedef KSpace::Integer          Integer;
   typedef boost::unordered_map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef typename CC::CellMapIterator      CellMapIterator;
+  typedef CC::CellMapIterator      CellMapIterator;
 
   srand( 0 );
   KSpace K;
@@ -283,7 +283,7 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > collapse tests", "[cubica
       REQUIRE( it2 != complex.end( 0 ) );
       it1->second.data |= CC::FIXED;
       it2->second.data |= CC::FIXED;
-      typename CC::DefaultCellMapIteratorPriority P;
+      CC::DefaultCellMapIteratorPriority P;
       functions::collapse( complex, S.begin(), S.end(), P, false, true );
       CAPTURE( complex.nbCells( 0 ) );
       CAPTURE( complex.nbCells( 1 ) );
@@ -306,12 +306,12 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > collapse tests", "[cubica
 SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > link tests", "[cubical_complex][link]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
-  typedef typename KSpace::Point            Point;
-  typedef typename KSpace::Cell             Cell;
-  typedef typename KSpace::Integer          Integer;
+  typedef KSpace::Point            Point;
+  typedef KSpace::Cell             Cell;
+  typedef KSpace::Integer          Integer;
   typedef boost::unordered_map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+  typedef CC::CellMapConstIterator CellMapConstIterator;
 
   srand( 0 );
   KSpace K;
@@ -362,11 +362,11 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > link tests", "[cubical_co
 SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubical_complex][incidence]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
-  typedef typename KSpace::Point            Point;
-  typedef typename KSpace::Cell             Cell;
+  typedef KSpace::Point            Point;
+  typedef KSpace::Cell             Cell;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+  typedef CC::CellMapConstIterator CellMapConstIterator;
 
   srand( 0 );
   KSpace K;
@@ -471,7 +471,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
         for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
               it != itE; ++it )
           {
-            typename CC::Cells faces = complex.cellBoundary( it->first, true );
+            CC::Cells faces = complex.cellBoundary( it->first, true );
             int n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
@@ -480,7 +480,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
         for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
               it != itE; ++it )
           {
-            typename CC::Cells faces = complex.cellBoundary( it->first, false );
+            CC::Cells faces = complex.cellBoundary( it->first, false );
             int n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
@@ -505,12 +505,12 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
 SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex][collapse]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
-  typedef typename KSpace::Point            Point;
-  typedef typename KSpace::Cell             Cell;
-  typedef typename KSpace::Integer          Integer;
+  typedef KSpace::Point            Point;
+  typedef KSpace::Cell             Cell;
+  typedef KSpace::Integer          Integer;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef typename CC::CellMapIterator      CellMapIterator;
+  typedef CC::CellMapIterator      CellMapIterator;
 
   srand( 0 );
   KSpace K;
@@ -543,7 +543,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex][c
       REQUIRE( it2 != complex.end( 0 ) );
       it1->second.data |= CC::FIXED;
       it2->second.data |= CC::FIXED;
-      typename CC::DefaultCellMapIteratorPriority P;
+      CC::DefaultCellMapIteratorPriority P;
       functions::collapse( complex, S.begin(), S.end(), P, false, true );
       CAPTURE( complex.nbCells( 0 ) );
       CAPTURE( complex.nbCells( 1 ) );
@@ -566,12 +566,12 @@ SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex][c
 SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex][link]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
-  typedef typename KSpace::Point            Point;
-  typedef typename KSpace::Cell             Cell;
-  typedef typename KSpace::Integer          Integer;
+  typedef KSpace::Point            Point;
+  typedef KSpace::Cell             Cell;
+  typedef KSpace::Integer          Integer;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+  typedef CC::CellMapConstIterator CellMapConstIterator;
 
   srand( 0 );
   KSpace K;
@@ -615,30 +615,30 @@ SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex][link]
 SCENARIO( "CubicalComplex< K3,std::map<> > concept check tests", "[cubical_complex][concepts]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
-  typedef typename KSpace::Point            Point;
-  typedef typename KSpace::Cell             Cell;
-  typedef typename KSpace::Integer          Integer;
+  typedef KSpace::Point            Point;
+  typedef KSpace::Cell             Cell;
+  typedef KSpace::Integer          Integer;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+  typedef CC::CellMapConstIterator CellMapConstIterator;
 
   BOOST_CONCEPT_ASSERT(( boost::Container<CC> ));
-  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<typename CC::Iterator> ));
-  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<typename CC::ConstIterator> ));
+  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<CC::Iterator> ));
+  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<CC::ConstIterator> ));
 }
 
 
 SCENARIO( "CubicalComplex< K2,std::map<> > set operations and relations", "[cubical_complex][ccops]" )
 {
   typedef KhalimskySpaceND<2>               KSpace;
-  typedef typename KSpace::Space            Space;
+  typedef KSpace::Space            Space;
   typedef HyperRectDomain<Space>            Domain;
-  typedef typename KSpace::Point            Point;
-  typedef typename KSpace::Cell             Cell;
-  typedef typename KSpace::Integer          Integer;
+  typedef KSpace::Point            Point;
+  typedef KSpace::Cell             Cell;
+  typedef KSpace::Integer          Integer;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef typename CC::CellMapConstIterator CellMapConstIterator;
+  typedef CC::CellMapConstIterator CellMapConstIterator;
 
   using namespace DGtal::functions::ccops;
 
