@@ -289,7 +289,7 @@ namespace DGtal
       typedef typename Base::difference_type DifferenceType;
       
       /// Default iterator. Invalid.
-      ConstIterator() : myCC( 0 ), myD( -1 ) {}
+      ConstIterator() : myCC( 0 ), myD( 0 ) {}
 
       /**
        * Constructor from complex \a cc and cell dimension \a d.
@@ -302,7 +302,6 @@ namespace DGtal
       ConstIterator( ConstAlias<CubicalComplex> cc, Dimension d )
         : myCC( &cc ), myD( d )
       {
-        ASSERT( myD >= 0 );
         if ( myD <= myCC->dimension )
           {
             myIt    = myCC->begin( myD );
@@ -328,7 +327,6 @@ namespace DGtal
                      CellMapConstIterator it )
         : myCC( &cc ), myD( d ), myIt( it )
       {
-        ASSERT( myD >= 0 );
         ASSERT( d <= myCC->dimension );
         myItEnd = myCC->end( d );
         nextDimension();
@@ -349,6 +347,7 @@ namespace DGtal
 
       void increment()
       {
+        ASSERT( myCC != 0 );
         ++myIt;
         nextDimension();
       }
@@ -395,7 +394,7 @@ namespace DGtal
       typedef typename Base::difference_type DifferenceType;
       
       /// Default iterator. Invalid.
-      Iterator() : myCC( 0 ), myD( -1 ) {}
+      Iterator() : myCC( 0 ), myD( 0 ) {}
 
       /**
        * Constructor from complex \a cc and cell dimension \a d.
@@ -407,7 +406,6 @@ namespace DGtal
       Iterator( Alias<CubicalComplex> cc, Dimension d )
         : myCC( &cc ), myD( d )
       {
-        ASSERT( myD >= 0 );
         if ( myD <= myCC->dimension )
           {
             myIt    = myCC->begin( myD );
@@ -433,7 +431,6 @@ namespace DGtal
                 CellMapIterator it )
         : myCC( &cc ), myD( d ), myIt( it )
       {
-        ASSERT( myD >= 0 );
         ASSERT( d <= myCC->dimension );
         myItEnd = myCC->end( d );
         nextDimension();
@@ -454,6 +451,7 @@ namespace DGtal
 
       void increment()
       {
+        ASSERT( myCC != 0 );
         ++myIt;
         nextDimension();
       }
