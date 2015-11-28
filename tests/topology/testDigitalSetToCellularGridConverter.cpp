@@ -79,7 +79,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /* argc */, char** /* argv */ )
 {
     bool res = true;
     testDigitalSetToCellularGridConverter test;
