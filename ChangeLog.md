@@ -42,6 +42,11 @@
  - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
    (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
 
+- *Geometry Package*
+ - Fix pseudo-random number generator in KanungoNoise (David
+   Coeurjolly,
+   [#1078](https://github.com/DGtal-team/DGtal/pull/1078))
+   
 
 # DGtal 0.9
 
