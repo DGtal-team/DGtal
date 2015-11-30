@@ -147,7 +147,7 @@ int main( int argc, char** argv )
   trace.beginBlock( "Collapsing complex" );
   CC::DefaultCellMapIteratorPriority P;
   uint64_t removed 
-    = functions::collapse( complex, S.begin(), S.end(), P, true, true, true );
+    = functions::ccops::collapse( complex, S.begin(), S.end(), P, true, true, true );
   trace.info() << "Collapse removed " << removed << " cells." << std::endl;
   trace.info() << "After collapse: " << complex << std::endl;
   trace.endBlock();

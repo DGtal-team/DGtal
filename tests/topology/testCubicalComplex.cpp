@@ -284,7 +284,7 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > collapse tests", "[cubica
       it1->second.data |= CC::FIXED;
       it2->second.data |= CC::FIXED;
       CC::DefaultCellMapIteratorPriority P;
-      functions::collapse( complex, S.begin(), S.end(), P, false, true );
+      functions::ccops::collapse( complex, S.begin(), S.end(), P, false, true );
       CAPTURE( complex.nbCells( 0 ) );
       CAPTURE( complex.nbCells( 1 ) );
       CAPTURE( complex.nbCells( 2 ) );
@@ -544,7 +544,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex][c
       it1->second.data |= CC::FIXED;
       it2->second.data |= CC::FIXED;
       CC::DefaultCellMapIteratorPriority P;
-      functions::collapse( complex, S.begin(), S.end(), P, false, true );
+      functions::ccops::collapse( complex, S.begin(), S.end(), P, false, true );
       CAPTURE( complex.nbCells( 0 ) );
       CAPTURE( complex.nbCells( 1 ) );
       CAPTURE( complex.nbCells( 2 ) );
