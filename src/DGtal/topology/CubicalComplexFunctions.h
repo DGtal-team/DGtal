@@ -307,53 +307,52 @@ namespace DGtal
         return true;
       }
       
+      /**
+       * Collapse a user-specified part of complex \a K, collapsing cells
+       * following priority [priority], in a decreasing sequence until no
+       * more collapse is feasible. The range [\a S_itb,\a S_itE)
+       * provides the starting cells, generally (but not compulsory)
+       * maximal cells. The resulting complex is guaranteed to keep the
+       * same homotopy type (a kind of topology equivalence).
+       *
+       * @note Cells whose data has been marked as FIXED are not removed.
+       *
+       * @note Only cells that are in the closure of [\a S_itb,\a S_itE)
+       * may be removed, and only if they are not marked as FIXED.
+       *
+       * @advanced If you use a DefaultCellMapIteratorPriority object as
+       * \a priority, then the VALUE part of each cell data defines the
+       * priority (the highest value the soonest are these cells
+       * collapsed). You may thus fill these cell values before calling
+       * this method.
+       *
+       * @tparam CellConstIterator any forward const iterator on Cell.
+       *
+       * @tparam CellMapIteratorPriority any type defining a method 'bool
+       * operator()( const Cell&, const Cell&) const'. Defines the order
+       * in which cells are collapsed. @see DefaultCellMapIteratorPriority
+       *
+       * @param[in,out] K the complex that is collapsed.
+       * @param S_itB the start of a range of cells which is included in [K].
+       * @param S_itE the end of a range of cells which is included in [K].
+       * @param priority the object that assign a priority to each cell.
+       * @param hintIsSClosed indicates if [\a S_itb,\a S_ite) is a closed set (faster in this case).
+       * @param hintIsKClosed indicates that complex \a K is closed.
+       * @param verbose outputs some information during processing when 'true'.
+       * @return the number of cells removed from complex \a K.
+       *
+       * @see topology/cubical-complex-collapse.cpp
+       */
+      template <typename TKSpace, typename TCellContainer,
+                typename CellConstIterator, 
+                typename CellMapIteratorPriority >
+      uint64_t collapse( CubicalComplex< TKSpace, TCellContainer >& K, 
+                         CellConstIterator S_itB, CellConstIterator S_itE, 
+                         const CellMapIteratorPriority& priority, 
+                         bool hintIsSClosed = false, bool hintIsKClosed = false,
+                         bool verbose = false );
+
     } // namespace ccops
-  } // namespace functions
-
-  namespace functions {
-
-    /**
-    * Collapse a user-specified part of complex \a K, collapsing cells
-    * following priority [priority], in a decreasing sequence until no
-    * more collapse is feasible. The range [\a S_itb,\a S_itE)
-    * provides the starting cells, generally (but not compulsory)
-    * maximal cells. The resulting complex is guaranteed to keep the
-    * same homotopy type (a kind of topology equivalence).
-    *
-    * @note Cells whose data has been marked as FIXED are not removed.
-    *
-    * @note Only cells that are in the closure of [\a S_itb,\a S_itE)
-    * may be removed, and only if they are not marked as FIXED.
-    *
-    * @advanced If you use a DefaultCellMapIteratorPriority object as
-    * \a priority, then the VALUE part of each cell data defines the
-    * priority (the highest value the soonest are these cells
-    * collapsed). You may thus fill these cell values before calling
-    * this method.
-    *
-    * @tparam CellConstIterator any forward const iterator on Cell.
-    *
-    * @tparam CellMapIteratorPriority any type defining a method 'bool
-    * operator()( const Cell&, const Cell&) const'. Defines the order
-    * in which cells are collapsed. @see DefaultCellMapIteratorPriority
-    *
-    * @param[in,out] K the complex that is collapsed.
-    * @param S_itB the start of a range of cells which is included in [K].
-    * @param S_itE the end of a range of cells which is included in [K].
-    * @param priority the object that assign a priority to each cell.
-    * @param hintIsSClosed indicates if [\a S_itb,\a S_ite) is a closed set (faster in this case).
-    * @param hintIsKClosed indicates that complex \a K is closed.
-    * @param verbose outputs some information during processing when 'true'.
-    * @return the number of cells removed from complex \a K.
-    */
-    template <typename TKSpace, typename TCellContainer,
-              typename CellConstIterator, 
-              typename CellMapIteratorPriority >
-    uint64_t collapse( CubicalComplex< TKSpace, TCellContainer >& K, 
-                       CellConstIterator S_itB, CellConstIterator S_itE, 
-                       const CellMapIteratorPriority& priority, 
-                       bool hintIsSClosed = false, bool hintIsKClosed = false,
-                       bool verbose = false );
 
   } // namespace functions
 
