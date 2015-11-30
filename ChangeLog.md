@@ -20,6 +20,12 @@
  - Minor improvements of default settings in Viewer3D. (David
    Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
 
+ - change the chronological order to diplay primitives (in the draw
+   function) in order to see see the cube primitive through the
+   transparency of the ball primitive. (Bertrand Kerautret,
+   [#1081](https://github.com/DGtal-team/DGtal/pull/1081))
+
+
  - New possibility to move the light source direction using the mouse move
    in Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on mac)). The light source
    direction is now defined according the main coordinate system (no more from
