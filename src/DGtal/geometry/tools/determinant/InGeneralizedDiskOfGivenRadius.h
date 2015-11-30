@@ -142,7 +142,7 @@ namespace DGtal
     /**
      * static size of the array, ie. 2
      */
-    static const SizeArray size = PointArray::static_size; 
+    static const SizeArray size = 2;
 
     /**
      * Type of determinant computer
