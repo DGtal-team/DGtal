@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testScaleProfile.cpp
+ * @file testProfile.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2015/11/08
  *
- * Functions for testing class ScaleProfile.
+ * Functions for testing class Profile.
  *
  * This file is part of the DGtal library.
  */
@@ -33,23 +33,23 @@
 #include "ConfigTest.h"
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/helpers/LogScaleProfile.h" 
+#include "DGtal/geometry/helpers/Profile.h" 
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class LogScaleProfile.
+// Functions for testing class Profile.
 ///////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE( "Testing LogScaleProfile" )
+TEST_CASE( "Testing Profile" )
 {
   
-  LogScaleProfile sp(LogScaleProfile::MEAN);
+  Profile sp(Profile::MEAN);
   sp.init(5);
   
-  SECTION("Testing basic add of LogScaleProfile")
+  SECTION("Testing basic add of Profile")
     {
       sp.addValue(0, 10.0);
       sp.addValue(1, 10.0);
@@ -68,7 +68,7 @@ TEST_CASE( "Testing LogScaleProfile" )
 
   sp.clear();
   sp.init(6);
-  SECTION("Testing noise level detect of LogScaleProfile")
+  SECTION("Testing noise level detect of Profile")
     {
       sp.addValue(0,22);
       sp.addValue(1,15);
@@ -89,7 +89,7 @@ TEST_CASE( "Testing LogScaleProfile" )
   sp.clear();
 
   
-  SECTION("Testing noise level detect of LogScaleProfile with iterator init ")
+  SECTION("Testing noise level detect of Profile with iterator init ")
     {
       std::vector<double> scales;
       for(unsigned int i =0; i < 6; i++){

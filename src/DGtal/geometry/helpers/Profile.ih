@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file LogProfile.ih
+ * @file Profile.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
@@ -23,7 +23,7 @@
  * 
  * @date 2015/11/08
  *
- * Implementation of inline methods defined in LogProfile.h
+ * Implementation of inline methods defined in Profile.h
  *
  * This file is part of the DGtal library.
  */
@@ -43,20 +43,20 @@
 // Implementation of inline methods                                          //
 
 
-DGtal::LogProfile::~LogProfile()
+DGtal::Profile::~Profile()
 {
   if ( myScales != 0 ) delete myScales;
   if ( myStats != 0 ) delete myStats; 
 }
 
-DGtal::LogProfile::LogProfile()
+DGtal::Profile::Profile()
   : myScales( 0 ), myStats( 0 ), myProfileDef(MEAN), myStoreValInStats(false)
 {
 }
 
 
 
-DGtal::LogProfile::LogProfile(LogProfileType type)
+DGtal::Profile::Profile(ProfileType type)
   : myScales( 0 ), myStats( 0 ), myProfileDef(type), myStoreValInStats(false)
 {
 }
@@ -64,7 +64,7 @@ DGtal::LogProfile::LogProfile(LogProfileType type)
 
 
 void 
-DGtal::LogProfile::clear()
+DGtal::Profile::clear()
 {
   if ( myScales != 0 ) 
     {
@@ -81,7 +81,7 @@ DGtal::LogProfile::clear()
 
 
 void 
-DGtal::LogProfile::init(unsigned int nb, const bool storeValsInStats )
+DGtal::Profile::init(unsigned int nb, const bool storeValsInStats )
 {
   clear();
   myScales = new std::vector<float>( nb );
@@ -96,7 +96,7 @@ DGtal::LogProfile::init(unsigned int nb, const bool storeValsInStats )
 
 
 void
-DGtal::LogProfile::addValue( unsigned int idxScale, float value )
+DGtal::Profile::addValue( unsigned int idxScale, float value )
 {
   ASSERT( isValid() && ( idxScale < myScales->size() ) );
   (*myStats)[ idxScale ].addValue( value );
@@ -104,7 +104,7 @@ DGtal::LogProfile::addValue( unsigned int idxScale, float value )
 
 
 void
-DGtal::LogProfile::addStatistic
+DGtal::Profile::addStatistic
 ( unsigned int idxScale, const Statistic<float> & stat )
 {
   ASSERT( isValid() && ( idxScale < myScales->size() ) );
@@ -114,7 +114,7 @@ DGtal::LogProfile::addStatistic
 
 
 void
-DGtal::LogProfile::getProfile
+DGtal::Profile::getProfile
 ( std::vector<double> & x, std::vector<double> & y ) const
 {
   ASSERT( isValid() );
@@ -142,7 +142,7 @@ DGtal::LogProfile::getProfile
 
 
 void 
-DGtal::LogProfile::meaningfulScales ( std::vector< std::pair< unsigned int,
+DGtal::Profile::meaningfulScales ( std::vector< std::pair< unsigned int,
                                         unsigned int > > & intervals,
                                         const unsigned int minSize,
                                         const double maxSlope,
@@ -169,7 +169,7 @@ DGtal::LogProfile::meaningfulScales ( std::vector< std::pair< unsigned int,
 
 
 std::pair<bool, double> 
-DGtal::LogProfile::getSlopeFromMeaningfulScales(const double maxSlope, 
+DGtal::Profile::getSlopeFromMeaningfulScales(const double maxSlope, 
                                                   const double minSlope,
                                                   const unsigned int minSize) const {
   std::pair<bool, double> resuSlope(false, 0.0);
@@ -209,7 +209,7 @@ DGtal::LogProfile::getSlopeFromMeaningfulScales(const double maxSlope,
 }
 
 unsigned int
-DGtal::LogProfile::noiseLevel ( const unsigned int minSize,
+DGtal::Profile::noiseLevel ( const unsigned int minSize,
                                   const double maxSlope,
                                   const double minSlope ) const
 {
@@ -222,7 +222,7 @@ DGtal::LogProfile::noiseLevel ( const unsigned int minSize,
 
 
 unsigned int
-DGtal::LogProfile::lowerBoundedNoiseLevel( const unsigned int minSize,
+DGtal::Profile::lowerBoundedNoiseLevel( const unsigned int minSize,
                                              const double maxSlope,
                                              const double minSlope,
                                              const double lowerBoundAtScale1,
@@ -253,7 +253,7 @@ DGtal::LogProfile::lowerBoundedNoiseLevel( const unsigned int minSize,
 
 
 void 
-DGtal::LogProfile::stopStatsSaving()
+DGtal::Profile::stopStatsSaving()
 {
   for ( unsigned int i = 0; i < myStats->size(); ++i ){
     ((*myStats).at( i )).terminate();
@@ -262,7 +262,7 @@ DGtal::LogProfile::stopStatsSaving()
 
 
 inline
-DGtal::LogProfile::LogProfile( const LogProfile & other ){
+DGtal::Profile::Profile( const Profile & other ){
   if(other.myStats!=0 && other.myScales!=0){
     myScales = new std::vector<float>( other.myScales->size() );
     myStats = new std::vector< Statistic<float> > ( other.myScales->size());
@@ -282,9 +282,9 @@ DGtal::LogProfile::LogProfile( const LogProfile & other ){
 
 
 inline
-DGtal::LogProfile & 
-DGtal::LogProfile::operator=
-( const DGtal::LogProfile & other )
+DGtal::Profile & 
+DGtal::Profile::operator=
+( const DGtal::Profile & other )
 {
   if ( this != &other ) {
   if(other.myStats!=0 && other.myScales!=0){
@@ -313,7 +313,7 @@ DGtal::LogProfile::operator=
 template <typename Iterator>
 inline
 void 
-DGtal::LogProfile::init( Iterator beginScale, Iterator endScale,
+DGtal::Profile::init( Iterator beginScale, Iterator endScale,
                            const bool storeValsInStats )
 {
   clear();
@@ -331,14 +331,14 @@ DGtal::LogProfile::init( Iterator beginScale, Iterator endScale,
 
 
 void 
-DGtal::LogProfile::selfDisplay( std::ostream& out ) const
+DGtal::Profile::selfDisplay( std::ostream& out ) const
 {
-  out << "[LogProfile]";
+  out << "[Profile]";
 }
 
 
 bool
-DGtal::LogProfile::isValid() const
+DGtal::Profile::isValid() const
 {
   return myScales != 0;
 }
@@ -349,15 +349,15 @@ DGtal::LogProfile::isValid() const
 // Implementation of inline functions and external operators                 //
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'LogProfile'.
+ * Overloads 'operator<<' for displaying objects of class 'Profile'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'LogProfile' to write.
+ * @param object the object of class 'Profile' to write.
  * @return the output stream after the writing.
  */
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const LogProfile & object )
+                  const Profile & object )
 {
     object.selfDisplay ( out );
     return out;
@@ -365,7 +365,7 @@ DGtal::operator<< ( std::ostream & out,
 
 inline
 void 
-DGtal::LogProfile::setType(LogProfileType type){
+DGtal::Profile::setType(ProfileType type){
   ASSERT(myProfileDef==MEAN || myProfileDef==MAX || myProfileDef==MIN || myProfileDef==MEDIAN);
   myProfileDef = type; 
 }
