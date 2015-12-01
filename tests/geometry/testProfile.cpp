@@ -46,7 +46,7 @@ using namespace DGtal;
 TEST_CASE( "Testing Profile" )
 {
   
-  Profile sp(Profile::MEAN);
+  Profile<> sp(Profile<>::MEAN);
   sp.init(5);
   
   SECTION("Testing basic add of Profile")

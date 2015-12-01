@@ -102,7 +102,7 @@ namespace DGtal
    * various refactoring.
    */
 
-
+  template<typename TValueFunctor = functors::Identity >
   class Profile
   {
     // ----------------------- Standard services ------------------------------
@@ -114,8 +114,11 @@ namespace DGtal
      * 
      **/
     enum ProfileType{MEAN, MAX, MIN, MEDIAN};
+    
+    typedef TValueFunctor Functor;
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<Functor, float, float>  ));
 
-
+    
     /**
      * Destructor.
      */
@@ -358,6 +361,8 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+    Functor myFunctor;
+    
     /**
      * The vector containing the different scales for the analysis.
      */
@@ -408,8 +413,9 @@ namespace DGtal
    * @param object the object of class 'Profile' to write.
    * @return the output stream after the writing.
    */
+  template< typename TFunctor >
   std::ostream&
-  operator<< ( std::ostream & out, const Profile & object );
+  operator<< ( std::ostream & out, const Profile<TFunctor> & object );
 
 
 } // namespace DGtal
