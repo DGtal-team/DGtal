@@ -42,29 +42,30 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
-
-DGtal::Profile::~Profile()
+template<typename TValueFunctor>
+DGtal::Profile<TValueFunctor>::~Profile()
 {
   if ( myScales != 0 ) delete myScales;
   if ( myStats != 0 ) delete myStats; 
 }
 
-DGtal::Profile::Profile()
+template<typename TValueFunctor>
+DGtal::Profile<TValueFunctor>::Profile()
   : myScales( 0 ), myStats( 0 ), myProfileDef(MEAN), myStoreValInStats(false)
 {
 }
 
 
-
-DGtal::Profile::Profile(ProfileType type)
+template<typename TValueFunctor>
+DGtal::Profile<TValueFunctor>::Profile(ProfileType type)
   : myScales( 0 ), myStats( 0 ), myProfileDef(type), myStoreValInStats(false)
 {
 }
 
 
-
+template<typename TValueFunctor>
 void 
-DGtal::Profile::clear()
+DGtal::Profile<TValueFunctor>::clear()
 {
   if ( myScales != 0 ) 
     {
@@ -80,8 +81,9 @@ DGtal::Profile::clear()
 }
 
 
+template<typename TValueFunctor>
 void 
-DGtal::Profile::init(unsigned int nb, const bool storeValsInStats )
+DGtal::Profile<TValueFunctor>::init(unsigned int nb, const bool storeValsInStats )
 {
   clear();
   myScales = new std::vector<float>( nb );
@@ -94,17 +96,17 @@ DGtal::Profile::init(unsigned int nb, const bool storeValsInStats )
 }
 
 
-
+template<typename TValueFunctor>
 void
-DGtal::Profile::addValue( unsigned int idxScale, float value )
+DGtal::Profile<TValueFunctor>::addValue( unsigned int idxScale, float value )
 {
   ASSERT( isValid() && ( idxScale < myScales->size() ) );
   (*myStats)[ idxScale ].addValue( value );
 }
 
-
+template<typename TValueFunctor>
 void
-DGtal::Profile::addStatistic
+DGtal::Profile<TValueFunctor>::addStatistic
 ( unsigned int idxScale, const Statistic<float> & stat )
 {
   ASSERT( isValid() && ( idxScale < myScales->size() ) );
@@ -112,9 +114,9 @@ DGtal::Profile::addStatistic
 }
 
 
-
+template<typename TValueFunctor>
 void
-DGtal::Profile::getProfile
+DGtal::Profile<TValueFunctor>::getProfile
 ( std::vector<double> & x, std::vector<double> & y ) const
 {
   ASSERT( isValid() );
@@ -141,8 +143,9 @@ DGtal::Profile::getProfile
 }
 
 
+template<typename TValueFunctor>
 void 
-DGtal::Profile::meaningfulScales ( std::vector< std::pair< unsigned int,
+DGtal::Profile<TValueFunctor>::meaningfulScales ( std::vector< std::pair< unsigned int,
                                         unsigned int > > & intervals,
                                         const unsigned int minSize,
                                         const double maxSlope,
@@ -167,9 +170,9 @@ DGtal::Profile::meaningfulScales ( std::vector< std::pair< unsigned int,
 }
 
 
-
+template<typename TValueFunctor>
 std::pair<bool, double> 
-DGtal::Profile::getSlopeFromMeaningfulScales(const double maxSlope, 
+DGtal::Profile<TValueFunctor>::getSlopeFromMeaningfulScales(const double maxSlope, 
                                                   const double minSlope,
                                                   const unsigned int minSize) const {
   std::pair<bool, double> resuSlope(false, 0.0);
@@ -208,8 +211,11 @@ DGtal::Profile::getSlopeFromMeaningfulScales(const double maxSlope,
   return resuSlope;
 }
 
+
+
+template<typename TValueFunctor>
 unsigned int
-DGtal::Profile::noiseLevel ( const unsigned int minSize,
+DGtal::Profile<TValueFunctor>::noiseLevel ( const unsigned int minSize,
                                   const double maxSlope,
                                   const double minSlope ) const
 {
@@ -220,9 +226,9 @@ DGtal::Profile::noiseLevel ( const unsigned int minSize,
     : 0;
 }
 
-
+template<typename TValueFunctor>
 unsigned int
-DGtal::Profile::lowerBoundedNoiseLevel( const unsigned int minSize,
+DGtal::Profile<TValueFunctor>::lowerBoundedNoiseLevel( const unsigned int minSize,
                                              const double maxSlope,
                                              const double minSlope,
                                              const double lowerBoundAtScale1,
@@ -251,18 +257,18 @@ DGtal::Profile::lowerBoundedNoiseLevel( const unsigned int minSize,
 }
 
 
-
+template<typename TValueFunctor>
 void 
-DGtal::Profile::stopStatsSaving()
+DGtal::Profile<TValueFunctor>::stopStatsSaving()
 {
   for ( unsigned int i = 0; i < myStats->size(); ++i ){
     ((*myStats).at( i )).terminate();
   } 
 }
 
-
+template<typename TValueFunctor>
 inline
-DGtal::Profile::Profile( const Profile & other ){
+DGtal::Profile<TValueFunctor>::Profile( const Profile & other ){
   if(other.myStats!=0 && other.myScales!=0){
     myScales = new std::vector<float>( other.myScales->size() );
     myStats = new std::vector< Statistic<float> > ( other.myScales->size());
@@ -280,11 +286,11 @@ DGtal::Profile::Profile( const Profile & other ){
   }
 }
 
-
+template<typename TValueFunctor>
 inline
-DGtal::Profile & 
-DGtal::Profile::operator=
-( const DGtal::Profile & other )
+DGtal::Profile<TValueFunctor> & 
+DGtal::Profile<TValueFunctor>::operator=
+( const DGtal::Profile<TValueFunctor> & other )
 {
   if ( this != &other ) {
   if(other.myStats!=0 && other.myScales!=0){
@@ -309,11 +315,11 @@ DGtal::Profile::operator=
 
 
 
-
+template<typename TValueFunctor>
 template <typename Iterator>
 inline
 void 
-DGtal::Profile::init( Iterator beginScale, Iterator endScale,
+DGtal::Profile<TValueFunctor>::init( Iterator beginScale, Iterator endScale,
                            const bool storeValsInStats )
 {
   clear();
@@ -329,16 +335,16 @@ DGtal::Profile::init( Iterator beginScale, Iterator endScale,
 }
 
 
-
+template<typename TValueFunctor>
 void 
-DGtal::Profile::selfDisplay( std::ostream& out ) const
+DGtal::Profile<TValueFunctor>::selfDisplay( std::ostream& out ) const
 {
   out << "[Profile]";
 }
 
-
+template<typename TValueFunctor>
 bool
-DGtal::Profile::isValid() const
+DGtal::Profile<TValueFunctor>::isValid() const
 {
   return myScales != 0;
 }
@@ -354,18 +360,21 @@ DGtal::Profile::isValid() const
  * @param object the object of class 'Profile' to write.
  * @return the output stream after the writing.
  */
+template<typename TValueFunctor>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const Profile & object )
+                    const Profile<TValueFunctor> & object )
 {
     object.selfDisplay ( out );
     return out;
 }
 
+
+template<typename TValueFunctor>
 inline
 void 
-DGtal::Profile::setType(ProfileType type){
+DGtal::Profile<TValueFunctor>::setType(ProfileType type){
   ASSERT(myProfileDef==MEAN || myProfileDef==MAX || myProfileDef==MIN || myProfileDef==MEDIAN);
   myProfileDef = type; 
 }
