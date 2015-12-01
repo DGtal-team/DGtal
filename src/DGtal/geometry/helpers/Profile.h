@@ -17,27 +17,27 @@
 #pragma once
 
 /**
- * @file LogProfile.h
+ * @file Profile.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  * @Jacques-Olivier Lachaud
  *
  * @date 2015/11/08
  *
- * Header file for module LogProfile.cpp
+ * Header file for module Profile.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(LogProfile_RECURSES)
-#error Recursive header files inclusion detected in LogProfile.h
-#else // defined(LogProfile_RECURSES)
+#if defined(Profile_RECURSES)
+#error Recursive header files inclusion detected in Profile.h
+#else // defined(Profile_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define LogProfile_RECURSES
+#define Profile_RECURSES
 
-#if !defined LogProfile_h
+#if !defined Profile_h
 /** Prevents repeated inclusion of headers. */
-#define LogProfile_h
+#define Profile_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,21 +52,21 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class LogProfile
+  // class Profile
   /**
-   * Description of class 'LogProfile' <p> \brief Aim: This class
+   * Description of class 'Profile' <p> \brief Aim: This class
    * represents one (multi)scale profile, e.g. a sequence of statistics
    * on digital lengths parameterized by a scale. This class only
    * represents what happens at one place, not everywhere on the
    * contour. All further computations in the scale profile are
    * done in logspace.
    *
-   * For instance, to use a LogProfile on 10 scale levels (from 1 to
-   * 10) you can start to construct and initialize a LogProfile as
+   * For instance, to use a Profile on 10 scale levels (from 1 to
+   * 10) you can start to construct and initialize a Profile as
    * follows:
    *
    * @code 
-   * LogProfile sp;
+   * Profile sp;
    * sp.init(10);
    * @endcode 
    * 
@@ -77,7 +77,7 @@ namespace DGtal
    * for (double i = 0.5; i < 5; i=i+0.5){
    *     scale.push_back(i);
    * }   
-   * LogProfile sp;
+   * Profile sp;
    * sp.init(scale.begin(), scale.end());
    * @endcode
    *
@@ -103,7 +103,7 @@ namespace DGtal
    */
 
 
-  class LogProfile
+  class Profile
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -113,32 +113,32 @@ namespace DGtal
      * (used in @ref getProfile())
      * 
      **/
-    enum LogProfileType{MEAN, MAX, MIN, MEDIAN};
+    enum ProfileType{MEAN, MAX, MIN, MEDIAN};
 
 
     /**
      * Destructor.
      */
-    ~LogProfile();
+    ~Profile();
 
     /**
      * Constructor. The object is not valid.
      */
-    LogProfile();
+    Profile();
 
 
     /**
      * Constructor. The object is not valid.
      * @param[in] type allows to specify the used to computes the profile points from the added samples.
      */
-    LogProfile(LogProfileType type);
+    Profile(ProfileType type);
     
 
     /**
      * Copy constructor.
      * @param[in] other the object to clone.
      */
-    LogProfile( const LogProfile & other );
+    Profile( const Profile & other );
 
 
     /**
@@ -147,7 +147,7 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    LogProfile & operator= ( const LogProfile & other );
+    Profile & operator= ( const Profile & other );
 
 
  
@@ -213,7 +213,7 @@ namespace DGtal
      * the median value.  Typically if you nedd to access to the
      * median value of the profile, you need to follow this example:
      * @code
-     * LogProfile sp;
+     * Profile sp;
      * // the value are now stored and you can access to the median value of the profile.
      * sp.init(true);
      * sp.addValue(0, 10.5);
@@ -238,7 +238,7 @@ namespace DGtal
      *
      * @param type the method applied to the statistics samples: MEAN, MAX, MIN.
      **/    
-    void setType(LogProfileType type);
+    void setType(ProfileType type);
     
 
     
@@ -373,7 +373,7 @@ namespace DGtal
      * MEAN (default), MAX, MIN (not efficient)
      */
     
-    LogProfileType myProfileDef;
+    ProfileType myProfileDef;
     
 
 
@@ -399,17 +399,17 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class LogProfile
+  }; // end of class Profile
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'LogProfile'.
+   * Overloads 'operator<<' for displaying objects of class 'Profile'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'LogProfile' to write.
+   * @param object the object of class 'Profile' to write.
    * @return the output stream after the writing.
    */
   std::ostream&
-  operator<< ( std::ostream & out, const LogProfile & object );
+  operator<< ( std::ostream & out, const Profile & object );
 
 
 } // namespace DGtal
@@ -418,14 +418,14 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #if !defined(BUILD_INLINE)
-#include "DGtal/geometry/helpers/LogProfile.ih"
+#include "DGtal/geometry/helpers/Profile.ih"
 #endif
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined LogProfile_h
+#endif // !defined Profile_h
 
-#undef LogProfile_RECURSES
-#endif // else defined(LogProfile_RECURSES)
+#undef Profile_RECURSES
+#endif // else defined(Profile_RECURSES)
