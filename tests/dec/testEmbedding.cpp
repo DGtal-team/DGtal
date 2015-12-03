@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
             Calculus1D::KSpace::Point point;
             point[0] = kk;
             const Calculus1D::SCell cell = calculus_1d_manual.myKSpace.sCell(point);
-            calculus_1d_manual.insertSCell(cell, kk == 0 || kk == 30 ? 1/2. : 1);
+            calculus_1d_manual.insertSCell(cell, 1, kk == 0 || kk == 30 ? 1/2. : 1);
             cells_1d_manual.insert(cell);
             if (kk%2 != 0) ncells_1d_factory.insert(cell);
         }
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 
         Calculus2D calculus_2d_manual;
         {
-            calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,0)), 1/2. );
+            calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,0)), 1, 1/2. );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,1), Calculus2D::KSpace::POS) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,2)) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(7,2), Calculus2D::KSpace::POS) );
@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,1), Calculus2D::KSpace::NEG) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,0)) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,0), Calculus2D::KSpace::NEG) );
-            calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(0,0)), 1/2.);
+            calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(0,0)), 1, 1/2.);
             calculus_2d_manual.updateIndexes();
         }
         trace.info() << "calculus_2d_manual=" << calculus_2d_manual << endl;
@@ -214,7 +214,7 @@ int main(int argc, char* argv[])
 
         Calculus3D calculus_3d_manual;
         {
-            calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,0,0)), 1/2. );
+            calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,0,0)), 1, 1/2. );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,0,0), Calculus3D::KSpace::POS) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,0,0)) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(3,0,0), Calculus3D::KSpace::POS) );
@@ -244,7 +244,7 @@ int main(int argc, char* argv[])
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,5,-2), Calculus3D::KSpace::NEG) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,4,-2)) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,-2), Calculus3D::KSpace::NEG) );
-            calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,-2)), 1/2. );
+            calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,-2)), 1, 1/2. );
             calculus_3d_manual.updateIndexes();
         }
         trace.info() << "calculus_3d_manual=" << calculus_3d_manual << endl;
@@ -486,7 +486,7 @@ int main(int argc, char* argv[])
         trace.endBlock();
     }
 
-    {
+    /*{
         trace.beginBlock("2d manifold embedding");
 
         //! [embedding_2d_typedef]
@@ -987,7 +987,7 @@ int main(int argc, char* argv[])
         trace.endBlock();
 
         trace.endBlock();
-    }
+    }*/
 
 #if !defined(NOVIEWER)
     return app.exec();
