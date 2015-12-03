@@ -326,6 +326,9 @@ namespace DGtal
        * collapsed). You may thus fill these cell values before calling
        * this method.
        *
+       * @tparam TCubicalComplex any instantiated type of
+       * CubicalComplex< Space, CellContainer >.
+       *
        * @tparam CellConstIterator any forward const iterator on Cell.
        *
        * @tparam CellMapIteratorPriority any type defining a method 'bool
@@ -343,14 +346,52 @@ namespace DGtal
        *
        * @see topology/cubical-complex-collapse.cpp
        */
-      template <typename TKSpace, typename TCellContainer,
+      template <typename TCubicalComplex,
                 typename CellConstIterator, 
                 typename CellMapIteratorPriority >
-      uint64_t collapse( CubicalComplex< TKSpace, TCellContainer >& K, 
+      uint64_t collapse( TCubicalComplex& K, 
                          CellConstIterator S_itB, CellConstIterator S_itE, 
                          const CellMapIteratorPriority& priority, 
                          bool hintIsSClosed = false, bool hintIsKClosed = false,
                          bool verbose = false );
+
+      /**
+       * Computes the cells of the given complex \a K that lies on the
+       * boundary or inside the parallelepiped specified by bounds \a
+       * kLow and \a kUp.
+       *
+       * @tparam TCubicalComplex any instantiated type of
+       * CubicalComplex< Space, CellContainer >.
+       *
+       * @tparam CellOutputIterator any output iterator on TCubicalComplex::Cell.
+       *
+       * @param[in] K any cubical complex.
+       *
+       * @param[in] kLow any Khalimsky coordinate representing the
+       * lowest possible cell.
+       *
+       * @param[in] kUp any Khalimsky coordinate representing the
+       * uppermost possible cell.
+       * 
+       * @param[in,out] An output iterator on Cell that outputs all
+       * the cells of \a K that lie on the boundary of the
+       * parallelepiped specified by bounds \a kLow and \a kUp.
+       * 
+       * @param[in,out] An output iterator on Cell that outputs all
+       * the cells of \a K that lie in the interior of the
+       * parallelepiped specified by bounds \a kLow and \a kUp.
+       *
+       * @note Complexity is linear in the number of cells of \a K
+       * (but the constant is also linear in the dimension of \a K).
+       */
+      template <typename TCubicalComplex,
+                typename CellOutputIterator>
+      void 
+      filterCellsWithinBounds( const TCubicalComplex& K, 
+                               const typename TCubicalComplex::Point& kLow,  
+                               const typename TCubicalComplex::Point& kUp,
+                               CellOutputIterator itBdry, 
+                               CellOutputIterator itInner );
 
     } // namespace ccops
 
