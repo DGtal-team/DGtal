@@ -64,7 +64,7 @@ ENDIF()
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # require at least gcc 4.7
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
-    add_defitinions("-DCATCH_CONFIG_CPP11_NO_IS_ENUM")
+    add_definitions("-DCATCH_CONFIG_CPP11_NO_IS_ENUM")
     message(STATUS "Patching Catch for gcc < 4.7")
   endif()
 endif()
