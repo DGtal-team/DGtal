@@ -75,8 +75,7 @@ void test_linear_structure()
     trace.info() << calculus << endl;
 
     //! [input-dirac]
-    Calculus::PrimalForm0 dirac(calculus);
-    dirac.myContainer(25) = 1;
+    Calculus::PrimalForm0 dirac = Calculus::PrimalForm0::Dirac(calculus, calculus.myKSpace.uCell(Point(10,4)));
     //! [input-dirac]
 
     {
