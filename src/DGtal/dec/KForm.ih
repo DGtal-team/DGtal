@@ -34,6 +34,32 @@
 // ----------------------- Standard services ------------------------------
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+DGtal::KForm<Calculus, order, duality>
+DGtal::KForm<Calculus, order, duality>::Ones(ConstAlias<Calculus> _calculus)
+{
+    KForm<Calculus, order, duality> kform(_calculus);
+    kform.myContainer.fill(1);
+    return kform;
+}
+
+template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+DGtal::KForm<Calculus, order, duality>
+DGtal::KForm<Calculus, order, duality>::Zeros(ConstAlias<Calculus> _calculus)
+{
+    KForm<Calculus, order, duality> kform(_calculus);
+    return kform;
+}
+
+template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+DGtal::KForm<Calculus, order, duality>
+DGtal::KForm<Calculus, order, duality>::Dirac(ConstAlias<Calculus> _calculus, const typename Calculus::Cell& _cell)
+{
+    KForm<Calculus, order, duality> kform(_calculus);
+    kform.myContainer( _calculus->getCellIndex(_cell) ) = 1;
+    return kform;
+}
+
+template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
 DGtal::KForm<Calculus, order, duality>::KForm(ConstAlias<Calculus> _calculus)
     : myContainer((&_calculus)->kFormLength(order, duality)), myCalculus(&_calculus)
 {

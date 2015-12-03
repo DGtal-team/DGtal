@@ -451,11 +451,11 @@ int main(int argc, char* argv[])
             const Calculus2D::Scalar area_th = calculus_2d_factory.kFormLength(0, DUAL);
             const Calculus2D::Scalar area_primal = (
                 calculus_2d_factory.hodge<0, PRIMAL>() *
-                Calculus2D::PrimalForm0(calculus_2d_factory, Eigen::VectorXd::Ones(calculus_2d_factory.kFormLength(0, PRIMAL)))
+                Calculus2D::PrimalForm0::Ones(calculus_2d_factory)
                 ).myContainer.array().sum();
             const Calculus2D::Scalar area_dual = (
                 calculus_2d_factory.hodge<0, DUAL>() *
-                Calculus2D::DualForm0(calculus_2d_factory, Eigen::VectorXd::Ones(calculus_2d_factory.kFormLength(0, DUAL)))
+                Calculus2D::DualForm0::Ones(calculus_2d_factory)
                 ).myContainer.array().sum();
             trace.info() << "area_2d_th=" << area_th << endl;
             trace.info() << "area_2d_primal=" << area_primal << endl;
@@ -468,11 +468,11 @@ int main(int argc, char* argv[])
             const Calculus3D::Scalar area_th = calculus_3d_factory.kFormLength(0, DUAL);
             const Calculus3D::Scalar area_primal = (
                 calculus_3d_factory.hodge<0, PRIMAL>() *
-                Calculus3D::PrimalForm0(calculus_3d_factory, Eigen::VectorXd::Ones(calculus_3d_factory.kFormLength(0, PRIMAL)))
+                Calculus3D::PrimalForm0::Ones(calculus_3d_factory)
                 ).myContainer.array().sum();
             const Calculus3D::Scalar area_dual = (
                 calculus_3d_factory.hodge<0, DUAL>() *
-                Calculus3D::DualForm0(calculus_3d_factory, Eigen::VectorXd::Ones(calculus_3d_factory.kFormLength(0, DUAL)))
+                Calculus3D::DualForm0::Ones(calculus_3d_factory)
                 ).myContainer.array().sum();
             trace.info() << "area_3d_th=" << area_th << endl;
             trace.info() << "area_3d_primal=" << area_primal << endl;
@@ -954,11 +954,11 @@ int main(int argc, char* argv[])
             const Calculus2D::Scalar area_th = calculus_2d_factory_weighed.kFormLength(0, DUAL);
             const Calculus2D::Scalar area_primal = (
                 calculus_2d_factory_weighed.hodge<0, PRIMAL>() *
-                Calculus2D::PrimalForm0(calculus_2d_factory_weighed, Eigen::VectorXd::Ones(calculus_2d_factory_weighed.kFormLength(0, PRIMAL)))
+                Calculus2D::PrimalForm0::Ones(calculus_2d_factory_weighed)
                 ).myContainer.array().sum();
             const Calculus2D::Scalar area_dual = (
                 calculus_2d_factory_weighed.hodge<0, DUAL>() *
-                Calculus2D::DualForm0(calculus_2d_factory_weighed, Eigen::VectorXd::Ones(calculus_2d_factory_weighed.kFormLength(0, DUAL)))
+                Calculus2D::DualForm0::Ones(calculus_2d_factory_weighed)
                 ).myContainer.array().sum();
             trace.info() << "area_2d_th=" << area_th << endl;
             trace.info() << "area_2d_primal=" << area_primal << endl;
@@ -971,11 +971,11 @@ int main(int argc, char* argv[])
             const Calculus3D::Scalar area_th = calculus_3d_factory_weighed.kFormLength(0, DUAL);
             const Calculus3D::Scalar area_primal = (
                 calculus_3d_factory_weighed.hodge<0, PRIMAL>() *
-                Calculus3D::PrimalForm0(calculus_3d_factory_weighed, Eigen::VectorXd::Ones(calculus_3d_factory_weighed.kFormLength(0, PRIMAL)))
+                Calculus3D::PrimalForm0::Ones(calculus_3d_factory_weighed)
                 ).myContainer.array().sum();
             const Calculus3D::Scalar area_dual = (
                 calculus_3d_factory_weighed.hodge<0, DUAL>() *
-                Calculus3D::DualForm0(calculus_3d_factory_weighed, Eigen::VectorXd::Ones(calculus_3d_factory_weighed.kFormLength(0, DUAL)))
+                Calculus3D::DualForm0::Ones(calculus_3d_factory_weighed)
                 ).myContainer.array().sum();
             trace.info() << "area_3d_th=" << area_th << endl;
             trace.info() << "area_3d_primal=" << area_primal << endl;
