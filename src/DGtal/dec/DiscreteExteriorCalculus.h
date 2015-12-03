@@ -296,6 +296,16 @@ namespace DGtal
     std::string className() const;
 
     /**
+     * Manually insert signed cell into calculus with unit primal and dual size.
+     * Should call updateIndexes() when structure modification is finished.
+     * Be sure to insert all adjacent lower order primal cells.
+     * @param signed_cell the signed cell to be inserted.
+     * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
+     */
+    bool
+    insertSCell(const SCell& signed_cell);
+
+    /**
      * Manually insert signed cell into calculus.
      * Should call updateIndexes() when structure modification is finished.
      * Be sure to insert all adjacent lower order primal cells.
@@ -305,7 +315,7 @@ namespace DGtal
      * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
      */
     bool
-    insertSCell(const SCell& signed_cell, const Scalar& primal_size = 1, const Scalar& dual_size = 1);
+    insertSCell(const SCell& signed_cell, const Scalar& primal_size, const Scalar& dual_size);
 
     /**
      * Manually erase cell from calculus.

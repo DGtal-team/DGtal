@@ -82,6 +82,13 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& signed_cell)
+{
+    return insertSCell(signed_cell, 1, 1);
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+bool
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& signed_cell, const Scalar& primal_size, const Scalar& dual_size)
 {
     const Cell cell = myKSpace.unsigns(signed_cell);
@@ -92,7 +99,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     property.index = std::numeric_limits<Index>::max();
     property.flipped = ( myKSpace.sSign(signed_cell) == KSpace::NEG );
 
-    ASSERT_MSG( cell_dim >= 0 && cell_dim <= dimEmbedded, "wrong cell dimension");
+    if (cell_dim == 0) ASSERT_MSG( property.primal_size == 1, "0-cell primal size must be equal to 1" );
+    if (cell_dim == dimEmbedded) ASSERT_MSG( property.dual_size == 1, "n-cell dual size must be equal to 1" );
+    ASSERT_MSG( cell_dim >= 0 && cell_dim <= dimEmbedded, "wrong cell dimension" );
     ASSERT_MSG( cell_dim != 0 || !property.flipped , "can't insert negative 0-cells" );
     ASSERT_MSG( cell_dim != dimAmbient || !property.flipped , "can't insert negative n-cells" );
 

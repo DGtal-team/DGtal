@@ -197,11 +197,11 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         ASSERT( dual_dim <= Calculus::dimensionEmbedded );
 
         const Scalar factor = pow(.5, 2*dual_dim-1);
-        const Scalar size_ratio = lai->second * factor;
-        ASSERT( size_ratio > 0 );
+        const Scalar dual_size = lai->second * factor;
+        ASSERT( dual_size > 0 );
 
         const SCell cell_signed = calculus.myKSpace.signs(cell, KSpace::POS);
-        calculus.insertSCell(cell_signed, size_ratio);
+        calculus.insertSCell(cell_signed, 1, dual_size);
     }
 
     calculus.updateIndexes();
