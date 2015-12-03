@@ -8,6 +8,11 @@ compiler:
 
 os:
   - linux
+    addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-4.7']
+      env: COMPILER=g++-4.7
   - osx
 
 cache: apt
@@ -77,7 +82,7 @@ before_script:
 # Main rules
 ############
 script:
-  - cmake . $BTYPE
+  - cmake . $BTYPE -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_C_COMPILER=$COMPILER
   - echo $DOC
   - echo $BTYPE
   - if [ $NEEDBUILD == "true" ]; then  make DGtal && make DGtalIO; fi
