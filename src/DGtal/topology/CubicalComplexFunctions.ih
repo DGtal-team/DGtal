@@ -35,19 +35,22 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename TKSpace, typename TCellContainer,
+//-----------------------------------------------------------------------------
+template <typename TCubicalComplex,
           typename CellConstIterator, 
           typename CellMapIteratorPriority >
 DGtal::uint64_t
 DGtal::functions::ccops::
-collapse( CubicalComplex< TKSpace, TCellContainer >& K, 
+collapse( TCubicalComplex& K, 
           CellConstIterator S_itB, CellConstIterator S_itE, 
           const CellMapIteratorPriority& priority, 
           bool hintIsSClosed, bool hintIsKClosed,
           bool verbose )
 {
   using namespace std;
-  typedef CubicalComplex< TKSpace, TCellContainer > CC;
+  typedef TCubicalComplex                           CC;
+  typedef typename CC::Space                        Space;
+  typedef typename CC::CellContainer                CellContainer;
   typedef typename CC::Cell                         Cell;
   typedef typename CC::CellType                     CellType;
   typedef typename CC::CellMapIterator              CellMapIterator;
@@ -247,6 +250,45 @@ collapse( CubicalComplex< TKSpace, TCellContainer >& K,
   return nb_removed;
 }
 
+
+//-----------------------------------------------------------------------------
+template <typename TCubicalComplex,
+          typename CellOutputIterator>
+void
+DGtal::functions::ccops::
+filterCellsWithinBounds( const TCubicalComplex& K, 
+                         const typename TCubicalComplex::Point& kLow,  
+                         const typename TCubicalComplex::Point& kUp,
+                         CellOutputIterator itBdry, CellOutputIterator itInner )
+{
+  typedef TCubicalComplex                               CubicalComplex;
+  typedef typename CubicalComplex::Cell                 Cell;
+  typedef typename CubicalComplex::Point                Point;
+  typedef typename CubicalComplex::CellMapConstIterator CellMapConstIterator;
+  Dimension d = K.dim();
+  for ( Dimension i = 0; i <= d; ++i )
+    {
+      for ( CellMapConstIterator it = K.begin( i ), itE = K.end( i ); it != itE; ++it )
+        {
+          Cell cell = it->first;
+          Point kCell = K.space().uKCoords( cell );
+          if ( ( kLow.inf( kCell ) == kLow ) && ( kUp.sup( kCell ) == kUp ) )
+            { // Inside or on boundary.
+              bool bdry = false;
+              for ( Dimension j = 0; j < Point::dimension; ++j )
+                {
+                  if ( ( kCell[ j ] == kLow[ j ] ) || ( kCell[ j ] == kUp[ j ] ) )
+                    {
+                      bdry = true;
+                      break;
+                    }
+                }
+              if ( bdry ) *itBdry++  = cell;
+              else        *itInner++ = cell;
+            }
+        }
+    }
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
