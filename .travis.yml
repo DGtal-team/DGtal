@@ -59,7 +59,7 @@ addons:
 
 
 before_install:
-  - CCOMPILER="g++-4.7"
+  - CCOMPILER="gcc-4.7"
   - CXXCOMPILER="g++-4.7"
   - DOC="false"
   - NEEDBUILD="true";
