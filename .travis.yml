@@ -8,7 +8,6 @@ compiler:
 
 os:
   - linux
-    env: COMPILER=g++-4.7
   - osx
 
 cache: apt
@@ -59,6 +58,7 @@ addons:
 
 
 before_install:
+  - COMPILER="g++-4.7"
   - DOC="false"
   - NEEDBUILD="true";
   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDBUILD="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
