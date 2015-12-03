@@ -8,11 +8,7 @@ compiler:
 
 os:
   - linux
-    addons:
-        apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-4.7']
-      env: COMPILER=g++-4.7
+    env: COMPILER=g++-4.7
   - osx
 
 cache: apt
@@ -58,7 +54,8 @@ addons:
     - libgdcm2-dev 
     - libgraphicsmagick++1-dev
     - libqglviewer-qt4-dev
-    - libinsighttoolkit3-dev 
+    - libinsighttoolkit3-dev
+    - g++-4.7
 
 
 before_install:
