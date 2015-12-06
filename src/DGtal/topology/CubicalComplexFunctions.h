@@ -363,7 +363,8 @@ namespace DGtal
        * @tparam TCubicalComplex any instantiated type of
        * CubicalComplex< Space, CellContainer >.
        *
-       * @tparam CellOutputIterator any output iterator on TCubicalComplex::Cell.
+       * @tparam BdryCellOutputIterator any output iterator on TCubicalComplex::Cell.
+       * @tparam InnerCellOutputIterator any output iterator on TCubicalComplex::Cell.
        *
        * @param[in] K any cubical complex.
        *
@@ -373,11 +374,11 @@ namespace DGtal
        * @param[in] kUp any Khalimsky coordinate representing the
        * uppermost possible cell.
        * 
-       * @param[in,out] An output iterator on Cell that outputs all
+       * @param[in,out] itBdry An output iterator on Cell that outputs all
        * the cells of \a K that lie on the boundary of the
        * parallelepiped specified by bounds \a kLow and \a kUp.
        * 
-       * @param[in,out] An output iterator on Cell that outputs all
+       * @param[in,out] itInner An output iterator on Cell that outputs all
        * the cells of \a K that lie in the interior of the
        * parallelepiped specified by bounds \a kLow and \a kUp.
        *
@@ -385,13 +386,14 @@ namespace DGtal
        * (but the constant is also linear in the dimension of \a K).
        */
       template <typename TCubicalComplex,
-                typename CellOutputIterator>
+                typename BdryCellOutputIterator,
+                typename InnerCellOutputIterator>
       void 
       filterCellsWithinBounds( const TCubicalComplex& K, 
                                const typename TCubicalComplex::Point& kLow,  
                                const typename TCubicalComplex::Point& kUp,
-                               CellOutputIterator itBdry, 
-                               CellOutputIterator itInner );
+                               BdryCellOutputIterator itBdry, 
+                               InnerCellOutputIterator itInner );
 
     } // namespace ccops
 

@@ -253,13 +253,15 @@ collapse( TCubicalComplex& K,
 
 //-----------------------------------------------------------------------------
 template <typename TCubicalComplex,
-          typename CellOutputIterator>
+          typename BdryCellOutputIterator,
+          typename InnerCellOutputIterator>
 void
 DGtal::functions::ccops::
 filterCellsWithinBounds( const TCubicalComplex& K, 
                          const typename TCubicalComplex::Point& kLow,  
                          const typename TCubicalComplex::Point& kUp,
-                         CellOutputIterator itBdry, CellOutputIterator itInner )
+                         BdryCellOutputIterator itBdry, 
+                         InnerCellOutputIterator itInner )
 {
   typedef TCubicalComplex                               CubicalComplex;
   typedef typename CubicalComplex::Cell                 Cell;
