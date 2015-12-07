@@ -397,7 +397,7 @@ public:
       if ( isDimensionPeriodicHelper( d ) )
         {
           aKCoord = ( aKCoord - derived().myCellLower.myCoordinates[ d ] ) % myCellExtent[ d ];
-          return ( aKCoord < 0 ) ?
+          return aKCoord + ( aKCoord < 0 ) ?
                 derived().myCellUpper.myCoordinates[ d ] + 1
               : derived().myCellLower.myCoordinates[ d ];
         }
