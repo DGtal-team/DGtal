@@ -406,6 +406,15 @@ namespace DGtal
     template <typename Value> struct SurfelMap {
       typedef std::map<SCell,Value> Type;
     };
+
+    /// Boundaries closure type
+    enum Closure
+      {
+        closed,    ///< The space is closed.
+        open,     ///< The space is open.
+        periodic  ///< The space is periodic.
+      };
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -438,15 +447,47 @@ namespace DGtal
      *
      * @param lower the lowest point in this space (digital coords)
      * @param upper the upper point in this space (digital coords)
-     * @param closed 'true' if this space is closed, 'false' if open.
+     * @param isClosed 'true' if this space is closed and non-periodic in every dimension, 'false' if open.
      *
      * @return true if the initialization was valid (ie, such bounds
      * are representable with these integers).
      */
     bool init( const Point & lower,
                const Point & upper,
-               bool closed );
+               bool isClosed );
+    
+    /**
+     * Specifies the upper and lower bounds for the maximal cells in
+     * this space.
+     *
+     * @param lower the lowest point in this space (digital coords)
+     * @param upper the upper point in this space (digital coords)
+     * @param closure \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic), 
+     *        open or periodic (thus closed) in every dimension.
+     *
+     * @return true if the initialization was valid (ie, such bounds
+     * are representable with these integers).
+     */
+    bool init( const Point & lower,
+               const Point & upper,
+               Closure closure );
 
+    /**
+     * Specifies the upper and lower bounds for the maximal cells in
+     * this space.
+     *
+     * @param lower the lowest point in this space (digital coords)
+     * @param upper the upper point in this space (digital coords)
+     * @param bndryClosure an array of \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic), 
+     *        open or periodic (thus closed) in the corresponding dimension.
+     *
+     * @return true if the initialization was valid (ie, such bounds
+     * are representable with these integers).
+     */
+    bool init( const Point & lower,
+               const Point & upper,
+               Closure[dim] closure );
+    
     // ------------------------- Basic services ------------------------------
   public:
 
@@ -475,17 +516,39 @@ namespace DGtal
     const Point & upperBound() const;
     /**
        @return the lower bound for cells in this space.
+       @todo doc for periodic
     */
     const Cell & lowerCell() const;
     /**
        @return the upper bound for cells in this space.
+       @todo doc for periodic
     */
     const Cell & upperCell() const;
 
     /**
-       @return 'true' iff the space is closed.
+       @return 'true' iff the space is closed or periodic along every dimension.
     */
     bool isSpaceClosed() const;
+
+    /**
+     * @return 'true' iff the space is close or periodic along the specified dimension.
+     */
+    bool isSpaceClose( Dimension d ) const;
+
+    /**
+     * @return 'true' iff the space is periodic along every dimension.
+     */
+    bool isSpacePeriodic() const;
+
+    /**
+     * @return 'true' iff the space is periodic along the specified dimension.
+     */
+    bool isSpacePeriodic( Dimension d ) const;
+
+    /**
+     * @return 'true' iff the space is periodic along at least one dimension.
+     */
+    bool isAnyDimensionPeriodic() const;
 
     // ----------------------- Cell creation services --------------------------
   public:
@@ -509,7 +572,7 @@ namespace DGtal
      * @return the cell having the topology of [c] and the given
      * digital coordinates [p].
      */
-    Cell uCell( const Point & p, const Cell & c ) const;
+    Cell uCell( Point p, const Cell & c ) const;
 
     /**
      * From the Khalimsky coordinates of a cell and a sign, builds the
@@ -531,7 +594,7 @@ namespace DGtal
      * @return the cell having the topology and sign of [c] and the given
      * digital coordinates [p].
      */
-    SCell sCell( const Point & p, const SCell & c ) const;
+    SCell sCell( Point p, const SCell & c ) const;
 
     /**
      * From the digital coordinates of a point in Zn, creates the spel
@@ -541,7 +604,7 @@ namespace DGtal
      *
      * @return the spel having the given digital coordinates [p].
      */
-    Cell uSpel( const Point & p ) const;
+    Cell uSpel( Point p ) const;
 
     /**
      * From the digital coordinates of a point in Zn, creates the spel
@@ -552,7 +615,7 @@ namespace DGtal
      *
      * @return the signed spel having the given digital coordinates [p].
      */
-    SCell sSpel( const Point & p, Sign sign = POS ) const;
+    SCell sSpel( Point p, Sign sign = POS ) const;
 
     /**
      * From the digital coordinates of a point in Zn, creates the pointel
@@ -562,7 +625,7 @@ namespace DGtal
      *
      * @return the pointel having the given digital coordinates [p].
      */
-    Cell uPointel( const Point & p ) const;
+    Cell uPointel( Point p ) const;
 
     /**
      * From the digital coordinates of a point in Zn, creates the pointel
@@ -573,7 +636,7 @@ namespace DGtal
      *
      * @return the signed pointel having the given digital coordinates [p].
      */
-    SCell sPointel( const Point & p, Sign sign = POS ) const;
+    SCell sPointel( Point p, Sign sign = POS ) const;
 
 
     // ----------------------- Read accessors to cells ------------------------
@@ -1456,7 +1519,8 @@ namespace DGtal
     Point myUpper;
     Cell myCellLower;
     Cell myCellUpper;
-    bool myIsClosed;
+    Closure[dim] myClosure;
+    
     // ------------------------- Hidden services ------------------------------
   protected:
 
