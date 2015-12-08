@@ -428,15 +428,8 @@ public:
       myIsAnyDimensionPeriodic = false;
       for ( DGtal::Dimension i = 0; i < dim; ++i )
         {
-          if ( isDimensionPeriodicHelper( i ) )
-            {
-              myIsAnyDimensionPeriodic = true;
-              myCellExtent[ i ] = derived().myCellUpper.myCoordinates[ i ] - derived().myCellLower.myCoordinates[ i ] + 2;
-            }
-          else
-            {
-              myCellExtent[ i ] = derived().myCellUpper.myCoordinates[ i ] - derived().myCellLower.myCoordinates[ i ] + 1;
-            }
+          myIsAnyDimensionPeriodic |= isDimensionPeriodicHelper( i );
+          myCellExtent[ i ] = derived().myCellUpper.myCoordinates[ i ] - derived().myCellLower.myCoordinates[ i ] + 2;
         }
      
       return true;
