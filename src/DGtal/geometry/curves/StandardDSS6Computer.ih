@@ -462,7 +462,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::className() const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out)
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out) const
 {
   
   out << "[StandardDSS6Computer]" <<  std::endl;

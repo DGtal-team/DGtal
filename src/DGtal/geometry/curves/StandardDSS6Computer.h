@@ -271,7 +271,7 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) ;
+    void selfDisplay ( std::ostream & out ) const;
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -305,7 +305,7 @@ namespace DGtal
    */
   template <typename TIterator, typename TInteger, int connectivity>
   std::ostream&
-  operator<< ( std::ostream & out,  StandardDSS6Computer<TIterator,TInteger,connectivity> & object )
+  operator<< ( std::ostream & out,  const StandardDSS6Computer<TIterator,TInteger,connectivity> & object )
   {
     object.selfDisplay( out);
     return out;
