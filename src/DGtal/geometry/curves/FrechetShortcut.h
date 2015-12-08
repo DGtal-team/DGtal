@@ -335,7 +335,7 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out) ;
+    void selfDisplay ( std::ostream & out) const;
     
       
     };
