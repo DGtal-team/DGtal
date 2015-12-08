@@ -47,8 +47,10 @@
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
 #include "DGtal/geometry/curves/StandardDSS6Computer.h"
+#include "DGtal/geometry/curves/Naive3DDSSComputer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
+#include "DGtal/kernel/sets/DigitalSetByAssociativeContainer.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/Object.h"
@@ -63,7 +65,6 @@
 #include "DGtal/images/ConstImageAdapter.h"
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/helpers/StdDefs.h"
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -192,6 +193,42 @@ namespace DGtal
     // StandardDSS6Computer
 
 
+    // naive3DDSSComputer
+    /**
+     * Default drawing style object.
+     * @param str the name of the class
+     * @param arithm the arithm to draw
+     * @return the dyn. alloc. default style for this object.
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+    /**
+     * Method to draw Naive3DDSSComputer as Balls.
+     * @param viewer the viewer where to draw
+     * @param arithm the arithm to draw
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static void drawAsBalls( Viewer3D<Space,KSpace> & viewer, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+    /**
+     * Method to draw Naive3DDSSComputer as BoundingBox.
+     * @param viewer the viewer where to draw
+     * @param arithm the arithm to draw
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static void drawAsBoundingBox( Viewer3D<Space,KSpace> & viewer, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+
+    /**
+     * Method to draw Naive3DDSSComputer.
+     * @param viewer the viewer where to draw
+     * @param arithm the arithm to draw
+     */
+    template <typename TIterator, typename TInteger, int connectivity>
+    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> & arithm );
+    // Naive3DDSSComputer
+
+
     // DigitalSetBySTLSet
     /**
      * Return the default drawing style object.
@@ -234,6 +271,49 @@ namespace DGtal
     template<typename Domain, typename Compare>
     static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
     // DigitalSetBySTLSet
+
+    // DigitalSetByAssociativeContainer
+    /**
+     * Return the default drawing style object.
+     * @param str the name of the class
+     * @param aSet the set to draw
+     * @return the dyn. alloc. default style for this object.
+     */
+    template<typename Domain, typename Container>
+    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
+
+    /**
+     * Method to draw DigitalSetByAssociativeContainer as Paving Transparent.
+     * @param viewer the viewer where to draw
+     * @param aSet the set to draw
+     */
+    template<typename Domain, typename Container>
+    static void drawAsPavingTransparent( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
+
+    /**
+     * Method to draw DigitalSetByAssociativeContainer as Paving.
+     * @param viewer the viewer where to draw
+     * @param aSet the set to draw
+     */
+    template<typename Domain, typename Container>
+    static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
+
+    /**
+     * Method to draw DigitalSetByAssociativeContainer as Grid.
+     * @param viewer the viewer where to draw
+     * @param aSet the set to draw
+     */
+    template<typename Domain, typename Container>
+    static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
+
+    /**
+     * Method to draw DigitalSetByAssociativeContainer.
+     * @param viewer the viewer where to draw
+     * @param aSet the set to draw
+     */
+    template<typename Domain, typename Container>
+    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & aSet );
+    // DigitalSetByAssociativeContainer
 
 
     // DigitalSetBySTLVector

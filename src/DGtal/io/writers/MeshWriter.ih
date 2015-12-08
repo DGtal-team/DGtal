@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <set>
+#include <map>
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 

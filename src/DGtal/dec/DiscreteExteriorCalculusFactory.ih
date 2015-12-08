@@ -138,9 +138,6 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Scalar Scalar;
-    typedef typename Calculus::Point Point;
-    typedef typename Calculus::Property Property;
-    typedef typename Calculus::Properties Properties;
     typedef typename Calculus::KSpace KSpace;
     typedef typename KSpace::Cells Cells;
 
@@ -157,6 +154,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         const SCell cell_signed = *ci;
         const Dimension cell_dim = calculus.myKSpace.sDim(cell_signed);
         ASSERT_MSG( cell_dim == dimEmbedded, "wrong n-cell dimension" );
+        boost::ignore_unused_variable_warning(cell_dim);
 
         calculus.insertSCell(cell_signed);
 

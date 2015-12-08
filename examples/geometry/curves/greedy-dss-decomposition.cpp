@@ -74,18 +74,19 @@ int main( )
   Board2D aBoard;
   aBoard << SetMode( domain.className(), "Grid" )
 	 << domain
-	 << SetMode( "PointVector", "Grid" )
-	 << theContour;
+    	 << SetMode( "PointVector", "Grid" ); 
 
   // Draw each segment
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string styleName = "ArithmeticalDSS/BoundingBox";
+  string styleName = "";
   for ( Decomposition4::SegmentComputerIterator 
 	  it = theDecomposition.begin(),
 	  itEnd = theDecomposition.end();
 	it != itEnd; ++it ) 
     {
-      aBoard << CustomStyle( styleName, 
+      aBoard << SetMode( "ArithmeticalDSS", "Points" )
+	     << it->primitive(); 
+      aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+	     << CustomStyle( "ArithmeticalDSS/BoundingBox", 
        			     new CustomPenColor( Color::Blue ) )
 	     << it->primitive();
     } 
@@ -93,6 +94,9 @@ int main( )
   
   aBoard.saveSVG("greedy-dss-decomposition.svg");
   aBoard.saveEPS("greedy-dss-decomposition.eps");
+  #ifdef WITH_CAIRO
+    aBoard.saveCairo("greedy-dss-decomposition.png"); 
+  #endif
 
   trace.endBlock();
 

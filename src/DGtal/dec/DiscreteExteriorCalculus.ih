@@ -57,6 +57,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     // FIXME should be open or closed? => closed = true
     const bool kspace_init_ok = const_cast<KSpace&>(myKSpace).init(_domain->lowerBound(), _domain->upperBound(), true);
     ASSERT(kspace_init_ok);
+    boost::ignore_unused_variable_warning(kspace_init_ok);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -70,7 +71,6 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     if (iter_property == myCellProperties.end())
         return false;
 
-    const DGtal::Dimension cell_dim = myKSpace.uDim(_cell);
     const Index index = iter_property->second.index;
     myCellProperties.erase(iter_property);
 

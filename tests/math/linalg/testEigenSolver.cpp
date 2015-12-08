@@ -29,6 +29,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <vector>
+#include <list>
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"

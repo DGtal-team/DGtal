@@ -184,7 +184,7 @@ namespace DGtal
     typedef std::pair<Point, Value> PointValue; 
     typedef std::set<PointValue,
 		     detail::PointValueCompare<PointValue> > CandidatePointSet; 
-    typedef unsigned long Area;
+    typedef DGtal::uint64_t Area;
 
     // ------------------------- Private Datas --------------------------------
   private:

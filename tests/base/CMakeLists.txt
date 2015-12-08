@@ -25,6 +25,8 @@ SET(DGTAL_TESTS_SRC
    testCloneAndAliases
    testClone2
    testOwningOrAliasingPtr
+   testCatch
+   testSimpleRandomAccessRangeFromPoint
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
