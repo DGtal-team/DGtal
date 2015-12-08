@@ -21,8 +21,8 @@
    Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
 
  - change the chronological order to diplay primitives (in the draw
-   function) in order to see see the cube primitive through the
-   transparency of the ball primitive. (Bertrand Kerautret,
+   function) in order to see the cube primitive through the
+   transparency of the ball primitives. (Bertrand Kerautret,
    [#1081](https://github.com/DGtal-team/DGtal/pull/1081))
 
 
