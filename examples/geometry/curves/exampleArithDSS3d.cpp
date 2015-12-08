@@ -15,8 +15,8 @@
  **/
 
 /**
- * @file testArithDSS3dViewer.cpp
- * @ingroup Tests
+ * @file testArithDSS3d.cpp
+ * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -28,7 +28,7 @@
 
 /**
  * Description of testArithDSS3dViewer <p>
- * Aim: simple test of \ref StandardDSS6Computer
+ * Aim: simple example of \ref StandardDSS6Computer
  */
 
 
@@ -36,7 +36,6 @@
 
 #include <iostream>
 
-#include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board3DTo2D.h"
 

@@ -61,7 +61,6 @@ int main()
   
   typedef SpaceND<2> Space2;
   typedef HyperRectDomain<Space2> TDomain;
-  typedef TDomain::Vector Vector;
 
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;

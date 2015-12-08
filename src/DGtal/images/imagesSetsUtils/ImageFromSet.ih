@@ -45,7 +45,7 @@ DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
            typename Set::ConstIterator itBegin, 
            typename Set::ConstIterator itEnd)
 {
-  // BOOST_CONCEPT_ASSERT(( CDigitalSet<Set> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Set> ));
  
   typename Set::Point lower,upper;
   typename Set::Point dec;
@@ -71,7 +71,7 @@ DGtal::ImageFromSet<Image>::append(Image &aImage, const Value &defaultValue,
            typename Set::ConstIterator itBegin, 
            typename Set::ConstIterator itEnd)
 {
-  // BOOST_CONCEPT_ASSERT(( CDigitalSet<Set> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Set> ));
  
   typename Image::Domain domain = aImage.domain();
 

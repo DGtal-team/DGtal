@@ -917,17 +917,17 @@ sWriteBoundary( OutputIterator & out_it,
                 const PointPredicate & pp,
                 const Point & aLowerBound, const Point & aUpperBound  )
 {
-  Dimension k;
   // bool in_here, in_further;
-  bool in_here, in_before;
+  bool in_here = false, in_before = false;
   
   typedef typename KSpace::Space Space;
   typedef HyperRectDomain<Space> Domain;
   std::vector< Dimension > axes( aKSpace.dimension ); 
-  for ( k = 0; k < aKSpace.dimension; ++k )
+  for ( Dimension k = 0; k < aKSpace.dimension; ++k )
     axes[ k ] = k;
+  
   // We look for surfels in every direction.
-  for ( k = 0; k < aKSpace.dimension; ++k )
+  for ( Dimension k = 0; k < aKSpace.dimension; ++k )
     {
       // When looking for surfels, the visiting must follow the k-th
       // axis first so as to reuse the predicate "pp( p )".

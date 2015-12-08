@@ -43,9 +43,14 @@
 
 #include "DGtal/base/Common.h"
 
+#include "DGtal/kernel/sets/DigitalSetByAssociativeContainer.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
+
 #include "DGtal/math/AngleLinearMinimizer.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
+#include "DGtal/geometry/curves/AlphaThickSegmentComputer.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
@@ -71,7 +76,6 @@
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 
-//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -149,8 +153,23 @@ template <typename TIterator, typename TInteger, int connectivity>
 			    const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & );
 
 template <typename TIterator, typename TInteger, int connectivity>
-  static void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & );
+static void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & );
 // ArithmeticalDSSComputer
+
+
+// AlphaThickSegmentComputer
+template < typename TInputPoint,  typename TConstIterator>
+static void drawAsBoundingBox( DGtal::Board2D & aBoard, 
+                               const DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator> & );
+
+template < typename TInputPoint, typename TConstIterator>
+static void drawAsDigitalPoints( DGtal::Board2D & aBoard, 
+                                 const DGtal::AlphaThickSegmentComputer<TInputPoint, TConstIterator> & );
+
+template < typename TInputPoint,  typename TConstIterator>
+  static void draw( DGtal::Board2D & aBoard, 
+                    const DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator> & );
+// AlphaThickSegmentComputer
     
     
 // CircleFrom2Points
@@ -181,7 +200,13 @@ static void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
 template<typename Domain, typename Compare>
 static void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & );
 // DigitalSetBySTLSet
-    
+
+   
+// DigitalSetByAssociativeContainer
+template<typename Domain, typename Container>
+static void draw( DGtal::Board2D & board, const DGtal::DigitalSetByAssociativeContainer<Domain,Container> & );
+// DigitalSetByAssociativeContainer
+   
     
 // DigitalSetBySTLVector
 template<typename Domain>

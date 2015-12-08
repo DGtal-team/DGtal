@@ -10,6 +10,7 @@
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/CDiscreteExteriorCalculusVectorSpace.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 
 template <typename Container>
 bool
@@ -107,8 +108,9 @@ struct HodgeTester
 template <typename Calculus>
 struct HodgeTester<Calculus, -1>
 {
-  static bool test(const Calculus& UNUSED(calculus))
+  static bool test(const Calculus& calculus)
   {
+    boost::ignore_unused_variable_warning( calculus );
     return true;
   }
 };
@@ -438,7 +440,7 @@ test_hodge_sign()
         const DGtal::Z2i::DigitalSet set(domain);
         const Calculus calculus = CalculusFactory::createFromDigitalSet(set);
         typedef DGtal::Z2i::Point Point;
-        typedef typename Calculus::KSpace KSpace;
+
         // primal point, dual cell
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0)), DGtal::PRIMAL ) == 1 );
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0)), DGtal::DUAL ) == 1 );
@@ -459,7 +461,7 @@ test_hodge_sign()
         const DGtal::Z3i::DigitalSet set(domain);
         const Calculus calculus = CalculusFactory::createFromDigitalSet(set);
         typedef DGtal::Z3i::Point Point;
-        typedef typename Calculus::KSpace KSpace;
+        
         // primal point, dual cell
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0,0)), DGtal::PRIMAL ) == 1 );
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uCell(Point(0,0,0)), DGtal::DUAL ) == 1 );

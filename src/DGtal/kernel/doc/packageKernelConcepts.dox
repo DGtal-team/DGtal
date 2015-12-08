@@ -49,6 +49,8 @@ digraph GKERNEL {
 	   
 	   boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
 	   boost_Assignable [ label="boost::Assignable" URL="\ref boost::Assignable" ];
+	   boost_DefaultConstructible [ label="boost::DefaultConstructible" URL="\ref boost::DefaultConstructible" ];
+	   boost_ForwardContainer [ label="boost::ForwardContainer" URL="\ref boost::ForwardContainer" ];
 	   
         }
 
@@ -72,7 +74,8 @@ digraph GKERNEL {
       CEuclideanRing [label="CEuclideanRing" URL="@ref concepts::CEuclideanRing"];
       CCommutativeRing [label="CCommutativeRing" URL="@ref concepts::CCommutativeRing"];
       CDomain [label="CDomain" URL="@ref concepts::CDomain"];
-    
+      CSTLAssociativeContainer [label="CSTLAssociativeContainer" URL="@ref concepts::CSTLAssociativeContainer"];
+
       CPointFunctor -> CUnaryFunctor;
       CPointPredicate -> CPredicate;
 
@@ -87,7 +90,10 @@ digraph GKERNEL {
       CCommutativeRing -> CSignedNumber;
     
       CDomain-> CConstSinglePassRange;
-		
+
+      CSTLAssociativeContainer -> boost_DefaultConstructible;
+      CSTLAssociativeContainer -> boost_ForwardContainer;
+
       CDigitalSet -> CPointPredicate;
       CDigitalSet -> CDomain   [label="use",style=dashed] ;
 		
@@ -115,6 +121,7 @@ digraph GKERNEL {
         DigitalSetFromMap [ label="DigitalSetFromMap" URL="\ref DigitalSetFromMap" ] ;
 	SetPredicate [ label="SetPredicate" URL="\ref deprecated::SetPredicate" ] ;
 	DomainPredicate [ label="DomainPredicate" URL="\ref functors::DomainPredicate" ] ;
+        DigitalSetByAssociativeContainer [ label="DigitalSetByAssociativeContainer" URL="\ref DigitalSetByAssociativeContainer" ] ;
      }
      
    SpaceND ->CSpace;
@@ -122,6 +129,8 @@ digraph GKERNEL {
    DigitalSetBySTLVector -> CDigitalSet;
    DigitalSetBySTLSet -> CDigitalSet;
    DigitalSetFromMap -> CDigitalSet;
+   DigitalSetByAssociativeContainer -> CDigitalSet
+   DigitalSetByAssociativeContainer -> CSTLAssociativeContainer [label="use",style=dashed];
    SetPredicate -> CDigitalSet [label="use",style=dashed];
    SetPredicate -> CPointPredicate;
    DomainPredicate -> CDomain [label="use",style=dashed];

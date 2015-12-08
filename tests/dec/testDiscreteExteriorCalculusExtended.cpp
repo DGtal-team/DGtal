@@ -28,7 +28,7 @@
 #include "common.h"
 
 int
-main(int UNUSED(argc), char** UNUSED(argv))
+main(int , char**)
 {
     DGtal::trace.beginBlock("testing sparse eigen backend");
     test_backend<DGtal::EigenLinearAlgebraBackend>(2, 7);

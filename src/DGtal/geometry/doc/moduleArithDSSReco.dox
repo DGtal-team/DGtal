@@ -445,7 +445,7 @@ As a model of CDynamicBidirectionalSegmentComputer, its main methods are:
   - ArithmeticalDSSComputer::retractBack()
  
 Moreover, ArithmeticalDSSComputer::primitive() returns an object of 
-type ArithmeticalDSSComputer::Primitive that is actually the current DSS. 
+type ArithmeticalDSSComputer::Primitive that is actually one of 2D DSSs. 
 
 Before using a DSS Computer, you must include the following header: 
 @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerHeader
@@ -453,7 +453,7 @@ Before using a DSS Computer, you must include the following header:
 Then, you can construct a DSS computer as follows: 
 @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardCtor
 
-The extention is simply done as follows: 
+The extension is simply done as follows: 
 @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardExtension
 
 \note You don't need to provide the next point, because ArithmeticalDSSComputer can access to 
@@ -463,8 +463,154 @@ Finally, you can get the resulting DSS as follows:
 @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardPrimitive
 
 The whole example may be found in exampleArithmeticalDSSComputer.cpp. The use of NaiveDSS8Computer
-is quite similar. 
+is quite similar.
+
+\subsection moduleArithDSSReco-DSSRec-Computers3D Naive3DDSSComputer 
+
+Recognition of a 3D straight line segments is based on a projection of the 
+corresponding 3D digital curve onto three base planes. Then these projections 
+are segmented iteratively as long as at least two such 2D segmentation remains valid. 
+By valid we understand that there are no two points of 3D curve which have 
+the same projection onto a 2D plane.
+
+As a model of CForwardSegmentComputer, its main methods are: 
+- Naive3DDSSComputer.init()
+- iteration services
+  - Naive3DDSSComputer::begin()
+  - Naive3DDSSComputer::end()
+- extension tests:
+  - Naive3DDSSComputer::isExtendableFront()
+- extension:
+  - Naive3DDSSComputer::extendFront()
+ 
+Moreover, Naive3DDSSComputer::arithmeticalDSS2d( Dimension ) returns an object of 
+type Naive3DDSSComputer::ArithmeticalDSSComputer2d that is actually the current 
+2D DSS in a given projection. 
+
+Before using a 3D DSS Computer, you must include the following header: 
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerHeader
+
+Then, you can construct a 3D DSS computer as follows: 
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardCtor
+
+The extension is simply done as follows: 
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardExtension
+
+\note You don't need to provide the next point, because Naive3DDSSComputer can access to 
+the points by iterators. 
+
+You can check which 2D DSS are valid as follows ( 0 - YZ, 1 - XZ, 2 - XY ): 
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardPrimitiveValid
+
+And access them:
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardPrimitive
+
+Finally to obtain the parameters of 3D DSS
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardParams
+
+The whole example may be found in exampleNaive3DDSSComputer.cpp.
+
+\section moduleArithDSSReco-DSSRec Application of the straight line segment recognition
+
+This section contains several examples of application of straight line recognition.
+
+\subsection moduleArithDSSReco-DSSRec-Computers3DTangent Estimation of tangent direction
+
+Example below shows how to estimate tangent directions of a digital curve 
+while using Lambda Maximal Segment Tangent estimation introduced
+by Lachaud et. al. \cite LachaudIVC2007.
+
+Before using the LMST 2D estimator, you must include the following headers: 
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DHeader
+
+Then, you can construct estimator as follows: 
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DStandardCtor 
+
+Notice that by default polynomial lambda function is used. Another ones are 
+implemented in FunctorsLambdaMST.h  
+
+We need also to generate a tangential cover:
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DTangential 
+
+Finally, we can estimate tangent direction point-by-point:
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DPoint
+
+or when we want to calculate tangent directions for a range of points better 
+choice is to do this in following way:
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DFast
+
+
+Note that the 3D extension provides similar interface:
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DHeader
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DStandardCtor 
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DTangential 
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DPoint
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DFast
+
+Notice that both LmabdaMST2D and LambdaMST3D are models of CCurveLocalGeometricEstimator.
+
+Both examples are in exampleLMST2D.cpp and exampleLMST3D.cpp
+
 */
 
+
+/**
+   This example 
+- shows the basic usage of a naive/standard DSL, 
+- displays the steps of a DSL for all octants. 
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSL.cpp
+*/
+
+/**
+   This example shows the basic usage of a 8-connected and a 4-connected 
+arithmetical DSS.  
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSS.cpp
+*/
+
+/**
+   This example shows the basic usage of a 4-connected standard segment computer, 
+an object devoted to the on-line recognition of 4-connected standard DSSs.  
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSSComputer.cpp
+*/
+
+/**
+   This example shows the basic usage of a naive 3D DSS recognition. 
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleNaive3DDSSComputer.cpp
+*/
+
+/**
+   This example shows the basic usage of the Lambda maximal segment tangent estimation
+   in 2D.
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/estimation/exampleLMST2D.cpp
+*/
+
+/**
+   This example shows the basic usage of the Lambda maximal segment tangent estimation
+   in 3D.
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/estimation/exampleLMST3D.cpp
+*/
 
 }
