@@ -421,12 +421,15 @@ namespace DGtal
     /// Boundaries closure type
     enum Closure
       {
-        closed,    ///< The space is closed.
+        closed,   ///< The space is closed.
         open,     ///< The space is open.
         periodic  ///< The space is periodic.
       };
 
     // ----------------------- Standard services ------------------------------
+    /** @name Standard services
+     * @{
+     */
   public:
 
     /**
@@ -499,7 +502,12 @@ namespace DGtal
                const Point & upper,
                Closure closure[dim] );
     
+    /// @}
+
     // ------------------------- Basic services ------------------------------
+    /** @name Basic services
+     * @{
+     */
   public:
 
     /**
@@ -536,6 +544,14 @@ namespace DGtal
     */
     const Cell & upperCell() const;
 
+    /// @}
+
+    // ----------------------- Closure type query --------------------------
+    /** @name Closure type query
+     *  @{
+     */
+  public:
+
     /**
        @return 'true' iff the space is closed or periodic along every dimension.
     */
@@ -561,7 +577,18 @@ namespace DGtal
      */
     bool isAnyDimensionPeriodic() const;
 
+    /** Gets closure type.
+     * @param k the dimension.
+     * @return closure type along the specified dimension.
+     */
+    Closure getClosure( Dimension k ) const;
+     
+    /// @}
+
     // ----------------------- Cell creation services --------------------------
+    /** @name Cell creation services
+     * @{
+     */
   public:
 
     /**
@@ -649,8 +676,12 @@ namespace DGtal
      */
     SCell sPointel( Point p, Sign sign = POS ) const;
 
+    ///@}
 
     // ----------------------- Read accessors to cells ------------------------
+    /** @name Read accessors to cells
+     * @{
+     */
   public:
     /**
      * @param c any unsigned cell.
@@ -710,7 +741,12 @@ namespace DGtal
      */
     Sign sSign( const SCell & c ) const;
 
+    /// @}
+
     // ----------------------- Write accessors to cells ------------------------
+    /** @name Write accessors to cells
+     * @{
+     */
   public:
 
     /**
@@ -780,7 +816,12 @@ namespace DGtal
      */
     void sSetSign( SCell & c, Sign s ) const;
 
+    /// @}
+    
     // -------------------- Conversion signed/unsigned ------------------------
+    /** @name Conversion signed/unsigned
+     * @{
+     */
   public:
     /**
      * Creates a signed cell from an unsigned one and a given sign.
@@ -804,7 +845,12 @@ namespace DGtal
      */
     SCell sOpp( const SCell & p ) const;
 
+    /// @}
+
     // ------------------------- Cell topology services -----------------------
+    /** @name Cell topology services
+     * @{
+     */
   public:
     /**
      * @param p any unsigned cell.
@@ -856,7 +902,12 @@ namespace DGtal
     */
     bool sIsOpen( const SCell & p, Dimension k ) const;
 
+    /// @}
+    
     // -------------------- Iterator services for cells ------------------------
+    /** @name Iterator services for cells
+     * @{
+     */
   public:
 
     /**
@@ -965,7 +1016,12 @@ namespace DGtal
     */
     Dimension sOrthDir( const SCell & s ) const;
 
+    /// @}
+
     // -------------------- Unsigned cell geometry services --------------------
+    /** @name Unsigned cell geometry services
+     * @{
+     */
   public:
 
     /**
@@ -1143,7 +1199,12 @@ namespace DGtal
     */
     bool uNext( Cell & p, const Cell & lower, const Cell & upper ) const;
 
+    /// @}
+
     // -------------------- Signed cell geometry services --------------------
+    /** @name Signed cell geometry services
+     * @{
+     */
   public:
 
     /**
@@ -1318,7 +1379,12 @@ namespace DGtal
     */
     bool sNext( SCell & p, const SCell & lower, const SCell & upper ) const;
 
+    /// @}
+
     // ----------------------- Neighborhood services --------------------------
+    /** @name Neighborhood services
+     * @{
+     */
   public:
 
     /**
@@ -1390,7 +1456,12 @@ namespace DGtal
     */
     SCell sAdjacent( const SCell & p, Dimension k, bool up ) const;
 
+    /// @}
+
     // ----------------------- Incidence services --------------------------
+    /** @name Incidence services
+     * @{
+     */
   public:
 
     /**
@@ -1506,8 +1577,12 @@ namespace DGtal
     */
     SCell sIndirectIncident( SCell p, Dimension k ) const;
 
+    /// @}
 
     // ----------------------- Interface --------------------------------------
+    /** @name DGtal interface
+     * @{
+     */
   public:
 
     /**
@@ -1521,6 +1596,8 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+    /// @}
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -1541,6 +1618,9 @@ namespace DGtal
 
 
     // ------------------------- Internals ------------------------------------
+    /** @name Internals
+     * @{
+     */
   private:
     /**
        Used by uFaces for computing incident faces.
@@ -1552,6 +1632,7 @@ namespace DGtal
     */
     void uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const;
 
+    /// @}
 
   }; // end of class KhalimskySpaceND
 
