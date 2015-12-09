@@ -1167,11 +1167,37 @@ sOrthDir( const SCell & s ) const
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uFirst( const Cell & p, DGtal::Dimension k ) const
+{
+  return myClosure[ k ] == open ?
+        2 * myLower[ k ] + 2 - p.myCoordinates[ k ] & Integer(1)
+      : 2 * myLower[ k ]     + p.myCoordinates[ k ] & Integer(1);
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uFirst( const Cell & p ) const
 {
-  return uCell( myLower, p );
+  Cell cell;
+  for ( Dimension k = 0; k < dimension; ++k )
+    cell.myCoordinates[ k ] = uFirst( p, k );
+
+  return cell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uLast( const Cell & p, DGtal::Dimension k ) const
+{
+  return myClosure[ k ] == closed ?
+        2 * myUpper[ k ] + 2 - p.myCoordinates[ k ] & Integer(1)
+      : 2 * myUpper[ k ]     + p.myCoordinates[ k ] & Integer(1);
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1180,7 +1206,11 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uLast( const Cell & p ) const
 {
-  return uCell( myUpper, p );
+  Cell cell;
+  for ( Dimension k = 0; k < dimension; ++k )
+    cell.myCoordinates[ k ] = uLast( p, k );
+
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1213,8 +1243,8 @@ uIsInside( const Cell & p, DGtal::Dimension k ) const
   return 
         this->isDimensionPeriodicHelper( k )
     || (
-          (p.myCoordinates[ k ] <= uLast(p).myCoordinates[ k ]) &&
-          (p.myCoordinates[ k ] >= uFirst(p).myCoordinates[ k ])
+          (p.myCoordinates[ k ] <= uLast(p, k) &&
+          (p.myCoordinates[ k ] >= uFirst(p,  k)
   );
 }
 //-----------------------------------------------------------------------------
@@ -1222,9 +1252,10 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetMax( const Cell & p, DGtal::Dimension k ) const
+uGetMax( Cell p, DGtal::Dimension k ) const
 {
-  return uProjection( p, uLast(p), k );
+  p.myCoordinates[ k ] = uLast( p, k );
+  return p;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1252,9 +1283,10 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetMin( const Cell & p, DGtal::Dimension k ) const
+uGetMin( Cell p, DGtal::Dimension k ) const
 {
-  return uProjection( p, uFirst(p), k );
+  p.myCoordinates[ k ] = uFirst( p, k );
+  return p;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1359,11 +1391,37 @@ uNext( Cell & p, const Cell & lower, const Cell & upper ) const
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sFirst( const SCell & p, DGtal::Dimension k ) const
+{
+  return myClosure[ k ] == open ?
+        2 * myLower[ k ] + 2 - p.myCoordinates[ k ] & Integer(1)
+      : 2 * myLower[ k ]     + p.myCoordinates[ k ] & Integer(1);
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sFirst( const SCell & p ) const
 {
-  return sCell( myLower, p );
+  SCell cell = p;
+  for ( Dimension k = 0; k < dimension; ++k )
+    cell.myCoordinates[ k ] = sFirst( p, k );
+  
+  return cell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sLast( const SCell & p, DGtal::Dimension k ) const
+{
+  return myClosure[ k ] == closed ?
+        2 * myUpper[ k ] + 2 - p.myCoordinates[ k ] & Integer(1)
+      : 2 * myUpper[ k ]     + p.myCoordinates[ k ] & Integer(1);
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1372,7 +1430,11 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sLast( const SCell & p ) const
 {
-  return sCell( myUpper, p );
+  SCell cell = p;
+  for ( Dimension k = 0; k < dimension; ++k )
+    cell.myCoordinates[ k ] = sLast( p, k );
+
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1413,9 +1475,10 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sGetMax( const SCell & p, DGtal::Dimension k ) const
+sGetMax( SCell p, DGtal::Dimension k ) const
 {
-  return sProjection( p, sLast(p), k );
+  p.myCoordinates[ k ] = sLast( p, k );
+  return p;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1443,9 +1506,10 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sGetMin( const SCell & p, DGtal::Dimension k ) const
+sGetMin( SCell p, DGtal::Dimension k ) const
 {
-  return sProjection( p, sFirst(p), k );
+  p.myCoordinates[ k ] = sFirst( p, k );
+  return p;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>

@@ -1025,10 +1025,20 @@ namespace DGtal
   public:
 
     /**
+       @return the k-th coordinate of the first cell of the space with the same type as [p].
+    */
+    Integer uFirst( const Cell & p, Dimension k ) const;
+    
+    /**
        @return the first cell of the space with the same type as [p].
     */
     Cell uFirst( const Cell & p ) const;
 
+    /**
+       @return the k-th coordinate of the last cell of the space with the same type as [p].
+    */
+    Integer uLast( const Cell & p, Dimension k ) const;
+    
     /**
        @return the last cell of the space with the same type as [p].
     */
@@ -1073,7 +1083,7 @@ namespace DGtal
        @return the cell similar to [p] but with the maximum allowed
        [k]-coordinate.
     */
-    Cell uGetMax( const Cell & p, Dimension k ) const;
+    Cell uGetMax( Cell p, Dimension k ) const;
 
     /**
        NB: you can go out of the space.
@@ -1103,7 +1113,7 @@ namespace DGtal
        @return the cell similar to [p] but with the minimum allowed
        [k]-coordinate.
     */
-    Cell uGetMin( const Cell & p, Dimension k ) const;
+    Cell uGetMin( Cell p, Dimension k ) const;
 
 
     /**
@@ -1208,10 +1218,20 @@ namespace DGtal
   public:
 
     /**
+       @return the k-th coordinate of the first cell of the space with the same type as [p].
+    */
+    Integer sFirst( const SCell & p, Dimension k ) const;
+    
+    /**
        @return the first cell of the space with the same type as [p].
     */
     SCell sFirst( const SCell & p ) const;
 
+    /**
+       @return the k-th coordinate of the last cell of the space with the same type as [p].
+    */
+    Integer sLast( const SCell & p, Dimension k ) const;
+    
     /**
        @return the last cell of the space with the same type as [p].
     */
@@ -1254,7 +1274,7 @@ namespace DGtal
        @return the cell similar to [p] but with the maximum allowed
        [k]-coordinate.
     */
-    SCell sGetMax( const SCell & p, Dimension k ) const;
+    SCell sGetMax( SCell p, Dimension k ) const;
 
     /**
        NB: you can go out of the space.
@@ -1284,7 +1304,7 @@ namespace DGtal
        @return the cell similar to [p] but with the minimum allowed
        [k]-coordinate.
     */
-    SCell sGetMin( const SCell & p, Dimension k ) const;
+    SCell sGetMin( SCell p, Dimension k ) const;
 
     /**
        NB: you can go out of the space.
