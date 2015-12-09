@@ -79,6 +79,13 @@ namespace std
     }
   };
 }
+//Also defining boost::hash since boost::hash_range needs it.
+namespace boost
+{
+  template <>
+  struct hash< DGtal::BigInteger > : std::hash<DGtal::BigInteger>
+  { };
+}
 #endif
 
 
