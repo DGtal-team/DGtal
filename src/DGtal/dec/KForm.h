@@ -82,7 +82,7 @@ namespace DGtal
      */
     static
     KForm<TCalculus, order, duality>
-    Ones(ConstAlias<Calculus> calculus);
+    ones(ConstAlias<Calculus> calculus);
 
     /**
      * Create a kform with all values initialized to 0.
@@ -91,7 +91,7 @@ namespace DGtal
      */
     static
     KForm<TCalculus, order, duality>
-    Zeros(ConstAlias<Calculus> calculus);
+    zeros(ConstAlias<Calculus> calculus);
 
     /**
      * Create a kform with all values initialized to 0, except value associated with cell initialized to 1.
@@ -100,7 +100,7 @@ namespace DGtal
      */
     static
     KForm<TCalculus, order, duality>
-    Dirac(ConstAlias<Calculus> calculus, const typename Calculus::Cell& cell);
+    dirac(ConstAlias<Calculus> calculus, const typename Calculus::Cell& cell);
 
     /**
      * Constructor.
