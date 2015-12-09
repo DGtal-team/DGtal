@@ -1172,8 +1172,8 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uFirst( const Cell & p, DGtal::Dimension k ) const
 {
   return myClosure[ k ] == open ?
-        2 * myLower[ k ] + 2 - p.myCoordinates[ k ] & Integer(1)
-      : 2 * myLower[ k ]     + p.myCoordinates[ k ] & Integer(1);
+        2 * myLower[ k ] + 2 - ( p.myCoordinates[ k ] & Integer(1) )
+      : 2 * myLower[ k ]     + ( p.myCoordinates[ k ] & Integer(1) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1196,8 +1196,8 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uLast( const Cell & p, DGtal::Dimension k ) const
 {
   return myClosure[ k ] == closed ?
-        2 * myUpper[ k ] + 2 - p.myCoordinates[ k ] & Integer(1)
-      : 2 * myUpper[ k ]     + p.myCoordinates[ k ] & Integer(1);
+        2 * myUpper[ k ] + 2 - ( p.myCoordinates[ k ] & Integer(1) )
+      : 2 * myUpper[ k ]     + ( p.myCoordinates[ k ] & Integer(1) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1243,8 +1243,8 @@ uIsInside( const Cell & p, DGtal::Dimension k ) const
   return 
         this->isDimensionPeriodicHelper( k )
     || (
-          (p.myCoordinates[ k ] <= uLast(p, k) &&
-          (p.myCoordinates[ k ] >= uFirst(p,  k)
+           p.myCoordinates[ k ] <= uLast( p, k )
+        && p.myCoordinates[ k ] >= uFirst( p, k )
   );
 }
 //-----------------------------------------------------------------------------
@@ -1396,8 +1396,8 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sFirst( const SCell & p, DGtal::Dimension k ) const
 {
   return myClosure[ k ] == open ?
-        2 * myLower[ k ] + 2 - p.myCoordinates[ k ] & Integer(1)
-      : 2 * myLower[ k ]     + p.myCoordinates[ k ] & Integer(1);
+        2 * myLower[ k ] + 2 - ( p.myCoordinates[ k ] & Integer(1) )
+      : 2 * myLower[ k ]     + ( p.myCoordinates[ k ] & Integer(1) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1420,8 +1420,8 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sLast( const SCell & p, DGtal::Dimension k ) const
 {
   return myClosure[ k ] == closed ?
-        2 * myUpper[ k ] + 2 - p.myCoordinates[ k ] & Integer(1)
-      : 2 * myUpper[ k ]     + p.myCoordinates[ k ] & Integer(1);
+        2 * myUpper[ k ] + 2 - ( p.myCoordinates[ k ] & Integer(1) )
+      : 2 * myUpper[ k ]     + ( p.myCoordinates[ k ] & Integer(1) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1466,8 +1466,9 @@ sIsInside( const SCell & p, DGtal::Dimension k ) const
 {
   return 
         this->isDimensionPeriodicHelper( k )
-    ||  (   (p.myCoordinates[ k ] <= sLast(p).myCoordinates[ k ])
-         && (p.myCoordinates[ k ] >= sFirst(p).myCoordinates[ k ])
+    ||  (   
+            p.myCoordinates[ k ] <= sLast( p, k )
+         && p.myCoordinates[ k ] >= sFirst( p, k )
   );
 }
 //-----------------------------------------------------------------------------
