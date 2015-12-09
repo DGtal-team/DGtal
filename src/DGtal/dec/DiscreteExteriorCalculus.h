@@ -134,7 +134,7 @@ namespace DGtal
 
     /**
      * @struct Property
-     * @brief Holds size 'ratio', 'index' and 'flipped' for each cell of the DEC object.
+     * @brief Holds size 'primal_size', 'dual_size', 'index' and 'flipped' for each cell of the DEC object.
      * To avoid inserting both positive and negative cells in a DEC object,
      * only non signed cells are stored internally.
      * @var Property::flipped
@@ -310,8 +310,8 @@ namespace DGtal
      * Should call updateIndexes() when structure modification is finished.
      * Be sure to insert all adjacent lower order primal cells.
      * @param signed_cell the signed cell to be inserted.
-     * @param primal_size size (length, area, volume, ...) of primal cell.
-     * @param dual_size size (length, area, volume, ...) of dual cell.
+     * @param primal_size size (length, area, volume, ...) of primal cell. Primal size of 0-cell should be equal to 1.
+     * @param dual_size size (length, area, volume, ...) of dual cell. Dual size of n-cell should be equal to 1.
      * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
      */
     bool

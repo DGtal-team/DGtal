@@ -36,9 +36,11 @@ This allows easy and fast resolution of linear problem over complex geometric ob
 
 A DEC structure is composed of a primal and a dual k-cells sets which define the geometrical shape of the represented object.
 These sets are interleaved and are the dual of each others in the classical sense.
-Each pair of primal and dual k-cells holds a size ratio used to define the Hodge duality operator.
+Each pair of primal and dual k-cells holds primal and dual sizes used to define the Hodge duality operator.
 Associated primal k-cell and dual k'-cell don't have the same dimension.
 In general, \f$k' = n - k\f$ where \f$n\f$ is the dimension of the DEC structure.
+
+@note By definition 0-cell must have a primal size equals to 1 and n-cell must have dual size equals to 1.
 
 \anchor one
 \image html grille_cubique.png "Primal (solid lines and filled dots) and dual (dashed lines and hollow dots) k-cells sets defining a 3D DEC structure."
@@ -88,6 +90,12 @@ Intuitively, one can think of Hodge duality operator as orthogonal complement op
 Wedging any k-cells with its orthogonal complement always forms the volume form (single n-form base).
 They take care of size ratio and orientation change between primal and dual meshes.
 \f$\star_k\f$ (resp. \f$\star_k'\f$) take primal (resp. dual) k-forms as input and create dual (resp. primal) (n-k)-forms.
+Hodge operators are defined by their action on a value of a discrete k-form \f$x\f$ at a k-cell \f$\sigma\f$.
+
+\f[ \star x ( \star\sigma ) = \frac{|\star\sigma|}{|\sigma|} x ( \sigma )\f]
+
+where \f$|\sigma|\f$ is the size of \f$\sigma\f$.
+Applying \f$\star\f$ twice to a k-form \f$x\f$ will give \f$x\f$ back up to sign given by the following equation.
 
 \f[ \star \star x = -1^{(n-k)k} x \f]
 
@@ -256,7 +264,7 @@ See \ref moduleDECEmbedding for a discussion about manifold embedding.
 Borders can be added or
 removed from the generated structure using the add_border boolean
 to enforce various boundary condition.
-Dual k-cells are created automatically with the right size ratio.
+Dual k-cells are created automatically.
 Note that the structure can be altered after creation to adjust small details
 or created completely manually via calls to
 DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseCell.
