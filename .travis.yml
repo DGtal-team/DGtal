@@ -57,13 +57,13 @@ addons:
     - libgraphicsmagick++1-dev
     - libqglviewer-qt4-dev
     - libinsighttoolkit3-dev
-    - g++-4.7
-    - gcc-4.7
+    - g++-4.9
+    - gcc-4.9
     
 
 before_install:
-  - CCOMPILER="gcc-4.7"
-  - CXXCOMPILER="g++-4.7"
+  - CCOMPILER="gcc-4.9"
+  - CXXCOMPILER="g++-4.9"
   - DOC="false"
   - NEEDBUILD="true";
   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDBUILD="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
