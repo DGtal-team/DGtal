@@ -43,7 +43,7 @@ addons:
   apt:
     packages:
     - libhdf5-serial-dev
-    - libboost-program-options-dev
+    - libboost-dev
     - libcairo2-dev
     - doxygen
     - doxygen-latex
@@ -54,13 +54,13 @@ addons:
     - libgraphicsmagick++1-dev
     - libqglviewer-qt4-dev
     - libinsighttoolkit3-dev
- #   - g++-4.7
- #   - gcc-4.7
+    - g++-4.7
+    - gcc-4.7
 
 
 before_install:
-  - CCOMPILER="gcc"
-  - CXXCOMPILER="g++"
+  - CCOMPILER="gcc-4.7"
+  - CXXCOMPILER="g++-4.7"
   - DOC="false"
   - NEEDBUILD="true";
   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDBUILD="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
