@@ -421,7 +421,7 @@ namespace DGtal
     /// Boundaries closure type
     enum Closure
       {
-        closed,   ///< The space is closed.
+        closed,   ///< The space is closed and non-periodic.
         open,     ///< The space is open.
         periodic  ///< The space is periodic.
       };

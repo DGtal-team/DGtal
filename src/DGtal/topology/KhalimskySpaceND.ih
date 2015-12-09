@@ -1231,7 +1231,7 @@ uIsMax( const Cell & p, DGtal::Dimension k ) const
 {
   return 
         ! this->isDimensionPeriodicHelper( k ) 
-    &&  p.myCoordinates[ k ] >= myCellUpper.myCoordinates[ k ];
+    &&  p.myCoordinates[ k ] >= uLast( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1276,7 +1276,7 @@ uIsMin( const Cell & p, DGtal::Dimension k ) const
 {
   return 
         ! this->isDimensionPeriodicHelper( k )
-    &&  p.myCoordinates[ k ] <= myCellLower.myCoordinates[ k ];
+    &&  p.myCoordinates[ k ] <= uFirst( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1455,7 +1455,7 @@ sIsMax( const SCell & p, DGtal::Dimension k ) const
 {
   return 
         ! this->isDimensionPeriodicHelper( k )
-    &&  p.myCoordinates[ k ] >= myCellUpper.myCoordinates[ k ];
+    &&  p.myCoordinates[ k ] >= sLast( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1500,7 +1500,7 @@ sIsMin( const SCell & p, DGtal::Dimension k ) const
 {
   return 
         ! this->isDimensionPeriodicHelper( k )
-    &&  p.myCoordinates[ k ] <= myCellLower.myCoordinates[ k ];
+    &&  p.myCoordinates[ k ] <= sFirst( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
