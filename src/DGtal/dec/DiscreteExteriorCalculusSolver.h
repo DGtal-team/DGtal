@@ -89,6 +89,10 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
+    /**
+     * Pointer to const calculus
+     */
+    const Calculus* myCalculus;
 
     /**
      * Linear algebra solver.
@@ -123,11 +127,6 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-
-    /**
-     * Pointer to const calculus
-     */
-    const Calculus* myCalculus;
 
     // ------------------------- Hidden services ------------------------------
   protected:
