@@ -85,7 +85,7 @@ namespace DGtal
     KhalimskyCell( const KhalimskyCell & other );
 
     /**
-     * constructor from point.
+     * Constructor from point.
      *
      * @param point any point.
      */
@@ -170,7 +170,7 @@ namespace DGtal
     SignedKhalimskyCell( const SignedKhalimskyCell & other );
 
     /**
-     * constructor from point.
+     * Constructor from point.
      *
      * @param point any point.
      * @param positive if cell has positive sign.
@@ -477,7 +477,7 @@ namespace DGtal
      * @param lower the lowest point in this space (digital coords)
      * @param upper the upper point in this space (digital coords)
      * @param closure \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic), 
-     *        open or periodic (thus closed) in every dimension.
+     *        open or periodic in every dimension.
      *
      * @return true if the initialization was valid (ie, such bounds
      * are representable with these integers).
@@ -493,7 +493,7 @@ namespace DGtal
      * @param lower the lowest point in this space (digital coords)
      * @param upper the upper point in this space (digital coords)
      * @param closure an array of \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic), 
-     *        open or periodic (thus closed) in the corresponding dimension.
+     *        open or periodic in the corresponding dimension.
      *
      * @return true if the initialization was valid (ie, such bounds
      * are representable with these integers).
@@ -558,7 +558,7 @@ namespace DGtal
     bool isSpaceClosed() const;
 
     /**
-     * @return 'true' iff the space is close or periodic along the specified dimension.
+     * @return 'true' iff the space is closed or periodic along the specified dimension.
      */
     bool isSpaceClosed( Dimension d ) const;
 

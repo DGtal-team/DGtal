@@ -386,7 +386,7 @@ public:
     }
 
   /** Modifies a khalimsky coordinate according to the dimension periodicity.
-   * @param aCoordinate the coordinate to modify.
+   * @param aKCoord the coordinate to modify.
    * @param d the coordinate dimension.
    * @return the modified coordinate.
    */
