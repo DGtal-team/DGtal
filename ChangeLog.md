@@ -22,7 +22,7 @@
 
 ## Changes
 - *DEC Package*
- - DiscreteExteriorCalculus holds both primal and dual size.
+ - DiscreteExteriorCalculus holds both primal and dual sizes of each cell.
    Subsequent changes have been made to insertSCell.
    (Pierre Gueth [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
  - Convenient static members for KForm :
