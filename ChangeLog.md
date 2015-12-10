@@ -21,6 +21,13 @@
    [#1076](https://github.com/DGtal-team/DGtal/pull/1076))
 
 ## Changes
+- *DEC Package*
+ - DiscreteExteriorCalculus holds both primal and dual size.
+   Subsequent changes have been made to insertSCell.
+   (Pierre Gueth [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
+ - Convenient static members for KForm :
+   KForm::ones(), KForm::zeros() and KForm::dirac(KSpace::Cell).
+   (Pierre Gueth [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
 - *Base Package*
  - Enabling circulators in SimpleRandomAccessRangeFromPoint.
    (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
@@ -46,6 +53,8 @@
    [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
  - Fixing parenthese warnings in Catch. Waiting for an official fix.
    (Roland Denis, [#1069](https://github.com/DGtal-team/DGtal/pull/1069))
+ - Fix constness in selfDisplay and operator<<.
+   (Pierre Gueth [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
 
 - *Base Package*
  - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
