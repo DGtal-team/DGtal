@@ -721,22 +721,6 @@ DGtal::Viewer3D<Space, KSpace>::draw()
 
     }
 
-  for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
-    {
-      if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
-        {
-          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam );
-        }
-      glCallList(myBallSetListId+j);
-    }
- for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
-	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
-    {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
-        {
-          glDrawGLBall ( *it_s );
-        }
-    }
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
     {
@@ -753,6 +737,22 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList( myCubeSetListId+j);
     }
 
+  for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
+    {
+      if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
+        {
+          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam );
+        }
+      glCallList(myBallSetListId+j);
+    }
+ for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
+	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
+    {
+      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
+        {
+          glDrawGLBall ( *it_s );
+        }
+    }
 
   glDisable(GL_CULL_FACE);
   glCallList(myQuadsMapId);
