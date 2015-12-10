@@ -28,7 +28,8 @@
 
 
 //////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io/Color.h"
+#include <DGtal/io/Color.h>
+#include <DGtal/kernel/NumberTraits.h>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -330,12 +331,10 @@ DGtal::CellDirectionIterator< dim, TInteger >::
 find()
 {
   if ( myOpen ) // loop on open coordinates
-    while ( ( myDir != dim )
-      && ( ( myCell.myCoordinates[ myDir ] & 0x1 ) == 0 ) )
+    while ( myDir != dim && NumberTraits<Integer>::even( myCell.myCoordinates[ myDir ] ) )
       ++myDir;
   else // myOpen is false, loop on closed coordinates
-    while ( ( myDir != dim )
-      && ( myCell.myCoordinates[ myDir ] & 0x1 ) )
+    while ( myDir != dim && NumberTraits<Integer>::odd( myCell.myCoordinates[ myDir ] ) )
       ++myDir;
 }
 
@@ -465,7 +464,7 @@ KhalimskySpaceND()
   Point low, high;
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
     {
-      low[ i ] = NumberTraits< Integer >::min() / 2 + 1;
+      low[ i ]  = NumberTraits< Integer >::min() / 2 + 1;
       high[ i ] = NumberTraits< Integer >::max() / 2 - 1;
     }
   init( low, high, true );
@@ -556,7 +555,7 @@ init( const Point & lower,
     {
       myClosure[ i ] = closure[ i ];
       myCellLower.myCoordinates[ i ] = ( lower[ i ] * 2 )
-        + ( closure[ i ] != open ? 0 : 1 );
+        + ( closure[ i ] != open   ? 0 : 1 );
       myCellUpper.myCoordinates[ i ] = ( upper[ i ] * 2 )
         + ( closure[ i ] == closed ? 2 : 1 );
 
@@ -699,7 +698,7 @@ uCell( Point p, const Cell & c ) const
 {
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
     {
-      p[ i ] += p[ i ] + ( c.myCoordinates[ i ] & 0x1 );
+      p[ i ] += p[ i ] + ( NumberTraits<Integer>::odd( c.myCoordinates[ i ] ) ? 1 : 0 );
     }
   return uCell( p );
 }
@@ -720,7 +719,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sCell( Point p, const SCell & c ) const
 {
   for ( DGtal::Dimension i = 0; i < DIM; ++i )
-    p[ i ] += p[ i ] + ( c.myCoordinates[ i ] & 0x1 );
+    p[ i ] += p[ i ] + ( NumberTraits<Integer>::odd( c.myCoordinates[ i ] ) ? 1 : 0 );
   return sCell( p, c.myPositive );
 }
 //-----------------------------------------------------------------------------
@@ -925,7 +924,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uSetCoord( Cell & c, DGtal::Dimension k, Integer i ) const
 {
   ASSERT( k < DIM );
-  i = this->updateKCoordHelper( ( i << 1 ) + ( c.myCoordinates[ k ] & 1 ), k );
+  i = this->updateKCoordHelper( 2 * i + ( NumberTraits<Integer>::odd( c.myCoordinates[ k ] ) ? 1 : 0 ), k );
   ASSERT( myCellLower.myCoordinates[ k ] <= i
     && i <= myCellUpper.myCoordinates[ k ] );
   c.myCoordinates[ k ] = i;
@@ -938,7 +937,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetCoord( SCell & c, DGtal::Dimension k, Integer i ) const
 {
   ASSERT( k < DIM );
-  i = this->updateKCoordHelper( ( i << 1 ) + ( c.myCoordinates[ k ] & 1 ), k );
+  i = this->updateKCoordHelper( 2 * i + ( NumberTraits<Integer>::odd( c.myCoordinates[ k ] ) ? 1 : 0 ), k );
   ASSERT( myCellLower.myCoordinates[ k ] <= i
     && i <= myCellUpper.myCoordinates[ k ] );
   c.myCoordinates[ k ] = i;
@@ -971,7 +970,7 @@ uSetCoords( Cell & c, const Point & p ) const
   Integer i;
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
     {
-      i = this->updateKCoordHelper( ( p[ k ] << 1 ) + ( c.myCoordinates[ k ] & 1 ), k );
+      i = this->updateKCoordHelper( 2 * p[ k ] + ( NumberTraits<Integer>::odd( c.myCoordinates[ k ] ) ? 1 : 0 ), k );
       ASSERT( myCellLower.myCoordinates[ k ] <= i
         && i <= myCellUpper.myCoordinates[ k ] );
       c.myCoordinates[ k ] = i;
@@ -987,7 +986,7 @@ sSetCoords( SCell & c, const Point & p ) const
   Integer i;
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
     {
-      i = this->updateKCoordHelper( ( p[ k ] << 1 ) + ( c.myCoordinates[ k ] & 1 ), k );
+      i = this->updateKCoordHelper( 2 * p[ k ] + ( NumberTraits<Integer>::odd( c.myCoordinates[ k ] ) ? 1 : 0 ), k );
       ASSERT( myCellLower.myCoordinates[ k ] <= i
         && i <= myCellUpper.myCoordinates[ k ] );
       c.myCoordinates[ k ] = i;
@@ -1015,9 +1014,9 @@ uTopology( const Cell & p ) const
   Integer j = NumberTraits<Integer>::ONE;
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
     {
-      if ( p.myCoordinates[ k ] & NumberTraits<Integer>::ONE )
+      if ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) )
         i |= j;
-      j <<= 1;
+      j *= 2;
     }
   return i;
 }
@@ -1032,9 +1031,9 @@ sTopology( const SCell & p ) const
   Integer j = NumberTraits<Integer>::ONE;
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
     {
-      if ( p.myCoordinates[ k ] & NumberTraits<Integer>::ONE )
+      if ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) )
         i |= j;
-      j <<= 1;
+      j *= 2;
     }
   return i;
 }
@@ -1047,7 +1046,7 @@ uDim( const Cell & p ) const
 {
   Integer i = NumberTraits<Integer>::ZERO;
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    if ( p.myCoordinates[ k ] & NumberTraits<Integer>::ONE )
+    if ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) )
       ++i;
   return i;
 }
@@ -1060,7 +1059,7 @@ sDim( const SCell & p ) const
 {
   Integer i = NumberTraits<Integer>::ZERO;
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    if ( p.myCoordinates[ k ] & NumberTraits<Integer>::ONE )
+    if ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) )
       ++i;
   return i;
 }
@@ -1089,7 +1088,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsOpen( const Cell & p, DGtal::Dimension k ) const
 {
-  return p.myCoordinates[ k ] & NumberTraits<Integer>::ONE;
+  return NumberTraits<Integer>::odd( p.myCoordinates[ k ] );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1098,7 +1097,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsOpen( const SCell & p, DGtal::Dimension k ) const
 {
-  return p.myCoordinates[ k ] & NumberTraits<Integer>::ONE;
+  return NumberTraits<Integer>::odd( p.myCoordinates[ k ] );
 }
 
 //-----------------------------------------------------------------------------
@@ -1172,8 +1171,8 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uFirst( const Cell & p, DGtal::Dimension k ) const
 {
   return myClosure[ k ] == open ?
-        2 * myLower[ k ] + 2 - ( p.myCoordinates[ k ] & Integer(1) )
-      : 2 * myLower[ k ]     + ( p.myCoordinates[ k ] & Integer(1) );
+        2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
+      : 2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1196,8 +1195,8 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uLast( const Cell & p, DGtal::Dimension k ) const
 {
   return myClosure[ k ] == closed ?
-        2 * myUpper[ k ] + 2 - ( p.myCoordinates[ k ] & Integer(1) )
-      : 2 * myUpper[ k ]     + ( p.myCoordinates[ k ] & Integer(1) );
+        2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
+      : 2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1295,7 +1294,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uGetAdd( Cell p, DGtal::Dimension k, const Integer & x ) const
 {
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2*x, k );
+  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2 * x, k );
   return p;
 }
 //-----------------------------------------------------------------------------
@@ -1334,7 +1333,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uTranslation( Cell p, const Vector & vec ) const
 {
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + ( vec[ k ] << 1 ), k);
+    p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2 * vec[ k ], k);
   return p;
 }
 //-----------------------------------------------------------------------------
@@ -1396,8 +1395,8 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sFirst( const SCell & p, DGtal::Dimension k ) const
 {
   return myClosure[ k ] == open ?
-        2 * myLower[ k ] + 2 - ( p.myCoordinates[ k ] & Integer(1) )
-      : 2 * myLower[ k ]     + ( p.myCoordinates[ k ] & Integer(1) );
+        2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
+      : 2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1420,8 +1419,8 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sLast( const SCell & p, DGtal::Dimension k ) const
 {
   return myClosure[ k ] == closed ?
-        2 * myUpper[ k ] + 2 - ( p.myCoordinates[ k ] & Integer(1) )
-      : 2 * myUpper[ k ]     + ( p.myCoordinates[ k ] & Integer(1) );
+        2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
+      : 2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1558,7 +1557,7 @@ DGtal::KhalimskySpaceND< dim, TInteger >::
 sTranslation( SCell p, const Vector & vec ) const
 {
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + ( vec[ k ] << 1 ), k );
+    p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2 * vec[ k ], k );
   return p;
 }
 //-----------------------------------------------------------------------------
