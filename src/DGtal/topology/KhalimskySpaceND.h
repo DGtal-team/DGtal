@@ -492,7 +492,7 @@ namespace DGtal
      *
      * @param lower the lowest point in this space (digital coords)
      * @param upper the upper point in this space (digital coords)
-     * @param bndryClosure an array of \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic), 
+     * @param closure an array of \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic), 
      *        open or periodic (thus closed) in the corresponding dimension.
      *
      * @return true if the initialization was valid (ie, such bounds
