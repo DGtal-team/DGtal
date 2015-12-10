@@ -897,7 +897,7 @@ namespace DGtal
   template < typename Domain, typename Value, typename HashKey>
   inline
   void
-  ImageContainerByHashTree< Domain, Value, HashKey>::selfDisplay ( std::ostream & out )
+  ImageContainerByHashTree< Domain, Value, HashKey>::selfDisplay ( std::ostream & out ) const
   {
     printInfo ( out );
   }
