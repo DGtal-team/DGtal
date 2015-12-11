@@ -36,7 +36,7 @@
 
   - In the Viewer3D, the light source position is now saved in the
     QGLViewer state file (.qglviewer.xml). (Bertrand Kerautret
-    [#1081](https://github.com/DGtal-team/DGtal/pull/1084))
+    [#1087](https://github.com/DGtal-team/DGtal/pull/1087))
 
  - Minor improvements of default settings in Viewer3D. (David
    Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
