@@ -44,6 +44,9 @@
 #include <limits>
 #include <QColor>
 
+# include <QMessageBox>
+# include <QTextStream>
+# include <QDir>
 
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
@@ -70,7 +73,7 @@ DGtal::Viewer3D<Space, KSpace>::rotateDomain(Image2DDomainD3D &anDom, double ang
   pt[1] = (int) (anDom.point1[1]+anDom.point2[1]+anDom.point3[1]+anDom.point4[1])/4.0;
   pt[2] = (int) (anDom.point1[2]+anDom.point2[2]+anDom.point3[2]+anDom.point4[2])/4.0;
   rotateImageVertex(anDom, angleRotation, rotationDir);
-
+  
   std::vector<typename DGtal::Display3D<Space, KSpace>::LineD3D> &aVectLine = Viewer3D<Space, KSpace>::myLineSetList.at(anDom.myLineSetIndex);
   for(unsigned int i = 0; i< aVectLine.size();i++){
     typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine = aVectLine.at(i);
@@ -1706,4 +1709,61 @@ DGtal::Viewer3D<Space, KSpace>::glUpdateTextureImages(const  VectorTextureImage 
       myVectTextureImage.push_back(textureImg);
     }
 }
+
+
+
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::saveStateToFile(){
+  QString name = stateFileName();
+  
+  if (name.isEmpty())
+		return;
+    
+    QFileInfo fileInfo(name);
+    
+    if (fileInfo.isDir())
+    {
+      QMessageBox::warning(this, tr("Save to file error", "Message box window title"), tr("State file name (%1) references a directory instead of a file.").arg(name));
+      return;
+    }
+    
+    const QString dirName = fileInfo.absolutePath();
+    if (!QFileInfo(dirName).exists())
+    {
+      QDir dir;
+      if (!(dir.mkdir(dirName)))
+      {
+        QMessageBox::warning(this, tr("Save to file error", "Message box window title"), tr("Unable to create directory %1").arg(dirName));
+        return;
+      }
+    }
+    
+    // Write the DOM tree to file
+    QFile f(name);
+    if (f.open(QIODevice::WriteOnly))
+    {
+      QTextStream out(&f);
+      QDomDocument doc("QGLVIEWER");
+      doc.appendChild(domElement("QGLViewer", doc));
+      QDomElement lightDoc = doc.createElement(QString("LIGHT_POSITION1"));
+      lightDoc.setAttribute(QString("Light Pos_PHI"), myLightPhi);
+      lightDoc.setAttribute(QString("Light Pos_Theta"), myLightTheta);
+      lightDoc.setAttribute(QString("Light Pos_Radius"), myLightR);
+
+      doc.appendChild(lightDoc);
+      doc.save(out, 2);
+      f.flush();
+      f.close();
+    }
+    else
+    QMessageBox::warning(this, tr("Save to file error", "Message box window title"), tr("Unable to save to file %1").arg(name) + ":\n" + f.errorString());
+}
+
+
+
+
+
+
 
