@@ -95,8 +95,6 @@ namespace DGtal
     typedef typename TImageContainer::Domain::Vector Vector;
     typedef TFunctor Functor;
 
-    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || (ImageContainer::Domain::dimension == 3) );
-
     /**
      * Method to import a Raw into an instance of the
      * template parameter ImageContainer.
