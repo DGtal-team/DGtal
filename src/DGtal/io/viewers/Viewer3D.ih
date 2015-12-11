@@ -1712,7 +1712,6 @@ DGtal::Viewer3D<Space, KSpace>::glUpdateTextureImages(const  VectorTextureImage 
 
 
 
-
 template< typename Space, typename KSpace>
 QDomElement
 DGtal::Viewer3D<Space, KSpace>::domElement(const QString& name, QDomDocument& document) const
