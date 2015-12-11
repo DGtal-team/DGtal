@@ -43,10 +43,10 @@
 
 #include <limits>
 #include <QColor>
-
-# include <QMessageBox>
-# include <QTextStream>
-# include <QDir>
+#include <QTextEdit>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QDir>
 
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
@@ -1714,56 +1714,55 @@ DGtal::Viewer3D<Space, KSpace>::glUpdateTextureImages(const  VectorTextureImage 
 
 
 template< typename Space, typename KSpace>
-void
-DGtal::Viewer3D<Space, KSpace>::saveStateToFile(){
-  QString name = stateFileName();
-  
-  if (name.isEmpty())
-		return;
-    
-    QFileInfo fileInfo(name);
-    
-    if (fileInfo.isDir())
-    {
-      QMessageBox::warning(this, tr("Save to file error", "Message box window title"), tr("State file name (%1) references a directory instead of a file.").arg(name));
-      return;
-    }
-    
-    const QString dirName = fileInfo.absolutePath();
-    if (!QFileInfo(dirName).exists())
-    {
-      QDir dir;
-      if (!(dir.mkdir(dirName)))
-      {
-        QMessageBox::warning(this, tr("Save to file error", "Message box window title"), tr("Unable to create directory %1").arg(dirName));
-        return;
-      }
-    }
-    
-    // Write the DOM tree to file
-    QFile f(name);
-    if (f.open(QIODevice::WriteOnly))
-    {
-      QTextStream out(&f);
-      QDomDocument doc("QGLVIEWER");
-      doc.appendChild(domElement("QGLViewer", doc));
-      QDomElement lightDoc = doc.createElement(QString("LIGHT_POSITION1"));
-      lightDoc.setAttribute(QString("Light Pos_PHI"), myLightPhi);
-      lightDoc.setAttribute(QString("Light Pos_Theta"), myLightTheta);
-      lightDoc.setAttribute(QString("Light Pos_Radius"), myLightR);
-
-      doc.appendChild(lightDoc);
-      doc.save(out, 2);
-      f.flush();
-      f.close();
-    }
-    else
-    QMessageBox::warning(this, tr("Save to file error", "Message box window title"), tr("Unable to save to file %1").arg(name) + ":\n" + f.errorString());
+QDomElement
+DGtal::Viewer3D<Space, KSpace>::domElement(const QString& name, QDomDocument& document) const
+{
+  // Creates a custom node for a light  position
+  QDomElement de = document.createElement("Light");
+  de.setAttribute("pos_light_phi", myLightPhi);
+  de.setAttribute("pos_light_theta", myLightTheta);
+  de.setAttribute("pos_light_r", myLightR);
+  // Get default state domElement and append custom node
+  QDomElement res = QGLViewer::domElement(name, document);
+  res.appendChild(de);
+  return res;
 }
 
 
 
 
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::initFromDOMElement(const QDomElement& element)
+{
+  // Restore standard state
+  QGLViewer::initFromDOMElement(element);
+  QDomElement child=element.firstChild().toElement();
+  while (!child.isNull())
+  {
+    if (child.tagName() == "Light")
+    {
+      if (child.hasAttribute("pos_light_phi")){
+        myLightPhi = child.attribute("pos_light_phi").toDouble();
+      }
+      
+      if (child.hasAttribute("pos_light_theta")){
+        myLightTheta = child.attribute("pos_light_theta").toDouble();
+      }
+      if (child.hasAttribute("pos_light_r")){
+        myLightR = child.attribute("pos_light_r").toDouble();
+      }
+    }
+    child = child.nextSibling().toElement();
+  }
+  
+  myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
+  myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
+  myLightPosition[2] = myLightR*sin(myLightTheta);
+  myLightPosition[3] = 0.0;
+  updateGL();
+}
 
 
 
