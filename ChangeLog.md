@@ -35,6 +35,8 @@
    the camera center).
    (Bertrand Kerautret [#1070](https://github.com/DGtal-team/DGtal/pull/1070))
 
+ - Adding raw I/O capabilities for non integral types and signed integers.
+   (Roland Denis [#1084](https://github.com/DGtal-team/DGtal/pull/1084))
 
 ## Bug Fixes
 
