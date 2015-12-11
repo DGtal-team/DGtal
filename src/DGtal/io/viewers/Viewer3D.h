@@ -1330,12 +1330,9 @@ namespace DGtal
     /// Used to store all the domains
     std::vector<Image2DDomainD3D> myImageDomainList;
 
-    
-    
-    
   }; // end of class Viewer3D
 
-  
+
 
   template < typename Space, typename KSpace>
   /**
