@@ -329,10 +329,3 @@ TEST_CASE( "Checking writing & reading double in 3D with generic IO", "[reader][
   testWriteAndRead<3, double, RawIO>( 1.23456789 );
 }
 
-/*
-TEST_CASE( "Checking writing & reading double in 4D with generic IO", "[reader][writer][4D][raw][double]" )
-{
-  testWriteAndRead<4, double, RawIO>( 1.23456789 );
-}
-*/
-
