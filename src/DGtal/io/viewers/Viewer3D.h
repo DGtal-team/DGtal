@@ -243,7 +243,9 @@ namespace DGtal
     bool myViewWire;
     /// to improve the display of gl line
     double myGLLineMinWidth;
-
+    /// flag to save automatically or not the Viewer3d state when closing the viewer
+    bool myAutoSaveState;
+    
     /**
      * Used to display the 2D domain of an image.
      * @note has to be public because of external functions
@@ -916,7 +918,16 @@ namespace DGtal
     virtual void initFromDOMElement(const QDomElement& element);
     
     
+    /**
+     * @brief Overload the QWidget method to customize the viewer state auto saving.
+     * Now it save the viewer state if the flag myAutoSaveState is true (false by default)
+     * and call the QGLWidget::closeEvent().
+     * @param e the QCloseEvent calling the method.
+     */
     
+    protected: virtual void closeEvent	(	QCloseEvent * 	e	);
+    
+
     
     // ------------------------- Internals ------------------------------------
   private:
