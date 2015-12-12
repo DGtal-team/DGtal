@@ -34,7 +34,12 @@
 
 - *IO*
 
-  - In the Viewer3D, the light source position is now saved in the
+ - By default, closing a Viewer3D does not save automatically the viewer
+   state anymore (in a .qglviewer.xml file). The automatic save can be
+   activated by a flag (myAutoSaveState). (Bertrand Kerautret
+    [#1088](https://github.com/DGtal-team/DGtal/pull/1088))
+
+ - In the Viewer3D, the light source position is now saved in the
     QGLViewer state file (.qglviewer.xml). (Bertrand Kerautret
     [#1087](https://github.com/DGtal-team/DGtal/pull/1087))
 
