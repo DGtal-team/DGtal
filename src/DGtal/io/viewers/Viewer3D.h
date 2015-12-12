@@ -891,8 +891,33 @@ namespace DGtal
 
 
 
+    /**
+     * @brief Overload of the QGLViewer method which returns an XML
+     * QDomElement representing the QGLViewer state. This overload adds the light
+     * position attribute.
+     *
+     * @param name the name of the QDomElement tag.  
+     * @param document the QDomElement factory used to create QDomElement.
+     * @see initFromDOMElement
+     */
+    virtual  QDomElement domElement(const QString& name, QDomDocument& document) const;
+    
 
-
+    /**
+     * @brief Overload of the QGLViewer method which restores the
+     * viewer state from a QDomDocument element. This overload
+     * recovers and loads default viewer attributes with the add of the
+     * the light position.
+     *
+     * @param element QDomDocument used to apply the restoration.
+     *
+     * @see domElement
+     */    
+    virtual void initFromDOMElement(const QDomElement& element);
+    
+    
+    
+    
     // ------------------------- Internals ------------------------------------
   private:
 
