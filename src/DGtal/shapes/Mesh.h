@@ -261,6 +261,14 @@ namespace DGtal
      **/
     const MeshFace & getFace(unsigned int i) const;
 
+
+    /**
+     * @param i the index of the face.
+     * @return the center of the face of index i.
+     **/
+    TPoint getFaceCenter(unsigned int i) const;    
+
+
     
     /**
      * @param i the index of the face.
