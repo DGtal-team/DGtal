@@ -89,7 +89,6 @@
 #define secured_sprintf snprintf
 #endif // defined( WIN32 )
 
-
 #include "DGtal/base/Config.h"
 #include "DGtal/base/Trace.h"
 #include "DGtal/base/TraceWriterTerm.h"

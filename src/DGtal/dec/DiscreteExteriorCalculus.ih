@@ -82,16 +82,26 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 bool
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& _signed_cell, const Scalar& _size_ratio)
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& signed_cell)
 {
-    const Cell cell = myKSpace.unsigns(_signed_cell);
+    return insertSCell(signed_cell, 1, 1);
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+bool
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& signed_cell, const Scalar& primal_size, const Scalar& dual_size)
+{
+    const Cell cell = myKSpace.unsigns(signed_cell);
     const DGtal::Dimension cell_dim = myKSpace.uDim(cell);
     Property property;
+    property.primal_size = primal_size;
+    property.dual_size = dual_size;
     property.index = std::numeric_limits<Index>::max();
-    property.size_ratio = _size_ratio;
-    property.flipped = ( myKSpace.sSign(_signed_cell) == KSpace::NEG );
+    property.flipped = ( myKSpace.sSign(signed_cell) == KSpace::NEG );
 
-    ASSERT_MSG( cell_dim >= 0 && cell_dim <= dimEmbedded, "wrong cell dimension");
+    if (cell_dim == 0) ASSERT_MSG( property.primal_size == 1, "0-cell primal size must be equal to 1" );
+    if (cell_dim == dimEmbedded) ASSERT_MSG( property.dual_size == 1, "n-cell dual size must be equal to 1" );
+    ASSERT_MSG( cell_dim >= 0 && cell_dim <= dimEmbedded, "wrong cell dimension" );
     ASSERT_MSG( cell_dim != 0 || !property.flipped , "can't insert negative 0-cells" );
     ASSERT_MSG( cell_dim != dimAmbient || !property.flipped , "can't insert negative n-cells" );
 
@@ -99,8 +109,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     if (!insert_pair.second) insert_pair.first->second = property;
 
     ASSERT( insert_pair.first->first == cell );
+    ASSERT( insert_pair.first->second.dual_size == property.dual_size );
+    ASSERT( insert_pair.first->second.primal_size == property.primal_size );
     ASSERT( insert_pair.first->second.index == property.index );
-    ASSERT( insert_pair.first->second.size_ratio == property.size_ratio );
     ASSERT( insert_pair.first->second.flipped == property.flipped );
 
     myIndexesNeedUpdate = true;
@@ -111,12 +122,15 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 void
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::resetSizeRatios()
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::resetSizes()
 {
     for (typename Properties::iterator pi=myCellProperties.begin(), pe=myCellProperties.end(); pi!=pe; pi++)
-        pi->second.size_ratio = 1;
+    {
+        pi->second.primal_size = 1;
+        pi->second.dual_size = 1;
+    }
 
-    myCachedOperatorsNeedUpdate = true; // FIXME not sure if needed
+    myCachedOperatorsNeedUpdate = true;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
@@ -290,7 +304,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
         ASSERT( iter_property != myCellProperties.end() );
         ASSERT( iter_property->second.index == index );
 
-        const Scalar size_ratio = ( duality == DGtal::PRIMAL ? iter_property->second.size_ratio : 1/iter_property->second.size_ratio );
+        const Scalar size_ratio = ( duality == DGtal::PRIMAL ?
+            iter_property->second.dual_size/iter_property->second.primal_size :
+            iter_property->second.primal_size/iter_property->second.dual_size );
         triplets.push_back( Triplet(index, index, hodgeSign(cell, duality) * size_ratio) );
     }
 
@@ -350,52 +366,61 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
+    typedef typename Properties::const_iterator PropertiesConstIterator;
 
     boost::array<Triplets, dimAmbient> triplets;
 
     // iterate over points
-    for (Index kk=0; kk<kFormLength(0, duality); kk++)
+    for (Index point_index=0; point_index<kFormLength(0, duality); point_index++)
     {
-        const SCell signed_cell = myIndexSignedCells[actualOrder(0, duality)][kk];
-        ASSERT( myKSpace.sDim(signed_cell) == actualOrder(0, duality) );
-        const Scalar sign_pt = ( myKSpace.sSign(signed_cell) == KSpace::POS ? 1 : -1 );
-        const Cell cell = myKSpace.unsigns(signed_cell);
+        const SCell signed_point = myIndexSignedCells[actualOrder(0, duality)][point_index];
+        ASSERT( myKSpace.sDim(signed_point) == actualOrder(0, duality) );
+        const Scalar point_orientation = ( myKSpace.sSign(signed_point) == KSpace::POS ? 1 : -1 );
+        const Cell point = myKSpace.unsigns(signed_point);
 
         typedef typename KSpace::Cells Edges;
-        const Edges edges = ( duality == PRIMAL ? myKSpace.uUpperIncident(cell) : myKSpace.uLowerIncident(cell) );
+        typedef typename Edges::const_iterator EdgesConstIterator;
+        const Edges edges = ( duality == PRIMAL ? myKSpace.uUpperIncident(point) : myKSpace.uLowerIncident(point) );
+        ASSERT( edges.size() <= 2*dimAmbient );
 
         // collect 1-form values over neighboring edges
-        typedef boost::array< std::list< std::pair<Index, Scalar> >, dimAmbient > BorderIndexes;
-        BorderIndexes border_indexes;
-        for (typename Edges::const_iterator ei=edges.begin(), eie=edges.end(); ei!=eie; ei++)
+        typedef boost::array< std::pair<Scalar, std::list< std::pair<Index, Scalar> > >, dimAmbient > EdgeIndexes;
+        EdgeIndexes edge_indexes;
+        for (EdgesConstIterator ei=edges.begin(), eie=edges.end(); ei!=eie; ei++)
         {
-            const Cell cell_border = *ei;
-            ASSERT( myKSpace.uDim(cell_border) == actualOrder(1, duality) );
+            const Cell edge = *ei;
+            ASSERT( myKSpace.uDim(edge) == actualOrder(1, duality) );
 
-            const typename Properties::const_iterator iter_property = myCellProperties.find(cell_border);
-            if (iter_property == myCellProperties.end())
+            const PropertiesConstIterator edge_property_iter = myCellProperties.find(edge);
+            if (edge_property_iter == myCellProperties.end())
                 continue;
 
-            const Index& cell_border_index = iter_property->second.index;
-            ASSERT( cell_border_index < static_cast<Index>(myIndexSignedCells[actualOrder(1, duality)].size()) );
+            const Index edge_index = edge_property_iter->second.index;
+            const Scalar edge_length = ( duality == PRIMAL ? edge_property_iter->second.primal_size : edge_property_iter->second.dual_size );
 
-            const Scalar orientation = ( iter_property->second.flipped ? 1 : -1 );
-            const DGtal::Dimension direction = edgeDirection(cell_border, duality);
+            const Scalar edge_orientation = ( edge_property_iter->second.flipped ? 1 : -1 );
+            const DGtal::Dimension edge_direction = edgeDirection(edge, duality); //FIXME iterate over direction
 
-            border_indexes[direction].push_back(std::make_pair(cell_border_index, orientation));
+            edge_indexes[edge_direction].second.push_back(std::make_pair(edge_index, edge_orientation));
+            edge_indexes[edge_direction].first += edge_length;
         }
 
         for (DGtal::Dimension direction=0; direction<dimAmbient; direction++)
-            for (typename std::list< std::pair<Index, Scalar> >::const_iterator bi=border_indexes[direction].begin(), bie=border_indexes[direction].end(); bi!=bie; bi++)
-            {
-                const Index cell_border_index = bi->first;
-                const Scalar cell_border_orientation = bi->second;
-                ASSERT( cell_border_index < static_cast<Index>(myIndexSignedCells[actualOrder(1, duality)].size()) );
-                ASSERT( cell_border_index < kFormLength(1, duality) );
+        {
+            const Scalar edge_sign = ( duality == DUAL && (direction*(dimAmbient-direction))%2 == 0 ? -1 : 1 );
+            const Scalar edge_length_sum = edge_indexes[direction].first;
 
-                const Scalar sign = ( duality == DUAL && (direction*(dimAmbient-direction))%2 == 0 ? -1 : 1 );
-                triplets[direction].push_back( Triplet(kk, cell_border_index, sign_pt * sign * cell_border_orientation/border_indexes[direction].size()) );
+            for (typename std::list< std::pair<Index, Scalar> >::const_iterator ei=edge_indexes[direction].second.begin(), ee=edge_indexes[direction].second.end(); ei!=ee; ei++)
+            {
+                const Index edge_index = ei->first;
+                const Scalar edge_orientation = ei->second;
+                ASSERT( edge_index < static_cast<Index>(myIndexSignedCells[actualOrder(1, duality)].size()) );
+                ASSERT( edge_index < kFormLength(1, duality) );
+                ASSERT( edge_length_sum > 0 );
+
+                triplets[direction].push_back( Triplet(point_index, edge_index, point_orientation*edge_sign*edge_orientation/edge_length_sum) );
             }
+        }
     }
 
     boost::array<SparseMatrix, dimAmbient> sharp_operator_matrix;
@@ -453,22 +478,26 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
+    typedef typename Properties::const_iterator PropertiesConstIterator;
 
     boost::array<Triplets, dimAmbient> triplets;
 
     // iterate over edges
-    for (Index kk=0; kk<kFormLength(1, duality); kk++)
+    for (Index edge_index=0; edge_index<kFormLength(1, duality); edge_index++)
     {
-        const SCell signed_cell = myIndexSignedCells[actualOrder(1, duality)][kk];
-        ASSERT( myKSpace.sDim(signed_cell) == actualOrder(1, duality) );
-        const Cell cell = myKSpace.unsigns(signed_cell);
+        const SCell signed_edge = myIndexSignedCells[actualOrder(1, duality)][edge_index];
+        ASSERT( myKSpace.sDim(signed_edge) == actualOrder(1, duality) );
+        const Cell edge = myKSpace.unsigns(signed_edge);
 
-        const Scalar orientation = ( myKSpace.sSign(signed_cell) == KSpace::NEG ? 1 : -1 );
-        const DGtal::Dimension& direction = edgeDirection(cell, duality);
-        const Scalar sign = ( duality == DUAL && (direction*(dimAmbient-direction))%2 == 0 ? -1 : 1 );
+        const Scalar edge_orientation = ( myKSpace.sSign(signed_edge) == KSpace::NEG ? 1 : -1 );
+        const DGtal::Dimension& edge_direction = edgeDirection(edge, duality); //FIXME iterate over edge direction
+        const Scalar edge_sign = ( duality == DUAL && (edge_direction*(dimAmbient-edge_direction))%2 == 0 ? -1 : 1 );
+        const PropertiesConstIterator edge_property_iter = myCellProperties.find(edge);
+        ASSERT( edge_property_iter != myCellProperties.end() );
+        const Scalar edge_length = ( duality == PRIMAL ? edge_property_iter->second.primal_size : edge_property_iter->second.dual_size );
 
         typedef typename KSpace::Cells Points;
-        const Points points = ( duality == PRIMAL ? myKSpace.uLowerIncident(cell) : myKSpace.uUpperIncident(cell) );
+        const Points points = ( duality == PRIMAL ? myKSpace.uLowerIncident(edge) : myKSpace.uUpperIncident(edge) );
 
         // project vector field along edge from neighboring points
         typedef std::pair<Index, Scalar> BorderInfo;
@@ -476,28 +505,29 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
         BorderInfos border_infos;
         for (typename Points::const_iterator pi=points.begin(), pie=points.end(); pi!=pie; pi++)
         {
-            const Cell cell_border = *pi;
-            ASSERT( myKSpace.uDim(cell_border) == actualOrder(0, duality) );
+            const Cell point = *pi;
+            ASSERT( myKSpace.uDim(point) == actualOrder(0, duality) );
 
-            const typename Properties::const_iterator iter_property = myCellProperties.find(cell_border);
-            if (iter_property == myCellProperties.end())
+            const PropertiesConstIterator point_property_iter = myCellProperties.find(point);
+            if (point_property_iter == myCellProperties.end())
                 continue;
 
-            const Index cell_border_index = iter_property->second.index;
-            const Scalar cell_border_sign = ( iter_property->second.flipped ? -1 : 1 );
-            ASSERT( cell_border_index < static_cast<Index>(myIndexSignedCells[actualOrder(0, duality)].size()) );
+            const Index point_index = point_property_iter->second.index;
+            const Scalar point_orientation = ( point_property_iter->second.flipped ? -1 : 1 );
 
-            border_infos.push_back(std::make_pair(cell_border_index, cell_border_sign));
+            border_infos.push_back(std::make_pair(point_index, point_orientation));
         }
+
+        ASSERT( border_infos.size() <= 2 );
 
         for (typename BorderInfos::const_iterator bi=border_infos.begin(), bie=border_infos.end(); bi!=bie; bi++)
         {
-            const Index cell_border_index = bi->first;
-            const Scalar cell_border_sign = bi->second;
-            ASSERT( cell_border_index < static_cast<Index>(myIndexSignedCells[actualOrder(0, duality)].size()) );
-            ASSERT( cell_border_index < kFormLength(0, duality) );
+            const Index point_index = bi->first;
+            const Scalar point_orientation = bi->second;
+            ASSERT( point_index < static_cast<Index>(myIndexSignedCells[actualOrder(0, duality)].size()) );
+            ASSERT( point_index < kFormLength(0, duality) );
 
-            triplets[direction].push_back( Triplet(kk, cell_border_index, sign*cell_border_sign*orientation/border_infos.size()) );
+            triplets[edge_direction].push_back( Triplet(edge_index, point_index, point_orientation*edge_length*edge_sign*edge_orientation/border_infos.size()) );
         }
 
     }

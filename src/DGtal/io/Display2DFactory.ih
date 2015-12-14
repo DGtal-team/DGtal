@@ -1461,8 +1461,8 @@ void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board,
            const DGtal::PointVector<dim,TComponent> & p )
 {
   FATAL_ERROR(dim == 2);
-  board.drawRectangle( (float) NumberTraits<TComponent>::castToDouble(p.myArray[0]) - 0.5f,
-                       (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]) + 0.5f, 1, 1 );
+  board.drawRectangle( (float) NumberTraits<TComponent>::castToDouble(p[0]) - 0.5f,
+                       (float) NumberTraits<TComponent>::castToDouble(p[1]) + 0.5f, 1, 1 );
 }
 
 template<DGtal::Dimension dim, typename TComponent>
@@ -1471,8 +1471,8 @@ void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board,
            const DGtal::PointVector<dim,TComponent> & p )
 {
   FATAL_ERROR(dim == 2);
-  board.fillCircle((float) NumberTraits<TComponent>::castToDouble(p.myArray[0]),
-                   (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]),0.1);
+  board.fillCircle((float) NumberTraits<TComponent>::castToDouble(p[0]),
+                   (float) NumberTraits<TComponent>::castToDouble(p[1]),0.1);
 }
 
 template<DGtal::Dimension dim, typename TComponent>
@@ -1504,7 +1504,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   FATAL_ERROR(dim == 2);
 
   board.drawArrow((float)apoint[0], (float) apoint[1],
-      (float) apoint[0] + p.myArray[0], (float)apoint[1] + p.myArray[1],
+      (float) apoint[0] + p[0], (float)apoint[1] + p[1],
       true);
 }
 // PointVector

@@ -529,7 +529,7 @@ typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut
 
 template <typename TIterator, typename TInteger>
 inline
-void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::selfDisplay ( std::ostream & out)
+void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::selfDisplay ( std::ostream & out) const
 {
   out << "[Cone]" <<  std::endl;
   if(myInf)

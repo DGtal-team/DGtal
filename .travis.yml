@@ -41,9 +41,12 @@ matrix:
 
 addons:
   apt:
-    packages:
+   sources:
+    - deadsnakes
+    - ubuntu-toolchain-r-test
+   packages:
     - libhdf5-serial-dev
-    - libboost-program-options-dev
+    - libboost-dev
     - libcairo2-dev
     - doxygen
     - doxygen-latex
@@ -53,10 +56,13 @@ addons:
     - libgdcm2-dev 
     - libgraphicsmagick++1-dev
     - libqglviewer-qt4-dev
-    - libinsighttoolkit3-dev 
-
+    - libinsighttoolkit3-dev
+    - g++-4.8
+    - gcc-4.8
+    
 
 before_install:
+  - if [ $CXX == "g++" ]; then CCOMPILER="gcc-4.8"; CXXCOMPILER="g++-4.8"; fi
   - DOC="false"
   - NEEDBUILD="true";
   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDBUILD="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
@@ -77,7 +83,7 @@ before_script:
 # Main rules
 ############
 script:
-  - cmake . $BTYPE
+  - cmake . $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER
   - echo $DOC
   - echo $BTYPE
   - if [ $NEEDBUILD == "true" ]; then  make DGtal && make DGtalIO; fi

@@ -134,7 +134,7 @@ namespace DGtal
 
     /**
      * @struct Property
-     * @brief Holds size 'ratio', 'index' and 'flipped' for each cell of the DEC object.
+     * @brief Holds size 'primal_size', 'dual_size', 'index' and 'flipped' for each cell of the DEC object.
      * To avoid inserting both positive and negative cells in a DEC object,
      * only non signed cells are stored internally.
      * @var Property::flipped
@@ -143,15 +143,15 @@ namespace DGtal
      * if 'flipped' is false, the associated signed cell is positive.
      * @var Property::index
      * 'index' give the index of the discrete k-form value in the k-form container.
-     * @var Property::size_ratio
-     * 'size_ratio' is used when computing hodge operator for the associated cell:
-     * primal hodge operator multiplies primal value by 'size_ratio' to produce dual value,
-     * dual hodge operator divides dual value by 'size_ratio' to produce primal value.
-     * In the DEC framework, size_ratio should hold the ratio of dual cell size over primal cell size for the embedding the be correct.
+     * @var Property::dual_size
+     * 'dual_size' is the dual cell size, has the same dimension as the dual cell.
+     * @var Property::primal_size
+     * 'primal_size' is the primal cell size, has the same dimension as the primal cell.
      */
     struct Property
     {
-        Scalar size_ratio;
+        Scalar primal_size;
+        Scalar dual_size;
         Index index;
         bool flipped;
     };
@@ -296,15 +296,26 @@ namespace DGtal
     std::string className() const;
 
     /**
+     * Manually insert signed cell into calculus with unit primal and dual size.
+     * Should call updateIndexes() when structure modification is finished.
+     * Be sure to insert all adjacent lower order primal cells.
+     * @param signed_cell the signed cell to be inserted.
+     * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
+     */
+    bool
+    insertSCell(const SCell& signed_cell);
+
+    /**
      * Manually insert signed cell into calculus.
      * Should call updateIndexes() when structure modification is finished.
      * Be sure to insert all adjacent lower order primal cells.
      * @param signed_cell the signed cell to be inserted.
-     * @param size_ratio ratio of dual cell size over primal cell size.
+     * @param primal_size size (length, area, volume, ...) of primal cell. Primal size of 0-cell should be equal to 1.
+     * @param dual_size size (length, area, volume, ...) of dual cell. Dual size of n-cell should be equal to 1.
      * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
      */
     bool
-    insertSCell(const SCell& signed_cell, const Scalar& size_ratio = 1);
+    insertSCell(const SCell& signed_cell, const Scalar& primal_size, const Scalar& dual_size);
 
     /**
      * Manually erase cell from calculus.
@@ -509,10 +520,10 @@ namespace DGtal
     edgeDirection(const Cell& cell, const Duality& duality) const;
 
     /**
-     * Reset all primal to dual cell size ratios to 1.
+     * Reset all primal to dual cell sizes to 1.
      */
     void
-    resetSizeRatios();
+    resetSizes();
 
     /**
      * Checks the validity/consistency of the object.
