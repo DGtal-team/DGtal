@@ -54,7 +54,7 @@ IF (CPP11_INITIALIZER_LIST OR CPP11_AUTO OR CP11_FORWARD_LIST)
   MESSAGE(STATUS "Supported c++11 features: [${C11_FEATURES} ]")
   ADD_DEFINITIONS("-DWITH_C11 ")
 ELSE()
-  MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler of disable this WITH_C11 option.")
+  MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler.")
 ENDIF()
 
 
