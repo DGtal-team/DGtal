@@ -35,14 +35,6 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 ENDIF()
 #---------------------------------
 
-
-IF(WITH_C11)
-SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
-message(STATUS "      WITH_C11           true    (C++ compiler C11 features)")
-ELSE(WITH_C11)
-message(STATUS "      WITH_C11           false   (C++ compiler C11 features)")
-ENDIF(WITH_C11)
-
 IF(WITH_OPENMP)
 SET (LIST_OPTION ${LIST_OPTION} [OpenMP]\ )
 message(STATUS "      WITH_OPENMP        true    (OpenMP multithread features)")
@@ -210,21 +202,19 @@ IF(WITH_ITK)
 
 
     ## We test if ITK build accepts cpp11 compilers
-    IF(WITH_C11)
-      try_compile( CPP11_ITK
-            ${CMAKE_BINARY_DIR}/CMakeTmp
-            ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
-            ITKCPP11BUG
-            OUTPUT_VARIABLE OUTPUT )
-      if ( CPP11_ITK )
-        message(STATUS "ITK accepts [c++11]" )
-      else ( CPP11_ITK )
-        message(STATUS "ITK does not accept [c++11]" )
+    try_compile( CPP11_ITK
+      ${CMAKE_BINARY_DIR}/CMakeTmp
+      ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
+      ITKCPP11BUG
+      OUTPUT_VARIABLE OUTPUT )
+    if ( CPP11_ITK )
+      message(STATUS "ITK accepts [c++11]" )
+    else ( CPP11_ITK )
+      message(STATUS "ITK does not accept [c++11]" )
       if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-        MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).")
+        MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will not compile.")
       endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-     endif ( CPP11_ITK )
-    ENDIF(WITH_C11)
+    endif ( CPP11_ITK )
 
     # -------------------------------------------------------------------------
     # This test is for instance used for ITK v3.x. ITK forces a limited
@@ -453,13 +443,6 @@ ENDIF(WITH_PATATE)
 # -----------------------------------------------------------------------------
 SET(BENCHMARK_FOUND_DGTAL 0)
 IF(WITH_BENCHMARK)
-
-  IF (WITH_C11)
-    message(STATUS "C11 enabled for Google benchmark, all fine.")
-  ELSE(WITH_C11)
-   message(FATAL_ERROR "Google benchmark requires C++11. Please enable it setting 'WITH_C11' to true.")
- ENDIF(WITH_C11)
-
   FIND_PACKAGE(Benchmark REQUIRED)
   IF(BENCHMARK_FOUND)
     SET(BENCHMARK_FOUND_DGTAL 1)
@@ -471,7 +454,6 @@ IF(WITH_BENCHMARK)
    message(FATAL_ERROR "Google benchmark not installed. Please disable WITH_BENCHMARK or install it.")
  ENDIF(BENCHMARK_FOUND)
 ENDIF(WITH_BENCHMARK)
-
 
 
 message(STATUS "-------------------------------------------------------------------------------")
