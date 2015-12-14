@@ -445,14 +445,9 @@ cut( const HalfSpace & hs )
   // Both iterators point on the right place.
   if ( _a > NumberTraits<Integer>::ZERO )
     { //convex not reduced to a straight line segment
-#ifdef WITH_C11
       std::insert_iterator<ClockwiseVertexSequence> itOut
         = std::inserter<ClockwiseVertexSequence>( myVertices, it_next_is_outside );
-#else
-      std::insert_iterator<ClockwiseVertexSequence> itOut
-        = std::inserter<ClockwiseVertexSequence,Iterator>( myVertices, it_next_is_outside );
-#endif
-      computeConvexHullBorder( itOut, _A1, _A2, hs1, hs, hs3 );
+     computeConvexHullBorder( itOut, _A1, _A2, hs1, hs, hs3 );
     }
   else //convex reduced to a straight line segment
     {
