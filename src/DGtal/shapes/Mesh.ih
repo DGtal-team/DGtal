@@ -261,8 +261,8 @@ DGtal::Mesh<TPoint>::getFaceCenter(unsigned int i) const
 {
   TPoint c; 
   MeshFace aFace = getFace(i);
-  for ( auto &i: aFace){
-    c += getVertex(i);
+  for ( auto &j: aFace){
+    c += getVertex(j);
   }
   return c/aFace.size();
 }
