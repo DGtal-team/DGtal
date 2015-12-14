@@ -256,6 +256,20 @@ DGtal::Mesh<TPoint>::getFace(unsigned int i)
 
 template<typename TPoint>
 inline
+TPoint 
+DGtal::Mesh<TPoint>::getFaceCenter(unsigned int i) const
+{
+  TPoint c; 
+  MeshFace aFace = getFace(i);
+  for ( auto &i: aFace){
+    c += getVertex(i);
+  }
+  return c/aFace.size();
+}
+
+
+template<typename TPoint>
+inline
 unsigned int 
 DGtal::Mesh<TPoint>::nbFaces() const
 {

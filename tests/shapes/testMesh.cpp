@@ -133,9 +133,9 @@ bool testMesh()
        it++){
     nb++;
   }
-  okMeshIterators =  okMeshIterators && ((nb == aMesh.nbFaces()) &&  ((aMesh.getVertex(5))[0]==13));
-  if ((nb == aMesh.nbFaces()) &&  (aMesh.getVertex(5))[0]==13)
-    trace.info() << "getVertex test ok"<<std::endl;
+  okMeshIterators =  okMeshIterators && ((nb == aMesh.nbFaces()) &&  ((aMesh.getVertex(5))[0]==13)) && aMesh.getFaceCenter(0)==Point(10,6);
+  if ((nb == aMesh.nbFaces()) &&  (aMesh.getVertex(5))[0]==13 && aMesh.getFaceCenter(0)==Point(10,6))
+    trace.info() << "getVertex and getFaceCenter tests ok"<<std::endl;
   
   // testing changing color of individual face:
   aMesh.setFaceColor(1, DGtal::Color::Red);
