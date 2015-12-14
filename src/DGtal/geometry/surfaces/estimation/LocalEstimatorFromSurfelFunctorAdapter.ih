@@ -167,8 +167,8 @@ eval( const SurfelConstIterator& it ) const
 {
   ASSERT_MSG( isValid(), "Missing init() before evaluation" );
 
-  MetricToPoint metricToPoint( *myMetric, myEmbedder( *it ));
-  VertexFunctor vfunctor( myEmbedder, metricToPoint);
+  const MetricToPoint metricToPoint = std::bind( *myMetric, myEmbedder( *it ), std::placeholders::_1 );
+  const VertexFunctor vfunctor( myEmbedder, metricToPoint);
   Visitor visitor( *mySurface, vfunctor, *it);
   ASSERT( ! visitor.finished() );
   double currentDistance = 0.0;

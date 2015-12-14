@@ -30,12 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <benchmark/benchmark.h>
-
-#ifdef WITH_C11
 #include <unordered_set>
-#else
-#include <boost/unordered_set.hpp>
-#endif
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/CDomainArchetype.h"
@@ -58,20 +53,11 @@ using namespace DGtal;
 
 typedef DGtal::DigitalSetBySTLSet< Z2i::Domain> FromSet;
 typedef DGtal::DigitalSetBySTLVector< Z2i::Domain> FromVector;
-#ifdef WITH_C11
 typedef DGtal::DigitalSetByAssociativeContainer< Z2i::Domain, std::unordered_set<Z2i::Point> > FromUnordered;
-#else
-typedef DGtal::DigitalSetByAssociativeContainer< Z2i::Domain, boost::unordered_set<Z2i::Point>  > FromUnordered;
-#endif
 
 typedef DGtal::DigitalSetBySTLSet< Z3i::Domain> FromSet3;
 typedef DGtal::DigitalSetBySTLVector< Z3i::Domain> FromVector3;
-#ifdef WITH_C11
 typedef DGtal::DigitalSetByAssociativeContainer< Z3i::Domain, std::unordered_set<Z3i::Point> > FromUnordered3;
-#else
-typedef DGtal::DigitalSetByAssociativeContainer< Z3i::Domain, boost::unordered_set<Z3i::Point>  > FromUnordered3;
-#endif
-
 
 template<typename Q>
 static void BM_Constructor(benchmark::State& state)
