@@ -43,35 +43,18 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/base/BasicTypes.h"
-#include <boost/functional/hash.hpp>
-#ifdef WITH_C11
 #include <functional>
-#endif
+#include <boost/functional/hash.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 
 /**
- * Extend std and boost namespaces to define a std::hash (or
- * boost::hash) functiono on DGtal::PointVector.
+ * Extend std and boost namespaces to define a std::hash function on
+ * DGtal::PointVector.
  *
  */
 
-
-#ifdef WITH_C11
 namespace std {
-  template <DGtal::Dimension dim,
-  typename EuclideanRing,
-  typename Container>
-  struct hash< DGtal::PointVector<dim,EuclideanRing,Container> >
-  {
-    size_t operator()(const DGtal::PointVector<dim,EuclideanRing,Container> & p) const
-    {
-      return boost::hash_range(p.begin(), p.end());
-    }
-  };
-}
-#endif
-namespace boost {
   template <DGtal::Dimension dim,
   typename EuclideanRing,
   typename Container>
@@ -85,7 +68,6 @@ namespace boost {
 }
 
 #ifdef WITH_GMP
-#ifdef WITH_C11
 namespace std
 {
   template <>
@@ -97,17 +79,12 @@ namespace std
     }
   };
 }
-#endif
+//Also defining boost::hash since boost::hash_range needs it.
 namespace boost
 {
   template <>
-  struct hash< DGtal::BigInteger >
-  {
-    size_t operator()(const DGtal::BigInteger & p) const
-    {
-      return DGtal::NumberTraits<DGtal::BigInteger>::castToInt64_t( p );
-    }
-  };
+  struct hash< DGtal::BigInteger > : std::hash<DGtal::BigInteger>
+  { };
 }
 #endif
 
