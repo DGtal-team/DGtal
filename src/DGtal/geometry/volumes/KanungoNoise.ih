@@ -29,14 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#ifdef WITH_C11
 #include <random>
-#else
-#ifdef BOOST_RANDOM_OLD
-#include <boost/random/uniform_real.hpp>
-#endif
-#include <boost/random.hpp>
-#endif
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -50,18 +43,8 @@ inline
 DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAlias<Domain> aDomain, const double alpha):
   myPredicate(aPredicate), myDomain(aDomain), myAlpha(alpha)
 {
-#ifdef WITH_C11
   std::mt19937 rng;
   std::uniform_real_distribution<double> dis(0.0, 1.0);
-#else
-#ifdef BOOST_RANDOM_OLD
-  boost::mt19937 rng;
-  boost::uniform_real<double> dis(0.0, 1.0);
-#else
-  boost::random::mt19937 rng;
-  boost::random::uniform_real_distribution<double> dis(0.0, 1.0);
-#endif
-#endif
   
   ASSERT(alpha>0 && alpha < 1);
   double p;
