@@ -34,7 +34,7 @@ To build DGtal in is minimal configuration, you need at least these
 dependencies:
 
 - \e cmake (optionally cmake-gui),
-- \e c++ compiler (g++, clang++, ...)
+- \e c++ compiler (g++, clang++, ...) with C++11 features (gcc>4.6 for instance)
 - \e boost >= 1.46.0
 
 To build DGtal in is full configuration, you may need these dependencies too:

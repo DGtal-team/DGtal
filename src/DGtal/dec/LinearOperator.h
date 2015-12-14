@@ -56,7 +56,7 @@ namespace DGtal
   /**
    * Description of template class 'LinearOperator' <p>
    * \brief Aim:
-   * LinearOperator represents linear operator between kforms in the DEC package.
+   * LinearOperator represents discrete linear operator between discrete kforms in the DEC package.
    *
    * @tparam TCalculus should be DiscreteExteriorCalculus.
    * @tparam order_in is the input order of the linear operator.

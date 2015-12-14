@@ -40,6 +40,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Scalar Scalar;
+    typedef typename Calculus::Index Index;
     typedef typename Calculus::Point Point;
     typedef typename Calculus::Property Property;
     typedef typename Calculus::Properties Properties;
@@ -81,8 +82,10 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         if (!add_border && normalized_size < 1) continue;
 
         Property property;
+        property.primal_size = 1;
+        property.dual_size = normalized_size;
+        property.index = std::numeric_limits<Index>::max();
         property.flipped = false;
-        property.size_ratio = normalized_size;
 
         calculus.myCellProperties[cell] = property;
     }
@@ -192,11 +195,11 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         ASSERT( dual_dim <= Calculus::dimensionEmbedded );
 
         const Scalar factor = pow(.5, 2*dual_dim-1);
-        const Scalar size_ratio = lai->second * factor;
-        ASSERT( size_ratio > 0 );
+        const Scalar dual_size = lai->second * factor;
+        ASSERT( dual_size > 0 );
 
         const SCell cell_signed = calculus.myKSpace.signs(cell, KSpace::POS);
-        calculus.insertSCell(cell_signed, size_ratio);
+        calculus.insertSCell(cell_signed, 1, dual_size);
     }
 
     calculus.updateIndexes();
