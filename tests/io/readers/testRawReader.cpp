@@ -158,7 +158,6 @@ void testWriteAndRead( T aSeed )
   typedef SpaceND<N> Space;
   typedef HyperRectDomain<Space> Domain;
   typedef typename ImageSelector<Domain, T>::Type Image;
-  typedef typename Domain::Vector Vector;
   typedef typename Domain::Point  Point;  
 
   Point upperPt;
