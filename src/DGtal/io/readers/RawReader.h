@@ -55,7 +55,7 @@ namespace DGtal
   // template class RawReader
   /**
    * Description of template class 'RawReader' <p>
-   * \brief Aim: implements methods to read a "Vol" file format or any raw binary export of an Image.
+   * \brief Aim: Raw binary import of an Image.
    *
    * The import methods \c importRaw8, \c importRaw16 and \c importRaw32 read raw files (little-endian format)
    * containing unsigned integer values of, respectively, 8 bits, 16 bits and 32 bits width.
