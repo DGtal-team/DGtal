@@ -41,6 +41,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
+
 /**
  * Constructor.
  */
@@ -257,14 +258,14 @@ DGtal::Mesh<TPoint>::getFace(unsigned int i)
 template<typename TPoint>
 inline
 TPoint 
-DGtal::Mesh<TPoint>::getFaceCenter(unsigned int i) const
+DGtal::Mesh<TPoint>::getFaceBarycenter(unsigned int i) const
 {
   TPoint c; 
   MeshFace aFace = getFace(i);
   for ( auto &j: aFace){
     c += getVertex(j);
   }
-  return c/aFace.size();
+  return c/static_cast<typename TPoint::Component>(aFace.size());
 }
 
 

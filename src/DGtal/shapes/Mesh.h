@@ -266,7 +266,7 @@ namespace DGtal
      * @param i the index of the face.
      * @return the center of the face of index i.
      **/
-    TPoint getFaceCenter(unsigned int i) const;    
+    TPoint getFaceBarycenter(unsigned int i) const;    
 
 
     
