@@ -425,12 +425,19 @@ getAdjacentOnSurfelPredicate( SCell & adj_surfel,
   ASSERT( sp( mySurfel ) && "Current surfel should satisfy predicate." );
 
   // Check if it goes outside the space.
+  /*
   Integer x_track = mySpace->sCoord( surfel(), track_dir );
   if ( ( pos && ( x_track == mySpace->max( track_dir ) ) )
        || 
        ( (!pos) && ( x_track == mySpace->min( track_dir ) ) )
        )
     return 0;
+  */
+  if  (     (  pos && mySpace->sIsMax( surfel() ) )
+        ||  ( !pos && mySpace->sIsMin( surfel() ) )
+      )
+    return 0;
+
   // Integer x_orth = mySpace->sCoord( surfel(), orthDir() );
   SCell tmp_surfel = adj_surfel;
 
