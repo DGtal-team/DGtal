@@ -229,6 +229,7 @@ getAdjacentOnSpelSet( SCell & adj_surfel,
   if ( ( pos && mySpace->uisMax( uinner_spel, track_dir ) )  
        || ( ( ! pos ) && mySpace->uisMin( uinner_spel, track_dir ) ) )
     return 0;
+
   // Check type of surfel adjacency.
   if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
     { // interior to exterior
@@ -295,7 +296,6 @@ getAdjacentOnDigitalSet( SCell & adj_surfel,
       )
     return 0;
   
-
   // Check type of surfel adjacency.
   if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
     { // interior to exterior
@@ -435,50 +435,30 @@ getAdjacentOnSurfelPredicate( SCell & adj_surfel,
   if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
     { // interior to exterior
       // Check first next bel.
-      // if ( ( myOrthDirect && ( x_orth != mySpace->max( orthDir() ) ) )
-      //      || ( ! myOrthDirect && ( x_orth != mySpace->min( orthDir() ) ) ) )
-      //   {
       adj_surfel = follower1( track_dir, pos );
       if ( sp( adj_surfel ) ) return 1;
-      // }
+      
       // Check second next bel.
-      // if ( ( pos && ( x_track != mySpace->max( track_dir ) ) )
-      //      || ( ! pos && ( x_track != mySpace->min( track_dir ) ) ) )
-      //   {
       adj_surfel = follower2( track_dir, pos ); 
       if ( sp( adj_surfel ) ) return 2;
-      // }
+      
       // Check third one.
-      // if ( ( ! myOrthDirect && ( x_orth != mySpace->max( orthDir() ) ) )
-      //      || ( myOrthDirect && ( x_orth != mySpace->min( orthDir() ) ) ) )
-      //   {
       adj_surfel = follower3( track_dir, pos ); 
       if ( sp( adj_surfel ) ) return 3;
-      // }
     }
-  else // if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
+  else
     { // exterior to interior
       // Check first next bel.
-      // if ( ( ! myOrthDirect && ( x_orth != mySpace->max( orthDir() ) ) )
-      //      || ( myOrthDirect && ( x_orth != mySpace->min( orthDir() ) ) ) )
-      //   {
       adj_surfel = follower3( track_dir, pos ); 
       if ( sp( adj_surfel ) ) return 3;
-      // }
+      
       // Check second next bel.
-      // if ( ( pos && ( x_track != mySpace->max( track_dir ) ) )
-      //      || ( ! pos && ( x_track != mySpace->min( track_dir ) ) ) )
-      //   {
       adj_surfel = follower2( track_dir, pos ); 
       if ( sp( adj_surfel ) ) return 2;
-      // }
+      
       // Check third one.
-      // if ( ( myOrthDirect && ( x_orth != mySpace->max( orthDir() ) ) )
-      //      || ( ! myOrthDirect && ( x_orth != mySpace->min( orthDir() ) ) ) )
-      //   {
       adj_surfel = follower1( track_dir, pos );
       if ( sp( adj_surfel ) ) return 1;
-      // }
     }
   adj_surfel = tmp_surfel;
   return 0;
