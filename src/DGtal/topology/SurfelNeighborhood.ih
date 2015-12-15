@@ -193,9 +193,6 @@ follower2( DGtal::Dimension track_dir, bool pos ) const
 {
   ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
   return mySpace->sAdjacent( surfel(), track_dir, pos );
-  // return pos 
-  //   ? mySpace->sGetIncr( surfel(), track_dir )
-  //   : mySpace->sGetDecr( surfel(), track_dir );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -293,11 +290,12 @@ getAdjacentOnDigitalSet( SCell & adj_surfel,
   ASSERT( obj.find( mySpace->sCoords( outerSpel() ) ) == obj.end() );
   
   // Check if it goes outside the space.
-  if ( ( pos && ( inner_spel_pt[ track_dir ] == mySpace->max( track_dir ) ) )
-       || 
-       ( (!pos) && ( inner_spel_pt[ track_dir ] == mySpace->min( track_dir ) ) )
-       )
+  if  (     (  pos && mySpace->sIsMax( innerSpel(), track_dir ) )
+        ||  ( !pos && mySpace->sIsMin( innerSpel(), track_dir ) )
+      )
     return 0;
+  
+
   // Check type of surfel adjacency.
   if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
     { // interior to exterior
@@ -362,11 +360,11 @@ getAdjacentOnPointPredicate( SCell & adj_surfel,
   ASSERT( ! pp( mySpace->sCoords( outerSpel() ) ) && "Should be outside" );
   
   // Check if it goes outside the space.
-  if ( ( pos && ( inner_spel_pt[ track_dir ] == mySpace->max( track_dir ) ) )
-       || 
-       ( (!pos) && ( inner_spel_pt[ track_dir ] == mySpace->min( track_dir ) ) )
-       )
+  if  (     (  pos && mySpace->sIsMax( innerSpel(), track_dir ) )
+        ||  ( !pos && mySpace->sIsMin( innerSpel(), track_dir ) )
+      )
     return 0;
+
   // Check type of surfel adjacency.
   if ( mySurfelAdj->getAdjacency( orthDir(), track_dir ) )
     { // interior to exterior
@@ -425,14 +423,6 @@ getAdjacentOnSurfelPredicate( SCell & adj_surfel,
   ASSERT( sp( mySurfel ) && "Current surfel should satisfy predicate." );
 
   // Check if it goes outside the space.
-  /*
-  Integer x_track = mySpace->sCoord( surfel(), track_dir );
-  if ( ( pos && ( x_track == mySpace->max( track_dir ) ) )
-       || 
-       ( (!pos) && ( x_track == mySpace->min( track_dir ) ) )
-       )
-    return 0;
-  */
   if  (     (  pos && mySpace->sIsMax( surfel(), track_dir ) )
         ||  ( !pos && mySpace->sIsMin( surfel(), track_dir ) )
       )
