@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -89,10 +90,14 @@ namespace DGtal
   template <typename TPoint >
   class Mesh
   {   
-    
+
     
     // ----------------------- associated types ------------------------------
   public:
+
+
+   typedef  typename DGtal::PointVector<TPoint::dimension, double> RealPoint;
+    
     /**
      * Structure for representing the faces from the vertex index.
      **/
@@ -264,9 +269,9 @@ namespace DGtal
 
     /**
      * @param i the index of the face.
-     * @return the center of the face of index i.
+     * @return barycenter (RealPoint) of the face of index i.
      **/
-    TPoint getFaceBarycenter(unsigned int i) const;    
+    RealPoint getFaceBarycenter(unsigned int i) const;    
 
 
     

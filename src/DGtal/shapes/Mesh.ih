@@ -257,15 +257,18 @@ DGtal::Mesh<TPoint>::getFace(unsigned int i)
 
 template<typename TPoint>
 inline
-TPoint 
+typename DGtal::Mesh<TPoint>::RealPoint 
 DGtal::Mesh<TPoint>::getFaceBarycenter(unsigned int i) const
 {
-  TPoint c; 
+  DGtal::Mesh<TPoint>::RealPoint c;
   MeshFace aFace = getFace(i);
   for ( auto &j: aFace){
-    c += getVertex(j);
+    TPoint p = getVertex(j);
+    for (typename TPoint::Dimension i = 0; i < TPoint::dimension; i++){
+      c[i] += static_cast<typename RealPoint::Component>(p[i]) ;
+    }
   }
-  return c/static_cast<typename TPoint::Component>(aFace.size());
+  return c/static_cast<typename RealPoint::Component>(aFace.size());
 }
 
 
