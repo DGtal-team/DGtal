@@ -433,8 +433,8 @@ getAdjacentOnSurfelPredicate( SCell & adj_surfel,
        )
     return 0;
   */
-  if  (     (  pos && mySpace->sIsMax( surfel() ) )
-        ||  ( !pos && mySpace->sIsMin( surfel() ) )
+  if  (     (  pos && mySpace->sIsMax( surfel(), track_dir ) )
+        ||  ( !pos && mySpace->sIsMin( surfel(), trakc_dir ) )
       )
     return 0;
 
