@@ -95,8 +95,19 @@ namespace DGtal
     // ----------------------- associated types ------------------------------
   public:
 
+    
+    /**
+     * Main type associated to the mesh vertices.
+     **/    
+    typedef TPoint Point;    
 
-   typedef  typename DGtal::PointVector<TPoint::dimension, double> RealPoint;
+    
+    /**
+     * Type to represent real points which can be obtained from  various methods (like getFaceBarycenter).
+     **/    
+
+    typedef  typename DGtal::PointVector<TPoint::dimension, double> RealPoint;
+
     
     /**
      * Structure for representing the faces from the vertex index.
