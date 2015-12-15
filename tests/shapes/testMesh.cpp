@@ -133,8 +133,8 @@ bool testMesh()
        it++){
     nb++;
   }
-  okMeshIterators =  okMeshIterators && ((nb == aMesh.nbFaces()) &&  ((aMesh.getVertex(5))[0]==13)) && aMesh.getFaceBarycenter(0)==Point(10,6);
-  if ((nb == aMesh.nbFaces()) &&  (aMesh.getVertex(5))[0]==13 && aMesh.getFaceBarycenter(0)==Point(10,6))
+  okMeshIterators =  okMeshIterators && ((nb == aMesh.nbFaces()) &&  ((aMesh.getVertex(5))[0]==13)) && aMesh.getFaceBarycenter(0)==Mesh<Point>::RealPoint(31.0/3.0,6.0);
+  if ((nb == aMesh.nbFaces()) &&  (aMesh.getVertex(5))[0]==13 && aMesh.getFaceBarycenter(0)==Mesh<Point>::RealPoint(31.0/3.0,6.0))
     trace.info() << "getVertex and getFaceCenter tests ok"<<std::endl;
   
   // testing changing color of individual face:
