@@ -264,8 +264,8 @@ DGtal::Mesh<TPoint>::getFaceBarycenter(unsigned int i) const
   MeshFace aFace = getFace(i);
   for ( auto &j: aFace){
     TPoint p = getVertex(j);
-    for (typename TPoint::Dimension i = 0; i < TPoint::dimension; i++){
-      c[i] += static_cast<typename RealPoint::Component>(p[i]) ;
+    for (typename TPoint::Dimension k = 0; k < TPoint::dimension; k++){
+      c[k] += static_cast<typename RealPoint::Component>(p[k]) ;
     }
   }
   return c/static_cast<typename RealPoint::Component>(aFace.size());
