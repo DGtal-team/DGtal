@@ -328,13 +328,33 @@ namespace DGtal
    * defined by the parity of the coordinates (even: closed, odd:
    * open).
    *
-   * The space is generally finite (except for arbitrary size
-   * integers). The user should choose between a closed (default) cell
-   * space or an open cell space.
+   * The user should choose, for each dimension spanned by the space,
+   * between a closed and non-periodic (default) cell dimension,
+   * an open cell dimension or a periodic cell dimension.
+   * The space is generally finite, except for arbitrary size
+   * integers and when the space has a periodic dimension.
+   *
+   * For a periodic dimension, the cells returned by KhalimskySpaceND
+   * have the corresponding khalimsky coordinate between
+   * the khalimsky coordinate of the lower cell as if the dimension was closed,
+   * and the khalimsky coordinate of the upper cell as if the dimension was open.
+   *
+   * Therefore, cell-based container will only see the main domain of the space.
+   * To be consistent with that choice, space bounds or size returned by KhalimskySpaceND will
+   * also follow the same rule. This concerns the methods \c size, \c min, \c max,
+   * \c lowerBound, \c upperBound, \c lowerCell, \c upperCell,
+   * \c uFirst, \c uLast, \c uGetMin, \c uGetMax, \c uDistanceToMin, \c uDistanceToMax,
+   * \c sFirst, \c sLast, \c sGetMin, \c sGetMax, \c sDistanceToMin and \c sDistanceToMax.
+   * 
+   * Thus, if a cell need to be compared to the bounds, prefer using dedicated tests like 
+   * \c (u|s)IsMin and \c (u|s)IsMax that return always \c false for a periodic dimension, 
+   * and \c (u|s)IsInside that returns always \c true for a periodic dimension.
+   *
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
-   * NB: Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * @note Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   *
   */
   template < Dimension dim,
              typename TInteger = DGtal::int32_t >
@@ -342,7 +362,7 @@ namespace DGtal
     : private KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >
   {
 
-    typedef KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > > Helper;
+    typedef KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > > Helper; ///< Features basic operations on coordinates, especially for periodic dimensions.
     friend class KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >;
     
     //Integer must be signed to characterize a ring.
@@ -513,6 +533,7 @@ namespace DGtal
     /**
        @param k a coordinate (from 0 to 'dim()-1').
        @return the width of the space in the [k]-dimension.
+       @note for periodic dimension, it returns the number of unique coordinates along that dimension.
     */
     Size size( Dimension k ) const;
     /**
