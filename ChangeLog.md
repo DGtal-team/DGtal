@@ -65,6 +65,11 @@
    the camera center).
    (Bertrand Kerautret [#1070](https://github.com/DGtal-team/DGtal/pull/1070))
 
+- *Shapes Package*
+ - New methods to remove faces from a Mesh  or to obtain the barycenter of a
+   face.
+   (Bertrand Kerautret [#1091](https://github.com/DGtal-team/DGtal/pull/1091))
+
 
 ## Bug Fixes
 

@@ -102,10 +102,10 @@ namespace DGtal
     typedef TPoint Point;    
 
     
+    
     /**
      * Type to represent real points which can be obtained from  various methods (like getFaceBarycenter).
      **/    
-
     typedef  typename DGtal::PointVector<TPoint::dimension, double> RealPoint;
 
     
@@ -175,7 +175,6 @@ namespace DGtal
      * Destructor.
      */
     ~Mesh();
-
 
    /**
      * Copy constructor.
@@ -256,7 +255,16 @@ namespace DGtal
     **/    
     void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);
     
-    
+
+    /**
+     * Remove faces from the mesh. @note the vertexes which are no
+     * more associated to any face are also removed.
+     * 
+     * @param[in] facesIndex the index of the face to be removed.
+     **/
+    void removeFaces(const std::vector<unsigned int>  &facesIndex);
+   
+ 
     /**
      * @param i the index of the vertex.
      * @return a const reference to the vertex of index i. 
@@ -292,7 +300,6 @@ namespace DGtal
      **/
     MeshFace & getFace(unsigned int i);
     
-
 
 
     /**
@@ -488,9 +495,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     FaceStorage  myFaceList;
-    VertexStorage myVertexList;
-    
-    
+    VertexStorage myVertexList;    
     ColorStorage myFaceColorList;
     bool mySaveFaceColor;
     DGtal::Color myDefaultColor;

@@ -189,8 +189,16 @@ bool testMesh()
                     aMesh.nbFaces() == aMesh3.nbFaces() && aMesh.nbVertex() == aMesh3.nbVertex() &&
                     aMesh.getVertex(0) == aMesh2.getVertex(0) && aMesh.getVertex(0) == aMesh3.getVertex(0);
   trace.endBlock();
-  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK && 
-       okSubDivide && okQuadToTrans;   
+
+  trace.beginBlock ( "Testing face removing  ..." );
+  Mesh<Point> aMesh4 = aMesh;
+  std::vector<unsigned int> f = {1};
+  aMesh4.removeFaces(f);
+  bool okRemoveFace = (aMesh4.nbFaces() == aMesh.nbFaces()-1) && (aMesh4.nbVertex() == aMesh.nbVertex()-3);
+  
+  
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK &&
+       okSubDivide && okQuadToTrans && okRemoveFace;
   trace.endBlock();
   return ok;
 
