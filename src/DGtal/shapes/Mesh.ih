@@ -212,9 +212,62 @@ DGtal::Mesh<TPoint>::addFace(const MeshFace &aFace,  const DGtal::Color &aColor)
     {
       myFaceColorList.push_back(aColor);
     }
-
-
 }
+
+
+
+template<typename TPoint>
+inline
+void 
+DGtal::Mesh<TPoint>::removeFaces(const std::vector<unsigned int> &facesIndex){
+  DGtal::Mesh<TPoint> newMesh(true);
+  std::vector<unsigned int> indexVertexFaceCard(nbVertex());
+  std::vector<bool> indexFaceOK(nbFaces());
+  std::fill(indexVertexFaceCard.begin(), indexVertexFaceCard.end(), 0);
+  std::fill(indexFaceOK.begin(), indexFaceOK.end(), true);
+  for (unsigned int i = 0; i<facesIndex.size(); i++){
+    indexFaceOK[facesIndex[i]]=false;
+  }
+  // for each face remaining in the mesh we add +1 to each vertex used in a face
+  for(unsigned int i = 0; i < nbFaces(); i++){
+    if( indexFaceOK[i] ){
+      DGtal::Mesh<TPoint>::MeshFace aFace = getFace(i);
+      for (unsigned int j=0; j< aFace.size() ; j++) {
+        indexVertexFaceCard[aFace[j]] += 1;
+      }
+    }
+  }  
+  // we remove all vertex with a face == 0 and compute the new vertex association:
+  std::vector<unsigned int> newVertexIndex;
+  unsigned int currentIndex=0;
+  for (unsigned int i=0; i< nbVertex(); i++) {
+    if (indexVertexFaceCard[i]!=0){
+      newMesh.addVertex(getVertex(i));
+      newVertexIndex.push_back(currentIndex);
+      currentIndex++;
+    }else{
+      newVertexIndex.push_back(0);
+    }
+  }
+  for (unsigned int i = 0; i < nbFaces(); i++) {
+    if(indexFaceOK[i]){
+      MeshFace aFace = getFace(i);
+      MeshFace aNewFace = aFace;
+      // translate the old face with new index:
+      for (unsigned int j=0; j< aFace.size() ; j++) {
+        aNewFace[j] = newVertexIndex[aFace[j]];
+      }
+      newMesh.addFace(aNewFace);
+      newMesh.setFaceColor(newMesh.nbFaces()-1, getFaceColor(i));
+    }
+  }
+  myFaceList = newMesh.myFaceList;
+  myVertexList = newMesh.myVertexList;
+  myFaceColorList = newMesh.myFaceColorList;
+}
+
+
+
 
 
 template<typename TPoint>
