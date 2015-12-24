@@ -46,6 +46,7 @@ addons:
     - ubuntu-toolchain-r-test
     - kalakris-cmake
    packages:
+    - cmake
     - libhdf5-serial-dev
     - libboost-dev
     - libcairo2-dev
