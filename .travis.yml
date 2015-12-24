@@ -31,10 +31,10 @@ env:
 matrix:
   fast_finish: true 
   exclude:
-    - os: linux
+    - os: osx
       env: CONFIG="Documentation,Debug,Cairo,GMP"
     - compiler: gcc
-      os: osx
+      os: linux
       env: CONFIG="Documentation,Debug,Cairo,GMP"
     - os: osx
       compiler: gcc
