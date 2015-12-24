@@ -45,8 +45,7 @@ addons:
     - deadsnakes
     - ubuntu-toolchain-r-test
     - kalakris-cmake
-    
- packages:
+   packages:
     - libhdf5-serial-dev
     - libboost-dev
     - libcairo2-dev
