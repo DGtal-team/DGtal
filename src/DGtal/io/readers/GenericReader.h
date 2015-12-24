@@ -119,7 +119,7 @@ namespace DGtal
    * Template partial specialisation for volume images of dimension 3
    **/
   template <typename TContainer, typename TValue>
-  struct GenericReader<TContainer, 3 , TValue>
+  struct GenericReader<TContainer, 3, TValue>
   {
     BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
     /**
@@ -154,42 +154,50 @@ namespace DGtal
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const TFunctor &aFunctor,
                                              unsigned int x=0,
-                                             unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException){
-      BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
-      DGtal::IOException dgtalio;
-      std::string extension = filename.substr(filename.find_last_of(".") + 1);
+                                             unsigned int y=0, unsigned int z=0)  throw( DGtal::IOException )
+      {
+        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
+        DGtal::IOException dgtalio;
+        const std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
-      if(extension=="vol")
-        return  VolReader<TContainer, TFunctor>::importVol( filename, aFunctor );
-
-      if(extension=="longvol")
-        return  LongvolReader<TContainer, TFunctor>::importLongvol( filename, aFunctor  );
-
-      if(extension=="pgm3d"|| extension=="pgm3D" || extension=="p3d" || extension=="pgm")
-        return PGMReader<TContainer, TFunctor>::importPGM3D(filename, aFunctor);
-
-      if(extension=="raw")
-        {
-          ASSERT(x!=0 && y!=0 && z!=0);
-          typename TContainer::Point pt (x,y,z);
-          return RawReader< TContainer, TFunctor >::importRaw8 ( filename, pt, aFunctor  );
-        }
+        if ( extension == "vol" )
+          {
+            return VolReader<TContainer, TFunctor>::importVol( filename, aFunctor );
+          }
+        else if ( extension == "longvol" )
+          {
+            return LongvolReader<TContainer, TFunctor>::importLongvol( filename, aFunctor  );
+          }
+        else if ( extension == "pgm3d" || extension == "pgm3D" || extension == "p3d" || extension == "pgm" )
+          {
+            return PGMReader<TContainer, TFunctor>::importPGM3D(filename, aFunctor);
+          }
+        else if ( extension == "raw" )
+          {
+            ASSERT( x != 0 && y != 0 && z != 0 );
+            typename TContainer::Point const pt (x, y, z);
+            return RawReader< TContainer, TFunctor >::template importRaw<TValue>( filename, pt, aFunctor  );
+          }
 
 #ifdef WITH_HDF5
-      if (extension=="h5")
-        return HDF5Reader<TContainer, TFunctor>::importHDF5_3D(filename, "UInt8Array3D", aFunctor);
+        if ( extension == "h5" )
+          return HDF5Reader<TContainer, TFunctor>::importHDF5_3D(filename, "UInt8Array3D", aFunctor);
 #endif
 
 #ifdef WITH_ITK
-      if(extension=="dcm")
-        return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
-      if(extension=="mha" || extension=="mhd")
-        return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
+        if ( extension == "dcm" )
+          {
+            return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
+          }
+        else if ( extension == "mha" || extension == "mhd" )
+          {
+            return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
+          }
 #endif
 
-      trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-      throw dgtalio;
-    }
+        trace.error() << "Extension " << extension<< " in 3D, not yet implemented in DGtal GenericReader." << std::endl;
+        throw dgtalio;
+      }
   };
 
 
@@ -234,31 +242,37 @@ namespace DGtal
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const TFunctor &aFunctor,
                                              unsigned int x=0,
-                                             unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException){
-      BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
-      DGtal::IOException dgtalio;
-      std::string extension = filename.substr(filename.find_last_of(".") + 1);
+                                             unsigned int y=0, unsigned int z=0)  throw( DGtal::IOException )
+      {
+        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::uint32_t, typename TContainer::Value > )) ;
+        DGtal::IOException dgtalio;
+        const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
 
-      if(extension=="longvol")
-        return  LongvolReader<TContainer, TFunctor>::importLongvol( filename, aFunctor  );
-
-      if(extension=="raw")
-        {
-          ASSERT(x!=0 && y!=0 && z!=0);
-          typename TContainer::Point pt (x,y,z);
-          return RawReader< TContainer, TFunctor >::importRaw32 ( filename, pt, aFunctor  );
-        }
+        if ( extension == "longvol" )
+          {
+            return LongvolReader<TContainer, TFunctor>::importLongvol( filename, aFunctor  );
+          }
+        else if ( extension == "raw" )
+          {
+            ASSERT( x != 0 && y != 0 && z != 0 );
+            typename TContainer::Point const pt (x, y, z);
+            return RawReader< TContainer, TFunctor >::importRaw32 ( filename, pt, aFunctor  );
+          }
 
 #ifdef WITH_ITK
-      if(extension=="dcm")
-        return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
-      if(extension=="mha" || extension=="mhd")
-        return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
+        if ( extension == "dcm" )
+          {
+            return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
+          }
+        else if ( extension == "mha" || extension == "mhd" )
+          {
+            return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
+          }
 #endif
 
-      trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-      throw dgtalio;
-    }
+        trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+        throw dgtalio;
+      }
   };
 
 
@@ -299,39 +313,39 @@ namespace DGtal
      **/
     template<typename TFunctor>
     static TContainer importWithColorFunctor(const std::string &filename,
-                                             const  TFunctor &aFunctor, 
+                                             const  TFunctor &aFunctor,
                                              unsigned int x=0,
-                                             unsigned int y=0)  throw(DGtal::IOException)
-    {
-      BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::Color> )) ;
-      DGtal::IOException dgtalio;
-      //Getting image extension
-      std::string extension = filename.substr(filename.find_last_of(".") + 1);
+                                             unsigned int y=0)  throw( DGtal::IOException )
+      {
+        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TContainer::Value> )) ;
+        DGtal::IOException dgtalio;
+        //Getting image extension
+        const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
 
-      if(extension=="ppm")
-        return PPMReader<TContainer, TFunctor>::importPPM(filename, aFunctor);
-
-      if(extension=="raw"){
-        ASSERT(x!=0 && y!=0);
-        typename TContainer::Point pt (x,y);
-        return RawReader< TContainer, TFunctor >::importRaw8 ( filename, pt , aFunctor);
-      }
-
-
-      if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp")
-        {
+        if ( extension == "ppm" )
+          {
+            return PPMReader<TContainer, TFunctor>::importPPM(filename, aFunctor);
+          }
+        else if ( extension == "raw" )
+          {
+            ASSERT( x != 0 && y != 0 );
+            typename TContainer::Point const pt (x,y);
+            return RawReader< TContainer, TFunctor >::template importRaw<DGtal::Color>( filename, pt, aFunctor);
+          }
+        else if ( extension == "gif" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" )
+          {
 #ifdef WITH_MAGICK
-          MagickReader<TContainer, TFunctor> reader;
-          return reader.importImage( filename, aFunctor );
+            MagickReader<TContainer, TFunctor> reader;
+            return reader.importImage( filename, aFunctor );
 #else
-          trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
-          throw dgtalio;
+            trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
+            throw dgtalio;
 #endif
-        }
+          }
 
-      trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-      throw dgtalio;
-    }
+        trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericReader." << std::endl;
+        throw dgtalio;
+      }
 
 
     /**
@@ -348,32 +362,34 @@ namespace DGtal
     template<typename TFunctor>
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
-                                             unsigned int y=0)  throw(DGtal::IOException){
-      BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
+                                             unsigned int y=0)  throw( DGtal::IOException )
+      {
+        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
 
-      DGtal::IOException dgtalio;
-      //Getting image extension
-      std::string extension = filename.substr(filename.find_last_of(".") + 1);
+        DGtal::IOException dgtalio;
+        //Getting image extension
+        const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
 
-      if(extension=="raw"){
-        ASSERT(x!=0 && y!=0);
-        typename TContainer::Point pt (x,y);
-        return RawReader< TContainer, TFunctor >::importRaw8 ( filename, pt, aFunctor  );
-      }
-
-
-      if(extension=="pgm")
-        return PGMReader<TContainer, TFunctor>::importPGM(filename, aFunctor);
+        if ( extension == "raw" )
+          {
+            ASSERT( x!= 0 && y != 0);
+            typename TContainer::Point const pt (x,y);
+            return RawReader< TContainer, TFunctor >::importRaw8( filename, pt, aFunctor  );
+          }
+        else if ( extension == "pgm" )
+          {
+            return PGMReader<TContainer, TFunctor>::importPGM(filename, aFunctor);
+          }
 
 #ifdef WITH_HDF5
-      if (extension=="h5")
-        return HDF5Reader<TContainer, TFunctor>::importHDF5(filename, "image8bit", aFunctor);
+        if (extension=="h5")
+          return HDF5Reader<TContainer, TFunctor>::importHDF5(filename, "image8bit", aFunctor);
 #endif
 
-      trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-      throw dgtalio;
+        trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+        throw dgtalio;
 
-    }
+      }
 
   };
 
@@ -417,33 +433,37 @@ namespace DGtal
     static TContainer importWithColorFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
                                              unsigned int y=0)  throw(DGtal::IOException)
-{
-  //warnings
-  BOOST_VERIFY(x==x);
-  BOOST_VERIFY(y==y);
+      {
 
-      BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::Color> )) ;
-      DGtal::IOException dgtalio;
-      //Getting image extension
-      std::string extension = filename.substr(filename.find_last_of(".") + 1);
+        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TContainer::Value> )) ;
+        DGtal::IOException dgtalio;
+        //Getting image extension
+        const std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
-      if(extension=="ppm")
-        return PPMReader<TContainer, TFunctor>::importPPM(filename, aFunctor);
-      
-      if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp")
-        {
+        if ( extension == "ppm" )
+          {
+            return PPMReader<TContainer, TFunctor>::importPPM(filename, aFunctor);
+          }
+        else if ( extension == "raw" )
+          {
+            ASSERT( x != 0 && y != 0 );
+            typename TContainer::Point const pt (x,y);
+            return RawReader< TContainer, TFunctor >::template importRaw<DGtal::Color>( filename, pt, aFunctor);
+          }
+        else if ( extension == "gif" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" )
+          {
 #ifdef WITH_MAGICK
-          MagickReader<TContainer, TFunctor> reader;
-          return reader.importImage( filename, aFunctor );
+            MagickReader<TContainer, TFunctor> reader;
+            return reader.importImage( filename, aFunctor );
 #else
-          trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
-          throw dgtalio;
+            trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
+            throw dgtalio;
 #endif
-        }
+          }
 
-      trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-      throw dgtalio;
-    }
+        trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+        throw dgtalio;
+      }
 
 
     /**
@@ -452,38 +472,41 @@ namespace DGtal
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, TContainer::Value > ).
      * @param aFunctor to transform input unsigned char of image value into the given image type.
-     * 
+     *
      ** @param x specify the  x image size to be used with raw format.
      * @param y specify the  y image size to be used with raw format.
      **/
     template<typename TFunctor>
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
-                                             unsigned int y=0)  throw(DGtal::IOException){
-      BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
+                                             unsigned int y=0)  throw(DGtal::IOException)
+      {
+        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
 
-      DGtal::IOException dgtalio;
-      //Getting image extension
-      std::string extension = filename.substr(filename.find_last_of(".") + 1);
-            
-      if(extension=="raw"){
-        ASSERT(x!=0 && y!=0);
-        typename TContainer::Point pt (x,y);
-        return RawReader< TContainer, TFunctor >::importRaw32 ( filename, pt, aFunctor  );
-      }
+        DGtal::IOException dgtalio;
+        //Getting image extension
+        const std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
-      if(extension=="pgm")
-        return PGMReader<TContainer, TFunctor>::importPGM(filename, aFunctor);
+        if ( extension == "raw" )
+          {
+            ASSERT( x != 0 && y != 0);
+            typename TContainer::Point const pt (x,y);
+            return RawReader< TContainer, TFunctor >::importRaw8 ( filename, pt, aFunctor  );
+          }
+        else if ( extension == "pgm ")
+          {
+            return PGMReader<TContainer, TFunctor>::importPGM(filename, aFunctor);
+          }
 
 #ifdef WITH_HDF5
-      if (extension=="h5")
-        return HDF5Reader<TContainer, TFunctor>::importHDF5(filename, "image8bit", aFunctor);
+        if (extension=="h5")
+          return HDF5Reader<TContainer, TFunctor>::importHDF5(filename, "image8bit", aFunctor);
 #endif
 
-      trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-      throw dgtalio;
+        trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+        throw dgtalio;
 
-    }
+      }
 
   };
 
