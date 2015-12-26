@@ -58,11 +58,41 @@ namespace DGtal
    * Description of template struct 'RawWriter' <p>
    * \brief Aim: Raw binary export of an Image.
    *
+   * The export methods \c exportRaw8, \c exportRaw16 and \c exportRaw32 write raw files (little-endian format)
+   * with unsigned integer values of, respectively, 8 bits, 16 bits and 32 bits width.
+   * The method \c exportRaw can write any type of values, signed integers, floating point types or
+   * even structures.
+   *
    * A functor can be specified to convert image values to raw values
-   * (unsigned char for exportRaw8).
+   * (e.g. unsigned char for \c exportRaw8).
+   * 
+   * Example usage:
+   * @code
+   * ...
+   * typedef DGtal::SpaceND<int,3> Space;
+   * typedef DGtal::HyperRectDomain<Space> Domain;
+   * typedef Domain::Point Point;
+   *
+   * //Default image container = STLVector
+   * typedef DGtal::ImageSelector<TDomain, unsigned char>::Type Image;
+   *
+   * Domain domain( Point::diagonal(0), Point::diagonal(10) );
+   * Image image( domain );
+   *
+   * ... // Filling the image.
+   *
+   * DGtal::RawWriter<Image> writer;
+   * if ( writer.exportRaw8( "data.raw", image ) )
+   *   trace.info() << "Image successfully exported." << endl;
+   * else
+   *   trace.info() << "Error while exporting image." << endl;
+   * @endcode
    *
    * @tparam TImage the Image type.
    * @tparam TFunctor the type of functor used in the export.
+   *
+   * @see RawReader
+   * @see testRawReader.cpp
    */
   template <typename TImage, typename TFunctor = functors::Identity>
   struct RawWriter
@@ -74,7 +104,7 @@ namespace DGtal
     typedef TFunctor Functor;
 
     /**
-     * Export an Image to Raw format.
+     * Export an Image to Raw format (any value type, in little-endian format).
      *
      * @tparam Word exported pixel type.
      * @param filename name of the output file.

@@ -28,6 +28,7 @@
 
 
 //////////////////////////////////////////////////////////////////////////////
+#include <cstddef>
 #include <cstdlib>
 #include <fstream>
 //////////////////////////////////////////////////////////////////////////////
@@ -101,8 +102,9 @@ template <typename Word>
 std::ostream&
 DGtal::raw_writer_write_word(std::ostream& outs, Word value)
 {
-    for (unsigned size = sizeof(Word); size; --size, value >>= 8)
-        outs.put(static_cast<unsigned char>(value & 0xFF));
+    for ( std::size_t i = 0; i < sizeof(Word); ++i )
+        outs.put( reinterpret_cast<unsigned char*>(&value)[i] );
+
     return outs;
 }
 

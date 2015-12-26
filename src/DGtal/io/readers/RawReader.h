@@ -55,22 +55,26 @@ namespace DGtal
   // template class RawReader
   /**
    * Description of template class 'RawReader' <p>
-   * \brief Aim: implements methods to read a "Vol" file format.
+   * \brief Aim: Raw binary import of an Image.
    *
-   * The main import method "importRaw8" returns an instance of the template
-   * parameter TImageContainer.
+   * The import methods \c importRaw8, \c importRaw16 and \c importRaw32 read raw files (little-endian format)
+   * containing unsigned integer values of, respectively, 8 bits, 16 bits and 32 bits width.
+   * The method \c importRaw can read any type of values, signed integers, floating point types or
+   * even structures.
+   *
+   * All these methods return an instance of the template parameter \c TImageContainer. A functor can be specified to convert raw values to image values.
    *
    * Example usage:
    * @code
    * ...
-   * typedef SpaceND<int,3> Space3;
-   * typedef HyperRectDomain<Space3> TDomain;
+   * typedef DGtal::SpaceND<int,3> Space3;
+   * typedef DGtal::HyperRectDomain<Space3> TDomain;
    * typedef TDomain::Point Point;
    *
    * //Default image container = STLVector
-   * typedef ImageSelector<TDomain, int>::Type Image;
+   * typedef DGtal::ImageSelector<TDomain, int>::Type Image;
    *
-   * RawReader<Image> reader;
+   * DGtal::RawReader<Image> reader;
    * Image image = reader.importRaw8("data.raw");
    *
    * trace.info() << image <<endl;
@@ -81,6 +85,7 @@ namespace DGtal
    *
    * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
    *
+   * @see RawWriter
    * @see testRawReader.cpp
    */
   template <typename TImageContainer,
@@ -95,11 +100,9 @@ namespace DGtal
     typedef typename TImageContainer::Domain::Vector Vector;
     typedef TFunctor Functor;
 
-    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || (ImageContainer::Domain::dimension == 3) );
-
     /**
-     * Method to import a Raw into an instance of the
-     * template parameter ImageContainer.
+     * Method to import a Raw (any type stored in little-endian format)
+     * into an instance of the template parameter ImageContainer.
      *
      * @tparam Word read pixel type.
      * @param filename the file name to import.
