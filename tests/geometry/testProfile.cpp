@@ -43,10 +43,16 @@ using namespace DGtal;
 // Functions for testing class Profile.
 ///////////////////////////////////////////////////////////////////////////////
 
+struct LogFct{
+  float operator()(const float &a) const {
+    return log(a);
+  }
+};
+
 TEST_CASE( "Testing Profile" )
 {
   
-  Profile<> sp(Profile<>::MEAN);
+  Profile<LogFct> sp(Profile<LogFct>::MEAN);
   sp.init(5);
   
   SECTION("Testing basic add of Profile")
@@ -56,8 +62,8 @@ TEST_CASE( "Testing Profile" )
       sp.addValue(2, 10.0);
       sp.addValue(3, 10.0);
       sp.addValue(4, 10.0);
-      std::vector<double> x;
-      std::vector<double> y;
+      std::vector<float> x;
+      std::vector<float> y;
       sp.getProfile(x, y);
 
       REQUIRE( x[3] == Approx(log(4)) );
@@ -91,7 +97,7 @@ TEST_CASE( "Testing Profile" )
   
   SECTION("Testing noise level detect of Profile with iterator init ")
     {
-      std::vector<double> scales;
+      std::vector<float> scales;
       for(unsigned int i =0; i < 6; i++){
         scales.push_back(5+i);
       }
@@ -102,7 +108,7 @@ TEST_CASE( "Testing Profile" )
       sp.addValue(3,17);
       sp.addValue(4,7);
       sp.addValue(5,2);      
-      std::vector<double> x,y;
+      std::vector<float> x,y;
       sp.getProfile(x,y); 
       REQUIRE( (x[0] == Approx(log(5))) );
       REQUIRE( (y[0] == Approx(log(22))) );
