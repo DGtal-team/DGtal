@@ -102,7 +102,7 @@ namespace DGtal
    * various refactoring.
    */
 
-  template<typename TValueFunctor = functors::Identity >
+  template<typename TValueFunctor = functors::Identity, typename TValue = float >
   class Profile
   {
     // ----------------------- Standard services ------------------------------
@@ -116,7 +116,9 @@ namespace DGtal
     enum ProfileType{MEAN, MAX, MIN, MEDIAN};
     
     typedef TValueFunctor Functor;
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<Functor, float, float>  ));
+    typedef TValue Value;
+
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<Functor, Value, Value>  ));
 
     
     /**
@@ -195,7 +197,7 @@ namespace DGtal
      * @param[in] idxScale some valid index (according to init).
      * @param[in] value any value.
      */
-    void addValue( unsigned int idxScale, float value );
+    void addValue( unsigned int idxScale, TValue value );
 
 
     /**
@@ -206,7 +208,7 @@ namespace DGtal
      * @param stat any statistic (which is added to the current
      * statistic object).
      */
-    void addStatistic( unsigned int idxScale, const Statistic<float> & stat );
+    void addStatistic( unsigned int idxScale, const Statistic<Value> & stat );
 
 
 
@@ -252,8 +254,8 @@ namespace DGtal
      * @param[out] y (modified) adds the y-value of the profile
      * (log(Exp(samples))) to the back of the vector.
      */
-    void getProfile( std::vector<double> & x, 
-		     std::vector<double> & y ) const;
+    void getProfile( std::vector<Value> & x, 
+		     std::vector<Value> & y ) const;
     
 
     /**
@@ -366,12 +368,12 @@ namespace DGtal
     /**
      * The vector containing the different scales for the analysis.
      */
-    std::vector<float>* myScales;
+    std::vector<Value>* myScales;
 
     /**
      * The vector containing the different statistics for the analysis.
      */
-    std::vector< Statistic<float> >* myStats;
+    std::vector< Statistic<Value> >* myStats;
 
     /**
      * Used to define the method to compute the scale profile: several choice are possible:
@@ -413,9 +415,9 @@ namespace DGtal
    * @param object the object of class 'Profile' to write.
    * @return the output stream after the writing.
    */
-  template< typename TFunctor >
+  template< typename TValueFunctor, typename TValue >
   std::ostream&
-  operator<< ( std::ostream & out, const Profile<TFunctor> & object );
+  operator<< ( std::ostream & out, const Profile<TValueFunctor, TValue> & object );
 
 
 } // namespace DGtal
