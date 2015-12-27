@@ -426,7 +426,7 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #if !defined(BUILD_INLINE)
-#include "DGtal/geometry/helpers/Profile.ih"
+#include "DGtal/math/Profile.ih"
 #endif
 
 
