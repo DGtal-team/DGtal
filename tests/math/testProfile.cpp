@@ -33,7 +33,7 @@
 #include "ConfigTest.h"
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/helpers/Profile.h" 
+#include "DGtal/math/Profile.h" 
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
