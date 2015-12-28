@@ -240,7 +240,7 @@ namespace DGtal
     /**
      * Used to define the method to determine the profile values from
      * the samples of scale statistics.
-     *
+     * 
      * @param type the method applied to the statistics samples: MEAN, MAX, MIN.
      **/    
     void setType(ProfileType type);
