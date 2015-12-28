@@ -8,7 +8,8 @@ SET(DGTAL_TESTS_SRC_MATH
        testAngleLinearMinimizer
        testBasicMathFunctions 
        testMultiStatistics
-       testProfile)
+       testProfile
+       testMeaningfulScaleAnalysis)
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})
