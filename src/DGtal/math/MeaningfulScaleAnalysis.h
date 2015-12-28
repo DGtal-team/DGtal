@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/math/Profile.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,10 +54,20 @@ namespace DGtal
  * Description of class 'MeaningfulScaleAnalysis' <p>
  * \brief Aim:
  */
+template<typename TProfile>
 class MeaningfulScaleAnalysis
 {
     // ----------------------- Standard services ------------------------------
 public:
+
+    typedef TProfile Profile;
+
+    /**
+     * Constructor
+     */
+     MeaningfulScaleAnalysis(const Profile &aProfile): myProfile(aProfile) {
+       
+     }
 
     /**
      * Destructor.
@@ -79,7 +90,9 @@ public:
     bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
-private:
+protected:
+    const Profile  &myProfile;
+  
     // ------------------------- Private Datas --------------------------------
 private:
 
