@@ -55,7 +55,7 @@ namespace DGtal
   /**
    * Description of template class 'KForm' <p>
    * \brief Aim:
-   * KForm represents kforms in the dec package.
+   * KForm represents discrete kforms in the dec package.
    *
    * @tparam TCalculus should be DiscreteExteriorCalculus.
    * @tparam order is the order of the kform.
@@ -75,6 +75,32 @@ namespace DGtal
     typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
+
+    /**
+     * Create a kform with all values initialized to 1.
+     * @param calculus the discrete exterior calculus to use.
+     */
+    static
+    KForm<TCalculus, order, duality>
+    ones(ConstAlias<Calculus> calculus);
+
+    /**
+     * Create a kform with all values initialized to 0.
+     * Convenience wrapper for default constructor.
+     * @param calculus the discrete exterior calculus to use.
+     */
+    static
+    KForm<TCalculus, order, duality>
+    zeros(ConstAlias<Calculus> calculus);
+
+    /**
+     * Create a kform with all values initialized to 0, except value associated with cell initialized to 1.
+     * @param calculus the discrete exterior calculus to use.
+     * @param cell Dirac position.
+     */
+    static
+    KForm<TCalculus, order, duality>
+    dirac(ConstAlias<Calculus> calculus, const typename Calculus::Cell& cell);
 
     /**
      * Constructor.
