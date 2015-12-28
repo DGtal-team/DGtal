@@ -48,34 +48,121 @@
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class MeaningfulScaleAnalysis
-/**
- * Description of class 'MeaningfulScaleAnalysis' <p>
- * \brief Aim:
- */
-template<typename TProfile>
-class MeaningfulScaleAnalysis
-{
+  /////////////////////////////////////////////////////////////////////////////
+  // class MeaningfulScaleAnalysis
+  /**
+   * Description of class 'MeaningfulScaleAnalysis' <p>
+   * \brief Aim:
+   */
+  template<typename TProfile>
+  class MeaningfulScaleAnalysis
+  {
     // ----------------------- Standard services ------------------------------
-public:
+  public:
 
     typedef TProfile Profile;
 
     /**
      * Constructor
      */
-     MeaningfulScaleAnalysis(const Profile &aProfile): myProfile(aProfile) {
+    MeaningfulScaleAnalysis(const Profile &aProfile): myProfile(aProfile) {
        
-     }
+    }
 
     /**
      * Destructor.
      */
-    ~MeaningfulScaleAnalysis();
+    ~MeaningfulScaleAnalysis(){};
 
     // ----------------------- Interface --------------------------------------
-public:
+  public:
+
+
+  
+    /**
+     * A meaningful scale is an interval of scales of length no
+     * smaller than [min_width] and in which the profile has slopes
+     * below [max_slope] and above [min_slope]. This method computes
+     * the sequence of meaningful scales for surfel [idx].
+     *
+     * @param[out] intervals (returns) a list of meaningful scales.
+     * @param[in] minSize the minimum length for the meaningful scales.
+     * @param[in] maxSlope the maximum allowed slope for length evolution.
+     * @param[in] minSlope the minimum allowed slope for length evolution.
+     */
+    void 
+    computeMeaningfulScales( std::vector< std::pair< unsigned int, unsigned int > > & intervals,
+                             const unsigned int minSize = 1,
+                             const double maxSlope = -0.2,
+                             const double minSlope = -1e10 ) const;
+
+
+    /**
+     *  Compute the profile slope of the first meaningful scale
+     *  interval computed by a simple linear regression model.
+     *
+     * @return a pair<bool, double> giving the slope and indicating if
+     * a meaningful scale was  found or not. If no meaningful
+     * scale interval was found, it simply return the slope obtained
+     * from the linear regression. 
+     *
+     * @param[in] maxSlope the  maximum allowed slope for length evolution.
+     * @param[in] minSlope the  minimum allowed slope for length evolution.  
+     * @param[in] minSize the minimum length for the meaningful scales.
+     * 
+     **/
+    std::pair<bool, double> 
+    getSlopeFromMeaningfulScales(const double maxSlope=-0.2,
+                                 const double minSlope=-1e10,
+                                 const unsigned int minSize=2) const ;
+    
+    
+    
+    /**
+     * The noise level is the first scale of the first meaningful
+     * scale. A meaningful scale is an interval of scales of length no
+     * smaller than [min_width] and in which the profile has slopes
+     * below [max_slope]. 
+     *
+     * @param[in] minSize the minimum length for the meaningful scales.
+     * @param[in] maxSlope the maximum allowed slope for length evolution.
+     * @param[in] minSlope the minimum allowed slope for length evolution.
+     * @return the noise level or zero is none was found.
+     * @see meaningfulScales
+     */
+    unsigned int
+    noiseLevel( const unsigned int minSize = 1,
+		const double maxSlope = -0.2,
+		const double minSlope = -1e10 ) const;
+
+
+
+    /**
+     * The noise level is the first scale of the first meaningful
+     * scale. A meaningful scale is an interval of scales of length no
+     * smaller than [minWidth] and in which the profile has slopes
+     * below [maxSlope]. The lower bounded noise level also requires
+     * minimum lenghs for different scales. Therefore the profile must
+     * be greater that
+     * [lower_bound_at_scale_1]+[lower_bound_slope]*scale.
+     *
+     * @param[in] minSize the minimum length for the meaningful scales.
+     * @param[in] maxSlope the maximum allowed slope for length evolution.
+     * @param[in] minSlope the minimum allowed slope for length evolution.
+     * @param[in] lowerBoundAtScale1 the lower bound for the profile at scale 1.
+     * @param[in] lowerBoundSlope the slope of the lower bound for the profile (for instance -1 for digital contours, -3 for digital image graphs since area values are divided by (scale)^3.
+     * @return the noise level or zero is none was found.
+     * @see meaningfulScales
+     */
+    unsigned int
+    lowerBoundedNoiseLevel( const unsigned int minSize = 1,
+			    const double maxSlope = -0.2,
+			    const double minSlope = -1e10,
+			    const double lowerBoundAtScale1 = 1.0,
+			    const double lowerBoundSlope = -2.0 ) const;
+
+
+    
 
     /**
      * Writes/Displays the object on an output stream.
@@ -90,14 +177,14 @@ public:
     bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
-protected:
+  protected:
     const Profile  &myProfile;
   
     // ------------------------- Private Datas --------------------------------
-private:
+  private:
 
     // ------------------------- Hidden services ------------------------------
-protected:
+  protected:
 
     /**
      * Constructor.
@@ -105,7 +192,7 @@ protected:
      */
     MeaningfulScaleAnalysis();
 
-private:
+  private:
 
     /**
      * Copy constructor.
@@ -123,19 +210,20 @@ private:
     MeaningfulScaleAnalysis & operator= ( const MeaningfulScaleAnalysis & other );
 
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
-}; // end of class MeaningfulScaleAnalysis
+  }; // end of class MeaningfulScaleAnalysis
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'MeaningfulScaleAnalysis'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'MeaningfulScaleAnalysis' to write.
- * @return the output stream after the writing.
- */
-std::ostream&
-operator<< ( std::ostream & out, const MeaningfulScaleAnalysis & object );
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'MeaningfulScaleAnalysis'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'MeaningfulScaleAnalysis' to write.
+   * @return the output stream after the writing.
+   */
+  template<typename TProfile>
+  std::ostream&
+  operator<< ( std::ostream & out, const MeaningfulScaleAnalysis<TProfile> & object );
 
 
 } // namespace DGtal

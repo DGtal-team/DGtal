@@ -69,7 +69,7 @@ TEST_CASE( "Testing Profile" )
       REQUIRE( y[3] == Approx(log(10.0)) );
     }
   
-  Profile<> sp2(Profile<>::MAX);
+g  Profile<> sp2(Profile<>::MAX);
   sp2.init(3, true);
 
   SECTION("Testing Profile (with max/median)")
