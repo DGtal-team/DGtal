@@ -43,17 +43,20 @@ DiscreteExteriorCalculusFactory is a helper class to easily create DEC structure
 or combinatorial structures such as digital surfaces (DigitalSurface).
 
 As usual, one can fill the DEC structure manually using DiscreteExteriorCalculus.insertSCell.
-Every k-cells should then be inserted manually with their correct hodge ratio.
+Every k-cells should then be inserted manually with their correct primal and dual sizes.
+Primal and dual sizes default to 1 when not specified.
 On the other hand, one could create automatically a DEC structure from a range of n-cells using
 DiscreteExteriorCalculusFactory::createFromNSCells.
 Incident lower dimension cells are then inserted and weighted automatically.
 The first template parameter of DiscreteExteriorCalculusFactory::createFromNSCells represents
 the embedded dimension of the generated manifold.
 
+@note By definition 0-cell must have a primal size equals to 1 and n-cell must have dual size equals to 1.
+
 When the ambient space has the same dimension as the embedded manifold, one could
 use DiscreteExteriorCalculusFactory::createFromDigitalSet.
 Similarly to DiscreteExteriorCalculusFactory::createFromNSCells, incident lower dimension cells
-are automatically inserted with proper hodge ratios.
+are automatically inserted with proper primal and dual sizes.
 Each point of the set is inserted in the DEC structure as a primal n-cell.
 
 @note DiscreteExteriorCalculusFactory::createFromNSCells is compatible with iterators over DigitalSurface.

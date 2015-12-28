@@ -44,6 +44,7 @@ using namespace DGtal;
 
 
 struct Point3D{  
+  static const unsigned int dimension = 3;
   const double & operator[]( unsigned int i ) const{
     assert(i<3);
     switch (i){

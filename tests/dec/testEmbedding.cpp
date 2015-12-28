@@ -81,7 +81,7 @@ int main(int , char** )
             Calculus1D::KSpace::Point point;
             point[0] = kk;
             const Calculus1D::SCell cell = calculus_1d_manual.myKSpace.sCell(point);
-            calculus_1d_manual.insertSCell(cell, kk == 0 || kk == 30 ? 1/2. : 1);
+            calculus_1d_manual.insertSCell(cell, 1, kk == 0 || kk == 30 ? 1/2. : 1);
             cells_1d_manual.insert(cell);
             if (kk%2 != 0) ncells_1d_factory.insert(cell);
         }
@@ -108,7 +108,7 @@ int main(int , char** )
 
         Calculus2D calculus_2d_manual;
         {
-            calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,0)), 1/2. );
+            calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,0)), 1, 1/2. );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,1), Calculus2D::KSpace::POS) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(6,2)) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(7,2), Calculus2D::KSpace::POS) );
@@ -138,7 +138,7 @@ int main(int , char** )
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,1), Calculus2D::KSpace::NEG) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(2,0)) );
             calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(1,0), Calculus2D::KSpace::NEG) );
-            calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(0,0)), 1/2.);
+            calculus_2d_manual.insertSCell( calculus_2d_manual.myKSpace.sCell(Z2i::Point(0,0)), 1, 1/2.);
             calculus_2d_manual.updateIndexes();
         }
         trace.info() << "calculus_2d_manual=" << calculus_2d_manual << endl;
@@ -214,7 +214,7 @@ int main(int , char** )
 
         Calculus3D calculus_3d_manual;
         {
-            calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,0,0)), 1/2. );
+            calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(0,0,0)), 1, 1/2. );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(1,0,0), Calculus3D::KSpace::POS) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,0,0)) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(3,0,0), Calculus3D::KSpace::POS) );
@@ -244,7 +244,7 @@ int main(int , char** )
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,5,-2), Calculus3D::KSpace::NEG) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,4,-2)) );
             calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,3,-2), Calculus3D::KSpace::NEG) );
-            calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,-2)), 1/2. );
+            calculus_3d_manual.insertSCell( calculus_3d_manual.myKSpace.sCell(Z3i::Point(2,2,-2)), 1, 1/2. );
             calculus_3d_manual.updateIndexes();
         }
         trace.info() << "calculus_3d_manual=" << calculus_3d_manual << endl;
@@ -451,11 +451,11 @@ int main(int , char** )
             const Calculus2D::Scalar area_th = calculus_2d_factory.kFormLength(0, DUAL);
             const Calculus2D::Scalar area_primal = (
                 calculus_2d_factory.hodge<0, PRIMAL>() *
-                Calculus2D::PrimalForm0(calculus_2d_factory, Eigen::VectorXd::Ones(calculus_2d_factory.kFormLength(0, PRIMAL)))
+                Calculus2D::PrimalForm0::ones(calculus_2d_factory)
                 ).myContainer.array().sum();
             const Calculus2D::Scalar area_dual = (
                 calculus_2d_factory.hodge<0, DUAL>() *
-                Calculus2D::DualForm0(calculus_2d_factory, Eigen::VectorXd::Ones(calculus_2d_factory.kFormLength(0, DUAL)))
+                Calculus2D::DualForm0::ones(calculus_2d_factory)
                 ).myContainer.array().sum();
             trace.info() << "area_2d_th=" << area_th << endl;
             trace.info() << "area_2d_primal=" << area_primal << endl;
@@ -468,11 +468,11 @@ int main(int , char** )
             const Calculus3D::Scalar area_th = calculus_3d_factory.kFormLength(0, DUAL);
             const Calculus3D::Scalar area_primal = (
                 calculus_3d_factory.hodge<0, PRIMAL>() *
-                Calculus3D::PrimalForm0(calculus_3d_factory, Eigen::VectorXd::Ones(calculus_3d_factory.kFormLength(0, PRIMAL)))
+                Calculus3D::PrimalForm0::ones(calculus_3d_factory)
                 ).myContainer.array().sum();
             const Calculus3D::Scalar area_dual = (
                 calculus_3d_factory.hodge<0, DUAL>() *
-                Calculus3D::DualForm0(calculus_3d_factory, Eigen::VectorXd::Ones(calculus_3d_factory.kFormLength(0, DUAL)))
+                Calculus3D::DualForm0::ones(calculus_3d_factory)
                 ).myContainer.array().sum();
             trace.info() << "area_3d_th=" << area_th << endl;
             trace.info() << "area_3d_primal=" << area_primal << endl;
@@ -486,7 +486,7 @@ int main(int , char** )
         trace.endBlock();
     }
 
-    {
+    /*{
         trace.beginBlock("2d manifold embedding");
 
         //! [embedding_2d_typedef]
@@ -552,7 +552,7 @@ int main(int , char** )
         const Calculus2D calculus_2d_factory_weighed = CalculusFactory::createFromNSCells<2>(ncells_2d_factory.begin(), ncells_2d_factory.end(), true);
         //! [embedding_2d_factory_2d]
         Calculus2D calculus_2d_factory = calculus_2d_factory_weighed;
-        calculus_2d_factory.resetSizeRatios();
+        calculus_2d_factory.resetSizes();
         trace.info() << "calculus_2d_factory=" << calculus_2d_factory << endl;
 
         SCells2D cells_2d_manual;
@@ -718,7 +718,7 @@ int main(int , char** )
         const Calculus3D calculus_3d_factory_weighed = CalculusFactory::createFromNSCells<2>(ncells_3d_factory.begin(), ncells_3d_factory.end(), true);
         //! [embedding_2d_factory_3d]
         Calculus3D calculus_3d_factory = calculus_3d_factory_weighed;
-        calculus_3d_factory.resetSizeRatios();
+        calculus_3d_factory.resetSizes();
         trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
 
         SCells3D cells_3d_manual;
@@ -954,11 +954,11 @@ int main(int , char** )
             const Calculus2D::Scalar area_th = calculus_2d_factory_weighed.kFormLength(0, DUAL);
             const Calculus2D::Scalar area_primal = (
                 calculus_2d_factory_weighed.hodge<0, PRIMAL>() *
-                Calculus2D::PrimalForm0(calculus_2d_factory_weighed, Eigen::VectorXd::Ones(calculus_2d_factory_weighed.kFormLength(0, PRIMAL)))
+                Calculus2D::PrimalForm0::ones(calculus_2d_factory_weighed)
                 ).myContainer.array().sum();
             const Calculus2D::Scalar area_dual = (
                 calculus_2d_factory_weighed.hodge<0, DUAL>() *
-                Calculus2D::DualForm0(calculus_2d_factory_weighed, Eigen::VectorXd::Ones(calculus_2d_factory_weighed.kFormLength(0, DUAL)))
+                Calculus2D::DualForm0::ones(calculus_2d_factory_weighed)
                 ).myContainer.array().sum();
             trace.info() << "area_2d_th=" << area_th << endl;
             trace.info() << "area_2d_primal=" << area_primal << endl;
@@ -971,11 +971,11 @@ int main(int , char** )
             const Calculus3D::Scalar area_th = calculus_3d_factory_weighed.kFormLength(0, DUAL);
             const Calculus3D::Scalar area_primal = (
                 calculus_3d_factory_weighed.hodge<0, PRIMAL>() *
-                Calculus3D::PrimalForm0(calculus_3d_factory_weighed, Eigen::VectorXd::Ones(calculus_3d_factory_weighed.kFormLength(0, PRIMAL)))
+                Calculus3D::PrimalForm0::ones(calculus_3d_factory_weighed)
                 ).myContainer.array().sum();
             const Calculus3D::Scalar area_dual = (
                 calculus_3d_factory_weighed.hodge<0, DUAL>() *
-                Calculus3D::DualForm0(calculus_3d_factory_weighed, Eigen::VectorXd::Ones(calculus_3d_factory_weighed.kFormLength(0, DUAL)))
+                Calculus3D::DualForm0::ones(calculus_3d_factory_weighed)
                 ).myContainer.array().sum();
             trace.info() << "area_3d_th=" << area_th << endl;
             trace.info() << "area_3d_primal=" << area_primal << endl;
@@ -987,7 +987,7 @@ int main(int , char** )
         trace.endBlock();
 
         trace.endBlock();
-    }
+    }*/
 
 #if !defined(NOVIEWER)
     return app.exec();

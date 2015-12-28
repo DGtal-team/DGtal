@@ -12,7 +12,6 @@ message(STATUS "   cmake frontend, or define cmake commandline variables")
 message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "")
 
-OPTION(WITH_C11 "With C++ compiler C11 features." OFF)
 OPTION(WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 OPTION(WITH_EIGEN "With Eigen3 Linear Algebra Library." OFF)
@@ -27,25 +26,6 @@ OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
 OPTION(WITH_QT5 "Using Qt5." OFF)
 
 #----------------------------------
-# Checking clang version on APPLE
-#
-# When using clang 5.0, DGtal must
-# be compiled with C11 features
-#----------------------------------
-IF (APPLE)
-  if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    EXECUTE_PROCESS( COMMAND ${CMAKE_CXX_COMPILER} --version OUTPUT_VARIABLE clang_full_version_string )
-    string (REGEX REPLACE ".*LLVM version ([0-9]).*" "\\1" CLANG_VERSION_STRING ${clang_full_version_string})
-    if (CLANG_VERSION_STRING VERSION_GREATER 4)
-      SET(WITH_C11 ON)
-      MESSAGE(STATUS "You are using Clang >= 5.0, I'm forcing the WITH_C11 option")
-    endif()
-  endif()
-endif()
-MESSAGE(STATUS " ")
-#---------------------------------
-
-#----------------------------------
 # Removing -frounding-math compile flag for clang
 #----------------------------------
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -54,14 +34,6 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     MESSAGE( STATUS " " )
 ENDIF()
 #---------------------------------
-
-
-IF(WITH_C11)
-SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
-message(STATUS "      WITH_C11           true    (C++ compiler C11 features)")
-ELSE(WITH_C11)
-message(STATUS "      WITH_C11           false   (C++ compiler C11 features)")
-ENDIF(WITH_C11)
 
 IF(WITH_OPENMP)
 SET (LIST_OPTION ${LIST_OPTION} [OpenMP]\ )
@@ -152,58 +124,58 @@ ENDIF(WITH_BENCHMARK)
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
 
-# -----------------------------------------------------------------------------
-# Check CPP11
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-SET(C11_FOUND_DGTAL 0)
-SET(C11_AUTO_DGTAL 0)
-SET(C11_FORWARD_DGTAL 0)
-SET(C11_INITIALIZER_DGTAL 0)
-SET(C11_ARRAY 0)
-SET(C11_UNORDERED_SET 0)
-SET(C11_UNORDERED_MAP 0)
-IF(WITH_C11)
-  INCLUDE(CheckCPP11)
-  IF (CPP11_INITIALIZER_LIST OR CPP11_AUTO OR CPP11_FORWARD_LIST)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ")
-    SET(C11_FOUND_DGTAL 1)
-    IF (CPP11_AUTO)
-      SET(C11_AUTO_DGTAL 1)
-      SET(C11_FEATURES "${C11_FEATURES} auto")
-    ENDIF()
-    IF (CPP11_INITIALIZER_LIST)
-      SET(C11_INITIALIZER_DGTAL 1)
-      SET(C11_FEATURES "${C11_FEATURES} initializer-list")
-    ENDIF()
-    IF (CPP11_FORWARD_LIST)
-      SET(C11_FORWARD_DGTAL 1)
-      SET(C11_FEATURES "${C11_FEATURES} std::forward-list")
-    ENDIF()
-    IF (CPP11_ARRAY)
-      SET(C11_ARRAY 1)
-      SET(C11_FEATURES "${C11_FEATURES} std::array")
-    ENDIF()
-    IF (CPP11_UNORDERED_SET)
-      SET(C11_UNORDERED_SET 1)
-      SET(C11_FEATURES "${C11_FEATURES} std::unordered_set")
-    ENDIF()
-    IF (CPP11_UNORDERED_MAP)
-      SET(C11_UNORDERED_MAP 1)
-      SET(C11_FEATURES "${C11_FEATURES} std::unordered_map")
-    ENDIF()
-    IF (CPP11_RREF_MOVE)
-      SET(C11_RREF_MOVE 1)
-      SET(C11_FEATURES "${C11_FEATURES} std::move rvalue-reference(&&)")
-    ENDIF()
-    MESSAGE(STATUS "Supported c++11 features: [${C11_FEATURES} ]")
-    ADD_DEFINITIONS("-DWITH_C11 ")
-  ELSE()
-    MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler of disable this WITH_C11 option.")
-  ENDIF()
-ELSE(WITH_C11)
-    ADD_DEFINITIONS("-DCATCH_CONFIG_NO_CPP11 ")  
-ENDIF(WITH_C11)
+# # -----------------------------------------------------------------------------
+# # Check CPP11
+# # (They are not compulsory).
+# # -----------------------------------------------------------------------------
+# SET(C11_FOUND_DGTAL 0)
+# SET(C11_AUTO_DGTAL 0)
+# SET(C11_FORWARD_DGTAL 0)
+# SET(C11_INITIALIZER_DGTAL 0)
+# SET(C11_ARRAY 0)
+# SET(C11_UNORDERED_SET 0)
+# SET(C11_UNORDERED_MAP 0)
+# IF(WITH_C11)
+#   INCLUDE(CheckCPP11)
+#   IF (CPP11_INITIALIZER_LIST OR CPP11_AUTO OR CPP11_FORWARD_LIST)
+#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ")
+#     SET(C11_FOUND_DGTAL 1)
+#     IF (CPP11_AUTO)
+#       SET(C11_AUTO_DGTAL 1)
+#       SET(C11_FEATURES "${C11_FEATURES} auto")
+#     ENDIF()
+#     IF (CPP11_INITIALIZER_LIST)
+#       SET(C11_INITIALIZER_DGTAL 1)
+#       SET(C11_FEATURES "${C11_FEATURES} initializer-list")
+#     ENDIF()
+#     IF (CPP11_FORWARD_LIST)
+#       SET(C11_FORWARD_DGTAL 1)
+#       SET(C11_FEATURES "${C11_FEATURES} std::forward-list")
+#     ENDIF()
+#     IF (CPP11_ARRAY)
+#       SET(C11_ARRAY 1)
+#       SET(C11_FEATURES "${C11_FEATURES} std::array")
+#     ENDIF()
+#     IF (CPP11_UNORDERED_SET)
+#       SET(C11_UNORDERED_SET 1)
+#       SET(C11_FEATURES "${C11_FEATURES} std::unordered_set")
+#     ENDIF()
+#     IF (CPP11_UNORDERED_MAP)
+#       SET(C11_UNORDERED_MAP 1)
+#       SET(C11_FEATURES "${C11_FEATURES} std::unordered_map")
+#     ENDIF()
+#     IF (CPP11_RREF_MOVE)
+#       SET(C11_RREF_MOVE 1)
+#       SET(C11_FEATURES "${C11_FEATURES} std::move rvalue-reference(&&)")
+#     ENDIF()
+#     MESSAGE(STATUS "Supported c++11 features: [${C11_FEATURES} ]")
+#     ADD_DEFINITIONS("-DWITH_C11 ")
+#   ELSE()
+#     MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler of disable this WITH_C11 option.")
+#   ENDIF()
+# ELSE(WITH_C11)
+#     ADD_DEFINITIONS("-DCATCH_CONFIG_NO_CPP11 ")  
+# ENDIF(WITH_C11)
 
 
 
@@ -285,21 +257,19 @@ IF(WITH_ITK)
 
 
     ## We test if ITK build accepts cpp11 compilers
-    IF(WITH_C11)
-      try_compile( CPP11_ITK
-            ${CMAKE_BINARY_DIR}/CMakeTmp
-            ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
-            ITKCPP11BUG
-            OUTPUT_VARIABLE OUTPUT )
-      if ( CPP11_ITK )
-        message(STATUS "ITK accepts [c++11]" )
-      else ( CPP11_ITK )
-        message(STATUS "ITK does not accept [c++11]" )
+    try_compile( CPP11_ITK
+      ${CMAKE_BINARY_DIR}/CMakeTmp
+      ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
+      ITKCPP11BUG
+      OUTPUT_VARIABLE OUTPUT )
+    if ( CPP11_ITK )
+      message(STATUS "ITK accepts [c++11]" )
+    else ( CPP11_ITK )
+      message(STATUS "ITK does not accept [c++11]" )
       if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-        MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).")
+        MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will not compile.")
       endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-     endif ( CPP11_ITK )
-    ENDIF(WITH_C11)
+    endif ( CPP11_ITK )
 
     # -------------------------------------------------------------------------
     # This test is for instance used for ITK v3.x. ITK forces a limited
@@ -461,7 +431,7 @@ ENDIF(WITH_OPENMP)
 # -----------------------------------------------------------------------------
 SET(EIGEN_FOUND_DGTAL 0)
 IF(WITH_EIGEN)
-  FIND_PACKAGE(Eigen3 3.2.1 REQUIRED)
+  FIND_PACKAGE(Eigen3 3.2 REQUIRED)
   IF(EIGEN3_FOUND)
     SET(EIGEN_FOUND_DGTAL 1)
     ADD_DEFINITIONS("-DWITH_EIGEN ")
@@ -528,13 +498,6 @@ ENDIF(WITH_PATATE)
 # -----------------------------------------------------------------------------
 SET(BENCHMARK_FOUND_DGTAL 0)
 IF(WITH_BENCHMARK)
-
-  IF (WITH_C11)
-    message(STATUS "C11 enabled for Google benchmark, all fine.")
-  ELSE(WITH_C11)
-   message(FATAL_ERROR "Google benchmark requires C++11. Please enable it setting 'WITH_C11' to true.")
- ENDIF(WITH_C11)
-
   FIND_PACKAGE(Benchmark REQUIRED)
   IF(BENCHMARK_FOUND)
     SET(BENCHMARK_FOUND_DGTAL 1)
@@ -546,7 +509,6 @@ IF(WITH_BENCHMARK)
    message(FATAL_ERROR "Google benchmark not installed. Please disable WITH_BENCHMARK or install it.")
  ENDIF(BENCHMARK_FOUND)
 ENDIF(WITH_BENCHMARK)
-
 
 
 message(STATUS "-------------------------------------------------------------------------------")

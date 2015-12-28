@@ -214,7 +214,7 @@ namespace DGtal
      * |--------------------|-------------|----------|----------|
      * | vector             |   false     |  false   |  false   |
      * | list               |   false     |  false   |  false   |
-     * | (to avoid)         |   false     |  false   |  true    |
+     * | (not valid)        |   false     |  false   |  true    |
      * | sorted vector (S)  |   false     |  true    |  false   |
      * | sorted list (S)    |   false     |  true    |  false   |
      * | set (S)            |    true     |  true    |  false   |
@@ -225,6 +225,10 @@ namespace DGtal
      * @note For pair containers (like map and unordered_map), the
      * data is not taken into account, which means that it can be lost
      * in some (modifier) operations.
+     *
+     * @note It is illogical to have a containers that is not
+     * associative and that is a pair container, since the pair
+     * represents an association.
      */
     template <typename Container, bool associative, bool ordered>
     struct SetFunctionsImpl
