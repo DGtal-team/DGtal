@@ -55,11 +55,8 @@ namespace DGtal
   // class Profile
   /**
    * Description of class 'Profile' <p> \brief Aim: This class
-   * represents one (multi)scale profile, e.g. a sequence of statistics
-   * on digital lengths parameterized by a scale. This class only
-   * represents what happens at one place, not everywhere on the
-   * contour. All further computations in the scale profile are
-   * done in logspace.
+   * represents a two coordinates profile, e.g. which can be used for
+   * instance to represent a multi scale profile.
    *
    * For instance, to use a Profile on 10 scale levels (from 1 to
    * 10) you can start to construct and initialize a Profile as
