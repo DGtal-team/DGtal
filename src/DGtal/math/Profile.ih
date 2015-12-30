@@ -45,20 +45,20 @@
 template<typename TValueFunctor, typename TValue>
 DGtal::Profile<TValueFunctor, TValue>::~Profile()
 {
-  if ( myScales != 0 ) delete myScales;
+  if ( myXsamples != 0 ) delete myXsamples;
   if ( myStats != 0 ) delete myStats; 
 }
 
 template<typename TValueFunctor, typename TValue>
 DGtal::Profile<TValueFunctor, TValue>::Profile()
-  : myScales( 0 ), myStats( 0 ), myProfileDef(MEAN), myStoreValInStats(false)
+  : myXsamples( 0 ), myStats( 0 ), myProfileDef(MEAN), myStoreValInStats(false)
 {
 }
 
 
 template<typename TValueFunctor, typename TValue>
 DGtal::Profile<TValueFunctor, TValue>::Profile(ProfileType type)
-  : myScales( 0 ), myStats( 0 ), myProfileDef(type), myStoreValInStats(false)
+  : myXsamples( 0 ), myStats( 0 ), myProfileDef(type), myStoreValInStats(false)
 {
 }
 
@@ -67,10 +67,10 @@ template<typename TValueFunctor, typename TValue>
 void 
 DGtal::Profile<TValueFunctor, TValue>::clear()
 {
-  if ( myScales != 0 ) 
+  if ( myXsamples != 0 ) 
     {
-      delete myScales;
-      myScales = 0;
+      delete myXsamples;
+      myXsamples = 0;
     }
   if ( myStats != 0 ) 
     {
@@ -86,11 +86,11 @@ void
 DGtal::Profile<TValueFunctor, TValue>::init(unsigned int nb, const bool storeValsInStats )
 {
   clear();
-  myScales = new std::vector<TValue>( nb );
+  myXsamples = new std::vector<TValue>( nb );
   myStats = new std::vector< Statistic<TValue> >;
   myStoreValInStats= storeValsInStats;
   for ( unsigned int i = 0; i < nb; ++i ){
-    (*myScales)[ i ] = (TValue) ( i + 1 );
+    (*myXsamples)[ i ] = (TValue) ( i + 1 );
     myStats->push_back(Statistic<TValue>(storeValsInStats));
   }
 }
@@ -98,19 +98,19 @@ DGtal::Profile<TValueFunctor, TValue>::init(unsigned int nb, const bool storeVal
 
 template<typename TValueFunctor, typename TValue>
 void
-DGtal::Profile<TValueFunctor, TValue>::addValue( unsigned int idxScale, TValue value )
+DGtal::Profile<TValueFunctor, TValue>::addValue( unsigned int indexX, TValue value )
 {
-  ASSERT( isValid() && ( idxScale < myScales->size() ) );
-  (*myStats)[ idxScale ].addValue( value );
+  ASSERT( isValid() && ( indexX < myXsamples->size() ) );
+  (*myStats)[ indexX ].addValue( value );
 }
 
 template<typename TValueFunctor, typename TValue>
 void
 DGtal::Profile<TValueFunctor, TValue>::addStatistic
-( unsigned int idxScale, const Statistic<TValue> & stat )
+( unsigned int indexX, const Statistic<TValue> & stat )
 {
-  ASSERT( isValid() && ( idxScale < myScales->size() ) );
-  (*myStats)[ idxScale ] += stat;
+  ASSERT( isValid() && ( indexX < myXsamples->size() ) );
+  (*myStats)[ indexX ] += stat;
 }
 
 
@@ -120,9 +120,9 @@ DGtal::Profile<TValueFunctor, TValue>::getProfile
 ( std::vector<TValue> & x, std::vector<TValue> & y ) const
 {
   ASSERT( isValid() );
-  for ( unsigned int i = 0; i < myScales->size(); ++i) 
+  for ( unsigned int i = 0; i < myXsamples->size(); ++i) 
     {
-      x.push_back( myFunctor( (*myScales)[ i ] ) );
+      x.push_back( myFunctor( (*myXsamples)[ i ] ) );
       switch (myProfileDef){
       case MAX:
 	y.push_back( myFunctor( (*myStats)[ i ].max() ) );
@@ -159,18 +159,18 @@ DGtal::Profile<TValueFunctor, TValue>::stopStatsSaving()
 template<typename TValueFunctor, typename TValue>
 inline
 DGtal::Profile<TValueFunctor, TValue>::Profile( const Profile & other ){
-  if(other.myStats!=0 && other.myScales!=0){
-    myScales = new std::vector<TValue>( other.myScales->size() );
-    myStats = new std::vector< Statistic<TValue> > ( other.myScales->size());
+  if(other.myStats!=0 && other.myXsamples!=0){
+    myXsamples = new std::vector<TValue>( other.myXsamples->size() );
+    myStats = new std::vector< Statistic<TValue> > ( other.myXsamples->size());
     myProfileDef = other.myProfileDef;
     myStoreValInStats= other.myStoreValInStats;
-    for ( unsigned int i = 0; i < other.myScales->size(); ++i ){
-      (*myScales)[ i ] = (*other.myScales)[i];
+    for ( unsigned int i = 0; i < other.myXsamples->size(); ++i ){
+      (*myXsamples)[ i ] = (*other.myXsamples)[i];
       (*myStats)[ i ] = (*other.myStats)[i];
     }
   }else{
     myStats=0;
-    myScales=0;
+    myXsamples=0;
     myProfileDef = other.myProfileDef;
     myStoreValInStats = false;
   }
@@ -183,18 +183,18 @@ DGtal::Profile<TValueFunctor, TValue>::operator=
 ( const DGtal::Profile<TValueFunctor, TValue> & other )
 {
   if ( this != &other ) {
-  if(other.myStats!=0 && other.myScales!=0){
-    myScales = new std::vector<TValue>( other.myScales->size() );
-    myStats = new std::vector< Statistic<TValue> > ( other.myScales->size());
+  if(other.myStats!=0 && other.myXsamples!=0){
+    myXsamples = new std::vector<TValue>( other.myXsamples->size() );
+    myStats = new std::vector< Statistic<TValue> > ( other.myXsamples->size());
     myProfileDef = other.myProfileDef;
     myStoreValInStats= other.myStoreValInStats;
-    for ( unsigned int i = 0; i < other.myScales->size(); ++i ){
-      (*myScales)[ i ] = (*other.myScales)[i];
+    for ( unsigned int i = 0; i < other.myXsamples->size(); ++i ){
+      (*myXsamples)[ i ] = (*other.myXsamples)[i];
       (*myStats)[ i ] = (*other.myStats)[i];
     }
   }else{
     myStats=0;
-    myScales=0;
+    myXsamples=0;
     myProfileDef = other.myProfileDef;
     myStoreValInStats=false;
   }
@@ -209,17 +209,17 @@ template<typename TValueFunctor, typename TValue>
 template <typename Iterator>
 inline
 void 
-DGtal::Profile<TValueFunctor, TValue>::init( Iterator beginScale, Iterator endScale,
-                           const bool storeValsInStats )
+DGtal::Profile<TValueFunctor, TValue>::init( Iterator  beginXvalues, Iterator endXvalues,
+                                             const bool storeValsInStats )
 {
   clear();
   myStoreValInStats= storeValsInStats;
-  myScales = new std::vector<TValue>;
+  myXsamples = new std::vector<TValue>;
   myStats = new std::vector< Statistic<TValue> >;
   
   unsigned int nb = 0;
-  for ( ; beginScale != endScale; ++beginScale, ++nb ){
-    myScales->push_back( *beginScale );
+  for ( ;  beginXvalues != endXvalues; ++ beginXvalues, ++nb ){
+    myXsamples->push_back( * beginXvalues );
     myStats->push_back(Statistic<TValue>( myStoreValInStats));
   }
 }
@@ -236,7 +236,7 @@ template<typename TValueFunctor, typename TValue>
 bool
 DGtal::Profile<TValueFunctor, TValue>::isValid() const
 {
-  return myScales != 0;
+  return myXsamples != 0;
 }
 
 
