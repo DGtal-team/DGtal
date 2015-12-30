@@ -54,46 +54,78 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class Profile
   /**
-   * Description of class 'Profile' <p> \brief Aim: This class
-   * represents a two coordinates profile, e.g. which can be used for
-   * instance to represent a multi scale profile.
+   * Description of class 'Profile' <p> \brief Aim: This class can be
+   * used to represent a profile (PX, PY) defined from an input set of
+   * samples (Xi, Yi). From all the samples (Xk, Yk) having the same
+   * value Xk, the associated value PY is computed (by default) by the
+   * mean of the values Yk. Note that other definitions can be used
+   * (MAX, MIN or MEDIAN).
    *
-   * For instance, to use a Profile on 10 scale levels (from 1 to
-   * 10) you can start to construct and initialize a Profile as
-   * follows:
+   * 
+   * This class is templated by the type of the functor TValueFunctor
+   * which is applied on the two coordinate values of the resulting
+   * profile (PX, PY). This functor is by default set to the identity
+   * functor. The default type (float) of the values added to the
+   * profile can also be changed by using the template parameter
+   * TValue.
+   *
+   * For instance to construct a Profile defined from a data sample
+   * having its Xi integer values included from 1 to 10, you can construct
+   * and initialize a Profile as follows:
    *
    * @code 
-   * Profile sp;
+   * Profile<> sp;
    * sp.init(10);
    * @endcode 
    * 
-   * Alternatively you can customize the scale definition by using an iterator in the initialization:
+   * Alternatively you can customize the Xi initialisations by using an
+   * iterator:
    *
    * @code
-   * std::vector<double> scale;
-   * for (double i = 0.5; i < 5; i=i+0.5){
-   *     scale.push_back(i);
+   * std::vector<float> xDef;
+   * for (float i = 0.5; i < 5; i=i+0.5){
+   *     xDef.push_back(i);
    * }   
-   * Profile sp;
-   * sp.init(scale.begin(), scale.end());
+   * Profile<> sp;
+   * sp.init(xDef.begin(), xDef.end());
    * @endcode
    *
-   * Then, you can fill the values associated to each scale:
+   * Then, you can add all the samples (Xk, Yk) :
    * @code
-   * scale.addValue(0, 23.0);
-   * scale.addValue(0, 20.0);
-   * scale.addValue(1, 20.2);
-   * scale.addValue(2, 10.4);
+   * sp.addValue(0, 23.0);
+   * sp.addValue(0, 20.0);
+   * sp.addValue(1, 20.2);
+   * sp.addValue(2, 10.4);
    * ...
-   * scale.addValue(9, 20);
-   * // then you can get a scale profile (in log scale):
-   * std::vector<double> x; 
-   * std::vector<double> y;
+   * sp.addValue(9, 20);
+   * // then you can get a profile:
+   * std::vector<float> x; 
+   * std::vector<float> y;
    * sp.getProfile(x, y); 
-   * // or compute the noise level (the first scale starting from 0 index with max slope < -0.2):
-   * unsigned int  noiseLevel = sp.noise();
-   * 
    * @endcode
+   *
+   * To obtain a profile given in log space, you have just to define the following basic log functor:
+   *
+   * @code 
+   *  struct LogFct{
+   *   float operator()(const float &a) const {
+   *     return log(a);
+   *    }
+   *  };
+   *
+   * @endcode
+   *
+   *
+   * And then you can construct a profile as previously:
+   * @code 
+   *  Profile<LogFct> pLog;
+   *  pLog.init(10);
+   *   ...
+   *  @endcode
+   *
+   * @tparam TValueFunctor the type of the functor applied in the resulting profile (any model of CUnaryFunctor)
+   * @tparam TValue the type value stored in the profile.  
+   * 
    * The proposed implementation is mainly a backport from
    * [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
    * various refactoring.
@@ -162,24 +194,23 @@ namespace DGtal
 
     /**
      * Initializer. Must be called before adding datas. Specifies the
-     * scales of the profile (generally an iterator on a sequence
+     * X values  of the profile (generally an iterator on a sequence
      * (1,2,3,4,...N)).
      *
-     * @param[in] beginScale an iterator pointing on the first scale (some
-     * floating-point convertible value).
-     * @param[in] endScale an iterator pointing after the last scale.
+     * @param[in] beginXvalues an iterator pointing on the first X value.
+     * @param[in] endXvalues an iterator pointing after the last X value.
      * @param[in] storeValsInStats flag to store values in statistics (so that 
      *    the median value is accessible (default false)). 
      */
     template <typename Iterator>
-    void init(  Iterator beginScale,  Iterator endScale, 
+    void init(  Iterator beginXvalues,  Iterator endXvalues, 
                 const bool storeValsInStats=false );
 
 
 
     /**
      * Initializer. Must be called before adding datas. Specifies the
-     * scales of the profile as the sequence (1,2,3,4,...,nb).
+     * X values of the profile as the sequence (1,2,3,4,...,nb).
      *
      * @param[in] nb an integer number strictly positive.
      * @param[in] storeValsInStats flag to store values in statistics (so that 
@@ -189,23 +220,23 @@ namespace DGtal
     
 
     /**
-     * Adds some sample value at the given scale.
+     * Adds some sample value at the given X value.
      *
-     * @param[in] idxScale some valid index (according to init).
+     * @param[in] indexX some valid index (according to init).
      * @param[in] value any value.
      */
-    void addValue( unsigned int idxScale, TValue value );
-
+    void addValue( unsigned int indexX, TValue value );
+    
 
     /**
-     * Adds some statistic at the given scale.
+     * Adds some statistic at the given X value.
      *
-     * @param idxScale some valid index (according to init).
+     * @param indexX some valid index (according to init).
      *
      * @param stat any statistic (which is added to the current
      * statistic object).
      */
-    void addStatistic( unsigned int idxScale, const Statistic<Value> & stat );
+    void addStatistic( unsigned int indexX, const Statistic<Value> & stat );
 
 
 
@@ -236,7 +267,7 @@ namespace DGtal
     
     /**
      * Used to define the method to determine the profile values from
-     * the samples of scale statistics.
+     * the samples of X  statistics.
      * 
      * @param type the method applied to the statistics samples: MEAN, MAX, MIN.
      **/    
@@ -245,7 +276,7 @@ namespace DGtal
 
     
     /**
-     * @param[out] x (modified) adds the x-value of the profile (log(scale))
+     * @param[out] x (modified) adds the x-value of the profile 
      * to the back of the vector.
      *
      * @param[out] y (modified) adds the y-value of the profile
@@ -282,9 +313,9 @@ namespace DGtal
     Functor myFunctor;
     
     /**
-     * The vector containing the different scales for the analysis.
+     * The vector containing the different X samples for the analysis.
      */
-    std::vector<Value>* myScales;
+    std::vector<Value>* myXsamples;
 
     /**
      * The vector containing the different statistics for the analysis.
@@ -292,10 +323,9 @@ namespace DGtal
     std::vector< Statistic<Value> >* myStats;
 
     /**
-     * Used to define the method to compute the scale profile: several choice are possible:
-     * MEAN (default), MAX, MIN (not efficient)
-     */
-    
+     * Used to define the method to compute the profile: several choice are possible:
+     * MEAN (default), MAX, MIN (not efficient) or MEDIAN.
+     */    
     ProfileType myProfileDef;
     
 
