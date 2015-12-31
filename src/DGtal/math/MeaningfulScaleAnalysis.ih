@@ -49,7 +49,7 @@ DGtal::MeaningfulScaleAnalysis<TProfile>::MeaningfulScaleAnalysis(const Profile 
 template<typename TProfile>
 DGtal::MeaningfulScaleAnalysis<TProfile>::~MeaningfulScaleAnalysis()
 {
-};
+}
 
 
 template<typename TProfile>
