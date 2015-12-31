@@ -1464,8 +1464,6 @@ DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   typedef DGtal::CubicalComplex<TKSpace, TCellContainer> CC;
   typedef typename CC::KSpace               KSpace;
   typedef typename CC::Point                Point;
-  typedef typename CC::Cell                 Cell;
-  typedef typename CC::CellMapConstIterator CellMapConstIterator;
   typedef typename CC::ConstIterator        ConstIterator;
   typedef typename KSpace::Integer          Integer;
   for ( ConstIterator it = cc.begin(), itE = cc.end(); it != itE; ++it )
