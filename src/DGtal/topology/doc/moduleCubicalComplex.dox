@@ -80,6 +80,15 @@ You have also methods to remove some cells (CubicalComplex::eraseCell,
 CubicalComplex::eraseCells) and methods to check if a cell belongs to
 the complex (CubicalComplex::belongs).
 
+@note You may use \c std::unordered_map or \c boost::unordered_map
+instead of \c std::map. It is sometimes slightly faster. In this case
+you need to define a hash function for cells. Either you provide one,
+or you just include the file KhalimskyCellHashFunctions.h with:
+
+\code
+#include "DGtal/topology/KhalimskyCellHashFunctions.h"
+\endcode
+
 @section dgtal_ccomplex_sec2  Displaying a 2D cubical complex
 
 2D cubical complex are displayable on a Board (see \ref
