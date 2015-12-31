@@ -39,6 +39,19 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
+
+template<typename TProfile>
+DGtal::MeaningfulScaleAnalysis<TProfile>::MeaningfulScaleAnalysis(const Profile &aProfile): myProfile(aProfile) 
+{  
+}
+
+
+template<typename TProfile>
+DGtal::MeaningfulScaleAnalysis<TProfile>::~MeaningfulScaleAnalysis()
+{
+};
+
+
 template<typename TProfile>
 void 
 DGtal::MeaningfulScaleAnalysis<TProfile>::computeMeaningfulScales ( std::vector< std::pair< unsigned int,
