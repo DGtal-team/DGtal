@@ -78,7 +78,7 @@ namespace DGtal
    * sp.init(10);
    * @endcode 
    * 
-   * Alternatively you can customize the Xi initialisations by using an
+   * Alternatively you can customize the Xi initialisation by using an
    * iterator:
    *
    * @code
@@ -104,7 +104,7 @@ namespace DGtal
    * sp.getProfile(x, y); 
    * @endcode
    *
-   * To obtain a profile given in log space, you have just to define the following basic log functor:
+   * To obtain a profile given in log space, you just have to define the following basic log functor:
    *
    * @code 
    *  struct LogFct{
@@ -216,7 +216,7 @@ namespace DGtal
      * @param[in] storeValsInStats flag to store values in statistics (so that 
      *   the median value is accessible (default false)). 
      */
-    void init( unsigned int nb, bool storeValsInStats=false );
+    void init( const unsigned int nb, const bool storeValsInStats=false );
     
 
     /**
@@ -225,18 +225,17 @@ namespace DGtal
      * @param[in] indexX some valid index (according to init).
      * @param[in] value any value.
      */
-    void addValue( unsigned int indexX, TValue value );
+    void addValue( const unsigned int indexX, const TValue value );
     
 
     /**
      * Adds some statistic at the given X value.
      *
-     * @param indexX some valid index (according to init).
-     *
-     * @param stat any statistic (which is added to the current
+     * @param[in] indexX some valid index (according to init).
+     * @param[in] stat any statistic (which is added to the current
      * statistic object).
      */
-    void addStatistic( unsigned int indexX, const Statistic<Value> & stat );
+    void addStatistic( const unsigned int indexX, const Statistic<Value> & stat );
 
 
 
@@ -269,9 +268,9 @@ namespace DGtal
      * Used to define the method to determine the profile values from
      * the samples of X  statistics.
      * 
-     * @param type the method applied to the statistics samples: MEAN, MAX, MIN.
+     * @param[in] type the method applied to the statistics samples: MEAN, MAX, MIN.
      **/    
-    void setType(ProfileType type);
+    void setType(const ProfileType type);
     
 
     

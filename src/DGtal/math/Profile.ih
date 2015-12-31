@@ -83,7 +83,7 @@ DGtal::Profile<TValueFunctor, TValue>::clear()
 
 template<typename TValueFunctor, typename TValue>
 void 
-DGtal::Profile<TValueFunctor, TValue>::init(unsigned int nb, const bool storeValsInStats )
+DGtal::Profile<TValueFunctor, TValue>::init(const unsigned int nb, const bool storeValsInStats )
 {
   clear();
   myXsamples = new std::vector<TValue>( nb );
@@ -98,7 +98,7 @@ DGtal::Profile<TValueFunctor, TValue>::init(unsigned int nb, const bool storeVal
 
 template<typename TValueFunctor, typename TValue>
 void
-DGtal::Profile<TValueFunctor, TValue>::addValue( unsigned int indexX, TValue value )
+DGtal::Profile<TValueFunctor, TValue>::addValue( const unsigned int indexX, const TValue value )
 {
   ASSERT( isValid() && ( indexX < myXsamples->size() ) );
   (*myStats)[ indexX ].addValue( value );
@@ -107,7 +107,7 @@ DGtal::Profile<TValueFunctor, TValue>::addValue( unsigned int indexX, TValue val
 template<typename TValueFunctor, typename TValue>
 void
 DGtal::Profile<TValueFunctor, TValue>::addStatistic
-( unsigned int indexX, const Statistic<TValue> & stat )
+( const unsigned int indexX, const Statistic<TValue> & stat )
 {
   ASSERT( isValid() && ( indexX < myXsamples->size() ) );
   (*myStats)[ indexX ] += stat;

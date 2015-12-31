@@ -69,9 +69,9 @@ TEST_CASE( "Testing MeaningfulScaleAnalysis" )
       sp.addValue(3,17);
       sp.addValue(4,7);
       sp.addValue(5,2);      
-      std::vector< std::pair<uint, uint> > interval;
+
       MeaningfulScaleAnalysis<Profile<LogFct>> msa(sp);
-      
+      std::vector< std::pair<uint, uint> > interval;      
       msa.computeMeaningfulScales(interval, 1);
       msa.getSlopeFromMeaningfulScales(0,0,2);
       msa.lowerBoundedNoiseLevel(0,10,2,2,2);

@@ -21,6 +21,10 @@
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * 
+ *
  * @date 2015/12/27
  *
  * Header file for module MeaningfulScaleAnalysis.cpp
@@ -51,9 +55,60 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class MeaningfulScaleAnalysis
   /**
-   * Description of class 'MeaningfulScaleAnalysis' <p>
-   * \brief Aim:
+   * Description of class 'MeaningfulScaleAnalysis' <p> \brief Aim:
+   * This class proposes the implementation of different methods used
+   * to define the meaningful scale analysis as proposed in 
+   * \cite kerautret_meaningful_2012 . In particular, it exploits the
+   * Profile class to represent a multi-scale profile and to compute a
+   * meaningful scale. It also permits to get a noise estimation from
+   * the given profile.
+   * 
+   *
+   * A typical use is to exploit from the length of maximal segments
+   * obtained at different scales. We show here a simple example of
+   * use with a single profile:
+   *
+   *
+   * First we start to construct a Profile: 
+   * @code 
+   *   // we need to have the Profile header:
+   *   #include "DGtal/math/Profile.h"
+   *
+   *   // with a log functor to obtain log scale profile:
+   *   struct LogFct{
+   *     float operator()(const float &a) const {
+   *      return log(a);
+   *      }
+   *   };
+   *
+   *   ...
+   *
+   *   Profile<LogFct> sp (Profile<LogFct>::MEAN);
+   *   sp.init(6);
+   * @endcode
+   *
+   * Then, we can add values to the profile:
+   * @code 
+   *   sp.addValue(0,22);
+   *   sp.addValue(1,15);
+   *   sp.addValue(2,8);
+   *   sp.addValue(3,17);
+   *   sp.addValue(4,7);
+   *   sp.addValue(5,2);      
+   *
+   * @endcode
+   * Finally we can construct the MeaningfulScaleAnalysis object and obtain the meaningful scale:
+   * @code 
+   *  MeaningfulScaleAnalysis<Profile<LogFct>> msa(sp);
+   *  std::vector< std::pair<uint, uint> > interval;      
+   *  msa.computeMeaningfulScales(interval, 1);
+   *  uint n = msa.noiseLevel();
+   * @endcode
+   * @see testMeaningfulScaleAnalysis 
+   * @tparam TProfile the type of the profile class.
    */
+
+  
   template<typename TProfile>
   class MeaningfulScaleAnalysis
   {
@@ -65,14 +120,13 @@ namespace DGtal
     /**
      * Constructor
      */
-    MeaningfulScaleAnalysis(const Profile &aProfile): myProfile(aProfile) {
-       
-    }
+    MeaningfulScaleAnalysis(const Profile &aProfile);
+      
 
     /**
      * Destructor.
      */
-    ~MeaningfulScaleAnalysis(){};
+    ~MeaningfulScaleAnalysis();
 
     // ----------------------- Interface --------------------------------------
   public:
