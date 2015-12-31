@@ -30,11 +30,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <map>
-#include <boost/unordered_map.hpp>
-#include <boost/unordered_set.hpp>
+#include <unordered_map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/KhalimskyCellHashFunctions.h"
 #include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/topology/CubicalComplexFunctions.h"
 #include "DGtalCatch.h"
@@ -43,53 +43,53 @@
 using namespace std;
 using namespace DGtal;
 
-namespace boost {
-  template < DGtal::Dimension dim,
-             typename TInteger >
-  struct hash< DGtal::KhalimskyCell<dim, TInteger> >{
-    typedef DGtal::KhalimskyCell<dim, TInteger> Key;
-    typedef Key argument_type;
-    typedef std::size_t result_type;
-    inline hash() {}
-    inline result_type operator()( const argument_type& cell ) const
-    {
-      result_type h = cell.myCoordinates[ 0 ];
-      static const result_type mult[ 8 ] = { 1, 1733, 517237, 935783132, 305, 43791, 12846764, 56238719 };
-      // static const result_type shift[ 8 ] = { 0, 13, 23, 7, 19, 11, 25, 4 };
-      for ( DGtal::Dimension i = 1; i < dim; ++i )
-        h += cell.myCoordinates[ i ] * mult[ i & 0x7 ];
-      // h += cell.myCoordinates[ i ] << shift[ i & 0x7 ];
-      return h;
-    }
-  };
-  template < typename TInteger >
-  struct hash< DGtal::KhalimskyCell<2, TInteger> >{
-    typedef DGtal::KhalimskyCell<3, TInteger> Key;
-    typedef Key argument_type;
-    typedef std::size_t result_type;
-    inline hash() {}
-    inline result_type operator()( const argument_type& cell ) const
-    {
-      result_type h = cell.myCoordinates[ 0 ];
-      h += cell.myCoordinates[ 1 ] * 1733;
-      return h;
-    }
-  };
-  template < typename TInteger >
-  struct hash< DGtal::KhalimskyCell<3, TInteger> >{
-    typedef DGtal::KhalimskyCell<3, TInteger> Key;
-    typedef Key argument_type;
-    typedef std::size_t result_type;
-    inline hash() {}
-    inline result_type operator()( const argument_type& cell ) const
-    {
-      result_type h = cell.myCoordinates[ 0 ];
-      h += cell.myCoordinates[ 1 ] * 1733;
-      h += cell.myCoordinates[ 2 ] * 517237;
-      return h;
-    }
-  };
-}
+// namespace boost {
+//   template < DGtal::Dimension dim,
+//              typename TInteger >
+//   struct hash< DGtal::KhalimskyCell<dim, TInteger> >{
+//     typedef DGtal::KhalimskyCell<dim, TInteger> Key;
+//     typedef Key argument_type;
+//     typedef std::size_t result_type;
+//     inline hash() {}
+//     inline result_type operator()( const argument_type& cell ) const
+//     {
+//       result_type h = cell.myCoordinates[ 0 ];
+//       static const result_type mult[ 8 ] = { 1, 1733, 517237, 935783132, 305, 43791, 12846764, 56238719 };
+//       // static const result_type shift[ 8 ] = { 0, 13, 23, 7, 19, 11, 25, 4 };
+//       for ( DGtal::Dimension i = 1; i < dim; ++i )
+//         h += cell.myCoordinates[ i ] * mult[ i & 0x7 ];
+//       // h += cell.myCoordinates[ i ] << shift[ i & 0x7 ];
+//       return h;
+//     }
+//   };
+//   template < typename TInteger >
+//   struct hash< DGtal::KhalimskyCell<2, TInteger> >{
+//     typedef DGtal::KhalimskyCell<3, TInteger> Key;
+//     typedef Key argument_type;
+//     typedef std::size_t result_type;
+//     inline hash() {}
+//     inline result_type operator()( const argument_type& cell ) const
+//     {
+//       result_type h = cell.myCoordinates[ 0 ];
+//       h += cell.myCoordinates[ 1 ] * 1733;
+//       return h;
+//     }
+//   };
+//   template < typename TInteger >
+//   struct hash< DGtal::KhalimskyCell<3, TInteger> >{
+//     typedef DGtal::KhalimskyCell<3, TInteger> Key;
+//     typedef Key argument_type;
+//     typedef std::size_t result_type;
+//     inline hash() {}
+//     inline result_type operator()( const argument_type& cell ) const
+//     {
+//       result_type h = cell.myCoordinates[ 0 ];
+//       h += cell.myCoordinates[ 1 ] * 1733;
+//       h += cell.myCoordinates[ 2 ] * 517237;
+//       return h;
+//     }
+//   };
+// }
 
 
 
@@ -99,14 +99,14 @@ namespace boost {
 
 static const int NBCELLS = 1000;
 
-SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > unit tests (incidence,...)", "[cubical_complex][incidence]" )
+SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)", "[cubical_complex][incidence]" )
 {
-  typedef KhalimskySpaceND<3>               KSpace;
-  typedef KSpace::Point            Point;
-  typedef KSpace::Cell             Cell;
-  typedef boost::unordered_map<Cell, CubicalCellData>   Map;
-  typedef CubicalComplex< KSpace, Map >     CC;
-  typedef CC::CellMapConstIterator CellMapConstIterator;
+  typedef KhalimskySpaceND<3>                       KSpace;
+  typedef KSpace::Point                             Point;
+  typedef KSpace::Cell                              Cell;
+  typedef std::unordered_map<Cell, CubicalCellData> Map;
+  typedef CubicalComplex< KSpace, Map >             CC;
+  typedef CC::CellMapConstIterator                  CellMapConstIterator;
 
   srand( 0 );
   KSpace K;
@@ -242,15 +242,15 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > unit tests (incidence,...
   }
 }
 
-SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > collapse tests", "[cubical_complex][collapse]" )
+SCENARIO( "CubicalComplex< K3,std::unordered_map<> > collapse tests", "[cubical_complex][collapse]" )
 {
-  typedef KhalimskySpaceND<3>               KSpace;
-  typedef KSpace::Point            Point;
-  typedef KSpace::Cell             Cell;
-  typedef KSpace::Integer          Integer;
-  typedef boost::unordered_map<Cell, CubicalCellData>   Map;
-  typedef CubicalComplex< KSpace, Map >     CC;
-  typedef CC::CellMapIterator      CellMapIterator;
+  typedef KhalimskySpaceND<3>                       KSpace;
+  typedef KSpace::Point                             Point;
+  typedef KSpace::Cell                              Cell;
+  typedef KSpace::Integer                           Integer;
+  typedef std::unordered_map<Cell, CubicalCellData> Map;
+  typedef CubicalComplex< KSpace, Map >             CC;
+  typedef CC::CellMapIterator                       CellMapIterator;
 
   srand( 0 );
   KSpace K;
@@ -303,15 +303,15 @@ SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > collapse tests", "[cubica
   }
 }
 
-SCENARIO( "CubicalComplex< K3,boost::unordered_map<> > link tests", "[cubical_complex][link]" )
+SCENARIO( "CubicalComplex< K3,std::unordered_map<> > link tests", "[cubical_complex][link]" )
 {
-  typedef KhalimskySpaceND<3>               KSpace;
-  typedef KSpace::Point            Point;
-  typedef KSpace::Cell             Cell;
-  typedef KSpace::Integer          Integer;
-  typedef boost::unordered_map<Cell, CubicalCellData>   Map;
-  typedef CubicalComplex< KSpace, Map >     CC;
-  typedef CC::CellMapConstIterator CellMapConstIterator;
+  typedef KhalimskySpaceND<3>                       KSpace;
+  typedef KSpace::Point                             Point;
+  typedef KSpace::Cell                              Cell;
+  typedef KSpace::Integer                           Integer;
+  typedef std::unordered_map<Cell, CubicalCellData> Map;
+  typedef CubicalComplex< KSpace, Map >             CC;
+  typedef CC::CellMapIterator                       CellMapIterator;
 
   srand( 0 );
   KSpace K;
