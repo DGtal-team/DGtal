@@ -49,18 +49,10 @@
 #include <boost/type_traits.hpp>
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
-#ifdef CPP11_UNORDERED_SET
 #include <unordered_set>
-#endif
-#ifdef CPP11_UNORDERED_MAP
 #include <unordered_map>
-#endif
-#ifdef CPP11_FORWARD_LIST
 #include <forward_list>
-#endif
-#ifdef CPP11_ARRAY
 #include <array>
-#endif
 
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -116,23 +108,19 @@ namespace DGtal
     typedef SequenceCategory Category;
   };
   
-#ifdef CPP11_FORWARD_LIST
   /// Defines container traits for std::forward_list<>.
   template < class T, class Alloc >
   struct ContainerTraits< std::forward_list<T, Alloc> >
   {
     typedef SequenceCategory Category;
   };
-#endif
 
-#ifdef CPP11_ARRAY
   /// Defines container traits for std::array<>.
   template < class T, size_t N >
   struct ContainerTraits< std::array<T, N> >
   {
     typedef SequenceCategory Category;
   };
-#endif
 
   /// Defines container traits for std::set<>.
   template < class T, class Compare, class Alloc >
@@ -190,7 +178,6 @@ namespace DGtal
     typedef UnorderedMultimapAssociativeCategory Category;
   };
 
-#ifdef CPP11_UNORDERED_SET
   /// Defines container traits for std::unordered_set<>.
   template < class Key, class Hash, class Pred, class Alloc >
   struct ContainerTraits< std::unordered_set<Key, Hash, Pred, Alloc> >
@@ -204,8 +191,7 @@ namespace DGtal
   {
     typedef UnorderedMultisetAssociativeCategory Category;
   };
-#endif
-#ifdef CPP11_UNORDERED_MAP
+
   /// Defines container traits for std::unordered_map<>.
   template < class Key, class T, class Hash, class Pred, class Alloc >
   struct ContainerTraits< std::unordered_map<Key, T, Hash, Pred, Alloc> >
@@ -219,7 +205,6 @@ namespace DGtal
   {
     typedef UnorderedMultimapAssociativeCategory Category;
   };
-#endif
 
   namespace detail
   {

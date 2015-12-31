@@ -36,19 +36,10 @@
 #include <map>
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
-
-#ifdef CPP11_FORWARD_LIST
 #include <forward_list>
-#endif
-#ifdef CPP11_ARRAY
 #include <array>
-#endif
-#ifdef CPP11_UNORDERED_SET
 #include <unordered_set>
-#endif
-#ifdef CPP11_UNORDERED_MAP
 #include <unordered_map>
-#endif
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ContainerTraits.h"
@@ -127,7 +118,6 @@ TEST_CASE( "std::deque<> container traits", "[deque][traits]" )
     }
 }
 
-#ifdef CPP11_FORWARD_LIST
 TEST_CASE( "std::forward_list<> container traits", "[forward_list][traits]" )
 {
   typedef std::forward_list<int> Container;
@@ -144,12 +134,10 @@ TEST_CASE( "std::forward_list<> container traits", "[forward_list][traits]" )
       REQUIRE( (IsMultipleAssociativeContainer< Container >::value == false) );
     }
 }
-#endif
 
-#ifdef CPP1_ARRAY
 TEST_CASE( "std::array<> container traits", "[array][traits]" )
 {
-  typedef std::array<int> Container;
+  typedef std::array<int, 10> Container;
   SECTION( "Checking container traits" )
     {
       REQUIRE( (IsContainer< Container >::value == true) );
@@ -163,7 +151,6 @@ TEST_CASE( "std::array<> container traits", "[array][traits]" )
       REQUIRE( (IsMultipleAssociativeContainer< Container >::value == false) );
     }
 }
-#endif
 
 TEST_CASE( "std::set<> container traits", "[set][traits]" )
 {
@@ -301,7 +288,6 @@ TEST_CASE( "boost::unordered_multimap<> container traits", "[unordered_multimap]
     }
 }
 
-#ifdef CPP11_UNORDERED_SET
 TEST_CASE( "std::unordered_set<> container traits", "[unordered_set][traits]" )
 {
   typedef std::unordered_set<int> Container;
@@ -334,9 +320,7 @@ TEST_CASE( "std::unordered_multiset<> container traits", "[unordered_multiset][t
       REQUIRE( (IsMultipleAssociativeContainer< Container >::value == true) );
     }
 }
-#endif
 
-#ifdef CPP11_UNORDERED_MAP
 TEST_CASE( "std::unordered_map<> container traits", "[unordered_map][traits]" )
 {
   typedef std::unordered_map<int,int> Container;
@@ -353,6 +337,7 @@ TEST_CASE( "std::unordered_map<> container traits", "[unordered_map][traits]" )
       REQUIRE( (IsMultipleAssociativeContainer< Container >::value == false) );
     }
 }
+
 TEST_CASE( "std::unordered_multimap<> container traits", "[unordered_multimap][traits]" )
 {
   typedef std::unordered_multimap<int,int> Container;
@@ -369,6 +354,5 @@ TEST_CASE( "std::unordered_multimap<> container traits", "[unordered_multimap][t
       REQUIRE( (IsMultipleAssociativeContainer< Container >::value == true) );
     }
 }
-#endif
 
 /** @ingroup Tests **/

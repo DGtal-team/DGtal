@@ -31,12 +31,8 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#ifdef WITH_C11
 #include <random>
-#else
-#include <cstdlib>
-#endif
-#include <boost/unordered_set.hpp>
+#include <unordered_set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/SetFunctions.h"
 #include "DGtalCatch.h"
@@ -52,7 +48,7 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
                       std::vector<int>,
                       std::list<int>, 
                       std::set<int>, 
-                      boost::unordered_set<int> )
+                      std::unordered_set<int> )
 
 {
   int S1[ 10 ] = { 4, 15, 20, 17, 9, 7, 13, 12, 1, 3 }; 
@@ -119,11 +115,7 @@ static const int NB = 10000;
 
 int randomNB( int n )
 {
-#ifdef WITH_C11
   return random() % n;
-#else
-  return rand() % n;
-#endif
 }
 
 ////////////////////////////// operator | //////////////////////////////
@@ -156,7 +148,7 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator | (sequences)", "[set_fun
 TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator | (sets)", "[set_functions]",
                       Container, 
                       std::set<int>, 
-                      boost::unordered_set<int> )
+                      std::unordered_set<int> )
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
@@ -207,7 +199,7 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator & (sequences)", "[set_fun
 TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator & (sets)", "[set_functions]",
                       Container, 
                       std::set<int>, 
-                      boost::unordered_set<int> )
+                      std::unordered_set<int> )
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
@@ -259,7 +251,7 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator - (sequences)", "[set_fun
 TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator - (sets)", "[set_functions]",
                       Container, 
                       std::set<int>, 
-                      boost::unordered_set<int> )
+                      std::unordered_set<int> )
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
@@ -311,7 +303,7 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator ^ (sequences)", "[set_fun
 TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator ^ (sets)", "[set_functions]",
                       Container, 
                       std::set<int>, 
-                      boost::unordered_set<int> )
+                      std::unordered_set<int> )
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
