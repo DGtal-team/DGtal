@@ -45,6 +45,7 @@ addons:
     - deadsnakes
     - ubuntu-toolchain-r-test
     - kalakris-cmake
+    - george-edison55-precise-backports
    packages:
     - cmake
     - libhdf5-serial-dev
