@@ -49,8 +49,6 @@ collapse( TCubicalComplex& K,
 {
   using namespace std;
   typedef TCubicalComplex                           CC;
-  typedef typename CC::Space                        Space;
-  typedef typename CC::CellContainer                CellContainer;
   typedef typename CC::Cell                         Cell;
   typedef typename CC::CellType                     CellType;
   typedef typename CC::CellMapIterator              CellMapIterator;

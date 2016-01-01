@@ -91,23 +91,20 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
   // std::cout << "C1 | C2 - C1 & C2  = ";
   // for ( auto e : C1_union_C2 - C1_intersection_C2 ) std::cout << e << ' ';
   // std::cout << std::endl;
-  REQUIRE( (DGtal::functions::setops::operator==( C1_symdiff_C2, 
-                                                  C1_union_C2 - C1_intersection_C2 )) );
-  REQUIRE( (DGtal::functions::setops::operator==( C1_symdiff_C2, 
-                                                  C1_minus_C2 | C2_minus_C1 )) );
-  REQUIRE( (DGtal::functions::setops::operator==( C1_minus_C2 | C1_intersection_C2 | C2_minus_C1,
-                                                  C1_union_C2 )) );
-  REQUIRE(   (DGtal::functions::setops::operator<=( C1_minus_C2,  C1 ) ) );
-  REQUIRE( ! (DGtal::functions::setops::operator<=( C1_minus_C2, C2 ) ) );
-  REQUIRE(   (DGtal::functions::setops::operator<=( C2_minus_C1, C2 )) );
-  REQUIRE( ! (DGtal::functions::setops::operator<=( C2_minus_C1, C1 )) );
-  REQUIRE(   (DGtal::functions::setops::operator<=( C1, C1_union_C2 )) );
-  REQUIRE(   (DGtal::functions::setops::operator<=( C2, C1_union_C2 )) );
-  REQUIRE(   (DGtal::functions::setops::operator<=( C1_intersection_C2, C1 )) );
-  REQUIRE(   (DGtal::functions::setops::operator<=( C1_intersection_C2, C2 )) );
-  REQUIRE(   (DGtal::functions::setops::operator<=( C1_symdiff_C2, C1_union_C2 )) );
-  REQUIRE( ! (DGtal::functions::setops::operator<=( C1, C1_symdiff_C2 )) );
-  REQUIRE( ! (DGtal::functions::setops::operator<=( C2, C1_symdiff_C2 )) );
+  REQUIRE( isEqual( C1_symdiff_C2, C1_union_C2 - C1_intersection_C2 ) );
+  REQUIRE( isEqual( C1_symdiff_C2, C1_minus_C2 | C2_minus_C1 ) );
+  REQUIRE( isEqual( C1_minus_C2 | C1_intersection_C2 | C2_minus_C1, C1_union_C2 ) );
+  REQUIRE(   isSubset( C1_minus_C2, C1 ) );
+  REQUIRE( ! isSubset( C1_minus_C2, C2 ) );
+  REQUIRE(   isSubset( C2_minus_C1, C2 ) );
+  REQUIRE( ! isSubset( C2_minus_C1, C1 ) );
+  REQUIRE(   isSubset( C1, C1_union_C2 ) );
+  REQUIRE(   isSubset( C2, C1_union_C2 ) );
+  REQUIRE(   isSubset( C1_intersection_C2, C1 ) );
+  REQUIRE(   isSubset( C1_intersection_C2, C2 ) );
+  REQUIRE(   isSubset( C1_symdiff_C2, C1_union_C2 ) );
+  REQUIRE( ! isSubset( C1, C1_symdiff_C2 ) );
+  REQUIRE( ! isSubset( C2, C1_symdiff_C2 ) );
 }
 
 
