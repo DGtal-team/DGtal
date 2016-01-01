@@ -311,7 +311,6 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > link tests", "[cubical_comp
   typedef KSpace::Integer                           Integer;
   typedef std::unordered_map<Cell, CubicalCellData> Map;
   typedef CubicalComplex< KSpace, Map >             CC;
-  typedef CC::CellMapIterator                       CellMapIterator;
 
   srand( 0 );
   KSpace K;
@@ -571,7 +570,6 @@ SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex][link]
   typedef KSpace::Integer          Integer;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef CC::CellMapConstIterator CellMapConstIterator;
 
   srand( 0 );
   KSpace K;
@@ -615,12 +613,9 @@ SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex][link]
 SCENARIO( "CubicalComplex< K3,std::map<> > concept check tests", "[cubical_complex][concepts]" )
 {
   typedef KhalimskySpaceND<3>               KSpace;
-  typedef KSpace::Point            Point;
-  typedef KSpace::Cell             Cell;
-  typedef KSpace::Integer          Integer;
+  typedef KSpace::Cell                      Cell;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef CC::CellMapConstIterator CellMapConstIterator;
 
   BOOST_CONCEPT_ASSERT(( boost::Container<CC> ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<CC::Iterator> ));
@@ -631,14 +626,12 @@ SCENARIO( "CubicalComplex< K3,std::map<> > concept check tests", "[cubical_compl
 SCENARIO( "CubicalComplex< K2,std::map<> > set operations and relations", "[cubical_complex][ccops]" )
 {
   typedef KhalimskySpaceND<2>               KSpace;
-  typedef KSpace::Space            Space;
+  typedef KSpace::Space                     Space;
   typedef HyperRectDomain<Space>            Domain;
-  typedef KSpace::Point            Point;
-  typedef KSpace::Cell             Cell;
-  typedef KSpace::Integer          Integer;
+  typedef KSpace::Point                     Point;
+  typedef KSpace::Cell                      Cell;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-  typedef CC::CellMapConstIterator CellMapConstIterator;
 
   using namespace DGtal::functions::ccops;
 

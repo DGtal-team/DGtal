@@ -237,7 +237,7 @@ namespace DGtal
         typedef CubicalComplex< TKSpace, TCellContainer > CC;
         ASSERT( &(S1.space()) == &(S2.space()) );
         for ( Dimension i = 0; i <= CC::dimension; ++i )
-          if ( setops::operator!=( S1.myCells[ i ], S2.myCells[ i ] ) )
+          if ( ! isEqual( S1.myCells[ i ], S2.myCells[ i ] ) )
             return false;
         return true;
       }
@@ -261,7 +261,7 @@ namespace DGtal
         typedef CubicalComplex< TKSpace, TCellContainer > CC;
         ASSERT( &(S1.space()) == &(S2.space()) );
         for ( Dimension i = 0; i <= CC::dimension; ++i )
-          if ( setops::operator!=( S1.myCells[ i ], S2.myCells[ i ] ) )
+          if ( ! isEqual( S1.myCells[ i ], S2.myCells[ i ] ) )
             return true;
         return false;
       }
@@ -282,7 +282,7 @@ namespace DGtal
         typedef CubicalComplex< TKSpace, TCellContainer > CC;
         ASSERT( &(S1.space()) == &(S2.space()) );
         for ( Dimension i = 0; i <= CC::dimension; ++i )
-          if ( ! setops::operator<=( S1.myCells[ i ], S2.myCells[ i ] ) )
+          if ( ! isSubset( S1.myCells[ i ], S2.myCells[ i ] ) )
             return false;
         return true;
       }
@@ -302,7 +302,7 @@ namespace DGtal
         typedef CubicalComplex< TKSpace, TCellContainer > CC;
         ASSERT( &(S1.space()) == &(S2.space()) );
         for ( Dimension i = 0; i <= CC::dimension; ++i )
-          if ( ! setops::operator<=( S2.myCells[ i ], S1.myCells[ i ] ) )
+          if ( ! isSubset( S2.myCells[ i ], S1.myCells[ i ] ) )
             return false;
         return true;
       }
