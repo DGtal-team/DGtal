@@ -68,6 +68,11 @@
  - Adding raw I/O capabilities for non integral types and signed integers.
    (Roland Denis [#1084](https://github.com/DGtal-team/DGtal/pull/1084))
 
+- *Shapes Package*
+ - New methods to remove faces from a Mesh  or to obtain the barycenter of a
+   face.
+   (Bertrand Kerautret [#1091](https://github.com/DGtal-team/DGtal/pull/1091))
+
 ## Bug Fixes
 
 - *Configuration/General*

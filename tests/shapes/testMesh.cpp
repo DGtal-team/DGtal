@@ -133,9 +133,9 @@ bool testMesh()
        it++){
     nb++;
   }
-  okMeshIterators =  okMeshIterators && ((nb == aMesh.nbFaces()) &&  ((aMesh.getVertex(5))[0]==13));
-  if ((nb == aMesh.nbFaces()) &&  (aMesh.getVertex(5))[0]==13)
-    trace.info() << "getVertex test ok"<<std::endl;
+  okMeshIterators =  okMeshIterators && ((nb == aMesh.nbFaces()) &&  ((aMesh.getVertex(5))[0]==13)) && aMesh.getFaceBarycenter(0)==Mesh<Point>::RealPoint(31.0/3.0,6.0);
+  if ((nb == aMesh.nbFaces()) &&  (aMesh.getVertex(5))[0]==13 && aMesh.getFaceBarycenter(0)==Mesh<Point>::RealPoint(31.0/3.0,6.0))
+    trace.info() << "getVertex and getFaceCenter tests ok"<<std::endl;
   
   // testing changing color of individual face:
   aMesh.setFaceColor(1, DGtal::Color::Red);
@@ -189,8 +189,16 @@ bool testMesh()
                     aMesh.nbFaces() == aMesh3.nbFaces() && aMesh.nbVertex() == aMesh3.nbVertex() &&
                     aMesh.getVertex(0) == aMesh2.getVertex(0) && aMesh.getVertex(0) == aMesh3.getVertex(0);
   trace.endBlock();
-  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK && 
-       okSubDivide && okQuadToTrans;   
+
+  trace.beginBlock ( "Testing face removing  ..." );
+  Mesh<Point> aMesh4 = aMesh;
+  std::vector<unsigned int> f = {1};
+  aMesh4.removeFaces(f);
+  bool okRemoveFace = (aMesh4.nbFaces() == aMesh.nbFaces()-1) && (aMesh4.nbVertex() == aMesh.nbVertex()-3);
+  
+  
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK &&
+       okSubDivide && okQuadToTrans && okRemoveFace;
   trace.endBlock();
   return ok;
 
