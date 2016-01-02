@@ -58,7 +58,8 @@ namespace DGtal
 
   /**
   * Any cell is stored within a cubical complex with an associated
-  * data, which must derive from this class. Its basic usage is to
+  * data. You may define your own associated data but the type must
+  * derive from this class CubicalCellData. Its basic usage is to
   * store flags associated to the cells, but it may store other
   * values.
   *
@@ -76,7 +77,8 @@ namespace DGtal
     CubicalCellData( uint32_t d ) : data( d ) {}
     uint32_t data;
   };
-  
+
+  // Forward definitions.
   template < typename TKSpace, typename TCellContainer >
   class CubicalComplex;
   
