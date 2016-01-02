@@ -218,11 +218,11 @@ space to be valid. You could thus use operations defined in
 DGtal::functions::setops (see \ref moduleSetFunctions) to perform set
 operations and relations on complexes. However, to use the specificity
 of the templated parameter CellContainer of CubicalComplex, it is
-better to use operations and relations defined in
-DGtal::function::ccops, for instance as follows:
+better to use operations and relations defined in namespace
+DGtal::function, for instance as follows:
 
 \code
-using namespace DGtal::functions::ccops;
+using namespace DGtal::functions;
 CC X( K );            // creates the cubical complex
 CC Xc  = ~X;          // closing of X
 CC Xco = *Xc;         // opening of Xc (interior of X).
@@ -231,22 +231,22 @@ CC Xbd2= X.boundary();// same result for pure complex.
 \endcode
 
 You have the following operations:
-- functions::ccops::operator|  : union of two complexes.
-- functions::ccops::operator|= : assignment union with another complex.
-- functions::ccops::operator&  : intersection of two complexes.
-- functions::ccops::operator&= : assignment intersection with another complex.
-- functions::ccops::operator-  : set difference of two complexes.
-- functions::ccops::operator-= : assignment set difference with another complex.
-- functions::ccops::operator^  : symmetric set difference of two complexes.
-- functions::ccops::operator^= : assignment symmetric set difference with another complex.
-- functions::ccops::operator~  : closing of a complex (smallest closed complex containg input complex).
-- functions::ccops::operator*  : opening of a complex (greatest open complex contained in input complex).
+- functions::operator|  : union of two complexes.
+- functions::operator|= : assignment union with another complex.
+- functions::operator&  : intersection of two complexes.
+- functions::operator&= : assignment intersection with another complex.
+- functions::operator-  : set difference of two complexes.
+- functions::operator-= : assignment set difference with another complex.
+- functions::operator^  : symmetric set difference of two complexes.
+- functions::operator^= : assignment symmetric set difference with another complex.
+- functions::operator~  : closing of a complex (smallest closed complex containg input complex).
+- functions::operator*  : opening of a complex (greatest open complex contained in input complex).
 
 And the following relations:
-- functions::ccops::operator<=  : inclusion of two complexes (subset).
-- functions::ccops::operator>=  : inclusion of two complexes (supset).
-- functions::ccops::operator==  : equality of two complexes (both subset and supset).
-- functions::ccops::operator!=  : non-equality of two complexes (equal is false).
+- functions::operator<=  : inclusion of two complexes (subset).
+- functions::operator>=  : inclusion of two complexes (supset).
+- functions::operator==  : equality of two complexes (both subset and supset).
+- functions::operator!=  : non-equality of two complexes (equal is false).
 
 All these operations are at most \b linear in the sum of the number of
 cells of input complexes, but they are generally exponential in the
