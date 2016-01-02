@@ -50,6 +50,7 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ContainerTraits.h"
+#include "DGtal/base/CSTLAssociativeContainer.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -172,7 +173,7 @@ namespace DGtal
   *
   */
   template < typename TKSpace, 
-             typename TCellContainer = std::map< typename TKSpace::Cell, CubicalCellData > >
+             typename TCellContainer = typename TKSpace::template CellMap< CubicalCellData >::Type >
   class CubicalComplex
   {
     // ----------------------- associated types ------------------------------
@@ -186,6 +187,7 @@ namespace DGtal
     // these concept checks.
     // BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< TCellContainer > ));
     // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TCellContainer > ));
 
     friend Self& DGtal::functions::operator|=<>( Self&, const Self& );
     friend Self& DGtal::functions::operator&=<>( Self&, const Self& );
@@ -202,9 +204,9 @@ namespace DGtal
     friend bool  DGtal::functions::operator<=<>( const Self&, const Self& );
     friend bool  DGtal::functions::operator>=<>( const Self&, const Self& );
 
-    typedef TKSpace KSpace;
-    typedef TCellContainer CellContainer;
-    typedef typename CellContainer::mapped_type Data;
+    typedef TKSpace                             KSpace;        ///< Type of the cellular grid space.
+    typedef TCellContainer                      CellContainer; ///< Type for storing cells, an associative container Cell -> Data 
+    typedef typename CellContainer::mapped_type Data;          ///< Type of data associated to each cell.
 
     BOOST_STATIC_ASSERT (( boost::is_base_of< CubicalCellData, Data >::value ));
     BOOST_STATIC_ASSERT (( boost::is_same< typename TKSpace::Cell, typename CellContainer::key_type >::value ));
@@ -212,16 +214,16 @@ namespace DGtal
 
     /// The dimension of the embedding space.
     static const Dimension dimension = KSpace::dimension;
-    typedef typename KSpace::Integer     Integer;
-    typedef typename KSpace::Cell        Cell;
-    typedef typename KSpace::Cells       Cells;
-    typedef typename KSpace::Space       Space;
-    typedef typename KSpace::Size        Size;
-    typedef typename KSpace::Point       Point;
-    typedef typename KSpace::DirIterator DirIterator;
-    typedef CellContainer                CellMap;
-    typedef typename CellMap::const_iterator CellMapConstIterator;
-    typedef typename CellMap::iterator   CellMapIterator;
+    typedef typename KSpace::Integer     Integer;     ///< Type for integers in the space.
+    typedef typename KSpace::Cell        Cell;        ///< Type for a cell in the space.
+    typedef typename KSpace::Cells       Cells;       ///< Type for a sequence of cells in the space.
+    typedef typename KSpace::Space       Space;       ///< Type of the digital space
+    typedef typename KSpace::Size        Size;        ///< Type for a number of elements
+    typedef typename KSpace::Point       Point;       ///< Type for a point in the digital space
+    typedef typename KSpace::DirIterator DirIterator; ///< Type for iterating over cell directions
+    typedef CellContainer                CellMap;     ///< Type for storing cells, an associative container Cell -> Data 
+    typedef typename CellMap::const_iterator CellMapConstIterator; ///< Const iterator for visiting type CellMap
+    typedef typename CellMap::iterator   CellMapIterator;          ///< Iterator for visiting type CellMap
 
 
     /// Possible cell types within a complex. 
@@ -232,15 +234,15 @@ namespace DGtal
     };
 
     /// Flag Used to indicate in a cell data that this cell has been (virtually) removed.
-    static const uint32_t REMOVED     = 0x10000000;
+    BOOST_STATIC_CONSTANT( uint32_t, REMOVED     = 0x10000000 );
     /// Flag Used to indicate in a cell data that this cell is collapsible.
-    static const uint32_t COLLAPSIBLE = 0x20000000;
+    BOOST_STATIC_CONSTANT( uint32_t, COLLAPSIBLE = 0x20000000 );
     /// Flag Used to indicate in a cell data that this cell is fixed.
-    static const uint32_t FIXED       = 0x40000000;
+    BOOST_STATIC_CONSTANT( uint32_t, FIXED       = 0x40000000 );
     /// User flag for a cell.
-    static const uint32_t USER1       = 0x80000000;
+    BOOST_STATIC_CONSTANT( uint32_t, USER1       = 0x80000000 );
     /// Value for a cell.
-    static const uint32_t VALUE       = 0x0fffffff;
+    BOOST_STATIC_CONSTANT( uint32_t, VALUE       = 0x0fffffff );
 
     // ----------------------- inner types ------------------------------------
 

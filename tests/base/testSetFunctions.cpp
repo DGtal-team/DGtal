@@ -82,15 +82,6 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
   REQUIRE( C1_symdiff_C2.size() == ( C1_union_C2 - C1_intersection_C2 ).size() );
   REQUIRE( C1_symdiff_C2.size() == ( C1_minus_C2 | C2_minus_C1 ).size() );
 
-  // JOL: catch relation operator overloading interacts too much with
-  //      our own set operator overloading. We call the exact
-  //      operations.
-  // std::cout << "C1 D C2 = ";
-  // for ( auto e : C1_symdiff_C2 ) std::cout << e << ' ';
-  // std::cout << std::endl;
-  // std::cout << "C1 | C2 - C1 & C2  = ";
-  // for ( auto e : C1_union_C2 - C1_intersection_C2 ) std::cout << e << ' ';
-  // std::cout << std::endl;
   REQUIRE( isEqual( C1_symdiff_C2, C1_union_C2 - C1_intersection_C2 ) );
   REQUIRE( isEqual( C1_symdiff_C2, C1_minus_C2 | C2_minus_C1 ) );
   REQUIRE( isEqual( C1_minus_C2 | C1_intersection_C2 | C2_minus_C1, C1_union_C2 ) );
