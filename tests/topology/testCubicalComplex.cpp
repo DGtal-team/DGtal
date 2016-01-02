@@ -43,55 +43,6 @@
 using namespace std;
 using namespace DGtal;
 
-// namespace boost {
-//   template < DGtal::Dimension dim,
-//              typename TInteger >
-//   struct hash< DGtal::KhalimskyCell<dim, TInteger> >{
-//     typedef DGtal::KhalimskyCell<dim, TInteger> Key;
-//     typedef Key argument_type;
-//     typedef std::size_t result_type;
-//     inline hash() {}
-//     inline result_type operator()( const argument_type& cell ) const
-//     {
-//       result_type h = cell.myCoordinates[ 0 ];
-//       static const result_type mult[ 8 ] = { 1, 1733, 517237, 935783132, 305, 43791, 12846764, 56238719 };
-//       // static const result_type shift[ 8 ] = { 0, 13, 23, 7, 19, 11, 25, 4 };
-//       for ( DGtal::Dimension i = 1; i < dim; ++i )
-//         h += cell.myCoordinates[ i ] * mult[ i & 0x7 ];
-//       // h += cell.myCoordinates[ i ] << shift[ i & 0x7 ];
-//       return h;
-//     }
-//   };
-//   template < typename TInteger >
-//   struct hash< DGtal::KhalimskyCell<2, TInteger> >{
-//     typedef DGtal::KhalimskyCell<3, TInteger> Key;
-//     typedef Key argument_type;
-//     typedef std::size_t result_type;
-//     inline hash() {}
-//     inline result_type operator()( const argument_type& cell ) const
-//     {
-//       result_type h = cell.myCoordinates[ 0 ];
-//       h += cell.myCoordinates[ 1 ] * 1733;
-//       return h;
-//     }
-//   };
-//   template < typename TInteger >
-//   struct hash< DGtal::KhalimskyCell<3, TInteger> >{
-//     typedef DGtal::KhalimskyCell<3, TInteger> Key;
-//     typedef Key argument_type;
-//     typedef std::size_t result_type;
-//     inline hash() {}
-//     inline result_type operator()( const argument_type& cell ) const
-//     {
-//       result_type h = cell.myCoordinates[ 0 ];
-//       h += cell.myCoordinates[ 1 ] * 1733;
-//       h += cell.myCoordinates[ 2 ] * 517237;
-//       return h;
-//     }
-//   };
-// }
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class CubicalComplex.
@@ -284,7 +235,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > collapse tests", "[cubical_
       it1->second.data |= CC::FIXED;
       it2->second.data |= CC::FIXED;
       CC::DefaultCellMapIteratorPriority P;
-      functions::ccops::collapse( complex, S.begin(), S.end(), P, false, true );
+      functions::collapse( complex, S.begin(), S.end(), P, false, true );
       CAPTURE( complex.nbCells( 0 ) );
       CAPTURE( complex.nbCells( 1 ) );
       CAPTURE( complex.nbCells( 2 ) );
@@ -543,7 +494,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > collapse tests", "[cubical_complex][c
       it1->second.data |= CC::FIXED;
       it2->second.data |= CC::FIXED;
       CC::DefaultCellMapIteratorPriority P;
-      functions::ccops::collapse( complex, S.begin(), S.end(), P, false, true );
+      functions::collapse( complex, S.begin(), S.end(), P, false, true );
       CAPTURE( complex.nbCells( 0 ) );
       CAPTURE( complex.nbCells( 1 ) );
       CAPTURE( complex.nbCells( 2 ) );
@@ -633,7 +584,7 @@ SCENARIO( "CubicalComplex< K2,std::map<> > set operations and relations", "[cubi
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
 
-  using namespace DGtal::functions::ccops;
+  using namespace DGtal::functions;
 
   KSpace K;
   K.init( Point( 0,0 ), Point( 5,3 ), true );

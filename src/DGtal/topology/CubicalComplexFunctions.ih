@@ -36,19 +36,19 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template <typename TCubicalComplex,
+template <typename TKSpace, typename TCellContainer,
           typename CellConstIterator, 
           typename CellMapIteratorPriority >
 DGtal::uint64_t
-DGtal::functions::ccops::
-collapse( TCubicalComplex& K, 
+DGtal::functions::
+collapse( CubicalComplex< TKSpace, TCellContainer > & K, 
           CellConstIterator S_itB, CellConstIterator S_itE, 
           const CellMapIteratorPriority& priority, 
           bool hintIsSClosed, bool hintIsKClosed,
           bool verbose )
 {
   using namespace std;
-  typedef TCubicalComplex                           CC;
+  typedef CubicalComplex< TKSpace, TCellContainer > CC;
   typedef typename CC::Cell                         Cell;
   typedef typename CC::CellType                     CellType;
   typedef typename CC::CellMapIterator              CellMapIterator;
@@ -250,21 +250,21 @@ collapse( TCubicalComplex& K,
 
 
 //-----------------------------------------------------------------------------
-template <typename TCubicalComplex,
+template <typename TKSpace, typename TCellContainer,
           typename BdryCellOutputIterator,
           typename InnerCellOutputIterator>
 void
-DGtal::functions::ccops::
-filterCellsWithinBounds( const TCubicalComplex& K, 
-                         const typename TCubicalComplex::Point& kLow,  
-                         const typename TCubicalComplex::Point& kUp,
+DGtal::functions::
+filterCellsWithinBounds( const CubicalComplex< TKSpace, TCellContainer > & K, 
+                         const typename TKSpace::Point& kLow,  
+                         const typename TKSpace::Point& kUp,
                          BdryCellOutputIterator itBdry, 
                          InnerCellOutputIterator itInner )
 {
-  typedef TCubicalComplex                               CubicalComplex;
-  typedef typename CubicalComplex::Cell                 Cell;
-  typedef typename CubicalComplex::Point                Point;
-  typedef typename CubicalComplex::CellMapConstIterator CellMapConstIterator;
+  typedef CubicalComplex< TKSpace, TCellContainer > CC;
+  typedef typename CC::Cell                         Cell;
+  typedef typename CC::Point                        Point;
+  typedef typename CC::CellMapConstIterator         CellMapConstIterator;
   Dimension d = K.dim();
   for ( Dimension i = 0; i <= d; ++i )
     {

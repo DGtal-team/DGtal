@@ -157,7 +157,7 @@ int main( int /* argc */, char** /* argv */ )
   X[ p1 ] = CC::FIXED;
   X[ p2 ] = CC::FIXED;
   CC::DefaultCellMapIteratorPriority P;
-  functions::ccops::collapse( X, X.begin(), X.end(), P, true, true, true );
+  functions::collapse( X, X.begin(), X.end(), P, true, true, true );
   board << CustomStyle( X.className(), 
                         new CustomColors( Color(255,120,20), Color(255,150,50) ) )
         << X
