@@ -178,7 +178,6 @@ namespace DGtal
       aBoard.setFillColor(Color::None);
     }
   };
-
   /**
    * Default style for the points mode.
    */
@@ -198,6 +197,49 @@ namespace DGtal
     }
   };
   // ArithmeticalDSSComputer
+
+
+  // AlphaThickSegmentComputer
+
+  /**
+   * Default style for the bounding box mode.
+   */
+  struct DefaultDrawStyleBB_AlphaThickSegmentComputer : public DrawableWithBoard2D
+  {
+    /**
+     * Draw the AlphaThickSegmentComputer on a board
+     * @param aBoard the output board where the object is drawn.
+     */
+    virtual void setStyle(Board2D & aBoard) const
+    {
+      // Set board style
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setPenColor(Color::Red);
+      aBoard.setLineWidth(5);
+      aBoard.setFillColor(Color::None);
+    }
+  };
+  
+  /**
+   * Default style for the points mode.
+   */
+  struct DefaultDrawStylePoints_AlphaThickSegmentComputer : public DrawableWithBoard2D
+  {
+    /**
+     * Draw the AlphaThickSegmentComputer on a board
+     * @param aBoard the output board where the object is drawn.
+     */
+    virtual void setStyle(Board2D & aBoard) const
+    {
+      // Set board style
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setPenColor(Color::Black);
+      aBoard.setLineWidth(2);
+      aBoard.setFillColor(Color::None);
+    }
+  };
+  
+  // AlphaThickSegmentComputer
 
 
   // DigitalSetBySTLSet
@@ -595,6 +637,19 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ArithmeticalDSSComputer<TI
     return new DGtal::DefaultDrawStylePoints_ArithmeticalDSSComputer;
 }
 // ArithmeticalDSSComputer
+
+
+// AlphaThickSegmentComputer
+template <typename TInputPoint, typename TConstIterator>
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator> & /*a*/, std::string mode = "" )
+{
+  if ( ( mode == "" ) || ( mode == "BoundingBox" ) )
+    return new DGtal::DefaultDrawStyleBB_AlphaThickSegmentComputer;
+  else // mode == "Points"
+    return new DGtal::DefaultDrawStylePoints_AlphaThickSegmentComputer;
+}
+// AlphaThickSegmentComputer
 
 
 // CircleFrom2Points

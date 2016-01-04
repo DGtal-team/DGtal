@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <functional>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
@@ -71,7 +72,7 @@ namespace DGtal
    * the estimated quantity is computed applying a functor on the
    * surfel set.
    *
-   * More precisely, this adapter needs a model of CMetric to define 
+   * More precisely, this adapter needs a model of CMetricSpace to define 
    * the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
    * to perform the local estimator computation. When sent to the
    * functor, the surfels are weighted using the distance from the
@@ -92,7 +93,7 @@ namespace DGtal
    * canonical embedding of surfel elements (cf CanonicSCellEmbedder).
    *
    *  @tparam TDigitalSurfaceContainer any model of digital surface container concept (CDigitalSurfaceContainer)
-   *  @tparam TMetric any model of CMetric to be used in the neighborhood construction.
+   *  @tparam TMetric any model of CMetricSpace to be used in the neighborhood construction.
    *  @tparam TFunctorOnSurfel an estimator on surfel set (model of CLocalEstimatorFromSurfelFunctor)
    *  @tparam TConvolutionFunctor type of  functor on double
    *  [0,1]->[0,1] to implement the response of a symmetric convolution kernel.
@@ -142,7 +143,7 @@ namespace DGtal
 
     ///Embedded and type definitions
     typedef typename FunctorOnSurfel::SCellEmbedder Embedder;
-    typedef std::binder1st<Metric> MetricToPoint;
+    typedef std::function< typename Metric::Value ( typename Metric::Point ) > MetricToPoint;
     typedef functors::Composer<Embedder, MetricToPoint, Value> VertexFunctor;
     typedef DistanceBreadthFirstVisitor< Surface, 
                                          VertexFunctor> Visitor;

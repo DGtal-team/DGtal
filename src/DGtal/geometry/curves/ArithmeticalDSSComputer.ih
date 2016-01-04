@@ -432,7 +432,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isValid() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 void
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::selfDisplay ( std::ostream & out)
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::selfDisplay ( std::ostream & out) const
 {
   out << "[ArithmeticalDSSComputer] " << myDSS;
 }

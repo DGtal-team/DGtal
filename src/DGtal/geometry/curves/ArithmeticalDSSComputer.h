@@ -404,7 +404,7 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) ; 
+    void selfDisplay ( std::ostream & out ) const; 
 
     
   }; // end of class ArithmeticalDSSComputer
@@ -418,7 +418,7 @@ namespace DGtal
  */
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 std::ostream&
-operator<< ( std::ostream & out,  ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & object )
+operator<< ( std::ostream & out,  const ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & object )
 {
   object.selfDisplay( out);
   return out;

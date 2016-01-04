@@ -212,6 +212,7 @@ namespace DGtal
     //have to be public because of external functions
     struct BallD3D : public CommonD3D
     {
+      static const typename RealPoint::Dimension dimension = RealPoint::dimension;
       const double & operator[]( unsigned int i ) const
       {
         assert(i<3);

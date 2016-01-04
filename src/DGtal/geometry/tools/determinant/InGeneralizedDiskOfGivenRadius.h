@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <array>
 #include "DGtal/base/Common.h"
 
 #include "DGtal/geometry/tools/determinant/C2x2DetComputer.h"
@@ -133,7 +134,7 @@ namespace DGtal
     /**
      * Type of point array
      */
-    typedef boost::array<Point,2> PointArray;
+    typedef std::array<Point,2> PointArray;
     /**
      * Type used to represent the size of the array
      */
@@ -141,7 +142,7 @@ namespace DGtal
     /**
      * static size of the array, ie. 2
      */
-    static const SizeArray size = PointArray::static_size; 
+    static const SizeArray size = 2;
 
     /**
      * Type of determinant computer
