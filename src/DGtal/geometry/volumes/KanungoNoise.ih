@@ -17,7 +17,7 @@
 /**
  * @file KanungoNoise.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * LaboraTPire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/03/06
  *
@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <random>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,6 +43,8 @@ inline
 DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAlias<Domain> aDomain, const double alpha):
   myPredicate(aPredicate), myDomain(aDomain), myAlpha(alpha)
 {
+  std::mt19937 rng;
+  std::uniform_real_distribution<double> dis(0.0, 1.0);
   
   ASSERT(alpha>0 && alpha < 1);
   double p;
@@ -63,7 +66,7 @@ DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAli
   for(typename Domain::ConstIterator it = myDomain.begin(), itend = myDomain.end();
       it != itend; ++it)
   {
-    p = (double)rand()/(RAND_MAX+1.0);
+    p = dis(rng);
     if ( myPredicate(*it) )
     {
       if ( p >= std::pow( alpha, 1.0+DTin(*it) ) )
