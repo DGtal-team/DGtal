@@ -94,7 +94,10 @@
  - Fix pseudo-random number generator in KanungoNoise (David
    Coeurjolly,
    [#1078](https://github.com/DGtal-team/DGtal/pull/1078))
-   
+
+- *IO*
+ - Fix viewer tests including qt4 headers even with configuring WITH_QT5=ON.
+   (Pablo Hernandez-Cerdan, [#1100](https://github.com/DGtal-team/DGtal/pull/1100))
 
 # DGtal 0.9
 
