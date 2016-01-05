@@ -31,19 +31,22 @@ env:
 matrix:
   fast_finish: true 
   exclude:
-    - os: linux
+    - os: osx
       env: CONFIG="Documentation,Debug,Cairo,GMP"
     - compiler: gcc
-      os: osx
+      os: linux
       env: CONFIG="Documentation,Debug,Cairo,GMP"
     - os: osx
       compiler: gcc
 
 addons:
   apt:
-    packages:
+   sources:
+    - deadsnakes
+    - ubuntu-toolchain-r-test
+   packages:
     - libhdf5-serial-dev
-    - libboost-program-options-dev
+    - libboost-dev
     - libcairo2-dev
     - doxygen
     - doxygen-latex
@@ -53,16 +56,19 @@ addons:
     - libgdcm2-dev 
     - libgraphicsmagick++1-dev
     - libqglviewer-qt4-dev
-    - libinsighttoolkit3-dev 
-
+    - libinsighttoolkit3-dev
+    - g++-4.8
+    - gcc-4.8
+    
 
 before_install:
+  - if [ $CXX == "g++" ]; then CCOMPILER="gcc-4.8"; CXXCOMPILER="g++-4.8"; fi
   - DOC="false"
   - NEEDBUILD="true";
   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDBUILD="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
   - if [ $CONFIG == "Debug,Magick,GMP,ITK" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF";   fi
-  - if [ $DOC == "true" ]; then  BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="true"; fi
+  - if [ $DOC == "true" ]; then  .travis/install_doxygen.sh;  BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen -DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="true"; fi
 
 
 ########
@@ -77,7 +83,7 @@ before_script:
 # Main rules
 ############
 script:
-  - cmake . $BTYPE
+  - cmake . $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER
   - echo $DOC
   - echo $BTYPE
   - if [ $NEEDBUILD == "true" ]; then  make DGtal && make DGtalIO; fi
