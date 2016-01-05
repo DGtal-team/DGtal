@@ -377,7 +377,7 @@ public:
     {
       return derived().myClosure[ d ] == KhalimskySpace::periodic;
     }
-  
+
   /// @return true is there is at least one periodic dimension.
   inline
   bool isAnyDimensionPeriodicHelper() const
@@ -430,7 +430,7 @@ public:
           myIsAnyDimensionPeriodic |= isDimensionPeriodicHelper( i );
           myCellExtent[ i ] = derived().myCellUpper.myCoordinates[ i ] - derived().myCellLower.myCoordinates[ i ] + 1;
         }
-     
+
       return true;
     }
 
@@ -824,7 +824,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uCoord( const Cell & c, DGtal::Dimension k, bool correct ) const
 {
   ASSERT( k < DIM );
-  return correct ? ( this->updateKCoordHelper( c.myCoordinates[ k ], k ) >> 1 ) : ( c.myCoordinates[ k ] >> 1 ); 
+  return correct ? ( this->updateKCoordHelper( c.myCoordinates[ k ], k ) >> 1 ) : ( c.myCoordinates[ k ] >> 1 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1328,8 +1328,8 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsMax( const Cell & p, DGtal::Dimension k ) const
 {
-  return 
-        ! this->isDimensionPeriodicHelper( k ) 
+  return
+        ! this->isDimensionPeriodicHelper( k )
     &&  p.myCoordinates[ k ] >= uLast( p, k );
 }
 //-----------------------------------------------------------------------------
@@ -1339,7 +1339,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsInside( const Cell & p, DGtal::Dimension k ) const
 {
-  return 
+  return
         this->isDimensionPeriodicHelper( k )
     || (
            p.myCoordinates[ k ] <= uLast( p, k )
@@ -1373,7 +1373,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsMin( const Cell & p, DGtal::Dimension k ) const
 {
-  return 
+  return
         ! this->isDimensionPeriodicHelper( k )
     &&  p.myCoordinates[ k ] <= uFirst( p, k );
 }
@@ -1508,7 +1508,7 @@ sFirst( const SCell & p ) const
   SCell cell = p;
   for ( Dimension k = 0; k < dimension; ++k )
     cell.myCoordinates[ k ] = sFirst( p, k );
-  
+
   return cell;
 }
 //-----------------------------------------------------------------------------
@@ -1552,7 +1552,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sIsMax( const SCell & p, DGtal::Dimension k ) const
 {
-  return 
+  return
         ! this->isDimensionPeriodicHelper( k )
     &&  p.myCoordinates[ k ] >= sLast( p, k );
 }
@@ -1563,9 +1563,9 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsInside( const SCell & p, DGtal::Dimension k ) const
 {
-  return 
+  return
         this->isDimensionPeriodicHelper( k )
-    ||  (   
+    ||  (
             p.myCoordinates[ k ] <= sLast( p, k )
          && p.myCoordinates[ k ] >= sFirst( p, k )
   );
@@ -1597,7 +1597,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sIsMin( const SCell & p, DGtal::Dimension k ) const
 {
-  return 
+  return
         ! this->isDimensionPeriodicHelper( k )
     &&  p.myCoordinates[ k ] <= sFirst( p, k );
 }
@@ -1810,7 +1810,7 @@ uIncident( Cell c, DGtal::Dimension k, bool up ) const
   ASSERT( k < dim );
   ASSERT( this->isDimensionPeriodicHelper( k ) || ( ! up ) || ( uKCoord( c, k ) < uKCoord( myCellUpper, k ) ) );
   ASSERT( this->isDimensionPeriodicHelper( k ) || (   up ) || ( uKCoord( myCellLower, k ) < uKCoord( c, k ) ) );
-  
+
   if ( up ) ++c.myCoordinates[ k ];
   else      --c.myCoordinates[ k ];
 
@@ -1837,9 +1837,9 @@ sIncident( SCell c, DGtal::Dimension k, bool up ) const
 
   if ( up ) ++c.myCoordinates[ k ];
   else      --c.myCoordinates[ k ];
-  
+
   c.myCoordinates[ k ] = this->updateKCoordHelper( c.myCoordinates[ k ], k );
-  
+
   return c;
 }
 //-----------------------------------------------------------------------------
