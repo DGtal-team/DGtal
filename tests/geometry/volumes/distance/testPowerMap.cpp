@@ -101,7 +101,7 @@ bool testPowerMap()
       for(unsigned int j=0; j<11; j++)
 	{
 	  Z2i::Point p(i,j);
-	  DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
+	  DGtal::int64_t dist = (i-power(p)[0])*(i-power(p)[0]) +
 	    ( j-power(p)[1])*(j-power(p)[1])  - image(power(p));
 	  trace.info()<< dist;
 	}

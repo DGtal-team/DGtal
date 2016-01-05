@@ -615,7 +615,7 @@ bool testComparison(int size, int area, double dist)
   FMM fmm( map, set, dp, area, dist, distance ); 
   fmm.compute(); 
   trace.info() << fmm << std::endl; 
-
+				
   trace.endBlock();
 
   trace.beginBlock ( " DT computation " );
