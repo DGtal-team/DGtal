@@ -685,6 +685,15 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
+uCell( const Cell & c ) const
+{
+  return uCell( c.myCoordinates );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
+DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( const Point & kp ) const
 {
   return Cell( this->updateKCoordsHelper( kp ) );
@@ -701,6 +710,15 @@ uCell( Point p, const Cell & c ) const
       p[ i ] += p[ i ] + ( NumberTraits<Integer>::odd( c.myCoordinates[ i ] ) ? 1 : 0 );
     }
   return uCell( p );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sCell( const Cell & c, Sign sign ) const
+{
+  return sCell( c.myCoordinates, sign );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -776,7 +794,17 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uKCoord( const Cell & c, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
-  return this->updateKCoordHelper( c.myCoordinates[ k ], k );
+  return c.myCoordinates[ k ];
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uKCoord( const Cell & c, DGtal::Dimension k, bool correct ) const
+{
+  ASSERT( k < DIM );
+  return correct ? this->updateKCoordHelper( c.myCoordinates[ k ], k ) : c.myCoordinates[ k ];
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -786,7 +814,17 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uCoord( const Cell & c, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
-  return this->updateKCoordHelper( c.myCoordinates[ k ], k ) >> 1;
+  return c.myCoordinates[ k ] >> 1;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uCoord( const Cell & c, DGtal::Dimension k, bool correct ) const
+{
+  ASSERT( k < DIM );
+  return correct ? ( this->updateKCoordHelper( c.myCoordinates[ k ], k ) >> 1 ) : ( c.myCoordinates[ k ] >> 1 ); 
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -795,7 +833,16 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uKCoords( const Cell & c ) const
 {
-  return this->updateKCoordsHelper( c.myCoordinates );
+  return c.myCoordinates;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uKCoords( const Cell & c, bool correct ) const
+{
+  return correct ? this->updateKCoordsHelper( c.myCoordinates ) : c.myCoordinates;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -812,12 +859,34 @@ uCoords( const Cell & c ) const
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uCoords( const Cell & c, bool correct ) const
+{
+  Point dp = uKCoords( c, correct );
+  for ( DGtal::Dimension i = 0; i < DIM; ++i )
+    dp[ i ] >>= 1;
+  return dp;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sKCoord( const SCell & c, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
-  return this->updateKCoordHelper( c.myCoordinates[ k ], k );
+  return c.myCoordinates[ k ];
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sKCoord( const SCell & c, DGtal::Dimension k, bool correct ) const
+{
+  ASSERT( k < DIM );
+  return correct ? this->updateKCoordHelper( c.myCoordinates[ k ], k ) : c.myCoordinates[ k ];
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -827,7 +896,17 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sCoord( const SCell & c, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
-  return this->updateKCoordHelper( c.myCoordinates[ k ], k ) >> 1;
+  return c.myCoordinates[ k ] >> 1;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sCoord( const SCell & c, DGtal::Dimension k, bool correct ) const
+{
+  ASSERT( k < DIM );
+  return correct ? ( this->updateKCoordHelper( c.myCoordinates[ k ], k ) >> 1 ) : ( c.myCoordinates[ k ] >> 1 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -836,7 +915,16 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sKCoords( const SCell & c ) const
 {
-  return this->updateKCoordsHelper( c.myCoordinates );
+  return c.myCoordinates;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sKCoords( const SCell & c, bool correct ) const
+{
+  return correct ? this->updateKCoordsHelper( c.myCoordinates ) : c.myCoordinates;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -846,6 +934,18 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sCoords( const SCell & c ) const
 {
   Point dp = sKCoords( c );
+  for ( DGtal::Dimension i = 0; i < DIM; ++i )
+    dp[ i ] >>= 1;
+  return dp;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sCoords( const SCell & c, bool correct ) const
+{
+  Point dp = sKCoords( c, correct );
   for ( DGtal::Dimension i = 0; i < DIM; ++i )
     dp[ i ] >>= 1;
   return dp;
@@ -1314,7 +1414,7 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uDistanceToMax( const Cell & p, DGtal::Dimension k ) const
 {
-  return ( myCellUpper.myCoordinates[ k ] - this->updateKCoordHelper( p.myCoordinates[ k ], k ) ) >> 1;
+  return ( myCellUpper.myCoordinates[ k ] - p.myCoordinates[ k ] ) >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1323,7 +1423,7 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uDistanceToMin( const Cell & p, DGtal::Dimension k ) const
 {
-  return ( this->updateKCoordHelper( p.myCoordinates[ k ], k ) - myCellLower.myCoordinates[ k ] ) >> 1;
+  return ( p.myCoordinates[ k ] - myCellLower.myCoordinates[ k ] ) >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1343,7 +1443,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uProjection( Cell p, const Cell & bound, DGtal::Dimension k ) const
 {
-  p.myCoordinates[ k ] = this->updateKCoordHelper( bound.myCoordinates[ k ], k );
+  p.myCoordinates[ k ] = bound.myCoordinates[ k ];
   return p;
 }
 //-----------------------------------------------------------------------------
@@ -1353,7 +1453,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uProject( Cell & p, const Cell & bound, DGtal::Dimension k ) const
 {
-  p.myCoordinates[ k ] = this->updateKCoordHelper( bound.myCoordinates[ k ], k );
+  p.myCoordinates[ k ] = bound.myCoordinates[ k ];
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1538,7 +1638,7 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sDistanceToMax( const SCell & p, DGtal::Dimension k ) const
 {
-  return ( myCellUpper.myCoordinates[ k ] - this->updateKCoordHelper( p.myCoordinates[ k ], k ) ) >> 1;
+  return ( myCellUpper.myCoordinates[ k ] - p.myCoordinates[ k ] ) >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1547,7 +1647,7 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sDistanceToMin( const SCell & p, DGtal::Dimension k ) const
 {
-  return ( this->updateKCoordHelper( p.myCoordinates[ k ], k ) - myCellLower.myCoordinates[ k ] ) >> 1;
+  return ( p.myCoordinates[ k ] - myCellLower.myCoordinates[ k ] ) >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1567,7 +1667,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sProjection( SCell p, const SCell & bound, DGtal::Dimension k ) const
 {
-  p.myCoordinates[ k ] = this->updateKCoordHelper( bound.myCoordinates[ k ], k );
+  p.myCoordinates[ k ] = bound.myCoordinates[ k ];
   return p;
 }
 //-----------------------------------------------------------------------------
@@ -1577,7 +1677,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sProject( SCell & p, const SCell & bound, DGtal::Dimension k ) const
 {
-  p.myCoordinates[ k ] = this->updateKCoordHelper( bound.myCoordinates[ k ], k );
+  p.myCoordinates[ k ] = bound.myCoordinates[ k ];
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
