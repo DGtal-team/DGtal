@@ -716,9 +716,9 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sCell( const Cell & c, Sign sign ) const
+sCell( const SCell & c  ) const
 {
-  return sCell( c.myCoordinates, sign );
+  return sCell( c.myCoordinates, c.myPositive ? POS : NEG );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>

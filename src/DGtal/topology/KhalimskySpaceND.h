@@ -845,7 +845,7 @@ namespace DGtal
      * @return its Khalimsky coordinate along [k], corrected to lie into the fundamental domain if
      *         the dimension is periodic and if \a correct is set to 'true'.
      */
-    Integer sKCoord( const Cell & c, Dimension k, bool correct ) const;
+    Integer sKCoord( const SCell & c, Dimension k, bool correct ) const;
 
     /**
      * @param c any signed cell.
@@ -1353,7 +1353,7 @@ namespace DGtal
        @param k the concerned coordinate.
        @return the projection.
        @note if \a k is a periodic dimension, the corresponding coordinate of \a bound is supposed to lie into the fundamental domain.
-       If note, use before uCell(const Cell &) const on \a bound.
+       If not, use before uCell(const Cell &) const on \a bound.
     */
     Cell uProjection( Cell p, const Cell & bound, Dimension k ) const;
 
@@ -1365,7 +1365,7 @@ namespace DGtal
        @param [in] bound the element acting as bound (same topology as p).
        @param [in] k the concerned coordinate.
        @note if \a k is a periodic dimension, the corresponding coordinate of \a bound is supposed to lie into the fundamental domain.
-       If note, use before uCell(const Cell &) const on \a bound.
+       If not, use before uCell(const Cell &) const on \a bound.
     */
     void uProject( Cell & p, const Cell & bound, Dimension k ) const;
 
@@ -1550,6 +1550,8 @@ namespace DGtal
        @param bound the element acting as bound (same topology as p).
        @param k the concerned coordinate.
        @return the projection.
+       @note if \a k is a periodic dimension, the corresponding coordinate of \a bound is supposed to lie into the fundamental domain.
+       If not, use before uCell(const Cell &) const on \a bound.
     */
     SCell sProjection( SCell p, const SCell & bound, Dimension k ) const;
 
@@ -1560,6 +1562,8 @@ namespace DGtal
        @param p any cell.
        @param bound the element acting as bound (same topology as p).
        @param k the concerned coordinate.
+       @note if \a k is a periodic dimension, the corresponding coordinate of \a bound is supposed to lie into the fundamental domain.
+       If not, use before uCell(const Cell &) const on \a bound.
     */
     void sProject( SCell & p, const SCell & bound, Dimension k ) const;
 
