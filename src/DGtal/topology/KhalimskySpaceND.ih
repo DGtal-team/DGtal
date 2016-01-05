@@ -1996,7 +1996,7 @@ DGtal::KhalimskySpaceND< dim, TInteger >::
 uFaces( const Cell & c ) const
 {
   Cells N;
-  uAddFaces( N, uCell( c.myCoordinates ), 0 );
+  uAddFaces( N, c.myCoordinates, 0 );
   return N;
 }
 //-----------------------------------------------------------------------------
@@ -2007,7 +2007,7 @@ DGtal::KhalimskySpaceND< dim, TInteger >::
 uCoFaces( const Cell & c ) const
 {
   Cells N;
-  uAddCoFaces( N, uCell( c.myCoordinates ), 0 );
+  uAddCoFaces( N, c.myCoordinates, 0 );
   return N;
 }
 //-----------------------------------------------------------------------------
