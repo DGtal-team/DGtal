@@ -590,7 +590,7 @@ bool testComparison(int size, int area, double dist)
   //Image and set for FMM
   typedef ImageContainerBySTLVector<Domain, long> Image;
   Image map( d ); 
-  map.setValue( Point::diagonal(0), 0.0 );
+  map.setValue( Point::diagonal(0), 0);
   typedef DigitalSetBySTLSet<Domain> Set; 
   Set set( d );
   set.insert( Point::diagonal(0) ); 

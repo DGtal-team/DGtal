@@ -43,7 +43,7 @@ is_identity(const Container& container, const Value& value)
     for (typename Container::Index ii=0; ii<container.rows(); ii++)
         for (typename Container::Index jj=0; jj<container.cols(); jj++)
         {
-            const Value foo = container.coeff(ii,jj);
+            const Value foo = static_cast<Value>(container.coeff(ii,jj));
             if ((ii != jj && foo != 0) || (ii == jj && foo != value))
                 return false;
         }
