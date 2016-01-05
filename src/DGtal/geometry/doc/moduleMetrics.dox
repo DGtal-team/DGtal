@@ -218,9 +218,10 @@ closestPower() methods for the given metric, and @f$ H @f$ the cost
 of the @a hiddenBy() or @a hiddenByWeigthed(), the computational costs
 of the separable metrics can be summarized as follows:
 
-| Models of CSeparableMetric/CPowerSeparableMetric| C | H | Note |
-|-------------------------------------------------|---|---|------|
-| ExactPredicateLpSeparableMetric<p>              | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
+
+| Models of CSeparableMetric/CPowerSeparableMetric | C | H | Note |
+|--------------------------------------------------|---|---|------|
+| ExactPredicateLpSeparableMetric<p>               | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
 | ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
 | ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Exact computations|
 | InexactPredicateLpSeparableMetric with p at construction | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|

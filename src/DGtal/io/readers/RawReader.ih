@@ -28,6 +28,7 @@
 
 
 //////////////////////////////////////////////////////////////////////////////
+#include <cstddef>
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -116,7 +117,8 @@ FILE*
 DGtal::raw_reader_read_word( FILE* fin, Word& aValue )
 {
     aValue = 0;
-    for (unsigned size = 0; size < sizeof( Word ); ++size)
-        aValue |= getc(fin) << (8 * size);
+    for ( std::size_t i = 0; i < sizeof( Word ); ++i )
+        reinterpret_cast<unsigned char*>(&aValue)[i] = getc(fin);
+
     return fin;
 }
