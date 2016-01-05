@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -437,10 +438,11 @@ namespace DGtal
           }
         else 
           {
-            double k = -(a[0]-b[0])*c[1]-(b[0]*a[1]-a[0]*b[1]);
-            TInputPoint p (k/(b[1]-a[1]), c[1]);
+            auto k = -(a[0]-b[0])*c[1]-(b[0]*a[1]-a[0]*b[1]);
+            PointVector<2, double> p (k/static_cast<double>(b[1]-a[1]), 
+                                      static_cast<double>(c[1]));
             isInside  = (b-a).dot(p)*(b-a).dot(p)>0;
-            return std::abs((k/(b[1]-a[1])) - c[0]);
+            return std::abs((k/static_cast<double>(b[1]-a[1])) - c[0]);
           }
       }      
       
@@ -456,10 +458,11 @@ namespace DGtal
           }
         else 
           {
-            double k = -(b[1]-a[1])*c[0]-(b[0]*a[1]-a[0]*b[1]);
-            TInputPoint p (k/(a[0]-b[0]), c[0]);
+            auto k = -(b[1]-a[1])*c[0]-(b[0]*a[1]-a[0]*b[1]);
+            PointVector<2, double> p (k/static_cast<double>(a[0]-b[0]), 
+                                      static_cast<double>(c[0]));
             isInside  = (b-a).dot(p-a)*(b-a).dot(p-a)>0;          
-            return std::abs((k/(a[0]-b[0])) - c[1]);
+            return std::abs((k/static_cast<double>(a[0]-b[0])) - c[1]);
           }
       }
 
@@ -470,9 +473,9 @@ namespace DGtal
     computeEuclideanDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, 
                             bool &isInside )
     {
-      double dy =  b[1]-a[1];
-      double dx =  a[0]-b[0];
-      double dc = b[0]*a[1]-a[0]*b[1];
+      auto dy =  b[1]-a[1];
+      auto dx =  a[0]-b[0];
+      auto dc = b[0]*a[1]-a[0]*b[1];
       isInside = (b-a).dot(c-a)*(b-a).dot(c-a)>0; 
       return std::abs(dy*c[0]+dx*c[1]+dc)/(std::sqrt(dy*dy+dx*dx));
     }
