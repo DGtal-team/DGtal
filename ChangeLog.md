@@ -7,10 +7,11 @@
  - DGtal requires now to have a C++11 enabled compiler (gcc>4.6, clang
    >2.9, VS14, ...). This allows us to use new C++11 features in 
    DGtal core and to have more generic and reliable code. (David
- Coeurjolly, [#1080](https://github.com/DGtal-team/DGtal/pull/1080))
- - DGtal core now compiles on Microsoft Windows, Visual Studio. Many
-   issues have been fixed for compatibility with 'cl' compiler. (David
-   Coeurjolly, Jérémy Levallois,
+   Coeurjolly, [#1080](https://github.com/DGtal-team/DGtal/pull/1080))
+   
+ - DGtal core now compiles on Microsoft Windows, Visual Studio (only
+   VS14 or above). Many issues have been fixed for compatibility with
+   'cl' compiler. (David Coeurjolly, Jérémy Levallois,
    [#1074](https://github.com/DGtal-team/DGtal/pull/1074))
 
 - *Geometry Package*
@@ -65,7 +66,6 @@
    function) in order to see the cube primitive through the
    transparency of the ball primitives. (Bertrand Kerautret,
    [#1081](https://github.com/DGtal-team/DGtal/pull/1081))
-
 
  - New possibility to move the light source direction using the mouse move
    in Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on mac)). The light source
