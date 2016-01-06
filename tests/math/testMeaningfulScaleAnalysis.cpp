@@ -49,7 +49,7 @@ using namespace DGtal;
 
 
 struct LogFct{
-  float operator()(const float &a) const {
+  double operator()(const double &a) const {
     return log(a);
   }
 };

@@ -20,7 +20,8 @@
  * @file Profile.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
- * @Jacques-Olivier Lachaud
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2015/11/08
  *
@@ -56,21 +57,22 @@ namespace DGtal
   /**
    * Description of class 'Profile' <p> \brief Aim: This class can be
    * used to represent a profile (PX, PY) defined from an input set of
-   * samples (Xi, Yi). From all the samples (Xk, Yk) having the same
-   * value Xk, the associated value PY is computed (by default) by the
-   * mean of the values Yk. Note that other definitions can be used
-   * (MAX, MIN or MEDIAN).
+   * samples (Xi, Yi). For all sample (Xk, Yk) having the same value
+   * Xk, the associated value PY is computed (by default) by the mean
+   * of the values Yk. Note that other definitions can be used (MAX,
+   * MIN or MEDIAN). Internally each sample abscissa is an instance of
+   * DGtal::Statistic. 
    *
    * 
    * This class is templated by the type of the functor TValueFunctor
    * which is applied on the two coordinate values of the resulting
    * profile (PX, PY). This functor is by default set to the identity
-   * functor. The default type (float) of the values added to the
+   * functor. The default type (double) of the values added to the
    * profile can also be changed by using the template parameter
    * TValue.
    *
    * For instance to construct a Profile defined from a data sample
-   * having its Xi integer values included from 1 to 10, you can construct
+   * having its Xi integer values from 1 to 10, you can construct
    * and initialize a Profile as follows:
    *
    * @code 
@@ -82,15 +84,15 @@ namespace DGtal
    * iterator:
    *
    * @code
-   * std::vector<float> xDef;
-   * for (float i = 0.5; i < 5; i=i+0.5){
+   * std::vector<double> xDef;
+   * for (double i = 0.5; i < 5; i=i+0.5){
    *     xDef.push_back(i);
    * }   
    * Profile<> sp;
    * sp.init(xDef.begin(), xDef.end());
    * @endcode
    *
-   * Then, you can add all the samples (Xk, Yk) :
+   * Then, you can add the samples (Xk, Yk):
    * @code
    * sp.addValue(0, 23.0);
    * sp.addValue(0, 20.0);
@@ -99,8 +101,8 @@ namespace DGtal
    * ...
    * sp.addValue(9, 20);
    * // then you can get a profile:
-   * std::vector<float> x; 
-   * std::vector<float> y;
+   * std::vector<double> x; 
+   * std::vector<double> y;
    * sp.getProfile(x, y); 
    * @endcode
    *
@@ -108,7 +110,7 @@ namespace DGtal
    *
    * @code 
    *  struct LogFct{
-   *   float operator()(const float &a) const {
+   *   double operator()(const double &a) const {
    *     return log(a);
    *    }
    *  };
@@ -123,7 +125,7 @@ namespace DGtal
    *   ...
    *  @endcode
    *
-   * @tparam TValueFunctor the type of the functor applied in the resulting profile (any model of CUnaryFunctor)
+   * @tparam TValueFunctor the type of the functor applied in the resulting Profile (any model of CUnaryFunctor)
    * @tparam TValue the type value stored in the profile.  
    * 
    * The proposed implementation is mainly a backport from
@@ -131,7 +133,7 @@ namespace DGtal
    * various refactoring.
    */
 
-  template<typename TValueFunctor = functors::Identity, typename TValue = float >
+  template<typename TValueFunctor = functors::Identity, typename TValue = double >
   class Profile
   {
     // ----------------------- Standard services ------------------------------
@@ -143,8 +145,15 @@ namespace DGtal
      * 
      **/
     enum ProfileType{MEAN, MAX, MIN, MEDIAN};
-    
+
+    /**
+     * The type of the functor applied to the resulting Profile
+     **/
     typedef TValueFunctor Functor;
+
+    /**
+     * The type value stored in the profile.  
+     **/
     typedef TValue Value;
 
     BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<Functor, Value, Value>  ));

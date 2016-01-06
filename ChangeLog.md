@@ -19,7 +19,7 @@
    (Bertrand Kerautret, [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
 
  - LogScaleProfile: new class to represent a (multi)scale profile e.g. a sequence
-   of statistics on digital lengths parameterized by a scale.
+   of statistics on digital lengths parameterized by a grid resolution.
    (Backport of the ScaleProfile class of
    [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
    (Bertrand Kerautret, Jacques-Olivier Lachaud
