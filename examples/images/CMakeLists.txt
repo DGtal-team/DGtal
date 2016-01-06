@@ -26,12 +26,8 @@ SET(DGTAL_EXAMPLES_SRC
   imageBasicSubsampling
   exampleRigidtransformation2d
   exampleRigidtransformation3d
+  exampleArrayImageAdapter
 )
-
-if( WITH_C11 )
-  SET(DGTAL_EXAMPLES_SRC ${DGTAL_EXAMPLES_SRC}
-      exampleArrayImageAdapter)
-endif( WITH_C11 )
 
 if( WITH_HDF5 )
   SET(DGTAL_EXAMPLES_SRC ${DGTAL_EXAMPLES_SRC} 

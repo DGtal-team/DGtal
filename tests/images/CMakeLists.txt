@@ -13,17 +13,13 @@ SET(DGTAL_TESTS_SRC
 #  testImageContainerByHashTree
   testRigidTransformation2D
   testRigidTransformation3D
+  testArrayImageAdapter
   )
 
 if( WITH_HDF5 )
   SET(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC}
   testImageFactoryFromHDF5)
 endif( WITH_HDF5 )
-
-if( WITH_C11 )
-  SET(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC}
-      testArrayImageAdapter)
-endif( WITH_C11 )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})

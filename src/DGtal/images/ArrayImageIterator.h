@@ -36,10 +36,6 @@
 /** Prevents repeated inclusion of headers. */
 #define ArrayImageIterator_h
 
-#if __cplusplus < 201103L
-  #error ArrayImageIterator.h requires C++11.
-#endif
-
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <ostream>
@@ -70,8 +66,6 @@ namespace DGtal
    * For an usage example, see ArrayImageAdapter.h .
    *
    * @tparam TIterableClass   Type of the iterable class.
-   *
-   * @warning C++11 needs to be enabled in order to use this class.
    *
    * @see ArrayImageAdapter.h
    */
