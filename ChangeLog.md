@@ -2,6 +2,13 @@
 # DGtal 0.9.1
 
 ## New Features / Critical Changes
+
+- *General*
+ - DGtal requires now to have a C++11 enabled compiler (gcc>4.6, clang
+   >2.9, VS14, ...). This allows us to use new C++11 features in 
+   DGtal core and to have more generic and reliable code. (David
+ Coeurjolly, [#1080](https://github.com/DGtal-team/DGtal/pull/1080))
+
 - *Geometry Package*
  - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
    the width (vertical/horizontal or Euclidean) of a convex hull.
@@ -21,11 +28,28 @@
    [#1076](https://github.com/DGtal-team/DGtal/pull/1076))
 
 ## Changes
+- *DEC Package*
+ - DiscreteExteriorCalculus holds both primal and dual sizes of each cell.
+   Subsequent changes have been made to insertSCell.
+   (Pierre Gueth [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
+ - Convenient static members for KForm :
+   KForm::ones(), KForm::zeros() and KForm::dirac(KSpace::Cell).
+   (Pierre Gueth [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
 - *Base Package*
  - Enabling circulators in SimpleRandomAccessRangeFromPoint.
    (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
 
 - *IO*
+
+ - By default, closing a Viewer3D does not save automatically the viewer
+   state anymore (in a .qglviewer.xml file). The automatic save can be
+   activated by a flag (myAutoSaveState). (Bertrand Kerautret
+    [#1088](https://github.com/DGtal-team/DGtal/pull/1088))
+
+ - In the Viewer3D, the light source position is now saved in the
+    QGLViewer state file (.qglviewer.xml). (Bertrand Kerautret
+    [#1087](https://github.com/DGtal-team/DGtal/pull/1087))
+
  - Minor improvements of default settings in Viewer3D. (David
    Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
 
@@ -41,6 +65,13 @@
    the camera center).
    (Bertrand Kerautret [#1070](https://github.com/DGtal-team/DGtal/pull/1070))
 
+ - Adding raw I/O capabilities for non integral types and signed integers.
+   (Roland Denis [#1084](https://github.com/DGtal-team/DGtal/pull/1084))
+
+- *Shapes Package*
+ - New methods to remove faces from a Mesh  or to obtain the barycenter of a
+   face.
+   (Bertrand Kerautret [#1091](https://github.com/DGtal-team/DGtal/pull/1091))
 
 ## Bug Fixes
 
@@ -52,6 +83,8 @@
    [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
  - Fixing parenthese warnings in Catch. Waiting for an official fix.
    (Roland Denis, [#1069](https://github.com/DGtal-team/DGtal/pull/1069))
+ - Fix constness in selfDisplay and operator<<.
+   (Pierre Gueth [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
 
 - *Base Package*
  - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
