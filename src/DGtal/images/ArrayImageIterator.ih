@@ -26,7 +26,7 @@
 
 
 //////////////////////////////////////////////////////////////////////////////
-#include <boost/assert.hpp>
+#include <DGtal/base/Assert.h>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,12 +58,12 @@ ArrayImageIterator( IterableClass* anIterableClassPtr, Domain const& aFullDomain
   , myPoint{ aPoint }
   , myFullIndex( Self::Linearizer::getIndex( myPoint - myFullDomain.lowerBound(), myFullExtent ) )
 {
-  BOOST_ASSERT_MSG(
+  ASSERT_MSG(
       myFullDomain.lowerBound().isLower( myViewDomain.lowerBound() )
       && myFullDomain.upperBound().isUpper( myViewDomain.upperBound() ),
       "The viewable domain must be included into the full domain."
       );
-  BOOST_ASSERT_MSG(
+  ASSERT_MSG(
       myViewDomain.isInside(aPoint),
       "The point is outside the viewable domain !"
       );
@@ -208,7 +208,7 @@ std::ptrdiff_t
 DGtal::ArrayImageIterator<TIterableClass>::
 distance_to( Point const& aPoint ) const noexcept
 {
-  BOOST_ASSERT_MSG(
+  ASSERT_MSG(
       myViewDomain.isInside(aPoint),
       "The point is outside the viewable domain !"
       );
