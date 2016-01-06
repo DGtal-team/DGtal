@@ -54,11 +54,12 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
+  /// @cond
   /**
    * @brief Aim: Image adapter for generic arrays with sub-domain view capability.
    *
    * Description of template class 'ArrayImageAdapter' <p>
-   * It is an empty class that is specialized for HyperRectDomain (see corresponding documentation page).
+   * It is an empty class that is specialized for HyperRectDomain (see @ref DGtal::ArrayImageAdapter< TArrayIterator, HyperRectDomain< TSpace > >).
    *
    * @tparam TArrayIterator Type of a random-access iterator over the datas (can be a T* pointer).
    * @tparam TDomain  Type of the domain (must be an HyperRectDomain).
@@ -68,6 +69,7 @@ namespace DGtal
     typename TDomain
   >
   class ArrayImageAdapter;
+  /// @endcond
 
   /////////////////////////////////////////////////////////////////////////////
   /**
