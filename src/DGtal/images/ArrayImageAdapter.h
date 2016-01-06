@@ -42,8 +42,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <boost/assert.hpp>
-#include <boost/static_assert.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/iterator/iterator_concepts.hpp>
 #include <iterator>
@@ -171,7 +169,7 @@ namespace DGtal
           , myFullDomain{ aFullDomain }
           , myViewDomain{ aViewDomain }
         {
-          BOOST_ASSERT_MSG(
+          ASSERT_MSG(
                  aFullDomain.lowerBound().isLower( aViewDomain.lowerBound() )
               && aFullDomain.upperBound().isUpper( aViewDomain.upperBound() ),
               "The viewable domain must be included into the full domain."
@@ -229,7 +227,7 @@ namespace DGtal
       inline
       Value getValue( Point const& aPoint ) const
         {
-          BOOST_ASSERT_MSG(
+          ASSERT_MSG(
               myFullDomain.isInside(aPoint),
               "The point is outside the full domain."
           );
@@ -245,7 +243,7 @@ namespace DGtal
       inline
       void setValue( Point const& aPoint, Value aValue )
         {
-          BOOST_ASSERT_MSG(
+          ASSERT_MSG(
               myFullDomain.isInside(aPoint),
               "The point is outside the full domain."
           );
@@ -329,7 +327,7 @@ namespace DGtal
       inline
       Reference dereference( Point const& /* aPoint */, typename Point::Coordinate aFullIndex )
         {
-          BOOST_ASSERT_MSG(
+          ASSERT_MSG(
               aFullIndex >= 0 && static_cast<typename Domain::Size>(aFullIndex) < myFullDomain.size(),
               "linearized index out of bounds !"
           );
@@ -344,7 +342,7 @@ namespace DGtal
       inline
       ConstReference dereference( Point const& /* aPoint */, typename Point::Coordinate aFullIndex ) const
         {
-          BOOST_ASSERT_MSG(
+          ASSERT_MSG(
               aFullIndex >= 0 && static_cast<typename Domain::Size>(aFullIndex) < myFullDomain.size(),
               "linearized index out of bounds !"
           );
@@ -420,7 +418,7 @@ namespace DGtal
            */
           Difference operator() ( Point const& aPoint ) const
             {
-              BOOST_ASSERT_MSG(
+              ASSERT_MSG(
                   myDomain.isInside(aPoint),
                   "The point is outside the domain !"
               );
