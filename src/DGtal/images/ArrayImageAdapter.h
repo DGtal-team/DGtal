@@ -119,14 +119,14 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT( (boost_concepts::RandomAccessTraversalConcept<TArrayIterator>) );
 
     public:
-      // Typedefs
+      // Aliases
       using Self = ArrayImageAdapter<TArrayIterator, HyperRectDomain<TSpace> >;           ///< Self type.
       using ArrayIterator   = TArrayIterator;                                             ///< The given random-access iterator's type.
       using Value           = typename std::iterator_traits<ArrayIterator>::value_type;   ///< The value type stored in the image.
       using Reference       = typename std::iterator_traits<ArrayIterator>::reference;    ///< Mutable reference type.
       using ConstReference  = const Reference;                                            ///< Constant reference type.
 
-      // DGtal typedefs and constant
+      // DGtal aliases and constant
       using Domain    = HyperRectDomain<TSpace>;      ///< Domain type.
       using Point     = typename Domain::Point;       ///< Point type.
       using Dimension = typename Domain::Dimension;   ///< Dimension type.
