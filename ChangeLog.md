@@ -5,7 +5,7 @@
 
 - *Configuration/General*
  - DGtal requires now to have a C++11 enabled compiler (gcc>4.6, clang
-   >2.9, VS14, ...). This allows us to use new C++11 features in 
+   >2.9, VS14, ...). This allows us to use new C++11 features in
    DGtal core and to have more generic and reliable code. (David
    Coeurjolly, [#1080](https://github.com/DGtal-team/DGtal/pull/1080))
    
@@ -14,20 +14,48 @@
    'cl' compiler. (David Coeurjolly, Jérémy Levallois,
    [#1074](https://github.com/DGtal-team/DGtal/pull/1074))
 
+
+- *Base Package*
+ - Traits class for containers in order to probe their category at
+   compile time.  (Jacques-Olivier Lachaud,
+   [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+
+- Generic set operations for arbitrary containers. You may use
+   overloaded operators like &, |, -, ^ on arbitrary containers (list,
+   vector, unordered_set, map, etc).  (Jacques-Olivier Lachaud,
+   [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+
+- *Topology Package*
+ - New class CubicalComplex and functions associated to
+   it. Arbitrary cubical complexes can be represented, displayed and
+   multiple operations are defined onto them: incidence, closing,
+   opening, closure, star, link, interior, boundary, set operations
+   and relations, as a collapse operation.
+   (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+
+
 - *Geometry Package*
- - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
-   the width (vertical/horizontal or Euclidean) of a convex hull.
-   (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
+ - Hull2DHelpers: implementation of the rotating caliper algorithm to
+   compute the width (vertical/horizontal or Euclidean) of a convex
+   hull.  (Bertrand Kerautret,
+   [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
 
- - MelkmanConvexHull: new reverse method to allow point insertions and convex
-   hull computation on both side of a point sequence.
-   (Bertrand Kerautret, [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
+ - MelkmanConvexHull: new reverse method to allow point insertions and
+   convex hull computation on both side of a point sequence.
+   (Bertrand Kerautret,
+   [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
 
+ - LogScaleProfile: new class to represent a (multi)scale profile
+   e.g. a sequence of statistics on digital lengths parameterized by a
+   grid resolution.  (Backport of the ScaleProfile class of
+   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
+   (Bertrand Kerautret, Jacques-Olivier Lachaud
+   [#1075](https://github.com/DGtal-team/DGtal/pull/1075))
 
 - *Math Package*
- - MultiStatistics: new class to compute different statistics (like mean
-   variance, median) on multiple variables.
-   (Backport of the Statistics class of
+ - MultiStatistics: new class to compute different statistics (like
+   mean variance, median) on multiple variables.  (Backport of the
+   Statistics class of
    [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
    (Bertrand Kerautret, Jacques-Olivier Lachaud
    [#1076](https://github.com/DGtal-team/DGtal/pull/1076))
@@ -102,7 +130,10 @@
  - Fix pseudo-random number generator in KanungoNoise (David
    Coeurjolly,
    [#1078](https://github.com/DGtal-team/DGtal/pull/1078))
-   
+
+- *IO Package*
+ - Fix viewer tests including qt4 headers even with configuring WITH_QT5=ON.
+   (Pablo Hernandez-Cerdan, [#1100](https://github.com/DGtal-team/DGtal/pull/1100))
 
 # DGtal 0.9
 
@@ -147,7 +178,7 @@
  - Specializations of std::hash (c++11) and boost::hash to define a hash
    functions on DGtal points. (David Coeurjolly,
    [#1023](https://github.com/DGtal-team/DGtal/pull/1023)
- 
+
 ## Changes
 
 - *DEC Package*
