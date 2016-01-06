@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC
    testAdjacency
    testCellularGridSpaceND
+   testCubicalComplex
    testDigitalSurface
    testDigitalTopology
    testObject
@@ -9,6 +10,7 @@ SET(DGTAL_TESTS_SRC
    testSCellsFunctor
    testUmbrellaComputer
    testSurfaceHelper
+   testDigitalSetToCellularGridConverter
  )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
