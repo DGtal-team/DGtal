@@ -75,8 +75,7 @@ void test_linear_structure()
     trace.info() << calculus << endl;
 
     //! [input-dirac]
-    Calculus::PrimalForm0 dirac(calculus);
-    dirac.myContainer(25) = 1;
+    Calculus::PrimalForm0 dirac = Calculus::PrimalForm0::dirac(calculus, calculus.myKSpace.uCell(Point(10,4)));
     //! [input-dirac]
 
     {
@@ -470,7 +469,8 @@ void test_manual_operators_2d()
             trace.info() << cell
                 << " " << dim
                 << " " << signed_cell
-                << " " << property.size_ratio
+                << " " << property.primal_size
+                << " " << property.dual_size
                 << " " << property.index
                 << " " << (property.flipped ? "negative" : "positive")
                 << endl;
@@ -525,7 +525,8 @@ void test_manual_operators_2d()
             trace.info() << cell
                 << " " << dim
                 << " " << signed_cell
-                << " " << property.size_ratio
+                << " " << property.primal_size
+                << " " << property.dual_size
                 << " " << property.index
                 << " " << (property.flipped ? "negative" : "positive")
                 << endl;

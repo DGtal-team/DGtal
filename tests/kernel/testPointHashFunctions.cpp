@@ -50,31 +50,17 @@ TEST_CASE("Hash functions on DGtal::Point")
   Z3i::Point p(0,0,0);
   Z3i::Point q(10,0,0);
   Z3i::Point p_copy(0,0,0);
-
-  boost::hash<Z3i::Point> myhash;
-
-  #ifdef WITH_C11
   std::hash<Z3i::Point> myhashcpp11;
-  #endif
   
   SECTION("Identity test")
     {
-      REQUIRE( (myhash(p) == myhash(p_copy)) );
-      CAPTURE( myhash(p) );
-      
-#ifdef WITH_C11
-      REQUIRE( (myhashcpp11(p) == myhashcpp11(p_copy)) );
-#endif      
+      REQUIRE( myhashcpp11(p) == myhashcpp11(p_copy) );
     }
 
   
   SECTION("Difference test")
     {
-      REQUIRE( (myhash(p) != myhash(q)) );
-      
-#ifdef WITH_C11
-      REQUIRE( (myhashcpp11(p) != myhashcpp11(q)) );
-#endif 
+      REQUIRE( myhashcpp11(p) != myhashcpp11(q) );
     }
     
   SECTION("Higher dimension identity test")
@@ -84,21 +70,9 @@ TEST_CASE("Hash functions on DGtal::Point")
         qq=(Point26::diagonal(11) + Point26::diagonal(1)),
         rr=Point26::diagonal(13);
 
-      boost::hash<Point26> myhash26;
-      
-#ifdef WITH_C11
       std::hash<Point26> myhash26cpp11;
-#endif
- 
-      REQUIRE( (myhash26(pp) == myhash26(qq)) );
       
-#ifdef WITH_C11
-      REQUIRE( (myhash26cpp11(pp) == myhash26cpp11(qq)) );
-#endif
-      REQUIRE( (myhash26(pp) != myhash26(rr)) );
-      
-#ifdef WITH_C11
-      REQUIRE( (myhash26cpp11(pp) != myhash26cpp11(rr)) );
-#endif 
+      REQUIRE( myhash26cpp11(pp) == myhash26cpp11(qq) );
+      REQUIRE( myhash26cpp11(pp) != myhash26cpp11(rr) );
     }
 }

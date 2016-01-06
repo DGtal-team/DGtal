@@ -391,7 +391,7 @@ namespace DGtal
                 resThickness = th;
                 antipodalVertexR = aConvexHull[j+1];
                 antipodalEdgeP = aConvexHull[i];
-                antipodalEdgeP = aConvexHull[i+1];
+                antipodalEdgeQ = aConvexHull[i+1];
               }
             }
             i++;
