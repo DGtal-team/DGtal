@@ -134,7 +134,7 @@ DGtal::Statistic<TQuantity>::operator+=
   }else{
     myStoreSamples=false;
   }
-  
+  return *this;
 }
 
 

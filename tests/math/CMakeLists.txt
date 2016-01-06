@@ -7,7 +7,9 @@ SET(DGTAL_TESTS_SRC_MATH
        testMPolynomial
        testAngleLinearMinimizer
        testBasicMathFunctions 
-       testMultiStatistics)
+       testMultiStatistics
+       testProfile
+       testMeaningfulScaleAnalysis)
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})

@@ -492,6 +492,23 @@ namespace DGtal
   };
   // Object
 
+  // CubicalComplex
+  /**
+   * Default style for CubicalComplex.
+   */
+  struct DefaultDrawStyle_CubicalComplex : public DrawableWithBoard2D
+  {
+    virtual void setStyle(Board2D & aBoard) const
+    {
+      // line width decreased to avoid too large arrows to display adjacency.
+      aBoard.setLineWidth(0.75);
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setFillColorRGBi(200, 200, 200);
+      aBoard.setPenColorRGBi(0, 0, 0);
+    }
+  };
+  // CubicalComplex
+
 
   // PointVector
   /**
@@ -912,6 +929,17 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::Object<TDigitalTopology, T
   return new DGtal::DefaultDrawStyle_Object;
 }
 // Object
+
+// CubicalComplex
+template < typename TKSpace, 
+           typename TCellContainer >
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::CubicalComplex<TKSpace, TCellContainer> & /*o*/, std::string mode = "" )
+{
+  boost::ignore_unused_variable_warning(mode);
+  return new DGtal::DefaultDrawStyle_CubicalComplex;
+}
+// CubicalComplex
 
 
 // PointVector
