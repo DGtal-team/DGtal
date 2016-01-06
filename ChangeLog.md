@@ -9,13 +9,41 @@
    DGtal core and to have more generic and reliable code. (David
    Coeurjolly, [#1080](https://github.com/DGtal-team/DGtal/pull/1080))
 
-
 - *Base Package*
  - Traits class for containers in order to probe their category at compile time.
    (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
  - Generic set operations for arbitrary containers. You may use overloaded operators
    like &, |, -, ^ on arbitrary containers (list, vector, unordered_set, map, etc).
    (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+
+- *Geometry Package*
+ - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
+   the width (vertical/horizontal or Euclidean) of a convex hull.
+   (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
+ - MelkmanConvexHull: new reverse method to allow point insertions and convex
+   hull computation on both side of a point sequence.
+   (Bertrand Kerautret, [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
+ - LogScaleProfile: new class to represent a (multi)scale profile e.g. a sequence
+   of statistics on digital lengths parameterized by a grid resolution.
+   (Backport of the ScaleProfile class of
+   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
+   (Bertrand Kerautret, Jacques-Olivier Lachaud
+   [#1075](https://github.com/DGtal-team/DGtal/pull/1075))
+ - IteratorCompletion provides iterators and ranges access from a basic set of methods.
+   (Roland Denis, [#1029](https://github.com/DGtal-team/DGtal/pull/1029))
+
+- *Image Package*
+ - ArrayImageAdapter adds a read-write image adapter from any random-access iterator,
+   e.g. from a C-array.
+   (Roland Denis, [#1029](https://github.com/DGtal-team/DGtal/pull/1029))
+
+- *Math Package*
+ - MultiStatistics: new class to compute different statistics (like mean
+   variance, median) on multiple variables.
+   (Backport of the Statistics class of
+   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
+   (Bertrand Kerautret, Jacques-Olivier Lachaud
+   [#1076](https://github.com/DGtal-team/DGtal/pull/1076))
 
 - *Topology Package*
  - New class CubicalComplex and functions associated to
@@ -25,32 +53,6 @@
    and relations, as a collapse operation.
    (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
 
-
-- *Geometry Package*
- - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
-   the width (vertical/horizontal or Euclidean) of a convex hull.
-   (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
-
- - MelkmanConvexHull: new reverse method to allow point insertions and convex
-   hull computation on both side of a point sequence.
-   (Bertrand Kerautret, [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
-
- - LogScaleProfile: new class to represent a (multi)scale profile e.g. a sequence
-   of statistics on digital lengths parameterized by a grid resolution.
-   (Backport of the ScaleProfile class of
-   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
-   (Bertrand Kerautret, Jacques-Olivier Lachaud
-   [#1075](https://github.com/DGtal-team/DGtal/pull/1075))
-
-
-
-- *Math Package*
- - MultiStatistics: new class to compute different statistics (like mean
-   variance, median) on multiple variables.
-   (Backport of the Statistics class of
-   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
-   (Bertrand Kerautret, Jacques-Olivier Lachaud
-   [#1076](https://github.com/DGtal-team/DGtal/pull/1076))
 
 ## Changes
 - *DEC Package*
