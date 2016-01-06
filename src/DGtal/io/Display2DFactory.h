@@ -67,6 +67,7 @@
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/Object.h"
+#include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
@@ -359,6 +360,13 @@ template <typename TDigitalTopology, typename TDigitalSet>
 template <typename TDigitalTopology, typename TDigitalSet>
   static void draw( DGtal::Board2D & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
 // Object
+
+
+// CubicalComplex
+template < typename TKSpace, typename TCellContainer >
+  static void draw( DGtal::Board2D & board, const DGtal::CubicalComplex<TKSpace, TCellContainer> & );
+// CubicalComplex
+
     
     
 // PointVector

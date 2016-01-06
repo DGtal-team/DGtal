@@ -26,8 +26,9 @@ SET(DGTAL_TESTS_SRC
    testClone2
    testOwningOrAliasingPtr
    testCatch
-   testSimpleRandomAccessRangeFromPoint
-   )
+   testContainerTraits
+   testSetFunctions
+   testSimpleRandomAccessRangeFromPoint)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
