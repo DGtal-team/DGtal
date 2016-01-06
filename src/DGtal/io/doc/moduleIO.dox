@@ -99,7 +99,10 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 |            | Longvol | Volumetric file format  (long)  | the functor should return a DGtal::uint64_t | LongvolWriter | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
 |            | HDF5    | HDF5 file with 3D UInt8 image dataset(s)  | the functor should return a DGtal::uint8_t | HDF5Writer    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/ |
 |            | any 3D ITK format | Any 3D ITK image   | the functor should return a ITKIOTrait<Image::Value>::ValueOut | ITKWriter | with @a WITH_ITK build flag, http://www.itk.org/ |
-|         nD | Raw8    | raw binary file format on 8bits | the functor should return an unsigned char  | RawWriter     |                                                          |
+|         nD | Raw8    | raw binary file format on 8bits     | the functor should return an unsigned char   | RawWriter     |                                                          |
+|            | Raw16   | raw binary file format on 16bits    | the functor should return an unsigned short  | RawWriter     |                                                          |
+|            | Raw32   | raw binary file format on 32bits    | the functor should return an unsigned int    | RawWriter     |                                                          |
+|            | Raw     | raw binary file format for any type | the functor should return the same type as specified in the template parameter of RawWriter::exportRaw | RawWriter     |                                                          |
 
 
 @note Since DGtal doesn't integrate ITK by default, ITK image should by writen directly using the ITKWriter class.
@@ -113,7 +116,7 @@ For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template c
 
 
 
-The class GenericWriter (DGtal/io/reader/GenericWriter.h) allows to
+The class GenericWriter allows to
 automatically export any image (2d, 3d, nd) from its filename. The
 class is templated with an image container type, a dimension value (given by
 default by the image container dimension), a value type, (also given
@@ -180,7 +183,9 @@ DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::expo
 |            | HDF5              | HDF5 file with 3D UInt8 image dataset(s)                    | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
 |            | any 3D ITK format | Any file format in the ITK library (mhd, mha, ...)          | ITKReader     | with @a WITH_ITK build flag, http://www.itk.org/               |
 |         nD | Raw8              | raw binary file format on 8bits                             | RawReader     |                                                                |
+|            | Raw16             | raw binary file format on 16bits                            | RawReader     |                                                                |
 |            | Raw32             | raw binary file format on 32bits                            | RawReader     |                                                                |
+|            | Raw               | raw binary file format for any type                         | RawReader     |                                                                |
 
 @note Since DGtal doesn't integrate ITK by default, ITK image should by read directly using the ITKReader class.
 @code
@@ -188,7 +193,7 @@ DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::expo
 @endcode
 
 
-The class GenericReader (DGtal/io/reader/GenericReader.h) allows to
+The class GenericReader allows to
 automatically import any image (2d, 3d, nd) from its filename. The
 class is templated with an image container type, a dimension value
 (given by default by the image container dimension), a value type,

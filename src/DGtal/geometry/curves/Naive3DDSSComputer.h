@@ -43,7 +43,7 @@
 #include <iostream>
 #include <list>
 #include <utility>
-#include <boost/array.hpp>
+#include <array>
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
@@ -118,7 +118,7 @@ class Naive3DDSSComputer
     /// Type of 2d digital point
     typedef DGtal::PointVector< 2, Coordinate > Point2d;
     /// Type of 3d rational point
-    typedef boost::array< Quotient, 3 > PointR3d;
+    typedef std::array< Quotient, 3 > PointR3d;
     /// Adapter for iterators
     typedef functors::Projector< SpaceND< 2, Coordinate > > Projector2d;
     /// Iterator over adapter

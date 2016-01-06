@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -89,10 +90,25 @@ namespace DGtal
   template <typename TPoint >
   class Mesh
   {   
-    
+
     
     // ----------------------- associated types ------------------------------
   public:
+
+    
+    /**
+     * Main type associated to the mesh vertices.
+     **/    
+    typedef TPoint Point;    
+
+    
+    
+    /**
+     * Type to represent real points which can be obtained from  various methods (like getFaceBarycenter).
+     **/    
+    typedef  typename DGtal::PointVector<TPoint::dimension, double> RealPoint;
+
+    
     /**
      * Structure for representing the faces from the vertex index.
      **/
@@ -159,7 +175,6 @@ namespace DGtal
      * Destructor.
      */
     ~Mesh();
-
 
    /**
      * Copy constructor.
@@ -240,7 +255,16 @@ namespace DGtal
     **/    
     void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);
     
-    
+
+    /**
+     * Remove faces from the mesh. @note the vertexes which are no
+     * more associated to any face are also removed.
+     * 
+     * @param[in] facesIndex the index of the face to be removed.
+     **/
+    void removeFaces(const std::vector<unsigned int>  &facesIndex);
+   
+ 
     /**
      * @param i the index of the vertex.
      * @return a const reference to the vertex of index i. 
@@ -261,6 +285,14 @@ namespace DGtal
      **/
     const MeshFace & getFace(unsigned int i) const;
 
+
+    /**
+     * @param i the index of the face.
+     * @return barycenter (RealPoint) of the face of index i.
+     **/
+    RealPoint getFaceBarycenter(unsigned int i) const;    
+
+
     
     /**
      * @param i the index of the face.
@@ -268,7 +300,6 @@ namespace DGtal
      **/
     MeshFace & getFace(unsigned int i);
     
-
 
 
     /**
@@ -464,9 +495,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     FaceStorage  myFaceList;
-    VertexStorage myVertexList;
-    
-    
+    VertexStorage myVertexList;    
     ColorStorage myFaceColorList;
     bool mySaveFaceColor;
     DGtal::Color myDefaultColor;

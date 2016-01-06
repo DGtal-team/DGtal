@@ -73,8 +73,6 @@ bool testcpp11()
   trace.info() <<  "Forward list ok"<<std::endl;
 #endif
 
-
-
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "

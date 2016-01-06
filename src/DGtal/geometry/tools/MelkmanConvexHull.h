@@ -191,7 +191,15 @@ namespace DGtal
      **/
     void clear();
     
-    
+    /**
+     * Reverse the convex hull container allowing to change the order
+     * of adding points from the front or from the back in reference
+     * to an input contour. Such a reverse is important to avoid wrong
+     * convexhull and to allow convex hull extension from two directions.
+     **/
+    void reverse();
+
+
     // ------------------------- Private Datas --------------------------------
   private:
     /**
@@ -211,6 +219,10 @@ namespace DGtal
      * Used to define a default functor to allow default constructor
      **/
     Functor myDefaultFunctor;
+    /**
+     * first point used to reverse the convexhull container.
+     **/
+    Point myFirstPoint; 
 
     // ------------------------- Internals ------------------------------------
   private:

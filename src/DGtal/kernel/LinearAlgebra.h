@@ -78,7 +78,7 @@ namespace DGtal
      * 
      * @param out the output stream.
      */
-    static void selfDisplay(std::ostream &out);
+    void selfDisplay(std::ostream &out) const;
 
     /** 
      * @return true if the instance is valid.

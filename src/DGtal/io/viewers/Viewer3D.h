@@ -147,7 +147,9 @@ namespace DGtal
      * Constructor
      */
     Viewer3D() :QGLViewer(), Display3D<Space, KSpace>()
-    {};
+    {
+      resize(800,600);
+    };
 
     /**
      *Constructor with a khalimsky space
@@ -241,7 +243,9 @@ namespace DGtal
     bool myViewWire;
     /// to improve the display of gl line
     double myGLLineMinWidth;
-
+    /// flag to save automatically or not the Viewer3d state when closing the viewer
+    bool myAutoSaveState;
+    
     /**
      * Used to display the 2D domain of an image.
      * @note has to be public because of external functions
@@ -753,8 +757,28 @@ namespace DGtal
      * @param e the QKeyEvent
      **/
     virtual void keyPressEvent ( QKeyEvent *e );
-
-
+    
+    /**
+     * Used to manage a mouse move event (to handle light move).
+     *
+     * @param e the QMouseEvent
+     **/
+    virtual void mouseMoveEvent ( QMouseEvent *e );
+    
+    /**
+     * Used to manage a mouse press event (to handle light move).
+     *
+     * @param e the QMouseEvent
+     **/
+    virtual void mousePressEvent ( QMouseEvent *e );
+    
+    /**
+     * Used to manage a mouse release event (to handle light move).
+     *
+     * @param e the QMouseEvent
+     **/
+    virtual void mouseReleaseEvent ( QMouseEvent *e );
+    
     /**
      * Used to sort pixel from camera
      **/
@@ -869,8 +893,42 @@ namespace DGtal
 
 
 
+    /**
+     * @brief Overload of the QGLViewer method which returns an XML
+     * QDomElement representing the QGLViewer state. This overload adds the light
+     * position attribute.
+     *
+     * @param name the name of the QDomElement tag.  
+     * @param document the QDomElement factory used to create QDomElement.
+     * @see initFromDOMElement
+     */
+    virtual  QDomElement domElement(const QString& name, QDomDocument& document) const;
+    
 
+    /**
+     * @brief Overload of the QGLViewer method which restores the
+     * viewer state from a QDomDocument element. This overload
+     * recovers and loads default viewer attributes with the add of the
+     * the light position.
+     *
+     * @param element QDomDocument used to apply the restoration.
+     *
+     * @see domElement
+     */    
+    virtual void initFromDOMElement(const QDomElement& element);
+    
+    
+    /**
+     * @brief Overload the QWidget method to customize the viewer state auto saving.
+     * Now it save the viewer state if the flag myAutoSaveState is true (false by default)
+     * and call the QGLWidget::closeEvent().
+     * @param e the QCloseEvent calling the method.
+     */
+    
+    protected: virtual void closeEvent	(	QCloseEvent * 	e	);
+    
 
+    
     // ------------------------- Internals ------------------------------------
   private:
 
@@ -1192,6 +1250,7 @@ namespace DGtal
 
     /**
      * Rotate a vertex from a given angle, a center point and a rotation direction.
+     * @tparam TValues the type of coordinate to be rotated.
      * @param  x the x coordinate of the point to rotated (return).
      * @param  y the y coordinate of the point to rotated (return).
      * @param  z the z coordinate of the point to rotated (return).
@@ -1201,9 +1260,10 @@ namespace DGtal
      * @param rotationAngle the angle of the rotation.
      * @param rotationDir the rotation is applied around this axis direction.
      **/
-
+    
+    template <typename TValues>
     static
-    void  rotatePoint(double &x, double &y, double &z,
+    void  rotatePoint(TValues &x, TValues &y, TValues &z,
           double cx, double cy, double cz,
           double rotationAngle, ImageDirection rotationDir);
 
@@ -1255,6 +1315,10 @@ namespace DGtal
     double camera_direction[3]; ///< camera direction
     double camera_upVector[3]; ///< camera up-vector
 
+    float myLightTheta; /// the light position (inclination)
+    float myLightPhi; /// the light position (azimuth)
+    float myLightR; /// the light position (distance)
+    GLfloat myLightPosition [4]; // the light position in cartesian coordinates
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
 
@@ -1265,6 +1329,12 @@ namespace DGtal
     float myGLScaleFactorX;
     float myGLScaleFactorY;
     float myGLScaleFactorZ;
+
+    // Used to apply interactive light rotation
+    float myLigthRotationStep; /// the angle rotation increment used for interactive light move
+    int myRefMouseXPos; /// the reference mouse x-position used to determince the light position change (azimuth)
+    int myRefMouseYPos; /// the reference mouse y-position used to determince the light position change (inclination)
+    bool myIsMovingLight; /// flag to display the ligth source when it is moved by the user
 
     /// Used to store all displayed images
     std::vector<TextureImage> myGSImageList;

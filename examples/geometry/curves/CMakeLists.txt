@@ -2,7 +2,11 @@ add_subdirectory(estimation)
 
 SET(DGTAL_EXAMPLES_SRC
   greedy-dss-decomposition
+  greedyAlphaThickDecomposition
   convex-and-concave-parts
+  exampleAlphaThickSegment
+  exampleAlphaThickSegmentNoisy
+  exampleAlphaThickSegmentTgtCover
   exampleGridCurve2d
   exampleStabbingLineComputer
   exampleStabbingCircleComputer

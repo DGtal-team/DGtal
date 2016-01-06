@@ -43,7 +43,10 @@
 
 #include <limits>
 #include <QColor>
-
+#include <QTextEdit>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QDir>
 
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
@@ -70,7 +73,7 @@ DGtal::Viewer3D<Space, KSpace>::rotateDomain(Image2DDomainD3D &anDom, double ang
   pt[1] = (int) (anDom.point1[1]+anDom.point2[1]+anDom.point3[1]+anDom.point4[1])/4.0;
   pt[2] = (int) (anDom.point1[2]+anDom.point2[2]+anDom.point3[2]+anDom.point4[2])/4.0;
   rotateImageVertex(anDom, angleRotation, rotationDir);
-
+  
   std::vector<typename DGtal::Display3D<Space, KSpace>::LineD3D> &aVectLine = Viewer3D<Space, KSpace>::myLineSetList.at(anDom.myLineSetIndex);
   for(unsigned int i = 0; i< aVectLine.size();i++){
     typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine = aVectLine.at(i);
@@ -81,9 +84,10 @@ DGtal::Viewer3D<Space, KSpace>::rotateDomain(Image2DDomainD3D &anDom, double ang
 
 
 template < typename Space ,typename KSpace >
+template <typename TValues>
 inline
 void
-DGtal::Viewer3D<Space, KSpace>::rotatePoint(double &x, double &y, double &z, double cx, double cy, double cz,
+DGtal::Viewer3D<Space, KSpace>::rotatePoint(TValues &x, TValues &y, TValues &z, double cx, double cy, double cz,
                                             double angleRotation, ImageDirection rotationDir){
   double dx = x-cx; double dy = y-cy; double dz = z-cz;
   if(rotationDir  == zDirection){
@@ -663,13 +667,16 @@ inline
 void
 DGtal::Viewer3D<Space, KSpace>::draw()
 {
+  
+  
   glPushMatrix();
   glMultMatrixd ( manipulatedFrame()->matrix() );
   glPushMatrix();
   glScalef(myGLScaleFactorX, myGLScaleFactorY, myGLScaleFactorZ);
+  glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
   unsigned int i = 0;
   typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
-
+  
   // OpenGL can't draw more than GL_MAX_CLIP_PLANES clipping plane
   while ( i < GL_MAX_CLIP_PLANES && it !=Viewer3D<Space, KSpace>::myClippingPlaneList.end() )
     {
@@ -697,7 +704,6 @@ DGtal::Viewer3D<Space, KSpace>::draw()
     {
       GLTextureImage &textureImg = myVectTextureImage.at(j);
       glPushName ( textureImg.myTextureName );
-      glEnable(GL_LIGHTING);
       glEnable(GL_TEXTURE_2D);
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
       glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
@@ -718,22 +724,6 @@ DGtal::Viewer3D<Space, KSpace>::draw()
 
     }
 
-  for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
-    {
-      if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
-        {
-          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam );
-        }
-      glCallList(myBallSetListId+j);
-    }
- for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
-	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
-    {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
-        {
-          glDrawGLBall ( *it_s );
-        }
-    }
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
     {
@@ -750,6 +740,22 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList( myCubeSetListId+j);
     }
 
+  for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
+    {
+      if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
+        {
+          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam );
+        }
+      glCallList(myBallSetListId+j);
+    }
+ for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
+	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
+    {
+      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
+        {
+          glDrawGLBall ( *it_s );
+        }
+    }
 
   glDisable(GL_CULL_FACE);
   glCallList(myQuadsMapId);
@@ -775,10 +781,12 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList(myPolygonSetListWiredId);
     }
 
- 
+  if(myIsMovingLight){
+    drawLight(GL_LIGHT0);
+  }
+  
    glPopMatrix();
    glPopMatrix();
-   drawLight(GL_LIGHT1);
 }
 
 
@@ -797,22 +805,36 @@ DGtal::Viewer3D<Space, KSpace>::isValid() const
   return true;
 }
 
-
-
-#if defined( max )
-#undef max
-#define _HAS_MSVC_MAX_ true
-#endif
-
-#if defined( min )
-#undef min
-#define _HAS_MSVC_MIN_ true
-#endif
-
 template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::init()
 {
+  GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+  GLfloat mat_shininess[] = { 50.0 };
+  myAutoSaveState = false;
+  myIsMovingLight = false;
+  myLigthRotationStep = 0.01;
+  myRefMouseXPos = 0;
+  myRefMouseYPos = 0;
+  myLightTheta = M_PI/8.0; 
+  myLightPhi = M_PI/4.0; 
+  myLightR = 1.0; 
+  myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
+  myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
+  myLightPosition[2] = myLightR*sin(myLightTheta);
+  myLightPosition[3] = 0.0;
+
+  glClearColor (0.0, 0.0, 0.0, 0.0);
+  glShadeModel (GL_SMOOTH);
+  
+  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+  glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+  glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
+  
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_DEPTH_TEST);
+  
   Viewer3D<Space, KSpace>::myMeshDefaultLineWidth=10.0;
   myNbListe=0;
   myViewWire=false;
@@ -820,7 +842,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myGLScaleFactorY=1.0;
   myGLScaleFactorZ=1.0;
   myGLLineMinWidth=1.5;
-
+  setBackgroundColor ( QColor ( 217, 228, 255 ) );
   myIsDoubleFaceRendering=true;
   Viewer3D<Space, KSpace>::createNewCubeList ( );
   vector<typename Viewer3D<Space, KSpace>::LineD3D> listeLine;
@@ -848,13 +870,19 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_E, "Export the current display into OFF file (just Cube, surfel and SurfelPrism for now)." );
   setKeyDescription ( Qt::Key_W, "Switch display with and without wired view of triangle and quad faces." );
   setKeyDescription ( Qt::Key_T, "Sort elements for display improvements." );
-  setKeyDescription ( Qt::Key_L, "Load last visualisation settings." );
+  setKeyDescription ( Qt::Key_L, "Load last visualisation settings (from a .qglviewer.xml file generated by using SHIFT+L)");
   setKeyDescription ( Qt::ShiftModifier+Qt::Key_L, "Save visualisation settings." );
   setKeyDescription ( Qt::Key_B, "Switch background color with White/Black colors." );
   setKeyDescription ( Qt::Key_C, "Show camera informations." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
   setKeyDescription ( Qt::Key_D, "Enable/Disable the two side face rendering." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
+#if !defined (QGLVIEWER_VERSION) || QGLVIEWER_VERSION < 0x020500
+  setMouseBindingDescription((Qt::ControlModifier|Qt::ShiftModifier) + Qt::LeftButton, "move light source position defined in the main coordinate system (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
+#else
+  setMouseBindingDescription(Qt::ControlModifier|Qt::ShiftModifier, Qt::LeftButton, "move light source position defined in the main coordinate system (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
+#endif
+
 
   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
@@ -866,14 +894,6 @@ DGtal::Viewer3D<Space, KSpace>::init()
 
   setManipulatedFrame ( new ManipulatedFrame() );
 }
-
-#if defined( _HAS_MSVC_MAX_ )
-#define max(A,B) ((A)>(B)?(A):(B))
-#endif
-
-#if defined( _HAS_MSVC_MIN_ )
-#define min(A,B) ((A)<(B)?(A):(B))
-#endif
 
 
 template< typename Space, typename KSpace>
@@ -900,7 +920,6 @@ DGtal::Viewer3D<Space, KSpace>::sortTriangleFromCamera()
   comp.posCam= camera()->position();
   for (typename std::vector<std::vector< typename Viewer3D<Space, KSpace>::TriangleD3D> >::iterator it = Viewer3D<Space, KSpace>::myTriangleSetList.begin(); it != Viewer3D<Space, KSpace>::myTriangleSetList.end(); it++)
     {
-      //DGtal::trace.info() << "sort triangle size" << it->size() << std::endl;
       sort ( it->begin(), it->end(), comp );
     }
 
@@ -1123,6 +1142,55 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>:
   }
 }
 
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::mousePressEvent ( QMouseEvent *e )
+{
+  if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier)){
+    myIsMovingLight=true;
+    myRefMouseXPos = e->x();
+    myRefMouseYPos = e->y();
+  }else{
+    QGLViewer::mousePressEvent(e);
+  }
+}
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::mouseReleaseEvent ( QMouseEvent *e )
+{
+  if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier) || myIsMovingLight){
+    myIsMovingLight=false;
+    updateGL();
+  }else{
+    QGLViewer::mouseReleaseEvent(e);
+  }
+}
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::mouseMoveEvent ( QMouseEvent *e )
+{
+  if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier)){
+    int varX = e->x() - myRefMouseXPos; 
+    int varY = e->y() - myRefMouseYPos; 
+    myLightPhi += varX*myLigthRotationStep;
+    myLightTheta += varY*myLigthRotationStep/2.0;
+    myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
+    myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
+    myLightPosition[2] = myLightR*sin(myLightTheta);
+    myLightPosition[3] = 0.0;
+    
+    glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
+    myRefMouseXPos = e->x();
+    myRefMouseYPos = e->y();
+    updateGL();
+  }else{
+    QGLViewer::mouseMoveEvent(e);
+  }
+}
+
+
+
 
 template< typename Space, typename KSpace>
 void
@@ -1187,7 +1255,7 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
         }
       else
         {
-          setBackgroundColor ( QColor ( 51, 51, 51 ) );
+          setBackgroundColor ( QColor ( 217, 228, 255 ) );
         }
       updateGL();
     }
@@ -1641,4 +1709,72 @@ DGtal::Viewer3D<Space, KSpace>::glUpdateTextureImages(const  VectorTextureImage 
       myVectTextureImage.push_back(textureImg);
     }
 }
+
+
+
+template< typename Space, typename KSpace>
+QDomElement
+DGtal::Viewer3D<Space, KSpace>::domElement(const QString& name, QDomDocument& document) const
+{
+  // Creates a custom node for a light  position
+  QDomElement de = document.createElement("Light");
+  de.setAttribute("pos_light_phi", myLightPhi);
+  de.setAttribute("pos_light_theta", myLightTheta);
+  de.setAttribute("pos_light_r", myLightR);
+  // Get default state domElement and append custom node
+  QDomElement res = QGLViewer::domElement(name, document);
+  res.appendChild(de);
+  return res;
+}
+
+
+
+
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::initFromDOMElement(const QDomElement& element)
+{
+  // Restore standard state
+  QGLViewer::initFromDOMElement(element);
+  QDomElement child=element.firstChild().toElement();
+  while (!child.isNull())
+  {
+    if (child.tagName() == "Light")
+    {
+      if (child.hasAttribute("pos_light_phi")){
+        myLightPhi = child.attribute("pos_light_phi").toDouble();
+      }
+      
+      if (child.hasAttribute("pos_light_theta")){
+        myLightTheta = child.attribute("pos_light_theta").toDouble();
+      }
+      if (child.hasAttribute("pos_light_r")){
+        myLightR = child.attribute("pos_light_r").toDouble();
+      }
+    }
+    child = child.nextSibling().toElement();
+  }
+  
+  myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
+  myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
+  myLightPosition[2] = myLightR*sin(myLightTheta);
+  myLightPosition[3] = 0.0;
+  updateGL();
+}
+
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::closeEvent	(	QCloseEvent * 	e	){
+  if (myAutoSaveState)
+  {
+    saveStateToFile();
+  }
+  QGLWidget::closeEvent(e);
+}
+
+
+
+
 
