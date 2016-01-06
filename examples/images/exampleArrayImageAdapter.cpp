@@ -27,10 +27,6 @@
  * This file is part of the DGtal library.
  */
 
-#if __cplusplus < 201103L
-  #error This test file needs C++11 features.
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

@@ -36,10 +36,6 @@
 /** Prevents repeated inclusion of headers. */
 #define ArrayImageAdapter_h
 
-#if __cplusplus < 201103L
-  #error ArrayImageAdapter.h requires C++11.
-#endif
-
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <boost/concept/assert.hpp>
@@ -103,7 +99,6 @@ namespace DGtal
    *
    * @warning The array must be column-major ordered (but row-major order could be later accepted via template parameter, if needed ?)
    * @warning The domain must be an HyperRectDomain.
-   * @warning C++11 needs to be enabled in order to use this class.
    *
    * @tparam TArrayIterator Type of a random-access iterator over the datas (can be a T* pointer).
    * @tparam TSpace Type of the space associated to the HyperRectDomain (auto-deduced from TDomain template, see ArrayImageAdapter).
@@ -281,7 +276,7 @@ namespace DGtal
         }
 
       /**
-       * @return a constant iterator pointing to the lower bound of the viewable domain (C++11).
+       * @return a constant iterator pointing to the lower bound of the viewable domain.
        */
       inline
       ConstIterator cbegin() const
@@ -308,7 +303,7 @@ namespace DGtal
         }
 
       /**
-       * @return a constant iterator pointing after the upper bound of the viewable domain (C++11).
+       * @return a constant iterator pointing after the upper bound of the viewable domain.
        */
       inline
       ConstIterator cend() const
