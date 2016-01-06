@@ -405,7 +405,7 @@ namespace DGtal
     /// Template rebinding for defining the type that is a mapping
     /// Cell -> Value.
     template <typename Value> struct CellMap {
-      typedef std::map<SCell,Value> Type;
+      typedef std::map<Cell,Value> Type;
     };
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
