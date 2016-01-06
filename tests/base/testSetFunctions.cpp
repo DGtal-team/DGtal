@@ -100,10 +100,12 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
 
 
 static const int NB = 10000;
+static std::default_random_engine generator;
+static std::uniform_int_distribution<int> distribution(1,NB);
 
 int randomNB( int n )
 {
-  return std::random() % n;
+  return distribution(generator);
 }
 
 ////////////////////////////// operator | //////////////////////////////
