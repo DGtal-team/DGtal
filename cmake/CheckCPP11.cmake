@@ -44,6 +44,26 @@ if ( CPP11_ARRAY )
   add_definitions("-DCPP11_ARRAY")
 endif ( CPP11_ARRAY)
 
+try_compile( CPP11_UNORDERED_SET
+  ${CMAKE_BINARY_DIR}/CMakeTmp
+  ${CMAKE_SOURCE_DIR}/cmake/src/cpp11/cpp11_unordered_set.cpp
+  COMPILE_DEFINITIONS "-std=c++0x"
+  OUTPUT_VARIABLE OUTPUT
+  )
+if ( CPP11_UNORDERED_SET )
+  add_definitions("-DCPP11_UNORDERED_SET")
+endif ( CPP11_UNORDERED_SET)
+
+try_compile( CPP11_UNORDERED_MAP
+  ${CMAKE_BINARY_DIR}/CMakeTmp
+  ${CMAKE_SOURCE_DIR}/cmake/src/cpp11/cpp11_unordered_map.cpp
+  COMPILE_DEFINITIONS "-std=c++0x"
+  OUTPUT_VARIABLE OUTPUT
+  )
+if ( CPP11_UNORDERED_MAP )
+  add_definitions("-DCPP11_UNORDERED_MAP")
+endif ( CPP11_UNORDERED_MAP)
+
 try_compile( CPP11_RREF_MOVE
   ${CMAKE_BINARY_DIR}/CMakeTmp
   ${CMAKE_SOURCE_DIR}/cmake/src/cpp11/rref-move.cpp
