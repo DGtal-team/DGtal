@@ -30,7 +30,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>
-#include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -77,7 +76,7 @@ displayRange( Viewer3D & viewer, InputIterator it, InputIterator itE )
 template <typename Domain>
 std::vector<typename Domain::Point> pointsInStandardPlane
 ( const Domain & domain,
-  typename Domain::Integer a, 
+  typename Domain::Integer a,
   typename Domain::Integer b,
   typename Domain::Integer c,
   typename Domain::Integer mu )
@@ -115,17 +114,17 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Testing class COBAGenericStandardPlaneComputer" );
   trace.info() << "Recognizing plane "
                << mu << " <= " << a << " * x + "
-               << b << " * y + " << c << " * z < " 
+               << b << " * y + " << c << " * z < "
                << (mu+abs(a)+abs(b)+abs(c)) << std::endl;
   Domain domain1( Point( -diameter, -diameter, -diameter ),
                   Point(  diameter,  diameter,  diameter ) );
-  
+
   typedef COBAGenericStandardPlaneComputer<Z3, BigInteger> PlaneComputer;
   typedef PlaneComputer::Primitive Primitive;
   PlaneComputer plane;
   plane.init( 2*diameter, 1, 1 );
-  
-  std::vector<Point> recognized = pointsInStandardPlane( domain1, 
+
+  std::vector<Point> recognized = pointsInStandardPlane( domain1,
                                                          a, b , c, mu );
   ++nb, nbok += plane.extend( recognized.begin(), recognized.end() ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb
@@ -133,7 +132,7 @@ int main( int argc, char** argv )
   trace.info() << " - Plane=" << plane
                << std::endl;
   Primitive strip = plane.primitive();
-  trace.info() << "strip=" << strip 
+  trace.info() << "strip=" << strip
                << " axis=" << strip.mainAxis()
                << " axiswidth=" << strip.axisWidth()
                << " diag=" << strip.mainDiagonal()
