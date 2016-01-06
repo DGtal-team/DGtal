@@ -19,6 +19,9 @@
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
  * @date 2015/12/27
  *
  * Implementation of inline methods defined in MeaningfulScaleAnalysis.h
@@ -92,28 +95,33 @@ DGtal::MeaningfulScaleAnalysis<TProfile>::getSlopeFromMeaningfulScales(const dou
   myProfile.getProfile( vx, vy );
   // no meaningfulScale interval: 
   
-  if(vectIntervals.size()!=0 && vectIntervals.at(0).first<vectIntervals.at(0).second ){
-    resuSlope.first=true;
-  }else{
-    std::pair<unsigned int, unsigned int> interAll(1, vx.size());
-    vectIntervals.push_back(interAll); 
-  }
+  if(vectIntervals.size()!=0 && vectIntervals.at(0).first<vectIntervals.at(0).second )
+    {
+      resuSlope.first=true;
+    }
+  else
+    {
+      std::pair<unsigned int, unsigned int> interAll(1, vx.size());
+      vectIntervals.push_back(interAll); 
+    }
   SimpleLinearRegression SLR;
 
   unsigned int mfsBeg = vectIntervals.at(0).first-1;
   unsigned int mfsEnd = vectIntervals.at(0).second-1;
   
   // Only two sampled points
-  if ( mfsEnd-mfsBeg == 1 ){
-    Z2i::RealPoint pt1(vx.at(mfsBeg),vy.at(mfsBeg));
-    Z2i::RealPoint pt2(vx.at(mfsEnd),vy.at(mfsEnd));
-    double slope = (pt2[1] - pt1[1])/(pt2[0] -pt1[0]);
-    resuSlope.second = slope;
-    return resuSlope;
-  }
-  for(unsigned int i=mfsBeg; i<=mfsEnd; i++){
-    SLR.addSample(vx.at(i), vy.at(i));
-  }
+  if ( mfsEnd-mfsBeg == 1 )
+    {
+      Z2i::RealPoint pt1(vx.at(mfsBeg),vy.at(mfsBeg));
+      Z2i::RealPoint pt2(vx.at(mfsEnd),vy.at(mfsEnd));
+      double slope = (pt2[1] - pt1[1])/(pt2[0] -pt1[0]);
+      resuSlope.second = slope;
+      return resuSlope;
+    }
+  for(unsigned int i=mfsBeg; i<=mfsEnd; i++)
+    {
+      SLR.addSample(vx.at(i), vy.at(i));
+    }
   SLR.computeRegression();
   resuSlope.second = SLR.slope();
   return resuSlope;

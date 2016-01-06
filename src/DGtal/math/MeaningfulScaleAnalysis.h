@@ -56,20 +56,18 @@ namespace DGtal
   // class MeaningfulScaleAnalysis
   /**
    * Description of class 'MeaningfulScaleAnalysis' <p> \brief Aim:
-   * This class proposes the implementation of different methods used
+   * This class implements different methods used
    * to define the meaningful scale analysis as proposed in 
-   * \cite kerautret_meaningful_2012 . In particular, it exploits the
+   * \cite kerautret_meaningful_2012 . In particular, it uses the
    * Profile class to represent a multi-scale profile and to compute a
    * meaningful scale. It also permits to get a noise estimation from
    * the given profile.
    * 
-   *
-   * A typical use is to exploit from the length of maximal segments
-   * obtained at different scales. We show here a simple example of
-   * use with a single profile:
+   * A typical example is for instance the length of maximal segments
+   * obtained at different scales. 
    *
    *
-   * First we start to construct a Profile: 
+   * First we construct a Profile: 
    * @code 
    *   // we need to have the Profile header:
    *   #include "DGtal/math/Profile.h"
@@ -100,9 +98,9 @@ namespace DGtal
    * Finally we can construct the MeaningfulScaleAnalysis object and obtain the meaningful scale:
    * @code 
    *  MeaningfulScaleAnalysis<Profile<LogFct>> msa(sp);
-   *  std::vector< std::pair<uint, uint> > interval;      
-   *  msa.computeMeaningfulScales(interval, 1);
-   *  uint n = msa.noiseLevel();
+   *  std::vector< std::pair<uint, uint> > intervals;      
+   *  msa.computeMeaningfulScales(intervals, 1);
+   *  unsigned int n = msa.noiseLevel();
    * @endcode
    * @see testMeaningfulScaleAnalysis 
    * @tparam TProfile the type of the profile class.

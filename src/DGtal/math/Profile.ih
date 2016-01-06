@@ -18,8 +18,8 @@
  * @file Profile.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
- *
- * @author Jacques-Olivier Lachaud
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  * 
  * @date 2015/11/08
  *
@@ -89,10 +89,11 @@ DGtal::Profile<TValueFunctor, TValue>::init(const unsigned int nb, const bool st
   myXsamples = new std::vector<TValue>( nb );
   myStats = new std::vector< Statistic<TValue> >;
   myStoreValInStats= storeValsInStats;
-  for ( unsigned int i = 0; i < nb; ++i ){
-    (*myXsamples)[ i ] = (TValue) ( i + 1 );
-    myStats->push_back(Statistic<TValue>(storeValsInStats));
-  }
+  for ( unsigned int i = 0; i < nb; ++i )
+    {
+      (*myXsamples)[ i ] = (TValue) ( i + 1 );
+      myStats->push_back(Statistic<TValue>(storeValsInStats));
+    }
 }
 
 
@@ -151,29 +152,34 @@ template<typename TValueFunctor, typename TValue>
 void 
 DGtal::Profile<TValueFunctor, TValue>::stopStatsSaving()
 {
-  for ( unsigned int i = 0; i < myStats->size(); ++i ){
-    ((*myStats).at( i )).terminate();
-  } 
+  for ( unsigned int i = 0; i < myStats->size(); ++i )
+    {
+      ((*myStats).at( i )).terminate();
+    } 
 }
 
 template<typename TValueFunctor, typename TValue>
 inline
 DGtal::Profile<TValueFunctor, TValue>::Profile( const Profile & other ){
-  if(other.myStats!=0 && other.myXsamples!=0){
-    myXsamples = new std::vector<TValue>( other.myXsamples->size() );
-    myStats = new std::vector< Statistic<TValue> > ( other.myXsamples->size());
-    myProfileDef = other.myProfileDef;
-    myStoreValInStats= other.myStoreValInStats;
-    for ( unsigned int i = 0; i < other.myXsamples->size(); ++i ){
-      (*myXsamples)[ i ] = (*other.myXsamples)[i];
-      (*myStats)[ i ] = (*other.myStats)[i];
+  if(other.myStats!=0 && other.myXsamples!=0)
+    {
+      myXsamples = new std::vector<TValue>( other.myXsamples->size() );
+      myStats = new std::vector< Statistic<TValue> > ( other.myXsamples->size());
+      myProfileDef = other.myProfileDef;
+      myStoreValInStats= other.myStoreValInStats;
+      for ( unsigned int i = 0; i < other.myXsamples->size(); ++i )
+        {
+          (*myXsamples)[ i ] = (*other.myXsamples)[i];
+          (*myStats)[ i ] = (*other.myStats)[i];
+        }
     }
-  }else{
-    myStats=0;
-    myXsamples=0;
-    myProfileDef = other.myProfileDef;
-    myStoreValInStats = false;
-  }
+  else
+    {
+      myStats=0;
+      myXsamples=0;
+      myProfileDef = other.myProfileDef;
+      myStoreValInStats = false;
+    }
 }
 
 template<typename TValueFunctor, typename TValue>
@@ -182,24 +188,29 @@ DGtal::Profile<TValueFunctor, TValue> &
 DGtal::Profile<TValueFunctor, TValue>::operator=
 ( const DGtal::Profile<TValueFunctor, TValue> & other )
 {
-  if ( this != &other ) {
-  if(other.myStats!=0 && other.myXsamples!=0){
-    myXsamples = new std::vector<TValue>( other.myXsamples->size() );
-    myStats = new std::vector< Statistic<TValue> > ( other.myXsamples->size());
-    myProfileDef = other.myProfileDef;
-    myStoreValInStats= other.myStoreValInStats;
-    for ( unsigned int i = 0; i < other.myXsamples->size(); ++i ){
-      (*myXsamples)[ i ] = (*other.myXsamples)[i];
-      (*myStats)[ i ] = (*other.myStats)[i];
+  if ( this != &other ) 
+    {
+      if(other.myStats!=0 && other.myXsamples!=0)
+        {
+          myXsamples = new std::vector<TValue>( other.myXsamples->size() );
+          myStats = new std::vector< Statistic<TValue> > ( other.myXsamples->size());
+          myProfileDef = other.myProfileDef;
+          myStoreValInStats= other.myStoreValInStats;
+          for ( unsigned int i = 0; i < other.myXsamples->size(); ++i )
+            {
+              (*myXsamples)[ i ] = (*other.myXsamples)[i];
+              (*myStats)[ i ] = (*other.myStats)[i];
+            }
+        }
+      else
+        {
+          myStats=0;
+          myXsamples=0;
+          myProfileDef = other.myProfileDef;
+          myStoreValInStats=false;
+        }
     }
-  }else{
-    myStats=0;
-    myXsamples=0;
-    myProfileDef = other.myProfileDef;
-    myStoreValInStats=false;
-  }
-  }
-   
+  
   return *this;
 }
 
@@ -218,10 +229,11 @@ DGtal::Profile<TValueFunctor, TValue>::init( Iterator  beginXvalues, Iterator en
   myStats = new std::vector< Statistic<TValue> >;
   
   unsigned int nb = 0;
-  for ( ;  beginXvalues != endXvalues; ++ beginXvalues, ++nb ){
-    myXsamples->push_back( * beginXvalues );
-    myStats->push_back(Statistic<TValue>( myStoreValInStats));
-  }
+  for ( ;  beginXvalues != endXvalues; ++ beginXvalues, ++nb )
+    {
+      myXsamples->push_back( * beginXvalues );
+      myStats->push_back(Statistic<TValue>( myStoreValInStats));
+    }
 }
 
 
