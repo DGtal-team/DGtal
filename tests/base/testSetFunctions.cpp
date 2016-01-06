@@ -103,7 +103,7 @@ static const int NB = 10000;
 
 int randomNB( int n )
 {
-  return random() % n;
+  return std::random() % n;
 }
 
 ////////////////////////////// operator | //////////////////////////////
