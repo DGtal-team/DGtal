@@ -1303,12 +1303,18 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsInside( const Cell & p, DGtal::Dimension k ) const
 {
-  return
-        this->isDimensionPeriodicHelper( k )
-    || (
-           p.myCoordinates[ k ] <= uLast( p, k )
-        && p.myCoordinates[ k ] >= uFirst( p, k )
-  );
+  return this->isDimensionPeriodicHelper( k )
+      || uIsValid( p, k );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uIsInside( const Cell & p ) const
+{
+  return this->isAnyDimensionPeriodicHelper()
+      || uIsValid( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1527,12 +1533,18 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsInside( const SCell & p, DGtal::Dimension k ) const
 {
-  return
-        this->isDimensionPeriodicHelper( k )
-    ||  (
-            p.myCoordinates[ k ] <= sLast( p, k )
-         && p.myCoordinates[ k ] >= sFirst( p, k )
-  );
+  return this->isDimensionPeriodicHelper( k )
+      || sIsValid( p, k );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sIsInside( const SCell & p ) const
+{
+  return this->isAnyDimensionPeriodicHelper()
+      || sIsValid( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
