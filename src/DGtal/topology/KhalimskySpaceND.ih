@@ -632,6 +632,52 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
+uIsValid( const Cell & p, Dimension k ) const
+{
+  return   p.myCoordinates[ k ] <= myCellUpper[ k ]
+        && p.myCoordinates[ k ] >= myCellLower[ k ];
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uIsValid( const Cell & p ) const
+{
+  for ( Dimension k = 0; k < DIM; ++ k )
+    if ( ! uIsValid( p, k ) )
+      return false;
+
+  return true;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sIsValid( const SCell & p, Dimension k ) const
+{
+  return   p.myCoordinates[ k ] <= myCellUpper[ k ]
+        && p.myCoordinates[ k ] >= myCellLower[ k ];
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sIsValid( const SCell & p ) const
+{
+  for ( Dimension k = 0; k < DIM; ++ k )
+    if ( ! uIsValid( p, k ) )
+      return false;
+
+  return true;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
 isSpaceClosed() const
 {
   for ( Dimension i = 0; i < dimension; ++i )
@@ -645,9 +691,9 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
-isSpaceClosed( Dimension d ) const
+isSpaceClosed( Dimension k ) const
 {
-  return myClosure[ d ] != open;
+  return myClosure[ k ] != open;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -667,9 +713,9 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
-isSpacePeriodic( Dimension d ) const
+isSpacePeriodic( Dimension k ) const
 {
-  return myClosure[ d ] == periodic;
+  return myClosure[ k ] == periodic;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
