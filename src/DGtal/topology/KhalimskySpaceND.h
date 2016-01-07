@@ -55,9 +55,11 @@ namespace DGtal
 {
 
   /**
-     @brief Represents an (unsigned) cell in a cellular grid space by its
-     Khalimsky coordinates.
-  */
+   * @brief Represents an (unsigned) cell in a cellular grid space by its
+   * Khalimsky coordinates.
+   * @tparam dim the dimension of the digital space.
+   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
+   */
   template < Dimension dim,
              typename TInteger = DGtal::int32_t >
   struct KhalimskyCell
@@ -101,20 +103,29 @@ namespace DGtal
     KhalimskyCell & operator=( const KhalimskyCell & other );
 
     /**
-       Equality operator.
-       @param other any other cell.
-    */
+     * Equality operator.
+     * @param other any other cell.
+     * @warning Comparison between cells may have no sense for periodic Khalimsky space
+     * if the cells have not been modified through KhalimskySpaceND methods.
+     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
+     */
     bool operator==( const KhalimskyCell & other ) const;
 
     /**
-       Difference operator.
-       @param other any other cell.
+     * Difference operator.
+     * @param other any other cell.
+     * @warning Comparison between cells may have no sense for periodic Khalimsky space
+     * if the cells have not been modified through KhalimskySpaceND methods.
+     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
     */
     bool operator!=( const KhalimskyCell & other ) const;
 
     /**
-       Inferior operator. (lexicographic order).
-       @param other any other cell.
+     * Inferior operator. (lexicographic order).
+     * @param other any other cell.
+     * @warning Comparison between cells may have no sense for periodic Khalimsky space
+     * if the cells have not been modified through KhalimskySpaceND methods.
+     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
     */
     bool operator<( const KhalimskyCell & other ) const;
 
@@ -141,9 +152,11 @@ namespace DGtal
               const KhalimskyCell< dim, TInteger > & object );
 
   /**
-     @brief Represents a signed cell in a cellular grid space by its
-     Khalimsky coordinates and a boolean value.
-  */
+   * @brief Represents a signed cell in a cellular grid space by its
+   * Khalimsky coordinates and a boolean value.
+   * @tparam dim the dimension of the digital space.
+   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
+   */
   template < Dimension dim,
              typename TInteger = DGtal::int32_t >
   struct SignedKhalimskyCell
@@ -187,21 +200,30 @@ namespace DGtal
     SignedKhalimskyCell & operator=( const SignedKhalimskyCell & other );
 
     /**
-       Equality operator.
-       @param other any other cell.
-    */
+     * Equality operator.
+     * @param other any other cell.
+     * @warning Comparison between cells may have no sense for periodic Khalimsky space
+     * if the cells have not been modified through KhalimskySpaceND methods.
+     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
+     */
     bool operator==( const SignedKhalimskyCell & other ) const;
 
     /**
-       Difference operator.
-       @param other any other cell.
-    */
+     * Difference operator.
+     * @param other any other cell.
+     * @warning Comparison between cells may have no sense for periodic Khalimsky space
+     * if the cells have not been modified through KhalimskySpaceND methods.
+     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
+     */
     bool operator!=( const SignedKhalimskyCell & other ) const;
 
     /**
-       Inferior operator. (lexicographic order).
-       @param other any other cell.
-    */
+     * Inferior operator. (lexicographic order).
+     * @param other any other cell.
+     * @warning Comparison between cells may have no sense for periodic Khalimsky space
+     * if the cells have not been modified through KhalimskySpaceND methods.
+     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
+     */
     bool operator<( const SignedKhalimskyCell & other ) const;
 
     // --------------- CDrawableWithBoard2D realization -------------------
@@ -609,7 +631,7 @@ namespace DGtal
      * each cell has unique coordinates.
      */
     bool uIsValid( const Cell & c, Dimension k ) const;
-    
+
     /**
      * @param c a signed cell.
      * @returns \c true if the given unsigned cell has Khalimsky coordinates
@@ -628,7 +650,7 @@ namespace DGtal
      * each cell has unique coordinates.
      */
     bool sIsValid( const SCell & c, Dimension k ) const;
-    
+
     /**
      * @param c an unsigned cell.
      * @returns \c true if the given signed cell has Khalimsky coordinates
@@ -1275,7 +1297,7 @@ namespace DGtal
        @return true if [p] has its coordinates within the allowed bounds.
     */
     bool uIsInside( const Cell & p ) const;
-    
+
     /**
        Useful to check if you are going out of the space.
        @param p any cell.
@@ -1482,7 +1504,7 @@ namespace DGtal
        @return true if [p] has its coordinates within the allowed bounds.
     */
     bool sIsInside( const SCell & p ) const;
-    
+
     /**
        Useful to check if you are going out of the space.
        @param p any cell.
