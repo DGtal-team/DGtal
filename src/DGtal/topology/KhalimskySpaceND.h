@@ -20,6 +20,8 @@
  * @file KhalimskySpaceND.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author Roland Denis (\c roland.denis@univ-smb.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/02/08
  *
@@ -328,13 +330,60 @@ namespace DGtal
    * defined by the parity of the coordinates (even: closed, odd:
    * open).
    *
-   * The space is generally finite (except for arbitrary size
-   * integers). The user should choose between a closed (default) cell
-   * space or an open cell space.
+   * When \b initializing the space using init(),
+   * the user should choose, for each dimension spanned by the space,
+   * between a closed and non-periodic (default) cell dimension,
+   * an open cell dimension or a periodic cell dimension.
+   * The space is generally finite, except for arbitrary size
+   * integers and when the space has a periodic dimension.
+   *
+   * Supposing that the space has been initialized with digital bounds \c lower and \c upper,
+   * the methods lowerBound() and upperBound() will always return, respectively, \c lower and \c upper.
+   * It as also true for periodic dimension, in order to span over the unique digital points of the space.
+   *
+   * In the same way, lowerCell() and upperCell() respect the following rules:
+   * - the k-th Khalimsky coordinate of lowerCell() is equal to:
+   *    - `2*lower[k]` if the k-th dimension is closed or periodic,
+   *    - `2*lower[k]+1` if the k-th dimension is open;
+   * - the k-th Khalimsky coordinate of upperCell() is equal to:
+   *    - `2*upper[k]+2` if the k-th dimension is closed,
+   *    - `2*upper[k]+1` if the k-th dimension is open or periodic.
+   *    .
+   * .
+   * The special behavior for __periodic dimensions__ guarantees that each cell has unique
+   * Khalimsky coordinates in this range.
+   * It is useful to span the space and also for cell-based containers (see e.g. CubicalComplex).
+   * Uniqueness also gives meaning to equality tests between cells.
+   *
+   * Following this concept, the related methods size(), min(), max(),
+   * uFirst(), uLast(), uGetMin(), uGetMax(), uDistanceToMin(), uDistanceToMax(),
+   * sFirst(), sLast(), sGetMin(), sGetMax(), sDistanceToMin() and sDistanceToMax()
+   * behave for periodic dimensions like for finite dimensions, using the bounds described above.
+   *
+   * Thus, if a cell needs to be __compared to the bounds__, prefer using dedicated tests like
+   * uIsMin(), uIsMax(), sIsMin() and sIsMax() that return always \c false for a periodic dimension,
+   * and uIsInside() and sIsInside() that return always \c true for a periodic dimension.
+   *
+   * To be consistent with those choices, each cell returned or modified by a KhalimskySpaceND method
+   * will have his Khalimsky coordinates along periodic dimensions between the corresponding
+   * coordinates of lowerCell() and upperCell().
+   * But, in order to keep low computational cost, each cell passed by parameter to a KhalimskySpaceND
+   * method must follow the same conditions.
+   * This validity can be tested with the dedicated methods uIsValid() and sIsValid().
+   *
+   * Exceptions exist for uCell(const Cell &) const and sCell(const SCell &) const that are specially featured
+   * to correct Khalimsky coordinates of a given cell.
+   * In addition, methods returning digital or Khalimsky coordinate of a cell have a flag to control if this
+   * coordinate must be corrected.
+   * However, when a method accepts a coordinate as parameter, it is always corrected along periodic dimensions.
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
-   * NB: Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * @note Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   *
+   * @warning Periodic Khalimsky space and per-dimension closure specification are new features.
+   * Therefore, there is no guarantee that it is compatible with the whole DGtal library.
+   *
   */
   template < Dimension dim,
              typename TInteger = DGtal::int32_t >
@@ -342,9 +391,9 @@ namespace DGtal
     : private KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >
   {
 
-    typedef KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > > Helper;
+    typedef KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > > Helper; ///< Features basic operations on coordinates, especially for periodic dimensions.
     friend class KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >;
-    
+
     //Integer must be signed to characterize a ring.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
@@ -469,14 +518,14 @@ namespace DGtal
     bool init( const Point & lower,
                const Point & upper,
                bool isClosed );
-    
+
     /**
      * Specifies the upper and lower bounds for the maximal cells in
      * this space.
      *
      * @param lower the lowest point in this space (digital coords)
      * @param upper the upper point in this space (digital coords)
-     * @param closure \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic), 
+     * @param closure \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic),
      *        open or periodic in every dimension.
      *
      * @return true if the initialization was valid (ie, such bounds
@@ -492,7 +541,7 @@ namespace DGtal
      *
      * @param lower the lowest point in this space (digital coords)
      * @param upper the upper point in this space (digital coords)
-     * @param closure an array of \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic), 
+     * @param closure an array of \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic),
      *        open or periodic in the corresponding dimension.
      *
      * @return true if the initialization was valid (ie, such bounds
@@ -501,7 +550,7 @@ namespace DGtal
     bool init( const Point & lower,
                const Point & upper,
                Closure closure[dim] );
-    
+
     /// @}
 
     // ------------------------- Basic services ------------------------------
@@ -511,38 +560,83 @@ namespace DGtal
   public:
 
     /**
-       @param k a coordinate (from 0 to 'dim()-1').
-       @return the width of the space in the [k]-dimension.
-    */
+     * @param k a coordinate (from 0 to 'dim()-1').
+     * @return the width of the space in the [k]-dimension.
+     * @note for periodic dimension, it returns the number of unique coordinates along that dimension.
+     */
     Size size( Dimension k ) const;
+
     /**
-       @param k a coordinate (from 0 to 'dim()-1').
-       @return the minimal coordinate in the [k]-dimension.
+     * @param k a coordinate (from 0 to 'dim()-1').
+     * @return the minimal coordinate in the [k]-dimension.
      */
     Integer min( Dimension k ) const;
+
     /**
-       @param k a coordinate (from 0 to 'dim()-1').
-       @return the maximal coordinate in the [k]-dimension.
+     * @param k a coordinate (from 0 to 'dim()-1').
+     * @return the maximal coordinate in the [k]-dimension.
      */
     Integer max( Dimension k ) const;
+
     /**
-       @return the lower bound for digital points in this space.
-    */
+     * @return the lower bound for digital points in this space.
+     */
     const Point & lowerBound() const;
+
     /**
-       @return the upper bound for digital points in this space.
-    */
+     * @return the upper bound for digital points in this space.
+     */
     const Point & upperBound() const;
+
     /**
-       @return the lower bound for cells in this space.
-       @todo doc for periodic
-    */
+     * @return the lower bound for cells in this space.
+     * @todo doc for periodic
+     */
     const Cell & lowerCell() const;
+
     /**
-       @return the upper bound for cells in this space.
-       @todo doc for periodic
-    */
+     * @return the upper bound for cells in this space.
+     * @todo doc for periodic
+     */
     const Cell & upperCell() const;
+
+    /**
+     * @param c a signed cell.
+     * @param k a dimension.
+     * @returns \c true if the given unsigned cell has his k-th Khalimsky coordinate
+     * between those of the cells returned by lowerCell and upperCell.
+     * @note For periodic dimension, even if there is no bounds, it guarantees that
+     * each cell has unique coordinates.
+     */
+    bool uIsValid( const Cell & c, Dimension k ) const;
+    
+    /**
+     * @param c a signed cell.
+     * @returns \c true if the given unsigned cell has Khalimsky coordinates
+     * between those of the cells returned by lowerCell and upperCell.
+     * @note For periodic dimension, even if there is no bounds, it guarantees that
+     * each cell has unique coordinates.
+     */
+    bool uIsValid( const Cell & c ) const;
+
+    /**
+     * @param c an unsigned cell.
+     * @param k a dimension.
+     * @returns \c true if the given signed cell his k-th Khalimsky coordinate
+     * between those of the cells returned by lowerCell and upperCell.
+     * @note For periodic dimension, even if there is no bounds, it guarantees that
+     * each cell has unique coordinates.
+     */
+    bool sIsValid( const SCell & c, Dimension k ) const;
+    
+    /**
+     * @param c an unsigned cell.
+     * @returns \c true if the given signed cell has Khalimsky coordinates
+     * between those of the cells returned by lowerCell and upperCell.
+     * @note For periodic dimension, even if there is no bounds, it guarantees that
+     * each cell has unique coordinates.
+     */
+    bool sIsValid( const SCell & c ) const;
 
     /// @}
 
@@ -553,14 +647,15 @@ namespace DGtal
   public:
 
     /**
-       @return 'true' iff the space is closed or periodic along every dimension.
-    */
+     * @return 'true' iff the space is closed or periodic along every dimension.
+     */
     bool isSpaceClosed() const;
 
     /**
+     * @param k the dimension.
      * @return 'true' iff the space is closed or periodic along the specified dimension.
      */
-    bool isSpaceClosed( Dimension d ) const;
+    bool isSpaceClosed( Dimension k ) const;
 
     /**
      * @return 'true' iff the space is periodic along every dimension.
@@ -568,9 +663,10 @@ namespace DGtal
     bool isSpacePeriodic() const;
 
     /**
+     * @param k the dimension.
      * @return 'true' iff the space is periodic along the specified dimension.
      */
-    bool isSpacePeriodic( Dimension d ) const;
+    bool isSpacePeriodic( Dimension k ) const;
 
     /**
      * @return 'true' iff the space is periodic along at least one dimension.
@@ -582,7 +678,7 @@ namespace DGtal
      * @return closure type along the specified dimension.
      */
     Closure getClosure( Dimension k ) const;
-     
+
     /// @}
 
     // ----------------------- Cell creation services --------------------------
@@ -596,7 +692,7 @@ namespace DGtal
      * Khalimsky coordinates when the space has periodic
      * dimension.
      *
-     * This is only useful for convertion between non-periodic 
+     * This is only useful for convertion between non-periodic
      * and periodic Khalimsky spaces.
      *
      * @note For periodic dimension, the corresponding Khalimsky coordinate
@@ -635,11 +731,11 @@ namespace DGtal
     Cell uCell( Point p, const Cell & c ) const;
 
     /**
-     * From a signed cell, returns the same signed cell with 
-     * appropriate Khalimsky coordinates when the space has 
+     * From a signed cell, returns the same signed cell with
+     * appropriate Khalimsky coordinates when the space has
      * periodic dimension.
      *
-     * This is only useful for convertion between non-periodic 
+     * This is only useful for convertion between non-periodic
      * and periodic Khalimsky spaces.
      *
      * @note For periodic dimension, the corresponding Khalimsky coordinate
@@ -650,7 +746,7 @@ namespace DGtal
      *          along periodic dimensions.
      */
     SCell sCell( const SCell & c ) const;
-    
+
     /**
      * From the Khalimsky coordinates of a cell and a sign, builds the
      * corresponding unsigned cell.
@@ -785,7 +881,7 @@ namespace DGtal
      * created and modified by the methods of this KhalimskySpaceND instance.
      */
     Point uCoords( const Cell & c, bool correct = false ) const;
-    
+
     /**
      * @param c any signed cell.
      * @param k any valid dimension.
@@ -914,7 +1010,7 @@ namespace DGtal
     void sSetSign( SCell & c, Sign s ) const;
 
     /// @}
-    
+
     // -------------------- Conversion signed/unsigned ------------------------
     /** @name Conversion signed/unsigned
      * @{
@@ -1000,7 +1096,7 @@ namespace DGtal
     bool sIsOpen( const SCell & p, Dimension k ) const;
 
     /// @}
-    
+
     // -------------------- Iterator services for cells ------------------------
     /** @name Iterator services for cells
      * @{
@@ -1125,7 +1221,7 @@ namespace DGtal
        @return the k-th coordinate of the first cell of the space with the same type as [p].
     */
     Integer uFirst( const Cell & p, Dimension k ) const;
-    
+
     /**
        @return the first cell of the space with the same type as [p].
     */
@@ -1135,7 +1231,7 @@ namespace DGtal
        @return the k-th coordinate of the last cell of the space with the same type as [p].
     */
     Integer uLast( const Cell & p, Dimension k ) const;
-    
+
     /**
        @return the last cell of the space with the same type as [p].
     */
@@ -1326,7 +1422,7 @@ namespace DGtal
        @return the k-th coordinate of the first cell of the space with the same type as [p].
     */
     Integer sFirst( const SCell & p, Dimension k ) const;
-    
+
     /**
        @return the first cell of the space with the same type as [p].
     */
@@ -1336,7 +1432,7 @@ namespace DGtal
        @return the k-th coordinate of the last cell of the space with the same type as [p].
     */
     Integer sLast( const SCell & p, Dimension k ) const;
-    
+
     /**
        @return the last cell of the space with the same type as [p].
     */
@@ -1741,7 +1837,7 @@ namespace DGtal
     Cell myCellLower;
     Cell myCellUpper;
     Closure myClosure[dim];
-    
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
