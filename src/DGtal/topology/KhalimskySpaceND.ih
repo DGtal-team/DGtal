@@ -511,7 +511,7 @@ init( const Point & lower,
 {
   Closure closure[dim];
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
-    closure[ i ] = isClosed ? closed : open;
+    closure[ i ] = isClosed ? CLOSED : OPEN;
 
   return init( lower, upper, closure );
 }
@@ -555,9 +555,9 @@ init( const Point & lower,
     {
       myClosure[ i ] = closure[ i ];
       myCellLower.myCoordinates[ i ] = ( lower[ i ] * 2 )
-        + ( closure[ i ] != open   ? 0 : 1 );
+        + ( closure[ i ] != OPEN   ? 0 : 1 );
       myCellUpper.myCoordinates[ i ] = ( upper[ i ] * 2 )
-        + ( closure[ i ] == closed ? 2 : 1 );
+        + ( closure[ i ] == CLOSED ? 2 : 1 );
 
     }
 
@@ -681,7 +681,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 isSpaceClosed() const
 {
   for ( Dimension i = 0; i < dimension; ++i )
-    if ( myClosure[ i ] == open )
+    if ( myClosure[ i ] == OPEN )
       return false;
 
   return true;
@@ -693,7 +693,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 isSpaceClosed( Dimension k ) const
 {
-  return myClosure[ k ] != open;
+  return myClosure[ k ] != OPEN;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -703,7 +703,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 isSpacePeriodic() const
 {
   for ( Dimension i = 0; i < dimension; ++i )
-    if ( myClosure[ i ] != periodic )
+    if ( myClosure[ i ] != PERIODIC )
       return false;
 
   return true;
@@ -715,7 +715,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 isSpacePeriodic( Dimension k ) const
 {
-  return myClosure[ k ] == periodic;
+  return myClosure[ k ] == PERIODIC;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1234,7 +1234,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uFirst( const Cell & p, DGtal::Dimension k ) const
 {
-  return myClosure[ k ] == open ?
+  return myClosure[ k ] == OPEN ?
         2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
       : 2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
 }
@@ -1258,7 +1258,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uLast( const Cell & p, DGtal::Dimension k ) const
 {
-  return myClosure[ k ] == closed ?
+  return myClosure[ k ] == CLOSED ?
         2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
       : 2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
 }
@@ -1464,7 +1464,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sFirst( const SCell & p, DGtal::Dimension k ) const
 {
-  return myClosure[ k ] == open ?
+  return myClosure[ k ] == OPEN ?
         2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
       : 2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
 }
@@ -1488,7 +1488,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sLast( const SCell & p, DGtal::Dimension k ) const
 {
-  return myClosure[ k ] == closed ?
+  return myClosure[ k ] == CLOSED ?
         2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
       : 2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
 }

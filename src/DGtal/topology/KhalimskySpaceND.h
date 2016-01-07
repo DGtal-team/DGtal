@@ -492,9 +492,9 @@ namespace DGtal
     /// Boundaries closure type
     enum Closure
       {
-        closed,   ///< The dimension is closed and non-periodic.
-        open,     ///< The dimension is open.
-        periodic  ///< The dimension is periodic.
+        CLOSED,   ///< The dimension is closed and non-periodic.
+        OPEN,     ///< The dimension is open.
+        PERIODIC  ///< The dimension is periodic.
       };
 
     // ----------------------- Standard services ------------------------------
@@ -547,7 +547,7 @@ namespace DGtal
      *
      * @param lower the lowest point in this space (digital coords)
      * @param upper the upper point in this space (digital coords)
-     * @param closure \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic),
+     * @param closure \a CLOSED, \a OPEN or \a PERIODIC if this space is resp. closed (and non-periodic),
      *        open or periodic in every dimension.
      *
      * @return true if the initialization was valid (ie, such bounds
@@ -563,7 +563,7 @@ namespace DGtal
      *
      * @param lower the lowest point in this space (digital coords)
      * @param upper the upper point in this space (digital coords)
-     * @param closure an array of \a closed, \a open or \a periodic if this space is resp. closed (and non-periodic),
+     * @param closure an array of \a CLOSED, \a OPEN or \a PERIODIC if this space is resp. closed (and non-periodic),
      *        open or periodic in the corresponding dimension.
      *
      * @return true if the initialization was valid (ie, such bounds
