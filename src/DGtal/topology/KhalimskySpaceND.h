@@ -1348,7 +1348,7 @@ namespace DGtal
        @return the same element as [p] except for a coordinate [k]
        incremented with x.
     */
-    Cell uGetAdd( Cell p, Dimension k, const Integer & x ) const;
+    Cell uGetAdd( Cell p, Dimension k, Integer x ) const;
 
     /**
        NB: you can go out of the space.
@@ -1359,7 +1359,7 @@ namespace DGtal
        @return the same element as [p] except for a coordinate [k]
        decremented with x.
     */
-    Cell uGetSub( Cell p, Dimension k, const Integer & x ) const;
+    Cell uGetSub( Cell p, Dimension k, Integer x ) const;
 
     /**
        Useful to check if you are going out of the space.
@@ -1554,7 +1554,7 @@ namespace DGtal
        @return the same element as [p] except for a coordinate [k]
        incremented with x.
     */
-    SCell sGetAdd( SCell p, Dimension k, const Integer & x ) const;
+    SCell sGetAdd( SCell p, Dimension k, Integer x ) const;
 
     /**
        NB: you can go out of the space.
@@ -1565,7 +1565,7 @@ namespace DGtal
        @return the same element as [p] except for a coordinate [k]
        decremented with x.
     */
-    SCell sGetSub( SCell p, Dimension k, const Integer & x ) const;
+    SCell sGetSub( SCell p, Dimension k, Integer x ) const;
 
     /**
        Useful to check if you are going out of the space.

@@ -375,7 +375,7 @@ public:
   inline
   bool isDimensionPeriodicHelper( DGtal::Dimension d ) const
     {
-      return derived().myClosure[ d ] == KhalimskySpace::periodic;
+      return derived().myClosure[ d ] == KhalimskySpace::PERIODIC;
     }
 
   /// @return true is there is at least one periodic dimension.
@@ -634,8 +634,8 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsValid( const Cell & p, Dimension k ) const
 {
-  return   p.myCoordinates[ k ] <= myCellUpper[ k ]
-        && p.myCoordinates[ k ] >= myCellLower[ k ];
+  return   p.myCoordinates[ k ] <= myCellUpper.myCoordinates[ k ]
+        && p.myCoordinates[ k ] >= myCellLower.myCoordinates[ k ];
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -657,8 +657,8 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsValid( const SCell & p, Dimension k ) const
 {
-  return   p.myCoordinates[ k ] <= myCellUpper[ k ]
-        && p.myCoordinates[ k ] >= myCellLower[ k ];
+  return   p.myCoordinates[ k ] <= myCellUpper.myCoordinates[ k ]
+        && p.myCoordinates[ k ] >= myCellLower.myCoordinates[ k ];
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1362,7 +1362,7 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetAdd( Cell p, DGtal::Dimension k, const Integer & x ) const
+uGetAdd( Cell p, DGtal::Dimension k, Integer x ) const
 {
   p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2 * x, k );
   return p;
@@ -1372,7 +1372,7 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetSub( Cell p, DGtal::Dimension k, const Integer & x ) const
+uGetSub( Cell p, DGtal::Dimension k, Integer x ) const
 {
   p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] - 2*x, k );
   return p;
@@ -1592,7 +1592,7 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sGetAdd( SCell p, DGtal::Dimension k, const Integer & x ) const
+sGetAdd( SCell p, DGtal::Dimension k, Integer x ) const
 {
   p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2*x, k );
   return p;
@@ -1602,7 +1602,7 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sGetSub( SCell p, DGtal::Dimension k, const Integer & x ) const
+sGetSub( SCell p, DGtal::Dimension k, Integer x ) const
 {
   p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] - 2*x, k );
   return p;
