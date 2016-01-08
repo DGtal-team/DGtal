@@ -668,7 +668,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsValid( const SCell & p ) const
 {
   for ( Dimension k = 0; k < DIM; ++ k )
-    if ( ! uIsValid( p, k ) )
+    if ( ! sIsValid( p, k ) )
       return false;
 
   return true;
@@ -1452,7 +1452,7 @@ uNext( Cell & p, const Cell & lower, const Cell & upper ) const
   ASSERT( uIsValid(p) );
   ASSERT( uIsValid(lower) );
   ASSERT( uIsValid(upper) );
-  ASSERT( uTopology(p) == uTopology(lower) 
+  ASSERT( uTopology(p) == uTopology(lower)
       &&  uTopology(p) == uTopology(upper) );
 
   DGtal::Dimension k = NumberTraits<Dimension>::ZERO;
@@ -1721,7 +1721,7 @@ sNext( SCell & p, const SCell & lower, const SCell & upper ) const
   ASSERT( sIsValid(p) );
   ASSERT( sIsValid(lower) );
   ASSERT( sIsValid(upper) );
-  ASSERT( sTopology(p) == sTopology(lower) 
+  ASSERT( sTopology(p) == sTopology(lower)
       &&  sTopology(p) == sTopology(upper) );
 
   DGtal::Dimension k = NumberTraits<Dimension>::ZERO;
