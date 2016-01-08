@@ -359,6 +359,7 @@ namespace DGtal
    * The space is generally finite, except for arbitrary size
    * integers and when the space has a periodic dimension.
    *
+   * @anchor KhalimskySpaceNDBounds
    * Supposing that the space has been initialized with digital bounds \c lower and \c upper,
    * the methods lowerBound() and upperBound() will always return, respectively, \c lower and \c upper.
    * It as also true for periodic dimension, in order to span over the unique digital points of the space.
@@ -582,43 +583,47 @@ namespace DGtal
   public:
 
     /**
-     * @param k a coordinate (from 0 to 'dim()-1').
-     * @return the width of the space in the [k]-dimension.
-     * @note for periodic dimension, it returns the number of unique coordinates along that dimension.
+     * @param k a dimension.
+     * @return the width of the space in the \a k-dimension.
+     * @note For periodic dimension, it returns the number of unique coordinates along that dimension.
      */
     Size size( Dimension k ) const;
 
     /**
-     * @param k a coordinate (from 0 to 'dim()-1').
-     * @return the minimal coordinate in the [k]-dimension.
+     * @param k a dimension.
+     * @return the minimal digital coordinate in the \a k-dimension.
+     * @note For periodic dimension, it returns the minimal unique digital coordinate along that dimension.
      */
     Integer min( Dimension k ) const;
 
     /**
-     * @param k a coordinate (from 0 to 'dim()-1').
-     * @return the maximal coordinate in the [k]-dimension.
+     * @param k a coordinate.
+     * @return the maximal digital coordinate in the \a k-dimension.
+     * @note For periodic dimension, it returns the maximal unique digital coordinate along that dimension.
      */
     Integer max( Dimension k ) const;
 
     /**
      * @return the lower bound for digital points in this space.
+     * @note For periodic dimension, it returns the lower digital point with unique coordinates. See also the \ref KhalimskySpaceNDBounds "class documentation".
      */
     const Point & lowerBound() const;
 
     /**
      * @return the upper bound for digital points in this space.
+     * @note For periodic dimension, it returns the upper digital point with unique coordinates. See also the \ref KhalimskySpaceNDBounds "class documentation".
      */
     const Point & upperBound() const;
 
     /**
      * @return the lower bound for cells in this space.
-     * @todo doc for periodic
+     * @note For periodic dimension, it returns the upper cell with unique coordinates. See also the \ref KhalimskySpaceNDBounds "class documentation".
      */
     const Cell & lowerCell() const;
 
     /**
      * @return the upper bound for cells in this space.
-     * @todo doc for periodic
+     * @note For periodic dimension, it returns the upper cell with unique coordinates. See also the \ref KhalimskySpaceNDBounds "class documentation".
      */
     const Cell & upperCell() const;
 
@@ -629,6 +634,8 @@ namespace DGtal
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
      * each cell has unique coordinates.
+     * @see uCell(const Cell &) const to correct Khalimsky coordinates along 
+     * periodic dimensions.
      */
     bool uIsValid( const Cell & c, Dimension k ) const;
 
@@ -638,6 +645,8 @@ namespace DGtal
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
      * each cell has unique coordinates.
+     * @see uCell(const Cell &) const to correct Khalimsky coordinates along 
+     * periodic dimensions.
      */
     bool uIsValid( const Cell & c ) const;
 
@@ -648,6 +657,8 @@ namespace DGtal
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
      * each cell has unique coordinates.
+     * @see sCell(const SCell &) const to correct Khalimsky coordinates along 
+     * periodic dimensions.
      */
     bool sIsValid( const SCell & c, Dimension k ) const;
 
@@ -657,6 +668,8 @@ namespace DGtal
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
      * each cell has unique coordinates.
+     * @see sCell(const SCell &) const to correct Khalimsky coordinates along 
+     * periodic dimensions.
      */
     bool sIsValid( const SCell & c ) const;
 
@@ -952,68 +965,84 @@ namespace DGtal
      */
   public:
 
-    /**
-     * Sets the [k]-th Khalimsky coordinate of [c] to [i].
+    /** Sets the [k]-th Khalimsky coordinate of [c] to [i].
      * @param c any unsigned cell.
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
+     * @note The coordinate \a i will be corrected if \a k is a periodic dimension.
+     * @pre  `uIsValid(c)` is \a true and \a i is within the space bounds if \a k is a non-periodic dimension.
+     * @post `uIsValid(c)` is \a true.
      */
     void uSetKCoord( Cell & c, Dimension k, Integer i ) const;
 
-    /**
-     * Sets the [k]-th Khalimsky coordinate of [c] to [i].
+    /** Sets the [k]-th Khalimsky coordinate of [c] to [i].
      * @param c any signed cell.
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
+     * @note The coordinate \a i will be corrected if \a k is a periodic dimension.
+     * @pre  `sIsValid(c)` is \a true and \a i is within the space bounds if \a k is a non-periodic dimension.
+     * @post `sIsValid(c)` is \a true.
      */
     void sSetKCoord( SCell & c, Dimension k, Integer i ) const;
 
-    /**
-     * Sets the [k]-th digital coordinate of [c] to [i].
+    /** Sets the [k]-th digital coordinate of [c] to [i].
      * @param c any unsigned cell.
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
+     * @note The coordinate \a i will be corrected if \a k is a periodic dimension.
+     * @pre  `uIsValid(c)` is \a true and \a i is within the space bounds if \a k is a non-periodic dimension.
+     * @post `uIsValid(c)` is \a true.
      */
     void uSetCoord( Cell & c, Dimension k, Integer i ) const;
 
-    /**
-     * Sets the [k]-th digital coordinate of [c] to [i].
+    /** Sets the [k]-th digital coordinate of [c] to [i].
      * @param c any signed cell.
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
+     * @note The coordinate \a i will be corrected if \a k is a periodic dimension.
+     * @pre  `sIsValid(c)` is \a true and \a i is within the space bounds if \a k is a non-periodic dimension.
+     * @post `sIsValid(c)` is \a true.
      */
     void sSetCoord( SCell & c, Dimension k, Integer i ) const;
 
-    /**
-     * Sets the Khalimsky coordinates of [c] to [kp].
+    /** Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any unsigned cell.
      * @param kp the new Khalimsky coordinates for [c].
+     * @note The coordinates \a kp will be corrected for periodic dimensions.
+     * @pre  \a kp is within the space bounds for non-periodic dimensions.
+     * @post `uIsValid(c)` is \a true.
+     *
      */
     void uSetKCoords( Cell & c, const Point & kp ) const;
 
-    /**
-     * Sets the Khalimsky coordinates of [c] to [kp].
+    /** Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any signed cell.
      * @param kp the new Khalimsky coordinates for [c].
+     * @note The coordinates \a kp will be corrected for periodic dimensions.
+     * @pre  \a kp is within the space bounds for non-periodic dimensions.
+     * @post `sIsValid(c)` is \a true.
      */
     void sSetKCoords( SCell & c, const Point & kp ) const;
 
-    /**
-     * Sets the digital coordinates of [c] to [kp].
+    /** Sets the digital coordinates of [c] to [kp].
      * @param c any unsigned cell.
      * @param kp the new Khalimsky coordinates for [c].
+     * @note The coordinates \a kp will be corrected for periodic dimensions.
+     * @pre  \a kp is within the space bounds for non-periodic dimensions.
+     * @post `uIsValid(c)` is \a true.
      */
     void uSetCoords( Cell & c, const Point & kp ) const;
 
-    /**
-     * Sets the digital coordinates of [c] to [kp].
+    /** Sets the digital coordinates of [c] to [kp].
      * @param c any signed cell.
      * @param kp the new Khalimsky coordinates for [c].
+     * @note The coordinates \a kp will be corrected for periodic dimensions.
+     * @pre  \a kp is within the space bounds for non-periodic dimensions.
+     * @post `sIsValid(c)` is \a true.
      */
     void sSetCoords( SCell & c, const Point & kp ) const;
 
-    /**
-     * Sets the sign of the cell.
+    /** Sets the sign of the cell.
      * @param c (modified) any signed cell.
      * @param s any sign.
      */
@@ -1026,18 +1055,20 @@ namespace DGtal
      * @{
      */
   public:
-    /**
-     * Creates a signed cell from an unsigned one and a given sign.
+    /** Creates a signed cell from an unsigned one and a given sign.
      * @param p any unsigned cell.
      * @param s a sign.
      * @return the signed version of the cell [p] with sign [s].
+     * @pre  `uIsValid(p)` is \a true.
+     * @post `sIsValid(signs(p, s))` is \a true.
      */
     SCell signs( const Cell & p, Sign s ) const;
 
-    /**
-     * Creates an unsigned cell from a signed one.
+    /** Creates an unsigned cell from a signed one.
      * @param p any signed cell.
      * @return the unsigned version of the cell [p].
+     * @pre  `sIsValid(p)` is \a true.
+     * @post `uIsValid(unsigns(p))` is \a true.
      */
     Cell unsigns( const SCell & p ) const;
 
@@ -1045,6 +1076,8 @@ namespace DGtal
      * Creates the signed cell with the inverse sign of [p].
      * @param p any signed cell.
      * @return the cell [p] with opposite sign.
+     * @pre  `sIsValid(p)` is \a true.
+     * @post `sIsValid(sOpp(p))` is \a true. 
      */
     SCell sOpp( const SCell & p ) const;
 
@@ -1058,51 +1091,59 @@ namespace DGtal
     /**
      * @param p any unsigned cell.
      * @return the topology word of [p].
+     * @pre `uIsInside(p)` is \a true.
      */
     Integer uTopology( const Cell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the topology word of [p].
+     * @pre `sIsInside(p)` is \a true.
      */
     Integer sTopology( const SCell & p ) const;
 
     /**
      * @param p any unsigned cell.
      * @return the dimension of the cell [p].
+     * @pre `uIsInside(p)` is \a true.
      */
     Dimension uDim( const Cell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the dimension of the cell [p].
+     * @pre `sIsInside(p)` is \a true.
      */
     Dimension sDim( const SCell & p ) const;
 
     /**
      * @param b any unsigned cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
+     * @pre `uIsInside(b)` is \a true.
      */
     bool uIsSurfel( const Cell & b ) const;
 
     /**
      * @param b any signed cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
+     * @pre `sIsInside(b)` is \a true.
      */
     bool sIsSurfel( const SCell & b ) const;
 
     /**
-       @param p any cell.
-       @param k any direction.
-       @return 'true' if [p] is open along the direction [k].
-    */
+     * @param p any cell.
+     * @param k any direction.
+     * @return 'true' if [p] is open along the direction [k].
+     * @pre `uIsInside(b)` is \a true.
+     */
     bool uIsOpen( const Cell & p, Dimension k ) const;
 
     /**
-       @param p any signed cell.
-       @param k any direction.
-       @return 'true' if [p] is open along the direction [k].
-    */
+     * @param p any signed cell.
+     * @param k any direction.
+     * @return 'true' if [p] is open along the direction [k].
+     * @pre `uIsInside(b)` is \a true.
+     */
     bool sIsOpen( const SCell & p, Dimension k ) const;
 
     /// @}
@@ -1113,110 +1154,106 @@ namespace DGtal
      */
   public:
 
-    /**
-       Given an unsigned cell [p], returns an iterator to iterate over
-       each coordinate the cell spans. (A spel spans all coordinates; a
-       surfel all but one, etc). Example:
-
-       @code
-       KSpace::Cell p;
-       ...
-       for ( KSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q )
-       {
-         Dimension dir = *q;
-       ...
-       }
-       @endcode
-
-       @param p any unsigned cell.
-
-       @return an iterator that points on the first coordinate spanned
-       by the cell.
-    */
+    /** Given an unsigned cell [p], returns an iterator to iterate over
+     * each coordinate the cell spans. (A spel spans all coordinates; a
+     * surfel all but one, etc). Example:
+     *
+     * @code
+     * KSpace::Cell p;
+     * ...
+     * for ( KSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q )
+     * {
+     *   Dimension dir = *q;
+     * ...
+     * }
+     * @endcode
+     *
+     * @param p any unsigned cell.
+     * @return an iterator that points on the first coordinate spanned
+     * by the cell.
+     * @pre `uIsInside(p)` is \a true.
+     */
     DirIterator uDirs( const Cell & p ) const;
 
-    /**
-       Given a signed cell [p], returns an iterator to iterate over
-       each coordinate the cell spans. (A spel spans all coordinates; a
-       surfel all but one, etc). Example:
-
-       @code
-       KSpace::SCell p;
-       ...
-       for ( KSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q )
-       {
-         Dimension dir = *q;
-       ...
-       }
-       @endcode
-
-       @param p any signed cell.
-
-       @return an iterator that points on the first coordinate spanned
-       by the cell.
-    */
+    /** Given a signed cell [p], returns an iterator to iterate over
+     * each coordinate the cell spans. (A spel spans all coordinates; a
+     * surfel all but one, etc). Example:
+     *
+     * @code
+     * KSpace::SCell p;
+     * ...
+     * for ( KSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q )
+     * {
+     *   Dimension dir = *q;
+     * ...
+     * }
+     *  @endcode
+     *
+     * @param p any signed cell.
+     * @return an iterator that points on the first coordinate spanned
+     * by the cell.
+     * @pre `sIsInside(p)` is \a true.
+     */
     DirIterator sDirs( const SCell & p ) const;
 
-    /**
-       Given an unsigned cell [p], returns an iterator to iterate over each
-       coordinate the cell does not span. (A spel spans all coordinates;
-       a surfel all but one, etc). Example:
-
-       @code
-       KSpace::Cell p;
-       ...
-       for ( KSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q )
-       {
-         Dimension dir = *q;
-       ...
-       }
-       @endcode
-
-       @param p any unsigned cell.
-
-       @return an iterator that points on the first coordinate spanned
-       by the cell.
-    */
+    /** Given an unsigned cell [p], returns an iterator to iterate over each
+     * coordinate the cell does not span. (A spel spans all coordinates;
+     * a surfel all but one, etc). Example:
+     *
+     * @code
+     * KSpace::Cell p;
+     * ...
+     * for ( KSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q )
+     * {
+     *   Dimension dir = *q;
+     * ...
+     * }
+     * @endcode
+     *
+     * @param p any unsigned cell.
+     * @return an iterator that points on the first coordinate spanned
+     * by the cell.
+     * @pre `uIsInside(p)` is \a true.
+     */
     DirIterator uOrthDirs( const Cell & p ) const;
 
-    /**
-       Given a signed cell [p], returns an iterator to iterate over each
-       coordinate the cell does not span. (A spel spans all coordinates;
-       a surfel all but one, etc). Example:
-
-       @code
-       KSpace::SCell p;
-       ...
-       for ( KSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q )
-       {
-         Dimension dir = *q;
-       ...
-       }
-       @endcode
-
-       @param p any signed cell.
-
-       @return an iterator that points on the first coordinate spanned
-       by the cell.
-    */
+    /** Given a signed cell [p], returns an iterator to iterate over each
+     * coordinate the cell does not span. (A spel spans all coordinates;
+     * a surfel all but one, etc). Example:
+     *
+     * @code
+     * KSpace::SCell p;
+     * ...
+     * for ( KSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q )
+     * {
+     *   Dimension dir = *q;
+     * ...
+     * }
+     * @endcode
+     *
+     * @param p any signed cell.
+     * @return an iterator that points on the first coordinate spanned
+     * by the cell.
+     * @pre `sIsInside(p)` is \a true.
+     */
     DirIterator sOrthDirs( const SCell & p ) const;
 
-    /**
-       Given an unsigned surfel [s], returns its orthogonal direction (ie,
-       the coordinate where the surfel is closed).
-
-       @param s an unsigned surfel
-       @return the orthogonal direction of [s]
-    */
+    /** Given an unsigned surfel [s], returns its orthogonal direction (ie,
+     * the coordinate where the surfel is closed).
+     *
+     * @param s an unsigned surfel
+     * @return the orthogonal direction of [s]
+     * @pre `uIsInside(s)` is \a true.
+     */
     Dimension uOrthDir( const Cell & s ) const;
 
-    /**
-       Given a signed surfel [s], returns its orthogonal direction (ie,
-       the coordinate where the surfel is closed).
-
-       @param s a signed surfel
-       @return the orthogonal direction of [s]
-    */
+    /** Given a signed surfel [s], returns its orthogonal direction (ie,
+     * the coordinate where the surfel is closed).
+     *
+     * @param s a signed surfel
+     * @return the orthogonal direction of [s]
+     * @pre `sIsInside(s)` is \a true.
+     */
     Dimension sOrthDir( const SCell & s ) const;
 
     /// @}
@@ -1228,204 +1265,207 @@ namespace DGtal
   public:
 
     /**
-       @return the k-th coordinate of the first cell of the space with the same type as [p].
-    */
+     * @return the k-th Khalimsky coordinate of the first cell of the space with the same type as [p].
+     * @note For periodic dimension, it returns the first unique coordinate of a cell of same type as \a p.
+     * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
+     */
     Integer uFirst( const Cell & p, Dimension k ) const;
 
     /**
-       @return the first cell of the space with the same type as [p].
-    */
+     * @return the first cell of the space with the same type as [p].
+     * @note Along periodic dimensions, it returns the first unique coordinate of a cell of same type as \a p.
+     * @post `uIsValid(uFirst(p))` is \a true.
+     */
     Cell uFirst( const Cell & p ) const;
 
     /**
-       @return the k-th coordinate of the last cell of the space with the same type as [p].
-    */
+     * @return the k-th Khalimsky coordinate of the last cell of the space with the same type as [p].
+     * @note For periodic dimension, it returns the last unique coordinate of a cell of same type as \a p.
+     * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
+     */
     Integer uLast( const Cell & p, Dimension k ) const;
 
     /**
-       @return the last cell of the space with the same type as [p].
-    */
+     * @return the last cell of the space with the same type as [p].
+     * @note Along periodic dimensions, it returns the last unique coordinate of a cell of same type as \a p.
+     * @post `uIsValid(uLast(p))` is \a true.
+     */
     Cell uLast( const Cell & p ) const;
 
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-
-       @return the same element as [p] except for the incremented
-       coordinate [k].
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @return the same element as [p] except for the incremented
+     * coordinate [k].
+     * @pre `uIsValid(p)` and not `uIsMax(p)`.
+     * @post `uIsValid(uGetIncr(p, k))` is \a true.
+     */
     Cell uGetIncr( Cell p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the tested coordinate.
-
-       @return true if [p] cannot have its [k]-coordinate augmented
-       without leaving the space.
-    */
+    /** Useful to check if you are going out of the space.
+     * @param p any cell.
+     * @param k the tested coordinate.
+     * @return true if [p] cannot have its [k]-coordinate augmented
+     * without leaving the space.
+     * @note It returns always \a false for periodic dimension.
+     * @pre `uIsInside(p)` is \a true.
+     */
     bool uIsMax( const Cell & p, Dimension k ) const;
 
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the tested coordinate.
-
-       @return true if [p] has its [k]-coordinate within the allowed bounds.
-    */
+    /** Useful to check if you are going out of the space.
+     *  @param p any cell.
+     *  @param k the tested coordinate.
+     *  @return true if [p] has its [k]-coordinate within the allowed bounds.
+     *  @note It returns always \a true for periodic dimension.
+     */
     bool uIsInside( const Cell & p, Dimension k ) const;
 
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-
-       @return true if [p] has its coordinates within the allowed bounds.
-    */
+    /** Useful to check if you are going out of the space.
+     * @param p any cell.
+     * @return true if [p] has its coordinates within the allowed bounds.
+     * @note Only the non-periodic dimensions are checked.
+     */
     bool uIsInside( const Cell & p ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the concerned coordinate.
-
-       @return the cell similar to [p] but with the maximum allowed
-       [k]-coordinate.
-    */
+    /** Useful to check if you are going out of the space.
+     * @param p any cell.
+     * @param k the concerned coordinate.
+     * @return the cell similar to [p] but with the maximum allowed
+     * [k]-coordinate.
+     * @pre `uIsValid(p, d)` is \a true for each dimension \a d different than \a k.
+     * @post `uIsValid(uGetMax(p, k))` is \a true.
+     */
     Cell uGetMax( Cell p, Dimension k ) const;
 
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-
-       @return the same element as [p] except for an decremented
-       coordinate [k].
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @return the same element as [p] except for an decremented
+     * coordinate [k].
+     * @pre `uIsValid(p)` and not `uIsMin(p)`.
+     * @post `uIsValid(uGetDecr(p, k))` is \a true.
+     */
     Cell uGetDecr( Cell p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the tested coordinate.
-
-       @return true if [p] cannot have its [k]-coordinate decreased
-       without leaving the space.
-    */
+    /** Useful to check if you are going out of the space.
+     * @param p any cell.
+     * @param k the tested coordinate.
+     * @return true if [p] cannot have its [k]-coordinate decreased
+     * without leaving the space.
+     * @note It returns always \a false for periodic dimension.
+     * @pre `uIsInside(p)` is \a true.
+     */
     bool uIsMin( const Cell & p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the concerned coordinate.
-
-       @return the cell similar to [p] but with the minimum allowed
-       [k]-coordinate.
-    */
+    /** Useful to check if you are going out of the space.
+     *
+     * @param p any cell.
+     * @param k the concerned coordinate.
+     * @return the cell similar to [p] but with the minimum allowed
+     * [k]-coordinate.
+     * @pre `uIsValid(p, d)` is \a true for each dimension \a d different than \a k.
+     * @post `uIsValid(uGetMin(p, k))` is \a true.
+     */
     Cell uGetMin( Cell p, Dimension k ) const;
 
 
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-       @param x the increment.
-
-       @return the same element as [p] except for a coordinate [k]
-       incremented with x.
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @param x the increment.
+     * @return the same element as [p] except for a coordinate [k]
+     * incremented with x.
+     * @pre `uIsValid(p)` and ( `x <= uDistanceToMax(p, k)` or `isSpacePeriodic(k)` ).
+     * @post `uIsValid(uGetAdd(p, k, x))` is \a true.
+     */
     Cell uGetAdd( Cell p, Dimension k, Integer x ) const;
 
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-       @param x the decrement.
-
-       @return the same element as [p] except for a coordinate [k]
-       decremented with x.
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @param x the decrement.
+     * @return the same element as [p] except for a coordinate [k]
+     * decremented with x.
+     * @pre `uIsValid(p)` and ( `x <= uDistanceToMin(p, k)` or `isSpacePeriodic(k)` ).
+     * @post `uIsValid(uGetSub(p, k, x))` is \a true.
+     */
     Cell uGetSub( Cell p, Dimension k, Integer x ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the coordinate that is tested.
-       @return the number of increment to do to reach the maximum value.
-       @note if \a k is a periodic dimension, the corresponding coordinate of \a p is supposed to lie into the fundamental domain.
-       If not, use before uCell(const Cell &) const on \a p.
-    */
+    /** Useful to check if you are going out of the space (for non-periodic dimensions).
+     *
+     * @param p any cell.
+     * @param k the coordinate that is tested.
+     * @return the number of increment to do to reach the maximum value.
+     * @pre `uIsValid(p)` is \a true.
+     */
     Integer uDistanceToMax( const Cell & p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the coordinate that is tested.
-
-       @return the number of decrement to do to reach the minimum
-       value.
-       @note if \a k is a periodic dimension, the corresponding coordinate of \a p is supposed to lie into the fundamental domain.
-       If not, use before uCell(const Cell &) const on \a p.
-    */
+    /** Useful to check if you are going out of the space (for non-periodic dimensions).
+     *
+     * @param p any cell.
+     * @param k the coordinate that is tested.
+     * @return the number of decrement to do to reach the minimum
+     * value.
+     * @pre `uIsValid(p)` is \a true.
+     */
     Integer uDistanceToMin( const Cell & p, Dimension k ) const;
 
-    /**
-       Add the vector [vec] to [p].
-       NB: you can go out of the space.
-       @param p any cell.
-       @param vec any pointel.
-       @return the unsigned code of the cell [p] translated by [coord].
-    */
+    /** Add the vector [vec] to [p].
+     *
+     * @param p any cell.
+     * @param vec any pointel.
+     * @return the unsigned copy of the cell [p] translated by [coord].
+     * @pre  `uIsValid(p, k)` and ( `uDistanceToMin(p, k) <= vec[k] <= uDistanceToMax(p, k) or isPeriodicSpace(k) )` for each dimension \a k.
+     * @post `uIsValid(uTranslation(p, vec))` is \a true.
+     */
     Cell uTranslation( Cell p, const Vector & vec ) const;
 
-    /**
-       Return the projection of [p] along the [k]th direction toward
-       [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
-
-       @param p any cell.
-       @param bound the element acting as bound (same topology as p).
-       @param k the concerned coordinate.
-       @return the projection.
-       @note if \a k is a periodic dimension, the corresponding coordinate of \a bound is supposed to lie into the fundamental domain.
-       If not, use before uCell(const Cell &) const on \a bound.
-    */
+    /** Return the projection of [p] along the [k]th direction toward
+     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+     *
+     * @param p any cell.
+     * @param bound the element acting as bound (same topology as p).
+     * @param k the concerned coordinate.
+     * @return the projection.
+     * @pre  `uIsValid(p)` and `uIsValid(bound)` and `uIsOpen(p, k) == uIsOpen(bound, k)`
+     * @post `uIsValid(uProjection(p, bound, k))` and `uTopology(p) == uTopology(uProjection(p, bound, k))`.
+     */
     Cell uProjection( Cell p, const Cell & bound, Dimension k ) const;
 
-    /**
-       Projects [p] along the [k]th direction toward
-       [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
-
-       @param [in,out] p any cell.
-       @param [in] bound the element acting as bound (same topology as p).
-       @param [in] k the concerned coordinate.
-       @note if \a k is a periodic dimension, the corresponding coordinate of \a bound is supposed to lie into the fundamental domain.
-       If not, use before uCell(const Cell &) const on \a bound.
-    */
+    /** Projects [p] along the [k]th direction toward
+     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards
+     *
+     * @param [in,out] p any cell.
+     * @param [in] bound the element acting as bound (same topology as p).
+     * @param [in] k the concerned coordinate.
+     * @pre  `uIsValid(p)` and `uIsValid(bound)` and `uIsOpen(p, k) == uIsOpen(bound, k)`
+     * @post `uIsValid(p)`.
+     */
     void uProject( Cell & p, const Cell & bound, Dimension k ) const;
 
-    /**
-       Increment the cell [p] to its next position (as classically done in
-       a scanning). Example:
-
-       \code
-       KSpace K;
-       Cell first, last; // lower and upper bounds
-       Cell p = first;
-       do
-       { // ... whatever [p] is the current cell
-       }
-       while ( K.uNext( p, first, last ) );
-       \endcode
-
-       @param p any cell.
-       @param lower the lower bound.
-       @param upper the upper bound.
-
-       @return true if p is still within the bounds, false if the
-       scanning is finished.
-    */
+    /** Increment the cell [p] to its next position (as classically done in
+     *  a scanning). Example:
+     *
+     * \code
+     * KSpace K;
+     * Cell first, last; // lower and upper bounds
+     * Cell p = first;
+     * do
+     * { // ... whatever [p] is the current cell
+     * }
+     * while ( K.uNext( p, first, last ) );
+     * \endcode
+     *
+     * @param p any cell.
+     * @param lower the lower bound.
+     * @param upper the upper bound.
+     * @return true if p is still within the bounds, false if the
+     * scanning is finished.
+     * @pre `uIsValid(p)` and `uIsValid(lower)` and `uIsValid(upper)` and `uTopology(p) == uTopology(lower) == uTopology(upper)`.
+     * @post `uIsValid(p)` is \a true.
+     */
     bool uNext( Cell & p, const Cell & lower, const Cell & upper ) const;
 
     /// @}
