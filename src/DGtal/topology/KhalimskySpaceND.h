@@ -1691,73 +1691,76 @@ namespace DGtal
      */
   public:
 
-    /**
-       Computes the 1-neighborhood of the cell [c] and returns
-       it. It is the set of cells with same topology that are adjacent
-       to [c] and which are within the bounds of this space.
-
-       @param cell the unsigned cell of interest.
-       @return the cells of the 1-neighborhood of [cell].
-    */
+    /** Computes the 1-neighborhood of the cell [c] and returns
+     *  it. It is the set of cells with same topology that are adjacent
+     *  to [c] and which are within the bounds of this space.
+     *
+     * @param cell the unsigned cell of interest.
+     * @return the cells of the 1-neighborhood of [cell].
+     * @pre  `uIsValid(cell)` is \a true.
+     * @post `uIsValid(c)` is \a true for every returned cell \a c.
+     */
     Cells uNeighborhood( const Cell & cell ) const;
 
-    /**
-       Computes the 1-neighborhood of the cell [c] and returns
-       it. It is the set of cells with same topology that are adjacent
-       to [c] and which are within the bounds of this space.
-
-       @param cell the signed cell of interest.
-       @return the cells of the 1-neighborhood of [cell].
-    */
+    /** Computes the 1-neighborhood of the cell [c] and returns
+     *  it. It is the set of cells with same topology that are adjacent
+     *  to [c] and which are within the bounds of this space.
+     *
+     * @param cell the signed cell of interest.
+     * @return the cells of the 1-neighborhood of [cell].
+     * @pre  `sIsValid(cell)` is \a true.
+     * @post `sIsValid(c)` is \a true for every returned cell \a c.
+     */
     SCells sNeighborhood( const SCell & cell ) const;
 
-    /**
-       Computes the proper 1-neighborhood of the cell [c] and returns
-       it. It is the set of cells with same topology that are adjacent
-       to [c], different from [c] and which are within the bounds of
-       this space.
-
-       @param cell the unsigned cell of interest.
-       @return the cells of the proper 1-neighborhood of [cell].
-    */
+    /** Computes the proper 1-neighborhood of the cell [c] and returns
+     *  it. It is the set of cells with same topology that are adjacent
+     *  to [c], different from [c] and which are within the bounds of
+     *  this space.
+     *
+     * @param cell the unsigned cell of interest.
+     * @return the cells of the proper 1-neighborhood of [cell].
+     * @pre  `uIsValid(cell)` is \a true.
+     * @post `uIsValid(c)` is \a true for every returned cell \a c.
+     */
     Cells uProperNeighborhood( const Cell & cell ) const;
 
-    /**
-       Computes the proper 1-neighborhood of the cell [c] and returns
-       it. It is the set of cells with same topology that are adjacent
-       to [c], different from [c] and which are within the bounds of
-       this space.
-
-       @param cell the signed cell of interest.
-       @return the cells of the proper 1-neighborhood of [cell].
-    */
+    /** Computes the proper 1-neighborhood of the cell [c] and returns
+     *  it. It is the set of cells with same topology that are adjacent
+     *  to [c], different from [c] and which are within the bounds of
+     *  this space.
+     *
+     * @param cell the signed cell of interest.
+     * @return the cells of the proper 1-neighborhood of [cell].
+     * @pre  `sIsValid(cell)` is \a true.
+     * @post `sIsValid(c)` is \a true for every returned cell \a c.
+     */
     SCells sProperNeighborhood( const SCell & cell ) const;
 
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-       @param up if 'true' the orientation is forward along axis
-       [k], otherwise backward.
-
-       @return the adjacent element to [p] along axis [k] in the given
-       direction and orientation.
-
-       @note It is an alias to 'up ? uGetIncr( p, k ) : uGetDecr( p, k )'.
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @param up if 'true' the orientation is forward along axis
+     * [k], otherwise backward.
+     * @return the adjacent element to [p] along axis [k] in the given
+     * direction and orientation.
+     * @note It is an alias to 'up ? uGetIncr( p, k ) : uGetDecr( p, k )'.
+     * @pre  `uIsValid(p)` and not `uIs(Min|Max)(p, k)` depending on \a up value.
+     * @post `uIsValid(uAdjacent(p, k, up)) is \a true.
+     */
     Cell uAdjacent( const Cell & p, Dimension k, bool up ) const;
+
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-       @param up if 'true' the orientation is forward along axis
-       [k], otherwise backward.
-
-       @return the adjacent element to [p] along axis [k] in the given
-       direction and orientation.
-
-       @note It is an alias to 'up ? sGetIncr( p, k ) : sGetDecr( p, k )'.
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @param up if 'true' the orientation is forward along axis
+     * [k], otherwise backward.
+     * @return the adjacent element to [p] along axis [k] in the given
+     * direction and orientation.
+     * @note It is an alias to 'up ? sGetIncr( p, k ) : sGetDecr( p, k )'.
+     * @pre  `sIsValid(p)` and not `sIs(Min|Max)(p, k)` depending on \a up value.
+     * @post `sIsValid(sAdjacent(p, k, up)) is \a true.
+     */
     SCell sAdjacent( const SCell & p, Dimension k, bool up ) const;
 
     /// @}
@@ -1769,115 +1772,120 @@ namespace DGtal
   public:
 
     /**
-       @param c any unsigned cell.
-       @param k any coordinate.
-
-       @param up if 'true' the orientation is forward along axis
-       [k], otherwise backward.
-
-       @return the forward or backward unsigned cell incident to [c]
-       along axis [k], depending on [forward].
-
-       @note It may be a lower incident cell if [c] is open along axis
-       [k], else an upper incident cell.
-
-       @note The cell should have an incident cell in this
-       direction/orientation.
-    */
+     * @param c any unsigned cell.
+     * @param k any coordinate.
+     * @param up if 'true' the orientation is forward along axis
+     * [k], otherwise backward.
+     * @return the forward or backward unsigned cell incident to [c]
+     * along axis [k], depending on [up].
+     * @note It may be a lower incident cell if [c] is open along axis
+     * [k], else an upper incident cell.
+     * @pre  `uIsValid(c)` and the cell should have an incident cell in this direction/orientation.
+     * @post `uIsValid(uIncident(c, k, up))` is \a true.
+     */
     Cell uIncident( Cell c, Dimension k, bool up ) const;
 
     /**
-       @param c any signed cell.
-       @param k any coordinate.
-
-       @param up if 'true' the orientation is forward along axis
-       [k], otherwise backward.
-
-       @return the forward or backward signed cell incident to [c]
-       along axis [k], depending on [forward]. It is worthy to note
-       that the forward and backward cell have opposite
-       sign. Furthermore, the sign of these cells is defined so as to
-       satisfy a boundary operator.
-
-       @note It may be a lower incident cell if [c] is open along axis
-       [k], else an upper incident cell.
-
-       @note The cell should have an incident cell in this
-       direction/orientation.
-    */
+     * @param c any signed cell.
+     * @param k any coordinate.
+     * @param up if 'true' the orientation is forward along axis
+     * [k], otherwise backward.
+     * @return the forward or backward signed cell incident to [c]
+     * along axis [k], depending on [up]. It is worthy to note
+     * that the forward and backward cell have opposite
+     * sign. Furthermore, the sign of these cells is defined so as to
+     * satisfy a boundary operator.
+     * @note It may be a lower incident cell if [c] is open along axis
+     * [k], else an upper incident cell.
+     * @pre  `sIsValid(c)` and the cell should have an incident cell in this direction/orientation.
+     * @post `sIsValid(sIncident(c, k, up))` is \a true.
+     */
     SCell sIncident( SCell c, Dimension k, bool up ) const;
 
     /**
-       @param c any unsigned cell.
-       @return the cells directly low incident to c in this space.
-    */
+     * @param c any unsigned cell.
+     * @return the cells directly low incident to c in this space.
+     * @pre  `uIsValid(c)` is \a true.
+     * @post `uIsValid(b)` is \a true for every returned cell \a b.
+     */
     Cells uLowerIncident( const Cell & c ) const;
 
     /**
-       @param c any unsigned cell.
-       @return the cells directly up incident to c in this space.
-    */
+     * @param c any unsigned cell.
+     * @return the cells directly up incident to c in this space.
+     * @pre  `uIsValid(c)` is \a true.
+     * @post `uIsValid(b)` is \a true for every returned cell \a b.
+     */
     Cells uUpperIncident( const Cell & c ) const;
 
     /**
-       @param c any signed cell.
-       @return the signed cells directly low incident to c in this space.
-       @note it is the lower boundary of c expressed as a list of signed cells.
-    */
+     *  @param c any signed cell.
+     *  @return the signed cells directly low incident to c in this space.
+     *  @note it is the lower boundary of c expressed as a list of signed cells.
+     * @pre  `sIsValid(c)` is \a true.
+     * @post `sIsValid(b)` is \a true for every returned cell \a b.
+     */
     SCells sLowerIncident( const SCell & c ) const;
 
     /**
-       @param c any signed cell.
-       @return the signed cells directly up incident to c in this space.
-       @note it is the upper boundary of c expressed as a list of signed cells.
-    */
+     * @param c any signed cell.
+     * @return the signed cells directly up incident to c in this space.
+     * @note it is the upper boundary of c expressed as a list of signed cells.
+     * @pre  `sIsValid(c)` is \a true.
+     * @post `sIsValid(b)` is \a true for every returned cell \a b.
+     */
     SCells sUpperIncident( const SCell & c ) const;
 
     /**
-       @param c any unsigned cell.
-       @return the proper faces of [c] (chain of lower incidence).
-    */
+     * @param c any unsigned cell.
+     * @return the proper faces of [c] (chain of lower incidence).
+     * @pre  `uIsValid(c)` is \a true.
+     * @post `uIsValid(b)` is \a true for every returned cell \a b.
+     */
     Cells uFaces( const Cell & c ) const;
 
     /**
-       @param c any unsigned cell.
-       @return the proper cofaces of [c] (chain of upper incidence).
-    */
+     * @param c any unsigned cell.
+     * @return the proper cofaces of [c] (chain of upper incidence).
+     */
     Cells uCoFaces( const Cell & c ) const;
 
-    /**
-       Return 'true' if the direct orientation of [p] along [k] is in
-       the positive coordinate direction. The direct orientation in a
-       direction allows to go from positive incident cells to positive
-       incident cells.  This means that
-       @code
-       K.sSign( K.sIncident( p, k, K.sDirect( p, k ) ) ) == K.POS
-       @endcode
-       is always true.
-
-       @param p any signed cell.
-       @param k any coordinate.
-
-       @return the direct orientation of [p] along [k] (true is
-       upward, false is backward).
-    */
+    /** Return 'true' if the direct orientation of [p] along [k] is in
+     *  the positive coordinate direction. The direct orientation in a
+     *  direction allows to go from positive incident cells to positive
+     *  incident cells.  This means that
+     *  @code
+     *  K.sSign( K.sIncident( p, k, K.sDirect( p, k ) ) ) == K.POS
+     *  @endcode
+     *  is always true.
+     *
+     * @param p any signed cell.
+     * @param k any coordinate.
+     * @return the direct orientation of [p] along [k] (true is
+     * upward, false is backward).
+     * @pre `sIsValid(p)` is \a true.
+     */
     bool sDirect( const SCell & p, Dimension k ) const;
 
     /**
-       @param p any signed cell.
-       @param k any coordinate.
-
-       @return the direct incident cell of [p] along [k] (the incident
-       cell along [k] whose sign is positive).
-    */
+     * @param p any signed cell.
+     * @param k any coordinate.
+     * @return the direct incident cell of [p] along [k] (the incident
+     * cell along [k])
+     * @pre  `sIsValid(p)` and the cell should have a direct incident cell in this direction.
+     * @post `sIsValid(c)` is \a true for every returned cell \a c.
+ose sign is positive).
+     */
     SCell sDirectIncident( SCell p, Dimension k ) const;
 
     /**
-       @param p any signed cell.
-       @param k any coordinate.
-
-       @return the indirect incident cell of [p] along [k] (the incident
-       cell along [k] whose sign is negative).
+     * @param p any signed cell.
+     * @param k any coordinate.
+     * @return the indirect incident cell of [p] along [k] (the incident
+     * cell along [k] whose sign is negative).
+     * @pre  `sIsValid(p)` and the cell should have an indirect incident cell in this direction.
+     * @post `sIsValid(c)` is \a true for every returned cell \a c.
+ose sign is positive).
     */
     SCell sIndirectIncident( SCell p, Dimension k ) const;
 
@@ -1927,13 +1935,13 @@ namespace DGtal
      */
   private:
     /**
-       Used by uFaces for computing incident faces.
-    */
+     * Used by uFaces for computing incident faces.
+     */
     void uAddFaces( Cells& faces, const Cell& c, Dimension axis ) const;
 
     /**
-       Used by uCoFaces for computing incident cofaces.
-    */
+     * Used by uCoFaces for computing incident cofaces.
+     */
     void uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const;
 
     /// @}
