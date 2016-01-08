@@ -634,7 +634,7 @@ namespace DGtal
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
      * each cell has unique coordinates.
-     * @see uCell(const Cell &) const to correct Khalimsky coordinates along 
+     * @see uCell(const Cell &) const to correct Khalimsky coordinates along
      * periodic dimensions.
      */
     bool uIsValid( const Cell & c, Dimension k ) const;
@@ -645,7 +645,7 @@ namespace DGtal
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
      * each cell has unique coordinates.
-     * @see uCell(const Cell &) const to correct Khalimsky coordinates along 
+     * @see uCell(const Cell &) const to correct Khalimsky coordinates along
      * periodic dimensions.
      */
     bool uIsValid( const Cell & c ) const;
@@ -657,7 +657,7 @@ namespace DGtal
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
      * each cell has unique coordinates.
-     * @see sCell(const SCell &) const to correct Khalimsky coordinates along 
+     * @see sCell(const SCell &) const to correct Khalimsky coordinates along
      * periodic dimensions.
      */
     bool sIsValid( const SCell & c, Dimension k ) const;
@@ -668,7 +668,7 @@ namespace DGtal
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
      * each cell has unique coordinates.
-     * @see sCell(const SCell &) const to correct Khalimsky coordinates along 
+     * @see sCell(const SCell &) const to correct Khalimsky coordinates along
      * periodic dimensions.
      */
     bool sIsValid( const SCell & c ) const;
@@ -727,7 +727,7 @@ namespace DGtal
      * Khalimsky coordinates when the space has periodic
      * dimension.
      *
-     * This is only useful for convertion between non-periodic
+     * This is only useful for conversion between non-periodic
      * and periodic Khalimsky spaces.
      *
      * @param c a cell.
@@ -767,7 +767,7 @@ namespace DGtal
      * appropriate Khalimsky coordinates when the space has
      * periodic dimension.
      *
-     * This is only useful for convertion between non-periodic
+     * This is only useful for conversion between non-periodic
      * and periodic Khalimsky spaces.
      *
      * @param c a signed cell.
@@ -1077,7 +1077,7 @@ namespace DGtal
      * @param p any signed cell.
      * @return the cell [p] with opposite sign.
      * @pre  `sIsValid(p)` is \a true.
-     * @post `sIsValid(sOpp(p))` is \a true. 
+     * @post `sIsValid(sOpp(p))` is \a true.
      */
     SCell sOpp( const SCell & p ) const;
 
@@ -1303,6 +1303,7 @@ namespace DGtal
     Cell uGetIncr( Cell p, Dimension k ) const;
 
     /** Useful to check if you are going out of the space.
+     *
      * @param p any cell.
      * @param k the tested coordinate.
      * @return true if [p] cannot have its [k]-coordinate augmented
@@ -1314,6 +1315,7 @@ namespace DGtal
 
 
     /** Useful to check if you are going out of the space.
+     *
      *  @param p any cell.
      *  @param k the tested coordinate.
      *  @return true if [p] has its [k]-coordinate within the allowed bounds.
@@ -1323,6 +1325,7 @@ namespace DGtal
 
 
     /** Useful to check if you are going out of the space.
+     * 
      * @param p any cell.
      * @return true if [p] has its coordinates within the allowed bounds.
      * @note Only the non-periodic dimensions are checked.
@@ -1330,11 +1333,12 @@ namespace DGtal
     bool uIsInside( const Cell & p ) const;
 
     /** Useful to check if you are going out of the space.
+     *
      * @param p any cell.
      * @param k the concerned coordinate.
      * @return the cell similar to [p] but with the maximum allowed
      * [k]-coordinate.
-     * @pre `uIsValid(p, d)` is \a true for each dimension \a d different than \a k.
+     * @pre  `uIsValid(p, d)` is \a true for each dimension \a d different than \a k.
      * @post `uIsValid(uGetMax(p, k))` is \a true.
      */
     Cell uGetMax( Cell p, Dimension k ) const;
@@ -1344,7 +1348,7 @@ namespace DGtal
      * @param k the coordinate that is changed.
      * @return the same element as [p] except for an decremented
      * coordinate [k].
-     * @pre `uIsValid(p)` and not `uIsMin(p)`.
+     * @pre  `uIsValid(p)` and not `uIsMin(p)`.
      * @post `uIsValid(uGetDecr(p, k))` is \a true.
      */
     Cell uGetDecr( Cell p, Dimension k ) const;
@@ -1355,7 +1359,7 @@ namespace DGtal
      * @return true if [p] cannot have its [k]-coordinate decreased
      * without leaving the space.
      * @note It returns always \a false for periodic dimension.
-     * @pre `uIsInside(p)` is \a true.
+     * @pre  `uIsInside(p)` is \a true.
      */
     bool uIsMin( const Cell & p, Dimension k ) const;
 
@@ -1477,201 +1481,206 @@ namespace DGtal
   public:
 
     /**
-       @return the k-th coordinate of the first cell of the space with the same type as [p].
+     * @return the k-th coordinate of the first cell of the space with the same type as [p].
+     * @note For periodic dimension, it returns the first unique coordinate of a cell of same type as \a p.
+     * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
     */
     Integer sFirst( const SCell & p, Dimension k ) const;
 
     /**
-       @return the first cell of the space with the same type as [p].
-    */
+     * @return the first cell of the space with the same type as [p].
+     * @note Along periodic dimensions, it returns the first unique coordinate of a cell of same type as \a p.
+     * @post `sIsValid(sFirst(p))` is \a true.
+     */
     SCell sFirst( const SCell & p ) const;
 
     /**
-       @return the k-th coordinate of the last cell of the space with the same type as [p].
+     * @return the k-th Khalimsky coordinate of the last cell of the space with the same type as [p].
+     * @note For periodic dimension, it returns the last unique coordinate of a cell of same type as \a p.
+     * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
     */
     Integer sLast( const SCell & p, Dimension k ) const;
 
     /**
-       @return the last cell of the space with the same type as [p].
-    */
+     * @return the last cell of the space with the same type as [p].
+     * @note Along periodic dimensions, it returns the last unique coordinate of a cell of same type as \a p.
+     * @post `sIsValid(sLast(p))` is \a true.
+     */
     SCell sLast( const SCell & p ) const;
 
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-
-       @return the same element as [p] except for the incremented
-       coordinate [k].
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @return the same element as [p] except for the incremented
+     * coordinate [k].
+     * @pre `sIsValid(p)` and not `sIsMax(p)`.
+     * @post `sIsValid(sGetIncr(p, k))` is \a true.
+     */
     SCell sGetIncr( SCell p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the tested coordinate.
-
-       @return true if [p] cannot have its [k]-coordinate augmented
-       without leaving the space.
-    */
+    /** Useful to check if you are going out of the space.
+     * @param p any cell.
+     * @param k the tested coordinate.
+     * @return true if [p] cannot have its [k]-coordinate augmented
+     * without leaving the space.
+     * @note It returns always \a false for periodic dimension.
+     * @pre `sIsInside(p)` is \a true.
+     */
     bool sIsMax( const SCell & p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the tested coordinate.
-
-       @return true if [p] has its [k]-coordinate within the allowed bounds.
-    */
+    /** Useful to check if you are going out of the space.
+     * @param p any cell.
+     * @param k the tested coordinate.
+     * @return true if [p] has its [k]-coordinate within the allowed bounds.
+     *  @note It returns always \a true for periodic dimension.
+     */
     bool sIsInside( const SCell & p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-
-       @return true if [p] has its coordinates within the allowed bounds.
-    */
+    /** Useful to check if you are going out of the space.
+     * 
+     * @param p any cell.
+     * @return true if [p] has its coordinates within the allowed bounds.
+     * @note Only the non-periodic dimensions are checked.
+     */
     bool sIsInside( const SCell & p ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the concerned coordinate.
-
-       @return the cell similar to [p] but with the maximum allowed
-       [k]-coordinate.
-    */
+    /** Useful to check if you are going out of the space.
+     *
+     * @param p any cell.
+     * @param k the concerned coordinate.
+     * @return the cell similar to [p] but with the maximum allowed
+     * [k]-coordinate.
+     * @pre  `sIsValid(p, d)` is \a true for each dimension \a d different than \a k.
+     * @post `sIsValid(sGetMax(p, k))` is \a true.
+     */
     SCell sGetMax( SCell p, Dimension k ) const;
 
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-
-       @return the same element as [p] except for an decremented
-       coordinate [k].
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @return the same element as [p] except for an decremented
+     * coordinate [k].
+     * @pre  `sIsValid(p)` and not `sIsMin(p)`.
+     * @post `sIsValid(sGetDecr(p, k))` is \a true.
+     */
     SCell sGetDecr( SCell p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the tested coordinate.
-
-       @return true if [p] cannot have its [k]-coordinate decreased
-       without leaving the space.
-    */
+    /** Useful to check if you are going out of the space.
+     *
+     * @param p any cell.
+     * @param k the tested coordinate.
+     * @return true if [p] cannot have its [k]-coordinate decreased
+     * without leaving the space.
+     * @note It returns always \a false for periodic dimension.
+     * @pre  `sIsInside(p)` is \a true.
+     */
     bool sIsMin( const SCell & p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the concerned coordinate.
-
-       @return the cell similar to [p] but with the minimum allowed
-       [k]-coordinate.
+    /** Useful to check if you are going out of the space.
+     * @param p any cell.
+     * @param k the concerned coordinate.
+     * @return the cell similar to [p] but with the minimum allowed
+     * [k]-coordinate.
+     * @pre `sIsValid(p, d)` is \a true for each dimension \a d different than \a k.
+     * @post `sIsValid(sGetMin(p, k))` is \a true.
     */
     SCell sGetMin( SCell p, Dimension k ) const;
 
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-       @param x the increment.
-
-       @return the same element as [p] except for a coordinate [k]
-       incremented with x.
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @param x the increment.
+     * @return the same element as [p] except for a coordinate [k]
+     * incremented with x.
+     * @pre `sIsValid(p)` and ( `x <= sDistanceToMax(p, k)` or `isSpacePeriodic(k)` ).
+     * @post `sIsValid(sGetAdd(p, k, x))` is \a true.
+     */
     SCell sGetAdd( SCell p, Dimension k, Integer x ) const;
 
     /**
-       NB: you can go out of the space.
-       @param p any cell.
-       @param k the coordinate that is changed.
-       @param x the decrement.
-
-       @return the same element as [p] except for a coordinate [k]
-       decremented with x.
-    */
+     * @param p any cell.
+     * @param k the coordinate that is changed.
+     * @param x the decrement.
+     * @return the same element as [p] except for a coordinate [k]
+     * decremented with x.
+     * @pre suIsValid(p)` and ( `x <= sDistanceToMin(p, k)` or `isSpacePeriodic(k)` ).
+     * @post `sIsValid(sGetSub(p, k, x))` is \a true.
+     */
     SCell sGetSub( SCell p, Dimension k, Integer x ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the coordinate that is tested.
-       @return the number of increment to do to reach the maximum value.
-       @note if \a k is a periodic dimension, the corresponding coordinate of \a p is supposed to lie into the fundamental domain.
-       If not, use before sCell(const SCell &) const on \a p.
-    */
+    /** Useful to check if you are going out of the space (for non-periodic dimensions).
+     *
+     * @param p any cell.
+     * @param k the coordinate that is tested.
+     * @return the number of increment to do to reach the maximum value.
+     * @pre `sIsValid(p)` is \a true.
+     */
     Integer sDistanceToMax( const SCell & p, Dimension k ) const;
 
-    /**
-       Useful to check if you are going out of the space.
-       @param p any cell.
-       @param k the coordinate that is tested.
-
-       @return the number of decrement to do to reach the minimum
-       @note if \a k is a periodic dimension, the corresponding coordinate of \a p is supposed to lie into the fundamental domain.
-       If not, use before sCell(const SCell &) const on \a p.
-       value.
-    */
+    /** Useful to check if you are going out of the space (for non-periodic dimensions).
+     *
+     * @param p any cell.
+     * @param k the coordinate that is tested.
+     * @return the number of decrement to do to reach the minimum
+     * value.
+     * @pre `sIsValid(p)` is \a true.
+     */
     Integer sDistanceToMin( const SCell & p, Dimension k ) const;
 
-    /**
-       Add the vector [vec] to [p].
-       NB: you can go out of the space.
-       @param p any cell.
-       @param vec any pointel.
-       @return the signed code of the cell [p] translated by [coord].
-    */
+    /** Add the vector [vec] to [p].
+     *
+     * @param p any cell.
+     * @param vec any pointel.
+     * @return the signed code of the cell [p] translated by [coord].
+     * @pre  `sIsValid(p, k)` and ( `sDistanceToMin(p, k) <= vec[k] <= sDistanceToMax(p, k) or isPeriodicSpace(k) )` for each dimension \a k.
+     * @post `sIsValid(sTranslation(p, vec))` is \a true.
+     */
     SCell sTranslation( SCell p, const Vector & vec ) const;
 
-    /**
-       Return the projection of [p] along the [k]th direction toward
-       [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
-
-       @param p any cell.
-       @param bound the element acting as bound (same topology as p).
-       @param k the concerned coordinate.
-       @return the projection.
-       @note if \a k is a periodic dimension, the corresponding coordinate of \a bound is supposed to lie into the fundamental domain.
-       If not, use before uCell(const Cell &) const on \a bound.
-    */
+    /** Return the projection of [p] along the [k]th direction toward
+     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+     *
+     * @param p any cell.
+     * @param bound the element acting as bound (same topology as p).
+     * @param k the concerned coordinate.
+     * @return the projection.
+     * @pre  `sIsValid(p)` and `sIsValid(bound)` and `sIsOpen(p, k) == sIsOpen(bound, k)`
+     * @post `sIsValid(sProjection(p, bound, k))` and `sTopology(p) == sTopology(sProjection(p, bound, k))`.
+     */
     SCell sProjection( SCell p, const SCell & bound, Dimension k ) const;
 
-    /**
-       Projects [p] along the [k]th direction toward
-       [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
-
-       @param p any cell.
-       @param bound the element acting as bound (same topology as p).
-       @param k the concerned coordinate.
-       @note if \a k is a periodic dimension, the corresponding coordinate of \a bound is supposed to lie into the fundamental domain.
-       If not, use before uCell(const Cell &) const on \a bound.
-    */
+    /** Projects [p] along the [k]th direction toward
+     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+     *
+     * @param p any cell.
+     * @param bound the element acting as bound (same topology as p).
+     * @param k the concerned coordinate.
+     * @pre  `sIsValid(p)` and `sIsValid(bound)` and `sIsOpen(p, k) == sIsOpen(bound, k)`
+     * @post `sIsValid(p)`.
+     */
     void sProject( SCell & p, const SCell & bound, Dimension k ) const;
 
-    /**
-       Increment the cell [p] to its next position (as classically done in
-       a scanning). Example:
+    /** Increment the cell [p] to its next position (as classically done in
+     *  a scanning). Example:
 
-       \code
-       KSpace K;
-       Cell first, last; // lower and upper bounds
-       Cell p = first;
-       do
-       { // ... whatever [p] is the current cell
-       }
-       while ( K.uNext( p, first, last ) );
-       \endcode
-
-       @param p any cell.
-       @param lower the lower bound.
-       @param upper the upper bound.
-
-       @return true if p is still within the bounds, false if the
-       scanning is finished.
-    */
+     * \code
+     * KSpace K;
+     * Cell first, last; // lower and upper bounds
+     * Cell p = first;
+     * do
+     * { // ... whatever [p] is the current cell
+     * }
+     * while ( K.uNext( p, first, last ) );
+     * \endcode
+     *
+     * @param p any cell.
+     * @param lower the lower bound.
+     * @param upper the upper bound.
+     * @return true if p is still within the bounds, false if the
+     * scanning is finished.
+     * @pre `sIsValid(p)` and `sIsValid(lower)` and `sIsValid(upper)` and `sTopology(p) == sTopology(lower) == sTopology(upper)`.
+     * @post `sIsValid(p)` is \a true.
+     */
     bool sNext( SCell & p, const SCell & lower, const SCell & upper ) const;
 
     /// @}
