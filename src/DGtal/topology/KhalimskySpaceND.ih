@@ -1941,14 +1941,25 @@ uAddFaces( Cells& faces, const Cell& c, Dimension axis ) const
 {
   const DGtal::Dimension dim_of_c = uDim( c );
   if ( axis >= dim_of_c ) return;
+
   DirIterator q = uDirs( c );
   for ( Dimension i = 0; i < axis; ++i ) ++q;
-  const Cell f1 = uIncident( c, *q, false );
-  const Cell f2 = uIncident( c, *q, true );
-  faces.push_back( f1 );
-  faces.push_back( f2 );
-  uAddFaces( faces, f1, axis );
-  uAddFaces( faces, f2, axis );
+
+  // We test incident cells existence within the current Khalimsky space.
+  const Integer x = uKCoord( c, *q );
+  bool has_f1 = this->isDimensionPeriodicHelper( *q ) || uKCoord( myCellLower, *q ) < x ;
+  bool has_f2 = this->isDimensionPeriodicHelper( *q ) || x < uKCoord( myCellUpper, *q ) ;
+
+  Cell f1, f2;
+  if ( has_f1 ) f1 = uIncident( c, *q, false );
+  if ( has_f2 ) f2 = uIncident( c, *q, true );
+
+  if ( has_f1 ) faces.push_back( f1 );
+  if ( has_f2 ) faces.push_back( f2 );
+
+  if ( has_f1 ) uAddFaces( faces, f1, axis );
+  if ( has_f2 ) uAddFaces( faces, f2, axis );
+
   uAddFaces( faces, c, axis+1 );
 }
 //-----------------------------------------------------------------------------
@@ -1960,14 +1971,25 @@ uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const
 {
   const DGtal::Dimension dim_of_c = uDim( c );
   if ( axis >= dimension - dim_of_c ) return;
+
   DirIterator q = uOrthDirs( c );
   for ( Dimension i = 0; i < axis; ++i ) ++q;
-  const Cell f1 = uIncident( c, *q, false );
-  const Cell f2 = uIncident( c, *q, true );
-  cofaces.push_back( f1 );
-  cofaces.push_back( f2 );
-  uAddCoFaces( cofaces, f1, axis );
-  uAddCoFaces( cofaces, f2, axis );
+
+  // We test incident cells existence within the current Khalimsky space.
+  const Integer x = uKCoord( c, *q );
+  bool has_f1 = this->isDimensionPeriodicHelper( *q ) || uKCoord( myCellLower, *q ) < x ;
+  bool has_f2 = this->isDimensionPeriodicHelper( *q ) || x < uKCoord( myCellUpper, *q ) ;
+
+  Cell f1, f2;
+  if ( has_f1 ) f1 = uIncident( c, *q, false );
+  if ( has_f2 ) f2 = uIncident( c, *q, true );
+
+  if ( has_f1 ) cofaces.push_back( f1 );
+  if ( has_f2 ) cofaces.push_back( f2 );
+
+  if ( has_f1 ) uAddCoFaces( cofaces, f1, axis );
+  if ( has_f2 ) uAddCoFaces( cofaces, f2, axis );
+
   uAddCoFaces( cofaces, c, axis+1 );
 }
 //-----------------------------------------------------------------------------
