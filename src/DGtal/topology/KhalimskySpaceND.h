@@ -717,12 +717,11 @@ namespace DGtal
      * This is only useful for convertion between non-periodic
      * and periodic Khalimsky spaces.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
-     *
      * @param c a cell.
      * @return the same cell with appropriate Khalimsky coordinates
      *         along periodic dimensions.
+     * @pre `uIsInside(c)` is \a true.
+     * @post `uIsValid(uCell(c))` is \a true.
      */
     Cell uCell( const Cell & c ) const;
 
@@ -730,11 +729,10 @@ namespace DGtal
      * From the Khalimsky coordinates of a cell, builds the
      * corresponding unsigned cell.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
-     *
      * @param kp an integer point (Khalimsky coordinates of cell).
      * @return the unsigned cell.
+     * @pre \a kp are the coordinates of a cell lying in the Khalimsky space.
+     * @post `uIsValid(uCell(kp))` is \a true.
      */
     Cell uCell( const Point & kp ) const;
 
@@ -742,13 +740,12 @@ namespace DGtal
      * From the digital coordinates of a point in Zn and a cell type,
      * builds the corresponding cell.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
-     *
      * @param p an integer point (digital coordinates of cell).
      * @param c another cell defining the topology.
      * @return the cell having the topology of [c] and the given
      * digital coordinates [p].
+     * @pre \a p are the coordinates of a digital point lying in the Khalimsky space.
+     * @post `uIsValid(uCell(p, c))` is \a true.
      */
     Cell uCell( Point p, const Cell & c ) const;
 
@@ -760,12 +757,11 @@ namespace DGtal
      * This is only useful for convertion between non-periodic
      * and periodic Khalimsky spaces.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
-     *
      * @param c a signed cell.
      * @return the same signed cell with appropriate Khalimsky coordinates
      *          along periodic dimensions.
+     * @pre `sIsInside(c)` is \a true.
+     * @post `sIsValid(sCell(c))` is \a true.
      */
     SCell sCell( const SCell & c ) const;
 
@@ -773,12 +769,11 @@ namespace DGtal
      * From the Khalimsky coordinates of a cell and a sign, builds the
      * corresponding unsigned cell.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
-     *
      * @param kp an integer point (Khalimsky coordinates of cell).
      * @param sign the sign of the cell (either POS or NEG).
      * @return the signed cell.
+     * @pre \a kp are the coordinates of a cell lying in the Khalimsky space.
+     * @post `sIsValid(sCell(kp, sign))` is \a true.
      */
     SCell sCell( const Point & kp, Sign sign = POS ) const;
 
@@ -786,14 +781,12 @@ namespace DGtal
      * From the digital coordinates of a point in Zn and a signed cell
      * type, builds the corresponding signed cell.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
-     *
      * @param p an integer point (digital coordinates of cell).
      * @param c another cell defining the topology and sign.
-     *
      * @return the cell having the topology and sign of [c] and the given
      * digital coordinates [p].
+     * @pre \a p are the coordinates of a digital point lying in the Khalimsky space.
+     * @post `sIsValid(sCell(p, c))` is \a true.
      */
     SCell sCell( Point p, const SCell & c ) const;
 
@@ -801,12 +794,10 @@ namespace DGtal
      * From the digital coordinates of a point in Zn, creates the spel
      * (cell of maximal dimension) with these coordinates.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
-     *
      * @param p an integer point (digital coordinates of cell).
-     *
      * @return the spel having the given digital coordinates [p].
+     * @pre \a p are the coordinates of a digital point lying in the Khalimsky space.
+     * @post `uIsValid(uSpel(p))` is \a true.
      */
     Cell uSpel( Point p ) const;
 
@@ -814,13 +805,11 @@ namespace DGtal
      * From the digital coordinates of a point in Zn, creates the spel
      * (cell of maximal dimension) with these coordinates.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
-     *
      * @param p an integer point (digital coordinates of cell).
      * @param sign the sign of the cell (either POS or NEG).
-     *
      * @return the signed spel having the given digital coordinates [p].
+     * @pre \a p are the coordinates of a digital point lying in the Khalimsky space.
+     * @post `sIsValid(sSpel(p, sign))` is \a true.
      */
     SCell sSpel( Point p, Sign sign = POS ) const;
 
@@ -828,12 +817,11 @@ namespace DGtal
      * From the digital coordinates of a point in Zn, creates the pointel
      * (cell of dimension 0) with these coordinates.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
-     *
      * @param p an integer point (digital coordinates of cell).
-     *
      * @return the pointel having the given digital coordinates [p].
+     * @pre \a p are the coordinates of a digital point which associated
+     * 0-dimensional cell lies in the Khalimsky space.
+     * @post `uIsValid(uSpel(p))` is \a true.
      */
     Cell uPointel( Point p ) const;
 
