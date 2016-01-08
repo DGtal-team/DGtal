@@ -20,7 +20,7 @@
  * @file KhalimskySpaceND.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- * @author Roland Denis (\c roland.denis@univ-smb.fr )
+ * @author Roland Denis ( \c roland.denis@univ-smb.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/02/08
