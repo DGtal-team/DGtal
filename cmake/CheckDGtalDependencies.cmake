@@ -14,7 +14,8 @@ set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_FOUND FALSE)
 FIND_PACKAGE(Boost 1.46.0 REQUIRED)
 if ( Boost_FOUND )
-  include_directories( ${Boost_INCLUDE_DIRS} )
+  # SYSTEM to avoid warnings from boost.
+  include_directories(SYSTEM ${Boost_INCLUDE_DIRS} )
   SET(DGtalLibInc ${DGtalLibInc} ${Boost_INCLUDE_DIRS})
 
   ## Checking boost/random ( <1.47)
