@@ -1313,8 +1313,11 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsInside( const Cell & p ) const
 {
-  return this->isAnyDimensionPeriodicHelper()
-      || uIsValid( p );
+  for ( Dimension k = 0; k < DIM; ++k )
+    if ( ! uIsInside( p, k ) )
+      return false;
+
+  return true;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1543,8 +1546,11 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsInside( const SCell & p ) const
 {
-  return this->isAnyDimensionPeriodicHelper()
-      || sIsValid( p );
+  for ( Dimension k = 0; k < DIM; ++k )
+    if ( ! sIsInside( p, k ) )
+      return false;
+
+  return true;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
