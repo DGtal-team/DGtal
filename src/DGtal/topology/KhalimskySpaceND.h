@@ -1325,7 +1325,7 @@ namespace DGtal
 
 
     /** Useful to check if you are going out of the space.
-     * 
+     *
      * @param p any cell.
      * @return true if [p] has its coordinates within the allowed bounds.
      * @note Only the non-periodic dimensions are checked.
@@ -1537,7 +1537,7 @@ namespace DGtal
     bool sIsInside( const SCell & p, Dimension k ) const;
 
     /** Useful to check if you are going out of the space.
-     * 
+     *
      * @param p any cell.
      * @return true if [p] has its coordinates within the allowed bounds.
      * @note Only the non-periodic dimensions are checked.
@@ -1838,7 +1838,7 @@ namespace DGtal
 
     /**
      * @param c any unsigned cell.
-     * @return the proper faces of [c] (chain of lower incidence).
+     * @return the proper faces of [c] (chain of lower incidence) that belong to the space.
      * @pre  `uIsValid(c)` is \a true.
      * @post `uIsValid(b)` is \a true for every returned cell \a b.
      */
@@ -1846,7 +1846,9 @@ namespace DGtal
 
     /**
      * @param c any unsigned cell.
-     * @return the proper cofaces of [c] (chain of upper incidence).
+     * @return the proper cofaces of [c] (chain of upper incidence) that belong to the space.
+     * @pre  `uIsValid(c)` is \a true.
+     * @post `uIsValid(b)` is \a true for every returned cell \a b.
      */
     Cells uCoFaces( const Cell & c ) const;
 
