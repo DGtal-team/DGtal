@@ -1091,42 +1091,36 @@ namespace DGtal
     /**
      * @param p any unsigned cell.
      * @return the topology word of [p].
-     * @pre `uIsInside(p)` is \a true.
      */
     Integer uTopology( const Cell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the topology word of [p].
-     * @pre `sIsInside(p)` is \a true.
      */
     Integer sTopology( const SCell & p ) const;
 
     /**
      * @param p any unsigned cell.
      * @return the dimension of the cell [p].
-     * @pre `uIsInside(p)` is \a true.
      */
     Dimension uDim( const Cell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the dimension of the cell [p].
-     * @pre `sIsInside(p)` is \a true.
      */
     Dimension sDim( const SCell & p ) const;
 
     /**
      * @param b any unsigned cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
-     * @pre `uIsInside(b)` is \a true.
      */
     bool uIsSurfel( const Cell & b ) const;
 
     /**
      * @param b any signed cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
-     * @pre `sIsInside(b)` is \a true.
      */
     bool sIsSurfel( const SCell & b ) const;
 
@@ -1134,7 +1128,6 @@ namespace DGtal
      * @param p any cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
-     * @pre `uIsInside(b)` is \a true.
      */
     bool uIsOpen( const Cell & p, Dimension k ) const;
 
@@ -1142,7 +1135,6 @@ namespace DGtal
      * @param p any signed cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
-     * @pre `uIsInside(b)` is \a true.
      */
     bool sIsOpen( const SCell & p, Dimension k ) const;
 
@@ -1171,7 +1163,6 @@ namespace DGtal
      * @param p any unsigned cell.
      * @return an iterator that points on the first coordinate spanned
      * by the cell.
-     * @pre `uIsInside(p)` is \a true.
      */
     DirIterator uDirs( const Cell & p ) const;
 
@@ -1192,7 +1183,6 @@ namespace DGtal
      * @param p any signed cell.
      * @return an iterator that points on the first coordinate spanned
      * by the cell.
-     * @pre `sIsInside(p)` is \a true.
      */
     DirIterator sDirs( const SCell & p ) const;
 
@@ -1213,7 +1203,6 @@ namespace DGtal
      * @param p any unsigned cell.
      * @return an iterator that points on the first coordinate spanned
      * by the cell.
-     * @pre `uIsInside(p)` is \a true.
      */
     DirIterator uOrthDirs( const Cell & p ) const;
 
@@ -1234,7 +1223,6 @@ namespace DGtal
      * @param p any signed cell.
      * @return an iterator that points on the first coordinate spanned
      * by the cell.
-     * @pre `sIsInside(p)` is \a true.
      */
     DirIterator sOrthDirs( const SCell & p ) const;
 
@@ -1243,7 +1231,6 @@ namespace DGtal
      *
      * @param s an unsigned surfel
      * @return the orthogonal direction of [s]
-     * @pre `uIsInside(s)` is \a true.
      */
     Dimension uOrthDir( const Cell & s ) const;
 
@@ -1252,7 +1239,6 @@ namespace DGtal
      *
      * @param s a signed surfel
      * @return the orthogonal direction of [s]
-     * @pre `sIsInside(s)` is \a true.
      */
     Dimension sOrthDir( const SCell & s ) const;
 
@@ -1865,7 +1851,6 @@ namespace DGtal
      * @param k any coordinate.
      * @return the direct orientation of [p] along [k] (true is
      * upward, false is backward).
-     * @pre `sIsValid(p)` is \a true.
      */
     bool sDirect( const SCell & p, Dimension k ) const;
 
