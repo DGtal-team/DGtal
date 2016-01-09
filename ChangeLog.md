@@ -110,9 +110,16 @@
    [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
  - Fixing parenthese warnings in Catch. Waiting for an official fix.
    (Roland Denis, [#1069](https://github.com/DGtal-team/DGtal/pull/1069))
- - Fix constness in selfDisplay and operator<<.
-   (Pierre Gueth [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
-
+ - Fix constness in selfDisplay and operator<<.  (Pierre Gueth
+   [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
+ - DGtal cmake configuration scripts are now installed in the
+   ```${PREFIX_PATH}/lib/DGtal/``` folder on linux systems (when
+   running ```make install``` command). The documentation is copied to
+   the folder ```${PREFIX_PATH}/share/DGtal/html/```. This fixes issue
+   [#1095](https://github.com/DGtal-team/DGtal/issues/1095). (David
+   Coeurjolly,
+   [#10XX]((https://github.com/DGtal-team/DGtal/issues/10XX))
+   
 - *Base Package*
  - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
    (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
