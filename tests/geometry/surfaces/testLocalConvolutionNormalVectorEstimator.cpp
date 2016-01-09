@@ -50,11 +50,6 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
 
 
 #include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
