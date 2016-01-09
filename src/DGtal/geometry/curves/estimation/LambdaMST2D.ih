@@ -56,8 +56,7 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::isValid () const
 template < typename TSpace, typename TSegmentation, typename Functor >
 inline
 typename TSpace::RealVector
-DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval 
-( const DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::ConstIterator & it )
+DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval( const typename DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::ConstIterator & it )
 {
   assert ( dssSegments != 0 );
   typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();

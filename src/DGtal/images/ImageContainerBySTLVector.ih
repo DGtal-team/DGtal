@@ -48,9 +48,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::
 ImageContainerBySTLVector(const Domain &aDomain ) :
   myDomain(aDomain)
 {
-  Point p = Point::diagonal(1);
-  Vector e =  (aDomain.upperBound() - aDomain.lowerBound()) + p;
-  myExtent=e;
+  myExtent =  (aDomain.upperBound() - aDomain.lowerBound()) + Point::diagonal(1);
   this->resize( myDomain.size() );
 }
 

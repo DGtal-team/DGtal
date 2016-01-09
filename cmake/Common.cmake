@@ -83,7 +83,10 @@ ENDIF(COLOR_WITH_ALPHA_ARITH)
 # -----------------------------------------------------------------------------
 # Benchmark target
 # -----------------------------------------------------------------------------
-ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
+OPTION(BUILD_BENCHMARKS "Build benchmarks." OFF)
+IF(BUILD_BENCHMARKS)
+  ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
+ENDIF(BUILD_BENCHMARKS)
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'

@@ -38,6 +38,11 @@
 #include "DGtal/arithmetic/LightSternBrocot.h"
 #include "DGtal/arithmetic/LighterSternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
+
+#include <boost/version.hpp>
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_smallint.hpp>
+#include <boost/random/variate_generator.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -64,19 +69,7 @@ testPattern( Fraction1 f1 )
   std::cerr << "r(2)=";
   f1.reduced(2).selfDisplay( std::cerr );
   std::cerr << std::endl;
-  // std::cerr << "r(3)=";
-  // f1.reduced(3).selfDisplay( std::cerr );
-  // std::cerr << std::endl;
-  // std::cerr << "r(4)=";
-  // f1.reduced(4).selfDisplay( std::cerr );
-  // std::cerr << std::endl;
-  // std::cerr << "r(5)=";
-  // f1.reduced(5).selfDisplay( std::cerr );
-  // std::cerr << std::endl;
-  // std::cerr << "r(6)=";
-  // f1.reduced(6).selfDisplay( std::cerr );
-  // std::cerr << std::endl;
-
+ 
   Pattern1 p1( f1 );
   Pattern2 p2( f2 );
   std::cerr << "p1=" << p1.rE() << std::endl;
@@ -110,15 +103,17 @@ testPatterns()
   f1.selfDisplay( std::cerr );
   std::cerr << endl;
   IntegerComputer<unsigned  int > ic;
+
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
-      unsigned int p = random() % 1000;
-      unsigned int q = random() % 1000; 
+      unsigned int p = std::rand() % 999+1;
+      unsigned int q = std::rand() % 999+1;
       unsigned int g = ic.gcd( p, q );
       p /= g; q /= g;
       std::cerr << "*- p / q = " << p << "/" << q << std::endl;
       f1 = Fraction1( p, q );
-      ++nb, nbok += testPattern<Fraction1,Fraction2>( f1 ) ? 1 : 0;
+      ++nb;
+	  nbok += testPattern<Fraction1,Fraction2>( f1 ) ? 1 : 0;
       std::cerr << "(" << nbok << "/" << nb << ") f1=";
       f1.selfDisplay( std::cerr );
       std::cerr << endl;

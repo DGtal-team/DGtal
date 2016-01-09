@@ -205,9 +205,9 @@ bool testLatticePolytope2D()
   return nbok == nb;
 }
 
-int myRandom( int nb )
+int myRand( int nb )
 {
-  return random() % nb;
+  return rand() % nb;
 }
 
 /**
@@ -253,13 +253,13 @@ bool exhaustiveTestLatticePolytope2D()
       int y = 0;
       while ( ( x == 0 ) && ( y == 0 ) )
         {
-          x = myRandom( 63 ) - 31;
-          y = myRandom( 63 ) - 31;
+          x = myRand( 63 ) - 31;
+          y = myRand( 63 ) - 31;
         }
       int g = IntegerComputer<int>::staticGcd( x , y );
       x /= g; y /= g;
-      int cc = myRandom( 4 ) *x + myRandom( 4 ) * y + myRandom( 40 ) + 40;
-      for ( unsigned int i = 0; i < 10; ++i, cc -= myRandom( 40 ) )
+      int cc = myRand( 4 ) *x + myRand( 4 ) * y + myRand( 40 ) + 40;
+      for ( unsigned int i = 0; i < 10; ++i, cc -= myRand( 40 ) )
         {
           HalfSpace h( Vector( x, y ), cc );
           trace.info() << "[" << j << " size=" << cip2.size() << "]"

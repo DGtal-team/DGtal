@@ -1222,7 +1222,7 @@ DGtal::Display3D< Space ,KSpace >::embedK( const typename KSpace::Cell & cell ) 
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) const
+DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<RealPoint> &aMesh) const
 {
   unsigned int vertexIndex=0;
 
@@ -1230,11 +1230,11 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
   for (unsigned int i=0; i< myPrismList.size(); i++)
     {
       QuadD3D quad = myPrismList.at(i);
-      BallD3D p1, p2, p3, p4;
-      p1.center=quad.point1;
-      p2.center=quad.point2;
-      p3.center=quad.point3;
-      p4.center=quad.point4;
+      RealPoint p1, p2, p3, p4;
+      p1=quad.point1;
+      p2=quad.point2;
+      p3=quad.point3;
+      p4=quad.point4;
       aMesh.addVertex(p1);
       aMesh.addVertex(p2);
       aMesh.addVertex(p3);
@@ -1250,11 +1250,11 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
     {
       for (typename std::vector<QuadD3D>::const_iterator aQuad = it->second.begin(); aQuad!=it->second.end();aQuad ++)
 	{
-	  BallD3D p1, p2, p3, p4;
-	  p1.center=aQuad->point1;
-	  p2.center=aQuad->point2;
-	  p3.center=aQuad->point3;
-	  p4.center=aQuad->point4;
+	  RealPoint p1, p2, p3, p4;
+	  p1=aQuad->point1;
+	  p2=aQuad->point2;
+	  p3=aQuad->point3;
+	  p4=aQuad->point4;
 	  aMesh.addVertex(p4);
 	  aMesh.addVertex(p3);
 	  aMesh.addVertex(p2);
@@ -1270,10 +1270,10 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
     {
       for (typename std::vector<TriangleD3D>::const_iterator aTriangle = it->begin(); aTriangle!=it->end();aTriangle ++)
 	{
-	  BallD3D p1, p2, p3;
-	  p1.center=aTriangle->point1;
-	  p2.center=aTriangle->point2;
-	  p3.center=aTriangle->point3;
+	  RealPoint p1, p2, p3;
+	  p1=aTriangle->point1;
+	  p2=aTriangle->point2;
+	  p3=aTriangle->point3;
 	  aMesh.addVertex(p1);
 	  aMesh.addVertex(p2);
 	  aMesh.addVertex(p3);
@@ -1289,17 +1289,17 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
       for (unsigned int i=0; i< myCubeSetList.at(j).size(); i++)
 	{
 	  CubeD3D cube = myCubeSetList.at(j).at(i);
-	  BallD3D p1, p2, p3, p4, p5, p6, p7, p8;
+	  RealPoint p1, p2, p3, p4, p5, p6, p7, p8;
 	  double width= cube.width;
 
-	  p1.center = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]+width);
-	  p2.center = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]+width);
-	  p3.center = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]+width);
-	  p4.center = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]+width);
-	  p5.center = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]-width);
-	  p6.center = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]-width);
-	  p7.center = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]-width);
-	  p8.center = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]-width);
+	  p1 = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]+width);
+	  p2 = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]+width);
+	  p3 = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]+width);
+	  p4 = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]+width);
+	  p5 = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]-width);
+	  p6 = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]-width);
+	  p7 = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]-width);
+	  p8 = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]-width);
 
 	  aMesh.addVertex(p1);
 	  aMesh.addVertex(p2);
@@ -1362,7 +1362,7 @@ DGtal::operator<< ( std::ostream & out,
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, DGtal::Mesh< typename Display3D< Space ,KSpace >::BallD3D> &aMesh)
+DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, DGtal::Mesh< typename Display3D<Space , KSpace >::RealPoint > &aMesh)
 {
   aDisplay3D.exportToMesh(aMesh);
 }
@@ -1374,7 +1374,7 @@ void
 DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, std::string aFilename)
 {
   // exporting with a mesh containing color (parameter constructor to true):
-  DGtal::Mesh<typename Display3D< Space ,KSpace >::BallD3D> mesh(true);
+  DGtal::Mesh<typename Display3D<Space , KSpace >::RealPoint> mesh(true);
   aDisplay3D >> mesh;
   trace.info() << "generating faces done." << std::endl;
   mesh >> aFilename;

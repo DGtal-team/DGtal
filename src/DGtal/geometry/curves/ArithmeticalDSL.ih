@@ -760,9 +760,9 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::ConstIterator
 template <typename TCoordinate, typename TI>
 inline
 DGtal::StandardDSL<TCoordinate, TI>::
-StandardDSL(const typename Super::Coordinate& aA, 
-	    const typename Super::Coordinate& aB,
-	    const typename Super::Integer& aMu) 
+StandardDSL(const Coordinate& aA, 
+	    const Coordinate& aB,
+	    const Integer& aMu) 
   : Super(aA, aB, aMu) 
 {}
 
@@ -790,9 +790,9 @@ operator= ( const StandardDSL & aOther )
 template <typename TCoordinate, typename TI>
 inline
 DGtal::NaiveDSL<TCoordinate, TI>::
-NaiveDSL(const typename Super::Coordinate& aA, 
-	 const typename Super::Coordinate& aB,
-	 const typename Super::Integer& aMu)
+NaiveDSL(const Coordinate& aA, 
+	 const Coordinate& aB,
+	 const Integer& aMu)
   : Super(aA, aB, aMu) 
 {}
 

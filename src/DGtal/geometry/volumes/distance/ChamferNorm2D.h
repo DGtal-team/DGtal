@@ -516,7 +516,7 @@ namespace DGtal
       Directions myNormals;
 
       ///Instance of comparator functor
-      static LessThanAngular myLessThanAngular;
+      LessThanAngular myLessThanAngular;
 
       ///Static constant
       BOOST_STATIC_CONSTANT(Abscissa, myInfinity = 32562);

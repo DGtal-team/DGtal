@@ -584,7 +584,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableBack()
 template < typename TConstIterator, typename TInteger >
 inline
 void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::setPosition( 
-   const DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::Point & p )
+   const typename DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::Point & p )
 {
   Vector v = myLastPoint - myFirstPoint;
   myFirstPoint = p;
@@ -596,7 +596,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::setPosition(
 template < typename TConstIterator, typename TInteger >
 inline
 void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::translate( 
-   const DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::Vector & v )
+   const typename DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::Vector & v )
 {
   myFirstPoint += v;
   myLastPoint  += v;

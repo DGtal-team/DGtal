@@ -43,7 +43,7 @@ is_identity(const Container& container, const Value& value)
     for (typename Container::Index ii=0; ii<container.rows(); ii++)
         for (typename Container::Index jj=0; jj<container.cols(); jj++)
         {
-            const Value foo = container.coeff(ii,jj);
+            const Value foo = static_cast<Value>(container.coeff(ii,jj));
             if ((ii != jj && foo != 0) || (ii == jj && foo != value))
                 return false;
         }
@@ -130,7 +130,7 @@ test_hodge(int domain_size)
     DigitalSet set(domain);
     for (typename Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
     {
-        if (random()%4!=0) continue;
+        if (std::rand()%4!=0) continue;
         const typename Domain::Point& point = *di;
         set.insertNew(point);
     }
@@ -274,7 +274,7 @@ test_derivative(int domain_size)
     DigitalSet set(domain);
     for (typename Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
     {
-        if (random()%3!=0) continue;
+        if (std::rand()%3!=0) continue;
         const typename Domain::Point& point = *di;
         set.insertNew(point);
     }
@@ -502,8 +502,6 @@ template <typename LinearAlgebraBackend>
 void
 test_backend(const int& ntime, const int& maxdim)
 {
-    srandom(0);
-
     test_duality();
 
     test_hodge_sign<LinearAlgebraBackend>();

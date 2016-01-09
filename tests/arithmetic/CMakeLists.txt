@@ -40,11 +40,13 @@ SET(DGTAL_BENCH_GMP_SRC
 
 
 #Benchmark target
-IF(GMP_FOUND)
-  FOREACH(FILE ${DGTAL_BENCH_GMP_SRC})
-    add_executable(${FILE} ${FILE}) 
-    target_link_libraries (${FILE} DGtal DGtalIO)
-    add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
-    ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
-  ENDFOREACH(FILE)
-ENDIF(GMP_FOUND)
+IF(BUILD_BENCHMARKS)
+  IF(GMP_FOUND)
+    FOREACH(FILE ${DGTAL_BENCH_GMP_SRC})
+      add_executable(${FILE} ${FILE}) 
+      target_link_libraries (${FILE} DGtal DGtalIO)
+      add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
+      ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
+    ENDFOREACH(FILE)
+  ENDIF(GMP_FOUND)
+ENDIF(BUILD_BENCHMARKS)

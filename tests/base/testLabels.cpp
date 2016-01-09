@@ -70,7 +70,7 @@ checkInsert( VContainer1 & v, LContainer2 & l,
 {
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int idx = random() % ( l.size() );
+      unsigned int idx = rand() % ( l.size() );
       insert( v, l, idx );
     }
   return isEqual( v, l );
@@ -90,7 +90,7 @@ checkErase( VContainer1 & v, LContainer2 & l,
 {
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int idx = random() % ( l.size() );
+      unsigned int idx = rand() % ( l.size() );
       erase( v, l, idx );
     }
   return isEqual( v, l );

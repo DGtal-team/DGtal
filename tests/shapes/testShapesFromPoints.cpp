@@ -34,8 +34,6 @@
 #include <fstream>
 #include <sstream>
 #include <exception>
-#include <boost/program_options.hpp>
-
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
