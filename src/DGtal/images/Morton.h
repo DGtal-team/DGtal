@@ -85,7 +85,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CIntegralNumber<THashKey> ));
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
 
-	BOOST_STATIC_CONSTANT(Dimension, dimension = TPoint::dimension);
+    BOOST_STATIC_CONSTANT(Dimension, dimension = TPoint::dimension);
 
     /**
      * Constructor

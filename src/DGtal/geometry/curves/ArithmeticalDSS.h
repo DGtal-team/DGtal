@@ -831,9 +831,9 @@ namespace DGtal
   {
   public: 
     typedef ArithmeticalDSS<TCoordinate, TInteger, 4> Super;
-	typedef typename Super::Point Point;
-	typedef typename Super::Coordinate Coordinate;
-	typedef typename Super::DSL DSL;
+    typedef typename Super::Point Point;
+    typedef typename Super::Coordinate Coordinate;
+    typedef typename Super::DSL DSL;
 
   public: 
 
@@ -970,9 +970,9 @@ namespace DGtal
   {
   public: 
     typedef ArithmeticalDSS<TCoordinate, TInteger, 8> Super;
-	typedef typename Super::Point Point;
-	typedef typename Super::Coordinate Coordinate;
-	typedef typename Super::DSL DSL;
+    typedef typename Super::Point Point;
+    typedef typename Super::Coordinate Coordinate;
+    typedef typename Super::DSL DSL;
 
   public: 
     /**
