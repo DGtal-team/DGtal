@@ -118,7 +118,7 @@
    the folder ```${PREFIX_PATH}/share/DGtal/html/```. This fixes issue
    [#1095](https://github.com/DGtal-team/DGtal/issues/1095). (David
    Coeurjolly,
-   [#10XX]((https://github.com/DGtal-team/DGtal/issues/10XX))
+   [#1103]((https://github.com/DGtal-team/DGtal/issues/1103))
    
 - *Base Package*
  - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
