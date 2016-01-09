@@ -467,7 +467,7 @@ namespace DGtal
      * Base class
      */
     typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super;
-	typedef typename Super::ConstIterator ConstIterator;
+    typedef typename Super::ConstIterator ConstIterator;
 
   public: 
 
@@ -528,7 +528,7 @@ namespace DGtal
      * Base class
      */
     typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super; 
-	typedef typename Super::ConstIterator ConstIterator;
+    typedef typename Super::ConstIterator ConstIterator;
 
   public: 
 

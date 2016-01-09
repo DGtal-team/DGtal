@@ -712,8 +712,8 @@ namespace DGtal
      * Type of base class.
      */
     typedef ArithmeticalDSL<TCoordinate, TInteger, 4> Super;
-	typedef typename Super::Coordinate Coordinate;
-	typedef typename Super::Integer Integer;
+    typedef typename Super::Coordinate Coordinate;
+    typedef typename Super::Integer Integer;
 
   public:
     /**
@@ -780,8 +780,8 @@ namespace DGtal
      * Type of base class.
      */
     typedef ArithmeticalDSL<TCoordinate, TInteger, 8> Super;
-	typedef typename Super::Coordinate Coordinate;
-	typedef typename Super::Integer Integer;
+    typedef typename Super::Coordinate Coordinate;
+    typedef typename Super::Integer Integer;
 
   public:
     /**
