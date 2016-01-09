@@ -258,7 +258,7 @@ public:
 */
 template <typename Value, unsigned int L, unsigned int X, unsigned int Y>
 class ArrayXYOfList {
-  typedef typename std::pair<uint16_t, Value> MyPair;
+  typedef typename std::pair<DGtal::uint16_t, Value> MyPair;
   typedef typename std::forward_list<MyPair> MyList;
   typedef typename MyList::iterator Iterator;
   typedef typename MyList::const_iterator ConstIterator;

@@ -26,6 +26,7 @@ SET(DGTAL_TESTS_SRC
    testClone2
    testOwningOrAliasingPtr
    testCatch
+   testPartialTemplateSpecialization
    testContainerTraits
    testSetFunctions
    testSimpleRandomAccessRangeFromPoint)

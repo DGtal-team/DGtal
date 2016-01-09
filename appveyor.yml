@@ -1,3 +1,59 @@
-version: 1.0.{build}
-build:
-  verbosity: minimal
+version: 0.9beta.{build}
+
+environment:
+  matrix:
+  - VS_GEN: Visual Studio 14 2015
+    CONFIG: RelWithDebInfo
+    B_NAME: Win32
+  - VS_GEN: Visual Studio 14 2015 Win64
+    CONFIG: Release
+    B_NAME: Win64
+
+matrix:
+  fast_finish: true
+
+# Operating system (build VM template)
+os: Visual Studio 2015
+branches:
+  except:
+  - coverity_scan
+skip_tags: true
+#platform: ARM
+#  - x86
+#  - x64
+#  - ARM
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  # Print environment info
+  - set
+  - msbuild /version
+  - cmake --version
+
+# check nmake ?
+#- call "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+#- cl
+
+# scripts that run after cloning repository
+install:
+
+before_build:
+  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DBUILD_TESTING:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
+  
+#  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DGDCM_BUILD_TESTING:BOOL=ON -DGDCM_BUILD_APPLICATIONS:BOOL=ON -DGDCM_BUILD_SHARED_LIBS:BOOL=ON -DGDCM_ALLOW_INSOURCE_BUILD:BOOL=ON -DBUILDNAME:STRING=%COMPUTERNAME%-%B_NAME% -DGDCM_WRAP_CSHARP:BOOL=ON -DGDCM_WRAP_JAVA:BOOL=ON -DGDCM_WRAP_PYTHON:BOOL=ON -DGDCM_USE_PVRG:BOOL=ON .
+
+build_script:
+  - echo %CONFIG%
+  # NUMBER_OF_PROCESSORS=2
+  # msbuild /m => parallel
+  #- msbuild gdcm.sln /m /p:Configuration=%config% /toolsversion:14.0 /p:Platform=x64 /p:PlatformToolset=v140
+  # Do not run Test=Update/Configure, only Start/Build/Test/Submit (TODO: Coverage)
+
+  - msbuild /m /p:Configuration=%CONFIG% /p:Platform=%B_NAME% DGtal.sln 
+
+# - ctest -D ExperimentalStart -C %CONFIG%
+ # - ctest -D ExperimentalBuild -j2 -C %CONFIG%
+ # - ctest -D ExperimentalTest -j2 -C %CONFIG% 
+
+test: off
+deploy: off

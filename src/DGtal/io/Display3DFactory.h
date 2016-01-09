@@ -596,7 +596,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToPoint<KSpace>, typename TKSpace::Point> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToPoint<KSpace>, typename TKSpace::Point> & anObject );
     // PointsRange
 
     // MidPointsRange
@@ -619,7 +619,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToArrow<KSpace>,
+                      const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToArrow<KSpace>,
                       std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & anObject );
     // ArrowsRange
 
@@ -631,7 +631,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<KSpace>, typename TKSpace::Point> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToInnerPoint<KSpace>, typename TKSpace::Point> & anObject );
     // InnerPointsRange
 
     // OuterPointsRange
@@ -642,7 +642,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<KSpace>, typename TKSpace::Point> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToOuterPoint<KSpace>, typename TKSpace::Point> & anObject );
     // OuterPointsRange
 
     // IncidentPointsRange
@@ -653,8 +653,8 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<KSpace>,
-                      std::pair<typename TKSpace::Point, typename TKSpace::Point > > & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToIncidentPoints<KSpace>,
+                      std::pair<typename KSpace::Point, typename KSpace::Point > > & anObject );
     // IncidentPointsRange
 
     /**

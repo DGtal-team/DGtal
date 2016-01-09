@@ -46,8 +46,8 @@ bool testGCD( const IntegerComputer<Integer> & ic )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer a = random();
-  Integer b = random();
+  Integer a = rand();
+  Integer b = rand();
   Integer g = ic.gcd( a, b );
   trace.info() << "GCD(" << a << "," << b << ")" 
                << " = " << g << std::endl;
@@ -67,7 +67,7 @@ bool testGCD( const IntegerComputer<Integer> & ic )
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "GCD(" << a << "," << b << ") == 1" << std::endl;
-  Integer c = random(); 
+  Integer c = rand(); 
   ++c; // avoids zero.
   a *= c; b *= c;
   ic.getGcd( g, a, b );
@@ -83,8 +83,8 @@ bool testCFrac( const IntegerComputer<Integer> & ic )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer a = random();
-  Integer b = random();
+  Integer a = rand();
+  Integer b = rand();
   Integer g = ic.gcd( a, b );
   trace.info() << "a / b = " << a << " / " << b << std::endl;
   std::vector<Integer> quotients;
@@ -123,10 +123,10 @@ bool testCeilFloorDiv( const IntegerComputer<Integer> & ic )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer a = random();
-  a -= random();
-  Integer b = random();
-  b -= random(); 
+  Integer a = rand();
+  a -= rand();
+  Integer b = rand();
+  b -= rand(); 
   if ( ic.isZero( b ) ) ++b;
   trace.info() << "- a / b = " << a << " / " << b << std::endl;
   Integer fl = ic.floorDiv( a, b );
@@ -156,8 +156,8 @@ bool testExtendedEuclid( const IntegerComputer<Integer> & ic )
   typedef typename IntegerComputer<Integer>::Point2I Point2I;
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer a = random();
-  Integer b = random();
+  Integer a = rand();
+  Integer b = rand();
   Integer g = ic.gcd( a, b );
   trace.info() << "a / b = " << a << " / " << b 
                << " gcd=" << g << std::endl;
@@ -180,10 +180,10 @@ bool testCoefficientIntersection( const IntegerComputer<Integer> & ic )
   unsigned int nb = 0;
   Point2I p, N;
   Integer c;
-  p = Point2I( random(), random() );
-  N = Point2I( random() , random() );
-  c = random() * random();
-  Point2I u( random() / 100, random() / 100);
+  p = Point2I( rand(), rand() );
+  N = Point2I( rand() , rand() );
+  c = rand() * rand();
+  Point2I u( rand() / 100, rand() / 100);
   trace.info() << "p = " << p << std::endl;
   trace.info() << "u = " << u << std::endl;
   trace.info() << "N = " << N << std::endl;
@@ -214,13 +214,13 @@ bool testValidBezout( const IntegerComputer<Integer> & ic )
   unsigned int nbok = 0;
   unsigned int nb = 0;
   Vector2I v;
-  Point2I A( random(), random() );
-  Vector2I u( random() / 100, random() / 100 );
+  Point2I A( rand(), rand() );
+  Vector2I u( rand() / 100, rand() / 100 );
   ic.reduce( u );
-  Vector2I N( random(), random() );
-  Vector2I N2( random(), random() );
-  Integer c = random() * random();
-  Integer c2 = random() * random();
+  Vector2I N( rand(), rand() );
+  Vector2I N2( rand(), rand() );
+  Integer c = rand() * rand();
+  Integer c2 = rand() * rand();
   trace.info() << "A = " << A << std::endl;
   trace.info() << "u = " << u << std::endl;
   trace.info() << "N = " << N << std::endl;
