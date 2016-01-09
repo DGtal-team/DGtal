@@ -26,6 +26,7 @@ SET(DGTAL_EXAMPLES_SRC
   imageBasicSubsampling
   exampleRigidtransformation2d
   exampleRigidtransformation3d
+  exampleArrayImageAdapter
 )
 
 if( WITH_HDF5 )
