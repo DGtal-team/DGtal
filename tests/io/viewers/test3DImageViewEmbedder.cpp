@@ -29,11 +29,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
 #include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -66,7 +61,7 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
-  typedef DGtal::ImageContainerBySTLVector< DGtal::Z3i::Domain, unsigned int>  Image3D;
+  typedef DGtal::ImageContainerBySTLVector< DGtal::Z3i::Domain, unsigned char>  Image3D;
   typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
                                    Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
 
