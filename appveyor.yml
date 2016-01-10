@@ -42,7 +42,7 @@ install:
 before_build:
 #install QGLViewer:
   - git clone https://github.com/kerautret/libQGLViewer.git
-  - cd C:\projects\libqglviewer\QGLViewer
+  - cd C:\projects\dgtal\libqglviewer\QGLViewer
   - qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
 
   - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DBUILD_TESTING:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
