@@ -1315,9 +1315,9 @@ namespace DGtal
     double camera_direction[3]; ///< camera direction
     double camera_upVector[3]; ///< camera up-vector
 
-    float myLightTheta; /// the light position (inclination)
-    float myLightPhi; /// the light position (azimuth)
-    float myLightR; /// the light position (distance)
+    double myLightTheta; /// the light position (inclination)
+    double myLightPhi; /// the light position (azimuth)
+    double myLightR; /// the light position (distance)
     GLfloat myLightPosition [4]; // the light position in cartesian coordinates
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
