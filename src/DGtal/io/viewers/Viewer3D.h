@@ -43,6 +43,9 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#ifdef WIN32
+#include <windows.h>
+#endif
 #ifdef APPLE
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
