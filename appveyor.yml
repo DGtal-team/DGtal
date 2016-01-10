@@ -5,12 +5,16 @@ environment:
   - VS_GEN: Visual Studio 14 2015
     CONFIG: RelWithDebInfo
     B_NAME: Win32
-  - VS_GEN: Visual Studio 14 2015 Win64
-    CONFIG: Release
-    B_NAME: Win64
+    QTDIR: C:\Qt\5.4\msvc2013_opengl 
+  # - VS_GEN: Visual Studio 14 2015 Win64
+  #   CONFIG: Release
+  #   B_NAME: Win64
+
+
 
 matrix:
   fast_finish: true
+
 
 # Operating system (build VM template)
 os: Visual Studio 2015
@@ -29,16 +33,19 @@ init:
   - set
   - msbuild /version
   - cmake --version
+  - set PATH=%QTDIR%\bin;%PATH%
 
-# check nmake ?
-#- call "c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
-#- cl
 
 # scripts that run after cloning repository
 install:
 
 before_build:
-  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DBUILD_TESTING:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
+#install QGLViewer:
+  - git clone https://github.com/kerautret/libQGLViewer.git
+  - cd C:\projects\libqglviewer\QGLViewer
+  - qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
+
+  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DBUILD_TESTING:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
   
 #  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DGDCM_BUILD_TESTING:BOOL=ON -DGDCM_BUILD_APPLICATIONS:BOOL=ON -DGDCM_BUILD_SHARED_LIBS:BOOL=ON -DGDCM_ALLOW_INSOURCE_BUILD:BOOL=ON -DBUILDNAME:STRING=%COMPUTERNAME%-%B_NAME% -DGDCM_WRAP_CSHARP:BOOL=ON -DGDCM_WRAP_JAVA:BOOL=ON -DGDCM_WRAP_PYTHON:BOOL=ON -DGDCM_USE_PVRG:BOOL=ON .
 
