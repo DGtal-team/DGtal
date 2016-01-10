@@ -185,7 +185,7 @@ int main( int argc, char** argv )
   // First pass to find biggest planes.
   trace.beginBlock( "Decomposition first pass. Computes all planes so as to sort vertices by the plane size." );
   typedef BreadthFirstVisitor<MyDigitalSurface> Visitor;
-  typedef ChordGenericNaivePlaneComputer<Z3,Z3::Point, int64_t> NaivePlaneComputer;
+  typedef ChordGenericNaivePlaneComputer<Z3,Z3::Point, DGtal::int64_t> NaivePlaneComputer;
   map<Surfel,unsigned int> v2size;
   for ( ConstIterator it = digSurf.begin(), itE= digSurf.end(); it != itE; ++it )
     v2size[ *it ] = 0;

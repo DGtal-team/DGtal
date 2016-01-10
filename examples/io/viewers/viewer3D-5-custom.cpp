@@ -30,10 +30,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 
-#include "DGtal/io/Color.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/Color.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 
