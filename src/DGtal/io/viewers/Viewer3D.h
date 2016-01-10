@@ -281,7 +281,7 @@ namespace DGtal
        * @param mode the mode of representation
        */
       template<typename TDomain>
-      Image2DDomainD3D( TDomain aDomain, Viewer3D::ImageDirection normalDir=zDirection,
+      Image2DDomainD3D( TDomain aDomain, ImageDirection normalDir=zDirection,
                         double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox")
       {
         BOOST_CONCEPT_ASSERT(( concepts::CDomain < TDomain >));
@@ -302,7 +302,7 @@ namespace DGtal
        * @param yBottomLeft the x coordinate of bottom left image point.
        * @param zBottomLeft the x coordinate of bottom left image point.
        **/
-      void updateDomainOrientation( Viewer3D::ImageDirection normalDir,
+      void updateDomainOrientation( ImageDirection normalDir,
                                     double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
 
@@ -400,7 +400,7 @@ namespace DGtal
       template <typename TImageType, typename TFunctor>
 
       TextureImage( const TImageType & image, const TFunctor &aFunctor,
-                    Viewer3D::ImageDirection normalDir=zDirection,
+                    ImageDirection normalDir=zDirection,
                     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
                     TextureMode aMode= 1)
       {
@@ -425,7 +425,7 @@ namespace DGtal
        * @param yBottomLeft the x coordinate of bottom left image point.
        * @param zBottomLeft the x coordinate of bottom left image point.
        **/
-      void updateImageOrientation( Viewer3D::ImageDirection normalDir,
+      void updateImageOrientation( ImageDirection normalDir,
                                    double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
 
