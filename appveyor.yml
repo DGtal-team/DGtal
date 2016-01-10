@@ -4,6 +4,8 @@ environment:
   matrix:
   - VS_GEN: Visual Studio 14 2015
     CONFIG: RelWithDebInfo
+    CONFIGQGL: Release
+
     B_NAME: Win32
     QTDIR: C:\Qt\5.4\msvc2013_opengl 
   # - VS_GEN: Visual Studio 14 2015 Win64
@@ -44,7 +46,7 @@ before_build:
   - git clone https://github.com/kerautret/libQGLViewer.git
   - cd C:\projects\dgtal\libqglviewer\QGLViewer
   - qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
-  - msbuild /m /p:Configuration=%CONFIG% /p:Platform=%B_NAME% qglviewer.vcxproj 
+  - msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj 
   - cd C:\projects\dgtal
   - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DBUILD_TESTING:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
   
