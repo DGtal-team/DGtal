@@ -17,15 +17,6 @@ if ( Boost_FOUND )
   # SYSTEM to avoid warnings from boost.
   include_directories(SYSTEM ${Boost_INCLUDE_DIRS} )
   SET(DGtalLibInc ${DGtalLibInc} ${Boost_INCLUDE_DIRS})
-
-  ## Checking boost/random ( <1.47)
-  STRING (COMPARE LESS "${Boost_VERSION}" 104700 BOOST_RANDOM_OLD)
-  IF (BOOST_RANDOM_OLD)
-    message(STATUS "   Old boost::random found, I define BOOST_RANDOM_OLD")
-    ADD_DEFINITIONS("-DBOOST_RANDOM_OLD")
-  ELSE()
-    message(STATUS "   boost::random ok")
-  ENDIF()
 endif( Boost_FOUND )
 
 # -----------------------------------------------------------------------------
