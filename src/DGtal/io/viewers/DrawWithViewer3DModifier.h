@@ -258,7 +258,7 @@ namespace DGtal
      */
     AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
                                  Clone<TFunctor> aFunctor,
-                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my2DImage(&anImage),
+                                 typename Viewer3D<Space,KSpace>::TextureMode aMode = GrayScaleMode): my2DImage(&anImage),
                                                                                          myFunctor(aFunctor),
                                                                                          myMode(aMode)
     {
@@ -304,7 +304,7 @@ namespace DGtal
      */
     AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
                                  Clone<TFunctor> aFunctor,
-                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my3DImage(&anImage),
+                                 typename Viewer3D<Space,KSpace>::TextureMode aMode = GrayScaleMode): my3DImage(&anImage),
                                                                                          myFunctor(aFunctor),
                                                                                          myMode(aMode)
     {
