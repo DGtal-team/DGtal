@@ -395,14 +395,14 @@ namespace DGtal
        * @param xBottomLeft the x coordinate of bottom left image point (default 0).
        * @param yBottomLeft the x coordinate of bottom left image point (default 0).
        * @param zBottomLeft the x coordinate of bottom left image point (default 0).
-       * @param aMode the mode of representation
+       * @param aMode the mode of representation (default GrayScaleMode).
        */
       template <typename TImageType, typename TFunctor>
 
       TextureImage( const TImageType & image, const TFunctor &aFunctor,
                     ImageDirection normalDir=zDirection,
                     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
-                    TextureMode aMode= 1)
+                    TextureMode aMode= GrayScaleMode)
       {
         BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
         BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
