@@ -24,14 +24,14 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
 
 # Install the export set for use with the install-tree
 install(EXPORT DGtalLibraryDepends DESTINATION
-  "${INSTALL_DATA_DIR}/DGtal/CMake"
+  "${INSTALL_DATA_DIR}"
   COMPONENT dev)
 
 # Create a DGtalConfig.cmake file for the use from the install tree
 # and install it
 set(DGTAL_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
 set(DGTAL_LIB_DIR "${INSTALL_LIB_DIR}")
-set(DGTAL_CMAKE_DIR "${INSTALL_DATA_DIR}/DGtal/CMake")
+set(DGTAL_CMAKE_DIR "${INSTALL_DATA_DIR}")
 configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfig.cmake" @ONLY)
 
