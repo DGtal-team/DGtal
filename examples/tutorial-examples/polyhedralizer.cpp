@@ -311,7 +311,7 @@ int main( int argc, char** argv )
             }
         }
       // Assign random color for each plane.
-      ptrRoundPlane->second = Color( random() % 192 + 64, random() % 192 + 64, random() % 192 + 64, 255 );
+      ptrRoundPlane->second = Color( rand() % 192 + 64, rand() % 192 + 64, rand() % 192 + 64, 255 );
     }
   trace.endBlock();
   //! [polyhedralizer-segment]
