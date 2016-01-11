@@ -40,6 +40,8 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+#include "DGtal/base/Common.h"
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -64,7 +66,6 @@
 #include <QGLWidget>
 #include <QKeyEvent>
 
-#include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/base/CountedPtr.h"
