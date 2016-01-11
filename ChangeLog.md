@@ -129,7 +129,9 @@
    the folder ```${PREFIX_PATH}/share/DGtal/html/```. This fixes issue
    [#1095](https://github.com/DGtal-team/DGtal/issues/1095). (David
    Coeurjolly,
-   [#1103]((https://github.com/DGtal-team/DGtal/issues/1103))
+   [#1103](https://github.com/DGtal-team/DGtal/issues/1103))
+ - Fix for swapped coordinates in TangentFromDSS2DFunctor. (Kacper Pluta,
+   [#1083](https://github.com/DGtal-team/DGtal/issues/1103))
    
 - *Base Package*
  - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
