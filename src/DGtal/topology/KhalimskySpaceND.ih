@@ -742,8 +742,23 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( const Point & kp ) const
 {
-  const Cell cell( this->updateKCoordsHelper( kp ) );
-  ASSERT( uIsValid(cell) );
+  Cell cell( kp );
+
+  for ( Dimension k = 0; k < DIM; ++k )
+    {
+      if ( this->isDimensionPeriodicHelper( k ) )
+        {
+          cell.myCoordinates[k] = this->updateKCoordHelper( cell.myCoordinates[k], k );
+        }
+      else
+        {
+          if ( cell.myCoordinates[k] < myCellLower.myCoordinates[k] )
+            cell.myCoordinates[k] = uFirst( cell, k );
+          else if ( cell.myCoordinates[k] > myCellUpper.myCoordinates[k] )
+            cell.myCoordinates[k] = uLast( cell, k );
+        }
+    }
+
   return cell;
 }
 //-----------------------------------------------------------------------------
@@ -775,8 +790,23 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCell( const Point & kp, Sign sign ) const
 {
-  const SCell cell( this->updateKCoordsHelper( kp ), sign == POS );
-  ASSERT( sIsValid(cell) );
+  SCell cell( kp, sign == POS );
+
+  for ( Dimension k = 0; k < DIM; ++k )
+    {
+      if ( this->isDimensionPeriodicHelper( k ) )
+        {
+          cell.myCoordinates[k] = this->updateKCoordHelper( cell.myCoordinates[k], k );
+        }
+      else
+        {
+          if ( cell.myCoordinates[k] < myCellLower.myCoordinates[k] )
+            cell.myCoordinates[k] = sFirst( cell, k );
+          else if ( cell.myCoordinates[k] > myCellUpper.myCoordinates[k] )
+            cell.myCoordinates[k] = sLast( cell, k );
+        }
+    }
+
   return cell;
 }
 //-----------------------------------------------------------------------------
