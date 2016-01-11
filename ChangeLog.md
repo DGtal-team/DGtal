@@ -145,7 +145,7 @@
    (Pablo Hernandez-Cerdan, [#1100](https://github.com/DGtal-team/DGtal/pull/1100))
  - Fix Viewer3D axis display when they are included in a transparent element.
    (issue #873)
-   (Bertrand Kerautret [##1102](https://github.com/DGtal-team/DGtal/pull/1102)))
+   (Bertrand Kerautret [##1108](https://github.com/DGtal-team/DGtal/pull/1108)))
 
 
 # DGtal 0.9
