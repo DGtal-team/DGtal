@@ -1787,18 +1787,19 @@ DGtal::Viewer3D<Space, KSpace>::paintGL(){
 		{
 			// Clears screen, set model view matrix with shifted matrix for ith buffer
 			preDrawStereo(view);
-			// Used defined method. Default is empty
+                        postDraw();
+                  	// Used defined method. Default is empty
 			if (camera()->frame()->isManipulated())
                           fastDraw();
 			else
                           draw();
-			postDraw();
+		
 		}
 	}
 	else
 	{
 		// Clears screen, set model view matrix...
-		QGLViewer::preDraw();
+		preDraw();
 		postDraw();
                 // Used defined method. Default calls draw()
 		if (camera()->frame()->isManipulated())
