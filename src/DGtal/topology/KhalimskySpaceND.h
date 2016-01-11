@@ -722,133 +722,163 @@ namespace DGtal
      */
   public:
 
-    /**
-     * From a cell, returns the same cell with appropriate
-     * Khalimsky coordinates when the space has periodic
-     * dimension.
+    /** From an unsigned cell, returns an unsigned cell lying into this Khalismky space.
      *
-     * This is only useful for conversion between non-periodic
-     * and periodic Khalimsky spaces.
+     * Along a non-periodic dimension, if the given Khalimsky coordinate lies
+     * outside the space, it replaces it by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the Khalimsky coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param c a cell.
      * @return the same cell with appropriate Khalimsky coordinates
      *         along periodic dimensions.
-     * @pre `uIsInside(c)` is \a true.
      * @post `uIsValid(uCell(c))` is \a true.
+     * @post `uCell(c) == c` if `uIsValid(c)`.
      */
     Cell uCell( const Cell & c ) const;
 
-    /**
-     * From the Khalimsky coordinates of a cell, builds the
-     * corresponding unsigned cell.
+    /** From the Khalimsky coordinates of a cell, 
+     * builds the corresponding unsigned cell lying into this Khalismky space.
+     *
+     * Along a non-periodic dimension, if the given Khalimsky coordinate lies
+     * outside the space, it is replaced by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the Khalimsky coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param kp an integer point (Khalimsky coordinates of cell).
      * @return the unsigned cell.
-     * @pre \a kp are the coordinates of a cell lying in the Khalimsky space.
      * @post `uIsValid(uCell(kp))` is \a true.
      */
     Cell uCell( const Point & kp ) const;
 
-    /**
-     * From the digital coordinates of a point in Zn and a cell type,
-     * builds the corresponding cell.
+    /** From the digital coordinates of a point in Zn and a cell type, 
+     * builds the corresponding unsigned cell lying into this Khalismky space.
+     *
+     * Along a non-periodic dimension, if the given digital coordinate lies
+     * outside the space, it is replaced by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the digital coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
      * @param c another cell defining the topology.
      * @return the cell having the topology of [c] and the given
      * digital coordinates [p].
-     * @pre \a p are the coordinates of a digital point lying in the Khalimsky space.
      * @post `uIsValid(uCell(p, c))` is \a true.
      */
     Cell uCell( Point p, const Cell & c ) const;
 
-    /**
-     * From a signed cell, returns the same signed cell with
-     * appropriate Khalimsky coordinates when the space has
-     * periodic dimension.
+    /** From a signed cell, returns a signed cell lying into this Khalismky space.
      *
-     * This is only useful for conversion between non-periodic
-     * and periodic Khalimsky spaces.
+     * Along a non-periodic dimension, if the given Khalimsky coordinate lies
+     * outside the space, it replaces it by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the Khalimsky coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param c a signed cell.
      * @return the same signed cell with appropriate Khalimsky coordinates
      *          along periodic dimensions.
-     * @pre `sIsInside(c)` is \a true.
      * @post `sIsValid(sCell(c))` is \a true.
+     * @post `sCell(c) == c` if `sIsValid(c)`.
      */
     SCell sCell( const SCell & c ) const;
 
-    /**
-     * From the Khalimsky coordinates of a cell and a sign, builds the
-     * corresponding unsigned cell.
+    /** From the Khalimsky coordinates of a cell and a sign, 
+     * builds the corresponding signed cell lying into this Khalismky space.
+     *
+     * Along a non-periodic dimension, if the given Khalimsky coordinate lies
+     * outside the space, it is replaced by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the Khalimsky coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param kp an integer point (Khalimsky coordinates of cell).
      * @param sign the sign of the cell (either POS or NEG).
      * @return the signed cell.
-     * @pre \a kp are the coordinates of a cell lying in the Khalimsky space.
      * @post `sIsValid(sCell(kp, sign))` is \a true.
      */
     SCell sCell( const Point & kp, Sign sign = POS ) const;
 
-    /**
-     * From the digital coordinates of a point in Zn and a signed cell
-     * type, builds the corresponding signed cell.
+    /** From the digital coordinates of a point in Zn and a signed cell type, 
+     * builds the corresponding signed cell lying into this Khalismky space.
+     *
+     * Along a non-periodic dimension, if the given digital coordinate lies
+     * outside the space, it is replaced by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the digital coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
      * @param c another cell defining the topology and sign.
      * @return the cell having the topology and sign of [c] and the given
      * digital coordinates [p].
-     * @pre \a p are the coordinates of a digital point lying in the Khalimsky space.
      * @post `sIsValid(sCell(p, c))` is \a true.
      */
     SCell sCell( Point p, const SCell & c ) const;
 
-    /**
-     * From the digital coordinates of a point in Zn, creates the spel
-     * (cell of maximal dimension) with these coordinates.
+    /** From the digital coordinates of a point in Zn, 
+     * builds the corresponding spel (cell of maximal dimension) lying into this Khalismky space.
+     *
+     * Along a non-periodic dimension, if the given digital coordinate lies
+     * outside the space, it is replaced by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the digital coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
      * @return the spel having the given digital coordinates [p].
-     * @pre \a p are the coordinates of a digital point lying in the Khalimsky space.
      * @post `uIsValid(uSpel(p))` is \a true.
      */
     Cell uSpel( Point p ) const;
 
-    /**
-     * From the digital coordinates of a point in Zn, creates the spel
-     * (cell of maximal dimension) with these coordinates.
+    /** From the digital coordinates of a point in Zn, 
+     * builds the corresponding spel (cell of maximal dimension) lying into this Khalismky space.
+     *
+     * Along a non-periodic dimension, if the given digital coordinate lies
+     * outside the space, it is replaced by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the digital coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
      * @param sign the sign of the cell (either POS or NEG).
      * @return the signed spel having the given digital coordinates [p].
-     * @pre \a p are the coordinates of a digital point lying in the Khalimsky space.
      * @post `sIsValid(sSpel(p, sign))` is \a true.
      */
     SCell sSpel( Point p, Sign sign = POS ) const;
 
-    /**
-     * From the digital coordinates of a point in Zn, creates the pointel
-     * (cell of dimension 0) with these coordinates.
+    /** From the digital coordinates of a point in Zn, 
+     * builds the corresponding pointel (cell of dimension 0) lying into this Khalismky space.
+     *
+     * Along a non-periodic dimension, if the given digital coordinate lies
+     * outside the space, it is replaced by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the digital coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
      * @return the pointel having the given digital coordinates [p].
-     * @pre \a p are the coordinates of a digital point which associated
-     * 0-dimensional cell lies in the Khalimsky space.
      * @post `uIsValid(uSpel(p))` is \a true.
      */
     Cell uPointel( Point p ) const;
 
-    /**
-     * From the digital coordinates of a point in Zn, creates the pointel
-     * (cell of dimension 0) with these coordinates.
+    /** From the digital coordinates of a point in Zn, 
+     * builds the corresponding pointel (cell of dimension 0) lying into this Khalismky space.
      *
-     * @note For periodic dimension, the corresponding Khalimsky coordinate
-     * of the returned cell lies into the fundamental domain.
+     * Along a non-periodic dimension, if the given digital coordinate lies
+     * outside the space, it is replaced by the nearest valid coordinate.
+     *
+     * Along a periodic dimension, the digital coordinate is corrected 
+     * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
      * @param sign the sign of the cell (either POS or NEG).
      *
      * @return the signed pointel having the given digital coordinates [p].
+     * @post `uIsValid(uSpel(p))` is \a true.
      */
     SCell sPointel( Point p, Sign sign = POS ) const;
 
