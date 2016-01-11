@@ -573,6 +573,14 @@ namespace DGtal
 
 
     /**
+     *  @brief Overload of the QGLViewer method in order to change the
+     *  order of display (to fix the QGLViewer axis display trough
+     *  transparency).
+     **/
+    virtual void paintGL();
+
+
+    /**
      * Add a TextureImage in the list of image to be displayed.
      * @param image a TextureImage including image data buffer and position, orientation.
      *
