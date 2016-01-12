@@ -4,11 +4,11 @@
 ## New Features / Critical Changes
 
 - *Configuration/General*
- - DGtal requires now to have a C++11 enabled compiler (gcc>4.6, clang
-   >2.9, VS14, ...). This allows us to use new C++11 features in
+ - DGtal requires now to have a C++11 enabled compiler (gcc>4.6, clang>2.9, VS14, ...).
+   This allows us to use new C++11 features in
    DGtal core and to have more generic and reliable code. (David
    Coeurjolly, [#1080](https://github.com/DGtal-team/DGtal/pull/1080))
-   
+
  - DGtal core now compiles on Microsoft Windows, Visual Studio (only
    VS14 or above). Many issues have been fixed for compatibility with
    'cl' compiler. (David Coeurjolly, Jérémy Levallois,
@@ -133,7 +133,7 @@
  - Fix for swapped coordinates in TangentFromDSS2DFunctor. (Kacper
    Pluta,
    [#1083](https://github.com/DGtal-team/DGtal/issues/1083))
-   
+ - Update of the README.md page. (David Coeurjolly, [#11XX](https://github.com/DGtal-team/DGtal/issues/10XX<))   
 - *Base Package*
  - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
    (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
@@ -263,12 +263,12 @@
  - New algorithms to compute the convex hull of planar point sets.
    (Tristan Roussillon, [#1028](https://github.com/DGtal-team/DGtal/pull/1028))
  - Lambda maximal segment tangent direction estimator 2D/3D: LambdaMST2D, LambdaMST3D.
-   A fast tangent direction estimator which uses maximal digital straight segments. 
+   A fast tangent direction estimator which uses maximal digital straight segments.
    (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
- - Segmentation of 3D digital curves by a combination of the segmentations of its 2D 
+ - Segmentation of 3D digital curves by a combination of the segmentations of its 2D
    projections onto 2D base planes: XY, XZ, YZ. Notice that, only valid projections
    are used. By valid one understands that there are no two 3D points which are projected
-   onto the same 2D point. A segment is computed as long as is extendable and at least 
+   onto the same 2D point. A segment is computed as long as is extendable and at least
    two projections are valid.
  : NaiveDSS3DComputer.
    (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
@@ -371,7 +371,7 @@
 
 ## Bug Fixes
 
-- *Configuration* 
+- *Configuration*
   - Removing code coverage with coverall.io (David Coeurjolly,
   [1040](https://github.com/DGtal-team/DGtal/pull/1032)).
   - Forces Eigen 3.2.1 minimum (for a bug fix).  (Jacques-Olivier
@@ -1155,7 +1155,7 @@ Known problems:
 
     For technical reasons, we haven’t be able to verify that this release also
     compile on Windows Visual Studio systems (see ticket #87). A new release
-    will fix this problem as soon as possible. 
+    will fix this problem as soon as possible.
 
 
 
