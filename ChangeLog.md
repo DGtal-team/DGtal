@@ -4,11 +4,11 @@
 ## New Features / Critical Changes
 
 - *Configuration/General*
- - DGtal requires now to have a C++11 enabled compiler (gcc>4.6, clang
-   >2.9, VS14, ...). This allows us to use new C++11 features in
+ - DGtal requires now to have a C++11 enabled compiler (gcc>4.6,
+   clang>2.9, VS14, ...).  This allows us to use new C++11 features in
    DGtal core and to have more generic and reliable code. (David
    Coeurjolly, [#1080](https://github.com/DGtal-team/DGtal/pull/1080))
-   
+
  - DGtal core now compiles on Microsoft Windows, Visual Studio (only
    VS14 or above). Many issues have been fixed for compatibility with
    'cl' compiler. (David Coeurjolly, Jérémy Levallois,
@@ -79,30 +79,24 @@
    Coeurjolly, [#1074](https://github.com/DGtal-team/DGtal/pull/1074))
 
 - *IO*
-
  - By default, closing a Viewer3D does not save automatically the viewer
    state anymore (in a .qglviewer.xml file). The automatic save can be
    activated by a flag (myAutoSaveState). (Bertrand Kerautret
     [#1088](https://github.com/DGtal-team/DGtal/pull/1088))
-
  - In the Viewer3D, the light source position is now saved in the
     QGLViewer state file (.qglviewer.xml). (Bertrand Kerautret
     [#1087](https://github.com/DGtal-team/DGtal/pull/1087))
-
  - Minor improvements of default settings in Viewer3D. (David
    Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
-
  - change the chronological order to diplay primitives (in the draw
    function) in order to see the cube primitive through the
    transparency of the ball primitives. (Bertrand Kerautret,
    [#1081](https://github.com/DGtal-team/DGtal/pull/1081))
-
  - New possibility to move the light source direction using the mouse move
    in Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on mac)). The light source
    direction is now defined according the main coordinate system (no more from
    the camera center).
    (Bertrand Kerautret [#1070](https://github.com/DGtal-team/DGtal/pull/1070))
-
  - Adding raw I/O capabilities for non integral types and signed integers.
    (Roland Denis [#1084](https://github.com/DGtal-team/DGtal/pull/1084))
 
@@ -133,10 +127,13 @@
  - Fix for swapped coordinates in TangentFromDSS2DFunctor. (Kacper
    Pluta,
    [#1083](https://github.com/DGtal-team/DGtal/issues/1083))
-   
+ - Update of the README.md page. (David Coeurjolly,
+   [#1109](https://github.com/DGtal-team/DGtal/issues/1109))
+
 - *Base Package*
- - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
-   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
+ - Fix wrong initialization of reverse iterators in
+   SimpleRandomAccess(Const)RangeFromPoint.  (Roland Denis,
+   [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
 
 - *Geometry Package*
  - Fix pseudo-random number generator in KanungoNoise (David
@@ -263,12 +260,12 @@
  - New algorithms to compute the convex hull of planar point sets.
    (Tristan Roussillon, [#1028](https://github.com/DGtal-team/DGtal/pull/1028))
  - Lambda maximal segment tangent direction estimator 2D/3D: LambdaMST2D, LambdaMST3D.
-   A fast tangent direction estimator which uses maximal digital straight segments. 
+   A fast tangent direction estimator which uses maximal digital straight segments.
    (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
- - Segmentation of 3D digital curves by a combination of the segmentations of its 2D 
+ - Segmentation of 3D digital curves by a combination of the segmentations of its 2D
    projections onto 2D base planes: XY, XZ, YZ. Notice that, only valid projections
    are used. By valid one understands that there are no two 3D points which are projected
-   onto the same 2D point. A segment is computed as long as is extendable and at least 
+   onto the same 2D point. A segment is computed as long as is extendable and at least
    two projections are valid.
  : NaiveDSS3DComputer.
    (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
@@ -371,7 +368,7 @@
 
 ## Bug Fixes
 
-- *Configuration* 
+- *Configuration*
   - Removing code coverage with coverall.io (David Coeurjolly,
   [1040](https://github.com/DGtal-team/DGtal/pull/1032)).
   - Forces Eigen 3.2.1 minimum (for a bug fix).  (Jacques-Olivier
@@ -1155,7 +1152,7 @@ Known problems:
 
     For technical reasons, we haven’t be able to verify that this release also
     compile on Windows Visual Studio systems (see ticket #87). A new release
-    will fix this problem as soon as possible. 
+    will fix this problem as soon as possible.
 
 
 
