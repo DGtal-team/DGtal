@@ -24,7 +24,7 @@ form: http://dgtal.org/registration/
 Quick Installation
 ==================
 
-* Linux: [Binary packages]() (Arch, CentOS, Fedora, openSUSE, RHEL, SL)
+* Linux: [Binary packages](https://software.opensuse.org/download.html?project=home%3Acopyme%3ADGtal&package=DGtal) (Arch, CentOS, Fedora, openSUSE, RHEL, SL)
 * MacOS (using [homebrew](http://brew.sh)):
         brew install dgtal
 (```brew options dgtal``` to enable optional features)
