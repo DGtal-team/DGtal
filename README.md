@@ -1,4 +1,4 @@
-![DGtal logo](doc/images/logo_DGtal.png)
+![DGtal logo](doc/images/logoDGtal-small.png)
 
 Main website: http://dgtal.org
 
