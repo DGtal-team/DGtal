@@ -131,8 +131,9 @@
    [#1109](https://github.com/DGtal-team/DGtal/issues/1109))
 
 - *Base Package*
- - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
-   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
+ - Fix wrong initialization of reverse iterators in
+   SimpleRandomAccess(Const)RangeFromPoint.  (Roland Denis,
+   [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
 
 - *Geometry Package*
  - Fix pseudo-random number generator in KanungoNoise (David
