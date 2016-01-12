@@ -36,10 +36,12 @@ Quick Build Instructions
 
 More details are given in the [documentation pages](http://dgtal.org/download/). We just sketch the main instructions on linux/unix-based systems:
 
+```shell
     git clone https://github.com/DGtal-team/DGtal.git
     cd DGtal ; mkdir buid ; cd build
     cmake ..
     make install
+```
 
 Minimum system requirements: C++11 enabled compiler, [cmake](http://cmake.org), [boost](http://boost.org) (>= 1.46).
 
