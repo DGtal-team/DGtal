@@ -65,7 +65,7 @@ void usage( int /*argc*/, char** argv )
   std::cerr << "\t - See http://www.freigeist.cc/gallery.html" << std::endl;
 }
   
-  typedef Space::RealPoint Z3i::RealPoint;
+  typedef Space::RealPoint RealPoint;
   typedef RealPoint::Coordinate Ring;
   typedef MPolynomial<3, Ring> Polynomial3;
   typedef MPolynomialReader<3, Ring> Polynomial3Reader;
