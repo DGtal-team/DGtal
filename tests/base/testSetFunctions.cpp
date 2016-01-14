@@ -40,7 +40,7 @@
 
 using namespace DGtal;
 using namespace DGtal::functions;
-using namespace DGtal::functions::setops;
+
 
 ////////////////////////////// unit tests /////////////////////////////////
 TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
