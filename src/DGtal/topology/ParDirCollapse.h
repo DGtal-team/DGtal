@@ -47,7 +47,7 @@
 // Inclusions
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
-#include <kernel/PointVector.h>
+#include "DGtal/kernel/PointVector.h"
 // Cellular grid
 #include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/topology/CubicalComplexFunctions.h"
@@ -60,7 +60,8 @@ namespace DGtal
 /**
  * Description of class 'ParDirCollapse' <p>
  * \brief Aim: Implements thinning algorithm in cubical complexes.
- * Paper: Chaussard, J. and Couprie, M., Surface Thinning in 3D Cubical Complexes, Combinatorial Image Analysis, (2009)
+ * Paper: Chaussard, J. and Couprie, M., Surface Thinning in 3D Cubical Complexes,
+ * Combinatorial Image Analysis, (2009)
  * @tparam CC cubical complex.
  */
 template < typename CC >
@@ -71,7 +72,7 @@ public:
     /// Any model of concepts::CCellularGridSpaceND, i.e. a type that models a Khalimsky space.
     typedef typename CC::KSpace KSpace;
     /// Type of Nd integer vector
-    typedef typename Vector<KSpace::dimension, int > Vector;
+    typedef PointVector< KSpace::dimension, int > Vector;
     /// Type of cells in Khalimsky space
     typedef typename KSpace::Cell Cell;
     /// Type of collection of cells
@@ -92,19 +93,19 @@ public:
      * Constructor.
      * @param k -- const reference to Khalimsky space
      */
-    ParDirCollapse( const KSpace & k);
+    ParDirCollapse ( const KSpace & k );
 
      /**
      * Constructor.
      * @param pComplex -- Cubical complex
      */
-    void attach ( Alias<CC> pComplex );
+    void attach ( Alias< CC > pComplex );
 
      /**
      * @param iterations -- number of iterations
      * @return total number of removed cells.
      */
-     unsigned int eval (int iterations );
+     unsigned int eval ( unsigned int iterations );
 
     /**
      * Extension of basic algorithm which preserve KSpace::dimension - 1 faces which are not included
@@ -164,7 +165,7 @@ private:
 
     /// Reference to Khalimsky space in which a given complex is embedded.
     const KSpace& K;
-    // Pointer to complex.
+    /// Pointer to complex.
     CC * complex;
 
 }; // end of class ParDirCollapse
