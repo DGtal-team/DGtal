@@ -1,0 +1,208 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ParDirCollapse.h
+ * @author Mohamad ONAYSSI (\c mohamad.onayssi@edu.esiee.fr )
+ * @author Bibiana MARTINEZ (\c bibiana.martinez@edu.esiee.fr )
+ * @author Mohamed MELLOULI (\c mohamed.mellouli@edu.esiee.fr )
+ * ESIEE Paris
+ *
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
+ *
+ *
+ * @date 2015/12/22
+ *
+ *
+ * This file is part of the DGtal library.
+ */
+
+#include <vector>
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+template < typename  CC >
+inline
+DGtal::ParDirCollapse<CC >::ParDirCollapse( const KSpace & k) : K (k)
+{
+    complex = 0;
+}
+
+template < typename  CC >
+inline
+void
+DGtal::ParDirCollapse< CC >::attach ( Alias<CC> pComplex )
+{
+    complex = pComplex;
+}
+
+template < typename  CC >
+inline
+int
+DGtal::ParDirCollapse< CC >::getDirection ( const Cell& F, const Cell& G )
+{
+    Vector V=K.uKCoords ( F ) - K.uKCoords ( G );
+    for ( int i = 0; i< K.dimension; i++ )
+        if ( V[i] != 0 ) return i;
+}
+
+template < typename CC >
+inline
+int
+DGtal::ParDirCollapse< CC >::getOrientation( const Cell& F, const Cell& G )
+{
+    Vector V=K.uKCoords ( F ) - K.uKCoords ( G );
+    for ( int i = 0; i < K.dimension; i++ )
+        if ( V[i] != 0 ) return V[i];
+}
+
+template < typename CC >
+inline
+bool
+DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
+{
+    std::vector<Cell> SUB;
+    int collapseval=0;
+    typename CC::DefaultCellMapIteratorPriority P;
+    for ( unsigned int i = 0; i < iterations; i++ )
+    {
+        CC boundary = complex->boundary();
+        int priority = 0;
+        for ( int dim = 0; dim < K.dimension; dim++ )
+        {
+            for ( int orientation = -1 ; orientation <= 1; orientation += 2 )
+            {
+                for ( int d = K.dimension - 1; d >= 0; d-- )
+                {
+                    for ( CellMapConstIterator begin = boundary.begin ( d ); begin != boundary.end ( d ); ++begin, ++priority )
+                    {
+                        if ( K.uDim ( begin->first ) == d )
+                        {
+                            Cells faces = K.uUpperIncident ( begin->first );
+                            for ( unsigned int j = 0; j < faces.size(); j++ )
+                            {
+                                if ( complex->findCell ( d + 1, faces[j] ) != boundary->end( d + 1 ) )
+                                {
+                                    if ( getOrientation ( begin->first, faces[j] ) == orientation &&
+                                         getDirection ( begin->first, faces[j] ) == dim &&
+                                         K.uDim ( faces[j] ) == d + 1 )
+                                    {
+                                        CellMapConstIterator cmIt = boundary->findCell ( d + 1, faces[j] );
+                                        if ( cmIt->second.data != CC::FIXED && (*begin).second.data != CC::FIXED )
+                                        {
+                                            SUB.push_back ( faces[j] );
+                                            complex->insertCell ( SUB.back(), priority );
+                                            SUB.push_back ( begin->first );
+                                            complex->insertCell ( SUB.back(), priority );
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    collapseval += DGtal::functions::collapse ( *complex, SUB.begin(), SUB.end(), P, true, true, true );
+                    SUB.clear();
+                    priority = 0;
+                }
+            }
+        }
+    }
+    return collapseval;
+}
+
+template < typename CC >
+inline
+void
+DGtal::ParDirCollapse< CC >::collapseSurface(){
+    while ( eval ( 1 ) )
+    {
+        CellMapConstIterator constIterator = complex->begin ( K.dimension - 1 );
+        CellMapConstIterator itEd = complex->end ( K.dimension - 1 );
+        for ( ; constIterator != itEd; ++constIterator )
+        {
+            bool status = false;
+            Cells faces = K.uUpperIncident ( constIterator->first );
+            for ( unsigned int i = 0; i < faces.size(); i++ )
+            {
+
+                if ( complex->findCell ( K.dimension, faces[i] ) != complex->end ( K.dimension ) )
+                {
+                    status = true;
+                    break;
+                }
+            }
+            if ( !status )
+                complex->insertCell( constIterator->first, CC::FIXED );
+        }
+    }
+}
+
+template < typename CC >
+inline
+void
+DGtal::ParDirCollapse< CC >::collapseIsthmus(){
+    while ( eval ( 1 ) )
+    {
+        CellMapConstIterator constIterator = complex->begin ( K.dimension - 1 );
+        CellMapConstIterator itEd = complex->end ( K.dimension - 1 );
+        for ( ; constIterator != itEd; ++constIterator )
+        {
+            bool status = false;
+            Cells faces = K.uUpperIncident ( constIterator->first );
+            for ( int i = 0; i < faces.size(); i++ )
+            {
+
+                if ( complex->findCell ( K.dimension, faces[i] ) != complex->end ( K.dimension ) )
+                {
+                    status = true;
+                    break;
+                }
+            }
+            if ( status )
+                continue;
+            faces = K.uLowerIncident ( constIterator->first );
+            status = false;
+            for ( unsigned int i = 0; i < faces.size(); i++ )
+            {
+                int count = 0;
+                if ( K.uDim ( faces[i] ) == K.dimension - 2 )
+                {
+                    Cells facesUpper = K.uUpperIncident ( faces[i] );
+                    for ( unsigned int j = 0; j < facesUpper.size(); j++ )
+                    {
+                        if( K.uDim ( facesUpper[j] ) == K.dimension - 1 )
+                        {
+                            if ( complex->findCell ( K.dimension-1, facesUpper[j] ) != complex->end ( K.dimension - 1 ) )
+                                count++;
+                        }
+                    }
+                    if ( count > 1 )
+                        status = true;
+                    else
+                        status = false;
+                }
+            }
+            if ( status )
+                complex->insertCell ( constIterator->first, CC::FIXED );
+        }
+    }
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
