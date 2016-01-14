@@ -96,13 +96,13 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
                             Cells faces = K.uUpperIncident ( begin->first );
                             for ( unsigned int j = 0; j < faces.size(); j++ )
                             {
-                                if ( boundary.findCell ( d + 1, faces[j] ) != boundary.end ( d + 1 ) )
+                                if (  complex->findCell ( d + 1, faces[j] ) !=  complex->end ( d + 1 ) )
                                 {
                                     if ( getOrientation ( begin->first, faces[j] ) == orientation &&
                                          getDirection ( begin->first, faces[j] ) == dim &&
                                          K.uDim ( faces[j] ) == d + 1 )
                                     {
-                                        CellMapConstIterator cmIt = boundary.findCell ( d + 1, faces[j] );
+                                        CellMapConstIterator cmIt = complex->findCell ( d + 1, faces[j] );
                                         if ( cmIt->second.data != CC::FIXED && (*begin).second.data != CC::FIXED )
                                         {
                                             SUB.push_back ( faces[j] );
