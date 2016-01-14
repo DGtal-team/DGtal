@@ -196,7 +196,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 
       double lambda = 0.5;
       *result++ = ( innerSum * lambda + outerSum * ( 1.0 - lambda ));
-      
+
       ++total;
     }
 
@@ -251,7 +251,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
       double lambda = 0.5;
       resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
       *result++ = functor( resultQuantity );
-      
+
       ++total;
     }
 
@@ -344,7 +344,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 
       double lambda = 0.5;
       *result++ = ( innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda ));
-      
+
       ++total;
     }
 
@@ -399,7 +399,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
       double lambda = 0.5;
       resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
       *result++ = functor( resultCovarianceMatrix );
-      
+
       ++total;
     }
 
@@ -699,7 +699,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 
       double lambda = 0.5;
       *result++ = ( innerSum * lambda + outerSum * ( 1.0 - lambda ));
-      
+
       ++total;
     }
 
@@ -754,7 +754,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       double lambda = 0.5;
       resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
       *result++ = functor( resultQuantity );
-      
+
       ++total;
     }
 
@@ -847,7 +847,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 
       double lambda = 0.5;
       *result++ = ( innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda ));
-      
+
       ++total;
     }
 
@@ -902,7 +902,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       double lambda = 0.5;
       resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
       *result++ = functor( resultCovarianceMatrix );
-      
+
       ++total;
     }
 
@@ -1096,15 +1096,18 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
               {
                 for( KernelConstIterator itm = myKernelMask->first; itm != myKernelMask->second; ++itm )
                   {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                    if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                    {
+                      myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                      if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                       {
                         m += 1.0;
                       }
+                    }
                   }
               }
             else if( isInitKernelAndMasks )
@@ -1114,15 +1117,18 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
                   {
                     if( myKernel->operator()( *itm ))
                       {
-                        myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                        if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                        {
+                          myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-                        if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                          if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                           {
                             m += 1.0;
                           }
+                        }
                       }
                   }
               }
@@ -1140,29 +1146,35 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
             /// Part to substract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel ))
+                {
+                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
 
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                  if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                   {
                     m -= 1.0;
                   }
+                }
               }
 
             /// Part to add from previous result.
             for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
               {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                {
+                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                  if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                   {
                     m += 1.0;
                   }
+                }
               }
           }
 
@@ -1203,29 +1215,35 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
         /// Part to substract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
-            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel ))
+            {
+              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
 
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+              if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
               {
                 m -= 1.0;
               }
+            }
           }
 
         /// Part to add from previous result.
         for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
           {
-            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel ))
+            {
+              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
 
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+              if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
               {
                 m += 1.0;
               }
+            }
           }
       }
 
@@ -1348,15 +1366,18 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
               {
                 for( KernelConstIterator itm = myKernelMask->first; itm != myKernelMask->second; ++itm )
                   {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                    if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                    {
+                      myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                      if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                       {
                         fillMoments( m, shiftedSpel, 1.0 );
                       }
+                    }
                   }
               }
             else if( isInitKernelAndMasks )
@@ -1366,15 +1387,18 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
                   {
                     if( myKernel->operator()( *itm ))
                       {
-                        myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                        if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                        {
+                          myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-                        if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                          if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                           {
                             fillMoments( m, shiftedSpel, 1.0 );
                           }
+                        }
                       }
                   }
               }
@@ -1391,29 +1415,35 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
             /// Part to substract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel ))
+                {
+                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
 
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                  if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                   {
                     fillMoments( m, shiftedSpel, -1.0 );
                   }
+                }
               }
 
             /// Part to add from previous result.
             for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
               {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                {
+                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                  if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                   {
                     fillMoments( m, shiftedSpel, 1.0 );
                   }
+                }
               }
           }
 
@@ -1454,29 +1484,35 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
         /// Part to substract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
-            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel ))
+            {
+              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
 
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+              if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
               {
                 fillMoments( m, shiftedSpel, -1.0 );
               }
+            }
           }
 
         /// Part to add from previous result.
         for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
           {
-            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel ))
+            {
+              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
 
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
 
-            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+              if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
               {
                 fillMoments( m, shiftedSpel, 1.0 );
               }
+            }
           }
       }
 
@@ -1656,7 +1692,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 
       double lambda = 0.5;
       *result++ = ( innerSum * lambda + outerSum * ( 1.0 - lambda ));
-      
+
       ++total;
     }
 
@@ -1711,7 +1747,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       double lambda = 0.5;
       resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
       *result++ = functor( resultQuantity );
-      
+
       ++total;
     }
 
@@ -1802,7 +1838,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 
       double lambda = 0.5;
       *result++ = ( innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda ));
-      
+
       ++total;
     }
 
@@ -1857,7 +1893,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       double lambda = 0.5;
       resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
       *result++ = functor( resultCovarianceMatrix );
-      
+
       ++total;
     }
 
@@ -2069,16 +2105,19 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
               {
                 for( KernelConstIterator itm = myKernelMask->first; itm != myKernelMask->second; ++itm )
                   {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                    if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                    {
+                      myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                      if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                       {
                         m += 1.0;
                       }
+                    }
                   }
               }
             else if( isInitKernelAndMasks )
@@ -2088,16 +2127,19 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
                   {
                     if( myKernel->operator()( *itm ))
                       {
-                        myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                        if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                        {
+                          myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-                        if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                          if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                           {
                             m += 1.0;
                           }
+                        }
                       }
                   }
               }
@@ -2114,31 +2156,37 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
             /// Part to substract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel ))
+                {
+                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
 
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                  if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                   {
                     m -= 1.0;
                   }
+                }
               }
 
             /// Part to add from previous result.
             for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
               {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                {
+                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                  if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                   {
                     m += 1.0;
                   }
+                }
               }
           }
 
@@ -2181,31 +2229,37 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
         /// Part to substract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
-            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel ))
+            {
+              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
 
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+              if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
               {
                 m -= 1.0;
               }
+            }
           }
 
         /// Part to add from previous result.
         for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
           {
-            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel ))
+            {
+              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
 
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+              if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
               {
                 m += 1.0;
               }
+            }
           }
       }
 
@@ -2330,16 +2384,19 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
               {
                 for( KernelConstIterator itm = myKernelMask->first; itm != myKernelMask->second; ++itm )
                   {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                    if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                    {
+                      myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                      ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                      if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                       {
                         fillMoments( m, shiftedSpel, 1.0 );
                       }
+                    }
                   }
               }
             else if( isInitKernelAndMasks )
@@ -2349,16 +2406,19 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
                   {
                     if( myKernel->operator()( *itm ))
                       {
-                        myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                        if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                        {
+                          myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                          ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-                        if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                          if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                           {
                             fillMoments( m, shiftedSpel, 1.0 );
                           }
+                        }
                       }
                   }
               }
@@ -2375,31 +2435,37 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
             /// Part to substract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel ))
+                {
+                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
 
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                  if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                   {
                     fillMoments( m, shiftedSpel, -1.0 );
                   }
+                }
               }
 
             /// Part to add from previous result.
             for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
               {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                {
+                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-                ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                  ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                  if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                   {
                     fillMoments( m, shiftedSpel, 1.0 );
                   }
+                }
               }
           }
 
@@ -2442,31 +2508,37 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
         /// Part to substract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
-            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel ))
+            {
+              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
 
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+              if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
               {
                 fillMoments( m, shiftedSpel, -1.0 );
               }
+            }
           }
 
         /// Part to add from previous result.
         for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
           {
-            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel ))
+            {
+              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
 
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+              ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
 
-            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+              if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
               {
                 fillMoments( m, shiftedSpel, 1.0 );
               }
+            }
           }
       }
 
@@ -2486,4 +2558,3 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   return false;
 #endif
 }
-
