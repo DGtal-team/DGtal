@@ -38,9 +38,9 @@
 
 template < typename  CC >
 inline
-DGtal::ParDirCollapse<CC >::ParDirCollapse( const KSpace & k) : K (k)
+DGtal::ParDirCollapse<CC >::ParDirCollapse( const KSpace & k ) : K ( k )
 {
-    complex = 0;
+    complex = nullptr;
 }
 
 template < typename  CC >
@@ -48,7 +48,7 @@ inline
 void
 DGtal::ParDirCollapse< CC >::attach ( Alias<CC> pComplex )
 {
-    complex = pComplex;
+    complex = &pComplex;
 }
 
 template < typename  CC >
@@ -56,7 +56,7 @@ inline
 int
 DGtal::ParDirCollapse< CC >::getDirection ( const Cell& F, const Cell& G )
 {
-    Vector V=K.uKCoords ( F ) - K.uKCoords ( G );
+    Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
     for ( int i = 0; i< K.dimension; i++ )
         if ( V[i] != 0 ) return i;
 }
@@ -66,18 +66,18 @@ inline
 int
 DGtal::ParDirCollapse< CC >::getOrientation( const Cell& F, const Cell& G )
 {
-    Vector V=K.uKCoords ( F ) - K.uKCoords ( G );
+    Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
     for ( int i = 0; i < K.dimension; i++ )
         if ( V[i] != 0 ) return V[i];
 }
 
 template < typename CC >
 inline
-bool
+unsigned int
 DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
 {
     std::vector<Cell> SUB;
-    int collapseval=0;
+    int collapseval = 0;
     typename CC::DefaultCellMapIteratorPriority P;
     for ( unsigned int i = 0; i < iterations; i++ )
     {
@@ -96,13 +96,13 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
                             Cells faces = K.uUpperIncident ( begin->first );
                             for ( unsigned int j = 0; j < faces.size(); j++ )
                             {
-                                if ( complex->findCell ( d + 1, faces[j] ) != boundary->end( d + 1 ) )
+                                if ( boundary.findCell ( d + 1, faces[j] ) != boundary.end ( d + 1 ) )
                                 {
                                     if ( getOrientation ( begin->first, faces[j] ) == orientation &&
                                          getDirection ( begin->first, faces[j] ) == dim &&
                                          K.uDim ( faces[j] ) == d + 1 )
                                     {
-                                        CellMapConstIterator cmIt = boundary->findCell ( d + 1, faces[j] );
+                                        CellMapConstIterator cmIt = boundary.findCell ( d + 1, faces[j] );
                                         if ( cmIt->second.data != CC::FIXED && (*begin).second.data != CC::FIXED )
                                         {
                                             SUB.push_back ( faces[j] );
@@ -129,7 +129,8 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
 template < typename CC >
 inline
 void
-DGtal::ParDirCollapse< CC >::collapseSurface(){
+DGtal::ParDirCollapse< CC >::collapseSurface()
+{
     while ( eval ( 1 ) )
     {
         CellMapConstIterator constIterator = complex->begin ( K.dimension - 1 );
@@ -140,7 +141,6 @@ DGtal::ParDirCollapse< CC >::collapseSurface(){
             Cells faces = K.uUpperIncident ( constIterator->first );
             for ( unsigned int i = 0; i < faces.size(); i++ )
             {
-
                 if ( complex->findCell ( K.dimension, faces[i] ) != complex->end ( K.dimension ) )
                 {
                     status = true;
@@ -148,7 +148,7 @@ DGtal::ParDirCollapse< CC >::collapseSurface(){
                 }
             }
             if ( !status )
-                complex->insertCell( constIterator->first, CC::FIXED );
+                complex->insertCell ( constIterator->first, CC::FIXED );
         }
     }
 }
@@ -156,7 +156,8 @@ DGtal::ParDirCollapse< CC >::collapseSurface(){
 template < typename CC >
 inline
 void
-DGtal::ParDirCollapse< CC >::collapseIsthmus(){
+DGtal::ParDirCollapse< CC >::collapseIsthmus()
+{
     while ( eval ( 1 ) )
     {
         CellMapConstIterator constIterator = complex->begin ( K.dimension - 1 );
@@ -167,7 +168,6 @@ DGtal::ParDirCollapse< CC >::collapseIsthmus(){
             Cells faces = K.uUpperIncident ( constIterator->first );
             for ( int i = 0; i < faces.size(); i++ )
             {
-
                 if ( complex->findCell ( K.dimension, faces[i] ) != complex->end ( K.dimension ) )
                 {
                     status = true;
@@ -188,7 +188,7 @@ DGtal::ParDirCollapse< CC >::collapseIsthmus(){
                     {
                         if( K.uDim ( facesUpper[j] ) == K.dimension - 1 )
                         {
-                            if ( complex->findCell ( K.dimension-1, facesUpper[j] ) != complex->end ( K.dimension - 1 ) )
+                            if ( complex->findCell ( K.dimension - 1, facesUpper[j] ) != complex->end ( K.dimension - 1 ) )
                                 count++;
                         }
                     }
