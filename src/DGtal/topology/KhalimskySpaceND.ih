@@ -655,6 +655,29 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
+cIsValid( const Point & p, Dimension k ) const
+{
+  return   p[ k ] <= myCellUpper.myCoordinates[ k ]
+        && p[ k ] >= myCellLower.myCoordinates[ k ];
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+cIsValid( const Point & p ) const
+{
+  for ( Dimension k = 0; k < DIM; ++ k )
+    if ( ! cIsValid( p, k ) )
+      return false;
+
+  return true;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsValid( const SCell & p, Dimension k ) const
 {
   return   p.myCoordinates[ k ] <= myCellUpper.myCoordinates[ k ]
@@ -1340,6 +1363,30 @@ uIsInside( const Cell & p ) const
 {
   for ( Dimension k = 0; k < DIM; ++k )
     if ( ! uIsInside( p, k ) )
+      return false;
+
+  return true;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+cIsInside( const Point & p, DGtal::Dimension k ) const
+{
+  ASSERT( k < DIM );
+  return this->isDimensionPeriodicHelper( k )
+      || uIsValid( p, k );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+cIsInside( const Point & p ) const
+{
+  for ( Dimension k = 0; k < DIM; ++k )
+    if ( ! cIsInside( p, k ) )
       return false;
 
   return true;
@@ -2237,5 +2284,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
