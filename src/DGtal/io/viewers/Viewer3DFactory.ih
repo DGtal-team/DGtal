@@ -395,7 +395,7 @@ template <typename TVector>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::SphericalAccumulator<TVector> & accumulator,
-                              const typename DGtal::SphericalAccumulator<TVector>::RealVector & shift,
+                                            const typename DGtal::Z3i::RealVector & shift,
                               const double radius)
 {
   DGtal::Display3DFactory<Space,KSpace>::draw ( viewer, accumulator, shift, radius);
