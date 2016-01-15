@@ -165,7 +165,7 @@ DGtal::Viewer3D< Space ,KSpace >::getCurrentGLImageNumber()
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Viewer3D< Space ,KSpace >::addTextureImage(const Viewer3D< Space ,KSpace >::TextureImage &image)
+DGtal::Viewer3D< Space ,KSpace >::addTextureImage(const typename Viewer3D< Space ,KSpace >::TextureImage &image)
 {
   myGSImageList.push_back(image);
   Display3D< Space, KSpace>::updateBoundingBox(image.point1);
@@ -259,7 +259,7 @@ DGtal::Viewer3D<Space, KSpace>::updateEmbeddingTextureImage(unsigned int anImage
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Viewer3D< Space ,KSpace >::TextureImage::updateImageOrientation( DGtal::Viewer3D< Space ,KSpace >::ImageDirection normalDir,
+DGtal::Viewer3D< Space ,KSpace >::TextureImage::updateImageOrientation( ImageDirection normalDir,
                                                                         double xBottomLeft, double yBottomLeft, double zBottomLeft)
 {
   if(normalDir==zDirection)
@@ -287,8 +287,8 @@ DGtal::Viewer3D< Space ,KSpace >::TextureImage::updateImageOrientation( DGtal::V
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Viewer3D< Space ,KSpace >::Image2DDomainD3D::updateDomainOrientation( Viewer3D< Space ,KSpace >::ImageDirection normalDir,
-                                                                             double xBottomLeft, double yBottomLeft, double zBottomLeft)
+DGtal::Viewer3D< Space ,KSpace >::Image2DDomainD3D::updateDomainOrientation(ImageDirection normalDir,
+                                                                            double xBottomLeft, double yBottomLeft, double zBottomLeft)
 {
   if(normalDir==zDirection)
     {

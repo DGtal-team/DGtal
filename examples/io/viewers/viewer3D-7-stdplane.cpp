@@ -30,9 +30,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/geometry/surfaces/COBAGenericStandardPlaneComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
