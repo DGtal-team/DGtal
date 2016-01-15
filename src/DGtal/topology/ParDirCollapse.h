@@ -96,7 +96,6 @@ public:
     ParDirCollapse ( const KSpace & k );
 
      /**
-     * Constructor.
      * @param pComplex -- Cubical complex
      */
     void attach ( Alias< CC > pComplex );
@@ -145,6 +144,21 @@ private:
      * otherwise.
      */
     bool completeFreepair ( CellMapConstIterator F, Cell& G, int orient, int dir );
+
+    /**
+     * Check if a given face of dimension n is included in a face of dimmension n + 1.
+     * @param F -- cell of dimension smaller than KSpace::dimension.
+     * @return true if a face is not included in any other and false otherwise.
+     */
+    bool isNotIncludedInUpperDim (  CellMapConstIterator F );
+
+    /**
+     * Check if a given face of dimension: KSpace::dimension - 1, does not constitute a freepair.
+     * Note that, a given face has to not be included in any face of dimension: KSpace::dimension.
+     * @param F -- cell of dimension one lower than KSpace.
+     * @return true if F does not constitute a freepair and false otherwise.
+     */
+    bool isIsthmus ( CellMapConstIterator F );
 
     // ------------------------- Hidden services ------------------------------
 protected:
