@@ -16,8 +16,8 @@
 
 /**
  * @file ParDirCollapse.h
- * @author Mohamad ONAYSSI (\c mohamad.onayssi@edu.esiee.fr )
  * @author Bibiana MARTINEZ (\c bibiana.martinez@edu.esiee.fr )
+ * @author Mohamad ONAYSSI (\c mohamad.onayssi@edu.esiee.fr )
  * @author Mohamed MELLOULI (\c mohamed.mellouli@edu.esiee.fr )
  * ESIEE Paris
  *
@@ -124,7 +124,7 @@ int
 DGtal::ParDirCollapse< CC >::getOrientation( const Cell& F, const Cell& G )
 {
     Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
-    for ( int i = 0; i < K.dimension; i++ )
+    for ( unsigned int i = 0; i < K.dimension; i++ )
         if ( V[i] != 0 ) return V[i];
 }
 
@@ -134,7 +134,7 @@ int
 DGtal::ParDirCollapse< CC >::getDirection ( const Cell& F, const Cell& G )
 {
     Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
-    for ( int i = 0; i< K.dimension; i++ )
+    for ( unsigned int i = 0; i< K.dimension; i++ )
         if ( V[i] != 0 ) return i;
 }
 
@@ -148,20 +148,8 @@ DGtal::ParDirCollapse< CC >::collapseSurface()
         CellMapConstIterator constIterator = complex->begin ( K.dimension - 1 );
         CellMapConstIterator itEd = complex->end ( K.dimension - 1 );
         for ( ; constIterator != itEd; ++constIterator )
-        {
-            bool status = false;
-            Cells faces = K.uUpperIncident ( constIterator->first );
-            for ( unsigned int i = 0; i < faces.size(); i++ )
-            {
-                if ( complex->findCell ( K.dimension, faces[i] ) != complex->end ( K.dimension ) )
-                {
-                    status = true;
-                    break;
-                }
-            }
-            if ( !status )
+            if ( isNotIncludedInUpperDim ( constIterator ) )
                 complex->insertCell ( constIterator->first, CC::FIXED );
-        }
     }
 }
 
@@ -175,45 +163,48 @@ DGtal::ParDirCollapse< CC >::collapseIsthmus()
         CellMapConstIterator constIterator = complex->begin ( K.dimension - 1 );
         CellMapConstIterator itEd = complex->end ( K.dimension - 1 );
         for ( ; constIterator != itEd; ++constIterator )
-        {
-            bool status = false;
-            Cells faces = K.uUpperIncident ( constIterator->first );
-            for ( int i = 0; i < faces.size(); i++ )
-            {
-                if ( complex->findCell ( K.dimension, faces[i] ) != complex->end ( K.dimension ) )
-                {
-                    status = true;
-                    break;
-                }
-            }
-            if ( status )
-                continue;
-            faces = K.uLowerIncident ( constIterator->first );
-            status = false;
-            for ( unsigned int i = 0; i < faces.size(); i++ )
-            {
-                int count = 0;
-                if ( K.uDim ( faces[i] ) == K.dimension - 2 )
-                {
-                    Cells facesUpper = K.uUpperIncident ( faces[i] );
-                    for ( unsigned int j = 0; j < facesUpper.size(); j++ )
-                    {
-                        if( K.uDim ( facesUpper[j] ) == K.dimension - 1 )
-                        {
-                            if ( complex->findCell ( K.dimension - 1, facesUpper[j] ) != complex->end ( K.dimension - 1 ) )
-                                count++;
-                        }
-                    }
-                    if ( count > 1 )
-                        status = true;
-                    else
-                        status = false;
-                }
-            }
-            if ( status )
+            if ( isNotIncludedInUpperDim ( constIterator ) && isIsthmus ( constIterator ) )
                 complex->insertCell ( constIterator->first, CC::FIXED );
+    }
+}
+
+template < typename  CC >
+inline
+bool
+DGtal::ParDirCollapse< CC >::isNotIncludedInUpperDim ( CellMapConstIterator F )
+{
+    Cells faces = K.uUpperIncident ( F->first );
+    for ( unsigned int i = 0; i < faces.size(); i++ )
+        if ( complex->findCell ( K.dimension, faces[i] ) != complex->end ( K.dimension ) )
+            return false;
+    return true;
+}
+
+template < typename  CC >
+inline
+bool
+DGtal::ParDirCollapse< CC >::isIsthmus ( CellMapConstIterator F )
+{
+    Cells faces = K.uLowerIncident ( F->first );
+    for ( unsigned int i = 0; i < faces.size(); i++ )
+    {
+        int count = 0;
+        if ( K.uDim ( faces[i] ) == K.dimension - 2 )
+        {
+            Cells facesUpper = K.uUpperIncident ( faces[i] );
+            for ( unsigned int j = 0; j < facesUpper.size(); j++ )
+            {
+                if( K.uDim ( facesUpper[j] ) == K.dimension - 1 )
+                {
+                    if ( complex->findCell ( K.dimension - 1, facesUpper[j] ) != complex->end ( K.dimension - 1 ) )
+                        count++;
+                }
+            }
+            if ( count <= 1 )
+                return false;
         }
     }
+    return true;
 }
 
 //                                                                           //
