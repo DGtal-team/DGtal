@@ -51,26 +51,6 @@ DGtal::ParDirCollapse< CC >::attach ( Alias<CC> pComplex )
     complex = &pComplex;
 }
 
-template < typename  CC >
-inline
-int
-DGtal::ParDirCollapse< CC >::getDirection ( const Cell& F, const Cell& G )
-{
-    Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
-    for ( int i = 0; i< K.dimension; i++ )
-        if ( V[i] != 0 ) return i;
-}
-
-template < typename CC >
-inline
-int
-DGtal::ParDirCollapse< CC >::getOrientation( const Cell& F, const Cell& G )
-{
-    Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
-    for ( int i = 0; i < K.dimension; i++ )
-        if ( V[i] != 0 ) return V[i];
-}
-
 template < typename CC >
 inline
 unsigned int
@@ -83,36 +63,23 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
     {
         CC boundary = complex->boundary();
         int priority = 0;
-        for ( int dim = 0; dim < K.dimension; dim++ )
+        for ( int dir = 0; dir < K.dimension; dir++ )
         {
-            for ( int orientation = -1 ; orientation <= 1; orientation += 2 )
+            for ( int orient = -1 ; orient <= 1; orient += 2 )
             {
-                for ( int d = K.dimension - 1; d >= 0; d-- )
+                for ( int dim = K.dimension - 1; dim >= 0; dim-- )
                 {
-                    for ( CellMapConstIterator begin = boundary.begin ( d ); begin != boundary.end ( d ); ++begin, ++priority )
+                    for ( CellMapConstIterator begin = boundary.begin ( dim ); begin != boundary.end ( dim ); ++begin, ++priority )
                     {
-                        if ( K.uDim ( begin->first ) == d )
+                        if ( K.uDim ( begin->first ) == dim )
                         {
-                            Cells faces = K.uUpperIncident ( begin->first );
-                            for ( unsigned int j = 0; j < faces.size(); j++ )
+                            Cell G;
+                            if ( completeFreepair ( begin, G, orient, dir ) )
                             {
-                                if (  complex->findCell ( d + 1, faces[j] ) !=  complex->end ( d + 1 ) )
-                                {
-                                    if ( getOrientation ( begin->first, faces[j] ) == orientation &&
-                                         getDirection ( begin->first, faces[j] ) == dim &&
-                                         K.uDim ( faces[j] ) == d + 1 )
-                                    {
-                                        CellMapConstIterator cmIt = complex->findCell ( d + 1, faces[j] );
-                                        if ( cmIt->second.data != CC::FIXED && (*begin).second.data != CC::FIXED )
-                                        {
-                                            SUB.push_back ( faces[j] );
-                                            complex->insertCell ( SUB.back(), priority );
-                                            SUB.push_back ( begin->first );
-                                            complex->insertCell ( SUB.back(), priority );
-                                        }
-                                    }
-                                    break;
-                                }
+                                SUB.push_back ( G );
+                                complex->insertCell ( SUB.back(), priority );
+                                SUB.push_back ( begin->first );
+                                complex->insertCell ( SUB.back(), priority );
                             }
                         }
                     }
@@ -124,6 +91,51 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
         }
     }
     return collapseval;
+}
+
+template < typename  CC >
+inline
+bool
+DGtal::ParDirCollapse< CC >::completeFreepair ( CellMapConstIterator F, Cell & G, int orient, int dir )
+{
+    Cells faces = K.uUpperIncident ( (*F).first );
+    unsigned int dim = K.uDim ( (*F).first ) + 1;
+    for ( unsigned int j = 0; j < faces.size(); j++ )
+    {
+        if ( K.uDim ( faces[j] ) == dim && complex->findCell ( dim, faces[j] ) !=  complex->end ( dim ) )
+        {
+            if ( getOrientation ( (*F).first, faces[j] ) == orient && getDirection ( (*F).first, faces[j] ) == dir )
+            {
+                CellMapConstIterator cmIt = complex->findCell ( dim, faces[j] );
+                if ( cmIt->second.data != CC::FIXED && (*F).second.data != CC::FIXED )
+                {
+                    G = faces[j];
+                    return true;
+                }
+             }
+         }
+    }
+    return false;
+}
+
+template < typename CC >
+inline
+int
+DGtal::ParDirCollapse< CC >::getOrientation( const Cell& F, const Cell& G )
+{
+    Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
+    for ( int i = 0; i < K.dimension; i++ )
+        if ( V[i] != 0 ) return V[i];
+}
+
+template < typename  CC >
+inline
+int
+DGtal::ParDirCollapse< CC >::getDirection ( const Cell& F, const Cell& G )
+{
+    Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
+    for ( int i = 0; i< K.dimension; i++ )
+        if ( V[i] != 0 ) return i;
 }
 
 template < typename CC >

@@ -135,6 +135,17 @@ private:
      */
     int getDirection ( const Cell& F, const Cell& G );
 
+     /**
+     * Calculate an orientation of a freepair.
+     * @param F -- cell of a dimension one lower than G.
+     * @param G -- cell of a dimension one higher than F.
+     * @param orient -- freepair orientation
+     * @param dir -- freepair direction
+     * @return -- true if G was found as collapisble, false
+     * otherwise.
+     */
+    bool completeFreepair ( CellMapConstIterator F, Cell& G, int orient, int dir );
+
     // ------------------------- Hidden services ------------------------------
 protected:
     /**
