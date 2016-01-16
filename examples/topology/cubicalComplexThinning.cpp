@@ -41,7 +41,6 @@
 #include "DGtal/shapes/parametric/Flower2D.h"
 // Drawing
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/Color.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
