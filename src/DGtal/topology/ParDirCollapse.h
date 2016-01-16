@@ -106,7 +106,7 @@ public:
      * @param iterations -- number of iterations
      * @return total number of removed cells.
      */
-     unsigned int eval ( unsigned int iterations );
+    unsigned int eval ( unsigned int iterations );
 
     /**
      * Extension of basic algorithm which preserve KSpace::dimension - 1 faces which are not included
