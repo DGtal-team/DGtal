@@ -32,6 +32,7 @@
  */
 
 #include <vector>
+#include <stdexcept>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -141,6 +142,7 @@ DGtal::ParDirCollapse< CC >::getOrientation( const Cell& F, const Cell& G )
     Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
     for ( unsigned int i = 0; i < K.dimension; i++ )
         if ( V[i] != 0 ) return V[i];
+    throw std::runtime_error ( "Cells F and G are same!" );
 }
 
 template < typename  CC >
@@ -151,6 +153,7 @@ DGtal::ParDirCollapse< CC >::getDirection ( const Cell& F, const Cell& G )
     Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
     for ( unsigned int i = 0; i< K.dimension; i++ )
         if ( V[i] != 0 ) return i;
+    throw std::runtime_error ( "Cells F and G are same!" );
 }
 
 template < typename CC >
