@@ -17,7 +17,6 @@
 #include <queue>
 #include <QImageReader>
 
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
@@ -28,6 +27,8 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/io/viewers/Viewer3D.h"
+
 //! [volBreadthFirstTraversal-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////

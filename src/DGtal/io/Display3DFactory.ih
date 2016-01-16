@@ -161,7 +161,7 @@ inline
 void
 DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
 					     const DGtal::SphericalAccumulator<TV> & aAccumulator,
-					     const typename DGtal::SphericalAccumulator<TV>::RealVector &shift,
+					     const typename DGtal::Z3i::RealVector &shift,
 					     const double radius)
 {
   DGtal::Color saveFillColor = display.getFillColor();
