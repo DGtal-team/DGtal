@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ParDirCollapse.h
+ * @file ParDirCollapse.ih
  * @author Bibiana MARTINEZ (\c bibiana.martinez@edu.esiee.fr )
  * @author Mohamad ONAYSSI (\c mohamad.onayssi@edu.esiee.fr )
  * @author Mohamed MELLOULI (\c mohamed.mellouli@edu.esiee.fr )
@@ -46,7 +46,7 @@ DGtal::ParDirCollapse<CC >::ParDirCollapse( const KSpace & k ) : K ( k )
 template < typename  CC >
 inline
 bool
-DGtal::ParDirCollapse< CC >::isValid ( )
+DGtal::ParDirCollapse< CC >::isValid ( ) const
 {
     return complex != nullptr;
 }
@@ -67,18 +67,19 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
     assert ( isValid() );
     std::vector<Cell> SUB;
     unsigned int collapseval = 0;
+    unsigned int removed = 1;
     typename CC::DefaultCellMapIteratorPriority P;
-    for ( unsigned int i = 0; i < iterations; i++ )
+    for ( unsigned int i = 0; i < iterations && removed > 0; i++ )
     {
         CC boundary = complex->boundary();
-        int priority = 0;
-        for ( unsigned int dir = 0; dir < K.dimension; dir++ )
+        unsigned int priority = 0;
+        for ( int dir = 0; dir < K.dimension; dir++ )
         {
             for ( int orient = -1 ; orient <= 1; orient += 2 )
             {
-                for ( unsigned int dim = K.dimension - 1; dim >= 0; dim-- )
+                for ( int dim = K.dimension - 1; dim >= 0; dim-- )
                 {
-                    for ( CellMapConstIterator begin = boundary.begin ( dim ); begin != boundary.end ( dim ); ++begin, ++priority )
+                    for ( CellMapConstIterator begin = boundary.begin ( dim ); begin != boundary.end ( dim ); ++begin, priority++ )
                     {
                         if ( K.uDim ( begin->first ) == dim )
                         {
@@ -89,13 +90,13 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
                                 complex->insertCell ( SUB.back(), priority );
                                 SUB.push_back ( begin->first );
                                 complex->insertCell ( SUB.back(), priority );
-                                priority++;
                             }
                         }
                     }
-                    collapseval += DGtal::functions::collapse ( *complex, SUB.begin(), SUB.end(), P, true, true, true );
+                    removed = DGtal::functions::collapse ( *complex, SUB.begin(), SUB.end(), P, true, true, true );
                     SUB.clear();
                     priority = 0;
+                    collapseval += removed;
                 }
             }
         }
@@ -106,7 +107,7 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
 template < typename  CC >
 inline
 bool
-DGtal::ParDirCollapse< CC >::completeFreepair ( CellMapConstIterator F, Cell & G, int orient, unsigned int dir )
+DGtal::ParDirCollapse< CC >::completeFreepair ( CellMapConstIterator F, Cell & G, int orient, int dir )
 {
     if ( (*F).second.data == CC::FIXED )
         return false;
@@ -208,10 +209,8 @@ DGtal::ParDirCollapse< CC >::isIsthmus ( CellMapConstIterator F )
         {
             Cells facesUpper = K.uUpperIncident ( faces[i] );
             for ( unsigned int j = 0; j < facesUpper.size(); j++ )
-            {
                 if ( complex->findCell ( K.dimension - 1, facesUpper[j] ) != complex->end ( K.dimension - 1 ) )
                     count++;
-            }
             if ( count <= 1 )
                 return false;
         }
