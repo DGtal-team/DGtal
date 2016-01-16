@@ -40,9 +40,14 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+#include "DGtal/base/Common.h"
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#ifdef WIN32
+#include <windows.h>
+#endif
 #ifdef APPLE
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -61,7 +66,6 @@
 #include <QGLWidget>
 #include <QKeyEvent>
 
-#include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/base/CountedPtr.h"
@@ -281,7 +285,7 @@ namespace DGtal
        * @param mode the mode of representation
        */
       template<typename TDomain>
-      Image2DDomainD3D( TDomain aDomain, Viewer3D::ImageDirection normalDir=zDirection,
+      Image2DDomainD3D( TDomain aDomain, ImageDirection normalDir=zDirection,
                         double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox")
       {
         BOOST_CONCEPT_ASSERT(( concepts::CDomain < TDomain >));
@@ -302,7 +306,7 @@ namespace DGtal
        * @param yBottomLeft the x coordinate of bottom left image point.
        * @param zBottomLeft the x coordinate of bottom left image point.
        **/
-      void updateDomainOrientation( Viewer3D::ImageDirection normalDir,
+      void updateDomainOrientation( ImageDirection normalDir,
                                     double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
 
@@ -395,14 +399,14 @@ namespace DGtal
        * @param xBottomLeft the x coordinate of bottom left image point (default 0).
        * @param yBottomLeft the x coordinate of bottom left image point (default 0).
        * @param zBottomLeft the x coordinate of bottom left image point (default 0).
-       * @param aMode the mode of representation
+       * @param aMode the mode of representation (default GrayScaleMode).
        */
       template <typename TImageType, typename TFunctor>
 
       TextureImage( const TImageType & image, const TFunctor &aFunctor,
-                    Viewer3D::ImageDirection normalDir=zDirection,
+                    ImageDirection normalDir=zDirection,
                     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
-                    TextureMode aMode= 1)
+                    TextureMode aMode= GrayScaleMode)
       {
         BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
         BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
@@ -425,7 +429,7 @@ namespace DGtal
        * @param yBottomLeft the x coordinate of bottom left image point.
        * @param zBottomLeft the x coordinate of bottom left image point.
        **/
-      void updateImageOrientation( Viewer3D::ImageDirection normalDir,
+      void updateImageOrientation( ImageDirection normalDir,
                                    double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
 
@@ -1323,9 +1327,9 @@ namespace DGtal
     double camera_direction[3]; ///< camera direction
     double camera_upVector[3]; ///< camera up-vector
 
-    float myLightTheta; /// the light position (inclination)
-    float myLightPhi; /// the light position (azimuth)
-    float myLightR; /// the light position (distance)
+    double myLightTheta; /// the light position (inclination)
+    double myLightPhi; /// the light position (azimuth)
+    double myLightR; /// the light position (distance)
     GLfloat myLightPosition [4]; // the light position in cartesian coordinates
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
@@ -1339,7 +1343,7 @@ namespace DGtal
     float myGLScaleFactorZ;
 
     // Used to apply interactive light rotation
-    float myLigthRotationStep; /// the angle rotation increment used for interactive light move
+    double myLigthRotationStep; /// the angle rotation increment used for interactive light move
     int myRefMouseXPos; /// the reference mouse x-position used to determince the light position change (azimuth)
     int myRefMouseYPos; /// the reference mouse y-position used to determince the light position change (inclination)
     bool myIsMovingLight; /// flag to display the ligth source when it is moved by the user

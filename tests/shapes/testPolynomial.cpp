@@ -64,9 +64,9 @@ void usage( int /*argc*/, char** argv )
   std::cerr << "\t - You may try x^3y+xz^3+y^3z+z^3+5z or (y^2+z^2-1)^2 +(x^2+y^2-1)^3 " << std::endl;
   std::cerr << "\t - See http://www.freigeist.cc/gallery.html" << std::endl;
 }
-
-  typedef Space::RealPoint RealPoint;
-  typedef RealPoint::Coordinate Ring;
+  
+  typedef Space::RealPoint RealPointT;
+  typedef RealPointT::Coordinate Ring;
   typedef MPolynomial<3, Ring> Polynomial3;
   typedef MPolynomialReader<3, Ring> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
@@ -109,7 +109,7 @@ int main( int argc, char** argv )
   ImplicitShape ishape( P );
   DigitalShape dshape;
   dshape.attach( ishape );
-  dshape.init( RealPoint( p1 ), RealPoint( p2 ), step );
+  dshape.init( RealPointT( p1 ), RealPointT( p2 ), step );
   Domain domain = dshape.getDomain();
 
 
@@ -159,7 +159,7 @@ int main( int argc, char** argv )
         it != it_end; ++it)
   {
 
-    RealPoint A = midpoint( *it ) * step;
+    RealPointT A = midpoint( *it ) * step;
     A = ishape.nearestPoint (A,0.01,200,0.1*step);
     double a = ishape.meanCurvature( A );
 //    double a=ishape.gaussianCurvature(A);
@@ -199,7 +199,7 @@ int main( int argc, char** argv )
   {
 
 
-    RealPoint A = midpoint( *it ) * step;
+    RealPointT A = midpoint( *it ) * step;
     A = ishape.nearestPoint (A,0.01,200,0.1*step);
 //    double a=ishape.gaussianCurvature(A);
     double a = ishape.meanCurvature( A );

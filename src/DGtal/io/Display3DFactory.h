@@ -138,8 +138,7 @@ namespace DGtal
      */
     template <typename TVector>
     static void draw( Display & display, const DGtal::SphericalAccumulator<TVector> & accumulator,
-                      const typename DGtal::SphericalAccumulator<TVector>::RealVector &shift =
-                      typename DGtal::SphericalAccumulator<TVector>::RealVector(0,0,0),
+                      const DGtal::Z3i::RealVector &shift = DGtal::Z3i::RealVector(0,0,0),
                       const double radius=1.0);
     // SphericalAccumulator
 

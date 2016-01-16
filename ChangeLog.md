@@ -14,6 +14,10 @@
    'cl' compiler. (David Coeurjolly, Jérémy Levallois,
    [#1074](https://github.com/DGtal-team/DGtal/pull/1074))
 
+ - DGtal with QGLViewer option activated now compiles on Microsoft Windows,
+   Visual Studio (only VS14 or above). (Bertrand Kerautret,
+   [#1106](https://github.com/DGtal-team/DGtal/pull/1106))
+
 - *Base Package*
  - Traits class for containers in order to probe their category at
    compile time.  (Jacques-Olivier Lachaud,
