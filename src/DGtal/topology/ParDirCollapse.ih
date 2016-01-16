@@ -89,6 +89,7 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
                                 complex->insertCell ( SUB.back(), priority );
                                 SUB.push_back ( begin->first );
                                 complex->insertCell ( SUB.back(), priority );
+                                priority++;
                             }
                         }
                     }
