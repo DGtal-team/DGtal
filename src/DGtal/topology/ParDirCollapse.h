@@ -67,6 +67,8 @@ namespace DGtal
 template < typename CC >
 class ParDirCollapse
 {
+    BOOST_STATIC_ASSERT(( CC::KSpace::dimension >= 2 ));
+    BOOST_CONCEPT_ASSERT(( boost::Container< CC > ));
     // ----------------------- Types ------------------------------
 public:
     /// Any model of concepts::CCellularGridSpaceND, i.e. a type that models a Khalimsky space.
