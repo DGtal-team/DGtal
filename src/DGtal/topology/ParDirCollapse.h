@@ -143,7 +143,7 @@ private:
      * @return -- true if G was found as collapisble, false
      * otherwise.
      */
-    bool completeFreepair ( CellMapConstIterator F, Cell& G, int orient, unsigned int dir );
+    bool completeFreepair ( CellMapConstIterator F, Cell& G, int orient, int dir );
 
     /**
      * Check if a given face of dimension n is included in a face of dimmension n + 1.
