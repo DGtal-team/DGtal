@@ -13,14 +13,38 @@ We process contributions to the library using GitHub Pull-request mechanism. If 
 
 Each pull-request must contain:
 * a doxygen documented source-code satisfying the coding style (see below);
-* a unit test file testing the features in the contribution;
-* a user-oriented documentation page describing the feature;
+* a unit test file testing the features in the contribution (written using [Catch](http://catch-lib.net), see for instance [this tutorial](http://dgtal.org/doc/stable/moduleCatch.html));
+* a user-oriented documentation page describing the feature (using [doxygen](http://doxgen.org));
 * an informative pull-request comment describing the contribution;
-* a new entry in the project ```Changelog.md``` file
+* a new entry in the project ```Changelog.md``` file.
 
 Once the pull-request has been sent, a DGtal package manager will review the code and may ask for edits before being merged to the DGtal master branch.
 
 More information are described in the [DGtal documentation](http://dgtal.org/doc/stable/moduleFAQGit.html).
+
+## Code Strucutre
+
+### Folders
+
+DGtal features are organized into [packages](http://dgtal.org/doc/stable/) and modules (e.g. [Geometry Package modules](http://dgtal.org/doc/stable/packageGeometry.html)). The source code folders follows this decomposition:
+* ```src/DGtal/```: the main source code tree.
+* Each package has its own  subfolder. For instance ```src/DGtal/kernel``` for the Kernel Package.
+* Each package also contains its documentation pages (e.g. ```src/DGtal/kernel/doc```).
+* ```tests/``` contains all unit test files. This folder is also decomposted into package folders (e.g. ```tests/kernel/``` for unit tests of the Kernel package modules).
+* ```examples/```examples source files (mostly used for documentation purposes).
+* ```cmake```contains all [cmake](http://cmake.org) configuration scripts.
+
+### Namespaces
+
+All DGtal classes and functions are contained in a ```DGtal::``` C++ namespace. Additionally, sub-namespaces are used to gather specific codes:
+* ```DGtal::functions::``` contains all DGtal global functions.
+* ```DGtal::functors::``` contains all C++ functors.
+* ```DGtal::concepts::``` contains all DGtal concepts.
+* ```DGtal::experimental::``` contains classes and features that have a "beta" status.
+* ```DGtal::Z2i::``` and ```DGtal::Z3i::``` are user-oriented namespaces that contain predefined types for digital geometry in dimension 2  and 3 (respectivelly) using an arithmetical kernel based on ```DGtal::int32_t```.
+* ```DGtal::deprecated::``` contains deprecated classes  and functions.
+* ```DGtal::detail::``` contains some internal classes and funcitons.
+
 
 ## Coding style
 
@@ -92,7 +116,7 @@ At this point, we do not have  Contributor License Agreement. However, contribut
 
 Documentation are published under the [Creative Commons  Attribution-NonCommercial-ShareAlike 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) International License.
 
-If you want your package to be distributed under different licenses. Please contact us (see below). 
+If you want your package to be distributed under different licenses. Please contact us (see below).
 
 ## Contacts
 
