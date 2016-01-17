@@ -3,6 +3,8 @@
 In this document, we describe how to contribute to [DGtal](http://dgtal.org) library and its [DGtalTools](http://dgtal.org/tools) and [DGtalTools-contrib](http://dgtal.org/tools) projects.
 Please keep in mind that DGtal is an open-source initiative under LGPL license.
 
+A first way to contribute to the library is to give us feedbacks and comments using [Github issue tracker](https://github.com/DGtal-team/DGtal/issues). Do not hesitate to create an issue (feature request, bug report, issues with the documentation...).
+
 ## Contribution reviewing process
 
 We process contributions to the library using GitHub Pull-request mechanism. If you want to contribute, you would have to:
