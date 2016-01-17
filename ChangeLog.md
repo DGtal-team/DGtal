@@ -4,7 +4,9 @@
 ## New Features / Critical Changes
 
 - *Configuration/General*
- - A CONTRIBUTING.md file has been added to describe how to contribute to the library. (David Coeurjoly, [#1XXX](https://github.com/DGtal-team/DGtal/pull/XXXX))
+ - A CONTRIBUTING.md file has been added to describe how to contribute
+   to the library. (David Coeurjoly,
+   [#1XXX](https://github.com/DGtal-team/DGtal/pull/XXXX))
  - DGtal requires now to have a C++11 enabled compiler (gcc>4.6,
    clang>2.9, VS14, ...).  This allows us to use new C++11 features in
    DGtal core and to have more generic and reliable code. (David
