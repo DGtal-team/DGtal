@@ -12,7 +12,7 @@ We process contributions to the library using GitHub Pull-request mechanism. If 
 * create a GitHub pull-request to ask for an inclusion.
 
 Each pull-request must contain:
-* a doxygen documented source-code satisfying the coding style (see below);
+* a [doxygen](http://doxygen.org) documented source-code satisfying the coding style (see below);
 * a unit test file testing the features in the contribution (written using [Catch](http://catch-lib.net), see for instance [this tutorial](http://dgtal.org/doc/stable/moduleCatch.html));
 * a user-oriented documentation page describing the feature (using [doxygen](http://doxgen.org));
 * an informative pull-request comment describing the contribution;
