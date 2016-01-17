@@ -18,7 +18,7 @@ Each pull-request must contain:
 * an informative pull-request comment describing the contribution;
 * a new entry in the project ```Changelog.md``` file.
 
-Once the pull-request has been sent, a DGtal package manager will review the code and may ask for edits before being merged to the DGtal master branch.
+Once the pull-request has been sent, a DGtal package manager will review the code and may ask for edits before being merged to the DGtal master branch. Note that we use [Travis](http://travis-ci.org) as Continuous Integration platform. When creating a pull-request, several builds are tested on several systems (linux, macos), compilers (gcc, clang) and configurations (DGtal dependencies). Before being merged, a pull-request must pass all these tests.
 
 More information are described in the [DGtal documentation](http://dgtal.org/doc/stable/moduleFAQGit.html).
 
