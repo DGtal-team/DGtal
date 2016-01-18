@@ -19,7 +19,7 @@ mechanism. If you want to contribute, you would have to:
 * create an account on GitHub;
 * clone [DGtal](https://github.com/DGtal-team/DGtal) main repository
   (or [DGtalTools](https://github.com/DGtal-team/DGtalTools),
-  [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib));
+[DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib));
 * create a branch for your contribution and push it to your DGtal
   clone;
 * create a GitHub pull-request to ask for an inclusion.
@@ -39,7 +39,7 @@ Once the pull-request has been sent, a DGtal package manager will
 review the code and may ask for edits before being merged to the DGtal
 master branch. Note that we use [Travis](http://travis-ci.org) as
 Continuous Integration platform. When creating a pull-request, several
-builds are tested on several systems (linux, macos), compilers (gcc,
+builds are tested on several systems (linux, macos and MS windows), compilers (gcc,
 clang) and configurations (DGtal dependencies). Before being merged, a
 pull-request must pass all these tests.
 
@@ -73,7 +73,7 @@ All DGtal classes and functions are contained in a ```DGtal::``` C++
 namespace. Additionally, sub-namespaces are used to gather specific
 codes:
 * ```DGtal::functions::``` contains all DGtal global functions.
-* ```DGtal::functors::``` contains all C++ functors.
+* ```DGtal::functors::``` contains all DGtal C++ functors.
 * ```DGtal::concepts::``` contains all DGtal concepts.
 * ```DGtal::experimental::``` contains classes and features that have a "beta" status.
 * ```DGtal::Z2i::``` and ```DGtal::Z3i::``` are user-oriented
