@@ -11,7 +11,6 @@
    clang>2.9, VS14, ...).  This allows us to use new C++11 features in
    DGtal core and to have more generic and reliable code. (David
    Coeurjolly, [#1080](https://github.com/DGtal-team/DGtal/pull/1080))
-
  - DGtal core now compiles on Microsoft Windows, Visual Studio (only
    VS14 or above). Many issues have been fixed for compatibility with
    'cl' compiler. (David Coeurjolly, Jérémy Levallois,
