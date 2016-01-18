@@ -79,7 +79,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    KhalimskyCell( Integer dummy = 0 );
+    explicit KhalimskyCell( Integer dummy = 0 );
 
     /**
      * Copy constructor.
@@ -93,7 +93,7 @@ namespace DGtal
      *
      * @param point any point.
      */
-    KhalimskyCell( const Point & point );
+    explicit KhalimskyCell( const Point & point );
 
     /**
      * Copy constructor.
@@ -175,7 +175,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    SignedKhalimskyCell( Integer dummy = 0 );
+    explicit SignedKhalimskyCell( Integer dummy = 0 );
 
     /**
      * Copy constructor.
@@ -190,7 +190,7 @@ namespace DGtal
      * @param point any point.
      * @param positive if cell has positive sign.
      */
-    SignedKhalimskyCell( const Point & point, bool positive );
+    explicit SignedKhalimskyCell( const Point & point, bool positive );
 
     /**
      * Copy constructor.
