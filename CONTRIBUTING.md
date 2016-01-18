@@ -19,7 +19,7 @@ mechanism. If you want to contribute, you would have to:
 * create an account on GitHub;
 * clone [DGtal](https://github.com/DGtal-team/DGtal) main repository
   (or [DGtalTools](https://github.com/DGtal-team/DGtalTools),
-  [DGtalTools-contrib](https://github.com/DGtal-team/DDGtalTools-contrib));
+  [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib));
 * create a branch for your contribution and push it to your DGtal
   clone;
 * create a GitHub pull-request to ask for an inclusion.
