@@ -152,7 +152,7 @@ class NewClass
  * accessors are usually not prefixed by "get" is is name by the class member
  * if the accessor needs some computations, it is prefixed by "get"
 
-      `Value parameter()` (if a `Value myParamter` exists)
+      `Value parameter()` (if a `Value myParameter` exists)
 
       `Value getParameter()` (there is "computation")
 
