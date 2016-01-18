@@ -46,7 +46,7 @@ pull-request must pass all these tests.
 More information are described in the
 [DGtal documentation](http://dgtal.org/doc/stable/moduleFAQGit.html).
 
-## Code Strucutre
+## Code Structure
 
 ### Folders
 
@@ -86,7 +86,7 @@ codes:
 
 ## Coding style
 
-We exepct the source code to match with some coding style rules
+We expect the source code to match with some coding style rules
 described below. We strongly encourage the developers to consider
 scripts and unit-test/class templates provided in the
 [DGtalScripts](https://github.com/DGtal-team/DGtalScripts)
@@ -134,7 +134,8 @@ class NewClass
 ### Naming rules
 
 * Types/methods/variable/classes in ```CamelCase```: (e.g.
-  ```BreadthFirstVisitor```, ```myImage```...)
+```BreadthFirstVisitor```, ```myImage```...)
+* methods, functions or variables start with lowercase letter
 * Types start with capital letters (
   e.g. ```DigitalSurface```,```Value```...)
 * Concepts classes start with a "C" (e.g. ```CInteger```, ```CSpace```
@@ -153,7 +154,7 @@ class NewClass
 
       `Value parameter()` (if a `Value myParamter` exists)
 
-      `Value getParemeter()` (there is "computation")
+      `Value getParameter()` (there is "computation")
 
  * Setter methods are prefixed by "set"
 
