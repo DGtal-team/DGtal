@@ -51,9 +51,7 @@ using namespace Z2i;
 // Functions for testing class ParDirCollapse.
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef map<Cell, CubicalCellData>   Map;
-typedef CubicalComplex< KSpace, Map >     CC;
-
+template <typename CC, typename KSpace>
 void getComplex ( CC & complex, KSpace & K )
 {
   typedef Flower2D< Space > MyEuclideanShape;
@@ -69,31 +67,33 @@ void getComplex ( CC & complex, KSpace & K )
 
   K.init ( domainShape.lowerBound(), domainShape.upperBound(), true );
   complex.clear();
-  complex.construct< DigitalSet >( aSet );
+  complex.construct ( aSet );
 }
 
 TEST_CASE( "Testing ParDirCollapse" )
 {
+  typedef map<Cell, CubicalCellData>   Map;
+  typedef CubicalComplex< KSpace, Map >     CC;
   KSpace K;
   CC complex ( K );
   ParDirCollapse < CC > thinning ( K );
-  
+
   SECTION("Testing the basic algorithm of ParDirCollapse")
     {
-      getComplex ( complex, K );
+      getComplex< CC, KSpace > ( complex, K );
       thinning.attach ( &complex );
       REQUIRE( ( thinning.eval ( 2 ) != 0 ) );
     }
-  
+
   SECTION("Testing ParDirCollapse::collapseSurface")
     {
-      getComplex ( complex, K );
+      getComplex< CC, KSpace > ( complex, K );
       thinning.attach ( &complex );
       thinning.collapseSurface ();
     }
   SECTION("Testing ParDirCollapse::collapseTsthmus")
     {
-      getComplex ( complex, K );
+      getComplex< CC, KSpace > ( complex, K );
       thinning.attach ( &complex );
       thinning.collapseIsthmus ();
     }

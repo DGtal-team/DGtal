@@ -48,9 +48,7 @@ using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef map<Cell, CubicalCellData>   Map;
-typedef CubicalComplex< KSpace, Map >     CC;
-
+template <typename CC, typename KSpace>
 void getComplex ( CC & complex, KSpace & K )
 {
   typedef Flower2D< Space > MyEuclideanShape;
@@ -66,13 +64,14 @@ void getComplex ( CC & complex, KSpace & K )
 
   K.init ( domainShape.lowerBound(), domainShape.upperBound(), true );
   complex.clear();
-  complex.construct< DigitalSet >( aSet );
+  complex.construct ( aSet );
 }
 
+template <typename CC>
 void drawComplex ( Board2D & board, CC & complex )
 {
   board.clear();
-  typedef CC::CellMapConstIterator CellMapConstIterator;
+  typedef typename CC::CellMapConstIterator CellMapConstIterator;
   for ( Dimension d = 0; d <= 2; ++d )
     for ( CellMapConstIterator it = complex.begin( d ), itE = complex.end( d );
 	 it != itE; ++it )
@@ -93,38 +92,42 @@ void drawComplex ( Board2D & board, CC & complex )
 	 }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+
+
 int main( int argc, char** argv )
 {
+  typedef map<Cell, CubicalCellData>   Map;
+  typedef CubicalComplex< KSpace, Map >     CC;
   Board2D board;
   KSpace K;
   CC complex ( K );
   ParDirCollapse < CC > thinning ( K );
   trace.beginBlock ( "ParDirCollapse -- 2 iterations." );
-    getComplex ( complex, K );
-    drawComplex ( board, complex );
+    getComplex< CC, KSpace > ( complex, K );
+    drawComplex<CC> ( board, complex );
     board.saveEPS ( "ComplexBeforeThinning.eps" );
     thinning.attach ( &complex );
     thinning.eval ( 2 );
-    drawComplex ( board, complex );
+    drawComplex<CC> ( board, complex );
     board.saveEPS ( "ParDirCollapse_2.eps" );
   trace.endBlock();
 
   trace.beginBlock ( "ParDirCollapse -- collapseSurface." );
-    getComplex ( complex, K );
+    getComplex< CC, KSpace > ( complex, K );
     thinning.attach ( &complex );
     thinning.collapseSurface ();
-    drawComplex ( board, complex );
+    drawComplex<CC> ( board, complex );
     board.saveEPS ( "ParDirCollapse_collapseSurface.eps" );
   trace.endBlock();
 
   trace.beginBlock ( "ParDirCollapse -- collapseIsthmus." );
-    getComplex ( complex, K );
+    getComplex< CC, KSpace > ( complex, K );
     thinning.attach ( &complex );
     thinning.collapseIsthmus ();
-    drawComplex ( board, complex );
+    drawComplex<CC> ( board, complex );
     board.saveEPS ( "ParDirCollapse_collapseIsthmus.eps" );
   trace.endBlock();
   return 0;
 }
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
