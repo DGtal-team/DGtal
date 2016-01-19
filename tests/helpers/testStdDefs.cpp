@@ -15,29 +15,44 @@
  **/
 
 /**
- * @file OrderedAlphabet.cpp
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- * @author Laurent Provot (\c Laurent.Provot@loria.fr )
- * LORIA (CNRS, UMR 7503), Nancy University, France
+ * @file testStdDefs.cpp
+ * @ingroup Tests
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/01
+ * @date 2016/01/19
  *
- * Implementation of methods defined in OrderedAlphabet.h
+ * Functions for testing class StdDefs.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/base/OrderedAlphabet.h"
+#include <iostream>
+#include "DGtal/base/Common.h"
+#include "ConfigTest.h"
+#include "DGtalCatch.h"
+#include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
+using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// class OrderedAlphabet
+// Functions for testing class StdDefs.
 ///////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
+TEST_CASE( "Testing StdDefs" )
+{
+  
+  //Just for compilation timings.
+  SECTION("Testing domain instanciation (Z2i)")
+    {
+      Z2i::Domain dom(Z2i::Point(0,0), Z2i::Point(16,16));    
+      REQUIRE( dom.isValid() );
+    }
+  
+  
+}
 
+/** @ingroup Tests **/

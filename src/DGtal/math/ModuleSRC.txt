@@ -1,6 +1,1 @@
-## Sources associated to the module math
-##
-
-SET(DGTAL_SRC ${DGTAL_SRC}
-    DGtal/math/AngleLinearMinimizer)
-
+b
