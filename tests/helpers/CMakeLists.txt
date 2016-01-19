@@ -1,4 +1,5 @@
 SET(DGTAL_TESTS_SRC_HELPERS
+  testStdDefs
   testParametricShape
   testImplicitShape
   )
