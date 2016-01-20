@@ -643,7 +643,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsValid( const Cell & p ) const
 {
-  return cIsValid( p.myCoordinates, k );
+  return cIsValid( p.myCoordinates );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
