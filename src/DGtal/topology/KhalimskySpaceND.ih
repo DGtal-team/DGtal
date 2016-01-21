@@ -634,8 +634,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsValid( const Cell & p, Dimension k ) const
 {
-  return   p.myCoordinates[ k ] <= myCellUpper.myCoordinates[ k ]
-        && p.myCoordinates[ k ] >= myCellLower.myCoordinates[ k ];
+  return cIsValid( p.myCoordinates, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -644,8 +643,27 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsValid( const Cell & p ) const
 {
+  return cIsValid( p.myCoordinates );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+cIsValid( const Point & p, Dimension k ) const
+{
+  return   p[ k ] <= myCellUpper.myCoordinates[ k ]
+        && p[ k ] >= myCellLower.myCoordinates[ k ];
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+cIsValid( const Point & p ) const
+{
   for ( Dimension k = 0; k < DIM; ++ k )
-    if ( ! uIsValid( p, k ) )
+    if ( ! cIsValid( p, k ) )
       return false;
 
   return true;
@@ -657,8 +675,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsValid( const SCell & p, Dimension k ) const
 {
-  return   p.myCoordinates[ k ] <= myCellUpper.myCoordinates[ k ]
-        && p.myCoordinates[ k ] >= myCellLower.myCoordinates[ k ];
+  return cIsValid( p.myCoordinates, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -667,11 +684,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsValid( const SCell & p ) const
 {
-  for ( Dimension k = 0; k < DIM; ++ k )
-    if ( ! sIsValid( p, k ) )
-      return false;
-
-  return true;
+  return cIsValid( p.myCoordinates );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1327,9 +1340,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsInside( const Cell & p, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  return this->isDimensionPeriodicHelper( k )
-      || uIsValid( p, k );
+  return cIsInside( p.myCoordinates, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1338,8 +1349,28 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsInside( const Cell & p ) const
 {
+  return cIsInside( p.myCoordinates );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+cIsInside( const Point & p, DGtal::Dimension k ) const
+{
+  ASSERT( k < DIM );
+  return this->isDimensionPeriodicHelper( k )
+      || cIsValid( p, k );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+cIsInside( const Point & p ) const
+{
   for ( Dimension k = 0; k < DIM; ++k )
-    if ( ! uIsInside( p, k ) )
+    if ( ! cIsInside( p, k ) )
       return false;
 
   return true;
@@ -1592,9 +1623,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsInside( const SCell & p, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  return this->isDimensionPeriodicHelper( k )
-      || sIsValid( p, k );
+  return cIsInside( p.myCoordinates, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1603,11 +1632,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsInside( const SCell & p ) const
 {
-  for ( Dimension k = 0; k < DIM; ++k )
-    if ( ! sIsInside( p, k ) )
-      return false;
-
-  return true;
+  return cIsInside( p.myCoordinates );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -2237,5 +2262,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
