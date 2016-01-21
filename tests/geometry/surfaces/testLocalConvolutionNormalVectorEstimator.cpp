@@ -76,7 +76,6 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     trace.beginBlock ( "Testing convolution neighborhood ..." );
 
     QApplication application ( argc,argv );
-    DGtal::Viewer3D<> viewer;
 
     std::string filename = testPath + "samples/cat10.vol";
 
@@ -124,10 +123,11 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     MyEstimator::Quantity res = myNormalEstimator.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res << std::endl;
 
+    DGtal::Viewer3D<Space,KSpace> viewer(ks);
     viewer.show();
 
     DGtal::Color lineColorSave = viewer.getLineColor();
-    viewer.setLineColor( DGtal::Color ( 200,20,20 ));
+    viewer.setLineColor( DGtal::Color ( 20,200,20 ));
     for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
             itbis!=itend; ++itbis )
     {
