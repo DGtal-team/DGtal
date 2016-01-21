@@ -628,7 +628,7 @@ namespace DGtal
     const Cell & upperCell() const;
 
     /**
-     * @param c a signed cell.
+     * @param c a unsigned cell.
      * @param k a dimension.
      * @returns \c true if the given unsigned cell has his k-th Khalimsky coordinate
      * between those of the cells returned by lowerCell and upperCell.
@@ -640,7 +640,7 @@ namespace DGtal
     bool uIsValid( const Cell & c, Dimension k ) const;
 
     /**
-     * @param c a signed cell.
+     * @param c a unsigned cell.
      * @returns \c true if the given unsigned cell has Khalimsky coordinates
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
@@ -651,7 +651,7 @@ namespace DGtal
     bool uIsValid( const Cell & c ) const;
 
     /**
-     * @param c an unsigned cell.
+     * @param c a signed cell.
      * @param k a dimension.
      * @returns \c true if the given signed cell his k-th Khalimsky coordinate
      * between those of the cells returned by lowerCell and upperCell.
@@ -663,7 +663,7 @@ namespace DGtal
     bool sIsValid( const SCell & c, Dimension k ) const;
 
     /**
-     * @param c an unsigned cell.
+     * @param c a signed cell.
      * @returns \c true if the given signed cell has Khalimsky coordinates
      * between those of the cells returned by lowerCell and upperCell.
      * @note For periodic dimension, even if there is no bounds, it guarantees that
@@ -672,6 +672,25 @@ namespace DGtal
      * periodic dimensions.
      */
     bool sIsValid( const SCell & c ) const;
+
+    /**
+     * @param p an integer point (Khalimsky coordinates of cell).
+     * @param k a dimension.
+     * @returns \c true if the given cell has his k-th Khalimsky coordinate
+     * between those of the cells returned by lowerCell and upperCell.
+     * @note For periodic dimension, even if there is no bounds, it guarantees that
+     * each cell has unique coordinates.
+     */
+    bool cIsValid( const Point & p, Dimension k ) const;
+
+    /**
+     * @param p an integer point (Khalimsky coordinates of cell).
+     * @returns \c true if the given cell has Khalimsky coordinates
+     * between those of the cells returned by lowerCell and upperCell.
+     * @note For periodic dimension, even if there is no bounds, it guarantees that
+     * each cell has unique coordinates.
+     */
+    bool cIsValid( const Point & p ) const;
 
     /// @}
 
@@ -727,7 +746,7 @@ namespace DGtal
      * Along a non-periodic dimension, if the given Khalimsky coordinate lies
      * outside the space, it replaces it by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the Khalimsky coordinate is corrected 
+     * Along a periodic dimension, the Khalimsky coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param c a cell.
@@ -738,13 +757,13 @@ namespace DGtal
      */
     Cell uCell( const Cell & c ) const;
 
-    /** From the Khalimsky coordinates of a cell, 
+    /** From the Khalimsky coordinates of a cell,
      * builds the corresponding unsigned cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given Khalimsky coordinate lies
      * outside the space, it is replaced by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the Khalimsky coordinate is corrected 
+     * Along a periodic dimension, the Khalimsky coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param kp an integer point (Khalimsky coordinates of cell).
@@ -753,13 +772,13 @@ namespace DGtal
      */
     Cell uCell( const Point & kp ) const;
 
-    /** From the digital coordinates of a point in Zn and a cell type, 
+    /** From the digital coordinates of a point in Zn and a cell type,
      * builds the corresponding unsigned cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
      * outside the space, it is replaced by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the digital coordinate is corrected 
+     * Along a periodic dimension, the digital coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
@@ -775,7 +794,7 @@ namespace DGtal
      * Along a non-periodic dimension, if the given Khalimsky coordinate lies
      * outside the space, it replaces it by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the Khalimsky coordinate is corrected 
+     * Along a periodic dimension, the Khalimsky coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param c a signed cell.
@@ -786,13 +805,13 @@ namespace DGtal
      */
     SCell sCell( const SCell & c ) const;
 
-    /** From the Khalimsky coordinates of a cell and a sign, 
+    /** From the Khalimsky coordinates of a cell and a sign,
      * builds the corresponding signed cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given Khalimsky coordinate lies
      * outside the space, it is replaced by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the Khalimsky coordinate is corrected 
+     * Along a periodic dimension, the Khalimsky coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param kp an integer point (Khalimsky coordinates of cell).
@@ -802,13 +821,13 @@ namespace DGtal
      */
     SCell sCell( const Point & kp, Sign sign = POS ) const;
 
-    /** From the digital coordinates of a point in Zn and a signed cell type, 
+    /** From the digital coordinates of a point in Zn and a signed cell type,
      * builds the corresponding signed cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
      * outside the space, it is replaced by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the digital coordinate is corrected 
+     * Along a periodic dimension, the digital coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
@@ -819,13 +838,13 @@ namespace DGtal
      */
     SCell sCell( Point p, const SCell & c ) const;
 
-    /** From the digital coordinates of a point in Zn, 
+    /** From the digital coordinates of a point in Zn,
      * builds the corresponding spel (cell of maximal dimension) lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
      * outside the space, it is replaced by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the digital coordinate is corrected 
+     * Along a periodic dimension, the digital coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
@@ -834,13 +853,13 @@ namespace DGtal
      */
     Cell uSpel( Point p ) const;
 
-    /** From the digital coordinates of a point in Zn, 
+    /** From the digital coordinates of a point in Zn,
      * builds the corresponding spel (cell of maximal dimension) lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
      * outside the space, it is replaced by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the digital coordinate is corrected 
+     * Along a periodic dimension, the digital coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
@@ -850,13 +869,13 @@ namespace DGtal
      */
     SCell sSpel( Point p, Sign sign = POS ) const;
 
-    /** From the digital coordinates of a point in Zn, 
+    /** From the digital coordinates of a point in Zn,
      * builds the corresponding pointel (cell of dimension 0) lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
      * outside the space, it is replaced by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the digital coordinate is corrected 
+     * Along a periodic dimension, the digital coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
@@ -865,13 +884,13 @@ namespace DGtal
      */
     Cell uPointel( Point p ) const;
 
-    /** From the digital coordinates of a point in Zn, 
+    /** From the digital coordinates of a point in Zn,
      * builds the corresponding pointel (cell of dimension 0) lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
      * outside the space, it is replaced by the nearest valid coordinate.
      *
-     * Along a periodic dimension, the digital coordinate is corrected 
+     * Along a periodic dimension, the digital coordinate is corrected
      * (by periodicity) to lie between the coordinates of lowerCell() and upperCell().
      *
      * @param p an integer point (digital coordinates of cell).
@@ -1347,6 +1366,24 @@ namespace DGtal
      * @note Only the non-periodic dimensions are checked.
      */
     bool uIsInside( const Cell & p ) const;
+
+    /** Useful to check if you are going out of the space.
+     *
+     *  @param p any integer point (Khalimsky coordinates).
+     *  @param k the tested coordinate.
+     *  @return true if [p] has its [k]-coordinate within the allowed bounds.
+     *  @note It returns always \a true for periodic dimension.
+     */
+    bool cIsInside( const Point & p, Dimension k ) const;
+
+
+    /** Useful to check if you are going out of the space.
+     *
+     * @param p any integer point (Khalimsky coordinates).
+     * @return true if [p] has its coordinates within the allowed bounds.
+     * @note Only the non-periodic dimensions are checked.
+     */
+    bool cIsInside( const Point & p ) const;
 
     /** Useful to check if you are going out of the space.
      *
