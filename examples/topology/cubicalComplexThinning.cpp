@@ -96,7 +96,7 @@ void drawComplex ( Board2D & board, CC & complex )
 //                                                                           //
 
 
-int main( int argc, char** argv )
+int main( int, char** )
 {
   typedef map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
