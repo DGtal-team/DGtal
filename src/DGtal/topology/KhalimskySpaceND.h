@@ -151,6 +151,65 @@ namespace DGtal
   operator<<( std::ostream & out,
               const KhalimskyCell< dim, TInteger > & object );
 
+  /** Represents an non-validated unsigned cell in a cellular grid space by its
+   * Khalimsky coordinates.
+   *
+   * To be validated for a given KhalimskySpaceND, it must be converted to a KhalimskyCell
+   * through an appropriate method of KhalimskySpaceND.
+   *
+   * @tparam dim the dimension of the digital space.
+   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
+   */
+  template < Dimension dim,
+             typename TInteger = DGtal::int32_t >
+  struct KhalimskyPreCell
+  {
+
+    // Integer must be a model of the concept CInteger.
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
+
+    // Aliases
+  public:
+    using Integer = TInteger;
+    using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
+    using Point = PointVector< dim, Integer >;
+
+    // Public members
+  public:
+    Point myCoordinates; ///< Khalimsky coordinates of the cell.
+
+    // Standard interface
+  public:
+
+    /// Default constructor.
+    explicit KhalimskyPreCell( Integer dummy = 0 );
+
+    /** Implicit convertion from a KhalimskyCell
+     * @param aCell a cell to be converted into a non-validated cell.
+     */
+    KhalimskyPreCell( KhalismkyCell<dim, Integer> const& aCell );
+
+    /** Copy constructor.
+     *
+     * @param aCell any other cell.
+     */
+    KhalimskyPreCell( KhalimskyPreCell const& aCell );
+
+    /** Explicit constructor from its Khalimsky coordinates.
+     *
+     * @param aPoint Its Khalimsky coordinates as a point.
+     */
+    explicit KhalimskyPreCell( Point const& point );
+
+    /** Copy operator
+     *
+     * @param aCell any other cell.
+     */
+    KhalimskyPreCell & operator=( KhalimskyPreCell const& aCell );
+
+  } // KhalimskyPreCell
+
+
   /**
    * @brief Represents a signed cell in a cellular grid space by its
    * Khalimsky coordinates and a boolean value.
@@ -247,6 +306,65 @@ namespace DGtal
   std::ostream &
   operator<<( std::ostream & out,
               const SignedKhalimskyCell< dim, TInteger > & object );
+
+  /** Represents an non-validated signed cell in a cellular grid space by its
+   * Khalimsky coordinates and a boolean value.
+   *
+   * To be validated for a given KhalimskySpaceND, it must be converted to a SignedKhalimskyCell
+   * through an appropriate method of KhalimskySpaceND.
+   *
+   * @tparam dim the dimension of the digital space.
+   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
+   */
+  template < Dimension dim,
+             typename TInteger = DGtal::int32_t >
+  struct SignedKhalimskyPreCell
+  {
+
+    // Integer must be a model of the concept CInteger.
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
+
+    // Aliases
+  public:
+    using Integer = TInteger;
+    using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
+    using Point = PointVector< dim, Integer >;
+
+    // Public members
+  public:
+    Point myCoordinates;  ///< Khalimsky coordinates of the cell.
+    bool  myPositive;     ///< Cell sign.
+
+    // Standard interface
+  public:
+
+    /// Default constructor.
+    explicit SignedKhalimskyPreCell( Integer dummy = 0 );
+
+    /** Implicit convertion from a SignedKhalimskyCell
+     * @param aCell a cell to be converted into a non-validated cell.
+     */
+    SignedKhalimskyPreCell( SignedKhalismkyCell<dim, Integer> const& aCell );
+
+    /** Copy constructor.
+     *
+     * @param aCell any other cell.
+     */
+    SignedKhalimskyPreCell( SignedKhalimskyPreCell const& aCell );
+
+    /** Explicit constructor from its Khalimsky coordinates.
+     *
+     * @param aPoint Its Khalimsky coordinates as a point.
+     */
+    explicit SignedKhalimskyPreCell( Point const& point, bool positive );
+
+    /** Copy operator
+     *
+     * @param aCell any other cell.
+     */
+    SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell const& aCell );
+
+  } // SignedKhalimskyPreCell
 
   /**
      @brief This class is useful for looping on all "interesting" coordinates of a
@@ -429,12 +547,15 @@ namespace DGtal
 
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;
+    typedef KhalimskyPreCell< dim, Integer > PreCell;
     typedef SignedKhalimskyCell< dim, Integer > SCell;
+    typedef SignedKhalimskyPreCell< dim, Integer > SPreCell;
+
     typedef SCell Surfel;
     typedef bool Sign;
     typedef CellDirectionIterator< dim, Integer > DirIterator;
 
-    //Points and Vectors
+    // Points and Vectors
     typedef PointVector< dim, Integer > Point;
     typedef PointVector< dim, Integer > Vector;
 
@@ -628,7 +749,7 @@ namespace DGtal
     const Cell & upperCell() const;
 
     /**
-     * @param c a unsigned cell.
+     * @param c an unsigned cell.
      * @param k a dimension.
      * @returns \c true if the given unsigned cell has his k-th Khalimsky coordinate
      * between those of the cells returned by lowerCell and upperCell.
@@ -637,7 +758,7 @@ namespace DGtal
      * @see uCell(const Cell &) const to correct Khalimsky coordinates along
      * periodic dimensions.
      */
-    bool uIsValid( const Cell & c, Dimension k ) const;
+    bool uIsValid( const PreCell & c, Dimension k ) const;
 
     /**
      * @param c a unsigned cell.
@@ -648,7 +769,7 @@ namespace DGtal
      * @see uCell(const Cell &) const to correct Khalimsky coordinates along
      * periodic dimensions.
      */
-    bool uIsValid( const Cell & c ) const;
+    bool uIsValid( const PreCell & c ) const;
 
     /**
      * @param c a signed cell.
@@ -660,7 +781,7 @@ namespace DGtal
      * @see sCell(const SCell &) const to correct Khalimsky coordinates along
      * periodic dimensions.
      */
-    bool sIsValid( const SCell & c, Dimension k ) const;
+    bool sIsValid( const SPreCell & c, Dimension k ) const;
 
     /**
      * @param c a signed cell.
@@ -671,7 +792,7 @@ namespace DGtal
      * @see sCell(const SCell &) const to correct Khalimsky coordinates along
      * periodic dimensions.
      */
-    bool sIsValid( const SCell & c ) const;
+    bool sIsValid( const SPreCell & c ) const;
 
     /**
      * @param p an integer point (Khalimsky coordinates of cell).
@@ -755,7 +876,7 @@ namespace DGtal
      * @post `uIsValid(uCell(c))` is \a true.
      * @post `uCell(c) == c` if `uIsValid(c)`.
      */
-    Cell uCell( const Cell & c ) const;
+    Cell uCell( const PreCell & c ) const;
 
     /** From the Khalimsky coordinates of a cell,
      * builds the corresponding unsigned cell lying into this Khalismky space.
@@ -787,7 +908,7 @@ namespace DGtal
      * digital coordinates [p].
      * @post `uIsValid(uCell(p, c))` is \a true.
      */
-    Cell uCell( Point p, const Cell & c ) const;
+    Cell uCell( Point p, const PreCell & c ) const;
 
     /** From a signed cell, returns a signed cell lying into this Khalismky space.
      *
@@ -803,7 +924,7 @@ namespace DGtal
      * @post `sIsValid(sCell(c))` is \a true.
      * @post `sCell(c) == c` if `sIsValid(c)`.
      */
-    SCell sCell( const SCell & c ) const;
+    SCell sCell( const SPreCell & c ) const;
 
     /** From the Khalimsky coordinates of a cell and a sign,
      * builds the corresponding signed cell lying into this Khalismky space.
@@ -836,7 +957,7 @@ namespace DGtal
      * digital coordinates [p].
      * @post `sIsValid(sCell(p, c))` is \a true.
      */
-    SCell sCell( Point p, const SCell & c ) const;
+    SCell sCell( Point p, const SPreCell & c ) const;
 
     /** From the digital coordinates of a point in Zn,
      * builds the corresponding spel (cell of maximal dimension) lying into this Khalismky space.
@@ -1141,51 +1262,51 @@ namespace DGtal
      * @param p any unsigned cell.
      * @return the topology word of [p].
      */
-    Integer uTopology( const Cell & p ) const;
+    Integer uTopology( const PreCell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the topology word of [p].
      */
-    Integer sTopology( const SCell & p ) const;
+    Integer sTopology( const SPreCell & p ) const;
 
     /**
      * @param p any unsigned cell.
      * @return the dimension of the cell [p].
      */
-    Dimension uDim( const Cell & p ) const;
+    Dimension uDim( const PreCell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the dimension of the cell [p].
      */
-    Dimension sDim( const SCell & p ) const;
+    Dimension sDim( const SPreCell & p ) const;
 
     /**
      * @param b any unsigned cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
-    bool uIsSurfel( const Cell & b ) const;
+    bool uIsSurfel( const PreCell & b ) const;
 
     /**
      * @param b any signed cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
-    bool sIsSurfel( const SCell & b ) const;
+    bool sIsSurfel( const SPreCell & b ) const;
 
     /**
      * @param p any cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
      */
-    bool uIsOpen( const Cell & p, Dimension k ) const;
+    bool uIsOpen( const PreCell & p, Dimension k ) const;
 
     /**
      * @param p any signed cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
      */
-    bool sIsOpen( const SCell & p, Dimension k ) const;
+    bool sIsOpen( const SPreCell & p, Dimension k ) const;
 
     /// @}
 
@@ -1304,28 +1425,28 @@ namespace DGtal
      * @note For periodic dimension, it returns the first unique coordinate of a cell of same type as \a p.
      * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
      */
-    Integer uFirst( const Cell & p, Dimension k ) const;
+    Integer uFirst( const PreCell & p, Dimension k ) const;
 
     /**
      * @return the first cell of the space with the same type as [p].
      * @note Along periodic dimensions, it returns the first unique coordinate of a cell of same type as \a p.
      * @post `uIsValid(uFirst(p))` is \a true.
      */
-    Cell uFirst( const Cell & p ) const;
+    Cell uFirst( const PreCell & p ) const;
 
     /**
      * @return the k-th Khalimsky coordinate of the last cell of the space with the same type as [p].
      * @note For periodic dimension, it returns the last unique coordinate of a cell of same type as \a p.
      * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
      */
-    Integer uLast( const Cell & p, Dimension k ) const;
+    Integer uLast( const PreCell & p, Dimension k ) const;
 
     /**
      * @return the last cell of the space with the same type as [p].
      * @note Along periodic dimensions, it returns the last unique coordinate of a cell of same type as \a p.
      * @post `uIsValid(uLast(p))` is \a true.
      */
-    Cell uLast( const Cell & p ) const;
+    Cell uLast( const PreCell & p ) const;
 
     /**
      * @param p any cell.
@@ -1356,7 +1477,7 @@ namespace DGtal
      *  @return true if [p] has its [k]-coordinate within the allowed bounds.
      *  @note It returns always \a true for periodic dimension.
      */
-    bool uIsInside( const Cell & p, Dimension k ) const;
+    bool uIsInside( const PreCell & p, Dimension k ) const;
 
 
     /** Useful to check if you are going out of the space.
@@ -1365,7 +1486,7 @@ namespace DGtal
      * @return true if [p] has its coordinates within the allowed bounds.
      * @note Only the non-periodic dimensions are checked.
      */
-    bool uIsInside( const Cell & p ) const;
+    bool uIsInside( const PreCell & p ) const;
 
     /** Useful to check if you are going out of the space.
      *
@@ -1538,28 +1659,28 @@ namespace DGtal
      * @note For periodic dimension, it returns the first unique coordinate of a cell of same type as \a p.
      * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
     */
-    Integer sFirst( const SCell & p, Dimension k ) const;
+    Integer sFirst( const SPreCell & p, Dimension k ) const;
 
     /**
      * @return the first cell of the space with the same type as [p].
      * @note Along periodic dimensions, it returns the first unique coordinate of a cell of same type as \a p.
      * @post `sIsValid(sFirst(p))` is \a true.
      */
-    SCell sFirst( const SCell & p ) const;
+    SCell sFirst( const SPreCell & p ) const;
 
     /**
      * @return the k-th Khalimsky coordinate of the last cell of the space with the same type as [p].
      * @note For periodic dimension, it returns the last unique coordinate of a cell of same type as \a p.
      * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
     */
-    Integer sLast( const SCell & p, Dimension k ) const;
+    Integer sLast( const SPreCell & p, Dimension k ) const;
 
     /**
      * @return the last cell of the space with the same type as [p].
      * @note Along periodic dimensions, it returns the last unique coordinate of a cell of same type as \a p.
      * @post `sIsValid(sLast(p))` is \a true.
      */
-    SCell sLast( const SCell & p ) const;
+    SCell sLast( const SPreCell & p ) const;
 
     /**
      * @param p any cell.
@@ -1587,7 +1708,7 @@ namespace DGtal
      * @return true if [p] has its [k]-coordinate within the allowed bounds.
      *  @note It returns always \a true for periodic dimension.
      */
-    bool sIsInside( const SCell & p, Dimension k ) const;
+    bool sIsInside( const SPreCell & p, Dimension k ) const;
 
     /** Useful to check if you are going out of the space.
      *
@@ -1595,7 +1716,7 @@ namespace DGtal
      * @return true if [p] has its coordinates within the allowed bounds.
      * @note Only the non-periodic dimensions are checked.
      */
-    bool sIsInside( const SCell & p ) const;
+    bool sIsInside( const SPreCell & p ) const;
 
     /** Useful to check if you are going out of the space.
      *
