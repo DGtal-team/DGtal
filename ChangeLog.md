@@ -69,6 +69,14 @@
 
 
 ## Changes
+- *Configuration*
+ - Types and classes in helper namespaces ```Z2i``` and ```Z3i``` for
+   ```StdDefs.h``` header (2D and 3D digital geometry with
+   computations on 32bit integers) are now explicitly instanciated in
+   the compiled library. This reduces compilation time when such types
+   are used. (David Coeurjolly,
+   [#1117](https://github.com/DGtal-team/DGtal/pull/1117))
+   
 - *DEC Package*
  - DiscreteExteriorCalculus holds both primal and dual sizes of each cell.
    Subsequent changes have been made to insertSCell.
