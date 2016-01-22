@@ -154,6 +154,8 @@
    [#1078](https://github.com/DGtal-team/DGtal/pull/1078))
 
 - *IO Package*
+ - Fix line export in Board3D.
+   (Bertrand Kerautret [##1119](https://github.com/DGtal-team/DGtal/pull/1119))
  - Fix viewer tests including qt4 headers even with configuring WITH_QT5=ON.
    (Pablo Hernandez-Cerdan, [#1100](https://github.com/DGtal-team/DGtal/pull/1100))
  - Fix Viewer3D axis display when they are included in a transparent element.
