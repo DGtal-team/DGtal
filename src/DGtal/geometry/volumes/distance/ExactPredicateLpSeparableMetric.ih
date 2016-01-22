@@ -318,7 +318,7 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa
                                                                   const Abscissa &) const
 {
   ASSERT(false && "Not Necessary for l_2");
-
+  return 0;
 }
 //------------------------------------------------------------------------------
 template <typename T,   typename P>

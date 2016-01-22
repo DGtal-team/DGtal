@@ -3,6 +3,5 @@ SET(DGTAL_SRC ${DGTAL_SRC}
     DGtal/base/Bits
     DGtal/base/Clock
     DGtal/base/Trace
-    DGtal/base/OrderedAlphabet
     DGtal/base/Common)
 

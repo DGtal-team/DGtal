@@ -48,6 +48,7 @@
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/arithmetic/ModuloComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

@@ -24,8 +24,7 @@
  - Traits class for containers in order to probe their category at
    compile time.  (Jacques-Olivier Lachaud,
    [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
-
-- Generic set operations for arbitrary containers. You may use
+ - Generic set operations for arbitrary containers. You may use
    overloaded operators like &, |, -, ^ on arbitrary containers (list,
    vector, unordered_set, map, etc).  (Jacques-Olivier Lachaud,
    [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
@@ -69,6 +68,14 @@
 
 
 ## Changes
+- *Configuration*
+ - Types and classes in helper namespaces ```Z2i``` and ```Z3i``` for
+   ```StdDefs.h``` header (2D and 3D digital geometry with
+   computations on 32bit integers) are now explicitly instanciated in
+   the compiled library. This reduces compilation time when such types
+   are used. (David Coeurjolly,
+   [#1117](https://github.com/DGtal-team/DGtal/pull/1117))
+   
 - *DEC Package*
  - DiscreteExteriorCalculus holds both primal and dual sizes of each cell.
    Subsequent changes have been made to insertSCell.
