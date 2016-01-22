@@ -24,8 +24,7 @@
  - Traits class for containers in order to probe their category at
    compile time.  (Jacques-Olivier Lachaud,
    [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
-
-- Generic set operations for arbitrary containers. You may use
+ - Generic set operations for arbitrary containers. You may use
    overloaded operators like &, |, -, ^ on arbitrary containers (list,
    vector, unordered_set, map, etc).  (Jacques-Olivier Lachaud,
    [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
