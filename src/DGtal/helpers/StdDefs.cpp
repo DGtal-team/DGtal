@@ -38,8 +38,6 @@ template class DGtal::DigitalTopology< DGtal::Z2i::Adj4, DGtal::Z2i::Adj8 > ;
 template class DGtal::DigitalTopology< DGtal::Z2i::Adj8, DGtal::Z2i::Adj4 > ;
 template class DGtal::DigitalSetByAssociativeContainer<DGtal::Z2i::Domain,
                                                        std::unordered_set< typename DGtal::Z2i::Domain::Point> >;
-//template class DGtal::Object<DGtal::Z2i::DT4_8, DGtal::Z2i::DigitalSet> ;
-//template class DGtal::Object<DGtal::Z2i::DT8_4, DGtal::Z2i::DigitalSet> ;
 template class DGtal::GridCurve<DGtal::Z2i::K2> ;
 template class DGtal::ExactPredicateLpSeparableMetric<DGtal::Z2i::Space,2> ;
 template class DGtal::ExactPredicateLpSeparableMetric<DGtal::Z2i::Space,1> ;
@@ -56,6 +54,7 @@ template class DGtal::KhalimskySpaceND< 3, DGtal::Z3i::Integer > ;
 template class DGtal::HyperRectDomain< DGtal::Z3i::Space > ; 
 template class DGtal::MetricAdjacency< DGtal::Z3i::Space, 1> ;
 template class DGtal::MetricAdjacency< DGtal::Z3i::Space, 2> ;
+template class DGtal::MetricAdjacency< DGtal::Z3i::Space, 3> ;
 template class DGtal::DigitalTopology< DGtal::Z3i::Adj6, DGtal::Z3i::Adj26 > ;
 template class DGtal::DigitalTopology< DGtal::Z3i::Adj26, DGtal::Z3i::Adj6 > ;
 template class DGtal::DigitalTopology< DGtal::Z3i::Adj18, DGtal::Z3i::Adj26 > ;
