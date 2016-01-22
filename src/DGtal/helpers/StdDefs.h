@@ -183,8 +183,6 @@ namespace DGtal
     static const DT6_26 dt6_26 = DT6_26( adj6, adj26, JORDAN_DT );
     static const DT26_6 dt26_6 = DT26_6( adj26, adj6, JORDAN_DT );
 
-    typedef GridCurve<K3> Curve; 
-
     typedef ExactPredicateLpSeparableMetric<Space,2> L2Metric;
     typedef ExactPredicateLpSeparableMetric<Space,1> L1Metric;
     typedef ExactPredicateLpPowerSeparableMetric<Space,2> L2PowerMetric;
