@@ -15,7 +15,7 @@
  **/
 /**
  * @file StdDefs.cpp
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.frx )
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  * @date 2016/01/19
  *
