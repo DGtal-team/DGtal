@@ -12,7 +12,8 @@ environment:
   #   CONFIG: Release
   #   B_NAME: Win64
 
-
+cache:
+  - libqglviewer
 
 matrix:
   fast_finish: true
@@ -43,7 +44,7 @@ install:
 
 before_build:
 #install QGLViewer:
-  - git clone https://github.com/kerautret/libQGLViewer.git
+  - IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\libqglviewer git clone https://github.com/kerautret/libQGLViewer.git
   - cd %APPVEYOR_BUILD_FOLDER%\libqglviewer\QGLViewer
   - qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
   - msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj 
