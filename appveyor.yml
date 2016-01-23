@@ -44,7 +44,7 @@ install:
 
 before_build:
 #install QGLViewer:
-  - IF NOT EXIST %QGLDIR%\libqglviewer git clone https://github.com/kerautret/libQGLViewer.git
+  - IF NOT EXIST %QGLDIR%\libqglviewer git clone https://github.com/kerautret/libQGLViewer.git %QGLDIR%\libqglviewer\QGLViewer
   - cd %QGLDIR%\libqglviewer\QGLViewer
   - qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
   - msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj 
