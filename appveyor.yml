@@ -5,7 +5,7 @@ environment:
   - VS_GEN: Visual Studio 14 2015
     CONFIG: RelWithDebInfo
     CONFIGQGL: Release
-
+    QGLDIR: C:\Libraries
     B_NAME: Win32
     QTDIR: C:\Qt\5.4\msvc2013_opengl 
   # - VS_GEN: Visual Studio 14 2015 Win64
@@ -13,7 +13,7 @@ environment:
   #   B_NAME: Win64
 
 cache:
-  - libqglviewer
+  - %QGLDIR%\libqglviewer
 
 matrix:
   fast_finish: true
@@ -44,12 +44,12 @@ install:
 
 before_build:
 #install QGLViewer:
-  - IF NOT EXIST %APPVEYOR_BUILD_FOLDER%\libqglviewer git clone https://github.com/kerautret/libQGLViewer.git
-  - cd %APPVEYOR_BUILD_FOLDER%\libqglviewer\QGLViewer
+  - IF NOT EXIST %QGLDIR%\libqglviewer git clone https://github.com/kerautret/libQGLViewer.git
+  - cd %QGLDIR%\libqglviewer\QGLViewer
   - qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
   - msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj 
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%APPVEYOR_BUILD_FOLDER%\libQGLViewer -DQGLVIEWER_LIBRARIES=%APPVEYOR_BUILD_FOLDER%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
+  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%QGLDIR%\libQGLViewer -DQGLVIEWER_LIBRARIES=%QGLDIR%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
   
 #  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DGDCM_BUILD_TESTING:BOOL=ON -DGDCM_BUILD_APPLICATIONS:BOOL=ON -DGDCM_BUILD_SHARED_LIBS:BOOL=ON -DGDCM_ALLOW_INSOURCE_BUILD:BOOL=ON -DBUILDNAME:STRING=%COMPUTERNAME%-%B_NAME% -DGDCM_WRAP_CSHARP:BOOL=ON -DGDCM_WRAP_JAVA:BOOL=ON -DGDCM_WRAP_PYTHON:BOOL=ON -DGDCM_USE_PVRG:BOOL=ON .
 
