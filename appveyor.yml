@@ -13,7 +13,7 @@ environment:
   #   B_NAME: Win64
 
 cache:
-  - C:\Libraries\libqglviewer -> appveyor.yml
+  - C:\Libraries\libqglviewer 
 
 matrix:
   fast_finish: true
@@ -37,17 +37,18 @@ init:
   - msbuild /version
   - cmake --version
   - set PATH=%QTDIR%\bin;%PATH%
-
+  - set CACHEOK=FALSE 
 
 # scripts that run after cloning repository
 install:
 
 before_build:
 #install QGLViewer:
-  - IF NOT EXIST %QGLDIR%\libqglviewer git clone https://github.com/kerautret/libQGLViewer.git %QGLDIR%\libqglviewer
-  - cd %QGLDIR%\libqglviewer\QGLViewer
-  - qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
-  - msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj 
+  - IF EXIST %QGLDIR%\libqglviewer SET CACHEOK=TRUE 
+  - IF %CACHEOK%==FALSE git clone https://github.com/kerautret/libQGLViewer.git %QGLDIR%\libqglviewer
+  - IF %CACHEOK%==FALSE cd %QGLDIR%\libqglviewer\QGLViewer
+  - IF %CACHEOK%==FALSE qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
+  - IF %CACHEOK%==FALSE msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj 
   - cd %APPVEYOR_BUILD_FOLDER%
   - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%QGLDIR%\libQGLViewer -DQGLVIEWER_LIBRARIES=%QGLDIR%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_EXAMPLES:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
   
