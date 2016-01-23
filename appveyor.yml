@@ -13,7 +13,7 @@ environment:
   #   B_NAME: Win64
 
 cache:
-  - %QGLDIR%\libqglviewer
+  - C:\Libraries\libqglviewer
 
 matrix:
   fast_finish: true
