@@ -15,7 +15,6 @@
    VS14 or above). Many issues have been fixed for compatibility with
    'cl' compiler. (David Coeurjolly, Jérémy Levallois,
    [#1074](https://github.com/DGtal-team/DGtal/pull/1074))
-
  - DGtal with QGLViewer option activated now compiles on Microsoft Windows,
    Visual Studio (only VS14 or above). (Bertrand Kerautret,
    [#1106](https://github.com/DGtal-team/DGtal/pull/1106))
@@ -101,7 +100,7 @@
     [#1087](https://github.com/DGtal-team/DGtal/pull/1087))
  - Minor improvements of default settings in Viewer3D. (David
    Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
- - change the chronological order to diplay primitives (in the draw
+ - change the chronological order to display primitives (in the draw
    function) in order to see the cube primitive through the
    transparency of the ball primitives. (Bertrand Kerautret,
    [#1081](https://github.com/DGtal-team/DGtal/pull/1081))
