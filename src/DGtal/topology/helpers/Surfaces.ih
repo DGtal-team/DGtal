@@ -696,8 +696,8 @@ extractAllConnectedSCell
 {
   std::set<SCell> bdry;
   sMakeBoundary( bdry, aKSpace, pp,
-                 aKSpace.uCoords(aKSpace.lowerCell()), 
-                 aKSpace.uCoords(aKSpace.upperCell()) );
+                 aKSpace.lowerBound(), 
+                 aKSpace.upperBound() );
   aVectConnectedSCell.clear();
   while(!bdry.empty()){
     std::set<SCell>  aConnectedSCellSet;
@@ -975,7 +975,7 @@ DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace,
 {
   unsigned int numberCellFilled = 0;
   std::deque<Cell> pixels;      
-  Cell p =  aKSpace.uFirst(aKSpace.uCell(Point(1,1)));  
+  Cell p =  aKSpace.uFirst( typename KSpace::PreCell( Point(1,1) ) );  
   bool in_mode = empty_is_inside;   
   do 
     {
@@ -1038,7 +1038,7 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
 {
   unsigned int numberCellFilled=0;
   std::deque<Cell> pixels;      
-  Cell p =  aKSpace.uFirst(aKSpace.uCell(Point(1,1)));  
+  Cell p =  aKSpace.uFirst( typename KSpace::PreCell( Point(1,1) ) );  
   bool in_mode = empty_is_outside;   
   do 
     {

@@ -1632,10 +1632,11 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sFirst( const SPreCell & p ) const
 {
-  SCell cell = p;
+  SCell cell;
   for ( Dimension k = 0; k < dimension; ++k )
     cell.myCoordinates[ k ] = sFirst( p, k );
 
+  cell.myPositive = p.myPositive;
   return cell;
 }
 //-----------------------------------------------------------------------------
@@ -1657,10 +1658,11 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sLast( const SPreCell & p ) const
 {
-  SCell cell = p;
+  SCell cell;
   for ( Dimension k = 0; k < dimension; ++k )
     cell.myCoordinates[ k ] = sLast( p, k );
 
+  cell.myPositive = p.myPositive;
   return cell;
 }
 //-----------------------------------------------------------------------------
