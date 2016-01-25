@@ -82,8 +82,8 @@ bool testCellularGridSpaceND()
   Point kp( spel );
   Cell center = K.uCell( kp );
   Cell c1 = K.uCell( kp );
-  Cell clow = K.uCell( low, kp );
-  Cell chigh = K.uCell( high, kp );
+  Cell clow = K.uCell( low, center );
+  Cell chigh = K.uCell( high, center );
   trace.info() << c1 << clow << chigh
          << " topo(c1)=" << K.uTopology( c1 ) << " dirs=";
   for ( DirIterator q = K.uDirs( clow ); q != 0; ++q )

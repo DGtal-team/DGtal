@@ -187,7 +187,7 @@ namespace DGtal
     /** Implicit convertion from a KhalimskyCell
      * @param aCell a cell to be converted into a non-validated cell.
      */
-    KhalimskyPreCell( KhalismkyCell<dim, Integer> const& aCell );
+    KhalimskyPreCell( KhalimskyCell<dim, Integer> const& aCell );
 
     /** Copy constructor.
      *
@@ -207,7 +207,7 @@ namespace DGtal
      */
     KhalimskyPreCell & operator=( KhalimskyPreCell const& aCell );
 
-  } // KhalimskyPreCell
+  }; // KhalimskyPreCell
 
 
   /**
@@ -344,7 +344,7 @@ namespace DGtal
     /** Implicit convertion from a SignedKhalimskyCell
      * @param aCell a cell to be converted into a non-validated cell.
      */
-    SignedKhalimskyPreCell( SignedKhalismkyCell<dim, Integer> const& aCell );
+    SignedKhalimskyPreCell( SignedKhalimskyCell<dim, Integer> const& aCell );
 
     /** Copy constructor.
      *
@@ -364,7 +364,7 @@ namespace DGtal
      */
     SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell const& aCell );
 
-  } // SignedKhalimskyPreCell
+  }; // SignedKhalimskyPreCell
 
   /**
      @brief This class is useful for looping on all "interesting" coordinates of a
