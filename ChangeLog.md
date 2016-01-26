@@ -4,8 +4,8 @@
 ## Bug Fixes
 - *Geometry Package*
  - AlphaThickSegmentComputer: fix segment display errors which could appear
-   when displaying a small segment. Fix also a non initialized attribute with
-   some improvements on bounding box computation.
+   when displaying a small segment. Fix a non initialized attribute with
+   some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1106))
 
 # DGtal 0.9.1
