@@ -545,6 +545,20 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBox(P
                                                                                PointD &pt3LongestSegment2,
                                                                                PointD &pt4LongestSegment2 ) const
 {  
+  // handle special case with only one point
+  if (getNumberSegmentPoints() == 1)
+    {
+      TInputPoint p = myState.lastFront;
+      pt1LongestSegment1[0]= p[0]+myMaximalThickness/2.0;
+      pt1LongestSegment1[1]= p[1]+myMaximalThickness/2.0;
+      pt2LongestSegment1[0]= p[0]+myMaximalThickness/2.0;
+      pt2LongestSegment1[1]= p[1]-myMaximalThickness/2.0;
+      pt3LongestSegment2[0]= p[0]-myMaximalThickness/2.0;
+      pt3LongestSegment2[1]= p[1]-myMaximalThickness/2.0;
+      pt4LongestSegment2[0]= p[0]-myMaximalThickness/2.0;
+      pt4LongestSegment2[1]= p[1]+myMaximalThickness/2.0;
+      return;
+    }
   InputPoint fp = myState.lastBack;
   InputPoint lp = myState.lastFront;
   getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
