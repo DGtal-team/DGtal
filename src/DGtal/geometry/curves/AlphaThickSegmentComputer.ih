@@ -686,7 +686,11 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::projectOnStraigh
   
   ptProjected[0]= ptA[0]+vABn[0]*(distPtA_Proj);
   ptProjected[1] = ptA[1]+vABn[1]*(distPtA_Proj);  
-  return  (distPtA_Proj>=0 && (ptProjected-ptA).norm() <= vAB.norm()); 
+  
+  return  distPtA_Proj>=0 && ((ptA[0]<ptB[0] && ptProjected[0]<=ptB[0] ) ||
+                              (ptA[0]>ptB[0] && ptProjected[0]>=ptB[0] ) ||
+                              (ptA[0]==ptB[0] && ptA[1]<ptB[1] && ptProjected[1]<=ptB[1]) ||
+                              (ptA[0]==ptB[0] && ptA[1]>=ptB[1] && ptProjected[1]>=ptB[1])); 
 }
 
 
