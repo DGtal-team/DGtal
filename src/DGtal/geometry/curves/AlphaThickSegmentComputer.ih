@@ -69,6 +69,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint,
   myThicknessCompPrecision = thickCompPrecision;
   myMaximalThickness = maximalThickness; 
   myThicknessDefinition = thicknessDefinition;
+  myNbPointsAddedFromIterators = 0;
 }
 
 
