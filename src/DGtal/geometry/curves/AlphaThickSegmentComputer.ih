@@ -530,6 +530,18 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
       pt4LongestSegment2[0]=projF2[0];
       pt4LongestSegment2[1]=projF2[1];      
     }
+  // check orientation of resulting sequence of vertex
+  PointD v1 = pt1LongestSegment1 - pt2LongestSegment1;
+  PointD v2 = pt3LongestSegment2 - pt2LongestSegment1;
+  double orient = v1[0]*v2[1]-v1[1]*v2[0];
+  if (orient < 0)
+    {
+      std::swap(pt1LongestSegment1, pt4LongestSegment2);
+      std::swap(pt2LongestSegment1, pt3LongestSegment2);
+    }
+  
+
+  
 }
 
 
@@ -563,7 +575,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBox(P
   InputPoint lp = myState.lastFront;
   getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
                                  pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);
-
+  
   if(myState.actualThickness==0.0)
     {
       return;

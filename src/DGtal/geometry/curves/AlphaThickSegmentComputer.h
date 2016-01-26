@@ -513,7 +513,7 @@ public:
    * @param[in] minVisibleWidthBounds the minimal width of the resulting bounding box (for drawing issue when the segment thickness is 0).
    * The sequence of resulting points (pt1LongestSegment1,
    * pt2LongestSegment1, pt3LongestSegment2, pt4LongestSegment4) are
-   * clockwise oriented.
+   * ccw oriented.
    *
    * @note the segment bounding box can be drawn with the sequence of
    * out parameters pt1LongestSegment1, pt2LongestSegment1,
@@ -535,7 +535,7 @@ public:
    * when a large amount of noise is present in the initial curve.
    * The sequence of resulting points (pt1LongestSegment1,
    * pt2LongestSegment1, pt3LongestSegment2, pt4LongestSegment4) are
-   * clockwise oriented.
+   * ccw oriented.
    *
    * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
