@@ -62,7 +62,7 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
     out << "P5"<<std::endl;
   }
 
-  out << "#DGtal PNM Writer"<<std::endl<<std::endl;
+  out << "#DGtal PNM Writer"<<std::endl;
   out << size[0]<<" "<< size[1]<<std::endl;
   out << "255" <<std::endl;
   
