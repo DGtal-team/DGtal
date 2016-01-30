@@ -164,7 +164,6 @@ namespace DGtal
     typedef TPointPredicate PointPredicate; 
 
     //points
-    typedef typename Image::Point Vector;
     typedef typename Image::Point Point;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename AcceptedPointSet::Point >::value ));
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename PointPredicate::Point >::value ));
