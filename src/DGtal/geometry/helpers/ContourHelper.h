@@ -64,7 +64,7 @@ public:
   /**
    * Compute the barycenter of the 2D contour.  
    * 
-   * @param aContour the vector containing the 2D contour coordinates.
+   * @param[in] aContour the vector containing the 2D contour coordinates.
    * @return the resulting mean point. 
    **/
   template <typename TPoint>
@@ -75,10 +75,9 @@ public:
   /**
    * Checks if a contour given as a sequence of point is clockwise oriented or not.
    *
-   * @param aContour the vector containing the 2D contour coordinates.
+   * @param[in] aContour the vector containing the 2D contour coordinates.
    * @return 'true' if the contour is counter clockwise oriented, 'false' otherwise.
    **/
-
   template <typename TPoint> 
   static
   bool
@@ -87,28 +86,32 @@ public:
 
 
   /**
-   * @return the Freeman code associated to given point.
-   * @param[in] pt1: a first point.
-   * @param[in] pt2: a second point.
+   * @return the Freeman code associated to given points (0,1,2, or
+   * 3). If the direction between the two points differs from these
+   * directions it returns 8.
+   *
+   * @param[in] pt1  a first point.
+   * @param[in] pt2  a second point.
+   * 
    **/
   template<typename TPoint>
   static 
   unsigned int 
-  getFreemanCode4connexe(const TPoint &pt1, const TPoint &pt2);
+  getFreemanCode4C(const TPoint &pt1, const TPoint &pt2);
   
 
 
   /**
    * Transforms an input contour into an 8 connected contour.
-   * @param[in] itb: begin iterator associated to the input contour.
-   * @param[in] itb: end iterator associated to the input contour.
-   * @param[out] out: output iterator associated to the resulting contour.
+   * @param[in] itb  begin iterator associated to the input contour.
+   * @param[in] itb  end iterator associated to the input contour.
+   * @param[out] out   output iterator associated to the resulting contour.
    */
 
   template <typename TConstIterator, typename TOutputIterator>
   static
   void
-  pixels2pixels8c(const TConstIterator &itb, const TConstIterator &ite,
+  pixels2pixels8C(const TConstIterator &itb, const TConstIterator &ite,
                   TOutputIterator out);
    
   
@@ -127,7 +130,7 @@ public:
 
     /**
      * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
+     * @param[out] out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
 

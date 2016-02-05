@@ -83,7 +83,7 @@ bool testContourHelper()
   aContour3.push_back(Z2i::Point(5,2));
   aContour3.push_back(Z2i::Point(6,2));
   std::vector<Z2i::Point> res;
-  ContourHelper::pixels2pixels8c(aContour3.begin(), aContour3.end(), std::back_inserter(res));
+  ContourHelper::pixels2pixels8C(aContour3.begin(), aContour3.end(), std::back_inserter(res));
   trace.info() << "Apply pixels2pixels8c init size : " << res.size() << " (should be: " << aContour3.size() -2  << " ) "<< std::endl;  
   trace.info() << "Third point : " << res[2] << " (should be: " << Z2i::Point(2,1) << " ) "<< std::endl;  
   nb++;
