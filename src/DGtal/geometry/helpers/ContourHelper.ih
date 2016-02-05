@@ -63,7 +63,7 @@ DGtal::ContourHelper::getMeanPoint(const std::vector<TPoint> & aContour)
 template<typename TPoint>
 inline
 unsigned int 
-DGtal::ContourHelper::getFreemanCode4connexe(const TPoint &pt1, const TPoint &pt2)
+DGtal::ContourHelper::getFreemanCode4C(const TPoint &pt1, const TPoint &pt2)
 {
   int dx = pt2[0] - pt1[0];
   int dy = pt2[1] - pt1[1];
@@ -92,7 +92,7 @@ DGtal::ContourHelper::getFreemanCode4connexe(const TPoint &pt1, const TPoint &pt
 template <typename TConstIterator, typename TOutputIterator>
 inline
 void 
-DGtal::ContourHelper::pixels2pixels8c(const TConstIterator &itb, const TConstIterator &ite,
+DGtal::ContourHelper::pixels2pixels8C(const TConstIterator &itb, const TConstIterator &ite,
                                       TOutputIterator out)
 {
   int xCurrent = (*itb)[0];
@@ -103,8 +103,8 @@ DGtal::ContourHelper::pixels2pixels8c(const TConstIterator &itb, const TConstIte
   int i=0;
   while(i<size-1)
     {
-      unsigned int code = ContourHelper::getFreemanCode4connexe(*it, *(it+1));
-      unsigned int codeNext = ContourHelper::getFreemanCode4connexe(*(it+1), *(it+2));
+      unsigned int code = ContourHelper::getFreemanCode4C(*it, *(it+1));
+      unsigned int codeNext = ContourHelper::getFreemanCode4C(*(it+1), *(it+2));
       
       if((code != 8 && codeNext != 8) &&  (((4+(int)codeNext-(int)code)%4)==1 || ((4+(int)codeNext-(int)code)%4)==3))
         {
