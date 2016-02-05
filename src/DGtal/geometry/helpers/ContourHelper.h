@@ -84,7 +84,34 @@ public:
   bool
   isCounterClockWise(const std::vector<TPoint> & aContour);
 
+
+
+  /**
+   * @return the Freeman code associated to given point.
+   * @param[in] pt1: a first point.
+   * @param[in] pt2: a second point.
+   **/
+  template<typename TPoint>
+  static 
+  unsigned int 
+  getFreemanCode4connexe(const TPoint &pt1, const TPoint &pt2);
+  
+
+
+  /**
+   * Transforms an input contour into an 8 connected contour.
+   * @param[in] itb: begin iterator associated to the input contour.
+   * @param[in] itb: end iterator associated to the input contour.
+   * @param[out] out: output iterator associated to the resulting contour.
+   */
+
+  template <typename TConstIterator, typename TOutputIterator>
+  static
+  void
+  pixels2pixels8c(const TConstIterator &itb, const TConstIterator &ite,
+                  TOutputIterator out);
    
+  
   
 
     // ----------------------- Standard services ------------------------------
