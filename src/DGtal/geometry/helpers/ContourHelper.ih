@@ -95,8 +95,6 @@ void
 DGtal::ContourHelper::pixels2pixels8C(const TConstIterator &itb, const TConstIterator &ite,
                                       TOutputIterator out)
 {
-  int xCurrent = (*itb)[0];
-  int yCurrent = (*ite)[1];
   TConstIterator it = itb;
   *out++ = *it;
   unsigned int size = std::distance(itb, ite);
@@ -104,8 +102,7 @@ DGtal::ContourHelper::pixels2pixels8C(const TConstIterator &itb, const TConstIte
   while(i<size-1)
     {
       unsigned int code = ContourHelper::getFreemanCode4C(*it, *(it+1));
-      unsigned int codeNext = ContourHelper::getFreemanCode4C(*(it+1), *(it+2));
-      
+      unsigned int codeNext = ContourHelper::getFreemanCode4C(*(it+1), *(it+2));      
       if((code != 8 && codeNext != 8) &&  (((4+(int)codeNext-(int)code)%4)==1 || ((4+(int)codeNext-(int)code)%4)==3))
         {
           it++;
