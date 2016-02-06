@@ -104,7 +104,7 @@ public:
   /**
    * Transforms an input contour into an 8 connected contour.
    * @param[in] itb  begin iterator associated to the input contour.
-   * @param[in] itb  end iterator associated to the input contour.
+   * @param[in] ite  end iterator associated to the input contour.
    * @param[out] out   output iterator associated to the resulting contour.
    */
 
