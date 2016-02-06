@@ -100,7 +100,6 @@ public:
   getFreemanCode4C(const TPoint &pt1, const TPoint &pt2);
   
 
-
   /**
    * Transforms an input contour into an 8 connected contour.
    * @param[in] itb  begin iterator associated to the input contour.
