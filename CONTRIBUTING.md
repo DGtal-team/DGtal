@@ -31,7 +31,7 @@ Each pull-request must contain:
   using [Catch](http://catch-lib.net), see for instance
   [this tutorial](http://dgtal.org/doc/stable/moduleCatch.html));
 * a user-oriented documentation page describing the feature (using
-  [doxygen](http://doxgen.org));
+  [doxygen](http://doxygen.org));
 * an informative pull-request comment describing the contribution;
 * a new entry in the project ```Changelog.md``` file.
 
