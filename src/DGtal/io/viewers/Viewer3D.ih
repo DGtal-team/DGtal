@@ -674,6 +674,8 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glMultMatrixd ( manipulatedFrame()->matrix() );
   glPushMatrix();
   glScalef(myGLScaleFactorX, myGLScaleFactorY, myGLScaleFactorZ);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeff);
+  glMaterialfv(GL_FRONT, GL_SHININESS, myMaterialShininessCoeff);
   glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
   unsigned int i = 0;
   typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
@@ -810,8 +812,6 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::init()
 {
-  GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-  GLfloat mat_shininess[] = { 50.0 };
   myAutoSaveState = false;
   myIsMovingLight = false;
   myLigthRotationStep = 0.01;
@@ -826,10 +826,10 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myLightPosition[3] = 0.0;
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
-  glShadeModel (GL_SMOOTH);
-  
-  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-  glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+  glShadeModel (GL_SMOOTH);  
+
+  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeff);
+  glMaterialfv(GL_FRONT, GL_SHININESS, myMaterialShininessCoeff);
   glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
   
   glEnable(GL_LIGHTING);
@@ -1223,7 +1223,6 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       updateList(false);
       updateGL();
     }
-
 
   if ( ( e->key() ==Qt::Key_R ) )
     {
@@ -1774,6 +1773,20 @@ DGtal::Viewer3D<Space, KSpace>::closeEvent	(	QCloseEvent * 	e	){
   }
   QGLWidget::closeEvent(e);
 }
+
+
+
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::setGlMaterialSpecularCoefficients(const GLfloat matSpecularCoeff [4], 
+                                                                  const GLfloat matShininessCoeff){
+  myMaterialShininessCoeff[0] = matShininessCoeff;
+  myMaterialSpecularCoeff[0] =  matSpecularCoeff[0];
+  myMaterialSpecularCoeff[1] =  matSpecularCoeff[1];
+  myMaterialSpecularCoeff[2] =  matSpecularCoeff[2];
+  updateGL();
+}
+
 
 
 
