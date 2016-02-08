@@ -674,9 +674,15 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glMultMatrixd ( manipulatedFrame()->matrix() );
   glPushMatrix();
   glScalef(myGLScaleFactorX, myGLScaleFactorY, myGLScaleFactorZ);
-  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeff);
+
   glMaterialfv(GL_FRONT, GL_SHININESS, myMaterialShininessCoeff);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeffs);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, myLightSpecularCoeffs);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, myLightDiffuseCoeffs);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, myLightAmbientCoeffs);
+  
   glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
+
   unsigned int i = 0;
   typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
   
@@ -828,8 +834,12 @@ DGtal::Viewer3D<Space, KSpace>::init()
   glClearColor (0.0, 0.0, 0.0, 0.0);
   glShadeModel (GL_SMOOTH);  
 
-  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeff);
   glMaterialfv(GL_FRONT, GL_SHININESS, myMaterialShininessCoeff);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeffs);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, myLightSpecularCoeffs);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, myLightDiffuseCoeffs);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, myLightAmbientCoeffs);
+  
   glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
   
   glEnable(GL_LIGHTING);
@@ -1215,7 +1225,24 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       operator>> <Space, KSpace>(*this, "exportedMesh.off");
       trace.info() << "[done]"<< endl ;
     }
+  if( e->key() == Qt::Key_M)
+    {
+      switch (myRenderingMode)
+        {
+        case RenderingMode::RenderingDefault : 
+          myRenderingMode = RenderingMode::RenderingMetallic;
+          break;
+        case RenderingMode::RenderingMetallic : 
+          myRenderingMode = RenderingMode::RenderingPlastic;
+          break;
+        case RenderingMode::RenderingPlastic : 
+          myRenderingMode = RenderingMode::RenderingDefault;
+          break;
+        } 
+      updateRenderingCoefficients(myRenderingMode);
+    }
 
+  
 
   if ( ( e->key() ==Qt::Key_W ) )
     {
@@ -1775,17 +1802,81 @@ DGtal::Viewer3D<Space, KSpace>::closeEvent	(	QCloseEvent * 	e	){
 }
 
 
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::setGLMaterialShininessCoefficient(const GLfloat matShininessCoeff)
+{
+  myMaterialShininessCoeff = matShininessCoeff;  
+  updateGL();
+}
+
 
 template< typename Space, typename KSpace>
 void 
-DGtal::Viewer3D<Space, KSpace>::setGlMaterialSpecularCoefficients(const GLfloat matSpecularCoeff [4], 
-                                                                  const GLfloat matShininessCoeff){
-  myMaterialShininessCoeff[0] = matShininessCoeff;
-  myMaterialSpecularCoeff[0] =  matSpecularCoeff[0];
-  myMaterialSpecularCoeff[1] =  matSpecularCoeff[1];
-  myMaterialSpecularCoeff[2] =  matSpecularCoeff[2];
+DGtal::Viewer3D<Space, KSpace>::setGLLightAmbientCoefficients(const GLfloat lightAmbientCoeffs [4])
+{
+  myLightAmbientCoeffs[0] =  lightAmbientCoeffs[0];
+  myLightAmbientCoeffs[1] =  lightAmbientCoeffs[1];
+  myLightAmbientCoeffs[2] =  lightAmbientCoeffs[2];
+  myLightAmbientCoeffs[3] =  lightAmbientCoeffs[3]; 
   updateGL();
 }
+
+
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::setGLLightDiffuseCoefficients(const GLfloat lightDiffuseCoeffs [4])
+{
+  myLightDiffuseCoeffs[0] =  lightDiffuseCoeffs[0];
+  myLightDiffuseCoeffs[1] =  lightDiffuseCoeffs[1];
+  myLightDiffuseCoeffs[2] =  lightDiffuseCoeffs[2];
+  myLightDiffuseCoeffs[3] =  lightDiffuseCoeffs[3];
+  updateGL();
+}
+
+
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode aRenderMode)
+{
+  GLfloat newCoefDiff, newCoefSpec = 1.0;
+  switch (aRenderMode) 
+    {
+    case RenderingMode::RenderingDefault :
+      newCoefDiff = myDefaultRenderDiff;
+      newCoefSpec = myDefaultRenderSpec;
+      break;
+    case RenderingMode::RenderingMetallic :
+      newCoefDiff = myMetallicRenderDiff;
+      newCoefSpec = myMetallicRenderSpec;
+      break;
+    case RenderingMode::RenderingPlastic :
+      newCoefDiff = myPlasticRenderDiff;
+      newCoefSpec = myPlasticRenderSpec;
+      break;
+    }
+  for (unsigned int i = 0; i<3; i++) 
+    myLightDiffuseCoeffs[i] = newCoefDiff;
+  myLightDiffuseCoeffs[3] = 1.0;
+  for (unsigned int i = 0; i<3; i++) 
+    myLightSpecularCoeffs[i] = newCoefSpec;
+  myLightSpecularCoeffs[3] = 1.0;
+  updateGL();
+}
+
+
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::setGLLightSpecularCoefficients(const GLfloat lightSpecularCoeffs [4])
+{
+  myLightSpecularCoeffs[0] =  lightSpecularCoeffs[0];
+  myLightSpecularCoeffs[1] =  lightSpecularCoeffs[1];
+  myLightSpecularCoeffs[2] =  lightSpecularCoeffs[2];
+  myLightSpecularCoeffs[3] =  lightSpecularCoeffs[3];
+  updateGL();
+}
+
 
 
 

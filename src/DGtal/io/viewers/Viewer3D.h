@@ -144,6 +144,8 @@ namespace DGtal
     using Display::getSelectCallback3D;
     typedef typename Display::RealPoint RealPoint;
 
+    enum RenderingMode {RenderingDefault, RenderingMetallic, RenderingPlastic };
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -232,6 +234,56 @@ namespace DGtal
     }
 
 
+    /**
+     * Change the light shininess coefficients used in opengl
+     * rendering (used in glMaterialf with GL_SPECULAR parameters). 
+     *
+     * @param[in] matShininessCoeff the value of the shininess coefficient (defined in [0, 128], default 50.0).
+     * 
+     **/
+    void setGLMaterialShininessCoefficient(const GLfloat matShininessCoeff);
+
+    
+    /**
+     * Change the light ambient coefficients used in opengl
+     * rendering (used in glLightfv with GL_AMBIENT parameters). 
+     *
+     * @param[in] lightAmbientCoeffs the values of specular coefficient of RGBA channels (defined in [0,1], default: {0.0,0.0,0.0,1.0}).
+
+     * 
+     **/
+    void setGLLightAmbientCoefficients(const GLfloat lightAmbientCoeffs [4]);
+
+    /**
+     * Change the material ambient coefficients used in opengl
+     * rendering (used in glMaterialf with GL_AMBIENT parameters). 
+     *
+     * @param[in] lightDiffuseCoeffs the values of specular coefficient of RGBA channels (defined in [0,1], default: {1.0,1.0,1.0,1.0}).
+
+     * 
+     **/
+    void setGLLightDiffuseCoefficients(const GLfloat lightDiffuseCoeffs [4]);
+
+
+    /**
+     * Change the light specular coefficients used in opengl
+     * rendering (used in glLightfv with GL_SPECULAR parameters). 
+     *
+     * @param[in] lightSpecularCoeffs the values of specular coefficient of RGBA channels (defined in [0,1], default: {1.0,1.0,1.0,1.0}).
+     * 
+     **/
+    void setGLLightSpecularCoefficients(const GLfloat lightSpecularCoeffs [4]);
+    
+    
+    /**
+     * Change the current rendering mode of the viewer.
+     * 
+     * @param aRenderMode the mode of the rendering.
+     * 
+     **/
+    void updateRenderingCoefficients(const RenderingMode aRenderMode);
+    
+    
     /// the 3 possible axes for the image direction
     enum ImageDirection {xDirection, yDirection, zDirection, undefDirection };
     /// the modes of representation of an image
@@ -249,6 +301,8 @@ namespace DGtal
     double myGLLineMinWidth;
     /// flag to save automatically or not the Viewer3d state when closing the viewer
     bool myAutoSaveState;
+    // define the default rendering mode of the viewer
+    RenderingMode myRenderingMode = RenderingDefault;
     
     /**
      * Used to display the 2D domain of an image.
@@ -718,16 +772,6 @@ namespace DGtal
     void  rotateDomain(Image2DDomainD3D &anDom, double angle, ImageDirection rotationDir);
 
 
-    /**
-     * Change the material specular/shininess coefficients used in opengl
-     * rendering (used in glMaterialf with GL_SPECULAR/GL_SHININESS parameters). 
-     *
-     * @param[in] matSpecularCoeff the values of specular coefficient of RGBA channels (defined in [0,1], default: {1.0,1.0,1.0,1.0}).
-     * @param[in] matShininessCoeff the value of the shininess coefficient (defined in [0, 128], default 50.0).
-     * 
-     **/
-    void setGlMaterialSpecularCoefficients(const GLfloat matSpecularCoeff [4], const GLfloat matShininessCoeff);
-    
 
 
     
@@ -1342,9 +1386,21 @@ namespace DGtal
     double myLightTheta; /// the light position (inclination)
     double myLightPhi; /// the light position (azimuth)
     double myLightR; /// the light position (distance)
-    GLfloat myLightPosition [4]; // the light position in cartesian coordinates
-    GLfloat myMaterialSpecularCoeff[4] = { 1.0, 1.0, 1.0, 1.0 }; // the material specular coefficients used in opengl rendering 
-    GLfloat myMaterialShininessCoeff[1] = { 50.0 }; // the material shininess coefficient used in opengl rendering 
+    GLfloat myLightPosition [4]; // the light position in cartesian coordinate
+    GLfloat myMaterialShininessCoeff[1] =  {50.0} ; // the material shininess coefficient used in opengl rendering 
+    GLfloat myMaterialSpecularCoeffs[4] = { 1.0, 1.0, 1.0, 1.0 }; // the light specular coefficients used in opengl rendering 
+    GLfloat myLightSpecularCoeffs[4] = { 1.0, 1.0, 1.0, 1.0 }; // the light specular coefficients used in opengl rendering 
+    GLfloat myLightAmbientCoeffs[4] = { 0.0, 0.0, 0.0, 1.0 }; // the material ambient coefficients used in opengl rendering  
+    GLfloat myLightDiffuseCoeffs[4] = { 1.0, 1.0, 1.0, 1.0 }; // the material diffuse coefficients used in opengl rendering  
+    
+    const GLfloat myDefaultRenderSpec = 1.0; // default specular coefficients for default mode rendering
+    const GLfloat myDefaultRenderDiff = 1.0; // default diffuse coefficients for metallic mode rendering
+    const GLfloat myMetallicRenderSpec = 0.6; // default specular coefficients for metallic mode rendering
+    const GLfloat myMetallicRenderDiff = 0.5; // default diffuse coefficients for metallic mode rendering
+    const GLfloat myPlasticRenderSpec = 0.8; // default specular coefficients for platic mode rendering
+    const GLfloat myPlasticRenderDiff = 0.2; // default diffuse coefficients for platic mode rendering
+    
+
 
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
