@@ -718,7 +718,19 @@ namespace DGtal
     void  rotateDomain(Image2DDomainD3D &anDom, double angle, ImageDirection rotationDir);
 
 
+    /**
+     * Change the material specular/shininess coefficients used in opengl
+     * rendering (used in glMaterialf with GL_SPECULAR/GL_SHININESS parameters). 
+     *
+     * @param[in] matSpecularCoeff the values of specular coefficient of RGBA channels (defined in [0,1], default: {1.0,1.0,1.0,1.0}).
+     * @param[in] matShininessCoeff the value of the shininess coefficient (defined in [0, 128], default 50.0).
+     * 
+     **/
+    void setGlMaterialSpecularCoefficients(const GLfloat matSpecularCoeff [4], const GLfloat matShininessCoeff);
+    
 
+
+    
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -1331,6 +1343,9 @@ namespace DGtal
     double myLightPhi; /// the light position (azimuth)
     double myLightR; /// the light position (distance)
     GLfloat myLightPosition [4]; // the light position in cartesian coordinates
+    GLfloat myMaterialSpecularCoeff[4] = { 1.0, 1.0, 1.0, 1.0 }; // the material specular coefficients used in opengl rendering 
+    GLfloat myMaterialShininessCoeff[1] = { 50.0 }; // the material shininess coefficient used in opengl rendering 
+
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
 
