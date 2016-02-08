@@ -8,6 +8,16 @@
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
 
+
+- *IO Package*
+ - Viewer3D: add three new modes for shape rendering (default, metallic and
+   plastic). The rendering can be changed by using the key M. The user can
+   also choose its own rendering with some setter/getter on the opengl
+   lightning/properties. (B. Kerautret,
+   [#1128](https://github.com/DGtal-team/DGtal/pull/1128))
+
+
+
 # DGtal 0.9.1
 
 ## New Features / Critical Changes

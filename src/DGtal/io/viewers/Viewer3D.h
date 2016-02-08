@@ -278,7 +278,7 @@ namespace DGtal
     /**
      * Change the current rendering mode of the viewer.
      * 
-     * @param aRenderMode the mode of the rendering.
+     * @param[in] aRenderMode the mode of the rendering.
      * 
      **/
     void updateRenderingCoefficients(const RenderingMode aRenderMode);
