@@ -173,6 +173,7 @@ namespace DGtal
       {
 	vertices[ 0 ] = v1;
 	vertices[ 1 ] = v2;
+	boost::ignore_unused_variable_warning(b);
       }
       /**
 	Constructor from vertices with auto-ordering.
@@ -523,6 +524,23 @@ objects[ 0 ].writeComponents( it ); // it points in same container as this.
      * @return opposite edge.
      */
     Edge opposite(const Edge & e) const;
+
+    /**
+     *
+     * @param e edge
+     *
+     * @return Head vertex of edge. Related to boost::target
+     * @note It doesn't check if output vertex belongs to Object.
+     */
+    Vertex head( const Edge & e) const;
+    /**
+     *
+     * @param e edge
+     *
+     * @return Tail vertex of edge. Related to boost::source
+     * @note It doesn't check if output vertex belongs to Object.
+     */
+    Vertex tail( const Edge & e) const;
 
     // ----------------------- Simple points -------------------------------
   public:

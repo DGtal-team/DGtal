@@ -104,7 +104,6 @@ struct Fixture_object_diamond_with_hole {
         );
     FixtureSurfelAdjacency surfAdj( true ); // interior in all directions.
 
-    using FixtureDigitalSet = DigitalSetByAssociativeContainer<Z3i::Domain , std::unordered_set< typename Z3i::Domain::Point> >;
     FixtureDigitalTopology::ForegroundAdjacency adjF;
     FixtureDigitalTopology::BackgroundAdjacency adjB;
     FixtureDigitalTopology topo(adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
@@ -116,14 +115,6 @@ struct Fixture_object_diamond_with_hole {
 
 TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Basic Graph functions", "[interface]" ){
   GIVEN( "A diamond object with graph properties" ){
-    typedef FixtureObject Graph;
-    typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-    typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Arc
-    typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie Object::Size
-    typedef boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
-    typedef boost::graph_traits<Graph>::out_edge_iterator out_edge_iterator;
-    typedef boost::graph_traits<Graph>::edge_iterator edge_iterator;
-
     THEN( "Vertices, Num Vertices" ){
       auto num_verts = boost::num_vertices(obj_fixture);
       auto verts = boost::vertices(obj_fixture);
@@ -176,14 +167,7 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Basic Graph functions", "[in
 
 TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Boost Graph Concepts", "[concepts]" ){
   GIVEN( "A diamond object with graph properties" ){
-
     typedef FixtureObject Graph;
-    typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-    typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Arc
-    typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie Object::Size
-    typedef boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
-    typedef boost::graph_traits<Graph>::out_edge_iterator out_edge_iterator;
-    typedef boost::graph_traits<Graph>::edge_iterator edge_iterator;
 
     THEN( "Check Graph Concepts" ){
 
@@ -200,11 +184,7 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Breadth first visit and sear
   GIVEN( "A diamond object with graph properties" ){
     typedef FixtureObject Graph;
     typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-    typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Arc
-    typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie Object::Size
     typedef boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
-    typedef boost::graph_traits<Graph>::out_edge_iterator out_edge_iterator;
-    typedef boost::graph_traits<Graph>::edge_iterator edge_iterator;
 
     // get the property map for coloring vertices.
     typedef std::map< vertex_descriptor, boost::default_color_type > StdColorMap;
@@ -277,11 +257,8 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Connected Components", "[con
   GIVEN( "A diamond object with graph properties and an isolated vertex" ){
     typedef FixtureObject Graph;
     typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-    typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Arc
+    typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Edge
     typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie Object::Size
-    typedef boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
-    typedef boost::graph_traits<Graph>::out_edge_iterator out_edge_iterator;
-    typedef boost::graph_traits<Graph>::edge_iterator edge_iterator;
 
     // Add an isolated point in the domain.
     obj_fixture.pointSet().insertNew(FixtureObject::Point(0,0,7));
@@ -390,7 +367,6 @@ struct vertex_position {
 typedef boost::property< boost::vertex_index_t, std::size_t,
         boost::property<vertex_position_t, vertex_position> > VertexProperties;
 
-
 template <typename Graph1, typename Graph2, typename VertexIndexMap>
 struct my_vertex_copier {
   typedef typename boost::property_map< Graph2, boost::vertex_index_t>::type graph_vertex_index_map;
@@ -422,7 +398,7 @@ struct my_vertex_copier {
 };
 template <typename Graph1, typename Graph2>
 struct my_edge_copier {
-  my_edge_copier(const Graph1& UNUSED1, Graph2& UNUSED2)
+  my_edge_copier(const Graph1& , Graph2& )
   {}
   template <typename Edge1, typename Edge2>
     void operator()(const Edge1& /*v1*/, Edge2& /*v2*/) const {
@@ -434,12 +410,7 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Copy graph", "[copy]" ){
   GIVEN( "A diamond object with graph properties" ){
     typedef FixtureObject Graph;
     typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-    typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Arc
     typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie Object::Size
-    typedef boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
-    typedef boost::graph_traits<Graph>::out_edge_iterator out_edge_iterator;
-    typedef boost::graph_traits<Graph>::edge_iterator edge_iterator;
-
     THEN( "Test copy_graph"){
 
       // trace.beginBlock ( "Testing AdjacencyListGraph with copy_graph ..." );
@@ -477,7 +448,7 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Copy graph", "[copy]" ){
 //   GIVEN( "A diamond object with graph properties, and a breadth_first_visit" ){
 //     typedef FixtureObject Graph;
 //     typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-//     typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Arc
+//     typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Edge
 //     typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie Object::Size
 //     typedef boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
 //     typedef boost::graph_traits<Graph>::out_edge_iterator out_edge_iterator;

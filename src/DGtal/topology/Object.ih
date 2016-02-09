@@ -724,6 +724,24 @@ outEdges( const Vertex & v) const
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Vertex
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+head( const Edge & e ) const
+{
+  return e.vertices[1];
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Vertex
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+tail( const Edge & e ) const
+{
+  return e.vertices[0];
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Edge
 DGtal::Object<TDigitalTopology, TDigitalSet>::
 opposite( const Edge & v) const
