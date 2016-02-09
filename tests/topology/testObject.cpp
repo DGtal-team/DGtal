@@ -685,6 +685,7 @@ bool testObjectGraph()
   bool space_ok = K.init( domain.lowerBound(),
                           domain.upperBound(), true // necessary
                           );
+  INBLOCK_TEST( space_ok == true ) ;
 
   using MyDigitalTopology = Z3i::DT26_6;
   // using MyDigitalSet = Z3i::DigitalSet ;

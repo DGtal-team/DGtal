@@ -361,10 +361,10 @@ namespace boost
   source( typename graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::edge_descriptor edge,
           const DGtal::Object< TDigitalTopology, TDigitalSet > & obj )
   {
-    return edge.vertices[0]; ;
+    return obj.tail( edge );
   }
   /**
-     @param edge an arc (s,t) on \a obj.
+     @param edge an edge (s,t) on \a obj.
      @param obj a valid object.
      @return the vertex t.
   */
@@ -374,7 +374,7 @@ namespace boost
   target( typename graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::edge_descriptor edge,
           const DGtal::Object< TDigitalTopology, TDigitalSet > & obj )
   {
-    return edge.vertices[1];
+    return obj.head( edge );
   }
 
   /**
