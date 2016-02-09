@@ -110,7 +110,7 @@ An object x satisfying this concept may then be used as:
   private:
 
     T myT; //! the drawable class
-    DrawableWithViewer3D *myD;
+    struct DrawableWithViewer3D *myD;
 
     std::string myS;
 
