@@ -17,8 +17,8 @@
    [#1128](https://github.com/DGtal-team/DGtal/pull/1128))
  - readers: fix a vol/pgm/raw reading bug occurring on Windows 10 due to the
    different interpretations of end of line \r\n on Window versus \n on
-   unix/mac. Changing reading mode with binary mode instead text mode the
-   issue. (Bertrand Kerautret
+   unix/mac. Changing reading mode with binary mode instead text mode fix
+   the issue. (Bertrand Kerautret
    [#1130](https://github.com/DGtal-team/DGtal/pull/1130))
 
 
