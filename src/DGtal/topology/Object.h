@@ -98,6 +98,10 @@ namespace DGtal
    *
    * \b Model of CUndirectedSimpleLocalGraph and CUndirectedSimpleGraph.
    *
+   * \b Object has a Boost Graph Interface to directly use an object
+   * instance into boost graph library algorithms.
+   *	@see ObjectBoostGraphInterface.h
+   *
    * @tparam TDigitalTopology any realization of DigitalTopology.
    * @tparam TDigitalSet any model of CDigitalSet.
    *
@@ -159,26 +163,23 @@ namespace DGtal
        * Invalid default constructor.
        */
       inline Edge(){}
-	// vertices{
-	//   std::numeric_limits<Vertex>::max(),
-	//   std::numeric_limits<Vertex>::max()}
-	// {}
 
       /**
-	Constructor from vertices with no order.
+	Constructor from vertices with no auto-order.
 	@param v1 the first vertex.
 	@param v2 the second vertex.
+	@param bool unused flag to select this constructor.
 	*/
-      Edge( const Vertex & v1, const Vertex & v2, const bool b )
+      Edge( const Vertex & v1, const Vertex & v2, const bool )
       {
 	vertices[ 0 ] = v1;
 	vertices[ 1 ] = v2;
-	boost::ignore_unused_variable_warning(b);
       }
       /**
 	Constructor from vertices with auto-ordering.
 	@param v1 the first vertex.
 	@param v2 the second vertex.
+	@note Edge(v1,v2) = Edge(v2,v1), stored vertices[0] will be the lowest of the two.
 	*/
       Edge( const Vertex & v1, const Vertex & v2 )
       {
