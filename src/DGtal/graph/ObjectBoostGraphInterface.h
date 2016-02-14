@@ -297,7 +297,7 @@ namespace boost
        * through a DGtal::CountedPtr.
        *
        * @param it const_iterator of OutEdgeContainer.
-       * @param vertices CountedPtr of an OutEdgeContainer
+       * @param out_edges CountedPtr of an OutEdgeContainer
        */
       inline
       out_edge_iterator( typename OutEdgeContainer::const_iterator it,
