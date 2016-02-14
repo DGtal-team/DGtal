@@ -168,7 +168,6 @@ namespace DGtal
 	Constructor from vertices with no auto-order.
 	@param v1 the first vertex.
 	@param v2 the second vertex.
-	@param bool unused flag to select this constructor.
 	*/
       Edge( const Vertex & v1, const Vertex & v2, const bool )
       {
