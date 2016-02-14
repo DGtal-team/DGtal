@@ -120,13 +120,13 @@ namespace boost
 
 
     /**
-     *  @return the invalid vertex for that kind of graph (default Vertex( 0 )).
+     *  @return the invalid vertex for that kind of graph (default Vertex()).
      */
     static
     inline
     vertex_descriptor null_vertex()
     {
-      return vertex_descriptor( 0 );
+      return vertex_descriptor();
     }
 
     /**
@@ -139,8 +139,8 @@ namespace boost
        provide a method that outputs them. Therefore, this iterator \b
        shares the container of adjacent vertices (a std::vector) with
        other (potentially) iterators, through a DGtal::CountedPtr. When the
-       last iterator pointing in this structure is desallocated, the
-       container is automatically desallocated. This is for instance
+       last iterator pointing in this structure is deallocated, the
+       container is automatically deallocated. This is for instance
        used by function \ref adjacent_vertices, which returns a pair
        of adjacency_iterator, both points on the same
        container. Another problem is that the user may have called
@@ -169,14 +169,30 @@ namespace boost
                                 const Vertex & >
     {
     public:
+      /// Default, invalid, constructor.
       inline
       adjacency_iterator()
         : myIterator(), myVertices( 0 ) {}
+
+      /**
+       * Valid constructor from instance of AdjacentVertexContainer.
+       * The iterator shares the container of adjacent vertices
+       * (a std::vector) with other (potentially) iterators,
+       * through a DGtal::CountedPtr.
+       *
+       * @param it const_iterator of AdjacentVertexContainer.
+       * @param vertices CountedPtr of an AdjacentVertexContainer
+       */
       inline
       adjacency_iterator( typename AdjacentVertexContainer::const_iterator it,
                           const DGtal::CountedPtr< AdjacentVertexContainer > & vertices )
         : myIterator( it ), myVertices( vertices ) {}
+
     private:
+      /**
+       * @return const reference to the Vertex the iterator is pointing to.
+       * Required for Readable Iterator, Writable Iterator Concepts
+       */
       inline
       const Vertex & dereference() const
       {
@@ -184,6 +200,14 @@ namespace boost
         return *myIterator;
       }
 
+      /**
+       * Predicate to compare equal value of iterators.
+       * Required to implement Single Pass Iterator Concept.
+       *
+       * @param other adjacency_iterator to compare with.
+       *
+       * @return true iff other and this refer to the same Vertex.
+       */
       inline
       bool equal(const adjacency_iterator& other) const
       {
@@ -193,18 +217,32 @@ namespace boost
         else return *myIterator == *other.myIterator;
       }
 
+      /**
+       * Increment iterator.
+       * Required to implement Incrementable Iterator Concept.
+       */
       inline
       void increment() { ++myIterator; }
+
+      /**
+       * Decrement iterator.
+       * Required to implement Bidirectional Traversal Iterator Concept.
+       */
       inline
       void decrement() { --myIterator; }
 
+      // ///////////// Data Members ////////////////
+
       /// The iterator pointing in the container of adjacent vertices.
       typename AdjacentVertexContainer::const_iterator myIterator;
-      /// A counted pointer to the dynamically allocated container of
-      /// vertices. Will be automatically deallocated when there is no
-      /// more iterators pointing on it.
+      /**
+       * A counted pointer to the dynamically allocated container of
+       * vertices. Will be automatically deallocated when there is no
+       * more iterators pointing on it.
+       */
       DGtal::CountedPtr< AdjacentVertexContainer > myVertices;
 
+      /// Requirement for boost::iterator_facade
       friend class iterator_core_access;
     }; // end class adjacency_iterator
 
@@ -218,8 +256,8 @@ namespace boost
        provide a method that outputs them. Therefore, this iterator \b
        shares the container of out edges (a std::vector) with other
        (potentially) iterators, through a DGtal::CountedPtr. When the last
-       iterator pointing in this structure is desallocated, the
-       container is automatically desallocated. This is for instance
+       iterator pointing in this structure is deallocated, the
+       container is automatically deallocated. This is for instance
        used by function \ref out_edges, which returns a pair of
        out_edge_iterator, both points on the same container. Another
        problem is that the user may have called twice \ref out_edges
@@ -248,14 +286,28 @@ namespace boost
                                 const Edge & >
     {
     public:
+      /// Default, invalid, constructor.
       inline
       out_edge_iterator()
         : myIterator(), myOutEdges( 0 ) {}
+      /**
+       * Valid constructor from instance of OutEdgeContainer.
+       * The iterator shares the container of out edges
+       * (a std::vector) with other (potentially) iterators,
+       * through a DGtal::CountedPtr.
+       *
+       * @param it const_iterator of OutEdgeContainer.
+       * @param vertices CountedPtr of an OutEdgeContainer
+       */
       inline
       out_edge_iterator( typename OutEdgeContainer::const_iterator it,
                          const DGtal::CountedPtr< OutEdgeContainer > & out_edges )
         : myIterator( it ), myOutEdges( out_edges ) {}
     private:
+      /**
+       * @return const reference to the Edge the iterator is pointing to.
+       * Required for Readable Iterator, Writable Iterator Concepts
+       */
       inline
       const Edge & dereference() const
       {
@@ -263,6 +315,14 @@ namespace boost
         return *myIterator;
       }
 
+      /**
+       * Predicate to compare equal value of iterators.
+       * Required to implement Single Pass Iterator Concept.
+       *
+       * @param other out_edge_iterator to compare with.
+       *
+       * @return true iff other and this refer to the same Edge.
+       */
       inline
       bool equal(const out_edge_iterator & other) const
       {
@@ -272,20 +332,36 @@ namespace boost
         else return *myIterator == *other.myIterator;
       }
 
+      /**
+       * Increment iterator.
+       * Required to implement Incrementable Iterator Concept.
+       */
       inline
       void increment() { ++myIterator; }
+      /**
+       * Decrement iterator.
+       * Required to implement Bidirectional Traversal Iterator Concept.
+       */
       inline
       void decrement() { --myIterator; }
 
       /// The iterator pointing in the container of out edges.
       typename OutEdgeContainer::const_iterator myIterator;
-      /// A counted pointer to the dynamically allocated container of
-      /// out edges. Will be automatically deallocated when there is no
-      /// more iterators pointing on it.
+      /** A counted pointer to the dynamically allocated container of
+       *  out edges. Will be automatically deallocated when there is no
+       *  more iterators pointing on it.
+       */
       DGtal::CountedPtr< OutEdgeContainer > myOutEdges;
 
+      /// Requirement for boost::iterator_facade
       friend class iterator_core_access;
     }; // end class out_edge_iterator
+
+    /**
+     * Alias to use in_edge_iterator as out_edge_iterator.
+     * Required by filtered_graph algorithm.
+     */
+    using in_edge_iterator = out_edge_iterator ;
 
     /**
        Iterator for visiting all edges of the graph.  We use an iterator
@@ -326,24 +402,55 @@ namespace boost
                                 const Edge & >
     {
     public:
+      /// Default, invalid, constructor.
       edge_iterator();
+      /**
+       * Valid constructor from instance of an Object (Graph),
+       * and begin/end vertex_iterators.
+       * This iterator mixes a vertex_iterator (to visit all vertices)
+       * and a local out_edge_iterator (to visit all out edges
+       * of each vertex).
+       *
+       * @param graph valid Object.
+       * @param itB begin vertex_iterator of \b graph.
+       * @param itE end vertex_iterator of \b graph.
+       */
       edge_iterator( const Adapted & graph,
                      const vertex_iterator & itB, const vertex_iterator & itE );
 
     private:
+      /**
+       * @return const reference to the Edge the iterator is pointing to.
+       * Required for Readable Iterator, Writable Iterator Concepts
+       */
       const Edge & dereference() const;
+      /**
+       * Predicate to compare equal value of iterators.
+       * Required to implement Single Pass Iterator Concept.
+       *
+       * @param other edge_iterator to compare with.
+       *
+       * @return true iff other and this refer to the same Edge.
+       */
       bool equal(const edge_iterator & other) const;
+      /**
+       * Increment iterator.
+       * Required to implement Incrementable Iterator Concept.
+       */
       void increment();
 
+      // /////////// Data Members //////////////
+      /// Graph to iterate from.
       const Adapted* myGraph;
+      /// Vertex Range to iterator from. Set at constructor.
       std::pair< vertex_iterator, vertex_iterator > myVertexRange;
+      /// Local pair of out_edge_iterator. Created within this iterator.
       std::pair< out_edge_iterator, out_edge_iterator > myOutEdgeRange;
 
+      /// Requirement for boost::iterator_facade
       friend class iterator_core_access;
     }; // end class out_edge_iterator
 
-
-    using in_edge_iterator = out_edge_iterator ;
   }; // end struct graph_traits< >
 
 

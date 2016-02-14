@@ -62,14 +62,11 @@ struct Fixture_object_diamond_with_hole {
   ///////////////////////////////////////////////////////////
   using Point  = DGtal::Z3i::Point;
   using Domain = DGtal::Z3i::Domain;
-  using KSpace = DGtal::Z3i::KSpace;
 
-  using FixtureSurfelAdjacency =
-    DGtal::SurfelAdjacency<DGtal::Z3i::KSpace::dimension> ;
   using FixtureDigitalTopology =
     DGtal::Z3i::DT26_6;
   using FixtureDigitalSet =
-    DGtal::DigitalSetByAssociativeContainer<DGtal::Z3i::Domain , std::unordered_set< typename DGtal::Z3i::Domain::Point> >;
+    DGtal::DigitalSetByAssociativeContainer<Domain , std::unordered_set<Point> >;
   using FixtureObject =
     DGtal::Object<FixtureDigitalTopology, FixtureDigitalSet>;
 
@@ -98,12 +95,6 @@ struct Fixture_object_diamond_with_hole {
     }
     diamond_set.erase( c );
 
-    KSpace K;
-    bool space_ok = K.init( domain.lowerBound(),
-        domain.upperBound(), true // necessary
-        );
-    FixtureSurfelAdjacency surfAdj( true ); // interior in all directions.
-
     FixtureDigitalTopology::ForegroundAdjacency adjF;
     FixtureDigitalTopology::BackgroundAdjacency adjB;
     FixtureDigitalTopology topo(adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
@@ -112,6 +103,59 @@ struct Fixture_object_diamond_with_hole {
     // trace.endBlock();
   }
  };
+
+////////////////////////////////////////////////////////
+// copiers between Object and boost::adjacency_list
+////////////////////////////////////////////////////////
+struct vertex_position_t {
+  using kind = boost::vertex_property_tag ;
+};
+
+struct vertex_position {
+  Z3i::Point myP;
+  vertex_position() : myP()
+  {
+  }
+};
+
+using VertexProperties = boost::property< boost::vertex_index_t, std::size_t,
+            boost::property<vertex_position_t, vertex_position> > ;
+
+template <typename Graph1, typename Graph2, typename VertexIndexMap>
+struct my_vertex_copier {
+  using graph_vertex_index_map = typename boost::property_map< Graph2, boost::vertex_index_t>::type ;
+  using graph_vertex_position_map = typename boost::property_map< Graph2, vertex_position_t>::type ;
+  using Vertex1 = typename boost::graph_traits< Graph1 >::vertex_descriptor ;
+  using Vertex2 = typename boost::graph_traits< Graph2 >::vertex_descriptor ;
+
+  const Graph1 & myG1;
+  graph_vertex_index_map graph_vertex_index;
+  graph_vertex_position_map graph_vertex_position;
+  VertexIndexMap & myIndexMap;
+
+  my_vertex_copier(const Graph1& g1, Graph2& g2, VertexIndexMap & indexMap )
+    : myG1( g1 ),
+    graph_vertex_index( boost::get( boost::vertex_index_t(), g2 ) ),
+    graph_vertex_position( boost::get( vertex_position_t(), g2) ),
+    myIndexMap( indexMap )
+  {}
+
+  void operator()( const Vertex1& v1, const Vertex2& v2 ) const {
+    vertex_position pos;
+    pos.myP = v1;
+    put( graph_vertex_position, v2, pos);
+  }
+};
+template <typename Graph1, typename Graph2>
+struct my_edge_copier {
+  my_edge_copier(const Graph1& , Graph2& )
+  {}
+  template <typename Edge1, typename Edge2>
+    void operator()(const Edge1& /*v1*/, Edge2& /*v2*/) const {
+      // does nothing
+    }
+};
+
 
 TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Basic Graph functions", "[interface]" ){
   GIVEN( "A diamond object with graph properties" ){
@@ -167,7 +211,7 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Basic Graph functions", "[in
 
 TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Boost Graph Concepts", "[concepts]" ){
   GIVEN( "A diamond object with graph properties" ){
-    typedef FixtureObject Graph;
+    using Graph = FixtureObject ;
 
     THEN( "Check Graph Concepts" ){
 
@@ -182,23 +226,50 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Boost Graph Concepts", "[con
 
 TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Breadth first visit and search", "[breadth]" ){
   GIVEN( "A diamond object with graph properties" ){
-    typedef FixtureObject Graph;
-    typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-    typedef boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
+    using Graph = FixtureObject ;
+    using vertex_descriptor = boost::graph_traits<Graph>::vertex_descriptor ; // ie Object::Vertex
+    using vertex_iterator = boost::graph_traits<Graph>::vertex_iterator ;
 
     // get the property map for coloring vertices.
-    typedef std::map< vertex_descriptor, boost::default_color_type > StdColorMap;
+    using StdColorMap = std::map< vertex_descriptor, boost::default_color_type > ;
     StdColorMap colorMap;
     boost::associative_property_map< StdColorMap > propColorMap( colorMap );
     // get the property map for storing distances
-    typedef std::map< vertex_descriptor, uint64_t > StdDistanceMap;
+    using StdDistanceMap = std::map< vertex_descriptor, uint64_t > ;
     StdDistanceMap distanceMap;
     boost::associative_property_map< StdDistanceMap > propDistanceMap( distanceMap );
     boost::queue< vertex_descriptor > Q; // std::queue does not have top().
     vertex_descriptor start = *( obj_fixture.begin() );
 
+
+    THEN( "Test IncidenceGraph interface with breadth_first_search" ){
+      using PredecessorMap = std::map< vertex_descriptor, vertex_descriptor > ;
+      PredecessorMap predecessorMap;
+      boost::associative_property_map< PredecessorMap >
+        propPredecessorMap( predecessorMap );
+
+      boost::breadth_first_search(
+         obj_fixture,
+         start,
+         Q,
+         boost::make_bfs_visitor( boost::record_predecessors( propPredecessorMap, boost::on_tree_edge() ) ), // only record predecessors
+         propColorMap  // necessary for the visiting vertices
+         );
+
+      INFO( "predecessorMap" );
+      INFO( "starting point: " << *( obj_fixture.begin() ) );
+      size_t visited{0};
+      for(auto && v : predecessorMap){
+        ++visited;
+        INFO( v.first << " : " << v.second );
+      }
+      // +1 to count the starting point;
+      CHECK((visited + 1) == obj_fixture.size());
+    }
+
     THEN( "Test IncidenceGraph interface with breadth_first_visit" ){
 
+      trace.beginBlock ( "Testing IncidenceGraph interface with breadth_first_visit..." );
       boost::breadth_first_visit // boost graph breadth first visiting algorithm.
         ( obj_fixture, // the graph
           start, // the starting vertex
@@ -222,43 +293,148 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Breadth first visit and sear
       }
 
       REQUIRE( nbV == obj_fixture.size() );
-      INFO("- d[ " << start << " ] = " << boost::get( propDistanceMap, start));
-      INFO("- d[ " << furthest << " ] = " << maxD);
+      trace.info() << "- Start: d[ " << start << " ] = " << boost::get( propDistanceMap, start) << std::endl;
+      trace.info() << "- Furthest: d[ " << furthest << " ] = " << maxD << std::endl;
       CHECK( maxD == 6 );
-    }
+      trace.endBlock();
 
-    THEN( "Test IncidenceGraph interface with breadth_first_search" ){
-      typedef std::map< vertex_descriptor, vertex_descriptor > PredecessorMap;
-      PredecessorMap predecessorMap;
-      boost::associative_property_map< PredecessorMap >
-        propPredecessorMap( predecessorMap );
+      THEN( "Test Wagner Stoer min-cut"){
 
-      boost::breadth_first_search(
-         obj_fixture,
-         start,
-         Q,
-         boost::make_bfs_visitor( boost::record_predecessors( propPredecessorMap, boost::on_tree_edge() ) ), // only record predecessors
-         propColorMap  // necessary for the visiting vertices
-         );
+        using vertices_size_type = boost::graph_traits<Graph>::vertices_size_type ; // ie Object::Size
+        using edge_descriptor = boost::graph_traits<Graph>::edge_descriptor ; // ie Object::Edge
 
-      INFO("predecessorMap");
-      INFO("starting point: " << *( obj_fixture.begin() ) );
-      size_t visited{0};
-      for(auto && v : predecessorMap){
-        ++visited;
-        INFO(v.first << " : " << v.second) ;
-      }
-      // +1 to count the starting point;
-      CHECK((visited + 1) == obj_fixture.size());
-    }
-  }
-}
+        trace.beginBlock ( "Testing UndirectedGraph interface with Wagner-Stoer min cut ..." );
+        // get the property map for weighting edges.
+        using weight_type = double ;
+        using StdWeightMap = std::map< edge_descriptor, weight_type > ;
+        StdWeightMap weightMap;
+        boost::associative_property_map< StdWeightMap > propWeightMap( weightMap );
+        using StdVertexIndexMap = std::map< vertex_descriptor, vertices_size_type > ;
+        StdVertexIndexMap vertexIndexMap;
+        boost::associative_property_map< StdVertexIndexMap > propVertexIndexMap( vertexIndexMap );
+        vertices_size_type idxV = 0;
+        // The weight is smaller for edges traversing plane z=0 than anywhere else.
+        // The min cut thus cuts the diamond in two approximate halves.
+        for ( auto vp = boost::vertices( obj_fixture );
+            vp.first != vp.second; ++vp.first, ++idxV )
+        {
+          vertex_descriptor v1 = *vp.first;
+          vertexIndexMap[ v1 ] = idxV;
+          for ( auto ve = boost::out_edges( v1, obj_fixture );
+              ve.first != ve.second; ++ve.first )
+          {
+            auto v2 = boost::target( *ve.first, obj_fixture );
+            if ( v1 < v2 )
+            {
+              weight_type weight = (
+                  (v1[2] == Approx(0) && v2[2] != Approx(0) ) ||
+                  (v2[2] == Approx(0) && v1[2] != Approx(0) )
+                  ) ? 0.01 : 1.0;
+              weightMap[ *ve.first ] = weight;
+              weightMap[ obj_fixture.opposite( *ve.first ) ] = weight;
+            }
+          }
+        }
+        // get the parity map for assigning a set to each vertex.
+        using StdParityMap = std::map< vertex_descriptor, bool > ;
+        StdParityMap parityMap;
+        boost::associative_property_map< StdParityMap > propParityMap( parityMap );
+
+        weight_type total_weight =
+          boost::stoer_wagner_min_cut // boost wagner stoer min cut algorithm.
+          ( obj_fixture, // the graph
+            propWeightMap, // the mapping edge -> weight
+            boost::parity_map( propParityMap ) // this map stores the vertex assignation
+            .vertex_index_map( propVertexIndexMap )
+          );
+        INFO( "- total weight = " << total_weight);
+        uint64_t nb0 = 0;
+        uint64_t nb1 = 0;
+        for ( auto vp = boost::vertices( obj_fixture );
+            vp.first != vp.second; ++vp.first, ++idxV )
+        {
+          vertex_descriptor v1 = *vp.first;
+          if ( parityMap[ v1 ] ) ++nb1;
+          else ++nb0;
+        }
+        trace.info() << "parityMap: True components: " << nb1 << " False: " << nb0 << std::endl;
+        trace.info() << "- parity[ " << start << " ] = " << parityMap[ start ] << std::endl;
+        trace.info() << "- parity[ " << furthest << " ] = " << parityMap[ furthest ] << std::endl;
+        CHECK( parityMap[start] != parityMap[furthest]);
+        CHECK( total_weight < 1.0);
+
+        trace.endBlock();
+
+        THEN( "Test Boykov-Kolmogorov max flow"){
+
+          using edge_iterator = boost::graph_traits<Graph>::edge_iterator ;
+          trace.beginBlock ( "Testing EdgeListGraph and IncidenceGraph interfaces with Boykov-Kolmogorov max flow ..." );
+          using capacity_type = double ;
+          // get the property map for edge capacity.
+          using StdEdgeCapacityMap = std::map< edge_descriptor, weight_type > ;
+          StdEdgeCapacityMap edgeCapacityMap;
+          boost::associative_property_map< StdEdgeCapacityMap > propEdgeCapacityMap( edgeCapacityMap );
+          // get the property map for edge residual capacity.
+          using StdEdgeResidualCapacityMap = std::map< edge_descriptor, weight_type > ;
+          StdEdgeResidualCapacityMap edgeResidualCapacityMap;
+          boost::associative_property_map< StdEdgeResidualCapacityMap > propEdgeResidualCapacityMap( edgeResidualCapacityMap );
+          // get the property map for reverse edge.
+          using StdReversedEdgeMap = std::map< edge_descriptor, edge_descriptor > ;
+          StdReversedEdgeMap reversedEdgeMap;
+          boost::associative_property_map< StdReversedEdgeMap > propReversedEdgeMap( reversedEdgeMap );
+          // get the property map for vertex predecessor.
+          using StdPredecessorMap = std::map< vertex_descriptor, edge_descriptor > ;
+          StdPredecessorMap predecessorMap;
+          boost::associative_property_map< StdPredecessorMap > propPredecessorMap( predecessorMap );
+          // We already have vertex color map, vertex distance map and vertex index map.
+          uint64_t nbEdges = 0;
+          // The weight is smaller for edges traversing plane z=0 than anywhere else.
+          // The min cut thus cuts the diamond in two approximate halves.
+          for ( std::pair<edge_iterator, edge_iterator>
+              ve = boost::edges( obj_fixture ); ve.first != ve.second; ++ve.first, ++nbEdges )
+          {
+            edge_descriptor e = *ve.first;
+            edge_descriptor rev_e = obj_fixture.opposite( e );
+            vertex_descriptor v1 = boost::source( e, obj_fixture );
+            vertex_descriptor v2 = boost::target( e, obj_fixture );
+            ASSERT( boost::source( rev_e, obj_fixture ) == v2 );
+            ASSERT( boost::target( rev_e, obj_fixture ) == v1 );
+            if ( v1 < v2 )
+            {
+              capacity_type capacity = (
+                  (v1[2] == Approx(0) && v2[2] != Approx(0) ) ||
+                  (v2[2] == Approx(0) && v1[2] != Approx(0) )
+                  ) ? 0.01 : 1.0;
+              edgeCapacityMap[ e ] = capacity;
+              edgeCapacityMap[ obj_fixture.opposite( e ) ] = capacity;
+              reversedEdgeMap[ e ] = obj_fixture.opposite( e );
+              reversedEdgeMap[ obj_fixture.opposite( e ) ] = e;
+            }
+          }
+          trace.info() << "- nb edges = " << nbEdges << std::endl;
+          distanceMap.clear();
+          colorMap.clear();
+          capacity_type max_flow =
+            boost::boykov_kolmogorov_max_flow // boykov kolmogorov max flow algorithm.
+            ( obj_fixture, // the graph
+              propEdgeCapacityMap, propEdgeResidualCapacityMap,
+              propReversedEdgeMap, propPredecessorMap, propColorMap, propDistanceMap, propVertexIndexMap,
+              start, furthest );
+          trace.info() << "- max flow = " << max_flow << std::endl;
+          CHECK(abs(max_flow) == Approx(total_weight));
+          trace.endBlock();
+        }// maxflow
+      }// mincut
+    }// breath_visit
+  }// given
+}// scenario
+
 TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Connected Components", "[connected]" ){
   GIVEN( "A diamond object with graph properties and an isolated vertex" ){
-    typedef FixtureObject Graph;
-    typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-    typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Edge
-    typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie Object::Size
+    using Graph = FixtureObject ;
+    using vertex_descriptor = boost::graph_traits<Graph>::vertex_descriptor ; // ie Object::Vertex
+    using edge_descriptor = boost::graph_traits<Graph>::edge_descriptor ; // ie Object::Edge
+    using vertices_size_type = boost::graph_traits<Graph>::vertices_size_type ; // ie Object::Size
 
     // Add an isolated point in the domain.
     obj_fixture.pointSet().insertNew(FixtureObject::Point(0,0,7));
@@ -266,11 +442,11 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Connected Components", "[con
     THEN( "VertexListGraph interface with connected_components" ){
       // get the property map for labelling vertices.
       // get the property map for coloring vertices.
-      typedef std::map< vertex_descriptor, boost::default_color_type > StdColorMap;
+      using StdColorMap = std::map< vertex_descriptor, boost::default_color_type > ;
       StdColorMap colorMap;
       boost::associative_property_map< StdColorMap > propColorMap( colorMap );
 
-      typedef std::map< vertex_descriptor, vertices_size_type > StdComponentMap;
+      using StdComponentMap = std::map< vertex_descriptor, vertices_size_type > ;
       StdComponentMap componentMap;
       boost::associative_property_map< StdComponentMap > propComponentMap( componentMap );
       vertices_size_type nbComp =
@@ -317,24 +493,6 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Connected Components", "[con
         }
       }
 
-      // THEN( "[visualize] visualize the components" ){
-      // //#include "DGtal/io/viewers/Viewer3D.h"
-      //   int argc(1);
-      //   char** argv(nullptr);
-      //   QApplication app(argc, argv);
-      //   Viewer3D<> viewer;
-      //   viewer.show();
-      //
-      //   viewer.setFillColor(Color(255, 255, 255, 255));
-      //   viewer << obj_components[0].pointSet();
-      //   viewer.setFillColor(Color(20, 30, 30, 255));
-      //   viewer << obj_components[1].pointSet();
-      //   viewer.setFillColor(Color(10, 10, 10, 20));
-      //   viewer << obj_fixture.pointSet();
-      //   viewer << Viewer3D<>::updateDisplay;
-      //   app.exec();
-      // }
-
       // TODO use copy_graph directly to an Object.
       // using StdVertexIndexMap = std::map< vertex_descriptor, vertices_size_type > ;
       // StdVertexIndexMap vertexIndexMap;
@@ -350,70 +508,14 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Connected Components", "[con
   }//given
 }//scenario
 
-////////////////////////////////////////////////////////
-// copiers between Object and boost::adjacency_list
-////////////////////////////////////////////////////////
-struct vertex_position_t {
-  typedef boost::vertex_property_tag kind;
-};
-
-struct vertex_position {
-  Z3i::Point myP;
-  vertex_position() : myP()
-  {
-  }
-};
-
-typedef boost::property< boost::vertex_index_t, std::size_t,
-        boost::property<vertex_position_t, vertex_position> > VertexProperties;
-
-template <typename Graph1, typename Graph2, typename VertexIndexMap>
-struct my_vertex_copier {
-  typedef typename boost::property_map< Graph2, boost::vertex_index_t>::type graph_vertex_index_map;
-  typedef typename boost::property_map< Graph2, vertex_position_t>::type graph_vertex_position_map;
-  typedef typename boost::graph_traits< Graph1 >::vertex_descriptor Vertex1;
-  typedef typename boost::graph_traits< Graph2 >::vertex_descriptor Vertex2;
-
-  const Graph1 & myG1;
-  graph_vertex_index_map graph_vertex_index;
-  graph_vertex_position_map graph_vertex_position;
-  VertexIndexMap & myIndexMap;
-
-  my_vertex_copier(const Graph1& g1, Graph2& g2, VertexIndexMap & indexMap )
-    : myG1( g1 ),
-    graph_vertex_index( boost::get( boost::vertex_index_t(), g2 ) ),
-    graph_vertex_position( boost::get( vertex_position_t(), g2) ),
-    myIndexMap( indexMap )
-  {}
-
-  void operator()( const Vertex1& v1, const Vertex2& v2 ) const {
-    //  std::size_t idx = myIndexMap[ v1 ];
-    // Does not work !
-    // put( graph_vertex_index, v2, idx);
-    vertex_position pos;
-    pos.myP = v1;
-    //std::cout << "vertex " << idx << " at " << pos.myP << std::endl;
-    put( graph_vertex_position, v2, pos);
-  }
-};
-template <typename Graph1, typename Graph2>
-struct my_edge_copier {
-  my_edge_copier(const Graph1& , Graph2& )
-  {}
-  template <typename Edge1, typename Edge2>
-    void operator()(const Edge1& /*v1*/, Edge2& /*v2*/) const {
-      // does nothing
-    }
-};
 
 TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Copy graph", "[copy]" ){
   GIVEN( "A diamond object with graph properties" ){
-    typedef FixtureObject Graph;
-    typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-    typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie Object::Size
+    using Graph = FixtureObject ;
+    using vertex_descriptor = boost::graph_traits<Graph>::vertex_descriptor ; // ie Object::Vertex
+    using vertices_size_type = boost::graph_traits<Graph>::vertices_size_type ; // ie Object::Size
     THEN( "Test copy_graph"){
 
-      // trace.beginBlock ( "Testing AdjacencyListGraph with copy_graph ..." );
       using StdVertexIndexMap = std::map< vertex_descriptor, vertices_size_type > ;
       StdVertexIndexMap vertexIndexMap;
       boost::associative_property_map< StdVertexIndexMap > propVertexIndexMap( vertexIndexMap );
@@ -433,193 +535,13 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Copy graph", "[copy]" ){
       {
         vertex_descriptor_2 v1 = *vp.first;
         vertex_position pos = boost::get( vertexPos, v1 );
-        // trace.info() << "- " << v1 << " was at " << pos.myP << std::endl;
       }
       INFO("after copy: Boost graph has " << num_vertices( bG ) << " vertices.");
       CHECK(boost::num_vertices( bG ) == boost::num_vertices( obj_fixture ));
-      // trace.endBlock();
 
     }
   }
 }
-
-
-// TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Wagner-Stoe min-cut and Boykov-Kolmogorov max-flow", "[mincut][maxflow]" ){
-//   GIVEN( "A diamond object with graph properties, and a breadth_first_visit" ){
-//     typedef FixtureObject Graph;
-//     typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie Object::Vertex
-//     typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie Object::Edge
-//     typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie Object::Size
-//     typedef boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
-//     typedef boost::graph_traits<Graph>::out_edge_iterator out_edge_iterator;
-//     typedef boost::graph_traits<Graph>::edge_iterator edge_iterator;
-//
-//     ///////////////////////////////////////
-//     // Breadth first
-//
-//     // get the property map for coloring vertices.
-//     using StdColorMap = std::map< vertex_descriptor, boost::default_color_type > ;
-//     StdColorMap colorMap;
-//     boost::associative_property_map< StdColorMap > propColorMap( colorMap );
-//     // get the property map for storing distances
-//     using StdDistanceMap = std::map< vertex_descriptor, uint64_t > ;
-//     StdDistanceMap distanceMap;
-//     boost::associative_property_map< StdDistanceMap > propDistanceMap( distanceMap );
-//     boost::queue< vertex_descriptor > Q; // std::queue does not have top().
-//     vertex_descriptor start = *( obj_fixture.begin() );
-//
-//     boost::breadth_first_visit // boost graph breadth first visiting algorithm.
-//       ( obj_fixture, // the graph
-//         start, // the starting vertex
-//         Q, // the buffer for breadth first queueing
-//         boost::make_bfs_visitor( boost::record_distances( propDistanceMap, boost::on_tree_edge() ) ), // only record distances
-//         propColorMap  // necessary for the visiting vertices
-//       );
-//
-//     uint64_t maxD = 0;
-//     vertex_descriptor furthest = start;
-//     uint64_t nbV = 0;
-//     for ( std::pair<vertex_iterator, vertex_iterator>
-//         vp = boost::vertices( obj_fixture ); vp.first != vp.second; ++vp.first, ++nbV )
-//     {
-//       uint64_t d = boost::get( propDistanceMap, *vp.first );
-//       if ( d > maxD )
-//       {
-//         maxD = d;
-//         furthest = *vp.first;
-//       }
-//     }
-//     THEN( "Test Wagner Stoer min-cut"){
-//
-//       trace.beginBlock ( "Testing UndirectedGraph interface with Wagner-Stoer min cut ..." );
-//       // get the property map for weighting edges.
-//       using weight_type = double ;
-//       using StdWeightMap = std::map< edge_descriptor, weight_type > ;
-//       StdWeightMap weightMap;
-//       boost::associative_property_map< StdWeightMap > propWeightMap( weightMap );
-//       using StdVertexIndexMap = std::map< vertex_descriptor, vertices_size_type > ;
-//       StdVertexIndexMap vertexIndexMap;
-//       boost::associative_property_map< StdVertexIndexMap > propVertexIndexMap( vertexIndexMap );
-//       vertices_size_type idxV = 0;
-//       // The weight is smaller for edges traversing plane z=0 than anywhere else.
-//       // The min cut thus cuts the sphere in two approximate halves.
-//       for ( std::pair<vertex_iterator, vertex_iterator>
-//           vp = boost::vertices( obj_fixture ); vp.first != vp.second; ++vp.first, ++idxV )
-//       {
-//         vertex_descriptor v1 = *vp.first;
-//         vertexIndexMap[ v1 ] = idxV;
-//         for ( std::pair<out_edge_iterator, out_edge_iterator>
-//             ve = boost::out_edges( v1, obj_fixture ); ve.first != ve.second; ++ve.first )
-//         {
-//           vertex_descriptor v2 = boost::target( *ve.first, obj_fixture );
-//           if ( v1 < v2 )
-//           {
-//             // KSpace::SCell sep = obj_fixture.separator( *ve.first );
-//             // weight_type weight = ( K.sKCoord( sep, 2 ) == 0 ) ? 0.01 : 1.0;
-//             weight_type weight = 0.5;
-//             weightMap[ *ve.first ] = weight;
-//             // weightMap[ obj_fixture.opposite( *ve.first ) ] = weight;
-//           }
-//         }
-//       }
-//       // get the parity map for assigning a set to each vertex.
-//       using StdParityMap = std::map< vertex_descriptor, bool > ;
-//       StdParityMap parityMap;
-//       boost::associative_property_map< StdParityMap > propParityMap( parityMap );
-//
-//       weight_type total_weight =
-//         boost::stoer_wagner_min_cut // boost wagner stoer min cut algorithm.
-//         ( obj_fixture, // the graph
-//           propWeightMap, // the mapping edge -> weight
-//           boost::parity_map( propParityMap ) // this map stores the vertex assignation
-//           .vertex_index_map( propVertexIndexMap )
-//         );
-//       trace.info() << "- total weight = " << total_weight << std::endl;
-//       uint64_t nb0 = 0;
-//       uint64_t nb1 = 0;
-//       for ( std::pair<vertex_iterator, vertex_iterator>
-//           vp = boost::vertices( obj_fixture ); vp.first != vp.second; ++vp.first, ++idxV )
-//       {
-//         vertex_descriptor v1 = *vp.first;
-//         INFO("- " << v1 << " in " << parityMap[ v1 ] );
-//         if ( parityMap[ v1 ] ) ++nb1;
-//         else ++nb0;
-//       }
-//       INFO("parityMap: True components: " << nb1 << " False: " << nb0);
-//       INFO("- parity[ " << start << " ] = " << parityMap[ start ]);
-//       INFO("- parity[ " << furthest << " ] = " << parityMap[ furthest ]);
-//       CHECK( parityMap[start] != parityMap[furthest]);
-//       CHECK(total_weight < 1.0);
-//
-//       trace.endBlock();
-//
-//       THEN( "Test Boykov-Kolmogorov max flow"){
-//         using weight_type = double ;
-//         using StdWeightMap = std::map< edge_descriptor, weight_type > ;
-//         StdWeightMap weightMap;
-//         boost::associative_property_map< StdWeightMap > propWeightMap( weightMap );
-//         using StdVertexIndexMap = std::map< vertex_descriptor, vertices_size_type > ;
-//         StdVertexIndexMap vertexIndexMap;
-//
-//         trace.beginBlock ( "Testing EdgeListGraph and IncidenceGraph interfaces with Boykov-Kolmogorov max flow ..." );
-//         typedef double capacity_type;
-//         // get the property map for edge capacity.
-//         typedef std::map< edge_descriptor, weight_type > StdEdgeCapacityMap;
-//         StdEdgeCapacityMap edgeCapacityMap;
-//         boost::associative_property_map< StdEdgeCapacityMap > propEdgeCapacityMap( edgeCapacityMap );
-//         // get the property map for edge residual capacity.
-//         typedef std::map< edge_descriptor, weight_type > StdEdgeResidualCapacityMap;
-//         StdEdgeResidualCapacityMap edgeResidualCapacityMap;
-//         boost::associative_property_map< StdEdgeResidualCapacityMap > propEdgeResidualCapacityMap( edgeResidualCapacityMap );
-//         // get the property map for reverse edge.
-//         typedef std::map< edge_descriptor, edge_descriptor > StdReversedEdgeMap;
-//         StdReversedEdgeMap reversedEdgeMap;
-//         boost::associative_property_map< StdReversedEdgeMap > propReversedEdgeMap( reversedEdgeMap );
-//         // get the property map for vertex predecessor.
-//         typedef std::map< vertex_descriptor, edge_descriptor > StdPredecessorMap;
-//         StdPredecessorMap predecessorMap;
-//         boost::associative_property_map< StdPredecessorMap > propPredecessorMap( predecessorMap );
-//         // We already have vertex color map, vertex distance map and vertex index map.
-//         uint64_t nbEdges = 0;
-//         // The weight is smaller for edges traversing plane z=0 than anywhere else.
-//         // The min cut thus cuts the sphere in two approximate halves.
-//         for ( std::pair<edge_iterator, edge_iterator>
-//             ve = boost::edges( obj_fixture ); ve.first != ve.second; ++ve.first, ++nbEdges )
-//         {
-//           edge_descriptor e = *ve.first;
-//           edge_descriptor rev_e = obj_fixture.opposite( e );
-//           vertex_descriptor v1 = boost::source( e, obj_fixture );
-//           vertex_descriptor v2 = boost::target( e, obj_fixture );
-//           ASSERT( boost::source( rev_e, obj_fixture ) == v2 );
-//           ASSERT( boost::target( rev_e, obj_fixture ) == v1 );
-//           if ( v1 < v2 )
-//           {
-//             // KSpace::SCell sep = obj_fixture.separator( *ve.first );
-//             // capacity_type capacity = ( K.sKCoord( sep, 2 ) == 0 ) ? 0.01 : 1.0;
-//             capacity_type capacity = 0.5;
-//             edgeCapacityMap[ e ] = capacity;
-//             edgeCapacityMap[ obj_fixture.opposite( e ) ] = capacity;
-//             reversedEdgeMap[ e ] = obj_fixture.opposite( e );
-//             reversedEdgeMap[ obj_fixture.opposite( e ) ] = e;
-//           }
-//         }
-//         trace.info() << "- nb edges = " << nbEdges << std::endl;
-//         distanceMap.clear();
-//         colorMap.clear();
-//         capacity_type max_flow =
-//           boost::boykov_kolmogorov_max_flow // boykov kolmogorov max flow algorithm.
-//           ( obj_fixture, // the graph
-//             propEdgeCapacityMap, propEdgeResidualCapacityMap,
-//             propReversedEdgeMap, propPredecessorMap, propColorMap, propDistanceMap, propVertexIndexMap,
-//             start, furthest );
-//         INFO( "- max flow = " << max_flow)
-//           CHECK(abs(max_flow) == Approx(total_weight));
-//         trace.endBlock();
-//       }// maxflow
-//     }// mincut
-//   }
-// }
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
