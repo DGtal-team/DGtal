@@ -89,7 +89,7 @@ script:
   - if [ $NEEDBUILD == "true" ]; then  make DGtal && make DGtalIO; fi
   - if [ $NEEDBUILD == "true" ]; then  cd examples && make  -j 3 ; fi
   - if [ $NEEDBUILD == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
-  - if [ $NEEDBUILD == "true" ]; then  make test;  fi
+  - if [ $NEEDBUILD == "true" ]; then  make test ARGS=--output-on-failure ; fi
 
 ###########
 ## Building the documentation
