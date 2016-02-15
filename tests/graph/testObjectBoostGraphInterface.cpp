@@ -239,8 +239,8 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Breadth first visit and sear
     StdDistanceMap distanceMap;
     boost::associative_property_map< StdDistanceMap > propDistanceMap( distanceMap );
     boost::queue< vertex_descriptor > Q; // std::queue does not have top().
-    vertex_descriptor start = *( obj_fixture.begin() );
-
+    // Start in +z corner of diamond.
+    vertex_descriptor start { Point{ 0, 0, 3 } };
 
     THEN( "Test IncidenceGraph interface with breadth_first_search" ){
       using PredecessorMap = std::map< vertex_descriptor, vertex_descriptor > ;
