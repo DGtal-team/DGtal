@@ -493,16 +493,6 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Connected Components", "[con
         }
       }
 
-      // TODO use copy_graph directly to an Object.
-      // using StdVertexIndexMap = std::map< vertex_descriptor, vertices_size_type > ;
-      // StdVertexIndexMap vertexIndexMap;
-      // boost::associative_property_map< StdVertexIndexMap > propVertexIndexMap( vertexIndexMap );
-      // boost::copy_graph( obj_fixture, obj_copy,
-      //     boost::vertex_copy( my_vertex_copier<Graph,Graph,StdVertexIndexMap>( obj_fixture, obj_copy, vertexIndexMap ) )
-      //     .edge_copy( my_edge_copier<Graph,Graph>( obj_fixture, obj_copy ) )
-      //     .vertex_index_map( propVertexIndexMap )
-      //     );
-
       }// filtered_graph
     }// connected_components
   }//given
