@@ -60,7 +60,7 @@ DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFile
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
   try 
     {
-      infile.open (aFilename.c_str(), std::ifstream::in);
+      infile.open (aFilename.c_str(), std::ifstream::in | std::ifstream::binary);
     }
   catch( ... )
     {
@@ -180,7 +180,7 @@ DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFil
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 3));
   try 
     {
-      infile.open (aFilename.c_str(), std::ifstream::in);
+      infile.open (aFilename.c_str(), std::ifstream::in | std::ifstream::binary);
     }
   catch( ... )
     {

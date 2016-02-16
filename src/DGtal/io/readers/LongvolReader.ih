@@ -54,7 +54,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
 
   HeaderField header[ MAX_HEADERNUMLINES ];
 
-  fin = fopen( filename.c_str() , "r" );
+  fin = fopen( filename.c_str() , "rb" );
 
   if ( fin == NULL )
   {

@@ -58,14 +58,14 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
 
 #ifdef WIN32
   errno_t err;
-  err = fopen_s( &fin, filename.c_str() , "r" );
+  err = fopen_s( &fin, filename.c_str() , "rb" );
   if ( err )
   {
     trace.error() << "VolReader : can't open " << filename << std::endl;
     throw dgtalexception;
   }
 #else
-  fin = fopen( filename.c_str() , "r" );
+  fin = fopen( filename.c_str() , "rb" );
 #endif
 
   if ( fin == NULL )
