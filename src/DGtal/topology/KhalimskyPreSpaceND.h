@@ -52,11 +52,8 @@
 namespace DGtal
 {
 
-  /** Represents a non-validated unsigned cell in a cellular grid space by its
+  /** Represents an unsigned cell in an unbounded cellular grid space by its
    * Khalimsky coordinates.
-   *
-   * To be validated for a given KhalimskyPreSpaceND, it must be converted to a KhalimskyCell
-   * through an appropriate method of KhalimskyPreSpaceND.
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
@@ -86,37 +83,37 @@ namespace DGtal
     /// Default constructor.
     explicit KhalimskyPreCell( Integer dummy = 0 );
 
-    /** Implicit convertion from a KhalimskyCell
-     * @param aCell a cell to be converted into a non-validated cell.
-     */
-    KhalimskyPreCell( KhalimskyCell<dim, Integer> const& aCell );
-
-    /** Copy constructor.
-     *
-     * @param aCell any other cell.
-     */
-    KhalimskyPreCell( KhalimskyPreCell const& aCell );
 
     /** Explicit constructor from its Khalimsky coordinates.
-     *
      * @param aPoint Its Khalimsky coordinates as a point.
      */
     explicit KhalimskyPreCell( Point const& point );
 
-    /** Copy operator
-     *
+    /** Copy constructor.
      * @param aCell any other cell.
      */
-    KhalimskyPreCell & operator=( KhalimskyPreCell const& aCell );
+    KhalimskyPreCell( KhalimskyPreCell const& aCell ) = default;
+    
+    /** Copy operator
+     * @param aCell any other cell.
+     */
+    KhalimskyPreCell & operator=( KhalimskyPreCell const& aCell ) = default;
+
+    /** Move constructor.
+     * @param aCell any other cell.
+     */
+    KhalimskyPreCell( KhalimskyPreCell && aCell ) = default;
+    
+    /** Move operator
+     * @param aCell any other cell.
+     */
+    KhalimskyPreCell & operator=( KhalimskyPreCell && aCell ) = default;
 
   }; // KhalimskyPreCell
 
 
-  /** Represents an non-validated signed cell in a cellular grid space by its
+  /** Represents a signed cell in an unbounded cellular grid space by its
    * Khalimsky coordinates and a boolean value.
-   *
-   * To be validated for a given KhalimskyPreSpaceND, it must be converted to a SignedKhalimskyCell
-   * through an appropriate method of KhalimskyPreSpaceND.
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
@@ -146,38 +143,41 @@ namespace DGtal
     /// Default constructor.
     explicit SignedKhalimskyPreCell( Integer dummy = 0 );
 
-    /** Implicit convertion from a SignedKhalimskyCell
-     * @param aCell a cell to be converted into a non-validated cell.
-     */
-    SignedKhalimskyPreCell( SignedKhalimskyCell<dim, Integer> const& aCell );
-
-    /** Copy constructor.
-     *
-     * @param aCell any other cell.
-     */
-    SignedKhalimskyPreCell( SignedKhalimskyPreCell const& aCell );
-
     /** Explicit constructor from its Khalimsky coordinates.
      *
      * @param aPoint Its Khalimsky coordinates as a point.
      */
     explicit SignedKhalimskyPreCell( Point const& point, bool positive );
 
-    /** Copy operator
-     *
+    /** Copy constructor.
      * @param aCell any other cell.
      */
-    SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell const& aCell );
+    SignedKhalimskyPreCell( SignedKhalimskyPreCell const& aCell ) = default;
+    
+    /** Copy operator
+     * @param aCell any other cell.
+     */
+    SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell const& aCell ) = default;
+
+    /** Move constructor.
+     * @param aCell any other cell.
+     */
+    SignedKhalimskyPreCell( SignedKhalimskyPreCell && aCell ) = default;
+    
+    /** Move operator
+     * @param aCell any other cell.
+     */
+    SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell && aCell ) = default;
 
   }; // SignedKhalimskyPreCell
 
   /**
      @brief This class is useful for looping on all "interesting" coordinates of a
-     cell. For instance, surfels in Z3 have two interesting coordinates (the
+     pre-cell. For instance, surfels in Z3 have two interesting coordinates (the
      ones spanned by the surfel).
      @code
-     KSpace::Cell p;
-     KnSpace::DirIterator q;
+     KSpace::PreCell p;
+     KnSpace::PreDirIterator q;
      for ( q = KSpace::uDirs( p ); q != 0; ++q )
      {
      KSpace::Dimension dir = *q;
@@ -187,26 +187,26 @@ namespace DGtal
   */
   template < Dimension dim,
              typename TInteger = DGtal::int32_t >
-  class CellDirectionIterator
+  class PreCellDirectionIterator
   {
   public:
     typedef TInteger Integer;
     // Cells
-    typedef KhalimskyCell< dim, Integer > Cell;
-    typedef SignedKhalimskyCell< dim, Integer > SCell;
+    typedef KhalimskyPreCell< dim, Integer > PreCell;
+    typedef SignedKhalimskyPreCell< dim, Integer > SPreCell;
 
   public:
     /**
-     * Constructor from cell.
-     * @param cell any unsigned cell
+     * Constructor from a pre-cell.
+     * @param cell any unsigned pre-cell
      */
-    CellDirectionIterator( Cell cell, bool open = true );
+    explicit PreCellDirectionIterator( PreCell cell, bool open = true );
 
     /**
-     * Constructor from signed cell.
-     * @param scell any signed cell
+     * Constructor from a signed pre-cell.
+     * @param scell any signed pre-cell
      */
-    CellDirectionIterator( SCell scell, bool open = true );
+    explicit PreCellDirectionIterator( SPreCell scell, bool open = true );
 
     /**
      * @return the current direction.
@@ -216,7 +216,7 @@ namespace DGtal
     /**
      * Pre-increment. Go to next direction.
      */
-    CellDirectionIterator & operator++();
+    PreCellDirectionIterator & operator++();
 
     /**
      * Fast comparison with unsigned integer (unused
@@ -235,19 +235,19 @@ namespace DGtal
      * Slow comparison with other iterator. Useful to check for end of loop.
      * @param other any direction iterator.
      */
-    bool operator!=( const CellDirectionIterator & other ) const;
+    bool operator!=( const PreCellDirectionIterator & other ) const;
 
     /**
      * Slow comparison with other iterator.
      * @param other any direction iterator.
      */
-    bool operator==( const CellDirectionIterator & other ) const;
+    bool operator==( const PreCellDirectionIterator & other ) const;
 
   private:
     /** the current direction. */
     Dimension myDir;
     /** the cell. */
-    Cell myCell;
+    PreCell myCell;
     /** If 'true', returns open coordinates, otherwise returns closed
         coordinates. */
     bool myOpen;
@@ -345,7 +345,7 @@ namespace DGtal
     using SPreCell  = SignedKhalimskyPreCell< dim, Integer > SPreCell;
 
     using Sign = bool;
-    using DIrIterator = CellDirectionIterator< dim, Integer >;
+    using PreDirIterator = PreCellDirectionIterator< dim, Integer >;
 
     // Points and Vectors
     using Point   = PointVector< dim, Integer >;
@@ -414,7 +414,7 @@ namespace DGtal
     /**
      * Protected destructor to avoid undefined behavior with derived classes.
      */
-    ~KhalimskyPreSpaceND();
+    ~KhalimskyPreSpaceND() = default;
 
     /// @}
 
@@ -507,58 +507,58 @@ namespace DGtal
      * @param k any valid dimension.
      * @return its Khalimsky coordinate along [k].
      */
-    static Integer uPreKCoord( const PreCell & c, Dimension k );
+    static Integer uKCoord( const PreCell & c, Dimension k );
 
     /**
      * @param c any unsigned pre-cell.
      * @param k any valid dimension.
      * @return its digital coordinate along [k].
      */
-    static Integer uPreCoord( const PreCell & c, Dimension k );
+    static Integer uCoord( const PreCell & c, Dimension k );
 
     /**
      * @param c any unsigned pre-cell.
      * @return its Khalimsky coordinates.
      */
-    static Point uPreKCoords( const PreCell & c );
+    static Point uKCoords( const PreCell & c );
 
     /**
      * @param c any unsigned pre-cell.
      * @return its digital coordinates.
      */
-    static Point uPreCoords( const PreCell & c );
+    static Point uCoords( const PreCell & c );
 
     /**
      * @param c any signed pre-cell.
      * @param k any valid dimension.
      * @return its Khalimsky coordinate along [k].
      */
-    static Integer sPreKCoord( const SPreCell & c, Dimension k );
+    static Integer sKCoord( const SPreCell & c, Dimension k );
 
     /**
      * @param c any signed pre-cell.
      * @param k any valid dimension.
      * @return its digital coordinate along [k].
      */
-    static Integer sPreCoord( const SCell & c, Dimension k );
+    static Integer sCoord( const SPreCell & c, Dimension k );
 
     /**
      * @param c any signed pre-cell.
      * @return its Khalimsky coordinates.
      */
-    static Point sPreKCoords( const SPreCell & c );
+    static Point sKCoords( const SPreCell & c );
 
     /**
      * @param c any signed pre-cell.
      * @return its digital coordinates.
      */
-    static Point sPreCoords( const SPreCell & c );
+    static Point sCoords( const SPreCell & c );
 
     /**
      * @param c any signed pre-cell.
      * @return its sign.
      */
-    static Sign sPreSign( const SPreCell & c );
+    static Sign sSign( const SPreCell & c );
 
     /// @}
 
@@ -725,7 +725,7 @@ namespace DGtal
      * @code
      * KSpace::PreCell p;
      * ...
-     * for ( KSpace::DirIterator q = KSpace::uDirs( p ); q != 0; ++q )
+     * for ( auto q = KSpace::uDirs( p ); q != 0; ++q )
      * {
      *   Dimension dir = *q;
      * ...
@@ -736,7 +736,7 @@ namespace DGtal
      * @return an iterator that points on the first coordinate spanned
      * by the pre-cell.
      */
-    static DirIterator uDirs( const PreCell & p );
+    static PreDirIterator uDirs( const PreCell & p );
 
     /** Given a signed pre-cell [p], returns an iterator to iterate over
      * each coordinate the cell spans. (A spel spans all coordinates; a
@@ -745,7 +745,7 @@ namespace DGtal
      * @code
      * KSpace::SPreCell p;
      * ...
-     * for ( KSpace::DirIterator q = KSpace::uDirs( p ); q != 0; ++q )
+     * for ( auto q = KSpace::uDirs( p ); q != 0; ++q )
      * {
      *   Dimension dir = *q;
      * ...
@@ -756,7 +756,7 @@ namespace DGtal
      * @return an iterator that points on the first coordinate spanned
      * by the pre-cell.
      */
-    static DirIterator sDirs( const SPreCell & p );
+    static PreDirIterator sDirs( const SPreCell & p );
 
     /** Given an unsigned pre-cell [p], returns an iterator to iterate over each
      * coordinate the cell does not span. (A spel spans all coordinates;
@@ -765,7 +765,7 @@ namespace DGtal
      * @code
      * KSpace::PreCell p;
      * ...
-     * for ( KSpace::DirIterator q = KSpace::uOrthDirs( p ); q != 0; ++q )
+     * for ( auto q = KSpace::uOrthDirs( p ); q != 0; ++q )
      * {
      *   Dimension dir = *q;
      * ...
@@ -776,7 +776,7 @@ namespace DGtal
      * @return an iterator that points on the first coordinate spanned
      * by the cell.
      */
-    static DirIterator uOrthDirs( const PreCell & p );
+    static PreDirIterator uOrthDirs( const PreCell & p );
 
     /** Given a signed pre-cell [p], returns an iterator to iterate over each
      * coordinate the cell does not span. (A spel spans all coordinates;
@@ -785,7 +785,7 @@ namespace DGtal
      * @code
      * KSpace::SPreCell p;
      * ...
-     * for ( KSpace::DirIterator q = KSpace::uOrthDirs( p ); q != 0; ++q )
+     * for ( auto q = KSpace::uOrthDirs( p ); q != 0; ++q )
      * {
      *   Dimension dir = *q;
      * ...
@@ -796,7 +796,7 @@ namespace DGtal
      * @return an iterator that points on the first coordinate spanned
      * by the cell.
      */
-    static DirIterator sOrthDirs( const SPreCell & p );
+    static PreDirIterator sOrthDirs( const SPreCell & p );
 
     /** Given an unsigned pre-surfel [s], returns its orthogonal direction (ie,
      * the coordinate where the surfel is closed).
@@ -1182,8 +1182,40 @@ namespace DGtal
     static void uAddCoFaces( PreCells & cofaces, const PreCell & c, Dimension axis );
 
     /// @}
+    
+    // ----------------------- Interface --------------------------------------
+    /** @name DGtal interface
+     * @{
+     */
+  public:
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    static void selfDisplay ( std::ostream & out );
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    static constexpr bool isValid();
+
+    /// @}
 
   }; // end of class KhalimskyPreSpaceND
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'KhalimskyPreSpaceND'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'KhalimskyPreSpaceND' to write.
+   * @return the output stream after the writing.
+   */
+  template < Dimension dim,
+             typename TInteger >
+  std::ostream&
+  operator<< ( std::ostream & out,
+               const KhalimskyPreSpaceND<dim, TInteger > & object );
 
 } // namespace DGtal
 
