@@ -151,7 +151,7 @@ namespace DGtal
   operator<<( std::ostream & out,
               const KhalimskyCell< dim, TInteger > & object );
 
-  /** Represents an non-validated unsigned cell in a cellular grid space by its
+  /** Represents a non-validated unsigned cell in a cellular grid space by its
    * Khalimsky coordinates.
    *
    * To be validated for a given KhalimskySpaceND, it must be converted to a KhalimskyCell
@@ -172,11 +172,12 @@ namespace DGtal
   public:
     using Integer = TInteger;
     using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
-    using Point = PointVector< dim, Integer >;
+    using Point   = PointVector< dim, Integer >;
+    using Self    = KhalimskyPreCell< dim, Integer >;
 
     // Public members
   public:
-    Point myCoordinates; ///< Khalimsky coordinates of the cell.
+    Point myCoordinates; ///< Khalimsky coordinates of the cell. Public to allow easy coordinate manipulations.
 
     // Standard interface
   public:
@@ -1021,6 +1022,85 @@ namespace DGtal
      * @post `uIsValid(uSpel(p))` is \a true.
      */
     SCell sPointel( Point p, Sign sign = POS ) const;
+
+    ///@}
+
+    // ----------------------- Pre-cell creation services --------------------------
+    /** @name Pre-cell creation services (static methods)
+     * @{
+     */
+  public:
+
+    /** From the Khalimsky coordinates of a cell,
+     * builds the corresponding unsigned pre-cell.
+     *
+     * @param kp an integer point (Khalimsky coordinates of cell).
+     * @return the unsigned pre-cell.
+     */
+    static PreCell uPreCell( const Point & kp );
+
+    /** From the digital coordinates of a point in Zn and a cell type,
+     * builds the corresponding unsigned pre-cell.
+     *
+     * @param p an integer point (digital coordinates of cell).
+     * @param c another cell defining the topology.
+     * @return the pre-cell having the topology of [c] and the given
+     * digital coordinates [p].
+     */
+    static PreCell uPreCell( Point p, const PreCell & c );
+
+    /** From the Khalimsky coordinates of a cell and a sign,
+     * builds the corresponding signed pre-cell.
+     *
+     * @param kp an integer point (Khalimsky coordinates of cell).
+     * @param sign the sign of the cell (either POS or NEG).
+     * @return the signed pre-cell.
+     */
+    static SPreCell sPreCell( const Point & kp, Sign sign = POS );
+
+    /** From the digital coordinates of a point in Zn and a signed cell type,
+     * builds the corresponding signed pre-cell.
+     *
+     * @param p an integer point (digital coordinates of cell).
+     * @param c another cell defining the topology and sign.
+     * @return the pre-cell having the topology and sign of [c] and the given
+     * digital coordinates [p].
+     */
+    static SPreCell sPreCell( Point p, const SPreCell & c );
+
+    /** From the digital coordinates of a point in Zn,
+     * builds the corresponding pre-spel (pre-cell of maximal dimension).
+     *
+     * @param p an integer point (digital coordinates of cell).
+     * @return the pre-spel having the given digital coordinates [p].
+     */
+    static PreCell uPreSpel( Point p );
+
+    /** From the digital coordinates of a point in Zn,
+     * builds the corresponding pre-spel (pre-cell of maximal dimension).
+     *
+     * @param p an integer point (digital coordinates of cell).
+     * @param sign the sign of the cell (either POS or NEG).
+     * @return the signed pre-spel having the given digital coordinates [p].
+     */
+    static SPreCell sPreSpel( Point p, Sign sign = POS );
+
+    /** From the digital coordinates of a point in Zn,
+     * builds the corresponding pre-pointel (pre-cell of dimension 0).
+     *
+     * @param p an integer point (digital coordinates of cell).
+     * @return the pre-pointel having the given digital coordinates [p].
+     */
+    static PreCell uPrePointel( Point p );
+
+    /** From the digital coordinates of a point in Zn,
+     * builds the corresponding pre-pointel (pre-cell of dimension 0).
+     *
+     * @param p an integer point (digital coordinates of cell).
+     * @param sign the sign of the cell (either POS or NEG).
+     * @return the signed pre-pointel having the given digital coordinates [p].
+     */
+    static SPreCell sPrePointel( Point p, Sign sign = POS );
 
     ///@}
 
