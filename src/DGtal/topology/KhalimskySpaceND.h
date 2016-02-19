@@ -45,14 +45,21 @@
 #include <iostream>
 #include <set>
 #include <map>
-#include "DGtal/base/Common.h"
-#include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/SpaceND.h"
+#include <DGtal/base/Common.h>
+#include <DGtal/kernel/CInteger.h>
+#include <DGtal/kernel/PointVector.h>
+#include <DGtal/kernel/SpaceND.h>
+#include <DGtal/topology/KhalimskyPreSpaceND.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+  // Pre-declaration
+  template < 
+      Dimension dim,
+      typename TInteger = DGtal::int32_t
+  >
+  class KhalimskySpaceND;
 
   /**
    * @brief Represents an (unsigned) cell in a cellular grid space by its
@@ -68,64 +75,77 @@ namespace DGtal
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
+    friend class KhalimskySpace< dim, TInteger >;
+
+    // Aliases
   public:
-    typedef TInteger Integer;
+    using Integer = TInteger;
+    using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
+    using Point   = PointVector< dim, Integer >;
+    using PreCell = KhalimskyPreCell< dim, Integer >;
+    using Self    = KhalimskyCell< dim, Integer >;
 
-    typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
-    typedef PointVector< dim, Integer > Point;
+  private:
+    // Underlying pre-cell
+    PreCell myPreCell;
 
-    Point myCoordinates;
-
+  private:
     /**
      * Constructor.
      */
     explicit KhalimskyCell( Integer dummy = 0 );
 
     /**
-     * Copy constructor.
-     *
-     * @param other any other cell.
+     * Explicit constructor from its Khalimsky coordinates.
+     * @param aPoint Its Khalimsky coordinates as a point.
      */
-    KhalimskyCell( const KhalimskyCell & other );
+    explicit KhalimskyCell( const Point & aPoint );
 
     /**
-     * Constructor from point.
-     *
-     * @param point any point.
+     * Explicit constructor from a KhalimskyPreCell.
+     * @param aCell a pre-cell.
      */
-    explicit KhalimskyCell( const Point & point );
+    explicit KhalimksyCell( const PreCell & aCell );
 
-    /**
-     * Copy constructor.
-     *
+  public:
+    /// Explicit conversion to KhalimskyPreCell.
+    explicit operator PreCell() const;
+
+    /** Copy constructor.
      * @param other any other cell.
      */
-    KhalimskyCell & operator=( const KhalimskyCell & other );
+    KhalimskyCell( const KhalimskyCell & other ) = default;
+
+    /** Copy operator.
+     * @param other any other cell.
+     */
+    KhalimskyCell & operator=( const KhalimskyCell & other ) = default;
+
+    /** Move constructor.
+     * @param other any other cell.
+     */
+    KhalimskyCell( KhalimskyCell && other ) = default;
+
+    /** Move operator.
+     * @param other any other cell.
+     */
+    KhalimskyCell & operator=( KhalimskyCell && other ) = default;
 
     /**
      * Equality operator.
      * @param other any other cell.
-     * @warning Comparison between cells may have no sense for periodic Khalimsky space
-     * if the cells have not been modified through KhalimskySpaceND methods.
-     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
      */
     bool operator==( const KhalimskyCell & other ) const;
 
     /**
      * Difference operator.
      * @param other any other cell.
-     * @warning Comparison between cells may have no sense for periodic Khalimsky space
-     * if the cells have not been modified through KhalimskySpaceND methods.
-     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
     */
     bool operator!=( const KhalimskyCell & other ) const;
 
     /**
      * Inferior operator. (lexicographic order).
      * @param other any other cell.
-     * @warning Comparison between cells may have no sense for periodic Khalimsky space
-     * if the cells have not been modified through KhalimskySpaceND methods.
-     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
     */
     bool operator<( const KhalimskyCell & other ) const;
 
@@ -151,65 +171,6 @@ namespace DGtal
   operator<<( std::ostream & out,
               const KhalimskyCell< dim, TInteger > & object );
 
-  /** Represents a non-validated unsigned cell in a cellular grid space by its
-   * Khalimsky coordinates.
-   *
-   * To be validated for a given KhalimskySpaceND, it must be converted to a KhalimskyCell
-   * through an appropriate method of KhalimskySpaceND.
-   *
-   * @tparam dim the dimension of the digital space.
-   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
-   */
-  template < Dimension dim,
-             typename TInteger = DGtal::int32_t >
-  struct KhalimskyPreCell
-  {
-
-    // Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-
-    // Aliases
-  public:
-    using Integer = TInteger;
-    using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
-    using Point   = PointVector< dim, Integer >;
-    using Self    = KhalimskyPreCell< dim, Integer >;
-
-    // Public members
-  public:
-    Point myCoordinates; ///< Khalimsky coordinates of the cell. Public to allow easy coordinate manipulations.
-
-    // Standard interface
-  public:
-
-    /// Default constructor.
-    explicit KhalimskyPreCell( Integer dummy = 0 );
-
-    /** Implicit convertion from a KhalimskyCell
-     * @param aCell a cell to be converted into a non-validated cell.
-     */
-    KhalimskyPreCell( KhalimskyCell<dim, Integer> const& aCell );
-
-    /** Copy constructor.
-     *
-     * @param aCell any other cell.
-     */
-    KhalimskyPreCell( KhalimskyPreCell const& aCell );
-
-    /** Explicit constructor from its Khalimsky coordinates.
-     *
-     * @param aPoint Its Khalimsky coordinates as a point.
-     */
-    explicit KhalimskyPreCell( Point const& point );
-
-    /** Copy operator
-     *
-     * @param aCell any other cell.
-     */
-    KhalimskyPreCell & operator=( KhalimskyPreCell const& aCell );
-
-  }; // KhalimskyPreCell
-
 
   /**
    * @brief Represents a signed cell in a cellular grid space by its
@@ -224,65 +185,78 @@ namespace DGtal
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
+    friend class KhalimskySpaceND< dim, TInteger >;
+
+    // Aliases
   public:
-    typedef TInteger Integer;
-    typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
-    typedef PointVector< dim, Integer > Point;
+    using Integer = TInteger;
+    using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
+    using Point   = PointVector< dim, Integer >;
+    using SPreCell = SignedKhalimskyPreCell< dim, Integer >;
+    using Self    = SignedKhalimskyCell< dim, Integer >;
 
-    Point myCoordinates;
-    bool myPositive;
+  private:
+    // Underlying signed pre-cell
+    SPreCell mySPreCell;
 
+  private:
     /**
      * Constructor.
      */
     explicit SignedKhalimskyCell( Integer dummy = 0 );
 
     /**
-     * Copy constructor.
-     *
-     * @param other any other cell.
-     */
-    SignedKhalimskyCell( const SignedKhalimskyCell & other );
-
-    /**
-     * Constructor from point.
-     *
-     * @param point any point.
+     * Explicit constructor from its Khalimsky coordinates.
+     * @param aPoint any point.
      * @param positive if cell has positive sign.
      */
-    explicit SignedKhalimskyCell( const Point & point, bool positive );
-
+    explicit SignedKhalimskyCell( const Point & aPoint, bool positive );
+    
     /**
-     * Copy constructor.
-     *
+     * Explicit constructor from a SignedKhalimskyPreCell.
+     * @param aCell a pre-cell.
+     */
+    explicit KhalimksyCell( const SPreCell & aCell );
+
+  public:
+    /// Explicit conversion to KhalimskyiSignedPreCell.
+    explicit operator SPreCell() const;
+
+    /** Copy constructor.
      * @param other any other cell.
      */
-    SignedKhalimskyCell & operator=( const SignedKhalimskyCell & other );
+    SignedKhalimskyCell( const SignedKhalimskyCell & other ) = default;
+
+    /** Copy operator.
+     * @param other any other cell.
+     */
+    SignedKhalimskyCell & operator=( const SignedKhalimskyCell & other ) = default;
+
+    /** Move constructor.
+     * @param other any other cell.
+     */
+    SignedKhalimskyCell( SignedKhalimskyCell && other ) = default;
+
+    /** Move operator.
+     * @param other any other cell.
+     */
+    SignedKhalimskyCell & operator=( SignedKhalimskyCell && other ) = default;
 
     /**
      * Equality operator.
      * @param other any other cell.
-     * @warning Comparison between cells may have no sense for periodic Khalimsky space
-     * if the cells have not been modified through KhalimskySpaceND methods.
-     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
      */
     bool operator==( const SignedKhalimskyCell & other ) const;
 
     /**
      * Difference operator.
      * @param other any other cell.
-     * @warning Comparison between cells may have no sense for periodic Khalimsky space
-     * if the cells have not been modified through KhalimskySpaceND methods.
-     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
      */
     bool operator!=( const SignedKhalimskyCell & other ) const;
 
     /**
      * Inferior operator. (lexicographic order).
      * @param other any other cell.
-     * @warning Comparison between cells may have no sense for periodic Khalimsky space
-     * if the cells have not been modified through KhalimskySpaceND methods.
-     * See KhalimskySpaceND::uIsValid() and KhalimskySpaceND::sIsValid().
      */
     bool operator<( const SignedKhalimskyCell & other ) const;
 
@@ -307,151 +281,6 @@ namespace DGtal
   std::ostream &
   operator<<( std::ostream & out,
               const SignedKhalimskyCell< dim, TInteger > & object );
-
-  /** Represents an non-validated signed cell in a cellular grid space by its
-   * Khalimsky coordinates and a boolean value.
-   *
-   * To be validated for a given KhalimskySpaceND, it must be converted to a SignedKhalimskyCell
-   * through an appropriate method of KhalimskySpaceND.
-   *
-   * @tparam dim the dimension of the digital space.
-   * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
-   */
-  template < Dimension dim,
-             typename TInteger = DGtal::int32_t >
-  struct SignedKhalimskyPreCell
-  {
-
-    // Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-
-    // Aliases
-  public:
-    using Integer = TInteger;
-    using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
-    using Point = PointVector< dim, Integer >;
-
-    // Public members
-  public:
-    Point myCoordinates;  ///< Khalimsky coordinates of the cell.
-    bool  myPositive;     ///< Cell sign.
-
-    // Standard interface
-  public:
-
-    /// Default constructor.
-    explicit SignedKhalimskyPreCell( Integer dummy = 0 );
-
-    /** Implicit convertion from a SignedKhalimskyCell
-     * @param aCell a cell to be converted into a non-validated cell.
-     */
-    SignedKhalimskyPreCell( SignedKhalimskyCell<dim, Integer> const& aCell );
-
-    /** Copy constructor.
-     *
-     * @param aCell any other cell.
-     */
-    SignedKhalimskyPreCell( SignedKhalimskyPreCell const& aCell );
-
-    /** Explicit constructor from its Khalimsky coordinates.
-     *
-     * @param aPoint Its Khalimsky coordinates as a point.
-     */
-    explicit SignedKhalimskyPreCell( Point const& point, bool positive );
-
-    /** Copy operator
-     *
-     * @param aCell any other cell.
-     */
-    SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell const& aCell );
-
-  }; // SignedKhalimskyPreCell
-
-  /**
-     @brief This class is useful for looping on all "interesting" coordinates of a
-     cell. For instance, surfels in Z3 have two interesting coordinates (the
-     ones spanned by the surfel).
-     @code
-     KSpace::Cell p;
-     KnSpace::DirIterator q;
-     for ( q = ks.uDirs( p ); q != 0; ++q )
-     {
-     KSpace::Dimension dir = *q;
-     ...
-     }
-     @endcode
-  */
-  template < Dimension dim,
-             typename TInteger = DGtal::int32_t >
-  class CellDirectionIterator
-  {
-  public:
-    typedef TInteger Integer;
-    // Cells
-    typedef KhalimskyCell< dim, Integer > Cell;
-    typedef SignedKhalimskyCell< dim, Integer > SCell;
-
-  public:
-    /**
-     * Constructor from cell.
-     * @param cell any unsigned cell
-     */
-    CellDirectionIterator( Cell cell, bool open = true );
-
-    /**
-     * Constructor from signed cell.
-     * @param scell any signed cell
-     */
-    CellDirectionIterator( SCell scell, bool open = true );
-
-    /**
-     * @return the current direction.
-     */
-    Dimension operator*() const;
-
-    /**
-     * Pre-increment. Go to next direction.
-     */
-    CellDirectionIterator & operator++();
-
-    /**
-     * Fast comparison with unsigned integer (unused
-     * parameter). Comparison is 'false' at the end of the iteration.
-     *
-     * @return 'true' if the iterator is finished.
-     */
-    bool operator!=( const Integer ) const;
-
-    /**
-     * @return 'true' if the iteration is ended.
-     */
-    bool end() const;
-
-    /**
-     * Slow comparison with other iterator. Useful to check for end of loop.
-     * @param other any direction iterator.
-     */
-    bool operator!=( const CellDirectionIterator & other ) const;
-
-    /**
-     * Slow comparison with other iterator.
-     * @param other any direction iterator.
-     */
-    bool operator==( const CellDirectionIterator & other ) const;
-
-  private:
-    /** the current direction. */
-    Dimension myDir;
-    /** the cell. */
-    Cell myCell;
-    /** If 'true', returns open coordinates, otherwise returns closed
-        coordinates. */
-    bool myOpen;
-
-  private:
-    /** Look for next valid coordinate. */
-    void find();
-  };
 
   /////////////////////////////////////////////////////////////////////////////
   /** Internal class of KhalimskySpaceND that provides some optimizations
@@ -527,10 +356,13 @@ namespace DGtal
    * Therefore, there is no guarantee that it is compatible with the whole DGtal library.
    *
   */
-  template < Dimension dim,
-             typename TInteger = DGtal::int32_t >
+  template < 
+      Dimension dim,
+      typename TInteger = DGtal::int32_t
+  >
   class KhalimskySpaceND
     : private KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >
+    , public  KhalimskyPreSpace< dim, TInteger >
   {
 
     typedef KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > > Helper; ///< Features basic operations on coordinates, especially for periodic dimensions.
@@ -545,6 +377,11 @@ namespace DGtal
 
     ///Type used to represent sizes in the digital space.
     typedef typename NumberTraits<Integer>::UnsignedVersion Size;
+    
+    // Spaces
+    typedef SpaceND<dim, Integer> Space;
+    typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
+    typedef KhalimskyPreSpaceND<dim, Integer> KhalimskyPreSpace;
 
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;
@@ -554,14 +391,12 @@ namespace DGtal
 
     typedef SCell Surfel;
     typedef bool Sign;
-    typedef CellDirectionIterator< dim, Integer > DirIterator;
+    using DirIterator = KhalimskyPreSpace::DirIterator;
 
     // Points and Vectors
     typedef PointVector< dim, Integer > Point;
     typedef PointVector< dim, Integer > Vector;
 
-    typedef SpaceND<dim, Integer> Space;
-    typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
 
 #if defined ( WIN32 )
     // static constants
@@ -577,13 +412,7 @@ namespace DGtal
     static const Sign NEG;
 #endif //WIN32
 
-    template <typename CellType>
-    struct AnyCellCollection : public std::deque<CellType> {
-      typedef CellType Value;
-      typedef typename std::deque<CellType> Container;
-      typedef typename std::deque<CellType>::iterator Iterator;
-      typedef typename std::deque<CellType>::const_iterator ConstIterator;
-    };
+    using KhalimskyPreCell::AnyCellCollection;
 
     // Neighborhoods, Incident cells, Faces and Cofaces
     typedef AnyCellCollection<Cell> Cells;
@@ -592,24 +421,27 @@ namespace DGtal
     // Sets, Maps
     /// Preferred type for defining a set of Cell(s).
     typedef std::set<Cell> CellSet;
+    
     /// Preferred type for defining a set of SCell(s).
     typedef std::set<SCell> SCellSet;
+    
     /// Preferred type for defining a set of surfels (always signed cells).
     typedef std::set<SCell> SurfelSet;
+    
     /// Template rebinding for defining the type that is a mapping
     /// Cell -> Value.
-    template <typename Value> struct CellMap {
-      typedef std::map<Cell,Value> Type;
-    };
+    template <typename Value> 
+    using CellMap = std::map<Cell,Value>;
+    
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
-    template <typename Value> struct SCellMap {
-      typedef std::map<SCell,Value> Type;
-    };
+    template <typename Value> 
+    using SCellMap = std::map<SCell,Value>;
+    
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
-    template <typename Value> struct SurfelMap {
-      typedef std::map<SCell,Value> Type;
+    template <typename Value> 
+    using SurfelMap = std::map<SCell,Value>;
     };
 
     /// Boundaries closure type
@@ -632,7 +464,7 @@ namespace DGtal
     ~KhalimskySpaceND();
 
     /**
-     * Default onstructor.
+     * Default constructor.
      */
     KhalimskySpaceND();
 
@@ -640,14 +472,27 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    KhalimskySpaceND ( const KhalimskySpaceND & other );
+    KhalimskySpaceND ( const KhalimskySpaceND & other ) = default;
 
     /**
-     * Assignment.
+     * Copy operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    KhalimskySpaceND & operator= ( const KhalimskySpaceND & other );
+    KhalimskySpaceND & operator= ( const KhalimskySpaceND & other ) = default;
+
+    /**
+     * Move constructor.
+     * @param other the object to clone.
+     */
+    KhalimskySpaceND ( KhalimskySpaceND && other ) = default;
+
+    /**
+     * Move operator.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    KhalimskySpaceND & operator= ( KhalimskySpaceND && other ) = default;
 
     /**
      * Specifies the upper and lower bounds for the maximal cells in
@@ -2172,8 +2017,8 @@ ose sign is positive).
   private:
     Point myLower;
     Point myUpper;
-    Cell myCellLower;
-    Cell myCellUpper;
+    PreCell myCellLower;
+    PreCell myCellUpper;
     Closure myClosure[dim];
 
     // ------------------------- Hidden services ------------------------------
