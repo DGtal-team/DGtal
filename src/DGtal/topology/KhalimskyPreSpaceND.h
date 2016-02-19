@@ -43,10 +43,10 @@
 #include <iostream>
 #include <set>
 #include <map>
-#include "DGtal/base/Common.h"
-#include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/SpaceND.h"
+#include <DGtal/base/Common.h>
+#include <DGtal/kernel/CInteger.h>
+#include <DGtal/kernel/PointVector.h>
+#include <DGtal/kernel/SpaceND.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -87,27 +87,53 @@ namespace DGtal
     /** Explicit constructor from its Khalimsky coordinates.
      * @param aPoint Its Khalimsky coordinates as a point.
      */
-    explicit KhalimskyPreCell( Point const& point );
+    explicit KhalimskyPreCell( Point const& aPoint );
 
     /** Copy constructor.
-     * @param aCell any other cell.
+     * @param aCell any other pre-cell.
      */
     KhalimskyPreCell( KhalimskyPreCell const& aCell ) = default;
-    
+
     /** Copy operator
-     * @param aCell any other cell.
+     * @param aCell any other pre-cell.
      */
     KhalimskyPreCell & operator=( KhalimskyPreCell const& aCell ) = default;
 
     /** Move constructor.
-     * @param aCell any other cell.
+     * @param aCell any other pre-cell.
      */
     KhalimskyPreCell( KhalimskyPreCell && aCell ) = default;
-    
+
     /** Move operator
-     * @param aCell any other cell.
+     * @param aCell any other pre-cell.
      */
     KhalimskyPreCell & operator=( KhalimskyPreCell && aCell ) = default;
+
+    /**
+     * Equality operator.
+     * @param other any other pre-cell.
+     */
+    bool operator==( const KhalimskyPreCell & other ) const;
+
+    /**
+     * Difference operator.
+     * @param other any other pre-cell.
+    */
+    bool operator!=( const KhalimskyPreCell & other ) const;
+
+    /**
+     * Inferior operator. (lexicographic order).
+     * @param other any other pre-cell.
+    */
+    bool operator<( const KhalimskyPreCell & other ) const;
+
+    // --------------- CDrawableWithBoard2D realization -------------------
+  public:
+
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
 
   }; // KhalimskyPreCell
 
@@ -150,24 +176,50 @@ namespace DGtal
     explicit SignedKhalimskyPreCell( Point const& point, bool positive );
 
     /** Copy constructor.
-     * @param aCell any other cell.
+     * @param aCell any other pre-cell.
      */
     SignedKhalimskyPreCell( SignedKhalimskyPreCell const& aCell ) = default;
-    
+
     /** Copy operator
-     * @param aCell any other cell.
+     * @param aCell any other pre-cell.
      */
     SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell const& aCell ) = default;
 
     /** Move constructor.
-     * @param aCell any other cell.
+     * @param aCell any other pre-cell.
      */
     SignedKhalimskyPreCell( SignedKhalimskyPreCell && aCell ) = default;
-    
+
     /** Move operator
-     * @param aCell any other cell.
+     * @param aCell any other pre-cell.
      */
     SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell && aCell ) = default;
+
+    /**
+     * Equality operator.
+     * @param other any other pre-cell.
+     */
+    bool operator==( const SignedKhalimskyPreCell & other ) const;
+
+    /**
+     * Difference operator.
+     * @param other any other pre-cell.
+     */
+    bool operator!=( const SignedKhalimskyPreCell & other ) const;
+
+    /**
+     * Inferior operator. (lexicographic order).
+     * @param other any other pre-cell.
+     */
+    bool operator<( const SignedKhalimskyPreCell & other ) const;
+
+    // --------------- CDrawableWithBoard2D realization -------------------
+  public:
+
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
 
   }; // SignedKhalimskyPreCell
 
@@ -324,7 +376,7 @@ namespace DGtal
    * Therefore, there is no guarantee that it is compatible with the whole DGtal library.
    *
   */
-  template < 
+  template <
     Dimension dim,
     typename TInteger = DGtal::int32_t
   >
@@ -344,6 +396,7 @@ namespace DGtal
     using PreCell   = KhalimskyPreCell< dim, Integer > PreCell;
     using SPreCell  = SignedKhalimskyPreCell< dim, Integer > SPreCell;
 
+    using PreSurfel = SPreCell;
     using Sign = bool;
     using PreDirIterator = PreCellDirectionIterator< dim, Integer >;
 
@@ -397,7 +450,7 @@ namespace DGtal
 
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
-    template < typename Value > 
+    template < typename Value >
     using SPreCellMap = std::map< SPreCell, Value >;
 
     /// Template rebinding for defining the type that is a mapping
@@ -1182,7 +1235,7 @@ namespace DGtal
     static void uAddCoFaces( PreCells & cofaces, const PreCell & c, Dimension axis );
 
     /// @}
-    
+
     // ----------------------- Interface --------------------------------------
     /** @name DGtal interface
      * @{

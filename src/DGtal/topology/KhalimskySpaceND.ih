@@ -66,15 +66,7 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::KhalimskyCell< dim, TInteger >::
 KhalimskyCell( Integer )
-{
-  myCoordinates.reset();
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::KhalimskyCell< dim, TInteger >::
-KhalimskyCell( const KhalimskyCell & other )
-  : myCoordinates( other.myCoordinates )
+     : myPreCell()
 {
 }
 //-----------------------------------------------------------------------------
@@ -82,19 +74,24 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::KhalimskyCell< dim, TInteger >::
 KhalimskyCell( const Point & p )
-  : myCoordinates( p )
+  : myPreCell( p )
 {
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
 inline
-DGtal::KhalimskyCell< dim, TInteger > &
 DGtal::KhalimskyCell< dim, TInteger >::
-operator=( const KhalimskyCell & other )
+KhalimskyCell( const PreCell & aCell )
+  : myPreCell( aCell )
 {
-  if ( this != &other )
-    myCoordinates = other.myCoordinates;
-  return *this;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::KhalimskyCell< dim, TInteger >::
+operator DGtal::KhalimskyPreCell< dim, TInteger >() const
+{
+  return myPreCell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
@@ -103,7 +100,7 @@ bool
 DGtal::KhalimskyCell< dim, TInteger >::
 operator==( const KhalimskyCell & other ) const
 {
-  return myCoordinates == other.myCoordinates;
+  return myPreCell == other.myPreCell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
@@ -112,7 +109,7 @@ bool
 DGtal::KhalimskyCell< dim, TInteger >::
 operator!=( const KhalimskyCell & other ) const
 {
-  return myCoordinates != other.myCoordinates;
+  return myPreCell != other.myPreCell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
@@ -121,7 +118,7 @@ bool
 DGtal::KhalimskyCell< dim, TInteger >::
 operator<( const KhalimskyCell & other ) const
 {
-  return myCoordinates < other.myCoordinates;
+  return myPreCell < other.myPreCell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
@@ -130,10 +127,7 @@ std::ostream &
 DGtal::operator<<( std::ostream & out,
        const KhalimskyCell< dim, TInteger > & object )
 {
-  out << "(" << object.myCoordinates[ 0 ];
-  for ( DGtal::Dimension i = 1; i < dim; ++i )
-    out << "," << object.myCoordinates[ i ];
-  out << ")";
+  out << static_cast< const KhalimskyPreCell<dim, TInteger> >(object);
   return out;
 }
 
@@ -148,53 +142,6 @@ className() const
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// KhalimskyPreCell
-///////////////////////////////////////////////////////////////////////////////
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::KhalimskyPreCell< dim, TInteger >::
-KhalimskyPreCell( Integer /* dummy */ )
-{
-  myCoordinates.reset();
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::KhalimskyPreCell< dim, TInteger >::
-KhalimskyPreCell( KhalimskyCell<dim, Integer> const& aCell )
-  : myCoordinates( aCell.myCoordinates )
-{
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::KhalimskyPreCell< dim, TInteger >::
-KhalimskyPreCell( KhalimskyPreCell const& aCell )
-  : myCoordinates( aCell.myCoordinates )
-{
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::KhalimskyPreCell< dim, TInteger >::
-KhalimskyPreCell( Point const& p )
-  : myCoordinates( p )
-{
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::KhalimskyPreCell< dim, TInteger > &
-DGtal::KhalimskyPreCell< dim, TInteger >::
-operator=( const KhalimskyPreCell & other )
-{
-  if ( this != &other )
-    myCoordinates = other.myCoordinates;
-  return *this;
-}
-
-///////////////////////////////////////////////////////////////////////////////
 // SignedKhalimskyCell
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
@@ -202,16 +149,7 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::SignedKhalimskyCell< dim, TInteger >::
 SignedKhalimskyCell( Integer )
-  : myPositive( true )
-{
-  myCoordinates.reset();
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::SignedKhalimskyCell< dim, TInteger >::
-SignedKhalimskyCell( const SignedKhalimskyCell & other )
-  : myCoordinates( other.myCoordinates), myPositive( other.myPositive )
+  : mySPreCell()
 {
 }
 //-----------------------------------------------------------------------------
@@ -219,22 +157,24 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::SignedKhalimskyCell< dim, TInteger >::
 SignedKhalimskyCell( const Point & p, bool positive )
-  : myCoordinates( p ), myPositive( positive )
+  : mySPreCell( p, positive )
 {
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
 inline
-DGtal::SignedKhalimskyCell< dim, TInteger > &
 DGtal::SignedKhalimskyCell< dim, TInteger >::
-operator=( const SignedKhalimskyCell & other )
+SignedKhalimskyCell( const SPreCell & aCell )
+  : mySPreCell( aCell )
 {
-  if ( this != &other )
-    {
-      myCoordinates = other.myCoordinates;
-      myPositive = other.myPositive;
-    }
-  return *this;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::SignedKhalimskyCell< dim, TInteger >::
+operator DGtal::SignedKhalimskyPreCell< dim, TInteger >() const
+{
+  return mySPreCell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
@@ -243,8 +183,7 @@ bool
 DGtal::SignedKhalimskyCell< dim, TInteger >::
 operator==( const SignedKhalimskyCell & other ) const
 {
-  return ( myPositive == other.myPositive )
-    && ( myCoordinates == other.myCoordinates );
+  return mySPreCell == other.mySPreCell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
@@ -253,8 +192,7 @@ bool
 DGtal::SignedKhalimskyCell< dim, TInteger >::
 operator!=( const SignedKhalimskyCell & other ) const
 {
-  return ( myPositive != other.myPositive )
-    || ( myCoordinates != other.myCoordinates );
+  return mySPreCell != other.mySPreCell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
@@ -263,9 +201,7 @@ bool
 DGtal::SignedKhalimskyCell< dim, TInteger >::
 operator<( const SignedKhalimskyCell & other ) const
 {
-  return ( myPositive < other.myPositive )
-    || ( ( myPositive == other.myPositive )
-   && ( myCoordinates < other.myCoordinates ) );
+  return mySPreCell < other.mySPreCell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim,
@@ -275,11 +211,7 @@ std::ostream &
 DGtal::operator<<( std::ostream & out,
        const SignedKhalimskyCell< dim, TInteger > & object )
 {
-  out << "(" << object.myCoordinates[ 0 ];
-  for ( DGtal::Dimension i = 1; i < dim; ++i )
-    out << "," << object.myCoordinates[ i ];
-  out << "," << ( object.myPositive ? '+' : '-' );
-  out << ")";
+  out << static_cast< const SignedKhalimskyPreCell<dim, TInteger> >(object);
   return out;
 }
 
@@ -292,61 +224,6 @@ className() const
 {
   return "SignedKhalimskyCell";
 }
-
-///////////////////////////////////////////////////////////////////////////////
-// SignedKhalimskyPreCell
-///////////////////////////////////////////////////////////////////////////////
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::SignedKhalimskyPreCell< dim, TInteger >::
-SignedKhalimskyPreCell( Integer /* dummy */ )
-  : myPositive( true )
-{
-  myCoordinates.reset();
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::SignedKhalimskyPreCell< dim, TInteger >::
-SignedKhalimskyPreCell( SignedKhalimskyCell<dim, Integer> const& aCell )
-  : myCoordinates( aCell.myCoordinates )
-  , myPositive( aCell.myPositive )
-{
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::SignedKhalimskyPreCell< dim, TInteger >::
-SignedKhalimskyPreCell( SignedKhalimskyPreCell const& aCell )
-  : myCoordinates( aCell.myCoordinates )
-  , myPositive( aCell.myPositive )
-{
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::SignedKhalimskyPreCell< dim, TInteger >::
-SignedKhalimskyPreCell( Point const& p, bool positive )
-  : myCoordinates( p )
-  , myPositive( positive )
-{
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::SignedKhalimskyPreCell< dim, TInteger > &
-DGtal::SignedKhalimskyPreCell< dim, TInteger >::
-operator=( const SignedKhalimskyPreCell & other )
-{
-  if ( this != &other )
-    {
-      myCoordinates = other.myCoordinates;
-      myPositive    = other.myPositive;
-    }
-  return *this;
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // CellDirectionIterator
@@ -574,37 +451,6 @@ KhalimskySpaceND()
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
-DGtal::KhalimskySpaceND< dim, TInteger>::
-KhalimskySpaceND( const KhalimskySpaceND & other )
- : Helper( other ),
-   myLower(other.myLower), myUpper(other.myUpper),
-   myCellLower(other.myCellLower), myCellUpper(other.myCellUpper)
-{
-  for ( DGtal::Dimension i = 0; i < dimension; ++i )
-    myClosure[ i ] = other.myClosure[ i ];
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger>
-inline
-DGtal::KhalimskySpaceND< dim, TInteger> &
-DGtal::KhalimskySpaceND< dim, TInteger>::
-operator= ( const KhalimskySpaceND & other )
-{
-  if ( this != &other )
-    {
-      Helper::operator= ( other );
-      myLower = other.myLower;
-      myUpper = other.myUpper;
-      myCellLower = other.myCellLower;
-      myCellUpper = other.myCellUpper;
-      for ( DGtal::Dimension i = 0; i < dimension; ++i )
-        myClosure[ i ] = other.myClosure[ i ];
-    }
-  return *this;
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger>
-inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 init( const Point & lower,
@@ -718,7 +564,7 @@ const typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell &
 DGtal::KhalimskySpaceND< dim, TInteger>::
 lowerCell() const
 {
-  return myCellLower;
+  return Cell( myCellLower );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -727,7 +573,7 @@ const typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell &
 DGtal::KhalimskySpaceND< dim, TInteger>::
 upperCell() const
 {
-  return myCellUpper;
+  return Cell( myCellUpper );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -857,9 +703,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( const Point & kp ) const
 {
-  Cell cell( this->updateKCoordsHelper( kp ) );
-  ASSERT( uIsValid(cell) );
-  return cell;
+  ASSERT( cIsInside( kp ) );
+  return Cell( this->updateKCoordsHelper( kp ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -868,11 +713,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( Point p, const PreCell & c ) const
 {
-  for ( DGtal::Dimension i = 0; i < dimension; ++i )
-    {
-      p[ i ] += p[ i ] + ( NumberTraits<Integer>::odd( c.myCoordinates[ i ] ) ? 1 : 0 );
-    }
-  return uCell( p );
+  return uCell( uPreCell( p, c ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -890,9 +731,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCell( const Point & kp, Sign sign ) const
 {
-  SCell cell( this->updateKCoordsHelper( kp ), sign == POS );
-  ASSERT( sIsValid( cell ) );
-  return cell;
+  ASSERT( cIsInside( kp ) );
+  return SCell( this->updateKCoordsHelper( kp ), sign == POS );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -901,9 +741,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCell( Point p, const SPreCell & c ) const
 {
-  for ( DGtal::Dimension i = 0; i < DIM; ++i )
-    p[ i ] += p[ i ] + ( NumberTraits<Integer>::odd( c.myCoordinates[ i ] ) ? 1 : 0 );
-  return sCell( p, c.myPositive );
+  return sCell( sPreCell( p, c ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -912,9 +750,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSpel( Point p ) const
 {
-  for ( DGtal::Dimension i = 0; i < DIM; ++i )
-    p[ i ] += p[ i ] + 1;
-  return uCell( p );
+  return uCell( uPreCell( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -923,9 +759,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSpel( Point p, Sign sign ) const
 {
-  for ( DGtal::Dimension i = 0; i < DIM; ++i )
-    p[ i ] += p[ i ] + 1;
-  return sCell( p, sign );
+  return sCell( sPreCell( p, sign ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -934,9 +768,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uPointel( Point p ) const
 {
-  for ( DGtal::Dimension i = 0; i < DIM; ++i )
-    p[ i ] += p[ i ];
-  return uCell( p );
+  return uCell( uPrePointel( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -945,9 +777,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sPointel( Point p, Sign sign ) const
 {
-  for ( DGtal::Dimension i = 0; i < DIM; ++i )
-    p[ i ] += p[ i ];
-  return sCell( p, sign );
+  return sCell( sPrePointel( p, sign ) );
 }
 //-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
