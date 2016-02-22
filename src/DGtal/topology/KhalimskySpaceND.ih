@@ -96,6 +96,22 @@ operator DGtal::KhalimskyPreCell< dim, TInteger >() const
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
 inline
+DGtal::KhalimskyCell< dim, TInteger >::
+operator DGtal::KhalimskyPreCell< dim, TInteger > const& () const
+{
+  return myPreCell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::KhalimskyCell< dim, TInteger >::
+operator DGtal::KhalimskyPreCell< dim, TInteger > & ()
+{
+  return myPreCell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
 bool
 DGtal::KhalimskyCell< dim, TInteger >::
 operator==( const KhalimskyCell & other ) const
@@ -173,6 +189,22 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::SignedKhalimskyCell< dim, TInteger >::
 operator DGtal::SignedKhalimskyPreCell< dim, TInteger >() const
+{
+  return mySPreCell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::SignedKhalimskyCell< dim, TInteger >::
+operator DGtal::SignedKhalimskyPreCell< dim, TInteger > const& () const
+{
+  return mySPreCell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::SignedKhalimskyCell< dim, TInteger >::
+operator DGtal::SignedKhalimskyPreCell< dim, TInteger > & ()
 {
   return mySPreCell;
 }
@@ -331,8 +363,8 @@ class KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >
 {
 private:
   // Private typedefs
-  typedef KhalimskySpaceND< dim, TInteger > KhalimskySpace;
-  typedef PointVector< dim, TInteger > Point;
+  using KhalimskySpace = KhalimskySpaceND< dim, TInteger >;
+  using Point = PointVector< dim, TInteger >;
 
   /// Returns derived mutable instance
   KhalimskySpace& derived()
@@ -365,12 +397,11 @@ public:
     }
 
   /** Modifies a khalimsky coordinate according to the dimension periodicity.
-   * @param aKCoord the coordinate to modify.
+   * @param[in,out] aKCoord the coordinate to modify.
    * @param d the coordinate dimension.
-   * @return the modified coordinate.
    */
   inline
-  typename Point::Coordinate updateKCoordHelper( typename Point::Coordinate aKCoord, DGtal::Dimension d ) const
+  void updateKCoordHelper( typename Point::Coordinate & aKCoord, DGtal::Dimension d ) const
     {
       if ( isDimensionPeriodicHelper( d ) )
         {
@@ -380,23 +411,79 @@ public:
               : derived().myCellLower.myCoordinates[ d ]
           );
         }
-      else
-        return aKCoord;
+    }
+
+  /** Returns a given khalimsky coordinate modified according to the dimension periodicity.
+   * @param[in] aKCoord the coordinate to modify.
+   * @param d the coordinate dimension.
+   * @returns the modified coordinate.
+   */
+  inline
+  typename Point::Coordinate returnKCoordHelper( typename Point::Coordinate aKCoord, DGtal::Dimension d ) const
+    {
+      updateKCoordHelper( aKCoord, d );
+      return aKCoord;
     }
 
   /** Modifies khalimsky coordinates of a point according to the dimension periodicity.
-   * @param aKCoords  the khalimksy coordinates.
-   * @return the modified coordinates.
+   * @param[in,out] aKCoords  the khalimksy coordinates.
    */
   inline
-  Point updateKCoordsHelper( Point aKCoords ) const
+  void updateKCoordsHelper( Point & aKCoords ) const
     {
       if ( isAnyDimensionPeriodicHelper() )
         {
           for ( DGtal::Dimension i = 0; i < dim; ++i )
-            aKCoords[ i ] = updateKCoordHelper( aKCoords[ i ], i );
+            updateKCoordHelper( aKCoords[ i ], i );
         }
+    }
+
+  /** Returns given khalimsky coordinates of a point modified according to the dimension periodicity.
+   * @param[in] aKCoords  the khalimksy coordinates.
+   */
+  inline
+  Point returnKCoordsHelper( Point aKCoords ) const
+    {
+      updateKCoordsHelper( aKCoords );
       return aKCoords;
+    }
+
+  /** Modifies a cell's khalimsky coordinate according to the dimension periodicity.
+   * @param[in,out] aCell an unsigned cell.
+   * @param d the coordinate dimension.
+   */
+  inline
+  void updateCellHelper( KhalimskySpace::Cell & aCell, DGtal::Dimension d ) const
+    {
+      updateKCoordHelper( aCell.myPreCell.myCoordinates[ d ], d );
+    }
+
+  /** Modifies a cell's khalimsky coordinates according to the dimension periodicity.
+   * @param[in,out] aCell an unsigned cell.
+   */
+  inline
+  void updateCellHelper( KhalimskySpace::Cell & aCell ) const
+    {
+      updateKCoordsHelper( aCell.myPreCell.myCoordinates );
+    }
+
+  /** Modifies a cell's khalimsky coordinate according to the dimension periodicity.
+   * @param[in,out] aCell a signed cell.
+   * @param d the coordinate dimension.
+   */
+  inline
+  void updateSCellHelper( KhalimskySpace::SCell & aCell, DGtal::Dimension d ) const
+    {
+      updateKCoordHelper( aCell.mySPreCell.myCoordinates[ d ], d );
+    }
+
+  /** Modifies a cell's khalimsky coordinates according to the dimension periodicity.
+   * @param[in,out] aCell a signed cell.
+   */
+  inline
+  void updateSCellHelper( KhalimskySpace::SCell & aCell ) const
+    {
+      updateKCoordsHelper( Cell.mySPreCell.myCoordinates );
     }
 
 public:
@@ -704,7 +791,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( const Point & kp ) const
 {
   ASSERT( cIsInside( kp ) );
-  return Cell( this->updateKCoordsHelper( kp ) );
+  return Cell( this->returnKCoordsHelper( kp ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -713,7 +800,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( Point p, const PreCell & c ) const
 {
-  return uCell( uPreCell( p, c ) );
+  return uCell( KhalimskyPreSpace::uPreCell( p, c ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -732,7 +819,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sCell( const Point & kp, Sign sign ) const
 {
   ASSERT( cIsInside( kp ) );
-  return SCell( this->updateKCoordsHelper( kp ), sign == POS );
+  return SCell( this->returnKCoordsHelper( kp ), sign == POS );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -741,7 +828,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCell( Point p, const SPreCell & c ) const
 {
-  return sCell( sPreCell( p, c ) );
+  return sCell( KhalimskyPreSpace::sPreCell( p, c ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -750,7 +837,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSpel( Point p ) const
 {
-  return uCell( uPreCell( p ) );
+  return uCell( KhalimskyPreSpace::uPreSpel( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -759,7 +846,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSpel( Point p, Sign sign ) const
 {
-  return sCell( sPreCell( p, sign ) );
+  return sCell( KhalimskyPreSpace::sPreSpel( p, sign ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -768,7 +855,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uPointel( Point p ) const
 {
-  return uCell( uPrePointel( p ) );
+  return uCell( KhalimskyPreSpace::uPrePointel( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -777,7 +864,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sPointel( Point p, Sign sign ) const
 {
-  return sCell( sPrePointel( p, sign ) );
+  return sCell( KhalimskyPreSpace::sPrePointel( p, sign ) );
 }
 //-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
@@ -788,8 +875,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uKCoord( const Cell & c, DGtal::Dimension k, bool correct ) const
 {
-  ASSERT( k < DIM );
-  return correct ? this->updateKCoordHelper( c.myCoordinates[ k ], k ) : c.myCoordinates[ k ];
+  const Integer coord = KhalimskyPreSpace::uKCoord( c, k );
+  return correct ? this->returnKCoordHelper( coord ) : coord;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -798,8 +885,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uCoord( const Cell & c, DGtal::Dimension k, bool correct ) const
 {
-  ASSERT( k < DIM );
-  return correct ? ( this->updateKCoordHelper( c.myCoordinates[ k ], k ) >> 1 ) : ( c.myCoordinates[ k ] >> 1 );
+  const Integer coord = uKCoord( c, k, correct );
+  return coord >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -808,7 +895,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uKCoords( const Cell & c, bool correct ) const
 {
-  return correct ? this->updateKCoordsHelper( c.myCoordinates ) : c.myCoordinates;
+  const Point coords = KhalimskyPreSpace::uKCoords( c );
+  return correct ? this->returnKCoordsHelper( coords ) : coords;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -829,8 +917,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sKCoord( const SCell & c, DGtal::Dimension k, bool correct ) const
 {
-  ASSERT( k < DIM );
-  return correct ? this->updateKCoordHelper( c.myCoordinates[ k ], k ) : c.myCoordinates[ k ];
+  const Integer coord = KhalimskyPreSpace::sKCoord( c, k );
+  return correct ? this->returnKCoordHelper( coord, k ) : coord;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -839,8 +927,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCoord( const SCell & c, DGtal::Dimension k, bool correct ) const
 {
-  ASSERT( k < DIM );
-  return correct ? ( this->updateKCoordHelper( c.myCoordinates[ k ], k ) >> 1 ) : ( c.myCoordinates[ k ] >> 1 );
+  const Point coord = sKCoord( c, k, correct );
+  return coord >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -849,7 +937,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sKCoords( const SCell & c, bool correct ) const
 {
-  return correct ? this->updateKCoordsHelper( c.myCoordinates ) : c.myCoordinates;
+  const Point coords = KhalimskyPreSpace::sKCoords( c );
+  return correct ? this->return KCoordsHelper( coords ) : coords;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -870,7 +959,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Sign
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSign( const SCell & c ) const
 {
-  return c.myPositive ? POS : NEG;
+  return KhalimskyPreSpace::sSign( c );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -879,7 +968,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 signs( const Cell & p, Sign s ) const
 {
-  return sCell( p.myCoordinates, s );
+  return sCell( KhalimskyPreSpace::signs( p, s ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -888,7 +977,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 unsigns( const SCell & p ) const
 {
-  return uCell( p.myCoordinates );
+  return uCell( KhalimskyPreSpace::unsigns( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -897,7 +986,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sOpp( const SCell & p ) const
 {
-  return sCell( p.myCoordinates, ! p.myPositive );
+  return sCell( KhalimskyPreSpace::sOpp( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -906,8 +995,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSetKCoord( Cell & c, DGtal::Dimension k, Integer i ) const
 {
-  ASSERT( k < DIM );
-  c.myCoordinates[ k ] = this->updateKCoordHelper( i, k );
+  KhalimskyPreSpace::uSetKCoord( c, k, i );
+  this->updateCellHelper( c, k );
   ASSERT( uIsValid(c) );
 }
 //-----------------------------------------------------------------------------
@@ -917,8 +1006,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetKCoord( SCell & c, DGtal::Dimension k, Integer i ) const
 {
-  ASSERT( k < DIM );
-  c.myCoordinates[ k ] = this->updateKCoordHelper( i, k );
+  KhalimskyPreSpace::sSetKCoord( c, k, i );
+  this->updateSCellHelper( c, k );
   ASSERT( sIsValid(c) );
 }
 //-----------------------------------------------------------------------------
@@ -928,8 +1017,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSetCoord( Cell & c, DGtal::Dimension k, Integer i ) const
 {
-  ASSERT( k < DIM );
-  c.myCoordinates[ k ] = this->updateKCoordHelper( 2 * i + ( NumberTraits<Integer>::odd( c.myCoordinates[ k ] ) ? 1 : 0 ), k );
+  KhalimskyPreSpace::uSetCoord( c, k, i );
+  this->updateCellHelper( c, k );
   ASSERT( uIsValid(c) );
 }
 //-----------------------------------------------------------------------------
@@ -939,8 +1028,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetCoord( SCell & c, DGtal::Dimension k, Integer i ) const
 {
-  ASSERT( k < DIM );
-  c.myCoordinates[ k ] = this->updateKCoordHelper( 2 * i + ( NumberTraits<Integer>::odd( c.myCoordinates[ k ] ) ? 1 : 0 ), k );
+  KhalimskyPreSpace::sSetCoord( c, k, i );
+  this->updateCellHelper( c, k );
   ASSERT( sIsValid(c) );
 }
 //-----------------------------------------------------------------------------
@@ -950,7 +1039,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSetKCoords( Cell & c, const Point & kp ) const
 {
-  c.myCoordinates = this->updateKCoordsHelper( kp );
+  KhalimskyPreSpace::uSetKCoords( c, kp );
+  this->updateCellHelper( c );
   ASSERT( uIsValid(c) );
 }
 //-----------------------------------------------------------------------------
@@ -960,7 +1050,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetKCoords( SCell & c, const Point & kp ) const
 {
-  c.myCoordinates = this->updateKCoordsHelper( kp );
+  KhalimskyPreSpace::sSetKCoords( c, kp );
+  this->updateSCellHelper( c );
   ASSERT( sIsValid(c) );
 }
 //-----------------------------------------------------------------------------
@@ -970,9 +1061,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSetCoords( Cell & c, const Point & p ) const
 {
-  for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    c.myCoordinates[ k ] = this->updateKCoordHelper( 2 * p[ k ] + ( NumberTraits<Integer>::odd( c.myCoordinates[ k ] ) ? 1 : 0 ), k );
-
+  KhalimskyPreSpace::uSetCoords( c, p );
+  this->updateCellHelper( c );
   ASSERT( uIsValid(c) );
 }
 //-----------------------------------------------------------------------------
@@ -982,9 +1072,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetCoords( SCell & c, const Point & p ) const
 {
-  for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    c.myCoordinates[ k ] = this->updateKCoordHelper( 2 * p[ k ] + ( NumberTraits<Integer>::odd( c.myCoordinates[ k ] ) ? 1 : 0 ), k );
-
+  KhalimskyPreSpace::sSetCoords( c, p );
+  this->updateSCellHelper( c );
   ASSERT( sIsValid(c) );
 }
 //-----------------------------------------------------------------------------
@@ -994,7 +1083,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetSign( SCell & c, Sign s ) const
 {
-  c.myPositive = ( s == POS );
+  KhalimskyPreSpace::sSetSign( c, s );
 }
 //-----------------------------------------------------------------------------
 // ------------------------- Cell topology services -----------------------
@@ -1003,96 +1092,72 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 TInteger
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uTopology( const PreCell & p ) const
+uTopology( const Cell & p ) const
 {
-  Integer i = NumberTraits<Integer>::ZERO;
-  Integer j = NumberTraits<Integer>::ONE;
-  for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    {
-      if ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) )
-        i |= j;
-      j *= 2;
-    }
-  return i;
+  return KhalimskyPreSpace::uTopology( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 TInteger
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sTopology( const SPreCell & p ) const
+sTopology( const SCell & p ) const
 {
-  Integer i = NumberTraits<Integer>::ZERO;
-  Integer j = NumberTraits<Integer>::ONE;
-  for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    {
-      if ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) )
-        i |= j;
-      j *= 2;
-    }
-  return i;
+  return KhalimskyPreSpace::sTopology( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 DGtal::Dimension
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uDim( const PreCell & p ) const
+uDim( const Cell & p ) const
 {
-  Integer i = NumberTraits<Integer>::ZERO;
-  for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    if ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) )
-      ++i;
-  return i;
+  return KhalimskyPreSpace::uDim( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 DGtal::Dimension
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sDim( const SPreCell & p ) const
+sDim( const SCell & p ) const
 {
-  Integer i = NumberTraits<Integer>::ZERO;
-  for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    if ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) )
-      ++i;
-  return i;
+  return KhalimskyPreSpace::sDim( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uIsSurfel( const PreCell & b ) const
+uIsSurfel( const Cell & b ) const
 {
-  return uDim( b ) == ( DIM - 1 );
+  return KhalimskyPreSpace::uIsSurfel( b );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sIsSurfel( const SPreCell & b ) const
+sIsSurfel( const SCell & b ) const
 {
- return sDim( b ) == ( DIM - 1 );
+  return KhalimskyPreSpace::sIsSurfel( b );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uIsOpen( const PreCell & p, DGtal::Dimension k ) const
+uIsOpen( const Cell & p, DGtal::Dimension k ) const
 {
-  return NumberTraits<Integer>::odd( p.myCoordinates[ k ] );
+  return KhalimskyPreSpace::uIsOpen( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sIsOpen( const SPreCell & p, DGtal::Dimension k ) const
+sIsOpen( const SCell & p, DGtal::Dimension k ) const
 {
-  return NumberTraits<Integer>::odd( p.myCoordinates[ k ] );
+  return KhalimskyPreSpace::sIsOpen( p, k );
 }
 
 //-----------------------------------------------------------------------------
@@ -1104,7 +1169,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::DirIterator
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uDirs( const Cell & p ) const
 {
-  return DirIterator( p, true );
+  return KhalimskyPreSpace::uDirs( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1113,7 +1178,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::DirIterator
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sDirs( const SCell & p ) const
 {
-  return DirIterator( p, true );
+  return KhalimskyPreSpace::sDirs( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1122,7 +1187,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::DirIterator
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uOrthDirs( const Cell & p ) const
 {
-  return DirIterator( p, false );
+  return KhalimskyPreSpace::uOrthDirs( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1131,7 +1196,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::DirIterator
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sOrthDirs( const SCell & p ) const
 {
-  return DirIterator( p, false );
+  return KhalimskyPreSpace::sOrthDirs( p );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1140,9 +1205,7 @@ DGtal::Dimension
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uOrthDir( const Cell & s ) const
 {
-  DirIterator it( s, false );
-  ASSERT( ! it.end() );
-  return *it;
+  return KhalimskyPreSpace::uOrthDir( s );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1151,9 +1214,7 @@ DGtal::Dimension
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sOrthDir( const SCell & s ) const
 {
-  DirIterator it( s, false );
-  ASSERT( ! it.end() );
-  return *it;
+  return KhalimskyPreSpace::sOrthDir( s );
 }
 //-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
@@ -1180,7 +1241,7 @@ uFirst( const PreCell & p ) const
 {
   Cell cell;
   for ( Dimension k = 0; k < dimension; ++k )
-    cell.myCoordinates[ k ] = uFirst( p, k );
+    KhalimskyPreSpace::uSetKCoord( cell, k, uFirst( p, k ) );
 
   return cell;
 }
@@ -1206,7 +1267,7 @@ uLast( const PreCell & p ) const
 {
   Cell cell;
   for ( Dimension k = 0; k < dimension; ++k )
-    cell.myCoordinates[ k ] = uLast( p, k );
+    KhalimskyPreSpace::uSetKCoord( cell, k, uLast( p, k ) );
 
   return cell;
 }
@@ -1215,12 +1276,12 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetIncr( Cell p, DGtal::Dimension k ) const
+uGetIncr( const Cell & p, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2, k );
-  ASSERT( uIsValid(p) );
-  return p;
+  Cell cell = KhalimskyPreSpace::uGetIncr( p, k );
+  this->updateCellHelper( cell, k );
+  ASSERT( uIsValid(cell) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1233,7 +1294,7 @@ uIsMax( const Cell & p, DGtal::Dimension k ) const
   ASSERT( uIsInside(p) );
   return
         ! this->isDimensionPeriodicHelper( k )
-    &&  p.myCoordinates[ k ] >= uLast( p, k );
+    &&  KhalimskyPreSpace::uKCoord( p, k ) >= uLast( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1284,8 +1345,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uGetMax( Cell p, DGtal::Dimension k ) const
 {
-  p.myCoordinates[ k ] = uLast( p, k );
-  ASSERT( uIsValid(p) );
+  KhalimskyPreSpace::uSetKCoord( p, k, uLast( p, k ) );
+  ASSERT( uIsValid( p ) );
   return p;
 }
 //-----------------------------------------------------------------------------
@@ -1293,11 +1354,12 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetDecr( Cell p, DGtal::Dimension k ) const
+uGetDecr( const Cell & p, DGtal::Dimension k ) const
 {
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] - 2, k );
-  ASSERT( uIsValid(p) );
-  return p;
+  Cell cell = KhalimskyPreSpace::uGetDecr( p, k );
+  this->updateCellHelper( cell, k );
+  ASSERT( uIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1309,7 +1371,7 @@ uIsMin( const Cell & p, DGtal::Dimension k ) const
   ASSERT( uIsInside(p) );
   return
         ! this->isDimensionPeriodicHelper( k )
-    &&  p.myCoordinates[ k ] <= uFirst( p, k );
+    &&  KhalimskyPreSpace::uKCoord( p, k ) <= uFirst( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1318,7 +1380,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uGetMin( Cell p, DGtal::Dimension k ) const
 {
-  p.myCoordinates[ k ] = uFirst( p, k );
+  KhalimskyPreSpace::uSetKCoord( p, k, uFirst( p, k ) );
   ASSERT( uIsValid(p) );
   return p;
 }
@@ -1327,23 +1389,24 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetAdd( Cell p, DGtal::Dimension k, Integer x ) const
+uGetAdd( const Cell & p, DGtal::Dimension k, Integer x ) const
 {
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2 * x, k );
-  ASSERT( uIsValid(p) );
-  return p;
+  Cell cell = KhalimskyPreSpace::uGetAdd( p, k, x );
+  this->updateCellHelper( cell, k );
+  ASSERT( uIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uGetSub( Cell p, DGtal::Dimension k, Integer x ) const
+uGetSub( const Cell & p, DGtal::Dimension k, Integer x ) const
 {
-  ASSERT( k < DIM );
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] - 2*x, k );
-  ASSERT( uIsValid(p) );
-  return p;
+  Cell cell = KhalimskyPreSpace::uGetSub( p, k, x );
+  this->updateCellHelper( cell, k );
+  ASSERT( uIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1354,7 +1417,7 @@ uDistanceToMax( const Cell & p, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
   ASSERT( uIsValid(p) );
-  return ( myCellUpper.myCoordinates[ k ] - p.myCoordinates[ k ] ) >> 1;
+  return ( myCellUpper.myCoordinates[ k ] - KhalimskyPreSpace::uKCoord( p, k ) ) >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1365,33 +1428,30 @@ uDistanceToMin( const Cell & p, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
   ASSERT( uIsValid(p) );
-  return ( p.myCoordinates[ k ] - myCellLower.myCoordinates[ k ] ) >> 1;
+  return ( KhalimskyPreSpace::uKCoord( p, k ) - myCellLower.myCoordinates[ k ] ) >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uTranslation( Cell p, const Vector & vec ) const
+uTranslation( const Cell & p, const Vector & vec ) const
 {
-  for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2 * vec[ k ], k);
-
-  ASSERT( uIsValid(p) );
-  return p;
+  Cell cell = KhalismkyPreSpace::uTranslation( p, vec );
+  this->updateCellHelper( cell );
+  ASSERT( uIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uProjection( Cell p, const Cell & bound, DGtal::Dimension k ) const
+uProjection( const Cell & p, const Cell & bound, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  ASSERT( uIsOpen(p, k) == uIsOpen(bound, k) );
-  p.myCoordinates[ k ] = bound.myCoordinates[ k ];
-  ASSERT( uIsValid(p) );
-  return p;
+  Cell cell = KhalimskyPreSpace::uProjection( p, bound, k );
+  ASSERT( uIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1400,10 +1460,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uProject( Cell & p, const Cell & bound, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  ASSERT( uIsOpen(p, k) == uIsOpen(bound, k) );
-  p.myCoordinates[ k ] = bound.myCoordinates[ k ];
-  ASSERT( uIsValid(p) );
+  KhalimskyPreSpace::uProject( p, bound, k );
+  ASSERT( uIsValid( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1418,25 +1476,28 @@ uNext( Cell & p, const Cell & lower, const Cell & upper ) const
   ASSERT( uTopology(p) == uTopology(lower)
       &&  uTopology(p) == uTopology(upper) );
 
+  using KPS = KhalimskyPreSpace;
+
   DGtal::Dimension k = NumberTraits<Dimension>::ZERO;
-  if ( uKCoord( p, k ) == uKCoord( upper, k ) )
+  if ( KPS::uKCoord( p, k ) == KPS::uKCoord( upper, k ) )
     {
       if ( p == upper ) return false;
-      uProject( p, lower, k );
+      KPS::uProject( p, lower, k );
+
       for ( k = 1; k < DIM; ++k )
         {
-          if ( uKCoord( p, k ) == uKCoord( upper, k ) )
-            uProject( p, lower, k );
+          if ( KPS::uKCoord( p, k ) == KPS::uKCoord( upper, k ) )
+            KPS::uProject( p, lower, k );
           else
             {
-              p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2, k );
+              KPS::uSetKCoord( p, k, this->returnKCoordHelper( KPS::uKCoord( p, k ) + 2, k ) );
               break;
             }
         }
       return true;
     }
 
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2, k );
+  KPS::uSetKCoord( p, k, this->returnKCoordHelper( KPS::uKCoord( p, k ) + 2, k ) );
   return true;
 }
 
@@ -1451,6 +1512,7 @@ DGtal::KhalimskySpaceND< dim, TInteger>::
 sFirst( const SPreCell & p, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
+
   return myClosure[ k ] == OPEN ?
         2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
       : 2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
@@ -1464,9 +1526,10 @@ sFirst( const SPreCell & p ) const
 {
   SCell cell;
   for ( Dimension k = 0; k < dimension; ++k )
-    cell.myCoordinates[ k ] = sFirst( p, k );
+    KhalimskyPreSPace::sSetKCoord( cell, k, sFirst( p, k ) );
 
-  cell.myPositive = p.myPositive;
+  KhalimskyPreSpace::sSetSign( cell, KhalimskyPreSpace::sSign( p ) );
+
   return cell;
 }
 //-----------------------------------------------------------------------------
@@ -1490,9 +1553,10 @@ sLast( const SPreCell & p ) const
 {
   SCell cell;
   for ( Dimension k = 0; k < dimension; ++k )
-    cell.myCoordinates[ k ] = sLast( p, k );
+    KhalimskyPreSpace::sSetKCoord( cell, k, sLast( p, k ) )
 
-  cell.myPositive = p.myPositive;
+  KhalimskyPreSpace::sSetSign( cell, KhalimskyPreSpace::sSign( p ) );
+
   return cell;
 }
 //-----------------------------------------------------------------------------
@@ -1500,12 +1564,12 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sGetIncr( SCell p, DGtal::Dimension k ) const
+sGetIncr( const SCell & p, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2, k );
-  ASSERT( sIsValid(p) );
-  return p;
+  SCell cell = KhalimskyPreSpace::sGetIncr( p, k );
+  this->updateSCellHelper( cell, k );
+  ASSERT( sIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1518,7 +1582,7 @@ sIsMax( const SCell & p, DGtal::Dimension k ) const
   ASSERT( sIsInside(p) );
   return
         ! this->isDimensionPeriodicHelper( k )
-    &&  p.myCoordinates[ k ] >= sLast( p, k );
+    &&  KhalimskyPreSpace::sKCoord( p, k ) >= sLast( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1545,8 +1609,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetMax( SCell p, DGtal::Dimension k ) const
 {
-  p.myCoordinates[ k ] = sLast( p, k );
-  ASSERT( sIsValid(p) );
+  KhalimskyPreSpace::sSetKCoord, p, k, sLast( p, k ) );
+  ASSERT( sIsValid( p ) );
   return p;
 }
 //-----------------------------------------------------------------------------
@@ -1554,12 +1618,12 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sGetDecr( SCell p, DGtal::Dimension k ) const
+sGetDecr( const SCell & p, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] - 2, k );
-  ASSERT( sIsValid(p) );
-  return p;
+  SCell cell = KhalimskyPreCell::sGetDecr( p, k );
+  this->updateSCellHelper( cell, k );
+  ASSERT( sIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1572,7 +1636,7 @@ sIsMin( const SCell & p, DGtal::Dimension k ) const
   ASSERT( sIsInside(p) );
   return
         ! this->isDimensionPeriodicHelper( k )
-    &&  p.myCoordinates[ k ] <= sFirst( p, k );
+    &&  KhalimskyPreSpace::sKCoord( p, k ) <= sFirst( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1581,9 +1645,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetMin( SCell p, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  p.myCoordinates[ k ] = sFirst( p, k );
-  ASSERT( sIsValid(p) );
+  KhalimskyPreSpace::sSetKCoord( p, k ) = sFirst( p, k );
+  ASSERT( sIsValid( p ) );
   return p;
 }
 //-----------------------------------------------------------------------------
@@ -1591,24 +1654,24 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sGetAdd( SCell p, DGtal::Dimension k, Integer x ) const
+sGetAdd( const SCell & p, DGtal::Dimension k, Integer x ) const
 {
-  ASSERT( k < DIM );
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2*x, k );
-  ASSERT( sIsValid(p) );
-  return p;
+  SCell cell = KhalimskyPreSpace::sGetAdd( p, k, x );
+  this->updateSCellHelper( cell, k );
+  ASSERT( sIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sGetSub( SCell p, DGtal::Dimension k, Integer x ) const
+sGetSub( const SCell & p, DGtal::Dimension k, Integer x ) const
 {
-  ASSERT( k < DIM );
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] - 2*x, k );
-  ASSERT( sIsValid(p) );
-  return p;
+  SCell cell = KhalimskyPreCell::sGetSub( p, k, x );
+  this->updateSCellHelper( cell, k );
+  ASSERT( sIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1618,8 +1681,8 @@ DGtal::KhalimskySpaceND< dim, TInteger >::
 sDistanceToMax( const SCell & p, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
-  ASSERT( sIsValid(p) );
-  return ( myCellUpper.myCoordinates[ k ] - p.myCoordinates[ k ] ) >> 1;
+  ASSERT( sIsValid( p ) );
+  return ( myCellUpper.myCoordinates[ k ] - KhalimskyPreSpace::sKCoord( p, k ) ) >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1629,34 +1692,31 @@ DGtal::KhalimskySpaceND< dim, TInteger >::
 sDistanceToMin( const SCell & p, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
-  ASSERT( sIsValid(p) );
-  return ( p.myCoordinates[ k ] - myCellLower.myCoordinates[ k ] ) >> 1;
+  ASSERT( sIsValid( p ) );
+  return ( KhalimskyPreSpace::sKCoord( p, k ) - myCellLower.myCoordinates[ k ] ) >> 1;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sTranslation( SCell p, const Vector & vec ) const
+sTranslation( const SCell & p, const Vector & vec ) const
 {
-  for ( DGtal::Dimension k = 0; k < DIM; ++k )
-    p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2 * vec[ k ], k );
-
-  ASSERT( sIsValid(p) );
-  return p;
+  SCell cell = KhalimskyPreSpace::sTranslation( p, vec );
+  this->updateSCellHelper( cell );
+  ASSERT( sIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sProjection( SCell p, const SCell & bound, DGtal::Dimension k ) const
+sProjection( const SCell & p, const SCell & bound, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  ASSERT( sIsOpen(p, k) == sIsOpen(bound, k) );
-  p.myCoordinates[ k ] = bound.myCoordinates[ k ];
-  ASSERT( sIsValid(p) );
-  return p;
+  SCell cell = KhalimskyPreSpace::sProjection( p, bound, k );
+  ASSERT( sIsValid( cell ) );
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1665,10 +1725,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sProject( SCell & p, const SCell & bound, DGtal::Dimension k ) const
 {
-  ASSERT( k < DIM );
-  ASSERT( sIsOpen(p, k) == sIsOpen(bound, k) );
-  p.myCoordinates[ k ] = bound.myCoordinates[ k ];
-  ASSERT( sIsValid(p) );
+  KhalimskyPreSpace::sProject( p, bound, k );
+  ASSERT( sIsValid( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1683,25 +1741,28 @@ sNext( SCell & p, const SCell & lower, const SCell & upper ) const
   ASSERT( sTopology(p) == sTopology(lower)
       &&  sTopology(p) == sTopology(upper) );
 
+  using KPS = KhalimskyPreSpace;
+
   DGtal::Dimension k = NumberTraits<Dimension>::ZERO;
-  if ( sCoord( p, k ) == sCoord( upper, k ) )
+  if ( KPS::sKCoord( p, k ) == KPS::sKCoord( upper, k ) )
     {
       if ( p == upper ) return false;
-      sProject( p, lower, k );
+      KPS::sProject( p, lower, k );
+
       for ( k = 1; k < DIM; ++k )
         {
-          if ( sCoord( p, k ) == sCoord( upper, k ) )
-            sProject( p, lower, k );
+          if ( KPS::sKCoord( p, k ) == KPS::sKCoord( upper, k ) )
+            KPS::sProject( p, lower, k );
           else
             {
-              p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2, k );
+              KPS::sSetKCoord( p, k, this->returnKCoordHelper( KPS::sKCoord( p, k ) + 2, k ) );
               break;
             }
         }
       return true;
     }
 
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ] + 2, k );
+  KPS::sSetKCoord( p, k, this->returnKCoordHelper( KPS::sKCoord( p, k ) + 2, k ) );
   return true;
 }
 
@@ -1816,44 +1877,34 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::Cell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-uIncident( Cell c, DGtal::Dimension k, bool up ) const
+uIncident( const Cell & c, DGtal::Dimension k, bool up ) const
 {
   ASSERT( k < dim );
   ASSERT( uIsValid(c) );
   ASSERT( this->isDimensionPeriodicHelper( k ) || ( ! up ) || ( uKCoord( c, k ) < uKCoord( myCellUpper, k ) ) );
   ASSERT( this->isDimensionPeriodicHelper( k ) || (   up ) || ( uKCoord( myCellLower, k ) < uKCoord( c, k ) ) );
 
-  if ( up ) ++c.myCoordinates[ k ];
-  else      --c.myCoordinates[ k ];
+  Cell cell = KhalimskyPreSpace::uIncident( c, k, up );
+  this->updateCellHelper( cell, k );
 
-  c.myCoordinates[ k ] = this->updateKCoordHelper( c.myCoordinates[ k ], k );
-
-  return c;
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sIncident( SCell c, DGtal::Dimension k, bool up ) const
+sIncident( const SCell & c, DGtal::Dimension k, bool up ) const
 {
   ASSERT( k < dim );
   ASSERT( sIsValid(c) );
   ASSERT( this->isDimensionPeriodicHelper( k ) || ( ! up ) || ( sKCoord( c, k ) < uKCoord( myCellUpper, k ) ) );
   ASSERT( this->isDimensionPeriodicHelper( k ) || (   up ) || ( uKCoord( myCellLower, k ) < sKCoord( c, k ) ) );
 
-  bool sign = up ? c.myPositive : ! c.myPositive;
-  for ( DGtal::Dimension i = 0; i <= k; ++i )
-    if ( sIsOpen( c, i ) )
-      sign = ! sign;
-  c.myPositive = sign;
+  SCell cell = KhalimskyPreSpace::sIncident( c, k, up );
+  this->updateCellHelper( cell, k );
 
-  if ( up ) ++c.myCoordinates[ k ];
-  else      --c.myCoordinates[ k ];
-
-  c.myCoordinates[ k ] = this->updateKCoordHelper( c.myCoordinates[ k ], k );
-
-  return c;
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1876,9 +1927,9 @@ uLowerIncident( const Cell & c ) const
       else
         {
           const Integer x = uKCoord( c, k );
-          if ( uKCoord( myCellLower, k ) < x )
+          if ( KhalimskyPreSpace::uKCoord( myCellLower, k ) < x )
             N.push_back( uIncident( c, k, false ) );
-          if ( x < uKCoord( myCellUpper, k ) )
+          if ( x < KhalimskyPreSpace::uKCoord( myCellUpper, k ) )
             N.push_back( uIncident( c, k, true ) );
         }
     }
@@ -1905,9 +1956,9 @@ uUpperIncident( const Cell & c ) const
       else
         {
           const Integer x = uKCoord( c, k );
-          if ( uKCoord( myCellLower, k ) < x )
+          if ( KhalimskyPreSpace::uKCoord( myCellLower, k ) < x )
             N.push_back( uIncident( c, k, false ) );
-          if ( x < uKCoord( myCellUpper, k ) )
+          if ( x < KhalimskyPreSpace::uKCoord( myCellUpper, k ) )
             N.push_back( uIncident( c, k, true ) );
         }
     }
@@ -1934,9 +1985,9 @@ sLowerIncident( const SCell & c ) const
       else
         {
           const Integer x = sKCoord( c, k );
-          if ( uKCoord( myCellLower, k ) < x )
+          if ( KhalimskyPreSpace::uKCoord( myCellLower, k ) < x )
             N.push_back( sIncident( c, k, false ) );
-          if ( x < uKCoord( myCellUpper, k ) )
+          if ( x < KhalimskyPreSpace::uKCoord( myCellUpper, k ) )
             N.push_back( sIncident( c, k, true ) );
         }
     }
@@ -1963,9 +2014,9 @@ sUpperIncident( const SCell & c ) const
       else
         {
           const Integer x = sKCoord( c, k );
-          if ( uKCoord( myCellLower, k ) < x )
+          if ( KhalimskyPreSpace::uKCoord( myCellLower, k ) < x )
             N.push_back( sIncident( c, k, false ) );
-          if ( x < uKCoord( myCellUpper, k ) )
+          if ( x < KhalimskyPreSpace::uKCoord( myCellUpper, k ) )
             N.push_back( sIncident( c, k, true ) );
         }
     }
@@ -1978,6 +2029,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger >::
 uAddFaces( Cells& faces, const Cell& c, Dimension axis ) const
 {
+  using KPS = KhalimskyPreSpace;
+
   const DGtal::Dimension dim_of_c = uDim( c );
   if ( axis >= dim_of_c ) return;
 
@@ -1985,9 +2038,9 @@ uAddFaces( Cells& faces, const Cell& c, Dimension axis ) const
   for ( Dimension i = 0; i < axis; ++i ) ++q;
 
   // We test incident cells existence within the current Khalimsky space.
-  const Integer x = uKCoord( c, *q );
-  bool has_f1 = this->isDimensionPeriodicHelper( *q ) || uKCoord( myCellLower, *q ) < x ;
-  bool has_f2 = this->isDimensionPeriodicHelper( *q ) || x < uKCoord( myCellUpper, *q ) ;
+  const Integer x = KPS::uKCoord( c, *q );
+  bool has_f1 = this->isDimensionPeriodicHelper( *q ) || KPS::uKCoord( myCellLower, *q ) < x ;
+  bool has_f2 = this->isDimensionPeriodicHelper( *q ) || x < KPS::uKCoord( myCellUpper, *q ) ;
 
   Cell f1, f2;
   if ( has_f1 ) f1 = uIncident( c, *q, false );
@@ -2008,6 +2061,8 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger >::
 uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const
 {
+  using KPS = KhalimskyPreSpace;
+
   const DGtal::Dimension dim_of_c = uDim( c );
   if ( axis >= dimension - dim_of_c ) return;
 
@@ -2015,9 +2070,9 @@ uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const
   for ( Dimension i = 0; i < axis; ++i ) ++q;
 
   // We test incident cells existence within the current Khalimsky space.
-  const Integer x = uKCoord( c, *q );
-  bool has_f1 = this->isDimensionPeriodicHelper( *q ) || uKCoord( myCellLower, *q ) < x ;
-  bool has_f2 = this->isDimensionPeriodicHelper( *q ) || x < uKCoord( myCellUpper, *q ) ;
+  const Integer x = KPS::uKCoord( c, *q );
+  bool has_f1 = this->isDimensionPeriodicHelper( *q ) || KPS::uKCoord( myCellLower, *q ) < x ;
+  bool has_f2 = this->isDimensionPeriodicHelper( *q ) || x < KPS::uKCoord( myCellUpper, *q ) ;
 
   Cell f1, f2;
   if ( has_f1 ) f1 = uIncident( c, *q, false );
@@ -2064,68 +2119,45 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sDirect( const SCell & p, DGtal::Dimension k ) const
 {
-  ASSERT( k < dim );
-
-  bool sign = p.myPositive;
-  for ( DGtal::Dimension i = 0; i <= k; ++i )
-    if ( sIsOpen( p, i ) )
-      sign = ! sign;
-  return sign;
+  return KhalimskyPreSPace::sDirect( p, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sDirectIncident( SCell p, DGtal::Dimension k ) const
+sDirectIncident( const SCell & p, DGtal::Dimension k ) const
 {
+  using KPS = KhalimskyPreSpace;
+
   ASSERT( k < dim );
   ASSERT( sIsValid(p) );
+  ASSERT( this->isDimensionPeriodicHelper( k ) || ( ! KPS::sDirect( p, k ) ) || ( KPS::sKCoord( p, k ) < KPS::uKCoord( myCellUpper, k ) ) );
+  ASSERT( this->isDimensionPeriodicHelper( k ) || (   KPS::sDirect( p, k ) ) || ( KPS::uKCoord( myCellLower, k ) < KPS::sKCoord( p, k ) ) );
 
-  bool sign = p.myPositive;
-  for ( DGtal::Dimension i = 0; i <= k; ++i )
-    if ( sIsOpen( p, i ) )
-      sign = ! sign;
+  SCell cell = KPS::sDirectIncident( p, k );
+  this->updateSCellHelper( cell, k );
 
-  bool up = sign;
-  p.myPositive = POS;
-
-  ASSERT( this->isDimensionPeriodicHelper( k ) || ( ! up ) || ( sKCoord( p, k ) < uKCoord( myCellUpper, k ) ) );
-  ASSERT( this->isDimensionPeriodicHelper( k ) || (   up ) || ( uKCoord( myCellLower, k ) < sKCoord( p, k ) ) );
-
-  if ( up )  ++p.myCoordinates[ k ];
-  else  --p.myCoordinates[ k ];
-
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ], k );
-
-  return p;
+  return cell;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
-sIndirectIncident( SCell p, DGtal::Dimension k ) const
+sIndirectIncident( const SCell & p, DGtal::Dimension k ) const
 {
+  using KPS = KhalimskyPreCell;
+
   ASSERT( k < dim );
   ASSERT( sIsValid(p) );
+  ASSERT( this->isDimensionPeriodicHelper( k ) || (   KPS::sDirect( p, k ) ) || ( sKCoord( p, k ) < uKCoord( myCellUpper, k ) ) );
+  ASSERT( this->isDimensionPeriodicHelper( k ) || ( ! KPS::sDirect( p, k ) ) || ( uKCoord( myCellLower, k ) < sKCoord( p, k ) ) );
 
-  bool sign = p.myPositive;
-  for ( DGtal::Dimension i = 0; i <= k; ++i )
-    if ( sIsOpen( p, i ) )
-      sign = ! sign;
+  SCell cell = KPS::sIndirectIncident( p, k );
+  this->updateSCellHelper( cell, k );
 
-  bool up = ! sign;
-  p.myPositive = NEG;
-  ASSERT( this->isDimensionPeriodicHelper( k ) || ( ! up ) || ( sKCoord( p, k ) < uKCoord( myCellUpper, k ) ) );
-  ASSERT( this->isDimensionPeriodicHelper( k ) || (   up ) || ( uKCoord( myCellLower, k ) < sKCoord( p, k ) ) );
-
-  if ( up ) ++p.myCoordinates[ k ];
-  else --p.myCoordinates[ k ];
-
-  p.myCoordinates[ k ] = this->updateKCoordHelper( p.myCoordinates[ k ], k );
-
-  return p;
+  return cell;
 }
 
 
