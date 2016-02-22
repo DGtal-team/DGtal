@@ -54,13 +54,22 @@
 
 namespace DGtal
 {
+  /////////////////////////////////////////////////////////////////////////////
   // Pre-declaration
-  template < 
+  template <
       Dimension dim,
       typename TInteger = DGtal::int32_t
   >
   class KhalimskySpaceND;
 
+  /////////////////////////////////////////////////////////////////////////////
+  /** Internal class of KhalimskySpaceND that provides some optimizations
+   * depending on the space type.
+   */
+  template < class TKhalimskySpace >
+  class KhalimskySpaceNDHelper;
+
+  /////////////////////////////////////////////////////////////////////////////
   /**
    * @brief Represents an (unsigned) cell in a cellular grid space by its
    * Khalimsky coordinates.
@@ -75,7 +84,6 @@ namespace DGtal
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
-    friend class KhalimskySpace< dim, TInteger >;
 
     // Aliases
   public:
@@ -83,7 +91,13 @@ namespace DGtal
     using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
     using Point   = PointVector< dim, Integer >;
     using PreCell = KhalimskyPreCell< dim, Integer >;
+    using KhalimskySpace = KhalimskySpaceND< dim, TInteger >;
+    using KhalimskyPreSpace = KhalimskyPreSpaceND< dim, TInteger >;
     using Self    = KhalimskyCell< dim, Integer >;
+
+    // Friendship
+    friend class KhalimskySpace;
+    friend class KhalimskySpaceNDHelper< KhalimskySpace >;
 
   private:
     // Underlying pre-cell
@@ -107,10 +121,19 @@ namespace DGtal
      */
     explicit KhalimksyCell( const PreCell & aCell );
 
+    // Conversion operators.
   public:
-    /// Explicit conversion to KhalimskyPreCell.
-    explicit operator PreCell() const;
+    /// Constant conversion to KhalimskyPreCell.
+    operator PreCell() const;
 
+    /// Constant conversion to KhalimskyPreCell.
+    operator PreCell const& () const;
+
+  private:
+    /// Mutable conversion to KhalimskyPreCell.
+    operator PreCell & ();
+
+  public:
     /** Copy constructor.
      * @param other any other cell.
      */
@@ -172,6 +195,7 @@ namespace DGtal
               const KhalimskyCell< dim, TInteger > & object );
 
 
+  /////////////////////////////////////////////////////////////////////////////
   /**
    * @brief Represents a signed cell in a cellular grid space by its
    * Khalimsky coordinates and a boolean value.
@@ -185,15 +209,19 @@ namespace DGtal
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
-    friend class KhalimskySpaceND< dim, TInteger >;
-
     // Aliases
   public:
     using Integer = TInteger;
     using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
     using Point   = PointVector< dim, Integer >;
     using SPreCell = SignedKhalimskyPreCell< dim, Integer >;
+    using KhalimskySpace = KhalimskySpaceND< dim, TInteger >;
+    using KhalimskyPreSpace = KhalimskyPreSpaceND< dim, TInteger >;
     using Self    = SignedKhalimskyCell< dim, Integer >;
+
+    // Friendship
+    friend class KhalimskySpace;
+    friend class KhalimskySpaceNDHelper< KhalimskySpace >;
 
   private:
     // Underlying signed pre-cell
@@ -211,16 +239,26 @@ namespace DGtal
      * @param positive if cell has positive sign.
      */
     explicit SignedKhalimskyCell( const Point & aPoint, bool positive );
-    
-    /**
+
+    /**²
      * Explicit constructor from a SignedKhalimskyPreCell.
      * @param aCell a pre-cell.
      */
     explicit KhalimksyCell( const SPreCell & aCell );
 
+    // Conversion operators.
   public:
-    /// Explicit conversion to KhalimskyiSignedPreCell.
-    explicit operator SPreCell() const;
+    /// Constant conversion to KhalimskySignedPreCell.
+    operator SPreCell() const;
+
+    /// Constant conversion to KhalimskySignedPreCell.
+    operator SPreCell const& () const;
+
+  private:
+    /// Mutable conversion to KhalimskySignedPreCell.
+    operator SPreCell & ();
+
+  public:
 
     /** Copy constructor.
      * @param other any other cell.
@@ -282,12 +320,6 @@ namespace DGtal
   operator<<( std::ostream & out,
               const SignedKhalimskyCell< dim, TInteger > & object );
 
-  /////////////////////////////////////////////////////////////////////////////
-  /** Internal class of KhalimskySpaceND that provides some optimizations
-   * depending on the space type.
-   */
-  template < class TKhalimskySpace >
-  class KhalimskySpaceNDHelper;
 
   /////////////////////////////////////////////////////////////////////////////
   // template class KhalimskySpaceND
@@ -356,7 +388,7 @@ namespace DGtal
    * Therefore, there is no guarantee that it is compatible with the whole DGtal library.
    *
   */
-  template < 
+  template <
       Dimension dim,
       typename TInteger = DGtal::int32_t
   >
@@ -377,7 +409,7 @@ namespace DGtal
 
     ///Type used to represent sizes in the digital space.
     typedef typename NumberTraits<Integer>::UnsignedVersion Size;
-    
+
     // Spaces
     typedef SpaceND<dim, Integer> Space;
     typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
@@ -421,28 +453,27 @@ namespace DGtal
     // Sets, Maps
     /// Preferred type for defining a set of Cell(s).
     typedef std::set<Cell> CellSet;
-    
+
     /// Preferred type for defining a set of SCell(s).
     typedef std::set<SCell> SCellSet;
-    
+
     /// Preferred type for defining a set of surfels (always signed cells).
     typedef std::set<SCell> SurfelSet;
-    
+
     /// Template rebinding for defining the type that is a mapping
     /// Cell -> Value.
-    template <typename Value> 
+    template <typename Value>
     using CellMap = std::map<Cell,Value>;
-    
+
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
-    template <typename Value> 
+    template <typename Value>
     using SCellMap = std::map<SCell,Value>;
-    
+
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
-    template <typename Value> 
+    template <typename Value>
     using SurfelMap = std::map<SCell,Value>;
-    };
 
     /// Boundaries closure type
     enum Closure
@@ -1381,7 +1412,7 @@ namespace DGtal
      * @pre `uIsValid(p)` and not `uIsMax(p)`.
      * @post `uIsValid(uGetIncr(p, k))` is \a true.
      */
-    Cell uGetIncr( Cell p, Dimension k ) const;
+    Cell uGetIncr( const Cell & p, Dimension k ) const;
 
     /** Useful to check if you are going out of the space.
      *
@@ -1450,7 +1481,7 @@ namespace DGtal
      * @pre  `uIsValid(p)` and not `uIsMin(p)`.
      * @post `uIsValid(uGetDecr(p, k))` is \a true.
      */
-    Cell uGetDecr( Cell p, Dimension k ) const;
+    Cell uGetDecr( const Cell & p, Dimension k ) const;
 
     /** Useful to check if you are going out of the space.
      * @param p any cell.
@@ -1483,7 +1514,7 @@ namespace DGtal
      * @pre `uIsValid(p)` and ( `x <= uDistanceToMax(p, k)` or `isSpacePeriodic(k)` ).
      * @post `uIsValid(uGetAdd(p, k, x))` is \a true.
      */
-    Cell uGetAdd( Cell p, Dimension k, Integer x ) const;
+    Cell uGetAdd( const Cell & p, Dimension k, Integer x ) const;
 
     /**
      * @param p any cell.
@@ -1523,7 +1554,7 @@ namespace DGtal
      * @pre  `uIsValid(p, k)` and ( `uDistanceToMin(p, k) <= vec[k] <= uDistanceToMax(p, k) or isPeriodicSpace(k) )` for each dimension \a k.
      * @post `uIsValid(uTranslation(p, vec))` is \a true.
      */
-    Cell uTranslation( Cell p, const Vector & vec ) const;
+    Cell uTranslation( const Cell & p, const Vector & vec ) const;
 
     /** Return the projection of [p] along the [k]th direction toward
      *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
@@ -1535,7 +1566,7 @@ namespace DGtal
      * @pre  `uIsValid(p)` and `uIsValid(bound)` and `uIsOpen(p, k) == uIsOpen(bound, k)`
      * @post `uIsValid(uProjection(p, bound, k))` and `uTopology(p) == uTopology(uProjection(p, bound, k))`.
      */
-    Cell uProjection( Cell p, const Cell & bound, Dimension k ) const;
+    Cell uProjection( const Cell & p, const Cell & bound, Dimension k ) const;
 
     /** Projects [p] along the [k]th direction toward
      *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards
@@ -1615,7 +1646,7 @@ namespace DGtal
      * @pre `sIsValid(p)` and not `sIsMax(p)`.
      * @post `sIsValid(sGetIncr(p, k))` is \a true.
      */
-    SCell sGetIncr( SCell p, Dimension k ) const;
+    SCell sGetIncr( const SCell & p, Dimension k ) const;
 
     /** Useful to check if you are going out of the space.
      * @param p any cell.
@@ -1662,7 +1693,7 @@ namespace DGtal
      * @pre  `sIsValid(p)` and not `sIsMin(p)`.
      * @post `sIsValid(sGetDecr(p, k))` is \a true.
      */
-    SCell sGetDecr( SCell p, Dimension k ) const;
+    SCell sGetDecr( const SCell & p, Dimension k ) const;
 
     /** Useful to check if you are going out of the space.
      *
@@ -1694,7 +1725,7 @@ namespace DGtal
      * @pre `sIsValid(p)` and ( `x <= sDistanceToMax(p, k)` or `isSpacePeriodic(k)` ).
      * @post `sIsValid(sGetAdd(p, k, x))` is \a true.
      */
-    SCell sGetAdd( SCell p, Dimension k, Integer x ) const;
+    SCell sGetAdd( const SCell & p, Dimension k, Integer x ) const;
 
     /**
      * @param p any cell.
@@ -1705,7 +1736,7 @@ namespace DGtal
      * @pre suIsValid(p)` and ( `x <= sDistanceToMin(p, k)` or `isSpacePeriodic(k)` ).
      * @post `sIsValid(sGetSub(p, k, x))` is \a true.
      */
-    SCell sGetSub( SCell p, Dimension k, Integer x ) const;
+    SCell sGetSub( const SCell & p, Dimension k, Integer x ) const;
 
     /** Useful to check if you are going out of the space (for non-periodic dimensions).
      *
@@ -1734,7 +1765,7 @@ namespace DGtal
      * @pre  `sIsValid(p, k)` and ( `sDistanceToMin(p, k) <= vec[k] <= sDistanceToMax(p, k) or isPeriodicSpace(k) )` for each dimension \a k.
      * @post `sIsValid(sTranslation(p, vec))` is \a true.
      */
-    SCell sTranslation( SCell p, const Vector & vec ) const;
+    SCell sTranslation( const SCell & p, const Vector & vec ) const;
 
     /** Return the projection of [p] along the [k]th direction toward
      *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
@@ -1746,7 +1777,7 @@ namespace DGtal
      * @pre  `sIsValid(p)` and `sIsValid(bound)` and `sIsOpen(p, k) == sIsOpen(bound, k)`
      * @post `sIsValid(sProjection(p, bound, k))` and `sTopology(p) == sTopology(sProjection(p, bound, k))`.
      */
-    SCell sProjection( SCell p, const SCell & bound, Dimension k ) const;
+    SCell sProjection( const SCell & p, const SCell & bound, Dimension k ) const;
 
     /** Projects [p] along the [k]th direction toward
      *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
@@ -1882,7 +1913,7 @@ namespace DGtal
      * @pre  `uIsValid(c)` and the cell should have an incident cell in this direction/orientation.
      * @post `uIsValid(uIncident(c, k, up))` is \a true.
      */
-    Cell uIncident( Cell c, Dimension k, bool up ) const;
+    Cell uIncident( const Cell & c, Dimension k, bool up ) const;
 
     /**
      * @param c any signed cell.
@@ -1899,7 +1930,7 @@ namespace DGtal
      * @pre  `sIsValid(c)` and the cell should have an incident cell in this direction/orientation.
      * @post `sIsValid(sIncident(c, k, up))` is \a true.
      */
-    SCell sIncident( SCell c, Dimension k, bool up ) const;
+    SCell sIncident( const SCell & c, Dimension k, bool up ) const;
 
     /**
      * @param c any unsigned cell.
@@ -1976,7 +2007,7 @@ namespace DGtal
      * @post `sIsValid(c)` is \a true for every returned cell \a c.
 ose sign is positive).
      */
-    SCell sDirectIncident( SCell p, Dimension k ) const;
+    SCell sDirectIncident( const SCell & p, Dimension k ) const;
 
     /**
      * @param p any signed cell.
