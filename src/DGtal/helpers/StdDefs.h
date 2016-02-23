@@ -50,6 +50,7 @@
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/KhalimskyPreSpaceND.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
@@ -79,6 +80,12 @@ namespace DGtal
     typedef KSpace::SCell SCell;
     typedef KSpace::Cells Cells;
     typedef KSpace::SCells SCells;
+    typedef KhalimskyPreSpaceND< 2, Integer > KPreSpace;
+    typedef KPreSpace KP2;
+    typedef KPreSpace::Cell PreCell;
+    typedef KPreSpace::SCell SPreCell;
+    typedef KPreSpace::Cells PreCells;
+    typedef KPreSpace::SCells SPreCells;
     /** Standard 4-neighborhood for a 2D digital space. */
     typedef MetricAdjacency< Space, 1> Adj4;
     /** Standard 8-neighborhood for a 2D digital space. */
@@ -142,6 +149,12 @@ namespace DGtal
     typedef KSpace::SCell SCell;
     typedef KSpace::Cells Cells;
     typedef KSpace::SCells SCells;
+    typedef KhalimskyPreSpaceND< 3, Integer > KPreSpace;
+    typedef KPreSpace KP3;
+    typedef KPreSpace::Cell   PreCell;
+    typedef KPreSpace::SCell  SPreCell;
+    typedef KPreSpace::Cells  PreCells;
+    typedef KPreSpace::SCells SPreCells;
     /** Standard 6-neighborhood for a 3D digital space. */
     typedef MetricAdjacency< Space, 1> Adj6;
     /** Standard 18-neighborhood for a 3D digital space. */
