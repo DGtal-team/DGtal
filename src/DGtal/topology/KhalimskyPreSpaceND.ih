@@ -297,8 +297,6 @@ find()
       ++myDir;
 }
 
-} // namespace DGtal
-
 ///////////////////////////////////////////////////////////////////////////////
 // KhalimskyPreSpaceND
 ///////////////////////////////////////////////////////////////////////////////
@@ -309,7 +307,7 @@ typename DGtal::KhalimskyPreSpaceND< dim, TInteger>::PreCell
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 uPreCell( const Point & kp )
 {
-  return { kp };
+  return PreCell( kp );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -331,7 +329,7 @@ typename DGtal::KhalimskyPreSpaceND< dim, TInteger>::SPreCell
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 sPreCell( const Point & kp, Sign sign )
 {
-  return { kp, sign == POS };
+  return SPreCell( kp, sign == POS );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -465,7 +463,7 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskyPreSpaceND< dim, TInteger>::Point
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
-sCoords( const SPreCell & c, bool correct )
+sCoords( const SPreCell & c )
 {
   Point dp = sKCoords( c );
   for ( DGtal::Dimension i = 0; i < DIM; ++i )
@@ -827,7 +825,7 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 void
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
-uProject( PreCell & p, const PreCell & bound, DGtal::Dimension k ) const
+uProject( PreCell & p, const PreCell & bound, DGtal::Dimension k )
 {
   ASSERT( k < DIM );
   ASSERT( uIsOpen(p, k) == uIsOpen(bound, k) );
@@ -1172,7 +1170,7 @@ uAddFaces( PreCells& faces, const PreCell& c, Dimension axis )
   const DGtal::Dimension dim_of_c = uDim( c );
   if ( axis >= dim_of_c ) return;
 
-  DirIterator q = uDirs( c );
+  PreDirIterator q = uDirs( c );
   for ( Dimension i = 0; i < axis; ++i ) ++q;
 
   const Integer x = uKCoord( c, *q );
@@ -1198,7 +1196,7 @@ uAddCoFaces( PreCells& cofaces, const PreCell& c, Dimension axis )
   const DGtal::Dimension dim_of_c = uDim( c );
   if ( axis >= dimension - dim_of_c ) return;
 
-  DirIterator q = uOrthDirs( c );
+  PreDirIterator q = uOrthDirs( c );
   for ( Dimension i = 0; i < axis; ++i ) ++q;
 
   const Integer x = uKCoord( c, *q );
@@ -1310,7 +1308,7 @@ selfDisplay ( std::ostream & out )
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
-inline
+constexpr inline
 bool
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 isValid()

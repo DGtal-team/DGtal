@@ -96,7 +96,7 @@ namespace DGtal
     using Self    = KhalimskyCell< dim, Integer >;
 
     // Friendship
-    friend class KhalimskySpace;
+    friend class KhalimskySpaceND< dim, TInteger >;
     friend class KhalimskySpaceNDHelper< KhalimskySpace >;
 
   private:
@@ -119,13 +119,10 @@ namespace DGtal
      * Explicit constructor from a KhalimskyPreCell.
      * @param aCell a pre-cell.
      */
-    explicit KhalimksyCell( const PreCell & aCell );
+    explicit KhalimskyCell( const PreCell & aCell );
 
     // Conversion operators.
   public:
-    /// Constant conversion to KhalimskyPreCell.
-    operator PreCell() const;
-
     /// Constant conversion to KhalimskyPreCell.
     operator PreCell const& () const;
 
@@ -220,7 +217,7 @@ namespace DGtal
     using Self    = SignedKhalimskyCell< dim, Integer >;
 
     // Friendship
-    friend class KhalimskySpace;
+    friend class KhalimskySpaceND< dim, TInteger >;
     friend class KhalimskySpaceNDHelper< KhalimskySpace >;
 
   private:
@@ -244,13 +241,10 @@ namespace DGtal
      * Explicit constructor from a SignedKhalimskyPreCell.
      * @param aCell a pre-cell.
      */
-    explicit KhalimksyCell( const SPreCell & aCell );
+    explicit SignedKhalimskyCell( const SPreCell & aCell );
 
     // Conversion operators.
   public:
-    /// Constant conversion to KhalimskySignedPreCell.
-    operator SPreCell() const;
-
     /// Constant conversion to KhalimskySignedPreCell.
     operator SPreCell const& () const;
 
@@ -390,11 +384,11 @@ namespace DGtal
   */
   template <
       Dimension dim,
-      typename TInteger = DGtal::int32_t
+      typename TInteger
   >
   class KhalimskySpaceND
     : private KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >
-    , public  KhalimskyPreSpace< dim, TInteger >
+    , public  KhalimskyPreSpaceND< dim, TInteger >
   {
 
     typedef KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > > Helper; ///< Features basic operations on coordinates, especially for periodic dimensions.
@@ -423,7 +417,7 @@ namespace DGtal
 
     typedef SCell Surfel;
     typedef bool Sign;
-    using DirIterator = KhalimskyPreSpace::DirIterator;
+    using DirIterator = typename KhalimskyPreSpace::PreDirIterator;
 
     // Points and Vectors
     typedef PointVector< dim, Integer > Point;
@@ -444,7 +438,8 @@ namespace DGtal
     static const Sign NEG;
 #endif //WIN32
 
-    using KhalimskyPreCell::AnyCellCollection;
+    template < typename CellType >
+    using AnyCellCollection = typename KhalimskyPreSpace::template AnyCellCollection< CellType >;
 
     // Neighborhoods, Incident cells, Faces and Cofaces
     typedef AnyCellCollection<Cell> Cells;
@@ -462,18 +457,21 @@ namespace DGtal
 
     /// Template rebinding for defining the type that is a mapping
     /// Cell -> Value.
-    template <typename Value>
-    using CellMap = std::map<Cell,Value>;
+    template <typename Value> struct CellMap {
+        typedef std::map<Cell,Value> Type;
+    };
 
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
-    template <typename Value>
-    using SCellMap = std::map<SCell,Value>;
+    template <typename Value> struct SCellMap {
+        typedef std::map<SCell,Value> Type;
+    };
 
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
-    template <typename Value>
-    using SurfelMap = std::map<SCell,Value>;
+    template <typename Value> struct SurfelMap {
+        typedef std::map<SCell,Value> Type;
+    };
 
     /// Boundaries closure type
     enum Closure
@@ -1218,51 +1216,51 @@ namespace DGtal
      * @param p any unsigned cell.
      * @return the topology word of [p].
      */
-    Integer uTopology( const PreCell & p ) const;
+    Integer uTopology( const Cell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the topology word of [p].
      */
-    Integer sTopology( const SPreCell & p ) const;
+    Integer sTopology( const SCell & p ) const;
 
     /**
      * @param p any unsigned cell.
      * @return the dimension of the cell [p].
      */
-    Dimension uDim( const PreCell & p ) const;
+    Dimension uDim( const Cell & p ) const;
 
     /**
      * @param p any signed cell.
      * @return the dimension of the cell [p].
      */
-    Dimension sDim( const SPreCell & p ) const;
+    Dimension sDim( const SCell & p ) const;
 
     /**
      * @param b any unsigned cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
-    bool uIsSurfel( const PreCell & b ) const;
+    bool uIsSurfel( const Cell & b ) const;
 
     /**
      * @param b any signed cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
-    bool sIsSurfel( const SPreCell & b ) const;
+    bool sIsSurfel( const SCell & b ) const;
 
     /**
      * @param p any cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
      */
-    bool uIsOpen( const PreCell & p, Dimension k ) const;
+    bool uIsOpen( const Cell & p, Dimension k ) const;
 
     /**
      * @param p any signed cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
      */
-    bool sIsOpen( const SPreCell & p, Dimension k ) const;
+    bool sIsOpen( const SCell & p, Dimension k ) const;
 
     /// @}
 
@@ -1525,7 +1523,7 @@ namespace DGtal
      * @pre `uIsValid(p)` and ( `x <= uDistanceToMin(p, k)` or `isSpacePeriodic(k)` ).
      * @post `uIsValid(uGetSub(p, k, x))` is \a true.
      */
-    Cell uGetSub( Cell p, Dimension k, Integer x ) const;
+    Cell uGetSub( const Cell & p, Dimension k, Integer x ) const;
 
     /** Useful to check if you are going out of the space (for non-periodic dimensions).
      *
@@ -2018,7 +2016,7 @@ ose sign is positive).
      * @post `sIsValid(c)` is \a true for every returned cell \a c.
 ose sign is positive).
     */
-    SCell sIndirectIncident( SCell p, Dimension k ) const;
+    SCell sIndirectIncident( const SCell & p, Dimension k ) const;
 
     /// @}
 
@@ -2048,8 +2046,8 @@ ose sign is positive).
   private:
     Point myLower;
     Point myUpper;
-    PreCell myCellLower;
-    PreCell myCellUpper;
+    Cell myCellLower;
+    Cell myCellUpper;
     Closure myClosure[dim];
 
     // ------------------------- Hidden services ------------------------------
