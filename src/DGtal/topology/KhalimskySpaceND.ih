@@ -692,7 +692,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( Point p, const PreCell & c ) const
 {
-  return uCell( KhalimskyPreSpace::uPreCell( p, c ) );
+  return uCell( KhalimskyPreSpace::uCell( p, c ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -720,7 +720,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCell( Point p, const SPreCell & c ) const
 {
-  return sCell( KhalimskyPreSpace::sPreCell( p, c ) );
+  return sCell( KhalimskyPreSpace::sCell( p, c ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -729,7 +729,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSpel( Point p ) const
 {
-  return uCell( KhalimskyPreSpace::uPreSpel( p ) );
+  return uCell( KhalimskyPreSpace::uSpel( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -738,7 +738,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSpel( Point p, Sign sign ) const
 {
-  return sCell( KhalimskyPreSpace::sPreSpel( p, sign ) );
+  return sCell( KhalimskyPreSpace::sSpel( p, sign ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -747,7 +747,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uPointel( Point p ) const
 {
-  return uCell( KhalimskyPreSpace::uPrePointel( p ) );
+  return uCell( KhalimskyPreSpace::uPointel( p ) );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -756,7 +756,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sPointel( Point p, Sign sign ) const
 {
-  return sCell( KhalimskyPreSpace::sPrePointel( p, sign ) );
+  return sCell( KhalimskyPreSpace::sPointel( p, sign ) );
 }
 //-----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
