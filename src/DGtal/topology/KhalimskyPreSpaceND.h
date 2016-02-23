@@ -975,7 +975,7 @@ namespace DGtal
      * coordinate [k].
      */
     static SPreCell sGetIncr( SPreCell p, Dimension k );
-    
+
     /**
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
