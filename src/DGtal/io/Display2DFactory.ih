@@ -1584,6 +1584,14 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 }
 // Preimage2D
 
+// SignedKhalimskyCell
+template < DGtal::Dimension dim, typename TInteger >
+inline
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
+     const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+{
+  draw( board, static_cast< DGtal::SignedKhalimskyPreCell<dim, TInteger> const& >(sk) );
+}
 
 // SignedKhalimskyPreCell
 template < DGtal::Dimension dim, typename TInteger >

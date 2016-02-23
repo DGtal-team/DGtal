@@ -137,6 +137,11 @@ namespace DGtal
 
   }; // KhalimskyPreCell
 
+  template < Dimension dim,
+             typename TInteger >
+  std::ostream &
+  operator<<( std::ostream & out,
+              const KhalimskyPreCell< dim, TInteger > & object );
 
   /** Represents a signed cell in an unbounded cellular grid space by its
    * Khalimsky coordinates and a boolean value.
@@ -222,6 +227,12 @@ namespace DGtal
     std::string className() const;
 
   }; // SignedKhalimskyPreCell
+
+  template < Dimension dim,
+             typename TInteger >
+  std::ostream &
+  operator<<( std::ostream & out,
+              const SignedKhalimskyPreCell< dim, TInteger > & object );
 
   /**
      @brief This class is useful for looping on all "interesting" coordinates of a

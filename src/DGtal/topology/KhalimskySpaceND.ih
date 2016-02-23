@@ -135,7 +135,7 @@ std::ostream &
 DGtal::operator<<( std::ostream & out,
        const KhalimskyCell< dim, TInteger > & object )
 {
-  out << static_cast< const KhalimskyPreCell<dim, TInteger> >(object);
+  out << static_cast< const KhalimskyPreCell<dim, TInteger> & >(object);
   return out;
 }
 
@@ -227,7 +227,7 @@ std::ostream &
 DGtal::operator<<( std::ostream & out,
        const SignedKhalimskyCell< dim, TInteger > & object )
 {
-  out << static_cast< const SignedKhalimskyPreCell<dim, TInteger> >(object);
+  out << static_cast< const SignedKhalimskyPreCell<dim, TInteger> & >(object);
   return out;
 }
 
