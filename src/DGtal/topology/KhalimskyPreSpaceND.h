@@ -393,8 +393,8 @@ namespace DGtal
     using Size = typename NumberTraits<Integer>::UnsignedVersion;
 
     // Cells
-    using PreCell   = KhalimskyPreCell< dim, Integer > PreCell;
-    using SPreCell  = SignedKhalimskyPreCell< dim, Integer > SPreCell;
+    using PreCell   = KhalimskyPreCell< dim, Integer >;
+    using SPreCell  = SignedKhalimskyPreCell< dim, Integer >;
 
     using PreSurfel = SPreCell;
     using Sign = bool;
@@ -626,58 +626,58 @@ namespace DGtal
      * @param k any valid dimension.
      * @param i an integer coordinate.
      */
-    static void uPreSetKCoord( PreCell & c, Dimension k, Integer i );
+    static void uSetKCoord( PreCell & c, Dimension k, Integer i );
 
     /** Sets the [k]-th Khalimsky coordinate of [c] to [i].
      * @param c any signed pre-cell.
      * @param k any valid dimension.
      * @param i an integer coordinate.
      */
-    static void sPreSetKCoord( SPreCell & c, Dimension k, Integer i );
+    static void sSetKCoord( SPreCell & c, Dimension k, Integer i );
 
     /** Sets the [k]-th digital coordinate of [c] to [i].
      * @param c any unsigned pre-cell.
      * @param k any valid dimension.
      * @param i an integer coordinate.
      */
-    static void uPreSetCoord( PreCell & c, Dimension k, Integer i );
+    static void uSetCoord( PreCell & c, Dimension k, Integer i );
 
     /** Sets the [k]-th digital coordinate of [c] to [i].
      * @param c any signed pre-cell.
      * @param k any valid dimension.
      * @param i an integer coordinate.
      */
-    static void sPreSetCoord( SPreCell & c, Dimension k, Integer i );
+    static void sSetCoord( SPreCell & c, Dimension k, Integer i );
 
     /** Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any unsigned pre-cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
-    static void uPreSetKCoords( PreCell & c, const Point & kp );
+    static void uSetKCoords( PreCell & c, const Point & kp );
 
     /** Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any signed pre-cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
-    static void sPreSetKCoords( SPreCell & c, const Point & kp );
+    static void sSetKCoords( SPreCell & c, const Point & kp );
 
     /** Sets the digital coordinates of [c] to [kp].
      * @param c any unsigned pre-cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
-    static void uPreSetCoords( PreCell & c, const Point & kp );
+    static void uSetCoords( PreCell & c, const Point & kp );
 
     /** Sets the digital coordinates of [c] to [kp].
      * @param c any signed pre-cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
-    static void sPreSetCoords( SPreCell & c, const Point & kp );
+    static void sSetCoords( SPreCell & c, const Point & kp );
 
     /** Sets the sign of the pre-cell.
      * @param c (modified) any signed pre-cell.
      * @param s any sign.
      */
-    static void sPreSetSign( SPreCell & c, Sign s );
+    static void sSetSign( SPreCell & c, Sign s );
 
     /// @}
 
@@ -975,6 +975,14 @@ namespace DGtal
      * coordinate [k].
      */
     static SPreCell sGetIncr( SPreCell p, Dimension k );
+    
+    /**
+     * @param p any pre-cell.
+     * @param k the coordinate that is changed.
+     * @return the same element as [p] except for an decremented
+     * coordinate [k].
+     */
+    static SPreCell sGetDecr( SPreCell p, Dimension k );
 
     /**
      * @param p any pre-cell.
@@ -1087,7 +1095,7 @@ namespace DGtal
      * @param cell the signed pre-cell of interest.
      * @return the pre-cells of the proper 1-neighborhood of [cell].
      */
-    statuc SPreCells sProperNeighborhood( const SPreCell & cell );
+    static SPreCells sProperNeighborhood( const SPreCell & cell );
 
     /**
      * @param p any pre-cell.
