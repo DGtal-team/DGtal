@@ -38,13 +38,13 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
     typedef DGtal::DiscreteExteriorCalculus<TDigitalSet::Point::dimension, TDigitalSet::Point::dimension, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::Cell Cell;
-    typedef typename Calculus::SCell SCell;
+    // typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::Index Index;
     typedef typename Calculus::Point Point;
-    typedef typename Calculus::Property Property;
+    // typedef typename Calculus::Property Property;
     typedef typename Calculus::Properties Properties;
-    typedef typename Calculus::KSpace KSpace;
+    // typedef typename Calculus::KSpace KSpace;
 
     Calculus calculus;
     calculus.template initKSpace<typename TDigitalSet::Domain>(_set.domain());
