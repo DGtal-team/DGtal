@@ -45,7 +45,7 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/KhalimskyPreSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -180,11 +180,11 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   /**
      * Constructor.
      *
-     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
+     * @param aSurfel a DGtal::Z3i::SPreCell ( KhalimskyPreSpaceND< 2, Integer > SPreCell ) .
      * @param aShift the shift distance (positive or negative).
      * @param aSizeFactor use to change the Prism size (1.0 initial size).
      */
-  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+  TransformedPrism( const DGtal::KhalimskyPreSpaceND< 3, int >::SPreCell  & aSurfel,
                           double aShift, double aSizeFactor=1.0 ):mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
   {
   }
@@ -193,13 +193,13 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   /**
      * Constructor.
      *
-     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
-     * @param aVoxel a  DGtal::Z3i::SCell represent the voxel for which the surfel is associated. It permits to determine automatically the shift parameter (the surfel is automatically shifted towards this voxel).
+     * @param aSurfel a DGtal::Z3i::SPreCell ( KhalimskyPreSpaceND< 2, Integer > SPreCell ) .
+     * @param aVoxel a  DGtal::Z3i::SPreCell represent the voxel for which the surfel is associated. It permits to determine automatically the shift parameter (the surfel is automatically shifted towards this voxel).
      * @param aShift the shift distance (positive or negative (default 0.05)).
      * @param aSizeFactor use to change the Prism size (default 0.75).
      */
-  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
-                          const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel,
+  TransformedPrism( const DGtal::KhalimskyPreSpaceND< 3, int >::SPreCell  & aSurfel,
+                          const DGtal::KhalimskyPreSpaceND< 3, int >::SPreCell  & aVoxel,
                           double aShift=0.05, double aSizeFactor=0.75  )
   {
     mySurfel= aSurfel;
@@ -221,7 +221,7 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   }
 
   ///@todo FIX this member
-  DGtal::KhalimskySpaceND< 3, int >::SCell mySurfel;
+  DGtal::KhalimskyPreSpaceND< 3, int >::SPreCell mySurfel;
   double myShift;
   double mySizeFactor;
 };
