@@ -104,10 +104,6 @@ namespace DGtal
     PreCell myPreCell;
 
   private:
-    /**
-     * Constructor.
-     */
-    explicit KhalimskyCell( Integer dummy = 0 );
 
     /**
      * Explicit constructor from its Khalimsky coordinates.
@@ -131,6 +127,11 @@ namespace DGtal
     operator PreCell & ();
 
   public:
+    /**
+     * Default constructor.
+     */
+    explicit KhalimskyCell( Integer dummy = 0 );
+    
     /** Copy constructor.
      * @param other any other cell.
      */
@@ -226,11 +227,6 @@ namespace DGtal
 
   private:
     /**
-     * Constructor.
-     */
-    explicit SignedKhalimskyCell( Integer dummy = 0 );
-
-    /**
      * Explicit constructor from its Khalimsky coordinates.
      * @param aPoint any point.
      * @param positive if cell has positive sign.
@@ -253,6 +249,10 @@ namespace DGtal
     operator SPreCell & ();
 
   public:
+    /**
+     * Default constructor.
+     */
+    explicit SignedKhalimskyCell( Integer dummy = 0 );
 
     /** Copy constructor.
      * @param other any other cell.
