@@ -66,6 +66,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/KhalimskyPreSpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/kernel/PointVector.h"
@@ -397,6 +398,10 @@ template < Dimension dim, typename TInteger >
   static void draw( DGtal::Board2D & board, const DGtal::SignedKhalimskyCell<dim, TInteger> & );
 // SignedKhalimskyCell
     
+// SignedKhalimskyPreCell
+template < Dimension dim, typename TInteger >
+  static void draw( DGtal::Board2D & board, const DGtal::SignedKhalimskyPreCell<dim, TInteger> & );
+// SignedKhalimskyPreCell
     
 // StraightLineFrom2Points
 template <typename TPoint>
