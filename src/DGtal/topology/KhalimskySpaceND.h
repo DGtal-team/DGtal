@@ -388,7 +388,6 @@ namespace DGtal
   >
   class KhalimskySpaceND
     : private KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >
-    , public  KhalimskyPreSpaceND< dim, TInteger >
   {
 
     typedef KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > > Helper; ///< Features basic operations on coordinates, especially for periodic dimensions.
@@ -406,7 +405,7 @@ namespace DGtal
 
     // Spaces
     typedef SpaceND<dim, Integer> Space;
-    typedef KhalimskySpaceND<dim, Integer> KhalimskySpace;
+    typedef KhalimskySpaceND<dim, Integer>    KhalimskySpace;
     typedef KhalimskyPreSpaceND<dim, Integer> KhalimskyPreSpace;
 
     // Cells
@@ -417,7 +416,7 @@ namespace DGtal
 
     typedef SCell Surfel;
     typedef bool Sign;
-    using DirIterator = typename KhalimskyPreSpace::PreDirIterator;
+    using DirIterator = typename KhalimskyPreSpace::DirIterator;
 
     // Points and Vectors
     typedef PointVector< dim, Integer > Point;
