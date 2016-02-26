@@ -6,7 +6,7 @@
 ## Changes
 - *Configuration*
  - Travis Continuous integration will check that DGtalTools will compile with
- changes of new pull-requests. (David Coeurjolly, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
+ changes of new pull-requests. (David Coeurjolly, [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
 
 ## Bug Fixes
 - *Geometry Package*
