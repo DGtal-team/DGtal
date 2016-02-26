@@ -1,6 +1,13 @@
 # DGtal 0.9.2
 
 
+## New Features / Critical Changes
+
+## Changes
+- *Configuration*
+ - Travis Continuous integration will check that DGtalTools will compile with
+ changes of new pull-requests. (David Coeurjolly, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
+
 ## Bug Fixes
 - *Geometry Package*
  - AlphaThickSegmentComputer: fix segment display errors which could appear
@@ -97,7 +104,7 @@
    the compiled library. This reduces compilation time when such types
    are used. (David Coeurjolly,
    [#1117](https://github.com/DGtal-team/DGtal/pull/1117))
-   
+
 - *DEC Package*
  - DiscreteExteriorCalculus holds both primal and dual sizes of each cell.
    Subsequent changes have been made to insertSCell.
