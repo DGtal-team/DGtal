@@ -20,7 +20,7 @@ notifications:
 #    - one build for the documentation on macosx (clang) and only for commits on
 #      DGtal-team repo (no pull request). Encrypted var. required.
 #    - No gcc on macos
-#    - clang build of dgtaltools in linux only. In this case, no deps are considerd in DGtal
+#    - clang build of dgtaltools in linux only. In this case, some dependencies are considerd in DGtal (GMP, QGLViewer, CAIRO, HDF5)
 #    - Otherwise, 2 os x 2 configs
 #
 ########
@@ -77,7 +77,7 @@ before_install:
   - if [ $CONFIG == "Debug,Magick,GMP,ITK" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF";   fi
   - if [ $DOC == "true" ]; then  .travis/install_doxygen.sh;  BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen -DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="true"; fi
-  - if [ $CONFIG == "DGtalTools" ]; then NEEDEXAMPLESANDTESTS="false"; BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=off";  fi
+  - if [ $CONFIG == "DGtalTools" ]; then NEEDEXAMPLESANDTESTS="false"; BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=off";  fi
 
 
 ########
