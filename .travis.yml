@@ -19,7 +19,8 @@ notifications:
 # matrix details:
 #    - one build for the documentation on macosx (clang) and only for commits on
 #      DGtal-team repo (no pull request). Encrypted var. required.
-#    - No gcc on macosx
+#    - No gcc on macos
+#    - clang build of dgtaltools in linux only. In this case, some dependencies are considerd in DGtal (GMP, QGLViewer, CAIRO, HDF5)
 #    - Otherwise, 2 os x 2 configs
 #
 ########
@@ -27,15 +28,20 @@ env:
   - CONFIG="Debug,Magick,GMP,ITK"
   - CONFIG="Debug,Cairo,QGLviewer,HDF5"
   - CONFIG="Documentation,Debug,Cairo,GMP"
+  - CONFIG="DGtalTools"
 
 matrix:
-  fast_finish: true 
+  fast_finish: true
   exclude:
     - os: osx
       env: CONFIG="Documentation,Debug,Cairo,GMP"
     - compiler: gcc
       os: linux
       env: CONFIG="Documentation,Debug,Cairo,GMP"
+    - compiler: gcc
+      env: CONFIG="DGtalTools"
+    - os: osx
+      env: CONFIG="DGtalTools"
     - os: osx
       compiler: gcc
 
@@ -47,28 +53,31 @@ addons:
    packages:
     - libhdf5-serial-dev
     - libboost-dev
+    - libboost-program-options-dev
     - libcairo2-dev
     - doxygen
     - doxygen-latex
     - graphviz
     - libboost-system-dev
     - libgmp-dev
-    - libgdcm2-dev 
+    - libgdcm2-dev
     - libgraphicsmagick++1-dev
     - libqglviewer-qt4-dev
     - libinsighttoolkit3-dev
     - g++-4.8
     - gcc-4.8
-    
+
 
 before_install:
   - if [ $CXX == "g++" ]; then CCOMPILER="gcc-4.8"; CXXCOMPILER="g++-4.8"; fi
   - DOC="false"
-  - NEEDBUILD="true";
-  - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDBUILD="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
+  - NEEDCORE="true";
+  - NEEDEXAMPLESANDTESTS="true";
+  - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDEXAMPLESANDTESTS="false"; NEEDCORE="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
   - if [ $CONFIG == "Debug,Magick,GMP,ITK" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF";   fi
   - if [ $DOC == "true" ]; then  .travis/install_doxygen.sh;  BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen -DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="true"; fi
+  - if [ $CONFIG == "DGtalTools" ]; then NEEDEXAMPLESANDTESTS="false"; BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=off";  fi
 
 
 ########
@@ -86,10 +95,13 @@ script:
   - cmake . $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER
   - echo $DOC
   - echo $BTYPE
-  - if [ $NEEDBUILD == "true" ]; then  make DGtal && make DGtalIO; fi
-  - if [ $NEEDBUILD == "true" ]; then  cd examples && make  -j 3 ; fi
-  - if [ $NEEDBUILD == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
-  - if [ $NEEDBUILD == "true" ]; then  make test ARGS=--output-on-failure ; fi
+  - if [ $NEEDCORE == "true" ]; then  make DGtal && make DGtalIO; fi
+  - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd examples && make  -j 3 ; fi
+  - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
+  - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  make test ARGS=--output-on-failure ; fi
+  - if [ $CONFIG == "DGtalTools" ]; then pwd ; .travis/getAndCheckDGtalTools.sh ; fi
+
+
 
 ###########
 ## Building the documentation
