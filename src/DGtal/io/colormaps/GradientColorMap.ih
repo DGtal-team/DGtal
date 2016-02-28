@@ -50,7 +50,8 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   const Color firstColor,
   const Color lastColor )
   : myMin( minV ), myMax( maxV )
-{ 
+{
+  ASSERT_MSG(myMin != myMax, "Max and Min of a colormap cannot be identical.");
   switch ( preset ) {
   case CMAP_GRAYSCALE:
     myColors.push_back( Color::Black );
@@ -99,7 +100,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
     if ( firstColor != Color::None
    && lastColor != Color::None ) {
       myColors.push_back( firstColor );
-      myColors.push_back( lastColor );   
+      myColors.push_back( lastColor );
     }
     break;
   }
@@ -113,7 +114,8 @@ inline
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::GradientColorMap
 ( const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myColors( other.myColors )
-{ 
+{
+  ASSERT_MSG(myMin != myMax, "Max and Min of a colormap cannot be identical.");
 }
 
 template <typename PValue,
@@ -136,6 +138,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   if ( &other != this ) {
     myMin = other.myMin;
     myMax = other.myMax;
+    ASSERT_MSG(myMin != myMax, "Max and Min of a colormap cannot be identical.");
     myColors = other.myColors;
   }
   return *this;
@@ -218,14 +221,14 @@ void
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::selfDisplay
 ( std::ostream & out ) const
 {
-  out << "[GradientColorMap " 
+  out << "[GradientColorMap "
       << " min=" << myMin
       << " max=" << myMax;
   std::vector<Color>::iterator it = myColors.begin();
   while ( it != myColors.end() ) {
-    out << " RGB(" 
+    out << " RGB("
   << it->red() << ","
-  << it->green() << ","  
+  << it->green() << ","
   << it->blue() << ") ";
     ++it;
   }
@@ -259,6 +262,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   const Value & max,
   const Value & value )
 {
+  ASSERT_MSG(min != max, "Max and Min of a colormap cannot be identical.");
   if ( colors.size() < 2 )
     return DGtal::Color::None;
   double scale = static_cast<double>( value - min ) / (max - min);
@@ -271,13 +275,13 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   scale = ( scale * intervals ) - (upper_index - 1);
 
   const unsigned char red = static_cast<unsigned char>( firstColor.red() +
-              scale * ( lastColor.red() - 
+              scale * ( lastColor.red() -
                   firstColor.red() ));
   const unsigned char green = static_cast<unsigned char>( firstColor.green() +
-                scale * ( lastColor.green() - 
+                scale * ( lastColor.green() -
                     firstColor.green() ));
   const unsigned char blue = static_cast<unsigned char>( firstColor.blue() +
-               scale * ( lastColor.blue() - 
+               scale * ( lastColor.blue() -
                    firstColor.blue() ));
   return DGtal::Color( red, green, blue );
 }
@@ -291,7 +295,7 @@ template <typename PValue,
     int PDefaultLastColor >
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & object )
 {
   object.selfDisplay( out );
@@ -304,4 +308,3 @@ DGtal::operator<< ( std::ostream & out,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - private :
-
