@@ -21,8 +21,8 @@ using the library. This is really important for us to justify the ressources spe
 in developing this software. Please, take a few seconds to fill in the registration
 form: http://dgtal.org/registration/
 
-Quick Installation
-==================
+Quick Install
+=============
 
 * Linux: [Binary packages](https://software.opensuse.org/download.html?project=home%3Acopyme%3ADGtal&package=DGtal) (Arch, CentOS, Fedora, openSUSE, RHEL, SL)
 * MacOS (using [homebrew](http://brew.sh)):
@@ -45,14 +45,13 @@ make install
 
 Minimum system requirements: C++11 enabled compiler, [cmake](http://cmake.org), [boost](http://boost.org) (>= 1.46).
 
-DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer). Generate the Visual Studio project using windows [cmake](http://cmake.org) tool.
+DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer): Generate the Visual Studio project using windows [cmake](http://cmake.org) tool and compile the DGtal solution (you may also need to set the cmake variable ```BUILD_SHARED_LIBS``` to false).
 
 More Information
 ================
 
 * Project homepage http://dgtal.org
-
-* Related DGtalTools project: http://dgtal.org/tools, https://github.com/DGtal-team/DGtalTools
+* Related DGtalTools project: http://dgtal.org/tools, https://github.com/DGtal-team/DGtalTools, https://github.com/DGtal-team/DGtalTools-contrib
 
 * Release 0.9.1 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.45125.svg)](http://dx.doi.org/10.5281/zenodo.45125)
 * Release 0.9 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.31884.svg)](http://dx.doi.org/10.5281/zenodo.31884)
