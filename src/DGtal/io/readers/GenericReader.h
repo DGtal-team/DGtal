@@ -287,19 +287,13 @@ namespace DGtal
   {
     BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
     /**
-     * Import a volume image file.  For the special format of longvol
-     * image, the default parameter x,y, z need to be updated
-     * according to the dimension if the image.
+     * Import a volume image file.  
      *
      * @param filename the image filename to be imported.
-     * @param x the size in the x direction.
-     * @param y the size in the y direction.
-     * @param z the size in the z direction.
      *
      **/
 
-    static TContainer import(const std::string &filename,  unsigned int x=0,
-                             unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
+    static TContainer import(const std::string &filename)  throw(DGtal::IOException);
 
   };
 
