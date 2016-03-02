@@ -29,6 +29,10 @@
    the issue. (Bertrand Kerautret
    [#1130](https://github.com/DGtal-team/DGtal/pull/1130))
 
+ - readers: include longvol reader in GenericReader for 64 bits images. Update
+   the test for 64 bit longvol. (Bertrand Kerautret
+   [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
+
 
 # DGtal 0.9.1
 

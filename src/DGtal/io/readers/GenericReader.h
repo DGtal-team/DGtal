@@ -276,6 +276,34 @@ namespace DGtal
   };
 
 
+
+
+  /**
+   * GenericReader
+   * Template partial specialisation for volume images with 32 bits values
+   **/
+  template <typename TContainer>
+  struct GenericReader<TContainer, 3 , DGtal::uint64_t>
+  {
+    BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
+    /**
+     * Import a volume image file.  For the special format of longvol
+     * image, the default parameter x,y, z need to be updated
+     * according to the dimension if the image.
+     *
+     * @param filename the image filename to be imported.
+     * @param x the size in the x direction.
+     * @param y the size in the y direction.
+     * @param z the size in the z direction.
+     *
+     **/
+
+    static TContainer import(const std::string &filename,  unsigned int x=0,
+                             unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
+
+  };
+
+
   /**
    * GenericReader
    * Template partial specialisation for volume images of dimension 2
