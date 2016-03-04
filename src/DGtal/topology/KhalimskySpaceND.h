@@ -117,21 +117,26 @@ namespace DGtal
      */
     explicit KhalimskyCell( const PreCell & aCell );
 
-    // Conversion operators.
   public:
     /// Constant conversion to KhalimskyPreCell.
     operator PreCell const& () const;
 
+    /// Returns the underlying constant pre-cell.
+    PreCell const& preCell() const;
+
   private:
     /// Mutable conversion to KhalimskyPreCell.
     operator PreCell & ();
+
+    /// Returns the underlying mutable pre-cell.
+    PreCell & preCell();
 
   public:
     /**
      * Default constructor.
      */
     explicit KhalimskyCell( Integer dummy = 0 );
-    
+
     /** Copy constructor.
      * @param other any other cell.
      */
@@ -239,14 +244,19 @@ namespace DGtal
      */
     explicit SignedKhalimskyCell( const SPreCell & aCell );
 
-    // Conversion operators.
   public:
     /// Constant conversion to KhalimskySignedPreCell.
     operator SPreCell const& () const;
 
+    /// Returns the underlying constant signed pre-cell.
+    SPreCell const& preCell() const;
+
   private:
     /// Mutable conversion to KhalimskySignedPreCell.
     operator SPreCell & ();
+
+    /// Returns the underlying mutable signed pre-cell.
+    SPreCell & preCell();
 
   public:
     /**
