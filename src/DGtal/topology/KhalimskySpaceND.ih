@@ -97,7 +97,23 @@ operator DGtal::KhalimskyPreCell< dim, TInteger > const& () const
 template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::KhalimskyCell< dim, TInteger >::
+DGtal::KhalimskyPreCell< dim, TInteger > const& preCell () const
+{
+  return myPreCell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::KhalimskyCell< dim, TInteger >::
 operator DGtal::KhalimskyPreCell< dim, TInteger > & ()
+{
+  return myPreCell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::KhalimskyCell< dim, TInteger >::
+DGtal::KhalimskyPreCell< dim, TInteger > & preCell ()
 {
   return myPreCell;
 }
@@ -188,7 +204,23 @@ operator DGtal::SignedKhalimskyPreCell< dim, TInteger > const& () const
 template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::SignedKhalimskyCell< dim, TInteger >::
+DGtal::SignedKhalimskyPreCell< dim, TInteger > const& preCell() const
+{
+  return mySPreCell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::SignedKhalimskyCell< dim, TInteger >::
 operator DGtal::SignedKhalimskyPreCell< dim, TInteger > & ()
+{
+  return mySPreCell;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::SignedKhalimskyCell< dim, TInteger >::
+DGtal::SignedKhalimskyPreCell< dim, TInteger > & preCell()
 {
   return mySPreCell;
 }
