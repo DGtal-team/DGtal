@@ -1884,7 +1884,7 @@ inline
 void 
 DGtal::Viewer3D<Space, KSpace>::show(){
   QGLWidget::show();
-  updateList();
+  updateList(false);
 }
 
 
