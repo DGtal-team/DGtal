@@ -51,7 +51,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   const Color lastColor )
   : myMin( minV ), myMax( maxV )
 {
-  ASSERT_MSG(myMin != myMax, "Max and Min of a colormap cannot be identical.");
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
   switch ( preset ) {
   case CMAP_GRAYSCALE:
     myColors.push_back( Color::Black );
@@ -115,7 +115,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 ( const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myColors( other.myColors )
 {
-  ASSERT_MSG(myMin != myMax, "Max and Min of a colormap cannot be identical.");
+    ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
 }
 
 template <typename PValue,
@@ -138,7 +138,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   if ( &other != this ) {
     myMin = other.myMin;
     myMax = other.myMax;
-    ASSERT_MSG(myMin != myMax, "Max and Min of a colormap cannot be identical.");
+    ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
     myColors = other.myColors;
   }
   return *this;
@@ -262,7 +262,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   const Value & max,
   const Value & value )
 {
-  ASSERT_MSG(min != max, "Max and Min of a colormap cannot be identical.");
+  ASSERT_MSG(min < max, "Max should be strictly greather than Min in a colormap.");
   if ( colors.size() < 2 )
     return DGtal::Color::None;
   double scale = static_cast<double>( value - min ) / (max - min);
