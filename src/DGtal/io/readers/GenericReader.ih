@@ -79,7 +79,7 @@ import( const std::string & filename,
     {
       return VolReader<TContainer>::importVol( filename );
     }
-  else if ( extension == "longvol" )
+  else if ( extension == "longvol" || extension == "lvol" )
     {
       return LongvolReader<TContainer>::importLongvol( filename );
     }
@@ -118,7 +118,7 @@ import( const std::string & filename,
   DGtal::IOException dgtalio;
   const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
 
-  if ( extension == "longvol" )
+  if ( extension == "longvol" || extension == "lvol" )
     {
       return LongvolReader<TContainer>::importLongvol( filename );
     }
@@ -145,7 +145,7 @@ import( const std::string & filename) throw( DGtal::IOException )
   DGtal::IOException dgtalio;
   const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
 
-  if ( extension == "longvol" )
+  if ( extension == "longvol" || extension == "lvol" )
     {
       return LongvolReader<TContainer>::importLongvol( filename );
     }
