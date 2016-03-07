@@ -28,7 +28,8 @@
    the issue. (Bertrand Kerautret
    [#1130](https://github.com/DGtal-team/DGtal/pull/1130))
  - Fixing issue [#899](https://github.com/DGtal-team/DGtal/issues/899) in
-   GradientColorMap (David Coeurjolly, [#1134](https://github.com/DGtal-team/DGtal/pull/1134))
+   all color maps, (David Coeurjolly, Bertrand Kerautret
+   [#1134](https://github.com/DGtal-team/DGtal/pull/1134))
 
 # DGtal 0.9.1
 
