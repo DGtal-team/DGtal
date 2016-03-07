@@ -94,7 +94,6 @@ details.
 ### Associated types :
 
 - \e Integer: the integral type for representing coordinates in the space (model of CInteger).
-- \e Size: the integral unsigned type for representing sizes in the space (model of CUnsignedNumber and CIntegralNumber).
 - \e Space: the corresponding digital space (same dimension and same \e Integer type as this).
 - \e Cell: the type that represents an unsigned cell. Cell's are ordered.
 - \e SCell: the type that represents a signed cell. SCell's are ordered.
@@ -115,23 +114,23 @@ details.
 
 \note DirIterator should be use as follows:
 @code
-KSpace x; 
-Cell c; 
-for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q ) 
-  { 
+KSpace x;
+Cell c;
+for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
+  {
     Dimension dir = *q;
     ...
-  } 
+  }
 @endcode
-       
+
 ### Notation
 - \e X : A type that is a model of \e CPreCellularGridSpaceND
 - \e x : object of type \e X
-- \e k : object of type Dimension 
+- \e k : object of type Dimension
 - \e i : object of type \e Integer
-- \e c : object of type \e Cell 
-- \e sc : object of type \e SCell 
-- \e s : object of type \e Surfel 
+- \e c : object of type \e Cell
+- \e sc : object of type \e SCell
+- \e s : object of type \e Surfel
 - \e p, \e p1, \e p2 : object of type \e Point
 - \e v : object of type \e Vector
 - \e sign: object of type \e Sign
@@ -274,13 +273,12 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 @tparam T the type that should be a model of CPreCellularGridSpaceND.
  */
 template <typename T>
-struct CPreCellularGridSpaceND 
+struct CPreCellularGridSpaceND
   : boost::DefaultConstructible<T>, boost::CopyConstructible<T>
 {
   // ----------------------- Concept checks ------------------------------
 public:
   typedef typename T::Integer Integer;
-  typedef typename T::Size Size;
   typedef typename T::Space Space;
   typedef typename T::Cell Cell;
   typedef typename T::SCell SCell;
@@ -298,10 +296,8 @@ public:
   typedef typename T::template CellMap<Dummy>::Type CellMap;
   typedef typename T::template SCellMap<Dummy>::Type SCellMap;
   typedef typename T::template SurfelMap<Dummy>::Type SurfelMap;
-  
+
   BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-  BOOST_CONCEPT_ASSERT(( CUnsignedNumber< Size > ));
-  BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Integer, typename Space::Integer >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename Space::Point >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Vector, typename Space::Vector >::value ));
@@ -419,7 +415,6 @@ public:
 private:
   T myX; // do not require T to be default constructible.
   Integer myInteger;
-  Size mySize;
   Dimension myDim;
   Point myP1, myP2;
   Vector myV;
