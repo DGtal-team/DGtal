@@ -42,38 +42,41 @@ void
 DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& sk)
 {
     FATAL_ERROR( dim == 2 );
+
+    using KPS = DGtal::Z2i::KPreSpace;
+
     //FIXME: as for Display3D models, embedder should be factorized
     //and not instantiated at each call.
-    typedef DGtal::CanonicSCellEmbedder<DGtal::Z2i::KSpace> Embedder;
-    const Embedder embedder((DGtal::Z2i::KSpace()));
-    const Embedder::RealPoint coords = embedder(sk);
+    typedef DGtal::CanonicSCellEmbedder<KPS> Embedder;
+    const Embedder embedder( KPS() );
+    const Embedder::RealPoint coords = embedder(sk.preCell());
     const float x = coords[0];
     const float y = coords[1];
     const float retract = 0.1f;
-    const bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
-    const bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
+    const bool xodd = ( KPS::sKCoord(sk, 0) & 1 );
+    const bool yodd = ( KPS::sKCoord(sk, 1) & 1 );
     board.setLineWidth( .5 );
     board.setPenColor( DGtal::Color::Black );
     board.setLineStyle( Board2D::Shape::SolidStyle );
     if (!xodd && !yodd)
     {
-        if (!sk.myPositive) DGtal::trace.warning() << "negative khalimsky 0-cell" << std::endl;
+        if ( KPS::sSign(sk) == KPS::NEG ) DGtal::trace.warning() << "negative khalimsky 0-cell" << std::endl;
         board.drawCircle(x, y, retract);
         return;
     }
     if (xodd && !yodd)
     {
-        if (!sk.myPositive) board.drawTriangle(x-.5f, y-retract, x-.5f, y+retract, x+.5f, y);
+        if ( KPS::sSign(sk) == KPS::NEG ) board.drawTriangle(x-.5f, y-retract, x-.5f, y+retract, x+.5f, y);
         else board.drawTriangle(x+.5f, y+retract, x+.5f, y-retract, x-.5f, y);
         return;
     }
     if (!xodd && yodd)
     {
-        if (!sk.myPositive) board.drawTriangle(x-retract, y-.5f, x+retract, y-.5f, x, y+.5);
+        if ( KPS::sSign(sk) == KPS::NEG ) board.drawTriangle(x-retract, y-.5f, x+retract, y-.5f, x, y+.5);
         else board.drawTriangle(x+retract, y+.5f, x-retract, y+.5f, x, y-.5);
         return;
     }
-    if (!sk.myPositive) DGtal::trace.warning() << "negative khalimsky 2-cell" << std::endl;
+    if ( KPS::sSign(sk) == KPS::NEG ) DGtal::trace.warning() << "negative khalimsky 2-cell" << std::endl;
     board.drawRectangle(x-.5, y+.5, 1, 1);
 }
 
