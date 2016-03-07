@@ -453,31 +453,21 @@ namespace DGtal
 
     /// Template rebinding for defining the type that is a mapping
     /// Cell -> Value.
-    template < typename Value >
-    using CellMap = std::map< Cell, Value >;
+    template <typename Value> struct CellMap {
+        typedef std::map<Cell,Value> Type;
+    };
 
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
-    template < typename Value >
-    using SCellMap = std::map< SCell, Value >;
+    template <typename Value> struct SCellMap {
+        typedef std::map<SCell,Value> Type;
+    };
 
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
-    template < typename Value >
-    using SurfelMap = std::map< SCell, Value >;
-
-    // ----------------------- Standard services ------------------------------
-    /** @name Standard services
-     * @{
-     */
-  protected:
-
-    /**
-     * Protected destructor to avoid undefined behavior with derived classes.
-     */
-    ~KhalimskyPreSpaceND() = default;
-
-    /// @}
+    template <typename Value> struct SurfelMap {
+        typedef std::map<SCell,Value> Type;
+    };
 
     // ----------------------- Pre-cell creation services --------------------------
     /** @name Pre-cell creation services (static methods)
