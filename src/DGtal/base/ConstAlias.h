@@ -191,8 +191,8 @@ namespace DGtal
 
     /// Internal class that allows to distinguish the different types of parameters.
     enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR,
-		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
-		     COUNTED_CONST_PTR_OR_CONST_PTR };
+        COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
+        COUNTED_CONST_PTR_OR_CONST_PTR };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -270,15 +270,16 @@ namespace DGtal
        - const A & -> const A &     // no duplication
        - const A* -> const A &      // no duplication, exception if null
     */
-    inline operator const T&() const {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF:
-      case CONST_PTR:
-	return *( static_cast< const T* >( myPtr ) );
-      default: ASSERT( false && "[ConstAlias::operator const T&() const] Invalid cast for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
-        return *( static_cast< const T* >( myPtr ) );
+    inline operator const T&() const
+      {
+        switch( myParam ) {
+          case CONST_LEFT_VALUE_REF:
+          case CONST_PTR:
+            return *( static_cast< const T* >( myPtr ) );
+          default: ASSERT( false && "[ConstAlias::operator const T&() const] Invalid cast for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
+                   return *( static_cast< const T* >( myPtr ) );
+        }
       }
-    }
 
     /**
        Cast operator to a T const-pointer. The object is never
@@ -286,14 +287,15 @@ namespace DGtal
        - const A & -> const A*      // no duplication
        - const A* -> const A*       // no duplication
     */
-    inline const T* operator&() const {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF:
-      case CONST_PTR:
-	return static_cast< const T* >( myPtr );
-      default: ASSERT( false && "[const T* ConstAlias::operator&() const] Invalid address operator for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
-        return static_cast< const T* >( myPtr );
-      }
+    inline const T* operator&() const
+      {
+        switch( myParam ) {
+          case CONST_LEFT_VALUE_REF:
+          case CONST_PTR:
+            return static_cast< const T* >( myPtr );
+          default: ASSERT( false && "[const T* ConstAlias::operator&() const] Invalid address operator for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
+                   return static_cast< const T* >( myPtr );
+        }
     }
 
     /**
@@ -306,35 +308,37 @@ namespace DGtal
        - CountedPtrOrPtr<A>           -> CountedConstPtrOrConstPtr<A> // no duplication
        - CountedConstPtrOrConstPtr<A> -> CountedConstPtrOrConstPtr<A> // no duplication
     */
-    inline operator CountedConstPtrOrConstPtr<T>() const {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF:
-      case CONST_PTR:
-	return CountedConstPtrOrConstPtr<T>( static_cast< const T* >( myPtr ), false );
-      case COUNTED_PTR:
-	return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtr<T>* >( myPtr ) ) );
-      case COUNTED_PTR_OR_PTR:
-	return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
-      case COUNTED_CONST_PTR_OR_CONST_PTR:
-	return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
-      default: ASSERT( false && "[ConstAlias::operator CowPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
-        return CountedConstPtrOrConstPtr<T>( 0, false );
-      }
+    inline operator CountedConstPtrOrConstPtr<T>() const
+      {
+        switch( myParam ) {
+          case CONST_LEFT_VALUE_REF:
+          case CONST_PTR:
+            return CountedConstPtrOrConstPtr<T>( static_cast< const T* >( myPtr ), false );
+          case COUNTED_PTR:
+            return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtr<T>* >( myPtr ) ) );
+          case COUNTED_PTR_OR_PTR:
+            return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
+          case COUNTED_CONST_PTR_OR_CONST_PTR:
+            return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
+          default: ASSERT( false && "[ConstAlias::operator CowPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
+                   return CountedConstPtrOrConstPtr<T>( 0, false );
+        }
     }
 
-    inline const T* operator->() const {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF:
-      case CONST_PTR:
-	return static_cast< const T* >( myPtr );
-      case COUNTED_PTR:
-	return ( static_cast< const CountedPtr<T>* >( myPtr ) )->operator->();
-      case COUNTED_PTR_OR_PTR:
-	return ( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) )->operator->();
-      case COUNTED_CONST_PTR_OR_CONST_PTR:
-	return ( static_cast< const CountedConstPtrOrConstPtr<T>* >( myPtr ) )->operator->();
-      default: ASSERT( false && "[ConstAlias::operator->() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
-        return 0;
+    inline const T* operator->() const
+      {
+        switch( myParam ) {
+          case CONST_LEFT_VALUE_REF:
+          case CONST_PTR:
+            return static_cast< const T* >( myPtr );
+          case COUNTED_PTR:
+            return ( static_cast< const CountedPtr<T>* >( myPtr ) )->operator->();
+          case COUNTED_PTR_OR_PTR:
+            return ( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) )->operator->();
+          case COUNTED_CONST_PTR_OR_CONST_PTR:
+            return ( static_cast< const CountedConstPtrOrConstPtr<T>* >( myPtr ) )->operator->();
+          default: ASSERT( false && "[ConstAlias::operator->() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
+                   return 0;
       }
     }
 
