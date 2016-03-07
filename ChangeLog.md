@@ -16,7 +16,6 @@
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
 
-
 - *IO Package*
  - Viewer3D: add three new modes for shape rendering (default, metallic and
    plastic). The rendering can be changed by using the key M. The user can
@@ -28,7 +27,9 @@
    unix/mac. Changing reading mode with binary mode instead text mode fix
    the issue. (Bertrand Kerautret
    [#1130](https://github.com/DGtal-team/DGtal/pull/1130))
-
+ - Fixing issue [#899](https://github.com/DGtal-team/DGtal/issues/899) in
+   all color maps, (David Coeurjolly, Bertrand Kerautret
+   [#1134](https://github.com/DGtal-team/DGtal/pull/1134))
 
 # DGtal 0.9.1
 
