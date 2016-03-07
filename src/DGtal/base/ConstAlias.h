@@ -112,7 +112,7 @@ namespace DGtal
 
      It can be used as follows. Consider this simple example where
      class \e A is a big object.
-     
+
      @code
      const int N = 10000;
      struct A { ...
@@ -140,14 +140,14 @@ namespace DGtal
      longer than \a b itself (case for an instance of \a B1
      above). Classes \ref Clone, \ref Alias, \ref ConstAlias exist for these
      reasons. The class above may be rewritten as follows.
-     
+
      @code
      // ConstAliasing for a long lifetime is visible.
      struct B1_v2_1 {
        B1_v2_1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
-       const A & myA; 
+       const A & myA;
      };
 
      // ConstAliasing for a long lifetime is visible.
@@ -190,7 +190,7 @@ namespace DGtal
   protected:
 
     /// Internal class that allows to distinguish the different types of parameters.
-    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
+    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR,
 		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
 		     COUNTED_CONST_PTR_OR_CONST_PTR };
 
@@ -216,15 +216,17 @@ namespace DGtal
        @param ptrT any const pointer to an object of type T.
     */
     inline ConstAlias( const T* ptrT )
-      : myParam( CONST_PTR ), myPtr( static_cast<const void*>( ptrT ) ) {} 
+      : myParam( CONST_PTR ), myPtr( static_cast<const void*>( ptrT ) ) {}
 
 
     /**
        Constructor from a const reference to a copy-on-write pointer on T. Invalid.
     */
-    inline ConstAlias( const CowPtr<T>& ) 
+    inline ConstAlias( const CowPtr<T>& )
       : myParam( COW_PTR ), myPtr( 0 )
-    { ASSERT(( false && "[ConstAlias::ConstAlias( const CowPtr<T>& )] Const-aliasing a a copy-on-write pointer has no meaning. Consider Clone instead." )); }
+      {
+        static_assert( false, "[ConstAlias::ConstAlias( const CowPtr<T>& )] Const-aliasing a a copy-on-write pointer has no meaning. Consider Clone instead." );
+      }
 
 
     /**
@@ -232,7 +234,7 @@ namespace DGtal
        'this'.
        @param shT any const reference to a shared pointer to an object of type T.
     */
-    inline ConstAlias( const CountedPtr<T>& shT ) 
+    inline ConstAlias( const CountedPtr<T>& shT )
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
 
     /**
@@ -240,7 +242,7 @@ namespace DGtal
        'this'.
        @param shT any const reference to a shared or simple const pointer to an object of type T.
     */
-    inline ConstAlias( const CountedPtrOrPtr<T>& shT ) 
+    inline ConstAlias( const CountedPtrOrPtr<T>& shT )
       : myParam( COUNTED_PTR_OR_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
 
     /**
@@ -248,15 +250,18 @@ namespace DGtal
        'this'.
        @param shT any const reference to a shared or simple const pointer to an object of type T.
     */
-    inline ConstAlias( const CountedConstPtrOrConstPtr<T>& shT ) 
+    inline ConstAlias( const CountedConstPtrOrConstPtr<T>& shT )
       : myParam( COUNTED_CONST_PTR_OR_CONST_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
 
 #ifdef CPP11_RREF_MOVE
     /**
        Constructor from right-reference value. Invalid.
     */
-    inline ConstAlias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
-    { ASSERT(( false && "[ConstAlias::ConstAlias( T&& )] Const-aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
+    inline ConstAlias( T&& )
+      : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
+      {
+        static_assert( false, "[ConstAlias::ConstAlias( T&& )] Const-aliasing a rvalue ref has no meaning. Consider Clone instead." );
+      }
 #endif // CPP11_RREF_MOVE
 
     /**
@@ -283,7 +288,7 @@ namespace DGtal
     */
     inline const T* operator&() const {
       switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
+      case CONST_LEFT_VALUE_REF:
       case CONST_PTR:
 	return static_cast< const T* >( myPtr );
       default: ASSERT( false && "[const T* ConstAlias::operator&() const] Invalid address operator for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
@@ -303,7 +308,7 @@ namespace DGtal
     */
     inline operator CountedConstPtrOrConstPtr<T>() const {
       switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
+      case CONST_LEFT_VALUE_REF:
       case CONST_PTR:
 	return CountedConstPtrOrConstPtr<T>( static_cast< const T* >( myPtr ), false );
       case COUNTED_PTR:
@@ -319,7 +324,7 @@ namespace DGtal
 
     inline const T* operator->() const {
       switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
+      case CONST_LEFT_VALUE_REF:
       case CONST_PTR:
 	return static_cast< const T* >( myPtr );
       case COUNTED_PTR:
@@ -339,7 +344,7 @@ namespace DGtal
     const Parameter myParam;
     /// Stores the address of the input parameter for further use.
     const void* const myPtr;
-    
+
 
     // ------------------------- Internals ------------------------------------
   private:
