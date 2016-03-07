@@ -215,12 +215,12 @@ public:
   // ------------------------- Private Datas --------------------------------
 private:
   T myX; // do not require T to be default constructible.
-  Integer myInteger;
+  typename CPreCellularGridSpaceND<T>::Integer myInteger;
   Size mySize;
   Dimension myDim;
-  Point myP1, myP2;
-  Cell myCell;
-  SCell mySCell;
+  typename CPreCellularGridSpaceND<T>::Point myP1, myP2;
+  typename CPreCellularGridSpaceND<T>::Cell myCell;
+  typename CPreCellularGridSpaceND<T>::SCell mySCell;
   bool myBool;
 
     // ------------------------- Internals ------------------------------------
