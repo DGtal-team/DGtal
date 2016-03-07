@@ -95,7 +95,7 @@ script:
   - cmake . $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER
   - echo $DOC
   - echo $BTYPE
-  - if [ $NEEDCORE == "true" ]; then  make DGtal && make DGtalIO; fi
+  - if [ $NEEDCORE == "true" ]; then  make -j 3 DGtal && make -j 3 DGtalIO; fi
   - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd examples && make  -j 3 ; fi
   - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
   - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  make test ARGS=--output-on-failure ; fi
