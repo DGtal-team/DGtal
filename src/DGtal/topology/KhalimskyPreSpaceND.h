@@ -400,9 +400,6 @@ namespace DGtal
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.
     using Integer = TInteger;
 
-    ///Type used to represent sizes in the digital space.
-    using Size = typename NumberTraits<Integer>::UnsignedVersion;
-
     // Cells
     using Cell   = KhalimskyPreCell< dim, Integer >;
     using SCell  = SignedKhalimskyPreCell< dim, Integer >;
