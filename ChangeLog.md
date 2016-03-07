@@ -16,8 +16,10 @@
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
 
-
 - *IO Package*
+ - Viewer3D: Fix a problem when the show() method was called at the end of the
+   main program (the list creation was not called).
+   (Bertrand Kerautret [##1138](https://github.com/DGtal-team/DGtal/pull/1138))
  - Viewer3D: add three new modes for shape rendering (default, metallic and
    plastic). The rendering can be changed by using the key M. The user can
    also choose its own rendering with some setter/getter on the opengl
@@ -28,11 +30,12 @@
    unix/mac. Changing reading mode with binary mode instead text mode fix
    the issue. (Bertrand Kerautret
    [#1130](https://github.com/DGtal-team/DGtal/pull/1130))
-
- - readers: include longvol reader in GenericReader for 64 bit images. Update
-   the test for 64 bit longvol. (Bertrand Kerautret
+ - Fixing issue [#899](https://github.com/DGtal-team/DGtal/issues/899) in
+   all color maps, (David Coeurjolly, Bertrand Kerautret
+   [#1134](https://github.com/DGtal-team/DGtal/pull/1134))
+-  GenericReader: include longvol reader in GenericReader for 64 bit images.
+   Update the test for 64 bit longvol. (Bertrand Kerautret
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
-
 
 # DGtal 0.9.1
 

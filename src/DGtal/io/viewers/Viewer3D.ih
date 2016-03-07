@@ -1879,7 +1879,13 @@ DGtal::Viewer3D<Space, KSpace>::setGLLightSpecularCoefficients(const GLfloat lig
 }
 
 
-
+template<typename Space, typename KSpace>
+inline
+void 
+DGtal::Viewer3D<Space, KSpace>::show(){
+  QGLWidget::show();
+  updateList(false);
+}
 
 
 template<typename Space, typename KSpace>

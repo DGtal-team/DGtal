@@ -639,6 +639,15 @@ namespace DGtal
 
 
     /**
+     *  @brief Overload QWidget method in order to add a call to
+     * updateList() method (to ensure that the lists are well created
+     * in the particular case where show() is called at the end of the
+     * program).
+     **/    
+    virtual void show();
+
+
+    /**
      * Add a TextureImage in the list of image to be displayed.
      * @param image a TextureImage including image data buffer and position, orientation.
      *
