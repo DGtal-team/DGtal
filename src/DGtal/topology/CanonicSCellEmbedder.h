@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -92,7 +93,7 @@ namespace DGtal
     /**
        Constructor from space. 
     */
-    CanonicSCellEmbedder( const KSpace & aKSpace );
+    CanonicSCellEmbedder( ConstAlias<KSpace> aKSpace );
 
     /**
        Copy constructor.
