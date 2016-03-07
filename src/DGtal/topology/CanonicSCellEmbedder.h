@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/topology/CCellularGridSpaceND.h"
+#include "DGtal/topology/CPreCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -65,7 +65,7 @@ namespace DGtal
   {
   public:
     typedef CanonicSCellEmbedder<TKSpace> Self;
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND<TKSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPreCellularGridSpaceND<TKSpace> ));
 
     typedef TKSpace KSpace;
     typedef typename KSpace::SCell SCell;
