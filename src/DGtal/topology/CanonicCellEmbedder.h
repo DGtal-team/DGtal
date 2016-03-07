@@ -91,7 +91,7 @@ namespace DGtal
     CanonicCellEmbedder();
 
     /**
-       Constructor from space. 
+       Constructor from space.
     */
     CanonicCellEmbedder( ConstAlias<KSpace> aKSpace );
 
@@ -116,7 +116,7 @@ namespace DGtal
     /**
        Map a unsigned cell to its corresponding point in the Euclidean
        space.
-       
+
        @param cell any unsigned cell in the digital space.
        @return its canonical embedding in the Euclidean space.
     */
@@ -125,7 +125,7 @@ namespace DGtal
     /**
        Map a unsigned cell to its corresponding point in the Euclidean
        space.
-       
+
        @param cell any unsigned cell in the digital space.
        @return its canonical embedding in the Euclidean space.
     */
