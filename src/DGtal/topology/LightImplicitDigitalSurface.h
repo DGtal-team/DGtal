@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
@@ -137,7 +138,7 @@ namespace DGtal
 	 @param aSurface the container describing the surface.
 	 @param s the surfel on which the tracker is initialized.
       */
-      Tracker( const DigitalSurfaceContainer & aSurface, 
+      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
                const Surfel & s );
 
       /**
@@ -257,10 +258,10 @@ namespace DGtal
        @param s any surfel of \a aKSpace such that \a aPP is true in
        the interior and false in the exterior.
       */
-    LightImplicitDigitalSurface( const KSpace & aKSpace,
-                            const PointPredicate & aPP,
-                            const Adjacency & adj,
-                            const Surfel & s );
+    LightImplicitDigitalSurface(ConstAlias<KSpace> aKSpace,
+                                ConstAlias<PointPredicate> aPP,
+                                const Adjacency & adj,
+                                const Surfel & s );
 
     /// accessor to surfel adjacency.
     const Adjacency & surfelAdjacency() const;
