@@ -80,7 +80,7 @@ template < typename TKSpace, typename TImplicitFunction, typename TEmbedder >
 inline
 void 
 DGtal::ImplicitFunctionLinearCellEmbedder<TKSpace, TImplicitFunction, TEmbedder>::
-init( const KSpace & K, const ImplicitFunction & f, const Embedder & e )
+init( ConstAlias<KSpace> K, ConstAlias<ImplicitFunction> f, ConstAlias<Embedder> e )
 {
   myPtrK = &K;
   myPtrFct = &f;
