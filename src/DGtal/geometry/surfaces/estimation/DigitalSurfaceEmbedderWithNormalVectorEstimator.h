@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/topology/CDigitalSurfaceEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -116,8 +117,8 @@ namespace DGtal
         @param anEstimator a normal vector estimator
     */
     DigitalSurfaceEmbedderWithNormalVectorEstimator
-    ( const DigitalSurfaceEmbedder & aDSEmbedder,
-      const NormalVectorEstimator & anEstimator );
+    ( ConstAlias<DigitalSurfaceEmbedder> aDSEmbedder,
+      ConstAlias<NormalVectorEstimator> anEstimator );
 
     /**
        Copy Constructor.
