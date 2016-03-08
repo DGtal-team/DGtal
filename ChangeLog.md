@@ -9,6 +9,12 @@
    changes in new pull-requests. (David Coeurjolly,
    [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
 
+- *Base Package*
+ - Alias and ConstAlias now raise compilation error when using invalid
+   constructor, like from a rvalue reference. Adding ConstAlias in many classes
+   that need it.
+   (Roland Denis, [#1140](https://github.com/DGtal-team/DGtal/pull/1140))
+
 ## Bug Fixes
 - *Geometry Package*
  - AlphaThickSegmentComputer: fix segment display errors which could appear
