@@ -248,7 +248,7 @@ namespace DGtal
        @param embedder any instance of DigitalSurfaceEmbedderWithNormalVectorEstimator.
     */
     DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
-    ( const Embedder & embedder );
+    ( ConstAlias<Embedder> embedder );
 
     /**
        Functor operator : SCell (surfel) -> RealVector (gradient vector).
