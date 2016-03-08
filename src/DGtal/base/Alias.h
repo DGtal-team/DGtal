@@ -199,22 +199,18 @@ user forward an Alias<T> parameter.
     inline ~Alias() {}
 
     /**
-       Constructor from const reference to an instance of T. Invalid.
+       Constructor from const reference to an instance of T. Deleted.
+
+       Aliasing a const-ref is an error. Consider ConstAlias instead.
     */
-    inline Alias( const T& )
-      : myParam( CONST_LEFT_VALUE_REF ), myPtr( 0 )
-      {
-        static_assert( false, "[Alias::Alias( const T& )] Aliasing a const-ref is an error. Consider ConstAlias instead." );
-      }
+    Alias( const T& ) = delete;
 
     /**
-       Constructor from const pointer to an instance of T. Invalid.
+       Constructor from const pointer to an instance of T. Deleted.
+
+       Aliasing a const-ptr is an error. Consider ConstAlias instead.
     */
-    inline Alias( const T* )
-      : myParam( CONST_PTR ), myPtr( 0 )
-      {
-        static_assert( false, "[Alias::Alias( const T& )] Aliasing a const-ptr is an error. Consider ConstAlias instead." );
-      }
+    Alias( const T* ) = delete;
 
     /**
        Constructor from a reference to an instance of T. The object is pointed in
@@ -234,13 +230,11 @@ user forward an Alias<T> parameter.
       : myParam( PTR ), myPtr( static_cast<const void*>( t ) ) {}
 
     /**
-       Constructor from a const reference to a copy-on-write pointer on T. Invalid.
+       Constructor from a const reference to a copy-on-write pointer on T. Deleted.
+
+       Aliasing a const-cow ptr is an error. Consider ConstAlias instead.
     */
-    inline Alias( const CowPtr<T>& )
-      : myParam( COW_PTR ), myPtr( 0 )
-    {
-      static_assert( false, "[Alias::Alias( const CowPtr<T>& )] Aliasing a const-cow ptr is an error. Consider ConstAlias instead." );
-    }
+    Alias( const CowPtr<T>& ) = delete;
 
     /**
        Constructor from a const reference to a shared pointer on T. The object is pointed in
@@ -262,13 +256,11 @@ user forward an Alias<T> parameter.
 
 #ifdef CPP11_RREF_MOVE
     /**
-       Constructor from right-reference value. Invalid.
+       Constructor from right-reference value. Deleted.
+
+       Aliasing a rvalue ref has no meaning. Consider Clone instead.
     */
-    inline Alias( T&& )
-      : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
-      {
-        static_assert( false, "[Alias::Alias( T&& )] Aliasing a rvalue ref has no meaning. Consider Clone instead." );
-      }
+    Alias( T&& ) = delete;
 #endif // CPP11_RREF_MOVE
 
     /**
