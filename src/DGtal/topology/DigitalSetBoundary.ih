@@ -47,7 +47,7 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Tracker
 template <typename TKSpace, typename TDigitalSet>
 inline
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Tracker
-::Tracker( const DigitalSurfaceContainer & aSurface, 
+::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
            const Surfel & s )
   : mySurface( aSurface ), myNeighborhood()
 {
@@ -136,7 +136,7 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSetBoundary
 template <typename TKSpace, typename TDigitalSet>
 inline
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSetBoundary
-( const KSpace & aKSpace, 
+( ConstAlias<KSpace> aKSpace, 
   const DigitalSet & aSet,
   const Adjacency & adj )
   : myKSpace( aKSpace ), myDigitalSet( aSet ), mySurfelAdjacency( adj )
