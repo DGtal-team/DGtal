@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
@@ -94,7 +95,7 @@ namespace DGtal
 	 @param aSurface the container describing the surface.
 	 @param s the surfel on which the tracker is initialized.
       */
-      Tracker( const DigitalSurfaceContainer & aSurface, 
+      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
                const Surfel & s );
 
       /**
@@ -208,7 +209,7 @@ namespace DGtal
        
        NB: Complexity depends on the type chosen for SurfelSet.
       */
-    SetOfSurfels( const KSpace & aKSpace,
+    SetOfSurfels( ConstAlias<KSpace> aKSpace,
                   const Adjacency & adj,
                   SurfelSet aSetOfSurfels = SurfelSet() );
 
