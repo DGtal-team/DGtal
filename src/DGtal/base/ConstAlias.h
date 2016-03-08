@@ -220,13 +220,11 @@ namespace DGtal
 
 
     /**
-       Constructor from a const reference to a copy-on-write pointer on T. Invalid.
+       Constructor from a const reference to a copy-on-write pointer on T. Deleted.
+       
+       Const-aliasing a copy-on-write pointer has no meaning. Consider Clone instead.
     */
-    inline ConstAlias( const CowPtr<T>& )
-      : myParam( COW_PTR ), myPtr( 0 )
-      {
-        static_assert( false, "[ConstAlias::ConstAlias( const CowPtr<T>& )] Const-aliasing a a copy-on-write pointer has no meaning. Consider Clone instead." );
-      }
+    ConstAlias( const CowPtr<T>& ) = delete;
 
 
     /**
@@ -255,13 +253,11 @@ namespace DGtal
 
 #ifdef CPP11_RREF_MOVE
     /**
-       Constructor from right-reference value. Invalid.
+       Constructor from right-reference value. Delete.
+        
+       Const-aliasing a rvalue ref has no meaning. Consider Clone instead.
     */
-    inline ConstAlias( T&& )
-      : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
-      {
-        static_assert( false, "[ConstAlias::ConstAlias( T&& )] Const-aliasing a rvalue ref has no meaning. Consider Clone instead." );
-      }
+    ConstAlias( T&& ) = delete;
 #endif // CPP11_RREF_MOVE
 
     /**
