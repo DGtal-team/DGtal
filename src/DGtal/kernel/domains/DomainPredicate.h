@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -77,7 +78,7 @@ namespace DGtal {
      * Constructor from domain.
      * @param aDomain any domain.
      */
-    DomainPredicate ( const Domain & aDomain );
+    DomainPredicate ( ConstAlias<Domain> aDomain );
 
     /**
      * Copy constructor.
