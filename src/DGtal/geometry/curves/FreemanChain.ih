@@ -48,7 +48,7 @@
 template <typename TInteger>
 inline
   DGtal::FreemanChain<TInteger>::ConstIterator::ConstIterator( 
-      const FreemanChain & aChain, unsigned int n)
+      ConstAlias<FreemanChain> aChain, unsigned int n)
   : myFc( &aChain ), myPos( 0 )
 {
   if ( n < myFc->chain.size() ) 
