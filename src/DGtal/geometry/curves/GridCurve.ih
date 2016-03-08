@@ -54,7 +54,7 @@ DGtal::GridCurve<TKSpace>::GridCurve()
 }
 
 template <typename TKSpace>
-DGtal::GridCurve<TKSpace>::GridCurve(const KSpace& aKSpace)
+DGtal::GridCurve<TKSpace>::GridCurve( ConstAlias<KSpace> aKSpace)
   : myKPtr( &aKSpace ), myFlagIsOwned( false )
 {
 }
