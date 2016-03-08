@@ -43,6 +43,7 @@
 #include <iostream>
 #include <queue>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -286,7 +287,7 @@ while ( ! visitor.finished() )
      * @param distance the distance object, a functor Vertex -> Scalar (cloned).
      * @param p any vertex of the graph.
      */
-    DistanceBreadthFirstVisitor( const Graph & graph, 
+    DistanceBreadthFirstVisitor( ConstAlias<Graph> graph, 
                      const VertexFunctor & distance,
                      const Vertex & p );
 
