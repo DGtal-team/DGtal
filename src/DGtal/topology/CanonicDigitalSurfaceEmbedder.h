@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -93,7 +94,7 @@ namespace DGtal
     /**
        Constructor from surface.
     */
-    CanonicDigitalSurfaceEmbedder( const Surface & aSurface );
+    CanonicDigitalSurfaceEmbedder( ConstAlias<Surface> aSurface );
 
     /**
        Copy constructor.
