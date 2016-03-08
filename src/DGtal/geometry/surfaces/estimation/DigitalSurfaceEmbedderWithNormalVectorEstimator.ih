@@ -58,8 +58,8 @@ template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
 inline
 DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
 DigitalSurfaceEmbedderWithNormalVectorEstimator
-( const DigitalSurfaceEmbedder & aDSEmbedder,
-  const NormalVectorEstimator & anEstimator )
+( ConstAlias<DigitalSurfaceEmbedder> aDSEmbedder,
+  ConstAlias<NormalVectorEstimator> anEstimator )
   : myDSEmbedder( &aDSEmbedder ),
     myEstimator( &anEstimator )
 {}
