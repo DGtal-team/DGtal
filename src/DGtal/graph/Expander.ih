@@ -57,7 +57,7 @@ DGtal::Expander<TObject>::~Expander()
 template <typename TObject>
 inline
 DGtal::Expander<TObject>
-::Expander( const Object & object, const Point & p )
+::Expander( ConstAlias<Object> object, const Point & p )
   : myEmbeddingDomain( object.pointSet().domain() ),
     myObject( object ),
     myObjectDomain( object.pointSet() ),
@@ -87,7 +87,7 @@ template <typename TObject>
 template <typename PointInputIterator>
 inline
 DGtal::Expander<TObject>
-::Expander( const Object & object,
+::Expander( ConstAlias<Object> object,
       PointInputIterator b, PointInputIterator e )
   : myEmbeddingDomain( object.pointSet().domain() ),
     myObject( object ),
