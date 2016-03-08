@@ -184,7 +184,7 @@ template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
 inline
 DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
 DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
-( const Embedder & embedder )
+( ConstAlias<Embedder> embedder )
   : myEmbedder( &embedder )
 {}
 
