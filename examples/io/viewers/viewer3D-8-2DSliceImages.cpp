@@ -87,7 +87,8 @@ int main( int argc, char** argv )
   DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctorZ(10); aSliceFunctorZ.initAddOneDim(2);
 
   // We can now obtain the slice image (a ConstImageAdapter):
-  MySliceImageAdapter aSliceImageZ(imageVol, domain2DZ, aSliceFunctorZ, DGtal::functors::Identity() );
+  const auto identityFunctor = DGtal::functors::Identity();
+  MySliceImageAdapter aSliceImageZ(imageVol, domain2DZ, aSliceFunctorZ, identityFunctor );
 
   // Second image  the fiftieth Y slice (dim=1)
   // Define the functor to recover a 2D domain from the 3D one in the Y direction (1):
@@ -99,7 +100,7 @@ int main( int argc, char** argv )
   DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctorY(50); aSliceFunctorY.initAddOneDim(1);
 
   // We can now obtain the slice image (a ConstImageAdapter):
-  MySliceImageAdapter aSliceImageY(imageVol, domain2DY, aSliceFunctorY, DGtal::functors::Identity() );
+  MySliceImageAdapter aSliceImageY(imageVol, domain2DY, aSliceFunctorY, identityFunctor );
   //! [ExampleViewer3D2DImagesExtractImages]
 
  //! [ExampleViewer3D2DChangeMode]
