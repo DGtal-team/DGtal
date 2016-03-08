@@ -47,6 +47,7 @@
 #include <boost/graph/properties.hpp>
 #include <boost/property_map/property_map.hpp>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/DigitalSurface.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -333,7 +334,7 @@ namespace boost
     {
     public:
       edge_iterator();
-      edge_iterator( const Adapted & graph,
+      edge_iterator( ConstAlias<Adapted> graph,
                      const vertex_iterator & itB, const vertex_iterator & itE );
 
     private:
