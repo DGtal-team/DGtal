@@ -49,9 +49,9 @@ DGtal::NormalVectorEstimatorLinearCellEmbedder<TKSpace, TNormalEstimator, TEmbed
 template < typename TDigitalSurface, typename TNormalEstimator, typename TEmbedder >
 inline
 DGtal::NormalVectorEstimatorLinearCellEmbedder<TDigitalSurface, TNormalEstimator, TEmbedder>::
-NormalVectorEstimatorLinearCellEmbedder( const DigitalSurface &aSurface, 
-                                         const NormalVectorEstimator & anEstim, 
-                                         const Embedder &aEmb )
+NormalVectorEstimatorLinearCellEmbedder( ConstAlias<DigitalSurface> aSurface, 
+                                         ConstAlias<NormalVectorEstimator> anEstim, 
+                                         ConstAlias<Embedder> aEmb )
   : mySurface(aSurface ), 
     myPtrFct( anEstim ), 
     myPtrEmbedder( aEmb )
