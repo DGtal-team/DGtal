@@ -118,8 +118,8 @@ namespace DGtal
        @param e a digital embedder (like a GaussDigitizer).
        @param iso_value the threshold value that defines the linear embedding.
     */
-    void init( ConstAlias<KSpace> K, const Image & f, 
-               const Embedder & e, ImageValue iso_value );
+    void init( ConstAlias<KSpace> K, ConstAlias<Image> f, 
+               ConstAlias<Embedder> e, ImageValue iso_value );
 
     // ----------------------- Interface --------------------------------------
   public:
