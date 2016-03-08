@@ -85,7 +85,7 @@ template < typename TKSpace, typename TImage, typename TEmbedder >
 inline
 void
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
-init( const KSpace & K, const Image & f, const Embedder & e,
+init( ConstAlias<KSpace> K, const Image & f, const Embedder & e,
       ImageValue iso_value )
 {
   myPtrK = &K;
