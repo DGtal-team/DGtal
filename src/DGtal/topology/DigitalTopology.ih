@@ -63,8 +63,8 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
-::DigitalTopology( const ForegroundAdjacency & aKappa, 
-       const BackgroundAdjacency & aLambda,
+::DigitalTopology( ConstAlias<ForegroundAdjacency> aKappa, 
+       ConstAlias<BackgroundAdjacency> aLambda,
        DigitalTopologyProperties props )
   : myKappa( aKappa ), myLambda( aLambda ), 
     myProps( props )
