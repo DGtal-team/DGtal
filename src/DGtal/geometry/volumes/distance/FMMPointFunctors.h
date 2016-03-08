@@ -48,6 +48,7 @@
 #include <vector>
 #include <queue>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/CPointFunctor.h"
@@ -617,7 +618,7 @@ namespace DGtal
      *
      * @param aMap any distance map
      */
-    L2FirstOrderLocalDistanceFromCells(const KSpace& aK, Map& aMap);
+    L2FirstOrderLocalDistanceFromCells( ConstAlias<KSpace> aK, Map& aMap);
 
     /**
      * Copy constructor.
