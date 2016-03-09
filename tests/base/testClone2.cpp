@@ -193,7 +193,6 @@ public:
     ++nbCreated;
   }
 
-#ifdef CPP11_RREF_MOVE
   DummyTbl( DummyTbl && a ) noexcept 
   : size( std::move( a.size ) ), allocated( std::move( a.allocated ) )
   {
@@ -203,7 +202,6 @@ public:
     ++nbCreated;
     ++nbMoved;
   }
-#endif
 
   int value() const { return data[ 0 ]; }
   void setValue( int v ) const { data[ 0 ] = v; }
@@ -839,7 +837,6 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-#ifdef CPP11_RREF_MOVE
   trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl &&) to DummyTbl member. Duplication by move (+2/+1/+1)" );
   CloneToValueMember c40( DummyTbl( 50, -4 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c40.value() << std::endl;
@@ -878,7 +875,6 @@ bool testCloneCases()
                << " nbMoved=" << DummyTbl::nbMoved
 	       << std::endl; 
   trace.endBlock();
-#endif
 
   trace.endBlock();
 
