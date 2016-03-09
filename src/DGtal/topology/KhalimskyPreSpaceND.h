@@ -52,6 +52,15 @@
 namespace DGtal
 {
 
+  /////////////////////////////////////////////////////////////////////////////
+  // Pre-declaration
+  template <
+      Dimension dim,
+      typename TInteger = DGtal::int32_t
+  >
+  class KhalimskyPreSpaceND;
+
+  /////////////////////////////////////////////////////////////////////////////
   /** Represents an unsigned cell in an unbounded cellular grid space by its
    * Khalimsky coordinates.
    *
@@ -72,6 +81,9 @@ namespace DGtal
     using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
     using Point   = PointVector< dim, Integer >;
     using Self    = KhalimskyPreCell< dim, Integer >;
+    using PreCell = Self;
+    using KhalimskyPreSpace = KhalimskyPreSpaceND< dim, TInteger >;
+    using KhalimskySpace    = KhalimskyPreSpace;
 
     // Public members
   public:
@@ -80,6 +92,9 @@ namespace DGtal
     // Standard interface
   public:
 
+    /// Returns the underlying constant pre-cell, itself in fact.
+    PreCell const& preCell() const;
+    
     /// Default constructor.
     explicit KhalimskyPreCell( Integer dummy = 0 );
 
@@ -161,7 +176,11 @@ namespace DGtal
   public:
     using Integer = TInteger;
     using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
-    using Point = PointVector< dim, Integer >;
+    using Point   = PointVector< dim, Integer >;
+    using Self    = SignedKhalimskyPreCell< dim, Integer >;
+    using SPreCell = Self;
+    using KhalimskyPreSpace = KhalimskyPreSpaceND< dim, TInteger >;
+    using KhalimskySpace    = KhalimskyPreSpace;
 
     // Public members
   public:
@@ -170,6 +189,9 @@ namespace DGtal
 
     // Standard interface
   public:
+
+    /// Returns the underlying constant pre-cell, itself in fact.
+    SPreCell const& preCell() const;
 
     /// Default constructor.
     explicit SignedKhalimskyPreCell( Integer dummy = 0 );
@@ -389,7 +411,7 @@ namespace DGtal
   */
   template <
     Dimension dim,
-    typename TInteger = DGtal::int32_t
+    typename TInteger
   >
   class KhalimskyPreSpaceND
   {
