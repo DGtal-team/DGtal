@@ -126,10 +126,7 @@ namespace DGtal
 
   private:
     /// Mutable conversion to KhalimskyPreCell.
-    operator PreCell & ();
-
-    /// Returns the underlying mutable pre-cell.
-    PreCell & preCell();
+    explicit operator PreCell & ();
 
   public:
     /**
@@ -253,10 +250,7 @@ namespace DGtal
 
   private:
     /// Mutable conversion to KhalimskySignedPreCell.
-    operator SPreCell & ();
-
-    /// Returns the underlying mutable signed pre-cell.
-    SPreCell & preCell();
+    explicit operator SPreCell & ();
 
   public:
     /**
