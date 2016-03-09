@@ -30,7 +30,7 @@ IF (CPP11_COMPATIBLE)
   ENDIF()
   MESSAGE(STATUS "OK.")
 ELSE()
-  MESSAGE(FATAL_ERROR "Your compiler does not support c++11. Please specify another C++ compiler.")
+  MESSAGE(FATAL_ERROR "Your compiler does not support C++11. Please specify another C++ compiler.")
 ENDIF()
 
 
