@@ -113,15 +113,6 @@ operator DGtal::KhalimskyPreCell< dim, TInteger > & ()
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
 inline
-DGtal::KhalimskyPreCell< dim, TInteger > &
-DGtal::KhalimskyCell< dim, TInteger >::
-preCell ()
-{
-  return myPreCell;
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
 bool
 DGtal::KhalimskyCell< dim, TInteger >::
 operator==( const KhalimskyCell & other ) const
@@ -216,15 +207,6 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::SignedKhalimskyCell< dim, TInteger >::
 operator DGtal::SignedKhalimskyPreCell< dim, TInteger > & ()
-{
-  return mySPreCell;
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger >
-inline
-DGtal::SignedKhalimskyPreCell< dim, TInteger > &
-DGtal::SignedKhalimskyCell< dim, TInteger >::
-preCell()
 {
   return mySPreCell;
 }
@@ -519,8 +501,8 @@ init( const Point & lower,
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
     {
       myClosure[ i ] = closure[ i ];
-      KhalimskyPreSpace::uSetKCoord( myCellLower, i, ( lower[ i ] * 2 ) + ( closure[ i ] != OPEN   ? 0 : 1 ) );
-      KhalimskyPreSpace::uSetKCoord( myCellUpper, i, ( upper[ i ] * 2 ) + ( closure[ i ] == CLOSED ? 2 : 1 ) );
+      KhalimskyPreSpace::uSetKCoord( myCellLower.myPreCell, i, ( lower[ i ] * 2 ) + ( closure[ i ] != OPEN   ? 0 : 1 ) );
+      KhalimskyPreSpace::uSetKCoord( myCellUpper.myPreCell, i, ( upper[ i ] * 2 ) + ( closure[ i ] == CLOSED ? 2 : 1 ) );
 
     }
 
@@ -923,7 +905,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSetKCoord( Cell & c, DGtal::Dimension k, Integer i ) const
 {
-  KhalimskyPreSpace::uSetKCoord( c, k, i );
+  KhalimskyPreSpace::uSetKCoord( c.myPreCell, k, i );
   this->updateCellHelper( c, k );
   ASSERT( uIsValid(c) );
 }
@@ -934,7 +916,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetKCoord( SCell & c, DGtal::Dimension k, Integer i ) const
 {
-  KhalimskyPreSpace::sSetKCoord( c, k, i );
+  KhalimskyPreSpace::sSetKCoord( c.mySPreCell, k, i );
   this->updateSCellHelper( c, k );
   ASSERT( sIsValid(c) );
 }
@@ -945,7 +927,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSetCoord( Cell & c, DGtal::Dimension k, Integer i ) const
 {
-  KhalimskyPreSpace::uSetCoord( c, k, i );
+  KhalimskyPreSpace::uSetCoord( c.myPreCell, k, i );
   this->updateCellHelper( c, k );
   ASSERT( uIsValid(c) );
 }
@@ -956,7 +938,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetCoord( SCell & c, DGtal::Dimension k, Integer i ) const
 {
-  KhalimskyPreSpace::sSetCoord( c, k, i );
+  KhalimskyPreSpace::sSetCoord( c.mySPreCell, k, i );
   this->updateSCellHelper( c, k );
   ASSERT( sIsValid(c) );
 }
@@ -967,7 +949,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSetKCoords( Cell & c, const Point & kp ) const
 {
-  KhalimskyPreSpace::uSetKCoords( c, kp );
+  KhalimskyPreSpace::uSetKCoords( c.myPreCell, kp );
   this->updateCellHelper( c );
   ASSERT( uIsValid(c) );
 }
@@ -978,7 +960,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetKCoords( SCell & c, const Point & kp ) const
 {
-  KhalimskyPreSpace::sSetKCoords( c, kp );
+  KhalimskyPreSpace::sSetKCoords( c.mySPreCell, kp );
   this->updateSCellHelper( c );
   ASSERT( sIsValid(c) );
 }
@@ -989,7 +971,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uSetCoords( Cell & c, const Point & p ) const
 {
-  KhalimskyPreSpace::uSetCoords( c, p );
+  KhalimskyPreSpace::uSetCoords( c.myPreCell, p );
   this->updateCellHelper( c );
   ASSERT( uIsValid(c) );
 }
@@ -1000,7 +982,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetCoords( SCell & c, const Point & p ) const
 {
-  KhalimskyPreSpace::sSetCoords( c, p );
+  KhalimskyPreSpace::sSetCoords( c.mySPreCell, p );
   this->updateSCellHelper( c );
   ASSERT( sIsValid(c) );
 }
@@ -1011,7 +993,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSetSign( SCell & c, Sign s ) const
 {
-  KhalimskyPreSpace::sSetSign( c, s );
+  KhalimskyPreSpace::sSetSign( c.mySPreCell, s );
 }
 //-----------------------------------------------------------------------------
 // ------------------------- Cell topology services -----------------------
@@ -1169,7 +1151,7 @@ uFirst( const PreCell & p ) const
 {
   Cell cell;
   for ( Dimension k = 0; k < dimension; ++k )
-    KhalimskyPreSpace::uSetKCoord( cell, k, uFirst( p, k ) );
+    KhalimskyPreSpace::uSetKCoord( cell.myPreCell, k, uFirst( p, k ) );
 
   return cell;
 }
@@ -1195,7 +1177,7 @@ uLast( const PreCell & p ) const
 {
   Cell cell;
   for ( Dimension k = 0; k < dimension; ++k )
-    KhalimskyPreSpace::uSetKCoord( cell, k, uLast( p, k ) );
+    KhalimskyPreSpace::uSetKCoord( cell.myPreCell, k, uLast( p, k ) );
 
   return cell;
 }
@@ -1273,7 +1255,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uGetMax( Cell p, DGtal::Dimension k ) const
 {
-  KhalimskyPreSpace::uSetKCoord( p, k, uLast( p, k ) );
+  KhalimskyPreSpace::uSetKCoord( p.myPreCell, k, uLast( p, k ) );
   ASSERT( uIsValid( p ) );
   return p;
 }
@@ -1308,7 +1290,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uGetMin( Cell p, DGtal::Dimension k ) const
 {
-  KhalimskyPreSpace::uSetKCoord( p, k, uFirst( p, k ) );
+  KhalimskyPreSpace::uSetKCoord( p.myPreCell, k, uFirst( p, k ) );
   ASSERT( uIsValid(p) );
   return p;
 }
@@ -1390,7 +1372,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uProject( Cell & p, const Cell & bound, DGtal::Dimension k ) const
 {
-  KhalimskyPreSpace::uProject( p, bound, k );
+  KhalimskyPreSpace::uProject( p.myPreCell, bound, k );
   ASSERT( uIsValid( p ) );
 }
 //-----------------------------------------------------------------------------
@@ -1412,22 +1394,22 @@ uNext( Cell & p, const Cell & lower, const Cell & upper ) const
   if ( KPS::uKCoord( p, k ) == KPS::uKCoord( upper, k ) )
     {
       if ( p == upper ) return false;
-      KPS::uProject( p, lower, k );
+      KPS::uProject( p.myPreCell, lower, k );
 
       for ( k = 1; k < DIM; ++k )
         {
           if ( KPS::uKCoord( p, k ) == KPS::uKCoord( upper, k ) )
-            KPS::uProject( p, lower, k );
+            KPS::uProject( p.myPreCell, lower, k );
           else
             {
-              KPS::uSetKCoord( p, k, this->returnKCoordHelper( KPS::uKCoord( p, k ) + 2, k ) );
+              KPS::uSetKCoord( p.myPreCell, k, this->returnKCoordHelper( KPS::uKCoord( p, k ) + 2, k ) );
               break;
             }
         }
       return true;
     }
 
-  KPS::uSetKCoord( p, k, this->returnKCoordHelper( KPS::uKCoord( p, k ) + 2, k ) );
+  KPS::uSetKCoord( p.myPreCell, k, this->returnKCoordHelper( KPS::uKCoord( p, k ) + 2, k ) );
   return true;
 }
 
@@ -1483,9 +1465,9 @@ sLast( const SPreCell & p ) const
 {
   SCell cell;
   for ( Dimension k = 0; k < dimension; ++k )
-    KhalimskyPreSpace::sSetKCoord( cell, k, sLast( p, k ) );
+    KhalimskyPreSpace::sSetKCoord( cell.mySPreCell, k, sLast( p, k ) );
 
-  KhalimskyPreSpace::sSetSign( cell, KhalimskyPreSpace::sSign( p ) );
+  KhalimskyPreSpace::sSetSign( cell.mySPreCell, KhalimskyPreSpace::sSign( p ) );
 
   return cell;
 }
@@ -1539,7 +1521,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetMax( SCell p, DGtal::Dimension k ) const
 {
-  KhalimskyPreSpace::sSetKCoord( p, k, sLast( p, k ) );
+  KhalimskyPreSpace::sSetKCoord( p.mySPreCell, k, sLast( p, k ) );
   ASSERT( sIsValid( p ) );
   return p;
 }
@@ -1575,7 +1557,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetMin( SCell p, DGtal::Dimension k ) const
 {
-  KhalimskyPreSpace::sSetKCoord( p, k, sFirst( p, k ) );
+  KhalimskyPreSpace::sSetKCoord( p.mySPreCell, k, sFirst( p, k ) );
   ASSERT( sIsValid( p ) );
   return p;
 }
@@ -1657,7 +1639,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sProject( SCell & p, const SCell & bound, DGtal::Dimension k ) const
 {
-  KhalimskyPreSpace::sProject( p, bound, k );
+  KhalimskyPreSpace::sProject( p.mySPreCell, bound, k );
   ASSERT( sIsValid( p ) );
 }
 //-----------------------------------------------------------------------------
@@ -1679,22 +1661,22 @@ sNext( SCell & p, const SCell & lower, const SCell & upper ) const
   if ( KPS::sKCoord( p, k ) == KPS::sKCoord( upper, k ) )
     {
       if ( p == upper ) return false;
-      KPS::sProject( p, lower, k );
+      KPS::sProject( p.mySPreCell, lower, k );
 
       for ( k = 1; k < DIM; ++k )
         {
           if ( KPS::sKCoord( p, k ) == KPS::sKCoord( upper, k ) )
-            KPS::sProject( p, lower, k );
+            KPS::sProject( p.mySPreCell, lower, k );
           else
             {
-              KPS::sSetKCoord( p, k, this->returnKCoordHelper( KPS::sKCoord( p, k ) + 2, k ) );
+              KPS::sSetKCoord( p.mySPreCell, k, this->returnKCoordHelper( KPS::sKCoord( p, k ) + 2, k ) );
               break;
             }
         }
       return true;
     }
 
-  KPS::sSetKCoord( p, k, this->returnKCoordHelper( KPS::sKCoord( p, k ) + 2, k ) );
+  KPS::sSetKCoord( p.mySPreCell, k, this->returnKCoordHelper( KPS::sKCoord( p, k ) + 2, k ) );
   return true;
 }
 
