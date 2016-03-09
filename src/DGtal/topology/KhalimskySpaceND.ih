@@ -1438,9 +1438,9 @@ sFirst( const SPreCell & p ) const
 {
   SCell cell;
   for ( Dimension k = 0; k < dimension; ++k )
-    KhalimskyPreSpace::sSetKCoord( cell, k, sFirst( p, k ) );
+    KhalimskyPreSpace::sSetKCoord( cell.mySPreCell, k, sFirst( p, k ) );
 
-  KhalimskyPreSpace::sSetSign( cell, KhalimskyPreSpace::sSign( p ) );
+  KhalimskyPreSpace::sSetSign( cell.mySPreCell, KhalimskyPreSpace::sSign( p ) );
 
   return cell;
 }
