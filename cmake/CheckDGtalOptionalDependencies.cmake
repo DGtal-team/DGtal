@@ -213,9 +213,7 @@ IF(WITH_ITK)
       message(STATUS "ITK accepts [c++11]" )
     else ( CPP11_ITK )
       message(STATUS "ITK does not accept [c++11]" )
-      if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-        MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will not compile.")
-      endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+      MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will not compile.")
     endif ( CPP11_ITK )
 
     # -------------------------------------------------------------------------
