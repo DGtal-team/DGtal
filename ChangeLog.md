@@ -4,7 +4,9 @@
 ## New Features / Critical Changes
 
 ## Changes
-- *Configuration*
+- *Configuration/General*
+ - Cleaning remaining preprocessor directives related to C++11 features.
+   (Roland Denis, [#1141](https://github.com/DGtal-team/DGtal/pull/1141))
  - Travis Continuous integration will check that DGtalTools still compiles with
    changes in new pull-requests. (David Coeurjolly,
    [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
