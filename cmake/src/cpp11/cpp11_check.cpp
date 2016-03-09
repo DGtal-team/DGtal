@@ -14,7 +14,7 @@
  *
  **/
 
-#if __cplusplus <= 199711L
+#if __cplusplus < 201103L
   #error Your compiler does not support C++11. Please specify another C++ compiler.
 #endif
 
