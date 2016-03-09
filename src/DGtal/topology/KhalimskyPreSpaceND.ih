@@ -79,6 +79,15 @@ KhalimskyPreCell( Point const& p )
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
 inline
+DGtal::KhalimskyPreCell< dim, TInteger > const &
+DGtal::KhalimskyPreCell< dim, TInteger >::
+preCell () const
+{
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
 bool
 DGtal::KhalimskyPreCell< dim, TInteger >::
 operator==( const KhalimskyPreCell & other ) const
@@ -147,6 +156,15 @@ SignedKhalimskyPreCell( Point const& p, bool positive )
   : myCoordinates( p )
   , myPositive( positive )
 {
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::SignedKhalimskyPreCell< dim, TInteger > const &
+DGtal::SignedKhalimskyPreCell< dim, TInteger >::
+preCell() const
+{
+  return *this;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
