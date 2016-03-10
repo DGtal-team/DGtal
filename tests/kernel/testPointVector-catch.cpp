@@ -63,10 +63,8 @@ TEST_CASE( "Point Vector Unit tests" )
       REQUIRE( p1 == p1bis );
       REQUIRE( p1 < p2 );
       
-#ifdef CPP11_INITIALIZER_LIST
       RealPoint realInitializerlist( { 3.5, 4.2, 2.2, 3.2 } );
       REQUIRE( p1 != realInitializerlist );
-#endif
     }
   
   SECTION("Min/Max of vector components")

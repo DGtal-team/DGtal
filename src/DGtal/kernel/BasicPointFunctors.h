@@ -51,11 +51,7 @@
 #include "DGtal/base/CQuantity.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/ConstAlias.h"
-#ifdef CPP11_ARRAY
 #include <array>
-#else
-#include <boost/array.hpp>
-#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -153,11 +149,8 @@ namespace functors
      * Array storing the coordinates that are copied from 
      * the input point to its projection (order matters)
      */
-#ifdef CPP11_ARRAY
     std::array<Dimension, dimension> myDims; 
-#else
-    boost::array<Dimension, dimension> myDims; 
-#endif
+    
     /**
      * Default integer set to coordinates of the projected point
      * not in the input point

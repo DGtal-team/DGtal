@@ -121,7 +121,6 @@ bool testIterator()
     itend = myHyperRectDomain.rend(); it != itend; ++it )
     trace.warning() << ( *it ) << std::endl;
   
-#ifdef CPP11_INITIALIZER_LIST
   trace.emphase() << "Iterator 2d (permutation initializer list): ";
   for ( HyperRectDomain<TSpace>::ConstSubRange::ConstIterator 
     it = myHyperRectDomain.subRange( {1, 0} ).begin();
@@ -165,7 +164,6 @@ bool testIterator()
     it = myHyperRectDomain.subRange( {1} , c ).rbegin(c),
     itend=myHyperRectDomain.subRange( {1} , c ).rend(); it !=itend; ++it )
     trace.warning() << ( *it ) << std::endl;
-#endif
 
   trace.emphase() << "Iterator 4d: ";
   typedef SpaceND<4> TSpace4D;
@@ -190,7 +188,6 @@ bool testIterator()
     trace.info() << ( *it ) << std::endl;
 
   
-#ifdef CPP11_INITIALIZER_LIST
   trace.emphase() << "Iterator 4d by using order different from lexicographic initializer list: ";
   for ( HyperRectDomain<TSpace4D>::ConstSubRange::ConstIterator
     it = myHyperRectDomain4D.subRange( {3, 2, 1, 0}).begin();
@@ -222,7 +219,6 @@ bool testIterator()
   --it5;
   for ( ; it4 != it5; --it5 )
     trace.info() << ( *it5 ) << std::endl;
-#endif
 
   return myHyperRectDomain.isValid();
 }

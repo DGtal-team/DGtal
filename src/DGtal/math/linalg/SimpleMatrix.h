@@ -45,11 +45,7 @@
 #include "DGtal/kernel/CEuclideanRing.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/NumberTraits.h"
-#ifdef CPP11_ARRAY
 #include <array>
-#else
-#include <boost/array.hpp>
-#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -399,21 +395,13 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-#ifdef CPP11_ARRAY
     ///Matrix values containers.
     std::array< Component, M*N>  myValues;
 
     ///Static computation of cofactor coefficients
     /// @todo should be static
     std::array< Component, M*N>  myCofactorCoefs;
-#else
-    ///Matrix values containers.
-    boost::array< Component, M*N>  myValues;
-
-    ///Static computation of cofactor coefficients
-    /// @todo should be static
-    boost::array< Component, M*N>  myCofactorCoefs;
-#endif
+    
     // ------------------------- Hidden services ------------------------------
   protected:
 
