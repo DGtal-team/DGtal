@@ -825,7 +825,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sKCoord( const SCell & c, DGtal::Dimension k ) const
 {
-  ASSERT( uIsValid(c) );
+  ASSERT( sIsValid(c) );
   return KhalimskyPreSpace::sKCoord( c, k );
 }
 //-----------------------------------------------------------------------------
@@ -835,7 +835,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCoord( const SCell & c, DGtal::Dimension k ) const
 {
-  ASSERT( uIsValid(c) );
+  ASSERT( sIsValid(c) );
   return KhalimskyPreSpace::sCoord( c, k );
 }
 //-----------------------------------------------------------------------------
@@ -845,7 +845,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Point const &
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sKCoords( const SCell & c ) const
 {
-  ASSERT( uIsValid(c) );
+  ASSERT( sIsValid(c) );
   return KhalimskyPreSpace::sKCoords( c );
 }
 //-----------------------------------------------------------------------------
@@ -855,7 +855,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCoords( const SCell & c ) const
 {
-  ASSERT( uIsValid(c) );
+  ASSERT( sIsValid(c) );
   return KhalimskyPreSpace::sCoords( c );
 }
 //-----------------------------------------------------------------------------
@@ -865,7 +865,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Sign
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSign( const SCell & c ) const
 {
-  ASSERT( uIsValid(c) );
+  ASSERT( sIsValid(c) );
   return KhalimskyPreSpace::sSign( c );
 }
 //-----------------------------------------------------------------------------
