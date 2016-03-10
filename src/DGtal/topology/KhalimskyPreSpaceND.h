@@ -94,7 +94,7 @@ namespace DGtal
 
     /// Returns the underlying constant pre-cell, itself in fact.
     PreCell const& preCell() const;
-    
+
     /// Default constructor.
     explicit KhalimskyPreCell( Integer dummy = 0 );
 
@@ -593,7 +593,7 @@ namespace DGtal
      * @param c any unsigned pre-cell.
      * @return its Khalimsky coordinates.
      */
-    static Point uKCoords( const Cell & c );
+    static const Point & uKCoords( const Cell & c );
 
     /**
      * @param c any unsigned pre-cell.
@@ -619,7 +619,7 @@ namespace DGtal
      * @param c any signed pre-cell.
      * @return its Khalimsky coordinates.
      */
-    static Point sKCoords( const SCell & c );
+    static const Point & sKCoords( const SCell & c );
 
     /**
      * @param c any signed pre-cell.
