@@ -38,13 +38,10 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
     typedef DGtal::DiscreteExteriorCalculus<TDigitalSet::Point::dimension, TDigitalSet::Point::dimension, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::Cell Cell;
-    typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::Index Index;
     typedef typename Calculus::Point Point;
     typedef typename Calculus::Property Property;
-    typedef typename Calculus::Properties Properties;
-    typedef typename Calculus::KSpace KSpace;
 
     Calculus calculus;
     calculus.template initKSpace<typename TDigitalSet::Domain>(_set.domain());
@@ -171,7 +168,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
             accumulateAllLowerIncidentCells(calculus.myKSpace, cell_border, lower_accum);
         }
     }
-    ASSERT( !add_border || add_border && border_accum.empty() );
+    ASSERT( !add_border || border_accum.empty() );
 
     typedef std::set<Cell> CellsSet;
     CellsSet border;
@@ -182,7 +179,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         if (bai->second >= 2) continue;
         insertAllLowerIncidentCells(calculus.myKSpace, bai->first, border);
     }
-    ASSERT( !add_border || add_border && border.empty() );
+    ASSERT( !add_border || border.empty() );
 
     // normalize cell size and set flipped flag
     for (typename CellsAccum::const_iterator lai=lower_accum.begin(), lae=lower_accum.end(); lai!=lae; ++lai)
