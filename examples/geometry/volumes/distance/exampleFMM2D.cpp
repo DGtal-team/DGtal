@@ -73,11 +73,11 @@ using namespace DGtal;
  * @tparam TImage a model of CImage
  */
 template< typename TImage >
-void draw( const TImage aImg, const int& aMaxValue, std::string aBasename) 
+void draw( const TImage aImg, const double& aMaxValue, std::string aBasename) 
 {
   typedef typename TImage::Domain::ConstIterator ConstIteratorOnPoints; 
   typedef typename TImage::Domain::Point Point; 
-  HueShadeColorMap<unsigned char, 2> colorMap(0,aMaxValue);
+  HueShadeColorMap<double, 2> colorMap(0,aMaxValue);
 
   Board2D b; 
   b.setUnit ( LibBoard::Board::UCentimeter );

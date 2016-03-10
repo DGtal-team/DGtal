@@ -1,11 +1,5 @@
 #CMakeLists associated to the examples subdir
 
-
-# Make sure the compiler can find include files.
-if ( CPP11_INITIALIZER_LIST )
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-endif ( CPP11_INITIALIZER_LIST )
-
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/src/)
 include_directories (${PROJECT_BINARY_DIR}/src)
@@ -35,3 +29,4 @@ add_subdirectory(arithmetic)
 add_subdirectory(shapes)
 add_subdirectory(graph)
 add_subdirectory(dec)
+add_subdirectory(base)

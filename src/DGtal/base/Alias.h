@@ -249,13 +249,11 @@ user forward an Alias<T> parameter.
     inline Alias( const CountedPtrOrPtr<T>& t ) 
       : myParam( COUNTED_PTR_OR_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
 
-#ifdef CPP11_RREF_MOVE
     /**
        Constructor from right-reference value. Invalid.
     */
     inline Alias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
     { ASSERT(( false && "[Alias::Alias( T&& )] Aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
-#endif // CPP11_RREF_MOVE
 
     /**
        Cast operator to a T reference. The object is never

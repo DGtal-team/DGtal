@@ -220,7 +220,7 @@ int main( int argc, char** argv )
             visitor.ignore();
         }
       // Assign random color for each plane.
-      ptrSegment->color = Color( random() % 256, random() % 256, random() % 256, 255 );
+      ptrSegment->color = Color( rand() % 256, rand() % 256, rand() % 256, 255 );
     }
   trace.endBlock();
   //! [greedy-plane-segmentation-ex3-segment]

@@ -71,11 +71,11 @@ TEST_CASE( "Testing MeaningfulScaleAnalysis" )
       sp.addValue(5,2);      
 
       MeaningfulScaleAnalysis<Profile<LogFct>> msa(sp);
-      std::vector< std::pair<uint, uint> > interval;      
+      std::vector< std::pair<unsigned int, unsigned int> > interval;      
       msa.computeMeaningfulScales(interval, 1);
       msa.getSlopeFromMeaningfulScales(0,0,2);
       msa.lowerBoundedNoiseLevel(0,10,2,2,2);
-      uint n = msa.noiseLevel();
+      unsigned int n = msa.noiseLevel();
       REQUIRE( interval[0].first == 1 );
       REQUIRE( interval[0].second == 3 );
       REQUIRE( interval[1].first == 4 );

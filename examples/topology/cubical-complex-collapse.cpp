@@ -116,7 +116,7 @@ int main( int argc, char** argv )
             || ( ( z == m ) && ( y == m ) );
           complex.insertCell( S.back(), 
                               fixed ? CC::FIXED 
-                              : (uint32_t) floor(64.0 * n1 ) // This is the priority for collapse 
+                              : (DGtal::uint32_t) floor(64.0 * n1 ) // This is the priority for collapse 
                               );
         }
   //complex.close();
@@ -146,7 +146,7 @@ int main( int argc, char** argv )
   
   trace.beginBlock( "Collapsing complex" );
   CC::DefaultCellMapIteratorPriority P;
-  uint64_t removed 
+  DGtal::uint64_t removed 
     = functions::collapse( complex, S.begin(), S.end(), P, true, true, true );
   trace.info() << "Collapse removed " << removed << " cells." << std::endl;
   trace.info() << "After collapse: " << complex << std::endl;

@@ -161,7 +161,7 @@ inline
 void
 DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
 					     const DGtal::SphericalAccumulator<TV> & aAccumulator,
-					     const typename DGtal::SphericalAccumulator<TV>::RealVector &shift,
+					     const typename DGtal::Z3i::RealVector &shift,
 					     const double radius)
 {
   DGtal::Color saveFillColor = display.getFillColor();
@@ -1666,7 +1666,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
-						  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToPoint<KSpace>, typename KSpace::Point> & object )
+						  const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToPoint<KSpace>, typename KSpace::Point> & object )
 {
   typedef ConstRangeAdapter<TIterator, functors::SCellToPoint<KSpace>, typename KSpace::Point> Range;
   typedef typename Range::ConstIterator ConstIterator;
@@ -1704,10 +1704,10 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
 // MidPointsRange
 
 // ArrowsRange
-template <typename Space, typename KSpace>
+template <typename TSpace, typename TKSpace>
 template <typename TIterator>
 inline
-void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
+void DGtal::Display3DFactory<TSpace,TKSpace>::draw( Display & display,
 						  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToArrow<KSpace>,
 						  std::pair<typename KSpace::Point, typename KSpace::Vector> > & object )
 {
@@ -1731,9 +1731,9 @@ template <typename Space, typename KSpace>
 template <typename TIterator>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
-						  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<KSpace>, typename KSpace::Point> & object )
+						  const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToInnerPoint<KSpace>, typename KSpace::Point> & object )
 {
-  typedef ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<KSpace>, typename KSpace::Point> Range;
+  typedef ConstRangeAdapter<TIterator, DGtal::functors::SCellToInnerPoint<KSpace>, typename KSpace::Point> Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );
@@ -1752,9 +1752,9 @@ template <typename Space, typename KSpace>
 template <typename TIterator>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
-						  const DGtal::ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<KSpace>, typename KSpace::Point> & object )
+						  const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::SCellToOuterPoint<KSpace>, typename KSpace::Point> & object )
 {
-  typedef ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<KSpace>, typename KSpace::Point> Range;
+  typedef ConstRangeAdapter<TIterator, DGtal::functors::SCellToOuterPoint<KSpace>, typename KSpace::Point> Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );

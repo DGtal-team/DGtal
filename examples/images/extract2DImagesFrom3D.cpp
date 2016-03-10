@@ -60,8 +60,8 @@ int main( int /*argc*/, char** /*argv*/ )
    DGtal::Z3i::Point ptUpper1(220, 220, 10);
    DGtal::Z3i::Point ptUpper2(150, 150, 50);
    DGtal::Z2i::Domain domainImage2D (DGtal::Z2i::Point(0,0),
-				     DGtal::Z2i::Point((ptUpper1-origin).norm(),
-						       (ptUpper2-origin).norm()));
+				     DGtal::Z2i::Point(static_cast<int>((ptUpper1-origin).norm()),
+						       static_cast<int>((ptUpper2-origin).norm())));
    //! [extract2DImagesFrom3DOrigin3D]
    DGtal::Z3i::Point ptCenter(175, 175, 20);
    DGtal::Z2i::Domain domainImage2D2 (DGtal::Z2i::Point(0,0),

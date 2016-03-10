@@ -53,6 +53,7 @@
 #include "DGtal/io/viewers/CDrawableWithViewer3D.h"
 #include "DGtal/io/viewers/Viewer3DFactory.h"
 #include "QGLViewer/manipulatedFrame.h"
+#include "QGLViewer/manipulatedCameraFrame.h"
 //////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -164,7 +165,7 @@ DGtal::Viewer3D< Space ,KSpace >::getCurrentGLImageNumber()
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Viewer3D< Space ,KSpace >::addTextureImage(const Viewer3D< Space ,KSpace >::TextureImage &image)
+DGtal::Viewer3D< Space ,KSpace >::addTextureImage(const typename Viewer3D< Space ,KSpace >::TextureImage &image)
 {
   myGSImageList.push_back(image);
   Display3D< Space, KSpace>::updateBoundingBox(image.point1);
@@ -258,7 +259,7 @@ DGtal::Viewer3D<Space, KSpace>::updateEmbeddingTextureImage(unsigned int anImage
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Viewer3D< Space ,KSpace >::TextureImage::updateImageOrientation( DGtal::Viewer3D< Space ,KSpace >::ImageDirection normalDir,
+DGtal::Viewer3D< Space ,KSpace >::TextureImage::updateImageOrientation( ImageDirection normalDir,
                                                                         double xBottomLeft, double yBottomLeft, double zBottomLeft)
 {
   if(normalDir==zDirection)
@@ -286,8 +287,8 @@ DGtal::Viewer3D< Space ,KSpace >::TextureImage::updateImageOrientation( DGtal::V
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Viewer3D< Space ,KSpace >::Image2DDomainD3D::updateDomainOrientation( Viewer3D< Space ,KSpace >::ImageDirection normalDir,
-                                                                             double xBottomLeft, double yBottomLeft, double zBottomLeft)
+DGtal::Viewer3D< Space ,KSpace >::Image2DDomainD3D::updateDomainOrientation(ImageDirection normalDir,
+                                                                            double xBottomLeft, double yBottomLeft, double zBottomLeft)
 {
   if(normalDir==zDirection)
     {
@@ -673,7 +674,15 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glMultMatrixd ( manipulatedFrame()->matrix() );
   glPushMatrix();
   glScalef(myGLScaleFactorX, myGLScaleFactorY, myGLScaleFactorZ);
+
+  glMaterialfv(GL_FRONT, GL_SHININESS, myMaterialShininessCoeff);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeffs);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, myLightSpecularCoeffs);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, myLightDiffuseCoeffs);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, myLightAmbientCoeffs);
+  
   glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
+
   unsigned int i = 0;
   typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
   
@@ -809,8 +818,6 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::init()
 {
-  GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-  GLfloat mat_shininess[] = { 50.0 };
   myAutoSaveState = false;
   myIsMovingLight = false;
   myLigthRotationStep = 0.01;
@@ -825,10 +832,14 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myLightPosition[3] = 0.0;
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
-  glShadeModel (GL_SMOOTH);
+  glShadeModel (GL_SMOOTH);  
+
+  glMaterialfv(GL_FRONT, GL_SHININESS, myMaterialShininessCoeff);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeffs);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, myLightSpecularCoeffs);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, myLightDiffuseCoeffs);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, myLightAmbientCoeffs);
   
-  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-  glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
   glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
   
   glEnable(GL_LIGHTING);
@@ -877,6 +888,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
   setKeyDescription ( Qt::Key_D, "Enable/Disable the two side face rendering." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
+  setKeyDescription ( Qt::Key_M, "Switch the rendering mode bewteen Default, Metallic and Plastic mode." );
 #if !defined (QGLVIEWER_VERSION) || QGLVIEWER_VERSION < 0x020500
   setMouseBindingDescription((Qt::ControlModifier|Qt::ShiftModifier) + Qt::LeftButton, "move light source position defined in the main coordinate system (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
 #else
@@ -1214,7 +1226,24 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       operator>> <Space, KSpace>(*this, "exportedMesh.off");
       trace.info() << "[done]"<< endl ;
     }
+  if( e->key() == Qt::Key_M)
+    {
+      switch (myRenderingMode)
+        {
+        case RenderingMode::RenderingDefault : 
+          myRenderingMode = RenderingMode::RenderingMetallic;
+          break;
+        case RenderingMode::RenderingMetallic : 
+          myRenderingMode = RenderingMode::RenderingPlastic;
+          break;
+        case RenderingMode::RenderingPlastic : 
+          myRenderingMode = RenderingMode::RenderingDefault;
+          break;
+        } 
+      updateRenderingCoefficients(myRenderingMode);
+    }
 
+  
 
   if ( ( e->key() ==Qt::Key_W ) )
     {
@@ -1222,7 +1251,6 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       updateList(false);
       updateGL();
     }
-
 
   if ( ( e->key() ==Qt::Key_R ) )
     {
@@ -1775,6 +1803,123 @@ DGtal::Viewer3D<Space, KSpace>::closeEvent	(	QCloseEvent * 	e	){
 }
 
 
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::setGLMaterialShininessCoefficient(const GLfloat matShininessCoeff)
+{
+  myMaterialShininessCoeff = matShininessCoeff;  
+  updateGL();
+}
 
 
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::setGLLightAmbientCoefficients(const GLfloat lightAmbientCoeffs [4])
+{
+  myLightAmbientCoeffs[0] =  lightAmbientCoeffs[0];
+  myLightAmbientCoeffs[1] =  lightAmbientCoeffs[1];
+  myLightAmbientCoeffs[2] =  lightAmbientCoeffs[2];
+  myLightAmbientCoeffs[3] =  lightAmbientCoeffs[3]; 
+  updateGL();
+}
+
+
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::setGLLightDiffuseCoefficients(const GLfloat lightDiffuseCoeffs [4])
+{
+  myLightDiffuseCoeffs[0] =  lightDiffuseCoeffs[0];
+  myLightDiffuseCoeffs[1] =  lightDiffuseCoeffs[1];
+  myLightDiffuseCoeffs[2] =  lightDiffuseCoeffs[2];
+  myLightDiffuseCoeffs[3] =  lightDiffuseCoeffs[3];
+  updateGL();
+}
+
+
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode aRenderMode)
+{
+  GLfloat newCoefDiff, newCoefSpec = 1.0;
+  switch (aRenderMode) 
+    {
+    case RenderingMode::RenderingDefault :
+      newCoefDiff = myDefaultRenderDiff;
+      newCoefSpec = myDefaultRenderSpec;
+      break;
+    case RenderingMode::RenderingMetallic :
+      newCoefDiff = myMetallicRenderDiff;
+      newCoefSpec = myMetallicRenderSpec;
+      break;
+    case RenderingMode::RenderingPlastic :
+      newCoefDiff = myPlasticRenderDiff;
+      newCoefSpec = myPlasticRenderSpec;
+      break;
+    }
+  for (unsigned int i = 0; i<3; i++) 
+    myLightDiffuseCoeffs[i] = newCoefDiff;
+  myLightDiffuseCoeffs[3] = 1.0;
+  for (unsigned int i = 0; i<3; i++) 
+    myLightSpecularCoeffs[i] = newCoefSpec;
+  myLightSpecularCoeffs[3] = 1.0;
+  updateGL();
+}
+
+
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::setGLLightSpecularCoefficients(const GLfloat lightSpecularCoeffs [4])
+{
+  myLightSpecularCoeffs[0] =  lightSpecularCoeffs[0];
+  myLightSpecularCoeffs[1] =  lightSpecularCoeffs[1];
+  myLightSpecularCoeffs[2] =  lightSpecularCoeffs[2];
+  myLightSpecularCoeffs[3] =  lightSpecularCoeffs[3];
+  updateGL();
+}
+
+
+template<typename Space, typename KSpace>
+inline
+void 
+DGtal::Viewer3D<Space, KSpace>::show(){
+  QGLWidget::show();
+  updateList(false);
+}
+
+
+template<typename Space, typename KSpace>
+inline
+void 
+DGtal::Viewer3D<Space, KSpace>::paintGL(){
+	if (displaysInStereo())
+	{
+		for (int view=1; view>=0; --view)
+		{
+			// Clears screen, set model view matrix with shifted matrix for ith buffer
+			preDrawStereo(view);
+                        postDraw();
+                  	// Used defined method. Default is empty
+			if (camera()->frame()->isManipulated())
+                          fastDraw();
+			else
+                          draw();
+		
+		}
+	}
+	else
+	{
+		// Clears screen, set model view matrix...
+		preDraw();
+		postDraw();
+                // Used defined method. Default calls draw()
+		if (camera()->frame()->isManipulated())
+			fastDraw();
+		else
+                  draw();
+		// Add visual hints: axis, camera, grid...
+		
+	}
+	Q_EMIT drawFinished(true);
+}
 

@@ -423,6 +423,12 @@ Moreover, you have to be sure that it implements all operators required by its c
 If your iterator should be readable and forward, you have to be sure that it is both a 
 model of readable and forward iterator by concept checking. 
 
+\subsection subsecIteratorRangeUtilsIteratorCompletion For developers: interface completion for classes with random-access iterators over points
+
+When you create a class that exposes a random-access iterator related to points, IteratorCompletion can help you to complete the iterator interface of your class: from a basic set of methods (`begin()` and `end()` returning mutable and constant iterators), IteratorCompletion adds to your class reverse iterators and ranges, and the corresponding access methods (`rbegin`, `rend`, `range`, etc.).
+
+See the documentation of IteratorCompletion for more details and an usage example.
+
 \subsection subsecIteratorRangesUtilsConcepts Concepts checking
 
 The basic way of checking whether a given type is a model of a given concept or not

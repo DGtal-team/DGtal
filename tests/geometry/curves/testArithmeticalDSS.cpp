@@ -882,7 +882,7 @@ bool unionTest()
   unsigned int nb = 0;
   unsigned int nbok = 0;
   
-  typedef DGtal::ArithmeticalDSS<int32_t,int32_t,8> DSS;
+  typedef DGtal::ArithmeticalDSS<DGtal::int32_t,DGtal::int32_t,8> DSS;
   typedef DSS::Point Point;
   
   trace.beginBlock("Testing union of two DSSs");
@@ -1136,14 +1136,14 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
       // Pick up a random DSL slope
-      Integer b( random() % modb + 1 );
-      Integer a( random() % b +1);
+      Integer b( rand() % modb + 1 );
+      Integer a( rand() % b +1);
       while(ic.gcd(a,b) !=1)
-	a =random()%b +1; // |a| < |b|
+	a =rand()%b +1; // |a| < |b|
       
       // Pick-up random signs for a and b
-      a = a*((random()%2==0)?1:-1);
-      b = b*((random()%2==0)?1:-1);
+      a = a*((rand()%2==0)?1:-1);
+      b = b*((rand()%2==0)?1:-1);
 
       if ( ic.gcd( a, b ) == 1 )
         {
@@ -1151,7 +1151,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
           for ( unsigned int j = 0; j < 5; ++j )
             {
 	      // Pick up the DSL intercept
-              Integer mu = random() % (2*modb);
+              Integer mu = rand() % (2*modb);
 	      DSL baseDSL(a,b,-mu);
 	      
 	      for (Integer x = 0; x < 10; ++x )
@@ -1160,22 +1160,22 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 
 		  // modx modulates the length of the subsegments
 		  // Pick up the beginning of the first subsegment
-		  Integer x1 = random() % modx;
+		  Integer x1 = rand() % modx;
 		  // Pick up the end of the first subsegment
-		  Integer x2 = x1 + (modx + (random() % modx))*elemMove;
+		  Integer x2 = x1 + (modx + (rand() % modx))*elemMove;
 		  
 		  /************************************************/
 		  
 		  // Connected DSSs: The beginning of the second
 		  //subsegment is randomly set between x1 and x2 or just
 		  //after x2. 
-		  //Integer x3 = x1 + (random() % (x2-x1+1))*elemMove;
+		  //Integer x3 = x1 + (rand() % (x2-x1+1))*elemMove;
 
 		  // Disonnected DSSs: The beginning of the second subsegment is randomly set after x2. 
-		  //Integer x3 = x2 + (random() % (modb))*elemMove;
+		  //Integer x3 = x2 + (rand() % (modb))*elemMove;
 		  
 		  // General Case
-		  Integer x3 = x1 + (random() % (2*modb))*elemMove;
+		  Integer x3 = x1 + (rand() % (2*modb))*elemMove;
 
 		  // The length of the second segment is set to modx
 		  Integer x4 = x3 + modx*elemMove;
@@ -1195,7 +1195,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  Point A,B,C,D;
 		  DSL aDSL(baseDSL);
 		  //Randomly switch a and b to cover cases where |a| > |b|
-		  if(random()%2)
+		  if(rand()%2)
 		    {
 		      aDSL = DSL(b,-a,-mu);
 		      A = Point(-y1,x1); B = Point(-y2,x2);

@@ -31,6 +31,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <boost/algorithm/minmax_element.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 //! [ImageSetDT-includes]
@@ -101,8 +102,8 @@ int main()
  
 
   //! [ImageSetDT-DTvis]
-  DTL2::Value maxDT = (*std::max_element(dt.constRange().begin(), 
-                                         dt.constRange().end()));
+  DTL2::Value maxDT = (*boost::first_max_element(dt.constRange().begin(), 
+                                                 dt.constRange().end(), std::less<DTL2::Value>() ));
   typedef DGtal::HueShadeColorMap<DTL2::Value,2> HueTwice;
 
   aBoard.clear();

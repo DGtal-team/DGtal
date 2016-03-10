@@ -1865,8 +1865,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   Dimension recount = 0;
 #endif
 
-  Quantity lastInnerMoments[ nbMoments ];
-  Quantity lastOuterMoments[ nbMoments ];
+  Quantity *lastInnerMoments = new Quantity[ nbMoments ];
+  Quantity *lastOuterMoments = new Quantity[ nbMoments ];
 
   CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
   CovarianceMatrix resultCovarianceMatrix;

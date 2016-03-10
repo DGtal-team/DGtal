@@ -51,11 +51,7 @@
 #include "DGtal/base/CQuantity.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/ConstAlias.h"
-#ifdef CPP11_ARRAY
 #include <array>
-#else
-#include <boost/array.hpp>
-#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -153,11 +149,8 @@ namespace functors
      * Array storing the coordinates that are copied from 
      * the input point to its projection (order matters)
      */
-#ifdef CPP11_ARRAY
     std::array<Dimension, dimension> myDims; 
-#else
-    boost::array<Dimension, dimension> myDims; 
-#endif
+    
     /**
      * Default integer set to coordinates of the projected point
      * not in the input point
@@ -321,8 +314,8 @@ namespace functors
       double d1 = pt[indexesRotate[0]] - myCenter[indexesRotate[0]];
       double d2 = pt[indexesRotate[1]] - myCenter[indexesRotate[1]];
       
-      pt[indexesRotate[0]] = myCenter[indexesRotate[0]] + d1*cos(myRotationAngle)-d2*sin(myRotationAngle) ; 
-      pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + d1*sin(myRotationAngle)+d2*cos(myRotationAngle) ; 
+      pt[indexesRotate[0]] = myCenter[indexesRotate[0]] + static_cast<Integer>(floor(d1*cos(myRotationAngle)-d2*sin(myRotationAngle) )); 
+      pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + static_cast<Integer>(floor(d1*sin(myRotationAngle)+d2*cos(myRotationAngle) ));
       
       if(myDomain.isInside(pt))
         return pt;
@@ -483,6 +476,7 @@ namespace functors
     {
       Point pt = myOriginPointEmbeddedIn3D;
       for( Dimension i=0; i<pt.size(); i++){
+
         pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[0])
                                                  *myFirstAxisEmbeddedDirection[i]));
         pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[1])
@@ -688,14 +682,6 @@ namespace functors
     Point myGridShift;
     std::vector<TValue> myGridSize;    
  };
-
-
-
-
-
-
-
-
 
 
   /**
