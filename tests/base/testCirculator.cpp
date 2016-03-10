@@ -31,9 +31,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#ifdef CPP11_FORWARD_LIST 
 #include <forward_list>
-#endif
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Circulator.h"
@@ -307,14 +305,13 @@ int main( int argc, char** argv )
   res = res && ((*rc1) == (*c4));
   trace.endBlock();
 
-#ifdef CPP11_FORWARD_LIST 
   std::forward_list<int> fl;
   fl.push_front(1);
   fl.push_front(2);
   fl.push_front(3);
   fl.push_front(4);
   fl.push_front(5);
-#endif 
+  
   std::list<int> bl; 
   bl.push_back(1);
   bl.push_back(2);
@@ -323,9 +320,7 @@ int main( int argc, char** argv )
   bl.push_back(5);
 
   res = res && 
-#ifdef CPP11_FORWARD_LIST 
     basicForwardTest(fl) && 
-#endif
     basicForwardTest(bl) && 
     basicForwardTest(v) &&
     basicBidirectionalTest(bl) && 
