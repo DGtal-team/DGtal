@@ -74,7 +74,7 @@ int main()
   SCell linelC = K.sCell(Point(1,2 ,2), false);
   board << linelA << linelB << linelC;
 
-  Cell center(Point(5,5,5));
+  Cell center = K.uCell(Point(5,5,5));
 
   // Testing display of oriented surfels:
   SCell ssurfelXZ = K.sCell( Point( 5, 6, 5 ), false ); 
