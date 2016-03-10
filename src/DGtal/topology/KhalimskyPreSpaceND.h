@@ -99,10 +99,10 @@ namespace DGtal
     explicit KhalimskyPreCell( Integer dummy = 0 );
 
 
-    /** Explicit constructor from its Khalimsky coordinates.
+    /** Implicit constructor from its Khalimsky coordinates.
      * @param aPoint Its Khalimsky coordinates as a point.
      */
-    explicit KhalimskyPreCell( Point const& aPoint );
+    KhalimskyPreCell( Point const& aPoint );
 
     /** Copy constructor.
      * @param aCell any other pre-cell.
@@ -196,11 +196,11 @@ namespace DGtal
     /// Default constructor.
     explicit SignedKhalimskyPreCell( Integer dummy = 0 );
 
-    /** Explicit constructor from its Khalimsky coordinates.
+    /** Implicit constructor from its Khalimsky coordinates.
      *
      * @param aPoint Its Khalimsky coordinates as a point.
      */
-    explicit SignedKhalimskyPreCell( Point const& point, bool positive );
+    SignedKhalimskyPreCell( Point const& point, bool positive );
 
     /** Copy constructor.
      * @param aCell any other pre-cell.
