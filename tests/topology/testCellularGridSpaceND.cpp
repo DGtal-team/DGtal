@@ -415,8 +415,8 @@ bool testFindABel()
   SCell s001 = Surfaces<KSpace>::findABel( K, shape_set , p000 , p001 );
 
   trace.endBlock();
-  return ( (s010 == SCell( Point(1,2,1), true  ) ) &&
-           (s001 == SCell( Point(1,1,2), false ) ) );
+  return ( (s010 == K.sCell( Point(1,2,1), true  ) ) &&
+           (s001 == K.sCell( Point(1,1,2), false ) ) );
 }
 
 template <typename KSpace>

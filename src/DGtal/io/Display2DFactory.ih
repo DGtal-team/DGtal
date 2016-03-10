@@ -44,11 +44,12 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
     FATAL_ERROR( dim == 2 );
 
     using KPS = DGtal::Z2i::KPreSpace;
+    const KPS K{};
 
     //FIXME: as for Display3D models, embedder should be factorized
     //and not instantiated at each call.
     typedef DGtal::CanonicSCellEmbedder<KPS> Embedder;
-    const Embedder embedder( KPS() );
+    const Embedder embedder( K );
     const Embedder::RealPoint coords = embedder(sk.preCell());
     const float x = coords[0];
     const float y = coords[1];
@@ -231,7 +232,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
     for (typename TCalculus::Index index=0; index<vector_field.length(); index++)
     {
         const typename TCalculus::SCell& cell = vector_field.getSCell(index);
-        const DGtal::Z2i::RealPoint origin = DGtal::Z2i::RealPoint(cell.myCoordinates[0]-1, cell.myCoordinates[1]-1)/2.;
+        const DGtal::Z2i::RealPoint origin = DGtal::Z2i::RealPoint(cell.preCell().myCoordinates[0]-1, cell.preCell().myCoordinates[1]-1)/2.;
 
         Vector vector = vector_field.getVector(index);
 
@@ -1384,9 +1385,12 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
 template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
-           const DGtal::KhalimskyCell<dim, TInteger> & k )
+           const DGtal::KhalimskyCell<dim, TInteger> & kk )
 {
   FATAL_ERROR( dim == 2 );
+
+  auto const& k = kk.preCell();
+
   float x = (float)
     ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
   float y = (float)

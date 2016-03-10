@@ -55,8 +55,9 @@ namespace std {
              typename TInteger >
   struct hash< DGtal::KhalimskyCell< dim, TInteger > >
   {
-    size_t operator()(const DGtal::KhalimskyCell< dim, TInteger > & p) const
+    size_t operator()(const DGtal::KhalimskyCell< dim, TInteger > & pp) const
     {
+      auto const& p = pp.preCell();
       return boost::hash_range(p.myCoordinates.begin(), p.myCoordinates.end());
     }
   };
@@ -70,8 +71,9 @@ namespace std {
              typename TInteger >
   struct hash< DGtal::SignedKhalimskyCell< dim, TInteger > >
   {
-    size_t operator()(const DGtal::SignedKhalimskyCell< dim, TInteger > & p) const
+    size_t operator()(const DGtal::SignedKhalimskyCell< dim, TInteger > & pp) const
     {
+      auto const& p = pp.preCell();
       return p.myPositive
         ? boost::hash_range(p.myCoordinates.begin(), p.myCoordinates.end())
         : boost::hash_range(p.myCoordinates.begin(), p.myCoordinates.end()) ^ ( (size_t) 0x7a0d3fe9 );
