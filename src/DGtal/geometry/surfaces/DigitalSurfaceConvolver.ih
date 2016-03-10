@@ -1011,6 +1011,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
+  using KPS = typename KSpace::KhalimskyPreSpace;
+
 #ifdef DEBUG_VERBOSE
   Dimension recount = false;
 #endif
@@ -1096,9 +1098,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
               {
                 for( KernelConstIterator itm = myKernelMask->first; itm != myKernelMask->second; ++itm )
                   {
-                    if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                    auto preShiftedSpel = KPS::sSpel( *itm );
+                    preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                    if( myKSpace.sIsInside( preShiftedSpel ) )
                     {
-                      myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                      myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                       ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                       ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1117,9 +1122,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
                   {
                     if( myKernel->operator()( *itm ))
                       {
-                        if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                        auto preShiftedSpel = KPS::sSpel( *itm );
+                        preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                        if( myKSpace.sIsInside( preShiftedSpel ) )
                         {
-                          myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                          myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                           ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                           ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1146,9 +1154,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
             /// Part to substract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
-                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel ))
+                auto preShiftedSpel = KPS::sSpel( *itm );
+                preShiftedSpel.myCoordinates += shiftInnerSpel - diffSpel;
+
+                if( myKSpace.sIsInside( preShiftedSpel ) )
                 {
-                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+                  myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1163,9 +1174,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
             /// Part to add from previous result.
             for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
               {
-                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                auto preShiftedSpel = KPS::sSpel( *itm );
+                preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                if( myKSpace.sIsInside( preShiftedSpel ) )
                 {
-                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                  myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1215,9 +1229,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
         /// Part to substract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
-            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel ))
+            auto preShiftedSpel = KPS::sSpel( *itm );
+            preShiftedSpel.myCoordinates += shiftOuterSpel - diffSpel;
+
+            if( myKSpace.sIsInside( preShiftedSpel ) )
             {
-              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+              myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1232,9 +1249,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
         /// Part to add from previous result.
         for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
           {
-            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel ))
+            auto preShiftedSpel = KPS::sSpel( *itm );
+            preShiftedSpel.myCoordinates += shiftOuterSpel;
+
+            if( myKSpace.sIsInside( preShiftedSpel ) )
             {
-              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+              myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1279,6 +1299,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   Quantity * lastOuterMoments ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
+
+  using KPS = typename KSpace::KhalimskyPreSpace;
 
 #ifdef DEBUG_VERBOSE
   Dimension recount = false;
@@ -1366,9 +1388,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
               {
                 for( KernelConstIterator itm = myKernelMask->first; itm != myKernelMask->second; ++itm )
                   {
-                    if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                    auto preShiftedSpel = KPS::sSpel( *itm );
+                    preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                    if( myKSpace.sIsInside( preShiftedSpel ) )
                     {
-                      myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                      myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                       ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                       ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1387,9 +1412,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
                   {
                     if( myKernel->operator()( *itm ))
                       {
-                        if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                        auto preShiftedSpel = KPS::sSpel( *itm );
+                        preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                        if( myKSpace.sIsInside( preShiftedSpel ) )
                         {
-                          myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                          myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                           ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                           ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1415,9 +1443,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
             /// Part to substract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
-                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel ))
+                auto preShiftedSpel = KPS::sSpel( *itm );
+                preShiftedSpel.myCoordinates += shiftInnerSpel - diffSpel;
+
+                if( myKSpace.sIsInside( preShiftedSpel ) )
                 {
-                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+                  myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1432,9 +1463,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
             /// Part to add from previous result.
             for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
               {
-                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                auto preShiftedSpel = KPS::sSpel( *itm );
+                preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                if( myKSpace.sIsInside( preShiftedSpel ) )
                 {
-                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                  myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1484,9 +1518,11 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
         /// Part to substract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
-            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel ))
+            auto preShiftedSpel = KPS::sSpel( *itm );
+            preShiftedSpel.myCoordinates += shiftOuterSpel - diffSpel;
+            if( myKSpace.sIsInside( preShiftedSpel ) )
             {
-              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+              myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1501,9 +1537,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
         /// Part to add from previous result.
         for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
           {
-            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel ))
+            auto preShiftedSpel = KPS::sSpel( *itm );
+            preShiftedSpel.myCoordinates += shiftOuterSpel;
+
+            if( myKSpace.sIsInside( preShiftedSpel ) )
             {
-              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+              myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2018,6 +2057,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
+  using KPS = typename KSpace::KhalimskyPreSpace;
+
 #ifdef DEBUG_VERBOSE
   Dimension recount = false;
 #endif
@@ -2105,9 +2146,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
               {
                 for( KernelConstIterator itm = myKernelMask->first; itm != myKernelMask->second; ++itm )
                   {
-                    if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                    auto preShiftedSpel = KPS::sSpel( *itm );
+                    preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                    if( myKSpace.sIsInside( preShiftedSpel ) )
                     {
-                      myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                      myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                       ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                       ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2127,9 +2171,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
                   {
                     if( myKernel->operator()( *itm ))
                       {
-                        if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                        auto preShiftedSpel = KPS::sSpel( *itm );
+                        preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                        if( myKSpace.sIsInside( preShiftedSpel ) )
                         {
-                          myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                          myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                           ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                           ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2156,9 +2203,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
             /// Part to substract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
-                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel ))
+                auto preShiftedSpel = KPS::sSpel( *itm );
+                preShiftedSpel.myCoordinates += shiftInnerSpel - diffSpel;
+
+                if( myKSpace.sIsInside( preShiftedSpel ) )
                 {
-                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+                  myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2174,9 +2224,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
             /// Part to add from previous result.
             for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
               {
-                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                auto preShiftedSpel = KPS::sSpel( *itm );
+                preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                if( myKSpace.sIsInside( preShiftedSpel ) )
                 {
-                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                  myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2229,9 +2282,13 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
         /// Part to substract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
-            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel ))
+            auto preShiftedSpel = KPS::sSpel( *itm );
+            preShiftedSpel.myCoordinates += shiftOuterSpel - diffSpel;
+
+            if( myKSpace.sIsInside( preShiftedSpel ) )
             {
-              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+              myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates
+                                   );
 
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2247,9 +2304,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
         /// Part to add from previous result.
         for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
           {
-            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel ))
+            auto preShiftedSpel = KPS::sSpel( *itm );
+            preShiftedSpel.myCoordinates += shiftOuterSpel;
+
+            if( myKSpace.sIsInside( preShiftedSpel ) )
             {
-              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+              myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2295,6 +2355,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   Quantity * lastOuterMoments ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
+
+  using KPS = typename KSpace::KhalimskyPreSpace;
 
 #ifdef DEBUG_VERBOSE
   Dimension recount = false;
@@ -2384,9 +2446,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
               {
                 for( KernelConstIterator itm = myKernelMask->first; itm != myKernelMask->second; ++itm )
                   {
-                    if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                    auto preShiftedSpel = KPS::sSpel( *itm );
+                    preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                    if( myKSpace.sIsInside( preShiftedSpel ) )
                     {
-                      myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                      myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                       ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                       ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2406,9 +2471,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
                   {
                     if( myKernel->operator()( *itm ))
                       {
-                        if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                        auto preShiftedSpel = KPS::sSpel( *itm );
+                        preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                        if( myKSpace.sIsInside( preShiftedSpel ) )
                         {
-                          myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                          myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                           ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                           ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2435,9 +2503,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
             /// Part to substract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
-                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel ))
+                auto preShiftedSpel = KPS::sSpel( *itm );
+                preShiftedSpel.myCoordinates += shiftInnerSpel - diffSpel;
+
+                if( myKSpace.sIsInside( preShiftedSpel ) )
                 {
-                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+                  myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2453,9 +2524,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
             /// Part to add from previous result.
             for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
               {
-                if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel ))
+                auto preShiftedSpel = KPS::sSpel( *itm );
+                preShiftedSpel.myCoordinates += shiftInnerSpel;
+
+                if( myKSpace.sIsInside( preShiftedSpel ) )
                 {
-                  myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+                  myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                   ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2508,9 +2582,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
         /// Part to substract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
-            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel ))
+            auto preShiftedSpel = KPS::sSpel( *itm );
+            preShiftedSpel.myCoordinates += shiftOuterSpel - diffSpel;
+
+            if( myKSpace.sIsInside( preShiftedSpel ) )
             {
-              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+              myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2526,9 +2603,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
         /// Part to add from previous result.
         for( KernelConstIterator itm = (*myMasks)[ nbMasks - offset ].first, itend = (*myMasks)[ nbMasks - offset ].second; itm != itend; ++itm )
           {
-            if( myKSpace.cIsInside( myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel ))
+            auto preShiftedSpel = KPS::sSpel( *itm );
+            preShiftedSpel.myCoordinates += shiftOuterSpel;
+
+            if( myKSpace.sIsInside( preShiftedSpel ) )
             {
-              myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+              myKSpace.sSetKCoords( shiftedSpel, preShiftedSpel.myCoordinates );
 
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
               ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
