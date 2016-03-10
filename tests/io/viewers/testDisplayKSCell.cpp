@@ -118,7 +118,7 @@ int main( int argc, char** argv )
  viewer << linelA << linelB << linelC;
 
 
- Cell center(Point(5,5,5));
+ Cell center = K.uCell(Point(5,5,5));
 // Testing display of oriented surfels:
  SCell ssurfelXZ = K.sCell( Point( 5, 6, 5 ), false );
  SCell ssurfelXY = K.sCell( Point( 5, 5, 6 ), false );

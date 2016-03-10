@@ -45,7 +45,7 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/topology/KhalimskyPreSpaceND.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -180,11 +180,11 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   /**
      * Constructor.
      *
-     * @param aSurfel a DGtal::Z3i::SPreCell ( KhalimskyPreSpaceND< 2, Integer > SPreCell ) .
+     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
      * @param aShift the shift distance (positive or negative).
      * @param aSizeFactor use to change the Prism size (1.0 initial size).
      */
-  TransformedPrism( const DGtal::KhalimskyPreSpaceND< 3, int >::SPreCell  & aSurfel,
+  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
                           double aShift, double aSizeFactor=1.0 ):mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
   {
   }
@@ -193,35 +193,36 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   /**
      * Constructor.
      *
-     * @param aSurfel a DGtal::Z3i::SPreCell ( KhalimskyPreSpaceND< 2, Integer > SPreCell ) .
-     * @param aVoxel a  DGtal::Z3i::SPreCell represent the voxel for which the surfel is associated. It permits to determine automatically the shift parameter (the surfel is automatically shifted towards this voxel).
+     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
+     * @param aVoxel a  DGtal::Z3i::SCell represent the voxel for which the surfel is associated. It permits to determine automatically the shift parameter (the surfel is automatically shifted towards this voxel).
      * @param aShift the shift distance (positive or negative (default 0.05)).
      * @param aSizeFactor use to change the Prism size (default 0.75).
      */
-  TransformedPrism( const DGtal::KhalimskyPreSpaceND< 3, int >::SPreCell  & aSurfel,
-                          const DGtal::KhalimskyPreSpaceND< 3, int >::SPreCell  & aVoxel,
+  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+                          const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel,
                           double aShift=0.05, double aSizeFactor=0.75  )
+    : mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
   {
-    mySurfel= aSurfel;
-    myShift = aShift;
-    mySizeFactor = aSizeFactor;
-    bool xodd = (mySurfel.myCoordinates[ 0 ] & 1 );
-    bool yodd = (mySurfel.myCoordinates[ 1 ] & 1 );
-    bool zodd = (mySurfel.myCoordinates[ 2 ] & 1 );
+    auto const& preSurfel = aSurfel.preCell();
+    auto const& preVoxel  = aVoxel.preCell();
+
+    bool xodd = (preSurfel.myCoordinates[ 0 ] & 1 );
+    bool yodd = (preSurfel.myCoordinates[ 1 ] & 1 );
+    bool zodd = (preSurfel.myCoordinates[ 2 ] & 1 );
     if(!xodd )
     {
-      myShift*= ((aVoxel.myCoordinates[ 0 ]-mySurfel.myCoordinates[ 0 ] <0)? -1.0: 1.0);
+      myShift*= ((preVoxel.myCoordinates[ 0 ]-preSurfel.myCoordinates[ 0 ] <0)? -1.0: 1.0);
     }else if(!yodd )
     {
-      myShift*=((aVoxel.myCoordinates[ 1 ]-mySurfel.myCoordinates[ 1 ] <0)? -1.0: 1.0);
+      myShift*=((preVoxel.myCoordinates[ 1 ]-preSurfel.myCoordinates[ 1 ] <0)? -1.0: 1.0);
     }else if(!zodd )
     {
-      myShift*=((aVoxel.myCoordinates[ 2 ]-mySurfel.myCoordinates[ 2 ] <0)? -1.0: 1.0);
+      myShift*=((preVoxel.myCoordinates[ 2 ]-preSurfel.myCoordinates[ 2 ] <0)? -1.0: 1.0);
     }
   }
 
   ///@todo FIX this member
-  DGtal::KhalimskyPreSpaceND< 3, int >::SPreCell mySurfel;
+  DGtal::KhalimskySpaceND< 3, int >::SCell mySurfel;
   double myShift;
   double mySizeFactor;
 };
