@@ -75,7 +75,7 @@ namespace DGtal
    * \brief Aim: This class template may be used to (linearly) convert scalar
    * values in a given range into a color in a gradient defined by two
    * or more colors.
-   * 
+   *
    * The GradientColorMap can be used either as a functor object
    * (the value range is given at the object's construction, together with the
    * reference color) which converts a value into a Color structure,
@@ -97,7 +97,7 @@ namespace DGtal
    *   grad3.addColor( Color::Blue );
    *   grad3.addColor( Color::White );
    *   grad3.addColor( Color::Red );
-   *   
+   *
    *   b.setPenColor( grad3( 100 ) ); // Between Blue and white.
    *   b.setPenColor( grad3( 300 ) ); // Between white and red.
    * }
@@ -111,7 +111,7 @@ namespace DGtal
    * @tparam PDefaultLastColor If DefaultPreset is CMAP_CUSTOM, this is the
    *         ending color of the gradient.
    */
-  template <typename PValue, 
+  template <typename PValue,
     int PDefaultPreset = CMAP_CUSTOM,
     int PDefaultFirstColor = -1,
     int PDefaultLastColor = -1 >
@@ -119,15 +119,16 @@ namespace DGtal
   {
 
   public:
-    
+
     typedef PValue Value;
 
     // ----------------------- Standard services ------------------------------
   public:
 
-    /** 
+    /**
      * Constructor.
-     * 
+     *
+     * @pre min and max values must be different.
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      * @param preset A preset identifier.
@@ -139,28 +140,28 @@ namespace DGtal
           const ColorGradientPreset preset
           = static_cast<ColorGradientPreset>( PDefaultPreset ),
           const Color firstColor
-          = 
+          =
           ( PDefaultFirstColor == -1 ) ? Color::None :
           Color( DGTAL_RED_COMPONENT( PDefaultFirstColor ),
             DGTAL_GREEN_COMPONENT( PDefaultFirstColor ),
             DGTAL_BLUE_COMPONENT( PDefaultFirstColor ) ),
           const Color lastColor
-          = 
+          =
           ( PDefaultFirstColor == -1 ) ? Color::None :
           Color( DGTAL_RED_COMPONENT( PDefaultLastColor ),
             DGTAL_GREEN_COMPONENT( PDefaultLastColor ),
             DGTAL_BLUE_COMPONENT( PDefaultLastColor ) )
           );
-    
-    /** 
+
+    /**
      * Computes the color associated with a value in a given range.
-     * 
+     *
      * @param value A value within the value range.
-     * @return A color whose brightness linearly depends on the 
+     * @return A color whose brightness linearly depends on the
      * position of [value] within the current range.
      */
     Color operator()( const PValue & value ) const;
-      
+
     /**
      * Destructor.
      */
@@ -182,15 +183,15 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
-    /** 
+    /**
      * Clears the list of colors.
-     * 
+     *
      */
     void clearColors();
 
-    /** 
+    /**
      * Adds a color to the list of color steps.
-     * 
+     *
      * @param color A color.
      */
     void addColor( const Color & color );
@@ -207,14 +208,14 @@ namespace DGtal
      */
     bool isValid() const;
 
-    /** 
+    /**
      * Returns the lower bound of the value range.
      *
      * @return The lower bound of the value range.
      */
     const PValue & min() const;
 
-    /** 
+    /**
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
@@ -223,21 +224,22 @@ namespace DGtal
 
     // ----------------------- Static methods ---------------------------------
 
-    /** 
+    /**
      * Computes the color associated with a value in a given range.
      * 
+     * @pre min and max values must be different.
      * @param colors The gradients boundary colors.
-     * @param min The lower bound of the value range.  
+     * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      * @param value A value within the value range.
-     * @return A color whose color linearly depends on the 
-     * position of [value] within the range [min]..[max]. 
+     * @return A color whose color linearly depends on the
+     * position of [value] within the range [min]..[max].
      */
     static Color getColor( const std::vector<Color> & colors,
              const PValue & min,
              const PValue & max,
              const PValue & value );
-    
+
     // ------------------------- Protected Datas ------------------------------
   private:
 
@@ -250,7 +252,7 @@ namespace DGtal
     PValue myMin;    /**< The lower bound of the value range.  */
     PValue myMax;           /**< The lower bound of the value range.  */
     std::vector<Color> myColors;  /**< The gradients boundary colors. */
-    
+
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
@@ -275,7 +277,7 @@ namespace DGtal
     int PDefaultLastColor >
   std::ostream&
   operator<< ( std::ostream & out, const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & object );
-  
+
 } // namespace DGtal
 
 

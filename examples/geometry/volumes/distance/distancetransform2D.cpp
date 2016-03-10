@@ -94,14 +94,8 @@ int main()
   randomSeeds(image,16,0);
   //! [DTDef]
 
-  //! [DTColormaps]
-  //Colormap used for the SVG output
-  typedef HueShadeColorMap<long int, 2> HueTwice;
-  typedef GrayscaleColorMap<unsigned char> Gray;
-  //! [DTColormaps]
-
-
   //Input shape output
+  typedef GrayscaleColorMap<Image::Value> Gray;
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)129);
@@ -132,6 +126,13 @@ int main()
   //We compute the maximum DT value on the L1 map
   for ( DTL1::ConstRange::ConstIterator it = dtL1.constRange().begin(), itend = dtL1.constRange().end();it != itend; ++it)
     if ( (*it) > maxv1)  maxv1 = (*it);
+  
+  //! [DTColormaps]
+  //Colormap used for the SVG output
+  typedef HueShadeColorMap<DTL2::Value, 2> HueTwice;
+  //! [DTColormaps]
+
+
   
   
   trace.warning() << dtL2 << " maxValue= "<<maxv2<< endl;

@@ -171,13 +171,13 @@ DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::expo
 
 | Dimension  | Name              | Description                                                 | Class name    | Comment                                                        |
 |------------|-------------------|-------------------------------------------------------------|---------------|----------------------------------------------------------------|
-|         2D | PGM               | Grayscale  netpbm image format                              | PNMReader     | http://netpbm.sourceforge.net/                                 |
+|         2D | PGM               | Grayscale  netpbm image format                              | PGMReader     | http://netpbm.sourceforge.net/                                 |
 |            | any Magick format | Any file format in the GraphicsMagick library               | MagickReader  | with @a WITH_MAGICK build flag, http://www.graphicsmagick.org/ |
 |            | HDF5              | HDF5 file with 2D image dataset(s)                          | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
 |            | any 2D ITK format | Any file format in the ITK library (png, jpg, mhd, mha, ...)| ITKReader     | with @a WITH_ITK build flag, http://www.itk.org/               |
-|         3D | PGM3D             | Grayscale  netpbm image format                              | PNMReader     |                                                                |
-|            | PGM               | Same as PGM3D but with same header as in 2D (P2 or P5)      | PNMReader     |                                                                |
-|            | DICOM             | Medical format (from scanners, with the use of ITK library) | DicomREader   | http://medical.nema.org/                                       |
+|         3D | PGM3D             | Grayscale  netpbm image format                              | PGMReader     |                                                                |
+|            | PGM               | Same as PGM3D but with same header as in 2D (P2 or P5)      | PGMReader     |                                                                |
+|            | DICOM             | Medical format (from scanners, with the use of ITK library) | DicomReader   | http://medical.nema.org/                                       |
 |            | Vol               | Volumetric file format                                      | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
 |            | Longvol           | Volumetric file format (long)                               | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
 |            | HDF5              | HDF5 file with 3D UInt8 image dataset(s)                    | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |

@@ -112,7 +112,7 @@ static void BM_CalculatePi(benchmark::State& state) {
   }
 }
 BENCHMARK(BM_CalculatePi)->Threads(8);
-BENCHMARK(BM_CalculatePi)->ThreadRange(1, 32);
+BENCHMARK(BM_CalculatePi)->ThreadRange(1, 16);
 BENCHMARK(BM_CalculatePi)->ThreadPerCpu();
 
 
@@ -122,7 +122,7 @@ static void BM_LongTest(benchmark::State& state) {
     for (int i = 0; i < state.range_x(); ++i)
       benchmark::DoNotOptimize(tracker += i);
 }
-BENCHMARK(BM_LongTest)->Range(1<<16,1<<28);
+BENCHMARK(BM_LongTest)->Range(1<<4,1<<8);
 
 
 

@@ -1,21 +1,105 @@
+# DGtal 0.9.2
+
+
+## New Features / Critical Changes
+
+## Changes
+- *Configuration/General*
+ - Cleaning remaining preprocessor directives related to C++11 features.
+   (Roland Denis, [#1141](https://github.com/DGtal-team/DGtal/pull/1141))
+ - Travis Continuous integration will check that DGtalTools still compiles with
+   changes in new pull-requests. (David Coeurjolly,
+   [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
+
+## Bug Fixes
+- *DEC Package*
+ - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
+   (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
+
+   - *Geometry Package*
+ - AlphaThickSegmentComputer: fix segment display errors which could appear
+   when displaying a small segment. Fix a non initialized attribute with
+   some improvements on bounding box computation with orientation check.
+   (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
+
+- *IO Package*
+ - Viewer3D: Fix a problem when the show() method was called at the end of the
+   main program (the list creation was not called).
+   (Bertrand Kerautret [##1138](https://github.com/DGtal-team/DGtal/pull/1138))
+ - Viewer3D: add three new modes for shape rendering (default, metallic and
+   plastic). The rendering can be changed by using the key M. The user can
+   also choose its own rendering with some setter/getter on the opengl
+   lightning/properties. (B. Kerautret,
+   [#1128](https://github.com/DGtal-team/DGtal/pull/1128))
+ - readers: fix a vol/pgm/raw reading bug occurring on Windows 10 due to the
+   different interpretations of end of line \r\n on Window versus \n on
+   unix/mac. Changing reading mode with binary mode instead text mode fix
+   the issue. (Bertrand Kerautret
+   [#1130](https://github.com/DGtal-team/DGtal/pull/1130))
+ - Fixing issue [#899](https://github.com/DGtal-team/DGtal/issues/899) in
+   all color maps, (David Coeurjolly, Bertrand Kerautret
+   [#1134](https://github.com/DGtal-team/DGtal/pull/1134))
+-  GenericReader: include longvol reader in GenericReader for 64 bit images.
+   Update the test for 64 bit longvol. (Bertrand Kerautret
+   [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
 
 # DGtal 0.9.1
 
 ## New Features / Critical Changes
 
-- *General*
- - DGtal requires now to have a C++11 enabled compiler (gcc>4.6, clang
-   >2.9, VS14, ...). This allows us to use new C++11 features in
+- *Configuration/General*
+ - A CONTRIBUTING.md file has been added to describe how to contribute
+   to the library. (David Coeurjolly,
+   [#1112](https://github.com/DGtal-team/DGtal/pull/1112))
+ - DGtal requires now to have a C++11 enabled compiler (gcc>4.6,
+   clang>2.9, VS14, ...).  This allows us to use new C++11 features in
    DGtal core and to have more generic and reliable code. (David
    Coeurjolly, [#1080](https://github.com/DGtal-team/DGtal/pull/1080))
-
+ - DGtal core now compiles on Microsoft Windows, Visual Studio (only
+   VS14 or above). Many issues have been fixed for compatibility with
+   'cl' compiler. (David Coeurjolly, Jérémy Levallois,
+   [#1074](https://github.com/DGtal-team/DGtal/pull/1074))
+ - DGtal with QGLViewer option activated now compiles on Microsoft Windows,
+   Visual Studio (only VS14 or above). (Bertrand Kerautret,
+   [#1106](https://github.com/DGtal-team/DGtal/pull/1106))
 
 - *Base Package*
- - Traits class for containers in order to probe their category at compile time.
-   (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
- - Generic set operations for arbitrary containers. You may use overloaded operators
-   like &, |, -, ^ on arbitrary containers (list, vector, unordered_set, map, etc).
-   (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+ - Traits class for containers in order to probe their category at
+   compile time.  (Jacques-Olivier Lachaud,
+   [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+ - Generic set operations for arbitrary containers. You may use
+   overloaded operators like &, |, -, ^ on arbitrary containers (list,
+   vector, unordered_set, map, etc).  (Jacques-Olivier Lachaud,
+   [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
+
+- *Geometry Package*
+ - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
+   the width (vertical/horizontal or Euclidean) of a convex hull.
+   (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
+ - MelkmanConvexHull: new reverse method to allow point insertions and convex
+   hull computation on both side of a point sequence.
+   (Bertrand Kerautret, [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
+ - LogScaleProfile: new class to represent a (multi)scale profile e.g. a sequence
+   of statistics on digital lengths parameterized by a grid resolution.
+   (Backport of the ScaleProfile class of
+   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
+   (Bertrand Kerautret, Jacques-Olivier Lachaud
+   [#1075](https://github.com/DGtal-team/DGtal/pull/1075))
+ - IteratorCompletion provides iterators and ranges access from a basic set of methods.
+   (Roland Denis, [#1029](https://github.com/DGtal-team/DGtal/pull/1029))
+
+- *Image Package*
+ - ArrayImageAdapter adds a read-write image adapter from any random-access iterator,
+   e.g. from a C-array.
+   (Roland Denis, [#1029](https://github.com/DGtal-team/DGtal/pull/1029))
+
+- *Math Package*
+ - MultiStatistics: new class to compute different statistics (like
+   mean variance, median) on multiple variables.  (Backport of the
+   Statistics class of
+   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
+   (Bertrand Kerautret, Jacques-Olivier Lachaud
+   [#1076](https://github.com/DGtal-team/DGtal/pull/1076))
 
 - *Topology Package*
  - New class CubicalComplex and functions associated to
@@ -26,33 +110,15 @@
    (Jacques-Olivier Lachaud, [#1079](https://github.com/DGtal-team/DGtal/pull/1079))
 
 
-- *Geometry Package*
- - Hull2DHelpers: implementation of the rotating caliper algorithm to compute
-   the width (vertical/horizontal or Euclidean) of a convex hull.
-   (Bertrand Kerautret, [#1052](https://github.com/DGtal-team/DGtal/pull/1052))
-
- - MelkmanConvexHull: new reverse method to allow point insertions and convex
-   hull computation on both side of a point sequence.
-   (Bertrand Kerautret, [#1073](https://github.com/DGtal-team/DGtal/pull/1073))
-
- - LogScaleProfile: new class to represent a (multi)scale profile e.g. a sequence
-   of statistics on digital lengths parameterized by a grid resolution.
-   (Backport of the ScaleProfile class of
-   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
-   (Bertrand Kerautret, Jacques-Olivier Lachaud
-   [#1075](https://github.com/DGtal-team/DGtal/pull/1075))
-
-
-
-- *Math Package*
- - MultiStatistics: new class to compute different statistics (like mean
-   variance, median) on multiple variables.
-   (Backport of the Statistics class of
-   [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) ).
-   (Bertrand Kerautret, Jacques-Olivier Lachaud
-   [#1076](https://github.com/DGtal-team/DGtal/pull/1076))
-
 ## Changes
+- *Configuration*
+ - Types and classes in helper namespaces ```Z2i``` and ```Z3i``` for
+   ```StdDefs.h``` header (2D and 3D digital geometry with
+   computations on 32bit integers) are now explicitly instanciated in
+   the compiled library. This reduces compilation time when such types
+   are used. (David Coeurjolly,
+   [#1117](https://github.com/DGtal-team/DGtal/pull/1117))
+
 - *DEC Package*
  - DiscreteExteriorCalculus holds both primal and dual sizes of each cell.
    Subsequent changes have been made to insertSCell.
@@ -64,32 +130,29 @@
  - Enabling circulators in SimpleRandomAccessRangeFromPoint.
    (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
 
-- *IO*
+- *Base*
+ - Deprecated OldAlias, OldClone, OldConstAlias have been removed. (David
+   Coeurjolly, [#1074](https://github.com/DGtal-team/DGtal/pull/1074))
 
+- *IO*
  - By default, closing a Viewer3D does not save automatically the viewer
    state anymore (in a .qglviewer.xml file). The automatic save can be
    activated by a flag (myAutoSaveState). (Bertrand Kerautret
     [#1088](https://github.com/DGtal-team/DGtal/pull/1088))
-
  - In the Viewer3D, the light source position is now saved in the
     QGLViewer state file (.qglviewer.xml). (Bertrand Kerautret
     [#1087](https://github.com/DGtal-team/DGtal/pull/1087))
-
  - Minor improvements of default settings in Viewer3D. (David
    Coeurjolly, [#1066](https://github.com/DGtal-team/DGtal/pull/1066))
-
- - change the chronological order to diplay primitives (in the draw
+ - change the chronological order to display primitives (in the draw
    function) in order to see the cube primitive through the
    transparency of the ball primitives. (Bertrand Kerautret,
    [#1081](https://github.com/DGtal-team/DGtal/pull/1081))
-
-
  - New possibility to move the light source direction using the mouse move
    in Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on mac)). The light source
    direction is now defined according the main coordinate system (no more from
    the camera center).
    (Bertrand Kerautret [#1070](https://github.com/DGtal-team/DGtal/pull/1070))
-
  - Adding raw I/O capabilities for non integral types and signed integers.
    (Roland Denis [#1084](https://github.com/DGtal-team/DGtal/pull/1084))
 
@@ -108,21 +171,40 @@
    [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
  - Fixing parenthese warnings in Catch. Waiting for an official fix.
    (Roland Denis, [#1069](https://github.com/DGtal-team/DGtal/pull/1069))
- - Fix constness in selfDisplay and operator<<.
-   (Pierre Gueth [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
+ - Fix constness in selfDisplay and operator<<.  (Pierre Gueth
+   [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
+ - DGtal cmake configuration scripts are now installed in the
+   ```${PREFIX_PATH}/lib/DGtal/``` folder on linux systems (when
+   running ```make install``` command). The documentation is copied to
+   the folder ```${PREFIX_PATH}/share/DGtal/html/```. This fixes issue
+   [#1095](https://github.com/DGtal-team/DGtal/issues/1095). (David
+   Coeurjolly,
+   [#1103](https://github.com/DGtal-team/DGtal/issues/1103))
+ - Fix for swapped coordinates in TangentFromDSS2DFunctor. (Kacper
+   Pluta,
+   [#1083](https://github.com/DGtal-team/DGtal/issues/1083))
+ - Update of the README.md page. (David Coeurjolly,
+   [#1109](https://github.com/DGtal-team/DGtal/issues/1109))
 
 - *Base Package*
- - Fix wrong initialization of reverse iterators in SimpleRandomAccess(Const)RangeFromPoint.
-   (Roland Denis, [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
+ - Fix wrong initialization of reverse iterators in
+   SimpleRandomAccess(Const)RangeFromPoint.  (Roland Denis,
+   [#1060](https://github.com/DGtal-team/DGtal/pull/1060))
 
 - *Geometry Package*
  - Fix pseudo-random number generator in KanungoNoise (David
    Coeurjolly,
    [#1078](https://github.com/DGtal-team/DGtal/pull/1078))
 
-- *IO*
+- *IO Package*
+ - Fix line export in Board3D.
+   (Bertrand Kerautret [##1119](https://github.com/DGtal-team/DGtal/pull/1119))
  - Fix viewer tests including qt4 headers even with configuring WITH_QT5=ON.
    (Pablo Hernandez-Cerdan, [#1100](https://github.com/DGtal-team/DGtal/pull/1100))
+ - Fix Viewer3D axis display when they are included in a transparent element.
+   (issue #873)
+   (Bertrand Kerautret [##1108](https://github.com/DGtal-team/DGtal/pull/1108)))
+
 
 # DGtal 0.9
 
@@ -236,12 +318,12 @@
  - New algorithms to compute the convex hull of planar point sets.
    (Tristan Roussillon, [#1028](https://github.com/DGtal-team/DGtal/pull/1028))
  - Lambda maximal segment tangent direction estimator 2D/3D: LambdaMST2D, LambdaMST3D.
-   A fast tangent direction estimator which uses maximal digital straight segments. 
+   A fast tangent direction estimator which uses maximal digital straight segments.
    (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
- - Segmentation of 3D digital curves by a combination of the segmentations of its 2D 
+ - Segmentation of 3D digital curves by a combination of the segmentations of its 2D
    projections onto 2D base planes: XY, XZ, YZ. Notice that, only valid projections
    are used. By valid one understands that there are no two 3D points which are projected
-   onto the same 2D point. A segment is computed as long as is extendable and at least 
+   onto the same 2D point. A segment is computed as long as is extendable and at least
    two projections are valid.
  : NaiveDSS3DComputer.
    (Kacper Pluta, [#1021](https://github.com/DGtal-team/DGtal/pull/1021))
@@ -344,7 +426,7 @@
 
 ## Bug Fixes
 
-- *Configuration* 
+- *Configuration*
   - Removing code coverage with coverall.io (David Coeurjolly,
   [1040](https://github.com/DGtal-team/DGtal/pull/1032)).
   - Forces Eigen 3.2.1 minimum (for a bug fix).  (Jacques-Olivier
@@ -1128,7 +1210,7 @@ Known problems:
 
     For technical reasons, we haven’t be able to verify that this release also
     compile on Windows Visual Studio systems (see ticket #87). A new release
-    will fix this problem as soon as possible. 
+    will fix this problem as soon as possible.
 
 
 

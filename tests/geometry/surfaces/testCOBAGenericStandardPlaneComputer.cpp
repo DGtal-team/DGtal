@@ -50,7 +50,7 @@ using namespace DGtal;
 template <typename Integer>
 Integer getRandomInteger( const Integer & first, const Integer & after_last )
 {
-  Integer r = (Integer) random();
+  Integer r = (Integer) rand();
   return ( r % (after_last - first) ) + first;
 }
 

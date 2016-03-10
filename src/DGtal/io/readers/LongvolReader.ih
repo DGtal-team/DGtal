@@ -33,8 +33,7 @@
 
 
 //! Maximum number of fields in a .longvol file header
-template <typename T, typename TFunctor>
-const int DGtal::LongvolReader<T, TFunctor>::MAX_HEADERNUMLINES = 64;
+#define MAX_HEADERNUMLINES 64
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,7 +54,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
 
   HeaderField header[ MAX_HEADERNUMLINES ];
 
-  fin = fopen( filename.c_str() , "r" );
+  fin = fopen( filename.c_str() , "rb" );
 
   if ( fin == NULL )
   {

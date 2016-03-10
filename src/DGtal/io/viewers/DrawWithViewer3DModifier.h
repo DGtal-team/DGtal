@@ -251,22 +251,23 @@ namespace DGtal
   struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
   {
     BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
-
+    typedef typename Viewer3D<Space,KSpace>::TextureMode TTextureMode;
+    
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
     AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
                                  Clone<TFunctor> aFunctor,
-                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my2DImage(&anImage),
-                                                                                         myFunctor(aFunctor),
-                                                                                         myMode(aMode)
+                                 TTextureMode aMode = TTextureMode::GrayScaleMode): my2DImage(&anImage),
+                                                                                    myFunctor(aFunctor),
+                                                                                    myMode(aMode)
     {
 
     }
     const TImageType *my2DImage;
     const TFunctor myFunctor;
-    typename Viewer3D< Space, KSpace>::TextureMode myMode;
+    TTextureMode myMode;
   };
 
   /**
@@ -297,22 +298,23 @@ namespace DGtal
   struct AddTextureImage3DWithFunctor : public DrawWithViewer3DModifier
   {
     BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
-
+    typedef typename Viewer3D<Space,KSpace>::TextureMode TTextureMode;
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
     AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
                                  Clone<TFunctor> aFunctor,
-                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my3DImage(&anImage),
-                                                                                         myFunctor(aFunctor),
-                                                                                         myMode(aMode)
+                                 TTextureMode aMode =
+                                 TTextureMode::GrayScaleMode): my3DImage(&anImage),
+                                                                         myFunctor(aFunctor),
+                                                                         myMode(aMode)
     {
 
     }
     const TImageType *my3DImage;
     const TFunctor myFunctor;
-    typename Viewer3D<Space, KSpace>::TextureMode myMode;
+    TTextureMode myMode;
   };
 
 

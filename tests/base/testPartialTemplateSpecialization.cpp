@@ -29,73 +29,59 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/base/Common.h"
 ///////////////////////////////////////////////////////////////////////////////
-
-using namespace std;
-using namespace DGtal;
+#include <boost/type_traits/is_arithmetic.hpp>
+#include <boost/type_traits/is_integral.hpp>
+#include <boost/utility/enable_if.hpp>
+#include "DGtal/base/Common.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class cpp11.
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Example of a test. To be completed.
- *
- */
-bool testcpp11()
+
+template< typename TC, typename TD >
+class A
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing CPP Auto ..." );
+public:
+	typedef TC C; 
 
-#ifdef CPP11_AUTO
-  auto a= 5.0;
-  auto mssg = "Message";
+  A( const C& c );
+};
 
-  trace.info() <<  "Auto value = "<<a<<std::endl;
-  trace.info() <<  "Auto string = "<< mssg <<std::endl;
-#endif
-
-  trace.endBlock();
-
-#ifdef CPP11_INITIALIZER_LIST
-  trace.info() <<  "initializer list  ok"<<std::endl;
-#endif
-
-
-#ifdef CPP11_ARRAY
-  trace.info() <<  "std::Array ok"<<std::endl;
-#endif
-
-
-#ifdef CPP11_FORWARD_LIST
-  trace.info() <<  "Forward list ok"<<std::endl;
-#endif
-
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  
-  return nbok == nb;
+template< typename TC, typename TD >
+inline
+A< TC, TD >::A( const C& c )
+{
+  boost::ignore_unused_variable_warning( c );
+  std::cout << "Generic" << std::endl;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
 
-int main( int argc, char** argv )
+
+template< typename TC > //int specialization
+class B : public A< TC, int >
 {
-  trace.beginBlock ( "Testing class cpp11" );
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << endl;
+public: 
+    typedef A< TC, int > Super;
+	typedef typename Super::C C; //Compile en rajoutant cette ligne (et en changeant les appels à Super::C par C)
 
-  bool res = testcpp11(); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  trace.endBlock();
-  return res ? 0 : 1;
+	B( const C& c );
+};
+
+template <typename TC>
+inline
+B<TC>::B( const C& c) : Super(c) 
+{
+  std::cout << "Specialized" << std::endl;
+}
+
+
+
+int main( int /*argc*/, char** /*argv*/ )
+{
+  B<int> a(1);
+
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

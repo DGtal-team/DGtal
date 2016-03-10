@@ -16,7 +16,7 @@ namespace DGtal {
 
 
 @page moduleImages Images
-@authors Tristan Roussillon, David Coeurjolly, Martial Tola
+@authors Tristan Roussillon, David Coeurjolly, Martial Tola, Roland Denis
 @date 2012/12/05
 
 [TOC]
@@ -274,6 +274,10 @@ in mind that each time operator() or setValue() methods are called,
 such functors are evaluated (with potential side-effects depending on
 the functors).
 
+In addition, ArrayImageAdapter allows to convert any iterable storage
+(like a C-style array or some DGtal image models), to a concepts::CImage (or concepts::CConstImage) model 
+with the possibility to restrict his visibility to a sub-domain
+of the definition domain.
 
 \subsection constimage  ConstImageAdapter 
 
@@ -394,7 +398,68 @@ The values associated to writing the points are adapted
 
 The use is the same that for ConstImageAdapter.
 
- \section dgtalImagesFunctions Useful classes and functions
+\subsection arrayimageadat ArrayImageAdapter
+The ArrayImageAdapter class is less generic than ImageAdapter but is able to adapt
+any storage that have a random-access iterator to a concepts::CImage model.
+It is thus usable on C-style array but also on STL container like `std::vector`
+(and therefore on ImageContainerBySTLVector) and on another ArrayImageAdapter instances.
+
+In addition, this class allows to restrict the visibility to a sub-domain of the definition domain
+and provides a read-write random-access iterator (depending on the mutability of the storage's iterator)
+with fast access to the underlying point (no need to iterate over the domain).
+
+A common usage of this last feature is for padded raw data.
+
+In order to illustrate the following ArrayImageAdapter usages, we need some common includes:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp include
+and the next definitions:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp def
+
+From a C-style array, we can create an image that spans the full definition domain:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp raw_image_creation
+and fill it using common iterator syntax:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp image_filling
+that gives us the following result:
+\image html ArrayImageAdapter_image.png " (6) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255."
+\image latex ArrayImageAdapter_image.png " (6) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." width=5cm
+
+We can now create a read-only view of the same image on a sub-domain:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp ConstArrayImageAdapterForSubImage_creation
+that gives us:
+\image html ArrayImageAdapter_subImage.png " (7) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain."
+\image latex ArrayImageAdapter_subImage.png " (7) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." width=5cm
+
+If we want to modify the image through this adapter, we must create a read-write instance using the following syntax:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_creation
+or the alternate method using the helpers:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_alternateCreation
+and we can then modify it using the common syntax with a domain iterator:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_modifByDomain
+
+\image html ArrayImageAdapter_subImage_modifByDomain.png " (8) modifying the first bottom-left 8x8 image through the sub-domain view with a domain iterator."
+\image latex ArrayImageAdapter_subImage_modifByDomain.png " (8) modifying the first bottom-left 8x8 image through the sub-domain view with a domain iterator." width=5cm
+
+Alternatively, there is a computationally faster syntax (no need to linearize the point) using the method `getPoint` featured by the ArrayImageAdapter iterators (see ArrayImageIterator):
+@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_modifByImage
+
+\image html ArrayImageAdapter_subImage_modifByImage.png " (9) modifying the first bottom-left 8x8 image through the sub-domain view with an image iterator."
+\image latex ArrayImageAdapter_subImage_modifByImage.png " (9) modifying the first bottom-left 8x8 image through the sub-domain view with an image iterator." width=5cm
+
+It is also possible to use ArrayImageAdater on any image model that provides a random-access iterator, like ImageContainerBySTLVector:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp ImageSTL_creation
+and adapt it using:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL
+or, thanks to the helpers:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL_alternate
+
+From there, we can use all the previous features or, for example, use available STL algorithms:
+@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL_copy
+
+\image html ArrayImageAdapter_subImage_copyToImageSTL.png " (10) modifying the first bottom-left 8x8 image of a ImageContainerBySTLVector through the sub-domain view."
+\image latex ArrayImageAdapter_subImage_copyToImageSTL.png " (10) modifying the first bottom-left 8x8 image of a ImageContainerBySTLVector through the sub-domain view." width=5cm
+
+
+\section dgtalImagesFunctions Useful classes and functions
 
 In addition to the image containers and the image adapters described in the previous sections, 
 there are also image proxys: 

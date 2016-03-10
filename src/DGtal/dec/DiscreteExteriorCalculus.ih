@@ -71,7 +71,6 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     if (iter_property == myCellProperties.end())
         return false;
 
-    const Index index = iter_property->second.index;
     myCellProperties.erase(iter_property);
 
     myIndexesNeedUpdate = true;
@@ -176,7 +175,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     }
 
     const Index length = kFormLength(order, duality);
-    ASSERT( triplets.size() == length );
+    ASSERT( triplets.size() == static_cast<typename Triplets::size_type>(length) );
     SparseMatrix reorder_matrix(length, length);
     reorder_matrix.setFromTriplets(triplets.begin(), triplets.end());
 

@@ -224,8 +224,7 @@ KhalimskySpaceND::uCell for arbitrary cells,
 KhalimskySpaceND::uSpel for n-dimensional cells,
 KhalimskySpaceND::uPointel for 0-dimensional cells.
 
-The full code of this example is in file <a
-href="ctopo-1_8cpp-example.html" > ctopo-1.cpp</a>. Pointels or
+The full code of this example is in file ctopo-1.cpp. Pointels or
 0-cells are displayed in blue, linels or 1-cells in green, pixels
 or 2-cells in red. Note that KhalimskySpaceND::uCell requires
 Khalimsky coordinates while the two others require digital
@@ -251,8 +250,7 @@ coordinates (the topology is known in the two latter cases).
 @image latex ctopo-1.png "Displaying some cells in different colors." width=0.5\textwidth
 
 
-The file <a href="ctopo-1-3d_8cpp-example.html" >
-ctopo-1-3d.cpp</a> shows another example in 3D:
+The file ctopo-1-3d.cpp shows another example in 3D:
 
 
 @code 
@@ -392,9 +390,7 @@ cells:
  while ( K.uNext( p, first, last ) ); 
  \endcode
 
-  For instance (see.  <a
-  href="khalimskySpaceScanner_8cpp-example.html">
-  khalimskySpaceScanner.cpp </a> ) you will obtain the default following scan:
+  For instance (see.  khalimskySpaceScanner.cpp) you will obtain the default following scan:
  
 @image html khalimskySpaceScanner1.png "Sequence of visited pixels in a scan of Khalimsky Space (standard scan order)."
 @image latex khalimskySpaceScanner1.png "Sequence of visited pixels in a scan of Khalimsky Space (standard scan order)." width=0.4\textwidth

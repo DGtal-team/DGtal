@@ -40,7 +40,11 @@
 
 using namespace DGtal;
 using namespace DGtal::functions;
-using namespace DGtal::functions::setops;
+//using  DGtal::functions::setops::operator|;
+using  DGtal::functions::setops::operator&;
+using  DGtal::functions::setops::operator-;
+using  DGtal::functions::setops::operator^;
+
 
 ////////////////////////////// unit tests /////////////////////////////////
 TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
@@ -63,28 +67,28 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
   REQUIRE( ( C2_minus_C1 - C2 ).size() == 0 );
   REQUIRE( ( C1_minus_C2 - C2 ).size() == C1_minus_C2.size() );
   REQUIRE( ( C2_minus_C1 - C1 ).size() == C2_minus_C1.size() );
-  Container C1_union_C2 = C1 | C2;
-  Container C2_union_C1 = C2 | C1;
+  Container C1_union_C2 = DGtal::functions::setops::operator|(C1 , C2);
+  Container C2_union_C1 = DGtal::functions::setops::operator|(C2 , C1);
   REQUIRE( C1_union_C2.size() == 13 );
   REQUIRE( C1_union_C2.size() == C2_union_C1.size() );
-  REQUIRE( ( C1_minus_C2 | C2 ).size() == (C2_minus_C1 | C1 ).size() );
+  REQUIRE( ( DGtal::functions::setops::operator|(C1_minus_C2 , C2) ).size() == (DGtal::functions::setops::operator|(C2_minus_C1 , C1) ).size() );
 
   Container C1_intersection_C2 = C1 & C2;
   Container C2_intersection_C1 = C2 & C1;
   REQUIRE( C1_intersection_C2.size() == 3 );
   REQUIRE( C1_intersection_C2.size() == C2_intersection_C1.size() );
 
-  REQUIRE( ( C1_minus_C2 | C1_intersection_C2 | C2_minus_C1 ).size() == C1_union_C2.size() );
+  REQUIRE( ( DGtal::functions::setops::operator|(DGtal::functions::setops::operator|(C1_minus_C2 , C1_intersection_C2) , C2_minus_C1) ).size() == C1_union_C2.size() );
 
   Container C1_symdiff_C2 = C1 ^ C2;
   Container C2_symdiff_C1 = C2 ^ C1;
   REQUIRE( C1_symdiff_C2.size() == C2_symdiff_C1.size() );
   REQUIRE( C1_symdiff_C2.size() == ( C1_union_C2 - C1_intersection_C2 ).size() );
-  REQUIRE( C1_symdiff_C2.size() == ( C1_minus_C2 | C2_minus_C1 ).size() );
+  REQUIRE( C1_symdiff_C2.size() == ( DGtal::functions::setops::operator|(C1_minus_C2 , C2_minus_C1) ).size() );
 
   REQUIRE( isEqual( C1_symdiff_C2, C1_union_C2 - C1_intersection_C2 ) );
-  REQUIRE( isEqual( C1_symdiff_C2, C1_minus_C2 | C2_minus_C1 ) );
-  REQUIRE( isEqual( C1_minus_C2 | C1_intersection_C2 | C2_minus_C1, C1_union_C2 ) );
+  REQUIRE( isEqual( C1_symdiff_C2, DGtal::functions::setops::operator|(C1_minus_C2 , C2_minus_C1) ) );
+  REQUIRE( isEqual( DGtal::functions::setops::operator|(DGtal::functions::setops::operator|(C1_minus_C2 , C1_intersection_C2) , C2_minus_C1), C1_union_C2 ) );
   REQUIRE(   isSubset( C1_minus_C2, C1 ) );
   REQUIRE( ! isSubset( C1_minus_C2, C2 ) );
   REQUIRE(   isSubset( C2_minus_C1, C2 ) );
@@ -100,10 +104,12 @@ TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
 
 
 static const int NB = 10000;
+static std::default_random_engine generator;
+static std::uniform_int_distribution<int> distribution(1,NB);
 
-int randomNB( int n )
+int randomNB( )
 {
-  return random() % n;
+  return distribution(generator);
 }
 
 ////////////////////////////// operator | //////////////////////////////
@@ -114,8 +120,8 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator | (sequences)", "[set_fun
   typedef typename Container::size_type Size;
   std::set<int> S1; 
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
-  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AorB;
@@ -125,7 +131,7 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator | (sequences)", "[set_fun
 
   SECTION( "  - benchmark set operators |" )
     {
-      AorB    = A | B;
+      AorB    = DGtal::functions::setops::operator|(A , B);
     }
   Size size_A       = A.size();
   Size size_B       = B.size();
@@ -140,16 +146,16 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator | (sets)", "[set_function
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AorB;
 
   SECTION( "  - benchmark set operators |" )
     {
-      AorB    = A | B;
+      AorB    = DGtal::functions::setops::operator|(A , B);
     }
   Size size_A       = A.size();
   Size size_B       = B.size();
@@ -164,9 +170,9 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator & (sequences)", "[set_fun
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AandB;
@@ -191,9 +197,9 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator & (sets)", "[set_function
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AandB;
@@ -216,9 +222,9 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator - (sequences)", "[set_fun
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AminusB;
@@ -243,9 +249,9 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator - (sets)", "[set_function
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AminusB;
@@ -268,9 +274,9 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator ^ (sequences)", "[set_fun
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AxorB;
@@ -295,9 +301,9 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator ^ (sets)", "[set_function
 {
   typedef typename Container::size_type Size;
   std::set<int> S1; 
-  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
-  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB( NB ) );
+  for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   Container A( S1.begin(), S1.end() );
   Container B( S2.begin(), S2.end() );
   Container AxorB;

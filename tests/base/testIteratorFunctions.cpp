@@ -51,7 +51,7 @@ struct Tool
     c.push_back(obj); 
   }
 };
-#ifdef CPP11_FORWARD_LIST 
+
 #include <forward_list>
 //specialization for forward lists
 template<typename T>
@@ -62,7 +62,6 @@ struct Tool<std::forward_list<int>, T>
     c.push_front(obj); 
   }
 };
-#endif
 
 /**
  * Test of the advance function
@@ -549,31 +548,21 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-#ifdef CPP11_FORWARD_LIST 
   std::forward_list<int> fl;
-#endif 
   std::list<int> bl; 
   std::vector<int> v; 
 
   bool res = 
-#ifdef CPP11_FORWARD_LIST 
     testAdvance(fl) && 
-#endif
     testAdvance(bl) && 
     testAdvance(v) &&
-#ifdef CPP11_FORWARD_LIST 
     testMiddle(fl) && 
-#endif
     testMiddle(bl) && 
     testMiddle(v) &&
-#ifdef CPP11_FORWARD_LIST 
     testSize(fl) && 
-#endif
     testSize(bl) && 
     testSize(v) &&
-#ifdef CPP11_FORWARD_LIST 
     testRange(fl) && 
-#endif
     testRange(bl) && 
     testRange(v);
 

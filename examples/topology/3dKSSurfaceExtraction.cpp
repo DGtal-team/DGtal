@@ -65,10 +65,10 @@ int main( int argc, char** argv )
   // Generate the digital set from randam seeds and distance threshold.
   DigitalSet diamond_set( domain );
   //srand ( time(NULL) );
-  uint nbSeeds = 35;
+  unsigned int nbSeeds = 35;
   vector<Point> vCenters;
   vector<uint> vRad;
-  for(uint i=0;i<nbSeeds; i++){
+  for(unsigned int i=0;i<nbSeeds; i++){
     vCenters.push_back(Point(rand()%p2[0], rand()%p2[1],
           rand()%p2[2]));
     vRad.push_back(rand()%7);
@@ -116,13 +116,13 @@ int main( int argc, char** argv )
   gradient.addColor(Color::Red);
 
 
-  for(uint i=0; i< vectConnectedSCell.size();i++){
+  for(unsigned int i=0; i< vectConnectedSCell.size();i++){
     DGtal::Color col= gradient(i);
     viewer << CustomColors3D(Color(250, 0,0), Color(col.red(),
                 col.green(),
                 col.blue()));
 
-    for(uint j=0; j< vectConnectedSCell.at(i).size();j++){
+    for(unsigned int j=0; j< vectConnectedSCell.at(i).size();j++){
       viewer << vectConnectedSCell.at(i).at(j);
     }
   }

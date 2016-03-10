@@ -90,18 +90,25 @@ namespace DGtal
   {
   public:
     
-    ///Domain type
+    ///Domain type.
     typedef TDomain Domain;
   
-    ///Container type
+    ///Container type.
     typedef TContainer Container;
-      
+    
+    ///Self Type.
     typedef DigitalSetByAssociativeContainer<Domain, Container> Self;
+    ///Type of digital space.
     typedef typename Domain::Space Space;
+    ///Type of points in the space.
     typedef typename Domain::Point Point;
+    ///Iterator type of the container.
     typedef typename Container::iterator Iterator;
+    ///ConstIterator type of the container;
     typedef typename Container::const_iterator ConstIterator;
+    ///Value type of the container.
     typedef typename Container::value_type value_type;
+    ///Size type of the container;
     typedef typename Container::size_type Size;
     
     ///Concept checks

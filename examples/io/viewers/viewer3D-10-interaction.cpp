@@ -31,8 +31,8 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -47,10 +47,10 @@ typedef KSpace::SCell SCell;
 struct BigData
 {
   KSpace K;
-  std::map< int32_t, SCell > cells;
+  std::map< DGtal::int32_t, Z3i::SCell > cells;
 };
 
-int reaction1( void* viewer, int32_t name, void* data )
+int reaction1( void* viewer, DGtal::int32_t name, void* data )
 {
   BigData* bg = (BigData*) data;
   stringstream ssMessage;
@@ -59,7 +59,7 @@ int reaction1( void* viewer, int32_t name, void* data )
   trace.info() <<  ssMessage.str() << std::endl;
   return 0;
 }
-int reaction23( void* viewer, int32_t name, void* data )
+int reaction23( void* viewer, DGtal::int32_t name, void* data )
 {
   BigData* bg = (BigData*) data;
   stringstream ssMessage;
@@ -84,9 +84,9 @@ int main( int argc, char** argv )
   MyViewer viewer( K );
   viewer.show();
   viewer.displayMessage(QString("You can use [shift + click right] on surfels to interact ..."), 100000);
-  SCell surfel1 = K.sCell( Point( 1, 1, 2 ), KSpace::POS );
-  SCell surfel2 = K.sCell( Point( 3, 3, 4 ), KSpace::NEG );
-  SCell surfel3 = K.sCell( Point( 5, 6, 5 ), KSpace::POS );
+  Z3i::SCell surfel1 = K.sCell( Point( 1, 1, 2 ), KSpace::POS );
+  Z3i::SCell surfel2 = K.sCell( Point( 3, 3, 4 ), KSpace::NEG );
+  Z3i::SCell surfel3 = K.sCell( Point( 5, 6, 5 ), KSpace::POS );
   data.cells[ 10001 ] = surfel1;
   data.cells[ 10002 ] = surfel2;
   data.cells[ 10003 ] = surfel3;

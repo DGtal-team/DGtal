@@ -124,12 +124,13 @@ int main(  )
 
 
   //! [SurfelFunctorsInstances]
+  CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
 #ifdef WITH_CGAL
   ///Creating functors for h=1.0
-  FunctorGaussian estimatorK(CanonicSCellEmbedder<KSpace>(surface.container().space()),1.0);
-  FunctorMean estimatorH(CanonicSCellEmbedder<KSpace>(surface.container().space()), 1.0);
-  FunctorNormal estimatorN(CanonicSCellEmbedder<KSpace>(surface.container().space()),1.0);
-  FunctorNormalLeast estimatorL(CanonicSCellEmbedder<KSpace>(surface.container().space()),1.0);
+  FunctorGaussian estimatorK(embedder,1.0);
+  FunctorMean estimatorH(embedder, 1.0);
+  FunctorNormal estimatorN(embedder,1.0);
+  FunctorNormalLeast estimatorL(embedder,1.0);
 
   ConstFunctor constFunctor(1.0);
 
@@ -139,7 +140,7 @@ int main(  )
   ReporterNormalLeast reporterL;
 #endif
 
-  FunctorNormalElem estimatorNormalElem(CanonicSCellEmbedder<KSpace>(surface.container().space()),1.0);
+  FunctorNormalElem estimatorNormalElem(embedder,1.0);
   ///sigma = 2.0 for the gaussian smoothing
   DGtal::functors::GaussianKernel gaussian(2.0);
   ReporterNormalElem reporterElem(surface, l2Metric,

@@ -27,11 +27,6 @@
 */
 
 ///////////////////////////////////////////////////////////////////////////////
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
 #include "DGtal/shapes/parametric/Ball3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <iostream>

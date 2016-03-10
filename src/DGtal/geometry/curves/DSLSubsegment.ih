@@ -916,7 +916,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
   Position myPosition;
 
   RayC aRay;
-  bool found;
+  bool found =  false;
 
   while((lup>=2 || ldown >=2) && !found)
     {
