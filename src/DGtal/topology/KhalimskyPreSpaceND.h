@@ -200,7 +200,7 @@ namespace DGtal
      *
      * @param aPoint Its Khalimsky coordinates as a point.
      */
-    SignedKhalimskyPreCell( Point const& point, bool positive );
+    SignedKhalimskyPreCell( Point const& aPoint, bool positive );
 
     /** Copy constructor.
      * @param aCell any other pre-cell.
