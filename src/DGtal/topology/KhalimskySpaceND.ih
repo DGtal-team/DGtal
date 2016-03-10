@@ -783,84 +783,80 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uKCoord( const Cell & c, DGtal::Dimension k, bool correct ) const
+uKCoord( const Cell & c, DGtal::Dimension k ) const
 {
-  const Integer coord = KhalimskyPreSpace::uKCoord( c, k );
-  return correct ? this->returnKCoordHelper( coord, k ) : coord;
+  ASSERT( uIsValid(c) );
+  return KhalimskyPreSpace::uKCoord( c, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uCoord( const Cell & c, DGtal::Dimension k, bool correct ) const
+uCoord( const Cell & c, DGtal::Dimension k ) const
 {
-  const Integer coord = uKCoord( c, k, correct );
-  return coord >> 1;
+  ASSERT( uIsValid(c) );
+  return KhalimskyPreSpace::uCoord( c, k );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Point const &
+DGtal::KhalimskySpaceND< dim, TInteger>::
+uKCoords( const Cell & c ) const
+{
+  ASSERT( uIsValid(c) );
+  return KhalimskyPreSpace::uKCoords( c );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uKCoords( const Cell & c, bool correct ) const
+uCoords( const Cell & c ) const
 {
-  const Point coords = KhalimskyPreSpace::uKCoords( c );
-  return correct ? this->returnKCoordsHelper( coords ) : coords;
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger>
-inline
-typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
-DGtal::KhalimskySpaceND< dim, TInteger>::
-uCoords( const Cell & c, bool correct ) const
-{
-  Point dp = uKCoords( c, correct );
-  for ( DGtal::Dimension i = 0; i < DIM; ++i )
-    dp[ i ] >>= 1;
-  return dp;
+  ASSERT( uIsValid(c) );
+  return KhalimskyPreSpace::uCoords( c );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sKCoord( const SCell & c, DGtal::Dimension k, bool correct ) const
+sKCoord( const SCell & c, DGtal::Dimension k ) const
 {
-  const Integer coord = KhalimskyPreSpace::sKCoord( c, k );
-  return correct ? this->returnKCoordHelper( coord, k ) : coord;
+  ASSERT( uIsValid(c) );
+  return KhalimskyPreSpace::sKCoord( c, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sCoord( const SCell & c, DGtal::Dimension k, bool correct ) const
+sCoord( const SCell & c, DGtal::Dimension k ) const
 {
-  const Integer coord = sKCoord( c, k, correct );
-  return coord >> 1;
+  ASSERT( uIsValid(c) );
+  return KhalimskyPreSpace::sCoord( c, k );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Point const &
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sKCoords( const SCell & c ) const
+{
+  ASSERT( uIsValid(c) );
+  return KhalimskyPreSpace::sKCoords( c );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sKCoords( const SCell & c, bool correct ) const
+sCoords( const SCell & c ) const
 {
-  const Point coords = KhalimskyPreSpace::sKCoords( c );
-  return correct ? this->returnKCoordsHelper( coords ) : coords;
-}
-//-----------------------------------------------------------------------------
-template < DGtal::Dimension dim, typename TInteger>
-inline
-typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
-DGtal::KhalimskySpaceND< dim, TInteger>::
-sCoords( const SCell & c, bool correct ) const
-{
-  Point dp = sKCoords( c, correct );
-  for ( DGtal::Dimension i = 0; i < DIM; ++i )
-    dp[ i ] >>= 1;
-  return dp;
+  ASSERT( uIsValid(c) );
+  return KhalimskyPreSpace::sCoords( c );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -869,6 +865,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Sign
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sSign( const SCell & c ) const
 {
+  ASSERT( uIsValid(c) );
   return KhalimskyPreSpace::sSign( c );
 }
 //-----------------------------------------------------------------------------

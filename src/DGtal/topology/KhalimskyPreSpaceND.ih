@@ -429,7 +429,7 @@ uCoord( const Cell & c, DGtal::Dimension k )
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskyPreSpaceND< dim, TInteger>::Point
+typename DGtal::KhalimskyPreSpaceND< dim, TInteger>::Point const &
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 uKCoords( const Cell & c )
 {
@@ -470,7 +470,7 @@ sCoord( const SCell & c, DGtal::Dimension k )
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
-typename DGtal::KhalimskyPreSpaceND< dim, TInteger>::Point
+typename DGtal::KhalimskyPreSpaceND< dim, TInteger>::Point const &
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 sKCoords( const SCell & c )
 {

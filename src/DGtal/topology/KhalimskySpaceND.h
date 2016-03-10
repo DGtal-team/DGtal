@@ -989,98 +989,67 @@ namespace DGtal
     /**
      * @param c any unsigned cell.
      * @param k any valid dimension.
-     * @param correct if set to 'true', the coordinate is corrected if \a k is a periodic dimension.
-     * @return its Khalimsky coordinate along [k], corrected to lie into the fundamental domain if
-     *         the dimension is periodic and if \a correct is set to 'true'.
-     *
-     * @note it is not needed to set \a correct to 'true' if the cell \a c has been
-     * created and modified by the methods of this KhalimskySpaceND instance.
+     * @return its Khalimsky coordinate along [k]. 
+     * @pre  `uIsValid(c)` is \a true.
      */
-    Integer uKCoord( const Cell & c, Dimension k, bool correct = false ) const;
+    Integer uKCoord( const Cell & c, Dimension k ) const;
 
     /**
      * @param c any unsigned cell.
      * @param k any valid dimension.
-     * @param correct if set to 'true', the coordinate is corrected if \a k is a periodic dimension.
-     * @return its digital coordinate along [k], corrected to lie into the fundamental domain if
-     *         the dimension is periodic and if \a correct is set to 'true'.
-     *
-     * @note it is not needed to set \a correct to 'true' if the cell \a c has been
-     * created and modified by the methods of this KhalimskySpaceND instance.
+     * @return its digital coordinate along [k].
+     * @pre  `uIsValid(c)` is \a true.
      */
-    Integer uCoord( const Cell & c, Dimension k, bool correct = false ) const;
+    Integer uCoord( const Cell & c, Dimension k ) const;
 
     /**
      * @param c any unsigned cell.
-     * @param correct is set to 'true', the coordinates are corrected for periodic dimensions.
-     * @return its Khalimsky coordinates, corrected to lie into the fundamental domain
-     * for periodic dimensions if \a correct is set to 'true'.
-     *
-     * @note it is not needed to set \a correct to 'true' if the cell \a c has been
-     * created and modified by the methods of this KhalimskySpaceND instance.
+     * @return its Khalimsky coordinates.
+     * @pre  `uIsValid(c)` is \a true.
      */
-    Point uKCoords( const Cell & c, bool correct = false ) const;
+    const Point & uKCoords( const Cell & c ) const;
 
     /**
      * @param c any unsigned cell.
-     * @param correct is set to 'true', the coordinates are corrected for periodic dimensions.
-     * @return its digital coordinates, corrected to lie into the fundamental domain
-     * for periodic dimensions if \a correct is set to 'true'.
-     *
-     * @note it is not needed to set \a correct to 'true' if the cell \a c has been
-     * created and modified by the methods of this KhalimskySpaceND instance.
+     * @return its digital coordinates
+     * @pre  `uIsValid(c)` is \a true.
      */
-    Point uCoords( const Cell & c, bool correct = false ) const;
+    Point uCoords( const Cell & c ) const;
 
     /**
      * @param c any signed cell.
      * @param k any valid dimension.
-     * @param correct if set to 'true', the coordinate is corrected if \a k is a periodic dimension.
-     * @return its Khalimsky coordinate along [k], corrected to lie into the fundamental domain if
-     *         the dimension is periodic and if \a correct is set to 'true'.
-     *
-     * @note it is not needed to set \a correct to 'true' if the cell \a c has been
-     * created and modified by the methods of this KhalimskySpaceND instance.
+     * @return its Khalimsky coordinate along [k].
+     * @pre  `uIsValid(c)` is \a true.
      */
-    Integer sKCoord( const SCell & c, Dimension k, bool correct = false ) const;
+    Integer sKCoord( const SCell & c, Dimension k ) const;
 
     /**
      * @param c any signed cell.
      * @param k any valid dimension.
-     * @param correct if set to 'true', the coordinate is corrected if \a k is a periodic dimension.
-     * @return its digital coordinate along [k], corrected to lie into the fundamental domain if
-     *         the dimension is periodic and if \a correct is set to 'true'.
-     *
-     * @note it is not needed to set \a correct to 'true' if the cell \a c has been
-     * created and modified by the methods of this KhalimskySpaceND instance.
+     * @return its digital coordinate along [k].
+     * @pre  `uIsValid(c)` is \a true.
      */
-    Integer sCoord( const SCell & c, Dimension k, bool correct = false ) const;
+    Integer sCoord( const SCell & c, Dimension k ) const;
 
     /**
      * @param c any signed cell.
-     * @param correct is set to 'true', the coordinates are corrected for periodic dimensions.
-     * @return its Khalimsky coordinates, corrected to lie into the fundamental domain
-     * for periodic dimensions if \a correct is set to 'true'.
-     *
-     * @note it is not needed to set \a correct to 'true' if the cell \a c has been
-     * created and modified by the methods of this KhalimskySpaceND instance.
+     * @return its Khalimsky coordinates.
+     * @pre  `uIsValid(c)` is \a true.
      */
-    Point sKCoords( const SCell & c, bool correct = false ) const;
+    const Point & sKCoords( const SCell & c ) const;
 
     /**
      * @param c any signed cell.
-     * @param correct is set to 'true', the coordinates are corrected for periodic dimensions.
-     * @return its digital coordinates, corrected to lie into the fundamental domain
-     * for periodic dimensions if \a correct is set to 'true'.
-     *
-     * @note it is not needed to set \a correct to 'true' if the cell \a c has been
-     * created and modified by the methods of this KhalimskySpaceND instance.
+     * @return its digital coordinates.
+     * @pre  `uIsValid(c)` is \a true.
      */
-    Point sCoords( const SCell & c, bool correct = false ) const;
+    Point sCoords( const SCell & c  ) const;
 
     /**
      * @param c any signed cell.
      * @return its sign.
+     * @pre  `uIsValid(c)` is \a true.
      */
     Sign sSign( const SCell & c ) const;
 
