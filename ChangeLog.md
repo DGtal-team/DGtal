@@ -10,7 +10,11 @@
    [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
 
 ## Bug Fixes
-- *Geometry Package*
+- *DEC Package*
+ - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
+   (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
+
+   - *Geometry Package*
  - AlphaThickSegmentComputer: fix segment display errors which could appear
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
