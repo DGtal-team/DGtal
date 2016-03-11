@@ -138,6 +138,7 @@ namespace DGtal
     struct CommonD3D {
       DGtal::Color   color; ///< Color used for displaying the graphical structure 
       DGtal::int32_t name;  ///< The "OpenGL name" associated with the graphical structure, used for selecting it (-1 is none).
+      ~CommonD3D() = delete; ///< Deleted destructor to disallow polymorphism.
     };
 
     /**
