@@ -138,7 +138,9 @@ namespace DGtal
     struct CommonD3D {
       DGtal::Color   color; ///< Color used for displaying the graphical structure 
       DGtal::int32_t name;  ///< The "OpenGL name" associated with the graphical structure, used for selecting it (-1 is none).
-      ~CommonD3D() = delete; ///< Deleted destructor to disallow polymorphism.
+
+    protected:
+      ~CommonD3D() = default; ///< Protected destructor to disallow polymorphism.
     };
 
     /**
@@ -253,12 +255,14 @@ namespace DGtal
 
 
   protected:
+    /// The Khalimsky space
+    KSpace myKSpace;
     /// an embeder from a dgtal space point to a real space point
-    Embedder *myEmbedder;
+    Embedder* myEmbedder;
     /// an embeder from a unsigned khalimsky space point to a real space point
-    CellEmbedder *myCellEmbedder;
+    CellEmbedder* myCellEmbedder;
     /// an embeder from a signed khalimsky space point to a real space point
-    SCellEmbedder *mySCellEmbedder;
+    SCellEmbedder* mySCellEmbedder;
 
 
 
@@ -271,42 +275,48 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~Display3D()
-    {
-      delete myEmbedder;
-      delete mySCellEmbedder;
-      delete myCellEmbedder;
-    };
+    virtual ~Display3D()
+      {
+        delete myEmbedder;
+        delete myCellEmbedder;
+        delete mySCellEmbedder;
+      }
 
     /**
-     * default constructor
+     * Constructor with the Khalimsky Space
+     * @param KSEmb the khalimsky space for embedding
+     */
+    Display3D( const KSpace & KSEmb )
+      : myKSpace( KSEmb )
+      , myEmbedder( new Embedder() )
+      , myCellEmbedder( new CellEmbedder( myKSpace ) )
+      , mySCellEmbedder( new SCellEmbedder( myKSpace )  )
+      , myCurrentFillColor( 220, 220, 220 )
+      , myCurrentLineColor( 22, 22, 222, 50 )
+      , myBoundingPtEmptyTag( true )
+    {
+    }
+    
+    /**
+     * Default constructor
      * Display3D
      */
     Display3D()
+      : Display3D( KSpace() )
     {
-      myCurrentFillColor = Color ( 220, 220, 220 );
-      myCurrentLineColor = Color ( 22, 22, 222, 50 );
-      myBoundingPtEmptyTag = true;
-      myEmbedder= new Embedder();
-      myCellEmbedder = new CellEmbedder();
-      mySCellEmbedder = new SCellEmbedder();
-
     }
 
-    /**
-     * constructor with the Khalimsky Space
-     * @param KSEmb the khalimsky space for embedding
-     */
-    Display3D(const KSpace &KSEmb)
-    {
-      myCurrentFillColor = Color ( 220, 220, 220 );
-      myCurrentLineColor = Color ( 22, 22, 222, 50 );
-      myBoundingPtEmptyTag = true;
-      myEmbedder= new Embedder();
-      myCellEmbedder = new CellEmbedder(KSEmb);
-      mySCellEmbedder = new SCellEmbedder(KSEmb);
-    };
+    /// Copy constructor. Deleted.
+    Display3D( const Display3D & ) = delete;
 
+    /// Move constructor. Deleted.
+    Display3D( Display3D && ) = delete;
+
+    /// Assignment operator. Deleted.
+    Display3D & operator= ( const Display3D & ) = delete;
+
+    /// Move operator. Deleted.
+    Display3D & operator= ( Display3D && ) = delete;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -325,7 +335,7 @@ namespace DGtal
 
     /// @return the cellular grid space.
     const KSpace& space() const 
-    { return mySCellEmbedder->space(); }
+    { return myKSpace; }
 
     /**
      * Used to set the current fill color
@@ -361,24 +371,11 @@ namespace DGtal
 
     virtual DGtal::Color getLineColor();
 
-
     /**
-     * Used to change the default embedder for point of the Digital 3D Space
-     * @param anEmbedder the new CanonicEmbedder
+     *  Used to change the Khalimsky 3D Space.
+     * @param aKSpace the new Khalimsky space.
      **/
-    virtual void  setSpaceEmbedder(Embedder *anEmbedder);
-
-    /**
-     *  Used to change the default embedder for unsigned cell of Khalimsky 3D Space.
-     * @param anEmbedder the new CanonicCellEmbedder
-     **/
-    virtual void  setKSpaceEmbedder(CellEmbedder *anEmbedder);
-
-    /**
-     * Used to change the default embedder for signed cell of Khalimsky 3D Space.
-     * @param anEmbedder the new CanonicSCellEmbedder
-     **/
-    virtual void  setSKSpaceEmbedder(SCellEmbedder *anEmbedder);
+    virtual void  setKSpace( const KSpace & aKSpace );
 
 
     /**
@@ -875,27 +872,6 @@ namespace DGtal
     std::set<SelectCallbackFctStore> mySelectCallBackFcts;
 
     //----end of protected datas
-
-    // ------------------------- Hidden services ------------------------------
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Display3D ( const Display3D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Display3D & operator= ( const Display3D & other );
-
-    //----end of hidden services
 
     // ------------------------- Internals ------------------------------------
   protected:

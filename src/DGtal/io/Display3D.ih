@@ -82,29 +82,13 @@ DGtal::Display3D< Space ,KSpace >::setLineColor(DGtal::Color aColor)
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::setSpaceEmbedder(CanonicEmbedder<Space> *anEmbedder)
+DGtal::Display3D< Space ,KSpace >::setKSpace( const KSpace & aKSpace )
 {
-  delete myEmbedder;
-  myEmbedder = anEmbedder;
+  myKSpace = aKSpace;
+  *myCellEmbedder  = CellEmbedder( myKSpace );
+  *mySCellEmbedder = SCellEmbedder( myKSpace );
 }
 
-template < typename Space ,typename KSpace >
-inline
-void
-DGtal::Display3D< Space ,KSpace >::setKSpaceEmbedder( CanonicCellEmbedder<KSpace> *anEmbedder)
-{
-  delete myCellEmbedder;
-  myCellEmbedder = anEmbedder;
-}
-
-template < typename Space ,typename KSpace >
-inline
-void
-DGtal::Display3D< Space ,KSpace >::setSKSpaceEmbedder(CanonicSCellEmbedder<KSpace> *anEmbedder)
-{
-  delete mySCellEmbedder;
-  mySCellEmbedder = anEmbedder;
-}
 
 template < typename Space ,typename KSpace >
 inline
