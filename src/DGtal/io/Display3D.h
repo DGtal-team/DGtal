@@ -258,11 +258,11 @@ namespace DGtal
     /// The Khalimsky space
     KSpace myKSpace;
     /// an embeder from a dgtal space point to a real space point
-    Embedder* myEmbedder;
+    Embedder *myEmbedder;
     /// an embeder from a unsigned khalimsky space point to a real space point
-    CellEmbedder* myCellEmbedder;
+    CellEmbedder *myCellEmbedder;
     /// an embeder from a signed khalimsky space point to a real space point
-    SCellEmbedder* mySCellEmbedder;
+    SCellEmbedder *mySCellEmbedder;
 
 
 
@@ -276,11 +276,11 @@ namespace DGtal
      * Destructor.
      */
     virtual ~Display3D()
-      {
-        delete myEmbedder;
-        delete myCellEmbedder;
-        delete mySCellEmbedder;
-      }
+    {
+      delete myEmbedder;
+      delete mySCellEmbedder;
+      delete myCellEmbedder;
+    }
 
     /**
      * Constructor with the Khalimsky Space
