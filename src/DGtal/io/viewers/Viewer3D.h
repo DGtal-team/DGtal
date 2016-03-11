@@ -162,17 +162,9 @@ namespace DGtal
      * @param KSEmb the Khalimsky space
      */
     Viewer3D(const KSpace &KSEmb):QGLViewer(), Display3D<Space,KSpace>(KSEmb)
-    {};
-
-    /**
-     *Constructor with a space and a khalimsky space
-     *@param SEmb a space
-     *@param KSEmb a khalimsky space
-     **/
-    Viewer3D(const Space &SEmb, const KSpace &KSEmb) : QGLViewer(), Display3D<Space,KSpace>(SEmb, KSEmb)
-    {};
-
-
+    {
+      resize(800,600);
+    }
 
     /**
      * Set camera position.
