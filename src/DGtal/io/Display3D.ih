@@ -1390,6 +1390,16 @@ DGtal::Display3D< Space ,KSpace >::normalize (double vec[3])
 
 template < typename Space ,typename KSpace >
 inline
+bool
+DGtal::Display3D< Space ,KSpace >::isValid() const
+{
+  return      myEmbedder.isValid()
+          &&  myCellEmbedder.isValid()
+          &&  mySCellEmbedder.isValid();
+}
+
+template < typename Space ,typename KSpace >
+inline
 void
 DGtal::Display3D< Space ,KSpace >::clear()
 {
