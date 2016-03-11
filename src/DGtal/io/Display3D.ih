@@ -1393,9 +1393,9 @@ inline
 bool
 DGtal::Display3D< Space ,KSpace >::isValid() const
 {
-  return      myEmbedder.isValid()
-          &&  myCellEmbedder.isValid()
-          &&  mySCellEmbedder.isValid();
+  return      myEmbedder->isValid()
+          &&  myCellEmbedder->isValid()
+          &&  mySCellEmbedder->isValid();
 }
 
 template < typename Space ,typename KSpace >

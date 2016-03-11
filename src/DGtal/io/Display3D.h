@@ -291,9 +291,9 @@ namespace DGtal
       , myEmbedder( new Embedder() )
       , myCellEmbedder( new CellEmbedder( myKSpace ) )
       , mySCellEmbedder( new SCellEmbedder( myKSpace )  )
+      , myBoundingPtEmptyTag( true )
       , myCurrentFillColor( 220, 220, 220 )
       , myCurrentLineColor( 22, 22, 222, 50 )
-      , myBoundingPtEmptyTag( true )
     {
     }
     
