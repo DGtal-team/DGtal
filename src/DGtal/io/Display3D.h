@@ -306,21 +306,6 @@ namespace DGtal
       mySCellEmbedder = new SCellEmbedder(KSEmb);
     };
 
-    /**
-     * constructor with the Space and the Khalimsky Space
-     * @param Semb the space for embedding
-     * @param KSEmb the khalimsky space for embedding
-     */
-    Display3D(const Space &Semb, const KSpace &KSEmb)
-    {
-      myCurrentFillColor = Color ( 220, 220, 220 );
-      myCurrentLineColor = Color ( 22, 22, 222, 50 );
-      myBoundingPtEmptyTag = true;
-      myEmbedder = new Embedder(Semb);
-      myCellEmbedder = new CellEmbedder(KSEmb);
-      mySCellEmbedder = new SCellEmbedder(KSEmb);
-    };
-
 
     // ----------------------- Interface --------------------------------------
   public:
