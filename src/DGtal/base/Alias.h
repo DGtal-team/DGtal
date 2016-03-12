@@ -254,14 +254,12 @@ user forward an Alias<T> parameter.
       : myParam( COUNTED_PTR_OR_PTR ), myPtr( static_cast<const void*>( &t ) )
       {}
 
-#ifdef CPP11_RREF_MOVE
     /**
        Constructor from right-reference value. Deleted.
 
        Aliasing a rvalue ref has no meaning. Consider Clone instead.
     */
     Alias( T&& ) = delete;
-#endif // CPP11_RREF_MOVE
 
     /**
        Cast operator to a T reference. The object is never

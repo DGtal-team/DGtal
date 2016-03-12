@@ -251,14 +251,12 @@ namespace DGtal
     inline ConstAlias( const CountedConstPtrOrConstPtr<T>& shT )
       : myParam( COUNTED_CONST_PTR_OR_CONST_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
 
-#ifdef CPP11_RREF_MOVE
     /**
        Constructor from right-reference value. Delete.
         
        Const-aliasing a rvalue ref has no meaning. Consider Clone instead.
     */
     ConstAlias( T&& ) = delete;
-#endif // CPP11_RREF_MOVE
 
     /**
        Cast operator to a T const-reference. The object is never

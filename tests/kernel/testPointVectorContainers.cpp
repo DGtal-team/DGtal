@@ -34,9 +34,7 @@
 #include <boost/array.hpp>
 #include <vector>
 
-#ifdef CPP11_ARRAY
 #include <array>
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -62,11 +60,9 @@ bool testPointVectorContainers()
   
   trace.info() <<"boost::array container "<< pa<<std::endl;
   
-#ifdef CPP11_ARRAY
   typedef PointVector<3, int, std::array<int, 3> > PV6;
   PV6 pv(1,3,4);
   trace.info() <<"std::array container "<< pv<<std::endl;
-#endif
 
   nbok += true ? 1 : 0; 
   nb++;
