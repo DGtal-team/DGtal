@@ -79,7 +79,7 @@ import( const std::string & filename,
     {
       return VolReader<TContainer>::importVol( filename );
     }
-  else if ( extension == "longvol" )
+  else if ( extension == "longvol" || extension == "lvol" )
     {
       return LongvolReader<TContainer>::importLongvol( filename );
     }
@@ -118,7 +118,7 @@ import( const std::string & filename,
   DGtal::IOException dgtalio;
   const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
 
-  if ( extension == "longvol" )
+  if ( extension == "longvol" || extension == "lvol" )
     {
       return LongvolReader<TContainer>::importLongvol( filename );
     }
@@ -131,6 +131,26 @@ import( const std::string & filename,
 
 
   trace.error() << "Extension " << extension << " with DGtal::uint32_t in 3D, not yet implemented in DGtal GenericReader." << std::endl;
+  throw dgtalio;
+}
+
+
+
+template <typename TContainer>
+inline
+TContainer
+DGtal::GenericReader<TContainer, 3, DGtal::uint64_t>::
+import( const std::string & filename) throw( DGtal::IOException )
+{
+  DGtal::IOException dgtalio;
+  const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
+
+  if ( extension == "longvol" || extension == "lvol" )
+    {
+      return LongvolReader<TContainer>::importLongvol( filename );
+    }
+
+  trace.error() << "Extension " << extension << " with DGtal::uint64_t in 3D, not yet implemented in DGtal GenericReader." << std::endl;
   throw dgtalio;
 }
 

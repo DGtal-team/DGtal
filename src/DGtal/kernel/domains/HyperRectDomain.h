@@ -262,7 +262,6 @@ namespace DGtal
           myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
         }
 
-#ifdef CPP11_INITIALIZER_LIST
       /**
        * ConstSubRange constructor from a given domain.
        * @param domain the domain.
@@ -291,7 +290,6 @@ namespace DGtal
           myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
           myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
         }
-#endif
 
       /**
        * ConstSubRange constructor from a given domain for one dimension.
@@ -517,7 +515,6 @@ namespace DGtal
         return ConstSubRange(*this, adim1, adim2, adim3, startingPoint);
       }
     
-#ifdef CPP11_INITIALIZER_LIST
     /**
      * get a subRange.
      * @param permutation an initializer_list containing the dimensions used for
@@ -542,7 +539,6 @@ namespace DGtal
       { 
         return ConstSubRange(*this, permutation, startingPoint);
       }
-#endif
     
     // ----------------------- Interface --------------------------------------
   public:
