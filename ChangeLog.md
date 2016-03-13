@@ -1,6 +1,5 @@
 # DGtal 0.9.2
 
-
 ## New Features / Critical Changes
 
 ## Changes
