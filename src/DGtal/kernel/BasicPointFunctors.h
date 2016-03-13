@@ -670,7 +670,7 @@ namespace functors
      */
     
     inline
-    TDomain getSubSampledDomain(){
+    const TDomain & getSubSampledDomain(){
       return myNewDomain;
     } 
     
