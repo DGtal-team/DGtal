@@ -16,7 +16,7 @@
  - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
    (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
 
-   - *Geometry Package*
+- *Geometry Package*
  - AlphaThickSegmentComputer: fix segment display errors which could appear
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
@@ -42,6 +42,12 @@
 -  GenericReader: include longvol reader in GenericReader for 64 bit images.
    Update the test for 64 bit longvol. (Bertrand Kerautret
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
+
+- *Topology Package*
+  - Fix wrong starting point for surface tracking in example code
+    frontierAndBoundary.cpp.
+    (Roland Denis, [#1144](https://github.com/DGtal-team/DGtal/pull/1144))
+
 
 # DGtal 0.9.1
 
