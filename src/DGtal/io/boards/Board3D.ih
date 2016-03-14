@@ -372,23 +372,17 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   // myCubeSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     j  = 0 ; //id of each Cube sub list for the .OBJ identification
-    k = 0; // id of each list
     
     
     //Foreach list
-
     for(typename Board3D<Space, KSpace>::CubesMap::const_iterator it =Board3D<Space, KSpace>::myCubesMap.begin();
         it != Board3D<Space, KSpace>::myCubesMap.end();   it++)
     {
-      for (typename std::vector<typename Board3D<Space, KSpace>::CubeD3D>::const_iterator aCube = it->second.begin();
-           aCube!=it->second.end();aCube ++)
-      {
+    
         std::stringstream name;
         std::ostringstream tmpStream;
-        if ( Board3D<Space, KSpace>::myCubeSetNameList.at(k) == "" )
-          name << "myCubeSetList_" << k ;
-        else
-          name << Board3D<Space, KSpace>::myCubeSetNameList.at(k)<< "_"<<k;
+
+        name << "myCubeSetList_" << it->first ;
         outOBJ << "o  " << name.str() << std::endl;
       
       
@@ -480,12 +474,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
           outOBJ << "f " << "-4" << " " << "-1" << " " <<"-2" << " " <<"-3" << std::endl;//top
 
           
-          j ++;
+       
         }
-      }
+        
       
-      k++;
+      j++;
+      
       }
+      k++;
     }
 
   }
