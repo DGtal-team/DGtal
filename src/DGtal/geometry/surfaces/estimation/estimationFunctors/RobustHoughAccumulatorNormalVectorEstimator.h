@@ -132,10 +132,11 @@ namespace DGtal
           //we have a random triple (i,j,k)
           accumulator.addDirection( vector );
         }
+      }
       
-       typename SphericalAccumulator<RealPoint>::Size posPhi,posTheta;
-       accumulator.maxCountBin(posPhi, posTheta);
-      
+      //We return the max bin orientation-
+      typename SphericalAccumulator<RealPoint>::Size posPhi,posTheta;
+      accumulator.maxCountBin(posPhi, posTheta);
       return accumulator.representativeDirection(posPhi, posTheta);
     }
 
