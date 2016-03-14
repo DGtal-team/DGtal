@@ -645,12 +645,10 @@ DGtal::Viewer3D<Space, KSpace>::drawWithNames()
   // quads. Seems to work well.
 
   glCallList ( myQuadsMapId );
-  // JOL: 2014/10/15. I leave the remaining code, but I am not
-  // confident that it works reliably.
-  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
-    {
-      glCallList ( myCubeSetListId +i);
-    }
+
+  glCallList ( myCubesMapId );
+
+
   for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
     {
       glCallList ( myLineSetListId+i );
@@ -744,10 +742,10 @@ DGtal::Viewer3D<Space, KSpace>::draw()
     }
 
   glCallList(myPrismListId);
-  for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myCubeSetList.size() ; j++ )
-    {
-      glCallList( myCubeSetListId+j);
-    }
+  
+
+  glCallList( myCubesMapId );
+      
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
@@ -914,15 +912,23 @@ DGtal::Viewer3D<Space, KSpace>::sortSurfelFromCamera()
 {
   CompFarthestVoxelFromCamera comp;
   comp.posCam= camera()->position();
-  for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
+
+  for (typename Viewer3D<Space, KSpace>::CubesMap::iterator it = Viewer3D<Space, KSpace>::myCubesMap.begin(), 
+         itE = Viewer3D<Space, KSpace>::myCubesMap.end();
+       it != itE; ++it )
     {
-      sort ( Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).begin(), Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).end(), comp );
+      DGtal::trace.info() << "sort quad size" << it->second.size() << std::endl;
+      sort ( it->second.begin(), it->second.end(), comp );
     }
+
   CompFarthestSurfelFromCamera compSurf;
   DGtal::trace.info() << "sort surfel size" << Viewer3D<Space, KSpace>::myPrismList.size() << std::endl;
   sort ( Viewer3D<Space, KSpace>::myPrismList.begin(), Viewer3D<Space, KSpace>::myPrismList.end(), compSurf );
-
 }
+
+
+
+
 
 template< typename Space, typename KSpace>
 void
@@ -990,26 +996,6 @@ DGtal::Viewer3D<Space, KSpace>::postSelection ( const QPoint& point )
       SelectCallbackFct fct = getSelectCallback3D( selectedName(), aData );
       if ( fct ) fct( this, selectedName(), aData );
       // I leave the remaining code.
-      else if ( selectedName() >= 0 )
-        {
-          unsigned int id = abs ( selectedName()-1 );
-          if ( id< Viewer3D<Space, KSpace>::myCubeSetList.size())
-            {
-              DGtal::trace.info() << "deleting list="<< id<<endl;
-              Viewer3D<Space, KSpace>::myCubeSetList.erase ( Viewer3D<Space, KSpace>::myCubeSetList.begin() +id );
-              updateList ( false );
-            }
-          else if ( id< Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myLineSetList.size() )
-            {
-              Viewer3D<Space, KSpace>::myLineSetList.erase ( Viewer3D<Space, KSpace>::myLineSetList.begin() + ( id- Viewer3D<Space, KSpace>::myCubeSetList.size()) );
-              updateList ( false );
-            }
-          else if ( id< Viewer3D<Space, KSpace>::myBallSetList.size() + Viewer3D<Space, KSpace>::myLineSetList.size() + Viewer3D<Space, KSpace>::myCubeSetList.size())
-            {
-              Viewer3D<Space, KSpace>::myBallSetList.erase ( Viewer3D<Space, KSpace>::myBallSetList.begin() + ( id- Viewer3D<Space, KSpace>::myCubeSetList.size() - Viewer3D<Space, KSpace>::myLineSetList.size() ) );
-              updateList ( false );
-            }
-        }
     }
 }
 
@@ -1021,21 +1007,20 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 {
 
   // glDeleteLists
-  glDeleteLists(myCubeSetListId, myNbCubeSetList);
+  glDeleteLists(myCubesMapId, 1);
   glDeleteLists(myLineSetListId, myNbLineSetList);
   glDeleteLists(myBallSetListId, myNbBallSetList);
   glDeleteLists(myTriangleSetListId, 1);
   glDeleteLists(myTriangleSetListWiredId, 1);
   glDeleteLists(myPrismListId, 1);
-  glDeleteLists(myCubeSetListWiredId, 1);
+  glDeleteLists(myCubesMapId, 1);
   glDeleteLists(myPolygonSetListId, 1);
   glDeleteLists(myPolygonSetListWiredId, 1);
   glDeleteLists(myQuadsMapId, 1);
   glDeleteLists(myQuadsMapWiredId, 1);
 
   // Storing ID for each list
-  myCubeSetListId = glGenLists(Viewer3D<Space, KSpace>::myCubeSetList.size());
-  myNbCubeSetList  = Viewer3D<Space, KSpace>::myCubeSetList.size();
+  myCubesMapId = glGenLists(1);
   myLineSetListId = glGenLists(Viewer3D<Space, KSpace>::myLineSetList.size());
   myNbLineSetList =  Viewer3D<Space, KSpace>::myLineSetList.size();
   myBallSetListId = glGenLists(Viewer3D<Space, KSpace>::myBallSetList.size());
@@ -1058,11 +1043,9 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
 
-  for( unsigned int i = 0; i <   Viewer3D<Space, KSpace>::myCubeSetList.size(); i++){
-    glCreateListCubes(Viewer3D<Space, KSpace>::myCubeSetList.at(i), myCubeSetListId+i);
-    myNbListe++;
-  }
-
+  
+  glCreateListCubeMaps(Viewer3D<Space, KSpace>::myCubesMap, myCubesMapIdi);
+  
 
   glCreateListQuadD3D(Viewer3D<Space, KSpace>::myPrismList, myPrismListId);
   myNbListe++;
@@ -1376,20 +1359,31 @@ DGtal::Viewer3D<Space, KSpace>::helpString() const
 
 
 
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::glCreateListQuadMaps(const typename DGtal::Display3D<Space, KSpace>::QuadsMap &aQuadMap,
+                                                    unsigned int idList){
+  glNewList ( idList, GL_COMPILE );
+
+  for (typename DGtal::Display3D<Space, KSpace>::QuadsMap::const_iterator it = aQuadMap.begin(), itE = aQuadMap.end();
+       it != itE; ++it )
+    {
 
 template< typename Space, typename KSpace>
 void
-DGtal::Viewer3D<Space, KSpace>::glCreateListCubes( const VectorCubes & aVectCubes,
-                                                   unsigned int idList){
+  DGtal::Viewer3D<Space, KSpace>::glCreateListCubeMaps(const typename DGtal::Display3D<Space, KSpace>::CubesMap &aCubeMap,
+                                                       unsigned int idList){
   glNewList ( idList , GL_COMPILE );
   glPushName ( myNbListe );
   glEnable ( GL_DEPTH_TEST );
   glBegin ( GL_QUADS );
 
-  for (typename  VectorCubes::const_iterator c_it =  aVectCubes.begin();
-       c_it != aVectCubes.end(); ++c_it ){
+  for (typename DGtal::Display3D<Space, KSpace>::QuadsMap::const_iterator it = aCubeMap.begin(), itE = aCubeMap.end();
+       it != itE; ++it )
+    {
+      
 
-    typename Viewer3D<Space, KSpace>::CubeD3D cube = (*c_it);
+    typename Viewer3D<Space, KSpace>::CubeD3D cube = (*it);
     glColor4ub ( cube.color.red(), cube.color.green(), cube.color.blue(), cube.color.alpha() );
     double _width= cube.width;
     //z+

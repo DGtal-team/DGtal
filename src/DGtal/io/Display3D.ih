@@ -193,12 +193,21 @@ DGtal::Display3D< Space ,KSpace >::getMode( const std::string & objectName ) con
 
 template < typename Space ,typename KSpace >
 inline
-void
-DGtal::Display3D< Space ,KSpace >::createNewCubeList( std::string str)
+DGtal::int32_t
+DGtal::Display3D< Space ,KSpace >::createNewCubeList()
 {
-  std::vector< CubeD3D > v;
-  myCubeSetList.push_back(v);
-  myCubeSetNameList.push_back(str);
+  // looking for an empty key
+  DGtal::int32_t aKey=0;
+  bool found =  myCubesMap.count(aKey) == 0;
+   do{
+     aKey++;
+     found = myCubesMap.count(aKey) == 0; 
+   }while (!found && aKey < std::numeric_limits<DGtal::int32_t>::max());
+   if (found){
+     myName3d = aKey;
+     return aKey;
+   }
+   return -1;
 }
 
 
@@ -276,9 +285,8 @@ DGtal::Display3D< Space ,KSpace >::addCube(const RealPoint &center, double width
   v.color  = getFillColor();
   v.width  = width;
   v.name   = name3d(); 
-  if (myCubeSetList.size() ==0)
-    createNewCubeList("Cube Root");
-  (myCubeSetList.at(myCubeSetList.size()-1)).push_back(v);
+  myCubesMap[ v.name ].push_back( v );
+
 }
 
 
@@ -1284,11 +1292,13 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<RealPoint> &aMesh) c
     }
 
   // Export of cubeSet (generated from addCube)
-  for(unsigned int j=0; j<myCubeSetList.size(); j++)
+  // Export CubesList
+  for (typename QuadsMap::const_iterator it = myCubesMap.begin(); it != myCubesMap.end(); it++)
     {
-      for (unsigned int i=0; i< myCubeSetList.at(j).size(); i++)
+      for (typename std::vector<CubeD3D>::const_iterator aCube = it->second.begin(); aQuad!=it->second.end();aQuad ++)
 	{
-	  CubeD3D cube = myCubeSetList.at(j).at(i);
+
+	  CubeD3D cube = *aCube;
 	  RealPoint p1, p2, p3, p4, p5, p6, p7, p8;
 	  double width= cube.width;
 
@@ -1409,7 +1419,7 @@ inline
 void
 DGtal::Display3D< Space ,KSpace >::clear()
 {
-  myCubeSetList.clear();
+  myCubesMap.clear();
   myLineSetList.clear();
   myBallSetList.clear();
   myClippingPlaneList.clear();
