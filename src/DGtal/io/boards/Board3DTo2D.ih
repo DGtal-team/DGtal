@@ -430,25 +430,25 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
     }
 
     // myCubeSetList
-    for(unsigned int i=0; i<Board3DTo2D<Space, KSpace>::myCubeSetList.size(); i++)
+    for(typename std::vector<std::vector< typename Board3DTo2D<Space, KSpace>::const_iterator it = Board3DTo2D<Space, KSpace>::myCubesMap.begin();
+        it != Board3DTo2D<Space, KSpace>::myCubesMap.end();   it++)
     {
-        for (typename std::vector< typename Board3DTo2D<Space, KSpace>::CubeD3D>::iterator s_it = Board3DTo2D<Space, KSpace>::myCubeSetList.at(i).begin();
-             s_it != Board3DTo2D<Space, KSpace>::myCubeSetList.at(i).end();
-             ++s_it)
-        {
-            {
-                cairo_save (cr);
-
-                if (Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode")
-		  cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0,
-					 (*s_it).color.blue()/255.0, (*s_it).color.alpha()/(255.0*1.75)); // *1.75 arbitraire
-                else
-		  cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0,
-					 (*s_it).color.blue()/255.0, (*s_it).color.alpha()/(255.0*0.75)); // *0.75 arbitraire
-
-                cairo_set_line_width (cr, 1.); // arbitraire car non set
-
-                double x1, y1, x2, y2, x3, y3, x4, y4;
+       for (typename std::vector< typename Board3DTo2D<Space, KSpace>::CubeD3D>::const_iterator s_it = it->second.begin();
+           s_it != it->second.end(); ++s_it)
+         {
+           {
+             cairo_save (cr);
+             
+             if (Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode")
+               cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0,
+                                      (*s_it).color.blue()/255.0, (*s_it).color.alpha()/(255.0*1.75)); // *1.75 arbitraire
+             else
+               cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0,
+                                      (*s_it).color.blue()/255.0, (*s_it).color.alpha()/(255.0*0.75)); // *0.75 arbitraire
+             
+             cairo_set_line_width (cr, 1.); // arbitraire car non set
+             
+             double x1, y1, x2, y2, x3, y3, x4, y4;
                 double width=(*s_it).width;
 
                 //z+
