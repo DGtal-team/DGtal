@@ -430,7 +430,7 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
     }
 
     // myCubeSetList
-    for(typename std::vector<std::vector< typename Board3DTo2D<Space, KSpace>::const_iterator it = Board3DTo2D<Space, KSpace>::myCubesMap.begin();
+    for(typename  Board3DTo2D<Space, KSpace>::CubesMap::const_iterator it = Board3DTo2D<Space, KSpace>::myCubesMap.begin();
         it != Board3DTo2D<Space, KSpace>::myCubesMap.end();   it++)
     {
        for (typename std::vector< typename Board3DTo2D<Space, KSpace>::CubeD3D>::const_iterator s_it = it->second.begin();
