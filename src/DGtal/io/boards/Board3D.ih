@@ -376,8 +376,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
     
     
     //Foreach list
-    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::CubeD3D> >::const_iterator it =Board3D<Space, KSpace>::myCubeSetList.begin();
-        it != Board3D<Space, KSpace>::myCubeSetList.end();   it++)
+    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::CubeD3D> >::const_iterator it =Board3D<Space, KSpace>::myCubesMap.begin();
+        it != Board3D<Space, KSpace>::myCubesMap.end();   it++)
     {
       //If we have at least a cube to export
       if ( it->begin() != it->end() )
@@ -395,8 +395,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
       unsigned int prevMaterialIndex = std::numeric_limits<unsigned int>::max();  //index to the last voxel material
       
       //Foreach cube in the list
-      for (typename std::vector< typename Board3D<Space, KSpace>::CubeD3D>::const_iterator s_it = it->begin();
-           s_it != it->end(); ++s_it)
+      for (typename std::vector< typename Board3D<Space, KSpace>::CubeD3D>::const_iterator s_it = it->second.begin();
+           s_it != it->second.end(); ++s_it)
       {
         //Color
         unsigned int matid = getMaterialIndex(s_it->color);
