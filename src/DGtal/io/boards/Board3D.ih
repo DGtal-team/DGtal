@@ -376,11 +376,12 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
     
     
     //Foreach list
-    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::CubeD3D> >::const_iterator it =Board3D<Space, KSpace>::myCubesMap.begin();
+
+    for(typename Board3D<Space, KSpace>::CubesMap::const_iterator it =Board3D<Space, KSpace>::myCubesMap.begin();
         it != Board3D<Space, KSpace>::myCubesMap.end();   it++)
     {
-      //If we have at least a cube to export
-      if ( it->begin() != it->end() )
+      for (typename std::vector<typename Board3D<Space, KSpace>::CubeD3D>::const_iterator aCube = it->second.begin();
+           aCube!=it->second.end();aCube ++)
       {
         std::stringstream name;
         std::ostringstream tmpStream;
@@ -389,7 +390,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         else
           name << Board3D<Space, KSpace>::myCubeSetNameList.at(k)<< "_"<<k;
         outOBJ << "o  " << name.str() << std::endl;
-      }
+      
       
       //For each list, we force the cube color to be set in the OBJ file
       unsigned int prevMaterialIndex = std::numeric_limits<unsigned int>::max();  //index to the last voxel material
@@ -482,8 +483,11 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
           j ++;
         }
       }
+      
       k++;
+      }
     }
+
   }
   
   //OPT quad

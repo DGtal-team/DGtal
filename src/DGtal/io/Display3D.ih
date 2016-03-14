@@ -1293,9 +1293,9 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<RealPoint> &aMesh) c
 
   // Export of cubeSet (generated from addCube)
   // Export CubesList
-  for (typename QuadsMap::const_iterator it = myCubesMap.begin(); it != myCubesMap.end(); it++)
+  for (typename CubesMap::const_iterator it = myCubesMap.begin(); it != myCubesMap.end(); it++)
     {
-      for (typename std::vector<CubeD3D>::const_iterator aCube = it->second.begin(); aQuad!=it->second.end();aQuad ++)
+      for (typename std::vector<CubeD3D>::const_iterator aCube = it->second.begin(); aCube!=it->second.end();aCube ++)
 	{
 
 	  CubeD3D cube = *aCube;

@@ -482,7 +482,7 @@ namespace DGtal
      * @return the new key of the map associated to the new list.
      **/
 
-    DGtal::int32_t createNewCubeList()
+    DGtal::int32_t createNewCubeList();
 
 
      /**
