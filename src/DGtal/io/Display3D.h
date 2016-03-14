@@ -249,6 +249,9 @@ namespace DGtal
   public:
     // The type that maps identifier name -> vector of QuadD3D.
     typedef std::map<DGtal::int32_t, std::vector< QuadD3D > > QuadsMap;
+    
+    // The type that maps identifier name -> vector of CubeD3D.
+    typedef std::map<DGtal::int32_t, std::vector< CubeD3D > > CubesMap;
 
 
   protected:
@@ -476,9 +479,11 @@ namespace DGtal
     /**
      * Used to create a new list containing new 3D objects
      * (useful to use transparency between different objects).
-     * @param s name of the new list
+     * @return the new key of the map associated to the new list.
      **/
-    void createNewCubeList(std::string s= "");
+
+    DGtal::int32_t createNewCubeList()
+
 
      /**
       * Used to create a new list containing new 3D objects
@@ -817,10 +822,6 @@ namespace DGtal
     ///
     double myCurrentfShiftVisuPrisms;
 
-    /// Used to represent all the list used in the display.
-    ///
-    std::vector< std::vector<CubeD3D> > myCubeSetList;
-
     /// Used to represent all the list of line primitive
     ///
     std::vector< std::vector<LineD3D> > myLineSetList;
@@ -848,6 +849,13 @@ namespace DGtal
 
     /// Represents all the polygon drawn in the Display3D
     std::vector<std::vector<PolygonD3D> > myPolygonSetList;
+
+
+    /// Represents all the cubes drawn in the Display3D.  The map int
+    /// --> vector<CubeD3D> associates to a vector of cubes to an
+    /// integer identifier (OpenGL name)
+    CubesMap myCubesMap;
+
 
     /// names of the lists in myCubeSetList
     ///

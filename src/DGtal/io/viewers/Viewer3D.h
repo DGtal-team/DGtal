@@ -1187,12 +1187,16 @@ namespace DGtal
 
 
     /**
-     * Creates an OpenGL list of type GL_QUADS from a vector of CubeD3D.
-     * @param[in] aVectCubes a vector of cubes (Cube3D) containing the cubes to be displayed.
+     * Creates an OpenGL list of type GL_QUADS from a CubeD3D.  Only
+     * one OpenGL list is created but each map compoment (CubeD3D
+     * vector) are marked by its identifier through the OpenGl
+     * glPushName() function.
+     * See @ref moduleQGLInteraction for more details.
+     * @param[in] aCubeMap  a map of cube (CubesMap) associating a name to a vector of CubeD3D.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/
-    void glCreateListCubes( const VectorCubes & aVectCubes,
-                              unsigned int idList);
+    void glCreateListCubesMaps(const typename Display3D<Space, KSpace>::CubesMap &aCubeMap, unsigned int idList);
+
 
 
     /**
@@ -1354,9 +1358,6 @@ namespace DGtal
     /// lists of the list to draw
     //GLuint myListToAff;
 
-    GLuint myCubeSetListId;
-    GLuint myCubeSetListWiredId;
-
     GLuint myTriangleSetListId;
     GLuint myTriangleSetListWiredId;
 
@@ -1370,10 +1371,12 @@ namespace DGtal
     GLuint myQuadsMapId;
     GLuint myQuadsMapWiredId;
 
+    GLuint myCubeMapId;
+    GLuint myCubeSetListWiredId;
+
     /// number of lists in myListToAff
 
     unsigned int myNbListe;
-    unsigned int myNbCubeSetList;
     unsigned int myNbLineSetList;
     unsigned int myNbBallSetList;
     unsigned int myNbPrismSetList;
