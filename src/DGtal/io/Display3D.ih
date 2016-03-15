@@ -201,7 +201,8 @@ DGtal::Display3D< Space ,KSpace >::createNewCubeList()
   bool found =  myCubesMap.count(aKey) == 0;
    do{
      aKey++;
-     found = myCubesMap.count(aKey) == 0; 
+     found = (myCubesMap.count(aKey) == 0) &&
+             (myQuadsMap.count(aKey) == 0); 
    }while (!found && aKey < std::numeric_limits<DGtal::int32_t>::max());
    if (found){
      myName3d = aKey;
@@ -241,7 +242,8 @@ DGtal::Display3D< Space ,KSpace >::createNewLineList(std::string str)
    bool found =  myQuadsMap.count(aKey) == 0;
    do{
      aKey++;
-     found = myQuadsMap.count(aKey) == 0; 
+     found = (myCubesMap.count(aKey) == 0) &&
+             (myQuadsMap.count(aKey) == 0); 
    }while (!found && aKey < std::numeric_limits<DGtal::int32_t>::max());
    if (found){
      myName3d = aKey;
