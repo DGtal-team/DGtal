@@ -987,10 +987,12 @@ DGtal::Viewer3D<Space, KSpace>::postSelection ( const QPoint& point )
     {
       DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << endl;
       // JOL: 2014/10/15
+      mySelectedElementId = selectedName();
       void* aData = 0;
       SelectCallbackFct fct = getSelectCallback3D( selectedName(), aData );
       if ( fct ) fct( this, selectedName(), aData );
-      // I leave the remaining code.
+      // I leave the remaining code.      
+      updateList(false);
     }
 }
 
@@ -1364,10 +1366,16 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListCubesMaps(const typename DGtal::Disp
       glPushName ( mapElem.first );
       glEnable ( GL_LIGHTING );
       glBegin ( GL_QUADS );      
+      bool useColorSelection = false;
+      if(mySelectedElementId == mapElem.first)
+        useColorSelection = true;
       
       for (auto   &cube: mapElem.second)
         {
-          glColor4ub ( cube.color.red(), cube.color.green(), cube.color.blue(), cube.color.alpha() );
+          if(useColorSelection)
+            glColor4ub ( mySelectionColor.red(), mySelectionColor.green(), mySelectionColor.blue(), mySelectionColor.alpha() );
+          else
+            glColor4ub ( cube.color.red(), cube.color.green(), cube.color.blue(), cube.color.alpha() );
           double _width= cube.width;
           //z+
           glNormal3f ( 0.0, 0.0, 1.0 );
@@ -1500,10 +1508,16 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListQuadMaps(const typename DGtal::Displ
       glPushName ( mapElem.first );
       glEnable ( GL_LIGHTING );
       glBegin ( GL_QUADS );
+      bool useColorSelection = false;
+      if(mySelectedElementId == mapElem.first)
+        useColorSelection = true;
       
       for (auto &q: mapElem.second)
         {
-          glColor4ub ( q.color.red(), q.color.green(), q.color.blue(), q.color.alpha() );
+          if(useColorSelection)
+            glColor4ub ( mySelectionColor.red(), mySelectionColor.green(), mySelectionColor.blue(), mySelectionColor.alpha() );
+          else
+            glColor4ub ( q.color.red(), q.color.green(), q.color.blue(), q.color.alpha() );
           glNormal3f ( q.nx, q.ny ,q.nz );
           glVertex3f ( q.point1[0], q.point1[1], q.point1[2] );
           glVertex3f ( q.point2[0], q.point2[1], q.point2[2] );
