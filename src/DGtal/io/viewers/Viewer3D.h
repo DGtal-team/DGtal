@@ -1381,7 +1381,10 @@ namespace DGtal
     unsigned int myNbBallSetList;
     unsigned int myNbPrismSetList;
 
-
+    /// used to displayed selected elements
+    int mySelectedElementId = -1;
+    Color mySelectionColor = Color::Red;
+    
     /// information linked to the navigation in the viewer
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
     /// a point selected with postSelection @see postSelection

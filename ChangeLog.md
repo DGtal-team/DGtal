@@ -15,8 +15,8 @@
  - Add the possibility to interact in QGLViewer Viewer3D class with the voxel
    primitive (was limited to surfel). As with surfel, the user may assign integer
    identifiers (OpenGL names) to voxel and callback functions, which are called
-   when voxel are selected. (Bertrand Kerautret,
-   [#1146](https://github.com/DGtal-team/DGtal/pull/1146))
+   when voxel are selected. The selected elements are now highlighted in red.
+   (Bertrand Kerautret, [#1146](https://github.com/DGtal-team/DGtal/pull/1146))
 
 ## Bug Fixes
 - *DEC Package*
