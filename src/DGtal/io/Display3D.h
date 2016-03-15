@@ -484,6 +484,14 @@ namespace DGtal
 
     DGtal::int32_t createNewCubeList();
 
+    
+    /**
+     * Delete the cube list identified by a its name.
+     * @param[in] name the name of the cube list.
+     * @return true if the list was found and removed.
+     *
+     **/
+    bool deleteCubeList(const DGtal::int32_t name);
 
      /**
       * Used to create a new list containing new 3D objects
@@ -491,6 +499,15 @@ namespace DGtal
       * @return the new key of the map associated to the new list.
       **/
     DGtal::int32_t createNewQuadList();
+
+
+    /**
+     * Delete the quad list identified by a its name.
+     * @param[in] name the name of the quad list.
+     * @return true if the list was found and removed.
+     *
+     **/
+    bool deleteQuadList(const DGtal::int32_t name);
 
     /**
      * Used to create a new list containing new 3D objects
