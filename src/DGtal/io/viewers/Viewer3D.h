@@ -1371,7 +1371,7 @@ namespace DGtal
     GLuint myQuadsMapId;
     GLuint myQuadsMapWiredId;
 
-    GLuint myCubeMapId;
+    GLuint myCubesMapId;
     GLuint myCubeSetListWiredId;
 
     /// number of lists in myListToAff

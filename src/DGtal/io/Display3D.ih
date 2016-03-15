@@ -1295,10 +1295,10 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<RealPoint> &aMesh) c
   // Export CubesList
   for (typename CubesMap::const_iterator it = myCubesMap.begin(); it != myCubesMap.end(); it++)
     {
-      for (typename std::vector<CubeD3D>::const_iterator aCube = it->second.begin(); aCube!=it->second.end();aCube ++)
+      for (typename std::vector<CubeD3D>::const_iterator itCube = it->second.begin(); itCube!=it->second.end(); itCube++)
 	{
 
-	  CubeD3D cube = *aCube;
+	  CubeD3D cube = *itCube;
 	  RealPoint p1, p2, p3, p4, p5, p6, p7, p8;
 	  double width= cube.width;
 

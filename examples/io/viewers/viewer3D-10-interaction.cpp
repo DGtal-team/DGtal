@@ -47,20 +47,20 @@ typedef Viewer3D<Space,KSpace> MyViewer;
 typedef MyViewer::SelectCallbackFct SelectCallbackFct;
 typedef KSpace::SCell SCell;
 
-struct BigData
+struct BigDataCells
 {
   KSpace K;
   std::map< DGtal::int32_t, Z3i::SCell > cells;
 };
 
-struct BigDataV
+struct BigDataVoxels
 {
-  std::map< DGtal::int32_t, Z3i::Point > voxel;
+  std::map< DGtal::int32_t, Z3i::Point > voxels;
 };
 
 int reaction1( void* viewer, DGtal::int32_t name, void* data )
 {
-  BigData* bg = (BigData*) data;
+  BigDataCells* bg = (BigDataCells*) data;
   stringstream ssMessage;
   ssMessage << "Reaction1 with name " << name << " cell " << bg->K.sKCoords( bg->cells[ name ] )  ;
   ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000);
@@ -69,7 +69,7 @@ int reaction1( void* viewer, DGtal::int32_t name, void* data )
 }
 int reaction23( void* viewer, DGtal::int32_t name, void* data )
 {
-  BigData* bg = (BigData*) data;
+  BigDataCells* bg = (BigDataCells*) data;
   stringstream ssMessage;
   ssMessage <<  "Reaction23 with name " << name << " cell " << bg->K.sKCoords( bg->cells[ name ] );
   ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000);
@@ -78,9 +78,9 @@ int reaction23( void* viewer, DGtal::int32_t name, void* data )
 }
 int reaction4( void* viewer, DGtal::int32_t name, void* data )
 {
-  BigDataV* bg = (BigDataV*) data;
+  BigDataVoxels* bg = (BigDataVoxels*) data;
   stringstream ssMessage;
-  ssMessage <<  "Reaction4 with name " << name << " Voxel " << bg->voxel[name] ;
+  ssMessage <<  "Reaction4 with name " << name << " Voxel " << bg->voxels[name] ;
   ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000);
   trace.info() << ssMessage.str() << std::endl;
   return 0;
@@ -91,8 +91,8 @@ int reaction4( void* viewer, DGtal::int32_t name, void* data )
 int main( int argc, char** argv )
 {
   QApplication application(argc,argv);
-  BigData data;
-  BigDataV dataV;
+  BigDataCells data;
+  BigDataVoxels dataV;
   Point p1( 0, 0, 0 );
   Point p2( 5, 5 ,5 );
   Point p3( 2, 3, 4 );
@@ -102,9 +102,9 @@ int main( int argc, char** argv )
   Point v2 = Z3i::Point(9, 9, 9);
   Point v3 = Z3i::Point(11, 11,11);
   
-  dataV.voxel[4001] = v1;
-  dataV.voxel[4002] = v2;
-  dataV.voxel[4003] = v3;
+  dataV.voxels[4001] = v1;
+  dataV.voxels[4002] = v2;
+  dataV.voxels[4003] = v3;
   
   
   MyViewer viewer( K );

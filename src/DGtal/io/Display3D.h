@@ -247,10 +247,10 @@ namespace DGtal
 
 
   public:
-    // The type that maps identifier name -> vector of QuadD3D.
+    /// The type that maps identifier name -> vector of QuadD3D.
     typedef std::map<DGtal::int32_t, std::vector< QuadD3D > > QuadsMap;
     
-    // The type that maps identifier name -> vector of CubeD3D.
+    /// The type that maps identifier name -> vector of CubeD3D.
     typedef std::map<DGtal::int32_t, std::vector< CubeD3D > > CubesMap;
 
 
@@ -840,7 +840,7 @@ namespace DGtal
 
     /// Represents all the planes drawn in the Display3D or to display
     /// Khalimsky Space Cell.  The map int --> vector< QuadD3D>
-    /// associates to a vector of quads to an integer identifier
+    /// associates a vector of quads to an integer identifier
     /// (OpenGL name)
     QuadsMap myQuadsMap;
 
@@ -852,7 +852,7 @@ namespace DGtal
 
 
     /// Represents all the cubes drawn in the Display3D.  The map int
-    /// --> vector<CubeD3D> associates to a vector of cubes to an
+    /// --> vector<CubeD3D> associates  a vector of cubes to an
     /// integer identifier (OpenGL name)
     CubesMap myCubesMap;
 
