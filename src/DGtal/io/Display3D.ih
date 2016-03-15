@@ -211,6 +211,14 @@ DGtal::Display3D< Space ,KSpace >::createNewCubeList()
    return -1;
 }
 
+template < typename Space ,typename KSpace >
+inline
+bool
+DGtal::Display3D< Space ,KSpace >::deleteCubeList(const DGtal::int32_t idList)
+{
+  return myCubesMap.erase(idList);
+}
+
 
 template < typename Space ,typename KSpace >
 inline
@@ -252,6 +260,18 @@ DGtal::Display3D< Space ,KSpace >::createNewLineList(std::string str)
 
    return -1;
  }
+
+
+
+template < typename Space ,typename KSpace >
+inline
+bool
+DGtal::Display3D< Space ,KSpace >::deleteQuadList(const DGtal::int32_t idList)
+{
+  return myQuadsMap.erase(idList);
+}
+
+
 
 template < typename Space ,typename KSpace >
 inline
