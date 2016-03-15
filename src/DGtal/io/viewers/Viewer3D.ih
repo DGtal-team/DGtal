@@ -40,7 +40,7 @@
 
 #include "DGtal/io/viewers/Viewer3D.h"
 
-
+#include <algorithm> 
 #include <limits>
 #include <QColor>
 #include <QTextEdit>
@@ -993,6 +993,10 @@ DGtal::Viewer3D<Space, KSpace>::postSelection ( const QPoint& point )
       if ( fct ) fct( this, selectedName(), aData );
       // I leave the remaining code.      
       updateList(false);
+    }else if (mySelectedElementId != -1)
+    {
+      mySelectedElementId = -1;
+      updateList(false);
     }
 }
 
@@ -1373,9 +1377,26 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListCubesMaps(const typename DGtal::Disp
       for (auto   &cube: mapElem.second)
         {
           if(useColorSelection)
-            glColor4ub ( mySelectionColor.red(), mySelectionColor.green(), mySelectionColor.blue(), mySelectionColor.alpha() );
+            {
+              unsigned char m = std::max(std::max( cube.color.red(), cube.color.green()), cube.color.blue());
+              if(m>128)
+                {
+                  glColor4ub ( std::max(cube.color.red()-mySelectionColorShift, 0),
+                               std::max(cube.color.green()-mySelectionColorShift, 0),
+                               std::max(cube.color.blue()-mySelectionColorShift, 0),
+                               cube.color.alpha());              
+                }
+              else{
+                glColor4ub ( std::min(cube.color.red()+mySelectionColorShift, 255),
+                             std::min(cube.color.green()+mySelectionColorShift, 255),
+                             std::min(cube.color.blue()+mySelectionColorShift, 255),
+                             cube.color.alpha());              
+              } 
+            }
           else
-            glColor4ub ( cube.color.red(), cube.color.green(), cube.color.blue(), cube.color.alpha() );
+            { 
+              glColor4ub ( cube.color.red(), cube.color.green(), cube.color.blue(),cube.color.alpha());
+            }
           double _width= cube.width;
           //z+
           glNormal3f ( 0.0, 0.0, 1.0 );
@@ -1515,9 +1536,28 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListQuadMaps(const typename DGtal::Displ
       for (auto &q: mapElem.second)
         {
           if(useColorSelection)
-            glColor4ub ( mySelectionColor.red(), mySelectionColor.green(), mySelectionColor.blue(), mySelectionColor.alpha() );
+            {
+              unsigned char m = std::max(std::max( q.color.red(), q.color.green()), q.color.blue());
+              if(m>128)
+                {
+                  glColor4ub ( std::max(q.color.red()-mySelectionColorShift, 0),
+                               std::max(q.color.green()-mySelectionColorShift, 0),
+                               std::max(q.color.blue()-mySelectionColorShift, 0),
+                               q.color.alpha());              
+                }
+              else{
+                glColor4ub ( std::min(q.color.red()+mySelectionColorShift, 255),
+                             std::min(q.color.green()+mySelectionColorShift, 255),
+                             std::min(q.color.blue()+mySelectionColorShift, 255),
+                             q.color.alpha());              
+              } 
+            }
           else
-            glColor4ub ( q.color.red(), q.color.green(), q.color.blue(), q.color.alpha() );
+            {
+              glColor4ub ( q.color.red(), q.color.green(), q.color.blue(), q.color.alpha());              
+              
+            }
+
           glNormal3f ( q.nx, q.ny ,q.nz );
           glVertex3f ( q.point1[0], q.point1[1], q.point1[2] );
           glVertex3f ( q.point2[0], q.point2[1], q.point2[2] );
