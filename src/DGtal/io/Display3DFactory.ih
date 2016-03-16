@@ -127,14 +127,14 @@ DGtal::Display3DFactory<Space, KSpace>::drawWithColorMap(Display3D<Space, KSpace
 template <typename Space, typename KSpace>
 template <typename Calculus, DGtal::Duality duality>
 void
-DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale, const double& epsilon)
+DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale, const double& epsilon, const DGtal::Color color)
 {
     BOOST_STATIC_ASSERT(( Calculus::dimensionAmbient == 3 ));
     ASSERT( vector_field.myCalculus );
 
     typedef typename DGtal::VectorField<Calculus, duality>::Vector Vector;
 
-    display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::Black);
+    display << DGtal::CustomColors3D(DGtal::Color::Black, color);
 
     for (typename Calculus::Index index=0; index<vector_field.length(); index++)
     {

@@ -121,7 +121,7 @@ namespace DGtal
     template <typename Calculus, DGtal::Duality duality>
     static
     void
-    draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale = 0.5, const double& epsilon = 1e-8);
+    draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale = 0.5, const double& epsilon = 1e-8, const DGtal::Color color = DGtal::Color::Black);
     // VectorField
 
     // SphericalAccumulator
