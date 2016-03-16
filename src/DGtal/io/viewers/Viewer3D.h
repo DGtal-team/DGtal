@@ -1383,7 +1383,7 @@ namespace DGtal
 
     /// used to displayed selected elements
     int mySelectedElementId = -1;
-    unsigned char mySelectionColorShift = 100;
+    unsigned char mySelectionColorShift = 150;
     
     /// information linked to the navigation in the viewer
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;

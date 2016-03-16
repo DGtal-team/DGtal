@@ -1378,12 +1378,12 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListCubesMaps(const typename DGtal::Disp
         {
           if(useColorSelection)
             {
-              unsigned char m = std::max(std::max( cube.color.red(), cube.color.green()), cube.color.blue());
+              unsigned char m =  (cube.color.red()+ cube.color.green()+ cube.color.blue())/3;
               if(m>128)
                 {
-                  glColor4ub ( std::max(cube.color.red()-mySelectionColorShift, 0),
-                               std::max(cube.color.green()-mySelectionColorShift, 0),
-                               std::max(cube.color.blue()-mySelectionColorShift, 0),
+                  glColor4ub ( std::max((int)(cube.color.red())-mySelectionColorShift, 0),
+                               std::max((int)(cube.color.green())-mySelectionColorShift, 0),
+                               std::max((int)(cube.color.blue())-mySelectionColorShift, 0),
                                cube.color.alpha());              
                 }
               else{
@@ -1537,12 +1537,12 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListQuadMaps(const typename DGtal::Displ
         {
           if(useColorSelection)
             {
-              unsigned char m = std::max(std::max( q.color.red(), q.color.green()), q.color.blue());
+              unsigned char m = (q.color.red()+ q.color.green()+ q.color.blue())/3;
               if(m>128)
                 {
-                  glColor4ub ( std::max(q.color.red()-mySelectionColorShift, 0),
-                               std::max(q.color.green()-mySelectionColorShift, 0),
-                               std::max(q.color.blue()-mySelectionColorShift, 0),
+                  glColor4ub ( std::max((int)(q.color.red())-mySelectionColorShift, 0),
+                               std::max((int)(q.color.green())-mySelectionColorShift, 0),
+                               std::max((int)(q.color.blue())-mySelectionColorShift, 0),
                                q.color.alpha());              
                 }
               else{
