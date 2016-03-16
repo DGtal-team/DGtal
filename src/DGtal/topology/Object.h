@@ -27,7 +27,9 @@
  *
  * Header file for module Object.cpp
  *
+ * PHC just added Boost Graph Library Interface in 0.9.2
  * This file is part of the DGtal library.
+ *
  */
 
 #if defined(Object_RECURSES)
@@ -101,6 +103,8 @@ namespace DGtal
    * \b Object has a Boost Graph Interface to directly use an object
    * instance into boost graph library algorithms.
    *	@see ObjectBoostGraphInterface.h
+   *	@see moduleBoostGraphWrapping for documentation on the interface
+   *	with boost::graph library.
    *
    * @tparam TDigitalTopology any realization of DigitalTopology.
    * @tparam TDigitalSet any model of CDigitalSet.
