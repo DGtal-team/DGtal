@@ -974,15 +974,15 @@ DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace,
                                          bool incrementMode)
 {
   unsigned int numberCellFilled = 0;
-  std::deque<Cell> pixels;      
+  std::deque<Cell> pixels;
   Cell p =  aKSpace.uFirst( typename KSpace::PreCell( Point::diagonal(1) ) );
   const Cell lowerCell = aKSpace.uFirst( p );
   const Cell upperCell = aKSpace.uLast( p );
-  bool in_mode = empty_is_inside;   
-  do 
+  bool in_mode = empty_is_inside;
+  do
     {
       if ( p != aKSpace.uGetMax( p, 0 ) )
-        { 
+        {
           pixels.push_front( p );
           SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
           if ( aSurfPred( b )  )
@@ -998,28 +998,28 @@ DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace,
             }
           else if ( aSurfPred( aKSpace.sOpp( b ) )  )
             {
-               pixels.clear();
+              pixels.clear();
               in_mode = true;
 
             }
         }
       else
-	{
-	  pixels.push_front( p );
-	  if ( in_mode )
-	    {
-	      while ( ! pixels.empty() )
-		{
+        {
+          pixels.push_front( p );
+          if ( in_mode )
+            {
+              while ( ! pixels.empty() )
+                {
                   Point aPoint = aKSpace.uCoords(pixels.front());
                   anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
-		  pixels.pop_front();
+                  pixels.pop_front();
                   numberCellFilled++;
-		}
-	    }
-	  else
-	    pixels.clear();
-	  in_mode = empty_is_inside;
-	}
+                }
+            }
+          else
+            pixels.clear();
+          in_mode = empty_is_inside;
+        }
     }  while ( aKSpace.uNext(p, lowerCell, upperCell)  );
 
   return numberCellFilled;
@@ -1039,15 +1039,15 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
                                          bool incrementMode)
 {
   unsigned int numberCellFilled=0;
-  std::deque<Cell> pixels;      
+  std::deque<Cell> pixels;
   Cell p =  aKSpace.uFirst( typename KSpace::PreCell( Point::diagonal(1) ) );
   const Cell lowerCell = aKSpace.uFirst( p );
   const Cell upperCell = aKSpace.uLast( p );
-  bool in_mode = empty_is_outside;   
-  do 
+  bool in_mode = empty_is_outside;
+  do
     {
       if ( p != aKSpace.uGetMax( p, 0 ) )
-        { 
+        {
           pixels.push_front( p );
           SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
           if ( aSurfPred( b ) )
@@ -1068,22 +1068,22 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
             }
         }
       else
-	{
-	  pixels.push_front( p );
-	  if ( in_mode )
-	    {
-	      while ( ! pixels.empty() )
-		{
+        {
+          pixels.push_front( p );
+          if ( in_mode )
+            {
+              while ( ! pixels.empty() )
+                {
                   Point aPoint = aKSpace.uCoords(pixels.front());
                   anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
                   pixels.pop_front();
                   numberCellFilled++;
                 }
-	    }
-	  else
-	    pixels.clear();
-	  in_mode = empty_is_outside;
-	}
+            }
+          else
+            pixels.clear();
+          in_mode = empty_is_outside;
+        }
     }  while ( aKSpace.uNext(p, lowerCell, upperCell)  );
   return numberCellFilled;
 }
@@ -1126,7 +1126,7 @@ DGtal::Surfaces<TKSpace>::isValid() const
 template <typename TKSpace>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const Surfaces<TKSpace> & object )
 {
   object.selfDisplay( out );
