@@ -808,10 +808,12 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
   zab = p2[2]-p1[2];
 
   norm = sqrt( xab*xab + yab*yab + zab*zab);
-  assert (norm > 0);
-  xab = xab / norm;
-  yab = yab / norm;
-  zab = zab / norm;
+  if (norm > 0);
+	{
+			xab = xab / norm;
+			yab = yab / norm;
+			zab = zab / norm;
+	}
 
   //take a third point M different from A and B
   double xm = 0;
@@ -830,10 +832,12 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
   zam = zm-p1[2];
 
   norm = sqrt( xam*xam + yam*yam + zam*zam);
-  assert (norm > 0);
-  xam = xam / norm;
-  yam = yam / norm;
-  zam = zam / norm;
+  if (norm > 0);
+	{
+			xam = xam / norm;
+			yam = yam / norm;
+			zam = zam / norm;
+	}
 
   //normal vector n = AB^AM
   double xn, yn, zn;
@@ -844,10 +848,12 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
 
   //divide n by its norm
   norm = sqrt( xn*xn + yn*yn + zn*zn);
-  assert (norm > 0);
-  xn = xn / norm;
-  yn = yn / norm;
-  zn = zn / norm;
+  if (norm > 0);
+	{
+			xn = xn / norm;
+			yn = yn / norm;
+			zn = zn / norm;
+	}
 
   //the first point of the base
   double xf, yf, zf;
@@ -880,10 +886,12 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
 
       //divide n by its norm
       norm = sqrt( xn*xn + yn*yn + zn*zn);
-      assert (norm > 0);
-      xn = xn / norm;
-      yn = yn / norm;
-      zn = zn / norm;
+      if (norm > 0);
+			{
+					xn = xn / norm;
+					yn = yn / norm;
+					zn = zn / norm;
+			}
 
       // calculate one point with the normal vector at a distance width
       xb2 = p2[0] + width * xn;
