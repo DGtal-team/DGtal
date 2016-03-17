@@ -1322,7 +1322,7 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uDistanceToMax( const Cell & p, DGtal::Dimension k ) const
 {
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
   ASSERT( k < DIM );
   ASSERT( uIsValid(p) );
   return ( KPS::uKCoord( myCellUpper, k ) - KPS::uKCoord( p, k ) ) >> 1;
@@ -1334,7 +1334,7 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uDistanceToMin( const Cell & p, DGtal::Dimension k ) const
 {
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
   ASSERT( k < DIM );
   ASSERT( uIsValid(p) );
   return ( KPS::uKCoord( p, k ) - KPS::uKCoord( myCellLower, k ) ) >> 1;
@@ -1385,7 +1385,7 @@ uNext( Cell & p, const Cell & lower, const Cell & upper ) const
   ASSERT( uTopology(p) == uTopology(lower)
       &&  uTopology(p) == uTopology(upper) );
 
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
 
   DGtal::Dimension k = NumberTraits<Dimension>::ZERO;
   if ( KPS::uKCoord( p, k ) == KPS::uKCoord( upper, k ) )
@@ -1589,7 +1589,7 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sDistanceToMax( const SCell & p, DGtal::Dimension k ) const
 {
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
   ASSERT( k < DIM );
   ASSERT( sIsValid( p ) );
   return ( KPS::uKCoord( myCellUpper, k ) - KPS::sKCoord( p, k ) ) >> 1;
@@ -1601,7 +1601,7 @@ TInteger
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sDistanceToMin( const SCell & p, DGtal::Dimension k ) const
 {
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
   ASSERT( k < DIM );
   ASSERT( sIsValid( p ) );
   return ( KPS::sKCoord( p, k ) - KPS::uKCoord( myCellLower, k ) ) >> 1;
@@ -1652,7 +1652,7 @@ sNext( SCell & p, const SCell & lower, const SCell & upper ) const
   ASSERT( sTopology(p) == sTopology(lower)
       &&  sTopology(p) == sTopology(upper) );
 
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
 
   DGtal::Dimension k = NumberTraits<Dimension>::ZERO;
   if ( KPS::sKCoord( p, k ) == KPS::sKCoord( upper, k ) )
@@ -1940,7 +1940,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger >::
 uAddFaces( Cells& faces, const Cell& c, Dimension axis ) const
 {
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
 
   const DGtal::Dimension dim_of_c = uDim( c );
   if ( axis >= dim_of_c ) return;
@@ -1972,7 +1972,7 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger >::
 uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const
 {
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
 
   const DGtal::Dimension dim_of_c = uDim( c );
   if ( axis >= dimension - dim_of_c ) return;
@@ -2039,7 +2039,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sDirectIncident( const SCell & p, DGtal::Dimension k ) const
 {
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
 
   ASSERT( k < dim );
   ASSERT( sIsValid(p) );
@@ -2058,7 +2058,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sIndirectIncident( const SCell & p, DGtal::Dimension k ) const
 {
-  using KPS = KhalimskyPreSpace;
+  using KPS = PreCellularGridSpace;
 
   ASSERT( k < dim );
   ASSERT( sIsValid(p) );
