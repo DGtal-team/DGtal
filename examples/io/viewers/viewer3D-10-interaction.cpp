@@ -20,6 +20,9 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
+ * @author Bertrand Kerautret (\c bertrand.kerautret@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Lorraine, France
+ *
  * @date 2014/10/12
  *
  * Simple example of class Viewer3D.
@@ -44,15 +47,20 @@ typedef Viewer3D<Space,KSpace> MyViewer;
 typedef MyViewer::SelectCallbackFct SelectCallbackFct;
 typedef KSpace::SCell SCell;
 
-struct BigData
+struct BigDataCells
 {
   KSpace K;
   std::map< DGtal::int32_t, Z3i::SCell > cells;
 };
 
+struct BigDataVoxels
+{
+  std::map< DGtal::int32_t, Z3i::Point > voxels;
+};
+
 int reaction1( void* viewer, DGtal::int32_t name, void* data )
 {
-  BigData* bg = (BigData*) data;
+  BigDataCells* bg = (BigDataCells*) data;
   stringstream ssMessage;
   ssMessage << "Reaction1 with name " << name << " cell " << bg->K.sKCoords( bg->cells[ name ] )  ;
   ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000);
@@ -61,9 +69,18 @@ int reaction1( void* viewer, DGtal::int32_t name, void* data )
 }
 int reaction23( void* viewer, DGtal::int32_t name, void* data )
 {
-  BigData* bg = (BigData*) data;
+  BigDataCells* bg = (BigDataCells*) data;
   stringstream ssMessage;
   ssMessage <<  "Reaction23 with name " << name << " cell " << bg->K.sKCoords( bg->cells[ name ] );
+  ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000);
+  trace.info() << ssMessage.str() << std::endl;
+  return 0;
+}
+int reaction4( void* viewer, DGtal::int32_t name, void* data )
+{
+  BigDataVoxels* bg = (BigDataVoxels*) data;
+  stringstream ssMessage;
+  ssMessage <<  "Reaction4 with name " << name << " Voxel " << bg->voxels[name] ;
   ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000);
   trace.info() << ssMessage.str() << std::endl;
   return 0;
@@ -74,16 +91,25 @@ int reaction23( void* viewer, DGtal::int32_t name, void* data )
 int main( int argc, char** argv )
 {
   QApplication application(argc,argv);
-  BigData data;
+  BigDataCells data;
+  BigDataVoxels dataV;
   Point p1( 0, 0, 0 );
   Point p2( 5, 5 ,5 );
   Point p3( 2, 3, 4 );
   KSpace & K = data.K;
   K.init( p1, p2, true );
-
+  Point v1 = Z3i::Point(10, 10,10);
+  Point v2 = Z3i::Point(9, 9, 9);
+  Point v3 = Z3i::Point(11, 11,11);
+  
+  dataV.voxels[4001] = v1;
+  dataV.voxels[4002] = v2;
+  dataV.voxels[4003] = v3;
+  
+  
   MyViewer viewer( K );
   viewer.show();
-  viewer.displayMessage(QString("You can use [shift + click right] on surfels to interact ..."), 100000);
+  viewer.displayMessage(QString("You can use [shift + click right] on surfels or voxel to interact ..."), 100000);
   Z3i::SCell surfel1 = K.sCell( Point( 1, 1, 2 ), KSpace::POS );
   Z3i::SCell surfel2 = K.sCell( Point( 3, 3, 4 ), KSpace::NEG );
   Z3i::SCell surfel3 = K.sCell( Point( 5, 6, 5 ), KSpace::POS );
@@ -96,6 +122,12 @@ int main( int argc, char** argv )
   viewer << SetName3D( 10003 ) << CustomColors3D( Color::Blue, Color::Blue ) << surfel3;
   viewer << SetSelectCallback3D( reaction1,  &data, 10001, 10001 );
   viewer << SetSelectCallback3D( reaction23, &data, 10002, 10003 );
+ 
+  // example by using voxel interaction:
+  viewer << SetName3D( 4001 ) << v1;
+  viewer << SetName3D( 4002 ) << v2;
+  viewer << SetName3D( 4003 ) << v3;
+  viewer << SetSelectCallback3D( reaction4, &dataV, 4001,4003 );
   viewer<< MyViewer::updateDisplay;
   return application.exec();
 }

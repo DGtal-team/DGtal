@@ -19,7 +19,10 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @date 2010/07/07
+ * @author Pablo Hernandez-Cerdan. Institute of Fundamental Sciences.
+ * Massey University. Palmerston North, New Zealand
+ *
+ * @date 2016/02/01
  *
  * Implementation of inline methods defined in Object.h
  *
@@ -575,7 +578,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::computeConnectedness() const
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator 
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator
 DGtal::Object<TDigitalTopology, TDigitalSet>::begin() const
 {
   return myPointSet->begin();
@@ -583,15 +586,15 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::begin() const
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator 
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator
 DGtal::Object<TDigitalTopology, TDigitalSet>::end() const
 {
   return myPointSet->end();
 }
 
-/** 
+/**
  * @param v any vertex of the object
- * 
+ *
  * @return the number of neighbors of this vertex
  */
 template <typename TDigitalTopology, typename TDigitalSet>
@@ -600,7 +603,7 @@ typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>::degree
 ( const Vertex & v ) const
 {
-  return neighborhoodSize( v );
+  return properNeighborhoodSize( v );
 }
 
 /**
@@ -616,13 +619,13 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::bestCapacity() const
 
 /**
  * Writes the neighbors of a vertex using an output iterator
- * 
- * 
+ *
+ *
  * @tparam OutputObjectIterator the type of an output iterator writing
  * in a container of vertices.
- * 
+ *
  * @param it the output iterator
- * 
+ *
  * @param v the vertex whose neighbors will be writeNeighbors
  */
 template <typename TDigitalTopology, typename TDigitalSet>
@@ -653,19 +656,19 @@ writeNeighbors( OutputIterator & it,
 }
 
 /**
- * Writes the neighbors of a vertex which satisfy a predicate using an 
+ * Writes the neighbors of a vertex which satisfy a predicate using an
  * output iterator
- * 
- * 
+ *
+ *
  * @tparam OutputObjectIterator the type of an output iterator writing
  * in a container of vertices.
- * 
+ *
  * @tparam VertexPredicate the type of the predicate
- * 
+ *
  * @param it the output iterator
- * 
+ *
  * @param v the vertex whose neighbors will be written
- * 
+ *
  * @param pred the predicate that must be satisfied
  */
 template <typename TDigitalTopology, typename TDigitalSet>
@@ -694,6 +697,57 @@ writeNeighbors( OutputIterator & it,
       ++cit )
     if ( ( pointSet().find( *cit ) != not_found ) && pred(*cit) )
       *it++ = *cit;
+}
+
+/**
+ * @note For this to work with graph algorithms, the source of the edge must be the input vertex, even on undirected graphs.
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::EdgeRange
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+outEdges( const Vertex & v) const
+{
+  typedef std::vector<Vertex> Container;
+
+  Container tmp_local_points;
+  std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
+
+  EdgeRange out_edges;
+  this->writeNeighbors(back_ins_it, v);
+  for ( auto && cit = tmp_local_points.begin();
+      cit != tmp_local_points.end(); ++cit )
+    out_edges.emplace_back(Edge(v, *cit, true));
+
+  return out_edges;
+}
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Vertex
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+head( const Edge & e ) const
+{
+  return e.vertices[1];
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Vertex
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+tail( const Edge & e ) const
+{
+  return e.vertices[0];
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Edge
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+opposite( const Edge & v) const
+{
+  // boolean constructor to force order of vertices.
+  return Edge(v.vertices[1],v.vertices[0], true);
 }
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Simple points -------------------------------
@@ -750,7 +804,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
     }
   visitor.terminate();
   SmallObject geodesicN( this->topology(), aDomain );
-  geodesicN.pointSet().insertNew( visitor.markedVertices().begin(), 
+  geodesicN.pointSet().insertNew( visitor.markedVertices().begin(),
                                   visitor.markedVertices().end()  );
 
   // JOL: 2012/11/16 There is apparently now a bug in expander !
@@ -818,10 +872,10 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
       else break; // to far away, we exit
     }
   visitor.terminate();
-	
+
   SmallComplementObject geodesicN( this->topology().reverseTopology(),
-                                   aDomain ); 
-  geodesicN.pointSet().insertNew( visitor.markedVertices().begin(), 
+                                   aDomain );
+  geodesicN.pointSet().insertNew( visitor.markedVertices().begin(),
                                   visitor.markedVertices().end()  );
 
   // JOL: 2012/11/16 There is apparently now a bug in expander !
@@ -854,9 +908,9 @@ bool
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::isSimple( const Point & v ) const
 {
-  static const int kappa_n = 
+  static const int kappa_n =
     DigitalTopologyTraits< ForegroundAdjacency, BackgroundAdjacency, Space::dimension >::GEODESIC_NEIGHBORHOOD_SIZE;
-  static const int lambda_n = 
+  static const int lambda_n =
     DigitalTopologyTraits< BackgroundAdjacency, ForegroundAdjacency, Space::dimension >::GEODESIC_NEIGHBORHOOD_SIZE;
 
   SmallObject Gkappa_X
