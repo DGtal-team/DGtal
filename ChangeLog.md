@@ -16,12 +16,19 @@
    that need it.
    (Roland Denis, [#1140](https://github.com/DGtal-team/DGtal/pull/1140))
 
+- *IO Package*
+ - Add the possibility to interact in QGLViewer Viewer3D class with the voxel
+   primitive (was limited to surfel). As with surfel, the user may assign integer
+   identifiers (OpenGL names) to voxel and callback functions, which are called
+   when voxel are selected. The selected elements are now highlighted.
+   (Bertrand Kerautret, [#1146](https://github.com/DGtal-team/DGtal/pull/1146))
+
 ## Bug Fixes
 - *DEC Package*
  - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
    (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
 
-   - *Geometry Package*
+- *Geometry Package*
  - AlphaThickSegmentComputer: fix segment display errors which could appear
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
@@ -47,6 +54,12 @@
 -  GenericReader: include longvol reader in GenericReader for 64 bit images.
    Update the test for 64 bit longvol. (Bertrand Kerautret
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
+
+- *Topology Package*
+  - Fix wrong starting point for surface tracking in example code
+    frontierAndBoundary.cpp.
+    (Roland Denis, [#1144](https://github.com/DGtal-team/DGtal/pull/1144))
+
 
 # DGtal 0.9.1
 
