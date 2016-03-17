@@ -1011,7 +1011,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
-  using KPS = typename KSpace::KhalimskyPreSpace;
+  using KPS = typename KSpace::PreCellularGridSpace;
 
 #ifdef DEBUG_VERBOSE
   Dimension recount = false;
@@ -1300,7 +1300,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
-  using KPS = typename KSpace::KhalimskyPreSpace;
+  using KPS = typename KSpace::PreCellularGridSpace;
 
 #ifdef DEBUG_VERBOSE
   Dimension recount = false;
@@ -2057,7 +2057,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
-  using KPS = typename KSpace::KhalimskyPreSpace;
+  using KPS = typename KSpace::PreCellularGridSpace;
 
 #ifdef DEBUG_VERBOSE
   Dimension recount = false;
@@ -2356,7 +2356,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
-  using KPS = typename KSpace::KhalimskyPreSpace;
+  using KPS = typename KSpace::PreCellularGridSpace;
 
 #ifdef DEBUG_VERBOSE
   Dimension recount = false;

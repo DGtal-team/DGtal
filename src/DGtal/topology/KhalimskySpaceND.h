@@ -97,7 +97,7 @@ namespace DGtal
 
     // Friendship
     friend class KhalimskySpaceND< dim, TInteger >;
-    friend class KhalimskySpaceNDHelper< KhalimskySpace >;
+    friend class KhalimskySpaceNDHelper< CellularGridSpace >;
 
   private:
     // Underlying pre-cell
@@ -221,7 +221,7 @@ namespace DGtal
 
     // Friendship
     friend class KhalimskySpaceND< dim, TInteger >;
-    friend class KhalimskySpaceNDHelper< KhalimskySpace >;
+    friend class KhalimskySpaceNDHelper< CellularGridSpace >;
 
   private:
     // Underlying signed pre-cell
