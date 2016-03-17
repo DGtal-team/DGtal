@@ -372,31 +372,26 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   // myCubeSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     j  = 0 ; //id of each Cube sub list for the .OBJ identification
-    k = 0; // id of each list
     
     
     //Foreach list
-    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::CubeD3D> >::const_iterator it =Board3D<Space, KSpace>::myCubeSetList.begin();
-        it != Board3D<Space, KSpace>::myCubeSetList.end();   it++)
+    for(typename Board3D<Space, KSpace>::CubesMap::const_iterator it =Board3D<Space, KSpace>::myCubesMap.begin();
+        it != Board3D<Space, KSpace>::myCubesMap.end();   it++)
     {
-      //If we have at least a cube to export
-      if ( it->begin() != it->end() )
-      {
+    
         std::stringstream name;
         std::ostringstream tmpStream;
-        if ( Board3D<Space, KSpace>::myCubeSetNameList.at(k) == "" )
-          name << "myCubeSetList_" << k ;
-        else
-          name << Board3D<Space, KSpace>::myCubeSetNameList.at(k)<< "_"<<k;
+
+        name << "myCubeSetList_" << it->first ;
         outOBJ << "o  " << name.str() << std::endl;
-      }
+      
       
       //For each list, we force the cube color to be set in the OBJ file
       unsigned int prevMaterialIndex = std::numeric_limits<unsigned int>::max();  //index to the last voxel material
       
       //Foreach cube in the list
-      for (typename std::vector< typename Board3D<Space, KSpace>::CubeD3D>::const_iterator s_it = it->begin();
-           s_it != it->end(); ++s_it)
+      for (typename std::vector< typename Board3D<Space, KSpace>::CubeD3D>::const_iterator s_it = it->second.begin();
+           s_it != it->second.end(); ++s_it)
       {
         //Color
         unsigned int matid = getMaterialIndex(s_it->color);
@@ -479,11 +474,16 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
           outOBJ << "f " << "-4" << " " << "-1" << " " <<"-2" << " " <<"-3" << std::endl;//top
 
           
-          j ++;
+       
         }
+        
+      
+      j++;
+      
       }
       k++;
     }
+
   }
   
   //OPT quad
