@@ -82,8 +82,8 @@ namespace DGtal
     using Point   = PointVector< dim, Integer >;
     using Self    = KhalimskyPreCell< dim, Integer >;
     using PreCell = Self;
-    using KhalimskyPreSpace = KhalimskyPreSpaceND< dim, TInteger >;
-    using KhalimskySpace    = KhalimskyPreSpace;
+    using PreCellularGridSpace = KhalimskyPreSpaceND< dim, TInteger >;
+    using CellularGridSpace    = PreCellularGridSpace;
 
     // Public members
   public:
@@ -179,8 +179,8 @@ namespace DGtal
     using Point   = PointVector< dim, Integer >;
     using Self    = SignedKhalimskyPreCell< dim, Integer >;
     using SPreCell = Self;
-    using KhalimskyPreSpace = KhalimskyPreSpaceND< dim, TInteger >;
-    using KhalimskySpace    = KhalimskyPreSpace;
+    using PreCellularGridSpace = KhalimskyPreSpaceND< dim, TInteger >;
+    using CellularGridSpace    = PreCellularGridSpace;
 
     // Public members
   public:
@@ -435,7 +435,7 @@ namespace DGtal
     using Vector  = PointVector< dim, Integer >;
 
     using Space = SpaceND<dim, Integer>;
-    using KhalimskyPreSpace = KhalimskyPreSpaceND<dim, Integer>;
+    using PreCellularGridSpace = PreCellularGridSpace<dim, Integer>;
 
 #if defined ( WIN32 )
     // static constants
