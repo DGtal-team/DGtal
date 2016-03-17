@@ -247,8 +247,11 @@ namespace DGtal
 
 
   public:
-    // The type that maps identifier name -> vector of QuadD3D.
+    /// The type that maps identifier name -> vector of QuadD3D.
     typedef std::map<DGtal::int32_t, std::vector< QuadD3D > > QuadsMap;
+    
+    /// The type that maps identifier name -> vector of CubeD3D.
+    typedef std::map<DGtal::int32_t, std::vector< CubeD3D > > CubesMap;
 
 
   protected:
@@ -476,9 +479,19 @@ namespace DGtal
     /**
      * Used to create a new list containing new 3D objects
      * (useful to use transparency between different objects).
-     * @param s name of the new list
+     * @return the new key of the map associated to the new list.
      **/
-    void createNewCubeList(std::string s= "");
+
+    DGtal::int32_t createNewCubeList();
+
+    
+    /**
+     * Delete the cube list identified by a its name.
+     * @param[in] name the name of the cube list.
+     * @return true if the list was found and removed.
+     *
+     **/
+    bool deleteCubeList(const DGtal::int32_t name);
 
      /**
       * Used to create a new list containing new 3D objects
@@ -486,6 +499,15 @@ namespace DGtal
       * @return the new key of the map associated to the new list.
       **/
     DGtal::int32_t createNewQuadList();
+
+
+    /**
+     * Delete the quad list identified by a its name.
+     * @param[in] name the name of the quad list.
+     * @return true if the list was found and removed.
+     *
+     **/
+    bool deleteQuadList(const DGtal::int32_t name);
 
     /**
      * Used to create a new list containing new 3D objects
@@ -817,10 +839,6 @@ namespace DGtal
     ///
     double myCurrentfShiftVisuPrisms;
 
-    /// Used to represent all the list used in the display.
-    ///
-    std::vector< std::vector<CubeD3D> > myCubeSetList;
-
     /// Used to represent all the list of line primitive
     ///
     std::vector< std::vector<LineD3D> > myLineSetList;
@@ -839,7 +857,7 @@ namespace DGtal
 
     /// Represents all the planes drawn in the Display3D or to display
     /// Khalimsky Space Cell.  The map int --> vector< QuadD3D>
-    /// associates to a vector of quads to an integer identifier
+    /// associates a vector of quads to an integer identifier
     /// (OpenGL name)
     QuadsMap myQuadsMap;
 
@@ -848,6 +866,13 @@ namespace DGtal
 
     /// Represents all the polygon drawn in the Display3D
     std::vector<std::vector<PolygonD3D> > myPolygonSetList;
+
+
+    /// Represents all the cubes drawn in the Display3D.  The map int
+    /// --> vector<CubeD3D> associates  a vector of cubes to an
+    /// integer identifier (OpenGL name)
+    CubesMap myCubesMap;
+
 
     /// names of the lists in myCubeSetList
     ///
