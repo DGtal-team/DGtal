@@ -16,7 +16,7 @@ SET(TESTS_SURFACES_SRC
   ##testVoronoiCovarianceMeasureOnSurface
   testTensorVoting
   testEstimatorCache
-  testRobustHoughAccumulatorNormalVectorEstimator
+  testSphericalHoughNormalVectorEstimator
   )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})
