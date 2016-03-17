@@ -38,8 +38,10 @@ namespace DGtal {
    on-the-fly), because boost graphs require multipass iterators on
    vertices and edges. 
 
-   For now, only DigitalSurface instances are wrapped to satisfy boost
-   graph concepts.
+   For now, the only models that are wrapped to satisfy boost
+   graph concepts are:
+   - DigitalSurface.
+   - Object, since 0.9.2.
 
    @note A natural question is why DGtal graph concepts do not match
    exactly boost graph concepts. This is for mainly three reasons:
@@ -282,6 +284,21 @@ creating your property map, as follows.
 You may have a look at \ref
 graph/testDigitalSurfaceBoostGraphInterface.cpp to see a few more
 examples of using Boost Graph algorithms (max-flow and min-cut).
+
+  @subsection dgtal_graph_boost_3 Wrapping Object as a boost graph
+
+   The file \ref ObjectBoostGraphInterface.h defines the boost
+   graph traits for any kind of Object (see
+   Object). With those definitios, an Object is a model of
+   VertexListGraphConcept, AdjacencyGraphConcept,
+   IncidenceGraphConcept, EdgeListGraphConcept.
+   You may use an Object as a graph in any Boost Graph Library
+   algorithm that satisfies the mentioned concepts.
+
+   You may have a look at \ref
+   graph/testObjectBoostGraphInterface.cpp for examples
+   on how to use Object as a graph. Also see DigitalSurface section,
+   as the interfaces are similar.
 
 */
 
