@@ -7,6 +7,7 @@ namespace DGtal {
 
 /**
  * @page moduleQGLInteraction Limited interaction when using selection with QGLViewer Viewer3D stream mechanism
+ *  
  *
  * This part of the manual describes how to select objects in 3D
  * scenes when using a Viewer3D object. The principle is to handle one
@@ -16,17 +17,32 @@ namespace DGtal {
  * shift + left click on the object of interest. The "name" of the
  * clicked object is then given as parameter to the reaction/callback
  * function, so that further processing taking into account the
- * selected object is made possible.
- *
+ * selected object is made possible. By default the selected elements
+ * are highlighted (in dark or light color depending of the original
+ * color element).
+ *  
+ * Actually the elements which can be selected interactively are the following:
+ * 
+ * |   Element type         | list type   | can be selected |
+ * |:----------------------:|:----------: |:---------------:|
+ * | Surfel (Quad3D)        | std::map    |       YES       |
+ * | Voxel (Cube3D)         | std::map    |       YES       |
+ * | Line (LineD3D)         | std::vector |       NO        |
+ * | Point (BallD3D)        | std::vector |       NO        |
+ * | Triangles (TriangleD3D)| std::vector |       NO        |
+ * | Polygon (PolygonD3D)   | std::vector |       NO        |
+ *  
+ *  
  * @author Jacques-Olivier Lachaud
+ * @author Bertrand Kerautret
  *
  * Related examples: viewer3D-10-interaction.cpp
  *
  * [TOC]
  *
  * @note This functionality is not really useful for developing a full
- * interactive 3D application. It is for now limited to surfel
- * selection, without visual feedback. However, this functionality is
+ * interactive 3D application. It is for now limited to surfel and voxel
+ * selection, with simple visual feedback. However, this functionality is
  * rather easy to use, hence may be found useful when prototyping.
  * 
  * \section QGLInteraction_sec1 Giving names to graphical objects
