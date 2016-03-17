@@ -91,8 +91,8 @@ namespace DGtal
     using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
     using Point   = PointVector< dim, Integer >;
     using PreCell = KhalimskyPreCell< dim, Integer >;
-    using KhalimskySpace = KhalimskySpaceND< dim, TInteger >;
-    using KhalimskyPreSpace = KhalimskyPreSpaceND< dim, TInteger >;
+    using CellularGridSpace = KhalimskySpaceND< dim, TInteger >;
+    using PreCellularGridSpace = KhalimskyPreSpaceND< dim, TInteger >;
     using Self    = KhalimskyCell< dim, Integer >;
 
     // Friendship
@@ -215,8 +215,8 @@ namespace DGtal
     using UnsignedInteger = typename NumberTraits<Integer>::UnsignedVersion;
     using Point   = PointVector< dim, Integer >;
     using SPreCell = SignedKhalimskyPreCell< dim, Integer >;
-    using KhalimskySpace = KhalimskySpaceND< dim, TInteger >;
-    using KhalimskyPreSpace = KhalimskyPreSpaceND< dim, TInteger >;
+    using CellularGridSpace = KhalimskySpaceND< dim, TInteger >;
+    using PreCellularGridSpace = KhalimskyPreSpaceND< dim, TInteger >;
     using Self    = SignedKhalimskyCell< dim, Integer >;
 
     // Friendship
@@ -409,8 +409,8 @@ namespace DGtal
 
     // Spaces
     typedef SpaceND<dim, Integer> Space;
-    typedef KhalimskySpaceND<dim, Integer>    KhalimskySpace;
-    typedef KhalimskyPreSpaceND<dim, Integer> KhalimskyPreSpace;
+    typedef KhalimskySpaceND<dim, Integer>    CellularGridSpace;
+    typedef KhalimskyPreSpaceND<dim, Integer> PreCellularGridSpace;
 
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;
@@ -420,7 +420,7 @@ namespace DGtal
 
     typedef SCell Surfel;
     typedef bool Sign;
-    using DirIterator = typename KhalimskyPreSpace::DirIterator;
+    using DirIterator = typename PreCellularGridSpace::DirIterator;
 
     // Points and Vectors
     typedef PointVector< dim, Integer > Point;
@@ -442,7 +442,7 @@ namespace DGtal
 #endif //WIN32
 
     template < typename CellType >
-    using AnyCellCollection = typename KhalimskyPreSpace::template AnyCellCollection< CellType >;
+    using AnyCellCollection = typename PreCellularGridSpace::template AnyCellCollection< CellType >;
 
     // Neighborhoods, Incident cells, Faces and Cofaces
     typedef AnyCellCollection<Cell> Cells;

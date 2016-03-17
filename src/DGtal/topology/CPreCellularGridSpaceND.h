@@ -95,6 +95,7 @@ details.
 
 - \e Integer: the integral type for representing coordinates in the space (model of CInteger).
 - \e Space: the corresponding digital space (same dimension and same \e Integer type as this).
+- \e PreCelullarGridSpace: the pre-celullar grid space type associated to this model (can be itself).
 - \e Cell: the type that represents an unsigned cell. Cell's are ordered.
 - \e SCell: the type that represents a signed cell. SCell's are ordered.
 - \e Surfel: the type that represents a signed n-1-cell. Should be promotable to SCell and reciprocally. Surfel's are ordered.
@@ -280,6 +281,7 @@ struct CPreCellularGridSpaceND
 public:
   typedef typename T::Integer Integer;
   typedef typename T::Space Space;
+  typedef typename T::PreCellularGridSpace PreCellularGridSpace;
   typedef typename T::Cell Cell;
   typedef typename T::SCell SCell;
   typedef typename T::Surfel Surfel;
