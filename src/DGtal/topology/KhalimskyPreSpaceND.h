@@ -435,7 +435,7 @@ namespace DGtal
     using Vector  = PointVector< dim, Integer >;
 
     using Space = SpaceND<dim, Integer>;
-    using PreCellularGridSpace = PreCellularGridSpace<dim, Integer>;
+    using PreCellularGridSpace = KhalimskyPreSpaceND<dim, Integer>;
 
 #if defined ( WIN32 )
     // static constants
