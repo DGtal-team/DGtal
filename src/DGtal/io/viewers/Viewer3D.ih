@@ -678,9 +678,21 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glLightfv(GL_LIGHT0, GL_SPECULAR, myLightSpecularCoeffs);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, myLightDiffuseCoeffs);
   glLightfv(GL_LIGHT0, GL_AMBIENT, myLightAmbientCoeffs);
+  if(myLightPositionFixToCamera)
+    {
+      const Vec cameraPos = camera()->position();
+      GLfloat pos[4];
+      pos[0] = static_cast<GLfloat>(cameraPos[0])+myLightPositionRefCamera[0];
+      pos[1] = static_cast<GLfloat>(cameraPos[1])+myLightPositionRefCamera[1];
+      pos[2] = static_cast<GLfloat>(cameraPos[2])+myLightPositionRefCamera[2];
+      pos[3] = 1.0;
+      glLightfv(GL_LIGHT0, GL_POSITION, pos);  
+    }
+  else
+    {
+      glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);  
+    }
   
-  glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
-
   unsigned int i = 0;
   typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
   
@@ -821,14 +833,11 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myLigthRotationStep = 0.01;
   myRefMouseXPos = 0;
   myRefMouseYPos = 0;
-  myLightTheta = M_PI/8.0; 
-  myLightPhi = M_PI/4.0; 
-  myLightR = 1.0; 
-  myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
-  myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
-  myLightPosition[2] = myLightR*sin(myLightTheta);
-  myLightPosition[3] = 0.0;
-
+  const Vec cameraPos = camera()->position();
+  myLightPosition[0] = static_cast<GLfloat>(cameraPos[0]);
+  myLightPosition[1] = static_cast<GLfloat>(cameraPos[1]);
+  myLightPosition[2] = static_cast<GLfloat>(cameraPos[2]);
+  myLightPosition[3] = 1.0;
   glClearColor (0.0, 0.0, 0.0, 0.0);
   glShadeModel (GL_SMOOTH);  
 
@@ -1145,10 +1154,31 @@ DGtal::Viewer3D<Space, KSpace>::mousePressEvent ( QMouseEvent *e )
     myIsMovingLight=true;
     myRefMouseXPos = e->x();
     myRefMouseYPos = e->y();
+    GLfloat lPos [4];
+    lPos[3] = 1.0;
+    if(myLightPositionFixToCamera)
+      {
+        const Vec cameraPos = camera()->position();
+        lPos[0] = static_cast<GLfloat>(cameraPos[0])+myLightPositionRefCamera[0];
+        lPos[1] = static_cast<GLfloat>(cameraPos[1])+myLightPositionRefCamera[1];
+        lPos[2] = static_cast<GLfloat>(cameraPos[2])+myLightPositionRefCamera[2];
+      }
+    else
+      {
+        lPos[0]  = myLightPosition[0];
+        lPos[1]  = myLightPosition[1];
+        lPos[2]  = myLightPosition[2];
+      }
+    myLightR = sqrt(lPos[0]*lPos[0]+
+                    lPos[1]*lPos[1]+
+                    lPos[2]*lPos[2]);
+    myLightTheta = asin(lPos[2]/myLightR);
+    myLightPhi = atan2(lPos[1],lPos[0]);
   }else{
     QGLViewer::mousePressEvent(e);
   }
 }
+
 template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::mouseReleaseEvent ( QMouseEvent *e )
@@ -1173,8 +1203,14 @@ DGtal::Viewer3D<Space, KSpace>::mouseMoveEvent ( QMouseEvent *e )
     myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
     myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
     myLightPosition[2] = myLightR*sin(myLightTheta);
-    myLightPosition[3] = 0.0;
-    
+    myLightPosition[3] = 1.0;
+    if(myLightPositionFixToCamera){
+      const Vec cameraPos = camera()->position();
+      myLightPositionRefCamera[0] = myLightPosition[0]-cameraPos[0];
+      myLightPositionRefCamera[1] = myLightPosition[1]-cameraPos[1];
+      myLightPositionRefCamera[2] = myLightPosition[2]-cameraPos[2];
+    }
+     
     glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
     myRefMouseXPos = e->x();
     myRefMouseYPos = e->y();
@@ -1232,6 +1268,29 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
     {
       myViewWire=!myViewWire;
       updateList(false);
+      updateGL();
+    }
+
+  if ( ( e->key() ==Qt::Key_P ) )
+    {
+      
+
+      myLightPositionFixToCamera =! myLightPositionFixToCamera;
+      const Vec cameraPos = camera()->position();
+      if(myLightPositionFixToCamera)
+        {
+          displayMessage(QString("Light source position fixed to camera."), 3000);
+          myLightPositionRefCamera[0] = myLightPosition[0]-static_cast<GLfloat>(cameraPos[0]);
+          myLightPositionRefCamera[1] = myLightPosition[1]-static_cast<GLfloat>(cameraPos[1]);
+          myLightPositionRefCamera[2] = myLightPosition[2]-static_cast<GLfloat>(cameraPos[2]);
+        }
+      else
+        {
+          displayMessage(QString("Light source position fixed to main scene."), 3000);
+          myLightPosition[0] = static_cast<GLfloat>(cameraPos[0])+myLightPositionRefCamera[0];
+          myLightPosition[1] = static_cast<GLfloat>(cameraPos[1])+myLightPositionRefCamera[1];
+          myLightPosition[2] = static_cast<GLfloat>(cameraPos[2])+myLightPositionRefCamera[2];
+        }
       updateGL();
     }
 
