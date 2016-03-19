@@ -88,7 +88,7 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   Surface surface( surfaceContainer ); // acquired
 
   
-  typedef SphericalHoughNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > SphericalHough;
+  typedef functors::SphericalHoughNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > SphericalHough;
   typedef functors::ConstValue<double> ConstFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, SphericalHough, ConstFunctor> Reporter;
   
