@@ -29,6 +29,8 @@
    (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
 
 - *Geometry Package*
+ - VoronoiCovarianceMeasure: fix dimension-specific code.
+   (Roland Denis, [#1145](https://github.com/DGtal-team/DGtal/pull/1145))
  - AlphaThickSegmentComputer: fix segment display errors which could appear
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
