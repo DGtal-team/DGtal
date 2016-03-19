@@ -35,6 +35,8 @@
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
 
 - *IO Package*
+ - Display3D: Fix embedder usage when using default constructor in Debug mode.
+   (Roland Denis [##1143](https://github.com/DGtal-team/DGtal/pull/1143))
  - Viewer3D: Fix a problem when the show() method was called at the end of the
    main program (the list creation was not called).
    (Bertrand Kerautret [##1138](https://github.com/DGtal-team/DGtal/pull/1138))

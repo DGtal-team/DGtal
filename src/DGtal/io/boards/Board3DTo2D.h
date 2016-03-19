@@ -88,14 +88,11 @@ public:
     * Constructor with a khalimsky space
     * @param KSEmb the Khalimsky space
     */
-    Board3DTo2D( KSpace KSEmb):Display3D<Space,KSpace>(KSEmb) {}
-
-    /**
-        *Constructor with a space and a khalimsky space
-        *@param SEmb a space
-        *@param KSEmb a khalimsky space
-        **/
-    Board3DTo2D( Space SEmb, KSpace KSEmb):Display3D<Space,KSpace>(SEmb, KSEmb){}
+    Board3DTo2D( KSpace KSEmb )
+        : Display3D<Space,KSpace>( KSEmb )
+      {
+        init();
+      }
 
 
     ~Board3DTo2D(){}
