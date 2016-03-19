@@ -80,8 +80,12 @@ namespace DGtal
     /**
      * Constructor.
      *
-     * @param anEmbedder embedder to map surfel to R^n.
-     * @param h grid step
+     * @param [in] anEmbedder embedder to map surfel to R^n.
+     * @param [in] h grid step
+     * @param [in] minimalAspectRatio the minimal aspect ratio of triangles to be considered in the accumulator (default=0.001).
+     * @param [in] nbTrials number of random triangles in the neighborhood to consider (default=100).
+     * @param [in] accumulatorSize size of the spherical accumulators (see SphericalAccumulator, default=10).
+     * @param [in] nbAccumulators number of randomly rotated spherical accumulators to consider in order to avoid aliasing artefacts. (default=5)
      */
     SphericalHoughNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder,
                                                 const double h,
@@ -91,6 +95,19 @@ namespace DGtal
                                                 const unsigned int nbAccumulators = 5) : myEmbedder(&anEmbedder),myH(h), myAspectRatio(minimalAspectRatio),
     myNbTrials( nbTrials), mySize(accumulatorSize) , myNbAccumulators(nbAccumulators)
     {
+      SphericalAccumulator<RealPoint> accum(mySize);
+      std::vector< SphericalAccumulator<RealPoint> > myAccumulators(myNbAccumulators, accum);
+      std::vector< Matrix > myRotations;
+      std::vector< Matrix > myInverseRotations;
+      
+      //We compute random rotations.
+      for(auto i=0; i < myNbAccumulators; ++i)
+      {
+        //we reuse uniform generator
+        Matrix m = randomRotation();
+        myRotations.push_back( m );
+        myInverseRotations.push_back( m.inverse() );
+      }
     }
     
     /**
@@ -109,30 +126,15 @@ namespace DGtal
     }
     
     /**
-     * Evaluate the
+     * Estimate normal vector using spherical accumulator
+     * voting.
      *
      * @return the feature score
      */
-    Quantity eval( ) const
+    Quantity eval( )
     {
       std::default_random_engine generator;
       std::uniform_int_distribution<int> distribution(0, myPoints.size() );
-      
-      //Accumulators init
-      SphericalAccumulator<RealPoint> accum(mySize);
-      std::vector< SphericalAccumulator<RealPoint> > accumulators(myNbAccumulators, accum);
-      std::vector< Matrix > rotations;
-      std::vector< Matrix > inverseRotations;
-      
-      //We compute random rotations.
-      for(auto i=0; i < myNbAccumulators; ++i)
-      {
-        //we reuse uniform generator
-        Matrix m = randomRotation();
-        rotations.push_back( m );
-        inverseRotations.push_back( m.inverse() );
-      }
-      
       
       for(auto t = 0; t < myNbTrials ; ++t)
       {
@@ -149,10 +151,9 @@ namespace DGtal
           //we have an admissible triangle, we push both normal vectors
           for(auto acc=0; acc < myNbAccumulators; ++acc)
           {
-            RealPoint shifted = rotations[acc]*vector;
-            //trace.info() << "Pushing shifted "<< shifted << " oorig=" << vector<< "  inverse= "<< inverseRotations[acc]*shifted<<std::endl;
-            accumulators[acc].addDirection( shifted );
-            accumulators[acc].addDirection( -shifted );
+            RealPoint shifted = myRotations[acc]*vector;
+            myAccumulators[acc].addDirection( shifted );
+            myAccumulators[acc].addDirection( -shifted );
           }
         }
       }
@@ -161,8 +162,10 @@ namespace DGtal
       RealPoint vote;
       for(auto acc=0; acc < myNbAccumulators; ++acc)
       {
-        accumulators[acc].maxCountBin(posPhi, posTheta);
-        RealPoint dir = inverseRotations[acc]*accumulators[acc].representativeDirection(posPhi, posTheta).getNormalized() ;
+        myAccumulators[acc].maxCountBin(posPhi, posTheta);
+        RealPoint dir = myInverseRotations[acc]*myAccumulators[acc].representativeDirection(posPhi, posTheta).getNormalized() ;
+  
+        //We only consider z-oriented normals (since we pushed vector and -vector)
         if ( dir.dot(RealPoint(0,0,1)) >0 )
           vote += dir;
         else
@@ -182,6 +185,9 @@ namespace DGtal
     
   private:
     
+    /**
+     * @return a random rotation matrix.
+     */
     Matrix randomRotation() const
     {
       double theta = (rand()+0.f)/RAND_MAX * 2* M_PI;
@@ -197,7 +203,6 @@ namespace DGtal
       Rt.setComponent(0,2,0);
       Rt.setComponent(1,2,sin(theta));
       Rt.setComponent(2,2,cos(theta));
-      
       
       Matrix Rph;
       Rph.setComponent(0,0,cos(phi));
@@ -224,8 +229,24 @@ namespace DGtal
       return Rt*Rph*Rps;
     }
     
-    Quantity getNormal(const unsigned int i, const unsigned int j, const unsigned int k) const
+    /**
+     * Computes the (unnormalized) normal vector of a triangle defined
+     * by triangle (i,j,k).
+     *
+     * @param [in] i a first vertex index.
+     * @param [in] j a second vertex index.
+     * @param [in] k a third vertex index.
+     *
+     * @return a random rotation matrix.
+     */
+    Quantity getNormal(const unsigned int i,
+                       const unsigned int j,
+                       const unsigned int k) const
     {
+      ASSERT( i < myPoints.size());
+      ASSERT( j < myPoints.size());
+      ASSERT( k < myPoints.size());
+      
       RealPoint v = myPoints[i] - myPoints[j];
       RealPoint u = myPoints[i] - myPoints[k];
       return v.crossProduct(u);
@@ -251,6 +272,16 @@ namespace DGtal
     
     ///vector of embedded surfels
     std::vector<RealPoint> myPoints;
+    
+    ///Spherical Accumulators
+    std::vector< SphericalAccumulator<RealPoint> > myAccumulators;
+    
+    ///Random rotations
+    std::vector< Matrix > myRotations;
+   
+    ///Random inverse rotations
+    std::vector< Matrix > myInverseRotations;
+    
     
   }; // end of class SphericalHoughNormalVectorEstimator
   
