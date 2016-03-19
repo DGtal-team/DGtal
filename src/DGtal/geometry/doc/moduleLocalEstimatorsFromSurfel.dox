@@ -71,20 +71,20 @@ The core of the estimators are thus specified in the surfel functor
 (model of concepts::CLocalEstimatorFromSurfelFunctor). In DGtal, we have defined
 several functors:
 
-- MongeJetFittingGaussianCurvatureEstimator,
-  MongeJetFittingMeanCurvatureEstimator,
-  MongeJetFittingNormalVectorEstimator,
-  MongeJetFittingPrincipalCurvaturesEstimator: return differential quantity
+- functors::MongeJetFittingGaussianCurvatureEstimator,
+  functors::MongeJetFittingMeanCurvatureEstimator,
+  functors::MongeJetFittingNormalVectorEstimator,
+  functors::MongeJetFittingPrincipalCurvaturesEstimator: return differential quantity
   by  a polynomial surface  fitting @cite CGal, @cite Cazals2005 . These  estimators require CGAL  and Eigen3 dependency
   (WITH_CGAL, WITH_EIGEN).
 
-- LinearLeastSquareFittingNormalVectorEstimator: normal vector
+- functors::LinearLeastSquareFittingNormalVectorEstimator: normal vector
   estimation from least square fitting of the embedded sufel points.
 
-- ElementaryConvolutionNormalVectorEstimator: Normal vector estimation
+- functors::ElementaryConvolutionNormalVectorEstimator: Normal vector estimation
   based on weighted average of surfel elementary normal vectors (@cite lenoir1996, @cite papier1998).
 
-- SphericalHoughNormalVectorEstimator: Robsut normal vector estimation using a spherical hough voting (@cite BoulchM12).
+- functors::SphericalHoughNormalVectorEstimator: Robsut normal vector estimation using a spherical hough voting (@cite BoulchM12).
 
 @advanced Implementing your own surfel patch based estimator is quite
 simple. Please have a look to CLocalEstimatorFromSurfelFunctor or the
