@@ -109,20 +109,23 @@ namespace DGtal
                                           const unsigned int nbAccumulators = 5) : myEmbedder(&anEmbedder),myH(h), myAspectRatio(minimalAspectRatio),
       myNbTrials( nbTrials), mySize(accumulatorSize) , myNbAccumulators(nbAccumulators)
       {
-        SphericalAccumulator<RealPoint> accum(mySize);
-        std::vector< SphericalAccumulator<RealPoint> > myAccumulators(myNbAccumulators, accum);
-        std::vector< Matrix > myRotations;
-        std::vector< Matrix > myInverseRotations;
-        
-        //We compute random rotations.
+        SphericalAccumulator<RealPoint> accum(mySize);  
+
+        //We precompute the random rotations and accumulators
         for(auto i=0; i < myNbAccumulators; ++i)
         {
-          //we reuse uniform generator
           Matrix m = randomRotation();
+          myAccumulators.push_back( accum );
           myRotations.push_back( m );
           myInverseRotations.push_back( m.inverse() );
         }
       }
+
+      /**
+       * Disable default constructor.
+       */
+      SphericalHoughNormalVectorEstimator() = delete;
+
       
       /**
        * Add the geometrical embedding of a surfel to the point list and
@@ -148,7 +151,7 @@ namespace DGtal
       Quantity eval( )
       {
         std::default_random_engine generator;
-        std::uniform_int_distribution<int> distribution(0, myPoints.size() );
+        std::uniform_int_distribution<int> distribution(0, myPoints.size() - 1 );
         double aspect;
         
         for(auto t = 0; t < myNbTrials ; ++t)
@@ -161,12 +164,13 @@ namespace DGtal
           while (( (k = distribution(generator)) == i) || (k == j) );
           
           RealPoint vector = getNormal(i,j,k,aspect);
-          if (aspect > myAspectRatio)
+          if ((vector.norm() > 0.00001) && (aspect > myAspectRatio))
           {
             //we have an admissible triangle, we push both normal vectors
             for(auto acc=0; acc < myNbAccumulators; ++acc)
             {
               RealPoint shifted = myRotations[acc]*vector;
+              trace.info() << "  PUSHING = "<< shifted<<std::endl;
               myAccumulators[acc].addDirection( shifted );
               myAccumulators[acc].addDirection( -shifted );
             }

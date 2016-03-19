@@ -69,7 +69,6 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   typedef Surface::Surfel Surfel;
   
   
-  trace.beginBlock("Creating Surface");
   Point p1( -50, -50, -50 );
   Point p2( 50, 50, 50 );
   KSpace K;
@@ -77,7 +76,7 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   
 
   //Shape
-  Shape shape(RealPoint::diagonal(0.0), 30.0 );
+  Shape shape(RealPoint::diagonal(0.0), 10.0 );
   Gauss gauss;
   gauss.attach(shape);
   gauss.init(p1,p2,1.0);
@@ -101,12 +100,20 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   reporter.setParams(l2Metric, estimator , constFunc, 10.0);
   reporter.init(1, surface.begin(),surface.end());
 
+  REQUIRE( reporter.isValid() );
+  
   typedef  Reporter::Quantity Quantity;
   
   Quantity result = reporter.eval( surface.begin() );
   trace.info() << "Result at begin = "<< result <<std::endl;
 
-#ifdef WITH_VISU3D_QGLVIEWER
+  RealPoint res(0.439047, -0.755537, 0.486211);
+  /*REQUIRE( result[0] == Approx( res[0] ));
+  REQUIRE( result[1] == Approx( res[1] ));
+  REQUIRE( result[2] == Approx( res[2] ));*/
+  
+  
+#ifdef wwWITH_VISU3D_QGLVIEWER
   int argc=0;
   char **argv;
   QApplication application(argc,argv);
