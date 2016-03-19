@@ -1389,11 +1389,13 @@ namespace DGtal
     double camera_position[3]; ///< camera position
     double camera_direction[3]; ///< camera direction
     double camera_upVector[3]; ///< camera up-vector
-
+    
+    bool   myLightPositionFixToCamera = true; // when false the light position is fix according to the scene.
     double myLightTheta; /// the light position (inclination)
     double myLightPhi; /// the light position (azimuth)
     double myLightR; /// the light position (distance)
     GLfloat myLightPosition [4]; // the light position in cartesian coordinate
+    GLfloat myLightPositionRefCamera [4]; // the light position according to the camera position
     GLfloat myMaterialShininessCoeff[1] =  {50.0} ; // the material shininess coefficient used in opengl rendering 
     GLfloat myMaterialSpecularCoeffs[4] = { 1.0, 1.0, 1.0, 1.0 }; // the light specular coefficients used in opengl rendering 
     GLfloat myLightSpecularCoeffs[4] = { 1.0, 1.0, 1.0, 1.0 }; // the light specular coefficients used in opengl rendering 
