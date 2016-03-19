@@ -82,7 +82,9 @@ several functors:
   estimation from least square fitting of the embedded sufel points.
 
 - ElementaryConvolutionNormalVectorEstimator: Normal vector estimation
-  based on weighted average of surfel elementary normal vectors (@cite lenoir1996, @cite papier1998)
+  based on weighted average of surfel elementary normal vectors (@cite lenoir1996, @cite papier1998).
+
+- SphericalHoughNormalVectorEstimator: Robsut normal vector estimation using a spherical hough voting (@cite BoulchM12).
 
 @advanced Implementing your own surfel patch based estimator is quite
 simple. Please have a look to CLocalEstimatorFromSurfelFunctor or the
