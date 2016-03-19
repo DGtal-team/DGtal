@@ -58,10 +58,22 @@ namespace DGtal
   // template class SphericalHoughNormalVectorEstimator
   /**
    * Description of template class 'SphericalHoughNormalVectorEstimator' <p>
-   * \brief Aim:
+   * \brief Aim: This functor estimates normal vector for a collection of surfels using
+   * spherical accumulator based Hough voting.
    *
+   * This functors implements @cite BoulchM12 algorithm:
+   *   - we first collect the surfels using the @a pushSurfel method
+   *   - we select random triples of surfels and estimate the normal vectors of the associated triangles
+   *   - each normal vector is added to a spherical accumulator (see SphericalAccumulator)
+   *   - the estimated normal vector is computed from normal vectors from the bin of the accumulator with maximal vote
    *
-   * model of CLocalEstimatorFromSurfelFunctor
+   * To avoid aliasing artefacts of the spherical accumulator, several randomly 
+   * rotated accumulators are used.
+   *
+   * Given a random triple of surfels, a threshold on the triangle aspect ratio
+   * can be specified to discard bad aspect triangles (e.g. thin ones).
+   *
+   * This functor is a model of concepts::CLocalEstimatorFromSurfelFunctor
    *
    * @tparam TSurfel type of surfels
    * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
@@ -135,7 +147,8 @@ namespace DGtal
     {
       std::default_random_engine generator;
       std::uniform_int_distribution<int> distribution(0, myPoints.size() );
-      
+      double aspect;
+
       for(auto t = 0; t < myNbTrials ; ++t)
       {
         unsigned int i,j,k;
@@ -145,8 +158,8 @@ namespace DGtal
         while ( (j = distribution(generator)) == i);
         while (( (k = distribution(generator)) == i) || (k == j) );
         
-        RealPoint vector = getNormal(i,j,k);
-        if (vector.norm() > myAspectRatio)
+        RealPoint vector = getNormal(i,j,k,aspect);
+        if (aspect > myAspectRatio)
         {
           //we have an admissible triangle, we push both normal vectors
           for(auto acc=0; acc < myNbAccumulators; ++acc)
@@ -232,16 +245,19 @@ namespace DGtal
     /**
      * Computes the (unnormalized) normal vector of a triangle defined
      * by triangle (i,j,k).
+     * The variable @a aspect returns the aspect ratio of the triangle.
      *
      * @param [in] i a first vertex index.
      * @param [in] j a second vertex index.
      * @param [in] k a third vertex index.
+     * @param [out] aspect aspect ratio of the triangle.
      *
      * @return a random rotation matrix.
      */
     Quantity getNormal(const unsigned int i,
                        const unsigned int j,
-                       const unsigned int k) const
+                       const unsigned int k,
+                       double &aspect) const
     {
       ASSERT( i < myPoints.size());
       ASSERT( j < myPoints.size());
@@ -249,6 +265,14 @@ namespace DGtal
       
       RealPoint v = myPoints[i] - myPoints[j];
       RealPoint u = myPoints[i] - myPoints[k];
+      RealPoint w = myPoints[j] - myPoints[k];
+  
+      //aspect ratio
+      double a = u.norm() , b = v.norm();
+      double c = w.norm();
+      double s = s = (a+b+c)/2.0;
+      aspect = a*b*c/(8.0*(s-a)*(s-b)*(s-c));
+      
       return v.crossProduct(u);
     }
     

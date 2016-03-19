@@ -105,6 +105,7 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   
   Quantity result = reporter.eval( surface.begin() );
   trace.info() << "Result at begin = "<< result <<std::endl;
+
 #ifdef WITH_VISU3D_QGLVIEWER
   int argc=0;
   char **argv;
