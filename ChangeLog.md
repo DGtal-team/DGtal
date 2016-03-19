@@ -1,6 +1,5 @@
 # DGtal 0.9.2
 
-
 ## New Features / Critical Changes
 
 ## Changes
@@ -10,6 +9,12 @@
  - Travis Continuous integration will check that DGtalTools still compiles with
    changes in new pull-requests. (David Coeurjolly,
    [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
+
+- *Base Package*
+ - Alias and ConstAlias now raise compilation error when using invalid
+   constructor, like from a rvalue reference. Adding ConstAlias in many classes
+   that need it.
+   (Roland Denis, [#1140](https://github.com/DGtal-team/DGtal/pull/1140))
 
 - *IO Package*
  - Add the possibility to interact in QGLViewer Viewer3D class with the voxel

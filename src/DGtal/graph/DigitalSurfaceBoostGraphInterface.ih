@@ -59,7 +59,7 @@ edge_iterator()
 template < class TDigitalSurfaceContainer >
 inline 
 boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
-edge_iterator( const Adapted & graph,
+edge_iterator( ConstAlias<Adapted> graph,
                const vertex_iterator & itB, const vertex_iterator & itE )
   : myGraph( &graph ), 
     myVertexRange( itB, itE ),

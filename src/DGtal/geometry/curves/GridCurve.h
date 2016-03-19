@@ -52,6 +52,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PointListReader.h"
+#include "DGtal/base/ConstAlias.h"
 
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/Circulator.h"
@@ -193,7 +194,7 @@ namespace DGtal
      * Constructor.
      * @param aKSpace the Khalimsky space where the grid curve lies. 
      */
-    GridCurve(const KSpace& aKSpace);
+    GridCurve( ConstAlias<KSpace> aKSpace);
 
     /**
      * Default Constructor.
