@@ -52,7 +52,7 @@ inline
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
 VoronoiCovarianceMeasure( double _R, double _r, Metric aMetric, bool verbose )
   : myBigR( _R ), myMetric( aMetric ), myVerbose( verbose ),
-    myDomain( Point(0,0,0), Point(0,0,0) ), // dummy domain
+    myDomain( Point::diagonal(0), Point::diagonal(0) ), // dummy domain
     myCharSet( 0 ), 
     myVoronoi( 0 ),
     myProximityStructure( 0 )
@@ -224,10 +224,10 @@ init( PointInputIterator itb, PointInputIterator ite )
           double d = myMetric( q, p );
           if ( d <= myBigR ) // We restrict computation to the R offset of K.
             { 
-              VectorN v( p[ 0 ] - q[ 0 ], p[ 1 ] - q[ 1 ], p[ 2 ] - q[ 2 ] );
+              VectorN v = p - q;
               // Computes tensor product V^t x V
-              for ( Dimension i = 0; i < 3; ++i ) 
-                for ( Dimension j = 0; j < 3; ++j )
+              for ( Dimension i = 0; i < Space::dimension; ++i ) 
+                for ( Dimension j = 0; j < Space::dimension; ++j )
                   m.setComponent( i, j, v[ i ] * v[ j ] ); 
               myVCM[ q ] += m;
             }

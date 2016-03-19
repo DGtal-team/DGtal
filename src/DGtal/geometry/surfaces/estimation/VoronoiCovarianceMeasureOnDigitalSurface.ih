@@ -127,7 +127,7 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
         {
           Point p = *itPts;
           const EigenStructure& evcm = myPt2EigenStructure[ p ];
-          VectorN n = evcm.vectors.column( 2 );
+          VectorN n = evcm.vectors.column( Space::dimension-1 );
           if ( n.dot( normals.trivialNormal ) < 0 ) normals.vcmNormal -= n;
           else                                      normals.vcmNormal += n;
         }
