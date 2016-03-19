@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -98,7 +99,7 @@ namespace DGtal {
        @param l1 a label in the image that defines the inner region.
        @param l2 a label in the image that defines the outer region.
     */
-    FrontierPredicate( const KSpace & aSpace, const Image & anImage,
+    FrontierPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
                        const Value & l1, const Value & l2 );
   
     /**

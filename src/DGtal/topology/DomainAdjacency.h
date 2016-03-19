@@ -43,6 +43,7 @@
 #include <iostream>
 #include <map>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/topology/CAdjacency.h"
@@ -104,7 +105,7 @@ namespace DGtal
        @param adjacency any adjacency whose range contains the given
        domain \a aDomain.
      */
-    DomainAdjacency( const Domain & aDomain, const Adjacency & adjacency );
+    DomainAdjacency( ConstAlias<Domain> aDomain, ConstAlias<Adjacency> adjacency );
 
     /**
      * Copy constructor.

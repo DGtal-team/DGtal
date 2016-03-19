@@ -42,7 +42,7 @@
 template <typename TSurfelSet, typename TSurfel>
 inline
 DGtal::functors::SurfelSetPredicate<TSurfelSet, TSurfel>
-::SurfelSetPredicate( const SurfelSet & aSet )
+::SurfelSetPredicate( ConstAlias<SurfelSet> aSet )
   : mySet( &aSet )
 {
 }

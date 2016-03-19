@@ -50,6 +50,7 @@
 #include <map>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/images/DefaultConstImageRange.h"
@@ -149,7 +150,7 @@ namespace DGtal
      * @param aValue a default value associated to the domain points
      * that are not contained in the underlying map.
      */
-    ImageContainerBySTLMap(const Domain &aDomain, const Value& aValue = 0);
+    ImageContainerBySTLMap( ConstAlias<Domain> aDomain, const Value& aValue = 0);
 
     /** 
      * Copy operator

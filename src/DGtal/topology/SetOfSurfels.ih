@@ -47,7 +47,7 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
 template <typename TKSpace, typename TSurfelSet>
 inline
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
-::Tracker( const DigitalSurfaceContainer & aSurface, 
+::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
            const Surfel & s )
   : mySurface( aSurface ), myNeighborhood()
 {
@@ -134,7 +134,7 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::SetOfSurfels
 template <typename TKSpace, typename TSurfelSet>
 inline
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::SetOfSurfels
-(  const KSpace & aKSpace,
+(  ConstAlias<KSpace> aKSpace,
    const Adjacency & adj,
    SurfelSet aSetOfSurfels )
   : myKSpace( aKSpace ), mySurfelSet( aSetOfSurfels ), 

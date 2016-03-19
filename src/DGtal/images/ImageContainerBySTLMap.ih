@@ -47,7 +47,7 @@ const typename TDomain::Dimension DGtal::ImageContainerBySTLMap<TDomain,
 template <typename TDomain, typename TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
-::ImageContainerBySTLMap(const Domain& aDomain, const Value& aValue)
+::ImageContainerBySTLMap( ConstAlias<Domain> aDomain, const Value& aValue)
   : myDomainPtr( &aDomain ), myDefaultValue( aValue )
 {
 }

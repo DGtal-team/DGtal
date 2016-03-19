@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CPointEmbedder.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
@@ -129,8 +130,8 @@ namespace DGtal
        @param f an implicit function
        @param e a digital embedder (like a GaussDigitizer).
     */
-    void init( const KSpace & K, const ImplicitFunctionDiff1 & f, 
-               const Embedder & e );
+    void init( ConstAlias<KSpace> K, ConstAlias<ImplicitFunctionDiff1> f, 
+               ConstAlias<Embedder> e );
 
     // ----------------------- Interface --------------------------------------
   public:

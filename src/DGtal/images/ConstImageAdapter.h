@@ -47,6 +47,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/domains/CDomain.h"
@@ -130,7 +131,12 @@ public:
 
 public:
 
-    ConstImageAdapter(const ImageContainer &anImage, const Domain &aDomain, const TFunctorD &aFD, const TFunctorV &aFV):
+    ConstImageAdapter(
+                      ConstAlias<ImageContainer> anImage,
+                      ConstAlias<Domain> aDomain,
+                      ConstAlias<TFunctorD> aFD,
+                      ConstAlias<TFunctorV> aFV
+      ) :
             myImagePtr(&anImage), mySubDomainPtr(&aDomain), myFD(&aFD), myFV(&aFV)
     {
       defaultValue = 0;
