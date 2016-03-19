@@ -59,12 +59,6 @@ using namespace Z3i;
 // Functions for testing class SphericalHoughNormalVectorEstimator.
 ///////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE("Testing random shifts of accumulator")
-{
-  
-}
-
-
 TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
 {
   typedef ImplicitBall<Space> Shape;
@@ -133,9 +127,8 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
     Point center = K.sCoords ( *it );
     }
   viewer<< Viewer3D<>::updateDisplay;
-  return application.exec();
+  application.exec();
 #endif
-  
 }
 
 /** @ingroup Tests **/
