@@ -54,261 +54,263 @@
 
 namespace DGtal
 {
-  /////////////////////////////////////////////////////////////////////////////
-  // template class SphericalHoughNormalVectorEstimator
-  /**
-   * Description of template class 'SphericalHoughNormalVectorEstimator' <p>
-   * \brief Aim: This functor estimates normal vector for a collection of surfels using
-   * spherical accumulator based Hough voting.
-   *
-   * This functors implements @cite BoulchM12 algorithm:
-   *   - we first collect the surfels using the @a pushSurfel method
-   *   - we select random triples of surfels and estimate the normal vectors of the associated triangles
-   *   - each normal vector is added to a spherical accumulator (see SphericalAccumulator)
-   *   - the estimated normal vector is computed from normal vectors from the bin of the accumulator with maximal vote
-   *
-   * To avoid aliasing artefacts of the spherical accumulator, several randomly 
-   * rotated accumulators are used.
-   *
-   * Given a random triple of surfels, a threshold on the triangle aspect ratio
-   * can be specified to discard bad aspect triangles (e.g. thin ones).
-   *
-   * This functor is a model of concepts::CLocalEstimatorFromSurfelFunctor
-   *
-   * @tparam TSurfel type of surfels
-   * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
-   */
-  template <typename TSurfel, typename TEmbedder>
-  class SphericalHoughNormalVectorEstimator
+  namespace functors
   {
-  public:
-    
-    typedef TSurfel Surfel;
-    typedef TEmbedder SCellEmbedder;
-    typedef typename SCellEmbedder::RealPoint RealPoint;
-    typedef RealPoint Quantity;
-    typedef SimpleMatrix<double,3,3> Matrix;
-    
+    /////////////////////////////////////////////////////////////////////////////
+    // template class SphericalHoughNormalVectorEstimator
     /**
-     * Constructor.
+     * Description of template class 'SphericalHoughNormalVectorEstimator' <p>
+     * \brief Aim: This functor estimates normal vector for a collection of surfels using
+     * spherical accumulator based Hough voting.
      *
-     * @param [in] anEmbedder embedder to map surfel to R^n.
-     * @param [in] h grid step
-     * @param [in] minimalAspectRatio the minimal aspect ratio of triangles to be considered in the accumulator (default=0.001).
-     * @param [in] nbTrials number of random triangles in the neighborhood to consider (default=100).
-     * @param [in] accumulatorSize size of the spherical accumulators (see SphericalAccumulator, default=10).
-     * @param [in] nbAccumulators number of randomly rotated spherical accumulators to consider in order to avoid aliasing artefacts. (default=5)
+     * This functors implements @cite BoulchM12 algorithm:
+     *   - we first collect the surfels using the @a pushSurfel method;
+     *   - we select random triples of surfels and estimate the normal vectors of the associated triangles;
+     *   - each normal vector is added to a spherical accumulator (see SphericalAccumulator);
+     *   - the estimated normal vector is computed from normal vectors of the bin of the accumulator with maximal vote.
+     *
+     * To avoid aliasing artefacts of the spherical accumulator, several randomly
+     * rotated accumulators are used.
+     *
+     * Given a random triple of surfels, a threshold on the triangle aspect ratio
+     * can be specified to discard bad aspect triangles (e.g. thin ones).
+     *
+     * This functor is a model of concepts::CLocalEstimatorFromSurfelFunctor
+     *
+     * @tparam TSurfel type of surfels
+     * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
      */
-    SphericalHoughNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder,
-                                                const double h,
-                                                const double minimalAspectRatio = 0.001,
-                                                const unsigned int nbTrials = 100,
-                                                const unsigned int accumulatorSize = 10,
-                                                const unsigned int nbAccumulators = 5) : myEmbedder(&anEmbedder),myH(h), myAspectRatio(minimalAspectRatio),
-    myNbTrials( nbTrials), mySize(accumulatorSize) , myNbAccumulators(nbAccumulators)
+    template <typename TSurfel, typename TEmbedder>
+    class SphericalHoughNormalVectorEstimator
     {
-      SphericalAccumulator<RealPoint> accum(mySize);
-      std::vector< SphericalAccumulator<RealPoint> > myAccumulators(myNbAccumulators, accum);
-      std::vector< Matrix > myRotations;
-      std::vector< Matrix > myInverseRotations;
+    public:
       
-      //We compute random rotations.
-      for(auto i=0; i < myNbAccumulators; ++i)
+      typedef TSurfel Surfel;
+      typedef TEmbedder SCellEmbedder;
+      typedef typename SCellEmbedder::RealPoint RealPoint;
+      typedef RealPoint Quantity;
+      typedef SimpleMatrix<double,3,3> Matrix;
+      
+      /**
+       * Constructor.
+       *
+       * @param [in] anEmbedder embedder to map surfel to R^n.
+       * @param [in] h grid step
+       * @param [in] minimalAspectRatio the minimal aspect ratio of triangles to be considered in the accumulator (default=0.001).
+       * @param [in] nbTrials number of random triangles in the neighborhood to consider (default=100).
+       * @param [in] accumulatorSize size of the spherical accumulators (see SphericalAccumulator, default=10).
+       * @param [in] nbAccumulators number of randomly rotated spherical accumulators to consider in order to avoid aliasing artefacts. (default=5)
+       */
+      SphericalHoughNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder,
+                                          const double h,
+                                          const double minimalAspectRatio = 0.001,
+                                          const unsigned int nbTrials = 100,
+                                          const unsigned int accumulatorSize = 10,
+                                          const unsigned int nbAccumulators = 5) : myEmbedder(&anEmbedder),myH(h), myAspectRatio(minimalAspectRatio),
+      myNbTrials( nbTrials), mySize(accumulatorSize) , myNbAccumulators(nbAccumulators)
       {
-        //we reuse uniform generator
-        Matrix m = randomRotation();
-        myRotations.push_back( m );
-        myInverseRotations.push_back( m.inverse() );
-      }
-    }
-    
-    /**
-     * Add the geometrical embedding of a surfel to the point list and
-     * update the normal spherical hough voting.
-     *
-     * @param aSurf a surfel to add
-     * @param aDistance  distance of aSurf to the neighborhood boundary (NOT USED HERE)
-     */
-    void pushSurfel(const Surfel & aSurf,
-                    const double aDistance)
-    {
-      BOOST_VERIFY(aDistance == aDistance);
-      RealPoint p = myH * ( myEmbedder->operator()(aSurf) );
-      myPoints.push_back(p);
-    }
-    
-    /**
-     * Estimate normal vector using spherical accumulator
-     * voting.
-     *
-     * @return the feature score
-     */
-    Quantity eval( )
-    {
-      std::default_random_engine generator;
-      std::uniform_int_distribution<int> distribution(0, myPoints.size() );
-      double aspect;
-
-      for(auto t = 0; t < myNbTrials ; ++t)
-      {
-        unsigned int i,j,k;
+        SphericalAccumulator<RealPoint> accum(mySize);
+        std::vector< SphericalAccumulator<RealPoint> > myAccumulators(myNbAccumulators, accum);
+        std::vector< Matrix > myRotations;
+        std::vector< Matrix > myInverseRotations;
         
-        i = distribution(generator);
-        j = distribution(generator);
-        while ( (j = distribution(generator)) == i);
-        while (( (k = distribution(generator)) == i) || (k == j) );
-        
-        RealPoint vector = getNormal(i,j,k,aspect);
-        if (aspect > myAspectRatio)
+        //We compute random rotations.
+        for(auto i=0; i < myNbAccumulators; ++i)
         {
-          //we have an admissible triangle, we push both normal vectors
-          for(auto acc=0; acc < myNbAccumulators; ++acc)
-          {
-            RealPoint shifted = myRotations[acc]*vector;
-            myAccumulators[acc].addDirection( shifted );
-            myAccumulators[acc].addDirection( -shifted );
-          }
+          //we reuse uniform generator
+          Matrix m = randomRotation();
+          myRotations.push_back( m );
+          myInverseRotations.push_back( m.inverse() );
         }
       }
-      //We return the max bin orientation summing up all accumulators vote
-      typename SphericalAccumulator<RealPoint>::Size posPhi,posTheta;
-      RealPoint vote;
-      for(auto acc=0; acc < myNbAccumulators; ++acc)
+      
+      /**
+       * Add the geometrical embedding of a surfel to the point list and
+       * update the normal spherical hough voting.
+       *
+       * @param aSurf a surfel to add
+       * @param aDistance  distance of aSurf to the neighborhood boundary (NOT USED HERE)
+       */
+      void pushSurfel(const Surfel & aSurf,
+                      const double aDistance)
       {
-        myAccumulators[acc].maxCountBin(posPhi, posTheta);
-        RealPoint dir = myInverseRotations[acc]*myAccumulators[acc].representativeDirection(posPhi, posTheta).getNormalized() ;
-  
-        //We only consider z-oriented normals (since we pushed vector and -vector)
-        if ( dir.dot(RealPoint(0,0,1)) >0 )
-          vote += dir;
-        else
-          vote += -dir;
+        BOOST_VERIFY(aDistance == aDistance);
+        RealPoint p = myH * ( myEmbedder->operator()(aSurf) );
+        myPoints.push_back(p);
       }
-      return vote.getNormalized();
-    }
-    
-    /**
-     * Reset the point list.
-     *
-     */
-    void reset()
-    {
-      myPoints.clear();
-    }
-    
-  private:
-    
-    /**
-     * @return a random rotation matrix.
-     */
-    Matrix randomRotation() const
-    {
-      double theta = (rand()+0.f)/RAND_MAX * 2* M_PI;
-      double phi = (rand()+0.f)/RAND_MAX * 2* M_PI;
-      double psi = (rand()+0.f)/RAND_MAX * 2* M_PI;
-      Matrix Rt;
-      Rt.setComponent(0,0,1);
-      Rt.setComponent(1,0,0);
-      Rt.setComponent(2,0,0);
-      Rt.setComponent(0,1,0);
-      Rt.setComponent(1,1,cos(theta));
-      Rt.setComponent(2,1,-sin(theta));
-      Rt.setComponent(0,2,0);
-      Rt.setComponent(1,2,sin(theta));
-      Rt.setComponent(2,2,cos(theta));
       
-      Matrix Rph;
-      Rph.setComponent(0,0,cos(phi));
-      Rph.setComponent(1,0,0);
-      Rph.setComponent(2,0,sin(phi));
-      Rph.setComponent(0,1,0);
-      Rph.setComponent(1,1,1);
-      Rph.setComponent(2,1,0);
-      Rph.setComponent(0,2,-sin(phi));
-      Rph.setComponent(1,2,0);
-      Rph.setComponent(2,2,cos(phi));
+      /**
+       * Estimate normal vector using spherical accumulator
+       * voting.
+       *
+       * @return the feature score
+       */
+      Quantity eval( )
+      {
+        std::default_random_engine generator;
+        std::uniform_int_distribution<int> distribution(0, myPoints.size() );
+        double aspect;
+        
+        for(auto t = 0; t < myNbTrials ; ++t)
+        {
+          unsigned int i,j,k;
+          
+          i = distribution(generator);
+          j = distribution(generator);
+          while ( (j = distribution(generator)) == i);
+          while (( (k = distribution(generator)) == i) || (k == j) );
+          
+          RealPoint vector = getNormal(i,j,k,aspect);
+          if (aspect > myAspectRatio)
+          {
+            //we have an admissible triangle, we push both normal vectors
+            for(auto acc=0; acc < myNbAccumulators; ++acc)
+            {
+              RealPoint shifted = myRotations[acc]*vector;
+              myAccumulators[acc].addDirection( shifted );
+              myAccumulators[acc].addDirection( -shifted );
+            }
+          }
+        }
+        //We return the max bin orientation summing up all accumulators vote
+        typename SphericalAccumulator<RealPoint>::Size posPhi,posTheta;
+        RealPoint vote;
+        for(auto acc=0; acc < myNbAccumulators; ++acc)
+        {
+          myAccumulators[acc].maxCountBin(posPhi, posTheta);
+          RealPoint dir = myInverseRotations[acc]*myAccumulators[acc].representativeDirection(posPhi, posTheta).getNormalized() ;
+          
+          //We only consider z-oriented normals (since we pushed vector and -vector)
+          if ( dir.dot(RealPoint(0,0,1)) >0 )
+          vote += dir;
+          else
+          vote += -dir;
+        }
+        return vote.getNormalized();
+      }
       
-      Matrix Rps;
-      Rps.setComponent(0,0,cos(psi));
-      Rps.setComponent(1,0,-sin(psi));
-      Rps.setComponent(2,0,0);
-      Rps.setComponent(0,1,sin(psi));
-      Rps.setComponent(1,1,cos(psi));
-      Rps.setComponent(2,1,0);
-      Rps.setComponent(0,2,0);
-      Rps.setComponent(1,2,0);
-      Rps.setComponent(2,2,1);
+      /**
+       * Reset the point list.
+       *
+       */
+      void reset()
+      {
+        myPoints.clear();
+      }
       
-      return Rt*Rph*Rps;
-    }
-    
-    /**
-     * Computes the (unnormalized) normal vector of a triangle defined
-     * by triangle (i,j,k).
-     * The variable @a aspect returns the aspect ratio of the triangle.
-     *
-     * @param [in] i a first vertex index.
-     * @param [in] j a second vertex index.
-     * @param [in] k a third vertex index.
-     * @param [out] aspect aspect ratio of the triangle.
-     *
-     * @return a random rotation matrix.
-     */
-    Quantity getNormal(const unsigned int i,
-                       const unsigned int j,
-                       const unsigned int k,
-                       double &aspect) const
-    {
-      ASSERT( i < myPoints.size());
-      ASSERT( j < myPoints.size());
-      ASSERT( k < myPoints.size());
+    private:
       
-      RealPoint v = myPoints[i] - myPoints[j];
-      RealPoint u = myPoints[i] - myPoints[k];
-      RealPoint w = myPoints[j] - myPoints[k];
-  
-      //aspect ratio
-      double a = u.norm() , b = v.norm();
-      double c = w.norm();
-      double s = s = (a+b+c)/2.0;
-      aspect = a*b*c/(8.0*(s-a)*(s-b)*(s-c));
+      /**
+       * @return a random rotation matrix.
+       */
+      Matrix randomRotation() const
+      {
+        double theta = (rand()+0.f)/RAND_MAX * 2* M_PI;
+        double phi = (rand()+0.f)/RAND_MAX * 2* M_PI;
+        double psi = (rand()+0.f)/RAND_MAX * 2* M_PI;
+        Matrix Rt;
+        Rt.setComponent(0,0,1);
+        Rt.setComponent(1,0,0);
+        Rt.setComponent(2,0,0);
+        Rt.setComponent(0,1,0);
+        Rt.setComponent(1,1,cos(theta));
+        Rt.setComponent(2,1,-sin(theta));
+        Rt.setComponent(0,2,0);
+        Rt.setComponent(1,2,sin(theta));
+        Rt.setComponent(2,2,cos(theta));
+        
+        Matrix Rph;
+        Rph.setComponent(0,0,cos(phi));
+        Rph.setComponent(1,0,0);
+        Rph.setComponent(2,0,sin(phi));
+        Rph.setComponent(0,1,0);
+        Rph.setComponent(1,1,1);
+        Rph.setComponent(2,1,0);
+        Rph.setComponent(0,2,-sin(phi));
+        Rph.setComponent(1,2,0);
+        Rph.setComponent(2,2,cos(phi));
+        
+        Matrix Rps;
+        Rps.setComponent(0,0,cos(psi));
+        Rps.setComponent(1,0,-sin(psi));
+        Rps.setComponent(2,0,0);
+        Rps.setComponent(0,1,sin(psi));
+        Rps.setComponent(1,1,cos(psi));
+        Rps.setComponent(2,1,0);
+        Rps.setComponent(0,2,0);
+        Rps.setComponent(1,2,0);
+        Rps.setComponent(2,2,1);
+        
+        return Rt*Rph*Rps;
+      }
       
-      return v.crossProduct(u);
-    }
-    
-    ///Alias of the geometrical embedder
-    const SCellEmbedder * myEmbedder;
-    
-    ///Grid step
-    const double myH;
-    
-    ///Minimal aspect ratio (norm of the cross-product) to consider a given triangle
-    const double myAspectRatio;
-    
-    ///Number of trials in the neignborhood
-    const unsigned int myNbTrials;
-    
-    ///Size of the accumulator
-    const unsigned int mySize;
-    
-    ///Number of randomly shifted spherical accumulators to consider
-    const unsigned int myNbAccumulators;
-    
-    ///vector of embedded surfels
-    std::vector<RealPoint> myPoints;
-    
-    ///Spherical Accumulators
-    std::vector< SphericalAccumulator<RealPoint> > myAccumulators;
-    
-    ///Random rotations
-    std::vector< Matrix > myRotations;
-   
-    ///Random inverse rotations
-    std::vector< Matrix > myInverseRotations;
-    
-    
-  }; // end of class SphericalHoughNormalVectorEstimator
-  
+      /**
+       * Computes the (unnormalized) normal vector of a triangle defined
+       * by triangle (i,j,k).
+       * The variable @a aspect returns the aspect ratio of the triangle.
+       *
+       * @param [in] i a first vertex index.
+       * @param [in] j a second vertex index.
+       * @param [in] k a third vertex index.
+       * @param [out] aspect aspect ratio of the triangle.
+       *
+       * @return a random rotation matrix.
+       */
+      Quantity getNormal(const unsigned int i,
+                         const unsigned int j,
+                         const unsigned int k,
+                         double &aspect) const
+      {
+        ASSERT( i < myPoints.size());
+        ASSERT( j < myPoints.size());
+        ASSERT( k < myPoints.size());
+        
+        RealPoint v = myPoints[i] - myPoints[j];
+        RealPoint u = myPoints[i] - myPoints[k];
+        RealPoint w = myPoints[j] - myPoints[k];
+        
+        //aspect ratio
+        double a = u.norm() , b = v.norm();
+        double c = w.norm();
+        double s = s = (a+b+c)/2.0;
+        aspect = a*b*c/(8.0*(s-a)*(s-b)*(s-c));
+        
+        return v.crossProduct(u);
+      }
+      
+      ///Alias of the geometrical embedder
+      const SCellEmbedder * myEmbedder;
+      
+      ///Grid step
+      const double myH;
+      
+      ///Minimal aspect ratio (norm of the cross-product) to consider a given triangle
+      const double myAspectRatio;
+      
+      ///Number of trials in the neignborhood
+      const unsigned int myNbTrials;
+      
+      ///Size of the accumulator
+      const unsigned int mySize;
+      
+      ///Number of randomly shifted spherical accumulators to consider
+      const unsigned int myNbAccumulators;
+      
+      ///vector of embedded surfels
+      std::vector<RealPoint> myPoints;
+      
+      ///Spherical Accumulators
+      std::vector< SphericalAccumulator<RealPoint> > myAccumulators;
+      
+      ///Random rotations
+      std::vector< Matrix > myRotations;
+      
+      ///Random inverse rotations
+      std::vector< Matrix > myInverseRotations;
+      
+      
+    }; // end of class SphericalHoughNormalVectorEstimator
+  } // namespace functors
 } // namespace DGtal
 
 
