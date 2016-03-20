@@ -937,7 +937,6 @@ DGtal::Viewer3D<Space, KSpace>::sortSurfelFromCamera()
 
 
 
-
 template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::sortTriangleFromCamera()
