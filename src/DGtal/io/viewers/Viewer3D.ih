@@ -1203,7 +1203,6 @@ DGtal::Viewer3D<Space, KSpace>::mouseMoveEvent ( QMouseEvent *e )
     myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
     myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
     myLightPosition[2] = myLightR*sin(myLightTheta);
-    myLightPosition[3] = 1.0;
     if(myLightPositionFixToCamera){
       const Vec cameraPos = camera()->position();
       myLightPositionRefCamera[0] = myLightPosition[0]-cameraPos[0];
@@ -1255,7 +1254,10 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
         case RenderingMode::RenderingMetallic : 
           myRenderingMode = RenderingMode::RenderingPlastic;
           break;
-        case RenderingMode::RenderingPlastic : 
+        case RenderingMode::RenderingPlastic :
+          myRenderingMode = RenderingMode::RenderingLambertian;
+          break;
+        case RenderingMode::RenderingLambertian : 
           myRenderingMode = RenderingMode::RenderingDefault;
           break;
         } 
@@ -1293,7 +1295,7 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
         }
       updateGL();
     }
-
+  
   if ( ( e->key() ==Qt::Key_R ) )
     {
       myGLScaleFactorX=1.0f;
@@ -1922,20 +1924,31 @@ template< typename Space, typename KSpace>
 void 
 DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode aRenderMode)
 {
+  stringstream ss; 
+  ss << "Rendering mode ";
+    
   GLfloat newCoefDiff, newCoefSpec = 1.0;
   switch (aRenderMode) 
     {
     case RenderingMode::RenderingDefault :
       newCoefDiff = myDefaultRenderDiff;
       newCoefSpec = myDefaultRenderSpec;
+      ss << "Default (diffuse with few specular)";
       break;
     case RenderingMode::RenderingMetallic :
       newCoefDiff = myMetallicRenderDiff;
       newCoefSpec = myMetallicRenderSpec;
+      ss << "Metallic (diffuse with specular)";
       break;
     case RenderingMode::RenderingPlastic :
       newCoefDiff = myPlasticRenderDiff;
       newCoefSpec = myPlasticRenderSpec;
+      ss << "Plastic (few diffuse with large specular)";
+      break;
+    case RenderingMode::RenderingLambertian :
+      newCoefDiff = myLambertRenderDiff;
+      newCoefSpec = myLambertRenderSpec;
+      ss << "Lambertian (only diffuse)";
       break;
     }
   for (unsigned int i = 0; i<3; i++) 
@@ -1944,7 +1957,8 @@ DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode 
   for (unsigned int i = 0; i<3; i++) 
     myLightSpecularCoeffs[i] = newCoefSpec;
   myLightSpecularCoeffs[3] = 1.0;
-  updateGL();
+  displayMessage(QString(ss.str().c_str()), 3000);
+ updateGL();
 }
 
 
