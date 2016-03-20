@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
@@ -93,7 +94,7 @@ namespace DGtal
 	 @param aSurface the container describing the surface.
 	 @param s the surfel on which the tracker is initialized.
       */
-      Tracker( const DigitalSurfaceContainer & aSurface, 
+      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
                const Surfel & s );
 
       /**
@@ -216,8 +217,8 @@ namespace DGtal
 
        @see computeSurfels
       */
-    ImplicitDigitalSurface( const KSpace & aKSpace,
-                            const PointPredicate & aPP,
+    ImplicitDigitalSurface( ConstAlias<KSpace> aKSpace,
+                            ConstAlias<PointPredicate> aPP,
                             const Adjacency & adj,
                             const Surfel & s,
                             bool closed = false );

@@ -44,6 +44,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/arithmetic/Pattern.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -120,7 +121,7 @@ namespace DGtal
       inline ConstIterator()
         : myPtrDSL( 0 )
       {}
-      inline ConstIterator( const StandardDSLQ0<TFraction> & myDSL,
+      inline ConstIterator( ConstAlias< StandardDSLQ0<TFraction> > myDSL,
                             const Point & p )
         : myPtrDSL( & myDSL ), myP( p )
       {}

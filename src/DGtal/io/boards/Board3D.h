@@ -97,17 +97,6 @@ namespace DGtal
       init();
     }
 
-    /**
-     *Constructor with a space and a khalimsky space
-     *@param SEmb a space
-     *@param KSEmb a khalimsky space
-     **/
-    Board3D(const  Space &SEmb, const KSpace &KSEmb):Display3D<Space,KSpace>(SEmb,
-                                                                             KSEmb)
-    {
-      init();
-    }
-
 
     /*!
      * Destructor.

@@ -44,8 +44,9 @@
 template <typename DigitalSurf,  typename KernelFunctor>
 inline
 DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>
-::LocalConvolutionNormalVectorEstimator ( const DigitalSurf & digitalSurface,
-        const KernelFunctor & aKernelFunctor )
+::LocalConvolutionNormalVectorEstimator ( 
+        ConstAlias<DigitalSurf> digitalSurface,
+        ConstAlias<KernelFunctor> aKernelFunctor )
     : mySurface ( digitalSurface ), myKernelFunctor ( aKernelFunctor )
 {
 }

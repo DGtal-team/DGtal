@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/shapes/implicit/CImplicitFunction.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -86,9 +87,9 @@ namespace DGtal
        @param estimator an normal vector estimator
        @param e a digital embedder (like a GaussDigitizer).
     */
-    NormalVectorEstimatorLinearCellEmbedder( const DigitalSurface & digSurf,
-                                             const NormalVectorEstimator & estimator, 
-                                             const Embedder & e );
+    NormalVectorEstimatorLinearCellEmbedder( ConstAlias<DigitalSurface> digSurf,
+                                             ConstAlias<NormalVectorEstimator> estimator, 
+                                             ConstAlias<Embedder> e );
     
     /** 
      * Destructor.

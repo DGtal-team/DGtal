@@ -47,8 +47,8 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 template <typename TDomain, typename TAdjacency>
 inline
 DGtal::DomainAdjacency<TDomain,TAdjacency>
-::DomainAdjacency( const Domain & aDomain, 
-       const Adjacency & adjacency )
+::DomainAdjacency( ConstAlias<Domain> aDomain, 
+       ConstAlias<Adjacency> adjacency )
   : myPred( aDomain ), myAdjacency( adjacency )
 {
 }

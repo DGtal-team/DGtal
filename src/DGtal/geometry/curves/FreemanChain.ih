@@ -48,19 +48,19 @@
 template <typename TInteger>
 inline
   DGtal::FreemanChain<TInteger>::ConstIterator::ConstIterator( 
-      const FreemanChain & aChain, unsigned int n)
+      ConstAlias<FreemanChain> aChain, unsigned int n)
   : myFc( &aChain ), myPos( 0 )
 {
   if ( n < myFc->chain.size() ) 
   {
-    myXY[0]=aChain.x0;
-    myXY[1]=aChain.y0;
+    myXY[0] = myFc->x0;
+    myXY[1] = myFc->y0;
     while ( myPos < n ) this->next();
   } 
   else 
   {// iterator end() 
-    myXY[0]=aChain.xn;
-    myXY[1]=aChain.yn;
+    myXY[0] = myFc->xn;
+    myXY[1] = myFc->yn;
     myPos = (typename DGtal::FreemanChain<TInteger>::Index)(myFc->chain.size()+1);
   }
 }

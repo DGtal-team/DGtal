@@ -57,11 +57,11 @@ DGtal::Expander<TObject>::~Expander()
 template <typename TObject>
 inline
 DGtal::Expander<TObject>
-::Expander( const Object & object, const Point & p )
-  : myEmbeddingDomain( object.pointSet().domain() ),
+::Expander( ConstAlias<Object> object, const Point & p )
+  : myEmbeddingDomain( (&object)->pointSet().domain() ),
     myObject( object ),
-    myObjectDomain( object.pointSet() ),
-    myObjectAdjacency( myObjectDomain, object.adjacency() ),
+    myObjectDomain( myObject.pointSet() ),
+    myObjectAdjacency( myObjectDomain, myObject.adjacency() ),
     myCore( myEmbeddingDomain ), 
     myLayer( myEmbeddingDomain ),
     myDistance( 0 ), myFinished( false ),
@@ -87,12 +87,12 @@ template <typename TObject>
 template <typename PointInputIterator>
 inline
 DGtal::Expander<TObject>
-::Expander( const Object & object,
+::Expander( ConstAlias<Object> object,
       PointInputIterator b, PointInputIterator e )
-  : myEmbeddingDomain( object.pointSet().domain() ),
+  : myEmbeddingDomain( (&object)->pointSet().domain() ),
     myObject( object ),
-    myObjectDomain( object.pointSet() ),
-    myObjectAdjacency( myObjectDomain, object.adjacency() ),
+    myObjectDomain( myObject.pointSet() ),
+    myObjectAdjacency( myObjectDomain, myObject.adjacency() ),
     myCore( myEmbeddingDomain ), 
     myLayer( myEmbeddingDomain ),
     myDistance( 0 ), myFinished( false ),

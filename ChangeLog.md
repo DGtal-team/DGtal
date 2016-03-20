@@ -1,6 +1,5 @@
 # DGtal 0.9.2
 
-
 ## New Features / Critical Changes
 
 ## Changes
@@ -10,6 +9,12 @@
  - Travis Continuous integration will check that DGtalTools still compiles with
    changes in new pull-requests. (David Coeurjolly,
    [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
+
+- *Base Package*
+ - Alias and ConstAlias now raise compilation error when using invalid
+   constructor, like from a rvalue reference. Adding ConstAlias in many classes
+   that need it.
+   (Roland Denis, [#1140](https://github.com/DGtal-team/DGtal/pull/1140))
 
 - *IO Package*
  - Add the possibility to interact in QGLViewer Viewer3D class with the voxel
@@ -24,12 +29,16 @@
    (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
 
 - *Geometry Package*
+ - VoronoiCovarianceMeasure: fix dimension-specific code.
+   (Roland Denis, [#1145](https://github.com/DGtal-team/DGtal/pull/1145))
  - AlphaThickSegmentComputer: fix segment display errors which could appear
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
 
 - *IO Package*
+ - Display3D: Fix embedder usage when using default constructor in Debug mode.
+   (Roland Denis [##1143](https://github.com/DGtal-team/DGtal/pull/1143))
  - Viewer3D: Fix a problem when the show() method was called at the end of the
    main program (the list creation was not called).
    (Bertrand Kerautret [##1138](https://github.com/DGtal-team/DGtal/pull/1138))
