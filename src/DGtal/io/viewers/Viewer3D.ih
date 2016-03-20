@@ -1146,24 +1146,14 @@ DGtal::Viewer3D<Space, KSpace>::mousePressEvent ( QMouseEvent *e )
     myRefMouseYPos = e->y();
     GLfloat lPos [4];
     lPos[3] = 1.0f;
-    if(myLightPositionFixToCamera)
-      {
-        const Vec cameraPos = camera()->position();
-        lPos[0] = static_cast<GLfloat>(cameraPos[0])+myLightPositionRefCamera[0];
-        lPos[1] = static_cast<GLfloat>(cameraPos[1])+myLightPositionRefCamera[1];
-        lPos[2] = static_cast<GLfloat>(cameraPos[2])+myLightPositionRefCamera[2];
-      }
-    else
-      {
-        lPos[0]  = myLightPosition[0];
-        lPos[1]  = myLightPosition[1];
-        lPos[2]  = myLightPosition[2];
-      }
-    myLightR = sqrt(lPos[0]*lPos[0]+
-                    lPos[1]*lPos[1]+
-                    lPos[2]*lPos[2]);
-    myLightTheta = asin(lPos[2]/myLightR);
-    myLightPhi = atan2(lPos[1],lPos[0]);
+    if( myLightPositionFixToCamera ){
+      updateLightCoordsFromCamera();  
+    }    
+    myLightR = sqrt( myLightPosition[0]* myLightPosition[0]+
+                     myLightPosition[1]* myLightPosition[1]+
+                     myLightPosition[2]* myLightPosition[2]);
+    myLightTheta = asin( myLightPosition[2]/myLightR);
+    myLightPhi = atan2( myLightPosition[1], myLightPosition[0]);
   }else{
     QGLViewer::mousePressEvent(e);
   }
@@ -1199,7 +1189,6 @@ DGtal::Viewer3D<Space, KSpace>::mouseMoveEvent ( QMouseEvent *e )
       myLightPositionRefCamera[1] = myLightPosition[1]-cameraPos[1];
       myLightPositionRefCamera[2] = myLightPosition[2]-cameraPos[2];
     }
-     
     glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
     myRefMouseXPos = e->x();
     myRefMouseYPos = e->y();
