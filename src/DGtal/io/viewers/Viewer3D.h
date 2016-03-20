@@ -1290,9 +1290,14 @@ namespace DGtal
      **/
     void glUpdateTextureImages(const VectorTextureImage  &aVectImage);
 
-
-
-
+    
+    /**
+     * Update the light source coordinates (myLightPosition) from the
+     * camera relative coordinates (myLightPositionRefCamera). It
+     * could be useful when the light source position is fix according
+     * to camera position.
+     **/
+    void updateLightCoordsFromCamera();
 
 
   public:
