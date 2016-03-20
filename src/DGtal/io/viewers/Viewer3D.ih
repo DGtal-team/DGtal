@@ -1266,9 +1266,7 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       else
         {
           displayMessage(QString("Light source position fixed to main scene."), 3000);
-          myLightPosition[0] = static_cast<GLfloat>(cameraPos[0])+myLightPositionRefCamera[0];
-          myLightPosition[1] = static_cast<GLfloat>(cameraPos[1])+myLightPositionRefCamera[1];
-          myLightPosition[2] = static_cast<GLfloat>(cameraPos[2])+myLightPositionRefCamera[2];
+          updateLightCoordsFromCamera();
         }
       updateGL();
     }
