@@ -57,7 +57,7 @@ CanonicSCellEmbedder()
 template <typename TKSpace>
 inline
 DGtal::CanonicSCellEmbedder<TKSpace>::
-CanonicSCellEmbedder( const KSpace & aKSpace )
+CanonicSCellEmbedder( ConstAlias<KSpace> aKSpace )
   : myKSpace( &aKSpace )
 {}
 //-----------------------------------------------------------------------------

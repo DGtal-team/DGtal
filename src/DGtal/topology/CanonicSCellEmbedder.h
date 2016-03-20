@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/topology/CPreCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -58,7 +59,7 @@ namespace DGtal
 
    Model of CSCellEmbedder.
 
-   @tparam TKSpace the type of cellular grid space where the embedder works, a model of CCellularGridSpaceND.
+   @tparam TKSpace the type of cellular grid space where the embedder works, a model of CPreCellularGridSpaceND.
  */
   template <typename TKSpace>
   struct CanonicSCellEmbedder
@@ -90,9 +91,9 @@ namespace DGtal
     CanonicSCellEmbedder();
 
     /**
-       Constructor from space. 
+       Constructor from space.
     */
-    CanonicSCellEmbedder( const KSpace & aKSpace );
+    CanonicSCellEmbedder( ConstAlias<KSpace> aKSpace );
 
     /**
        Copy constructor.
@@ -115,7 +116,7 @@ namespace DGtal
     /**
        Map a signed cell to its corresponding point in the Euclidean
        space.
-       
+
        @param cell any signed cell in the digital space.
        @return its canonical embedding in the Euclidean space.
     */
@@ -124,7 +125,7 @@ namespace DGtal
     /**
        Map a signed cell to its corresponding point in the Euclidean
        space.
-       
+
        @param cell any signed cell in the digital space.
        @return its canonical embedding in the Euclidean space.
     */

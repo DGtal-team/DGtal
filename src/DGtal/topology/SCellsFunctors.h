@@ -44,6 +44,7 @@
 #include <iostream>
 #include <iterator>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/BasicBoolFunctors.h"
 #include "DGtal/kernel/SpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -92,7 +93,7 @@ namespace DGtal {
        * Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToPoint(const KSpace& aK) : myK(&aK) { }
+    SCellToPoint( ConstAlias<KSpace> aK ) : myK(&aK) { }
 
     /**
      * Copy constructor.
@@ -186,7 +187,7 @@ namespace DGtal {
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToMidPoint(const KSpace& aK) : myK(&aK) { }
+    SCellToMidPoint( ConstAlias<KSpace> aK ) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -262,7 +263,7 @@ namespace DGtal {
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToArrow(const KSpace& aK) : myK(&aK) { }
+    SCellToArrow( ConstAlias<KSpace> aK ) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -343,7 +344,7 @@ namespace DGtal {
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToInnerPoint(const KSpace& aK) : myK(&aK) { }
+    SCellToInnerPoint( ConstAlias<KSpace> aK ) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -418,7 +419,7 @@ namespace DGtal {
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToOuterPoint(const KSpace& aK) : myK(&aK) { }
+    SCellToOuterPoint( ConstAlias<KSpace> aK ) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -495,7 +496,7 @@ namespace DGtal {
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToIncidentPoints(const KSpace& aK) : myK(&aK) { }
+    SCellToIncidentPoints( ConstAlias<KSpace> aK ) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -575,7 +576,7 @@ namespace DGtal {
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToCode(const KSpace& aK) : myK(&aK) { }
+    SCellToCode( ConstAlias<KSpace> aK ) : myK(&aK) { }
 
     /**
      *  Copy constructor.

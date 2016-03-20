@@ -43,6 +43,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/ConstIteratorAdapter.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/images/CTrivialConstImage.h"
 #include "DGtal/images/SetValueIterator.h"
@@ -96,7 +97,7 @@ namespace DGtal
      * @param aImage any image.
      *
      */
-    DefaultConstImageRange( const TImage& aImage )
+    DefaultConstImageRange( ConstAlias<TImage> aImage )
       : myImagePtr(&aImage) {}
 
     /**

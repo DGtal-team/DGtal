@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
@@ -104,8 +105,8 @@ namespace DGtal
      * @param aSurface surface  for which the normal vector are estimated.
      * @param aFunctor convolution kernel functor.
      */
-    LocalConvolutionNormalVectorEstimator(const DigitalSurface & aSurface,
-                                          const KernelFunctor & aFunctor);
+    LocalConvolutionNormalVectorEstimator(ConstAlias<DigitalSurface> aSurface,
+                                          ConstAlias<KernelFunctor> aFunctor);
 
     /**
      * Destructor.

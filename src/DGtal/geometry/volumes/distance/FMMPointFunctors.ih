@@ -752,7 +752,7 @@ template <typename TKSpace, typename TMap, bool isIndirect>
 inline
 DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap,isIndirect>
 ::L2FirstOrderLocalDistanceFromCells
-  (const KSpace& aK, Map& aMap): myKSpace(&aK), myMap(&aMap)
+  ( ConstAlias<KSpace> aK, Map& aMap): myKSpace(&aK), myMap(&aMap)
 {
 }
 
