@@ -1844,10 +1844,10 @@ DGtal::Viewer3D<Space, KSpace>::initFromDOMElement(const QDomElement& element)
   }
   if(myLightPositionFixToCamera){
     const Vec cameraPos = camera()->position();
-      myLightPositionRefCamera[0] = myLightPosition[0]-cameraPos[0];
-      myLightPositionRefCamera[1] = myLightPosition[1]-cameraPos[1];
-      myLightPositionRefCamera[2] = myLightPosition[2]-cameraPos[2];
-    }
+    myLightPositionRefCamera[0] = myLightPosition[0]-cameraPos[0];
+    myLightPositionRefCamera[1] = myLightPosition[1]-cameraPos[1];
+    myLightPositionRefCamera[2] = myLightPosition[2]-cameraPos[2];
+  }
 
   updateGL();
 }
