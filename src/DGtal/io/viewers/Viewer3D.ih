@@ -827,7 +827,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myLightPosition[0] = static_cast<GLfloat>(cameraPos[0]);
   myLightPosition[1] = static_cast<GLfloat>(cameraPos[1]);
   myLightPosition[2] = static_cast<GLfloat>(cameraPos[2]);
-  myLightPosition[3] = 1.0;
+  myLightPosition[3] = 1.0f;
   glClearColor (0.0, 0.0, 0.0, 0.0);
   glShadeModel (GL_SMOOTH);  
 
@@ -1145,7 +1145,7 @@ DGtal::Viewer3D<Space, KSpace>::mousePressEvent ( QMouseEvent *e )
     myRefMouseXPos = e->x();
     myRefMouseYPos = e->y();
     GLfloat lPos [4];
-    lPos[3] = 1.0;
+    lPos[3] = 1.0f;
     if(myLightPositionFixToCamera)
       {
         const Vec cameraPos = camera()->position();
@@ -1917,7 +1917,7 @@ DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode 
   stringstream ss; 
   ss << "Rendering mode ";
     
-  GLfloat newCoefDiff, newCoefSpec = 1.0;
+  GLfloat newCoefDiff, newCoefSpec = 1.0f;
   switch (aRenderMode) 
     {
     case RenderingMode::RenderingDefault :
@@ -2010,14 +2010,11 @@ DGtal::Viewer3D<Space, KSpace>::paintGL(){
 }
 
 
-
-
-
 template< typename Space, typename KSpace>
 void DGtal::Viewer3D<Space, KSpace>::updateLightCoordsFromCamera() {
   const Vec cameraPos = camera()->position();
   myLightPosition[0] = static_cast<GLfloat>(cameraPos[0])+myLightPositionRefCamera[0];
   myLightPosition[1] = static_cast<GLfloat>(cameraPos[1])+myLightPositionRefCamera[1];
   myLightPosition[2] = static_cast<GLfloat>(cameraPos[2])+myLightPositionRefCamera[2];
-  myLightPosition[3] = 1.0;
+  myLightPosition[3] = 1.0f;
 }

@@ -1401,20 +1401,20 @@ namespace DGtal
     double myLightR; /// the light position (distance)
     GLfloat myLightPosition [4]; // the light position in cartesian coordinate
     GLfloat myLightPositionRefCamera [4]; // the light position according to the camera position
-    GLfloat myMaterialShininessCoeff[1] =  {50.0} ; // the material shininess coefficient used in opengl rendering 
-    GLfloat myMaterialSpecularCoeffs[4] = { 1.0, 1.0, 1.0, 1.0 }; // the light specular coefficients used in opengl rendering 
-    GLfloat myLightSpecularCoeffs[4] = { 0.3, 0.3, 0.3, 1.0 }; // the light specular coefficients used in opengl rendering 
-    GLfloat myLightAmbientCoeffs[4] = { 0.0, 0.0, 0.0, 1.0 }; // the material ambient coefficients used in opengl rendering  
-    GLfloat myLightDiffuseCoeffs[4] = { 0.7, 0.7, 0.7, 1.0 }; // the material diffuse coefficients used in opengl rendering  
+    GLfloat myMaterialShininessCoeff[1] =  {50.0f} ; // the material shininess coefficient used in opengl rendering 
+    GLfloat myMaterialSpecularCoeffs[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; // the light specular coefficients used in opengl rendering 
+    GLfloat myLightSpecularCoeffs[4] = { 0.3f, 0.3f, 0.3f, 1.0f }; // the light specular coefficients used in opengl rendering 
+    GLfloat myLightAmbientCoeffs[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; // the material ambient coefficients used in opengl rendering  
+    GLfloat myLightDiffuseCoeffs[4] = { 0.7f, 0.7f, 0.7f, 1.0f }; // the material diffuse coefficients used in opengl rendering  
 
-    const GLfloat myDefaultRenderSpec = 0.3; // default specular coefficients for default mode rendering
-    const GLfloat myDefaultRenderDiff = 0.7; // default diffuse coefficients for metallic mode rendering    
-    const GLfloat myLambertRenderSpec = 0.0; // default specular coefficients for default mode rendering
-    const GLfloat myLambertRenderDiff = 0.9; // default diffuse coefficients for metallic mode rendering
-    const GLfloat myMetallicRenderSpec = 0.5; // default specular coefficients for metallic mode rendering
-    const GLfloat myMetallicRenderDiff = 0.5; // default diffuse coefficients for metallic mode rendering
-    const GLfloat myPlasticRenderSpec = 0.8; // default specular coefficients for platic mode rendering
-    const GLfloat myPlasticRenderDiff = 0.2; // default diffuse coefficients for platic mode rendering
+    const GLfloat myDefaultRenderSpec = 0.3f; // default specular coefficients for default mode rendering
+    const GLfloat myDefaultRenderDiff = 0.7f; // default diffuse coefficients for metallic mode rendering    
+    const GLfloat myLambertRenderSpec = 0.0f; // default specular coefficients for default mode rendering
+    const GLfloat myLambertRenderDiff = 0.9f; // default diffuse coefficients for metallic mode rendering
+    const GLfloat myMetallicRenderSpec = 0.5f; // default specular coefficients for metallic mode rendering
+    const GLfloat myMetallicRenderDiff = 0.5f; // default diffuse coefficients for metallic mode rendering
+    const GLfloat myPlasticRenderSpec = 0.8f; // default specular coefficients for platic mode rendering
+    const GLfloat myPlasticRenderDiff = 0.2f; // default diffuse coefficients for platic mode rendering
     
 
 
