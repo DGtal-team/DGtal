@@ -94,10 +94,7 @@ You should obtain the following visualization:
 
 @note Note that you can display the camera settings in the console
 (key C) which can be used in Board2Dto3D described in the following.
-@note The light source direction is defined according the main coordinate
-system (not from the camera center). It can be moved by a
-mouse move in the Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on
-mac)).
+@note The light source position is by default defined according the camera position. You can change this mode by using a position defined from the main coordinate system (with key P in the Viewer3D). In the two mode, the light source position can be moved by a mouse move in the Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on mac)).
 
 
 
