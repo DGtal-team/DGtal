@@ -112,10 +112,6 @@ namespace DGtal
     typedef typename Domain::Dimension Dimension;
     typedef Point Vertex;
 
-    // Pointer to the (const) Domain given at construction.
-    typedef const Domain * DomainPtr;
-
-
     /// static constants
     static const typename Domain::Dimension dimension;
 
@@ -131,10 +127,8 @@ namespace DGtal
     /////////////////// Data members //////////////////
   private: 
 
-    /// Counted pointer on the image domain,
-    /// Since the domain is not mutable, not assignable,
-    /// it is shared by all the copies of *this
-    DomainPtr myDomainPtr;
+    /// Image domain
+    Domain myDomain;
 
     /// Default value
     Value myDefaultValue;
@@ -150,7 +144,7 @@ namespace DGtal
      * @param aValue a default value associated to the domain points
      * that are not contained in the underlying map.
      */
-    ImageContainerBySTLMap( ConstAlias<Domain> aDomain, const Value& aValue = 0);
+    ImageContainerBySTLMap( const Domain& aDomain, const Value& aValue = 0);
 
     /** 
      * Copy operator
