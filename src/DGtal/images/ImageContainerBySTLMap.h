@@ -78,33 +78,33 @@ namespace DGtal
    * Once constructed, the image is valid, i.e. every point of the
    * image domain has a value, which can be read and overwritten.
    * Note that the default value (returned for points that are not
-   * stored in the underlying STL map) can be chosen by the user. 
+   * stored in the underlying STL map) can be chosen by the user.
    *
-   * As a model of concepts::CImage, this class provides two ways of accessing values: 
-   * - through the range of points returned by the domain() method 
-   * combined with the operator() that takes a point and returns its associated value. 
-   * - through the range of values returned by the range() method, 
+   * As a model of concepts::CImage, this class provides two ways of accessing values:
+   * - through the range of points returned by the domain() method
+   * combined with the operator() that takes a point and returns its associated value.
+   * - through the range of values returned by the range() method,
    * which can be used to directly iterate over the values of the image
    *
-   * This class also provides a setValue() method and an output iterator, 
-   * which is returned by the outputIterator() method for writting purposes. 
+   * This class also provides a setValue() method and an output iterator,
+   * which is returned by the outputIterator() method for writting purposes.
    *
    * @see testImage.cpp
    */
 
   template <typename TDomain, typename TValue>
-  class ImageContainerBySTLMap: 
+  class ImageContainerBySTLMap:
     public std::map<typename TDomain::Point, TValue >
   {
 
   public:
 
-    typedef ImageContainerBySTLMap<TDomain,TValue> Self; 
-    typedef std::map<typename TDomain::Point, TValue > Parent; 
+    typedef ImageContainerBySTLMap<TDomain,TValue> Self;
+    typedef std::map<typename TDomain::Point, TValue > Parent;
 
     /// domain
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
-    typedef TDomain Domain;    
+    typedef TDomain Domain;
     typedef typename Domain::Point Point;
     typedef typename Domain::Vector Vector;
     typedef typename Domain::Integer Integer;
@@ -118,14 +118,14 @@ namespace DGtal
     /// range of values
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     typedef TValue Value;
-    typedef DefaultConstImageRange<Self> ConstRange; 
-    typedef DefaultImageRange<Self> Range; 
+    typedef DefaultConstImageRange<Self> ConstRange;
+    typedef DefaultImageRange<Self> Range;
 
     /// output iterator
-    typedef SetValueIterator<Self> OutputIterator; 
+    typedef SetValueIterator<Self> OutputIterator;
 
     /////////////////// Data members //////////////////
-  private: 
+  private:
 
     /// Image domain
     Domain myDomain;
@@ -135,39 +135,39 @@ namespace DGtal
 
     /////////////////// standard services //////////////////
 
-  public: 
+  public:
 
-    /** 
+    /**
      * Constructor from a Domain
-     * 
+     *
      * @param aDomain the image domain.
      * @param aValue a default value associated to the domain points
      * that are not contained in the underlying map.
      */
     ImageContainerBySTLMap( const Domain& aDomain, const Value& aValue = 0);
 
-    /** 
+    /**
      * Copy operator
-     * 
+     *
      * @param other the object to copy.
      */
     ImageContainerBySTLMap(const ImageContainerBySTLMap& other);
 
-    /** 
+    /**
      * Assignement operator
-     * 
+     *
      * @param other the object to copy.
      * @return this
      */
     ImageContainerBySTLMap& operator=(const ImageContainerBySTLMap& other);
 
-    /** 
+    /**
      * Destructor.
      *
     */
     ~ImageContainerBySTLMap();
 
-  
+
     /////////////////// Interface //////////////////
 
       /**
@@ -190,12 +190,12 @@ namespace DGtal
      * @param aValue the value.
      */
     void setValue(const Point &aPoint, const Value &aValue);
-    
+
 
     /**
      * @return the domain associated to the image.
      */
-    const Domain &domain() const; 
+    const Domain &domain() const;
 
     /**
      * @return the const range providing constant
@@ -232,15 +232,15 @@ namespace DGtal
     typedef typename std::map<Point,Value>::const_iterator ConstIterator;
     typedef typename std::map<Point,Value>::reverse_iterator ReverseIterator;
     typedef typename std::map<Point,Value>::const_reverse_iterator ConstReverseIterator;
-    
+
     /**
-     * Construct a Iterator on the image 
+     * Construct a Iterator on the image
      *
-     * 
+     *
      * @return a Iterator      */
     OutputIterator outputIterator();
 
-        
+
   };
 
   /**
@@ -252,7 +252,7 @@ namespace DGtal
   template <typename TDomain, typename TValue>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const ImageContainerBySTLMap<TDomain,TValue> & object )
   {
     object.selfDisplay ( out );
