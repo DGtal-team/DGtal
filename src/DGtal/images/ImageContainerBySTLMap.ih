@@ -47,8 +47,8 @@ const typename TDomain::Dimension DGtal::ImageContainerBySTLMap<TDomain,
 template <typename TDomain, typename TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
-::ImageContainerBySTLMap( ConstAlias<Domain> aDomain, const Value& aValue)
-  : myDomainPtr( &aDomain ), myDefaultValue( aValue )
+::ImageContainerBySTLMap( const Domain& aDomain, const Value& aValue)
+  : myDomain( aDomain ), myDefaultValue( aValue )
 {
 }
 
@@ -58,7 +58,7 @@ inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
 ::ImageContainerBySTLMap(const ImageContainerBySTLMap& other)
   : Parent(other), 
-    myDomainPtr(other.myDomainPtr), myDefaultValue(other.myDefaultValue)
+    myDomain(other.myDomain), myDefaultValue(other.myDefaultValue)
 {
 }
 //------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>
   if (this != &other)
     {
       Parent::operator=(other); 
-      myDomainPtr = other.myDomainPtr; 
+      myDomain = other.myDomain; 
       myDefaultValue = other.myDefaultValue; 
     }
   return *this; 
@@ -116,7 +116,7 @@ inline
 const typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Domain&
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::domain() const
 {
-  return *myDomainPtr;
+  return myDomain;
 }
 
 //------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ void
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Image - STLMap] size=" << this->size() << " valuetype=" 
-      << sizeof(TValue) << "bytes Domain=" << *myDomainPtr;
+      << sizeof(TValue) << "bytes Domain=" << myDomain;
 }
 
 //------------------------------------------------------------------------------
