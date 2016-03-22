@@ -62,10 +62,10 @@ bool testReducedMedialAxis()
   set.insertNew(Z2i::Point(3,3)); 
   //set.insertNew(Z2i::Point(3,7)); 
   set.insertNew(Z2i::Point(7,7));
-  DigitalSetDomain<DigitalSetBySTLSet<Z2i::Domain > > setDomain(set); 
   
-  typedef ImageContainerBySTLMap<DigitalSetDomain<DigitalSetBySTLSet<Z2i::Domain > > , DGtal::int64_t> Image;
-  Image image(setDomain);
+  using SetDomain = DigitalSetDomain< DigitalSetBySTLSet<Z2i::Domain > >; 
+  using Image = ImageContainerBySTLMap< SetDomain , DGtal::int64_t>;
+  Image image( std::make_shared<SetDomain>( set ) );
   
   //Setting some values
   image.setValue(Z2i::Point(3,3), 9); 
