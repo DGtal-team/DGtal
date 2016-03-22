@@ -372,11 +372,9 @@ namespace DGtal
    * method must follow the same conditions.
    * This validity can be tested with the dedicated methods uIsValid() and sIsValid().
    *
-   * Exceptions exist for uCell(const Cell &) const and sCell(const SCell &) const that are specially featured
+   * Exceptions exist for uCell(const PreCell &) const and sCell(const SPreCell &) const that are specially featured
    * to correct Khalimsky coordinates of a given cell.
-   * In addition, methods returning digital or Khalimsky coordinate of a cell have a flag to control if this
-   * coordinate must be corrected.
-   * However, when a method accepts a coordinate as parameter, it is always corrected along periodic dimensions.
+   * In addition, when a method accepts a coordinate as parameter, it is always corrected along periodic dimensions.
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
