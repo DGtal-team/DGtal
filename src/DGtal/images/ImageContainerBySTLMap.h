@@ -48,6 +48,7 @@
 // Inclusions
 #include <iostream>
 #include <map>
+#include <memory>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
@@ -112,10 +113,6 @@ namespace DGtal
     typedef typename Domain::Dimension Dimension;
     typedef Point Vertex;
 
-    // Pointer to the (const) Domain given at construction.
-    typedef const Domain * DomainPtr;
-
-
     /// static constants
     static const typename Domain::Dimension dimension;
 
@@ -131,10 +128,10 @@ namespace DGtal
     /////////////////// Data members //////////////////
   private:
 
-    /// Counted pointer on the image domain,
+    /// Shared pointer on the image domain,
     /// Since the domain is not mutable, not assignable,
     /// it is shared by all the copies of *this
-    DomainPtr myDomainPtr;
+    std::shared_ptr<const Domain> myDomainPtr;
 
     /// Default value
     Value myDefaultValue;
@@ -144,13 +141,24 @@ namespace DGtal
   public:
 
     /**
-     * Constructor from a Domain
+     * Constructor from a Domain.
+     *
+     * If Domain is a heavy type, prefer giving a smart pointer on the domain.
      *
      * @param aDomain the image domain.
      * @param aValue a default value associated to the domain points
      * that are not contained in the underlying map.
      */
-    ImageContainerBySTLMap( ConstAlias<Domain> aDomain, const Value& aValue = 0);
+    ImageContainerBySTLMap( const Domain & aDomain, const Value& aValue = 0);
+
+    /**
+     * Constructor from a pointer to a domain.
+     *
+     * @param aDomainPtr a pointer to the image domain.
+     * @param aValue a default value associated to the domain points
+     * that are not contained in the underlying map.
+     */
+    ImageContainerBySTLMap( const std::shared_ptr<const Domain> & aDomainPtr, const Value& aValue = 0);
 
     /**
      * Copy operator
