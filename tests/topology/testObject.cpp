@@ -49,6 +49,8 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/topology/NeighborhoodConfigurations.h"
+#include "DGtal/topology/tables/NeighborhoodTables.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -738,6 +740,82 @@ bool testObjectGraph()
 
 }
 
+bool testSetTable()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  typedef DGtal::Z2i::Point Point;
+  //typedef Domain::ConstIterator DomainConstIterator;
+
+  Point p1( -17, -17 );
+  Point p2( 17, 17 );
+  Domain domain( p1, p2 );
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( -10, -8 ), 7 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 10, 8 ), 7 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 3, 0 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 0, -3 ), 7 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( -10, 0 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( -8, 8 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 0, 9 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 15, -2 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 12, -10 ), 4 );
+  shape_set.erase( Point( 5, 0 ) );
+  shape_set.erase( Point( -1, -2 ) );
+  Object4_8 shape( dt4_8, shape_set );
+  // shape.setTable(functions::loadTable<2>(simplicity::tableSimple4_8));
+  {
+    auto table_smart_ptr = functions::loadTable<2>(simplicity::tableSimple4_8);
+    shape.setTable(table_smart_ptr); // table must survive (smart_ptr)
+  }
+
+  GradientColorMap<int> cmap_grad( 0, 6 );
+  cmap_grad.addColor( Color( 128, 128, 255 ) );
+  cmap_grad.addColor( Color( 255, 255, 128 ) );
+  //cmap_grad.addColor( Color( 220, 130, 25 ) );
+  Board2D board;
+  board.setUnit(Board::UCentimeter);
+  board << SetMode( domain.className(), "Paving" )
+  << domain;
+  Board2D board2;
+  board2.setUnit(Board::UCentimeter);
+  board2 << SetMode( domain.className(), "Grid" )
+   << domain;
+
+  // Greedy thinning.
+  DGtal::uint64_t nb_simple;
+  trace.beginBlock ( "Greedy homotopic thinning with table..." );
+  int layer = 0;
+  do
+    {
+      DigitalSet & S = shape.pointSet();
+      std::queue<DigitalSet::Iterator> Q;
+      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+  if ( shape.isSimple( *it ) )
+    Q.push( it );
+      nb_simple = 0;
+      while ( ! Q.empty() )
+  {
+    DigitalSet::Iterator it = Q.front();
+    Q.pop();
+    if ( shape.isSimple( *it ) )
+      {
+        board << CustomStyle( it->className(),
+                   new MyDrawStyleCustomFillColor
+                   ( cmap_grad( layer ) ) )
+        << *it;
+        S.erase( *it );
+        ++nb_simple;
+      }
+  }
+      ++layer;
+    }
+  while ( nb_simple != 0 );
+  trace.endBlock();
+
+  return nbok == nb;
+
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -753,7 +831,8 @@ int main( int argc, char** argv )
     testObject3D() && testDraw()
     && testSimplePoints3D()
     && testSimplePoints2D()
-    && testObjectGraph();
+    && testObjectGraph()
+    && testSetTable();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
