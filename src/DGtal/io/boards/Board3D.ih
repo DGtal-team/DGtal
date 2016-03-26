@@ -138,8 +138,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   if (lastdot != std::string::npos)
     noExt = filename.substr(0, lastdot);
   else
-  noExt = filename;
-  
+    noExt = filename;
+    
   std::stringstream nameOBJ;
   std::stringstream nameMTL;
   nameOBJ << noExt << ".obj";
