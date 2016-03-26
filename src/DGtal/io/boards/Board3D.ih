@@ -147,13 +147,13 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   
   outOBJ.open(nameOBJ.str().c_str());
   outOBJ << "#  OBJ format"<< std::endl;
-  outOBJ << "# generated from Board3D from the DGTal library"<< std::endl;
+  outOBJ << "# generated from Board3D from the DGtal library"<< std::endl;
   outOBJ << "mtllib " <<  nameMTL.str() << std::endl;
   outOBJ << std::endl;
   
   outMTL.open(nameMTL.str().c_str());
   outMTL << "#  MTL format"<< std::endl;
-  outMTL << "# generated from Board3D from the DGTal library"<< std::endl;
+  outMTL << "# generated from Board3D from the DGtal library"<< std::endl;
   
   
   //myClippingPlaneList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
