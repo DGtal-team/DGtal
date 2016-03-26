@@ -58,8 +58,8 @@
  -  GenericReader: include longvol reader in GenericReader for 64 bit images.
    Update the test for 64 bit longvol. (Bertrand Kerautret
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
- - Fix the extension removal in Obj filename export in Board3D. (David 
-   Coeurjolly,[#XXXX](https://github.com/DGtal-team/DGtal/pull/XXXX)))
+ - Fix the extension removal in Obj filename export in Board3D. (David
+   Coeurjolly,[#1154](https://github.com/DGtal-team/DGtal/pull/1154)))
 
 - *Topology Package*
   - Fix wrong starting point for surface tracking in example code
