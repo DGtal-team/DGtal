@@ -124,7 +124,7 @@ bool testQuadNorm()
   Cell surfel = k.uCell( Point( 2,3,3) );
   Display3DFactory<Space,KSpace>::drawUnorientedSurfelWithNormal( board, surfel, n2.getNormalized());
 
-  board.saveOBJ("dgtalBoard3D-quad.obj");
+  board.saveOBJ("dgtalBoard3D.quad.obj");
 
 
   nbok += true ? 1 : 0;
