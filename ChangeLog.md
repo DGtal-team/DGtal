@@ -55,9 +55,11 @@
  - Fixing issue [#899](https://github.com/DGtal-team/DGtal/issues/899) in
    all color maps, (David Coeurjolly, Bertrand Kerautret
    [#1134](https://github.com/DGtal-team/DGtal/pull/1134))
--  GenericReader: include longvol reader in GenericReader for 64 bit images.
+ -  GenericReader: include longvol reader in GenericReader for 64 bit images.
    Update the test for 64 bit longvol. (Bertrand Kerautret
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
+ - Fix the extension removal in Obj filename export in Board3D. (David 
+   Coeurjolly,[#XXXX](https://github.com/DGtal-team/DGtal/pull/XXXX)))
 
 - *Topology Package*
   - Fix wrong starting point for surface tracking in example code

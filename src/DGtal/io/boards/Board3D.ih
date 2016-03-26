@@ -131,9 +131,15 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
   std::ofstream outOBJ; //OBJ file where to write
   std::ofstream outMTL; //MTL file where to write
+
+  //the filename without OBJ any extention
+  std::string noExt;
+  size_t lastdot = filename.find_last_of(".");
+  if (lastdot != std::string::npos)
+    noExt = filename.substr(0, lastdot);
+  else
+  noExt = filename;
   
-  
-  std::string noExt(filename.substr(0, filename.find_first_of("."))); //the filename withoutOBJ any extention
   std::stringstream nameOBJ;
   std::stringstream nameMTL;
   nameOBJ << noExt << ".obj";
