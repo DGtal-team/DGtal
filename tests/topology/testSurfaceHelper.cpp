@@ -77,13 +77,15 @@ bool testComputeInterior()
   fst.close();
   std::set<SCell> boundaryCell;
   std::set<SCell> boundaryCell2;
-  DGtal::KhalimskySpaceND< 2, int > K; 
+  DGtal::KhalimskySpaceND< 2, int > K, Ko;
+  
   int minx, miny, maxx, maxy; 
   fc.computeBoundingBox(minx, miny, maxx, maxy);
 
   BoolImage2D::Domain dom(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5));
   trace.info() << "Domain defined by :" << dom.lowerBound() << " " << dom.upperBound() << std::endl;
   K.init(dom.lowerBound(), dom.upperBound(), true);
+  Ko.init(dom.lowerBound(), dom.upperBound(), false);
   FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K, fc, boundaryCell );
 
   BoolImage2D interiorImage(dom);
@@ -92,22 +94,29 @@ bool testComputeInterior()
   trace.info() << "Interior size: " << nbInt << " (awaited:  3082)" <<  std::endl;
 
   BoolImage2D exteriorImage(dom);
-  unsigned int nbExt = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillExterior(K ,SurfelSetPredicate<std::set<SCell>, SCell>(boundaryCell), 
-                                                                                     exteriorImage, 1, true);
-  trace.info() << "Exterior size: " << nbExt << " (awaited:   9182)" <<  std::endl;
-  
+  unsigned int nbExt = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillExterior(K ,SurfelSetPredicate<std::set<SCell>, SCell>(boundaryCell),
+                                                                                   exteriorImage, 1, true);
+  unsigned int nbExto = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillExterior(Ko ,SurfelSetPredicate<std::set<SCell>, SCell>(boundaryCell), 
+                                                                                    exteriorImage, 1, true);
+  trace.info() << "Exterior size: (KhalimskySpaceND open) " << nbExto << " (awaited:   9182)" <<  std::endl;
+  trace.info() << "Exterior size: (KhalimskySpaceND close)" << nbExt << " (awaited:   9182)" <<  std::endl;
 
-  DGtal::KhalimskySpaceND< 2, int > K2; 
+
+  DGtal::KhalimskySpaceND< 2, int > K2, K2c; 
   int minx2, miny2, maxx2, maxy2; 
   fc2.computeBoundingBox(minx2, miny2, maxx2, maxy2); 
   BoolImage2D::Domain dom2(Z2i::Point(minx2-5,miny2-5), Z2i::Point(maxx2+5, maxy2+5));
   K2.init(dom2.lowerBound(), dom2.upperBound(), false);
+  K2c.init(dom2.lowerBound(), dom2.upperBound(), true);
   FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K2, fc2, boundaryCell2 ); 
 
   BoolImage2D interiorImage2(dom2);
   unsigned int nbInt2 = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K2, SurfelSetPredicate<std::set<SCell>,SCell>(boundaryCell2), 
                                                                                     interiorImage2, 1, false);
- trace.info() << "Interior size2: " << nbInt2 << " (awaited:  196316)" <<  std::endl;
+ trace.info() << "Interior size2: (KhalimskySpaceND open) " << nbInt2 << " (awaited:  196316)" <<  std::endl;
+ unsigned int nbInt2c = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K2c, SurfelSetPredicate<std::set<SCell>,SCell>(boundaryCell2), 
+                                                                                    interiorImage2, 1, false);
+ trace.info() << "Interior size2: (KhalimskySpaceND closed) " << nbInt2c << " (awaited:  196316)" <<  std::endl;
   
   // Displaying interiorCell
   Board2D aBoard, aBoard2, aBoard3; 
@@ -161,7 +170,7 @@ bool testComputeInterior()
   aBoard.saveEPS("testSurfaceHelperComputeInterior.eps");
   aBoard3.saveEPS("testSurfaceHelperComputeExterior.eps");
   aBoard2.saveEPS("testSurfaceHelperComputeInterior2.eps");
-  nbok += (nbInt == 3082 && nbInt2 == 196316 && nbExt== 9182)? 1 : 0; 
+  nbok += (nbInt == 3082 && nbInt2 == 196316 && nbInt2c == 196316 && nbExt== 9182 && nbExto== 9182)? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << nbInt << " (interiorCell.size()) == 3014 and "
@@ -203,7 +212,7 @@ test3dSurfaceHelper()
    trace.info() << "Connected component :" << vectConnectedSCell.size() << " (should be 1) "  << std::endl;
    trace.endBlock();
    
-   trace.beginBlock("Test filling interior of surface (in an closed KhalimskySpaceND ) ...");
+   trace.beginBlock("Test 3D filling interior of surface (in an closed KhalimskySpaceND ) ...");
    Image3dChar imageFilled(image.domain());
    std::set<Z3i::SCell> setSCell; for (auto const &s: vectConnectedSCell[0]) setSCell.insert(s);
    functors::SurfelSetPredicate<std::set<Z3i::SCell>,Z3i::SCell> surfacePred (setSCell);
@@ -215,7 +224,7 @@ test3dSurfaceHelper()
    trace.endBlock();
 
 
-   trace.beginBlock("Test filling interior of surface (in an open  KhalimskySpaceND ) ...");
+   trace.beginBlock("Test 3D filling interior of surface (in an open  KhalimskySpaceND ) ...");
    Z3i::KSpace ko;
    ko.init(image.domain().lowerBound(),
            image.domain().upperBound(), false);
@@ -226,7 +235,7 @@ test3dSurfaceHelper()
    trace.endBlock();
 
    
-   trace.beginBlock("Test filling exterior of surface (in an closed KhalimskySpaceND ) ...");  
+   trace.beginBlock("Test 3D filling exterior of surface (in an closed KhalimskySpaceND ) ...");  
    unsigned int nbFilled3 = DGtal::Surfaces<DGtal::Z3i::KSpace>::uFillExterior(Kc, surfacePred, imageFilled, 1);
    trace.info() << "Nb voxel filled:" << nbFilled3 << " (should be " << aSet.size() << " )"  << std::endl;
    nb++;
@@ -235,7 +244,7 @@ test3dSurfaceHelper()
 
 
 
-   trace.beginBlock("Test filling exterior of surface (in an open  KhalimskySpaceND ) ...");
+   trace.beginBlock("Test 3D filling exterior of surface (in an open  KhalimskySpaceND ) ...");
    unsigned int nbFilled4 = DGtal::Surfaces<DGtal::Z3i::KSpace>::uFillExterior(ko, surfacePred, imageFilled, 1);
    trace.info() << "Nb voxel filled:" << nbFilled4 << " (should be " << aSet.size() << " )"  << std::endl;
    nb++;
