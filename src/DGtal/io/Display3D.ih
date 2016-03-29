@@ -822,10 +822,10 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
   zab = p2[2]-p1[2];
 
   norm = sqrt( xab*xab + yab*yab + zab*zab);
-  assert (norm > 0);
-  xab = xab / norm;
-  yab = yab / norm;
-  zab = zab / norm;
+	if (norm == 0) return;
+	xab /= norm;
+	yab /= norm;
+	zab /= norm;
 
   //take a third point M different from A and B
   double xm = 0;
@@ -836,32 +836,39 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
   while (p1[1] == ym || p2[1] ==ym) ym++;
   while (p1[2] == zm || p2[2] ==zm) zm++;
 
-  //vector AM
-  double xam, yam, zam;
+	//vector AM
+	double xam, yam, zam;
+	//normal vector n = AB^AM
+	double xn, yn, zn;
 
-  xam = xm-p1[0];
-  yam = ym-p1[1];
-  zam = zm-p1[2];
+	// ensure that M is not collinear to AB
+	while (true)
+	{
+			xam = xm-p1[0];
+			yam = ym-p1[1];
+			zam = zm-p1[2];
 
-  norm = sqrt( xam*xam + yam*yam + zam*zam);
-  assert (norm > 0);
-  xam = xam / norm;
-  yam = yam / norm;
-  zam = zam / norm;
+			norm = sqrt( xam*xam + yam*yam + zam*zam);
+			ASSERT( norm > 0 );
+			xam /= norm;
+			yam /= norm;
+			zam /= norm;
 
-  //normal vector n = AB^AM
-  double xn, yn, zn;
+			xn = yab*zam - yam*zab;
+			yn = xam*zab - xab*zam;
+			zn = xab*yam - xam*yab;
 
-  xn = yab*zam - yam*zab;
-  yn = xam*zab - xab*zam;
-  zn = xab*yam - xam*yab;
+			//divide n by its norm
+			norm = sqrt( xn*xn + yn*yn + zn*zn);
+			if (norm > 0) break;
+			xm += .1;
+			ym -= M_PI;
+	}
 
-  //divide n by its norm
-  norm = sqrt( xn*xn + yn*yn + zn*zn);
-  assert (norm > 0);
-  xn = xn / norm;
-  yn = yn / norm;
-  zn = zn / norm;
+	ASSERT( norm > 0 );
+	xn /= norm;
+	yn /= norm;
+	zn /= norm;
 
   //the first point of the base
   double xf, yf, zf;
@@ -894,10 +901,12 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
 
       //divide n by its norm
       norm = sqrt( xn*xn + yn*yn + zn*zn);
-      assert (norm > 0);
-      xn = xn / norm;
-      yn = yn / norm;
-      zn = zn / norm;
+      if (norm > 0)
+			{
+					xn = xn / norm;
+					yn = yn / norm;
+					zn = zn / norm;
+			}
 
       // calculate one point with the normal vector at a distance width
       xb2 = p2[0] + width * xn;
