@@ -39,6 +39,7 @@
 #include "DGtal/topology/SurfelSetPredicate.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/readers/VolReader.h"
 #include "DGtal/base/ConstAlias.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -82,7 +83,7 @@ bool testComputeInterior()
 
   BoolImage2D::Domain dom(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5));
   trace.info() << "Domain defined by :" << dom.lowerBound() << " " << dom.upperBound() << std::endl;
-  K.init(dom.lowerBound(), dom.upperBound(), false);
+  K.init(dom.lowerBound(), dom.upperBound(), true);
   FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K, fc, boundaryCell );
 
   BoolImage2D interiorImage(dom);
@@ -171,6 +172,51 @@ bool testComputeInterior()
   return nbok == nb;
 }
 
+
+bool
+test3dSurfaceHelper()
+{
+  typedef DGtal::DigitalSetBySTLSet<DGtal::Z3i::Domain> Set;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing extraction of 3D connected component ..." );
+  // import point from a vol file
+  typedef ImageContainerBySTLVector< Z3i::Domain, unsigned char> Image3dChar;
+  Image3dChar image = VolReader<Image3dChar>::importVol( testPath + "samples/cat10.vol");
+  Set aSet(image.domain());
+   for(auto const &p: image.domain())
+     {
+      if(image(p)>0)
+        {
+          aSet.insert(p);
+        } 
+     }
+  Z3i::KSpace K;
+  K.init(image.domain().lowerBound(),
+         image.domain().upperBound(), true);
+  SurfelAdjacency<3> SAdj( false );
+  std::vector<std::vector<DGtal::Z3i::SCell> > vectConnectedSCell;
+  Surfaces<DGtal::Z3i::KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, aSet, false);
+  nb++;
+  nbok += vectConnectedSCell.size()==1;
+  trace.info() << "Connected component :" << vectConnectedSCell.size() << " (should be 1) "  << std::endl;
+  trace.endBlock();
+  
+  trace.beginBlock("Test filling of surface ...");
+  Image3dChar imageFilled(image.domain());
+  std::set<Z3i::SCell> setSCell; for (auto const &s: vectConnectedSCell[0]) setSCell.insert(s);
+  functors::SurfelSetPredicate<std::set<Z3i::SCell>,Z3i::SCell> surfacePred (setSCell);
+  
+  unsigned int nbFilled = DGtal::Surfaces<DGtal::Z3i::KSpace>::uFillInterior(K, surfacePred, imageFilled, 1);
+  trace.info() << "Nb voxel filled:" << nbFilled << " (should be " << aSet.size() << " )"  << std::endl;
+  nb++;
+  nbok += nbFilled == aSet.size();
+  trace.endBlock();
+  return nb == nbok;
+}
+
+
 /**
 * Checks that method Surfaces::findABel can take in argument any pair
 * of points (one inside, one outside) to determine a boundary surfel
@@ -223,6 +269,7 @@ bool testFindABel()
   return nbok == nb;
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -235,7 +282,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = testComputeInterior()
-    && testFindABel< KhalimskySpaceND<3,int> >();
+    && testFindABel< KhalimskySpaceND<3,int> >()  && test3dSurfaceHelper();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
