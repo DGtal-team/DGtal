@@ -36,12 +36,17 @@
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
 
+- *Image Package*
+ - Fixing issue [#779](https://github.com/DGtal-team/DGtal/issues/779) by
+   storing domain with smart pointer in ImageContainerBySTLMap.
+   (Roland Denis [#1151](https://github.com/DGtal-team/DGtal/pull/1151))
+
 - *IO Package*
  - Display3D: Fix embedder usage when using default constructor in Debug mode.
-   (Roland Denis [##1143](https://github.com/DGtal-team/DGtal/pull/1143))
+   (Roland Denis [#1143](https://github.com/DGtal-team/DGtal/pull/1143))
  - Viewer3D: Fix a problem when the show() method was called at the end of the
    main program (the list creation was not called).
-   (Bertrand Kerautret [##1138](https://github.com/DGtal-team/DGtal/pull/1138))
+   (Bertrand Kerautret [#1138](https://github.com/DGtal-team/DGtal/pull/1138))
  - Viewer3D: add three new modes for shape rendering (default, metallic and
    plastic). The rendering can be changed by using the key M. The user can
    also choose its own rendering with some setter/getter on the opengl
