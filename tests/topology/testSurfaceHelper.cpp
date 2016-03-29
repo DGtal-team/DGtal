@@ -192,27 +192,59 @@ test3dSurfaceHelper()
           aSet.insert(p);
         } 
      }
-  Z3i::KSpace K;
-  K.init(image.domain().lowerBound(),
-         image.domain().upperBound(), true);
-  SurfelAdjacency<3> SAdj( false );
-  std::vector<std::vector<DGtal::Z3i::SCell> > vectConnectedSCell;
-  Surfaces<DGtal::Z3i::KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, aSet, false);
-  nb++;
-  nbok += vectConnectedSCell.size()==1;
-  trace.info() << "Connected component :" << vectConnectedSCell.size() << " (should be 1) "  << std::endl;
-  trace.endBlock();
+   Z3i::KSpace Kc;
+   Kc.init(image.domain().lowerBound(),
+          image.domain().upperBound(), true);
+   SurfelAdjacency<3> SAdj( false );
+   std::vector<std::vector<DGtal::Z3i::SCell> > vectConnectedSCell;
+   Surfaces<DGtal::Z3i::KSpace>::extractAllConnectedSCell(vectConnectedSCell,Kc, SAdj, aSet, false);
+   nb++;
+   nbok += vectConnectedSCell.size()==1;
+   trace.info() << "Connected component :" << vectConnectedSCell.size() << " (should be 1) "  << std::endl;
+   trace.endBlock();
+   
+   trace.beginBlock("Test filling interior of surface (in an closed KhalimskySpaceND ) ...");
+   Image3dChar imageFilled(image.domain());
+   std::set<Z3i::SCell> setSCell; for (auto const &s: vectConnectedSCell[0]) setSCell.insert(s);
+   functors::SurfelSetPredicate<std::set<Z3i::SCell>,Z3i::SCell> surfacePred (setSCell);
   
-  trace.beginBlock("Test filling of surface ...");
-  Image3dChar imageFilled(image.domain());
-  std::set<Z3i::SCell> setSCell; for (auto const &s: vectConnectedSCell[0]) setSCell.insert(s);
-  functors::SurfelSetPredicate<std::set<Z3i::SCell>,Z3i::SCell> surfacePred (setSCell);
-  
-  unsigned int nbFilled = DGtal::Surfaces<DGtal::Z3i::KSpace>::uFillInterior(K, surfacePred, imageFilled, 1);
-  trace.info() << "Nb voxel filled:" << nbFilled << " (should be " << aSet.size() << " )"  << std::endl;
-  nb++;
-  nbok += nbFilled == aSet.size();
-  trace.endBlock();
+   unsigned int nbFilled = DGtal::Surfaces<DGtal::Z3i::KSpace>::uFillInterior(Kc, surfacePred, imageFilled, 1);
+   trace.info() << "Nb voxel filled:" << nbFilled << " (should be " << aSet.size() << " )"  << std::endl;
+   nb++;
+   nbok += nbFilled == aSet.size();
+   trace.endBlock();
+
+
+   trace.beginBlock("Test filling interior of surface (in an open  KhalimskySpaceND ) ...");
+   Z3i::KSpace ko;
+   ko.init(image.domain().lowerBound(),
+           image.domain().upperBound(), false);
+   unsigned int nbFilled2 = DGtal::Surfaces<DGtal::Z3i::KSpace>::uFillInterior(ko, surfacePred, imageFilled, 1);
+   trace.info() << "Nb voxel filled:" << nbFilled2 << " (should be " << aSet.size() << " )"  << std::endl;
+   nb++;
+   nbok += nbFilled2 == aSet.size();
+   trace.endBlock();
+
+   
+   trace.beginBlock("Test filling exterior of surface (in an closed KhalimskySpaceND ) ...");  
+   unsigned int nbFilled3 = DGtal::Surfaces<DGtal::Z3i::KSpace>::uFillExterior(Kc, surfacePred, imageFilled, 1);
+   trace.info() << "Nb voxel filled:" << nbFilled3 << " (should be " << aSet.size() << " )"  << std::endl;
+   nb++;
+   nbok += nbFilled3 == imageFilled.size()-aSet.size();
+   trace.endBlock();
+
+
+
+   trace.beginBlock("Test filling exterior of surface (in an open  KhalimskySpaceND ) ...");
+   unsigned int nbFilled4 = DGtal::Surfaces<DGtal::Z3i::KSpace>::uFillExterior(ko, surfacePred, imageFilled, 1);
+   trace.info() << "Nb voxel filled:" << nbFilled4 << " (should be " << aSet.size() << " )"  << std::endl;
+   nb++;
+   nbok += nbFilled4 == imageFilled.size()-aSet.size();
+   trace.endBlock();
+
+
+   
+   
   return nb == nbok;
 }
 
