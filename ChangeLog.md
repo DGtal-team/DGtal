@@ -65,7 +65,9 @@
   - Fix wrong starting point for surface tracking in example code
     frontierAndBoundary.cpp.
     (Roland Denis, [#1144](https://github.com/DGtal-team/DGtal/pull/1144))
-
+  - Fix interior/exterior fill methods of topology/helpers/Surfaces class which
+    was wrong on 3d and on closed Khalimsky space.
+    (Bertrand Kerautret, [#1156](https://github.com/DGtal-team/DGtal/pull/1156))
 
 # DGtal 0.9.1
 
