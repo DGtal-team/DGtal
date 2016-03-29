@@ -347,68 +347,21 @@ namespace DGtal
   /**
    * Description of template class 'KhalimskyPreSpaceND' <p>
    *
-   * \brief Aim: This class is a model of CCellularGridSpaceND. It
+   * \brief Aim: This class is a model of CPreCellularGridSpaceND. It
    * represents the cubical grid as a cell complex, whose cells are
    * defined as an array of integers. The topology of the cells is
    * defined by the parity of the coordinates (even: closed, odd:
    * open).
    *
-   * When \b initializing the space using init(),
-   * the user should choose, for each dimension spanned by the space,
-   * between a closed and non-periodic (default) cell dimension,
-   * an open cell dimension or a periodic cell dimension.
-   * The space is generally finite, except for arbitrary size
-   * integers and when the space has a periodic dimension.
-   *
-   * @anchor KhalimskyPreSpaceNDBounds
-   * Supposing that the space has been initialized with digital bounds \c lower and \c upper,
-   * the methods lowerBound() and upperBound() will always return, respectively, \c lower and \c upper.
-   * It as also true for periodic dimension, in order to span over the unique digital points of the space.
-   *
-   * In the same way, lowerCell() and upperCell() respect the following rules:
-   * - the k-th Khalimsky coordinate of lowerCell() is equal to:
-   *    - `2*lower[k]` if the k-th dimension is closed or periodic,
-   *    - `2*lower[k]+1` if the k-th dimension is open;
-   * - the k-th Khalimsky coordinate of upperCell() is equal to:
-   *    - `2*upper[k]+2` if the k-th dimension is closed,
-   *    - `2*upper[k]+1` if the k-th dimension is open or periodic.
-   *    .
-   * .
-   * The special behavior for __periodic dimensions__ guarantees that each cell has unique
-   * Khalimsky coordinates in this range.
-   * It is useful to span the space and also for cell-based containers (see e.g. CubicalComplex).
-   * Uniqueness also gives meaning to equality tests between cells.
-   *
-   * Following this concept, the related methods size(), min(), max(),
-   * uFirst(), uLast(), uGetMin(), uGetMax(), uDistanceToMin(), uDistanceToMax(),
-   * sFirst(), sLast(), sGetMin(), sGetMax(), sDistanceToMin() and sDistanceToMax()
-   * behave for periodic dimensions like for finite dimensions, using the bounds described above.
-   *
-   * Thus, if a cell needs to be __compared to the bounds__, prefer using dedicated tests like
-   * uIsMin(), uIsMax(), sIsMin() and sIsMax() that return always \c false for a periodic dimension,
-   * and uIsInside() and sIsInside() that return always \c true for a periodic dimension.
-   *
-   * To be consistent with those choices, each cell returned or modified by a KhalimskyPreSpaceND method
-   * will have his Khalimsky coordinates along periodic dimensions between the corresponding
-   * coordinates of lowerCell() and upperCell().
-   * But, in order to keep low computational cost, each cell passed by parameter to a KhalimskyPreSpaceND
-   * method must follow the same conditions.
-   * This validity can be tested with the dedicated methods uIsValid() and sIsValid().
-   *
-   * Exceptions exist for uCell(const Cell &) const and sCell(const SCell &) const that are specially featured
-   * to correct Khalimsky coordinates of a given cell.
-   * In addition, methods returning digital or Khalimsky coordinate of a cell have a flag to control if this
-   * coordinate must be corrected.
-   * However, when a method accepts a coordinate as parameter, it is always corrected along periodic dimensions.
+   * This cellular grid space has no bounds (depending on the Integer type)
+   * and thus only provides static methods.
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
    * @note Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * @see KhalimskySpaceND
    *
-   * @warning Periodic Khalimsky space and per-dimension closure specification are new features.
-   * Therefore, there is no guarantee that it is compatible with the whole DGtal library.
-   *
-  */
+   */
   template <
     Dimension dim,
     typename TInteger
@@ -968,7 +921,7 @@ namespace DGtal
      * do
      * { // ... whatever [p] is the current cell
      * }
-     * while ( KSpace::uNext( p, first, last ) );
+     * while ( KPreSpace::uNext( p, first, last ) );
      * \endcode
      *
      * @param p any pre-cell.
@@ -1061,7 +1014,7 @@ namespace DGtal
      * do
      * { // ... whatever [p] is the current cell
      * }
-     * while ( KSpace::uNext( p, first, last ) );
+     * while ( KPreSpace::uNext( p, first, last ) );
      * \endcode
      *
      * @param p any pre-cell.
@@ -1217,7 +1170,7 @@ namespace DGtal
      *  direction allows to go from positive incident pre-cells to positive
      *  incident pre-cells.  This means that
      *  @code
-     *  KSpace::sSign( KSpace::sIncident( p, k, KSpace::sDirect( p, k ) ) ) == K.POS
+     *  KPreSpace::sSign( KPreSpace::sIncident( p, k, KPreSpace::sDirect( p, k ) ) ) == KPreSpace::POS
      *  @endcode
      *  is always true.
      *
