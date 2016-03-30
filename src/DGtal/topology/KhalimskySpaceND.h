@@ -45,6 +45,7 @@
 #include <iostream>
 #include <set>
 #include <map>
+#include <array>
 #include <DGtal/base/Common.h>
 #include <DGtal/kernel/CInteger.h>
 #include <DGtal/kernel/PointVector.h>
@@ -569,7 +570,7 @@ namespace DGtal
      */
     bool init( const Point & lower,
                const Point & upper,
-               Closure closure[dim] );
+               const std::array<Closure, dim> & closure );
 
     /// @}
 
@@ -908,7 +909,7 @@ namespace DGtal
     /**
      * @param c any unsigned cell.
      * @param k any valid dimension.
-     * @return its Khalimsky coordinate along [k]. 
+     * @return its Khalimsky coordinate along [k].
      * @pre  `uIsValid(c)` is \a true.
      */
     Integer uKCoord( const Cell & c, Dimension k ) const;
@@ -1939,7 +1940,7 @@ ose sign is positive).
     Point myUpper;
     Cell myCellLower;
     Cell myCellUpper;
-    Closure myClosure[dim];
+    std::array<Closure, dimension> myClosure;
 
     // ------------------------- Hidden services ------------------------------
   protected:

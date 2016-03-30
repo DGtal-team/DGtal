@@ -456,7 +456,7 @@ init( const Point & lower,
       const Point & upper,
       bool isClosed )
 {
-  Closure closure[dim];
+  std::array<Closure, dimension> closure;
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
     closure[ i ] = isClosed ? CLOSED : OPEN;
 
@@ -471,9 +471,8 @@ init( const Point & lower,
       const Point & upper,
       Closure closure )
 {
-  Closure dimClosure[dim];
-  for ( DGtal::Dimension i = 0; i < dimension; ++i )
-    dimClosure[ i ] = closure;
+  std::array<Closure, dimension> dimClosure;
+  dimClosure.fill( closure );
 
   return init( lower, upper, dimClosure );
 }
@@ -485,10 +484,12 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 init( const Point & lower,
       const Point & upper,
-      Closure closure[dim] )
+      const std::array<Closure, dim> & closure )
 {
   myLower = lower;
   myUpper = upper;
+  myClosure = closure;
+
   if ( NumberTraits< Integer >::isBounded() == BOUNDED )
     {
       for ( DGtal::Dimension i = 0; i < dimension; ++i )
@@ -498,9 +499,9 @@ init( const Point & lower,
               return false;
         }
     }
+
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
     {
-      myClosure[ i ] = closure[ i ];
       PreCellularGridSpace::uSetKCoord( myCellLower.myPreCell, i, ( lower[ i ] * 2 ) + ( closure[ i ] != OPEN   ? 0 : 1 ) );
       PreCellularGridSpace::uSetKCoord( myCellUpper.myPreCell, i, ( upper[ i ] * 2 ) + ( closure[ i ] == CLOSED ? 2 : 1 ) );
 
