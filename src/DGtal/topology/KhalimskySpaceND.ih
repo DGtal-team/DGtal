@@ -2081,7 +2081,15 @@ void
 DGtal::KhalimskySpaceND< dim, TInteger>::
 selfDisplay ( std::ostream & out ) const
 {
-  out << "[KhalimskySpaceND]";
+  out << "[KhalimskySpaceND<" << dimension << ">] { ";
+  out << "{ ";
+  for ( Dimension i = 0; i < dimension; ++i )
+    out << ( myClosure[i] == OPEN ? "OPEN " : ( myClosure[i] == CLOSED ? "CLOSED " : "PERIODIC " ) );
+  out << "}, ";
+  out << "lower = " << myLower << ", ";
+  out << "upper = " << myUpper;
+  out << " }";
+
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>

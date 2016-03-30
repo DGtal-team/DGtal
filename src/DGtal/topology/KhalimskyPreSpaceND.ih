@@ -1322,7 +1322,7 @@ void
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 selfDisplay ( std::ostream & out )
 {
-  out << "[KhalimskyPreSpaceND]";
+  out << "[KhalimskyPreSpaceND<" << dimension << ">]";
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
