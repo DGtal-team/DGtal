@@ -488,7 +488,7 @@ TEST_CASE( "Checking concepts" )
 
 TEST_CASE( "2D Khalimsky pre-space", "[KPreSpace][2D]" )
 {
-  const KhalimskyPreSpaceND<2> K;
+  const KhalimskyPreSpaceND<2> K{};
   INFO( "Khalimsky space is " << K );
 
   testScan( K, {-1, -2}, {1, 2} );
@@ -499,7 +499,7 @@ TEST_CASE( "2D Khalimsky pre-space", "[KPreSpace][2D]" )
 
 TEST_CASE( "3D Khalimsky pre-space", "[KPreSpace][3D]" )
 {
-  const KhalimskyPreSpaceND<3> K;
+  const KhalimskyPreSpaceND<3> K{};
   INFO( "Khalimsky space is " << K );
 
   testScan( K, {-1, -2, -3}, {1, 2, 3} );
@@ -509,7 +509,7 @@ TEST_CASE( "3D Khalimsky pre-space", "[KPreSpace][3D]" )
 
 TEST_CASE( "4D Khalimsky pre-space", "[KPreSpace][4D]" )
 {
-  const KhalimskyPreSpaceND<3> K;
+  const KhalimskyPreSpaceND<3> K{};
   INFO( "Khalimsky space is " << K );
 
   testScan( K, {-1, -2, -3, -4}, {1, 0, 1, -1} );
