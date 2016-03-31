@@ -856,6 +856,31 @@ namespace DGtal
      */
     static Cell uGetIncr( Cell p, Dimension k );
 
+    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+     *
+     * @param p any pre-cell.
+     * @param k the tested coordinate.
+     * @return always false.
+     */
+    static bool uIsMax( const Cell & p, Dimension k );
+
+
+    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+     *
+     *  @param p any pre-cell.
+     *  @param k the tested coordinate.
+     *  @return always true.
+     */
+    static bool uIsInside( const Cell & p, Dimension k );
+
+
+    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+     *
+     * @param p any pre-cell.
+     * @return always true.
+     */
+    static bool uIsInside( const Cell & p );
+
     /**
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
@@ -863,6 +888,13 @@ namespace DGtal
      * coordinate [k].
      */
     static Cell uGetDecr( Cell p, Dimension k );
+
+    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+     * @param p any pre-cell.
+     * @param k the tested coordinate.
+     * @return always false.
+     */
+    static bool uIsMin( const Cell & p, Dimension k );
 
     /**
      * @param p any pre-cell.
@@ -949,6 +981,31 @@ namespace DGtal
      */
     static SCell sGetIncr( SCell p, Dimension k );
 
+    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+     *
+     * @param p any pre-cell.
+     * @param k the tested coordinate.
+     * @return always false.
+     */
+    static bool sIsMax( const SCell & p, Dimension k );
+
+
+    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+     *
+     *  @param p any pre-cell.
+     *  @param k the tested coordinate.
+     *  @return always true.
+     */
+    static bool sIsInside( const SCell & p, Dimension k );
+
+
+    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+     *
+     * @param p any pre-cell.
+     * @return always true.
+     */
+    static bool sIsInside( const SCell & p );
+
     /**
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
@@ -956,6 +1013,13 @@ namespace DGtal
      * coordinate [k].
      */
     static SCell sGetDecr( SCell p, Dimension k );
+
+    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+     * @param p any pre-cell.
+     * @param k the tested coordinate.
+     * @return always false.
+     */
+    static bool sIsMin( const SCell & p, Dimension k );
 
     /**
      * @param p any pre-cell.
