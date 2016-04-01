@@ -64,7 +64,7 @@ namespace DGtal {
     const Domain& domain = dgtal_itk_image.domain();
 
     typedef ConstImageAdapter<DGtalITKImage, Domain, functors::Identity, Value, Functor> AdaptedImage;
-    const functors::Identity identityFunctor;
+    const functors::Identity identityFunctor{};
     const AdaptedImage adapted(dgtal_itk_image, domain, identityFunctor, aFunctor);
 
     Image image(domain);
