@@ -294,6 +294,46 @@ bool testMeshGeneration()
   return ok;
 }
 
+
+
+/**
+ * Test the mesh object construction.
+ */
+bool testVisualTubularMesh()
+{
+  trace.beginBlock("Testing visual tubular mesh generation:");
+  // Generate the center line:
+  std::vector<Z3i::RealPoint> centerline;
+  unsigned int nbPoints = 0;
+  double z = 0.0;
+  double radiusSpirale = 13.0;
+  double radiusTube = 15.0;
+  double alphaMax = 32.0;
+  for (double alpha = 0; alpha< alphaMax; alpha+= 0.1, z = z+0.5-0.05)
+    {
+      centerline.push_back(Z3i::RealPoint(radiusSpirale*cos(alpha), radiusSpirale*sin(alpha), z  ));
+      nbPoints++;
+      radiusSpirale -=0.05;
+      radiusSpirale = std::max(radiusSpirale, 0.0);
+    }    
+  // Generate radius:
+  std::vector<double> vectRadius;
+  for(unsigned int i=0; i<nbPoints; i++)
+    {
+      vectRadius.push_back(radiusTube);
+      radiusTube -=0.05;
+      radiusTube = std::max(radiusTube, 0.0);
+    }  
+
+  DGtal::Mesh<Z3i::RealPoint> theMesh(true);
+  DGtal::Mesh<Z3i::RealPoint>::createTubularMesh(theMesh, centerline, vectRadius, 0.01);
+  
+  trace.info()<< "generating done .. saving ";
+  theMesh >> "spiraleGeneratedFromTestMesh.off";  
+  trace.endBlock();
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -305,7 +345,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMesh() && testMeshGeneration(); // && ... other tests
+  bool res = testMesh() && testMeshGeneration() && testVisualTubularMesh(); 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
