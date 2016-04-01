@@ -329,11 +329,12 @@ bool testVisualTubularMesh()
     }  
 
   DGtal::Mesh<Z3i::RealPoint> theMeshShell(true);
-  DGtal::Mesh<Z3i::RealPoint>::createTubularMesh(theMeshShell, centerline, vectRadius, 0.01);
+  DGtal::Mesh<Z3i::RealPoint>::createTubularMesh(theMeshShell, centerline, vectRadius, 0.1);
   
-  trace.info() << "Mesh generated with " << theMeshShell.nbFaces() << " faces (should be 200651)" << std::endl;
+  trace.info() << "Mesh generated with " << theMeshShell.nbFaces()
+               << " faces (should be " << (centerline.size()-1)*63 << " )" << std::endl;
   nb++;
-  nbok +=  theMeshShell.nbFaces() == 200651;
+  nbok +=  theMeshShell.nbFaces() == (centerline.size()-1)*63;
   theMeshShell >> "spiraleGeneratedFromTestMesh.off";  
   trace.info() << " [done]" << std::endl;
   trace.endBlock();
@@ -375,14 +376,15 @@ bool testVisualTubularMesh()
   DGtal::Mesh<DGtal::Z3i::RealPoint>::createTubularMesh(theMeshTube, centerLine2,
                                                         5.0, 0.2, DGtal::Color::Blue);
   
-  trace.info() << "Mesh generated with " << theMeshTube.nbFaces() << " faces (should be 10208)" << std::endl; 
+  trace.info() << "Mesh generated with " << theMeshTube.nbFaces() << " faces (should be "
+               << (centerLine2.size()-1)*32 << " )" << std::endl; 
   nb++;
-  nbok +=  theMeshTube.nbFaces() == 10208;
+  nbok +=  theMeshTube.nbFaces() == (centerLine2.size()-1)*32;
 
   theMeshTube >> "tubeGeneratedFromTestMesh.off";  
   trace.endBlock();
   
-  return nb = nbok;
+  return nb == nbok;
 
 }
 
