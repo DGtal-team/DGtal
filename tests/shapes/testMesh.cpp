@@ -312,11 +312,12 @@ bool testVisualTubularMesh()
   double radiusSpirale = 13.0;
   double radiusTube = 15.0;
   double alphaMax = 32.0;
-  for (double alpha = 0; alpha< alphaMax; alpha+= 0.1, z = z+0.5-0.05)
+  double reduc = 0.05;
+  for (double alpha = 0; alpha< alphaMax; alpha += 0.1, z += 0.5-reduc)
     {
       centerline.push_back(Z3i::RealPoint(radiusSpirale*cos(alpha), radiusSpirale*sin(alpha), z  ));
       nbPoints++;
-      radiusSpirale -=0.05;
+      radiusSpirale -=reduc;
       radiusSpirale = std::max(radiusSpirale, 0.0);
     }    
   // Generate radius:
@@ -324,7 +325,7 @@ bool testVisualTubularMesh()
   for(unsigned int i=0; i<nbPoints; i++)
     {
       vectRadius.push_back(radiusTube);
-      radiusTube -=0.05;
+      radiusTube -=reduc;
       radiusTube = std::max(radiusTube, 0.0);
     }  
 
