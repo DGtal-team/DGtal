@@ -280,7 +280,7 @@ namespace DGtal
         //aspect ratio
         double a = u.norm() , b = v.norm();
         double c = w.norm();
-        double s = s = (a+b+c)/2.0;
+        double s = (a+b+c)/2.0;
         aspect = a*b*c/(8.0*(s-a)*(s-b)*(s-c));
         
         return v.crossProduct(u);
