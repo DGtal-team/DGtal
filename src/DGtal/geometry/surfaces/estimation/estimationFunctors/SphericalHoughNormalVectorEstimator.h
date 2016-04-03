@@ -215,7 +215,7 @@ namespace DGtal
       {
         const double theta = (rand()+0.f)/RAND_MAX * 2* M_PI;
         const double phi = (rand()+0.f)/RAND_MAX * 2* M_PI;
-        const double psi = (rand()+0.f)/RAND_MAX * 2* M_PI;
+        const  double psi = (rand()+0.f)/RAND_MAX * 2* M_PI;
         Matrix Rt;
         Rt.setComponent(0,0,1);
         Rt.setComponent(1,0,0);

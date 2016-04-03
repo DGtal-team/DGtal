@@ -38,7 +38,7 @@
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
-
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/base/BasicFunctors.h"
 
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
@@ -106,11 +106,12 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   
   Quantity result = reporter.eval( surface.begin() );
   trace.info() << "Result at begin = "<< result <<std::endl;
-
-  RealPoint res(-0.236188, 0.952967, 0.189917);
-  REQUIRE( result[0] == Approx( res[0] ));
-  REQUIRE( result[1] == Approx( res[1] ));
-  REQUIRE( result[2] == Approx( res[2] ));
+ 
+  //true normal (implicitBall)
+  RealPoint res = embedder( *(surface.begin()) ).getNormalized();
+  trace.info() << "Expecting  = "<< res <<std::endl;
+  
+  REQUIRE( std::abs(result.dot(res)) > 0.9 );
   
   
 #ifdef WITH_VISU3D_QGLVIEWER_TESTS
