@@ -61,7 +61,7 @@ using namespace Z3i;
 
 TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
 {
-  typedef ImplicitHyperCube<Space> Shape;
+  typedef ImplicitBall<Space> Shape;
   typedef GaussDigitizer<Space,Shape> Gauss;
   
   typedef LightImplicitDigitalSurface<KSpace,Gauss> SurfaceContainer;
@@ -76,7 +76,7 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   
 
   //Shape
-  Shape shape(RealPoint::diagonal(0.0), 30.0 );
+  Shape shape(RealPoint::diagonal(0.0), 10.0 );
   Gauss gauss;
   gauss.attach(shape);
   gauss.init(p1,p2,1.0);
