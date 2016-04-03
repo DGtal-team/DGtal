@@ -109,8 +109,8 @@ namespace DGtal
                                           const unsigned int nbAccumulators = 5) : myEmbedder(&anEmbedder),myH(h), myAspectRatio(minimalAspectRatio),
       myNbTrials( nbTrials), mySize(accumulatorSize) , myNbAccumulators(nbAccumulators)
       {
-        SphericalAccumulator<RealPoint> accum(mySize);  
-
+        SphericalAccumulator<RealPoint> accum(mySize);
+        
         //We precompute the random rotations and accumulators
         for(auto i=0; i < myNbAccumulators; ++i)
         {
@@ -170,7 +170,7 @@ namespace DGtal
             for(auto acc=0; acc < myNbAccumulators; ++acc)
             {
               RealPoint shifted = myRotations[acc]*vector;
-              trace.info() << "  PUSHING = "<< shifted<<std::endl;
+              //trace.info() << "  PUSHING = "<< shifted<<std::endl;
               myAccumulators[acc].addDirection( shifted );
               myAccumulators[acc].addDirection( -shifted );
             }
@@ -200,6 +200,8 @@ namespace DGtal
       void reset()
       {
         myPoints.clear();
+        for(auto i=0; i < myNbAccumulators; ++i)
+          myAccumulators[i].clear();
       }
       
     private:

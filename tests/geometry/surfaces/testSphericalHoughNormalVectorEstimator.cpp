@@ -113,7 +113,7 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   REQUIRE( result[2] == Approx( res[2] ));*/
   
   
-#ifdef wwWITH_VISU3D_QGLVIEWER
+#ifdef WITH_VISU3D_QGLVIEWER
   int argc=0;
   char **argv;
   QApplication application(argc,argv);
