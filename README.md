@@ -55,7 +55,7 @@ License
 DGtal core libarary is under the GNU LGPL v3 license (see [LICENSE](LICENSE)). DGtal documentation and website materials are under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 ](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 If some dependencies are activated, resulting binaries may follow the dependencies licenses. More precisely:
-* If the library is built with the 3D internal viewer using [libQGLViewer](http://libqglviewer.com) (```WITH_QGLVIEWER``` flag set to ```true```), then resulting binaries libQGLViewer license (GNU GPL or commercial, see [libQGLViewer licensing](http://libqglviewer.com/dualLicensing.html)).
+* If the library is built with the 3D internal viewer using [libQGLViewer](http://libqglviewer.com) (```WITH_QGLVIEWER``` flag set to ```true```), then resulting binaries must follow libQGLViewer license (GNU GPL or commercial, see [libQGLViewer licensing](http://libqglviewer.com/dualLicensing.html)).
 * If [CGAL](cgal.org) is activated (```WITH_CGAL``` option), the resulting binaries are under GNU GPL v3 license if the source code uses Jet Fitting based differential estimators (see [CGAL Estimation of Local Differential Properties of Point-Sampled Surfaces package](http://doc.cgal.org/latest/Manual/packages.html#PkgJet_fitting_3Summary))
 
 More Information
