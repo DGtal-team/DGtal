@@ -106,7 +106,8 @@ namespace DGtal
                                           const double minimalAspectRatio = 0.001,
                                           const unsigned int nbTrials = 100,
                                           const unsigned int accumulatorSize = 10,
-                                          const unsigned int nbAccumulators = 5) : myEmbedder(&anEmbedder),myH(h), myAspectRatio(minimalAspectRatio),
+                                          const unsigned int nbAccumulators = 5) :
+      myEmbedder(&anEmbedder),myH(h), myAspectRatio(minimalAspectRatio),
       myNbTrials( nbTrials), mySize(accumulatorSize) , myNbAccumulators(nbAccumulators)
       {
         SphericalAccumulator<RealPoint> accum(mySize);
@@ -158,6 +159,7 @@ namespace DGtal
         {
           unsigned int i,j,k;
           
+          //We pick 3 distinct point indices.
           i = distribution(generator);
           j = distribution(generator);
           while ( (j = distribution(generator)) == i);
@@ -170,7 +172,6 @@ namespace DGtal
             for(auto acc=0; acc < myNbAccumulators; ++acc)
             {
               RealPoint shifted = myRotations[acc]*vector;
-              //trace.info() << "  PUSHING = "<< shifted<<std::endl;
               myAccumulators[acc].addDirection( shifted );
               myAccumulators[acc].addDirection( -shifted );
             }
@@ -185,7 +186,7 @@ namespace DGtal
           RealPoint dir = myInverseRotations[acc]*myAccumulators[acc].representativeDirection(posPhi, posTheta).getNormalized() ;
           
           //We only consider z-oriented normals (since we pushed vector and -vector)
-          if ( dir.dot(RealPoint(0,0,1)) >0 )
+          if ( dir.dot(RealPoint(0,0,1)) > 0.0 )
           vote += dir;
           else
           vote += -dir;
@@ -200,6 +201,7 @@ namespace DGtal
       void reset()
       {
         myPoints.clear();
+        //accumulators cleanup
         for(auto i=0; i < myNbAccumulators; ++i)
           myAccumulators[i].clear();
       }
