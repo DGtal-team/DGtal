@@ -213,9 +213,9 @@ namespace DGtal
        */
       Matrix randomRotation() const
       {
-        double theta = (rand()+0.f)/RAND_MAX * 2* M_PI;
-        double phi = (rand()+0.f)/RAND_MAX * 2* M_PI;
-        double psi = (rand()+0.f)/RAND_MAX * 2* M_PI;
+        const double theta = (rand()+0.f)/RAND_MAX * 2* M_PI;
+        const double phi = (rand()+0.f)/RAND_MAX * 2* M_PI;
+        const double psi = (rand()+0.f)/RAND_MAX * 2* M_PI;
         Matrix Rt;
         Rt.setComponent(0,0,1);
         Rt.setComponent(1,0,0);
@@ -273,14 +273,14 @@ namespace DGtal
         ASSERT( j < myPoints.size());
         ASSERT( k < myPoints.size());
         
-        RealPoint v = myPoints[i] - myPoints[j];
-        RealPoint u = myPoints[i] - myPoints[k];
-        RealPoint w = myPoints[j] - myPoints[k];
+        const RealPoint v = myPoints[i] - myPoints[j];
+        const RealPoint u = myPoints[i] - myPoints[k];
+        const RealPoint w = myPoints[j] - myPoints[k];
         
         //aspect ratio
-        double a = u.norm() , b = v.norm();
-        double c = w.norm();
-        double s = (a+b+c)/2.0;
+        const double a = u.norm() , b = v.norm();
+        const double c = w.norm();
+        const double s = (a+b+c)/2.0;
         aspect = a*b*c/(8.0*(s-a)*(s-b)*(s-c));
         
         return v.crossProduct(u);
