@@ -107,13 +107,13 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   Quantity result = reporter.eval( surface.begin() );
   trace.info() << "Result at begin = "<< result <<std::endl;
 
-  RealPoint res(0.439047, -0.755537, 0.486211);
-  /*REQUIRE( result[0] == Approx( res[0] ));
+  RealPoint res(-0.236188, 0.952967, 0.189917);
+  REQUIRE( result[0] == Approx( res[0] ));
   REQUIRE( result[1] == Approx( res[1] ));
-  REQUIRE( result[2] == Approx( res[2] ));*/
+  REQUIRE( result[2] == Approx( res[2] ));
   
   
-#ifdef WITH_VISU3D_QGLVIEWER
+#ifdef WITH_VISU3D_QGLVIEWER_TESTS
   int argc=0;
   char **argv;
   QApplication application(argc,argv);
