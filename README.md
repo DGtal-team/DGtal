@@ -52,7 +52,7 @@ DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or n
 License
 =======
 
-DGtal core libarary is under the GNU LGPL v3 license (see [LICENSE.txt](LICENSE.txt)). DGtal documentation and website materials are under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 ](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+DGtal core libarary is under the GNU LGPL v3 license (see [LICENSE](LICENSE)). DGtal documentation and website materials are under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 ](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 If some dependencies are activated, resulting binaries may follow the dependencies licenses. More precisely:
 * If the library is built with the 3D internal viewer using [libQGLViewer](http://libqglviewer.com) (```WITH_QGLVIEWER``` flag set to ```true```), then resulting binaries libQGLViewer license (GNU GPL or commercial, see [libQGLViewer licensing](http://libqglviewer.com/dualLicensing.html)).
