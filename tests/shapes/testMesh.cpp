@@ -294,6 +294,101 @@ bool testMeshGeneration()
   return ok;
 }
 
+
+
+/**
+ * Test the mesh object construction.
+ */
+bool testVisualTubularMesh()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock("Testing visual tubular mesh generation (shell mesh):");
+  // Generate the center line:
+  std::vector<Z3i::RealPoint> centerline;
+  unsigned int nbPoints = 0;
+  double z = 0.0;
+  double radiusSpirale = 13.0;
+  double radiusTube = 15.0;
+  double alphaMax = 32.0;
+  double reduc = 0.05;
+  for (double alpha = 0; alpha< alphaMax; alpha += 0.1, z += 0.5-reduc)
+    {
+      centerline.push_back(Z3i::RealPoint(radiusSpirale*cos(alpha), radiusSpirale*sin(alpha), z  ));
+      nbPoints++;
+      radiusSpirale -=reduc;
+      radiusSpirale = std::max(radiusSpirale, 0.0);
+    }    
+  // Generate radius:
+  std::vector<double> vectRadius;
+  for(unsigned int i=0; i<nbPoints; i++)
+    {
+      vectRadius.push_back(radiusTube);
+      radiusTube -=reduc;
+      radiusTube = std::max(radiusTube, 0.0);
+    }  
+
+  DGtal::Mesh<Z3i::RealPoint> theMeshShell(true);
+  DGtal::Mesh<Z3i::RealPoint>::createTubularMesh(theMeshShell, centerline, vectRadius, 0.1);
+  
+  trace.info() << "Mesh generated with " << theMeshShell.nbFaces()
+               << " faces (should be " << (centerline.size()-1)*63 << " )" << std::endl;
+  nb++;
+  nbok +=  theMeshShell.nbFaces() == (centerline.size()-1)*63;
+  theMeshShell >> "spiraleGeneratedFromTestMesh.off";  
+  trace.info() << " [done]" << std::endl;
+  trace.endBlock();
+
+
+
+  trace.beginBlock("Testing visual tubular mesh generation (tube mesh):");
+  std::vector<Z3i::RealPoint> centerLine2;
+  centerLine2.push_back(Z3i::RealPoint(0.0,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(3.3,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(6.6,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(10.0,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(13.3,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(16.6,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(20.0,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(60.0,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(63.3,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(66.6,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(70.0,0.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(71.7,0.1,0.0));
+  centerLine2.push_back(Z3i::RealPoint(73.4,0.6,0.0));
+  centerLine2.push_back(Z3i::RealPoint(75.0,1.3,0.0));
+  centerLine2.push_back(Z3i::RealPoint(76.4,2.3,0.0));
+  centerLine2.push_back(Z3i::RealPoint(77.6,3.5,0.0));
+  centerLine2.push_back(Z3i::RealPoint(78.6,5.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(79.3,6.5,0.0));
+  centerLine2.push_back(Z3i::RealPoint(79.8,8.2,0.0));
+  centerLine2.push_back(Z3i::RealPoint(80.0,10.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(80.0,13.8,0.0));
+  centerLine2.push_back(Z3i::RealPoint(80.0,86.1,0.0));
+  centerLine2.push_back(Z3i::RealPoint(80.0,90.0,0.0));
+  centerLine2.push_back(Z3i::RealPoint(80.1,91.7,-0.1));
+  centerLine2.push_back(Z3i::RealPoint(80.6,93.4,0.1));
+  centerLine2.push_back(Z3i::RealPoint(81.3,95.0,0.1));
+  centerLine2.push_back(Z3i::RealPoint(82.3,96.4,-0.1));
+  centerLine2.push_back(Z3i::RealPoint(83.5,97.6,-0.1));
+
+  DGtal::Mesh<Z3i::RealPoint> theMeshTube(true);
+  DGtal::Mesh<DGtal::Z3i::RealPoint>::createTubularMesh(theMeshTube, centerLine2,
+                                                        5.0, 0.2, DGtal::Color::Blue);
+  
+  trace.info() << "Mesh generated with " << theMeshTube.nbFaces() << " faces (should be "
+               << (centerLine2.size()-1)*32 << " )" << std::endl; 
+  nb++;
+  nbok +=  theMeshTube.nbFaces() == (centerLine2.size()-1)*32;
+
+  theMeshTube >> "tubeGeneratedFromTestMesh.off";  
+  trace.endBlock();
+  
+  return nb == nbok;
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -305,7 +400,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMesh() && testMeshGeneration(); // && ... other tests
+  bool res = testMesh() && testMeshGeneration() && testVisualTubularMesh(); 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
