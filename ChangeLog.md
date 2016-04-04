@@ -69,6 +69,12 @@
     was wrong on 3d and on closed Khalimsky space.
     (Bertrand Kerautret, [#1156](https://github.com/DGtal-team/DGtal/pull/1156))
 
+- *Shape Package*
+  - Fix a tubular mesh construction problem (missing faces) which appears
+    when the center line is oriented in a main axis direction (in
+    createTubularMesh()). Also improves and fixes the face construction.
+    (Bertrand Kerautret, [#1157](https://github.com/DGtal-team/DGtal/pull/1157))
+
 # DGtal 0.9.1
 
 ## New Features / Critical Changes
