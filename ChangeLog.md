@@ -15,6 +15,8 @@
    constructor, like from a rvalue reference. Adding ConstAlias in many classes
    that need it.
    (Roland Denis, [#1140](https://github.com/DGtal-team/DGtal/pull/1140))
+   (With ITK related compilation fix, Bertrand Kerautret
+   [#1153](https://github.com/DGtal-team/DGtal/pull/1153))
 
 - *IO Package*
  - Add the possibility to interact in QGLViewer Viewer3D class with the voxel
