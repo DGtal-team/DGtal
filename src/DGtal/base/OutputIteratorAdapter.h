@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/Circulator.h"
@@ -90,7 +91,7 @@ namespace DGtal
      * @param it any iterator 
      * @param f any functor
      */
-    OutputIteratorAdapter(const Iterator &it, const TFunctor &f)
+    OutputIteratorAdapter(const Iterator &it, ConstAlias<TFunctor> f)
     : myIt(it), myF(&f) {}
 
     /**

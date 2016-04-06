@@ -51,7 +51,7 @@ template <typename TImage, typename TSet, typename TPointPredicate, typename TPo
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
-      const PointPredicate& aPointPredicate)
+      ConstAlias<PointPredicate> aPointPredicate)
   : myImage( aImg ), myAcceptedPoints( aSet ), 
     myPointFunctorPtr( new PointFunctor(aImg, aSet) ), 
     myFlagIsOwning( true ), 
@@ -68,7 +68,7 @@ template <typename TImage, typename TSet, typename TPointPredicate, typename TPo
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
-      const PointPredicate& aPointPredicate, 
+      ConstAlias<PointPredicate> aPointPredicate, 
       const Area& aAreaThreshold, 
       const Value& aValueThreshold)
   : myImage( aImg ), myAcceptedPoints( aSet ), 
@@ -87,7 +87,7 @@ template <typename TImage, typename TSet, typename TPointPredicate, typename TPo
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
-      const PointPredicate& aPointPredicate,
+      ConstAlias<PointPredicate> aPointPredicate,
       PointFunctor& aPointFunctor)
   : myImage( aImg ), myAcceptedPoints( aSet ), 
     myPointFunctorPtr( &aPointFunctor ), 
@@ -105,7 +105,7 @@ template <typename TImage, typename TSet, typename TPointPredicate, typename TPo
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
-      const PointPredicate& aPointPredicate, 
+      ConstAlias<PointPredicate> aPointPredicate, 
       const Area& aAreaThreshold, 
       const Value& aValueThreshold,
       PointFunctor& aPointFunctor)

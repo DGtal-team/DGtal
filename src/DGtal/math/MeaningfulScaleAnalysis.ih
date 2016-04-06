@@ -44,7 +44,7 @@
 // Implementation of inline methods                                          //
 
 template<typename TProfile>
-DGtal::MeaningfulScaleAnalysis<TProfile>::MeaningfulScaleAnalysis(const Profile &aProfile): myProfile(aProfile) 
+DGtal::MeaningfulScaleAnalysis<TProfile>::MeaningfulScaleAnalysis( ConstAlias<Profile> aProfile): myProfile(aProfile) 
 {  
 }
 

@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file DigitalSurfaceBoostGraphInterface.ih
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ * @file ObjectBoostGraphInterface.ih
+ * @author Pablo Hernandez-Cerdan. Institute of Fundamental Sciences.
+ * Massey University. Palmerston North, New Zealand
  *
- * @date 2013/01/20
+ * @date 2016/02/01
  *
- * Implementation of inline methods defined in DigitalSurfaceBoostGraphInterface.h
+ * Implementation of inline methods defined in ObjectBoostGraphInterface.h
  *
  * This file is part of the DGtal library.
  */
@@ -38,32 +38,32 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template < class TDigitalSurfaceContainer >
-inline 
+template < class TDigitalTopology, class TDigitalSet >
+inline
 std::pair<
-  typename boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_iterator,
-  typename boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_iterator 
+  typename boost::graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::vertex_iterator,
+  typename boost::graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::vertex_iterator
   >
-boost::vertices( const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
+boost::vertices( const DGtal::Object< TDigitalTopology, TDigitalSet > & obj )
 {
-  return std::make_pair( digSurf.begin(), digSurf.end() );
+  return std::make_pair( obj.begin(), obj.end() );
 }
 //-----------------------------------------------------------------------------
-template < class TDigitalSurfaceContainer >
-inline 
-boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
+template < class TDigitalTopology, class TDigitalSet >
+inline
+boost::graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::edge_iterator::
 edge_iterator()
-  : myGraph( 0 ) 
+  : myGraph( 0 )
 {}
 //-----------------------------------------------------------------------------
-template < class TDigitalSurfaceContainer >
-inline 
-boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
-edge_iterator( ConstAlias<Adapted> graph,
+template < class TDigitalTopology, class TDigitalSet >
+inline
+boost::graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::edge_iterator::
+edge_iterator( const Adapted & graph,
                const vertex_iterator & itB, const vertex_iterator & itE )
-  : myGraph( &graph ), 
+  : myGraph( &graph ),
     myVertexRange( itB, itE ),
-    myOutEdgeRange() 
+    myOutEdgeRange()
 {
   if ( myVertexRange.first != myVertexRange.second )
     {
@@ -71,23 +71,23 @@ edge_iterator( ConstAlias<Adapted> graph,
     }
 }
 //-----------------------------------------------------------------------------
-template < class TDigitalSurfaceContainer >
-inline 
-const typename boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::Arc &
-boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
+template < class TDigitalTopology, class TDigitalSet >
+inline
+const typename boost::graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::Edge &
+boost::graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::edge_iterator::
 dereference() const
 {
   ASSERT( myVertexRange.first != myVertexRange.second );
   ASSERT( myOutEdgeRange.first != myOutEdgeRange.second );
-  return *( myOutEdgeRange.first ); 
+  return *( myOutEdgeRange.first );
 }
 //-----------------------------------------------------------------------------
-template < class TDigitalSurfaceContainer >
-inline 
+template < class TDigitalTopology, class TDigitalSet >
+inline
 bool
-boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
+boost::graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::edge_iterator::
 equal( const edge_iterator & other ) const
-{ 
+{
   bool thisAtEnd = ( myVertexRange.first == myVertexRange.second );
   bool otherAtEnd = ( other.myVertexRange.first == other.myVertexRange.second );
   if ( thisAtEnd || otherAtEnd ) return thisAtEnd && otherAtEnd;
@@ -99,11 +99,11 @@ equal( const edge_iterator & other ) const
     }
 }
 //-----------------------------------------------------------------------------
-template < class TDigitalSurfaceContainer >
-inline 
+template < class TDigitalTopology, class TDigitalSet >
+inline
 void
-boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
-increment() 
+boost::graph_traits< DGtal::Object< TDigitalTopology, TDigitalSet > >::edge_iterator::
+increment()
 {
   ++myOutEdgeRange.first;
   if ( myOutEdgeRange.first == myOutEdgeRange.second )

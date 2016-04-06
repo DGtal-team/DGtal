@@ -162,17 +162,9 @@ namespace DGtal
      * @param KSEmb the Khalimsky space
      */
     Viewer3D(const KSpace &KSEmb):QGLViewer(), Display3D<Space,KSpace>(KSEmb)
-    {};
-
-    /**
-     *Constructor with a space and a khalimsky space
-     *@param SEmb a space
-     *@param KSEmb a khalimsky space
-     **/
-    Viewer3D(const Space &SEmb, const KSpace &KSEmb) : QGLViewer(), Display3D<Space,KSpace>(SEmb, KSEmb)
-    {};
-
-
+    {
+      resize(800,600);
+    }
 
     /**
      * Set camera position.
@@ -1187,12 +1179,16 @@ namespace DGtal
 
 
     /**
-     * Creates an OpenGL list of type GL_QUADS from a vector of CubeD3D.
-     * @param[in] aVectCubes a vector of cubes (Cube3D) containing the cubes to be displayed.
+     * Creates an OpenGL list of type GL_QUADS from a CubeD3D.  Only
+     * one OpenGL list is created but each map compoment (CubeD3D
+     * vector) are marked by its identifier through the OpenGl
+     * glPushName() function.
+     * See @ref moduleQGLInteraction for more details.
+     * @param[in] aCubeMap  a map of cube (CubesMap) associating a name to a vector of CubeD3D.
      * @param[in] idList the Id of the list (should be given by glGenLists).
      **/
-    void glCreateListCubes( const VectorCubes & aVectCubes,
-                              unsigned int idList);
+    void glCreateListCubesMaps(const typename Display3D<Space, KSpace>::CubesMap &aCubeMap, unsigned int idList);
+
 
 
     /**
@@ -1354,9 +1350,6 @@ namespace DGtal
     /// lists of the list to draw
     //GLuint myListToAff;
 
-    GLuint myCubeSetListId;
-    GLuint myCubeSetListWiredId;
-
     GLuint myTriangleSetListId;
     GLuint myTriangleSetListWiredId;
 
@@ -1370,15 +1363,20 @@ namespace DGtal
     GLuint myQuadsMapId;
     GLuint myQuadsMapWiredId;
 
+    GLuint myCubesMapId;
+    GLuint myCubeSetListWiredId;
+
     /// number of lists in myListToAff
 
     unsigned int myNbListe;
-    unsigned int myNbCubeSetList;
     unsigned int myNbLineSetList;
     unsigned int myNbBallSetList;
     unsigned int myNbPrismSetList;
 
-
+    /// used to displayed selected elements
+    int mySelectedElementId = -1;
+    unsigned char mySelectionColorShift = 150;
+    
     /// information linked to the navigation in the viewer
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
     /// a point selected with postSelection @see postSelection

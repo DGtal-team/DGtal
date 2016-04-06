@@ -42,7 +42,7 @@
 template <typename TDomain>
 inline
 DGtal::functors::DomainPredicate<TDomain>
-::DomainPredicate( const Domain & aDomain )
+::DomainPredicate( ConstAlias<Domain> aDomain )
   : myDomain( &aDomain )
 {
 }
