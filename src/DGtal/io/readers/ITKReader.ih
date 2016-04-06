@@ -37,8 +37,7 @@ namespace DGtal {
   throw(DGtal::IOException)
   {
     typedef typename Image::Domain Domain;
-    typedef typename Domain::Point Point;
-
+    
     typedef ImageContainerByITKImage<Domain, ValueOut> DGtalITKImage;
     typedef typename DGtalITKImage::ITKImagePointer ITKImagePointer;
     ITKImagePointer itk_image = DGtalITKImage::ITKImage::New();
