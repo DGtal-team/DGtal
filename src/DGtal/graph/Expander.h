@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DomainAdjacency.h"
@@ -126,7 +127,7 @@ namespace DGtal
      * @param object the digital object in which the expander expands.
      * @param p any point in the given object.
      */
-    Expander( const Object & object, const Point & p );
+    Expander( ConstAlias<Object> object, const Point & p );
 
     /**
      * Constructor from iterators. All points visited between the
@@ -140,7 +141,7 @@ namespace DGtal
      * @param e the end point in a set.
      */
     template <typename PointInputIterator>
-    Expander( const Object & object,
+    Expander( ConstAlias<Object> object,
         PointInputIterator b, PointInputIterator e );
 
 

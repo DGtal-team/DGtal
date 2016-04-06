@@ -45,7 +45,8 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
     //FIXME: as for Display3D models, embedder should be factorized
     //and not instantiated at each call.
     typedef DGtal::CanonicSCellEmbedder<DGtal::Z2i::KSpace> Embedder;
-    const Embedder embedder((DGtal::Z2i::KSpace()));
+    const DGtal::Z2i::KSpace K{};
+    const Embedder embedder( K );
     const Embedder::RealPoint coords = embedder(sk);
     const float x = coords[0];
     const float y = coords[1];

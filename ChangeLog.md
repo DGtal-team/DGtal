@@ -1,6 +1,5 @@
 # DGtal 0.9.2
 
-
 ## New Features / Critical Changes
 
 - *Geometry Package*
@@ -16,18 +15,37 @@
    changes in new pull-requests. (David Coeurjolly,
    [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
 
+- *Base Package*
+ - Alias and ConstAlias now raise compilation error when using invalid
+   constructor, like from a rvalue reference. Adding ConstAlias in many classes
+   that need it.
+   (Roland Denis, [#1140](https://github.com/DGtal-team/DGtal/pull/1140))
+   (With ITK related compilation fix, Bertrand Kerautret
+   [#1153](https://github.com/DGtal-team/DGtal/pull/1153))
+
+- *IO Package*
+ - Add the possibility to interact in QGLViewer Viewer3D class with the voxel
+   primitive (was limited to surfel). As with surfel, the user may assign integer
+   identifiers (OpenGL names) to voxel and callback functions, which are called
+   when voxel are selected. The selected elements are now highlighted.
+   (Bertrand Kerautret, [#1146](https://github.com/DGtal-team/DGtal/pull/1146))
+
 ## Bug Fixes
 - *DEC Package*
  - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
    (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
 
 - *Geometry Package*
+ - VoronoiCovarianceMeasure: fix dimension-specific code.
+   (Roland Denis, [#1145](https://github.com/DGtal-team/DGtal/pull/1145))
  - AlphaThickSegmentComputer: fix segment display errors which could appear
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
 
 - *IO Package*
+ - Display3D: Fix embedder usage when using default constructor in Debug mode.
+   (Roland Denis [##1143](https://github.com/DGtal-team/DGtal/pull/1143))
  - Viewer3D: Fix a problem when the show() method was called at the end of the
    main program (the list creation was not called).
    (Bertrand Kerautret [##1138](https://github.com/DGtal-team/DGtal/pull/1138))
@@ -44,15 +62,25 @@
  - Fixing issue [#899](https://github.com/DGtal-team/DGtal/issues/899) in
    all color maps, (David Coeurjolly, Bertrand Kerautret
    [#1134](https://github.com/DGtal-team/DGtal/pull/1134))
--  GenericReader: include longvol reader in GenericReader for 64 bit images.
+ -  GenericReader: include longvol reader in GenericReader for 64 bit images.
    Update the test for 64 bit longvol. (Bertrand Kerautret
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
+ - Fix the extension removal in Obj filename export in Board3D. (David
+   Coeurjolly,[#1154](https://github.com/DGtal-team/DGtal/pull/1154)))
 
 - *Topology Package*
   - Fix wrong starting point for surface tracking in example code
     frontierAndBoundary.cpp.
     (Roland Denis, [#1144](https://github.com/DGtal-team/DGtal/pull/1144))
+  - Fix interior/exterior fill methods of topology/helpers/Surfaces class which
+    was wrong on 3d and on closed Khalimsky space.
+    (Bertrand Kerautret, [#1156](https://github.com/DGtal-team/DGtal/pull/1156))
 
+- *Shape Package*
+  - Fix a tubular mesh construction problem (missing faces) which appears
+    when the center line is oriented in a main axis direction (in
+    createTubularMesh()). Also improves and fixes the face construction.
+    (Bertrand Kerautret, [#1157](https://github.com/DGtal-team/DGtal/pull/1157))
 
 # DGtal 0.9.1
 

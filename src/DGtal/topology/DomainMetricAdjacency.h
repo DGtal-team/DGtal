@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -88,7 +89,7 @@ namespace DGtal
        * Constructor from domain.
        * @param aDomain any domain.
        */
-      DomainMetricAdjacency( const Domain & aDomain );
+      DomainMetricAdjacency( ConstAlias<Domain> aDomain );
 
       /**
        * Copy constructor.
