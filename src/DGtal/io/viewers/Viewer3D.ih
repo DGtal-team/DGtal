@@ -1257,9 +1257,9 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
   if ( ( e->key() ==Qt::Key_P ) )
     {
       myLightPositionFixToCamera =! myLightPositionFixToCamera;
-      myLightPositionRefCamera[0] = 0;
-      myLightPositionRefCamera[1] = 0;
-      myLightPositionRefCamera[2] = 0;
+      myLightPositionRefCamera[0] = 0.0f;
+      myLightPositionRefCamera[1] = 0.0f;
+      myLightPositionRefCamera[2] = 0.0f;
       updateLightCoordsFromCamera();
       const Vec cameraPos = camera()->position();
       if(myLightPositionFixToCamera)
