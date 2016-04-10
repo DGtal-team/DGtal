@@ -678,11 +678,13 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glLightfv(GL_LIGHT0, GL_SPECULAR, myLightSpecularCoeffs);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, myLightDiffuseCoeffs);
   glLightfv(GL_LIGHT0, GL_AMBIENT, myLightAmbientCoeffs);
-  if( myLightPositionFixToCamera ){
-        updateLightCoordsFromCamera();  
-  }
-  glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);  
-  
+  if( myLightPositionFixToCamera )
+    {
+      updateLightCoordsFromCamera();  
+    }else
+    {  
+      glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);  
+    }
   unsigned int i = 0;
   typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
   
@@ -1255,18 +1257,19 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
   if ( ( e->key() ==Qt::Key_P ) )
     {
       myLightPositionFixToCamera =! myLightPositionFixToCamera;
+      myLightPositionRefCamera[0] = 0;
+      myLightPositionRefCamera[1] = 0;
+      myLightPositionRefCamera[2] = 0;
+      updateLightCoordsFromCamera();
       const Vec cameraPos = camera()->position();
       if(myLightPositionFixToCamera)
         {
+          glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
           displayMessage(QString("Light source position fixed to camera."), 3000);
-          myLightPositionRefCamera[0] = myLightPosition[0]-static_cast<GLfloat>(cameraPos[0]);
-          myLightPositionRefCamera[1] = myLightPosition[1]-static_cast<GLfloat>(cameraPos[1]);
-          myLightPositionRefCamera[2] = myLightPosition[2]-static_cast<GLfloat>(cameraPos[2]);
         }
       else
         {
           displayMessage(QString("Light source position fixed to main scene."), 3000);
-          updateLightCoordsFromCamera();
         }
       updateGL();
     }
