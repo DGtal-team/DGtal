@@ -1399,7 +1399,7 @@ namespace DGtal
     double myLightTheta; /// the light position (inclination)
     double myLightPhi; /// the light position (azimuth)
     double myLightR; /// the light position (distance)
-    GLfloat myLightPosition [4]; // the light position in cartesian coordinate
+    GLfloat myLightPosition [4] = {0.0f, 0.0f, 1.0f, 0.0f}; // the light position in cartesian coordinate
     GLfloat myLightPositionRefCamera [4] = {0.0f, 0.0f, 0.0f, 0.0f}; // the light position according to the camera position
     GLfloat myMaterialShininessCoeff[1] =  {50.0f} ; // the material shininess coefficient used in opengl rendering 
     GLfloat myMaterialSpecularCoeffs[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; // the light specular coefficients used in opengl rendering 
