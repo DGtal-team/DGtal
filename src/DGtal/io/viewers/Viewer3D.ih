@@ -1142,23 +1142,30 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::mousePressEvent ( QMouseEvent *e )
 {
-  if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier)){
-    myIsMovingLight=true;
-    myRefMouseXPos = e->x();
-    myRefMouseYPos = e->y();
-    GLfloat lPos [4];
-    lPos[3] = 1.0f;
-    if( myLightPositionFixToCamera ){
-      updateLightCoordsFromCamera();  
-    }    
-    myLightR = sqrt( myLightPosition[0]* myLightPosition[0]+
-                     myLightPosition[1]* myLightPosition[1]+
-                     myLightPosition[2]* myLightPosition[2]);
-    myLightTheta = asin( myLightPosition[2]/myLightR);
-    myLightPhi = atan2( myLightPosition[1], myLightPosition[0]);
-  }else{
-    QGLViewer::mousePressEvent(e);
-  }
+  if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier))
+    {
+      myIsMovingLight=true;
+      myRefMouseXPos = e->x();
+      myRefMouseYPos = e->y();
+      GLfloat lPos [4];
+      lPos[3] = 1.0f;
+      if( myLightPositionFixToCamera )
+        {
+          myLightPositionRefCamera[0] = 0.0f;
+          myLightPositionRefCamera[1] = 0.0f;
+          myLightPositionRefCamera[2] = 0.0f;
+          updateLightCoordsFromCamera();
+        }
+      myLightR = sqrt( myLightPosition[0]* myLightPosition[0]+
+                       myLightPosition[1]* myLightPosition[1]+
+                       myLightPosition[2]* myLightPosition[2]);
+      myLightTheta = asin( myLightPosition[2]/myLightR);
+      myLightPhi = atan2( myLightPosition[1], myLightPosition[0]);
+    }
+  else
+    {
+      QGLViewer::mousePressEvent(e);
+    }
 }
 
 template< typename Space, typename KSpace>
