@@ -1269,7 +1269,6 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       myLightPositionRefCamera[1] = 0.0f;
       myLightPositionRefCamera[2] = 0.0f;
       updateLightCoordsFromCamera();
-      const Vec cameraPos = camera()->position();
       if(myLightPositionFixToCamera)
         {
           glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
