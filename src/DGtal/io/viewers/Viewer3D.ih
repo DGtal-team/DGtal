@@ -853,6 +853,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myGLScaleFactorZ=1.0;
   myGLLineMinWidth=1.5;
   setBackgroundColor ( QColor ( 217, 228, 255 ) );
+  setForegroundColor ( QColor ( 217, 22, 25 ) );
   myIsDoubleFaceRendering=true;
   Viewer3D<Space, KSpace>::createNewCubeList ( );
   vector<typename Viewer3D<Space, KSpace>::LineD3D> listeLine;
