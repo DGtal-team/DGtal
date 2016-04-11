@@ -92,10 +92,62 @@ You should obtain the following visualization:
 \image html simple3dVisu1.png "Digital point visualization  with Viewer3D."
 \image latex simple3dVisu1.png "Digital point visualization  with Viewer3D." width=5cm
 
+
+
+\subsection  DGtalGLV_Viewer3D_Rendering Interactive change of rendering mode   
+
+By default the rendering mode of the Viewer3D is defined by melange of
+diffuse (Lambertian) and specular parts. The user can swith to the following mode by using the key P : 
+
+|  Mode Number    |              type   |     Examples                                  |
+|:---------------:|:-------------------:|:--------------------------------------------: |
+|  0              | default mode  mixte | ![ ] (defaultRenderingViewer3Dmode0.png)      |
+|  1              | metallic mode       |  ![ ] (metallicRenderingViewer3Dmode1.png)    |
+|  2              | plastic mode        |   ![ ] (plasticRenderingViewer3Dmode2.png)    |
+|  3              | lambertian mode     |   ![ ] (lambertianRenderingViewer3Dmode3.png) |
+
+
+
+
+\subsection  DGtalGLV_Viewer3D_Light Light source position modes
+
+The light source position is by default defined according to the
+camera position and its position will not change even after camera
+move (default mode). By this way, if you move the camera, the object
+will be always illuminated (see images of mode 0 of the following
+tabular). This default light position could be changed interactively
+by a mouse move in the Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on
+mac)).
+
+There exists a second mode where the light source position will fixed
+according the main scene axis. In this case, even if the camera move,
+the light source will have the same position towards the object of the
+scene (see for instance images of mode 1 of the following tabular). As for the
+previous mode, the default light position could be changed
+interactively by a mouse move in the Viewer3D (with the key
+SHIFT+CTRL (SHIFT+CMD on mac)).
+
+
+
+__To change between the two light position mode you can use the Key P in the
+viewer3D.__
+
+
+
+|  Light position mode  |    default position                    |         after camera move            |
+| :-------------------: | :------------------------------------: | :----------------------------------: |
+|         0             |  ![ ](lightPositionRef.png)             |  ![ ](lightPositionMode0.png)       |
+|         1             |  ![ ](lightPositionRef.png)             |  ![ ](lightPositionMode1.png)       |
+
+
+
+@note When you change of mode the light source is automatically
+replaced to its default position.
+
+
+
 @note Note that you can display the camera settings in the console
 (key C) which can be used in Board2Dto3D described in the following.
-@note The light source position is by default defined according the camera position. You can change this mode by using a position defined from the main coordinate system (with key P in the Viewer3D). In the two mode, the light source position can be moved by a mouse move in the Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on mac)).
-
 
 
 \section DGtalGLV_Boas3DTo2D Alternative visualization without QGLViewer dependency
