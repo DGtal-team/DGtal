@@ -1300,6 +1300,8 @@ namespace DGtal
     void updateLightCoordsFromCamera();
 
 
+    void updateRelativeCameraFromLightPosition();
+
   public:
     /**
      * Rotate Image2DDomainD3D or TextureImage  vertex from a given
