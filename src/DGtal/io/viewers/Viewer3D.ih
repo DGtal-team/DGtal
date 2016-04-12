@@ -827,9 +827,9 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myRefMouseYPos = 0;
   const Vec cameraPos = camera()->position();
 
-  myLightPositionRefCamera[0] = -100.0f;
-  myLightPositionRefCamera[1] = 100.0f;
-  myLightPositionRefCamera[2] = 0.0f;  
+  myLightPositionRefCamera[0] = myLightPositionRefCameraDefault[0];
+  myLightPositionRefCamera[1] = myLightPositionRefCameraDefault[1];
+  myLightPositionRefCamera[2] = myLightPositionRefCameraDefault[2];
   updateLightCoordsFromCamera();
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
@@ -2001,7 +2001,10 @@ DGtal::Viewer3D<Space, KSpace>::paintGL(){
 
 template< typename Space, typename KSpace>
 void DGtal::Viewer3D<Space, KSpace>::updateLightCoordsFromCamera() {
-  qreal posLCam[3]; posLCam[0] = myLightPositionRefCamera[0];  posLCam[1] = myLightPositionRefCamera[1];  posLCam[2] = myLightPositionRefCamera[2];  
+  qreal posLCam[3];
+  posLCam[0] = myLightPositionRefCamera[0];
+  posLCam[1] = myLightPositionRefCamera[1];
+  posLCam[2] = myLightPositionRefCamera[2];  
   qreal posL[3];
   camera()->getWorldCoordinatesOf(posLCam, posL); 
   myLightPosition[0] = static_cast<GLfloat>(posL[0]);
@@ -2014,7 +2017,10 @@ void DGtal::Viewer3D<Space, KSpace>::updateLightCoordsFromCamera() {
 
 template< typename Space, typename KSpace>
 void DGtal::Viewer3D<Space, KSpace>::updateRelativeCameraFromLightPosition() {
-  qreal posL[3]; posL[0] = myLightPosition[0];  posL[1] = myLightPosition[1];  posL[2] = myLightPosition[2];  
+  qreal posL[3];
+  posL[0] = myLightPosition[0];
+  posL[1] = myLightPosition[1];
+  posL[2] = myLightPosition[2];  
   qreal posLCam[3];
   camera()->getCameraCoordinatesOf(posL, posLCam); 
   myLightPositionRefCamera[0] = posLCam[0];
