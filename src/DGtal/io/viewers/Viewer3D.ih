@@ -1997,12 +1997,11 @@ DGtal::Viewer3D<Space, KSpace>::paintGL(){
 
 template< typename Space, typename KSpace>
 void DGtal::Viewer3D<Space, KSpace>::updateLightCoordsFromCamera() {
-  float posLCam[3];
+  Vec posLCam;
   posLCam[0] = myLightPositionRefCamera[0];
   posLCam[1] = myLightPositionRefCamera[1];
   posLCam[2] = myLightPositionRefCamera[2];  
-  float posL[3];
-  camera()->getWorldCoordinatesOf(posLCam, posL); 
+  Vec posL = camera()->worldCoordinatesOf(posLCam);
   myLightPosition[0] = static_cast<GLfloat>(posL[0]);
   myLightPosition[1] = static_cast<GLfloat>(posL[1]);
   myLightPosition[2] = static_cast<GLfloat>(posL[2]);
@@ -2013,13 +2012,12 @@ void DGtal::Viewer3D<Space, KSpace>::updateLightCoordsFromCamera() {
 
 template< typename Space, typename KSpace>
 void DGtal::Viewer3D<Space, KSpace>::updateRelativeCameraFromLightPosition() {
-  float posL[3];
+  Vec posL;
   posL[0] = myLightPosition[0];
   posL[1] = myLightPosition[1];
   posL[2] = myLightPosition[2];  
-  float posLCam[3];
-  camera()->getCameraCoordinatesOf(posL, posLCam); 
-  myLightPositionRefCamera[0] = posLCam[0];
-  myLightPositionRefCamera[1] = posLCam[1];
-  myLightPositionRefCamera[2] = posLCam[2];
+  Vec posLCam = camera()->cameraCoordinatesOf(posL); 
+  myLightPositionRefCamera[0] = static_cast<GLfloat>(posLCam[0]);
+  myLightPositionRefCamera[1] = static_cast<GLfloat>(posLCam[1]);
+  myLightPositionRefCamera[2] = static_cast<GLfloat>(posLCam[2]);
 }
