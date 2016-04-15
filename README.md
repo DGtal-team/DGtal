@@ -33,7 +33,7 @@ Quick Install
 
 
 Additional instructions are availalbe in the
-[documentation](http://dgtal.org/doc/stable/moduleBuildDGtal.html).
+[documentation](http://dgtal.org/doc/nightly/moduleBuildDGtal.html).
 
 Quick Build Instructions
 ========================
