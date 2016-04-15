@@ -99,13 +99,11 @@ You should obtain the following visualization:
 By default the rendering mode of the Viewer3D is defined by melange of
 diffuse (Lambertian) and specular parts. The user can swith to the following mode by using the key P : 
 
-|  Mode Number    |              type   |     Examples                                  |
-|:---------------:|:-------------------:|:--------------------------------------------: |
-|  0              | default mode  mixte | ![ ] (defaultRenderingViewer3Dmode0.png)      |
-|  1              | metallic mode       |  ![ ] (metallicRenderingViewer3Dmode1.png)    |
-|  2              | plastic mode        |   ![ ] (plasticRenderingViewer3Dmode2.png)    |
-|  3              | lambertian mode     |   ![ ] (lambertianRenderingViewer3Dmode3.png) |
 
+|  type            | default mixte                             | metallic | plastic| lambertian |
+|:--------------- :|:------------------:                       |:--------:|:------:|:---------: |
+| mode             | 0                                         | 1        |  2     | 3          |
+| Ex:              |  ![ ] (defaultRenderingViewer3Dmode0.png) | ![ ] (metallicRenderingViewer3Dmode1.png)|  ![ ] (plasticRenderingViewer3Dmode2.png) | ![ ] (lambertianRenderingViewer3Dmode3.png)|
 
 
 
@@ -113,13 +111,13 @@ diffuse (Lambertian) and specular parts. The user can swith to the following mod
 
 The light source position is by default defined according to the
 camera position and its position will not change even after camera
-move (default mode). By this way, if you move the camera, the object
+moves (default mode). By this way, if you move the camera, the object
 will be always illuminated (see images of mode 0 of the following
 tabular). This default light position could be changed interactively
 by a mouse move in the Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on
 mac)).
 
-There exists a second mode where the light source position will fixed
+There exists a second mode where the light source position will be fixed
 according the main scene axis. In this case, even if the camera move,
 the light source will have the same position towards the object of the
 scene (see for instance images of mode 1 of the following tabular). As for the
@@ -139,10 +137,6 @@ viewer3D.__
 |         0             |  ![ ](lightPositionRef.png)             |  ![ ](lightPositionMode0.png)       |
 |         1             |  ![ ](lightPositionRef.png)             |  ![ ](lightPositionMode1.png)       |
 
-
-
-@note When you change of mode the light source is automatically
-replaced to its default position.
 
 
 
