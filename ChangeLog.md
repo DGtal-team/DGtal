@@ -28,7 +28,7 @@
 ## Bug Fixes
 - *Configuration/General*
  - Simplification of the windows build instructions. (David
-   Coeurjolly, [#xxxx](https://github.com/DGtal-team/DGtal/pull/xxxx))
+   Coeurjolly, [#1160](https://github.com/DGtal-team/DGtal/pull/1160))
 
 - *DEC Package*
  - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
