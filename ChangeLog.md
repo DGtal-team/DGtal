@@ -19,6 +19,10 @@
    [#1153](https://github.com/DGtal-team/DGtal/pull/1153))
 
 - *IO Package*
+ - Viewer3D: add a new mode to have the light source position defined from the
+   camera (default) or from the scene coordinate system (key P to change
+   position mode). A new lambertian rendering mode was added.
+   (Bertrand Kerautret [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
  - Add the possibility to interact in QGLViewer Viewer3D class with the voxel
    primitive (was limited to surfel). As with surfel, the user may assign integer
    identifiers (OpenGL names) to voxel and callback functions, which are called
