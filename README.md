@@ -21,7 +21,6 @@ using the library. This is really important for us to justify the ressources spe
 in developing this software. Please, take a few seconds to fill in the registration
 form: http://dgtal.org/registration/
 
-
 Quick Install
 =============
 
@@ -31,6 +30,10 @@ Quick Install
 (```brew options dgtal``` to enable optional features)
 
 * Windows: no binary package, please compile the library.
+
+
+Additional instructions are availalbe in the
+[documentation](http://dgtal.org/doc/stable/moduleBuildDGtal.html).
 
 Quick Build Instructions
 ========================
@@ -47,16 +50,6 @@ make install
 Minimum system requirements: C++11 enabled compiler, [cmake](http://cmake.org), [boost](http://boost.org) (>= 1.46).
 
 DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer): Generate the Visual Studio project using windows [cmake](http://cmake.org) tool and compile the DGtal solution (you may also need to set the cmake variable ```BUILD_SHARED_LIBS``` to false).
-
-
-License
-=======
-
-DGtal core libarary is under the GNU LGPL v3 license (see [LICENSE](LICENSE)). DGtal documentation and website materials are under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 ](http://creativecommons.org/licenses/by-nc-sa/4.0/).
-
-If some dependencies are activated, resulting binaries may follow the dependencies licenses. More precisely:
-* If the library is built with the 3D internal viewer using [libQGLViewer](http://libqglviewer.com) (```WITH_QGLVIEWER``` flag set to ```true```), then resulting binaries must follow libQGLViewer license (GNU GPL or commercial, see [libQGLViewer licensing](http://libqglviewer.com/dualLicensing.html)).
-* If [CGAL](cgal.org) is activated (```WITH_CGAL``` option), the resulting binaries are under GNU GPL v3 license if the source code uses Jet Fitting based differential estimators (see [CGAL Estimation of Local Differential Properties of Point-Sampled Surfaces package](http://doc.cgal.org/latest/Manual/packages.html#PkgJet_fitting_3Summary))
 
 More Information
 ================
