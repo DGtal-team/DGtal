@@ -71,6 +71,22 @@ The core of the estimators are thus specified in the surfel functor
 (model of concepts::CLocalEstimatorFromSurfelFunctor). In DGtal, we have defined
 several functors:
 
+- functors::ElementaryConvolutionNormalVectorEstimator: Normal vector estimation
+  based on weighted average of surfel elementary normal vectors (@cite lenoir1996, @cite papier1998)
+
+ 
+- functors::TensorVotingFeatureExtraction implements a functor to
+  detect feature points on a digital surface using tensor voting
+  strategy (see @cite tensor-voting-ParkLL12).  More precisely, the
+  functor accumulates tensor votes @f$I - vv^T/\|vv^T\|@f$ for each
+  surfel added during the scan (@f$v@f$ being the vector from the
+  center of the neighborhood to the added surfel). Then, the @e eval()
+  method returns the ratio @f$\frac{\lambda_1+\lambda_2}{\lambda_3}@f$
+  of the eigenvalues (@f$\lambda_1\leq\lambda_2\leq\lambda_3@f$) of
+  the accumulated tensor votes.
+
+- functors::SphereFittingEstimator
+
 - functors::MongeJetFittingGaussianCurvatureEstimator,
   functors::MongeJetFittingMeanCurvatureEstimator,
   functors::MongeJetFittingNormalVectorEstimator,
@@ -79,10 +95,9 @@ several functors:
   (WITH_CGAL, WITH_EIGEN).
 
 - functors::LinearLeastSquareFittingNormalVectorEstimator: normal vector
-  estimation from least square fitting of the embedded sufel points.
+  estimation from least square fitting of the embedded sufel
+  points. This functor also needs CGAL depencendy.
 
-- functors::ElementaryConvolutionNormalVectorEstimator: Normal vector estimation
-  based on weighted average of surfel elementary normal vectors (@cite lenoir1996, @cite papier1998)
 
 @advanced Implementing your own surfel patch based estimator is quite
 simple. Please have a look to concepts::CLocalEstimatorFromSurfelFunctor or the
