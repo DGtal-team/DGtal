@@ -53,12 +53,22 @@
 
 namespace DGtal
 {
+   namespace functors
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class TensorVotingFeatureExtraction
   /**
    * Description of template class 'TensorVotingFeatureExtraction' <p>
    * \brief Aim: Implements a functor to detect feature points from
    * normal tensor voting strategy.
+   *
+   *  More precisely, the
+   * functor accumulates tensor votes @f$I - vv^T/\|vv^T\|@f$ for each
+   * surfel added during the scan (@f$v@f$ being the vector from the
+   * center of the neighborhood to the added surfel). Then, the @e eval()
+   * method returns the ratio @f$\frac{\lambda_1+\lambda_2}{\lambda_3}@f$
+   * of the eigenvalues (@f$ \lambda_1\leq\lambda_2\leq\lambda_3@f$) of
+   * the accumulated tensor votes.
    *
    * (see @cite tensor-voting-ParkLL12)    
    *
@@ -111,8 +121,8 @@ namespace DGtal
       else
         {
           myArea+= aDistance;
-          RealPoint p = myEmbedder->operator()(aSurf);
-          RealPoint v = p - myReceiver;
+          const RealPoint p = myEmbedder->operator()(aSurf);
+          const RealPoint v = p - myReceiver;
           
           double maxcol = 0.0;
           double matnorm = 0.0;
@@ -194,8 +204,8 @@ namespace DGtal
     double myArea;
     
   }; // end of class TensorVotingFeatureExtraction
-
-} // namespace DGtal
+   }//namespace functors
+}// namespace DGtal
 
 
 //                                                                           //
