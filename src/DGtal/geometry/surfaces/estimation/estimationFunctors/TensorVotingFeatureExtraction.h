@@ -53,158 +53,158 @@
 
 namespace DGtal
 {
-   namespace functors
+  namespace functors
   {
-  /////////////////////////////////////////////////////////////////////////////
-  // template class TensorVotingFeatureExtraction
-  /**
-   * Description of template class 'TensorVotingFeatureExtraction' <p>
-   * \brief Aim: Implements a functor to detect feature points from
-   * normal tensor voting strategy.
-   *
-   *  More precisely, the
-   * functor accumulates tensor votes @f$I - vv^T/\|vv^T\|@f$ for each
-   * surfel added during the scan (@f$v@f$ being the vector from the
-   * center of the neighborhood to the added surfel). Then, the @e eval()
-   * method returns the ratio @f$\frac{\lambda_1+\lambda_2}{\lambda_3}@f$
-   * of the eigenvalues (@f$ \lambda_1\leq\lambda_2\leq\lambda_3@f$) of
-   * the accumulated tensor votes.
-   *
-   * (see @cite tensor-voting-ParkLL12)    
-   *
-   * model of CLocalEstimatorFromSurfelFunctor
-   *
-   * @tparam TSurfel type of surfels
-   * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
-   */
-  template <typename TSurfel, typename TEmbedder>
-  class TensorVotingFeatureExtraction
-  {
-  public:
-
-    typedef TSurfel Surfel;
-    typedef TEmbedder SCellEmbedder;
-    typedef typename SCellEmbedder::RealPoint RealPoint;
-    typedef double Quantity;
-
+    /////////////////////////////////////////////////////////////////////////////
+    // template class TensorVotingFeatureExtraction
     /**
-     * Constructor.
+     * Description of template class 'TensorVotingFeatureExtraction' <p>
+     * \brief Aim: Implements a functor to detect feature points from
+     * normal tensor voting strategy.
      *
-     * @param anEmbedder embedder to map surfel to R^n.
-     * @param h grid step
+     *  More precisely, the
+     * functor accumulates tensor votes @f$I - vv^T/\|vv^T\|@f$ for each
+     * surfel added during the scan (@f$v@f$ being the vector from the
+     * center of the neighborhood to the added surfel). Then, the @e eval()
+     * method returns the ratio @f$\frac{\lambda_1+\lambda_2}{\lambda_3}@f$
+     * of the eigenvalues (@f$ \lambda_1\leq\lambda_2\leq\lambda_3@f$) of
+     * the accumulated tensor votes.
+     *
+     * (see @cite tensor-voting-ParkLL12)    
+     *
+     * model of CLocalEstimatorFromSurfelFunctor
+     *
+     * @tparam TSurfel type of surfels
+     * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
      */
-    TensorVotingFeatureExtraction(ConstAlias<SCellEmbedder> anEmbedder,
-                                  const double h):
-      myEmbedder(&anEmbedder), myH(h)
+    template <typename TSurfel, typename TEmbedder>
+    class TensorVotingFeatureExtraction
     {
-      myId.identity();
-      myArea = 0.0;
-      myFirstSurfel = true;
-      myAccum.constant(0.0);
-    }
+    public:
 
-    /**
-     * Add the geometrical embedding of a surfel to the point list and
-     * update the tensor voting.
-     *
-     * @param aSurf a surfel to add
-     * @param aDistance  distance of aSurf to the neighborhood boundary
-     */
-    void pushSurfel(const Surfel & aSurf,
-                    const double aDistance)
-    {
-      if (myFirstSurfel)
+      typedef TSurfel Surfel;
+      typedef TEmbedder SCellEmbedder;
+      typedef typename SCellEmbedder::RealPoint RealPoint;
+      typedef double Quantity;
+
+      /**
+       * Constructor.
+       *
+       * @param anEmbedder embedder to map surfel to R^n.
+       * @param h grid step
+       */
+      TensorVotingFeatureExtraction(ConstAlias<SCellEmbedder> anEmbedder,
+                                    const double h):
+        myEmbedder(&anEmbedder), myH(h)
       {
-        myReceiver =  myEmbedder->operator()(aSurf);
-        myFirstSurfel = false;
+        myId.identity();
+        myArea = 0.0;
+        myFirstSurfel = true;
+        myAccum.constant(0.0);
       }
-      else
-        {
-          myArea+= aDistance;
-          const RealPoint p = myEmbedder->operator()(aSurf);
-          const RealPoint v = p - myReceiver;
+
+      /**
+       * Add the geometrical embedding of a surfel to the point list and
+       * update the tensor voting.
+       *
+       * @param aSurf a surfel to add
+       * @param aDistance  distance of aSurf to the neighborhood boundary
+       */
+      void pushSurfel(const Surfel & aSurf,
+                      const double aDistance)
+      {
+        if (myFirstSurfel)
+          {
+            myReceiver =  myEmbedder->operator()(aSurf);
+            myFirstSurfel = false;
+          }
+        else
+          {
+            myArea+= aDistance;
+            const RealPoint p = myEmbedder->operator()(aSurf);
+            const RealPoint v = p - myReceiver;
           
-          double maxcol = 0.0;
-          double matnorm = 0.0;
+            double maxcol = 0.0;
+            double matnorm = 0.0;
           
-          // I - vv^t/||vv^t||
-          for(DGtal::Dimension i= 0; i <3; i++)
-            {
-              maxcol = 0.0;
-              for(DGtal::Dimension j=0; j < 3; j++)
-                {
-                  myVote.setComponent(i,j, v(i)*v(j));
-                  if (std::abs(v(i)*v(j)) > maxcol)
-                    maxcol = std::abs(v(i)*v(j));
-                }
-              matnorm += maxcol;
-            }
+            // I - vv^t/||vv^t||
+            for(DGtal::Dimension i= 0; i <3; i++)
+              {
+                maxcol = 0.0;
+                for(DGtal::Dimension j=0; j < 3; j++)
+                  {
+                    myVote.setComponent(i,j, v(i)*v(j));
+                    if (std::abs(v(i)*v(j)) > maxcol)
+                      maxcol = std::abs(v(i)*v(j));
+                  }
+                matnorm += maxcol;
+              }
         
-          myAccum += (myId - myVote/matnorm)*aDistance;
-        }
-    }
+            myAccum += (myId - myVote/matnorm)*aDistance;
+          }
+      }
 
-    /**
-     * Evaluate the feature score. 
-     *
-     * I.e. (l_1+l_2)/l_3 of the tensor eigenvalues (l_1<l_2<l_3).
-     *
-     * @return the feature score
-     */
-    Quantity eval( )
-    {
-      SimpleMatrix<double, 3, 3> eigenvectors;
-      RealPoint eigenvalues;
+      /**
+       * Evaluate the feature score. 
+       *
+       * I.e. (l_1+l_2)/l_3 of the tensor eigenvalues (l_1<l_2<l_3).
+       *
+       * @return the feature score
+       */
+      Quantity eval( )
+      {
+        SimpleMatrix<double, 3, 3> eigenvectors;
+        RealPoint eigenvalues;
 
-      myAccum /= myArea;
-      EigenDecomposition<3, double>::getEigenDecomposition( myAccum, eigenvectors, eigenvalues);
+        myAccum /= myArea;
+        EigenDecomposition<3, double>::getEigenDecomposition( myAccum, eigenvectors, eigenvalues);
   
 #ifdef DEBUG
-      for( Dimension i_dim = 1; i_dim < 3; ++i_dim )
-      {
-        ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
-      }
+        for( Dimension i_dim = 1; i_dim < 3; ++i_dim )
+          {
+            ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
+          }
 
-      trace.warning()<< "Eigen values= "<< eigenvalues<< std::endl;
+        trace.warning()<< "Eigen values= "<< eigenvalues<< std::endl;
 #endif
       
-      return ((eigenvalues[0] + eigenvalues[1])/(eigenvalues[2]));
-    }
+        return ((eigenvalues[0] + eigenvalues[1])/(eigenvalues[2]));
+      }
 
-    /**
-     * Reset the point list.
-     *
-     */
-    void reset()
-    {
-      myArea = 0.0;
-      myFirstSurfel = true;
-      myAccum.constant(0.0);
-    }
+      /**
+       * Reset the point list.
+       *
+       */
+      void reset()
+      {
+        myArea = 0.0;
+        myFirstSurfel = true;
+        myAccum.constant(0.0);
+      }
 
 
-  private:
+    private:
 
-    ///First surfel flag
-    bool myFirstSurfel;
+      ///First surfel flag
+      bool myFirstSurfel;
     
-    ///Alias of the geometrical embedder
-    const SCellEmbedder * myEmbedder;
+      ///Alias of the geometrical embedder
+      const SCellEmbedder * myEmbedder;
 
-    //Grid step
-    double myH;
+      //Grid step
+      double myH;
 
-    ///Receiver (embedding of the starting surfel)
-    RealPoint myReceiver;
+      ///Receiver (embedding of the starting surfel)
+      RealPoint myReceiver;
     
-    ///Covariance accumulator
-    SimpleMatrix<double, 3, 3> myAccum, myId, myVote;
+      ///Covariance accumulator
+      SimpleMatrix<double, 3, 3> myAccum, myId, myVote;
     
-    ///Convolution kernel area
-    double myArea;
+      ///Convolution kernel area
+      double myArea;
     
-  }; // end of class TensorVotingFeatureExtraction
-   }//namespace functors
+    }; // end of class TensorVotingFeatureExtraction
+  }//namespace functors
 }// namespace DGtal
 
 
