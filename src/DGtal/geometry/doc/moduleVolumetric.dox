@@ -214,7 +214,7 @@ given metric to the closest site instead of the vector.
 
 As a consequence, the DistanceTransformation class simply  inherits from  the
 VoronoiMap class and overrides  methods required by
-the CConstImage concept. Note that the DistanceTransfomation::Value
+the concepts::CConstImage concept. Note that the DistanceTransformation::Value
 type is double. If you want to get the underlying vector instead of
 the distance to perform exact computations, you can use the
 DistanceTransformation::getVoronoiVector method.
@@ -259,8 +259,8 @@ the dimension of the space).
 
 
 Hence such class is parametrized by the following types:
-- a type representing the mapping between points and weights (WeightImage, model of CImage);
-- a type representing the underlying power metric (model of CSeparablePowerMetric, see below)
+- a type representing the mapping between points and weights (WeightImage, model of concepts::CImage);
+- a type representing the underlying power metric (model of concepts::CPowerSeparableMetric, see below)
 - and an optional image container to store the resulting Power map (by default, the type is ImageContainerBySTLVector).
 
 The PowerMap  constructor is parametrized by
@@ -287,9 +287,9 @@ for the same metric/power metric, returns the input binary shape.
 
 
 
-@note Power separable metrics are formalized in CPowerMetric and
-CSeparablePowerMetric concepts whose main concept is
-ExactLpPowerSeparableMetric, see @ref moduleMetrics
+@note Power separable metrics are formalized in concepts::CPowerMetric and
+concepts::CPowerSeparableMetric concepts whose main model is
+ExactPredicateLpPowerSeparableMetric, see @ref moduleMetrics
 
 
 */

@@ -62,9 +62,9 @@ some of them are induced by norms.
 
 @section subConcepts Main concepts
 
-In DGtal, the concept of CMetricSpace is associated with metric space
+In DGtal, the concept of concepts::CMetricSpace is associated with metric space
 definition. A first refinement of this concept is the concept of
-CDigitalMetricSpace whose models implement distance functions on
+concepts::CDigitalMetricSpace whose models implement distance functions on
 integer numbers (i.e. @f$(\mathbb{Z}^n, \mathbb{Z}, d)@f$)). For
 example,
 
@@ -99,7 +99,7 @@ digraph metric_concepts_2_vor {
   }
 @enddot
 
-For instance, CMetricSpace requires to have a binary operator to compute the
+For instance, concepts::CMetricSpace requires to have a binary operator to compute the
 distance between any two points of the digital space. Furthermore, it
 requires to have a method he @a closest(origin,p,q) which returns the closest
 point from @a p and @a q to the origin. Such closest method can be
@@ -107,13 +107,13 @@ easily implemented from the binary distance operator. However, for
 some metric, more efficient implementation can be obtained to answer
 to @a closest() requests.
 
-@note Models of CMetricSpace concept also implements a  @e
+@note Models of concepts::CMetricSpace concept also implements a  @e
 rawDistance(x,y) method. This method returns a value of type @e
 RawValue which may be considered as an exact representation of the
 distance between x and y. For example, if we consider a @f$ l_p@f$
 metric, the distance between x and y can be represented as sum of
 power p terms (the distance without the order p square root). Hence,
-if RawValue is an @e exact @e type (e.g. model of CInteger with enough
+if RawValue is an @e exact @e type (e.g. model of concepts::CInteger with enough
 capacity to represent power p integers), rawDistance method can be used
 to perform exact metric comparison.  To sum up for any instance @e
 metric of the class ExactLpSeparableMetric for instance:
@@ -181,8 +181,8 @@ algorithms. The next section discusses about complexity of such
 volumetric algorithm with respect to computation costs of the two
 predicates.
 
-CPowerSeparableMetric concepts is a similar refinement of the
-CPowerMetric concept. Indeed, CPowerSeparableMetric models must
+concepts::CPowerSeparableMetric concepts is a similar refinement of the
+concepts::CPowerMetric concept. Indeed, concepts::CPowerSeparableMetric models must
 implement an @a hiddenByPower(u,
 wu,v,wv,w,ww,startingPoint,endPoint,dim) on triplet of weighted points
 {(u,wu),(v,wv),(w,ww)}.
