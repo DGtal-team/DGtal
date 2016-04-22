@@ -769,7 +769,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
           if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
             {
               glPointSize ( max(myGLPointMinWidth,
-                                ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam ));
+                                ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) ));
             }
           glCallList(myBallSetListId+j);
         }
