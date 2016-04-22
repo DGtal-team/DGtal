@@ -302,7 +302,7 @@ namespace DGtal
     bool myIsBackgroundDefault;
     /// objects have shadows which follow the camera if false
     bool myViewWire;
-    double myGLPointMinWidth = 5.5; /// to improve the display of gl points    
+    double myGLPointMinWidth = 1.5; /// to improve the display of gl points    
     double myGLLineMinWidth = 1.5; /// to improve the display of gl line
     /// flag to save automatically or not the Viewer3d state when closing the viewer
     bool myAutoSaveState;
