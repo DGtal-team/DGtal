@@ -266,6 +266,19 @@ namespace DGtal
      **/
     void setGLLightSpecularCoefficients(const GLfloat lightSpecularCoeffs [4]);
     
+
+
+    /**
+     *  Change the primitive to display point (OpenGl points or ball).
+     * 
+     *
+     *  @param[in] useOpenGLPt if true all points will be displayed
+     *  with OpenGl points instead the default balls (defined from
+     *  quads).
+     *
+     **/    
+    void setUseGLPointPrimivite(bool useOpenGLPt);
+
     
     /**
      * Change the current rendering mode of the viewer.
@@ -289,8 +302,8 @@ namespace DGtal
     bool myIsBackgroundDefault;
     /// objects have shadows which follow the camera if false
     bool myViewWire;
-    /// to improve the display of gl line
-    double myGLLineMinWidth;
+    double myGLPointMinWidth = 5.5; /// to improve the display of gl points    
+    double myGLLineMinWidth = 1.5; /// to improve the display of gl line
     /// flag to save automatically or not the Viewer3d state when closing the viewer
     bool myAutoSaveState;
     // define the default rendering mode of the viewer
@@ -1284,7 +1297,7 @@ namespace DGtal
 
 
     /**
-     * Update the container of GLTextureImage object with the given vector of TextureImage.
+     * Updates the container of GLTextureImage object with the given vector of TextureImage.
      * @param[in] aVectImage the vector containing
      *
      **/
@@ -1292,19 +1305,27 @@ namespace DGtal
 
     
     /**
-     * Update the light source coordinates (myLightPosition) from the
+     * Updates the light source coordinates (myLightPosition) from the
      * camera relative coordinates (myLightPositionRefCamera). It
      * could be useful when the light source position is fix according
      * to camera position.
      **/
     void updateLightCoordsFromCamera();
 
-
+    /**
+     * Updates the camera relative light source coordinates
+     *  (myLightPositionRefCamera) from the scene light coordinates
+     *  (myLightPosition). It could be useful when the light source
+     *  position is fix in the main scene.
+     **/
     void updateRelativeCameraFromLightPosition();
 
+
+    
+    
   public:
     /**
-     * Rotate Image2DDomainD3D or TextureImage  vertex from a given
+     * Rotates Image2DDomainD3D or TextureImage  vertex from a given
      * angle and a rotation direction. The center of rotation is defined
      * from the image center point.
      *
@@ -1419,7 +1440,7 @@ namespace DGtal
     const GLfloat myPlasticRenderSpec = 0.8f; // default specular coefficients for platic mode rendering
     const GLfloat myPlasticRenderDiff = 0.2f; // default diffuse coefficients for platic mode rendering
     
-
+    bool myUseGLPointsPrimitive =  false; // to display GL points instead balls (from quads) 
 
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
@@ -1428,10 +1449,10 @@ namespace DGtal
     float myMeshDefaultLineWidth;
 
     // To apply openGL ajustment only on visualisation
-    float myGLScaleFactorX;
-    float myGLScaleFactorY;
-    float myGLScaleFactorZ;
-
+    float myGLScaleFactorX=1.0;
+    float myGLScaleFactorY=1.0;
+    float myGLScaleFactorZ=1.0;
+    
     // Used to apply interactive light rotation
     double myLigthRotationStep; /// the angle rotation increment used for interactive light move
     int myRefMouseXPos; /// the reference mouse x-position used to determince the light position change (azimuth)
