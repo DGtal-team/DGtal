@@ -751,22 +751,30 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glCallList( myCubesMapId );
       
 
-  for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
+ 
+  if(!myUseGLPointsPrimitive)
     {
-      if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
+      for ( auto const &bList: Viewer3D<Space, KSpace>::myBallSetList )
         {
-          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam );
-        }
-      glCallList(myBallSetListId+j);
-    }
-
-  for ( auto const &bList: Viewer3D<Space, KSpace>::myBallSetList )
-    {
-      for ( auto const & b: bList)
-        {
-          glDrawGLBall ( b );
+          for ( auto const & b: bList)
+            {
+              glDrawGLBall ( b );
+            }
         }
     }
+  else
+    {
+      for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
+        {
+          if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
+            {
+              glPointSize ( max(myGLPointMinWidth,
+                                ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam ));
+            }
+          glCallList(myBallSetListId+j);
+        }
+    }
+  
 
   glDisable(GL_CULL_FACE);
   glCallList(myQuadsMapId);
@@ -849,10 +857,6 @@ DGtal::Viewer3D<Space, KSpace>::init()
   Viewer3D<Space, KSpace>::myMeshDefaultLineWidth=10.0;
   myNbListe=0;
   myViewWire=false;
-  myGLScaleFactorX=1.0;
-  myGLScaleFactorY=1.0;
-  myGLScaleFactorZ=1.0;
-  myGLLineMinWidth=1.5;
   setBackgroundColor ( QColor ( 217, 228, 255 ) );
   setForegroundColor ( QColor ( 217, 22, 25 ) );
   myIsDoubleFaceRendering=true;
@@ -1893,6 +1897,15 @@ DGtal::Viewer3D<Space, KSpace>::setGLLightDiffuseCoefficients(const GLfloat ligh
   myLightDiffuseCoeffs[3] =  lightDiffuseCoeffs[3];
   updateGL();
 }
+
+
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::setUseGLPointPrimivite(const bool useBall)
+{
+  myUseGLPointsPrimitive = useBall;
+}
+
 
 
 template< typename Space, typename KSpace>
