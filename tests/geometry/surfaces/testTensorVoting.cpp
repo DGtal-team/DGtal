@@ -100,7 +100,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   trace.endBlock();
 
   trace.beginBlock("Creating  adapters");
-  typedef TensorVotingFeatureExtraction<Surfel, CanonicSCellEmbedder<KSpace> > FunctorVoting;
+  typedef functors::TensorVotingFeatureExtraction<Surfel, CanonicSCellEmbedder<KSpace> > FunctorVoting;
 
   typedef functors::GaussianKernel ConvFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorVoting, ConvFunctor> Reporter;
@@ -171,7 +171,7 @@ bool testCube()
   trace.endBlock();
 
   trace.beginBlock("Creating  adapters");
-  typedef TensorVotingFeatureExtraction<Surfel, CanonicSCellEmbedder<KSpace> > FunctorVoting;
+  typedef functors::TensorVotingFeatureExtraction<Surfel, CanonicSCellEmbedder<KSpace> > FunctorVoting;
 
   typedef functors::GaussianKernel ConvFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorVoting, ConvFunctor> Reporter;
