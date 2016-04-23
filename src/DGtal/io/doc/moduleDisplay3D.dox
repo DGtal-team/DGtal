@@ -165,7 +165,7 @@ By changing the mode you will obtain such display:
  |  ![ ](viewer3DBallDefaultQuads.png)     |  ![ ](viewer3DBallPtOpenGL.png)      |
 
 
-
+You can also change the ball display mode interactively by using the key O. 
 
 \section DGtalGLV_Boas3DTo2D Alternative visualization without QGLViewer dependency
 
