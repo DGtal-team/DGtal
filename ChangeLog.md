@@ -19,6 +19,10 @@
    [#1153](https://github.com/DGtal-team/DGtal/pull/1153))
 
 - *IO Package*
+
+ - Viewer3D: add a mode to display point primitive with OpenGL point instead the
+   default balls.
+   (Bertrand Kerautret [#1162](https://github.com/DGtal-team/DGtal/pull/1162))
  - Viewer3D: add a new mode to have the light source position defined from the
    camera (default) or from the scene coordinate system (key P to change
    position mode). A new lambertian rendering mode was added.
