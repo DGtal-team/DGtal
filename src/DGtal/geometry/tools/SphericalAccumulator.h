@@ -330,8 +330,47 @@ namespace DGtal
 			Size &posPhi,
 			Size &posTheta) const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
+    
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    SphericalAccumulator ( const SphericalAccumulator & other )
+    {
+      myNphi = other.myNphi;
+      myNtheta = other.myNtheta;
+      myAccumulator = other.myAccumulator;
+      myAccumulatorDir = other.myAccumulatorDir;
+      myTotal = other.myTotal;
+      myBinNumber = other.myBinNumber;
+      myMaxBinPhi = other.myMaxBinPhi;
+      myMaxBinTheta = other.myMaxBinTheta;
+    }
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    SphericalAccumulator & operator= ( const SphericalAccumulator & other )
+    {
+      if (this!=other)
+      {
+        myNphi = other.myNphi;
+        myNtheta = other.myNtheta;
+        myAccumulator = other.myAccumulator;
+        myAccumulatorDir = other.myAccumulatorDir;
+        myTotal = other.myTotal;
+        myBinNumber = other.myBinNumber;
+        myMaxBinPhi = other.myMaxBinPhi;
+        myMaxBinTheta = other.myMaxBinTheta; 
+      }
+      return *this;
+    }
+    
+
+    
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -371,22 +410,7 @@ namespace DGtal
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    SphericalAccumulator ( const SphericalAccumulator & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    SphericalAccumulator & operator= ( const SphericalAccumulator & other );
-
-    // ------------------------- Internals ------------------------------------
+        // ------------------------- Internals ------------------------------------
   private:
 
   }; // end of class SphericalAccumulator

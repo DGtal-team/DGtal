@@ -2,6 +2,11 @@
 
 ## New Features / Critical Changes
 
+- *Geometry Package*
+ - New robust normal vector estimator using spherical accumulators and statistical
+   voting (Boulc'h & Marlet, SGP 2012). 
+   (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149)) 
+
 ## Changes
 - *Configuration/General*
  - Cleaning remaining preprocessor directives related to C++11 features.
