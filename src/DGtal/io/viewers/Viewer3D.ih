@@ -738,26 +738,27 @@ DGtal::Viewer3D<Space, KSpace>::draw()
     {
       if ( Viewer3D<Space, KSpace>::myLineSetList.at ( j ).size() !=0 )
         {
-          glLineWidth ( max(myGLLineMinWidth, Viewer3D<Space, KSpace>::myLineSetList.at ( j ).at ( 0 ).width )) ;
+          glLineWidth ( max(myGLLineMinWidth,
+                            Viewer3D<Space, KSpace>::myLineSetList.at ( j ).at ( 0 ).width )) ;
         }
       glCallList(myLineSetListId+j);
     }
 
   glCallList(myPrismListId);
   
-
   glCallList( myCubesMapId );
       
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
-      if(myUseGLPointsForBalls){
-        if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
-          {
-            glPointSize ( max(myGLPointMinWidth,
-                              ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) ));
-          }
-      }
+      if(myUseGLPointsForBalls)
+        {
+          if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
+            {
+              glPointSize ( max(myGLPointMinWidth,
+                                ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) ));
+            }
+        }
       else
         glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
       
@@ -766,11 +767,8 @@ DGtal::Viewer3D<Space, KSpace>::draw()
         glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
       else
         glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
-      
     }
-    
   
-
   glDisable(GL_CULL_FACE);
   glCallList(myQuadsMapId);
   if(myViewWire)
@@ -783,7 +781,8 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glCallList(myTriangleSetListId);
   if(myViewWire)
     {
-      glLineWidth ( max(myGLLineMinWidth, Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam ));
+      glLineWidth ( max(myGLLineMinWidth,
+                        Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam ));
       glCallList(myTriangleSetListWiredId);
     }
 
@@ -791,7 +790,8 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glCallList(myPolygonSetListId);
   if(myViewWire)
     {
-      glLineWidth (max(myGLLineMinWidth,  Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam ));
+      glLineWidth (max(myGLLineMinWidth,
+                       Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam ));
       glCallList(myPolygonSetListWiredId);
     }
 
@@ -1111,7 +1111,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
 template< typename Space, typename KSpace>
 void
-DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>::BallD3D aBall )
+DGtal::Viewer3D<Space, KSpace>::glDrawGLBall (const typename Viewer3D<Space, KSpace>::BallD3D &aBall )
 {
   double thetaResolution = aBall.resolution;
   double thetaStep= (2.0*M_PI)/thetaResolution;

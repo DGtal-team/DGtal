@@ -815,10 +815,10 @@ namespace DGtal
 
 
     /**
-     * Draw a linel by using the [gluCShere] primitive.
-     * @param pointel the pointel to draw
+     * Draw a ball by using quads strip primitive.
+     * @param[in] pointel the pointel to draw
      */
-    void glDrawGLBall ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
+    void glDrawGLBall (const typename Viewer3D<Space,KSpace>::BallD3D & aBall );
 
 
 
