@@ -887,6 +887,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_C, "Show camera informations." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
   setKeyDescription ( Qt::Key_D, "Enable/Disable the two side face rendering." );
+  setKeyDescription ( Qt::Key_O, "Switch the ball display mode (quad ball display (default) or OpenGL point)." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
   setKeyDescription ( Qt::Key_M, "Switch the rendering mode bewteen Default, Metallic and Plastic mode." );
   setKeyDescription ( Qt::Key_P, "Switch the light source position mode between the camera mode (default: the light source position is fixed according to the camera position) and scene mode (the light source position is fixed according the scene coordinate system)." );
@@ -1273,6 +1274,13 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       updateGL();
     }
   
+  if ( ( e->key() ==Qt::Key_O ) )
+    {
+      myUseGLPointsForBalls = !myUseGLPointsForBalls;
+      updateList(false);
+      updateGL();
+    }
+
   if ( ( e->key() ==Qt::Key_R ) )
     {
       myGLScaleFactorX=1.0f;
@@ -1280,7 +1288,6 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       myGLScaleFactorZ=1.0f;
       updateGL();
     }
-
 
   if ( ( e->key() ==Qt::Key_T ) )
     {
