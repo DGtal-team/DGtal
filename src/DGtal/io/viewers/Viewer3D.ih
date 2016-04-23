@@ -751,29 +751,26 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glCallList( myCubesMapId );
       
 
- 
-  if(!myUseGLPointsPrimitive)
+  for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
-      for ( auto const &bList: Viewer3D<Space, KSpace>::myBallSetList )
-        {
-          for ( auto const & b: bList)
-            {
-              glDrawGLBall ( b );
-            }
-        }
+      if(myUseGLPointsPrimitive){
+        if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
+          {
+            glPointSize ( max(myGLPointMinWidth,
+                              ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) ));
+          }
+      }
+      else
+        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+      
+      glCallList(myBallSetListId+j);
+      if(myIsDoubleFaceRendering)
+        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+      else
+        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+      
     }
-  else
-    {
-      for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
-        {
-          if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
-            {
-              glPointSize ( max(myGLPointMinWidth,
-                                ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) ));
-            }
-          glCallList(myBallSetListId+j);
-        }
-    }
+    
   
 
   glDisable(GL_CULL_FACE);
@@ -1127,21 +1124,23 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>:
   double xCenter = aBall.center[0];
   double yCenter = aBall.center[1];
   double zCenter = aBall.center[2];
-
-  for(unsigned int j =0; j < phiResolution; j++){
-    double phi0 = M_PI/2.0-j*phiStep;
-    double phi1 = M_PI/2.0-(j+1)*phiStep;
-    glBegin(GL_QUAD_STRIP);
-    for(unsigned int i =0; i <= thetaResolution; i++){
-      double theta0 =  i * thetaStep;
-      glColor4ub ( aBall.color.red(), aBall.color.green(), aBall.color.blue(), aBall.color.alpha() );
-      glNormal3f(cos(phi0)*cos(theta0), cos(phi0)*sin(theta0), sin(phi0));
-      glVertex3f(xCenter+cos(phi0)*cos(theta0)*radius,yCenter+ cos(phi0)*sin(theta0)*radius, zCenter+ sin(phi0)*radius);
-      glNormal3f(cos(phi1)*cos(theta0), cos(phi1)*sin(theta0), sin(phi1));
-      glVertex3f(xCenter+cos(phi1)*cos(theta0)*radius,yCenter+ cos(phi1)*sin(theta0)*radius, zCenter+ sin(phi1)*radius);
+  glBegin(GL_QUAD_STRIP);
+  for(unsigned int j =0; j < phiResolution; j++)
+    {
+      double phi0 = M_PI/2.0-j*phiStep;
+      double phi1 = M_PI/2.0-(j+1)*phiStep;
+      for(unsigned int i =0; i <= thetaResolution; i++)
+        {
+          double theta0 =  i * thetaStep;
+          glColor4ub ( aBall.color.red(), aBall.color.green(), aBall.color.blue(), aBall.color.alpha() );
+          glNormal3f(cos(phi0)*cos(theta0), cos(phi0)*sin(theta0), sin(phi0));
+          glVertex3f(xCenter+cos(phi0)*cos(theta0)*radius,yCenter+ cos(phi0)*sin(theta0)*radius, zCenter+ sin(phi0)*radius);
+          glNormal3f(cos(phi1)*cos(theta0), cos(phi1)*sin(theta0), sin(phi1));
+          glVertex3f(xCenter+cos(phi1)*cos(theta0)*radius,yCenter+ cos(phi1)*sin(theta0)*radius, zCenter+ sin(phi1)*radius);
+        }
     }
-     glEnd();
-  }
+  glEnd();
+  
 }
 
 template< typename Space, typename KSpace>
@@ -1539,22 +1538,38 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::glCreateListBalls(const VectorBall &aVectBall,
                                                   unsigned int idList){
-  glNewList ( idList, GL_COMPILE );
-  glDepthMask ( GL_TRUE );
-  glDisable ( GL_TEXTURE_2D );
-  glDisable ( GL_POINT_SMOOTH );
-  glDisable ( GL_LIGHTING );
-
-  glPushName ( myNbListe );
-  glBegin ( GL_POINTS );
-  for ( auto const &ball: aVectBall )
+  if(myUseGLPointsPrimitive){
+    glNewList ( idList, GL_COMPILE );
+    glDepthMask ( GL_TRUE );
+    glDisable ( GL_TEXTURE_2D );
+    glDisable ( GL_POINT_SMOOTH );
+    glDisable ( GL_LIGHTING );
+    glPushName ( myNbListe );
+    glBegin ( GL_POINTS );
+    for ( auto const &ball: aVectBall )
+      {
+        glColor4ub ( ball.color.red(), ball.color.green(),
+                     ball.color.blue(), ball.color.alpha() );
+        glVertex3f ( ball.center[0], ball.center[1], ball.center[2] );
+      }
+    glEnd();
+    glEnable ( GL_LIGHTING );
+    glEndList();
+  }
+  else
     {
-      glColor4ub ( ball.color.red(), ball.color.green(), ball.color.blue(), ball.color.alpha() );
-      glVertex3f ( ball.center[0], ball.center[1], ball.center[2] );
+      glNewList ( idList, GL_COMPILE );
+      glPushName ( myNbListe );
+      glDepthMask ( GL_TRUE );
+      glDisable ( GL_TEXTURE_2D );
+      glDisable ( GL_POINT_SMOOTH );
+      for ( auto const & b: aVectBall)
+        {
+          glDrawGLBall ( b );
+        }
+      glEnd();
+      glEndList();
     }
-  glEnd();
-  glEnable ( GL_LIGHTING );
-  glEndList();
 }
 
 
