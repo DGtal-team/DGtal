@@ -88,7 +88,8 @@ template < typename Space ,typename KSpace >
 template <typename TValues>
 inline
 void
-DGtal::Viewer3D<Space, KSpace>::rotatePoint(TValues &x, TValues &y, TValues &z, double cx, double cy, double cz,
+DGtal::Viewer3D<Space, KSpace>::rotatePoint(TValues &x, TValues &y, TValues &z,
+                                            double cx, double cy, double cz,
                                             double angleRotation, ImageDirection rotationDir){
   double dx = x-cx; double dy = y-cy; double dz = z-cz;
   if(rotationDir  == zDirection){
@@ -140,9 +141,6 @@ DGtal::Viewer3D<Space, KSpace>::rotateLineD3D(typename DGtal::Display3D<Space, K
   }
 
 }
-
-
-
 
 
 template < typename Space ,typename KSpace >
@@ -753,7 +751,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
-      if(myUseGLPointsPrimitive){
+      if(myUseGLPointsForBalls){
         if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
           {
             glPointSize ( max(myGLPointMinWidth,
@@ -1538,7 +1536,7 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::glCreateListBalls(const VectorBall &aVectBall,
                                                   unsigned int idList){
-  if(myUseGLPointsPrimitive){
+  if(myUseGLPointsForBalls){
     glNewList ( idList, GL_COMPILE );
     glDepthMask ( GL_TRUE );
     glDisable ( GL_TEXTURE_2D );
@@ -1836,8 +1834,6 @@ DGtal::Viewer3D<Space, KSpace>::domElement(const QString& name, QDomDocument& do
 
 
 
-
-
 template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::initFromDOMElement(const QDomElement& element)
@@ -1916,9 +1912,9 @@ DGtal::Viewer3D<Space, KSpace>::setGLLightDiffuseCoefficients(const GLfloat ligh
 
 template< typename Space, typename KSpace>
 void 
-DGtal::Viewer3D<Space, KSpace>::setUseGLPointPrimivite(const bool useBall)
+DGtal::Viewer3D<Space, KSpace>::setUseGLPointForBalls(const bool useOpenGLPt)
 {
-  myUseGLPointsPrimitive = useBall;
+  myUseGLPointsForBalls = useOpenGLPt;
 }
 
 

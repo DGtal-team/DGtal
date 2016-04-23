@@ -269,7 +269,8 @@ namespace DGtal
 
 
     /**
-     *  Change the primitive to display point (OpenGl points or ball).
+     *  Change the primitive to display ball (OpenGl points instead
+     *  balls created with quads).
      * 
      *
      *  @param[in] useOpenGLPt if true all points will be displayed
@@ -277,7 +278,7 @@ namespace DGtal
      *  quads).
      *
      **/    
-    void setUseGLPointPrimivite(bool useOpenGLPt);
+    void setUseGLPointForBalls(bool useOpenGLPt);
 
     
     /**
@@ -1440,7 +1441,7 @@ namespace DGtal
     const GLfloat myPlasticRenderSpec = 0.8f; // default specular coefficients for platic mode rendering
     const GLfloat myPlasticRenderDiff = 0.2f; // default diffuse coefficients for platic mode rendering
     
-    bool myUseGLPointsPrimitive =  false; // to display GL points instead balls (from quads) 
+    bool myUseGLPointsForBalls =  false; // to display balls with GL points (instead real ball) 
 
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
