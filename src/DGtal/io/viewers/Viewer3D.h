@@ -816,7 +816,7 @@ namespace DGtal
 
     /**
      * Draw a ball by using quads strip primitive.
-     * @param[in] pointel the pointel to draw
+     * @param[in] aBall the ball to be drawn
      */
     void glDrawGLBall (const typename Viewer3D<Space,KSpace>::BallD3D & aBall );
 
