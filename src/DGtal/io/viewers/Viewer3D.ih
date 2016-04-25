@@ -1543,24 +1543,25 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::glCreateListBalls(const VectorBall &aVectBall,
                                                   unsigned int idList){
-  if(myUseGLPointsForBalls){
-    glNewList ( idList, GL_COMPILE );
-    glDepthMask ( GL_TRUE );
-    glDisable ( GL_TEXTURE_2D );
-    glDisable ( GL_POINT_SMOOTH );
-    glDisable ( GL_LIGHTING );
-    glPushName ( myNbListe );
-    glBegin ( GL_POINTS );
-    for ( auto const &ball: aVectBall )
-      {
-        glColor4ub ( ball.color.red(), ball.color.green(),
-                     ball.color.blue(), ball.color.alpha() );
-        glVertex3f ( ball.center[0], ball.center[1], ball.center[2] );
-      }
-    glEnd();
-    glEnable ( GL_LIGHTING );
-    glEndList();
-  }
+  if(myUseGLPointsForBalls)
+    {
+      glNewList ( idList, GL_COMPILE );
+      glDepthMask ( GL_TRUE );
+      glDisable ( GL_TEXTURE_2D );
+      glDisable ( GL_POINT_SMOOTH );
+      glDisable ( GL_LIGHTING );
+      glPushName ( myNbListe );
+      glBegin ( GL_POINTS );
+      for ( auto const &ball: aVectBall )
+        {
+          glColor4ub ( ball.color.red(), ball.color.green(),
+                       ball.color.blue(), ball.color.alpha() );
+          glVertex3f ( ball.center[0], ball.center[1], ball.center[2] );
+        }
+      glEnd();
+      glEnable ( GL_LIGHTING );
+      glEndList();
+    }
   else
     {
       glNewList ( idList, GL_COMPILE );
