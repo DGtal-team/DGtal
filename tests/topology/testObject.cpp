@@ -587,60 +587,58 @@ bool testSimplePoints2D()
   trace.beginBlock ( "Greedy homotopic thinning ..." );
   int layer = 0;
   do
-    {
-      DigitalSet & S = shape.pointSet();
-      std::queue<DigitalSet::Iterator> Q;
-      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-  if ( shape.isSimple( *it ) )
-    Q.push( it );
-      nb_simple = 0;
-      while ( ! Q.empty() )
   {
-    DigitalSet::Iterator it = Q.front();
-    Q.pop();
-    if ( shape.isSimple( *it ) )
+    DigitalSet & S = shape.pointSet();
+    std::queue<DigitalSet::Iterator> Q;
+    for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+      if ( shape.isSimple( *it ) )
+        Q.push( it );
+    nb_simple = 0;
+    while ( ! Q.empty() )
+    {
+      DigitalSet::Iterator it = Q.front();
+      Q.pop();
+      if ( shape.isSimple( *it ) )
       {
         board << CustomStyle( it->className(),
-                   new MyDrawStyleCustomFillColor
-                   ( cmap_grad( layer ) ) )
-        << *it;
+            new MyDrawStyleCustomFillColor
+            ( cmap_grad( layer ) ) )
+          << *it;
         S.erase( *it );
         ++nb_simple;
       }
-  }
-      ++layer;
     }
-  while ( nb_simple != 0 );
+    ++layer;
+  } while ( nb_simple != 0 );
   trace.endBlock();
 
   // Greedy thinning.
   trace.beginBlock ( "Greedy homotopic thinning ..." );
   layer = 0;
   do
-    {
-      DigitalSet & S = shape2.pointSet();
-      std::queue<DigitalSet::Iterator> Q;
-      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-  if ( shape2.isSimple( *it ) )
-    Q.push( it );
-      nb_simple = 0;
-      while ( ! Q.empty() )
   {
-    DigitalSet::Iterator it = Q.front();
-    Q.pop();
-    if ( shape2.isSimple( *it ) )
+    DigitalSet & S = shape2.pointSet();
+    std::queue<DigitalSet::Iterator> Q;
+    for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+      if ( shape2.isSimple( *it ) )
+        Q.push( it );
+    nb_simple = 0;
+    while ( ! Q.empty() )
+    {
+      DigitalSet::Iterator it = Q.front();
+      Q.pop();
+      if ( shape2.isSimple( *it ) )
       {
         board2 << CustomStyle( it->className(),
-                   new MyDrawStyleCustomFillColor
-             ( cmap_grad( layer ) ) )
-         << *it;
+            new MyDrawStyleCustomFillColor
+            ( cmap_grad( layer ) ) )
+          << *it;
         S.erase( *it );
         ++nb_simple;
       }
-  }
-      ++layer;
     }
-  while ( nb_simple != 0 );
+    ++layer;
+  } while ( nb_simple != 0 );
   trace.endBlock();
 
   board  << CustomStyle( shape.className(), new MyDrawStyleCustomRed )
@@ -786,31 +784,29 @@ bool testSetTable()
   DGtal::uint64_t nb_simple;
   trace.beginBlock ( "Greedy homotopic thinning with table..." );
   int layer = 0;
-  do
+  do {
+    DigitalSet & S = shape.pointSet();
+    std::queue<DigitalSet::Iterator> Q;
+    for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+      if ( shape.isSimple( *it ) )
+        Q.push( it );
+    nb_simple = 0;
+    while ( ! Q.empty() )
     {
-      DigitalSet & S = shape.pointSet();
-      std::queue<DigitalSet::Iterator> Q;
-      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-  if ( shape.isSimple( *it ) )
-    Q.push( it );
-      nb_simple = 0;
-      while ( ! Q.empty() )
-  {
-    DigitalSet::Iterator it = Q.front();
-    Q.pop();
-    if ( shape.isSimple( *it ) )
+      DigitalSet::Iterator it = Q.front();
+      Q.pop();
+      if ( shape.isSimple( *it ) )
       {
         board << CustomStyle( it->className(),
-                   new MyDrawStyleCustomFillColor
-                   ( cmap_grad( layer ) ) )
-        << *it;
+            new MyDrawStyleCustomFillColor
+            ( cmap_grad( layer ) ) )
+          << *it;
         S.erase( *it );
         ++nb_simple;
       }
-  }
-      ++layer;
     }
-  while ( nb_simple != 0 );
+    ++layer;
+  } while ( nb_simple != 0 );
   trace.endBlock();
 
   return nbok == nb;
