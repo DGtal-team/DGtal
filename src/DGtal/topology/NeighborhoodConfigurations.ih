@@ -70,12 +70,11 @@ namespace DGtal{
   template<typename TPoint>
   inline
   DGtal::CountedPtr<
-  std::unordered_map<TPoint, unsigned int > >
-  mapPointToBitMask()
+  std::unordered_map<TPoint, NeighborhoodConfiguration > >
+  mapZeroPointNeighborhoodToConfigurationMask()
   {
-    using Mask = unsigned int;
-    using Map = std::unordered_map<TPoint, Mask> ;
-    Mask mask = 1 ;
+    using Map = std::unordered_map<TPoint, NeighborhoodConfiguration> ;
+    NeighborhoodConfiguration mask = 1 ;
     CountedPtr<Map> mapPtr(new Map);
     Map& amap  = *mapPtr;
     auto p1 = TPoint::diagonal(-1);

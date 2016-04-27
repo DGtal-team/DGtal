@@ -60,6 +60,7 @@
 #include <boost/graph/properties.hpp>
 #include <boost/dynamic_bitset.hpp>
 #include <unordered_map>
+#include <DGtal/topology/helpers/NeighborhoodConfigurationsHelper.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace boost
@@ -279,6 +280,21 @@ namespace DGtal
      * @param inputTable table loaded using @ref NeighborhoodConfigurations.h::loadTable
      */
     void setTable(Alias<boost::dynamic_bitset<> >inputTable);
+
+    /**
+     * Get the occupancy configuration of the neighborhood of a point. The neighborhood only depends on the dimension, not the topology of the object (3x3 cube for 3D point, 2x2 square for 2D).
+     * @param center point of the neighborhood. It doesn't matter if center belongs or not to \b input_object.
+     *
+     * @param mapZeroNeighborhoodToMask maping each point of the neighborhood of point Zero to a NeighborhoodConfiguration.
+     * @see myNeighborConfigurationMap
+     * @see mapPointToBitMask
+     *
+     * @return bit configuration of neighborhood
+     */
+    NeighborhoodConfiguration getNeighborhoodConfigurationOccupancy(
+	const Point & center,
+	const std::unordered_map< Point,
+	NeighborhoodConfiguration> & mapZeroNeighborhoodToMask) const;
     /**
      * @return the number of elements in the set.
      */
@@ -596,16 +612,18 @@ objects[ 0 ].writeComponents( it ); // it points in same container as this.
      *
      * @param v point to check simplicity.
      * @param input_table external look up table containing the configuration of neighbors which are simple. @see NeighborhoodConfigurations.h::loadTable
-     * @param pointMap helper map to create a bit number of the neighborhood.
+     * @param mapZeroNeighborhoodToMask maping each point of the neighborhood of point Zero to a NeighborhoodConfiguration.
      *
      * @return true if the point is simple according to precalculated table.
      *
      * @note precalculated tables are available at build time.
      * @see NeighborhoodTables.h
      */
-    inline bool isSimpleFromTable( const Point & v,
-             const boost::dynamic_bitset<> & input_table,
-             const std::unordered_map<Point,unsigned int> & pointMap ) const;
+    inline bool isSimpleFromTable(
+	const Point & v,
+        const boost::dynamic_bitset<> & input_table,
+	const std::unordered_map< Point,
+	  NeighborhoodConfiguration > & mapZeroNeighborhoodToMask) const;
     // ----------------------- Interface --------------------------------------
   public:
 

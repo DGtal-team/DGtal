@@ -30,7 +30,7 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/topology/NeighborhoodConfigurationsHelpers.h"
+#include "DGtal/topology/tables/NeighborhoodTablesGenerators.h"
 #include <vector>
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/boards/Board2D.h"

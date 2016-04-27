@@ -35,7 +35,6 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/NeighborhoodConfigurations.h"
-#include "DGtal/topology/NeighborhoodConfigurationsHelpers.h"
 #include "DGtal/topology/tables/NeighborhoodTables.h"
 using namespace std;
 using namespace DGtal;
@@ -65,12 +64,12 @@ Object3D(const typename TObject::DigitalTopology &dt)
   return TObject(dt, diamond_set);
 }
 
-TEST_CASE("Check that each neighborhood point in 3D (26 points) has associated a bit in an unsigned integer.", "[map][mask][3D]" )
+TEST_CASE("Check that each neighborhood point in 3D (26 points) has associated a bit in an unsigned integer (NeighborhoodConfiguration).", "[map][mask][3D]" )
 {
     using namespace Z3i;
-    using Map = unordered_map<Point, unsigned int>;
+    using Map = unordered_map<Point, NeighborhoodConfiguration>;
     auto pointToMask3D =
-        mapPointToBitMask< typename Object26_6::Point >();
+        mapZeroPointNeighborhoodToConfigurationMask< typename Object26_6::Point >();
     Map truth3D;
     truth3D[Point{ -1, -1, -1 }] = 1;        // 0000 x x 0000 x x 0000 0001
     truth3D[Point{  0, -1, -1 }] = 2;        // x x x x x x x 0010
@@ -103,7 +102,7 @@ TEST_CASE("Check that each neighborhood point in 3D (26 points) has associated a
 }
 SCENARIO("Simplicity tables match on-the-fly calculations for all 3D topologies", "[simple][object][diamond][3D]" )
 {
-  auto mapPointToMask = mapPointToBitMask<Z3i::Point>();
+  auto mapZeroNeighborhoodToMask = mapZeroPointNeighborhoodToConfigurationMask<Z3i::Point>();
   using namespace Z3i;
 
   SECTION("26_6 topology using loadTable from string and default table size (2^26)"){
@@ -118,7 +117,7 @@ SCENARIO("Simplicity tables match on-the-fly calculations for all 3D topologies"
     for( const auto & p : objSet){
         auto simple = obj.isSimple(p);
         if( simple ) ++nsimples;
-        auto cfg = getOccupancyConfiguration(obj, p, *mapPointToMask);
+        auto cfg = obj.getNeighborhoodConfigurationOccupancy(p, *mapZeroNeighborhoodToMask);
         auto simple_from_table = table[cfg];
         if( simple_from_table ) ++nsimples_tables;
         INFO("Point: " <<  p << " cfg: " << cfg);
@@ -140,7 +139,7 @@ SCENARIO("Simplicity tables match on-the-fly calculations for all 3D topologies"
     for( const auto & p : objSet){
         auto simple = obj.isSimple(p);
         if( simple ) ++nsimples;
-        auto cfg = getOccupancyConfiguration(obj, p, *mapPointToMask);
+        auto cfg = obj.getNeighborhoodConfigurationOccupancy(p, *mapZeroNeighborhoodToMask);
         auto simple_from_table = table[cfg];
         if( simple_from_table ) ++nsimples_tables;
         INFO("Point: " <<  p << " cfg: " << cfg);
@@ -162,7 +161,7 @@ SCENARIO("Simplicity tables match on-the-fly calculations for all 3D topologies"
     for( const auto & p : objSet){
         auto simple = obj.isSimple(p);
         if( simple ) ++nsimples;
-        auto cfg = getOccupancyConfiguration(obj, p, *mapPointToMask);
+        auto cfg = obj.getNeighborhoodConfigurationOccupancy(p, *mapZeroNeighborhoodToMask);
         auto simple_from_table = table[cfg];
         if( simple_from_table ) ++nsimples_tables;
         INFO("Point: " <<  p << " cfg: " << cfg);
@@ -185,7 +184,7 @@ SCENARIO("Simplicity tables match on-the-fly calculations for all 3D topologies"
     for( const auto & p : objSet){
         auto simple = obj.isSimple(p);
         if( simple ) ++nsimples;
-        auto cfg = getOccupancyConfiguration(obj, p, *mapPointToMask);
+        auto cfg = obj.getNeighborhoodConfigurationOccupancy(p, *mapZeroNeighborhoodToMask);
         auto simple_from_table = table[cfg];
         if( simple_from_table ) ++nsimples_tables;
         INFO("Point: " <<  p << " cfg: " << cfg);
@@ -230,12 +229,12 @@ struct Objects2D{
 
 };
 
-TEST_CASE("Check that each neighborhood point in 2D (8 points) has associated a bit in an unsigned integer.", "[map][mask][2D]" )
+TEST_CASE("Check that each neighborhood point in 2D (8 points) has associated a bit in an unsigned integer (NeighborhoodConfiguration).", "[map][mask][2D]" )
 {
     using namespace Z2i;
-    using Map = unordered_map<Point, unsigned int>;
+    using Map = unordered_map<Point, NeighborhoodConfiguration>;
     auto pointToMask2D =
-        mapPointToBitMask< typename Object8_4::Point >();
+        mapZeroPointNeighborhoodToConfigurationMask< typename Object8_4::Point >();
     Map truth2D;
     truth2D[Point{ -1, -1 }] = 1;   // 0000 x x 0000 x x 0000 0001
     truth2D[Point{  0, -1 }] = 2;   // x x x x x x x 0010
@@ -251,7 +250,7 @@ TEST_CASE("Check that each neighborhood point in 2D (8 points) has associated a 
 
 TEST_CASE_METHOD(Objects2D, "Simplicity tables match on-the-fly calculations for all 2D topologies", "[simple][object][balls][2D]" )
 {
-  auto mapPointToMask = mapPointToBitMask<Z2i::Point>();
+  auto mapZeroNeighborhoodToMask = mapZeroPointNeighborhoodToConfigurationMask<Z2i::Point>();
 
   SECTION("8_4 and 4_8 topologies using loadTable with specific table size (2^8) and with template parameter N=2 (dimension)"){
     // 8_4
@@ -266,7 +265,7 @@ TEST_CASE_METHOD(Objects2D, "Simplicity tables match on-the-fly calculations for
       for( const auto & p : objSet){
         auto simple = obj.isSimple(p);
         if( simple ) ++nsimples;
-        auto cfg = getOccupancyConfiguration(obj, p, *mapPointToMask);
+        auto cfg = obj.getNeighborhoodConfigurationOccupancy(p, *mapZeroNeighborhoodToMask);
         auto simple_from_table = table[cfg];
         if( simple_from_table ) ++nsimples_tables;
         INFO("Point: " <<  p << " cfg: " << cfg);
@@ -288,7 +287,7 @@ TEST_CASE_METHOD(Objects2D, "Simplicity tables match on-the-fly calculations for
       for( const auto & p : objSet){
         auto simple = obj.isSimple(p);
         if( simple ) ++nsimples;
-        auto cfg = getOccupancyConfiguration(obj, p, *mapPointToMask);
+        auto cfg = obj.getNeighborhoodConfigurationOccupancy(p, *mapZeroNeighborhoodToMask);
         auto simple_from_table = table[cfg];
         if( simple_from_table ) ++nsimples_tables;
         INFO("Point: " <<  p << " cfg: " << cfg);

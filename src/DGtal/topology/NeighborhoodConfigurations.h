@@ -44,6 +44,7 @@
 #include <unordered_map>
 #include "boost/dynamic_bitset.hpp"
 #include <DGtal/base/CountedPtr.h>
+#include <DGtal/topology/helpers/NeighborhoodConfigurationsHelper.h>
 
 namespace DGtal {
   namespace functions {
@@ -85,12 +86,21 @@ namespace DGtal {
   loadTable(const std::string & input_filename);
 
   /**
-   * Map the points of a 2x2 or 3x3 cube centered in zero to a bit configuration
-   * (excludes center). The order of the configuration is lexicographic,
-   * starting in {-1, -1, ...}.
+   * Maps any point in the neighborhood of point Zero (0,..,0) to its
+   * corresponding configuration bit mask. This is a helper to use with tables.
+   * The order of the configuration is lexicographic, starting in {-1, -1, ...}.
+   * @note the neighborhood is considered to be all points p which ||p-zero|| <= 1
+   *
+   * Example:
+   * Point{ -1, -1, -1 } = 1; // corresponding to mask  x x 0000 0001
+   * Point{  0, -1, -1 } = 2; // corresponding to mask  x x 0000 0010
+   * Point{  1,  1,  1 } = 2^26; // x 0010 x x x x x x
+   *
+   * @note NeighborhoodConfiguration is type uint 32 bits,
+   * so the max dimension supported is 3.
    *
    * @see HyperRectDomain_Iterator::nextLexicographicOrder
-   * @see testNeighborhoodConfigurations.cpp shows the map.
+   * @see testNeighborhoodConfigurations.cpp shows the complete mapping.
    *
    * @tparam TPoint type of point to create map and input the desired dimension.
    *
@@ -99,8 +109,8 @@ namespace DGtal {
   template<typename TPoint>
   inline
   DGtal::CountedPtr<
-  std::unordered_map<TPoint, unsigned int > >
-  mapPointToBitMask();
+  std::unordered_map<TPoint, NeighborhoodConfiguration > >
+  mapZeroPointNeighborhoodToConfigurationMask();
 
   } // namespace functions
 } // namespace DGtal
