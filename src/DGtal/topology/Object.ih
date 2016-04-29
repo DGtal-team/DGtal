@@ -204,10 +204,10 @@ getNeighborhoodConfigurationOccupancy(const Point & center,
   Point p1 = Point::diagonal( -1 );
   Point p2 = Point::diagonal(  1 );
   Point c = Point::diagonal( 0 );
-  Domain domain( p1, p2 );
+  Domain cube_domain( p1, p2 );
   const auto & not_found( this->pointSet().end() );
   NeighborhoodConfiguration cfg{0};
-  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it ) {
+  for ( DomainConstIterator it = cube_domain.begin(); it != cube_domain.end(); ++it ) {
     if( *it != c  &&
         this->pointSet().find( center + *it ) != not_found )
       cfg |= mapZeroNeighborhoodToMask.at(*it) ;
