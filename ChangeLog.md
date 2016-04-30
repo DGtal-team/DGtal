@@ -38,7 +38,10 @@
 - *Configuration/General*
  - Simplification of the windows build instructions. (David
    Coeurjolly, [#1160](https://github.com/DGtal-team/DGtal/pull/1160))
-
+ - Various fixes in the documentation (e.g. links to concepts
+   pages). (David Coeurjolly,
+   [#1161](https://github.com/DGtal-team/DGtal/pull/1161))
+   
 - *DEC Package*
  - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
    (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
