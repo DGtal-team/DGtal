@@ -69,7 +69,7 @@ namespace DGtal
    * \brief Aim: Estimates normal vector using CGAL linear least
    * squares plane fitting.
    *
-   * model of CLocalEstimatorFromSurfelFunctor
+   * model of concepts::CLocalEstimatorFromSurfelFunctor
    *
    *
    * @tparam TSurfel type of surfels
