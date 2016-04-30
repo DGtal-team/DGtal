@@ -85,14 +85,21 @@ several functors:
   of the eigenvalues (@f$\lambda_1\leq\lambda_2\leq\lambda_3@f$) of
   the accumulated tensor votes.
 
-- functors::SphereFittingEstimator
-
+- functors::SphereFittingEstimator: this functor requires the
+  WITH_PATATE flag and the Patate Library dependency. The functor
+  performs a sphere fitting on the neighborhood following @cite
+  mellado2012growing. The output of the estimator is a structure
+  containing the fitted sphere parameters (e.g. its center and
+  radius). Please refer to @cite mellado2012growing for details on the
+  @e tau, @e kappa and @e eta parameters.
+  
 - functors::MongeJetFittingGaussianCurvatureEstimator,
   functors::MongeJetFittingMeanCurvatureEstimator,
   functors::MongeJetFittingNormalVectorEstimator,
-  functors::MongeJetFittingPrincipalCurvaturesEstimator: return differential quantity
-  by  a polynomial surface  fitting @cite CGal, @cite Cazals2005 . These  estimators require CGAL  and Eigen3 dependency
-  (WITH_CGAL, WITH_EIGEN).
+  functors::MongeJetFittingPrincipalCurvaturesEstimator: return
+  differential quantity by a polynomial surface fitting @cite CGal,
+  @cite Cazals2005 . These estimators require CGAL and Eigen3
+  dependency (WITH_CGAL, WITH_EIGEN).
 
 - functors::LinearLeastSquareFittingNormalVectorEstimator: normal vector
   estimation from least square fitting of the embedded sufel
