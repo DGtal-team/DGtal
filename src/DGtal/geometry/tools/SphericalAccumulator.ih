@@ -84,7 +84,7 @@ void DGtal::SphericalAccumulator<T>::binCoordinates(const Vector &aDir,
 						    Size &posPhi, 
 						    Size &posTheta) const
 {
-  double theta,phi;
+  double theta,phi, theta2;
   double norm = aDir.norm();
   
   ASSERT(norm != 0);
@@ -100,12 +100,13 @@ void DGtal::SphericalAccumulator<T>::binCoordinates(const Vector &aDir,
     }
   else
     {
-      theta=atan2(NumberTraits<typename T::Component>::castToDouble(aDir[1]),
+      theta2=atan2(NumberTraits<typename T::Component>::castToDouble(aDir[1]),
                   NumberTraits<typename T::Component>::castToDouble(aDir[0]));
  
-      if(aDir[1]<0)
-	theta += 2.0*M_PI;
-      
+      if(theta2<0)
+	theta = theta2 + 2.0*M_PI;
+      else
+      theta = theta2;
       Nthetai = floor(2.0*(myNphi)*sin(posPhi*dphi));
       double dtheta = 2.0*M_PI/(Nthetai);
       posTheta = static_cast<Size>(floor( (theta+dtheta/2.0)/dtheta));
@@ -322,9 +323,9 @@ DGtal::SphericalAccumulator<T>::clear()
   for(Size i=0; i < myNphi; i++)
     for(Size j=0; j < myNtheta; j++)
       if (isValidBin(i,j))
-	myAccumulator[j + i*myNtheta]=0;
+        myAccumulator[j + i*myNtheta]=0;
       else
-	myAccumulator[j+ i*myNtheta]=-1;
+        myAccumulator[j+ i*myNtheta]=-1;
       
   std::fill(myAccumulatorDir.begin(), myAccumulatorDir.end(), Vector::zero);
 }

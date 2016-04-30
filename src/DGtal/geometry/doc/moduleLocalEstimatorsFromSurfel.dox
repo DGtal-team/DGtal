@@ -96,8 +96,9 @@ several functors:
 
 - functors::LinearLeastSquareFittingNormalVectorEstimator: normal vector
   estimation from least square fitting of the embedded sufel
-  points. This functor also needs CGAL depencendy.
+  points. This functor also needs CGAL dependency.
 
+- functors::SphericalHoughNormalVectorEstimator: Robsut normal vector estimation using a spherical hough voting (@cite BoulchM12).
 
 @advanced Implementing your own surfel patch based estimator is quite
 simple. Please have a look to concepts::CLocalEstimatorFromSurfelFunctor or the
@@ -132,7 +133,7 @@ We can now estimate the quantities at a surfel given by an iterator
 
 @snippet exampleEstimatorFromSurfelFunctors.cpp SurfelFunctorsEstim
 
-
+@see exampleEstimatorFromSurfelFunctors.cpp
 
 */
 

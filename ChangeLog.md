@@ -2,6 +2,11 @@
 
 ## New Features / Critical Changes
 
+- *Geometry Package*
+ - New robust normal vector estimator using spherical accumulators and statistical
+   voting (Boulc'h & Marlet, SGP 2012). 
+   (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149)) 
+
 ## Changes
 - *Configuration/General*
  - Cleaning remaining preprocessor directives related to C++11 features.
@@ -19,6 +24,10 @@
    [#1153](https://github.com/DGtal-team/DGtal/pull/1153))
 
 - *IO Package*
+ - Viewer3D: add a new mode to have the light source position defined from the
+   camera (default) or from the scene coordinate system (key P to change
+   position mode). A new lambertian rendering mode was added.
+   (Bertrand Kerautret [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
  - Add the possibility to interact in QGLViewer Viewer3D class with the voxel
    primitive (was limited to surfel). As with surfel, the user may assign integer
    identifiers (OpenGL names) to voxel and callback functions, which are called
@@ -26,6 +35,10 @@
    (Bertrand Kerautret, [#1146](https://github.com/DGtal-team/DGtal/pull/1146))
 
 ## Bug Fixes
+- *Configuration/General*
+ - Simplification of the windows build instructions. (David
+   Coeurjolly, [#1160](https://github.com/DGtal-team/DGtal/pull/1160))
+
 - *DEC Package*
  - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
    (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
