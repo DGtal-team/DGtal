@@ -80,7 +80,7 @@ namespace DGtal
    *
    * The mean curvature estimation is thus given up to a sign.
    *
-   * model of CLocalEstimatorFromSurfelFunctor.
+   * model of concepts::CLocalEstimatorFromSurfelFunctor.
    *
    *
    * @tparam TSurfel type of surfels
