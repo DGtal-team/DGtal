@@ -72,7 +72,7 @@ namespace DGtal
      *
      * (see @cite tensor-voting-ParkLL12)    
      *
-     * model of CLocalEstimatorFromSurfelFunctor
+     * model of concepts::CLocalEstimatorFromSurfelFunctor
      *
      * @tparam TSurfel type of surfels
      * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
