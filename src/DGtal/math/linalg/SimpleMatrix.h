@@ -60,6 +60,8 @@ namespace DGtal
    * This class defines simple matrix with static size. Computations
    * are performed in the euclidean ring associated with the type @a TComponent.
    *
+   * Matrix coefficient indices are in the range [0,M-1] and [0,N-1].
+   *
    * This class also defines types for row and column vectors as
    * specialized PointVector types.
    *
@@ -160,6 +162,8 @@ namespace DGtal
 
     /**
      * Set a value at position (i,j).
+     *
+     * @pre (i,j) must be in the range [0,M-1]x[0,N-1]
      *
      * @param i row index
      * @param j column index

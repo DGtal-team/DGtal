@@ -189,9 +189,6 @@ DGtal::AngleLinearMinimizer::setIsCurveOpen( bool isCurveOpen)
   myIsCurveOpen = isCurveOpen;
 }
 
-
-
-
 inline
 DGtal::AngleLinearMinimizer::~AngleLinearMinimizer()
 {
