@@ -148,7 +148,7 @@ viewer3D.__
 
 The Viewer3D class has a special mode to display balls (added from the
 Display3D method \c addBall() ). By default, the balls are constructed
-with OpenGl quad primitive which can be slow if the number of ball is
+with OpenGl quadrangulated sphere which can be slow if the number of ball is
 huge. In the latter case, it is possible to use OpenGL points to
 increase display performance. To use this mode, you have just to
 activate it with the method \c setUseGLPointForBalls() when needed:
