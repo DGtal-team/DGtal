@@ -88,7 +88,8 @@ template < typename Space ,typename KSpace >
 template <typename TValues>
 inline
 void
-DGtal::Viewer3D<Space, KSpace>::rotatePoint(TValues &x, TValues &y, TValues &z, double cx, double cy, double cz,
+DGtal::Viewer3D<Space, KSpace>::rotatePoint(TValues &x, TValues &y, TValues &z,
+                                            double cx, double cy, double cz,
                                             double angleRotation, ImageDirection rotationDir){
   double dx = x-cx; double dy = y-cy; double dz = z-cz;
   if(rotationDir  == zDirection){
@@ -140,9 +141,6 @@ DGtal::Viewer3D<Space, KSpace>::rotateLineD3D(typename DGtal::Display3D<Space, K
   }
 
 }
-
-
-
 
 
 template < typename Space ,typename KSpace >
@@ -740,34 +738,37 @@ DGtal::Viewer3D<Space, KSpace>::draw()
     {
       if ( Viewer3D<Space, KSpace>::myLineSetList.at ( j ).size() !=0 )
         {
-          glLineWidth ( max(myGLLineMinWidth, Viewer3D<Space, KSpace>::myLineSetList.at ( j ).at ( 0 ).width )) ;
+          glLineWidth ( max(myGLLineMinWidth,
+                            Viewer3D<Space, KSpace>::myLineSetList.at ( j ).at ( 0 ).width )) ;
         }
       glCallList(myLineSetListId+j);
     }
 
   glCallList(myPrismListId);
   
-
   glCallList( myCubesMapId );
       
 
   for ( unsigned int j=0; j< Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
-      if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
+      if(myUseGLPointsForBalls)
         {
-          glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) /distCam );
+          if ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).size() !=0 )
+            {
+              glPointSize ( max(myGLPointMinWidth,
+                                ( Viewer3D<Space, KSpace>::myBallSetList.at ( j ).at ( 0 ).radius ) ));
+            }
         }
+      else
+        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+      
       glCallList(myBallSetListId+j);
+      if(myIsDoubleFaceRendering)
+        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+      else
+        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
     }
-
-  for ( auto const &bList: Viewer3D<Space, KSpace>::myBallSetList )
-    {
-      for ( auto const & b: bList)
-        {
-          glDrawGLBall ( b );
-        }
-    }
-
+  
   glDisable(GL_CULL_FACE);
   glCallList(myQuadsMapId);
   if(myViewWire)
@@ -780,7 +781,8 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glCallList(myTriangleSetListId);
   if(myViewWire)
     {
-      glLineWidth ( max(myGLLineMinWidth, Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam ));
+      glLineWidth ( max(myGLLineMinWidth,
+                        Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam ));
       glCallList(myTriangleSetListWiredId);
     }
 
@@ -788,7 +790,8 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glCallList(myPolygonSetListId);
   if(myViewWire)
     {
-      glLineWidth (max(myGLLineMinWidth,  Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam ));
+      glLineWidth (max(myGLLineMinWidth,
+                       Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam ));
       glCallList(myPolygonSetListWiredId);
     }
 
@@ -849,10 +852,6 @@ DGtal::Viewer3D<Space, KSpace>::init()
   Viewer3D<Space, KSpace>::myMeshDefaultLineWidth=10.0;
   myNbListe=0;
   myViewWire=false;
-  myGLScaleFactorX=1.0;
-  myGLScaleFactorY=1.0;
-  myGLScaleFactorZ=1.0;
-  myGLLineMinWidth=1.5;
   setBackgroundColor ( QColor ( 217, 228, 255 ) );
   setForegroundColor ( QColor ( 217, 22, 25 ) );
   myIsDoubleFaceRendering=true;
@@ -888,6 +887,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_C, "Show camera informations." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
   setKeyDescription ( Qt::Key_D, "Enable/Disable the two side face rendering." );
+  setKeyDescription ( Qt::Key_O, "Switch the ball display mode (quad ball display (default) or OpenGL point)." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
   setKeyDescription ( Qt::Key_M, "Switch the rendering mode bewteen Default, Metallic and Plastic mode." );
   setKeyDescription ( Qt::Key_P, "Switch the light source position mode between the camera mode (default: the light source position is fixed according to the camera position) and scene mode (the light source position is fixed according the scene coordinate system)." );
@@ -1112,7 +1112,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
 template< typename Space, typename KSpace>
 void
-DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>::BallD3D aBall )
+DGtal::Viewer3D<Space, KSpace>::glDrawGLBall (const typename Viewer3D<Space, KSpace>::BallD3D &aBall )
 {
   double thetaResolution = aBall.resolution;
   double thetaStep= (2.0*M_PI)/thetaResolution;
@@ -1123,21 +1123,23 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>:
   double xCenter = aBall.center[0];
   double yCenter = aBall.center[1];
   double zCenter = aBall.center[2];
-
-  for(unsigned int j =0; j < phiResolution; j++){
-    double phi0 = M_PI/2.0-j*phiStep;
-    double phi1 = M_PI/2.0-(j+1)*phiStep;
-    glBegin(GL_QUAD_STRIP);
-    for(unsigned int i =0; i <= thetaResolution; i++){
-      double theta0 =  i * thetaStep;
-      glColor4ub ( aBall.color.red(), aBall.color.green(), aBall.color.blue(), aBall.color.alpha() );
-      glNormal3f(cos(phi0)*cos(theta0), cos(phi0)*sin(theta0), sin(phi0));
-      glVertex3f(xCenter+cos(phi0)*cos(theta0)*radius,yCenter+ cos(phi0)*sin(theta0)*radius, zCenter+ sin(phi0)*radius);
-      glNormal3f(cos(phi1)*cos(theta0), cos(phi1)*sin(theta0), sin(phi1));
-      glVertex3f(xCenter+cos(phi1)*cos(theta0)*radius,yCenter+ cos(phi1)*sin(theta0)*radius, zCenter+ sin(phi1)*radius);
+  glBegin(GL_QUAD_STRIP);
+  for(unsigned int j =0; j < phiResolution; j++)
+    {
+      double phi0 = M_PI/2.0-j*phiStep;
+      double phi1 = M_PI/2.0-(j+1)*phiStep;
+      for(unsigned int i =0; i <= thetaResolution; i++)
+        {
+          double theta0 =  i * thetaStep;
+          glColor4ub ( aBall.color.red(), aBall.color.green(), aBall.color.blue(), aBall.color.alpha() );
+          glNormal3f(cos(phi0)*cos(theta0), cos(phi0)*sin(theta0), sin(phi0));
+          glVertex3f(xCenter+cos(phi0)*cos(theta0)*radius,yCenter+ cos(phi0)*sin(theta0)*radius, zCenter+ sin(phi0)*radius);
+          glNormal3f(cos(phi1)*cos(theta0), cos(phi1)*sin(theta0), sin(phi1));
+          glVertex3f(xCenter+cos(phi1)*cos(theta0)*radius,yCenter+ cos(phi1)*sin(theta0)*radius, zCenter+ sin(phi1)*radius);
+        }
     }
-     glEnd();
-  }
+  glEnd();
+  
 }
 
 template< typename Space, typename KSpace>
@@ -1272,6 +1274,13 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       updateGL();
     }
   
+  if ( ( e->key() ==Qt::Key_O ) )
+    {
+      myUseGLPointsForBalls = !myUseGLPointsForBalls;
+      updateList(false);
+      updateGL();
+    }
+
   if ( ( e->key() ==Qt::Key_R ) )
     {
       myGLScaleFactorX=1.0f;
@@ -1279,7 +1288,6 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       myGLScaleFactorZ=1.0f;
       updateGL();
     }
-
 
   if ( ( e->key() ==Qt::Key_T ) )
     {
@@ -1535,22 +1543,39 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::glCreateListBalls(const VectorBall &aVectBall,
                                                   unsigned int idList){
-  glNewList ( idList, GL_COMPILE );
-  glDepthMask ( GL_TRUE );
-  glDisable ( GL_TEXTURE_2D );
-  glDisable ( GL_POINT_SMOOTH );
-  glDisable ( GL_LIGHTING );
-
-  glPushName ( myNbListe );
-  glBegin ( GL_POINTS );
-  for ( auto const &ball: aVectBall )
+  if(myUseGLPointsForBalls)
     {
-      glColor4ub ( ball.color.red(), ball.color.green(), ball.color.blue(), ball.color.alpha() );
-      glVertex3f ( ball.center[0], ball.center[1], ball.center[2] );
+      glNewList ( idList, GL_COMPILE );
+      glDepthMask ( GL_TRUE );
+      glDisable ( GL_TEXTURE_2D );
+      glDisable ( GL_POINT_SMOOTH );
+      glDisable ( GL_LIGHTING );
+      glPushName ( myNbListe );
+      glBegin ( GL_POINTS );
+      for ( auto const &ball: aVectBall )
+        {
+          glColor4ub ( ball.color.red(), ball.color.green(),
+                       ball.color.blue(), ball.color.alpha() );
+          glVertex3f ( ball.center[0], ball.center[1], ball.center[2] );
+        }
+      glEnd();
+      glEnable ( GL_LIGHTING );
+      glEndList();
     }
-  glEnd();
-  glEnable ( GL_LIGHTING );
-  glEndList();
+  else
+    {
+      glNewList ( idList, GL_COMPILE );
+      glPushName ( myNbListe );
+      glDepthMask ( GL_TRUE );
+      glDisable ( GL_TEXTURE_2D );
+      glDisable ( GL_POINT_SMOOTH );
+      for ( auto const & b: aVectBall)
+        {
+          glDrawGLBall ( b );
+        }
+      glEnd();
+      glEndList();
+    }
 }
 
 
@@ -1817,8 +1842,6 @@ DGtal::Viewer3D<Space, KSpace>::domElement(const QString& name, QDomDocument& do
 
 
 
-
-
 template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::initFromDOMElement(const QDomElement& element)
@@ -1893,6 +1916,15 @@ DGtal::Viewer3D<Space, KSpace>::setGLLightDiffuseCoefficients(const GLfloat ligh
   myLightDiffuseCoeffs[3] =  lightDiffuseCoeffs[3];
   updateGL();
 }
+
+
+template< typename Space, typename KSpace>
+void 
+DGtal::Viewer3D<Space, KSpace>::setUseGLPointForBalls(const bool useOpenGLPt)
+{
+  myUseGLPointsForBalls = useOpenGLPt;
+}
+
 
 
 template< typename Space, typename KSpace>

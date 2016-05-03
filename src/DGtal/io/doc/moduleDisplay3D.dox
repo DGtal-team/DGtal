@@ -144,6 +144,29 @@ viewer3D.__
 (key C) which can be used in Board2Dto3D described in the following.
 
 
+\subsection  DGtalGLV_Viewer3D_Ball Ball display modes
+
+The Viewer3D class has a special mode to display balls (added from the
+Display3D method \c addBall() ). By default, the balls are constructed
+with OpenGl quadrangulated sphere which can be slow if the number of ball is
+huge. In the latter case, it is possible to use OpenGL points to
+increase display performance. To use this mode, you have just to
+activate it with the method \c setUseGLPointForBalls() when needed:
+
+@code
+viewer.setUseGLPointForBalls(true);
+viewer.addBall(Z3i::RealPoint(10.3, 11.3, 4.0);
+@endcode
+
+By changing the mode you will obtain such display:
+
+ |    ball display default mode            |  ball display with OpenGL point mode |
+ | :------------------------------------ : | :----------------------------------: |
+ |  ![ ](viewer3DBallDefaultQuads.png)     |  ![ ](viewer3DBallPtOpenGL.png)      |
+
+
+You can also change the ball display mode interactively by using the key O. 
+
 \section DGtalGLV_Boas3DTo2D Alternative visualization without QGLViewer dependency
 
 
