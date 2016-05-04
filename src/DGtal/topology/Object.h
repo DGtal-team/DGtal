@@ -58,6 +58,9 @@
 #include "DGtal/topology/Topology.h"
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/properties.hpp>
+#include <boost/dynamic_bitset.hpp>
+#include <unordered_map>
+#include <DGtal/topology/helpers/NeighborhoodConfigurationsHelper.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace boost
@@ -271,6 +274,27 @@ namespace DGtal
      */
     Object & operator= ( const Object & other );
 
+    /**
+     * Clone into the object pre-computed look up table to speed up isSimple calculation.
+     *
+     * @param inputTable table loaded using @ref NeighborhoodConfigurations.h::loadTable
+     */
+    void setTable(Alias<boost::dynamic_bitset<> >inputTable);
+
+    /**
+     * Get the occupancy configuration of the neighborhood of a point. The neighborhood only depends on the dimension, not the topology of the object (3x3 cube for 3D point, 2x2 square for 2D).
+     * @param center point of the neighborhood. It doesn't matter if center belongs or not to \b input_object.
+     *
+     * @param mapZeroNeighborhoodToMask maping each point of the neighborhood of point Zero to a NeighborhoodConfiguration.
+     * @see myNeighborConfigurationMap
+     * @see mapPointToBitMask
+     *
+     * @return bit configuration of neighborhood
+     */
+    NeighborhoodConfiguration getNeighborhoodConfigurationOccupancy(
+	const Point & center,
+	const std::unordered_map< Point,
+	NeighborhoodConfiguration> & mapZeroNeighborhoodToMask) const;
     /**
      * @return the number of elements in the set.
      */
@@ -581,6 +605,25 @@ objects[ 0 ].writeComponents( it ); // it points in same container as this.
      */
     bool isSimple( const Point & v ) const;
 
+    /**
+     * Use pre-calculated look-up-table to check if point is simple.
+     * @note this method is used by isSimple if the object have
+     * a table set with @ref Object::setTable
+     *
+     * @param v point to check simplicity.
+     * @param input_table external look up table containing the configuration of neighbors which are simple. @see NeighborhoodConfigurations.h::loadTable
+     * @param mapZeroNeighborhoodToMask maping each point of the neighborhood of point Zero to a NeighborhoodConfiguration.
+     *
+     * @return true if the point is simple according to precalculated table.
+     *
+     * @note precalculated tables are available at build time.
+     * @see NeighborhoodTables.h
+     */
+    inline bool isSimpleFromTable(
+	const Point & v,
+        const boost::dynamic_bitset<> & input_table,
+	const std::unordered_map< Point,
+	  NeighborhoodConfiguration > & mapZeroNeighborhoodToMask) const;
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -616,6 +659,20 @@ objects[ 0 ].writeComponents( it ); // it points in same container as this.
      */
     mutable Connectedness myConnectedness;
 
+    /**
+     * pointer to look-up-table to speed up isSimple
+     * */
+    CountedPtrOrPtr<boost::dynamic_bitset<> > myTable;
+
+    /**
+     * Neighborhood configuration points to bit mask. Needed to use table.
+     * */
+    CountedPtrOrPtr<std::unordered_map<Point,unsigned int> > myNeighborConfigurationMap;
+
+    /**
+     * Flag to allow using myTable in isSimple calculation.
+     */
+    bool myTableIsLoaded;
 
     // --------------- CDrawableWithBoard2D realization ------------------
   public:

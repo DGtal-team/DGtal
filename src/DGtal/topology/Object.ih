@@ -38,12 +38,14 @@
 #include "DGtal/topology/DigitalTopologyTraits.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/graph/Expander.h"
+#include "DGtal/topology/NeighborhoodConfigurations.h"
+#include "DGtal/topology/helpers/NeighborhoodConfigurationsHelper.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/topology/Object.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
@@ -60,7 +62,12 @@
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object()
-  : myTopo( 0 ), myPointSet( 0 ), myConnectedness( UNKNOWN )
+  : myTopo( nullptr ),
+    myPointSet( nullptr ),
+    myConnectedness( UNKNOWN ),
+    myTable( nullptr ),
+    myNeighborConfigurationMap( nullptr ),
+    myTableIsLoaded( false )
 {
 }
 
@@ -81,7 +88,10 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
   Connectedness cxn )
   : myTopo( aTopology ),
     myPointSet( aPointSet ),
-    myConnectedness( cxn )
+    myConnectedness( cxn ),
+    myTable( nullptr ),
+    myNeighborConfigurationMap( nullptr ),
+    myTableIsLoaded(false)
 {
 }
 
@@ -98,7 +108,10 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 ( const Object & other )
   : myTopo( other.myTopo ),
     myPointSet( other.myPointSet ),
-    myConnectedness( other.myConnectedness )
+    myConnectedness( other.myConnectedness ),
+    myTable( other.myTable ),
+    myNeighborConfigurationMap( other.myNeighborConfigurationMap ),
+    myTableIsLoaded(other.myTableIsLoaded)
 {
 }
 
@@ -117,7 +130,10 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
   Clone<Domain> aDomain )
   : myTopo( new DigitalTopology( aTopology ) ),
     myPointSet( new DigitalSet( aDomain ) ),
-    myConnectedness( CONNECTED )
+    myConnectedness( CONNECTED ),
+    myTable( nullptr ),
+    myNeighborConfigurationMap( nullptr ),
+    myTableIsLoaded(false)
 {
 }
 
@@ -147,6 +163,9 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::operator=
     myTopo = other.myTopo;
     myPointSet = other.myPointSet;
     myConnectedness = other.myConnectedness;
+    myTable = other.myTable;
+    myNeighborConfigurationMap = other.myNeighborConfigurationMap;
+    myTableIsLoaded = other.myTableIsLoaded;
   }
   return *this;
 }
@@ -162,6 +181,40 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::size() const
   return myPointSet->size();
 }
 
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void
+DGtal::Object<TDigitalTopology, TDigitalSet>::setTable( Alias<boost::dynamic_bitset<> > input_table)
+{
+  myTable = input_table;
+  myNeighborConfigurationMap = DGtal::functions::mapZeroPointNeighborhoodToConfigurationMask<Point>();
+  myTableIsLoaded = true;
+}
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+DGtal::NeighborhoodConfiguration
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+getNeighborhoodConfigurationOccupancy(const Point & center,
+          const std::unordered_map< Point,
+          NeighborhoodConfiguration> & mapZeroNeighborhoodToMask) const
+{
+  using DomainConstIterator = typename Domain::ConstIterator;
+  Point p1 = Point::diagonal( -1 );
+  Point p2 = Point::diagonal(  1 );
+  Point c = Point::diagonal( 0 );
+  Domain cube_domain( p1, p2 );
+  const auto & not_found( this->pointSet().end() );
+  NeighborhoodConfiguration cfg{0};
+  for ( DomainConstIterator it = cube_domain.begin(); it != cube_domain.end(); ++it ) {
+    if( *it != c  &&
+        this->pointSet().find( center + *it ) != not_found )
+      cfg |= mapZeroNeighborhoodToMask.at(*it) ;
+  }
+  return cfg;
+
+}
 /**
  * A const reference to the embedding domain.
  */
@@ -891,6 +944,18 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   return geodesicN;
 }
 
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+bool
+DGtal::Object<TDigitalTopology, TDigitalSet>
+::isSimpleFromTable(
+    const Point & center,
+    const boost::dynamic_bitset<> & input_table,
+    const std::unordered_map< Point,
+    NeighborhoodConfiguration> & mapZeroNeighborhoodToMask) const
+{
+  return input_table[this->getNeighborhoodConfigurationOccupancy(center, mapZeroNeighborhoodToMask)];
+}
 /**
  * [Bertrand, 1994] A voxel v is simple for a set X if #C6 [G6 (v,
  * X)] = #C18[G18(v, X^c)] = 1, where #Ck [Y] denotes the number
@@ -908,6 +973,9 @@ bool
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::isSimple( const Point & v ) const
 {
+  if(myTableIsLoaded == true)
+    return isSimpleFromTable(v, *myTable, *myNeighborConfigurationMap);
+
   static const int kappa_n =
     DigitalTopologyTraits< ForegroundAdjacency, BackgroundAdjacency, Space::dimension >::GEODESIC_NEIGHBORHOOD_SIZE;
   static const int lambda_n =
