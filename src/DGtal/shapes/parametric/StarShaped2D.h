@@ -54,7 +54,7 @@ namespace DGtal
   // template class StarShaped2D
   /**
    * Description of template class 'StarShaped2D' <p>
-   * 
+   *
    * Aim: Abstract class that represents any star-shaped object in
    * dimension 2. Such a shape as a center and any segment from this
    * center to the shape boundary is included in the shape. These
@@ -62,22 +62,22 @@ namespace DGtal
    * the center.
    *
    * StarShaped2D and its derived classes are models of
-   * CEuclideanBoundedShape and CEuclideanOrientedShape. 
+   * CEuclideanBoundedShape and CEuclideanOrientedShape.
    *
    * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    *
-   *  
+   *
    * @tparam TSpace space in which the shape is defined.
    */
   template <typename TSpace>
   class StarShaped2D
   {
-   
+
   public:
     typedef TSpace Space;
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
-     
+
    /**
      * Constructor.
      */
@@ -88,7 +88,7 @@ namespace DGtal
      * Destructor.
      */
     ~StarShaped2D();
-    
+
     // ------------------------- Implemented services -------------------------
   public:
     /**
@@ -101,25 +101,25 @@ namespace DGtal
 
     // ------------------------- Abstract services ----------------------------
   public:
-    
+
     /**
      * @return the lower bound of the shape bounding box.
      *
      */
     virtual RealPoint getLowerBound() const = 0;
-    
+
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
     virtual RealPoint getUpperBound() const = 0;
-    
+
 
     /**
      * @return the center of the star-shaped object.
      */
     virtual RealPoint center() const = 0;
-    
+
     /**
      * @param p any point in the plane.
      *
@@ -150,26 +150,26 @@ namespace DGtal
      * @return the vector (x''(t),y''(t)).
      */
     virtual RealPoint xpp( const double t ) const = 0;
-    
+
 
     // ------------------------- star-shaped services -------------------------
   public:
 
-    /** 
+    /**
      * Return the orienatation of a point with respect to a shape.
-     * 
+     *
      * @param p input point
-     * 
-     * @return the orientation of the point (<0 means inside, ...)
+     *
+     * @return the orientation of the point (0 is inside, 1 is on, 2 is outside).
      */
     Orientation orientation( const RealPoint &p) const;
-    
-    
+
+
     /**
      * @param t any angle between 0 and 2*Pi.
      *
      * @return the vector (x'(t),y'(t)) made unitary which is the unit
-     * tangent to the shape boundary.  
+     * tangent to the shape boundary.
      */
     RealPoint tangent( double t ) const;
 
@@ -177,7 +177,7 @@ namespace DGtal
      * @param t any angle between 0 and 2*Pi.
      *
      * @return the vector (x''(t),y''(t)) made unitary which is the unit
-     * normal to the shape boundary looking inside the shape.  
+     * normal to the shape boundary looking inside the shape.
      */
     RealPoint normal( double t ) const;
 
@@ -197,6 +197,15 @@ namespace DGtal
      * @return the estimated arclength.
      */
     double arclength( double t1, double t2, unsigned int nb ) const;
+
+    /**
+     * @param inner a point that is inside the shape
+     * @param outer a point that is outside the shape
+     * @param epsilon error parameter
+     * @return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
+
+     */
+    RealPoint projection( RealPoint& inner, RealPoint& outer, const double epsilon ) const;
 
 
     // ----------------------- Interface --------------------------------------
