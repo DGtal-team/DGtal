@@ -152,7 +152,24 @@ DGtal::StarShaped2D<TSpace>::arclength( double t1, double t2, unsigned int nb ) 
   return l;
 }
 
+/**
+ * @param inner a point that is inside the shape
+ * @param outer a point that is outside the shape
+ * @param epsilon error parameter
+ * @return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
+ */
+template <typename TSpace>
+inline
+typename DGtal::StarShaped2D<TSpace>::RealPoint
+DGtal::StarShaped2D<TSpace>::projection( typename DGtal::StarShaped2D<TSpace>::RealPoint& inner, typename DGtal::StarShaped2D<TSpace>::RealPoint& outer, double epsilon ) const
+{
+    typename DGtal::StarShaped2D<TSpace>::RealPoint mid = RealPoint(0.5 * (inner + outer));
 
+    if((inner - outer).norm() < epsilon) return mid; // We found a point that is at distance epsilon from the shape
+    else if(orientation(mid) == 0) return projection( mid, outer, epsilon ); // The point lies inside the shape
+    else if(orientation(mid) == 1) return mid; // The point is right onto the shape
+    else if(orientation(mid) == 2) return projection( inner, mid, epsilon ); // The point lies outside the shape
+}
 
 /**
  * Destructor.
