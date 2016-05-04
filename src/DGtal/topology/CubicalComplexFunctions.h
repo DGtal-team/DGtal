@@ -441,8 +441,8 @@ namespace DGtal
   /**
    * Get the occupancy configuration of the neighborhood of a point in a cubical
    * complex.
-   * The neighborhood size is considered DxD for dimension D of the point
-   * (ie 3x3 cube for 3D point).
+   * The neighborhood size is considered 3^D for dimension D of the point
+   * (ie 3x3x3 cube for 3D point).
    *
    * @tparam TComplex Complex type.
 
