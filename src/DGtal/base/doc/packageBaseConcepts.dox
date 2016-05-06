@@ -59,6 +59,8 @@ digraph GBASE {
     CLabel [ label="CLabel" URL="\ref concepts::CLabel"];
     CQuantity [ label="CQuantity" URL="\ref concepts::CQuantity"];
     CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate"];
+    CBackInsertable [ label="CBackInsertable" URL="\ref concepts::CBackInsertable"];
+    CUnaryFunctor [ label="CUnaryFunctor" URL="\ref concepts::CUnaryFunctor"];
 
     CSinglePassRange -> CConstSinglePassRange ;
     CSinglePassRangeFromPoint -> CConstSinglePassRangeFromPoint;
@@ -74,8 +76,6 @@ digraph GBASE {
     CBidirectionalRangeWithWritableIterator -> CSinglePassRangeWithWritableIterator;
     CBidirectionalRangeWithWritableIteratorFromPoint -> CBidirectionalRangeWithWritableIterator;
 
-    CQuantity -> CLabel;
-    CPredicate;
     label = "Base";
   }
 
@@ -84,9 +84,12 @@ digraph GBASE {
   CSinglePassRange ->  boost_SinglePassIteratorConcept [label="use",style=dashed] ;
   CPredicate -> boost_Assignable;
   CQuantity -> boost_LessThanComparable;
+  CQuantity -> CLabel;
+  CPredicate -> CUnaryFunctor;
   CLabel -> boost_DefaultConstructible;
   CLabel -> boost_Assignable;
   CLabel -> boost_EqualityComparable;
+  CUnaryFunctor -> boost_Assignable;
   }
  @enddot
 

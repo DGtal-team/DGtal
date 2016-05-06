@@ -79,7 +79,7 @@ namespace DGtal
   {
   public:
     typedef TFraction Fraction;
-    BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPositiveIrreducibleFraction< Fraction > ));
 
     typedef Pattern<TFraction> Self;
     typedef typename Fraction::Integer Integer;
