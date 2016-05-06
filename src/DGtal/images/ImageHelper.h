@@ -353,7 +353,7 @@ namespace DGtal
     
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CQuantity<Value> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CQuantity<Value> ));
     
     /*BOOST_CONCEPT_USAGE(ImageToConstantFunctor)
     {

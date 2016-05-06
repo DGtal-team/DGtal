@@ -526,7 +526,7 @@ namespace functors
 
       BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
       BOOST_CONCEPT_ASSERT(( concepts::CDomain< Domain > ));
-      BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
+      BOOST_CONCEPT_ASSERT(( concepts::CQuantity< Value > ));
 
       /**
        * @brief Constructor.
