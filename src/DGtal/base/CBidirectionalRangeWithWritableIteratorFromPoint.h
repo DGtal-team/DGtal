@@ -48,69 +48,74 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CBidirectionalRangeWithWritableIteratorFromPoint
-  /**
-DescriptionDescription of \b concept '\b CBidirectionalRangeWithWritableIteratorFromPoint' <p>
-@ingroup Concepts
-@brief Aim: refined concept of  single pass range with an routputIterator() method from a point.
-
-### Refinement of CBidirectionalRangeWithWritableIterator
-
-### Associated types :
-
-### Notation
-- X : A type that is a model of CBidirectionalRangeWithWritableIteratorFromPoint
-- x,  y : object of type X
-- Point: A type of Point
-
-
-### Definitions
-
-### Valid expressions and semantics
-
-
-| Name                    | Expression                           | Type requirements    | Return type          | Precondition | Semantics                                                         | Post condition | Complexity |
-|-------------------------|--------------------------------------|----------------------|----------------------|--------------|-------------------------------------------------------------------|----------------|------------|
-| reverse output iterator | routputIterator(const Point &aPoint) | aPoint of type Point | ReveseOutputIterator |              | Returns a reverse output iterator on the range at point \a aPoint |                |            |
-
-### Invariants
-
-### Models
-
-ImageContainerBySTLVector::Range
-
-### Notes
-
-@tparam T the type that should be a model of CBidirectionalRangeWithWritableIteratorFromPoint.
-@tparam Value the type of object t in (*it) = t.
-      */
-  template <typename T, typename Value>
-  struct CBidirectionalRangeWithWritableIteratorFromPoint:
-    CBidirectionalRangeWithWritableIterator<T,Value>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Point Point;
-    typedef typename T::ReverseOutputIterator ReverseOutputIterator;
 
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIteratorFromPoint )
+    /////////////////////////////////////////////////////////////////////////////
+    // class CBidirectionalRangeWithWritableIteratorFromPoint
+    /**
+       DescriptionDescription of \b concept '\b CBidirectionalRangeWithWritableIteratorFromPoint' <p>
+       @ingroup Concepts
+       @brief Aim: refined concept of  single pass range with an routputIterator() method from a point.
+
+       ### Refinement of CBidirectionalRangeWithWritableIterator
+
+       ### Associated types :
+
+       ### Notation
+       - X : A type that is a model of CBidirectionalRangeWithWritableIteratorFromPoint
+       - x,  y : object of type X
+       - Point: A type of Point
+
+
+       ### Definitions
+
+       ### Valid expressions and semantics
+
+
+       | Name                    | Expression                           | Type requirements    | Return type          | Precondition | Semantics                                                         | Post condition | Complexity |
+       |-------------------------|--------------------------------------|----------------------|----------------------|--------------|-------------------------------------------------------------------|----------------|------------|
+       | reverse output iterator | routputIterator(const Point &aPoint) | aPoint of type Point | ReveseOutputIterator |              | Returns a reverse output iterator on the range at point \a aPoint |                |            |
+
+       ### Invariants
+
+       ### Models
+
+       ImageContainerBySTLVector::Range
+
+       ### Notes
+
+       @tparam T the type that should be a model of CBidirectionalRangeWithWritableIteratorFromPoint.
+       @tparam Value the type of object t in (*it) = t.
+    */
+    template <typename T, typename Value>
+    struct CBidirectionalRangeWithWritableIteratorFromPoint:
+      CBidirectionalRangeWithWritableIterator<T,Value>
     {
-       concepts::ConceptUtils::sameType( myIt, myX.routputIterator( myPoint ) );
-    }
+      // ----------------------- Concept checks ------------------------------
+    public:
+      // 1. define first provided types (i.e. inner types), like
+      typedef typename T::Point Point;
+      typedef typename T::ReverseOutputIterator ReverseOutputIterator;
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Point myPoint;
-    ReverseOutputIterator myIt;
+      // 2. then check the presence of data members, operators and methods with
+      BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIteratorFromPoint )
+      {
+        concepts::ConceptUtils::sameType( myIt, myX.routputIterator( myPoint ) );
+      }
 
-    // ------------------------- Internals ------------------------------------
-  private:
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // do not require T to be default constructible.
+      Point myPoint;
+      ReverseOutputIterator myIt;
 
-  }; // end of concept CBidirectionalRangeWithWritableIteratorFromPoint
+      // ------------------------- Internals ------------------------------------
+    private:
+
+    }; // end of concept CBidirectionalRangeWithWritableIteratorFromPoint
+
+  } // namespace concepts
 
 } // namespace DGtal
 
