@@ -100,7 +100,7 @@ namespace DGtal
   public:
 
     typedef typename T::Quantity Quantity;
-    BOOST_CONCEPT_ASSERT(( CQuantity< Quantity > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CQuantity< Quantity > ));
 
     typedef typename T::ConstIterator ConstIterator;
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< ConstIterator > ));
