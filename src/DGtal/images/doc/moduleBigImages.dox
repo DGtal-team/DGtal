@@ -273,3 +273,13 @@ And finally, here is the modified original image after the two writings.
 */
 
 }
+
+
+/**
+*  Example of HDF5 ImageFactory.
+   @see @ref dgtalBigImagesAbstract   
+
+   \image html TiledImageFromImage-11-write.png "Example of writing in cache, see @ref dgtalBigImagesAbstract for more details. "
+*  \example images/exampleImageFactoryFromHDF5.cpp
+**/
+

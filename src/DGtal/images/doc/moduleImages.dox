@@ -519,6 +519,39 @@ You will obtain such a result (with also the result on 3D images):
 */
 }
 
+
+/**
+*  Example of ConstImageAdapter.
+   @see @ref constimage
+   \image html logImage.png " 16x16 image: (1,1) to (16,16) adapted from with a log scale functor." 
+*  \example images/exampleConstImageAdapter.cpp
+**/
+
+
+/**
+*  Example of ArrayImageAdapter with subdomain.
+   @see @ref arrayimageadat
+   \image html ArrayImageAdapter_subImage_modifByImage.png " (9) modifying the first bottom-left 8x8 image through the sub-domain view with an image iterator."
+
+* \example images/exampleArrayImageAdapter.cpp
+**/
+
+
+/**
+*  Example of TiledImage.
+   @see @ref moduleImages   
+*  \example images/exampleTiledImage.cpp
+**/
+
+
+/**
+*  Example of image format transformation from raw to HDF5.
+   @see @ref  dgtalBigImagesAbstract   
+*  \example images/raw2HDF5.cpp
+**/
+
+
+
 /**
 *  Example of 2D slice images extraction from 3D images.
 
