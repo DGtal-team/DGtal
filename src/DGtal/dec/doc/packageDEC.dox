@@ -47,6 +47,8 @@ namespace DGtal {
 Discrete exterior calculus (DEC) provides an easy and efficient way to describe linear operator over various structure.
 Basic operators, such as Hodge duality operator or exterior derivative, can be combined to create classical vector analysis operator such as gradient, curl and divergence.
 
+@note To use this package, you have to build DGtal with the Eigen option (and with Cairo option to have the examples compiled). By using cmake you have to use these options:  -DWITH_EIGEN=true -DWITH_CAIRO=true.
+
 @b Modules
 - \ref moduleDECIntroduction
 - \ref moduleDECEmbedding
@@ -69,5 +71,22 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 - exampleDECSurface.cpp
 
 */
+
+
+
+/**
+   Example of solving Poisson equation using the DEC package.
+    @see \ref sectDECPoissonProblem
+   \image html alcapone_phi.png "Solution dual 0-form."
+   \example dec/exampleDECSurface.cpp
+**/
+
+
+/**
+   Example of 2D wave propagation using the DEC package.
+    @see \ref moduleDECPropagation
+   \image html  propagation_time_wave_ii.gif  "You should obtain such wave propagation (by converting svg files)."
+   \example dec/examplePropagation.cpp
+**/
 
 }
