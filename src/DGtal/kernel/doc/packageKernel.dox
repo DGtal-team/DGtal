@@ -66,10 +66,37 @@ tools.
 
 
 
-
-
-
+@b Related @b examples
+- kernelDomain.cpp
+- range.cpp
+- kernelDomain.cpp
+- demo-kernel-1.cpp
 
 */
+
+
+
+/**
+   Example of DGtal kernel and export with Board2D.
+   \image html exampleDemoKernel-1.png "Display 2D points in its domain and export woth Board2D."
+   \example doc-examples/demo-kernel-1.cpp
+**/
+
+
+/**
+   Example of DGtal kernel with Domain.
+   @see \ref sectSpace
+   \image html kernel-domain-it-arrow.png "Iteration over a domain with displacements depicted as arrows."
+   \example doc-examples/kernelDomain.cpp
+**/
+
+
+/**
+   Example of range on Domain.
+   @see \ref sectSpace
+   \example doc-examples/range.cpp
+**/
+
+
 
 }
