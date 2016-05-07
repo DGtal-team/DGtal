@@ -106,3 +106,9 @@ of arbitrary dimension, by the means of separable and incremental distance trans
    \example geometry/curves/estimation/exampleCurvature.cpp
 **/
 
+
+/**
+   Example of DSLSubsegment.
+   \example geometry/curves/exampleDSLSubsegment.cpp
+**/
+
