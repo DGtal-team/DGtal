@@ -88,7 +88,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 @b Related @b documentation @b pages
 
 @b Related @b examples
-
+- exampleCurvature.cpp
 - voronoimap2D.cpp, distancetransform3D.cpp, distancetransform2D.cpp
 - viewer3D-7-planes.cpp , viewer3D-7bis-planes.cpp , viewer3D-7-stdplane.cpp , viewer3D-7bis-stdplane.cpp , greedy-plane-segmentation.cpp  , greedy-plane-segmentation-ex2.cpp
 - exampleConvexHull2D.cpp, exampleAlphaShape.cpp
@@ -96,3 +96,13 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 */
 
 }
+
+
+
+
+/**
+   Example of curvature estimation based on Digital Circular Arc (DCA) estimator.
+   \image  html  exampleCurvature.png "Curvature estimated using DCA estimator on a flower shape."
+   \example geometry/curves/estimation/exampleCurvature.cpp
+**/
+
