@@ -97,7 +97,11 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 }
 
-
+/**
+  Example of geometric predicates.
+  @see @ref moduleGeometricPredicates
+  \example geometry/tools/determinant/exampleInHalfPlane.cpp
+**/
 
 
 /**
@@ -110,5 +114,13 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 /**
    Example of DSLSubsegment.
    \example geometry/curves/exampleDSLSubsegment.cpp
+**/
+
+
+
+/**
+   Example of Preimage2D.
+   \image  html  preimageExample2.png "Example of preimage based arc recognition."
+   \example geometry/tools/examplePreimage.cpp
 **/
 
