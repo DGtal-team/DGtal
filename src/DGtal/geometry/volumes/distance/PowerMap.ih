@@ -50,16 +50,16 @@ template < typename W, typename Sep, typename Im>
 inline
 DGtal::PowerMap< W,Sep,Im>::~PowerMap()
 {
-} 
+}
 
 
 template < typename W, typename Sep, typename Im>
 inline
-typename DGtal::PowerMap<W, Sep,Im>::Self &  
-DGtal::PowerMap<W, Sep,Im>::operator=(const Self &aOtherPowerMap ) 
+typename DGtal::PowerMap<W, Sep,Im>::Self &
+DGtal::PowerMap<W, Sep,Im>::operator=(const Self &aOtherPowerMap )
 {
   if (this != &aOtherPowerMap)
-    { 
+    {
       myMetricPtr = aOtherPowerMap.myMetricPtr;
       myImagePtr = aOtherPowerMap.myImagePtr;
       myWeightImagePtr = aOtherPowerMap.myWeightImagePtr;
@@ -79,10 +79,10 @@ DGtal::PowerMap<W, Sep,Im>::compute( )
   //We copy the image extent
   myLowerBoundCopy = myDomainPtr->lowerBound();
   myUpperBoundCopy = myDomainPtr->upperBound();
- 
-  //Point outside the domain 
+
+  //Point outside the domain
   myInfinity = myDomainPtr->upperBound() + Point::diagonal(1);
-  
+
   //Init the map: the power map at point p is:
   //  - p if p is an input weighted point (with weight > 0);
   //  - myInfinity otherwise.
@@ -112,21 +112,21 @@ DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
 #endif
 
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
-  
+
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension).
-  std::vector<Size> subdomain;
+  std::vector<Dimension> subdomain;
   subdomain.reserve(W::Domain::Space::dimension - 1);
   for (unsigned int k = 0; k < W::Domain::Space::dimension ; k++)
     if ( ((int)W::Domain::Space::dimension - 1 - k) != dim)
       subdomain.push_back( (int)W::Domain::Space::dimension - 1 - k );
-  
+
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
-  
-  
+
+
 #ifdef WITH_OPENMP
-  //Parallel loop 
+  //Parallel loop
   std::vector<Point> subRangePoints;
   //Starting point precomputation
   for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
@@ -138,7 +138,7 @@ DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
   for (size_t i = 0; i < subRangePoints.size(); ++i)
     computeOtherStep1D ( subRangePoints[i], dim);
 
-#else  
+#else
   //We solve the 1D problems sequentially
   for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
 	 itend = localDomain.subRange( subdomain ).end();
@@ -156,20 +156,20 @@ DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
 template <typename W, typename Sep, typename Im>
 void
 DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
-                                                const Size dim) const
+                                                const Dimension dim) const
 {
   Point point = startingPoint;
   Point endpoint = startingPoint;
   Point psite;
   int nbSites = -1;
   std::vector<Point> Sites;
-  
-  //Reserve 
+
+  //Reserve
   Sites.reserve( myUpperBoundCopy[dim] - myLowerBoundCopy[dim] +1);
 
   //endpoint of the 1D row
   endpoint[dim] = myUpperBoundCopy[dim];
-  
+
   //Pruning the list of sites (dim=0 implies no hidden sites)
   if (dim==0)
     {
@@ -191,14 +191,14 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
 	{
 	  psite = myImagePtr->operator()(point);
 	  if ( psite != myInfinity )
-	    {        
-	      while ((nbSites >= 1) && 
+	    {
+	      while ((nbSites >= 1) &&
 		     ( myMetricPtr->hiddenByPower(Sites[nbSites-1], myWeightImagePtr->operator()(Sites[nbSites-1]),
 						  Sites[nbSites] ,  myWeightImagePtr->operator()(Sites[nbSites]),
 						  psite,  myWeightImagePtr->operator()(psite),
 						  startingPoint, endpoint, dim) ))
 		{
-		  nbSites --; 
+		  nbSites --;
                   Sites.pop_back();
 		}
 	      nbSites++;
@@ -218,15 +218,15 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
   point[dim] = myLowerBoundCopy[dim];
   for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
     {
-      while ( (k < nbSites) && 
-	      ( myMetricPtr->closestPower(point, 
+      while ( (k < nbSites) &&
+	      ( myMetricPtr->closestPower(point,
 					  Sites[k], myWeightImagePtr->operator()(Sites[k]),
 					  Sites[k+1],myWeightImagePtr->operator()(Sites[k+1]))
 		!= DGtal::ClosestFIRST ))
         k++;
       myImagePtr->setValue(point, Sites[k]);
       point[dim]++;
-    } 
+    }
 }
 
 
@@ -238,10 +238,10 @@ inline
 DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
                                       ConstAlias<WeightImage> aWeightImage,
                                       ConstAlias<PowerSeparableMetric> aMetric):
-  myDomainPtr(&aDomain), 
+  myDomainPtr(&aDomain),
   myMetricPtr(&aMetric),
   myWeightImagePtr(&aWeightImage)
-  
+
 {
   myImagePtr = CountedPtr<OutputImage>(new OutputImage(aDomain));
   compute();
@@ -252,7 +252,7 @@ inline
 void
 DGtal::PowerMap<W,TSep,Im>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[PowerMap] power separable metric=" << *myMetricPtr ; 
+  out << "[PowerMap] power separable metric=" << *myMetricPtr ;
 }
 
 
@@ -262,7 +262,7 @@ DGtal::PowerMap<W,TSep,Im>::selfDisplay ( std::ostream & out ) const
 template <typename W,typename TSep,typename Im>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const PowerMap<W,TSep,Im> & object )
 {
   object.selfDisplay( out );
@@ -271,5 +271,3 @@ DGtal::operator<< ( std::ostream & out,
 
 // //                                                                           //
 // ///////////////////////////////////////////////////////////////////////////////
-
-

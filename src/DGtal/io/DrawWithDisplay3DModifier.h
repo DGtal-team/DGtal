@@ -41,6 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/images/CConstImage.h"
@@ -180,11 +181,11 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   /**
      * Constructor.
      *
-     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
+     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 3, Integer > SCell ) .
      * @param aShift the shift distance (positive or negative).
      * @param aSizeFactor use to change the Prism size (1.0 initial size).
      */
-  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+  TransformedPrism( const DGtal::Z3i::SCell  & aSurfel,
                           double aShift, double aSizeFactor=1.0 ):mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
   {
   }
@@ -193,13 +194,13 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   /**
      * Constructor.
      *
-     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
+     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 3, Integer > SCell ) .
      * @param aVoxel a  DGtal::Z3i::SCell represent the voxel for which the surfel is associated. It permits to determine automatically the shift parameter (the surfel is automatically shifted towards this voxel).
      * @param aShift the shift distance (positive or negative (default 0.05)).
      * @param aSizeFactor use to change the Prism size (default 0.75).
      */
-  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
-                          const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel,
+  TransformedPrism( const DGtal::Z3i::SCell  & aSurfel,
+                          const DGtal::Z3i::SCell  & aVoxel,
                           double aShift=0.05, double aSizeFactor=0.75  )
   {
     mySurfel= aSurfel;
@@ -221,7 +222,7 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   }
 
   ///@todo FIX this member
-  DGtal::KhalimskySpaceND< 3, int >::SCell mySurfel;
+  DGtal::Z3i::SCell mySurfel;
   double myShift;
   double mySizeFactor;
 };
@@ -240,7 +241,7 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   struct SetName3D : public DrawWithDisplay3DModifier {
     /// Sets the "OpenGL name" of future display command(s).
     /// @param aName any integer: an identifier for later selection or -1 for none.
-    SetName3D( DGtal::int32_t aName = -1 ) : name( aName ) {} 
+    SetName3D( DGtal::int32_t aName = -1 ) : name( aName ) {}
     /// @return the class name as a string.
     std::string className() const { return "SetName3D"; }
     /// the "OpenGL name" for selection, or -1 for none.
@@ -258,9 +259,9 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
     /// graphical element and a pointer toward the data that was given
     /// at construction of SetSelectCallback3D.
     typedef int (*CallbackFct)( void* viewer, DGtal::int32_t name, void* data );
-    SetSelectCallback3D( CallbackFct f, 
+    SetSelectCallback3D( CallbackFct f,
                          void* data,
-                         DGtal::int32_t min = 0, DGtal::int32_t max = 0x7fffffff ) 
+                         DGtal::int32_t min = 0, DGtal::int32_t max = 0x7fffffff )
       : myFct( f ), myData( data ), myMin( min ), myMax( max ) {}
     /// @return the class name as a string.
     std::string className() const { return "SetSelectCallback3D"; }
