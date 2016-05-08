@@ -112,7 +112,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) 
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension).
-  std::vector<Size> subdomain;
+  std::vector<Dimension> subdomain;
   subdomain.reserve(S::dimension - 1);
   for ( int k = 0; k < (int)S::dimension ; k++)
     if ( static_cast<Dimension>(((int)S::dimension - 1 - k)) != dim)
@@ -151,7 +151,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) 
 template <typename S,typename P, typename TSep, typename TImage>
 void
 DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingPoint,
-                                                  const Size dim) const
+                                                  const Dimension dim) const
 {
   Point point = startingPoint;
   Point endpoint = startingPoint;
