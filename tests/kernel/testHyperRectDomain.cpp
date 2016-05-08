@@ -56,9 +56,9 @@ bool testSimpleHyperRectDomain()
   typedef SpaceND<4> Space4Type;
   typedef Space4Type::Point Point;
 
-  DGtal::int32_t t [] = { 1, 2, 3 , 4};
+  Space4Type::Integer t [] = { 1, 2, 3 , 4};
   Point a ( t );
-  DGtal::int32_t t2[] = { 5, 5, 3 , 4};
+  Space4Type::Integer t2[] = { 5, 5, 3 , 4};
   Point b ( t2 );
 
   trace.beginBlock ( "HyperRectDomain init" );
@@ -66,7 +66,7 @@ bool testSimpleHyperRectDomain()
   typedef HyperRectDomain<Space4Type> HRDomain4;
   BOOST_CONCEPT_ASSERT(( concepts::CDomain< HRDomain4 > ));
   BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<HRDomain4> ));
-      
+
   ///Empty domain using the default constructor
   HyperRectDomain<Space4Type> myEmptyDomain;
   trace.info() << "Empty Domain: " << myEmptyDomain << std::endl;
@@ -120,14 +120,14 @@ bool testIterator()
   for ( HyperRectDomain<TSpace>::ConstReverseIterator it = myHyperRectDomain.rbegin(),
     itend = myHyperRectDomain.rend(); it != itend; ++it )
     trace.warning() << ( *it ) << std::endl;
-  
+
   trace.emphase() << "Iterator 2d (permutation initializer list): ";
-  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstIterator 
+  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstIterator
     it = myHyperRectDomain.subRange( {1, 0} ).begin();
   it != myHyperRectDomain.subRange( {1, 0} ).end(); ++it )
     trace.warning() << ( *it ) << std::endl;
   trace.emphase() << "Reverse Iterator 2d (permutation initializer list): ";
-  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator 
+  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator
     it = myHyperRectDomain.subRange( {1, 0} ).rbegin(),
     itend=myHyperRectDomain.subRange( {1, 0} ).rend(); it!=itend;  ++it )
     trace.warning() << ( *it ) << std::endl;
@@ -138,7 +138,7 @@ bool testIterator()
   it != myHyperRectDomain.subRange( {1, 0} ).end(); ++it )
     trace.warning() << ( *it ) << std::endl;
   trace.emphase() << "Reverse Iterator 2d (permutation+starting initializer list): ";
-  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator 
+  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator
     it = myHyperRectDomain.subRange( {1, 0} ).rbegin(c),
     itend=myHyperRectDomain.subRange( {1, 0} ).rend(); it !=itend ; ++it )
     trace.warning() << ( *it ) << std::endl;
@@ -149,7 +149,7 @@ bool testIterator()
   it != myHyperRectDomain.subRange( {1} ).end(); ++it )
     trace.warning() << ( *it ) << std::endl;
   trace.emphase() << "Reverse Iterator 2d (span initializer list): ";
-  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator 
+  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator
     it = myHyperRectDomain.subRange( {1} ).rbegin(),
     itend=myHyperRectDomain.subRange( {1} ).rend(); it != itend; ++it )
     trace.warning() << ( *it ) << std::endl;
@@ -160,7 +160,7 @@ bool testIterator()
   it != myHyperRectDomain.subRange( {1} , c ).end(); ++it )
     trace.warning() << ( *it ) << std::endl;
   trace.emphase() << "Reverse Iterator 2d (span+starting initializer list): ";
-  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator 
+  for ( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator
     it = myHyperRectDomain.subRange( {1} , c ).rbegin(c),
     itend=myHyperRectDomain.subRange( {1} , c ).rend(); it !=itend; ++it )
     trace.warning() << ( *it ) << std::endl;
@@ -169,9 +169,9 @@ bool testIterator()
   typedef SpaceND<4> TSpace4D;
   typedef TSpace4D::Point Point4D;
 
-  DGtal::int32_t t[] = {1, 1, 1, 1};
+  TSpace4D::Integer t[] = {1, 1, 1, 1};
   Point4D a4D ( t );
-  DGtal::int32_t t2[] = {3, 3, 3, 3};
+  TSpace4D::Integer t2[] = {3, 3, 3, 3};
   Point4D b4D ( t2 );
 
   HyperRectDomain<TSpace4D> myHyperRectDomain4D ( a4D, b4D );
@@ -187,7 +187,7 @@ bool testIterator()
     itend=myHyperRectDomain4D.rend(); it != itend; ++it )
     trace.info() << ( *it ) << std::endl;
 
-  
+
   trace.emphase() << "Iterator 4d by using order different from lexicographic initializer list: ";
   for ( HyperRectDomain<TSpace4D>::ConstSubRange::ConstIterator
     it = myHyperRectDomain4D.subRange( {3, 2, 1, 0}).begin();
@@ -211,7 +211,7 @@ bool testIterator()
     trace.info() << ( *it3 ) << std::endl;
 
   trace.emphase() << "Decreasing iterator on a subset of 4d by using order different from lexicographic initializer list: ";
-  HyperRectDomain<TSpace4D>::ConstSubRange::ConstIterator 
+  HyperRectDomain<TSpace4D>::ConstSubRange::ConstIterator
     it4 = myHyperRectDomain4D.subRange({1, 3}).begin();
   HyperRectDomain<TSpace4D>::ConstSubRange::ConstIterator
     it5 = myHyperRectDomain4D.subRange({1, 3}).end();
@@ -228,9 +228,9 @@ bool testReverseIterator()
 {
   typedef SpaceND<4> TSpace4D;
   typedef TSpace4D::Point Point4D;
-  DGtal::int32_t t[] = {1, 1, 1, 1};
+  TSpace4D::Integer t[] = {1, 1, 1, 1};
   Point4D a4D (t);
-  DGtal::int32_t t2[] = {3, 3, 3, 3};
+  TSpace4D::Integer t2[] = {3, 3, 3, 3};
   Point4D b4D (t2);
 
   trace.beginBlock ( "Test reverse iterator" );
@@ -240,13 +240,13 @@ bool testReverseIterator()
 
   trace.emphase() << "Increasing order: ";
 
-  HyperRectDomain<TSpace4D>::ConstIterator 
+  HyperRectDomain<TSpace4D>::ConstIterator
     it = myHyperRectDomain4D.begin();
   for ( ; it != myHyperRectDomain4D.end(); ++it )
     trace.info() << ( *it ) << std::endl;
 
   trace.emphase() << "Now decreasing order: ";
-  HyperRectDomain<TSpace4D>::ConstIterator 
+  HyperRectDomain<TSpace4D>::ConstIterator
     it2 = myHyperRectDomain4D.begin();
   --it;
   --it2;
@@ -264,9 +264,9 @@ bool testSTLCompat()
 {
   typedef SpaceND<4> TSpace4D;
   typedef TSpace4D::Point Point4D;
-  DGtal::int32_t t[] = {1, 1, 1, 1};
+  TSpace4D::Integer t[] = {1, 1, 1, 1};
   Point4D a4D (t);
-  DGtal::int32_t t2[] = {3, 3, 3, 3};
+  TSpace4D::Integer t2[] = {3, 3, 3, 3};
   Point4D b4D (t2);
 
   trace.beginBlock ( "TestSTL Compatibility" );
@@ -292,13 +292,13 @@ bool testEmptyDomain()
 
   unsigned int nb = 0;
   unsigned int nbok = 0;
-  
+
   trace.beginBlock( "Test empty domain." );
-  
+
   const TDomain nonempty_domain( TPoint::diagonal(0), TPoint::diagonal(0) );
   ++nb; nbok += nonempty_domain.isEmpty() ? 0 : 1;
   trace.info() << "(" << nbok << "/" << nb << ") Creating non-empty domain & checking isEmpty." << std::endl;
-  
+
   const TDomain default_domain;
   ++nb; nbok += default_domain.isEmpty() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Creating default empty domain & checking isEmpty." << std::endl;
@@ -322,7 +322,7 @@ bool testEmptyDomain()
 
   ++nb; nbok += range.rbegin() == range.rend() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Checking that rbegin() == rend() for sub-range {0,1,2}" << std::endl;
-  
+
   range = domain.subRange( 2, 1, 0, domain.lowerBound()  );
   ++nb; nbok += range.begin() == range.end() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Checking that begin() == end() for sub-range {2,1,0}" << std::endl;
@@ -336,14 +336,14 @@ bool testEmptyDomain()
 
   ++nb; nbok += range.rbegin() == range.rend() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Checking that rbegin() == rend() for sub-range {0,2}" << std::endl;
-  
+
   range = domain.subRange( 2, 0, domain.lowerBound()  );
   ++nb; nbok += range.begin() == range.end() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Checking that begin() == end() for sub-range {2,0}" << std::endl;
 
   ++nb; nbok += range.rbegin() == range.rend() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Checking that rbegin() == rend() for sub-range {2,0}" << std::endl;
-  
+
   range = domain.subRange( 1, domain.lowerBound()  );
   ++nb; nbok += range.begin() == range.end() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Checking that begin() == end() for sub-range {1}" << std::endl;
@@ -353,7 +353,7 @@ bool testEmptyDomain()
 
   trace.endBlock();
   return nb == nbok;
-  
+
 }
 
 int main()

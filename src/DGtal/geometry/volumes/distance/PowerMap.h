@@ -92,7 +92,7 @@ namespace DGtal
     */
   template < typename TWeightImage,
              typename TPowerSeparableMetric,
-             typename TImageContainer = 
+             typename TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
                                        typename TWeightImage::Domain::Space::Vector> >
   class PowerMap
@@ -102,7 +102,7 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage< TWeightImage > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPowerSeparableMetric<TPowerSeparableMetric> ));
-    
+
     ///Copy of the distance image types
     typedef TWeightImage WeightImage;
     typedef typename TWeightImage::Value Weight;
@@ -115,46 +115,46 @@ namespace DGtal
 
     //ImageContainer::Domain::Space must match with TSpace
     BOOST_STATIC_ASSERT ((boost::is_same< typename TWeightImage::Domain::Space,
-                          typename TImageContainer::Domain::Space >::value )); 
-    
+                          typename TImageContainer::Domain::Space >::value ));
+
     //ImageContainer value type must be  TSpace::Vector
     BOOST_STATIC_ASSERT ((boost::is_same< typename TWeightImage::Domain::Space::Vector,
-                          typename TImageContainer::Value >::value )); 
-    
+                          typename TImageContainer::Value >::value ));
+
     //ImageContainer domain type must be  HyperRectangular
     BOOST_STATIC_ASSERT ((boost::is_same< HyperRectDomain<typename TWeightImage::Domain::Space>,
-					  typename TImageContainer::Domain >::value )); 
- 
+					  typename TImageContainer::Domain >::value ));
+
     ///Definition of the underlying domain type.
     typedef typename TImageContainer::Domain Domain;
-   
-    ///We construct the type associated to the separable metric 
+
+    ///We construct the type associated to the separable metric
     typedef TPowerSeparableMetric PowerSeparableMetric;
-    
+
     ///Type of resulting image
     typedef TImageContainer OutputImage;
-    
+
     ///Definition of the image model value type.
     typedef Vector Value;
     ///Definition of the image value type.
     typedef typename OutputImage::ConstRange  ConstRange;
-  
+
     ///Self type
   typedef PowerMap<TWeightImage, TPowerSeparableMetric, TImageContainer> Self;
-    
+
 
     /**
      * Constructor.
-     * 
+     *
      * This constructor computes the Power Map of a set of point
      * sites using a SeparableMetric metric.  The method associates to
      * each point satisfying the foreground predicate, the closest
-     * site for which the predicate is false. 
+     * site for which the predicate is false.
      *
      * All parameters are aliased in this class.
      *
      * @param aDomain defines the (hyper-rectangular) domain on which
-     * the computation is performed.  
+     * the computation is performed.
      * @param aWeightImage an image
      * returning the weight for some points
      * @param aMetric a power
@@ -179,7 +179,7 @@ namespace DGtal
      *  @return a reference to Self
      */
     Self &  operator=(const Self &aOtherPowerMap );
-    
+
     /**
      * Returns a reference (const) to the Power map domain.
      *  @return a domain
@@ -189,7 +189,7 @@ namespace DGtal
       return *myDomainPtr;
     }
 
-    
+
     /**
      * Returns a const range on the Power map values.
      *  @return a const range
@@ -198,7 +198,7 @@ namespace DGtal
     {
       return myImagePtr->constRange();
     }
-        
+
     /**
      * Access to a Power value (a.k.a. vector to the closest site) at a point.
      *
@@ -207,9 +207,9 @@ namespace DGtal
     Value operator()(const Point &aPoint) const
     {
       return myImagePtr->operator()(aPoint);
-    }    
- 
-    /** 
+    }
+
+    /**
      * @return  Returns the underlying metric.
      */
     const PowerSeparableMetric* metricPtr() const
@@ -217,7 +217,7 @@ namespace DGtal
       return myMetricPtr;
     }
 
-    /** 
+    /**
      * @return  Returns the underlying weight image.
      */
     const WeightImage* weightImagePtr() const
@@ -227,14 +227,14 @@ namespace DGtal
 
     /**
      * Self Display method.
-     * 
+     *
      * @param out output stream
      */
-    void selfDisplay ( std::ostream & out ) const;    
-       
+    void selfDisplay ( std::ostream & out ) const;
+
     // ------------------- Private functions ------------------------
-  private:    
-    
+  private:
+
     /**
      * Compute the Power Map of a set of point sites using a
      * SeparableMetric metric.  The method associates to each point
@@ -244,60 +244,60 @@ namespace DGtal
     void compute ( ) ;
 
 
-    /** 
+    /**
      *  Compute the other steps of the separable Power map.
-     * 
+     *
      * @param dim the dimension to process
-     */    
+     */
     void computeOtherSteps(const Dimension dim) const;
-    /** 
+    /**
      * Given  a voronoi map valid at dimension @a dim-1, this method
      * updates the map to make it consistent at dimension @a dim along
      * the 1D span starting at @a row along the dimension @a
      * dim.
-     * 
+     *
      * @param row starting point of the 1D process.
      * @param dim dimension of the update.
      */
-    void computeOtherStep1D (const Point &row, 
-			     const Size dim) const;
-    
+    void computeOtherStep1D (const Point &row,
+			     const Dimension dim) const;
+
     // ------------------- protected methods ------------------------
   protected:
 
-    /** 
+    /**
      * Default Constructor.
-     * 
+     *
      */
     PowerMap();
-   
-    
+
+
     // ------------------- Private members ------------------------
   private:
 
     ///Pointer to the computation domain
     const Domain * myDomainPtr;
-    
+
     ///Copy of the image lower bound
     Point myLowerBoundCopy;
-    
+
     ///Copy of the image lower bound
     Point myUpperBoundCopy;
-    
+
     ///Value to act as a +infinity value
     Point myInfinity;
 
   protected:
     ///Pointer to the separable metric instance
     const PowerSeparableMetric * myMetricPtr;
-    
+
     ///Power map image
     CountedPtr<OutputImage> myImagePtr;
- 
+
     ///Pointer to the point predicate
     const WeightImage * myWeightImagePtr;
-    
- 
+
+
   }; // end of class PowerMap
 
  /**
