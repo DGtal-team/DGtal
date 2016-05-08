@@ -214,6 +214,15 @@ the previous image you should obtain:
 
 */
 
+/**
+  Example of tutorial 5: ImageAdapter: some simple image manipulations
+   @see @ref tutoImageManipulations
+  \image html slice20Lobster.png " Result of slice image number 20 on Z axis."  
+  @example tutorial-examples/2DSliceImageFromVol.cpp
+**/
+ 
+
+
 }
 
 

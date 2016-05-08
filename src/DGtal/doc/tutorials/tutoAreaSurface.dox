@@ -123,4 +123,10 @@ VoronoiCovarianceMeasureLocalEstimator.
 
 */
 
+
+/**
+ Example of tutorial 4: Surface area estimation
+ @see @ref tutoAreaSurface
+ \example tutorial-examples/AreaSurfaceEstimation-final.cpp
+**/
 }
