@@ -285,8 +285,8 @@ Afterwards the set is thresholded in ]0,255[:
 
 Then you will obtain the following visualisation:
 
-\image html visuDigitalSet3D.png "3D digital with Viewer3D" 
-\image latex visuDigitalSet3D.png "3D digital with Viewer3D" width=5cm
+\image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" 
+\image latex visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" width=5cm
 
 
 \subsection importPointList Import 3D point list from file
@@ -404,11 +404,17 @@ instance generate some exports in pdf like this example:
 }
 
 /**
-
-* TODO \example io/digitalSetFromVol.cpp
+   Example of digital set extraction from volumetric file (.vol).
+   @see @ref moduleIO 
+   \image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" 
+*  \example io/digitalSetFromVol.cpp
 **/
 
+
 /**
+   Example of point list import.
+   @see @ref moduleIO 
+   \image html visuPointList.png "Visualisation of 3d imported point list " 
 * \example io/digitalSetFromPointList.cpp
 **/
 
@@ -434,3 +440,5 @@ instance generate some exports in pdf like this example:
 
 * @example io/display3DToOFF.cpp
 */
+
+
