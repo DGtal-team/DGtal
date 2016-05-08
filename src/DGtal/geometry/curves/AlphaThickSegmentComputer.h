@@ -148,7 +148,7 @@ public:
 
   typedef typename InputPointContainer::iterator Iterator;
   typedef TConstIterator ConstIterator;
-  typedef ParallelStrip< SpaceND< 2 > ,true,true> Primitive;  
+  typedef ParallelStrip< SpaceND< 2, DGtal::int32_t > ,true,true> Primitive;  
 
   /**
    * Type of embedded points
