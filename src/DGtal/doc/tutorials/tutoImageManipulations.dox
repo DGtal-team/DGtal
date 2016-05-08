@@ -140,12 +140,12 @@ To apply the extraction you can follow these steps:
   - type of the source Image (Image3D).
   - the domain type of the resulting image (Image2D::Domain).
   - the functor taking in input 2D data and return 3D
-  points (DGtal::Projector<Z3i::Space>) to access to source image data.
+  points ( DGtal::functors::Projector<Z3i::Space>) to access to source image data.
   - the type of value of the 3D image (Image3D::Value)
   - the functor type to be applied on the source image value during the reading process.
-\code 
- typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::Projector<Z3i::Space>,
-                                   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+\code
+ typedef ConstImageAdapter<Image3D, Image2D::Domain, functors::Projector<Z3i::Space>,
+                            Image3D::Value,  functors::Identity >  SliceImageAdapter;
 \endcode
 
 
@@ -167,7 +167,7 @@ should obtain the following image:
 @subsubsection subsubsectHintsImageExtractionIntroTutoImageManipulations Hints:
 - To construct the domain of the resulting image you can use a projector:
 \code 
-  DGtal::Projector<Z2i::Space >  proj(2);
+  DGtal::functors::Projector<Z2i::Space >  proj(2);
   DGtal::Z2i::Domain domain2D(proj(image3d.domain().lowerBound()),
                               proj(image3d.domain().upperBound()));
 \endcode
