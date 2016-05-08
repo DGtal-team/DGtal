@@ -4,8 +4,8 @@
 
 - *Geometry Package*
  - New robust normal vector estimator using spherical accumulators and statistical
-   voting (Boulc'h & Marlet, SGP 2012). 
-   (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149)) 
+   voting (Boulc'h & Marlet, SGP 2012).
+   (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
 
 ## Changes
 - *Configuration/General*
@@ -50,6 +50,8 @@
 - *Configuration/General*
  - Simplification of the windows build instructions. (David
    Coeurjolly, [#1160](https://github.com/DGtal-team/DGtal/pull/1160))
+ - Fixing issues raised on some algorithms when changing Euclidean ring
+   for SpaceND and KhalimskySpaceND. (Jérémy Levallois, [#1163](https://github.com/DGtal-team/DGtal/pull/1163))
 
 - *DEC Package*
  - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.

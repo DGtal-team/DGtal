@@ -48,16 +48,16 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class FreemanChain.
 ///////////////////////////////////////////////////////////////////////////////
-typedef SpaceND<2> Space2Type;
+typedef SpaceND<2,int> Space2Type;
 typedef HyperRectDomain<Space2Type> Domain2D;
 
 
 /**
  * Test Constructors
  */
-bool testConstructors() 
+bool testConstructors()
 {
-  typedef FreemanChain<int> FreemanChain;
+  typedef FreemanChain<Space2Type::Integer> FreemanChain;
   typedef FreemanChain::ConstIterator Iterator;
 
   trace.beginBlock ( "Testing FreemanChain constructors" );
@@ -67,7 +67,7 @@ bool testConstructors()
   FreemanChain c1(s, -42, 12);
 
   trace.info() << "Constructor from point vector" << endl;
-  std::vector<Z2i::Point> myVector;
+  std::vector<Space2Type::Point> myVector;
   for (Iterator i = c1.begin(); i != c1.end(); i++)
     myVector.push_back(*i);
   FreemanChain c2(myVector);
@@ -112,12 +112,12 @@ bool testConstructors()
  */
 bool testPublicSercives()
 {
-  typedef FreemanChain<int> FreemanChain;
+  typedef FreemanChain<Space2Type::Integer> FreemanChain;
   typedef FreemanChain::Point Point;
   typedef FreemanChain::ConstIterator Iterator;
 
   trace.beginBlock ( "Testing public sercives" );
-    
+
   FreemanChain fc("000103000322232122", 0, 0);
   int nbOk = 0;
 
@@ -142,7 +142,7 @@ bool testPublicSercives()
   FreemanChain fcB("001",0,0);
   FreemanChain fcC("003",0,0);
   fcB += fcC + fcB;
-  test = ( fcB == FreemanChain("001003001", 0, 0) ) && 
+  test = ( fcB == FreemanChain("001003001", 0, 0) ) &&
     ( fcB.totalDisplacement() == fcA.totalDisplacement()*2 + fcC.totalDisplacement() );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 4 " << ((test) ? "passed" : "failed" ) << endl;
@@ -155,7 +155,7 @@ bool testPublicSercives()
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 5 " << ((test) ? "passed" : "failed" ) << endl;
 
-  //  typename Self::ConstIterator 
+  //  typename Self::ConstIterator
   //    findQuadrantChange( OrderedAlphabet & A ) const;
   OrderedAlphabet oa( '0', 4 );
   Iterator it = fc.findQuadrantChange( oa );
@@ -163,7 +163,7 @@ bool testPublicSercives()
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 6 " << ((test) ? "passed" : "failed" ) << endl;
 
-  //  typename Self::ConstIterator 
+  //  typename Self::ConstIterator
   //    findQuadrantChange4( OrderedAlphabet & A ) const;
   it = fc.findQuadrantChange4( oa );
   test = ( it.position() == 9 );
@@ -199,7 +199,7 @@ bool testPublicSercives()
 
   // Point firstPoint ( ) const
   // Point lastPoint ( ) const
-  test = ( ( fc.subChain(4,3).firstPoint() == Point(3,1) ) && 
+  test = ( ( fc.subChain(4,3).firstPoint() == Point(3,1) ) &&
       ( fc.subChain(4,3).lastPoint() == Point(5,0) ) );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 11 " << ((test) ? "passed" : "failed" ) << endl;
@@ -209,15 +209,15 @@ bool testPublicSercives()
   fcA = fc;
   fcA.extend('2');
   fcB = fcA.extend('1');
-  test = ( (fcB == fc + FreemanChain("21",0,0) ) &&  fcA.isClosed() 
-          && ( fcB.retract().retract() == fc ) ); 
+  test = ( (fcB == fc + FreemanChain("21",0,0) ) &&  fcA.isClosed()
+          && ( fcB.retract().retract() == fc ) );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 12 " << ((test) ? "passed" : "failed" ) << endl;
 
   trace.endBlock();
-  
+
   return ( nbOk == 12);
-  
+
 }
 
 
@@ -233,7 +233,7 @@ bool testPointsIterators()
   typedef FreemanChain::Point Point;
   typedef FreemanChain::ConstIterator PointIterator;
   typedef std::reverse_iterator<PointIterator> ReverseIterator;
-   
+
   trace.beginBlock ( "Testing FreemanChain Iterator" );
 
   std::stringstream ss;
@@ -241,14 +241,14 @@ bool testPointsIterators()
   ss << myString << std::endl;
   FreemanChain seq(ss);
 
-  trace.info()<< "Freeman chain set to " << myString << endl;   
+  trace.info()<< "Freeman chain set to " << myString << endl;
   trace.info()<< seq << endl;
 
   trace.info()<< "Iterates on points." << endl;
   std::stack<Point> myStack;
 
   unsigned int nbPts = 0;
-  for (PointIterator i = seq.begin(); i != seq.end(); ++i) 
+  for (PointIterator i = seq.begin(); i != seq.end(); ++i)
   {
     myStack.push(*i);
     nbPts++;
@@ -256,14 +256,14 @@ bool testPointsIterators()
 
   trace.info()<< "Test reverse iterator." << endl;
   bool samePoints = true;
-  for (ReverseIterator ri(seq.end()); 
+  for (ReverseIterator ri(seq.end());
       ri != ReverseIterator(seq.begin());
-      ++ri) 
+      ++ri)
   {
     if ( !myStack.empty() && ( *ri == myStack.top() ) )
     {
       myStack.pop();
-    } 
+    }
     else
     {
       samePoints = false;
@@ -284,7 +284,7 @@ bool testCodesIterators()
   typedef FreemanChain::CodesRange Range;
 //  typedef Range::ConstIterator PointIterator;
 //  typedef std::reverse_iterator<PointIterator> ReverseIterator;
-   
+
   trace.beginBlock ( "Testing CodesRange Iterator" );
 
   std::stringstream ss;
@@ -292,16 +292,16 @@ bool testCodesIterators()
   ss << myString << std::endl;
   FreemanChain seq(ss);
 
-  trace.info()<< "Freeman chain set to " << myString << endl;   
+  trace.info()<< "Freeman chain set to " << myString << endl;
   trace.info()<< seq << endl;
-  Range r = seq.getCodesRange(); 
+  Range r = seq.getCodesRange();
   trace.info()<< r << endl;
-  
+
   trace.info()<< "Iterates on letters." << endl;
   std::stack<char> myStack;
 
   unsigned int nbLetters = 0;
-  for (Range::ConstIterator i = r.begin(); i != r.end(); ++i) 
+  for (Range::ConstIterator i = r.begin(); i != r.end(); ++i)
   {
     myStack.push(*i);
     nbLetters++;
@@ -309,14 +309,14 @@ bool testCodesIterators()
 
   trace.info()<< "Test reverse iterator." << endl;
   bool samePoints = true;
-  for (Range::ConstReverseIterator ri = r.rbegin(); 
+  for (Range::ConstReverseIterator ri = r.rbegin();
       ri != r.rend();
-      ++ri) 
+      ++ri)
   {
     if ( !myStack.empty() && ( *ri == myStack.top() ) )
     {
       myStack.pop();
-    } 
+    }
     else
     {
       samePoints = false;
@@ -357,10 +357,10 @@ bool testStaticServices()
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 1 " << ((test) ? "passed" : "failed" ) << endl;
 
-  //  static void getContourPoints(const FreemanChain & fc, 
+  //  static void getContourPoints(const FreemanChain & fc,
   //      std::vector<Point> & aVContour );
   Point p0, p1(-1,-1), p2(0,-1), p3(1,-1), p4(2,-1), p5(2,0);
-  vector<Point> pointVecRef, pointVecTest; 
+  vector<Point> pointVecRef, pointVecTest;
   pointVecRef.push_back(p1);
   pointVecRef.push_back(p2);
   pointVecRef.push_back(p3);
@@ -373,7 +373,7 @@ bool testStaticServices()
 
 
   // static void movePointFromFC(Point & aPoint, unsigned int aCode )
-  Point P0(10,10), P1(10,10), P2(10,10), P3(10,10); 
+  Point P0(10,10), P1(10,10), P2(10,10), P3(10,10);
   FreemanChain::movePointFromFC( P0, '0'); FreemanChain::movePointFromFC( P1, '1');
   FreemanChain::movePointFromFC( P2, '2'); FreemanChain::movePointFromFC( P3, '3');
   test = ( P0 == Point(11,10) ) && ( P1 == Point(10,11) ) &&
@@ -383,7 +383,7 @@ bool testStaticServices()
 
 
   //  static unsigned int movement( unsigned int aCode1, unsigned int aCode2,
-  //      bool ccw = true ); 
+  //      bool ccw = true );
   test = ( FreemanChain::movement ( '0' , '0' , true ) == '2' ) &&
          ( FreemanChain::movement ( '0' , '1' , true ) == '1' ) &&
          ( FreemanChain::movement ( '0' , '2' , true ) == '0' ) &&
@@ -454,9 +454,9 @@ bool testStaticServices()
   numVector pix2plExpected;
   pix2plExpected.push_back( 0 ); pix2plExpected.push_back( 1 ); pix2plExpected.push_back( 3 );
   pix2plExpected.push_back( 6 ); pix2plExpected.push_back( 7 ); pix2plExpected.push_back( 7 );
-  pix2plExpected.push_back( 8 ); pix2plExpected.push_back( 10 ); 
-  test = ( pixChain == FreemanChain("00132213", 0, 0) ) && 
-         ( pl2pix == pl2pixExpected ) && 
+  pix2plExpected.push_back( 8 ); pix2plExpected.push_back( 10 );
+  test = ( pixChain == FreemanChain("00132213", 0, 0) ) &&
+         ( pl2pix == pl2pixExpected ) &&
          ( pix2pl == pix2plExpected );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 7 " << ((test) ? "passed" : "failed" ) << endl;
@@ -470,8 +470,8 @@ bool testStaticServices()
   FreemanChain innerChain;
   numVector outer2inner, inner2outer;
   FreemanChain::innerContour ( innerChain, outer2inner, inner2outer, f, true);
-  test = ( innerChain == FreemanChain("00132213", 0, 0 ) ) && 
-         ( outer2inner == pl2pixExpected ) && 
+  test = ( innerChain == FreemanChain("00132213", 0, 0 ) ) &&
+         ( outer2inner == pl2pixExpected ) &&
          ( inner2outer == pix2plExpected );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 8 " << ((test) ? "passed" : "failed" ) << endl;
@@ -487,7 +487,7 @@ bool testStaticServices()
   FreemanChain cleanC;
   bool cleaned = FreemanChain::cleanOuterSpikes( cleanC, c2clean, clean2c, c, true );
   FreemanChain cleanCExpected("22233000011231", 3, 2);
-  numVector c2cleanExpected; 
+  numVector c2cleanExpected;
   c2cleanExpected.push_back( 5 ); c2cleanExpected.push_back( 6 ); c2cleanExpected.push_back( 7 );
   c2cleanExpected.push_back( 8 ); c2cleanExpected.push_back( 9 ); c2cleanExpected.push_back(10 );
   c2cleanExpected.push_back(11 ); c2cleanExpected.push_back(12 ); c2cleanExpected.push_back(13 );
@@ -495,12 +495,12 @@ bool testStaticServices()
   c2cleanExpected.push_back( 2 ); c2cleanExpected.push_back( 2 ); c2cleanExpected.push_back( 3 );
   c2cleanExpected.push_back( 4 );
   numVector clean2cExpected;
-  clean2cExpected.push_back( 9 ); clean2cExpected.push_back(10 ); clean2cExpected.push_back(13 ); 
-  clean2cExpected.push_back(14 ); clean2cExpected.push_back(15 ); clean2cExpected.push_back( 0 ); 
-  clean2cExpected.push_back( 1 ); clean2cExpected.push_back( 2 ); clean2cExpected.push_back( 3 ); 
-  clean2cExpected.push_back( 4 ); clean2cExpected.push_back( 5 ); clean2cExpected.push_back( 6 ); 
+  clean2cExpected.push_back( 9 ); clean2cExpected.push_back(10 ); clean2cExpected.push_back(13 );
+  clean2cExpected.push_back(14 ); clean2cExpected.push_back(15 ); clean2cExpected.push_back( 0 );
+  clean2cExpected.push_back( 1 ); clean2cExpected.push_back( 2 ); clean2cExpected.push_back( 3 );
+  clean2cExpected.push_back( 4 ); clean2cExpected.push_back( 5 ); clean2cExpected.push_back( 6 );
   clean2cExpected.push_back( 7 ); clean2cExpected.push_back( 8 );
-  test = cleaned && (cleanC == cleanCExpected) && (c2clean == c2cleanExpected) 
+  test = cleaned && (cleanC == cleanCExpected) && (c2clean == c2cleanExpected)
     && (clean2c == clean2cExpected);
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 9 " << ((test) ? "passed" : "failed" ) << endl;
@@ -525,34 +525,34 @@ bool testDisplay()
 
   Board2D aBoard;
   aBoard.setUnit(Board::UCentimeter);
-  
+
   fstream fst;
   fst.open ((testPath + "samples/contourS.fc").c_str() , ios::in);
-  FreemanChain fc(fst);  
+  FreemanChain fc(fst);
 
   aBoard.setPenColor(Color::Red);
-  
+
   //aBoard << DrawPavingPixel();
-  
+
   aBoard << fc;
-  
+
   std::string filenameImage = testPath + "samples/contourS.png"; // ! only PNG with Cairo for the moment !
-  LibBoard::Image image( 0, 84, 185, 85, filenameImage, 20 ); 
+  LibBoard::Image image( 0, 84, 185, 85, filenameImage, 20 );
   image.shiftDepth(500);
   LibBoard::Board & board = aBoard;
   board << image;
-  
+
   aBoard.saveSVG( "testDisplayFC.svg", Board::BoundingBox, 5000 );
   aBoard.saveEPS( "testDisplayFC.eps", Board::BoundingBox, 5000 );
   aBoard.saveFIG( "testDisplayFC.fig", Board::BoundingBox, 5000 );
-  
+
 #ifdef WITH_CAIRO
   aBoard.saveCairo("testDisplayFC-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
   aBoard.saveCairo("testDisplayFC-cairo.png", Board2D::CairoPNG, Board::BoundingBox, 5000);
   aBoard.saveCairo("testDisplayFC-cairo.ps",  Board2D::CairoPS,  Board::BoundingBox, 5000);
   aBoard.saveCairo("testDisplayFC-cairo.svg", Board2D::CairoSVG, Board::BoundingBox, 5000);
 #endif
-  
+
   return true;
 }
 
@@ -570,9 +570,9 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  
-  bool res = 
-    testConstructors() &&  
+
+  bool res =
+    testConstructors() &&
     testPublicSercives() &&
     testPointsIterators() &&
     testCodesIterators() &&
@@ -582,7 +582,7 @@ int main( int argc, char** argv )
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
 
   trace.endBlock();
-  
+
   return res ? 0 : 1;
 }
 //                                                                           //

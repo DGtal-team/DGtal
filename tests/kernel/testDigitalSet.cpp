@@ -164,7 +164,7 @@ bool testDigitalSet( const DigitalSetType& aSet1, const DigitalSetType& aSet2 )
   << "Empty set: " << set1 << std::endl;
 
   //insertion
-  std::set<Point> v; 
+  std::set<Point> v;
   Coordinate t [] = { 4, 3, 3 , 4};
   Coordinate t2[] = { 2, 5, 3 , 5};
   Coordinate t3[] =  { 2, 5, 3 , 4} ;
@@ -185,20 +185,20 @@ bool testDigitalSet( const DigitalSetType& aSet1, const DigitalSetType& aSet2 )
   << "Insertion (3 elements): " << set1 << std::endl;
 
   //iterate
-  bool flag = true; 
-  for (typename DigitalSetType::Iterator it = set1.begin(); 
-       it != set1.end(); ++it) 
+  bool flag = true;
+  for (typename DigitalSetType::Iterator it = set1.begin();
+       it != set1.end(); ++it)
     {
       if (v.find( *it ) == v.end())
-	flag = false; 
-    } 
+	flag = false;
+    }
   nbok += (flag) ? 1 : 0;
   nb++;
   trace.info() << "Iterate: (" << nbok << "/" << nb << ") "
   	       << std::endl;
 
   //erasure
-  set1.erase( b ); 
+  set1.erase( b );
   nbok += ( (set1.size() == 2)
   	    &&(set1.find( b ) == set1.end()) )? 1 : 0;
   nb++;
@@ -206,7 +206,7 @@ bool testDigitalSet( const DigitalSetType& aSet1, const DigitalSetType& aSet2 )
   << "Erase one element by key (2 remain): " << set1 << std::endl;
 
   typename DigitalSetType::Iterator it = set1.find( c );
-  set1.erase( it ); 
+  set1.erase( it );
   nbok += ( (set1.size() == 1)
   	    &&(set1.find( c ) == set1.end()) )? 1 : 0;
   nb++;
@@ -215,21 +215,21 @@ bool testDigitalSet( const DigitalSetType& aSet1, const DigitalSetType& aSet2 )
 
   //other sets
   DigitalSetType set2( aSet2 );
-  DigitalSetInserter<DigitalSetType> inserter(set2); 
-  set1.computeComplement(inserter); 
+  DigitalSetInserter<DigitalSetType> inserter(set2);
+  set1.computeComplement(inserter);
   nbok += (set2.size() == (set2.domain().size()-1))? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "Complement: " << set2 << std::endl;
 
-  set2 += set1; 
+  set2 += set1;
   nbok += (set2.size() == (set2.domain().size()))? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "Union: " << set2 << std::endl;
 
   //clear
-  set1.clear(); 
+  set1.clear();
   nbok += ( (set1.size() == 0)&&(set1.empty()) ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -330,7 +330,7 @@ bool testDigitalSetDomain()
   Point l(  49, 0  );
 
   trace.beginBlock ( "Creating disk( r=50.0 ) ..." );
-  for ( Domain::ConstIterator it = domain.begin(); 
+  for ( Domain::ConstIterator it = domain.begin();
   it != domain.end();
   ++it )
     {
@@ -372,7 +372,7 @@ bool testDigitalSetConcept()
   BOOST_CONCEPT_ASSERT(( concepts::CDomain< concepts::CDomainArchetype< Space > > ));
   typedef concepts::CDigitalSetArchetype<Z2i::Domain> DigitalSetArchetype;
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<DigitalSetArchetype> ));
-  
+
   return true;
 }
 
@@ -382,9 +382,9 @@ int main()
   typedef HyperRectDomain<Space4Type> Domain;
   typedef Space4Type::Point Point;
 
-  DGtal::int32_t t[] =  { 1, 2, 3 , 4};
+  Space4Type::Integer t[] =  { 1, 2, 3 , 4};
   Point a ( t );
-  DGtal::int32_t t2[] = { 5, 5, 3 , 5};
+  Space4Type::Integer t2[] = { 5, 5, 3 , 5};
   Point b ( t2);
   trace.beginBlock ( "HyperRectDomain init" );
 
@@ -405,10 +405,10 @@ int main()
   trace.endBlock();
 
   trace.beginBlock( "DigitalSetFromMap" );
-  typedef ImageContainerBySTLMap<Domain,short int> Map; 
+  typedef ImageContainerBySTLMap<Domain,short int> Map;
   Map map(domain); Map map2(domain);        //maps
-  DigitalSetFromMap<Map> setFromMap(map);   //sets from these maps 
-  DigitalSetFromMap<Map> setFromMap2(map2);  
+  DigitalSetFromMap<Map> setFromMap(map);   //sets from these maps
+  DigitalSetFromMap<Map> setFromMap2(map2);
   bool okMap = testDigitalSet< DigitalSetFromMap<Map> >( setFromMap, setFromMap2 );
   trace.endBlock();
 
@@ -417,13 +417,13 @@ int main()
   bool okAssoctestSet = testDigitalSet< DigitalSetByAssociativeContainer<Domain,Container> >
   ( DigitalSetByAssociativeContainer<Domain, Container>(domain), DigitalSetByAssociativeContainer<Domain, Container>(domain) );
   trace.endBlock();
-  
+
   trace.beginBlock( "DigitalSetByUnorderedSet" );
   typedef std::unordered_set<Point> ContainerU;
   bool okUnorderedSet = testDigitalSet< DigitalSetByAssociativeContainer<Domain,ContainerU> >
   ( DigitalSetByAssociativeContainer<Domain, ContainerU>(domain), DigitalSetByAssociativeContainer<Domain, ContainerU>(domain) );
   trace.endBlock();
-    
+
   bool okSelectorSmall = testDigitalSetSelector
       < Domain, SMALL_DS + LOW_VAR_DS + LOW_ITER_DS + LOW_BEL_DS >
       ( domain, "Small set" );
@@ -442,7 +442,7 @@ int main()
 
   bool okDigitalSetDrawSnippet = testDigitalSetBoardSnippet();
 
-  bool res = okVector && okSet && okMap 
+  bool res = okVector && okSet && okMap
       && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
       && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet
      && okUnorderedSet && okAssoctestSet;
