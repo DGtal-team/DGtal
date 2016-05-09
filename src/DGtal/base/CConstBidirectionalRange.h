@@ -46,64 +46,70 @@
 #include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal{
-
-/////////////////////////////////////////////////////////////////////////////
-// class CConstBidirectionalRange
-/**
-Description of \b concept '\b CConstBidirectionalRange'
-@ingroup Concepts
-
-\brief Aim: Defines the concept describing a bidirectional const range.
-
-###  Refinement of
- CConstSinglePassRange
-
-###  Provided types :
-
-- ConstReverseIterator: the const reverse iterator type, a model of
-  const iterator concept.
-
- 
- 
- | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
- |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
- | rbegin of range| \e x.rbegin()|                    | \e ConstReverseIterator |             | returns a reverse forward iterator on the beginning of the range | | |
- | rend of range  | \e x.rend()|                      | \e ConstReverseIterator |             | returns a reverse forward iterator after the end of the range | | |
- 
- 
-###  Invariants
-
-###  Models
-
-###  Notes
-
-@tparam T the type that is checked. T should be a model of CConstBidirectionalRange.
-
- */
-template <typename T>
-struct CConstBidirectionalRange: CConstSinglePassRange<T>
+namespace DGtal
 {
-  // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::ConstReverseIterator ConstReverseIterator;
-  
-  BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
-  
-  BOOST_CONCEPT_USAGE(CConstBidirectionalRange)
+
+  namespace concepts
   {
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
-  {
-    concepts::ConceptUtils::sameType( it, i.rbegin() );
-    concepts::ConceptUtils::sameType( it, i.rend() );
-  }
+
+    /////////////////////////////////////////////////////////////////////////////
+    // class CConstBidirectionalRange
+    /**
+       Description of \b concept '\b CConstBidirectionalRange'
+       @ingroup Concepts
+
+       \brief Aim: Defines the concept describing a bidirectional const range.
+
+       ###  Refinement of
+       CConstSinglePassRange
+
+       ###  Provided types :
+
+       - ConstReverseIterator: the const reverse iterator type, a model of
+       const iterator concept.
+
+ 
+ 
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       | rbegin of range| \e x.rbegin()|                    | \e ConstReverseIterator |             | returns a reverse forward iterator on the beginning of the range | | |
+       | rend of range  | \e x.rend()|                      | \e ConstReverseIterator |             | returns a reverse forward iterator after the end of the range | | |
+ 
+ 
+       ###  Invariants
+
+       ###  Models
+
+       ###  Notes
+
+       @tparam T the type that is checked. T should be a model of CConstBidirectionalRange.
+
+    */
+    template <typename T>
+    struct CConstBidirectionalRange: CConstSinglePassRange<T>
+    {
+      // ----------------------- Concept checks ------------------------------
+    public:
+      typedef typename T::ConstReverseIterator ConstReverseIterator;
   
-private:
-  T i;
-  ConstReverseIterator it;
-}; // end of concept CConstBidirectionalRange
+      BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
+  
+      BOOST_CONCEPT_USAGE(CConstBidirectionalRange)
+      {
+        checkConstConstraints();
+      }
+      void checkConstConstraints() const
+      {
+        concepts::ConceptUtils::sameType( it, i.rbegin() );
+        concepts::ConceptUtils::sameType( it, i.rend() );
+      }
+  
+    private:
+      T i;
+      ConstReverseIterator it;
+    }; // end of concept CConstBidirectionalRange
+
+  } // namespace concepts
 
 } // namespace DGtal
 

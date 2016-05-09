@@ -427,7 +427,49 @@ Finally the result can simply be displayed using Viewer3D:
    @image html visuThinning.png  "Resulting 3d thinning  with the 6_26 object"
    @image latex DiskWithAdj4.png  "Resulting 3d thinning  with the 6_26 object" width=5cm	
 
-  
+
+   \section dgtal_topology_sec4 Neighborhood configurations, predicates and look up tables.
+
+   `Object::isSimple(input_point)` is an example of a predicate
+   (ie. a function returning a Boolean value) that depends on the topology
+   of the object and on the occupancy configuration of the `input_point` neighborhood.\n
+   There is a limited amount of possible configuration of the neighborhood
+   depending on the dimension of the space. In 2D, there are 2^8 different
+   neighborhood configurations, and in 3D 2^26.
+   The result of the predicate will vary depending on the topology of the space,
+   but the number of occupancy configurations will be the same for any topology
+   in that dimension.
+
+   The calculation of a predicate for each point is repetitive and can be
+   computationally intensive. However thanks to the limited amount of
+   neighborhood occupancy configurations, we can pre-compute the Boolean
+   result of the predicate for each configuration and store it in a look up table.
+
+   In DGtal, pre-computed look up tables for different predicates and topologies
+   are distributed with the source code, and decompressed at build/install
+   time to be ready to use. The tables locations are stored in string variables in:
+   "DGtal/topology/tables/NeighborhoodTables.h"
+
+   Different functions to work with these pre-computed tables are in the header:
+   "DGtal/topology/NeighborhoodConfigurations.h"
+
+   @ref Object is able to take advantage of this just preloading the table before calling isSimple. This speeds up a thinning process by orders of magnitude.  @see testNeighborhoodConfigurations.cpp
+
+   @code
+   Object26_6 object( dt26_6, point_set );
+   object.setTable(functions::loadTable<3>(simplicity::tableSimple26_6))
+   // Any following call to isSimple after setTable will use the pre-computed calculations.
+   object.isSimple(a_point);
+   @endcode
+
+   In 2D:
+
+   @code
+   Object4_8 object( dt4_8, point_set );
+   object.setTable(functions::loadTable<2>(simplicity::tableSimple4_8))
+   @endcode
+
+   @note Be sure to choose the table with the same topology than the object.
  */
 
 
