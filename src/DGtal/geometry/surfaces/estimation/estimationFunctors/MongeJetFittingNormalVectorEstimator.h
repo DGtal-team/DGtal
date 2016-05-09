@@ -71,7 +71,7 @@ namespace DGtal
    * to reverse the estimated vector @f$ \vec{n} @f$ to @f$
    * -\vec{n}@f$.
    *
-   * model of CLocalEstimatorFromSurfelFunctor
+   * model of concepts::CLocalEstimatorFromSurfelFunctor
    *
    *
    * @tparam TSurfel type of surfels

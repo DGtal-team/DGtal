@@ -77,7 +77,7 @@ namespace DGtal
    * boundary in the Euclidean space), this Voronoi map construction
    * will only keep one of them.
    *
-   * The metric is specified by a model of CSeparableMetric (for
+   * The metric is specified by a model of concepts::CSeparableMetric (for
    * instance, any instance of ExactPredicateLpSeparableMetric or
    * InexactPredicateLpSeparableMetric).  If the separable metric has
    * a complexity of O(h) for its "hiddenBy" predicate, the overall
@@ -91,13 +91,13 @@ namespace DGtal
    * in an optimal way: on @a p processors, expected runtime is in
    * @f$ O(h.d.n^d / p)@f$.
    *
-   * This class is a model of CConstImage.
+   * This class is a model of concepts::CConstImage.
    *
-   * @tparam TSpace type of Digital Space (model of CSpace).
+   * @tparam TSpace type of Digital Space (model of concepts::CSpace).
    * @tparam TPointPredicate point predicate returning true for points
    * from which we compute the distance (model of concepts::CPointPredicate)
-   * @tparam TSeparableMetric a model of CSeparableMetric
-   * @tparam TImageContainer any model of CImage to store the
+   * @tparam TSeparableMetric a model of concepts::CSeparableMetric
+   * @tparam TImageContainer any model of concepts::CImage to store the
    * VoronoiMap (default: ImageContainerBySTLVector). The space of the
    * image container and the TSpace should match. Furthermore the
    * container value type must be TSpace::Vector. Lastly, the domain

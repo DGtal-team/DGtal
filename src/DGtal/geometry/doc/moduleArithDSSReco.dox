@@ -1,8 +1,10 @@
 /* 
  * Useful to avoid writing DGtal:: in front of every class.
  */
+ using namespace DGtal;
+ using namespace concepts;
 namespace DGtal {
-
+namespace concepts{
 /*!
    
 @page moduleArithDSSReco Digital straight lines and segments.   
@@ -552,7 +554,7 @@ Note that the 3D extension provides similar interface:
 
 @snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DFast
 
-Notice that both LmabdaMST2D and LambdaMST3D are models of CCurveLocalGeometricEstimator.
+Notice that both LambdaMST2D and LambdaMST3D are models of CCurveLocalGeometricEstimator.
 
 Both examples are in exampleLMST2D.cpp and exampleLMST3D.cpp
 
@@ -613,4 +615,5 @@ an object devoted to the on-line recognition of 4-connected standard DSSs.
 \example geometry/curves/estimation/exampleLMST3D.cpp
 */
 
+}
 }
