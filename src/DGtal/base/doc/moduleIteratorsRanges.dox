@@ -481,7 +481,7 @@ All images provide an access to its domain (`domain()` method),
 which is a range of digital points, 
 as well as an access to a range of values (`constRange() or range()` methods).   
 
-See @ref moduleSpacePointVectorDomain and @ref moduleImage for further details. 
+See @ref moduleSpacePointVectorDomain and @ref moduleImages for further details. 
 
 */
 

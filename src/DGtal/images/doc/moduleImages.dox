@@ -23,10 +23,10 @@ namespace DGtal {
 
 \section dgtalImagesAbstract Overview
 
-The concept of @a point functor describe a mapping between 
+The concept of @a point @a functor describes a mapping between 
 the points of a digital space and a set of values. 
 The only method of a point functor is the `operator()`, 
-which must take a point as input parameter and must return a value.
+which must take a point as argument and must return a value.
 
 The concept of @a constant image is a point functor bounded by a domain. 
 It is thus a refinement of the concept of point functor, 
@@ -60,14 +60,14 @@ Any model of the concept concepts::CPointFunctor must have two nested types:
 
 Moreover, it must have the following method: 
 
-  - `operator()`, which takes a point as input parameter
+  - `operator()`, which takes a point as argument
 and returns a value, like a function.
 
 The concept concepts::CConstImage is a refinement of concepts::CPointFunctor. 
 Its models must have two extra nested types: 
 
   - Domain, a model of concepts::CDomain
-  - ConstRange, a model of concepts::CConstBidirectionnalRangeFromPoint
+  - ConstRange, a model of concepts::CConstBidirectionalRangeFromPoint
 
 Obviously, there are two methods 
 that return instances of these two types: 
@@ -80,7 +80,7 @@ You can see @ref moduleSpacePointVectorDomain for more
 details about spaces and domains and @ref dgtalImagesRanges 
 for more details about ranges in images.
 
-The concept concepts::CImage is refinement of concepts::CConstImage.  
+The concept concepts::CImage is a refinement of concepts::CConstImage.  
 Images, instead of constant ones, provide services
 to update values. 
 The main way of assigning values to points is the 
@@ -115,11 +115,13 @@ This domain is the set of points for which the image is defined
 and has values. Since a domain is a range, you can straightforwardly 
 use it in order to iterate over the points of an image. 
 
-    //iterate over the points
-    Image::Domain d = image.domain(); 
-    for (Image::Domain::ConstIterator it = d.begin(), itEnd = d.end(); 
-    it != itEnd; ++it)
-    {}
+@code
+//iterate over the points
+Image::Domain d = image.domain(); 
+for (Image::Domain::ConstIterator it = d.begin(), itEnd = d.end(); 
+     it != itEnd; ++it)
+{}
+@endcode
 
 Models of images have also two main methods in order to 
 read or write values at a given point: 
@@ -127,19 +129,20 @@ read or write values at a given point:
 - `operator()` to get the value associated to a given point 
 - `setValue` to assign a value to a given point. 
 
-    //process the values
-    Image::Domain d = image.domain(); 
-    for (Image::Domain::ConstIterator it = d.begin(), itEnd = d.end(); 
-    it != itEnd; ++it)
-    {
-    Image::Value v = image( *it ); 
-    v += 5; //adding 5 to all values
-    image.setValue( v ); 
-    }
-
+@code
+//process the values
+Image::Domain d = image.domain(); 
+for (Image::Domain::ConstIterator it = d.begin(), itEnd = d.end(); 
+     it != itEnd; ++it)
+{
+  Image::Value v = image( *it ); 
+  v += 5; //adding 5 to all values
+  image.setValue( v ); 
+}
+@endcode
 
 Note that this method of iterating over the values of an image
-is not always the fastest and that is why we also provide ranges. 
+is not always the fastest and that is why we also provide ranges of values. 
 
 
   \subsection dgtalImagesRanges Ranges of values
@@ -149,26 +152,31 @@ As every model of concepts::CConstBidirectionalRange, it provides `begin`, `end`
  methods returning constant iterators to iterate over the values in the forward or
 backward direction. 
 
-    //iterate over the values
-    Image::ConstRange r = image.constRange(); 
-    for (Image::ConstRange::ConstIterator it = r.begin(), itEnd = r.end(); 
-    it != itEnd; ++it)
-    {} 
+@code
+//iterate over the values
+Image::ConstRange r = image.constRange(); 
+for (Image::ConstRange::ConstIterator it = r.begin(), itEnd = r.end(); 
+     it != itEnd; ++it)
+{} 
+@endcode
 
 However, this range is also a model of concepts::CConstBidirectionalRangeFromPoint, 
 which is a refinement of concepts::CConstBidirectionalRange. That is why it also has 
 overloaded versions of the `begin` and `rbegin` methods taking a point as input argument. 
 This provides a way of iterating on sub-ranges defined from points.  
 
-    //iterator on the origin (0, ... , 0)
-    Image::ConstRange::ConstIterator it = r.begin( Image::Point::diagonal(0) )
+@code
+//iterator on the origin (0, ... , 0)
+Image::ConstRange::ConstIterator it = r.begin( Image::Point::diagonal(0) )
+@endcode
 
 Note that if the point does not belong to the domain, 
 the returned iterators (resp. reverse iterators) 
 must be equal to the `end` (resp. `rend`) methods. 
 
-    ASSERT( image.constRange().begin( image.domain().end() ) == image.constRange().end() )
-
+@code
+ASSERT( image.constRange().begin( image.domain().end() ) == image.constRange().end() )
+@endcode
 
 Images provide in addition to a constant range, a richer range returned by the `range` method.
 This range is not only a model of concepts::CBidirectionalRangeFromPoint, but also a model 
@@ -179,15 +187,17 @@ Thus, these output iterators are useful in order to incrementaly fill (a part of
 For instance, you can fill an image from the values of another one 
 (assumed to have the same domain) as follows: 
 
-    Image::Range r1 = image1.range(); 
-    Image::ConstRange r2 = image2.constRange(); 
-    std::copy( r2.begin(), r2.end(), r1.outputIterator() ); 
+@code
+Image::Range r1 = image1.range(); 
+Image::ConstRange r2 = image2.constRange(); 
+std::copy( r2.begin(), r2.end(), r1.outputIterator() ); 
+@endcode
 
  \section dgtalImagesModels Main models
 
 Different models of images are available: ImageContainerBySTLVector, 
-ImageContainerBySTLMap, and --- coming soon --- experimental::ImageContainerByHashTree, 
- experimental::ImageContainerByITKImage, a wrapper for ITK images. 
+ImageContainerBySTLMap, experimental::ImageContainerByHashTree and 
+ImageContainerByITKImage, a wrapper for ITK images. 
 
   \subsection dgtalImagesModelsVector ImageContainerBySTLVector
 
@@ -255,7 +265,7 @@ For more details, please refer to @cite Lewiner2009a
 
  \section dgtalImagesAdapters Image Adapter classes
 
-ImageAdapter, ConstImageAdapter are perfect swiss-nifes to transform
+ImageAdapter, ConstImageAdapter are perfect swiss-knifes to transform
 and adapt images (change their domain definition, change their value
 types, ...). These classses are parametrized by several types and
 functor in order to adapt the behavior of image getters/setters (@a operator() and @a
