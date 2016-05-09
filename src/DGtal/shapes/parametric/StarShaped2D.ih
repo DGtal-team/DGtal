@@ -161,14 +161,14 @@ DGtal::StarShaped2D<TSpace>::arclength( double t1, double t2, unsigned int nb ) 
 template <typename TSpace>
 inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint
-DGtal::StarShaped2D<TSpace>::projection( typename DGtal::StarShaped2D<TSpace>::RealPoint& inner, typename DGtal::StarShaped2D<TSpace>::RealPoint& outer, double epsilon ) const
+DGtal::StarShaped2D<TSpace>::segmentProjection( typename DGtal::StarShaped2D<TSpace>::RealPoint& inner, typename DGtal::StarShaped2D<TSpace>::RealPoint& outer, double epsilon ) const
 {
   typename DGtal::StarShaped2D<TSpace>::RealPoint mid = RealPoint(0.5 * (inner + outer));
 
   if((inner - outer).norm() < epsilon) return mid; // We found a point that is at distance epsilon from the shape
-  else if(orientation(mid) == 0) return projection( mid, outer, epsilon ); // The point lies inside the shape
+  else if(orientation(mid) == 0) return segmentProjection( mid, outer, epsilon ); // The point lies inside the shape
   else if(orientation(mid) == 1) return mid; // The point is right onto the shape
-  else if(orientation(mid) == 2) return projection( inner, mid, epsilon ); // The point lies outside the shape
+  else if(orientation(mid) == 2) return segmentProjection( inner, mid, epsilon ); // The point lies outside the shape
 
   return RealPoint(0., 0.);
 }
