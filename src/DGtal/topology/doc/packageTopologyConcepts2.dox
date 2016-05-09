@@ -34,7 +34,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="base";
 
-                 CPredicate [ label="CPredicate" URL="\ref CPredicate" ]; 
+                 CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate" ]; 
         }
         subgraph cluster_2 {
                  style=filled;

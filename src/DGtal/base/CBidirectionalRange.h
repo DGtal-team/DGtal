@@ -49,60 +49,65 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CBidirectionalRange
-  /**
-Description of \b concept '\b CBidirectionalRange'
-     @ingroup Concepts
-
-\brief Aim: Defines the concept describing a bidirectional range.
-
-### Refinement of CConstBidirectionalRange
-
-### Provided types :
-
-- ReverseIterator: the reverse iterator type, a model of
-iterator concept.
-
-### Valid expressions and semantics
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|rbegin         |\e x.rbegin()  |                     |ReverseIterator |               |           |                |            |
-|rend           |\e x.rend()    |                     |ReverseIterator |               |           |                |            |
-|rbegin         |\e x.rbegin() const |                |ConstReverseIterator |               |           |                |            | 
-|rend         |\e x.rend() const |                |ConstReverseIterator |               |           |                |            |                 
-
-### Invariants
-
-### Models
-PointVector
-
-### Notes
-
-@tparam T the type that is checked. T should be a model of CBidirectionalRange.
-
-*/
-  template <typename T>
-  struct CBidirectionalRange : public CConstBidirectionalRange<T>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::ReverseIterator ReverseIterator;
-    
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
-    
-    BOOST_CONCEPT_USAGE(CBidirectionalRange)
+
+    /////////////////////////////////////////////////////////////////////////////
+    // class CBidirectionalRange
+    /**
+       Description of \b concept '\b CBidirectionalRange'
+       @ingroup Concepts
+
+       \brief Aim: Defines the concept describing a bidirectional range.
+
+       ### Refinement of CConstBidirectionalRange
+
+       ### Provided types :
+
+       - ReverseIterator: the reverse iterator type, a model of
+       iterator concept.
+
+       ### Valid expressions and semantics
+
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       |rbegin         |\e x.rbegin()  |                     |ReverseIterator |               |           |                |            |
+       |rend           |\e x.rend()    |                     |ReverseIterator |               |           |                |            |
+       |rbegin         |\e x.rbegin() const |                |ConstReverseIterator |               |           |                |            | 
+       |rend         |\e x.rend() const |                |ConstReverseIterator |               |           |                |            |                 
+
+       ### Invariants
+
+       ### Models
+       PointVector
+
+       ### Notes
+
+       @tparam T the type that is checked. T should be a model of CBidirectionalRange.
+
+    */
+    template <typename T>
+    struct CBidirectionalRange : public CConstBidirectionalRange<T>
     {
-      concepts::ConceptUtils::sameType( it, i.rbegin() );
-      concepts::ConceptUtils::sameType( it, i.rend() );
-    };
+      // ----------------------- Concept checks ------------------------------
+    public:
+      typedef typename T::ReverseIterator ReverseIterator;
     
-  private:
-    T i;
-    ReverseIterator it;
-  }; // end of concept CBidirectionalRange
+      BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
+    
+      BOOST_CONCEPT_USAGE(CBidirectionalRange)
+      {
+        concepts::ConceptUtils::sameType( it, i.rbegin() );
+        concepts::ConceptUtils::sameType( it, i.rend() );
+      };
+    
+    private:
+      T i;
+      ReverseIterator it;
+    }; // end of concept CBidirectionalRange
   
+  } // namespace concepts
+
 } // namespace DGtal
 
 

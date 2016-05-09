@@ -47,68 +47,73 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CBidirectionalRangeWithWritableIterator
-  /**
-Description of \b concept '\b CBidirectionalRangeWithWritableIterator'
-     @ingroup Concepts
-     @brief Aim: refined concept of bidirectional range which require that a reverse output iterator exists.
-
-
-### Refinement of CSinglePassRangeWithWritableIterator
-
-### Associated types :
-- OutputIterator: type of output iterator on the range.
-
-### Notation
-- \a X : A type that is a model of CBidirectionalRangeWithWritableIterator
-- \a x, \a y : object of type X
-
-
-### Definitions
-
-
-| Name| Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
-|----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
-| creation | routputIterator() |                   | ReverseOutputIterator |              | Returns a reverse output iterator on the range first element |                |            |
-|          |                  |                   |                |              |                                                    |                |            |
-
-
-### Invariants###
-
-### Models###
-
-ImageContainerBySTLVector::Range
-
-### Notes###
-
-@tparam T the type that should be a model of CBidirectionalRangeWithWritableIterator.
-@tparam Value the type of object t in (*it) = t.
-
-   */
-  template <typename T, typename Value>
-  struct CBidirectionalRangeWithWritableIterator : CSinglePassRangeWithWritableIterator<T, Value>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::ReverseOutputIterator  ReverseOutputIterator;
-    // possibly check these types so as to satisfy a concept with
-    //BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
 
-    BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIterator )
+    /////////////////////////////////////////////////////////////////////////////
+    // class CBidirectionalRangeWithWritableIterator
+    /**
+       Description of \b concept '\b CBidirectionalRangeWithWritableIterator'
+       @ingroup Concepts
+       @brief Aim: refined concept of bidirectional range which require that a reverse output iterator exists.
+
+
+       ### Refinement of CSinglePassRangeWithWritableIterator
+
+       ### Associated types :
+       - OutputIterator: type of output iterator on the range.
+
+       ### Notation
+       - \a X : A type that is a model of CBidirectionalRangeWithWritableIterator
+       - \a x, \a y : object of type X
+
+
+       ### Definitions
+
+
+       | Name| Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
+       |----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
+       | creation | routputIterator() |                   | ReverseOutputIterator |              | Returns a reverse output iterator on the range first element |                |            |
+       |          |                  |                   |                |              |                                                    |                |            |
+
+
+       ### Invariants###
+
+       ### Models###
+
+       ImageContainerBySTLVector::Range
+
+       ### Notes###
+
+       @tparam T the type that should be a model of CBidirectionalRangeWithWritableIterator.
+       @tparam Value the type of object t in (*it) = t.
+
+    */
+    template <typename T, typename Value>
+    struct CBidirectionalRangeWithWritableIterator : CSinglePassRangeWithWritableIterator<T, Value>
     {
-      concepts::ConceptUtils::sameType( myOutput, myX.routputIterator( ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    ReverseOutputIterator myOutput;
+      // ----------------------- Concept checks ------------------------------
+    public:
+      // 1. define first provided types (i.e. inner types), like
+      typedef typename T::ReverseOutputIterator  ReverseOutputIterator;
+      // possibly check these types so as to satisfy a concept with
+      //BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
 
-    // ------------------------- Internals ------------------------------------
-  private:
+      BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIterator )
+      {
+        concepts::ConceptUtils::sameType( myOutput, myX.routputIterator( ) );
+      }
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // do not require T to be default constructible.
+      ReverseOutputIterator myOutput;
 
-  }; // end of concept CBidirectionalRangeWithWritableIterator
+      // ------------------------- Internals ------------------------------------
+    private:
+
+    }; // end of concept CBidirectionalRangeWithWritableIterator
+
+  } // namespace concepts
 
 } // namespace DGtal
 
