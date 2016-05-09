@@ -923,7 +923,7 @@ HTML_STYLESHEET        =
 # robust against future updates. Doxygen will copy the style sheet file to
 # the output directory.
 
-HTML_EXTRA_STYLESHEET  = @top_srcdir@/doc/modern-doxygen-blue.css
+HTML_EXTRA_STYLESHEET  = @top_srcdir@/doc/modern-doxygen-green.css
 
 HTML_EXTRA_FILES       =
 
