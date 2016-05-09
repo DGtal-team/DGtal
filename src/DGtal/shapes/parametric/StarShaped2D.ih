@@ -169,6 +169,8 @@ DGtal::StarShaped2D<TSpace>::projection( typename DGtal::StarShaped2D<TSpace>::R
     else if(orientation(mid) == 0) return projection( mid, outer, epsilon ); // The point lies inside the shape
     else if(orientation(mid) == 1) return mid; // The point is right onto the shape
     else if(orientation(mid) == 2) return projection( inner, mid, epsilon ); // The point lies outside the shape
+
+    return RealPoint(0., 0.);
 }
 
 /**
