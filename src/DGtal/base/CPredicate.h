@@ -49,63 +49,63 @@ namespace DGtal
 {
   namespace concepts
   {
-  /////////////////////////////////////////////////////////////////////////////
-  // class CPredicate
-  /**
-     Description of \b concept '\b CPredicate'
-     @ingroup Concepts
-     \brief Aim: Defines a predicate function, ie. a functor mapping a domain into the set of booleans.
+    /////////////////////////////////////////////////////////////////////////////
+    // class CPredicate
+    /**
+       Description of \b concept '\b CPredicate'
+       @ingroup Concepts
+       \brief Aim: Defines a predicate function, ie. a functor mapping a domain into the set of booleans.
 
-     @tparam T the type that should be a model of this predicate
-     @tparam TElement the type of an element of the predicate domain.
+       @tparam T the type that should be a model of this predicate
+       @tparam TElement the type of an element of the predicate domain.
 
-     ###  Refinement of 
+       ###  Refinement of 
 
-  - CUnaryFunctor
+       - CUnaryFunctor
 
-     ###  Associated types :
+       ###  Associated types :
 
-     ###  Notation
-     - \e X : A type that is a model of CPredicate
-     - \e x : Object of type \e X
-     - \e p : Object of type TElement
+       ###  Notation
+       - \e X : A type that is a model of CPredicate
+       - \e x : Object of type \e X
+       - \e p : Object of type TElement
 
-     ###  Definitions
+       ###  Definitions
 
-     ###  Valid expressions and semantics
+       ###  Valid expressions and semantics
 
-     | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-     |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-     | Apply predicate| \e x.( \e p )|                  | \e bool     |                  | the value of the predicate \e x at element \e p | | |
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       | Apply predicate| \e x.( \e p )|                  | \e bool     |                  | the value of the predicate \e x at element \e p | | |
 
-     ###  Invariants
+       ###  Invariants
 
-     ###  Models
+       ###  Models
 
-     - specializations: concepts::CPointPredicate, concepts::CVertexPredicate
+       - specializations: concepts::CPointPredicate, concepts::CVertexPredicate
 
-     ###  Notes
+       ###  Notes
 
-     CPredicate allows to factor codes when writing concepts for new
-     kinds of predicates.
-   */
-  template <typename T, typename TElement>
-  struct CPredicate :  CUnaryFunctor<T,TElement,bool>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef TElement Element;
+       CPredicate allows to factor codes when writing concepts for new
+       kinds of predicates.
+    */
+    template <typename T, typename TElement>
+    struct CPredicate :  CUnaryFunctor<T,TElement,bool>
+    {
+      // ----------------------- Concept checks ------------------------------
+    public:
+      typedef TElement Element;
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myPred;
-    Element myElement;
-    bool myBool;
-    // ------------------------- Internals ------------------------------------
-  private:
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myPred;
+      Element myElement;
+      bool myBool;
+      // ------------------------- Internals ------------------------------------
+    private:
 
-  }; // end of concept CPredicate
-  }
+    }; // end of concept CPredicate
+  } // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

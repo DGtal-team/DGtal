@@ -139,16 +139,16 @@ return two iterators bounding the range of elements contained
 in the data structure. Similarly, in DGtal, there are several 
 concepts of range having at least these `begin()` and `end()` methods. 
 
-The concept [CConstSinglePassRange](@ref CConstSinglePassRange)
+The concept [CConstSinglePassRange](@ref concepts::CConstSinglePassRange)
  describes any object for which, 
 one can iterate at least one time over a range of elements.  
-Models of CConstSinglePassRange have a nested type ConstIterator, 
+Models of concepts::CConstSinglePassRange have a nested type ConstIterator, 
 which is a readable and (at least) single-pass iterator.  
 Instances of ConstIterator are returned by `begin()` 
 and `end()` methods.     
 
-The concept [CConstBidirectionalRange](@ref CConstBidirectionalRange), 
-which is a refinement of CConstSinglePassRange,
+The concept [CConstBidirectionalRange](@ref concepts::CConstBidirectionalRange), 
+which is a refinement of concepts::CConstSinglePassRange,
 describes any collection of elements that can be scanned several times, 
 either forward or backward.  
 Models of this concept have obviously a nested type ConstIterator, but it 
@@ -158,9 +158,9 @@ iterator too. Finally, `begin()` and `end()` methods return instances of
 ConstIterator, whereas `rbegin()` and `rend()` methods return instances of 
 ConstReverseIterator. 
      
-The concept [CSinglePassRange](@ref CSinglePassRange) 
-(resp. [CBidirectionalRange](@ref CBidirectionalRange)) is 
-a refinement of CConstSinglePassRange (resp. CConstBidirectionalRange) 
+The concept [CSinglePassRange](@ref concepts::CSinglePassRange) 
+(resp. [CBidirectionalRange](@ref concepts::CBidirectionalRange)) is 
+a refinement of concepts::CConstSinglePassRange (resp. concepts::CConstBidirectionalRange) 
 for not constant, mutable elements. All their models have a nested type
 Iterator (resp. ReverseIterator), which are the readable and writable 
 counterparts of ConstIterator (resp. ConstReverseIterator).    
@@ -175,6 +175,11 @@ digraph GBASE {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
+
+    CSinglePassRange [ label="CSinglePassRange" URL="\ref concepts::CSinglePassRange"];
+    CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref concepts::CConstSinglePassRange"];
+    CBidirectionalRange [ label="CBidirectionalRange" URL="\ref concepts::CBidirectionalRange"];
+    CConstBidirectionalRange [ label="CConstBidirectionalRange" URL="\ref concepts::CConstBidirectionalRange"];
 
     CSinglePassRange-> CConstSinglePassRange;
     CConstBidirectionalRange -> CConstSinglePassRange;
@@ -203,7 +208,7 @@ as follows:
     template<typename Range>
     void anyProcedure(const Range& aRange)
       {
-        BOOST_CONCEPT_ASSERT(( CBidirectionalRange<Range> )); 
+        BOOST_CONCEPT_ASSERT(( concepts::CBidirectionalRange<Range> )); 
         ...
         for (typename Range::ReverseIterator ri = r.rbegin(), 
              typename Range::ReverseIterator riEnd = r.rend(); 
@@ -267,10 +272,11 @@ incremental iterator.
 
 \subsection subsecIteratorRangesAdaptersCirculators  Circulators
 
-Like [Cgal](http://www.cgal.org/ "CGAL"), DGtal extends the concept of iterator to circular data structures
- by defining the concept of circular iterator or *circulator* for short.
+Like [Cgal](http://www.cgal.org/ "CGAL"), DGtal extends the concept of
+ iterator to circular data structures by defining the concept of
+ circular iterator or *circulator* for short.
 
-The class Circulator is an adatper that creates a circulator from a classic iterator. 
+The class Circulator is an adapter that creates a circulator from a classic iterator. 
 
 In circular data structures, any pairs of iterators [`i,j`) always describes a valid range 
 (ie. `j` is always reachable from `i`) and there is no past-the-end element.

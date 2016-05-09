@@ -57,17 +57,17 @@ bool testDistanceTransformND()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing dT dim=5 ..." );
-  
+
   typedef SpaceND<5> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
-  int t[5] = {0,0,0,0,0};
+  TSpace::Integer t[5] = {0,0,0,0,0};
   Point a ( t );
-  int t2[5] = {15,15,15,15,15};
+  TSpace::Integer t2[5] = {15,15,15,15,15};
   Point b ( t2 );
-  int t3[5] = {3,3,3,3,3};
+  TSpace::Integer t3[5] = {3,3,3,3,3};
   Point c ( t3 );
   Point d;
 
@@ -86,7 +86,7 @@ bool testDistanceTransformND()
   typedef ExactPredicateLpSeparableMetric<TSpace, 2> L2Metric;
   L2Metric l2;
   DistanceTransformation<TSpace,Predicate,L2Metric> dt(&domain,&aPredicate, &l2 );
-  
+
   //We check the result
   bool res=true;
   for(Domain::ConstIterator itDom = domain.begin(), itDomend = domain.end();
@@ -107,12 +107,12 @@ bool testDistanceTransformND()
   res=false;
   }
     }
-  nbok += res ? 1 : 0; 
+  nbok += res ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

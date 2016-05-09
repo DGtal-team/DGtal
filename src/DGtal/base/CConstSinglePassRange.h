@@ -48,68 +48,72 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CConstSinglePassRange
-  /**
-     Description of \b concept '\b CConstSinglePassRange' <p>
-     @ingroup Concepts
+  namespace concepts {
     
-     \brief Aim: Defines the concept describing a const single pass range.
+    /////////////////////////////////////////////////////////////////////////////
+    // class CConstSinglePassRange
+    /**
+       Description of \b concept '\b CConstSinglePassRange' <p>
+       @ingroup Concepts
+    
+       \brief Aim: Defines the concept describing a const single pass range.
      
-     \tparam T the type that should be a model of CConstSinglePassRange.
+       \tparam T the type that should be a model of CConstSinglePassRange.
 
-     ### Refinement of
+       ### Refinement of
     
-     ### Associated types :
+       ### Associated types :
 
-     - \e ConstIterator: the const iterator type, a model of const iterator
-     concept (see boost_concepts::SinglePassIteratorConcept).
+       - \e ConstIterator: the const iterator type, a model of const iterator
+       concept (see boost_concepts::SinglePassIteratorConcept).
 
-     ### Notation
-     - \e T : A type that is a model of CConstSinglePassRange
-     - \e x : object of type \e T
+       ### Notation
+       - \e T : A type that is a model of CConstSinglePassRange
+       - \e x : object of type \e T
 
-     ### Valid expressions and semantics
+       ### Valid expressions and semantics
 
-     | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-     |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-     | begin of range| \e x.begin()|                    | \e ConstIterator |             | returns a forward iterator on the beginning of the range | | |
-     | end of range  | \e x.end()|                      | \e ConstIterator |             | returns a forward iterator after the end of the range | | |
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       | begin of range| \e x.begin()|                    | \e ConstIterator |             | returns a forward iterator on the beginning of the range | | |
+       | end of range  | \e x.end()|                      | \e ConstIterator |             | returns a forward iterator after the end of the range | | |
     
-     ### Invariants
+       ### Invariants
     
-     - Valid range. For any Range x, [\e x.begin(), \e x.end()) is a
+       - Valid range. For any Range x, [\e x.begin(), \e x.end()) is a
        valid range, that is, \e x.end() is reachable from \e x.begin()
        in a finite number of increments.
-     - Completeness. An algorithm that iterates through the range [\e x.begin(), \e x.end()) will pass through every element of \e x.
+       - Completeness. An algorithm that iterates through the range [\e x.begin(), \e x.end()) will pass through every element of \e x.
 
-     ### Models
+       ### Models
 
-   */
-  template <typename T>
-  struct CConstSinglePassRange
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::ConstIterator ConstIterator;
-    
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator> ));
-    
-    BOOST_CONCEPT_USAGE(CConstSinglePassRange)
+    */
+    template <typename T>
+    struct CConstSinglePassRange
     {
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      concepts::ConceptUtils::sameType( it, i.begin() );
-      concepts::ConceptUtils::sameType( it, i.end() );
-    }
+      // ----------------------- Concept checks ------------------------------
+    public:
+      typedef typename T::ConstIterator ConstIterator;
     
-  private:
-    T i;
-    ConstIterator it;
-  }; // end of concept CConstSinglePassRange
-  
+      BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator> ));
+    
+      BOOST_CONCEPT_USAGE(CConstSinglePassRange)
+      {
+        checkConstConstraints();
+      }
+      void checkConstConstraints() const
+      {
+        concepts::ConceptUtils::sameType( it, i.begin() );
+        concepts::ConceptUtils::sameType( it, i.end() );
+      }
+    
+    private:
+      T i;
+      ConstIterator it;
+    }; // end of concept CConstSinglePassRange
+
+  } // namespace concepts
+    
 } // namespace DGtal
 
 

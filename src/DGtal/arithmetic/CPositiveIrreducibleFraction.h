@@ -51,6 +51,9 @@
 namespace DGtal
 {
 
+  namespace concepts
+  {
+
 /////////////////////////////////////////////////////////////////////////////
 // class CPositiveIrreducibleFraction
 /**
@@ -157,7 +160,7 @@ except the last one. In this sense, a fraction is a sequence
 */
 template <typename T>
 struct CPositiveIrreducibleFraction 
-  : boost::CopyConstructible<T>, boost::DefaultConstructible<T>, boost::Assignable<T>, DGtal::CBackInsertable<T>, DGtal::CConstSinglePassRange<T>
+  : boost::CopyConstructible<T>, boost::DefaultConstructible<T>, boost::Assignable<T>, CBackInsertable<T>, CConstSinglePassRange<T>
 
 {
     // ----------------------- Concept checks ------------------------------
@@ -230,6 +233,8 @@ private:
 private:
 
 }; // end of concept CPositiveIrreducibleFraction
+
+} // namespace concepts
 
 } // namespace DGtal
 

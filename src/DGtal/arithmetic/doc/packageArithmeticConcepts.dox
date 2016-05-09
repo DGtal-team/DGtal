@@ -34,8 +34,8 @@ digraph GARITHMETIC {
                  node [style=filled,color=white];
                  label="base";
 
-                 CBackInsertable [ label="CBackInsertable" URL="\ref CBackInsertable" ];
-                 CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref CConstSinglePassRange" ];
+                 CBackInsertable [ label="CBackInsertable" URL="\ref concepts::CBackInsertable" ];
+                 CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref concepts::CConstSinglePassRange" ];
         }
         subgraph cluster_kernel {
                  style=filled;
@@ -67,7 +67,7 @@ digraph GARITHMETIC {
         node [style=filled,color=white];
         label="arithmetic (main concepts)";
 
-        CPositiveIrreducibleFraction [ label="CPositiveIrreducibleFraction" URL="\ref CPositiveIrreducibleFraction" ] ;
+        CPositiveIrreducibleFraction [ label="CPositiveIrreducibleFraction" URL="\ref concepts::CPositiveIrreducibleFraction" ] ;
     }
     CPositiveIrreducibleFraction -> CBackInsertable;
     CPositiveIrreducibleFraction -> CConstSinglePassRange;
