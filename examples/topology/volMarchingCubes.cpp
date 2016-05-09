@@ -109,6 +109,8 @@ int main( int argc, char** argv )
     ImageLinearCellEmbedder< KSpace, Image, MyEmbedder > CellEmbedder;
   CellEmbedder cellEmbedder;
   MyEmbedder trivialEmbedder;
+  // The +0.5 is to avoid isosurface going exactly through a voxel
+  // center, especially for binary volumes.
   cellEmbedder.init( ks, image, trivialEmbedder, 
                      ( (double) minThreshold ) + 0.5 );
   ofstream out( "marching-cube.off" );
