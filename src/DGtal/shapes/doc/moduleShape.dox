@@ -21,6 +21,7 @@ namespace DGtal {
 @author Jacques-Olivier Lachaud, David Coeurjolly, Jérémy Levallois
 
 [TOC]
+@see shapes/exampleEuclideanShapesDecorator.cpp
 
    \section sectmoduleShape1 Introduction of Concepts
 
@@ -38,13 +39,13 @@ Hence, shapes can be  compact or not (i.e. bounded), oriented or not and
 finally, defined on either the Euclidean space, or the Digital
 one. All these cases are formalized in the following concepts:
 
- - CDigitalBoundedShape: Digital shape with lower/upper bounds
+ - concepts::CDigitalBoundedShape: Digital shape with lower/upper bounds
 
- - CEuclideanBoundedShape: Euclidean shape with lower/upper bounds
+ - concepts::CEuclideanBoundedShape: Euclidean shape with lower/upper bounds
 
- - CDigitalOrientedShape: Digital shape with an orientation predicate
+ - concepts::CDigitalOrientedShape: Digital shape with an orientation predicate
 
- - CEuclideanOrientedShape: Euclidean shape with an orientation predicate
+ - concepts::CEuclideanOrientedShape: Euclidean shape with an orientation predicate
 
 @note An orientation predicate is a method with the following
 interface:
@@ -185,14 +186,16 @@ parameters which are not specified in the captions).
 \section sectmoduleShape4 Constructive Solid Geometry tree on Shapes
 
 In DGtal, you can also use some CSG operations on Euclidean (resp. Digital)
-Shapes, using EuclideanShapesDecorator (resp. DigitalShapesDecorator).
+Shapes, using EuclideanShapesCSG (resp. DigitalShapesCSG).
+See examples in exampleEuclideanShapesDecorator.cpp.
+
 
 As a root for your CSG tree, you need a shape ShapeA, model of
-CEuclideanBoundedShape and CEuclideanOrientedShape (CDigitalBoundedShape and
-CDigitalOrientedShape).
+concepts::CEuclideanBoundedShape and concepts::CEuclideanOrientedShape (concepts::CDigitalBoundedShape and
+concepts::CDigitalOrientedShape).
 Then, you can add (plus()), remove (minus()), intersect (intersection()) any
-ShapeB, models of CEuclideanBoundedShape and CEuclideanOrientedShape
-(CDigitalBoundedShape and CDigitalOrientedShape) you want. You can combine
+ShapeB, models of concepts::CEuclideanBoundedShape and concepts::CEuclideanOrientedShape
+(concepts::CDigitalBoundedShape and concepts::CDigitalOrientedShape) you want. You can combine
 plus(), minus() and intersection() operations.
 
 Example for minus operation on two Euclidean Shapes :

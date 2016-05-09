@@ -36,7 +36,22 @@
 #include <boost/foreach.hpp>
 
 //specific itk method
+#if defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#endif
 #include <itkExtractImageFilter.h>
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+#if defined(__GNUG__)
+#endif
+#pragma GCC diagnostic pop
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

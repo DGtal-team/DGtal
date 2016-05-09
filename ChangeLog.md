@@ -29,7 +29,7 @@
    [#1153](https://github.com/DGtal-team/DGtal/pull/1153))
  - Moving all base concepts into namespace concepts. Update doc and
    concepts graphs accordingly. (Jacques-Olivier Lachaud, [#1164]
-   (https://github.com/DGtal-team/DGtal/pull/1164)) 
+   (https://github.com/DGtal-team/DGtal/pull/1164))
 
 - *IO Package*
 
@@ -50,6 +50,9 @@
 - *Configuration/General*
  - Simplification of the windows build instructions. (David
    Coeurjolly, [#1160](https://github.com/DGtal-team/DGtal/pull/1160))
+ - Various fixes in the documentation (e.g. links to concepts
+   pages). (David Coeurjolly,
+   [#1161](https://github.com/DGtal-team/DGtal/pull/1161))
  - Fixing issues raised on some algorithms when changing Euclidean ring
    for SpaceND and KhalimskySpaceND. (Jérémy Levallois, [#1163](https://github.com/DGtal-team/DGtal/pull/1163))
 
