@@ -93,6 +93,11 @@
     was wrong on 3d and on closed Khalimsky space.
     (Bertrand Kerautret, [#1156](https://github.com/DGtal-team/DGtal/pull/1156))
   - Add pre-calculated look up tables to speed up Object::isSimple calculations. (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
+  - Fix issue [#1168]
+    (https://github.com/DGtal-team/DGtal/issues/1168), related to bad
+    linear interpolation for binary volume data in
+    volMarchingCubes.cpp (Jacques-Olivier Lachaud,
+    [#1167](https://github.com/DGtal-team/DGtal/pull/1167))
 
 - *Shape Package*
   - Fix a tubular mesh construction problem (missing faces) which appears
