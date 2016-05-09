@@ -149,7 +149,7 @@ bool test_shape(Shape& shape, const double h, const double epsilon)
   return true;
 }
 
-int main(int argc, char** argv)
+int main()
 {
   typedef Ball2D<Space> Ball;
   const Ball ball(Point(0,0), 1.0);
@@ -165,7 +165,8 @@ int main(int argc, char** argv)
 
   double h = 1.0;
   
- 	while(h >= 0.001) {
+ 	while(h >= 0.001) 
+  {
   	if(test_shape(ball, h, h * 0.1)) return 0;
   	if(test_shape(flower2D, h, h * 0.1)) return 0;
   	if(test_shape(accFlower2D, h, h * 0.1)) return 0;
