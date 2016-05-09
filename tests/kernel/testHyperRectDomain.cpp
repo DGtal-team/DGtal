@@ -62,10 +62,11 @@ bool testSimpleHyperRectDomain()
   Point b ( t2 );
 
   trace.beginBlock ( "HyperRectDomain init" );
+
   // Checking that HyperRectDomain is a model of CDomain.
   typedef HyperRectDomain<Space4Type> HRDomain4;
   BOOST_CONCEPT_ASSERT(( concepts::CDomain< HRDomain4 > ));
-  BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<HRDomain4> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CConstBidirectionalRange<HRDomain4> ));
 
   ///Empty domain using the default constructor
   HyperRectDomain<Space4Type> myEmptyDomain;

@@ -49,64 +49,69 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CSinglePassRangeFromPoint
-  /**
-     Description of \b concept '\b CSinglePassRangeFromPoint' <p>
-     @ingroup Concepts
-     @brief Aim: refined concept of  single pass range with a begin() method from a point.
-
-     ### Refinement of CSinglePassRange and CConstSinglePassRangeFromPoint
-
-     ### Associated types :
-
-     ### Notation
-     - X : A type that is a model of CSinglePassRangeFromPoint
-     - x,  y : object of type X
-     - Point: A type of Point
-
-     ### Definitions
-
-     ### Valid expressions and semantics
-
-     | Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
-     |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
-     | begin | begin(const Point &aPoint) | aPoint of type Point | Iterator |              | Returns an iterator on the range first element |                |            |
-
-     ### Invariants
-
-     ### Models
-     - ImageContainerBySTLVector::Range
-
-     ### Notes
-     @tparam T the type that should be a model of CSinglePassRangeFromPoint.
-   */
-  template <typename T>
-  struct CSinglePassRangeFromPoint:
-    CSinglePassRange<T>,
-    CConstSinglePassRangeFromPoint<T>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Point Point;
 
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CSinglePassRangeFromPoint )
+    /////////////////////////////////////////////////////////////////////////////
+    // class CSinglePassRangeFromPoint
+    /**
+       Description of \b concept '\b CSinglePassRangeFromPoint' <p>
+       @ingroup Concepts
+       @brief Aim: refined concept of  single pass range with a begin() method from a point.
+
+       ### Refinement of CSinglePassRange and CConstSinglePassRangeFromPoint
+
+       ### Associated types :
+
+       ### Notation
+       - X : A type that is a model of CSinglePassRangeFromPoint
+       - x,  y : object of type X
+       - Point: A type of Point
+
+       ### Definitions
+
+       ### Valid expressions and semantics
+
+       | Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
+       |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
+       | begin | begin(const Point &aPoint) | aPoint of type Point | Iterator |              | Returns an iterator on the range first element |                |            |
+
+       ### Invariants
+
+       ### Models
+       - ImageContainerBySTLVector::Range
+
+       ### Notes
+       @tparam T the type that should be a model of CSinglePassRangeFromPoint.
+    */
+    template <typename T>
+    struct CSinglePassRangeFromPoint:
+      CSinglePassRange<T>,
+      CConstSinglePassRangeFromPoint<T>
     {
-       ConceptUtils::sameType( myIt, myX.begin( myPoint ) );
-    }
+      // ----------------------- Concept checks ------------------------------
+    public:
+      // 1. define first provided types (i.e. inner types), like
+      typedef typename T::Point Point;
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Point myPoint;
-    Iterartor myIt;
+      // 2. then check the presence of data members, operators and methods with
+      BOOST_CONCEPT_USAGE( CSinglePassRangeFromPoint )
+      {
+        ConceptUtils::sameType( myIt, myX.begin( myPoint ) );
+      }
 
-    // ------------------------- Internals ------------------------------------
-  private:
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // do not require T to be default constructible.
+      Point myPoint;
+      Iterartor myIt;
 
-  }; // end of concept CSinglePassRangeFromPoint
+      // ------------------------- Internals ------------------------------------
+    private:
+
+    }; // end of concept CSinglePassRangeFromPoint
+
+  } // namespace concepts
 
 } // namespace DGtal
 

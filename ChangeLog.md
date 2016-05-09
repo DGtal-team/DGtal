@@ -14,7 +14,9 @@
  - Travis Continuous integration will check that DGtalTools still compiles with
    changes in new pull-requests. (David Coeurjolly,
    [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
- - Add cmake configuration file NeighborhoodTablesConfig to decompress and install look up tables. (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
+ - Add cmake configuration file NeighborhoodTablesConfig to
+   decompress and install look up tables. (Pablo Hernandez-Cerdan,
+   [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
 
 
 
@@ -25,6 +27,9 @@
    (Roland Denis, [#1140](https://github.com/DGtal-team/DGtal/pull/1140))
    (With ITK related compilation fix, Bertrand Kerautret
    [#1153](https://github.com/DGtal-team/DGtal/pull/1153))
+ - Moving all base concepts into namespace concepts. Update doc and
+   concepts graphs accordingly. (Jacques-Olivier Lachaud, [#1164]
+   (https://github.com/DGtal-team/DGtal/pull/1164)) 
 
 - *IO Package*
 
@@ -92,12 +97,13 @@
   - Fix interior/exterior fill methods of topology/helpers/Surfaces class which
     was wrong on 3d and on closed Khalimsky space.
     (Bertrand Kerautret, [#1156](https://github.com/DGtal-team/DGtal/pull/1156))
-  - Add pre-calculated look up tables to speed up Object::isSimple calculations. (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
+  - Add pre-calculated look up tables to speed up Object::isSimple calculations.
+    (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
   - Fix issue [#1168]
     (https://github.com/DGtal-team/DGtal/issues/1168), related to bad
     linear interpolation for binary volume data in
     volMarchingCubes.cpp (Jacques-Olivier Lachaud,
-    [#1167](https://github.com/DGtal-team/DGtal/pull/1167))
+    [#1169](https://github.com/DGtal-team/DGtal/pull/1169))
 
 - *Shape Package*
   - Fix a tubular mesh construction problem (missing faces) which appears
