@@ -31,13 +31,13 @@ namespace DGtal {
     color=lightgrey;
     node [style=filled,color=white];
                
-    CEuclideanOrientedShape [ URL="\ref CEuclideanOrientedShape" ];
-    CEuclideanBoundedShape [ URL="\ref CEuclideanBoundedShape" ];
-    CDigitalOrientedShape [ URL="\ref CDigitalOrientedShape" ];
-    CDigitalBoundedShape [ URL="\ref CDigitalBoundedShape" ];
+    CEuclideanOrientedShape [ URL="\ref concepts::CEuclideanOrientedShape" ];
+    CEuclideanBoundedShape [ URL="\ref concepts::CEuclideanBoundedShape" ];
+    CDigitalOrientedShape [ URL="\ref concepts::CDigitalOrientedShape" ];
+    CDigitalBoundedShape [ URL="\ref concepts::CDigitalBoundedShape" ];
    
-    CImplicitFunction [ URL="\ref CImplicitFunction" ];
-    CImplicitFunctionDiff1 [ URL="\ref CImplicitFunctionDiff1" ];
+    CImplicitFunction [ URL="\ref concepts::CImplicitFunction" ];
+    CImplicitFunctionDiff1 [ URL="\ref concepts::CImplicitFunctionDiff1" ];
     
     CImplicitFunctionDiff1 -> CImplicitFunction;
 

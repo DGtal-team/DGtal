@@ -69,7 +69,7 @@ and
  
 
 ### Refinement of 
-  - CMetricSpace.
+  - concepts::CMetricSpace.
 
 ### Associated types :
 
@@ -95,7 +95,7 @@ ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric
 
 ### Notes
 
-@tparam T the type that should be a model of CSeparableMetric.
+@tparam T the type that should be a model of concepts::CSeparableMetric.
  */
 template <typename T>
 struct CSeparableMetric: CMetricSpace<T>

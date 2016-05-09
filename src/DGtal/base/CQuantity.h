@@ -50,47 +50,52 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CQuantity
-  /**
-Description of \b concept '\b CQuantity' <p>
-     @ingroup Concepts
-     @brief Aim: defines the concept of quantity in DGtal.
-
-###  Refinement of
-  -  CLabel 
-  -  boost::LessThanComparable
-
-###  Associated types :
-
-###  Notation
-     - \t X : A type that is a model of CQuantity
-     - \t x, \t y : object of type X
-
-###  Definitions
-
-###  Valid expressions and semantics
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|               |            | | | | | | | 
-
-
-###  Invariants
-
-###  Models
-
-
-###  Notes
-
-@tparam T the type that should be a model of CQuantity.
-   */
-  template <typename T>
-  struct CQuantity : CLabel<T>, boost::LessThanComparable<T>
+  namespace concepts
   {
 
+    /////////////////////////////////////////////////////////////////////////////
+    // class CQuantity
+    /**
+       Description of \b concept '\b CQuantity' <p>
+       @ingroup Concepts
+       @brief Aim: defines the concept of quantity in DGtal.
 
-  }; // end of concept CQuantity
+       ###  Refinement of
+       -  CLabel 
+       -  boost::LessThanComparable
+
+       ###  Associated types :
+
+       ###  Notation
+       - \t X : A type that is a model of CQuantity
+       - \t x, \t y : object of type X
+
+       ###  Definitions
+
+       ###  Valid expressions and semantics
+
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       |               |            | | | | | | | 
+
+
+       ###  Invariants
+
+       ###  Models
+
+
+       ###  Notes
+
+       @tparam T the type that should be a model of CQuantity.
+    */
+    template <typename T>
+    struct CQuantity : CLabel<T>, boost::LessThanComparable<T>
+    {
+
+
+    }; // end of concept CQuantity
+
+  } // namespace concepts
 
 } // namespace DGtal
 

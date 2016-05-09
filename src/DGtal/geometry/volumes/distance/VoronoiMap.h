@@ -77,7 +77,7 @@ namespace DGtal
    * boundary in the Euclidean space), this Voronoi map construction
    * will only keep one of them.
    *
-   * The metric is specified by a model of CSeparableMetric (for
+   * The metric is specified by a model of concepts::CSeparableMetric (for
    * instance, any instance of ExactPredicateLpSeparableMetric or
    * InexactPredicateLpSeparableMetric).  If the separable metric has
    * a complexity of O(h) for its "hiddenBy" predicate, the overall
@@ -91,13 +91,13 @@ namespace DGtal
    * in an optimal way: on @a p processors, expected runtime is in
    * @f$ O(h.d.n^d / p)@f$.
    *
-   * This class is a model of CConstImage.
+   * This class is a model of concepts::CConstImage.
    *
-   * @tparam TSpace type of Digital Space (model of CSpace).
+   * @tparam TSpace type of Digital Space (model of concepts::CSpace).
    * @tparam TPointPredicate point predicate returning true for points
    * from which we compute the distance (model of concepts::CPointPredicate)
-   * @tparam TSeparableMetric a model of CSeparableMetric
-   * @tparam TImageContainer any model of CImage to store the
+   * @tparam TSeparableMetric a model of concepts::CSeparableMetric
+   * @tparam TImageContainer any model of concepts::CImage to store the
    * VoronoiMap (default: ImageContainerBySTLVector). The space of the
    * image container and the TSpace should match. Furthermore the
    * container value type must be TSpace::Vector. Lastly, the domain
@@ -106,7 +106,7 @@ namespace DGtal
   template < typename TSpace,
              typename TPointPredicate,
              typename TSeparableMetric,
-             typename TImageContainer = 
+             typename TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<TSpace>,
                                        typename TSpace::Vector>
              >
@@ -120,20 +120,20 @@ namespace DGtal
 
     ///Both Space points and PointPredicate points must be the same.
     BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Point,
-                          typename TPointPredicate::Point >::value )); 
- 
+                          typename TPointPredicate::Point >::value ));
+
     //ImageContainer::Domain::Space must match with TSpace
     BOOST_STATIC_ASSERT ((boost::is_same< TSpace,
-                          typename TImageContainer::Domain::Space >::value )); 
-   
+                          typename TImageContainer::Domain::Space >::value ));
+
     //ImageContainer value type must be  TSpace::Vector
     BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Vector,
-                          typename TImageContainer::Value >::value )); 
- 
+                          typename TImageContainer::Value >::value ));
+
     //ImageContainer domain type must be  HyperRectangular
     BOOST_STATIC_ASSERT ((boost::is_same< HyperRectDomain<TSpace>,
-					  typename TImageContainer::Domain >::value )); 
-    
+					  typename TImageContainer::Domain >::value ));
+
     ///Copy of the space type.
     typedef TSpace Space;
 
@@ -154,23 +154,23 @@ namespace DGtal
     typedef typename Space::Dimension Dimension;
     typedef typename Space::Size Size;
     typedef typename Space::Point::Coordinate Abscissa;
- 
+
     ///Type of resulting image
     typedef TImageContainer OutputImage;
      ///Definition of the image value type.
     typedef Vector Value;
-    
+
     ///Definition of the image value type.
     typedef typename OutputImage::ConstRange  ConstRange;
 
     ///Self type
-    typedef VoronoiMap<TSpace, TPointPredicate, 
+    typedef VoronoiMap<TSpace, TPointPredicate,
 		       TSeparableMetric,TImageContainer> Self;
-    
+
 
     /**
      * Constructor.
-     * 
+     *
      * This constructor computes the Voronoi Map of a set of point
      * sites using a SeparableMetric metric.  The method associates to
      * each point satisfying the foreground predicate, the closest
@@ -183,7 +183,7 @@ namespace DGtal
      *
      * @param predicate a pointer to the point predicate to define the
      * Voronoi sites (false points).
-     * 
+     *
      *@param aMetric a pointer to the separable metric instance.
      */
     VoronoiMap(ConstAlias<Domain> aDomain,
@@ -205,7 +205,7 @@ namespace DGtal
      *  @return a reference to Self
      */
     Self &  operator=(const Self &aOtherVoronoiMap );
-    
+
     /**
      * Returns a reference (const) to the Voronoi map domain.
      * @return a domain
@@ -215,7 +215,7 @@ namespace DGtal
       return *myDomainPtr;
     }
 
-    
+
     /**
      * Returns a const range on the Voronoi map values.
      *  @return a const range
@@ -224,7 +224,7 @@ namespace DGtal
     {
       return myImagePtr->constRange();
     }
-        
+
     /**
      * Access to a Voronoi value (a.k.a. vector to the closest site)
      * at a point.
@@ -234,9 +234,9 @@ namespace DGtal
     Value operator()(const Point &aPoint) const
     {
       return myImagePtr->operator()(aPoint);
-    }    
-     
-    /** 
+    }
+
+    /**
      * @return Returns an alias to the underlying metric.
      */
     const SeparableMetric* metric() const
@@ -246,14 +246,14 @@ namespace DGtal
 
     /**
      * Self Display method.
-     * 
+     *
      * @param out output stream
      */
-    void selfDisplay ( std::ostream & out ) const;    
-   
+    void selfDisplay ( std::ostream & out ) const;
+
     // ------------------- Private functions ------------------------
-  private:    
-    
+  private:
+
     /**
      * Compute the Voronoi Map of a set of point sites using a
      * SeparableMetric metric.  The method associates to each point
@@ -263,49 +263,49 @@ namespace DGtal
     void compute ( ) ;
 
 
-    /** 
+    /**
      *  Compute the other steps of the separable Voronoi map.
-     * 
+     *
      * @param [in] dim the dimension to process
-     */    
+     */
     void computeOtherSteps(const Dimension dim) const;
-    /** 
+    /**
      * Given  a voronoi map valid at dimension @a dim-1, this method
      * updates the map to make it consistent at dimension @a dim along
      * the 1D span starting at @a row along the dimension @a
      * dim.
-     * 
+     *
      * @param [in] row starting point of the 1D process.
      * @param [in] dim dimension of the update.
      */
-    void computeOtherStep1D (const Point &row, 
-			     const Size dim) const;
-    
+    void computeOtherStep1D (const Point &row,
+			     const Dimension dim) const;
+
     // ------------------- protected methods ------------------------
   protected:
 
-    /** 
+    /**
      * Default Constructor.
-     * 
+     *
      */
     VoronoiMap();
-   
-    
+
+
     // ------------------- Private members ------------------------
   private:
 
     ///Pointer to the computation domain
     const Domain * myDomainPtr;
-    
+
     ///Pointer to the point predicate
     const PointPredicate * myPointPredicatePtr;
-    
+
     ///Copy of the image lower bound
     Point myLowerBoundCopy;
-    
+
     ///Copy of the image lower bound
     Point myUpperBoundCopy;
-    
+
     ///Value to act as a +infinity value
     Point myInfinity;
 
