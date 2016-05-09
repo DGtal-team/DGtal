@@ -136,7 +136,7 @@ bool test_shape(Shape& shape, const double h, const double epsilon)
     inner *= h;
     outer *= h;
 
-    RealPoint q = shape.projection(inner, outer, epsilon);
+    RealPoint q = shape.segmentProjection(inner, outer, epsilon);
 
     //trace.info() << (q - h * canonicSCellEmbedder(sCells0[i])).norm() << std::endl;
 
