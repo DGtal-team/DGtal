@@ -30,8 +30,8 @@
 
 #include <iostream>
 #include <DGtal/base/Common.h>
-#include "DGTal/io/readers/GenericReader.h"
-#include "DGTal/io/writers/GenericWriter.h"
+#include "DGtal/io/readers/GenericReader.h"
+#include "DGtal/io/writers/GenericWriter.h"
 
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/images/ImageContainerBySTLVector.h>
