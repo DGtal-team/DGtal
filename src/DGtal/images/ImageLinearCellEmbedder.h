@@ -119,7 +119,7 @@ namespace DGtal
        @param iso_value the threshold value that defines the linear embedding.
     */
     void init( ConstAlias<KSpace> K, ConstAlias<Image> f, 
-               ConstAlias<Embedder> e, ImageValue iso_value );
+               ConstAlias<Embedder> e, double iso_value );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -189,7 +189,7 @@ namespace DGtal
     /// A pointer on the digital embedder.
     const Embedder* myPtrEmbedder;
     /// The threshold value for the linear embedding.
-    ImageValue myIsoValue;
+    double myIsoValue;
     
     // ------------------------- Hidden services ------------------------------
   protected:

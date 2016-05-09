@@ -95,8 +95,8 @@ bool testCreate()
   typedef Image<VImage6 > MyImage6;
   BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImage6 > ));
 
-  int aa[] = {0,0,0,0,0,0};
-  int bb[] = {2,2,2,2,2,2};
+  Z2i::Integer aa[] = {0,0,0,0,0,0};
+  Z2i::Integer bb[] = {2,2,2,2,2,2};
   Domain6::Point A(aa);
   Domain6::Point B(bb);
 

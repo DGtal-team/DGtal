@@ -74,13 +74,13 @@ namespace DGtal
    * Please refer to VoronoiMap documentation for details on the
    * computational cost and parameter description.
    *
-   * This class is a model of CConstImage.
+   * This class is a model of concepts::CConstImage.
    *
-   * @tparam TSpace type of Digital Space (model of CSpace).
+   * @tparam TSpace type of Digital Space (model of concepts::CSpace).
    * @tparam TPointPredicate point predicate returning false for points
    * from which we compute the distance (model of concepts::CPointPredicate)
-   * @tparam TSeparableMetric a model of CSeparableMetric
-   * @tparam TImageContainer any model of CImage to store the
+   * @tparam TSeparableMetric a model of concepts::CSeparableMetric
+   * @tparam TImageContainer any model of concepts::CImage to store the
    * VoronoiMap (default: ImageContainerBySTLVector). The space of the
    * image container and the TSpace should match. Furthermore the
    * container value type must be TSpace::Vector.

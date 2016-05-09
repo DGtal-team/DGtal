@@ -120,7 +120,7 @@ namespace DGtal
     static const typename Domain::Dimension dimension;
 
     /// range of values
-    BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLabel<TValue> ));
     typedef TValue Value;
     typedef DefaultConstImageRange<Self> ConstRange; 
     typedef DefaultImageRange<Self> Range; 
