@@ -35,10 +35,10 @@ digraph GKERNEL {
 	   color="#eeeeff";
 	   node [style=filled,color=white];
 	   label="base";
-	   CQuantity [ label="CQuantity" URL="\ref CQuantity" ];
-	   CUnaryFunctor [ label="CUnaryFunctor" URL="\ref CUnaryFunctor" ];
-	   CPredicate [ label="CPredicate" URL="\ref CPredicate" ];
-	   CConstSinglePassRange [ label="CConstSinglePassRange" URL="@ref CConstSinglePassRange"]
+	   CQuantity [ label="CQuantity" URL="\ref concepts::CQuantity" ];
+	   CUnaryFunctor [ label="CUnaryFunctor" URL="\ref concepts::CUnaryFunctor" ];
+	   CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate" ];
+	   CConstSinglePassRange [ label="CConstSinglePassRange" URL="@ref concepts::CConstSinglePassRange"]
 	   }
 	   
        subgraph cluster_boost {
