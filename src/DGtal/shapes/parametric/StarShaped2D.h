@@ -205,7 +205,7 @@ namespace DGtal
      * @return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
 
      */
-    RealPoint projection( RealPoint& inner, RealPoint& outer, const double epsilon ) const;
+    RealPoint segmentProjection( RealPoint& inner, RealPoint& outer, const double epsilon ) const;
 
 
     // ----------------------- Interface --------------------------------------
