@@ -52,7 +52,7 @@ template <typename DSS>
 bool mainTest()
 {
   BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<DSS> ));
-  BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<DSS> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;
 
@@ -740,7 +740,7 @@ template <typename DSS>
 bool constructorsTest()
 {
   BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<DSS> ));
-  BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<DSS> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;
 

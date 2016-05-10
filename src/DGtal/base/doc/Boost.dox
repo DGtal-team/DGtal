@@ -26,27 +26,27 @@
    - the BOOST type traits main page http://www.boost.org/doc/libs/1_52_0/libs/type_traits/doc/html/index.html
 */
 namespace boost {
-  /// Go to http://www.boost.org/doc/html/DefaultConstructible.html
+  /// Go to http://www.sgi.com/tech/stl/DefaultConstructible.html
   template <typename T> struct DefaultConstructible {};
-  /// Go to http://www.boost.org/doc/html/Assignable.html
+  /// Go to http://www.sgi.com/tech/stl/Assignable.html
   template <typename T> struct Assignable {};
-  /// Go to http://www.boost.org/doc/html/CopyConstructible.html
+  /// Go to http://www.sgi.com/tech/stl/CopyConstructible.html
   template <typename T> struct CopyConstructible {};
-  /// Go to http://www.boost.org/doc/html/InputIterator.html
+  /// Go to http://www.sgi.com/tech/stl/InputIterator.html
   template <typename T> struct InputIterator {};
-  /// Go to http://www.boost.org/doc/html/OutputIterator.html
+  /// Go to http://www.sgi.com/tech/stl/OutputIterator.html
   template <typename T> struct OutputIterator {};
-  /// Go to http://www.boost.org/doc/html/ForwardIterator.html
+  /// Go to http://www.sgi.com/tech/stl/ForwardIterator.html
   template <typename T> struct ForwardIterator {};
-  /// Go to http://www.boost.org/doc/html/BidirectionalIterator.html
+  /// Go to http://www.sgi.com/tech/stl/BidirectionalIterator.html
   template <typename T> struct BidirectionalIterator {};
-  /// Go to http://www.boost.org/doc/html/RandomAccessIterator.html
+  /// Go to http://www.sgi.com/tech/stl/RandomAccessIterator.html
   template <typename T> struct RandomAccessIterator {};
-  /// Go to http://www.boost.org/doc/html/EqualityComparable.html
+  /// Go to http://www.sgi.com/tech/stl/EqualityComparable.html
   template <typename T> struct EqualityComparable {};
-  /// Go to http://www.boost.org/doc/html/LessThanComparable.html
+  /// Go to http://www.sgi.com/tech/stl/LessThanComparable.html
   template <typename T> struct LessThanComparable {};
-  /// Go to http://www.boost.org/doc/html/SignedInteger.html
+  /// Go to http://www.sgi.com/tech/stl/SignedInteger.html
   template <typename T> struct SignedInteger {};
 
   /// Go to http://www.boost.org/libs/concept_check/reference.htm

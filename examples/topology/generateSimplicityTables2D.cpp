@@ -30,12 +30,9 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <iostream>
+#include "DGtal/topology/tables/NeighborhoodTablesGenerators.h"
 #include <vector>
-#include <bitset>
-#include "DGtal/topology/Object.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
@@ -45,61 +42,6 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-
-/**
-   Given a digital topology \a dt, generates tables that tells if the
-   central point is simple for the specified configuration. The
-   configuration is determined by a sequence of bits, the first bit
-   for the point in the neighborhood, the second bit for the second
-   point, etc. When set to one, the point is in the neighborhood.
-
-   @tparam Object the type of object whose simpleness we wish to
-   precompute. Includes the topology.
-
-   @tparam Map the type used to store the mapping configuration -> bool.
-
-   @param dt an instance of the digital topology.
-   @param map (modified) the mapping configuration -> bool.
-*/
-template <typename Object, typename Map>
-void
-generateSimplicityTable( const typename Object::DigitalTopology & dt,
-			 Map & map )
-{
-  typedef typename Object::DigitalSet DigitalSet;
-  typedef typename Object::Point Point;
-  typedef typename DigitalSet::Domain Domain;
-  typedef typename Domain::ConstIterator DomainConstIterator;
-
-  Point p1 = Point::diagonal( -1 );
-  Point p2 = Point::diagonal(  1 );
-  Point c = Point::diagonal( 0 );
-  Domain domain( p1, p2 );
-  DigitalSet shapeSet( domain );
-  Object shape( dt, shapeSet );
-  unsigned int k = 0;
-  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
-    if ( *it != c ) ++k;
-  ASSERT( ( k < 32 )
-	  && "[generateSimplicityTable] number of configurations is too high." );
-  unsigned int nbCfg = 1 << k;
-  for ( unsigned int cfg = 0; cfg < nbCfg; ++cfg )
-    {
-      shape.pointSet().clear();
-      shape.pointSet().insert( c );
-      unsigned int mask = 1;
-      for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
-	{
-	  if ( *it != c )
-	    {
-	      if ( cfg & mask ) shape.pointSet().insert( *it );
-	      mask <<= 1;
-	    }
-	}
-      bool simple = shape.isSimple( c );
-      map[ cfg ] = simple;
-    }
-}
 
 /**
    Given a digital topology \a dt and a mapping configuration -> bool
@@ -203,12 +145,12 @@ int main( int /*argc*/, char** /*argv*/ )
   using namespace Z2i;
   trace.beginBlock ( "Generate 2d table for 4-8 topology" );
   ConfigMap table4_8( 256 );
-  generateSimplicityTable< Object4_8 >( dt4_8, table4_8 );
+  functions::generateSimplicityTable< Object4_8 >( dt4_8, table4_8 );
   trace.endBlock();
 
   trace.beginBlock ( "Generate 2d table for 8-4 topology" );
   ConfigMap table8_4( 256 );
-  generateSimplicityTable< Object8_4 >( dt8_4, table8_4 );
+  functions::generateSimplicityTable< Object8_4 >( dt8_4, table8_4 );
   trace.endBlock();
 
   Board2D board;
@@ -225,6 +167,25 @@ int main( int /*argc*/, char** /*argv*/ )
 
   outputTableAsArray( std::cout, table4_8, "simplicityTable4_8" );
   outputTableAsArray( std::cout, table8_4, "simplicityTable8_4" );
+
+  /* Output bitset tables to files,
+   * for using with NeighborhoodConfigurations.h interface.
+   * These tables can be accesed from NeighborhoodTables.h header.
+   */
+  using ConfigMapBit = std::bitset<256> ; // 2^8
+  ConfigMapBit bit_table8_4;
+  ConfigMapBit bit_table4_8;
+  functions::generateSimplicityTable< Object8_4 >( dt8_4, bit_table8_4 );
+  functions::generateSimplicityTable< Object4_8 >( dt4_8, bit_table4_8 );
+  string filename = "simplicity_table8_4.txt";
+  ofstream file( filename  );
+  file << bit_table8_4;
+  file.close();
+
+  filename = "simplicity_table4_8.txt";
+  ofstream file2( filename  );
+  file2 << bit_table4_8;
+  file2.close();
 
   return 0;
 }

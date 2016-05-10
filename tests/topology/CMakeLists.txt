@@ -12,6 +12,7 @@ SET(DGTAL_TESTS_SRC
    testUmbrellaComputer
    testSurfaceHelper
    testDigitalSetToCellularGridConverter
+   testNeighborhoodConfigurations
  )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
@@ -20,13 +21,11 @@ FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
-
 SET(DGTAL_BENCH_SRC
    testObject-benchmark
    testImplicitDigitalSurface-benchmark
    testLightImplicitDigitalSurface-benchmark
 )
-
 
 #Benchmark target
 IF (BUILD_BENCHMARKS)

@@ -49,68 +49,73 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CSinglePassRangeWithWritableIteratorFromPoint
-  /**
-     Description of \b concept '\b CSinglePassRangeWithWritableIteratorFromPoint' <p>
-     @ingroup Concepts
-     @brief Aim: refined concept of single pass range with a outputIterator() method from a point.
-
-     ### Refinement of CConstSinglePassRangeFromPoint and CSinglePassRangeWithWritableIterator
-
-     ### Associated types :
-
-     ### Notation
-     - X : A type that is a model of CSinglePassRangeWithWritableIteratorFromPoint
-     - x,  y : object of type X
-     - Point: A type of Point
-
-     ### Definitions
-
-     ### Valid expressions and semantics
-
-     | Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
-     |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
-     | output iterator | outputIterator(const Point &aPoint) | aPoint of type Point | OutputIterator |              | Returns an output iterator on the range first element |                |            |
-
-     ### Invariants
-
-     ### Models
-     - ImageContainerBySTLVector::Range
-
-     ### Notes
-
-     @tparam T the type that should be a model of CSinglePassRangeWithWritableIteratorFromPoint.
-     @tparam Value the type of object t in (*it) = t.
-
-   */
-  template <typename T, typename Value>
-  struct CSinglePassRangeWithWritableIteratorFromPoint:
-    CConstSinglePassRangeFromPoint<T,Value>,
-    CSinglePassRangeWithWritableIterator<T,Value>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::OutputIterator OutputIterator;
-    typedef typename T::Point Point;
 
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CSinglePassRangeWithWritableIteratorFromPoint )
+    /////////////////////////////////////////////////////////////////////////////
+    // class CSinglePassRangeWithWritableIteratorFromPoint
+    /**
+       Description of \b concept '\b CSinglePassRangeWithWritableIteratorFromPoint' <p>
+       @ingroup Concepts
+       @brief Aim: refined concept of single pass range with a outputIterator() method from a point.
+
+       ### Refinement of CConstSinglePassRangeFromPoint and CSinglePassRangeWithWritableIterator
+
+       ### Associated types :
+
+       ### Notation
+       - X : A type that is a model of CSinglePassRangeWithWritableIteratorFromPoint
+       - x,  y : object of type X
+       - Point: A type of Point
+
+       ### Definitions
+
+       ### Valid expressions and semantics
+
+       | Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
+       |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
+       | output iterator | outputIterator(const Point &aPoint) | aPoint of type Point | OutputIterator |              | Returns an output iterator on the range first element |                |            |
+
+       ### Invariants
+
+       ### Models
+       - ImageContainerBySTLVector::Range
+
+       ### Notes
+
+       @tparam T the type that should be a model of CSinglePassRangeWithWritableIteratorFromPoint.
+       @tparam Value the type of object t in (*it) = t.
+
+    */
+    template <typename T, typename Value>
+    struct CSinglePassRangeWithWritableIteratorFromPoint:
+      CConstSinglePassRangeFromPoint<T,Value>,
+      CSinglePassRangeWithWritableIterator<T,Value>
     {
-       ConceptUtils::sameType( myIt, myX.begin( myPoint ) );
-    }
+      // ----------------------- Concept checks ------------------------------
+    public:
+      // 1. define first provided types (i.e. inner types), like
+      typedef typename T::OutputIterator OutputIterator;
+      typedef typename T::Point Point;
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Point myPoint;
-    OutputIterartor myIt;
+      // 2. then check the presence of data members, operators and methods with
+      BOOST_CONCEPT_USAGE( CSinglePassRangeWithWritableIteratorFromPoint )
+      {
+        ConceptUtils::sameType( myIt, myX.begin( myPoint ) );
+      }
 
-    // ------------------------- Internals ------------------------------------
-  private:
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // do not require T to be default constructible.
+      Point myPoint;
+      OutputIterartor myIt;
 
-  }; // end of concept CSinglePassRangeWithWritableIteratorFromPoint
+      // ------------------------- Internals ------------------------------------
+    private:
+
+    }; // end of concept CSinglePassRangeWithWritableIteratorFromPoint
+
+  } // namespace concepts
 
 } // namespace DGtal
 

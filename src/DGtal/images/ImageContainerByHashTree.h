@@ -161,7 +161,7 @@ namespace DGtal
                                           HyperRectDomain<typename Domain::Space > >::value));
 
     /// values range
-    BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CLabel<TValue> ));
     typedef TValue Value;
     //typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange;
     typedef DefaultConstImageRange<Self> ConstRange;

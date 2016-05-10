@@ -144,7 +144,7 @@ namespace DGtal
     using Display::getSelectCallback3D;
     typedef typename Display::RealPoint RealPoint;
 
-    enum RenderingMode {RenderingDefault, RenderingMetallic, RenderingPlastic };
+    enum RenderingMode {RenderingDefault, RenderingMetallic, RenderingPlastic, RenderingLambertian };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -266,6 +266,20 @@ namespace DGtal
      **/
     void setGLLightSpecularCoefficients(const GLfloat lightSpecularCoeffs [4]);
     
+
+
+    /**
+     *  Change the primitive to display ball (OpenGl points instead
+     *  balls created with quads).
+     * 
+     *
+     *  @param[in] useOpenGLPt if true all points will be displayed
+     *  with OpenGl points instead the default balls (defined from
+     *  quads).
+     *
+     **/    
+    void setUseGLPointForBalls(bool useOpenGLPt);
+
     
     /**
      * Change the current rendering mode of the viewer.
@@ -289,8 +303,8 @@ namespace DGtal
     bool myIsBackgroundDefault;
     /// objects have shadows which follow the camera if false
     bool myViewWire;
-    /// to improve the display of gl line
-    double myGLLineMinWidth;
+    double myGLPointMinWidth = 1.5; /// to improve the display of gl points    
+    double myGLLineMinWidth = 1.5; /// to improve the display of gl line
     /// flag to save automatically or not the Viewer3d state when closing the viewer
     bool myAutoSaveState;
     // define the default rendering mode of the viewer
@@ -801,10 +815,10 @@ namespace DGtal
 
 
     /**
-     * Draw a linel by using the [gluCShere] primitive.
-     * @param pointel the pointel to draw
+     * Draw a ball by using quads strip primitive.
+     * @param[in] aBall the ball to be drawn
      */
-    void glDrawGLBall ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
+    void glDrawGLBall (const typename Viewer3D<Space,KSpace>::BallD3D & aBall );
 
 
 
@@ -1284,20 +1298,35 @@ namespace DGtal
 
 
     /**
-     * Update the container of GLTextureImage object with the given vector of TextureImage.
+     * Updates the container of GLTextureImage object with the given vector of TextureImage.
      * @param[in] aVectImage the vector containing
      *
      **/
     void glUpdateTextureImages(const VectorTextureImage  &aVectImage);
 
+    
+    /**
+     * Updates the light source coordinates (myLightPosition) from the
+     * camera relative coordinates (myLightPositionRefCamera). It
+     * could be useful when the light source position is fix according
+     * to camera position.
+     **/
+    void updateLightCoordsFromCamera();
+
+    /**
+     * Updates the camera relative light source coordinates
+     *  (myLightPositionRefCamera) from the scene light coordinates
+     *  (myLightPosition). It could be useful when the light source
+     *  position is fix in the main scene.
+     **/
+    void updateRelativeCameraFromLightPosition();
 
 
-
-
-
+    
+    
   public:
     /**
-     * Rotate Image2DDomainD3D or TextureImage  vertex from a given
+     * Rotates Image2DDomainD3D or TextureImage  vertex from a given
      * angle and a rotation direction. The center of rotation is defined
      * from the image center point.
      *
@@ -1389,25 +1418,30 @@ namespace DGtal
     double camera_position[3]; ///< camera position
     double camera_direction[3]; ///< camera direction
     double camera_upVector[3]; ///< camera up-vector
-
+    
+    bool   myLightPositionFixToCamera = true; // when false the light position is fix according to the scene.
     double myLightTheta; /// the light position (inclination)
     double myLightPhi; /// the light position (azimuth)
     double myLightR; /// the light position (distance)
-    GLfloat myLightPosition [4]; // the light position in cartesian coordinate
-    GLfloat myMaterialShininessCoeff[1] =  {50.0} ; // the material shininess coefficient used in opengl rendering 
-    GLfloat myMaterialSpecularCoeffs[4] = { 1.0, 1.0, 1.0, 1.0 }; // the light specular coefficients used in opengl rendering 
-    GLfloat myLightSpecularCoeffs[4] = { 1.0, 1.0, 1.0, 1.0 }; // the light specular coefficients used in opengl rendering 
-    GLfloat myLightAmbientCoeffs[4] = { 0.0, 0.0, 0.0, 1.0 }; // the material ambient coefficients used in opengl rendering  
-    GLfloat myLightDiffuseCoeffs[4] = { 1.0, 1.0, 1.0, 1.0 }; // the material diffuse coefficients used in opengl rendering  
-    
-    const GLfloat myDefaultRenderSpec = 1.0; // default specular coefficients for default mode rendering
-    const GLfloat myDefaultRenderDiff = 1.0; // default diffuse coefficients for metallic mode rendering
-    const GLfloat myMetallicRenderSpec = 0.6; // default specular coefficients for metallic mode rendering
-    const GLfloat myMetallicRenderDiff = 0.5; // default diffuse coefficients for metallic mode rendering
-    const GLfloat myPlasticRenderSpec = 0.8; // default specular coefficients for platic mode rendering
-    const GLfloat myPlasticRenderDiff = 0.2; // default diffuse coefficients for platic mode rendering
-    
+    GLfloat myLightPosition [4] = {0.0f, 0.0f, 1.0f, 1.0f}; // the light position in cartesian coordinate
+    GLfloat myLightPositionRefCameraDefault [3] = {-100.0f, 100.0f, 0.0f}; // the light default position according to the camera position
+    GLfloat myLightPositionRefCamera [3] = {0.0f, 0.0f, 0.0f}; // the light position according to the camera position
+    GLfloat myMaterialShininessCoeff[1] =  {50.0f} ; // the material shininess coefficient used in opengl rendering 
+    GLfloat myMaterialSpecularCoeffs[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; // the light specular coefficients used in opengl rendering 
+    GLfloat myLightSpecularCoeffs[4] = { 0.3f, 0.3f, 0.3f, 1.0f }; // the light specular coefficients used in opengl rendering 
+    GLfloat myLightAmbientCoeffs[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; // the material ambient coefficients used in opengl rendering  
+    GLfloat myLightDiffuseCoeffs[4] = { 0.7f, 0.7f, 0.7f, 1.0f }; // the material diffuse coefficients used in opengl rendering  
 
+    const GLfloat myDefaultRenderSpec = 0.3f; // default specular coefficients for default mode rendering
+    const GLfloat myDefaultRenderDiff = 0.7f; // default diffuse coefficients for metallic mode rendering    
+    const GLfloat myLambertRenderSpec = 0.0f; // default specular coefficients for default mode rendering
+    const GLfloat myLambertRenderDiff = 0.9f; // default diffuse coefficients for metallic mode rendering
+    const GLfloat myMetallicRenderSpec = 0.5f; // default specular coefficients for metallic mode rendering
+    const GLfloat myMetallicRenderDiff = 0.5f; // default diffuse coefficients for metallic mode rendering
+    const GLfloat myPlasticRenderSpec = 0.8f; // default specular coefficients for platic mode rendering
+    const GLfloat myPlasticRenderDiff = 0.2f; // default diffuse coefficients for platic mode rendering
+    
+    bool myUseGLPointsForBalls =  false; // to display balls with GL points (instead real ball) 
 
     double ZNear; ///< znear distance
     double ZFar; ///< zfar distance
@@ -1416,10 +1450,10 @@ namespace DGtal
     float myMeshDefaultLineWidth;
 
     // To apply openGL ajustment only on visualisation
-    float myGLScaleFactorX;
-    float myGLScaleFactorY;
-    float myGLScaleFactorZ;
-
+    float myGLScaleFactorX=1.0;
+    float myGLScaleFactorY=1.0;
+    float myGLScaleFactorZ=1.0;
+    
     // Used to apply interactive light rotation
     double myLigthRotationStep; /// the angle rotation increment used for interactive light move
     int myRefMouseXPos; /// the reference mouse x-position used to determince the light position change (azimuth)

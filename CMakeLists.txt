@@ -68,3 +68,8 @@ INCLUDE(BuildExamples)
 # Install settings
 # -----------------------------------------------------------------------------
 INCLUDE(Install)
+
+# -----------------------------------------------------------------------------
+# Unzip and install topology Look up Tables.
+# -----------------------------------------------------------------------------
+INCLUDE(NeighborhoodTablesConfig)
