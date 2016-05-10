@@ -1,11 +1,13 @@
 /* 
  * Useful to avoid writing DGtal:: in front of every class.
  */
+ using namespace DGtal;
+ using namespace concepts;
 namespace DGtal {
-
+namespace concepts{
 /*!
    
-@page moduleArithDSSReco Digital straight lines and segments.   
+@page moduleArithDSSReco Digital straight lines and segments   
 
 @author Tristan Roussillon
 
@@ -317,12 +319,6 @@ You can construct a DSS by specifying the value of all its data members.
 Though, the resulting DSS may be not valid and you should test its validity 
 before using it. An instance of ArithmeticalDSS is valid iff the DSL parameters, 
 the ending points and the leaning points are consistent. 
-To check if these redondant data members are consistents,
-some functions are defined in the namespace ArithmeticalDSSCheck. For instance,  
-- function ArithmeticalDSSCheck::checkPointsRemainder compares the remainder of the 
-leaning and ending points to the parameters of the minimal bounding DSL.  
-- function ArithmeticalDSSCheck::checkPointsPosition compares the position of the 
-leaning and ending points to the parameters of the minimal bounding DSL.
 
 There are five extra ways of constructing an instance of ArithmeticalDSS:
 - from the minimal set of data members required to build the DSS in constant time.  
@@ -510,7 +506,7 @@ Finally to obtain the parameters of 3D DSS
 
 The whole example may be found in exampleNaive3DDSSComputer.cpp.
 
-\section moduleArithDSSReco-DSSRec Application of the straight line segment recognition
+\section moduleArithDSSReco-DSSRecAppli Application of the straight line segment recognition
 
 This section contains several examples of application of straight line recognition.
 
@@ -552,7 +548,7 @@ Note that the 3D extension provides similar interface:
 
 @snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DFast
 
-Notice that both LmabdaMST2D and LambdaMST3D are models of CCurveLocalGeometricEstimator.
+Notice that both LambdaMST2D and LambdaMST3D are models of CCurveLocalGeometricEstimator.
 
 Both examples are in exampleLMST2D.cpp and exampleLMST3D.cpp
 
@@ -613,4 +609,5 @@ an object devoted to the on-line recognition of 4-connected standard DSSs.
 \example geometry/curves/estimation/exampleLMST3D.cpp
 */
 
+}
 }

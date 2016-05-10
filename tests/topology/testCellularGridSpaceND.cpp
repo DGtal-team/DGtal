@@ -61,6 +61,7 @@ bool testCellularGridSpaceND()
   typedef typename KSpace::Cell Cell;
   typedef typename KSpace::SCell SCell;
   typedef typename KSpace::Point Point;
+  typedef typename KSpace::Integer Integer;
   typedef typename KSpace::DirIterator DirIterator;
   typedef typename KSpace::Cells Cells;
   unsigned int nbok = 0;
@@ -68,8 +69,8 @@ bool testCellularGridSpaceND()
 
   trace.beginBlock ( "Testing block KSpace instantiation and scan ..." );
   KSpace K;
-  int xlow[ 4 ] = { -3, -2, -2, -1 };
-  int xhigh[ 4 ] = { 5, 3, 2, 3 };
+  Integer xlow[ 4 ] = { -3, -2, -2, -1 };
+  Integer xhigh[ 4 ] = { 5, 3, 2, 3 };
   Point low( xlow );
   Point high( xhigh );
   bool space_ok = K.init( low, high, true );
@@ -78,7 +79,7 @@ bool testCellularGridSpaceND()
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "K.init( low, high )" << std::endl;
   trace.info() << "K.dim()=" << K.dimension << endl;
-  int spel[ 4 ] = { 1, 1, 1, 1 }; // pixel
+  Integer spel[ 4 ] = { 1, 1, 1, 1 }; // pixel
   Point kp( spel );
   Cell center = K.uCell( kp );
   Cell c1 = K.uCell( kp );
@@ -205,8 +206,8 @@ bool testSurfelAdjacency()
 
   trace.beginBlock ( "Testing block KSpace instantiation and scan ..." );
   KSpace K;
-  int xlow[ 4 ] = { -3, -3, -3, -3 };
-  int xhigh[ 4 ] = { 5, 3, 3, 3 };
+  Integer xlow[ 4 ] = { -3, -3, -3, -3 };
+  Integer xhigh[ 4 ] = { 5, 3, 3, 3 };
   Point low( xlow );
   Point high( xhigh );
   bool space_ok = K.init( low, high, true );
@@ -226,7 +227,7 @@ bool testSurfelAdjacency()
   trace.info() << endl;
   trace.endBlock();
 
-  int spel[ 4 ] = { 1, 1, 1, 1 }; // pixel
+  Integer spel[ 4 ] = { 1, 1, 1, 1 }; // pixel
   Point kp( spel );
   SCell sspel = K.sCell( kp, K.POS );
   trace.beginBlock ( "Testing surfel directness ..." );
@@ -270,7 +271,7 @@ bool testSurfelAdjacency()
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   Domain domain( low, high );
   DigitalSet shape_set( domain );
-  int center[ 4 ] = { 1, 0, 0, 0 }; // pixel
+  Integer center[ 4 ] = { 1, 0, 0, 0 }; // pixel
   Point pcenter( center );
   Shapes<Domain>::addNorm1Ball( shape_set, pcenter, 1 );
   trace.info() << "surfel      = " << surfel << endl;
@@ -332,8 +333,8 @@ bool testCellDrawOnBoard()
   unsigned int nb = 0;
   trace.beginBlock ( "Testing cell draw on digital board ..." );
   KSpace K;
-  int xlow[ 4 ] = { -3, -3 };
-  int xhigh[ 4 ] = { 5, 3 };
+  Integer xlow[ 4 ] = { -3, -3 };
+  Integer xhigh[ 4 ] = { 5, 3 };
   Point low( xlow );
   Point high( xhigh );
   bool space_ok = K.init( low, high, true );
@@ -342,14 +343,14 @@ bool testCellDrawOnBoard()
   board.setUnit( LibBoard::Board::UCentimeter );
   board << SetMode( domain.className(), "Paving" )
   << domain;
-  int spel[ 2 ] = { 1, 1 }; // pixel 0,0
+  Integer spel[ 2 ] = { 1, 1 }; // pixel 0,0
   Point kp( spel );
   Cell uspel = K.uCell( kp );
   board << uspel
   << low << high
   << K.uIncident( uspel, 0, false )
   << K.uIncident( uspel, 1, false );
-  int spel2[ 2 ] = { 5, 1 }; // pixel 2,0
+  Integer spel2[ 2 ] = { 5, 1 }; // pixel 2,0
   Point kp2( spel2 );
   SCell sspel2 = K.sCell( kp2, K.POS );
   board << CustomStyle( sspel2.className(),

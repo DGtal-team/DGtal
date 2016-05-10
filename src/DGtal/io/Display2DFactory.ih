@@ -48,8 +48,9 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
 
     //FIXME: as for Display3D models, embedder should be factorized
     //and not instantiated at each call.
-    typedef DGtal::CanonicSCellEmbedder<KPS> Embedder;
+    using Embedder = DGtal::CanonicSCellEmbedder<KPS> Embedder;
     const Embedder embedder( K );
+    
     const Embedder::RealPoint coords = embedder(sk.preCell());
     const float x = coords[0];
     const float y = coords[1];
@@ -438,7 +439,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 
 // AlphaThickSegmentComputer
 template <typename TInputPoint,  typename TConstIterator>
-void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard, 
+void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
                                                  const DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>  & anAlphaThickSegment){
   typedef DGtal::PointVector<2,double> PointD;
 
@@ -453,7 +454,7 @@ void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
 
 
 template < typename TInputPoint, typename TConstIterator>
-void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard, 
+void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
                                                    const DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator> & anAlphaThickSegment){
   typedef typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ContainerConstIterator ContConstIterator;
   typedef TConstIterator ConstIterator;
@@ -463,7 +464,7 @@ void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
     {
       std::vector<LibBoard::Point> contour;
       if (anAlphaThickSegment.isStoringSegmentPoints()){
-        for (ContConstIterator it = anAlphaThickSegment.containerBegin(); 
+        for (ContConstIterator it = anAlphaThickSegment.containerBegin();
              it != anAlphaThickSegment.containerEnd(); it++) {
           Point p = *it;
           double xp = NumberTraits<typename TInputPoint::Component>::castToDouble(p[0]);
@@ -485,21 +486,21 @@ void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
     }
   // Draw points
   if (anAlphaThickSegment.isStoringSegmentPoints()){
-    for (ContConstIterator it = anAlphaThickSegment.containerBegin(); 
+    for (ContConstIterator it = anAlphaThickSegment.containerBegin();
          it != anAlphaThickSegment.containerEnd(); it++) {
       Point p = *it;
-     draw(aBoard,p );  
+     draw(aBoard,p );
     }
   }else {
     for (ConstIterator it = anAlphaThickSegment.begin(); it != anAlphaThickSegment.end(); it++) {
       Point p = *it;
-    draw(aBoard,p );  
-    }  
+    draw(aBoard,p );
+    }
   }
 }
 
 template < typename TInputPoint,  typename TConstIterator>
-void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
                                     const DGtal::AlphaThickSegmentComputer< TInputPoint,  TConstIterator>  & anAlphaThickSegment ){
   std::string mode = aBoard.getMode( anAlphaThickSegment.className() );
   if ( mode == "BoundingBox" )
@@ -610,7 +611,7 @@ void DGtal::Display2DFactory::drawSector(Board2D & aBoard, const DGtal::CircleFr
 
 template <typename Point>
 inline
-void DGtal::Display2DFactory::drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, 
+void DGtal::Display2DFactory::drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p,
 					  const Point& aPoint1, const Point& aPoint2, bool anOrientation, const double& w)
 {
   typedef typename Point::Coordinate Coordinate;
@@ -1050,11 +1051,11 @@ void DGtal::Display2DFactory::drawFill( DGtal::Board2D & aBoard,
 
 // SCellsRange
 template <typename TIterator, typename TSCell>
-void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
            const ConstRangeAdapter<TIterator, functors::Identity, TSCell> & object )
 {
-    typedef ConstRangeAdapter<TIterator, functors::Identity, TSCell> Range; 
-    typedef typename Range::ConstIterator ConstIterator; 
+    typedef ConstRangeAdapter<TIterator, functors::Identity, TSCell> Range;
+    typedef typename Range::ConstIterator ConstIterator;
 
     ConstIterator it ( object.begin() );
     ConstIterator itEnd ( object.end() );
@@ -1462,9 +1463,9 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 
 // CubicalComplex
 template < typename TKSpace, typename TCellContainer >
-inline 
-void 
-DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
+inline
+void
+DGtal::Display2DFactory::draw( DGtal::Board2D & board,
              const DGtal::CubicalComplex<TKSpace, TCellContainer> & cc )
 {
   FATAL_ERROR( cc.dimension == 2);
@@ -1680,5 +1681,3 @@ DGtal::Display2DFactory::draw
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

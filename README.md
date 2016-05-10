@@ -31,6 +31,10 @@ Quick Install
 
 * Windows: no binary package, please compile the library.
 
+
+Additional instructions are availalbe in the
+[documentation](http://dgtal.org/doc/nightly/moduleBuildDGtal.html).
+
 Quick Build Instructions
 ========================
 

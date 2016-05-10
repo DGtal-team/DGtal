@@ -48,11 +48,24 @@
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/images/DefaultImageRange.h"
 
+#if defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#endif
 #include <itkImage.h>
 #include <itkImageRegionConstIterator.h>
 #include <itkImageRegionIterator.h>
 #include <iostream>
-
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+#if defined(__GNUG__)
+#endif
+#pragma GCC diagnostic pop
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

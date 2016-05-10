@@ -68,7 +68,7 @@ namespace DGtal
    * Description of template class 'MongeJetFittingPrincipalCurvaturesEstimator' <p>
    * \brief Aim: Estimates Gaussian curvature using CGAL Jet Fitting and Monge Form.
    *
-   * model of CLocalEstimatorFromSurfelFunctor.
+   * model of concepts::CLocalEstimatorFromSurfelFunctor.
    *
    * @tparam TSurfel type of surfels
    * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$

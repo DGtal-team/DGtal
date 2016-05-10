@@ -28,7 +28,21 @@
 
 #include "DGtal/images/ConstImageAdapter.h"
 #include "DGtal/images/ImageContainerByITKImage.h"
+#if defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#endif
 #include <itkImageFileWriter.h>
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+#if defined(__GNUG__)
+#endif
+#pragma GCC diagnostic pop
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
@@ -44,7 +58,8 @@ namespace DGtal {
     const Domain& domain = aImage.domain();
 
     typedef ConstImageAdapter<Image, Domain, functors::Identity, ValueOut, Functor> AdaptedImage;
-    const AdaptedImage adapted(aImage, domain, functors::Identity(), aFunctor);
+    const functors::Identity identityFunctor{}; 
+    const AdaptedImage adapted(aImage, domain, identityFunctor, aFunctor);
 
     typedef ImageContainerByITKImage<Domain, ValueOut> DGtalITKImage;
     DGtalITKImage itk_image(aImage.domain());
