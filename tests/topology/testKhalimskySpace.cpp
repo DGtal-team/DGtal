@@ -476,6 +476,15 @@ void testSurfelAdjacency( KSpace const & K,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+/** Testing Cell drawing on Board.
+ * @tparam KSpace the Khalimsky space type.
+ * @param  K      the Khalimsky space.
+ * @param  aPoint a point where to test the incidences.
+ */
+
+
+
+///////////////////////////////////////////////////////////////////////////////
 // Test cases
 
 TEST_CASE( "Checking concepts" )
@@ -494,7 +503,7 @@ TEST_CASE( "2D Khalimsky pre-space", "[KPreSpace][2D]" )
   testScan( K, {-1, -2}, {1, 2} );
   testIncidence( K, {0, 0} );
   testDirectIncidence( K, {0, 0} );
-  //testSurfelAdjacency( K, {0, 0} );
+  testSurfelAdjacency( K, {0, 0} );
 }
 
 TEST_CASE( "3D Khalimsky pre-space", "[KPreSpace][3D]" )
@@ -502,9 +511,10 @@ TEST_CASE( "3D Khalimsky pre-space", "[KPreSpace][3D]" )
   const KhalimskyPreSpaceND<3> K{};
   INFO( "Khalimsky space is " << K );
 
-  testScan( K, {-1, -2, -3}, {1, 2, 3} );
+  testScan( K, {-2, -3, -4}, {2, 3, 4} );
   testIncidence( K, {0, 0, 0} );
   testDirectIncidence( K, {0, 0, 0} );
+  testSurfelAdjacency( K, {0, 0, 0} );
 }
 
 TEST_CASE( "4D Khalimsky pre-space", "[KPreSpace][4D]" )
