@@ -43,6 +43,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <type_traits>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -89,8 +90,13 @@ public:
     const T* operator->()   const throw()   {return myPtr.get();}
     const T* get()          const throw()   {return myPtr.get();}
     
+    template < typename U = T, typename std::enable_if< ! std::is_const<U>::value >::type* = nullptr >
     T& operator*()                          {copy(); return *myPtr;}
+
+    template < typename U = T, typename std::enable_if< ! std::is_const<U>::value >::type* = nullptr >
     T* operator->()                         {copy(); return myPtr.get();}
+
+    template < typename U = T, typename std::enable_if< ! std::is_const<U>::value >::type* = nullptr >
     T* get()                                {copy(); return myPtr.get();}
 
     /**
