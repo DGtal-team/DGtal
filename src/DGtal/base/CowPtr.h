@@ -89,7 +89,7 @@ public:
     const T& operator*()    const throw()   {return *myPtr;}
     const T* operator->()   const throw()   {return myPtr.get();}
     const T* get()          const throw()   {return myPtr.get();}
-    
+
     template < typename U = T, typename std::enable_if< ! std::is_const<U>::value >::type* = nullptr >
     T& operator*()                          {copy(); return *myPtr;}
 
@@ -101,7 +101,7 @@ public:
 
     /**
        Equality operator ==
-       
+
        @param other any other pointer.
        @return 'true' if pointed address is equal to \a other.
     */
@@ -112,7 +112,7 @@ public:
 
     /**
        Inequality operator !=
-       
+
        @param other any other pointer.
        @return 'true' if pointed address is different from \a other.
     */
