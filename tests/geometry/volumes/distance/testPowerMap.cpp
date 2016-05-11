@@ -66,7 +66,9 @@ bool testPowerMap()
 
   using SetDomain = DigitalSetDomain< DigitalSetBySTLSet<Z2i::Domain > >;
   using Image = ImageContainerBySTLMap< SetDomain , DGtal::int64_t>;
-  Image image( std::make_shared<SetDomain>( set ) );
+
+  SetDomain setDomain( set );
+  Image image( setDomain );
   
   //Setting some values
   image.setValue(Z2i::Point(3,3), 9); 
