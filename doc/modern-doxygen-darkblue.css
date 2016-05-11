@@ -1,6 +1,6 @@
 /*
-header color: #4478A6
-text color: #2980b9
+header color: #344876
+text color: #2A577B
 */
 
 html {
@@ -16,7 +16,7 @@ body {
 }
 
 .tablist li.current a,.tablist a,.tablist a:hover,#nav-tree .selected {
-    color: #2980b9;
+    color: #2A577B;
     text-shadow: none;
 }
 
@@ -50,7 +50,7 @@ body {
 }
 
 .title a {
-  color: #2980b9;
+  color: #2A577B;
 }
 
 div.header {
@@ -72,7 +72,7 @@ div.header {
 }
 
 a {
-    color: #2980b9;
+    color: #2A577B;
 }
 
 #side-nav {
@@ -112,7 +112,7 @@ div.navpath {
 }
 
 table.doxtable th {
-  background-color: #2980b9;
+  background-color: #2A577B;
 }
 
 .directory table {
@@ -137,7 +137,7 @@ div.directory {
 }
 
 .contents a:visited {
-    color: #2980b9;
+    color: #2A577B;
 }
 
 div.toc {
@@ -169,14 +169,14 @@ div.ah {
 }
 
 .icon {
-	background-color: #4478A6;
+	background-color: #344876;
 	color: white;
 }
 
 #navrow1 > .tablist > .current > a {
-	background-color: #4478A6;
+	background-color: #344876;
 }
 
 .directory .levels span {
-	color: #4478A6;
+	color: #344876;
 }
