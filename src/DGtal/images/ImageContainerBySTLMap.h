@@ -48,12 +48,11 @@
 // Inclusions
 #include <iostream>
 #include <map>
-#include <memory>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/base/ConstAlias.h"
-#include "DGtal/base/CountedPtr.h"
 #include "DGtal/base/BasicFunctors.h"
+#include "DGtal/base/CowPtr.h"
+#include "DGtal/base/Clone.h"
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/images/DefaultImageRange.h"
 #include "DGtal/images/SetValueIterator.h"
@@ -113,6 +112,9 @@ namespace DGtal
     typedef typename Domain::Dimension Dimension;
     typedef Point Vertex;
 
+    // Pointer to the (const) Domain given at construction.
+    typedef CowPtr< const Domain >  DomainPtr;
+
     /// static constants
     static const typename Domain::Dimension dimension;
 
@@ -131,7 +133,7 @@ namespace DGtal
     /// Shared pointer on the image domain,
     /// Since the domain is not mutable, not assignable,
     /// it is shared by all the copies of *this
-    std::shared_ptr<const Domain> myDomainPtr;
+    DomainPtr myDomainPtr;
 
     /// Default value
     Value myDefaultValue;
@@ -141,24 +143,15 @@ namespace DGtal
   public:
 
     /**
-     * Constructor from a Domain.
+     * Constructor from a pointer to a domain.
      *
-     * If Domain is a heavy type, prefer giving a smart pointer on the domain.
+     * If Domain is a heavy type, consider giving instead a smart pointer on the domain (like CountedPtr).
      *
      * @param aDomain the image domain.
      * @param aValue a default value associated to the domain points
      * that are not contained in the underlying map.
      */
-    ImageContainerBySTLMap( const Domain & aDomain, const Value& aValue = 0);
-
-    /**
-     * Constructor from a pointer to a domain.
-     *
-     * @param aDomainPtr a pointer to the image domain.
-     * @param aValue a default value associated to the domain points
-     * that are not contained in the underlying map.
-     */
-    ImageContainerBySTLMap( const std::shared_ptr<const Domain> & aDomainPtr, const Value& aValue = 0);
+    ImageContainerBySTLMap( Clone<const Domain> aDomain, const Value& aValue = 0);
 
     /**
      * Copy operator

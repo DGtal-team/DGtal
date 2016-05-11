@@ -43,22 +43,13 @@ template <typename TDomain, typename TValue>
 const typename TDomain::Dimension DGtal::ImageContainerBySTLMap<TDomain,
 								TValue>::dimension = TDomain::Space::dimension;
 
-
-template <typename TDomain, typename TValue>
-inline
-DGtal::ImageContainerBySTLMap<TDomain,TValue>
-::ImageContainerBySTLMap( const Domain & aDomain, const Value& aValue)
-  : myDomainPtr( std::make_shared<const Domain>(aDomain) ), myDefaultValue( aValue )
-{
-}
-
 //------------------------------------------------------------------------------
 
 template <typename TDomain, typename TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
-::ImageContainerBySTLMap( const std::shared_ptr<const Domain> & aDomainPtr, const Value& aValue)
-  : myDomainPtr( aDomainPtr ), myDefaultValue( aValue )
+::ImageContainerBySTLMap( Clone<const Domain> aDomain, const Value& aValue)
+  : myDomainPtr( aDomain ), myDefaultValue( aValue )
 {
 }
 
