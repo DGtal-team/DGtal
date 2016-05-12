@@ -930,7 +930,7 @@ HTML_FOOTER            =
 
 HTML_STYLESHEET        =
 
-HTML_EXTRA_STYLESHEET  = @top_srcdir@/doc/modern-doxygen-green.css
+HTML_EXTRA_STYLESHEET  = @top_srcdir@/doc/modern-doxygen-blue.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
