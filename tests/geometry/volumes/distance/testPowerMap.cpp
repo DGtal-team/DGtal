@@ -30,7 +30,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CountedPtr.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
@@ -68,7 +67,7 @@ bool testPowerMap()
   using SetDomain = DigitalSetDomain< DigitalSetBySTLSet<Z2i::Domain > >;
   using Image = ImageContainerBySTLMap< SetDomain , DGtal::int64_t>;
 
-  Image image( CountedPtr<const SetDomain> ( new SetDomain( set ) ) );
+  Image image( new SetDomain( set ) );
 
   //Setting some values
   image.setValue(Z2i::Point(3,3), 9);
