@@ -90,6 +90,25 @@ public:
     const T* operator->()   const throw()   {return myPtr.get();}
     const T* get()          const throw()   {return myPtr.get();}
 
+    /* The following non-const methods are deactivated if T is a const type.
+     * The goal here is to avoid unecessary copies when it is known that
+     *   the T object will not be modified.
+     *
+     * The problem is that C++ uses the non-const methods whenever it's possible
+     *   (ie when CowPtr<T> is non-const), even if the full expression doesn't 
+     *   modify the object. A solution is to const_cast the CowPtr<T> before
+     *   using one of these methods to force the usage of the const versions above.
+     *
+     * However, in the trivial case when T is a const type, we can simplify this
+     *   by deactivating those methods.
+     *
+     * To do that, we use std::enable_if (see http://en.cppreference.com/w/cpp/types/enable_if )
+     *   in the template parameters (it is also possible in the return type or
+     *   as a parameter but it will change the signature). It depends on
+     *   the constness of T returned by the type trait std::is_const.
+     * The `typename U = T` is necessary in order that the SFINAE rule works at the overload
+     * resolution step.
+     */
     template < typename U = T, typename std::enable_if< ! std::is_const<U>::value >::type* = nullptr >
     T& operator*()                          {copy(); return *myPtr;}
 
