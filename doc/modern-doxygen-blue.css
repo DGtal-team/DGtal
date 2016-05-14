@@ -2,6 +2,7 @@
 header color: #4478A6
 text color: #2980b9
 */
+
 html {
     height: 100%;
 }
@@ -93,7 +94,7 @@ div.navpath {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
     text-shadow: none;
-    background-color: inherit;
+    background-color: #eff0f2;
     color: #353534;
 }
 
