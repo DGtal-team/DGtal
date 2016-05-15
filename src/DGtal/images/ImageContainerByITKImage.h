@@ -92,7 +92,7 @@ namespace DGtal
       // ----------------------- Standard services ------------------------------
     public:
 
-      BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CLabel<TValue> ));
       BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
 
       typedef TValue Value;
