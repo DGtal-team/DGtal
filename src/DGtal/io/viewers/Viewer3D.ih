@@ -671,8 +671,6 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glPushMatrix();
   glScalef(myGLScaleFactorX, myGLScaleFactorY, myGLScaleFactorZ);
 
-  glMaterialfv(GL_FRONT, GL_SHININESS, myMaterialShininessCoeff);
-  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeffs);
   glLightfv(GL_LIGHT0, GL_SPECULAR, myLightSpecularCoeffs);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, myLightDiffuseCoeffs);
   glLightfv(GL_LIGHT0, GL_AMBIENT, myLightAmbientCoeffs);
@@ -839,6 +837,10 @@ DGtal::Viewer3D<Space, KSpace>::init()
 
   glMaterialfv(GL_FRONT, GL_SHININESS, myMaterialShininessCoeff);
   glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeffs);
+
+  glMaterialfv(GL_BACK, GL_SHININESS, myMaterialShininessCoeff);
+  glMaterialfv(GL_BACK, GL_SPECULAR, myMaterialSpecularCoeffs);
+
   glLightfv(GL_LIGHT0, GL_SPECULAR, myLightSpecularCoeffs);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, myLightDiffuseCoeffs);
   glLightfv(GL_LIGHT0, GL_AMBIENT, myLightAmbientCoeffs);
