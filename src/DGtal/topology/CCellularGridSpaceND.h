@@ -135,21 +135,15 @@ details.
 |               |                  |                   |               |              |                                       |                |            |
 | Get first cell|\e x.uFirst(\e c) |                   | \e Cell       |              | returns the first cell of the space with same topology as \e c | |  |
 | Get last cell |\e x.uLast(\e c)  |                   | \e Cell       |              | returns the last cell of the space with same topology as \e c | |  |
-| Maximal coordinate test|\e x.uIsMax(\e c,\e k)|      | \c bool       |              | returns 'true' iff the cell has the maximal possible \e k-th coordinate | | |
-| Minimal coordinate test|\e x.uIsMin(\e c,\e k)|      | \c bool       |              | returns 'true' iff the cell has the minimal possible \e k-th coordinate | | |
 | Get maximal cell along some axis|\e x.uGetMax(\e c,\e k)| | \e Cell  |              | returns the same cell as \e c except the \e k-th coordinate that is the maximal possible | | |
 | Get minimal cell along some axis|\e x.uGetMin(\e c,\e k)| | \e Cell  |              | returns the same cell as \e c except the \e k-th coordinate that is the minimal possible | | |
-| Inside test along some axis|\e x.uIsInside(\e c,\e k)| | \c bool     |              | returns 'true' iff the cell \e c has a valid \e k-th coordinate | | |
 | Distance to upper bound |\e x.uDistanceToMax(\e c,\e k)| | \e Integer  |            | returns the number of increments to do along the \e k-th axis to reach the upper bound | | |
 | Distance to lower bound |\e x.uDistanceToMin(\e c,\e k)| | \e Integer  |            | returns the number of decrements to do along the \e k-th axis to reach the lower bound | | |
 |               |                  |                   |               |              |                                       |                |            |
 | Get first cell|\e x.sFirst(\e sc) |                   | \e SCell     |              | returns the first cell of the space with same topology as \e sc | |  |
 | Get last cell |\e x.sLast(\e sc)  |                   | \e SCell     |              | returns the last cell of the space with same topology as \e sc | |  |
-| Maximal coordinate test|\e x.sIsMax(\e sc,\e k)|      | \c bool      |              | returns 'true' iff the cell has the maximal possible \e k-th coordinate | | |
-| Minimal coordinate test|\e x.sIsMin(\e sc,\e k)|      | \c bool      |              | returns 'true' iff the cell has the minimal possible \e k-th coordinate | | |
 | Get maximal cell along some axis|\e x.sGetMax(\e sc,\e k)| | \e SCell|              | returns the same cell as \e sc except the \e k-th coordinate that is the maximal possible | | |
 | Get minimal cell along some axis|\e x.sGetMin(\e sc,\e k)| | \e SCell|              | returns the same cell as \e sc except the \e k-th coordinate that is the minimal possible | | |
-| Inside test along some axis|\e x.sIsInside(\e sc,\e k)| | \c bool    |              | returns 'true' iff the cell \e sc has a valid \e k-th coordinate | | |
 | Distance to upper bound |\e x.sDistanceToMax(\e sc,\e k)| | \e Integer  |           | returns the number of increments to do along the \e k-th axis to reach the upper bound | | |
 | Distance to lower bound |\e x.sDistanceToMin(\e sc,\e k)| | \e Integer  |           | returns the number of decrements to do along the \e k-th axis to reach the lower bound | | |
 
@@ -193,21 +187,15 @@ public:
     // -------------------- Unsigned cell geometry services --------------------
     ConceptUtils::sameType( myCell, myX.uFirst( myCell ) );
     ConceptUtils::sameType( myCell, myX.uLast( myCell ) );
-    ConceptUtils::sameType( myBool, myX.uIsMax( myCell, myDim ) );
-    ConceptUtils::sameType( myBool, myX.uIsMin( myCell, myDim ) );
     ConceptUtils::sameType( myCell, myX.uGetMax( myCell, myDim ) );
     ConceptUtils::sameType( myCell, myX.uGetMin( myCell, myDim ) );
-    ConceptUtils::sameType( myBool, myX.uIsInside( myCell, myDim ) );
     ConceptUtils::sameType( myInteger, myX.uDistanceToMax( myCell, myDim ) );
     ConceptUtils::sameType( myInteger, myX.uDistanceToMin( myCell, myDim ) );
     // -------------------- Signed cell geometry services --------------------
     ConceptUtils::sameType( mySCell, myX.sFirst( mySCell ) );
     ConceptUtils::sameType( mySCell, myX.sLast( mySCell ) );
-    ConceptUtils::sameType( myBool, myX.sIsMax( mySCell, myDim ) );
-    ConceptUtils::sameType( myBool, myX.sIsMin( mySCell, myDim ) );
     ConceptUtils::sameType( mySCell, myX.sGetMax( mySCell, myDim ) );
     ConceptUtils::sameType( mySCell, myX.sGetMin( mySCell, myDim ) );
-    ConceptUtils::sameType( myBool, myX.sIsInside( mySCell, myDim ) );
     ConceptUtils::sameType( myInteger, myX.sDistanceToMax( mySCell, myDim ) );
     ConceptUtils::sameType( myInteger, myX.sDistanceToMin( mySCell, myDim ) );
 

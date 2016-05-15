@@ -227,6 +227,9 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 |               |                  |                   |               |              |                                       |                |            |
 | Get next cell along some axis|\e x.uGetIncr(\e c,\e k)| | \e Cell    |              | returns the same cell as \e c except the \e k-th coordinate that is incremented | | |
 | Get previous cell along some axis|\e x.uGetDecr(\e c,\e k)| | \e Cell |             | returns the same cell as \e c except the \e k-th coordinate that is decremented | | |
+| Maximal coordinate test|\e x.uIsMax(\e c,\e k)|      | \c bool       |              | returns 'true' iff the cell has the maximal possible \e k-th coordinate | | |
+| Minimal coordinate test|\e x.uIsMin(\e c,\e k)|      | \c bool       |              | returns 'true' iff the cell has the minimal possible \e k-th coordinate | | |
+| Inside test along some axis|\e x.uIsInside(\e c,\e k)| | \c bool     |              | returns 'true' iff the cell \e c has a valid \e k-th coordinate | | |
 | Get cell further along some axis|\e x.uGetAdd(\e c,\e k,\e i)| | \e Cell|           | returns the same cell as \e c except the \e k-th coordinate that is increased by \e i | | |
 | Get cell before along some axis|\e x.uGetSub(\e c,\e k,\e i)| | \e Cell|            | returns the same cell as \e c except the \e k-th coordinate that is decreased by \e i | | |
 | Get the translation of a cell |\e x.uTranslation(\e c,\e v)| | \e Cell  |           | returns the cell that is the translation of \e c by the vector \e v | | |
@@ -236,6 +239,9 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 |               |                  |                   |               |              |                                       |                |            |
 | Get next cell along some axis|\e x.sGetIncr(\e sc,\e k)| | \e SCell  |              | returns the same cell as \e sc except the \e k-th coordinate that is incremented | | |
 | Get previous cell along some axis|\e x.sGetDecr(\e sc,\e k)| | \e SCell |           | returns the same cell as \e sc except the \e k-th coordinate that is decremented | | |
+| Maximal coordinate test|\e x.sIsMax(\e sc,\e k)|      | \c bool      |              | returns 'true' iff the cell has the maximal possible \e k-th coordinate | | |
+| Minimal coordinate test|\e x.sIsMin(\e sc,\e k)|      | \c bool      |              | returns 'true' iff the cell has the minimal possible \e k-th coordinate | | |
+| Inside test along some axis|\e x.sIsInside(\e sc,\e k)| | \c bool    |              | returns 'true' iff the cell \e sc has a valid \e k-th coordinate | | |
 | Get cell further along some axis|\e x.sGetAdd(\e sc,\e k,\e i)| | \e SCell|         | returns the same cell as \e sc except the \e k-th coordinate that is increased by \e i | | |
 | Get cell before along some axis|\e x.sGetSub(\e sc,\e k,\e i)| | \e SCell|          | returns the same cell as \e sc except the \e k-th coordinate that is decreased by \e i | | |
 | Get the translation of a cell |\e x.sTranslation(\e sc,\e v)| | \e SCell  |         | returns the cell that is the translation of \e sc by the vector \e v | | |
@@ -377,6 +383,9 @@ public:
     // -------------------- Unsigned cell geometry services --------------------
     ConceptUtils::sameType( myCell, myX.uGetIncr( myCell, myDim ) );
     ConceptUtils::sameType( myCell, myX.uGetDecr( myCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.uIsMax( myCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.uIsMin( myCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.uIsInside( myCell, myDim ) );
     ConceptUtils::sameType( myCell, myX.uGetAdd( myCell, myDim, myInteger ) );
     ConceptUtils::sameType( myCell, myX.uGetSub( myCell, myDim, myInteger ) );
     ConceptUtils::sameType( myCell, myX.uTranslation( myCell, myV ) );
@@ -386,6 +395,9 @@ public:
     // -------------------- Signed cell geometry services --------------------
     ConceptUtils::sameType( mySCell, myX.sGetIncr( mySCell, myDim ) );
     ConceptUtils::sameType( mySCell, myX.sGetDecr( mySCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.sIsMax( mySCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.sIsMin( mySCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.sIsInside( mySCell, myDim ) );
     ConceptUtils::sameType( mySCell, myX.sGetAdd( mySCell, myDim, myInteger ) );
     ConceptUtils::sameType( mySCell, myX.sGetSub( mySCell, myDim, myInteger ) );
     ConceptUtils::sameType( mySCell, myX.sTranslation( mySCell, myV ) );
