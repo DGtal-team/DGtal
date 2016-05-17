@@ -101,6 +101,11 @@ static
 void
 drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& cell);
 
+template <Dimension dim, typename TInteger>
+static
+void
+drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyPreCell<dim, TInteger>& cell);
+
 // DiscreteExteriorCalculus
 template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 static
@@ -353,6 +358,10 @@ template < Dimension dim, typename TInteger >
   static void draw( DGtal::Board2D & board, const DGtal::KhalimskyCell<dim, TInteger> & );
 // KhalimskyCell
     
+// KhalimskyPreCell
+template < Dimension dim, typename TInteger >
+  static void draw( DGtal::Board2D & board, const DGtal::KhalimskyPreCell<dim, TInteger> & );
+// KhalimskyPreCell
     
 // Object
 template <typename TDigitalTopology, typename TDigitalSet>
