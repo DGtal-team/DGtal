@@ -222,7 +222,7 @@ void testNeighborhood( KSpace const & K,
       const auto refUCell  = PK::uCell( refPoint );
 
       if ( ! K.uIsInside( PK::uCell( aPoint, refUCell ) ) )
-        continue; // Do not test if current point is outside space.
+        continue; // Do not continue if current point is outside space.
 
       const auto currUCell = K.uCell( aPoint, refUCell );
       REQUIRE( K.uTopology( currUCell ) == PK::uTopology( refUCell ) );
@@ -335,7 +335,7 @@ void testIncidence( KSpace const & K,
                   )
 {
   INFO( "Testing block Incidence in KSpace..." );
-  
+
   using SCell = typename KSpace::SCell;
   using DirIterator = typename KSpace::DirIterator;
 
@@ -376,7 +376,7 @@ void testDirectIncidence( KSpace const & K,
   using DirIterator = typename KSpace::DirIterator;
 
   SCell sspel = K.sSpel( aPoint, K.POS );
-  
+
   for ( DirIterator q1 = K.sDirs( sspel ); q1 != 0; ++q1 )
     for ( DirIterator q2 = K.sDirs( sspel ); q2 != 0; ++q2 )
       {
@@ -411,19 +411,17 @@ void testDirectIncidence( KSpace const & K,
  * @param  aPoint a point where to test the incidences.
  */
 template <typename KSpace>
-void testSurfelAdjacency( KSpace const & K,
-                          typename KSpace::Point const & aPoint
-                        )
+void testSurfelAdjacency( KSpace const & K )
 {
   using SCell = typename KSpace::SCell;
   using Point = typename KSpace::Point;
   using Integer = typename KSpace::Integer;
-  
+
   INFO( "Testing surfel adjacency ..." );
   SurfelAdjacency<KSpace::dimension> SAdj( true );
-  
+
   INFO( "Testing surfel directness ..." );
-  const SCell sspel = K.sSpel( Point::diagonal(1), K.POS );
+  const SCell sspel = K.sCell( Point::diagonal(1), K.POS );
 
   for ( Dimension k = 0; k < K.dimension; ++k )
     {
@@ -431,7 +429,7 @@ void testSurfelAdjacency( KSpace const & K,
       SCell innerspel = K.sDirectIncident( surfel, K.sOrthDir( surfel ) );
       INFO( "spel=" << sspel << " surfel=" << surfel << " innerspel=" << innerspel );
       REQUIRE( sspel == innerspel );
-      
+
       surfel = K.sIncident( sspel, k, false );
       innerspel = K.sDirectIncident( surfel, K.sOrthDir( surfel ) );
       INFO( "spel=" << sspel << " surfel=" << surfel << " innerspel=" << innerspel );
@@ -448,15 +446,30 @@ void testSurfelAdjacency( KSpace const & K,
   using Domain = HyperRectDomain<Space>;
   using DigitalSet = typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type;
 
-  const Domain domain( aPoint - Point::diagonal(3), aPoint + Point::diagonal(3) );
+  const Point low  = Point::diagonal(-3);
+  const Point high = Point::diagonal(3) + Point::base(0, 2);
+  REQUIRE( K.uIsInside( KSpace::PreCellularGridSpace::uSpel( low ) ) );
+  REQUIRE( K.uIsInside( KSpace::PreCellularGridSpace::uSpel( high ) ) );
+
+  const Domain domain( low, high );
   DigitalSet shape_set( domain );
+
   const Point pcenter = Point::diagonal(0) + Point::base(0);
   Shapes<Domain>::addNorm1Ball( shape_set, pcenter, 1 );
+
+  CAPTURE( surfel );
+  SCell other1, other2;
+
+  SN.getAdjacentOnDigitalSet( other1, shape_set, 1, K.sDirect( surfel, 1 ) );
+  INFO( "directNext  = " << other1 );
+
+  SN.getAdjacentOnDigitalSet( other2, shape_set, 1, !K.sDirect( surfel, 1 ) );
+  INFO( "indirectNext= " << other2 );
 
   std::set<SCell> bdry;
   Surfaces<KSpace>::trackBoundary( bdry, K, SAdj, shape_set, surfel );
   REQUIRE( bdry.size() == ( 2*K.dimension*(2*K.dimension-1) ) );
-  
+
   std::set<SCell> bdry_direct;
   Surfaces<KSpace>::trackClosedBoundary( bdry_direct, K, SAdj, shape_set, surfel );
   REQUIRE( bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) ) );
@@ -477,10 +490,73 @@ void testSurfelAdjacency( KSpace const & K,
 
 ///////////////////////////////////////////////////////////////////////////////
 /** Testing Cell drawing on Board.
- * @tparam KSpace the Khalimsky space type.
- * @param  K      the Khalimsky space.
- * @param  aPoint a point where to test the incidences.
+ * @tparam KSpace a 2D Khalimsky space type.
+ * @param  K      the 2D Khalimsky space.
  */
+template <typename KSpace>
+void testCellDrawOnBoard( KSpace const & K )
+{
+  REQUIRE(( K.dimension == 2 ));
+
+  typedef typename KSpace::Integer Integer;
+  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::SCell SCell;
+  typedef typename KSpace::Point Point;
+  typedef SpaceND<2, Integer> Z2;
+  typedef HyperRectDomain<Z2> Domain;
+
+  INFO( "Testing cell draw on digital board ..." );
+
+  const Point low( -3, -3 );
+  const Point high( 5, 3 );
+
+  const Domain domain( low, high );
+  Board2D board;
+  board.setUnit( LibBoard::Board::UCentimeter );
+  board << SetMode( domain.className(), "Paving" )
+        << domain;
+
+  Cell uspel = K.uCell( Point::diagonal(1) ); // pixel 0,0
+  board << uspel
+        << low << high
+        << K.uIncident( uspel, 0, false )
+        << K.uIncident( uspel, 1, false );
+
+  const SCell sspel2 = K.sCell( Point( 5, 1 ), K.POS ); // pixel 2,0
+  board <<  CustomStyle( sspel2.className(),
+                new CustomPen( Color( 200, 0, 0 ),
+                Color( 255, 100, 100 ),
+                2.0,
+                Board2D::Shape::SolidStyle ) )
+        << sspel2
+        << K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) )
+        << K.sIncident( sspel2, 1, K.sDirect( sspel2, 0 ) );
+
+  board.saveEPS( "cells-1.eps" );
+  board.saveSVG( "cells-1.svg" );
+  board.clear();
+
+  board << domain;
+  const SCell slinel0     = K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) );
+  const SCell spointel01  = K.sIncident( slinel0, 1, K.sDirect( slinel0, 1 ) );
+
+  board <<  CustomStyle( sspel2.className(),
+                new CustomColors( Color( 200, 0, 0 ),
+                Color( 255, 100, 100 ) ) )
+        <<  sspel2
+        <<  CustomStyle( slinel0.className(),
+                new CustomColors( Color( 0, 200, 0 ),
+                Color( 100, 255, 100 ) ) )
+        <<  slinel0
+        <<  CustomStyle( spointel01.className(),
+                new CustomColors( Color( 0, 0, 200 ),
+                Color( 100, 100, 255 ) ) )
+        << spointel01;
+
+  board.saveEPS( "cells-3.eps" );
+  board.saveSVG( "cells-3.svg" );
+}
+
 
 
 
@@ -503,7 +579,8 @@ TEST_CASE( "2D Khalimsky pre-space", "[KPreSpace][2D]" )
   testScan( K, {-1, -2}, {1, 2} );
   testIncidence( K, {0, 0} );
   testDirectIncidence( K, {0, 0} );
-  testSurfelAdjacency( K, {0, 0} );
+  testSurfelAdjacency( K );
+  testCellDrawOnBoard( K );
 }
 
 TEST_CASE( "3D Khalimsky pre-space", "[KPreSpace][3D]" )
@@ -511,10 +588,10 @@ TEST_CASE( "3D Khalimsky pre-space", "[KPreSpace][3D]" )
   const KhalimskyPreSpaceND<3> K{};
   INFO( "Khalimsky space is " << K );
 
-  testScan( K, {-2, -3, -4}, {2, 3, 4} );
+  testScan( K, {-2, -3, -4}, {1, 2, 4} );
   testIncidence( K, {0, 0, 0} );
   testDirectIncidence( K, {0, 0, 0} );
-  testSurfelAdjacency( K, {0, 0, 0} );
+  testSurfelAdjacency( K );
 }
 
 TEST_CASE( "4D Khalimsky pre-space", "[KPreSpace][4D]" )
@@ -525,12 +602,30 @@ TEST_CASE( "4D Khalimsky pre-space", "[KPreSpace][4D]" )
   testScan( K, {-1, -2, -3, -4}, {1, 0, 1, -1} );
   testIncidence( K, {0, 0, 0, 0} );
   testDirectIncidence( K, {0, 0, 0, 0} );
+  testSurfelAdjacency( K );
+}
+
+TEST_CASE( "3D closed Khalimsky space", "[KSpace][3D][closed]" )
+{
+  KhalimskySpaceND<3> K;
+  const bool spaceOK = K.init( {-3, -3, -3}, {5, 3, 3}, K.CLOSED );
+  INFO( "Khalimsky space is " << K );
+  REQUIRE( spaceOK == true );
+
+  testScan( K, {-1, -2, -1}, {1, 2, 2} );
+  testNeighborhood( K, {0, 0, 0} );
+  testNeighborhood( K, {-2, 3, 2} );
+  testFaces( K, {0, 0, 0} );
+  testFaces( K, {-2, 3, -3} );
+  testIncidence( K, {0, 0, 0} );
+  testDirectIncidence( K, {0, 0, 0} );
+  testSurfelAdjacency( K );
 }
 
 TEST_CASE( "2D closed Khalimsky space", "[KSpace][2D][closed]" )
 {
   KhalimskySpaceND<2> K;
-  const bool spaceOK = K.init( {-2, -3}, {3, 3}, K.CLOSED );
+  const bool spaceOK = K.init( {-3, -3}, {5, 3}, K.CLOSED );
   INFO( "Khalimsky space is " << K );
   REQUIRE( spaceOK == true );
 
@@ -541,13 +636,14 @@ TEST_CASE( "2D closed Khalimsky space", "[KSpace][2D][closed]" )
   testFaces( K, {-2, 3} );
   testIncidence( K, {0, 0} );
   testDirectIncidence( K, {0, 0} );
-  testSurfelAdjacency( K, {0, 0} );
+  testSurfelAdjacency( K );
+  testCellDrawOnBoard( K );
 }
 
 TEST_CASE( "4D closed Khalimsky space", "[KSpace][4D][closed]" )
 {
   KhalimskySpaceND<4> K;
-  const bool spaceOK = K.init( {-2, -3, -1, 0}, {2, 3, 2, 3}, K.CLOSED );
+  const bool spaceOK = K.init( {-3, -3, -3, -3}, {5, 3, 3, 3}, K.CLOSED );
   INFO( "Khalimsky space is " << K );
   REQUIRE( spaceOK == true );
 
@@ -558,12 +654,13 @@ TEST_CASE( "4D closed Khalimsky space", "[KSpace][4D][closed]" )
   testFaces( K, {-2, 3, -1, 3} );
   testIncidence( K, {0, 0, 0, 0} );
   testDirectIncidence( K, {0, 0, 0, 0} );
+  testSurfelAdjacency( K );
 }
 
 TEST_CASE( "2D open Khalimsky space", "[KSpace][2D][open]" )
 {
   KhalimskySpaceND<2> K;
-  const bool spaceOK = K.init( {-2, -3}, {2, 3}, K.OPEN );
+  const bool spaceOK = K.init( {-3, -3}, {5, 3}, K.OPEN );
   INFO( "Khalimsky space is " << K );
   REQUIRE( spaceOK == true );
 
@@ -574,6 +671,8 @@ TEST_CASE( "2D open Khalimsky space", "[KSpace][2D][open]" )
   testFaces( K, {-2, 3} );
   testIncidence( K, {0, 0} );
   testDirectIncidence( K, {0, 0} );
+  testSurfelAdjacency( K );
+  testCellDrawOnBoard( K );
 }
 
 TEST_CASE( "2D periodic Khalimsky space", "[KSpace][2D][periodic]" )
@@ -590,12 +689,14 @@ TEST_CASE( "2D periodic Khalimsky space", "[KSpace][2D][periodic]" )
   testFaces( K, {-2, 3} );
   testIncidence( K, {0, 3} );
   testDirectIncidence( K, {0, 3} );
+  testSurfelAdjacency( K );
+  testCellDrawOnBoard( K );
 }
 
 TEST_CASE( "2D mixed Khalimsky space", "[KSpace][2D][closed][periodic]" )
 {
   KhalimskySpaceND<2> K;
-  const bool spaceOK = K.init( {-2, -3}, {2, 3}, { K.CLOSED, K.PERIODIC } );
+  const bool spaceOK = K.init( {-3, -3}, {5, 3}, { K.CLOSED, K.PERIODIC } );
   INFO( "Khalimsky space is " << K );
   REQUIRE( spaceOK == true );
 
@@ -606,4 +707,6 @@ TEST_CASE( "2D mixed Khalimsky space", "[KSpace][2D][closed][periodic]" )
   testFaces( K, {-2, 4} );
   testIncidence( K, {0, 3} );
   testDirectIncidence( K, {0, 3} );
+  testSurfelAdjacency( K );
+  testCellDrawOnBoard( K );
 }
