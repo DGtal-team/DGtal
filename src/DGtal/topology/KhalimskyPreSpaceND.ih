@@ -31,27 +31,6 @@
 #include <DGtal/kernel/NumberTraits.h>
 //////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////
-// IMPLEMENTATION of static constants
-///////////////////////////////////////////////////////////////////////////////
-
-#if (!defined(WIN32))
-/*template < Dimension dim, typename TInteger >
-const Dimension
-DGtal::KhalimskyPreSpaceND< dim, TInteger >::dimension = dim;
-*/
-template < DGtal::Dimension dim, typename TInteger >
-const DGtal::Dimension
-DGtal::KhalimskyPreSpaceND< dim, TInteger >::DIM = dim;
-
-template < DGtal::Dimension dim, typename TInteger >
-const typename DGtal::KhalimskyPreSpaceND< dim, TInteger >::Sign
-DGtal::KhalimskyPreSpaceND< dim, TInteger >::POS = true;
-
-template < DGtal::Dimension dim, typename TInteger >
-const typename DGtal::KhalimskyPreSpaceND< dim, TInteger >::Sign
-DGtal::KhalimskyPreSpaceND< dim, TInteger >::NEG = false;
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.

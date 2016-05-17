@@ -426,19 +426,11 @@ namespace DGtal
     typedef PointVector< dim, Integer > Vector;
 
 
-#if defined ( WIN32 )
     // static constants
-    static const Dimension dimension = dim;
-    static const Dimension DIM = dim;
-    static const Sign POS = true;
-    static const Sign NEG = false;
-#else
-    // static constants
-    static const Dimension dimension = dim;
-    static const Dimension DIM;
-    static const Sign POS;
-    static const Sign NEG;
-#endif //WIN32
+    static const constexpr Dimension dimension = dim;
+    static const constexpr Dimension DIM = dim;
+    static const constexpr Sign POS = true;
+    static const constexpr Sign NEG = false;
 
     template < typename CellType >
     using AnyCellCollection = typename PreCellularGridSpace::template AnyCellCollection< CellType >;

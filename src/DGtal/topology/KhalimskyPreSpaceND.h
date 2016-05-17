@@ -390,19 +390,11 @@ namespace DGtal
     using Space = SpaceND<dim, Integer>;
     using PreCellularGridSpace = KhalimskyPreSpaceND<dim, Integer>;
 
-#if defined ( WIN32 )
     // static constants
-    static const Dimension dimension = dim;
-    static const Dimension DIM = dim;
-    static const Sign POS = true;
-    static const Sign NEG = false;
-#else
-    // static constants
-    static const Dimension dimension = dim;
-    static const Dimension DIM;
-    static const Sign POS;
-    static const Sign NEG;
-#endif //WIN32
+    static constexpr const Dimension dimension = dim;
+    static constexpr const Dimension DIM = dim;
+    static constexpr const Sign POS = true;
+    static constexpr const Sign NEG = false;
 
     template <typename CellType>
     struct AnyCellCollection : public std::deque<CellType> {
