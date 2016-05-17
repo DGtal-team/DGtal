@@ -33,28 +33,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// IMPLEMENTATION of static constants
-///////////////////////////////////////////////////////////////////////////////
-
-#if (!defined(WIN32))
-/*template < Dimension dim, typename TInteger >
-const Dimension
-DGtal::KhalimskySpaceND< dim, TInteger >::dimension = dim;
-*/
-template < DGtal::Dimension dim, typename TInteger >
-const DGtal::Dimension
-DGtal::KhalimskySpaceND< dim, TInteger >::DIM = dim;
-
-template < DGtal::Dimension dim, typename TInteger >
-const typename DGtal::KhalimskySpaceND< dim, TInteger >::Sign
-DGtal::KhalimskySpaceND< dim, TInteger >::POS = true;
-
-template < DGtal::Dimension dim, typename TInteger >
-const typename DGtal::KhalimskySpaceND< dim, TInteger >::Sign
-DGtal::KhalimskySpaceND< dim, TInteger >::NEG = false;
-#endif
-
-///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
