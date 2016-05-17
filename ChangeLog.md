@@ -7,6 +7,15 @@
    voting (Boulc'h & Marlet, SGP 2012).
    (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
 
+- *Topology Package*
+ - Adding periodic closure for KhalimskySpaceND and per-dimension closure
+   specification.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+ - Adding CPreCellularGridSpaceND concept and KhalimskyPreSpaceND model
+   to manipulate unbounded Khalimsky space and cells.
+   KhalimskySpaceND now checks that all given cells are within the bounds.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+
 ## Changes
 - *Configuration/General*
  - Cleaning remaining preprocessor directives related to C++11 features.
