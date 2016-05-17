@@ -408,7 +408,6 @@ void testDirectIncidence( KSpace const & K,
  *
  * @tparam KSpace the Khalimsky space type.
  * @param  K      the Khalimsky space.
- * @param  aPoint a point where to test the incidences.
  */
 template <typename KSpace>
 void testSurfelAdjacency( KSpace const & K )
@@ -558,7 +557,151 @@ void testCellDrawOnBoard( KSpace const & K )
 }
 
 
+///////////////////////////////////////////////////////////////////////////////
+/** Testing Surfaces::findABel
+ * @tparam KSpace a Khalimsky space type.
+ * @param  K      the Khalimsky space.
+ */
+template <typename KSpace>
+void testFindABel( KSpace const & K )
+{
+  REQUIRE(( K.dimension >= 3 ));
 
+  typedef typename KSpace::Point Point;
+  typedef SpaceND< KSpace::dimension, typename KSpace::Integer > Space;
+  typedef HyperRectDomain<Space> Domain;
+  typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  typedef typename KSpace::SCell SCell;
+
+  INFO( "Test FindABel" );
+
+  const Point low = Point::diagonal(-3);
+  const Point high = Point::diagonal(3);
+
+  REQUIRE( K.uIsInside( KSpace::PreCellularGridSpace::uSpel( low ) ) );
+  REQUIRE( K.uIsInside( KSpace::PreCellularGridSpace::uSpel( high ) ) );
+
+  const Domain domain( low, high );
+  DigitalSet shape_set( domain );
+
+  const Point p000 = Point::zero;
+  const Point p001 = Point::base(2);
+  const Point p010 = Point::base(1);
+  const Point p011 = p001 + p010;
+  const Point p100 = Point::base(0);
+  const Point p101 = p100 + p001;
+  const Point p110 = p100 + p010;
+  const Point p111 = Point::diagonal(1);
+
+  shape_set.insert( p000 );
+  shape_set.insert( p100 );
+
+  Surfaces<KSpace>::findABel( K, shape_set , p000 , p011 );
+  Surfaces<KSpace>::findABel( K, shape_set , p000 , p110 );
+  Surfaces<KSpace>::findABel( K, shape_set , p000 , p111 );
+  Surfaces<KSpace>::findABel( K, shape_set , p000 , p101 );
+
+  SCell s010 = Surfaces<KSpace>::findABel( K, shape_set , p000 , p010 );
+  SCell s001 = Surfaces<KSpace>::findABel( K, shape_set , p000 , p001 );
+
+  REQUIRE( s010 == K.sCell( Point::diagonal(1) + Point::base(1), true  ) );
+  REQUIRE( s001 == K.sCell( Point::diagonal(1) + Point::base(2), false ) );
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+/** Testing uFaces
+ * @tparam KSpace a Khalimsky space type.
+ * @param  K      the Khalimsky space.
+ */
+template <typename KSpace>
+void testCellularGridSpaceNDFaces( KSpace const & K )
+{
+  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::Point Point;
+  typedef typename KSpace::Cells Cells;
+
+  const Dimension N = KSpace::dimension;
+
+  const Point low = Point::diagonal(-1);
+  const Point high = Point::diagonal(1);
+  REQUIRE( K.uIsInside( KSpace::PreCellularGridSpace::uSpel( low ) ) );
+  REQUIRE( K.uIsInside( KSpace::PreCellularGridSpace::uSpel( high ) ) );
+
+  const Cell vox = K.uSpel( Point::zero );
+  const Cells faces = K.uFaces( vox );
+
+  // Check that there is no duplicates.
+  INFO( "Check CellularGridSpaceND::uFaces" );
+  for ( Dimension k = 0; k < N; ++k )
+    {
+      CAPTURE( k );
+
+      DGtal::int64_t nf = 0;
+
+      for ( auto const & face : faces )
+        if ( K.uDim( face ) == k )
+          {
+            INFO( face );
+            ++nf;
+          }
+
+      // Number of k-faces of N-cube is binom(n,k)*2^(n-k)
+      DGtal::int64_t exp_nf = (DGtal::int64_t) round( boost::math::binomial_coefficient<double>(N, k) );
+      exp_nf <<= N-k;
+
+      REQUIRE( nf == exp_nf );
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/** Testing uCoFaces
+ * @tparam KSpace a Khalimsky space type.
+ * @param  K      the Khalimsky space.
+ */
+template <typename KSpace>
+void testCellularGridSpaceNDCoFaces( KSpace const & K )
+{
+  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::Point Point;
+  typedef typename KSpace::Cells Cells;
+
+  const Dimension N = KSpace::dimension;
+
+  const Point low = Point::diagonal(-1);
+  const Point high = Point::diagonal(1);
+  REQUIRE( K.uIsInside( KSpace::PreCellularGridSpace::uSpel( low ) ) );
+  REQUIRE( K.uIsInside( KSpace::PreCellularGridSpace::uSpel( high ) ) );
+
+  const Cell  pointel = K.uPointel( Point::zero );
+  const Cells cofaces = K.uCoFaces( pointel );
+
+  // Check that there is no duplicates.
+  INFO( "Check CellularGridSpaceND::uCoFaces" );
+  for ( Dimension k = 1; k <= N; ++k )
+    {
+      CAPTURE( k );
+
+      DGtal::int64_t nf = 0;
+
+      for ( auto const & coface : cofaces )
+        {
+          if ( K.uDim( coface  ) == k )
+            {
+              CAPTURE( coface );
+              ++nf;
+            }
+        }
+
+      CAPTURE( nf );
+
+      // Number of k-faces of N-cube is binom(n,k)*2^(n-k)
+      DGtal::int64_t exp_nf = (DGtal::int64_t) round( boost::math::binomial_coefficient<double>(N, N-k) );
+      exp_nf <<= k;
+
+      REQUIRE( nf == exp_nf );
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Test cases
@@ -581,6 +724,8 @@ TEST_CASE( "2D Khalimsky pre-space", "[KPreSpace][2D]" )
   testDirectIncidence( K, {0, 0} );
   testSurfelAdjacency( K );
   testCellDrawOnBoard( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
 }
 
 TEST_CASE( "3D Khalimsky pre-space", "[KPreSpace][3D]" )
@@ -592,6 +737,9 @@ TEST_CASE( "3D Khalimsky pre-space", "[KPreSpace][3D]" )
   testIncidence( K, {0, 0, 0} );
   testDirectIncidence( K, {0, 0, 0} );
   testSurfelAdjacency( K );
+  testFindABel( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
 }
 
 TEST_CASE( "4D Khalimsky pre-space", "[KPreSpace][4D]" )
@@ -603,6 +751,9 @@ TEST_CASE( "4D Khalimsky pre-space", "[KPreSpace][4D]" )
   testIncidence( K, {0, 0, 0, 0} );
   testDirectIncidence( K, {0, 0, 0, 0} );
   testSurfelAdjacency( K );
+  testFindABel( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
 }
 
 TEST_CASE( "3D closed Khalimsky space", "[KSpace][3D][closed]" )
@@ -620,6 +771,9 @@ TEST_CASE( "3D closed Khalimsky space", "[KSpace][3D][closed]" )
   testIncidence( K, {0, 0, 0} );
   testDirectIncidence( K, {0, 0, 0} );
   testSurfelAdjacency( K );
+  testFindABel( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
 }
 
 TEST_CASE( "2D closed Khalimsky space", "[KSpace][2D][closed]" )
@@ -638,6 +792,8 @@ TEST_CASE( "2D closed Khalimsky space", "[KSpace][2D][closed]" )
   testDirectIncidence( K, {0, 0} );
   testSurfelAdjacency( K );
   testCellDrawOnBoard( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
 }
 
 TEST_CASE( "4D closed Khalimsky space", "[KSpace][4D][closed]" )
@@ -655,6 +811,9 @@ TEST_CASE( "4D closed Khalimsky space", "[KSpace][4D][closed]" )
   testIncidence( K, {0, 0, 0, 0} );
   testDirectIncidence( K, {0, 0, 0, 0} );
   testSurfelAdjacency( K );
+  testFindABel( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
 }
 
 TEST_CASE( "2D open Khalimsky space", "[KSpace][2D][open]" )
@@ -673,6 +832,28 @@ TEST_CASE( "2D open Khalimsky space", "[KSpace][2D][open]" )
   testDirectIncidence( K, {0, 0} );
   testSurfelAdjacency( K );
   testCellDrawOnBoard( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
+}
+
+TEST_CASE( "3D open Khalimsky space", "[KSpace][3D][open]" )
+{
+  KhalimskySpaceND<3> K;
+  const bool spaceOK = K.init( {-3, -3, -3}, {5, 3, 3}, K.OPEN );
+  INFO( "Khalimsky space is " << K );
+  REQUIRE( spaceOK == true );
+
+  testScan( K, {-1, -2, -1}, {1, 2, 2} );
+  testNeighborhood( K, {0, 0, 0} );
+  testNeighborhood( K, {-2, 3, 2} );
+  testFaces( K, {0, 0, 0} );
+  testFaces( K, {-2, 3, -3} );
+  testIncidence( K, {0, 0, 0} );
+  testDirectIncidence( K, {0, 0, 0} );
+  testSurfelAdjacency( K );
+  testFindABel( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
 }
 
 TEST_CASE( "2D periodic Khalimsky space", "[KSpace][2D][periodic]" )
@@ -691,12 +872,34 @@ TEST_CASE( "2D periodic Khalimsky space", "[KSpace][2D][periodic]" )
   testDirectIncidence( K, {0, 3} );
   testSurfelAdjacency( K );
   testCellDrawOnBoard( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
+}
+
+TEST_CASE( "3D periodic Khalimsky space", "[KSpace][3D][periodic]" )
+{
+  KhalimskySpaceND<3> K;
+  const bool spaceOK = K.init( {-3, -3, -3}, {2, 2, 3}, K.PERIODIC );
+  INFO( "Khalimsky space is " << K );
+  REQUIRE( spaceOK == true );
+
+  testScan( K, {-1, -2, -1}, {1, 2, 2} );
+  testNeighborhood( K, {0, 0, 0} );
+  testNeighborhood( K, {-2, 3, 2} );
+  testFaces( K, {0, 0, 0} );
+  testFaces( K, {-2, 3, -3} );
+  testIncidence( K, {0, 0, 0} );
+  testDirectIncidence( K, {0, 0, 0} );
+  testSurfelAdjacency( K );
+  testFindABel( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
 }
 
 TEST_CASE( "2D mixed Khalimsky space", "[KSpace][2D][closed][periodic]" )
 {
   KhalimskySpaceND<2> K;
-  const bool spaceOK = K.init( {-3, -3}, {5, 3}, { K.CLOSED, K.PERIODIC } );
+  const bool spaceOK = K.init( {-3, -3}, {5, 2}, { K.CLOSED, K.PERIODIC } );
   INFO( "Khalimsky space is " << K );
   REQUIRE( spaceOK == true );
 
@@ -709,4 +912,27 @@ TEST_CASE( "2D mixed Khalimsky space", "[KSpace][2D][closed][periodic]" )
   testDirectIncidence( K, {0, 3} );
   testSurfelAdjacency( K );
   testCellDrawOnBoard( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
 }
+
+TEST_CASE( "3D mixed Khalimsky space", "[KSpace][3D][closed][periodic][open]" )
+{
+  KhalimskySpaceND<3> K;
+  const bool spaceOK = K.init( {-3, -3, -3}, {5, 3, 1}, { K.CLOSED, K.OPEN, K.PERIODIC } );
+  INFO( "Khalimsky space is " << K );
+  REQUIRE( spaceOK == true );
+
+  testScan( K, {-1, -2, -1}, {1, 2, 2} );
+  testNeighborhood( K, {0, 0, 0} );
+  testNeighborhood( K, {-2, 3, 2} );
+  testFaces( K, {0, 0, 0} );
+  testFaces( K, {-2, 3, -3} );
+  testIncidence( K, {0, 0, 0} );
+  testDirectIncidence( K, {0, 0, 0} );
+  testSurfelAdjacency( K );
+  testFindABel( K );
+  testCellularGridSpaceNDFaces( K );
+  testCellularGridSpaceNDCoFaces( K );
+}
+
