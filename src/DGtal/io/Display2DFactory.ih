@@ -41,6 +41,14 @@ inline
 void
 DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& sk)
 {
+  drawDECSignedKhalimskyCell( board, sk.preCell() );
+}
+
+template <DGtal::Dimension dim, typename TInteger>
+inline
+void
+DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyPreCell<dim, TInteger>& sk)
+{
     FATAL_ERROR( dim == 2 );
 
     using KPS = DGtal::Z2i::KPreSpace;
@@ -51,7 +59,7 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
     using Embedder = DGtal::CanonicSCellEmbedder<KPS>;
     const Embedder embedder( K );
     
-    const Embedder::RealPoint coords = embedder(sk.preCell());
+    const Embedder::RealPoint coords = embedder( sk );
     const float x = coords[0];
     const float y = coords[1];
     const float retract = 0.1f;
@@ -1382,15 +1390,22 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
   }
 }
 
-// KhalimskyCell
+// KhalimskyPreCell
 template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
-           const DGtal::KhalimskyCell<dim, TInteger> & kk )
+           const DGtal::KhalimskyCell<dim, TInteger> & k )
+{
+  draw( board, k.preCell() );
+}
+
+// KhalimskyPreCell
+template < DGtal::Dimension dim, typename TInteger >
+inline
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
+           const DGtal::KhalimskyPreCell<dim, TInteger> & k )
 {
   FATAL_ERROR( dim == 2 );
-
-  auto const& k = kk.preCell();
 
   float x = (float)
     ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
@@ -1405,7 +1420,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            !yodd ? y + retract - 0.5 : y - retract + 0.5,
            dx, dy );
 }
-// KhalimskyCell
+// KhalimskyPreCell
 
 
 // Object
