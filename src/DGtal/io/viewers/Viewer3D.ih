@@ -761,10 +761,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
         glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
       
       glCallList(myBallSetListId+j);
-      if(myIsDoubleFaceRendering)
-        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-      else
-        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+      glUpdateLightRenderingMode();
     }
   
   glDisable(GL_CULL_FACE);
@@ -835,12 +832,10 @@ DGtal::Viewer3D<Space, KSpace>::init()
   glClearColor (0.0, 0.0, 0.0, 0.0);
   glShadeModel (GL_SMOOTH);  
 
-  glMaterialfv(GL_FRONT, GL_SHININESS, myMaterialShininessCoeff);
-  glMaterialfv(GL_FRONT, GL_SPECULAR, myMaterialSpecularCoeffs);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, myMaterialShininessCoeff);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, myMaterialSpecularCoeffs);
 
-  glMaterialfv(GL_BACK, GL_SHININESS, myMaterialShininessCoeff);
-  glMaterialfv(GL_BACK, GL_SPECULAR, myMaterialSpecularCoeffs);
-
+  
   glLightfv(GL_LIGHT0, GL_SPECULAR, myLightSpecularCoeffs);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, myLightDiffuseCoeffs);
   glLightfv(GL_LIGHT0, GL_AMBIENT, myLightAmbientCoeffs);
@@ -1217,10 +1212,7 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
   if( e->key() == Qt::Key_D)
     {
       myIsDoubleFaceRendering = !myIsDoubleFaceRendering;
-      if(myIsDoubleFaceRendering)
-        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-      else
-        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+      glUpdateLightRenderingMode();
       updateGL();
 
     }
@@ -1416,6 +1408,7 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListCubesMaps(const typename DGtal::Disp
     {
       glPushName ( mapElem.first );
       glEnable ( GL_LIGHTING );
+      glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
       glBegin ( GL_QUADS );      
       bool useColorSelection = false;
       if(mySelectedElementId == mapElem.first)
@@ -1486,6 +1479,8 @@ DGtal::Viewer3D<Space, KSpace>::glCreateListCubesMaps(const typename DGtal::Disp
       glPopName();
     }
   glEndList();
+  glUpdateLightRenderingMode();
+  
 }
 
 
@@ -1823,6 +1818,16 @@ DGtal::Viewer3D<Space, KSpace>::glUpdateTextureImages(const  VectorTextureImage 
         }
       myVectTextureImage.push_back(textureImg);
     }
+}
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::glUpdateLightRenderingMode() const
+{
+  if(myIsDoubleFaceRendering)
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+  else
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 }
 
 
