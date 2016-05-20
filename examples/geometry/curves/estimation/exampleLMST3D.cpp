@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleLambdaMST3D.cpp
+ * @file
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
