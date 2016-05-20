@@ -1,6 +1,6 @@
 /* -*- mode: c++ -*- */
 /**
- * @file   Shapes.h
+ * @file
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
  * 
