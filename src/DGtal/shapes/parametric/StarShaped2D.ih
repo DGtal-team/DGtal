@@ -173,6 +173,46 @@ DGtal::StarShaped2D<TSpace>::segmentProjection( typename DGtal::StarShaped2D<TSp
   return RealPoint(0., 0.);
 }
 
+template <typename TSpace>
+inline
+typename DGtal::StarShaped2D<TSpace>::RealPoint 
+DGtal::StarShaped2D<TSpace>::normalProjection( typename DGtal::StarShaped2D<TSpace>::RealPoint& p, DGtal::StarShaped2D<TSpace>::RealPoint& left, DGtal::StarShaped2D<TSpace>::RealPoint& right, const int step, const double h ) const
+{
+    auto dotProd = [](RealPoint& a, RealPoint& b) { return a[0] * b[0] + a[1] * b[1]; };
+
+    double left_angl = parameter(left);
+    double right_angl = parameter(right);
+
+    std::vector<typename DGtal::StarShaped2D<TSpace>::RealPoint> points;
+
+    for(int i = 0; i < step; i++)
+    {
+        double arc = fabs(right_angl - left_angl);
+        if(arc > M_PI) arc = 2 * M_PI - arc;
+        const double current_angl = fmod(left_angl + arc / step * i, 2 * M_PI);
+
+        RealPoint temp = x(current_angl);
+        points.push_back(temp);
+    }
+
+    double p_norm = 1e15;
+    RealPoint p_return = Point(0., 0.);
+
+    for(int i = 0; i < points.size(); i++)
+    {
+        const double p_norm_current = (points[i] - p).norm();
+        if(p_norm_current < p_norm)
+        {
+            p_return = points[i];
+            p_norm = p_norm_current;
+        }
+    }
+
+    ASSERT(p_return != Point(0., 0.));
+
+    return p_return;
+}
+
 /**
  * Destructor.
  */
