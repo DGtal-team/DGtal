@@ -653,7 +653,7 @@ WARN_FORMAT            = "$file:$line: $text"
 # and error messages should be written. If left blank the output is written
 # to stderr.
 
-WARN_LOGFILE           =
+WARN_LOGFILE           = ./doxygen.log
 
 #---------------------------------------------------------------------------
 # configuration options related to the input files
@@ -757,7 +757,6 @@ EXAMPLE_RECURSIVE      = YES
 
 IMAGE_PATH             = @top_srcdir@/src/DGtal/doc/images \
                          @top_srcdir@/src/DGtal/doc/tutorials/images \
-                         @top_srcdir@/src/DGtal/base/doc/images \
                          @top_srcdir@/src/DGtal/kernel/doc/images \
                          @top_srcdir@/src/DGtal/graph/doc/images \
                          @top_srcdir@/src/DGtal/dec/doc/images \
@@ -767,8 +766,7 @@ IMAGE_PATH             = @top_srcdir@/src/DGtal/doc/images \
                          @top_srcdir@/src/DGtal/math/doc/images \
                          @top_srcdir@/src/DGtal/geometry/doc/images \
                          @top_srcdir@/src/DGtal/topology/doc/images \
-                         @top_srcdir@/src/DGtal/shapes/doc/images \
-                         @top_srcdir@/src/DGtal/helpers/doc/images
+                         @top_srcdir@/src/DGtal/shapes/doc/images
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
