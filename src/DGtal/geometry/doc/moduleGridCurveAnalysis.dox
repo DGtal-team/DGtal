@@ -615,7 +615,7 @@ $ ./examples/geometry/curves/greedy-dss-decomposition
 
 @see \ref moduleArithDSSReco and \ref moduleGridCurveAnalysis
 
-\example geometry/curves/greedy-dss-decomposition.cpp
+@see geometry/curves/greedy-dss-decomposition.cpp
 */
 
 /**
