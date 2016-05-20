@@ -76,8 +76,8 @@ namespace DGtal
  * the \cite FaureTangential2008 (see \cite FaureTangential2008 page
  * 363) which reduces the complexity from \f$O(n\ log\ n) \f$ in
  * \f$O( log\ n) \f$.  Note that the convexhull update in linear
- * time (with point substraction) proposed by Buzer \cite
- * lilianComputing2007 is not yet implemented.
+ * time (with point substraction) proposed by Buzer
+ * @cite lilianComputing2007 is not yet implemented.
  *
  *
  *
