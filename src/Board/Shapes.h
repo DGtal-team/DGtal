@@ -72,7 +72,10 @@ struct Shape {
    * @param penColor The pen color of the shape.
    * @param fillColor The fill color of the shape.
    * @param lineWidth The line thickness.
-   * @param depth The depth of the shape.
+   * @param style     The line style.
+   * @param cap       The line cap.
+   * @param join      The line join.
+   * @param depth     The depth of the shape.
    */
   inline Shape( DGtal::Color penColor, DGtal::Color fillColor,
     double lineWidth, 
@@ -236,6 +239,7 @@ struct Shape {
    * 
    * @param stream The output stream.
    * @param transform A 2D transform to be applied.
+   * @param colormap  A colormap.
    */
   virtual void flushFIG( std::ostream & stream,
        const TransformFIG & transform,
@@ -538,6 +542,9 @@ struct Line : public Shape {
    * @param y2 Second coordinate of the end point.
    * @param color The color of the line.
    * @param lineWidth The line thickness.
+   * @param style The line style.
+   * @param cap   The line cap.
+   * @param join  The line join.
    * @param depth The depth of the line.
    */
   inline Line( double x1, double y1, double x2, double y2, 
@@ -667,6 +674,9 @@ struct Arrow : public Line {
    * @param penColor The color of the line.
    * @param fillColor The fill color of the sharp end.
    * @param lineWidth The line thickness.
+   * @param style Line style.
+   * @param cap   Line cap.
+   * @param join  Line join.
    * @param depth The depth of the line.
    */
   inline Arrow( double x1, double y1, double x2, double y2,
