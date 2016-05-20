@@ -325,7 +325,7 @@ namespace DGtal
       /**
        * Update the Bezout vector v of u according to the new point A in the
        * case of integer parameters. Follows algorithm presented in
-       * \cite{CharrierBuzer2009}
+       * @cite  CharrierBuzer2009
        * @param u a vector
        * @param A a point
        * @param l directional vector of the line
@@ -337,7 +337,7 @@ namespace DGtal
       /**
        * Update the Bezout vector v of u according to the new point A in the
        * case of floating-point parameters. Follows algorithm presented in
-       * \cite{CharrierBuzer2009}
+       * @cite  CharrierBuzer2009
        *
        * @param u a vector
        * @param A a point
@@ -370,7 +370,7 @@ namespace DGtal
        * the line of directional vector l and intercept r, between x=0
        * and x=n. Returns the upper and lower closest
        * points. Implementation of Charrier and Buzer algorithm
-       * \cite{CharrierBuzer2009}
+       * @cite  CharrierBuzer2009
        * @param l directional vector of the line
        * @param r intercept of the line
        * @param n maximal value of x-coordinate
@@ -395,7 +395,7 @@ namespace DGtal
        * the line of slope s, between x=0
        * and x=n. Returns the last two points computed.
        * Implementation of Charrier and Buzer algorithm
-       * \cite{CharrierBuzer2009}
+       * @cite  CharrierBuzer2009
        * @param l directional vector of the line
        * @param r intercept of the line
        * @param n maximal value of x-coordinate
@@ -523,7 +523,7 @@ namespace DGtal
        * Performs a dichotomy among the rays of smallest slope passing
        * through the points (fp/fq,r/fq), r in [0,fq] in order to locate
        * the point lambda(a/b,mu/b) in the ladder. Implements line 3 of
-       * Algorithm 1 in \cite{sivignonDGCI2013}. Return an integer h such
+       * Algorithm 1 in @cite sivignonDGCI2013. Return an integer h such
        * that either i) lambda is in between the rays passing through
        * the point (fp/fq,h/fq) and flagRayFound is set to false or ii)
        * lambda is below all the rays passing through the point
@@ -556,7 +556,7 @@ namespace DGtal
        * Performs a dichotomy among the rays of smallest slope passing
        * through the points (fp/fq,r/fq), r in [0,fq] in order to locate
        * the point lambda(alpha,beta) in the ladder. Implements line 3 of
-       * Algorithm 1 in \cite{sivignonDGCI2013}. Return an integer h such
+       * Algorithm 1 in @cite sivignonDGCI2013. Return an integer h such
        * that either i) lambda is in between the rays passing through
        * the point (fp/fq,h/fq) and flagRayFound is set to false or ii)
        * lambda is below all the rays passing through the point
@@ -643,7 +643,7 @@ namespace DGtal
        *  FareyFan. This cell represents a DSS. This function computes the
        * vertex of the cell that represents the minimal characteristics
        *  of the DSS.
-       * Optimized version of the algorithm presented in the paper \cite{sivignonDGCI2013}.
+       * Optimized version of the algorithm presented in the paper @cite sivignonDGCI2013 .
        * Complexity of nextTermInFareySeriesEuclid
        *
        * @param fp numerator of the smallest fraction of the ladder
@@ -671,7 +671,7 @@ namespace DGtal
 
       /**
        * Corresponds to the algorithm presented in
-       * \cite{sivignonDGCI2013}.
+       * @cite  sivignonDGCI2013.
        *
        * @param fp numerator of the smallest fraction of the ladder
        * @param fq denominator of the smallest fraction of the
