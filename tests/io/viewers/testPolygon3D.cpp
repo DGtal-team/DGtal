@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file test3dViewer.cpp
+ * @file
  * @ingroup Tests
  * @author David Coeurjolly
  * @date 2013/09/06

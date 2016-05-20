@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file rigidtransformation2d.cpp
+ * @file
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France

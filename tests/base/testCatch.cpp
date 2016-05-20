@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testCatch
+ * @file
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
