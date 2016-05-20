@@ -26,7 +26,7 @@ namespace DGtal {
 
 @author Jérémy Levallois
 
-\section sectOverview Overview
+\section II_sectOverview Overview
 
 The algorithm implemented in the class IntegralInvariantVolumeEstimator and 
 IntegralInvariantCovarianceEstimator are detailed in the article 
@@ -110,9 +110,9 @@ Euclidean radius of the kernel must follow the rule @f$ r = k_mh^{\alpha_m} @f$
 Experimental results can be found at https://liris.cnrs.fr/jeremy.levallois/Papers/DGCI2013/
  and https://liris.cnrs.fr/jeremy.levallois/Papers/AFIG2013/
 
-\section sectAlgo Algorithm
+\section II_sectAlgo Algorithm
 
-\subsection subsectDef Overall algorithm
+\subsection II_subsectDef Overall algorithm
 
 The user part is rather simple by using only IntegralInvariantVolumeEstimator or IntegralInvariantCovarianceEstimator.
 
@@ -181,7 +181,7 @@ it's recommended to use a <b>depth-first search</b> (see DepthFirstVisitor for
 example). If none, no optimization are perform (it will be visible in 
 performances for big shape).
 
-\section sectImplementation Example code
+\section II_sectImplementation Example code
 
 It is important to consider a range of connected surfels when evaluating with 
 Integral Invariant Curvature estimators in order to benefit the kernel 
