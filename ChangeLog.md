@@ -4,7 +4,8 @@
 
 - *Documentation*
  - New "@seeDGtalTools" doxygen command to cite a DGtalTools tool in
-   DGtal documentation (David Coeurjolly, [#]())
+   DGtal documentation (David Coeurjolly,
+   [#1179](https://github.com/DGtal-team/DGtal/pull/1179))
  
 - *Geometry Package*
  - New robust normal vector estimator using spherical accumulators and statistical
