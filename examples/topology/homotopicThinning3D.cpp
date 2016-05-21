@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file
+ * @file topology/homotopicThinning3D.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France

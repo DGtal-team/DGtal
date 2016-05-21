@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file
+ * @file geometry/curves/estimation/exampleLMST3D.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
