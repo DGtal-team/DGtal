@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file digitalSetFromVol.cpp
+ * @file io/viewDualSurface.cpp
  * @ingroup Examples
  *
  * @date 2011/03/25

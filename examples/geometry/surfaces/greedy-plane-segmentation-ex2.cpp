@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file greedy-plane-segmentation-ex2.cpp
+ * @file geometry/surfaces/greedy-plane-segmentation-ex2.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
