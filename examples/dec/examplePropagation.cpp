@@ -1,3 +1,4 @@
+/// @file dec/examplePropagation.cpp
 #include <iomanip>
 
 #include "common.h"
