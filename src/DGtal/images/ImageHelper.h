@@ -234,7 +234,7 @@ namespace DGtal
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
-   * S is a DigitalSetFromMap<I> as follows: 
+   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows: 
    * @code
    std::pair<P, V> 
    pair( aPoint, aValue );  
@@ -279,7 +279,7 @@ namespace DGtal
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
-   * S is a DigitalSetFromMap<I> as follows: 
+   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows: 
    * @code
    std::pair<P, V> 
    pair( aPoint, aValue );  
@@ -320,7 +320,7 @@ namespace DGtal
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
-   * S is a DigitalSetFromMap<I> as follows: 
+   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows: 
    * @code
    * @endcode
    *
