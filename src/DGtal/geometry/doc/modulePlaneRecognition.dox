@@ -60,10 +60,10 @@ A \b parallel \b strip is the intersection of two parallel half-planes such
 that each half-plane includes the other. Half-planes may be closed or
 open. Hence, parallel strips take one of the following form:
 
-- \f$ \mu \le \vec{N} \cdot \vec{X} \le \mu + \epsilon \f$, class  ParallelStrip<Space,true,true>
-- \f$ \mu \le \vec{N} \cdot \vec{X} < \mu + \epsilon \f$, class \ref ParallelStrip<Space,true,false>
-- \f$ \mu < \vec{N} \cdot \vec{X} \le \mu + \epsilon \f$, class \ref ParallelStrip<Space,false,true>
-- \f$ \mu < \vec{N} \cdot \vec{X} < \mu + \epsilon \f$, class \ref ParallelStrip<Space,false,false>
+- \f$ \mu \le \vec{N} \cdot \vec{X} \le \mu + \epsilon \f$, class \link ParallelStrip ParallelStrip<Space, true, true>\endlink
+- \f$ \mu \le \vec{N} \cdot \vec{X} < \mu + \epsilon \f$, class \link ParallelStrip ParallelStrip<Space, true, false>\endlink
+- \f$ \mu < \vec{N} \cdot \vec{X} \le \mu + \epsilon \f$, class \link ParallelStrip  ParallelStrip<Space, false, true>\endlink
+- \f$ \mu < \vec{N} \cdot \vec{X} < \mu + \epsilon \f$, class \link ParallelStrip ParallelStrip<Space, false, false>\endlink
 
 Here are a few useful definitions:
 
@@ -496,7 +496,7 @@ COBANaivePlaneComputer (COBA).
 
 /**
    This example shows the recognition of a simple digital plane with
-   the Chord algorithm (class \ref ChordNaivePlaneComputer). Green points belong to
+   the Chord algorithm (class \ref DGtal::ChordNaivePlaneComputer). Green points belong to
    the naive plane.  There is no naive plane containing the green
    points and any one of the red points.
 
@@ -515,7 +515,7 @@ $ ./examples/io/viewers/viewer3D-7bis-planes
 /**
    This example shows the recognition of a simple standard digital
    plane with the COBA algorithm (class
-   \ref COBAGenericStandardPlaneComputer). Green points belong to the naive
+   \ref DGtal::COBAGenericStandardPlaneComputer). Green points belong to the naive
    plane. Grey points show farther points that also belong to the
    strip.
 

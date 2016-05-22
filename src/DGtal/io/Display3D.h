@@ -649,7 +649,7 @@ namespace DGtal
      * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
      * @param sizeFactor set the difference between the upper face of the prism and the down face
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
-     * @param aSign if @ref isSigned is true it will be used to apply a different displays
+     * @param aSign if @a isSigned is true it will be used to apply a different displays
      * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
     void addPrism(const RealPoint &baseQuadCenter,

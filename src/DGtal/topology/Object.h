@@ -277,7 +277,7 @@ namespace DGtal
     /**
      * Clone into the object pre-computed look up table to speed up isSimple calculation.
      *
-     * @param inputTable table loaded using @ref NeighborhoodConfigurations.h::loadTable
+     * @param inputTable table loaded using functions::loadTable from NeighborhoodConfigurations.h
      */
     void setTable(Alias<boost::dynamic_bitset<> >inputTable);
 
@@ -611,7 +611,7 @@ objects[ 0 ].writeComponents( it ); // it points in same container as this.
      * a table set with @ref Object::setTable
      *
      * @param v point to check simplicity.
-     * @param input_table external look up table containing the configuration of neighbors which are simple. @see NeighborhoodConfigurations.h::loadTable
+     * @param input_table external look up table containing the configuration of neighbors which are simple. @see functions::loadTable
      * @param mapZeroNeighborhoodToMask maping each point of the neighborhood of point Zero to a NeighborhoodConfiguration.
      *
      * @return true if the point is simple according to precalculated table.

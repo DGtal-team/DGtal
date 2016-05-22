@@ -130,7 +130,7 @@ many differential quantities as: <b>3d Gaussian curvature</b>, <b>first</b> and
 <b>second principal curvatures</b>, as well <b>first and second principal 
 curvature directions</b>, <b>normal vector</b> or <b>tangeant vector</b> 
 (functors::IIGaussianCurvature3DFunctor, etc. See 
-file DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h or namespace \ref functors:: for the entire list).
+file DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h or namespace \link DGtal::functors functors\endlink for the entire list).
 
 \subsubsection subsubsectFunctors Integral Invariant functors
 

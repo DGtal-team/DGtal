@@ -83,8 +83,8 @@ algorithm optimizes iteratively the direction so as to get a direction
 with feasible bounds or no solutions. All this is hidden to the user,
 but explains the worst-case complexity.
 
-\note You may have a look at \ref pageArithmeticPackage, more
-precisely at module \ref dgtal_lattice_polytope_2d to see how
+\note You may have a look at \ref packageArithmetic, more
+precisely at module \ref moduleLatticePolytope2D to see how
 lattice polytopes are represented.
 
 \section moduleCOBANaivePlaneRecognition_sec2 How to recognize a plane ?
@@ -168,7 +168,7 @@ COBANaivePlaneComputer::extend does not induce a speed up on the second
 method. You should prefer calling directly COBANaivePlaneComputer::extend()
 whenever you wish to extend the plane at this point.
 
-You may also have a look at example \ref viewer3D-7-planes.cpp.
+You may also have a look at example viewer3D-7-planes.cpp.
 
 @image html coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points."
 @image latex coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points." width=5cm
