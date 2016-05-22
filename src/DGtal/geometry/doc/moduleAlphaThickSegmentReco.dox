@@ -21,7 +21,7 @@ instance in tangent \cite LachaudIVC2007 or curvature estimation
 directly process real contours with the potential presence of
 noise. To overcome this limitation the alpha-thick segments (called
 initially Blurred Segments) were first introduced by Debled-Rennesson 
-\i et al \cite debledFuzzy2005 which handle noise or contour
+\e et al \cite debledFuzzy2005 which handle noise or contour
 irregularities.
 
 

@@ -67,8 +67,8 @@ Description of \b concept '\b CInteger' <p>
  ### Associated types 
     
  ### Notation
-     - \t X : A type that is a model of CInteger
-     - \t x, \t y  : Object of type X
+     - \a X : A type that is a model of CInteger
+     - \a x, \a y  : Object of type X
     
  ### Definitions
     

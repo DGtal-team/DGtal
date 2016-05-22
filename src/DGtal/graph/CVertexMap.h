@@ -67,10 +67,10 @@ namespace DGtal {
   - Value : specifies the type for a value (inner type).
    
   ###  Notation
-  - \t X : A type that is a model of CVertexMap
-  - \t x : Object of type X
-  - \t v : Object of type Vertex
-  - \t val : Object of type Value
+  - \a X : A type that is a model of CVertexMap
+  - \a x : Object of type X
+  - \a v : Object of type Vertex
+  - \a val : Object of type Value
    
   ### Definitions
    

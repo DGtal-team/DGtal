@@ -64,8 +64,8 @@ Description of \b concept '\b CEuclideanOrientedShape' <p>
     - RealPoint: type for real points.
 
  ### Notation
-     - \t X : A type that is a model of CEuclideanOrientedShape
-     - \t x, \t y : object of type X
+     - \a X : A type that is a model of CEuclideanOrientedShape
+     - \a x, \a y : object of type X
     
  ### Definitions
     

@@ -169,7 +169,7 @@ Inner types are:
 - \e Value and \e value_type: the type \c std::pair<Size,Size>, useful
   to create back insertion sequence.
 
-- \e ConstIterator \and \e const_iterator: the type for visiting the quotients of the
+- \e ConstIterator and \e const_iterator: the type for visiting the quotients of the
   fraction in sequence. The value of the iterator has type \e Value.
 
 Notations are:

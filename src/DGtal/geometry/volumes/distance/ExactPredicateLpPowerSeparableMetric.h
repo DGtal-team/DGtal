@@ -78,7 +78,7 @@ namespace DGtal
    * @tparam TSpace the model of CSpace on which the metric is
    * defined.
    * @tparam p the exponent of the metric (static DGtal::uint32_t)
-   * @taparm TPromoted model of CSignedInteger used to store power @a
+   * @tparam TPromoted model of CSignedInteger used to store power @a
    * p sums (default: DGtal::int64_t)
    *
    */
