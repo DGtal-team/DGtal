@@ -45,7 +45,7 @@ namespace DGtal
   // Lookup tables for find and count operations.
   /**
      Lookup table for counting the number of bits set to 1 in a byte.
-     ( Taken from STL <bitset> )
+     ( Taken from STL \<bitset\> )
   */
   const DGtal::uint8_t Bits::myBitCount[] = {
     0, /*   0 */ 1, /*   1 */ 1, /*   2 */ 2, /*   3 */ 1, /*   4 */
