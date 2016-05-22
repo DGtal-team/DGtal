@@ -156,7 +156,7 @@ given type).
 
 
 To write color images, you need to use a functor which transform a scalar value into a Color. 
-You can use the previous \ref colormaps:
+You can use the previous \ref colormaps :
 @code 
 typedef DGtal::ImageContainerBySTLVector<Z2i::Domain, double > Image2D;
 DGtal::HueShadeColorMap<double>  hueColorMap (-50.0, 50.0);

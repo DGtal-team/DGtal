@@ -262,7 +262,7 @@ You will obtain such a resulting visualization:
 \subsection moduleAlphaThickSegmentTgtCoverSingle Tangential cover on a single point
 
 Alternatively, if you only want the tangential cover associated to a
-single point, you can use the functions of the @ref SegmentComputerUtils:
+single point, you can use the functions of the @link SegmentComputerUtils.h SegmentComputerUtils@endlink:
 
 @snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp SaturatedAlphaThickCoverHeaderSingle
 

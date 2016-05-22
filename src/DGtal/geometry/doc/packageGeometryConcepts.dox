@@ -67,7 +67,7 @@ subgraph cluster_concepts_2 {
   CMetricSpace [label="CMetricSpace" URL="@ref concepts::CMetricSpace"];
     CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref concepts::CDigitalMetricSpace"];
     CSeparableMetric [label="CSeparableMetric" URL="@ref concepts::CSeparableMetric"];
-    CDigitalSeparableMetric [label="CDigitalSeparableMetric" URL="@ref concepts::CDigitalSeparableMetric"];
+    CDigitalSeparableMetric [label="CDigitalSeparableMetric"];
     CPowerMetric [label="CPowerMetric" URL="@ref concepts::CPowerMetric"];
     CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref concepts::CPowerSeparableMetric"];
 

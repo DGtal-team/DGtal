@@ -85,7 +85,7 @@ requires two type parameters:
 
 - \b TSpace: the digital space (any model of CSpace), like \ref SpaceND.
 
-- \b TSeparableMetric: the metric used for computing the Voronoi map (any model of CSeparableMetric), like \ref ExactPredicateLpSeparableMetric<TSpace, 2> for the Euclidean metric.
+- \b TSeparableMetric: the metric used for computing the Voronoi map (any model of CSeparableMetric), like \link ExactPredicateLpSeparableMetric ExactPredicateLpSeparableMetric<TSpace, 2>\endlink for the Euclidean metric.
 
 The instantiation of the class VoronoiCovarianceMeasure requires the
 following parameters:
