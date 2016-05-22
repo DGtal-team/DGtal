@@ -71,10 +71,10 @@ namespace DGtal {
    -  @f$ \{(x,y) | y \leq ax + b \} @f$
    *
    * The second set can be defined as follows: 
-   * @snippet geometry/2d/testHalfPlane.cpp HalfPlaneTypedefUpClosed
+   * @snippet shapes/testHalfPlane.cpp HalfPlaneTypedefUpClosed
    *
    * Then, you can create and use your half-plane as shown below:
-   * @snippet geometry/2d/testHalfPlane.cpp HalfPlaneUsage
+   * @snippet shapes/testHalfPlane.cpp HalfPlaneUsage
    * 
    * You should get: 
    @code

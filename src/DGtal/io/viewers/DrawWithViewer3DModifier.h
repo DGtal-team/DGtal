@@ -233,19 +233,19 @@ namespace DGtal
    *
    * A typical use can be illustrated by displaying a grayscale source
    * image with artificial color defined from a colormap (see
-   * viewer3D-8-2Dimages.cpp ):
+   * viewer3D-8-2DSliceImages.cpp ):
    * We can first add a functor to convert grayscale value into RGB int:
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
    *
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
    *
    * Then you can define and add the object AddTextureImage2DWithFunctor in a viewer:
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImagesColor
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesDisplayImagesColor
    *
    * @note If you change the image date don't forget to specify again.
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImagesColor
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DModifImagesColor
    *
-   * @see AddTextureImage3DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
+   * @see AddTextureImage3DWithFunctor viewer3D-8-2DSliceImages.cpp viewer3D-9-3Dimages.cpp
    */
   template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
@@ -281,18 +281,18 @@ namespace DGtal
    *
    * A typical use can be illustrated by displaying a grayscale source
    * image with artificial color defined from a colormap (see
-   * viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp):
+   * viewer3D-8-2DSliceImages.cpp viewer3D-9-3Dimages.cpp):
    * We can first add a functor to convert grayscale value into RGB int:
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
    *
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
    *
    * Then you can define and add the object AddTextureImage2DWithFunctor in a viewer:
    * @snippet io/viewers/viewer3D-9-3Dimages.cpp ExampleViewer3D3DImagesDisplayImagesColor
    *
    * @note If you change the image date don't forget to specify again the functor with the UpdateImageData object.
    *
-   * @see AddTextureImage2DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
+   * @see AddTextureImage2DWithFunctor viewer3D-8-2DSliceImages.cpp viewer3D-9-3Dimages.cpp
    */
   template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage3DWithFunctor : public DrawWithViewer3DModifier

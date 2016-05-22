@@ -125,7 +125,7 @@ DGtal/Catch examples
 
 @see \ref moduleCatch
 
-\example doc-exmples/exampleCatch.cpp
+\example doc-examples/exampleCatch.cpp
 */
 
 }
