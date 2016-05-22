@@ -244,7 +244,7 @@ BigInteger.
 @image latex COBA-timings.png "Time (in ms) to recognize a naive plane as a function of the number of points N (x-axis) and the diameter (y-axis). Time is averaged over 1000 random recognitions." width=5cm
 
 @image html COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions."
-@image latex html COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions." width=5cm
+@image latex COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions." width=5cm
 
 
 \section moduleCOBANaivePlaneRecognition_sec5 Application to greedy segmentation into digital planes
