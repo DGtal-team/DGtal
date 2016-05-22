@@ -180,7 +180,7 @@ the on-line feature, you may call the off-line procedure melkmanConvexHullAlgori
 \subsubsection subsectmoduleHull2D131 Constructing a Melkman convex hull from both sides.
 
 If you want to construction a convex hull by considering the front and
-back of a contour you will need to use the @ref reverse() method. For
+back of a contour you will need to use the @ref MelkmanConvexHull::reverse() method. For
 instance, to recover the convex hull of the point P0 of the following
 figure, you will need to do as follows:
 
