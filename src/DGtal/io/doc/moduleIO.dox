@@ -38,7 +38,7 @@ offer better colormap for scientific visualisation purposes.
 \image html colormaps.png "Example of predefined colormaps" 
 \image latex colormaps.png "Example of predefined colormaps" width=5cm
 
-Beside colormaps, TickedColorMap is a colormap adapter that adds ticks. For example, you can adapt a Black-Red gradient colormap to add regular white ticks (see usage in @ref testTickedColorMap):
+Beside colormaps, TickedColorMap is a colormap adapter that adds ticks. For example, you can adapt a Black-Red gradient colormap to add regular white ticks (see usage in @ref testTickedColorMap.cpp):
 
 \image html testTicked-gradient-regular.png "Colormaps with regular ticks" 
 \image latex testTicked-gradient-regular.png "Colormaps with regular ticks" width=10cm
