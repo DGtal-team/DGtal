@@ -66,8 +66,8 @@ Description of \b concept '\b CDigitalOrientedShape' <p>
      - Point: type for digital points.
 
  ### Notation
-     - \t X : A type that is a model of CDigitalOrientedShape
-     - \t x, \t y : object of type X
+     - \a X : A type that is a model of CDigitalOrientedShape
+     - \a x, \a y : object of type X
     
  ### Definitions
     

@@ -274,7 +274,6 @@ the option --track work only from git version 1.6.2 and later. But you can perfo
 @code 
 git checkout -b [myBranchName] [aRemoteName]/[aBranch]
 @endcode 
-@endnote
 
 
 

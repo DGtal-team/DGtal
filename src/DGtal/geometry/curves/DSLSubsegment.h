@@ -287,8 +287,8 @@ namespace DGtal
       /**
        * Compute the intersection between the line of direction v
        * passing through P and the vertical line x = n.
-       * The intersection point is of the form P + \alpha*v and the
-       * function returns the value floor(alpha).
+       * The intersection point is of the form P + &alpha;*v and the
+       * function returns the value floor(&alpha;).
        * @param P a point
        * @param v directional vector of the line
        * @param n maximal value for x-coordinate
@@ -300,8 +300,8 @@ namespace DGtal
       /**
        * Compute the intersection between the line of direction v
        * passing through P and the line y = (aL[1]/aL[0])*x +r
-       * The intersection point is of the form P + \alpha*v and the
-       * function returns the value floor(alpha).
+       * The intersection point is of the form P + &alpha;*v and the
+       * function returns the value floor(&alpha;).
        * @param P a point of the first line
        * @param v directional vector of the first line
        * @param aL slope of the second line is equal to aL[1]/aL[0]
@@ -313,8 +313,8 @@ namespace DGtal
       /**
        * Compute the intersection between the line of direction v
        * passing through P and the line y = s*x
-       * The intersection point is of the form P + \alpha*v and the
-       * function returns the value floor(alpha).
+       * The intersection point is of the form P + &alpha;*v and the
+       * function returns the value floor(&alpha;).
        * @param P a point of the first line
        * @param v directional vector of the first line
        * @param s slope of the second line

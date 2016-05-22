@@ -75,9 +75,9 @@ An object x satisfying this concept may then be used as:
 ### Associated types :
    
 ### Notation
-   - \t X : A type that is a model of CDrawableWithBoard2D
-   - \t x, \t y  : Object of type X
-   - \t m  : a string of characters
+   - \a X : A type that is a model of CDrawableWithBoard2D
+   - \a x, \a y  : Object of type X
+   - \a m  : a string of characters
    
 ### Definitions
    
@@ -85,9 +85,9 @@ An object x satisfying this concept may then be used as:
    
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|the default draw style | x.defaultStyle( m ="" ) | \t mode \t m: \c std::string | DrawableWithBoard2D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
+|the default draw style | x.defaultStyle( m ="" ) | \a mode \a m: \c std::string | DrawableWithBoard2D | | returns a dynamic allocation of the default style for the model \a X in mode \a m | | |
 |the name of the model  | x.className()           |  | std::string | | returns a string telling the name of the model | | |
-|the way the objet \t x is drawn | x.setStyle(Board2D &board) | | | | draws the object \c x on the \t board stream | | |
+|the way the objet \a x is drawn | x.setStyle(Board2D &board) | | | | draws the object \c x on the \a board stream | | |
    
  ### Invariants
    

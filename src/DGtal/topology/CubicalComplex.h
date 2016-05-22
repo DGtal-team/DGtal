@@ -1136,7 +1136,7 @@ namespace DGtal
 
     /**
      * Computes the (topological) interior \a intcc and the
-     * (topological) boundary \bdcc of this complex. Note that \bdcc
+     * (topological) boundary \a bdcc of this complex. Note that \a bdcc
      * is not necessarily a subcomplex.
      *
      * @param[out] intcc returns the interior subcomplex of this complex.

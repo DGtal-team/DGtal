@@ -60,11 +60,11 @@ which is a refinement of CPointFunctor.
      CPointFunctor
      
 ###  Associated types :
-     - \t Domain: type of the image domain, model of concept CDomain
+     - \a Domain: type of the image domain, model of concept CDomain
      
 ###  Notation
-    - \t X : A type that is a model of CTrivialConstImage
-    - \t x, \t y  : Object of type X
+    - \a X : A type that is a model of CTrivialConstImage
+    - \a x, \a y  : Object of type X
     
 ###  Definitions
    

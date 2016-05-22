@@ -396,7 +396,7 @@ namespace DGtal
      * valid.  A tree is valid if there's one (and only one) leaf for
      * each position at maximal depth.
      * @param key the key
-     * @param leafAbove  leafAbove (@TODO)
+     * @param leafAbove  leafAbove (@todo)
      */
     bool checkIntegrity(HashKey key = ROOT_KEY, bool leafAbove = false) const;
 

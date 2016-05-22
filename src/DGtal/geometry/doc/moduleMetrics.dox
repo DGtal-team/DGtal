@@ -208,7 +208,7 @@ CPowerSeparableMetric are:
   (with approximated predicates)
  - SeparableMetricAdapter: adapts any model of CMetricSpace (with
  - monotonicity property) to CSeparableMetric
- - ExactPredicateLpPowerSeparableMetric:  main class for power @f@f$
+ - ExactPredicateLpPowerSeparableMetric:  main class for power @f$
   l_p@f$ functions (with exact predicates).
  - experimental::ChamferNorm2D: proof-of-concept of sperable volumetric computation from path based norms.
 

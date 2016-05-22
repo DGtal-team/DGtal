@@ -415,7 +415,7 @@ Note that a model of CSegmentComputerIterator should define the following method
 The first and simplest segmentation is the greedy one: 
 from a starting element, extend a segment while it is possible, 
 get the last element of the resulting segment and iterate.
-This segmentation algorithm is implemented in the class @href GreedySegmentation.   
+This segmentation algorithm is implemented in the class @ref GreedySegmentation.   
 
 In the short example below, a digital curve stored in a STL vector
 is decomposed into 8-connected DSSs whose parameters are sent to 
@@ -531,7 +531,7 @@ to get the following figure:
  @image latex maxseg.png  "maximal segments" width=2.5cm
 
 
-See @href convex-and-concave-parts.cpp
+See convex-and-concave-parts.cpp
 for an example of how to use maximal DSSs to decompose a digital curve
  into convex and concave parts. 
 

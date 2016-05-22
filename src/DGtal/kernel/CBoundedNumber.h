@@ -69,7 +69,7 @@ Description of \b concept '\b CBoundedNumber' <p>
  ### Associated types:
 
  ### Notation
-     - \t X : A type that is a model of CBoundedNumber
+     - \a X : A type that is a model of CBoundedNumber
 
  ### Definitions
 

@@ -357,7 +357,7 @@ public:
    *  Tests whether the current alpha thick segment can be extended at
    *  the front with the next contour point i.e checks if we have
    *  still an alpha thick segment of width alpha_max after adding the
-   *  given point \aPoint. The segment parameters are keep in its
+   *  given point \a aPoint. The segment parameters are keep in its
    *  original state.
    *
    * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
@@ -368,7 +368,7 @@ public:
   /**
    *  Tests whether the current alpha thick segment can be extended, i.e
    *  checks if we have still an alpha thick segment of width alpha_max after
-   *  adding the given point \aPoint. The segment parameters are keep
+   *  adding the given point \a aPoint. The segment parameters are keep
    *  in its original state.
    *
    * @param[in] aPoint the point to be tested for the segment extension.
