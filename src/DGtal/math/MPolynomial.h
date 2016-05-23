@@ -1530,6 +1530,7 @@ public:
        variables; this is needed for recursive printing.
 
        @param s the output stream where the object is written.
+       @param N the number of variables.
     */
     void selfDisplay ( std::ostream & s, int N = n ) const
     {

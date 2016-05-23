@@ -377,6 +377,7 @@ namespace DGtal
      * @param translateZ the y translation value.
      * @param rotationAngle the angle of rotation. 
      * @param dirRotation the rotation is applyed arount the given direction (default zDirection).
+     * @param aFunctor
      */
     UpdateImageData(unsigned int anIndex, ConstAlias<TImageType> anImage, double translateX=0,
                     double translateY=0, double translateZ=0,

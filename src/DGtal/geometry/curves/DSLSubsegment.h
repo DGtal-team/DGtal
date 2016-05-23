@@ -596,9 +596,11 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
+	     * @param r numerator of the point y-coordinate
        * @param a DSL a parameter
        * @param b DSL b parameter
        * @param mu DSL my parameter
+       * @param n order of the Farey Fan
        * @return a ray
        */
       RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq,
@@ -616,6 +618,7 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
+	     * @param r numerator of the point y-coordinate
        * @param alpha DSL slope
        * @param beta DSL intercept
        * @param n order of the Farey Fan
@@ -632,6 +635,7 @@ namespace DGtal
        *
        * @param fp numerator
        * @param fq denominator
+       * @param r  a ray
        */
 
       RayC raySup(Integer fp, Integer fq, RayC r);

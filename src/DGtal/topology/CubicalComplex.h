@@ -1100,7 +1100,7 @@ namespace DGtal
     * @param[out] it_cell_up (returns) a pointer on a cell d if c is a
     * free face of d.
     *
-    * param[in] n the maximal dimension of a cell in this
+    * @param[in] n the maximal dimension of a cell in this
     * complex. Default to \ref dimension, but can be less in some
     * cases: for instance, you know that your subcomplex is a digital
     * surface in Z3, hence you can pass 2 for \a n.
