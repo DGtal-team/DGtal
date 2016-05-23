@@ -72,13 +72,16 @@ TEST_CASE( "Testing MelkmanConvexHull insertion from front and back using revers
   
   Point pHV,qHV,sHV, pE,qE,sE;
    
-  DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+  const double thicknessHV = DGtal::functions::Hull2D::computeHullThickness( ch.begin(), ch.end(), 
                                                  DGtal::functions::Hull2D::HorizontalVerticalThickness,
                                                  pHV, qHV, sHV);
   
-  DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+  const double thicknessE  = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                                  DGtal::functions::Hull2D::EuclideanThickness,
                                                  pE, qE, sE);
+
+  CAPTURE( thicknessHV );
+  CAPTURE( thicknessE  );
   
   SECTION("Testing antipodal points of ConvexHull2D")
     {
@@ -94,10 +97,12 @@ TEST_CASE( "Testing MelkmanConvexHull insertion from front and back using revers
     }
   ch.reverse();
     
-  DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+  const double thicknessEb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                                  DGtal::functions::Hull2D::EuclideanThickness,
                                                  pE, qE, sE);
    
+  CAPTURE( thicknessEb );
+
   SECTION("Testing same antipodal points after hull reversing ")
     {
       REQUIRE( pE == Point(101.2, 48.2) );
