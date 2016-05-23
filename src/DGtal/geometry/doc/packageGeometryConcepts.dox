@@ -42,13 +42,13 @@ digraph GGeom   {
     color=lightgrey;
     node [style=filled,color=white];
 
-    CSegment [ URL="\ref concepts::Segment" ];
-    CBidirectionalSegmentComputer  [ URL="\ref concepts::CBidirectionalSegmentComputer" ];
-    CIncrementalSegmentComputer [ URL="\ref concepts::CIncrementalSegmentComputer" ];
-    CForwardSegmentComputer [ URL="\ref concepts::CForwardSegmentComputer" ];
-    CSegmentFactory [ URL="\ref concepts::SegmentFactory" ];
-    CDynamicBidirectionalSegmentComputer [ URL="\ref concepts::CDynamicBidirectionalSegmentComputer" ];
-    CDynamicSegmentComputer [ URL="\ref concepts::CDynamicSegmentComputer" ];
+    CSegment [ URL="\ref CSegment" ];
+    CBidirectionalSegmentComputer  [ URL="\ref CBidirectionalSegmentComputer" ];
+    CIncrementalSegmentComputer [ URL="\ref CIncrementalSegmentComputer" ];
+    CForwardSegmentComputer [ URL="\ref CForwardSegmentComputer" ];
+    CSegmentFactory [ URL="\ref CSegmentFactory" ];
+    CDynamicBidirectionalSegmentComputer [ URL="\ref CDynamicBidirectionalSegmentComputer" ];
+    CDynamicSegmentComputer [ URL="\ref CDynamicSegmentComputer" ];
 
     CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CIncrementalSegmentComputer -> CSegmentFactory -> CSegment;
     CDynamicSegmentComputer-> CForwardSegmentComputer ;
@@ -90,7 +90,7 @@ subgraph cluster_concepts_2 {
     CAdditivePrimitiveComputer [ URL="\ref concepts::CAdditivePrimitiveComputer" ];
     CDigitalSurfaceLocalEstimator [ URL="\ref concepts::CDigitalSurfaceLocalEstimator" ];
 
-    CAdditivePrimitiveComputer -> concepts::CIncrementalPrimitiveComputer -> concepts::CPrimitiveComputer;
+    CAdditivePrimitiveComputer -> CIncrementalPrimitiveComputer -> CPrimitiveComputer;
     label="geometry/surfaces (main concepts)";
   }
 
