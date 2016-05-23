@@ -238,21 +238,21 @@ namespace DGtal
 
 
     // TODO
-    // /**
+    // /*
     //  * Copy contructor.
     //  *
     //  * @param other object to copy.
     //  */
     // ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& other);
 
-    // /**
+    // /*
     //  * Assignment.
     //  *
     //  * @param other object to copy.
     //  */
     // ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& other);
 
-    // /**
+    // /*
     //  * Destructor
     //  * Free the memory allocated by @a myData
     //  */
