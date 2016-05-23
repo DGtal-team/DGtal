@@ -145,10 +145,10 @@ namespace DGtal
          @param q1 the denominator.
          @param u1 the quotient (last coefficient of its continued fraction).
          @param k1 the depth (1+number of coefficients of its continued fraction).
-         @param \_origin A pointer to the origin node [u_0,...,u_{n-1},1].
+         @param anOrigin A pointer to the origin node [u_0,...,u_{n-1},1].
        */
       Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 
-	    Node* _origin );
+	    Node* anOrigin );
 
       /// @return the node [u_0, ..., u_n - 1, v] if [u_0, ..., u_n]
       /// is the current node. Construct it if it does not exist yet.
