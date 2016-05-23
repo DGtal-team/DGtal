@@ -138,7 +138,7 @@ longest backpath in the direction @f$\overrightarrow{p_ip_j}@f$.
 @image html def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 @image latex def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 
-We have the following property from @cite Abam1247103: 
+We have the following property from @cite Abam1247103 : 
 
 The Fréchet error of a shortcut @f$p_ip_j@f$ satisfies:
 

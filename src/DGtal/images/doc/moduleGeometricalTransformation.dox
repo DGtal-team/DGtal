@@ -109,7 +109,7 @@ and for backward as well:
 
 \subsection secRigid3D Rigid transformations in 3D discrete space
 Discrete rigid transformations in 3D were implemented thanks to
-Rodrigues' rotation formula @cite belongieRotation which allow defining
+Rodrigues' rotation formula @cite belongieRot which allow defining
 rotation around any arbitrary axis with exception for
 \f$(0,0,0)\f$. Usage is analogous to the 2D implementation and can be
 illustrated in the following steps:
