@@ -356,7 +356,6 @@ namespace DGtal
       */
       static  bool isBetween(double i, double a, double b, double n)
       {
-	// if a<=b, a simple comparison enables to conclude
 	if(a<=b)
 	  if(i>=a && i<=b)
 	    return true;
@@ -364,12 +363,11 @@ namespace DGtal
 	    return false;
 	else
 	  {
-	    //otherwise, translate the points such that a->0
-	    int tmp = a;
-	    a = fmod(a+n-tmp,n);
-	    b = fmod(b+n-tmp,n);
-	    i = fmod(i+n-tmp,n);
-	    return isBetween(i,a,b,n); 
+	    if((i>=a && i<=n) || (i>=0 && i<=b))
+	      return true;
+	    else
+	      return false;
+	    
 	  }
       }
       
