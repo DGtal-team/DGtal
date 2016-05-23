@@ -1552,7 +1552,16 @@ INCLUDE_FILE_PATTERNS  =
 # instead of the = operator.
 
 PREDEFINED             = "BOOST_FUSION_ADAPT_STRUCT(x,y)=" \
-                         "WITH_GMP="
+                         "WITH_GMP=" \
+                         "WITH_CAIRO=" \
+                         "WITH_CGAL=" \
+                         "WITH_EIGEN=" \
+                         "WITH_HDF5=" \
+                         "WITH_ITK=" \
+                         "WITH_MAGICK=" \
+                         "WITH_PATATE=" \
+                         "WITH_QGLVIEWER="
+
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then
 # this tag can be used to specify a list of macro names that should be expanded.
