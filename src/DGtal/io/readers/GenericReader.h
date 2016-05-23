@@ -80,7 +80,8 @@ namespace DGtal
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned int> Image2D;
    @endcode
-   - Use the same import function for both 2D or 3D images:
+
+   * - Use the same import function for both 2D or 3D images:
    @code
    Image3D an3Dimage= DGtal::GenericReader<Image3D>::import("example.vol");
    Image2D an2Dimage= DGtal::GenericReader<Image2D>::import("example.pgm");
