@@ -23,6 +23,8 @@ namespace DGtal {
 [TOC]
 @see shapes/exampleEuclideanShapesDecorator.cpp
 
+@seeDGtalTools @ref shapeGenerator
+
    \section sectmoduleShape1 Introduction of Concepts
 
 In DGtal, we use the generic terminology shape to describe either
