@@ -57,59 +57,7 @@ and provides a way of getting the elements (operator*).
 
 In the following, iterators are assumed to be constant (because the structures
 are assumed to be constant) and to be at least bidirectionnal (ie. they are
-either bidirectionnal iterators or random access iterators). You can read 
-the STL documentation about iterators: http://www.sgi.com/tech/stl/Iterators.html
-to learn more about the different kind of iterators. 
-
-The notion of <em>reachability</em> is very important. An iterator j is reachable from an iterator i
-if and only if i can be made equal to j with finitely many applications of the operator++.
-If j is reachable from i, one can iterate over the <em>range</em> of elements 
-bounded by i and j, from the one pointed to by i and up to but not including 
-the one pointed to by j. Such a range is valid and is denoted by [i,j). 
-
-Let i and j be two iterators that point to two elements of a same structure. 
-For open (or linear) structures, [i,j) is not always a valid range (ie. j is not always
-reachable from i) because if j has not been reached and if i points to the last element,
- one application of the operator++ makes i to be equal to the <em>past-the-end</em> value, 
-ie. an iterator value that points past the last element (just as a regular pointer to an 
-array guarantees that there is a pointer value pointing past the last element of the array). 
-If i turns out to be equal to the past-the-end value, then j cannot be reached from i.  
-If an iterator denoted by begin points to the first element of a given structure and 
-an iterator denoted by end is the past-the-end value, iterating over the range [begin,end)
- is a way of iterating over all the elements of the underlying structure. If the underlying
- structure is empty, it only has a past-the-end value. As a consequence, a range [i, i) 
-denotes an empty range.    
-A range of a linear structure is illustrated below (normal values are depicted with 
-a small straight segment, whereas the past-the-end value is depicted with a cross).
-In this example, [i,j) is not a valid range because j cannot be reached from i
-and the whole range may be denoted by [begin,end). 
-
- @image html linearRange.png  "Linear range"
- @image latex linearRange.png  "Linear range"
-
-
-However, for closed (or circular) structures, [i,j) should always be a valid range 
-(ie. j should always be reachable from i) and there should be no past-the-end value.
-As a consequence, iterating over all the elements or dealing with empty ranges is 
-different. The chosen solution is the same as the one used in 
-<a href="http://www.cgal.org/Manual/3.3/doc_html/cgal_manual/Circulator/Chapter_main.html">CGAL</a>.
-Circular iterators (or <em>circulators</em> for short) are used instead of classic iterators. 
-They behave like classic iterators but they have a specific state in the empty range case. 
-As long as i != j, the range [i,j) behaves like a classic iterator range 
-and could be used in STL algorithms. The range [i,i) is used to iterate over
- all the elements in DGtal algorithms (each element is visited only once). 
-Such a range is however considered as empty in STL algorithms. 
-A range of a circular structure is illustrated below. In this example, [i,j) is a valid range.  
-
- @image html circularRange.png  "Circular range"
- @image latex circularRange.png  "Circular range"
-
-
-Either an iterator or a circulator may have a reverse counterpart, ie. 
-an adaptor that enables a backward scanning. The operator++ of the adaptor 
-calls the operator-- of the underlying (circular)iterator and conversely. 
-You can use the STL reverse iterator for that:
-http://www.sgi.com/tech/stl/ReverseIterator.html 
+either bidirectionnal iterators or random access iterators). See \ref moduleIteratorsRanges. 
 
 
 \subsection geometryGridCurve GridCurve and FreemanChain.
@@ -345,7 +293,7 @@ Detecting a segment in a range looks like this:
  @code 
     //s is a segment computer
     //[begin,end) is a range
-		s.init( begin );
+    s.init( begin );
     while ( (s.end() != end) && (s.extendFront()) ) {} 
  @endcode
 
@@ -355,7 +303,7 @@ infinite loops are avoided as follows:
  @code 
     //s is a segment computer
     //c is a circulator
-		s.init( c );
+    s.init( c );
     while ( (s.end() != s.begin()) && (s.extendFront()) ) {} 
  @endcode
  
@@ -406,29 +354,20 @@ devoted to the dynamic recognition of DSSs,
 
  Here is a short example of how to use this class in the 4-connected case:
 
- @snippet geometry/curves/ArithmeticalDSSComputer.cpp ArithmeticalDSSComputer4Usage
+ @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardExtension
 
- Here is a short example of how to use this class in the 8-connected case:
-
- @snippet geometry/curves/ArithmeticalDSSComputer.cpp ArithmeticalDSSComputer8Usage
-
- These snippets are drawn from ArithmeticalDSSComputer.cpp. 
- 
- The resulting DSSs of the two previous pieces of code are drawing below:
-
- @image html DSS8.png  "8-connected DSS drawn with the paving mode" 
- @image latex DSS8.png  "8-connected DSS drawn with the paving mode" width=5cm
+ This snippet is drawn from exampleArithmeticalDSSComputer.cpp. 
+  The resulting DSS is drawing below:
 
  @image html DSS4.png  "4-connected DSS drawn with the grid mode"
  @image latex DSS4.png  "4-connected DSS in the grid drawing mode" width=5cm
 
-See @ref dgtal_dgtalboard for the drawing mechanism. 
-
+See @ref moduleBoard2D and @ref moduleArithDSSReco for the drawing mechanism. 
 
 As seen above, the code can be different if an iterator or a circulator is used 
 as the nested ConstIterator type. Moreover, some tasks can be made faster for a 
 given kind of segment computer than for another kind of segment computer. 
-That's why many generic functions are provided in @ref SegmentComputerUtils.h:
+That's why many generic functions are provided in the file DGtal/geometry/curves/SegmentComputerUtils.h:
 
 - maximalExtension, oppositeEndMaximalExtension, maximalSymmetricExtension, 
 - maximalRetraction, oppositeEndMaximalRetraction,  
@@ -442,7 +381,7 @@ These functions are used in the segmentation algorithms introduced below.
 
 A given range contains a finite set of segments verifying a given 
 predicate P.  
-A @e segmentation< is a subset of the whole set of segments, 
+A @e segmentation is a subset of the whole set of segments, 
 such that:
   
 i. each element of the range belongs to a segment of the subset and 
@@ -478,54 +417,51 @@ from a starting element, extend a segment while it is possible,
 get the last element of the resulting segment and iterate.
 This segmentation algorithm is implemented in the class @href GreedySegmentation.   
 
-   * In the short example below, a digital curve stored in a STL vector
-   * is decomposed into 8-connected DSSs whose parameters are sent to 
-   * the standard output.
-   * @code 
-   
-  //types definition
-  typedef PointVector<2,int> Point;
-  typedef std::vector<Point> Range;
-  typedef Range::const_iterator ConstIterator;
-  typedef ArithmeticalDSSComputer<ConstIterator,int,8> SegmentComputer;
-	typedef GreedySegmentation<SegmentComputer> Segmentation;
+In the short example below, a digital curve stored in a STL vector
+is decomposed into 8-connected DSSs whose parameters are sent to 
+the standard output.
 
-	//input points
-	Range curve;
-	curve.push_back(Point(1,1));
-	curve.push_back(Point(2,1));
-	curve.push_back(Point(3,2));
-	curve.push_back(Point(4,2));
-	curve.push_back(Point(5,2));
-	curve.push_back(Point(6,2));
-	curve.push_back(Point(7,2));
-	curve.push_back(Point(8,1));
-	curve.push_back(Point(9,1));
+@code    
+//types definition
+typedef std::vector<Point> Range;
+typedef Range::const_iterator ConstIterator;
+typedef StandardDSS4Computer<ConstIterator> SegmentComputer;
+typedef GreedySegmentation<SegmentComputer> Segmentation;
 
-  //Segmentation
-	SegmentComputer recognitionAlgorithm;
-  Segmentation theSegmentation(curve.begin(), curve.end(), recognitionAlgorithm);
-				 
-  Segmentation::SegmentComputerIterator i = theSegmentation.begin();
-  Segmentation::SegmentComputerIterator end = theSegmentation.end();
-  for ( ; i != end; ++i) {
-		SegmentComputer current(*i);
-		trace.info() << current << std::endl;	//standard output
-  } 
+//input points
+Range curve;
+curve.push_back(Point(1,1));
+curve.push_back(Point(2,1));
+curve.push_back(Point(3,2));
+curve.push_back(Point(4,2));
+curve.push_back(Point(5,2));
+curve.push_back(Point(6,2));
+curve.push_back(Point(7,2));
+curve.push_back(Point(8,1));
+curve.push_back(Point(9,1));
 
-   * @endcode
-   *
-   * If you want to get the DSSs segmentation of the digital curve
-   * when it is scanned in the reverse way, you can use the reverse
-   * iterator of the STL vector:   
-   * @code 
+//Segmentation
+SegmentComputer recognitionAlgorithm;
+Segmentation theSegmentation(curve.begin(), curve.end(), recognitionAlgorithm);
+
+Segmentation::SegmentComputerIterator i = theSegmentation.begin();
+Segmentation::SegmentComputerIterator end = theSegmentation.end();
+for ( ; i != end; ++i) {
+  trace.info() << *i << std::endl;	//standard output
+} 
+
+@endcode
+
+If you want to get the DSSs segmentation of the digital curve
+when it is scanned in the reverse way, you can use the reverse
+iterator of the STL vector:   
+@code 
 ...
-	typedef Range::const_reverse_iterator ConstReverseIterator;
+typedef Range::const_reverse_iterator ConstReverseIterator;
 ...
-  Segmentation theSegmentation(curve.rbegin(), curve.rend(), recognitionAlgorithm);
+Segmentation theSegmentation(curve.rbegin(), curve.rend(), recognitionAlgorithm);
 ...
-   * @endcode
-   *
+@endcode
 
 The resulting segmentations are shown in the figures below:
 
@@ -538,36 +474,34 @@ The resulting segmentations are shown in the figures below:
  @image latex right_left.png  "segmented from right to left" width=5cm
 
 
-   * If you want to get the DSSs segmentation of a part of the 
-   * digital curve (not the whole digital curve), you can give 
-   * the range to process as a pair of iterators when calling 
-   * the setSubRange() method as follow: 
-   * @code 
-  theSegmentation.setSubRange(beginIt, endIt);
-   * @endcode   
-   *
-   * Obviously, [beginIt, endIt) has to be a valid range included
-   * in the wider range [curve.begin(), curve.end()). 
-   *
-   * Moreover, a part of a digital curve may be processed either
-   * as an independant (open) digital curve or as a part whose 
-   * segmentation at the ends depends of the underlying digital 
-   * curve. That's why 3 processing modes are available:
-   * - "Truncate" (default), the extension of the last segment 
-   *  (and the segmentation) stops just before endIt.
-   * - "Truncate+1", the last segment is extended to endIt too
-   * if it is possible, provided that endIt != curve.end(). 
-   * - "DoNotTruncate", the last segment is extended as far as 
-   * possible, provided that curve.end() is not reached. 
-   *
-   * In order to set a mode (before getting a SegmentComputerIterator),
-   * use the setMode() method as follow: 
-   * @code 
-  theSegmentation.setMode("DoNotTruncate");
-   * @endcode  
-   * Note that the default mode will be used for any unknown modes.  
-   *
+If you want to get the DSSs segmentation of a part of the 
+digital curve (not the whole digital curve), you can give 
+the range to process as a pair of iterators when calling 
+the setSubRange() method as follow: 
+@code 
+theSegmentation.setSubRange(beginIt, endIt);
+@endcode   
 
+Obviously, [beginIt, endIt) has to be a valid range included
+in the wider range [curve.begin(), curve.end()). 
+
+Moreover, a part of a digital curve may be processed either
+as an independant (open) digital curve or as a part whose 
+segmentation at the ends depends of the underlying digital 
+curve. That's why 3 processing modes are available:
+- "Truncate" (default), the extension of the last segment 
+  (and the segmentation) stops just before endIt.
+- "Truncate+1", the last segment is extended to endIt too
+  if it is possible, provided that endIt != curve.end(). 
+- "DoNotTruncate", the last segment is extended as far as 
+  possible, provided that curve.end() is not reached. 
+
+In order to set a mode (before getting a SegmentComputerIterator),
+use the setMode() method as follow: 
+@code 
+theSegmentation.setMode("DoNotTruncate");
+@endcode  
+Note that the default mode will be used for any unknown modes.  
 
 The complexity of the greedy segmentation algorithm relies on the 
 complexity of the extendFront() method of the segment computer. If it
