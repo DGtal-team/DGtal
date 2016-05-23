@@ -593,8 +593,8 @@ objects[ 0 ].writeComponents( it ); // it points in same container as this.
 
 
     /**
-     * [Bertrand, 1994] A voxel v is simple for a set X if #C6 [G6 (v,
-     * X)] = #C18[G18(v, X^c)] = 1, where #Ck [Y] denotes the number
+     * [Bertrand, 1994] A voxel v is simple for a set X if \#C6 [G6 (v,
+     * X)] = \#C18[G18(v, X^c)] = 1, where \#Ck [Y] denotes the number
      * of k-connected components of a set Y.
      *
      * We adapt this definition to (kappa,lambda) connectednesses. Be
