@@ -323,7 +323,7 @@ namespace DGtal
        * @param aQ second extremity point
        * @param Lmin first extremity point of the L segment
        * @param Lmax second extremity point of the L segment
-       * @param aDimension
+       * @param aDimension a dimension
        * @return the lowest rounding intersection point.
        **/
       Abscissa getLowerRayIntersection(const Vector &aP, const Vector &aQ,
@@ -345,7 +345,7 @@ namespace DGtal
        * @param aQ second extremity point
        * @param Lmin first extremity point of the L segment
        * @param Lmax second extremity point of the L segment
-       * @param aDimension
+       * @param aDimension a dimension
        * @return the lowest rounding intersection point.
        **/
       Abscissa getUpperRayIntersection(const Vector &aP, const Vector &aQ,

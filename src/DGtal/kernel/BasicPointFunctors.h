@@ -468,7 +468,7 @@ namespace functors
     /**
      * The operator just recover the 3D Point associated to the Point2DEmbederIn3D parameters.
      * @param[in] aPoint point of the input domain (of dimension 2).
-     * @param checkInsideDomain
+     * @param checkInsideDomain if 'true', checks that the point lies inside the domain.
      *
      * @return the digital point of dimension 3 (value rounded downward with floor).
      */
