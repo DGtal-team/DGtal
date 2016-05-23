@@ -480,9 +480,11 @@ namespace DGtal
        @param itOut       The output iterator.
        @param pointRefC1  The grid point lying on @a C1.
        @param pointRefC3  The grid point lying on @a C3.
-       @param hs1
-       @param hs2
-       @param hs3
+       @param hs1         The first half-space.
+       @param hs2         The second half-space.
+       @param hs3         The third half-space.
+
+       @todo proper parameters documentation.
     */
     template <typename OutputIterator>
     OutputIterator computeConvexHullBorder( OutputIterator itOut,
