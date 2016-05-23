@@ -385,8 +385,11 @@ namespace DGtal
      * intersect the straight line.
      *
      * @param u a site
+     * @param wu a weight
      * @param v a site
+     * @param wv a weight
      * @param w a site
+     * @param ww a weight
      * @param startingPoint starting point of the segment
      * @param endPoint end point of the segment
      * @param dim direction of the straight line

@@ -468,12 +468,13 @@ namespace functors
     /**
      * The operator just recover the 3D Point associated to the Point2DEmbederIn3D parameters.
      * @param[in] aPoint point of the input domain (of dimension 2).
+     * @param checkInsideDomain
      *
      * @return the digital point of dimension 3 (value rounded downward with floor).
      */
     template <typename TPoint2D>
     inline
-    Point  operator()(const TPoint2D& aPoint, bool chechInsideDomain=true) const
+    Point  operator()(const TPoint2D& aPoint, bool checkInsideDomain=true) const
     {
       Point pt = myOriginPointEmbeddedIn3D;
       for( Dimension i=0; i<pt.size(); i++){
@@ -484,7 +485,7 @@ namespace functors
                                                  *mySecondAxisEmbeddedDirection[i]));
       }
 
-      if(myDomain.isInside(pt)|| !chechInsideDomain)
+      if(myDomain.isInside(pt)|| !checkInsideDomain)
         {
           return pt;
         }
