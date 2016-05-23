@@ -97,20 +97,20 @@ namespace DGtal
  *
  * Alpha thick segment recognition may be typically done as follows:
  * - If you consider input point with floating coordinates, you can define this type:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyTypedef
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyTypedef
  *
  * - Then import possibly a vector containing the input points by using the PointListReader class:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyReadFile
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyReadFile
  *
  * - Finally apply the segment recognition (here of maximal thickness 15)  by adding the sequence (forward) of contour points:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco
  *  @note The maximal thickness given in initialization is the same than
  *  the width given by the method width() of the ParallelStrip primitive
  *  (not the vertical/horizontal width of the convex hull).
  *
  *
  * - If you use a Board2D display, you can draw the resulting segment like other 2D objects:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementDisplay
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentDisplay
  *
  * The complete example of segment recognition is given in exampleAlphaThickSegmentNoisy.cpp
  *

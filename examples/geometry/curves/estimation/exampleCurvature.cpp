@@ -101,25 +101,34 @@ estimatorOnShapeDigitization( const string& name,
       std::vector<double> estimations;
       if (gridcurve.isOpen())
         {
-	  typedef StabbingCircleComputer<ClassicIterator> SegmentComputer;
-	  typedef CurvatureFromDCAEstimator<SegmentComputer> SCEstimator;
-	  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> CurvatureEstimator;
-	  SegmentComputer sc;
-	  SCEstimator sce;
-	  CurvatureEstimator estimator(sc, sce);
-	  std::cout << "# open grid curve" << endl;
+          //! [MostCenteredConstruction]
+          typedef StabbingCircleComputer<ClassicIterator> SegmentComputer;
+          typedef CurvatureFromDCAEstimator<SegmentComputer> SCEstimator;
+          typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> CurvatureEstimator;
+          SegmentComputer sc;
+          SCEstimator sce;
+          CurvatureEstimator estimator(sc, sce);
+          //! [MostCenteredConstruction]
+
+          std::cout << "# open grid curve" << endl;
+          
+          //! [MostCenteredInit]
           estimator.init( h, r.begin(), r.end() );
+          //! [MostCenteredInit]
+          
+          //! [MostCenteredEvaluation]
           estimator.eval( r.begin(), r.end(), std::back_inserter(estimations) );
+          //! [MostCenteredEvaluation]
         }
       else
         {
-	  typedef StabbingCircleComputer<CircularIterator> SegmentComputer;
-	  typedef CurvatureFromDCAEstimator<SegmentComputer> SCEstimator;
-	  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> CurvatureEstimator;
-	  SegmentComputer sc;
-	  SCEstimator sce;
-	  CurvatureEstimator estimator(sc, sce);
-	  std::cout << "# closed grid curve" << endl;
+          typedef StabbingCircleComputer<CircularIterator> SegmentComputer;
+          typedef CurvatureFromDCAEstimator<SegmentComputer> SCEstimator;
+          typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> CurvatureEstimator;
+          SegmentComputer sc;
+          SCEstimator sce;
+          CurvatureEstimator estimator(sc, sce);
+          std::cout << "# closed grid curve" << endl;
           estimator.init( h, r.c(), r.c() );
           estimator.eval( r.c(), r.c(), std::back_inserter(estimations) );
         }
@@ -127,17 +136,17 @@ estimatorOnShapeDigitization( const string& name,
       std::cout << "# idx kappa" << endl;
       unsigned int i = 0;
       for ( ClassicIterator it = r.begin(), ite = r.end();
-	    it != ite; ++it, ++i )
-	{
-	  std::cout << i << " " << estimations.at(i) << std::endl;
-	}
+           it != ite; ++it, ++i )
+        {
+          std::cout << i << " " << estimations.at(i) << std::endl;
+        }
     }
-    catch ( InputException e )
-      {
-	std::cerr << "[estimatorOnShapeDigitization]"
-		  << " error in finding a bel." << std::endl;
-	ok = false;
-      }
+  catch ( InputException e )
+    {
+      std::cerr << "[estimatorOnShapeDigitization]"
+        << " error in finding a bel." << std::endl;
+      ok = false;
+    }
   trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return ok;
@@ -147,8 +156,8 @@ estimatorOnShapeDigitization( const string& name,
 int main( )
 {
   trace.beginBlock ( "Example exampleCurvature" );
-  trace.info()<<" Curvature estimation using shape to digitize: flower" << std::endl
-	      <<" with Grid step: 0.01" << std::endl;
+  trace.info()  << " Curvature estimation using shape to digitize: flower" << std::endl
+                << " with Grid step: 0.01" << std::endl;
 
   // grid step
   double h = 0.01;
