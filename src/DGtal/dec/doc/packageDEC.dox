@@ -67,9 +67,6 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 - exampleDiscreteExteriorCalculusUsage.cpp
 - exampleDiscreteExteriorCalculusSolve.cpp
 - exampleDiscreteExteriorCalculusChladni.cpp
-- testDiscreteExteriorCalculus.cpp
-- testLinearStructure.cpp
-- testEmbedding.cpp
 
 */
 
