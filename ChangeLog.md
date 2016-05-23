@@ -2,6 +2,11 @@
 
 ## New Features / Critical Changes
 
+- *Documentation*
+ - New "@seeDGtalTools" doxygen command to cite a DGtalTools tool in
+   DGtal documentation (David Coeurjolly,
+   [#1179](https://github.com/DGtal-team/DGtal/pull/1179))
+ 
 - *Geometry Package*
  - New robust normal vector estimator using spherical accumulators and statistical
    voting (Boulc'h & Marlet, SGP 2012).
@@ -27,8 +32,6 @@
    decompress and install look up tables. (Pablo Hernandez-Cerdan,
    [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
 
-
-
 - *Base Package*
  - Alias and ConstAlias now raise compilation error when using invalid
    constructor, like from a rvalue reference. Adding ConstAlias in many classes
@@ -41,7 +44,6 @@
    (https://github.com/DGtal-team/DGtal/pull/1164))
 
 - *IO Package*
-
  - Viewer3D: add a mode to display ball primitive with OpenGL point instead of
    quadrangulated mesh.
    (Bertrand Kerautret [#1162](https://github.com/DGtal-team/DGtal/pull/1162))
