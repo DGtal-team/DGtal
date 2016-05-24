@@ -201,7 +201,7 @@ namespace DGtal
       return *this;
     }
     
-    /*
+    /**
      * Destructor.
      */
     ~LocalEstimatorFromSurfelFunctorAdapter();

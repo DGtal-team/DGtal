@@ -315,9 +315,10 @@ public:
       return res;
     }
     
-    /*
+    /**
       Continues evaluation with the next indeterminant.  Functor
-      returning a "child" evaluator implementation.
+      returining a "child" evaluator implementation.
+      @param x the next indeterminant.
     */
     template < typename XX >
     inline 

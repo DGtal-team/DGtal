@@ -176,7 +176,7 @@ private:
     InputPoint edgeQh;
     /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint vertexSh;
-    /*the actual thickness of the current segment*/
+    /** the actual thickness of the current segment */
     double actualThickness;
   };
 

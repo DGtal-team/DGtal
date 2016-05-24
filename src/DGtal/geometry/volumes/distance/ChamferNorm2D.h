@@ -476,7 +476,7 @@ namespace DGtal
         return myDirections.end();
       }
     
-      /*
+      /**
        * @return the mask size
        */
       inline

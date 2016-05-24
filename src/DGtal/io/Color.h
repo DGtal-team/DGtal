@@ -86,7 +86,7 @@ namespace DGtal
     Color( const unsigned int aRgb,
            unsigned char aAlpha = 255 );
 
-    /*
+    /**
      * Copy Constructor.
      *
      * @param aColor the color to copy.
