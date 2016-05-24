@@ -69,11 +69,11 @@ namespace DGtal
   reversedSmartDSS() algorithms.
 
   @tparam TFraction the type chosen to represent fractions, a model
-  of CFraction. You may use SternBrocot<>::Fraction for instance.
+  of CFraction. You may use SternBrocot::Fraction for instance.
 
   Model of boost::CopyConstructible, boost::Assignable, concepts::CPointPredicate
 
-  @see \ref dgtal_digstraighness_sec3
+  @see The documentation about @ref dgtal_digstraighness_sec3
   */
   template <typename TFraction>
   class StandardDSLQ0
