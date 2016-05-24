@@ -99,26 +99,10 @@ DGtal::AccFlower2D<T>::parameter( const RealPoint2D & pp ) const
 {
   RealPoint2D p( pp );
   p -= myCenter;
-  
-  double angle = 0.0;
-  if ( ( p[0] == 0.0 ) && ( p[1] == 0.0 ) )
-    return angle;
 
-  if ( p[0] >= p[1] )
-    {
-      if ( p[0] >= -p[1] )
-  angle = atan( p[1] / p[0] );
-      else
-  angle = 1.5* M_PI + atan( - p[0] / p[1] );
-    }
-  else // ( p[0] >= p[1] )
-    {
-      if ( p[0] >= -p[1] )
-  angle = 0.5*M_PI - atan( p[0] / p[1] );
-      else
-  angle = M_PI + atan( p[1] / p[0] );
-    }
-  angle = ( angle < 0.0 ) ? angle + 2*M_PI : angle;
+  double angle = atan2( p[1], p[0] );
+  angle = ( angle < 0.0 ) ? angle + 2 * M_PI : angle;
+
   return angle;
 }
 
