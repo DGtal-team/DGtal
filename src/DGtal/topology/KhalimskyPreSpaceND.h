@@ -199,6 +199,7 @@ namespace DGtal
     /** Implicit constructor from its Khalimsky coordinates.
      *
      * @param aPoint Its Khalimsky coordinates as a point.
+     * @param positive if cell has positive sign.
      */
     SignedKhalimskyPreCell( Point const& aPoint, bool positive );
 
@@ -284,12 +285,14 @@ namespace DGtal
     /**
      * Constructor from a pre-cell.
      * @param cell any unsigned pre-cell
+     * @param open 'true' if the cell if open.
      */
     explicit PreCellDirectionIterator( Cell cell, bool open = true );
 
     /**
      * Constructor from a signed pre-cell.
      * @param scell any signed pre-cell
+     * @param open 'true' if the cell if open.
      */
     explicit PreCellDirectionIterator( SCell scell, bool open = true );
 
