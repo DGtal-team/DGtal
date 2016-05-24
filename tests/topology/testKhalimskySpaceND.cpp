@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testCellularGridSpaceND.cpp
+ * @file
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-smb.fr )
  * LAboratory of MAthematics - LAMA (CNRS, UMR 5127), University of Savoie Mont Blanc, France
