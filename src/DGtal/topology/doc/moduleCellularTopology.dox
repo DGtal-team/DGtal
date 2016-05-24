@@ -1,5 +1,5 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
@@ -20,7 +20,7 @@ these spaces. A lot of the ideas, concepts, algorithms,
 documentation and code is a backport from <a
 href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
- 
+
 
 @section dgtal_ctopo_sec1  Images and digital spaces
 
@@ -49,7 +49,7 @@ nD), but also all the lower dimensional cells of the space. For
 instance, in 2D, we have:
 
 - 2-dimensional cells (closed unit square) = pixels
-- 1-dimensional cells (closed unit segment) = linels 
+- 1-dimensional cells (closed unit segment) = linels
 - 0-dimensional cells (closed point) = pointels
 
 The set of all cells \f$\mathbf{F}^n\f$ is called the n-dimensional
@@ -72,7 +72,7 @@ space. The 2-cell is in red, the 1-cell in green, the 0-cell in blue.
 
 
 @subsection dgtal_ctopo_sec2  Cells in the cubical grid and Khalimsky coordinates
- 
+
 We use now the regularity of the cubical grid to represent it
 efficiently. In 1D, the cubical grid is a simple line alternating
 closed points {k} and open unit segments (k,k+1). Khalimsky noticed
@@ -104,7 +104,7 @@ For instance, the pixel (x,y) of the digital space
 \f$\mathbf{Z}^2\f$ corresponds to the 2-cell (2x+1,2y+1) of the
 cellular grid space \f$\mathbf{F}^2\f$.
 
-@subsection dgtal_ctopo_sec3  Models for cellular grid spaces 
+@subsection dgtal_ctopo_sec3  Models for cellular grid spaces
 
 Instead of chosing a specific implementation of a cellular grid
 space, we keep the genericity and efficiency objective of DGtal by
@@ -120,7 +120,7 @@ href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
 The inner types are:
 - Integer: the type for representing a coordinate or component in this space.
-- Size: the type for representing a size (unsigned) 
+- Size: the type for representing a size (unsigned)
 - Cell: the type of unsigned cells
 - SCell: the type of signed cells
 - Sign: the sign type for cells
@@ -141,7 +141,7 @@ The inner types are:
 Methods include:
 - Cell creation services
 - Read accessors to cells
-- Write accessors to cells 
+- Write accessors to cells
 - Conversion signed/unsigned cells
 - Cell topology services
 - Direction iterator services for cells
@@ -165,7 +165,7 @@ standard \c int (32 bits generally), we can write:
 typedef KhalimskySpaceND< 2, int > KSpace;
 KSpace K;
 Point low( -3, -4 );
-Point high( 5, 3 ); 
+Point high( 5, 3 );
 // true for closed space, false for open space.
 bool space_ok = K.init( low, high, true );
 @endcode
@@ -253,29 +253,29 @@ coordinates (the topology is known in the two latter cases).
 The file ctopo-1-3d.cpp shows another example in 3D:
 
 
-@code 
+@code
   KSpace K;
-  Point plow(0,0,0);  
+  Point plow(0,0,0);
   Point pup(3,3,2);
   ...
   Cell ptlow = K.uPointel( plow ); // pointel (0*2,0*2, 0*2)
   Cell ptup1 = K.uPointel( pup ); // pointel (3*2,3*2, 2*2)
   Cell ptup2 = K.uTranslation( ptup1, Point::diagonal() ); // pointel (4*2, 4*2, 3*2)
 
-  viewer << ptlow << ptup1 << ptup2; 
+  viewer << ptlow << ptup1 << ptup2;
   Cell linel0 = K.uCell( Point( 1, 0, 2 ) ); // linel (2, 0, 2)
   viewer << linel0; // ...
   Cell surfelA = K.uCell( Point( 2, 1, 3 ) ); // surfel (2,1,3)
   viewer << surfelA; //...
   Cell vox1 = K.uCell( Point( 3, 3, 3 ) ); // voxel (3,3,3)
   viewer << vox1;
-@endcode 
- 
+@endcode
+
   @image html ctopo-1-3d.png  "Displaying some cells in different colors."
   @image latex ctopo-1-3d.png  "Displaying some cells in different colors." width=0.5\textwidth
 
 
- 
+
 
 @section dgtal_ctopo_sec6  Cells may be unsigned or signed
 
@@ -284,7 +284,7 @@ Cell). However it is often convenient to assign a sign (POS or NEG)
 to a cell, a kind of orientation. The sign is especially useful to
 define boundary operators and digital surfaces. It is also used in
 algebraic topological models of cubical complexes, for instance to
-define chains (formal sums of cells). 
+define chains (formal sums of cells).
 
 Signed cells have type SCell. They are created using methods
 KhalimskySpaceND::sCell for arbitrary cells,
@@ -301,8 +301,8 @@ the cell with opposite sign.
 
 All methods concerning unsigned cells are prefixed by \c u, all
 methods concerning signed cells are prefixed by \c s.
- 
- 
+
+
  Note that the sign of the signed and unsigned are well taked into
   account in the display with  \ref Viewer3D .
 
@@ -382,35 +382,35 @@ cells:
 
  \code
  KSpace K;
- Cell first, last; // lower and upper bounds 
+ Cell first, last; // lower and upper bounds
  Cell p = first;
- do 
+ do
  { // ... whatever [p] is the current cell
  }
- while ( K.uNext( p, first, last ) ); 
+ while ( K.uNext( p, first, last ) );
  \endcode
 
   For instance (see.  khalimskySpaceScanner.cpp) you will obtain the default following scan:
- 
+
 @image html khalimskySpaceScanner1.png "Sequence of visited pixels in a scan of Khalimsky Space (standard scan order)."
 @image latex khalimskySpaceScanner1.png "Sequence of visited pixels in a scan of Khalimsky Space (standard scan order)." width=0.4\textwidth
 
-- The scan can also be done by explicitly controll the order:
+- The scan can also be done by explicitly controlling the order:
 @code
 KSpace::Cell q;
 
 ...
 for (q = K.uGetMaxT(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
-  	for ( q = K.uGetMinT(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1)){
-	 // ... whatever [q] is the current cell
-		
-	}		
+  for ( q = K.uGetMinT(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1))
+    {
+      // ... whatever [q] is the current cell
+    }
 @endcode
 You will obtain the following scan:
 
  @image html khalimskySpaceScanner2.png "Sequence of visited pixels in a scan of Khalimsky Space (other scan order)."
  @image latex khalimskySpaceScanner2.png "Sequence of visited pixels in a scan of Khalimsky Space (other scan order)." width=0.4\textwidth
-  
+
 - Translating arbitrarily a cell in the space with
   KhalimskySpaceND::uTranslation and
   KhalimskySpaceND::sTranslation.
@@ -447,11 +447,11 @@ cell topology.
   @code
   KSpace::Cell p;
   ...
-  for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
-  { 
+  for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q )
+  {
   KSpace::Dimension dir = *q;
 	...
-  } 
+  }
   @endcode
 
 @section dgtal_ctopo_sec10  Cell adjacency and neighborhood
@@ -466,14 +466,14 @@ to a given cell with the following methods:
   KhalimskySpaceND::sProperNeighborhood.
 - the cell that is adjacent forward or backward along some given
   axis is returned by KhalimskySpaceND::uAdjacent and
-  KhalimskySpaceND::sAdjacent. 
+  KhalimskySpaceND::sAdjacent.
 
 @section dgtal_ctopo_sec11  Cell incidence
 
 Cells incident to some cell touch the cell but do not have the same
 dimension. Cells lower incident to a cell have lower dimensions,
 cells upper incident to a cell have higher dimensions. Specific
-rules determine the sign of incident cells to a signed cell: 
+rules determine the sign of incident cells to a signed cell:
 
 1. A first rule is that along some axis, the forward and the
 backward incident cell have opposite sign.
@@ -506,7 +506,7 @@ boundary.
   SCell ptdl = K.sIncident( downl, 0, false );// pointel (0,0)
   // ptld and ptdl have opposite signs.
   @endcode
-  
+
 - The set of cells low incident to a given cell (i.e. just 1
   dimension less) is returned by
   KhalimskySpaceND::uLowerIncident and
@@ -701,7 +701,7 @@ space. This program outputs these images:
 
 @see \ref dgtal_ctopo_sec8
 
-<table> 
+<table>
 <TR>
 <td> @image html khalimskySpaceScanner1.png </td>
 <td> @image html khalimskySpaceScanner2.png </td>
