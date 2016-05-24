@@ -800,7 +800,7 @@ namespace DGtal
 // Aliases
 namespace DGtal
 {
-  /*
+  /**
    * \brief Aim: This class represents a standard digital straight segment (DSS), 
    * ie. the sequence of simply 4-connected digital points contained in a 
    * standard digital straight line (DSL) between two points of it. 

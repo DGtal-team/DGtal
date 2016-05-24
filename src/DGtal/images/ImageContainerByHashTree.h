@@ -409,7 +409,7 @@ namespace DGtal
 
     int* getCoordinatesFromKey(HashKey key) const;
 
-    /*
+    /**
      * Prints in the state of the container as a tree. (Calls
      * printTree)
      *
@@ -485,9 +485,9 @@ namespace DGtal
 
 
     // -------------------------------------------------------------
-    /*  Iterator inner-class
+    /**  Iterator inner-class
      *
-     *  @brief Buil-in iterator on an HashTree. This iterator visits
+     *  @brief Built-in iterator on an HashTree. This iterator visits
      *  all node in the tree.
      *
      * -------------------------------------------------------------
