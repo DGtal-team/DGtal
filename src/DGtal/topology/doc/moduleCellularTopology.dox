@@ -599,6 +599,14 @@ The main features are:
   a.myCoordinates[0] += 2;
   @endcode
 
+- direct construction of a pre-cell from its Khalimsky coordinates:
+  @code
+  KPreSpace::Cell precell( Point( 4, 5 ) ); // OK
+
+  // KSpace::Cell    cell( Point( 4, 5 ) ); // Compilation error.
+  // Cell creation is only possible through a valid KhalimskySpaceND.
+  @endcode
+
 - easy conversion from a cell to a pre-cell using the KhalimskyCell::preCell
   and SignedKhalimskyCell::preCell methods,
   or using the implicit conversion:
