@@ -759,7 +759,7 @@ WARN_FORMAT            = "$file:$line: $text"
 # messages should be written. If left blank the output is written to standard
 # error (stderr).
 
-WARN_LOGFILE           = ./doxygen.Board.log
+WARN_LOGFILE           = @top_bindir@/doxygen.Board.log
 
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
@@ -800,6 +800,7 @@ FILE_PATTERNS          = *.cpp \
                          *.hpp \
                          *.cxx \
                          *.h \
+                         *.ih \
                          *.dox
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
