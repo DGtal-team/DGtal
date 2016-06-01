@@ -1,5 +1,43 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
 #pragma once
 
+/**
+ * @file
+ * @author Roland Denis (\c roland.denis@univ-smb.fr )
+ * LAboratory of MAthematics - LAMA (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2016/06/01
+ *
+ * This file is part of the DGtal library.
+ */
+
+#if defined(RealFFT_RECURSES)
+#error Recursive header files inclusion detected in RealFFT.h
+#else // defined(RealFFT_RECURSES)
+/** Prevents recursive inclusion of headers. */
+#define RealFFT_RECURSES
+
+#if !defined RealFFT_h
+/** Prevents repeated inclusion of headers. */
+#define RealFFT_h
+
+//////////////////////////////////////////////////////////////////////////////
+// Inclusions
 #include <cstddef>    // std::size_t
 #include <stdexcept>  // Exceptions
 #include <new>        // std::bad_alloc exception
@@ -7,16 +45,16 @@
 #include <complex>    // To be included before fftw: see http://www.fftw.org/doc/Complex-numbers.html#Complex-numbers
 #include <fftw3.h>
 
-#include <DGtal/kernel/domains/HyperRectDomain.h>
-#include <DGtal/images/ArrayImageAdapter.h>
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/images/ArrayImageAdapter.h"
 
 namespace DGtal
 {
 
-namespace
+namespace detail
 {
 
-/// Facility to cast to complex type used by fftw
+/// Facility to cast to the complex type used by fftw
 template <typename TFFTW>
 struct FFTWComplexCast
   {
@@ -37,8 +75,8 @@ struct FFTWComplexCast
 #define FFTW_WRAPPER_GEN(suffix)                                                                                         \
     using size_t  = std::size_t;                                                                                         \
     using complex = fftw ## suffix ## _complex;                                                                          \
-    using plan = fftw ## suffix ## _plan;                                                                                \
-    using self = FFTWWrapper<real>;                                                                                      \
+    using plan    = fftw ## suffix ## _plan;                                                                             \
+    using self    = FFTWWrapper<real>;                                                                                   \
                                                                                                                          \
     static inline void*   malloc( size_t n )      noexcept { return fftw ## suffix ## _malloc(n); }                      \
     static inline void    free( void* p )         noexcept { fftw ## suffix ## _free(p); }                               \
@@ -135,7 +173,7 @@ struct FFTWWrapper<long double>
     FFTW_WRAPPER_GEN(l)
   };
 
-} // anonymous namespace
+} // detail namespace
 
 
 /** Generic real-complex backward and forward Fast Fourier Transform.
@@ -145,7 +183,7 @@ struct FFTWWrapper<long double>
  * @see http://www.fftw.org/doc/index.html
  */
 template <
-  class TDomain, 
+  class TDomain,
   typename T = double
 >
 class RealFFT;
@@ -158,204 +196,158 @@ template <typename TSpace, typename T>
 class RealFFT< HyperRectDomain<TSpace>, T >
   {
   private:
-    using FFTW = FFTWWrapper<T>;
+    using FFTW = detail::FFTWWrapper<T>;
 
   public:
-    using Space   = TSpace;
-    using Domain  = HyperRectDomain<Space>;
-    using Point   = typename Domain::Point;
-    using Dimension = typename Domain::Dimension;
-    using Real = T;
-    using Complex = std::complex<Real>;
-    static const Dimension dimension = Domain::dimension;
+    using Space   = TSpace;                       ///< Space type.
+    using Domain  = HyperRectDomain<Space>;       ///< Domain type.
+    using Point   = typename Domain::Point;       ///< Point type.
+    using Dimension = typename Domain::Dimension; ///< Space dimension type.
+    using Real = T;                               ///< Real value type.
+    using Complex = std::complex<Real>;           ///< Complex value type.
+    using Self    = RealFFT< Domain, T >;         ///< Self type.
+
+    static const constexpr Dimension dimension = Domain::dimension; ///< Space dimension.
+
+    // ----------------------- Standard services ------------------------------
+  public:
 
     /** Constructor.
      * @param aDomain The domain over which the transform will be performed.
      */
-    RealFFT( Domain const& aDomain ) noexcept
-        : mySpatialDomain{ aDomain }
-        , mySpatialExtent{ mySpatialDomain.upperBound() - mySpatialDomain.lowerBound() + Point::diagonal(1) }
-        , myFreqExtent{ mySpatialExtent / (Point::diagonal(1) + Point::base(0)) + Point::base(0) }
-        , myFreqDomain{ Point::diagonal(0), myFreqExtent - Point::diagonal(1) }
-        , myStorage( FFTW::malloc( sizeof(Complex) * myFreqDomain.size() ) )
-      {}
+    RealFFT( Domain const& aDomain ) noexcept;
+
+    /// Copy constructor. Deleted.
+    RealFFT( Self const & /* other */ ) = delete;
+
+    /// Move constructor. Deleted.
+    RealFFT( Self && /* other */ ) = delete;
+
+    /// Copy assignment operator. Deleted.
+    Self & operator= ( Self const & /* other */ ) = delete;
+
+    /// Move assignment operator. Deleted.
+    Self & operator= ( Self && /* other */ ) = delete;
 
     /// Destructor
-    ~RealFFT()
-      {
-        FFTW::free( myStorage );
-      }
+    ~RealFFT();
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+
+    /** Padding used with real datas.
+     *
+     * @return the number of real values used as padding along the last dimension.
+     *
+     * @see http://www.fftw.org/doc/Multi_002dDimensional-DFTs-of-Real-Data.html#Multi_002dDimensional-DFTs-of-Real-Data
+     */
+    std::size_t getPadding() const noexcept;
+
+    ///@{
+    /** Gets spatial raw storage.
+     * @warning There is a padding at the end of the first dimension (see getPadding()).
+     */
+          Real* getSpatialStorage()       noexcept;
+
+    const Real* getSpatialStorage() const noexcept;
+    ///@}
+
+    ///@{
+    /** Gets spatial image.
+     * @returns a @link concepts::CImage CImage@endlink
+     *       or a @link concepts::CConstImage CConstImage@endlink
+     *    model on the spatial data.
+     * @see ArrayImageAdapter
+     */
+    ArrayImageAdapter<      Real*, Domain> getSpatialImage()       noexcept;
+
+    ArrayImageAdapter<const Real*, Domain> getSpatialImage() const noexcept;
+    ///@}
+
+    ///@{
+    /// Gets frequential raw storage.
+          Complex* getFreqStorage()       noexcept;
+
+    const Complex* getFreqStorage() const noexcept;
+
+    ///@}
+
+    ///@{
+    /** Gets frequential image.
+     * @returns a @link concepts::CImage CImage@endlink
+     *       or a @link concepts::CConstImage CConstImage@endlink
+     *    model on the frequency data.
+     * @see ArrayImageAdapter
+     */
+    ArrayImageAdapter<      Complex*, Domain> getFreqImage()       noexcept;
+
+    ArrayImageAdapter<const Complex*, Domain> getFreqImage() const noexcept;
+    ///@}
+
+    /// Get spatial domain.
+    Domain const& getSpatialDomain() const noexcept;
+
+    /// Get frequential domain.
+    Domain const& getFreqDomain()    const noexcept;
+
+    /// Get spatial domain extent.
+    Point  const& getSpatialExtent() const noexcept;
+
+    /// Get frequential domain extent.
+    Point  const& getFreqExtent()    const noexcept;
+
+    /** In-place Fast Fourier Transformation.
+     *
+     * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
+     * @param way   The direction of the transformation: FFTW_FORWARD for real->complex, FFTW_BACKWARD for complex->real.
+     */
+    void doFFT( unsigned flags = FFTW_MEASURE, int way = FFTW_FORWARD );
+
+    /** In-place forward FFT transformation (spatial -> frequential)
+     *
+     * @param flags Planner flags. @see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
+     */
+    void forwardFFT( unsigned flags = FFTW_MEASURE );
+
+    /** In-place backward FFT transformation (frequential -> spatial)
+     *
+     * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
+     */
+    void backwardFFT( unsigned flags = FFTW_MEASURE );
 
     /** Checks if storage is valid.
      * @return true if there is an allocated storage, false otherwise.
      */
-    bool isValid() const noexcept
-      {
-        return myStorage != nullptr;
-      }
+    bool isValid() const noexcept;
 
-    /** Padding when using real datas. 
-     *
-     * @return the number of real values used as padding along the last dimension.
-     *
-     *  \see http://www.fftw.org/doc/Multi_002dDimensional-DFTs-of-Real-Data.html#Multi_002dDimensional-DFTs-of-Real-Data 
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
      */
-    inline  
-    size_t getPadding() const noexcept
-      {
-        return 2*myFreqExtent[0] - mySpatialExtent[0];
-      }
+    void selfDisplay ( std::ostream & out ) const;
 
-    /** Get mutable spatial storage.
-     * @warning There is a padding at the end of the first dimension. \see getPadding
-     */
-    inline
-    Real* getSpatialStorage() noexcept
-      {
-        return reinterpret_cast<Real*>(myStorage);
-      }
-
-    /** Get non-mutable spatial storage.
-     * @warning There is a padding at the end of the first dimension. \see getPadding
-     */
-    inline
-    Real const* getSpatialStorage() const noexcept
-      {
-        return reinterpret_cast<Real const*>(myStorage);
-      }
-
-    /// Get mutable spatial image.
-    inline
-    ArrayImageAdapter<Real*, Domain> getSpatialImage() noexcept
-      {
-        const Domain full_domain { mySpatialDomain.lowerBound(), mySpatialDomain.upperBound() + Point::base(0, getPadding()) };
-        return { getSpatialStorage(), full_domain, mySpatialDomain };
-      }
-    
-    /// Get non-mutable spatial image.
-    inline
-    ArrayImageAdapter<const Real*, Domain> getSpatialImage() const noexcept
-      {
-        const Domain full_domain { mySpatialDomain.lowerBound(), mySpatialDomain.upperBound() + Point::base(0, getPadding()) };
-        return { getSpatialStorage(), full_domain, mySpatialDomain };
-      }
-
-    /// Get mutable frequential storage.
-    inline
-    Complex* getFreqStorage() noexcept
-      {
-        return reinterpret_cast<Complex*>(myStorage);
-      }
-
-    /// Get non-mutable frequential storage.
-    inline
-    Complex const* getFreqStorage() const noexcept
-      {
-        return reinterpret_cast<Complex const*>(myStorage);
-      }
-   
-    /// Get mutable frequential image.
-    inline
-    ArrayImageAdapter<Complex*, Domain> getFreqImage() noexcept
-      {
-        return { getFreqStorage(), getFreqDomain() };
-      }
-    
-    /// Get non-mutable frequential image.
-    inline
-    ArrayImageAdapter<Complex*, Domain> getFreqImage() const noexcept
-      {
-        return { getFreqStorage(), getFreqDomain() };
-      }
-    
-    /// Get spatial domain.
-    inline Domain const& getSpatialDomain() const noexcept { return mySpatialDomain; }
-
-    /// Get frequential domain.
-    inline Domain const& getFreqDomain()    const noexcept { return myFreqDomain; }
-
-    /// Get spatial domain extent.
-    inline Point  const& getSpatialExtent() const noexcept { return mySpatialExtent; }
-        
-    /// Get frequential domain extent.
-    inline Point  const& getFreqExtent()    const noexcept { return myFreqExtent; }
-
-    /** Fast Fourier Transformation.
-     *
-     * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags 
-     * @param way   The direction of the transform: FFTW_FORWARD for real->complex, FFTW_BACKWARD for complex->real.
-     */
-    void doFFT( unsigned flags = FFTW_MEASURE, int way = FFTW_FORWARD )
-      {
-        typename FFTW::plan p;
-
-        // Transform dimensions
-        int n[dimension];
-        for (size_t i = 0; i < dimension; ++i)
-          n[dimension-i-1] = mySpatialExtent[i];
-
-        // Create the plan for this transformation
-        // Only FFTW_ESTIMATE flag preserves input.
-        if ( flags & FFTW_ESTIMATE )
-          {
-            p = FFTW::plan_dft( dimension, n, getSpatialStorage(), getFreqStorage(), way, FFTW_ESTIMATE );
-          }
-        else
-          {
-            // Strategy to preserve input datas while creating DFT plan:
-            // - Firstly, checks if a plan already exists for this dimensions.
-            p = FFTW::plan_dft( dimension, n, getSpatialStorage(), getFreqStorage(), way, FFTW_WISDOM_ONLY | flags );
-
-            // - Otherwise, create fake input to create the plan.
-            if ( p == NULL )
-              {
-                void* tmp = FFTW::malloc( sizeof(Complex) * myFreqDomain.size() );
-                if ( tmp == nullptr )  throw std::bad_alloc{};
-                p = FFTW::plan_dft( dimension, n, reinterpret_cast<Real*>(tmp), reinterpret_cast<Complex*>(tmp), way, flags );
-                FFTW::free(tmp);
-              }
-          }
-
-        // We must have a valid plan now ...
-        if ( p == NULL ) throw std::runtime_error("No valid DFT plan founded.");
-
-        // Gogogo !
-        FFTW::execute_dft( p, getSpatialStorage(), getFreqStorage(), way );
-
-        // Destroying plan
-        FFTW::destroy_plan( p );
-      }
-
-    /** Forward transformation (spatial -> frequential)
-     *
-     * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags 
-     */
-    inline
-    void forwardFFT( unsigned flags = FFTW_MEASURE )
-      {
-        doFFT( flags, FFTW_FORWARD );
-      }
-    
-    /** Backward transformation (frequential -> spatial)
-     *
-     * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags 
-     */
-    inline
-    void backwardFFT( unsigned flags = FFTW_MEASURE )
-      {
-        doFFT( flags, FFTW_BACKWARD );
-      }
-
+    // ------------------------- Private Datas --------------------------------
   private:
     const Domain  mySpatialDomain;  ///< Spatial domain (real).
     const Point   mySpatialExtent;  ///< Extent of the spatial domain.
     const Point   myFreqExtent;     ///< Extent of the frequential domain.
     const Domain  myFreqDomain;     ///< Frequential domain (complex).
           void*   myStorage;        ///< Storage.
-    
+
   };
 
 } // namespace DGtal
 
-/* GNU coding style */
-/* vim: set ts=2 sw=2 expandtab cindent cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1 : */
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions.
+#include "DGtal/math/RealFFT.ih"
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+#endif // !defined RealFFT_h
+
+#undef RealFFT_RECURSES
+#endif // else defined(RealFFT_RECURSES)
+
