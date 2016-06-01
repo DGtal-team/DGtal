@@ -28,7 +28,10 @@
 
 
 //////////////////////////////////////////////////////////////////////////////
-#include <cstdlib>
+#include <ostream>
+#include <stdexcept>  // Exceptions
+#include <new>        // std::bad_alloc exception
+#include <algorithm>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -213,7 +216,7 @@ template <typename TSpace, typename T>
 inline
 void
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
-  doFFT( unsigned flags, int way )
+  doFFT( unsigned flags, int way, bool normalized )
 {
   typename FFTW::plan p;
 
@@ -252,6 +255,15 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 
   // Destroying plan
   FFTW::destroy_plan( p );
+
+  // Normalization
+  if ( way == FFTW_BACKWARD && normalized )
+    {
+      const std::size_t N = getSpatialDomain().size();
+
+      for ( auto & v : getSpatialImage() )
+        v /= N;
+    }
 }
 
 /// In-place forward FFT transformation (spatial -> frequential)
@@ -261,7 +273,7 @@ void
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   forwardFFT( unsigned flags )
 {
-  doFFT( flags, FFTW_FORWARD );
+  doFFT( flags, FFTW_FORWARD, false );
 }
 
 /// In-place backward FFT transformation (frequential -> spatial)
@@ -269,9 +281,9 @@ template <typename TSpace, typename T>
 inline
 void
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
-  backwardFFT( unsigned flags )
+  backwardFFT( unsigned flags, bool normalized )
 {
-  doFFT( flags, FFTW_BACKWARD );
+  doFFT( flags, FFTW_BACKWARD, normalized );
 }
 
 /**
