@@ -43,8 +43,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <cstddef>    // std::size_t
-#include <stdexcept>  // Exceptions
-#include <new>        // std::bad_alloc exception
 
 #include <complex>    // To be included before fftw: see http://www.fftw.org/doc/Complex-numbers.html#Complex-numbers
 #include <fftw3.h>
@@ -213,8 +211,9 @@ class RealFFT< HyperRectDomain<TSpace>, T >
   public:
     using Space   = TSpace;                       ///< Space type.
     using Domain  = HyperRectDomain<Space>;       ///< Domain type.
-    using Point   = typename Domain::Point;       ///< Point type.
-    using Dimension = typename Domain::Dimension; ///< Space dimension type.
+    using Point     = typename Space::Point;      ///< Point type.
+    using RealPoint = typename Space::RealPoint;  ///< Real point type.
+    using Dimension = typename Space::Dimension;  ///< Space dimension type.
     using Real = T;                               ///< Real value type.
     using Complex = std::complex<Real>;           ///< Complex value type.
     using Self    = RealFFT< Domain, T >;         ///< Self type.
@@ -247,6 +246,9 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     // ----------------------- Interface --------------------------------------
   public:
 
+    ///////////////////////////////////////////////////////////////////////////
+    ///@name Spatial domain services.
+    ///@{
 
     /** Padding used with real datas.
      *
@@ -256,6 +258,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      */
     std::size_t getPadding() const noexcept;
 
+    ///@name
     ///@{
     /** Gets spatial raw storage.
      * @warning There is a padding at the end of the first dimension (see getPadding()).
@@ -266,7 +269,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ///@}
 
     ///@{
-    /** Gets spatial image.
+    /** Gets the spatial image.
      * @returns a @link concepts::CImage CImage@endlink
      *       or a @link concepts::CConstImage CConstImage@endlink
      *    model on the spatial data.
@@ -276,6 +279,44 @@ class RealFFT< HyperRectDomain<TSpace>, T >
 
     ArrayImageAdapter<const Real*, Domain> getSpatialImage() const noexcept;
     ///@}
+
+    /// Gets the spatial domain.
+    Domain const& getSpatialDomain() const noexcept;
+
+    /// Gets the spatial domain extent.
+    Point  const& getSpatialExtent() const noexcept;
+
+    ///@{
+    /// Gets the extent of the scaled spatial domain.
+    RealPoint getScaledSpatialExtent() const noexcept;
+
+    /** Sets the extent of the scaled spatial domain.
+     * @param anExtent  The extent.
+     */
+    void setScaledSpatialExtent( RealPoint const& anExtent ) noexcept;
+    ///@}
+
+    ///@{
+    /// Gets the lower bound of the scaled spatial domain.
+    RealPoint getScaledSpatialLowerBound() const noexcept;
+
+    /** Sets the lower bound of the scaled spatial domain.
+     * @param aPoint  The lower bound.
+     */
+    void setScaledSpatialLowerBound( RealPoint const& aPoint ) noexcept;
+    ///@}
+
+    /** Converts coordinates from the spatial image into scaled coordinates.
+     * @param aPoint  Coordinates in the domain of the spatial image.
+     * @return Corresponding coordinates in the scaled spatial domain.
+     */
+    RealPoint calcScaledSpatialCoords( Point const& aPoint ) const noexcept;
+
+    ///@}
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///@name Frequency domain services.
+    ///@{
 
     ///@{
     /// Gets frequential raw storage.
@@ -297,17 +338,29 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ArrayImageAdapter<const Complex*, Domain> getFreqImage() const noexcept;
     ///@}
 
-    /// Get spatial domain.
-    Domain const& getSpatialDomain() const noexcept;
-
-    /// Get frequential domain.
+    /// Gets the frequency domain.
     Domain const& getFreqDomain()    const noexcept;
 
-    /// Get spatial domain extent.
-    Point  const& getSpatialExtent() const noexcept;
-
-    /// Get frequential domain extent.
+    /// Gets the frequency domain extent.
     Point  const& getFreqExtent()    const noexcept;
+
+    /** Converts coordinates from the frequency image into scaled frequencies.
+     *
+     * Along each dimension, the first half of the space is composed of
+     * positive frequencies and the second half maps to the negative
+     * frequencies.
+     *
+     * @param aPoint  Coordinates in the domain of the frequency image.
+     * @return Corresponding coordinates (the frequencies) in the scaled frequency domain.
+     * @see http://www.fftw.org/fftw3_doc/The-1d-Discrete-Fourier-Transform-_0028DFT_0029.html#The-1d-Discrete-Fourier-Transform-_0028DFT_0029
+     */
+    RealPoint calcScaledFreqCoords( Point const& aPoint ) const noexcept;
+
+    ///@}
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///@name Fast Fourier Transformations.
+    ///@{
 
     /** In-place Fast Fourier Transformation.
      *
@@ -320,7 +373,6 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     /** In-place forward FFT transformation (spatial -> frequential)
      *
      * @param flags Planner flags. @see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
-     * @note Don't forget that these transforms are unnormalized. Applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
      */
     void forwardFFT( unsigned flags = FFTW_MEASURE );
 
@@ -331,6 +383,12 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @note If the transformation result will be modified or copied in an another image, prefer set @a normalized to false and postpone the normalization.
      */
     void backwardFFT( unsigned flags = FFTW_MEASURE, bool normalized = true );
+
+    ///@}
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///@name DGtal services.
+    ///@{
 
     /** Checks if storage is valid.
      * @return true if there is an allocated storage, false otherwise.
@@ -343,10 +401,14 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      */
     void selfDisplay ( std::ostream & out ) const;
 
+    ///@}
+
     // ------------------------- Private Datas --------------------------------
   private:
     const Domain  mySpatialDomain;  ///< Spatial domain (real).
     const Point   mySpatialExtent;  ///< Extent of the spatial domain.
+        RealPoint myScaledSpatialExtent;  ///< Extent of the scaled spatial domain.
+        RealPoint myScaledSpatialLowerBound;  ///< Lower bound of the scaled spatial domain.
     const Point   myFreqExtent;     ///< Extent of the frequential domain.
     const Domain  myFreqDomain;     ///< Frequential domain (complex).
           void*   myStorage;        ///< Storage.
