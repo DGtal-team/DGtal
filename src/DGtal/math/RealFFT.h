@@ -36,6 +36,10 @@
 /** Prevents repeated inclusion of headers. */
 #define RealFFT_h
 
+#ifndef WITH_FFTW3
+  #error You need to have activated FFTW3 (WITH_FFTW3) to include this file.
+#endif
+
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <cstddef>    // std::size_t
@@ -51,6 +55,7 @@
 namespace DGtal
 {
 
+// Implementation details.
 namespace detail
 {
 
@@ -143,6 +148,7 @@ struct FFTWComplexCast
 template <typename Real = double>
 struct FFTWWrapper;
 
+#ifdef WITH_FFTW3_DOUBLE
 /** Wrapper implementations to fftw functions for double values.
  * @warning Remember to link against fftw3 library.
  */
@@ -152,7 +158,9 @@ struct FFTWWrapper<double>
     using real = double;
     FFTW_WRAPPER_GEN()
   };
+#endif
 
+#ifdef WITH_FFTW3_FLOAT
 /** Wrapper implementations to fftw functions for float values.
  * @warning Remember to link against fftw3f library.
  */
@@ -162,7 +170,9 @@ struct FFTWWrapper<float>
     using real = float;
     FFTW_WRAPPER_GEN(f)
   };
+#endif
 
+#ifdef WITH_FFTW3_LONG
 /** Wrapper implementations to fftw functions for long double values.
  * @warning Remember to link against fftw3l library.
  */
@@ -172,10 +182,11 @@ struct FFTWWrapper<long double>
     using real = long double;
     FFTW_WRAPPER_GEN(l)
   };
+#endif
 
 } // detail namespace
 
-
+///@cond
 /** Generic real-complex backward and forward Fast Fourier Transform.
  * @tparam  TDomain Type of the domain over which the FFT will be performed.
  * @tparam  T       Values type.
@@ -187,6 +198,7 @@ template <
   typename T = double
 >
 class RealFFT;
+///@endcond
 
 /** Specialization for FFT over HyperRectDomain.
  * @tparam  TSpace  Type of the space.
