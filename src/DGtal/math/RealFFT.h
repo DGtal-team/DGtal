@@ -200,7 +200,7 @@ template <
 class RealFFT;
 ///@endcond
 
-/** Specialization for FFT over HyperRectDomain.
+/** Real-complex backward and forward Fast Fourier Transform over HyperRectDomain.
  * @tparam  TSpace  Type of the space.
  * @tparam  T       Values type.
  */
@@ -311,22 +311,26 @@ class RealFFT< HyperRectDomain<TSpace>, T >
 
     /** In-place Fast Fourier Transformation.
      *
-     * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
+     * @param flags Planner flags (see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags).
      * @param way   The direction of the transformation: FFTW_FORWARD for real->complex, FFTW_BACKWARD for complex->real.
+     * @param normalized  When applying the backward transformation, if @a normalized is true, then the transformation is normalized. Otherwise, applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
      */
-    void doFFT( unsigned flags = FFTW_MEASURE, int way = FFTW_FORWARD );
+    void doFFT( unsigned flags = FFTW_MEASURE, int way = FFTW_FORWARD, bool normalized = false );
 
     /** In-place forward FFT transformation (spatial -> frequential)
      *
      * @param flags Planner flags. @see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
+     * @note Don't forget that these transforms are unnormalized. Applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
      */
     void forwardFFT( unsigned flags = FFTW_MEASURE );
 
     /** In-place backward FFT transformation (frequential -> spatial)
      *
      * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
+     * @param normalized  When applying the backward transformation, if @a normalized is true, then the transformation is normalized. Otherwise, applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
+     * @note If the transformation result will be modified or copied in an another image, prefer set @a normalized to false and postpone the normalization.
      */
-    void backwardFFT( unsigned flags = FFTW_MEASURE );
+    void backwardFFT( unsigned flags = FFTW_MEASURE, bool normalized = true );
 
     /** Checks if storage is valid.
      * @return true if there is an allocated storage, false otherwise.
