@@ -345,8 +345,11 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
     drawAsDigitalPoints( board, a );
   else if ( ( mode == "" ) )
     {
+      auto style = new DefaultDrawStyleBB_ArithmeticalDSS();
       drawAsDigitalPoints( board, a );
+      Style2DFactory::draw( board,  style);
       drawAsBoundingBox( board, a );
+      delete style;
     }
   else
     ASSERT(false && ("draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> & a ): Unknown mode "+mode)==""  );
