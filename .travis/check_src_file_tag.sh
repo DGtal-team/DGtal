@@ -3,7 +3,7 @@
 return_code=0
 
 # Checking that source code has proper @file tag
-for file in `find * -regextype posix-extended -regex '.*\.(cpp|h|ih)'`
+for file in `find * -type f \( -name \*.cpp -o -name \*.h -o -name \*.ih \)`
 do
   expected_name=$(basename $file)
   if ! $(grep -aqP "^\s*(\**|//[/!]|/\*[\*!])\s*?[@\\\\]file(\s+${expected_name})?\s*$" $file)

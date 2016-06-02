@@ -3,7 +3,7 @@
 return_code=0
 
 # Checking that examples has proper @file tag
-for file in `find * -regextype posix-extended -regex '.*\.[ch](pp|xx|)'`
+for file in `find * -type f \( -name \*.c -o -name \*.cpp -o -name \*.cxx -o -name \*.h -o -name \*.hpp -o -name \*.hxx \)`
 do
   expected_name=$file
   if ! $(grep -aqP "^\s*(\**|//[/!]|/\*[\*!])\s*?[@\\\\]example(\s+${expected_name})?\s*$" $file)
