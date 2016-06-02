@@ -108,6 +108,7 @@ script:
 ###########
 after_success:
   - if [ $DOC == "true" ]; then  make doc; fi
+  - if [ $DOC == "true" ]; then ./checkDoxygenDocumentation.sh; fi
   - if [ $DOC == "true" ]; then rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/;  fi
   - if [ $DOC == "true" ]; then cd html; make ; wget http://dgtal.org/doc/docset/template.tgz ; tar zxvf template.tgz ; mv template/* org.dgtal.docset ; tar zcvf DGtal-devel.tgz org.dgtal.docset ; cd .. ;rsync  -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/DGtal-devel.tgz dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/docset ;   fi
     ## We publish the DGtalTools tags
