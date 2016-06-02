@@ -15,7 +15,7 @@ else
     echo "Doxygen log file not empty !"
     cat doxygen.log
 fi
-   
+
 ## We check src code consitency
 cd src/
 if ! $( $HOMEPATH/.travis/check_src_file_tag.sh  )
@@ -25,14 +25,14 @@ fi
 cd ..
 
 ## We check examples consistency
-cd examples/
-if ! $( $HOMEPATH/.travis/check_examples_file_tag.sh  )
-then
-    return_code3=1;
-fi
-cd ..
+#cd examples/
+#if ! $( $HOMEPATH/.travis/check_examples_file_tag.sh  )
+#then
+#    return_code3=1;
+#fi
+#cd ..
 
-return_code=$((return_code + return_code2 + return_code3)) 
+return_code=$((return_code + return_code2 + return_code3))
 echo $return_code
 
 exit $return_code
