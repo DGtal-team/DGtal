@@ -7,7 +7,6 @@ HOMEPATH=$PWD
 
 
 ## We first check that the doxygen.log is empty
-##we need to check is 
 if [ -s doxygen.log ]
 then
     return_code=0
