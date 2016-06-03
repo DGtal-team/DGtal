@@ -75,6 +75,7 @@ digraph GTOPOLOGY {
         CDomainAdjacency [ label="CDomainAdjacency" URL="\ref concepts::CDomainAdjacency" ];
 	CAdjacency [ label="CAdjacency" URL="\ref concepts::CAdjacency" ];
         CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref concepts::CCellularGridSpaceND" ];
+        CPreCellularGridSpaceND [ label="CPreCellularGridSpaceND" URL="\ref concepts::CPreCellularGridSpaceND" ];
     }
     CDigitalSurfaceContainer -> boost_CopyConstructible;
     CDigitalSurfaceTracker -> boost_CopyConstructible;
@@ -82,8 +83,9 @@ digraph GTOPOLOGY {
     CDigitalSurfaceContainer -> CCellularGridSpaceND [label="use",style=dashed];
     CUndirectedSimpleLocalGraph -> CConstSinglePassRange;
     CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
-    CAdjacency -> CUndirectedSimpleLocalGraph; 
-    CDomainAdjacency -> CAdjacency ; 
+    CAdjacency -> CUndirectedSimpleLocalGraph;
+    CDomainAdjacency -> CAdjacency ;
+    CCellularGridSpaceND -> CPreCellularGridSpaceND;
   
     subgraph cluster_models {
         style=filled;
@@ -110,6 +112,7 @@ digraph GTOPOLOGY {
             label="(others)";
 
             KhalimskySpaceND [ label="KhalimskySpaceND" URL="\ref KhalimskySpaceND" ];
+            KhalimskyPreSpaceND [ label="KhalimskyPreSpaceND" URL="\ref KhalimskyPreSpaceND" ];
         }
     }
 
@@ -120,6 +123,7 @@ digraph GTOPOLOGY {
     DigitalSurface -> CUndirectedSimpleGraph;
     DigitalSurface -> CDigitalSurfaceContainer [label="use",style=dashed];
     KhalimskySpaceND -> CCellularGridSpaceND;
+    KhalimskyPreSpaceND -> CPreCellularGridSpaceND;
 
 }
 @enddot
