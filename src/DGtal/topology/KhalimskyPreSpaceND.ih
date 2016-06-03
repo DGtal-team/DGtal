@@ -131,9 +131,9 @@ SignedKhalimskyPreCell( Integer /* dummy */ )
 template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::SignedKhalimskyPreCell< dim, TInteger >::
-SignedKhalimskyPreCell( Point const& p, bool positive )
+SignedKhalimskyPreCell( Point const& p, bool aPositive )
   : coordinates( p )
-  , positive( positive )
+  , positive( aPositive )
 {
 }
 //-----------------------------------------------------------------------------
