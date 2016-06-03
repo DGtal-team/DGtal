@@ -8,8 +8,7 @@ namespace DGtal {
 
 @page moduleCellularTopology  Cellular grid space and topology, unoriented and oriented cells, incidence
 
-@writers by Jacques-Olivier Lachaud and Bertrand
-Kerautret
+@writers by Jacques-Olivier Lachaud, Bertrand Kerautret and Roland Denis
 
   Part of the \ref packageTopology.
   [TOC]
