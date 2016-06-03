@@ -99,6 +99,8 @@
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
  - Fix the extension removal in Obj filename export in Board3D. (David
    Coeurjolly,[#1154](https://github.com/DGtal-team/DGtal/pull/1154)))
+ - Fix issue when drawing DSS with both points and bounding box. (David
+   Coeurjolly,[#1186](https://github.com/DGtal-team/DGtal/pull/1186)))
 
 - *Topology Package*
   - Fix wrong starting point for surface tracking in example code
