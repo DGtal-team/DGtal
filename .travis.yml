@@ -78,7 +78,7 @@ before_install:
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF";   fi
   - if [ $DOC == "true" ]; then  .travis/install_doxygen.sh;  BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen -DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="true"; fi
   - if [ $CONFIG == "DGtalTools" ]; then NEEDEXAMPLESANDTESTS="false"; BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=off";  fi
-  - if [ $DOC == "true"]; then wget http://http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
+  - if [ $DOC == "true"]; then wget http://dgtal.org/doc/tags/DGtalTools-tagfile; fi 
 
 ########
 # Deps.
