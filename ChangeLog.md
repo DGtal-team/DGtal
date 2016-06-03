@@ -3,12 +3,10 @@
 ## New Features / Critical Changes
 
 - *Documentation*
- - Fixing all doxygen warnings.
-   (Roland Denis, [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
  - New "@seeDGtalTools" doxygen command to cite a DGtalTools tool in
    DGtal documentation (David Coeurjolly,
    [#1179](https://github.com/DGtal-team/DGtal/pull/1179))
-
+ 
 - *Geometry Package*
  - New robust normal vector estimator using spherical accumulators and statistical
    voting (Boulc'h & Marlet, SGP 2012).
@@ -16,10 +14,6 @@
 
 ## Changes
 - *Configuration/General*
- - Travis Continuous integration will check that doxygen raises no warnings
-   and that the documented file names are valid.
-   (David Coeurjolly, Roland Denis,
-        [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
  - Cleaning remaining preprocessor directives related to C++11 features.
    (Roland Denis, [#1141](https://github.com/DGtal-team/DGtal/pull/1141))
  - Travis Continuous integration will check that DGtalTools still compiles with
