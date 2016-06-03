@@ -100,7 +100,7 @@ script:
   - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
   - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  make test ARGS=--output-on-failure ; fi
   - if [ $CONFIG == "DGtalTools" ]; then pwd ; .travis/getAndCheckDGtalTools.sh ; fi
-  - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then make doc;  ./travis/checkDoxygenDocumentation.sh; fi
+  - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then make doc;  ./.travis/checkDoxygenDocumentation.sh; fi
 
 
 ###########
