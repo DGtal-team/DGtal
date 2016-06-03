@@ -32,6 +32,8 @@
 #include <stdexcept>  // Exceptions
 #include <new>        // std::bad_alloc exception
 #include <algorithm>
+
+#include <iostream>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,18 +47,33 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-/// Constructor
+/// Constructor from a domain and scaled lower bound and extent.
+template <typename TSpace, typename T>
+inline
+DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
+  RealFFT( DGtal::HyperRectDomain<TSpace> const& aDomain,
+           typename TSpace::RealPoint const& aLowerBound,
+           typename TSpace::RealPoint const& anExtent
+  ) noexcept
+    : mySpatialDomain{ aDomain }
+    , mySpatialExtent{ mySpatialDomain.upperBound() - mySpatialDomain.lowerBound() + Point::diagonal(1) }
+    , myScaledSpatialExtent{ anExtent }
+    , myScaledSpatialLowerBound{ aLowerBound }
+    , myFreqExtent{ mySpatialExtent / (Point::diagonal(1) + Point::base(0)) + Point::base(0) }
+    , myFreqDomain{ Point::diagonal(0), myFreqExtent - Point::diagonal(1) }
+    , myStorage( FFTW::malloc( sizeof(Complex) * myFreqDomain.size() ) )
+{
+}
+
+/// Constructor from a domain.
 template <typename TSpace, typename T>
 inline
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   RealFFT( DGtal::HyperRectDomain<TSpace> const& aDomain ) noexcept
-    : mySpatialDomain{ aDomain }
-    , mySpatialExtent{ mySpatialDomain.upperBound() - mySpatialDomain.lowerBound() + Point::diagonal(1) }
-    , myScaledSpatialExtent{ mySpatialExtent }
-    , myScaledSpatialLowerBound{ mySpatialDomain.lowerBound() }
-    , myFreqExtent{ mySpatialExtent / (Point::diagonal(1) + Point::base(0)) + Point::base(0) }
-    , myFreqDomain{ Point::diagonal(0), myFreqExtent - Point::diagonal(1) }
-    , myStorage( FFTW::malloc( sizeof(Complex) * myFreqDomain.size() ) )
+    : RealFFT( aDomain
+             , aDomain.lowerBound()
+             , aDomain.upperBound() - aDomain.lowerBound() + Point::diagonal(1)
+      )
 {
 }
 
@@ -96,7 +113,6 @@ typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Real const*
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   getSpatialStorage() const noexcept
 {
-  return reinterpret_cast<Real const*>(myStorage);
 }
 
 /// Gets mutable spatial image.
@@ -248,7 +264,7 @@ template <typename TSpace, typename T>
 inline
 void
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
-  setScaledSpatialLowerBound( typename TSpace::RealPoint const& aPoint ) noexcept
+  setScaledSpatialLowerBound( RealPoint const& aPoint ) noexcept
 {
   myScaledSpatialLowerBound = aPoint;
 }
@@ -286,6 +302,32 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
     }
 
   return frequencies;
+}
+
+/// Converts a complex value from the frequency image to the scaled frequency image.
+template <typename TSpace, typename T>
+inline
+typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Complex
+DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
+calcScaledFreqValue( Point const& aPoint, Complex const& aValue ) const noexcept
+{
+  //const Real phase = 2*pi*( myScaledSpatialLowerBound / myScaledSpatialExtent ).dot( aPoint );
+  Real phase = 0;
+  for ( Dimension i = 0; i < dimension; ++i )
+    phase = aPoint[ i ] * myScaledSpatialLowerBound[ i ] * mySpatialExtent[ i ] / myScaledSpatialExtent[ i ];
+  //phase *= 2*pi;
+
+  //const Real phase = std::fmod( 2*pi* calcScaledFreqCoords( aPoint ).dot( aPoint ), 2*pi );
+
+  std::cout << "aPoint = " << aPoint << std::endl;
+  std::cout << "myScaledSpatialLowerBound = " << myScaledSpatialLowerBound << std::endl;
+  std::cout << "myScaledSpatialExtent = " << myScaledSpatialExtent << std::endl;
+  std::cout << "phase = " << phase << std::endl;
+  std::cout << "c = " << Complex( std::cos(phase), std::sin(phase) ) << std::endl;
+  std::cout << "aValue = " << aValue << std::endl;
+  std::cout << "aValue*c = " << aValue * Complex( std::cos(phase), std::sin(phase) ) << std::endl;
+
+  return aValue * Complex( std::cos(phase), std::sin(phase) );
 }
 
 /// Fast Fourier Transformation.

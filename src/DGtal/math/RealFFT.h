@@ -47,6 +47,8 @@
 #include <complex>    // To be included before fftw: see http://www.fftw.org/doc/Complex-numbers.html#Complex-numbers
 #include <fftw3.h>
 
+#include <boost/math/constants/constants.hpp>
+
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ArrayImageAdapter.h"
 
@@ -218,15 +220,32 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     using Complex = std::complex<Real>;           ///< Complex value type.
     using Self    = RealFFT< Domain, T >;         ///< Self type.
 
+    using SpatialImage      = ArrayImageAdapter<       Real*, Domain >; ///< Mutable spatial image type.
+    using ConstSpatialImage = ArrayImageAdapter< const Real*, Domain >; ///< Constant spatial image type.
+    using FreqImage      = ArrayImageAdapter<       Complex*, Domain >; ///< Mutable frequency image type.
+    using ConstFreqImage = ArrayImageAdapter< const Complex*, Domain >; ///< Constant frequency image type.
+
     static const constexpr Dimension dimension = Domain::dimension; ///< Space dimension.
+    static const constexpr Real pi = boost::math::constants::pi<Real>(); ///< Pi.
 
     // ----------------------- Standard services ------------------------------
   public:
 
-    /** Constructor.
+    /** Constructor from a domain.
+     *
      * @param aDomain The domain over which the transform will be performed.
+     *
+     * The scaled lower bound and extent is initialized from the given domain.
      */
     RealFFT( Domain const& aDomain ) noexcept;
+
+    /** Constructor from a domain and scaled lower bound and extent.
+     *
+     * @param aDomain     The domain over which the transform will be performed.
+     * @param aLowerBound The lower bound of the scaled spatial domain.
+     * @param anExtent    The extent of the scaled spatial domain.
+     */
+    RealFFT( Domain const& aDomain, RealPoint const& aLowerBound, RealPoint const& anExtent ) noexcept;
 
     /// Copy constructor. Deleted.
     RealFFT( Self const & /* other */ ) = delete;
@@ -275,9 +294,9 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      *    model on the spatial data.
      * @see ArrayImageAdapter
      */
-    ArrayImageAdapter<      Real*, Domain> getSpatialImage()       noexcept;
+    SpatialImage      getSpatialImage()       noexcept;
 
-    ArrayImageAdapter<const Real*, Domain> getSpatialImage() const noexcept;
+    ConstSpatialImage getSpatialImage() const noexcept;
     ///@}
 
     /// Gets the spatial domain.
@@ -333,9 +352,9 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      *    model on the frequency data.
      * @see ArrayImageAdapter
      */
-    ArrayImageAdapter<      Complex*, Domain> getFreqImage()       noexcept;
+    FreqImage       getFreqImage()       noexcept;
 
-    ArrayImageAdapter<const Complex*, Domain> getFreqImage() const noexcept;
+    ConstFreqImage  getFreqImage() const noexcept;
     ///@}
 
     /// Gets the frequency domain.
@@ -355,6 +374,17 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @see http://www.fftw.org/fftw3_doc/The-1d-Discrete-Fourier-Transform-_0028DFT_0029.html#The-1d-Discrete-Fourier-Transform-_0028DFT_0029
      */
     RealPoint calcScaledFreqCoords( Point const& aPoint ) const noexcept;
+
+    /** Converts a complex value from the frequency image to the scaled frequency image.
+     *
+     * @param aPoint  Coordinates in the domain of the frequency image.
+     * @param aValue  Complex value from the frequency image.
+     * @return corresponding complex value from the scaled frequency image.
+     *
+     * @note Prefer translating data in the spatial space instead of using this method.
+     */
+    Complex calcScaledFreqValue( Point const& aPoint, Complex const& aValue ) const noexcept;
+
 
     ///@}
 

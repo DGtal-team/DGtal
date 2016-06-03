@@ -1,91 +1,300 @@
-#include <cmath>
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @ingroup Tests
+ * @author Roland Denis (\c roland.denis@univ-smb.fr )
+ *
+ *
+ * @date 2016/06/02
+ *
+ * This file is part of the DGtal library
+ */
+
+/**
+ * Description of testRealFFT.cpp <p>
+ * Aim: Tests of real-data in-place Fast Fourier Transform featured by RealFFT.
+ */
+
+#ifndef WITH_FFTW3
+  #error You need to have activated FFTW3 (WITH_FFTW3) to include this file.
+#endif
+
+#include <cstddef>
 #include <algorithm>
+#include <complex>
+#include <cmath>
+#include <limits>
+#include <string>
 
-#include "DGtal/base/Common.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/images/ImageContainerBySTLVector.h"
+#include <boost/math/constants/constants.hpp>
+
+#include "DGtalCatch.h"
+#include "ConfigTest.h"
+
 #include "DGtal/math/RealFFT.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/writers/PGMWriter.h"
-//#include "VTKWriter.h"
+#include "DGtal/base/BasicFunctors.h"
 
-int main()
+using namespace DGtal;
+
+/** Tests of forward FFT followed by a backward FFT.
+* @tparam  TDomain Domain type.
+* @tparam  TValue  Value type.
+* @param   anImage The image to transform.
+*/
+template <
+  typename TDomain,
+  typename TValue
+>
+void testForwardBackwardFFT( ImageContainerBySTLVector<TDomain, TValue> const & anImage )
 {
-  constexpr typename DGtal::Dimension N = 2;
-  using real = float;
-  using integer = int;
-  using Space = DGtal::SpaceND<N, integer>;
-  using Point = typename Space::Point;
-  using Domain = DGtal::HyperRectDomain<Space>;
-  using Image = DGtal::ImageContainerBySTLVector<Domain, real>;
-  using FFT = DGtal::RealFFT<Domain, real>;
+  using FFT = RealFFT< TDomain, TValue >;
 
-  real dT = 5; // Diffusion coefficient
+  INFO( "Initializing RealFFT." );
+  FFT fft( anImage.domain() );
 
-  // Image initialization
-  Domain domain{ Point::diagonal(-64), Point::diagonal(63) };
-  Image image{ domain };
-  for ( auto const& pt : domain )
-    image.setValue( pt, pt.norm1() <= 30 ? 255 : 0 );
-
-  FFT fft(image.domain());
-
-  // Copy data
+  INFO( "Copying data from the image." );
   auto spatial_image = fft.getSpatialImage();
-  std::copy( image.cbegin(), image.cend(), spatial_image.begin() );
+  std::copy( anImage.cbegin(), anImage.cend(), spatial_image.begin() );
 
-  // Forward transformation
-  fft.forwardFFT(FFTW_ESTIMATE);
+  INFO( "Forward transformation." );
+  fft.forwardFFT( FFTW_ESTIMATE );
 
-  // Convolution
-  auto const extent = fft.getSpatialExtent();
-  auto freq_image = fft.getFreqImage();
-  for ( auto it = freq_image.begin(); it != freq_image.end(); ++it )
+  INFO( "Checking modification of the input image." );
+  REQUIRE( ! std::equal( anImage.cbegin(), anImage.cend(), spatial_image.cbegin() ) );
+
+  INFO( "Backward transformation." );
+  fft.backwardFFT( FFTW_ESTIMATE );
+
+  INFO( "Comparing result with original image." );
+  const auto eps = 100 * std::numeric_limits<TValue>::epsilon() * std::log( anImage.domain().size() );
+  CAPTURE( eps );
+
+  for ( auto it = spatial_image.cbegin(); it != spatial_image.cend(); ++it )
     {
-      /*
-      auto const& point = it.getPoint();
-
-      real norm2 = 0;
-      for ( size_t j = 0; j < Image::dimension; ++j)
-        {
-          real coord = static_cast<real>(point[j]) / extent[j];
-          if ( coord >= 0.5 ) coord -= 1.;
-          test[j] = coord;
-          norm2 += coord*coord;
-        }
-      */
-
-      const auto freq = fft.calcScaledFreqCoords( it.getPoint() );
-      const auto norm2 = freq.dot(freq);
-      const real c = std::exp( -4*M_PI*M_PI*dT*norm2 );
-
-      // New value
-      auto const v = *it;
-      *it = { c*std::real(v), c*std::imag(v) };
+      if ( std::abs( *it - anImage( it.getPoint() ) ) > eps * std::max( *it, TValue(1) ) )
+        FAIL( "Approximation failed: " << *it << " - " << anImage( it.getPoint() ) << " = " << (*it - anImage( it.getPoint() ) ) );
     }
-
-  // Back in spatial space
-  fft.backwardFFT(FFTW_ESTIMATE, false);
-
-  // Store the result
-  const size_t n = fft.getSpatialDomain().size();
-  std::transform(
-      spatial_image.cbegin(),
-      spatial_image.cend(),
-      image.begin(),
-      [n] (real x) { return x/n; }
-  );
-  //std::copy( spatial_image.cbegin(), spatial_image.cend(), image.begin() );
-
-  DGtal::PGMWriter<Image, DGtal::functors::Cast<unsigned char> >::exportPGM( "testRealFFT.pgm", image );
-  /**
-  // Export
-  if ( N == 2 || N == 3 )
-    {
-      DGtal::VTKWriter<Domain>( "fft_test", image.domain() ) << "data" << image;
-    }
-  **/
-
-  return 0;
 }
 
+template <typename TIterator>
+TIterator findMaxNorm( TIterator it, TIterator const & it_end )
+{
+  auto norm_max = std::norm(*it);
+  auto it_max   = it;
+
+  for ( ; it != it_end; ++it )
+    if ( std::norm(*it) > norm_max )
+      {
+        norm_max = std::norm(*it);
+        it_max   = it;
+      }
+
+  return it_max;
+}
+
+/** Tests spatial domain scaling.
+* @tparam   TDomain   Domain type.
+* @tparam   TValue    Value type.
+* @param    anImage   The image from which to take the domain.
+*/
+template <
+  typename TDomain,
+  typename TValue
+>
+void testSpatialScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage )
+{
+  using RealPoint = typename TDomain::Space::RealPoint;
+  using FFT = RealFFT< TDomain, TValue >;
+
+  const TValue pi = boost::math::constants::pi<TValue>();
+  const TValue freq = 5;
+  const TValue phase = pi/4;
+
+  INFO( "Checking image size." );
+  REQUIRE( anImage.extent()[ TDomain::dimension-1 ] >= 2*std::abs(freq) );
+
+  INFO( "Initializing RealFFT." );
+  FFT fft( anImage.domain(), RealPoint::zero, RealPoint::diagonal(1) );
+
+  INFO( "Initializing spatial data." );
+  auto spatial_image = fft.getSpatialImage();
+  for ( auto it = spatial_image.begin(); it != spatial_image.end(); ++it )
+    {
+      const auto pt = fft.calcScaledSpatialCoords( it.getPoint() );
+      *it = std::cos( 2*pi * freq * pt[ TDomain::dimension - 1 ] + phase );
+    }
+
+  INFO( "Forward transformation." );
+  fft.forwardFFT( FFTW_ESTIMATE );
+
+  const auto freq_image = fft.getFreqImage();
+  const auto it_max = findMaxNorm( freq_image.cbegin(), freq_image.cend() );
+  const auto pt_max = it_max.getPoint();
+  CAPTURE( *it_max );
+
+  INFO( "Checks maximal frequency with unit domain." );
+    {
+      auto freq_pt  = fft.calcScaledFreqCoords( it_max.getPoint() );
+      auto freq_val = fft.calcScaledFreqValue( it_max.getPoint(), *it_max );
+      if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
+        {
+          freq_pt  = -freq_pt;
+          freq_val = std::conj( freq_val );
+        }
+
+      REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ) );
+      REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase, 2*pi ) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
+    }
+
+  /*
+  INFO( "Checks maximal frequency with translated unit domain." );
+    {
+      fft.setScaledSpatialLowerBound( RealPoint::diagonal( 1. / (4*freq) ) );
+
+      auto freq_pt  = fft.calcScaledFreqCoords( it_max.getPoint() );
+      auto freq_val = fft.calcScaledFreqValue( it_max.getPoint(), *it_max );
+      CAPTURE( freq_pt );
+      CAPTURE( freq_val );
+      if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
+        {
+          freq_pt  = -freq_pt;
+          freq_val = std::conj( freq_val );
+        }
+      CAPTURE( freq_pt );
+      CAPTURE( freq_val );
+      CAPTURE( std::arg(freq_val) );
+      CAPTURE( phase + pi/2 );
+      CAPTURE( std::arg(freq_val) - phase - pi/2);
+
+      REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ) );
+      REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase - pi/2, 2*pi) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
+    }
+  */
+
+  INFO( "Checks maximal frequency with initial domain." );
+    {
+      fft.setScaledSpatialExtent( anImage.extent() );
+      fft.setScaledSpatialLowerBound( RealPoint::diagonal( 3.) );
+
+      auto freq_pt  = fft.calcScaledFreqCoords( it_max.getPoint() );
+      auto freq_val = fft.calcScaledFreqValue( it_max.getPoint(), *it_max );
+      if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
+        {
+          freq_pt  = -freq_pt;
+          freq_val = std::conj( freq_val );
+        }
+      const auto scaled_factor = freq/anImage.extent()[ TDomain::dimension-1 ];
+      REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, scaled_factor ) ).norm() == Approx( 0 ) );
+      REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase - 3*2*pi*scaled_factor, 2*pi ) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
+    }
+
+}
+
+#ifdef WITH_FFTW3_FLOAT
+TEST_CASE( "Checking RealFFT on a 2D image in float precision.", "[2D][float]" )
+{
+  constexpr typename DGtal::Dimension N = 2;
+  const std::string file_name = testPath + "/samples/church-small.pgm";
+
+  using real = float;
+  using Space = SpaceND<N>;
+  using Domain = HyperRectDomain<Space>;
+  using Image = ImageContainerBySTLVector<Domain, real>;
+
+  INFO( "Importing image " );
+  const auto image = PGMReader< Image, functors::Cast<real> >::importPGM( file_name );
+
+  INFO( "Testing forward and backward FFT." );
+  testForwardBackwardFFT( image );
+
+  INFO( "Testing spatial domain scaling." );
+  testSpatialScaling( image );
+}
+#endif
+
+#ifdef WITH_FFTW3_DOUBLE
+TEST_CASE( "Checking RealFFT on a 2D image in double precision.", "[2D][double]" )
+{
+  constexpr typename DGtal::Dimension N = 2;
+  const std::string file_name = testPath + "/samples/church-small.pgm";
+
+  using real    = double;
+  using Space   = SpaceND<N>;
+  using Domain  = HyperRectDomain<Space>;
+  using Image   = ImageContainerBySTLVector<Domain, real>;
+
+  INFO( "Importing image " );
+  const auto image = PGMReader< Image, functors::Cast<real> >::importPGM( file_name );
+
+  INFO( "Testing forward and backward FFT." );
+  testForwardBackwardFFT( image );
+
+  INFO( "Testing spatial domain scaling." );
+  testSpatialScaling( image );
+}
+#endif
+
+#ifdef WITH_FFTW3_LONG
+TEST_CASE( "Checking RealFFT on a 2D image in long double precision.", "[2D][long double]" )
+{
+  using namespace DGtal;
+
+  constexpr typename DGtal::Dimension N = 2;
+  const std::string file_name = testPath + "/samples/church-small.pgm";
+
+  using real    = long double;
+  using Space   = SpaceND<N>;
+  using Domain  = HyperRectDomain<Space>;
+  using Image   = ImageContainerBySTLVector<Domain, real>;
+
+  INFO( "Importing image " );
+  const auto image = PGMReader< Image, functors::Cast<real> >::importPGM( file_name );
+
+  INFO( "Testing forward and backward FFT." );
+  testForwardBackwardFFT( image );
+
+  INFO( "Testing spatial domain scaling." );
+  testSpatialScaling( image );
+}
+#endif
+
+#ifdef WITH_FFTW3_FLOAT
+TEST_CASE( "Checking RealFFT on a 3D image in float precision.", "[3D][float]" )
+{
+  constexpr typename DGtal::Dimension N = 3;
+  const std::string file_name = testPath + "/samples/church-small.pgm";
+
+  using real = float;
+  using Space = SpaceND<N>;
+  using Point = Space::Point;
+  using Domain = HyperRectDomain<Space>;
+  using Image = ImageContainerBySTLVector<Domain, real>;
+
+  const Domain domain( {0, 10, 13}, {31, 28, 45} );
+  Image image( domain );
+
+  //INFO( "Testing forward and backward FFT." );
+  //testForwardBackwardFFT( image );
+
+  INFO( "Testing spatial domain scaling." );
+  testSpatialScaling( image );
+}
+#endif
