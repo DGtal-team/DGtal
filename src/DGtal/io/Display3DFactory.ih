@@ -1248,9 +1248,9 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
     }
 
   DGtal::Z3i::RealPoint rp = display.embedK( k );
-  bool xodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(k.preCell().myCoordinates[ 0 ]) & 1 );
-  bool yodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(k.preCell().myCoordinates[ 1 ]) & 1 );
-  bool zodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(k.preCell().myCoordinates[ 2 ]) & 1 );
+  bool xodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(k.preCell().coordinates[ 0 ]) & 1 );
+  bool yodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(k.preCell().coordinates[ 1 ]) & 1 );
+  bool zodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(k.preCell().coordinates[ 2 ]) & 1 );
   unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
 
   switch (spaceDim) {
@@ -1385,9 +1385,9 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
     }
 
   DGtal::Z3i::RealPoint rps = display.embedKS( sk );
-  bool xodd = ( sk.preCell().myCoordinates[ 0 ] & 1 );
-  bool yodd = ( sk.preCell().myCoordinates[ 1 ] & 1 );
-  bool zodd = ( sk.preCell().myCoordinates[ 2 ] & 1 );
+  bool xodd = ( sk.preCell().coordinates[ 0 ] & 1 );
+  bool yodd = ( sk.preCell().coordinates[ 1 ] & 1 );
+  bool zodd = ( sk.preCell().coordinates[ 2 ] & 1 );
   unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
   // pointel
 
@@ -1855,9 +1855,9 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display, const DGtal
 
   auto const& preSurfel = aTransformedPrism.mySurfel.preCell();
 
-  bool xodd = ( preSurfel.myCoordinates[ 0 ] & 1 );
-  bool yodd = ( preSurfel.myCoordinates[ 1 ] & 1 );
-  bool zodd = ( preSurfel.myCoordinates[ 2 ] & 1 );
+  bool xodd = ( preSurfel.coordinates[ 0 ] & 1 );
+  bool yodd = ( preSurfel.coordinates[ 1 ] & 1 );
+  bool zodd = ( preSurfel.coordinates[ 2 ] & 1 );
 
   unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
   ASSERT(spaceDim ==2 );

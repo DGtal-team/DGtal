@@ -34,7 +34,7 @@ template <DGtal::Dimension dim, typename TInteger>
 size_t
 DGtal::hash_value(const DGtal::KhalimskyCell<dim, TInteger>& cell)
 {
-    return boost::hash_range( cell.preCell().myCoordinates.begin(), cell.preCell().myCoordinates.end());
+    return boost::hash_range( cell.preCell().coordinates.begin(), cell.preCell().coordinates.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////

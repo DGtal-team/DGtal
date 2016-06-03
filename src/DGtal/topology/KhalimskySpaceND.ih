@@ -295,10 +295,10 @@ public:
     {
       if ( isDimensionPeriodicHelper( d ) )
         {
-          aKCoord = ( aKCoord - derived().myCellLower.myPreCell.myCoordinates[ d ] ) % myCellExtent[ d ];
+          aKCoord = ( aKCoord - derived().myCellLower.myPreCell.coordinates[ d ] ) % myCellExtent[ d ];
           aKCoord += ( ( aKCoord < 0 ) ?
-                derived().myCellUpper.myPreCell.myCoordinates[ d ] + 1
-              : derived().myCellLower.myPreCell.myCoordinates[ d ]
+                derived().myCellUpper.myPreCell.coordinates[ d ] + 1
+              : derived().myCellLower.myPreCell.coordinates[ d ]
           );
         }
     }
@@ -345,7 +345,7 @@ public:
   inline
   void updateCellHelper( Cell & aCell, DGtal::Dimension d ) const
     {
-      updateKCoordHelper( aCell.myPreCell.myCoordinates[ d ], d );
+      updateKCoordHelper( aCell.myPreCell.coordinates[ d ], d );
     }
 
   /** Modifies a cell's khalimsky coordinates according to the dimension periodicity.
@@ -354,7 +354,7 @@ public:
   inline
   void updateCellHelper( Cell & aCell ) const
     {
-      updateKCoordsHelper( aCell.myPreCell.myCoordinates );
+      updateKCoordsHelper( aCell.myPreCell.coordinates );
     }
 
   /** Modifies a cell's khalimsky coordinate according to the dimension periodicity.
@@ -364,7 +364,7 @@ public:
   inline
   void updateSCellHelper( SCell & aCell, DGtal::Dimension d ) const
     {
-      updateKCoordHelper( aCell.mySPreCell.myCoordinates[ d ], d );
+      updateKCoordHelper( aCell.mySPreCell.coordinates[ d ], d );
     }
 
   /** Modifies a cell's khalimsky coordinates according to the dimension periodicity.
@@ -373,7 +373,7 @@ public:
   inline
   void updateSCellHelper( SCell & aCell ) const
     {
-      updateKCoordsHelper( aCell.mySPreCell.myCoordinates );
+      updateKCoordsHelper( aCell.mySPreCell.coordinates );
     }
 
 public:
@@ -384,7 +384,7 @@ public:
       for ( DGtal::Dimension i = 0; i < dim; ++i )
         {
           myIsAnyDimensionPeriodic |= isDimensionPeriodicHelper( i );
-          myCellExtent[ i ] = derived().myCellUpper.myPreCell.myCoordinates[ i ] - derived().myCellLower.myPreCell.myCoordinates[ i ] + 1;
+          myCellExtent[ i ] = derived().myCellUpper.myPreCell.coordinates[ i ] - derived().myCellLower.myPreCell.coordinates[ i ] + 1;
         }
 
       return true;
@@ -558,7 +558,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsValid( const PreCell & p, Dimension k ) const
 {
-  return cIsValid( p.myCoordinates, k );
+  return cIsValid( p.coordinates, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -567,7 +567,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsValid( const PreCell & p ) const
 {
-  return cIsValid( p.myCoordinates );
+  return cIsValid( p.coordinates );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -599,7 +599,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsValid( const SPreCell & p, Dimension k ) const
 {
-  return cIsValid( p.myCoordinates, k );
+  return cIsValid( p.coordinates, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -608,7 +608,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsValid( const SPreCell & p ) const
 {
-  return cIsValid( p.myCoordinates );
+  return cIsValid( p.coordinates );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -670,7 +670,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( const PreCell & c ) const
 {
-  return uCell( c.myCoordinates );
+  return uCell( c.coordinates );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -698,7 +698,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCell( const SPreCell & c  ) const
 {
-  return sCell( c.myCoordinates, c.myPositive ? POS : NEG );
+  return sCell( c.coordinates, c.myPositive ? POS : NEG );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1115,8 +1115,8 @@ uFirst( const PreCell & p, DGtal::Dimension k ) const
   ASSERT( k < DIM );
 
   return myClosure[ k ] == OPEN ?
-        2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
-      : 2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
+        2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) ? 1 : 2 )
+      : 2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) ? 1 : 0 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1141,8 +1141,8 @@ uLast( const PreCell & p, DGtal::Dimension k ) const
   ASSERT( k < DIM );
 
   return myClosure[ k ] == CLOSED ?
-        2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
-      : 2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
+        2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) ? 1 : 2 )
+      : 2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) ? 1 : 0 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1189,7 +1189,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsInside( const PreCell & p, DGtal::Dimension k ) const
 {
-  return cIsInside( p.myCoordinates, k );
+  return cIsInside( p.coordinates, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1198,7 +1198,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsInside( const PreCell & p ) const
 {
-  return cIsInside( p.myCoordinates );
+  return cIsInside( p.coordinates );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1402,8 +1402,8 @@ sFirst( const SPreCell & p, DGtal::Dimension k ) const
   ASSERT( k < DIM );
 
   return myClosure[ k ] == OPEN ?
-        2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
-      : 2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
+        2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) ? 1 : 2 )
+      : 2 * myLower[ k ] + ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) ? 1 : 0 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1429,8 +1429,8 @@ sLast( const SPreCell & p, DGtal::Dimension k ) const
 {
   ASSERT( k < DIM );
   return myClosure[ k ] == CLOSED ?
-        2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 2 )
-      : 2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.myCoordinates[ k ] ) ? 1 : 0 );
+        2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) ? 1 : 2 )
+      : 2 * myUpper[ k ] + ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) ? 1 : 0 );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1479,7 +1479,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsInside( const SPreCell & p, DGtal::Dimension k ) const
 {
-  return cIsInside( p.myCoordinates, k );
+  return cIsInside( p.coordinates, k );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -1488,7 +1488,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sIsInside( const SPreCell & p ) const
 {
-  return cIsInside( p.myCoordinates );
+  return cIsInside( p.coordinates );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
