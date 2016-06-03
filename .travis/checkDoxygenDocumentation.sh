@@ -20,21 +20,17 @@ fi
 
 ## We check src code consitency
 cd src/
-if ! $( $HOMEPATH/.travis/check_src_file_tag.sh  )
+$HOMEPATH/.travis/check_src_file_tag.sh
+if [[ $? -ne 0 ]]
 then
     return_code2=1;
-    $HOMEPATH/.travis/check_src_file_tag.sh
 fi
 cd ..
 
 ## We check examples consistency
-#cd examples/
-#if ! $( $HOMEPATH/.travis/check_examples_file_tag.sh  )
-#then
-#    return_code3=1;
-#    $HOMEPATH/.travis/check_examples_file_tag.sh
-#fi
-#cd ..
+#
+# TODO
+# 
 
 return_code=$((return_code + return_code2 + return_code3))
 exit $return_code
