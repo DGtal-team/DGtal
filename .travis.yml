@@ -74,11 +74,11 @@ before_install:
   - NEEDCORE="true";
   - NEEDEXAMPLESANDTESTS="true";
   - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then NEEDEXAMPLESANDTESTS="false"; NEEDCORE="false"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then DOC="true"; fi; fi; fi
-  - if [ $CONFIG == "Debug,Magick,GMP,ITK" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
+  - if [ $CONFIG == "Debug,Magick,GMP,ITK,Doc" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF";   fi
   - if [ $DOC == "true" ]; then  .travis/install_doxygen.sh;  BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen -DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true  -DWITH_GMP=true"; DOC="true"; openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; DOC="true"; fi
   - if [ $CONFIG == "DGtalTools" ]; then NEEDEXAMPLESANDTESTS="false"; BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=off";  fi
-  - if [ $DOC == "true"]; then wget http://http://dgtal.org/doc/tags/DGtalTools-tagfile; fi 
+  - if [ $DOC == "true"]; then wget http://http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
 
 ########
 # Deps.
@@ -100,14 +100,13 @@ script:
   - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
   - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  make test ARGS=--output-on-failure ; fi
   - if [ $CONFIG == "DGtalTools" ]; then pwd ; .travis/getAndCheckDGtalTools.sh ; fi
-
+  - if [ $CONFIG == "Documentation,Debug,Cairo,GMP" ]; then make doc;  ./checkDoxygenDocumentation.sh; fi
 
 
 ###########
 ## Building the documentation
 ###########
 after_success:
-  - if [ $DOC == "true" ]; then  make doc; fi
   - if [ $DOC == "true" ]; then rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/;  fi
   - if [ $DOC == "true" ]; then cd html; make ; wget http://dgtal.org/doc/docset/template.tgz ; tar zxvf template.tgz ; mv template/* org.dgtal.docset ; tar zcvf DGtal-devel.tgz org.dgtal.docset ; cd .. ;rsync  -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/DGtal-devel.tgz dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/docset ;   fi
     ## We publish the DGtalTools tags
