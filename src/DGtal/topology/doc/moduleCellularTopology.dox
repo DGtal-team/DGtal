@@ -588,14 +588,14 @@ validity, restricted neighborhood, ...) and is also fully compatible with
 @link KhalimskySpaceND @endlink-based algorithms when bounds are not necessary.
 
 The main features are:
-- direct manipulation of the Khalimsky coordinates through the `myCoordinates`
+- direct manipulation of the Khalimsky coordinates through the `coordinates`
   public member of KhalimskyPreCell and SignedKhalimskyPreCell:
   @code
   using KPreSpace = DGtal::KhalimskyPreSpaceND<2, int>;
   KPreSpace::Cell  a = KPreSpace::uSpel( {1, 1} );
   KPreSpace::SCell b = KPreSpace::sPointel( {12, 5}, true );
-  const auto pt_diff = b.myCoordinates - a.myCoordinates;
-  a.myCoordinates[0] += 2;
+  const auto pt_diff = b.coordinates - a.coordinates;
+  a.coordinates[0] += 2;
   @endcode
 
 - direct construction of a pre-cell from its Khalimsky coordinates:

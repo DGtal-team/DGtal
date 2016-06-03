@@ -246,10 +246,10 @@ namespace DGtal
       Component z1,z2,z3,z4;
       Component ONE = NumberTraits<Component>::ONE;
       
-      Point baseQuadCenter =  aPreSurfel.myCoordinates;
+      Point baseQuadCenter =  aPreSurfel.coordinates;
       
-      bool yodd = ( NumberTraits<Component>::castToInt64_t(aPreSurfel.myCoordinates[ 1 ]) & 1 );
-      bool zodd = ( NumberTraits<Component>::castToInt64_t(aPreSurfel.myCoordinates[ 2 ]) & 1 ); 
+      bool yodd = ( NumberTraits<Component>::castToInt64_t(aPreSurfel.coordinates[ 1 ]) & 1 );
+      bool zodd = ( NumberTraits<Component>::castToInt64_t(aPreSurfel.coordinates[ 2 ]) & 1 ); 
       
       if(!zodd)
         {

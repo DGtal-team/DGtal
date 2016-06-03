@@ -207,18 +207,18 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
     auto const& preSurfel = aSurfel.preCell();
     auto const& preVoxel  = aVoxel.preCell();
 
-    bool xodd = (preSurfel.myCoordinates[ 0 ] & 1 );
-    bool yodd = (preSurfel.myCoordinates[ 1 ] & 1 );
-    bool zodd = (preSurfel.myCoordinates[ 2 ] & 1 );
+    bool xodd = (preSurfel.coordinates[ 0 ] & 1 );
+    bool yodd = (preSurfel.coordinates[ 1 ] & 1 );
+    bool zodd = (preSurfel.coordinates[ 2 ] & 1 );
     if(!xodd )
     {
-      myShift*= ((preVoxel.myCoordinates[ 0 ]-preSurfel.myCoordinates[ 0 ] <0)? -1.0: 1.0);
+      myShift*= ((preVoxel.coordinates[ 0 ]-preSurfel.coordinates[ 0 ] <0)? -1.0: 1.0);
     }else if(!yodd )
     {
-      myShift*=((preVoxel.myCoordinates[ 1 ]-preSurfel.myCoordinates[ 1 ] <0)? -1.0: 1.0);
+      myShift*=((preVoxel.coordinates[ 1 ]-preSurfel.coordinates[ 1 ] <0)? -1.0: 1.0);
     }else if(!zodd )
     {
-      myShift*=((preVoxel.myCoordinates[ 2 ]-preSurfel.myCoordinates[ 2 ] <0)? -1.0: 1.0);
+      myShift*=((preVoxel.coordinates[ 2 ]-preSurfel.coordinates[ 2 ] <0)? -1.0: 1.0);
     }
   }
 
