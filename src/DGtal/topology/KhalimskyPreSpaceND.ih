@@ -123,7 +123,7 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::SignedKhalimskyPreCell< dim, TInteger >::
 SignedKhalimskyPreCell( Integer /* dummy */ )
-  : myPositive( true )
+  : positive( true )
 {
   coordinates.reset();
 }
@@ -133,7 +133,7 @@ inline
 DGtal::SignedKhalimskyPreCell< dim, TInteger >::
 SignedKhalimskyPreCell( Point const& p, bool positive )
   : coordinates( p )
-  , myPositive( positive )
+  , positive( positive )
 {
 }
 //-----------------------------------------------------------------------------
@@ -152,7 +152,7 @@ bool
 DGtal::SignedKhalimskyPreCell< dim, TInteger >::
 operator==( const SignedKhalimskyPreCell & other ) const
 {
-  return ( myPositive == other.myPositive )
+  return ( positive == other.positive )
     && ( coordinates == other.coordinates );
 }
 //-----------------------------------------------------------------------------
@@ -162,7 +162,7 @@ bool
 DGtal::SignedKhalimskyPreCell< dim, TInteger >::
 operator!=( const SignedKhalimskyPreCell & other ) const
 {
-  return ( myPositive != other.myPositive )
+  return ( positive != other.positive )
     || ( coordinates != other.coordinates );
 }
 //-----------------------------------------------------------------------------
@@ -172,8 +172,8 @@ bool
 DGtal::SignedKhalimskyPreCell< dim, TInteger >::
 operator<( const SignedKhalimskyPreCell & other ) const
 {
-  return ( myPositive < other.myPositive )
-    || ( ( myPositive == other.myPositive )
+  return ( positive < other.positive )
+    || ( ( positive == other.positive )
    && ( coordinates < other.coordinates ) );
 }
 //-----------------------------------------------------------------------------
@@ -187,7 +187,7 @@ DGtal::operator<<( std::ostream & out,
   out << "(" << object.coordinates[ 0 ];
   for ( DGtal::Dimension i = 1; i < dim; ++i )
     out << "," << object.coordinates[ i ];
-  out << "," << ( object.myPositive ? '+' : '-' );
+  out << "," << ( object.positive ? '+' : '-' );
   out << ")";
   return out;
 }
@@ -337,7 +337,7 @@ sCell( Point p, const SCell & c )
 {
   for ( DGtal::Dimension i = 0; i < DIM; ++i )
     p[ i ] += p[ i ] + ( NumberTraits<Integer>::odd( c.coordinates[ i ] ) ? 1 : 0 );
-  return sCell( p, c.myPositive );
+  return sCell( p, c.positive );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -474,7 +474,7 @@ typename DGtal::KhalimskyPreSpaceND< dim, TInteger>::Sign
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 sSign( const SCell & c )
 {
-  return c.myPositive ? POS : NEG;
+  return c.positive ? POS : NEG;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -501,7 +501,7 @@ typename DGtal::KhalimskyPreSpaceND< dim, TInteger>::SCell
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 sOpp( const SCell & p )
 {
-  return sCell( p.coordinates, ! p.myPositive );
+  return sCell( p.coordinates, ! p.positive );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
@@ -588,7 +588,7 @@ void
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 sSetSign( SCell & c, Sign s )
 {
-  c.myPositive = ( s == POS );
+  c.positive = ( s == POS );
 }
 //-----------------------------------------------------------------------------
 // ------------------------- Cell topology services -----------------------
@@ -1154,11 +1154,11 @@ sIncident( SCell c, DGtal::Dimension k, bool up )
 {
   ASSERT( k < dim );
 
-  bool sign = up ? c.myPositive : ! c.myPositive;
+  bool sign = up ? c.positive : ! c.positive;
   for ( DGtal::Dimension i = 0; i <= k; ++i )
     if ( sIsOpen( c, i ) )
       sign = ! sign;
-  c.myPositive = sign;
+  c.positive = sign;
 
   if ( up ) ++c.coordinates[ k ];
   else      --c.coordinates[ k ];
@@ -1312,7 +1312,7 @@ sDirect( const SCell & p, DGtal::Dimension k )
 {
   ASSERT( k < dim );
 
-  bool sign = p.myPositive;
+  bool sign = p.positive;
   for ( DGtal::Dimension i = 0; i <= k; ++i )
     if ( sIsOpen( p, i ) )
       sign = ! sign;
@@ -1327,13 +1327,13 @@ sDirectIncident( SCell p, DGtal::Dimension k )
 {
   ASSERT( k < dim );
 
-  bool sign = p.myPositive;
+  bool sign = p.positive;
   for ( DGtal::Dimension i = 0; i <= k; ++i )
     if ( sIsOpen( p, i ) )
       sign = ! sign;
 
   bool up = sign;
-  p.myPositive = POS;
+  p.positive = POS;
 
   if ( up )  ++p.coordinates[ k ];
   else  --p.coordinates[ k ];
@@ -1349,13 +1349,13 @@ sIndirectIncident( SCell p, DGtal::Dimension k )
 {
   ASSERT( k < dim );
 
-  bool sign = p.myPositive;
+  bool sign = p.positive;
   for ( DGtal::Dimension i = 0; i <= k; ++i )
     if ( sIsOpen( p, i ) )
       sign = ! sign;
 
   bool up = ! sign;
-  p.myPositive = NEG;
+  p.positive = NEG;
 
   if ( up ) ++p.coordinates[ k ];
   else --p.coordinates[ k ];

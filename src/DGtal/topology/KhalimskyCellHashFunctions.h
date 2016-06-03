@@ -74,7 +74,7 @@ namespace std {
     size_t operator()(const DGtal::SignedKhalimskyCell< dim, TInteger > & pp) const
     {
       auto const& p = pp.preCell();
-      return p.myPositive
+      return p.positive
         ? boost::hash_range(p.coordinates.begin(), p.coordinates.end())
         : boost::hash_range(p.coordinates.begin(), p.coordinates.end()) ^ ( (size_t) 0x7a0d3fe9 );
     }
@@ -111,7 +111,7 @@ namespace boost{
     size_t operator()(const DGtal::SignedKhalimskyCell< dim, TInteger > & pp) const
     {
       auto const& p = pp.preCell();
-      return p.myPositive
+      return p.positive
         ? boost::hash_range(p.coordinates.begin(), p.coordinates.end())
         : boost::hash_range(p.coordinates.begin(), p.coordinates.end()) ^ ( (size_t) 0x7a0d3fe9 );
     }
