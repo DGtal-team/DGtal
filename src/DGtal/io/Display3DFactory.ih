@@ -1396,7 +1396,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
     case 0:
       if(mode!="" && mode!="Basic" && mode!="IllustrationCustomColor")
         {
-          if( sk.preCell().myPositive)
+          if( sk.preCell().positive)
             display.setFillColor(DGtal::Color(20, 20, 250, 255));
           else
             display.setFillColor(DGtal::Color(20, 20, 150, 255));
@@ -1408,7 +1408,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
         {
           display.setFillColor(  DGtal::Color(255, 50, 50, 255));
         }
-      if (sk.preCell().myPositive)
+      if (sk.preCell().positive)
         {
           display.addCone(DGtal::Z3i::RealPoint(rps[0]- (xodd? 0.5:0 ), rps[1]- (yodd? 0.5:0 ), rps[2]- (zodd? 0.5:0 )),
         DGtal::Z3i::RealPoint(rps[0]+ (xodd? 0.5:0 ), rps[1]+ (yodd? 0.5:0 ), rps[2]+ (zodd? 0.5:0 )));
@@ -1426,12 +1426,12 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
                                           ! xodd, !yodd, !zodd );
         }else
         display.addPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
-                               ! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.preCell().myPositive );
+                               ! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.preCell().positive );
       break;
     case 3:
       if(mode!="" && mode!="IllustrationCustomColor")
         {
-          if( sk.preCell().myPositive)
+          if( sk.preCell().positive)
             {
               display.setFillColor(DGtal::Color(200, 20, 20, 255));
             }else
@@ -1863,8 +1863,8 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display, const DGtal
   ASSERT(spaceDim ==2 );
   boost::ignore_unused_variable_warning(spaceDim);
 
-  //display.addSurfelPrism(rps[0], rps[1], rps[2],! xodd, !yodd, !zodd, factorVolSurfel, aTransformedSurfelPrism.mySizeFactor, true, aTransformedSurfelPrism.mySurfel.myPositive );
-  display.addPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, preSurfel.myPositive );
+  //display.addSurfelPrism(rps[0], rps[1], rps[2],! xodd, !yodd, !zodd, factorVolSurfel, aTransformedSurfelPrism.mySizeFactor, true, aTransformedSurfelPrism.mySurfel.positive );
+  display.addPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, preSurfel.positive );
   display.setFillColor(fillColorSave);
 
 }

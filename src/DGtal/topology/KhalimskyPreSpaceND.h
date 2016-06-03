@@ -185,7 +185,7 @@ namespace DGtal
     // Public members
   public:
     Point coordinates;  ///< Khalimsky coordinates of the cell.
-    bool  myPositive;     ///< Cell sign.
+    bool  positive;     ///< Cell sign.
 
     // Standard interface
   public:

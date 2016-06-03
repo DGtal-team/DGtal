@@ -698,7 +698,7 @@ typename DGtal::KhalimskySpaceND< dim, TInteger>::SCell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sCell( const SPreCell & c  ) const
 {
-  return sCell( c.coordinates, c.myPositive ? POS : NEG );
+  return sCell( c.coordinates, c.positive ? POS : NEG );
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
