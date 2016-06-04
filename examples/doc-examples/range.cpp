@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file range.cpp
+ * @file doc-examples/range.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * @author Guillaume Damiand

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleTiledImage.cpp
+ * @file images/exampleTiledImage.cpp
  * @ingroup Examples
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France

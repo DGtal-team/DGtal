@@ -66,8 +66,8 @@ namespace DGtal
    *   - RealPoint: type for real points (to characterize upper/lower bounds).
    *
    * <p> Notation
-   * - \t X : A type that is a model of CEuclideanBoundedShape
-   * - \t x, \t y  : Object of type X
+   * - \a X : A type that is a model of CEuclideanBoundedShape
+   * - \a x, \a y  : Object of type X
    *
    * <p> Definitions
    *

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-1-points.cpp
+ * @file io/viewers/viewer3D-1-points.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France

@@ -58,7 +58,7 @@ namespace DGtal {
     AccFlower2D [URL="\ref AccFlower2D"];
     NGon2D [URL="\ref NGon2D"];
     Ball3D [URL="\ref Ball3D"];
-    ImplicitPolynomial2Shape [URL="\ref ImplicitPolynomial2Shape"];
+    ImplicitPolynomial3Shape [URL="\ref ImplicitPolynomial3Shape"];
 
     StarShaped2D -> CEuclideanBoundedShape;
     StarShaped2D -> CEuclideanOrientedShape;
@@ -76,8 +76,8 @@ namespace DGtal {
     AccFlower2D -> StarShaped2D;
     Ball3D -> StarShaped3D;
 
-    ImplicitPolynomial2Shape -> CImplicitFunction;
-    ImplicitPolynomial2Shape -> CEuclideanOrientedShape;
+    ImplicitPolynomial3Shape -> CImplicitFunction;
+    ImplicitPolynomial3Shape -> CEuclideanOrientedShape;
     }
     }
     @enddot

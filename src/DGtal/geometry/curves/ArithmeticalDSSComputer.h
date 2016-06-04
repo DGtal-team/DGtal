@@ -430,7 +430,7 @@ operator<< ( std::ostream & out,  const ArithmeticalDSSComputer<TIterator,TInteg
 // Aliases
 namespace DGtal
 {
-  /*
+  /**
    * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted 
    * to the dynamic recognition of standard and simply 4-connected digital 
    * straight segments (DSS) along any sequence of digital points. 
@@ -498,7 +498,7 @@ namespace DGtal
 
   }; 
 
-  /*
+  /**
    * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted 
    * to the dynamic recognition of naive and simply 8-connected digital straight 
    * segments (DSS) along any sequence of digital points. 

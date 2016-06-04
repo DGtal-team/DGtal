@@ -1,8 +1,9 @@
+/// @file dec/exampleDiscreteExteriorCalculusSolve.cpp
 #include <string>
 
 #include <QApplication>
 
-#include "common.h"
+#include "DECExamplesCommon.h"
 
 // always include EigenSupport.h before any other Eigen headers
 #include "DGtal/math/linalg/EigenSupport.h"

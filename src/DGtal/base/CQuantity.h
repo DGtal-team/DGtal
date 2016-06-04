@@ -67,8 +67,8 @@ namespace DGtal
        ###  Associated types :
 
        ###  Notation
-       - \t X : A type that is a model of CQuantity
-       - \t x, \t y : object of type X
+       - \a X : A type that is a model of CQuantity
+       - \a x, \a y : object of type X
 
        ###  Definitions
 

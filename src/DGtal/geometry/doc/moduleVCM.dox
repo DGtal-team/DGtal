@@ -59,13 +59,13 @@ integrable function \f$\chi:\mathbb{R}^3 \to \mathbb{R}^+\f$ to the matrix
 @image html vcm.png "Voronoi Covariance Measure of a point set in the plane."
 @image latex vcm.png "Voronoi Covariance Measure of a point set in the plane." width=8cm
 
-\note The stability result of \cite{Merigot_2011-tvcg} implies that
+\note The stability result of @cite Merigot_2011-tvcg implies that
 information extracted from the covariance matrix such as normals or
 principal directions are \b stable with respect to \b Hausdorff
 \b perturbation.
 
 \advanced Remark that this definition matches the definition
-introduced in \cite{Merigot_2011-tvcg}: when \f$\chi\f$ is the
+introduced in @cite Merigot_2011-tvcg : when \f$\chi\f$ is the
 characteristic function of a ball, one recovers a notion similar to
 the convolved VCM.
 
@@ -85,7 +85,7 @@ requires two type parameters:
 
 - \b TSpace: the digital space (any model of CSpace), like \ref SpaceND.
 
-- \b TSeparableMetric: the metric used for computing the Voronoi map (any model of CSeparableMetric), like \ref ExactPredicateLpSeparableMetric<TSpace, 2> for the Euclidean metric.
+- \b TSeparableMetric: the metric used for computing the Voronoi map (any model of CSeparableMetric), like \link ExactPredicateLpSeparableMetric ExactPredicateLpSeparableMetric<TSpace, 2>\endlink for the Euclidean metric.
 
 The instantiation of the class VoronoiCovarianceMeasure requires the
 following parameters:

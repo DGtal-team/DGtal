@@ -61,8 +61,8 @@ Description of \b concept '\b CBidirectionalSegmentComputer' <p>
  ### Associated types : the same as CForwardSegmentComputer
   
  ### Notation
-     - \t X : A type that is a model of CBidirectionalSegmentComputer
-     - \t x : object of type X
+     - \a X : A type that is a model of CBidirectionalSegmentComputer
+     - \a x : object of type X
   
  ### Definitions
     
