@@ -88,7 +88,7 @@ namespace DGtal
     Ball3D(const RealPoint &aPoint, const double r);
 
     
-    /**
+    /*
      * Constructor.
      * @param aPoint the sphere center.
      * @param r the radius of the sphere.

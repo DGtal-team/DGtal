@@ -136,12 +136,14 @@ namespace DGtal
     }
 
     typedef unsigned char voxel;
-    // This class help us to associate a field type and his value.
-    // An object is a pair (type, value). You can copy and assign
-    // such objects.
+    /** This class help us to associate a field type and his value.
+     * An object is a pair (type, value). You can copy and assign
+     * such objects.
+     */
     /* In recent C++, we should use a std::map, but we prefer (badly) code it
-       by hand for compatibility with old compilers.
-       At this time, there is a limit of 30 fields in header :-} */
+     * by hand for compatibility with old compilers.
+     * At this time, there is a limit of 30 fields in header :-}
+     */
     struct HeaderField {
       //! Constructor. The string are copied.
       HeaderField( const char *t, const char *v ) :

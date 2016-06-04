@@ -26,7 +26,7 @@ digraph GTOPOLOGY {
     rankdir= BT
 
     subgraph cluster_ext {
-	rank = same;
+        rank = same;
         style=invis;
         subgraph cluster_1 {
                  style=filled;
@@ -52,7 +52,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="kernel";
 
-                 CDigitalSet [ label="CDigitalSet" URL="\ref CDigitalSet" ];
+                 CDigitalSet [ label="CDigitalSet" URL="\ref concepts::CDigitalSet" ];
         }
         subgraph cluster_5 {
                  style=filled;

@@ -76,8 +76,8 @@ namespace DGtal
  * the \cite FaureTangential2008 (see \cite FaureTangential2008 page
  * 363) which reduces the complexity from \f$O(n\ log\ n) \f$ in
  * \f$O( log\ n) \f$.  Note that the convexhull update in linear
- * time (with point substraction) proposed by Buzer \cite
- * lilianComputing2007 is not yet implemented.
+ * time (with point substraction) proposed by Buzer
+ * @cite lilianComputing2007 is not yet implemented.
  *
  *
  *
@@ -97,20 +97,20 @@ namespace DGtal
  *
  * Alpha thick segment recognition may be typically done as follows:
  * - If you consider input point with floating coordinates, you can define this type:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyTypedef
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyTypedef
  *
  * - Then import possibly a vector containing the input points by using the PointListReader class:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyReadFile
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyReadFile
  *
  * - Finally apply the segment recognition (here of maximal thickness 15)  by adding the sequence (forward) of contour points:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco
  *  @note The maximal thickness given in initialization is the same than
  *  the width given by the method width() of the ParallelStrip primitive
  *  (not the vertical/horizontal width of the convex hull).
  *
  *
  * - If you use a Board2D display, you can draw the resulting segment like other 2D objects:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementDisplay
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentDisplay
  *
  * The complete example of segment recognition is given in exampleAlphaThickSegmentNoisy.cpp
  *
@@ -176,7 +176,7 @@ private:
     InputPoint edgeQh;
     /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint vertexSh;
-    /*the actual thickness of the current segment*/
+    /** the actual thickness of the current segment */
     double actualThickness;
   };
 
@@ -357,7 +357,7 @@ public:
    *  Tests whether the current alpha thick segment can be extended at
    *  the front with the next contour point i.e checks if we have
    *  still an alpha thick segment of width alpha_max after adding the
-   *  given point \aPoint. The segment parameters are keep in its
+   *  given point \a aPoint. The segment parameters are keep in its
    *  original state.
    *
    * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
@@ -368,7 +368,7 @@ public:
   /**
    *  Tests whether the current alpha thick segment can be extended, i.e
    *  checks if we have still an alpha thick segment of width alpha_max after
-   *  adding the given point \aPoint. The segment parameters are keep
+   *  adding the given point \a aPoint. The segment parameters are keep
    *  in its original state.
    *
    * @param[in] aPoint the point to be tested for the segment extension.

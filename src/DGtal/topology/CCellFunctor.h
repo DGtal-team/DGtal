@@ -68,10 +68,10 @@ namespace DGtal {
   - Quantity : specifies the type for a quantity (inner type).
   
   ### Notation
-  - \t X : A type that is a model of CCellFunctor
-  - \t x : Object of type \t X
-  - \t c : Object of type Cell
-  - \t q : Object of type Quantity
+  - \a X : A type that is a model of CCellFunctor
+  - \a x : Object of type \a X
+  - \a c : Object of type Cell
+  - \a q : Object of type Quantity
     
   ### Definitions
   
@@ -79,7 +79,7 @@ namespace DGtal {
   
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|     
-  |Apply function | \t x( \t c)|                     | \c q        |                  |the quantity of the function \t x at cell \t c | | |
+  |Apply function | \a x( \a c)|                     | \c q        |                  |the quantity of the function \a x at cell \a c | | |
   
   ### Invariants
   

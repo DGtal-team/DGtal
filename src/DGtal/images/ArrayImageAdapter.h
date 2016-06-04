@@ -93,7 +93,7 @@ namespace DGtal
    * copy operations (constructor and operator) lead to shallow copies.
    *
    * The following code snippet demonstrates how to use ArrayImageAdapter from converting a native C-array to an image:
-   * @snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapter_example
+   * @snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapter_example
    *
    * Another usage example is illustrated in the image module documentation, \ref arrayimageadat.
    *

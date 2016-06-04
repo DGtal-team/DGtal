@@ -120,7 +120,7 @@ you will obtain the followings contours:
 
 \section  FCfromImageTools Extracting and displaying contours from the DGtalTools project 
 
-Project available in the DGtal website (@href http://libdgtal.org/tools/)
+Project available in the DGtal website (http://libdgtal.org/tools/)
 
 
 The directory 2dContourTools contains command line program "pgm2freeman" 

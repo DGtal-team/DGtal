@@ -134,7 +134,7 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
 public:
 
-    /**
+    /*
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */

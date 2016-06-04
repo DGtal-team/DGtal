@@ -1100,7 +1100,7 @@ namespace DGtal
     * @param[out] it_cell_up (returns) a pointer on a cell d if c is a
     * free face of d.
     *
-    * param[in] n the maximal dimension of a cell in this
+    * @param[in] n the maximal dimension of a cell in this
     * complex. Default to \ref dimension, but can be less in some
     * cases: for instance, you know that your subcomplex is a digital
     * surface in Z3, hence you can pass 2 for \a n.
@@ -1136,7 +1136,7 @@ namespace DGtal
 
     /**
      * Computes the (topological) interior \a intcc and the
-     * (topological) boundary \bdcc of this complex. Note that \bdcc
+     * (topological) boundary \a bdcc of this complex. Note that \a bdcc
      * is not necessarily a subcomplex.
      *
      * @param[out] intcc returns the interior subcomplex of this complex.

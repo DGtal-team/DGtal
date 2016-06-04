@@ -78,7 +78,7 @@ Description of \b concept '\b CNormalVectorEstimator' <p>
 |---------------------------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Accessor to surface       |\e x.surface()|                 | const \e Surface &|             | returns a reference to the digital surface | | |
 | Local normal vector estimation  |\e x.eval(\e sc)|         | \e Quantity    |              | returns the estimation of the normal vector at the signed cell \e sc | | |
-| Global normal vector estimation |\c template <OutputIterator>\e x.evalAll(\e out_it)|  | \e OutputIterator | | outputs the estimation of the normal vector field of the whole surface | | |
+| Global normal vector estimation |\c template \<OutputIterator\>\e x.evalAll(\e out_it)|  | \e OutputIterator | | outputs the estimation of the normal vector field of the whole surface | | |
 
 ### Invariants
 

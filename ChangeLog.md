@@ -3,6 +3,8 @@
 ## New Features / Critical Changes
 
 - *Documentation*
+ - Fixing all doxygen warnings.
+   (Roland Denis, [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
  - New "@seeDGtalTools" doxygen command to cite a DGtalTools tool in
    DGtal documentation (David Coeurjolly,
    [#1179](https://github.com/DGtal-team/DGtal/pull/1179))
@@ -23,6 +25,10 @@
 
 ## Changes
 - *Configuration/General*
+ - Travis Continuous integration will check that doxygen raises no warnings
+   and that the documented file names are valid.
+   (David Coeurjolly, Roland Denis,
+        [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
  - Cleaning remaining preprocessor directives related to C++11 features.
    (Roland Denis, [#1141](https://github.com/DGtal-team/DGtal/pull/1141))
  - Travis Continuous integration will check that DGtalTools still compiles with
@@ -108,6 +114,8 @@
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
  - Fix the extension removal in Obj filename export in Board3D. (David
    Coeurjolly,[#1154](https://github.com/DGtal-team/DGtal/pull/1154)))
+ - Fix issue when drawing DSS with both points and bounding box. (David
+   Coeurjolly,[#1186](https://github.com/DGtal-team/DGtal/pull/1186)))
 
 - *Topology Package*
   - Fix wrong starting point for surface tracking in example code
