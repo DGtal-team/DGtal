@@ -67,9 +67,9 @@ namespace DGtal
      - same as CIncrementalSegmentComputer
 
  ### Notation
-     - \t X : A type that is a model of CForwardSegmentComputer
-     - \t x : object of type X
-     - \t r : object of type X::Reverse
+     - \a X : A type that is a model of CForwardSegmentComputer
+     - \a x : object of type X
+     - \a r : object of type X::Reverse
 
  ### Invariants###
 

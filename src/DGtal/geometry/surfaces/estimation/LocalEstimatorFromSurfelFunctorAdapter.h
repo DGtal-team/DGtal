@@ -201,7 +201,7 @@ namespace DGtal
       return *this;
     }
     
-    /*
+    /**
      * Destructor.
      */
     ~LocalEstimatorFromSurfelFunctorAdapter();
@@ -235,6 +235,8 @@ namespace DGtal
      *
      * @param aConvolutionFunctor a functor giving the weight as a
      * function of the distance to the surfel.
+     *
+     * @param radius  a kernel radius.
      */
     void setParams( ConstAlias<TMetric> aMetric,
                     Alias<FunctorOnSurfel>  aFunctor,

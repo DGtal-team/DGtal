@@ -58,7 +58,7 @@ namespace DGtal
    * \brief Aim: Class that implements a binary point predicate, which is able to 
    * compare the position of two given points \f$ P, Q \f$ around a pole \f$ O \f$. 
    * More precisely, it compares the oriented angles lying between the horizontal line
-   * passing by \f$ O \$f and the rays \f$ [OP) \f$ and \f$ [OQ) \f$ 
+   * passing by \f$ O \f$ and the rays \f$ [OP) \f$ and \f$ [OQ) \f$ 
    * (in a counter-clockwise orientation). 
    *
    * See PolarPointComparatorBy2x2DetComputer::operator() and PolarPointComparatorBy2x2DetComputer::isBefore

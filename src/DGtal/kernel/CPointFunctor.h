@@ -65,10 +65,10 @@ Description of \b concept '\b CPointFunctor' <p>
  - Value : specifies the type for a value (inner type).
 
  ### Notation
-     - \t X : A type that is a model of CPointFunctor
-     - \t x : Object of type \t X
-     - \t p : Object of type Point
-     - \t v : Object of type Value
+     - \a X : A type that is a model of CPointFunctor
+     - \a x : Object of type \a X
+     - \a p : Object of type Point
+     - \a v : Object of type Value
 
  ### Definitions
 
@@ -76,7 +76,7 @@ Description of \b concept '\b CPointFunctor' <p>
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|Apply function | \t x( \t p)|                     | \c v        |                  |the value of the function \t x at point \t p | | |
+|Apply function | \a x( \a p)|                     | \c v        |                  |the value of the function \a x at point \a p | | |
 
  ### Invariants
 

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file cubical-complex-collapse.cpp
+ * @file topology/cubical-complex-collapse.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France

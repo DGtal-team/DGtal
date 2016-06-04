@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CDigitialOrientedShape.h
+ * @file
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -66,8 +66,8 @@ Description of \b concept '\b CDigitalOrientedShape' <p>
      - Point: type for digital points.
 
  ### Notation
-     - \t X : A type that is a model of CDigitalOrientedShape
-     - \t x, \t y : object of type X
+     - \a X : A type that is a model of CDigitalOrientedShape
+     - \a x, \a y : object of type X
     
  ### Definitions
     

@@ -1177,6 +1177,7 @@ namespace DGtal
 
        @param idx the index of the data in the container.
        @pre idx <= size() (if size(), inserts at the end.
+       @param block_size the block size.
        @param data the data to insert.
        NB: O( n ), E = O( n - idx )
     */

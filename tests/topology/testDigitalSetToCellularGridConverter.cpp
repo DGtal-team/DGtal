@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testdigitalSetToCubicalComplexes.cpp
+ * @file
  * @ingroup Tests
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, A3SI, France
