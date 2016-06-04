@@ -252,12 +252,14 @@ namespace DGtal
     /**
      * Constructor from cell.
      * @param cell any unsigned cell
+     * @param open 'true' if the cell if open.
      */
     CellDirectionIterator( Cell cell, bool open = true );
 
     /**
      * Constructor from signed cell.
      * @param scell any signed cell
+     * @param open 'true' if the cell if open.
      */
     CellDirectionIterator( SCell scell, bool open = true );
 

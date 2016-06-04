@@ -197,7 +197,7 @@ $ ./examples/graph/graphTraversal
 
   Displays the Euclidean distance to a starting surfel on the boundary
   of a vol shape (traversal by mix distance/breadth-first, see
-  \ref DistanceBreadthFirstVisitor).
+  \ref DGtal::DistanceBreadthFirstVisitor).
 
 @see \ref dgtal_graph_def_2_4
 

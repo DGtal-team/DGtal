@@ -137,7 +137,7 @@ namespace DGtal
      * Fortran subroutine in EISPACK.
      *
      * @param[in] e contains the subdiagonal elements of the input matrix in its last n-1 positions. e(0) is arbitrary.
-     * @param[in,out] d \b input: the diagonal elements of the input matrix / \b: output orthonormal eigenvalues in ascending order.
+     * @param[in,out] d \b input: the diagonal elements of the input matrix / \b output: orthonormal eigenvalues in ascending order.
 
      * @param[in,out] V \b input: transformation matrix produced in the
      * reduction by tridiagonalize(), if performed. If the

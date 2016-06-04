@@ -321,8 +321,9 @@ namespace DGtal
        *
        * @param aP first extremity point
        * @param aQ second extremity point
-       * @apram Lmin first extremity point of the L segment
-       * @apram Lmin first extremity point of the L segment
+       * @param Lmin first extremity point of the L segment
+       * @param Lmax second extremity point of the L segment
+       * @param aDimension a dimension
        * @return the lowest rounding intersection point.
        **/
       Abscissa getLowerRayIntersection(const Vector &aP, const Vector &aQ,
@@ -342,8 +343,9 @@ namespace DGtal
        *
        * @param aP first extremity point
        * @param aQ second extremity point
-       * @apram Lmin first extremity point of the L segment
-       * @apram Lmin first extremity point of the L segment
+       * @param Lmin first extremity point of the L segment
+       * @param Lmax second extremity point of the L segment
+       * @param aDimension a dimension
        * @return the lowest rounding intersection point.
        **/
       Abscissa getUpperRayIntersection(const Vector &aP, const Vector &aQ,
@@ -366,8 +368,8 @@ namespace DGtal
        *
        * @param [in] aP center of the ball we are shrinking
        * @param [in] aQ center of the second ball
-       * @apram [in]  Lmin first extremity point of the L segment
-       * @apram [in] Lmax first extremity point of the L segment
+       * @param [in]  Lmin first extremity point of the L segment
+       * @param [in] Lmax first extremity point of the L segment
        * @param [in] aDimension direction of the (Lmin,LMax segment)
        * @param [out] midPoint the point, on the segment, corresponding to the intersection
        * of the the first cone direction and the segment
@@ -396,8 +398,8 @@ namespace DGtal
        *
        * @param [in] aP center of the ball we are shrinking
        * @param [in] aQ center of the second ball
-       * @apram [in]  Lmin first extremity point of the L segment
-       * @apram [in] Lmax first extremity point of the L segment
+       * @param [in]  Lmin first extremity point of the L segment
+       * @param [in] Lmax first extremity point of the L segment
        * @param [in] aDimension direction of the (Lmin,LMax segment)
        * @param [out] midPoint the point, on the segment, corresponding to the intersection
        * of the the first cone direction and the segment
@@ -474,7 +476,7 @@ namespace DGtal
         return myDirections.end();
       }
     
-      /*
+      /**
        * @return the mask size
        */
       inline

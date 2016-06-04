@@ -759,7 +759,7 @@ WARN_FORMAT            = "$file:$line: $text"
 # messages should be written. If left blank the output is written to standard
 # error (stderr).
 
-WARN_LOGFILE           =
+WARN_LOGFILE           = @top_bindir@/doxygen.Board.log
 
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
@@ -800,6 +800,7 @@ FILE_PATTERNS          = *.cpp \
                          *.hpp \
                          *.cxx \
                          *.h \
+                         *.ih \
                          *.dox
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
@@ -848,7 +849,7 @@ EXCLUDE_SYMBOLS        =
 # that contain example code fragments that are included (see the \include
 # command).
 
-EXAMPLE_PATH           = html
+EXAMPLE_PATH           =
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp and

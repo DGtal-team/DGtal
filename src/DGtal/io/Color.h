@@ -86,7 +86,7 @@ namespace DGtal
     Color( const unsigned int aRgb,
            unsigned char aAlpha = 255 );
 
-    /*
+    /**
      * Copy Constructor.
      *
      * @param aColor the color to copy.
@@ -368,7 +368,7 @@ namespace DGtal
      * @param aPrefix A prefix string to be appended to the returned 
      * string if not empty.
      * 
-     * @return An empty string if alpha == 255, otherwise the string <prefix>-opacity="<alpha-value>".
+     * @return An empty string if alpha == 255, otherwise the string \<prefix\>-opacity="<alpha-value>".
      */
     std::string svgAlpha( const char * aPrefix ) const;
 

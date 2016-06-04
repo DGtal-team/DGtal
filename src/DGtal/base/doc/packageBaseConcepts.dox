@@ -31,7 +31,7 @@ digraph GBASE {
     color=white;
     label = "std/boost concepts"
     boost_OutputIterator [ label="OutputIterator" URL="\ref boost::OutputIterator" ];
-    boost_SinglePassIteratorConcept [ label="SinglePassIteratorConcept" URL="\ref boost::SinglePassIteratorConcept" ];
+    boost_SinglePassIteratorConcept [ label="SinglePassIteratorConcept" URL="\ref boost_concepts::SinglePassIteratorConcept" ];
     boost_Assignable [ label="Assignable" URL="\ref boost::Assignable" ];
     boost_LessThanComparable [ label="LessThanComparable" URL="\ref boost::LessThanComparable" ];
     boost_DefaultConstructible [ label="DefaultConstructible" URL="\ref boost::DefaultConstructible" ];
