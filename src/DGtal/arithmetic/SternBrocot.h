@@ -292,7 +292,7 @@ namespace DGtal
 
       /**
 	 Splitting formula, O(1) time complexity. This fraction should
-	 not be 0/1 or 1/0. NB: 'this' = [f1] \oplus [f2].
+	 not be 0/1 or 1/0. NB: 'this' = [f1] @f$\oplus@f$ [f2].
 
 	 @param f1 (returns) the left part of the split.
 	 @param f2 (returns) the right part of the split.
@@ -302,7 +302,7 @@ namespace DGtal
       /**
 	 Berstel splitting formula, O(1) time complexity. This
 	 fraction should not be 0/1 or 1/0. NB: 'this' = nb1*[f1]
-	 \oplus nb2*[f2]. Also, if 'this->k' is even then nb1=1,
+	 @f$\oplus@f$ nb2*[f2]. Also, if 'this->k' is even then nb1=1,
 	 otherwise nb2=1.
 
 	 @param f1 (returns) the left part of the split (left pattern).

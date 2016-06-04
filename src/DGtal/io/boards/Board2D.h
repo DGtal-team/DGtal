@@ -96,10 +96,9 @@ namespace DGtal
     /** 
      * Constructs a new board and sets the background color, if any.
      * 
-     * @param backgroundColor A color for the drawing's background.
+     * @param aBackgroundColor A color for the drawing's background.
      */
-    Board2D( const Color & backgroundColor 
-    = Color::None );
+    Board2D( const Color & aBackgroundColor = Color::None );
 
     /** 
      * Copy constructor.

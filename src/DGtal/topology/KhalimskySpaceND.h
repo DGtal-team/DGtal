@@ -319,7 +319,6 @@ namespace DGtal
   operator<<( std::ostream & out,
               const SignedKhalimskyCell< dim, TInteger > & object );
 
-
   /////////////////////////////////////////////////////////////////////////////
   // template class KhalimskySpaceND
   /**

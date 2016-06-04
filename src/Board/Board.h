@@ -865,6 +865,7 @@ public:
    * 
    * @param filename The name of the file.
    * @param type Output type: CairoPDF, CairoPNG, CairoPS, CairoSVG.
+   * @param size the page size.
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveCairo( const char * filename, CairoType type = CairoPNG, 

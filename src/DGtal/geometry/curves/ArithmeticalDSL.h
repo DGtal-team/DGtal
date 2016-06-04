@@ -377,7 +377,8 @@ namespace DGtal
   /**
    * Test if DSLs lie in the same octant.
    * @param aOther the object to compare with.
-   * @return 'true' the two DSLs lie in the same octant, 'false' otherwise
+   * @param[out] theOctant  where to store the common octant if the DSLs are in the same octant.
+   * @return 'true' if the two DSLs lie in the same octant, 'false' otherwise
    * @see sameOctant
    */
   bool sameOctant ( const ArithmeticalDSL & aOther, typename Octant::first_type *theOctant ) const;

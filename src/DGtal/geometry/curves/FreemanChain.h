@@ -604,7 +604,7 @@ public:
 
     /**
      * Comparaison operator
-     * @paramother other the object to compare to.
+     * @param other the object to compare to.
      * @return 'true' both FreemanChain are different, 'false' otherwise.
      */
     bool operator!=( const FreemanChain & other) const

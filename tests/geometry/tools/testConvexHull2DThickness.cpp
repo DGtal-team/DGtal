@@ -107,12 +107,15 @@ TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (convex hull with floating 
   
   Point pHV,qHV,sHV, pE,qE,sE;
 
-  DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+  const double thicknessHV = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                                  DGtal::functions::Hull2D::HorizontalVerticalThickness,
                                                  pHV, qHV, sHV);
-  DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+  const double thicknessE  = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                                  DGtal::functions::Hull2D::EuclideanThickness,
                                                  pE, qE, sE);
+
+  CAPTURE( thicknessHV );
+  CAPTURE( thicknessE  );
   
    SECTION("Testing antipodal points of ConvexHull2D")
      {
@@ -127,9 +130,12 @@ TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (convex hull with floating 
        REQUIRE( sE == Point(102.3, 52.3) );
      }
    ch.reverse();
-   DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+   
+   const double thicknessEb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
                                                   DGtal::functions::Hull2D::EuclideanThickness,
                                                   pE, qE, sE);
+
+   CAPTURE( thicknessEb );
    
    SECTION("Testing same antipodal points after hull reversing ")
      {

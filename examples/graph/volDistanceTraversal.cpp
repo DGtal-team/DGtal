@@ -1,5 +1,5 @@
 /**
- * @file volDistanceTraversal.cpp
+ * @file graph/volDistanceTraversal.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France

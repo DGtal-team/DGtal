@@ -80,7 +80,8 @@ namespace DGtal
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned int> Image2D;
    @endcode
-   - Use the same import function for both 2D or 3D images:
+
+   * - Use the same import function for both 2D or 3D images:
    @code
    Image3D an3Dimage= DGtal::GenericReader<Image3D>::import("example.vol");
    Image2D an2Dimage= DGtal::GenericReader<Image2D>::import("example.pgm");
@@ -144,6 +145,7 @@ namespace DGtal
      *  (used for gray scale image format: vol, longvol, pgm3D, raw).
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char , TContainer::Value > ).
+     * @param filename the image filename to be imported.
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param x x
      * @param y y
@@ -232,6 +234,7 @@ namespace DGtal
      *  (used for gray scale image format: vol, longvol, pgm3D, raw).
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char , TContainer::Value > ).
+     * @param filename the image filename to be imported.
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param x specify the  x image size to be used with raw format.
      * @param y specify the  y image size to be used with raw format.
@@ -328,6 +331,7 @@ namespace DGtal
      *  magick image lib is installed) .
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
+     * @param filename the image filename to be imported.
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param x specify the  x image size to be used with raw format.
      * @param y specify the  y image size to be used with raw format.
@@ -375,9 +379,9 @@ namespace DGtal
      *  grayscale image.
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, TContainer::Value > ).
+     * @param filename the image filename to be imported.
      * @param aFunctor to transform input unsigned char of image value into the given image type.
      *  image.
-     *
      * @param x specify the  x image size to be used with raw format.
      * @param y specify the  y image size to be used with raw format.
      **/
@@ -429,10 +433,9 @@ namespace DGtal
      *  the default parameter datasetName needs to be updated
      * according to the dimension if the image.
      *
+     * @param filename the image filename to be imported.
      * @param x specify the  x image size to be used with raw format.
      * @param y specify the  y image size to be used with raw format.
-     *
-     * @param filename the image filename to be imported.
      *
      **/
 
@@ -446,6 +449,7 @@ namespace DGtal
      *  magick image lib is installed) .
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
+     * @param filename the image filename to be imported.
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param x specify the  x image size to be used with raw format.
      * @param y specify the  y image size to be used with raw format.
@@ -493,9 +497,9 @@ namespace DGtal
      *  grayscale image.
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, TContainer::Value > ).
+     * @param filename the image filename to be imported.
      * @param aFunctor to transform input unsigned char of image value into the given image type.
-     *
-     ** @param x specify the  x image size to be used with raw format.
+     * @param x specify the  x image size to be used with raw format.
      * @param y specify the  y image size to be used with raw format.
      **/
     template<typename TFunctor>

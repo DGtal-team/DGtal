@@ -123,6 +123,7 @@ namespace DGtal
      * Estimation at each element of [@e itb , @e ite )
      * @param itb begin iterator
      * @param ite end iterator
+     * @param result  the output iterator to the results.
      * @return the estimated quantity
      * from itb till ite (excluded)
      */

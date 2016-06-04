@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file digitalSetToCubicalComplexes2D.cpp
+ * @file topology/digitalSetToCubicalComplexes2D.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France

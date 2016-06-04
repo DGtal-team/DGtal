@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalBoard3DTo2D-KSCell.cpp
+ * @file io/boards/dgtalBoard3DTo2D-KSCell.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 31 aout 2011
  * 

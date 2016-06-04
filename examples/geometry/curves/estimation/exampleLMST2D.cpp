@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleLambdaMST2D.cpp
+ * @file geometry/curves/estimation/exampleLMST2D.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France

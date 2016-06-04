@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-7-planes.cpp
+ * @file io/viewers/viewer3D-7-stdplane.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
