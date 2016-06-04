@@ -311,21 +311,13 @@ typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Complex
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 calcScaledFreqValue( Point const& aPoint, Complex const& aValue ) const noexcept
 {
-  //const Real phase = 2*pi*( myScaledSpatialLowerBound / myScaledSpatialExtent ).dot( aPoint );
+  auto const pt = calcScaledFreqCoords( aPoint );
+
   Real phase = 0;
   for ( Dimension i = 0; i < dimension; ++i )
-    phase = aPoint[ i ] * myScaledSpatialLowerBound[ i ] * mySpatialExtent[ i ] / myScaledSpatialExtent[ i ];
-  //phase *= 2*pi;
+    phase = Real( myScaledSpatialLowerBound[ i ] ) * pt[ i ];
 
-  //const Real phase = std::fmod( 2*pi* calcScaledFreqCoords( aPoint ).dot( aPoint ), 2*pi );
-
-  std::cout << "aPoint = " << aPoint << std::endl;
-  std::cout << "myScaledSpatialLowerBound = " << myScaledSpatialLowerBound << std::endl;
-  std::cout << "myScaledSpatialExtent = " << myScaledSpatialExtent << std::endl;
-  std::cout << "phase = " << phase << std::endl;
-  std::cout << "c = " << Complex( std::cos(phase), std::sin(phase) ) << std::endl;
-  std::cout << "aValue = " << aValue << std::endl;
-  std::cout << "aValue*c = " << aValue * Complex( std::cos(phase), std::sin(phase) ) << std::endl;
+  phase *= 2*pi;
 
   return aValue * Complex( std::cos(phase), std::sin(phase) );
 }

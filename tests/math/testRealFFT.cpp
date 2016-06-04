@@ -94,6 +94,12 @@ void testForwardBackwardFFT( ImageContainerBySTLVector<TDomain, TValue> const & 
     }
 }
 
+/** Find element with maximal norm in a range.
+ * @tparam  TIterator   Iterator type.
+ * @param   it      Iterator to the range begin.
+ * @param   it_end  Iterator the the range end.
+ * @return  the iterator to the maximal element.
+ */
 template <typename TIterator>
 TIterator findMaxNorm( TIterator it, TIterator const & it_end )
 {
@@ -119,10 +125,10 @@ template <
   typename TDomain,
   typename TValue
 >
-void testSpatialScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage )
+void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage )
 {
-  using RealPoint = typename TDomain::Space::RealPoint;
   using FFT = RealFFT< TDomain, TValue >;
+  using RealPoint = FFT::RealPoint;
 
   const TValue pi = boost::math::constants::pi<TValue>();
   const TValue freq = 5;
@@ -145,12 +151,13 @@ void testSpatialScaling( ImageContainerBySTLVector<TDomain, TValue> const & anIm
   INFO( "Forward transformation." );
   fft.forwardFFT( FFTW_ESTIMATE );
 
+  INFO( "Finding maximal frequency..." );
   const auto freq_image = fft.getFreqImage();
   const auto it_max = findMaxNorm( freq_image.cbegin(), freq_image.cend() );
   const auto pt_max = it_max.getPoint();
-  CAPTURE( *it_max );
+  INFO( "\tat " << pt_max << " with value " << *it_max );
 
-  INFO( "Checks maximal frequency with unit domain." );
+  INFO( "Checks maximal frequency on unit domain." );
     {
       auto freq_pt  = fft.calcScaledFreqCoords( it_max.getPoint() );
       auto freq_val = fft.calcScaledFreqValue( it_max.getPoint(), *it_max );
@@ -164,35 +171,28 @@ void testSpatialScaling( ImageContainerBySTLVector<TDomain, TValue> const & anIm
       REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase, 2*pi ) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
     }
 
-  /*
-  INFO( "Checks maximal frequency with translated unit domain." );
+  INFO( "Checks maximal frequency on translated unit domain." );
     {
       fft.setScaledSpatialLowerBound( RealPoint::diagonal( 1. / (4*freq) ) );
 
       auto freq_pt  = fft.calcScaledFreqCoords( it_max.getPoint() );
       auto freq_val = fft.calcScaledFreqValue( it_max.getPoint(), *it_max );
-      CAPTURE( freq_pt );
-      CAPTURE( freq_val );
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
           freq_pt  = -freq_pt;
           freq_val = std::conj( freq_val );
         }
-      CAPTURE( freq_pt );
-      CAPTURE( freq_val );
-      CAPTURE( std::arg(freq_val) );
-      CAPTURE( phase + pi/2 );
-      CAPTURE( std::arg(freq_val) - phase - pi/2);
 
       REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ) );
       REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase - pi/2, 2*pi) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
     }
-  */
 
-  INFO( "Checks maximal frequency with initial domain." );
+  INFO( "Checks maximal frequency on translated initial domain." );
     {
+      const RealPoint shift = RealPoint::diagonal( 3. );
+
       fft.setScaledSpatialExtent( anImage.extent() );
-      fft.setScaledSpatialLowerBound( RealPoint::diagonal( 3.) );
+      fft.setScaledSpatialLowerBound( shift );
 
       auto freq_pt  = fft.calcScaledFreqCoords( it_max.getPoint() );
       auto freq_val = fft.calcScaledFreqValue( it_max.getPoint(), *it_max );
@@ -201,12 +201,51 @@ void testSpatialScaling( ImageContainerBySTLVector<TDomain, TValue> const & anIm
           freq_pt  = -freq_pt;
           freq_val = std::conj( freq_val );
         }
+
       const auto scaled_factor = freq/anImage.extent()[ TDomain::dimension-1 ];
       REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, scaled_factor ) ).norm() == Approx( 0 ) );
-      REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase - 3*2*pi*scaled_factor, 2*pi ) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
+      REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase - 2*pi*scaled_factor*shift[TDomain::dimension-1], 2*pi ) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
     }
+}
+
+/** Compares the FFT of an image with the FFT of its translation.
+* @tparam   TDomain   Domain type.
+* @tparam   TValue    Value type.
+* @param    anImage   The image from which to take the domain.
+*/
+template <
+  typename TDomain,
+  typename TValue
+>
+void cmpTranslationFFT( ImageContainerBySTLVector<TDomain, TValue> const & anImage )
+{
+  using FFT = RealFFT< TDomain, TValue >;
+  using Point = FFT::RealPoint;
+
+  const Point shift = RealPoint::diagonal( 3 );
+  INFO( "Initializing RealFFT." );
+  FFT fft( anImage.domain() );
+  FFT shifted_fft( anImage.domain() );
+
+  INFO( "Copying data from the image." );
+  auto spatial_image = fft.getSpatialImage();
+  std::copy( anImage.cbegin(), anImage.cend(), spatial_image.begin() );
+
+  auto shifted_spatial_image = fft.getSpatialImage();
+  const auto spatial_extent = fft.getSpatialExtent();
+  for ( auto it = shifted_spatial_image.begin(); it != shifted_spatial_image.end(); ++it )
+    {
+      auto pt = it.getPoint() - shift;
+
+    }
+  std::copy( anImage.cbegin(), anImage.cend(), spatial_image.begin() );
+
+  INFO( "Forward transformation." );
+  fft.forwardFFT( FFTW_ESTIMATE );
 
 }
+///////////////////////////////////////////////////////////////////////////////
+// Test cases.
 
 #ifdef WITH_FFTW3_FLOAT
 TEST_CASE( "Checking RealFFT on a 2D image in float precision.", "[2D][float]" )
@@ -226,7 +265,7 @@ TEST_CASE( "Checking RealFFT on a 2D image in float precision.", "[2D][float]" )
   testForwardBackwardFFT( image );
 
   INFO( "Testing spatial domain scaling." );
-  testSpatialScaling( image );
+  testFFTScaling( image );
 }
 #endif
 
@@ -248,7 +287,7 @@ TEST_CASE( "Checking RealFFT on a 2D image in double precision.", "[2D][double]"
   testForwardBackwardFFT( image );
 
   INFO( "Testing spatial domain scaling." );
-  testSpatialScaling( image );
+  testFFTScaling( image );
 }
 #endif
 
@@ -272,7 +311,7 @@ TEST_CASE( "Checking RealFFT on a 2D image in long double precision.", "[2D][lon
   testForwardBackwardFFT( image );
 
   INFO( "Testing spatial domain scaling." );
-  testSpatialScaling( image );
+  testFFTScaling( image );
 }
 #endif
 
@@ -295,6 +334,6 @@ TEST_CASE( "Checking RealFFT on a 3D image in float precision.", "[3D][float]" )
   //testForwardBackwardFFT( image );
 
   INFO( "Testing spatial domain scaling." );
-  testSpatialScaling( image );
+  testFFTScaling( image );
 }
 #endif
