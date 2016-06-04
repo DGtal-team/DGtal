@@ -1,3 +1,4 @@
+/// @file dec/exampleDECSurface.cpp
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SurfelAdjacency.h"

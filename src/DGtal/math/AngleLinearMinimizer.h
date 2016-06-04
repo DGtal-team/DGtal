@@ -60,7 +60,7 @@ namespace DGtal
  * Description of class 'AngleLinearMinimizer' <p>
  * \brief Aim: Used to minimize the angle variation between different angles while taking into accounts min and max constraints.
  * Example (@see math/testAngleLinearMinimizer.cpp) 
-  \snippet testAngleLinearMinimizer.cpp [optimization]
+  \snippet testAngleLinearMinimizer.cpp optimization
   
  *
  */
