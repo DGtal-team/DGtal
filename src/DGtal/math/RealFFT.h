@@ -437,11 +437,12 @@ class RealFFT< HyperRectDomain<TSpace>, T >
   private:
     const Domain  mySpatialDomain;  ///< Spatial domain (real).
     const Point   mySpatialExtent;  ///< Extent of the spatial domain.
-        RealPoint myScaledSpatialExtent;  ///< Extent of the scaled spatial domain.
-        RealPoint myScaledSpatialLowerBound;  ///< Lower bound of the scaled spatial domain.
     const Point   myFreqExtent;     ///< Extent of the frequential domain.
     const Domain  myFreqDomain;     ///< Frequential domain (complex).
           void*   myStorage;        ///< Storage.
+        RealPoint myScaledSpatialExtent;  ///< Extent of the scaled spatial domain.
+        RealPoint myScaledSpatialLowerBound;  ///< Lower bound of the scaled spatial domain.
+        Real      myScaledFreqMag;  ///< Magnitude ratio for the scaled frequency values.
 
   };
 
