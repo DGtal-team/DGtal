@@ -696,8 +696,8 @@ extractAllConnectedSCell
 {
   std::set<SCell> bdry;
   sMakeBoundary( bdry, aKSpace, pp,
-                 aKSpace.uCoords(aKSpace.lowerCell()), 
-                 aKSpace.uCoords(aKSpace.upperCell()) );
+                 aKSpace.lowerBound(), 
+                 aKSpace.upperBound() );
   aVectConnectedSCell.clear();
   while(!bdry.empty()){
     std::set<SCell>  aConnectedSCellSet;
@@ -741,11 +741,11 @@ extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointConto
     for(unsigned int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
       SCell sc = vectContoursBdrySCell.at(i).at(j);
       float x = (float) 
-        ( NumberTraits<typename TKSpace::Integer>::castToInt64_t( sc.myCoordinates[0] ) >> 1 );
+        ( NumberTraits<typename TKSpace::Integer>::castToInt64_t( aKSpace.sKCoord(sc, 0) ) >> 1 );
       float y = (float) 
-        ( NumberTraits<typename TKSpace::Integer>::castToInt64_t( sc.myCoordinates[1] ) >> 1 );
-      bool xodd = ( sc.myCoordinates[ 0 ] & 1 );
-      bool yodd = ( sc.myCoordinates[ 1 ] & 1 );
+        ( NumberTraits<typename TKSpace::Integer>::castToInt64_t( aKSpace.sKCoord(sc, 1) ) >> 1 );
+      bool xodd = ( aKSpace.sKCoord(sc, 0) & 1 );
+      bool yodd = ( aKSpace.sKCoord(sc, 1) & 1 );
       double x0 = !xodd ? x  - 0.5 : (!aKSpace.sSign(sc)? x  - 0.5: x  + 0.5) ;
       double y0 = !yodd ? y  - 0.5 : (!aKSpace.sSign(sc)? y  - 0.5: y + 0.5);
       double x1 = !xodd ? x  - 0.5 : (aKSpace.sSign(sc)? x  - 0.5: x  + 0.5) ;
@@ -932,51 +932,35 @@ sWriteBoundary( OutputIterator & out_it,
       // When looking for surfels, the visiting must follow the k-th
       // axis first so as to reuse the predicate "pp( p )".
       std::swap( axes[ 0 ], axes[ k ] );
+
+      // We keep direct coordinates manipulation (instead of using KSpace methods) 
+      // to allow correct domain span even with periodic Khalimsky space.
       Point low = aLowerBound; ++low[ k ];
       Point up = aUpperBound;
-      Domain domain( low, up );
-      Integer x = low[ k ];
-      typename Domain::ConstSubRange range = domain.subRange( axes );
-      for ( typename Domain::ConstSubRange::ConstIterator
-              it = range.begin(), it_end = range.end();
-            it != it_end; ++it )
+      const Domain domain( low, up );
+      const Integer x = low[ k ];
+      
+      for ( auto const& p : domain.subRange( axes ) )
         {
-          const Point & p = *it;
+          auto cell = aKSpace.sSpel( p, true );
+          
           if ( p[ k ] == x)
             {
-              in_here = pp( p );
-              Point p2( p ); --p2[ k ];
-              in_before = pp( p2 );
+              in_here = pp( aKSpace.sCoords( cell ) );
+              in_before = pp( aKSpace.sCoords( aKSpace.sGetDecr( cell, k ) ) );
             }
           else
             { 
               in_before = in_here;
-              in_here = pp( p );
+              in_here = pp( aKSpace.sCoords( cell ) );
             }
           if ( in_here != in_before ) // boundary element
             { // writes it into the output iterator.
-              *out_it++ = aKSpace.sIncident( aKSpace.sSpel( p, in_here ),
-                                             k, false );
+              aKSpace.sSetSign( cell, in_here );
+              *out_it++ = aKSpace.sIncident( cell, k, false );
             }
         }
     }
-  // for ( k = 0; k < aKSpace.dimension; ++k )
-  //   {
-  //     Cell dir_low_uid = aKSpace.uSpel( aLowerBound );
-  //     Cell dir_up_uid = aKSpace.uGetDecr( aKSpace.uSpel( aUpperBound ), k);
-  //     Cell p = dir_low_uid;
-  //     do 
-  //       {
-  //         in_here = pp( aKSpace.uCoords(p) );
-  //         in_further = pp( aKSpace.uCoords(aKSpace.uGetIncr( p, k )) );
-  //         if ( in_here != in_further ) // boundary element
-  //           { // writes it into the output iterator.
-  //             *out_it++ = aKSpace.sIncident( aKSpace.signs( p, in_here ),
-  //                                            k, true );
-  //           }
-  //       }
-  //     while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
-  //   }
 }
 
 template <typename TKSpace>
@@ -990,16 +974,15 @@ DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace,
                                          bool incrementMode)
 {
   unsigned int numberCellFilled = 0;
-  std::deque<Cell> pixels;      
-  Cell p =  aKSpace.uFirst(aKSpace.uCell(Point::diagonal(1)));  
-  Cell lowerCell = aKSpace.uFirst(p);
-  Cell upperCell = aKSpace.uLast(p);
- 
-  bool in_mode = empty_is_inside;   
-  do 
+  std::deque<Cell> pixels;
+  Cell p =  aKSpace.uFirst( typename KSpace::PreCell( Point::diagonal(1) ) );
+  const Cell lowerCell = aKSpace.uFirst( p );
+  const Cell upperCell = aKSpace.uLast( p );
+  bool in_mode = empty_is_inside;
+  do
     {
       if ( p != aKSpace.uGetMax( p, 0 ) )
-        { 
+        {
           pixels.push_front( p );
           SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
           if ( aSurfPred( b )  )
@@ -1015,28 +998,28 @@ DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace,
             }
           else if ( aSurfPred( aKSpace.sOpp( b ) )  )
             {
-               pixels.clear();
+              pixels.clear();
               in_mode = true;
 
             }
         }
       else
-	{
-	  pixels.push_front( p );
-	  if ( in_mode )
-	    {
-	      while ( ! pixels.empty() )
-		{
+        {
+          pixels.push_front( p );
+          if ( in_mode )
+            {
+              while ( ! pixels.empty() )
+                {
                   Point aPoint = aKSpace.uCoords(pixels.front());
                   anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
-		  pixels.pop_front();
+                  pixels.pop_front();
                   numberCellFilled++;
-		}
-	    }
-	  else
-	    pixels.clear();
-	  in_mode = empty_is_inside;
-	}
+                }
+            }
+          else
+            pixels.clear();
+          in_mode = empty_is_inside;
+        }
     }  while ( aKSpace.uNext(p, lowerCell, upperCell)  );
 
   return numberCellFilled;
@@ -1056,16 +1039,15 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
                                          bool incrementMode)
 {
   unsigned int numberCellFilled=0;
-  std::deque<Cell> pixels;      
-  Cell p =  aKSpace.uFirst(aKSpace.uCell(Point::diagonal(1)));  
-  Cell lowerCell = aKSpace.uFirst(p);
-  Cell upperCell = aKSpace.uLast(p);
-  
-  bool in_mode = empty_is_outside;   
-  do 
+  std::deque<Cell> pixels;
+  Cell p =  aKSpace.uFirst( typename KSpace::PreCell( Point::diagonal(1) ) );
+  const Cell lowerCell = aKSpace.uFirst( p );
+  const Cell upperCell = aKSpace.uLast( p );
+  bool in_mode = empty_is_outside;
+  do
     {
       if ( p != aKSpace.uGetMax( p, 0 ) )
-        { 
+        {
           pixels.push_front( p );
           SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
           if ( aSurfPred( b ) )
@@ -1086,22 +1068,22 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
             }
         }
       else
-	{
-	  pixels.push_front( p );
-	  if ( in_mode )
-	    {
-	      while ( ! pixels.empty() )
-		{
+        {
+          pixels.push_front( p );
+          if ( in_mode )
+            {
+              while ( ! pixels.empty() )
+                {
                   Point aPoint = aKSpace.uCoords(pixels.front());
                   anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
                   pixels.pop_front();
                   numberCellFilled++;
                 }
-	    }
-	  else
-	    pixels.clear();
-	  in_mode = empty_is_outside;
-	}
+            }
+          else
+            pixels.clear();
+          in_mode = empty_is_outside;
+        }
     }  while ( aKSpace.uNext(p, lowerCell, upperCell)  );
   return numberCellFilled;
 }
@@ -1144,7 +1126,7 @@ DGtal::Surfaces<TKSpace>::isValid() const
 template <typename TKSpace>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const Surfaces<TKSpace> & object )
 {
   object.selfDisplay( out );
