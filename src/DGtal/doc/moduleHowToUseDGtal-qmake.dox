@@ -21,7 +21,7 @@ namespace DGtal {
 @author Bertrand Kerautret
 
 
-In \ref HowToUseDGtal, we have described a simple way to use DGtal in your own project with the cmake build system. We detail here hints to use DGtal with different systems.
+In \ref moduleHowToUseDGtal, we have described a simple way to use DGtal in your own project with the cmake build system. We detail here hints to use DGtal with different systems.
 
 [TOC]
 

@@ -71,10 +71,10 @@ namespace concepts
  
  
  ### Notation
-  - \t X : A type that is a model of CImage
-  - \t x : Object of type X
-  - \t aPoint : Object of type Point
-  - \t aValue : Object of type Value
+  - \a X : A type that is a model of CImage
+  - \a x : Object of type X
+  - \a aPoint : Object of type Point
+  - \a aValue : Object of type Value
  
  
  ### Definitions

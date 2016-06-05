@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleFMM3D.cpp
+ * @file geometry/volumes/distance/exampleFMM3D.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France

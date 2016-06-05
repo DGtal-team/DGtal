@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleBezierCurve.cpp
+ * @file io/boards/exampleBezierCurve.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France

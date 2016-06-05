@@ -67,8 +67,8 @@ Description of \b concept '\b CConvolutionWeights' <p>
    - Distance: type to represent topological distances.
 
  ### Notation
-     - \t X : A type that is a model of CConvolutionWeights
-     - \t x, \t y : object of type X
+     - \a X : A type that is a model of CConvolutionWeights
+     - \a x, \a y : object of type X
 
  ### Definitions
 

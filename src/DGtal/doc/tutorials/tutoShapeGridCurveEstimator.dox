@@ -53,7 +53,7 @@ The smaller the grid step, the higher the resolution is.
 
 The extraction of the contour is performed in a cellular space 
 (with 0-, 1-, and 2-cells), given an adjacency (0-, 1-, 2-adjacency). 
-See \ref dgtal_cellular_topology for the basic
+See \ref moduleCellularTopology for the basic
 concepts of cellular topology. 
 
 @snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-prepareTracking
