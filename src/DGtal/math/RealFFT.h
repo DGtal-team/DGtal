@@ -51,6 +51,7 @@
 
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ArrayImageAdapter.h"
+#include "DGtal/kernel/PointVector.h"
 
 namespace DGtal
 {
@@ -212,11 +213,11 @@ class RealFFT< HyperRectDomain<TSpace>, T >
 
   public:
     using Space   = TSpace;                       ///< Space type.
+    using Real    = T;                            ///< Real value type.
     using Domain  = HyperRectDomain<Space>;       ///< Domain type.
     using Point     = typename Space::Point;      ///< Point type.
-    using RealPoint = typename Space::RealPoint;  ///< Real point type.
+    using RealPoint = PointVector<Space::dimension, Real>;  ///< Real point type.
     using Dimension = typename Space::Dimension;  ///< Space dimension type.
-    using Real = T;                               ///< Real value type.
     using Complex = std::complex<Real>;           ///< Complex value type.
     using Self    = RealFFT< Domain, T >;         ///< Self type.
 

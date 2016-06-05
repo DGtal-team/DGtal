@@ -51,9 +51,9 @@
 template <typename TSpace, typename T>
 inline
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
-  RealFFT( DGtal::HyperRectDomain<TSpace> const& aDomain,
-           typename TSpace::RealPoint const& aLowerBound,
-           typename TSpace::RealPoint const& anExtent
+  RealFFT( Domain     const& aDomain,
+           RealPoint  const& aLowerBound,
+           RealPoint  const& anExtent
   ) noexcept
     : mySpatialDomain{ aDomain }
     , mySpatialExtent{ mySpatialDomain.upperBound() - mySpatialDomain.lowerBound() + Point::diagonal(1) }
@@ -69,7 +69,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 template <typename TSpace, typename T>
 inline
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
-  RealFFT( DGtal::HyperRectDomain<TSpace> const& aDomain ) noexcept
+  RealFFT( Domain const& aDomain ) noexcept
     : RealFFT( aDomain
              , aDomain.lowerBound()
              , aDomain.upperBound() - aDomain.lowerBound() + Point::diagonal(1)
@@ -232,7 +232,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 /// Gets the extent of the scaled spatial domain.
 template <typename TSpace, typename T>
 inline
-typename TSpace::RealPoint
+typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::RealPoint
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   getScaledSpatialExtent() const noexcept
 {
@@ -244,7 +244,7 @@ template <typename TSpace, typename T>
 inline
 void
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
-  setScaledSpatialExtent( typename TSpace::RealPoint const& anExtent ) noexcept
+  setScaledSpatialExtent( RealPoint const& anExtent ) noexcept
 {
   myScaledSpatialExtent = anExtent;
 
@@ -256,7 +256,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 /// Gets the lower bound of the scaled spatial domain.
 template <typename TSpace, typename T>
 inline
-typename TSpace::RealPoint
+typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::RealPoint
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   getScaledSpatialLowerBound() const noexcept
 {
@@ -276,7 +276,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 /// Converts coordinates from the spatial image into scaled coordinates.
 template <typename TSpace, typename T>
 inline
-typename TSpace::RealPoint
+typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::RealPoint
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   calcScaledSpatialCoords( Point const& aPoint ) const noexcept
 {
@@ -292,7 +292,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 /// Converts coordinates from the frequency image into scaled frequencies.
 template <typename TSpace, typename T>
 inline
-typename TSpace::RealPoint
+typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::RealPoint
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   calcScaledFreqCoords( Point const& aPoint ) const noexcept
 {
