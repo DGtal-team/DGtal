@@ -211,6 +211,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
   private:
     using FFTW = detail::FFTWWrapper<T>;
 
+    // ----------------------------- Aliases ----------------------------------
   public:
     using Space   = TSpace;                       ///< Space type.
     using Real    = T;                            ///< Real value type.
@@ -227,7 +228,6 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     using ConstFreqImage = ArrayImageAdapter< const Complex*, Domain >; ///< Constant frequency image type.
 
     static const constexpr Dimension dimension = Domain::dimension; ///< Space dimension.
-    static const constexpr Real pi = boost::math::constants::pi<Real>(); ///< Pi.
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -433,6 +433,10 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     void selfDisplay ( std::ostream & out ) const;
 
     ///@}
+
+    // ------------------------- Public Datas --------------------------------
+  public:
+    const Real pi = boost::math::constants::pi<Real>(); ///< Pi.
 
     // ------------------------- Private Datas --------------------------------
   private:
