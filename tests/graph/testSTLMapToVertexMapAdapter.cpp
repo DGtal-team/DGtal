@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file STLMapToVertexMapAdapter.cpp
+ * @file
  * @ingroup Tests
  * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
  * Institut National des Sciences Appliquées - INSA, France

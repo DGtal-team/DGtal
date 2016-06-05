@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleNaive3DDSSComputer.cpp
+ * @file geometry/curves/exampleNaive3DDSSComputer.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France

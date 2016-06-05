@@ -66,19 +66,19 @@ namespace DGtal {
   ### Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
   
   ### Associated types :
-  - \t Space, the type that defines the digital space.
-  - \t Primitive, the type that defines the primitive.
+  - \a Space, the type that defines the digital space.
+  - \a Primitive, the type that defines the primitive.
   
   ### Notation
-  - \t X : A type that is a model of CPrimitiveComputer
-  - \t x : object of type X
+  - \a X : A type that is a model of CPrimitiveComputer
+  - \a x : object of type X
 
   ### Valid expressions and semantics
 
 
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-  |access to primitive | x.primitive() |             | \t Primitive|                  |returns a primitive that represents the current solution| | O(1)|
+  |access to primitive | x.primitive() |             | \a Primitive|                  |returns a primitive that represents the current solution| | O(1)|
   
   
   ### Invariants###

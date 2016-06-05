@@ -57,6 +57,7 @@
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/KhalimskyPreSpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/CubicalComplex.h"

@@ -147,7 +147,7 @@ git branch
 
 Note also that the branch marked with a star is your 
 current local branch. At this point you should see
-
+@code
 - * master
 - cool-feature
 @endcode
@@ -159,8 +159,10 @@ git checkout cool-feature
 @endcode
 
 After taping the command "git branch" you should see now: 
+@code
  - master
  - * cool-feature
+@endcode
 
 3- Add files, edit files, commit local branch
 
@@ -274,7 +276,6 @@ the option --track work only from git version 1.6.2 and later. But you can perfo
 @code 
 git checkout -b [myBranchName] [aRemoteName]/[aBranch]
 @endcode 
-@endnote
 
 
 

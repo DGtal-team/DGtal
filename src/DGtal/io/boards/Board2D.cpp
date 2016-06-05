@@ -49,7 +49,7 @@ DGtal::Board2D::~Board2D()
 /** 
  * Constructs a new board and sets the background color, if any.
  * 
- * @param backgroundColor A color for the drawing's background.
+ * @param aBackgroundColor A color for the drawing's background.
  */
 DGtal::Board2D::Board2D( const Color & aBackgroundColor )
   : LibBoard::Board( aBackgroundColor ),

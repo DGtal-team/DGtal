@@ -122,7 +122,7 @@ namespace DGtal
        Maps a digital point to its corresponding embedding position
        and gradient vector in the Euclidean space.
        
-       @param p any digital surface surfel given by a ConstIterator.
+       @param surfelIt any digital surface surfel given by a ConstIterator.
        @param x its embedding in the Euclidean space.
        @param grad (returns) its gradient vector at the point given by
        the current embedder in the Euclidean space.

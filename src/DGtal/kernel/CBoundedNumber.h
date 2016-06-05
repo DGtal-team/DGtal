@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CBoundedInteger.h
+ * @file
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -69,7 +69,7 @@ Description of \b concept '\b CBoundedNumber' <p>
  ### Associated types:
 
  ### Notation
-     - \t X : A type that is a model of CBoundedNumber
+     - \a X : A type that is a model of CBoundedNumber
 
  ### Definitions
 

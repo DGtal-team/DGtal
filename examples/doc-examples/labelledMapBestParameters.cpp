@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file demo-kernel-1.cpp
+ * @file doc-examples/labelledMapBestParameters.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
