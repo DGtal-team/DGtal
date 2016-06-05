@@ -128,7 +128,7 @@ template <
 void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage )
 {
   using FFT = RealFFT< TDomain, TValue >;
-  using RealPoint = FFT::RealPoint;
+  using RealPoint = typename FFT::RealPoint;
 
   const TValue pi = boost::math::constants::pi<TValue>();
   const TValue freq = 5;
@@ -217,31 +217,52 @@ template <
   typename TDomain,
   typename TValue
 >
-void cmpTranslationFFT( ImageContainerBySTLVector<TDomain, TValue> const & anImage )
+void cmpTranslatedFFT( ImageContainerBySTLVector<TDomain, TValue> const & anImage )
 {
   using FFT = RealFFT< TDomain, TValue >;
-  using Point = FFT::RealPoint;
+  using Point = typename TDomain::Point;
 
-  const Point shift = RealPoint::diagonal( 3 );
+  const Point shift = anImage.extent() / 3;
+  const auto domain = anImage.domain();
+
   INFO( "Initializing RealFFT." );
-  FFT fft( anImage.domain() );
-  FFT shifted_fft( anImage.domain() );
+  FFT fft( domain );
+  FFT shifted_fft( domain, domain.lowerBound() + shift, anImage.extent() );
 
   INFO( "Copying data from the image." );
   auto spatial_image = fft.getSpatialImage();
   std::copy( anImage.cbegin(), anImage.cend(), spatial_image.begin() );
 
-  auto shifted_spatial_image = fft.getSpatialImage();
-  const auto spatial_extent = fft.getSpatialExtent();
+  auto shifted_spatial_image = shifted_fft.getSpatialImage();
+  const auto spatial_extent  = shifted_fft.getSpatialExtent();
   for ( auto it = shifted_spatial_image.begin(); it != shifted_spatial_image.end(); ++it )
     {
-      auto pt = it.getPoint() - shift;
+      // Calculating shifted coordinates with periodicity.
+      Point pt = it.getPoint() - shift;
+      for ( typename Point::Dimension i = 0; i < Point::dimension; ++i )
+        if ( pt[ i ] < domain.lowerBound()[ i ] )
+          pt[ i ] += anImage.extent()[ i ];
 
+      *it = anImage( pt );
     }
-  std::copy( anImage.cbegin(), anImage.cend(), spatial_image.begin() );
 
   INFO( "Forward transformation." );
   fft.forwardFFT( FFTW_ESTIMATE );
+  shifted_fft.forwardFFT( FFTW_ESTIMATE );
+
+  INFO( "Comparing results." );
+  auto freq_image = fft.getFreqImage();
+  auto shifted_freq_image = shifted_fft.getFreqImage();
+  const TValue eps = 100 * std::numeric_limits<TValue>::epsilon();
+
+  for ( auto it = freq_image.cbegin(), shifted_it = shifted_freq_image.cbegin(); it != freq_image.cend(); ++it, ++shifted_it )
+    {
+      if ( std::norm( *it - shifted_fft.calcScaledFreqValue( shifted_it.getPoint(), *shifted_it ) ) > eps * std::max( std::norm(*it), TValue(1) ) )
+        FAIL( "Approximation failed at point " << it.getPoint()
+              << " between " << *it
+              << " and " << shifted_fft.calcScaledFreqValue( it.getPoint(), *shifted_it )
+              << " (scaled from " << *shifted_it << ")" );
+    }
 
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -266,6 +287,9 @@ TEST_CASE( "Checking RealFFT on a 2D image in float precision.", "[2D][float]" )
 
   INFO( "Testing spatial domain scaling." );
   testFFTScaling( image );
+
+  INFO( "Testing FFT on translated image." );
+  cmpTranslatedFFT( image );
 }
 #endif
 
@@ -288,6 +312,9 @@ TEST_CASE( "Checking RealFFT on a 2D image in double precision.", "[2D][double]"
 
   INFO( "Testing spatial domain scaling." );
   testFFTScaling( image );
+
+  INFO( "Testing FFT on translated image." );
+  cmpTranslatedFFT( image );
 }
 #endif
 
@@ -312,6 +339,9 @@ TEST_CASE( "Checking RealFFT on a 2D image in long double precision.", "[2D][lon
 
   INFO( "Testing spatial domain scaling." );
   testFFTScaling( image );
+
+  INFO( "Testing FFT on translated image." );
+  cmpTranslatedFFT( image );
 }
 #endif
 
@@ -323,17 +353,21 @@ TEST_CASE( "Checking RealFFT on a 3D image in float precision.", "[3D][float]" )
 
   using real = float;
   using Space = SpaceND<N>;
-  using Point = Space::Point;
   using Domain = HyperRectDomain<Space>;
   using Image = ImageContainerBySTLVector<Domain, real>;
 
   const Domain domain( {0, 10, 13}, {31, 28, 45} );
   Image image( domain );
 
-  //INFO( "Testing forward and backward FFT." );
-  //testForwardBackwardFFT( image );
+  /*
+  INFO( "Testing forward and backward FFT." );
+  testForwardBackwardFFT( image );
 
   INFO( "Testing spatial domain scaling." );
   testFFTScaling( image );
+
+  INFO( "Testing FFT on translated image." );
+  cmpTranslatedFFT( image );
+  */
 }
 #endif

@@ -57,12 +57,12 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   ) noexcept
     : mySpatialDomain{ aDomain }
     , mySpatialExtent{ mySpatialDomain.upperBound() - mySpatialDomain.lowerBound() + Point::diagonal(1) }
-    , myScaledSpatialExtent{ anExtent }
-    , myScaledSpatialLowerBound{ aLowerBound }
     , myFreqExtent{ mySpatialExtent / (Point::diagonal(1) + Point::base(0)) + Point::base(0) }
     , myFreqDomain{ Point::diagonal(0), myFreqExtent - Point::diagonal(1) }
     , myStorage( FFTW::malloc( sizeof(Complex) * myFreqDomain.size() ) )
 {
+  setScaledSpatialLowerBound( aLowerBound );
+  setScaledSpatialExtent( anExtent );
 }
 
 /// Constructor from a domain.
@@ -247,6 +247,10 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   setScaledSpatialExtent( typename TSpace::RealPoint const& anExtent ) noexcept
 {
   myScaledSpatialExtent = anExtent;
+
+  myScaledFreqMag = 1.;
+  for ( Dimension i = 0; i < dimension; ++i )
+    myScaledFreqMag *= mySpatialExtent[ i ] / myScaledSpatialExtent[ i ];
 }
 
 /// Gets the lower bound of the scaled spatial domain.
@@ -309,17 +313,17 @@ template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Complex
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
-calcScaledFreqValue( Point const& aPoint, Complex const& aValue ) const noexcept
+  calcScaledFreqValue( Point const& aPoint, Complex const& aValue ) const noexcept
 {
   auto const pt = calcScaledFreqCoords( aPoint );
 
   Real phase = 0;
   for ( Dimension i = 0; i < dimension; ++i )
-    phase = Real( myScaledSpatialLowerBound[ i ] ) * pt[ i ];
+    phase += Real( myScaledSpatialLowerBound[ i ] ) * pt[ i ];
 
   phase *= 2*pi;
 
-  return aValue * Complex( std::cos(phase), std::sin(phase) );
+  return aValue * std::polar( myScaledFreqMag, phase );
 }
 
 /// Fast Fourier Transformation.
