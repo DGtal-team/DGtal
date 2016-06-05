@@ -451,6 +451,19 @@ class RealFFT< HyperRectDomain<TSpace>, T >
 
   };
 
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'RealFFT'.
+   * @param out     the output stream where the object is written.
+   * @param object  the object of class 'RealFFT' to write.
+   * @return the output stream after the writing.
+   */
+  template <
+    class TDomain,
+    typename T
+  >
+  std::ostream&
+  operator<< ( std::ostream & out, const RealFFT<TDomain,T> & object );
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

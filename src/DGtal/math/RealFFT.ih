@@ -430,11 +430,14 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::isValid() const noexcept
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename T>
+template <
+  class TDomain,
+  typename T
+>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const RealFFT<T> & object )
+                  const RealFFT<TDomain, T> & object )
 {
   object.selfDisplay( out );
   return out;
