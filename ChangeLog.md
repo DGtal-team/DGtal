@@ -67,6 +67,8 @@
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
+ - Frechet S hortcut: fix implicit rounding.
+   (I. Sivignon, [#1180](https://github.com/DGtal-team/DGtal/pull/1180))
 
 - *Image Package*
  - Fixing issue [#779](https://github.com/DGtal-team/DGtal/issues/779) by
