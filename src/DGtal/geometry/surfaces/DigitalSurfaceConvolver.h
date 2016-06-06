@@ -314,7 +314,7 @@ protected:
   /**
    * @brief fillMoments fill the matrix of moments with a given spel.
    *
-   * @param[out]aMomentMatrix a matrix of digital moments
+   * @param[out] aMomentMatrix a matrix of digital moments
    * [ sum(1)
    *   sum(y) sum (x)
    *   sum(x*y) sum(y*y) sum(x*x)
@@ -674,7 +674,7 @@ protected:
   /**
    * @brief fillMoments fill the matrix of moments with a given spel.
    *
-   * @param[out]aMomentMatrix a matrix of digital moments
+   * @param[out] aMomentMatrix a matrix of digital moments
    * [ sum(1)
    *   sum(y) sum (x)
    *   sum(x*y) sum(y*y) sum(x*x)
@@ -1039,7 +1039,7 @@ protected:
   /**
    * @brief fillMoments fill the matrix of moments with a given spel.
    *
-   * @param[out]aMomentMatrix a matrix of digital moments
+   * @param[out] aMomentMatrix a matrix of digital moments
    * [ sum(1)
    *   sum(z) sum(y) sum (x)
    *   sum(y*z) sum(x*z) sum(x*y)

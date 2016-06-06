@@ -68,7 +68,7 @@ namespace DGtal
    *
    * Moreover, the provided iterators are adapted 
    * with a functor f given at construction so that 
-   * operator* calls f(*it), instead of calling directly 
+   * operator* calls f(\*it), instead of calling directly 
    * operator* of the iterator it.
    *
    * @tparam TFunctor the type of functor that transforms

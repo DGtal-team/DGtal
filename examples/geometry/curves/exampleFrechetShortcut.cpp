@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleFrechetShortcut.cpp
+ * @file geometry/curves/exampleFrechetShortcut.cpp
  * @ingroup Examples
  * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
  * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France

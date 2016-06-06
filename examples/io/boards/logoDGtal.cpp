@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file logoDGtal.cpp
+ * @file io/boards/logoDGtal.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * CNRS, LIRIS UMR 5205, Université de Lyon, France

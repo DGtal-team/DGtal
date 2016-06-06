@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file polynomial-read.cpp
+ * @file math/polynomial-read.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France

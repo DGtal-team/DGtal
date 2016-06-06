@@ -385,7 +385,7 @@ namespace DGtal
     	  
     /**
        Lookup table for counting the number of bits set to 1 in a byte.
-       ( Taken from STL <bitset> )
+       ( Taken from STL \<bitset\> )
     */
     static const DGtal::uint8_t myBitCount[ 256 ];
 

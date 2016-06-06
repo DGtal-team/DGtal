@@ -616,6 +616,7 @@ namespace DGtal
      * Constructor from a space and a map. 
      * NB: only pointers are stored
      *
+     * @param aK   a space.
      * @param aMap any distance map
      */
     L2FirstOrderLocalDistanceFromCells( ConstAlias<KSpace> aK, Map& aMap);

@@ -73,7 +73,8 @@ namespace DGtal {
     /** 
      * Constructor. This functor can be used to threshold image values
      * greater (>) than @a value.
-     * 
+     *
+     * @param aImage the image.
      * @param value  the threshold value.
      */
     SimpleThresholdForegroundPredicate(ConstAlias<Image> aImage,

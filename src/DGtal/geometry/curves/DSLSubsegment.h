@@ -287,8 +287,8 @@ namespace DGtal
       /**
        * Compute the intersection between the line of direction v
        * passing through P and the vertical line x = n.
-       * The intersection point is of the form P + \alpha*v and the
-       * function returns the value floor(alpha).
+       * The intersection point is of the form P + &alpha;*v and the
+       * function returns the value floor(&alpha;).
        * @param P a point
        * @param v directional vector of the line
        * @param n maximal value for x-coordinate
@@ -300,8 +300,8 @@ namespace DGtal
       /**
        * Compute the intersection between the line of direction v
        * passing through P and the line y = (aL[1]/aL[0])*x +r
-       * The intersection point is of the form P + \alpha*v and the
-       * function returns the value floor(alpha).
+       * The intersection point is of the form P + &alpha;*v and the
+       * function returns the value floor(&alpha;).
        * @param P a point of the first line
        * @param v directional vector of the first line
        * @param aL slope of the second line is equal to aL[1]/aL[0]
@@ -313,8 +313,8 @@ namespace DGtal
       /**
        * Compute the intersection between the line of direction v
        * passing through P and the line y = s*x
-       * The intersection point is of the form P + \alpha*v and the
-       * function returns the value floor(alpha).
+       * The intersection point is of the form P + &alpha;*v and the
+       * function returns the value floor(&alpha;).
        * @param P a point of the first line
        * @param v directional vector of the first line
        * @param s slope of the second line
@@ -325,7 +325,7 @@ namespace DGtal
       /**
        * Update the Bezout vector v of u according to the new point A in the
        * case of integer parameters. Follows algorithm presented in
-       * \cite{CharrierBuzer2009}
+       * @cite  CharrierBuzer2009
        * @param u a vector
        * @param A a point
        * @param l directional vector of the line
@@ -337,7 +337,7 @@ namespace DGtal
       /**
        * Update the Bezout vector v of u according to the new point A in the
        * case of floating-point parameters. Follows algorithm presented in
-       * \cite{CharrierBuzer2009}
+       * @cite  CharrierBuzer2009
        *
        * @param u a vector
        * @param A a point
@@ -370,7 +370,7 @@ namespace DGtal
        * the line of directional vector l and intercept r, between x=0
        * and x=n. Returns the upper and lower closest
        * points. Implementation of Charrier and Buzer algorithm
-       * \cite{CharrierBuzer2009}
+       * @cite  CharrierBuzer2009
        * @param l directional vector of the line
        * @param r intercept of the line
        * @param n maximal value of x-coordinate
@@ -395,7 +395,7 @@ namespace DGtal
        * the line of slope s, between x=0
        * and x=n. Returns the last two points computed.
        * Implementation of Charrier and Buzer algorithm
-       * \cite{CharrierBuzer2009}
+       * @cite  CharrierBuzer2009
        * @param l directional vector of the line
        * @param r intercept of the line
        * @param n maximal value of x-coordinate
@@ -523,7 +523,7 @@ namespace DGtal
        * Performs a dichotomy among the rays of smallest slope passing
        * through the points (fp/fq,r/fq), r in [0,fq] in order to locate
        * the point lambda(a/b,mu/b) in the ladder. Implements line 3 of
-       * Algorithm 1 in \cite{sivignonDGCI2013}. Return an integer h such
+       * Algorithm 1 in @cite sivignonDGCI2013. Return an integer h such
        * that either i) lambda is in between the rays passing through
        * the point (fp/fq,h/fq) and flagRayFound is set to false or ii)
        * lambda is below all the rays passing through the point
@@ -556,7 +556,7 @@ namespace DGtal
        * Performs a dichotomy among the rays of smallest slope passing
        * through the points (fp/fq,r/fq), r in [0,fq] in order to locate
        * the point lambda(alpha,beta) in the ladder. Implements line 3 of
-       * Algorithm 1 in \cite{sivignonDGCI2013}. Return an integer h such
+       * Algorithm 1 in @cite sivignonDGCI2013. Return an integer h such
        * that either i) lambda is in between the rays passing through
        * the point (fp/fq,h/fq) and flagRayFound is set to false or ii)
        * lambda is below all the rays passing through the point
@@ -596,9 +596,11 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
+	     * @param r numerator of the point y-coordinate
        * @param a DSL a parameter
        * @param b DSL b parameter
        * @param mu DSL my parameter
+       * @param n order of the Farey Fan
        * @return a ray
        */
       RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq,
@@ -616,6 +618,7 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
+	     * @param r numerator of the point y-coordinate
        * @param alpha DSL slope
        * @param beta DSL intercept
        * @param n order of the Farey Fan
@@ -632,6 +635,7 @@ namespace DGtal
        *
        * @param fp numerator
        * @param fq denominator
+       * @param r  a ray
        */
 
       RayC raySup(Integer fp, Integer fq, RayC r);
@@ -643,7 +647,7 @@ namespace DGtal
        *  FareyFan. This cell represents a DSS. This function computes the
        * vertex of the cell that represents the minimal characteristics
        *  of the DSS.
-       * Optimized version of the algorithm presented in the paper \cite{sivignonDGCI2013}.
+       * Optimized version of the algorithm presented in the paper @cite sivignonDGCI2013 .
        * Complexity of nextTermInFareySeriesEuclid
        *
        * @param fp numerator of the smallest fraction of the ladder
@@ -671,7 +675,7 @@ namespace DGtal
 
       /**
        * Corresponds to the algorithm presented in
-       * \cite{sivignonDGCI2013}.
+       * @cite  sivignonDGCI2013.
        *
        * @param fp numerator of the smallest fraction of the ladder
        * @param fq denominator of the smallest fraction of the
