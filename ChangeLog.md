@@ -84,6 +84,8 @@
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
+ - ArithDSSIterator: fix missing postfix ++.
+   (I. Sivignon, [#1187](https://github.com/DGtal-team/DGtal/pull/1187))
 
 - *Image Package*
  - Fixing issue [#779](https://github.com/DGtal-team/DGtal/issues/779) by
