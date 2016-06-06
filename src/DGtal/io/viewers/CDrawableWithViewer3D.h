@@ -70,9 +70,9 @@ An object x satisfying this concept may then be used as:
 ### Associated types :
    
 ### Notation
-    - \t X : A type that is a model of CDrawableWithViewer3DD
-    - \t x, \t y  : Object of type X
-    - \t m  : a string of characters
+    - \a X : A type that is a model of CDrawableWithViewer3DD
+    - \a x, \a y  : Object of type X
+    - \a m  : a string of characters
    
 ### Definitions
    
@@ -80,9 +80,9 @@ An object x satisfying this concept may then be used as:
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|the default draw style | x.defaultStyle( m = "") | mode \t m: \c std::string | CDrawableWithViewer3D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
+|the default draw style | x.defaultStyle( m = "") | mode \a m: \c std::string | CDrawableWithViewer3D | | returns a dynamic allocation of the default style for the model \a X in mode \a m | | |
 |the name of the model X | x.className() | | std::string | | returns a string telling the name of the model X | | |
-|the way the object \t x is drawn | x.setStyle(CDrawableWithViewer3D &display) | | | |draws the object \c x on the \c display stream | | |
+|the way the object \a x is drawn | x.setStyle(CDrawableWithViewer3D &display) | | | |draws the object \c x on the \c display stream | | |
 
 ### Invariants
    

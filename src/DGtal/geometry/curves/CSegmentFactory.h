@@ -65,8 +65,8 @@ Description of \b concept '\b CSegmentFactory' <p>
     instead of Self::ConstIterator as the underlying iterator
 
  ### Notation
-     - \t X : A type that is a model of CSegmentFactory
-     - \t x : object of type X
+     - \a X : A type that is a model of CSegmentFactory
+     - \a x : object of type X
 
  ### Definitions
 

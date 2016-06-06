@@ -79,7 +79,7 @@ Description of \b concept '\b CSpace' <p>
 - RealVector: the type for a Euclidean vector in the real vector space of same dimension.
 
  ### Notation
-  - \t X : A type that is a model of CSpace
+  - \a X : A type that is a model of CSpace
 
  ### Definitions
 

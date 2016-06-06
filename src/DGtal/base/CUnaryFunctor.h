@@ -63,12 +63,12 @@ Description of \b concept '\b CUnaryFunctor' <p>
 ### Associated types :
 
 ### Notation
-     - \t X : a type that is a model of CUnaryFunctor
-     - \t x : Object of type \t X
-     - \t A : argument type
-     - \t a : Object of type \t A
-     - \t R : result type
-     - \t r : Object of type \t R
+     - \a X : a type that is a model of CUnaryFunctor
+     - \a x : Object of type \a X
+     - \a A : argument type
+     - \a a : Object of type \a A
+     - \a R : result type
+     - \a r : Object of type \a R
 
 ### Definitions
 
@@ -76,7 +76,7 @@ Description of \b concept '\b CUnaryFunctor' <p>
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| Apply function | r = x(\t a) |                   | \c R        |                  | returns the value of the function \t x on argument \t a | | |         
+| Apply function | r = x(\a a) |                   | \c R        |                  | returns the value of the function \a x on argument \a a | | |         
 
 
 ### Invariants

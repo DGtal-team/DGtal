@@ -73,7 +73,7 @@ member or variable are possible:
 |------------------|---------------|---------------|----------------|---------------------|
 |To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |                     |
 |To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |                     |
-|To: \ref CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
+|To: \link CountedPtrOrPtr CountedPtrOrPtr<T>\endlink| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
 
 Argument conversion to member is \b automatic except when converting
 to a pointer \c T*: the \b address operator (\c operator&) must be used in

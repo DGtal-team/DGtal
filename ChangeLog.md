@@ -2,13 +2,33 @@
 
 ## New Features / Critical Changes
 
+- *Documentation*
+ - Fixing all doxygen warnings.
+   (Roland Denis, [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
+ - New "@seeDGtalTools" doxygen command to cite a DGtalTools tool in
+   DGtal documentation (David Coeurjolly,
+   [#1179](https://github.com/DGtal-team/DGtal/pull/1179))
+ 
 - *Geometry Package*
  - New robust normal vector estimator using spherical accumulators and statistical
    voting (Boulc'h & Marlet, SGP 2012).
    (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
 
+- *Topology Package*
+ - Adding periodic closure for KhalimskySpaceND and per-dimension closure
+   specification.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+ - Adding CPreCellularGridSpaceND concept and KhalimskyPreSpaceND model
+   to manipulate unbounded Khalimsky space and cells.
+   KhalimskySpaceND now checks that all given cells are within the bounds.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+
 ## Changes
 - *Configuration/General*
+ - Travis Continuous integration will check that doxygen raises no warnings
+   and that the documented file names are valid.
+   (David Coeurjolly, Roland Denis,
+        [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
  - Cleaning remaining preprocessor directives related to C++11 features.
    (Roland Denis, [#1141](https://github.com/DGtal-team/DGtal/pull/1141))
  - Travis Continuous integration will check that DGtalTools still compiles with
@@ -17,8 +37,6 @@
  - Add cmake configuration file NeighborhoodTablesConfig to
    decompress and install look up tables. (Pablo Hernandez-Cerdan,
    [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
-
-
 
 - *Base Package*
  - Alias and ConstAlias now raise compilation error when using invalid
@@ -32,7 +50,6 @@
    (https://github.com/DGtal-team/DGtal/pull/1164))
 
 - *IO Package*
-
  - Viewer3D: add a mode to display ball primitive with OpenGL point instead of
    quadrangulated mesh.
    (Bertrand Kerautret [#1162](https://github.com/DGtal-team/DGtal/pull/1162))
@@ -99,6 +116,8 @@
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
  - Fix the extension removal in Obj filename export in Board3D. (David
    Coeurjolly,[#1154](https://github.com/DGtal-team/DGtal/pull/1154)))
+ - Fix issue when drawing DSS with both points and bounding box. (David
+   Coeurjolly,[#1186](https://github.com/DGtal-team/DGtal/pull/1186)))
 
 - *Topology Package*
   - Fix wrong starting point for surface tracking in example code

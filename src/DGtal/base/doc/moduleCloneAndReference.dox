@@ -130,14 +130,14 @@ We propose the following ways to pass parameters without ambiguity:
 
 \subsection moduleCloneAndReference_sec22 User passing an argument to a Clone parameter
 
-A parameter `( Clone<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c Clone depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T, \c T*, \ref CowPtr<T>. The following table sums up the different conversions \e Argument toward \e member.
+A parameter `( Clone<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c Clone depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T, \c T*, @link CowPtr CowPtr<T>@endlink. The following table sums up the different conversions \e Argument toward \e member.
 
 
 |Argument type:    |\c const \c T& |    \c T*      |\c CountedPtr<T>| \c CowPtr<T>   |\c T&& (c++11)|
 |------------------|---------------|---------------|----------------|----------------|--------------|
 |To:\c T           | Dupl.  O(N)   |Acq. Dupl. O(N)| Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
 |To:\c T*          | Dupl.  O(N)   |   Acq. O(1)   | Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
-|To:\ref CowPtr<T>   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
+|To:@link CowPtr CowPtr<T>@endlink   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
 
 where O(N) stands for the time to duplicate an instance of \c T, and with the following abbreviations:
 - \b Dupl. Object is duplicated.
@@ -208,7 +208,7 @@ A parameter `( Alias<T> cT )` accepts several types of arguments constructed fro
 |------------------|---------------|---------------|----------------|---------------------|
 |To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |                     |
 |To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |                     |
-|To: \ref CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
+|To: @link CountedPtrOrPtr CountedPtrOrPtr<T>@endlink| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
 
 \note When choosing an `Alias<T>` parameter, the \e programmer should really consider using a `CountedPtrOrPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c T&  and  \c T*) is that there is one less boolean test and indirection. 
 
@@ -252,7 +252,7 @@ A parameter `( ConstAlias<T> cT )` accepts several types of arguments constructe
 |------------------|---------------|---------------|----------------|------------|---|
 |To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |   |
 |To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
-|To: \ref CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure|Shared. O(1), \b secure| Shared. O(1), \b secure|
+|To: \link CountedConstPtrOrConstPtr CountedConstPtrOrConstPtr<T>\endlink|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure|Shared. O(1), \b secure| Shared. O(1), \b secure|
 
 \note When choosing a `ConstAlias<T>` parameter, the \e programmer should really consider using a `CountedConstPtrOrConstPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c const \c T&  and \c const \c T*) is that there is one less boolean test and indirection. 
 

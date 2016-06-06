@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file raw2HDF5.cpp
+ * @file images/raw2HDF5.cpp
  * @ingroup Examples
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France

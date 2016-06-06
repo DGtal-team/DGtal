@@ -82,7 +82,7 @@ x\in\mathcal{X}@f$ (in this case, @f$ d @f$ is the @f$l_2@f$ Euclidean norm).
 
 
 
-@section tutosectLoadVol Import volumetric image an visualization 
+@section VDTG_tutosectLoadVol Import volumetric image an visualization 
 
 Let start with volumetric image loading. First of all, create a source
 file with the following includes (or copy the volDTGranulo-tempate.cpp
