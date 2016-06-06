@@ -22,7 +22,7 @@ namespace DGtal {
 
 [TOC]
 
-\section sectOverview Overview
+\section FS_sectOverview Overview
 
 
 The algorithm implemented in the class FrechetShortcut is the one
@@ -119,9 +119,9 @@ shortcuts of a @f$ \varepsilon @f$-simplification.
 @image latex local.png "Illustration of the local property." width=5cm
 
 
-\section sectAlgo Guaranteed algorithm using an approximated distance 
+\section FS_sectAlgo Guaranteed algorithm using an approximated distance 
 
-\subsection subsectDef Definitions and overall algorithm
+\subsection FS_subsectDef Definitions and overall algorithm
 
 Using the exact Fréchet distance appears to be too expensive to design an
 efficient algorithm. Instead, we use an approximation of the
@@ -138,7 +138,7 @@ longest backpath in the direction @f$\overrightarrow{p_ip_j}@f$.
 @image html def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 @image latex def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 
-We have the following property from @cite Abam1247103: 
+We have the following property from @cite Abam1247103 : 
 
 The Fréchet error of a shortcut @f$p_ip_j@f$ satisfies:
 
@@ -309,7 +309,7 @@ bounded by @f$n@f$. Nevertheless, experiments on noisy shapes show that the
 general behaviour of the algorithm in linear in time. 
 
 
-\section sectImplementation Implementation in DGtal
+\section FS_sectImplementation Implementation in DGtal
 
 
 In DGtal, the FrechetShortcut should be used with a Curve object, using its PointsRange, as in the example below: 

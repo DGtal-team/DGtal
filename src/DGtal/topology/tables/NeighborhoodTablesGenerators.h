@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file NeighborhoodConfigurationsGenerators.h
+ * @file
  *
  * @author Pablo Hernandez-Cerdan. Institute of Fundamental Sciences.
  * Massey University. Palmerston North, New Zealand

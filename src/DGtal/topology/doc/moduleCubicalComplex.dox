@@ -18,8 +18,8 @@ This part of the manual describes how to represent and process
 arbitrary cubical complexes. 
 
 @note Collapse operation is a backport from <a
-href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. \cite
-ImaGene 
+href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+@cite ImaGene 
 
 [TOC]
 

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file shapeGridCurveEstimator.cpp
+ * @file tutorial-examples/shapeDTViewer.cpp
  * @ingroup tutorial-examples
  * @author David Coeurjolly (david.coeurjolly@liris.cnrs.fr)
  *

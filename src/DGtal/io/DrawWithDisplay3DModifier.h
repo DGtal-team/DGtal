@@ -202,22 +202,23 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   TransformedPrism( const DGtal::Z3i::SCell  & aSurfel,
                           const DGtal::Z3i::SCell  & aVoxel,
                           double aShift=0.05, double aSizeFactor=0.75  )
+    : mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
   {
-    mySurfel= aSurfel;
-    myShift = aShift;
-    mySizeFactor = aSizeFactor;
-    bool xodd = (mySurfel.myCoordinates[ 0 ] & 1 );
-    bool yodd = (mySurfel.myCoordinates[ 1 ] & 1 );
-    bool zodd = (mySurfel.myCoordinates[ 2 ] & 1 );
+    auto const& preSurfel = aSurfel.preCell();
+    auto const& preVoxel  = aVoxel.preCell();
+
+    bool xodd = (preSurfel.coordinates[ 0 ] & 1 );
+    bool yodd = (preSurfel.coordinates[ 1 ] & 1 );
+    bool zodd = (preSurfel.coordinates[ 2 ] & 1 );
     if(!xodd )
     {
-      myShift*= ((aVoxel.myCoordinates[ 0 ]-mySurfel.myCoordinates[ 0 ] <0)? -1.0: 1.0);
+      myShift*= ((preVoxel.coordinates[ 0 ]-preSurfel.coordinates[ 0 ] <0)? -1.0: 1.0);
     }else if(!yodd )
     {
-      myShift*=((aVoxel.myCoordinates[ 1 ]-mySurfel.myCoordinates[ 1 ] <0)? -1.0: 1.0);
+      myShift*=((preVoxel.coordinates[ 1 ]-preSurfel.coordinates[ 1 ] <0)? -1.0: 1.0);
     }else if(!zodd )
     {
-      myShift*=((aVoxel.myCoordinates[ 2 ]-mySurfel.myCoordinates[ 2 ] <0)? -1.0: 1.0);
+      myShift*=((preVoxel.coordinates[ 2 ]-preSurfel.coordinates[ 2 ] <0)? -1.0: 1.0);
     }
   }
 

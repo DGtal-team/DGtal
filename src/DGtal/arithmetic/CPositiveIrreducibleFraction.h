@@ -94,7 +94,7 @@ except the last one. In this sense, a fraction is a sequence
 - \e Value and \e value_type: the type \c std::pair<Quotient,Quotient>, useful
   to create back insertion sequence.
 
-- \e ConstIterator \and \e const_iterator: the type for visiting the quotients of the
+- \e ConstIterator and \e const_iterator: the type for visiting the quotients of the
   fraction in sequence. The value of the iterator has type \e Value.
 
 ### Notation

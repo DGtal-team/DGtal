@@ -64,8 +64,8 @@ Description of \b concept '\b CSegment' <p>
     elements of the segment, a model of bidirectional iterator
 
  ### Notation
-     - \t X : A type that is a model of CSegment
-     - \t x, \t y : object of type X
+     - \a X : A type that is a model of CSegment
+     - \a x, \a y : object of type X
 
  ### Valid expressions and semantics
 

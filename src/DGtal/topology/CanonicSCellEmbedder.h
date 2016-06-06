@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
-#include "DGtal/topology/CCellularGridSpaceND.h"
+#include "DGtal/topology/CPreCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -59,14 +59,14 @@ namespace DGtal
 
    Model of CSCellEmbedder.
 
-   @tparam TKSpace the type of cellular grid space where the embedder works, a model of CCellularGridSpaceND.
+   @tparam TKSpace the type of cellular grid space where the embedder works, a model of CPreCellularGridSpaceND.
  */
   template <typename TKSpace>
   struct CanonicSCellEmbedder
   {
   public:
     typedef CanonicSCellEmbedder<TKSpace> Self;
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND<TKSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPreCellularGridSpaceND<TKSpace> ));
 
     typedef TKSpace KSpace;
     typedef typename KSpace::SCell SCell;
@@ -134,7 +134,7 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
 public:
 
-    /**
+    /*
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */

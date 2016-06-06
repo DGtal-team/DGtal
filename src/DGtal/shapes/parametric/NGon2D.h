@@ -182,12 +182,12 @@ namespace DGtal
      */
     double myRadius;
 
-    /*
+    /**
      * Number of sides of the ngon.
      */
     unsigned int myK;
 
-    /*
+    /**
      * Phase of the  ngon (radian).
      */
     double myPhi;

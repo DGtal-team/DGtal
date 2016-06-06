@@ -51,7 +51,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
            const Surfel & s )
   : mySurface( aSurface ), myNeighborhood()
 {
-  myNeighborhood.init( & surface().space(), 
+  myNeighborhood.init( & surface().space(),
                        & surface().surfelAdjacency(),
                        s );
 }
@@ -128,8 +128,8 @@ template <typename TKSpace, typename TSurfelPredicate>
 inline
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::ExplicitDigitalSurface
 ( const ExplicitDigitalSurface & other )
-  : myKSpace( other.myKSpace ), 
-    mySurfelPredicate( other.mySurfelPredicate ), 
+  : myKSpace( other.myKSpace ),
+    mySurfelPredicate( other.mySurfelPredicate ),
     mySurfelAdjacency( other.mySurfelAdjacency ),
     mySurfels( other.mySurfels )
 {
@@ -141,7 +141,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::ExplicitDigitalSurface
 ( ConstAlias<KSpace> aKSpace,
   const SurfelPredicate & aPP,
   const Adjacency & adj,
-  const Surfel & s, 
+  const Surfel & s,
   bool closed )
   : myKSpace( aKSpace ), mySurfelPredicate( aPP ), mySurfelAdjacency( adj )
 {
@@ -150,8 +150,8 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::ExplicitDigitalSurface
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelPredicate>
 inline
-const 
-typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Adjacency & 
+const
+typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Adjacency &
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelAdjacency() const
 {
   return mySurfelAdjacency;
@@ -159,7 +159,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelAdjacency() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelPredicate>
 inline
-typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Adjacency & 
+typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Adjacency &
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelAdjacency()
 {
   return mySurfelAdjacency;
@@ -167,8 +167,8 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelAdjacency()
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelPredicate>
 inline
-const 
-typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::SurfelPredicate & 
+const
+typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::SurfelPredicate &
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelPredicate() const
 {
   return mySurfelPredicate;
@@ -179,7 +179,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelPredicate() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelPredicate>
 inline
-const typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::KSpace & 
+const typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::KSpace &
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::space() const
 {
   return myKSpace;
@@ -228,7 +228,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::empty() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelPredicate>
 inline
-typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::DigitalSurfaceTracker* 
+typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::DigitalSurfaceTracker*
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::newTracker
 ( const Surfel & s ) const
 {
@@ -256,29 +256,33 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::computeSurfels
     {
       typename KSpace::SCellSet surface;
       if ( closed )
-	Surfaces<KSpace>::trackClosedSurface( surface,
-					      myKSpace,
-					      mySurfelAdjacency,
-					      mySurfelPredicate,
-					      p );
+        Surfaces<KSpace>::trackClosedSurface( surface,
+                                              myKSpace,
+                                              mySurfelAdjacency,
+                                              mySurfelPredicate,
+                                              p
+        );
       else
-	Surfaces<KSpace>::trackSurface( surface,
-					myKSpace,
-					mySurfelAdjacency,
-					mySurfelPredicate,
-					p );
+        Surfaces<KSpace>::trackSurface( surface,
+                                        myKSpace,
+                                        mySurfelAdjacency,
+                                        mySurfelPredicate,
+                                        p
+        );
+
       for ( typename KSpace::SCellSet::const_iterator it = surface.begin(),
-	      it_end = surface.end(); it != it_end; ++it )
-	mySurfels.push_back( *it );
+            it_end = surface.end(); it != it_end; ++it )
+        mySurfels.push_back( *it );
     }
   else
     {
       ASSERT( KSpace::dimension == 2 );
       Surfaces<KSpace>::track2DSurface( mySurfels,
-					myKSpace,
-					mySurfelAdjacency,
-					mySurfelPredicate,
-					p );
+                                        myKSpace,
+                                        mySurfelAdjacency,
+                                        mySurfelPredicate,
+                                        p
+      );
     }
 }
 
@@ -317,8 +321,8 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::isValid() const
 template <typename TKSpace, typename TSurfelPredicate>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
-		  const ExplicitDigitalSurface<TKSpace,TSurfelPredicate> & object )
+DGtal::operator<< ( std::ostream & out,
+    const ExplicitDigitalSurface<TKSpace,TSurfelPredicate> & object )
 {
   object.selfDisplay( out );
   return out;
