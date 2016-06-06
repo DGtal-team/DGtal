@@ -99,18 +99,28 @@ typename DGtal::ArithDSSIterator<TInteger,c>::Self & DGtal::ArithDSSIterator<TIn
   if(c == 8)
     {
       if(r + myA >= myB + myMu)
-	++myP[1];
-      ++myP[0];
+	++(myP[1]);
+      ++(myP[0]);
     }
   else // connectivity = 4
     {
       if(r - myB >=myMu)
-	    ++myP[1];
+	++(myP[1]);
       else
-	++myP[0];
+	++(myP[0]);
     }
   return *this;
 }
+
+template<typename TInteger, int c>
+inline
+typename DGtal::ArithDSSIterator<TInteger,c>::Self DGtal::ArithDSSIterator<TInteger,c>::operator++(int a)
+{
+  Self _tmp = *this;
+  this->operator++();
+  return _tmp;
+}
+
 
 template<typename TInteger, int c>
 inline

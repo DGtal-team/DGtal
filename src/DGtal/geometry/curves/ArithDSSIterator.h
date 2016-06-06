@@ -110,6 +110,10 @@ namespace DGtal
      */
     Self& operator++();
 
+    Self operator++(int);
+    
+
+    
     /**
      * Equality operator.
      * @param other the object to compare with.
