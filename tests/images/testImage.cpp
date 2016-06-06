@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file test_Image.cpp
+ * @file
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *

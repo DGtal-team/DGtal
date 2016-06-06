@@ -72,7 +72,8 @@ namespace DGtal {
     /** 
      * Constructor. This functor can be used to threshold image values
      * in the interval ]minVal,maxVal].
-     * 
+     *
+     * @param aImage the image.
      * @param minVal the minimum value (first value excluded).
      * @param maxVal the maximum value (last value considered).
      */

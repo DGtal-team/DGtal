@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file imageSetDT.cpp
+ * @file tutorial-examples/imageSetDT.cpp
  * @ingroup Examples
  * @author David Coeurjolly (david.coeurjolly@liris.cnrs.fr)
  *

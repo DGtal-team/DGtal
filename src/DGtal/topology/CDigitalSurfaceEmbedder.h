@@ -81,7 +81,7 @@ It adds inner types to functor as well as a method to access the digital surface
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-|Apply function|\e x(\e p)|              | \e Value      |              | return the value of the function \t x on argument \t p | | |
+|Apply function|\e x(\e p)|              | \e Value      |              | return the value of the function \a x on argument \a p | | |
 |Accessor to surface|\e x.surface()|     | \e Surface    |              | return the associated digital surface | | |
 
 ### Invariants

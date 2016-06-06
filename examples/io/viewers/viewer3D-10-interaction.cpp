@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-10-interaction.cpp
+ * @file io/viewers/viewer3D-10-interaction.cpp
  * @ingroup examples/3dViewer
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France

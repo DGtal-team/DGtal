@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleIteratorCompletion.cpp
+ * @file base/exampleIteratorCompletion.cpp
  * @ingroup Examples
  * @author Roland Denis (\c roland.denis@univ-smb.fr )
  * LAboratory of MAthematics - LAMA (CNRS, UMR 5127), University of Savoie, France

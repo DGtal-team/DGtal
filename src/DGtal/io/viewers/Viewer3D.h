@@ -1304,6 +1304,14 @@ namespace DGtal
      **/
     void glUpdateTextureImages(const VectorTextureImage  &aVectImage);
 
+
+    /**
+     * Updates opengl light rendering mode (GL_LIGHT_MODEL_TWO_SIDE)
+     * according to the values of private attribute
+     * myIsDoubleFaceRendering.
+     **/
+    
+    void glUpdateLightRenderingMode() const;
     
     /**
      * Updates the light source coordinates (myLightPosition) from the
