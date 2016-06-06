@@ -168,7 +168,7 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
         }
 
       REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ) );
-      REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase, 2*pi ) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
+      REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase, 2*pi ) + 3*pi, 2*pi ) - pi ) == Approx( 0 ) );
     }
 
   INFO( "Checks maximal frequency on translated unit domain." );
@@ -184,7 +184,7 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
         }
 
       REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ) );
-      REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase - pi/2, 2*pi) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
+      REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase - pi/2, 2*pi) + 3*pi, 2*pi ) - pi ) == Approx( 0 ) );
     }
 
   INFO( "Checks maximal frequency on translated initial domain." );
@@ -204,7 +204,7 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
 
       const auto scaled_factor = freq/anImage.extent()[ TDomain::dimension-1 ];
       REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, scaled_factor ) ).norm() == Approx( 0 ) );
-      REQUIRE( std::fmod( std::fmod( std::arg( freq_val ) - phase - 2*pi*scaled_factor*shift[TDomain::dimension-1], 2*pi ) + 3*pi, 2*pi ) - pi == Approx( 0 ) );
+      REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase - 2*pi*scaled_factor*shift[TDomain::dimension-1], 2*pi ) + 3*pi, 2*pi ) - pi ) == Approx( 0 ) );
     }
 }
 
