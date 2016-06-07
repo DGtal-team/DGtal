@@ -232,19 +232,25 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     // ----------------------- Standard services ------------------------------
   public:
 
-    /** Constructor from a domain.
+    /** Constructor from the spatial domain.
      *
      * @param aDomain The domain over which the transform will be performed.
      *
      * The scaled lower bound and extent is initialized from the given domain.
+     *
+     * @note The data storage (spatial or frequency image) is not zeroed at
+     * RealFFT construction.
      */
     RealFFT( Domain const& aDomain ) noexcept;
 
-    /** Constructor from a domain and scaled lower bound and extent.
+    /** Constructor from the spatial domain and scaled lower bound and extent.
      *
      * @param aDomain     The domain over which the transform will be performed.
      * @param aLowerBound The lower bound of the scaled spatial domain.
      * @param anExtent    The extent of the scaled spatial domain.
+     *
+     * @note The data storage (spatial or frequency image) is not zeroed at
+     * RealFFT construction.
      */
     RealFFT( Domain const& aDomain, RealPoint const& aLowerBound, RealPoint const& anExtent ) noexcept;
 
@@ -270,6 +276,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ///@name Spatial domain services.
     ///@{
 
+    ///@{
     /** Padding used with real datas.
      *
      * @return the number of real values used as padding along the last dimension.
@@ -277,8 +284,8 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @see http://www.fftw.org/doc/Multi_002dDimensional-DFTs-of-Real-Data.html#Multi_002dDimensional-DFTs-of-Real-Data
      */
     std::size_t getPadding() const noexcept;
+    ///@}
 
-    ///@name
     ///@{
     /** Gets spatial raw storage.
      * @warning There is a padding at the end of the first dimension (see getPadding()).
@@ -293,6 +300,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @returns a @link concepts::CImage CImage@endlink
      *       or a @link concepts::CConstImage CConstImage@endlink
      *    model on the spatial data.
+     * @warning The spatial image is not zeroed during RealFFT construction.
      * @see ArrayImageAdapter
      */
     SpatialImage      getSpatialImage()       noexcept;
@@ -300,11 +308,85 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ConstSpatialImage getSpatialImage() const noexcept;
     ///@}
 
+    ///@{
     /// Gets the spatial domain.
     Domain const& getSpatialDomain() const noexcept;
 
     /// Gets the spatial domain extent.
     Point  const& getSpatialExtent() const noexcept;
+    ///@}
+
+    ///@}
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///@name Frequency domain services.
+    ///@{
+
+    ///@{
+    /// Gets frequential raw storage.
+          Complex* getFreqStorage()       noexcept;
+
+    const Complex* getFreqStorage() const noexcept;
+
+    ///@}
+
+    ///@{
+    /** Gets frequential image.
+     * @returns a @link concepts::CImage CImage@endlink
+     *       or a @link concepts::CConstImage CConstImage@endlink
+     *    model on the frequency data.
+     * @warning The frequency image is not zeroed during RealFFT construction.
+     * @see ArrayImageAdapter
+     */
+    FreqImage       getFreqImage()       noexcept;
+
+    ConstFreqImage  getFreqImage() const noexcept;
+    ///@}
+
+    ///@{
+    /// Gets the frequency domain.
+    Domain const& getFreqDomain()    const noexcept;
+
+    /// Gets the frequency domain extent.
+    Point  const& getFreqExtent()    const noexcept;
+    ///@}
+
+    ///@}
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///@name Fast Fourier Transformations.
+    ///@{
+
+    /** In-place Fast Fourier Transformation.
+     *
+     * @param flags Planner flags (see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags).
+     * @param way   The direction of the transformation: FFTW_FORWARD for real->complex, FFTW_BACKWARD for complex->real.
+     * @param normalized  When applying the backward transformation, if @a normalized is true, then the transformation is normalized. Otherwise, applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
+     * @note for planner other than @a FFTW_ESTIMATE and if no plan has been generated before, a temporary image will be allocated in order to find an optimal transformation plan without modifiying the user data.
+     */
+    void doFFT( unsigned flags = FFTW_ESTIMATE, int way = FFTW_FORWARD, bool normalized = false );
+
+    /** In-place forward FFT transformation (spatial -> frequential)
+     *
+     * @param flags Planner flags. @see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
+     * @note for planner other than @a FFTW_ESTIMATE and if not plan has been generated before, a temporary image will be allocated in order to find an optimal transformation plan.
+     */
+    void forwardFFT( unsigned flags = FFTW_ESTIMATE );
+
+    /** In-place backward FFT transformation (frequential -> spatial)
+     *
+     * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
+     * @param normalized  When applying the backward transformation, if @a normalized is true, then the transformation is normalized (all values are divided by the size of the domain). Otherwise, applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
+     * @note If the transformation result will be afterward modified or copied in an another image, prefer set @a normalized to false and postpone the normalization.
+     * @note for planner other than @a FFTW_ESTIMATE and if not plan has been generated before, a temporary image will be allocated in order to find an optimal transformation plan.
+     */
+    void backwardFFT( unsigned flags = FFTW_ESTIMAGE, bool normalized = true );
+
+    ///@}
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///@name Space scaling services.
+    ///@{
 
     ///@{
     /// Gets the extent of the scaled spatial domain.
@@ -326,43 +408,12 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     void setScaledSpatialLowerBound( RealPoint const& aPoint ) noexcept;
     ///@}
 
+    ///@{
     /** Converts coordinates from the spatial image into scaled coordinates.
      * @param aPoint  Coordinates in the domain of the spatial image.
      * @return Corresponding coordinates in the scaled spatial domain.
      */
     RealPoint calcScaledSpatialCoords( Point const& aPoint ) const noexcept;
-
-    ///@}
-
-    ///////////////////////////////////////////////////////////////////////////
-    ///@name Frequency domain services.
-    ///@{
-
-    ///@{
-    /// Gets frequential raw storage.
-          Complex* getFreqStorage()       noexcept;
-
-    const Complex* getFreqStorage() const noexcept;
-
-    ///@}
-
-    ///@{
-    /** Gets frequential image.
-     * @returns a @link concepts::CImage CImage@endlink
-     *       or a @link concepts::CConstImage CConstImage@endlink
-     *    model on the frequency data.
-     * @see ArrayImageAdapter
-     */
-    FreqImage       getFreqImage()       noexcept;
-
-    ConstFreqImage  getFreqImage() const noexcept;
-    ///@}
-
-    /// Gets the frequency domain.
-    Domain const& getFreqDomain()    const noexcept;
-
-    /// Gets the frequency domain extent.
-    Point  const& getFreqExtent()    const noexcept;
 
     /** Converts coordinates from the frequency image into scaled frequencies.
      *
@@ -385,37 +436,10 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @note Prefer translating data in the spatial space instead of using this method.
      */
     Complex calcScaledFreqValue( Point const& aPoint, Complex const& aValue ) const noexcept;
-
+    ///@}
 
     ///@}
 
-    ///////////////////////////////////////////////////////////////////////////
-    ///@name Fast Fourier Transformations.
-    ///@{
-
-    /** In-place Fast Fourier Transformation.
-     *
-     * @param flags Planner flags (see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags).
-     * @param way   The direction of the transformation: FFTW_FORWARD for real->complex, FFTW_BACKWARD for complex->real.
-     * @param normalized  When applying the backward transformation, if @a normalized is true, then the transformation is normalized. Otherwise, applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
-     */
-    void doFFT( unsigned flags = FFTW_ESTIMATE, int way = FFTW_FORWARD, bool normalized = false );
-
-    /** In-place forward FFT transformation (spatial -> frequential)
-     *
-     * @param flags Planner flags. @see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
-     */
-    void forwardFFT( unsigned flags = FFTW_ESTIMATE );
-
-    /** In-place backward FFT transformation (frequential -> spatial)
-     *
-     * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
-     * @param normalized  When applying the backward transformation, if @a normalized is true, then the transformation is normalized. Otherwise, applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
-     * @note If the transformation result will be modified or copied in an another image, prefer set @a normalized to false and postpone the normalization.
-     */
-    void backwardFFT( unsigned flags = FFTW_ESTIMAGE, bool normalized = true );
-
-    ///@}
 
     ///////////////////////////////////////////////////////////////////////////
     ///@name DGtal services.
