@@ -54,13 +54,15 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   RealFFT( Domain     const& aDomain,
            RealPoint  const& aLowerBound,
            RealPoint  const& anExtent
-  ) noexcept
+  )
     : mySpatialDomain{ aDomain }
     , mySpatialExtent{ mySpatialDomain.upperBound() - mySpatialDomain.lowerBound() + Point::diagonal(1) }
     , myFreqExtent{ mySpatialExtent / (Point::diagonal(1) + Point::base(0)) + Point::base(0) }
     , myFreqDomain{ Point::diagonal(0), myFreqExtent - Point::diagonal(1) }
     , myStorage( FFTW::malloc( sizeof(Complex) * myFreqDomain.size() ) )
 {
+  if ( myStorage == nullptr )  throw std::bad_alloc{};
+
   setScaledSpatialLowerBound( aLowerBound );
   setScaledSpatialExtent( anExtent );
 }
@@ -69,7 +71,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 template <typename TSpace, typename T>
 inline
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
-  RealFFT( Domain const& aDomain ) noexcept
+  RealFFT( Domain const& aDomain )
     : RealFFT( aDomain
              , aDomain.lowerBound()
              , aDomain.upperBound() - aDomain.lowerBound() + Point::diagonal(1)
@@ -324,6 +326,25 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   phase *= 2*pi;
 
   return aValue * std::polar( myScaledFreqMag, phase );
+}
+
+/// Creates a transformation plan for the specified transformation direction.
+template <typename TSpace, typename T>
+inline
+void
+DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
+  createPlan( unsigned flags, int way )
+{
+  // Transform dimensions
+  int n[dimension];
+  for (size_t i = 0; i < dimension; ++i)
+    n[dimension-i-1] = mySpatialExtent[i];
+
+  // Creates the plan for this transformation
+  typename FFTW::plan p = FFTW::plan_dft( dimension, n, getSpatialStorage(), getFreqStorage(), way, flags );
+
+  // Destroying plan
+  FFTW::destroy_plan( p );
 }
 
 /// Fast Fourier Transformation.

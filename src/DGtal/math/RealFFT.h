@@ -241,7 +241,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @note The data storage (spatial or frequency image) is not zeroed at
      * RealFFT construction.
      */
-    RealFFT( Domain const& aDomain ) noexcept;
+    RealFFT( Domain const& aDomain );
 
     /** Constructor from the spatial domain and scaled lower bound and extent.
      *
@@ -252,7 +252,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @note The data storage (spatial or frequency image) is not zeroed at
      * RealFFT construction.
      */
-    RealFFT( Domain const& aDomain, RealPoint const& aLowerBound, RealPoint const& anExtent ) noexcept;
+    RealFFT( Domain const& aDomain, RealPoint const& aLowerBound, RealPoint const& anExtent );
 
     /// Copy constructor. Deleted.
     RealFFT( Self const & /* other */ ) = delete;
@@ -288,7 +288,11 @@ class RealFFT< HyperRectDomain<TSpace>, T >
 
     ///@{
     /** Gets spatial raw storage.
+     *
      * @warning There is a padding at the end of the first dimension (see getPadding()).
+     *
+     * @warning Remember that the spatial and frequency image share the same memory location.
+     *          Therefore, modifying one image erases the data from the other image.
      */
           Real* getSpatialStorage()       noexcept;
 
@@ -300,7 +304,12 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @returns a @link concepts::CImage CImage@endlink
      *       or a @link concepts::CConstImage CConstImage@endlink
      *    model on the spatial data.
+     *
      * @warning The spatial image is not zeroed during RealFFT construction.
+     *
+     * @warning Remember that the spatial and frequency image share the same memory location.
+     *          Therefore, modifying one image erases the data from the other image.
+     *
      * @see ArrayImageAdapter
      */
     SpatialImage      getSpatialImage()       noexcept;
@@ -323,7 +332,11 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ///@{
 
     ///@{
-    /// Gets frequential raw storage.
+    /** Gets frequential raw storage.
+     *
+     * @warning Remember that the spatial and frequency image share the same memory location.
+     *          Therefore, modifying one image erases the data from the other image.
+     */
           Complex* getFreqStorage()       noexcept;
 
     const Complex* getFreqStorage() const noexcept;
@@ -335,7 +348,12 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @returns a @link concepts::CImage CImage@endlink
      *       or a @link concepts::CConstImage CConstImage@endlink
      *    model on the frequency data.
+     *
      * @warning The frequency image is not zeroed during RealFFT construction.
+     *
+     * @warning Remember that the spatial and frequency image share the same memory location.
+     *          Therefore, modifying one image erases the data from the other image.
+     *
      * @see ArrayImageAdapter
      */
     FreqImage       getFreqImage()       noexcept;
@@ -357,30 +375,69 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ///@name Fast Fourier Transformations.
     ///@{
 
-    /** In-place Fast Fourier Transformation.
+    /** Creates a transformation plan for the specified transformation direction.
      *
      * @param flags Planner flags (see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags).
      * @param way   The direction of the transformation: FFTW_FORWARD for real->complex, FFTW_BACKWARD for complex->real.
-     * @param normalized  When applying the backward transformation, if @a normalized is true, then the transformation is normalized. Otherwise, applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
-     * @note for planner other than @a FFTW_ESTIMATE and if no plan has been generated before, a temporary image will be allocated in order to find an optimal transformation plan without modifiying the user data.
+     *
+     * The created plan is immediately destroyed but the associated wisdom is keeped by FFTW3,
+     * so that future creation of similar plan (same image dimension, size and precision,
+     * same number of process, same @a flags and @a way) will be costless.
+     *
+     * It is only usefull when using a plan flag other than @a FFTW_ESTIMATE, when the allocation of a temporary image
+     * is not wanted and when the spatial or frequency image has not been already initialized.
+     * Otherwise, consider using doFFT(), forwardFFT() or backwardFFT() directly.
+     *
+     * @warning For planners other than @a FFTW_ESTIMATE and if no plan has been generated before,
+     *    the spatial and frequency image will be overwriten. See doFFT(), forwardFFT() or backwardFFT()
+     *    if it is not the wanted behavior.
+     */
+    void createPlan( unsigned flags, int way );
+
+    /** In-place Fast Fourier Transformation.
+     *
+     * @param flags Planner flags (see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags).
+     * @param way   The direction of the transformation:
+     *              FFTW_FORWARD for real->complex,FFTW_BACKWARD for complex->real.
+     *
+     * @param normalized  When applying the backward transformation, if @a normalized is true,
+     *        then the transformation is normalized (all values are divided by the size of the domain).
+     *        Otherwise, applying a forward transformation followed by a backward transformation
+     *        will multiply the input by the size of the spatial domain
+     *        (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
+     *
+     * @note For planner other than @a FFTW_ESTIMATE and if no plan has been generated before,
+     *       a temporary image will be allocated in order to find an optimal transformation plan
+     *       without modifiying the user data. See createPlan() if you want to avoid this
+     *       extra-memory cost.
      */
     void doFFT( unsigned flags = FFTW_ESTIMATE, int way = FFTW_FORWARD, bool normalized = false );
 
     /** In-place forward FFT transformation (spatial -> frequential)
      *
      * @param flags Planner flags. @see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
-     * @note for planner other than @a FFTW_ESTIMATE and if not plan has been generated before, a temporary image will be allocated in order to find an optimal transformation plan.
+     *
+     * @note  For planner other than @a FFTW_ESTIMATE and if not plan has been generated before,
+     *        a temporary image will be allocated in order to find an optimal transformation plan.
      */
     void forwardFFT( unsigned flags = FFTW_ESTIMATE );
 
     /** In-place backward FFT transformation (frequential -> spatial)
      *
      * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
-     * @param normalized  When applying the backward transformation, if @a normalized is true, then the transformation is normalized (all values are divided by the size of the domain). Otherwise, applying a forward transformation followed by a backward transformation will multiply the input by the size of the spatial domain (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
-     * @note If the transformation result will be afterward modified or copied in an another image, prefer set @a normalized to false and postpone the normalization.
-     * @note for planner other than @a FFTW_ESTIMATE and if not plan has been generated before, a temporary image will be allocated in order to find an optimal transformation plan.
+     * @param normalized  When applying the backward transformation, if @a normalized is true,
+     *        then the transformation is normalized (all values are divided by the size of the domain).
+     *        Otherwise, applying a forward transformation followed by a backward transformation
+     *        will multiply the input by the size of the spatial domain
+     *        (see http://www.fftw.org/fftw3_doc/The-1d-Real_002ddata-DFT.html#The-1d-Real_002ddata-DFT).
+     *
+     * @note  If the transformation result will be afterward modified or copied in an another image,
+     *        prefer set @a normalized to false and postpone the normalization.
+     *
+     * @note  For planner other than @a FFTW_ESTIMATE and if not plan has been generated before,
+     *        a temporary image will be allocated in order to find an optimal transformation plan.
      */
-    void backwardFFT( unsigned flags = FFTW_ESTIMAGE, bool normalized = true );
+    void backwardFFT( unsigned flags = FFTW_ESTIMATE, bool normalized = true );
 
     ///@}
 
