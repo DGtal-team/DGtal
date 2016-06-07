@@ -229,6 +229,9 @@ void cmpTranslatedFFT( ImageContainerBySTLVector<TDomain, TValue> const & anImag
   FFT fft( domain );
   FFT shifted_fft( domain, domain.lowerBound() + shift, anImage.extent() );
 
+  INFO( "Pre-creating plan." );
+  fft.createPlan( FFTW_MEASURE, FFTW_FORWARD );
+
   INFO( "Copying data from the image." );
   auto spatial_image = fft.getSpatialImage();
   std::copy( anImage.cbegin(), anImage.cend(), spatial_image.begin() );
@@ -246,9 +249,9 @@ void cmpTranslatedFFT( ImageContainerBySTLVector<TDomain, TValue> const & anImag
       *it = anImage( pt );
     }
 
-  INFO( "Forward transformation." );
-  fft.forwardFFT( FFTW_ESTIMATE );
-  shifted_fft.forwardFFT( FFTW_ESTIMATE );
+  INFO( "Forward transformation (forcing plan re-use)." );
+  fft.forwardFFT( FFTW_MEASURE | FFTW_WISDOM_ONLY );
+  shifted_fft.forwardFFT( FFTW_MEASURE | FFTW_WISDOM_ONLY );
 
   INFO( "Comparing results." );
   auto freq_image = fft.getFreqImage();
