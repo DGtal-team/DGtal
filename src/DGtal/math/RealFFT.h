@@ -45,6 +45,7 @@
 #include <cstddef>    // std::size_t
 
 #include <complex>    // To be included before fftw: see http://www.fftw.org/doc/Complex-numbers.html#Complex-numbers
+#include <type_traits>
 #include <fftw3.h>
 
 #include <boost/math/constants/constants.hpp>
@@ -147,7 +148,14 @@ struct FFTWComplexCast
 
 /// Wrapper to fftw functions depending on value type.
 template <typename Real = double>
-struct FFTWWrapper;
+struct FFTWWrapper
+  {
+    // Static errors when using wrong precision or when adapted FFTW3 library is missing.
+    static_assert( ! std::is_same<Real, float>::value, "[DGtal::RealFFT] The FFTW3 library for float precision (libfftw3f) has not been found." );
+    static_assert( ! std::is_same<Real, double>::value, "[DGtal::RealFFT] The FFTW3 library for double precision (libfftw3) has not been found." );
+    static_assert( ! std::is_same<Real, long double>::value, "[DGtal::RealFFT] The FFTW3 library for long double precision (libfftw3l) has not been found." );
+    static_assert( ! std::is_same<Real, Real>::value, "[DGtal::RealFFT] Value type not supported." );
+  };
 
 #ifdef WITH_FFTW3_DOUBLE
 /** Wrapper implementations to fftw functions for double values.
