@@ -362,6 +362,9 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * @warning Remember that the spatial and frequency image share the same memory location.
      *          Therefore, modifying one image erases the data from the other image.
      *
+     * @warning The frequency image's domain is smaller (about the half-size) of the spatial image's domain
+     *          (see http://www.fftw.org/fftw3_doc/Multi_002dDimensional-DFTs-of-Real-Data.html#Multi_002dDimensional-DFTs-of-Real-Data).
+     *
      * @see ArrayImageAdapter
      */
     FreqImage       getFreqImage()       noexcept;
@@ -370,10 +373,18 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ///@}
 
     ///@{
-    /// Gets the frequency domain.
+    /** Gets the frequency domain.
+     *
+     * @warning The frequency image's domain is smaller (about the half-size) of the spatial image's domain
+     *          (see http://www.fftw.org/fftw3_doc/Multi_002dDimensional-DFTs-of-Real-Data.html#Multi_002dDimensional-DFTs-of-Real-Data).
+     */
     Domain const& getFreqDomain()    const noexcept;
 
-    /// Gets the frequency domain extent.
+    /** Gets the frequency domain extent.
+     *
+     * @warning The frequency image's domain is smaller (about the half-size) of the spatial image's domain
+     *          (see http://www.fftw.org/fftw3_doc/Multi_002dDimensional-DFTs-of-Real-Data.html#Multi_002dDimensional-DFTs-of-Real-Data).
+     */
     Point  const& getFreqExtent()    const noexcept;
     ///@}
 
@@ -404,6 +415,11 @@ class RealFFT< HyperRectDomain<TSpace>, T >
 
     /** In-place Fast Fourier Transformation.
      *
+     * The transformation is done as if the lower bound of the spatial domain is the origin
+     * but with the same extent as the domain given at construction.
+     * See the scaling services provided by this class in order to take into account
+     * a different lower bound or extent.
+     *
      * @param flags Planner flags (see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags).
      * @param way   The direction of the transformation:
      *              FFTW_FORWARD for real->complex,FFTW_BACKWARD for complex->real.
@@ -418,19 +434,36 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      *       a temporary image will be allocated in order to find an optimal transformation plan
      *       without modifiying the user data. See createPlan() if you want to avoid this
      *       extra-memory cost.
+     *
+     * @warning Since this class uses an in-place algorithm,
+     *          if @a way is equal to FFTW_FORWARD then the spatial image will be overwriten,
+     *      and if @a way is equal to FFTW_BACKWARD then the frequency image will be overwriten.
      */
     void doFFT( unsigned flags = FFTW_ESTIMATE, int way = FFTW_FORWARD, bool normalized = false );
 
     /** In-place forward FFT transformation (spatial -> frequential)
      *
+     * The transformation is done as if the lower bound of the spatial domain is the origin
+     * but with the same extent as the domain given at construction.
+     * See the scaling services provided by this class in order to take into account
+     * a different lower bound or extent.
+     *
      * @param flags Planner flags. @see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
      *
      * @note  For planner other than @a FFTW_ESTIMATE and if not plan has been generated before,
      *        a temporary image will be allocated in order to find an optimal transformation plan.
+     *
+     * @warning Since this class uses an in-place algorithm,
+     *          the spatial image will be overwriten during the transformation.
      */
     void forwardFFT( unsigned flags = FFTW_ESTIMATE );
 
     /** In-place backward FFT transformation (frequential -> spatial)
+     *
+     * The transformation is done as if the lower bound of the spatial domain is the origin
+     * but with the same extent as the domain given at construction.
+     * See the scaling services provided by this class in order to take into account
+     * a different lower bound or extent.
      *
      * @param flags Planner flags. \see http://www.fftw.org/fftw3_doc/Planner-Flags.html#Planner-Flags
      * @param normalized  When applying the backward transformation, if @a normalized is true,
@@ -444,13 +477,16 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      *
      * @note  For planner other than @a FFTW_ESTIMATE and if not plan has been generated before,
      *        a temporary image will be allocated in order to find an optimal transformation plan.
+     *
+     * @warning Since this class uses an in-place algorithm,
+     *          the frequency image will be overwriten during the transformation.
      */
     void backwardFFT( unsigned flags = FFTW_ESTIMATE, bool normalized = true );
 
     ///@}
 
     ///////////////////////////////////////////////////////////////////////////
-    ///@name Space scaling services.
+    ///@name Scaling services.
     ///@{
 
     ///@{
@@ -474,13 +510,16 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ///@}
 
     ///@{
-    /** Converts coordinates from the spatial image into scaled coordinates.
+    /** Scales coordinates from the spatial image taking into account
+     * the extent and lower bound of the scaled spatial domain.
+     *
      * @param aPoint  Coordinates in the domain of the spatial image.
      * @return Corresponding coordinates in the scaled spatial domain.
      */
     RealPoint calcScaledSpatialCoords( Point const& aPoint ) const noexcept;
 
-    /** Converts coordinates from the frequency image into scaled frequencies.
+    /** Scales coordinates from the frequency image taking into account
+     *  the extent and lower bound of the scaled spatial domain.
      *
      * Along each dimension, the first half of the space is composed of
      * positive frequencies and the second half maps to the negative
@@ -492,7 +531,8 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      */
     RealPoint calcScaledFreqCoords( Point const& aPoint ) const noexcept;
 
-    /** Converts a complex value from the frequency image to the scaled frequency image.
+    /** Scales and rotates a complex value from the frequency image taking
+     *  into account the extent and lower bound of the sclaed spatial domain.
      *
      * @param aPoint  Coordinates in the domain of the frequency image.
      * @param aValue  Complex value from the frequency image.
