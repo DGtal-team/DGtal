@@ -114,7 +114,7 @@ typename DGtal::ArithDSSIterator<TInteger,c>::Self & DGtal::ArithDSSIterator<TIn
 
 template<typename TInteger, int c>
 inline
-typename DGtal::ArithDSSIterator<TInteger,c>::Self DGtal::ArithDSSIterator<TInteger,c>::operator++(int a)
+typename DGtal::ArithDSSIterator<TInteger,c>::Self DGtal::ArithDSSIterator<TInteger,c>::operator++(int)
 {
   Self _tmp = *this;
   this->operator++();
