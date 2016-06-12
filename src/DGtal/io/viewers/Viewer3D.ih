@@ -1989,7 +1989,7 @@ DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode 
   for (unsigned int i = 0; i<3; i++) 
     myLightSpecularCoeffs[i] = newCoefSpec;
   myLightSpecularCoeffs[3] = 1.0;
-  if (diplayState)
+  if (displayState)
     {
       displayMessage(QString(ss.str().c_str()), 3000);
     }
