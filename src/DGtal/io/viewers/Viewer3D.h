@@ -302,7 +302,7 @@ namespace DGtal
      * @param[in] displayState if true (default) the viewer will display the current rendering mode.
      * 
      **/
-    void updateRenderingCoefficients(const RenderingMode aRenderMode, bool diplayState=true);
+    void updateRenderingCoefficients(const RenderingMode aRenderMode, bool displayState=true);
     
     
     /// the 3 possible axes for the image direction

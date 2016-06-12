@@ -1954,7 +1954,7 @@ DGtal::Viewer3D<Space, KSpace>::setUseGLPointForBalls(const bool useOpenGLPt)
 
 template< typename Space, typename KSpace>
 void 
-DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode aRenderMode, bool diplayState)
+DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode aRenderMode, bool displayState)
 {
   stringstream ss; 
   ss << "Rendering mode ";
