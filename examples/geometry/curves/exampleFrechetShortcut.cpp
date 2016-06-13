@@ -55,19 +55,30 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  std::string filename = examplesPath + "samples/plant-frechet.dat";
-  ifstream instream; // input stream
-  instream.open (filename.c_str(), ifstream::in);
-
+  std::string filename;
   double error;
-  if(argc < 3)
+  
+  if(argc == 1)
     {
-      trace.info() << "Maximum error not specified. Use default value (3).\n";
+      trace.info() << "Use default file and error value\n";
+      filename = examplesPath + "samples/plant-frechet.dat";
       error = 3;
     }
   else
-    error = atof(argv[1]);
-  trace.info() << error << endl;
+    if(argc != 3)
+      {
+	trace.info() << "Please enter a filename and error value.\n";
+	return 0;
+      }
+    else
+      {
+	filename = argv[1];
+	error = atof(argv[2]);
+      }
+  ifstream instream; // input stream
+  instream.open (filename.c_str(), ifstream::in);
+  
+
   
   Curve c; //grid curve
   c.initFromVectorStream(instream);
