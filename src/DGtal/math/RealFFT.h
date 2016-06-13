@@ -597,6 +597,76 @@ class RealFFT< HyperRectDomain<TSpace>, T >
 
     ///@}
 
+    ///////////////////////////////////////////////////////////////////////////
+    ///@name Scaled accessors.
+    ///@{
+
+    ///@{
+    /** Reads a spatial value at the nearest native coordinates corresponding to
+     *  the given scaled spatial coordinates.
+     *
+     * @param aScaledPoint  Coordinates in the scaled domain of the spatial image.
+     * @return value from the native spatial image taken at the nearest corresponding coordinates.
+     */
+    inline
+    Real getScaledSpatialValue( RealPoint const& aScaledPoint ) const noexcept
+      {
+        return getSpatialImage()( getNativeSpatialCoords( aScaledPoint ) );
+      }
+
+    /** Writes a spatial value at the nearest native coordinates corresponding to
+     *  the given scaled spatial coordinates.
+     *
+     * @param aScaledPoint  Coordinates in the scaled domain of the spatial image.
+     * @param aValue        Value to set in the native spatial image at the nearest corresponding coordinates.
+     */
+    inline
+    void setScaledSpatialValue( RealPoint const& aScaledPoint, Real aValue ) noexcept
+      {
+        getSpatialImage().setValue( getNativeSpatialCoords( aScaledPoint ), aValue );
+      }
+    ///@}
+
+
+    ///@{
+    /** Reads a scaled frequency value at the nearest native coordinates
+     *  corresponding to the given scaled frequency coordinates.
+     *
+     * @param aScaledPoint  Coordinates in the scaled domain of the frequency image.
+     * @return  scaled value from the native frequency image taken at the nearest
+     *          corresponding coordinates.
+     */
+    inline
+    Complex getScaledFreqValue( RealPoint const& aScaledPoint ) const noexcept
+      {
+        bool apply_conj;
+        const auto aPoint = calcNativeFreqCoords( aScaledPoint, apply_conj );
+        const Complex aScaledValue = calcScaledFreqValue( aScaledPoint, getFreqImage()( aPoint ) );
+        return apply_conj ? std::conj( aScaledValue ) : aScaledValue;
+      }
+
+    /** Writes a scaled frequency value at the nearest native coordinates
+     *  corresponding to the given scaled frequency coordinates.
+     *
+     * @param aScaledPoint  Coordinates in the scaled domain of the frequency image.
+     * @param aScaledValue  Scaled value to set in the native frequency image at
+     *        the nearest corresponding coordinates.
+     */
+    inline
+    void setScaledFreqValue( RealPoint const& aScaledPoint, Complex aScaledValue ) noexcept
+      {
+        bool apply_conj;
+        const auto aPoint = calcNativeFreqCoords( aScaledPoint, apply_conj );
+        const Complex aValue = calcNativeFreqValue( aScaledPoint, aScaledValue );
+
+        if ( apply_conj )
+          getFreqImage().setValue( aPoint, std::conj( aValue ) );
+        else
+          getFreqImage().setValue( aPoint, aValue );
+      }
+    ///@}
+
+    ///@}
 
     ///////////////////////////////////////////////////////////////////////////
     ///@name DGtal services.
@@ -625,8 +695,9 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     const Point   mySpatialExtent;  ///< Extent of the spatial domain.
     const Point   myFreqExtent;     ///< Extent of the frequential domain.
     const Domain  myFreqDomain;     ///< Frequential domain (complex).
+    const Domain  myFullSpatialDomain;  ///< Full spatial domain (real) including the padding.
           void*   myStorage;        ///< Storage.
-        RealPoint myScaledSpatialExtent;  ///< Extent of the scaled spatial domain.
+        RealPoint myScaledSpatialExtent;      ///< Extent of the scaled spatial domain.
         RealPoint myScaledSpatialLowerBound;  ///< Lower bound of the scaled spatial domain.
         Real      myScaledFreqMag;  ///< Magnitude ratio for the scaled frequency values.
 
