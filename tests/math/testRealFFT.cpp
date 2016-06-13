@@ -169,7 +169,7 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
       REQUIRE( fft.calcNativeFreqCoords( freq_pt, applyConj ) == it_max.getPoint() );
       REQUIRE( ! applyConj );
       REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.) );
-      REQUIRE( std::norm( fft.getScaledFreqValue( it_max.getPoint() ) - freq_val ) == Approx(0.) );
+      REQUIRE( std::norm( fft.getScaledFreqValue( freq_pt ) - freq_val ) == Approx(0.) );
 
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
@@ -193,7 +193,7 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
       REQUIRE( fft.calcNativeFreqCoords( freq_pt, applyConj ) == it_max.getPoint() );
       REQUIRE( ! applyConj );
       REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.) );
-      REQUIRE( std::norm( fft.getScaledFreqValue( it_max.getPoint() ) - freq_val ) == Approx(0.) );
+      REQUIRE( std::norm( fft.getScaledFreqValue( freq_pt ) - freq_val ) == Approx(0.) );
 
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
@@ -219,7 +219,7 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
       REQUIRE( fft.calcNativeFreqCoords( freq_pt, applyConj ) == it_max.getPoint() );
       REQUIRE( ! applyConj );
       REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.) );
-      REQUIRE( std::norm( fft.getScaledFreqValue( it_max.getPoint() ) - freq_val ) == Approx(0.) );
+      REQUIRE( std::norm( fft.getScaledFreqValue( freq_pt ) - freq_val ) == Approx(0.) );
 
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
