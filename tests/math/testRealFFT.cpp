@@ -40,6 +40,7 @@
 #include <cmath>
 #include <limits>
 #include <string>
+#include <random>
 
 #include <boost/math/constants/constants.hpp>
 
@@ -145,6 +146,8 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
   for ( auto it = spatial_image.begin(); it != spatial_image.end(); ++it )
     {
       const auto pt = fft.calcScaledSpatialCoords( it.getPoint() );
+      REQUIRE( fft.calcNativeSpatialCoords( pt ) == it.getPoint() );
+
       *it = std::cos( 2*pi * freq * pt[ TDomain::dimension - 1 ] + phase );
     }
 
@@ -160,7 +163,13 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
   INFO( "Checks maximal frequency on unit domain." );
     {
       auto freq_pt  = fft.calcScaledFreqCoords( it_max.getPoint() );
-      auto freq_val = fft.calcScaledFreqValue( it_max.getPoint(), *it_max );
+      auto freq_val = fft.calcScaledFreqValue( freq_pt, *it_max );
+
+      bool applyConj;
+      REQUIRE( fft.calcNativeFreqCoords( freq_pt, applyConj ) == it_max.getPoint() );
+      REQUIRE( ! applyConj );
+      REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.) );
+
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
           freq_pt  = -freq_pt;
@@ -169,6 +178,7 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
 
       REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ) );
       REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase, 2*pi ) + 3*pi, 2*pi ) - pi ) == Approx( 0 ) );
+
     }
 
   INFO( "Checks maximal frequency on translated unit domain." );
@@ -176,7 +186,13 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
       fft.setScaledSpatialLowerBound( RealPoint::diagonal( 1. / (4*freq) ) );
 
       auto freq_pt  = fft.calcScaledFreqCoords( it_max.getPoint() );
-      auto freq_val = fft.calcScaledFreqValue( it_max.getPoint(), *it_max );
+      auto freq_val = fft.calcScaledFreqValue( freq_pt, *it_max );
+
+      bool applyConj;
+      REQUIRE( fft.calcNativeFreqCoords( freq_pt, applyConj ) == it_max.getPoint() );
+      REQUIRE( ! applyConj );
+      REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.) );
+
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
           freq_pt  = -freq_pt;
@@ -195,7 +211,13 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
       fft.setScaledSpatialLowerBound( shift );
 
       auto freq_pt  = fft.calcScaledFreqCoords( it_max.getPoint() );
-      auto freq_val = fft.calcScaledFreqValue( it_max.getPoint(), *it_max );
+      auto freq_val = fft.calcScaledFreqValue( freq_pt, *it_max );
+
+      bool applyConj;
+      REQUIRE( fft.calcNativeFreqCoords( freq_pt, applyConj ) == it_max.getPoint() );
+      REQUIRE( ! applyConj );
+      REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.) );
+
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
           freq_pt  = -freq_pt;
@@ -260,10 +282,10 @@ void cmpTranslatedFFT( ImageContainerBySTLVector<TDomain, TValue> const & anImag
 
   for ( auto it = freq_image.cbegin(), shifted_it = shifted_freq_image.cbegin(); it != freq_image.cend(); ++it, ++shifted_it )
     {
-      if ( std::norm( *it - shifted_fft.calcScaledFreqValue( shifted_it.getPoint(), *shifted_it ) ) > eps * std::max( std::norm(*it), TValue(1) ) )
+      if ( std::norm( *it - shifted_fft.calcScaledFreqValue( shifted_fft.calcScaledFreqCoords( shifted_it.getPoint() ), *shifted_it ) ) > eps * std::max( std::norm(*it), TValue(1) ) )
         FAIL( "Approximation failed at point " << it.getPoint()
               << " between " << *it
-              << " and " << shifted_fft.calcScaledFreqValue( it.getPoint(), *shifted_it )
+              << " and " << shifted_fft.calcScaledFreqValue( shifted_fft.calcScaledFreqCoords( shifted_it.getPoint() ), *shifted_it )
               << " (scaled from " << *shifted_it << ")" );
     }
 
@@ -352,17 +374,31 @@ TEST_CASE( "Checking RealFFT on a 2D image in long double precision.", "[2D][lon
 TEST_CASE( "Checking RealFFT on a 3D image in float precision.", "[3D][float]" )
 {
   constexpr typename DGtal::Dimension N = 3;
-  const std::string file_name = testPath + "/samples/church-small.pgm";
 
-  using real = float;
+  using real  = float;
   using Space = SpaceND<N>;
+  using Point = Space::Point;
   using Domain = HyperRectDomain<Space>;
   using Image = ImageContainerBySTLVector<Domain, real>;
 
   const Domain domain( {0, 10, 13}, {31, 28, 45} );
   Image image( domain );
+  auto const extent = image.extent();
 
-  /*
+  INFO( "Filling the image randomly." );
+  const std::size_t CNT = image.size() / 100;
+  std::random_device rd;
+  std::mt19937 gen( rd() );
+  std::uniform_real_distribution<> dis{};
+  Point pt;
+
+  for ( std::size_t i = 0; i < CNT; ++i )
+    {
+      for ( Dimension d = 0; d < N; ++d )
+        pt[ d ] = domain.lowerBound()[ d ] + std::floor( extent[ d ] * dis(gen) );
+      image.setValue( pt, 1. );
+    }
+
   INFO( "Testing forward and backward FFT." );
   testForwardBackwardFFT( image );
 
@@ -371,6 +407,5 @@ TEST_CASE( "Checking RealFFT on a 3D image in float precision.", "[3D][float]" )
 
   INFO( "Testing FFT on translated image." );
   cmpTranslatedFFT( image );
-  */
 }
 #endif

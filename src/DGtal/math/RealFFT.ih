@@ -32,8 +32,7 @@
 #include <stdexcept>  // Exceptions
 #include <new>        // std::bad_alloc exception
 #include <algorithm>
-
-#include <iostream>
+#include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,7 +46,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-/// Constructor from a domain and scaled lower bound and extent.
+// Constructor from a domain and scaled lower bound and extent.
 template <typename TSpace, typename T>
 inline
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
@@ -67,7 +66,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   setScaledSpatialExtent( anExtent );
 }
 
-/// Constructor from a domain.
+// Constructor from a domain.
 template <typename TSpace, typename T>
 inline
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
@@ -79,7 +78,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 {
 }
 
-/// Destructor
+// Destructor
 template <typename TSpace, typename T>
 inline
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
@@ -88,7 +87,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   FFTW::free( myStorage );
 }
 
-/// Padding when using real datas.
+// Padding when using real datas.
 template <typename TSpace, typename T>
 inline
 std::size_t
@@ -98,7 +97,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return 2*myFreqExtent[0] - mySpatialExtent[0];
 }
 
-/// Gets mutable spatial storage.
+// Gets mutable spatial storage.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Real*
@@ -108,7 +107,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return reinterpret_cast<Real*>(myStorage);
 }
 
-/// Gets non-mutable spatial storage.
+// Gets non-mutable spatial storage.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Real const*
@@ -117,7 +116,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 {
 }
 
-/// Gets mutable spatial image.
+// Gets mutable spatial image.
 template <typename TSpace, typename T>
 inline
 DGtal::ArrayImageAdapter<
@@ -131,7 +130,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return { getSpatialStorage(), full_domain, mySpatialDomain };
 }
 
-/// Gets non-mutable spatial image.
+// Gets non-mutable spatial image.
 template <typename TSpace, typename T>
 inline
 DGtal::ArrayImageAdapter<
@@ -145,7 +144,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return { getSpatialStorage(), full_domain, mySpatialDomain };
 }
 
-/// Gets mutable frequential raw storage.
+// Gets mutable frequential raw storage.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Complex*
@@ -155,7 +154,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return reinterpret_cast<Complex*>(myStorage);
 }
 
-/// Gets non-mutable frequential storage.
+// Gets non-mutable frequential storage.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Complex const*
@@ -165,7 +164,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return reinterpret_cast<Complex const*>(myStorage);
 }
 
-/// Gets mutable frequential image.
+// Gets mutable frequential image.
 template <typename TSpace, typename T>
 inline
 DGtal::ArrayImageAdapter<
@@ -178,7 +177,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return { getFreqStorage(), getFreqDomain() };
 }
 
-/// Get non-mutable frequential image.
+// Get non-mutable frequential image.
 template <typename TSpace, typename T>
 inline
 DGtal::ArrayImageAdapter<
@@ -191,7 +190,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return { getFreqStorage(), getFreqDomain() };
 }
 
-/// Get spatial domain.
+// Get spatial domain.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Domain const&
@@ -201,7 +200,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return mySpatialDomain;
 }
 
-/// Get frequential domain.
+// Get frequential domain.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Domain const&
@@ -211,7 +210,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return myFreqDomain;
 }
 
-/// Get spatial domain extent.
+// Get spatial domain extent.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Point const&
@@ -221,7 +220,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return mySpatialExtent;
 }
 
-/// Get frequential domain extent.
+// Get frequential domain extent.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Point const&
@@ -231,7 +230,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return myFreqExtent;
 }
 
-/// Gets the extent of the scaled spatial domain.
+// Gets the extent of the scaled spatial domain.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::RealPoint
@@ -241,7 +240,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return myScaledSpatialExtent;
 }
 
-/// Sets the extent of the scaled spatial domain.
+// Sets the extent of the scaled spatial domain.
 template <typename TSpace, typename T>
 inline
 void
@@ -255,7 +254,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
     myScaledFreqMag *= mySpatialExtent[ i ] / myScaledSpatialExtent[ i ];
 }
 
-/// Gets the lower bound of the scaled spatial domain.
+// Gets the lower bound of the scaled spatial domain.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::RealPoint
@@ -265,7 +264,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return myScaledSpatialLowerBound;
 }
 
-/// Sets the lower bound of the scaled spatial domain.
+// Sets the lower bound of the scaled spatial domain.
 template <typename TSpace, typename T>
 inline
 void
@@ -275,7 +274,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   myScaledSpatialLowerBound = aPoint;
 }
 
-/// Converts coordinates from the spatial image into scaled coordinates.
+// Converts coordinates from the spatial image into scaled coordinates.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::RealPoint
@@ -291,7 +290,25 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return scaledCoords;
 }
 
-/// Converts coordinates from the frequency image into scaled frequencies.
+// Converts scaled coordinates from the spatial image into native spatial coords.
+template <typename TSpace, typename T>
+inline
+typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Point
+DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
+  calcNativeSpatialCoords( RealPoint const& aScaledPoint ) const noexcept
+{
+  Point nativeCoords;
+  for ( Dimension i = 0; i < dimension; ++i )
+    nativeCoords[ i ] = std::round(
+          mySpatialDomain.lowerBound()[ i ]
+        + ( mySpatialExtent[ i ] / myScaledSpatialExtent[ i ] )
+          * ( aScaledPoint[ i ] - myScaledSpatialLowerBound[ i ] )
+    );
+
+  return nativeCoords;
+}
+
+// Converts coordinates from the frequency image into scaled frequencies.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::RealPoint
@@ -310,25 +327,71 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   return frequencies;
 }
 
-/// Converts a complex value from the frequency image to the scaled frequency image.
+// From the scaled frequency coordinates, calculates the nearest corresponding
+// coordinates in the native frequency image.
+template <typename TSpace, typename T>
+inline
+typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Point
+DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
+  calcNativeFreqCoords( RealPoint const& aScaledPoint, bool & applyConj ) const noexcept
+{
+  Point nativeCoords;
+  for ( Dimension i = 0; i < dimension; ++i )
+    {
+      nativeCoords[ i ] = std::round( aScaledPoint[ i ] * myScaledSpatialExtent[ i ] );
+
+      if ( aScaledPoint[ i ] < 0 )
+        nativeCoords[ i ] += mySpatialExtent[ i ];
+    }
+
+  // Checking if conjugate is needed.
+  if ( nativeCoords[ 0 ] > mySpatialExtent[ 0 ] / 2 )
+    {
+      nativeCoords[ 0 ] = mySpatialExtent[ 0 ] - nativeCoords[ 0 ];
+      applyConj = true;
+    }
+  else
+    applyConj = false;
+
+  return nativeCoords;
+}
+
+
+// Converts a complex value from the frequency image to the scaled frequency image.
 template <typename TSpace, typename T>
 inline
 typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Complex
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
-  calcScaledFreqValue( Point const& aPoint, Complex const& aValue ) const noexcept
+  calcScaledFreqValue( RealPoint const& aScaledPoint, Complex const& aValue ) const noexcept
 {
-  auto const pt = calcScaledFreqCoords( aPoint );
-
   Real phase = 0;
   for ( Dimension i = 0; i < dimension; ++i )
-    phase += Real( myScaledSpatialLowerBound[ i ] ) * pt[ i ];
+    phase += Real( myScaledSpatialLowerBound[ i ] ) * aScaledPoint[ i ];
 
   phase *= 2*pi;
 
   return aValue * std::polar( myScaledFreqMag, phase );
 }
 
-/// Creates a transformation plan for the specified transformation direction.
+// From a complex value of the scaled frequency image, calculates the
+// corresponding value (undoing scaling and rotation) in the native
+// frequency image.
+template <typename TSpace, typename T>
+inline
+typename DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::Complex
+DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
+  calcNativeFreqValue( RealPoint const& aScaledPoint, Complex const& aScaledValue ) const noexcept
+{
+  Real phase = 0;
+  for ( Dimension i = 0; i < dimension; ++i )
+    phase += Real( myScaledSpatialLowerBound[ i ] ) * aScaledPoint[ i ];
+
+  phase *= 2*pi;
+
+  return aScaledValue * std::polar( Real(1)/myScaledFreqMag, -phase );
+}
+
+// Creates a transformation plan for the specified transformation direction.
 template <typename TSpace, typename T>
 inline
 void
@@ -347,7 +410,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   FFTW::destroy_plan( p );
 }
 
-/// Fast Fourier Transformation.
+// Fast Fourier Transformation.
 template <typename TSpace, typename T>
 inline
 void
@@ -402,7 +465,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
     }
 }
 
-/// In-place forward FFT transformation (spatial -> frequential)
+// In-place forward FFT transformation (spatial -> frequential)
 template <typename TSpace, typename T>
 inline
 void
@@ -412,7 +475,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   doFFT( flags, FFTW_FORWARD, false );
 }
 
-/// In-place backward FFT transformation (frequential -> spatial)
+// In-place backward FFT transformation (frequential -> spatial)
 template <typename TSpace, typename T>
 inline
 void
