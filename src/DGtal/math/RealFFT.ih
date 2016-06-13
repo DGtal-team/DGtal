@@ -58,6 +58,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
     , mySpatialExtent{ mySpatialDomain.upperBound() - mySpatialDomain.lowerBound() + Point::diagonal(1) }
     , myFreqExtent{ mySpatialExtent / (Point::diagonal(1) + Point::base(0)) + Point::base(0) }
     , myFreqDomain{ Point::diagonal(0), myFreqExtent - Point::diagonal(1) }
+    , myFullSpatialDomain{ mySpatialDomain.lowerBound(), mySpatialDomain.lowerBound() + myFreqExtent + Point::base(0, myFreqExtent[0]) - Point::diagonal(1) }
     , myStorage( FFTW::malloc( sizeof(Complex) * myFreqDomain.size() ) )
 {
   if ( myStorage == nullptr )  throw std::bad_alloc{};
@@ -126,8 +127,7 @@ DGtal::ArrayImageAdapter<
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   getSpatialImage() noexcept
 {
-  const Domain full_domain( mySpatialDomain.lowerBound(), mySpatialDomain.upperBound() + Point::base(0, getPadding()) );
-  return { getSpatialStorage(), full_domain, mySpatialDomain };
+  return { getSpatialStorage(), myFullSpatialDomain, mySpatialDomain };
 }
 
 // Gets non-mutable spatial image.
@@ -140,8 +140,7 @@ DGtal::ArrayImageAdapter<
 DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   getSpatialImage() const noexcept
 {
-  const Domain full_domain { mySpatialDomain.lowerBound(), mySpatialDomain.upperBound() + Point::base(0, getPadding()) };
-  return { getSpatialStorage(), full_domain, mySpatialDomain };
+  return { getSpatialStorage(), myFullSpatialDomain, mySpatialDomain };
 }
 
 // Gets mutable frequential raw storage.
