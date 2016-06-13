@@ -486,7 +486,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ///@}
 
     ///////////////////////////////////////////////////////////////////////////
-    ///@name Scaling services.
+    ///@name Spatial scaling definitions.
     ///@{
 
     ///@{
@@ -509,12 +509,20 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     void setScaledSpatialLowerBound( RealPoint const& aPoint ) noexcept;
     ///@}
 
+    ///@}
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///@name Scaling calculators.
+    ///@{
+
     ///@{
     /** Scales coordinates from the spatial image taking into account
      * the extent and lower bound of the scaled spatial domain.
      *
      * @param aPoint  Coordinates in the domain of the spatial image.
      * @return Corresponding coordinates in the scaled spatial domain.
+     *
+     * @see calcNativeSpatialCoords().
      */
     RealPoint calcScaledSpatialCoords( Point const& aPoint ) const noexcept;
 
@@ -527,20 +535,64 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      *
      * @param aPoint  Coordinates in the domain of the frequency image.
      * @return Corresponding coordinates (the frequencies) in the scaled frequency domain.
+     *
      * @see http://www.fftw.org/fftw3_doc/The-1d-Discrete-Fourier-Transform-_0028DFT_0029.html#The-1d-Discrete-Fourier-Transform-_0028DFT_0029
+     * @see calcNativeFreqCoords()
      */
     RealPoint calcScaledFreqCoords( Point const& aPoint ) const noexcept;
 
     /** Scales and rotates a complex value from the frequency image taking
-     *  into account the extent and lower bound of the sclaed spatial domain.
+     *  into account the extent and lower bound of the scaled spatial domain.
      *
-     * @param aPoint  Coordinates in the domain of the frequency image.
-     * @param aValue  Complex value from the frequency image.
-     * @return corresponding complex value from the scaled frequency image.
+     * @param   aScaledPoint  Coordinates in the scaled domain of the frequency image.
+     * @param   aValue        Complex value from the frequency image.
+     * @return  corresponding complex value from the scaled frequency image.
      *
      * @note Prefer translating data in the spatial space instead of using this method.
+     * @see calcNativeFreqValue()
      */
-    Complex calcScaledFreqValue( Point const& aPoint, Complex const& aValue ) const noexcept;
+    Complex calcScaledFreqValue( RealPoint const& aScaledPoint, Complex const& aValue ) const noexcept;
+    ///@}
+
+    ///@{
+    /** From the scaled spatial coordinates, calculates the nearest corresponding
+     *  coordinates in the native spatial image.
+     *
+     *  @param    aScaledPoint   Coordinates in the scaled domain of the spatial image.
+     *  @returns  integer coordinates lying into the spatial image returned by getSpatialImage().
+     *
+     *  @see calcScaledSpatialCoords()
+     */
+    Point calcNativeSpatialCoords( RealPoint const& aScaledPoint ) const noexcept;
+
+    /** From the scaled frequency coordinates, calculates the nearest corresponding
+     *  coordinates in the native frequency image.
+     *
+     *  Since the frequency image's domain is half the size of the spatial domain
+     *  due to the hermitian symmetry, if the given point lies into the stripped part,
+     *  then the given parameter @a applyConj is set to @a true to indicate that
+     *  the frequency image value at the returned coordinates must be conjugate.
+     *
+     *  @param      aScaledPoint  Coordinates in the scaled domain of the frequency image.
+     *  @param[out] applyConj   Set to @a true if you must take the conjugate of
+     *              the frequency image value at the returned coordinates.
+     *  @return integer coordinates lying into the frequency image returned by getFreqImage().
+     *
+     *  @see calcScaledFreqCoords()
+     */
+    Point calcNativeFreqCoords( RealPoint const& aScaledPoint, bool & applyConj ) const noexcept;
+
+    /** From a complex value of the scaled frequency image, calculates the
+     *  corresponding value (undoing scaling and rotation) in the native
+     *  frequency image.
+     *
+     * @param   aScaledPoint  Coordinates in the scaled domain of the frequency image.
+     * @param   aScaledValue  Complex value from the scaled frequency image.
+     * @return  corresponding complex value from the native frequency image.
+     *
+     * @see calcScaledFreqValue()
+     */
+    Complex calcNativeFreqValue( RealPoint const& aScaledPoint, Complex const& aScaledValue ) const noexcept;
     ///@}
 
     ///@}
