@@ -366,7 +366,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 {
   Real phase = 0;
   for ( Dimension i = 0; i < dimension; ++i )
-    phase += Real( myScaledSpatialLowerBound[ i ] ) * aScaledPoint[ i ];
+    phase -= Real( myScaledSpatialLowerBound[ i ] ) * aScaledPoint[ i ];
 
   phase *= 2*pi;
 
@@ -388,7 +388,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
 
   phase *= 2*pi;
 
-  return aScaledValue * std::polar( Real(1)/myScaledFreqMag, -phase );
+  return aScaledValue * std::polar( Real(1)/myScaledFreqMag, phase );
 }
 
 // Creates a transformation plan for the specified transformation direction.
