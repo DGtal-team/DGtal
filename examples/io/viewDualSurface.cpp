@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewDualSurface.cpp
+ * @file io/viewDualSurface.cpp
  * @ingroup Examples
  *
  * @date 2011/03/25
@@ -414,7 +414,7 @@ int main( int argc, char** argv )
         fillCfg( f, offset + Vector( 1, 1, 1 ), cfg );
         Domain domain( offset + Vector( 0, 0, 0), offset + Vector( 2, 2, 2 ) );
         KSpace K;
-        K.init( offset + Vector( 0, 0, 0), offset + Vector( 2, 2, 2 ), true );
+        K.init( Vector( 0, 0, 0), Vector( 2, 2, 2 ), true );
         ConfigPointPredicate<Vector> cpp( f, offset );
         CellSet aBoundary;
         Surfaces<KSpace>::uMakeBoundary( aBoundary, K, cpp, Vector( 0, 0, 0), Vector( 1, 1, 1 ) );
@@ -422,7 +422,7 @@ int main( int argc, char** argv )
               it != itE; ++it )
           {
             viewer << CustomColors3D( surfelColor, surfelColor );
-            viewer << K.uTranslation( *it, offset/2 );
+            viewer << KS.uTranslation( *it, offset/2 );
           }
         for ( Domain::ConstIterator it = domain.begin(), itE = domain.end();
               it != itE; ++it )

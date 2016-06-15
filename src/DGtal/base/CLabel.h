@@ -68,8 +68,8 @@ namespace DGtal
        ### Associated types :
 
        ### Notation
-       - \t X : A type that is a model of CLabel
-       - \t x, \t y : object of type X
+       - \a X : A type that is a model of CLabel
+       - \a x, \a y : object of type X
 
        ### Definitions
 

@@ -16,7 +16,7 @@
  **/
 
 /**
- * @file dgtalBoard2D-1-points.cpp
+ * @file io/boards/dgtalBoard3D-2-ks.cpp
  * @ingroup Examples
  * @author Aline MARTIN (\c aline.martin@insa-lyon.fr )
  *

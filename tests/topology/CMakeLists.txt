@@ -1,6 +1,6 @@
 SET(DGTAL_TESTS_SRC
    testAdjacency
-   testCellularGridSpaceND
+   testKhalimskySpaceND
    testCubicalComplex
    testDigitalSurface
    testDigitalTopology

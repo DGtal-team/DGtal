@@ -66,8 +66,8 @@ DescriptionDescription of \b concept '\b CDigitalBoundedShape' <p>
     - Point: type for points (to characterize upper/lower bounds).
    
 ### Notation
-    - \t X : A type that is a model of CDigitalBoundedShape
-    - \t x, \t y  : Object of type X
+    - \a X : A type that is a model of CDigitalBoundedShape
+    - \a x, \a y  : Object of type X
    
 ### Definitions
    

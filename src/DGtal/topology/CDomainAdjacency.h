@@ -73,8 +73,8 @@ namespace DGtal {
   - Predicate: the type of the predicate "is in domain ?"
    
   ###  Notation
-  - \t X : A type that is a model of CDomainAdjacency
-  - \t x, \t y  : Object of type X
+  - \a X : A type that is a model of CDomainAdjacency
+  - \a x, \a y  : Object of type X
    
   ### Definitions
    

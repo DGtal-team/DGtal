@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file Board3D-6-clipping.cpp
+ * @file io/boards/dgtalBoard3D-6-clipping.cpp
  * @ingroup examples/3dboard
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
