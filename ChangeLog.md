@@ -37,12 +37,9 @@
  - Add cmake configuration file NeighborhoodTablesConfig to
    decompress and install look up tables. (Pablo Hernandez-Cerdan,
    [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
-<<<<<<< HEAD
-- Check and add all DGtal examples in the Examples listing section.
-   (Bertrand Kerautret, [#1166](https://github.com/DGtal-team/DGtal/pull/1166))))
-=======
->>>>>>> 85656d8f34b0cdf6afc8e76acebcc553dafce397
-
+ - Check and add all DGtal examples in the Examples listing section.
+   (Bertrand Kerautret,[#1166](https://github.com/DGtal-team/DGtal/pull/1166))))
+   
 - *Base Package*
  - Alias and ConstAlias now raise compilation error when using invalid
    constructor, like from a rvalue reference. Adding ConstAlias in many classes
