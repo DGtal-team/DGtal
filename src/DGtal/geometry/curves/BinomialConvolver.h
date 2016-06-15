@@ -269,6 +269,7 @@ namespace DGtal
     /**
        Operator()
 
+       @param bc a binomial convolver.
        @param it any valid iterator in the current BinomialConvolver.
        @return the tangent vector at position [it].
      */
@@ -300,6 +301,7 @@ namespace DGtal
     /**
        Operator()
 
+       @param bc a binomial convolver.
        @param it any valid iterator in the current BinomialConvolver.
        @return the tangent vector at position [it].
      */

@@ -80,8 +80,8 @@ digraph GMath {
                  node [style=filled,color=white];
                  label="math/linalg";
 
-                 CVectorSpace [ label="CVectorSpace" URL="\ref concepts::CVectorSpace" ];
-                 CMatrix [ label="CMatrix" URL="\ref concepts::Matrix" ];
+                 CVectorSpace [ label="CVectorSpace" URL="\ref CVectorSpace" ];
+                 CMatrix [ label="CMatrix" URL="\ref concepts::CMatrix" ];
                  CStaticMatrix [ label="CStaticMatrix" URL="\ref concepts::CStaticMatrix" ];
                  CDynamicMatrix [ label="CDynamicMatrix" URL="\ref concepts::CDynamicMatrix" ];
                  CDenseMatrix [ label="CDenseMatrix" URL="\ref concepts::CDenseMatrix" ];

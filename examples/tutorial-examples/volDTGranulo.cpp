@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file shapeGridCurveEstimator.cpp
+ * @file tutorial-examples/volDTGranulo.cpp
  * @ingroup tutorial-examples
  * @author Tristan Roussillon (tristan.roussillon@liris.cnrs.fr)
  *

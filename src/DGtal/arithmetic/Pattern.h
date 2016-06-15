@@ -225,6 +225,12 @@ namespace DGtal
 
        @param posA the position of A (number of steps till A).
        @param posB the position of B (number of steps till B), > posA.
+       
+       @param reversed when 'false' assume a usual pattern, otherwise
+       assume a reversed pattern (i.e. a path between two lower
+       leaning points). In this case, all positions are relative to
+       the first lower leaning point L(0). Everything returned
+       correspond to reversed pattern(s).
 
        @return 'true' iff the subpattern is not null.
     */

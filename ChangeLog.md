@@ -3,6 +3,8 @@
 ## New Features / Critical Changes
 
 - *Documentation*
+ - Fixing all doxygen warnings.
+   (Roland Denis, [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
  - New "@seeDGtalTools" doxygen command to cite a DGtalTools tool in
    DGtal documentation (David Coeurjolly,
    [#1179](https://github.com/DGtal-team/DGtal/pull/1179))
@@ -12,8 +14,21 @@
    voting (Boulc'h & Marlet, SGP 2012).
    (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
 
+- *Topology Package*
+ - Adding periodic closure for KhalimskySpaceND and per-dimension closure
+   specification.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+ - Adding CPreCellularGridSpaceND concept and KhalimskyPreSpaceND model
+   to manipulate unbounded Khalimsky space and cells.
+   KhalimskySpaceND now checks that all given cells are within the bounds.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+
 ## Changes
 - *Configuration/General*
+ - Travis Continuous integration will check that doxygen raises no warnings
+   and that the documented file names are valid.
+   (David Coeurjolly, Roland Denis,
+        [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
  - Cleaning remaining preprocessor directives related to C++11 features.
    (Roland Denis, [#1141](https://github.com/DGtal-team/DGtal/pull/1141))
  - Travis Continuous integration will check that DGtalTools still compiles with
@@ -74,6 +89,8 @@
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
+ - Frechet Shortcut: fix implicit rounding.
+   (I. Sivignon, [#1180](https://github.com/DGtal-team/DGtal/pull/1180))
 
 - *Image Package*
  - Fixing issue [#779](https://github.com/DGtal-team/DGtal/issues/779) by
@@ -104,6 +121,8 @@
    [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
  - Fix the extension removal in Obj filename export in Board3D. (David
    Coeurjolly,[#1154](https://github.com/DGtal-team/DGtal/pull/1154)))
+ - Fix issue when drawing DSS with both points and bounding box. (David
+   Coeurjolly,[#1186](https://github.com/DGtal-team/DGtal/pull/1186)))
 
 - *Topology Package*
   - Fix wrong starting point for surface tracking in example code

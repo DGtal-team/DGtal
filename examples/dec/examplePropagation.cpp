@@ -1,6 +1,7 @@
+/// @file dec/examplePropagation.cpp
 #include <iomanip>
 
-#include "common.h"
+#include "DECExamplesCommon.h"
 
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"

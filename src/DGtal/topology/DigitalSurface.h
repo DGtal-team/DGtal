@@ -472,13 +472,13 @@ namespace DGtal
     */
     FaceRange facesAroundVertex( const Vertex & v ) const;
 
-    /*
+    /**
       @param a any arc (s,t)
       @return the vertex t
     */
     Vertex head( const Arc & a ) const;
 
-    /*
+    /**
       @param a any arc (s,t)
       @return the vertex s
     */

@@ -43,10 +43,10 @@ digraph GARITHMETIC {
                  node [style=filled,color=white];
                  label="kernel";
 
-                 CInteger [ label="CInteger" URL="\ref CInteger" ];
-                 CSignedInteger [ label="CSignedInteger" URL="\ref CSignedInteger" ];
-                 CUnsignedInteger [ label="CUnsignedInteger" URL="\ref CUnsignedInteger" ];
-                 CSpace [ label="CSpace" URL="\ref CSpace" ];
+                 CInteger [ label="CInteger" URL="\ref concepts::CInteger" ];
+                 CSignedNumber [ label="CSignedNumber" URL="\ref concepts::CSignedNumber" ];
+                 CUnsignedNumber [ label="CUnsignedNumber" URL="\ref concepts::CUnsignedNumber" ];
+                 CSpace [ label="CSpace" URL="\ref concepts::CSpace" ];
         }
         subgraph cluster_boost {
                  style=filled;
@@ -75,7 +75,7 @@ digraph GARITHMETIC {
     CPositiveIrreducibleFraction -> boost_CopyConstructible;
     CPositiveIrreducibleFraction -> boost_Assignable;
     CPositiveIrreducibleFraction -> CInteger [label="use",style=dashed];
-    CPositiveIrreducibleFraction -> CSignedInteger [label="use",style=dashed];
+    CPositiveIrreducibleFraction -> CSignedNumber [label="use",style=dashed];
   
     subgraph cluster_models {
         style=filled;
@@ -98,7 +98,7 @@ digraph GARITHMETIC {
     IntegerComputer -> boost_CopyConstructible;
     IntegerComputer -> boost_Assignable;
     IntegerComputer -> CInteger [label="use",style=dashed];
-    IntegerComputer -> CUnsignedInteger [label="use",style=dashed];
+    IntegerComputer -> CUnsignedNumber [label="use",style=dashed];
     LatticePolytope2D -> CSpace [label="use",style=dashed];
     LatticePolytope2D -> boost_DefaultConstructible;
     LatticePolytope2D -> boost_CopyConstructible;

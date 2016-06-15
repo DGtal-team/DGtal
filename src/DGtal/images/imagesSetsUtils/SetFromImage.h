@@ -90,6 +90,7 @@ namespace DGtal
      * of values in ]minVal,maxVal].
      *
      * @param aSet the set (maybe empty) to which points are added.
+     * @param aImage  the image.
      * @param minVal minimum value of the thresholding
      * @param maxVal maximum value of the thresholding
      * @param itBegin starting point in the input image Domain.

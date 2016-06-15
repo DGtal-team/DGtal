@@ -80,6 +80,7 @@ namespace DGtal
     /**
      * Return the minor determinant (i,j) of the current matrix
      *
+     * @param M the matrix
      * @param i row index
      * @param j column index
      *
@@ -122,6 +123,7 @@ namespace DGtal
     /**
      * Return the minor determinant (i,j) of the current matrix
      *
+     * @param aM  the matrix
      * @param i row index
      * @param j column index
      *
@@ -163,6 +165,7 @@ namespace DGtal
     /**
      * Return the minor determinant (i,j) of the current matrix
      *
+     * @param aM  the matrix.
      * @param i row index
      * @param j column index
      *
@@ -205,6 +208,7 @@ namespace DGtal
     /**
      * Return the minor determinant (i,j) of the current matrix
      *
+     * @param M the matrix
      * @param i row index
      * @param j column index
      *

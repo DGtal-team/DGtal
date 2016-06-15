@@ -66,9 +66,9 @@ Description of \b concept '\b CIncrementalSegmentComputer' <p>
     the same as CSegmentFactory
   
  ### Notation
-     - \t X : A type that is a model of CIncrementalSegmentComputer
-     - \t x, \t y : object of type X
-     - \t i : object of type X::ConstIterator
+     - \a X : A type that is a model of CIncrementalSegmentComputer
+     - \a x, \a y : object of type X
+     - \a i : object of type X::ConstIterator
   
  ### Definitions
     

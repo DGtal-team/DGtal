@@ -38,7 +38,7 @@ digraph GGraph {
                  node [style=filled,color=white];
                  label="base";
 
-                 CPredicate [ label="CPredicate" URL="\ref CPredicate" ];
+                 CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate" ];
         }
         subgraph cluster_kernel {
                  style=filled;
@@ -118,7 +118,7 @@ digraph GGraph {
         node [style=filled,color=white];
         label="Topology (related concepts and models)";
 
-        CAdjacency  [ label="CAdjacency" URL="\ref CAdjacency" ] ;
+        CAdjacency  [ label="CAdjacency" URL="\ref concepts::CAdjacency" ] ;
         DigitalSurface [ label="DigitalSurface" URL="\ref DigitalSurface" ] ;
         Object [ label="Object" URL="\ref Object" ] ;
         }

@@ -314,19 +314,19 @@ Functor g (and/or functor f) can be a default functor, i.e. a
 In order to illustrate the next ConstImageAdapter usage samples,
  we are going a) to use these includes:
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp include 
+@snippet images/exampleConstImageAdapter.cpp include 
 
 b) then define these types and variables:
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp def 
+@snippet images/exampleConstImageAdapter.cpp def 
 
 c) then define a simple 16x16 (1,1) to (16,16) image (of 'unsigned char' type):
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp image_creation 
+@snippet images/exampleConstImageAdapter.cpp image_creation 
 
 filled with 0 to 255 values like that:
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp image_filling 
+@snippet images/exampleConstImageAdapter.cpp image_filling 
 
 which looks like that with a simple HueShadeColorMap varying from 0 to 255 and with (1,1) the first bottom-left point:
 
@@ -337,7 +337,7 @@ Here is now the construction of a simple image adapter that
  use a subdomain of the initial image domain to
  access the first bottom-left 8x8 image: 
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForSubImage_creation 
+@snippet images/exampleConstImageAdapter.cpp ConstImageAdapterForSubImage_creation 
 
 and here is the result:
 \image html subImage.png " (2) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." 
@@ -347,11 +347,11 @@ and here is the result:
 Here is then the construction of an image adapter that 
  use a specific domain: here, only one pixel on two in x and y coordinates, created like that:
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp specificDomain_creation
+@snippet images/exampleConstImageAdapter.cpp specificDomain_creation
 
 from the initial image domain. 
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForSpecificImage_creation
+@snippet images/exampleConstImageAdapter.cpp ConstImageAdapterForSpecificImage_creation
 
 Here is the result:
 
@@ -361,7 +361,7 @@ Here is the result:
 Here is now the construction of an image adapter that 
  is a thresholded view of the initial scalar image: 
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
+@snippet images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
 
 and here is the result with a simple GrayscaleColorMap varying from 0 to 1:
 
@@ -372,11 +372,11 @@ Here is finally the construction of an image adapter that
  use a functor to change 'unsigned char' values to 'double'
  values using a log scale functor defined like that:
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp LogScaleFunctor
+@snippet images/exampleConstImageAdapter.cpp LogScaleFunctor
 
 defined from the initial image: 
 
-@snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForLogScale_creation
+@snippet images/exampleConstImageAdapter.cpp ConstImageAdapterForLogScale_creation
 
 and here is the result with a simple HueShadeColorMap varying from 0. to logScale(255):
 
@@ -421,49 +421,49 @@ with fast access to the underlying point (no need to iterate over the domain).
 A common usage of this last feature is for padded raw data.
 
 In order to illustrate the following ArrayImageAdapter usages, we need some common includes:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp include
+@snippet images/exampleArrayImageAdapter.cpp include
 and the next definitions:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp def
+@snippet images/exampleArrayImageAdapter.cpp def
 
 From a C-style array, we can create an image that spans the full definition domain:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp raw_image_creation
+@snippet images/exampleArrayImageAdapter.cpp raw_image_creation
 and fill it using common iterator syntax:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp image_filling
+@snippet images/exampleArrayImageAdapter.cpp image_filling
 that gives us the following result:
 \image html ArrayImageAdapter_image.png " (6) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255."
 \image latex ArrayImageAdapter_image.png " (6) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." width=5cm
 
 We can now create a read-only view of the same image on a sub-domain:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp ConstArrayImageAdapterForSubImage_creation
+@snippet images/exampleArrayImageAdapter.cpp ConstArrayImageAdapterForSubImage_creation
 that gives us:
 \image html ArrayImageAdapter_subImage.png " (7) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain."
 \image latex ArrayImageAdapter_subImage.png " (7) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." width=5cm
 
 If we want to modify the image through this adapter, we must create a read-write instance using the following syntax:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_creation
+@snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_creation
 or the alternate method using the helpers:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_alternateCreation
+@snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_alternateCreation
 and we can then modify it using the common syntax with a domain iterator:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_modifByDomain
+@snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_modifByDomain
 
 \image html ArrayImageAdapter_subImage_modifByDomain.png " (8) modifying the first bottom-left 8x8 image through the sub-domain view with a domain iterator."
 \image latex ArrayImageAdapter_subImage_modifByDomain.png " (8) modifying the first bottom-left 8x8 image through the sub-domain view with a domain iterator." width=5cm
 
 Alternatively, there is a computationally faster syntax (no need to linearize the point) using the method `getPoint` featured by the ArrayImageAdapter iterators (see ArrayImageIterator):
-@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_modifByImage
+@snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_modifByImage
 
 \image html ArrayImageAdapter_subImage_modifByImage.png " (9) modifying the first bottom-left 8x8 image through the sub-domain view with an image iterator."
 \image latex ArrayImageAdapter_subImage_modifByImage.png " (9) modifying the first bottom-left 8x8 image through the sub-domain view with an image iterator." width=5cm
 
 It is also possible to use ArrayImageAdater on any image model that provides a random-access iterator, like ImageContainerBySTLVector:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp ImageSTL_creation
+@snippet images/exampleArrayImageAdapter.cpp ImageSTL_creation
 and adapt it using:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL
+@snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL
 or, thanks to the helpers:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL_alternate
+@snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL_alternate
 
 From there, we can use all the previous features or, for example, use available STL algorithms:
-@snippet ../examples/images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL_copy
+@snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL_copy
 
 \image html ArrayImageAdapter_subImage_copyToImageSTL.png " (10) modifying the first bottom-left 8x8 image of a ImageContainerBySTLVector through the sub-domain view."
 \image latex ArrayImageAdapter_subImage_copyToImageSTL.png " (10) modifying the first bottom-left 8x8 image of a ImageContainerBySTLVector through the sub-domain view." width=5cm

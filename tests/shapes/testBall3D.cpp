@@ -15,7 +15,7 @@
 **/
 
 /**
-* @file testEllipsoid.cpp
+* @file
 * @ingroup Tests
 * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
 *

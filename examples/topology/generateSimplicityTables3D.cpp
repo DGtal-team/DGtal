@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file generateSimplicityTables3D.cpp
+ * @file topology/generateSimplicityTables3D.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France

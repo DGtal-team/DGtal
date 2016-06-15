@@ -349,16 +349,16 @@ namespace functors
    * instance (see full example images/extract2DImagesFrom3D.cpp):
    *
    * - First some image types and ConstImageAdapter are defined to exploit the functor:
-   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DType
+   * @snippet images/extract2DImagesFrom3D.cpp extract2DImagesFrom3DType
    *
    * - Then, we define the origin point and axis vector used to extract 2D image values and we also deduce the associated 2D domain:
-   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DOrigin3D
+   * @snippet images/extract2DImagesFrom3D.cpp extract2DImagesFrom3DOrigin3D
    *
    * - The 2D image we can now be  constructed from the embeder and from the ConstImageAdapter class:
-   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DOExtract
+   * @snippet images/extract2DImagesFrom3D.cpp extract2DImagesFrom3DOExtract
    *
    * - Alternatively, you can also construct the same functor from a reference center point, a normal, and a size:
-   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DOExtract2
+   * @snippet images/extract2DImagesFrom3D.cpp extract2DImagesFrom3DOExtract2
    *
    *
    * @see tests/kernel/testBasicPointFunctors.cpp
@@ -468,12 +468,13 @@ namespace functors
     /**
      * The operator just recover the 3D Point associated to the Point2DEmbederIn3D parameters.
      * @param[in] aPoint point of the input domain (of dimension 2).
+     * @param checkInsideDomain if 'true', checks that the point lies inside the domain.
      *
      * @return the digital point of dimension 3 (value rounded downward with floor).
      */
     template <typename TPoint2D>
     inline
-    Point  operator()(const TPoint2D& aPoint, bool chechInsideDomain=true) const
+    Point  operator()(const TPoint2D& aPoint, bool checkInsideDomain=true) const
     {
       Point pt = myOriginPointEmbeddedIn3D;
       for( Dimension i=0; i<pt.size(); i++){
@@ -484,7 +485,7 @@ namespace functors
                                                  *mySecondAxisEmbeddedDirection[i]));
       }
 
-      if(myDomain.isInside(pt)|| !chechInsideDomain)
+      if(myDomain.isInside(pt)|| !checkInsideDomain)
         {
           return pt;
         }

@@ -30,7 +30,7 @@ namespace DGtal {
    contours (in 2D or 3D). If you require more advanced operations on
    surfaces (for instance using afterwards the topology defined on the
    surface), it is better to wrap a DigitalSurface object around your
-   surface of interest, see \ref dgtal_digital_surface.
+   surface of interest, see \ref moduleDigitalSurfaces.
 
    @section dgtal_helpsurf_sec1  The 2D case: the boundary is a sequence of cells
 

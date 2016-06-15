@@ -239,15 +239,17 @@ namespace DGtal
     template < typename Surfel >
     bool operator()(const Surfel &aSurfel) const
     {
+      auto const & aPreSurfel = aSurfel.preCell();
+
       Component x1,x2,x3,x4;
       Component y1,y2,y3,y4;
       Component z1,z2,z3,z4;
       Component ONE = NumberTraits<Component>::ONE;
       
-      Point baseQuadCenter =  aSurfel.myCoordinates;
+      Point baseQuadCenter =  aPreSurfel.coordinates;
       
-      bool yodd = ( NumberTraits<Component>::castToInt64_t(aSurfel.myCoordinates[ 1 ]) & 1 );
-      bool zodd = ( NumberTraits<Component>::castToInt64_t(aSurfel.myCoordinates[ 2 ]) & 1 ); 
+      bool yodd = ( NumberTraits<Component>::castToInt64_t(aPreSurfel.coordinates[ 1 ]) & 1 );
+      bool zodd = ( NumberTraits<Component>::castToInt64_t(aPreSurfel.coordinates[ 2 ]) & 1 ); 
       
       if(!zodd)
         {
