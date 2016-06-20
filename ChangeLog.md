@@ -50,6 +50,9 @@
    (https://github.com/DGtal-team/DGtal/pull/1164))
 
 - *IO Package*
+ - Viewer3D: improvement of the viewer state record by saving the rendering 
+   mode. A new setter was also added to desable/enable double face rendering.
+   (Bertrand Kerautret [#1166](https://github.com/DGtal-team/DGtal/pull/1162))
  - Viewer3D: add a mode to display ball primitive with OpenGL point instead of
    quadrangulated mesh.
    (Bertrand Kerautret [#1162](https://github.com/DGtal-team/DGtal/pull/1162))
