@@ -688,6 +688,24 @@ $ ./examples/topology/volToOff ../examples/samples/lobster.vol 50 255 0
 \example topology/volToOFF.cpp
 */
 
+/**
+Marching-cube like surface extracted using the combinatorial
+manifold structure of digital surfaces.
+
+@see \ref dgtal_digsurf_sec4_3
+
+@verbatim
+# Commands
+$ ./examples/topology/volMarchingCubes  ../examples/samples/Al.100.vol 0 1 0 
+@endverbatim
+
+@image html digital-surface-mc-Al100.png "Marching-cube surface of Al.100.vol file."
+
+\example topology/volMarchingCubes.cpp
+*/
+
+
+
 /** 
 Implicit polynomial surface defined on the command-line by the
 user (as "(x^2+y^2+2z^2-1)*(z^2x-0.1)"), then extracted using digital
@@ -710,6 +728,20 @@ $ ctmviewer marching-cube.off
 
 \example topology/trackImplicitPolynomialSurfaceToOFF.cpp
 
+*/
+
+/**
+    Examples of breadth-first traversal on a digital surface
+You can use these commands:
+@verbatim
+# Commands
+$ ./examples/topology/volBreadthFirstTraversal ../examples/samples/lobster.vol 50 255
+$ ./examples/topology/volBreadthFirstTraversal ../examples/samples/cat10.vol 1 255
+@endverbatim
+
+to get these pictures:
+  @image html digital-surface-bfv-all.png "Examples of breadth-first traversal on a digital surface."
+  @example topology/volBreadthFirstTraversal.cpp
 */
 
 }
