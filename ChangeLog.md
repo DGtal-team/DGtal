@@ -37,6 +37,8 @@
  - Add cmake configuration file NeighborhoodTablesConfig to
    decompress and install look up tables. (Pablo Hernandez-Cerdan,
    [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
+ - Check and add all DGtal examples in the Examples listing section.
+   (Bertrand Kerautret,[#1166](https://github.com/DGtal-team/DGtal/pull/1166))))
 
 - *Base Package*
  - Alias and ConstAlias now raise compilation error when using invalid

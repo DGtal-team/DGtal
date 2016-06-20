@@ -198,4 +198,13 @@ propagation based granulometric/thickness function from the PowerMap
 
 */
 
+/**
+Example of tutorial 3: Volumetric analysis and Granulometry
+@see @ref  tutoVolDTGranulometry
+\image html tutoVolDTGranulometry.png  "result on obtained examples/samples/Al.100.vol."
+@example tutorial-examples/volDTGranulo.cpp
+ 
+*/
+
+
 }
