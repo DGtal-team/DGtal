@@ -346,7 +346,10 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   // Checking if conjugate is needed.
   if ( nativeCoords[ 0 ] > mySpatialExtent[ 0 ] / 2 )
     {
-      nativeCoords = mySpatialExtent - nativeCoords;
+      for ( Dimension i = 0; i < dimension; ++i )
+        if ( nativeCoords[ i ] > 0 )
+            nativeCoords[ i ] = mySpatialExtent[ i ] - nativeCoords[ i ];
+
       applyConj = true;
     }
   else
