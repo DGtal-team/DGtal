@@ -851,7 +851,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myViewWire=false;
   setBackgroundColor ( QColor ( 217, 228, 255 ) );
   setForegroundColor ( QColor ( 217, 22, 25 ) );
-  myIsDoubleFaceRendering=true;
+  
   Viewer3D<Space, KSpace>::createNewCubeList ( );
   vector<typename Viewer3D<Space, KSpace>::LineD3D> listeLine;
   Viewer3D<Space, KSpace>::myLineSetList.push_back ( listeLine );
@@ -1837,6 +1837,8 @@ QDomElement
 DGtal::Viewer3D<Space, KSpace>::domElement(const QString& name, QDomDocument& document) const
 {
   // Creates a custom node for a light  position
+  QDomElement deRendering = document.createElement("Rendering");
+  deRendering.setAttribute("mode", myRenderingMode);
   QDomElement de = document.createElement("Light");
   de.setAttribute("pos_light_x", myLightPosition[0]);
   de.setAttribute("pos_light_y", myLightPosition[1]);
@@ -1844,6 +1846,7 @@ DGtal::Viewer3D<Space, KSpace>::domElement(const QString& name, QDomDocument& do
   // Get default state domElement and append custom node
   QDomElement res = QGLViewer::domElement(name, document);
   res.appendChild(de);
+  res.appendChild(deRendering);
   return res;
 }
 
@@ -1858,25 +1861,32 @@ DGtal::Viewer3D<Space, KSpace>::initFromDOMElement(const QDomElement& element)
   QDomElement child=element.firstChild().toElement();
   while (!child.isNull())
   {
+    if (child.tagName() == "Rendering")
+      {
+        myRenderingMode = (RenderingMode)(child.attribute("mode").toInt());
+      }
     if (child.tagName() == "Light")
     {
-      if (child.hasAttribute("pos_light_x")){
-        myLightPosition[0] = child.attribute("pos_light_x").toDouble();
-      }
+      if (child.hasAttribute("pos_light_x"))
+        {
+          myLightPosition[0] = child.attribute("pos_light_x").toDouble();
+        }
       
-      if (child.hasAttribute("pos_light_y")){
-        myLightPosition[1] = child.attribute("pos_light_y").toDouble();
-      }
-      if (child.hasAttribute("pos_light_z")){
-        myLightPosition[2] = child.attribute("pos_light_z").toDouble();
-      }
+      if (child.hasAttribute("pos_light_y"))
+        {
+          myLightPosition[1] = child.attribute("pos_light_y").toDouble();
+        }
+      if (child.hasAttribute("pos_light_z"))
+        {
+          myLightPosition[2] = child.attribute("pos_light_z").toDouble();
+        }
     }
     child = child.nextSibling().toElement();
   }
   if(myLightPositionFixToCamera){
     updateRelativeCameraFromLightPosition();
   }
-
+  updateRenderingCoefficients(myRenderingMode, false);
   updateGL();
 }
 
@@ -1889,6 +1899,14 @@ DGtal::Viewer3D<Space, KSpace>::closeEvent	(	QCloseEvent * 	e	){
     saveStateToFile();
   }
   QGLWidget::closeEvent(e);
+}
+
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::setGLDoubleRenderingMode(bool doubleSidedRendering)
+{
+  myIsDoubleFaceRendering = doubleSidedRendering;
+  glUpdateLightRenderingMode();
 }
 
 
@@ -1936,7 +1954,7 @@ DGtal::Viewer3D<Space, KSpace>::setUseGLPointForBalls(const bool useOpenGLPt)
 
 template< typename Space, typename KSpace>
 void 
-DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode aRenderMode)
+DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode aRenderMode, bool displayState)
 {
   stringstream ss; 
   ss << "Rendering mode ";
@@ -1971,8 +1989,11 @@ DGtal::Viewer3D<Space, KSpace>::updateRenderingCoefficients(const RenderingMode 
   for (unsigned int i = 0; i<3; i++) 
     myLightSpecularCoeffs[i] = newCoefSpec;
   myLightSpecularCoeffs[3] = 1.0;
-  displayMessage(QString(ss.str().c_str()), 3000);
- updateGL();
+  if (displayState)
+    {
+      displayMessage(QString(ss.str().c_str()), 3000);
+    }
+  updateGL();
 }
 
 
