@@ -49,7 +49,8 @@
 
 namespace DGtal
 {
-
+ namespace concepts
+ {
   /////////////////////////////////////////////////////////////////////////////
   // class COrientationFunctor
   /**
@@ -131,7 +132,7 @@ namespace DGtal
     SizeArray myS;
 
   }; // end of concept COrientationFunctor
-
+ }
 } // namespace DGtal
 
 //                                                                           //

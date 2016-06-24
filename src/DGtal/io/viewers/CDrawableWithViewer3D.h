@@ -47,77 +47,78 @@
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithViewer3D
-  /**
-Description of \b concept '\b CDrawableWithViewer3D' <p>
-@ingroup Concepts
-
-@brief Aim:  The concept CDrawableWithViewer3D specifies what are the classes
-that admit an export with Viewer3D.
-    
-An object x satisfying this concept may then be used as:
-    
-   \code
-   Viewer3D display;
-   display << CustomStyle( x.className(), x.defaultStyle() )
-         << x;
-   \endcode 
-   
-### Refinement of
-   
-### Associated types :
-   
-### Notation
-    - \a X : A type that is a model of CDrawableWithViewer3DD
-    - \a x, \a y  : Object of type X
-    - \a m  : a string of characters
-   
-### Definitions
-   
-### Valid expressions and semantics
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|the default draw style | x.defaultStyle( m = "") | mode \a m: \c std::string | CDrawableWithViewer3D | | returns a dynamic allocation of the default style for the model \a X in mode \a m | | |
-|the name of the model X | x.className() | | std::string | | returns a string telling the name of the model X | | |
-|the way the object \a x is drawn | x.setStyle(CDrawableWithViewer3D &display) | | | |draws the object \c x on the \c display stream | | |
-
-### Invariants
-   
-### Models
-    ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
-   
-### Notes
-    @todo ImageContainerByHashTree does not implement setStyle(display &).
-    @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
-   */  
-  
-  
-  template <typename T, typename S, typename KS>
-  struct CDrawableWithViewer3D  : public CDrawableWithDisplay3D<T, S, KS>
+  namespace concepts
   {
+    /////////////////////////////////////////////////////////////////////////////
+    // class CDrawableWithViewer3D
+    /**
+       Description of \b concept '\b CDrawableWithViewer3D' <p>
+       @ingroup Concepts
 
-  BOOST_CONCEPT_USAGE( CDrawableWithViewer3D )
-    {
-      //Drawable model should have a className() returning a string
-      concepts::ConceptUtils::sameType( myS, myT.className() );
+       @brief Aim:  The concept CDrawableWithViewer3D specifies what are the classes
+       that admit an export with Viewer3D.
+    
+       An object x satisfying this concept may then be used as:
+    
+       \code
+       Viewer3D display;
+       display << CustomStyle( x.className(), x.defaultStyle() )
+       << x;
+       \endcode 
+   
+       ### Refinement of
+   
+       ### Associated types :
+   
+       ### Notation
+       - \a X : A type that is a model of CDrawableWithViewer3DD
+       - \a x, \a y  : Object of type X
+       - \a m  : a string of characters
+   
+       ### Definitions
+   
+       ### Valid expressions and semantics
 
-    }
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       |the default draw style | x.defaultStyle( m = "") | mode \a m: \c std::string | CDrawableWithViewer3D | | returns a dynamic allocation of the default style for the model \a X in mode \a m | | |
+       |the name of the model X | x.className() | | std::string | | returns a string telling the name of the model X | | |
+       |the way the object \a x is drawn | x.setStyle(CDrawableWithViewer3D &display) | | | |draws the object \c x on the \c display stream | | |
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    T myT; //! the drawable class
-    DrawableWithViewer3D *myD;
-
-    std::string myS;
-
-    // ------------------------- Internals ------------------------------------
-
-  }; // end of concept CDrawableWithViewer3D
+       ### Invariants
+   
+       ### Models
+       ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
+   
+       ### Notes
+       @todo ImageContainerByHashTree does not implement setStyle(display &).
+       @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
+    */  
   
+  
+    template <typename T, typename S, typename KS>
+    struct CDrawableWithViewer3D  : public concepts::CDrawableWithDisplay3D<T, S, KS>
+    {
+
+      BOOST_CONCEPT_USAGE( CDrawableWithViewer3D )
+      {
+        //Drawable model should have a className() returning a string
+        concepts::ConceptUtils::sameType( myS, myT.className() );
+
+      }
+
+      // ------------------------- Private Datas --------------------------------
+    private:
+
+      T myT; //! the drawable class
+      DrawableWithViewer3D *myD;
+
+      std::string myS;
+
+      // ------------------------- Internals ------------------------------------
+
+    }; // end of concept CDrawableWithViewer3D
+  }  
 } // namespace DGtal
 
 

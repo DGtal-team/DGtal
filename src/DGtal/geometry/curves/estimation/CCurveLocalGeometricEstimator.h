@@ -48,55 +48,56 @@
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CCurveLocalGeometricEstimator
-  /**
-     Description of \b concept '\b CCurveLocalGeometricEstimator' <p>
-     @ingroup Concepts
-     @brief Aim: This concept describes an object that can process 
-     a range so as to return one estimated quantity for each element 
-     of the range (or a given subrange). 
-
-     ### Refinement of 
-     - boost::DefaultConstructible
-
-     ### Associated types :
-     - ConstIterator 
-     - Quantity
-
-     ### Notation
-     - \e X : A type that is a model of CCurveLocalGeometricEstimator
-     - \e x : object of type X
-     - \e h : double
-     - \e itb, ite, it : objects of type ConstIterator
-     - \e ito : an instance of a model of output iterator having Quantity as value type
- 
-     ### Definitions
-
-     ### Valid expressions and semantics
-
-     | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
-     |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
-     | Initialization | x.init( h, itb, ite )         |   | void                         | h > 0        | Grid step and range initialization        |   | constant        |
-     | Evaluation     | x.eval( it )                  |   | Quantity                     |              | Estimation of the quantity at \e it       |   | model dependant |
-     | Evaluation     | ito = x.eval( itb, ite, ito ) |   | a model of output iterator   |              | Estimation for each element of [itb, ite) |   | model dependant |
-
-     ### Invariants
-
-     ### Models
-
-     - MostCenteredMaximalSegmentEstimator, TrueLocalEstimatorOnPoints, BinomialConvolverEstimator
-     - concept refined by CSegmentComputerEstimator, LambdaMST2D, LambdaMST3D
-
-     ### Notes
-
-     @tparam T the type that should be a model of CCurveLocalGeometricEstimator.
-  */
-  template <typename T>
-  struct CCurveLocalGeometricEstimator: 
-    boost::DefaultConstructible<T>
+  namespace concepts
   {
+    /////////////////////////////////////////////////////////////////////////////
+    // class CCurveLocalGeometricEstimator
+    /**
+       Description of \b concept '\b CCurveLocalGeometricEstimator' <p>
+       @ingroup Concepts
+       @brief Aim: This concept describes an object that can process 
+       a range so as to return one estimated quantity for each element 
+       of the range (or a given subrange). 
+
+       ### Refinement of 
+       - boost::DefaultConstructible
+
+       ### Associated types :
+       - ConstIterator 
+       - Quantity
+
+       ### Notation
+       - \e X : A type that is a model of CCurveLocalGeometricEstimator
+       - \e x : object of type X
+       - \e h : double
+       - \e itb, ite, it : objects of type ConstIterator
+       - \e ito : an instance of a model of output iterator having Quantity as value type
+ 
+       ### Definitions
+
+       ### Valid expressions and semantics
+
+       | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
+       |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
+       | Initialization | x.init( h, itb, ite )         |   | void                         | h > 0        | Grid step and range initialization        |   | constant        |
+       | Evaluation     | x.eval( it )                  |   | Quantity                     |              | Estimation of the quantity at \e it       |   | model dependant |
+       | Evaluation     | ito = x.eval( itb, ite, ito ) |   | a model of output iterator   |              | Estimation for each element of [itb, ite) |   | model dependant |
+
+       ### Invariants
+
+       ### Models
+
+       - MostCenteredMaximalSegmentEstimator, TrueLocalEstimatorOnPoints, BinomialConvolverEstimator
+       - concept refined by CSegmentComputerEstimator, LambdaMST2D, LambdaMST3D
+
+       ### Notes
+
+       @tparam T the type that should be a model of CCurveLocalGeometricEstimator.
+    */
+    template <typename T>
+    struct CCurveLocalGeometricEstimator: 
+      boost::DefaultConstructible<T>
+    {
 
     // ----------------------- Concept checks ------------------------------
   public:
@@ -111,12 +112,12 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( CCurveLocalGeometricEstimator )
     {
-      //init method
-      myX.init( myH, myItb, myIte ); 
+    //init method
+    myX.init( myH, myItb, myIte ); 
 
-      concepts::ConceptUtils::sameType( myQ, myX.eval( myItb ) );
-      concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
-    }
+    concepts::ConceptUtils::sameType( myQ, myX.eval( myItb ) );
+    concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
+  }
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -133,11 +134,11 @@ namespace DGtal
   private:
 
   }; // end of concept CCurveLocalGeometricEstimator
+  }
+  } // namespace DGtal
 
-} // namespace DGtal
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+    //                                                                           //
+    ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CCurveLocalGeometricEstimator_h
 

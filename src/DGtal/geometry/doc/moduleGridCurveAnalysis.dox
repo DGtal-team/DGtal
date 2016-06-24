@@ -181,7 +181,7 @@ In this section, we focus on parts of one-dimensional structures,
 called <em>segment</em>.
 More precisely, a segment is a valid and not empty range. 
 
-The concept CSegment refines boost::DefaultConstructible, 
+The concept concepts::CSegment refines boost::DefaultConstructible, 
 boost::CopyConstructible, boost::Assignable, boost::EqualityComparable, 
 and the one of constant range. 
 It thus have the following inner types: 
@@ -237,8 +237,8 @@ for instances of its own type.
 A segment computer is not a single concept, 
 but actually several concepts that form a hierarchy. 
 The five concepts that are used in segmentation algorithms are 
-CIncrementalSegmentComputer, CForwardSegmentComputer, CBidirectionalSegmentComputer, 
-CDynamicSegmentComputer and CDynamicBidirectionalSegmentComputer. 
+concepts::CIncrementalSegmentComputer, concepts::CForwardSegmentComputer, concepts::CBidirectionalSegmentComputer, 
+concepts::CDynamicSegmentComputer and concepts::CDynamicBidirectionalSegmentComputer. 
 
 @dot
 digraph SegmentComputerHierarchy   {
@@ -249,13 +249,13 @@ digraph SegmentComputerHierarchy   {
     color=lightgrey;
     node [style=filled,color=white];
                
-    CSegment [ URL="\ref CSegment" ];
-    CBidirectionalSegmentComputer  [ URL="\ref CBidirectionalSegmentComputer" ];
-    CIncrementalSegmentComputer [ URL="\ref CIncrementalSegmentComputer" ];
-    CForwardSegmentComputer [ URL="\ref CForwardSegmentComputer" ];
-    CSegmentFactory [ URL="\ref CSegmentFactory" ];
-    CDynamicBidirectionalSegmentComputer [ URL="\ref CDynamicBidirectionalSegmentComputer" ];
-    CDynamicSegmentComputer [ URL="\ref CDynamicSegmentComputer" ];
+    CSegment [ URL="\ref concepts::CSegment" ];
+    CBidirectionalSegmentComputer  [ URL="\ref concepts::CBidirectionalSegmentComputer" ];
+    CIncrementalSegmentComputer [ URL="\ref concepts::CIncrementalSegmentComputer" ];
+    CForwardSegmentComputer [ URL="\ref concepts::CForwardSegmentComputer" ];
+    CSegmentFactory [ URL="\ref concepts::CSegmentFactory" ];
+    CDynamicBidirectionalSegmentComputer [ URL="\ref concepts::CDynamicBidirectionalSegmentComputer" ];
+    CDynamicSegmentComputer [ URL="\ref concepts::CDynamicSegmentComputer" ];
 
     CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CIncrementalSegmentComputer -> CSegmentFactory -> CSegment; 
     CDynamicSegmentComputer-> CForwardSegmentComputer ;
@@ -279,7 +279,7 @@ the range [begin(), it), so that a incremental segment computer
 can be initialized at a starting element and then can be extended 
 forward to the neighbor elements while P remains true. 
   
-CIncrementalSegmentComputer is a refinement of CSegmentFactory and should provide
+concepts::CIncrementalSegmentComputer is a refinement of concepts::CSegmentFactory and should provide
 in addition the following methods: 
 
  - void init ( const Iterator& it ) : set the segment to the element pointed to by it.
@@ -307,10 +307,10 @@ infinite loops are avoided as follows:
     while ( (s.end() != s.begin()) && (s.extendFront()) ) {} 
  @endcode
  
-Like any model of CIncrementalSegmentComputer, a model of 
-CForwardSegmentComputer can control its own extension 
+Like any model of concepts::CIncrementalSegmentComputer, a model of 
+concepts::CForwardSegmentComputer can control its own extension 
 so that P remains true. However, contrary to models 
-of CIncrementalSegmentComputer, it garantees that 
+of concepts::CIncrementalSegmentComputer, it garantees that 
 for each iterator it from begin() to end(), P must be true for 
 the range [it, end()). This last constraint, together with 
 the previous contraint on the range [begin(), it), implies 
@@ -326,7 +326,7 @@ but the direction given by operator-- for instances of Reverse).
 They cannot extend themselves in two directions at the same time around an element 
 contrary to bidirectional segment computers. 
 
-Any model of CBidirectionalSegmentComputer, which is a refinement of CForwardSegmentComputer, 
+Any model of concepts::CBidirectionalSegmentComputer, which is a refinement of concepts::CForwardSegmentComputer, 
 should define the following methods:
 
  - bool extendBack () : return 'true' and extend the segment to the element pointed to by --begin() if it is possible, return 'false' and does not extend the segment otherwise.
@@ -335,18 +335,18 @@ should define the following methods:
 
 StabbingLineComputer and StabbingCircleComputer are both models of CBidirectionalSegmentComputer. 
 
-The concept CDynamicSegmentComputer is another refinement of CForwardSegmentComputer. 
+The concept concepts::CDynamicSegmentComputer is another refinement of concepts::CForwardSegmentComputer. 
 Any model of this concept should define the following method: 
 
  - bool retractBack () : return 'true' and move the beginning of the segment to ++begin() if ++begin() != end(), return 'false' otherwise. 
 
-Finally, the concept CDynamicBidirectionalSegmentComputer is a refinement of both 
-CBidirectionalSegmentComputer and CDynamicSegmentComputer and should define this extra method:
+Finally, the concept concepts::CDynamicBidirectionalSegmentComputer is a refinement of both 
+concepts::CBidirectionalSegmentComputer and concepts::CDynamicSegmentComputer and should define this extra method:
  
  - bool retractFront () : return 'true' and move the end of the segment to --end() if begin() != --end(), return 'false' otherwise. 
 
 
-A model of CDynamicBidirectionalSegmentComputer is ArithmeticalDSSComputer, 
+A model of concepts::CDynamicBidirectionalSegmentComputer is ArithmeticalDSSComputer, 
 devoted to the dynamic recognition of DSSs, 
  defined as a sequence of connected points @f$ (x,y) @f$
  such that @f$ \mu \leq ax - by < \mu + \omega  @f$ 
@@ -391,22 +391,22 @@ ii.  no segment contains another segment of the subset.
 Due to (ii), the segments of a segmentation can be ordered without ambiguity
 (according to the position of their first element for instance). 
 
-Segmentation algorithms should verify the concept CSegmentation. 
-A CSegmentation model should define the following nested type:
+Segmentation algorithms should verify the concept concepts::CSegmentation. 
+A concepts::CSegmentation model should define the following nested type:
 
- - SegmentComputerIterator: a model of the concept CSegmentComputerIterator
+ - SegmentComputerIterator: a model of the concept concepts::CSegmentComputerIterator
  
 It should also define a constructor taking as input parameters: 
 
  - begin/end iterators of the range to be segmented. 
 
- - an instance of a model of CSegmentComputer.
+ - an instance of a model of concepts::CSegmentComputer.
 
-Note that a model of CSegmentComputerIterator should define the following methods :
+Note that a model of concepts::CSegmentComputerIterator should define the following methods :
 
  - default and copy constructors
 
- - dereference operator: return an instance of a model of CSegmentComputer.
+ - dereference operator: return an instance of a model of concepts::CSegmentComputer.
 
  - intersectPrevious(), intersectNext(): return 'true' if the current segment intersects, respectively, the previous and the next one (when they exist), 'false' otherwise. 
 
