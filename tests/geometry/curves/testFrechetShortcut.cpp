@@ -121,8 +121,8 @@ void testFrechetShortcutConceptChecking()
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::const_iterator ConstIterator;
   typedef FrechetShortcut<ConstIterator,int> Shortcut;
-  BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<Shortcut> ));
-  BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<Shortcut> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDrawableWithBoard2D<Shortcut> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<Shortcut> ));
 }
 
 bool testSegmentation()

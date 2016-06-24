@@ -60,7 +60,7 @@ namespace DGtal {
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS<Functor> ));
-    BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<typename TSegmentation::SegmentComputer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer> ));
     // ----------------------- Types ------------------------------
   public:
     /// Tangential cover algorithm

@@ -49,7 +49,8 @@
 
 namespace DGtal
 {
-
+ namespace concepts
+ {
   /////////////////////////////////////////////////////////////////////////////
   // class CDynamicBidirectionalSegmentComputer
   /**
@@ -79,8 +80,8 @@ Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
    */
   template <typename T>
   struct CDynamicBidirectionalSegmentComputer :
-    CBidirectionalSegmentComputer<T>,
-    CDynamicSegmentComputer<T>
+    concepts::CBidirectionalSegmentComputer<T>,
+    concepts::CDynamicSegmentComputer<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -97,7 +98,7 @@ Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
     // ------------------------- Internals ------------------------------------
   private:
   }; // end of concept CDynamicBidirectionalSegmentComputer
-
+ }
 } // namespace DGtal
 
 //                                                                           //

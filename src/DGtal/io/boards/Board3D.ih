@@ -71,7 +71,7 @@ inline
 DGtal::Board3D<Space, KSpace> &
 DGtal::Board3D<Space, KSpace>::operator<<( const TDrawableWithDisplay3D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D, Space, KSpace>));
+  BOOST_CONCEPT_ASSERT((concepts::CDrawableWithDisplay3D< TDrawableWithDisplay3D, Space, KSpace>));
   
   DGtal::Display3DFactory<Space,KSpace>::draw(*this, object);
   return *this;
