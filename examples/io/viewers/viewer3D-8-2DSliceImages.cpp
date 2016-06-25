@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-8-2DSliceImages.cpp
+ * @file io/viewers/viewer3D-8-2DSliceImages.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France

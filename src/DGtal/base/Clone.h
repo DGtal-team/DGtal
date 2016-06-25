@@ -74,7 +74,7 @@ namespace DGtal
      |------------------|---------------|---------------|----------------|----------------|--------------|
      |To:\c T           | Dupl.  O(N)   |Acq. Dupl. O(N)| Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
      |To:\c T*          | Dupl.  O(N)   |   Acq. O(1)   | Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
-     |To:\ref CowPtr<T>   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
+     |To:\link CowPtr CowPtr<T>\endlink   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
 
      with abbreviations:
      - \b Dupl. Object is duplicated.

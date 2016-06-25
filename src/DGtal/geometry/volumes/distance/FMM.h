@@ -389,11 +389,13 @@ namespace DGtal
      * if @a aFlagIsPositive is 'true' (default) but @a aValue otherwise, 
      * and conversely for the outer points.  
      *
+     * @param aK a Khalimsky space in which the signed cells live.
      * @param itb begin iterator (on signed cells)
      * @param ite end iterator (on signed cells)
      * @param aImg the distance image
      * @param aSet the set of points for which the distance has been assigned
      * @param aValue distance default value
+     * @param aFlagIsPositive The flag controlling the \a aValue sign assigned to inner points.
      */
     template <typename KSpace, typename TIteratorOnBels>
     static void initFromBelsRange(const KSpace& aK, 
@@ -412,11 +414,13 @@ namespace DGtal
      * from the distance values of the neighbors given by the function @a aF. 
      * Swap the signs if @a aFlagIsPositive is 'false'. 
      *
+     * @param aK a Khalimsky space in which the signed cells live.
      * @param itb begin iterator (on signed cells)
      * @param ite end iterator (on signed cells)
      * @param aF any implicit function
      * @param aImg the distance image
      * @param aSet the set of points for which the distance has been assigned
+     * @param aFlagIsPositive The flag controlling the \a aValue sign assigned to inner points.
      */
     template <typename KSpace, typename TIteratorOnBels, typename TImplicitFunction>
     static void initFromBelsRange(const KSpace& aK, 
@@ -438,6 +442,7 @@ namespace DGtal
      * @param aImg the distance image
      * @param aSet the set of points for which the distance has been assigned
      * @param aValue distance default value
+     * @param aFlagIsPositive The flag controlling the \a aValue sign assigned to inner points.
      */
     template <typename TIteratorOnPairs>
     static void initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 

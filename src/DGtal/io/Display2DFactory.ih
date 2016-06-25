@@ -41,41 +41,52 @@ inline
 void
 DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& sk)
 {
+  drawDECSignedKhalimskyCell( board, sk.preCell() );
+}
+
+template <DGtal::Dimension dim, typename TInteger>
+inline
+void
+DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyPreCell<dim, TInteger>& sk)
+{
     FATAL_ERROR( dim == 2 );
+
+    using KPS = DGtal::Z2i::KPreSpace;
+    const KPS K{};
+
     //FIXME: as for Display3D models, embedder should be factorized
     //and not instantiated at each call.
-    typedef DGtal::KhalimskySpaceND<dim, TInteger> KSpace;
-    typedef DGtal::CanonicSCellEmbedder<KSpace> Embedder;
-    const KSpace K{};
+    using Embedder = DGtal::CanonicSCellEmbedder<KPS>;
     const Embedder embedder( K );
-    const typename Embedder::RealPoint coords = embedder(sk);
+    
+    const Embedder::RealPoint coords = embedder( sk );
     const float x = coords[0];
     const float y = coords[1];
     const float retract = 0.1f;
-    const bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
-    const bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
+    const bool xodd = ( KPS::sKCoord(sk, 0) & 1 );
+    const bool yodd = ( KPS::sKCoord(sk, 1) & 1 );
     board.setLineWidth( .5 );
     board.setPenColor( DGtal::Color::Black );
     board.setLineStyle( Board2D::Shape::SolidStyle );
     if (!xodd && !yodd)
     {
-        if (!sk.myPositive) DGtal::trace.warning() << "negative khalimsky 0-cell" << std::endl;
+        if ( KPS::sSign(sk) == KPS::NEG ) DGtal::trace.warning() << "negative khalimsky 0-cell" << std::endl;
         board.drawCircle(x, y, retract);
         return;
     }
     if (xodd && !yodd)
     {
-        if (!sk.myPositive) board.drawTriangle(x-.5f, y-retract, x-.5f, y+retract, x+.5f, y);
+        if ( KPS::sSign(sk) == KPS::NEG ) board.drawTriangle(x-.5f, y-retract, x-.5f, y+retract, x+.5f, y);
         else board.drawTriangle(x+.5f, y+retract, x+.5f, y-retract, x-.5f, y);
         return;
     }
     if (!xodd && yodd)
     {
-        if (!sk.myPositive) board.drawTriangle(x-retract, y-.5f, x+retract, y-.5f, x, y+.5);
+        if ( KPS::sSign(sk) == KPS::NEG ) board.drawTriangle(x-retract, y-.5f, x+retract, y-.5f, x, y+.5);
         else board.drawTriangle(x+retract, y+.5f, x-retract, y+.5f, x, y-.5);
         return;
     }
-    if (!sk.myPositive) DGtal::trace.warning() << "negative khalimsky 2-cell" << std::endl;
+    if ( KPS::sSign(sk) == KPS::NEG ) DGtal::trace.warning() << "negative khalimsky 2-cell" << std::endl;
     board.drawRectangle(x-.5, y+.5, 1, 1);
 }
 
@@ -230,7 +241,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
     for (typename TCalculus::Index index=0; index<vector_field.length(); index++)
     {
         const typename TCalculus::SCell& cell = vector_field.getSCell(index);
-        const DGtal::Z2i::RealPoint origin = DGtal::Z2i::RealPoint(cell.myCoordinates[0]-1, cell.myCoordinates[1]-1)/2.;
+        const DGtal::Z2i::RealPoint origin = DGtal::Z2i::RealPoint(cell.preCell().coordinates[0]-1, cell.preCell().coordinates[1]-1)/2.;
 
         Vector vector = vector_field.getVector(index);
 
@@ -1382,27 +1393,37 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
   }
 }
 
-// KhalimskyCell
+// KhalimskyPreCell
 template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::KhalimskyCell<dim, TInteger> & k )
 {
+  draw( board, k.preCell() );
+}
+
+// KhalimskyPreCell
+template < DGtal::Dimension dim, typename TInteger >
+inline
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
+           const DGtal::KhalimskyPreCell<dim, TInteger> & k )
+{
   FATAL_ERROR( dim == 2 );
+
   float x = (float)
-    ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( k.coordinates[0] ) >> 1 );
   float y = (float)
-    ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[1] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( k.coordinates[1] ) >> 1 );
   float retract = 0.05f;
-  bool xodd = ( k.myCoordinates[ 0 ] & 1 );
-  bool yodd = ( k.myCoordinates[ 1 ] & 1 );
+  bool xodd = ( k.coordinates[ 0 ] & 1 );
+  bool yodd = ( k.coordinates[ 1 ] & 1 );
   float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
   float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
   board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
            !yodd ? y + retract - 0.5 : y - retract + 0.5,
            dx, dy );
 }
-// KhalimskyCell
+// KhalimskyPreCell
 
 
 // Object
@@ -1589,28 +1610,36 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 }
 // Preimage2D
 
-
 // SignedKhalimskyCell
 template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
      const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
 {
+  draw( board, static_cast< DGtal::SignedKhalimskyPreCell<dim, TInteger> const& >(sk) );
+}
+
+// SignedKhalimskyPreCell
+template < DGtal::Dimension dim, typename TInteger >
+inline
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
+     const DGtal::SignedKhalimskyPreCell<dim, TInteger> & sk )
+{
   FATAL_ERROR( dim == 2 );
   float x = (float)
-    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[0] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( sk.coordinates[0] ) >> 1 );
   float y = (float)
-    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[1] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t( sk.coordinates[1] ) >> 1 );
   float retract = 0.05f;
-  bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
-  bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
+  bool xodd = ( sk.coordinates[ 0 ] & 1 );
+  bool yodd = ( sk.coordinates[ 1 ] & 1 );
   float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
   float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
   board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
            !yodd ? y + retract - 0.5 : y - retract + 0.5,
            dx, dy );
 }
-// SignedKhalimskyCell
+// SignedKhalimskyPreCell
 
 
 // StraightLineFrom2Points

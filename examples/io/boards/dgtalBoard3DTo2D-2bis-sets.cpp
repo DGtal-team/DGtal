@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalBoard3DTo2D-2bis-sets.cpp
+ * @file io/boards/dgtalBoard3DTo2D-2bis-sets.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 

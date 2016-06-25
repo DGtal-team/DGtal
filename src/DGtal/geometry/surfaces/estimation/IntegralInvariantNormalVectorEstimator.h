@@ -278,7 +278,7 @@ public:
   *
   * @param[in] itb iterator defining the start of the range of surfels where the normal vector is computed.
   * @param[in] ite iterator defining the end of the range of surfels where the normal vector is computed.
-  * @param[in] output iterator of results of the computation.
+  * @param[in] result output iterator of results of the computation.
   * @return the updated output iterator after all outputs.
   */
   template <typename OutputIterator, typename SurfelConstIterator>

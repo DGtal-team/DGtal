@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testr_measure.cpp
+ * @file
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *

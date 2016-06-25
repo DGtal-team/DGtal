@@ -1,6 +1,7 @@
+/// @file dec/exampleDiscreteExteriorCalculusUsage.cpp
 #include <string>
 
-#include "common.h"
+#include "DECExamplesCommon.h"
 
 //! [usage_calculus_headers]
 // always include EigenSupport.h before any other Eigen headers

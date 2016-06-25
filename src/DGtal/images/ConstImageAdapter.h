@@ -90,7 +90,7 @@ namespace DGtal
  * Here is the construction of a simple ConstImageAdapter that
  * is a thresholded view of the initial scalar image:
  *
- * @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
+ * @snippet images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
  *
  * NB: the underlying image as well as the 2 functors
  * are stored in the adapter as aliasing pointer

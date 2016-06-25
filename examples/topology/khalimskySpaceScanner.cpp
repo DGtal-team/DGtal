@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file KhalimskySpaceScanner.cpp
+ * @file topology/khalimskySpaceScanner.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -98,24 +98,27 @@ int main( int argc, char** argv )
 
  // Other way to scan Khalimsky space by controlling axis order
  Z2i::Vector shiftq;
- Z2i::KSpace::Cell precq=q;
- bool firstq=true;
- for (q = K.uGetMax(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
-   for ( q = K.uGetMin(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1))
-        { 
-    boardScan2 << q;
-    if(firstq){
-      firstq=false;
-      precq=q;
-   continue;
-    }
-    // Drawing the scan arrows
-    shiftq =   K.uCoords(q)-K.uCoords(precq);  
-    boardScan2.setPenColor( Color( 30, 30, 200 ));
-    Display2DFactory::draw(boardScan2, shiftq, K.uCoords(precq));
-    precq=q;       
-  }
-  
+ Z2i::KSpace::Cell precq = q;
+ bool firstq = true;
+ using KPS = Z2i::KPreSpace;
+ for ( KPS::Cell qq = K.uGetMax(q, 0); K.uIsInside(qq, 0); qq = KPS::uGetDecr(qq, 0) )
+   {
+     for ( KPS::uSetKCoord( qq, K.uFirst( qq, 1 ), 1 ); K.uIsInside(qq, 1); qq = KPS::uGetIncr(qq, 1) )
+       {
+         q = K.uCell( qq );
+         boardScan2 << q;
+         if(firstq){
+             firstq = false;
+             precq = q;
+             continue;
+         }
+         // Drawing the scan arrows
+         shiftq = K.uCoords(q) - K.uCoords(precq);
+         boardScan2.setPenColor( Color( 30, 30, 200 ));
+         Display2DFactory::draw(boardScan2, shiftq, K.uCoords(precq));
+         precq = q;
+       }
+   }
  
  boardScan1.saveSVG("khalimskySpaceScanner1.svg");
  boardScan1.saveFIG("khalimskySpaceScanner1.fig");

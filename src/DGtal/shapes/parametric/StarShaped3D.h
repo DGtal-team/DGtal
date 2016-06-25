@@ -206,7 +206,7 @@ namespace DGtal
     virtual Orientation orientation( const RealPoint &p) const;
     
     
-    /**
+    /*
      * @param t is a couple of Teta && Phi wich are 2 angles
      respectivly between [0,2PI] and [0,Pi].
      *

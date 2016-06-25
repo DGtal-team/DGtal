@@ -3,6 +3,8 @@
 ## New Features / Critical Changes
 
 - *Documentation*
+ - Fixing all doxygen warnings.
+   (Roland Denis, [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
  - New "@seeDGtalTools" doxygen command to cite a DGtalTools tool in
    DGtal documentation (David Coeurjolly,
    [#1179](https://github.com/DGtal-team/DGtal/pull/1179))
@@ -12,8 +14,21 @@
    voting (Boulc'h & Marlet, SGP 2012).
    (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
 
+- *Topology Package*
+ - Adding periodic closure for KhalimskySpaceND and per-dimension closure
+   specification.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+ - Adding CPreCellularGridSpaceND concept and KhalimskyPreSpaceND model
+   to manipulate unbounded Khalimsky space and cells.
+   KhalimskySpaceND now checks that all given cells are within the bounds.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+
 ## Changes
 - *Configuration/General*
+ - Travis Continuous integration will check that doxygen raises no warnings
+   and that the documented file names are valid.
+   (David Coeurjolly, Roland Denis,
+        [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
  - Cleaning remaining preprocessor directives related to C++11 features.
    (Roland Denis, [#1141](https://github.com/DGtal-team/DGtal/pull/1141))
  - Travis Continuous integration will check that DGtalTools still compiles with
@@ -24,7 +39,9 @@
    [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
  - Documentation graphs are now in SVG instead of PNG. (David Coeurjolly,
    [#1192](https://github.com/DGtal-team/DGtal/pull/1192))
-   
+ - Check and add all DGtal examples in the Examples listing section.
+   (Bertrand Kerautret,[#1166](https://github.com/DGtal-team/DGtal/pull/1166))))
+
 - *Base Package*
  - Alias and ConstAlias now raise compilation error when using invalid
    constructor, like from a rvalue reference. Adding ConstAlias in many classes
@@ -37,6 +54,9 @@
    (https://github.com/DGtal-team/DGtal/pull/1164))
 
 - *IO Package*
+ - Viewer3D: improvement of the viewer state record by saving the rendering 
+   mode. A new setter was also added to desable/enable double face rendering.
+   (Bertrand Kerautret [#1166](https://github.com/DGtal-team/DGtal/pull/1162))
  - Viewer3D: add a mode to display ball primitive with OpenGL point instead of
    quadrangulated mesh.
    (Bertrand Kerautret [#1162](https://github.com/DGtal-team/DGtal/pull/1162))
@@ -71,6 +91,8 @@
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
+ - Frechet Shortcut: fix implicit rounding.
+   (I. Sivignon, [#1180](https://github.com/DGtal-team/DGtal/pull/1180))
 
 - *Image Package*
  - Fixing issue [#779](https://github.com/DGtal-team/DGtal/issues/779) by

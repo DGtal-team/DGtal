@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file fileGridCurveRanges.cpp
+ * @file tutorial-examples/fileGridCurveRanges.cpp
  * @ingroup tutorial-examples
  * @author Tristan Roussillon (tristan.roussillon@liris.cnrs.fr)
  *
