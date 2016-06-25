@@ -18,8 +18,8 @@ This part of the manual describes how to represent and process
 arbitrary cubical complexes. 
 
 @note Collapse operation is a backport from <a
-href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. \cite
-ImaGene 
+href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+@cite ImaGene 
 
 [TOC]
 
@@ -346,3 +346,26 @@ $
 */
 
 }
+
+
+
+/**
+Source of examples used to generate illustrations of Cubical Complex module documention.   
+@see @ref  moduleCubicalComplex
+@image html cubical-complex-illustrations-X.png "One of the generated illustration: displaying a 2D cubical complex on a Board."
+@example topology/cubical-complex-illustrations.cpp
+
+*/
+
+
+
+/**
+Converting a digital set to cubical complex.
+@see @ref  moduleCubicalComplex
+@image html cubicalComplexes.png "Resulting cubical complex obtained on a flower shape."
+@example topology/digitalSetToCubicalComplexes2D.cpp
+
+*/
+
+
+

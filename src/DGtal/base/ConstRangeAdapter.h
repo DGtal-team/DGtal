@@ -64,11 +64,11 @@ namespace DGtal
    * (circularly)iterate over it (in a read-only manner). 
    *
    * @tparam TIterator the type of the iterator to adapt
-   * (at least bidirectional) 
+   * (at least bidirectional). 
    *
    * Moreover, the provided (circular)iterator is adapted 
    * with a functor f given at construction so that 
-   * operator* calls f(*it), instead of calling directly 
+   * operator* calls f(\*it), instead of calling directly 
    * operator* of the underlying iterator it.
    *
    * @tparam TFunctor the type of functor that transforms

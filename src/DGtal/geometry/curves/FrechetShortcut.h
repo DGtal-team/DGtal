@@ -356,7 +356,6 @@ namespace DGtal
       */
       static  bool isBetween(double i, double a, double b, double n)
       {
-	// if a<=b, a simple comparison enables to conclude
 	if(a<=b)
 	  if(i>=a && i<=b)
 	    return true;
@@ -364,12 +363,11 @@ namespace DGtal
 	    return false;
 	else
 	  {
-	    //otherwise, translate the points such that a->0
-	    int tmp = a;
-	    a = fmod(a+n-tmp,n);
-	    b = fmod(b+n-tmp,n);
-	    i = fmod(i+n-tmp,n);
-	    return isBetween(i,a,b,n); 
+	    if((i>=a && i<=n) || (i>=0 && i<=b))
+	      return true;
+	    else
+	      return false;
+	    
 	  }
       }
       
@@ -466,15 +464,23 @@ namespace DGtal
 
 
       /**
-	 Given a point X and a circle of center X1, compute the two
-	 points Xi and Xi' of the circle the tangent of which go through
-	 X. Since the triangle XXiX1 is a right triangle on Xi, the
-	 middle point M between X and X1 is equidistant to X, X1 and
-	 Xi. Thus, Xi belongs to the intersection of the circle (X1,r1)
-	 and the circle of center M and radius ||XX1||/2.   
-	 @param x point (x,y), a circle of center (x1,y1) and a radius
-	 r1, pointers to the intersection points
-	 @return result of the call to circle_circle_intersection
+        Given a point X and a circle of center X1, compute the two
+        points Xi and Xi' of the circle the tangent of which go through
+        X. Since the triangle XXiX1 is a right triangle on Xi, the
+        middle point M between X and X1 is equidistant to X, X1 and
+        Xi. Thus, Xi belongs to the intersection of the circle (X1,r1)
+        and the circle of center M and radius ||XX1||/2.   
+        
+        @param[in] x  the first coordinate of X.
+        @param[in] y  the second coordinate of X.
+        @param[in] x1 the first coordinate of the circle center X1.
+        @param[in] y1 the second coordinate of the circle center X1.
+        @param[in] r1 the circle radius.
+        @param[out] xi  pointer to the first coordinate of the first intersection point.
+        @param[out] yi  pointer to the second coordinate of the first intersection point.
+        @param[out] xi_prime  pointer to the first coordinate of the second intersection point.
+        @param[out] yi_prime  pointer to the second coordinate of the second intersection point.
+        @return result of the call to circle_circle_intersection
       */ 
       static int circleTangentPoints(double x, double y, double x1, double y1, double r1, double *xi, double *yi, 
 			      double *xi_prime, double *yi_prime)

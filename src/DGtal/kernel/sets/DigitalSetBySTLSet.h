@@ -108,6 +108,7 @@ namespace DGtal
      * Constructor.
      * Creates the empty set in the domain [d].
      *
+     * @param c comparison function object.
      * @param d any domain.
      */
     DigitalSetBySTLSet( Clone<Domain> d, const Compare & c = Compare() );

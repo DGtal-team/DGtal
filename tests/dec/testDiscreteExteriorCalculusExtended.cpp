@@ -25,7 +25,7 @@
  */
 
 
-#include "common.h"
+#include "DECCommon.h"
 
 int
 main(int , char**)

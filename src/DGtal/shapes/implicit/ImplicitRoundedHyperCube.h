@@ -74,6 +74,7 @@ namespace DGtal
      * 
      * @param aCenter the cube center. 
      * @param aHalfWidth the cube half-width.
+     * @param aPower  the cube power.
      */
     ImplicitRoundedHyperCube(const RealPoint &aCenter,
                              const double &aHalfWidth,

@@ -74,7 +74,7 @@ namespace DGtal
      |------------------|---------------|---------------|----------------|------------|---|
      |To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |   |
      |To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
-     |To: \ref CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure |Shared. O(1), \b secure| Shared. O(1), \b secure |
+     |To: \link CountedConstPtrOrConstPtr CountedConstPtrOrConstPtr<T>\endlink|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure |Shared. O(1), \b secure| Shared. O(1), \b secure |
 
      Argument conversion to member is \b automatic except when
      converting to a pointer \c const \c T*: the \b address operator

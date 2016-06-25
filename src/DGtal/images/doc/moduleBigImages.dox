@@ -179,19 +179,19 @@ that point.
 In order to illustrate the next TiledImage usage sample,
  we are going a) to use these includes:
 
-@snippet ../examples/images/exampleTiledImage.cpp include
+@snippet images/exampleTiledImage.cpp include
 
 b) then define these type and variable:
 
-@snippet ../examples/images/exampleTiledImage.cpp def
+@snippet images/exampleTiledImage.cpp def
 
 c) then define a simple 16x16 (1,1) to (16,16) image (of 'int' type):
 
-@snippet ../examples/images/exampleTiledImage.cpp image_creation
+@snippet images/exampleTiledImage.cpp image_creation
 
 filled with 1 to 256 values like that:
 
-@snippet ../examples/images/exampleTiledImage.cpp image_filling
+@snippet images/exampleTiledImage.cpp image_filling
 
 which looks like that with a simple HueShadeColorMap varying from 1 to 256 and with (1,1) the first bottom-left point:
 
@@ -205,7 +205,7 @@ The second parameter is an alias on a read policy.
 The third parameter is an alias on a write policy.
 The fourth parameter is to set how many tiles we want for each dimension:
 
-@snippet ../examples/images/exampleTiledImage.cpp TiledImage_creation
+@snippet images/exampleTiledImage.cpp TiledImage_creation
 
 In this sample, we are going to work only with the 8 bottom subdomains of the original image.
 
@@ -213,7 +213,7 @@ At the beginning the cache is empty.
 
 First we want to read the point 4,2 (which is in domain 1),
 
-@snippet ../examples/images/exampleTiledImage.cpp TiledImage_read42
+@snippet images/exampleTiledImage.cpp TiledImage_read42
 
 so after that the cache is (domain1,empty). Here is the domain1:
 
@@ -222,7 +222,7 @@ so after that the cache is (domain1,empty). Here is the domain1:
 
 Then we want to read the point 10,6 (which is in domain 7),
 
-@snippet ../examples/images/exampleTiledImage.cpp TiledImage_read106
+@snippet images/exampleTiledImage.cpp TiledImage_read106
 
 so after that the cache is (domain1,domain7). Here is the domain7:
 
@@ -231,7 +231,7 @@ so after that the cache is (domain1,domain7). Here is the domain7:
 
 Then we want to set the value of the point 11,7 to 1 (which is in domain 7),
 
-@snippet ../examples/images/exampleTiledImage.cpp TiledImage_write117
+@snippet images/exampleTiledImage.cpp TiledImage_write117
 
 so after that the cache is always (domain1,domain7). Here is the new domain7 after writing:
 
@@ -240,7 +240,7 @@ so after that the cache is always (domain1,domain7). Here is the new domain7 aft
 
 Then we want to read the point 2,3 (which is in domain 1),
 
-@snippet ../examples/images/exampleTiledImage.cpp TiledImage_read23
+@snippet images/exampleTiledImage.cpp TiledImage_read23
 
 so after that the cache is always (domain1,domain7). Here is the domain1:
 
@@ -249,7 +249,7 @@ so after that the cache is always (domain1,domain7). Here is the domain1:
 
 Then we want to read the point 16,1 (which is in domain 4),
 
-@snippet ../examples/images/exampleTiledImage.cpp TiledImage_read161
+@snippet images/exampleTiledImage.cpp TiledImage_read161
 
 so after that the cache is (domain7,domain4). Here is the domain4:
 
@@ -258,7 +258,7 @@ so after that the cache is (domain7,domain4). Here is the domain4:
 
 Then we want to set the value of the point 16,1 to 128 (which is in domain 4),
 
-@snippet ../examples/images/exampleTiledImage.cpp TiledImage_write161
+@snippet images/exampleTiledImage.cpp TiledImage_write161
 
 so after that the cache is always (domain7,domain4). Here is the new domain4 after writing:
 
@@ -273,3 +273,13 @@ And finally, here is the modified original image after the two writings.
 */
 
 }
+
+
+/**
+*  Example of HDF5 ImageFactory.
+   @see @ref dgtalBigImagesAbstract   
+
+   \image html TiledImageFromImage-11-write.png "Example of writing in cache. "
+*  \example images/exampleImageFactoryFromHDF5.cpp
+**/
+
