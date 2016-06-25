@@ -81,12 +81,13 @@ namespace DGtal
 
        @code
        for ( ConstIterator it = s.begin(),
-       ConstIterator itEnd = s.end();
-       it != itEnd; ++it)
-       { // [it, itEnd) is a segment:
-       bool flag = true;
-       while ( (s.end() != itEnd)&&(flag) ) { flag = s.extend(); }
-       ASSERT( flag );
+             ConstIterator itEnd = s.end();
+             it != itEnd; ++it)
+       { 
+         // [it, itEnd) is a segment:
+         bool flag = true;
+         while ( (s.end() != itEnd)&&(flag) ) { flag = s.extend(); }
+         ASSERT( flag );
        }
        @endcode
 
@@ -110,7 +111,7 @@ namespace DGtal
     private:
 
     }; // end of concept CForwardSegmentComputer
-  }
+  } //namespace concepts
 } // namespace DGtal
 
 //                                                                           //

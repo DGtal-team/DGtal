@@ -63,7 +63,7 @@ namespace DGtal
        \code
        Board3DTo2D display;
        display << CustomStyle( x.className(), x.defaultStyle() )
-       << x;
+               << x;
        \endcode 
    
        ### Refinement of
@@ -101,36 +101,36 @@ namespace DGtal
     struct CDrawableWithBoard3DTo2D : public concepts::CDrawableWithDisplay3D<T, S , KS>
     {
 
-    BOOST_CONCEPT_USAGE( CDrawableWithBoard3DTo2D )
-    {
-    //Drawable model should have a className() returning a string
-    concepts::ConceptUtils::sameType( myS, myT.className() );
+      BOOST_CONCEPT_USAGE( CDrawableWithBoard3DTo2D )
+      {
+        //Drawable model should have a className() returning a string
+        concepts::ConceptUtils::sameType( myS, myT.className() );
 
-    //Drawable model should be associated to global functions draw and defaultStyle.
-    //draw(myD3D, myT);
-    //concepts::ConceptUtils::sameType( myD, defaultStyle( myT) );
-  }
+        //Drawable model should be associated to global functions draw and defaultStyle.
+        //draw(myD3D, myT);
+        //concepts::ConceptUtils::sameType( myD, defaultStyle( myT) );
+      }
 
-    // ------------------------- Private Datas --------------------------------
-  private:
+      // ------------------------- Private Datas --------------------------------
+    private:
 
-    T myT;//! the drawable object
-    DrawableWithBoard3DTo2D *myD;
+      T myT;//! the drawable object
+      DrawableWithBoard3DTo2D *myD;
 
-    DGtal::Board3DTo2D<S, KS> myD3D;
-    std::string myS;
+      DGtal::Board3DTo2D<S, KS> myD3D;
+      std::string myS;
 
-    // ------------------------- Internals ------------------------------------
-  private:
+      // ------------------------- Internals ------------------------------------
+    private:
 
-  }; // end of concept CDrawableWithBoard3DTo2D
-  }
-  } // namespace DGtal
+    }; // end of concept CDrawableWithBoard3DTo2D
+  } // namespace concepts
+} // namespace DGtal
 
 
 
-    //                                                                           //
-    ///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CDrawableWithBoard3DTo2D_h
 

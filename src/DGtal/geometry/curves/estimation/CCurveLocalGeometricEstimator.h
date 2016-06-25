@@ -99,46 +99,46 @@ namespace DGtal
       boost::DefaultConstructible<T>
     {
 
-    // ----------------------- Concept checks ------------------------------
-  public:
+      // ----------------------- Concept checks ------------------------------
+    public:
 
-    typedef typename T::Quantity Quantity;
-    BOOST_CONCEPT_ASSERT(( concepts::CQuantity< Quantity > ));
+      typedef typename T::Quantity Quantity;
+      BOOST_CONCEPT_ASSERT(( concepts::CQuantity< Quantity > ));
 
-    typedef typename T::ConstIterator ConstIterator;
-    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< ConstIterator > ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< ConstIterator > ));
+      typedef typename T::ConstIterator ConstIterator;
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< ConstIterator > ));
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< ConstIterator > ));
 
 
-    BOOST_CONCEPT_USAGE( CCurveLocalGeometricEstimator )
-    {
-    //init method
-    myX.init( myH, myItb, myIte ); 
+      BOOST_CONCEPT_USAGE( CCurveLocalGeometricEstimator )
+      {
+        //init method
+        myX.init( myH, myItb, myIte ); 
 
-    concepts::ConceptUtils::sameType( myQ, myX.eval( myItb ) );
-    concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
-  }
+        concepts::ConceptUtils::sameType( myQ, myX.eval( myItb ) );
+        concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
+      }
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX;
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX;
     
-    double myH; 
-    ConstIterator myItb, myIte; 
-    Quantity myQ;
-    boost::iterator_archetype<Quantity,
-			      boost::iterator_archetypes::writable_iterator_t,
-			      boost::incrementable_traversal_tag > myIto; 
+      double myH; 
+      ConstIterator myItb, myIte; 
+      Quantity myQ;
+      boost::iterator_archetype<Quantity,
+                                boost::iterator_archetypes::writable_iterator_t,
+                                boost::incrementable_traversal_tag > myIto; 
 
-    // ------------------------- Internals ------------------------------------
-  private:
+      // ------------------------- Internals ------------------------------------
+    private:
 
-  }; // end of concept CCurveLocalGeometricEstimator
-  }
-  } // namespace DGtal
+    }; // end of concept CCurveLocalGeometricEstimator
+  }//namespace concepts
+} // namespace DGtal
 
-    //                                                                           //
-    ///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CCurveLocalGeometricEstimator_h
 

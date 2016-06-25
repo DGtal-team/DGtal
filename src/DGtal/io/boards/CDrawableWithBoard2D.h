@@ -69,7 +69,7 @@ namespace DGtal
        \code
        Board2D board;
        board << CustomStyle( x.className(), x.defaultStyle() )
-       << x;
+             << x;
        \endcode 
    
        ### Refinement of
@@ -126,7 +126,7 @@ namespace DGtal
     private:
 
     }; // end of concept CDrawableWithBoard2D
-  }
+  }// namespace concepts
 } // namespace DGtal
 
 
