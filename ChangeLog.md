@@ -37,6 +37,8 @@
  - Add cmake configuration file NeighborhoodTablesConfig to
    decompress and install look up tables. (Pablo Hernandez-Cerdan,
    [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
+ - Documentation graphs are now in SVG instead of PNG. (David Coeurjolly,
+   [#1192](https://github.com/DGtal-team/DGtal/pull/1192))
  - Check and add all DGtal examples in the Examples listing section.
    (Bertrand Kerautret,[#1166](https://github.com/DGtal-team/DGtal/pull/1166))))
 
