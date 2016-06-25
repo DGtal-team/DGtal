@@ -55,11 +55,11 @@ namespace DGtal
        Description of \b concept '\b CBidirectionalSegmentComputer' <p>
        @ingroup Concepts
        @brief Aim: Defines the concept describing a bidirectional segment computer,  
-       ie. a model of CSegment that can extend itself in the two possible directions. 
+       ie. a model of concepts::CSegment that can extend itself in the two possible directions. 
      
        ### Refinement of CForwardSegmentComputer 
     
-       ### Associated types : the same as CForwardSegmentComputer
+       ### Associated types : the same as concepts::CForwardSegmentComputer
   
        ### Notation
        - \a X : A type that is a model of CBidirectionalSegmentComputer
@@ -89,28 +89,28 @@ namespace DGtal
     template <typename T> 
     struct CBidirectionalSegmentComputer : concepts::CForwardSegmentComputer<T>
     {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // Methods
-    BOOST_CONCEPT_USAGE( CBidirectionalSegmentComputer )
-    {
-    concepts::ConceptUtils::sameType( myB, myX.isExtendableBack() );
-    concepts::ConceptUtils::sameType( myB, myX.extendBack() );
-  }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    bool myB; 
+      // ----------------------- Concept checks ------------------------------
+    public:
+      // Methods
+      BOOST_CONCEPT_USAGE( CBidirectionalSegmentComputer )
+      {
+        concepts::ConceptUtils::sameType( myB, myX.isExtendableBack() );
+        concepts::ConceptUtils::sameType( myB, myX.extendBack() );
+      }
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // only if T is default constructible.
+      bool myB; 
   
-    // ------------------------- Internals ------------------------------------
-  private:
+      // ------------------------- Internals ------------------------------------
+    private:
     
-  }; // end of concept CBidirectionalSegmentComputer
-  }
-  } // namespace DGtal
+    }; // end of concept CBidirectionalSegmentComputer
+  } //namespace concepts
+} // namespace DGtal
 
-    //                                                                           //
-    ///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CBidirectionalSegmentComputer_h
 

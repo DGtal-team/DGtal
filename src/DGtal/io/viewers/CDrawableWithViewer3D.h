@@ -61,9 +61,9 @@ namespace DGtal
        An object x satisfying this concept may then be used as:
     
        \code
-       Viewer3D display;
+       Viewer3D<Space,KSpace> display;
        display << CustomStyle( x.className(), x.defaultStyle() )
-       << x;
+               << x;
        \endcode 
    
        ### Refinement of
@@ -118,7 +118,7 @@ namespace DGtal
       // ------------------------- Internals ------------------------------------
 
     }; // end of concept CDrawableWithViewer3D
-  }  
+  }  // namespace concepts
 } // namespace DGtal
 
 

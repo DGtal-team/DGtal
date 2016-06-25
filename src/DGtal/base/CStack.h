@@ -118,7 +118,7 @@ namespace DGtal
       bool myB; 
 
     }; // end of concept CStack
-  }
+  }//namespace concepts
 } // namespace DGtal
 
 //                                                                           //

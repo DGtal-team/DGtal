@@ -49,7 +49,6 @@ namespace DGtal
 {
   namespace concepts
   {
-
     /////////////////////////////////////////////////////////////////////////////
     // class CIncrementalSegmentComputer
     /**
@@ -91,13 +90,14 @@ namespace DGtal
     
        @code
        for ( ConstIterator it = s.begin(), 
-       ConstIterator itEnd = s.end();
-       it != itEnd; ++it)
-       { // [s.begin(), it) is a segment:
-       s.init( s.begin() ); 
-       bool flag = true; 
-       while ( (s.end() != it)&&(flag) ) { flag = s.extend(); }
-       ASSERT( flag ); 
+             ConstIterator itEnd = s.end();
+             it != itEnd; ++it)
+       { 
+          // [s.begin(), it) is a segment:
+          s.init( s.begin() ); 
+          bool flag = true; 
+          while ( (s.end() != it)&&(flag) ) { flag = s.extend(); }
+          ASSERT( flag ); 
        }
        @endcode
 
@@ -132,7 +132,7 @@ namespace DGtal
     private:
     
     }; // end of concept CIncrementalSegmentComputer
-  }  
+  } //namespace concepts 
 } // namespace DGtal
 
 //                                                                           //

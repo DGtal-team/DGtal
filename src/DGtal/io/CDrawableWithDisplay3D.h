@@ -64,7 +64,7 @@ namespace DGtal
        \code
        Display3D display;
        display << CustomStyle( x.className(), x.defaultStyle() )
-       << x;
+               << x;
        \endcode 
    
        ### Refinement of
@@ -125,7 +125,7 @@ namespace DGtal
     private:
 
     }; // end of concept CDrawableWithDisplay3D
-  }
+  }//namespace concepts
 } // namespace DGtal
 
 
