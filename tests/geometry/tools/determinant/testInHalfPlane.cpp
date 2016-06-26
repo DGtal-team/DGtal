@@ -56,7 +56,7 @@ using namespace DGtal;
 template<typename OrientationFunctor>
 bool testInHalfPlane(OrientationFunctor f)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<OrientationFunctor> )); 
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -102,7 +102,7 @@ bool testInGeneralizedDiskOfGivenRadius()
   typedef PointVector<2, DGtal::int16_t> Point; 
   typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
   typedef InGeneralizedDiskOfGivenRadius<Point, DetComputer> Functor; 
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2<Functor> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> )); 
   typedef Functor::Value Value; 
 
   Value res; 

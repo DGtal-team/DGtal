@@ -47,7 +47,7 @@ namespace DGtal
       inline
       void updateHullWithStack(Stack& aStack, const Point& aNewPoint, const Predicate& aPredicate)
       {
-        BOOST_CONCEPT_ASSERT(( CStack<Stack> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CStack<Stack> ));
         
         Point Q = aStack.top();
         aStack.pop();
@@ -82,7 +82,7 @@ namespace DGtal
                               const ForwardIterator& itb, const ForwardIterator& ite,
                               const Predicate& aPredicate)
       {
-        BOOST_CONCEPT_ASSERT(( CStack<Stack> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CStack<Stack> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> ));
         
@@ -218,7 +218,7 @@ namespace DGtal
         typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point;
         BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> ));
-        BOOST_CONCEPT_ASSERT(( CPolarPointComparator2D<PolarComparator> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CPolarPointComparator2D<PolarComparator> ));
         
         if ( itb != ite )
           {
