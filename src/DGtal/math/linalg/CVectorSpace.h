@@ -47,74 +47,75 @@
 
 namespace DGtal
 {
+  namespace concepts
+  {
+    /////////////////////////////////////////////////////////////////////////////
+    // class CVectorSpace
+    /**
+       Description of \b concept '\b CVectorSpace' <p>
+       @ingroup Concepts
+       @brief Aim:
+       Base concept for vector space structure.
 
-/////////////////////////////////////////////////////////////////////////////
-// class CVectorSpace
-/**
-Description of \b concept '\b CVectorSpace' <p>
-@ingroup Concepts
-@brief Aim:
-Base concept for vector space structure.
+       ### Refinement of
+       - boost::Assignable
 
-### Refinement of
- - boost::Assignable
+       ### Associated types
+       - \c Scalar: Scalar type used for external multiplication and internal type representation.
+       - \c Index: Random access index type.
 
-### Associated types
- - \c Scalar: Scalar type used for external multiplication and internal type representation.
- - \c Index: Random access index type.
+       ### Notation
+       - \c VectorSpace : A type that is a model of concepts::CVectorSpace
+       - \e x, \e y : const object of type \c VectorSpace
+       - \e z : object of type \c VectorSpace
+       - \e a : object of type \c VectorSpace::Scalar
 
-### Notation
- - \c VectorSpace : A type that is a model of CVectorSpace
- - \e x, \e y : const object of type \c VectorSpace
- - \e z : object of type \c VectorSpace
- - \e a : object of type \c VectorSpace::Scalar
+       ### Definitions
 
-### Definitions
+       ### Valid expressions and semantics
 
-### Valid expressions and semantics
+       | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
+       |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
+       | Reset container content      |  \a z.clear()         |                   |               |              |           |                |            |
+       | Addition      | \a z = \a x + \a y           |                  | \c VectorSpace              |              |           |                |            |
+       | Substraction      | \a z = \a x - \a y           |                   | \c VectorSpace              |              |           |                |            |
+       | External multiplication      | \a z = \a a * \a x           |                   |  \c VectorSpace               |              |           |                |            |
 
-| Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
-|-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Reset container content      |  \a z.clear()         |                   |               |              |           |                |            |
-| Addition      | \a z = \a x + \a y           |                  | \c VectorSpace              |              |           |                |            |
-| Substraction      | \a z = \a x - \a y           |                   | \c VectorSpace              |              |           |                |            |
-| External multiplication      | \a z = \a a * \a x           |                   |  \c VectorSpace               |              |           |                |            |
+       ### Invariants
 
-### Invariants
+       ### Models
 
-### Models
+       ### Notes
 
-### Notes
-
-@tparam T the type that should be a model of CVectorSpace.
- */
-template <typename T>
-struct CVectorSpace : boost::Assignable<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Scalar Scalar;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<Scalar> ));
-
-    BOOST_CONCEPT_USAGE( CVectorSpace )
+       @tparam T the type that should be a model of CVectorSpace.
+    */
+    template <typename T>
+    struct CVectorSpace : boost::Assignable<T>
     {
+      // ----------------------- Concept checks ------------------------------
+    public:
+      typedef typename T::Scalar Scalar;
+
+      BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<Scalar> ));
+
+      BOOST_CONCEPT_USAGE( CVectorSpace )
+      {
         z.clear();
         z = x + y;
         z = x - y;
         z = a * x;
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-    const T x,y;
-    T z;
-    Scalar a;
+      }
+      // ------------------------- Private Datas --------------------------------
+    private:
+      const T x,y;
+      T z;
+      Scalar a;
 
-    // ------------------------- Internals ------------------------------------
-private:
+      // ------------------------- Internals ------------------------------------
+    private:
 
-}; // end of concept CVectorSpace
-
+    }; // end of concept CVectorSpace
+  }
 } // namespace DGtal
 
 //                                                                           //

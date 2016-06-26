@@ -76,7 +76,7 @@ bool test(const I& itb, const I& ite)
   typedef TangentVectorFromDSSEstimator<SegmentComputer> SCEstimator; //functor
   typedef typename SCEstimator::Quantity Value; //value
   typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> Estimator;//estimator
-  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< Estimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< Estimator > ));
   SegmentComputer sc;
   SCEstimator f; 
 

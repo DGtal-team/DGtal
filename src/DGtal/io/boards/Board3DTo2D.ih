@@ -93,7 +93,7 @@ inline
 DGtal::Board3DTo2D<Space, KSpace> &
 DGtal::Board3DTo2D<Space, KSpace>::operator<<( const TDrawableWithBoard3DTo2D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D, Space, KSpace>));
+  BOOST_CONCEPT_ASSERT((concepts::CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D, Space, KSpace>));
 
   DGtal::Board3DTo2DFactory<Space,KSpace>::draw(*this, object);
   return *this;

@@ -83,8 +83,8 @@ namespace DGtal
   class MostCenteredMaximalSegmentEstimator
   {
 
-    BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<SegmentComputer> )); 
-    BOOST_CONCEPT_ASSERT(( CSegmentComputerEstimator<SCEstimator> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<SegmentComputer> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CSegmentComputerEstimator<SCEstimator> )); 
     BOOST_STATIC_ASSERT(( boost::is_same< SegmentComputer, 
 			  typename SCEstimator::SegmentComputer >::value ));
 

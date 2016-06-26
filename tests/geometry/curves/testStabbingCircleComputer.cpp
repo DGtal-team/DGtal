@@ -138,8 +138,8 @@ void testStabbingCircleComputerConceptChecking()
    typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
    typedef std::vector<Pair>::const_iterator ConstIterator; 
    typedef StabbingCircleComputer<ConstIterator> GeomDSS; 
-   BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<GeomDSS> ));
-   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<GeomDSS> ));
+   BOOST_CONCEPT_ASSERT(( concepts::CDrawableWithBoard2D<GeomDSS> ));
+   BOOST_CONCEPT_ASSERT(( concepts::CBidirectionalSegmentComputer<GeomDSS> ));
 }
 
 /*
