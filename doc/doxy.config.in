@@ -345,7 +345,7 @@ IDL_PROPERTY_SUPPORT   = YES
 # all members of a group must be documented explicitly.
 # The default value is: NO.
 
-DISTRIBUTE_GROUP_DOC   = NO
+DISTRIBUTE_GROUP_DOC   = YES
 
 # If one adds a struct or class to a group and this option is enabled, then also
 # any nested class or struct is added to the same group. By default this option
@@ -2054,8 +2054,8 @@ PREDEFINED             = "BOOST_FUSION_ADAPT_STRUCT(x,y)=" \
                          "WITH_ITK=" \
                          "WITH_MAGICK=" \
                          "WITH_PATATE=" \
-                         "WITH_QGLVIEWER="
-
+                         "WITH_QGLVIEWER=" \
+                         "WITH_FFTW3=" "WITH_FFTW3_FLOAT=" "WITH_FFTW3_DOUBLE" "WITH_FFTW3_LONG"
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
