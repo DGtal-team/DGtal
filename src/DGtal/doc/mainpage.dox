@@ -1,4 +1,3 @@
-
 /**
  * \mainpage DGtal - Digital Geometry Tools and Algorithms Library.
  *
@@ -6,7 +5,6 @@
  *
  *
  * @section intro_sec_dgtal Introduction
-
 
 DGtal is a generic open source library for Digital Geometry
 programming whose main objective is to gather and structure different
@@ -63,11 +61,9 @@ the digital geometry community.
   - \ref packageTutorials
 
 
-
 @section manueldev Manual pages for DGtal developers
   - \ref moduleFAQGit
   - \ref moduleCatch
-
 
 
 @section links_sec_dgtal Links
