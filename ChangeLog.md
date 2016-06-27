@@ -82,7 +82,8 @@
    pages). (David Coeurjolly,
    [#1161](https://github.com/DGtal-team/DGtal/pull/1161))
  - Fixing issues raised on some algorithms when changing Euclidean ring
-   for SpaceND and KhalimskySpaceND. (Jérémy Levallois, [#1163](https://github.com/DGtal-team/DGtal/pull/1163))
+   for SpaceND and KhalimskySpaceND. (Jérémy Levallois,
+   [#1163](https://github.com/DGtal-team/DGtal/pull/1163))
  - Moving last concepts to concepts:: namespace. (David Coeurjolly,
    [#1193](https://github.com/DGtal-team/DGtal/pull/1193))
 
