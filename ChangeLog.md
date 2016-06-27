@@ -8,12 +8,16 @@
  - New "@seeDGtalTools" doxygen command to cite a DGtalTools tool in
    DGtal documentation (David Coeurjolly,
    [#1179](https://github.com/DGtal-team/DGtal/pull/1179))
- 
+
 - *Geometry Package*
  - New robust normal vector estimator using spherical accumulators and statistical
    voting (Boulc'h & Marlet, SGP 2012).
    (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
 
+- *Math Package*
+ - New RealFFT class for in-place real-complex Fast Fourier Transform using
+   fftw3 library.
+   (Roland Denis, [#1185](https://github.com/DGtal-team/DGtal/pull/1185))
 - *Topology Package*
  - Adding periodic closure for KhalimskySpaceND and per-dimension closure
    specification.
