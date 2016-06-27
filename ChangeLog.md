@@ -18,6 +18,7 @@
  - New RealFFT class for in-place real-complex Fast Fourier Transform using
    fftw3 library.
    (Roland Denis, [#1185](https://github.com/DGtal-team/DGtal/pull/1185))
+
 - *Topology Package*
  - Adding periodic closure for KhalimskySpaceND and per-dimension closure
    specification.
