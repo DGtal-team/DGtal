@@ -1,5 +1,8 @@
 # DGtal 0.9.2
 
+
+# DGtal 0.9.2
+
 ## New Features / Critical Changes
 
 - *Documentation*
@@ -59,7 +62,7 @@
    (https://github.com/DGtal-team/DGtal/pull/1164))
 
 - *IO Package*
- - Viewer3D: improvement of the viewer state record by saving the rendering 
+ - Viewer3D: improvement of the viewer state record by saving the rendering
    mode. A new setter was also added to desable/enable double face rendering.
    (Bertrand Kerautret [#1166](https://github.com/DGtal-team/DGtal/pull/1162))
  - Viewer3D: add a mode to display ball primitive with OpenGL point instead of
@@ -78,7 +81,7 @@
 - *Topology Package*
  - Add pre-calculated look up tables to speed up Object::isSimple calculations.
    (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
- 
+
 
 ## Bug Fixes
 - *Configuration/General*
