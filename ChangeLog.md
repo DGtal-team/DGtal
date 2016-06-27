@@ -75,6 +75,11 @@
    when voxel are selected. The selected elements are now highlighted.
    (Bertrand Kerautret, [#1146](https://github.com/DGtal-team/DGtal/pull/1146))
 
+- *Topology Package*
+ - Add pre-calculated look up tables to speed up Object::isSimple calculations.
+   (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
+ 
+
 ## Bug Fixes
 - *Configuration/General*
  - Simplification of the windows build instructions. (David
@@ -141,8 +146,6 @@
   - Fix interior/exterior fill methods of topology/helpers/Surfaces class which
     was wrong on 3d and on closed Khalimsky space.
     (Bertrand Kerautret, [#1156](https://github.com/DGtal-team/DGtal/pull/1156))
-  - Add pre-calculated look up tables to speed up Object::isSimple calculations.
-    (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
   - Fix issue [#1168]
     (https://github.com/DGtal-team/DGtal/issues/1168), related to bad
     linear interpolation for binary volume data in
