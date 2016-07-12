@@ -52,6 +52,7 @@
 #include <iostream>
 #if defined(__GNUG__)
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #pragma GCC diagnostic ignored "-Wignored-attributes"
 #endif
