@@ -32,7 +32,9 @@
 #include "DGtal/helpers/StdDefs.h"
 // Cellular grid
 #include "DGtal/topology/CubicalComplex.h"
+//! [include]
 #include "DGtal/topology/ParDirCollapse.h"
+//! [include]
 // Shape construction
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/Shapes.h"
@@ -103,13 +105,20 @@ int main( int, char** )
   Board2D board;
   KSpace K;
   CC complex ( K );
+//! [create]
   ParDirCollapse < CC > thinning ( K );
+//! [create]
   trace.beginBlock ( "ParDirCollapse -- 2 iterations." );
     getComplex< CC, KSpace > ( complex, K );
     drawComplex<CC> ( board, complex );
     board.saveEPS ( "ComplexBeforeThinning.eps" );
+//! [init]
     thinning.attach ( &complex );
+//! [init]
+
+//! [thinn]
     thinning.eval ( 2 );
+//! [thinn]
     drawComplex<CC> ( board, complex );
     board.saveEPS ( "ParDirCollapse_2.eps" );
   trace.endBlock();
@@ -117,7 +126,9 @@ int main( int, char** )
   trace.beginBlock ( "ParDirCollapse -- collapseSurface." );
     getComplex< CC, KSpace > ( complex, K );
     thinning.attach ( &complex );
+//! [thinnSurface]
     thinning.collapseSurface ();
+//! [thinnSurface]
     drawComplex<CC> ( board, complex );
     board.saveEPS ( "ParDirCollapse_collapseSurface.eps" );
   trace.endBlock();
@@ -125,7 +136,9 @@ int main( int, char** )
   trace.beginBlock ( "ParDirCollapse -- collapseIsthmus." );
     getComplex< CC, KSpace > ( complex, K );
     thinning.attach ( &complex );
+//! [thinnIsthmus]
     thinning.collapseIsthmus ();
+//! [thinnIsthmus]
     drawComplex<CC> ( board, complex );
     board.saveEPS ( "ParDirCollapse_collapseIsthmus.eps" );
   trace.endBlock();
