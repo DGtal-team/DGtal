@@ -12,6 +12,7 @@ SET(DGTAL_TESTS_SRC
    testSurfaceHelper
    testDigitalSetToCellularGridConverter
    testNeighborhoodConfigurations
+   testParDirCollapse
  )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
