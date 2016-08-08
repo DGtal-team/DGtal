@@ -107,22 +107,22 @@ namespace DGtal
     /** Copy constructor.
      * @param aCell any other pre-cell.
      */
-    KhalimskyPreCell( KhalimskyPreCell const& aCell ) = default;
+    KhalimskyPreCell( KhalimskyPreCell const& ) = default;
 
     /** Copy operator
      * @param aCell any other pre-cell.
      */
-    KhalimskyPreCell & operator=( KhalimskyPreCell const& aCell ) = default;
+    KhalimskyPreCell & operator=( KhalimskyPreCell const& ) = default;
 
     /** Move constructor.
      * @param aCell any other pre-cell.
      */
-    KhalimskyPreCell( KhalimskyPreCell && aCell ) = default;
+    KhalimskyPreCell( KhalimskyPreCell && ) = default;
 
     /** Move operator
      * @param aCell any other pre-cell.
      */
-    KhalimskyPreCell & operator=( KhalimskyPreCell && aCell ) = default;
+    KhalimskyPreCell & operator=( KhalimskyPreCell && ) = default;
 
     /**
      * Equality operator.
@@ -206,22 +206,22 @@ namespace DGtal
     /** Copy constructor.
      * @param aCell any other pre-cell.
      */
-    SignedKhalimskyPreCell( SignedKhalimskyPreCell const& aCell ) = default;
+    SignedKhalimskyPreCell( SignedKhalimskyPreCell const& ) = default;
 
     /** Copy operator
      * @param aCell any other pre-cell.
      */
-    SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell const& aCell ) = default;
+    SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell const& ) = default;
 
     /** Move constructor.
      * @param aCell any other pre-cell.
      */
-    SignedKhalimskyPreCell( SignedKhalimskyPreCell && aCell ) = default;
+    SignedKhalimskyPreCell( SignedKhalimskyPreCell && ) = default;
 
     /** Move operator
      * @param aCell any other pre-cell.
      */
-    SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell && aCell ) = default;
+    SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell && ) = default;
 
     /**
      * Equality operator.
