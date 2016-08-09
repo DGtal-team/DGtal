@@ -138,22 +138,22 @@ namespace DGtal
     /** Copy constructor.
      * @param other any other cell.
      */
-    KhalimskyCell( const KhalimskyCell & ) = default;
+    KhalimskyCell( const KhalimskyCell & other ) = default;
 
     /** Copy operator.
      * @param other any other cell.
      */
-    KhalimskyCell & operator=( const KhalimskyCell & ) = default;
+    KhalimskyCell & operator=( const KhalimskyCell & other ) = default;
 
     /** Move constructor.
      * @param other any other cell.
      */
-    KhalimskyCell( KhalimskyCell && ) = default;
+    KhalimskyCell( KhalimskyCell && other ) = default;
 
     /** Move operator.
      * @param other any other cell.
      */
-    KhalimskyCell & operator=( KhalimskyCell && ) = default;
+    KhalimskyCell & operator=( KhalimskyCell && other ) = default;
 
     /**
      * Equality operator.
@@ -262,22 +262,22 @@ namespace DGtal
     /** Copy constructor.
      * @param other any other cell.
      */
-    SignedKhalimskyCell( const SignedKhalimskyCell & ) = default;
+    SignedKhalimskyCell( const SignedKhalimskyCell & other ) = default;
 
     /** Copy operator.
      * @param other any other cell.
      */
-    SignedKhalimskyCell & operator=( const SignedKhalimskyCell & ) = default;
+    SignedKhalimskyCell & operator=( const SignedKhalimskyCell & other ) = default;
 
     /** Move constructor.
      * @param other any other cell.
      */
-    SignedKhalimskyCell( SignedKhalimskyCell && ) = default;
+    SignedKhalimskyCell( SignedKhalimskyCell && other ) = default;
 
     /** Move operator.
      * @param other any other cell.
      */
-    SignedKhalimskyCell & operator=( SignedKhalimskyCell && ) = default;
+    SignedKhalimskyCell & operator=( SignedKhalimskyCell && other ) = default;
 
     /**
      * Equality operator.
@@ -494,27 +494,27 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    KhalimskySpaceND ( const KhalimskySpaceND & ) = default;
+    KhalimskySpaceND ( const KhalimskySpaceND & other ) = default;
 
     /**
      * Copy operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    KhalimskySpaceND & operator= ( const KhalimskySpaceND & ) = default;
+    KhalimskySpaceND & operator= ( const KhalimskySpaceND & other ) = default;
 
     /**
      * Move constructor.
      * @param other the object to clone.
      */
-    KhalimskySpaceND ( KhalimskySpaceND && ) = default;
+    KhalimskySpaceND ( KhalimskySpaceND && other ) = default;
 
     /**
      * Move operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    KhalimskySpaceND & operator= ( KhalimskySpaceND && ) = default;
+    KhalimskySpaceND & operator= ( KhalimskySpaceND && other ) = default;
 
     /**
      * Specifies the upper and lower bounds for the maximal cells in
