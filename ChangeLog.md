@@ -86,6 +86,8 @@
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
  - ArithDSSIterator: fix missing postfix ++.
    (I. Sivignon, [#1187](https://github.com/DGtal-team/DGtal/pull/1187))
+ - Frechet Shortcut: fix implicit rounding.
+   (I. Sivignon, [#1180](https://github.com/DGtal-team/DGtal/pull/1180))
 
 - *Image Package*
  - Fixing issue [#779](https://github.com/DGtal-team/DGtal/issues/779) by
