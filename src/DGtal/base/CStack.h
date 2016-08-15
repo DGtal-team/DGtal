@@ -47,77 +47,78 @@
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CStack
-  /**
-     Description of \b concept '\b CStack' <p>
-     @ingroup Concepts
-     @brief Aim: This concept gathers classes that provide 
-     a stack interface
-
-     ### Refinement of copy constructible and assignable
-
-     ### Inner types :
-     - Value type of element stored in the stack
-     - Size type that represents the number of elements
-
-     ### Notation
-     - \e X : A type that is a model of CStack
-     - \e x : object of type X
-     - \e v : object of type Value
-
-     ### Definitions
-
-     ### Valid expressions and semantics
-
-     | Name  | Expression | Type requirements | Return type            | Precondition | Semantics                          | Post condition | Complexity |
-     |-------+------------+-------------------+------------------------+--------------+------------------------------------+----------------+------------|
-     | size  | x.size()   |                   | Size                   |              | returns the number of elements     |                | O(1)       |
-     | empty | x.empty()  |                   | bool                   |              | 'true' is empty, 'false' otherwise |                | O(1)       |
-     | top   | x.top()    |                   | Value& or const Value& |              | returns the top element            |                | O(1)       |
-     | push  | x.push(v)  |                   | void                   |              | inserts a new element at the top   |                | O(1)       |
-     | pop   | x.pop()    |                   | void                   |              | removes the top element            |                | O(1)       |
-
-
-     ### Models
-
-     std::stack, BackInsertionSequenceToStackAdapter, FrontInsertionSequenceToStackAdapter are the usual models of CStack.
-
-     @tparam T the type that should be a model of CStack.
-  */
-  template <typename T>
-  struct CStack : boost::CopyConstructible<T>, boost::Assignable<T>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::value_type Value;
-    typedef typename T::size_type Size;
+    /////////////////////////////////////////////////////////////////////////////
+    // class CStack
+    /**
+       Description of \b concept '\b CStack' <p>
+       @ingroup Concepts
+       @brief Aim: This concept gathers classes that provide 
+       a stack interface
 
-    BOOST_CONCEPT_USAGE( CStack )
+       ### Refinement of copy constructible and assignable
+
+       ### Inner types :
+       - Value type of element stored in the stack
+       - Size type that represents the number of elements
+
+       ### Notation
+       - \e X : A type that is a model of CStack
+       - \e x : object of type X
+       - \e v : object of type Value
+
+       ### Definitions
+
+       ### Valid expressions and semantics
+
+    | Name  | Expression | Type requirements | Return type            | Precondition | Semantics                          | Post condition | Complexity |
+    |-------+------------+-------------------+------------------------+--------------+------------------------------------+----------------+------------|
+    | size  | x.size()   |                   | Size                   |              | returns the number of elements     |                | O(1)       |
+    | empty | x.empty()  |                   | bool                   |              | 'true' is empty, 'false' otherwise |                | O(1)       |
+    | top   | x.top()    |                   | Value& or const Value& |              | returns the top element            |                | O(1)       |
+    | push  | x.push(v)  |                   | void                   |              | inserts a new element at the top   |                | O(1)       |
+    | pop   | x.pop()    |                   | void                   |              | removes the top element            |                | O(1)       |
+
+
+       ### Models
+
+       std::stack, BackInsertionSequenceToStackAdapter, FrontInsertionSequenceToStackAdapter are the usual models of CStack.
+
+       @tparam T the type that should be a model of CStack.
+    */
+    template <typename T>
+    struct CStack : boost::CopyConstructible<T>, boost::Assignable<T>
     {
-      concepts::ConceptUtils::sameType( myV, myX.top() ); 
-      myX.push( myV );
-      myX.pop(); 
+      // ----------------------- Concept checks ------------------------------
+    public:
+      typedef typename T::value_type Value;
+      typedef typename T::size_type Size;
 
-      // check const methods.
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      concepts::ConceptUtils::sameType( myS, myX.size() );
-      concepts::ConceptUtils::sameType( myB, myX.empty() );
-      concepts::ConceptUtils::sameType( myV, myX.top() );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Value myV; 
-    Size myS; 
-    bool myB; 
+      BOOST_CONCEPT_USAGE( CStack )
+      {
+        concepts::ConceptUtils::sameType( myV, myX.top() ); 
+        myX.push( myV );
+        myX.pop(); 
 
-  }; // end of concept CStack
+        // check const methods.
+        checkConstConstraints();
+      }
+      void checkConstConstraints() const
+      {
+        concepts::ConceptUtils::sameType( myS, myX.size() );
+        concepts::ConceptUtils::sameType( myB, myX.empty() );
+        concepts::ConceptUtils::sameType( myV, myX.top() );
+      }
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // do not require T to be default constructible.
+      Value myV; 
+      Size myS; 
+      bool myB; 
 
+    }; // end of concept CStack
+  }//namespace concepts
 } // namespace DGtal
 
 //                                                                           //

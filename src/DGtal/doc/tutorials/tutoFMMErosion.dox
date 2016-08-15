@@ -174,4 +174,13 @@ Once these types are defined, you can construct your new point predicate as foll
 
 */
 
+/**
+Example of tutorial 1: Local morphological opening of a 3d volume by the Fast Marching Method
+@see @ref tutoFMMErosion
+\image html tutoFMMerode.png  "erosion using FMM."
+@example tutorial-examples/FMMErosion.cpp
+ 
+*/
+
+
 }

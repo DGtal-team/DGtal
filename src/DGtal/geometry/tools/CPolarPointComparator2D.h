@@ -46,7 +46,8 @@
 
 namespace DGtal
 {
-
+ namespace concepts
+ {
   /////////////////////////////////////////////////////////////////////////////
   // class CPolarPointComparator2D
   /**
@@ -119,7 +120,7 @@ namespace DGtal
 
 
   }; // end of concept CPolarPointComparator2D
-
+ }
 } // namespace DGtal
 
 //                                                                           //

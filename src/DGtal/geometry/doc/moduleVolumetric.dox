@@ -298,17 +298,17 @@ ExactPredicateLpPowerSeparableMetric, see @ref moduleMetrics
    Example of a Voronoi map construction in dimension 2 for the
    Eucldiean metric.
 
-@see \ref voronoiSect
-
-\example geometry/volumes/distance/voronoimap2D.cpp
+   @see \ref voronoiSect
+   \image html voronoimap-dt.png "Distance transformation for the l_2 metric."
+   \example geometry/volumes/distance/voronoimap2D.cpp
 */
 
 /**
    Example of distance transformation in dimension 2.
 
-@see \ref moduleVolumetric
-
-\example geometry/volumes/distance/distancetransform2D.cpp
+   @see \ref moduleVolumetric
+   \image  html  example-DT-L2.png "Distance transform with L2 norm."
+   \example geometry/volumes/distance/distancetransform2D.cpp
 */
 
 /**

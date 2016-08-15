@@ -70,8 +70,8 @@ bool testOneBalancedWordComputer()
   typedef OneBalancedWordComputer< list<char>::iterator, int> OneBalancedWordComputer_list;
   typedef OneBalancedWordComputer<codeIterator, int> OneBalancedWordComputer_string;
 
-  BOOST_CONCEPT_ASSERT(( CDynamicBidirectionalSegmentComputer<OneBalancedWordComputer_list> ));
-  BOOST_CONCEPT_ASSERT(( CDynamicBidirectionalSegmentComputer<OneBalancedWordComputer_string> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDynamicBidirectionalSegmentComputer<OneBalancedWordComputer_list> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDynamicBidirectionalSegmentComputer<OneBalancedWordComputer_string> ));
 
   trace.beginBlock ( "Test different initialization methods" );
 

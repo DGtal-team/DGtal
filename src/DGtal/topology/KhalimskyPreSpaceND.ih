@@ -1242,8 +1242,6 @@ uAddFaces( Cells& faces, const Cell& c, Dimension axis )
   DirIterator q = uDirs( c );
   for ( Dimension i = 0; i < axis; ++i ) ++q;
 
-  const Integer x = uKCoord( c, *q );
-
   Cell f1 = uIncident( c, *q, false );
   Cell f2 = uIncident( c, *q, true );
 
@@ -1267,8 +1265,6 @@ uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis )
 
   DirIterator q = uOrthDirs( c );
   for ( Dimension i = 0; i < axis; ++i ) ++q;
-
-  const Integer x = uKCoord( c, *q );
 
   Cell f1 = uIncident( c, *q, false );
   Cell f2 = uIncident( c, *q, true );

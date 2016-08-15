@@ -227,6 +227,20 @@ namespace DGtal
 
 
     /**
+     * Changes the light rendering mode (GL_LIGHT_MODEL_TWO_SIDE) for
+     * single face primitives (polygons, quads or triangles). It will have no
+     * effect for cube or ball primitive which will be always rendered with
+     * single face.
+     *
+     * @param[in] doubleSidedRendering if true (resp. false) the
+     * double (resp. single) rendering mode will be activated for
+     * polygons, quads and triangles.
+     * 
+     **/
+    void setGLDoubleRenderingMode(bool doubleSidedRendering);
+
+    
+    /**
      * Change the light shininess coefficients used in opengl
      * rendering (used in glMaterialf with GL_SPECULAR parameters). 
      *
@@ -285,9 +299,10 @@ namespace DGtal
      * Change the current rendering mode of the viewer.
      * 
      * @param[in] aRenderMode the mode of the rendering.
+     * @param[in] displayState if true (default) the viewer will display the current rendering mode.
      * 
      **/
-    void updateRenderingCoefficients(const RenderingMode aRenderMode);
+    void updateRenderingCoefficients(const RenderingMode aRenderMode, bool displayState=true);
     
     
     /// the 3 possible axes for the image direction
@@ -1312,6 +1327,7 @@ namespace DGtal
      **/
     
     void glUpdateLightRenderingMode() const;
+
     
     /**
      * Updates the light source coordinates (myLightPosition) from the
@@ -1421,8 +1437,8 @@ namespace DGtal
     /// list of the images textures in this viewer
     std::vector<GLTextureImage> myVectTextureImage;
 
-    bool myIsDoubleFaceRendering; ///< true if is double face rendering
-
+    bool myIsDoubleFaceRendering = true; ///< true if is double face rendering
+    
     double camera_position[3]; ///< camera position
     double camera_direction[3]; ///< camera direction
     double camera_upVector[3]; ///< camera up-vector
