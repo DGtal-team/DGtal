@@ -463,7 +463,7 @@ void testArithmeticalDSSComputerConceptChecking()
    typedef PointVector<2,int> Point; 
    typedef std::vector<Point>::iterator Iterator; 
    typedef ArithmeticalDSSComputer<Iterator,int,8> ArithDSS; 
-   BOOST_CONCEPT_ASSERT(( CDynamicBidirectionalSegmentComputer<ArithDSS> ));
+   BOOST_CONCEPT_ASSERT(( concepts::CDynamicBidirectionalSegmentComputer<ArithDSS> ));
 }
 
 

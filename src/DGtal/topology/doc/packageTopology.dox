@@ -85,3 +85,16 @@ boundary, union, etc).
 */
 
 }
+
+
+
+/**
+Creates precomputed tables for determining whether some point is simple within an 2D object.
+@image html table4_8.png  "Resulting table for 4-8 topology."
+@example topology/generateSimplicityTables2D.cpp
+*/
+
+/**
+Creates precomputed  tables for determining whether some point is simple within an 3D object.
+@example topology/generateSimplicityTables3D.cpp
+*/

@@ -48,76 +48,78 @@
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CSegmentComputerEstimator
-  /**
-     Description of \b concept '\b CSegmentComputerEstimator' <p>
-     @ingroup Concepts
-     @brief Aim: This concept is a refinement of CCurveLocalGeometricEstimator
-     devoted to the estimation of a geometric quantiy along a segment 
-     detected by a segment computer. 
-
-     ### Refinement of 
-     - CCurveLocalGeometricEstimator
-     - boost::CopyConstructible
-     - boost::Assignable
-
-     ### Associated types :
-     - SegmentComputer
-
-     ### Notation
-     - \e X : A type that is a model of CSegmentComputerEstimator
-     - \e x : object of type X
-     - \e x : object of type SegmentComputer
-  
-     ### Definitions
-
-     ### Valid expressions and semantics
-
-     | Name     | Expression          | Type requirements | Return type | Precondition | Semantics                       | Post condition | Complexity      |
-     |----------|---------------------|-------------------|-------------|--------------|---------------------------------|----------------|-----------------|
-     | Attach   | x.attach(s)         |                   | void        |              | Attach the segment computer     |                | constant        |                              
-
-     ### Invariants
-
-     ### Models
-
-     TangentFromDSSEstimator, TangentAngleFromDSSEstimator, CurvatureFromDSSEstimator, TangentFromDCAEstimator, CurvatureFromDCAEstimator
-
-     @see SegmentComputerEstimators
-
-     ### Notes
-
-     @tparam T the type that should be a model of CSegmentComputerEstimator.
-  */
-  template <typename T>
-  struct CSegmentComputerEstimator: 
-    CCurveLocalGeometricEstimator<T>, boost::CopyConstructible<T>, boost::Assignable<T>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
+  
+    /////////////////////////////////////////////////////////////////////////////
+    // class CSegmentComputerEstimator
+    /**
+       Description of \b concept '\b CSegmentComputerEstimator' <p>
+       @ingroup Concepts
+       @brief Aim: This concept is a refinement of CCurveLocalGeometricEstimator
+       devoted to the estimation of a geometric quantiy along a segment 
+       detected by a segment computer. 
 
-    typedef typename T::SegmentComputer SegmentComputer;
-    BOOST_CONCEPT_ASSERT(( CSegment< SegmentComputer > ));
+       ### Refinement of 
+       - CCurveLocalGeometricEstimator
+       - boost::CopyConstructible
+       - boost::Assignable
 
-    BOOST_CONCEPT_USAGE( CSegmentComputerEstimator )
+       ### Associated types :
+       - SegmentComputer
+
+       ### Notation
+       - \e X : A type that is a model of CSegmentComputerEstimator
+       - \e x : object of type X
+       - \e x : object of type SegmentComputer
+  
+       ### Definitions
+
+       ### Valid expressions and semantics
+
+       | Name     | Expression          | Type requirements | Return type | Precondition | Semantics                       | Post condition | Complexity      |
+       |----------|---------------------|-------------------|-------------|--------------|---------------------------------|----------------|-----------------|
+       | Attach   | x.attach(s)         |                   | void        |              | Attach the segment computer     |                | constant        |                              
+
+       ### Invariants
+
+       ### Models
+
+       TangentFromDSSEstimator, TangentAngleFromDSSEstimator, CurvatureFromDSSEstimator, TangentFromDCAEstimator, CurvatureFromDCAEstimator
+
+       @see SegmentComputerEstimators
+
+       ### Notes
+
+       @tparam T the type that should be a model of CSegmentComputerEstimator.
+    */
+    template <typename T>
+    struct CSegmentComputerEstimator: 
+      concepts::CCurveLocalGeometricEstimator<T>, boost::CopyConstructible<T>, boost::Assignable<T>
     {
+      // ----------------------- Concept checks ------------------------------
+    public:
 
-      myX.attach(mySC); 
+      typedef typename T::SegmentComputer SegmentComputer;
+      BOOST_CONCEPT_ASSERT(( CSegment< SegmentComputer > ));
 
-    }
+      BOOST_CONCEPT_USAGE( CSegmentComputerEstimator )
+      {
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX;
-    SegmentComputer mySC;
+        myX.attach(mySC); 
 
-    // ------------------------- Internals ------------------------------------
-  private:
+      }
 
-  }; // end of concept CSegmentComputerEstimator
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX;
+      SegmentComputer mySC;
 
+      // ------------------------- Internals ------------------------------------
+    private:
+
+    }; // end of concept CSegmentComputerEstimator
+  }
 } // namespace DGtal
 
 //                                                                           //

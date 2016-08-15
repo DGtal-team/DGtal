@@ -42,13 +42,13 @@ digraph GGeom   {
     color=lightgrey;
     node [style=filled,color=white];
 
-    CSegment [ URL="\ref CSegment" ];
-    CBidirectionalSegmentComputer  [ URL="\ref CBidirectionalSegmentComputer" ];
-    CIncrementalSegmentComputer [ URL="\ref CIncrementalSegmentComputer" ];
-    CForwardSegmentComputer [ URL="\ref CForwardSegmentComputer" ];
-    CSegmentFactory [ URL="\ref CSegmentFactory" ];
-    CDynamicBidirectionalSegmentComputer [ URL="\ref CDynamicBidirectionalSegmentComputer" ];
-    CDynamicSegmentComputer [ URL="\ref CDynamicSegmentComputer" ];
+    CSegment [ URL="\ref concepts::CSegment" ];
+    CBidirectionalSegmentComputer  [ URL="\ref concepts::CBidirectionalSegmentComputer" ];
+    CIncrementalSegmentComputer [ URL="\ref concepts::CIncrementalSegmentComputer" ];
+    CForwardSegmentComputer [ URL="\ref concepts::CForwardSegmentComputer" ];
+    CSegmentFactory [ URL="\ref concepts::CSegmentFactory" ];
+    CDynamicBidirectionalSegmentComputer [ URL="\ref concepts::CDynamicBidirectionalSegmentComputer" ];
+    CDynamicSegmentComputer [ URL="\ref concepts::CDynamicSegmentComputer" ];
 
     CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CIncrementalSegmentComputer -> CSegmentFactory -> CSegment;
     CDynamicSegmentComputer-> CForwardSegmentComputer ;
