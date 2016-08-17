@@ -33,6 +33,30 @@
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
+// Namescape scope definition of static constants.
+///////////////////////////////////////////////////////////////////////////////
+
+template < DGtal::Dimension dim, typename TInteger >
+  const constexpr
+  DGtal::Dimension
+  DGtal::KhalimskySpaceND<dim, TInteger>::dimension;
+
+template < DGtal::Dimension dim, typename TInteger >
+  const constexpr
+  DGtal::Dimension
+  DGtal::KhalimskySpaceND<dim, TInteger>::DIM;
+
+template < DGtal::Dimension dim, typename TInteger >
+  const constexpr
+  typename DGtal::KhalimskySpaceND<dim, TInteger>::Sign
+  DGtal::KhalimskySpaceND<dim, TInteger>::POS;
+
+template < DGtal::Dimension dim, typename TInteger >
+  const constexpr
+  typename DGtal::KhalimskySpaceND<dim, TInteger>::Sign
+  DGtal::KhalimskySpaceND<dim, TInteger>::NEG;
+
+///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 

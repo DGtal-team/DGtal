@@ -1,5 +1,10 @@
 # DGtal 0.9.3
 
+## Bug Fixes
+
+- *Configuration/General*
+ - Fixing errors and warnings raised by g++ 4.7.x.
+   (Roland Denis, [#1202](https://github.com/DGtal-team/DGtal/pull/1202))
 
 # DGtal 0.9.2
 
