@@ -102,6 +102,8 @@
    [#1193](https://github.com/DGtal-team/DGtal/pull/1193))
 
 - *DEC Package*
+ - Fix compatibility with eigen 3.2.8 by changing default index type for sparse matrix.
+   (Pierre Gueth, [#1197](https://github.com/DGtal-team/DGtal/pull/1197))
  - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
    (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
 
