@@ -52,11 +52,14 @@
 #include <iostream>
 #if defined(__GNUG__)
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
+#pragma clang diagnostic ignored "-Wignored-attributes"
 #endif
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
@@ -96,7 +99,7 @@ struct EigenLinearAlgebraBackend
     typedef Eigen::MatrixXd DenseMatrix;
 
     typedef Eigen::Triplet<double> Triplet;
-    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor> SparseMatrix;
+    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor, long int> SparseMatrix;
 
     typedef Eigen::SimplicialLLT<SparseMatrix> SolverSimplicialLLT;
     typedef Eigen::SimplicialLDLT<SparseMatrix> SolverSimplicialLDLT;
