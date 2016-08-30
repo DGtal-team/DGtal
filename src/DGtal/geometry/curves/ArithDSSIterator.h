@@ -112,10 +112,10 @@ namespace DGtal
     
     /**
      * Postfix increment operator.
-     * @param int number of unit increments
+     * @param a number of unit increments
      * @return self
      */
-    Self operator++(int);
+    Self operator++(int a);
     
 
     
