@@ -31,6 +31,30 @@
 #include <DGtal/kernel/NumberTraits.h>
 //////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////
+// Namescape scope definition of static constants.
+///////////////////////////////////////////////////////////////////////////////
+
+template < DGtal::Dimension dim, typename TInteger >
+  const constexpr
+  DGtal::Dimension
+  DGtal::KhalimskyPreSpaceND<dim, TInteger>::dimension;
+
+template < DGtal::Dimension dim, typename TInteger >
+  const constexpr
+  DGtal::Dimension
+  DGtal::KhalimskyPreSpaceND<dim, TInteger>::DIM;
+
+template < DGtal::Dimension dim, typename TInteger >
+  const constexpr
+  typename DGtal::KhalimskyPreSpaceND<dim, TInteger>::Sign
+  DGtal::KhalimskyPreSpaceND<dim, TInteger>::POS;
+
+template < DGtal::Dimension dim, typename TInteger >
+  const constexpr
+  typename DGtal::KhalimskyPreSpaceND<dim, TInteger>::Sign
+  DGtal::KhalimskyPreSpaceND<dim, TInteger>::NEG;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
