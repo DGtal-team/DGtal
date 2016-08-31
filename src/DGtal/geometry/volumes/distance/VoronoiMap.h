@@ -45,6 +45,7 @@
 // Inclusions
 #include <iostream>
 #include <vector>
+#include <array>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -132,7 +133,7 @@ namespace DGtal
 
     //ImageContainer domain type must be  HyperRectangular
     BOOST_STATIC_ASSERT ((boost::is_same< HyperRectDomain<TSpace>,
-					  typename TImageContainer::Domain >::value ));
+                          typename TImageContainer::Domain >::value ));
 
     ///Copy of the space type.
     typedef TSpace Space;
@@ -164,9 +165,12 @@ namespace DGtal
     typedef typename OutputImage::ConstRange  ConstRange;
 
     ///Self type
-    typedef VoronoiMap<TSpace, TPointPredicate,
-		       TSeparableMetric,TImageContainer> Self;
+    typedef VoronoiMap< TSpace, TPointPredicate,
+                        TSeparableMetric,TImageContainer > Self;
 
+
+    /// Periodicity specification type.
+    typedef std::array< bool, Space::dimension > PeriodicitySpec;
 
     /**
      * Constructor.
@@ -190,6 +194,10 @@ namespace DGtal
                ConstAlias<PointPredicate> predicate,
                ConstAlias<SeparableMetric> aMetric);
 
+    VoronoiMap(ConstAlias<Domain> aDomain,
+               ConstAlias<PointPredicate> predicate,
+               ConstAlias<SeparableMetric> aMetric,
+               PeriodicitySpec const & aPeriodicitySpec);
     /**
      * Default destructor
      */
@@ -279,7 +287,7 @@ namespace DGtal
      * @param [in] dim dimension of the update.
      */
     void computeOtherStep1D (const Point &row,
-			     const Dimension dim) const;
+                             const Dimension dim) const;
 
     // ------------------- protected methods ------------------------
   protected:
@@ -316,6 +324,9 @@ namespace DGtal
 
     ///Voronoi map image
     CountedPtr<OutputImage> myImagePtr;
+
+    /// Periodicity along each dimension.
+    PeriodicitySpec myPeriodicitySpec;
 
   }; // end of class VoronoiMap
 
