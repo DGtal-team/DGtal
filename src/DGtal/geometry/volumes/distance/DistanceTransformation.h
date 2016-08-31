@@ -149,6 +149,15 @@ namespace DGtal
                                                                           aMetric)
     {}
     
+    DistanceTransformation(ConstAlias<Domain> aDomain,
+                           ConstAlias<PointPredicate> predicate,
+                           ConstAlias<SeparableMetric> aMetric,
+                           typename Parent::PeriodicitySpec const & aPeriodicitySpec):
+      VoronoiMap<TSpace,TPointPredicate,TSeparableMetric,TImageContainer>(aDomain,
+                                                                          predicate,
+                                                                          aMetric,
+                                                                          aPeriodicitySpec)
+    {}
     /**
      * Default destructor
      */

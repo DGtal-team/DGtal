@@ -226,7 +226,9 @@ bool testVoronoiMap( std::array<bool, 2> const& periodicity = { false, false } )
  *
  */
 template<typename Set>
-bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
+bool testVoronoiMapFromSites2D( const Set &aSet,
+                                const std::string &name,
+                                std::array<bool, 2> const& periodicity = { false, false } )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -248,7 +250,7 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,2> L2Metric;
   typedef VoronoiMap<typename Set::Space, Set, L2Metric> Voro2;
   L2Metric l2;
-  Voro2 voro(aSet.domain(), mySet, l2 );
+  Voro2 voro(aSet.domain(), mySet, l2, periodicity );
 
   trace.endBlock();
 
@@ -256,14 +258,14 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,6> L6Metric;
   L6Metric l6;
   typedef VoronoiMap<typename Set::Space, Set, L6Metric> Voro6;
-  Voro6 voro6(aSet.domain(), mySet, l6 );
+  Voro6 voro6( aSet.domain(), mySet, l6, periodicity );
   trace.endBlock();
 
 
 
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Set, L2Metric> DT;
-  DT dt(aSet.domain(), mySet, l2);
+  DT dt( aSet.domain(), mySet, l2, periodicity );
   trace.endBlock();
 
 
@@ -297,7 +299,7 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
       if (!mySet(*it))
         board  << (*it);
     }
-  std::string filename= "Voromap-"+name+"-orig.svg";
+  std::string filename = "Voromap-" + name + "-orig." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
   board.saveSVG(filename.c_str());
 
   board.clear();
@@ -312,7 +314,7 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
         Display2DFactory::draw( board,   p - (*it), (*it));
     }
 
-  filename= "Voromap-"+name+"-diag.svg";
+  filename = "Voromap-" + name + "-diag." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
   board.saveSVG(filename.c_str());
 
 
@@ -322,6 +324,9 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
       it != itend; ++it)
     {
       Z2i::Point p = voro(*it);
+      for ( auto & v : p )
+        v = ( v + 10 + 21 ) % 21 - 10;
+
       unsigned char c = (p[1]*13 + p[0] * 7) % 256;
       //    if ((p != (*it)) && (p != voro.domain().upperBound() + Z2i::Point::diagonal(1))
       //	  &&  (p != voro.domain().lowerBound()))
@@ -329,24 +334,24 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
             << (*it);
     }
 
-  filename= "Voromap-"+name+".svg";
+  filename = "Voromap-" + name + "." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
   board.saveSVG(filename.c_str());
-  filename= "Voromap-"+name+"-hue.svg";
+  filename = "Voromap-" + name + "-hue." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
   saveVoroMap(filename.c_str(),voro,2);
 
 
 
   board.clear();
   for(typename Voro6::OutputImage::Domain::ConstIterator it = voro6.domain().begin(),
-        itend = voro6.domain().end();
+      itend = voro6.domain().end();
       it != itend; ++it)
     {
       Z2i::Point p = voro6(*it);
       if (p != (*it))
-	Display2DFactory::draw( board,   p - (*it), (*it));
+        Display2DFactory::draw( board,   p - (*it), (*it));
     }
 
-  filename= "Voromap-diag-l6-"+name+".svg";
+  filename = "Voromap-diag-l6-" + name + "." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
   board.saveSVG(filename.c_str());
 
   board.clear();
@@ -354,18 +359,25 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
       it != itend; ++it)
     {
       Z2i::Point p = voro6(*it);
+      for ( auto & v : p )
+        v = ( v + 10 + 21 ) % 21 - 10;
+
       unsigned char c = (p[1]*13 + p[0] * 7) % 256;
       board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
             << (*it);;
     }
 
-  filename= "Voromap-l6"+name+".svg";
+  filename = "Voromap-l6" + name + "." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
   board.saveSVG(filename.c_str());
-  filename= "Voromap-hue-l6-"+name+".svg";
+  filename = "Voromap-hue-l6-" + name + "." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
   saveVoroMap(filename.c_str(),voro6,3);
 
 
-  nbok += checkVoronoiL2(aSet,voro) ? 1 : 0;
+  if ( std::none_of( periodicity.cbegin(), periodicity.cend(), [] ( bool v ) { return v; } ) )
+    nbok += checkVoronoiL2(aSet,voro) ? 1 : 0;
+  else
+    ++nbok;
+
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "Voronoi diagram is valid !" << std::endl;
@@ -432,7 +444,7 @@ bool testVoronoiMapFromSites(const Set &aSet)
 }
 
 
-bool testSimple2D()
+bool testSimple2D( std::array<bool, 2> const& periodicity = { false, false } )
 {
 
   Z2i::Point a(-10,-10);
@@ -443,11 +455,11 @@ bool testSimple2D()
   bool ok;
 
   trace.beginBlock("Simple2D");
-  sites.insertNew( Z2i::Point(0,-6));
-  sites.insertNew( Z2i::Point(6,0));
-  sites.insertNew( Z2i::Point(-6,0));
+  sites.insertNew( Z2i::Point(3,-6));
+  sites.insertNew( Z2i::Point(9,0));
+  sites.insertNew( Z2i::Point(-3,0));
 
-  ok = testVoronoiMapFromSites2D<Z2i::DigitalSet>(sites,"simple");
+  ok = testVoronoiMapFromSites2D<Z2i::DigitalSet>( sites, "simple", periodicity );
   trace.endBlock();
 
   return ok;
@@ -577,6 +589,9 @@ int main( int argc, char** argv )
     && testVoronoiMap( { false, true } )
     && testVoronoiMap( { true, true } )
     && testSimple2D()
+    && testSimple2D( { true, false } )
+    && testSimple2D( { false, true } )
+    && testSimple2D( { true, true } )
     && testSimpleRandom2D()
     && testSimple3D()
     && testSimpleRandom3D()
