@@ -156,70 +156,23 @@ void
 DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingPoint,
                                                   const Dimension dim) const
 {
+  ASSERT(dim < S::dimension);
+
   // Default starting and ending point for a cycle
   Point startPoint = startingPoint;
   Point endPoint   = startingPoint;
   startPoint[dim]  = myLowerBoundCopy[dim];
   endPoint[dim]    = myUpperBoundCopy[dim];
 
-  int nbSites = -1;
-  std::vector<Point> Sites;
-
   // Extent along current dimension.
   const auto extent = myUpperBoundCopy[dim] - myLowerBoundCopy[dim] + 1;
 
-  ASSERT(dim < S::dimension);
+  // Sites storage.
+  std::vector<Point> Sites;
 
   // Reserve sites storage.
   // +1 along periodic dimension in order to store two times the site that is on break index.
   Sites.reserve( extent + ( myPeriodicitySpec[dim] ? 1 : 0 ) );
-
-  /*
-  // Start and end point of the 1D row
-  if ( myPeriodicSpec[dim] )
-    {
-      // In the periodic case, the cycle depends on break index
-      if ( dim == 0 )
-        {
-          // Along the first dimension, the break index is at the first site found.
-          // Break index is set to myUpperBoundCopy[dim]+1 if no site is found.
-          for ( startPoint[dim] = myLowerBoundCopy[dim];
-                starPoint[dim] <= myUpperBoundCopy[dim] && myImagePtr->operator()( startPoint ) == myInfinity;
-                ++startPoint[dim] )
-            { }
-        }
-      else
-        {
-          // Along other than the first dimension, the break index is at the lower site found.
-          // Break index is set to myUpperBoundCopy[dim]+1 if no site is found.
-          startPoint[dim] = myUpperBoundCopy[dim] + 1;
-          auto minRawDist = DGtal::NumberTraits< TSep::RawValue >::max();
-
-          for ( auto point = startPoint; point[dim] <= myUpperBoundCopy[dim]; ++point[dim] )
-            {
-              psite = myImagePtr->operator()( point );
-              if ( psite != myInfinity )
-                {
-                  const auto rawDist = myMetricPtr->RawDistance( point, psite );
-                  if ( rawDist < minRawDist )
-                    {
-                      minRawDist = rawDist;
-                      startPoint[dim] = point[dim];
-                    }
-                }
-            }
-        }
-
-      // The cycle ends with the start point (included).
-      endPoint[dim] = startPoint[dim] + extent;
-    }
-  else
-    {
-      // In the non-periodic case, the cycle simply starts at lower bound and ends at upper bound.
-      startPoint[dim] = myLowerBoundCopy[dim];
-      endPoint[dim]   = myUpperBoundCopy[dim];
-    }
-  */
 
   // If break index was not found, then no sites will be found.
   if ( startPoint[dim] > myUpperBoundCopy[dim] )
@@ -228,21 +181,18 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
   // Pruning the list of sites and defining cycle bounds.
   // In the periodic case, the cycle bounds depend on the so-called break index
   // that defines the start point.
-  if ( dim == 0)
+  if ( dim == 0 )
     {
       // For dim = 0, no sites are hidden.
       for ( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
         {
           const Point psite = myImagePtr->operator()( point );
           if ( psite != myInfinity )
-            {
-              nbSites++;
-              Sites.push_back( psite );
-            }
+            Sites.push_back( psite );
         }
 
       // If no sites are found, then there is nothing to do.
-      if ( nbSites == -1 )
+      if ( Sites.size() == 0 )
         return;
 
       // In the periodic case and along the first dimension, the break index
@@ -291,15 +241,11 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
 
           if ( psite != myInfinity )
             {
-              while ((nbSites >= 1) &&
-                     ( myMetricPtr->hiddenBy(Sites[nbSites-1], Sites[nbSites] ,
+              while (( Sites.size() >= 2 ) &&
+                     ( myMetricPtr->hiddenBy(Sites[Sites.size()-2], Sites[Sites.size()-1] ,
                                              psite, startingPoint, endPoint, dim) ))
-                {
-                  nbSites --;
-                  Sites.pop_back();
-                }
+                Sites.pop_back();
 
-              nbSites++;
               Sites.push_back( psite );
             }
         }
@@ -318,15 +264,11 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
                   // Site coordinates must be between startPoint and endPoint.
                   psite[dim] += extent;
 
-                  while ((nbSites >= 1) &&
-                         ( myMetricPtr->hiddenBy(Sites[nbSites-1], Sites[nbSites] ,
+                  while (( Sites.size() >= 2 ) &&
+                         ( myMetricPtr->hiddenBy(Sites[Sites.size()-2], Sites[Sites.size()-1] ,
                                                  psite, startingPoint, endPoint, dim) ))
-                    {
-                      nbSites --;
-                      Sites.pop_back();
-                    }
+                    Sites.pop_back();
 
-                  nbSites++;
                   Sites.push_back( psite );
                 }
             }
@@ -334,21 +276,21 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
     }
 
   //No sites found
-  if (nbSites == -1)
+  if ( Sites.size() == 0 )
     return;
 
   // Rewriting for both periodic and non-periodic cases.
-  int k = 0;
+  std::size_t siteId = 0;
   auto point = startPoint;
 
   for ( ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
     {
-      while ( (k < nbSites) &&
-             ( myMetricPtr->closest(point, Sites[k], Sites[k+1])
+      while ( ( siteId < Sites.size()-1 ) &&
+             ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1])
               != DGtal::ClosestFIRST ))
-        k++;
+        siteId++;
 
-      myImagePtr->setValue(point, Sites[k]);
+      myImagePtr->setValue(point, Sites[siteId]);
     }
 
   // Continuing rewriting in the periodic case.
@@ -356,12 +298,12 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
     {
       for ( ; point[dim] <= endPoint[dim] ; ++point[dim] )
         {
-          while ( (k < nbSites) &&
-                 ( myMetricPtr->closest(point, Sites[k], Sites[k+1])
+          while ( ( siteId < Sites.size()-1 ) &&
+                 ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1])
                   != DGtal::ClosestFIRST ))
-            k++;
+            siteId++;
 
-          myImagePtr->setValue(point - Point::base(dim, extent), Sites[k]);
+          myImagePtr->setValue(point - Point::base(dim, extent), Sites[siteId]);
         }
     }
 
