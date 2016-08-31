@@ -84,7 +84,9 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::compute( )
   myUpperBoundCopy = myDomainPtr->upperBound();
 
   //Point outside the domain
-  myInfinity = myDomainPtr->upperBound() + Point::diagonal(1);
+  //myInfinity = myDomainPtr->upperBound() + Point::diagonal(1);
+  for ( auto & coord : myInfinity )
+    coord = DGtal::NumberTraits< typename Point::Coordinate >::max(); 
 
   //Init
   for ( typename Domain::ConstIterator it = myDomainPtr->begin(), itend = myDomainPtr->end();
@@ -200,7 +202,10 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
       if ( myPeriodicitySpec[dim] )
         {
           startPoint[dim] = Sites[0][dim];
-          endPoint[dim]   = startPoint[dim] + extent; // The cycle ends with the start point (included).
+          endPoint[dim]   = startPoint[dim] + extent - 1;
+
+          // The first site is also the last site (with appropriate shift).
+          Sites.push_back( Sites[0] + Point::base(dim, extent) );
         }
     }
   else
@@ -230,8 +235,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
           if ( minRawDist == DGtal::NumberTraits< typename SeparableMetric::RawValue >::max() )
             return;
 
-          // The cycle ends with the start point (included).
-          endPoint[dim] = startPoint[dim] + extent;
+          endPoint[dim] = startPoint[dim] + extent - 1;
         }
 
       // Pruning the list of sites for both periodic and non-periodic cases.
@@ -272,10 +276,13 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
                   Sites.push_back( psite );
                 }
             }
+
+          // The first site is also the last site (with appropriate shift).
+          Sites.push_back( Sites[0] + Point::base(dim, extent) );
         }
     }
 
-  //No sites found
+  // No sites found
   if ( Sites.size() == 0 )
     return;
 
@@ -303,7 +310,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
                   != DGtal::ClosestFIRST ))
             siteId++;
 
-          myImagePtr->setValue(point - Point::base(dim, extent), Sites[siteId]);
+          myImagePtr->setValue(point - Point::base(dim, extent), Sites[siteId] - Point::base(dim, extent) );
         }
     }
 
