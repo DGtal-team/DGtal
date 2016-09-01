@@ -64,19 +64,11 @@ template <typename VoroMap>
 void saveVoroMap(const std::string &filename,const VoroMap &output,const double p)
 {
   typedef HueShadeColorMap<double,2> Hue;
-  double maxdt=0.0;
 
-  for ( typename VoroMap::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
-	it != itend; ++it)
-    {
-      typename VoroMap::Value point = output(*it);
-      if ( mynorm(point-(*it),p) > maxdt)
-        maxdt = mynorm(point-(*it),p);
-    }
-  trace.error() << "MaxDT="<<maxdt<<std::endl;
+  const double maxdt = mynorm( output.domain().upperBound() - output.domain().lowerBound(), p );
 
   Board2D board;
-  Hue hue(0,maxdt);
+  Hue hue(0, maxdt);
 
   for(typename VoroMap::Domain::ConstIterator it = output.domain().begin(),
         itend = output.domain().end();
@@ -91,6 +83,61 @@ void saveVoroMap(const std::string &filename,const VoroMap &output,const double 
   board.saveSVG(filename.c_str());
 }
 
+/** Modify a point coordinates as if the given domain is periodic
+ * and so that the coordinates are between the lower and upper bounds
+ * of the domain.
+ *
+ * @param aPoint  the point.
+ * @param aDomain the periodic domain.
+ * @return the same point with coordinates between domain's lower and upper bounds.
+ */
+template < typename Point, typename Domain >
+Point calcPointModuloDomain( Point aPoint, Domain const & aDomain )
+{
+  auto const & lowerBound = aDomain.lowerBound();
+  auto const & upperBound = aDomain.upperBound();
+
+  for ( std::size_t i = 0; i < Domain::dimension; ++i )
+    aPoint[i] = ( aPoint[i] - 2*lowerBound[i] + upperBound[i] + 1 ) % ( upperBound[i] - lowerBound[i] + 1 ) + lowerBound[i];
+
+  return aPoint;
+}
+
+/** Returns periodicity specification from an integer between 0 and 2^n - 1.
+ *
+ * From an integer between 0 and 2^n-1, it returns a boolean array of size n
+ * whith value true at position i if the ith bit of the integer is set,
+ * false otherwise.
+ *
+ * @tparam N          size of the periodicity specification array.
+ * @param  anInteger  an integer between 0 and 2^N-1.
+ * @return a periodicity specification array.
+ */
+template < std::size_t N >
+std::array<bool, N> getPeriodicityFromInteger( std::size_t anInteger )
+{
+  std::array<bool, N> periodicity;
+  for ( std::size_t i = 0, mask = 1 ; i < N ; ++i, mask *= 2 )
+    periodicity[i] = anInteger & mask;
+
+  return periodicity;
+}
+
+/** Format a periodicity specification array as a string.
+ *
+ * @param aPeriodicity the periodicity specification array.
+ * @return a string which ith character is '0' if the ith dimension is
+ *         non-periodic, '1' otherwise.
+ */
+template < std::size_t N >
+std::string formatPeriodicity( std::array<bool, N> const& aPeriodicity )
+{
+  std::string str;
+  for ( std::size_t i = 0; i < N; ++i )
+    str += aPeriodicity[i] ? '1' : '0';
+
+  return str;
+}
 
 /* Is Validate the VoronoiMap
  */
@@ -189,32 +236,23 @@ bool testVoronoiMap( std::array<bool, 2> const& periodicity = { false, false } )
         itend = voro.domain().end();
       it != itend; ++it)
     {
-      Z2i::Point p = voro(*it);
-      for ( auto & v : p )
-        v = ( v + 10 + 21 ) % 21 - 10;
-
-      unsigned char c = ( p[1]*13 + p[0] * 7) % 256;
+      const auto p = calcPointModuloDomain( voro(*it), voro.domain() );
+      const unsigned char c = ( p[1]*13 + p[0] * 7) % 256;
       board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
             << (*it);
     }
 
-  board.saveSVG( ( "Voromap" + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg" ).c_str() );
+  board.saveSVG( ( "Voromap." + formatPeriodicity(periodicity) + ".svg" ).c_str() );
 
   if ( std::none_of( periodicity.cbegin(), periodicity.cend(), [] ( bool v ) { return v; } ) )
     {
       nbok += checkVoronoiL2(sites,voro) ? 1 : 0;
+      nb++;
     }
-  else
-    {
-      nbok += 1;
-    }
-  nb++;
+
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "Voronoi diagram is valid !" << std::endl;
   trace.endBlock();
-
-
-
 
   return nbok == nb;
 }
@@ -299,7 +337,7 @@ bool testVoronoiMapFromSites2D( const Set &aSet,
       if (!mySet(*it))
         board  << (*it);
     }
-  std::string filename = "Voromap-" + name + "-orig." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
+  std::string filename = "Voromap-" + name + "-orig." + formatPeriodicity(periodicity) + ".svg";
   board.saveSVG(filename.c_str());
 
   board.clear();
@@ -314,7 +352,7 @@ bool testVoronoiMapFromSites2D( const Set &aSet,
         Display2DFactory::draw( board,   p - (*it), (*it));
     }
 
-  filename = "Voromap-" + name + "-diag." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
+  filename = "Voromap-" + name + "-diag." + formatPeriodicity(periodicity) + ".svg";
   board.saveSVG(filename.c_str());
 
 
@@ -323,22 +361,17 @@ bool testVoronoiMapFromSites2D( const Set &aSet,
   for(typename Voro2::OutputImage::Domain::ConstIterator it = voro.domain().begin(), itend = voro.domain().end();
       it != itend; ++it)
     {
-      Z2i::Point p = voro(*it);
-      for ( auto & v : p )
-        v = ( v + 10 + 21 ) % 21 - 10;
-
+      const auto p = calcPointModuloDomain( voro(*it), voro.domain() );
       unsigned char c = (p[1]*13 + p[0] * 7) % 256;
-      //    if ((p != (*it)) && (p != voro.domain().upperBound() + Z2i::Point::diagonal(1))
-      //	  &&  (p != voro.domain().lowerBound()))
       board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
             << (*it);
     }
 
-  filename = "Voromap-" + name + "." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
+  filename = "Voromap-" + name + "." + formatPeriodicity(periodicity) + ".svg";
   board.saveSVG(filename.c_str());
-  filename = "Voromap-" + name + "-hue." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
-  saveVoroMap(filename.c_str(),voro,2);
 
+  filename = "Voromap-" + name + "-hue." + formatPeriodicity(periodicity) + ".svg";
+  saveVoroMap(filename.c_str(),voro,2);
 
 
   board.clear();
@@ -351,34 +384,32 @@ bool testVoronoiMapFromSites2D( const Set &aSet,
         Display2DFactory::draw( board,   p - (*it), (*it));
     }
 
-  filename = "Voromap-diag-l6-" + name + "." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
+  filename = "Voromap-diag-l6-" + name + "." + formatPeriodicity(periodicity) + ".svg";
   board.saveSVG(filename.c_str());
 
   board.clear();
   for(typename Voro6::OutputImage::Domain::ConstIterator it = voro6.domain().begin(), itend = voro6.domain().end();
       it != itend; ++it)
     {
-      Z2i::Point p = voro6(*it);
-      for ( auto & v : p )
-        v = ( v + 10 + 21 ) % 21 - 10;
-
+      const auto p = calcPointModuloDomain( voro6(*it), voro6.domain() );
       unsigned char c = (p[1]*13 + p[0] * 7) % 256;
       board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
             << (*it);;
     }
 
-  filename = "Voromap-l6" + name + "." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
+  filename = "Voromap-l6" + name + "." + formatPeriodicity(periodicity) + ".svg";
   board.saveSVG(filename.c_str());
-  filename = "Voromap-hue-l6-" + name + "." + std::to_string(periodicity[0]) + std::to_string(periodicity[1]) + ".svg";
+
+  filename = "Voromap-hue-l6-" + name + "." + formatPeriodicity(periodicity) + ".svg";
   saveVoroMap(filename.c_str(),voro6,3);
 
 
   if ( std::none_of( periodicity.cbegin(), periodicity.cend(), [] ( bool v ) { return v; } ) )
-    nbok += checkVoronoiL2(aSet,voro) ? 1 : 0;
-  else
-    ++nbok;
+    {
+      nbok += checkVoronoiL2(aSet,voro) ? 1 : 0;
+      nb++;
+    }
 
-  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "Voronoi diagram is valid !" << std::endl;
 
@@ -390,7 +421,15 @@ bool testVoronoiMapFromSites2D( const Set &aSet,
  *
  */
 template<typename Set>
-bool testVoronoiMapFromSites(const Set &aSet)
+bool testVoronoiMapFromSites( const Set &aSet )
+{
+  std::array<bool, Set::dimension> periodicity;
+  periodicity.fill( false );
+  return testVoronoiMapFromSites( aSet, periodicity );
+}
+
+template<typename Set>
+bool testVoronoiMapFromSites( const Set &aSet, std::array<bool, Set::Space::dimension> const & periodicity )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -414,7 +453,7 @@ bool testVoronoiMapFromSites(const Set &aSet)
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,2> L2Metric;
   typedef VoronoiMap<typename Set::Space, Set, L2Metric> Voro2;
   L2Metric l2;
-  Voro2 voro(aSet.domain(), mySet, l2);
+  Voro2 voro(aSet.domain(), mySet, l2, periodicity);
   trace.endBlock();
 
 
@@ -422,21 +461,26 @@ bool testVoronoiMapFromSites(const Set &aSet)
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,3> L3Metric;
   typedef VoronoiMap<typename Set::Space, Set, L3Metric> Voro3;
   L3Metric l3;
-  Voro3 voro3(aSet.domain(), mySet, l3);
+  Voro3 voro3(aSet.domain(), mySet, l3, periodicity);
   trace.endBlock();
 
 
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Set, L2Metric> DT;
-  DT dt(aSet.domain(), mySet, l2);
+  DT dt(aSet.domain(), mySet, l2, periodicity);
 
   trace.endBlock();
 
 
-  trace.beginBlock("Validating the Voronoi Map");
-  nbok += (checkVoronoiL2(aSet,voro)   )? 1 : 0;
-  trace.endBlock();
-  nb++;
+
+  if ( std::none_of( periodicity.cbegin(), periodicity.cend(), [] ( bool v ) { return v; } ) )
+    {
+      trace.beginBlock("Validating the Voronoi Map");
+      nbok += (checkVoronoiL2(aSet,voro)   )? 1 : 0;
+      nb++;
+      trace.endBlock();
+    }
+
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "Voronoi diagram is valid !" << std::endl;
 
@@ -444,7 +488,7 @@ bool testVoronoiMapFromSites(const Set &aSet)
 }
 
 
-bool testSimple2D( std::array<bool, 2> const& periodicity = { false, false } )
+bool testSimple2D()
 {
 
   Z2i::Point a(-10,-10);
@@ -452,14 +496,16 @@ bool testSimple2D( std::array<bool, 2> const& periodicity = { false, false } )
   Z2i::Domain domain(a,b);
 
   Z2i::DigitalSet sites(domain);
-  bool ok;
+  bool ok = true;
 
   trace.beginBlock("Simple2D");
   sites.insertNew( Z2i::Point(3,-6));
   sites.insertNew( Z2i::Point(9,0));
   sites.insertNew( Z2i::Point(-3,0));
 
-  ok = testVoronoiMapFromSites2D<Z2i::DigitalSet>( sites, "simple", periodicity );
+  for ( std::size_t i = 0; i < 4; ++i )
+    ok = ok && testVoronoiMapFromSites2D( sites, "simple", getPeriodicityFromInteger<2>(i) );
+
   trace.endBlock();
 
   return ok;
@@ -469,12 +515,12 @@ bool testSimple2D( std::array<bool, 2> const& periodicity = { false, false } )
 bool testSimpleRandom2D()
 {
   unsigned size=16;
- Z2i::Point a(0,0);
- Z2i::Point b(size,size);
+  Z2i::Point a(0,0);
+  Z2i::Point b(size,size);
   Z2i::Domain domain(a,b);
 
   Z2i::DigitalSet sites(domain);
-  bool ok;
+  bool ok = true;
 
   trace.beginBlock("Random 2D");
   for(unsigned int i = 0 ; i < size; ++i)
@@ -482,7 +528,10 @@ bool testSimpleRandom2D()
       Z2i::Point p(  rand() % (b[0]) -  a[0],  rand() % (b[1]) +  a[1]  );
       sites.insert( p );
     }
-  ok = testVoronoiMapFromSites2D<Z2i::DigitalSet>(sites,"random");
+
+  for ( std::size_t i = 0; i < 4; ++i )
+    ok = ok && testVoronoiMapFromSites2D( sites, "random", getPeriodicityFromInteger<2>(i) );
+
   trace.endBlock();
 
   trace.beginBlock("Random 2D (dense)");
@@ -491,11 +540,13 @@ bool testSimpleRandom2D()
       Z2i::Point p(  rand() % (b[0]) -  a[0],  rand() % (b[1]) +  a[1]  );
       sites.insert( p );
     }
-  ok = ok && testVoronoiMapFromSites2D<Z2i::DigitalSet>(sites,"random-dense");
+
+  for ( std::size_t i = 0; i < 4; ++i )
+    ok = ok && testVoronoiMapFromSites2D( sites, "random-dense", getPeriodicityFromInteger<2>(i) );
+
   trace.endBlock();
 
   return ok;
-
 }
 
 
@@ -507,18 +558,19 @@ bool testSimple3D()
   Z3i::Domain domain(a,b);
 
   Z3i::DigitalSet sites(domain);
-  bool ok;
+  bool ok = true;
 
   trace.beginBlock("Simple3D");
   sites.insertNew( Z3i::Point(0,0,-6));
   sites.insertNew( Z3i::Point(6,0,0));
   sites.insertNew( Z3i::Point(-6,0,3));
 
-  ok = testVoronoiMapFromSites<Z3i::DigitalSet>(sites);
+  for ( std::size_t i = 0; i < 8; ++i )
+    ok = ok && testVoronoiMapFromSites( sites, getPeriodicityFromInteger<3>(i) );
+
   trace.endBlock();
 
   return ok;
-
 }
 
 bool testSimpleRandom3D()
@@ -529,7 +581,7 @@ bool testSimpleRandom3D()
   Z3i::Domain domain(a,b);
 
   Z3i::DigitalSet sites(domain);
-  bool ok;
+  bool ok = true;
 
   trace.beginBlock("Random 3D");
   for(unsigned int i = 0 ; i < 64; ++i)
@@ -539,11 +591,13 @@ bool testSimpleRandom3D()
                      rand() % (b[2]) +  a[2]  );
       sites.insert( p );
     }
-  ok = testVoronoiMapFromSites<Z3i::DigitalSet>(sites);
+
+  for ( std::size_t i = 0; i < 8; ++i )
+    ok = ok && testVoronoiMapFromSites( sites, getPeriodicityFromInteger<3>(i) );
+
   trace.endBlock();
 
   return ok;
-
 }
 
 
@@ -557,18 +611,19 @@ bool testSimple4D()
   HyperRectDomain<Space4> domain(a,b);
 
   DigitalSetBySTLSet< HyperRectDomain<Space4> > sites(domain);
-  bool ok;
+  bool ok = true;
 
   trace.beginBlock("Simple4D");
   sites.insertNew( Space4::Point(1,4,1,1));
   sites.insertNew( Space4::Point(3,1,3,1));
   sites.insertNew( Space4::Point(0,0,0,0));
 
-  ok = testVoronoiMapFromSites<  DigitalSetBySTLSet< HyperRectDomain<Space4> >  >(sites);
+  for ( std::size_t i = 0; i < 16; ++i )
+    ok = ok && testVoronoiMapFromSites( sites, getPeriodicityFromInteger<4>(i) );
+
   trace.endBlock();
 
   return ok;
-
 }
 
 
@@ -589,14 +644,12 @@ int main( int argc, char** argv )
     && testVoronoiMap( { false, true } )
     && testVoronoiMap( { true, true } )
     && testSimple2D()
-    && testSimple2D( { true, false } )
-    && testSimple2D( { false, true } )
-    && testSimple2D( { true, true } )
     && testSimpleRandom2D()
     && testSimple3D()
     && testSimpleRandom3D()
     && testSimple4D()
     ; // && ... other tests
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
