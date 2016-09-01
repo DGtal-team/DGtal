@@ -158,7 +158,8 @@ namespace DGtal
 
     ///Type of resulting image
     typedef TImageContainer OutputImage;
-     ///Definition of the image value type.
+
+    ///Definition of the image value type.
     typedef Vector Value;
 
     ///Definition of the image value type.
@@ -173,12 +174,13 @@ namespace DGtal
     typedef std::array< bool, Space::dimension > PeriodicitySpec;
 
     /**
-     * Constructor.
+     * Constructor in the non-periodic case.
      *
      * This constructor computes the Voronoi Map of a set of point
-     * sites using a SeparableMetric metric.  The method associates to
-     * each point satisfying the foreground predicate, the closest
-     * site for which the predicate is false. This algorithm is
+     * sites using a SeparableMetric metric, on a non-periodic domain.
+     *
+     * The method associates to each point satisfying the foreground predicate,
+     * the closest site for which the predicate is false. This algorithm is
      * @f$ O(h.d.|domain size|)@f$ if the separable metric "hiddenBy"
      * predicate is in @f$ O(h)$@f$.
      *
@@ -188,12 +190,36 @@ namespace DGtal
      * @param predicate a pointer to the point predicate to define the
      * Voronoi sites (false points).
      *
-     *@param aMetric a pointer to the separable metric instance.
+     * @param aMetric a pointer to the separable metric instance.
      */
     VoronoiMap(ConstAlias<Domain> aDomain,
                ConstAlias<PointPredicate> predicate,
                ConstAlias<SeparableMetric> aMetric);
 
+    /**
+     * Constructor with periodicity specification.
+     *
+     * This constructor computes the Voronoi Map of a set of point
+     * sites using a SeparableMetric metric, on a domain with specified
+     * periodicity.
+     *
+     * The method associates to each point satisfying the foreground predicate,
+     * the closest site for which the predicate is false. This algorithm is
+     * @f$ O(h.d.|domain size|)@f$ if the separable metric "hiddenBy"
+     * predicate is in @f$ O(h)$@f$.
+     *
+     * @param aDomain a pointer to the (hyper-rectangular) domain on
+     * which the computation is performed.
+     *
+     * @param predicate a pointer to the point predicate to define the
+     * Voronoi sites (false points).
+     *
+     * @param aMetric a pointer to the separable metric instance.
+     *
+     * @param aPeriodicitySpec an array of size equal to the space dimension
+     *        where the i-th value is \c true if the i-th dimension of the
+     *        space is periodic, \c false otherwise.
+     */
     VoronoiMap(ConstAlias<Domain> aDomain,
                ConstAlias<PointPredicate> predicate,
                ConstAlias<SeparableMetric> aMetric,
@@ -251,6 +277,25 @@ namespace DGtal
     {
       return myMetricPtr;
     }
+
+    /** Periodicity specification.
+     *
+     * @returns the periodicity specification array.
+     */
+    PeriodicitySpec const & getPeriodicitySpec() const
+      {
+        return myPeriodicitySpec;
+      }
+
+    /** Periodicity specification along one dimensions.
+     *
+     * @param n the dimension index.
+     * @return \c true if the n-th dimension is periodic, \c false otherwise.
+     */
+    bool isPeriodic( Dimension n ) const
+      {
+        return myPeriodicitySpec[ n ];
+      }
 
     /**
      * Self Display method.

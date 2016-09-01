@@ -70,6 +70,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::operator=(const Self &aOtherVoronoiMap )
       myInfinity = aOtherVoronoiMap.myInfinity;
       myLowerBoundCopy = aOtherVoronoiMap.myLowerBoundCopy;
       myUpperBoundCopy = aOtherVoronoiMap.myUpperBoundCopy;
+      myPeriodicitySpec = aOtherVoronoiMap.myPeriodicitySpec;
     }
   return *this;
 }
