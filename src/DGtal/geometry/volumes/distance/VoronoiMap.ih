@@ -259,7 +259,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
         {
           auto point = startPoint;
           point[dim] = myLowerBoundCopy[dim];
-          for ( ; point[dim] <= endPoint[dim] - extent; ++point[dim] )
+          for ( ; point[dim] <= endPoint[dim] - extent + 1; ++point[dim] ) // +1 in order to add the break-index site at the cycle's end.
             {
               Point psite = myImagePtr->operator()(point);
 
@@ -276,9 +276,6 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
                   Sites.push_back( psite );
                 }
             }
-
-          // The first site is also the last site (with appropriate shift).
-          Sites.push_back( Sites[0] + Point::base(dim, extent) );
         }
     }
 
