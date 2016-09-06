@@ -229,6 +229,11 @@ namespace DGtal
      */
     ~VoronoiMap();
 
+    /**
+     * Disabling default constructor.
+     */
+     VoronoiMap() = delete;
+
   public:
     // ------------------- ConstImage model ------------------------
 
@@ -333,16 +338,6 @@ namespace DGtal
      */
     void computeOtherStep1D (const Point &row,
                              const Dimension dim) const;
-
-    // ------------------- protected methods ------------------------
-  protected:
-
-    /**
-     * Default Constructor.
-     *
-     */
-    VoronoiMap();
-
 
     // ------------------- Private members ------------------------
   private:
