@@ -85,7 +85,6 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::compute( )
   myUpperBoundCopy = myDomainPtr->upperBound();
 
   //Point outside the domain
-  //myInfinity = myDomainPtr->upperBound() + Point::diagonal(1);
   for ( auto & coord : myInfinity )
     coord = DGtal::NumberTraits< typename Point::Coordinate >::max(); 
 
@@ -109,7 +108,7 @@ void
 DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
 {
 #ifdef VERBOSE
-  std::string title = "Voro dimension " +  boost::lexical_cast<std::string>( dim ) ;
+  std::string title = "VoronoiMap dimension " +  boost::lexical_cast<std::string>( dim ) ;
   trace.beginBlock ( title );
 #endif
 
@@ -170,7 +169,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
   // Extent along current dimension.
   const auto extent = myUpperBoundCopy[dim] - myLowerBoundCopy[dim] + 1;
 
-  // Sites storage.
+  // Site storage.
   std::vector<Point> Sites;
 
   // Reserve sites storage.
