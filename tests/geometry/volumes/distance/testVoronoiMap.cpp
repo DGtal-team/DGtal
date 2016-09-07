@@ -219,7 +219,7 @@ bool testCheckConcept()
  * Example of a test. To be completed.
  *
  */
-bool testVoronoiMap( std::array<bool, 2> const& periodicity = { false, false } )
+bool testVoronoiMap( std::array<bool, 2> const& periodicity = { {false, false} } )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -296,7 +296,7 @@ bool testVoronoiMap( std::array<bool, 2> const& periodicity = { false, false } )
 template<typename Set>
 bool testVoronoiMapFromSites2D( const Set &aSet,
                                 const std::string &name,
-                                std::array<bool, 2> const& periodicity = { false, false } )
+                                std::array<bool, 2> const& periodicity = { {false, false} } )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -679,9 +679,9 @@ int main( int argc, char** argv )
 
   bool res = testCheckConcept()
     && testVoronoiMap()
-    && testVoronoiMap( { true, false } )
-    && testVoronoiMap( { false, true } )
-    && testVoronoiMap( { true, true } )
+    && testVoronoiMap( { {true, false} } )
+    && testVoronoiMap( { {false, true} } )
+    && testVoronoiMap( { {true, true} } )
     && testSimple2D()
     && testSimpleRandom2D()
     && testSimple3D()
