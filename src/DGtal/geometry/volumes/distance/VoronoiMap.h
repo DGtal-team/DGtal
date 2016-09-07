@@ -191,7 +191,7 @@ namespace DGtal
      * The method associates to each point satisfying the foreground predicate,
      * the closest site for which the predicate is false. This algorithm is
      * @f$ O(h.d.|domain size|)@f$ if the separable metric "hiddenBy"
-     * predicate is in @f$ O(h)$@f$.
+     * predicate is in @f$ O(h)@f$.
      *
      * @param aDomain a pointer to the (hyper-rectangular) domain on
      * which the computation is performed.
@@ -215,7 +215,7 @@ namespace DGtal
      * The method associates to each point satisfying the foreground predicate,
      * the closest site for which the predicate is false. This algorithm is
      * @f$ O(h.d.|domain size|)@f$ if the separable metric "hiddenBy"
-     * predicate is in @f$ O(h)$@f$.
+     * predicate is in @f$ O(h)@f$.
      *
      * @param aDomain a pointer to the (hyper-rectangular) domain on
      * which the computation is performed.
@@ -237,6 +237,11 @@ namespace DGtal
      * Default destructor
      */
     ~VoronoiMap();
+
+    /**
+     * Disabling default constructor.
+     */
+     VoronoiMap() = delete;
 
   public:
     // ------------------- ConstImage model ------------------------
@@ -298,10 +303,10 @@ namespace DGtal
 
     /** Periodicity specification along one dimensions.
      *
-     * @param n the dimension index.
+     * @param [in] n the dimension index.
      * @return \c true if the n-th dimension is periodic, \c false otherwise.
      */
-    bool isPeriodic( Dimension n ) const
+    bool isPeriodic( const Dimension n ) const
       {
         return myPeriodicitySpec[ n ];
       }
@@ -342,16 +347,6 @@ namespace DGtal
      */
     void computeOtherStep1D (const Point &row,
                              const Dimension dim) const;
-
-    // ------------------- protected methods ------------------------
-  protected:
-
-    /**
-     * Default Constructor.
-     *
-     */
-    VoronoiMap();
-
 
     // ------------------- Private members ------------------------
   private:
