@@ -174,7 +174,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
 
   // Reserve sites storage.
   // +1 along periodic dimension in order to store two times the site that is on break index.
-  Sites.reserve( extent + ( myPeriodicitySpec[dim] ? 1 : 0 ) );
+  Sites.reserve( extent + ( isPeriodic(dim) ? 1 : 0 ) );
 
   // If break index was not found, then no sites will be found.
   if ( startPoint[dim] > myUpperBoundCopy[dim] )
@@ -199,7 +199,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
 
       // In the periodic case and along the first dimension, the break index
       // is at the first site found.
-      if ( myPeriodicitySpec[dim] )
+      if ( isPeriodic(dim) )
         {
           startPoint[dim] = Sites[0][dim];
           endPoint[dim]   = startPoint[dim] + extent - 1;
@@ -211,7 +211,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
   else
     {
       // In the periodic case, the cycle depends on break index
-      if ( myPeriodicitySpec[dim] )
+      if ( isPeriodic(dim) )
         {
           // Along other than the first dimension, the break index is at the lower site found.
           auto minRawDist = DGtal::NumberTraits< typename SeparableMetric::RawValue >::max();
@@ -255,7 +255,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
         }
 
       // Pruning the remaining list of sites in the periodic case.
-      if ( myPeriodicitySpec[dim] )
+      if ( isPeriodic(dim) )
         {
           auto point = startPoint;
           point[dim] = myLowerBoundCopy[dim];
@@ -298,7 +298,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
     }
 
   // Continuing rewriting in the periodic case.
-  if ( myPeriodicitySpec[dim] )
+  if ( isPeriodic(dim) )
     {
       for ( ; point[dim] <= endPoint[dim] ; ++point[dim] )
         {
