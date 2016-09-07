@@ -66,8 +66,9 @@ namespace DGtal
    * \brief Aim: Implementation of the linear in time Voronoi map
    * construction.
 
-   * The algorithm uses a sperable process to construct Voronoi maps
-   * which has been described in @cite Maurer2003PAMI @cite dcoeurjo_these
+   * The algorithm uses a seperable process to construct Voronoi maps
+   * which has been described in @cite Maurer2003PAMI @cite dcoeurjo_these.
+   * Along periodic dimensions, the algorithm is adapted following @cite Coeurjo2008.
    *
    * Given a domain and a point predicate, an instance returns, for
    * each point in the domain, the closest point for which the
@@ -77,6 +78,14 @@ namespace DGtal
    * two sites (e.g. if the digital point belong to a Voronoi cell
    * boundary in the Euclidean space), this Voronoi map construction
    * will only keep one of them.
+   *
+   * By default, the domain is considered non-periodic but per-dimension
+   * periodicity can be specified in the constructor.
+   * When the domain has periodic dimensions, the closest point
+   * coordinates \c B to a given point \c A may not be between the lower
+   * and upper bounds of the domain, in such a way that the non-periodic
+   * distance between \c A and \c B is equal to their distance considering
+   * the periodicity.
    *
    * The metric is specified by a model of concepts::CSeparableMetric (for
    * instance, any instance of ExactPredicateLpSeparableMetric or

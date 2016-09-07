@@ -87,7 +87,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::compute( )
   //Point outside the domain
   //myInfinity = myDomainPtr->upperBound() + Point::diagonal(1);
   for ( auto & coord : myInfinity )
-    coord = DGtal::NumberTraits< typename Point::Coordinate >::max(); 
+    coord = DGtal::NumberTraits< typename Point::Coordinate >::max();
 
   //Init
   for ( typename Domain::ConstIterator it = myDomainPtr->begin(), itend = myDomainPtr->end();
