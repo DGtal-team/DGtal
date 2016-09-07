@@ -263,7 +263,6 @@ namespace DGtal
       return *myDomainPtr;
     }
 
-
     /**
      * Returns a const range on the Voronoi map values.
      *  @return a const range
