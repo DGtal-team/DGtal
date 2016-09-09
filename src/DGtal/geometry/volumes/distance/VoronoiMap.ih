@@ -44,37 +44,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-
-
-/**
- * Destructor.
- */
-template <typename S, typename P,typename TSep, typename TImage>
-inline
-DGtal::VoronoiMap<S, P,TSep, TImage>::~VoronoiMap()
-{
-}
-
-
-template <typename S, typename P, typename TSep, typename TImage>
-inline
-typename DGtal::VoronoiMap<S,P, TSep, TImage>::Self &
-DGtal::VoronoiMap<S,P, TSep, TImage>::operator=(const Self &aOtherVoronoiMap )
-{
-  if (this != &aOtherVoronoiMap)
-    {
-      myMetricPtr = aOtherVoronoiMap.myMetricPtr;
-      myImagePtr = aOtherVoronoiMap.myImagePtr;
-      myPointPredicatePtr = aOtherVoronoiMap.myPointPredicatePtr;
-      myDomainPtr = aOtherVoronoiMap.myDomainPtr;
-      myInfinity = aOtherVoronoiMap.myInfinity;
-      myLowerBoundCopy = aOtherVoronoiMap.myLowerBoundCopy;
-      myUpperBoundCopy = aOtherVoronoiMap.myUpperBoundCopy;
-      myPeriodicitySpec = aOtherVoronoiMap.myPeriodicitySpec;
-    }
-  return *this;
-}
-
 template <typename S, typename P, typename TSep, typename TImage>
 inline
 void
