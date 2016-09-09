@@ -236,7 +236,7 @@ namespace DGtal
     /**
      * Default destructor
      */
-    ~VoronoiMap();
+    ~VoronoiMap() = default;
 
     /**
      * Disabling default constructor.
@@ -252,7 +252,7 @@ namespace DGtal
      *  @param aOtherVoronoiMap another instance of Self
      *  @return a reference to Self
      */
-    Self &  operator=(const Self &aOtherVoronoiMap );
+    Self &  operator=(const Self &aOtherVoronoiMap ) = default;
 
     /**
      * Returns a reference (const) to the Voronoi map domain.
