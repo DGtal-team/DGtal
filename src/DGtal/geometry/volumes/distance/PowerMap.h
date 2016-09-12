@@ -51,6 +51,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/CConstImage.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/geometry/volumes/distance/CPowerSeparableMetric.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -100,6 +101,7 @@ namespace DGtal
 
   public:
 
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage< TWeightImage > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPowerSeparableMetric<TPowerSeparableMetric> ));
 

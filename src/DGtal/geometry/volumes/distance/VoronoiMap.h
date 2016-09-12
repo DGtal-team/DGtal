@@ -49,6 +49,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
@@ -127,6 +128,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
 
     ///Both Space points and PointPredicate points must be the same.
     BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Point,
