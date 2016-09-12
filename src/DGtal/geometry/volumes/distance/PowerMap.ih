@@ -110,7 +110,7 @@ DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
 #else
   //We solve the 1D problems sequentially
   for ( auto const & pt : localDomain.subRange( subdomain ) )
-    computeOtherStep1D ( *it, dim);
+    computeOtherStep1D ( pt, dim);
 #endif
 
 #ifdef VERBOSE
