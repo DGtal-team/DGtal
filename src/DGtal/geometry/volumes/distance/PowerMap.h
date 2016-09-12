@@ -83,7 +83,7 @@ namespace DGtal
    * This class is a model of CConstImage.
    *
    * @tparam TWeightImage model of CConstImage
-   * @tparam TPowerSeparableMetric model of CPowerSeparableMetric
+   * @tparam TPowerSeparableMetric model of concepts::CPowerSeparableMetric
    * @tparam TImageContainer any model of CImage to store the
    * PowerMap (default: ImageContainerBySTLVector). The space of the
    * image container and the TSpace should match. Furthermore the
@@ -123,7 +123,7 @@ namespace DGtal
 
     //ImageContainer domain type must be  HyperRectangular
     BOOST_STATIC_ASSERT ((boost::is_same< HyperRectDomain<typename TWeightImage::Domain::Space>,
-					  typename TImageContainer::Domain >::value ));
+                          typename TImageContainer::Domain >::value ));
 
     ///Definition of the underlying domain type.
     typedef typename TImageContainer::Domain Domain;
@@ -140,8 +140,10 @@ namespace DGtal
     typedef typename OutputImage::ConstRange  ConstRange;
 
     ///Self type
-  typedef PowerMap<TWeightImage, TPowerSeparableMetric, TImageContainer> Self;
+    typedef PowerMap<TWeightImage, TPowerSeparableMetric, TImageContainer> Self;
 
+    /// Periodicity specification type.
+    typedef std::array< bool, Space::dimension > PeriodicitySpec;
 
     /**
      * Constructor.
@@ -164,10 +166,20 @@ namespace DGtal
              ConstAlias<WeightImage> aWeightImage,
              ConstAlias<PowerSeparableMetric> aMetric);
 
+    PowerMap(ConstAlias<Domain> aDomain,
+             ConstAlias<WeightImage> aWeightImage,
+             ConstAlias<PowerSeparableMetric> aMetric,
+             PeriodicitySpec const & aPeriodicitySpec);
+
+    /**
+     * Disable default Constructor.
+     */
+    PowerMap() = delete;
+
     /**
      * Default destructor
      */
-    ~PowerMap();
+    ~PowerMap() = default;
 
   public:
     // ------------------- ConstImage model ------------------------
@@ -178,7 +190,7 @@ namespace DGtal
      *  @param aOtherPowerMap another instance of Self
      *  @return a reference to Self
      */
-    Self &  operator=(const Self &aOtherPowerMap );
+    Self &  operator=(const Self &aOtherPowerMap ) = default;
 
     /**
      * Returns a reference (const) to the Power map domain.
@@ -225,6 +237,25 @@ namespace DGtal
       return myWeightImagePtr;
     }
 
+    /** Periodicity specification.
+     *
+     * @returns the periodicity specification array.
+     */
+    PeriodicitySpec const & getPeriodicitySpec() const
+      {
+        return myPeriodicitySpec;
+      }
+
+    /** Periodicity specification along one dimensions.
+     *
+     * @param [in] n the dimension index.
+     * @return \c true if the n-th dimension is periodic, \c false otherwise.
+     */
+    bool isPeriodic( const Dimension n ) const
+      {
+        return myPeriodicitySpec[ n ];
+      }
+
     /**
      * Self Display method.
      *
@@ -260,16 +291,11 @@ namespace DGtal
      * @param dim dimension of the update.
      */
     void computeOtherStep1D (const Point &row,
-			     const Dimension dim) const;
+                             const Dimension dim) const;
 
     // ------------------- protected methods ------------------------
   protected:
 
-    /**
-     * Default Constructor.
-     *
-     */
-    PowerMap();
 
 
     // ------------------- Private members ------------------------
@@ -297,6 +323,8 @@ namespace DGtal
     ///Pointer to the point predicate
     const WeightImage * myWeightImagePtr;
 
+    /// Periodicity along each dimension.
+    PeriodicitySpec myPeriodicitySpec;
 
   }; // end of class PowerMap
 
