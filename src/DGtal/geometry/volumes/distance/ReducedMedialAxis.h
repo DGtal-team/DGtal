@@ -119,11 +119,11 @@ namespace DGtal
           v =  aPowerMap(*it);
           if  (aPowerMap.metricPtr()->powerDistance(*it, 
                                                     v,
-                                                    aPowerMap.weightImagePtr()->operator()( v )) 
+                                                    aPowerMap.weightImagePtr()->operator()( aPowerMap.projectPoint(v) )) 
                < NumberTraits<typename TPowerMap::PowerSeparableMetric::Value>::ZERO )
             
             computedMA->setValue( v,
-                                  aPowerMap.weightImagePtr()->operator()( v ));
+                                  aPowerMap.weightImagePtr()->operator()( aPowerMap.projectPoint(v) ));
 
         }
       return Type( computedMA );

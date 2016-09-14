@@ -73,7 +73,9 @@ bool testReducedMedialAxis()
   image.setValue(Z2i::Point(7,7), 16);
 
   Z2i::L2PowerMetric l2power;
-  PowerMap<Image, Z2i::L2PowerMetric> power(&domainLarge, &image, &l2power);
+  //PowerMap<Image, Z2i::L2PowerMetric> power(&domainLarge, &image, &l2power);
+  PowerMap<Image, Z2i::L2PowerMetric> power(&domainLarge, &image, &l2power, { true, true});
+
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)
@@ -101,7 +103,7 @@ bool testReducedMedialAxis()
 	{
 	  Z2i::Point p(i,j);
 	  DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
-	    ( j-power(p)[1])*(j-power(p)[1])  - image(power(p));
+	    ( j-power(p)[1])*(j-power(p)[1])  - image(power.projectPoint(power(p)));
 	  trace.info()<< dist;
 	}
       std::cerr<<std::endl;
@@ -133,6 +135,20 @@ bool testReducedMedialAxis()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
+
+  bool isEqual = true;
+  for ( auto const & pt : domain )
+    {
+      const Image::Value a = image.domain().isInside(pt) ? image(pt) : 0;
+      const Image::Value b = rdma.domain().isInside(pt) ? rdma(pt) : 0;
+      if ( a != b )
+        {
+          isEqual = false;
+          break;
+        }
+    }
+
+  trace.info() << "Equality ? " << isEqual << std::endl;
 
   return nbok == nb;
 }
