@@ -253,10 +253,21 @@ namespace DGtal
      * @param [in] n the dimension index.
      * @return \c true if the n-th dimension is periodic, \c false otherwise.
      */
+    inline
     bool isPeriodic( const Dimension n ) const
       {
         return myPeriodicitySpec[ n ];
       }
+
+    /**
+     * Project point coordinates into the domain, taking into account
+     * the periodicity.
+     *
+     * @param aPoint the point to project
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification.
+     */
+    Point projectPoint( Point aPoint ) const;
 
     /**
      * Self Display method.
@@ -295,6 +306,29 @@ namespace DGtal
     void computeOtherStep1D (const Point &row,
                              const Dimension dim) const;
 
+    /**
+     * Project point coordinates into the domain, taking into account
+     * the periodicity up to a fixed dimension.
+     *
+     * @param aPoint the point to project
+     * @param aMaxDim maximal dimension along which to project the coordinates.
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification, and only for dimension lower
+     *         or equal to @a aMaxDim.
+     */
+    Point projectPoint( Point aPoint, const Dimension aMaxDim ) const;
+
+    /**
+     * Project a coordinate into the domain, taking into account
+     * the periodicity.
+     *
+     * @param aCoordinate the coordinate.
+     * @param aDim  dimension of the coordinate.
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification.
+     */
+    typename Point::Coordinate projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const;
+
     // ------------------- protected methods ------------------------
   protected:
 
@@ -314,6 +348,12 @@ namespace DGtal
 
     ///Value to act as a +infinity value
     Point myInfinity;
+
+    /// Index of the periodic dimensions
+    std::vector< Dimension > myPeriodicityIndex;
+
+    /// Domain extent.
+    Point myDomainExtent;
 
   protected:
     ///Pointer to the separable metric instance
