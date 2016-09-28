@@ -1,5 +1,10 @@
-# DGtal 0.9.2
+# DGtal 0.9.3
 
+## Bug Fixes
+
+- *Configuration/General*
+ - Fixing errors and warnings raised by g++ 4.7.x.
+   (Roland Denis, [#1202](https://github.com/DGtal-team/DGtal/pull/1202))
 
 # DGtal 0.9.2
 
@@ -97,6 +102,8 @@
    [#1193](https://github.com/DGtal-team/DGtal/pull/1193))
 
 - *DEC Package*
+ - Fix compatibility with eigen 3.2.8 by changing default index type for sparse matrix.
+   (Pierre Gueth, [#1197](https://github.com/DGtal-team/DGtal/pull/1197))
  - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
    (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
 
