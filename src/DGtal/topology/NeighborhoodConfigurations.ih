@@ -83,8 +83,8 @@ namespace DGtal{
     // HyperRect Domain with lexicograpicOrder ensures same order.
     using Space = SpaceND< TPoint::dimension , DGtal::int32_t>;
     using Domain = HyperRectDomain< Space >;
-    Domain domain(p1,p2);
-    for (typename Domain::ConstIterator it = domain.begin(), itE = domain.end() ;
+    const Domain domain(p1, p2);
+    for ( auto it = domain.begin(), itE = domain.end() ;
         it!=itE ; ++it)
     {
       if (*it == center ) continue;
