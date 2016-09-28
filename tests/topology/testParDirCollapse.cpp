@@ -91,7 +91,7 @@ TEST_CASE( "Testing ParDirCollapse" )
       thinning.attach ( &complex );
       thinning.collapseSurface ();
     }
-  SECTION("Testing ParDirCollapse::collapseTsthmus")
+  SECTION("Testing ParDirCollapse::collapseIsthmus")
     {
       getComplex< CC, KSpace > ( complex, K );
       thinning.attach ( &complex );
