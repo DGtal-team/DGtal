@@ -113,7 +113,7 @@ namespace DGtal
         SphericalAccumulator<RealPoint> accum(mySize);
         
         //We precompute the random rotations and accumulators
-        for(auto i=0; i < myNbAccumulators; ++i)
+        for(auto i = 0u; i < myNbAccumulators; ++i)
         {
           Matrix m = randomRotation();
           myAccumulators.push_back( accum );
@@ -155,7 +155,7 @@ namespace DGtal
         std::uniform_int_distribution<int> distribution(0, myPoints.size() - 1 );
         double aspect;
         
-        for(auto t = 0; t < myNbTrials ; ++t)
+        for(auto t = 0u; t < myNbTrials ; ++t)
         {
           unsigned int i,j,k;
           
@@ -169,7 +169,7 @@ namespace DGtal
           if ((vector.norm() > 0.00001) && (aspect > myAspectRatio))
           {
             //we have an admissible triangle, we push both normal vectors
-            for(auto acc=0; acc < myNbAccumulators; ++acc)
+            for(auto acc = 0u; acc < myNbAccumulators; ++acc)
             {
               RealPoint shifted = myRotations[acc]*vector;
               myAccumulators[acc].addDirection( shifted );
@@ -180,7 +180,7 @@ namespace DGtal
         //We return the max bin orientation summing up all accumulators vote
         typename SphericalAccumulator<RealPoint>::Size posPhi,posTheta;
         RealPoint vote;
-        for(auto acc=0; acc < myNbAccumulators; ++acc)
+        for(auto acc = 0u; acc < myNbAccumulators; ++acc)
         {
           myAccumulators[acc].maxCountBin(posPhi, posTheta);
           RealPoint dir = myInverseRotations[acc]*myAccumulators[acc].representativeDirection(posPhi, posTheta).getNormalized() ;
@@ -202,7 +202,7 @@ namespace DGtal
       {
         myPoints.clear();
         //accumulators cleanup
-        for(auto i=0; i < myNbAccumulators; ++i)
+        for(auto i = 0u; i < myNbAccumulators; ++i)
           myAccumulators[i].clear();
       }
       
