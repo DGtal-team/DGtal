@@ -902,7 +902,7 @@ TEST_CASE( "3D periodic Khalimsky space", "[KSpace][3D][periodic]" )
 TEST_CASE( "2D mixed Khalimsky space", "[KSpace][2D][closed][periodic]" )
 {
   KhalimskySpaceND<2> K;
-  const bool spaceOK = K.init( {-3, -3}, {5, 2}, { K.CLOSED, K.PERIODIC } );
+  const bool spaceOK = K.init( {-3, -3}, {5, 2}, {{ K.CLOSED, K.PERIODIC }} );
   INFO( "Khalimsky space is " << K );
   REQUIRE( spaceOK == true );
 
@@ -922,7 +922,7 @@ TEST_CASE( "2D mixed Khalimsky space", "[KSpace][2D][closed][periodic]" )
 TEST_CASE( "3D mixed Khalimsky space", "[KSpace][3D][closed][periodic][open]" )
 {
   KhalimskySpaceND<3> K;
-  const bool spaceOK = K.init( {-3, -3, -3}, {5, 3, 1}, { K.CLOSED, K.OPEN, K.PERIODIC } );
+  const bool spaceOK = K.init( {-3, -3, -3}, {5, 3, 1}, {{ K.CLOSED, K.OPEN, K.PERIODIC }} );
   INFO( "Khalimsky space is " << K );
   REQUIRE( spaceOK == true );
 

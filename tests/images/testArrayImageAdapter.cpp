@@ -100,7 +100,7 @@ void incrementImageWithPointFn ( TImage& anImage, TFunction const& aFunction )
 template < typename TDomain, typename TValue, typename TFunction >
 void fastFillImageWithPointFn ( ImageContainerBySTLVector<TDomain, TValue>& anImage, TFunction const& aFunction )
 {
-  using Image = ImageContainerBySTLVector<TDomain, TValue>;
+  typedef ImageContainerBySTLVector<TDomain, TValue> Image; // 'typedef' instead of 'using' because of g++ 4.7.4 bug.
   using Value = typename Image::Value;
   auto imgit = anImage.begin();
   for ( auto const& point : anImage.domain() )
@@ -116,7 +116,7 @@ void fastFillImageWithPointFn ( ImageContainerBySTLVector<TDomain, TValue>& anIm
 template < typename TIterator, typename TDomain, typename TFunction >
 void fastFillImageWithPointFn ( ArrayImageAdapter<TIterator, TDomain>& anImage, TFunction const& aFunction )
 {
-  using Image = ArrayImageAdapter<TIterator, TDomain>;
+  typedef ArrayImageAdapter<TIterator, TDomain> Image; // 'typedef' instead of 'using' because of g++ 4.7.4 bug.
   using Value = typename Image::Value;
   for ( auto imgit = anImage.begin(); imgit != anImage.end(); ++imgit )
     {
