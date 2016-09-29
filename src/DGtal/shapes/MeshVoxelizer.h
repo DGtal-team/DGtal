@@ -37,7 +37,6 @@
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
-#include <type_traits>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,20 +49,6 @@ namespace DGtal
     arete(PointR3 mf, PointR3 ms) : f(mf), s(ms) {}
   };
 
-  /*
-  struct OverlapTestFunctor {
-    using PointR3 = PointVector<3, double>;
-    using PointR2 = PointVector<2, double>;
-    using PointZ3 = PointVector<3, int>;
-    double d;
-
-    arete target;
-
-    PointR3 A, B, C;
-    PointR2 AA, BB, CC;
-    PointZ3 v;
-  };
-*/
   /////////////////////////////////////////////////////////////////////////////
   /**
      Description of template class 'MeshVoxelizer' <p> \brief Aim: A
@@ -71,23 +56,21 @@ namespace DGtal
      target intersection to make a n-separating voxelization
      with n parameterizable
 
-     @tparam TDigitalSet a model of DigitalSet using std::vector, std::set, or an SVO
-     @tparam separation strategy of the voxelization (6, 18 or 26)
+     @tparam TDigitalSet a DigitalSet using std::vector, std::set, or SVO
+     @tparam separation strategy of the voxelization (6 or 26)
   */
   template <typename TDigitalSet, size_t separation = 6>
   class MeshVoxelizer
   {
-    friend struct OverlapTestFunctor;
-
-    using MeshFace = std::vector< unsigned int >;
     using Space3Dint = SpaceND<3>;
-    using Domain = HyperRectDomain<Space3Dint>;
-    using PointR3 = PointVector<3, double>;
+    using MeshFace = std::vector< unsigned int >;
+    using Domain   = HyperRectDomain<Space3Dint>;
+    using PointR3  = PointVector<3, double>;
     using VectorR3 = PointVector<3, double>;
-    using PointR2 = PointVector<2, double>;
+    using PointR2  = PointVector<2, double>;
     using VectorR2 = PointVector<2, double>;
-    using PointZ3 = PointVector<3, int>;
-    using PointZ2 = PointVector<2, int>;
+    using PointZ3  = PointVector<3, int>;
+    using PointZ2  = PointVector<2, int>;
 
     using OrientationFunctor = InHalfPlaneBySimple3x3Matrix<PointR2, double>;
 
@@ -99,28 +82,70 @@ namespace DGtal
   public:
 
     /**
-     * Constructor
+     * @brief Constructor of the voxelizer
+     * @param aMesh mesh to voxelize
+     * @param aDomain digital space of the voxelization
+     * @param aResolution resolution of the voxelization grid
      */
-    MeshVoxelizer(const Mesh<PointR3>&, Domain&, size_t resolution);
+    MeshVoxelizer(const Mesh<PointR3>& aMesh, Domain& aDomain, size_t aResolution);
 
     /**
-     * Voxelize the mesh into the digital set
+     * @brief voxelize the mesh into the digital set
      */
     void voxelize();
 
+    /**
+     * @brief getter for digitalSet
+     * @return current digital set
+     */
     const TDigitalSet& digitalSet() const;
 
-    static double distance(const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const PointZ3& voxel);
-    static int    pointIsInside2DTriangle(PointR2& A, PointR2& B, PointR2& C, PointR2& v);
-    static bool   pointIsInsideVoxel(PointR3& P, PointZ3& v);
+  private:
+    // some internal private static functions
 
+    /**
+     * @brief compute distance between triangle ABC and point p
+     * @param n normal of ABC
+     * @param p point p
+     * @return distance
+     */
+    static double distance(const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const PointZ3& p);
+
+    /**
+     * @brief predicat to know if p (2D point) is inside ABC (2D triangle)
+     * @param p point p
+     * @return true if p is inside ABC
+     */
+    static int pointIsInside2DTriangle(PointR2& A, PointR2& B, PointR2& C, PointR2& p);
+
+    /**
+     * @brief predicat to know if point P is inside voxel v
+     * @param P point P
+     * @param v voxel v
+     * @return
+     */
+    static bool pointIsInsideVoxel(PointR3& P, PointZ3& v);
+
+    /**
+     * @brief voxelize ABC to the digitalSet
+     * @param n normal of ABC
+     * @param bbox bounding box of ABC
+     * @return true if ok
+     */
     bool voxelizeTriangle(PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox)
     {
       // tag dispatching
       voxelizeTriangle(std::integral_constant<size_t, separation>{}, A, B, C, n, bbox);
     }
 
+    /**
+     * @brief function specialization of voxelizeTriangle for 6-separated voxelization using tag dispatching
+     */
     bool voxelizeTriangle(std::integral_constant<size_t, 6>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox);
+
+    /**
+     * @brief function specialization of voxelizeTriangle for 26-separated voxelization using tag dispatching
+     */
     bool voxelizeTriangle(std::integral_constant<size_t, 26>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox);
   };
 }
