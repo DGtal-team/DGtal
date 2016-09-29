@@ -45,13 +45,13 @@ using namespace Z3i;
 TEST_CASE("Basic voxelization test", "[voxelization]")
 {
   using Space3Dint = SpaceND<3>;
-  using Domain  = HyperRectDomain<Space3Dint>;
-  using PointR3 = PointVector<3, double>;
+  using Domain   = HyperRectDomain<Space3Dint>;
+  using PointR3  = PointVector<3, double>;
   using VectorR3 = PointVector<3, double>;
-  using PointR2 = PointVector<2, double>;
+  using PointR2  = PointVector<2, double>;
   using VectorR2 = PointVector<2, double>;
-  using PointZ3 = PointVector<3, int>;
-  using PointZ2 = PointVector<2, int>;
+  using PointZ3  = PointVector<3, int>;
+  using PointZ2  = PointVector<2, int>;
 
   using MeshVoxelizer = MeshVoxelizer<DigitalSetBySTLSet<Domain>, SEP>;
 
@@ -150,37 +150,5 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     P[1] = 9.83;
     P[2] = 0;
     REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == false); // outside
-  }
-
-  // ---------------------------------------------------------
-  SECTION("Voxelization")
-  {
-    // Import from a .off
-    Mesh<PointR3> aMesh;
-
-    int resolution = 64;
-
-    Domain aDomain( PointZ3(-resolution/2, -resolution/2, -resolution/2),
-                    PointZ3( resolution/2,  resolution/2,  resolution/2) );
-
-    std::string filename = "m_octaflower.off";
-    //std::string filename = "m_triangle1.off";
-    MeshReader<PointR3>::importOFFFile(filename.c_str(), aMesh);
-
-    MeshVoxelizer aVoxelizer(aMesh, aDomain, resolution);
-
-    auto start = std::chrono::high_resolution_clock::now();
-    aVoxelizer.voxelize();
-    auto end = std::chrono::high_resolution_clock::now();
-
-    auto diff = end - start;
-    std::cout << "-- time: " << std::chrono::duration <double, std::milli> (diff).count() << " ms" << std::endl;
-
-    // Export the digital set to a off file
-    std::string exportname = "";
-    exportname += filename.substr(0,filename.size()-4) + "_s"+ std::to_string(SEP) +"_v" + std::to_string(resolution) + ".off";
-    Display3D<> viewer;
-    viewer << aVoxelizer.digitalSet();
-    viewer >> exportname.c_str();
   }
 }
