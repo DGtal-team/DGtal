@@ -137,11 +137,13 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
   const auto extent = myUpperBoundCopy[dim] - myLowerBoundCopy[dim] + 1;
 
   // Site storage.
-  std::vector<Point> Sites;
+  std::vector<Point> Sites;         // Site coordinates with unbounded coordinates (can be outside the domain along periodic dimensions).
+  std::vector<Point> boundedSites;  // Site coordinates with bounded coordinates   (always inside the domain).
 
   // Reserve sites storage.
   // +1 along periodic dimension in order to store two times the site that is on break index.
   Sites.reserve( extent + ( isPeriodic(dim) ? 1 : 0 ) );
+  boundedSites.reserve( extent + ( isPeriodic(dim) ? 1 : 0 ) );
 
   // Pruning the list of sites and defining cycle bounds.
   // In the periodic case, the cycle bounds depend on the so-called break index
@@ -153,7 +155,10 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
         {
           const Point psite = myImagePtr->operator()( point );
           if ( psite != myInfinity )
-            Sites.push_back( psite );
+            {
+              Sites.push_back( psite );
+              boundedSites.push_back( psite );
+            }
         }
 
       // If no sites are found, then there is nothing to do.
@@ -169,6 +174,7 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
 
           // The first site is also the last site (with appropriate shift).
           Sites.push_back( Sites[0] + Point::base(dim, extent) );
+          boundedSites.push_back( Sites[0] );
         }
     }
   else
@@ -185,7 +191,7 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
 
               if ( psite != myInfinity )
                 {
-                  const auto powerDist = myMetricPtr->powerDistance( point, psite, myWeightImagePtr->operator()(psite) );
+                  const auto powerDist = myMetricPtr->powerDistance( point, psite, myWeightImagePtr->operator()( projectPoint( psite, dim-1 ) ) );
                   if ( powerDist < minPowerDist )
                     {
                       minPowerDist = powerDist;
@@ -201,23 +207,50 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
           endPoint[dim] = startPoint[dim] + extent - 1;
         }
 
-      // Pruning the list of sites for both periodic and non-periodic cases.
-      for( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
+      if ( myPeriodicityIndex.size() == 0 )
         {
-          const Point psite = myImagePtr->operator()(point);
-
-          if ( psite != myInfinity )
+          // Pruning the list of sites for both periodic and non-periodic cases.
+          for( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
             {
-              while (( Sites.size() >= 2 ) &&
-                     ( myMetricPtr->hiddenByPower(Sites[Sites.size()-2], myWeightImagePtr->operator()(Sites[Sites.size()-1]),
-                                                  Sites[Sites.size()-1], myWeightImagePtr->operator()(Sites[Sites.size()-1]),
-                                                  psite,  myWeightImagePtr->operator()(psite),
-                                                  startingPoint, endPoint, dim) ))
-                Sites.pop_back();
+              const Point psite = myImagePtr->operator()(point);
 
-              Sites.push_back( psite );
+              if ( psite != myInfinity )
+                {
+                  while (( Sites.size() >= 2 ) &&
+                         ( myMetricPtr->hiddenByPower(Sites[Sites.size()-2], myWeightImagePtr->operator()(Sites[Sites.size()-2]),
+                                                      Sites[Sites.size()-1], myWeightImagePtr->operator()(Sites[Sites.size()-1]),
+                                                      psite,  myWeightImagePtr->operator()(psite),
+                                                      startingPoint, endPoint, dim) ))
+                    Sites.pop_back();
+
+                  Sites.push_back( psite );
+                  boundedSites.push_back( psite );
+                }
             }
         }
+      else
+        {
+          // Pruning the list of sites for both periodic and non-periodic cases.
+          for( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
+            {
+              const Point psite = myImagePtr->operator()(point);
+              const Point boundedPSite = projectPoint( psite, dim-1 );
+
+              if ( psite != myInfinity )
+                {
+                  while (( Sites.size() >= 2 ) &&
+                         ( myMetricPtr->hiddenByPower(Sites[Sites.size()-2], myWeightImagePtr->operator()( projectPoint( Sites[Sites.size()-2], dim-1 ) ),
+                                                      Sites[Sites.size()-1], myWeightImagePtr->operator()( projectPoint( Sites[Sites.size()-1], dim-1 ) ),
+                                                      psite,  myWeightImagePtr->operator()( boundedPSite ),
+                                                      startingPoint, endPoint, dim) ))
+                    Sites.pop_back();
+
+                  Sites.push_back( psite );
+                  boundedSites.push_back( boundedPSite );
+                }
+            }
+        }
+
 
       // Pruning the remaining list of sites in the periodic case.
       if ( isPeriodic(dim) )
@@ -226,7 +259,8 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
           point[dim] = myLowerBoundCopy[dim];
           for ( ; point[dim] <= endPoint[dim] - extent + 1; ++point[dim] ) // +1 in order to add the break-index site at the cycle's end.
             {
-              Point psite = myImagePtr->operator()(point);
+              Point psite = myImagePtr->operator()(point); // Periodicity !!! Warning with the following test against myInfinity !!!
+              const Point boundedPSite = projectPoint( psite, dim-1 );
 
               if ( psite != myInfinity )
                 {
@@ -234,13 +268,14 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
                   psite[dim] += extent;
 
                   while (( Sites.size() >= 2 ) &&
-                         ( myMetricPtr->hiddenByPower(Sites[Sites.size()-2], myWeightImagePtr->operator()(Sites[Sites.size()-1]),
-                                                      Sites[Sites.size()-1], myWeightImagePtr->operator()(Sites[Sites.size()-1]),
-                                                      psite,  myWeightImagePtr->operator()(psite),
+                         ( myMetricPtr->hiddenByPower(Sites[Sites.size()-2], myWeightImagePtr->operator()(boundedSites[Sites.size()-2]),
+                                                      Sites[Sites.size()-1], myWeightImagePtr->operator()(boundedSites[Sites.size()-1]),
+                                                      psite,  myWeightImagePtr->operator()(boundedPSite),
                                                       startingPoint, endPoint, dim) ))
                     Sites.pop_back();
 
                   Sites.push_back( psite );
+                  boundedSites.push_back( boundedPSite );
                 }
             }
         }
@@ -258,8 +293,8 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
     {
       while ( ( siteId < Sites.size()-1 ) &&
              ( myMetricPtr->closestPower(point,
-                                         Sites[siteId], myWeightImagePtr->operator()(Sites[siteId]),
-                                         Sites[siteId+1],myWeightImagePtr->operator()(Sites[siteId+1]))
+                                         Sites[siteId],   myWeightImagePtr->operator()(boundedSites[siteId]),
+                                         Sites[siteId+1], myWeightImagePtr->operator()(boundedSites[siteId+1]))
               != DGtal::ClosestFIRST ))
         siteId++;
 
@@ -273,8 +308,8 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
         {
           while ( ( siteId < Sites.size()-1 ) &&
                  ( myMetricPtr->closestPower(point,
-                                             Sites[siteId], myWeightImagePtr->operator()(Sites[siteId]),
-                                             Sites[siteId+1],myWeightImagePtr->operator()(Sites[siteId+1]))
+                                             Sites[siteId], myWeightImagePtr->operator()(boundedSites[siteId]),
+                                             Sites[siteId+1],myWeightImagePtr->operator()(boundedSites[siteId+1]))
                   != DGtal::ClosestFIRST ))
             siteId++;
 
@@ -294,6 +329,7 @@ DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
                                       ConstAlias<WeightImage> aWeightImage,
                                       ConstAlias<PowerSeparableMetric> aMetric)
     : myDomainPtr(&aDomain)
+    , myDomainExtent( aDomain->upperBound() - aDomain->lowerBound() + Point::diagonal(1) )
     , myMetricPtr(&aMetric)
     , myWeightImagePtr(&aWeightImage)
 {
@@ -309,12 +345,48 @@ DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
                                       ConstAlias<PowerSeparableMetric> aMetric,
                                       PeriodicitySpec const & aPeriodicitySpec )
     : myDomainPtr(&aDomain)
+    , myDomainExtent( aDomain->upperBound() - aDomain->lowerBound() + Point::diagonal(1) )
     , myMetricPtr(&aMetric)
     , myWeightImagePtr(&aWeightImage)
     , myPeriodicitySpec(aPeriodicitySpec)
 {
+  // Finding periodic dimension index.
+  for ( std::size_t i = 0; i < Space::dimension; ++i )
+    if ( isPeriodic(i) )
+      myPeriodicityIndex.push_back( i );
+
   myImagePtr = CountedPtr<OutputImage>(new OutputImage(aDomain));
   compute();
+}
+
+template <typename W,typename TSep,typename Im>
+inline
+typename DGtal::PowerMap<W,TSep,Im>::Point
+DGtal::PowerMap<W,TSep,Im>::projectPoint( Point aPoint, const Dimension aMaxDim ) const
+{
+  for ( std::size_t i = 0; i < myPeriodicityIndex.size() && myPeriodicityIndex[i] <= aMaxDim; ++i )
+    aPoint[ myPeriodicityIndex[i] ] = projectCoordinate( aPoint[ myPeriodicityIndex[i] ], myPeriodicityIndex[i] );
+
+  return aPoint;
+}
+
+template <typename W,typename TSep,typename Im>
+inline
+typename DGtal::PowerMap<W,TSep,Im>::Point
+DGtal::PowerMap<W,TSep,Im>::projectPoint( Point aPoint  ) const
+{
+  for ( auto const & dim : myPeriodicityIndex )
+    aPoint[ dim ] = projectCoordinate( aPoint[ dim ], dim );
+
+  return aPoint;
+}
+
+template <typename W,typename TSep,typename Im>
+inline
+typename DGtal::PowerMap<W,TSep,Im>::Point::Coordinate
+DGtal::PowerMap<W,TSep,Im>::projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const
+{
+  return ( aCoordinate - myDomainPtr->lowerBound()[aDim] + myDomainExtent[aDim] ) % myDomainExtent[aDim] + myDomainPtr->lowerBound()[aDim];
 }
 
 template <typename W,typename TSep,typename Im>
