@@ -337,7 +337,6 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out) const;
     
-      
     };
     
     
@@ -349,26 +348,17 @@ namespace DGtal
 	  Determines if i is between a and b in the oriented toric space
 	  modulo n
 	  @param i i 
-      @param a a
-       @param b b
-       @param n n
+	  @param a a
+	  @param b b
+	  @param n n
 	  @return true if i is between a anb d, false otherwise
       */
       static  bool isBetween(double i, double a, double b, double n)
       {
 	if(a<=b)
-	  if(i>=a && i<=b)
-	    return true;
-	  else
-	    return false;
+	  return (i>=a && i<=b);
 	else
-	  {
-	    if((i>=a && i<=n) || (i>=0 && i<=b))
-	      return true;
-	    else
-	      return false;
-	    
-	  }
+	  return ((i>=a && i<=n) || (i>=0 && i<=b));
       }
       
       
