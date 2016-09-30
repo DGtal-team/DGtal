@@ -99,10 +99,11 @@ namespace DGtal
      * @return current digital set
      */
     const TDigitalSet& digitalSet() const;
-
-  private:
-    // some internal private static functions
-
+    
+    //
+    // some internal static functions
+    //
+    
     /**
      * @brief compute distance between triangle ABC and point p
      * @param n normal of ABC
