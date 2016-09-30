@@ -5,6 +5,8 @@
 - *Configuration/General*
  - Fixing errors and warnings raised by g++ 4.7.x.
    (Roland Denis, [#1202](https://github.com/DGtal-team/DGtal/pull/1202))
+ - Explicit M_PI definition if needed.
+   (David Coeurjolly, [#1208](https://github.com/DGtal-team/DGtal/pull/1208))
 
 # DGtal 0.9.2
 
