@@ -66,6 +66,7 @@
 #ifdef M_PI
 #undef M_PI
 #endif
+
 //C++ exception specification ignored except
 //to indicate a function is not __declspec(nothrow)
 #pragma warning(disable : 4290)
@@ -80,6 +81,15 @@
 #else
 #include <cmath>
 #endif //win32
+
+// Explicit M_PI definition if needed
+// (issue https://github.com/DGtal-team/DGtal/issues/1204)
+#ifndef M_PI
+#define M_PI           3.14159265358979323846
+#endif
+#ifndef M_PI_2
+#define M_PI_2         1.57079632679489661923
+#endif
 
 
 #if defined( WIN32 )
@@ -99,9 +109,6 @@
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/BasicArchetypes.h"
 #include "DGtal/base/Exceptions.h"
-
-
-//////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////
 namespace DGtal
