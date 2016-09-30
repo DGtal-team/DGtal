@@ -291,6 +291,17 @@ for the same metric/power metric, returns the input binary shape.
 concepts::CPowerSeparableMetric concepts whose main model is
 ExactPredicateLpPowerSeparableMetric, see @ref moduleMetrics
 
+@section toric Volumetric Analysis on Toric domains
+
+In some specific applications, toric domains and volumetric analysis
+of shapes in toric domains are crucial. Thanks to the separability
+property of VoronoiMap, PowerMap (and their associated wrappers
+DistanceTransformation and ReverseDistanceTransformation), one can
+easily consider volumetric transformation in arbitrary dimension on
+toric domains @cite Coeurjo2008. 
+
+@todo Continue..
+
 
 */
 
