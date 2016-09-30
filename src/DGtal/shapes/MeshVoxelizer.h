@@ -68,9 +68,7 @@ namespace DGtal
     using PointR3  = PointVector<3, double>;
     using VectorR3 = PointVector<3, double>;
     using PointR2  = PointVector<2, double>;
-    using VectorR2 = PointVector<2, double>;
     using PointZ3  = PointVector<3, int>;
-    using PointZ2  = PointVector<2, int>;
 
     using OrientationFunctor = InHalfPlaneBySimple3x3Matrix<PointR2, double>;
 
@@ -100,16 +98,18 @@ namespace DGtal
      */
     const TDigitalSet& digitalSet() const;
 
-  private:
-    // some internal private static functions
+    //
+    // some internal static functions
+    //
 
     /**
-     * @brief compute distance between triangle ABC and point p
-     * @param n normal of ABC
+     * @brief compute distance between p and plan defined by normal n and point M
+     * @param M point
+     * @param n normal
      * @param p point p
      * @return distance
      */
-    static double distance(const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const PointZ3& p);
+    static double distance(const PointR3& M, const VectorR3& n, const PointZ3& p);
 
     /**
      * @brief predicat to know if p (2D point) is inside ABC (2D triangle)
@@ -122,7 +122,7 @@ namespace DGtal
      * @brief predicat to know if point P is inside voxel v
      * @param P point P
      * @param v voxel v
-     * @return
+     * @return true if P is inside v
      */
     static bool pointIsInsideVoxel(PointR3& P, PointZ3& v);
 
@@ -135,7 +135,7 @@ namespace DGtal
     bool voxelizeTriangle(PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox)
     {
       // tag dispatching
-      voxelizeTriangle(std::integral_constant<size_t, separation>{}, A, B, C, n, bbox);
+      return voxelizeTriangle(std::integral_constant<size_t, separation>{}, A, B, C, n, bbox);
     }
 
     /**

@@ -49,9 +49,7 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
   using PointR3  = PointVector<3, double>;
   using VectorR3 = PointVector<3, double>;
   using PointR2  = PointVector<2, double>;
-  using VectorR2 = PointVector<2, double>;
   using PointZ3  = PointVector<3, int>;
-  using PointZ2  = PointVector<2, int>;
 
   using MeshVoxelizer = MeshVoxelizer<DigitalSetBySTLSet<Domain>, SEP>;
 
@@ -69,7 +67,7 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     VectorR3 e1 = A - B;
     VectorR3 e2 = A - C;
 
-    double distance = MeshVoxelizer::distance(A, B, C, e1.crossProduct(e2), v);
+    double distance = MeshVoxelizer::distance(A, e1.crossProduct(e2), v);
 
     REQUIRE( 2.40 < distance );
     REQUIRE( distance < 2.41 );
@@ -130,25 +128,25 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
   }
 
   // ---------------------------------------------------------
-  SECTION("Test if 3D point is inside voxel")
-  {
-    // Triangle ABC in R2
-    PointR3 P(-0.89, 9.91, 0.86);
-    PointZ3 v(-1, 10, 1);
+//  SECTION("Test if 3D point is inside voxel")
+//  {
+//    // Triangle ABC in R2
+//    PointR3 P(-0.89, 9.91, 0.86);
+//    PointZ3 v(-1, 10, 1);
 
-    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == true); // inside
+//    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == true); // inside
 
-    P[0] = -1.41;
-    P[1] = 9.91;
-    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == true); // inside
+//    P[0] = -1.41;
+//    P[1] = 9.91;
+//    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == true); // inside
 
-    P[0] = -1.37;
-    P[1] = 9.37;
-    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == false); // outside
+//    P[0] = -1.37;
+//    P[1] = 9.37;
+//    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == false); // outside
 
-    P[0] = -1.17;
-    P[1] = 9.83;
-    P[2] = 0;
-    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == false); // outside
-  }
+//    P[0] = -1.17;
+//    P[1] = 9.83;
+//    P[2] = 0;
+//    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == false); // outside
+//  }
 }

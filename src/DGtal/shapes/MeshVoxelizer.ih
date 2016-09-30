@@ -78,19 +78,17 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::MeshVoxelizer(const Mesh<PointR3>
 template <typename TDigitalSet, size_t separation>
 inline
 double
-DGtal::MeshVoxelizer<TDigitalSet, separation>::distance(const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const PointZ3& voxel)
+DGtal::MeshVoxelizer<TDigitalSet, separation>::distance(const PointR3& M, const VectorR3& n, const PointZ3& voxel)
 {
   double distance = 0.;
+  double d = n.dot(M);
 
-  // coef d de l'équation cartesienne du plan
-  double d = n.dot(C);
-
-  distance = n.dot(voxel) - d;//n.x * voxel[0] + n.y * voxel[1] + n.z * voxel[2] - d;
+  distance = n.dot(voxel) - d;
 
   if(distance < 0)
     distance *= -1;
 
-  distance /= n.norm();//sqrt(n.x * n.x + n.y * n.y + n.z * n.z);
+  distance /= n.norm();
 
   return distance;
 }
@@ -443,25 +441,25 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelize()
     bbox = currentMesh.getBoundingBox();
 
     // floor and ceil to have an axis aligned bounding box in Z^3
-    for(int i(0); i < 3; i++)
+    for(int j(0); j < 3; j++)
     {
-      if(bbox.first[i] < bbox.second[i])
+      if(bbox.first[j] < bbox.second[j])
       {
-        bbox.first[i] = floor(bbox.first[i]);
-        bbox.second[i] = ceil(bbox.second[i]);
+        bbox.first[j] = floor(bbox.first[j]);
+        bbox.second[j] = ceil(bbox.second[j]);
       }
       else
       {
-        bbox.second[i] = floor(bbox.second[i]);
-        bbox.first[i] = ceil(bbox.first[i]);
+        bbox.second[j] = floor(bbox.second[j]);
+        bbox.first[j] = ceil(bbox.first[j]);
       }
 
-      if(bbox.first[i] > bbox.second[i])
+      if(bbox.first[j] > bbox.second[j])
       {
         // swap
-        double tmp = bbox.first[i];
-        bbox.first[i] = bbox.second[i];
-        bbox.second[i] = tmp;
+        double tmp = bbox.first[j];
+        bbox.first[j] = bbox.second[j];
+        bbox.second[j] = tmp;
       }
     }
 
