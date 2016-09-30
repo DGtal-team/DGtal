@@ -97,11 +97,11 @@ namespace DGtal
      * @return current digital set
      */
     const TDigitalSet& digitalSet() const;
-
+    
     //
     // some internal static functions
     //
-
+    
     /**
      * @brief compute distance between p and plan defined by normal n and point M
      * @param M point
