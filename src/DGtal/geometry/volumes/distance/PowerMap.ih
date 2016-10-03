@@ -182,7 +182,7 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
       // In the periodic case, the cycle depends on break index
       if ( isPeriodic(dim) )
         {
-          // Along other than the first dimension, the break index is at the lower site found.
+          // Along other than the first dimension, the break index is at the lowest site found.
           auto minPowerDist = DGtal::NumberTraits< typename PowerSeparableMetric::Weight >::max();
 
           for ( auto point = startPoint; point[dim] <= myUpperBoundCopy[dim]; ++point[dim] )
