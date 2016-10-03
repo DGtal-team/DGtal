@@ -172,7 +172,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
       // In the periodic case, the cycle depends on break index
       if ( isPeriodic(dim) )
         {
-          // Along other than the first dimension, the break index is at the lower site found.
+          // Along other than the first dimension, the break index is at the lowest site found.
           auto minRawDist = DGtal::NumberTraits< typename SeparableMetric::RawValue >::max();
 
           for ( auto point = startPoint; point[dim] <= myUpperBoundCopy[dim]; ++point[dim] )
