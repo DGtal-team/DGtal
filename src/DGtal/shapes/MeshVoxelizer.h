@@ -113,6 +113,9 @@ namespace DGtal
 
     /**
      * @brief predicat to know if p (2D point) is inside ABC (2D triangle)
+     * @param A Point A
+     * @param B Point B
+     * @param C Point C
      * @param p point p
      * @return true if p is inside ABC
      */
@@ -128,6 +131,9 @@ namespace DGtal
 
     /**
      * @brief voxelize ABC to the digitalSet
+     * @param A Point A
+     * @param B Point B
+     * @param C Point C
      * @param n normal of ABC
      * @param bbox bounding box of ABC
      * @return true if ok
@@ -139,12 +145,24 @@ namespace DGtal
     }
 
     /**
-     * @brief function specialization of voxelizeTriangle for 6-separated voxelization using tag dispatching
+    * @brief voxelizeTriangle specialization for 6-separated
+     * @param A Point A
+     * @param B Point B
+     * @param C Point C
+     * @param n normal of ABC
+     * @param bbox bounding box of ABC
+     * @return true if ok
      */
     bool voxelizeTriangle(std::integral_constant<size_t, 6>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox);
 
     /**
-     * @brief function specialization of voxelizeTriangle for 26-separated voxelization using tag dispatching
+     * @brief voxelizeTriangle specialization for 26-separated
+     * @param A Point A
+     * @param B Point B
+     * @param C Point C
+     * @param n normal of ABC
+     * @param bbox bounding box of ABC
+     * @return true if ok
      */
     bool voxelizeTriangle(std::integral_constant<size_t, 26>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox);
   };
