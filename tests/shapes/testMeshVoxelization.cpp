@@ -27,15 +27,13 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "../tests/DGtalCatch.h"
+#include "DGtalCatch.h"
 #include "DGtal/shapes/MeshVoxelizer.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/readers/MeshReader.h"
 #include "DGtal/io/Display3D.h"
 ///////////////////////////////////////////////////////////////////////////////
-
-#include <chrono>
 
 using namespace DGtal;
 using namespace Z3i;
@@ -57,15 +55,15 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
   SECTION("Test distance point/plan 3D")
   {
     // Triangle ABC in R3
-    PointR3 A(38.6908 , 14.5441 , -0.71205);
-    PointR3 B(34.6171 , 13.5999 , 2.44455);
-    PointR3 C(37.4205 , 2.44239 , 6.31301);
+    const PointR3 A(38.6908 , 14.5441 , -0.71205);
+    const PointR3 B(34.6171 , 13.5999 , 2.44455);
+    const PointR3 C(37.4205 , 2.44239 , 6.31301);
 
     // Point v
-    PointZ3 v(35, 2, 5);
+    const PointZ3 v(35, 2, 5);
 
-    VectorR3 e1 = A - B;
-    VectorR3 e2 = A - C;
+    const VectorR3 e1 = A - B;
+    const VectorR3 e2 = A - C;
 
     double distance = MeshVoxelizer::distance(A, e1.crossProduct(e2), v);
 
