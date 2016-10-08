@@ -141,8 +141,8 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::pointIsInsideVoxel(const PointR3&
 // ---------------------------------------------------------
 template <typename TDigitalSet, size_t separation>
 inline
-bool
-DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_constant<size_t, 6>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox)
+void
+DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_constant<size_t, 6>, const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const std::pair<PointR3, PointR3>& bbox)
 {
   OrientationFunctor orientationFunctor;
 
@@ -247,15 +247,13 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
             myDigitalSet.insert(v);
         }
   }
-
-  return true;
 }
 
 // ---------------------------------------------------------
 template <typename TDigitalSet, size_t separation>
 inline
-bool
-DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_constant<size_t, 26>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox)
+void
+DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_constant<size_t, 26>, const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const std::pair<PointR3, PointR3>& bbox)
 {
   OrientationFunctor orientationFunctor;
 
@@ -278,8 +276,7 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
       double lambda = -( n.dot(a.f) + d );
       double den = n.dot(w);
 
-      if(den == 0)
-        return false;
+      ASSERT(den != 0);
 
       lambda /= den;
 
@@ -287,7 +284,6 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
       p[1] = a.f[1] + lambda*w[1];
       p[2] = a.f[2] + lambda*w[2];
 
-      return true;
     };
 
   auto abs = [=](double a) { return a < 0 ? -a : a; };
@@ -402,8 +398,6 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
           target.s -= v;
         }
   }
-
-  return true;
 }
 
 // ---------------------------------------------------------
