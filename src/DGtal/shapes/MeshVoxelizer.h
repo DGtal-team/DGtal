@@ -159,33 +159,40 @@ namespace DGtal
                              const PointZ3& v) ;
     
     /**
-     * @brief voxelize ABC to the digitalSet
+     * Voxelize ABC to the digitalSet
      * @param A Point A
      * @param B Point B
      * @param C Point C
      * @param n normal of ABC
      * @param bbox bounding box of ABC
-     * @return true if ok
      */
-    bool voxelizeTriangle(PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox)
+    void voxelizeTriangle(const PointR3& A,
+                          const PointR3& B,
+                          const PointR3& C,
+                          const VectorR3& n,
+                          const std::pair<PointR3, PointR3>& bbox)
     {
       // tag dispatching
       return voxelizeTriangle(std::integral_constant<size_t, separation>{}, A, B, C, n, bbox);
     }
     
     /**
-     * @brief voxelizeTriangle specialization for 6-separated
+     * VoxelizeTriangle specialization for 6-separated
      * @param A Point A
      * @param B Point B
      * @param C Point C
      * @param n normal of ABC
      * @param bbox bounding box of ABC
-     * @return true if ok
      */
-    bool voxelizeTriangle(std::integral_constant<size_t, 6>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox);
+    void voxelizeTriangle(std::integral_constant<size_t, 6>,
+                          const PointR3& A,
+                          const PointR3& B,
+                          const PointR3& C,
+                          const VectorR3& n,
+                          const std::pair<PointR3, PointR3>& bbox);
     
     /**
-     * @brief voxelizeTriangle specialization for 26-separated
+     * VoxelizeTriangle specialization for 26-separated
      * @param A Point A
      * @param B Point B
      * @param C Point C
@@ -193,7 +200,12 @@ namespace DGtal
      * @param bbox bounding box of ABC
      * @return true if ok
      */
-    bool voxelizeTriangle(std::integral_constant<size_t, 26>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox);
+    void voxelizeTriangle(std::integral_constant<size_t, 26>,
+                          const PointR3& A,
+                          const PointR3& B,
+                          const PointR3& C,
+                          const VectorR3& n,
+                          const std::pair<PointR3, PointR3>& bbox);
 
   
     // ----------------------- Members ------------------------------
