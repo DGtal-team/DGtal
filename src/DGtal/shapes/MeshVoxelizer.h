@@ -34,6 +34,7 @@
 // Inclusions
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Mesh.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
@@ -41,94 +42,122 @@
 
 namespace DGtal
 {
-  struct arete {
-    using PointR3 = PointVector<3, double>;
-    PointR3 f, s;
-
-    arete() {}
-    arete(PointR3 mf, PointR3 ms) : f(mf), s(ms) {}
-  };
-
+  
   /////////////////////////////////////////////////////////////////////////////
   /**
-     Description of template class 'MeshVoxelizer' <p> \brief Aim: A
-     class for computing a voxelization of a Mesh, use topological
-     target intersection to make a n-separating voxelization
-     with n parameterizable
-
-     @tparam TDigitalSet a DigitalSet using std::vector, std::set, or SVO
-     @tparam separation strategy of the voxelization (6 or 26)
-  */
+   Description of template class 'MeshVoxelizer' 
+   
+   \brief Aim: A
+   class for computing a voxelization of a Mesh, use topological
+   target intersection to make a n-separating voxelization
+   with n parameterizable
+   
+   @tparam TDigitalSet a DigitalSet (model of concepts::CDigitalSet)
+   @tparam Separation strategy of the voxelization (6 or 26)
+   */
   template <typename TDigitalSet, size_t separation = 6>
   class MeshVoxelizer
   {
-    using Space3Dint = SpaceND<3>;
-    using MeshFace = std::vector< unsigned int >;
-    using Domain   = HyperRectDomain<Space3Dint>;
-    using PointR3  = PointVector<3, double>;
-    using VectorR3 = PointVector<3, double>;
-    using PointR2  = PointVector<2, double>;
-    using PointZ3  = PointVector<3, int>;
-
-    using OrientationFunctor = InHalfPlaneBySimple3x3Matrix<PointR2, double>;
-
-  private:
-    std::vector<arete> myIntersectionTarget;
-    Mesh<PointR3> myMesh;
-    TDigitalSet myDigitalSet;
-
+    
   public:
+    
+    ///Concept Checking
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSet> ));
 
+    ///Digital Set Type
+    typedef TDigitalSet DigitalSet;
+    BOOST_STATIC_ASSERT_MSG( DigitalSet::Space::dimension == 3, "DigitalSet dimension must be 3");
+    
+    
+    /****** Associated types *********************/
+    using Space = typename DigitalSet::Space;
+    using Space2D = SpaceND<2, typename Space::Integer>;
+    using MeshFace = std::vector< unsigned int >;
+    using Domain   = typename DigitalSet::Domain;
+    using PointR3  = typename Space::RealPoint;
+    using VectorR3 = typename Space::RealPoint;
+    using PointR2  = typename Space2D::RealPoint;
+    using PointZ3  = typename Space::Point;
+    using Mesh3     = Mesh<PointR3>;
+    using OrientationFunctor = InHalfPlaneBySimple3x3Matrix<PointR2, double>;
+    /****** Associated types *********************/
+  
+    
+  private:
+    struct Edge
+    {
+      PointR3 myFirst, mySecond;
+      Edge() {}
+      Edge(PointR3 mf, PointR3 ms) : myFirst(mf), mySecond(ms) {}
+    };
+    
+  public:
+    
     /**
      * @brief Constructor of the voxelizer
      * @param aMesh mesh to voxelize
      * @param aDomain digital space of the voxelization
      * @param aResolution resolution of the voxelization grid
      */
-    MeshVoxelizer(const Mesh<PointR3>& aMesh, Domain& aDomain, size_t aResolution);
-
+    MeshVoxelizer(ConstAlias<Mesh3> aMesh,
+                  ConstAlias<Domain> aDomain,
+                  size_t aResolution);
+    
+    // ----------------------- Standard services ------------------------------
     /**
      * @brief voxelize the mesh into the digital set
      */
     void voxelize();
-
+    
     /**
      * @brief getter for digitalSet
      * @return current digital set
      */
     const TDigitalSet& digitalSet() const;
     
-    //
-    // some internal static functions
-    //
+ 
+    // ----------------------- Internal services ------------------------------
+
+    ///Enum type when deciding if a 2D point belongs to a 2D triangle.
+    enum TriangleOrientation { OUTSIDE, INSIDE, ONEDGE,ONVERTEX};
     
     /**
-     * @brief compute distance between p and plan defined by normal n and point M
+     * Compute distance between @a p and the Euclidean plan
+     * defined by normal vector @a n and point @a M
      * @param M point
      * @param n normal
      * @param p point p
      * @return distance
      */
-    static double distance(const PointR3& M, const VectorR3& n, const PointZ3& p);
-
+    static
+    double distance(const PointR3& M,
+                    const VectorR3& n,
+                    const PointZ3& p) ;
+    
     /**
-     * @brief predicat to know if p (2D point) is inside ABC (2D triangle)
+     * Predicate to know if @a p (2D point) is inside ABC (2D triangle)
      * @param A Point A
      * @param B Point B
      * @param C Point C
      * @param p point p
-     * @return true if p is inside ABC
+     * @return Either  {OUTSIDE, INSIDE, ONEDGE, ONVERTEX}
      */
-    static int pointIsInside2DTriangle(PointR2& A, PointR2& B, PointR2& C, PointR2& p);
-
+    static
+    TriangleOrientation pointIsInside2DTriangle(const PointR2& A,
+                                                const PointR2& B,
+                                                const PointR2& C,
+                                                const PointR2& p) ;
+    
     /**
-     * @brief predicat to know if point P is inside voxel v
+     * @brief predicat to know if a real point @a P is inside voxel @a v
      * @param P point P
      * @param v voxel v
      * @return true if P is inside v
      */
-    static bool pointIsInsideVoxel(PointR3& P, PointZ3& v);
-
+    static
+    bool pointIsInsideVoxel(const PointR3& P,
+                             const PointZ3& v) ;
+    
     /**
      * @brief voxelize ABC to the digitalSet
      * @param A Point A
@@ -143,9 +172,9 @@ namespace DGtal
       // tag dispatching
       return voxelizeTriangle(std::integral_constant<size_t, separation>{}, A, B, C, n, bbox);
     }
-
+    
     /**
-    * @brief voxelizeTriangle specialization for 6-separated
+     * @brief voxelizeTriangle specialization for 6-separated
      * @param A Point A
      * @param B Point B
      * @param C Point C
@@ -154,7 +183,7 @@ namespace DGtal
      * @return true if ok
      */
     bool voxelizeTriangle(std::integral_constant<size_t, 6>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox);
-
+    
     /**
      * @brief voxelizeTriangle specialization for 26-separated
      * @param A Point A
@@ -165,6 +194,21 @@ namespace DGtal
      * @return true if ok
      */
     bool voxelizeTriangle(std::integral_constant<size_t, 26>, PointR3& A, PointR3& B, PointR3& C, const VectorR3& n, std::pair<PointR3, PointR3>& bbox);
+
+  
+    // ----------------------- Members ------------------------------
+
+  private:
+    
+    ///Intersection target
+    std::vector<Edge> myIntersectionTarget;
+    
+    ///Input mesh
+    Mesh3 myMesh;
+    
+    ///Digital set containing the digitization of the mesh
+    DigitalSet myDigitalSet;
+  
   };
 }
 
