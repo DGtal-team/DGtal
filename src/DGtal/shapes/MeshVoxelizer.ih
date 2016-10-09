@@ -32,17 +32,17 @@
 // ----------------------- Standard services --------------------------------
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t separation>
+template <typename TDigitalSet, size_t Separation>
 inline
-DGtal::MeshVoxelizer<TDigitalSet, separation>::MeshVoxelizer(ConstAlias<Mesh3>  aMesh,
-                               ConstAlias<Domain> aDomain, size_t aResolution)
+DGtal::MeshVoxelizer<TDigitalSet, Separation>::MeshVoxelizer(ConstAlias<Mesh3> aMesh,
+                                                             ConstAlias<Domain> aDomain, size_t aResolution)
   : myMesh(&aMesh), myDigitalSet(&aDomain)
 {
   std::pair<PointR3, PointR3> bbox = myMesh.getBoundingBox();
 
   myMesh.changeScale(aResolution / bbox.second[0]);
 
-  if(separation == 6)
+  if(Separation == 6)
   {
     // 26 connected - 6 separated
     PointR3 AA(0.5, 0, 0);
@@ -56,7 +56,7 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::MeshVoxelizer(ConstAlias<Mesh3>  
     myIntersectionTarget.push_back( Edge(CC, DD) );
     myIntersectionTarget.push_back( Edge(EE, FF) );
   }
-  else if(separation == 26)
+  else if(Separation == 26)
   {
     // 6 connected - 26 separated
     PointR3 AA(-0.5, 0.5, 0.5);
@@ -76,10 +76,10 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::MeshVoxelizer(ConstAlias<Mesh3>  
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t separation>
+template <typename TDigitalSet, size_t Separation>
 inline
 double
-DGtal::MeshVoxelizer<TDigitalSet, separation>::distance(const PointR3& M,
+DGtal::MeshVoxelizer<TDigitalSet, Separation>::distance(const PointR3& M,
           const VectorR3& n, const PointZ3& voxel) 
 {
   double distance = 0.;
@@ -96,10 +96,10 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::distance(const PointR3& M,
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t separation>
+template <typename TDigitalSet, size_t Separation>
 inline
-typename DGtal::MeshVoxelizer<TDigitalSet, separation>::TriangleOrientation
-DGtal::MeshVoxelizer<TDigitalSet, separation>::pointIsInside2DTriangle(const PointR2& A, const PointR2& B, const PointR2& C, const PointR2& v)
+typename DGtal::MeshVoxelizer<TDigitalSet, Separation>::TriangleOrientation
+DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInside2DTriangle(const PointR2& A, const PointR2& B, const PointR2& C, const PointR2& v)
 {
   // AC
   double val1 = (C[1] - A[1])*(v[0] - A[0]) + (C[0] - A[0])*(A[1] - v[1]);
@@ -125,10 +125,10 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::pointIsInside2DTriangle(const Poi
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t separation>
+template <typename TDigitalSet, size_t Separation>
 inline
 bool
-DGtal::MeshVoxelizer<TDigitalSet, separation>::pointIsInsideVoxel(const PointR3& P, const PointZ3& v)
+DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInsideVoxel(const PointR3& P, const PointZ3& v)
 {
   PointR3 PP = P - v;
   for(int i(0); i < 3; i++)
@@ -139,10 +139,10 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::pointIsInsideVoxel(const PointR3&
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t separation>
+template <typename TDigitalSet, size_t Separation>
 inline
 void
-DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_constant<size_t, 6>, const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const std::pair<PointR3, PointR3>& bbox)
+DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(std::integral_constant<size_t, 6>, const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const std::pair<PointR3, PointR3>& bbox)
 {
   OrientationFunctor orientationFunctor;
 
@@ -157,7 +157,7 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
   {
     // 2D projection of A ; B ; C
 
-    if(target.f[0] == 0.5) {
+    if(target.myFirst[0] == 0.5) {
       // ignore X composante
       AA[0] = A[1];
       BB[0] = B[1];
@@ -167,7 +167,7 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
       BB[1] = B[2];
       CC[1] = C[2];
     }
-    else if(target.f[1] == 0.5)
+    else if(target.myFirst[1] == 0.5)
     {
       // ignore Y composante
       AA[0] = A[0];
@@ -205,18 +205,18 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
         for(v[2] = bbox.first[2]; v[2] <= bbox.second[2]; v[2]++)
         {
           // check if points are on different side
-          target.f += v;
-          target.s += v;
+          target.myFirst += v;
+          target.mySecond += v;
 
           VectorR3 d1, d2;
 
-          d1 = A - target.f;
-          d2 = A - target.s;
+          d1 = A - target.myFirst;
+          d2 = A - target.mySecond;
 
           bool isDifferentSide = d1.dot(n) * d2.dot(n) <= 0;
 
-          target.f -= v;
-          target.s -= v;
+          target.myFirst -= v;
+          target.mySecond -= v;
 
           if( ! isDifferentSide )
             continue;
@@ -224,12 +224,12 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
           PointR2 pp;
 
           // 2d projection of current voxel
-          if(target.f[0] == 0.5) {
+          if(target.myFirst[0] == 0.5) {
             // ignore X composante
             pp[0] = v[1];
             pp[1] = v[2];
           }
-          else if(target.f[1] == 0.5)
+          else if(target.myFirst[1] == 0.5)
           {
             // ignore Y composante
             pp[0] = v[0];
@@ -250,10 +250,10 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t separation>
+template <typename TDigitalSet, size_t Separation>
 inline
 void
-DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_constant<size_t, 26>, const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const std::pair<PointR3, PointR3>& bbox)
+DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(std::integral_constant<size_t, 26>, const PointR3& A, const PointR3& B, const PointR3& C, const VectorR3& n, const std::pair<PointR3, PointR3>& bbox)
 {
   OrientationFunctor orientationFunctor;
 
@@ -262,29 +262,6 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
 
   double d = n[0] * C[0] + n[1] * C[1] + n[2] * C[2];
   d *= -1;
-
-  // lambda function to return compute intersection point (p)
-  // intersection point between Edge a and ABC triangle
-  auto intersectionPoint =
-    [&](Edge a, PointR3& p)
-    {
-      // point d'intersection
-      VectorR3 w; // vecteur directeur
-
-      w = a.s - a.f;
-
-      double lambda = -( n.dot(a.f) + d );
-      double den = n.dot(w);
-
-      ASSERT(den != 0);
-
-      lambda /= den;
-
-      p[0] = a.f[0] + lambda*w[0];
-      p[1] = a.f[1] + lambda*w[1];
-      p[2] = a.f[2] + lambda*w[2];
-
-    };
 
   auto abs = [=](double a) { return a < 0 ? -a : a; };
   auto max = [=](double a, double b) { return abs(a) > abs(b) ? a : b; };
@@ -347,31 +324,37 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
         for(v[2] = bbox.first[2]; v[2] <= bbox.second[2]; v[2]++)
         {
           // check if points are on different side
-          target.f += v;
-          target.s += v;
+          target.myFirst += v;
+          target.mySecond += v;
 
           VectorR3 d1, d2;
 
-          d1 = A - target.f;
-          d2 = A - target.s;
+          d1 = A - target.myFirst;
+          d2 = A - target.mySecond;
 
-          bool isDifferentSide = d1.dot(n) * d2.dot(n) <= 0;
+          VectorR3 w = target.mySecond - target.myFirst;
+          double den = n.dot(w);
 
-          if( ! isDifferentSide )
+          bool isSameSide = d1.dot(n) * d2.dot(n) > 0
+                                 && den != 0;
+
+          // if target is on the same side -> skip current iteration
+          if( isSameSide )
           {
-            target.f -= v;
-            target.s -= v;
+            target.myFirst -= v;
+            target.mySecond -= v;
             continue;
           }
 
-          // get intersection point between target intersection and ABC
-          PointR3 p; // intersection point to compute
-          if( ! intersectionPoint(target, p)) // false if target is on ABC plane
-          {
-            target.f -= v;
-            target.s -= v;
-            continue;
-          }
+          // compute intersection point (p) between target intersection and ABC
+          PointR3 p;
+          double lambda = -( n.dot(target.myFirst) + d );
+
+          lambda /= den;
+
+          p[0] = target.myFirst[0] + lambda*w[0];
+          p[1] = target.myFirst[1] + lambda*w[1];
+          p[2] = target.myFirst[2] + lambda*w[2];
 
           // 2d projection of intersection point
           if(maxv == n[0])
@@ -394,17 +377,17 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelizeTriangle(std::integral_co
           if(pointIsInside2DTriangle(AA, BB, CC, pp) != 0)
             myDigitalSet.insert(v);
 
-          target.f -= v;
-          target.s -= v;
+          target.myFirst -= v;
+          target.mySecond -= v;
         }
   }
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t separation>
+template <typename TDigitalSet, size_t Separation>
 inline
 void
-DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelize()
+DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize()
 {
   MeshFace currentFace;
   std::pair<PointR3, PointR3> bbox;
@@ -412,7 +395,7 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelize()
   VectorR3 n, e1, e2;
   PointR3 A, B, C;
 
-  for(int i = 0; i < myMesh.nbFaces(); i++)
+  for(unsigned int i = 0; i < myMesh.nbFaces(); i++)
   {
     currentFace = myMesh.getFace(i);
 
@@ -461,10 +444,10 @@ DGtal::MeshVoxelizer<TDigitalSet, separation>::voxelize()
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t separation>
+template <typename TDigitalSet, size_t Separation>
 inline
 const TDigitalSet&
-DGtal::MeshVoxelizer<TDigitalSet, separation>::digitalSet() const
+DGtal::MeshVoxelizer<TDigitalSet, Separation>::digitalSet() const
 {
   return this->myDigitalSet;
 }
