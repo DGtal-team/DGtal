@@ -55,7 +55,7 @@ namespace DGtal
    @tparam TDigitalSet a DigitalSet (model of concepts::CDigitalSet)
    @tparam Separation strategy of the voxelization (6 or 26)
    */
-  template <typename TDigitalSet, size_t separation = 6>
+  template <typename TDigitalSet, size_t Separation = 6>
   class MeshVoxelizer
   {
     
@@ -173,7 +173,7 @@ namespace DGtal
                           const std::pair<PointR3, PointR3>& bbox)
     {
       // tag dispatching
-      return voxelizeTriangle(std::integral_constant<size_t, separation>{}, A, B, C, n, bbox);
+      return voxelizeTriangle(std::integral_constant<size_t, Separation>{}, A, B, C, n, bbox);
     }
     
     /**
@@ -198,7 +198,6 @@ namespace DGtal
      * @param C Point C
      * @param n normal of ABC
      * @param bbox bounding box of ABC
-     * @return true if ok
      */
     void voxelizeTriangle(std::integral_constant<size_t, 26>,
                           const PointR3& A,
