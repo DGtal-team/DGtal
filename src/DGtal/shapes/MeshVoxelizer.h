@@ -33,6 +33,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/shapes/Mesh.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
@@ -84,6 +85,9 @@ namespace DGtal
   
     
   private:
+    
+    ///Internal Edge structure
+    /// @todo replace structure element to integer only vertices for exact computations.
     struct Edge
     {
       PointR3 myFirst, mySecond;
@@ -101,16 +105,16 @@ namespace DGtal
      */
     MeshVoxelizer(ConstAlias<Mesh3> aMesh,
                   ConstAlias<Domain> aDomain,
-                  size_t aResolution);
+                  const size_t aResolution);
     
     // ----------------------- Standard services ------------------------------
     /**
-     * @brief voxelize the mesh into the digital set
+     * Voxelize the mesh into the digital set
      */
     void voxelize();
     
     /**
-     * @brief getter for digitalSet
+     * Getter for digitalSet
      * @return current digital set
      */
     const TDigitalSet& digitalSet() const;
@@ -149,7 +153,7 @@ namespace DGtal
                                                 const PointR2& p) ;
     
     /**
-     * @brief predicat to know if a real point @a P is inside voxel @a v
+     * Predicate to decide if a real point @a P is inside voxel @a v
      * @param P point P
      * @param v voxel v
      * @return true if P is inside v
