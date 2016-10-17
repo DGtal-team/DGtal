@@ -300,7 +300,16 @@ DistanceTransformation and ReverseDistanceTransformation), one can
 easily consider volumetric transformation in arbitrary dimension on
 toric domains @cite Coeurjo2008. 
 
-@todo Continue..
+More precisely, VoronoiMap class has a constructor allowing to specify
+periodicity information. In dimension @e d, such periodicity
+information is an array with @e d boolean flags where the i-th value
+is \c true if the i-th dimension of the space is periodic, \c false
+otherwise. Hence, computation can be performed either on a full toric
+domain, or on a domain with toricity property along only one axis.
+
+
+
+
 
 
 */
