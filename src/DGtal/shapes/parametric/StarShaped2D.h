@@ -211,7 +211,7 @@ namespace DGtal
      * @param p the point to be projected
      * @param left a point that is supposed to be projected left of p (regarding the angle)
      * @param right a point that is supposed to be projected right of p (regarding the angle)
-     * @param precision of the approximation
+     * @param step precision of the approximation
      * @param h the grid step
      * @return a point that lies between the projection of left and right and that is the closest in term of \f$L_2\f$ norm.
      * */
