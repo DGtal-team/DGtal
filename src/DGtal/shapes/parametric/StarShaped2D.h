@@ -43,6 +43,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -207,12 +208,14 @@ namespace DGtal
     RealPoint segmentProjection( RealPoint& inner, RealPoint& outer, const double epsilon ) const;
 
     /**
-     * @param inner a point that is inside the shape
-     * @param outer a point that is outside the shape
-     * @param epsilon error parameter
-     * @return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
-     */
-    RealPoint normalProjection( RealPoint& p, RealPoint& left, RealPoint& right, const int step, const double h ) const;
+     * @param p the point to be projected
+     * @param left a point that is supposed to be projected left of p (regarding the angle)
+     * @param right a point that is supposed to be projected right of p (regarding the angle)
+     * @param precision of the approximation
+     * @param h the grid step
+     * @return a point that lies between the projection of left and right and that is the closest in term of \f$L_2\f$ norm.
+     * */
+    RealPoint normProjection( RealPoint& p, RealPoint& left, RealPoint& right, const int step, const double h ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
