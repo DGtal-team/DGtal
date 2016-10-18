@@ -204,10 +204,10 @@ namespace DGtal
     }
 
     /**
-     * Access to a DistanceMap value (a.k.a. the norm of the
-     * associated Voronoi vector) at a point.
+     * Access to a Voronoi vector inducing the DistanceMap value
+     * (a.k.a. the  vector such that its norm is the DT value) at a point.
      *
-     * @param aPoint the point to probe.
+     * @param [in] aPoint the point to probe.
      */
     Vector getVoronoiVector(const Point &aPoint) const
     {

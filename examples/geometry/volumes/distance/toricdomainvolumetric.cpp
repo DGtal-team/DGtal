@@ -55,7 +55,7 @@ int main()
   using namespace Z2i;
 
   Point a ( 0, 0 );
-  Point b ( 64, 32);
+  Point b ( 32, 16);
   
   //Input image with unsigned char values
   typedef ImageSelector<Domain, unsigned int>::Type Image;
@@ -66,9 +66,9 @@ int main()
     (*it)=128;
 
   //We add 3 seeds with 0 values.
-  image.setValue(Point(32,10), 0);
-  image.setValue(Point(2,20), 0);
-  image.setValue(Point(50,31), 0);
+  image.setValue(Point(16,2), 0);
+  image.setValue(Point(2,11), 0);
+  image.setValue(Point(30,15), 0);
   //! [DTDef]
   
   trace.beginBlock ( "Example toricdomainvolumetric" );
@@ -104,7 +104,7 @@ int main()
 
   //! [DTColormaps]
   //Colormap used for the SVG output
-  typedef HueShadeColorMap<DTL2::Value, 2> HueTwice;
+  typedef HueShadeColorMap<DTL2::Value, 1> HueTwice;
   //! [DTColormaps]
   
   trace.warning() << "DT maxValue= "<<maxv2<< endl;
@@ -120,11 +120,10 @@ int main()
   //Explicit export with ticked colormap
   //We compute the maximum DT value on the L2 map
   TickedColorMap<double, GradientColorMap<double> > ticked(0.0,maxv2, Color::White);
-  ticked.addRegularTicks(5, 0.5);
+  ticked.addRegularTicks(3, 0.5);
   ticked.finalize();
   ticked.colormap()->addColor( Color::Red );
   ticked.colormap()->addColor( Color::Black );
-  
   board.clear();
   for ( auto it = dtL2.domain().begin(), itend = dtL2.domain().end();it != itend; ++it)
   {
@@ -140,6 +139,20 @@ int main()
     board << *it;
   }
   board.saveSVG("example-DT-L2-ticked-toric.svg");
+  
+  //Voronoi vector output
+  board.clear();
+  board << dtL2.domain();
+  for ( auto it = dtL2.domain().begin(), itend = dtL2.domain().end();it != itend; ++it)
+    Display2DFactory::draw(board,dtL2.getVoronoiVector(*it) - (*it), (*it));
+  board.saveSVG("example-Voro-L2.svg");
+  
+  board.clear();
+  board << dtL2Toric.domain();
+  for ( auto it = dtL2Toric.domain().begin(), itend = dtL2Toric.domain().end();it != itend; ++it)
+    Display2DFactory::draw(board, dtL2Toric.getVoronoiVector(*it) - (*it), (*it));
+  board.saveSVG("example-Voro-L2-toric.svg");
+  
   trace.endBlock();
   return 0;
 }
