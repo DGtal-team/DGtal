@@ -44,21 +44,22 @@
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 int main()
 {
-  trace.beginBlock ( "Example toricdomainvolumetric" );
 
   //! [DTDef]
-  Z2i::Point a ( 0, 0 );
-  Z2i::Point b ( 64, 32);
+  using namespace std;
+  using namespace DGtal;
+  using namespace Z2i;
+
+  Point a ( 0, 0 );
+  Point b ( 64, 32);
   
   //Input image with unsigned char values
-  typedef ImageSelector<Z2i::Domain, unsigned int>::Type Image;
-  Image image ( Z2i::Domain(a, b ));
+  typedef ImageSelector<Domain, unsigned int>::Type Image;
+  Image image ( Domain(a, b ));
 
   //We fill the image with the 128 value
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
@@ -68,9 +69,9 @@ int main()
   image.setValue(Point(32,10), 0);
   image.setValue(Point(2,20), 0);
   image.setValue(Point(50,31), 0);
-  
-
   //! [DTDef]
+  
+  trace.beginBlock ( "Example toricdomainvolumetric" );
   //Input shape output
   typedef GrayscaleColorMap<Image::Value> Gray;
   Board2D board;
@@ -85,58 +86,60 @@ int main()
   //! [DTPredicate]  
 
   //! [DTCompute]
-  typedef  DistanceTransformation<Z2i::Space, PointPredicate, Z2i::L2Metric> DTL2;
-  typedef  DistanceTransformation<Z2i::Space, PointPredicate, Z2i::L1Metric> DTL1;
+  typedef  DistanceTransformation<Space, PointPredicate, L2Metric> DTL2;
+  typedef  DistanceTransformation<Space, PointPredicate, L2Metric> DTL2Toric;
  
- 
-  DTL2 dtL2(image.domain(), predicate, Z2i::l2Metric);
-  DTL1 dtL1(image.domain(), predicate, Z2i::l1Metric);
+  //Regular 2D domain
+  DTL2 dtL2(image.domain(), predicate, l2Metric);
+  //Full toric 2D domain
+  DTL2Toric dtL2Toric(image.domain(), predicate, l2Metric, {{true, true}} );
   //! [DTCompute]
 
-
-  DTL2::Value maxv2=0;
+  DTL2::Value maxv2;
   //We compute the maximum DT value on the L2 map
-  for ( DTL2::ConstRange::ConstIterator it = dtL2.constRange().begin(), itend = dtL2.constRange().end();it != itend; ++it)
-    if ( (*it) > maxv2)  maxv2 = (*it);
- 
-  DTL1::Value maxv1=0;
-  //We compute the maximum DT value on the L1 map
-  for ( DTL1::ConstRange::ConstIterator it = dtL1.constRange().begin(), itend = dtL1.constRange().end();it != itend; ++it)
-    if ( (*it) > maxv1)  maxv1 = (*it);
+  maxv2 = * (std::max_element(dtL2.constRange().begin(), dtL2.constRange().end()));
   
+  DTL2Toric::Value maxvtoric;
+  maxvtoric = * (std::max_element(dtL2Toric.constRange().begin(), dtL2Toric.constRange().end()));
+
   //! [DTColormaps]
   //Colormap used for the SVG output
   typedef HueShadeColorMap<DTL2::Value, 2> HueTwice;
   //! [DTColormaps]
-
-
   
-  
-  trace.warning() << dtL2 << " maxValue= "<<maxv2<< endl;
+  trace.warning() << "DT maxValue= "<<maxv2<< endl;
   board.clear();
   Display2DFactory::drawImage<HueTwice>(board, dtL2, 0.0, maxv2 + 1);
   board.saveSVG ( "example-DT-L2.svg" );
-
-  trace.warning() << dtL1 << " maxValue= "<<maxv1<< endl;
+  
+  trace.warning() <<  "Toric maxValue= "<<maxvtoric<< endl;
   board.clear();
-  Display2DFactory::drawImage<HueTwice>(board, dtL1, 0.0, maxv1 + 1);
-  board.saveSVG ( "example-DT-L1.svg" );
+  Display2DFactory::drawImage<HueTwice>(board, dtL2Toric, 0.0, maxvtoric + 1);
+  board.saveSVG ( "example-DT-L2-toric.svg" );
 
   //Explicit export with ticked colormap
   //We compute the maximum DT value on the L2 map
-  board.clear();
   TickedColorMap<double, GradientColorMap<double> > ticked(0.0,maxv2, Color::White);
   ticked.addRegularTicks(5, 0.5);
   ticked.finalize();
   ticked.colormap()->addColor( Color::Red );
   ticked.colormap()->addColor( Color::Black );
-  for ( DTL2::Domain::ConstIterator it = dtL2.domain().begin(), itend = dtL2.domain().end();it != itend; ++it)
+  
+  board.clear();
+  for ( auto it = dtL2.domain().begin(), itend = dtL2.domain().end();it != itend; ++it)
   {
     board<< CustomStyle((*it).className(),new CustomColors(ticked(dtL2(*it)),ticked(dtL2(*it))));
     board << *it;
   }
   board.saveSVG("example-DT-L2-ticked.svg");
   
+  board.clear();
+  for ( auto it = dtL2Toric.domain().begin(), itend = dtL2Toric.domain().end();it != itend; ++it)
+  {
+    board<< CustomStyle((*it).className(),new CustomColors(ticked(dtL2Toric(*it)),ticked(dtL2Toric(*it))));
+    board << *it;
+  }
+  board.saveSVG("example-DT-L2-ticked-toric.svg");
   trace.endBlock();
   return 0;
 }
