@@ -298,18 +298,60 @@ of shapes in toric domains are crucial. Thanks to the separability
 property of VoronoiMap, PowerMap (and their associated wrappers
 DistanceTransformation and ReverseDistanceTransformation), one can
 easily consider volumetric transformation in arbitrary dimension on
-toric domains @cite Coeurjo2008. 
+toric domains @cite Coeurjo2008. Note that changing the periodicity
+property of the domain has no impact on the computational cost.
 
-More precisely, VoronoiMap class has a constructor allowing to specify
-periodicity information. In dimension @e d, such periodicity
-information is an array with @e d boolean flags where the i-th value
-is \c true if the i-th dimension of the space is periodic, \c false
-otherwise. Hence, computation can be performed either on a full toric
-domain, or on a domain with toricity property along only one axis.
+More precisely, VoronoiMap and DistanceTransformation classes have
+constructors allowing to specify periodicity information. In dimension
+@e d, such periodicity information is an array with @e d boolean flags
+where the i-th value is \c true if the i-th dimension of the space is
+periodic, \c false otherwise. Hence, computation can be performed
+either on a full toric domain, or on a domain with toricity property
+along only one axis.
+
+As illustrated in the example toricdomainvolumetric.cpp, Given an
+input image
+
+@image html toric-inputShape-red.png "Input domain and sites."
+
+We consider the following distance transformation objects:
+
+@snippet geometry/volumes/distance/toricdomainvolumetric.cpp DTComputeToric
+
+The following results illustrate both distance transformation and
+Voronoi maps. For the VoronoiMap results, points may be attached to
+sites exterior to the initial domain. In fact such sites correspond to
+toric replicas of existing sites within the domain. 
+
+<center>
+<table>
+<tr><td>
+Classical domain
+</td>
+<td>
+Toric domain
+</td>
+</tr>
+<tr><td>
+@image html toric-example-DT-L2-red.png "DT values."
+</td>
+<td>
+@image html toric-example-DT-L2-toric-red.png "Toric DT values."
+</td>
+</tr>
+<tr><td>
+@image html toric-example-Voro-L2-red.png "Voronoi map as vectors."
+</td>
+<td>
+@image html toric-example-Voro-L2-toric-red.png "Voronoi map as vectors."
+</td>
+</tr>
+</table>
+</center>
 
 
-
-
+Similar extensions to toric domains have been implemented for the
+PowerMap and ReverseDistanceTransformation classes.
 
 
 */
@@ -321,6 +363,15 @@ domain, or on a domain with toricity property along only one axis.
    @see \ref voronoiSect
    \image html voronoimap-dt.png "Distance transformation for the l_2 metric."
    \example geometry/volumes/distance/voronoimap2D.cpp
+*/
+
+
+/**
+   Example of a toric distance transform construction in dimension 2 for the
+   Eucldiean metric.
+
+   @see \ref voronoiSect
+   \example geometry/volumes/distance/toricdomainvolumetric.cpp
 */
 
 /**

@@ -77,7 +77,7 @@ int main()
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)129);
-  board.saveSVG("inputShape.svg");
+  board.saveSVG("toric-inputShape.svg");
 
   //! [DTPredicate]
   //Point Predicate from random seed image
@@ -85,7 +85,7 @@ int main()
   PointPredicate predicate(image,0);
   //! [DTPredicate]  
 
-  //! [DTCompute]
+  //! [DTComputeToric]
   typedef  DistanceTransformation<Space, PointPredicate, L2Metric> DTL2;
   typedef  DistanceTransformation<Space, PointPredicate, L2Metric> DTL2Toric;
  
@@ -93,7 +93,7 @@ int main()
   DTL2 dtL2(image.domain(), predicate, l2Metric);
   //Full toric 2D domain
   DTL2Toric dtL2Toric(image.domain(), predicate, l2Metric, {{true, true}} );
-  //! [DTCompute]
+  //! [DTComputeToric]
 
   DTL2::Value maxv2;
   //We compute the maximum DT value on the L2 map
@@ -110,12 +110,12 @@ int main()
   trace.warning() << "DT maxValue= "<<maxv2<< endl;
   board.clear();
   Display2DFactory::drawImage<HueTwice>(board, dtL2, 0.0, maxv2 + 1);
-  board.saveSVG ( "example-DT-L2.svg" );
+  board.saveSVG ( "toric-example-DT-L2.svg" );
   
   trace.warning() <<  "Toric maxValue= "<<maxvtoric<< endl;
   board.clear();
   Display2DFactory::drawImage<HueTwice>(board, dtL2Toric, 0.0, maxvtoric + 1);
-  board.saveSVG ( "example-DT-L2-toric.svg" );
+  board.saveSVG ( "toric-example-DT-L2-toric.svg" );
 
   //Explicit export with ticked colormap
   //We compute the maximum DT value on the L2 map
@@ -130,7 +130,7 @@ int main()
     board<< CustomStyle((*it).className(),new CustomColors(ticked(dtL2(*it)),ticked(dtL2(*it))));
     board << *it;
   }
-  board.saveSVG("example-DT-L2-ticked.svg");
+  board.saveSVG("toric-example-DT-L2-ticked.svg");
   
   board.clear();
   for ( auto it = dtL2Toric.domain().begin(), itend = dtL2Toric.domain().end();it != itend; ++it)
@@ -138,20 +138,20 @@ int main()
     board<< CustomStyle((*it).className(),new CustomColors(ticked(dtL2Toric(*it)),ticked(dtL2Toric(*it))));
     board << *it;
   }
-  board.saveSVG("example-DT-L2-ticked-toric.svg");
+  board.saveSVG("toric-example-DT-L2-ticked-toric.svg");
   
   //Voronoi vector output
   board.clear();
   board << dtL2.domain();
   for ( auto it = dtL2.domain().begin(), itend = dtL2.domain().end();it != itend; ++it)
     Display2DFactory::draw(board,dtL2.getVoronoiVector(*it) - (*it), (*it));
-  board.saveSVG("example-Voro-L2.svg");
+  board.saveSVG("toric-example-Voro-L2.svg");
   
   board.clear();
   board << dtL2Toric.domain();
   for ( auto it = dtL2Toric.domain().begin(), itend = dtL2Toric.domain().end();it != itend; ++it)
     Display2DFactory::draw(board, dtL2Toric.getVoronoiVector(*it) - (*it), (*it));
-  board.saveSVG("example-Voro-L2-toric.svg");
+  board.saveSVG("toric-example-Voro-L2-toric.svg");
   
   trace.endBlock();
   return 0;
