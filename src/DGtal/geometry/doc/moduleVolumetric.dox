@@ -291,7 +291,7 @@ for the same metric/power metric, returns the input binary shape.
 concepts::CPowerSeparableMetric concepts whose main model is
 ExactPredicateLpPowerSeparableMetric, see @ref moduleMetrics
 
-@section toric Volumetric Analysis on Toric domains
+@section toricVol Volumetric Analysis on Toric domains
 
 In some specific applications, toric domains and volumetric analysis
 of shapes in toric domains are crucial. Thanks to the separability
@@ -307,10 +307,12 @@ constructors allowing to specify periodicity information. In dimension
 where the i-th value is \c true if the i-th dimension of the space is
 periodic, \c false otherwise. Hence, computation can be performed
 either on a full toric domain, or on a domain with toricity property
-along only one axis.
+along only one axis. Similar extensions to toric domains have been
+implemented for the PowerMap and ReverseDistanceTransformation
+classes.
 
-As illustrated in the example toricdomainvolumetric.cpp, Given an
-input image
+As illustrated in the example toricdomainvolumetric.cpp, given an
+input:
 
 @image html toric-inputShape-red.png "Input domain and sites."
 
@@ -350,15 +352,14 @@ Toric domain
 </center>
 
 
-Similar extensions to toric domains have been implemented for the
-PowerMap and ReverseDistanceTransformation classes.
+
 
 
 */
 
 /**
    Example of a Voronoi map construction in dimension 2 for the
-   Eucldiean metric.
+   Euclidean metric.
 
    @see \ref voronoiSect
    \image html voronoimap-dt.png "Distance transformation for the l_2 metric."
@@ -368,9 +369,9 @@ PowerMap and ReverseDistanceTransformation classes.
 
 /**
    Example of a toric distance transform construction in dimension 2 for the
-   Eucldiean metric.
+   Euclidean metric.
 
-   @see \ref voronoiSect
+   @see \ref toricVol
    \example geometry/volumes/distance/toricdomainvolumetric.cpp
 */
 
