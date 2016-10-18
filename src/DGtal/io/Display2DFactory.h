@@ -389,10 +389,11 @@ template<Dimension dim, typename TComponent>
 template<Dimension dim, typename TComponent>
   static void draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
 
+//arrow drawing
 template<Dimension dim, typename TComponent>
   static void draw( DGtal::Board2D & board, 
-	     const DGtal::PointVector<dim,TComponent> &, 
-	     const DGtal::PointVector<dim,TComponent> & );
+	     const DGtal::PointVector<dim,TComponent> & shift,
+	     const DGtal::PointVector<dim,TComponent> & basepoint);
 // PointVector
     
     
