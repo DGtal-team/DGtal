@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <array>
+#include <algorithm>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -175,12 +176,19 @@ bool checkVoronoi(const Set &aSet, const Voro & voro)
       const Point psite  = voro(pt);
       const auto dist = voro.metric()->rawDistance( pt, psite );
 
+      // Checking that the reference site is actually a given site.
+      // Also testing projectPoint method.
+      if ( std::find( aSet.begin(), aSet.end(), voro.projectPoint( psite ) ) == aSet.end() )
+        {
+          trace.error() << "The Voro point " << psite
+                        << " projected to " << voro.projectPoint( psite )
+                        << " is not a valid site." << std::endl;
+          return false;
+        }
+
       // Checking if we can found a better site.
       for ( auto site : aSet )
         {
-          // Reseting site coordinates so that they are between domain's lower and upper bounds.
-          site = calcPointModuloDomain( site, voro.domain() );
-
           // Trying all shifting possibilities of the site depending on the domain periodicity.
           for ( auto const & periodicity : periodicShift )
             {
@@ -195,8 +203,10 @@ bool checkVoronoi(const Set &aSet, const Voro & voro)
               const auto dbis = voro.metric()->rawDistance( pt, currSite );
               if ( dbis < dist )
                 {
-                  trace.error() << "DT Error at " << pt << "  Voro:" << psite << " (" << dist << ")  from set:"
-                    << site << "(" << dbis << ")" << std::endl;
+                  trace.error() << "DT Error at " << pt
+                                << "  Voro:" << psite << " (" << dist << ")"
+                                << "  from set:" << site << "(" << dbis << ")"
+                                << " projected from " << currSite << "." << std::endl;
                   return false;
                 }
             }
