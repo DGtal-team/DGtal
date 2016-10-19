@@ -33,6 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/ReverseDistanceTransformation.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -329,9 +330,14 @@ bool testPowerMapFromSites( const Set &aSet, std::array<bool, Set::Space::dimens
   Power3 power3( aSet.domain(), image, l3, periodicity);
   trace.endBlock();
 
-  trace.beginBlock("Validating the Power Map");
+  trace.beginBlock("Validating the Power Map l_3");
   nbok += checkPowerMap( power3 ) ? 1 : 0;
   nb++;
+  trace.endBlock();
+
+  trace.beginBlock("Reverse DT computation");
+  typedef ReverseDistanceTransformation<typename Power2::WeightImage, L2PowerMetric> RDT;
+  RDT rdt(aSet.domain(), power2.weightImagePtr(), l2, periodicity);
   trace.endBlock();
 
   return nbok == nb;
