@@ -221,7 +221,10 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
                                                       Sites[Sites.size()-1], myWeightImagePtr->operator()(Sites[Sites.size()-1]),
                                                       psite,  myWeightImagePtr->operator()(psite),
                                                       startingPoint, endPoint, dim) ))
-                    Sites.pop_back();
+                    {
+                      Sites.pop_back();
+                      boundedSites.pop_back();
+                    }
 
                   Sites.push_back( psite );
                   boundedSites.push_back( psite );
@@ -244,7 +247,10 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
                                                       Sites[Sites.size()-1], myWeightImagePtr->operator()( projectPoint( Sites[Sites.size()-1], dim-1 ) ),
                                                       psite,  myWeightImagePtr->operator()( boundedPSite ),
                                                       startingPoint, endPoint, dim) ))
-                    Sites.pop_back();
+                    {
+                      Sites.pop_back();
+                      boundedSites.pop_back();
+                    }
 
                   Sites.push_back( psite );
                   boundedSites.push_back( boundedPSite );
@@ -274,7 +280,10 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
                                                       Sites[Sites.size()-1], myWeightImagePtr->operator()(boundedSites[Sites.size()-1]),
                                                       psite,  myWeightImagePtr->operator()(boundedPSite),
                                                       startingPoint, endPoint, dim) ))
-                    Sites.pop_back();
+                    {
+                      Sites.pop_back();
+                      boundedSites.pop_back();
+                    }
 
                   Sites.push_back( psite );
                   boundedSites.push_back( boundedPSite );
