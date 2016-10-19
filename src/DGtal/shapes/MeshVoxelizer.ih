@@ -416,38 +416,18 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(const PointR3 &a,
   e2 = C - A;
   n = e1.crossProduct(e2).getNormalized();
   
+  //Boundingbox
+  bbox.first = A;
+  bbox.second = A;
+  if (B < bbox.first ) bbox.first = B;
+  if (C < bbox.first ) bbox.first = C;
+  if (B > bbox.second) bbox.second = B;
+  if (C > bbox.second) bbox.second = C;
+  ASSERT( bbox.lower <= bbox.upper);
   
-  ///@FIXME remove this mesh construction to get the bbox
-  Mesh<PointR3> currentMesh;
-  currentMesh.addVertex(A);
-  currentMesh.addVertex(B);
-  currentMesh.addVertex(C);
-  currentMesh.addTriangularFace(0, 1, 2);
-  
-  bbox = currentMesh.getBoundingBox();
-  
-  // floor and ceil to have an axis aligned bounding box in Z^3
-  for(int j(0); j < 3; j++)
-  {
-    if(bbox.first[j] < bbox.second[j])
-    {
-      bbox.first[j] = floor(bbox.first[j]);
-      bbox.second[j] = ceil(bbox.second[j]);
-    }
-    else
-    {
-      bbox.second[j] = floor(bbox.second[j]);
-      bbox.first[j] = ceil(bbox.first[j]);
-    }
-    
-    if(bbox.first[j] > bbox.second[j])
-    {
-      // swap
-      double tmp = bbox.first[j];
-      bbox.first[j] = bbox.second[j];
-      bbox.second[j] = tmp;
-    }
-  }
+  //Rounding the bbox
+  std::transform( bbox.lower.begin(), bbox.lower.end(),   [](typename PointR3::Component c) { return std::floor(c);});
+  std::transform( bbox.upper.begin(), bbox.upper.end(),   [](typename PointR3::Component c) { return std::ceil(c);});
   
   // voxelize current triangle to myDigitalSet
   voxelizeTriangle(A, B, C, n, bbox);
