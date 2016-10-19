@@ -79,9 +79,8 @@ namespace DGtal
     using VectorR3 = typename Space::RealPoint;
     using PointR2  = typename Space2D::RealPoint;
     using PointZ3  = typename Space::Point;
-    using Mesh3     = Mesh<PointR3>;
     using OrientationFunctor = InHalfPlaneBySimple3x3Matrix<PointR2, double>;
-    /****** Associated types *********************/
+    /*********************************************/
   
     
   private:
@@ -99,19 +98,31 @@ namespace DGtal
     
     /**
      * @brief Constructor of the voxelizer
-     * @param aMesh mesh to voxelize
      * @param aDomain digital space of the voxelization
-     * @param aResolution resolution of the voxelization grid
      */
-    MeshVoxelizer(ConstAlias<Mesh3> aMesh,
-                  ConstAlias<Domain> aDomain,
-                  const size_t aResolution);
+    MeshVoxelizer(ConstAlias<Domain> aDomain);
     
     // ----------------------- Standard services ------------------------------
     /**
-     * Voxelize the mesh into the digital set
+     * Voxelize the mesh into the digital set.
+     *
+     * @param [in] aMesh the mesh to voxelize
+     * @param [in] scaleFactor the scale factor to apply to the mesh (default=1.0)
      */
-    void voxelize();
+    void voxelize(const Mesh<PointR3> &aMesh,
+                  const double scaleFactor = 1.0);
+    
+    /**
+     * Voxelize a unique triangle (a,b,c) into the digital set.
+     *
+     * @param [in] a the first point of the triangle
+     * @param [in] b the second point of the triangle
+     * @param [in] c the third point of the triangle
+     * @param [in] scaleFactor the scale factor to apply to the triangle (default=1.0)
+     *
+     */
+    void voxelize(const PointR3 &a, const PointR3 &b, const PointR3 &c,
+                  const double scaleFactor = 1.0);
     
     /**
      * Getter for digitalSet
@@ -126,7 +137,7 @@ namespace DGtal
     enum TriangleOrientation { OUTSIDE, INSIDE, ONEDGE,ONVERTEX};
     
     /**
-     * Compute distance between @a p and the Euclidean plan
+     * Compute (unsigned) distance between @a p and the Euclidean plan
      * defined by normal vector @a n and point @a M
      * @param M point
      * @param n normal
@@ -217,9 +228,6 @@ namespace DGtal
     
     ///Intersection target
     std::vector<Edge> myIntersectionTarget;
-    
-    ///Input mesh
-    Mesh3 myMesh;
     
     ///Digital set containing the digitization of the mesh
     DigitalSet myDigitalSet;
