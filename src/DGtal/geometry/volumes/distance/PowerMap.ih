@@ -234,10 +234,11 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
           for( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
             {
               const Point psite = myImagePtr->operator()(point);
-              const Point boundedPSite = projectPoint( psite, dim-1 );
 
               if ( psite != myInfinity )
                 {
+                  const Point boundedPSite = projectPoint( psite, dim-1 );
+
                   while (( Sites.size() >= 2 ) &&
                          ( myMetricPtr->hiddenByPower(Sites[Sites.size()-2], myWeightImagePtr->operator()( projectPoint( Sites[Sites.size()-2], dim-1 ) ),
                                                       Sites[Sites.size()-1], myWeightImagePtr->operator()( projectPoint( Sites[Sites.size()-1], dim-1 ) ),
@@ -259,11 +260,12 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
           point[dim] = myLowerBoundCopy[dim];
           for ( ; point[dim] <= endPoint[dim] - extent + 1; ++point[dim] ) // +1 in order to add the break-index site at the cycle's end.
             {
-              Point psite = myImagePtr->operator()(point); // Periodicity !!! Warning with the following test against myInfinity !!!
-              const Point boundedPSite = projectPoint( psite, dim-1 );
+              Point psite = myImagePtr->operator()(point);
 
               if ( psite != myInfinity )
                 {
+                  const Point boundedPSite = projectPoint( psite, dim-1 );
+
                   // Site coordinates must be between startPoint and endPoint.
                   psite[dim] += extent;
 
