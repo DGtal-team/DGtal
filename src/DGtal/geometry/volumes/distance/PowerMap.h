@@ -92,7 +92,7 @@ namespace DGtal
    *
    * This class is a model of concepts::CConstImage.
    *
-   * @see \ref toricVol
+   * @see &nbsp; \ref toricVol
    *
    * @tparam TWeightImage model of CConstImage
    * @tparam TPowerSeparableMetric model of concepts::CPowerSeparableMetric

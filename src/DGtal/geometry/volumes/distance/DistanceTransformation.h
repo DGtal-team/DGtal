@@ -135,7 +135,7 @@ namespace DGtal
 
     ///Definition of the image value type.
     typedef typename VoronoiMap<TSpace,TPointPredicate,
-				TSeparableMetric,TImageContainer>::Domain  Domain;
+            TSeparableMetric,TImageContainer>::Domain  Domain;
 
     /**
      *  Constructor in the non-periodic case.
