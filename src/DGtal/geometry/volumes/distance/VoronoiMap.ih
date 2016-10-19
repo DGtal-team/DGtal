@@ -283,6 +283,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
                                           ConstAlias<SeparableMetric> aMetric )
      : myDomainPtr(&aDomain)
      , myPointPredicatePtr(&aPredicate)
+     , myDomainExtent( aDomain->upperBound() - aDomain->lowerBound() + Point::diagonal(1) )
      , myMetricPtr(&aMetric)
 {
   myPeriodicitySpec.fill( false );
@@ -298,11 +299,37 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
                                           PeriodicitySpec const & aPeriodicitySpec )
      : myDomainPtr(&aDomain)
      , myPointPredicatePtr(&aPredicate)
+     , myDomainExtent( aDomain->upperBound() - aDomain->lowerBound() + Point::diagonal(1) )
      , myMetricPtr(&aMetric)
      , myPeriodicitySpec(aPeriodicitySpec)
 {
+  // Finding periodic dimension index.
+  for ( std::size_t i = 0; i < Space::dimension; ++i )
+    if ( isPeriodic(i) )
+      myPeriodicityIndex.push_back( i );
+
   myImagePtr = CountedPtr<OutputImage>( new OutputImage(aDomain) );
   compute();
+}
+
+template <typename S,typename P,typename TSep, typename TImage>
+inline
+typename DGtal::VoronoiMap<S, P, TSep, TImage>::Point
+DGtal::VoronoiMap<S, P, TSep, TImage>::projectPoint( Point aPoint  ) const
+{
+  for ( auto const & dim : myPeriodicityIndex )
+    aPoint[ dim ] = projectCoordinate( aPoint[ dim ], dim );
+
+  return aPoint;
+}
+
+template <typename S,typename P,typename TSep, typename TImage>
+inline
+typename DGtal::VoronoiMap<S, P, TSep, TImage>::Point::Coordinate
+DGtal::VoronoiMap<S, P, TSep, TImage>::projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const
+{
+  ASSERT( aCoordinate - myDomainPtr->lowerBound()[aDim] + myDomainExtent[aDim] >= 0 );
+  return ( aCoordinate - myDomainPtr->lowerBound()[aDim] + myDomainExtent[aDim] ) % myDomainExtent[aDim] + myDomainPtr->lowerBound()[aDim];
 }
 
 template <typename S,typename P,typename TSep, typename TImage>

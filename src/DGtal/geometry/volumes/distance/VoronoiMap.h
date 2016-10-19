@@ -104,7 +104,7 @@ namespace DGtal
    *
    * This class is a model of concepts::CConstImage.
    *
-   * @see \ref toricVol
+   * @see &nbsp; \ref toricVol
    *
    * @tparam TSpace type of Digital Space (model of concepts::CSpace).
    * @tparam TPointPredicate point predicate returning true for points
@@ -315,6 +315,18 @@ namespace DGtal
       }
 
     /**
+     * Project point coordinates into the domain, taking into account
+     * the periodicity.
+     *
+     * @pre The given point must come from operator()(const Point &) const (for performance reasons).
+     *
+     * @param aPoint the point to project
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification.
+     */
+    Point projectPoint( Point aPoint ) const;
+
+    /**
      * Self Display method.
      *
      * @param out output stream
@@ -351,6 +363,19 @@ namespace DGtal
     void computeOtherStep1D (const Point &row,
                              const Dimension dim) const;
 
+    /**
+     * Project a coordinate into the domain, taking into account
+     * the periodicity.
+     *
+     * @pre The given coordinate must come from operator()(const Point &) const (for performance reasons).
+     *
+     * @param aCoordinate the coordinate.
+     * @param aDim  dimension of the coordinate.
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification.
+     */
+    typename Point::Coordinate projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const;
+
     // ------------------- Private members ------------------------
   private:
 
@@ -368,6 +393,12 @@ namespace DGtal
 
     ///Value to act as a +infinity value
     Point myInfinity;
+
+    /// Index of the periodic dimensions
+    std::vector< Dimension > myPeriodicityIndex; // Could be boost::static_vector but it needs Boost >= 1.54.
+
+    /// Domain extent.
+    Point myDomainExtent;
 
   protected:
 
