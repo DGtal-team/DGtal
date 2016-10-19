@@ -478,7 +478,7 @@ bool testVoronoiMapFromSites( const Set &aSet, std::array<bool, Set::Space::dime
   Set mySet(aSet.domain());
 
   for(typename Set::Domain::ConstIterator it = aSet.domain().begin(),
-	itend = aSet.domain().end();
+      itend = aSet.domain().end();
       it != itend;
       ++it)
     mySet.insertNew( *it );
@@ -517,7 +517,6 @@ bool testVoronoiMapFromSites( const Set &aSet, std::array<bool, Set::Space::dime
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Set, L2Metric> DT;
   DT dt(aSet.domain(), mySet, l2, periodicity);
-
   trace.endBlock();
 
   return nbok == nb;
