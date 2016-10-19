@@ -67,7 +67,8 @@ namespace DGtal
    * construction.
 
    * The algorithm uses a separable process to construct
-   * Power maps as discussed in @cite dcoeurjo_pami_RDMA
+   * Power maps as discussed in @cite dcoeurjo_pami_RDMA.
+   * Along periodic dimensions, the algorithm is adapted following @cite Coeurjo2008.
    *
    * Given an image mapping points to values and a power separable
    * metric, the class computes the power map of the weighted points
@@ -75,13 +76,23 @@ namespace DGtal
    * points are equi-distant according to the power distance, this
    * power map will only consider one of them.
    *
+   * By default, the domain is considered non-periodic but per-dimension
+   * periodicity can be specified in the constructor.
+   * When the domain has periodic dimensions, the closest point
+   * coordinates \c B to a given point \c A may not be between the lower
+   * and upper bounds of the domain, in such a way that the non-periodic
+   * power distance between \c A and \c B is equal to their power distance
+   * considering the periodicity.
+   *
    * If the separable metric has a complexity of O(h) for its
    * "hiddenByPower" predicate, the overall Power map construction
    * algorithm is in @f$ O(h.d.n^d)@f$ for @f$ n^d@f$ domains (see
    * class constructor). For Euclidean the @f$ l_2@f$ metric, the
    * overall computation is in @f$ O(d.n^d)@f$, which is optimal.
    *
-   * This class is a model of CConstImage.
+   * This class is a model of concepts::CConstImage.
+   *
+   * @see \ref toricVol
    *
    * @tparam TWeightImage model of CConstImage
    * @tparam TPowerSeparableMetric model of concepts::CPowerSeparableMetric
@@ -151,7 +162,9 @@ namespace DGtal
      * Constructor.
      *
      * This constructor computes the Power Map of a set of point
-     * sites using a SeparableMetric metric.  The method associates to
+     * sites using a SeparableMetric metric on a non-periodic domain.
+     *
+     * The method associates to
      * each point satisfying the foreground predicate, the closest
      * site for which the predicate is false.
      *
@@ -168,13 +181,34 @@ namespace DGtal
              ConstAlias<WeightImage> aWeightImage,
              ConstAlias<PowerSeparableMetric> aMetric);
 
+    /**
+     * Constructor with periodicity specification.
+     *
+     * This constructor computes the Power Map of a set of point
+     * sites using a SeparableMetric metric, on a domain with specified
+     * periodicity.
+     *
+     * The method associates to
+     * each point satisfying the foreground predicate, the closest
+     * site for which the predicate is false.
+     *
+     * All parameters are aliased in this class.
+     *
+     * @param aDomain       defines the (hyper-rectangular) domain on which
+     *        the computation is performed.
+     * @param aWeightImage  an image returning the weight for some points.
+     * @param aMetric       a power separable metric instance.
+     * @param aPeriodicitySpec an array of size equal to the space dimension
+     *        where the i-th value is \c true if the i-th dimension of the
+     *        space is periodic, \c false otherwise.
+     */
     PowerMap(ConstAlias<Domain> aDomain,
              ConstAlias<WeightImage> aWeightImage,
              ConstAlias<PowerSeparableMetric> aMetric,
              PeriodicitySpec const & aPeriodicitySpec);
 
     /**
-     * Disable default Constructor.
+     * Disable default constructor.
      */
     PowerMap() = delete;
 
@@ -263,6 +297,8 @@ namespace DGtal
      * Project point coordinates into the domain, taking into account
      * the periodicity.
      *
+     * @pre The given point must come from operator()(const Point &) const (for performance reasons).
+     *
      * @param aPoint the point to project
      * @return the coordinates projected into the domain bounds accordingly
      *         to the periodicity specification.
@@ -294,6 +330,7 @@ namespace DGtal
      * @param dim the dimension to process
      */
     void computeOtherSteps(const Dimension dim) const;
+
     /**
      * Given  a voronoi map valid at dimension @a dim-1, this method
      * updates the map to make it consistent at dimension @a dim along
@@ -310,6 +347,8 @@ namespace DGtal
      * Project point coordinates into the domain, taking into account
      * the periodicity up to a fixed dimension.
      *
+     * @pre The given point must come from operator()(const Point &) const (for performance reasons).
+     *
      * @param aPoint the point to project
      * @param aMaxDim maximal dimension along which to project the coordinates.
      * @return the coordinates projected into the domain bounds accordingly
@@ -321,6 +360,8 @@ namespace DGtal
     /**
      * Project a coordinate into the domain, taking into account
      * the periodicity.
+     *
+     * @pre The given coordinate must come from operator()(const Point &) const (for performance reasons).
      *
      * @param aCoordinate the coordinate.
      * @param aDim  dimension of the coordinate.
@@ -350,7 +391,7 @@ namespace DGtal
     Point myInfinity;
 
     /// Index of the periodic dimensions
-    std::vector< Dimension > myPeriodicityIndex;
+    std::vector< Dimension > myPeriodicityIndex; // Could be boost::static_vector but it needs Boost >= 1.54.
 
     /// Domain extent.
     Point myDomainExtent;
