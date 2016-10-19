@@ -104,6 +104,8 @@ namespace DGtal
    *
    * This class is a model of concepts::CConstImage.
    *
+   * @see \ref toricVol
+   *
    * @tparam TSpace type of Digital Space (model of concepts::CSpace).
    * @tparam TPointPredicate point predicate returning true for points
    * from which we compute the distance (model of concepts::CPointPredicate)

@@ -386,6 +386,7 @@ inline
 typename DGtal::PowerMap<W,TSep,Im>::Point::Coordinate
 DGtal::PowerMap<W,TSep,Im>::projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const
 {
+  ASSERT( aCoordinate - myDomainPtr->lowerBound()[aDim] + myDomainExtent[aDim] >= 0 );
   return ( aCoordinate - myDomainPtr->lowerBound()[aDim] + myDomainExtent[aDim] ) % myDomainExtent[aDim] + myDomainPtr->lowerBound()[aDim];
 }
 
