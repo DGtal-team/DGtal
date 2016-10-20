@@ -87,51 +87,49 @@ namespace DGtal
    *
    * @tparam TPowerMap any specialized PowerMap type @tparam
    * TImageContainer any model of CImage to store the medial axis
-   * points (default: ImageContainerBySTLVector). 
+   * points (default: ImageContainerBySTLVector).
    *
    * @see testReducedMedialAxis.cpp
    */
-  template <typename TPowerMap, 
+  template <typename TPowerMap,
             typename TImageContainer =  ImageContainerBySTLMap<typename TPowerMap::Domain,
-                                                               typename TPowerMap::PowerSeparableMetric::Value> > 
+                                                               typename TPowerMap::PowerSeparableMetric::Value> >
   struct ReducedMedialAxis
   {
     //MA Container
     typedef Image<TImageContainer> Type;
 
-    /** 
+    /**
      * Extract reduced medial axis from a power map.
-     * This methods is in @f$ O(|powerMap|)@f$. 
+     * This methods is in @f$ O(|powerMap|)@f$.
      *
      * @param aPowerMap the input powerMap
-     * 
+     *
      * @return a lightweight proxy to the ImageContainer specified in
      * template arguments.
      */
-    static 
-    Type getReducedMedialAxisFromPowerMap(const TPowerMap &aPowerMap) 
+    static
+    Type getReducedMedialAxisFromPowerMap(const TPowerMap &aPowerMap)
     {
-      typename TPowerMap::Value v;
       TImageContainer *computedMA = new TImageContainer( aPowerMap.domain() );
-      for (typename TPowerMap::Domain::ConstIterator it = aPowerMap.domain().begin(), 
+
+      for (typename TPowerMap::Domain::ConstIterator it = aPowerMap.domain().begin(),
              itend = aPowerMap.domain().end(); it != itend; ++it)
         {
-          v =  aPowerMap(*it);
-          if  (aPowerMap.metricPtr()->powerDistance(*it, 
-                                                    v,
-                                                    aPowerMap.weightImagePtr()->operator()( aPowerMap.projectPoint(v) )) 
-               < NumberTraits<typename TPowerMap::PowerSeparableMetric::Value>::ZERO )
-            
-            computedMA->setValue( v,
-                                  aPowerMap.weightImagePtr()->operator()( aPowerMap.projectPoint(v) ));
+          const auto v  = aPowerMap( *it );
+          const auto pv = aPowerMap.projectPoint( v );
 
+          if ( aPowerMap.metricPtr()->powerDistance( *it, v, aPowerMap.weightImagePtr()->operator()( pv ) )
+                      < NumberTraits<typename TPowerMap::PowerSeparableMetric::Value>::ZERO )
+            computedMA->setValue( v, aPowerMap.weightImagePtr()->operator()( pv ) );
         }
+
       return Type( computedMA );
     }
   }; // end of class ReducedMedialAxis
 
 
-  
+
 } // namespace DGtal
 
 //                                                                           //
