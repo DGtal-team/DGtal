@@ -270,7 +270,7 @@ ENDIF(WITH_CAIRO)
 # -----------------------------------------------------------------------------
 SET(HDF5_FOUND_DGTAL 0)
 IF(WITH_HDF5)
-  FIND_PACKAGE (HDF5 REQUIRED HL C CXX)
+  FIND_PACKAGE (HDF5 REQUIRED HL C)
   IF(HDF5_FOUND)
     INCLUDE_DIRECTORIES(${HDF5_INCLUDE_DIRS})
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${HDF5_LIBRARIES})

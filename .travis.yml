@@ -88,7 +88,7 @@ before_install:
 ########
 before_script:
   - if [ $TRAVIS_OS_NAME == linux ]; then echo "All done.";   fi
-  - if [ $TRAVIS_OS_NAME == osx ]; then brew update; brew install boost doxygen  graphviz graphicsmagick  gmp libqglviewer fftw; brew install homebrew/science/hdf5 -cc=clang; echo "done";fi
+  - if [ $TRAVIS_OS_NAME == osx ]; then brew update; brew install boost doxygen homebrew/science/hdf5 graphviz graphicsmagick  gmp libqglviewer fftw; echo "done";fi
 
 
 ############
