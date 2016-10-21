@@ -67,7 +67,7 @@ addons:
     - g++-4.8
     - gcc-4.8
     - libfftw3-dev
-    - libeigen3-dev
+    - libeigen3.2-dev
     
 
 before_install:
