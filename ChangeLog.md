@@ -1,5 +1,13 @@
 # DGtal 0.9.3
 
+## New Features / Critical Changes
+
+- *Geometry Package*
+ - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
+   now work on toric domains (with per-dimension periodicity specification).
+   (David Coeurjolly, Roland Denis,
+   [#1206](https://github.com/DGtal-team/DGtal/pull/1206))
+
 ## Bug Fixes
 
 - *Configuration/General*
