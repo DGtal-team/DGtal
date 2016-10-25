@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file 3dBorderExtraction.cpp
+ * @file topology/3dBorderExtraction.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include <QtGui/qapplication.h>
+
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/viewers/Viewer3D.h"

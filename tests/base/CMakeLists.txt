@@ -9,7 +9,6 @@ SET(DGTAL_TESTS_SRC
    testOutputIteratorAdapter
    testClock
    testTrace
-   testcpp11
    testCountedPtr
    testCountedPtrOrPtr
    testCountedConstPtrOrConstPtr
@@ -25,7 +24,11 @@ SET(DGTAL_TESTS_SRC
    testCloneAndAliases
    testClone2
    testOwningOrAliasingPtr
-   )
+   testCatch
+   testPartialTemplateSpecialization
+   testContainerTraits
+   testSetFunctions
+   testSimpleRandomAccessRangeFromPoint)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})

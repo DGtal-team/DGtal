@@ -47,17 +47,70 @@ namespace DGtal {
 Discrete exterior calculus (DEC) provides an easy and efficient way to describe linear operator over various structure.
 Basic operators, such as Hodge duality operator or exterior derivative, can be combined to create classical vector analysis operator such as gradient, curl and divergence.
 
-@b Modules
+@note To use this package, you have to build DGtal with the Eigen option (and with Cairo option to have the examples compiled). By using cmake you have to use these options:  -DWITH_EIGEN=true -DWITH_CAIRO=true.
 
+@b Modules
 - \ref moduleDECIntroduction
+- \ref moduleDECEmbedding
 - \ref moduleDECPoisson
 - \ref moduleDECHelmoltz
+- \ref moduleDECPropagation
 
 @b Package @b Concepts @b Overview
- - \ref packageDECConcepts
+- \ref packageDECConcepts
 
 @b Related @b documentation @b pages
 
+@b Related @b examples
+- exampleDECSurface.cpp
+- examplePropagation.cpp
+- exampleDiscreteExteriorCalculusUsage.cpp
+- exampleDiscreteExteriorCalculusSolve.cpp
+- exampleDiscreteExteriorCalculusChladni.cpp
+
 */
+
+
+
+/**
+   Example of Discrete Exterior Calculus with Chladni.
+   @see \ref sectDECHelmoltzProblem
+   \image  html  exampleDECChladni.png "Primal Helmoltz decomposition harmonic component."
+   \example dec/exampleDiscreteExteriorCalculusChladni.cpp
+**/
+
+
+/**
+   Example of primal and dual Helmoltz decomposition in 2D and 3D using Discrete Exterior Calculus.
+   @see \ref sectDECHelmoltzProblem
+   \image  html  solve_2d_primal_decomposition_calculusSmall.png "Primal Helmoltz decomposition harmonic component."
+   \example dec/exampleDiscreteExteriorCalculusSolve.cpp
+**/
+
+
+
+/**
+   Example of vector field manipulation using Discrete Exterior Calculus.
+   @see \ref sectDECIntroduction
+   \image html usage_primal_one_form_sharp_flat.png "Flat sharped primal gradient vector field."
+   \example dec/exampleDiscreteExteriorCalculusUsage.cpp
+**/
+
+
+
+/**
+   Example of solving Poisson equation using the DEC package.
+    @see \ref sectDECPoissonProblem
+   \image html alcapone_phi.png "Solution dual 0-form."
+   \example dec/exampleDECSurface.cpp
+**/
+
+
+/**
+   Example of 2D wave propagation using the DEC package.
+    @see \ref moduleDECPropagation
+   \image html  propagation_time_wave_ii.gif  "You should obtain such wave propagation (by converting svg files)."
+   \example dec/examplePropagation.cpp
+**/
 
 }

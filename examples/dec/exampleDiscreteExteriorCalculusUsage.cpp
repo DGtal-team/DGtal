@@ -1,11 +1,15 @@
+/// @file dec/exampleDiscreteExteriorCalculusUsage.cpp
 #include <string>
 
-#include "common.h"
+#include "DECExamplesCommon.h"
 
+//! [usage_calculus_headers]
 // always include EigenSupport.h before any other Eigen headers
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
+#include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
+//! [usage_calculus_headers]
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/GenericReader.h"
@@ -20,15 +24,18 @@ void usage2d()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(9,9));
 
     //! [usage_calculus_typedef]
-    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, 2, EigenLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
     //! [usage_calculus_typedef]
 
     // create discrete exterior calculus from set without border
     {
     //! [usage_calculus_definition_without_border]
-    Calculus calculus(generateRingSet(domain), false);
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateRingSet(domain), false);
 
-    calculus.eraseSCell(calculus.myKSpace.sSpel(Z2i::Point(8, 5)));
+    calculus.eraseCell(calculus.myKSpace.uSpel(Z2i::Point(8, 5)));
+
+    calculus.updateIndexes();
     //! [usage_calculus_definition_without_border]
 
         trace.info() << calculus << endl;
@@ -41,10 +48,12 @@ void usage2d()
 
     // create discrete exterior calculus from set with border
     //! [usage_calculus_definition_with_border]
-    Calculus calculus(generateRingSet(domain));
+    Calculus calculus = CalculusFactory::createFromDigitalSet(generateRingSet(domain), true);
 
-    calculus.eraseSCell(calculus.myKSpace.sSpel(Z2i::Point(8, 5)));
-    calculus.eraseSCell(calculus.myKSpace.sCell(Z2i::Point(18, 11)));
+    calculus.eraseCell(calculus.myKSpace.uSpel(Z2i::Point(8, 5)));
+    calculus.eraseCell(calculus.myKSpace.uCell(Z2i::Point(18, 11)));
+
+    calculus.updateIndexes();
     //! [usage_calculus_definition_with_border]
 
     trace.info() << calculus << endl;
@@ -65,10 +74,10 @@ void usage2d()
         // create primal 0-form and fill it with euclidian metric
         //! [usage_primal_fill_zero_form]
         Calculus::PrimalForm0 primal_zero_form(calculus);
-        for (Calculus::Index index=0; index<primal_zero_form.myContainer.rows(); index++)
+        for (Calculus::Index index=0; index<primal_zero_form.length(); index++)
         {
             const Calculus::SCell& cell = primal_zero_form.getSCell(index);
-            const Calculus::Scalar& value = Z2i::l2Metric(cell.myCoordinates, center)/2;
+            const Calculus::Scalar& value = Z2i::l2Metric(calculus.myKSpace.sKCoords(cell), center)/2;
             primal_zero_form.myContainer(index) = value;
         }
         //! [usage_primal_fill_zero_form]
@@ -118,7 +127,7 @@ void usage2d()
 
         // create dual gradient vector field and hodge*d dual one form
         //! [usage_primal_hodge_gradient]
-        const Calculus::PrimalHodge1 primal_one_hodge = calculus.primalHodge<1>();
+        const Calculus::PrimalHodge1 primal_one_hodge = calculus.hodge<1, PRIMAL>();
         const Calculus::DualForm1 dual_one_form = primal_one_hodge * primal_zero_derivative * primal_zero_form;
         const Calculus::DualVectorField dual_vector_field = calculus.sharp(dual_one_form);
         //! [usage_primal_hodge_gradient]
@@ -140,10 +149,10 @@ void usage2d()
 
         // create dual 0-form and fill it with euclidian metric
         Calculus::DualForm0 dual_zero_form(calculus);
-        for (Calculus::Index index=0; index<dual_zero_form.myContainer.rows(); index++)
+        for (Calculus::Index index=0; index<dual_zero_form.length(); index++)
         {
             const Calculus::SCell& cell = dual_zero_form.getSCell(index);
-            const Calculus::Scalar& value = Z2i::l2Metric(cell.myCoordinates, center)/2;
+            const Calculus::Scalar& value = Z2i::l2Metric(calculus.myKSpace.sKCoords(cell), center)/2;
             dual_zero_form.myContainer(index) = value;
         }
 
@@ -171,19 +180,19 @@ void usage2d()
 
         // test primal flat and sharp
         const Calculus::DualForm1 flat_sharp_dual_one_form = calculus.flat(dual_vector_field);
-        const Calculus::DualVectorField sharp_flat_dual_vector_field = calculus.sharp(flat_sharp_dual_one_form);
+        const Calculus::DualVectorField sharp_flat_dual_vector_field = -calculus.sharp(flat_sharp_dual_one_form);
 
         {
             Board2D board;
             board << domain;
             board << calculus;
             board << flat_sharp_dual_one_form;
-            board << sharp_flat_dual_vector_field;
+            board << -sharp_flat_dual_vector_field;
             board.saveSVG("usage_dual_one_form_sharp_flat.svg");
         }
 
         // create primal gradient vector field and hodge*d primal one form
-        const Calculus::DualHodge1 dual_one_hodge = calculus.dualHodge<1>();
+        const Calculus::DualHodge1 dual_one_hodge = calculus.hodge<1, DUAL>();
         const Calculus::PrimalForm1 primal_one_form = dual_one_hodge * dual_zero_derivative * dual_zero_form;
         const Calculus::PrimalVectorField primal_vector_field = calculus.sharp(primal_one_form);
 

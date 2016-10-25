@@ -95,8 +95,8 @@ bool testTrueLocalEstimator(const std::string &filename)
   typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  > TrueTangentEstimator;
   typedef TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  TrueLengthEstimator;
 
-  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< TrueCurvatureEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< TrueTangentEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< TrueCurvatureEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< TrueTangentEstimator > ));
   TrueCurvatureEstimator curvatureEstimator;
   TrueTangentEstimator tangentEstimator;
   TrueLengthEstimator lengthEstimator;

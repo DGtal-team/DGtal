@@ -61,9 +61,10 @@ createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL)
       //running smartCH to compute the minimal characteristics AND the leaning points
       OneItemOutputIterator<Point> lastUpperVertex, lastLowerVertex;
       using namespace functions; 
+     
       Vector v = smartCH( aDSL, aF, ( aDSL.position(aL) - aDSL.position(aF) ),
 			  lastUpperVertex, lastLowerVertex );
-
+      
       //DSS construction
       Point U = lastUpperVertex.get(); 
       DSL dsl( v[1], v[0], DSL::remainder(v[1], v[0], U) ); 
@@ -207,6 +208,65 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createPattern(con
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>
+DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createDSS(const Coordinate& aA, const Coordinate& aB, const Point& aFirst, const Point& aLast, const Point& aU)
+{
+  Point Uf, Ul, Lf, Ll;
+  DSL dsl(aA,aB,DSL::remainder(aA,aB,aU));
+  
+  Vector u(aB,aA);
+
+
+  //Upper leaning points
+  
+  Vector t = (aLast-aU)/u;
+  Integer k1 = (t[0]>t[1])?t[1]:t[0];
+
+  Ul = aU + u*k1;
+
+  t = (aU-aFirst)/u;
+  Integer k2 = (t[0]>t[1])?t[1]:t[0];
+  Uf = aU - u*k2;
+  
+  
+  //Lower leaning points
+  if ( dsl.steps().second == Vector(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO) )
+    { //specific case: there is only one step, 
+	  //ie. either a == 0, or b == 0, or 
+	  //(a == 1 and b == 1) in the naive case
+      Lf = Uf;  
+      Ll = Ul;  
+    }
+  else 
+    { //otherwise
+      Coordinate signedUnity = -1; 
+      Vector v = bezoutVector(aA, aB, signedUnity);
+      v += dsl.shift(); // "forward" vector from an upper to a lower leaning point
+      Vector w = v - u; // "backward" vector from an upper to a lower leaning point
+      if(dsl.beforeOrEqual(aFirst,Uf+w)) // there is a lower leaning point before Uf
+	Lf = Uf + w;
+      else
+	Lf = Uf + v;
+      
+      if(dsl.beforeOrEqual(Ul+v,aLast))
+	Ll = Ul + v;
+      else
+	Ll = Ul + w;
+    }
+  
+  DSS res(dsl.a(), dsl.b(), aFirst, aLast, Uf, Ul, Lf, Ll);
+  
+  assert(res.isValid());
+
+  return res;
+
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>
 DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createReversedPattern(const Point& aF, const Point& aL)
 {
   DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> pattern = createPattern(aL, aF); 
@@ -229,21 +289,25 @@ bezoutVector(const Coordinate& aA,
   Vector v = computer.extendedEuclid(aA, -aB, aR); 
   ASSERT( (aA*v[0]-aB*v[1]) == aR );
 
-  //compute the one whose component
-  //have a sign equal to the direction
-  //vector components
-  if ( (aB >= 0)&&(v[0] < 0) )
-    v += Vector(aB,aA); 
-  else if ( (aB < 0)&&(v[0] >= 0) )
-    v += Vector(aB,aA); 
-  else if ( ( aA >= 0 )&&(v[1] < 0) )
-    v += Vector(aB,aA);
-  else if ( ( aA < 0 )&&(v[1] >= 0) )
-    v += Vector(aB,aA);
-  ASSERT( (aA*v[0]-aB*v[1]) == aR );
-  ASSERT( (( aA >= 0 )&&(v[1] >= 0))||(( aA < 0 )&&(v[1] < 0)) ); 
-  ASSERT( (( aB >= 0 )&&(v[0] >= 0))||(( aB < 0 )&&(v[0] < 0)) ); 
+  // compute the one whose component
+  // have a sign equal to the direction
+  // vector components
+  // modify v if and only if aB and v[0] or aA and v[1] have strictly different signs
 
+  if ( (aB > 0)&&(v[0] < 0) )
+    v += Vector(aB,aA); 
+  else if ( (aB < 0)&&(v[0] > 0) )
+    v += Vector(aB,aA); 
+  else if ( ( aA > 0 )&&(v[1] < 0) )
+    v += Vector(aB,aA);
+  else if ( ( aA < 0 )&&(v[1] > 0) )
+    v += Vector(aB,aA);
+  
+  ASSERT( (aA*v[0]-aB*v[1]) == aR );
+ 
+  // Assert that for the pairs (aA,v[1]) and (aB,v[0]) either one member is null, or they have the same sign
+  ASSERT( (aA ==0 || v[1] == 0 || (aA > 0 && v[1] > 0) || (aA < 0 && v[1] <0)) && (aB ==0 || v[0] == 0 || (aB > 0 && v[0] > 0) || (aB < 0 && v[0] <0)));
+  
   return v; 
 }
 

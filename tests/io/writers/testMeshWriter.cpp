@@ -62,26 +62,44 @@ bool testMeshWriter()
   Point p2(1, 0, 0);
   Point p3(1, 1, 0);
   Point p4(0, 1, 0);  
+  Point p11(0, 0, 1);
+  Point p21(1, 0, 1);
+  Point p31(1, 1, 1);
+  Point p41(0, 1, 1);  
   aMesh.addVertex(p1);
   aMesh.addVertex(p2);
   aMesh.addVertex(p3);
   aMesh.addVertex(p4);  
+  aMesh.addVertex(p11);
+  aMesh.addVertex(p21);
+  aMesh.addVertex(p31);
+  aMesh.addVertex(p41);  
 
   vector<DGtal::Color> vectColor;
   DGtal::Color col (250,0,0, 200);
+  DGtal::Color col2 (250,250,0, 200);
+  
   aMesh.addQuadFace(0,1,2,3, col);
+  aMesh.addQuadFace(4,5,6,7, col2);
+  aMesh.addQuadFace(0,1,5,4, col);
+
   //! [MeshWriterUseMeshCreation]
   //! [MeshWriterUseMeshExport]
   bool isOK = aMesh >> "test.off";
   //! [MeshWriterUseMeshExport]
   nb++;
-  bool isOK2 = aMesh >> "test.obj";
+  bool isOK2 = aMesh >> "testColor.obj";
+  nb++;
+  std::fstream exportObj;
+  exportObj.open("test.obj", std::fstream::out);
+  bool isOK3 = MeshWriter<Point>::export2OBJ(exportObj, aMesh);
+  
   nb++;
   
   trace.beginBlock ( "Testing block ..." );
   nbok += isOK ? 1 : 0; 
   nbok += isOK2 ? 1 : 0; 
-
+  nbok += isOK3 ? 1 : 0; 
  
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;

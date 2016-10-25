@@ -79,13 +79,13 @@ namespace DGtal
    * @tparam Shape  a model of COrientableHypersurface
    *
    * You can define your preimage type from a given shape type as follows:
-   * @snippet geometry/curves/tools/examplePreimage.cpp PreimageTypedefFromStraightLine
+   * @snippet geometry/tools/examplePreimage.cpp PreimageTypedefFromStraightLine
    *
    * Here is another example:
-   * @snippet geometry/curves/tools/examplePreimage.cpp PreimageTypedefFromCircle
+   * @snippet geometry/tools/examplePreimage.cpp PreimageTypedefFromCircle
    *
    * Then, here is the basic usage of this class:
-   * @snippet geometry/curves/tools/examplePreimage.cpp PreimageUsageFromIncidentPointsRange
+   * @snippet geometry/tools/examplePreimage.cpp PreimageUsageFromIncidentPointsRange
    *
    * @see examplePreimage.cpp testPreimage.cpp
    */
@@ -99,11 +99,12 @@ namespace DGtal
 
     typedef typename Shape::Point Point;
     typedef typename Shape::Point Vector;
+    //container of points
+    typedef std::list<Point> Container;
+    
 
   private:
 
-    //container of points
-    typedef std::list<Point> Container;
     //Iterators on the container
     typedef typename std::list<Point>::iterator ForwardIterator;
     typedef typename std::list<Point>::reverse_iterator BackwardIterator;

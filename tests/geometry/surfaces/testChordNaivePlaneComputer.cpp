@@ -49,7 +49,7 @@ using namespace DGtal::concepts;
 template <typename Integer>
 Integer getRandomInteger( Integer first, Integer after_last )
 {
-  Integer r = (Integer) random();
+  Integer r = (Integer) rand();
   return ( r % (after_last - first) ) + first;
 }
 

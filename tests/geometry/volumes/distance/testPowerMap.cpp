@@ -36,6 +36,7 @@
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -52,35 +53,36 @@ bool testPowerMap()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing PowerMap2D ..." );
 
   Z2i::Domain domain(Z2i::Point(0,0),Z2i::Point(10,10));
   Z2i::Domain domainLarge(Z2i::Point(0,0),Z2i::Point(10,10));
 
-  Z2i::DigitalSet set(domain);
-  set.insertNew(Z2i::Point(3,3)); 
-  //set.insertNew(Z2i::Point(3,7)); 
+  DigitalSetBySTLSet<Z2i::Domain > set(domain);
+  set.insertNew(Z2i::Point(3,3));
+  //set.insertNew(Z2i::Point(3,7));
   set.insertNew(Z2i::Point(7,7));
-  DigitalSetDomain<Z2i::DigitalSet> setDomain(set); 
-  
-  typedef ImageContainerBySTLMap<DigitalSetDomain<Z2i::DigitalSet> , DGtal::int64_t> Image;
-  Image image(setDomain);
-  
+
+  using SetDomain = DigitalSetDomain< DigitalSetBySTLSet<Z2i::Domain > >;
+  using Image = ImageContainerBySTLMap< SetDomain , DGtal::int64_t>;
+
+  Image image( new SetDomain( set ) );
+
   //Setting some values
-  image.setValue(Z2i::Point(3,3), 9); 
-  //  image.setValue(Z2i::Point(3,7), 0); 
+  image.setValue(Z2i::Point(3,3), 9);
+  //  image.setValue(Z2i::Point(3,7), 0);
   image.setValue(Z2i::Point(7,7), 16);
-  
+
   Z2i::L2PowerMetric l2power;
   PowerMap<Image, Z2i::L2PowerMetric> power(&domainLarge, &image, &l2power);
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)
-	if (image.domain().isInside(Z2i::Point(i,j)))
-	  trace.info()<< image(Z2i::Point(i,j))<<" ";
-	else
-	  trace.info()<< "0 ";
+        if (image.domain().isInside(Z2i::Point(i,j)))
+          trace.info()<< image(Z2i::Point(i,j))<<" ";
+        else
+          trace.info()<< "0 ";
       trace.info()<<std::endl;
     }
   trace.info()<<std::endl;
@@ -98,38 +100,38 @@ bool testPowerMap()
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)
-	{
-	  Z2i::Point p(i,j);
-	  DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
-	    ( j-power(p)[1])*(j-power(p)[1])  - image(power(p));
-	  trace.info()<< dist;
-	}
+        {
+          Z2i::Point p(i,j);
+          DGtal::int64_t dist = (i-power(p)[0])*(i-power(p)[0]) +
+            ( j-power(p)[1])*(j-power(p)[1])  - image(power(p));
+          trace.info()<< dist;
+        }
       std::cerr<<std::endl;
     }
   trace.info()<<std::endl;
- 
+
   //Reconstruction
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)
-	{
-	  Z2i::Point p(i,j);
-	  DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
-	    ( j-power(p)[1])*(j-power(p)[1])  - image(power(p));
-	  if (dist>=0)
-	    std::cerr<< "0 ";
-	   else
-	     std::cerr<< "X ";
-	}
+        {
+          Z2i::Point p(i,j);
+          DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
+            ( j-power(p)[1])*(j-power(p)[1])  - image(power(p));
+          if (dist>=0)
+            std::cerr<< "0 ";
+          else
+            std::cerr<< "X ";
+        }
       std::cerr<<std::endl;
     }
-  
-  nbok += true ? 1 : 0; 
+
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+    << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

@@ -105,6 +105,7 @@ namespace DGtal
      * @param aFunctor  functor used to cast image values
      * @param saveASCII used to save image with ASCII pixel value and with white space. 
      *        (default= false since ASCII mode is not efficient).     
+     * @param topbotomOrder 'true' if the image scan should start from the top.
      * 
      * @return true if no errors occur.
      */
@@ -119,6 +120,8 @@ namespace DGtal
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor  functor used to cast image values
+     * @param saveASCII used to save image with ASCII pixel value and with white space. 
+     *        (default= false since ASCII mode is not efficient).     
      * 
      * @return true if no errors occur.
      */

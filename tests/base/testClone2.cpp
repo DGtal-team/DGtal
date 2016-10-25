@@ -39,9 +39,6 @@
 #include "DGtal/base/Clone.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
-#include "DGtal/base/OldClone.h"
-#include "DGtal/base/OldAlias.h"
-#include "DGtal/base/OldConstAlias.h"
 #include "DGtal/helpers/StdDefs.h"
 
 using namespace DGtal;
@@ -196,7 +193,6 @@ public:
     ++nbCreated;
   }
 
-#ifdef CPP11_RREF_MOVE
   DummyTbl( DummyTbl && a ) noexcept 
   : size( std::move( a.size ) ), allocated( std::move( a.allocated ) )
   {
@@ -206,7 +202,6 @@ public:
     ++nbCreated;
     ++nbMoved;
   }
-#endif
 
   int value() const { return data[ 0 ]; }
   void setValue( int v ) const { data[ 0 ] = v; }
@@ -400,16 +395,6 @@ struct TriangleByConstReference {
 
 struct TriangleByValue {
   TriangleByValue( Point a, Point b, Point c )
-    : _a( a ), _b( b ), _c( c ) {}
-  double perimeter() const
-  {
-    return (_a - _b).norm() + (_b - _c).norm() + (_c - _a).norm();
-  }
-  Point _a, _b, _c;
-};
-
-struct TriangleByOldClone {
-  TriangleByOldClone( deprecated::Clone<Point> a, deprecated::Clone<Point> b, deprecated::Clone<Point> c )
     : _a( a ), _b( b ), _c( c ) {}
   double perimeter() const
   {
@@ -852,7 +837,6 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-#ifdef CPP11_RREF_MOVE
   trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl &&) to DummyTbl member. Duplication by move (+2/+1/+1)" );
   CloneToValueMember c40( DummyTbl( 50, -4 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c40.value() << std::endl;
@@ -891,7 +875,6 @@ bool testCloneCases()
                << " nbMoved=" << DummyTbl::nbMoved
 	       << std::endl; 
   trace.endBlock();
-#endif
 
   trace.endBlock();
 
@@ -918,16 +901,6 @@ bool testCloneTimings()
   trace.beginBlock ( "Total perimeter of triangles with by-const reference parameter passing." );
   double t2 = computeTriangles<TriangleByConstReference>( size );
   trace.info() << "Perimeter is " << t2 << std::endl;
-  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
-  ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ")"
-               << " Point nbCreated=" << Point::nbCreated 
-               << " nbDeleted=" << Point::nbDeleted << std::endl; 
-  Point::reset();
-  trace.endBlock();
-  trace.beginBlock ( "Total perimeter of triangles with by deprecated::Clone parameter passing." );
-  double t3 = computeTriangles<TriangleByOldClone>( size );
-  trace.info() << "Perimeter is " << t3 << std::endl;
   ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
   ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"

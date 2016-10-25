@@ -108,6 +108,7 @@ namespace DGtal
      * Constructor.
      * Creates the empty set in the domain [d].
      *
+     * @param c comparison function object.
      * @param d any domain.
      */
     DigitalSetBySTLSet( Clone<Domain> d, const Compare & c = Compare() );
@@ -335,12 +336,6 @@ namespace DGtal
 
     // --------------- CDrawableWithBoard2D realization ---------------------
   public:
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.

@@ -14,11 +14,10 @@ message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SY
 #------------------------------------------------------------------------------
 # Offer the user the choice of overriding the installation directories
 #------------------------------------------------------------------------------
-set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
-set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
-set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
-set(INSTALL_DATA_DIR share CACHE PATH "Installation directory for data files")
-
+set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries.")
+set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables.")
+set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header file./")
+set(INSTALL_DATA_DIR lib/DGtal CACHE PATH "Installation directory for DGtal cmake files.")
 #------------------------------------------------------------------------------
 # Make relative paths absolute (needed later on)
 #------------------------------------------------------------------------------
@@ -35,7 +34,7 @@ endforeach()
 message(STATUS "-------------------------------------------------------------------------------")
 message(STATUS "Checking if doxygen/dot is installed:")
 message(STATUS " ")
-set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
+set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/share/DGtal CACHE PATH "Installation directory for DGtal documentation files.")
 INCLUDE(doxygen)
 INCLUDE(TargetDoxygenDoc OPTIONAL)
 INCLUDE(TargetDoxygenDox OPTIONAL)
@@ -57,10 +56,12 @@ OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
 OPTION(BUILD_TESTING "Build testing." OFF)
 OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
 OPTION(VERBOSE "Verbose messages." OFF)
-option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
+OPTION(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
+OPTION(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 
 SET(VERBOSE_DGTAL 0)
 SET(DEBUG_VERBOSE_DGTAL 0)
+SET(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
 
 IF (DEBUG_VERBOSE)
   SET(DEBUG_VERBOSE_DGTAL 1)
@@ -73,10 +74,18 @@ IF (VERBOSE)
   MESSAGE(STATUS "Verbose mode activated")
 ENDIF(VERBOSE)
 
+IF(COLOR_WITH_ALPHA_ARITH)
+  SET(COLOR_WITH_ALPHA_ARITH_DGTAL 1)
+  ADD_DEFINITIONS(-DCOLOR_WITH_ALPHA_ARITH)
+ENDIF(COLOR_WITH_ALPHA_ARITH)
+
 # -----------------------------------------------------------------------------
 # Benchmark target
 # -----------------------------------------------------------------------------
-ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
+OPTION(BUILD_BENCHMARKS "Build benchmarks." OFF)
+IF(BUILD_BENCHMARKS)
+  ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
+ENDIF(BUILD_BENCHMARKS)
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'

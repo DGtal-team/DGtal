@@ -138,16 +138,16 @@ public:
   typedef int Value;
 
   /// A wrapper around point predicate (functor Point -> bool) that
-  /// transforms it into a functor Point -> uint (0 or 1).
+  /// transforms it into a functor Point -> unsigned int (0 or 1).
   typedef functors::PointFunctorFromPointPredicateAndDomain< PointPredicate, Domain, unsigned int > ShapePointFunctor;
-  /// Adapts the a functor Point -> uint (0 or 1) to a functor Cell ->
-  /// uint (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
+  /// Adapts the a functor Point -> unsigned int (0 or 1) to a functor Cell ->
+  /// unsigned int (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
   typedef FunctorOnCells< ShapePointFunctor, KSpace > ShapeSpelFunctor;
 
 
   typedef functors::ConstValueCell<Value, Spel> KernelSpelFunctor;
   typedef ImplicitBall<Space> KernelSupport;
-  typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+  typedef EuclideanShapesCSG< KernelSupport, KernelSupport > EuclideanMinus;
   typedef GaussDigitizer< Space, KernelSupport > DigitalShapeKernel;
   typedef GaussDigitizer< Space, EuclideanMinus > DigitalShape;
 
@@ -159,7 +159,7 @@ public:
   typedef double Scalar;
   BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
   BOOST_CONCEPT_ASSERT (( concepts::CUnaryFunctor< VolumeFunctor, Component, Quantity > ));
-  BOOST_STATIC_ASSERT (( ConceptUtils::SameType< typename Convolver::Quantity, 
+  BOOST_STATIC_ASSERT (( concepts::ConceptUtils::SameType< typename Convolver::Quantity, 
                                                  typename VolumeFunctor::Argument >::value ));
 
 

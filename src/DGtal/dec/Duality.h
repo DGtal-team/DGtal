@@ -60,6 +60,23 @@ enum Duality
     DUAL = 1
 };
 
+template <Duality duality_orig>
+struct OppositeDuality
+{
+};
+
+template <>
+struct OppositeDuality<PRIMAL>
+{
+    BOOST_STATIC_CONSTANT( Duality, duality = DUAL );
+};
+
+template <>
+struct OppositeDuality<DUAL>
+{
+    BOOST_STATIC_CONSTANT( Duality, duality = PRIMAL );
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // Order
 /**

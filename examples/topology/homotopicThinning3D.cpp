@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file qglViewer.cpp
+ * @file topology/homotopicThinning3D.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -30,8 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <queue>
-#include <QImageReader>
-#include <QtGui/qapplication.h>
+#include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"

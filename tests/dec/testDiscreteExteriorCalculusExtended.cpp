@@ -25,13 +25,13 @@
  */
 
 
-#include "common.h"
+#include "DECCommon.h"
 
 int
-main(int UNUSED(argc), char** UNUSED(argv))
+main(int , char**)
 {
     DGtal::trace.beginBlock("testing sparse eigen backend");
-    test_backend<DGtal::EigenLinearAlgebraBackend>(5, 5);
+    test_backend<DGtal::EigenLinearAlgebraBackend>(2, 7);
     const double sparse_eigen_time = DGtal::trace.endBlock();
 
     DGtal::trace.info() << "sparse_eigen_time=" << sparse_eigen_time << std::endl;

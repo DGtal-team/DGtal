@@ -1,31 +1,119 @@
 language: cpp
 
+sudo: false
+
 compiler:
   - gcc
   - clang
+
+os:
+  - linux
+  - osx
 
 cache: apt
 
 notifications:
   slack: dgtal:FObxCZFoeQkkaRuktJD5uhnN
 
+########
+# matrix details:
+#    - one build for the documentation on macosx (clang) and only for commits on
+#      DGtal-team repo (no pull request). Encrypted var. required.
+#    - No gcc on macos
+#    - clang build of dgtaltools in linux only. In this case, some dependencies are considerd in DGtal (GMP, QGLViewer, CAIRO, HDF5, FFTW3)
+#    - Otherwise, 2 os x 2 configs
+#
+########
 env:
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"
+  - CONFIG="Debug,Magick,GMP,ITK,FFTW3"
+  - CONFIG="Debug,Cairo,QGLviewer,HDF5"
+  - CONFIG="Documentation"
+  - CONFIG="DGtalTools"
 
+matrix:
+  fast_finish: true
+  exclude:
+    - os: osx
+      env: CONFIG="Documentation"
+    - compiler: gcc
+      os: linux
+      env: CONFIG="Documentation"
+    - compiler: gcc
+      env: CONFIG="DGtalTools"
+    - os: osx
+      env: CONFIG="DGtalTools"
+    - os: osx
+      compiler: gcc
+
+addons:
+  apt:
+   sources:
+    - deadsnakes
+    - ubuntu-toolchain-r-test
+   packages:
+    - libhdf5-serial-dev
+    - libboost-dev
+    - libboost-program-options-dev
+    - libcairo2-dev
+    - doxygen
+    - doxygen-latex
+    - graphviz
+    - libboost-system-dev
+    - libgmp-dev
+    - libgdcm2-dev
+    - libgraphicsmagick++1-dev
+    - libqglviewer-qt4-dev
+    - libinsighttoolkit3-dev
+    - g++-4.8
+    - gcc-4.8
+    - libfftw3-dev
+
+
+before_install:
+  - if [ $CXX == "g++" ]; then CCOMPILER="gcc-4.8"; CXXCOMPILER="g++-4.8"; fi
+  - BUILD_DOC="false"
+  - UPLOAD_DOC="false"
+  - NEEDCORE="true";
+  - NEEDEXAMPLESANDTESTS="true";
+  - if [ $CONFIG == "Documentation" ]; then NEEDEXAMPLESANDTESTS="false"; NEEDCORE="false"; BUILD_DOC="true"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then UPLOAD_DOC="true"; fi; fi; fi
+  - if [ $CONFIG == "Debug,Magick,GMP,ITK,FFTW3" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
+  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF";   fi
+  - if [ $CONFIG == "DGtalTools" ]; then NEEDEXAMPLESANDTESTS="false"; BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=off";  fi
+  - if [ $UPLOAD_DOC == "true" ]; then openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; BUILD_DOC="true"; fi
+  - if [ $BUILD_DOC == "true" ]; then wget http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
+  - if [ $BUILD_DOC == "true" ]; then .travis/install_doxygen.sh;  BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen"; fi
+
+########
+# Deps.
+########
 before_script:
-  - sudo apt-get -qq update
-  - sudo apt-get -qq install libboost-program-options-dev libcairo2-dev libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev
-  - gem install coveralls-lcov
-  - sudo apt-get install -y lcov
+  - if [ $TRAVIS_OS_NAME == linux ]; then echo "All done.";   fi
+  - if [ $TRAVIS_OS_NAME == osx ]; then brew update; brew install boost doxygen homebrew/science/hdf5 graphviz graphicsmagick  gmp libqglviewer fftw; echo "done";fi
 
+
+############
+# Main rules
+############
 script:
-  - cmake . $BTYPE
-  - make DGtal && make DGtalIO
-  - cd examples && make -j 3 
-  - cd ../tests &&  make &&  cd ..&& make test
-  - tests/geometry/surfaces/testTensorVoting
+  - cmake . $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER
+  - echo $BUILD_DOC
+  - echo $UPLOAD_DOC
+  - echo $BTYPE
+  - if [ $NEEDCORE == "true" ]; then  make -j 3 DGtal && make -j 3 DGtalIO; fi
+  - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd examples && make  -j 3 ; fi
+  - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
+  - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  make test ARGS=--output-on-failure ; fi
+  - if [ $CONFIG == "DGtalTools" ]; then pwd ; .travis/getAndCheckDGtalTools.sh ; fi
+  - if [ $BUILD_DOC == "true" ]; then make doc; fi
+  - if [ $CONFIG == "Documentation" ]; then ./.travis/checkDoxygenDocumentation.sh; fi
 
-after_script:
-  - make lcov
-  - coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info
+
+###########
+## Building the documentation
+###########
+after_success:
+  - if [ $UPLOAD_DOC == "true" ]; then rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/;  fi
+  - if [ $UPLOAD_DOC == "true" ]; then cd html; make ; wget http://dgtal.org/doc/docset/template.tgz ; tar zxvf template.tgz ; mv template/* org.dgtal.docset ; tar zcvf DGtal-devel.tgz org.dgtal.docset ; cd .. ;rsync  -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/DGtal-devel.tgz dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/docset ;   fi
+    ## We publish the DGtalTools tags
+  - if [ $UPLOAD_DOC == "true" ]; then scp -i  .travis/dgtal_rsa  DGtal-tagfile dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/tags/;scp -i  .travis/dgtal_rsa  Board-tagfile dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/tags/; fi
+  - echo "All done..."

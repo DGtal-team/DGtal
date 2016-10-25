@@ -51,6 +51,9 @@
 namespace DGtal
 {
 
+  namespace concepts
+  {
+
 /////////////////////////////////////////////////////////////////////////////
 // class CPositiveIrreducibleFraction
 /**
@@ -91,7 +94,7 @@ except the last one. In this sense, a fraction is a sequence
 - \e Value and \e value_type: the type \c std::pair<Quotient,Quotient>, useful
   to create back insertion sequence.
 
-- \e ConstIterator \and \e const_iterator: the type for visiting the quotients of the
+- \e ConstIterator and \e const_iterator: the type for visiting the quotients of the
   fraction in sequence. The value of the iterator has type \e Value.
 
 ### Notation
@@ -157,7 +160,7 @@ except the last one. In this sense, a fraction is a sequence
 */
 template <typename T>
 struct CPositiveIrreducibleFraction 
-  : boost::CopyConstructible<T>, boost::DefaultConstructible<T>, boost::Assignable<T>, DGtal::CBackInsertable<T>, DGtal::CConstSinglePassRange<T>
+  : boost::CopyConstructible<T>, boost::DefaultConstructible<T>, boost::Assignable<T>, CBackInsertable<T>, CConstSinglePassRange<T>
 
 {
     // ----------------------- Concept checks ------------------------------
@@ -171,45 +174,45 @@ public:
 
   BOOST_CONCEPT_ASSERT(( concepts::CInteger< Integer > ));
   BOOST_CONCEPT_ASSERT(( concepts::CInteger< Quotient > ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, std::pair<Quotient,Quotient> >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, Value >::value ));
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<value_type, std::pair<Quotient,Quotient> >::value ));
+  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<value_type, Value >::value ));
 
   BOOST_CONCEPT_USAGE( CPositiveIrreducibleFraction )
   {
-    ConceptUtils::sameType( myX, T( myP, myQ ) );
+    concepts::ConceptUtils::sameType( myX, T( myP, myQ ) );
     myX.push_back( myValue );
     myX.pushBack( myValue );
     checkConstConstraints();
   }
   void checkConstConstraints() const
   {
-    ConceptUtils::sameType( myP, myX.p() );
-    ConceptUtils::sameType( myQ, myX.q() );
-    ConceptUtils::sameType( myU, myX.u() );
-    ConceptUtils::sameType( myU, myX.k() );
-    ConceptUtils::sameType( myBool, myX.null() );
-    ConceptUtils::sameType( myX, myX.left() );
-    ConceptUtils::sameType( myX, myX.right() );
-    ConceptUtils::sameType( myBool, myX.even() );
-    ConceptUtils::sameType( myBool, myX.odd() );
-    ConceptUtils::sameType( myX, myX.father() );
-    ConceptUtils::sameType( myX, myX.father( myU ) );
-    ConceptUtils::sameType( myX, myX.previousPartial() );
-    ConceptUtils::sameType( myX, myX.inverse() );
-    ConceptUtils::sameType( myX, myX.partial( myU ) );
-    ConceptUtils::sameType( myX, myX.reduced( myU ) );
+    concepts::ConceptUtils::sameType( myP, myX.p() );
+    concepts::ConceptUtils::sameType( myQ, myX.q() );
+    concepts::ConceptUtils::sameType( myU, myX.u() );
+    concepts::ConceptUtils::sameType( myU, myX.k() );
+    concepts::ConceptUtils::sameType( myBool, myX.null() );
+    concepts::ConceptUtils::sameType( myX, myX.left() );
+    concepts::ConceptUtils::sameType( myX, myX.right() );
+    concepts::ConceptUtils::sameType( myBool, myX.even() );
+    concepts::ConceptUtils::sameType( myBool, myX.odd() );
+    concepts::ConceptUtils::sameType( myX, myX.father() );
+    concepts::ConceptUtils::sameType( myX, myX.father( myU ) );
+    concepts::ConceptUtils::sameType( myX, myX.previousPartial() );
+    concepts::ConceptUtils::sameType( myX, myX.inverse() );
+    concepts::ConceptUtils::sameType( myX, myX.partial( myU ) );
+    concepts::ConceptUtils::sameType( myX, myX.reduced( myU ) );
     myX.getSplit( myF1, myF2 );
     myX.getSplitBerstel( myF1, myN1, myF2, myN2 );
     myX.getCFrac( myQuots );
-    ConceptUtils::sameType( myBool, myX.equals( myP, myQ ) );
-    ConceptUtils::sameType( myBool, myX.lessThan( myP, myQ ) );
-    ConceptUtils::sameType( myBool, myX.moreThan( myP, myQ ) );
-    ConceptUtils::sameType( myBool, myX == myY );
-    ConceptUtils::sameType( myBool, myX != myY );
-    ConceptUtils::sameType( myBool, myX < myY );
-    ConceptUtils::sameType( myBool, myX > myY );
-    ConceptUtils::sameType( myIterator, myX.begin() );
-    ConceptUtils::sameType( myIterator, myX.end() );
+    concepts::ConceptUtils::sameType( myBool, myX.equals( myP, myQ ) );
+    concepts::ConceptUtils::sameType( myBool, myX.lessThan( myP, myQ ) );
+    concepts::ConceptUtils::sameType( myBool, myX.moreThan( myP, myQ ) );
+    concepts::ConceptUtils::sameType( myBool, myX == myY );
+    concepts::ConceptUtils::sameType( myBool, myX != myY );
+    concepts::ConceptUtils::sameType( myBool, myX < myY );
+    concepts::ConceptUtils::sameType( myBool, myX > myY );
+    concepts::ConceptUtils::sameType( myIterator, myX.begin() );
+    concepts::ConceptUtils::sameType( myIterator, myX.end() );
   }
   // ------------------------- Private Datas --------------------------------
 private:
@@ -230,6 +233,8 @@ private:
 private:
 
 }; // end of concept CPositiveIrreducibleFraction
+
+} // namespace concepts
 
 } // namespace DGtal
 

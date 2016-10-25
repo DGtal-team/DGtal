@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file exampleGridCurve3d.cpp
+ * @file geometry/curves/exampleGridCurve3d.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/06/03
  *
- * @brief An example file for GridCurve in 3d.
+ * An example file for GridCurve, defined as a sequence of 1-scells, in a 3d Khalimsky space.
  *
  * This file is part of the DGtal library.
  */
@@ -35,41 +35,43 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 
-  #ifdef WITH_VISU3D_QGLVIEWER
-#include <QtGui/qapplication.h>
+#ifdef WITH_VISU3D_QGLVIEWER
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
-   #endif
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-using namespace Z3i; 
+using namespace Z3i;
 
 
 
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
-  
 
-   trace.info() <<  "exampleGridCurve3d: the type can be changed in example source code with  <gridcurve>, <inner>, <outer>, <incident> " << std::endl; 
-  
-  string type = "gridcurve"; 
-  
+
+  trace.info() << "exampleGridCurve3d: the type of data to be displayed "
+	       << "may be given as argument as follows: "
+	       << argv[0] << " scells" << endl; 
+  trace.info() << "Available types are: gridcurve (default), scells, points, midpoints, arrows" << endl;
+
+  string type = (argc > 1) ? string(argv[1]) : "gridcurve";
+  trace.info() << "Chosen type: " << type << endl; 
 
   //curve
   string sinus = examplesPath + "samples/sinus.dat";
-  
+
   // domain
   Point lowerBound = Point::diagonal( -100 );
-  Point upperBound = Point::diagonal( 100 ); 
+  Point upperBound = Point::diagonal( 100 );
 
   //! [GridCurveDeclaration]
-  K3 ks; ks.init( lowerBound, upperBound, true ); 
-  GridCurve<K3> gc( ks ); 
+  K3 ks; ks.init( lowerBound, upperBound, true );
+  GridCurve<K3> gc( ks );
   //! [GridCurveDeclaration]
-  
+
   //! [GridCurveFromDataFile]
   fstream inputStream;
   inputStream.open (sinus.c_str(), ios::in);
@@ -79,10 +81,10 @@ int main( int argc, char** argv )
   inputStream.close();
   //! [GridCurveFromDataFile]
 
-  bool flag = false; 
-  #ifdef WITH_VISU3D_QGLVIEWER
+  bool flag = false;
+#ifdef WITH_VISU3D_QGLVIEWER
   QApplication application(argc,argv);
-  Viewer3D<> viewer;
+  Viewer3D<Space,K3> viewer(ks);
   viewer.show();
 
   if (type == "gridcurve")
@@ -91,28 +93,28 @@ int main( int argc, char** argv )
     }
   else if (type == "scells")
     {
-      viewer << gc.getSCellsRange(); 
+      viewer << gc.getSCellsRange();
     }
   else if (type == "points")
     {
-      viewer << gc.getPointsRange(); 
+      viewer << gc.getPointsRange();
     }
   else if (type == "midpoints")
     {
-      viewer << gc.getMidPointsRange(); 
+      viewer << gc.getMidPointsRange();
     }
   else if (type == "arrows")
     {
-      viewer << gc.getArrowsRange(); 
+      viewer << gc.getArrowsRange();
     }
   else
     {
-      trace.info() << "Display type not known. Use option -h" << std::endl; 
+      trace.info() << "Display type not known." << std::endl;
     }
-  viewer << Viewer3D<>::updateDisplay;
+  viewer << Viewer3D<Space,K3>::updateDisplay;
   flag = application.exec();
-   #endif
-  
+#endif
+
   return flag;
 }
 //                                                                           //

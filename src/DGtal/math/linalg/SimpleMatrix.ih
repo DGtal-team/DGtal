@@ -59,11 +59,13 @@ DGtal::SimpleMatrix<T,TM, TN>::SimpleMatrix()
 {
   for ( DGtal::Dimension i = 0; i < TM*TN; ++i )
     myValues[ i ] = NumberTraits<Component>::ZERO;
-
+  const Component one       =  NumberTraits<Component>::ONE;
+  const Component minus_one = -NumberTraits<Component>::ONE;
   //Cofactor coefs computation
   for (DGtal::Dimension i=0; i<TM; i++)
     for (DGtal::Dimension j=0; j<TN; j++)
-      myCofactorCoefs[i*N+j] = static_cast<T>(std::pow(-1.0f, (float)i+j));
+      myCofactorCoefs[i*N+j] = ( (i+j) & 1 )
+        ? minus_one : one;
 }
 //------------------------------------------------------------------------------
 

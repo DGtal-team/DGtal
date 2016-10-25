@@ -57,8 +57,8 @@ namespace DGtal
    * \brief Aim: Implement internal matrix services for specialized
    * matrix size.
    *
-   * Deterimant of a matrix and the determinant of a minor of the
-   * matrix is specialized for 2x2 and 3x3 matrices.
+   * Determiant of a matrix and determinant of a minor of the
+   * matrix are specialized for 2x2 and 3x3 matrices.
    *
    * @tparam TMatrix a type of matrix
    * @tparam TM number of rows
@@ -80,6 +80,7 @@ namespace DGtal
     /**
      * Return the minor determinant (i,j) of the current matrix
      *
+     * @param M the matrix
      * @param i row index
      * @param j column index
      *
@@ -122,6 +123,7 @@ namespace DGtal
     /**
      * Return the minor determinant (i,j) of the current matrix
      *
+     * @param aM  the matrix
      * @param i row index
      * @param j column index
      *
@@ -163,6 +165,7 @@ namespace DGtal
     /**
      * Return the minor determinant (i,j) of the current matrix
      *
+     * @param aM  the matrix.
      * @param i row index
      * @param j column index
      *
@@ -205,6 +208,7 @@ namespace DGtal
     /**
      * Return the minor determinant (i,j) of the current matrix
      *
+     * @param M the matrix
      * @param i row index
      * @param j column index
      *

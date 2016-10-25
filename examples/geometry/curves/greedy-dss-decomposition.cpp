@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file greedy-dss-decomposition.cpp
+ * @file geometry/curves/greedy-dss-decomposition.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -74,25 +74,29 @@ int main( )
   Board2D aBoard;
   aBoard << SetMode( domain.className(), "Grid" )
 	 << domain
-	 << SetMode( "PointVector", "Grid" )
-	 << theContour;
+    	 << SetMode( "PointVector", "Grid" ); 
 
   // Draw each segment
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string className = "ArithmeticalDSS/BoundingBox";
+  string styleName = "";
   for ( Decomposition4::SegmentComputerIterator 
 	  it = theDecomposition.begin(),
-	  itEnd = theDecomposition.begin();
+	  itEnd = theDecomposition.end();
 	it != itEnd; ++it ) 
     {
-      aBoard << CustomStyle( className, 
-			     new CustomPenColor( Color::Blue ) )
+      aBoard << SetMode( "ArithmeticalDSS", "Points" )
+	     << it->primitive(); 
+      aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+	     << CustomStyle( "ArithmeticalDSS/BoundingBox", 
+       			     new CustomPenColor( Color::Blue ) )
 	     << it->primitive();
     } 
 
   
-  aBoard.saveSVG("dgtalboard-5-greedy-dss.svg");
-  aBoard.saveSVG("dgtalboard-5-greedy-dss.eps");
+  aBoard.saveSVG("greedy-dss-decomposition.svg");
+  aBoard.saveEPS("greedy-dss-decomposition.eps");
+  #ifdef WITH_CAIRO
+    aBoard.saveCairo("greedy-dss-decomposition.png"); 
+  #endif
 
   trace.endBlock();
 

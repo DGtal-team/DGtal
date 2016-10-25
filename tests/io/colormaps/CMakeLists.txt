@@ -1,5 +1,6 @@
 SET(DGTAL_TESTS_SRC_COLORMAP
-       testColorMaps       )
+   testTickedColorMap    
+   testColorMaps       )
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_COLORMAP})

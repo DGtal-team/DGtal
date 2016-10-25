@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleArithDSSIterator.cpp
+ * @file geometry/curves/exampleArithDSSIterator.cpp
  * @ingroup Examples
  * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
  * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
@@ -43,7 +43,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int UNUSED(argc), char** UNUSED(argv) )
+int main()
 {
   trace.beginBlock ( "Example exampleArithDSSIterator" );
 

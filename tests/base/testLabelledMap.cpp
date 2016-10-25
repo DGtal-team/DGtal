@@ -62,8 +62,8 @@ checkInsert( VContainer1 & v, LContainer2 & l,
 {
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int idx = random() % ( l.max_size() );
-      double val = ( (double)random() ) / RAND_MAX;
+      unsigned int idx = rand() % ( l.max_size() );
+      double val = ( (double)rand() ) / RAND_MAX;
       insert( v, l, idx, val );
     }
   return isEqual( v, l );
@@ -83,7 +83,7 @@ checkErase( VContainer1 & v, LContainer2 & l,
 {
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int idx = random() % ( l.max_size() );
+      unsigned int idx = rand() % ( l.max_size() );
       erase( v, l, idx );
       //std::cout << "  (" << i << "/" << nb << ") l=" << l << std::endl; 
     }
@@ -159,6 +159,39 @@ int main()
   ++nb, nbok += ( pair1.second == l.upper_bound( 7 ) ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") equal_range, lower_bound." << std::endl; 
   
+  trace.endBlock();
+
+  // Test related to pull request #973 about copy constructor & operator when using at less 3 blocks.
+  typedef LabelledMap<double, 32, DGtal::uint16_t, 2, 3> MyOtherLabelledMap;
+  trace.beginBlock ( "Testing LabelledMap copy constructor and copy operator" );
+  MyOtherLabelledMap ll;
+
+  for ( unsigned int size = 0; size <= 2 + 3 + 2; ++size )
+    {
+      for (unsigned int i = 0; i < size; ++i)
+        ll[i] = i;
+      
+      MyOtherLabelledMap ll_ccopy(ll);
+      MyOtherLabelledMap ll_ocopy; ll_ocopy = ll;
+
+      for (unsigned int i = 0; i < size; ++i)
+        ll[i] = 10*i+1;
+
+      bool csuccess = true;
+      bool osuccess = true;
+      for (unsigned int i = 0; i < size; ++i)
+        {
+          csuccess &= ll_ccopy[i] == i;
+          osuccess &= ll_ocopy[i] == i;
+        }
+
+      ++nb; nbok += csuccess ? 1 : 0;
+      std::cout << "(" << nbok << "/" << nb << ") ll_copy_constructed=" << ll_ccopy << std::endl;
+      
+      ++nb; nbok += osuccess ? 1 : 0;
+      std::cout << "(" << nbok << "/" << nb << ") ll_copied=" << ll_ocopy << std::endl;
+    }
+
   trace.endBlock();
 
   return ( nb == nbok ) ? 0 : 1;

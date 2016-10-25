@@ -70,7 +70,7 @@ namespace DGtal
    * This class is said to be exact in the sense that the power @a p
    * is computed without approximation (exponentiation by squaring in
    * @f$ O(log(p))@f$ per computation, see
-   * BasicMathFunctions::power). As a consequence, @a hiddenBy and
+   * functions::power). As a consequence, @a hiddenBy and
    * @a closest methods are error free if the capacity of the template
    * type @a TPromoted allows to store sums of @f$ |x_i-y_i|^p@f$
    * quantities.
@@ -78,7 +78,7 @@ namespace DGtal
    * @tparam TSpace the model of CSpace on which the metric is
    * defined.
    * @tparam p the exponent of the metric (static DGtal::uint32_t)
-   * @taparm TRawValue model of CSignedInteger used to store power @a
+   * @tparam TRawValue model of CSignedInteger used to store power @a
    * p sums (default: DGtal::int64_t)
    *
    */
@@ -128,19 +128,21 @@ namespace DGtal
 
     /**
      * Copy constructor.
-     * UNUSED_PARAM other the object to clone.
+     * @param other the object to clone (not used).
      */
-    ExactPredicateLpSeparableMetric ( const Self & UNUSED(other) )
+    ExactPredicateLpSeparableMetric ( const Self & other )
     {
+      boost::ignore_unused_variable_warning( other );
     }
 
     /**
      * Assignment.
-     * UNUSED_PARAM other the object to copy.
+     * @param other other the object to copy (not used).
      * @return a reference on 'this'.
      */
-    Self & operator= ( const Self & UNUSED(other) )
+    Self & operator= ( const Self & other )
     {
+      boost::ignore_unused_variable_warning( other );
       return *this;
     }
 
@@ -300,16 +302,23 @@ namespace DGtal
 
     /**
      * Copy constructor.
-     * UNUSED_PARAM other the object to clone.
+     * @param  other the object to clone (not used).
      */
-    ExactPredicateLpSeparableMetric ( const Self & UNUSED(other) ) {}
+    ExactPredicateLpSeparableMetric ( const Self & other )
+    {
+      boost::ignore_unused_variable_warning( other );
+    }
 
     /**
      * Assignment.
-     * UNUSED_PARAM other the object to copy.
+     * @param other the object to copy (unused).
      * @return a reference on 'this'.
      */
-    Self & operator= ( const Self & UNUSED(other) ) { return *this;}
+    Self & operator= ( const Self & other )
+    {  
+      boost::ignore_unused_variable_warning( other );
+      return *this;
+    }
 
 
     // ----------------------- Interface --------------------------------------
@@ -433,12 +442,6 @@ namespace DGtal
                                 const Abscissa &lower,
                                 const Abscissa &upper) const;
 
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class ExactPredicateLpSeparableMetric
 

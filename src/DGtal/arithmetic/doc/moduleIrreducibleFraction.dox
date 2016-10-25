@@ -169,7 +169,7 @@ Inner types are:
 - \e Value and \e value_type: the type \c std::pair<Size,Size>, useful
   to create back insertion sequence.
 
-- \e ConstIterator \and \e const_iterator: the type for visiting the quotients of the
+- \e ConstIterator and \e const_iterator: the type for visiting the quotients of the
   fraction in sequence. The value of the iterator has type \e Value.
 
 Notations are:
@@ -379,7 +379,7 @@ We display the quotients of the fraction \e f as follows.
 and \e k is the depth of the fraction. The type is therefore a \c std::pair<Size,Size>.
 This is done for consistency with \c push_back method.
 
-\subsection dgtal_irrfrac_sec3_3 Obtaining all the convergents of a fraction
+\subsection dgtal_irrfrac_sec3_3_bis Obtaining all the convergents of a fraction
 
 One way of obtaining all the convergents of a fraction is simply to create the fraction
 progressively by adding quotients one at a time. You may use the methods \c pushBack or \c push_back 

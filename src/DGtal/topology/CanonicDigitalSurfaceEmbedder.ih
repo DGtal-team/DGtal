@@ -57,7 +57,7 @@ CanonicDigitalSurfaceEmbedder()
 template <typename TDigitalSurface>
 inline
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
-CanonicDigitalSurfaceEmbedder( const Surface & aSurface )
+CanonicDigitalSurfaceEmbedder( ConstAlias<Surface> aSurface )
   : mySurface( &aSurface )
 {}
 //-----------------------------------------------------------------------------

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-7-2Dimages.cpp
+ * @file io/viewers/viewer3D-9-3Dimages.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -35,7 +35,6 @@
 #include "DGtal/images/Image.h"
 #include "ConfigExamples.h"
 
-#include <QtGui/qapplication.h>
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/io/viewers/Viewer3D.h"

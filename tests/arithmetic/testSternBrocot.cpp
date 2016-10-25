@@ -75,8 +75,8 @@ bool testReducedFraction()
   typedef typename SB::Fraction Fraction;
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer p = random() / 10000;
-  Integer q = random() / 10000;
+  Integer p = rand() / 10000;
+  Integer q = rand() / 10000;
   trace.beginBlock ( "Testing block: reduced fraction." );
   IntegerComputer<Integer> ic;
   Integer g = ic.gcd( p, q );
@@ -126,8 +126,8 @@ bool testInitFraction()
   typedef typename SB::Fraction Fraction;
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer p = random() / 10000;
-  Integer q = random() / 10000;
+  Integer p = rand() / 10000;
+  Integer q = rand() / 10000;
   trace.beginBlock ( "Testing block: init fraction." );
   IntegerComputer<Integer> ic;
   Integer g = ic.gcd( p, q );
@@ -159,8 +159,8 @@ bool testPattern()
   typedef typename MyPattern::Vector2I Vector2I;
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer p = random() / 10000;
-  Integer q = random() / 10000;
+  Integer p = rand() / 10000;
+  Integer q = rand() / 10000;
   MyPattern pattern( p*6, q*6 );
   trace.info() << pattern << endl;
 
@@ -661,19 +661,19 @@ bool testSubStandardDSLQ0()
   trace.beginBlock( "Check ReversedSmartDSS == ArithmeticDSS" );
   for ( unsigned int i = 0; i < 100; ++i )
     {
-      Integer a( random() % 12000 + 1 );
-      Integer b( random() % 12000 + 1 );
+      Integer a( rand() % 12000 + 1 );
+      Integer b( rand() % 12000 + 1 );
       if ( ic.gcd( a, b ) == 1 )
         {
           trace.info() << "(" << i << ")"
                        << " Test DSL has slope " << a << "/" << b << std::endl;
           for ( Integer mu = 0; mu < 5; ++mu )
             {
-              DSL D( a, b, random() % 10000 );
+              DSL D( a, b, rand() % 10000 );
               for ( Integer x = 0; x < 10; ++x )
                 {
-                  Integer x1 = random() % 1000;
-                  Integer x2 = x1 + 1 + ( random() % 1000 );
+                  Integer x1 = rand() % 1000;
+                  Integer x2 = x1 + 1 + ( rand() % 1000 );
                   Point A = D.lowestY( x1 );
                   Point B = D.lowestY( x2 );
                   ++nb, nbok += checkSubStandardDSLQ0<DSL>( D, A, B ) ? 1 : 0;
@@ -739,12 +739,12 @@ bool testContinuedFraction()
   std::vector<Quotient> qcfrac;
   std::back_insert_iterator< Fraction > itout = 
     std::back_inserter( f );
-  unsigned int size = ( random() % 20 ) + 10;
+  unsigned int size = ( rand() % 20 ) + 10;
   for ( unsigned int i = 0; i < size; ++i )
     {
       Quotient q = ( i == 0 )
-        ? ( random() % 5 )
-        : ( random() % 5 ) + 1;
+        ? ( rand() % 5 )
+        : ( rand() % 5 ) + 1;
       *itout++ = std::make_pair( q, (Quotient) i );
       quotients.push_back( q );
     }
@@ -805,6 +805,62 @@ testAncestors()
   return D1.slope() == Fraction( 1, 1 );
 }
 
+
+//-------------------------------------------
+template <typename SB>
+bool
+testSimplestFractionInBetween()
+{
+  typedef typename SB::Fraction Fraction;
+  Fraction f,g;
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  
+  trace.beginBlock("Testing block: simplest fraction between two fractions");
+  // When the two fractions are not ancestors of one other
+  f = Fraction(1,5); g = Fraction(3,4);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(1,2) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+  
+  f = Fraction(4,7); g = Fraction(5,7);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(2,3) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  f = Fraction(3,8); g = Fraction(7,4);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(1,1) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  f = Fraction(11,7); g = Fraction(7,4);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(5,3) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+  
+  f = Fraction(8,13); g = Fraction(7,11);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(5,8) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  // When f is an ancestor of g or conversely
+  f = Fraction(2,5); g = Fraction(4,9);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(3,7) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+  
+  f = Fraction(2,3); g = Fraction(8,11);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(5,7) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  f = Fraction(1,2); g = Fraction(5,9);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(6,11) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  f = Fraction(5,9); g = Fraction(2,3);
+  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(3,5) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
+
+  trace.endBlock();
+  return nbok == nb;
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -814,7 +870,7 @@ int main( int , char** )
   typedef SB::Fraction Fraction;
   typedef Fraction::ConstIterator ConstIterator;
 
-  BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPositiveIrreducibleFraction< Fraction > ));
   BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
 
   trace.beginBlock ( "Testing class SternBrocot" );
@@ -822,7 +878,8 @@ int main( int , char** )
     && testPattern<SB>()
     && testSubStandardDSLQ0<Fraction>()
     && testContinuedFractions<SB>()
-    && testAncestors<SB>();
+    && testAncestors<SB>()
+    && testSimplestFractionInBetween<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

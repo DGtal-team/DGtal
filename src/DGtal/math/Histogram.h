@@ -50,7 +50,6 @@
 
 namespace DGtal
 {
-
   /**
     Description of template class 'RegularBinner' <p> \brief Aim:
     Represents an elementary functor that partitions quantities into

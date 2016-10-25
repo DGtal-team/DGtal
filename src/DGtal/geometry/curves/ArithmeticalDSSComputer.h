@@ -119,7 +119,7 @@ namespace DGtal
      */
     typedef ArithmeticalDSS<Coordinate, Integer, adjacency> DSS; 
     //we expect that the iterator type returned DGtal points, used in the DSS representation
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename DSS::Point >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Point, typename DSS::Point >::value ));
 
     /**
      * Type of primitive representation, defined as an alias of DSS 
@@ -404,7 +404,7 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) ; 
+    void selfDisplay ( std::ostream & out ) const; 
 
     
   }; // end of class ArithmeticalDSSComputer
@@ -418,7 +418,7 @@ namespace DGtal
  */
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 std::ostream&
-operator<< ( std::ostream & out,  ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & object )
+operator<< ( std::ostream & out,  const ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & object )
 {
   object.selfDisplay( out);
   return out;
@@ -430,7 +430,7 @@ operator<< ( std::ostream & out,  ArithmeticalDSSComputer<TIterator,TInteger,adj
 // Aliases
 namespace DGtal
 {
-  /*
+  /**
    * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted 
    * to the dynamic recognition of standard and simply 4-connected digital 
    * straight segments (DSS) along any sequence of digital points. 
@@ -466,7 +466,8 @@ namespace DGtal
     /**
      * Base class
      */
-    typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super; 
+    typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super;
+    typedef typename Super::ConstIterator ConstIterator;
 
   public: 
 
@@ -480,7 +481,7 @@ namespace DGtal
      * Constructor with initialisation
      * @param it an iterator on 2d points
      */
-    StandardDSS4Computer(const typename Super::ConstIterator& it);
+    StandardDSS4Computer(const ConstIterator& it);
 
     /**
      * Copy constructor.
@@ -497,7 +498,7 @@ namespace DGtal
 
   }; 
 
-  /*
+  /**
    * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted 
    * to the dynamic recognition of naive and simply 8-connected digital straight 
    * segments (DSS) along any sequence of digital points. 
@@ -527,6 +528,7 @@ namespace DGtal
      * Base class
      */
     typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super; 
+    typedef typename Super::ConstIterator ConstIterator;
 
   public: 
 
@@ -540,7 +542,7 @@ namespace DGtal
      * Constructor with initialisation
      * @param it an iterator on 2d points
      */
-    NaiveDSS8Computer(const typename Super::ConstIterator& it);
+    NaiveDSS8Computer(const ConstIterator& it);
 
     /**
      * Copy constructor.

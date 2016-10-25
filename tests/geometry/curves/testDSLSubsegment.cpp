@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testDSLSubsegmentSimple.cpp
+ * @file
  * @ingroup Tests
  * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
  * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
@@ -77,7 +77,7 @@ bool testDSLSubsegment(Integer modb)
   Integer b( rand() % modb +1);
   
   // Draw random value for a in [0,b]
-  Integer a( random() % b +1);
+  Integer a( rand() % b +1);
   // Draw a new a while a and b are not coprime (do not divide by
   // the gcd so that b remains in the required interval)
   while(ic.gcd(a,b) !=1)

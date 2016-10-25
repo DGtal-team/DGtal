@@ -358,7 +358,7 @@ while ( ! Q.empty() )
   roundPlanes.push_back( ptrRoundPlane ); // to delete them afterwards.
   v2plane[ v ] = ptrRoundPlane;
   ptrRoundPlane->init( wp, wq );
-  ptrRoundPlane->second = Color( random() % 192 + 64, random() % 192 + 64, random() % 192 + 64, 255 );
+  ptrRoundPlane->second = Color( rand() % 192 + 64, rand() % 192 + 64, rand() % 192 + 64, 255 );
   // same extraction of round plane as above
   // Do not forget to associate ptrRoundPlane to each unmarked visited surfels of the round plane.
   // Do not forget to mark all surfels of the round plane.
@@ -587,5 +587,12 @@ $ ./examples/tutorial-examples/polyhedralizer
 \example examples/tutorial-examples/polyhedralizer.cpp
 */
 
+/**
+Example of tutorial 2: making a polyhedron from a digital object
+   @see @ref tutoPolyhedralisation
+   \image html polyhedral-al-finished-w3.png "The polyhedral surface approaching Al Capone digital object, for width=3/1."
+   @example tutorial-examples/polyhedralizer.cpp
+ 
+*/
 
 }

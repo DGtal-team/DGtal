@@ -154,7 +154,6 @@ DGtal::PointVector<dim, TComponent, TContainer>::PointVector( const Component & 
     myArray[ i ] =  NumberTraits<TComponent>::ZERO;
 }
 //------------------------------------------------------------------------------
-#ifdef CPP11_INITIALIZER_LIST
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 DGtal::PointVector<dim, TComponent, TContainer>::PointVector(std::initializer_list<Component> init)
@@ -165,7 +164,6 @@ DGtal::PointVector<dim, TComponent, TContainer>::PointVector(std::initializer_li
   for ( ; i < dim; ++i)
     myArray[i] =  NumberTraits<TComponent>::ZERO;
 }
-#endif // CPP11_INITIALIZER_LIST
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
@@ -322,7 +320,6 @@ DGtal::PointVector<dim, TComponent, TContainer>::operator= ( const DGtal::PointV
   return *this;
 }
 //------------------------------------------------------------------------------
-#ifdef CPP11_INITIALIZER_LIST
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 DGtal::PointVector<dim, TComponent, TContainer>&
@@ -350,7 +347,6 @@ DGtal::PointVector<dim, TComponent, TContainer>::partialCopyInv
     dims.push_back(*c);
   return partialCopyInv(pv, dims);
 }
-#endif
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
@@ -540,6 +536,17 @@ DGtal::PointVector<dim, TComponent, TContainer>::dot( const Self& v ) const
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
+double
+DGtal::PointVector<dim, TComponent, TContainer>::cosineSimilarity( const Self& v ) const
+{
+    double angle = std::acos ( this->dot ( v ) / ( this->norm() * v.norm() ) );
+    if ( std::isnan ( angle ) )
+        angle = 0.0;
+    return angle;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+inline
 typename DGtal::PointVector<dim, TComponent, TContainer>
 DGtal::PointVector<dim, TComponent, TContainer>::crossProduct( const Self& v ) const
 {
@@ -722,10 +729,10 @@ DGtal::PointVector<dim, TComponent, TContainer>::normInfinity() const
 
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
-typename DGtal::PointVector<dim, double, TContainer>
+typename DGtal::PointVector<dim, double, std::array<double,dim> >
 DGtal::PointVector<dim, TComponent, TContainer>::getNormalized() const
 {
-  PointVector<dim,double,Container> normalized =(*this);
+  PointVector<dim,double,std::array<double,dim> > normalized =(*this);
   normalized /= normalized.norm();
   return normalized;
 }

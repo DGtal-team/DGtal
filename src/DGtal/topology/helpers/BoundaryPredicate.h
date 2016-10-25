@@ -44,6 +44,7 @@
 #include <boost/array.hpp>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -79,7 +80,7 @@ namespace DGtal {
     typedef typename Image::Value Value;
     // KSpace::Point same type as Image::Point
     BOOST_STATIC_ASSERT
-    (( ConceptUtils::SameType< typename KSpace::Point,
+    (( concepts::ConceptUtils::SameType< typename KSpace::Point,
        typename Image::Point>::value ));
 	      
 
@@ -99,7 +100,7 @@ namespace DGtal {
        @param anImage any image (referenced).
        @param l1 a label in the image that defines the inner region.
     */
-    BoundaryPredicate( const KSpace & aSpace, const Image & anImage,
+    BoundaryPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
                        const Value & l1 );
   
     /**

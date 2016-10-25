@@ -54,7 +54,7 @@
 namespace DGtal
 {
 
-  namespace details 
+  namespace detail 
   {
     /////////////////////////////////////////////////////////////////////////////
     /**
@@ -242,7 +242,7 @@ namespace DGtal
       bool isInConvexPart() const { return false; }
     };
 
-  } //end namespace details
+  } //end namespace detail
   /////////////////////////////////////////////////////////////////////////////
 
 
@@ -373,9 +373,9 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    /*
-    * list where each vertex of the FP is stored
-    */
+    /**
+     * List where each vertex of the FP is stored
+     */
     Polygon myPolygon;
 
   protected:
@@ -508,7 +508,7 @@ namespace DGtal
     // ------------------------- Display ------------------------------------
   public: 
 
-    /*
+    /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */

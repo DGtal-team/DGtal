@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file test_HyperRectDomain-snippet.cpp
+ * @file
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
@@ -45,8 +45,8 @@ int main()
   typedef DGtal::SpaceND<4> Space4D;
   typedef Space4D::Point Point4D;
 
-  const DGtal::int32_t rawA[ ] = { 1, 2, 3 ,4};
-  const DGtal::int32_t rawB[ ] = { 4, 4, 5 ,5};
+  const Space4D::Integer rawA[ ] = { 1, 2, 3 ,4};
+  const Space4D::Integer rawB[ ] = { 4, 4, 5 ,5};
   Point4D A ( rawA );
   Point4D B ( rawB );
 

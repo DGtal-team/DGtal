@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file meshFromOFF.cpp
+ * @file io/meshFromOFF.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -31,15 +31,12 @@
 
 
 //! [includeImportOFF]
-//!
-
-
 #include "DGtal/io/readers/MeshReader.h"
+//! [includeImportOFF]
 
-#include <QtGui/qapplication.h>
 #include "DGtal/io/Display3D.h"
 #include "DGtal/io/viewers/Viewer3D.h"
-//! [includeImportOFF]
+
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
 #include "ConfigExamples.h"
@@ -49,12 +46,12 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char** argv )
-{    
+{
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.show();     
+  viewer.show();
   //! [ImportOFFfile]
-  std::string inputFilename = examplesPath + "samples/tref.off";   
+  std::string inputFilename = examplesPath + "samples/tref.off";
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
   Mesh<Viewer3D<>::RealPoint> anImportedMesh;
   anImportedMesh << inputFilename;

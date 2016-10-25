@@ -1,11 +1,13 @@
 /* 
  * Useful to avoid writing DGtal:: in front of every class.
  */
+ using namespace DGtal;
+ using namespace concepts;
 namespace DGtal {
-
+namespace concepts{
 /*!
    
-@page moduleArithDSSReco Digital straight lines and segments.   
+@page moduleArithDSSReco Digital straight lines and segments   
 
 @author Tristan Roussillon
 
@@ -13,7 +15,7 @@ Part of the \ref packageGeometry.
 
 This module gathers classes that represent and recognize digital straight segments. 
 To dynamically recognize DSSs along a sequence of points, the basic class is ArithmeticalDSSComputer, 
-which is a model of CDynamicBidirectionalSegmentComputer. 
+which is a model of concepts::CDynamicBidirectionalSegmentComputer. 
 Each instance of ArithmeticalDSSComputer has an instance of ArithmeticalDSS, which represents the 
 recognized digital straight segment.   
 Moreover, any instance of ArithmeticalDSS has an instance of ArithmeticalDSL, which represents 
@@ -183,6 +185,7 @@ We list below the main methods of ArithmeticalDSL:
   - ArithmeticalDSL::remainder()
   - ArithmeticalDSL::isInDSL() (called in ArithmeticalDSL::operator())
   - ArithmeticalDSL::position()
+  - ArithmeticalDSL::getPoint()
   - ArithmeticalDSL::before()
   - ArithmeticalDSL::beforeOrEqual()
 
@@ -266,7 +269,7 @@ simply 4-connected sequence of points belonging to a standard DSL.
 As ArithmeticalDSL, ArithmeticalDSS is a model of CPointFunctor, ie. 
 it has a function operator ArithmeticalDSS.operator\(\) that returns 'true' 
 iff the input point belongs to the DSS. As ArithmeticalDSL, it provides 
-services to iterate over the DSS points. Indeed, ArithmeticalDSS is a model of CConstBidirectionalRange. 
+services to iterate over the DSS points. Indeed, ArithmeticalDSS is a model of concepts::CConstBidirectionalRange. 
 It has two inner types called ArithmeticalDSS::ConstIterator and ArithmeticalDSS::ConstReverseIterator, 
 which are both models of readable iterator and bidirectional iterator.
 
@@ -316,12 +319,6 @@ You can construct a DSS by specifying the value of all its data members.
 Though, the resulting DSS may be not valid and you should test its validity 
 before using it. An instance of ArithmeticalDSS is valid iff the DSL parameters, 
 the ending points and the leaning points are consistent. 
-To check if these redondant data members are consistents,
-some functions are defined in the namespace ArithmeticalDSSCheck. For instance,  
-- function ArithmeticalDSSCheck::checkPointsRemainder compares the remainder of the 
-leaning and ending points to the parameters of the minimal bounding DSL.  
-- function ArithmeticalDSSCheck::checkPointsPosition compares the position of the 
-leaning and ending points to the parameters of the minimal bounding DSL.
 
 There are five extra ways of constructing an instance of ArithmeticalDSS:
 - from the minimal set of data members required to build the DSS in constant time.  
@@ -444,7 +441,7 @@ As a model of CDynamicBidirectionalSegmentComputer, its main methods are:
   - ArithmeticalDSSComputer::retractBack()
  
 Moreover, ArithmeticalDSSComputer::primitive() returns an object of 
-type ArithmeticalDSSComputer::Primitive that is actually the current DSS. 
+type ArithmeticalDSSComputer::Primitive that is actually one of 2D DSSs. 
 
 Before using a DSS Computer, you must include the following header: 
 @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerHeader
@@ -452,7 +449,7 @@ Before using a DSS Computer, you must include the following header:
 Then, you can construct a DSS computer as follows: 
 @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardCtor
 
-The extention is simply done as follows: 
+The extension is simply done as follows: 
 @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardExtension
 
 \note You don't need to provide the next point, because ArithmeticalDSSComputer can access to 
@@ -462,8 +459,155 @@ Finally, you can get the resulting DSS as follows:
 @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardPrimitive
 
 The whole example may be found in exampleArithmeticalDSSComputer.cpp. The use of NaiveDSS8Computer
-is quite similar. 
+is quite similar.
+
+\subsection moduleArithDSSReco-DSSRec-Computers3D Naive3DDSSComputer 
+
+Recognition of a 3D straight line segments is based on a projection of the 
+corresponding 3D digital curve onto three base planes. Then these projections 
+are segmented iteratively as long as at least two such 2D segmentation remains valid. 
+By valid we understand that there are no two points of 3D curve which have 
+the same projection onto a 2D plane.
+
+As a model of concepts::CForwardSegmentComputer, its main methods are: 
+- Naive3DDSSComputer.init()
+- iteration services
+  - Naive3DDSSComputer::begin()
+  - Naive3DDSSComputer::end()
+- extension tests:
+  - Naive3DDSSComputer::isExtendableFront()
+- extension:
+  - Naive3DDSSComputer::extendFront()
+ 
+Moreover, Naive3DDSSComputer::arithmeticalDSS2d( Dimension ) returns an object of 
+type Naive3DDSSComputer::ArithmeticalDSSComputer2d that is actually the current 
+2D DSS in a given projection. 
+
+Before using a 3D DSS Computer, you must include the following header: 
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerHeader
+
+Then, you can construct a 3D DSS computer as follows: 
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardCtor
+
+The extension is simply done as follows: 
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardExtension
+
+\note You don't need to provide the next point, because Naive3DDSSComputer can access to 
+the points by iterators. 
+
+You can check which 2D DSS are valid as follows ( 0 - YZ, 1 - XZ, 2 - XY ): 
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardPrimitiveValid
+
+And access them:
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardPrimitive
+
+Finally to obtain the parameters of 3D DSS
+@snippet geometry/curves/exampleNaive3DDSSComputer.cpp Naive3DDSSComputerStandardParams
+
+The whole example may be found in exampleNaive3DDSSComputer.cpp.
+
+\section moduleArithDSSReco-DSSRecAppli Application of the straight line segment recognition
+
+This section contains several examples of application of straight line recognition.
+
+\subsection moduleArithDSSReco-DSSRec-Computers3DTangent Estimation of tangent direction
+
+Example below shows how to estimate tangent directions of a digital curve 
+while using Lambda Maximal Segment Tangent estimation introduced
+by Lachaud et. al. \cite LachaudIVC2007.
+
+Before using the LMST 2D estimator, you must include the following headers: 
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DHeader
+
+Then, you can construct estimator as follows: 
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DStandardCtor 
+
+Notice that by default polynomial lambda function is used. Another ones are 
+implemented in FunctorsLambdaMST.h  
+
+We need also to generate a tangential cover:
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DTangential 
+
+Finally, we can estimate tangent direction point-by-point:
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DPoint
+
+or when we want to calculate tangent directions for a range of points better 
+choice is to do this in following way:
+@snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DFast
+
+
+Note that the 3D extension provides similar interface:
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DHeader
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DStandardCtor 
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DTangential 
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DPoint
+
+@snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DFast
+
+Notice that both LambdaMST2D and LambdaMST3D are models of CCurveLocalGeometricEstimator.
+
+Both examples are in exampleLMST2D.cpp and exampleLMST3D.cpp
+
 */
 
 
+/**
+   This example 
+- shows the basic usage of a naive/standard DSL, 
+- displays the steps of a DSL for all octants. 
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSL.cpp
+*/
+
+/**
+   This example shows the basic usage of a 8-connected and a 4-connected 
+arithmetical DSS.  
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSS.cpp
+*/
+
+/**
+   This example shows the basic usage of a 4-connected standard segment computer, 
+an object devoted to the on-line recognition of 4-connected standard DSSs.  
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSSComputer.cpp
+*/
+
+/**
+   This example shows the basic usage of a naive 3D DSS recognition. 
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleNaive3DDSSComputer.cpp
+*/
+
+/**
+   This example shows the basic usage of the Lambda maximal segment tangent estimation
+   in 2D.
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/estimation/exampleLMST2D.cpp
+*/
+
+/**
+   This example shows the basic usage of the Lambda maximal segment tangent estimation
+   in 3D.
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/estimation/exampleLMST3D.cpp
+*/
+
+}
 }

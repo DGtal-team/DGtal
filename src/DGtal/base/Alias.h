@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class Alias
   /**
-Description of template class 'Alias' <p> 
+Description of template class 'Alias' <p>
 
 \brief Aim: This class encapsulates its parameter class so that
 to indicate to the user that the object/pointer will be only
@@ -73,7 +73,7 @@ member or variable are possible:
 |------------------|---------------|---------------|----------------|---------------------|
 |To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |                     |
 |To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |                     |
-|To: \ref CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
+|To: \link CountedPtrOrPtr CountedPtrOrPtr<T>\endlink| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
 
 Argument conversion to member is \b automatic except when converting
 to a pointer \c T*: the \b address operator (\c operator&) must be used in
@@ -91,7 +91,7 @@ callee context.
 in parameters is \b recommended when the lifetime of the
 parameter must exceed the lifetime of the called
 method/function/constructor (often the case in constructor or
-init methods). 
+init methods).
 
 @note The usage of \c T \c & or \c T \c * instead of \ref
 Alias<T> is \b recommended when the lifetime of the parameter is
@@ -142,7 +142,7 @@ struct B1_v2_1 {
   B1_v2_1( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
   : myA( a ) {}
 ...
-  A & myA; 
+  A & myA;
 };
 
 // Aliasing for a long lifetime is visible.
@@ -186,9 +186,9 @@ user forward an Alias<T> parameter.
   protected:
 
     /// Internal class that allows to distinguish the different types of parameters.
-    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
-		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
-		     COUNTED_CONST_PTR_OR_CONST_PTR };
+    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR,
+        COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
+        COUNTED_CONST_PTR_OR_CONST_PTR };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -199,63 +199,67 @@ user forward an Alias<T> parameter.
     inline ~Alias() {}
 
     /**
-       Constructor from const reference to an instance of T. Invalid.
+       Constructor from const reference to an instance of T. Deleted.
+
+       Aliasing a const-ref is an error. Consider ConstAlias instead.
     */
-    inline Alias( const T& ) : myParam( CONST_LEFT_VALUE_REF ), myPtr( 0 )
-    { ASSERT(( false && "[Alias::Alias( const T& )] Aliasing a const-ref is an error. Consider ConstAlias instead." )); }
+    Alias( const T& ) = delete;
 
     /**
-       Constructor from const pointer to an instance of T. Invalid.
+       Constructor from const pointer to an instance of T. Deleted.
+
+       Aliasing a const-ptr is an error. Consider ConstAlias instead.
     */
-    inline Alias( const T* ) : myParam( CONST_PTR ), myPtr( 0 )
-    { ASSERT(( false && "[Alias::Alias( const T& )] Aliasing a const-ptr is an error. Consider ConstAlias instead." )); }
+    Alias( const T* ) = delete;
 
     /**
        Constructor from a reference to an instance of T. The object is pointed in
        'this'.
        @param t any reference to an object of type T.
     */
-    inline Alias( T& t ) 
-      : myParam( LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
+    inline Alias( T& t )
+      : myParam( LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) )
+      {}
 
     /**
        Constructor from a pointer to an instance of T. The object is pointed in
        'this'.
        @param t any pointer to an object of type T.
     */
-    inline Alias( T* t ) 
+    inline Alias( T* t )
       : myParam( PTR ), myPtr( static_cast<const void*>( t ) ) {}
-    
+
     /**
-       Constructor from a const reference to a copy-on-write pointer on T. Invalid.
+       Constructor from a const reference to a copy-on-write pointer on T. Deleted.
+
+       Aliasing a const-cow ptr is an error. Consider ConstAlias instead.
     */
-    inline Alias( const CowPtr<T>& ) 
-      : myParam( COW_PTR ), myPtr( 0 )
-    { ASSERT(( false && "[Alias::Alias( const CowPtr<T>& )] Aliasing a const-cow ptr is an error. Consider ConstAlias instead." )); }
+    Alias( const CowPtr<T>& ) = delete;
 
     /**
        Constructor from a const reference to a shared pointer on T. The object is pointed in
        'this'.
        @param t a const-reference to any shared pointer to an object of type T.
     */
-    inline Alias( const CountedPtr<T>& t ) 
-      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
+    inline Alias( const CountedPtr<T>& t )
+      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) )
+      {}
 
     /**
        Constructor from a const reference to a shared or simple pointer on T. The object is pointed in
        'this'.
        @param t a const-reference to any shared or simple pointer to an object of type T.
     */
-    inline Alias( const CountedPtrOrPtr<T>& t ) 
-      : myParam( COUNTED_PTR_OR_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
+    inline Alias( const CountedPtrOrPtr<T>& t )
+      : myParam( COUNTED_PTR_OR_PTR ), myPtr( static_cast<const void*>( &t ) )
+      {}
 
-#ifdef CPP11_RREF_MOVE
     /**
-       Constructor from right-reference value. Invalid.
+       Constructor from right-reference value. Deleted.
+
+       Aliasing a rvalue ref has no meaning. Consider Clone instead.
     */
-    inline Alias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
-    { ASSERT(( false && "[Alias::Alias( T&& )] Aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
-#endif // CPP11_RREF_MOVE
+    Alias( T&& ) = delete;
 
     /**
        Cast operator to a T reference. The object is never
@@ -263,14 +267,15 @@ user forward an Alias<T> parameter.
        - T& -> T&                       // no duplication
        - T* -> T&                       // no duplication, exception if null
     */
-    inline operator T&() const {
-      switch( myParam ) {
-      case LEFT_VALUE_REF:
-      case PTR:
-	return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
-      default: ASSERT( false && "[Alias::operator T&() const] Invalid cast for given type. Consider passing a left-value reference or a pointer as a parameter." );
-        return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
-      }
+    inline operator T&() const
+      {
+        switch( myParam ) {
+          case LEFT_VALUE_REF:
+          case PTR:
+            return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
+          default: ASSERT( false && "[Alias::operator T&() const] Invalid cast for given type. Consider passing a left-value reference or a pointer as a parameter." );
+                   return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
+        }
     }
 
     /**
@@ -279,14 +284,15 @@ user forward an Alias<T> parameter.
      - T& -> T*                       // no duplication
      - T* -> T*                       // no duplication
     */
-    inline T* operator&() const {
-      switch( myParam ) {
-      case LEFT_VALUE_REF: 
-      case PTR:
-	return const_cast< T* >( static_cast< const T* >( myPtr ) );
-      default: ASSERT( false && "[T* Alias::operator&() const] Invalid address operator for given type. Consider passing a left-value reference or a pointer as a parameter." );
-        return const_cast< T* >( static_cast< const T* >( myPtr ) );
-      }
+    inline T* operator&() const
+      {
+        switch( myParam ) {
+          case LEFT_VALUE_REF:
+          case PTR:
+            return const_cast< T* >( static_cast< const T* >( myPtr ) );
+          default: ASSERT( false && "[T* Alias::operator&() const] Invalid address operator for given type. Consider passing a left-value reference or a pointer as a parameter." );
+                   return const_cast< T* >( static_cast< const T* >( myPtr ) );
+        }
     }
 
     /**
@@ -298,18 +304,19 @@ user forward an Alias<T> parameter.
        - CountedPtr<T>      -> CountedPtrOrPtr<T> // shared
        - CountedPtrOrPtr<T> -> CountedPtrOrPtr<T> // shared
     */
-    inline operator CountedPtrOrPtr<T>() const {
-      switch( myParam ) {
-      case LEFT_VALUE_REF: 
-      case PTR:
-	return CountedPtrOrPtr<T>( const_cast< T* >( static_cast< const T* >( myPtr ) ), false );
-      case COUNTED_PTR:
-	return CountedPtrOrPtr<T>( *( static_cast< const CountedPtr<T>* >( myPtr ) ) );
-      case COUNTED_PTR_OR_PTR:
-	return CountedPtrOrPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
-      default: ASSERT( false && "[Alias::operator CountedPtrOrPtr<T>() const] Invalid cast for given type. Consider passing a reference, a pointer or a CountedPtr as a parameter." );
-        return CountedPtrOrPtr<T>( 0 );
-      }
+    inline operator CountedPtrOrPtr<T>() const
+      {
+        switch( myParam ) {
+          case LEFT_VALUE_REF:
+          case PTR:
+            return CountedPtrOrPtr<T>( const_cast< T* >( static_cast< const T* >( myPtr ) ), false );
+          case COUNTED_PTR:
+            return CountedPtrOrPtr<T>( *( static_cast< const CountedPtr<T>* >( myPtr ) ) );
+          case COUNTED_PTR_OR_PTR:
+            return CountedPtrOrPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
+          default: ASSERT( false && "[Alias::operator CountedPtrOrPtr<T>() const] Invalid cast for given type. Consider passing a reference, a pointer or a CountedPtr as a parameter." );
+                   return CountedPtrOrPtr<T>( 0 );
+        }
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -318,7 +325,7 @@ user forward an Alias<T> parameter.
     const Parameter myParam;
     /// Stores the address of the input parameter for further use.
     const void* const myPtr;
-    
+
 
     // ------------------------- Internals ------------------------------------
   private:

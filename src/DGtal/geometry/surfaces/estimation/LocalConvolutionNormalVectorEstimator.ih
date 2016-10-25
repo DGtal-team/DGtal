@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file SummationBasedNormalVectorEstimator.ih
+ * @file
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -44,8 +44,9 @@
 template <typename DigitalSurf,  typename KernelFunctor>
 inline
 DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>
-::LocalConvolutionNormalVectorEstimator ( const DigitalSurf & digitalSurface,
-        const KernelFunctor & aKernelFunctor )
+::LocalConvolutionNormalVectorEstimator ( 
+        ConstAlias<DigitalSurf> digitalSurface,
+        ConstAlias<KernelFunctor> aKernelFunctor )
     : mySurface ( digitalSurface ), myKernelFunctor ( aKernelFunctor )
 {
 }

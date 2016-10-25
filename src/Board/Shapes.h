@@ -1,6 +1,6 @@
 /* -*- mode: c++ -*- */
 /**
- * @file   Shapes.h
+ * @file
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
  * 
@@ -72,7 +72,10 @@ struct Shape {
    * @param penColor The pen color of the shape.
    * @param fillColor The fill color of the shape.
    * @param lineWidth The line thickness.
-   * @param depth The depth of the shape.
+   * @param style     The line style.
+   * @param cap       The line cap.
+   * @param join      The line join.
+   * @param depth     The depth of the shape.
    */
   inline Shape( DGtal::Color penColor, DGtal::Color fillColor,
     double lineWidth, 
@@ -236,6 +239,7 @@ struct Shape {
    * 
    * @param stream The output stream.
    * @param transform A 2D transform to be applied.
+   * @param colormap  A colormap.
    */
   virtual void flushFIG( std::ostream & stream,
        const TransformFIG & transform,
@@ -521,6 +525,8 @@ protected:
   double _y;      /**< Second coordinate of the dot. */
 };
 
+
+
 /**
  * The line structure.
  * @brief A line between two points.
@@ -536,6 +542,9 @@ struct Line : public Shape {
    * @param y2 Second coordinate of the end point.
    * @param color The color of the line.
    * @param lineWidth The line thickness.
+   * @param style The line style.
+   * @param cap   The line cap.
+   * @param join  The line join.
    * @param depth The depth of the line.
    */
   inline Line( double x1, double y1, double x2, double y2, 
@@ -665,6 +674,9 @@ struct Arrow : public Line {
    * @param penColor The color of the line.
    * @param fillColor The fill color of the sharp end.
    * @param lineWidth The line thickness.
+   * @param style Line style.
+   * @param cap   Line cap.
+   * @param join  Line join.
    * @param depth The depth of the line.
    */
   inline Arrow( double x1, double y1, double x2, double y2,
@@ -1141,6 +1153,68 @@ private:
 protected:
 };
 
+/**
+ * @brief A quadratic Bezier curve having 3 control points. 
+ * NB. It is also a parabola arc. 
+ */
+struct QuadraticBezierCurve : public Triangle { 
+  
+  /** 
+   * Constructs a curve.
+   * 
+   * @param x1 First coordinate of the start point.
+   * @param y1 Second coordinate of the start point.
+   * @param x2 First coordinate of the middle point.
+   * @param y2 Second coordinate of the middle point.
+   * @param x3 First coordinate of the end point.
+   * @param y3 Second coordinate of the end point.
+   * @param pen Color of the curve.
+   * @param fill Color of the interior.
+   * @param lineWidth The line thickness.
+   * @param style Curve style 
+   * @param cap Curve cap
+   * @param join Curve join
+   * @param depthValue The depth of the line.
+   */
+  inline QuadraticBezierCurve( double x1, double y1, double x2, double y2, double x3, double y3,  
+         DGtal::Color pen,
+         DGtal::Color fill,
+         double lineWidth,
+         const LineStyle style = SolidStyle,
+         const LineCap cap = ButtCap,
+         const LineJoin join = MiterJoin,
+         int depthValue = -1 )
+    : Triangle(x1, y1, x2, y2, x3, y3, pen, fill, lineWidth, style, cap, join, depthValue) {}
+
+  void flushPostscript( std::ostream & stream,
+      const TransformEPS & transform ) const;
+  
+  void flushFIG( std::ostream & stream,
+     const TransformFIG & transform,
+     std::map<DGtal::Color,int> & colormap ) const;
+
+  void flushSVG( std::ostream & stream,
+     const TransformSVG & transform ) const;
+
+#ifdef WITH_CAIRO
+  void flushCairo( cairo_t *cr,
+     const TransformCairo & transform ) const;
+#endif
+
+  void flushTikZ( std::ostream & stream,
+     const TransformTikZ & transform ) const;
+
+  /** 
+   * Returns the name of the shape (QuadraticBezierCurve)
+   * 
+   * @return object name
+   */
+  const std::string & name() const;
+
+private:
+  static const std::string _name; /**< name of the shape. */
+
+};
 
 /**
  * The GouraudTriangle structure.

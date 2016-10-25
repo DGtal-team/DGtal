@@ -43,6 +43,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/CConstBidirectionalRangeFromPoint.h"
@@ -67,7 +68,7 @@ namespace DGtal
    *
    * Moreover, the provided iterators are adapted 
    * with a functor f given at construction so that 
-   * operator* calls f(*it), instead of calling directly 
+   * operator* calls f(\*it), instead of calling directly 
    * operator* of the iterator it.
    *
    * @tparam TFunctor the type of functor that transforms
@@ -102,8 +103,8 @@ namespace DGtal
      * @param aFunctor functor used to adapt on-the-fly the elements of the range
      *
      */
-    ConstRangeFromPointAdapter(const TRange& aRange, 
-		      const TFunctor& aFunctor )
+    ConstRangeFromPointAdapter( ConstAlias<TRange> aRange, 
+		      ConstAlias<TFunctor> aFunctor )
       : myRangePtr(&aRange), myFunctorPtr(&aFunctor) {}
 
     /**

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file range.cpp
+ * @file doc-examples/range.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * @author Guillaume Damiand
@@ -62,7 +62,6 @@ int main()
 
   trace.endBlock();
 
-#ifdef CPP11_INITIALIZER_LIST
   trace.beginBlock ( "Example range with CPP11 initializer list" );
   
   for( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator 
@@ -82,8 +81,6 @@ int main()
        it != itend; 
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
-
-#endif  
 
   return 0;
 }

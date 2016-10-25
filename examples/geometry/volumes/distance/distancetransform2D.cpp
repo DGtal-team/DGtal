@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file distancetransform2D.cpp
+ * @file geometry/volumes/distance/distancetransform2D.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -38,6 +38,8 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/colormaps/TickedColorMap.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/SimpleThresholdForegroundPredicate.h"
@@ -92,14 +94,8 @@ int main()
   randomSeeds(image,16,0);
   //! [DTDef]
 
-  //! [DTColormaps]
-  //Colormap used for the SVG output
-  typedef HueShadeColorMap<long int, 2> HueTwice;
-  typedef GrayscaleColorMap<unsigned char> Gray;
-  //! [DTColormaps]
-
-
   //Input shape output
+  typedef GrayscaleColorMap<Image::Value> Gray;
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)129);
@@ -131,6 +127,13 @@ int main()
   for ( DTL1::ConstRange::ConstIterator it = dtL1.constRange().begin(), itend = dtL1.constRange().end();it != itend; ++it)
     if ( (*it) > maxv1)  maxv1 = (*it);
   
+  //! [DTColormaps]
+  //Colormap used for the SVG output
+  typedef HueShadeColorMap<DTL2::Value, 2> HueTwice;
+  //! [DTColormaps]
+
+
+  
   
   trace.warning() << dtL2 << " maxValue= "<<maxv2<< endl;
   board.clear();
@@ -142,14 +145,21 @@ int main()
   Display2DFactory::drawImage<HueTwice>(board, dtL1, 0.0, maxv1 + 1);
   board.saveSVG ( "example-DT-L1.svg" );
 
+  //Explicit export with ticked colormap
   //We compute the maximum DT value on the L2 map
-  for ( unsigned int j=0;j<33;j++)
-    {
-      for(unsigned int i=0; i<33; i++)
-        trace.info()<< dtL2(Z2i::Point(i,j)) << " ";
-      trace.info()<<std::endl;
-    }
-
+  board.clear();
+  TickedColorMap<double, GradientColorMap<double> > ticked(0.0,maxv2, Color::White);
+  ticked.addRegularTicks(5, 0.5);
+  ticked.finalize();
+  ticked.colormap()->addColor( Color::Red );
+  ticked.colormap()->addColor( Color::Black );
+  for ( DTL2::Domain::ConstIterator it = dtL2.domain().begin(), itend = dtL2.domain().end();it != itend; ++it)
+  {
+    board<< CustomStyle((*it).className(),new CustomColors(ticked(dtL2(*it)),ticked(dtL2(*it))));
+    board << *it;
+  }
+  board.saveSVG("example-DT-L2-ticked.svg");
+  
   trace.endBlock();
   return 0;
 }

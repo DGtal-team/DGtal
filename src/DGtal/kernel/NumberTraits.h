@@ -175,7 +175,7 @@ namespace DGtal
 
   
   /**
-   * Specialization for <uint16_t>.
+   * Specialization for DGtal::uint16_t.
    */
   template <>
   struct NumberTraits<uint16_t>
@@ -251,7 +251,7 @@ namespace DGtal
   }; // end of class NumberTraits<uint16_t>.
 
   /**
-   * Specialization for <int16_t>.
+   * Specialization for DGtal::int16_t.
    */
   template <>
   struct NumberTraits<int16_t>
@@ -327,7 +327,7 @@ namespace DGtal
  
 
   /**
-   * Specialization for <uint8_t>.
+   * Specialization for DGtal::uint8_t.
    */
   template <>
   struct NumberTraits<uint8_t>
@@ -403,7 +403,7 @@ namespace DGtal
   }; // end of class NumberTraits<uint8_t>.
 
   /**
-   * Specialization for <int8_t>.
+   * Specialization for DGtal::int8_t.
    */
   template <>
   struct NumberTraits<int8_t>
@@ -478,7 +478,7 @@ namespace DGtal
   }; // end of class NumberTraits<int16_t>.
 
   /**
-   * Specialization for <uint32_t>.
+   * Specialization for DGtal::uint32_t.
    */
   template <>
   struct NumberTraits<uint32_t>
@@ -549,7 +549,7 @@ namespace DGtal
   }; // end of class NumberTraits<uint32_t>.
 
   /**
-   * Specialization for <int32_t>.
+   * Specialization for DGtal::int32_t.
    */
   template <>
   struct NumberTraits<int32_t>
@@ -624,7 +624,7 @@ namespace DGtal
   }; // end of class NumberTraits<int32_t>.
 
   /**
-   * Specialization for <uint64_t>.
+   * Specialization for DGtal::uint64_t.
    */
   template <>
   struct NumberTraits<uint64_t>
@@ -699,7 +699,7 @@ namespace DGtal
   }; // end of class NumberTraits<uint64_t>.
 
   /**
-   * Specialization for <int64_t>.
+   * Specialization for DGtal::int64_t.
    */
   template <>
   struct NumberTraits<int64_t>
@@ -770,7 +770,7 @@ namespace DGtal
   }; // end of class NumberTraits<int64_t>.
 
   /**
-   * Specialization for <float>.
+   * Specialization for float.
    */
   template <>
   struct NumberTraits<float>
@@ -826,7 +826,7 @@ namespace DGtal
 
 
   /**
-   * Specialization for <double>.
+   * Specialization for double.
    */
   template <>
   struct NumberTraits<double>
@@ -882,7 +882,7 @@ namespace DGtal
 
 
   /**
-   * Specialization for <long double>.
+   * Specialization for long double.
    */
   template <>
   struct NumberTraits<long double>
@@ -938,9 +938,67 @@ namespace DGtal
 
   
 
+#ifdef APPLE
+  /**
+   * Specialization for unsigned long.
+   */
+  template <>
+  struct NumberTraits<unsigned long>
+  {
+    typedef TagTrue IsIntegral;
+    typedef TagTrue IsBounded;
+    typedef TagTrue IsUnsigned;
+    typedef TagFalse IsSigned;
+    typedef TagTrue IsSpecialized;
+    typedef long SignedVersion;
+    typedef unsigned long UnsignedVersion;
+    typedef unsigned long ReturnType;
+    typedef boost::call_traits<unsigned long>::param_type ParamType;
+    static const unsigned long ZERO;
+    static const unsigned long ONE;
+    static ReturnType zero()
+    {
+      return 0;
+    }
+    static ReturnType one()
+    {
+      return 1;
+    }
+    static ReturnType min()
+    {
+      return boost::integer_traits<unsigned long>::const_min;
+    }
+    static ReturnType max()
+    {
+      return boost::integer_traits<unsigned long>::const_max;
+    }
+    static unsigned int digits()
+    {
+      return boost::integer_traits<unsigned long>::digits;
+    }
+    static BoundEnum isBounded()
+    {
+      return BOUNDED;
+    }
+    static SignEnum isSigned()
+    {
+      return SIGNED;
+    }
+   static DGtal::int64_t castToInt64_t(const unsigned long & aT)
+    {
+      return static_cast<int64_t>( aT );
+    }
+    static double castToDouble(const unsigned long & aT)
+    {
+      return static_cast<double>(aT);
+    }
+  }; // end of class NumberTraits<unsigned long>.
+#endif
+  
+
 #ifdef WITH_BIGINTEGER
   /**
-   * Specialization for <DGtal::BigInteger>. 
+   * Specialization for DGtal::BigInteger. 
    * Note that DGtal::BigInteger represents
    * signed and unsigned arbitrary-size integers. Therefore both
    * IsUnsigned and IsSigned are TagTrue.

@@ -29,7 +29,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"

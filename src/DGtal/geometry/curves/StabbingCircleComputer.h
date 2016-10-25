@@ -122,7 +122,7 @@ namespace DGtal
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
     //Pair::first_type and Pair::second_type should be the same type;
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType<typename Pair::first_type, typename Pair::second_type >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<typename Pair::first_type, typename Pair::second_type >::value ));
     typedef typename Pair::first_type Point;
     BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
   

@@ -53,7 +53,6 @@ bool testBinomialConvolver()
   trace.beginBlock ( "Testing block ..." );
   typedef PointVector<2, double> RealPoint;
   std::vector< RealPoint > points;
-#ifdef CPP11_INITIALIZER_LIST
   points.push_back( RealPoint( { 0.0, 0.0 } ) ); 
   points.push_back( RealPoint( { 1.0, 0.0 } ) ); 
   points.push_back( RealPoint( { 2.0, 0.0 } ) ); 
@@ -62,16 +61,6 @@ bool testBinomialConvolver()
   points.push_back( RealPoint( { 1.0, 2.0 } ) ); 
   points.push_back( RealPoint( { 0.0, 2.0 } ) ); 
   points.push_back( RealPoint( { 0.0, 1.0 } ) ); 
-#else
-   points.push_back( RealPoint(  0.0, 0.0  ) ); 
-  points.push_back( RealPoint(  1.0, 0.0  ) ); 
-  points.push_back( RealPoint(  2.0, 0.0  ) ); 
-  points.push_back( RealPoint(  2.0, 1.0  ) ); 
-  points.push_back( RealPoint( 2.0, 2.0  ) ); 
-  points.push_back( RealPoint( 1.0, 2.0  ) ); 
-  points.push_back( RealPoint(  0.0, 2.0  ) ); 
-  points.push_back( RealPoint(  0.0, 1.0  ) ); 
-#endif
   
   typedef std::vector< RealPoint >::const_iterator ConstIteratorOnPoints;
   typedef BinomialConvolver<ConstIteratorOnPoints, double> MyBinomialConvolver;
@@ -101,8 +90,8 @@ bool testBinomialConvolver()
     CurvatureBCFct;
   typedef BinomialConvolverEstimator< MyBinomialConvolver, TangentBCFct> BCTangentEstimator;
   typedef BinomialConvolverEstimator< MyBinomialConvolver, CurvatureBCFct> BCCurvatureEstimator;
-  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< BCTangentEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< BCCurvatureEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< BCTangentEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< BCCurvatureEstimator > ));
   BCTangentEstimator tgtEstimator;
   BCCurvatureEstimator curvEstimator;
 

@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
@@ -90,7 +91,7 @@ namespace DGtal
 	 @param aSurface the container describing the surface.
 	 @param s the surfel on which the tracker is initialized.
       */
-      Tracker( const DigitalSurfaceContainer & aSurface, 
+      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
                const Surfel & s );
 
       /**
@@ -188,7 +189,7 @@ namespace DGtal
        @param adj the surfel adjacency (default is interior to
        exterior adjacency ).
       */
-    DigitalSetBoundary( const KSpace & aKSpace,
+    DigitalSetBoundary( ConstAlias<KSpace> aKSpace,
                         const DigitalSet & aSet,
                         const Adjacency & adj = Adjacency( true ) );
 

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file polyhedralizer.cpp
+ * @file tutorial-examples/polyhedralizer.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -34,7 +34,7 @@
 #include <set>
 #include <map>
 #include <queue>
-#include <QtGui/qapplication.h>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
@@ -77,7 +77,7 @@ struct PairSorted2nd
 {
   typedef PairSorted2nd<T1,T2> Self;
   inline PairSorted2nd( const T1& t1, const T2& t2 ) : first( t1 ), second( t2 ) {}
-  bool operator<( const Self& other ) const 
+  bool operator<( const Self& other ) const
   {
     return second < other.second;
   }
@@ -177,7 +177,7 @@ int main( int argc, char** argv )
   MyContainer container( ks, digitalObject, surfAdj, start_surfel );
   MyDigitalSurface digSurf( container );
   trace.info() << "Digital surface has " << digSurf.size() << " surfels."
-               << endl; 
+               << endl;
   trace.endBlock();
   //! [polyhedralizer-ExtractingSurface]
 
@@ -185,7 +185,7 @@ int main( int argc, char** argv )
   // First pass to find biggest planes.
   trace.beginBlock( "Decomposition first pass. Computes all planes so as to sort vertices by the plane size." );
   typedef BreadthFirstVisitor<MyDigitalSurface> Visitor;
-  typedef ChordGenericNaivePlaneComputer<Z3,Z3::Point, int64_t> NaivePlaneComputer;
+  typedef ChordGenericNaivePlaneComputer<Z3,Z3::Point, DGtal::int64_t> NaivePlaneComputer;
   map<Surfel,unsigned int> v2size;
   for ( ConstIterator it = digSurf.begin(), itE= digSurf.end(); it != itE; ++it )
     v2size[ *it ] = 0;
@@ -215,7 +215,7 @@ int main( int argc, char** argv )
               bool isExtended = planeComputer.extend( layer.begin(), layer.end() );
               if ( isExtended )
                 {
-                  for ( vector<Surfel>::const_iterator it_layer = layer_surfel.begin(), 
+                  for ( vector<Surfel>::const_iterator it_layer = layer_surfel.begin(),
                           it_layer_end = layer_surfel.end(); it_layer != it_layer_end; ++it_layer )
                     {
                       ++v2size[ *it_layer ];
@@ -277,7 +277,7 @@ int main( int argc, char** argv )
               bool isExtended = ptrRoundPlane->first.extend( layer.begin(), layer.end() );
               if ( isExtended )
                 {
-                  for ( vector<Surfel>::const_iterator it_layer = layer_surfel.begin(), 
+                  for ( vector<Surfel>::const_iterator it_layer = layer_surfel.begin(),
                           it_layer_end = layer_surfel.end(); it_layer != it_layer_end; ++it_layer )
                     {
                       Surfel s = *it_layer;
@@ -299,9 +299,9 @@ int main( int argc, char** argv )
           else
             visitor.expand();
         }
-      if ( visitor.finished() ) 
+      if ( visitor.finished() )
         {
-          for ( vector<Surfel>::const_iterator it_layer = layer_surfel.begin(), 
+          for ( vector<Surfel>::const_iterator it_layer = layer_surfel.begin(),
                   it_layer_end = layer_surfel.end(); it_layer != it_layer_end; ++it_layer )
             {
               Surfel s = *it_layer;
@@ -311,14 +311,14 @@ int main( int argc, char** argv )
             }
         }
       // Assign random color for each plane.
-      ptrRoundPlane->second = Color( random() % 192 + 64, random() % 192 + 64, random() % 192 + 64, 255 );
+      ptrRoundPlane->second = Color( rand() % 192 + 64, rand() % 192 + 64, rand() % 192 + 64, 255 );
     }
   trace.endBlock();
   //! [polyhedralizer-segment]
 
   //! [polyhedralizer-lsf]
-  for ( vector<RoundPlane*>::iterator 
-          it = roundPlanes.begin(), itE = roundPlanes.end(); 
+  for ( vector<RoundPlane*>::iterator
+          it = roundPlanes.begin(), itE = roundPlanes.end();
         it != itE; ++it )
     {
       NaivePlaneComputer& computer = (*it)->first;
@@ -330,7 +330,7 @@ int main( int argc, char** argv )
 
   //! [polyhedralizer-projection]
   map<Surfel, RealPoint> coordinates;
-  for ( map<Surfel,RoundPlane*>::const_iterator 
+  for ( map<Surfel,RoundPlane*>::const_iterator
           it = v2plane.begin(), itE = v2plane.end();
         it != itE; ++it )
     {
@@ -387,7 +387,7 @@ int main( int argc, char** argv )
         {
           mface[ i++ ] = index[ *itv ];
         }
-      polyhedron.addFace( mface, Color( 255, 243, 150, 255 ) ); 
+      polyhedron.addFace( mface, Color( 255, 243, 150, 255 ) );
     }
   //! [polyhedralizer-MakeMesh]
 
@@ -403,8 +403,8 @@ int main( int argc, char** argv )
   //! [polyhedralizer-visualization]
 
   //! [polyhedralizer-freeMemory]
-  for ( vector<RoundPlane*>::iterator 
-          it = roundPlanes.begin(), itE = roundPlanes.end(); 
+  for ( vector<RoundPlane*>::iterator
+          it = roundPlanes.begin(), itE = roundPlanes.end();
         it != itE; ++it )
     delete *it;
   //! [polyhedralizer-freeMemory]

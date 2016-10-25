@@ -49,6 +49,7 @@
 #include <map>
 #include <set>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
@@ -61,7 +62,7 @@
 namespace DGtal
 {
 
-  namespace details
+  namespace detail
   {
   /////////////////////////////////////////////////////////////////////////////
   // template class PointValueCompare
@@ -164,7 +165,6 @@ namespace DGtal
     typedef TPointPredicate PointPredicate; 
 
     //points
-    typedef typename Image::Point Vector;
     typedef typename Image::Point Point;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename AcceptedPointSet::Point >::value ));
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename PointPredicate::Point >::value ));
@@ -183,8 +183,8 @@ namespace DGtal
     //intern data types
     typedef std::pair<Point, Value> PointValue; 
     typedef std::set<PointValue,
-		     details::PointValueCompare<PointValue> > CandidatePointSet; 
-    typedef unsigned long Area;
+		     detail::PointValueCompare<PointValue> > CandidatePointSet; 
+    typedef DGtal::uint64_t Area;
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -256,7 +256,7 @@ namespace DGtal
      * @see init
      */
     FMM(Image& aImg, AcceptedPointSet& aSet,
-	const PointPredicate& aPointPredicate);
+        ConstAlias<PointPredicate> aPointPredicate);
     
     /**
      * Constructor.
@@ -264,8 +264,8 @@ namespace DGtal
      * @see init
      */
     FMM(Image& aImg, AcceptedPointSet& aSet, 
-	const PointPredicate& aPointPredicate, 
-	const Area& aAreaThreshold, const Value& aValueThreshold);
+        ConstAlias<PointPredicate> aPointPredicate, 
+        const Area& aAreaThreshold, const Value& aValueThreshold);
     
     /**
      * Constructor.
@@ -273,8 +273,8 @@ namespace DGtal
      * @see init
      */
     FMM(Image& aImg, AcceptedPointSet& aSet,
-	const PointPredicate& aPointPredicate, 
-	PointFunctor& aPointFunctor );
+        ConstAlias<PointPredicate> aPointPredicate, 
+        PointFunctor& aPointFunctor );
     
     /**
      * Constructor.
@@ -282,9 +282,9 @@ namespace DGtal
      * @see init
      */
     FMM(Image& aImg, AcceptedPointSet& aSet, 
-	const PointPredicate& aPointPredicate, 
-	const Area& aAreaThreshold, const Value& aValueThreshold,
-	PointFunctor& aPointFunctor );
+        ConstAlias<PointPredicate> aPointPredicate, 
+        const Area& aAreaThreshold, const Value& aValueThreshold,
+        PointFunctor& aPointFunctor );
     
     /**
      * Destructor.
@@ -389,11 +389,13 @@ namespace DGtal
      * if @a aFlagIsPositive is 'true' (default) but @a aValue otherwise, 
      * and conversely for the outer points.  
      *
+     * @param aK a Khalimsky space in which the signed cells live.
      * @param itb begin iterator (on signed cells)
      * @param ite end iterator (on signed cells)
      * @param aImg the distance image
      * @param aSet the set of points for which the distance has been assigned
      * @param aValue distance default value
+     * @param aFlagIsPositive The flag controlling the \a aValue sign assigned to inner points.
      */
     template <typename KSpace, typename TIteratorOnBels>
     static void initFromBelsRange(const KSpace& aK, 
@@ -412,11 +414,13 @@ namespace DGtal
      * from the distance values of the neighbors given by the function @a aF. 
      * Swap the signs if @a aFlagIsPositive is 'false'. 
      *
+     * @param aK a Khalimsky space in which the signed cells live.
      * @param itb begin iterator (on signed cells)
      * @param ite end iterator (on signed cells)
      * @param aF any implicit function
      * @param aImg the distance image
      * @param aSet the set of points for which the distance has been assigned
+     * @param aFlagIsPositive The flag controlling the \a aValue sign assigned to inner points.
      */
     template <typename KSpace, typename TIteratorOnBels, typename TImplicitFunction>
     static void initFromBelsRange(const KSpace& aK, 
@@ -438,6 +442,7 @@ namespace DGtal
      * @param aImg the distance image
      * @param aSet the set of points for which the distance has been assigned
      * @param aValue distance default value
+     * @param aFlagIsPositive The flag controlling the \a aValue sign assigned to inner points.
      */
     template <typename TIteratorOnPairs>
     static void initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 

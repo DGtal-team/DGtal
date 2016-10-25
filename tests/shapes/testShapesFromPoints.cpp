@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testShapeFromPoints.cpp
+ * @file
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -34,8 +34,6 @@
 #include <fstream>
 #include <sstream>
 #include <exception>
-#include <boost/program_options.hpp>
-
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"

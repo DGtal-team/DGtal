@@ -49,6 +49,8 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/topology/NeighborhoodConfigurations.h"
+#include "DGtal/topology/tables/NeighborhoodTables.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -78,11 +80,11 @@ bool testObject()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   typedef SpaceND< 2 > Z2;
   typedef Z2::Point Point;
   typedef Point::Coordinate Coordinate;
-  typedef HyperRectDomain< Z2 > DomainType; 
+  typedef HyperRectDomain< Z2 > DomainType;
   Point p1(  -449, -449  );
   Point p2( 449, 449  );
   DomainType domain( p1, p2 );
@@ -94,9 +96,9 @@ bool testObject()
   typedef DomainAdjacency< DomainType, MetricAdj4 > Adj4;
   typedef DomainAdjacency< DomainType, MetricAdj8 > Adj8;
   typedef DigitalTopology< Adj4, Adj8 > DT48;
-  typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type 
+  typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type
      MediumSet;
-//   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type 
+//   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type
 //     MediumSet;
   typedef Object<DT48, MediumSet> ObjectType;
   typedef ObjectType::SmallSet SmallSet;
@@ -119,7 +121,7 @@ bool testObject()
   ostringstream sstr;
   sstr << "Creating disk( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
-  for ( DomainType::ConstIterator it = domain.begin(); 
+  for ( DomainType::ConstIterator it = domain.begin();
   it != domain.end();
   ++it )
     {
@@ -162,29 +164,29 @@ bool testObject()
 
   trace.beginBlock ( "Testing neighborhoods ..." );
   Object<DT48, SmallSet> neigh = disk_object.neighborhood( c );
-  nbok += neigh.size() == 4 ? 1 : 0; 
+  nbok += neigh.size() == 4 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "N_4(Disk, c).size() = " << neigh.size() 
+         << "N_4(Disk, c).size() = " << neigh.size()
          << " == 4" << std::endl;
   neigh = disk_object.properNeighborhood( l );
-  nbok += neigh.size() == 3 ? 1 : 0; 
+  nbok += neigh.size() == 3 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "N*_4(Disk, " << l << ").size() = " << neigh.size()
          << " == 3" << std::endl;
   Size size = disk_object.properNeighborhoodSize( l );
-  nbok += size == 3 ? 1 : 0; 
+  nbok += size == 3 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "#N*_4(Disk, " << l << ") = " << size
          << " == 3" << std::endl;
 
   neigh = disk_object2.neighborhood( c );
-  nbok += neigh.size() == 5 ? 1 : 0; 
+  nbok += neigh.size() == 5 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "N_4(Disk2, c).size() = " << neigh.size() 
+         << "N_4(Disk2, c).size() = " << neigh.size()
          << " == 5" << std::endl;
   trace.endBlock();
 
@@ -194,15 +196,15 @@ bool testObject()
     nbok += neigh.size() == 7824 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "neigh = disk_object, size() = " << neigh.size() 
+         << "neigh = disk_object, size() = " << neigh.size()
          << " == 636100" << std::endl;
   SmallObjectType neigh2 = disk_object2.neighborhood( c );
   DigitalSetConverter<SmallSet>::assign
     ( neigh.pointSet(), neigh2.pointSet() );
-  nbok += neigh.size() == 5 ? 1 : 0; 
+  nbok += neigh.size() == 5 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "neigh = N_4(Disk2, c), size() = " << neigh.size() 
+         << "neigh = N_4(Disk2, c), size() = " << neigh.size()
          << " == 5" << std::endl;
   trace.endBlock();
 
@@ -211,13 +213,13 @@ bool testObject()
   nbok += bdisk.size() == 400 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "Border(Disk, c), size() = " << bdisk.size() 
+         << "Border(Disk, c), size() = " << bdisk.size()
          << " == 3372" << std::endl;
   ObjectType bdisk2 = disk_object2.border();
   nbok += bdisk2.size() == 392 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "Border(Disk2, c), size() = " << bdisk2.size() 
+         << "Border(Disk2, c), size() = " << bdisk2.size()
          << " == 3364" << std::endl;
   trace.endBlock();
 
@@ -226,10 +228,10 @@ bool testObject()
   ObjectExpander expander( bdisk, *(bdisk.pointSet().begin()) );
   while ( ! expander.finished() )
     {
-      nbok += expander.layer().size() <= 2 ? 1 : 0; 
+      nbok += expander.layer().size() <= 2 ? 1 : 0;
       nb++;
       trace.info() << "(" << nbok << "/" << nb << ") "
-       << "expander.layer.size() <= 2 " 
+       << "expander.layer.size() <= 2 "
        << expander << std::endl;
       expander.nextLayer();
     }
@@ -242,7 +244,7 @@ bool testObject()
       trace.info() << expander2 << std::endl;
       expander2.nextLayer();
     }
-  nbok += expander2.distance() <= sqrt(2.0)*radius ? 1 : 0; 
+  nbok += expander2.distance() <= sqrt(2.0)*radius ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "expander.distance() = " << expander2.distance()
@@ -265,14 +267,14 @@ bool testObject3D()
   typedef MetricAdjacency< Z3, 2 > Adj18;
   typedef DigitalTopology< Adj6, Adj18 > DT6_18;
   typedef Z3::Point Point;
-  typedef HyperRectDomain< Z3 > Domain; 
-  typedef Domain::ConstIterator DomainConstIterator; 
+  typedef HyperRectDomain< Z3 > Domain;
+  typedef Domain::ConstIterator DomainConstIterator;
   typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   typedef Object<DT6_18, DigitalSet> ObjectType;
   Adj6 adj6;
   Adj18 adj18;
   DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
- 
+
   Point p1( -50, -50, -50 );
   Point p2( 50, 50, 50 );
   Domain domain( p1, p2 );
@@ -301,11 +303,11 @@ bool testObject3D()
   back_insert_iterator< vector< ObjectType > > inserter( objects );
   *inserter++ = diamond;
   *inserter++ = diamond_clone;
-  
+
   for (  vector<ObjectType>::const_iterator it = objects.begin();
    it != objects.end();
    ++it )
-    trace.info() << "- objects[" << (it - objects.begin() ) << "]" 
+    trace.info() << "- objects[" << (it - objects.begin() ) << "]"
      << " = " << *it << endl;
 
   INBLOCK_TEST( objects[ 0 ].size() == ( objects[ 1 ].size() + 2 ) );
@@ -314,7 +316,7 @@ bool testObject3D()
 
   trace.beginBlock ( "Testing connected component extraction  ..." );
   // JOL: do like this for output iterators pointing on the same
-  // container as 'this'. Works fine and nearly as fast. 
+  // container as 'this'. Works fine and nearly as fast.
   //
   // ObjectType( objects[ 0 ] ).writeComponents( inserter );
 
@@ -333,7 +335,7 @@ bool testObject3D()
   for (  vector<ObjectType>::const_iterator it = objects2.begin();
    it != objects2.end();
    ++it )
-    trace.info() << "- objects2[" << (it - objects2.begin() ) << "]" 
+    trace.info() << "- objects2[" << (it - objects2.begin() ) << "]"
      << " = " << *it << endl;
   INBLOCK_TEST( objects2[ 0 ].size() == objects2[ 1 ].size() );
   INBLOCK_TEST( objects2[ 2 ].size() == objects2[ 3 ].size() );
@@ -359,8 +361,8 @@ bool testSimplePoints3D()
   typedef MetricAdjacency< Z3, 2 > Adj18;
   typedef DigitalTopology< Adj6, Adj18 > DT6_18;
   typedef Z3::Point Point;
-  typedef HyperRectDomain< Z3 > Domain; 
-  typedef Domain::ConstIterator DomainConstIterator; 
+  typedef HyperRectDomain< Z3 > Domain;
+  typedef Domain::ConstIterator DomainConstIterator;
   typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   typedef Object<DT6_18, DigitalSet> ObjectType;
   typedef Object<DT6_18, DigitalSet>::SmallObject SmallObjectType;
@@ -368,7 +370,7 @@ bool testSimplePoints3D()
   Adj6 adj6;
   Adj18 adj18;
   DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
- 
+
   Point p1( -10, -10, -10 );
   Point p2( 10, 10, 10 );
   Domain domain( p1, p2 );
@@ -401,11 +403,11 @@ bool testSimplePoints3D()
   for ( DigitalSet::ConstIterator it = diamond.pointSet().begin();
   it != diamond.pointSet().end();
   ++it )
-    trace.info() << "- " << *it 
+    trace.info() << "- " << *it
      << " " << ( diamond.isSimple( *it ) ? "Simple" : "Not simple" )
      << endl;
   trace.endBlock();
-  
+
 
   return nbok == nb;
 }
@@ -417,11 +419,11 @@ bool testDraw()
   unsigned int nb = 0;
 
   trace.beginBlock ( "testDraw(): testing drawing commands." );
-  
+
   typedef SpaceND<  2 > Z2;
   typedef Z2::Point Point;
   typedef Point::Coordinate Coordinate;
-  typedef HyperRectDomain< Z2 > DomainType; 
+  typedef HyperRectDomain< Z2 > DomainType;
   Point p1(  -10, -10  );
   Point p2( 10, 10  );
   DomainType domain( p1, p2 );
@@ -434,9 +436,9 @@ bool testDraw()
   typedef DomainAdjacency< DomainType, MetricAdj8 > Adj8;
   typedef DigitalTopology< Adj4, Adj8 > DT48;
   typedef DigitalTopology< Adj8, Adj4 > DT84;
-  typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type 
+  typedef DigitalSetSelector< DomainType, MEDIUM_DS+HIGH_BEL_DS >::Type
      MediumSet;
-//   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type 
+//   typedef DigitalSetSelector< DomainType, SMALL_DS >::Type
 //     MediumSet;
   typedef Object<DT48, MediumSet> ObjectType;
   typedef Object<DT84, MediumSet> ObjectType84;
@@ -453,7 +455,7 @@ bool testDraw()
   Adj8 adj8( domain, madj8 );
   DT48 dt48( adj4, adj8, JORDAN_DT );
   DT84 dt84( adj8, adj4, JORDAN_DT );
-  
+
   Coordinate r = 5;
   double radius = (double) (r+1);
   Point c(  0, 0  );
@@ -462,7 +464,7 @@ bool testDraw()
   ostringstream sstr;
   sstr << "Creating disk( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
-  for ( DomainType::ConstIterator it = domain.begin(); 
+  for ( DomainType::ConstIterator it = domain.begin();
   it != domain.end();
   ++it )
     {
@@ -484,30 +486,30 @@ bool testDraw()
 
   board << SetMode( domain.className(), "Grid" ) << domain;
   board << disk_object;
-  
+
   board.saveSVG("disk-object.svg");
-  
+
   Board2D board2;
   board2.setUnit(Board::UCentimeter);
 
   board2 << SetMode( domain.className(), "Grid" ) << domain;
-  board2 << SetMode( disk_object.className(), "DrawAdjacencies" ) << disk_object; 
-  
+  board2 << SetMode( disk_object.className(), "DrawAdjacencies" ) << disk_object;
+
   board2.saveSVG("disk-object-adj.svg");
 
   Board2D board3;
   board3.setUnit(Board::UCentimeter);
 
-  board3 << SetMode( domain.className(), "Grid" ) << domain; 
+  board3 << SetMode( domain.className(), "Grid" ) << domain;
   board3 << SetMode( disk_object2.className(), "DrawAdjacencies" ) << disk_object2;
-  
+
   board3.saveSVG("disk-object-adj-bis.svg");
   trace.endBlock();
 
   trace.endBlock();
 
   return nbok == nb;
-  
+
 }
 
 struct MyDrawStyleCustomRed : public DrawableWithBoard2D
@@ -547,8 +549,8 @@ bool testSimplePoints2D()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef DGtal::Z2i::Point Point;
-  //typedef Domain::ConstIterator DomainConstIterator; 
- 
+  //typedef Domain::ConstIterator DomainConstIterator;
+
   Point p1( -17, -17 );
   Point p2( 17, 17 );
   Domain domain( p1, p2 );
@@ -584,63 +586,61 @@ bool testSimplePoints2D()
   DGtal::uint64_t nb_simple;
   trace.beginBlock ( "Greedy homotopic thinning ..." );
   int layer = 0;
-  do 
-    {
-      DigitalSet & S = shape.pointSet();
-      std::queue<DigitalSet::Iterator> Q;
-      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-  if ( shape.isSimple( *it ) )
-    Q.push( it );
-      nb_simple = 0;
-      while ( ! Q.empty() )
+  do
   {
-    DigitalSet::Iterator it = Q.front();
-    Q.pop();
-    if ( shape.isSimple( *it ) )
+    DigitalSet & S = shape.pointSet();
+    std::queue<DigitalSet::Iterator> Q;
+    for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+      if ( shape.isSimple( *it ) )
+        Q.push( it );
+    nb_simple = 0;
+    while ( ! Q.empty() )
+    {
+      DigitalSet::Iterator it = Q.front();
+      Q.pop();
+      if ( shape.isSimple( *it ) )
       {
-        board << CustomStyle( it->className(), 
-                   new MyDrawStyleCustomFillColor
-                   ( cmap_grad( layer ) ) )
-        << *it;
+        board << CustomStyle( it->className(),
+            new MyDrawStyleCustomFillColor
+            ( cmap_grad( layer ) ) )
+          << *it;
         S.erase( *it );
         ++nb_simple;
       }
-  }
-      ++layer;
     }
-  while ( nb_simple != 0 );
+    ++layer;
+  } while ( nb_simple != 0 );
   trace.endBlock();
 
   // Greedy thinning.
   trace.beginBlock ( "Greedy homotopic thinning ..." );
   layer = 0;
-  do 
-    {
-      DigitalSet & S = shape2.pointSet();
-      std::queue<DigitalSet::Iterator> Q;
-      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-  if ( shape2.isSimple( *it ) )
-    Q.push( it );
-      nb_simple = 0;
-      while ( ! Q.empty() )
+  do
   {
-    DigitalSet::Iterator it = Q.front();
-    Q.pop();
-    if ( shape2.isSimple( *it ) )
+    DigitalSet & S = shape2.pointSet();
+    std::queue<DigitalSet::Iterator> Q;
+    for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+      if ( shape2.isSimple( *it ) )
+        Q.push( it );
+    nb_simple = 0;
+    while ( ! Q.empty() )
+    {
+      DigitalSet::Iterator it = Q.front();
+      Q.pop();
+      if ( shape2.isSimple( *it ) )
       {
-        board2 << CustomStyle( it->className(), 
-                   new MyDrawStyleCustomFillColor
-             ( cmap_grad( layer ) ) )
-         << *it;
+        board2 << CustomStyle( it->className(),
+            new MyDrawStyleCustomFillColor
+            ( cmap_grad( layer ) ) )
+          << *it;
         S.erase( *it );
         ++nb_simple;
       }
-  }
-      ++layer;
     }
-  while ( nb_simple != 0 );
+    ++layer;
+  } while ( nb_simple != 0 );
   trace.endBlock();
-  
+
   board  << CustomStyle( shape.className(), new MyDrawStyleCustomRed )
   << shape;
   board.saveSVG( "shape-thinning-4-8.svg");
@@ -650,13 +650,168 @@ bool testSimplePoints2D()
    << shape2;
   board2.saveSVG( "shape-thinning-8-4.svg");
   board2.clear();
-  
+
   return nbok == nb;
 }
 
+bool testObjectGraph()
+{
 
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
 
+  using namespace DGtal;
+  using namespace Z3i;
+  using Point = Z3i::Point ;
+  using Domain = Z3i::Domain ;
+  using DigitalSet = Z3i::DigitalSet ;
+  using KSpace = Z3i::KSpace ;
+  trace.beginBlock ( "Create Diamond Object" );
+  Point p1( -10, -10, -10 );
+  Point p2( 10, 10, 10 );
+  Domain domain( p1, p2 );
+  Point c( 0, 0, 0 );
+  Point r( 3, 0, 0 );
 
+  // diamond of radius 4
+  DigitalSet diamond_set( domain );
+  for ( auto it = domain.begin(); it != domain.end(); ++it )
+    {
+      if ( (*it - c ).norm1() <= 3 ) diamond_set.insertNew( *it );
+    }
+  // diamond_set.erase( c );
+
+  KSpace K;
+  bool space_ok = K.init( domain.lowerBound(),
+                          domain.upperBound(), true // necessary
+                          );
+  INBLOCK_TEST( space_ok == true ) ;
+
+  using MyDigitalTopology = Z3i::DT26_6;
+  // using MyDigitalSet = Z3i::DigitalSet ;
+  using MyDigitalSet = DigitalSetByAssociativeContainer<Z3i::Domain , std::unordered_set< typename Z3i::Domain::Point> >;
+  using MyObject = Object<MyDigitalTopology, MyDigitalSet>;
+  MyDigitalTopology::ForegroundAdjacency adjF;
+  MyDigitalTopology::BackgroundAdjacency adjB;
+  MyDigitalTopology topo(adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
+  MyObject obj(topo,diamond_set);
+
+  INBLOCK_TEST( obj.size() == diamond_set.size() );
+  trace.endBlock();
+  trace.beginBlock( "Check edges" );
+
+  std::set<Point> corner_points;
+  Point north( 0 , 0 , 3 );
+  corner_points.insert(north);
+  Point south( 0 , 0 , -3 );
+  corner_points.insert(south);
+  Point east( 3 , 0 , 0 );
+  corner_points.insert(east);
+  Point west( -3 , 0 , 0 );
+  corner_points.insert(west);
+
+  for(auto && p : corner_points){
+    auto pit = obj.pointSet().find(p);
+    if(pit == obj.pointSet().end()){
+      trace.info() << "point not found" << std::endl;
+      return false;
+    }
+    auto edges = obj.outEdges(*pit);
+    INBLOCK_TEST2( edges.size() == 5, edges.size() );
+  }
+  Point center( 0 , 0 , 0 );
+  auto cpit = obj.pointSet().find(center);
+  auto cedges = obj.outEdges(*cpit);
+  INBLOCK_TEST2( cedges.size() == 26, cedges.size() );
+
+  // opposites edge
+  for(auto && e : cedges){
+    auto rev_e = obj.opposite(e);
+    INBLOCK_TEST(
+        (e.vertices[0] == rev_e.vertices[1]) &&
+        (e.vertices[1] == rev_e.vertices[0])
+    )
+  }
+  trace.endBlock();
+
+  return nbok == nb;
+
+}
+
+bool testSetTable()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  typedef DGtal::Z2i::Point Point;
+  //typedef Domain::ConstIterator DomainConstIterator;
+
+  Point p1( -17, -17 );
+  Point p2( 17, 17 );
+  Domain domain( p1, p2 );
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( -10, -8 ), 7 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 10, 8 ), 7 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 3, 0 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 0, -3 ), 7 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( -10, 0 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( -8, 8 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 0, 9 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 15, -2 ), 6 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 12, -10 ), 4 );
+  shape_set.erase( Point( 5, 0 ) );
+  shape_set.erase( Point( -1, -2 ) );
+  Object4_8 shape( dt4_8, shape_set );
+  // shape.setTable(functions::loadTable<2>(simplicity::tableSimple4_8));
+  {
+    auto table_smart_ptr = functions::loadTable<2>(simplicity::tableSimple4_8);
+    shape.setTable(table_smart_ptr); // table must survive (smart_ptr)
+  }
+
+  GradientColorMap<int> cmap_grad( 0, 6 );
+  cmap_grad.addColor( Color( 128, 128, 255 ) );
+  cmap_grad.addColor( Color( 255, 255, 128 ) );
+  //cmap_grad.addColor( Color( 220, 130, 25 ) );
+  Board2D board;
+  board.setUnit(Board::UCentimeter);
+  board << SetMode( domain.className(), "Paving" )
+  << domain;
+  Board2D board2;
+  board2.setUnit(Board::UCentimeter);
+  board2 << SetMode( domain.className(), "Grid" )
+   << domain;
+
+  // Greedy thinning.
+  DGtal::uint64_t nb_simple;
+  trace.beginBlock ( "Greedy homotopic thinning with table..." );
+  int layer = 0;
+  do {
+    DigitalSet & S = shape.pointSet();
+    std::queue<DigitalSet::Iterator> Q;
+    for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
+      if ( shape.isSimple( *it ) )
+        Q.push( it );
+    nb_simple = 0;
+    while ( ! Q.empty() )
+    {
+      DigitalSet::Iterator it = Q.front();
+      Q.pop();
+      if ( shape.isSimple( *it ) )
+      {
+        board << CustomStyle( it->className(),
+            new MyDrawStyleCustomFillColor
+            ( cmap_grad( layer ) ) )
+          << *it;
+        S.erase( *it );
+        ++nb_simple;
+      }
+    }
+    ++layer;
+  } while ( nb_simple != 0 );
+  trace.endBlock();
+
+  return nbok == nb;
+
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -668,10 +823,12 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testObject() && 
+  bool res = testObject() &&
     testObject3D() && testDraw()
     && testSimplePoints3D()
-    && testSimplePoints2D();
+    && testSimplePoints2D()
+    && testObjectGraph()
+    && testSetTable();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

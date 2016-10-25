@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -71,7 +72,7 @@ namespace DGtal {
      * Constructor.
      * @param aSet any set.
      */
-    SurfelSetPredicate ( const SurfelSet & aSet );
+    SurfelSetPredicate ( ConstAlias<SurfelSet> aSet );
 
     /**
      * Copy constructor.

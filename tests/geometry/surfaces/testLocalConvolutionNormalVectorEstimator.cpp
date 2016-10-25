@@ -50,7 +50,6 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include <QtGui/qapplication.h>
 
 
 #include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
@@ -77,7 +76,6 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     trace.beginBlock ( "Testing convolution neighborhood ..." );
 
     QApplication application ( argc,argv );
-    DGtal::Viewer3D<> viewer;
 
     std::string filename = testPath + "samples/cat10.vol";
 
@@ -125,10 +123,11 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     MyEstimator::Quantity res = myNormalEstimator.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res << std::endl;
 
+    DGtal::Viewer3D<Space,KSpace> viewer(ks);
     viewer.show();
 
     DGtal::Color lineColorSave = viewer.getLineColor();
-    viewer.setLineColor( DGtal::Color ( 200,20,20 ));
+    viewer.setLineColor( DGtal::Color ( 20,200,20 ));
     for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
             itbis!=itend; ++itbis )
     {
@@ -139,8 +138,8 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
         viewer.addLine ( center,
                          DGtal::Z3i::RealPoint(center[0]-3*normal[0],
-					       center[1]-3*normal[1],
-					       center[2]-3*normal[2]) );
+                 center[1]-3*normal[1],
+                 center[2]-3*normal[2]) );
     }
     viewer.setLineColor( lineColorSave);
     viewer<< Viewer3D<>::updateDisplay;
@@ -170,8 +169,8 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
         MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval ( itbis );
         viewer.addLine ( center,
                          DGtal::Z3i::RealPoint(center[0]-3*normal[0],
-					       center[1]-3*normal[1],
-					       center[2]-3*normal[2]) );
+                 center[1]-3*normal[1],
+                 center[2]-3*normal[2]) );
     }
     viewer.setLineColor( lineColorSave);
     viewer<< Viewer3D<>::updateDisplay;

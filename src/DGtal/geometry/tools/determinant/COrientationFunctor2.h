@@ -48,7 +48,8 @@
 
 namespace DGtal
 {
-
+ namespace concepts
+ {
   /////////////////////////////////////////////////////////////////////////////
   // class COrientationFunctor2
   /**
@@ -75,12 +76,12 @@ namespace DGtal
 
      ### Models
   
-     InHalfPlaneBy2x2DetComputer InHalfPlaneBySimple3x3Matrix RadiusFunctor
+     InHalfPlaneBy2x2DetComputer InHalfPlaneBySimpleMatrix InGeneralizedDiskOfGivenRadius
 
      @tparam T the type that should be a model of COrientationFunctor2.
   */
   template <typename T>
-  struct COrientationFunctor2 : COrientationFunctor<T>
+  struct COrientationFunctor2 : concepts::COrientationFunctor<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -95,7 +96,7 @@ namespace DGtal
     typename T::Point myA, myB;
 
   }; // end of concept COrientationFunctor2
-
+ }
 } // namespace DGtal
 
 //                                                                           //

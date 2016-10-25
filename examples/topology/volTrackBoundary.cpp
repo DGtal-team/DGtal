@@ -1,5 +1,5 @@
 /**
- * @file volTrackBoundary.cpp
+ * @file topology/volTrackBoundary.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -15,8 +15,7 @@
 //! [volTrackBoundary-basicIncludes]
 #include <iostream>
 #include <queue>
-#include <QImageReader>
-#include <QtGui/qapplication.h>
+#include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"

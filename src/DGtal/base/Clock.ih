@@ -52,7 +52,7 @@ DGtal::Clock::startClock()
   myFirstTick = clock();
   if (myFirstTick == (clock_t) -1)
     {
-      cerr << "[Clock::startClock] Error: can't start clock." << endl;
+      std::cerr << "[Clock::startClock] Error: can't start clock." << std::endl;
     }
 #else
 #ifdef __MACH__ // OS X does not have clock_gettime, use clock_get_time
@@ -80,7 +80,7 @@ DGtal::Clock::stopClock() const
   clock_t last_tick = clock();
   if (last_tick == (clock_t) -1)
     {
-      cerr << "[Clock::stopClock] Error: can't stop clock." << endl;
+      std::cerr << "[Clock::stopClock] Error: can't stop clock." << std::endl;
     }
   return (double) ((double) 1000.0 * (double)(last_tick - myFirstTick)
      / (double) CLOCKS_PER_SEC);
@@ -114,7 +114,7 @@ DGtal::Clock::restartClock()
   clock_t last_tick = clock();
   if (last_tick == (clock_t) -1)
     {
-      cerr << "[Clock::stopClock] Error: can't restart clock." << endl;
+      std::cerr << "[Clock::stopClock] Error: can't restart clock." << std::endl;
     }
   const double delta = ((double) 1000.0 * (double)(last_tick - myFirstTick)
      / (double) CLOCKS_PER_SEC);
@@ -143,7 +143,6 @@ DGtal::Clock::restartClock()
 #endif
 
 }
-
 
 
 /**

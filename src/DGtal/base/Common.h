@@ -66,6 +66,7 @@
 #ifdef M_PI
 #undef M_PI
 #endif
+
 //C++ exception specification ignored except
 //to indicate a function is not __declspec(nothrow)
 #pragma warning(disable : 4290)
@@ -81,6 +82,15 @@
 #include <cmath>
 #endif //win32
 
+// Explicit M_PI definition if needed
+// (issue https://github.com/DGtal-team/DGtal/issues/1204)
+#ifndef M_PI
+#define M_PI           (3.14159265358979323846)
+#endif
+#ifndef M_PI_2
+#define M_PI_2         (1.57079632679489661923)
+#endif
+
 
 #if defined( WIN32 )
 #define secured_sprintf sprintf_s
@@ -88,18 +98,6 @@
 #include <stdio.h>
 #define secured_sprintf snprintf
 #endif // defined( WIN32 )
-
-/*  Macro to cut down on compiler warnings. */
-#if !defined(NDEBUG)
-#define UNUSED_PARAM @param
-#define UNUSED(identifier) /* identifier */
-#else
-#define UNUSED_PARAM  param
-#define UNUSED(identifier)  identifier
-#endif
-
-
-
 
 #include "DGtal/base/Config.h"
 #include "DGtal/base/Trace.h"
@@ -111,9 +109,6 @@
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/BasicArchetypes.h"
 #include "DGtal/base/Exceptions.h"
-
-
-//////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////
 namespace DGtal

@@ -43,7 +43,14 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-int ATTRIBUTE_NOINLINE Factorial(uint32_t n) {
+#if defined(__GNUC__)
+# define BENCHMARK_NOINLINE __attribute__((noinline))
+#else
+# define BENCHMARK_NOINLINE
+#endif
+
+
+int BENCHMARK_NOINLINE Factorial(uint32_t n) {
   return (n == 1) ? 1 : n * Factorial(n - 1);
 }
 
@@ -71,7 +78,9 @@ static void BM_Factorial(benchmark::State& state) {
   while (state.KeepRunning())
     fac_42 = Factorial(8);
   // Prevent compiler optimizations
-  CHECK(fac_42 != std::numeric_limits<int>::max());
+  std::stringstream ss;
+  ss << fac_42;
+  state.SetLabel(ss.str());
 }
 BENCHMARK(BM_Factorial);
 
@@ -97,13 +106,13 @@ BENCHMARK_RANGE(BM_CalculatePiRange, 1, 1024 * 1024);
 
 static void BM_CalculatePi(benchmark::State& state) {
   static const int depth = 1024;
-  double pi ATTRIBUTE_UNUSED = 0.0;
+  double pi  = 0.0;
   while (state.KeepRunning()) {
-    pi = CalculatePi(depth);
+    benchmark::DoNotOptimize( pi = CalculatePi(depth) );
   }
 }
 BENCHMARK(BM_CalculatePi)->Threads(8);
-BENCHMARK(BM_CalculatePi)->ThreadRange(1, 32);
+BENCHMARK(BM_CalculatePi)->ThreadRange(1, 16);
 BENCHMARK(BM_CalculatePi)->ThreadPerCpu();
 
 
@@ -111,10 +120,9 @@ static void BM_LongTest(benchmark::State& state) {
   double tracker = 0.0;
   while (state.KeepRunning())
     for (int i = 0; i < state.range_x(); ++i)
-      tracker += i;
-  CHECK(tracker != 0.0);
+      benchmark::DoNotOptimize(tracker += i);
 }
-BENCHMARK(BM_LongTest)->Range(1<<16,1<<28);
+BENCHMARK(BM_LongTest)->Range(1<<4,1<<8);
 
 
 
@@ -127,9 +135,6 @@ BENCHMARK(BM_LongTest)->Range(1<<16,1<<28);
 int main(int argc, const char* argv[])
 {
   benchmark::Initialize(&argc, argv);
-
-  CHECK(Factorial(8) == 40320);
-  CHECK(CalculatePi(1) == 0.0);
 
   benchmark::RunSpecifiedBenchmarks();
   return 0;

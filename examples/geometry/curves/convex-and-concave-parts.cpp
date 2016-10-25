@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file convex-and-concave-parts.cpp
+ * @file geometry/curves/convex-and-concave-parts.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -195,6 +195,9 @@ int main( int argc, char** argv )
 
   //save the drawing
   aBoard.saveSVG("convex-and-concave-parts.svg");
+  #ifdef WITH_CAIRO
+    aBoard.saveCairo("convex-and-concave-parts.png"); 
+  #endif
 
   trace.endBlock();
 

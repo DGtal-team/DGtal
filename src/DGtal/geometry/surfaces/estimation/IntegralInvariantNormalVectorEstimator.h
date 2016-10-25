@@ -128,10 +128,10 @@ public:
   typedef int Value;
 
   /// A wrapper around point predicate (functor Point -> bool) that
-  /// transforms it into a functor Point -> uint (0 or 1).
+  /// transforms it into a functor Point -> unsigned int (0 or 1).
   typedef PointFunctorFromPointPredicateAndDomain< PointPredicate, Domain, unsigned int > ShapePointFunctor;
-  /// Adapts the a functor Point -> uint (0 or 1) to a functor Cell ->
-  /// uint (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
+  /// Adapts the a functor Point -> unsigned int (0 or 1) to a functor Cell ->
+  /// unsigned int (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
   typedef FunctorOnCells< ShapePointFunctor, KSpace > ShapeSpelFunctor;
 
 
@@ -278,7 +278,7 @@ public:
   *
   * @param[in] itb iterator defining the start of the range of surfels where the normal vector is computed.
   * @param[in] ite iterator defining the end of the range of surfels where the normal vector is computed.
-  * @param[in] output iterator of results of the computation.
+  * @param[in] result output iterator of results of the computation.
   * @return the updated output iterator after all outputs.
   */
   template <typename OutputIterator, typename SurfelConstIterator>

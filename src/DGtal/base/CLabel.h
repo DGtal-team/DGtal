@@ -49,47 +49,52 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CLabel
-  /**
-Description of \b concept '\b CLabel' <p>
-     @ingroup Concepts
-     @brief Aim: Define the concept of DGtal labels.
-     Models of CLabel can be default-constructible, assignable and equality comparable.
-
- ### Refinement of 
-   - boost::DefaultConstructible
-   - boost::Assignable 
-   - boost::EqualityComparable
-
- ### Associated types :
-
- ### Notation
-     - \t X : A type that is a model of CLabel
-     - \t x, \t y : object of type X
-
- ### Definitions
-
- ### Valid expressions and semantics
-
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|               |            |                     |             |                  |           |                |            |     
- ### Invariants###
-
- ### Models###
-
- ### Notes###
-
-@tparam T the type that should be a model of CLabel.
-   */
-  template <typename T>
-  struct CLabel  : boost::DefaultConstructible<T>, boost::Assignable<T>,
-    boost::EqualityComparable<T>
+  namespace concepts
   {
 
-  }; // end of concept CLabel
+    /////////////////////////////////////////////////////////////////////////////
+    // class CLabel
+    /**
+       Description of \b concept '\b CLabel' <p>
+       @ingroup Concepts
+       @brief Aim: Define the concept of DGtal labels.
+       Models of CLabel can be default-constructible, assignable and equality comparable.
+
+       ### Refinement of 
+       - boost::DefaultConstructible
+       - boost::Assignable 
+       - boost::EqualityComparable
+
+       ### Associated types :
+
+       ### Notation
+       - \a X : A type that is a model of CLabel
+       - \a x, \a y : object of type X
+
+       ### Definitions
+
+       ### Valid expressions and semantics
+
+
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       |               |            |                     |             |                  |           |                |            |     
+       ### Invariants###
+
+       ### Models###
+
+       ### Notes###
+
+       @tparam T the type that should be a model of CLabel.
+    */
+    template <typename T>
+    struct CLabel  : boost::DefaultConstructible<T>, boost::Assignable<T>,
+      boost::EqualityComparable<T>
+    {
+
+    }; // end of concept CLabel
+
+  } // namespace concepts
 
 } // namespace DGtal
 

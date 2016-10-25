@@ -6,6 +6,7 @@ SET(DGTAL_TUTO_EXAMPLES_SRC
   shapeGridCurveEstimator
   freemanChainFromImage
   FMMErosion
+  2DSliceImageFromVol
 )
 
 

@@ -48,6 +48,8 @@
 #include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSConvexHull.h"
+#include "DGtal/arithmetic/SternBrocot.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -211,7 +213,7 @@ namespace DGtal
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl);
-
+    
     /**
      * Constructor.
      * Minimal set of parameters to build the DSS
@@ -237,6 +239,9 @@ namespace DGtal
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl);
+
+    
+
 
     /**
      * Construction of a sequence of patterns 
@@ -497,14 +502,49 @@ namespace DGtal
      * @param aPoint any point
      */
     bool isInDSS(const Point& aPoint) const; 
-
-    /**
-     * @return 'true' if @a aPoint is in the DSS
-     * 'false' otherwise. 
-     * @param aPoint any point
-     * @see isInDSS
-     */
+    
     bool operator()(const Point& aPoint) const; 
+    
+    
+    /** 
+     * Returns a boolean equal to true if 'this' belongs to the DSL @a aDSL, false otherwise.
+     * @return 'true' if 'this' belongs to the DSL @a aDSL.
+     * 'false' otherwise.
+     * @param aDSL any DSL
+     */
+    bool isInDSL(const DSL& aDSL) const;
+
+ 
+    /** 
+     * Returns a boolean equal to true if 'this' belongs to the DSL @a
+     * aDSL, false otherwise. Also returns extra information about the
+     * leaning points included in 'this' or a point outside @a aDSL. 
+     * @param [in] aDSL any DSL
+     * @param [in,out] Ulp the list of @a aDSL upper leaning points on 'this', if any
+     * @param [in,out] Llp the list of @a aDSL lower leaning points on 'this', if any
+     * @param [in,out] outP a point of 'this' that does not belong to @a aDSL, if any
+     * @return 'true' if 'this' belongs to the DSL @a aDSL.
+     * 'false' otherwise.
+     */
+    bool isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point& outP) const;
+
+    
+   
+    /** Compute the union of two DSSs. If the union belongs to a DSL,
+	returns the DSS of minimal characteristics that includes the two
+	DSSs. Otherwise, returns the void DSS (DSS(Point(0,0)). See
+	Sivignon 2014  \cite SivignonDGCI2014). 
+	
+	@param aOther a DSS
+	@return a DSS
+	
+	nb: runs in O(1) when: 1) the union of the two DSSs is
+	not part of a DSL, 2) the two DSSs are connected, 3) the last
+	point of the first DSS and the first point of the second DSS
+	have the same ordinate (or abscissa). Otherwise, runs in
+	O(log(n)) where n is the total length of the union.
+     */
+    ArithmeticalDSS computeUnion(const ArithmeticalDSS & aOther) const;
 
 
     // ----------------------- Iterator services -------------------------------
@@ -760,7 +800,7 @@ namespace DGtal
 // Aliases
 namespace DGtal
 {
-  /*
+  /**
    * \brief Aim: This class represents a standard digital straight segment (DSS), 
    * ie. the sequence of simply 4-connected digital points contained in a 
    * standard digital straight line (DSL) between two points of it. 
@@ -790,7 +830,10 @@ namespace DGtal
     public ArithmeticalDSS<TCoordinate, TInteger, 4>
   {
   public: 
-    typedef ArithmeticalDSS<TCoordinate, TInteger, 4> Super; 
+    typedef ArithmeticalDSS<TCoordinate, TInteger, 4> Super;
+    typedef typename Super::Point Point;
+    typedef typename Super::Coordinate Coordinate;
+    typedef typename Super::DSL DSL;
 
   public: 
 
@@ -811,10 +854,10 @@ namespace DGtal
      * @param aLf the first lower point
      * @param aLl the last lower point
      */
-    StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB,
-		 const typename Super::Point& aF, const typename Super::Point& aL,
-		 const typename Super::Point& aUf, const typename Super::Point& aUl,
-		 const typename Super::Point& aLf, const typename Super::Point& aLl);
+    StandardDSS4(const Coordinate& aA, const Coordinate& aB,
+		 const Point& aF, const Point& aL,
+		 const Point& aUf, const Point& aUl,
+		 const Point& aLf, const Point& aLl);
 
     /**
      * Construction of a sequence of patterns 
@@ -829,7 +872,7 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the vector
      * starting from @a aF and pointing to @a aL
      */
-    StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL,
+    StandardDSS4(const Point& aF, const Point& aL,
 		 const bool& isOnTheUpperLine = true);
 
     /**
@@ -842,8 +885,8 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the direction vector
      * of the subsegment. Uses smartCH algorithm. 
      */
-    StandardDSS4(const typename Super::DSL& aDSL, 
-		 const typename Super::Point& aF, const typename Super::Point& aL);
+    StandardDSS4(const DSL& aDSL, 
+		 const Point& aF, const Point& aL);
 
     /**
      * Construction as the subsegment of minimal parameters of a greater DSS. 
@@ -857,7 +900,7 @@ namespace DGtal
      * @see ArithmeticalDSSFactory
      */
     StandardDSS4(const StandardDSS4& aDSS, 
-		 const typename Super::Point& aF, const typename Super::Point& aL);
+		 const Point& aF, const Point& aL);
 
     /**
      * Construction from a range of iterators on points. 
@@ -926,7 +969,10 @@ namespace DGtal
     public ArithmeticalDSS<TCoordinate, TInteger, 8>
   {
   public: 
-    typedef ArithmeticalDSS<TCoordinate, TInteger, 8> Super; 
+    typedef ArithmeticalDSS<TCoordinate, TInteger, 8> Super;
+    typedef typename Super::Point Point;
+    typedef typename Super::Coordinate Coordinate;
+    typedef typename Super::DSL DSL;
 
   public: 
     /**
@@ -946,10 +992,10 @@ namespace DGtal
      * @param aLf the first lower point
      * @param aLl the last lower point
      */
-    NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB,
-	      const typename Super::Point& aF, const typename Super::Point& aL,
-	      const typename Super::Point& aUf, const typename Super::Point& aUl,
-	      const typename Super::Point& aLf, const typename Super::Point& aLl);
+    NaiveDSS8(const Coordinate& aA, const Coordinate& aB,
+	      const Point& aF, const Point& aL,
+	      const Point& aUf, const Point& aUl,
+	      const Point& aLf, const Point& aLl);
 
 
     /**
@@ -965,7 +1011,7 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the vector
      * starting from @a aF and pointing to @a aL
      */
-    NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL,
+    NaiveDSS8(const Point& aF, const Point& aL,
 	      const bool& isOnTheUpperLine = true);
 
     /**
@@ -978,8 +1024,8 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the direction vector
      * of the subsegment. Uses smartCH algorithm. 
      */
-    NaiveDSS8(const typename Super::DSL& aDSL, 
-	      const typename Super::Point& aF, const typename Super::Point& aL);
+    NaiveDSS8(const DSL& aDSL, 
+	      const Point& aF, const Point& aL);
 
     /**
      * Construction as the subsegment of minimal parameters of a greater DSS. 
@@ -993,7 +1039,7 @@ namespace DGtal
      * @see ArithmeticalDSSFactory
      */
     NaiveDSS8(const NaiveDSS8& aDSS, 
-	      const typename Super::Point& aF, const typename Super::Point& aL);
+	      const Point& aF, const Point& aL);
 
     /**
      * Construction from a range of iterators on points. 

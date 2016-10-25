@@ -296,7 +296,7 @@ head( const Arc & a ) const
   Vertex s;
   myTracker->move( a.base );
   uint8_t code = myTracker->adjacent( s, a.k, a.epsilon );
-  ASSERT( code != 0 );
+  ASSERT( code != 0 ); boost::ignore_unused_variable_warning(code);
   return s;
 }
 //-----------------------------------------------------------------------------

@@ -315,9 +315,10 @@ public:
       return res;
     }
     
-    /*
+    /**
       Continues evaluation with the next indeterminant.  Functor
-      returning a "child" evaluator implementation.
+      returining a "child" evaluator implementation.
+      @param x the next indeterminant.
     */
     template < typename XX >
     inline 
@@ -793,9 +794,8 @@ public:
   {
   public:
     typedef TAlloc Alloc;
-    // typedef typename std::vector<typename Alloc::pointer, typename Alloc::template rebind<typename Alloc::pointer>::other>::size_type Size;
-    typedef unsigned long int Size;
-
+    typedef typename std::vector<typename Alloc::pointer, typename Alloc::template rebind<typename Alloc::pointer>::other>::size_type Size;
+   
   private:
     Alloc myAllocator;
     std::vector<typename Alloc::pointer, typename Alloc::template rebind<typename Alloc::pointer>::other> myVec;
@@ -1531,6 +1531,7 @@ public:
        variables; this is needed for recursive printing.
 
        @param s the output stream where the object is written.
+       @param N the number of variables.
     */
     void selfDisplay ( std::ostream & s, int N = n ) const
     {

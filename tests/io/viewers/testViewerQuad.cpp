@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file test3dViewer.cpp
+ * @file
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -29,7 +29,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -87,7 +86,7 @@ int main( int argc, char** argv )
 
   Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel3, n2.getNormalized());
 
-  
+
 
 
 
@@ -95,11 +94,11 @@ int main( int argc, char** argv )
 
   bool res = application.exec();
 
-  
-  
 
 
-  
+
+
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

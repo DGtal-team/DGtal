@@ -6,7 +6,15 @@ SET(DGTAL_TESTS_SRC_MATH
        testHistogram
        testMPolynomial
        testAngleLinearMinimizer
-       testBasicMathFunctions )
+       testBasicMathFunctions
+       testMultiStatistics
+       testProfile
+       testMeaningfulScaleAnalysis
+       )
+
+if (WITH_FFTW3)
+  set (DGTAL_TESTS_SRC_MATH ${DGTAL_TESTS_SRC_MATH} testRealFFT)
+endif (WITH_FFTW3)
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})

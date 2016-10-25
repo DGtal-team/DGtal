@@ -152,6 +152,13 @@ namespace DGtal
      */
     typedef Coordinate Position;
 
+  /**
+   * Type of the octant values, defined as a STL pair of int
+   */
+  typedef std::pair<unsigned char, unsigned char> Octant;
+
+  
+
     /**
      * \brief Aim: This class aims at representing an iterator
      * that provides a way to scan the points of a DSL.
@@ -367,6 +374,43 @@ namespace DGtal
      */
     bool operator!= ( const ArithmeticalDSL & aOther ) const;
 
+  /**
+   * Test if DSLs lie in the same octant.
+   * @param aOther the object to compare with.
+   * @param[out] theOctant  where to store the common octant if the DSLs are in the same octant.
+   * @return 'true' if the two DSLs lie in the same octant, 'false' otherwise
+   * @see sameOctant
+   */
+  bool sameOctant ( const ArithmeticalDSL & aOther, typename Octant::first_type *theOctant ) const;
+
+
+  /**
+   * Test if a point is an upper leaning point of *this
+   * @param aPoint a point
+   * @return 'true' if aPoint is an upper leaning point of *this, false otherwise
+   */
+  bool isUpperLeaningPoint(const Point& aPoint) const;
+  
+  /**
+   * Test if a point is a lower leaning point of *this
+   * @param aPoint a point
+   * @return 'true' if aPoint is a lower leaning point of *this, false otherwise
+   */
+  bool isLowerLeaningPoint(const Point& aPoint) const;
+  
+
+  /**
+   * Returns the octants of the DSL  as a
+   * pair of integers. If the parameters are such that \f$ abs(@a myA) =
+   * abs(@a myB) \f$ or \f$ @a myA = 0 \f$ or \f$ @a myB = 0 \f$, it returns
+   * two octants (for instance octants 0 and 7 if \f$ @a myA = 0 \f$).  
+   *
+   * @return the octants as a pair of integers
+   */
+  
+  Octant octant() const;
+
+
     /**
      * Destructor.
      */
@@ -480,6 +524,7 @@ namespace DGtal
     /**
      * Returns the unique point of the DSL located at position zero
      * in O(1). 
+     * @pre the arithmetical thickness is not equal to zero
      * @return the point of the DSL located at position zero
      */
     Point getPoint() const;
@@ -487,6 +532,7 @@ namespace DGtal
     /**
      * Returns the unique point of the DSL located at position @a aPosition
      * in O(1). 
+     * @pre the arithmetical thickness is not equal to zero
      * @param aPosition position of the returned point
      * @return the point of the DSL located at position @a aPosition
      */
@@ -523,6 +569,8 @@ namespace DGtal
      */
     bool isInDSL(const Point& aPoint) const;
 
+  
+  
     /**
      * @return 'true' if @a aPoint is in the DSL
      * 'false' otherwise.
@@ -535,7 +583,7 @@ namespace DGtal
     // ----------------------- Iterator services -------------------------------
     /**
      * @param aPoint any point of the DSL
-     * @pre aPoint sould belongs to the DSL
+     * @pre aPoint should belong to the DSL
      * @return begin iterator,
      * which points to @a aPoint
      */
@@ -543,7 +591,7 @@ namespace DGtal
 
     /**
      * @param aPoint any point of the DSL
-     * @pre aPoint sould belongs to the DSL
+     * @pre aPoint should belong to the DSL
      * @return end iterator,
      * which points to the point located after @a aPoint
      */
@@ -665,6 +713,8 @@ namespace DGtal
      * Type of base class.
      */
     typedef ArithmeticalDSL<TCoordinate, TInteger, 4> Super;
+    typedef typename Super::Coordinate Coordinate;
+    typedef typename Super::Integer Integer;
 
   public:
     /**
@@ -674,9 +724,9 @@ namespace DGtal
      * @param aB x-component of the direction vector
      * @param aMu intercept
      */
-    StandardDSL (const typename Super::Coordinate& aA,
-		 const typename Super::Coordinate& aB,
-		 const typename Super::Integer& aMu);
+    StandardDSL (const Coordinate& aA,
+		 const Coordinate& aB,
+		 const Integer& aMu);
 
     /**
      * Copy constructor.
@@ -731,6 +781,8 @@ namespace DGtal
      * Type of base class.
      */
     typedef ArithmeticalDSL<TCoordinate, TInteger, 8> Super;
+    typedef typename Super::Coordinate Coordinate;
+    typedef typename Super::Integer Integer;
 
   public:
     /**
@@ -740,9 +792,9 @@ namespace DGtal
      * @param aB x-component of the direction vector
      * @param aMu intercept
      */
-    NaiveDSL (const typename Super::Coordinate& aA,
-	      const typename Super::Coordinate& aB,
-	      const typename Super::Integer& aMu);
+    NaiveDSL (const Coordinate& aA,
+	      const Coordinate& aB,
+	      const Integer& aMu);
 
 
     /**

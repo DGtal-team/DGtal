@@ -47,8 +47,7 @@
 #include <string>
 #include <bitset>
 #include <algorithm>
-#include <boost/array.hpp>
-
+#include <array>
 #include <vector>
 
 #include "DGtal/base/Common.h"
@@ -97,7 +96,9 @@ namespace DGtal
    * @tparam TContainer specifies the container to be used to store
    * the point coordinates. At this point, such container must be a
    * random access bidirectionnal a-la STL containers (e.g. vector,
-   * boost/array).
+   * boost/array). If TContainer implements comparison operators == !=
+   * < <= > <=, then PointVector will also implements it and with the
+   * exact same behaviour.
    *
    *
    * If TEuclideanRing is a Integer type (built-in integers,
@@ -136,7 +137,7 @@ namespace DGtal
    */
   template < DGtal::Dimension dim, 
 	     typename TEuclideanRing,
-	     typename TContainer=boost::array<TEuclideanRing,dim> >
+	     typename TContainer=std::array<TEuclideanRing,dim> >
   class PointVector
   {
     // ----------------------- Standard services ------------------------------
@@ -165,9 +166,9 @@ namespace DGtal
     ///Copy of the static dimension of the Point/Vector.
     static const Dimension dimension = dim;
 
-		///Types needed by CLinearAlgebraContainer
-		typedef Component Scalar;
-		typedef Dimension Index;
+    ///Types needed by CLinearAlgebraContainer
+    typedef Component Scalar;
+    typedef Dimension Index;
 
     ///Copy of the container type
     typedef TContainer Container;
@@ -225,25 +226,23 @@ namespace DGtal
     PointVector( const Component & x, const Component & y, 
 		 const Component & z, const Component & t );
 
-#ifdef CPP11_INITIALIZER_LIST
     /**
      * Constructor from initializer list.
      * @param init the initializer list.
      */
     PointVector( std::initializer_list<Component> init );
-#endif // CPP11_INITIALIZER_LIST
 
-    /** Constructor taking apoint and a functor as parameters.
+    /** Constructor taking two points and a functor as parameters.
      *  The new point is initialized by the result of functor f
-     *  for each coordinate of apoint1 and apoint2
+     *  applied for each pair of coordinates of apoint1 and apoint2
      */
     template<typename BinaryFunctor>
     PointVector( const Self& apoint1, const Self& apoint2,
 		 const BinaryFunctor& f );
 
-    /** Constructor taking apoint and a unary functor as parameters.
-     *  The new point is initialized by the result of functor f
-     *  for each coordinate of apoint1
+    /** Constructor taking a point and a unary functor as parameters.
+     *  The new point is initialized by the result of functor f for
+     *  each coordinate of apoint1
      */
     template<typename UnaryFunctor>
     PointVector( const Self& apoint1, 
@@ -278,8 +277,6 @@ namespace DGtal
      */
     Self & operator= ( const Self & pv );
 
-
-#ifdef CPP11_INITIALIZER_LIST
     /**
      * Partial copy of a given PointVector. Only coordinates in dimensions
      * are copied.
@@ -303,7 +300,7 @@ namespace DGtal
      */
     Self& partialCopyInv (const Self & pv,
 			  std::initializer_list<Dimension> dimensions);
-#endif
+
     /**
      * Partial copy of a given PointVector. Only coordinates in dimensions
      * are copied.
@@ -332,6 +329,7 @@ namespace DGtal
      * Partial equality.
      *
      * @param pv Point/Vector to compare to this.
+     * @param dimensions  Dimensions along which to compare the points.
      *
      * @return true iff points are equal for given dimensions .
      */
@@ -342,6 +340,7 @@ namespace DGtal
      * Partial inverse equality.
      *
      * @param pv Point/Vector to compare to this.
+     * @param dimensions  Dimensions along which to compare the points.
      *
      * @return true iff points are equal for dimensions not in dimensions.
      */
@@ -444,6 +443,8 @@ namespace DGtal
      * @param pv Point/Vector to compare to this.
      *
      * @return true iff points are equal.
+     *
+     * @warning It inherits from operator== of TContainer.
      */
     bool operator== ( const Self & pv ) const;
 
@@ -453,6 +454,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this differs from pv, false otherwise.
+     *
+     * @warning It inherits from operator!= of TContainer.
      */
     bool operator!= ( const Self & pv ) const;
 
@@ -462,6 +465,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this < pv, false otherwise.
+     *
+     * @warning It inherits from operator< of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator< ( const Self & pv ) const;
 
@@ -471,6 +476,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this <= pv, false otherwise.
+     *
+     * @warning It inherits from operator<= of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator<= ( const Self & pv ) const;
 
@@ -480,6 +487,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this > pv, false otherwise.
+     *
+     * @warning It inherits from operator> of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator> ( const Self & pv ) const;
     
@@ -489,6 +498,8 @@ namespace DGtal
      * @param pv the Point/Vector to compare to this.
      *
      * @return true iff this >= pv, false otherwise.
+     *
+     * @warning It inherits from operator>= of TContainer. Consequently, it uses the lexicographical order when using default container.
      */
     bool operator>= ( const Self & pv ) const;
 
@@ -527,6 +538,13 @@ namespace DGtal
     Self crossProduct( const Self &v) const;
 
     /**
+     * Positive angle between two vectors, deduced from their scalar product.
+     * @param v any vector
+     * @return the angle between *this and v in [0,pi].
+     */
+    double cosineSimilarity ( const Self & v ) const;
+
+    /**
      * Addition operator with assignement.
      *
      * @param v is the Point that gets added to @a *this.
@@ -554,7 +572,7 @@ namespace DGtal
      * Substraction operator.
      * Point - Vector => Point
      *
-     * @param v is the Point that gets added to @a *this.
+     * @param v is the Point that gets substracted to @a *this.
      * @return a new Point that is the subtraction 'this'-[v].
      */
     Self operator- ( const Self & v ) const;
@@ -732,8 +750,9 @@ namespace DGtal
      * a unitary vector on double.
      * 
      * @return a unitary vector with double as coordiante type. 
+     * @advanced the point container is forced to boost::array<double,dim> 
      */
-    PointVector<dim, double, Container> getNormalized() const;
+    PointVector<dim, double, std::array<double,dim> > getNormalized() const;
     
 
     // ------------------------- Standard vectors ------------------------------
@@ -752,22 +771,9 @@ namespace DGtal
      */
     static Self base( Dimension k, Component val = 1 );
 
-    // ------------------------- Private Datas -------------------------------
-  private:
-
-
-
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
-    
-
-    
+ 
     /**
      * @return the style name used for drawing this object.
      */
@@ -792,9 +798,9 @@ namespace DGtal
     static Self zero;
     
     // ------------------------- Hidden services ------------------------------
-  //protected:
+  protected:
     
-    ///Internal data-structure: boost/array with constant size.
+    ///Internal data-structure: std::array with constant size.
     Container myArray;
 
   }; // end of class PointVector

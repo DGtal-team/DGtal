@@ -233,40 +233,41 @@ namespace DGtal
    *
    * A typical use can be illustrated by displaying a grayscale source
    * image with artificial color defined from a colormap (see
-   * viewer3D-8-2Dimages.cpp ):
+   * viewer3D-8-2DSliceImages.cpp ):
    * We can first add a functor to convert grayscale value into RGB int:
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
    *
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
    *
    * Then you can define and add the object AddTextureImage2DWithFunctor in a viewer:
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImagesColor
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesDisplayImagesColor
    *
    * @note If you change the image date don't forget to specify again.
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImagesColor
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DModifImagesColor
    *
-   * @see AddTextureImage3DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
+   * @see AddTextureImage3DWithFunctor viewer3D-8-2DSliceImages.cpp viewer3D-9-3Dimages.cpp
    */
   template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
   {
     BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
-
+    typedef typename Viewer3D<Space,KSpace>::TextureMode TTextureMode;
+    
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
     AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
-                                 ConstAlias<TFunctor> aFunctor,
-                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my2DImage(&anImage),
-                                                                                         myFunctor(aFunctor),
-                                                                                         myMode(aMode)
+                                 Clone<TFunctor> aFunctor,
+                                 TTextureMode aMode = TTextureMode::GrayScaleMode): my2DImage(&anImage),
+                                                                                    myFunctor(aFunctor),
+                                                                                    myMode(aMode)
     {
 
     }
     const TImageType *my2DImage;
-    const TFunctor &myFunctor;
-    typename Viewer3D< Space, KSpace>::TextureMode myMode;
+    const TFunctor myFunctor;
+    TTextureMode myMode;
   };
 
   /**
@@ -280,39 +281,40 @@ namespace DGtal
    *
    * A typical use can be illustrated by displaying a grayscale source
    * image with artificial color defined from a colormap (see
-   * viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp):
+   * viewer3D-8-2DSliceImages.cpp viewer3D-9-3Dimages.cpp):
    * We can first add a functor to convert grayscale value into RGB int:
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
    *
-   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
+   * @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
    *
    * Then you can define and add the object AddTextureImage2DWithFunctor in a viewer:
    * @snippet io/viewers/viewer3D-9-3Dimages.cpp ExampleViewer3D3DImagesDisplayImagesColor
    *
    * @note If you change the image date don't forget to specify again the functor with the UpdateImageData object.
    *
-   * @see AddTextureImage2DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
+   * @see AddTextureImage2DWithFunctor viewer3D-8-2DSliceImages.cpp viewer3D-9-3Dimages.cpp
    */
   template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage3DWithFunctor : public DrawWithViewer3DModifier
   {
     BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
-
+    typedef typename Viewer3D<Space,KSpace>::TextureMode TTextureMode;
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
     AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
-                                 ConstAlias<TFunctor> aFunctor,
-                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my3DImage(&anImage),
-                                                                                         myFunctor(aFunctor),
-                                                                                         myMode(aMode)
+                                 Clone<TFunctor> aFunctor,
+                                 TTextureMode aMode =
+                                 TTextureMode::GrayScaleMode): my3DImage(&anImage),
+                                                                         myFunctor(aFunctor),
+                                                                         myMode(aMode)
     {
 
     }
     const TImageType *my3DImage;
-    const TFunctor &myFunctor;
-    typename Viewer3D<Space, KSpace>::TextureMode myMode;
+    const TFunctor myFunctor;
+    TTextureMode myMode;
   };
 
 
@@ -375,11 +377,12 @@ namespace DGtal
      * @param translateZ the y translation value.
      * @param rotationAngle the angle of rotation. 
      * @param dirRotation the rotation is applyed arount the given direction (default zDirection).
+     * @param aFunctor a functor.
      */
-    UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
+    UpdateImageData(unsigned int anIndex, ConstAlias<TImageType> anImage, double translateX=0,
                     double translateY=0, double translateZ=0,
 		    double rotationAngle=0.0, typename Viewer3D<>::ImageDirection dirRotation=Viewer3D<>::zDirection,
-		    const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
+		    Clone<TFunctor> aFunctor = TFunctor() ): myIndex(anIndex),
 							   myImage(&anImage),
 							   myTranslateX (translateX),
 							   myTranslateY (translateY),
@@ -394,7 +397,7 @@ namespace DGtal
     int myTranslateX;
     int myTranslateY;
     int myTranslateZ;
-    const TFunctor &myFunctor;
+    const TFunctor myFunctor;
     double myRotationAngle;
     typename Viewer3D<>::ImageDirection  myRotationDir;
    };

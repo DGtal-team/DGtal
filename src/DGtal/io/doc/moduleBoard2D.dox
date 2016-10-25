@@ -158,7 +158,8 @@ is always default mode).
 - class FreemanChain, modes: "" / "Grid", "InterGrid"
 - class GridCurve, modes: "" / "Fill"
 - class LatticePolytope2D, modes: "" / "Transparent", "Filled"
-  
+- class AlphaThickSegmentComputer, modes ""/ "BoundingBox"
+
 For instance, to change the drawing mode for the next object \c dss of type
 ArithmeticalDSS, you may use the line
  \code
@@ -553,13 +554,20 @@ element ArithmeticDSS is redefined.
  */
 
  /**
-\example logoDGtal.cpp
+  \example io/boards/logoDGtal.cpp
   
-Simple example to generate DGtal logo in DGtal.
+   Simple example to generate DGtal logo in DGtal.
    \image html  logo_DGtal_small.png   "visualization of resulting export."
  */
 
 
 
 
+
+/**
+ * Example of bezier curve display in Board2D
+ * 
+   @image html exampleBezierCurve.png "visualization of resulting export."
+   @example io/boards/exampleBezierCurve.cpp
+ **/
 }

@@ -115,15 +115,15 @@ namespace DGtal
 
     // The sequence must contain points.
     BOOST_STATIC_ASSERT
-    (( ConceptUtils::SameType< Value, Point >::value ));
+    (( concepts::ConceptUtils::SameType< Value, Point >::value ));
     
     // Point2I and Point should be the same type.
     typedef typename MyIntegerComputer::Point2I Point2I;
     typedef typename MyIntegerComputer::Vector2I Vector2I;
     typedef typename MyIntegerComputer::Point3I Point3I;
     typedef typename MyIntegerComputer::Vector3I Vector3I;
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point2I, Point >::value ));
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Vector2I, Vector >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Point2I, Point >::value ));
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Vector2I, Vector >::value ));
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -342,6 +342,8 @@ namespace DGtal
        in \a hs and whose successor is in \a hs, or end() if none
        exists.
 
+       @param hs  The half-plane.
+
        @return the couple (number of vertices that are in \a hs, number of vertices).
      */
     SizeCouple findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside, 
@@ -418,6 +420,9 @@ namespace DGtal
 
        @param outPt (returns) a point on \a hs1 not satisfying \a hs2.
 
+       @param hs1 The first half-space.
+       @param hs2 The second half-space.
+
        @return 'true' iff the intersection oh \a hs1 and \a hs2 is
        exact. In this case, outPt is equal to inPt and is at the
        intersection of the two half-space boundaries.
@@ -462,15 +467,24 @@ namespace DGtal
        constraint 1 to constraint 3 and from constraint 3 to
        constraint 1.
        
-       The computed vertices are outputed with the output iterator [itOut].
+       The computed vertices are outputed with the output iterator @a itOut.
 
-       @param pointRefC1 and pointRefC3 corresponds to grid point lying on
+       @a pointRefC1 and @a pointRefC3 corresponds to grid point lying on
        the supporting lines of C1 and of C3 resp.
        
      
        NB: the method also computes grid point satisfying N1.P<=c1 and
        N3.P>=c3 but not satisfying N2.P<=c2. The algorithm uses
        these points that's why they appear in the code.
+
+       @param itOut       The output iterator.
+       @param pointRefC1  The grid point lying on @a C1.
+       @param pointRefC3  The grid point lying on @a C3.
+       @param hs1         The first half-space.
+       @param hs2         The second half-space.
+       @param hs3         The third half-space.
+
+       @todo proper parameters documentation.
     */
     template <typename OutputIterator>
     OutputIterator computeConvexHullBorder( OutputIterator itOut,

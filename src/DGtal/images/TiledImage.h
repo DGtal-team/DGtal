@@ -718,7 +718,9 @@ namespace DGtal
         {
           myImageCache->incCacheMissRead();
           Domain d;
-
+#ifdef DEBUG_VERBOSE
+          trace.info()<<"+";
+#endif 
           d = findSubDomain(aPoint);
 
           myImageCache->update(d);

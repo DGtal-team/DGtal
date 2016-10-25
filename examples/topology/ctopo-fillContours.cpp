@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ctopo-fillContours.cpp
+ * @file topology/ctopo-fillContours.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -99,7 +99,8 @@ int main( int /*argc*/, char** /*argv*/ )
 
   //! [ctopoFillContoursFillRegion]
   typedef ImageContainerBySTLMap< Z2i::Domain, bool> BoolImage2D;
-  BoolImage2D interiorCellImage(BoolImage2D::Domain(Z2i::Point(0,10), Z2i::Point(20,30) ));
+  BoolImage2D::Domain imageDomain( Z2i::Point(0,10), Z2i::Point(20,30) );
+  BoolImage2D interiorCellImage( imageDomain );
   Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, functors::SurfelSetPredicate<std::set<SCell>,SCell>(boundarySCell), 
                                                               interiorCellImage, 1, false);  
   //! [ctopoFillContoursFillRegion]
@@ -115,8 +116,8 @@ int main( int /*argc*/, char** /*argv*/ )
   
   // We can also compute the unsigned cell associated to interior and exterior pixels: 
   //! [ctopoFillContoursFillRegionHoles]
-  BoolImage2D interiorCellHoleImage(BoolImage2D::Domain(Z2i::Point(0,10), Z2i::Point(20,30) ));
-  BoolImage2D exteriorCellHoleImage(BoolImage2D::Domain(Z2i::Point(0,10), Z2i::Point(20,30) ));
+  BoolImage2D interiorCellHoleImage( imageDomain );
+  BoolImage2D exteriorCellHoleImage( imageDomain );
 
   
   Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, functors::SurfelSetPredicate<std::set<SCell>, SCell>(boundarySCellhole), 

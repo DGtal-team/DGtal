@@ -58,11 +58,41 @@ namespace DGtal
    * Description of template struct 'RawWriter' <p>
    * \brief Aim: Raw binary export of an Image.
    *
+   * The export methods \c exportRaw8, \c exportRaw16 and \c exportRaw32 write raw files (little-endian format)
+   * with unsigned integer values of, respectively, 8 bits, 16 bits and 32 bits width.
+   * The method \c exportRaw can write any type of values, signed integers, floating point types or
+   * even structures.
+   *
    * A functor can be specified to convert image values to raw values
-   * (unsigned char for exportRaw8).
+   * (e.g. unsigned char for \c exportRaw8).
+   * 
+   * Example usage:
+   * @code
+   * ...
+   * typedef DGtal::SpaceND<int,3> Space;
+   * typedef DGtal::HyperRectDomain<Space> Domain;
+   * typedef Domain::Point Point;
+   *
+   * //Default image container = STLVector
+   * typedef DGtal::ImageSelector<TDomain, unsigned char>::Type Image;
+   *
+   * Domain domain( Point::diagonal(0), Point::diagonal(10) );
+   * Image image( domain );
+   *
+   * ... // Filling the image.
+   *
+   * DGtal::RawWriter<Image> writer;
+   * if ( writer.exportRaw8( "data.raw", image ) )
+   *   trace.info() << "Image successfully exported." << endl;
+   * else
+   *   trace.info() << "Error while exporting image." << endl;
+   * @endcode
    *
    * @tparam TImage the Image type.
    * @tparam TFunctor the type of functor used in the export.
+   *
+   * @see RawReader
+   * @see testRawReader.cpp
    */
   template <typename TImage, typename TFunctor = functors::Identity>
   struct RawWriter
@@ -72,53 +102,72 @@ namespace DGtal
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    
 
-    
-    /** 
-     * Export an Image to  Raw format (8bits, unsigned char).
+    /**
+     * Export an Image to Raw format (any value type, in little-endian format).
      *
-     * @param filename name of the output file
-     * @param aImage the image to export
-     * @param aFunctor functor used to cast image values
+     * @tparam Word exported pixel type.
+     * @param filename name of the output file.
+     * @param aImage the image to export.
+     * @param aFunctor functor used to cast image values.
      * @return true if no errors occur.
-     */
-    static bool exportRaw8(const std::string & filename, const Image &aImage, 
-			   const Functor & aFunctor = Functor());
-    
-    /** 
-     * Export an Image to  Raw format (32bits, DGtal::uint32_t, binary format in little-endian).
-     * @param filename name of the output file
-     * @param aImage the image to export
-     * @param aFunctor functor used to cast image values
-     * @return true if no errors occur.
-     */
-    static bool exportRaw32(const std::string & filename, const Image &aImage, 
-                            const Functor & aFunctor = Functor());
-    
-  private: 
-    /** 
-     * Generic write word (binary mode) in little-endian.
-     * 
-     * @param outs output stream.
-     * @param value value to write.
-     * 
-     * @return modified stream.
      */
     template <typename Word>
-    static
-    std::ostream& write_word( std::ostream& outs, Word value )
-    {
-      for (unsigned size = sizeof( Word ); size; --size, value >>= 8)
-	outs.put( static_cast <char> (value & 0xFF) );
-      return outs;
-    }
-    
+    static bool exportRaw(const std::string& filename,
+         const Image& aImage,
+         const Functor& aFunctor = Functor());
 
-    
-  
-    
+    /**
+     * Export an Image to Raw format (unsigned 8bits little-endian, uint8_t, unsigned char).
+     *
+     * @param filename name of the output file.
+     * @param aImage the image to export.
+     * @param aFunctor functor used to cast image values.
+     * @return true if no errors occur.
+     */
+    static bool exportRaw8(const std::string& filename,
+         const Image& aImage,
+         const Functor& aFunctor = Functor());
+
+    /**
+     * Export an Image to Raw format (unsigned 16bits little-endian, uint16_t, unsigned short).
+     *
+     * @param filename name of the output file.
+     * @param aImage the image to export.
+     * @param aFunctor functor used to cast image values.
+     * @return true if no errors occur.
+     */
+    static bool exportRaw16(const std::string& filename,
+         const Image& aImage,
+         const Functor& aFunctor = Functor());
+
+    /**
+     * Export an Image to Raw format (unsigned 32bits little-endian, uint32_t, unsigned int).
+     *
+     * @param filename name of the output file.
+     * @param aImage the image to export.
+     * @param aFunctor functor used to cast image values.
+     * @return true if no errors occur.
+     */
+    static bool exportRaw32(const std::string& filename,
+         const Image& aImage,
+         const Functor& aFunctor = Functor());
+
+  private:
+
   };
+
+  /**
+   * Generic write word (binary mode) in little-endian.
+   *
+   * @param outs output stream.
+   * @param value value to write.
+   *
+   * @return modified stream.
+   */
+  template <typename Word>
+  std::ostream& raw_writer_write_word(std::ostream& outs, Word value);
+
 }//namespace
 
 ///////////////////////////////////////////////////////////////////////////////

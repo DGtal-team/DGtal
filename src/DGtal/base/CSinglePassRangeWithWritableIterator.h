@@ -47,63 +47,68 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CSinglePassRangeWithWritableIterator
-  /**
-     Description of \b concept '\b CSinglePassRangeWithWritableIterator' <p>
-     @ingroup Concepts
-     @brief Aim: refined concept of const single pass range which require that an output iterator exists.
+  namespace concepts
+  {
 
-     ###  Refinement of CSinglePassRange
+    /////////////////////////////////////////////////////////////////////////////
+    // class CSinglePassRangeWithWritableIterator
+    /**
+       Description of \b concept '\b CSinglePassRangeWithWritableIterator' <p>
+       @ingroup Concepts
+       @brief Aim: refined concept of const single pass range which require that an output iterator exists.
 
-     ###  Associated types :
-     - OutputIterator: type of output iterator on the range.
+       ###  Refinement of CSinglePassRange
 
-     ###  Notation
-     - \a X : A type that is a model of CSinglePassRangeWithWritableIterator
-     - \a x, \a y : object of type X
+       ###  Associated types :
+       - OutputIterator: type of output iterator on the range.
 
-     ###  Definitions
+       ###  Notation
+       - \a X : A type that is a model of CSinglePassRangeWithWritableIterator
+       - \a x, \a y : object of type X
 
-     | Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
-     |----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
-     | creation | \e x.\c outputIterator() |                   | OutputIterator |              | Returns an output iterator on the range first element |                |            |
+       ###  Definitions
+
+       | Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
+       |----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
+       | creation | \e x.\c outputIterator() |                   | OutputIterator |              | Returns an output iterator on the range first element |                |            |
      
 
-     ###  Invariants
+       ###  Invariants
 
-     ###  Models
-     - ImageContainerBySTLVector::Range
+       ###  Models
+       - ImageContainerBySTLVector::Range
 
-     ###  Notes
+       ###  Notes
 
-     @tparam T the type that should be a model of CSinglePassRangeWithWritableIterator.
-     @tparam Value the type of object t in (*it) = t.
-   */
-  template <typename T, typename Value>
-  struct CSinglePassRangeWithWritableIterator : CConstSinglePassRange<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::OutputIterator  OutputIterator;
-
-    // possibly check these types so as to satisfy a concept with
-    BOOST_CONCEPT_ASSERT(( boost::OutputIterator<OutputIterator,Value> ));
-
-    BOOST_CONCEPT_USAGE( CSinglePassRangeWithWritableIterator )
+       @tparam T the type that should be a model of CSinglePassRangeWithWritableIterator.
+       @tparam Value the type of object t in (*it) = t.
+    */
+    template <typename T, typename Value>
+    struct CSinglePassRangeWithWritableIterator : CConstSinglePassRange<T>
     {
-      ConceptUtils::sameType( myOutput, myX.outputIterator( ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    OutputIterator myOutput;
+      // ----------------------- Concept checks ------------------------------
+    public:
+      // 1. define first provided types (i.e. inner types), like
+      typedef typename T::OutputIterator  OutputIterator;
 
-    // ------------------------- Internals ------------------------------------
-  private:
+      // possibly check these types so as to satisfy a concept with
+      BOOST_CONCEPT_ASSERT(( boost::OutputIterator<OutputIterator,Value> ));
 
-  }; // end of concept CSinglePassRangeWithWritableIterator
+      BOOST_CONCEPT_USAGE( CSinglePassRangeWithWritableIterator )
+      {
+        concepts::ConceptUtils::sameType( myOutput, myX.outputIterator( ) );
+      }
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // do not require T to be default constructible.
+      OutputIterator myOutput;
+
+      // ------------------------- Internals ------------------------------------
+    private:
+
+    }; // end of concept CSinglePassRangeWithWritableIterator
+
+  } // namespace concepts
 
 } // namespace DGtal
 

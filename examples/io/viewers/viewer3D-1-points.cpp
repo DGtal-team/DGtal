@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-1-points.cpp
+ * @file io/viewers/viewer3D-1-points.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -29,11 +29,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
-#include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/helpers/StdDefs.h"
 
+#include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

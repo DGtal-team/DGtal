@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CDigitialOrientedShape.h
+ * @file
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -64,8 +64,8 @@ Description of \b concept '\b CEuclideanOrientedShape' <p>
     - RealPoint: type for real points.
 
  ### Notation
-     - \t X : A type that is a model of CEuclideanOrientedShape
-     - \t x, \t y : object of type X
+     - \a X : A type that is a model of CEuclideanOrientedShape
+     - \a x, \a y : object of type X
     
  ### Definitions
     

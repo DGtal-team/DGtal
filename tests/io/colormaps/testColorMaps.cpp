@@ -54,7 +54,7 @@ void addColorMapSample( const char * name,
       const typename TColorMap::Value step,
       Board & board )
 { 
-  BOOST_CONCEPT_ASSERT(( CColorMap<TColorMap> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CColorMap<TColorMap> ));
 
   typedef typename TColorMap::Value Value;
   board.translate( 0, 15 );

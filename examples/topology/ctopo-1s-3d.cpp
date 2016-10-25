@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ctopo-1-3d.cpp.cpp
+ * @file topology/ctopo-1s-3d.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -32,7 +32,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/viewers/Viewer3D.h"
-#include <QtGui/qapplication.h>
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 ///////////////////////////////////////////////////////////////////////////////

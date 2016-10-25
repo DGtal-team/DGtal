@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-5-custom.cpp
+ * @file io/viewers/viewer3D-5-custom.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -29,11 +29,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
-#include "DGtal/io/Color.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/Color.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 

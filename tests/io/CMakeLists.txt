@@ -1,10 +1,11 @@
 
 
 SET(DGTAL_TESTS_SRC_IOVIEWERS
-       testSimpleBoard
-       testBoard2DCustomStyle
-       testLongvol
-       testArcDrawing )
+  testColor
+  testSimpleBoard
+  testBoard2DCustomStyle
+  testLongvol
+  testArcDrawing )
 
 if (WITH_ITK)
     set(DGTAL_TESTS_SRC_IOVIEWERS ${DGTAL_TESTS_SRC_IOVIEWERS} testITKio)

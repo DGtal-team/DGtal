@@ -214,7 +214,7 @@ init
   myDigKernel->attach( *myKernel );
   myDigKernel->init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );
   Domain neighborhood( Point::diagonal(-1), Point::diagonal(1) );
-  unsigned int n = BasicMathFunctions::power( (unsigned int) 3, Space::dimension );
+  unsigned int n = functions::power( (unsigned int) 3, Space::dimension );
   myKernels = std::vector< PairIterators > ( n );
   myKernelsSet = std::vector< DigitalSet* >( n );
   unsigned int offset = 0;
@@ -231,7 +231,8 @@ init
         shiftPoint[ k ] = (Scalar) (*it_neigh)[ k ];
       shiftPoint *= (Scalar) myH;
       KernelSupport* kernelShifted = new KernelSupport( shiftPoint, eRadius );
-      EuclideanMinus* current = new EuclideanMinus( *myKernel, *kernelShifted );
+      EuclideanMinus* current = new EuclideanMinus( *myKernel );
+      current->minus( *kernelShifted );
       DigitalShape digCurrent;
       digCurrent.attach( *current );
       digCurrent.init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );

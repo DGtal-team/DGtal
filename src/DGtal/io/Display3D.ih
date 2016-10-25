@@ -82,29 +82,13 @@ DGtal::Display3D< Space ,KSpace >::setLineColor(DGtal::Color aColor)
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::setSpaceEmbedder(CanonicEmbedder<Space> *anEmbedder)
+DGtal::Display3D< Space ,KSpace >::setKSpace( const KSpace & aKSpace )
 {
-  delete myEmbedder;
-  myEmbedder = anEmbedder;
+  myKSpace = aKSpace;
+  *myCellEmbedder  = CellEmbedder( myKSpace );
+  *mySCellEmbedder = SCellEmbedder( myKSpace );
 }
 
-template < typename Space ,typename KSpace >
-inline
-void
-DGtal::Display3D< Space ,KSpace >::setKSpaceEmbedder( CanonicCellEmbedder<KSpace> *anEmbedder)
-{
-  delete myCellEmbedder;
-  myCellEmbedder = anEmbedder;
-}
-
-template < typename Space ,typename KSpace >
-inline
-void
-DGtal::Display3D< Space ,KSpace >::setSKSpaceEmbedder(CanonicSCellEmbedder<KSpace> *anEmbedder)
-{
-  delete mySCellEmbedder;
-  mySCellEmbedder = anEmbedder;
-}
 
 template < typename Space ,typename KSpace >
 inline
@@ -193,12 +177,30 @@ DGtal::Display3D< Space ,KSpace >::getMode( const std::string & objectName ) con
 
 template < typename Space ,typename KSpace >
 inline
-void
-DGtal::Display3D< Space ,KSpace >::createNewCubeList( std::string str)
+DGtal::int32_t
+DGtal::Display3D< Space ,KSpace >::createNewCubeList()
 {
-  std::vector< CubeD3D > v;
-  myCubeSetList.push_back(v);
-  myCubeSetNameList.push_back(str);
+  // looking for an empty key
+  DGtal::int32_t aKey=0;
+  bool found =  myCubesMap.count(aKey) == 0;
+   do{
+     aKey++;
+     found = (myCubesMap.count(aKey) == 0) &&
+             (myQuadsMap.count(aKey) == 0); 
+   }while (!found && aKey < std::numeric_limits<DGtal::int32_t>::max());
+   if (found){
+     myName3d = aKey;
+     return aKey;
+   }
+   return -1;
+}
+
+template < typename Space ,typename KSpace >
+inline
+bool
+DGtal::Display3D< Space ,KSpace >::deleteCubeList(const DGtal::int32_t idList)
+{
+  return myCubesMap.erase(idList);
 }
 
 
@@ -232,7 +234,8 @@ DGtal::Display3D< Space ,KSpace >::createNewLineList(std::string str)
    bool found =  myQuadsMap.count(aKey) == 0;
    do{
      aKey++;
-     found = myQuadsMap.count(aKey) == 0; 
+     found = (myCubesMap.count(aKey) == 0) &&
+             (myQuadsMap.count(aKey) == 0); 
    }while (!found && aKey < std::numeric_limits<DGtal::int32_t>::max());
    if (found){
      myName3d = aKey;
@@ -241,6 +244,18 @@ DGtal::Display3D< Space ,KSpace >::createNewLineList(std::string str)
 
    return -1;
  }
+
+
+
+template < typename Space ,typename KSpace >
+inline
+bool
+DGtal::Display3D< Space ,KSpace >::deleteQuadList(const DGtal::int32_t idList)
+{
+  return myQuadsMap.erase(idList);
+}
+
+
 
 template < typename Space ,typename KSpace >
 inline
@@ -276,9 +291,8 @@ DGtal::Display3D< Space ,KSpace >::addCube(const RealPoint &center, double width
   v.color  = getFillColor();
   v.width  = width;
   v.name   = name3d(); 
-  if (myCubeSetList.size() ==0)
-    createNewCubeList("Cube Root");
-  (myCubeSetList.at(myCubeSetList.size()-1)).push_back(v);
+  myCubesMap[ v.name ].push_back( v );
+
 }
 
 
@@ -286,7 +300,7 @@ template < typename Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center,
-                                           const double size,
+                                           const double radius,
                                            const unsigned int resolution)
 {
   updateBoundingBox(center);
@@ -295,7 +309,7 @@ DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center,
   p.color    = getFillColor();
   p.isSigned = false;
   p.signPos  = false;
-  p.size     = size;
+  p.radius     = radius;
   p.resolution = resolution;
   p.name     = name3d();
   if (myBallSetList.size()== 0)
@@ -349,10 +363,6 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
                                                      const bool enableReorientation,
                                                      const bool enableDoubleFace)
 {
-  // if(myQuadSetList.size() == 0 )
-  //   {
-  //     createNewQuadList("quad");
-  //   }
   QuadD3D aQuad,aQuad2;
   updateBoundingBox(p1);
   updateBoundingBox(p2);
@@ -423,13 +433,8 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
   aQuad2.name = name3d();
 
   myQuadsMap[ aQuad.name ] .push_back( aQuad );
-  myQuadsMap[ aQuad2.name ].push_back( aQuad2 );
-  // if (myQuadSetList.size()== 0)
-  //   createNewQuadList("Quad Root");
-
-  // (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad);
-  // if (enableDoubleFace)
-  //   (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad2);
+  if (enableDoubleFace)
+    myQuadsMap[ aQuad2.name ].push_back( aQuad2 );
 }
 
 
@@ -541,6 +546,7 @@ DGtal::Display3D< Space ,KSpace >::addPrism(const RealPoint &baseQuadCenter,
 
 
   ASSERT( xSurfel || ySurfel || zSurfel );
+  boost::ignore_unused_variable_warning( xSurfel );
 
   if(zSurfel)
     {
@@ -704,9 +710,9 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenter(const RealPoint &base
 {
   updateBoundingBox(baseQuadCenter);
   ASSERT( xSurfel || ySurfel || zSurfel );
-  double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
+  boost::ignore_unused_variable_warning( xSurfel );
 
-  ASSERT( xSurfel || ySurfel || zSurfel );
+  double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
 
   if(zSurfel)
     {
@@ -747,9 +753,9 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealP
 {
   updateBoundingBox(baseQuadCenter);
   ASSERT( xSurfel || ySurfel || zSurfel );
+  boost::ignore_unused_variable_warning( xSurfel );
+  
   double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
-
-  ASSERT( xSurfel || ySurfel || zSurfel );
 
   if(zSurfel)
     {
@@ -816,10 +822,10 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
   zab = p2[2]-p1[2];
 
   norm = sqrt( xab*xab + yab*yab + zab*zab);
-  assert (norm > 0);
-  xab = xab / norm;
-  yab = yab / norm;
-  zab = zab / norm;
+	if (norm == 0) return;
+	xab /= norm;
+	yab /= norm;
+	zab /= norm;
 
   //take a third point M different from A and B
   double xm = 0;
@@ -830,32 +836,39 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
   while (p1[1] == ym || p2[1] ==ym) ym++;
   while (p1[2] == zm || p2[2] ==zm) zm++;
 
-  //vector AM
-  double xam, yam, zam;
+	//vector AM
+	double xam, yam, zam;
+	//normal vector n = AB^AM
+	double xn, yn, zn;
 
-  xam = xm-p1[0];
-  yam = ym-p1[1];
-  zam = zm-p1[2];
+	// ensure that M is not collinear to AB
+	while (true)
+	{
+			xam = xm-p1[0];
+			yam = ym-p1[1];
+			zam = zm-p1[2];
 
-  norm = sqrt( xam*xam + yam*yam + zam*zam);
-  assert (norm > 0);
-  xam = xam / norm;
-  yam = yam / norm;
-  zam = zam / norm;
+			norm = sqrt( xam*xam + yam*yam + zam*zam);
+			ASSERT( norm > 0 );
+			xam /= norm;
+			yam /= norm;
+			zam /= norm;
 
-  //normal vector n = AB^AM
-  double xn, yn, zn;
+			xn = yab*zam - yam*zab;
+			yn = xam*zab - xab*zam;
+			zn = xab*yam - xam*yab;
 
-  xn = yab*zam - yam*zab;
-  yn = xam*zab - xab*zam;
-  zn = xab*yam - xam*yab;
+			//divide n by its norm
+			norm = sqrt( xn*xn + yn*yn + zn*zn);
+			if (norm > 0) break;
+			xm += .1;
+			ym -= M_PI;
+	}
 
-  //divide n by its norm
-  norm = sqrt( xn*xn + yn*yn + zn*zn);
-  assert (norm > 0);
-  xn = xn / norm;
-  yn = yn / norm;
-  zn = zn / norm;
+	ASSERT( norm > 0 );
+	xn /= norm;
+	yn /= norm;
+	zn /= norm;
 
   //the first point of the base
   double xf, yf, zf;
@@ -888,10 +901,12 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
 
       //divide n by its norm
       norm = sqrt( xn*xn + yn*yn + zn*zn);
-      assert (norm > 0);
-      xn = xn / norm;
-      yn = yn / norm;
-      zn = zn / norm;
+      if (norm > 0)
+			{
+					xn = xn / norm;
+					yn = yn / norm;
+					zn = zn / norm;
+			}
 
       // calculate one point with the normal vector at a distance width
       xb2 = p2[0] + width * xn;
@@ -1094,7 +1109,7 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
       double norm = sqrt(a*a+b*b+c*c);
       double dec=0.1;
       // Z dominant projection of the upper face
-      if(abs(c)>=abs(b) && abs(c) >= abs(a))
+      if(std::abs(c)>=std::abs(b) && std::abs(c) >= std::abs(a))
 	{
 	  x1= myBoundingPtUp[0]+a*dec/norm; y1= myBoundingPtUp[1]+b*dec/norm;
 	  z1 = c*dec/norm +(-d-a*myBoundingPtUp[0]-b*myBoundingPtUp[1])/c;
@@ -1114,7 +1129,7 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
 		      RealPoint(x3,y3,z3), RealPoint(x4,y4,z4));
 	    }
 	}// Y dominant projection of the upper face
-      else if(abs(b)>=abs(c) && abs(b) >= abs(a))
+      else if(std::abs(b)>=std::abs(c) && std::abs(b) >= std::abs(a))
 	{
 	  x1= myBoundingPtUp[0]+a*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
 	  y1= b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtUp[2])/b;
@@ -1134,7 +1149,7 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
 		      RealPoint(x3,y3,z3), RealPoint(x4,y4,z4));
 	    }
 	}// X dominant projection of the upper face
-      else if(abs(a)>=abs(c) && abs(a) >= abs(b))
+      else if(std::abs(a)>=std::abs(c) && std::abs(a) >= std::abs(b))
 	{
 	  y1= myBoundingPtUp[1]+b*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
 	  x1= a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtUp[2])/a;
@@ -1230,7 +1245,7 @@ DGtal::Display3D< Space ,KSpace >::embedK( const typename KSpace::Cell & cell ) 
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) const
+DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<RealPoint> &aMesh) const
 {
   unsigned int vertexIndex=0;
 
@@ -1238,11 +1253,11 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
   for (unsigned int i=0; i< myPrismList.size(); i++)
     {
       QuadD3D quad = myPrismList.at(i);
-      BallD3D p1, p2, p3, p4;
-      p1.center=quad.point1;
-      p2.center=quad.point2;
-      p3.center=quad.point3;
-      p4.center=quad.point4;
+      RealPoint p1, p2, p3, p4;
+      p1=quad.point1;
+      p2=quad.point2;
+      p3=quad.point3;
+      p4=quad.point4;
       aMesh.addVertex(p1);
       aMesh.addVertex(p2);
       aMesh.addVertex(p3);
@@ -1258,11 +1273,11 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
     {
       for (typename std::vector<QuadD3D>::const_iterator aQuad = it->second.begin(); aQuad!=it->second.end();aQuad ++)
 	{
-	  BallD3D p1, p2, p3, p4;
-	  p1.center=aQuad->point1;
-	  p2.center=aQuad->point2;
-	  p3.center=aQuad->point3;
-	  p4.center=aQuad->point4;
+	  RealPoint p1, p2, p3, p4;
+	  p1=aQuad->point1;
+	  p2=aQuad->point2;
+	  p3=aQuad->point3;
+	  p4=aQuad->point4;
 	  aMesh.addVertex(p4);
 	  aMesh.addVertex(p3);
 	  aMesh.addVertex(p2);
@@ -1278,10 +1293,10 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
     {
       for (typename std::vector<TriangleD3D>::const_iterator aTriangle = it->begin(); aTriangle!=it->end();aTriangle ++)
 	{
-	  BallD3D p1, p2, p3;
-	  p1.center=aTriangle->point1;
-	  p2.center=aTriangle->point2;
-	  p3.center=aTriangle->point3;
+	  RealPoint p1, p2, p3;
+	  p1=aTriangle->point1;
+	  p2=aTriangle->point2;
+	  p3=aTriangle->point3;
 	  aMesh.addVertex(p1);
 	  aMesh.addVertex(p2);
 	  aMesh.addVertex(p3);
@@ -1292,22 +1307,24 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
     }
 
   // Export of cubeSet (generated from addCube)
-  for(unsigned int j=0; j<myCubeSetList.size(); j++)
+  // Export CubesList
+  for (typename CubesMap::const_iterator it = myCubesMap.begin(); it != myCubesMap.end(); it++)
     {
-      for (unsigned int i=0; i< myCubeSetList.at(j).size(); i++)
+      for (typename std::vector<CubeD3D>::const_iterator itCube = it->second.begin(); itCube!=it->second.end(); itCube++)
 	{
-	  CubeD3D cube = myCubeSetList.at(j).at(i);
-	  BallD3D p1, p2, p3, p4, p5, p6, p7, p8;
+
+	  CubeD3D cube = *itCube;
+	  RealPoint p1, p2, p3, p4, p5, p6, p7, p8;
 	  double width= cube.width;
 
-	  p1.center = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]+width);
-	  p2.center = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]+width);
-	  p3.center = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]+width);
-	  p4.center = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]+width);
-	  p5.center = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]-width);
-	  p6.center = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]-width);
-	  p7.center = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]-width);
-	  p8.center = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]-width);
+	  p1 = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]+width);
+	  p2 = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]+width);
+	  p3 = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]+width);
+	  p4 = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]+width);
+	  p5 = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]-width);
+	  p6 = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]-width);
+	  p7 = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]-width);
+	  p8 = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]-width);
 
 	  aMesh.addVertex(p1);
 	  aMesh.addVertex(p2);
@@ -1370,7 +1387,7 @@ DGtal::operator<< ( std::ostream & out,
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, DGtal::Mesh< typename Display3D< Space ,KSpace >::BallD3D> &aMesh)
+DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, DGtal::Mesh< typename Display3D<Space , KSpace >::RealPoint > &aMesh)
 {
   aDisplay3D.exportToMesh(aMesh);
 }
@@ -1382,7 +1399,7 @@ void
 DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, std::string aFilename)
 {
   // exporting with a mesh containing color (parameter constructor to true):
-  DGtal::Mesh<typename Display3D< Space ,KSpace >::BallD3D> mesh(true);
+  DGtal::Mesh<typename Display3D<Space , KSpace >::RealPoint> mesh(true);
   aDisplay3D >> mesh;
   trace.info() << "generating faces done." << std::endl;
   mesh >> aFilename;
@@ -1414,15 +1431,24 @@ DGtal::Display3D< Space ,KSpace >::normalize (double vec[3])
 
 template < typename Space ,typename KSpace >
 inline
+bool
+DGtal::Display3D< Space ,KSpace >::isValid() const
+{
+  return      myEmbedder->isValid()
+          &&  myCellEmbedder->isValid()
+          &&  mySCellEmbedder->isValid();
+}
+
+template < typename Space ,typename KSpace >
+inline
 void
 DGtal::Display3D< Space ,KSpace >::clear()
 {
-  myCubeSetList.clear();
+  myCubesMap.clear();
   myLineSetList.clear();
   myBallSetList.clear();
   myClippingPlaneList.clear();
   myPrismList.clear();
-  //myQuadSetList.clear();
   myQuadsMap.clear();
   myTriangleSetList.clear();
   myPolygonSetList.clear();
@@ -1431,8 +1457,8 @@ DGtal::Display3D< Space ,KSpace >::clear()
   myBallSetNameList.clear();
   myClippingPlaneNameList.clear();
   myPrismNameList.clear();
-  // myQuadSetNameList.clear();
-  myTriangleSetNameList.clear();
+
+myTriangleSetNameList.clear();
   myPolygonSetNameList.clear();
 
   //Bounding box reset

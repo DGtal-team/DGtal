@@ -49,55 +49,56 @@
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CDynamicBidirectionalSegmentComputer
-  /**
-Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
-     @ingroup Concepts
-     @brief Aim: Defines the concept describing a dynamic and bidirectional
-    segment computer,  ie. a model of CSegment that can extend and retract itself
-    in either direction.
-
- ### Refinement of CBidirectionalSegmentComputer and CDynamicSegmentComputer
-
- ### Valid expressions and semantics
-
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| Backward retraction | x.retractFront() |      |bool         |                  | returns 'true' if --x.end() != x.begin() (and decrements the end iterator), 'false' otherwise | | |
-
-
- ### Models###
-
-     ArithmeticalDSSComputer, OneBalancedWordComputer
-
- ### Notes###
-
-@tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
-   */
-  template <typename T>
-  struct CDynamicBidirectionalSegmentComputer :
-    CBidirectionalSegmentComputer<T>,
-    CDynamicSegmentComputer<T>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // Methods
-    BOOST_CONCEPT_USAGE( CDynamicBidirectionalSegmentComputer )
+    /////////////////////////////////////////////////////////////////////////////
+    // class CDynamicBidirectionalSegmentComputer
+    /**
+       Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
+       @ingroup Concepts
+       @brief Aim: Defines the concept describing a dynamic and bidirectional
+       segment computer,  ie. a model of concepts::CSegment that can extend and retract itself
+       in either direction.
+
+       ### Refinement of concepts::CBidirectionalSegmentComputer and concepts::CDynamicSegmentComputer
+
+       ### Valid expressions and semantics
+
+
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       | Backward retraction | x.retractFront() |      |bool         |                  | returns 'true' if --x.end() != x.begin() (and decrements the end iterator), 'false' otherwise | | |
+
+
+       ### Models###
+
+       ArithmeticalDSSComputer, OneBalancedWordComputer
+
+       ### Notes###
+
+       @tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
+    */
+    template <typename T>
+    struct CDynamicBidirectionalSegmentComputer :
+      concepts::CBidirectionalSegmentComputer<T>,
+      concepts::CDynamicSegmentComputer<T>
     {
-      ConceptUtils::sameType( myB, myX.retractFront() );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    bool myB;
+      // ----------------------- Concept checks ------------------------------
+    public:
+      // Methods
+      BOOST_CONCEPT_USAGE( CDynamicBidirectionalSegmentComputer )
+      {
+        concepts::ConceptUtils::sameType( myB, myX.retractFront() );
+      }
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // only if T is default constructible.
+      bool myB;
 
-    // ------------------------- Internals ------------------------------------
-  private:
-  }; // end of concept CDynamicBidirectionalSegmentComputer
-
+      // ------------------------- Internals ------------------------------------
+    private:
+    }; // end of concept CDynamicBidirectionalSegmentComputer
+  }// namespace concepts
 } // namespace DGtal
 
 //                                                                           //

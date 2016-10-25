@@ -92,10 +92,80 @@ You should obtain the following visualization:
 \image html simple3dVisu1.png "Digital point visualization  with Viewer3D."
 \image latex simple3dVisu1.png "Digital point visualization  with Viewer3D." width=5cm
 
+
+
+\subsection  DGtalGLV_Viewer3D_Rendering Interactive change of rendering mode   
+
+By default the rendering mode of the Viewer3D is defined by melange of
+diffuse (Lambertian) and specular parts. The user can swith to the following mode by using the key P : 
+
+
+|  type            | default mixte                             | metallic | plastic| lambertian |
+|:--------------- :|:------------------:                       |:--------:|:------:|:---------: |
+| mode             | 0                                         | 1        |  2     | 3          |
+| Ex:              |  ![ ] (defaultRenderingViewer3Dmode0.png) | ![ ] (metallicRenderingViewer3Dmode1.png)|  ![ ] (plasticRenderingViewer3Dmode2.png) | ![ ] (lambertianRenderingViewer3Dmode3.png)|
+
+
+
+\subsection  DGtalGLV_Viewer3D_Light Light source position modes
+
+The light source position is by default defined according to the
+camera position and its position will not change even after camera
+moves (default mode). By this way, if you move the camera, the object
+will be always illuminated (see images of mode 0 of the following
+tabular). This default light position could be changed interactively
+by a mouse move in the Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on
+mac)).
+
+There exists a second mode where the light source position will be fixed
+according the main scene axis. In this case, even if the camera move,
+the light source will have the same position towards the object of the
+scene (see for instance images of mode 1 of the following tabular). As for the
+previous mode, the default light position could be changed
+interactively by a mouse move in the Viewer3D (with the key
+SHIFT+CTRL (SHIFT+CMD on mac)).
+
+
+
+__To change between the two light position mode you can use the Key P in the
+viewer3D.__
+
+
+
+|  Light position mode  |    default position                    |         after camera move            |
+| :-------------------: | :------------------------------------: | :----------------------------------: |
+|         0             |  ![ ](lightPositionRef.png)             |  ![ ](lightPositionMode0.png)       |
+|         1             |  ![ ](lightPositionRef.png)             |  ![ ](lightPositionMode1.png)       |
+
+
+
+
 @note Note that you can display the camera settings in the console
 (key C) which can be used in Board2Dto3D described in the following.
 
 
+\subsection  DGtalGLV_Viewer3D_Ball Ball display modes
+
+The Viewer3D class has a special mode to display balls (added from the
+Display3D method \c addBall() ). By default, the balls are constructed
+with OpenGl quadrangulated sphere which can be slow if the number of ball is
+huge. In the latter case, it is possible to use OpenGL points to
+increase display performance. To use this mode, you have just to
+activate it with the method \c setUseGLPointForBalls() when needed:
+
+@code
+viewer.setUseGLPointForBalls(true);
+viewer.addBall(Z3i::RealPoint(10.3, 11.3, 4.0);
+@endcode
+
+By changing the mode you will obtain such display:
+
+ |    ball display default mode            |  ball display with OpenGL point mode |
+ | :------------------------------------ : | :----------------------------------: |
+ |  ![ ](viewer3DBallDefaultQuads.png)     |  ![ ](viewer3DBallPtOpenGL.png)      |
+
+
+You can also change the ball display mode interactively by using the key O. 
 
 \section DGtalGLV_Boas3DTo2D Alternative visualization without QGLViewer dependency
 
@@ -670,7 +740,20 @@ Khalimsky Signed Cell Visualization (with Board3DTo2D)
 *
 */
 
+/**
+   Example of Domain and Point display in Viewer3D.
+   @see @ref moduleDisplay3D 
+   \image html demo-kernel-2.png " " 
+*  \example io/viewers/demo-kernel-2.cpp
+**/
 
+
+
+/**
+   Example of viewing dual surfaces in Viewer3D.  
+   \image html viewDualSurface.png " " 
+*  \example io/viewDualSurface.cpp
+**/
 
 
 }

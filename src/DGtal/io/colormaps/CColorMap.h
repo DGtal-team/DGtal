@@ -50,7 +50,8 @@
 
 namespace DGtal
 {
-
+namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CColorMap
   /**
@@ -65,8 +66,8 @@ Description of \b concept \b 'CColorMap' <p>
 ### Associated types :
    
 ### Notation
-    - \t X : A type that is a model of CColorMap
-    - \t x, \t y  : Object of type X
+    - \a X : A type that is a model of CColorMap
+    - \a x, \a y  : Object of type X
    
 ### Definitions
    
@@ -113,13 +114,9 @@ Description of \b concept \b 'CColorMap' <p>
     Color myColor;
     Value myMin, myMax, myValue;    
   }; // end of concept CColorMap
-  
+  }//namespace concepts
 } // namespace DGtal
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/io/colormaps/CColorMap.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

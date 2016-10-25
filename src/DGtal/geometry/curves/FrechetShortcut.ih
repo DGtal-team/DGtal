@@ -529,7 +529,7 @@ typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut
 
 template <typename TIterator, typename TInteger>
 inline
-void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::selfDisplay ( std::ostream & out)
+void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::selfDisplay ( std::ostream & out) const
 {
   out << "[Cone]" <<  std::endl;
   if(myInf)
@@ -830,7 +830,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::isBackpathOk()
   Point firstP = Point(*myBegin);
   Point P = Point(*(myEnd+1));
   
-  int q = Tools::computeQuadrant(firstP,P);
+  int q = Tools::computeOctant(firstP,P);
   
   
   // to handle non simple curves (a point is visited twice)
