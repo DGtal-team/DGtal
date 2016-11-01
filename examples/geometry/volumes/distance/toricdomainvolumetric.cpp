@@ -56,7 +56,7 @@ int main()
 
   Point a ( 0, 0 );
   Point b ( 32, 16);
-  
+
   //Input image with unsigned char values
   typedef ImageSelector<Domain, unsigned int>::Type Image;
   Image image ( Domain(a, b ));
@@ -70,7 +70,7 @@ int main()
   image.setValue(Point(2,11), 0);
   image.setValue(Point(30,15), 0);
   //! [DTDef]
-  
+
   trace.beginBlock ( "Example toricdomainvolumetric" );
   //Input shape output
   typedef GrayscaleColorMap<Image::Value> Gray;
@@ -83,38 +83,38 @@ int main()
   //Point Predicate from random seed image
   typedef functors::SimpleThresholdForegroundPredicate<Image> PointPredicate;
   PointPredicate predicate(image,0);
-  //! [DTPredicate]  
+  //! [DTPredicate]
 
   //! [DTComputeToric]
   typedef  DistanceTransformation<Space, PointPredicate, L2Metric> DTL2;
   typedef  DistanceTransformation<Space, PointPredicate, L2Metric> DTL2Toric;
- 
+
   //Regular 2D domain
   DTL2 dtL2(image.domain(), predicate, l2Metric);
   //Full toric 2D domain
   DTL2Toric dtL2Toric(image.domain(), predicate, l2Metric, {{true, true}} );
   //! [DTComputeToric]
 
-  DTL2::Value maxv2;
   //We compute the maximum DT value on the L2 map
-  maxv2 = * (std::max_element(dtL2.constRange().begin(), dtL2.constRange().end()));
-  
-  DTL2Toric::Value maxvtoric;
-  maxvtoric = * (std::max_element(dtL2Toric.constRange().begin(), dtL2Toric.constRange().end()));
+  const DTL2::Value       maxv2     = * (std::max_element(dtL2.constRange().begin(), dtL2.constRange().end()));
+  const DTL2Toric::Value  maxvtoric = * (std::max_element(dtL2Toric.constRange().begin(), dtL2Toric.constRange().end()));
+
+  // Color map based on the maximal value for all maps (in order to compare results with similar colors).
+  const auto maxvall = std::max( { maxv2, maxvtoric } );
 
   //! [DTColormaps]
   //Colormap used for the SVG output
   typedef HueShadeColorMap<DTL2::Value, 1> HueTwice;
   //! [DTColormaps]
-  
+
   trace.warning() << "DT maxValue= "<<maxv2<< endl;
   board.clear();
-  Display2DFactory::drawImage<HueTwice>(board, dtL2, 0.0, maxv2 + 1);
+  Display2DFactory::drawImage<HueTwice>(board, dtL2, 0.0, maxvall + 1);
   board.saveSVG ( "toric-example-DT-L2.svg" );
-  
+
   trace.warning() <<  "Toric maxValue= "<<maxvtoric<< endl;
   board.clear();
-  Display2DFactory::drawImage<HueTwice>(board, dtL2Toric, 0.0, maxvtoric + 1);
+  Display2DFactory::drawImage<HueTwice>(board, dtL2Toric, 0.0, maxvall + 1);
   board.saveSVG ( "toric-example-DT-L2-toric.svg" );
 
   //Explicit export with ticked colormap
@@ -131,7 +131,7 @@ int main()
     board << *it;
   }
   board.saveSVG("toric-example-DT-L2-ticked.svg");
-  
+
   board.clear();
   for ( auto it = dtL2Toric.domain().begin(), itend = dtL2Toric.domain().end();it != itend; ++it)
   {
@@ -139,20 +139,20 @@ int main()
     board << *it;
   }
   board.saveSVG("toric-example-DT-L2-ticked-toric.svg");
-  
+
   //Voronoi vector output
   board.clear();
   board << dtL2.domain();
   for ( auto it = dtL2.domain().begin(), itend = dtL2.domain().end();it != itend; ++it)
     Display2DFactory::draw(board,dtL2.getVoronoiVector(*it) - (*it), (*it));
   board.saveSVG("toric-example-Voro-L2.svg");
-  
+
   board.clear();
   board << dtL2Toric.domain();
   for ( auto it = dtL2Toric.domain().begin(), itend = dtL2Toric.domain().end();it != itend; ++it)
     Display2DFactory::draw(board, dtL2Toric.getVoronoiVector(*it) - (*it), (*it));
   board.saveSVG("toric-example-Voro-L2-toric.svg");
-  
+
   trace.endBlock();
   return 0;
 }
