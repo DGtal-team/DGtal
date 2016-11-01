@@ -95,16 +95,20 @@ int main( int , char** )
 	     board << CustomStyle( it->first.className(),
 				   new CustomColors( Color( 0, 0, 0 ),
 						     Color( 0, 0, 0 ) ) );
-	  else if ( d == 1 )
-	       board << CustomStyle( it->first.className(),
-				     new CustomColors( Color( 200, 0, 0 ),
-						       Color( 100, 255, 100 ) ) );
-	  else
+           else
+             {
+               if ( d == 1 )
+                 board << CustomStyle( it->first.className(),
+                                       new CustomColors( Color( 200, 0, 0 ),
+                                                         Color( 100, 255, 100 ) ) );
+               else
 		 board << CustomStyle( it->first.className(),
 				       new CustomColors( Color( 0, 0, 200 ),
 							 Color( 100, 255, 100 ) ) );
-		 board << it->first;
-	 }
+             }    
+           board << it->first;
+         }           
+  
   
   board.saveEPS ( "cubicalComplexes.eps" );
   trace.endBlock();
