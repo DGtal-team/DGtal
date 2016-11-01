@@ -83,9 +83,6 @@ before_install:
   - if [ $BUILD_DOC == "true" ]; then wget http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
   - if [ $BUILD_DOC == "true" ]; then .travis/install_doxygen.sh;  BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen"; fi
 
-
-
-
 ########
 # Deps.
 ########
