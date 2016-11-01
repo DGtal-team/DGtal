@@ -25,6 +25,7 @@ notifications:
 #
 ########
 env:
+  - CONFIG="Debug,Core,GCC6"
   - CONFIG="Debug,Magick,GMP,ITK,FFTW3"
   - CONFIG="Debug,Cairo,QGLviewer,HDF5"
   - CONFIG="Documentation"
@@ -67,10 +68,13 @@ addons:
     - g++-4.8
     - gcc-4.8
     - libfftw3-dev
+    - gcc-6
+    - g++-6
 
 
 before_install:
   - if [ $CXX == "g++" ]; then CCOMPILER="gcc-4.8"; CXXCOMPILER="g++-4.8"; fi
+  - if [ $CXX == "g++" ]; then if [ $CONFIG =="Debug,Core,GCC6" ]; then CCOMPILER="gcc-6"; CXXCOMPILER="g++-6" BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON"  fi ; fi
   - BUILD_DOC="false"
   - UPLOAD_DOC="false"
   - NEEDCORE="true";
