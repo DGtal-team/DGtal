@@ -21,7 +21,7 @@ namespace DGtal {
 
 [TOC]
 
-@author David Coeurjolly
+@author David Coeurjolly, Roland Denis
 
 This part of the manual describes the DGtal volumetric module. We
 focus here on separable process based volumetric analysis such as

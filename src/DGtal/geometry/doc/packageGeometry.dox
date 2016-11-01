@@ -72,7 +72,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 - Volumetric analysis
   - \ref moduleMetrics (David Coeurjolly)
-  - \ref moduleVolumetric (David Coeurjolly)
+  - \ref moduleVolumetric (David Coeurjolly, Roland Denis)
   - \ref moduleFMM (Tristan Roussillon) 
 
 - Tools 
