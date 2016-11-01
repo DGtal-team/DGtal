@@ -45,6 +45,8 @@ matrix:
       env: CONFIG="DGtalTools"
     - os: osx
       compiler: gcc
+    - os: osx
+      env: CONFIG="Debug,Core,GCC6"
 
 addons:
   apt:
