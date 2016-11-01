@@ -47,7 +47,9 @@ matrix:
       compiler: gcc
     - os: osx
       env: CONFIG="Debug,Core,GCC6"
-
+    - compiler: clang
+      env: CONFIG="Debug,Core,GCC6"
+   
 addons:
   apt:
    sources:
