@@ -91,12 +91,17 @@ before_install:
   - if [ $BUILD_DOC == "true" ]; then wget http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
   - if [ $BUILD_DOC == "true" ]; then .travis/install_doxygen.sh;  BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen"; fi
 
+
+
+
 ########
 # Deps.
 ########
 before_script:
   - if [ $TRAVIS_OS_NAME == linux ]; then echo "All done.";   fi
   - if [ $TRAVIS_OS_NAME == osx ]; then brew update; brew install boost doxygen homebrew/science/hdf5 graphviz graphicsmagick  gmp libqglviewer fftw; echo "done";fi
+# Workaround due to HDF5 issues on mac (issue #1213)
+  - if [ $TRAVIS_OS_NAME == osx ]; then BTYPE= "$BTYPE -DWITH_HDF5=false" ; fi
 
 
 ############
