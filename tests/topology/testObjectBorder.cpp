@@ -58,50 +58,50 @@ using namespace LibBoard;
 
 struct MyObjectStyleCustom : public DrawableWithBoard2D
 {
-    virtual void setStyle ( Board2D & aboard ) const
-    {
-        aboard.setFillColorRGBi ( 0, 169, 0 );
-    }
+  virtual void setStyle ( Board2D & aboard ) const
+  {
+    aboard.setFillColorRGBi ( 0, 169, 0 );
+  }
 };
 struct MyObjectStyleCustomRed : public DrawableWithBoard2D
 {
-    virtual void setStyle ( Board2D & aboard ) const
-    {
-        aboard.setFillColorRGBi ( 169, 0, 0 );
-    }
+  virtual void setStyle ( Board2D & aboard ) const
+  {
+    aboard.setFillColorRGBi ( 169, 0, 0 );
+  }
 };
 
 struct MyDrawStyleCustomRed : public DrawableWithBoard2D
 {
-    virtual void setStyle ( Board2D & aboard ) const
-    {
-        aboard.setFillColorRGBi ( 169, 150, 150 );
-        aboard.setPenColorRGBi ( 0, 0, 0 );
-        aboard.setLineStyle ( Board2D::Shape::SolidStyle );
-        aboard.setLineWidth ( 1.5 );
-    }
+  virtual void setStyle ( Board2D & aboard ) const
+  {
+    aboard.setFillColorRGBi ( 169, 150, 150 );
+    aboard.setPenColorRGBi ( 0, 0, 0 );
+    aboard.setLineStyle ( Board2D::Shape::SolidStyle );
+    aboard.setLineWidth ( 1.5 );
+  }
 };
 
 struct MyDrawStyleCustomBlue : public DrawableWithBoard2D
 {
-    virtual void setStyle ( Board2D & aboard ) const
-    {
-        aboard.setFillColorRGBi ( 150, 150, 250 );
-        aboard.setPenColorRGBi ( 0, 0, 200 );
-        aboard.setLineStyle ( Board2D::Shape::SolidStyle );
-        aboard.setLineWidth ( 1.5 );
-    }
+  virtual void setStyle ( Board2D & aboard ) const
+  {
+    aboard.setFillColorRGBi ( 150, 150, 250 );
+    aboard.setPenColorRGBi ( 0, 0, 200 );
+    aboard.setLineStyle ( Board2D::Shape::SolidStyle );
+    aboard.setLineWidth ( 1.5 );
+  }
 };
 
 struct MyDrawStyleCustomGreen : public DrawableWithBoard2D
 {
-    virtual void setStyle ( Board2D & aboard ) const
-    {
-        aboard.setFillColorRGBi ( 150, 150, 160 );
-        aboard.setPenColorRGBi ( 150, 150, 160 );
-        aboard.setLineStyle ( Board2D::Shape::DashStyle );
-        aboard.setLineWidth ( 1.0 );
-    }
+  virtual void setStyle ( Board2D & aboard ) const
+  {
+    aboard.setFillColorRGBi ( 150, 150, 160 );
+    aboard.setPenColorRGBi ( 150, 150, 160 );
+    aboard.setLineStyle ( Board2D::Shape::DashStyle );
+    aboard.setLineWidth ( 1.0 );
+  }
 };
 
 
@@ -112,42 +112,42 @@ struct MyDrawStyleCustomGreen : public DrawableWithBoard2D
  */
 bool testObjectBorder()
 {
-    trace.beginBlock ( "Testing Object Borders in 2D ..." );
+  trace.beginBlock ( "Testing Object Borders in 2D ..." );
 
-    typedef SpaceND<2> Z2;          // Z^2
-    typedef Z2::Point Point;
-    typedef MetricAdjacency<Z2, 1> Adj4; // 4-adjacency type
-    typedef MetricAdjacency<Z2, 2> Adj8; // 8-adjacency type
-    typedef DigitalTopology< Adj8, Adj4 > DT8_4; //8,4 topology type
-    typedef HyperRectDomain< Z2 > Domain;
-    typedef Domain::ConstIterator DomainConstIterator;
-    typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
-    typedef Object<DT8_4, DigitalSet> ObjectType;
+  typedef SpaceND<2> Z2;          // Z^2
+  typedef Z2::Point Point;
+  typedef MetricAdjacency<Z2, 1> Adj4; // 4-adjacency type
+  typedef MetricAdjacency<Z2, 2> Adj8; // 8-adjacency type
+  typedef DigitalTopology< Adj8, Adj4 > DT8_4; //8,4 topology type
+  typedef HyperRectDomain< Z2 > Domain;
+  typedef Domain::ConstIterator DomainConstIterator;
+  typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
+  typedef Object<DT8_4, DigitalSet> ObjectType;
 
 
-    Point p1 ( -20, -10 );
-    Point p2 ( 20, 10 );
-    Domain domain ( p1, p2 );
+  Point p1 ( -20, -10 );
+  Point p2 ( 20, 10 );
+  Domain domain ( p1, p2 );
 
-    Adj4 adj4;                          // instance of 4-adjacency
-    Adj8 adj8;                          // instance of 8-adjacency
-    DT8_4 dt8_4 ( adj8, adj4, JORDAN_DT );
+  Adj4 adj4;                          // instance of 4-adjacency
+  Adj8 adj8;                          // instance of 8-adjacency
+  DT8_4 dt8_4 ( adj8, adj4, JORDAN_DT );
 
-    Point c ( 0, 0 );
+  Point c ( 0, 0 );
 
-    //We construct a simple 3-bubbles set
-    DigitalSet bubble_set ( domain );
-    for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+  //We construct a simple 3-bubbles set
+  DigitalSet bubble_set ( domain );
+  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
     {
-        int x = ( *it ) [0];
-        int y = ( *it ) [1];
-        if ( ( x*x + y*y < 82 ) ||
-                ( ( x - 14 ) * ( x - 14 ) + ( y + 1 ) * ( y + 1 ) < 17 ) ||
-                ( ( x + 14 ) * ( x + 14 ) + ( y - 1 ) * ( y - 1 ) < 17 ) )
-            bubble_set.insertNew ( *it );
+      int x = ( *it ) [0];
+      int y = ( *it ) [1];
+      if ( ( x*x + y*y < 82 ) ||
+           ( ( x - 14 ) * ( x - 14 ) + ( y + 1 ) * ( y + 1 ) < 17 ) ||
+           ( ( x + 14 ) * ( x + 14 ) + ( y - 1 ) * ( y - 1 ) < 17 ) )
+        bubble_set.insertNew ( *it );
     }
 
-    ObjectType bubble ( dt8_4, bubble_set );
+  ObjectType bubble ( dt8_4, bubble_set );
 
   //Connectedness Check
   if (bubble.computeConnectedness() == CONNECTED)
@@ -162,26 +162,26 @@ bool testObjectBorder()
   else
     trace.info() << "The object (8,4) border is not connected." << endl;
 
-    //Board Export
-    Board2D board;
-    board.setUnit ( Board::UCentimeter );
+  //Board Export
+  Board2D board;
+  board.setUnit ( Board::UCentimeter );
+  
+  board << SetMode( domain.className(), "Grid" ) <<  domain << bubble_set;
+  board.saveSVG ( "bubble-set.svg" );
+  
+  board << SetMode( bubbleBorder.className(), "DrawAdjacencies" )
+        << CustomStyle ( bubbleBorder.className(), new MyObjectStyleCustom )
+        << bubbleBorder;
+  board.saveSVG ( "bubble-object-border.svg" );
+  
+  board.clear();
+  
+  //////////////////////:
+  //the same with the reverse topology
+  typedef Object<DT8_4::ReverseTopology, DigitalSet> ObjectType48;
+  DT8_4::ReverseTopology dt4_8 = dt8_4.reverseTopology();
 
-    board << SetMode( domain.className(), "Grid" ) <<  domain << bubble_set;
-    board.saveSVG ( "bubble-set.svg" );
-
-    board << SetMode( bubbleBorder.className(), "DrawAdjacencies" )
-          << CustomStyle ( bubbleBorder.className(), new MyObjectStyleCustom )
-          << bubbleBorder;
-    board.saveSVG ( "bubble-object-border.svg" );
-
-    board.clear();
-
-    //////////////////////:
-    //the same with the reverse topology
-    typedef Object<DT8_4::ReverseTopology, DigitalSet> ObjectType48;
-    DT8_4::ReverseTopology dt4_8 = dt8_4.reverseTopology();
-
-    ObjectType48 bubble2 ( dt4_8, bubble_set );
+  ObjectType48 bubble2 ( dt4_8, bubble_set );
 
   //Border Computation
   ObjectType48 bubbleBorder2 = bubble2.border();
@@ -190,37 +190,37 @@ bool testObjectBorder()
   else
     trace.info() << "The object (4,8) border is not connected." << endl;
 
-    board << SetMode( domain.className(), "Grid" ) << domain;
-    board << bubble_set
-          << SetMode( bubbleBorder2.className(), "DrawAdjacencies" )
-          << CustomStyle ( bubbleBorder2.className(), new MyObjectStyleCustom )
-          << bubbleBorder2;
+  board << SetMode( domain.className(), "Grid" ) << domain;
+  board << bubble_set
+        << SetMode( bubbleBorder2.className(), "DrawAdjacencies" )
+        << CustomStyle ( bubbleBorder2.className(), new MyObjectStyleCustom )
+        << bubbleBorder2;
 
-    board.saveSVG ( "bubble-object-border-48.svg" );
+  board.saveSVG ( "bubble-object-border-48.svg" );
 
-    //We split the border according to its components
-    vector<ObjectType48> borders ( 30 );
-    unsigned int nbComponents;
+  //We split the border according to its components
+  vector<ObjectType48> borders ( 30 );
+  unsigned int nbComponents;
 
-    vector<ObjectType48>::iterator it = borders.begin();
-    nbComponents = bubbleBorder2.writeComponents ( it );
+  vector<ObjectType48>::iterator it = borders.begin();
+  nbComponents = bubbleBorder2.writeComponents ( it );
 
-    trace.info() << "The Bubble object has " << nbComponents << " (4,8)-connected components" << endl;
+  trace.info() << "The Bubble object has " << nbComponents << " (4,8)-connected components" << endl;
 
-    bool flag = true;
-    for ( unsigned int k = 0;k < nbComponents ; k++ )
+  bool flag = true;
+  for ( unsigned int k = 0;k < nbComponents ; k++ )
     {
-        if ( flag )
-            board << SetMode( borders[k].className(), "DrawAdjacencies" ) << CustomStyle ( borders[k].className(), new MyObjectStyleCustom ) << borders[k];
-        else
-            board << SetMode( borders[k].className(), "DrawAdjacencies" ) << CustomStyle ( borders[k].className(), new MyObjectStyleCustom ) << borders[k];
-        flag = !flag;
+      if ( flag )
+        board << SetMode( borders[k].className(), "DrawAdjacencies" ) << CustomStyle ( borders[k].className(), new MyObjectStyleCustom ) << borders[k];
+      else
+        board << SetMode( borders[k].className(), "DrawAdjacencies" ) << CustomStyle ( borders[k].className(), new MyObjectStyleCustom ) << borders[k];
+      flag = !flag;
     }
 
-    board.saveSVG ( "bubble-object-color-borders-48.svg" );
-    trace.endBlock();
+  board.saveSVG ( "bubble-object-color-borders-48.svg" );
+  trace.endBlock();
 
-    return true;
+  return true;
 }
 
 
@@ -231,43 +231,43 @@ bool testObjectBorder()
  */
 bool testBoard2D()
 {
-    trace.beginBlock ( "Testing Board2D with Object Borders in 2D ..." );
+  trace.beginBlock ( "Testing Board2D with Object Borders in 2D ..." );
 
-    //typedef int Integer;                // choose your digital line here.
-    typedef SpaceND<2> Z2;          // Z^2
-    typedef Z2::Point Point;
-    typedef MetricAdjacency<Z2, 1> Adj4; // 4-adjacency type
-    typedef MetricAdjacency<Z2, 2> Adj8; // 8-adjacency type
-    typedef DigitalTopology< Adj8, Adj4 > DT8_4; //8,4 topology type
-    typedef HyperRectDomain< Z2 > Domain;
-    typedef Domain::ConstIterator DomainConstIterator;
-    typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
-    typedef Object<DT8_4, DigitalSet> ObjectType;
+  //typedef int Integer;                // choose your digital line here.
+  typedef SpaceND<2> Z2;          // Z^2
+  typedef Z2::Point Point;
+  typedef MetricAdjacency<Z2, 1> Adj4; // 4-adjacency type
+  typedef MetricAdjacency<Z2, 2> Adj8; // 8-adjacency type
+  typedef DigitalTopology< Adj8, Adj4 > DT8_4; //8,4 topology type
+  typedef HyperRectDomain< Z2 > Domain;
+  typedef Domain::ConstIterator DomainConstIterator;
+  typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
+  typedef Object<DT8_4, DigitalSet> ObjectType;
 
 
-    Point p1 ( -20, -10 );
-    Point p2 ( 20, 10 );
-    Domain domain ( p1, p2 );
+  Point p1 ( -20, -10 );
+  Point p2 ( 20, 10 );
+  Domain domain ( p1, p2 );
 
-    Adj4 adj4;                          // instance of 4-adjacency
-    Adj8 adj8;                          // instance of 8-adjacency
-    DT8_4 dt8_4 ( adj8, adj4, JORDAN_DT );
+  Adj4 adj4;                          // instance of 4-adjacency
+  Adj8 adj8;                          // instance of 8-adjacency
+  DT8_4 dt8_4 ( adj8, adj4, JORDAN_DT );
 
-    Point c ( 0, 0 );
+  Point c ( 0, 0 );
 
-    //We construct a simple 3-bubbles set
-    DigitalSet bubble_set ( domain );
-    for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+  //We construct a simple 3-bubbles set
+  DigitalSet bubble_set ( domain );
+  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
     {
-        int x = ( *it ) [0];
-        int y = ( *it ) [1];
-        if ( ( x*x + y*y < 82 ) ||
-                ( ( x - 14 ) * ( x - 14 ) + ( y + 1 ) * ( y + 1 ) < 17 ) ||
-                ( ( x + 14 ) * ( x + 14 ) + ( y - 1 ) * ( y - 1 ) < 17 ) )
-            bubble_set.insertNew ( *it );
+      int x = ( *it ) [0];
+      int y = ( *it ) [1];
+      if ( ( x*x + y*y < 82 ) ||
+           ( ( x - 14 ) * ( x - 14 ) + ( y + 1 ) * ( y + 1 ) < 17 ) ||
+           ( ( x + 14 ) * ( x + 14 ) + ( y - 1 ) * ( y - 1 ) < 17 ) )
+        bubble_set.insertNew ( *it );
     }
 
-    ObjectType bubble ( dt8_4, bubble_set );
+  ObjectType bubble ( dt8_4, bubble_set );
 
   //Connectedness Check
   if (bubble.computeConnectedness() == CONNECTED)
@@ -282,25 +282,25 @@ bool testBoard2D()
   else
     trace.info() << "The object (8,4) border is not connected." << endl;
 
-    //Board Export
-    Board2D board;
-    board.setUnit ( Board::UCentimeter );
+  //Board Export
+  Board2D board;
+  board.setUnit ( Board::UCentimeter );
 
-    board << SetMode( domain.className(), "Grid" )
-    << CustomStyle ( domain.className(), new MyDrawStyleCustomGreen )
-    << domain
-    << CustomStyle ( bubble_set.className(), new MyDrawStyleCustomRed )
-    << bubble_set;
-    board.saveSVG ( "bubble-set-dgtalboard.svg" );
+  board << SetMode( domain.className(), "Grid" )
+        << CustomStyle ( domain.className(), new MyDrawStyleCustomGreen )
+        << domain
+        << CustomStyle ( bubble_set.className(), new MyDrawStyleCustomRed )
+        << bubble_set;
+  board.saveSVG ( "bubble-set-dgtalboard.svg" );
 
-    board << SetMode( bubbleBorder.className(), "DrawAdjacencies" )
-    << CustomStyle ( bubbleBorder.className(), new MyDrawStyleCustomBlue )
-    << bubbleBorder;
-    board.saveSVG ( "bubble-object-border-dgtalboard.svg" );
-    board.clear();
+  board << SetMode( bubbleBorder.className(), "DrawAdjacencies" )
+        << CustomStyle ( bubbleBorder.className(), new MyDrawStyleCustomBlue )
+        << bubbleBorder;
+  board.saveSVG ( "bubble-object-border-dgtalboard.svg" );
+  board.clear();
 
-    trace.endBlock();
-    return true;
+  trace.endBlock();
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -308,9 +308,9 @@ bool testBoard2D()
 
 int main ( /* int argc, char** argv*/ )
 {
-    bool res = testObjectBorder()
-               && testBoard2D();
-    return res ? 0 : 1;
+  bool res = testObjectBorder()
+    && testBoard2D();
+  return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
