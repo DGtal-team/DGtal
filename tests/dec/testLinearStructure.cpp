@@ -140,10 +140,15 @@ void test_linear_structure()
         {
             std::ofstream handle("linear_structure_neumann.dat");
             for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
+            {
                 handle << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
+                trace.info() << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
+            }
         }
 
-        FATAL_ERROR( (solved_solution_ordered-analytic_solution).myContainer.array().abs().maxCoeff() < 1e-5 );
+        const double error = (solved_solution_ordered-analytic_solution).myContainer.array().abs().maxCoeff();
+        trace.info() << "error=" << error << endl;
+        FATAL_ERROR( error < 1e-5 );
 
         {
             Board2D board;
@@ -228,10 +233,15 @@ void test_linear_structure()
         {
             std::ofstream handle("linear_structure_dirichlet.dat");
             for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
+            {
                 handle << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
+                trace.info() << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
+            }
         }
 
-        FATAL_ERROR( (solved_solution_ordered-analytic_solution).myContainer.array().abs().maxCoeff() < 1e-5 );
+        const double error = (solved_solution_ordered-analytic_solution).myContainer.array().abs().maxCoeff();
+        trace.info() << "error=" << error << endl;
+        FATAL_ERROR( error < 1e-5 );
 
         {
             Board2D board;
