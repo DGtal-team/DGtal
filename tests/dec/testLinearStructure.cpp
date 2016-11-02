@@ -37,6 +37,8 @@ using namespace DGtal;
 using namespace Z2i;
 using std::endl;
 
+//#define TEST_HARDCODED_ORDER
+
 void test_linear_structure()
 {
     trace.beginBlock("creating dec problem with neumann border condition");
@@ -353,6 +355,7 @@ void test_manual_operators_3d()
         display_operator_info("d0", d0);
         display_operator_info("d2p", d2p);
 
+#if defined(TEST_HARDCODED_ORDER)
         Eigen::MatrixXd d0_th(5, 2);
         d0_th <<
            -1,  0,
@@ -362,7 +365,8 @@ void test_manual_operators_3d()
             0,  1;
 
         FATAL_ERROR( Eigen::MatrixXd(d0.myContainer) == d0_th );
-        FATAL_ERROR( Eigen::MatrixXd(d2p.myContainer) == d0_th.transpose() );
+#endif
+        FATAL_ERROR( Eigen::MatrixXd(d2p.transpose().myContainer) == Eigen::MatrixXd(d0.myContainer) );
     }
 
     {
@@ -371,6 +375,7 @@ void test_manual_operators_3d()
         display_operator_info("d1", d1);
         display_operator_info("d1p", d1p);
 
+#if defined(TEST_HARDCODED_ORDER)
         Eigen::MatrixXd d1_th(4, 5);
         d1_th <<
              0, -1,  1,  0, -1,
@@ -379,7 +384,8 @@ void test_manual_operators_3d()
             -1,  1,  0,  0,  0;
 
         FATAL_ERROR( Eigen::MatrixXd(d1.myContainer) == d1_th );
-        FATAL_ERROR( Eigen::MatrixXd(d1p.myContainer) == d1_th.transpose() );
+#endif
+        FATAL_ERROR( Eigen::MatrixXd(d1p.transpose().myContainer) == Eigen::MatrixXd(d1.myContainer) );
     }
 
     {
@@ -388,11 +394,13 @@ void test_manual_operators_3d()
         display_operator_info("d2", d2);
         display_operator_info("d0p", d0p);
 
+#if defined(TEST_HARDCODED_ORDER)
         Eigen::MatrixXd d2_th(1, 4);
         d2_th << -1, -1, -1, -1;
 
         FATAL_ERROR( Eigen::MatrixXd(d2.myContainer) == d2_th );
-        FATAL_ERROR( Eigen::MatrixXd(d0p.myContainer) == d2_th.transpose() );
+#endif
+        FATAL_ERROR( Eigen::MatrixXd(d0p.transpose().myContainer) == Eigen::MatrixXd(d2.myContainer) );
     }
 
     trace.endBlock();
@@ -550,6 +558,7 @@ void test_manual_operators_2d()
         display_operator_info("primal d0", primal_d0);
         display_operator_info("dual d0p", dual_d0p);
 
+#if defined(TEST_HARDCODED_ORDER)
         Eigen::MatrixXd d0_th(7, 6);
         d0_th <<
             -1,  1,  0,  0,  0,  0,
@@ -571,6 +580,7 @@ void test_manual_operators_2d()
             -1,  0,  1,  0,  0,  0,
              0,  0,  0, -1,  0,  1;
         FATAL_ERROR( Eigen::MatrixXd(dual_d0p.myContainer) == d0p_th );
+#endif
     }
 
     const Calculus::PrimalDerivative1 primal_d1 = primal_calculus.derivative<1, PRIMAL>();
@@ -579,6 +589,7 @@ void test_manual_operators_2d()
         display_operator_info("primal d1", primal_d1);
         display_operator_info("dual d1p", dual_d1p);
 
+#if defined(TEST_HARDCODED_ORDER)
         Eigen::MatrixXd d1_th(2, 7);
         d1_th <<
              1,  1,  0,  0,  1,  1,  0,
@@ -590,6 +601,7 @@ void test_manual_operators_2d()
             -1, -1, -1,  0,  0, -1,  0,
              0,  1,  0,  1,  1,  0,  1;
         FATAL_ERROR( Eigen::MatrixXd(dual_d1p.myContainer) == d1p_th );
+#endif
     }
 
     {
@@ -638,6 +650,7 @@ void test_manual_operators_2d()
         display_operator_info("primal d0p", primal_d0p);
         display_operator_info("dual d0", dual_d0);
 
+#if defined(TEST_HARDCODED_ORDER)
         Eigen::MatrixXd d0p_th_transpose(2, 7);
         d0p_th_transpose <<
              1,  1,  0,  0,  1,  1,  0,
@@ -649,6 +662,7 @@ void test_manual_operators_2d()
             -1, -1, -1,  0,  0, -1,  0,
              0,  1,  0,  1,  1,  0,  1;
         FATAL_ERROR( Eigen::MatrixXd(dual_d0.myContainer) == -minus_d0_th_transpose.transpose() );
+#endif
     }
 
     const Calculus::DualDerivative1 primal_d1p = primal_calculus.derivative<1, DUAL>();
@@ -657,6 +671,7 @@ void test_manual_operators_2d()
         display_operator_info("primal d1p", primal_d1p);
         display_operator_info("dual d1", dual_d1);
 
+#if defined(TEST_HARDCODED_ORDER)
         Eigen::MatrixXd minus_d1p_th_transpose(7, 6);
         minus_d1p_th_transpose <<
             -1,  1,  0,  0,  0,  0,
@@ -678,6 +693,7 @@ void test_manual_operators_2d()
             -1,  0,  1,  0,  0,  0,
              0,  0,  0, -1,  0,  1;
         FATAL_ERROR( Eigen::MatrixXd(dual_d1.myContainer) == d1_th_transpose.transpose() );
+#endif
     }
 
     const Calculus::PrimalHodge1 primal_h1 = primal_calculus.hodge<1, PRIMAL>();
@@ -736,10 +752,12 @@ void test_manual_operators_2d()
                 board.saveSVG("operators_sharp_dx_primal.svg");
             }
 
+#if defined(TEST_HARDCODED_ORDER)
             FATAL_ERROR( primal_dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
             FATAL_ERROR( primal_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
             FATAL_ERROR( dual_dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(6) );
             FATAL_ERROR( dual_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(6) );
+#endif
         }
 
         {
@@ -763,10 +781,12 @@ void test_manual_operators_2d()
                 board.saveSVG("operators_sharp_dy_primal.svg");
             }
 
+#if defined(TEST_HARDCODED_ORDER)
             FATAL_ERROR( primal_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(6) );
             FATAL_ERROR( primal_dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(6) );
             FATAL_ERROR( dual_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(6) );
             FATAL_ERROR( dual_dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(6) );
+#endif
         }
     }
 
@@ -797,10 +817,12 @@ void test_manual_operators_2d()
                 board.saveSVG("operators_sharp_dx_dual.svg");
             }
 
+#if defined(TEST_HARDCODED_ORDER)
             FATAL_ERROR( primal_dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(2) );
             FATAL_ERROR( primal_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(2) );
             FATAL_ERROR( dual_dx_field.myCoordinates.col(0) == Eigen::VectorXd::Ones(2) );
             FATAL_ERROR( dual_dx_field.myCoordinates.col(1) == Eigen::VectorXd::Zero(2) );
+#endif
         }
 
         {
@@ -824,10 +846,12 @@ void test_manual_operators_2d()
                 board.saveSVG("operators_sharp_dy_dual.svg");
             }
 
+#if defined(TEST_HARDCODED_ORDER)
             FATAL_ERROR( primal_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(2) );
             FATAL_ERROR( primal_dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(2) );
             FATAL_ERROR( dual_dy_field.myCoordinates.col(0) == Eigen::VectorXd::Zero(2) );
             FATAL_ERROR( dual_dy_field.myCoordinates.col(1) == Eigen::VectorXd::Ones(2) );
+#endif
         }
     }
 
@@ -879,6 +903,7 @@ void test_manual_operators_2d()
             board.saveSVG("operators_flat_dy_primal.svg");
         }
 
+#if defined(TEST_HARDCODED_ORDER)
         Calculus::PrimalForm1::Container dx_container(7);
         dx_container << -1, 0, 0, -1, 0, 1, 0;
         Calculus::PrimalForm1::Container dxp_container(7);
@@ -892,6 +917,7 @@ void test_manual_operators_2d()
         dyp_container << 0, 0, 1, 1, 0, -1, -1;
         FATAL_ERROR( primal_dy.myContainer == dy_container );
         FATAL_ERROR( dual_dy.myContainer == dyp_container );
+#endif
     }
 
     { // dual flat
@@ -938,6 +964,7 @@ void test_manual_operators_2d()
             board.saveSVG("operators_flat_dy_dual.svg");
         }
 
+#if defined(TEST_HARDCODED_ORDER)
         Calculus::PrimalForm1::Container dx_container(7);
         dx_container << 0, -1, -1, 0, 1, 0, 1;
         Calculus::PrimalForm1::Container dxp_container(7);
@@ -951,6 +978,7 @@ void test_manual_operators_2d()
         dyp_container << -1, 1, 0, 0, -1, 0, 0;
         FATAL_ERROR( primal_dy.myContainer == dy_container );
         FATAL_ERROR( dual_dy.myContainer == dyp_container );
+#endif
     }
 
     trace.endBlock();
@@ -963,6 +991,9 @@ void test_manual_operators_2d()
 int
 main()
 {
+#if !defined(TEST_HARDCODED_ORDER)
+    trace.warning() << "hardcoded order tests are NOT performed" << endl;
+#endif
     test_manual_operators_3d();
     test_manual_operators_2d();
     test_linear_ring();
