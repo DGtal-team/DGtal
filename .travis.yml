@@ -77,7 +77,7 @@ addons:
 
 
 before_install:
-  - if [ $CXX == "g++" ]; then  if [ $CONFIG == "Debug,GCC6" ]; then CCOMPILER="gcc-6"; CXXCOMPILER="g++-6"; BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi ; else  CCOMPILER="gcc-4.8"; CXXCOMPILER="g++-4.8";  fi ; else  CXXCOMPILER=$CXX; CCOMPILER=$CC; fi
+  - if [ $CXX == "g++" ]; then  if [ $CONFIG == "Debug,GCC6" ]; then CCOMPILER="gcc-6"; CXXCOMPILER="g++-6"; BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi ; else  CCOMPILER="gcc-4.8"; CXXCOMPILER="g++-4.8"; else  CXXCOMPILER="$CXX"; CCOMPILER="$CC"; fi
   - echo "CXX Compiler = " $CXXCOMPILER
   - BUILD_DOC="false"
   - UPLOAD_DOC="false"
