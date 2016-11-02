@@ -33,11 +33,15 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
+#include "boost/version.hpp"
+
 using namespace DGtal;
 using namespace Z2i;
 using std::endl;
 
-//#define TEST_HARDCODED_ORDER
+#if BOOST_VERSION >= 105000
+#define TEST_HARDCODED_ORDER
+#endif
 
 void test_linear_structure()
 {
@@ -998,6 +1002,9 @@ main()
     test_manual_operators_2d();
     test_linear_ring();
     test_linear_structure();
+#if !defined(TEST_HARDCODED_ORDER)
+    trace.warning() << "hardcoded order tests are NOT performed" << endl;
+#endif
     return 0;
 }
 
