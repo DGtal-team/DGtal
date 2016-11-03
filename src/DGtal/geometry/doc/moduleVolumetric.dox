@@ -327,10 +327,10 @@ toric replicas of existing sites within the domain.
 
 <center>
 <table>
-<tr><td>
+<tr><td align="center">
 Classical domain
 </td>
-<td>
+<td align="center">
 Toric domain
 </td>
 </tr>
@@ -351,9 +351,42 @@ Toric domain
 </table>
 </center>
 
+Using VoronoiMap::projectPoint(Point) const, site's coordinates can be projected
+into the initial domain, even for VoronoiMap calculated on toric domains:
 
+@image html toric-example-Voro-L2-toric-projected.png "Voronoi map on toric domain with projected sites."
 
+With partial periodicity specification (along the first or second dimension only):
 
+@snippet geometry/volumes/distance/toricdomainvolumetric.cpp DTComputePartialToric
+
+we obtain the following VoronoiMap:
+
+<center>
+<table>
+<tr><td align="center">
+Periodic domain along the 1th dimension.
+</td>
+<td align="center">
+Periodic domain along the 2th dimension.
+</td>
+</tr>
+<tr><td>
+@image html toric-example-DT-L2-toricX-red.png "DT values."
+</td>
+<td>
+@image html toric-example-DT-L2-toricY-red.png "DT values."
+</td>
+</tr>
+<tr><td>
+@image html toric-example-Voro-L2-toricX-red.png "Voronoi map as vectors."
+</td>
+<td>
+@image html toric-example-Voro-L2-toricY-red.png "Voronoi map as vectors."
+</td>
+</tr>
+</table>
+</center>
 
 */
 
