@@ -1,10 +1,24 @@
 # DGtal 0.9.3
 
+## New Features / Critical Changes
+
+- *Geometry Package*
+ - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
+   now work on toric domains (with per-dimension periodicity specification).
+   (David Coeurjolly, Roland Denis,
+   [#1206](https://github.com/DGtal-team/DGtal/pull/1206))
+
 ## Bug Fixes
 
 - *Configuration/General*
  - Fixing errors and warnings raised by g++ 4.7.x.
    (Roland Denis, [#1202](https://github.com/DGtal-team/DGtal/pull/1202))
+ - Explicit M_PI definition if needed.
+   (David Coeurjolly, [#1208](https://github.com/DGtal-team/DGtal/pull/1208))
+
+- *Geometry Package*
+ - ArithDSSIterator: fix missing postfix ++.
+   (I. Sivignon, [#1187](https://github.com/DGtal-team/DGtal/pull/1187))
 
 # DGtal 0.9.2
 

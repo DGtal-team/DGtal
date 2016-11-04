@@ -81,7 +81,7 @@ power metrics.
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | power distance computation | x.powerDistance(aPoint, anotherPoint, anotherWeight) | @a aPoint and @a anotherPoint of type @a Point, @a aWeight  of type Weight |  a value of type @a Weight   |              |  compute the power distance between a point and a weighted point  |                |    -        |
-| closest point test | closestPower(aOrigin,aP,aWp aQ, aWp) | @a aOrigin, @a aP,@a aQ of type @a aPoint, @a aWp,@a aWq of type @a Weight |   a value of type Closest | | decide between weighted points  @a aP and @a aQ which one is closer to the origin. This functions returns either DGtal::ClosestFIRST if @a aP is closer, DGtal::ClosestSECOND if @a aQ is closer  and DGtal::ClosestBOTH if both are equidistant.| | - |
+| closest point test | closestPower(aOrigin, aP, aWp, aQ, aWq) | @a aOrigin, @a aP,@a aQ of type @a aPoint, @a aWp,@a aWq of type @a Weight |   a value of type Closest | | decide between weighted points  @a aP and @a aQ which one is closer to the origin. This functions returns either DGtal::ClosestFIRST if @a aP is closer, DGtal::ClosestSECOND if @a aQ is closer  and DGtal::ClosestBOTH if both are equidistant.| | - |
   
 
 ### Invariants
