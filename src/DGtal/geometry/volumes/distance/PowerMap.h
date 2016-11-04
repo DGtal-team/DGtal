@@ -51,6 +51,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/CConstImage.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/geometry/volumes/distance/CPowerSeparableMetric.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -66,7 +67,8 @@ namespace DGtal
    * construction.
 
    * The algorithm uses a separable process to construct
-   * Power maps as discussed in @cite dcoeurjo_pami_RDMA
+   * Power maps as discussed in @cite dcoeurjo_pami_RDMA.
+   * Along periodic dimensions, the algorithm is adapted following @cite Coeurjo2008.
    *
    * Given an image mapping points to values and a power separable
    * metric, the class computes the power map of the weighted points
@@ -74,16 +76,26 @@ namespace DGtal
    * points are equi-distant according to the power distance, this
    * power map will only consider one of them.
    *
+   * By default, the domain is considered non-periodic but per-dimension
+   * periodicity can be specified in the constructor.
+   * When the domain has periodic dimensions, the closest point
+   * coordinates \c B to a given point \c A may not be between the lower
+   * and upper bounds of the domain, in such a way that the non-periodic
+   * power distance between \c A and \c B is equal to their power distance
+   * considering the periodicity.
+   *
    * If the separable metric has a complexity of O(h) for its
    * "hiddenByPower" predicate, the overall Power map construction
    * algorithm is in @f$ O(h.d.n^d)@f$ for @f$ n^d@f$ domains (see
    * class constructor). For Euclidean the @f$ l_2@f$ metric, the
    * overall computation is in @f$ O(d.n^d)@f$, which is optimal.
    *
-   * This class is a model of CConstImage.
+   * This class is a model of concepts::CConstImage.
+   *
+   * @see &nbsp; \ref toricVol
    *
    * @tparam TWeightImage model of CConstImage
-   * @tparam TPowerSeparableMetric model of CPowerSeparableMetric
+   * @tparam TPowerSeparableMetric model of concepts::CPowerSeparableMetric
    * @tparam TImageContainer any model of CImage to store the
    * PowerMap (default: ImageContainerBySTLVector). The space of the
    * image container and the TSpace should match. Furthermore the
@@ -100,6 +112,7 @@ namespace DGtal
 
   public:
 
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage< TWeightImage > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPowerSeparableMetric<TPowerSeparableMetric> ));
 
@@ -123,7 +136,7 @@ namespace DGtal
 
     //ImageContainer domain type must be  HyperRectangular
     BOOST_STATIC_ASSERT ((boost::is_same< HyperRectDomain<typename TWeightImage::Domain::Space>,
-					  typename TImageContainer::Domain >::value ));
+                          typename TImageContainer::Domain >::value ));
 
     ///Definition of the underlying domain type.
     typedef typename TImageContainer::Domain Domain;
@@ -140,14 +153,18 @@ namespace DGtal
     typedef typename OutputImage::ConstRange  ConstRange;
 
     ///Self type
-  typedef PowerMap<TWeightImage, TPowerSeparableMetric, TImageContainer> Self;
+    typedef PowerMap<TWeightImage, TPowerSeparableMetric, TImageContainer> Self;
 
+    /// Periodicity specification type.
+    typedef std::array< bool, Space::dimension > PeriodicitySpec;
 
     /**
      * Constructor.
      *
      * This constructor computes the Power Map of a set of point
-     * sites using a SeparableMetric metric.  The method associates to
+     * sites using a SeparableMetric metric on a non-periodic domain.
+     *
+     * The method associates to
      * each point satisfying the foreground predicate, the closest
      * site for which the predicate is false.
      *
@@ -165,9 +182,40 @@ namespace DGtal
              ConstAlias<PowerSeparableMetric> aMetric);
 
     /**
+     * Constructor with periodicity specification.
+     *
+     * This constructor computes the Power Map of a set of point
+     * sites using a SeparableMetric metric, on a domain with specified
+     * periodicity.
+     *
+     * The method associates to
+     * each point satisfying the foreground predicate, the closest
+     * site for which the predicate is false.
+     *
+     * All parameters are aliased in this class.
+     *
+     * @param aDomain       defines the (hyper-rectangular) domain on which
+     *        the computation is performed.
+     * @param aWeightImage  an image returning the weight for some points.
+     * @param aMetric       a power separable metric instance.
+     * @param aPeriodicitySpec an array of size equal to the space dimension
+     *        where the i-th value is \c true if the i-th dimension of the
+     *        space is periodic, \c false otherwise.
+     */
+    PowerMap(ConstAlias<Domain> aDomain,
+             ConstAlias<WeightImage> aWeightImage,
+             ConstAlias<PowerSeparableMetric> aMetric,
+             PeriodicitySpec const & aPeriodicitySpec);
+
+    /**
+     * Disable default constructor.
+     */
+    PowerMap() = delete;
+
+    /**
      * Default destructor
      */
-    ~PowerMap();
+    ~PowerMap() = default;
 
   public:
     // ------------------- ConstImage model ------------------------
@@ -178,7 +226,7 @@ namespace DGtal
      *  @param aOtherPowerMap another instance of Self
      *  @return a reference to Self
      */
-    Self &  operator=(const Self &aOtherPowerMap );
+    Self &  operator=(const Self &aOtherPowerMap ) = default;
 
     /**
      * Returns a reference (const) to the Power map domain.
@@ -225,6 +273,38 @@ namespace DGtal
       return myWeightImagePtr;
     }
 
+    /** Periodicity specification.
+     *
+     * @returns the periodicity specification array.
+     */
+    PeriodicitySpec const & getPeriodicitySpec() const
+      {
+        return myPeriodicitySpec;
+      }
+
+    /** Periodicity specification along one dimensions.
+     *
+     * @param [in] n the dimension index.
+     * @return \c true if the n-th dimension is periodic, \c false otherwise.
+     */
+    inline
+    bool isPeriodic( const Dimension n ) const
+      {
+        return myPeriodicitySpec[ n ];
+      }
+
+    /**
+     * Project point coordinates into the domain, taking into account
+     * the periodicity.
+     *
+     * @pre The given point must come from operator()(const Point &) const (for performance reasons).
+     *
+     * @param aPoint the point to project
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification.
+     */
+    Point projectPoint( Point aPoint ) const;
+
     /**
      * Self Display method.
      *
@@ -250,6 +330,7 @@ namespace DGtal
      * @param dim the dimension to process
      */
     void computeOtherSteps(const Dimension dim) const;
+
     /**
      * Given  a voronoi map valid at dimension @a dim-1, this method
      * updates the map to make it consistent at dimension @a dim along
@@ -260,16 +341,38 @@ namespace DGtal
      * @param dim dimension of the update.
      */
     void computeOtherStep1D (const Point &row,
-			     const Dimension dim) const;
+                             const Dimension dim) const;
+
+    /**
+     * Project point coordinates into the domain, taking into account
+     * the periodicity up to a fixed dimension.
+     *
+     * @pre The given point must come from operator()(const Point &) const (for performance reasons).
+     *
+     * @param aPoint the point to project
+     * @param aMaxDim maximal dimension along which to project the coordinates.
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification, and only for dimension lower
+     *         or equal to @a aMaxDim.
+     */
+    Point projectPoint( Point aPoint, const Dimension aMaxDim ) const;
+
+    /**
+     * Project a coordinate into the domain, taking into account
+     * the periodicity.
+     *
+     * @pre The given coordinate must come from operator()(const Point &) const (for performance reasons).
+     *
+     * @param aCoordinate the coordinate.
+     * @param aDim  dimension of the coordinate.
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification.
+     */
+    typename Point::Coordinate projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const;
 
     // ------------------- protected methods ------------------------
   protected:
 
-    /**
-     * Default Constructor.
-     *
-     */
-    PowerMap();
 
 
     // ------------------- Private members ------------------------
@@ -287,6 +390,12 @@ namespace DGtal
     ///Value to act as a +infinity value
     Point myInfinity;
 
+    /// Index of the periodic dimensions
+    std::vector< Dimension > myPeriodicityIndex; // Could be boost::static_vector but it needs Boost >= 1.54.
+
+    /// Domain extent.
+    Point myDomainExtent;
+
   protected:
     ///Pointer to the separable metric instance
     const PowerSeparableMetric * myMetricPtr;
@@ -297,6 +406,8 @@ namespace DGtal
     ///Pointer to the point predicate
     const WeightImage * myWeightImagePtr;
 
+    /// Periodicity along each dimension.
+    PeriodicitySpec myPeriodicitySpec;
 
   }; // end of class PowerMap
 

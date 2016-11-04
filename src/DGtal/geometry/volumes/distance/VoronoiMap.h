@@ -45,9 +45,11 @@
 // Inclusions
 #include <iostream>
 #include <vector>
+#include <array>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
@@ -65,8 +67,9 @@ namespace DGtal
    * \brief Aim: Implementation of the linear in time Voronoi map
    * construction.
 
-   * The algorithm uses a sperable process to construct Voronoi maps
-   * which has been described in @cite Maurer2003PAMI @cite dcoeurjo_these
+   * The algorithm uses a seperable process to construct Voronoi maps
+   * which has been described in @cite Maurer2003PAMI @cite dcoeurjo_these.
+   * Along periodic dimensions, the algorithm is adapted following @cite Coeurjo2008.
    *
    * Given a domain and a point predicate, an instance returns, for
    * each point in the domain, the closest point for which the
@@ -76,6 +79,14 @@ namespace DGtal
    * two sites (e.g. if the digital point belong to a Voronoi cell
    * boundary in the Euclidean space), this Voronoi map construction
    * will only keep one of them.
+   *
+   * By default, the domain is considered non-periodic but per-dimension
+   * periodicity can be specified in the constructor.
+   * When the domain has periodic dimensions, the closest point
+   * coordinates \c B to a given point \c A may not be between the lower
+   * and upper bounds of the domain, in such a way that the non-periodic
+   * distance between \c A and \c B is equal to their distance considering
+   * the periodicity.
    *
    * The metric is specified by a model of concepts::CSeparableMetric (for
    * instance, any instance of ExactPredicateLpSeparableMetric or
@@ -92,6 +103,8 @@ namespace DGtal
    * @f$ O(h.d.n^d / p)@f$.
    *
    * This class is a model of concepts::CConstImage.
+   *
+   * @see &nbsp; \ref toricVol
    *
    * @tparam TSpace type of Digital Space (model of concepts::CSpace).
    * @tparam TPointPredicate point predicate returning true for points
@@ -117,6 +130,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
 
     ///Both Space points and PointPredicate points must be the same.
     BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Point,
@@ -132,7 +146,7 @@ namespace DGtal
 
     //ImageContainer domain type must be  HyperRectangular
     BOOST_STATIC_ASSERT ((boost::is_same< HyperRectDomain<TSpace>,
-					  typename TImageContainer::Domain >::value ));
+                          typename TImageContainer::Domain >::value ));
 
     ///Copy of the space type.
     typedef TSpace Space;
@@ -157,26 +171,31 @@ namespace DGtal
 
     ///Type of resulting image
     typedef TImageContainer OutputImage;
-     ///Definition of the image value type.
+
+    ///Definition of the image value type.
     typedef Vector Value;
 
     ///Definition of the image value type.
     typedef typename OutputImage::ConstRange  ConstRange;
 
     ///Self type
-    typedef VoronoiMap<TSpace, TPointPredicate,
-		       TSeparableMetric,TImageContainer> Self;
+    typedef VoronoiMap< TSpace, TPointPredicate,
+                        TSeparableMetric,TImageContainer > Self;
 
+
+    /// Periodicity specification type.
+    typedef std::array< bool, Space::dimension > PeriodicitySpec;
 
     /**
-     * Constructor.
+     * Constructor in the non-periodic case.
      *
      * This constructor computes the Voronoi Map of a set of point
-     * sites using a SeparableMetric metric.  The method associates to
-     * each point satisfying the foreground predicate, the closest
-     * site for which the predicate is false. This algorithm is
+     * sites using a SeparableMetric metric, on a non-periodic domain.
+     *
+     * The method associates to each point satisfying the foreground predicate,
+     * the closest site for which the predicate is false. This algorithm is
      * @f$ O(h.d.|domain size|)@f$ if the separable metric "hiddenBy"
-     * predicate is in @f$ O(h)$@f$.
+     * predicate is in @f$ O(h)@f$.
      *
      * @param aDomain a pointer to the (hyper-rectangular) domain on
      * which the computation is performed.
@@ -184,16 +203,49 @@ namespace DGtal
      * @param predicate a pointer to the point predicate to define the
      * Voronoi sites (false points).
      *
-     *@param aMetric a pointer to the separable metric instance.
+     * @param aMetric a pointer to the separable metric instance.
      */
     VoronoiMap(ConstAlias<Domain> aDomain,
                ConstAlias<PointPredicate> predicate,
                ConstAlias<SeparableMetric> aMetric);
 
     /**
+     * Constructor with periodicity specification.
+     *
+     * This constructor computes the Voronoi Map of a set of point
+     * sites using a SeparableMetric metric, on a domain with specified
+     * periodicity.
+     *
+     * The method associates to each point satisfying the foreground predicate,
+     * the closest site for which the predicate is false. This algorithm is
+     * @f$ O(h.d.|domain size|)@f$ if the separable metric "hiddenBy"
+     * predicate is in @f$ O(h)@f$.
+     *
+     * @param aDomain a pointer to the (hyper-rectangular) domain on
+     * which the computation is performed.
+     *
+     * @param predicate a pointer to the point predicate to define the
+     * Voronoi sites (false points).
+     *
+     * @param aMetric a pointer to the separable metric instance.
+     *
+     * @param aPeriodicitySpec an array of size equal to the space dimension
+     *        where the i-th value is \c true if the i-th dimension of the
+     *        space is periodic, \c false otherwise.
+     */
+    VoronoiMap(ConstAlias<Domain> aDomain,
+               ConstAlias<PointPredicate> predicate,
+               ConstAlias<SeparableMetric> aMetric,
+               PeriodicitySpec const & aPeriodicitySpec);
+    /**
      * Default destructor
      */
-    ~VoronoiMap();
+    ~VoronoiMap() = default;
+
+    /**
+     * Disabling default constructor.
+     */
+     VoronoiMap() = delete;
 
   public:
     // ------------------- ConstImage model ------------------------
@@ -204,7 +256,7 @@ namespace DGtal
      *  @param aOtherVoronoiMap another instance of Self
      *  @return a reference to Self
      */
-    Self &  operator=(const Self &aOtherVoronoiMap );
+    Self &  operator=(const Self &aOtherVoronoiMap ) = default;
 
     /**
      * Returns a reference (const) to the Voronoi map domain.
@@ -214,7 +266,6 @@ namespace DGtal
     {
       return *myDomainPtr;
     }
-
 
     /**
      * Returns a const range on the Voronoi map values.
@@ -243,6 +294,37 @@ namespace DGtal
     {
       return myMetricPtr;
     }
+
+    /** Periodicity specification.
+     *
+     * @returns the periodicity specification array.
+     */
+    PeriodicitySpec const & getPeriodicitySpec() const
+      {
+        return myPeriodicitySpec;
+      }
+
+    /** Periodicity specification along one dimensions.
+     *
+     * @param [in] n the dimension index.
+     * @return \c true if the n-th dimension is periodic, \c false otherwise.
+     */
+    bool isPeriodic( const Dimension n ) const
+      {
+        return myPeriodicitySpec[ n ];
+      }
+
+    /**
+     * Project point coordinates into the domain, taking into account
+     * the periodicity.
+     *
+     * @pre The given point must come from operator()(const Point &) const (for performance reasons).
+     *
+     * @param aPoint the point to project
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification.
+     */
+    Point projectPoint( Point aPoint ) const;
 
     /**
      * Self Display method.
@@ -279,17 +361,20 @@ namespace DGtal
      * @param [in] dim dimension of the update.
      */
     void computeOtherStep1D (const Point &row,
-			     const Dimension dim) const;
-
-    // ------------------- protected methods ------------------------
-  protected:
+                             const Dimension dim) const;
 
     /**
-     * Default Constructor.
+     * Project a coordinate into the domain, taking into account
+     * the periodicity.
      *
+     * @pre The given coordinate must come from operator()(const Point &) const (for performance reasons).
+     *
+     * @param aCoordinate the coordinate.
+     * @param aDim  dimension of the coordinate.
+     * @return the coordinates projected into the domain bounds accordingly
+     *         to the periodicity specification.
      */
-    VoronoiMap();
-
+    typename Point::Coordinate projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const;
 
     // ------------------- Private members ------------------------
   private:
@@ -309,6 +394,12 @@ namespace DGtal
     ///Value to act as a +infinity value
     Point myInfinity;
 
+    /// Index of the periodic dimensions
+    std::vector< Dimension > myPeriodicityIndex; // Could be boost::static_vector but it needs Boost >= 1.54.
+
+    /// Domain extent.
+    Point myDomainExtent;
+
   protected:
 
     ///Pointer to the separable metric instance
@@ -316,6 +407,9 @@ namespace DGtal
 
     ///Voronoi map image
     CountedPtr<OutputImage> myImagePtr;
+
+    /// Periodicity along each dimension.
+    PeriodicitySpec myPeriodicitySpec;
 
   }; // end of class VoronoiMap
 
