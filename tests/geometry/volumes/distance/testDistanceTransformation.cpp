@@ -61,7 +61,7 @@ void randomSeeds(Image &input, const unsigned int nb, const int value)
 {
   typename Image::Point p, low = input.domain().lowerBound(), up = input.domain().upperBound();
   typename Image::Vector ext;
-  
+
   for (Dimension i = 0; i < Image::Domain::dimension; i++)
       ext[i] = up[i] - low[i] + 1;
 
@@ -69,9 +69,9 @@ void randomSeeds(Image &input, const unsigned int nb, const int value)
   for (unsigned int k = 0 ; k < nb; k++)
     {
       for (unsigned int dim = 0; dim < Image::dimension; dim++)
-	{
-	  p[dim] = rand() % (ext[dim]) +  low[dim];
-	}
+        {
+          p[dim] = rand() % (ext[dim]) +  low[dim];
+        }
       input.setValue(p, value);
     }
 }
@@ -85,7 +85,7 @@ void randomSeeds(Image &input, const unsigned int nb, const int value)
 bool testDistanceTransformation()
 {
   bool allfine;
-  
+
   trace.beginBlock ( "Testing the whole DT computation" );
 
   typedef SpaceND<2> TSpace;
@@ -120,9 +120,9 @@ bool testDistanceTransformation()
   board.saveSVG ( "image-preDT.svg" );
   //We just iterate on the Domain points and print out the point coordinates.
   std::copy ( image.begin(),
-	      image.end(),
-	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
-  
+              image.end(),
+              std::ostream_iterator<unsigned int> ( std::cout, " " ) );
+
   trace.info()<<std::endl;
   for(int i=2;i<=15;++i)
     {
@@ -130,20 +130,20 @@ bool testDistanceTransformation()
         trace.info()<< image(Point(i,j))<<" ";
       trace.info()<<std::endl;
     }
-  
-    
+
+
   trace.warning() << dt << endl;
   trace.info() <<std::endl;
 
   DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin();
   DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator itend = dt.constRange().end();
-  
+
   for (; it != itend; ++it)
     {
       std::cout << (*it) << " ";
     }
   std::cout << std::endl;
-  
+
   trace.info()<<std::endl;
   for(int i=2;i<=15;++i)
     {
@@ -151,7 +151,7 @@ bool testDistanceTransformation()
         trace.info()<< dt(Point(i,j))<<" ";
       trace.info()<<std::endl;
     }
-  
+
 
   trace.info()<<std::endl;
   for(int i=2;i<=15;++i)
@@ -169,7 +169,7 @@ bool testDistanceTransformation()
 
 
   allfine = true;
-  
+
   trace.info()<<std::endl;
   for(int i=2;i<=15;++i)
     {
@@ -214,15 +214,15 @@ bool testDistanceTransformationNeg()
   typedef ImageSelector<Domain, unsigned int>::Type Image;
   Image image ( Domain( a, b ));
 
-  for(int y=-10; y<=10;y++) 
+  for(int y=-10; y<=10;y++)
     for(int x=-10; x<=10;x++)
       {
-	if ((abs(x)<7) && (abs(y)<5))
-	  image.setValue(Point(x,y),1);
-	else
-	  image.setValue(Point(x,y),0);
+        if ((abs(x)<7) && (abs(y)<5))
+          image.setValue(Point(x,y),1);
+        else
+          image.setValue(Point(x,y),0);
       }
-  
+
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
 
@@ -234,35 +234,35 @@ bool testDistanceTransformationNeg()
   board.saveSVG ( "image-preDT-neg.svg" );
 
 
-  for(int y=-10; y<=10;y++) 
+  for(int y=-10; y<=10;y++)
     {
       for(int x=-10; x<=10;x++)
-	{
-	  std::cout<<image(Point(x,y))<<"  ";
-	}
+        {
+          std::cout<<image(Point(x,y))<<"  ";
+        }
       std::cout<<std::endl;
     }
- 
+
   trace.info()<<"Domain "<<Domain(a,b)<<std::endl;
   Domain dom(a,b);
   DistanceTransformation<TSpace, Predicate , L2Metric> dt(&dom, &aPredicate, &l2);
-   
+
   DistanceTransformation<TSpace, Predicate , L2Metric>::Value maxv=0.0;
-  for(DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(), 
+  for(DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(),
         itend = dt.constRange().end();
       it != itend ; ++it)
     if ((*it) > maxv)
       maxv = (*it);
 
-  for(int y=-10; y<=10;y++) 
+  for(int y=-10; y<=10;y++)
     {
       for(int x=-10; x<=10;x++)
-	{
-	  std::cout<<dt(Point(x,y))<<"  ";
-	}
+        {
+          std::cout<<dt(Point(x,y))<<"  ";
+        }
       std::cout<<std::endl;
     }
-  
+
 
 
   trace.warning() << dt << endl;
@@ -275,7 +275,7 @@ bool testDistanceTransformationNeg()
   board.saveSVG ( "image-postDT-neg.svg" );
 
   trace.info() << "Done..." << endl;
- 
+
   trace.info() << dt << endl;
 
   trace.endBlock();
@@ -294,13 +294,13 @@ bool testDTFromSet()
   typedef SpaceND<2> TSpace;
   typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
 
- 
+
   Board2D board;
-  
+
   AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), 30, 5,2,0);
   Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
   Z2i::DigitalSet aSet(domain);
-  
+
   Shapes<Z2i::Domain>::euclideanShaper(aSet, flower);
 
   // Since 0.6, models of CDigitalSet are models of CPointPredicate.
@@ -313,7 +313,7 @@ bool testDTFromSet()
   typedef DistanceTransformation<TSpace, Z2i::DigitalSet, L1Metric> L1DT;
   L1Metric l1;
   L1DT dt1(&domain,&aSet, &l1);
- 
+
   L2DT::Value maxv = 0;
   for ( L2DT::ConstRange::ConstIterator it = dt.constRange().begin(), itend = dt.constRange().end();
 	it != itend; ++it)
@@ -322,7 +322,7 @@ bool testDTFromSet()
   trace.error() << "MaxV="<<maxv<<std::endl;
   Display2DFactory::drawImage<Hue>(board, dt, 0, maxv+1);
   board.saveSVG ( "image-DTSet.svg" );
-  
+
   board.clear();
   maxv = 0;
   for ( L1DT::ConstRange::ConstIterator it = dt1.constRange().begin(), itend = dt1.constRange().end();
@@ -387,10 +387,10 @@ bool testDistanceTransformationBorder()
   for (unsigned int y = 0; y < 33; y++)
     {
       for (unsigned int x = 0; x < 33; x++)
-	{
-	  std::cout << std::setw(4) << (*it) << " ";
-	  ++it;
-	}
+        {
+          std::cout << std::setw(4) << (*it) << " ";
+          ++it;
+        }
       std::cout << std::endl;
     }
 
@@ -398,7 +398,7 @@ bool testDistanceTransformationBorder()
 
 
   board.clear();
-  Display2DFactory::drawImage<Hue>(board, dt, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1); 
+  Display2DFactory::drawImage<Hue>(board, dt, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-postDT-border.svg" );
 
 
@@ -432,15 +432,15 @@ bool testDistanceTransformation3D()
   Domain dom(a, b);
 
   for (Domain::ConstIterator it = dom.begin(),
-	 itend = dom.end(); it != itend; ++it)
+       itend = dom.end(); it != itend; ++it)
     {
       if ( ((*it) - c).norm() < 7)
 	image.setValue ( *it, 128 );
     }
-  
+
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
-  
+
   typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
   L2Metric l2;
   DistanceTransformation<TSpace, Predicate, L2Metric> dt(&dom, &aPredicate,&l2);
@@ -449,10 +449,10 @@ bool testDistanceTransformation3D()
   for (unsigned int y = 0; y < 16; y++)
     {
       for (unsigned int x = 0; x < 16; x++)
-	{
-	  Point p(x, y, 8);
-	  std::cout << dt(p) << "   ";
-	}
+        {
+          Point p(x, y, 8);
+          std::cout << dt(p) << "   ";
+        }
       std::cout << std::endl;
     }
 
@@ -492,23 +492,25 @@ bool testChessboard()
 
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
-  
-  
-  //L_euc metric
+
+
+  // L_euc metric
   typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
   L2Metric l2;
   typedef DistanceTransformation<TSpace,Predicate, L2Metric> DT2;
   DT2 dt2(&dom, &aPredicate, &l2);
-  
+  DT2 dt2_periodic( &dom, &aPredicate, &l2, {true, true} );
+
   //L_infinity metric
   //typedef DistanceTransformation<TSpace,Predicate, 0> DT;
   //DT dt(Domain(a,b), aPredicate);;
-  
+
   //L_1 metric
   typedef ExactPredicateLpSeparableMetric<TSpace,1> L1Metric;
   L1Metric l1;
   typedef DistanceTransformation<TSpace,Predicate, L1Metric> DT1;
   DT1 dt1(&dom,&aPredicate,&l1);
+  DT1 dt1_periodic( &dom, &aPredicate, &l1, {true, true} );
 
   DGtal::int64_t maxv = 0;
   for ( DistanceTransformation<TSpace,Predicate, L2Metric>::ConstRange::ConstIterator it = dt2.constRange().begin(), itend = dt2.constRange().end();it != itend; ++it)
@@ -520,10 +522,10 @@ bool testChessboard()
   for (unsigned int y = 0; y < 16; y++)
     {
       for (unsigned int x = 0; x < 16; x++)
-	{
-	  Point p(x, y);
-	  std::cout << std::setw(4) << dt2(p) << " ";
-	}
+        {
+          Point p(x, y);
+          std::cout << std::setw(4) << dt2(p) << " ";
+        }
       std::cout << std::endl;
     }
 
@@ -533,27 +535,37 @@ bool testChessboard()
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Hue>(board, dt2, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-DT-l2.svg" );
+
+  board.clear();
+  Display2DFactory::drawImage<Hue>(board, dt2_periodic, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  board.saveSVG ( "image-DT-l2-periodic.svg" );
+
   trace.info()<< "done"<<endl;
 
 
 
   trace.info()<< "max  L1"<<endl;
   maxv = 0;
-  for ( DistanceTransformation<TSpace,Predicate, L1Metric>::ConstRange::ConstIterator it2 = dt1.constRange().begin(), 
-	  itend = dt1.constRange().end();
-	it2 != itend; ++it2)
+  for ( DistanceTransformation<TSpace,Predicate, L1Metric>::ConstRange::ConstIterator it2 = dt1.constRange().begin(),
+        itend = dt1.constRange().end();
+        it2 != itend; ++it2)
     {
       if ( *it2 > maxv)
-	maxv = (*it2);
+        maxv = (*it2);
     }
-  
+
   trace.info()<< "Exporting to SVG L1"<<endl;
   board.clear();
   Display2DFactory::drawImage<Hue>(board, dt1, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-DT-l1.svg" );
+
+  board.clear();
+  Display2DFactory::drawImage<Hue>(board, dt1_periodic, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  board.saveSVG ( "image-DT-l1-periodic.svg" );
+
   trace.info()<< "done"<<endl;
-  
- 
+
+
   trace.endBlock();
 
   return nbok == nb;
@@ -573,7 +585,7 @@ bool testCompareExactInexact(unsigned int size, unsigned int nb)
 
   Point low=Point::diagonal(0),
     up=Point::diagonal(size);
-  
+
   Domain domain(low,up);
   Set set(domain);
 
@@ -583,7 +595,7 @@ bool testCompareExactInexact(unsigned int size, unsigned int nb)
       for(unsigned int dim=0;  dim<Space::dimension;++dim)
         p[dim]  = rand() % size;
       set.insert(p);
-    }  
+    }
 
   trace.info()<< "Testing metrics "<<MetricEx()<<" "<<MetricInex(norm)<<std::endl;
   trace.info()<< "Testing space dimension "<<Space::dimension<<std::endl;
@@ -591,20 +603,20 @@ bool testCompareExactInexact(unsigned int size, unsigned int nb)
 
   // SetPredicate<Set> setPred(set);
   NegPredicate negPred(set);
-  
+
   typedef DistanceTransformation<Space, NegPredicate, MetricEx> DTEx;
   typedef DistanceTransformation<Space, NegPredicate, MetricInex> DTIn;
   MetricEx metricEx;
   MetricInex metricInex(norm);
   DTEx dtex(&domain, &negPred, &metricEx);
   DTIn dtinex(&domain, &negPred, &metricInex);
-  
+
   double MSE=0.0;
   typename DTEx::ConstRange::ConstIterator it=dtex.constRange().begin(), itend=dtex.constRange().end();
   typename DTIn::ConstRange::ConstIterator it2 = dtinex.constRange().begin();
   for( ; it != itend; ++it, ++it2)
     MSE += ((*it) - (*it2))*((*it) - (*it2));
-  
+
   trace.warning()<<"Resulting MSE= "<<MSE;
   trace.endBlock();
   return true;
@@ -621,9 +633,9 @@ int main ( int argc, char** argv ){
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res =  testDistanceTransformation() && testDistanceTransformationNeg() 
-    && testDTFromSet()  
-    && testDistanceTransformationBorder() 
+  bool res =  testDistanceTransformation() && testDistanceTransformationNeg()
+    && testDTFromSet()
+    && testDistanceTransformationBorder()
     && testDistanceTransformation3D()
     && testChessboard()
     && testDTFromSet()
