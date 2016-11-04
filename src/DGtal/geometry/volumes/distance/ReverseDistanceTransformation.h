@@ -65,7 +65,7 @@ namespace DGtal
    * Description of template class 'ReverseDistanceTransformation' <p>
    * \brief Aim: Implementation of the linear in time reverse distance
    * transformation for separable metrics.
-   * 
+   *
    * This class is a wrapper around a power map construction (see
    * PowerMap). More precisely, at a point p, since the PowerMap at p
    * returns a vector to the closest power site, this class adapts
@@ -86,12 +86,12 @@ namespace DGtal
    */
   template < typename TWeightImage,
              typename TPSeparableMetric,
-	     typename TImageContainer = 
-             ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
-                                       typename TWeightImage::Domain::Space::Vector> >
-  class ReverseDistanceTransformation: public PowerMap<TWeightImage,
-						       TPSeparableMetric, 
-						       TImageContainer>
+             typename TImageContainer =
+               ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
+             typename TWeightImage::Domain::Space::Vector>
+           >
+  class ReverseDistanceTransformation
+    : public PowerMap<TWeightImage, TPSeparableMetric, TImageContainer>
   {
 
   public:
@@ -117,25 +117,27 @@ namespace DGtal
 
     ///Separable Metric type weight type
     typedef typename PowerSeparableMetric::Weight Weight;
-  
+
     ///Definition of the image.
     typedef  ReverseDistanceTransformation<TWeightImage,
                                            TPSeparableMetric,
                                            TImageContainer> Self;
-    
+
     typedef PowerMap<TWeightImage,TPSeparableMetric> Parent;
-   
+
     ///Definition of the image constRange
     typedef  DefaultConstImageRange<Self> ConstRange;
 
 
     ///Definition of the image value type.
-    typedef typename PowerMap<TWeightImage,TPSeparableMetric,
-			      TImageContainer>::Domain  Domain;
-    
+    typedef typename PowerMap< TWeightImage,TPSeparableMetric,
+                               TImageContainer >::Domain  Domain;
+
 
     /**
-     *  Constructor
+     *  Constructor in the non-periodic case.
+     *
+     * See documentation of PowerMap constructor.
      */
     ReverseDistanceTransformation(ConstAlias<Domain> aDomain,
                                   ConstAlias<WeightImage> aWeightImage,
@@ -144,15 +146,30 @@ namespace DGtal
                                                                aWeightImage,
                                                                aMetric)
     {}
-    
+
+    /**
+     *  Constructor with periodicity specification.
+     *
+     * See documentation of PowerMap constructor.
+     */
+    ReverseDistanceTransformation(ConstAlias<Domain> aDomain,
+                                  ConstAlias<WeightImage> aWeightImage,
+                                  ConstAlias<PowerSeparableMetric> aMetric,
+                                  typename Parent::PeriodicitySpec const & aPeriodicitySpec)
+      : PowerMap<TWeightImage,TPSeparableMetric,TImageContainer>(aDomain,
+                                                                 aWeightImage,
+                                                                 aMetric,
+                                                                 aPeriodicitySpec)
+    {}
+
     /**
      * Default destructor
      */
     ~ReverseDistanceTransformation() {};
-        
+
     // ------------------- Private functions ------------------------
   public:
-    
+
      /**
      * Returns a const range on the ReverseDistanceMap values.
      *  @return a const range
@@ -161,7 +178,7 @@ namespace DGtal
     {
       return Parent::domain();
     }
-    
+
      /**
      * Returns a const range on the ReverseDistanceMap values.
      *  @return a const range
@@ -170,7 +187,7 @@ namespace DGtal
     {
       return ConstRange(*this);
     }
-        
+
     /**
      * Access to a ReverseDistanceMap value (a.k.a. the norm of the
      * associated Power vector) at a point.
@@ -179,11 +196,11 @@ namespace DGtal
      */
     Value operator()(const Point &aPoint) const
     {
-      return this->myMetricPtr->powerDistance(aPoint, 
+      return this->myMetricPtr->powerDistance(aPoint,
                                               this->myImagePtr->operator()(aPoint),
                                               this->myWeightImagePtr->operator()( this->myImagePtr->operator()(aPoint)));
-    }    
-          
+    }
+
     /**
      * Access to a ReverseDistanceMap value (a.k.a. the norm of the
      * associated Voronoi vector) at a point.
@@ -193,9 +210,9 @@ namespace DGtal
     Vector getPowerVector(const Point &aPoint) const
     {
       return this->myImagePtr->operator()(aPoint);
-    }    
-     
-    /** 
+    }
+
+    /**
      * @return  Returns the underlying metric.
      */
     const PowerSeparableMetric* metricPtr() const
@@ -203,10 +220,10 @@ namespace DGtal
       return Parent::metricPtr();
     }
 
-    /** 
+    /**
      * Self Display method.
-     * 
-     * @param out output stream 
+     *
+     * @param out output stream
      */
     void selfDisplay ( std::ostream & out ) const
     {
@@ -214,17 +231,17 @@ namespace DGtal
       Parent::selfDisplay(out);
       out << "}";
     }
-    
+
     // ------------------- protected methods ------------------------
   protected:
 
-    /** 
+    /**
      * Default Constructor.
-     * 
+     *
      */
     ReverseDistanceTransformation();
-   
-    
+
+
     // ------------------- Private members ------------------------
   private:
 
@@ -233,19 +250,19 @@ namespace DGtal
 
 // //                                                                           //
 // ///////////////////////////////////////////////////////////////////////////////
-  
+
   template <typename W,typename TSep>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const ReverseDistanceTransformation<W,TSep> & object )
   {
     object.selfDisplay( out );
     return out;
   }
-  
 
-  
+
+
 } // namespace DGtal
 
 //                                                                           //

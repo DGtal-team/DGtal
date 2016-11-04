@@ -90,6 +90,8 @@ before_install:
 before_script:
   - if [ $TRAVIS_OS_NAME == linux ]; then echo "All done.";   fi
   - if [ $TRAVIS_OS_NAME == osx ]; then brew update; brew install boost doxygen homebrew/science/hdf5 graphviz graphicsmagick  gmp libqglviewer fftw; echo "done";fi
+# Workaround due to HDF5 issues on mac (issue #1213)
+  - if [ $TRAVIS_OS_NAME == osx ]; then BTYPE="$BTYPE -DWITH_HDF5=false" ; echo "Disabling HDF5 on MacOS"; fi
 
 
 ############
