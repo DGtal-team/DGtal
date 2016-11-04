@@ -116,7 +116,7 @@ void test_linear_structure()
         //! [neumann-solve]
         solved_solution.myContainer.array() -= solved_solution.myContainer(38);
         solved_solution.myContainer.array() /= solved_solution.myContainer.maxCoeff();
-        const Calculus::PrimalForm0 solved_solution_ordered = reorder * solved_solution;
+        Calculus::PrimalForm0 solved_solution_ordered = reorder * solved_solution;
 
         Calculus::PrimalForm0 analytic_solution(calculus);
         {
@@ -134,6 +134,10 @@ void test_linear_structure()
                 analytic_solution.myContainer(kk) = alpha;
             }
         }
+
+        const double shift = solved_solution_ordered.myContainer[0]-analytic_solution.myContainer[0];
+        for (Calculus::Index index=0; index<solved_solution_ordered.length(); index++) solved_solution_ordered.myContainer[index] -= shift;
+        solved_solution_ordered.myContainer /= solved_solution_ordered.myContainer.maxCoeff();
 
         trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
 
@@ -211,7 +215,7 @@ void test_linear_structure()
         Calculus::PrimalForm0 solved_solution = solver.solve(dirac);
         //! [dirichlet-solve]
         solved_solution.myContainer.array() /= solved_solution.myContainer.maxCoeff();
-        const Calculus::PrimalForm0 solved_solution_ordered = reorder * solved_solution;
+        Calculus::PrimalForm0 solved_solution_ordered = reorder * solved_solution;
 
         Calculus::PrimalForm0 analytic_solution(calculus);
         {
@@ -227,6 +231,10 @@ void test_linear_structure()
                 analytic_solution.myContainer(kk) = alpha;
             }
         }
+
+        const double shift = solved_solution_ordered.myContainer[0]-analytic_solution.myContainer[0];
+        for (Calculus::Index index=0; index<solved_solution_ordered.length(); index++) solved_solution_ordered.myContainer[index] -= shift;
+        solved_solution_ordered.myContainer /= solved_solution_ordered.myContainer.maxCoeff();
 
         trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
 
