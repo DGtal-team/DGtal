@@ -1,4 +1,5 @@
 SET(DGTAL_EXAMPLES_SRC
+  toricdomainvolumetric
   distancetransform2D
   exampleFMM2D
   voronoimap2D
