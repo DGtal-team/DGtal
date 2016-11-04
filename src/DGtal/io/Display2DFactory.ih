@@ -1555,13 +1555,13 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
-          const DGtal::PointVector<dim,TComponent> & p,
-          const DGtal::PointVector<dim,TComponent> & apoint )
+          const DGtal::PointVector<dim,TComponent> & shift,
+          const DGtal::PointVector<dim,TComponent> & basepoint )
 {
   FATAL_ERROR(dim == 2);
 
-  board.drawArrow((float)apoint[0], (float) apoint[1],
-      (float) apoint[0] + p[0], (float)apoint[1] + p[1],
+  board.drawArrow((float)basepoint[0], (float) basepoint[1],
+      (float) basepoint[0] + shift[0], (float)basepoint[1] + shift[1],
       true);
 }
 // PointVector
