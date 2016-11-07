@@ -384,7 +384,7 @@ ENDIF(WITH_OPENMP)
 # -----------------------------------------------------------------------------
 SET(EIGEN_FOUND_DGTAL 0)
 IF(WITH_EIGEN)
-  FIND_PACKAGE(Eigen3 3.2 REQUIRED)
+  FIND_PACKAGE(Eigen3 3 REQUIRED)
   IF(EIGEN3_FOUND)
     SET(EIGEN_FOUND_DGTAL 1)
     ADD_DEFINITIONS("-DWITH_EIGEN ")
