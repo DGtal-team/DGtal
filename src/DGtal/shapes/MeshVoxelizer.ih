@@ -426,8 +426,8 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(const PointR3 &a,
   ASSERT( bbox.lower <= bbox.upper);
   
   //Rounding the bbox
-  std::transform( bbox.lower.begin(), bbox.lower.end(),   [](typename PointR3::Component c) { return std::floor(c);});
-  std::transform( bbox.upper.begin(), bbox.upper.end(),   [](typename PointR3::Component c) { return std::ceil(c);});
+  std::transform( bbox.lower.begin(), bbox.lower.end(),   [](typename PointR3::Component cc) { return std::floor(cc);});
+  std::transform( bbox.upper.begin(), bbox.upper.end(),   [](typename PointR3::Component cc) { return std::ceil(cc);});
   
   // voxelize current triangle to myDigitalSet
   voxelizeTriangle(A, B, C, n, bbox);
