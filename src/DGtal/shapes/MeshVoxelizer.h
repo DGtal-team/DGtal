@@ -48,10 +48,28 @@ namespace DGtal
   /**
    Description of template class 'MeshVoxelizer' 
    
-   \brief Aim: A
-   class for computing a voxelization of a Mesh, use topological
-   target intersection to make a n-separating voxelization
-   with n parameterizable
+   \brief Aim: A class for computing the digitization of a triangle or
+   a Mesh.
+   
+   This class is parametrized by a Separation strategy (either 6 or
+   26). This value corresponds to the separability of a digitized
+   continuous plane. For instance, if the value is set to 6, then
+   the digitization of an Euclidean plane is such that no 6-path
+   exists to go from one side to the other of the Euclidean plane (see
+   @cite KletteRosenfeld_book).
+  
+   From the separability parameter, a template is constructed. A voxel
+   belongs to the digitization if and only if the template centered at
+   a given voxel intersects the triangle.
+
+   This approach is a CPU straightforward implementation of 
+   @cite Laine13.
+
+   6 and 26 templates are the following ones:
+
+   @image html 6-sep.png "Template for 6-separating digitization"
+   @image html 26-sep.png "Template for 26-separating digitization"
+
    
    @tparam TDigitalSet a DigitalSet (model of concepts::CDigitalSet)
    @tparam Separation strategy of the voxelization (6 or 26)
