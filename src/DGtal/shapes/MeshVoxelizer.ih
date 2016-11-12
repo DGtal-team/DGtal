@@ -251,7 +251,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
           
           // check if current voxel projection is inside ABC projection
           if(pointIsInside2DTriangle(AA, BB, CC, pp) != 0)
-            outputSet(v);
+            outputSet.insert(v);
         }
   }
 }
@@ -388,7 +388,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
           
           // check if current voxel projection is inside ABC projection
           if(pointIsInside2DTriangle(AA, BB, CC, pp) != 0)
-            outputSet(v);
+            outputSet.insert(v);
           
           target.myFirst -= v;
           target.mySecond -= v;
@@ -428,9 +428,9 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
   ASSERT( bbox.first <= bbox.second);
   
   //Rounding the bbox
-  std::transform( bbox.first.begin(), bbox.first.end(),
+  std::transform( bbox.first.begin(), bbox.first.end(), bbox.first.begin(),
                  [](typename PointR3::Component cc) { return std::floor(cc);});
-  std::transform( bbox.second.begin(), bbox.second.end(),
+  std::transform( bbox.second.begin(), bbox.second.end(), bbox.second.begin(),
                  [](typename PointR3::Component cc) { return std::ceil(cc);});
   
   // voxelize current triangle to myDigitalSet
