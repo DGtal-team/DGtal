@@ -48,8 +48,8 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
   using VectorR3 = PointVector<3, double>;
   using PointR2  = PointVector<2, double>;
   using PointZ3  = PointVector<3, int>;
-  
-  using MeshVoxelizer = MeshVoxelizer<DigitalSetBySTLSet<Domain>, SEP>;
+  using DigitalSet = DigitalSetBySTLSet<Domain>;
+  using MeshVoxelizer = MeshVoxelizer< DigitalSet, SEP>;
   
   // ---------------------------------------------------------
   SECTION("Test distance point/plan 3D")
@@ -146,5 +146,15 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     P[1] = 9.83;
     P[2] = 0;
     REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == false); // outside
+  }
+  
+  // ---------------------------------------------------------
+  SECTION("Voxelization of a single triange")
+  {
+    Domain domain(Point(0,0,0), Point(10,10,10));
+    DigitalSet outputSet(domain);
+    MeshVoxelizer voxelizer;
+    voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
+    REQUIRE( outputSet.size() == 12);
   }
 }
