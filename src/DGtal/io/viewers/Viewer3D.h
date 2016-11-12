@@ -223,6 +223,8 @@ namespace DGtal
       myGLScaleFactorX=sx;
       myGLScaleFactorY=sy;
       myGLScaleFactorZ=sz;
+      // In order to have the light source rendering the same as wtih the default scale 1. 
+      glEnable(GL_NORMALIZE);  
     }
 
 
