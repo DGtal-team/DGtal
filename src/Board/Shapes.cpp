@@ -2078,7 +2078,8 @@ Rectangle::flushTikZ( std::ostream & stream,
     stream << "\\path[" << tikzProperties(transform) << "] ("
       << _path[0].x << ',' << _path[0].y << ')'
       << " rectangle ("
-      << _path[1].x << ',' << _path[3].y << ");" << std::endl;
+      << _path[1].x << ',' << _path[3].y << "); "
+      << std::endl;
 /*
     if ( _path[0].y == _path[1].y ) {
         stream << "<rect x=\"" << transform.mapX( _path[0].x ) << '"'
