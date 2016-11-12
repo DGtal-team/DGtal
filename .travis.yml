@@ -74,10 +74,10 @@ before_install:
   - UPLOAD_DOC="false"
   - NEEDCORE="true";
   - NEEDEXAMPLESANDTESTS="true";
-  - if [ "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then  wget http://bitbucket.org/eigen/eigen/get/3.2.zip --output-document="eigen.zip"; unzip eigen.zip; fi 
+  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then  wget http://bitbucket.org/eigen/eigen/get/3.2.zip --output-document="eigen.zip"; unzip eigen.zip; fi 
   - if [ $CONFIG == "Documentation" ]; then NEEDEXAMPLESANDTESTS="false"; NEEDCORE="false"; BUILD_DOC="true"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then UPLOAD_DOC="true"; fi; fi; fi
   - if [ $CONFIG == "Debug,Magick,GMP,ITK,FFTW3" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
-  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWITH_EIGEN=true -DEIGEN3_INCLUDE_DIR="$TRAVIS_BUILD_DIR"/eigen-eigen-491bc9c5a46b  -DWARNING_AS_ERROR=OFF";   fi
+  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWITH_EIGEN=true -DEIGEN3_INCLUDE_DIR=$TRAVIS_BUILD_DIR/eigen-eigen-491bc9c5a46b  -DWARNING_AS_ERROR=OFF";   fi
   - if [ $CONFIG == "DGtalTools" ]; then NEEDEXAMPLESANDTESTS="false"; BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=off";  fi
   - if [ $UPLOAD_DOC == "true" ]; then openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; BUILD_DOC="true"; fi
   - if [ $BUILD_DOC == "true" ]; then wget http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
