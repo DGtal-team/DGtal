@@ -1,0 +1,31 @@
+/**
+ * @file moduleMeshVoxelization.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2016/11/12
+ *
+ * Documentation file for feature MeshVoxelization
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleMeshVoxelization Mesh Digitization
+@writers David Coeurjolly, Monir Hadji
+
+[TOC]
+
+\section sectMeshVoxelization1 First Section
+
+\subsection subsectMeshVoxelization11 Subsection 1.1
+
+*/
+
+}
