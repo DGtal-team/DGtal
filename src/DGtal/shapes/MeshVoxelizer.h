@@ -104,7 +104,6 @@ namespace DGtal
   private:
     
     ///Internal Edge structure
-    /// @todo replace structure element to integer only vertices for exact computations.
     struct Edge
     {
       PointR3 myFirst, mySecond;
@@ -155,12 +154,12 @@ namespace DGtal
     enum TriangleOrientation { OUTSIDE, INSIDE, ONEDGE,ONVERTEX};
     
     /**
-     * Compute (unsigned) distance between @a p and the Euclidean plan
+     * Compute (unsigned) distance between @a p and the Euclidean plane
      * defined by normal vector @a n and point @a M
      * @param M point
      * @param n normal
      * @param p point p
-     * @return distance
+     * @return distance the distance to the plane
      */
     static
     double distance(const PointR3& M,
@@ -173,7 +172,7 @@ namespace DGtal
      * @param B Point B
      * @param C Point C
      * @param p point p
-     * @return Either  {OUTSIDE, INSIDE, ONEDGE, ONVERTEX}
+     * @return TriangleOrientation either  {OUTSIDE, INSIDE, ONEDGE, ONVERTEX}
      */
     static
     TriangleOrientation pointIsInside2DTriangle(const PointR2& A,
