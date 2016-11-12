@@ -149,7 +149,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
                                                                 const PointR3& B,
                                                                 const PointR3& C,
                                                                 const VectorR3& n,
-                                                                const std::pair<PointR3, PointR3>& bbox                      )
+                                                                const std::pair<PointR3, PointR3>& bbox)
 {
   OrientationFunctor orientationFunctor;
   
@@ -421,10 +421,11 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
   //Boundingbox
   bbox.first = A;
   bbox.second = A;
-  if (B < bbox.first ) bbox.first = B;
-  if (C < bbox.first ) bbox.first = C;
-  if (B > bbox.second) bbox.second = B;
-  if (C > bbox.second) bbox.second = C;
+  bbox.first = bbox.first.inf( B );
+  bbox.first = bbox.first.inf( C );
+  bbox.second = bbox.second.sup( B );
+  bbox.second = bbox.second.sup( C );
+  
   ASSERT( bbox.first <= bbox.second);
   
   //Rounding the bbox
