@@ -114,38 +114,37 @@ namespace DGtal
   public:
     
     /**
-     * @brief Constructor of the voxelizer
-     * @param aDomain digital space of the voxelization
+     * Constructor of the voxelizer
      */
-    MeshVoxelizer(ConstAlias<Domain> aDomain);
+    MeshVoxelizer();
     
     // ----------------------- Standard services ------------------------------
     /**
      * Voxelize the mesh into the digital set.
      *
+     * @param [out] outputSet the set that collects the voxels.
      * @param [in] aMesh the mesh to voxelize
      * @param [in] scaleFactor the scale factor to apply to the mesh (default=1.0)
      */
-    void voxelize(const Mesh<PointR3> &aMesh,
+    void voxelize(DigitalSet &outputSet,
+                  const Mesh<PointR3> &aMesh,
                   const double scaleFactor = 1.0);
     
     /**
      * Voxelize a unique triangle (a,b,c) into the digital set.
+     * voxels are inserted to the @e outputSet.
      *
+     * @param [out] outputSet the set that collects the voxels.
      * @param [in] a the first point of the triangle
      * @param [in] b the second point of the triangle
      * @param [in] c the third point of the triangle
      * @param [in] scaleFactor the scale factor to apply to the triangle (default=1.0)
      *
      */
-    void voxelize(const PointR3 &a, const PointR3 &b, const PointR3 &c,
+    void voxelize(DigitalSet &outputSet,
+                  const PointR3 &a, const PointR3 &b, const PointR3 &c,
                   const double scaleFactor = 1.0);
     
-    /**
-     * Getter for digitalSet
-     * @return current digital set
-     */
-    const TDigitalSet& digitalSet() const;
     
  
     // ----------------------- Internal services ------------------------------
@@ -192,31 +191,35 @@ namespace DGtal
     
     /**
      * Voxelize ABC to the digitalSet
+     * @param [out] outputSet the set that collects the voxels.
      * @param A Point A
      * @param B Point B
      * @param C Point C
      * @param n normal of ABC
      * @param bbox bounding box of ABC
      */
-    void voxelizeTriangle(const PointR3& A,
+    void voxelizeTriangle(DigitalSet &outputSet,
+                          const PointR3& A,
                           const PointR3& B,
                           const PointR3& C,
                           const VectorR3& n,
                           const std::pair<PointR3, PointR3>& bbox)
     {
       // tag dispatching
-      return voxelizeTriangle(std::integral_constant<size_t, Separation>{}, A, B, C, n, bbox);
+      return voxelizeTriangle(outputSet, std::integral_constant<size_t, Separation>{}, A, B, C, n, bbox);
     }
     
     /**
      * VoxelizeTriangle specialization for 6-separated
+     * @param [out] outputSet the set that collects the voxels.
      * @param A Point A
      * @param B Point B
      * @param C Point C
      * @param n normal of ABC
      * @param bbox bounding box of ABC
      */
-    void voxelizeTriangle(std::integral_constant<size_t, 6>,
+    void voxelizeTriangle(DigitalSet &outputSet,
+                          std::integral_constant<size_t, 6>,
                           const PointR3& A,
                           const PointR3& B,
                           const PointR3& C,
@@ -225,13 +228,15 @@ namespace DGtal
     
     /**
      * VoxelizeTriangle specialization for 26-separated
+     * @param [out] outputSet the set that collects the voxels.
      * @param A Point A
      * @param B Point B
      * @param C Point C
      * @param n normal of ABC
      * @param bbox bounding box of ABC
      */
-    void voxelizeTriangle(std::integral_constant<size_t, 26>,
+    void voxelizeTriangle(DigitalSet &outputSet,
+                          std::integral_constant<size_t, 26>,
                           const PointR3& A,
                           const PointR3& B,
                           const PointR3& C,
@@ -245,10 +250,7 @@ namespace DGtal
     
     ///Intersection target
     std::vector<Edge> myIntersectionTarget;
-    
-    ///Digital set containing the digitization of the mesh
-    DigitalSet myDigitalSet;
-  
+   
   };
 }
 
