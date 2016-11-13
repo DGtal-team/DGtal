@@ -94,15 +94,8 @@ before_script:
 # Main rules
 ############
 script:
-  - echo "---- $BTYPE -----"
-  - cmake $TRAVIS_BUILD_DIR $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER 
-  - echo $BUILD_DOC
-  - echo $UPLOAD_DOC
-  - echo $BTYPE
-  - if [ $NEEDCORE == "true" ]; then  make -j 3 DGtal && make -j 3 DGtalIO; fi
-  - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd examples && make  -j 3 ; fi
-  - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  cd ../tests &&  make -j 3 &&  cd .. ; fi
-  - if [ $NEEDEXAMPLESANDTESTS == "true" ]; then  make test ARGS=--output-on-failure ; fi
+  - echo "---- $BTYPE ---$BUILD_DOC---$UPLOAD_DOC"
+  - .travis/main_build.sh
   - if [ $CONFIG == "DGtalTools" ]; then pwd ; .travis/getAndCheckDGtalTools.sh ; fi
   - if [ $BUILD_DOC == "true" ]; then make doc; fi
   - if [ $CONFIG == "Documentation" ]; then ./.travis/checkDoxygenDocumentation.sh; fi
