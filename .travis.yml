@@ -87,7 +87,7 @@ before_install:
 ########
 before_script:
   - if [ $TRAVIS_OS_NAME == linux ]; then echo "All done.";   fi
-  - if [ $TRAVIS_OS_NAME == osx ]; then source ./travis/install_deps_macos.sh; fi
+  - if [ $TRAVIS_OS_NAME == osx ]; then source .travis/install_deps_macos.sh; fi
 
 
 ############
