@@ -47,7 +47,8 @@ matrix:
       compiler: gcc
 
 addons:
-  packages
+ apt:
+  packages:
    - libboost-dev
    - libcairo2-dev
    - libgmp-dev
