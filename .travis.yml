@@ -58,6 +58,7 @@ addons:
    - doxygen
    - doxygen-latex
    - graphviz
+   - libgraphicsmagick++1-dev
 
 #addons:
 #   apt:
