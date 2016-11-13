@@ -71,6 +71,7 @@ addons:
 
 before_install:
   - source .travis/before_global.sh
+  - echo "C++ ===> ${CXXCOMPILER}"
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then source .travis/install_eigen.sh  ; cd $TRAVIS_BUILD_DIR; fi
   - echo $EIGEN_ROOT
   - if [ $CONFIG == "Documentation" ]; then NEEDEXAMPLESANDTESTS="false"; NEEDCORE="false"; BUILD_DOC="true"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then UPLOAD_DOC="true"; fi; fi; fi
