@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -v
-
 cd deps
 wget http://bitbucket.org/eigen/eigen/get/3.2.10.tar.bz2
 
