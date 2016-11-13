@@ -1,6 +1,7 @@
 language: cpp
 
 sudo: false
+dist: trusty
 
 compiler:
   - gcc
@@ -45,40 +46,32 @@ matrix:
     - os: osx
       compiler: gcc
 
-addons:
-  apt:
-   sources:
-    - deadsnakes
-    - ubuntu-toolchain-r-test
-   packages:
-    - libhdf5-serial-dev
-    - libboost-dev
-    - libboost-program-options-dev
-    - libcairo2-dev
-    - doxygen
-    - doxygen-latex
-    - graphviz
-    - libboost-system-dev
-    - libgmp-dev
-    - libgdcm2-dev
-    - libgraphicsmagick++1-dev
-    - libqglviewer-qt4-dev
-    - libinsighttoolkit3-dev
-    - g++-4.8
-    - gcc-4.8
-    - libfftw3-dev
+# addons:
+#   apt:
+#    sources:
+#     - deadsnakes
+#     - ubuntu-toolchain-r-test
+#    packages:
+#     - libhdf5-serial-dev
+#     - libboost-dev
+#     - libboost-program-options-dev
+#     - libcairo2-dev
+#     - doxygen
+#     - doxygen-latex
+#     - graphviz
+#     - libboost-system-dev
+#     - libgmp-dev
+#     - libgdcm2-dev
+#     - libgraphicsmagick++1-dev
+#     - libqglviewer-qt4-dev
+#     - libinsighttoolkit3-dev
+#     - g++-4.8
+#     - gcc-4.8
+#     - libfftw3-dev
 
 before_install:
-  - export DOWNLOAD_ROOT="$HOME/download"; if [ ! -d "$DOWNLOAD_ROOT" ]; then mkdir -p "$DOWNLOAD_ROOT"; fi
-  - export EIGEN_ROOT="$HOME/eigen"
-  - mkdir "$EIGEN_ROOT"
-  - export SRC_DIR="`pwd`"
-  - if [ $CXX == "g++" ]; then CCOMPILER="gcc-4.8"; CXXCOMPILER="g++-4.8"; fi
-  - BUILD_DOC="false"
-  - UPLOAD_DOC="false"
-  - NEEDCORE="true";
-  - NEEDEXAMPLESANDTESTS="true";
-  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then  wget http://bitbucket.org/eigen/eigen/get/3.3.0.tar.gz --output-document="$DOWNLOAD_ROOT/eigen.tar.gz";  cd "$DOWNLOAD_ROOT"; tar xvzf  eigen.tar.gz -C "$DOWNLOAD_ROOT"; cd "$DOWNLOAD_ROOT/eigen-eigen-26667be4f70b"; mkdir build; cd build; cmake .. -DCMAKE_INSTALL_PREFIX="$EIGEN_ROOT" ; make install  ; cd $TRAVIS_BUILD_DIR; fi
+  - source .travis/before_global.sh
+  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then source .travis/install_eigen.sh  ; cd $TRAVIS_BUILD_DIR; fi
   - if [ $CONFIG == "Documentation" ]; then NEEDEXAMPLESANDTESTS="false"; NEEDCORE="false"; BUILD_DOC="true"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then UPLOAD_DOC="true"; fi; fi; fi
   - if [ $CONFIG == "Debug,Magick,GMP,ITK,FFTW3" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWITH_EIGEN=true  -DWARNING_AS_ERROR=OFF  -DEIGEN3_INCLUDE_DIR=$EIGEN_ROOT/include/eigen3";   fi
@@ -93,9 +86,7 @@ before_install:
 ########
 before_script:
   - if [ $TRAVIS_OS_NAME == linux ]; then echo "All done.";   fi
-  - if [ $TRAVIS_OS_NAME == osx ]; then brew update; brew install boost doxygen homebrew/science/hdf5 graphviz graphicsmagick  gmp libqglviewer fftw; echo "done";fi
-# Workaround due to HDF5 issues on mac (issue #1213)
-  - if [ $TRAVIS_OS_NAME == osx ]; then BTYPE="$BTYPE -DWITH_HDF5=false" ; echo "Disabling HDF5 on MacOS"; fi
+  - if [ $TRAVIS_OS_NAME == osx ]; then source ./travis/install_deps_macos.sh; fi
 
 
 ############
@@ -120,8 +111,4 @@ script:
 ## Building the documentation
 ###########
 after_success:
-  - if [ $UPLOAD_DOC == "true" ]; then rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/;  fi
-  - if [ $UPLOAD_DOC == "true" ]; then cd html; make ; wget http://dgtal.org/doc/docset/template.tgz ; tar zxvf template.tgz ; mv template/* org.dgtal.docset ; tar zcvf DGtal-devel.tgz org.dgtal.docset ; cd .. ;rsync  -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/DGtal-devel.tgz dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/docset ;   fi
-    ## We publish the DGtalTools tags
-  - if [ $UPLOAD_DOC == "true" ]; then scp -i  .travis/dgtal_rsa  DGtal-tagfile dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/tags/;scp -i  .travis/dgtal_rsa  Board-tagfile dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/tags/; fi
-  - echo "All done..."
+  - if [ $UPLOAD_DOC == "true" ]; then .travis/publish_doc.sh;  fi
