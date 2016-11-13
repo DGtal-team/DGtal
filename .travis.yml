@@ -1,7 +1,6 @@
 language: cpp
 
 sudo: false
-dist: trusty
 
 compiler:
   - gcc
@@ -46,43 +45,29 @@ matrix:
     - os: osx
       compiler: gcc
 
-addons:
- apt:
-  packages:
-   - libboost-dev
-   - libcairo2-dev
-   - libgmp-dev
-   - libhdf5-serial-dev
-   - libfftw3-dev
-   - libinsighttoolkit3-dev
-   - libgdcm2-dev
-   - doxygen
-   - doxygen-latex
-   - graphviz
-   - libgraphicsmagick++1-dev
 
-#addons:
-#   apt:
-#    sources:
-#     - deadsnakes
-#     - ubuntu-toolchain-r-test
-#    packages:
-#     - libhdf5-serial-dev
-#     - libboost-dev
-#     - libboost-program-options-dev
-#     - libcairo2-dev
-#     - doxygen
-#     - doxygen-latex
-#     - graphviz
-#     - libboost-system-dev
-#     - libgmp-dev
-#     - libgdcm2-dev
-#     - libgraphicsmagick++1-dev
-#     - libqglviewer-qt4-dev
-#     - libinsighttoolkit3-dev
-#     - g++-4.8
-#     - gcc-4.8
-#     - libfftw3-dev
+addons:
+  apt:
+   sources:
+    - deadsnakes
+    - ubuntu-toolchain-r-test
+   packages:
+    - libhdf5-serial-dev
+    - libboost-dev
+    - libboost-program-options-dev
+    - libcairo2-dev
+    - doxygen
+    - doxygen-latex
+    - graphviz
+    - libboost-system-dev
+    - libgmp-dev
+    - libgdcm2-dev
+    - libgraphicsmagick++1-dev
+    - libqglviewer-qt4-dev
+    - libinsighttoolkit3-dev
+    - g++-4.8
+    - gcc-4.8
+    - libfftw3-dev
 
 before_install:
   - source .travis/before_global.sh
