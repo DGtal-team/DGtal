@@ -6,8 +6,8 @@ NEED_CORE="true"
 NEEDEXAMPLESANDTESTS="true";
 SRC_DIR="`pwd`"
 
-CCOMPILER="cc"
-CXXCOMPILER="c++"
+CCOMPILER="gcc-4.8"
+CXXCOMPILER="g++-4.8"
 
 
 ##Preparing folders
