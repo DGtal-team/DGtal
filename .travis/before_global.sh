@@ -9,6 +9,7 @@ SRC_DIR="`pwd`"
 CCOMPILER="gcc-4.8"
 CXXCOMPILER="g++-4.8"
 
+echo "CXXCOMPILER = $CXXCOMPILER"
 
 ##Preparing folders
 mkdir deps/
