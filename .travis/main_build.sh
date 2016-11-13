@@ -21,3 +21,8 @@ then
     cd examples && make  -j 3 && cd ../tests &&  make -j 3 && make test  ARGS=--output-on-failure
 fi
 
+### DGtal doc
+if [ $BUILD_DOC == "true" ]
+then
+    make doc
+fi

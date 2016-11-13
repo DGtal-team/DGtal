@@ -96,9 +96,8 @@ before_script:
 script:
   - echo "---- $BTYPE ---$BUILD_DOC---$UPLOAD_DOC"
   - .travis/main_build.sh
-  - if [ $CONFIG == "DGtalTools" ]; then pwd ; .travis/getAndCheckDGtalTools.sh ; fi
-  - if [ $BUILD_DOC == "true" ]; then make doc; fi
-  - if [ $CONFIG == "Documentation" ]; then ./.travis/checkDoxygenDocumentation.sh; fi
+  - if [ $CONFIG == "DGtalTools" ]; then  .travis/getAndCheckDGtalTools.sh ; fi
+  - if [ $CONFIG == "Documentation" ]; then .travis/checkDoxygenDocumentation.sh; fi
 
 
 ###########
