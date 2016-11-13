@@ -46,7 +46,20 @@ matrix:
     - os: osx
       compiler: gcc
 
-# addons:
+addons:
+  packages
+   - libboost-dev
+   - libcairo2-dev
+   - libgmp-dev
+   - libhdf5-serial-dev
+   - libfftw3-dev
+   - libinsighttoolkit3-dev
+   - libgdcm2-dev
+   - doxygen
+   - doxygen-latex
+   - graphviz
+
+#addons:
 #   apt:
 #    sources:
 #     - deadsnakes
