@@ -20,7 +20,7 @@ echo "NeedExample $NEEDEXAMPLESANDTESTS"
 ### DGtal Examples and Examples
 if [ $NEEDEXAMPLESANDTESTS = "true" ];
 then
-    cd examples ; make  -j 3 ; echo "PWD"; pwd
+    cd examples ; make  -j 3 ; echo "PWD"; pwd ; ls -l ..
     cd ../tests ;  make -j 3
     make test  ARGS=--output-on-failure
 fi
