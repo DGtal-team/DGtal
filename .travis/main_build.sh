@@ -8,7 +8,7 @@ cd build
 ### Cmake
 echo "Using C++ = $CXXCOMPILER"
 cmake ..  $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER 
- 
+echo "NeedCore = $NEEDCORE" 
 ### DGtal Core build
 if [ $NEEDCORE = "true" ];
 then
