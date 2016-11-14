@@ -20,7 +20,7 @@ fi
 ### DGtal Examples and Examples
 if [ $NEEDEXAMPLESANDTESTS = "true" ];
 then
-    cd examples ; make  -j 3
+    cd examples ; make  -j 3 ; echo "PWD"; pwd
     cd ../tests ;  make -j 3
     make test  ARGS=--output-on-failure
 fi
