@@ -8,7 +8,8 @@ cd build
 ### Cmake
 echo "Using C++ = $CXXCOMPILER"
 cmake ..  $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER 
-echo "NeedCore = $NEEDCORE" 
+
+
 ### DGtal Core build
 if [ $NEEDCORE = "true" ];
 then
@@ -19,7 +20,9 @@ fi
 ### DGtal Examples and Examples
 if [ $NEEDEXAMPLESANDTESTS = "true" ];
 then
-    cd examples && make  -j 3 && cd ../tests &&  make -j 3 && make test  ARGS=--output-on-failure
+    cd examples ; make  -j 3
+    cd ../tests ;  make -j 3
+    make test  ARGS=--output-on-failure
 fi
 
 ### DGtal doc
