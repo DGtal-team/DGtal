@@ -10,4 +10,4 @@ cd eigen-eigen-b9cd8366d4e8
 mkdir build ; cd build
 
 cmake .. -DCMAKE_INSTALL_PREFIX="${SRC_DIR}/deps/local"
-make && make install && cd ${SRC_DIR} && EIGEN_ROOT="$SRC_DIR/deps/local"
+make && make install && cd ${SRC_DIR} && export EIGEN_ROOT="$SRC_DIR/deps/local"

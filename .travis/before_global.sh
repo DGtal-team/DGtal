@@ -1,13 +1,13 @@
 #!/bin/bash
 
-BUILD_DOC="false"
-UPLOAD_DOC="false"
-NEED_CORE="true"
-NEEDEXAMPLESANDTESTS="true";
-SRC_DIR="`pwd`"
+export BUILD_DOC="false"
+export UPLOAD_DOC="false"
+export NEED_CORE="true"
+export NEEDEXAMPLESANDTESTS="true";
+export SRC_DIR="`pwd`"
 
-CCOMPILER="gcc-4.8"
-CXXCOMPILER="g++-4.8"
+export CCOMPILER="gcc-4.8"
+export CXXCOMPILER="g++-4.8"
 
 echo "CXXCOMPILER = $CXXCOMPILER"
 
