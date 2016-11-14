@@ -16,7 +16,7 @@ then
     make -j 3 DGtal && make -j 3 DGtalIO
 fi
 
-
+echo "NeedExample $NEEDEXAMPLESANDTESTS"
 ### DGtal Examples and Examples
 if [ $NEEDEXAMPLESANDTESTS = "true" ];
 then
