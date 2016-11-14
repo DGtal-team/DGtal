@@ -9,8 +9,6 @@ export SRC_DIR="`pwd`"
 export CCOMPILER="gcc-4.8"
 export CXXCOMPILER="g++-4.8"
 
-echo "CXXCOMPILER = $CXXCOMPILER"
-
 ##Preparing folders
 mkdir deps/
 mkdir deps/local
