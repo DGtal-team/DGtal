@@ -2,8 +2,12 @@
 
 set -ev
 
-BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS"; 
+## Temporary HDF5 build issue
+export BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS"; 
 
-brew update && brew install boost doxygen homebrew/science/hdf5 graphviz graphicsmagick  gmp  fftw
+#
+# Note: gmp and boost already installed
+#
 
-brew install homebrew/boneyard/libqglviewer
+brew update
+brew install doxygen homebrew/science/hdf5 graphviz graphicsmagick fftw eigen  homebrew/boneyard/libqglviewer
