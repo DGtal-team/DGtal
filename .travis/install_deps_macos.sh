@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ev
 
 BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS"; 
 
