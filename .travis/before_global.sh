@@ -17,7 +17,6 @@ then
     export CXXCOMPILER="g++-4.8"
 fi
 
-
 ##Preparing folders
 mkdir deps/
 mkdir deps/local
