@@ -246,7 +246,6 @@ void test_linear_structure()
             for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
             {
                 handle << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
-                trace.info() << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
             }
         }
 
