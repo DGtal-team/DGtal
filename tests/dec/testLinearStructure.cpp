@@ -81,8 +81,10 @@ void test_linear_structure()
     trace.info() << calculus << endl;
 
     //! [input-dirac]
-    Calculus::PrimalForm0 dirac = Calculus::PrimalForm0::dirac(calculus, calculus.myKSpace.uCell(Point(10,4)));
+    Calculus::Cell dirac_cell = calculus.myKSpace.uCell(Point(10,4));
+    Calculus::PrimalForm0 dirac = Calculus::PrimalForm0::dirac(calculus, dirac_cell);
     //! [input-dirac]
+    trace.info() << "dirac_cell_index=" << calculus.getCellIndex(dirac_cell) << endl;
 
     {
         Board2D board;
@@ -114,8 +116,6 @@ void test_linear_structure()
         solver.compute(laplace);
         Calculus::PrimalForm0 solved_solution = solver.solve(dirac);
         //! [neumann-solve]
-        solved_solution.myContainer.array() -= solved_solution.myContainer(38);
-        solved_solution.myContainer.array() /= solved_solution.myContainer.maxCoeff();
         Calculus::PrimalForm0 solved_solution_ordered = reorder * solved_solution;
 
         Calculus::PrimalForm0 analytic_solution(calculus);
@@ -146,7 +146,6 @@ void test_linear_structure()
             for (Calculus::Index kk=0; kk<analytic_solution.length(); kk++)
             {
                 handle << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
-                trace.info() << solved_solution_ordered.myContainer(kk) << " " << analytic_solution.myContainer(kk) << endl;
             }
         }
 
@@ -183,6 +182,10 @@ void test_linear_structure()
     calculus.insertSCell( calculus.myKSpace.sCell(Point(1,20), Calculus::KSpace::NEG) );
     calculus.updateIndexes();
     //! [dirichlet-creation]
+
+    dirac = Calculus::PrimalForm0::dirac(calculus, dirac_cell);
+    trace.info() << calculus << endl;
+    trace.info() << "dirac_cell_index=" << calculus.getCellIndex(dirac_cell) << endl;
 
     {
         Board2D board;
