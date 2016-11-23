@@ -50,11 +50,12 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#if defined(__GNUG__)
+#if defined(__GNUG__) && !defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #pragma GCC diagnostic ignored "-Wignored-attributes"
+#pragma GCC diagnostic ignored "-Wshadow"
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -70,9 +71,9 @@
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
-#if defined(__GNUG__)
-#endif
+#if defined(__GNUG__) && !defined(__clang__)
 #pragma GCC diagnostic pop
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
