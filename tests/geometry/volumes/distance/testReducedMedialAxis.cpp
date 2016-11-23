@@ -29,6 +29,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <array>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
@@ -48,7 +50,7 @@ using namespace DGtal;
  * Example of a test. To be completed.
  *
  */
-bool testReducedMedialAxis()
+bool testReducedMedialAxis( std::array<bool, 2> const& aPeriodicity = {{ false, false }} )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -73,14 +75,16 @@ bool testReducedMedialAxis()
   image.setValue(Z2i::Point(7,7), 16);
 
   Z2i::L2PowerMetric l2power;
-  PowerMap<Image, Z2i::L2PowerMetric> power(&domainLarge, &image, &l2power);
+  PowerMap<Image, Z2i::L2PowerMetric> power(&domainLarge, &image, &l2power, aPeriodicity );
+
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)
-	if (image.domain().isInside(Z2i::Point(i,j)))
-	  trace.info()<< image(Z2i::Point(i,j))<<" ";
-	else
-	  trace.info()<< "0 ";
+        if (image.domain().isInside(Z2i::Point(i,j)))
+          trace.info()<< image(Z2i::Point(i,j))<<" ";
+        else
+          trace.info()<< "0 ";
+
       trace.info()<<std::endl;
     }
   trace.info()<<std::endl;
@@ -89,7 +93,7 @@ bool testReducedMedialAxis()
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)
-	trace.info()<< power(Z2i::Point(i,j))[0]<<","<<power(Z2i::Point(i,j))[1]<<" ";
+        trace.info()<< power(Z2i::Point(i,j))[0]<<","<<power(Z2i::Point(i,j))[1]<<" ";
       trace.info()<<std::endl;
     }
 
@@ -98,12 +102,12 @@ bool testReducedMedialAxis()
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)
-	{
-	  Z2i::Point p(i,j);
-	  DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
-	    ( j-power(p)[1])*(j-power(p)[1])  - image(power(p));
-	  trace.info()<< dist;
-	}
+        {
+          Z2i::Point p(i,j);
+          DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
+            ( j-power(p)[1])*(j-power(p)[1])  - image(power.projectPoint(power(p)));
+          trace.info()<< dist;
+        }
       std::cerr<<std::endl;
     }
   trace.info()<<std::endl;
@@ -115,14 +119,14 @@ bool testReducedMedialAxis()
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)
-	{
-	  Z2i::Point p(i,j);
+        {
+          Z2i::Point p(i,j);
           if (rdma.domain().isInside(p) )
             trace.info()<< rdma(p);
           else
             trace.info()<< " - ";
 
-	}
+        }
       std::cerr<<std::endl;
     }
   trace.info()<<std::endl;
@@ -131,8 +135,22 @@ bool testReducedMedialAxis()
   nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+               << "true == true" << std::endl;
   trace.endBlock();
+
+  bool isEqual = true;
+  for ( auto const & pt : domain )
+    {
+      const Image::Value a = image.domain().isInside(pt) ? image(pt) : 0;
+      const Image::Value b = rdma.domain().isInside(pt) ? rdma(pt) : 0;
+      if ( a != b )
+        {
+          isEqual = false;
+          break;
+        }
+    }
+
+  trace.info() << "Equality ? " << isEqual << std::endl;
 
   return nbok == nb;
 }
@@ -148,7 +166,13 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testReducedMedialAxis(); // && ... other tests
+  bool res =
+       testReducedMedialAxis()
+    && testReducedMedialAxis( {{ true,  false }} )
+    && testReducedMedialAxis( {{ false, true  }} )
+    && testReducedMedialAxis( {{ true,  true  }} )
+  ; // && ... other tests
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
