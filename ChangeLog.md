@@ -20,6 +20,10 @@
  - ArithDSSIterator: fix missing postfix ++.
    (I. Sivignon, [#1187](https://github.com/DGtal-team/DGtal/pull/1187))
 
+- *IO Package*
+ - Viewer3D: fix bad rendering when changing the scale.
+   (Bertrand Kerautret, [#1217](https://github.com/DGtal-team/DGtal/pull/1217))
+
 # DGtal 0.9.2
 
 ## New Features / Critical Changes
