@@ -396,7 +396,7 @@ namespace DGtal
        * smaller than "other" fraction.
        * @param other any fraction
        * @return a fraction
-       * NB: \f$ O(k) where k is the depth of the output fraction\f$.
+       * NB: \f$ O(k) \f$ where \f$ k \f$ is the depth of the output fraction.
        */
       Fraction simplestFractionInBetween(const Fraction & other) const;
 	
