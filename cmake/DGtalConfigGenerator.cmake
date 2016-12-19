@@ -21,6 +21,9 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
 
 configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
   "${PROJECT_BINARY_DIR}/DGtalConfigVersion.cmake" @ONLY)
+# Copy also the cpp11_check.cpp for the build tree.
+file(COPY ${PROJECT_SOURCE_DIR}/cmake/src/cpp11/cpp11_check.cpp
+     DESTINATION ${PROJECT_BINARY_DIR})
 
 # Install the export set for use with the install-tree
 install(EXPORT DGtalLibraryDepends DESTINATION
@@ -40,4 +43,5 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
 install(FILES
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfig.cmake"
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfigVersion.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/src/cpp11/cpp11_check.cpp"
   DESTINATION "${DGTAL_CMAKE_DIR}" COMPONENT dev)
