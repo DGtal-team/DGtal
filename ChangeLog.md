@@ -4,8 +4,7 @@
 
 - *Configuration/General*
  - Set flag -std=c++11 only if needed. Modern compilers set compatible flags
-   by default (gnu++14, etc).
-   (Pablo H Cerdan,
+   by default (gnu++14, etc). (Pablo H Cerdan,
    [#1222](https://github.com/DGtal-team/DGtal/pull/1222))
 
 - *Geometry Package*
