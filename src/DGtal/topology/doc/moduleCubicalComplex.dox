@@ -311,20 +311,20 @@ Example topology/cubical-complex-collapse.cpp shows that it works also in 3D (in
 @section dgtal_ccomplex_sec8 Thinning in cubical complexes
 
 Thinning of digital objects in 2D and 3D with the guarantee that a final skeleton is thin can be achieved directly
-only in \f$\mathbb{Z}^2\f$ for so-called well-composed images. Nevertheless, the problem can be solved for 3D objects
-represented by cubical complexes @cite Chaussard:IWCIA:09.
+only in \f$\mathbb{Z}^2\f$ for so-called well-composed images @cite Latecki:ER:95. Nevertheless, the problem can
+ be solved for 3D objects represented by cubical complexes @cite Chaussard:IWCIA:09.
 
 In @cite Chaussard:IWCIA:09 Chaussard and Couprie proposed a parallel directional thinning schemes in cubical complexes
  which allow to obtain a thin result. The implementation in DGtal works for both 2D and 3D cubical complexes.
 
 The first scheme, so-called ParDirCollapse---parallel directional collapse---based on the idea such that free pairs
 of faces are collapsed with respect to a fixed order of directions and order of face dimensions. In other words, in
-each iteration we first collapse free paris of a given direction starting with pairs of the highest dimension.
-When there is no more free pairs to remove for a given direction then another direction is considered until specified
-number of iteration is not reach. Note in the case of ParDirCollapse thinness of the result depends on the number
-of iterations.
+each iteration we first collapse free pairs of a given direction starting with pairs of the highest dimension.
+When there is no more free pairs to remove for a given direction then another direction is considered unless the
+specified number of iterations is not reached . Note in the case of ParDirCollapse the thinness of the result
+depends on the number of iterations.
 
-The below steps present how to use ParDirCollapse in DGtal:
+The steps below present how to use ParDirCollapse in DGtal:
 
 a) add those includes:
 @snippet topology/cubicalComplexThinning.cpp include
@@ -346,7 +346,7 @@ d) run the algorithm (here two iterations):
 
 The second scheme, so-called SurfaceCollapse is similar to ParDirCollapse. The only difference is that after each
 iteration of ParDirCollapse, faces of dimension \f$dim(X) - 1\f$ which are not included in faces of higher
-dimension are marked as non-collapsible. The final output is guarantee to be thin i.e. there is no faces of
+dimension are marked as non-collapsible. The final output is guaranteed to be thin i.e. there is no faces of
 \f$dim(X)\f$.
 
 To run SurfaceCollapse we apply steps a--c for ParDirCollapse and then we apply the step below:

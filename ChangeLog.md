@@ -6,6 +6,11 @@
  - Fixing errors and warnings raised by g++ 4.7.x.
    (Roland Denis, [#1202](https://github.com/DGtal-team/DGtal/pull/1202))
 
+- *Topology Package*
+ -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
+    (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
+    [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
+
 # DGtal 0.9.2
 
 ## New Features / Critical Changes
@@ -86,10 +91,6 @@
 - *Topology Package*
  - Add pre-calculated look up tables to speed up Object::isSimple calculations.
    (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
- -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
-    (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
-    [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
-
 
 ## Bug Fixes
 - *Configuration/General*
