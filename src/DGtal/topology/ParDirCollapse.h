@@ -59,7 +59,16 @@ namespace DGtal
 // class ParDirCollapse
 /**
  * Description of class 'ParDirCollapse' <p>
- * \brief Aim: Implements thinning algorithm in cubical complexes.
+ * \brief Aim: Implements thinning algorithms in cubical complexes.
+ * The implementation supports any model of cubical complex,
+ * for instance a DGtal::CubicalComplex< KhalimskySpaceND< 3, int > >.
+ * Three approaches are provided. The first---ParDirCollapse---bases
+ * on directional collapse of free pairs of faces. Second---CollapseSurface---is an
+ * extension of ParDirCollapse such that faces of dimension one lower than
+ * the dimension of the complex are kept. The last approach ---CollapseIsthmus---is
+ * also an extension of ParDirCollapse such that faces of dimension one lower than
+ * the complex are preserved when they do not contain free faces of dimension two
+ * lower than the complex.
  * Paper: Chaussard, J. and Couprie, M., Surface Thinning in 3D Cubical Complexes,
  * Combinatorial Image Analysis, (2009)
  * @tparam CC cubical complex.
@@ -73,8 +82,8 @@ class ParDirCollapse
 public:
     /// Any model of concepts::CCellularGridSpaceND, i.e. a type that models a Khalimsky space.
     typedef typename CC::KSpace KSpace;
-    /// Type of Nd integer vector
-    typedef PointVector< KSpace::dimension, int > Vector;
+    /// Type of integer point
+    typedef CC::Point Point;
     /// Type of cells in Khalimsky space
     typedef typename KSpace::Cell Cell;
     /// Type of collection of cells
@@ -98,25 +107,33 @@ public:
     ParDirCollapse ( const KSpace & k );
 
      /**
+     * This method should be use to point to a complex
+     * to which one wish to apply one of the thinning
+     * algorithms.
      * @param pComplex -- Cubical complex
      */
     void attach ( Alias< CC > pComplex );
 
      /**
+     * This method applies a given number of iterations to a complex
+     * provided by the attach() method.
      * @param iterations -- number of iterations
      * @return total number of removed cells.
      */
     unsigned int eval ( unsigned int iterations );
 
     /**
-     * Extension of basic algorithm which preserve KSpace::dimension - 1 faces which are not included
-     * in any KSpace::dimension cells.
+     * Extension of basic algorithm---ParDirCollapse---which preserve
+     * KSpace::dimension - 1 faces which are not included in any
+     * KSpace::dimension cells.
      */
     void collapseSurface();
 
     /**
-     * Extension of basic algorithm which preserve KSpace::dimension - 1 faces which are not included
-     * in any KSpace::dimension cells. Moreover, cells to be kept have not to be collapsible.
+     * Extension of basic algorithm---ParDirCollapse---which preserve
+     * KSpace::dimension - 1 faces which are not included in any
+     * KSpace::dimension cells. Moreover, cells to be kept have not to
+     * be collapsible.
      */
     void collapseIsthmus();
 
@@ -127,14 +144,14 @@ private:
      * @param F -- cell of a dimension one lower than G.
      * @param G -- cell of a dimension one higher than F.
      */
-    int getOrientation ( const Cell& F, const Cell& G );
+    int getOrientation ( const Cell& F, const Cell& G ) const;
 
      /**
      * Calculate an orientation of a freepair.
      * @param F -- cell of a dimension one lower than G.
      * @param G -- cell of a dimension one higher than F.
      */
-    int getDirection ( const Cell& F, const Cell& G );
+    int getDirection ( const Cell& F, const Cell& G ) const;
 
      /**
      * Calculate an orientation of a freepair.

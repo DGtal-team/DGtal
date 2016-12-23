@@ -74,11 +74,11 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
     {
         CC boundary = complex->boundary();
         unsigned int priority = 0;
-        for ( int dir = 0; dir < K.dimension; dir++ )
+        for ( Dimension dir = 0; dir < K.dimension; dir++ )
         {
             for ( int orient = -1 ; orient <= 1; orient += 2 )
             {
-                for ( int dim = K.dimension - 1; dim >= 0; dim-- )
+                for ( Dimension dim = K.dimension - 1; dim >= 0; dim-- )
                 {
                     for ( CellMapConstIterator begin = boundary.begin ( dim ); begin != boundary.end ( dim ); ++begin, priority++ )
                     {
@@ -110,11 +110,11 @@ inline
 bool
 DGtal::ParDirCollapse< CC >::completeFreepair ( CellMapConstIterator F, Cell & G, int orient, int dir )
 {
-    if ( (*F).second.data == CC::FIXED )
+    if ( F->second.data == CC::FIXED )
         return false;
-    Cells faces = K.uUpperIncident ( (*F).first );
-    unsigned int dim = K.uDim ( (*F).first ) + 1;
-    for ( unsigned int j = 0; j < faces.size(); j++ )
+    Cells faces = K.uUpperIncident ( F->first );
+    Dimension dim = K.uDim ( F->first ) + 1;
+    for ( CC::Size j = 0; j < faces.size(); j++ )
     {
         if ( complex->findCell ( dim, faces[j] ) !=  complex->end ( dim ) )
         {
@@ -137,10 +137,10 @@ DGtal::ParDirCollapse< CC >::completeFreepair ( CellMapConstIterator F, Cell & G
 template < typename CC >
 inline
 int
-DGtal::ParDirCollapse< CC >::getOrientation( const Cell& F, const Cell& G )
+DGtal::ParDirCollapse< CC >::getOrientation( const Cell& F, const Cell& G ) const
 {
-    Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
-    for ( unsigned int i = 0; i < K.dimension; i++ )
+    Point V = K.uKCoords ( F ) - K.uKCoords ( G );
+    for ( Dimension i = 0; i < K.dimension; i++ )
         if ( V[i] != 0 ) return V[i];
     throw std::runtime_error ( "Cells F and G are same!" );
 }
@@ -148,10 +148,10 @@ DGtal::ParDirCollapse< CC >::getOrientation( const Cell& F, const Cell& G )
 template < typename  CC >
 inline
 int
-DGtal::ParDirCollapse< CC >::getDirection ( const Cell& F, const Cell& G )
+DGtal::ParDirCollapse< CC >::getDirection ( const Cell& F, const Cell& G ) const
 {
-    Vector V = K.uKCoords ( F ) - K.uKCoords ( G );
-    for ( unsigned int i = 0; i< K.dimension; i++ )
+    Point V = K.uKCoords ( F ) - K.uKCoords ( G );
+    for ( Dimension i = 0; i< K.dimension; i++ )
         if ( V[i] != 0 ) return i;
     throw std::runtime_error ( "Cells F and G are same!" );
 }
@@ -192,8 +192,8 @@ bool
 DGtal::ParDirCollapse< CC >::isNotIncludedInUpperDim ( CellMapConstIterator F )
 {
     Cells faces = K.uUpperIncident ( F->first );
-    unsigned int dim = K.uDim ( F->first ) + 1;
-    for ( unsigned int i = 0; i < faces.size(); i++ )
+    Dimension dim = K.uDim ( F->first ) + 1;
+    for ( CC::Size i = 0; i < faces.size(); i++ )
         if ( complex->findCell ( dim, faces[i] ) != complex->end ( dim ) )
             return false;
     return true;
