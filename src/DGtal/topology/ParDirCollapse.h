@@ -83,7 +83,9 @@ public:
     /// Any model of concepts::CCellularGridSpaceND, i.e. a type that models a Khalimsky space.
     typedef typename CC::KSpace KSpace;
     /// Type of integer point
-    typedef CC::Point Point;
+    typedef typename CC::Point Point;
+    /// Type of containers size
+    typedef typename CC::Size Size;
     /// Type of cells in Khalimsky space
     typedef typename KSpace::Cell Cell;
     /// Type of collection of cells
