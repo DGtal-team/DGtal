@@ -114,7 +114,7 @@ DGtal::ParDirCollapse< CC >::completeFreepair ( CellMapConstIterator F, Cell & G
         return false;
     Cells faces = K.uUpperIncident ( F->first );
     Dimension dim = K.uDim ( F->first ) + 1;
-    for ( CC::Size j = 0; j < faces.size(); j++ )
+    for ( Size j = 0; j < faces.size(); j++ )
     {
         if ( complex->findCell ( dim, faces[j] ) !=  complex->end ( dim ) )
         {
@@ -193,7 +193,7 @@ DGtal::ParDirCollapse< CC >::isNotIncludedInUpperDim ( CellMapConstIterator F )
 {
     Cells faces = K.uUpperIncident ( F->first );
     Dimension dim = K.uDim ( F->first ) + 1;
-    for ( CC::Size i = 0; i < faces.size(); i++ )
+    for ( Size i = 0; i < faces.size(); i++ )
         if ( complex->findCell ( dim, faces[i] ) != complex->end ( dim ) )
             return false;
     return true;
@@ -205,13 +205,13 @@ bool
 DGtal::ParDirCollapse< CC >::isIsthmus ( CellMapConstIterator F )
 {
     Cells faces = K.uLowerIncident ( F->first );
-    for ( unsigned int i = 0; i < faces.size(); i++ )
+    for ( Size i = 0; i < faces.size(); i++ )
     {
         int count = 0;
         if ( K.uDim ( faces[i] ) == K.dimension - 2 )
         {
             Cells facesUpper = K.uUpperIncident ( faces[i] );
-            for ( unsigned int j = 0; j < facesUpper.size(); j++ )
+            for ( Size j = 0; j < facesUpper.size(); j++ )
                 if ( complex->findCell ( K.dimension - 1, facesUpper[j] ) != complex->end ( K.dimension - 1 ) )
                     count++;
             if ( count <= 1 )
