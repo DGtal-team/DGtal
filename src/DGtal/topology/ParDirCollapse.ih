@@ -78,7 +78,7 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
         {
             for ( int orient = -1 ; orient <= 1; orient += 2 )
             {
-                for ( Dimension dim = K.dimension - 1; dim >= 0; dim-- )
+                for ( int dim = K.dimension - 1; dim >= 0; dim-- )
                 {
                     for ( CellMapConstIterator begin = boundary.begin ( dim ); begin != boundary.end ( dim ); ++begin, priority++ )
                     {
