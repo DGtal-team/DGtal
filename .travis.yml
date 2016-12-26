@@ -54,7 +54,6 @@ addons:
    packages:
     - libhdf5-serial-dev
     - libboost-dev
-    - libboost-program-options-dev
     - libcairo2-dev
     - doxygen
     - doxygen-latex
