@@ -67,13 +67,13 @@ const int sync_flush           = Z_SYNC_FLUSH;
 
 //------------------Implementation of zlib_error------------------------------//
                     
-zlib_error::zlib_error(int error) 
-    : BOOST_IOSTREAMS_FAILURE("zlib error"), error_(error) 
+zlib_error::zlib_error(int _error)
+    : BOOST_IOSTREAMS_FAILURE("zlib error"), error_(_error)
     { }
 
-void zlib_error::check BOOST_PREVENT_MACRO_SUBSTITUTION(int error)
+void zlib_error::check BOOST_PREVENT_MACRO_SUBSTITUTION(int _error)
 {
-    switch (error) {
+    switch (_error) {
     case Z_OK: 
     case Z_STREAM_END: 
     //case Z_BUF_ERROR: 
@@ -81,7 +81,7 @@ void zlib_error::check BOOST_PREVENT_MACRO_SUBSTITUTION(int error)
     case Z_MEM_ERROR: 
         boost::throw_exception(std::bad_alloc());
     default:
-        boost::throw_exception(zlib_error(error));
+        boost::throw_exception(zlib_error(_error));
         ;
     }
 }
