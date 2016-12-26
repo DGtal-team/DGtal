@@ -13,7 +13,7 @@ cmake ..  $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER
 ### DGtal Core build
 if [ $NEEDCORE = "true" ];
 then
-    make -j 3 DGtal && make -j 3 DGtalIO
+    make -j 3 DGtal 
 fi
 
 echo "NeedExample $NEEDEXAMPLESANDTESTS"

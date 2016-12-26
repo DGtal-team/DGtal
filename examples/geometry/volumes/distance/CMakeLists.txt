@@ -8,7 +8,7 @@ SET(DGTAL_EXAMPLES_SRC
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO )
+  target_link_libraries (${FILE} DGtal  )
 ENDFOREACH(FILE)
 
 if (  WITH_VISU3D_QGLVIEWER )
@@ -18,7 +18,7 @@ if (  WITH_VISU3D_QGLVIEWER )
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE} DGtalIO DGtal)   
+    target_link_libraries ( ${FILE}  DGtal)   
   ENDFOREACH(FILE)
 
 endif ( WITH_VISU3D_QGLVIEWER   )

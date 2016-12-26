@@ -6,6 +6,10 @@
  - Set flag -std=c++11 only if needed. Modern compilers set compatible flags
    by default (gnu++14, etc). (Pablo H Cerdan,
    [#1222](https://github.com/DGtal-team/DGtal/pull/1222))
+ - The project has a now a unique compiled library: DGtal. The DGtalIO
+   target has been removed. (David Coeurjolly,
+   [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
+   
 
 - *Geometry Package*
  - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
