@@ -12,6 +12,8 @@
 // Define BOOST_IOSTREAMS_SOURCE so that <boost/iostreams/detail/config.hpp> 
 // knows that we are building the library (possibly exporting code), rather 
 // than using it (possibly importing code).
+
+/// @file
 #define BOOST_IOSTREAMS_SOURCE 
 
 #include <boost/throw_exception.hpp>
