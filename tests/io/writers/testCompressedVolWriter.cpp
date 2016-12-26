@@ -62,14 +62,13 @@ TEST_CASE( "Testing CompressedVolWriter" )
   Domain domain(Point(0,0,0), Point(10,10,10));
   typedef ImageContainerBySTLVector<Domain, unsigned char> Image;
   Image image(domain);
-  
+  image.setValue(Point(5,5,5), 42);
   
   SECTION("Testing API of CompressedVolWriter")
     {
       VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image);
       VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image,
-                                                                               functors::Identity(), true);
-      
+                                                                               functors::Identity(), true);      
       REQUIRE( image.isValid() );
     }
   
@@ -77,6 +76,9 @@ TEST_CASE( "Testing CompressedVolWriter" )
     {
       Image read = VolReader<Image>::importVol("test.vol");
       REQUIRE( (checkImage(image,read) == true)) ;
+ 
+      Image readz = VolReader<Image>::importVol("testz.vol");
+      REQUIRE( (checkImage(image,readz) == true)) ;
     }
 
 }
