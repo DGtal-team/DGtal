@@ -20,6 +20,19 @@ if ( Boost_FOUND )
 endif( Boost_FOUND )
 
 # -----------------------------------------------------------------------------
+# Looking for zlib
+# -----------------------------------------------------------------------------
+
+set(ZLIB_FOUND FALSE)
+FIND_PACKAGE(ZLIB REQUIRED)
+if ( ZLIB_FOUND )
+  include_directories(SYSTEM ${ZLIB_INCLUDE_DIRS} )
+  SET(DGtalLibInc ${DGtalLibInc} ${ZLIB_INCLUDE_DIRS})
+  SET(DGtalLibDependencies ${DGtalLibDependencies} ${ZLIB_LIBRARIES})
+endif( ZLIB_FOUND )
+
+
+# -----------------------------------------------------------------------------
 # Check some CPP11 features in the compiler
 # -----------------------------------------------------------------------------
 MESSAGE(STATUS "Checking C++11 compatibility:")

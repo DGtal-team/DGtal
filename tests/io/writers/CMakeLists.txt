@@ -1,4 +1,5 @@
 SET(DGTAL_TESTS_SRC_IO_WRITERS
+       testCompressedVolWriter
        testPNMRawWriter 
        testMeshWriter
        testGenericWriter)
@@ -9,4 +10,3 @@ FOREACH(FILE ${DGTAL_TESTS_SRC_IO_WRITERS})
   target_link_libraries (${FILE} DGtal)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
-
