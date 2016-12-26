@@ -186,4 +186,4 @@ IF(@FFTW3_FOUND_DGTAL@)
 ENDIF(@FFTW3_FOUND_DGTAL@)
 
 # These are IMPORTED targets created by DGtalLibraryDepends.cmake
-set(DGTAL_LIBRARIES DGtal DGtalIO)
+set(DGTAL_LIBRARIES DGtal)

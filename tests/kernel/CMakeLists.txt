@@ -20,7 +20,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_KERNEL})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+  target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -32,7 +32,7 @@ IF(WITH_BENCHMARK)
   #Benchmark target
   FOREACH(FILE ${DGTAL_BENCH_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
     add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
     ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
   ENDFOREACH(FILE)
@@ -47,7 +47,7 @@ IF(GMP_FOUND)
 
   FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
     add_test(${FILE} ${FILE})
   ENDFOREACH(FILE)
 ENDIF(GMP_FOUND)
