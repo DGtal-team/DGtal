@@ -34,6 +34,7 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/writers/VolWriter.h"
+#include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -45,6 +46,16 @@ using namespace Z3i;
 // Functions for testing class CompressedVolWriter.
 ///////////////////////////////////////////////////////////////////////////////
 
+template <typename Image>
+bool checkImage(const Image &a, const Image &b)
+{
+  for(auto p: a.domain())
+  {
+    if (a(p) != b(p))
+      return false;
+  }
+  return true;
+}
 
 TEST_CASE( "Testing CompressedVolWriter" )
 {
@@ -56,16 +67,16 @@ TEST_CASE( "Testing CompressedVolWriter" )
   SECTION("Testing API of CompressedVolWriter")
     {
       VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image);
-      
-      VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image,functors::Identity(), true);
+      VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image,
+                                                                               functors::Identity(), true);
       
       REQUIRE( image.isValid() );
     }
   
   SECTION("Testing write/read of CompressedVolWriter")
     {
-      
-      
+      Image read = VolReader<Image>::importVol("test.vol");
+      REQUIRE( (checkImage(image,read) == true)) ;
     }
 
 }
