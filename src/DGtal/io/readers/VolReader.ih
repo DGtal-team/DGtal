@@ -29,6 +29,9 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -44,8 +47,7 @@ template <typename T, typename TFunctor>
 inline
 T
 DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
-                                         const Functor & aFunctor,
-                                         const bool compressed)   throw( DGtal::IOException )
+                                         const Functor & aFunctor)   throw( DGtal::IOException )
 {
   FILE * fin;
   DGtal::IOException dgtalexception;
@@ -208,14 +210,32 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
         throw dgtalexception;
       }
       
-      //Apply to the image structure
+      //Uncompress if needed
+      if(version == 3)
+      {
+        std::stringstream uncompressed;
+        boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
+        in.push(boost::iostreams::zlib_decompressor());
+        in.push(main);
+        boost::iostreams::copy(in, uncompressed);
+        //Apply to the image structure
+        for(auto i=0; i < total; ++i)
+        {
+          val = uncompressed.get();
+          image.setValue(( *it ), aFunctor(val) );
+          it++;
+        }
+      }
+      else
+      {
+        //Apply to the image structure
       for(auto i=0; i < total; ++i)
       {
         val = main.get();
         image.setValue(( *it ), aFunctor(val) );
         it++;
       }
-      
+      }
       fclose( fin );
       return image;
     }
