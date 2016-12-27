@@ -1,4 +1,4 @@
-# DGtal 0.9.3
+  # DGtal 0.9.3
 
 ## New Features / Critical Changes
 
@@ -22,6 +22,11 @@
    data. VolReady and VolWriter can still manage Version 2 Vols.
    (David Coeurjolly, #1228](https://github.com/DGtal-team/DGtal/pull/1228))
 
+## Changes
+
+ - *Configuration/General*
+  - Continuous integration Travis bots are now based on ubunutu/trusty containers.
+    (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
 
 ## Bug Fixes
 
