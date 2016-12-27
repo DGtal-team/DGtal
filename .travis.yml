@@ -63,7 +63,7 @@ addons:
     - libgmp-dev
     - libgdcm2-dev
     - libgraphicsmagick++1-dev
-    - libqglviewer-qt4-dev
+    - libqglviewer-dev
     - libinsighttoolkit3-dev
     - g++-4.8
     - gcc-4.8
