@@ -54,7 +54,10 @@ bool checkImage(const Image &a, const Image &b)
   for(auto p: a.domain())
   {
     if (a(p) != b(p))
+    {
+      trace.info()<< p <<" "<< a(p) <<" "<<b(p)<<std::endl;
       return false;
+    }
   }
   return true;
 }
@@ -85,14 +88,15 @@ TEST_CASE( "Testing CompressedVolWriter" )
 
 TEST_CASE( "Testing CompressedLongvol" )
 {
-  Domain domain(Point(0,0,0), Point(10,10,10));
+  Domain domain(Point(0,0,0), Point(2,2,2));
   typedef ImageContainerBySTLVector<Domain, DGtal::uint64_t> Image;
   Image image(domain);
-  image.setValue(Point(5,5,5), 42);
+  image.setValue(Point(1,1,1), 4222222);
   
   SECTION("Testing API of CompressedVolWriter")
     {
       LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("test.lvol", image);
+      trace.info()<<std::endl;
       LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("testz.lvol", image, true);
       REQUIRE( image.isValid() );
     }
@@ -102,7 +106,7 @@ TEST_CASE( "Testing CompressedLongvol" )
       Image read = LongvolReader<Image>::importLongvol("test.lvol");
       REQUIRE( (checkImage(image,read) == true)) ;
  
-      Image readz = LongvolReader<Image>::importLongvol("testz.vol");
+      Image readz = LongvolReader<Image>::importLongvol("testz.lvol");
       REQUIRE( (checkImage(image,readz) == true)) ;
     }
 }
