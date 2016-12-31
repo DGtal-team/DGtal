@@ -71,8 +71,8 @@ TEST_CASE( "Testing CompressedVolWriter" )
   
   SECTION("Testing API of CompressedVol")
   {
-    VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image);
-    VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image, true);
+    VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image, false);
+    VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image);
     REQUIRE( image.isValid() );
   }
   
@@ -95,9 +95,9 @@ TEST_CASE( "Testing CompressedLongvol" )
   
   SECTION("Testing API of CompressedVolWriter")
     {
-      LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("test.lvol", image);
+      LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("test.lvol", image, false);
       trace.info()<<std::endl;
-      LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("testz.lvol", image, true);
+      LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("testz.lvol", image);
       REQUIRE( image.isValid() );
     }
   

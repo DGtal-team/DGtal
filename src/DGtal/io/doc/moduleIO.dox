@@ -221,6 +221,33 @@ Use the same import function for both 2D or 3D images:
 
 
 
+
+\subsection volformat Details on the Vol/Longvol formats
+
+The Vol and Longvol formats are described on the  simplevol project
+website
+(http://liris.cnrs.fr/david.coeurjolly/code/simplevol.html). Basically,
+the format consists in:
+* an ASCII header with for instance the image size and the Vol format version
+* a binary chunck with linearized image values.
+
+
+In "Version 2" of Vol and Longvol, the binary chunck is simply a raw
+export of image values (little endian for Longvol entries).
+
+In "Version 3", the binary values are compressed using zlib (default
+version when using the DGtal reader and writer). 
+
+If you want to export an image to "Version 2" Vol or a Longvol, just
+add a @e false flag when exporting. For instance:
+
+@code
+VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image, false);
+@endcode
+
+@note "Version 1" Vol or Longvol files are not supported anymore in
+DGtal readers/writers.
+
 \section fileformat Other geometrical formats
 
 
