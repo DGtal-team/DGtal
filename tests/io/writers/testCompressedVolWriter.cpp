@@ -67,8 +67,7 @@ TEST_CASE( "Testing CompressedVolWriter" )
   SECTION("Testing API of CompressedVolWriter")
     {
       VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image);
-      VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image,
-                                                                               functors::Identity(), true);      
+      VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image, true);
       REQUIRE( image.isValid() );
     }
   
