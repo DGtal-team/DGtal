@@ -103,7 +103,6 @@ namespace DGtal {
       }
       else
       {
-        //We flush the header
         out << main.str();
         out.close();
       }

@@ -177,18 +177,19 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
       DGtal::uint64_t val=0;
       
       typename T::Domain::ConstIterator it = domain.begin();
-      long int total = sx * sy * sz;
+      long int total = sx * sy * sz ;
+      long int totalbytes = total * sizeof(val);
       std::stringstream main;
       
-      while (( count < total ) && ( fin ) )
+      unsigned char c_temp;
+      while (( count < totalbytes ) && ( fin ) )
       {
-        val = getc( fin );
-        main << val;
+        c_temp = getc( fin );
+        main << c_temp;
         count++;
       }
-      
-    
-      if ( count != total )
+     
+      if ( count != totalbytes )
       {
         trace.error() << "LongvolReader: can't read file (raw data) !\n";
         throw dgtalexception;

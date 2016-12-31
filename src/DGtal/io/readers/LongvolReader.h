@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <cstdio>
 #include "DGtal/base/Common.h"
@@ -127,14 +128,15 @@ namespace DGtal
      */
     template <typename Word>
     static
-    std::istream& read_word( std::istream& fin, Word& aValue )
+    std::stringstream& read_word( std::stringstream & fin, Word& aValue )
     {
       aValue = 0;
-      unsigned char c;
-      for (unsigned size = 0; size < sizeof( Word ); ++size)
+      char c;
+      for (auto size = 0; size < sizeof( Word ); ++size)
       {
-        c = fin.get();
-        aValue |=c << (8 * size);
+        fin.get( c ) ;
+        unsigned char cc=static_cast<unsigned char>(c);
+        aValue |= (cc << (8 * size));
       }
       return fin;
     }
