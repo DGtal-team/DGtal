@@ -52,7 +52,7 @@
 
 namespace DGtal
 {
-
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class LongvolReader
   /**
@@ -60,10 +60,10 @@ namespace DGtal
    * \brief Aim: implements methods to read a "Longvol" file format
    * (with DGtal::uint64_t value type).
    *
-   * The main import method "importLongvol" returns an instance of the template 
+   * The main import method "importLongvol" returns an instance of the template
    * parameter TImageContainer.
    *
-   * The private methods have been backported from the Simplelvol project 
+   * The private methods have been backported from the Simplelvol project
    * (see http://liris.cnrs.fr/david.coeurjolly).
    *
    * Example usage:
@@ -80,29 +80,29 @@ namespace DGtal
    * ...
    * @endcode
    *
-   * @tparam TImageContainer the image container to use. 
-   * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>). 
+   * @tparam TImageContainer the image container to use.
+   * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>).
    *
    * @see testLongvol.cpp
    */
-  template <typename TImageContainer, 
-	    typename TFunctor= functors::Cast< typename TImageContainer::Value > >
+  template <typename TImageContainer,
+  typename TFunctor= functors::Cast< typename TImageContainer::Value > >
   struct LongvolReader
   {
     // ----------------------- Standard services ------------------------------
-
+    
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Value Value;    
+    typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor;
-
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, Value > )) ;    
+    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, Value > )) ;
     BOOST_STATIC_ASSERT(ImageContainer::Domain::dimension == 3);
-
-
-    /** 
-     * Main method to import a Longvol into an instance of the 
+    
+    
+    /**
+     * Main method to import a Longvol into an instance of the
      * template parameter ImageContainer.
-     * 
+     *
      * @param filename the file name to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
@@ -110,31 +110,36 @@ namespace DGtal
      *
      *@return an instance of the ImageContainer.
      */
-    static ImageContainer importLongvol(const std::string & filename, 
-					const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+    static ImageContainer importLongvol(const std::string & filename,
+                                        const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
     
-   
+    
     
   private:
-
-    /** 
+    
+    /**
      * Generic read word (binary mode) in little-endian mode.
-     * 
-     * @param fin input FILE.
+     *
+     * @param fin input stream.
      * @param aValue value to write.
-     * 
+     *
      * @return modified stream.
      */
     template <typename Word>
     static
-    FILE* read_word( FILE* fin, Word& aValue )
+    std::istream& read_word( std::istream& fin, Word& aValue )
     {
       aValue = 0;
+      unsigned char c;
       for (unsigned size = 0; size < sizeof( Word ); ++size)
-	aValue |= getc(fin) << (8 * size);
+      {
+        c = fin.get();
+        aValue |=c << (8 * size);
+      }
       return fin;
     }
-
+    
+    
     typedef unsigned char voxel;
     /** This class help us to associate a field type and his value.
      * An object is a pair (type, value). You can copy and assign
@@ -147,48 +152,48 @@ namespace DGtal
     struct HeaderField {
       //! Constructor. The string are copied.
       HeaderField( const char *t, const char *v ) :
-	type( strdup(t) ), value( strdup(v) ) {}
+      type( strdup(t) ), value( strdup(v) ) {}
       ~HeaderField() {
-	free( type );
-	free( value );
+        free( type );
+        free( value );
       }
       //! Copy constructor
       HeaderField( const HeaderField &h ) :
-	type( strdup(h.type) ), value( strdup(h.value) ) {};
+      type( strdup(h.type) ), value( strdup(h.value) ) {};
       //! Default constructor
       HeaderField() : type(NULL), value(NULL) {};
       //! Assignement operator
       const HeaderField &operator = (const HeaderField &h) {
-	free( type );
-	free( value );
-	if (h.type != NULL) {
-	  type = strdup( h.type );
-	  value = strdup( h.value );
-	}
-	return *this;
+        free( type );
+        free( value );
+        if (h.type != NULL) {
+          type = strdup( h.type );
+          value = strdup( h.value );
+        }
+        return *this;
       }
       //! Type of field (e.g. Voxel-Size)
       char *type;
       //! Value of field (e.g. 2)
       char *value;
     };
-
-
+    
+    
     //! Returns NULL if this field is not found
     static const char *getHeaderValue( const char *type, const HeaderField * header );
-
+    
     //! Returns non-zero if failure
     static     int getHeaderValueAsInt( const char *type, int *dest , const HeaderField * header);
-
+    
     //! Internal method which returns the index of a field or -1 if not found.
     static int getHeaderField( const char *type, const HeaderField * header ) ;
     
     //! Global list of required fields in a .longvol file
     static const char *requiredHeaders[];
-   
+    
   }; // end of class LongvolReader
-
-
+  
+  
 } // namespace DGtal
 
 

@@ -108,6 +108,8 @@ namespace DGtal {
       {
         //We flush the header
         out << header.str();
+        out.close();
+        out.open(filename.c_str(),std::ios_base::binary | std::ios_base::app);
         out << main.str();
         out.close();
       }
