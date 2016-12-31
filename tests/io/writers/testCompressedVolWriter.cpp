@@ -33,6 +33,8 @@
 #include "ConfigTest.h"
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/writers/LongvolWriter.h"
+#include "DGtal/io/readers/LongvolReader.h"
 #include "DGtal/io/writers/VolWriter.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -64,22 +66,45 @@ TEST_CASE( "Testing CompressedVolWriter" )
   Image image(domain);
   image.setValue(Point(5,5,5), 42);
   
+  SECTION("Testing API of CompressedVol")
+  {
+    VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image);
+    VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image, true);
+    REQUIRE( image.isValid() );
+  }
+  
+  SECTION("Testing write/read of CompressedVolWriter")
+  {
+    Image read = VolReader<Image>::importVol("test.vol");
+    REQUIRE( (checkImage(image,read) == true)) ;
+    
+    Image readz = VolReader<Image>::importVol("testz.vol");
+    REQUIRE( (checkImage(image,readz) == true)) ;
+  }
+}
+
+TEST_CASE( "Testing CompressedLongvol" )
+{
+  Domain domain(Point(0,0,0), Point(10,10,10));
+  typedef ImageContainerBySTLVector<Domain, DGtal::uint64_t> Image;
+  Image image(domain);
+  image.setValue(Point(5,5,5), 42);
+  
   SECTION("Testing API of CompressedVolWriter")
     {
-      VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image);
-      VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image, true);
+      LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("test.lvol", image);
+      LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("testz.lvol", image, true);
       REQUIRE( image.isValid() );
     }
   
   SECTION("Testing write/read of CompressedVolWriter")
     {
-      Image read = VolReader<Image>::importVol("test.vol");
+      Image read = LongvolReader<Image>::importLongvol("test.lvol");
       REQUIRE( (checkImage(image,read) == true)) ;
  
-      Image readz = VolReader<Image>::importVol("testz.vol");
+      Image readz = LongvolReader<Image>::importLongvol("testz.vol");
       REQUIRE( (checkImage(image,readz) == true)) ;
     }
-
 }
 
 /** @ingroup Tests **/
