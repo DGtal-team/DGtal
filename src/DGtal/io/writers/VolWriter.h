@@ -80,13 +80,13 @@ namespace DGtal
      * 
      * @param filename name of the output file
      * @param aImage the image to export
-     * @param aFunctor functor used to cast image values
      * @param compressed boolean to decide wether the vol must be compressed or not
+     * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */
     static bool exportVol(const std::string & filename, const Image &aImage, 
-                          const Functor & aFunctor = Functor(),
-                          const bool compressed=false) throw(DGtal::IOException);
+                          const bool compressed=false,
+                          const Functor & aFunctor = Functor()) throw(DGtal::IOException);
   };
 }//namespace
 
