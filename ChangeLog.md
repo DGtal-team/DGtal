@@ -9,7 +9,8 @@
  - The project has a now a unique compiled library: DGtal. The DGtalIO
    target has been removed. (David Coeurjolly,
    [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
-
+ - Installation of tables is able to use DESTDIR env variable if provided by user.
+   (Pablo H Cerdan, [#1230](https://github.com/DGtal-team/DGtal/pull/1230))
 
 - *Geometry Package*
  - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis

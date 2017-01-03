@@ -27,7 +27,7 @@ install(CODE "
 set(TABLE_DIR ${INSTALL_INCLUDE_DIR}/DGtal/topology/tables)
 configure_file(
   ${PROJECT_SOURCE_DIR}/src/DGtal/topology/tables/NeighborhoodTables.h.in
-  ${INSTALL_INCLUDE_DIR}/DGtal/topology/tables/NeighborhoodTables.h) " )
+  $ENV{DESTDIR}/${INSTALL_INCLUDE_DIR}/DGtal/topology/tables/NeighborhoodTables.h) " )
 
 #--- specific install for uncompressed tables.
 set(unzip_folder_install ${INSTALL_INCLUDE_DIR}/DGtal/topology/tables)
