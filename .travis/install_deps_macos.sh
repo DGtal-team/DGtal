@@ -4,6 +4,7 @@
 # Note: gmp and boost already installed
 #
 brew update
+#brew install qt5 doxygen homebrew/science/hdf5 graphviz graphicsmagick fftw eigen homebrew/boneyard/libqglviewer
 brew install qt5 doxygen  graphviz graphicsmagick fftw eigen homebrew/boneyard/libqglviewer
 
 ## Temporary HDF5 build issue
