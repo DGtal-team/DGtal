@@ -3,11 +3,11 @@ dist: trusty
 sudo: false
 
 compiler:
-  - gcc
+#  - gcc
   - clang
 
 os:
-  - linux
+#  - linux
   - osx
 
 cache: apt
