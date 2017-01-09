@@ -464,40 +464,40 @@ namespace DGtal
      * @param aPoint the point to draw
      * @return the dyn. alloc. default style for this object.
      */
-    template<Dimension dim, typename TComponent>
-    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::PointVector<dim,TComponent> & aPoint );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
     /**
      * Method to draw PointVector as Grid.
      * @param viewer the viewer where to draw
      * @param aPoint the point to draw
      */
-    template<Dimension dim, typename TComponent>
-    static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
-    template<Dimension dim, typename TComponent>
     /**
      * Method to draw PointVector as Paving.
      * @param viewer the viewer where to draw
      * @param aPoint the point to draw
      */
-    static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
     /**
      * Method to draw PointVector as Paving Wired.
      * @param viewer the viewer where to draw
      * @param aPoint the point to draw
      */
-    template<Dimension dim, typename TComponent>
-    static void drawAsPavingWired( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static void drawAsPavingWired( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
     /**
      * Method to draw PointVector.
      * @param viewer the viewer where to draw
      * @param aPoint the point to draw
      */
-    template<Dimension dim, typename TComponent>
-    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
     /**
      * Method to draw PointVector.
@@ -505,8 +505,8 @@ namespace DGtal
      * @param aPoint the point to draw
      * @param aPoint2 the point to draw
      */
-    template<Dimension dim, typename TComponent>
-    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint, const DGtal::PointVector<dim,TComponent> & aPoint2 );
+    template<Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, TContainer2>
+    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim, TComponent1, TContainer1> & aPoint, const DGtal::PointVector<dim, TComponent2, TContainer2> & aPoint2 );
     // PointVector
 
 
