@@ -30,6 +30,9 @@
    (I. Sivignon, [#1187](https://github.com/DGtal-team/DGtal/pull/1187))
 
 - *IO Package*
+ - Missing TContainer template parameter for overloaded functions/methods that
+   rely on PointVector.
+   (Roland Denis, [#1232](https://github.com/DGtal-team/DGtal/pull/1232))
  - Viewer3D: fix bad rendering when changing the scale.
    (Bertrand Kerautret, [#1217](https://github.com/DGtal-team/DGtal/pull/1217))
 
