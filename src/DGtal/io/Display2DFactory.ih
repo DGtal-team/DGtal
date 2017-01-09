@@ -1539,7 +1539,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 {
   std::string mode = board.getMode( p.className() );
   FATAL_ERROR( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
-    ("draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & p ): Unknown mode "+mode)==""  );
+    ("draw( DGtal::Board2D & board, const DGtal::PointVector<dim, TComponent, TContainer> & p ): Unknown mode "+mode)==""  );
 
   if ( mode == "Paving"  || ( mode == "" )  )
     drawAsPaving( board, p );
