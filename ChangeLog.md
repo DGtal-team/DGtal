@@ -1,4 +1,4 @@
-# DGtal 0.9.3
+  # DGtal 0.9.3
 
 ## New Features / Critical Changes
 
@@ -9,13 +9,19 @@
  - The project has a now a unique compiled library: DGtal. The DGtalIO
    target has been removed. (David Coeurjolly,
    [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
-   
+
 
 - *Geometry Package*
  - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
    now work on toric domains (with per-dimension periodicity specification).
    (David Coeurjolly, Roland Denis,
    [#1206](https://github.com/DGtal-team/DGtal/pull/1206))
+
+## Changes
+
+ - *Configuration/General*
+  - Continuous integration Travis bots are now based on ubunutu/trusty containers.
+    (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
 
 ## Bug Fixes
 
