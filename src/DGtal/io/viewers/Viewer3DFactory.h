@@ -505,7 +505,7 @@ namespace DGtal
      * @param aPoint the point to draw
      * @param aPoint2 the point to draw
      */
-    template<Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, TContainer2>
+    template<Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, typename TContainer2>
     static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim, TComponent1, TContainer1> & aPoint, const DGtal::PointVector<dim, TComponent2, TContainer2> & aPoint2 );
     // PointVector
 
