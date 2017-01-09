@@ -1512,30 +1512,30 @@ DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 
 
 // PointVector
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board,
-           const DGtal::PointVector<dim,TComponent> & p )
+           const DGtal::PointVector<dim, TComponent, TContainer> & p )
 {
   FATAL_ERROR(dim == 2);
   board.drawRectangle( (float) NumberTraits<TComponent>::castToDouble(p[0]) - 0.5f,
                        (float) NumberTraits<TComponent>::castToDouble(p[1]) + 0.5f, 1, 1 );
 }
 
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board,
-           const DGtal::PointVector<dim,TComponent> & p )
+           const DGtal::PointVector<dim, TComponent, TContainer> & p )
 {
   FATAL_ERROR(dim == 2);
   board.fillCircle((float) NumberTraits<TComponent>::castToDouble(p[0]),
                    (float) NumberTraits<TComponent>::castToDouble(p[1]),0.1);
 }
 
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
-           const DGtal::PointVector<dim,TComponent> & p )
+           const DGtal::PointVector<dim,TComponent, TContainer> & p )
 {
   std::string mode = board.getMode( p.className() );
   FATAL_ERROR( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
@@ -1552,11 +1552,11 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
     }
 }
 
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, typename TContainer2>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
-          const DGtal::PointVector<dim,TComponent> & shift,
-          const DGtal::PointVector<dim,TComponent> & basepoint )
+          const DGtal::PointVector<dim, TComponent1, TContainer1> & shift,
+          const DGtal::PointVector<dim, TComponent2, TContainer2> & basepoint )
 {
   FATAL_ERROR(dim == 2);
 
