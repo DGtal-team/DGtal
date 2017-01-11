@@ -30,20 +30,35 @@
 #include <fstream>
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-
+// zlib + boost for reading compressed tables
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
 namespace DGtal{
   namespace functions {
 /*---------------------------------------------------------------------*/
 
   DGtal::CountedPtr< boost::dynamic_bitset<> >
-  loadTable(const std::string &input_filename, unsigned int known_size)
+  loadTable(const std::string &input_filename,
+            const unsigned int known_size,
+            const bool compressed)
   {
     using ConfigMap = boost::dynamic_bitset<> ;
     CountedPtr<ConfigMap> table(new ConfigMap(known_size));
     try {
-      std::ifstream text_file(input_filename);
-      text_file >> *table ;
-      text_file.close();
+      std::ifstream in_file(input_filename);
+      if (compressed) {
+        namespace io = boost::iostreams ;
+        io::filtering_streambuf<io::input> filter;
+        filter.push(io::zlib_decompressor());
+        filter.push(in_file);
+        std::stringstream compressed_stream;
+        io::copy(filter,compressed_stream);
+        compressed_stream >> *table ;
+      } else {
+        in_file >> *table ;
+      }
+      in_file.close();
     } catch(std::exception &e) {
       throw std::runtime_error("loadTable error in: " + input_filename + " with exception: " +  e.what());
     }
@@ -54,12 +69,12 @@ namespace DGtal{
   template<unsigned int N>
   inline
   DGtal::CountedPtr< boost::dynamic_bitset<> >
-  loadTable(const std::string &input_filename)
+  loadTable(const std::string &input_filename, const bool compressed)
   {
     if (N == 3) // Default
-      return loadTable(input_filename, 67108864);
+      return loadTable(input_filename, 67108864, compressed);
     if (N == 2)
-      return loadTable(input_filename, 256);
+      return loadTable(input_filename, 256, compressed);
     throw std::domain_error("loadTable<N> error, template parameter N = "
         + std::to_string(N) + " is invalid (use N = 2 or N = 3)");
 

@@ -32,6 +32,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <DGtal/topology/tables/NeighborhoodTablesGenerators.h>
 
+// For saving compressed tables.
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -71,10 +76,22 @@ int main( int argc, char** argv )
   }
   trace.endBlock();
 
-  string filename = "simplicity_table" + input_str + ".txt";
-  ofstream file( filename  );
-  file << *table;
-  file.close();
+  // string filename = "simplicity_table" + input_str + ".txt";
+  // ofstream file( filename  );
+  // file << *table;
+  // file.close();
+  {
+    string filename = "simplicity_table" + input_str + ".zlib";
+    ofstream file( filename );
+    std::stringstream table_stream;
+    table_stream << *table;
+    namespace io = boost::iostreams;
+    io::filtering_streambuf<io::input> filter;
+    filter.push(io::zlib_compressor());
+    filter.push(table_stream);
+    io::copy(filter,file);
+    file.close();
+  }
 
   return 0;
 }
