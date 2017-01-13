@@ -380,20 +380,20 @@ template < typename TKSpace, typename TCellContainer >
     
     
 // PointVector
-template<Dimension dim, typename TComponent>
-  static void drawAsPaving( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+template<Dimension dim, typename TComponent, typename TContainer>
+  static void drawAsPaving( DGtal::Board2D & board, const DGtal::PointVector<dim, TComponent, TContainer> & );
 
-template<Dimension dim, typename TComponent>
-  static void drawAsGrid( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+template<Dimension dim, typename TComponent, typename TContainer>
+  static void drawAsGrid( DGtal::Board2D & board, const DGtal::PointVector<dim, TComponent, TContainer> & );
 
-template<Dimension dim, typename TComponent>
-  static void draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+template<Dimension dim, typename TComponent, typename TContainer>
+  static void draw( DGtal::Board2D & board, const DGtal::PointVector<dim, TComponent, TContainer> & );
 
 //arrow drawing
-template<Dimension dim, typename TComponent>
+template<Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, typename TContainer2>
   static void draw( DGtal::Board2D & board, 
-	     const DGtal::PointVector<dim,TComponent> & shift,
-	     const DGtal::PointVector<dim,TComponent> & basepoint);
+	     const DGtal::PointVector<dim, TComponent1, TContainer1> & shift,
+	     const DGtal::PointVector<dim, TComponent2, TContainer2> & basepoint);
 // PointVector
     
     

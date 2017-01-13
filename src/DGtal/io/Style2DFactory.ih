@@ -952,9 +952,9 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::CubicalComplex<TKSpace, TC
 
 
 // PointVector
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim,TComponent> & /*p*/, std::string mode = "")
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim, TComponent, TContainer> & /*p*/, std::string mode = "")
 {
   if ( ( mode == "" ) || ( mode == "Paving" ) )
     return new DGtal::DefaultDrawStylePaving_PointVector;
