@@ -110,10 +110,11 @@ DGtal::Viewer3D<Space, KSpace>::rotatePoint(TValues &x, TValues &y, TValues &z,
 
 
 template < typename Space ,typename KSpace >
+template < typename TContainer >
 inline
 void
 DGtal::Viewer3D<Space, KSpace>::rotateLineD3D(typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine,
-                                              DGtal::PointVector<3, int> pt,
+                                              DGtal::PointVector<3, int, TContainer> pt,
                                               double angleRotation, ImageDirection dirRotation){
   double dx1 = aLine.point1[0] - pt[0]; double dy1 = aLine.point1[1] - pt[1]; double dz1 = aLine.point1[2] - pt[2];
   double dx2 = aLine.point2[0] - pt[0]; double dy2 = aLine.point2[1] - pt[1]; double dz2 = aLine.point2[2] - pt[2];
