@@ -52,7 +52,7 @@ before_build:
   - cmd: mkdir C:\zlib-install
   - cmd: mkdir C:\zlib-build
   - cmd: cd C:\zlib-build
-  - cmd: dir C:\zlib 
+  - cmd: dir C:\zlib\zlib-1.2.9
   - cmake -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG%  -DCMAKE_INSTALL_PREFIX:PATH=c:\zlib-install C:\zlib
   - msbuild zlib.sln /m
   - cmd: msbuild INSTALL.vcxproj
@@ -69,7 +69,7 @@ before_build:
   - 7z x zlib-dll.zip -oC:\zlib-dll
   - appveyor DownloadFile "http://www.winimage.com/zLibDll/zlib123.zip" -FileName zlib123.zip
   - 7z x zlib123.zip -oC:\zlib
-  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%QGLDIR%\libQGLViewer -DQGLVIEWER_LIBRARIES=%QGLDIR%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_EXAMPLES:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE   -DZLIB_LIBRARY=c:/zlib-install/lib/zlib.lib -DZLIB_INCLUDE_DIR=c:/zlib-install/include/ -DBOOST_ROOT=C:\Libraries\boost .
+  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%QGLDIR%\libQGLViewer -DQGLVIEWER_LIBRARIES=%QGLDIR%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_EXAMPLES:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE   -DZLIB_LIBRARY=c:/zlib-install/lib/zlibd.lib -DZLIB_INCLUDE_DIR=c:/zlib-install/include/ -DBOOST_ROOT=C:\Libraries\boost .
 
   
 #  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DGDCM_BUILD_TESTING:BOOL=ON -DGDCM_BUILD_APPLICATIONS:BOOL=ON -DGDCM_BUILD_SHARED_LIBS:BOOL=ON -DGDCM_ALLOW_INSOURCE_BUILD:BOOL=ON -DBUILDNAME:STRING=%COMPUTERNAME%-%B_NAME% -DGDCM_WRAP_CSHARP:BOOL=ON -DGDCM_WRAP_JAVA:BOOL=ON -DGDCM_WRAP_PYTHON:BOOL=ON -DGDCM_USE_PVRG:BOOL=ON .
