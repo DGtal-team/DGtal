@@ -43,15 +43,34 @@ init:
 install:
 
 before_build:
-#install QGLViewer:
+
+  # install zlib
+  - cmd: mkdir c:\zlib
+  - cmd: git clone -q --depth=1  git@github.com:madler/zlib.git c:\zlib
+  - cmd: cd c:\zlib
+  - cmd: git checkout 2fa463bacfff79181df1a5270fb67cc679a53e71
+  - cmd: mkdir c:\zlib-install
+  - cmd: mkdir c:\zlib-build
+  - cmd: cd c:\zlib-build
+  - cmd: cmake -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DZLIB_MANGLE_PREFIX:STRING=dcmqi_zlib_ -DCMAKE_INSTALL_PREFIX:PATH=c:\zlib-install c:\zlib
+  - msbuild zlib.sln /m
+  - cmd: msbuild INSTALL.vcxproj
+
+
+  #install QGLViewer:
   - IF EXIST %QGLDIR%\libqglviewer SET CACHEOK=TRUE
   - IF %CACHEOK%==FALSE git clone --depth 1 https://github.com/kerautret/libQGLViewer.git %QGLDIR%\libqglviewer
   - IF %CACHEOK%==FALSE cd %QGLDIR%\libqglviewer\QGLViewer
   - IF %CACHEOK%==FALSE qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
   - IF %CACHEOK%==FALSE msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%QGLDIR%\libQGLViewer -DQGLVIEWER_LIBRARIES=%QGLDIR%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_EXAMPLES:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
+  - appveyor DownloadFile "http://www.winimage.com/zLibDll/zlib123dll.zip" -FileName zlib-dll.zip
+  - 7z x zlib-dll.zip -oC:\zlib-dll
+  - appveyor DownloadFile "http://www.winimage.com/zLibDll/zlib123.zip" -FileName zlib123.zip
+  - 7z x zlib123.zip -oC:\zlib
+  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%QGLDIR%\libQGLViewer -DQGLVIEWER_LIBRARIES=%QGLDIR%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_EXAMPLES:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE   -DZLIB_LIBRARY=c:/zlib-install/lib/zlib.lib -DZLIB_INCLUDE_DIR=c:/zlib-install/include/ -DBOOST_ROOT=C:\Libraries\boost .
 
+  
 #  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DGDCM_BUILD_TESTING:BOOL=ON -DGDCM_BUILD_APPLICATIONS:BOOL=ON -DGDCM_BUILD_SHARED_LIBS:BOOL=ON -DGDCM_ALLOW_INSOURCE_BUILD:BOOL=ON -DBUILDNAME:STRING=%COMPUTERNAME%-%B_NAME% -DGDCM_WRAP_CSHARP:BOOL=ON -DGDCM_WRAP_JAVA:BOOL=ON -DGDCM_WRAP_PYTHON:BOOL=ON -DGDCM_USE_PVRG:BOOL=ON .
 
 build_script:

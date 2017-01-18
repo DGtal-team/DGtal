@@ -14,6 +14,7 @@ set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_FOUND FALSE)
 FIND_PACKAGE(Boost 1.50.0 REQUIRED)
 if ( Boost_FOUND )
+  ADD_DEFINITIONS(${BOOST_DEFINITIONS} -DBOOST_ALL_NO_LIB)
   # SYSTEM to avoid warnings from boost.
   include_directories(SYSTEM ${Boost_INCLUDE_DIRS} )
   SET(DGtalLibInc ${DGtalLibInc} ${Boost_INCLUDE_DIRS})
