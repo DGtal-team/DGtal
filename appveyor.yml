@@ -52,8 +52,8 @@ before_build:
   - cmd: mkdir C:\zlib-install
   - cmd: mkdir C:\zlib-build
   - cmd: cd C:\zlib-build
-  - cmd: dir C:\zlib\zlib-1.2.9
-  - cmake -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG%  -DCMAKE_INSTALL_PREFIX:PATH=c:\zlib-install C:\zlib
+  - cmd: dir C:\zlib
+  - cmake -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG%  -DCMAKE_INSTALL_PREFIX:PATH=c:\zlib-install C:\zlib\zlib-1.2.9
   - msbuild zlib.sln /m
   - cmd: msbuild INSTALL.vcxproj
 
