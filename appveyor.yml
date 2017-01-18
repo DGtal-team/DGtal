@@ -46,7 +46,7 @@ before_build:
 
   # install zlib
   - cmd: mkdir c:\zlib
-  - cmd: git clone -q --depth=1  git@github.com:madler/zlib.git c:\zlib
+  - cmd: git clone -q --depth=1  https://github.com/madler/zlib.git c:\zlib
   - cmd: cd c:\zlib
   - cmd: git checkout 2fa463bacfff79181df1a5270fb67cc679a53e71
   - cmd: mkdir c:\zlib-install
