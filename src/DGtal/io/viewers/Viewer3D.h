@@ -787,8 +787,8 @@ namespace DGtal
      * @param angleRotation the angle of rotation.
      * @param dirRotation the rotation will be applied around this direction.
      **/
-
-    void  rotateLineD3D(typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine, DGtal::PointVector<3, int> pt,
+    template < typename TContainer >
+    void  rotateLineD3D(typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine, DGtal::PointVector<3, int, TContainer> pt,
       double angleRotation, ImageDirection dirRotation);
 
 

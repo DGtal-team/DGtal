@@ -1516,10 +1516,10 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
 
 // PointVector
 template <typename Space, typename KSpace>
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
-							const DGtal::PointVector<dim,TComponent> & p )
+							const DGtal::PointVector<dim, TComponent, TContainer> & p )
 {
   DGtal::Color fillColorSave = display.getFillColor();
   ASSERT(dim == 3);
@@ -1530,10 +1530,10 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
 }
 
 template <typename Space, typename KSpace>
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
-							  const DGtal::PointVector<dim,TComponent> & p )
+							  const DGtal::PointVector<dim, TComponent, TContainer> & p )
 {
   ASSERT(dim == 3);
 
@@ -1542,10 +1542,10 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
 }
 
 template <typename Space, typename KSpace>
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingWired( Display & display,
-							       const DGtal::PointVector<dim,TComponent> & p )
+							       const DGtal::PointVector<dim, TComponent, TContainer> & p )
 {
   DGtal::Color lineColorSave = display.getLineColor();
   ASSERT(dim == 3);
@@ -1583,10 +1583,10 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingWired( Display & display
 }
 
 template <typename Space, typename KSpace>
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
-						  const DGtal::PointVector<dim,TComponent> & p )
+						  const DGtal::PointVector<dim, TComponent, TContainer> & p )
 {
   DGtal::Color fillColorSave = display.getFillColor();
   ASSERT(dim == 3);
@@ -1611,11 +1611,11 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
 }
 
 template <typename Space, typename KSpace>
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, typename TContainer2>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
-						  const DGtal::PointVector<dim,TComponent> & p,
-						  const DGtal::PointVector<dim,TComponent> & aPoint )
+						  const DGtal::PointVector<dim, TComponent1, TContainer1> & p,
+						  const DGtal::PointVector<dim, TComponent2, TContainer2> & aPoint )
 {
   ASSERT(dim == 3);
 
