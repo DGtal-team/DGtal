@@ -26,7 +26,7 @@ href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
 The following programs are related to this documentation:
 cubical-complex-collapse.cpp, cubical-complex-illustrations.cpp,
-testCubicalComplex.cpp,
+testCubicalComplex.cpp, cubicalComplexThinning.cpp.
 
 @section dgtal_ccomplex_sec1  Introduction to cubical complexes
 
