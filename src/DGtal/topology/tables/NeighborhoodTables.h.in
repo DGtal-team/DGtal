@@ -14,20 +14,20 @@
 
 namespace DGtal {
   namespace simplicity  {
-  ///Path to the DGtal look up tables.
+  ///Path to the DGtal look up tables. Compressed with zlib.
   const std::string tableDir = "@TABLE_DIR@";
   const std::string tableSimple26_6 =
-    "@TABLE_DIR@/simplicity_table26_6.txt";
+    "@TABLE_DIR@/simplicity_table26_6.zlib";
   const std::string tableSimple18_6 =
-    "@TABLE_DIR@/simplicity_table18_6.txt";
+    "@TABLE_DIR@/simplicity_table18_6.zlib";
   const std::string tableSimple6_26 =
-    "@TABLE_DIR@/simplicity_table6_26.txt";
+    "@TABLE_DIR@/simplicity_table6_26.zlib";
   const std::string tableSimple6_18 =
-    "@TABLE_DIR@/simplicity_table6_18.txt";
+    "@TABLE_DIR@/simplicity_table6_18.zlib";
   const std::string tableSimple8_4 =
-    "@TABLE_DIR@/simplicity_table8_4.txt";
+    "@TABLE_DIR@/simplicity_table8_4.zlib";
   const std::string tableSimple4_8 =
-    "@TABLE_DIR@/simplicity_table4_8.txt";
+    "@TABLE_DIR@/simplicity_table4_8.zlib";
 
   } // simplicity namespace
 } // DGtal namespace
