@@ -42,6 +42,11 @@
  - Viewer3D: fix bad rendering when changing the scale.
    (Bertrand Kerautret, [#1217](https://github.com/DGtal-team/DGtal/pull/1217))
 
+- *Topology Package*
+ -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
+    (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
+    [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
+
 # DGtal 0.9.2
 
 ## New Features / Critical Changes
@@ -122,7 +127,6 @@
 - *Topology Package*
  - Add pre-calculated look up tables to speed up Object::isSimple calculations.
    (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
-
 
 ## Bug Fixes
 - *Configuration/General*
