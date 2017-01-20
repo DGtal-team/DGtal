@@ -9,13 +9,18 @@
  - The project has a now a unique compiled library: DGtal. The DGtalIO
    target has been removed. (David Coeurjolly,
    [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
-
+ - New mandatory dependency for DGtal: zlib must be installed in the system.
+   (David Coeurjolly, #1228](https://github.com/DGtal-team/DGtal/pull/1228))
 
 - *Geometry Package*
  - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
    now work on toric domains (with per-dimension periodicity specification).
    (David Coeurjolly, Roland Denis,
    [#1206](https://github.com/DGtal-team/DGtal/pull/1206))
+- *IO*
+ - New version (3) for the VOL file format that allows (zlib) compressed volumetric
+   data. VolReady and VolWriter can still manage Version 2 Vols.
+   (David Coeurjolly, #1228](https://github.com/DGtal-team/DGtal/pull/1228))
 
 ## Changes
 
@@ -30,6 +35,8 @@
    (Roland Denis, [#1202](https://github.com/DGtal-team/DGtal/pull/1202))
  - Explicit M_PI definition if needed.
    (David Coeurjolly, [#1208](https://github.com/DGtal-team/DGtal/pull/1208))
+ - Continuous integration Travis bots are now based on ubunutu/trusty containers.
+   (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
 
 - *Geometry Package*
  - ArithDSSIterator: fix missing postfix ++.

@@ -12,12 +12,26 @@ set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_FOUND FALSE)
-FIND_PACKAGE(Boost 1.46.0 REQUIRED)
+FIND_PACKAGE(Boost 1.50.0 REQUIRED)
 if ( Boost_FOUND )
+  ADD_DEFINITIONS(${BOOST_DEFINITIONS} -DBOOST_ALL_NO_LIB)
   # SYSTEM to avoid warnings from boost.
   include_directories(SYSTEM ${Boost_INCLUDE_DIRS} )
   SET(DGtalLibInc ${DGtalLibInc} ${Boost_INCLUDE_DIRS})
 endif( Boost_FOUND )
+
+# -----------------------------------------------------------------------------
+# Looking for zlib
+# -----------------------------------------------------------------------------
+
+set(ZLIB_FOUND FALSE)
+FIND_PACKAGE(ZLIB REQUIRED)
+if ( ZLIB_FOUND )
+  include_directories(SYSTEM ${ZLIB_INCLUDE_DIRS} )
+  SET(DGtalLibInc ${DGtalLibInc} ${ZLIB_INCLUDE_DIRS})
+  SET(DGtalLibDependencies ${DGtalLibDependencies} ${ZLIB_LIBRARIES})
+endif( ZLIB_FOUND )
+
 
 # -----------------------------------------------------------------------------
 # Check some CPP11 features in the compiler

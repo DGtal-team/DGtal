@@ -4,9 +4,9 @@ include_directories(${PROJECT_BINARY_DIR}/src)
 #------------------------------------------------------------------------------
 # Include CPP files to add to the library target
 #
-# each subdir can contain a ModuleSRC.txt file 
+# each subdir can contain a ModuleSRC.txt file
 # with a set command on the variable ${DGTAL_SRC}
-# 
+#
 #------------------------------------------------------------------------------
 include(DGtal/arithmetic/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
@@ -15,6 +15,8 @@ include(DGtal/io/ModuleSRC.txt)
 include(DGtal/helpers/ModuleSRC.txt)
 ## Board dependency
 include(Board/ModuleSRC.txt)
+## Boost Add-ons
+include(BoostAddons/ModuleSRC.txt)
 
 
 #------------------------------------------------------------------------------
