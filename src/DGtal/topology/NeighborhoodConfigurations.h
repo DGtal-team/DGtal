@@ -55,6 +55,7 @@ namespace DGtal {
    *
    * @param input_filename plain text containing the bool table.
    * @param known_size of the bitset, for 2D = 256 (2^8), 3D = 67108864 (2^26)
+   * @param compressed true if table to read has been compressed with zlib.
    *
    * @return smart ptr of map[neighbor_configuration] -> bool
    *
@@ -66,7 +67,7 @@ namespace DGtal {
    */
   inline
   DGtal::CountedPtr< boost::dynamic_bitset<> >
-  loadTable(const std::string & input_filename, unsigned int known_size );
+  loadTable(const std::string & input_filename, const unsigned int known_size, const bool compressed = true );
 
   /**
    * Load existing look up table existing in file_name, precalculated
@@ -75,6 +76,7 @@ namespace DGtal {
    *
    * @tparam dimension of the space input_filename table refers. 2 or 3
    * @param input_filename plain text containing the bool table.
+   * @param compressed true if table to read has been compressed with zlib.
    *
    * @return smart ptr of map[neighbor_configuration] -> bool
    *
@@ -83,7 +85,7 @@ namespace DGtal {
   template<unsigned int dimension = 3>
   inline
   DGtal::CountedPtr< boost::dynamic_bitset<> >
-  loadTable(const std::string & input_filename);
+  loadTable(const std::string & input_filename, const bool compressed = true);
 
   /**
    * Maps any point in the neighborhood of point Zero (0,..,0) to its
