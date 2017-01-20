@@ -13,12 +13,12 @@ configure_file(
 
 # ------ Install Tree ------ #
 #--- Configuration of the src/topology/tables/NeighborhoodTables.h.in for the install tree. Save to tmp file.
-# dev note: The variables are expanded before they are passed to install(CODE). We have to scape TABLE_DIR inside configure_file if we want it to be updated with the value set inside the install script.
+# dev note: scaping \${TABLE_DIR} in configure_file not really working.
 install(CODE "
 set(TABLE_DIR $ENV{DESTDIR}${INSTALL_INCLUDE_DIR}/DGtal/topology/tables)
 configure_file(
   ${PROJECT_SOURCE_DIR}/src/DGtal/topology/tables/NeighborhoodTables.h.in
-  \${TABLE_DIR}/NeighborhoodTables.h @ONLY)")
+  $ENV{DESTDIR}${INSTALL_INCLUDE_DIR}/DGtal/topology/tables/NeighborhoodTables.h @ONLY)")
 
 #--- Install compressed tables and the header pointing to them ---#
 set(table_folder_install ${INSTALL_INCLUDE_DIR}/DGtal/topology/tables)
