@@ -13,9 +13,11 @@ configure_file(
 
 # ------ Install Tree ------ #
 #--- Configuration of the src/topology/tables/NeighborhoodTables.h.in for the install tree. Save to tmp file.
-# dev note: The variables are expanded before they are passed to install(CODE). We have to scape TABLE_DIR inside configure_file if we want it to be updated with the value set inside the install script.
+# dev note: we escape \$ENV{DESTDIR} because we want DESTDIR to be read at
+#  install time, not at configure time. The same with TABLE_DIR inside configure_file.
+#  Read more: https://cmake.org/pipermail/cmake-developers/2013-January/017810.html
 install(CODE "
-set(TABLE_DIR $ENV{DESTDIR}${INSTALL_INCLUDE_DIR}/DGtal/topology/tables)
+set(TABLE_DIR \$ENV{DESTDIR}${INSTALL_INCLUDE_DIR}/DGtal/topology/tables)
 configure_file(
   ${PROJECT_SOURCE_DIR}/src/DGtal/topology/tables/NeighborhoodTables.h.in
   \${TABLE_DIR}/NeighborhoodTables.h @ONLY)")
