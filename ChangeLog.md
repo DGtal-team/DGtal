@@ -1,16 +1,13 @@
-  # DGtal 0.9.3
+# DGtal 0.9.3
 
 ## New Features / Critical Changes
 
 - *Configuration/General*
- - Set flag -std=c++11 only if needed. Modern compilers set compatible flags
-   by default (gnu++14, etc). (Pablo H Cerdan,
-   [#1222](https://github.com/DGtal-team/DGtal/pull/1222))
  - The project has a now a unique compiled library: DGtal. The DGtalIO
    target has been removed. (David Coeurjolly,
    [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
  - New mandatory dependency for DGtal: zlib must be installed in the system.
-   (David Coeurjolly, #1228](https://github.com/DGtal-team/DGtal/pull/1228))
+   (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
 
 - *Geometry Package*
  - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
@@ -20,13 +17,16 @@
 - *IO*
  - New version (3) for the VOL file format that allows (zlib) compressed volumetric
    data. VolReady and VolWriter can still manage Version 2 Vols.
-   (David Coeurjolly, #1228](https://github.com/DGtal-team/DGtal/pull/1228))
+   (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
 
 ## Changes
 
- - *Configuration/General*
-  - Continuous integration Travis bots are now based on ubunutu/trusty containers.
-    (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
+- *Configuration/General*
+ - Continuous integration Travis bots are now based on ubunutu/trusty containers.
+   (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
+ - Set flag -std=c++11 only if needed. Modern compilers set compatible flags
+   by default (gnu++14, etc). (Pablo H Cerdan,
+   [#1222](https://github.com/DGtal-team/DGtal/pull/1222))
 
 ## Bug Fixes
 
