@@ -9,11 +9,17 @@
  - New mandatory dependency for DGtal: zlib must be installed in the system.
    (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
 
+- *Topology Package*
+ -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
+    (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
+    [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
+
 - *Geometry Package*
  - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
    now work on toric domains (with per-dimension periodicity specification).
    (David Coeurjolly, Roland Denis,
    [#1206](https://github.com/DGtal-team/DGtal/pull/1206))
+
 - *IO*
  - New version (3) for the VOL file format that allows (zlib) compressed volumetric
    data. VolReady and VolWriter can still manage Version 2 Vols.
@@ -49,10 +55,6 @@
  - Viewer3D: fix bad rendering when changing the scale.
    (Bertrand Kerautret, [#1217](https://github.com/DGtal-team/DGtal/pull/1217))
 
-- *Topology Package*
- -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
-    (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
-    [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
 
 # DGtal 0.9.2
 
