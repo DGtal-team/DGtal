@@ -54,6 +54,10 @@
     (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
     [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
 
+- *Documentation*
+ - Fixing various bib references.
+   (Bertrand Kerautret, [##1237](https://github.com/DGtal-team/DGtal/pull/1237))
+
 # DGtal 0.9.2
 
 ## New Features / Critical Changes
