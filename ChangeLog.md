@@ -43,6 +43,8 @@
    (David Coeurjolly, [#1208](https://github.com/DGtal-team/DGtal/pull/1208))
  - Continuous integration Travis bots are now based on ubunutu/trusty containers.
    (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
+ - Fix usage of DESTDIR at install time for linux packagers.
+   (Pablo Hernandez, [#1235](https://github.com/DGtal-team/DGtal/pull/1235))
 
 - *Geometry Package*
  - ArithDSSIterator: fix missing postfix ++.
