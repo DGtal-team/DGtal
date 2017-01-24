@@ -342,7 +342,7 @@ see example: <a href="3dBorderExtractionImg_8cpp-example.html"> 3dBorderExtracti
 
    A basic mechanism for simple points is implemented in the Object
    class. It relies on the well-known definition of simple points of
-   [Bertrand:1994], based on the number of connected components in a
+   \cite Bertrand:1994 , based on the number of connected components in a
    geodesic neighborhood of the point. It is valid in 2D and 3D. It
    should not be sufficient in nD, since toric connected components
    may appear. However, you can use it anyway as a kind of
