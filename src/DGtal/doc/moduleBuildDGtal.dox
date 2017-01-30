@@ -67,8 +67,12 @@ package name and versions.
 
 An important feature of cmake is the "out-of-source" build
 process. Let us suppose that DGtal sources are in the DGTALSOURCES
-folder. Hence, in a terminal you can create a build folder: @code cd
-DGTALSOURCES mkdir build cd build @endcode
+folder. Hence, in a terminal you can create a build folder:
+@code
+cd DGTALSOURCES
+mkdir build
+cd build
+@endcode
 
 Next, use the cmake command to generate your Unix Makefile project
 (default generator on Unix/Linux) like below for the minimal DGtal configuration:
@@ -146,7 +150,7 @@ tools with recent Visual Studio target. During the project generation,
 you would have to specify the path to @e boost headers (or paths
 needed for any optional dependency such as GMP, CGAL, Cairo...).
 
-@note Do not forget to set @e BUILD_SHARED_LIBS cmake to falqse (static DGtal lib target).
+@note Do not forget to set @e BUILD_SHARED_LIBS cmake to false (static DGtal lib target).
 
 
 @advanced When working on DGtal within github, we have set up a Windows

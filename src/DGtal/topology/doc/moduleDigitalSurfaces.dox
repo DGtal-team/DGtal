@@ -499,12 +499,11 @@ We have shown before that a digital surface has a dual structure
 that is the graph whose vertices are n-1-cells and whose arcs are
 (almost) n-2-cells. We can go further and use n-3-cells to define
 faces on this graph. This is related to the concept of \b umbrellas
-in 3D (see [Françon]). More precisely, given a start surfel, an
+in 3D (see \cite papier1998). More precisely, given a start surfel, an
 incident n-2-cell (the separator) and an incident n-3-cell (the
 pivot), one can turn around the pivot progressively to get a
 face. This gives precisely in 3D the dual to a digital surface that
-is a kind of marching-cube surface (see [Lachaud:1998-icip,
-Lachaud:2000-gmod]).
+is a kind of marching-cube surface (see \cite Lachaud:1998-icip, \cite Lachaud:2000-gmod).
 
 The main class for computing umbrellas is the class
 UmbrellaComputer.  Turning around the pivot means moving the face
