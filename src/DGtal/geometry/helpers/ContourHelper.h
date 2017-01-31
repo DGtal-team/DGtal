@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -102,17 +103,15 @@ public:
 
   /**
    * Transforms an input contour into an 8 connected contour.
-   * @param[in] itb  begin iterator associated to the input contour.
-   * @param[in] ite  end iterator associated to the input contour.
+   * @param[in] gc  the input GridCurve contour (4 connected).
    * @param[out] out   output iterator associated to the resulting contour.
    */
 
-  template <typename TConstIterator, typename TOutputIterator>
+  template <typename TKSpace, typename TOutputIterator>
   static
   void
-  pixels2pixels8C(const TConstIterator &itb, const TConstIterator &ite,
-                  TOutputIterator out);
-   
+  pixels2pixels8C(const GridCurve<TKSpace> &gc, TOutputIterator out);
+  
   
   
 
