@@ -72,6 +72,7 @@ bool testContourHelper()
   trace.endBlock();
 
   trace.beginBlock("Test ContourHelper:  pixels2pixels8c ");
+ 
   std::vector<Z2i::Point> aContour3;
   aContour3.push_back(Z2i::Point(0,0));
   aContour3.push_back(Z2i::Point(1,0));
@@ -82,8 +83,12 @@ bool testContourHelper()
   aContour3.push_back(Z2i::Point(4,2));
   aContour3.push_back(Z2i::Point(5,2));
   aContour3.push_back(Z2i::Point(6,2));
+  typedef GridCurve< KhalimskySpaceND<2>> GridCurve2d ;
+  GridCurve2d gc;
+  gc.initFromPointsVector(aContour3);
   std::vector<Z2i::Point> res;
-  ContourHelper::pixels2pixels8C(aContour3.begin(), aContour3.end(), std::back_inserter(res));
+    
+  ContourHelper::pixels2pixels8C(gc, std::back_inserter(res));
   trace.info() << "Apply pixels2pixels8c init size : " << res.size() << " (should be: " << aContour3.size() -2  << " ) "<< std::endl;  
   trace.info() << "Third point : " << res[2] << " (should be: " << Z2i::Point(2,1) << " ) "<< std::endl;  
   nb++;
