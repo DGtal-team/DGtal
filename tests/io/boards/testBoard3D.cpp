@@ -121,10 +121,10 @@ bool testQuadNorm()
   board << CustomColors3D(Color(0, 0, 255),Color(0, 0, 255));
   board.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized(), true);
 
-  Cell surfel = k.uCell( Point( 2,3,3) );
+  Cell surfel = k.uCell( Point( 4,5,5) );
   Display3DFactory<Space,KSpace>::drawUnorientedSurfelWithNormal( board, surfel, n2.getNormalized());
 
-  board.saveOBJ("dgtalBoard3D-quad.obj");
+  board.saveOBJ("dgtalBoard3D.quad.obj");
 
 
   nbok += true ? 1 : 0;

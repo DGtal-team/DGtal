@@ -7,13 +7,13 @@ environment:
     CONFIGQGL: Release
     QGLDIR: C:\Libraries
     B_NAME: Win32
-    QTDIR: C:\Qt\5.4\msvc2013_opengl 
+    QTDIR: C:\Qt\5.4\msvc2013_opengl
   # - VS_GEN: Visual Studio 14 2015 Win64
   #   CONFIG: Release
   #   B_NAME: Win64
 
 cache:
-  - C:\Libraries\libqglviewer 
+  - C:\Libraries\libqglviewer
 
 matrix:
   fast_finish: true
@@ -37,20 +37,40 @@ init:
   - msbuild /version
   - cmake --version
   - set PATH=%QTDIR%\bin;%PATH%
-  - set CACHEOK=FALSE 
+  - set CACHEOK=FALSE
 
 # scripts that run after cloning repository
 install:
 
 before_build:
-#install QGLViewer:
-  - IF EXIST %QGLDIR%\libqglviewer SET CACHEOK=TRUE 
-  - IF %CACHEOK%==FALSE git clone https://github.com/kerautret/libQGLViewer.git %QGLDIR%\libqglviewer
+
+  # install zlib
+  - cmd: mkdir c:\zlib
+  - appveyor DownloadFile "https://github.com/madler/zlib/archive/v1.2.9.zip" -FileName zlib.zip
+  - 7z x zlib.zip -oC:\zlib
+  - cmd: cd C:\zlib
+  - cmd: mkdir C:\zlib-install
+  - cmd: mkdir C:\zlib-build
+  - cmd: cd C:\zlib-build
+  - cmd: dir C:\zlib
+  - cmake -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG%  -DCMAKE_INSTALL_PREFIX:PATH=c:\zlib-install C:\zlib\zlib-1.2.9
+  - msbuild zlib.sln /m
+  - cmd: msbuild INSTALL.vcxproj
+
+
+  #install QGLViewer:
+  - IF EXIST %QGLDIR%\libqglviewer SET CACHEOK=TRUE
+  - IF %CACHEOK%==FALSE git clone --depth 1 https://github.com/kerautret/libQGLViewer.git %QGLDIR%\libqglviewer
   - IF %CACHEOK%==FALSE cd %QGLDIR%\libqglviewer\QGLViewer
   - IF %CACHEOK%==FALSE qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
-  - IF %CACHEOK%==FALSE msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj 
+  - IF %CACHEOK%==FALSE msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%QGLDIR%\libQGLViewer -DQGLVIEWER_LIBRARIES=%QGLDIR%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_EXAMPLES:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE  -DBOOST_ROOT=C:\Libraries\boost .
+  - appveyor DownloadFile "http://www.winimage.com/zLibDll/zlib123dll.zip" -FileName zlib-dll.zip
+  - 7z x zlib-dll.zip -oC:\zlib-dll
+  - appveyor DownloadFile "http://www.winimage.com/zLibDll/zlib123.zip" -FileName zlib123.zip
+  - 7z x zlib123.zip -oC:\zlib
+  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%QGLDIR%\libQGLViewer -DQGLVIEWER_LIBRARIES=%QGLDIR%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_EXAMPLES:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE   -DZLIB_LIBRARY=c:/zlib-install/lib/zlibd.lib -DZLIB_INCLUDE_DIR=c:/zlib-install/include/ -DBOOST_ROOT=C:\Libraries\boost .
+
   
 #  - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DGDCM_BUILD_TESTING:BOOL=ON -DGDCM_BUILD_APPLICATIONS:BOOL=ON -DGDCM_BUILD_SHARED_LIBS:BOOL=ON -DGDCM_ALLOW_INSOURCE_BUILD:BOOL=ON -DBUILDNAME:STRING=%COMPUTERNAME%-%B_NAME% -DGDCM_WRAP_CSHARP:BOOL=ON -DGDCM_WRAP_JAVA:BOOL=ON -DGDCM_WRAP_PYTHON:BOOL=ON -DGDCM_USE_PVRG:BOOL=ON .
 
@@ -61,11 +81,11 @@ build_script:
   #- msbuild gdcm.sln /m /p:Configuration=%config% /toolsversion:14.0 /p:Platform=x64 /p:PlatformToolset=v140
   # Do not run Test=Update/Configure, only Start/Build/Test/Submit (TODO: Coverage)
 
-  - msbuild /m /p:Configuration=%CONFIG% /p:Platform=%B_NAME% DGtal.sln 
+  - msbuild /m /p:Configuration=%CONFIG% /p:Platform=%B_NAME% DGtal.sln
 
 # - ctest -D ExperimentalStart -C %CONFIG%
  # - ctest -D ExperimentalBuild -j2 -C %CONFIG%
- # - ctest -D ExperimentalTest -j2 -C %CONFIG% 
+ # - ctest -D ExperimentalTest -j2 -C %CONFIG%
 
 test: off
 deploy: off

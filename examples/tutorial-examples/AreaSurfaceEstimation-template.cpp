@@ -1,3 +1,4 @@
+/// @file tutorial-examples/AreaSurfaceEstimation-template.cpp
 /// Shape
 #include "DGtal/shapes/parametric/Ball3D.h"
 

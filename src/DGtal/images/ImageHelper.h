@@ -234,7 +234,7 @@ namespace DGtal
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
-   * S is a DigitalSetFromMap<I> as follows: 
+   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows: 
    * @code
    std::pair<P, V> 
    pair( aPoint, aValue );  
@@ -279,7 +279,7 @@ namespace DGtal
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
-   * S is a DigitalSetFromMap<I> as follows: 
+   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows: 
    * @code
    std::pair<P, V> 
    pair( aPoint, aValue );  
@@ -320,7 +320,7 @@ namespace DGtal
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
-   * S is a DigitalSetFromMap<I> as follows: 
+   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows: 
    * @code
    * @endcode
    *
@@ -353,7 +353,7 @@ namespace DGtal
     
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CQuantity<Value> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CQuantity<Value> ));
     
     /*BOOST_CONCEPT_USAGE(ImageToConstantFunctor)
     {

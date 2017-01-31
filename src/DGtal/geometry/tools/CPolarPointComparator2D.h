@@ -46,7 +46,8 @@
 
 namespace DGtal
 {
-
+ namespace concepts
+ {
   /////////////////////////////////////////////////////////////////////////////
   // class CPolarPointComparator2D
   /**
@@ -62,7 +63,7 @@ namespace DGtal
      The main method is the operator() applied on two points. It returns 'true' if the first 
      point is located strictly before the second one, 'false' otherwise. A point \f$ P \f$ 
      is located strictly before a point \f$ Q \f$ iff the oriented angle done by \f$ P \f$ is
-     smaller than the one of \f$ Q f$ or its euclidean norm is shorter if \f$ O, P, Q \f$ are
+     smaller than the one of \f$ Q \f$ or its euclidean norm is shorter if \f$ O, P, Q \f$ are
      aligned. Note that it returns 'false' if \f$ P = Q \f$.
 
      ### Refinement of default constructible, copy constructible, assignable
@@ -119,7 +120,7 @@ namespace DGtal
 
 
   }; // end of concept CPolarPointComparator2D
-
+ }
 } // namespace DGtal
 
 //                                                                           //

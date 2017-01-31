@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file Statistics.h
+ * @file
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -208,10 +208,10 @@ namespace DGtal
     /**
      * Computes the median value of the statistics and switch to mode
      * which does not save the statistics samples (@ref
-     * myStore_samples = false). Usefull only if the values are stored
+     * myStoreSamples = false). Usefull only if the values are stored
      * (specified in the the constructor) else it doest nothing.
      *
-     * @see median, Statistic, myStore_samples
+     * @see median, Statistic, myStoreSamples
      */
     void terminate();
     

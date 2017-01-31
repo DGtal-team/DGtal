@@ -43,12 +43,13 @@ template <typename TDomain, typename TValue>
 const typename TDomain::Dimension DGtal::ImageContainerBySTLMap<TDomain,
 								TValue>::dimension = TDomain::Space::dimension;
 
+//------------------------------------------------------------------------------
 
 template <typename TDomain, typename TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
-::ImageContainerBySTLMap(const Domain& aDomain, const Value& aValue)
-  : myDomainPtr( &aDomain ), myDefaultValue( aValue )
+::ImageContainerBySTLMap( Clone<const Domain> aDomain, const Value& aValue)
+  : myDomainPtr( aDomain ), myDefaultValue( aValue )
 {
 }
 
@@ -57,7 +58,7 @@ template <typename TDomain, typename TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
 ::ImageContainerBySTLMap(const ImageContainerBySTLMap& other)
-  : Parent(other), 
+  : Parent(other),
     myDomainPtr(other.myDomainPtr), myDefaultValue(other.myDefaultValue)
 {
 }
@@ -70,11 +71,11 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>
 {
   if (this != &other)
     {
-      Parent::operator=(other); 
-      myDomainPtr = other.myDomainPtr; 
-      myDefaultValue = other.myDefaultValue; 
+      Parent::operator=(other);
+      myDomainPtr = other.myDomainPtr;
+      myDefaultValue = other.myDefaultValue;
     }
-  return *this; 
+  return *this;
 }
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TValue>
@@ -87,9 +88,9 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::~ImageContainerBySTLMap( )
 template <typename TDomain, typename TValue>
 inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Value
-DGtal::ImageContainerBySTLMap<TDomain,TValue>::operator()(const Point &aPoint) const 
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::operator()(const Point &aPoint) const
 {
-  ASSERT( this->domain().isInside( aPoint ) ); 
+  ASSERT( this->domain().isInside( aPoint ) );
   ConstIterator it = this->find( aPoint );
   if ( it == this->end() )
     return myDefaultValue;
@@ -103,11 +104,11 @@ inline
 void
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::setValue(const Point &aPoint, const Value &aValue)
 {
-  ASSERT( this->domain().isInside( aPoint ) ); 
-  std::pair<typename std::map<Point,Value>::iterator, bool> 
-    res = this->insert( std::pair<Point,Value>(aPoint, aValue) ); 
+  ASSERT( this->domain().isInside( aPoint ) );
+  std::pair<typename std::map<Point,Value>::iterator, bool>
+    res = this->insert( std::pair<Point,Value>(aPoint, aValue) );
   if (res.second == false)
-    res.first->second = aValue; 
+    res.first->second = aValue;
 }
 
 //------------------------------------------------------------------------------
@@ -161,7 +162,7 @@ inline
 void
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Image - STLMap] size=" << this->size() << " valuetype=" 
+  out << "[Image - STLMap] size=" << this->size() << " valuetype="
       << sizeof(TValue) << "bytes Domain=" << *myDomainPtr;
 }
 

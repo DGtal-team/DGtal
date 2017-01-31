@@ -147,7 +147,7 @@ namespace DGtal
 					    HyperRectDomain< typename Domain::Space > >::value ) );
 
     /// range of values
-    BOOST_CONCEPT_ASSERT ( ( CLabel<TValue> ) );
+    BOOST_CONCEPT_ASSERT ( ( concepts::CLabel<TValue> ) );
     typedef TValue Value;
 
     /////////////////// Data members //////////////////

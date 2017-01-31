@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testModifier.cpp
+ * @file
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -80,7 +80,7 @@ bool testSCellsFunctors()
     typedef KhalimskySpaceND<3> K3;
     K3 theKSpace; 
     functors::SCellToPoint<K3> m(theKSpace); 
-    K3::SCell s(K3::Point(0,0,0), true); //default point and orientation 
+    K3::SCell s = theKSpace.sCell(K3::Point(0,0,0), true); //default point and orientation 
     theKSpace.sSetKCoords( s, K3::Point(5,6,8) );
     K3::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  

@@ -31,9 +31,7 @@
 #include <iostream>
 #include <list>
 #include <vector>
-#ifdef CPP11_FORWARD_LIST 
 #include <forward_list>
-#endif
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/IteratorCirculatorTraits.h"
@@ -88,7 +86,6 @@ bool testIteratorCirculatorTraits()
   
   trace.beginBlock ( "Testing tags for various (circular) iterators..." );
 
-#ifdef CPP11_FORWARD_LIST 
   //forward list
   trace.info() << "forward list" << std::endl;
   std::forward_list<int> fl;
@@ -109,7 +106,6 @@ bool testIteratorCirculatorTraits()
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-#endif 
   
   //list
   trace.info() << "list" << std::endl;

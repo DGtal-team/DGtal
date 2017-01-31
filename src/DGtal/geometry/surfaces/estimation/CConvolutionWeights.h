@@ -48,77 +48,79 @@ namespace DGtal
 {
   namespace deprecated
   {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CConvolutionWeights
-  /**
-Description of \b concept '\b CConvolutionWeights' <p>
-     @ingroup Concepts
-     @brief Aim: defines models of centered convolution kernel used for normal vector integration for instance.
-
-     CConvolutionWeights models are functor mappings displacement vectors to real values.
-
-@warning deprecated since 0.7
-
- ### Refinement of CopyConstructible, Assignable
-
- ### Associated types :
-
-   - Distance: type to represent topological distances.
-
- ### Notation
-     - \t X : A type that is a model of CConvolutionWeights
-     - \t x, \t y : object of type X
-
- ### Definitions
-
- ### Valid expressions and
-
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| Apply function|x(v)        |v of type const Vector&| double    |                  |the value of the kernel at @e v | | O(1) |
-
- ### Invariants###
-
- ### Models###
-
-     ConstantConvolutionWeights, GaussianConvolutionWeights
-
- ### Notes###
-
-@tparam T the type that should be a model of CConvolutionWeights.
-   */
-  template <typename T>
-  struct CConvolutionWeights:  boost::CopyConstructible<T>, boost::Assignable<T>
-  // Use derivation for coarser concepts, like
-  // : CoarserConcept<T>
-  // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
-  // http://www.boost.org/doc/libs/1_49_0/libs/concept_check/reference.htm
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    //inner type
-    typedef typename T::Distance Distance;
-
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CConvolutionWeights )
+    namespace concepts
     {
+      /////////////////////////////////////////////////////////////////////////////
+      // class CConvolutionWeights
+      /**
+         Description of \b concept '\b CConvolutionWeights' <p>
+         @ingroup Concepts
+         @brief Aim: defines models of centered convolution kernel used for normal vector integration for instance.
 
-      concepts::ConceptUtils::sameType( myB, myX( myA ) );
+         CConvolutionWeights models are functor mappings displacement vectors to real values.
+
+         @warning deprecated since 0.7
+
+         ### Refinement of CopyConstructible, Assignable
+
+         ### Associated types :
+
+         - Distance: type to represent topological distances.
+
+         ### Notation
+         - \a X : A type that is a model of CConvolutionWeights
+         - \a x, \a y : object of type X
+
+         ### Definitions
+
+         ### Valid expressions and
+
+
+         | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+         |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+         | Apply function|x(v)        |v of type const Vector&| double    |                  |the value of the kernel at @e v | | O(1) |
+
+         ### Invariants###
+
+         ### Models###
+
+         ConstantConvolutionWeights, GaussianConvolutionWeights
+
+         ### Notes###
+
+         @tparam T the type that should be a model of CConvolutionWeights.
+      */
+      template <typename T>
+      struct CConvolutionWeights:  boost::CopyConstructible<T>, boost::Assignable<T>
+        // Use derivation for coarser concepts, like
+        // : CoarserConcept<T>
+        // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
+        // http://www.boost.org/doc/libs/1_49_0/libs/concept_check/reference.htm
+      {
+        // ----------------------- Concept checks ------------------------------
+      public:
+
+        //inner type
+        typedef typename T::Distance Distance;
+
+        // 2. then check the presence of data members, operators and methods with
+        BOOST_CONCEPT_USAGE( CConvolutionWeights )
+        {
+
+          DGtal::concepts::ConceptUtils::sameType( myB, myX( myA ) );
+        }
+
+        // ------------------------- Private Datas --------------------------------
+      private:
+        T myX; // do not require T to be default constructible.
+        Distance myA;
+        double myB;
+
+        // ------------------------- Internals ------------------------------------
+      private:
+
+      }; // end of concept CConvolutionWeights
     }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Distance myA;
-    double myB;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CConvolutionWeights
   }
 } // namespace DGtal
 

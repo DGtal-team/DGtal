@@ -58,7 +58,7 @@ DistanceBreadthFirstVisitor( const DistanceBreadthFirstVisitor & other )
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::
-DistanceBreadthFirstVisitor( const Graph & g,
+DistanceBreadthFirstVisitor( ConstAlias<Graph> g,
                  const VertexFunctor & distance,
                  const Vertex & p )
   : myGraph( &g ), myDistance( distance )

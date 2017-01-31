@@ -43,7 +43,9 @@ inline
 DGtal::GrayscaleColorMap<Value>::GrayscaleColorMap( const Value & aMin,
               const Value & aMax )
   : myMin( aMin ), myMax( aMax )
-{ }
+{
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+}
 
 template <typename Value>
 inline
@@ -51,6 +53,7 @@ DGtal::GrayscaleColorMap<Value>::GrayscaleColorMap
 ( const GrayscaleColorMap<Value> & other )
   : myMin( other.myMin ), myMax( other.myMax )
 { 
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
 }
 
 template <typename Value>
@@ -67,6 +70,7 @@ DGtal::GrayscaleColorMap<Value>::operator=
   if ( &other != this ) {
     myMin = other.myMin;
     myMax = other.myMax;
+    ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
   }
   return *this;
 }
@@ -134,6 +138,7 @@ DGtal::GrayscaleColorMap<Value>::getColor( const Value & min,
                  const Value & max,
                  const Value & value )
 {
+  ASSERT_MSG(min < max, "Max should be strictly greather than Min in a colormap.");
   double range = static_cast<double>( max - min );
   double scale = static_cast<double>( value - min );
   unsigned char gray = static_cast<unsigned char>( 255.0 * ( scale / range  ) );

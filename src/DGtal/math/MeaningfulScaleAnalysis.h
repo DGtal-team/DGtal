@@ -46,6 +46,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/math/Profile.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -118,7 +119,7 @@ namespace DGtal
     /**
      * Constructor
      */
-    MeaningfulScaleAnalysis(const Profile &aProfile);
+    MeaningfulScaleAnalysis( ConstAlias<Profile> aProfile);
       
 
     /**

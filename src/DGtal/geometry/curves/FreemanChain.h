@@ -60,6 +60,7 @@
 //#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/base/ConstAlias.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -171,7 +172,7 @@ namespace DGtal
          * @param aChain a Freeman chain,
          * @param n the position in [chain] (within 0 and chain.size()).
          */
-        ConstIterator( const FreemanChain & aChain, Index n =0);
+        ConstIterator( ConstAlias<FreemanChain> aChain, Index n =0);
 
 
         /**
@@ -185,7 +186,7 @@ namespace DGtal
          * @param n the position in [chain] (within 0 and chain.size()).
          * @param XY the point corresponding to the 'n'-th position of 'chain'.
          */
-        ConstIterator( const FreemanChain & aChain, Index n, const Point & XY)
+        ConstIterator( ConstAlias<FreemanChain> aChain, Index n, const Point & XY)
           : myFc( &aChain ), myPos( n ), myXY ( XY ) 
         { }
 
@@ -603,7 +604,7 @@ public:
 
     /**
      * Comparaison operator
-     * @paramother other the object to compare to.
+     * @param other the object to compare to.
      * @return 'true' both FreemanChain are different, 'false' otherwise.
      */
     bool operator!=( const FreemanChain & other) const

@@ -282,13 +282,11 @@ Lastly, if your compiler supports `C++11` initializer list, there is a custom `s
   TSpace::Point b(5, 5, 5);
   HyperRectDomain<TSpace> domain(a,b);
 
-#ifdef CPP11_INITIALIZER_LIST
   for( HyperRectDomain<TSpace>::ConstSubRange::ReverseConstIterator 
 	 it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
        it != itend; 
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
-#endif  
 @endcode    
 
 \subsection sectDomEmpty Empty domains

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file shapeGridCurveEstimator.cpp
+ * @file tutorial-examples/volDTGranulo.cpp
  * @ingroup tutorial-examples
  * @author Tristan Roussillon (tristan.roussillon@liris.cnrs.fr)
  *
@@ -180,10 +180,6 @@ int main(int argc, char ** argv)
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
   viewer3 << DGtal::Viewer3D<>::updateDisplay;
   trace.info() << "viewer3  launched..."<<std::endl;
-  res = res&& application3.exec();
+ return application3.exec();
 
-  if (res)
-    return 0;
-  else
-    return 1;
 }

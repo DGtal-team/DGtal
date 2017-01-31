@@ -167,7 +167,7 @@ exportFile( const std::string & filename,
 #endif
   if ( extension == "vol" )
     {
-      return  VolWriter<TContainer,TFunctor>::exportVol( filename, anImage, aFunctor );
+      return  VolWriter<TContainer,TFunctor>::exportVol( filename, anImage, true, aFunctor );
     }
   else if ( extension == "pgm3d" || extension == "pgm3D" || extension == "p3d" || extension == "pgm" )
     {

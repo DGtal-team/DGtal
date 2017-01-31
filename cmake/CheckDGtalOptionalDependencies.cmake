@@ -24,6 +24,7 @@ OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt4 required)." O
 OPTION(WITH_PATATE "With Patate library for geometry OFF (Eigen required)." processing)
 OPTION(WITH_QT5 "Using Qt5." OFF)
 OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
+OPTION(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 
 #----------------------------------
 # Removing -frounding-math compile flag for clang
@@ -112,6 +113,13 @@ if (WITH_QT5)
 else (WITH_QT5)
   message(STATUS "      WITH_QT5           false   (Using of Qt5 instead of Qt4)")
 endif (WITH_QT5)
+
+if (WITH_FFTW3)
+  set(LIST_OPTION ${LIST_OPTION} [FFTW3]\ )
+  message(STATUS "      WITH_FFTW3         true    (FFTW3 discrete Fourier transform library)")
+else (WITH_FFTW3)
+  message(STATUS "      WITH_FFTW3         false   (FFTW3 discrete Fourier transform library)")
+endif (WITH_FFTW3)
 
 message(STATUS "")
 message(STATUS "For Developpers:")
@@ -213,9 +221,7 @@ IF(WITH_ITK)
       message(STATUS "ITK accepts [c++11]" )
     else ( CPP11_ITK )
       message(STATUS "ITK does not accept [c++11]" )
-      if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-        MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will not compile.")
-      endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+      MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will not compile.")
     endif ( CPP11_ITK )
 
     # -------------------------------------------------------------------------
@@ -309,6 +315,12 @@ if (WITH_QGLVIEWER)
     endif (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
 
   else (WITH_QT5)
+    if (APPLE)
+      message(STATUS "Warning: on recent MacOs Sierra, Qt4 is no longer supported.")
+      message(STATUS "         Please consider switching to Qt5 and define WITH_QT5.")
+      message(STATUS "         Otherwise you may have cmake errors while generating the project.")
+    endif (APPLE)
+
     find_package(Qt4 COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
 
     if (QT4_FOUND)
@@ -378,7 +390,7 @@ ENDIF(WITH_OPENMP)
 # -----------------------------------------------------------------------------
 SET(EIGEN_FOUND_DGTAL 0)
 IF(WITH_EIGEN)
-  FIND_PACKAGE(Eigen3 3.2 REQUIRED)
+  FIND_PACKAGE(Eigen3 REQUIRED)
   IF(EIGEN3_FOUND)
     SET(EIGEN_FOUND_DGTAL 1)
     ADD_DEFINITIONS("-DWITH_EIGEN ")
@@ -457,5 +469,38 @@ IF(WITH_BENCHMARK)
  ENDIF(BENCHMARK_FOUND)
 ENDIF(WITH_BENCHMARK)
 
+# -----------------------------------------------------------------------------
+# Look for FFTW3.
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+SET(FFTW3_FOUND_DGTAL 0)
+IF(WITH_FFTW3)
+  FIND_PACKAGE(FFTW3 REQUIRED)
+  IF(FFTW3_FOUND)
+    SET(FFTW3_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_FFTW3 ")
+    INCLUDE_DIRECTORIES(${FFTW3_INCLUDES})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${FFTW3_LIBRARIES} ${FFTW3_DEP_LIBRARIES} )
+    message(STATUS "FFTW3 is found : ${FFTW3_LIBRARIES}.")
+  ELSE(FFTW3_FOUND)
+    message(FATAL_ERROR "FFTW3 is not found.")
+  ENDIF(FFTW3_FOUND)
+
+  IF(FFTW3_FLOAT_FOUND)
+    SET(FFTW3_FLOAT_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_FFTW3_FLOAT ")
+  ENDIF(FFTW3_FLOAT_FOUND)
+
+  IF(FFTW3_DOUBLE_FOUND)
+    SET(FFTW3_DOUBLE_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_FFTW3_DOUBLE ")
+  ENDIF(FFTW3_DOUBLE_FOUND)
+
+  IF(FFTW3_LONG_FOUND)
+    SET(FFTW3_LONG_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_FFTW3_LONG ")
+  ENDIF(FFTW3_LONG_FOUND)
+
+ENDIF(WITH_FFTW3)
 
 message(STATUS "-------------------------------------------------------------------------------")

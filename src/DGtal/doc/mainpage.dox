@@ -1,4 +1,3 @@
-
 /**
  * \mainpage DGtal - Digital Geometry Tools and Algorithms Library.
  *
@@ -6,7 +5,6 @@
  *
  *
  * @section intro_sec_dgtal Introduction
- 
 
 DGtal is a generic open source library for Digital Geometry
 programming whose main objective is to gather and structure different
@@ -19,7 +17,7 @@ believe this is a necessary step for a better recognition of the
 efficiency of discrete geometry techniques by the important image
 analysis community. As a consequence, DGtal is designed so as to
 simplify the construction of effective demonstration tools. New
-results are thus easily shared to a vast audience. 
+results are thus easily shared to a vast audience.
 
 On a more technical level, DGtal is developed in C++. Similarly to
 other classical libraries such as CGAL, it follows the paradigm of
@@ -36,16 +34,10 @@ arbitrary dimensional volumetric distance transforms. A stream
 mechanism has been developed to display digital objects and export
 results in different vector formats.
 
-DGtal is a collaborative effort of the French --- for now --- digital
+DGtal is a collaborative effort of the French ---for now--- digital
 geometry community. It is still a work in progress but show already
 many promises to be the common basis for future developments made by
-the digital geometry community. 
-
-Main participants: D. Coeurjolly (LIRIS, Lyon), G. Damiand (LIRIS,
-Lyon), S. Fourey (GREYC, Caen), B. Kerautret (LORIA, Nancy),
-J.-O. Lachaud (LAMA, Chambéry), L. Provot (LORIA, Nancy),
-T. Roussillon (LIRIS, Lyon), I. Sivignon (Gipsa-lab, Grenoble),
-M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
+the digital geometry community.
 
 
 @section package_description DGtal Packages
@@ -62,34 +54,32 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref packageMath
   - \ref packageImage
   - \ref packageIO
-  
+
 
 @section manuals_tutorials Helpers and Tutorials
 
   - \ref packageTutorials
 
 
-   
 @section manueldev Manual pages for DGtal developers
   - \ref moduleFAQGit
   - \ref moduleCatch
-  
-  
-  
+
+
 @section links_sec_dgtal Links
-  
+
    <ul>
-   <li>Visit the <a href="http://dgtal.org/">DGtal homepage</a>.</li>
+    <li> Documentation of the associated [DGtalTools project](http://dgtal.org/doc/tools/nightly/)</li>
+    <li> Visit the [DGtal homepage](http://dgtal.org/)</li>
     <li> LibBoard section page   </li>
    </ul>
-  
+
    @defgroup Concepts DGtal Concepts
    @defgroup Archetypes DGtal Archetypes
    @defgroup Tests DGtal Test Files
    @defgroup Examples DGtal Examples
-  
+
 
 [imagene]: https://gforge.liris.cnrs.fr/projects/imagene "ImaGene"
 
  */
-

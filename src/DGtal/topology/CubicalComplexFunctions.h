@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/CubicalComplex.h"
+#include <DGtal/topology/helpers/NeighborhoodConfigurationsHelper.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -437,6 +438,34 @@ namespace DGtal
                              BdryCellOutputIterator itBdry, 
                              InnerCellOutputIterator itInner );
 
+  /**
+   * Get the occupancy configuration of the neighborhood of a point in a cubical
+   * complex.
+   * The neighborhood size is considered 3^D for dimension D of the point
+   * (ie 3x3x3 cube for 3D point).
+   *
+   * @tparam TComplex Complex type.
+
+   * @param input_complex input complex. Used to check what points are occupied.
+   * @param center of the neighborhood. It doesn't matter if center belongs
+   * or not to \b input_complex.
+   * @param mapPointToMask map[Point]->configuration, where Point is
+   * inside a DxD cube centered in {0,0,..} in ND.
+   *
+   * @note This doesn't work with KSpace coordinates, these must be converted
+   * to digital coordinates before: @see KhalimskySpaceND::uCoords(3,cell)
+   * @see mapPointToBitMask
+   *
+   * @return bit configuration
+   */
+
+  template<typename TComplex>
+  NeighborhoodConfiguration
+  getSpelNeighborhoodConfigurationOccupancy(
+      const          TComplex        & input_complex,
+      const typename TComplex::Point & center,
+      const std::unordered_map<
+              typename TComplex::Point, NeighborhoodConfiguration> & mapPointToMask);
   } // namespace functions
 
 } // namespace DGtal

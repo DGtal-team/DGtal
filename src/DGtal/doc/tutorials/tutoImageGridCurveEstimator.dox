@@ -55,7 +55,7 @@ This predicate returns true for each dark pixel of the following image:
 
 The extraction of the contour is performed in a cellular space 
 (with 0-, 1-, and 2-cells), given an adjacency (0-, 1-, 2-adjacency). 
-See \ref dgtal_cellular_topology for the basic
+See \ref moduleCellularTopology for the basic
 concepts of cellular topology. 
 
 @snippet tutorial-examples/imageGridCurveEstimator.cpp imageGridCurveEstimator-prepareTracking

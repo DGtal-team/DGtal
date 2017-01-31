@@ -430,9 +430,9 @@ Here, the DrawableWithBoard2D is just an interface that specifies a virtual meth
 
   The dynamically allocated instance of the default style for the drawable element may eventually be tuned for a specific mode given as a string.
  \code
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent, typename TContainer>
   inline
-  DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim,TComponent> & p, std::string mode = "")
+  DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim, TComponent, TContainer> & p, std::string mode = "")
   {
   if ( ( mode == "" ) || ( mode == "Paving" ) ) 
  return new DefaultDrawStylePaving_PointVector;
@@ -446,11 +446,11 @@ Here, the DrawableWithBoard2D is just an interface that specifies a virtual meth
 
   This method draws the drawable element on the given Board2D instance. The style has been applied automatically before.
  \code
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, typename TContainer2>
   inline
   void draw( DGtal::Board2D & board, 
-const DGtal::PointVector<dim,TComponent> & p, 
-const DGtal::PointVector<dim,TComponent> & apoint )
+const DGtal::PointVector<dim, TComponent1, TContainer1> & p, 
+const DGtal::PointVector<dim, TComponent2, TContainer2> & apoint )
   {
   ASSERT(dim == 2);
 
@@ -554,13 +554,20 @@ element ArithmeticDSS is redefined.
  */
 
  /**
-\example logoDGtal.cpp
+  \example io/boards/logoDGtal.cpp
   
-Simple example to generate DGtal logo in DGtal.
+   Simple example to generate DGtal logo in DGtal.
    \image html  logo_DGtal_small.png   "visualization of resulting export."
  */
 
 
 
 
+
+/**
+ * Example of bezier curve display in Board2D
+ * 
+   @image html exampleBezierCurve.png "visualization of resulting export."
+   @example io/boards/exampleBezierCurve.cpp
+ **/
 }

@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/images/CImage.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -117,8 +118,8 @@ namespace DGtal
        @param e a digital embedder (like a GaussDigitizer).
        @param iso_value the threshold value that defines the linear embedding.
     */
-    void init( const KSpace & K, const Image & f, 
-               const Embedder & e, ImageValue iso_value );
+    void init( ConstAlias<KSpace> K, ConstAlias<Image> f, 
+               ConstAlias<Embedder> e, double iso_value );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -188,7 +189,7 @@ namespace DGtal
     /// A pointer on the digital embedder.
     const Embedder* myPtrEmbedder;
     /// The threshold value for the linear embedding.
-    ImageValue myIsoValue;
+    double myIsoValue;
     
     // ------------------------- Hidden services ------------------------------
   protected:

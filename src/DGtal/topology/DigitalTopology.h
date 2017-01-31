@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/topology/CAdjacency.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -123,8 +124,8 @@ namespace DGtal
      * @param props an hint of the properties of this digital
      * topology, default is UNKNOWN.
      */
-    DigitalTopology( const ForegroundAdjacency & aKappa, 
-         const BackgroundAdjacency & aLambda,
+    DigitalTopology( ConstAlias<ForegroundAdjacency> aKappa, 
+         ConstAlias<BackgroundAdjacency> aLambda,
          DigitalTopologyProperties props = UNKNOWN_DT );
 
     /**

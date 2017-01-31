@@ -48,7 +48,7 @@ DGtal::functors::BoundaryPredicate<TKSpace,TImage>::
 template <typename TKSpace, typename TImage>
 inline
 DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
-BoundaryPredicate( const KSpace & aSpace, const Image & anImage,
+BoundaryPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
                    const Value & l1 )
   : myPtrSpace( &aSpace ), myPtrImage( &anImage ),
     myLabel1( l1 )

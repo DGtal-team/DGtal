@@ -155,7 +155,7 @@ namespace DGtal
 
   public: 
 
-    BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<TSegmentComputer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<TSegmentComputer> ));
     typedef TSegmentComputer SegmentComputer;
     typedef typename SegmentComputer::ConstIterator ConstIterator;
 

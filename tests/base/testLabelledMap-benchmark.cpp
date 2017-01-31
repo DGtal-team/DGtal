@@ -34,9 +34,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
-#ifdef CPP11_FORWARD_LIST
 #include <forward_list>
-#endif
 #include <boost/version.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_smallint.hpp>
@@ -244,8 +242,6 @@ public:
 };
 
 
-#ifdef CPP11_FORWARD_LIST
-
 /**
    Array[X][Y] of forward_list< pair<L,Value> > Another intermediate
    approach which favors less memory and more computation time.
@@ -399,7 +395,6 @@ public:
   }
 };
 
-#endif
 
 /**
    Array[X][Y] of LabelledMap<L>
@@ -641,9 +636,7 @@ int main()
 
   typedef ArrayLXY<Value, L, X, Y> MyArrayLXY;
   typedef ArrayXYOfMap<Value, L, X, Y> MyArrayXYOfMap;
-#if CPP11_FORWARD_LIST
   typedef ArrayXYOfList<Value, L, X, Y> MyArrayXYOfList;
-#endif
   typedef ArrayXYOfLabelledMap<Value, L, X, Y, Word, N, M > MyArrayXYOfLabelledMap;
 
   //----------------------------------------------------------------------
@@ -718,7 +711,6 @@ int main()
   trace.endBlock();
   trace.endBlock();
 
-#if CPP11_FORWARD_LIST
   //----------------------------------------------------------------------
   trace.beginBlock ( "---------- ArrayXYOfList ---------------" );
   trace.beginBlock ( "Generating ArrayXYOfList" );
@@ -754,7 +746,6 @@ int main()
   delete arrayXYOfList;
   trace.endBlock();
   trace.endBlock();
-#endif
 
   //----------------------------------------------------------------------
   trace.beginBlock ( "---------- ArrayXYOfLabelledMap ---------------" );

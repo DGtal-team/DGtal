@@ -45,15 +45,15 @@ digraph GDEC {
                  node [style=filled,color=white];
                  label="math/linalg";
 
-                 CVectorSpace [ label="CVectorSpace" URL="\ref CVectorSpace" ];
-                 CMatrix [ label="CMatrix" URL="\ref CMatrix" ];
-                 CStaticMatrix [ label="CStaticMatrix" URL="\ref CStaticMatrix" ];
-                 CDynamicMatrix [ label="CDynamicMatrix" URL="\ref CDynamicMatrix" ];
-                 CVector [ label="CVector" URL="\ref CVector" ];
-                 CStaticVector [ label="CStaticVector" URL="\ref CStaticVector" ];
-                 CDynamicVector [ label="CDynamicVector" URL="\ref CDynamicVector" ];
-                 CLinearAlgebra [ label="CLinearAlgebra" URL="\ref CLinearAlgebra" ];
-                 CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref CLinearAlgebraSolver" ];
+                 CVectorSpace [ label="CVectorSpace" URL="\ref concepts::CVectorSpace" ];
+                 CMatrix [ label="CMatrix" URL="\ref concepts::CMatrix" ];
+                 CStaticMatrix [ label="CStaticMatrix" URL="\ref concepts::CStaticMatrix" ];
+                 CDynamicMatrix [ label="CDynamicMatrix" URL="\ref concepts::CDynamicMatrix" ];
+                 CVector [ label="CVector" URL="\ref concepts::CVector" ];
+                 CStaticVector [ label="CStaticVector" URL="\ref concepts::CStaticVector" ];
+                 CDynamicVector [ label="CDynamicVector" URL="\ref concepts::CDynamicVector" ];
+                 CLinearAlgebra [ label="CLinearAlgebra" URL="\ref concepts::CLinearAlgebra" ];
+                 CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref concepts::CLinearAlgebraSolver" ];
         }
 
         CVector -> CVectorSpace;
@@ -77,7 +77,7 @@ digraph GDEC {
         node [style=filled,color=white];
         label="DEC (main concepts)";
 
-        CDiscreteExteriorCalculusVectorSpace [ label="CDiscreteExteriorCalculusVectorSpace" URL="\ref CDiscreteExteriorCalculusVectorSpace" ] ;
+        CDiscreteExteriorCalculusVectorSpace [ label="CDiscreteExteriorCalculusVectorSpace" URL="\ref concepts::CDiscreteExteriorCalculusVectorSpace" ] ;
     }
     CDiscreteExteriorCalculusVectorSpace -> CVectorSpace;
     CVectorSpace -> boost_Assignable;

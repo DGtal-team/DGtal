@@ -121,7 +121,7 @@ namespace DGtal
     template <typename Calculus, DGtal::Duality duality>
     static
     void
-    draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale = 0.5, const double& epsilon = 1e-8);
+    draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale = 0.5, const double& epsilon = 1e-5, const DGtal::Color color = DGtal::Color::Black);
     // VectorField
 
     // SphericalAccumulator
@@ -523,48 +523,48 @@ namespace DGtal
      * @param anObject the object to draw
      * @return the dyn. alloc. default style for this object.
      */
-    template<Dimension dim, typename TComponent>
-    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const DGtal::PointVector<dim,TComponent> & anObject );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const DGtal::PointVector<dim, TComponent, TContainer> & anObject );
 
     /**
      * @brief drawAsGrid
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template<Dimension dim, typename TComponent>
-    static void drawAsGrid( Display & display, const DGtal::PointVector<dim,TComponent> & anObject );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static void drawAsGrid( Display & display, const DGtal::PointVector<dim, TComponent, TContainer> & anObject );
 
     /**
      * @brief drawAsPaving
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template<Dimension dim, typename TComponent>
-    static void drawAsPaving( Display & display, const DGtal::PointVector<dim,TComponent> & anObject );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static void drawAsPaving( Display & display, const DGtal::PointVector<dim, TComponent, TContainer> & anObject );
 
     /**
      * @brief drawAsPavingWired
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template<Dimension dim, typename TComponent>
-    static void drawAsPavingWired( Display & display, const DGtal::PointVector<dim,TComponent> & anObject );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static void drawAsPavingWired( Display & display, const DGtal::PointVector<dim, TComponent, TContainer> & anObject );
 
     /**
      * @brief draw
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template<Dimension dim, typename TComponent>
-    static void draw( Display & display, const DGtal::PointVector<dim,TComponent> & anObject );
+    template<Dimension dim, typename TComponent, typename TContainer>
+    static void draw( Display & display, const DGtal::PointVector<dim, TComponent, TContainer> & anObject );
 
     /**
      * @brief draw
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template<Dimension dim, typename TComponent>
-    static void draw( Display & display, const DGtal::PointVector<dim,TComponent> & , const DGtal::PointVector<dim,TComponent> & anObject );
+    template<Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, typename TContainer2>
+    static void draw( Display & display, const DGtal::PointVector<dim, TComponent1, TContainer1> & , const DGtal::PointVector<dim, TComponent2, TContainer2> & anObject );
     // PointVector
 
     // GridCurve

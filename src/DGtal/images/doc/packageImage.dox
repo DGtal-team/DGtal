@@ -56,7 +56,7 @@ This package aims to implement Image models and data-structures.
 
 
  @b Related @b documentation @b pages
- - \ref moduleITKImage
+ - \ref ImageContainerByITKImage
 
 
 

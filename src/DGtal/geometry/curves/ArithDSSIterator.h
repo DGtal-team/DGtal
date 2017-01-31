@@ -105,11 +105,20 @@ namespace DGtal
     reference operator*() const;
 
     /**
-     * Increment operator.
+     * Prefix increment operator.
      * @return a reference to self where myP has been set up to the next point of the DSS
      */
     Self& operator++();
+    
+    /**
+     * Postfix increment operator.
+     * @param a number of unit increments
+     * @return self
+     */
+    Self operator++(int a);
+    
 
+    
     /**
      * Equality operator.
      * @param other the object to compare with.

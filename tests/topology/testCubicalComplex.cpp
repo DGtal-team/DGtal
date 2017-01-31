@@ -82,7 +82,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
       REQUIRE( complex.nbCells( 2 ) == 0 );
       REQUIRE( complex.nbCells( 3 ) > 0 );
     }
-  
+
     WHEN( "Computing proper faces of these 3-cells" ) {
       std::vector<Cell> faces;
       std::back_insert_iterator< std::vector<Cell> > outIt( faces );
@@ -157,7 +157,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
           REQUIRE( nbFaces[ 4 ] == nbFaces2[ 4 ] );
         }
       }
-      
+
       WHEN( "Computing boundaries of 2-cells" ) {
         for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
               it != itE; ++it )
@@ -176,7 +176,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
             nbBdry2[ n ]++;
-          }        
+          }
         THEN( "All of them contain exactly 8 cells when computed with hint closed" ) {
           REQUIRE( nbBdry[ 7 ] == 0 );
           REQUIRE( nbBdry[ 8 ] > 0 );
@@ -189,7 +189,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
           REQUIRE( nbBdry[ 8 ] == nbBdry2[ 8 ] );
         }
       }
-    }  // WHEN( "Closing the cubical complex" ) {    
+    }  // WHEN( "Closing the cubical complex" ) {
   }
 }
 
@@ -283,7 +283,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > link tests", "[cubical_comp
     THEN( "It has Euler characteristic 1" ) {
       REQUIRE( X.euler() == 1 );
     }
-     
+
     WHEN( "Computing the link of its inner pointels without hint" ) {
       CC link_S_v1 = X.link( S );
 
@@ -341,7 +341,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
       REQUIRE( complex.nbCells( 2 ) == 0 );
       REQUIRE( complex.nbCells( 3 ) > 0 );
     }
-  
+
     WHEN( "Computing proper faces of these 3-cells" ) {
       std::vector<Cell> faces;
       std::back_insert_iterator< std::vector<Cell> > outIt( faces );
@@ -416,7 +416,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
           REQUIRE( nbFaces[ 4 ] == nbFaces2[ 4 ] );
         }
       }
-      
+
       WHEN( "Computing boundaries of 2-cells" ) {
         for ( CellMapConstIterator it = complex.begin( 2 ), itE = complex.end( 2 );
               it != itE; ++it )
@@ -435,7 +435,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
             nbBdry2[ n ]++;
-          }        
+          }
         THEN( "All of them contain exactly 8 cells when computed with hint closed" ) {
           REQUIRE( nbBdry[ 7 ] == 0 );
           REQUIRE( nbBdry[ 8 ] > 0 );
@@ -448,7 +448,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
           REQUIRE( nbBdry[ 8 ] == nbBdry2[ 8 ] );
         }
       }
-    }  // WHEN( "Closing the cubical complex" ) {    
+    }  // WHEN( "Closing the cubical complex" ) {
   }
 }
 
@@ -542,7 +542,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > link tests", "[cubical_complex][link]
     THEN( "It has Euler characteristic 1" ) {
       REQUIRE( X.euler() == 1 );
     }
-     
+
     WHEN( "Computing the link of its inner pointels without hint" ) {
       CC link_S_v1 = X.link( S );
 
@@ -620,7 +620,6 @@ SCENARIO( "CubicalComplex< K2,std::map<> > set operations and relations", "[cubi
   CAPTURE( X1.boundary() );
   bool X1bd_equal_X1boundary = X1bd == X1.boundary();
   REQUIRE( X1bd_equal_X1boundary );
-  
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

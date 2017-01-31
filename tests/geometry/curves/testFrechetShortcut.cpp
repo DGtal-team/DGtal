@@ -68,10 +68,10 @@ bool testFrechetShortcut()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef FrechetShortcut<Iterator,int> Shortcut;  
+  typedef FrechetShortcut<Iterator,int> Shortcut;
 
   std::vector<Point> contour;
   contour.push_back(Point(0,0));
@@ -97,20 +97,20 @@ bool testFrechetShortcut()
   contour.push_back(Point(9,2));
 
   trace.beginBlock ( "Testing block ..." );
-  
+
   Shortcut s(5);
   s.init(contour.begin());
-  
+
   trace.info() << s << std::endl;
-  
+
   while ( (s.end() != contour.end())
     &&(s.extendFront()) ) {}
-  
+
   trace.info() << s << std::endl;
-  
-  
+
+
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -118,21 +118,21 @@ bool testFrechetShortcut()
 
 void testFrechetShortcutConceptChecking()
 {
-  typedef PointVector<2,int> Point; 
-  typedef std::vector<Point>::const_iterator ConstIterator; 
-  typedef FrechetShortcut<ConstIterator,int> Shortcut; 
-  BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<Shortcut> ));
-  BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<Shortcut> ));
+  typedef PointVector<2,int> Point;
+  typedef std::vector<Point>::const_iterator ConstIterator;
+  typedef FrechetShortcut<ConstIterator,int> Shortcut;
+  BOOST_CONCEPT_ASSERT(( concepts::CDrawableWithBoard2D<Shortcut> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<Shortcut> ));
 }
 
 bool testSegmentation()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   typedef PointVector<2,int> Point;
   //typedef std::vector<Point>::iterator Iterator;
-  //typedef FrechetShortcut<Iterator,int> SegmentComputer;  
+  //typedef FrechetShortcut<Iterator,int> SegmentComputer;
 
   std::vector<Point> contour;
   contour.push_back(Point(0,0));
@@ -159,52 +159,53 @@ bool testSegmentation()
   contour.push_back(Point(9,2));
 
   trace.beginBlock ( "Testing block ..." );
-  
+
+  typedef GridCurve< KhalimskySpaceND< 2, int > > Curve;
   typedef Curve::PointsRange::ConstIterator Iterator;
   typedef FrechetShortcut<Iterator,int> SegmentComputer;
-  
+
   Curve aCurve; //grid curve
   aCurve.initFromVector(contour);
-  
+
   typedef Curve::PointsRange Range; //range
   Range r = aCurve.getPointsRange(); //range
-  
-  Board2D board; 
+
+  Board2D board;
   board << r;
   board << aCurve.getArrowsRange();
-  
+
 
   double anerror = 3;
   nbok =3;
-  
+
   trace.beginBlock ( "Greedy segmentation" );
   {
     typedef GreedySegmentation<SegmentComputer> Segmentation;
     Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer(anerror) );
-    
+
     Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
-    
+
     for ( ; it != itEnd; ++it) {
       SegmentComputer s(*it);
       trace.info() << s << std::endl;
-      board << (*it); 
+      board << (*it);
       nb++;
     }
 
     //board << aCurve;
     trace.info() << theSegmentation << std::endl;
-    board.saveEPS("FrechetShortcutGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+    board.saveEPS("FrechetShortcutGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 );
   }
-  
+
   /* Saturated segmentation does not work for FrechetShortcut
      computer. Indeed, given two maximal Frechet shortcuts s1(begin, end) et
      s2(begin, end),  we can have s1.begin < s2.begin < s2.end <
-     s1.end. */ 
-  
+     s1.end. */
+
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
