@@ -100,6 +100,7 @@ namespace DGtal
      * 
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
+     * @param color The color associated with the upper bound. 
      */
     ColorBrightnessColorMap( const PValue & min,
            const PValue & max,

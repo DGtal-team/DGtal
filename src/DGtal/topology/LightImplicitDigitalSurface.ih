@@ -48,7 +48,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 template <typename TKSpace, typename TPointPredicate>
 inline
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
-::Tracker( const DigitalSurfaceContainer & aSurface, 
+::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
            const Surfel & s )
   : mySurface( aSurface ), myNeighborhood()
 {
@@ -139,8 +139,8 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::LightImplicitDigita
 template <typename TKSpace, typename TPointPredicate>
 inline
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::LightImplicitDigitalSurface
-( const KSpace & aKSpace,
-  const PointPredicate & aPP,
+( ConstAlias<KSpace> aKSpace,
+  ConstAlias<PointPredicate> aPP,
   const Adjacency & adj,
   const Surfel & s )
   : myKSpace( aKSpace ), myPointPredicate( aPP ), mySurfelAdjacency( adj ),

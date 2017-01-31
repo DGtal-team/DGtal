@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file distancetransform2D.cpp
+ * @file geometry/volumes/distance/distancetransform2D.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France

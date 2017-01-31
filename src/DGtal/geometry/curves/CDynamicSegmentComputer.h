@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CDynamicSegmentComputer
   /**
@@ -62,8 +63,8 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
  ### Associated types : the same as CForwardSegmentComputer
   
  ### Notation
-     - \t X : A type that is a model of CDynamicSegmentComputer
-     - \t x : object of type X
+     - \a X : A type that is a model of CDynamicSegmentComputer
+     - \a x : object of type X
   
  ### Definitions
     
@@ -84,7 +85,7 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
 @tparam T the type that should be a model of CDynamicSegmentComputer.
    */
   template <typename T> 
-  struct CDynamicSegmentComputer : CForwardSegmentComputer<T>
+  struct CDynamicSegmentComputer : concepts::CForwardSegmentComputer<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -102,7 +103,7 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
   private:
     
   }; // end of concept CDynamicSegmentComputer
-  
+  }
 } // namespace DGtal
 
 //                                                                           //

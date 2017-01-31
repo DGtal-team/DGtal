@@ -48,66 +48,71 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CConstSinglePassRangeFromPoint
-  /**
-     Description of \b concept '\b CConstSinglePassRangeFromPoint' <p>
-     @ingroup Concepts
-     @brief Aim: refined concept of const single pass range with a begin() method from a point.
-
-     ###  Refinement of CConstSinglePassRange
-
-     ###  Associated types :
-
-     ###  Notation
-     - X : A type that is a model of CConstSinglePassRangeFromPoint
-     - x,  y : object of type X
-     - Point: A type of Point
-
-     ###  Definitions
-
-     ###  Valid expressions and semantics
-
-     | Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
-     |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
-     | begin | begin(const Point &aPoint) | aPoint of type Point | ConstIterator |              | Returns a const iterator on the range first element |                |            |
-     ###  Invariants
-
-     ###  Models
-     - ImageContainerBySTLVector::Range
-
-     ###  Notes
-     @tparam T the type that should be a model of CConstSinglePassRangeFromPoint.
-   */
-  template <typename T>
-  struct CConstSinglePassRangeFromPoint: CConstSinglePassRange<T>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Point Point;
 
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CConstSinglePassRangeFromPoint )
-    {
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      // const method dummyConst should take parameter myA of type A and return
-      // something of type B
-      ConceptUtils::sameType( myB, myX.begin( myPoint ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Point myPoint;
-    ConstIterartor myB;
+    /////////////////////////////////////////////////////////////////////////////
+    // class CConstSinglePassRangeFromPoint
+    /**
+       Description of \b concept '\b CConstSinglePassRangeFromPoint' <p>
+       @ingroup Concepts
+       @brief Aim: refined concept of const single pass range with a begin() method from a point.
 
-    // ------------------------- Internals ------------------------------------
-  private:
+       ###  Refinement of CConstSinglePassRange
 
-  }; // end of concept CConstSinglePassRangeFromPoint
+       ###  Associated types :
+
+       ###  Notation
+       - X : A type that is a model of CConstSinglePassRangeFromPoint
+       - x,  y : object of type X
+       - Point: A type of Point
+
+       ###  Definitions
+
+       ###  Valid expressions and semantics
+
+       | Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
+       |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
+       | begin | begin(const Point &aPoint) | aPoint of type Point | ConstIterator |              | Returns a const iterator on the range first element |                |            |
+       ###  Invariants
+
+       ###  Models
+       - ImageContainerBySTLVector::Range
+
+       ###  Notes
+       @tparam T the type that should be a model of CConstSinglePassRangeFromPoint.
+    */
+    template <typename T>
+      struct CConstSinglePassRangeFromPoint: CConstSinglePassRange<T>
+      {
+        // ----------------------- Concept checks ------------------------------
+      public:
+        // 1. define first provided types (i.e. inner types), like
+        typedef typename T::Point Point;
+
+        // 2. then check the presence of data members, operators and methods with
+        BOOST_CONCEPT_USAGE( CConstSinglePassRangeFromPoint )
+        {
+          checkConstConstraints();
+        }
+        void checkConstConstraints() const
+        {
+          // const method dummyConst should take parameter myA of type A and return
+          // something of type B
+          ConceptUtils::sameType( myB, myX.begin( myPoint ) );
+        }
+        // ------------------------- Private Datas --------------------------------
+      private:
+        T myX; // do not require T to be default constructible.
+        Point myPoint;
+        ConstIterartor myB;
+
+        // ------------------------- Internals ------------------------------------
+      private:
+
+      }; // end of concept CConstSinglePassRangeFromPoint
+
+  } // namespace concepts
 
 } // namespace DGtal
 

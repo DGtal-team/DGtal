@@ -47,71 +47,72 @@
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CSegmentFactory
-  /**
-Description of \b concept '\b CSegmentFactory' <p>
-     @ingroup Concepts
-     @brief Aim: Defines the concept describing a segment 
-    ie. a valid and not empty subrange, which can construct
-    instances of its own type or of derived type. 
-
- ### Refinement of CSegment
-
- ### Associated types :
-    - Self, its own type
-    - Reverse, same as Self but using std::reverse_iterator<Self::ConstIterator>
-    instead of Self::ConstIterator as the underlying iterator
-
- ### Notation
-     - \t X : A type that is a model of CSegmentFactory
-     - \t x : object of type X
-
- ### Definitions
-
- ### Valid expressions and semantics
-
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| getSelf method| x.getSelf()|                     |X::Self      |                  |returns an instance of Self, which is constructed from the same input parameters used to construct x (if any) | | depends on the internal structures defined in x |
-| conversion    | x.getReverse() |                 |X::Reverse   |                  |returns an instance of Reverse, which is constructed from the same input parameters used to construct x (if any) | | depends on the internal structures defined in x |
-
-
- ### Invariants###
-
- ### Models###
-
- ### Notes###
-
-@tparam T the type that should be a model of CSegmentFactory.
-   */
-  template <typename T>
-  struct CSegmentFactory : CSegment<T>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // Inner types
-    typedef typename T::Self Self;
-    BOOST_STATIC_ASSERT(( boost::is_same< T, Self >::value ));
-    typedef typename T::Reverse Reverse;
-    // Methods
-    BOOST_CONCEPT_USAGE( CSegmentFactory )
+    /////////////////////////////////////////////////////////////////////////////
+    // class CSegmentFactory
+    /**
+       Description of \b concept '\b CSegmentFactory' <p>
+       @ingroup Concepts
+       @brief Aim: Defines the concept describing a segment 
+       ie. a valid and not empty subrange, which can construct
+       instances of its own type or of derived type. 
+
+       ### Refinement of CSegment
+
+       ### Associated types :
+       - Self, its own type
+       - Reverse, same as Self but using std::reverse_iterator<Self::ConstIterator>
+       instead of Self::ConstIterator as the underlying iterator
+
+       ### Notation
+       - \a X : A type that is a model of CSegmentFactory
+       - \a x : object of type X
+
+       ### Definitions
+
+       ### Valid expressions and semantics
+
+
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       | getSelf method| x.getSelf()|                     |X::Self      |                  |returns an instance of Self, which is constructed from the same input parameters used to construct x (if any) | | depends on the internal structures defined in x |
+       | conversion    | x.getReverse() |                 |X::Reverse   |                  |returns an instance of Reverse, which is constructed from the same input parameters used to construct x (if any) | | depends on the internal structures defined in x |
+
+
+       ### Invariants###
+
+       ### Models###
+
+       ### Notes###
+
+       @tparam T the type that should be a model of CSegmentFactory.
+    */
+    template <typename T>
+    struct CSegmentFactory : concepts::CSegment<T>
     {
-      concepts::ConceptUtils::sameType( myT, myT.getSelf() );
-      concepts::ConceptUtils::sameType( myRT, myT.getReverse() );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myT; // only if T is default constructible.
-    Reverse myRT; 
+      // ----------------------- Concept checks ------------------------------
+    public:
+      // Inner types
+      typedef typename T::Self Self;
+      BOOST_STATIC_ASSERT(( boost::is_same< T, Self >::value ));
+      typedef typename T::Reverse Reverse;
+      // Methods
+      BOOST_CONCEPT_USAGE( CSegmentFactory )
+      {
+        concepts::ConceptUtils::sameType( myT, myT.getSelf() );
+        concepts::ConceptUtils::sameType( myRT, myT.getReverse() );
+      }
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myT; // only if T is default constructible.
+      Reverse myRT; 
 
-    // ------------------------- Internals ------------------------------------
-  private:
+      // ------------------------- Internals ------------------------------------
+    private:
 
-  }; // end of concept CSegmentFactory
-
+    }; // end of concept CSegmentFactory
+  }
 } // namespace DGtal
 
 //                                                                           //

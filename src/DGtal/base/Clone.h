@@ -74,7 +74,7 @@ namespace DGtal
      |------------------|---------------|---------------|----------------|----------------|--------------|
      |To:\c T           | Dupl.  O(N)   |Acq. Dupl. O(N)| Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
      |To:\c T*          | Dupl.  O(N)   |   Acq. O(1)   | Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
-     |To:\ref CowPtr<T>   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
+     |To:\link CowPtr CowPtr<T>\endlink   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
 
      with abbreviations:
      - \b Dupl. Object is duplicated.
@@ -338,7 +338,6 @@ namespace DGtal
     inline Clone( const CountedPtr<T> & ptrT )
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &ptrT ) ) {}
 
-#ifdef CPP11_RREF_MOVE
     /**
        Constructor from right-reference value.  The object is pointed in
        'this'. It is duplicated (or not) when the user claims it.
@@ -347,7 +346,6 @@ namespace DGtal
     */
     inline Clone( T && t )
       : myParam( RIGHT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
-#endif // CPP11_RREF_MOVE
 
 
     /**
@@ -373,10 +371,8 @@ namespace DGtal
 	return T( * static_cast< const CowPtr<T>* >( myPtr )->get() );
       case COUNTED_PTR:
 	return T( * static_cast< const CountedPtr<T>* >( myPtr )->get() );
-#ifdef CPP11_RREF_MOVE
       case RIGHT_VALUE_REF:
 	return T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
-#endif // CPP11_RREF_MOVE
       default: ASSERT( false && "[Clone::operator T() const] Invalid cast for given type. " );
         return T( * static_cast< const T* >( myPtr ) );
       }
@@ -403,10 +399,8 @@ namespace DGtal
 	return CowPtr<T>( * static_cast< const CowPtr<T>* >( myPtr ) );
       case COUNTED_PTR:
 	return CowPtr<T>( * static_cast< const CountedPtr<T>* >( myPtr ) );
-#ifdef CPP11_RREF_MOVE
       case RIGHT_VALUE_REF:
 	return CowPtr<T>( new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) ) );
-#endif
       default: ASSERT( false && "[Clone::operator CowPtr<T>() const] Invalid cast for given type. " );
         return CowPtr<T>( 0 );
       }
@@ -436,10 +430,8 @@ namespace DGtal
 	return new T( *( static_cast< const CowPtr<T>* >( myPtr )->get() ) );
       case COUNTED_PTR:
 	return new T( *( static_cast< const CountedPtr<T>* >( myPtr )->get() ) );
-#ifdef CPP11_RREF_MOVE
       case RIGHT_VALUE_REF:
 	return new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
-#endif
       default: ASSERT( false && "[T* Clone::operator&() const] Invalid address for given type. " );
         return 0;
       }

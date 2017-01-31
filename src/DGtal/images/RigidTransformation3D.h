@@ -264,7 +264,9 @@ public:
         points[6] = transform ( Point ( aInput.lowerBound()[0], aInput.lowerBound()[1], aInput.upperBound()[2] ) );
         points[7] = transform ( Point ( aInput.upperBound()[0], aInput.upperBound()[1], aInput.lowerBound()[2] ) );
 
-        Point t_min ( INT_MAX, INT_MAX, INT_MAX ), t_max ( INT_MIN, INT_MIN, INT_MIN );
+        typename Point::Component cmax = std::numeric_limits<typename Point::Component>::max();
+        typename Point::Component cmin = std::numeric_limits<typename Point::Component>::min();
+        Point t_min ( cmax, cmax, cmax ), t_max ( cmin, cmin, cmin );
         for ( int i = 0; i < 8; i++ )
         {
             if ( points[i][0] < t_min[0] )

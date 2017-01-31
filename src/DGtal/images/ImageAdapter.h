@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/domains/CDomain.h"
@@ -91,7 +92,7 @@ namespace DGtal
  * here is the construction of a simple ConstImageAdapter that 
  * is a thresholded view of the initial scalar image: 
  *
- * @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
+ * @snippet images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
  *
  * NB: the underlying image as well as the 3 functors
  * are stored in the adapter as aliasing pointer
@@ -135,7 +136,13 @@ public:
 
 public:
 
-    ImageAdapter(ImageContainer &anImage, const Domain &aDomain, const TFunctorD &aFD, const TFunctorV &aFV, const TFunctorVm1 &aFVm1):
+    ImageAdapter(
+                 ImageContainer &anImage, 
+                 ConstAlias<Domain>       aDomain, 
+                 ConstAlias<TFunctorD>    aFD,
+                 ConstAlias<TFunctorV>    aFV,
+                 ConstAlias<TFunctorVm1>  aFVm1
+      ) :
             myImagePtr(&anImage), mySubDomainPtr(&aDomain), myFD(&aFD), myFV(&aFV), myFVm1(&aFVm1)
     {
       defaultValue = 0;

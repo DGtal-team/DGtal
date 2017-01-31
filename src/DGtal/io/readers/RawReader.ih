@@ -44,7 +44,7 @@ throw(DGtal::IOException)
     BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Word, Value > )) ;
 
     FILE * fin;
-    fin = fopen( filename.c_str() , "r" );
+    fin = fopen( filename.c_str() , "rb" );
 
     if (fin == NULL)
         trace.error() << "RawReader : can't open "<< filename << std::endl;

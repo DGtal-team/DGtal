@@ -239,7 +239,7 @@ namespace DGtal
      string s1 = "1.5 X_0^2 X_2^3 X_1^5 * (4 X_0^3 + X_1^2)^2";
      bool ok1 = reader.read( P, s1.begin(), s1.end() ) == s1.end();
      std::cout << "- Parsing " << s1 << " : " << ok1 << " " << P << std::endl;
-     @encode
+     @endcode
      
      @tparam n the number of variables or indeterminates.
 
@@ -273,7 +273,7 @@ namespace DGtal
     MPolynomialReader() {}
 
     /**
-       Read any string between \a begin and \end, and builds the
+       Read any string between \a begin and end, and builds the
        corresponding polynomial in \a p.
 
        @param p (returns) the polynomial

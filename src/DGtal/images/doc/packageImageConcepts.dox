@@ -84,7 +84,7 @@ digraph GIMAGE {
         label="Image (main models)";
 	ImageContainerBySTLVector [label="ImageContainerBySTLVector" URL="@ref ImageContainerBySTLVector"];
 	ImageContainerBySTLMap  [label="ImageContainerBySTLMap" URL="@ref ImageContainerBySTLMap"];
-	ImageContainerByHashTree  [label="ImageContainerByHashTree" URL="@ref ImageContainerByHashTree"];
+	ImageContainerByHashTree  [label="ImageContainerByHashTree" URL="@ref experimental::ImageContainerByHashTree"];
 	ImageContainerByITKImage  [label="ImageContainerByITKImage" URL="@ref ImageContainerByITKImage"];
     
 	ImageAdapter  [label="ImageAdapter" URL="@ref ImageAdapter"];

@@ -38,7 +38,7 @@ offer better colormap for scientific visualisation purposes.
 \image html colormaps.png "Example of predefined colormaps" 
 \image latex colormaps.png "Example of predefined colormaps" width=5cm
 
-Beside colormaps, TickedColorMap is a colormap adapter that adds ticks. For example, you can adapt a Black-Red gradient colormap to add regular white ticks (see usage in @href testTickedColorMap):
+Beside colormaps, TickedColorMap is a colormap adapter that adds ticks. For example, you can adapt a Black-Red gradient colormap to add regular white ticks (see usage in @ref testTickedColorMap.cpp):
 
 \image html testTicked-gradient-regular.png "Colormaps with regular ticks" 
 \image latex testTicked-gradient-regular.png "Colormaps with regular ticks" width=10cm
@@ -156,7 +156,7 @@ given type).
 
 
 To write color images, you need to use a functor which transform a scalar value into a Color. 
-You can use the previous \ref colormaps:
+You can use the previous \ref colormaps :
 @code 
 typedef DGtal::ImageContainerBySTLVector<Z2i::Domain, double > Image2D;
 DGtal::HueShadeColorMap<double>  hueColorMap (-50.0, 50.0);
@@ -220,6 +220,47 @@ Use the same import function for both 2D or 3D images:
 @endcode 
 
 
+
+
+\subsection volformat Details on the Vol/Longvol formats
+
+The Vol and Longvol formats are described on the  simplevol project
+website
+(http://liris.cnrs.fr/david.coeurjolly/code/simplevol.html). Basically,
+the format consists in:
+
+ - an ASCII header with for instance the image size and the Vol format
+ version, ending with a ".". Mandatory information are the size (@e X,
+ @e Y, @e Z) and the format version (@e Version). E.g.
+@code
+Center-X: 5
+Center-Y: 5
+Center-Z: 5
+X: 11
+Y: 11
+Z: 11
+Voxel-Size: 1
+Alpha-Color: 0
+Voxel-Endian: 0
+Int-Endian: 0123
+Version: 3
+.
+@endcode
+
+ - a binary chunck with linearized image values. In "Version 2" of Vol and Longvol, the binary chunck is simply a raw
+export of image values (little endian for Longvol entries). In
+"Version 3", the binary values are compressed using zlib (default
+version when using the DGtal reader and writer).
+
+If you want to export an image to "Version 2" Vol or a Longvol, just
+add a @e false flag when exporting. For instance:
+
+@code
+DGtal::VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image, false);
+@endcode
+
+@note "Version 1" Vol or Longvol files are no longer supported in
+DGtal readers/writers.
 
 \section fileformat Other geometrical formats
 
@@ -285,8 +326,8 @@ Afterwards the set is thresholded in ]0,255[:
 
 Then you will obtain the following visualisation:
 
-\image html visuDigitalSet3D.png "3D digital with Viewer3D" 
-\image latex visuDigitalSet3D.png "3D digital with Viewer3D" width=5cm
+\image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" 
+\image latex visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" width=5cm
 
 
 \subsection importPointList Import 3D point list from file
@@ -404,11 +445,17 @@ instance generate some exports in pdf like this example:
 }
 
 /**
-
-* TODO \example io/digitalSetFromVol.cpp
+   Example of digital set extraction from volumetric file (.vol).
+   @see @ref moduleIO 
+   \image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" 
+*  \example io/digitalSetFromVol.cpp
 **/
 
+
 /**
+   Example of point list import.
+   @see @ref moduleIO 
+   \image html visuPointList.png "Visualisation of 3d imported point list " 
 * \example io/digitalSetFromPointList.cpp
 **/
 
@@ -434,3 +481,5 @@ instance generate some exports in pdf like this example:
 
 * @example io/display3DToOFF.cpp
 */
+
+

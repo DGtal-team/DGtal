@@ -104,7 +104,7 @@ namespace DGtal
      * Type of orientation functor
      */
     typedef TOrientationFunctor Functor;
-    BOOST_CONCEPT_ASSERT(( COrientationFunctor2<Functor> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> )); 
     //the two types of points must be the same
     BOOST_STATIC_ASSERT (( boost::is_same< Point, typename Functor::Point >::value )); 
 

@@ -15,7 +15,7 @@ SET(DGTAL_TESTS_QSRC
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO)
+  target_link_libraries (${FILE} DGtal)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -23,6 +23,6 @@ ENDFOREACH(FILE)
 IF (WITH_VISU3D_QGLVIEWER)
   FOREACH(FILE ${DGTAL_TESTS_QSRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
   ENDFOREACH(FILE)
 ENDIF()

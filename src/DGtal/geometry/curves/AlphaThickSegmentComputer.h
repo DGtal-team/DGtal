@@ -21,7 +21,7 @@
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  * @author Alexandre Faure
- * @author Fabien Feschet 
+ * @author Fabien Feschet
  * @author Mohammad Said
  * @author Jacques-Olivier Lachaud
  *
@@ -76,8 +76,8 @@ namespace DGtal
  * the \cite FaureTangential2008 (see \cite FaureTangential2008 page
  * 363) which reduces the complexity from \f$O(n\ log\ n) \f$ in
  * \f$O( log\ n) \f$.  Note that the convexhull update in linear
- * time (with point substraction) proposed by Buzer \cite
- * lilianComputing2007 is not yet implemented.
+ * time (with point substraction) proposed by Buzer
+ * @cite lilianComputing2007 is not yet implemented.
  *
  *
  *
@@ -91,30 +91,30 @@ namespace DGtal
  * TInputPoint > .
  *
  *
- * This class is a model of boost::ForwardContainer and  CForwardSegmentComputer.  
+ * This class is a model of boost::ForwardContainer and  CForwardSegmentComputer.
  * It is also default constructible, copy  constructible, assignable and equality comparable.
  *
  *
  * Alpha thick segment recognition may be typically done as follows:
  * - If you consider input point with floating coordinates, you can define this type:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyTypedef
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyTypedef
  *
  * - Then import possibly a vector containing the input points by using the PointListReader class:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisyReadFile 
- * 
- * - Finally apply the segment recognition (here of maximal thickness 15)  by adding the sequence (forward) of contour points: 
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementNoisInitAndReco 
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyReadFile
+ *
+ * - Finally apply the segment recognition (here of maximal thickness 15)  by adding the sequence (forward) of contour points:
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco
  *  @note The maximal thickness given in initialization is the same than
  *  the width given by the method width() of the ParallelStrip primitive
  *  (not the vertical/horizontal width of the convex hull).
  *
- *  
+ *
  * - If you use a Board2D display, you can draw the resulting segment like other 2D objects:
- *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegementDisplay 
- * 
+ *  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentDisplay
+ *
  * The complete example of segment recognition is given in exampleAlphaThickSegmentNoisy.cpp
  *
- * @note You can also construct the segment by using an input point iterator in initialisation (see @ref moduleAlphaThickSegmentReco for more details) 
+ * @note You can also construct the segment by using an input point iterator in initialisation (see @ref moduleAlphaThickSegmentReco for more details)
  *
  * The proposed implementation is mainly a backport from
  * [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
@@ -130,14 +130,14 @@ class AlphaThickSegmentComputer
 
   // ----------------------- public types --------------------------------------
   BOOST_STATIC_ASSERT(( TInputPoint::dimension == 2 ));
-  BOOST_CONCEPT_ASSERT((boost_concepts::ReadableIterator<TConstIterator>)); 
- 
+  BOOST_CONCEPT_ASSERT((boost_concepts::ReadableIterator<TConstIterator>));
+
 public:
   /**
    * Type of input point.
    **/
   typedef TInputPoint InputPoint;
-  
+
   /**
    * The container type of Input Point
    **/
@@ -145,66 +145,66 @@ public:
   typedef typename InputPointContainer::size_type Size;
   typedef typename InputPointContainer::const_iterator ContainerConstIterator;
   typedef typename DGtal::functions::Hull2D::ThicknessDefinition ThicknessDef;
-  
+
   typedef typename InputPointContainer::iterator Iterator;
   typedef TConstIterator ConstIterator;
-  typedef ParallelStrip< SpaceND< 2,  DGtal::int32_t > ,true,true> Primitive;  
-  
+  typedef ParallelStrip< SpaceND< 2, DGtal::int32_t > ,true,true> Primitive;  
+
   /**
-   * Type of embedded points 
+   * Type of embedded points
    * @see getBoundingBox, getBoundingBoxFromExtremPoints
    */
-  typedef DGtal::PointVector<2, double> PointD; 
+  typedef DGtal::PointVector<2, double> PointD;
 
-  typedef AlphaThickSegmentComputer<InputPoint, ConstIterator> Self; 
-  typedef AlphaThickSegmentComputer<InputPoint, ReverseIterator<ConstIterator> > Reverse; 
-  typedef DGtal::InHalfPlaneBySimple3x3Matrix<InputPoint, typename InputPoint::Component> Functor;  
+  typedef AlphaThickSegmentComputer<InputPoint, ConstIterator> Self;
+  typedef AlphaThickSegmentComputer<InputPoint, ReverseIterator<ConstIterator> > Reverse;
+  typedef DGtal::InHalfPlaneBySimple3x3Matrix<InputPoint, typename InputPoint::Component> Functor;
   typedef typename  DGtal::MelkmanConvexHull<InputPoint, Functor>::ConstIterator ConvexhullConstIterator;
-  
+
   // ----------------------- internal types --------------------------------------
 
-private: 
+private:
   struct State{
-    DGtal::MelkmanConvexHull<InputPoint, Functor> melkmanCH;  
+    DGtal::MelkmanConvexHull<InputPoint, Functor> melkmanCH;
     /** the last point added at the front of the alpha thick segment */
     InputPoint lastFront;
     /** the last point added at the back of the alpha thick segment */
     InputPoint lastBack;
-    /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */ 
+    /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint edgePh;
-    /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */ 
+    /** one the convexhull edge point of the (edge, vertex) pair used to compute the convexhull height */
     InputPoint edgeQh;
     /** one the convexhull vertex of the (edge, vertex) pair used to compute the convexhull height */
-    InputPoint vertexSh; 
-    /*the actual thickness of the current segment*/
-    double actualThickness; 
+    InputPoint vertexSh;
+    /** the actual thickness of the current segment */
+    double actualThickness;
   };
-    
-  
+
+
   // ----------------------- Standard services ------------------------------
 public:
-  
+
 
 
   /**
    * Constructor.
    * @param[in] maximalThickness the maximal thickness of the segment (default 1).
-   * @param[in] thicknessDefinition the definition of the thickness used in the segment extension (can be DGtal::functions::Hull2D::HorizontalVerticalThickness (default) or DGtal::functions::Hull2D::EuclideanThickness). 
+   * @param[in] thicknessDefinition the definition of the thickness used in the segment extension (can be DGtal::functions::Hull2D::HorizontalVerticalThickness (default) or DGtal::functions::Hull2D::EuclideanThickness).
    * @param[in] thickCompPrecision to adjust the precision of the
    * thickness estimation used in the comparison during the segment
    * extension (default set to 1e-6).
    */
-  AlphaThickSegmentComputer(const double maximalThickness = 1.0, 
-                            const ThicknessDef &thicknessDefinition = functions::Hull2D::HorizontalVerticalThickness, 
+  AlphaThickSegmentComputer(const double maximalThickness = 1.0,
+                            const ThicknessDef &thicknessDefinition = functions::Hull2D::HorizontalVerticalThickness,
                             const double thickCompPrecision=1e-6);
-  
-  
-  
+
+
+
   /**
    * Destructor.
    */
   ~AlphaThickSegmentComputer();
-  
+
 
   /**
    * Copy constructor.
@@ -212,7 +212,7 @@ public:
    * @param[in] other the object to clone.
    */
   AlphaThickSegmentComputer ( const AlphaThickSegmentComputer & other );
-  
+
 
   /**
    * Assignment.
@@ -221,19 +221,19 @@ public:
    * @return a reference on 'this'.
    */
   AlphaThickSegmentComputer & operator= ( const AlphaThickSegmentComputer & other );
-  
 
-  /** 
-   * @return a default-constructed instance of Self 
+
+  /**
+   * @return a default-constructed instance of Self
    */
   Self getSelf() const;
 
-  
+
   /**
    * @return a default-constructed instance of Reverse
    */
   Reverse getReverse() const;
-  
+
   /**
    * Equality operator.
    * @param other the object to compare with.
@@ -242,7 +242,7 @@ public:
    * 'false' otherwise
    */
   bool operator==( const AlphaThickSegmentComputer & other ) const;
-  
+
   /**
    * Difference operator.
    * @param other the object to compare with.
@@ -250,7 +250,7 @@ public:
    * 'true' otherwise
    */
   bool operator!=( const AlphaThickSegmentComputer & other ) const;
-    
+
 
 
   //-------------------- model of ForwardContainer -----------------------------
@@ -262,16 +262,16 @@ public:
    * iterator without the option of saving samples).
    */
   Size size() const;
-  
-  
+
+
   /**
-   * @return 'true' if and only if the container contains no point. 
+   * @return 'true' if and only if the container contains no point.
    * @note: returns always 'true' if the segment computer is initialized with a curve
    * const iterator without the option of saving samples).
    */
   bool empty() const;
-  
-  
+
+
   /**
    * @return a const iterator pointing on the first point given in the
    * container associated to the current alpha thick segment (is empty
@@ -293,7 +293,7 @@ public:
    */
   ConvexhullConstIterator convexhullBegin() const;
 
-  
+
   /**
    * @return a const iterator pointing after the last point of the
    * convex hull associated to the current alpha thick segment.
@@ -321,7 +321,7 @@ public:
    * @return the maximal allowed number of points in the current alpha thick segment.
    */
   Size max_size() const;
-  
+
 
 
 
@@ -335,10 +335,10 @@ public:
    * the width of the ParallelStrip primitive (set to 1 by default).
    *
    * @param[in] it an iterator on input points.
-   */  
-  void init(const ConstIterator &it);    
-  
-  
+   */
+  void init(const ConstIterator &it);
+
+
   /**
    * Tries to extend front the current alpha thick segment with the
    * next contour point and checks if we have still an alpha thick
@@ -357,20 +357,20 @@ public:
    *  Tests whether the current alpha thick segment can be extended at
    *  the front with the next contour point i.e checks if we have
    *  still an alpha thick segment of width alpha_max after adding the
-   *  given point \aPoint. The segment parameters are keep in its
+   *  given point \a aPoint. The segment parameters are keep in its
    *  original state.
-   *  
+   *
    * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
    */
   bool isExtendableFront();
 
-  
+
   /**
    *  Tests whether the current alpha thick segment can be extended, i.e
    *  checks if we have still an alpha thick segment of width alpha_max after
-   *  adding the given point \aPoint. The segment parameters are keep
+   *  adding the given point \a aPoint. The segment parameters are keep
    *  in its original state.
-   *  
+   *
    * @param[in] aPoint the point to be tested for the segment extension.
    * @return 'true' if the segment can be extended with the given point, 'false' otherwise.
    */
@@ -389,40 +389,40 @@ public:
    * otherwise (the object is then in its original state).
    */
   bool extendFront(const InputPoint &aPoint);
-  
- 
+
+
 
   //-------------------- Primitive services -----------------------------
-  
-  
+
+
   /**
      Returns the current primitive recognized by this computer,
      which is a ParallelStrip of axis width smaller than the one
      specified at instanciation.
   */
   Primitive primitive() const;
-  
 
 
-  
+
+
     // ----------------------- Interface --------------------------------------
 public:
-  
-  
+
+
   /**
    * Checks the validity/consistency of the object.
    * @return 'true' if the object is valid, 'false' otherwise.
    */
   bool isValid() const;
-  
- 
+
+
   /**
    * Get the extremity points of the segment. These points are not
    * necessary the last point of the segment.
    *
    **/
   std::pair<InputPoint, InputPoint>  getExtremityPoints() const;
-  
+
 
   /**
    * @return the antipodal leaning points of the segment (given in the
@@ -434,30 +434,30 @@ public:
    **/
   std::pair<std::pair<InputPoint, InputPoint>, InputPoint>
   getAntipodalLeaningPoints() const;
-  
-  
+
+
   /**
    * Computes the paralell strip params from the current state of the segment.
    * @param[out] mu the minimal value of N.X (with N is the normal vector of the segment).
    * @param[out] N the normal of the vector (not normalized).
-   * @param[out] nu the width of the strip. 
+   * @param[out] nu the width of the strip.
    *
    **/
   void computeParallelStripParams(double &mu, PointD &N, double &nu) const;
-  
-  
+
+
   /**
    * @return the two values of the normal vector given as a Point(a,b)
    * (the normal is oriented toward the segment by considering the
    * edge PQ of the convexhull antipodal pair).
    **/
- 
+
   PointD getNormal() const;
 
 
   /**
    * @return the thickness of the current segment.
-   **/  
+   **/
   double getThickness() const;
 
 
@@ -465,19 +465,19 @@ public:
    * @return the mu parameter of the current segment (given from the segment ParalellStrip primitive).
    **/
   double getMu() const;
- 
- 
+
+
   /**
    * @return the nu parameter the of the current segment (given from the segment ParalellStrip primitive).
    **/
   double getNu() const;
-   
-  
+
+
    /**
    * @return the segment length defined from the bouding box (@see getBoundingBox).
    **/
   double getSegmentLength() const;
-  
+
 
   /**
    * @return 'true' if the points of the segment computer are stored in the main container.
@@ -487,7 +487,7 @@ public:
 
   /**
    * @return the total number of points beeing recognized through in the segment construction.
-   **/  
+   **/
   unsigned int getNumberSegmentPoints() const;
 
 
@@ -501,11 +501,11 @@ public:
   std::vector<InputPoint> getConvexHull() const;
 
 
-  
+
   /**
    * Computes the segment bounding box according to two extremity points (\a aFirstPt, \a aLastPt).
    * @param[in] aFirstPt the first extrem point.
-   * @param[in] aLastPt the last extrem point. 
+   * @param[in] aLastPt the last extrem point.
    * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
    * @param[out] pt3LongestSegment2 the first point of one of the second longest segment.
@@ -518,7 +518,7 @@ public:
    * @note the segment bounding box can be drawn with the sequence of
    * out parameters pt1LongestSegment1, pt2LongestSegment1,
    * pt3LongestSegment1, pt4LongestSegment1.
-   **/  
+   **/
   void getBoundingBoxFromExtremPoints(const InputPoint &aFirstPt,
                                       const InputPoint &aLastPt,
                                       PointD &pt1LongestSegment1,
@@ -526,8 +526,8 @@ public:
                                       PointD &pt3LongestSegment2,
                                       PointD &pt4LongestSegment2,
                                       double minVisibleWidthBounds = 0.2) const;
-  
-  
+
+
   /**
    * Computes the segment bounding box defined from the extremity
    * points computed after a scan of the current convexhull. Note that
@@ -550,10 +550,10 @@ public:
                       PointD &pt2LongestSegment1,
                       PointD &pt3LongestSegment2,
                       PointD &pt4LongestSegment2) const;
-  
-    
-  
-  
+
+
+
+
 
   /**
    * @return the style name used for drawing this object.
@@ -567,22 +567,22 @@ public:
    * @param[out] out the output stream where the object is written.
    */
   void selfDisplay ( std::ostream & out ) const;
-  
+
     // ------------------------- Protected Datas ------------------------------
 protected:
-  
- 
+
+
   /**
    * begin iterator (associated to input data)
    **/
   ConstIterator myBegin;
-  
+
   /**
    * begin iterator (associated to input data)
    **/
   ConstIterator myEnd;
-  
-    
+
+
 
 
     // ------------------------- Private Datas --------------------------------
@@ -591,15 +591,15 @@ private:
   /**
    * The set of points contained in the alpha thick segment which can be changed during computations.
    **/
-  mutable InputPointContainer myPointContainer; 
+  mutable InputPointContainer myPointContainer;
 
   /**
    * The maximal thickness of the segment.
    */
-  double myMaximalThickness;  
+  double myMaximalThickness;
 
   /**
-   * To adjust the precision of the thickness estimation used in the comparison during the segment extension. 
+   * To adjust the precision of the thickness estimation used in the comparison during the segment extension.
    */
   double myThicknessCompPrecision;
 
@@ -609,54 +609,54 @@ private:
    */
   ThicknessDef myThicknessDefinition;
 
-  
+
   /**
    * State of the actual computer
-   **/ 
+   **/
   State myState;
 
   /**
    * Previous saved computer state
-   **/   
+   **/
   mutable State myPreviousState;
-  
+
   bool myIsStoringPoints;
-  
+
   /**
    * Used by the size method.
    **/
   unsigned int myNbPointsAddedFromIterators;
 
-  
-  
+
+
 
     // ------------------------- Hidden services ------------------------------
 protected:
 
-  
+
 
   /**
    * Depending on connexity, return true if a convex is valid.
    */
   bool melkmanIsConvexValid() ;
-  
+
 
   /**
    *  Updates the main height of the melkman convex hull
    *   and update the antipodal pairs.
-   * 
+   *
    * @return the thickness of the segment (thickness defined by
    * default as the vertical/horizontal width (see @ref
    * moduleAlphaThickSegmentReco for more details).
    **/
-  double updateMainHeightAndAntiPodal();   
-  
- 
-  
+  double updateMainHeightAndAntiPodal();
+
+
+
   /**
    * Computes the projection of a Point \a ptC on the real line defined by the two points (\a ptA, \a ptB), and
    * return true if the projected point is inside the segment closed interval [A,B].
-   * 
+   *
    * @param[in] ptA one of the two points defining the straight line.
    * @param[in] ptB one of the two points defining the straight line.
    * @param[in] ptC the point to be projected.
@@ -666,7 +666,7 @@ protected:
   template<typename TPointD>
   bool projectOnStraightLine(const TPointD & ptA, const TPointD & ptB,
                              const TPointD & ptC, PointD & ptProjected) const;
-  
+
 
   /**
    * From an point iterator (\a itBegin and \a itEnd) it computes the
@@ -677,13 +677,13 @@ protected:
    * @param[in] itEnd the end iterator of the input points.
    * @param[out] aFirstExtrPt the first extrem point.
    * @param[out] aLastExtrPt the last extrem point.
-   * 
+   *
    **/
   template<typename TConstIteratorG>
   void computeExtremaPoints(const TConstIteratorG & itBegin, const TConstIteratorG & itEnd,
                             InputPoint & aFirstExtrPt, InputPoint & aLastExtrPt) const;
-  
-  
+
+
     // ------------------------- Internals ------------------------------------
 private:
 

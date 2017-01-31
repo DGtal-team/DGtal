@@ -66,7 +66,7 @@ DGtal::ConnectivityException is raised if the points are not 4-connected.
 \section secttutofileGridCurveRanges2 Displaying a grid curve with Board2D
 
 DGtal::Board2D is a nice way of displaying many 2D objects.  
-See @ref dgtal_dgtalboard 
+See @ref moduleBoard2D
 for further details. 
 
 @snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-board
@@ -110,7 +110,7 @@ you can get the grid curve incident points as follows:
  @image latex images/DisplayIncidentPointsTuto.png  "Incident points" width=5cm
 
 See GridCurve for the exhaustive list of available ranges and their basic usage. 
-See @ref geometry2d for a general introduction about digital curves analysis. 
+See @ref moduleGridCurveAnalysis for a general introduction about digital curves analysis. 
 
 \section secttutofileGridCurveRanges4 Required includes
 

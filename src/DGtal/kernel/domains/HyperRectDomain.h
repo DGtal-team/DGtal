@@ -154,7 +154,7 @@ namespace DGtal
      */
     HyperRectDomain & operator= ( const HyperRectDomain & other );
 
-    /*
+    /**
      * begin method.
      * @return ConstIterator on the beginning of the range.
      */
@@ -163,7 +163,7 @@ namespace DGtal
         return myIteratorBegin;
       }
     
-    /*
+    /**
      * begin method from a given point.
      * @param aPoint the initial point.
      * @return a ConstIterator initialized to aPoint.
@@ -179,7 +179,7 @@ namespace DGtal
         return ConstIterator(aPoint, myLowerBound, myUpperBound);
       }
     
-    /*
+    /**
      * end method.
      * @return ConstIterator on the end of the range.
      */
@@ -188,7 +188,7 @@ namespace DGtal
         return myIteratorEnd;
       }
     
-    /*
+    /**
      * reverse begin method.
      * @return ConstIterator on the beginning of the reverse range.
      */
@@ -197,7 +197,7 @@ namespace DGtal
         return ConstReverseIterator(end());
       }
     
-    /*
+    /**
      * reverse begin method from a given point.
      * @param aPoint the initial point.
      * @return a ConstIterator initialized to aPoint.
@@ -214,7 +214,7 @@ namespace DGtal
         return ConstReverseIterator(it);
       }
     
-    /*
+    /**
      * reverse end method.
      * @return ConstIterator on the end of the reverse range.
      */
@@ -262,7 +262,6 @@ namespace DGtal
           myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
         }
 
-#ifdef CPP11_INITIALIZER_LIST
       /**
        * ConstSubRange constructor from a given domain.
        * @param domain the domain.
@@ -291,7 +290,6 @@ namespace DGtal
           myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
           myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
         }
-#endif
 
       /**
        * ConstSubRange constructor from a given domain for one dimension.
@@ -371,7 +369,7 @@ namespace DGtal
           myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
         }
       
-      /*
+      /**
        * begin method.
        * @return ConstIterator on the beginning of the range.
        */
@@ -380,7 +378,7 @@ namespace DGtal
           return ConstIterator(myLowerBound, myLowerBound, myUpperBound, myPermutation);
         }
       
-      /*
+      /**
        * begin method from a given point.
        * @param aPoint the initial point.
        * @return a ConstIterator initialized to aPoint.
@@ -397,7 +395,7 @@ namespace DGtal
           return ConstIterator(aPoint, myLowerBound, myUpperBound, myPermutation);
         }
 
-      /*
+      /**
        * end method.
        * @return ConstIterator on the end of the range.
        */
@@ -408,7 +406,7 @@ namespace DGtal
           return it;
         }
 
-      /*
+      /**
        * reverse begin method.
        * @return ConstIterator on the beginning of the reverse range.
        */
@@ -417,7 +415,7 @@ namespace DGtal
           return ConstReverseIterator(end());
         }
 
-      /*
+      /**
        * reverse begin method from a given point.
        * @param aPoint the initial point.
        * @return a ConstIterator initialized to aPoint.
@@ -430,7 +428,7 @@ namespace DGtal
           return ConstReverseIterator(it);
         }
 
-      /*
+      /**
        * reverse end method.
        * @return ConstIterator on the end of the reverse range.
        */
@@ -517,7 +515,6 @@ namespace DGtal
         return ConstSubRange(*this, adim1, adim2, adim3, startingPoint);
       }
     
-#ifdef CPP11_INITIALIZER_LIST
     /**
      * get a subRange.
      * @param permutation an initializer_list containing the dimensions used for
@@ -542,7 +539,6 @@ namespace DGtal
       { 
         return ConstSubRange(*this, permutation, startingPoint);
       }
-#endif
     
     // ----------------------- Interface --------------------------------------
   public:

@@ -45,11 +45,7 @@
 #include "DGtal/kernel/CEuclideanRing.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/NumberTraits.h"
-#ifdef CPP11_ARRAY
 #include <array>
-#else
-#include <boost/array.hpp>
-#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,6 +59,8 @@ namespace DGtal
    *
    * This class defines simple matrix with static size. Computations
    * are performed in the euclidean ring associated with the type @a TComponent.
+   *
+   * Matrix coefficient indices are in the range [0,M-1] and [0,N-1].
    *
    * This class also defines types for row and column vectors as
    * specialized PointVector types.
@@ -164,6 +162,8 @@ namespace DGtal
 
     /**
      * Set a value at position (i,j).
+     *
+     * @pre (i,j) must be in the range [0,M-1]x[0,N-1]
      *
      * @param i row index
      * @param j column index
@@ -399,21 +399,13 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-#ifdef CPP11_ARRAY
     ///Matrix values containers.
     std::array< Component, M*N>  myValues;
 
     ///Static computation of cofactor coefficients
     /// @todo should be static
     std::array< Component, M*N>  myCofactorCoefs;
-#else
-    ///Matrix values containers.
-    boost::array< Component, M*N>  myValues;
-
-    ///Static computation of cofactor coefficients
-    /// @todo should be static
-    boost::array< Component, M*N>  myCofactorCoefs;
-#endif
+    
     // ------------------------- Hidden services ------------------------------
   protected:
 

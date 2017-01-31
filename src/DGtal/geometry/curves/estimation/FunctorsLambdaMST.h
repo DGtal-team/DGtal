@@ -59,7 +59,7 @@ namespace functors
 {
   /**
    *  Polynomial lambda functor \cite LachaudIVC2007.
-   * \f$ 64 ( -x^6 + 3 x^5 - 3 x^4 + x^3 ) \$
+   * \f$ 64 ( -x^6 + 3 x^5 - 3 x^4 + x^3 ) \f$
    * 
    */
   struct Lambda64Function : std::unary_function < double, double >
@@ -73,7 +73,7 @@ namespace functors
   };
   /**
    * Sine Lambda functor \cite LachaudIVC2007.
-   * \f$ \sin x \pi \$
+   * \f$ \sin x \pi \f$
    * 
    */
   struct LambdaSinFromPiFunction : std::unary_function < double, double >

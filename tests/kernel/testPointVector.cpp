@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file test_PointVector.cpp
+ * @file
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
@@ -78,9 +78,7 @@ bool testComparison()
   const double t[ ] = { 3.5, 4.1, 2.2, 3.2 };
   PointVector<4,double> v ( t );
   PointVector<4,double> v2 ( t );
-#ifdef CPP11_INITIALIZER_LIST
   PointVector<4,double> v3 ( { 3.5, 4.2, 2.2, 3.2 } );
-#endif
 
   trace.beginBlock("Comparison of Points");
   if (v == v2)
@@ -88,12 +86,10 @@ bool testComparison()
   else
     trace.info()<< "v == v2 (false)"<<std::endl;
 
-#ifdef CPP11_INITIALIZER_LIST
   if (v == v3)
     trace.info()<< "v == v3 (true)"<<std::endl;
   else
     trace.info()<< "v == v3 (false)"<<std::endl;
-#endif
 
   if (v < v2)
     trace.info()<< "v < v2 (true)"<<std::endl;

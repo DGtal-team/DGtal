@@ -72,14 +72,18 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
       trace.error() << "MeshReader : can't read " << aFilename << std::endl;
       throw dgtalio;
     }
-  if ( str.substr(0,3) != "OFF")
+  if ( str.substr(0,3) != "OFF" && str.substr(0,4) != "NOFF")
     {
       std::cerr <<"*" <<str<<"*"<< std::endl;
-      trace.error() << "MeshReader : No OFF format in " << aFilename << std::endl;
+      trace.error() << "MeshReader : No OFF or NOFF format in " << aFilename << std::endl;
       throw dgtalio;
     }
-  
-  // Processing comments
+  if ( str.substr(0,4) == "NOFF")
+    {
+      trace.warning() << "MeshReader : reading NOFF format from importOFFFile (normal vectors will be ignored)..." << std::endl; 
+    }
+
+    // Processing comments
   do
     {
       getline( infile, str );

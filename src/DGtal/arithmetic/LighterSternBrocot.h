@@ -57,8 +57,9 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class LighterSternBrocot
   /**
-   Description of template class 'LighterSternBrocot' <p> \brief Aim: The
-   Stern-Brocot tree is the tree of irreducible fractions. This class
+   Description of template class 'LighterSternBrocot'
+   \brief Aim: 
+   The Stern-Brocot tree is the tree of irreducible fractions. This class
    allows to construct it progressively and to navigate within
    fractions in O(1) time for most operations. It is well known that
    the structure of this tree is a coding of the continued fraction
@@ -129,8 +130,8 @@ namespace DGtal
 
        The LighterSternBrocot instances only fractions greater than or
        equal to 1/1. The node 0/1 does not exist. It is the inverse of
-       1/0. Given a fraction [u_0,...,u_n], for u_n >= 2, its origin
-       is [u_0,...,u_{n-1},1]. The k-th son, k >= 2, of [u_0,...,u_n]
+       1/0. Given a fraction [u_0,...,u_n], for u_n \>= 2, its origin
+       is [u_0,...,u_{n-1},1]. The k-th son, k \>= 2, of [u_0,...,u_n]
        is the fraction [u_0,...,u_n - 1, k].
 
        @see LighterSternBrocot::fraction
@@ -144,10 +145,10 @@ namespace DGtal
          @param q1 the denominator.
          @param u1 the quotient (last coefficient of its continued fraction).
          @param k1 the depth (1+number of coefficients of its continued fraction).
-         @param _origin A pointer to the origin node [u_0,...,u_{n-1},1].
+         @param anOrigin A pointer to the origin node [u_0,...,u_{n-1},1].
        */
       Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 
-	    Node* _origin );
+	    Node* anOrigin );
 
       /// @return the node [u_0, ..., u_n - 1, v] if [u_0, ..., u_n]
       /// is the current node. Construct it if it does not exist yet.
@@ -390,7 +391,7 @@ namespace DGtal
 
       /**
 	 Splitting formula, O(1) time complexity. This fraction should
-	 not be 0/1 or 1/0. NB: 'this' = [f1] \oplus [f2].
+	 not be 0/1 or 1/0. NB: 'this' = [f1] @f$\oplus@f$ [f2].
 
 	 @param f1 (returns) the left part of the split.
 	 @param f2 (returns) the right part of the split.
@@ -400,7 +401,7 @@ namespace DGtal
       /**
 	 Berstel splitting formula, O(1) time complexity. This
 	 fraction should not be 0/1 or 1/0. NB: 'this' = nb1*[f1]
-	 \oplus nb2*[f2]. Also, if 'this->k' is even then nb1=1,
+	 @f$\oplus@f$ nb2*[f2]. Also, if 'this->k' is even then nb1=1,
 	 otherwise nb2=1.
 
 	 @param f1 (returns) the left part of the split (left pattern).

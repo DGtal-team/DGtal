@@ -31,13 +31,13 @@ namespace DGtal {
     color=lightgrey;
     node [style=filled,color=white];
                
-    CEuclideanOrientedShape [ URL="\ref CEuclideanOrientedShape" ];
-    CEuclideanBoundedShape [ URL="\ref CEuclideanBoundedShape" ];
-    CDigitalOrientedShape [ URL="\ref CDigitalOrientedShape" ];
-    CDigitalBoundedShape [ URL="\ref CDigitalBoundedShape" ];
+    CEuclideanOrientedShape [ URL="\ref concepts::CEuclideanOrientedShape" ];
+    CEuclideanBoundedShape [ URL="\ref concepts::CEuclideanBoundedShape" ];
+    CDigitalOrientedShape [ URL="\ref concepts::CDigitalOrientedShape" ];
+    CDigitalBoundedShape [ URL="\ref concepts::CDigitalBoundedShape" ];
    
-    CImplicitFunction [ URL="\ref CImplicitFunction" ];
-    CImplicitFunctionDiff1 [ URL="\ref CImplicitFunctionDiff1" ];
+    CImplicitFunction [ URL="\ref concepts::CImplicitFunction" ];
+    CImplicitFunctionDiff1 [ URL="\ref concepts::CImplicitFunctionDiff1" ];
     
     CImplicitFunctionDiff1 -> CImplicitFunction;
 
@@ -58,7 +58,7 @@ namespace DGtal {
     AccFlower2D [URL="\ref AccFlower2D"];
     NGon2D [URL="\ref NGon2D"];
     Ball3D [URL="\ref Ball3D"];
-    ImplicitPolynomial2Shape [URL="\ref ImplicitPolynomial2Shape"];
+    ImplicitPolynomial3Shape [URL="\ref ImplicitPolynomial3Shape"];
 
     StarShaped2D -> CEuclideanBoundedShape;
     StarShaped2D -> CEuclideanOrientedShape;
@@ -76,8 +76,8 @@ namespace DGtal {
     AccFlower2D -> StarShaped2D;
     Ball3D -> StarShaped3D;
 
-    ImplicitPolynomial2Shape -> CImplicitFunction;
-    ImplicitPolynomial2Shape -> CEuclideanOrientedShape;
+    ImplicitPolynomial3Shape -> CImplicitFunction;
+    ImplicitPolynomial3Shape -> CEuclideanOrientedShape;
     }
     }
     @enddot

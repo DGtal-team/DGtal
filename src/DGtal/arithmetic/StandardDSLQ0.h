@@ -44,6 +44,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/arithmetic/Pattern.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -53,7 +54,7 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   // template class StandardDSLQ0
-  /*
+  /**
   Description of template class 'StandardDSLQ0' <p> \brief Aim:
   Represents a digital straight line with slope in the first quadrant (Q0: x >= 0,
   y >= 0 ).
@@ -64,15 +65,15 @@ namespace DGtal
 
   You may move on it point by point with iterators ConstIterator.
   You can find upper and lower leaning points, find points on the
-  DSL given one coordinate.  You may extract subsegment with smartDSS and
-  reversedSmartDSS algorithms.
+  DSL given one coordinate.  You may extract subsegment with smartDSS() and
+  reversedSmartDSS() algorithms.
 
-  @param TFraction the type chosen to represent fractions, a model
-  of CFraction. You may use SternBrocot<>::Fraction for instance.
+  @tparam TFraction the type chosen to represent fractions, a model
+  of CFraction. You may use SternBrocot::Fraction for instance.
 
   Model of boost::CopyConstructible, boost::Assignable, concepts::CPointPredicate
 
-  @see dgtal_digstraighness_sec3
+  @see The documentation about @ref dgtal_digstraighness_sec3
   */
   template <typename TFraction>
   class StandardDSLQ0
@@ -120,7 +121,7 @@ namespace DGtal
       inline ConstIterator()
         : myPtrDSL( 0 )
       {}
-      inline ConstIterator( const StandardDSLQ0<TFraction> & myDSL,
+      inline ConstIterator( ConstAlias< StandardDSLQ0<TFraction> > myDSL,
                             const Point & p )
         : myPtrDSL( & myDSL ), myP( p )
       {}

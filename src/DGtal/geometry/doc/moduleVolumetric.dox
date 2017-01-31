@@ -21,7 +21,7 @@ namespace DGtal {
 
 [TOC]
 
-@author David Coeurjolly
+@author David Coeurjolly, Roland Denis
 
 This part of the manual describes the DGtal volumetric module. We
 focus here on separable process based volumetric analysis such as
@@ -214,7 +214,7 @@ given metric to the closest site instead of the vector.
 
 As a consequence, the DistanceTransformation class simply  inherits from  the
 VoronoiMap class and overrides  methods required by
-the CConstImage concept. Note that the DistanceTransfomation::Value
+the concepts::CConstImage concept. Note that the DistanceTransformation::Value
 type is double. If you want to get the underlying vector instead of
 the distance to perform exact computations, you can use the
 DistanceTransformation::getVoronoiVector method.
@@ -259,8 +259,8 @@ the dimension of the space).
 
 
 Hence such class is parametrized by the following types:
-- a type representing the mapping between points and weights (WeightImage, model of CImage);
-- a type representing the underlying power metric (model of CSeparablePowerMetric, see below)
+- a type representing the mapping between points and weights (WeightImage, model of concepts::CImage);
+- a type representing the underlying power metric (model of concepts::CPowerSeparableMetric, see below)
 - and an optional image container to store the resulting Power map (by default, the type is ImageContainerBySTLVector).
 
 The PowerMap  constructor is parametrized by
@@ -287,28 +287,133 @@ for the same metric/power metric, returns the input binary shape.
 
 
 
-@note Power separable metrics are formalized in CPowerMetric and
-CSeparablePowerMetric concepts whose main concept is
-ExactLpPowerSeparableMetric, see @ref moduleMetrics
+@note Power separable metrics are formalized in concepts::CPowerMetric and
+concepts::CPowerSeparableMetric concepts whose main model is
+ExactPredicateLpPowerSeparableMetric, see @ref moduleMetrics
 
+@section toricVol Volumetric Analysis on Toric domains
+
+In some specific applications, toric domains and volumetric analysis
+of shapes in toric domains are crucial. Thanks to the separability
+property of VoronoiMap, PowerMap (and their associated wrappers
+DistanceTransformation and ReverseDistanceTransformation), one can
+easily consider volumetric transformation in arbitrary dimension on
+toric domains @cite Coeurjo2008. Note that changing the periodicity
+property of the domain has no impact on the computational cost.
+
+More precisely, VoronoiMap and DistanceTransformation classes have
+constructors allowing to specify periodicity information. In dimension
+@e d, such periodicity information is an array with @e d boolean flags
+where the i-th value is \c true if the i-th dimension of the space is
+periodic, \c false otherwise. Hence, computation can be performed
+either on a full toric domain, or on a domain with toricity property
+along only one axis. Similar extensions to toric domains have been
+implemented for the PowerMap and ReverseDistanceTransformation
+classes.
+
+As illustrated in the example toricdomainvolumetric.cpp, given an
+input:
+
+@image html toric-inputShape-red.png "Input domain and sites."
+
+We consider the following distance transformation objects:
+
+@snippet geometry/volumes/distance/toricdomainvolumetric.cpp DTComputeToric
+
+The following results illustrate both distance transformation and
+Voronoi maps. For the VoronoiMap results, points may be attached to
+sites exterior to the initial domain. In fact such sites correspond to
+toric replicas of existing sites within the domain. 
+
+<center>
+<table>
+<tr><td align="center">
+Classical domain
+</td>
+<td align="center">
+Toric domain
+</td>
+</tr>
+<tr><td>
+@image html toric-example-DT-L2-red.png "DT values."
+</td>
+<td>
+@image html toric-example-DT-L2-toric-red.png "Toric DT values."
+</td>
+</tr>
+<tr><td>
+@image html toric-example-Voro-L2-red.png "Voronoi map as vectors."
+</td>
+<td>
+@image html toric-example-Voro-L2-toric-red.png "Voronoi map as vectors."
+</td>
+</tr>
+</table>
+</center>
+
+Using VoronoiMap::projectPoint(Point) const, site's coordinates can be projected
+into the initial domain, even for VoronoiMap calculated on toric domains:
+
+@image html toric-example-Voro-L2-toric-projected.png "Voronoi map on toric domain with projected sites."
+
+With partial periodicity specification (along the first or second dimension only):
+
+@snippet geometry/volumes/distance/toricdomainvolumetric.cpp DTComputePartialToric
+
+we obtain the following VoronoiMap:
+
+<center>
+<table>
+<tr><td align="center">
+Periodic domain along the 1th dimension.
+</td>
+<td align="center">
+Periodic domain along the 2th dimension.
+</td>
+</tr>
+<tr><td>
+@image html toric-example-DT-L2-toricX-red.png "DT values."
+</td>
+<td>
+@image html toric-example-DT-L2-toricY-red.png "DT values."
+</td>
+</tr>
+<tr><td>
+@image html toric-example-Voro-L2-toricX-red.png "Voronoi map as vectors."
+</td>
+<td>
+@image html toric-example-Voro-L2-toricY-red.png "Voronoi map as vectors."
+</td>
+</tr>
+</table>
+</center>
 
 */
 
 /**
    Example of a Voronoi map construction in dimension 2 for the
-   Eucldiean metric.
+   Euclidean metric.
 
-@see \ref voronoiSect
+   @see \ref voronoiSect
+   \image html voronoimap-dt.png "Distance transformation for the l_2 metric."
+   \example geometry/volumes/distance/voronoimap2D.cpp
+*/
 
-\example geometry/volumes/distance/voronoimap2D.cpp
+
+/**
+   Example of a toric distance transform construction in dimension 2 for the
+   Euclidean metric.
+
+   @see \ref toricVol
+   \example geometry/volumes/distance/toricdomainvolumetric.cpp
 */
 
 /**
    Example of distance transformation in dimension 2.
 
-@see \ref moduleVolumetric
-
-\example geometry/volumes/distance/distancetransform2D.cpp
+   @see \ref moduleVolumetric
+   \image  html  example-DT-L2.png "Distance transform with L2 norm."
+   \example geometry/volumes/distance/distancetransform2D.cpp
 */
 
 /**

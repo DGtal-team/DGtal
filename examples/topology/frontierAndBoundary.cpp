@@ -1,5 +1,5 @@
 /**
- * @file frontierAndBoundary.cpp
+ * @file topology/frontierAndBoundary.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -98,19 +98,19 @@ int main( int argc, char** argv )
   typedef ExplicitDigitalSurface<KSpace,BSurfelPredicate> BoundaryContainer;
   typedef DigitalSurface<BoundaryContainer> Boundary;
   // frontier between label 1 and 0 (connected part containing bel10)
-  SCell vox1  = K.sSpel( c1 + Point( radius1 - 1, 0, 0 ), K.POS );
+  SCell vox1  = K.sSpel( c1 + Point( radius1, 0, 0 ), K.POS );
   SCell bel10 = K.sIncident( vox1, 0, true );
   FSurfelPredicate surfPredicate10( K, image, 1, 0 );
   Frontier frontier10 =
     new FrontierContainer( K, surfPredicate10, surfAdj, bel10 );
   // frontier between label 2 and 0 (connected part containing bel20)
-  SCell vox2  = K.sSpel( c2 - Point( radius2 - 1, 0, 0 ), K.POS );
+  SCell vox2  = K.sSpel( c2 - Point( radius2, 0, 0 ), K.POS );
   SCell bel20 = K.sIncident( vox2, 0, false );
   FSurfelPredicate surfPredicate20( K, image, 2, 0 );
   Frontier frontier20 =
     new FrontierContainer( K, surfPredicate20, surfAdj, bel20 );
   // boundary of label 3 (connected part containing bel32)
-  SCell vox3  = K.sSpel( c1 - Point( radius1 - 1, 0, 0 ), K.POS );
+  SCell vox3  = K.sSpel( c1 - Point( radius1, 0, 0 ), K.POS );
   SCell bel32 = K.sIncident( vox3, 0, false );
   BSurfelPredicate surfPredicate3( K, image, 3 );
   Boundary boundary3 =

@@ -48,19 +48,19 @@
 template <typename TInteger>
 inline
   DGtal::FreemanChain<TInteger>::ConstIterator::ConstIterator( 
-      const FreemanChain & aChain, unsigned int n)
+      ConstAlias<FreemanChain> aChain, unsigned int n)
   : myFc( &aChain ), myPos( 0 )
 {
   if ( n < myFc->chain.size() ) 
   {
-    myXY[0]=aChain.x0;
-    myXY[1]=aChain.y0;
+    myXY[0] = myFc->x0;
+    myXY[1] = myFc->y0;
     while ( myPos < n ) this->next();
   } 
   else 
   {// iterator end() 
-    myXY[0]=aChain.xn;
-    myXY[1]=aChain.yn;
+    myXY[0] = myFc->xn;
+    myXY[1] = myFc->yn;
     myPos = (typename DGtal::FreemanChain<TInteger>::Index)(myFc->chain.size()+1);
   }
 }
@@ -708,7 +708,7 @@ template <typename TRange>
 inline
 void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TRange& aRange, FreemanChain & c ) 
 {
-  BOOST_CONCEPT_ASSERT(( CConstSinglePassRange<TRange> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CConstSinglePassRange<TRange> ));
   readFromPointsRange( aRange.begin(), aRange.end(), c ); 
 }
 
@@ -858,7 +858,6 @@ inline
 typename DGtal::PointVector<2,TInteger>
 DGtal::FreemanChain<TInteger>::displacement( char aCode )
 {
-#ifdef CPP11_INITIALIZER_LIST  
   switch ( aCode ) 
   {
     case '0':  return Point({1,0}); 
@@ -867,18 +866,6 @@ DGtal::FreemanChain<TInteger>::displacement( char aCode )
     case '3':  return Point({0,-1});
   }
   return  Point({0,0}); 
-#else
-  int t[2] = {0,0};
-
-  switch ( aCode ) 
-  {
-    case '0':  t[0]++; return Point( t ); 
-    case '1':  t[1]++; return Point( t ); 
-    case '2':  t[0]--; return Point( t );
-    case '3':  t[1]--; return Point( t );
-  }
-  return  Point( t ); 
-#endif //CPP11_INITIALIZER_LIST
 }
 
 

@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <cstdio>
 #include "DGtal/base/Common.h"
@@ -111,16 +112,16 @@ namespace DGtal
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importVol(const std::string & filename, 
-				    const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
-    
-   
+                                    const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
     
   private:
 
     typedef unsigned char voxel;
-    // This class help us to associate a field type and his value.
-    // An object is a pair (type, value). You can copy and assign
-    // such objects.
+    /**
+     * This class help us to associate a field type and his value.
+     * An object is a pair (type, value). You can copy and assign
+     * such objects.
+     */
     /* In recent C++, we should use a std::map, but we prefer (badly) code it
        by hand for compatibility with old compilers.
        At this time, there is a limit of 30 fields in header :-} */

@@ -18,15 +18,15 @@ This part of the manual describes how to represent and process
 arbitrary cubical complexes. 
 
 @note Collapse operation is a backport from <a
-href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. \cite
-ImaGene 
+href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+@cite ImaGene 
 
 [TOC]
 
 
 The following programs are related to this documentation:
-cubical-complex-collapse.cpp, cubical-complex-illustrations.cpp,
-testCubicalComplex.cpp,
+cubical-complex-collapse.cpp, cubical-complex-illustrations.cpp, 
+testCubicalComplex.cpp, cubicalComplexThinning.cpp.
 
 @section dgtal_ccomplex_sec1  Introduction to cubical complexes
 
@@ -308,6 +308,71 @@ Example topology/cubical-complex-collapse.cpp shows that it works also in 3D (in
 @image html cubical-complex-illustrations-collapse.png "Homotopic collapse of \a X, displayed in orange, with fixed points marked in blue."
 @image latex cubical-complex-illustrations-collapse.png "Homotopic collapse of \a X, displayed in orange, with fixed points marked in blue." width=5cm
 
+@section dgtal_ccomplex_sec8 Thinning in cubical complexes
+
+Thinning of digital objects in 2D and 3D with the guarantee that a final skeleton is thin can be achieved directly
+only in \f$\mathbb{Z}^2\f$ for so-called well-composed images @cite Latecki:ER:95. Nevertheless, the problem can
+ be solved for 3D objects represented by cubical complexes @cite Chaussard:IWCIA:09.
+
+In @cite Chaussard:IWCIA:09 Chaussard and Couprie proposed a parallel directional thinning schemes in cubical complexes
+ which allow to obtain a thin result. The implementation in DGtal works for both 2D and 3D cubical complexes.
+
+The first scheme, so-called ParDirCollapse---parallel directional collapse---based on the idea such that free pairs
+of faces are collapsed with respect to a fixed order of directions and order of face dimensions. In other words, in
+each iteration we first collapse free pairs of a given direction starting with pairs of the highest dimension.
+When there is no more free pairs to remove for a given direction then another direction is considered unless the
+specified number of iterations is not reached . Note in the case of ParDirCollapse the thinness of the result
+depends on the number of iterations.
+
+The steps below present how to use ParDirCollapse in DGtal:
+
+a) add those includes:
+@snippet topology/cubicalComplexThinning.cpp include
+
+b) create an instance of the class ParDirCollapse and initialize it with an instance of the Khalimsky space:
+@snippet topology/cubicalComplexThinning.cpp create
+
+c) attach a cubical complex \f$X\f$ to be thinned:
+@snippet topology/cubicalComplexThinning.cpp init
+
+d) run the algorithm (here two iterations):
+@snippet topology/cubicalComplexThinning.cpp thinn
+
+@image html ComplexBeforeThinning.png "The starting complex X before thinning." width=3cm
+@image latex ComplexBeforeThinning.png "The starting complex X before thinning." width=3cm
+
+@image html ParDirCollapse_2.png  "The starting complex X after two iterations of ParDirCollapse." width=5cm
+@image latex ParDirCollapse_2.png  "The starting complex X after two iterations of ParDirCollapse." width=5cm
+
+The second scheme, so-called SurfaceCollapse is similar to ParDirCollapse. The only difference is that after each
+iteration of ParDirCollapse, faces of dimension \f$dim(X) - 1\f$ which are not included in faces of higher
+dimension are marked as non-collapsible. The final output is guaranteed to be thin i.e. there is no faces of
+\f$dim(X)\f$.
+
+To run SurfaceCollapse we apply steps a--c for ParDirCollapse and then we apply the step below:
+
+d) run the algorithm:
+@snippet topology/cubicalComplexThinning.cpp thinnSurface
+
+@image html ParDirCollapse_collapseSurface.png "The starting complex X after SurfaceCollapse." width=3cm
+@image latex ParDirCollapse_collapseSurface.png "The starting complex X after SurfaceCollapse." width=3cm
+
+The last scheme, so-called IsthmusCollapse is similar to SurfaceCollapse. The only difference is that after each
+iteration of ParDirCollapse, we mark as non-collapsible those faces which are of dimension dim\f$(X) - 1\f$ and not
+included in faces of higher dimension. Moreover, all sub-faces of dimension \f$dim(X) - 2\f$ of those faces
+have to be not free -- are included in other faces of dimension \f$dim(X) - 1\f$. The final output is
+guarantee to be thin i.e. there is no faces of \f$dim(X)\f$.
+
+To run SurfaceCollapse we apply steps a--c for ParDirCollapse and then we apply the step below:
+
+d) run the algorithm:
+@snippet topology/cubicalComplexThinning.cpp thinnIsthmus
+
+@image html ParDirCollapse_collapseIsthmus.png "The starting complex X after IsthmusCollapse." width=3cm
+@image latex ParDirCollapse_collapseIsthmus.png "The starting complex X after IsthmusCollapse." width=3cm
+
+For more details see the example topology/cubicalComplexThinning.cpp.
+
 */
 
 /** 
@@ -346,3 +411,25 @@ $
 */
 
 }
+
+
+
+/**
+Source of examples used to generate illustrations of Cubical Complex module documention.   
+@see @ref   moduleCubicalComplex
+@image html cubical-complex-illustrations-X.png "One of the generated illustration: displaying a 2D cubical complex on a Board."
+@example topology/cubical-complex-illustrations.cpp
+
+*/
+
+
+
+/**
+Converting a digital set to cubical complex.
+@see @ref  moduleCubicalComplex
+@image html cubicalComplexes.png "Resulting cubical complex obtained on a flower shape."
+@example topology/digitalSetToCubicalComplexes2D.cpp
+
+*/
+
+

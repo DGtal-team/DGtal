@@ -87,13 +87,15 @@ LocalEstimatorFromSurfelFunctorAdapter.
 
 ### Models
 
-  DummyEstimatorFromSurfels,
-  MongeJetFittingGaussianCurvatureEstimator (if WITH_CGAL),
-  MongeJetFittingMeanCurvatureEstimator (if WITH_CGAL),
-  MongeJetFittingPrincipalCurvaturesEstimator (if WITH_CGAL),
-  MongeJetFittingNormalVectorEstimator (if WITH_CGAL),
-  LinearLeastSquareFittingNormalVectorEstimator (if WITH_CGAL),
-  ElementaryConvolutionNormalVectorEstimator
+  functors::DummyEstimatorFromSurfels,
+  functors::MongeJetFittingGaussianCurvatureEstimator (if WITH_CGAL),
+  functors::MongeJetFittingMeanCurvatureEstimator (if WITH_CGAL),
+  functors::MongeJetFittingPrincipalCurvaturesEstimator (if WITH_CGAL),
+  functors::MongeJetFittingNormalVectorEstimator (if WITH_CGAL),
+  functors::LinearLeastSquareFittingNormalVectorEstimator (if WITH_CGAL),
+  functors::ElementaryConvolutionNormalVectorEstimator,
+  functors::TensorVotingFeatureExtraction,
+  functors::SphereFittingEstimator (if WITH_PATATE)
 
 ### Notes
 

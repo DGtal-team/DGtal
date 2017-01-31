@@ -919,6 +919,15 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::KhalimskyCell<dim, TIntege
 }
 // KhalimskyCell
 
+// KhalimskyPreCell
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::KhalimskyPreCell<dim, TInteger> & /*k*/, std::string mode = "" )
+{
+  boost::ignore_unused_variable_warning(mode);
+  return new DGtal::DefaultDrawStyle_KhalimskyCell;
+}
+// KhalimskyPreCell
 
 // Object
 template <typename TDigitalTopology, typename TDigitalSet>
@@ -943,9 +952,9 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::CubicalComplex<TKSpace, TC
 
 
 // PointVector
-template<DGtal::Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim,TComponent> & /*p*/, std::string mode = "")
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim, TComponent, TContainer> & /*p*/, std::string mode = "")
 {
   if ( ( mode == "" ) || ( mode == "Paving" ) )
     return new DGtal::DefaultDrawStylePaving_PointVector;
@@ -976,6 +985,15 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::SignedKhalimskyCell<dim, T
 }
 // SignedKhalimskyCell
 
+// SignedKhalimskyPreCell
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::SignedKhalimskyPreCell<dim, TInteger> & /*sk*/, std::string mode = "" )
+{
+  boost::ignore_unused_variable_warning( mode );
+  return new DGtal::DefaultDrawStyle_SignedKhalimskyCell;
+}
+// SignedKhalimskyOreCell
 
 // StraightLineFrom2Points
 template <typename TPoint>

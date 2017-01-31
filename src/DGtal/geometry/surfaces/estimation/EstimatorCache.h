@@ -211,6 +211,7 @@ namespace DGtal
      * @tparam  SurfelConstIterator a const iterator on surfels.
      * @param [in] itb the begin iterator to the surfel to estimate.
      * @param [in] ite the end iterator to the surfel to estimate.
+     * @param [in] result an output iterator on the result.
      * @return the estimated quantity.
      */
     template <typename SurfelConstIterator,typename OutputIterator>

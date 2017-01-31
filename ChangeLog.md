@@ -1,15 +1,227 @@
-# DGtal 0.9.2
+  # DGtal 0.9.3
 
+## New Features / Critical Changes
+
+- *Configuration/General*
+ - Set flag -std=c++11 only if needed. Modern compilers set compatible flags
+   by default (gnu++14, etc). (Pablo H Cerdan,
+   [#1222](https://github.com/DGtal-team/DGtal/pull/1222))
+ - The project has a now a unique compiled library: DGtal. The DGtalIO
+   target has been removed. (David Coeurjolly,
+   [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
+ - New mandatory dependency for DGtal: zlib must be installed in the system.
+   (David Coeurjolly, #1228](https://github.com/DGtal-team/DGtal/pull/1228))
+
+- *Geometry Package*
+ - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
+   now work on toric domains (with per-dimension periodicity specification).
+   (David Coeurjolly, Roland Denis,
+   [#1206](https://github.com/DGtal-team/DGtal/pull/1206))
+- *IO*
+ - New version (3) for the VOL file format that allows (zlib) compressed volumetric
+   data. VolReady and VolWriter can still manage Version 2 Vols.
+   (David Coeurjolly, #1228](https://github.com/DGtal-team/DGtal/pull/1228))
+
+## Changes
+
+ - *Configuration/General*
+  - Continuous integration Travis bots are now based on ubunutu/trusty containers.
+    (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
 
 ## Bug Fixes
+
+- *Configuration/General*
+ - Fixing errors and warnings raised by g++ 4.7.x.
+   (Roland Denis, [#1202](https://github.com/DGtal-team/DGtal/pull/1202))
+ - Explicit M_PI definition if needed.
+   (David Coeurjolly, [#1208](https://github.com/DGtal-team/DGtal/pull/1208))
+ - Continuous integration Travis bots are now based on ubunutu/trusty containers.
+   (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
+ - Fix usage of DESTDIR at install time for linux packagers.
+   (Pablo Hernandez, [#1235](https://github.com/DGtal-team/DGtal/pull/1235))
+
 - *Geometry Package*
+ - ArithDSSIterator: fix missing postfix ++.
+   (I. Sivignon, [#1187](https://github.com/DGtal-team/DGtal/pull/1187))
+ - ContourHelper: add a method to transform a contour into a 8 connected path.
+   (B. Kerautret, [#1127](https://github.com/DGtal-team/DGtal/pull/1127))
+
+- *IO Package*
+ - Missing TContainer template parameter for overloaded functions/methods that
+   rely on PointVector.
+   (Roland Denis, [#1232](https://github.com/DGtal-team/DGtal/pull/1232))
+ - Viewer3D: fix bad rendering when changing the scale.
+   (Bertrand Kerautret, [#1217](https://github.com/DGtal-team/DGtal/pull/1217))
+
+- *Topology Package*
+ -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
+    (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
+    [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
+
+- *Documentation*
+ - Fixing various bib references.
+   (Bertrand Kerautret, [##1237](https://github.com/DGtal-team/DGtal/pull/1237))
+
+# DGtal 0.9.2
+
+## New Features / Critical Changes
+
+- *Documentation*
+ - Fixing all doxygen warnings.
+   (Roland Denis, [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
+ - New "@seeDGtalTools" doxygen command to cite a DGtalTools tool in
+   DGtal documentation (David Coeurjolly,
+   [#1179](https://github.com/DGtal-team/DGtal/pull/1179))
+
+- *Geometry Package*
+ - New robust normal vector estimator using spherical accumulators and statistical
+   voting (Boulc'h & Marlet, SGP 2012).
+   (David Coeurjolly, [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
+
+- *Math Package*
+ - New RealFFT class for in-place real-complex Fast Fourier Transform using
+   fftw3 library.
+   (Roland Denis, [#1185](https://github.com/DGtal-team/DGtal/pull/1185))
+
+- *Topology Package*
+ - Adding periodic closure for KhalimskySpaceND and per-dimension closure
+   specification.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+ - Adding CPreCellularGridSpaceND concept and KhalimskyPreSpaceND model
+   to manipulate unbounded Khalimsky space and cells.
+   KhalimskySpaceND now checks that all given cells are within the bounds.
+   (Roland Denis, [#1086](https://github.com/DGtal-team/DGtal/pull/1086))
+
+## Changes
+- *Configuration/General*
+ - Travis Continuous integration will check that doxygen raises no warnings
+   and that the documented file names are valid.
+   (David Coeurjolly, Roland Denis,
+        [#1182](https://github.com/DGtal-team/DGtal/pull/1182))
+ - Cleaning remaining preprocessor directives related to C++11 features.
+   (Roland Denis, [#1141](https://github.com/DGtal-team/DGtal/pull/1141))
+ - Travis Continuous integration will check that DGtalTools still compiles with
+   changes in new pull-requests. (David Coeurjolly,
+   [#1133](https://github.com/DGtal-team/DGtal/pull/1133))
+ - Add cmake configuration file NeighborhoodTablesConfig to
+   decompress and install look up tables. (Pablo Hernandez-Cerdan,
+   [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
+ - Documentation graphs are now in SVG instead of PNG. (David Coeurjolly,
+   [#1192](https://github.com/DGtal-team/DGtal/pull/1192))
+ - Check and add all DGtal examples in the Examples listing section.
+   (Bertrand Kerautret,[#1166](https://github.com/DGtal-team/DGtal/pull/1166))))
+
+- *Base Package*
+ - Alias and ConstAlias now raise compilation error when using invalid
+   constructor, like from a rvalue reference. Adding ConstAlias in many classes
+   that need it.
+   (Roland Denis, [#1140](https://github.com/DGtal-team/DGtal/pull/1140))
+   (With ITK related compilation fix, Bertrand Kerautret
+   [#1153](https://github.com/DGtal-team/DGtal/pull/1153))
+ - Moving all base concepts into namespace concepts. Update doc and
+   concepts graphs accordingly. (Jacques-Olivier Lachaud, [#1164]
+   (https://github.com/DGtal-team/DGtal/pull/1164))
+
+- *IO Package*
+ - Viewer3D: improvement of the viewer state record by saving the rendering
+   mode. A new setter was also added to desable/enable double face rendering.
+   (Bertrand Kerautret [#1166](https://github.com/DGtal-team/DGtal/pull/1162))
+ - Viewer3D: add a mode to display ball primitive with OpenGL point instead of
+   quadrangulated mesh.
+   (Bertrand Kerautret [#1162](https://github.com/DGtal-team/DGtal/pull/1162))
+ - Viewer3D: add a new mode to have the light source position defined from the
+   camera (default) or from the scene coordinate system (key P to change
+   position mode). A new lambertian rendering mode was added.
+   (Bertrand Kerautret [#1149](https://github.com/DGtal-team/DGtal/pull/1149))
+ - Add the possibility to interact in QGLViewer Viewer3D class with the voxel
+   primitive (was limited to surfel). As with surfel, the user may assign integer
+   identifiers (OpenGL names) to voxel and callback functions, which are called
+   when voxel are selected. The selected elements are now highlighted.
+   (Bertrand Kerautret, [#1146](https://github.com/DGtal-team/DGtal/pull/1146))
+
+- *Topology Package*
+ - Add pre-calculated look up tables to speed up Object::isSimple calculations.
+   (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
+
+## Bug Fixes
+- *Configuration/General*
+ - Simplification of the windows build instructions. (David
+   Coeurjolly, [#1160](https://github.com/DGtal-team/DGtal/pull/1160))
+ - Various fixes in the documentation (e.g. links to concepts
+   pages). (David Coeurjolly,
+   [#1161](https://github.com/DGtal-team/DGtal/pull/1161))
+ - Fixing issues raised on some algorithms when changing Euclidean ring
+   for SpaceND and KhalimskySpaceND. (Jérémy Levallois,
+   [#1163](https://github.com/DGtal-team/DGtal/pull/1163))
+ - Moving last concepts to concepts:: namespace. (David Coeurjolly,
+   [#1193](https://github.com/DGtal-team/DGtal/pull/1193))
+
+- *DEC Package*
+ - Fix compatibility with eigen 3.2.8 by changing default index type for sparse matrix.
+   (Pierre Gueth, [#1197](https://github.com/DGtal-team/DGtal/pull/1197))
+ - Fixing warnings in DiscreteExteriorCalculus and DiscreteExteriorCalculusFactory.
+   (Roland Denis, [#1139](https://github.com/DGtal-team/DGtal/pull/1139))
+
+- *Geometry Package*
+ - VoronoiCovarianceMeasure: fix dimension-specific code.
+   (Roland Denis, [#1145](https://github.com/DGtal-team/DGtal/pull/1145))
  - AlphaThickSegmentComputer: fix segment display errors which could appear
    when displaying a small segment. Fix a non initialized attribute with
    some improvements on bounding box computation with orientation check.
    (B. Kerautret, [#1123](https://github.com/DGtal-team/DGtal/pull/1123))
- - ContourHelper: add a method to transform a contour into a 8 connected path.
-   (B. Kerautret, [#1127](https://github.com/DGtal-team/DGtal/pull/1127))
+ - Frechet Shortcut: fix implicit rounding.
+   (I. Sivignon, [#1180](https://github.com/DGtal-team/DGtal/pull/1180))
 
+- *Image Package*
+ - Fixing issue [#779](https://github.com/DGtal-team/DGtal/issues/779) by
+   storing domain with smart pointer in ImageContainerBySTLMap.
+   (Roland Denis [#1151](https://github.com/DGtal-team/DGtal/pull/1151))
+
+- *IO Package*
+ - Display3D: Fix embedder usage when using default constructor in Debug mode.
+   (Roland Denis [#1143](https://github.com/DGtal-team/DGtal/pull/1143))
+ - Viewer3D: Fix a problem when the show() method was called at the end of the
+   main program (the list creation was not called).
+   (Bertrand Kerautret [#1138](https://github.com/DGtal-team/DGtal/pull/1138))
+ - Viewer3D: add three new modes for shape rendering (default, metallic and
+   plastic). The rendering can be changed by using the key M. The user can
+   also choose its own rendering with some setter/getter on the opengl
+   lightning/properties. (B. Kerautret,
+   [#1128](https://github.com/DGtal-team/DGtal/pull/1128))
+ - readers: fix a vol/pgm/raw reading bug occurring on Windows 10 due to the
+   different interpretations of end of line \r\n on Window versus \n on
+   unix/mac. Changing reading mode with binary mode instead text mode fix
+   the issue. (Bertrand Kerautret
+   [#1130](https://github.com/DGtal-team/DGtal/pull/1130))
+ - Fixing issue [#899](https://github.com/DGtal-team/DGtal/issues/899) in
+   all color maps, (David Coeurjolly, Bertrand Kerautret
+   [#1134](https://github.com/DGtal-team/DGtal/pull/1134))
+ -  GenericReader: include longvol reader in GenericReader for 64 bit images.
+   Update the test for 64 bit longvol. (Bertrand Kerautret
+   [#1135](https://github.com/DGtal-team/DGtal/pull/1135))
+ - Fix the extension removal in Obj filename export in Board3D. (David
+   Coeurjolly,[#1154](https://github.com/DGtal-team/DGtal/pull/1154)))
+ - Fix issue when drawing DSS with both points and bounding box. (David
+   Coeurjolly,[#1186](https://github.com/DGtal-team/DGtal/pull/1186)))
+
+- *Topology Package*
+  - Fix wrong starting point for surface tracking in example code
+    frontierAndBoundary.cpp.
+    (Roland Denis, [#1144](https://github.com/DGtal-team/DGtal/pull/1144))
+  - Fix interior/exterior fill methods of topology/helpers/Surfaces class which
+    was wrong on 3d and on closed Khalimsky space.
+    (Bertrand Kerautret, [#1156](https://github.com/DGtal-team/DGtal/pull/1156))
+  - Fix issue [#1168]
+    (https://github.com/DGtal-team/DGtal/issues/1168), related to bad
+    linear interpolation for binary volume data in
+    volMarchingCubes.cpp (Jacques-Olivier Lachaud,
+    [#1169](https://github.com/DGtal-team/DGtal/pull/1169))
+
+- *Shape Package*
+  - Fix a tubular mesh construction problem (missing faces) which appears
+    when the center line is oriented in a main axis direction (in
+    createTubularMesh()). Also improves and fixes the face construction.
+    (Bertrand Kerautret, [#1157](https://github.com/DGtal-team/DGtal/pull/1157))
 
 # DGtal 0.9.1
 
@@ -86,7 +298,7 @@
    the compiled library. This reduces compilation time when such types
    are used. (David Coeurjolly,
    [#1117](https://github.com/DGtal-team/DGtal/pull/1117))
-   
+
 - *DEC Package*
  - DiscreteExteriorCalculus holds both primal and dual sizes of each cell.
    Subsequent changes have been made to insertSCell.

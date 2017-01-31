@@ -60,7 +60,7 @@ namespace DGtal
  * Description of class 'AngleLinearMinimizer' <p>
  * \brief Aim: Used to minimize the angle variation between different angles while taking into accounts min and max constraints.
  * Example (@see math/testAngleLinearMinimizer.cpp) 
-  \snippet testAngleLinearMinimizer.cpp [optimization]
+  \snippet testAngleLinearMinimizer.cpp optimization
   
  *
  */
@@ -268,12 +268,6 @@ public:
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
-  /**
-   * Default drawing style object.
-   * @return the dyn. alloc. default style for this object.
-   */
-  //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
-  
   /**
    * @return the style name used for drawing this object.
    */

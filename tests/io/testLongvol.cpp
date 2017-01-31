@@ -59,7 +59,7 @@ bool testLongvol()
   Z3i::Point b(15,15,15);
   Z3i::Point c(7,7,7);
   
-  typedef ImageContainerBySTLVector<Z3i::Domain,DGtal::uint64_t> Image;
+  typedef ImageContainerBySTLVector<Z3i::Domain, DGtal::uint64_t> Image;
   Image image(Z3i::Domain(a,b));
   
   image.setValue(c,45693);

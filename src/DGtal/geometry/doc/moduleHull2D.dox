@@ -36,9 +36,9 @@ Let us recall that a polygon is a weakly externally visible polygon (WEVP)
  if for every point on it, there exists an infinite half-line beginning at 
 this point, which does not intersect the polygon at anywhere else. 
 
-The two basic procedures Hull2D::buildHullWithStack
+The two basic procedures functions::Hull2D::buildHullWithStack
 (the object having a stack interface is passed by reference) 
-and Hull2D::buildHullWithAdaptedStack (the object having a stack 
+and functions::Hull2D::buildHullWithAdaptedStack (the object having a stack 
 interface is passed by copy) retrieve the extremal vertices of a WEVP 
 in linear-time. This is an implementation of a well-known method, 
 called Sklansky's scan, Graham's scan or 3-coins algorithm, 
@@ -180,7 +180,7 @@ the on-line feature, you may call the off-line procedure melkmanConvexHullAlgori
 \subsubsection subsectmoduleHull2D131 Constructing a Melkman convex hull from both sides.
 
 If you want to construction a convex hull by considering the front and
-back of a contour you will need to use the @red reverse() method. For
+back of a contour you will need to use the @ref MelkmanConvexHull::reverse() method. For
 instance, to recover the convex hull of the point P0 of the following
 figure, you will need to do as follows:
 

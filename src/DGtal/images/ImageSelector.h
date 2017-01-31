@@ -66,7 +66,7 @@ namespace DGtal
   struct ImageSelector
   {
 
-    BOOST_CONCEPT_ASSERT((CLabel<Value>));
+    BOOST_CONCEPT_ASSERT((concepts::CLabel<Value>));
 
     // ----------------------- Local types ------------------------------
     /**

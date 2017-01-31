@@ -58,8 +58,10 @@ bool testGenericReader()
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
 
-  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned int> Image3D32bits;
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint32_t> Image3D32bits;
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint64_t> Image3D64bits;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned int> Image2D32bits;
+
 
   std::string filenameImage1 = testPath + "samples/cat10.vol";    
   Image3D anImportedImage1= DGtal::GenericReader<Image3D>::import(filenameImage1);
@@ -73,7 +75,7 @@ bool testGenericReader()
   nbok += (size0Img1==40 && size1Img1==40 && size2Img1==40) ? 1 : 0; 
   nb++;
   std::string filenameImage0 = testPath + "samples/test.longvol";    
-  Image3D anImportedImage0= DGtal::GenericReader<Image3D>::import(filenameImage0);
+  Image3D64bits anImportedImage0= DGtal::GenericReader<Image3D64bits>::import(filenameImage0);
   DGtal::Z3i::Domain domain0 = anImportedImage0.domain(); 
   unsigned int size0Img0= domain0.upperBound()[0]-domain0.lowerBound()[0]+1;
   unsigned int size1Img0= domain0.upperBound()[1]-domain0.lowerBound()[1]+1;
