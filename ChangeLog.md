@@ -39,6 +39,8 @@
    (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
  - Fix usage of DESTDIR at install time for linux packagers.
    (Pablo Hernandez, [#1235](https://github.com/DGtal-team/DGtal/pull/1235))
+ - Fix, let CMake handle DESTDIR instead of manual manipulation.
+   (Pablo Hernandez, [#1238](https://github.com/DGtal-team/DGtal/pull/1238))
 
 - *Geometry Package*
  - ArithDSSIterator: fix missing postfix ++.
