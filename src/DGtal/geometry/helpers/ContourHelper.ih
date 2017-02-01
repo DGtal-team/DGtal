@@ -89,16 +89,13 @@ DGtal::ContourHelper::getFreemanCode4C(const TPoint &pt1, const TPoint &pt2)
 
 
 
-template <typename TKSpace, typename TOutputIterator>
+template <typename TIterator, typename TOutputIterator>
 inline
 void 
-DGtal::ContourHelper::pixels2pixels8C(const DGtal::GridCurve<TKSpace> &gc,
+DGtal::ContourHelper::pixels2pixels8C(const TIterator &itb, const TIterator &ite,
                                       TOutputIterator out)
 {
-  typename DGtal::GridCurve<TKSpace>::PointsRange pr = gc.getPointsRange();
-  typename DGtal::GridCurve<TKSpace>::PointsRange::ConstIterator itb = pr.begin();
-  typename DGtal::GridCurve<TKSpace>::PointsRange::ConstIterator ite = pr.end();
-  typename DGtal::GridCurve<TKSpace>::PointsRange::ConstIterator it = itb;
+  TIterator it = itb;
   *out++ = *it;
   unsigned int size = std::distance(itb, ite);
   int i=0;

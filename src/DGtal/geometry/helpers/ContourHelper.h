@@ -103,14 +103,16 @@ public:
 
   /**
    * Transforms an input contour into an 8 connected contour.
-   * @param[in] gc  the input GridCurve contour (4 connected).
-   * @param[out] out   output iterator associated to the resulting contour.
+   * The contour is given from a range of points. 
+   * @param[in] itb  begin iterator associated to the input contour.
+   * @param[in] ite  end iterator associated to the input contour.
+   * @param[out] out  output iterator associated to the resulting contour.
    */
 
-  template <typename TKSpace, typename TOutputIterator>
+  template <typename TIterator, typename TOutputIterator>
   static
   void
-  pixels2pixels8C(const GridCurve<TKSpace> &gc, TOutputIterator out);
+  pixels2pixels8C(const TIterator &itb, const TIterator &ite, TOutputIterator out);
   
   
   
