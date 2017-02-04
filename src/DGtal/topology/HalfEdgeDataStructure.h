@@ -55,7 +55,22 @@ namespace DGtal
    * Aim: This class represents an half-edge data structure, which is
    * a structure for representing the topology of a combinatorial
    * 2-dimensional surface or an embedding of a planar graph in the
-   * plane. It does not store any geometry.
+   * plane. It does not store any geometry. As a minimal example,
+   * these lines of code build two triangles connected by the edge
+   * {1,2}.
+   *
+   * \code
+   * std::vector< HalfEdgeDataStructure::Triangle > triangles( 2 );
+   * triangles[0].v = { 0, 1, 2 };
+   * triangles[1].v = { 2, 1, 3 };
+   * HalfEdgeDataStructure mesh;
+   * mesh.build( triangles );
+   * std::cout << mesh << std::endl;
+   * \endcode
+   *
+   * @todo For now, the construction of the half-edge structure
+   * (method HalfEdgeDataStructure::build) is limited to triangles. It
+   * would be not difficult to adapt it to cellular surfaces.
    * 
    * @note Large parts of this class are taken from
    * https://github.com/yig/halfedge, written by Yotam Gingold.
@@ -235,6 +250,21 @@ namespace DGtal
                 const std::vector<Triangle>& triangles,
                 const std::vector<Edge>&     edges );
 
+    /**
+     * Builds the half-edge data structures from the given triangles.
+     * It keeps the numbering of vertices given in the input \a
+     * triangles as well as the numbering of triangles in the vector
+     * \a triangles.
+     *
+     * @param[in] triangles the vector of input triangles.
+     */
+    void build( const std::vector<Triangle>& triangles )
+    {
+      std::vector<Edge> edges;
+      const int nbVtx = getUnorderedEdgesFromTriangles( triangles, edges );
+      build( nbVtx, triangles, edges );
+    }
+
     /// Clears the data structure.
     void clear()
     {
@@ -381,6 +411,7 @@ namespace DGtal
     ///
     /// @note the sequence of vertices is oriented as the input faces
     /// where (ie. ccw if it was ccw).
+    /// @note O(nb half-edges) operation.
     VertexIndexRange boundaryVertices() const
     {
       std::set< VertexIndex > result;
@@ -396,8 +427,8 @@ namespace DGtal
       return VertexIndexRange( result.begin(), result.end() );
     }
 
-    /// @note O(nb half-edges) operation.
     /// @return a sequence containing the arcs lying on the boundary.
+    /// @note O(nb half-edges) operation.
     std::vector< Arc > boundaryArcs() const
     {
         std::vector< Arc > result;
