@@ -313,6 +313,28 @@ SCENARIO( "HalfEdgeDataStructure neighboring relations", "[halfedge][neighbors]"
       REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
     }
   }
+  GIVEN( "A ribbon with a hole" ) {
+    HalfEdgeDataStructure mesh = makeRibbonWithHole();
+    VertexIndexRange nv;
+    THEN( "Vertex 0 has 4 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 0, nv );
+      VertexIndexRange expected = { 4, 5, 1, 2 };
+      REQUIRE( nv.size()  ==  4 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 1 has 4 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 1, nv );
+      VertexIndexRange expected = { 3, 2, 0, 5 };
+      REQUIRE( nv.size()  ==  4 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 2 has 4 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 2, nv );
+      VertexIndexRange expected = { 0, 1, 3, 4 };
+      REQUIRE( nv.size()  ==  4 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+  }
 }
 
 /** @ingroup Tests **/
