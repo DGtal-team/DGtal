@@ -314,39 +314,5 @@ SCENARIO( "HalfEdgeDataStructure neighboring relations", "[halfedge][neighbors]"
     }
   }
 }
-      
-TEST_CASE( "Testing HalfEdgeDataStructure" )
-{
-
-  // // Use 'mesh' to walk the connectivity.
-  // HalfEdgeDataStructure::VertexIndexRange neighs;
-  // for( int vi = 0; vi < kNumVertices; ++vi )
-  //   {
-  //     mesh.getNeighboringVertices( vi, neighs );
-  //     std::cout << "neighbors of vertex " << vi << ": ";
-  //     for( int i = 0; i < neighs.size(); ++i )
-  //       {
-  //         std::cout << ' ' << neighs.at(i);
-  //       }
-  //     std::cout << '\n';
-  //   }
-  
-  int a = 5;
-  int b = 3+2;
-  int c = a+1;
-  
-  SECTION("Testing feature topology of HalfEdgeDataStructure")
-    {
-      REQUIRE( (a == b) );
-      a=6;
-      REQUIRE( (a == c) );
-    }
-  
-  SECTION("Testing another feature of HalfEdgeDataStructure")
-    {
-      REQUIRE( (a == 5) );
-    }
-
-}
 
 /** @ingroup Tests **/
