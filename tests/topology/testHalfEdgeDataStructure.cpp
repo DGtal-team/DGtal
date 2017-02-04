@@ -49,79 +49,37 @@ typedef HalfEdgeDataStructure::VertexIndexRange VertexIndexRange;
 
 HalfEdgeDataStructure makeTwoTriangles()
 {
-  // neighbors of vertex 0:  2 1
-  // neighbors of vertex 1:  0 2 3
-  // neighbors of vertex 2:  3 1 0
-  // neighbors of vertex 3:  1 2
-  std::vector< Triangle > triangles;
-  triangles.resize( 2 );
-  triangles[0].v[0] = 0;
-  triangles[0].v[1] = 1;
-  triangles[0].v[2] = 2;
-  triangles[1].v[0] = 2;
-  triangles[1].v[1] = 1;
-  triangles[1].v[2] = 3;
+  std::vector< Triangle > triangles( 2 );
+  triangles[0].v = { 0, 1, 2 };
+  triangles[1].v = { 2, 1, 3 };
 
-  std::vector< Edge > edges;
-  const int kNumVertices
-    = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
   HalfEdgeDataStructure mesh;
-  mesh.build( kNumVertices, triangles, edges );
+  mesh.build( triangles );
   return mesh;
 }
 
 HalfEdgeDataStructure makeThreeTriangles()
 {
-  // neighbors of vertex 0:  2 1 3
-  // neighbors of vertex 1:  0 2 3
-  // neighbors of vertex 2:  3 1 0
-  // neighbors of vertex 3:  1 2 0
-  std::vector< Triangle > triangles;
-  triangles.resize( 3 );
-  triangles[0].v[0] = 0;
-  triangles[0].v[1] = 1;
-  triangles[0].v[2] = 2;
-  triangles[1].v[0] = 2;
-  triangles[1].v[1] = 1;
-  triangles[1].v[2] = 3;
-  triangles[2].v[0] = 2;
-  triangles[2].v[1] = 3;
-  triangles[2].v[2] = 0;
+  std::vector< Triangle > triangles( 3 );
+  triangles[0].v = { 0, 1, 2 };
+  triangles[1].v = { 2, 1, 3 };
+  triangles[2].v = { 2, 3, 0 };
 
-  std::vector< Edge > edges;
-  const int kNumVertices
-    = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
   HalfEdgeDataStructure mesh;
-  mesh.build( kNumVertices, triangles, edges );
+  mesh.build( triangles );
   return mesh;
 }
 
 HalfEdgeDataStructure makeTetrahedron()
 {
-  // neighbors of vertex 0:  2 1 3
-  // neighbors of vertex 1:  0 2 3
-  // neighbors of vertex 2:  3 1 0
-  // neighbors of vertex 3:  1 2 0
-  std::vector< Triangle > triangles;
-  triangles.resize( 4 );
-  triangles[0].v[0] = 0;
-  triangles[0].v[1] = 1;
-  triangles[0].v[2] = 2;
-  triangles[1].v[0] = 2;
-  triangles[1].v[1] = 1;
-  triangles[1].v[2] = 3;
-  triangles[2].v[0] = 2;
-  triangles[2].v[1] = 3;
-  triangles[2].v[2] = 0;
-  triangles[3].v[0] = 0;
-  triangles[3].v[1] = 3;
-  triangles[3].v[2] = 1;
+  std::vector< Triangle > triangles( 4 );
+  triangles[0].v = { 0, 1, 2 };
+  triangles[1].v = { 2, 1, 3 };
+  triangles[2].v = { 2, 3, 0 };
+  triangles[3].v = { 0, 3, 1 };
 
-  std::vector< Edge > edges;
-  const int kNumVertices
-    = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
   HalfEdgeDataStructure mesh;
-  mesh.build( kNumVertices, triangles, edges );
+  mesh.build( triangles );
   return mesh;
 }
 
