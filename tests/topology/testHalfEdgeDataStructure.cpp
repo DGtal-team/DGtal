@@ -1,0 +1,352 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file testHalfEdgeDataStructure.cpp
+ * @ingroup Tests
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2017/02/04
+ *
+ * Functions for testing class HalfEdgeDataStructure.
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <algorithm>
+#include "DGtal/base/Common.h"
+#include "ConfigTest.h"
+#include "DGtalCatch.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/topology/HalfEdgeDataStructure.h"
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace DGtal;
+
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class HalfEdgeDataStructure.
+///////////////////////////////////////////////////////////////////////////////
+typedef HalfEdgeDataStructure::Triangle         Triangle;
+typedef HalfEdgeDataStructure::Edge             Edge;
+typedef HalfEdgeDataStructure::Arc              Arc;
+typedef HalfEdgeDataStructure::VertexIndexRange VertexIndexRange;
+
+HalfEdgeDataStructure makeTwoTriangles()
+{
+  // neighbors of vertex 0:  2 1
+  // neighbors of vertex 1:  0 2 3
+  // neighbors of vertex 2:  3 1 0
+  // neighbors of vertex 3:  1 2
+  std::vector< Triangle > triangles;
+  triangles.resize( 2 );
+  triangles[0].v[0] = 0;
+  triangles[0].v[1] = 1;
+  triangles[0].v[2] = 2;
+  triangles[1].v[0] = 2;
+  triangles[1].v[1] = 1;
+  triangles[1].v[2] = 3;
+
+  std::vector< Edge > edges;
+  const int kNumVertices
+    = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
+  HalfEdgeDataStructure mesh;
+  mesh.build( kNumVertices, triangles, edges );
+  return mesh;
+}
+
+HalfEdgeDataStructure makeThreeTriangles()
+{
+  // neighbors of vertex 0:  2 1 3
+  // neighbors of vertex 1:  0 2 3
+  // neighbors of vertex 2:  3 1 0
+  // neighbors of vertex 3:  1 2 0
+  std::vector< Triangle > triangles;
+  triangles.resize( 3 );
+  triangles[0].v[0] = 0;
+  triangles[0].v[1] = 1;
+  triangles[0].v[2] = 2;
+  triangles[1].v[0] = 2;
+  triangles[1].v[1] = 1;
+  triangles[1].v[2] = 3;
+  triangles[2].v[0] = 2;
+  triangles[2].v[1] = 3;
+  triangles[2].v[2] = 0;
+
+  std::vector< Edge > edges;
+  const int kNumVertices
+    = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
+  HalfEdgeDataStructure mesh;
+  mesh.build( kNumVertices, triangles, edges );
+  return mesh;
+}
+
+HalfEdgeDataStructure makeTetrahedron()
+{
+  // neighbors of vertex 0:  2 1 3
+  // neighbors of vertex 1:  0 2 3
+  // neighbors of vertex 2:  3 1 0
+  // neighbors of vertex 3:  1 2 0
+  std::vector< Triangle > triangles;
+  triangles.resize( 4 );
+  triangles[0].v[0] = 0;
+  triangles[0].v[1] = 1;
+  triangles[0].v[2] = 2;
+  triangles[1].v[0] = 2;
+  triangles[1].v[1] = 1;
+  triangles[1].v[2] = 3;
+  triangles[2].v[0] = 2;
+  triangles[2].v[1] = 3;
+  triangles[2].v[2] = 0;
+  triangles[3].v[0] = 0;
+  triangles[3].v[1] = 3;
+  triangles[3].v[2] = 1;
+
+  std::vector< Edge > edges;
+  const int kNumVertices
+    = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
+  HalfEdgeDataStructure mesh;
+  mesh.build( kNumVertices, triangles, edges );
+  return mesh;
+}
+
+HalfEdgeDataStructure makeRibbonWithHole()
+{
+  std::vector< Triangle > triangles( 6 );
+  triangles[0].v = { 0, 1, 2 };
+  triangles[1].v = { 2, 1, 3 };
+  triangles[2].v = { 2, 3, 4 };
+  triangles[3].v = { 4, 3, 5 };
+  triangles[4].v = { 4, 5, 0 };
+  triangles[5].v = { 0, 5, 1 };
+  std::vector< Edge > edges;
+  const int kNumVertices
+    = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
+  HalfEdgeDataStructure mesh;
+  mesh.build( kNumVertices, triangles, edges );
+  return mesh;
+}
+
+HalfEdgeDataStructure makeTriangulatedDisk()
+{
+  std::vector< Triangle > triangles( 7 );
+  triangles[0].v = { 0, 1, 2 };
+  triangles[1].v = { 2, 1, 3 };
+  triangles[2].v = { 2, 3, 4 };
+  triangles[3].v = { 4, 3, 5 };
+  triangles[4].v = { 4, 5, 0 };
+  triangles[5].v = { 0, 5, 1 };
+  triangles[6].v = { 4, 0, 2 };
+  std::vector< Edge > edges;
+  const int kNumVertices
+    = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
+  HalfEdgeDataStructure mesh;
+  mesh.build( kNumVertices, triangles, edges );
+  return mesh;
+}
+
+SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
+{
+  GIVEN( "Two triangles incident by an edge" ) {
+    HalfEdgeDataStructure mesh = makeTwoTriangles();
+    THEN( "The mesh has 4 vertices, 5 edges, 2 faces, 10 half-edges" ) {
+      REQUIRE( mesh.nbVertices()  ==  4 );
+      REQUIRE( mesh.nbEdges()     ==  5 );
+      REQUIRE( mesh.nbFaces()     ==  2 );
+      REQUIRE( mesh.nbHalfEdges() == 10 );
+    }
+    THEN( "The mesh has 4 boundary vertices" ) {
+      VertexIndexRange bdry = mesh.boundaryVertices();
+      std::sort( bdry.begin(), bdry.end() );
+      REQUIRE( bdry.size() == 4 );
+      REQUIRE( bdry[ 0 ] == 0 );
+      REQUIRE( bdry[ 1 ] == 1 );
+      REQUIRE( bdry[ 2 ] == 2 );
+      REQUIRE( bdry[ 3 ] == 3 );
+    }
+    THEN( "The mesh has 4 boundary arcs" ) {
+      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::sort( bdry.begin(), bdry.end() );
+      REQUIRE( bdry.size() == 4 );
+      // std::cout << " arc=(" << bdry[ 0 ].first << "," << bdry[ 0 ].second << ")" << std::endl;
+      REQUIRE( bdry[ 0 ] == Arc( 0, 2 ) );
+      REQUIRE( bdry[ 1 ] == Arc( 1, 0 ) );
+      REQUIRE( bdry[ 2 ] == Arc( 2, 3 ) );
+      REQUIRE( bdry[ 3 ] == Arc( 3, 1 ) );
+    }
+  }
+  GIVEN( "Three triangles forming a fan around a vertex" ) {
+    HalfEdgeDataStructure mesh = makeThreeTriangles();
+    THEN( "The mesh has 4 vertices, 6 edges, 3 faces, 12 half-edges" ) {
+      REQUIRE( mesh.nbVertices()  ==  4 );
+      REQUIRE( mesh.nbEdges()     ==  6 );
+      REQUIRE( mesh.nbFaces()     ==  3 );
+      REQUIRE( mesh.nbHalfEdges() == 12 );
+    }
+    THEN( "The mesh has 3 boundary vertices" ) {
+      VertexIndexRange bdry = mesh.boundaryVertices();
+      std::sort( bdry.begin(), bdry.end() );
+      REQUIRE( bdry.size() == 3 );
+      REQUIRE( bdry[ 0 ] == 0 );
+      REQUIRE( bdry[ 1 ] == 1 );
+      REQUIRE( bdry[ 2 ] == 3 );
+    }
+    THEN( "The mesh has 3 boundary arcs" ) {
+      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::sort( bdry.begin(), bdry.end() );
+      REQUIRE( bdry.size() == 3 );
+      // std::cout << " arc=(" << bdry[ 0 ].first << "," << bdry[ 0 ].second << ")" << std::endl;
+      REQUIRE( bdry[ 0 ] == Arc( 0, 3 ) );
+      REQUIRE( bdry[ 1 ] == Arc( 1, 0 ) );
+      REQUIRE( bdry[ 2 ] == Arc( 3, 1 ) );
+    }
+  }
+  GIVEN( "Four triangles forming a tetrahedron" ) {
+    HalfEdgeDataStructure mesh = makeTetrahedron();
+    THEN( "The mesh has 4 vertices, 6 edges, 4 faces, 12 half-edges" ) {
+      REQUIRE( mesh.nbVertices()  ==  4 );
+      REQUIRE( mesh.nbEdges()     ==  6 );
+      REQUIRE( mesh.nbFaces()     ==  4 );
+      REQUIRE( mesh.nbHalfEdges() == 12 );
+    }
+    THEN( "The mesh has no boundary vertices" ) {
+      VertexIndexRange bdry = mesh.boundaryVertices();
+      REQUIRE( bdry.size() == 0 );
+    }
+    THEN( "The mesh has no boundary arcs" ) {
+      std::vector<Arc> bdry = mesh.boundaryArcs();
+      REQUIRE( bdry.size() == 0 );
+    }
+  }
+  GIVEN( "A ribbon with a hole" ) {
+    HalfEdgeDataStructure mesh = makeRibbonWithHole();
+    THEN( "The mesh has 6 vertices, 12 edges, 6 faces, 24 half-edges" ) {
+      REQUIRE( mesh.nbVertices()  ==  6 );
+      REQUIRE( mesh.nbEdges()     ==  12 );
+      REQUIRE( mesh.nbFaces()     ==  6 );
+      REQUIRE( mesh.nbHalfEdges() == 24 );
+    }
+    THEN( "The mesh has 6 boundary vertices" ) {
+      VertexIndexRange bdry = mesh.boundaryVertices();
+      REQUIRE( bdry.size() == 6 );
+    }
+    THEN( "The mesh has 6 boundary arcs" ) {
+      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::sort( bdry.begin(), bdry.end() );
+      REQUIRE( bdry.size() == 6 );
+      REQUIRE( bdry[ 0 ] == Arc( 0, 2 ) );
+      REQUIRE( bdry[ 1 ] == Arc( 1, 5 ) );
+      REQUIRE( bdry[ 2 ] == Arc( 2, 4 ) );
+      REQUIRE( bdry[ 3 ] == Arc( 3, 1 ) );
+      REQUIRE( bdry[ 4 ] == Arc( 4, 0 ) );
+      REQUIRE( bdry[ 5 ] == Arc( 5, 3 ) );
+    }
+  }
+  GIVEN( "The same ribbon with his hole closed" ) {
+    HalfEdgeDataStructure mesh = makeTriangulatedDisk();
+    THEN( "The mesh has 6 vertices, 12 edges, 7 faces, 24 half-edges" ) {
+      REQUIRE( mesh.nbVertices()  ==  6 );
+      REQUIRE( mesh.nbEdges()     ==  12 );
+      REQUIRE( mesh.nbFaces()     ==  7 );
+      REQUIRE( mesh.nbHalfEdges() == 24 );
+    }
+    THEN( "The mesh has 3 boundary vertices" ) {
+      VertexIndexRange bdry = mesh.boundaryVertices();
+      std::sort( bdry.begin(), bdry.end() );
+      REQUIRE( bdry.size() == 3 );
+      REQUIRE( bdry[ 0 ] == 1 );
+      REQUIRE( bdry[ 1 ] == 3 );
+      REQUIRE( bdry[ 2 ] == 5 );
+    }
+    THEN( "The mesh has 3 boundary arcs" ) {
+      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::sort( bdry.begin(), bdry.end() );
+      REQUIRE( bdry.size() == 3 );
+      REQUIRE( bdry[ 0 ] == Arc( 1, 5 ) );
+      REQUIRE( bdry[ 1 ] == Arc( 3, 1 ) );
+      REQUIRE( bdry[ 2 ] == Arc( 5, 3 ) );
+    }
+  }
+}
+
+SCENARIO( "HalfEdgeDataStructure neighboring relations", "[halfedge][neighbors]" ){
+  GIVEN( "Two triangles incident by an edge" ) {
+    HalfEdgeDataStructure mesh = makeTwoTriangles();
+    VertexIndexRange nv;
+    THEN( "Vertex 0 has 2 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 0, nv );
+      VertexIndexRange expected = { 1, 2 };
+      REQUIRE( nv.size()  ==  2 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 1 has 3 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 1, nv );
+      VertexIndexRange expected = { 3, 2, 0 };
+      REQUIRE( nv.size()  ==  3 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 2 has 3 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 2, nv );
+      VertexIndexRange expected = { 0, 1, 3 };
+      REQUIRE( nv.size()  ==  3 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 3 has 2 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 3, nv );
+      VertexIndexRange expected = { 2, 1 };
+      REQUIRE( nv.size()  ==  2 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+  }
+}
+      
+TEST_CASE( "Testing HalfEdgeDataStructure" )
+{
+
+  // // Use 'mesh' to walk the connectivity.
+  // HalfEdgeDataStructure::VertexIndexRange neighs;
+  // for( int vi = 0; vi < kNumVertices; ++vi )
+  //   {
+  //     mesh.getNeighboringVertices( vi, neighs );
+  //     std::cout << "neighbors of vertex " << vi << ": ";
+  //     for( int i = 0; i < neighs.size(); ++i )
+  //       {
+  //         std::cout << ' ' << neighs.at(i);
+  //       }
+  //     std::cout << '\n';
+  //   }
+  
+  int a = 5;
+  int b = 3+2;
+  int c = a+1;
+  
+  SECTION("Testing feature topology of HalfEdgeDataStructure")
+    {
+      REQUIRE( (a == b) );
+      a=6;
+      REQUIRE( (a == c) );
+    }
+  
+  SECTION("Testing another feature of HalfEdgeDataStructure")
+    {
+      REQUIRE( (a == 5) );
+    }
+
+}
+
+/** @ingroup Tests **/

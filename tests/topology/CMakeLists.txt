@@ -13,6 +13,7 @@ SET(DGTAL_TESTS_SRC
    testDigitalSetToCellularGridConverter
    testNeighborhoodConfigurations
    testParDirCollapse
+   testHalfEdgeDataStructure
  )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
