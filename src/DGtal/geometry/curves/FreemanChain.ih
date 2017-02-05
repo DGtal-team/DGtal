@@ -678,9 +678,7 @@ void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TConstIterator& i
       {
         
         Point ptSuiv( *it ); 
-        Integer dx = ptSuiv[0] - pt[0]; 
-        Integer dy = ptSuiv[1] - pt[1]; 
-        short number = ( dx != 0 ? (1 - dx) : (2 - dy) );
+        short number = ContourHelper::getFreemanCode4C(pt, ptSuiv);
         if ( (number < 0) || (number > 3) )
         {
           std::cerr << "not connected points (method readFromPointsRange of FreemanChain)" << std::endl;
