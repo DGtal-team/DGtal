@@ -32,6 +32,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/geometry/curves/FreemanChain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -63,21 +64,6 @@ DGtal::ContourHelper::getBarycenter(const std::vector<TPoint> & aSet)
 
 
 
-  
-template<typename TPoint>
-inline
-unsigned int 
-DGtal::ContourHelper::getFreemanCode4C(const TPoint &pt1, const TPoint &pt2)
-{
-  int dx = pt2[0] - pt1[0];
-  int dy = pt2[1] - pt1[1];
-  short number = ( dx != 0 ? (1 - dx) : (2 - dy) );
-  if ( (number < 0) || (number > 3) )
-        {
-          return 8;
-        }
-  return number;
-}
 
 
 
@@ -93,8 +79,9 @@ DGtal::ContourHelper::pixels2pixels8C(const TIterator &itb, const TIterator &ite
   int i=0;
   while(i<size-1)
     {
-      unsigned int code = ContourHelper::getFreemanCode4C(*it, *(it+1));
-      unsigned int codeNext = ContourHelper::getFreemanCode4C(*(it+1), *(it+2));      
+
+      short code = FreemanChain<int>::freemanCode4C((*(it+1))[0]-(*it)[0],(*(it+1))[1]-(*it)[1]);
+      short codeNext = FreemanChain<int>::freemanCode4C((*(it+2))[0]-(*(it+1))[0],(*(it+2))[1]-(*(it+1))[1]);
       if((code != 8 && codeNext != 8) &&  (((4+(int)codeNext-(int)code)%4)==1 || ((4+(int)codeNext-(int)code)%4)==3))
         {
           it++;
