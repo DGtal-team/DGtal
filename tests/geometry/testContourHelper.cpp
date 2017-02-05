@@ -33,6 +33,7 @@
 #include "ConfigTest.h"
 #include "DGtal/geometry/helpers/ContourHelper.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/kernel/PointVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -50,13 +51,13 @@ bool testContourHelper()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Test ContourHelper:  getMeanPoint and isCounterClockWise" );
+  trace.beginBlock ( "Test ContourHelper:  getgetBarycenter and isCounterClockWise" );
   std::vector<Z2i::Point> aContour; 
   aContour.push_back(Z2i::Point(0,0));
   aContour.push_back(Z2i::Point(10,0));
   aContour.push_back(Z2i::Point(10,4));
   aContour.push_back(Z2i::Point(0,4));
-  Z2i::Point midPoint = ContourHelper::getMeanPoint(aContour);   
+  Z2i::RealPoint midPoint = ContourHelper::getBarycenter(aContour);   
 
   std::vector<Z2i::Point> aContour2; 
   aContour2.push_back(Z2i::Point(0,0));
@@ -92,7 +93,6 @@ bool testContourHelper()
   nb++;
   nbok += res.size() ==  aContour3.size() -2 || Z2i::Point(2,1)==res[2];
 
-
   typedef GridCurve< KhalimskySpaceND<2>> GridCurve2d ;
   GridCurve2d gc;
   gc.initFromPointsVector(aContour3);
@@ -105,6 +105,8 @@ bool testContourHelper()
   
   trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
   
+  for(auto p: res)
+    trace.info() << p << std::endl;
   return nbok == nb;
 }
 

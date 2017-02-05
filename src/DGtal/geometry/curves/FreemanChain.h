@@ -61,6 +61,7 @@
 #include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/geometry/helpers/ContourHelper.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

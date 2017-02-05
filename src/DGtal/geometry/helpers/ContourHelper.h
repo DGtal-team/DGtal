@@ -42,8 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/curves/GridCurve.h"
+#include "DGtal/kernel/PointVector.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -63,14 +63,15 @@ class ContourHelper
 public:
   
   /**
-   * Compute the barycenter of the 2D contour.  
+   * Compute the barycenter of a set of points.  
    * 
-   * @param[in] aContour the vector containing the 2D contour coordinates.
+   * @param[in] aSet the vector containing the set of points.
    * @return the resulting mean point. 
    **/
-  template <typename TPoint>
+  template <typename TPoint> 
   static 
-  TPoint getMeanPoint(const std::vector<TPoint> & aContour);
+  DGtal::PointVector<TPoint::dimension, double> 
+  getBarycenter(const std::vector<TPoint> & aSet);
   
 
   /**
@@ -102,8 +103,12 @@ public:
   
 
   /**
-   * Transforms an input contour into an 8 connected contour.
-   * The contour is given from a range of points. 
+   * Transforms an input contour into an 8 connected contour.  The
+   * contour is given from two iterators on points.  If the input
+   * sequence contains some points not 4-connected, they are
+   * are ignored (and the transformation continue on the remaining
+   * parts).
+   *
    * @param[in] itb  begin iterator associated to the input contour.
    * @param[in] ite  end iterator associated to the input contour.
    * @param[out] out  output iterator associated to the resulting contour.
