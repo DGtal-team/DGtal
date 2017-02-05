@@ -85,29 +85,14 @@ public:
   bool
   isCounterClockWise(const std::vector<TPoint> & aCurve);
 
-
-
-  /**
-   * @return the Freeman code associated to given points (0,1,2, or
-   * 3). If the direction between the two points differs from these
-   * directions it returns 8.
-   *
-   * @param[in] pt1  a first point.
-   * @param[in] pt2  a second point.
-   * 
-   **/
-  template<typename TPoint>
-  static 
-  unsigned int 
-  getFreemanCode4C(const TPoint &pt1, const TPoint &pt2);
   
 
   /**
    * Transforms an input contour into an 8 connected contour.  The
    * contour is given from two iterators on points.  If the input
-   * sequence contains some points not 4-connected, they are
-   * are ignored (and the transformation continue on the remaining
-   * parts).
+   * sequence contains some points not 4-connected, they are are
+   * ignored but the transformation continues on the next parts of the
+   * contour.
    *
    * @param[in] itb  begin iterator associated to the input contour.
    * @param[in] ite  end iterator associated to the input contour.

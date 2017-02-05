@@ -57,11 +57,11 @@
 #include "DGtal/base/OrderedAlphabet.h"
 #include "DGtal/base/Circulator.h"
 #include "DGtal/arithmetic/ModuloComputer.h"
-//#include "DGtal/io/boards/Board2D.h"
+
 #include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/base/ConstAlias.h"
-#include "DGtal/geometry/helpers/ContourHelper.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -958,6 +958,18 @@ public:
     static char addToCode( char code, int n);
 
 
+    /**
+     * @return the Freeman code associated to given points (0,1,2, or
+     * 3). If the direction between the two points differs from these
+     * directions it returns 8.
+     *
+     * @param[in] dx  the x-displacement.
+     * @param[in] dy  the y-displacement.
+     * 
+     **/
+    static short freemanCode4C(int dx, int dy);
+
+    
 
     /**
      * Returns the displacement vector of a Freeman code.
@@ -970,6 +982,7 @@ public:
     static void displacement( int & dx, int & dy, char aCode );
 
 
+    
     /**
      * @param aCode a Freeman code (between 0-3).
      * Returns the displacement vector of the Freeman code.
