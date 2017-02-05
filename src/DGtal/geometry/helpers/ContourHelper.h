@@ -75,15 +75,15 @@ public:
   
 
   /**
-   * Checks if a contour given as a sequence of point is clockwise oriented or not.
+   * Checks if a polygonal curve given as a sequence of point is clockwise oriented or not.
    *
-   * @param[in] aContour the vector containing the 2D contour coordinates.
-   * @return 'true' if the contour is counter clockwise oriented, 'false' otherwise.
+   * @param[in] aCurve the vector containing the 2D polygonal curve.
+   * @return 'true' if the polygonal curve is counter clockwise oriented, 'false' otherwise.
    **/
   template <typename TPoint> 
   static
   bool
-  isCounterClockWise(const std::vector<TPoint> & aContour);
+  isCounterClockWise(const std::vector<TPoint> & aCurve);
 
 
 
