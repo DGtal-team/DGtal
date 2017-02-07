@@ -51,6 +51,8 @@
 - *Geometry Package*
  - ArithDSSIterator: fix missing postfix ++.
    (I. Sivignon, [#1187](https://github.com/DGtal-team/DGtal/pull/1187))
+ - ContourHelper: add a method to transform a contour into a 8 connected path.
+   (B. Kerautret, [#1127](https://github.com/DGtal-team/DGtal/pull/1127))
 
 - *IO Package*
  - Missing TContainer template parameter for overloaded functions/methods that
