@@ -266,7 +266,7 @@ void propa_2d()
     trace.endBlock();
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     propa_2d();
     return 0;
