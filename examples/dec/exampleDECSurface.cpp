@@ -23,7 +23,7 @@ struct FalseOutsideDomain
     typedef typename Predicate::Point Point;
 
     FalseOutsideDomain(DGtal::ConstAlias<Predicate> predicate, DGtal::ConstAlias<Domain> adomain) :
-        predicate(&predicate), myDomain(&adomain)
+        myPredicate(&predicate), myDomain(&adomain)
     {
     }
 
@@ -31,10 +31,10 @@ struct FalseOutsideDomain
     operator()(const Point& point) const
     {
         if (!myDomain->isInside(point)) return false;
-        return (*predicate)(point);
+        return (*myPredicate)(point);
     }
 
-    const Predicate* predicate;
+    const Predicate* myPredicate;
     const Domain* myDomain;
 };
 
