@@ -154,6 +154,12 @@ namespace DGtal
       {
         v[0] = v[1] = v[2] = -1;
       }
+      Triangle( VertexIndex v0, VertexIndex v1, VertexIndex v2 )
+      {
+        v[0] = v0;
+        v[1] = v1;
+        v[2] = v2;
+      }
     };
     
     /// The half edge structure. Each half-edge points to some Vertex,
@@ -409,26 +415,38 @@ namespace DGtal
     /// @return a sequence containing the indices of the vertices
     /// lying on the boundary.
     ///
-    /// @note the sequence of vertices is oriented as the input faces
-    /// where (ie. ccw if it was ccw).
     /// @note O(nb half-edges) operation.
+    /// @note no particular order.
     VertexIndexRange boundaryVertices() const
     {
-      std::set< VertexIndex > result;
+      VertexIndexRange result;
+      // std::set< VertexIndex > result;
       for( int hei = 0; hei < myHalfEdges.size(); ++hei )
         {
           const HalfEdge& he = halfEdge( hei );
           if( -1 == he.face )
-            {
-              result.insert( he.toVertex );
-              result.insert( halfEdge( he.opposite ).toVertex );
-            }
+            result.push_back( he.toVertex );
         }
-      return VertexIndexRange( result.begin(), result.end() );
+      return result;
     }
 
+    /// @return a sequence containing the indices of half-edges  lying on the boundary.
+    /// @note O(nb half-edges) operation.
+    /// @note no particular order.
+    std::vector< Index > boundaryHalfEdgeIndices() const
+    {
+      std::vector< Index > result;
+      for( int hei = 0; hei < myHalfEdges.size(); ++hei )
+        {
+          const HalfEdge& he = halfEdge( hei );
+          if( -1 == he.face )
+            result.push_back( hei );
+        }
+      return result;
+    }
     /// @return a sequence containing the arcs lying on the boundary.
     /// @note O(nb half-edges) operation.
+    /// @note no particular order.
     std::vector< Arc > boundaryArcs() const
     {
         std::vector< Arc > result;

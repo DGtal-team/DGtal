@@ -1,0 +1,369 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file TriangulatedSurface.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2017/02/05
+ *
+ * Implementation of inline methods defined in TriangulatedSurface.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+bool
+DGtal::TriangulatedSurface<TVertexData>::build()
+{
+  if ( isHEDSValid ) {
+    trace.warning() << "[DGtal::TriangulatedSurface<TVertexData>::build()]"
+                    << " attempting to rebuild a triangulated surface." << std::endl;
+    return false;
+  }
+  myHEDS.build( myTriangles );
+  if ( myHEDS.nbVertices() != myVertexDatas.size() ) {
+    trace.warning() << "[DGtal::TriangulatedSurface<TVertexData>::build()]"
+                    << " the size of vertex data array (s1) and the number of vertices (s2) in the triangulated surface does not match:"
+                    << " s1=" << myVertexDatas.size()
+                    << " s2=" << myHEDS.nbVertices() << std::endl;
+    isHEDSValid = false;
+  } else {
+    isHEDSValid = true;
+  }
+  return isHEDSValid;
+}
+  
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::VertexIndex
+DGtal::TriangulatedSurface<TVertexData>::addVertex( const VertexData& vdata )
+{
+  VertexIndex vi = myVertexDatas.size();
+  myVertexDatas.push_back( vdata );
+  return vi;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::FaceIndex
+DGtal::TriangulatedSurface<TVertexData>::addTriangle
+( VertexIndex v0, VertexIndex v1, VertexIndex v2 )
+{
+  FaceIndex fi = myTriangles.size();
+  myTriangles.push_back( Triangle( v0, v1, v2 ) );
+  return fi;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::Size
+DGtal::TriangulatedSurface<TVertexData>::size() const
+{
+  return myVertexDatas.size();
+}
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::Size
+DGtal::TriangulatedSurface<TVertexData>::bestCapacity() const
+{
+  return 8;
+}
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::Size
+DGtal::TriangulatedSurface<TVertexData>::degree( const Vertex & v ) const
+{
+  ASSERT( isValid() );
+  return myHEDS.nbNeighboringVertices( v );
+}
+    
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+template <typename OutputIterator>
+inline
+void  
+DGtal::TriangulatedSurface<TVertexData>::writeNeighbors
+( OutputIterator &it, const Vertex & v ) const
+{
+  ASSERT( isValid() );
+  typedef HalfEdgeDataStructure::VertexIndexRange VertexIndexRange;
+  VertexIndexRange neighbors;
+  myHEDS.getNeighboringVertices( v, neighbors );
+  for ( Vertex nv : neighbors ) *it++ = nv;
+}
+    
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+template <typename OutputIterator, typename VertexPredicate>
+inline
+void  
+DGtal::TriangulatedSurface<TVertexData>::writeNeighbors
+( OutputIterator &it, const Vertex & v, const VertexPredicate & pred) const
+{
+  ASSERT( isValid() );
+  typedef HalfEdgeDataStructure::VertexIndexRange VertexIndexRange;
+  VertexIndexRange neighbors;
+  myHEDS.getNeighboringVertices( v, neighbors );
+  for ( Vertex nv : neighbors ) if ( pred( nv ) ) *it++ = nv;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::ArcRange
+DGtal::TriangulatedSurface<TVertexData>::outArcs( const Vertex & v ) const
+{
+  ArcRange result;
+  const Index start_hei = myHEDS.halfEdgeIndexFromVertexIndex( v );
+  Index hei = start_hei;
+  do
+    {
+      const HalfEdge& he = myHEDS.halfEdge( hei );
+      if( INVALID_FACE != he.face ) result.push_back( hei );
+      hei = myHEDS.halfEdge( he.opposite ).next;
+    }
+  while ( hei != start_hei );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::ArcRange
+DGtal::TriangulatedSurface<TVertexData>::inArcs( const Vertex & v ) const
+{
+  ArcRange result;
+  const Index start_hei = myHEDS.halfEdgeIndexFromVertexIndex( v );
+  Index hei = start_hei;
+  do
+    {
+      const HalfEdge& he = myHEDS.halfEdge( hei );
+      if( INVALID_FACE != he.face ) result.push_back( he.opposite );
+      hei = myHEDS.halfEdge( he.opposite ).next;
+    }
+  while ( hei != start_hei );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::FaceRange
+DGtal::TriangulatedSurface<TVertexData>::facesAroundVertex( const Vertex & v ) const
+{
+  FaceRange result;
+  const Index start_hei = myHEDS.halfEdgeIndexFromVertexIndex( v );
+  Index hei = start_hei;
+  do
+    {
+      const HalfEdge& he = myHEDS.halfEdge( hei );
+      if( INVALID_FACE != he.face ) result.push_back( he.face );
+      hei = myHEDS.halfEdge( he.opposite ).next;
+    }
+  while ( hei != start_hei );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::Vertex
+DGtal::TriangulatedSurface<TVertexData>::head( const Arc & a ) const
+{
+  return myHEDS.halfEdge( a ).toVertex;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::Vertex
+DGtal::TriangulatedSurface<TVertexData>::tail( const Arc & a ) const
+{
+  return head( opposite( a ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::Arc
+DGtal::TriangulatedSurface<TVertexData>::opposite( const Arc & a ) const
+{
+  return myHEDS.halfEdge( a ).opposite;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::Arc
+DGtal::TriangulatedSurface<TVertexData>::arc
+( const Vertex & tail, const Vertex & head ) const
+{
+  return myHEDS.halfEdgeIndexFromArc( tail, head );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::Face
+DGtal::TriangulatedSurface<TVertexData>::faceAroundArc( const Arc & a ) const
+{
+  return myHEDS.halfEdge( a ).face;
+}
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::FaceRange
+DGtal::TriangulatedSurface<TVertexData>::facesAroundArc( const Arc & a ) const
+{
+  FaceRange result;
+  Face f = faceAroundArc( a );
+  if ( f != INVALID_FACE ) result.push_back( f );
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::VertexRange 
+DGtal::TriangulatedSurface<TVertexData>::verticesAroundFace( const Face & f ) const
+{
+  VertexRange result;
+  const Index start_hei = myHEDS.halfEdgeIndexFromFaceIndex( f );
+  Index hei = start_hei;
+  do {
+    const HalfEdge& he = myHEDS.halfEdge( hei );
+    ASSERT( he.face == f );
+    result.push_back( he.toVertex );
+    hei = he.next;
+  } while ( hei != start_hei );
+  ASSERT( result.size() == 3 );
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+bool
+DGtal::TriangulatedSurface<TVertexData>::isVertexBoundary( const Vertex& v ) const
+{
+  return myHEDS.isVertexBoundary( v );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+bool
+DGtal::TriangulatedSurface<TVertexData>::isArcBoundary( const Arc& v ) const
+{
+  return INVALID_FACE == myHEDS.halfEdge( v ).face;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::FaceSet
+DGtal::TriangulatedSurface<TVertexData>::allFaces() const
+{
+  FaceSet result;
+  for ( FaceIndex fi = 0; fi < myHEDS.nbFaces(); ++fi )
+    result.insert( fi );
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::ArcRange
+DGtal::TriangulatedSurface<TVertexData>::allBoundaryArcs() const
+{
+  return myHEDS.boundaryHalfEdgeIndices();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::VertexRange
+DGtal::TriangulatedSurface<TVertexData>::allBoundaryVertices() const
+{
+  return myHEDS.boundaryVertices();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TVertexData>
+inline
+void
+DGtal::TriangulatedSurface<TVertexData>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[TriangulatedSurface #V=" << myHEDS.nbVertices()
+      << " #E=" << myHEDS.nbEdges() << " #F=" << myHEDS.nbFaces() << "]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TVertexData>
+inline
+bool
+DGtal::TriangulatedSurface<TVertexData>::isValid() const
+{
+  return isHEDSValid;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TVertexData>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+                    const TriangulatedSurface<TVertexData> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
