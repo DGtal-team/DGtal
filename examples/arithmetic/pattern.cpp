@@ -11,6 +11,24 @@
  * This file is part of the DGtal library.
  */
 
+/**
+   Computes a pattern from a given slope p / q.
+
+@see \ref dgtal_digstraighness_sec2
+
+@verbatim
+# Pattern 5 / 12
+$ ./examples/arithmetic/pattern 5 12
+00010010001001001
+
+# Pattern 5 / 12 with its recursive subdivision
+$ ./examples/arithmetic/pattern 5 12 SUB
+((0|(00|1)(00|1))(0|(00|1)(00|1))|(00|1))
+@endverbatim
+
+\example arithmetic/pattern.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 //! [pattern-basicIncludes]
 #include <cstdlib>
