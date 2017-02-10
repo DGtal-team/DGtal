@@ -11,6 +11,20 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * Examples of breadth-first traversal on a digital surface
+ * You can use these commands:
+ * @verbatim
+ * # Commands
+ * $ ./examples/topology/volBreadthFirstTraversal ../examples/samples/lobster.vol 50 255
+ * $ ./examples/topology/volBreadthFirstTraversal ../examples/samples/cat10.vol 1 255
+ * @endverbatim
+ * 
+ * to get these pictures:
+ *   @image html digital-surface-bfv-all.png "Examples of breadth-first traversal on a digital surface."
+ *   @example topology/volBreadthFirstTraversal.cpp
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //! [volBreadthFirstTraversal-basicIncludes]
 #include <iostream>
