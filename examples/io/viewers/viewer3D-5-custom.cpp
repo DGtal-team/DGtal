@@ -27,6 +27,15 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Example of a custom display
+ * @see \ref DGtalGLV_Custom
+ * \example io/viewers/viewer3D-5-custom.cpp
+ * \image html visuModeCustom.png "Example of several custom display ." width=5cm
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

@@ -27,6 +27,15 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Example of digital point visualization with Viewer3D.
+ * @see \ref DGtalGLV_VisualizationDigitalSet
+ * \example io/viewers/viewer3D-2-sets.cpp
+ * \image html simple3dVisu2.png "Digital point visualization  with Viewer3D."
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 
