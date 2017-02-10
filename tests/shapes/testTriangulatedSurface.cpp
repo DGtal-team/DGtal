@@ -54,6 +54,7 @@ typedef TriMesh::ArcRange                 ArcRange;
 typedef TriMesh::Arc                      Arc;
 typedef TriMesh::Face                     Face;
 typedef TriMesh::Vertex                   Vertex;
+typedef TriMesh::VertexDataMap            VertexDataMap;
 
 TriMesh makeTwoTriangles()
 {
@@ -134,6 +135,16 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( T[ 0 ] == 1 );
       REQUIRE( T[ 1 ] == 2 );
       REQUIRE( T[ 2 ] == 3 );
+    }
+    THEN( "The mesh has the barycenter (0.5, 0.5, 0.25) " ) {
+      VertexDataMap positions = mesh.defaultVertexMap();
+      RealPoint b;
+      for ( Vertex v = 0; v < mesh.size(); ++v )
+        b += positions( v );
+      b /= 4;
+      REQUIRE( b[ 0 ] == 0.5 );
+      REQUIRE( b[ 1 ] == 0.5 );
+      REQUIRE( b[ 2 ] == 0.25 );
     }
   }
 }

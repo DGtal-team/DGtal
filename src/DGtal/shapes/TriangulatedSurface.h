@@ -44,6 +44,7 @@
 #include <set>
 #include <map>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/OwningOrAliasingPtr.h"
 #include "DGtal/topology/HalfEdgeDataStructure.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -65,7 +66,7 @@ namespace DGtal
    * Model of CUndirectedSimpleLocalGraph: the vertices and edges of the
    * triangulated surface form indeed a graph structure.
    *
-   * @tparam TVertexData a type that must have an attribute \a
+   * @tparam TVertex a type that must have an attribute \a
    * position (a RealPoint) and an attribute \a flags.
    *
    * @see HalfEdgeDataStructure
@@ -105,7 +106,77 @@ namespace DGtal
     typedef std::set<Face>                       FaceSet;
 
     BOOST_STATIC_CONSTANT( Face, INVALID_FACE = -1 );
-    
+
+    template <typename Data>
+    struct VertexPropertyMap {
+      typedef Vertex            Argument;
+      typedef Data              Value;
+      typedef std::vector<Data> Storage;
+
+      /// Default constructor. The object is invalid.
+      VertexPropertyMap() : mySurface( 0 ), myData( 0 ) {}
+
+      /// Creates an empty vertex property map
+      VertexPropertyMap( const Self& surface )
+        : mySurface( &surface ),
+          myData( Storage( surface.size() ) )
+      {}
+
+      VertexPropertyMap( const Self& surface, Data def_data )
+        : mySurface( &surface ),
+          myData( Storage( surface.size(), def_data ) )
+      {}
+
+      /// Creates the VertexPropertyMap that points to one that exists already.
+      VertexPropertyMap( const Self& surface,
+                         Storage& storage )
+        : mySurface( &surface ),
+          myData( &storage, false )
+      {}
+
+      /// @return if valid, returns the associated triangulated surface.
+      const Self& surface() const
+      {
+        ASSERT( isValid() );
+        return *mySurface;
+      }
+      
+      /// This object is a function : Vertex -> Data
+      /// @param v any vertex
+      /// @return the associated data
+      const Data& operator()( Vertex v ) const
+      {
+        ASSERT( isValid() && v < myData->size() );
+        return (*myData)[ v ];
+      }
+
+      /// Non-mutable array access.
+      /// @param v any vertex
+      /// @return the associated data
+      const Data& operator[]( Vertex v ) const
+      {
+        ASSERT( isValid() && v < myData->size() );
+        return (*myData)[ v ];
+      }
+
+      /// mutable array access.
+      /// @param v any vertex
+      /// @return the associated data
+      Data& operator[]( Vertex v )
+      {
+        ASSERT( isValid() && v < myData->size() );
+        return (*myData)[ v ];
+      }
+      
+      /// @return if the object was properly initialized.
+      bool isValid() const { return mySurface != 0; }
+      
+    private:
+      const Self* mySurface;
+      OwningOrAliasingPtr<Storage> myData;
+    };
+
+    typedef VertexPropertyMap< VertexData >      VertexDataMap;
   protected:
     typedef HalfEdgeDataStructure::HalfEdge      HalfEdge;
     
@@ -139,14 +210,37 @@ namespace DGtal
     /// @return the corresponding index of the triangle.
     FaceIndex addTriangle( VertexIndex v0, VertexIndex v1, VertexIndex v2 );
 
+    /// The default property map is generally used to store the positions of vertices.
+    /// @return the default property map stored in the surface.
+    /// @note The returned map only referenced what is stored in the surface.
+    VertexPropertyMap< VertexData > defaultVertexMap()
+    {
+      return VertexPropertyMap< VertexData >( *this, myVertexDatas );
+    }
+
+    /// @return a vertex property map that associates some data to any vertex.
+    template <typename AnyData>
+    VertexPropertyMap< AnyData > makeVertexMap() const
+    {
+      return VertexPropertyMap< AnyData >( *this );
+    }
+
+    /// @param value the value that is given to all vertices at initialization.
+    /// @return a vertex property map that associates some data to any vertex.
+    template <typename AnyData>
+    VertexPropertyMap< AnyData > makeVertexMap( AnyData value ) const
+    {
+      return VertexPropertyMap< AnyData >( *this, value );
+    }
+    
     /// Mutable accessor to vertex data.
     /// @param v any vertex.
     /// @return the mutable data associated to \a v.
-    VertexData& vData();
+    VertexData& vData( Vertex v );
     /// Const accessor to vertex data.
     /// @param v any vertex.
     /// @return the non-mutable data associated to \a v.
-    const VertexData& vData() const;
+    const VertexData& vData( Vertex v ) const;
     
     // ----------------------- Undirected simple graph services -------------------------
   public:
