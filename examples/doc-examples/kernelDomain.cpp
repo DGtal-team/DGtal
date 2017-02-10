@@ -27,6 +27,16 @@
  * This file is part of the DGtal library.
  */
 
+
+
+/**
+ * Example of DGtal kernel with Domain.
+ * @see \ref sectSpace
+ * \image html kernel-domain-it-arrow.png "Iteration over a domain with displacements depicted as arrows."
+ * \example doc-examples/kernelDomain.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

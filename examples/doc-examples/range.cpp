@@ -28,6 +28,15 @@
  * This file is part of the DGtal library.
  */
 
+
+
+/**
+ * Example of range on Domain.
+ *  @see \ref sectSpace
+ *  \example doc-examples/range.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
