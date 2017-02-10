@@ -84,7 +84,24 @@ DGtal::TriangulatedSurface<TVertexData>::addTriangle
   myTriangles.push_back( Triangle( v0, v1, v2 ) );
   return fi;
 }
-
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+typename DGtal::TriangulatedSurface<TVertexData>::VertexData&
+DGtal::TriangulatedSurface<TVertexData>::vData( Vertex v )
+{
+  ASSERT( 0 <= v && v < myVertexDatas.size() );
+  return myVertexDatas[ v ];
+}
+//-----------------------------------------------------------------------------
+template <typename TVertexData>
+inline
+const typename DGtal::TriangulatedSurface<TVertexData>::VertexData&
+DGtal::TriangulatedSurface<TVertexData>::vData( Vertex v ) const
+{
+  ASSERT( 0 <= v && v < myVertexDatas.size() );
+  return myVertexDatas[ v ];
+}
 //-----------------------------------------------------------------------------
 template <typename TVertexData>
 inline
