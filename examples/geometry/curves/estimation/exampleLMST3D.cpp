@@ -27,6 +27,17 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   This example shows the basic usage of the Lambda maximal segment tangent estimation
+   in 3D.
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/estimation/exampleLMST3D.cpp
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <iterator>

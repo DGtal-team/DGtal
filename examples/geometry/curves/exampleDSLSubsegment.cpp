@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   Example of DSLSubsegment.
+   \example geometry/curves/exampleDSLSubsegment.cpp
+**/
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "ConfigExamples.h"
