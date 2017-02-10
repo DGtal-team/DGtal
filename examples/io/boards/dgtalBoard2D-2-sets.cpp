@@ -27,6 +27,21 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * \example io/boards/dgtalBoard2D-2-sets.cpp
+ * 
+ * This simple example shows also some basic usage of a Board2D
+ * to export graphical representations of dgtal objects (here, a
+ * digital set and a digital object). Note also the use of different
+ * modes that may be defined for some classes. An object may thus be
+ * displayed just as a set of points, but also as a set of points
+ * with neighborhood structure (a graph).
+ * \image html  dgtalboard-2-sets-1.png  "visualization of resulting export (first export dgtalBoard2D-2-sets-1)."
+ */
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

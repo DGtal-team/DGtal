@@ -26,6 +26,15 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * Ball visualisation (with Board3DTo2D)
+ * @see \ref DGtalGLV_CLipping
+ * \image html  dgtalBoard3DTo2D-6.png "Ball visualization (with Board3DTo2D) ."
+ * \example io/boards/dgtalBoard3DTo2D-6.cpp
+ *
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"
