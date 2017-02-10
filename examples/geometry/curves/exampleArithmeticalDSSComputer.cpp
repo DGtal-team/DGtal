@@ -27,6 +27,15 @@
  * This file is part of the DGtal library.
  */
 
+/**
+   This example shows the basic usage of a 4-connected standard segment computer, 
+an object devoted to the on-line recognition of 4-connected standard DSSs.  
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSSComputer.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

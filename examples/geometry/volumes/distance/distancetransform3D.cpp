@@ -25,6 +25,17 @@
  * This file is part of the DGtal library.
  */
 
+/**
+   Example of distance transformation in dimension 3 with DGtal Viewer3D.
+This program outputs this image:
+@see \ref moduleVolumetric
+
+@image html example-DT-3D.png
+
+\example geometry/volumes/distance/distancetransform3D.cpp
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

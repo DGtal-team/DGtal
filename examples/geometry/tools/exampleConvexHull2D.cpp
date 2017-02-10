@@ -27,6 +27,18 @@
  * This file is part of the DGtal library.
  */
 
+/**
+Computation of the convex hull of a planar point set by different algorithms: 
+- functions::Hull2D::andrewConvexHullAlgorithm \cite Andrew1979
+- functions::Hull2D::grahamConvexHullAlgorithm \cite Graham1972
+- functions::Hull2D::melkmanConvexHullAlgorithm \cite Melkman1987
+
+@see \ref moduleHull2D
+
+
+\example geometry/tools/exampleConvexHull2D.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

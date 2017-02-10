@@ -27,6 +27,15 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   This snippet segments a digital curve into Frechet shortcuts.  
+
+@see \ref moduleFrechetShortcut and \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleFrechetShortcut.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

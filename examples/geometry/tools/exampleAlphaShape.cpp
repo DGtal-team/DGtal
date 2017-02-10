@@ -27,6 +27,17 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+Computation of the alpha shape of the border of a digital shape. 
+
+@see \ref moduleHull2D
+
+
+\example geometry/tools/exampleAlphaShape.cpp
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
