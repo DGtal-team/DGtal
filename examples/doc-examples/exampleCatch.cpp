@@ -26,6 +26,13 @@
  *
  * This file is part of the DGtal library.
  */
+/**
+DGtal/Catch examples
+
+@see \ref moduleCatch
+
+\example doc-examples/exampleCatch.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
