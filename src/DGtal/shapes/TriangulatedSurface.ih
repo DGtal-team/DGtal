@@ -39,21 +39,21 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
 bool
-DGtal::TriangulatedSurface<TVertexData>::build()
+DGtal::TriangulatedSurface<TPoint>::build()
 {
   if ( isHEDSValid ) {
-    trace.warning() << "[DGtal::TriangulatedSurface<TVertexData>::build()]"
+    trace.warning() << "[DGtal::TriangulatedSurface<TPoint>::build()]"
                     << " attempting to rebuild a triangulated surface." << std::endl;
     return false;
   }
   myHEDS.build( myTriangles );
-  if ( myHEDS.nbVertices() != myVertexDatas.size() ) {
-    trace.warning() << "[DGtal::TriangulatedSurface<TVertexData>::build()]"
+  if ( myHEDS.nbVertices() != myPositions.size() ) {
+    trace.warning() << "[DGtal::TriangulatedSurface<TPoint>::build()]"
                     << " the size of vertex data array (s1) and the number of vertices (s2) in the triangulated surface does not match:"
-                    << " s1=" << myVertexDatas.size()
+                    << " s1=" << myPositions.size()
                     << " s2=" << myHEDS.nbVertices() << std::endl;
     isHEDSValid = false;
   } else {
@@ -61,23 +61,35 @@ DGtal::TriangulatedSurface<TVertexData>::build()
   }
   return isHEDSValid;
 }
-  
+
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::VertexIndex
-DGtal::TriangulatedSurface<TVertexData>::addVertex( const VertexData& vdata )
+void
+DGtal::TriangulatedSurface<TPoint>::clear()
 {
-  VertexIndex vi = myVertexDatas.size();
-  myVertexDatas.push_back( vdata );
+  isHEDSValid = false;
+  myHEDS.clear();
+  myPositions.clear();
+  myTriangles.clear();
+  
+}
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+typename DGtal::TriangulatedSurface<TPoint>::VertexIndex
+DGtal::TriangulatedSurface<TPoint>::addVertex( const Point& vdata )
+{
+  VertexIndex vi = myPositions.size();
+  myPositions.push_back( vdata );
   return vi;
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::FaceIndex
-DGtal::TriangulatedSurface<TVertexData>::addTriangle
+typename DGtal::TriangulatedSurface<TPoint>::FaceIndex
+DGtal::TriangulatedSurface<TPoint>::addTriangle
 ( VertexIndex v0, VertexIndex v1, VertexIndex v2 )
 {
   FaceIndex fi = myTriangles.size();
@@ -85,55 +97,55 @@ DGtal::TriangulatedSurface<TVertexData>::addTriangle
   return fi;
 }
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::VertexData&
-DGtal::TriangulatedSurface<TVertexData>::vData( Vertex v )
+typename DGtal::TriangulatedSurface<TPoint>::Point&
+DGtal::TriangulatedSurface<TPoint>::position( Vertex v )
 {
-  ASSERT( 0 <= v && v < myVertexDatas.size() );
-  return myVertexDatas[ v ];
+  ASSERT( 0 <= v && v < myPositions.size() );
+  return myPositions[ v ];
 }
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-const typename DGtal::TriangulatedSurface<TVertexData>::VertexData&
-DGtal::TriangulatedSurface<TVertexData>::vData( Vertex v ) const
+const typename DGtal::TriangulatedSurface<TPoint>::Point&
+DGtal::TriangulatedSurface<TPoint>::position( Vertex v ) const
 {
-  ASSERT( 0 <= v && v < myVertexDatas.size() );
-  return myVertexDatas[ v ];
+  ASSERT( 0 <= v && v < myPositions.size() );
+  return myPositions[ v ];
 }
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::Size
-DGtal::TriangulatedSurface<TVertexData>::size() const
+typename DGtal::TriangulatedSurface<TPoint>::Size
+DGtal::TriangulatedSurface<TPoint>::size() const
 {
-  return myVertexDatas.size();
+  return myPositions.size();
 }
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::Size
-DGtal::TriangulatedSurface<TVertexData>::bestCapacity() const
+typename DGtal::TriangulatedSurface<TPoint>::Size
+DGtal::TriangulatedSurface<TPoint>::bestCapacity() const
 {
   return 8;
 }
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::Size
-DGtal::TriangulatedSurface<TVertexData>::degree( const Vertex & v ) const
+typename DGtal::TriangulatedSurface<TPoint>::Size
+DGtal::TriangulatedSurface<TPoint>::degree( const Vertex & v ) const
 {
   ASSERT( isValid() );
   return myHEDS.nbNeighboringVertices( v );
 }
     
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 template <typename OutputIterator>
 inline
 void  
-DGtal::TriangulatedSurface<TVertexData>::writeNeighbors
+DGtal::TriangulatedSurface<TPoint>::writeNeighbors
 ( OutputIterator &it, const Vertex & v ) const
 {
   ASSERT( isValid() );
@@ -144,11 +156,11 @@ DGtal::TriangulatedSurface<TVertexData>::writeNeighbors
 }
     
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 template <typename OutputIterator, typename VertexPredicate>
 inline
 void  
-DGtal::TriangulatedSurface<TVertexData>::writeNeighbors
+DGtal::TriangulatedSurface<TPoint>::writeNeighbors
 ( OutputIterator &it, const Vertex & v, const VertexPredicate & pred) const
 {
   ASSERT( isValid() );
@@ -159,10 +171,10 @@ DGtal::TriangulatedSurface<TVertexData>::writeNeighbors
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::ArcRange
-DGtal::TriangulatedSurface<TVertexData>::outArcs( const Vertex & v ) const
+typename DGtal::TriangulatedSurface<TPoint>::ArcRange
+DGtal::TriangulatedSurface<TPoint>::outArcs( const Vertex & v ) const
 {
   ArcRange result;
   const Index start_hei = myHEDS.halfEdgeIndexFromVertexIndex( v );
@@ -177,10 +189,10 @@ DGtal::TriangulatedSurface<TVertexData>::outArcs( const Vertex & v ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::ArcRange
-DGtal::TriangulatedSurface<TVertexData>::inArcs( const Vertex & v ) const
+typename DGtal::TriangulatedSurface<TPoint>::ArcRange
+DGtal::TriangulatedSurface<TPoint>::inArcs( const Vertex & v ) const
 {
   ArcRange result;
   const Index start_hei = myHEDS.halfEdgeIndexFromVertexIndex( v );
@@ -195,10 +207,10 @@ DGtal::TriangulatedSurface<TVertexData>::inArcs( const Vertex & v ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::FaceRange
-DGtal::TriangulatedSurface<TVertexData>::facesAroundVertex( const Vertex & v ) const
+typename DGtal::TriangulatedSurface<TPoint>::FaceRange
+DGtal::TriangulatedSurface<TPoint>::facesAroundVertex( const Vertex & v ) const
 {
   FaceRange result;
   const Index start_hei = myHEDS.halfEdgeIndexFromVertexIndex( v );
@@ -213,55 +225,55 @@ DGtal::TriangulatedSurface<TVertexData>::facesAroundVertex( const Vertex & v ) c
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::Vertex
-DGtal::TriangulatedSurface<TVertexData>::head( const Arc & a ) const
+typename DGtal::TriangulatedSurface<TPoint>::Vertex
+DGtal::TriangulatedSurface<TPoint>::head( const Arc & a ) const
 {
   return myHEDS.halfEdge( a ).toVertex;
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::Vertex
-DGtal::TriangulatedSurface<TVertexData>::tail( const Arc & a ) const
+typename DGtal::TriangulatedSurface<TPoint>::Vertex
+DGtal::TriangulatedSurface<TPoint>::tail( const Arc & a ) const
 {
   return head( opposite( a ) );
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::Arc
-DGtal::TriangulatedSurface<TVertexData>::opposite( const Arc & a ) const
+typename DGtal::TriangulatedSurface<TPoint>::Arc
+DGtal::TriangulatedSurface<TPoint>::opposite( const Arc & a ) const
 {
   return myHEDS.halfEdge( a ).opposite;
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::Arc
-DGtal::TriangulatedSurface<TVertexData>::arc
+typename DGtal::TriangulatedSurface<TPoint>::Arc
+DGtal::TriangulatedSurface<TPoint>::arc
 ( const Vertex & tail, const Vertex & head ) const
 {
   return myHEDS.halfEdgeIndexFromArc( tail, head );
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::Face
-DGtal::TriangulatedSurface<TVertexData>::faceAroundArc( const Arc & a ) const
+typename DGtal::TriangulatedSurface<TPoint>::Face
+DGtal::TriangulatedSurface<TPoint>::faceAroundArc( const Arc & a ) const
 {
   return myHEDS.halfEdge( a ).face;
 }
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::FaceRange
-DGtal::TriangulatedSurface<TVertexData>::facesAroundArc( const Arc & a ) const
+typename DGtal::TriangulatedSurface<TPoint>::FaceRange
+DGtal::TriangulatedSurface<TPoint>::facesAroundArc( const Arc & a ) const
 {
   FaceRange result;
   Face f = faceAroundArc( a );
@@ -270,16 +282,18 @@ DGtal::TriangulatedSurface<TVertexData>::facesAroundArc( const Arc & a ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::VertexRange 
-DGtal::TriangulatedSurface<TVertexData>::verticesAroundFace( const Face & f ) const
+typename DGtal::TriangulatedSurface<TPoint>::VertexRange 
+DGtal::TriangulatedSurface<TPoint>::verticesAroundFace( const Face & f ) const
 {
   VertexRange result;
   const Index start_hei = myHEDS.halfEdgeIndexFromFaceIndex( f );
   Index hei = start_hei;
   do {
     const HalfEdge& he = myHEDS.halfEdge( hei );
+    if ( he.face != f )
+      trace.warning() << "[TriangulatedSurface::verticesAroundFace] invalid face: he.face=" << he.face << " f=" << f << std::endl;
     ASSERT( he.face == f );
     result.push_back( he.toVertex );
     hei = he.next;
@@ -289,49 +303,71 @@ DGtal::TriangulatedSurface<TVertexData>::verticesAroundFace( const Face & f ) co
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
 bool
-DGtal::TriangulatedSurface<TVertexData>::isVertexBoundary( const Vertex& v ) const
+DGtal::TriangulatedSurface<TPoint>::isVertexBoundary( const Vertex& v ) const
 {
   return myHEDS.isVertexBoundary( v );
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
 bool
-DGtal::TriangulatedSurface<TVertexData>::isArcBoundary( const Arc& v ) const
+DGtal::TriangulatedSurface<TPoint>::isArcBoundary( const Arc& v ) const
 {
   return INVALID_FACE == myHEDS.halfEdge( v ).face;
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::FaceSet
-DGtal::TriangulatedSurface<TVertexData>::allFaces() const
+typename DGtal::TriangulatedSurface<TPoint>::FaceRange
+DGtal::TriangulatedSurface<TPoint>::allFaces() const
 {
-  FaceSet result;
-  for ( FaceIndex fi = 0; fi < myHEDS.nbFaces(); ++fi )
-    result.insert( fi );
+  FaceRange result( nbFaces() );
+  for ( Face fi = 0; fi < result.size(); ++fi )
+    result[ fi ] = fi;
+  return result;
+}
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+typename DGtal::TriangulatedSurface<TPoint>::ArcRange
+DGtal::TriangulatedSurface<TPoint>::allArcs() const
+{
+  ArcRange result( nbArcs() );
+  for ( Arc fi = 0; fi < result.size(); ++fi )
+    result[ fi ] = fi;
+  return result;
+}
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+typename DGtal::TriangulatedSurface<TPoint>::VertexRange
+DGtal::TriangulatedSurface<TPoint>::allVertices() const
+{
+  VertexRange result( nbVertices() );
+  for ( Vertex fi = 0; fi < result.size(); ++fi )
+    result[ fi ] = fi;
   return result;
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::ArcRange
-DGtal::TriangulatedSurface<TVertexData>::allBoundaryArcs() const
+typename DGtal::TriangulatedSurface<TPoint>::ArcRange
+DGtal::TriangulatedSurface<TPoint>::allBoundaryArcs() const
 {
   return myHEDS.boundaryHalfEdgeIndices();
 }
 
 //-----------------------------------------------------------------------------
-template <typename TVertexData>
+template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TVertexData>::VertexRange
-DGtal::TriangulatedSurface<TVertexData>::allBoundaryVertices() const
+typename DGtal::TriangulatedSurface<TPoint>::VertexRange
+DGtal::TriangulatedSurface<TPoint>::allBoundaryVertices() const
 {
   return myHEDS.boundaryVertices();
 }
@@ -344,10 +380,10 @@ DGtal::TriangulatedSurface<TVertexData>::allBoundaryVertices() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TVertexData>
+template <typename TPoint>
 inline
 void
-DGtal::TriangulatedSurface<TVertexData>::selfDisplay ( std::ostream & out ) const
+DGtal::TriangulatedSurface<TPoint>::selfDisplay ( std::ostream & out ) const
 {
   out << "[TriangulatedSurface #V=" << myHEDS.nbVertices()
       << " #E=" << myHEDS.nbEdges() << " #F=" << myHEDS.nbFaces() << "]";
@@ -357,10 +393,10 @@ DGtal::TriangulatedSurface<TVertexData>::selfDisplay ( std::ostream & out ) cons
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TVertexData>
+template <typename TPoint>
 inline
 bool
-DGtal::TriangulatedSurface<TVertexData>::isValid() const
+DGtal::TriangulatedSurface<TPoint>::isValid() const
 {
   return isHEDSValid;
 }
@@ -370,11 +406,11 @@ DGtal::TriangulatedSurface<TVertexData>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TVertexData>
+template <typename TPoint>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-                    const TriangulatedSurface<TVertexData> & object )
+                    const TriangulatedSurface<TPoint> & object )
 {
   object.selfDisplay( out );
   return out;
