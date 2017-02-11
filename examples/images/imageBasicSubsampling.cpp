@@ -27,6 +27,16 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Examples of 2D and 3D basic image subsampling.
+ *
+ * \image html imageBasicSubsamplingExample.png "Illustration of the resulting subsampling produced by this example."
+ *
+ * \example images/imageBasicSubsampling.cpp
+ **/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "ConfigExamples.h"

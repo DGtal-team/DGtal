@@ -27,6 +27,13 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ *  Example of TiledImage.
+ *  @see @ref moduleImages   
+ *  \example images/exampleTiledImage.cpp
+ **/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

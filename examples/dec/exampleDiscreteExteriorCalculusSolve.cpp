@@ -1,4 +1,11 @@
 /// @file dec/exampleDiscreteExteriorCalculusSolve.cpp
+/**
+   Example of primal and dual Helmoltz decomposition in 2D and 3D using Discrete Exterior Calculus.
+   @see \ref sectDECHelmoltzProblem
+   \image  html  solve_2d_primal_decomposition_calculusSmall.png "Primal Helmoltz decomposition harmonic component."
+   \example dec/exampleDiscreteExteriorCalculusSolve.cpp
+**/
+
 #include <string>
 
 #include <QApplication>

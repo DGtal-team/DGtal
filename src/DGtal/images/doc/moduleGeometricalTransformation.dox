@@ -153,20 +153,6 @@ and for backward as well:
 
 
 
-/**
-*  Example of 2D rigid transformation using forward and backward model.
-   @see @ref moduleGeometricTransform
-   \image html church_backward.jpg "Result for backward model" 
-*  \example images/exampleRigidtransformation2d.cpp
-**/
-
-
-/**
-*  Example of 3D rigid transformation using forward and backward model.
-   @see @ref moduleGeometricTransform
-   \image html cat10_backward.jpg "Result for backward model" 
-*  \example images/exampleRigidtransformation3d.cpp
-**/
 
 
 

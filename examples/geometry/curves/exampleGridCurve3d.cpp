@@ -26,6 +26,28 @@
  *
  * This file is part of the DGtal library.
  */
+/**
+   This example shows how to use GridCurve as a sequence of 1-scells in a 3d Khalimsky space. 
+
+@verbatim
+$ ./examples/geometry/curves/exampleGridCurve3d
+@endverbatim
+
+Note that the data type you want to display may be passed as argument as follows: 
+@verbatim
+$ ./examples/geometry/curves/exampleGridCurve3d points
+@endverbatim
+
+This command line produces the following output (points are displayed as voxels): 
+
+@image html exampleGridCurveSinus.png "3d digital curve"
+@image latex exampleGridCurveSinus.png "3d digital curve"
+
+
+@see \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleGridCurve3d.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

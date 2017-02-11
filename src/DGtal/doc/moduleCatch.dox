@@ -120,12 +120,4 @@ test case).
 */
 
 
-/**
-DGtal/Catch examples
-
-@see \ref moduleCatch
-
-\example doc-examples/exampleCatch.cpp
-*/
-
 }

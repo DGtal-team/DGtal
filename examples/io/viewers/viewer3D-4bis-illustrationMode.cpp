@@ -27,6 +27,12 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ *   \image html  view3D-4bis-illustrationMode.png  "Illustration of the \"Illustration\" KhalimskyCell mode."
+ * \example io/viewers/viewer3D-4bis-illustrationMode.cpp
+ */ 
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

@@ -26,6 +26,14 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * Example of 6-18 digital Adjacencies visualization  with Board3DTo2D.
+ * @see \ref DGtalGLV_ModeEx
+ * \example io/boards/dgtalBoard3DTo2D-3-objects.cpp
+ * \image html dgtalBoard3DTo2D-3-objects.png " 6-18 digital Adjacencies visualization  with Board3DTo2D."
+ *
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"
