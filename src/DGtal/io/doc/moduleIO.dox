@@ -444,42 +444,5 @@ instance generate some exports in pdf like this example:
 
 }
 
-/**
-   Example of digital set extraction from volumetric file (.vol).
-   @see @ref moduleIO 
-   \image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" 
-*  \example io/digitalSetFromVol.cpp
-**/
-
-
-/**
-   Example of point list import.
-   @see @ref moduleIO 
-   \image html visuPointList.png "Visualisation of 3d imported point list " 
-* \example io/digitalSetFromPointList.cpp
-**/
-
-
-/**
-*  Example of OFF file importation and display.
-
-   @see \ref importMesh3D
-
-   \image html visuTrefExample.png   "Visualisation of the sample/tref.off file"
-
-* \example io/meshFromOFF.cpp
-**/
-
-
-
-/**
-*  Example of OFF generation from a Display3D object.
-
-   @see @ref exportMesh3D
-
-   @image html visuDisplay3DToOFF.png   "Visualisation of the Display3D mesh export using MeshLab software (http://meshlab.sourceforge.net). "
-
-* @example io/display3DToOFF.cpp
-*/
 
 

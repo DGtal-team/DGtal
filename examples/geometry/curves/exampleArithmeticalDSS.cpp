@@ -27,6 +27,15 @@
  * This file is part of the DGtal library.
  */
 
+/**
+   This example shows the basic usage of a 8-connected and a 4-connected 
+arithmetical DSS.  
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSS.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <exception>

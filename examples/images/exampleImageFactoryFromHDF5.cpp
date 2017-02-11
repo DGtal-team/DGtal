@@ -27,6 +27,15 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+*  Example of HDF5 ImageFactory.
+   @see @ref dgtalBigImagesAbstract   
+
+   \image html TiledImageFromImage-11-write.png "Example of writing in cache. "
+*  \example images/exampleImageFactoryFromHDF5.cpp
+**/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

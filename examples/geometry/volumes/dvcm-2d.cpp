@@ -27,6 +27,25 @@
  * This file is part of the DGtal library.
  */
 
+/**
+This example shows the computation of the VCM of a set of 2D
+digital points. The normal is estimated from the diagonalization of
+the VCM tensor. Feature detection is achieved with the eigenvalues
+of the VCM. A red color indicates a feature. Normals are displayed
+as arrows.
+
+@see \ref moduleVCM_sec2
+
+@verbatim
+$ ./examples/geometry/volumes/dvcm-2d
+@endverbatim
+
+@image html dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
+@image latex dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
+
+\example geometry/volumes/dvcm-2d.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
