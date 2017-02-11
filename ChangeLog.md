@@ -27,7 +27,12 @@
  - *Configuration/General*
   - Continuous integration Travis bots are now based on ubunutu/trusty containers.
     (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
-
+ 
+ - *Documentation*
+  - All the example descriptions are now in their the examples file (instead in
+    dox files).
+    (Bertrand Kerautret, #1240](https://github.com/DGtal-team/DGtal/pull/1240)
+ 
 ## Bug Fixes
 
 - *Configuration/General*

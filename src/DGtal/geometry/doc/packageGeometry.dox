@@ -97,30 +97,5 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 }
 
-/**
-  Example of geometric predicates.
-  @see @ref moduleGeometricPredicates
-  \example geometry/tools/determinant/exampleInHalfPlane.cpp
-**/
 
-
-/**
-   Example of curvature estimation based on Digital Circular Arc (DCA) estimator.
-   \image  html  exampleCurvature.png "Curvature estimated using DCA estimator on a flower shape."
-   \example geometry/curves/estimation/exampleCurvature.cpp
-**/
-
-
-/**
-   Example of DSLSubsegment.
-   \example geometry/curves/exampleDSLSubsegment.cpp
-**/
-
-
-
-/**
-   Example of Preimage2D.
-   \image  html  preimageExample2.png "Example of preimage based arc recognition."
-   \example geometry/tools/examplePreimage.cpp
-**/
 

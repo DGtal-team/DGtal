@@ -1,4 +1,10 @@
 /// @file dec/exampleDECSurface.cpp
+/**
+   Example of solving Poisson equation using the DEC package.
+    @see \ref sectDECPoissonProblem
+   \image html alcapone_phi.png "Solution dual 0-form."
+   \example dec/exampleDECSurface.cpp
+**/
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SurfelAdjacency.h"

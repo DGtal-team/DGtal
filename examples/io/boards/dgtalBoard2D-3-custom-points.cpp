@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-//LICENSE-END
+
 /**
  * @file io/boards/dgtalBoard2D-3-custom-points.cpp
  * @ingroup Examples
@@ -25,6 +25,18 @@
  * An example file named dgtalboard-3-custom-points.
  *
  * This file is part of the DGtal library.
+ */
+
+/**
+ *  \example io/boards/dgtalBoard2D-3-custom-points.cpp
+ *
+ * This example shows you how to modify the style of each drawable
+ * elements. It is a matter of creating a custom style class which
+ * gives in its method \c setStyle the specific style
+ * parameters. Then, you attach this style to your drawable elements
+ * with an instance of CustomStyle outputed in the Board2D
+ * stream.
+ *   \image html  dgtalboard-3-custom-points.png  "visualization of resulting export."
  */
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -27,6 +27,16 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   This snippet shows how to construct, scan and display a 2d grid curve. 
+
+@see \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleGridCurve2d.cpp
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

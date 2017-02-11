@@ -555,59 +555,6 @@ Both examples are in exampleLMST2D.cpp and exampleLMST3D.cpp
 */
 
 
-/**
-   This example 
-- shows the basic usage of a naive/standard DSL, 
-- displays the steps of a DSL for all octants. 
-
-@see \ref moduleArithDSSReco
-
-\example geometry/curves/exampleArithmeticalDSL.cpp
-*/
-
-/**
-   This example shows the basic usage of a 8-connected and a 4-connected 
-arithmetical DSS.  
-
-@see \ref moduleArithDSSReco
-
-\example geometry/curves/exampleArithmeticalDSS.cpp
-*/
-
-/**
-   This example shows the basic usage of a 4-connected standard segment computer, 
-an object devoted to the on-line recognition of 4-connected standard DSSs.  
-
-@see \ref moduleArithDSSReco
-
-\example geometry/curves/exampleArithmeticalDSSComputer.cpp
-*/
-
-/**
-   This example shows the basic usage of a naive 3D DSS recognition. 
-
-@see \ref moduleArithDSSReco
-
-\example geometry/curves/exampleNaive3DDSSComputer.cpp
-*/
-
-/**
-   This example shows the basic usage of the Lambda maximal segment tangent estimation
-   in 2D.
-
-@see \ref moduleArithDSSReco
-
-\example geometry/curves/estimation/exampleLMST2D.cpp
-*/
-
-/**
-   This example shows the basic usage of the Lambda maximal segment tangent estimation
-   in 3D.
-
-@see \ref moduleArithDSSReco
-
-\example geometry/curves/estimation/exampleLMST3D.cpp
-*/
 
 }
 }

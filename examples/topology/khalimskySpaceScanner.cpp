@@ -27,6 +27,23 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * A simple example illustrating different way to scan a Khalimsky
+ * space. This program outputs these images:
+ * 
+ * @see \ref dgtal_ctopo_sec8
+ *
+ * <table>
+ * <TR>
+ * <td> @image html khalimskySpaceScanner1.png </td>
+ * <td> @image html khalimskySpaceScanner2.png </td>
+ * </TR>
+ * </TABLE>
+ *
+ * \example topology/khalimskySpaceScanner.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

@@ -12,6 +12,24 @@
  * This file is part of the DGtal library.
  */
 
+/**
+Traverses a 2D graph in different ways (enumeration, breadth-first traversal, depth-first traversal).
+
+@see \ref dgtal_graph_def_2
+
+@verbatim
+# Commands
+$ ./examples/graph/graphTraversal
+# see files graphTraversal-enum.eps, graphTraversal-bfs.eps, graphTraversal-dfs-range.eps.
+@endverbatim
+
+@image html graphTraversal-enum.png "Coloring vertices of an object graph according to the enumeration order."
+@image html graphTraversal-bfs.png "Coloring vertices of an object graph according to the topological distance to a seed (breadth-first traversal)."
+@image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal."
+
+\example graph/graphTraversal.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 //! [graphTraversal-basicIncludes]
 #include <iostream>

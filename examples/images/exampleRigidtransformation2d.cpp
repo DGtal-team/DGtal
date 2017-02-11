@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+/**
+*  Example of 2D rigid transformation using forward and backward model.
+   @see @ref moduleGeometricTransform
+   \image html church_backward.jpg "Result for backward model" 
+*  \example images/exampleRigidtransformation2d.cpp
+**/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <cmath>

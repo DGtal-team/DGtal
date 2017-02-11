@@ -27,6 +27,17 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ *   A simple example illustrating the filling of the
+ *   interior/exterior of a given 2D contour. This program outputs
+ *   these images:
+ *
+ * @see \ref dgtal_helpsurf_sec4
+ * 
+ * @image html ctopo-fillContours.png 
+ * \example  topology/ctopo-fillContours.cpp
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "ConfigExamples.h"

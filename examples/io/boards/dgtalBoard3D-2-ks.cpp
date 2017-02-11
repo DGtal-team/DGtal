@@ -26,6 +26,16 @@
  *
  */
 
+
+/**
+ *   Example of Khalimsky Signed Cell export with Display3D.
+ *  @see \ref DGtalGLV_OBJExport
+ *  \image html  dgtalBoard3D-2-ks.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
+ *  \example io/boards/dgtalBoard3D-2-ks.cpp
+ *
+ */
+
+
 #include <iostream>
 #include "DGtal/io/boards/Board3D.h"
 #include "DGtal/base/Common.h"
