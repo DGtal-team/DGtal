@@ -66,7 +66,6 @@
  - Viewer3D: fix bad rendering when changing the scale.
    (Bertrand Kerautret, [#1217](https://github.com/DGtal-team/DGtal/pull/1217))
 
-
 - *Documentation*
  - Fixing various bib references.
    (Bertrand Kerautret, [##1237](https://github.com/DGtal-team/DGtal/pull/1237))
