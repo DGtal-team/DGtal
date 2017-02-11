@@ -25,6 +25,30 @@
  *
  * This file is part of the DGtal library.
  */
+/**
+   This example outputs the cover of an open digital curve by maximal DSSs. 
+Maximal DSSs are displayed in blue, green, yellow in convex, concave, inflexion parts respectively. 
+Ends are black. 
+Convex (resp. concave) parts are defined as sequences of maximal DSSs of increasing (resp. decreasing) slope. 
+
+@verbatim
+$ ./examples/geometry/curves/convex-and-concave-parts
+@endverbatim
+
+Note that the chain code of the input digital curve may be passed as argument as follows: 
+@verbatim
+$ ./examples/geometry/curves/convex-and-concave-parts 0300303303033030303000010101011010110100000303303033030303
+@endverbatim
+
+
+@image html convex-and-concave-parts.png "Decomposition into convex and concave parts"
+@image latex convex-and-concave-parts.png "Decomposition into convex and concave parts"
+
+
+@see \ref moduleArithDSSReco and \ref moduleGridCurveAnalysis
+
+\example geometry/curves/convex-and-concave-parts.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <cmath>

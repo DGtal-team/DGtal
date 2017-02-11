@@ -26,6 +26,19 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * A simple example of cellular grid space with several cells
+ * instantiated and visualized. This program outputs this image.
+ *
+ * @see \ref dgtal_ctopo_sec5
+ * 
+ * @image html ctopo-1.png
+ *
+ * \example topology/ctopo-1.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

@@ -27,6 +27,31 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * A simple example of cellular grid space with several cells
+ * instantiated and visualized in 3D. This program outputs this image.
+ *
+ * @see \ref dgtal_ctopo_sec6
+ *
+ * @image html ctopo-1b-3d.png
+ *
+ * \example topology/ctopo-1-3d.cpp
+ */
+
+
+/**
+ *   A simple example illustrating the extraction of the sequence of
+ *   surfels boudary. This program outputs this image.
+ *
+ * @see \ref dgtal_helpsurf_sec2
+ *
+ *  @image html ctopo3dSurfelCut.png 
+ *
+ * \example topology/ctopo-2-3d.cpp
+ *
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

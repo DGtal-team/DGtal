@@ -27,6 +27,24 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   This example shows a greedy segmentation into naive planes of the surface at threshold 0 within volume Al.100.vol.
+
+   Colors for each plane are chosen randomly. Surfels in the same plane have the same color.
+
+@see \ref moduleCOBANaivePlaneRecognition_sec5
+
+@verbatim
+# naive plane: width=1/1
+$ ./examples/geometry/surfaces/greedy-plane-segmentation -i ./examples/samples/Al.100.vol -t 0 -w 1 -d 1
+@endverbatim
+
+@image html greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes."
+@image latex greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes." width=6cm
+
+\example geometry/surfaces/greedy-plane-segmentation.cpp
+*/
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <vector>

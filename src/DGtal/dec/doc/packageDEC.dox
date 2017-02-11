@@ -70,47 +70,4 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 
 */
 
-
-
-/**
-   Example of Discrete Exterior Calculus with Chladni.
-   @see \ref sectDECHelmoltzProblem
-   \image  html  exampleDECChladni.png "Primal Helmoltz decomposition harmonic component."
-   \example dec/exampleDiscreteExteriorCalculusChladni.cpp
-**/
-
-
-/**
-   Example of primal and dual Helmoltz decomposition in 2D and 3D using Discrete Exterior Calculus.
-   @see \ref sectDECHelmoltzProblem
-   \image  html  solve_2d_primal_decomposition_calculusSmall.png "Primal Helmoltz decomposition harmonic component."
-   \example dec/exampleDiscreteExteriorCalculusSolve.cpp
-**/
-
-
-
-/**
-   Example of vector field manipulation using Discrete Exterior Calculus.
-   @see \ref sectDECIntroduction
-   \image html usage_primal_one_form_sharp_flat.png "Flat sharped primal gradient vector field."
-   \example dec/exampleDiscreteExteriorCalculusUsage.cpp
-**/
-
-
-
-/**
-   Example of solving Poisson equation using the DEC package.
-    @see \ref sectDECPoissonProblem
-   \image html alcapone_phi.png "Solution dual 0-form."
-   \example dec/exampleDECSurface.cpp
-**/
-
-
-/**
-   Example of 2D wave propagation using the DEC package.
-    @see \ref moduleDECPropagation
-   \image html  propagation_time_wave_ii.gif  "You should obtain such wave propagation (by converting svg files)."
-   \example dec/examplePropagation.cpp
-**/
-
 }

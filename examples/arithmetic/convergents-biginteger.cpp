@@ -10,6 +10,32 @@
  *
  * This file is part of the DGtal library.
  */
+/**
+
+   Computes the quotients and the convergents of a given fraction,
+   which may be arbitrarily large.
+
+@see \ref dgtal_irrfrac_sec3_2
+
+@verbatim
+# A huge fraction
+$ ./examples/arithmetic/convergents-biginteger 243224233245235253407096734543059 4324213412343432913758138673203834
+z = [0,17,1,3,1,1,12,1,2,33,2,1,1,1,1,49,1,1,1,1,17,34,1,1,304,1,2,1,1,1,2,1,48,1,20,2,3,5,1,1,16,9,1,1,5,1,2,2,7,4,3,1,7,1,1,17,1,1,29,1,12,2,5]
+z_0 = 0 / 1
+z_1 = 1 / 17
+z_2 = 1 / 18
+z_3 = 4 / 71
+z_4 = 5 / 89
+...
+z_18 = 23610961 / 419772458
+...
+z_40 = 832739221613445323225 / 14805030169237188131024
+...
+z_62 = 243224233245235253407096734543059 / 4324213412343432913758138673203834
+@endverbatim
+
+\example arithmetic/convergents-biginteger.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [convergents-biginteger-basicIncludes]

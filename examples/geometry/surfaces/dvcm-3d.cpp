@@ -26,6 +26,26 @@
  * This file is part of the DGtal library.
  */
 
+/** 
+This example shows the computation of the VCM of a digital surface
+read from a .vol file. The normal is estimated from the
+diagonalization of the VCM tensor, while the orientation is deduced
+from the orientation of the trivial surfel normals. Feature
+detection is achieved with the eigenvalues of the VCM. A red color
+indicates a feature. Normals are displayed as black lines.
+
+@see \ref moduleVCM_sec3
+
+@verbatim
+$ ./examples/geometry/surfaces/dvcm-3d
+@endverbatim
+
+@image html dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
+@image latex dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
+
+\example geometry/surfaces/dvcm-3d.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

@@ -27,6 +27,15 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
+ *  \image latex example3dMeshConstruction.png  "Simple example of 3D mesh construction."  width=5cm
+ * 
+ *   \example shapes/mesh3DConstructionAndVisualisation.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"

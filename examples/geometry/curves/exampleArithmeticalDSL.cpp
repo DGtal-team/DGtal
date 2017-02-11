@@ -27,6 +27,16 @@
  * This file is part of the DGtal library.
  */
 
+/**
+   This example 
+- shows the basic usage of a naive/standard DSL, 
+- displays the steps of a DSL for all octants. 
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSL.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <sstream>

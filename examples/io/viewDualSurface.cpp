@@ -25,6 +25,14 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ *  Example of viewing dual surfaces in Viewer3D.  
+ *  \image html viewDualSurface.png " " 
+ *  \example io/viewDualSurface.cpp
+ **/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <algorithm>

@@ -27,6 +27,15 @@
  * This file is part of the DGtal library.
  */
 
+/**
+   Example of a Voronoi map construction in dimension 2 for the
+   Euclidean metric.
+
+   @see \ref voronoiSect
+   \image html voronoimap-dt.png "Distance transformation for the l_2 metric."
+   \example geometry/volumes/distance/voronoimap2D.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

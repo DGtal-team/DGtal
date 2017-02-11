@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ *  Example of ConstImageAdapter.
+   @see @ref constimage
+   \image html logImage.png " 16x16 image: (1,1) to (16,16) adapted from with a log scale functor." 
+ *  \example images/exampleConstImageAdapter.cpp
+ **/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

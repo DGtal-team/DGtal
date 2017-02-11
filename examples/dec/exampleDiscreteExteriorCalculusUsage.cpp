@@ -1,4 +1,10 @@
 /// @file dec/exampleDiscreteExteriorCalculusUsage.cpp
+/**
+   Example of vector field manipulation using Discrete Exterior Calculus.
+   @see \ref sectDECIntroduction
+   \image html usage_primal_one_form_sharp_flat.png "Flat sharped primal gradient vector field."
+   \example dec/exampleDiscreteExteriorCalculusUsage.cpp
+**/
 #include <string>
 
 #include "DECExamplesCommon.h"

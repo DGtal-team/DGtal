@@ -27,6 +27,16 @@
  * This file is part of the DGtal library.
  */
 
+
+
+/**
+ * \image html  viewer3D-9.png  "Illustration of the 3D image visualization."
+ *  \example io/viewers/viewer3D-9-3Dimages.cpp
+ *
+ */
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
