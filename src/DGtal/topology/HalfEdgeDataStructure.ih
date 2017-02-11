@@ -51,6 +51,19 @@ build( const Size num_vertices,
   FaceIndex fi = 0;
   for( const Triangle& T : triangles )
     {
+      auto it01 = de2fi.find( Arc( T.v[0], T.v[1] ) );
+      auto it12 = de2fi.find( Arc( T.v[1], T.v[2] ) );
+      auto it20 = de2fi.find( Arc( T.v[2], T.v[0] ) );
+      if ( ( it01 != de2fi.end() ) || ( it12 != de2fi.end() ) || ( it20 != de2fi.end() ) )
+        {
+          trace.warning() << "[HalfEdgeDataStructure::build] Some arcs belongs to more than one face. Dropping triangle."
+                          << " Triangle (" << T.v[ 0 ] << "," << T.v[ 1 ] << "," << T.v[ 2 ] << ")"
+                          << " arc01 " << ( it01 != de2fi.end() ? it01->second : -1 )
+                          << " arc12 " << ( it12 != de2fi.end() ? it12->second : -1 )
+                          << " arc20 " << ( it20 != de2fi.end() ? it20->second : -1 )
+                          << std::endl;
+          continue;
+        }
       de2fi[ Arc( T.v[0], T.v[1] ) ] = fi;
       de2fi[ Arc( T.v[1], T.v[2] ) ] = fi;
       de2fi[ Arc( T.v[2], T.v[0] ) ] = fi;

@@ -56,9 +56,10 @@ namespace DGtal
   /**
    * Description of template class 'TriangulatedSurface' <p> \brief
    * Aim: Represents a triangulated surface. The topology is stored
-   * with a half-edge data structure. Geometry and other data can be
-   * stored within this object, and may be specialised with template
-   * parameters TVertexData.
+   * with a half-edge data structure. This object stored the positions
+   * of vertices in space. If you need further data attached to the
+   * surface, you may use property maps (see
+   * `TriangulatedSurface::makeVertexMap`).
    *
    * For now, the user must add vertices and triangles, and when
    * finished, call 'build()'.
@@ -66,8 +67,12 @@ namespace DGtal
    * Model of CUndirectedSimpleLocalGraph: the vertices and edges of the
    * triangulated surface form indeed a graph structure.
    *
-   * @tparam TVertex a type that must have an attribute \a
-   * position (a RealPoint) and an attribute \a flags.
+   * @note Vertices, Arcs, and Faces are all integer ranging from 0 to
+   * one less than the total number of the respective elements. You
+   * may thus iterate on them by just looping on integers. A negative
+   * index -1 is an invalid element.
+   *
+   * @tparam TPoint a type defining the position in space of vertices.
    *
    * @see HalfEdgeDataStructure
    *
@@ -75,19 +80,19 @@ namespace DGtal
    * trivial iterator that enumerates integer from 0 to the number of
    * vertices.
    */
-  template <typename TVertexData>
+  template <typename TPoint>
   class TriangulatedSurface
   {
   public:
-    typedef TVertexData                        VertexData;
-    typedef TriangulatedSurface<TVertexData>   Self;
+    typedef TPoint                             Point;
+    typedef TriangulatedSurface<TPoint>        Self;
     typedef HalfEdgeDataStructure::Size        Size;
     typedef HalfEdgeDataStructure::Index       Index;
     typedef HalfEdgeDataStructure::VertexIndex VertexIndex;
     typedef HalfEdgeDataStructure::EdgeIndex   EdgeIndex;
     typedef HalfEdgeDataStructure::FaceIndex   FaceIndex;
     typedef HalfEdgeDataStructure::Triangle    Triangle;
-    typedef std::vector<VertexData>            VertexDataStorage;
+    typedef std::vector<Point>                 PositionsStorage;
     typedef std::vector<Triangle>              TriangleStorage;
 
     // Required by CUndirectedSimpleLocalGraph
@@ -103,12 +108,20 @@ namespace DGtal
     typedef std::vector<Arc>                     ArcRange;
     typedef std::vector<Face>                    FaceRange;
     typedef std::vector<Vertex>                  VertexRange;
-    typedef std::set<Face>                       FaceSet;
 
     BOOST_STATIC_CONSTANT( Face, INVALID_FACE = -1 );
 
-    template <typename Data>
+    /// This structure is used to define efficient maps between
+    /// vertices and any data specified by type \a TData. The
+    /// triangulated surface provides a default vertex map for vertex
+    /// positions.
+    /// @tparam TData the value type for the map.
+    /// @see positions
+    /// @see makeVertexMap
+    /// @note This property map uses a vector structure as storage.
+    template <typename TData>
     struct VertexPropertyMap {
+      typedef TData             Data;
       typedef Vertex            Argument;
       typedef Data              Value;
       typedef std::vector<Data> Storage;
@@ -176,7 +189,8 @@ namespace DGtal
       OwningOrAliasingPtr<Storage> myData;
     };
 
-    typedef VertexPropertyMap< VertexData >      VertexDataMap;
+    typedef VertexPropertyMap< Point >           PositionsMap;
+    
   protected:
     typedef HalfEdgeDataStructure::HalfEdge      HalfEdge;
     
@@ -192,7 +206,10 @@ namespace DGtal
      * Constructor.
      */
     TriangulatedSurface() : isHEDSValid( false ) {}
-
+    
+    /// Clears everything. 
+    void clear();
+    
     /// Builds the half-edge data structure from the given triangles
     /// and vertices. After that, the surface is valid.
     ///
@@ -204,18 +221,31 @@ namespace DGtal
     /// Adds a new vertex to the surface with data \a vdata.
     /// @param vdata the data associated to this new vertex.
     /// @return the new index given to this vertex.
-    VertexIndex addVertex( const VertexData& vdata );
+    VertexIndex addVertex( const Point& vdata );
     
     /// Adds a new triangle of vertices \a v0, \a v1, \a v2 to the surface.
     /// @return the corresponding index of the triangle.
     FaceIndex addTriangle( VertexIndex v0, VertexIndex v1, VertexIndex v2 );
 
-    /// The default property map is generally used to store the positions of vertices.
-    /// @return the default property map stored in the surface.
-    /// @note The returned map only referenced what is stored in the surface.
-    VertexPropertyMap< VertexData > defaultVertexMap()
+    // ------------------------- standard services ------------------------------
+  public:
+    /// @return the number of half edges in the structure.
+    Size nbArcs() const { return myHEDS.nbHalfEdges(); }
+
+    /// @return the number of vertices in the structure.
+    Size nbVertices() const { return myHEDS.nbVertices(); }
+    
+    /// @return the number of unoriented edges in the structure.
+    Size nbEdges() const { return myHEDS.nbEdges(); }
+    
+    /// @return the number of faces in the structure.
+    Size nbFaces() const { return myHEDS.nbFaces(); }
+
+    /// @return the property map stored in the surface that defines vertex positions.
+    /// @note The returned map only references what is stored in the surface.
+    PositionsMap positions()
     {
-      return VertexPropertyMap< VertexData >( *this, myVertexDatas );
+      return PositionsMap( *this, myPositions );
     }
 
     /// @return a vertex property map that associates some data to any vertex.
@@ -236,11 +266,11 @@ namespace DGtal
     /// Mutable accessor to vertex data.
     /// @param v any vertex.
     /// @return the mutable data associated to \a v.
-    VertexData& vData( Vertex v );
+    Point& position( Vertex v );
     /// Const accessor to vertex data.
     /// @param v any vertex.
     /// @return the non-mutable data associated to \a v.
-    const VertexData& vData( Vertex v ) const;
+    const Point& position( Vertex v ) const;
     
     // ----------------------- Undirected simple graph services -------------------------
   public:
@@ -399,9 +429,20 @@ namespace DGtal
     bool isArcBoundary( const Arc& v ) const;
     
     /**
-       @return the set of all faces of the triangulated surface.
+       @return the range of all faces of the triangulated surface,
+       i.e. an array containing 0, 1, 2, ..., nbVertices()-1.
     */
-    FaceSet allFaces() const;
+    FaceRange allFaces() const;
+    /**
+       @return the range of all arcs of the triangulated surface,
+       i.e. an array containing 0, 1, 2, ..., nbArcs()-1.
+    */
+    ArcRange allArcs() const;
+    /**
+       @return the range of all vertices of the triangulated surface,
+       i.e. an array containing 0, 1, 2, ..., nbVertices()-1.
+    */
+    VertexRange allVertices() const;
 
     /**
        This set of arcs is sufficient for displaying the boundary of
@@ -443,7 +484,7 @@ namespace DGtal
     /// The half-edge data structure that stores the topology of the mesh
     HalfEdgeDataStructure myHEDS;
     /// Stores the information for each Vertex.
-    VertexDataStorage myVertexDatas;
+    PositionsStorage myPositions;
     /// Stores the triangles.
     TriangleStorage myTriangles;
     
@@ -467,9 +508,9 @@ namespace DGtal
    * @param object the object of class 'TriangulatedSurface' to write.
    * @return the output stream after the writing.
    */
-  template <typename TVertexData>
+  template <typename TPoint>
   std::ostream&
-  operator<< ( std::ostream & out, const TriangulatedSurface<TVertexData> & object );
+  operator<< ( std::ostream & out, const TriangulatedSurface<TPoint> & object );
 
 } // namespace DGtal
 

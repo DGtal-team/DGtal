@@ -38,6 +38,7 @@
 #include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/shapes/TriangulatedSurface.h"
+#include "DGtal/shapes/MeshHelpers.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -54,7 +55,7 @@ typedef TriMesh::ArcRange                 ArcRange;
 typedef TriMesh::Arc                      Arc;
 typedef TriMesh::Face                     Face;
 typedef TriMesh::Vertex                   Vertex;
-typedef TriMesh::VertexDataMap            VertexDataMap;
+typedef TriMesh::PositionsMap             PositionsMap;
 
 TriMesh makeTwoTriangles()
 {
@@ -72,17 +73,17 @@ TriMesh makeTwoTriangles()
 SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
 {
   GIVEN( "Two triangles incident by an edge" ) {
-    TriMesh mesh = makeTwoTriangles();
+    TriMesh trimesh = makeTwoTriangles();
     THEN( "The mesh has 4 vertices, v0 has 2 neighbors, v1 has 3 neighbors, etc" ) {
-      REQUIRE( mesh.size() == 4 );
-      REQUIRE( mesh.degree( 0 ) == 2 );
-      REQUIRE( mesh.degree( 1 ) == 3 );
-      REQUIRE( mesh.degree( 2 ) == 3 );
-      REQUIRE( mesh.degree( 3 ) == 2 );
+      REQUIRE( trimesh.size() == 4 );
+      REQUIRE( trimesh.degree( 0 ) == 2 );
+      REQUIRE( trimesh.degree( 1 ) == 3 );
+      REQUIRE( trimesh.degree( 2 ) == 3 );
+      REQUIRE( trimesh.degree( 3 ) == 2 );
     }
     THEN( "Breadth-first visiting the mesh from vertex 3, visit 3, then {1,2}, then 0." )
       {
-        BreadthFirstVisitor< TriMesh > visitor( mesh, 3 );
+        BreadthFirstVisitor< TriMesh > visitor( trimesh, 3 );
         std::vector<int> vertices;
         std::vector<int> distances;
         while ( ! visitor.finished() )
@@ -105,7 +106,7 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
         REQUIRE( distances_ok );
       }      
     THEN( "The mesh has 4 boundary vertices" ) {
-      VertexRange bv = mesh.allBoundaryVertices();
+      VertexRange bv = trimesh.allBoundaryVertices();
       std::sort( bv.begin(), bv.end() );
       int expected_bv [] = { 0, 1, 2, 3};
       REQUIRE( bv.size() == 4 );
@@ -113,13 +114,13 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( bv_ok );
     }
     THEN( "The mesh has 4 boundary arcs" ) {
-      ArcRange ba = mesh.allBoundaryArcs();
+      ArcRange ba = trimesh.allBoundaryArcs();
       REQUIRE( ba.size() == 4 );
     }
     THEN( "The face along (1,2) is a triangle (0,1,2)" ) {
-      Arc  a12      = mesh.arc( 1, 2 );
-      Face f        = mesh.faceAroundArc( a12 );
-      VertexRange T = mesh.verticesAroundFace( f );
+      Arc  a12      = trimesh.arc( 1, 2 );
+      Face f        = trimesh.faceAroundArc( a12 );
+      VertexRange T = trimesh.verticesAroundFace( f );
       REQUIRE( T.size() == 3 );
       std::sort( T.begin(), T.end() );
       REQUIRE( T[ 0 ] == 0 );
@@ -127,9 +128,9 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( T[ 2 ] == 2 );
     }
     THEN( "The face along (2,1) is a triangle (2,1,3)" ) {
-      Arc  a21      = mesh.arc( 2, 1 );
-      Face f        = mesh.faceAroundArc( a21 );
-      VertexRange T = mesh.verticesAroundFace( f );
+      Arc  a21      = trimesh.arc( 2, 1 );
+      Face f        = trimesh.faceAroundArc( a21 );
+      VertexRange T = trimesh.verticesAroundFace( f );
       REQUIRE( T.size() == 3 );
       std::sort( T.begin(), T.end() );
       REQUIRE( T[ 0 ] == 1 );
@@ -137,14 +138,25 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( T[ 2 ] == 3 );
     }
     THEN( "The mesh has the barycenter (0.5, 0.5, 0.25) " ) {
-      VertexDataMap positions = mesh.defaultVertexMap();
+      PositionsMap positions = trimesh.positions();
       RealPoint b;
-      for ( Vertex v = 0; v < mesh.size(); ++v )
+      for ( Vertex v = 0; v < trimesh.size(); ++v )
         b += positions( v );
       b /= 4;
       REQUIRE( b[ 0 ] == 0.5 );
       REQUIRE( b[ 1 ] == 0.5 );
       REQUIRE( b[ 2 ] == 0.25 );
+    }
+    THEN( "We can convert the triangulated surface to a mesh and vice versa" ) {
+      Mesh<RealPoint> mesh;
+      MeshHelpers::triangulatedSurface2Mesh( trimesh, mesh );
+      TriMesh trimesh2;
+      MeshHelpers::mesh2TriangulatedSurface( mesh, trimesh2 );
+      REQUIRE( mesh.nbVertex() == trimesh.nbVertices() );
+      REQUIRE( mesh.nbFaces()  == trimesh.nbFaces() );
+      REQUIRE( trimesh2.nbVertices() == trimesh.nbVertices() );
+      REQUIRE( trimesh2.nbArcs()     == trimesh.nbArcs() );
+      REQUIRE( trimesh2.nbFaces()    == trimesh.nbFaces() );
     }
   }
 }
