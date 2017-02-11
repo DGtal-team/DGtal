@@ -67,7 +67,7 @@
    (Bertrand Kerautret, [#1217](https://github.com/DGtal-team/DGtal/pull/1217))
 
 - *Documentation*
- - Fixing various bib references.
+ - Fixing various BibTeX references.
    (Bertrand Kerautret, [##1237](https://github.com/DGtal-team/DGtal/pull/1237))
 
 # DGtal 0.9.2
