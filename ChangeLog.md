@@ -1,38 +1,44 @@
-  # DGtal 0.9.3
+# DGtal 0.9.3
 
 ## New Features / Critical Changes
 
 - *Configuration/General*
- - Set flag -std=c++11 only if needed. Modern compilers set compatible flags
-   by default (gnu++14, etc). (Pablo H Cerdan,
-   [#1222](https://github.com/DGtal-team/DGtal/pull/1222))
  - The project has a now a unique compiled library: DGtal. The DGtalIO
    target has been removed. (David Coeurjolly,
    [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
  - New mandatory dependency for DGtal: zlib must be installed in the system.
-   (David Coeurjolly, #1228](https://github.com/DGtal-team/DGtal/pull/1228))
+   (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
+
+- *Topology Package*
+ -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
+    (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
+    [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
 
 - *Geometry Package*
  - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
    now work on toric domains (with per-dimension periodicity specification).
    (David Coeurjolly, Roland Denis,
    [#1206](https://github.com/DGtal-team/DGtal/pull/1206))
+
 - *IO*
  - New version (3) for the VOL file format that allows (zlib) compressed volumetric
    data. VolReady and VolWriter can still manage Version 2 Vols.
-   (David Coeurjolly, #1228](https://github.com/DGtal-team/DGtal/pull/1228))
+   (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
 
 ## Changes
 
- - *Configuration/General*
-  - Continuous integration Travis bots are now based on ubunutu/trusty containers.
-    (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
- 
+- *Configuration/General*
+ - Continuous integration Travis bots are now based on ubunutu/trusty containers.
+   (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
+ - Set flag -std=c++11 only if needed. Modern compilers set compatible flags
+   by default (gnu++14, etc). (Pablo H Cerdan,
+   [#1222](https://github.com/DGtal-team/DGtal/pull/1222))
+
  - *Documentation*
   - All the example descriptions are now in their the examples file (instead in
     dox files).
     (Bertrand Kerautret, #1240](https://github.com/DGtal-team/DGtal/pull/1240)
- 
+
 ## Bug Fixes
 
 - *Configuration/General*
@@ -60,13 +66,8 @@
  - Viewer3D: fix bad rendering when changing the scale.
    (Bertrand Kerautret, [#1217](https://github.com/DGtal-team/DGtal/pull/1217))
 
-- *Topology Package*
- -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
-    (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
-    [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
-
 - *Documentation*
- - Fixing various bib references.
+ - Fixing various BibTeX references.
    (Bertrand Kerautret, [##1237](https://github.com/DGtal-team/DGtal/pull/1237))
 
 # DGtal 0.9.2

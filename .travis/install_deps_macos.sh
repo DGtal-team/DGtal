@@ -5,7 +5,7 @@
 #
 brew update
 #brew install qt5 doxygen homebrew/science/hdf5 graphviz graphicsmagick fftw eigen homebrew/boneyard/libqglviewer
-brew install qt5 doxygen  graphviz graphicsmagick fftw eigen homebrew/boneyard/libqglviewer
+brew install qt5 graphicsmagick fftw eigen homebrew/boneyard/libqglviewer
 
 ## Temporary HDF5 build issue
 export BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS";

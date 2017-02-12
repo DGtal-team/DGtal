@@ -851,7 +851,7 @@ void solve3d_decomposition()
         {
             const int degree = laplace_diag[kk];
             ASSERT( degree >= 0 );
-            ASSERT( degree < degrees.size() );
+            ASSERT( static_cast<unsigned int>(degree) < degrees.size() );
             degrees[degree] ++;
         }
 
@@ -969,4 +969,3 @@ int main(int argc, char* argv[])
 
     return app.exec();
 }
-
