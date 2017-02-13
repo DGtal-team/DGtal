@@ -34,7 +34,7 @@
    by default (gnu++14, etc). (Pablo H Cerdan,
    [#1222](https://github.com/DGtal-team/DGtal/pull/1222))
 
- - *Documentation*
+- *Documentation*
   - All the example descriptions are now in their the examples file (instead in
     dox files).
     (Bertrand Kerautret, #1240](https://github.com/DGtal-team/DGtal/pull/1240)
