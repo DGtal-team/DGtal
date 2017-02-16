@@ -9,8 +9,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testPointVectorContainers
    testLinearAlgebra
    testImagesSetsUtilities
-   ## Disabling for now (DC 21/10/20154) waiting fix from Bertrand
-   #testBasicPointFunctors
+   testBasicPointFunctors
    testEmbedder
    testPointPredicateConcepts
    testPointHashFunctions
