@@ -1,3 +1,19 @@
+# DGtal 0.9.4
+
+## New Features / Critical Changes
+
+
+## Changes
+
+
+## Bug Fixes
+
+- *Configuration/General*
+ - Upgrading the benchmarks to match with the new google-benchmark API
+   (David Coeurjolly,
+   [#12XX]((https://github.com/DGtal-team/DGtal/pull/12XX))
+   
+
 # DGtal 0.9.3
 
 ## New Features / Critical Changes
