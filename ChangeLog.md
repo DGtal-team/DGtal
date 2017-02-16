@@ -11,7 +11,7 @@
 - *Configuration/General*
  - Upgrading the benchmarks to match with the new google-benchmark API
    (David Coeurjolly,
-   [#12XX]((https://github.com/DGtal-team/DGtal/pull/12XX))
+   [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
    
 
 # DGtal 0.9.3
