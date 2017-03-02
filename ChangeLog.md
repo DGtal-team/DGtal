@@ -1,3 +1,13 @@
+# DGtal 0.9.4
+
+
+## Bug Fixes
+
+- *Kernel Package*
+ - Fix testBasicPointFunctor. (Bertrand Kerautret
+   [#1244](https://github.com/DGtal-team/DGtal/pull/1226))
+
+
 # DGtal 0.9.3
 
 ## New Features / Critical Changes
