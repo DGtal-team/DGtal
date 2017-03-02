@@ -13,6 +13,9 @@
    (David Coeurjolly,
    [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
    
+- *Kernel Package*
+ - Fix testBasicPointFunctor. (Bertrand Kerautret
+   [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
 # DGtal 0.9.3
 
