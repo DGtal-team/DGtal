@@ -106,6 +106,7 @@ bool testProjector()
   //SliceRotator2D
   PointVector<3, int> pt1(0,0, 0);
   PointVector<3, int> pt2(10,10, 10);
+
   HyperRectDomain<SpaceND<3, int> >  domain (pt1, pt2);
   DGtal::functors::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, domain, 6, 1,  pt1, 0.1);
   DGtal::functors::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot2(2, domain, 7, 2, 3.14);
