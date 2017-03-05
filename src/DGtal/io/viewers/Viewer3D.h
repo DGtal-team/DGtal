@@ -932,6 +932,16 @@ namespace DGtal
 
   public:
 
+      /// To call the protected method `drawLight`.
+      void drawSomeLight( GLenum light ) const
+      {
+        QGLViewer::drawLight( light );
+      }
+      /// To call the protected method `drawLight`.
+      void drawSomeLight( GLenum light, float zoom ) const
+      {
+        QGLViewer::drawLight( light, zoom );
+      }
 
 
 
