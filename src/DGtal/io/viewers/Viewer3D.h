@@ -163,10 +163,26 @@ namespace DGtal
       ///
       /// @param viewer the viewer calling this method
       /// @param event the key event
-      /// @return 'true' if the event was handled.
+      ///
+      /// @return 'true' if the event was handled (in this case,
+      /// Viewer3D::keyPressEvent will not do anything).
       virtual bool keyPressEvent ( Viewer& /* viewer */, QKeyEvent * /* event */ )
       { return false; }
 
+      /// This method may be overloaded and is called at the beginning
+      /// of Viewer3D::drawWithNames. This method is useful for
+      /// drawing elements with additional information for selection.
+      ///
+      /// @param viewer the viewer calling this method
+      virtual void drawWithNames( Viewer& /* viewer */ ) {}
+      
+      /// This method may be overloaded and is called at the beginning
+      /// of Viewer3D::draw. This method is called for drawing
+      /// elements.
+      ///
+      /// @param viewer the viewer calling this method
+      virtual void draw( Viewer& /* viewer */ ) {}
+      
       /// This method may be overloaded and is called at QGLViewer
       /// initialization. It will be called at the beginning of
       /// Viewer3D::init.
@@ -180,6 +196,51 @@ namespace DGtal
       /// @return astring corresponding to the help of the viewer (list of commands, etc)
       virtual QString helpString(const Viewer& /* viewer */) const
       { return ""; }
+
+      /// This method may be overloaded to take care of a mouse
+      /// selection event. It will be called at the beginning of
+      /// Viewer3D::postSelection.
+      ///
+      /// @param viewer the viewer calling this method
+      /// @param point the point clicked by the user in the window
+      ///
+      /// @return 'true' if the event was handled (in this case,
+      /// Viewer3D::postSelection will not do anything).
+      virtual bool postSelection(const Viewer& /* viewer */, const QPoint& /* point */ )
+      { return false; }
+
+      /// This method may be overloaded to capture other mouse move
+      /// events. It will be called at the beginning of Viewer3D::mouseMoveEvent.
+      ///
+      /// @param viewer the viewer calling this method
+      /// @param event the mouse move event
+      ///
+      /// @return 'true' if the event was handled (in this case,
+      /// Viewer3D::mouseMoveEvent will not do anything).
+      virtual bool mouseMoveEvent(const Viewer& /* viewer */, QMouseEvent* /* event */ )
+      { return false; }
+
+      /// This method may be overloaded to capture other mouse press
+      /// events. It will be called at the beginning of Viewer3D::mousePressEvent.
+      ///
+      /// @param viewer the viewer calling this method
+      /// @param event the mouse press event
+      ///
+      /// @return 'true' if the event was handled (in this case,
+      /// Viewer3D::mousePressEvent will not do anything).
+      virtual bool mousePressEvent(const Viewer& /* viewer */, QMouseEvent* /* event */ )
+      { return false; }
+
+      /// This method may be overloaded to capture other mouse release
+      /// events. It will be called at the beginning of Viewer3D::mouseReleaseEvent.
+      ///
+      /// @param viewer the viewer calling this method
+      /// @param event the mouse release event
+      ///
+      /// @return 'true' if the event was handled (in this case,
+      /// Viewer3D::mouseReleaseEvent will not do anything).
+      virtual bool mouseReleaseEvent(const Viewer& /* viewer */, QMouseEvent* /* event */ )
+      { return false; }
 
     };
     

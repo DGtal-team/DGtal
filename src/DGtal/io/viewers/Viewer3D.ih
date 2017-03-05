@@ -642,6 +642,7 @@ DGtal::Viewer3D<TSpace, TKSpace>::drawWithNames()
   // selection is left clic + shift key.
   // JOL: 2014/10/15. This is my addition for interacting with
   // quads. Seems to work well.
+  if ( myExtension != 0 ) myExtension->drawWithNames( *this );
 
   glCallList ( myQuadsMapId );
 
@@ -665,7 +666,7 @@ inline
 void
 DGtal::Viewer3D<TSpace, TKSpace>::draw()
 {
-  
+  if ( myExtension != 0 ) myExtension->draw( *this );
   
   glPushMatrix();
   glMultMatrixd ( manipulatedFrame()->matrix() );
@@ -980,6 +981,11 @@ template< typename TSpace, typename TKSpace>
 void
 DGtal::Viewer3D<TSpace, TKSpace>::postSelection ( const QPoint& point )
 {
+  bool handled = false;
+  if ( myExtension != 0 )
+    handled = myExtension->postSelection( *this, point );
+  if ( handled ) return;
+  
   camera()->convertClickToLine ( point, myOrig, myDir );
   bool found;
   this->myPosSelector= point;
@@ -1144,6 +1150,14 @@ template< typename TSpace, typename TKSpace>
 void
 DGtal::Viewer3D<TSpace, TKSpace>::mousePressEvent ( QMouseEvent *e )
 {
+  bool handled = false;
+  // Checks if an extension is present.
+  if ( myExtension != 0 )
+    {
+      handled = myExtension->mousePressEvent( *this, e );
+      if ( handled ) return;
+    }
+
   if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier))
     {
       myIsMovingLight=true;
@@ -1169,6 +1183,14 @@ template< typename TSpace, typename TKSpace>
 void
 DGtal::Viewer3D<TSpace, TKSpace>::mouseReleaseEvent ( QMouseEvent *e )
 {
+  bool handled = false;
+  // Checks if an extension is present.
+  if ( myExtension != 0 )
+    {
+      handled = myExtension->mouseReleaseEvent( *this, e );
+      if ( handled ) return;
+    }
+  
   if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier) || myIsMovingLight){
     myIsMovingLight=false;
     updateGL();
@@ -1181,6 +1203,14 @@ template< typename TSpace, typename TKSpace>
 void
 DGtal::Viewer3D<TSpace, TKSpace>::mouseMoveEvent ( QMouseEvent *e )
 {
+  bool handled = false;
+  // Checks if an extension is present.
+  if ( myExtension != 0 )
+    {
+      handled = myExtension->mouseMoveEvent( *this, e );
+      if ( handled ) return;
+    }
+
   if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier)){
     int varX = e->x() - myRefMouseXPos; 
     int varY = e->y() - myRefMouseYPos; 
