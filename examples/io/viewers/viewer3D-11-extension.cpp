@@ -1,0 +1,116 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file io/viewers/viewer3D-1-points.cpp
+ * @ingroup examples/3dViewer
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2017/03/05
+ *
+ * Simple example of class Viewer3D.
+ *
+ * This file is part of the DGtal library.
+ */
+
+/**
+ * Example of digital point visualization  with Viewer3D.
+ * @see DGtalGLV_Viewer3D
+ * \example io/viewers/viewer3D-1-points.cpp
+ * \image html simple3dVisu1.png "Digital point visualization  with Viewer3D."
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+
+#include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/viewers/Viewer3D.h"
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+using namespace DGtal;
+using namespace Z3i;
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
+
+typedef Viewer3D<Space,KSpace> CustomViewer;
+struct RandomPointKeyExtension : public CustomViewer::Extension
+{
+  RandomPointKeyExtension() {}
+  
+  virtual bool keyPressEvent ( Viewer& viewer, QKeyEvent * event )
+  {
+    bool handled = false;
+    // Get event modifiers key
+    const Qt::KeyboardModifiers modifiers = event->modifiers();
+    if( ( event->key() == Qt::Key_R ) && ( modifiers == Qt::ShiftModifier ) )
+      {
+        typedef Viewer::KSpace KSpace;
+        Point p = viewer.space().lowerBound();
+        Point q = viewer.space().upperBound();
+        Point d = q - p;
+        Point a( ( rand() % d[ 0 ] ) + p[ 0 ],
+                 ( rand() % d[ 1 ] ) + p[ 1 ],
+                 ( rand() % d[ 2 ] ) + p[ 2 ] );
+        viewer << a;
+        viewer << Viewer::updateDisplay;
+        trace.info() << "Adding point " << a << std::endl;
+        handled = true;
+      }
+    return handled;
+  }
+
+  virtual void init( Viewer& viewer )
+  {
+    viewer.setKeyDescription ( Qt::ShiftModifier+Qt::Key_R, "Creates a random digital point." );
+  }
+  virtual QString helpString(const Viewer& viewer) const
+  {
+    QString text( "<h2> Random point Viewer3D </h2>" );
+    text += "Press Shift+R to add points.";
+    return text;
+  }
+
+};
+
+int main( int argc, char** argv )
+{
+
+ QApplication application(argc,argv);
+
+ Point p1( 0, 0, 0 );
+ Point p2( 5, 5 ,5 );
+ Point p3( 2, 3, 4 );
+ Domain domain( p1, p2 );
+
+ typedef Viewer3D<> MyViewer;
+ KSpace K;
+ K.init( p1, p2, true );
+ MyViewer viewer( K );
+ viewer.setExtension( new RandomPointKeyExtension );
+ viewer.show();
+ viewer << domain;
+ viewer << p1 << p2 << p3;
+
+ viewer<< MyViewer::updateDisplay;
+ return application.exec();
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
