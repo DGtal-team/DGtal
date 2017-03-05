@@ -66,7 +66,7 @@ static void BM_Constructor(benchmark::State& state)
     {
       state.PauseTiming();
       typename Q::Domain dom(typename Q::Point().diagonal(0),
-                             typename Q::Point().diagonal(state.range_x()));
+                             typename Q::Point().diagonal(state.range(0)));
       state.ResumeTiming();
       Q image( dom );
     }
@@ -107,7 +107,7 @@ template<typename Q>
 static void BM_iterate(benchmark::State& state)
 {
   Q myset(typename Q::Domain( Q::Point::diagonal(0), Q::Point::diagonal(2048) ));
-  for(unsigned int i= 0; i < state.range_x(); ++i)
+  for(unsigned int i= 0; i < state.range(0); ++i)
     {
       typename Q::Point p;
       for(unsigned int j=0; j < Q::Point::dimension; j++)
@@ -132,7 +132,7 @@ BENCHMARK_TEMPLATE(BM_iterate, FromUnordered3)->Range(1<<3 , 1 << 10);;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc,  const char*argv[] )
+int main( int argc,  char**argv )
 {
   benchmark::Initialize(&argc, argv);
 

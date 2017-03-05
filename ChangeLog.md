@@ -1,12 +1,21 @@
 # DGtal 0.9.4
 
+## New Features / Critical Changes
+
+
+## Changes
+
 
 ## Bug Fixes
 
+- *Configuration/General*
+ - Upgrading the benchmarks to match with the new google-benchmark API
+   (David Coeurjolly,
+   [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
+   
 - *Kernel Package*
  - Fix testBasicPointFunctor. (Bertrand Kerautret
-   [#1244](https://github.com/DGtal-team/DGtal/pull/1226))
-
+   [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
 # DGtal 0.9.3
 
