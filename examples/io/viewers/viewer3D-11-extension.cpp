@@ -50,8 +50,7 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-typedef Viewer3D<Space,KSpace> CustomViewer;
-struct RandomPointKeyExtension : public CustomViewer::Extension
+struct RandomPointKeyExtension : public Viewer3D<Space,KSpace>::Extension
 {
   RandomPointKeyExtension() {}
   
