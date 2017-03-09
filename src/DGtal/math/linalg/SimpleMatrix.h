@@ -102,6 +102,12 @@ namespace DGtal
     SimpleMatrix();
 
     /**
+     * Constructor from initializer list.
+     * @param values the initializer list.
+     */
+    SimpleMatrix( std::initializer_list<TComponent> values );
+
+    /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
