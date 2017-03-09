@@ -12,6 +12,9 @@
  - Upgrading the benchmarks to match with the new google-benchmark API
    (David Coeurjolly,
    [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
+ - The documentation mainpage now refers to the DGtalTools documentation
+   (David Coeurjolly,
+   [#12XX]((https://github.com/DGtal-team/DGtal/pull/12XX))
    
 - *Kernel Package*
  - Fix testBasicPointFunctor. (Bertrand Kerautret
