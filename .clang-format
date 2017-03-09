@@ -5,16 +5,17 @@
 #
 # Align:
 # - fonction parameters on the open bracket,
+# - consecutive assignments,
+# - operands of binary and ternary expressions,
 # - trailing comments.
 # Don't align:
-# - consecutive assignments or declarations,
-# - operands of binary and ternary expressions.
+# - consecutive declarations.
 #
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: false
-AlignConsecutiveDeclarations: false
-AlignOperands: false
+AlignConsecutiveAssignments: true
+AlignOperands: true
 AlignTrailingComments: true
+AlignConsecutiveDeclarations: false
 #
 # Short statements
 # ----------------
@@ -38,7 +39,7 @@ AllowShortLoopsOnASingleLine: false
 #
 # Insert line breaks:
 # - before braces (Allman style),
-# - after the function definition return type,
+# - after the function definition return type only if needed (cf 80col),
 # - after template declarations,
 # - before multiline string literals,
 # - before ternary operators,
@@ -51,7 +52,7 @@ AllowShortLoopsOnASingleLine: false
 #
 # Keep empty lines at the start of blocks.
 #
-AlwaysBreakAfterReturnType: All
+AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: true
 BreakBeforeBraces: Allman
@@ -64,10 +65,10 @@ KeepEmptyLinesAtTheStartOfBlocks: true
 # Indentation
 # -----------
 #
-# Use 2 spaces for indentations. Don't further indent continued lines.  Outdent
-# access modifiers (e.g. public:). Indent in all namespaces.
+# Use 2 spaces for indentations. Don't further indent continued lines.
+# Indent in all namespaces.
 #
-AccessModifierOffset: -2
+AccessModifierOffset: 0
 ConstructorInitializerIndentWidth: 2
 ContinuationIndentWidth: 0
 IndentWidth: 2
