@@ -14,7 +14,7 @@
    [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
  - The documentation mainpage now refers to the DGtalTools documentation
    (David Coeurjolly,
-   [#12XX]((https://github.com/DGtal-team/DGtal/pull/12XX))
+   [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
    
 - *Kernel Package*
  - Fix testBasicPointFunctor. (Bertrand Kerautret
