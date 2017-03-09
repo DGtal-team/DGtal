@@ -40,6 +40,15 @@ many promises to be the common basis for future developments made by
 the digital geometry community.
 
 
+DGtal is associated with some [DGtalTools](http://dgtal.org/tools/)
+and [DGtalTools-contrib](http://dgtal.org/tools/). Please have a look
+to the [DGtalTools online
+documentation](http://dgtal.org/doc/tools/nightly) for additional 
+information.
+
+
+
+
 @section package_description DGtal Packages
 
   - \ref packageIntroduction
