@@ -46,7 +46,7 @@ before_build:
 
   # install zlib
   - cmd: mkdir c:\zlib
-  - appveyor DownloadFile "https://github.com/madler/zlib/archive/v1.2.9.zip" -FileName zlib.zip
+  - appveyor DownloadFile "http://ker.iutsd.univ-lorraine.fr:Sites/zlib-1.2.11.zip" -FileName zlib.zip
   - 7z x zlib.zip -oC:\zlib
   - cmd: cd C:\zlib
   - cmd: mkdir C:\zlib-install
