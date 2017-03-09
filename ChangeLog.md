@@ -6,7 +6,9 @@
 ## Changes
 
 - *Math package*
- - New SimpleMatrix constructor with a initializer_list argument.
+ - New SimpleMatrix constructor with a initializer_list argument
+   (Nicolas Normand,
+   [#1250](https://github.com/DGtal-team/DGtal/pull/1250))
 
 ## Bug Fixes
 
