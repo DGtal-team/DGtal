@@ -5,6 +5,8 @@
 
 ## Changes
 
+- *Math package*
+ - New SimpleMatrix constructor with a initializer_list argument.
 
 ## Bug Fixes
 
