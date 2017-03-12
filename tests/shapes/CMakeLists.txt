@@ -40,7 +40,7 @@ ENDFOREACH(FILE)
 ##### Shapes with viewer.
 
 SET(QGLVIEWER_SHAPES_TESTS_SRC
-//  testPolynomial
+#  testPolynomial
   testBall3D
   )
 
