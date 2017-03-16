@@ -112,6 +112,78 @@ namespace DGtal
 
     static TContainer import(const std::string &filename,
                              std::vector<unsigned int> dimSpace= std::vector<unsigned int > () )  throw(DGtal::IOException);
+
+    
+    /**
+     * Import  a volume nd image file by specifying a value functor.
+     *
+     * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TValue , TContainer::Value > )     * @param dimSpace a vector containing the n dimensional image size..
+     * @param filename the image filename to be imported.
+     * @param aFunctor to transform input type of image value (TValue) into the given image type (TContainer::Value).
+     *
+     **/
+    template<typename TFunctor>
+    static TContainer importWithValueFunctor(const std::string &filename,
+                                             const TFunctor &aFunctor,
+                                             std::vector<unsigned int> dimSpace= std::vector<unsigned int > ())  throw( DGtal::IOException )
+    {
+      BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, TValue, typename TContainer::Value > )) ;
+      DGtal::IOException dgtalio;
+        const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
+
+        if ( extension == "raw" )
+          {
+            for ( unsigned int i = 0; i < dimSpace.size(); i++)
+              ASSERT( dimSpace[i] != 0  );
+            typename TContainer::Point const pt;
+            for ( unsigned int i = 0; i < dimSpace.size(); i++)
+              pt[i] = dimSpace[i];
+ 
+            return  RawReader< TContainer, TFunctor >::template importRaw<TValue>( filename, pt, aFunctor  );
+          }
+        
+        trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+        throw dgtalio;
+      }
+
+    
+    /**
+     * Import  a volume nd image file by specifying a value functor.
+     *
+     * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TValue , TContainer::Value > )     * @param dimSpace a vector containing the n dimensional image size..
+     * @param filename the image filename to be imported.
+     * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
+     *
+     **/
+        
+    template<typename TFunctor>
+    static TContainer importWithColorFunctor(const std::string &filename,
+                                             const TFunctor &aFunctor,
+                                             std::vector<unsigned int> dimSpace= std::vector<unsigned int > ())  throw( DGtal::IOException )
+
+    {
+      BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TContainer::Value> )) ;
+      
+      DGtal::IOException dgtalio;
+        const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
+
+        if ( extension == "raw" )
+          {
+            for ( unsigned int i = 0; i < dimSpace.size(); i++)
+              ASSERT( dimSpace[i] != 0  );
+            typename TContainer::Point const pt;
+            for ( unsigned int i = 0; i < dimSpace.size(); i++)
+              pt[i] = dimSpace[i];
+            return RawReader< TContainer, TFunctor >::template importRaw<DGtal::Color>( filename, pt, aFunctor);
+          }
+        
+        trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+        throw dgtalio;
+      }
+
+
+    
+
   };
 
 

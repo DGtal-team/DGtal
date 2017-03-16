@@ -17,6 +17,12 @@
  - Fix testBasicPointFunctor. (Bertrand Kerautret
    [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
+- *Documentation*
+ - Add import with functors in GenericReader in main default reader.
+   (mainly motivated to show documentation of specialized version of
+   importWithValueFunctor and importWithColorFunctor). (Bertrand Kerautret
+   [1251](https://github.com/DGtal-team/DGtal/pull/1245))
+  
 # DGtal 0.9.3
 
 ## New Features / Critical Changes
