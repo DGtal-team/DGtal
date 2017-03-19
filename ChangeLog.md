@@ -2,7 +2,6 @@
 
 ## New Features / Critical Changes
 
-
 ## Changes
 
 - *Math package*
