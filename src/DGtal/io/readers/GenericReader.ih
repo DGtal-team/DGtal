@@ -83,7 +83,7 @@ import( const std::string & filename,
     {
       return LongvolReader<TContainer>::importLongvol( filename );
     }
-  else if ( extension == "pgm3d" || extension == "pgm3D" || extension == "p3d" || extension == "pgm" )
+  else if ( extension == "pgm3d" || extension == "pgm3D" || extension == "p3d" || extension == "pgm"  || extension =="tiff"  || extension =="tif" )
     {
       return PGMReader<TContainer>::importPGM3D( filename );
     }
