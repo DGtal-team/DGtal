@@ -263,7 +263,7 @@ namespace DGtal
           {
             return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
           }
-        else if ( extension == "mha" || extension == "mhd" || extension =="tiff"  || extension =="tif")
+        else if (extension=="nii" || extension == "mha" || extension == "mhd" || extension =="tiff"  || extension =="tif")
           {
             return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
           }
