@@ -17,6 +17,11 @@
  - Fix testBasicPointFunctor. (Bertrand Kerautret
    [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
+- *Documentation*
+ - Fix exampleArithDSS3d compilation (which was not activated).
+   (Bertrand Kerautret [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
+   
+
 # DGtal 0.9.3
 
 ## New Features / Critical Changes
