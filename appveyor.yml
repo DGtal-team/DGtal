@@ -46,14 +46,14 @@ before_build:
 
   # install zlib
   - cmd: mkdir c:\zlib
-  - appveyor DownloadFile "https://github.com/madler/zlib/archive/v1.2.9.zip" -FileName zlib.zip
+  - appveyor DownloadFile "http://ker.iutsd.univ-lorraine.fr/zlib-1.2.11.zip" -FileName zlib.zip
   - 7z x zlib.zip -oC:\zlib
   - cmd: cd C:\zlib
   - cmd: mkdir C:\zlib-install
   - cmd: mkdir C:\zlib-build
   - cmd: cd C:\zlib-build
   - cmd: dir C:\zlib
-  - cmake -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG%  -DCMAKE_INSTALL_PREFIX:PATH=c:\zlib-install C:\zlib\zlib-1.2.9
+  - cmake -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG%  -DCMAKE_INSTALL_PREFIX:PATH=c:\zlib-install C:\zlib\zlib-1.2.11
   - msbuild zlib.sln /m
   - cmd: msbuild INSTALL.vcxproj
 
@@ -65,10 +65,6 @@ before_build:
   - IF %CACHEOK%==FALSE qmake -t vclib QGLViewer.pro -spec win32-msvc2013 -o  qglviewer.vcxproj
   - IF %CACHEOK%==FALSE msbuild /m /p:Configuration=%CONFIGQGL% /p:Platform=%B_NAME% qglviewer.vcxproj
   - cd %APPVEYOR_BUILD_FOLDER%
-  - appveyor DownloadFile "http://www.winimage.com/zLibDll/zlib123dll.zip" -FileName zlib-dll.zip
-  - 7z x zlib-dll.zip -oC:\zlib-dll
-  - appveyor DownloadFile "http://www.winimage.com/zLibDll/zlib123.zip" -FileName zlib123.zip
-  - 7z x zlib123.zip -oC:\zlib
   - cmake -Wno-dev -G"%VS_GEN%" -DCMAKE_BUILD_TYPE=%CONFIG% -DWITH_QGLVIEWER:BOOL=ON -DQGLVIEWER_INCLUDE_DIR=%QGLDIR%\libQGLViewer -DQGLVIEWER_LIBRARIES=%QGLDIR%\libQGLViewer\QGLViewer\QGLViewer2.lib -DWITH_QT5:BOOL=ON -DBUILD_EXAMPLES:BOOL=ON -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=FALSE   -DZLIB_LIBRARY=c:/zlib-install/lib/zlibd.lib -DZLIB_INCLUDE_DIR=c:/zlib-install/include/ -DBOOST_ROOT=C:\Libraries\boost .
 
   
