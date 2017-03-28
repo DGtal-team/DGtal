@@ -48,7 +48,9 @@ $ ./examples/geometry/curves/exampleArithDSS3d
 #include <iostream>
 
 #include "DGtal/io/viewers/Viewer3D.h"
+#ifdef WITH_CAIRO   
 #include "DGtal/io/boards/Board3DTo2D.h"
+#endif
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/readers/PointListReader.h"

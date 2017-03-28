@@ -41,7 +41,7 @@ ENDIF(MAGICK++_FOUND)
 ### Test with QGLViewer
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
-
+      exampleArithDSS3d
      exampleGridCurve3d
      exampleGridCurve3d-2
    )
