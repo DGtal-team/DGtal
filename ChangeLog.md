@@ -12,6 +12,9 @@
  - Upgrading the benchmarks to match with the new google-benchmark API
    (David Coeurjolly,
    [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
+ - The documentation mainpage now refers to the DGtalTools documentation
+   (David Coeurjolly,
+   [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
    
 - *Kernel Package*
  - Fix testBasicPointFunctor. (Bertrand Kerautret
@@ -23,7 +26,10 @@
    importWithValueFunctor and importWithColorFunctor). The tiff format
    was also added to the generic readers when ITK is present (Bertrand
    Kerautret [1251](https://github.com/DGtal-team/DGtal/pull/1245))
-  
+ - Fix exampleArithDSS3d compilation (which was not activated).
+   (Bertrand Kerautret 
+   [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
+
 # DGtal 0.9.3
 
 ## New Features / Critical Changes

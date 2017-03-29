@@ -73,7 +73,7 @@ namespace DGtal
  *  ...
  *  string filename = "test.pgm";
  *  typedef ImageSelector < Z2i::Domain, uint>::Type Image;
- *  Image image = PGMReader<Image>::importPGMImage( filename ); 
+ *  Image image = PGMReader<Image>::importPGM( filename ); 
  *   @endcode
  *  You can then for instance display a threshold part of the image:
  *  @code 
