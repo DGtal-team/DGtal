@@ -18,7 +18,7 @@
    [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
 - *Documentation*
- - Add import with functors in GenericReader in main default reader.
+ - Add import with functors in GenericReader in the main default reader.
    (mainly motivated to show documentation of specialized version of
    importWithValueFunctor and importWithColorFunctor). The tiff format
    was also added to the generic readers when ITK is present (Bertrand
