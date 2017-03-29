@@ -104,7 +104,9 @@ namespace DGtal
 
     /**
      * Import a volume nd image file.  For the special format of raw
-     * image, the default parameter of the image size must be given in the optional function vector parameter (dimSpace) .
+     * image, the default parameter of the image size must be given in
+     * the optional function vector parameter (dimSpace).
+     *
      * @param filename the image filename to imported.
      * @param dimSpace a vector containing the n dimensional image size.
      *
@@ -117,9 +119,13 @@ namespace DGtal
     /**
      * Import  a volume nd image file by specifying a value functor.
      *
-     * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TValue , TContainer::Value > )     * @param dimSpace a vector containing the n dimensional image size..
+     * @tparam TFunctor The type of the functor (should verify the
+     * concept CUnaryFunctor<TFunctor, TValue , TContainer::Value > )
+     *
+     * @param dimSpace a vector containing the n dimensional image size..
      * @param filename the image filename to be imported.
-     * @param aFunctor to transform input type of image value (TValue) into the given image type (TContainer::Value).
+     * @param aFunctor to transform the input type of image value (TValue)
+     * into the given image type (TContainer::Value).
      *
      **/
     template<typename TFunctor>
@@ -144,15 +150,21 @@ namespace DGtal
         
         trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
         throw dgtalio;
-      }
+    }
 
     
     /**
      * Import  a volume nd image file by specifying a value functor.
      *
-     * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TValue , TContainer::Value > )     * @param dimSpace a vector containing the n dimensional image size..
+     * @tparam TFunctor The type of the functor (should verify the
+     * concept CUnaryFunctor<TFunctor, TValue , TContainer::Value > )
+     
+     * @param dimSpace a vector containing the n dimensional image
+     * size.
      * @param filename the image filename to be imported.
-     * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
+     * @param aFunctor an ColorRGBEncoder. The type of the functor
+     * (should verify the concept CUnaryFunctor<TFunctor,
+     * TContainer::Value, DGtal::Color >).
      *
      **/
         
