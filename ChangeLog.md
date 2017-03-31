@@ -21,9 +21,14 @@
    [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
 - *Documentation*
+ - Add import with functors in GenericReader in the main default reader.
+   (mainly motivated to show documentation of specialized version of
+   importWithValueFunctor and importWithColorFunctor). The tiff format
+   was also added to the generic readers when ITK is present (Bertrand
+   Kerautret [1251](https://github.com/DGtal-team/DGtal/pull/1245))
  - Fix exampleArithDSS3d compilation (which was not activated).
-   (Bertrand Kerautret [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
-   
+   (Bertrand Kerautret 
+   [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
 
 # DGtal 0.9.3
 
