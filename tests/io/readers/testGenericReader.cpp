@@ -180,9 +180,7 @@ bool testGenericReader()
   DGtal::trace.info()<<"Image value of Point (35,29, 3): " << anImportedImage7(DGtal::Z3i::Point(35,29, 3)) << " (should be" << 60400 << " )"<< std::endl;
   nbok += (anImportedImage7(DGtal::Z3i::Point(35,29,3))==60400) ? 1 : 0; 
   nb++;
-  
-  
-#endif WITH_ITK
+#endif // WITH_ITK
 
 
   DGtal::trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
