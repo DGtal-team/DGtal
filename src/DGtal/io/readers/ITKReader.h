@@ -21,6 +21,9 @@
  * @author Pierre Gueth (\c pierre.gueth@gmail.com )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
+ * @author Bertrand Kerautret (\c bertrand.kerautret@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Lorraine, France
+ *
  * @date 2013/10/28
  *
  * Header file for module ITKReader.cpp
@@ -68,15 +71,44 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, ValueOut, Value> )) ;
     BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3) || (TImage::Domain::dimension == 2) ));
 
-    /**
+   /**
      * Import an Image with a format supported by ITK.
      *
-     * @param filename name of the output file
-     * @param aFunctor functor used to cast image values
+     * First an ImageContainerByITKImage is constructed by using the
+     * source type of the input ITK image, and in a second step the
+     * resulting image type is adapted to the TImage type with the use
+     * of the given Functor.
+     * 
+     * @param filename name of the input file.
+     * @param aFunctor functor used to cast image values.
      * @return read image
      */
     static Image importITK(const std::string & filename,
         const Functor & aFunctor = Functor()) throw(DGtal::IOException);
+
+     /**
+     * Get the type of the ITK image. 
+     *
+     * @param filename  name of the input file.
+     * @return the ITK image component type.
+     *
+     **/
+    static itk::ImageIOBase::IOComponentType getITKComponentType(const std::string & filename);
+
+  private:  
+    /**
+     * Read an DGtal image of type TypeDGtalImage with a format supported by ITK.
+     * (used by importITK)
+     * 
+     * @param filename name of the input file
+     * @param aFunctor functor used to cast image values
+     * @return read image
+     */
+    template <typename TypeDGtalImage>
+    static Image readDGtalImageFromITKtypes(const std::string &filename, const Functor &aFunctor) throw(DGtal::IOException);
+
+ 
+    
   };
 }//namespace
 
