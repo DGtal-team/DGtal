@@ -58,7 +58,10 @@ bool testGenericReader()
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
 
+#ifdef WITH_ITK
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint16_t> Image3D16bits;
+#endif // WITH_ITK
+  
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint32_t> Image3D32bits;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint64_t> Image3D64bits;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned int> Image2D32bits;
