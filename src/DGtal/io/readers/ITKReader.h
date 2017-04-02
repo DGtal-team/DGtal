@@ -46,6 +46,7 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/io/ITKIOTrait.h"
+#include <itkImageFileReader.h>
 
 namespace DGtal
 {
