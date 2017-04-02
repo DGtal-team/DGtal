@@ -315,8 +315,8 @@ namespace functors
       double d1 = pt[indexesRotate[0]] - myCenter[indexesRotate[0]];
       double d2 = pt[indexesRotate[1]] - myCenter[indexesRotate[1]];
 
-      pt[indexesRotate[0]] = myCenter[indexesRotate[0]] + static_cast<Integer>(floor(d1*cos(myRotationAngle)-d2*sin(myRotationAngle) ));
-      pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + static_cast<Integer>(floor(d1*sin(myRotationAngle)+d2*cos(myRotationAngle) ));
+      pt[indexesRotate[0]] = myCenter[indexesRotate[0]] + static_cast<Integer>(round(d1*cos(myRotationAngle)-d2*sin(myRotationAngle) ));
+      pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + static_cast<Integer>(round(d1*sin(myRotationAngle)+d2*cos(myRotationAngle) ));
 
       if(myDomain.isInside(pt))
         return pt;
