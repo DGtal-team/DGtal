@@ -56,20 +56,18 @@ namespace DGtal
    * \brief Aim: Import a 2D/3D Image using the ITK formats.
    *
    * @tparam TImage the Image type.
-   * @tparam TFunctor the type of functor used in the export.
    * @see ITKWriter
    * @see ITKIOTrait
    */
-  template <typename TImage, typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor >
+  template <typename TImage >
   struct ITKReader
   {
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
-    typedef TFunctor Functor;
+    
 
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, ValueOut, Value> )) ;
     BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3) || (TImage::Domain::dimension == 2) ));
 
    /**
@@ -82,10 +80,13 @@ namespace DGtal
      * 
      * @param filename name of the input file.
      * @param aFunctor functor used to cast image values.
+     * @tparam TFunctor the type of functor used in the export.
+     *
      * @return read image
      */
+    template<typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor >
     static Image importITK(const std::string & filename,
-        const Functor & aFunctor = Functor()) throw(DGtal::IOException);
+                           const TFunctor & aFunctor = TFunctor()) throw(DGtal::IOException);
 
      /**
      * Get the type of the ITK image. 
@@ -103,10 +104,12 @@ namespace DGtal
      * 
      * @param filename name of the input file
      * @param aFunctor functor used to cast image values
+     * @tparam TFunctor the type of functor used in the export.
+     *
      * @return read image
      */
-    template <typename TypeDGtalImage>
-    static Image readDGtalImageFromITKtypes(const std::string &filename, const Functor &aFunctor) throw(DGtal::IOException);
+    template <typename TypeDGtalImage, typename TFunctor>
+    static Image readDGtalImageFromITKtypes(const std::string &filename, const TFunctor &aFunctor) throw(DGtal::IOException);
 
  
     
