@@ -18,6 +18,11 @@ link_directories (${PROJECT_BINARY_DIR})
 configure_file(${PROJECT_SOURCE_DIR}/tests/ConfigTest.h.in
   ${PROJECT_BINARY_DIR}/tests/ConfigTest.h)
 
+
+# If google-benchmark is enabled, we have a specific target
+add_custom_target(benchmark)
+
+
 #------TESTS subdirectories ------
 add_subdirectory(base)
 add_subdirectory(kernel)

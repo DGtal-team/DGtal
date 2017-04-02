@@ -29,14 +29,12 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/base/Common.h"
-#include "ConfigTest.h"
-#include "DGtal/helpers/StdDefs.h"
+#include <string>
+#include <sstream>
 #include <benchmark/benchmark.h>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
-using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class Benchmark.
@@ -97,15 +95,15 @@ double CalculatePi(int depth) {
 static void BM_CalculatePiRange(benchmark::State& state) {
   double pi = 0.0;
   while (state.KeepRunning())
-    pi = CalculatePi(state.range_x());
+    pi = CalculatePi(state.range(0));
   std::stringstream ss;
   ss << pi;
   state.SetLabel(ss.str());
 }
-BENCHMARK_RANGE(BM_CalculatePiRange, 1, 1024 * 1024);
+BENCHMARK_RANGE(BM_CalculatePiRange, 1, 256 * 256);
 
 static void BM_CalculatePi(benchmark::State& state) {
-  static const int depth = 1024;
+  static const int depth = 256;
   double pi  = 0.0;
   while (state.KeepRunning()) {
     benchmark::DoNotOptimize( pi = CalculatePi(depth) );
@@ -119,10 +117,10 @@ BENCHMARK(BM_CalculatePi)->ThreadPerCpu();
 static void BM_LongTest(benchmark::State& state) {
   double tracker = 0.0;
   while (state.KeepRunning())
-    for (int i = 0; i < state.range_x(); ++i)
+    for (int i = 0; i < state.range(0); ++i)
       benchmark::DoNotOptimize(tracker += i);
 }
-BENCHMARK(BM_LongTest)->Range(1<<4,1<<8);
+BENCHMARK(BM_LongTest)->Range(1<<4,1<<6);
 
 
 
@@ -132,7 +130,7 @@ BENCHMARK(BM_LongTest)->Range(1<<4,1<<8);
 //       testBenchmark --benchmark_filter=BM_StringCreation
 //       testBenchmark --benchmark_filter=String
 //       testBenchmark --benchmark_filter='Copy|Creation'
-int main(int argc, const char* argv[])
+int main(int argc, char* argv[])
 {
   benchmark::Initialize(&argc, argv);
 
