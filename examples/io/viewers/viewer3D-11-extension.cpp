@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file io/viewers/viewer3D-1-points.cpp
+ * @file io/viewers/viewer3D-11-extension.cpp
  * @ingroup examples/3dViewer
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -28,10 +28,13 @@
  */
 
 /**
- * Example of digital point visualization  with Viewer3D.
- * @see DGtalGLV_Viewer3D
- * \example io/viewers/viewer3D-1-points.cpp
- * \image html simple3dVisu1.png "Digital point visualization  with Viewer3D."
+ * Example of extension of Viewer3D interface by deriving the class
+ * Viewer3D::Extension.  Here we have added a callback to the
+ * "Shift+R" keypressed event, which adds a point randomly in the domain.
+ *
+ * @see moduleQGLExtension
+ * \example io/viewers/viewer3D-11-extension.cpp
+ * \image html simple3dVisu1.png "Extending the Viewer3D interface: just press Shift+R and you have new points added randomly in the scene."
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -50,10 +53,15 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
+
+//! [viewer3D-extension-derivation]
+// Deriving from Viewer3D::Extension to add new callbacks to events.
 struct RandomPointKeyExtension : public Viewer3D<Space,KSpace>::Extension
 {
   RandomPointKeyExtension() {}
-  
+
+  // Here we override the "key pressed" event, and a point randomly in
+  // the scene if the key "Shift+R" is pressed.
   virtual bool keyPressEvent ( Viewer& viewer, QKeyEvent * event )
   {
     bool handled = false;
@@ -76,10 +84,16 @@ struct RandomPointKeyExtension : public Viewer3D<Space,KSpace>::Extension
     return handled;
   }
 
+  // We also override the Viewer3D::init method to add a key
+  // description in the help window.
   virtual void init( Viewer& viewer )
   {
-    viewer.setKeyDescription ( Qt::ShiftModifier+Qt::Key_R, "Creates a random digital point." );
+    viewer.setKeyDescription ( Qt::ShiftModifier+Qt::Key_R,
+                               "Creates a random digital point." );
   }
+
+  // We also override the Viewer3D::helpString method to add a
+  // description to the viewer.
   virtual QString helpString(const Viewer& viewer) const
   {
     QString text( "<h2> Random point Viewer3D </h2>" );
@@ -88,6 +102,7 @@ struct RandomPointKeyExtension : public Viewer3D<Space,KSpace>::Extension
   }
 
 };
+//! [viewer3D-extension-derivation]
 
 int main( int argc, char** argv )
 {
@@ -102,8 +117,10 @@ int main( int argc, char** argv )
  typedef Viewer3D<> MyViewer;
  KSpace K;
  K.init( p1, p2, true );
+ //! [viewer3D-extension-set-extension]
  MyViewer viewer( K );
  viewer.setExtension( new RandomPointKeyExtension );
+ //! [viewer3D-extension-set-extension]
  viewer.show();
  viewer << domain;
  viewer << p1 << p2 << p3;
