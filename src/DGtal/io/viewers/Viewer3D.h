@@ -118,8 +118,8 @@ namespace DGtal
    * used to compute the Euclidean coordinate of digital
    * objects/khalimksy cells.
    *
-   * @tparam Space any model of Digital 3D Space
-   * @tparam KSpace any mode of Khalimksky 3D space
+   * @tparam TSpace any model of Digital 3D Space
+   * @tparam TKSpace any mode of Khalimksky 3D space
    *
    * @note You *must* provide a Khalimksy space at instanciation if
    * you wish to display cells with the viewer. If you are not going
@@ -166,36 +166,52 @@ namespace DGtal
       ///
       /// @return 'true' if the event was handled (in this case,
       /// Viewer3D::keyPressEvent will not do anything).
-      virtual bool keyPressEvent ( Viewer& /* viewer */, QKeyEvent * /* event */ )
-      { return false; }
+      virtual bool keyPressEvent ( Viewer& viewer, QKeyEvent * event )
+      {
+        boost::ignore_unused_variable_warning( viewer ); 
+        boost::ignore_unused_variable_warning( event ); 
+        return false;
+      }
 
       /// This method may be overloaded and is called at the beginning
       /// of Viewer3D::drawWithNames. This method is useful for
       /// drawing elements with additional information for selection.
       ///
       /// @param viewer the viewer calling this method
-      virtual void drawWithNames( Viewer& /* viewer */ ) {}
+      virtual void drawWithNames( Viewer& viewer )
+      {
+        boost::ignore_unused_variable_warning( viewer ); 
+      }
       
       /// This method may be overloaded and is called at the beginning
       /// of Viewer3D::draw. This method is called for drawing
       /// elements.
       ///
       /// @param viewer the viewer calling this method
-      virtual void draw( Viewer& /* viewer */ ) {}
+      virtual void draw( Viewer& viewer )
+      {
+        boost::ignore_unused_variable_warning( viewer ); 
+      }
       
       /// This method may be overloaded and is called at QGLViewer
       /// initialization. It will be called at the beginning of
       /// Viewer3D::init.
       /// @param viewer the viewer calling this method
-      virtual void init(Viewer& /* viewer */) {}
+      virtual void init(Viewer& viewer)
+      {
+        boost::ignore_unused_variable_warning( viewer ); 
+      }
 
       /// This method may be overloaded and is called when pressing
       /// help. It will be added before Viewer3D::helpString.
       ///
       /// @param viewer the viewer calling this method
       /// @return astring corresponding to the help of the viewer (list of commands, etc)
-      virtual QString helpString(const Viewer& /* viewer */) const
-      { return ""; }
+      virtual QString helpString(const Viewer& viewer) const
+      {
+        boost::ignore_unused_variable_warning( viewer ); 
+        return "";
+      }
 
       /// This method may be overloaded to take care of a mouse
       /// selection event. It will be called at the beginning of
@@ -206,8 +222,12 @@ namespace DGtal
       ///
       /// @return 'true' if the event was handled (in this case,
       /// Viewer3D::postSelection will not do anything).
-      virtual bool postSelection(const Viewer& /* viewer */, const QPoint& /* point */ )
-      { return false; }
+      virtual bool postSelection(const Viewer& viewer, const QPoint& point )
+      {
+        boost::ignore_unused_variable_warning( viewer ); 
+        boost::ignore_unused_variable_warning( point ); 
+        return false;
+      }
 
       /// This method may be overloaded to capture other mouse move
       /// events. It will be called at the beginning of Viewer3D::mouseMoveEvent.
@@ -217,8 +237,12 @@ namespace DGtal
       ///
       /// @return 'true' if the event was handled (in this case,
       /// Viewer3D::mouseMoveEvent will not do anything).
-      virtual bool mouseMoveEvent(const Viewer& /* viewer */, QMouseEvent* /* event */ )
-      { return false; }
+      virtual bool mouseMoveEvent(const Viewer& viewer, QMouseEvent* event )
+      {
+        boost::ignore_unused_variable_warning( viewer ); 
+        boost::ignore_unused_variable_warning( event ); 
+        return false;
+      }
 
       /// This method may be overloaded to capture other mouse press
       /// events. It will be called at the beginning of Viewer3D::mousePressEvent.
@@ -228,8 +252,12 @@ namespace DGtal
       ///
       /// @return 'true' if the event was handled (in this case,
       /// Viewer3D::mousePressEvent will not do anything).
-      virtual bool mousePressEvent(const Viewer& /* viewer */, QMouseEvent* /* event */ )
-      { return false; }
+      virtual bool mousePressEvent(const Viewer& viewer, QMouseEvent* event )
+      {
+        boost::ignore_unused_variable_warning( viewer ); 
+        boost::ignore_unused_variable_warning( event ); 
+        return false;
+      }
 
       /// This method may be overloaded to capture other mouse release
       /// events. It will be called at the beginning of Viewer3D::mouseReleaseEvent.
@@ -239,8 +267,12 @@ namespace DGtal
       ///
       /// @return 'true' if the event was handled (in this case,
       /// Viewer3D::mouseReleaseEvent will not do anything).
-      virtual bool mouseReleaseEvent(const Viewer& /* viewer */, QMouseEvent* /* event */ )
-      { return false; }
+      virtual bool mouseReleaseEvent(const Viewer& viewer, QMouseEvent* event )
+      {
+        boost::ignore_unused_variable_warning( viewer ); 
+        boost::ignore_unused_variable_warning( event ); 
+        return false;
+      }
 
     };
     
