@@ -1098,8 +1098,7 @@ DGtal::Viewer3D<TSpace, TKSpace>::updateList ( bool needToUpdateBoundingBox )
   // Seventh list: Textured images.
   glUpdateTextureImages(myGSImageList);
 
-
-  if ( needToUpdateBoundingBox )
+  if ( needToUpdateBoundingBox && Viewer3D<TSpace, TKSpace>::myBoundingPtChangedTag )
     {
       setSceneBoundingBox ( qglviewer::Vec ( Viewer3D<TSpace, TKSpace>::myBoundingPtLow[0],
                                              Viewer3D<TSpace, TKSpace>::myBoundingPtLow[1],
@@ -1108,7 +1107,9 @@ DGtal::Viewer3D<TSpace, TKSpace>::updateList ( bool needToUpdateBoundingBox )
                                              Viewer3D<TSpace, TKSpace>::myBoundingPtUp[1],
                                              Viewer3D<TSpace, TKSpace>::myBoundingPtUp[2] ) );
       showEntireScene();
+      Viewer3D<TSpace, TKSpace>::myBoundingPtChangedTag = false;
     }
+  updateGL();
   glPopMatrix();
 }
 
