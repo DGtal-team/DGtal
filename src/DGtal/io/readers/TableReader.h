@@ -113,7 +113,31 @@ namespace DGtal
     getColumnElementsFromInputStream (std::istream &in,
                                       unsigned int aPosition);
 
+    /**
+     * Method to import a vector where each element contains the line
+     * elements of a given file. Blank line or line beginning with
+     * "#" are skipped.
+     *
+     * @param in the input file.
+     * @return a vector containing a vector which contains each line elements.
+     **/
+    static std::vector<std::vector< TQuantity > >
+    getLinesElementsFromFile (const std::string & aFilename);
+    
+    /**
+     * Method to import a vector where each element contains the line
+     * elements of a given file. Blank line or line beginning with
+     * "#" are skipped.
+     *
+     * @param in the input file.
+     * @return a vector containing a vector which contains each line elements.
+     **/
 
+    static std::vector<std::vector< TQuantity > >
+    getLinesElementsFromInputStream (std::istream &in);
+    
+
+    
   }; // end of class TableReader
 
 

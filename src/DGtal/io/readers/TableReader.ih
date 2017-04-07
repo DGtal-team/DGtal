@@ -89,6 +89,52 @@ DGtal::TableReader<TQuantity>::getColumnElementsFromInputStream (std::istream &i
 
 }
 
+template<typename TQuantity>
+inline
+std::vector<std::vector<TQuantity> >
+DGtal::TableReader<TQuantity>::getLinesElementsFromFile (const std::string & aFilename)
+{
+  std::ifstream infile;
+  infile.open (aFilename.c_str(), std::ifstream::in);
+  return DGtal::TableReader<TQuantity>::getLinesElementsFromInputStream(infile);
+
+}
+
+
+
+template<typename TQuantity>
+inline
+std::vector<std::vector<TQuantity> >
+DGtal::TableReader<TQuantity>::getLinesElementsFromInputStream (std::istream &in)
+{
+  std::vector < std::vector<TQuantity> > vectResult;
+  std::string str;
+  getline(in, str );
+  while ( in.good() ){
+    std::vector<TQuantity> aLine;
+    if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
+      std::istringstream in_str( str );
+      std::string wordVal;
+      TQuantity val;
+      while ( in_str.good()){
+        std::operator>>(in_str, wordVal);
+        std::istringstream word_str( wordVal );
+        word_str >> val;
+        bool isOK = !word_str.fail(); 
+        if (isOK ) {
+          aLine.push_back(val);
+        }
+      }
+      vectResult.push_back(aLine);
+    }
+    getline(in, str );
+  }
+  return vectResult;
+
+}
+
+
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
