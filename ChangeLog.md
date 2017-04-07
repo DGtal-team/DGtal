@@ -5,6 +5,11 @@
 
 ## Changes
 
+- *IO*
+ - TableReader can now read all elements contained in each lines of a file 
+   with method getLinesElementsFromFile().
+   (Bertrand Kerautret, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
+
 
 ## Bug Fixes
 
