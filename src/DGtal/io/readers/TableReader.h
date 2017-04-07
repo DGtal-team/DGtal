@@ -68,7 +68,7 @@ namespace DGtal
    *  #include "DGtal/io/readers/TableReader.h"
    *  ....
    *  string filename= "testFile.dat";
-   *  vector<Z2i::Point> vectPoints = TableReader<unsigned int>::getColumnElementsFromFile(filename);
+   *  vector<unsigned int> vectPoints = TableReader<unsigned int>::getColumnElementsFromFile(filename);
    * @endcode
    * and you can specifying the point position:
    *  @code
