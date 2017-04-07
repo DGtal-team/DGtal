@@ -11,7 +11,7 @@ namespace DGtal {
  *
  * This part of the manual describes how to extend the standard
  * Viewer3D interface of DGtal. For instance, you wish to assign new
- * reactions to keys or to mouse event, or you wish to display or
+ * handlers keys or to mouse event, or you wish to display or
  * select other graphical elements. To do that, you just have to write
  * a class that derived from Viewer3D::Extension and overrides some
  * methods to get your desired behaviour.
@@ -21,6 +21,8 @@ namespace DGtal {
  * @since 9.4
  * 
  * Related examples: viewer3D-11-extension.cpp
+ *
+ * Related modules: \ref moduleQGLInteraction
  *
  * [TOC]
  *
@@ -36,7 +38,7 @@ namespace DGtal {
  * Therefore we provide the class Viewer3D::Extension so that you can
  * extend the viewer in several ways. The principle is very easy. This
  * interface provides a set of empty virtual methods so you just have
- * to override in order to change the behavior of the viewer. For
+ * to override them in order to change the behavior of the viewer. For
  * instance, you just have to override
  * Viewer3D::Extension::keyPressEvent to capture other key events. You
  * can override all the following methods:
@@ -45,11 +47,11 @@ namespace DGtal {
  *   overloaded to capture other key events.
  *
  * - Viewer3D::Extension::drawWithNames. This method is useful for
- *   drawing elements with additional information for selection.
+ *   drawing elements with additional information for selection (see also \ref moduleQGLInteraction).
  *
- * - Viewer3D::Extension::draw. This method is useful for drawing elements.
+ * - Viewer3D::Extension::draw. This method is useful for drawing elements that are not directly handled by Viewer3D.
  *
- * - Viewer3D::Extension::init. This method is useful at initialization.
+ * - Viewer3D::Extension::init. This method is useful at initialization (e.g. adding lights manipulators).
  *
  * - Viewer3D::Extension::helpString. This method is useful to change the help message.
  *
@@ -65,8 +67,9 @@ namespace DGtal {
  * - Viewer3D::Extension::mouseReleaseEvent. This method is useful to
  *   take care of mouse button release events.
  *
- * The example below shows how to capture "Shift+R" key pressed events
- * and to add random points to the 3D scene.
+ * The example below shows how to capture "Shift+R" key pressed
+ * events, so that each time this event occurs random points are added
+ * to the 3D scene.
  *
  * @snippet io/viewers/viewer3D-11-extension.cpp viewer3D-extension-derivation
  *
