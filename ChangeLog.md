@@ -2,6 +2,11 @@
 
 ## New Features / Critical Changes
 
+- *IO*
+  - New simple way to extend the QGLViewer-based Viewer3D interface,
+    for instance to add callbacks to key or mouse events, or to modify
+    what is drawn on the window.
+    (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
 
 ## Changes
 
