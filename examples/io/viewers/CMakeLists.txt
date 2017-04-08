@@ -11,6 +11,7 @@ SET(DGTAL_TESTS_SRC
    viewer3D-7bis-planes
    viewer3D-9-3Dimages
    viewer3D-10-interaction
+   viewer3D-11-extension
    demo-kernel-2
 )
 
