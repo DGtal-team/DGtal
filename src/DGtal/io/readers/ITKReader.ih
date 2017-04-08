@@ -50,14 +50,16 @@
 
 namespace DGtal {
 
-  template<typename I,typename F>
+  template<typename I>
+  template<typename TFunctor>
   I
-  ITKReader<I,F>::importITK(const std::string& filename, const Functor& aFunctor)
+  ITKReader<I>::importITK(const std::string& filename, const TFunctor& aFunctor)
     throw(DGtal::IOException)
   {
     typedef typename Image::Domain Domain;
     typedef typename Domain::Point Point;
     typedef itk::ImageIOBase::IOComponentType IOComponentType;
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, ValueOut, Value> )) ;
     const IOComponentType componentType = getITKComponentType(filename);
     typedef unsigned char ElementType;
     switch( componentType )
@@ -126,8 +128,8 @@ namespace DGtal {
  
   }
 
-  template<typename I,typename F>
-  itk::ImageIOBase::IOComponentType ITKReader<I,F>::getITKComponentType(const std::string & filename)
+  template<typename I>
+  itk::ImageIOBase::IOComponentType ITKReader<I>::getITKComponentType(const std::string & filename)
   {
     typedef itk::ImageIOBase::IOComponentType IOComponentType;
     IOComponentType componentType;
@@ -149,9 +151,9 @@ namespace DGtal {
 
 
   
-  template<typename I,typename F>
-  template <typename TypeDGtalImage>
-  typename ITKReader<I,F>::Image  ITKReader<I,F>::readDGtalImageFromITKtypes(const std::string &filename, const Functor &aFunctor)
+  template<typename I>
+  template <typename TypeDGtalImage, typename TFunctor>
+  typename ITKReader<I>::Image  ITKReader<I>::readDGtalImageFromITKtypes(const std::string &filename, const TFunctor &aFunctor)
     throw(DGtal::IOException)
   {
     
@@ -180,7 +182,7 @@ namespace DGtal {
     const TypeDGtalImage dgtal_itk_image(itk_image);
     const Domain& domain = dgtal_itk_image.domain();
 
-    typedef ConstImageAdapter<TypeDGtalImage, Domain, functors::Identity, Value, Functor> AdaptedImage;
+    typedef ConstImageAdapter<TypeDGtalImage, Domain, functors::Identity, Value, TFunctor> AdaptedImage;
     const functors::Identity identityFunctor{};
     const AdaptedImage adapted(dgtal_itk_image, domain, identityFunctor, aFunctor);
 

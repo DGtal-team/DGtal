@@ -60,7 +60,7 @@ TEST_CASE( "Testing ITKReader" )
     {
       typedef DGtal::functors::Rescaling<uint16_t ,unsigned char > RescalFCT;
       RescalFCT resc = RescalFCT(0, 65535,0, 255);
-      Image3DUC im = ITKReader<Image3DUC, RescalFCT>::importITK(testPath + "samples/lobsterCroped16b.mhd", resc);
+      Image3DUC im = ITKReader<Image3DUC>::importITK(testPath + "samples/lobsterCroped16b.mhd", resc);
       REQUIRE((im(Z3i::Point(35,29,3))==resc(60400) ));
     }
   
