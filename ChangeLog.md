@@ -22,7 +22,7 @@
    [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
 
 - *IO*
- - Correction on the ITK reader when used with a functor which was not able to
+ - Fix on the ITK reader when used with a functor which is not able to
    handle 32/16 bits images. Also includes a new testITKReader and ITK tests in
    GenericReader.
    (Bertrand Kerautret, [#1255](https://github.com/DGtal-team/DGtal/pull/1255))
