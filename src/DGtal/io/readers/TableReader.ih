@@ -59,35 +59,39 @@ template<typename TQuantity>
 inline
 std::vector< TQuantity >  
 DGtal::TableReader<TQuantity>::getColumnElementsFromInputStream (std::istream &in, 
-                                                               unsigned int aPosition)
+                                                                 unsigned int aPosition)
 {
   std::vector<TQuantity> vectResult;
   std::string str;
   getline(in, str );
-  while ( in.good() ){
-    if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
-      std::istringstream in_str( str );
-      std::string wordVal;
-      TQuantity val;
-      bool found = false;
-      unsigned int idx = 0;
-      while ( in_str.good()&& !found){
-        std::operator>>(in_str, wordVal);
-        std::istringstream word_str( wordVal );
-        word_str >> val;
-        bool isOK = !word_str.fail(); 
-        if (isOK && idx == aPosition) {
-          found=true;
-          vectResult.push_back(val);
-        }
-        idx++;
-      }
-    }    
-    getline(in, str );
-  }
+  while ( in.good() )
+    {
+      if ( ( str != "" ) && ( str[ 0 ] != '#' ) )
+        {
+          std::istringstream in_str( str );
+          std::string wordVal;
+          TQuantity val;
+          bool found = false;
+          unsigned int idx = 0;
+          while ( in_str.good()&& !found)
+            {
+              std::operator>>(in_str, wordVal);
+              std::istringstream word_str( wordVal );
+              word_str >> val;
+              bool isOK = !word_str.fail(); 
+              if (isOK && idx == aPosition)
+                {
+                  found=true;
+                  vectResult.push_back(val);
+                }
+              idx++;
+            }
+        }    
+      getline(in, str );
+    }
   return vectResult;
-
 }
+
 
 template<typename TQuantity>
 inline
@@ -110,25 +114,28 @@ DGtal::TableReader<TQuantity>::getLinesElementsFromInputStream (std::istream &in
   std::vector < std::vector<TQuantity> > vectResult;
   std::string str;
   getline(in, str );
-  while ( in.good() ){
-    std::vector<TQuantity> aLine;
-    if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
-      std::istringstream in_str( str );
-      std::string wordVal;
-      TQuantity val;
-      while ( in_str.good()){
-        std::operator>>(in_str, wordVal);
-        std::istringstream word_str( wordVal );
-        word_str >> val;
-        bool isOK = !word_str.fail(); 
-        if (isOK ) {
-          aLine.push_back(val);
+  while ( in.good() )
+    {
+      std::vector<TQuantity> aLine;
+      if ( ( str != "" ) && ( str[ 0 ] != '#' ) )
+        {
+          std::istringstream in_str( str );
+          std::string wordVal;
+          TQuantity val;
+          while ( in_str.good())
+            {
+              std::operator>>(in_str, wordVal);
+              std::istringstream word_str( wordVal );
+              word_str >> val;
+              if (!word_str.fail())
+                {
+                  aLine.push_back(val);
+                }
+            }
+          vectResult.push_back(aLine);
         }
-      }
-      vectResult.push_back(aLine);
+      getline(in, str );
     }
-    getline(in, str );
-  }
   return vectResult;
 
 }
