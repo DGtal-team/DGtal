@@ -277,7 +277,7 @@ namespace DGtal
           }
         else if (extension=="nii" || extension == "mha" || extension == "mhd" || extension =="tiff"  || extension =="tif")
           {
-            return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
+            return ITKReader<TContainer>::importITK(filename, aFunctor);
           }
 #endif
 
@@ -353,7 +353,7 @@ namespace DGtal
           }
         else if ( extension == "mha" || extension == "mhd" )
           {
-            return ITKReader<TContainer, TFunctor>::importITK(filename, aFunctor);
+            return ITKReader<TContainer>::importITK(filename, aFunctor);
           }
 #endif
 
