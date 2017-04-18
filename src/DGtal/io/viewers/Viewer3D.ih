@@ -890,6 +890,9 @@ DGtal::Viewer3D<TSpace, TKSpace>::init()
   setKeyDescription ( Qt::Key_O, "Switch the ball display mode (quad ball display (default) or OpenGL point)." );
   setKeyDescription ( Qt::Key_M, "Switch the rendering mode bewteen Default, Metallic and Plastic mode." );
   setKeyDescription ( Qt::Key_P, "Switch the light source position mode between the camera mode (default: the light source position is fixed according to the camera position) and scene mode (the light source position is fixed according the scene coordinate system)." );
+  setKeyDescription ( Qt::Key_Z, "Move away the light source according to the scence center (move closer with  SHIFT+Z)");
+  setKeyDescription ( Qt::ShiftModifier+Qt::Key_Z, "Move closer the light source according to the scence center (move awya with key  Z)" );
+  
 #if !defined (QGLVIEWER_VERSION) || QGLVIEWER_VERSION < 0x020500
   setMouseBindingDescription((Qt::ControlModifier|Qt::ShiftModifier) + Qt::LeftButton, "move light source position defined in the main coordinate system (an x-axis (resp. y-axis) mouse move changes the azimuth (resp. inclination) angle of the light source). Note that light source is always looking at the center point (0,0,0).");
 #else
@@ -1288,7 +1291,43 @@ DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent ( QKeyEvent *e )
       updateList(false);
       updateGL();
     }
+  if( e->key() == Qt::Key_Z)
+    {
+      if( myLightPositionFixToCamera )
+        {
+          updateLightCoordsFromCamera();
+        }
+      myLightR = sqrt( myLightPosition[0]* myLightPosition[0]+
+                       myLightPosition[1]* myLightPosition[1]+
+                       myLightPosition[2]* myLightPosition[2]);
+      myLightTheta = asin( myLightPosition[2]/myLightR);
+      myLightPhi = atan2( myLightPosition[1], myLightPosition[0]);
+      
+      stringstream ss; 
+      if(e->modifiers()==Qt::ShiftModifier)
+        {
+          myLightR += 5.0;
+          ss << "Move away light source at distance: " << myLightR;
+        }
+      else
+        {
+           myLightR -= 5.0;
+           ss << "Move closer light source at distance: " << myLightR;
+        }
+      displayMessage(QString(ss.str().c_str()), 3000);
+      myLightPosition[0] = myLightR*cos(myLightTheta)*cos(myLightPhi);
+      myLightPosition[1] = myLightR*cos(myLightTheta)*sin(myLightPhi);
+      myLightPosition[2] = myLightR*sin(myLightTheta);
+      if(myLightPositionFixToCamera)
+        {
+          updateRelativeCameraFromLightPosition();
+        }
+      myIsMovingLight=true;
+      glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
+      updateGL();
+    }
 
+  
   if ( ( e->key() ==Qt::Key_P ) )
     {
       myLightPositionFixToCamera =! myLightPositionFixToCamera;
