@@ -31,7 +31,8 @@
    handle 32/16 bits images. Also includes a new testITKReader and ITK tests in
    GenericReader.
    (Bertrand Kerautret, [#1255](https://github.com/DGtal-team/DGtal/pull/1255))
- - Viewer3D: fix bad light source move according X/Y mouse move.
+ - Viewer3D: fix bad light source move according X/Y mouse move and new Key_Z to 
+   move away/closer the light source.
    (Bertrand Kerautret, [#1262](https://github.com/DGtal-team/DGtal/pull/1262))
    
 - *Kernel Package*
