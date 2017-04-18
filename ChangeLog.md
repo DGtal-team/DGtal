@@ -7,7 +7,7 @@
     for instance to add callbacks to key or mouse events, or to modify
     what is drawn on the window.
     (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
-
+    
 ## Changes
 
 - *IO*
@@ -15,7 +15,7 @@
    with the new method getLinesElementsFromFile().
    (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
 
-
+ 
 ## Bug Fixes
 
 - *Configuration/General*
@@ -31,7 +31,9 @@
    handle 32/16 bits images. Also includes a new testITKReader and ITK tests in
    GenericReader.
    (Bertrand Kerautret, [#1255](https://github.com/DGtal-team/DGtal/pull/1255))
-
+ - Viewer3D: fix bad light source move according X/Y mouse move.
+   (Bertrand Kerautret, [#1262](https://github.com/DGtal-team/DGtal/pull/1262))
+   
 - *Kernel Package*
  - Fix testBasicPointFunctor. (Bertrand Kerautret
    [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
