@@ -333,7 +333,7 @@ inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::back() const
 {
-  return myF; 
+  return myL; 
 }
 
 //-----------------------------------------------------------------------------
@@ -342,7 +342,7 @@ inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::front() const
 {
-  return myL; 
+  return myF; 
 }
 
 //-----------------------------------------------------------------------------
