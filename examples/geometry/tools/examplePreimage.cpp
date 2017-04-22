@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+
+
+/**
+   Example of Preimage2D.
+   \image  html  preimageExample2.png "Example of preimage based arc recognition."
+   \example geometry/tools/examplePreimage.cpp
+**/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

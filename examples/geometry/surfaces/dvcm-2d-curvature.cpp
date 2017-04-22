@@ -27,6 +27,23 @@
  * This file is part of the DGtal library.
  */
 
+/**
+This example shows the computation of the VCM of a sequence of 2D
+digital points forming a 4-connected curve. The absolute curvature is estimated from the diagonalization of
+the VCM tensor. A red color indicates a strong curvature, flat zones are blue, in-between is yellow.
+
+@see \ref moduleVCM_sec3_2
+
+@verbatim
+$ ./examples/geometry/surfaces/dvcm-2d-curvature
+@endverbatim
+
+@image html dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure."
+@image latex dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure." width=8cm
+
+\example geometry/surfaces/dvcm-2d-curvature.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

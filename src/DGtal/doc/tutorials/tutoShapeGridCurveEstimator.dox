@@ -23,7 +23,9 @@ namespace DGtal {
 In this example, we show how to test a
 length estimator of the contour of 
 a generated shape, which is digitized 
-at different resolutions.   
+at different resolutions.
+
+Please have a look to shapeGridCurveEstimator.cpp to get the complete source code of this tutorial.
 
 [TOC]
 

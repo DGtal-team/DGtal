@@ -36,6 +36,10 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
+// For saving compressed tables.
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -177,15 +181,41 @@ int main( int /*argc*/, char** /*argv*/ )
   ConfigMapBit bit_table4_8;
   functions::generateSimplicityTable< Object8_4 >( dt8_4, bit_table8_4 );
   functions::generateSimplicityTable< Object4_8 >( dt4_8, bit_table4_8 );
-  string filename = "simplicity_table8_4.txt";
-  ofstream file( filename  );
-  file << bit_table8_4;
-  file.close();
+  // string filename = "simplicity_table8_4.txt";
+  // ofstream file1( filename );
+  // file1 << bit_table8_4;
+  // file1.close();
+  {
+    string filename = "simplicity_table8_4.zlib";
+    ofstream file( filename );
+    ConfigMapBit* table = &bit_table8_4;
+    std::stringstream table_stream;
+    table_stream << *table;
+    namespace io = boost::iostreams;
+    io::filtering_streambuf<io::input> filter;
+    filter.push(io::zlib_compressor());
+    filter.push(table_stream);
+    io::copy(filter,file);
+    file.close();
+  }
 
-  filename = "simplicity_table4_8.txt";
-  ofstream file2( filename  );
-  file2 << bit_table4_8;
-  file2.close();
+  // string filename = "simplicity_table4_8.txt";
+  // ofstream file2( filename );
+  // file2 << bit_table4_8;
+  // file2.close();
+  {
+    string filename = "simplicity_table4_8.zlib";
+    ofstream file( filename );
+    ConfigMapBit* table = &bit_table4_8;
+    std::stringstream table_stream;
+    table_stream << *table;
+    namespace io = boost::iostreams;
+    io::filtering_streambuf<io::input> filter;
+    filter.push(io::zlib_compressor());
+    filter.push(table_stream);
+    io::copy(filter,file);
+    file.close();
+  }
 
   return 0;
 }

@@ -1191,16 +1191,42 @@ DGtal::Display3D< Space ,KSpace >::updateBoundingBox(const RealPoint &p)
       myBoundingPtUp[1]= p[1];
       myBoundingPtUp[2]= p[2];
       myBoundingPtEmptyTag = false;
+      myBoundingPtChangedTag = true;
     }
   else
     {
-      if(p[0] <myBoundingPtLow[0]) myBoundingPtLow[0]= p[0];
-      if(p[1] <myBoundingPtLow[1]) myBoundingPtLow[1]= p[1];
-      if(p[2] <myBoundingPtLow[2]) myBoundingPtLow[2]= p[2];
-
-      if(p[0] >myBoundingPtUp[0]) myBoundingPtUp[0]= p[0];
-      if(p[1] >myBoundingPtUp[1]) myBoundingPtUp[1]= p[1];
-      if(p[2] >myBoundingPtUp[2]) myBoundingPtUp[2]= p[2];
+      if(p[0] <myBoundingPtLow[0])
+        {
+          myBoundingPtLow[0]= p[0];
+          myBoundingPtChangedTag = true;
+        }
+      if(p[1] <myBoundingPtLow[1])
+        {
+          myBoundingPtLow[1]= p[1];
+          myBoundingPtChangedTag = true;
+        }
+      
+      if(p[2] <myBoundingPtLow[2])
+        {
+          myBoundingPtLow[2]= p[2];
+          myBoundingPtChangedTag = true;
+        }
+      
+      if(p[0] >myBoundingPtUp[0])
+        {
+          myBoundingPtUp[0]= p[0];
+          myBoundingPtChangedTag = true;
+        }
+      if(p[1] >myBoundingPtUp[1])
+        {
+          myBoundingPtUp[1]= p[1];
+          myBoundingPtChangedTag = true;
+        }
+      if(p[2] >myBoundingPtUp[2])
+        {
+          myBoundingPtUp[2]= p[2];
+          myBoundingPtChangedTag = true;
+        }
     }
 }
 

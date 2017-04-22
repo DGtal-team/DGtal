@@ -11,6 +11,29 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * In many circumstances, it is better to use the presented graph
+ * structure of digital surfaces. For instance it may be used to find
+ * the surface just by searching it by adjacencies. This process is
+ * called \b tracking. This is done for you by
+ * static method Surfaces::trackBoundary.
+ * 
+ * @see \ref dgtal_digsurf_sec2_2
+ * 
+ * On the lobser.vol volume, volTrackBoundary.cpp extracts 148364
+ * surfels in 351ms.
+ * 
+ * @verbatim
+ * # Commands
+ * $ ./examples/topology/volTrackBoundary ../examples/samples/lobster.vol 50 255
+ * @endverbatim
+ * 
+ * @image html volTrackBoundary-lobster.png "Digital surface that is the boundary of a (6,18)-connected component in image lobst* er.vol, extracted by tracking from an initial surfel in 351ms."
+ * 
+ * \example topology/volTrackBoundary.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 //! [volTrackBoundary-basicIncludes]
 #include <iostream>

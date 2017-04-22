@@ -27,6 +27,18 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   This example shows a simple alpha-thick segment recognition given from a noisy input contour with floating point coordinates.
+   @see \ref moduleAlphaThickSegmentReco
+
+   @image html exampleAlphaThickSegmentNoisy.png "Simple example of some alpha-thick segments recognition with alpha = 2, 9  and 15."
+   @image latex exampleAlphaThickSegmentNoisy.png "Simple example of some alpha-thick segments recognition with alpha = 2, 9  and 15." width=6cm
+   \example geometry/curves/exampleAlphaThickSegmentNoisy.cpp
+*/
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "ConfigExamples.h"

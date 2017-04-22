@@ -23,7 +23,7 @@ endif( WITH_HDF5 )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+  target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -34,9 +34,8 @@ IF(WITH_BENCHMARK)
   #Benchmark target
   FOREACH(FILE ${DGTAL_BENCH_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
-    add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
-    ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
+    target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
+    ADD_DEPENDENCIES(benchmark ${FILE})
   ENDFOREACH(FILE)
 ENDIF(WITH_BENCHMARK)
 
@@ -52,6 +51,6 @@ ENDIF(ITK_FOUND)
 
 FOREACH(FILE ${DGTAL_TESTS_ITK_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+  target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)

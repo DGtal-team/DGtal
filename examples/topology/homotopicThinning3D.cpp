@@ -27,6 +27,20 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * An homotopic thinning is an iterative removal of simple points from
+ * a given digital object.
+ *
+ * @see \ref dgtal_topology_sec3_5
+ *
+ * @image html visuThinning-18-6.png  "Resulting 3d thinning with the 18_6 object"
+ * @image html visuThinning.png  "Resulting 3d thinning with the 6_26 object"
+ *
+ * \example topology/homotopicThinning3D.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <queue>
@@ -135,5 +149,4 @@ int main( int argc, char** argv )
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
 

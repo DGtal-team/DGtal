@@ -27,6 +27,13 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ *  Example of image format transformation from raw to HDF5.
+ *   @see @ref  dgtalBigImagesAbstract   
+ *  \example images/raw2HDF5.cpp
+ **/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
