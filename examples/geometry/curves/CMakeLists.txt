@@ -22,7 +22,7 @@ SET(DGTAL_EXAMPLES_SRC
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO )
+  target_link_libraries (${FILE} DGtal  )
 ENDFOREACH(FILE)
 
 
@@ -33,7 +33,7 @@ IF(MAGICK++_FOUND)
     )
   FOREACH(FILE ${DGTALE_EXAMPLES_IO_Magick})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO)
+    target_link_libraries (${FILE} DGtal )
   ENDFOREACH(FILE)
 ENDIF(MAGICK++_FOUND)
 
@@ -41,19 +41,15 @@ ENDIF(MAGICK++_FOUND)
 ### Test with QGLViewer
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
-
+      exampleArithDSS3d
      exampleGridCurve3d
      exampleGridCurve3d-2
-   )
-### Test with QGLViewer and CAIRO
-   IF( WITH_CAIRO)
-     SET(DGTAL_EXAMPLES_QGL_CAIRO_SRC
-     exampleArithDSS3d
-   )
-   endif(WITH_CAIRO)
-  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC} ${DGTAL_EXAMPLES_QGL_CAIRO_SRC}) 
+     
+     )
+ 
+  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC} ) 
    add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE} DGtalIO DGtal)   
+    target_link_libraries ( ${FILE}  DGtal)   
   ENDFOREACH(FILE)
 
 endif ( WITH_VISU3D_QGLVIEWER   )

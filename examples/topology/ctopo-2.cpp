@@ -28,6 +28,18 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ *  A simple example illustrating the extraction of the sequence of
+ *  surfels boudary. This program outputs this image.
+ *
+ *  @see \ref dgtal_helpsurf_sec1
+ *
+ * @image html ctopo2c.png 
+ *
+ * \example topology/ctopo-2.cpp
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

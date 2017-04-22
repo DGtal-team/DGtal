@@ -28,6 +28,24 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ *
+ * \example geometry/curves/greedy-dss-decomposition.cpp
+ * This example outputs a greedy segmentation of a closed and 4-connected digital curve into DSSs. 
+ *
+ *  @verbatim
+ * $ ./examples/geometry/curves/greedy-dss-decomposition
+ * @endverbatim
+ *
+ * @image html greedy-dss-decomposition.png "Greedy segmentation into DSSs"
+ * @image latex greedy-dss-decomposition.png "Greedy segmentation into DSSs"
+ *
+ *
+ * @see \ref moduleArithDSSReco and \ref moduleGridCurveAnalysis
+ *
+ * @see geometry/curves/greedy-dss-decomposition.cpp
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <cmath>
 #include <iostream>

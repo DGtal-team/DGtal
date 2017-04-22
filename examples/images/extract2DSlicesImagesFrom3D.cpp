@@ -27,6 +27,16 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ *  Example of 2D slice images extraction from 3D images.
+ *
+ *  \image html lobsterSliceZ_20.png   "Example of resulting 2D slices images of the sample/lobster.vol file."
+ *
+ * \example images/extract2DSlicesImagesFrom3D.cpp
+ **/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <sstream>

@@ -29,6 +29,15 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * Extracting 3D surface slice with  DigitalSurfaceTracker.
+ * @see @ref  dgtal_helpsurf_sec2
+ * @image html digitalSurfaceSlice.png  "Extraction of 2 surface slice associated to one surfel."
+ * @example topology/digitalSurfaceSlice.cpp
+ *
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

@@ -11,7 +11,7 @@ SET(DGTAL_TESTS_SRC_IO_READERS
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+  target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -24,7 +24,7 @@ IF(MAGICK++_FOUND)
 
   FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_Magick})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
     add_test(${FILE} ${FILE})
   ENDFOREACH(FILE)
 
@@ -39,7 +39,7 @@ IF(HDF5_FOUND)
 
   FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_HDF5})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
     add_test(${FILE} ${FILE})
   ENDFOREACH(FILE)
 
@@ -49,11 +49,12 @@ IF(ITK_FOUND)
 
   SET(DGTAL_TESTS_SRC_IO_READERS_DICOM
     testDicomReader
-    )
+    testITKReader
+  )
 
   FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_DICOM})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
     add_test(${FILE} ${FILE})
   ENDFOREACH(FILE)
 

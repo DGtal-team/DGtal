@@ -26,6 +26,15 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Example of default visualization of a digital point sets with the associated domain (with Board3DTo2D)
+ * @see \ref DGtalGLV_ModeExamplesDomain
+ * \example io/boards/dgtalBoard3DTo2D-4-modes.cpp
+ *\image html visuModeDefault.png "Default visualization of a digital point sets with the associated domain (with Board3DTo2D) "
+ *
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"

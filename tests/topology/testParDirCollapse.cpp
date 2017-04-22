@@ -81,21 +81,27 @@ TEST_CASE( "Testing ParDirCollapse" )
   SECTION("Testing the basic algorithm of ParDirCollapse")
     {
       getComplex< CC, KSpace > ( complex, K );
+      int eulerBefore = complex.euler();
       thinning.attach ( &complex );
       REQUIRE( ( thinning.eval ( 2 ) != 0 ) );
+      REQUIRE( (eulerBefore == complex.euler()) );
     }
 
   SECTION("Testing ParDirCollapse::collapseSurface")
     {
       getComplex< CC, KSpace > ( complex, K );
+      int eulerBefore = complex.euler();
       thinning.attach ( &complex );
       thinning.collapseSurface ();
+      REQUIRE( (eulerBefore == complex.euler()) );
     }
-  SECTION("Testing ParDirCollapse::collapseTsthmus")
+  SECTION("Testing ParDirCollapse::collapseIsthmus")
     {
       getComplex< CC, KSpace > ( complex, K );
+      int eulerBefore = complex.euler();
       thinning.attach ( &complex );
       thinning.collapseIsthmus ();
+      REQUIRE( (eulerBefore == complex.euler()) );
     }
 }
 

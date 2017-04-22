@@ -1,5 +1,5 @@
 language: cpp
-
+dist: trusty
 sudo: false
 
 compiler:
@@ -54,19 +54,17 @@ addons:
    packages:
     - libhdf5-serial-dev
     - libboost-dev
-    - libboost-program-options-dev
     - libcairo2-dev
     - doxygen
     - doxygen-latex
     - graphviz
     - libboost-system-dev
+    - libboost-program-options-dev
     - libgmp-dev
     - libgdcm2-dev
     - libgraphicsmagick++1-dev
-    - libqglviewer-qt4-dev
+    - libqglviewer-dev
     - libinsighttoolkit3-dev
-    - g++-4.8
-    - gcc-4.8
     - libfftw3-dev
 
 before_install:

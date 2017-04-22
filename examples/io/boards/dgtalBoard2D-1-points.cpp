@@ -27,6 +27,16 @@
  * 
  */
 
+/**
+ *   \example io/boards/dgtalBoard2D-1-points.cpp
+ *
+ * This simple example shows the basic usage of a Board2D to
+ * export graphical representations of dgtal objects (here, a
+ * HyperRectDomain and three points exported as SVG and EPS).
+ * \image html  dgtalboard-1-points.png  "visualization of one of the  resulting export."
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

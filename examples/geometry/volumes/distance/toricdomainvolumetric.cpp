@@ -29,6 +29,16 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   Example of a toric distance transform construction in dimension 2 for the
+   Euclidean metric.
+
+   @see \ref toricVol
+   \example geometry/volumes/distance/toricdomainvolumetric.cpp
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <iomanip>

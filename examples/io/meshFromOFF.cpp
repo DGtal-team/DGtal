@@ -27,6 +27,18 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ *  Example of OFF file importation and display.
+ *
+ * @see \ref importMesh3D
+ *
+ * \image html visuTrefExample.png   "Visualisation of the sample/tref.off file"
+ *
+ * \example io/meshFromOFF.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 

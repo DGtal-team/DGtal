@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * Example of 6-18 digital Adjacencies visualization  with Viewer3D.
+ * @see \ref DGtalGLV_ModeEx
+ * \example io/viewers/viewer3D-3-objects.cpp
+ * \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D."
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

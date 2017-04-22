@@ -84,11 +84,13 @@ namespace DGtal
      * 
      * @param filename name of the output file
      * @param aImage the image to export
+     * @param compressed boolean to decide wether the vol must be compressed or not
      * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */
-    static bool exportLongvol(const std::string & filename, const Image &aImage, 
-			      const Functor & aFunctor = Functor()) throw(DGtal::IOException);
+    static bool exportLongvol(const std::string & filename, const Image &aImage,
+                              const bool compressed = true,
+                              const Functor & aFunctor = Functor()) throw(DGtal::IOException);
     
     
   private: 
@@ -106,7 +108,7 @@ namespace DGtal
     std::ostream& write_word( std::ostream& outs, Word value )
     {
       for (unsigned size = sizeof( Word ); size; --size, value >>= 8)
-	outs.put( static_cast <char> (value & 0xFF) );
+        outs.put( static_cast <char> (value & 0xFF) );
       return outs;
     }
     
