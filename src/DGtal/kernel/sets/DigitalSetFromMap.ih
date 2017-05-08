@@ -49,7 +49,7 @@ DGtal::DigitalSetFromMap<TMapImage>::~DigitalSetFromMap()
 template <typename TMapImage>
 inline
 DGtal::DigitalSetFromMap<TMapImage>
-::DigitalSetFromMap( DGtal::DigitalSetFromMap<TMapImage>::Image& aImage,
+::DigitalSetFromMap( typename DGtal::DigitalSetFromMap<TMapImage>::Image& aImage,
 		     const typename Image::Value& aDefaultValue )
   : myImgPtr( &aImage ), myFun( Functor() ), myDefault( aDefaultValue )
 {
