@@ -49,16 +49,14 @@ DGtal::TriangulatedSurface<TPoint>::build()
                     << " attempting to rebuild a triangulated surface." << std::endl;
     return false;
   }
-  myHEDS.build( myTriangles );
+  isHEDSValid = myHEDS.build( myTriangles );
   if ( myHEDS.nbVertices() != myPositions.size() ) {
     trace.warning() << "[DGtal::TriangulatedSurface<TPoint>::build()]"
                     << " the size of vertex data array (s1) and the number of vertices (s2) in the triangulated surface does not match:"
                     << " s1=" << myPositions.size()
                     << " s2=" << myHEDS.nbVertices() << std::endl;
     isHEDSValid = false;
-  } else {
-    isHEDSValid = true;
-  }
+  } 
   return isHEDSValid;
 }
 

@@ -251,8 +251,12 @@ namespace DGtal
      *
      * @param[in] triangles the vector of input triangles.
      * @param[in] edges the vector of input unoriented edges.
+     *
+     * @return 'true' if everything went well, 'false' if their was
+     * error in the given topology (for instance, three triangles
+     * sharing an edge).
      */
-    void build( const Size num_vertices, 
+    bool build( const Size num_vertices, 
                 const std::vector<Triangle>& triangles,
                 const std::vector<Edge>&     edges );
 
@@ -264,11 +268,11 @@ namespace DGtal
      *
      * @param[in] triangles the vector of input triangles.
      */
-    void build( const std::vector<Triangle>& triangles )
+    bool build( const std::vector<Triangle>& triangles )
     {
       std::vector<Edge> edges;
       const int nbVtx = getUnorderedEdgesFromTriangles( triangles, edges );
-      build( nbVtx, triangles, edges );
+      return build( nbVtx, triangles, edges );
     }
 
     /// Clears the data structure.

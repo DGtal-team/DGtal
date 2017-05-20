@@ -120,28 +120,22 @@ namespace DGtal
     /// @see makeVertexMap
     /// @note This property map uses a vector structure as storage.
     template <typename TData>
-    struct VertexPropertyMap {
+    struct IndexedPropertyMap {
+      typedef Index             Argument;
       typedef TData             Data;
-      typedef Vertex            Argument;
-      typedef Data              Value;
       typedef std::vector<Data> Storage;
 
       /// Default constructor. The object is invalid.
-      VertexPropertyMap() : mySurface( 0 ), myData( 0 ) {}
+      IndexedPropertyMap() : mySurface( 0 ), myData( 0 ) {}
 
       /// Creates an empty vertex property map
-      VertexPropertyMap( const Self& surface )
+      IndexedPropertyMap( const Self& surface, Size s, Data def_data = Data() )
         : mySurface( &surface ),
-          myData( Storage( surface.size() ) )
+          myData( Storage( s, def_data ) )
       {}
 
-      VertexPropertyMap( const Self& surface, Data def_data )
-        : mySurface( &surface ),
-          myData( Storage( surface.size(), def_data ) )
-      {}
-
-      /// Creates the VertexPropertyMap that points to one that exists already.
-      VertexPropertyMap( const Self& surface,
+      /// Creates the IndexedPropertyMap that points to one that exists already.
+      IndexedPropertyMap( const Self& surface,
                          Storage& storage )
         : mySurface( &surface ),
           myData( &storage, false )
@@ -154,28 +148,28 @@ namespace DGtal
         return *mySurface;
       }
       
-      /// This object is a function : Vertex -> Data
-      /// @param v any vertex
+      /// This object is a function : Argument -> Data
+      /// @param v any index
       /// @return the associated data
-      const Data& operator()( Vertex v ) const
+      const Data& operator()( Argument v ) const
       {
         ASSERT( isValid() && v < myData->size() );
         return (*myData)[ v ];
       }
 
       /// Non-mutable array access.
-      /// @param v any vertex
+      /// @param v any index
       /// @return the associated data
-      const Data& operator[]( Vertex v ) const
+      const Data& operator[]( Argument v ) const
       {
         ASSERT( isValid() && v < myData->size() );
         return (*myData)[ v ];
       }
 
       /// mutable array access.
-      /// @param v any vertex
+      /// @param v any index
       /// @return the associated data
-      Data& operator[]( Vertex v )
+      Data& operator[]( Argument v )
       {
         ASSERT( isValid() && v < myData->size() );
         return (*myData)[ v ];
@@ -189,7 +183,7 @@ namespace DGtal
       OwningOrAliasingPtr<Storage> myData;
     };
 
-    typedef VertexPropertyMap< Point >           PositionsMap;
+    typedef IndexedPropertyMap< Point >          PositionsMap;
     
   protected:
     typedef HalfEdgeDataStructure::HalfEdge      HalfEdge;
@@ -250,19 +244,49 @@ namespace DGtal
 
     /// @return a vertex property map that associates some data to any vertex.
     template <typename AnyData>
-    VertexPropertyMap< AnyData > makeVertexMap() const
+    IndexedPropertyMap< AnyData > makeVertexMap() const
     {
-      return VertexPropertyMap< AnyData >( *this );
+      return IndexedPropertyMap< AnyData >( *this, nbVertices() );
     }
 
     /// @param value the value that is given to all vertices at initialization.
     /// @return a vertex property map that associates some data to any vertex.
     template <typename AnyData>
-    VertexPropertyMap< AnyData > makeVertexMap( AnyData value ) const
+    IndexedPropertyMap< AnyData > makeVertexMap( AnyData value ) const
     {
-      return VertexPropertyMap< AnyData >( *this, value );
+      return IndexedPropertyMap< AnyData >( *this, nbVertices(), value );
     }
-    
+
+    /// @return an edge property map that associates some data to any edge.
+    template <typename AnyData>
+    IndexedPropertyMap< AnyData > makeEdgeMap() const
+    {
+      return IndexedPropertyMap< AnyData >( *this, nbEdges() );
+    }
+
+    /// @param value the value that is given to all edges at initialization.
+    /// @return an edge property map that associates some data to any edge.
+    template <typename AnyData>
+    IndexedPropertyMap< AnyData > makeEdgeMap( AnyData value ) const
+    {
+      return IndexedPropertyMap< AnyData >( *this, nbEdges(), value );
+    }
+
+    /// @return a face property map that associates some data to any face.
+    template <typename AnyData>
+    IndexedPropertyMap< AnyData > makeFaceMap() const
+    {
+      return IndexedPropertyMap< AnyData >( *this, nbFaces() );
+    }
+
+    /// @param value the value that is given to all faces at initialization.
+    /// @return a face property map that associates some data to any face.
+    template <typename AnyData>
+    IndexedPropertyMap< AnyData > makeFaceMap( AnyData value ) const
+    {
+      return IndexedPropertyMap< AnyData >( *this, nbFaces(), value );
+    }
+
     /// Mutable accessor to vertex data.
     /// @param v any vertex.
     /// @return the mutable data associated to \a v.

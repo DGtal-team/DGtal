@@ -163,7 +163,7 @@ TriangulatedSurface::VertexPropertyMap objects.
 
 A triangulated surface is a model of graph
 (concepts::CUndirectedSimpleLocalGraph) so you may use graph
-algorithms to traverse it (see moduleGraphDefinitions).
+algorithms to traverse it (see \ref moduleGraphDefinitions).
 
 \subsection HEM_sec2_1 Building a triangulated surface
 
@@ -203,7 +203,9 @@ Note that the topology that ties triangles together is built when
 calling TriangulatedSurface::build. If the topology is valid, it
 returns true. This method may return false for instance in the
 following cases:
-
+- three triangles sharing an edge,
+- number of vertices given by triangles does not match the number of vertex coordinates,
+- butterfly neighborhoods in the triangulation.
 
 
 \subsection subsect2moduleMesh Mesh Construction
