@@ -48,7 +48,7 @@ namespace DGtal {
      vertex iterators to enumerate all the vertices of the graph. Such
      iterators may only be single pass input iterators.
 
-     - Notable models: Object, DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface
+     - Notable models: Object, DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface, TriangulatedSurface
 
    All graphs define a \c Vertex (which must be instance-able,
    copy-able, assignable) and a \c Size type (type for counting

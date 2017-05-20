@@ -1,0 +1,315 @@
+/**
+* @file moduleHalfEdgeMesh.dox
+*
+* @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+* Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+*
+* @date 2017/05/7
+*
+* Documentation file for feature moduleHalfEdgeMesh
+*
+* This file is part of the DGtal library.
+*/
+
+/* 
+* Useful to avoid writing DGtal:: in front of every class.
+* Do not forget to add an entry in src/DGtal/base/Config.h.in !
+*/
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleHalfEdgeMesh Half-edge data structure and triangulated surfaces
+@author Jacques-Olivier Lachaud
+
+@since 0.9.4
+
+Part of \ref packageTopology and  \ref packageShapes
+  
+This part of the manual describes how to represent combinatorial
+surfaces, generally embedded in \f$\mathbb{R}^3\f$. The underlying
+combinatorial topological structure is the classical half-edge data
+structure (or doubly connected cell list). We also provide a
+triangulated surface representation that is based on an half-edge data
+structure. Other combinatorial surfaces (like quadrangulated meshes)
+could also be designed in a similar way.
+
+[TOC]
+
+The following programs are related to this documentation:
+testHalfEdgeDataStructure.cpp, testTriangulatedSurface.cpp
+
+
+\section HEM_sec1 The half-edge data structure
+
+An half-edge data structure is a way to represent the topology of a
+combinatorial surface. A combinatoirial surface is a union of
+vertices, edges (a curve bordered by two vertices), faces (a piece of
+surface bordered by a sequence of edges). They are often called
+0-cells, 1-cells and 2-cells respectively. The half-edge data
+structure describes which cells are connected to each other. Its
+principle is to associate two \i half-edges to each edge. Once this is
+done, it is easy to tie cells together by simply indicating for each
+half-edge:
+
+- its next half-edge (along its face)
+- its opposite half-edge (along the edge, that the half-edge associated to the neighboring face)
+- its associated face
+- its associated vertex (here, we choose the "to" vertex if the half-edge is seen as an arc)
+- its associated edge
+
+The classical half-edge data structure is implemented in the class HalfEdgeDataStructure.
+
+\subsection HEM_sec1_1 Creating an half-edge data structure
+
+For now, you only have methods to create an half-edge data structure
+from a set of triangles and edges. For instance, the following code
+builds a half-edge data structure representing two triangles tied
+along one edge:
+
+\code
+  #include "DGtal/topology/HalfEdgeDataStructure.h"
+  ...
+  std::vector< Triangle > triangles( 2 );
+  triangles[0].v = { 0, 1, 2 };
+  triangles[1].v = { 2, 1, 3 };
+
+  HalfEdgeDataStructure mesh;
+  mesh.build( triangles );
+\endcode
+
+All elements within the half-edge data structure are numbered,
+starting from 0. Furthermore, the indices of vertices and triangles
+are the same as the one given at initialization. Unordered edges may
+also be numbered according to your preference, but you need to call
+the other HalfEdgeDataStructure::build method, which takes as input
+triangles and edges.
+
+So, for instance, in the code above, triangle 0 is incident to
+vertices 0, 1, 2 and triangle 1 is incident to vertices 2, 1, 3.
+
+\subsection HEM_sec1_2 Elementary operations
+
+Since half-edges are the basis of the structure, you have operations
+to get an half-edge from an arc, or from neighboring vertices or
+faces:
+
+- HalfEdgeDataStructure::halfEdgeIndexFromArc : given an arc or two
+  vertices, returns the corresponding half-edge index (logaristhmic
+  cost in the number of half-edges)
+
+- HalfEdgeDataStructure::halfEdgeIndexFromVertexIndex,
+  HalfEdgeDataStructure::halfEdgeIndexFromFaceIndex,
+  HalfEdgeDataStructure::halfEdgeIndexFromEdgeIndex: returns the index
+  of an half-edge that borders the given vertex, face or edge
+  (constant time operation)
+
+- HalfEdgeDataStructure::halfEdge : given an half-edge index, returns
+  the half-edge itself.
+ 
+Then, each half-edge can give you its associated vertex, face, edge, opposite and next half-edge:
+
+- HalfEdgeDataStructure::HalfEdge::toVertex : the end vertex of this
+  half-edge as an index into the vertex array.
+- HalfEdgeDataStructure::HalfEdge:: face : index of the associated
+  face into the face array.
+- HalfEdgeDataStructure::HalfEdge::edge : index of the associated edge into the edge array.
+- HalfEdgeDataStructure::HalfEdge::opposite : index of the opposite
+  half-edge into the half-edge array.
+- HalfEdgeDataStructure::HalfEdge::next index of the next half-edge
+  along the face into the half-edge array.
+
+Finally an half-edge data structure can give you all the necessary
+neighboring information, and can also list the vertices and arcs that
+lie on the boundary of the data structure:
+
+- HalfEdgeDataStructure::neighboringVertices,
+  HalfEdgeDataStructure::getNeighboringVertices : returns the sequence
+  of vertices that are neighbors to the given vertex. The order of
+  neighbors has meaning and corresponds to the order given at the
+  initialization per triangle.
+
+- HalfEdgeDataStructure::neighboringFaces,
+  HalfEdgeDataStructure::getNeighboringFaces : returns the sequence of
+  faces that are incident to the given vertex.  The order of
+  neighbors has meaning and corresponds to the order given at the
+  initialization per triangle.
+
+- HalfEdgeDataStructure::boundaryVertices,
+  HalfEdgeDataStructure::boundaryHalfEdgeIndices,
+  HalfEdgeDataStructure::boundaryArcs : returns the vertices and/or
+  arcs lying on the boundary of the combinatorial surface (in no
+  particular order).
+
+\subsection HEM_sec1_3 Details about internal representation
+
+It is worthy to note the following elements in this representation:
+
+- half-edges, vertices, edges and faces are numbered consecutively from 0.
+- vertices and faces (here triangles) keep their numbering given at initialization.
+- given a vertex index, an edge index, or a face index, you can get
+  an half-edge incident to it in constant time (stored as a vector).
+- given an arc (i.e. a couple of vertices), you can get the
+  corresponding half-edge in logarithmic time (stored as a map).
+
+\section HEM_sec2 A triangulated surface data structure
+
+A \b triangulated \b surface is a two-dimensional simplicial complex,
+with a piecewise linear geometry. We use the half-edge data structure
+to represent its topology and its geometry is simply given by
+precising coordinates for each vertex. The class TriangulatedSurface
+represents this geometric object. You may also associate other
+information to each vertex of the surface, through
+TriangulatedSurface::VertexPropertyMap objects. 
+
+A triangulated surface is a model of graph
+(concepts::CUndirectedSimpleLocalGraph) so you may use graph
+algorithms to traverse it (see moduleGraphDefinitions).
+
+\subsection HEM_sec2_1 Building a triangulated surface
+
+A triangulated surface is parameterized by the type that represents
+the coordinates of each vertex. Then you simply add vertices by
+specifying their coordinates, and triangles by giving the indices of
+the three vertices counterclockwise. Once this is done, you must call
+TriangulatedSurface::build to finish the construction. The following
+code creates a tetrahedron.
+
+\code
+// The following includes and type definitions will be used everywhere afterwards.
+#include "DGtal/shapes/TriangulatedSurface.h"
+
+typedef PointVector<3,double>             RealPoint;
+typedef TriangulatedSurface< RealPoint >  TriMesh;
+typedef TriMesh::VertexRange              VertexRange;
+typedef TriMesh::ArcRange                 ArcRange;
+typedef TriMesh::Arc                      Arc;
+typedef TriMesh::Face                     Face;
+typedef TriMesh::Vertex                   Vertex;
+typedef TriMesh::PositionsMap             PositionsMap;
+
+TriMesh mesh;
+mesh.addVertex( RealPoint( 0, 0, 0 ) ); // vertex 0
+mesh.addVertex( RealPoint( 1, 0, 0 ) ); // vertex 1
+mesh.addVertex( RealPoint( 0, 1, 0 ) ); // vertex 2
+mesh.addVertex( RealPoint( 1, 1, 1 ) ); // vertex 3
+mesh.addTriangle( 0, 1, 2 );            // triangle 0
+mesh.addTriangle( 3, 1, 0 );            // triangle 1
+mesh.addTriangle( 3, 2, 1 );            // triangle 2
+mesh.addTriangle( 3, 0, 2 );            // triangle 3
+bool ok = mesh.build(); // should be true
+\endcode
+
+Note that the topology that ties triangles together is built when
+calling TriangulatedSurface::build. If the topology is valid, it
+returns true. This method may return false for instance in the
+following cases:
+
+
+
+\subsection subsect2moduleMesh Mesh Construction
+
+To construct a Mesh object you need first to include the associated
+header file:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
+
+
+Then the mesh construction is very simple, for instance you start
+ constructing an empty mesh input and specify if you want to store or
+not the vertex colors in the mesh:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshConstructor 
+
+Then you can add some vertices mesh:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingPoints 
+
+
+and add  some triangular/quad faces from the vertex indices:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingBasicFaces 
+
+
+You can also insert some polygonal faces by defining a vector containing the vertices of the face:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingPolygonalFaces 
+
+An example of mesh construction is given here:  mesh3DConstructionAndVisualisation.cpp and will produce the following faces:
+
+   \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
+
+
+\subsection subsect2moduleMeshIO Mesh IO
+
+The Mesh object is integrated in the main IO framework of DGtal. You
+can for instance display a Mesh object directly through a Viewer3d object:
+
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseDisplay
+
+(See complete example in mesh3DConstructionAndVisualisation.cpp)
+
+You can also export a mesh by using the MeshWriter class given in the header file:
+@snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseIncludes
+and export it:
+@snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseMeshExport
+
+
+The mesh import is also simple:
+
+- First add the MeshReader file:
+@snippet examples/io/meshFromOFF.cpp includeImportOFF
+
+- import the mesh:
+@snippet examples/io/meshFromOFF.cpp ImportOFFfile
+
+
+
+
+\section sectmoduleMesh2 Generating Basic Mesh 
+
+
+The Mesh class also provides some methods to generate shape mesh
+associated to tubular object or 3d surface from height map.
+
+For instance you can first define the  vector of the 3D skeleton points:
+@snippet tests/shapes/testMesh.cpp testMeshCreateSkeleton
+
+Then you can reconstruct a tubular mesh with a given radius:
+@snippet tests/shapes/testMesh.cpp testMeshCreateTubeMesh
+
+You will obtain such a tube display:
+   \image html  testMeshVisu3d.png  "Resulting mesh of tubular object."
+   \image latex testMeshVisu3d.png  "Resulting mesh of tubular object."  width=5cm
+
+
+
+Another example is given in testMesh.cpp which generates an height
+field from a sequence of height values. In the same way than the previous
+example, you can construct your input height vector:
+
+@snippet tests/shapes/testMesh.cpp testMeshCreateHeightSequence
+
+and then construct the height field mesh:
+
+@snippet tests/shapes/testMesh.cpp testMeshCreateSequenceMesh
+
+
+You will obtain such a small height field display (with previous tube mesh):
+
+   \image html  testMeshVisu3dBis.png  "Resulting mesh of tubular object and height field."
+   \image latex testMeshVisu3dBis.png  "Resulting mesh of tubular object and height field."  width=5cm
+
+@see  tests/shapes/testMesh.cpp
+*/
+
+
+
+/**
+   \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
+   \image latex example3dMeshConstruction.png  "Simple example of 3D mesh construction."  width=5cm
+
+   \example shapes/mesh3DConstructionAndVisualisation.cpp
+*/
+
+
+}

@@ -459,7 +459,7 @@ namespace DGtal
         return result;
     }
 
-  private:
+  protected:
 
     /// Stores all the half-edges.
     std::vector< HalfEdge > myHalfEdges;
@@ -500,8 +500,6 @@ namespace DGtal
   private:
     // ------------------------- Hidden services ------------------------------
   protected:
-    // ------------------------- Internals ------------------------------------
-  private:
 
     static
     FaceIndex arc2FaceIndex( const Arc2FaceIndex& de2fi,
