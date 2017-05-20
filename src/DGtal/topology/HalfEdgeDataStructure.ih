@@ -40,12 +40,13 @@
 
 //-----------------------------------------------------------------------------
 inline
-void
+bool
 DGtal::HalfEdgeDataStructure::
 build( const Size num_vertices, 
        const std::vector<Triangle>& triangles,
        const std::vector<Edge>&     edges )
 {
+  bool ok = true;
   Arc2FaceIndex de2fi;
   // Visiting triangles to associates faces to arcs.
   FaceIndex fi = 0;
@@ -62,6 +63,7 @@ build( const Size num_vertices,
                           << " arc12 " << ( it12 != de2fi.end() ? it12->second : -1 )
                           << " arc20 " << ( it20 != de2fi.end() ? it20->second : -1 )
                           << std::endl;
+	  ok = false;
           continue;
         }
       de2fi[ Arc( T.v[0], T.v[1] ) ] = fi;
@@ -171,6 +173,7 @@ build( const Size num_vertices,
       if( vertex2outgoing_boundary_hei[ origin_v ].size() > 1 )
         {
           trace.error() << "Butterfly vertex encountered." << std::endl;
+	  ok = false;
         }
     }
 
@@ -196,6 +199,7 @@ build( const Size num_vertices,
       ASSERT( it->second.empty() );
     }
   #endif
+  return ok;
 }
 
 //-----------------------------------------------------------------------------
