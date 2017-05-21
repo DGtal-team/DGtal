@@ -42,7 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/kernel/PointVector.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -62,29 +63,48 @@ class ContourHelper
 public:
   
   /**
-   * Compute the barycenter of the 2D contour.  
+   * Compute the barycenter of a set of points.  
    * 
-   * @param aContour the vector containing the 2D contour coordinates.
+   * @param[in] aSet the vector containing the set of points.
    * @return the resulting mean point. 
    **/
-  template <typename TPoint>
+  template <typename TPoint> 
   static 
-  TPoint getMeanPoint(const std::vector<TPoint> & aContour);
+  DGtal::PointVector<TPoint::dimension, double> 
+  getBarycenter(const std::vector<TPoint> & aSet);
   
 
   /**
-   * Checks if a contour given as a sequence of point is clockwise oriented or not.
+   * Checks if a polygonal curve given as a sequence of point is clockwise oriented or not.
    *
-   * @param aContour the vector containing the 2D contour coordinates.
-   * @return 'true' if the contour is counter clockwise oriented, 'false' otherwise.
+   * @param[in] aCurve the vector containing the 2D polygonal curve.
+   * @return 'true' if the polygonal curve is counter clockwise oriented, 'false' otherwise.
    **/
-
   template <typename TPoint> 
   static
   bool
-  isCounterClockWise(const std::vector<TPoint> & aContour);
+  isCounterClockWise(const std::vector<TPoint> & aCurve);
 
-   
+  
+
+  /**
+   * Transforms an input contour into an 8 connected contour.  The
+   * contour is given from two iterators on points.  If the input
+   * sequence contains some points not 4-connected, they are are
+   * ignored but the transformation continues on the next parts of the
+   * contour.
+   *
+   * @param[in] itb  begin iterator associated to the input contour.
+   * @param[in] ite  end iterator associated to the input contour.
+   * @param[out] out  output iterator associated to the resulting contour.
+   */
+
+  template <typename TIterator, typename TOutputIterator>
+  static
+  void
+  pixels2pixels8C(const TIterator &itb, const TIterator &ite, TOutputIterator out);
+  
+  
   
 
     // ----------------------- Standard services ------------------------------
@@ -100,7 +120,7 @@ public:
 
     /**
      * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
+     * @param[out] out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
 

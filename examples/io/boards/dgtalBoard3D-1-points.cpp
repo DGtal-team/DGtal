@@ -26,6 +26,14 @@
  *
  */
 
+/**
+ * Example of digital point export with Display3D.
+ *  @see \ref DGtalGLV_OBJExport
+ *  \image html  dgtalBoard3D-1-points.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
+ * \example io/boards/dgtalBoard3D-1-points.cpp
+ *
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

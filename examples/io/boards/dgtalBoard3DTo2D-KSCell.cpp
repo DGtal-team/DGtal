@@ -26,6 +26,14 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Khalimsky Signed Cell Visualization (with Board3DTo2D)
+ * \image html dgtalBoard3DTo2D-KSCell.png "Khalimsky Signed Cell Visualization (with Board3DTo2D)"
+ * \example io/boards/dgtalBoard3DTo2D-KSCell.cpp
+ *
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //#include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"

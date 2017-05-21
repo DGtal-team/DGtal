@@ -11,6 +11,24 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Marching-cube like surface extracted using the combinatorial
+ * manifold structure of digital surfaces.
+ *
+ * @see \ref dgtal_digsurf_sec4_3
+ *
+ * @verbatim
+ * # Commands
+ * $ ./examples/topology/volMarchingCubes  ../examples/samples/Al.100.vol 0 1 0 
+ * @endverbatim
+ * 
+ * @image html digital-surface-mc-Al100.png "Marching-cube surface of Al.100.vol file."
+ * 
+ * \example topology/volMarchingCubes.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 //! [volMarchingCubes-basicIncludes]
 #include <iostream>

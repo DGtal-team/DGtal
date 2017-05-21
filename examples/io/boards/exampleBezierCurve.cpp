@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * Example of bezier curve display in Board2D
+ * 
+ *   @image html exampleBezierCurve.png "visualization of resulting export."
+ *  @example io/boards/exampleBezierCurve.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "ConfigExamples.h"

@@ -31,6 +31,16 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   Example of distance transformation in dimension 2.
+
+   @see \ref moduleVolumetric
+   \image  html  example-DT-L2.png "Distance transform with L2 norm."
+   \example geometry/volumes/distance/distancetransform2D.cpp
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <iomanip>

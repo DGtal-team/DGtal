@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+/**
+  Example of geometric predicates.
+  @see @ref moduleGeometricPredicates
+  \example geometry/tools/determinant/exampleInHalfPlane.cpp
+**/
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

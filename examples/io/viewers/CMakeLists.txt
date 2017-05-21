@@ -11,6 +11,7 @@ SET(DGTAL_TESTS_SRC
    viewer3D-7bis-planes
    viewer3D-9-3Dimages
    viewer3D-10-interaction
+   viewer3D-11-extension
    demo-kernel-2
 )
 
@@ -22,13 +23,13 @@ SET(DGTAL_TESTS_GMP_SRC
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtalIO DGtal ${DGtalLibDependencies})
+  target_link_libraries (${FILE}  DGtal ${DGtalLibDependencies})
 ENDFOREACH(FILE)
 
 IF(GMP_FOUND)
   FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtalIO DGtal ${DGtalLibDependencies})
+    target_link_libraries (${FILE}  DGtal ${DGtalLibDependencies})
   ENDFOREACH(FILE)
 ENDIF(GMP_FOUND)
 

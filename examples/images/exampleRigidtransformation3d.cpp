@@ -27,6 +27,15 @@
  * This file is part of the DGtal library.
  */
 
+
+
+/**
+*  Example of 3D rigid transformation using forward and backward model.
+   @see @ref moduleGeometricTransform
+   \image html cat10_backward.jpg "Result for backward model" 
+*  \example images/exampleRigidtransformation3d.cpp
+**/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <cmath>

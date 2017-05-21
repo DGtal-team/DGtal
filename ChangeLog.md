@@ -1,12 +1,91 @@
+# DGtal 0.9.4
+
+## New Features / Critical Changes
+
+- *IO*
+  - New simple way to extend the QGLViewer-based Viewer3D interface,
+    for instance to add callbacks to key or mouse events, or to modify
+    what is drawn on the window.
+    (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
+
+## Changes
+
+- *IO*
+ - TableReader can now read all elements contained in each line of a file 
+   with the new method getLinesElementsFromFile().
+   (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
+
+
+## Bug Fixes
+
+- *Configuration/General*
+ - Upgrading the benchmarks to match with the new google-benchmark API
+   (David Coeurjolly,
+   [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
+ - The documentation mainpage now refers to the DGtalTools documentation
+   (David Coeurjolly,
+   [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
+
+- *IO*
+ - Fix on the ITK reader when used with a functor which is not able to
+   handle 32/16 bits images. Also includes a new testITKReader and ITK tests in
+   GenericReader.
+   (Bertrand Kerautret, [#1255](https://github.com/DGtal-team/DGtal/pull/1255))
+
+- *Kernel Package*
+ - Fix testBasicPointFunctor. (Bertrand Kerautret
+   [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
+
+- *Documentation*
+ - Add import with functors in GenericReader in the main default reader.
+   (mainly motivated to show documentation of specialized version of
+   importWithValueFunctor and importWithColorFunctor). The tiff format
+   was also added to the generic readers when ITK is present (Bertrand
+   Kerautret [1251](https://github.com/DGtal-team/DGtal/pull/1245))
+ - Fix exampleArithDSS3d compilation (which was not activated).
+   (Bertrand Kerautret 
+   [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
+
 # DGtal 0.9.3
 
 ## New Features / Critical Changes
+
+- *Configuration/General*
+ - The project has a now a unique compiled library: DGtal. The DGtalIO
+   target has been removed. (David Coeurjolly,
+   [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
+ - New mandatory dependency for DGtal: zlib must be installed in the system.
+   (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
+
+- *Topology Package*
+ -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
+    (Mohamad ONAYSSI, Bibiana MARTINEZ, Mohamed MELLOULI, Kacper PLUTA,
+    [#1199](https://github.com/DGtal-team/DGtal/pull/1199))
 
 - *Geometry Package*
  - VoronoiMap, PowerMap, (Reverse)DistanceTransformation and ReducedMedialAxis
    now work on toric domains (with per-dimension periodicity specification).
    (David Coeurjolly, Roland Denis,
    [#1206](https://github.com/DGtal-team/DGtal/pull/1206))
+
+- *IO*
+ - New version (3) for the VOL file format that allows (zlib) compressed volumetric
+   data. VolReady and VolWriter can still manage Version 2 Vols.
+   (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
+
+## Changes
+
+- *Configuration/General*
+ - Continuous integration Travis bots are now based on ubunutu/trusty containers.
+   (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
+ - Set flag -std=c++11 only if needed. Modern compilers set compatible flags
+   by default (gnu++14, etc). (Pablo H Cerdan,
+   [#1222](https://github.com/DGtal-team/DGtal/pull/1222))
+
+- *Documentation*
+  - All the example descriptions are now in their the examples file (instead in
+    dox files).
+    (Bertrand Kerautret, [#1240](https://github.com/DGtal-team/DGtal/pull/1240))
 
 ## Bug Fixes
 
@@ -15,10 +94,29 @@
    (Roland Denis, [#1202](https://github.com/DGtal-team/DGtal/pull/1202))
  - Explicit M_PI definition if needed.
    (David Coeurjolly, [#1208](https://github.com/DGtal-team/DGtal/pull/1208))
+ - Continuous integration Travis bots are now based on ubunutu/trusty containers.
+   (David Coeurjolly, [#1227](https://github.com/DGtal-team/DGtal/pull/1208))
+ - Fix usage of DESTDIR at install time for linux packagers.
+   (Pablo Hernandez, [#1235](https://github.com/DGtal-team/DGtal/pull/1235))
+ - Fix, let CMake handle DESTDIR instead of manual manipulation.
+   (Pablo Hernandez, [#1238](https://github.com/DGtal-team/DGtal/pull/1238))
 
 - *Geometry Package*
  - ArithDSSIterator: fix missing postfix ++.
    (I. Sivignon, [#1187](https://github.com/DGtal-team/DGtal/pull/1187))
+ - ContourHelper: add a method to transform a contour into a 8 connected path.
+   (B. Kerautret, [#1127](https://github.com/DGtal-team/DGtal/pull/1127))
+
+- *IO Package*
+ - Missing TContainer template parameter for overloaded functions/methods that
+   rely on PointVector.
+   (Roland Denis, [#1232](https://github.com/DGtal-team/DGtal/pull/1232))
+ - Viewer3D: fix bad rendering when changing the scale.
+   (Bertrand Kerautret, [#1217](https://github.com/DGtal-team/DGtal/pull/1217))
+
+- *Documentation*
+ - Fixing various BibTeX references.
+   (Bertrand Kerautret, [##1237](https://github.com/DGtal-team/DGtal/pull/1237))
 
 # DGtal 0.9.2
 
@@ -100,7 +198,6 @@
 - *Topology Package*
  - Add pre-calculated look up tables to speed up Object::isSimple calculations.
    (Pablo Hernandez-Cerdan, [#1155](https://github.com/DGtal-team/DGtal/pull/1155))
-
 
 ## Bug Fixes
 - *Configuration/General*

@@ -58,7 +58,7 @@ static void BM_Constructor(benchmark::State& state)
     {
       state.PauseTiming();
       typename Q::Domain dom(typename Q::Point().diagonal(0),
-                             typename Q::Point().diagonal(state.range_x()));
+                             typename Q::Point().diagonal(state.range(0)));
       state.ResumeTiming();
       Q image( dom );
     }
@@ -84,14 +84,14 @@ std::set<Point> ConstructRandomSet(unsigned int size, unsigned int maxWidth) {
 template<typename Q>
 static void BM_SetValue(benchmark::State& state)
 {
-  std::set<typename Q::Point> data = ConstructRandomSet<typename Q::Point>(state.range_x(),state.range_x());
+  std::set<typename Q::Point> data = ConstructRandomSet<typename Q::Point>(state.range(0),state.range(0));
 
   int64_t cpt=0;
   while (state.KeepRunning())
     {
       state.PauseTiming();
       typename Q::Domain dom(typename Q::Point().diagonal(0),
-                             typename Q::Point().diagonal(state.range_x()));
+                             typename Q::Point().diagonal(state.range(0)));
       Q image( dom );
       for(typename std::set<typename Q::Point>::const_iterator it = data.begin(), itend=data.end();
           it != itend; ++it)
@@ -103,7 +103,7 @@ static void BM_SetValue(benchmark::State& state)
         }
     }
   // const int64_t items_processed =
-    // static_cast<int64_t>(state.iterations())*state.range_x();
+    // static_cast<int64_t>(state.iterations())*state.range(0);
   state.SetItemsProcessed(cpt);
 }
 BENCHMARK_TEMPLATE(BM_SetValue, ImageVector2)->Range(1<<3 , 1 << 10);
@@ -113,13 +113,13 @@ BENCHMARK_TEMPLATE(BM_SetValue, ImageHash2)->Range(1<<3 , 1 << 10);
 template<typename Q>
 static void BM_RangeScan(benchmark::State& state)
 {
-  std::set<typename Q::Point> data = ConstructRandomSet<typename Q::Point>(state.range_x(),state.range_x());
+  std::set<typename Q::Point> data = ConstructRandomSet<typename Q::Point>(state.range(0),state.range(0));
   int sum=0;
   while (state.KeepRunning())
     {
       state.PauseTiming();
       typename Q::Domain dom(typename Q::Point().diagonal(0),
-                             typename Q::Point().diagonal(state.range_x()));
+                             typename Q::Point().diagonal(state.range(0)));
       Q image( dom );
       for(typename std::set<typename Q::Point>::const_iterator it = data.begin(), itend=data.end();
           it != itend; ++it)
@@ -139,13 +139,13 @@ BENCHMARK_TEMPLATE(BM_RangeScan, ImageMap2)->Range(1<<3 , 1 << 10);
 template<typename Q>
 static void BM_DomainScan(benchmark::State& state)
 {
-  std::set<typename Q::Point> data = ConstructRandomSet<typename Q::Point>(state.range_x(),state.range_x());
+  std::set<typename Q::Point> data = ConstructRandomSet<typename Q::Point>(state.range(0),state.range(0));
   int sum=0;
   while (state.KeepRunning())
     {
       state.PauseTiming();
       typename Q::Domain dom(typename Q::Point().diagonal(0),
-                             typename Q::Point().diagonal(state.range_x()));
+                             typename Q::Point().diagonal(state.range(0)));
       Q image( dom );
       for(typename std::set<typename Q::Point>::const_iterator it = data.begin(), itend=data.end();
           it != itend; ++it)
@@ -168,7 +168,7 @@ BENCHMARK_TEMPLATE(BM_DomainScan, ImageMap2)->Range(1<<3 , 1 << 10);
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc,  const char*argv[] )
+int main( int argc,  char **argv )
 {
   benchmark::Initialize(&argc, argv);
 

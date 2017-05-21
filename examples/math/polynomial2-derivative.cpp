@@ -11,6 +11,25 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ *   computes the first and second derivatives of the given polynomial P (in two variables).
+ *
+ * @see \ref dgtal_mpolynomial_sec1_5 and \ref dgtal_mpolynomial_sec3 
+ *
+ * @verbatim
+ * $ ./examples/math/polynomial2-derivative "(x-3)^2 + (y-2)^2 - 4"
+ * P(X_0,X_1)        = ((9 + -4 X_1 + 1 X_1^2) + -6 X_0 + 1 X_0^2)
+ * dP/dX_0(X_0,X_1)  = (-6 + 2 X_0)
+ * dP/dX_1(X_0,X_1)  = (-4 + 2 X_1)
+ * d/dX_1 dP/dX_0(X_0,X_1) = 0
+ * d/dX_0 dP/dX_1(X_0,X_1) = 0
+ * d/dX_0 dP/dX_0(X_0,X_1) = 2
+ * d/dX_1 dP/dX_1(X_0,X_1) = 2
+ * @endverbatim
+ *
+ * \example math/polynomial2-derivative.cpp
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //! [polynomial2-derivative-basicIncludes]
 #include <iostream>

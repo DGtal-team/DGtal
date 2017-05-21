@@ -11,6 +11,22 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * Frontiers and boundary of two intersecting balls. The first ball is
+ * labelled 1 (red), the second 2 (yellow), their intersection 3
+ * (orange). The frontier between 1 and 0 is displayed in red, the
+ * frontier between 2 and 0 is displayed in yellow, the boundary of
+ * region 3 is displayed in orange.
+ * 
+ * @see \ref dgtal_digsurf_sec3_5
+ * 
+ * @image html digital-surface-intersecting-balls.png
+ * @image latex digital-surface-intersecting-balls.png width=0.5\textwidth
+ *
+ * \example topology/frontierAndBoundary.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 //! [frontierAndBoundary-basicIncludes]
 #include <iostream>
