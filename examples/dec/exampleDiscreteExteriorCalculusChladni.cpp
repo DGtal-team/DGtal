@@ -1,4 +1,11 @@
 /// @file dec/exampleDiscreteExteriorCalculusChladni.cpp
+/**
+   Example of Discrete Exterior Calculus with Chladni.
+   @see \ref sectDECHelmoltzProblem
+   \image  html  exampleDECChladni.png "Primal Helmoltz decomposition harmonic component."
+   \example dec/exampleDiscreteExteriorCalculusChladni.cpp
+**/
+
 #include <sstream>
 #include <string>
 

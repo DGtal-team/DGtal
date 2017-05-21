@@ -500,45 +500,45 @@ namespace DGtal
    * @param aPoint the point to draw
    * @return the dyn. alloc. default style for this object.
    */
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent, typename TContainer>
   static DGtal::DrawableWithBoard3DTo2D *
-  defaultStyle( std::string str, const DGtal::PointVector<dim,TComponent> & aPoint );
+  defaultStyle( std::string str, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
   /**
    * @brief drawAsGrid
    * @param board the board where to draw
    * @param aPoint the point to draw
    */
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent, typename TContainer>
   static void
-  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint );
+  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
   /**
    * @brief drawAsPaving
    * @param board the board where to draw
    * @param aPoint the point to draw
    */
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent, typename TContainer>
   static void
-  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint );
+  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
   /**
    * @brief drawAsPavingWired
    * @param board the board where to draw
    * @param aPoint the point to draw
    */
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent, typename TContainer>
   static void
-  drawAsPavingWired( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint );
+  drawAsPavingWired( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
   /**
    * @brief draw
    * @param board the board where to draw
    * @param aPoint the point to draw
    */
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent, typename TContainer>
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint );
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim, TComponent, TContainer> & aPoint );
 
   /**
    * @brief draw
@@ -546,9 +546,9 @@ namespace DGtal
    * @param aPoint the point to draw
    * @param aPoint2 the point to draw
    */
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, typename TContainer2>
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint, const DGtal::PointVector<dim,TComponent> & aPoint2 );
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim, TComponent1, TContainer1> & aPoint, const DGtal::PointVector<dim, TComponent2, TContainer2> & aPoint2 );
   // PointVector
 
 

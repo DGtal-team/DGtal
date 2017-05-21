@@ -24,6 +24,16 @@
  * 
  */
 
+
+/**
+ *  \example io/boards/logoDGtal.cpp
+ * 
+ *  Simple example to generate DGtal logo in DGtal.
+ *  \image html  logo_DGtal_small.png   "visualization of resulting export."
+ */
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

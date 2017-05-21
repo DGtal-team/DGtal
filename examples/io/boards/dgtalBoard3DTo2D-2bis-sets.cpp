@@ -26,6 +26,16 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Example of digital point visualization with Board3DTo2D (wireframe visualisation).
+ * @see \ref DGtalGLV_VisualizationDigitalSet
+ * \example io/boards/dgtalBoard3DTo2D-2bis-sets.cpp
+ * \image html dgtalBoard3DTo2D-2bis-sets-wireframe.png "Digital point visualization  with Board3DTo2D (wireframe visualisation))."
+ *
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"

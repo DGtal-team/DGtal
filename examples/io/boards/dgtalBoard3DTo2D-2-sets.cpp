@@ -26,6 +26,16 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Example of digital set visualization with Board3DTo2D.
+ * @see \ref DGtalGLV_VisualizationDigitalSet
+ * \example io/boards/dgtalBoard3DTo2D-2-sets.cpp 
+ * \image html dgtalBoard3DTo2D-2-sets.png "Digital set visualization  with Board3DTo2D."
+ *
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"

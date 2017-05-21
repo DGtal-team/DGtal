@@ -9,8 +9,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testPointVectorContainers
    testLinearAlgebra
    testImagesSetsUtilities
-   ## Disabling for now (DC 21/10/20154) waiting fix from Bertrand
-   #testBasicPointFunctors
+   testBasicPointFunctors
    testEmbedder
    testPointPredicateConcepts
    testPointHashFunctions
@@ -20,7 +19,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_KERNEL})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+  target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -32,9 +31,8 @@ IF(WITH_BENCHMARK)
   #Benchmark target
   FOREACH(FILE ${DGTAL_BENCH_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
-    add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
-    ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
+    target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
+    ADD_DEPENDENCIES(benchmark ${FILE})
   ENDFOREACH(FILE)
 ENDIF(WITH_BENCHMARK)
 
@@ -47,7 +45,7 @@ IF(GMP_FOUND)
 
   FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
     add_test(${FILE} ${FILE})
   ENDFOREACH(FILE)
 ENDIF(GMP_FOUND)

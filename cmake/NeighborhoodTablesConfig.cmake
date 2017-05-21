@@ -2,36 +2,29 @@
 # DGtal Configuration file for LookUpTables
 #------------------------------------------------------------------------------
 
-# ------ AT CONFIGURE TIME ------ #
+# TABLE_DIR is the variable that NeighborhoodTables.h.in read.
+
+# ------ Build Tree ------ #
 #--- Configuration of the src/topology/tables/NeighborhoodTables.h.in
-set(TABLE_DIR ${PROJECT_BINARY_DIR}/src/DGtal/topology/tables)
+set(TABLE_DIR ${PROJECT_SOURCE_DIR}/src/DGtal/topology/tables)
 configure_file(
   ${PROJECT_SOURCE_DIR}/src/DGtal/topology/tables/NeighborhoodTables.h.in
   ${PROJECT_BINARY_DIR}/src/DGtal/topology/tables/NeighborhoodTables.h)
 
-#--- Unpack files at cmake configuration time.
-file(GLOB DGTAL_TABLES_COMPRESSED
-     ${PROJECT_SOURCE_DIR}/src/DGtal/topology/tables/*.tar.gz)
-set(unzip_folder ${PROJECT_BINARY_DIR}/src/DGtal/topology/tables/)
-message(STATUS "Decompressing look up tables to: ${unzip_folder}")
-foreach(zip_table ${DGTAL_TABLES_COMPRESSED})
-  execute_process(
-    COMMAND           ${CMAKE_COMMAND} -E tar xzf ${zip_table}
-    WORKING_DIRECTORY ${unzip_folder}
-  )
-endforeach()
-
-# ------ AT INSTALLATION TIME ------ #
-#--- Configuration of the src/topology/tables/NeighborhoodTables.h.in
-install(CODE "
+# ------ Install Tree ------ #
+#--- Configuration of the src/topology/tables/NeighborhoodTables.h.in for the install tree. Save to tmp file.
 set(TABLE_DIR ${INSTALL_INCLUDE_DIR}/DGtal/topology/tables)
 configure_file(
   ${PROJECT_SOURCE_DIR}/src/DGtal/topology/tables/NeighborhoodTables.h.in
-  ${INSTALL_INCLUDE_DIR}/DGtal/topology/tables/NeighborhoodTables.h) " )
+  ${PROJECT_BINARY_DIR}/InstallFiles/NeighborhoodTables.h @ONLY)
 
-#--- specific install for uncompressed tables.
-set(unzip_folder_install ${INSTALL_INCLUDE_DIR}/DGtal/topology/tables)
-install(DIRECTORY "${unzip_folder}"
-        DESTINATION "${unzip_folder_install}"
-        FILES_MATCHING PATTERN "*.txt")
+#--- Install compressed tables and the header pointing to them ---#
+set(table_folder_install ${INSTALL_INCLUDE_DIR}/DGtal/topology/tables)
 
+#--- Install header pointing to tables. ---#
+install(FILES ${PROJECT_BINARY_DIR}/InstallFiles/NeighborhoodTables.h
+        DESTINATION "${table_folder_install}")
+#--- Select all the tables and install ---#
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/DGtal/topology/tables/"
+        DESTINATION "${table_folder_install}"
+        FILES_MATCHING PATTERN "*.zlib")

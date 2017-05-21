@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Example of default visualization of a digital point sets with the associated domain
+ * @see \ref DGtalGLV_ModeExamplesDomain
+ * \example io/viewers/viewer3D-4-modes.cpp
+   \image html  viewer3D-4-modes.png  "Illustration of the Paving/Grid modes  on 3D points"
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

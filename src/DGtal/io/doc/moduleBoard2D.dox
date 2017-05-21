@@ -430,9 +430,9 @@ Here, the DrawableWithBoard2D is just an interface that specifies a virtual meth
 
   The dynamically allocated instance of the default style for the drawable element may eventually be tuned for a specific mode given as a string.
  \code
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent, typename TContainer>
   inline
-  DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim,TComponent> & p, std::string mode = "")
+  DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim, TComponent, TContainer> & p, std::string mode = "")
   {
   if ( ( mode == "" ) || ( mode == "Paving" ) ) 
  return new DefaultDrawStylePaving_PointVector;
@@ -446,11 +446,11 @@ Here, the DrawableWithBoard2D is just an interface that specifies a virtual meth
 
   This method draws the drawable element on the given Board2D instance. The style has been applied automatically before.
  \code
-  template<Dimension dim, typename TComponent>
+  template<Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, typename TContainer2>
   inline
   void draw( DGtal::Board2D & board, 
-const DGtal::PointVector<dim,TComponent> & p, 
-const DGtal::PointVector<dim,TComponent> & apoint )
+const DGtal::PointVector<dim, TComponent1, TContainer1> & p, 
+const DGtal::PointVector<dim, TComponent2, TContainer2> & apoint )
   {
   ASSERT(dim == 2);
 
@@ -493,81 +493,6 @@ included in DGtal. Its classes are grouped into the namespace Board.
   
  */
 
-  /**
-\example io/boards/dgtalBoard2D-1-points.cpp
-  
-This simple example shows the basic usage of a Board2D to
-export graphical representations of dgtal objects (here, a
-HyperRectDomain and three points exported as SVG and EPS).
-   \image html  dgtalboard-1-points.png  "visualization of one of the  resulting export."
- */
-
-  /**
-\example io/boards/dgtalBoard2D-2-sets.cpp
-  
-This simple example shows also some basic usage of a Board2D
-to export graphical representations of dgtal objects (here, a
-digital set and a digital object). Note also the use of different
-modes that may be defined for some classes. An object may thus be
-displayed just as a set of points, but also as a set of points
-with neighborhood structure (a graph).
-   \image html  dgtalboard-2-sets-1.png  "visualization of resulting export (first export dgtalBoard2D-2-sets-1)."
- */
-
-  /**
-\example io/boards/dgtalBoard2D-3-custom-classes.cpp
-  
-This example shows you how to modify the style of each drawable
-elements. You just have to create an instance of CustomColors,
-CustomPenColor, CustomFillColor or CustomPen and you attach this
-style to your drawable element type with an instance of CustomStyle
-outputed in the Board2D stream.
-   \image html  dgtalboard-3-custom-classes.png  "visualization of resulting export."
- */
-
-  /**
-\example io/boards/dgtalBoard2D-3-custom-points.cpp
-  
-This example shows you how to modify the style of each drawable
-elements. It is a matter of creating a custom style class which
-gives in its method \c setStyle the specific style
-parameters. Then, you attach this style to your drawable elements
-with an instance of CustomStyle outputed in the Board2D
-stream.
-   \image html  dgtalboard-3-custom-points.png  "visualization of resulting export."
- */
-
-  /**
-\example io/boards/dgtalBoard2D-4-colormaps.cpp
-  
-This example shows you how to use colormaps with Board2D
-streams. Note how we redefine the style of a specific mode for
-the drawable element.
-   \image html  dgtalboard-4-colormaps.png  "visualization of resulting export."
- */
-
-  /**
-\example geometry/curves/greedy-dss-decomposition.cpp
-  
-Another example where the specific mode style of the drawable
-element ArithmeticDSS is redefined.
- */
-
- /**
-  \example io/boards/logoDGtal.cpp
-  
-   Simple example to generate DGtal logo in DGtal.
-   \image html  logo_DGtal_small.png   "visualization of resulting export."
- */
 
 
-
-
-
-/**
- * Example of bezier curve display in Board2D
- * 
-   @image html exampleBezierCurve.png "visualization of resulting export."
-   @example io/boards/exampleBezierCurve.cpp
- **/
 }

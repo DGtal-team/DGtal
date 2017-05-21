@@ -10,6 +10,23 @@
  *
  * This file is part of the DGtal library.
  */
+/**
+
+  Displays the Euclidean distance to a starting surfel on the boundary
+  of a vol shape (traversal by mix distance/breadth-first, see
+  \ref DGtal::DistanceBreadthFirstVisitor).
+
+@see \ref dgtal_graph_def_2_4
+
+@verbatim
+# Commands
+$ ./examples/graph/volDistanceTraversal ../examples/samples/cat10.vol 0 255 100
+@endverbatim
+
+@image html volDistanceTraversal-cat10.png "Coloring vertices of a vol boundary according to the Euclidean distance to a starting surfel (distance breadth-first traversal)."
+
+\example graph/volDistanceTraversal.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [volDistanceTraversal-basicIncludes]

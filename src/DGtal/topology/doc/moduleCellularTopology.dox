@@ -649,69 +649,7 @@ The main features are:
   KSpace::SCell cell2 = K.sCell( preB ); // Will failed at runtime (in DEBUG mode) because preB is outside K.
 
   @endcode
-
 */
-
-
-
-
-/**
-A simple example of cellular grid space with several cells
-instantiated and visualized. This program outputs this image.
-
-@see \ref dgtal_ctopo_sec5
-
-@image html ctopo-1.png
-
-\example topology/ctopo-1.cpp
-
-*/
-
-
-/**
-A simple example of cellular grid space with several cells
-instantiated and visualized in 3D. This program outputs this image.
-
-@see \ref dgtal_ctopo_sec6
-
-@image html ctopo-1b-3d.png
-
-\example topology/ctopo-1-3d.cpp
-*/
-
-
-/**
-A simple example of cellular grid space with several cells
-instantiated and visualized in 3D. This program outputs this image.
-
-@see \ref dgtal_ctopo_sec6
-
-@image html ctopo-1s-3d.png
-
-\example topology/ctopo-1s-3d.cpp
-*/
-
-
-
-
-/**
-A simple example illustrating different way to scan a Khalimsky
-space. This program outputs these images:
-
-@see \ref dgtal_ctopo_sec8
-
-<table>
-<TR>
-<td> @image html khalimskySpaceScanner1.png </td>
-<td> @image html khalimskySpaceScanner2.png </td>
-</TR>
-</TABLE>
-
-\example topology/khalimskySpaceScanner.cpp
-*/
-
-
-
 
 }
 

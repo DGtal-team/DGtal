@@ -1,4 +1,11 @@
 /// @file dec/exampleDiscreteExteriorCalculusSolve.cpp
+/**
+   Example of primal and dual Helmoltz decomposition in 2D and 3D using Discrete Exterior Calculus.
+   @see \ref sectDECHelmoltzProblem
+   \image  html  solve_2d_primal_decomposition_calculusSmall.png "Primal Helmoltz decomposition harmonic component."
+   \example dec/exampleDiscreteExteriorCalculusSolve.cpp
+**/
+
 #include <string>
 
 #include <QApplication>
@@ -844,7 +851,7 @@ void solve3d_decomposition()
         {
             const int degree = laplace_diag[kk];
             ASSERT( degree >= 0 );
-            ASSERT( degree < degrees.size() );
+            ASSERT( static_cast<unsigned int>(degree) < degrees.size() );
             degrees[degree] ++;
         }
 
@@ -962,4 +969,3 @@ int main(int argc, char* argv[])
 
     return app.exec();
 }
-

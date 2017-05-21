@@ -315,6 +315,12 @@ if (WITH_QGLVIEWER)
     endif (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
 
   else (WITH_QT5)
+    if (APPLE)
+      message(STATUS "Warning: on recent MacOs Sierra, Qt4 is no longer supported.")
+      message(STATUS "         Please consider switching to Qt5 and define WITH_QT5.")
+      message(STATUS "         Otherwise you may have cmake errors while generating the project.")
+    endif (APPLE)
+
     find_package(Qt4 COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
 
     if (QT4_FOUND)
