@@ -35,7 +35,7 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/graph/CUndirectedSimpleGraph.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/shapes/TriangulatedSurface.h"
 #include "DGtal/shapes/MeshHelpers.h"
@@ -163,7 +163,8 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
 
 SCENARIO( "TriangulatedSurface< RealPoint3 > concept check tests", "[trisurf][concepts]" )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleLocalGraph< TriMesh > ));
+  // BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleLocalGraph< TriMesh > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< TriMesh > ));
 }
 
 /** @ingroup Tests **/

@@ -45,6 +45,7 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/OwningOrAliasingPtr.h"
+#include "DGtal/base/IntegerSequenceIterator.h"
 #include "DGtal/topology/HalfEdgeDataStructure.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -101,6 +102,10 @@ namespace DGtal
     template <typename Value> struct           VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
+
+    // Required by CUndirectedSimpleGraph
+    typedef EdgeIndex                          Edge;
+    typedef IntegerSequenceIterator< VertexIndex > ConstIterator;
     
     // Required for CCombinatorialSurface
     typedef HalfEdgeDataStructure::HalfEdgeIndex Arc;
@@ -356,6 +361,14 @@ namespace DGtal
 		    const Vertex & v,
 		    const VertexPredicate & pred) const;
 
+    /// @return a (non mutable) iterator pointing on the first vertex.
+    ConstIterator begin() const
+    { return ConstIterator( 0 ); }
+
+    /// @return a (non mutable) iterator pointing after the last vertex.
+    ConstIterator end() const
+    { return ConstIterator( nbVertices() ); }
+    
     // ----------------------- CombinatorialSurface --------------------------
   public:
 
