@@ -158,6 +158,13 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( trimesh2.nbArcs()     == trimesh.nbArcs() );
       REQUIRE( trimesh2.nbFaces()    == trimesh.nbFaces() );
     }
+    THEN( "We can iterate over the vertices" ) {
+      PositionsMap positions       = trimesh.positions();
+      RealPoint    exp_positions[] = { { 0,0,0 }, { 1,0,0 }, { 0,1,0 }, { 1,1,1 } };
+      for ( auto it = trimesh.begin(), itE = trimesh.end(); it != itE; ++it ) {
+	REQUIRE( positions[ *it ] == exp_positions[ *it ] );
+      }
+    }
   }
 }
 
