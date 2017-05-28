@@ -65,8 +65,9 @@ namespace DGtal
     /// Builds a triangulated surface (class TriangulatedSurface) from
     /// a mesh (class Mesh). Note that a triangulated surface contains
     /// only triangles, so faces of the input mesh are (naively)
-    /// triangulated. Furthermore, the output triangulated surface
-    /// rebuilds a topology between faces.
+    /// triangulated (triangles (0,1,2), (0,2,3), (0,3,4),
+    /// etc). Furthermore, the output triangulated surface rebuilds a
+    /// topology between faces.
     ///
     /// @tparam Point the type for points.
     /// @param[in]  mesh the input mesh.
