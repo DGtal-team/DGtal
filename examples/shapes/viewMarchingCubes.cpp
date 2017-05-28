@@ -1,12 +1,12 @@
 /**
- * @file topology/volMarchingCubes.cpp
+ * @file shapes/viewMarchingCubes.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/02/06
  *
- * An example file named volMarchingCubes.
+ * An example file named viewMarchingCubes to display an isosurface from a vol file.
  *
  * This file is part of the DGtal library.
  */
@@ -30,6 +30,7 @@
 #include "DGtal/shapes/TriangulatedSurface.h"
 #include "DGtal/shapes/MeshHelpers.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+//! [viewMarchingCubes-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -61,20 +62,6 @@ int main( int argc, char** argv )
   bool intAdjacency = atoi( argv[ 4 ] ) == 0;
 
   typedef ImageSelector < Domain, int>::Type Image;
-  // Domain domain( Point( -1,-1,-1), Point( 2,2,2 ) );
-  // Image image( domain );
-
-  // for ( unsigned int cfg = 0; cfg <= 255; cfg++ )
-  //   {
-  //     trace.info() << " ----------- cfg=" << cfg << " ------------------" << std::endl;
-  //     image.setValue( Point(0,0,0), ( cfg & 1 ) ? 255 : 0  );
-  //     image.setValue( Point(0,0,1), ( cfg & 2 ) ? 255 : 0  );
-  //     image.setValue( Point(0,1,0), ( cfg & 4 ) ? 255 : 0  );
-  //     image.setValue( Point(0,1,1), ( cfg & 8 ) ? 255 : 0  );
-  //     image.setValue( Point(1,0,0), ( cfg & 16 ) ? 255 : 0  );
-  //     image.setValue( Point(1,0,1), ( cfg & 32 ) ? 255 : 0  );
-  //     image.setValue( Point(1,1,0), ( cfg & 64 ) ? 255 : 0  );
-  //     image.setValue( Point(1,1,1), ( cfg & 128 ) ? 255 : 0  );
       
   //! [viewMarchingCubes-readVol]
   trace.beginBlock( "Reading vol file into an image." );
@@ -141,6 +128,8 @@ int main( int argc, char** argv )
   trace.info() << "Mesh has " << viewmesh.nbVertex()
                << " vertices and " << viewmesh.nbFaces() << " faces." << std::endl;
   trace.endBlock();
+  //! [viewMarchingCubes-makingMesh]
+
   QApplication application(argc,argv);
   Viewer3D<> viewer;
   viewer.show();
