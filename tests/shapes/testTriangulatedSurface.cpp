@@ -170,7 +170,6 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
 
 SCENARIO( "TriangulatedSurface< RealPoint3 > concept check tests", "[trisurf][concepts]" )
 {
-  // BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleLocalGraph< TriMesh > ));
   BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< TriMesh > ));
 }
 
