@@ -168,7 +168,7 @@ information to each vertex of the surface, through
 TriangulatedSurface::VertexPropertyMap objects. 
 
 A triangulated surface is a model of graph
-(concepts::CUndirectedSimpleLocalGraph) so you may use graph
+(concepts::CUndirectedSimpleGraph) so you may use graph
 algorithms to traverse it (see \ref moduleGraphDefinitions).
 
 \subsection HEM_sec2_1 Building a triangulated surface
@@ -215,9 +215,9 @@ following cases:
 
 \subsection HEM_sec2_2 Main topological operations
 
-As a model of graph (more precisely
-concepts::CUndirectedSimpleLocalGraph), you can get neighbors of
-vertices, degree and some other operations. As a combinatorial
+As a model of graph (more precisely concepts::CUndirectedSimpleGraph),
+you can get neighbors of vertices, degree and some other operations,
+as well as iterators for visiting vertices. As a combinatorial
 surfaces you have a lot of other operations to navigate onto the
 triangulated surface:
 
