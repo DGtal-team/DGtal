@@ -84,7 +84,7 @@ namespace DGtal
     /// the dual graph of a digital surface (class
     /// DigitalSurface).
     ///
-    /// @Note that a triangulated surface contains only triangles, so
+    /// @note that a triangulated surface contains only triangles, so
     /// faces of the input dual graph of the digital surface mesh are
     /// triangulated by adding a new vertex at the barycenter of the
     /// face vertices.
@@ -92,7 +92,7 @@ namespace DGtal
     /// @tparam DigitalSurfaceContainer the container chosen for the digital surface.
     /// @tparam CellEmbedder the embedder chosen for the digital surface.
     ///
-    /// @param[in]  durf the input digital surface.
+    /// @param[in]  dsurf the input digital surface.
     /// @param[in]  cembedder the embedder for n-1-cells of the digital surface, which are vertices in the output triangulated surface.
     /// @param[out] trisurf the output triangulated surface mesh.
     template < typename DigitalSurfaceContainer,
