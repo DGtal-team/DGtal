@@ -26,6 +26,16 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Example of Domain and Point display in Viewer3D.
+ *  @see @ref moduleDisplay3D 
+ * \image html demo-kernel-2.png " " 
+ *  \example io/viewers/demo-kernel-2.cpp
+ **/
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 

@@ -27,6 +27,35 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   This example shows a not-so-greedy segmentation into naive planes
+   of the surface at threshold 0 within volume Al.100.vol.
+
+   It enhances the polyhedrization of greedy-plane-segmentation.cpp by
+   selecting first the vertices that induces the biggest planes. This
+   is much slower than the other, but it gives nicer results. For each
+   vertex, it computes its best plane by breadth-first traversal. It
+   stores the obtained size for each vertex independently. It puts
+   them in a priority queue, the first to be popped are the ones with
+   the biggest size. The remaining of the algorithm is unchanged.
+
+   Colors for each plane are chosen randomly. Surfels in the same plane have the same color.
+
+@see \ref moduleCOBANaivePlaneRecognition_sec5 (solution of exercice 2)
+
+@verbatim
+# naive plane: width=1/1
+$ ./examples/geometry/surfaces/greedy-plane-segmentation-ex2 -i ./examples/samples/Al.100.vol -t 0 -w 1 -d 1
+@endverbatim
+
+@image html greedy-plane-segmentation-ex2-al-w1.png "Not-so-greedy segmentation of Al capone into naive planes."
+@image latex greedy-plane-segmentation-ex2-al-w1.png "Not-so-greedy segmentation of Al capone into naive planes." width=6cm
+
+\example geometry/surfaces/greedy-plane-segmentation-ex2.cpp
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <vector>

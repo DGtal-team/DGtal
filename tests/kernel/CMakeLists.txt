@@ -9,8 +9,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testPointVectorContainers
    testLinearAlgebra
    testImagesSetsUtilities
-   ## Disabling for now (DC 21/10/20154) waiting fix from Bertrand
-   #testBasicPointFunctors
+   testBasicPointFunctors
    testEmbedder
    testPointPredicateConcepts
    testPointHashFunctions
@@ -33,8 +32,7 @@ IF(WITH_BENCHMARK)
   FOREACH(FILE ${DGTAL_BENCH_SRC})
     add_executable(${FILE} ${FILE})
     target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-    add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
-    ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
+    ADD_DEPENDENCIES(benchmark ${FILE})
   ENDFOREACH(FILE)
 ENDIF(WITH_BENCHMARK)
 

@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * Source of examples used to generate illustrations of Cubical Complex module documention.   
+ * @see @ref   moduleCubicalComplex
+ * @image html cubical-complex-illustrations-X.png "One of the generated illustration: displaying a 2D cubical complex on a Board."
+ * @example topology/cubical-complex-illustrations.cpp
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <map>

@@ -30,6 +30,18 @@
  * This file is part of the DGtal library.
  */
 
+/**
+   Example of use the FMM (fast marching method) class in 3D.
+@see \ref moduleFMM
+
+This program outputs this image:
+@image html exampleFMM3D.png
+
+\example geometry/volumes/distance/exampleFMM3D.cpp
+*/
+
+
+
 #include <iostream>
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"

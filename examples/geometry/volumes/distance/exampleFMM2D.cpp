@@ -26,6 +26,19 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   Example of use the FMM (fast marching method) class in 2D.
+@see \ref moduleFMM
+
+This program outputs this image:
+
+@image html DTbyFMM-25.png
+
+\example geometry/volumes/distance/exampleFMM2D.cpp
+*/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <iomanip>

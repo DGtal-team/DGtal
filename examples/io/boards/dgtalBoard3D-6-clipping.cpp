@@ -27,6 +27,18 @@
  * This file is part of the DGtal library.
  */
 
+
+
+/**
+ *  Example of clipped object export with Display3D.
+ *  @see \ref DGtalGLV_OBJExport
+ *  \image html  dgtalBoard3D-6-clipping.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
+ $  \example io/boards/dgtalBoard3D-6-clipping.cpp
+ *
+ */
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3D.h"

@@ -27,6 +27,17 @@
  * This file is part of the DGtal library.
  */
 
+
+
+/**
+ * Example of point list import.
+ *  @see @ref moduleIO 
+ *  \image html visuPointList.png "Visualisation of 3d imported point list " 
+ * \example io/digitalSetFromPointList.cpp
+ */
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PointListReader.h"
