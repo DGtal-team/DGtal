@@ -1,4 +1,25 @@
-  # DGtal 0.9.3
+# DGtal 0.9.4
+
+## New Features / Critical Changes
+
+- *Topology Package*
+
+ - Adding the half-edge data structure to represent arbitrary
+   two-dimensional combinatorial surfaces with or without boundary
+   (Jacques-Olivier Lachaud
+    [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+
+- *Shapes Package*
+ - Adding classes and helpers to create triangulated surfaces and
+   to convert them from/to mesh and digital surfaces (Jacques-Olivier
+   Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+
+## Changes
+
+## Bug Fixes
+
+
+# DGtal 0.9.3
 
 ## New Features / Critical Changes
 
