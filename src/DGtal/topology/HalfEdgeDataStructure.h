@@ -80,7 +80,7 @@ namespace DGtal
   public:
 
     /// The type for counting elements.
-    typedef unsigned long Size;
+    typedef long    Size;
     /// The type used for numbering half-edges (an offset an the half-edges structure).
     typedef long    Index;
     /// The type used for numbering half-edges (alias)

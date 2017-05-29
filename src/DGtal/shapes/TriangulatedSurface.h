@@ -304,7 +304,7 @@ namespace DGtal
     // ----------------------- Undirected simple graph services -------------------------
   public:
     /**
-     * @Return the number of vertices of the surface.
+     * @return the number of vertices of the surface.
      */
     Size size() const;
     
@@ -458,8 +458,8 @@ namespace DGtal
     bool isVertexBoundary( const Vertex& v ) const;
 
     /**
-       @param a any arc.
-       @return 'true' if and only if arc \a a lies on a boundary (note
+       @param v any arc.
+       @return 'true' if and only if arc \a v lies on a boundary (note
        that the opposite arc does not lie on the boundary).
        @note O(1) operation
     */
