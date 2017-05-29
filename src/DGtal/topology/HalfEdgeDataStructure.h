@@ -80,9 +80,9 @@ namespace DGtal
   public:
 
     /// The type for counting elements.
-    typedef long    Size;
+    typedef std::size_t    Size;
     /// The type used for numbering half-edges (an offset an the half-edges structure).
-    typedef long    Index;
+    typedef std::size_t    Index;
     /// The type used for numbering half-edges (alias)
     typedef Index   HalfEdgeIndex;
     /// The type for numbering vertices
