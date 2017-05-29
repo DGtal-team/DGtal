@@ -335,12 +335,4 @@ An output using the Board mecanism is provided (see example above to output an e
 */
 
 
-/**
-   This snippet segments a digital curve into Frechet shortcuts.  
-
-@see \ref moduleFrechetShortcut and \ref moduleGridCurveAnalysis
-
-\example geometry/curves/exampleFrechetShortcut.cpp
-*/
-
 }

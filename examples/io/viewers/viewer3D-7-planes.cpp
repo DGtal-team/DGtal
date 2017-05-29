@@ -27,6 +27,24 @@
  * This file is part of the DGtal library.
  */
 
+/**
+   This example shows the recognition of a simple digital plane with
+   the COBA algorithm (class COBANaivePlaneComputer). Green points belong to
+   the naive plane.  There is no naive plane containing the green
+   points and any one of the red points.
+
+@see \ref moduleCOBANaivePlaneRecognition_sec2
+
+@verbatim
+$ ./examples/io/viewers/viewer3D-7-planes
+@endverbatim
+
+@image html coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points."
+@image latex coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points." width=5cm
+
+\example io/viewers/viewer3D-7-planes.cpp
+*/
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>

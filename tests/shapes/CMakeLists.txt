@@ -7,10 +7,10 @@ SET(QGLVIEWER_BASED_TESTS_SRC
 
 if (  WITH_VISU3D_QGLVIEWER )
 
-  FOREACH(FILE ${QGLVIEWER_BASED_TESTS_SRC}) 
+  FOREACH(FILE ${QGLVIEWER_BASED_TESTS_SRC})
    add_executable(${FILE} ${FILE})
     target_link_libraries ( ${FILE}  DGtal
-                            ${DGtalLibDependencies})   
+                            ${DGtalLibDependencies})
     #add_test(${FILE} ${FILE})
     #not a test since IHM
   ENDFOREACH(FILE)
@@ -41,7 +41,7 @@ ENDFOREACH(FILE)
 ##### Shapes with viewer.
 
 SET(QGLVIEWER_SHAPES_TESTS_SRC
-  testPolynomial
+#  testPolynomial
   testBall3D
   )
 

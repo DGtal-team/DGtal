@@ -83,10 +83,17 @@ import( const std::string & filename,
     {
       return LongvolReader<TContainer>::importLongvol( filename );
     }
-  else if ( extension == "pgm3d" || extension == "pgm3D" || extension == "p3d" || extension == "pgm" )
+  else if ( extension == "pgm3d" || extension == "pgm3D" || extension == "p3d" || extension == "pgm"  )
     {
       return PGMReader<TContainer>::importPGM3D( filename );
     }
+#ifdef WITH_ITK
+  else if (extension=="nii" || extension == "mha" || extension == "mhd" || extension =="tiff"  || extension =="tif")
+    {
+      return ITKReader<TContainer>::importITK(filename);
+    }
+#endif
+
   else if ( extension == "raw" )
     {
       ASSERT( x != 0 && y != 0 && z != 0 );

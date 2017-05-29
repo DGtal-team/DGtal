@@ -26,6 +26,14 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+ * Example of a custom display (with Board3DTo2D)
+ * @see \ref DGtalGLV_Custom
+ * \example io/boards/dgtalBoard3DTo2D-5-custom.cpp
+ * \image html dgtalBoard3DTo2D-5-custom.png "Example of several custom display  (with Board3DTo2D)." width=5cm
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"

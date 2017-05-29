@@ -896,6 +896,8 @@ namespace DGtal
     ///
     std::set<SelectCallbackFctStore> mySelectCallBackFcts;
 
+    bool myBoundingPtChangedTag = false;
+    
     //----end of protected datas
 
     // ------------------------- Internals ------------------------------------

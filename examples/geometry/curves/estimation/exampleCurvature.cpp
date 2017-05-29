@@ -27,6 +27,14 @@
  * This file is part of the DGtal library.
  */
 
+
+/**
+   Example of curvature estimation based on Digital Circular Arc (DCA) estimator.
+   \image  html  exampleCurvature.png "Curvature estimated using DCA estimator on a flower shape."
+   \example geometry/curves/estimation/exampleCurvature.cpp
+**/
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"

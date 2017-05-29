@@ -27,6 +27,17 @@
  * This file is part of the DGtal library.
  */
 
+/**
+ * A simple example illustrating the extraction of 3d connected set of
+ *  KhalimskyCell. This program outputs these images:
+ *
+ *  @see \ref dgtal_helpsurf_sec3
+ *  
+ *  @image html KSurfelsConnectedOrientExt.png 
+ *  \example  topology/3dKSSurfaceExtraction.cpp
+ */
+
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
