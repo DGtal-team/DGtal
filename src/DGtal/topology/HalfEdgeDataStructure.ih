@@ -59,9 +59,9 @@ build( const Size num_vertices,
         {
           trace.warning() << "[HalfEdgeDataStructure::build] Some arcs belongs to more than one face. Dropping triangle."
                           << " Triangle (" << T.v[ 0 ] << "," << T.v[ 1 ] << "," << T.v[ 2 ] << ")"
-                          << " arc01 " << ( it01 != de2fi.end() ? it01->second : -1 )
-                          << " arc12 " << ( it12 != de2fi.end() ? it12->second : -1 )
-                          << " arc20 " << ( it20 != de2fi.end() ? it20->second : -1 )
+                          << " arc01 " << ( it01 != de2fi.end() ? it01->second : INVALID_INDEX )
+                          << " arc12 " << ( it12 != de2fi.end() ? it12->second : INVALID_INDEX )
+                          << " arc20 " << ( it20 != de2fi.end() ? it20->second : INVALID_INDEX )
                           << std::endl;
 	  ok = false;
           continue;
@@ -76,9 +76,9 @@ build( const Size num_vertices,
   clear();
   Size num_edges = edges.size();
   Size num_triangles = triangles.size();
-  myVertexHalfEdges.resize( num_vertices, -1 );
-  myFaceHalfEdges.resize( num_triangles, -1 );
-  myEdgeHalfEdges.resize( num_edges, -1 );
+  myVertexHalfEdges.resize( num_vertices, INVALID_INDEX );
+  myFaceHalfEdges.resize( num_triangles, INVALID_INDEX );
+  myEdgeHalfEdges.resize( num_edges, INVALID_INDEX );
   myHalfEdges.reserve( num_edges*2 );
   // Visiting edges to connect everything.
   for( EdgeIndex ei = 0; ei < num_edges; ++ei )
@@ -93,12 +93,12 @@ build( const Size num_vertices,
       myHalfEdges.push_back( HalfEdge() );
       HalfEdge& he1 = myHalfEdges.back();
 
-      // The face will be -1 if it is a boundary half-edge.
+      // The face will be INVALID_INDEX if it is a boundary half-edge.
       he0.face = arc2FaceIndex( de2fi, edge.v[0], edge.v[1] );
       he0.toVertex = edge.v[1];
       he0.edge = ei;
 
-      // The face will be -1 if it is a boundary half-edge.
+      // The face will be INVALID_INDEX if it is a boundary half-edge.
       he1.face = arc2FaceIndex( de2fi, edge.v[1], edge.v[0] );
       he1.toVertex = edge.v[0];
       he1.edge = ei;
@@ -122,20 +122,20 @@ build( const Size num_vertices,
       //       boundary halfedges.  Because we have to pick one as the vertex's outgoing
       //       halfedge, we can't iterate over all neighbors, only a single wing of the
       //       butterfly.
-      if( myVertexHalfEdges[ he0.toVertex ] == -1 || -1 == he1.face )
+      if( myVertexHalfEdges[ he0.toVertex ] == INVALID_INDEX || INVALID_INDEX == he1.face )
         myVertexHalfEdges[ he0.toVertex ] = he0.opposite;
-      if( myVertexHalfEdges[ he1.toVertex ] == -1 || -1 == he0.face )
+      if( myVertexHalfEdges[ he1.toVertex ] == INVALID_INDEX || INVALID_INDEX == he0.face )
         myVertexHalfEdges[ he1.toVertex ] = he1.opposite;
 
       // If the face pointed to by a half-edge doesn't yet have a
       // halfedge pointing to it, store the halfedge.
-      if( -1 != he0.face && myFaceHalfEdges[ he0.face ] == -1 )
+      if( INVALID_INDEX != he0.face && myFaceHalfEdges[ he0.face ] == INVALID_INDEX )
         myFaceHalfEdges[ he0.face ] = he0index;
-      if( -1 != he1.face && myFaceHalfEdges[ he1.face ] == -1 )
+      if( INVALID_INDEX != he1.face && myFaceHalfEdges[ he1.face ] == INVALID_INDEX )
         myFaceHalfEdges[ he1.face ] = he1index;
 
       // Store one of the half-edges for the edge.
-      assert( myEdgeHalfEdges[ ei ] == -1 );
+      assert( myEdgeHalfEdges[ ei ] == INVALID_INDEX );
       myEdgeHalfEdges[ ei ] = he0index;
     }
 
@@ -146,7 +146,7 @@ build( const Size num_vertices,
     {
       HalfEdge& he = myHalfEdges.at( hei );
       // Store boundary halfedges for later.
-      if( -1 == he.face )
+      if( INVALID_INDEX == he.face )
         {
           boundary_heis.push_back( hei );
           continue;
@@ -154,11 +154,11 @@ build( const Size num_vertices,
 
       const Triangle& face = triangles[ he.face ];
       const VertexIndex i  = he.toVertex;
-      VertexIndex       j  = -1;
+      VertexIndex       j  = INVALID_INDEX;
       if( face.v[0] == i ) j = face.v[1];
       else if( face.v[1] == i ) j = face.v[2];
       else if( face.v[2] == i ) j = face.v[0];
-      ASSERT( -1 != j );
+      ASSERT( INVALID_INDEX != j );
       he.next = myArc2Index[ Arc( i, j ) ];
     }
 
