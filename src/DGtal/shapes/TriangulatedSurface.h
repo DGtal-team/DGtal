@@ -70,8 +70,8 @@ namespace DGtal
    *
    * @note Vertices, Arcs, and Faces are all integer ranging from 0 to
    * one less than the total number of the respective elements. You
-   * may thus iterate on them by just looping on integers. A negative
-   * index -1 is an invalid element.
+   * may thus iterate on them by just looping on integers. The index
+   * INVALID_FACE is an invalid element (equal to HalfEdgeDataStructure::INVALID_INDEX).
    *
    * @tparam TPoint a type defining the position in space of vertices.
    *
@@ -114,7 +114,7 @@ namespace DGtal
     typedef std::vector<Face>                    FaceRange;
     typedef std::vector<Vertex>                  VertexRange;
 
-    BOOST_STATIC_CONSTANT( Face, INVALID_FACE = -1 );
+    BOOST_STATIC_CONSTANT( Face, INVALID_FACE = HalfEdgeDataStructure::INVALID_INDEX );
 
     /// This structure is used to define efficient maps between
     /// vertices and any data specified by type \a TData. The
