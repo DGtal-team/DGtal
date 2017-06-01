@@ -257,9 +257,9 @@ template <typename TPoint>
 inline
 typename DGtal::TriangulatedSurface<TPoint>::Arc
 DGtal::TriangulatedSurface<TPoint>::arc
-( const Vertex & tail, const Vertex & head ) const
+( const Vertex & t, const Vertex & h ) const
 {
-  return myHEDS.halfEdgeIndexFromArc( tail, head );
+  return myHEDS.halfEdgeIndexFromArc( t, h );
 }
 
 //-----------------------------------------------------------------------------

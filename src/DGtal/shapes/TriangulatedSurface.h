@@ -114,7 +114,7 @@ namespace DGtal
     typedef std::vector<Face>                    FaceRange;
     typedef std::vector<Vertex>                  VertexRange;
 
-    BOOST_STATIC_CONSTANT( Face, INVALID_FACE = HalfEdgeDataStructure::INVALID_INDEX );
+    BOOST_STATIC_CONSTANT( Face, INVALID_FACE = HALF_EDGE_INVALID_INDEX );
 
     /// This structure is used to define efficient maps between
     /// vertices and any data specified by type \a TData. The
