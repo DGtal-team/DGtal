@@ -249,6 +249,11 @@ namespace DGtal
     /// @return the number of faces in the structure.
     Size nbFaces() const { return myHEDS.nbFaces(); }
 
+    /// @return the euler characteristic of the triangulated surface
+    /// (a famous topological invariant that is the number of vertices
+    /// minus the number of edges plus the number of faces).
+    long Euler() const { return myHEDS.Euler(); }
+
     /// @return the property map stored in the surface that defines vertex positions.
     /// @note The returned map only references what is stored in the surface.
     PositionsMap positions()

@@ -303,8 +303,8 @@ namespace DGtal
     Size nbFaces() const { return myFaceHalfEdges.size(); }
 
     /// @return the euler characteristic of the corresponding combinatorial mesh.
-    Index Euler() const
-    { return (Index) nbVertices() - (Index) nbEdges() + (Index) nbFaces(); }
+    long Euler() const
+    { return (long) nbVertices() - (long) nbEdges() + (long) nbFaces(); }
     
     /// @param i any valid half-edge index.
     /// @return the half-edge of index \a i.
