@@ -134,19 +134,28 @@ namespace DGtal
       IndexedPropertyMap() : mySurface( 0 ), myData( 0 ) {}
 
       /// Creates an empty vertex property map
-      IndexedPropertyMap( const Self& surface, Size s, Data def_data = Data() )
-        : mySurface( &surface ),
+      /// @param aSurface the corresponding triangulated surface.
+      /// @param s one more than the maximal allowed index (i.e. nb of elements).
+      /// @param def_data the default value at initialization.
+      IndexedPropertyMap( const Self& aSurface, Size s, Data def_data = Data() )
+        : mySurface( &aSurface ),
           myData( Storage( s, def_data ) )
       {}
 
       /// Creates the IndexedPropertyMap that points to one that exists already.
-      IndexedPropertyMap( const Self& surface,
+      ///
+      /// @param aSurface the corresponding triangulated surface.
+      /// @param storage the map to reference in this property map.
+      ///
+      /// @note This method is used to give to a user the map vertex
+      /// -> position that is stored within the triangulated surface.
+      IndexedPropertyMap( const Self& aSurface,
                          Storage& storage )
-        : mySurface( &surface ),
+        : mySurface( &aSurface ),
           myData( &storage, false )
       {}
 
-      /// @return if valid, returns the associated triangulated surface.
+      /// @return the associated triangulated surface.
       const Self& surface() const
       {
         ASSERT( isValid() );
