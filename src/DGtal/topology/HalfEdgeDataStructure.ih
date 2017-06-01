@@ -142,7 +142,7 @@ build( const Size num_vertices,
   // Now that all the half-edges are created, set the remaining next_he field.
   // We can't yet handle boundary halfedges, so store them for later.
   HalfEdgeIndexRange boundary_heis;
-  for( int hei = 0; hei < myHalfEdges.size(); ++hei )
+  for( Index hei = 0; hei < myHalfEdges.size(); ++hei )
     {
       HalfEdge& he = myHalfEdges.at( hei );
       // Store boundary halfedges for later.

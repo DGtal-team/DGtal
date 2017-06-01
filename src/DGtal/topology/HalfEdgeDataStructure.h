@@ -430,7 +430,7 @@ namespace DGtal
     {
       VertexIndexRange result;
       // std::set< VertexIndex > result;
-      for( int hei = 0; hei < myHalfEdges.size(); ++hei )
+      for( Index hei = 0; hei < myHalfEdges.size(); ++hei )
         {
           const HalfEdge& he = halfEdge( hei );
           if( INVALID_INDEX == he.face )
@@ -445,7 +445,7 @@ namespace DGtal
     std::vector< Index > boundaryHalfEdgeIndices() const
     {
       std::vector< Index > result;
-      for( int hei = 0; hei < myHalfEdges.size(); ++hei )
+      for( Index hei = 0; hei < myHalfEdges.size(); ++hei )
         {
           const HalfEdge& he = halfEdge( hei );
           if( INVALID_INDEX == he.face )
@@ -459,7 +459,7 @@ namespace DGtal
     std::vector< Arc > boundaryArcs() const
     {
         std::vector< Arc > result;
-        for( int hei = 0; hei < myHalfEdges.size(); ++hei )
+        for( Index hei = 0; hei < myHalfEdges.size(); ++hei )
           {
             const HalfEdge& he = halfEdge( hei );
             if( INVALID_INDEX == he.face )
