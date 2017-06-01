@@ -191,6 +191,15 @@ namespace DGtal
       
       /// @return if the object was properly initialized.
       bool isValid() const { return mySurface != 0; }
+
+      /// @return the size of the indexed map (i.e., size of associated vector).
+      Size size() const { return myData->size(); }
+
+      /// @return a reference to the storage class (a vector of Data).
+      Storage& storage() { return *myData; }
+
+      /// @return a const reference to the storage class (a vector of Data).
+      const Storage& storage() const { return *myData; }
       
     private:
       const Self* mySurface;
