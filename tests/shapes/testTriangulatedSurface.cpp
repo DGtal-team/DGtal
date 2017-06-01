@@ -81,6 +81,13 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( trimesh.degree( 2 ) == 3 );
       REQUIRE( trimesh.degree( 3 ) == 2 );
     }
+    THEN( "Euler number is 1 as is the Euler number of a disk." )
+      {
+	REQUIRE( trimesh.nbVertices() == 4 );
+	REQUIRE( trimesh.nbEdges() == 5 );
+	REQUIRE( trimesh.nbFaces() == 2 );
+	REQUIRE( trimesh.Euler() == 1 );
+      }
     THEN( "Breadth-first visiting the mesh from vertex 3, visit 3, then {1,2}, then 0." )
       {
         BreadthFirstVisitor< TriMesh > visitor( trimesh, 3 );
