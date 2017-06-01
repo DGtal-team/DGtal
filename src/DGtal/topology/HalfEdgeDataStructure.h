@@ -48,6 +48,14 @@
 namespace DGtal
 {
 
+  /// Defines the invalid half-edge (i.e. exterior).
+  ///
+  /// @note It is defined external to the HalfEdgeDataStructure
+  /// because there was link error with gcc 4.8.4 for all variants
+  /// within HalfEdgeDataStructure (e.g. BOOST_STATIC_CONSTANT, c++
+  /// constexpr, c++ constexpr with const reference).
+  static std::size_t const HALF_EDGE_INVALID_INDEX = boost::integer_traits<std::size_t>::const_max;
+  
   /////////////////////////////////////////////////////////////////////////////
   // class HalfEdgeDataStructure
   /**
@@ -92,9 +100,15 @@ namespace DGtal
     /// The type for numbering faces
     typedef Index   FaceIndex;
 
-    /// Defines the invalid index.
-    static constexpr Index const& INVALID_INDEX = boost::integer_traits<Index>::const_max;
-    // JOL: the following line does not work (undefined reference at link time).
+    // Defines the invalid index.
+    // JOL: works with Apple LLVM version 8.1.0 (clang-802.0.42), but does not work with gcc 4.8.4
+    //
+    // static constexpr Index const& INVALID_INDEX = boost::integer_traits<Index>::const_max;
+    //
+    // JOL: does NOT work with Apple LLVM version 8.1.0 (clang-802.0.42)
+    // (undefined reference at link time).
+    // static constexpr Index const INVALID_INDEX = boost::integer_traits<Index>::const_max;
+    // static Index const INVALID_INDEX = boost::integer_traits<Index>::const_max;
     // BOOST_STATIC_CONSTANT( Index, INVALID_INDEX = boost::integer_traits<Index>::const_max );
     
     typedef std::vector<HalfEdgeIndex> HalfEdgeIndexRange;
@@ -186,11 +200,11 @@ namespace DGtal
 
       /// Default constructor. The half-edge is invalid.
       HalfEdge() :
-        toVertex( INVALID_INDEX ),
-        face( INVALID_INDEX ),
-        edge( INVALID_INDEX ),
-        opposite( INVALID_INDEX ),
-        next( INVALID_INDEX )
+        toVertex( HALF_EDGE_INVALID_INDEX ),
+        face( HALF_EDGE_INVALID_INDEX ),
+        edge( HALF_EDGE_INVALID_INDEX ),
+        opposite( HALF_EDGE_INVALID_INDEX ),
+        next( HALF_EDGE_INVALID_INDEX )
       {}
     };
 
@@ -320,16 +334,16 @@ namespace DGtal
 
     /// @param i the vertex index of some vertex.
     /// @param j the vertex index of some other vertex.
-    /// @return the index of the half-edge from \a i to \a j or INVALID_INDEX if not found.
+    /// @return the index of the half-edge from \a i to \a j or HALF_EDGE_INVALID_INDEX if not found.
     Index halfEdgeIndexFromArc( const VertexIndex i, const VertexIndex j ) const
     { return halfEdgeIndexFromArc( std::make_pair( i, j ) ); }
     
     /// @param arc any directed edge (i,j)
-    /// @return the index of the half-edge from \a i to \a j or INVALID_INDEX if not found.
+    /// @return the index of the half-edge from \a i to \a j or HALF_EDGE_INVALID_INDEX if not found.
     Index halfEdgeIndexFromArc( const Arc& arc ) const
     {
       auto result = myArc2Index.find( arc );
-      return ( result == myArc2Index.end() ) ? INVALID_INDEX : result->second;
+      return ( result == myArc2Index.end() ) ? HALF_EDGE_INVALID_INDEX : result->second;
     }
 
     /// @param[in] vi any vertex index.
@@ -399,7 +413,7 @@ namespace DGtal
       do
         {
           const HalfEdge& he = halfEdge( hei );
-          if( INVALID_INDEX != he.face ) result.push_back( he.face );
+          if( HALF_EDGE_INVALID_INDEX != he.face ) result.push_back( he.face );
           hei = halfEdge( he.opposite ).next;
         }
       while ( hei != start_hei );
@@ -418,7 +432,7 @@ namespace DGtal
     /// @return true if and only if the vertex \a vi lies on the boundary.
     bool isVertexBoundary( const VertexIndex vi ) const
     {
-      return INVALID_INDEX == halfEdge( myVertexHalfEdges[ vi ] ).face;
+      return HALF_EDGE_INVALID_INDEX == halfEdge( myVertexHalfEdges[ vi ] ).face;
     }
 
     /// @return a sequence containing the indices of the vertices
@@ -433,7 +447,7 @@ namespace DGtal
       for( Index hei = 0; hei < myHalfEdges.size(); ++hei )
         {
           const HalfEdge& he = halfEdge( hei );
-          if( INVALID_INDEX == he.face )
+          if( HALF_EDGE_INVALID_INDEX == he.face )
             result.push_back( he.toVertex );
         }
       return result;
@@ -448,7 +462,7 @@ namespace DGtal
       for( Index hei = 0; hei < myHalfEdges.size(); ++hei )
         {
           const HalfEdge& he = halfEdge( hei );
-          if( INVALID_INDEX == he.face )
+          if( HALF_EDGE_INVALID_INDEX == he.face )
             result.push_back( hei );
         }
       return result;
@@ -462,7 +476,7 @@ namespace DGtal
         for( Index hei = 0; hei < myHalfEdges.size(); ++hei )
           {
             const HalfEdge& he = halfEdge( hei );
-            if( INVALID_INDEX == he.face )
+            if( HALF_EDGE_INVALID_INDEX == he.face )
               result.push_back( arcFromHalfEdgeIndex( hei ) );
           }
         return result;
@@ -523,7 +537,7 @@ namespace DGtal
       if( it == de2fi.end() )
         {
           ASSERT( de2fi.find( Arc( vj, vi ) ) != de2fi.end() );
-          return INVALID_INDEX;
+          return HALF_EDGE_INVALID_INDEX;
         }
       return it->second;
     }
