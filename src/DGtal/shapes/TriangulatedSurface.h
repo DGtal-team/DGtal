@@ -145,14 +145,14 @@ namespace DGtal
       /// Creates the IndexedPropertyMap that points to one that exists already.
       ///
       /// @param aSurface the corresponding triangulated surface.
-      /// @param storage the map to reference in this property map.
+      /// @param aStorage the map to reference in this property map.
       ///
       /// @note This method is used to give to a user the map vertex
       /// -> position that is stored within the triangulated surface.
       IndexedPropertyMap( const Self& aSurface,
-                         Storage& storage )
+			  Storage& aStorage )
         : mySurface( &aSurface ),
-          myData( &storage, false )
+          myData( &aStorage, false )
       {}
 
       /// @return the associated triangulated surface.
