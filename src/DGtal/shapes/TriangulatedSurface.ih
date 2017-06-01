@@ -184,6 +184,7 @@ DGtal::TriangulatedSurface<TPoint>::outArcs( const Vertex & v ) const
       hei = myHEDS.halfEdge( he.opposite ).next;
     }
   while ( hei != start_hei );
+  return result;
 }
 
 //-----------------------------------------------------------------------------
@@ -202,6 +203,7 @@ DGtal::TriangulatedSurface<TPoint>::inArcs( const Vertex & v ) const
       hei = myHEDS.halfEdge( he.opposite ).next;
     }
   while ( hei != start_hei );
+  return result;
 }
 
 //-----------------------------------------------------------------------------
@@ -220,6 +222,7 @@ DGtal::TriangulatedSurface<TPoint>::facesAroundVertex( const Vertex & v ) const
       hei = myHEDS.halfEdge( he.opposite ).next;
     }
   while ( hei != start_hei );
+  return result;
 }
 
 //-----------------------------------------------------------------------------

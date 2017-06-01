@@ -418,13 +418,13 @@ namespace DGtal
     Arc opposite( const Arc & a ) const;
 
     /**
-       [tail] and [head] should be adjacent vertices.
+       [t] and [h] should be adjacent vertices.
        
-       @param tail the vertex at the tail of the arc.
-       @param head the vertex at the head of the arc.
+       @param t the vertex at the tail of the arc.
+       @param h the vertex at the head of the arc.
        @return the arc (tail, head)
     */
-    Arc arc( const Vertex & tail, const Vertex & head ) const;
+    Arc arc( const Vertex & t, const Vertex & h ) const;
 
     /**
        Convenience method for computing the face incident to a given
