@@ -1197,7 +1197,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::mouseMoveEvent( QMouseEvent * e )
   }
 
   if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier)){
-    int varX = e->x() - myRefMouseXPos; 
+    int varX = e->x() - myRefMouseXPos;
     int varY = e->y() - myRefMouseYPos;
     myLightPhi -= varY * myLigthRotationStep;
     myLightTheta -= varX * myLigthRotationStep / 2.0;

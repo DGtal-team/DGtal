@@ -132,7 +132,6 @@ std::istream & in )
     getline( in, str );
   }
   return vectResult;
-
 }
 
 //                                                                           //
