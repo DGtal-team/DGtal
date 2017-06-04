@@ -4,8 +4,10 @@
 # Note: gmp and boost already installed
 #
 brew update
-#brew install qt5 doxygen homebrew/science/hdf5 graphviz graphicsmagick fftw eigen homebrew/boneyard/libqglviewer
-brew install qt5 graphicsmagick fftw eigen homebrew/boneyard/libqglviewer
+#brew install qt5 doxygen homebrew/science/hdf5 graphviz graphicsmagick fftw eigen 
+brew install qt5 graphicsmagick fftw eigen
+# Explicit install of libqglviewer
+brew install http://liris.cnrs.fr/david.coeurjolly/misc/libqglviewer.rb
 
 ## Temporary HDF5 build issue
 export BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS";
