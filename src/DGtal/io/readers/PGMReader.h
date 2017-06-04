@@ -58,14 +58,14 @@ namespace DGtal
 /**
  * Description of class 'PGMReader' <p>
  * \brief Aim: Import a 2D or 3D using the Netpbm formats (ASCII mode).
- * - PPM: RGB 
+ * - PPM: RGB
  *  - PGM: grayscale
  *  - PPM3D: 3D variant of PPM
  *  - PGM3D: 3D variant of PGM
- * 
+ *
  *
  *  Simple example: (extract from test file testPGMReader.cpp)
- * 
+ *
  *  @code
  *  #include "DGtal/helpers/StdDefs.h"
  *  #include "DGtal/io/readers/PGMReader.h"
@@ -73,29 +73,30 @@ namespace DGtal
  *  ...
  *  string filename = "test.pgm";
  *  typedef ImageSelector < Z2i::Domain, uint>::Type Image;
- *  Image image = PGMReader<Image>::importPGMImage( filename ); 
+ *  Image image = PGMReader<Image>::importPGM( filename );
  *   @endcode
  *  You can then for instance display a threshold part of the image:
- *  @code 
- *  #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"  
+ *  @code
+ *  #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
  *  ...
  *  Z2i::DigitalSet set2d (image.domain());
- *  // Threshold all pixel in ]0, 255] in a DigitalSet   
+ *  // Threshold all pixel in ]0, 255] in a DigitalSet
  *  SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
  *  Board2D board;
- *  board << image.domain() << set2d; // display domain and set   
+ *  board << image.domain() << set2d; // display domain and set
  *  @endcode
  *
  * @tparam TImageContainer the type of the image container
  *
- * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
+ * @tparam TFunctor the type of functor used in the import (by default set to
+ * functors::Cast< TImageContainer::Value>) .
  *
  */
-  template <typename TImageContainer, 
-	    typename TFunctor = functors::Cast< typename TImageContainer::Value > >
-  struct PGMReader
-  {
-    // ----------------------- Standard services ------------------------------
+template <typename TImageContainer,
+          typename TFunctor = functors::Cast<typename TImageContainer::Value>>
+struct PGMReader
+{
+  // ----------------------- Standard services ------------------------------
   public:
 
     typedef TImageContainer ImageContainer;

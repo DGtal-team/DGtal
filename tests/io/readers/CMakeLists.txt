@@ -49,7 +49,8 @@ IF(ITK_FOUND)
 
   SET(DGTAL_TESTS_SRC_IO_READERS_DICOM
     testDicomReader
-    )
+    testITKReader
+  )
 
   FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_DICOM})
     add_executable(${FILE} ${FILE})

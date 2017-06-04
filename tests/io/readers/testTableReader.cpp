@@ -65,7 +65,28 @@ bool testNumberReader()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
   trace.endBlock();
-  
+
+  trace.beginBlock( "Testing reading all numbers from each lines  ..." );
+
+  std::vector<vector<unsigned int>> vectLineIntegers =
+  TableReader<unsigned int>::getLinesElementsFromFile( filename );
+  for ( unsigned int k = 0; k < vectLineIntegers.size(); k++ )
+  {
+    for ( unsigned int l = 0; l < vectLineIntegers.at( k ).size(); l++ )
+    {
+      trace.info() << " integer: " << vectLineIntegers.at( k ).at( l ) << " ";
+    }
+    trace.info() << endl;
+  }
+
+  nbok += ( vectLineIntegers.at( 0 ).at( 0 ) == 1 &&
+            vectLineIntegers.at( 2 ).at( 2 ) == 9 &&
+            vectLineIntegers.at( 3 ).at( 2 ) == 1 )
+          ? 1
+          : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  trace.endBlock();
 
   trace.beginBlock ( "Testing reading string ..." );  
 
