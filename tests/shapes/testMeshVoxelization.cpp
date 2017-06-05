@@ -38,8 +38,6 @@
 using namespace DGtal;
 using namespace Z3i;
 
-#define SEP 26
-
 TEST_CASE("Basic voxelization test", "[voxelization]")
 {
   using Space3Dint = SpaceND<3>;
@@ -49,8 +47,10 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
   using PointR2  = PointVector<2, double>;
   using PointZ3  = PointVector<3, int>;
   using DigitalSet = DigitalSetBySTLSet<Domain>;
-  using MeshVoxelizer = MeshVoxelizer< DigitalSet, SEP>;
-  
+
+  using MeshVoxelizer26 = MeshVoxelizer< DigitalSet, 26>;
+  using MeshVoxelizer6 = MeshVoxelizer< DigitalSet, 6>;
+
   // ---------------------------------------------------------
   SECTION("Test distance point/plan 3D")
   {
@@ -58,19 +58,19 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     const PointR3 A(38.6908 , 14.5441 , -0.71205);
     const PointR3 B(34.6171 , 13.5999 , 2.44455);
     const PointR3 C(37.4205 , 2.44239 , 6.31301);
-    
+
     // Point v
     const PointZ3 v(35, 2, 5);
-    
+
     const VectorR3 e1 = A - B;
     const VectorR3 e2 = A - C;
-    
-    double distance = MeshVoxelizer::distance(A, e1.crossProduct(e2), v);
-    
+
+    double distance = MeshVoxelizer6::distance(A, e1.crossProduct(e2), v);
+
     REQUIRE( 2.40 < distance );
     REQUIRE( distance < 2.41 );
   }
-  
+
   // ---------------------------------------------------------
   SECTION("Test if 2D point is inside triangle 2D")
   {
@@ -78,83 +78,122 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     PointR2 A(1.0, 1.0);
     PointR2 B(2.0, 3.0);
     PointR2 C(3.0, 1.0);
-    
+
     typedef InHalfPlaneBySimple3x3Matrix<PointR2, double> OrientationFunctor;
     OrientationFunctor orientationFunctor;
-    
+
     //geometric predicate
     PredicateFromOrientationFunctor2<OrientationFunctor> pointPredicate( orientationFunctor );
-    
+
     if(! pointPredicate(A, B, C))
     {
       PointR2 tmp = A;
       A = C;
       C = tmp;
     }
-    
+
     // Test if point v is inside triangle ABC
     // 0 : outside
     // 1 : inside
     // 2 : on edge
     // 3 : on vertex
     PointR2 v;
-    
+
     v[0] = 3.0;
     v[1] = 3.0;
-    REQUIRE(MeshVoxelizer::pointIsInside2DTriangle(A, B, C, v) == 0); // outside
-    
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 0); // outside
+
     v[0] = 2.0;
     v[1] = 2.0;
-    REQUIRE(MeshVoxelizer::pointIsInside2DTriangle(A, B, C, v) == 1); // inside
-    
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 1); // inside
+
     v[0] = 2;
     v[1] = 1;
-    REQUIRE(MeshVoxelizer::pointIsInside2DTriangle(A, B, C, v) == 2); // on edge
-    
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 2); // on edge
+
     v[0] = 3;
     v[1] = 1;
-    REQUIRE(MeshVoxelizer::pointIsInside2DTriangle(A, B, C, v) == 3); // on vertex
-    
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 3); // on vertex
+
     // another triangle
     A[0] = -0.891282; A[1] = 9.91201;
     B[0] = -1.40823; B[1] = 9.91261;
     C[0] = -1.36963; C[1] = 9.37414;
-    
+
     v[0] = -1.16961;
     v[1] = 9.83039;
-    REQUIRE(MeshVoxelizer::pointIsInside2DTriangle(A, B, C, v) == 1); // inside
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 1); // inside
   }
-  
+
   // ---------------------------------------------------------
   SECTION("Test if 3D point is inside voxel")
   {
     // Triangle ABC in R2
     PointR3 P(-0.89, 9.91, 0.86);
     PointZ3 v(-1, 10, 1);
-    
-    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == true); // inside
-    
+
+    REQUIRE(MeshVoxelizer6::pointIsInsideVoxel(P, v) == true); // inside
+
     P[0] = -1.41;
     P[1] = 9.91;
-    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == true); // inside
-    
+    REQUIRE(MeshVoxelizer6::pointIsInsideVoxel(P, v) == true); // inside
+
     P[0] = -1.37;
     P[1] = 9.37;
-    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == false); // outside
-    
+    REQUIRE(MeshVoxelizer6::pointIsInsideVoxel(P, v) == false); // outside
+
     P[0] = -1.17;
     P[1] = 9.83;
     P[2] = 0;
-    REQUIRE(MeshVoxelizer::pointIsInsideVoxel(P, v) == false); // outside
+    REQUIRE(MeshVoxelizer6::pointIsInsideVoxel(P, v) == false); // outside
   }
-  
+
   // ---------------------------------------------------------
-  SECTION("Voxelization of a single triange")
+  SECTION("26-sep voxelization of a single triangle")
   {
     Domain domain(Point(0,0,0), Point(10,10,10));
     DigitalSet outputSet(domain);
-    MeshVoxelizer voxelizer;
+    MeshVoxelizer26 voxelizer;
     voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
-    REQUIRE( outputSet.size() == 12);
+
+    Display3D<> viewer;
+    viewer << outputSet;
+    viewer >> "26_outmesh.off";
+
+    REQUIRE( outputSet.size() == 46 );
   }
+
+  // ---------------------------------------------------------
+  SECTION("6-sep voxelization of a single triangle")
+  {
+    Domain domain(Point(0,0,0), Point(10,10,10));
+    DigitalSet outputSet(domain);
+    MeshVoxelizer6 voxelizer;
+    voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
+
+    Display3D<> viewer;
+    viewer << outputSet;
+    viewer >> "6_outmesh.off";
+
+    REQUIRE( outputSet.size() == 21 );
+  }
+
+  // ---------------------------------------------------------
+  // SECTION("6-sep voxelization of octaflower")
+  // {
+  //   Mesh<PointR3> aMesh;
+  //   std::string filename = "m_bunny.off";
+  //   MeshReader<PointR3>::importOFFFile(filename.c_str(), aMesh);
+
+  //   int res = 128;
+  //   Domain domain(PointZ3(-res, -res, -res), PointZ3(res, res, res));
+  //   DigitalSet outputSet(domain);
+  //   MeshVoxelizer6 voxelizer;
+
+  //   voxelizer.voxelize(outputSet, aMesh, 128*4);
+
+  //   Display3D<> viewer;
+  //   viewer << outputSet;
+  //   viewer >> "6_m_bunny.off";
+  // }
 }

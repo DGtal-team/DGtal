@@ -43,26 +43,26 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   /**
-   Description of template class 'MeshVoxelizer' 
-   
+   Description of template class 'MeshVoxelizer'
+
    \brief Aim: A class for computing the digitization of a triangle or
    a Mesh.
-   
+
    This class is parametrized by a Separation strategy (either 6 or
    26). This value corresponds to the separability of a digitized
    continuous plane. For instance, if the value is set to 6, then
    the digitization of an Euclidean plane is such that no 6-path
    exists to go from one side to the other of the Euclidean plane (see
    @cite KletteRosenfeld_book).
-  
+
    From the separability parameter, a template is constructed. A voxel
    belongs to the digitization if and only if the template centered at
    a given voxel intersects the triangle.
 
-   This approach is a CPU straightforward implementation of 
+   This approach is a CPU straightforward implementation of
    @cite Laine13.
 
    6 and 26 templates are the following ones:
@@ -70,24 +70,26 @@ namespace DGtal
    @image html 6-sep.png "Template for 6-separating digitization"
    @image html 26-sep.png "Template for 26-separating digitization"
 
-   
+
    @tparam TDigitalSet a DigitalSet (model of concepts::CDigitalSet)
    @tparam Separation strategy of the voxelization (6 or 26)
    */
   template <typename TDigitalSet, size_t Separation = 6>
   class MeshVoxelizer
   {
-    
+
   public:
-    
+
     ///Concept Checking
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSet> ));
 
     ///Digital Set Type
     typedef TDigitalSet DigitalSet;
     BOOST_STATIC_ASSERT_MSG( DigitalSet::Space::dimension == 3, "DigitalSet dimension must be 3");
-    
-    
+
+    ///Separation Checking
+    BOOST_STATIC_ASSERT_MSG( Separation == 6 || Separation == 26, "Separation must be 6 or 26");
+
     /****** Associated types *********************/
     using Space = typename DigitalSet::Space;
     using Space2D = SpaceND<2, typename Space::Integer>;
@@ -99,10 +101,9 @@ namespace DGtal
     using PointZ3  = typename Space::Point;
     using OrientationFunctor = InHalfPlaneBySimple3x3Matrix<PointR2, double>;
     /*********************************************/
-  
-    
+
   private:
-    
+
     ///Internal Edge structure
     struct Edge
     {
@@ -110,14 +111,14 @@ namespace DGtal
       Edge() {}
       Edge(PointR3 mf, PointR3 ms) : myFirst(mf), mySecond(ms) {}
     };
-    
+
   public:
-    
+
     /**
      * Constructor of the voxelizer
      */
     MeshVoxelizer();
-    
+
     // ----------------------- Standard services ------------------------------
     /**
      * Voxelize the mesh into the digital set.
@@ -129,7 +130,7 @@ namespace DGtal
     void voxelize(DigitalSet &outputSet,
                   const Mesh<PointR3> &aMesh,
                   const double scaleFactor = 1.0);
-    
+
     /**
      * Voxelize a unique triangle (a,b,c) into the digital set.
      * voxels are inserted to the @e outputSet.
@@ -144,14 +145,14 @@ namespace DGtal
     void voxelize(DigitalSet &outputSet,
                   const PointR3 &a, const PointR3 &b, const PointR3 &c,
                   const double scaleFactor = 1.0);
-    
-    
- 
+
+
+
     // ----------------------- Internal services ------------------------------
 
     ///Enum type when deciding if a 2D point belongs to a 2D triangle.
-    enum TriangleOrientation { OUTSIDE, INSIDE, ONEDGE,ONVERTEX};
-    
+    enum TriangleOrientation { OUTSIDE, INSIDE, ONEDGE, ONVERTEX};
+
     /**
      * Compute (unsigned) distance between @a p and the Euclidean plane
      * defined by normal vector @a n and point @a M
@@ -164,7 +165,7 @@ namespace DGtal
     double distance(const PointR3& M,
                     const VectorR3& n,
                     const PointZ3& p) ;
-    
+
     /**
      * Predicate to know if @a p (2D point) is inside ABC (2D triangle)
      * @param A Point A
@@ -178,7 +179,7 @@ namespace DGtal
                                                 const PointR2& B,
                                                 const PointR2& C,
                                                 const PointR2& p) ;
-    
+
     /**
      * Predicate to decide if a real point @a P is inside voxel @a v
      * @param P point P
@@ -187,8 +188,8 @@ namespace DGtal
      */
     static
     bool pointIsInsideVoxel(const PointR3& P,
-                             const PointZ3& v) ;
-    
+                            const PointZ3& v) ;
+
     /**
      * Voxelize ABC to the digitalSet
      * @param [out] outputSet the set that collects the voxels.
@@ -206,9 +207,9 @@ namespace DGtal
                           const std::pair<PointR3, PointR3>& bbox)
     {
       // tag dispatching
-      return voxelizeTriangle(outputSet, std::integral_constant<size_t, Separation>{}, A, B, C, n, bbox);
+      voxelizeTriangle(outputSet, std::integral_constant<size_t, Separation>{}, A, B, C, n, bbox);
     }
-    
+
     /**
      * VoxelizeTriangle specialization for 6-separated
      * @param [out] outputSet the set that collects the voxels.
@@ -225,7 +226,7 @@ namespace DGtal
                           const PointR3& C,
                           const VectorR3& n,
                           const std::pair<PointR3, PointR3>& bbox);
-    
+
     /**
      * VoxelizeTriangle specialization for 26-separated
      * @param [out] outputSet the set that collects the voxels.
@@ -243,14 +244,16 @@ namespace DGtal
                           const VectorR3& n,
                           const std::pair<PointR3, PointR3>& bbox);
 
-  
     // ----------------------- Members ------------------------------
 
   private:
-    
+
     ///Intersection target
     std::vector<Edge> myIntersectionTarget;
-   
+
+    //For 26 separation
+    std::vector<VectorR3> myE1base;
+    std::vector<VectorR3> myE2base;
   };
 }
 
