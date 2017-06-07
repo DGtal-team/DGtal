@@ -51,6 +51,8 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
   using MeshVoxelizer26 = MeshVoxelizer< DigitalSet, 26>;
   using MeshVoxelizer6 = MeshVoxelizer< DigitalSet, 6>;
 
+  using TriOr = MeshVoxelizer6::TriangleOrientation;
+
   // ---------------------------------------------------------
   SECTION("Test distance point/plan 3D")
   {
@@ -101,19 +103,19 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
 
     v[0] = 3.0;
     v[1] = 3.0;
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 0); // outside
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::OUTSIDE);
 
     v[0] = 2.0;
     v[1] = 2.0;
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 1); // inside
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::INSIDE);
 
     v[0] = 2;
     v[1] = 1;
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 2); // on edge
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::ONEDGE);
 
     v[0] = 3;
     v[1] = 1;
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 3); // on vertex
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::ONVERTEX);
 
     // another triangle
     A[0] = -0.891282; A[1] = 9.91201;
@@ -122,7 +124,7 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
 
     v[0] = -1.16961;
     v[1] = 9.83039;
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == 1); // inside
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::INSIDE);
   }
 
   // ---------------------------------------------------------
@@ -154,6 +156,7 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     Domain domain(Point(0,0,0), Point(10,10,10));
     DigitalSet outputSet(domain);
     MeshVoxelizer26 voxelizer;
+
     voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
 
     Display3D<> viewer;
@@ -169,6 +172,7 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     Domain domain(Point(0,0,0), Point(10,10,10));
     DigitalSet outputSet(domain);
     MeshVoxelizer6 voxelizer;
+
     voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
 
     Display3D<> viewer;
@@ -179,21 +183,21 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
   }
 
   // ---------------------------------------------------------
-  // SECTION("6-sep voxelization of octaflower")
-  // {
-  //   Mesh<PointR3> aMesh;
-  //   std::string filename = "m_bunny.off";
-  //   MeshReader<PointR3>::importOFFFile(filename.c_str(), aMesh);
+  SECTION("6-sep voxelization of octaflower")
+  {
+    Mesh<PointR3> aMesh;
+    std::string filename = "m_octaflower.off";
+    MeshReader<PointR3>::importOFFFile(filename.c_str(), aMesh);
 
-  //   int res = 128;
-  //   Domain domain(PointZ3(-res, -res, -res), PointZ3(res, res, res));
-  //   DigitalSet outputSet(domain);
-  //   MeshVoxelizer6 voxelizer;
+    int res = 128;
+    Domain domain(PointZ3(-res, -res, -res), PointZ3(res, res, res));
+    DigitalSet outputSet(domain);
+    MeshVoxelizer6 voxelizer;
 
-  //   voxelizer.voxelize(outputSet, aMesh, 128*4);
+    voxelizer.voxelize(outputSet, aMesh, res/aMesh.getBoundingBox().second[0]);
 
-  //   Display3D<> viewer;
-  //   viewer << outputSet;
-  //   viewer >> "6_m_bunny.off";
-  // }
+    Display3D<> viewer;
+    viewer << outputSet;
+    viewer >> "26_m_octaflower.off";
+  }
 }

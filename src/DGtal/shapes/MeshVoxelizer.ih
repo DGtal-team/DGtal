@@ -80,7 +80,8 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::MeshVoxelizer()
     // base
     myE1base.resize(4);
     myE2base.resize(4);
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < 4; i++)
+    {
       auto& x = myNormal[i][0];
       auto& y = myNormal[i][1];
       auto& z = myNormal[i][2];
@@ -135,9 +136,8 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInside2DTriangle(const Poi
   // 3 : on vertex
   if( ( val1 == 0 && val2 == 0 ) ||
       ( val1 == 0 && val3 == 0 ) ||
-      ( val2 == 0 && val3 == 0 ) ) {
+      ( val2 == 0 && val3 == 0 ) )
     return ONVERTEX;
-  }
   else if(val1 == 0 || val2 == 0 || val3 == 0)
     return ONEDGE;
   else if(val1 < 0 || val2 < 0 || val3 < 0)
@@ -185,7 +185,8 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
   for(Edge& target : myIntersectionTarget)
   {
     // 2D projection of A ; B ; C
-    if(target.myFirst[0] == 0.5) {
+    if(target.myFirst[0] == 0.5)
+    {
       // ignore X composante
       AA[0] = A[1];
       BB[0] = B[1];
@@ -250,7 +251,8 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
           PointR2 pp;
 
           // 2d projection of current voxel
-          if(target.myFirst[0] == 0.5) {
+          if(target.myFirst[0] == 0.5)
+          {
             // ignore X composante
             pp[0] = v[1];
             pp[1] = v[2];
