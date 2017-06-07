@@ -86,7 +86,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::MeshVoxelizer()
       auto& z = myNormal[i][2];
 
       myE1base[i] = std::move( VectorR3(-y, x, 0).getNormalized() );
-      myE2base[i] = std::move( VectorR3(-x*z, -y*x, x*x + y*y).getNormalized() );
+      myE2base[i] = std::move( VectorR3(-x*z, -y*z, x*x + y*y).getNormalized() );
     }
   }
 }
