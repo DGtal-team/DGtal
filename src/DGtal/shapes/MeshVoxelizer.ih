@@ -34,67 +34,6 @@
 // ---------------------------------------------------------
 template <typename TDigitalSet, size_t Separation>
 inline
-DGtal::MeshVoxelizer<TDigitalSet, Separation>::MeshVoxelizer()
-{
-
-  if(Separation == 6)
-  {
-    // 26 connected - 6 separated
-    PointR3 AA(0.5, 0, 0);
-    PointR3 BB(-0.5, 0, 0);
-    PointR3 CC(0, 0, 0.5);
-    PointR3 DD(0, 0, -0.5);
-    PointR3 EE(0, 0.5, 0);
-    PointR3 FF(0, -0.5, 0);
-
-    myIntersectionTarget.push_back( Edge(AA, BB) );
-    myIntersectionTarget.push_back( Edge(CC, DD) );
-    myIntersectionTarget.push_back( Edge(EE, FF) );
-  }
-  else if(Separation == 26)
-  {
-    // 6 connected - 26 separated
-    PointR3 AA(-0.5, 0.5, 0.5);
-    PointR3 BB(0.5, 0.5, 0.5);
-    PointR3 CC(0.5, 0.5, -0.5);
-    PointR3 DD(-0.5, 0.5, -0.5);
-    PointR3 EE(-0.5, -0.5, 0.5);
-    PointR3 FF(0.5, -0.5, 0.5);
-    PointR3 GG(0.5, -0.5, -0.5);
-    PointR3 HH(-0.5, -0.5, -0.5);
-
-    myIntersectionTarget.push_back( Edge(AA, GG) );
-    myIntersectionTarget.push_back( Edge(BB, HH) );
-    myIntersectionTarget.push_back( Edge(CC, EE) );
-    myIntersectionTarget.push_back( Edge(DD, FF) );
-
-    // compute base foreach normal
-
-    // normal
-    std::vector<VectorR3> myNormal(4);
-    myNormal[0] = VectorR3( 1, -1, -1).getNormalized(); // AG
-    myNormal[1] = VectorR3(-1, -1, -1).getNormalized(); // BH
-    myNormal[2] = VectorR3(-1, -1,  1).getNormalized(); // CE
-    myNormal[3] = VectorR3( 1, -1,  1).getNormalized(); // DF
-
-    // base
-    myE1base.resize(4);
-    myE2base.resize(4);
-    for(int i = 0; i < 4; i++)
-    {
-      auto& x = myNormal[i][0];
-      auto& y = myNormal[i][1];
-      auto& z = myNormal[i][2];
-
-      myE1base[i] = std::move( VectorR3(-y, x, 0).getNormalized() );
-      myE2base[i] = std::move( VectorR3(-x*z, -y*z, x*x + y*y).getNormalized() );
-    }
-  }
-}
-
-// ---------------------------------------------------------
-template <typename TDigitalSet, size_t Separation>
-inline
 double
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::distance(const PointR3& M,
                                                         const VectorR3& n,
@@ -153,12 +92,13 @@ bool
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInsideVoxel(const PointR3& P,
                                                                   const PointZ3& v)
 {
+  bool isInside = true;
+
   PointR3 PP = P - v;
   for(int i(0); i < 3; i++)
-    if(! (-0.5 <= PP[i] && PP[i] <= 0.5) )
-      return false;
+    isInside = isInside && ( -0.5 <= PP[i] && PP[i] <= 0.5 );
 
-  return true;
+  return isInside;
 }
 
 // ---------------------------------------------------------
@@ -166,7 +106,6 @@ template <typename TDigitalSet, size_t Separation>
 inline
 void
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outputSet,
-                                                                std::integral_constant<size_t, 6>,
                                                                 const PointR3& A,
                                                                 const PointR3& B,
                                                                 const PointR3& C,
@@ -178,153 +117,25 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
   //geometric predicate
   PredicateFromOrientationFunctor2<OrientationFunctor> pointPredicate( orientationFunctor );
 
-  PointR2 AA, BB, CC;
-  PointZ3 v;
-
   // foreach intersection target
-  for(Edge& target : myIntersectionTarget)
+  for(unsigned int i(0); i < myIntersectionTarget().size(); i++)
   {
     // 2D projection of A ; B ; C
-    if(target.myFirst[0] == 0.5)
-    {
-      // ignore X composante
-      AA[0] = A[1];
-      BB[0] = B[1];
-      CC[0] = C[1];
-
-      AA[1] = A[2];
-      BB[1] = B[2];
-      CC[1] = C[2];
-    }
-    else if(target.myFirst[1] == 0.5)
-    {
-      // ignore Y composante
-      AA[0] = A[0];
-      BB[0] = B[0];
-      CC[0] = C[0];
-
-      AA[1] = A[2];
-      BB[1] = B[2];
-      CC[1] = C[2];
-    }
-    else
-    {
-      // ignore Z composante
-      AA[0] = A[0];
-      BB[0] = B[0];
-      CC[0] = C[0];
-
-      AA[1] = A[1];
-      BB[1] = B[1];
-      CC[1] = C[1];
-    }
+    PointR2 AA = myIntersectionTarget.project(i, A);
+    PointR2 BB = myIntersectionTarget.project(i, B);
+    PointR2 CC = myIntersectionTarget.project(i, C);
 
     // check orientation
     if(! pointPredicate(AA, BB, CC))
       std::swap(AA, CC);
 
     // traverse all voxel of current face bounding box
-    v = bbox.first;
+    PointZ3 v = bbox.first;
     for(; v[1] <= bbox.second[1]; v[1]++)
       for(v[0] = bbox.first[0]; v[0] <= bbox.second[0]; v[0]++)
         for(v[2] = bbox.first[2]; v[2] <= bbox.second[2]; v[2]++)
         {
-          // check if points are on different side
-          target.myFirst += v;
-          target.mySecond += v;
-
-          VectorR3 a2myFirst = A - target.myFirst;
-          VectorR3 a2mySecond = A - target.mySecond;
-
-          VectorR3 w = target.mySecond - target.myFirst;
-          double den = n.dot(w);
-
-          bool isSameSide = den == 0 // target on plane
-            || ( a2myFirst.dot(n) * a2mySecond.dot(n) > 0 ); // target on one side
-
-          target.myFirst -= v;
-          target.mySecond -= v;
-
-          if( isSameSide )
-            continue;
-
-          PointR2 pp;
-
-          // 2d projection of current voxel
-          if(target.myFirst[0] == 0.5)
-          {
-            // ignore X composante
-            pp[0] = v[1];
-            pp[1] = v[2];
-          }
-          else if(target.myFirst[1] == 0.5)
-          {
-            // ignore Y composante
-            pp[0] = v[0];
-            pp[1] = v[2];
-          }
-          else
-          {
-            // ignore Z composante
-            pp[0] = v[0];
-            pp[1] = v[1];
-          }
-
-          // check if current voxel projection is inside ABC projection
-          if(pointIsInside2DTriangle(AA, BB, CC, pp) != OUTSIDE)
-            outputSet.insert(v);
-        }
-  }
-}
-
-// ---------------------------------------------------------
-template <typename TDigitalSet, size_t Separation>
-inline
-void
-DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outputSet,
-                                                                std::integral_constant<size_t, 26>,
-                                                                const PointR3& A,
-                                                                const PointR3& B,
-                                                                const PointR3& C,
-                                                                const VectorR3& n,
-                                                                const std::pair<PointR3, PointR3>& bbox)
-{
-  OrientationFunctor orientationFunctor;
-
-  //geometric predicate
-  PredicateFromOrientationFunctor2<OrientationFunctor> pointPredicate( orientationFunctor );
-
-  double d = n[0] * C[0] + n[1] * C[1] + n[2] * C[2];
-  d *= -1;
-
-  PointR2 AA, BB, CC;
-  PointZ3 v;
-  PointR2 pp;
-
-  // foreach intersection target
-  for(unsigned int i(0); i < myIntersectionTarget.size(); i++)
-  {
-    Edge& target = myIntersectionTarget[i];
-
-    // 2D projection of A ; B ; C
-    AA[0] = myE1base[i].dot(A);
-    AA[1] = myE2base[i].dot(A);
-
-    BB[0] = myE1base[i].dot(B);
-    BB[1] = myE2base[i].dot(B);
-
-    CC[0] = myE1base[i].dot(C);
-    CC[1] = myE2base[i].dot(C);
-
-    if(! pointPredicate(AA, BB, CC))
-      std::swap(AA, CC);
-
-    // traverse all voxel of current face bounding box
-    v = bbox.first;
-    for(; v[1] <= bbox.second[1]; v[1]++)
-      for(v[0] = bbox.first[0]; v[0] <= bbox.second[0]; v[0]++)
-        for(v[2] = bbox.first[2]; v[2] <= bbox.second[2]; v[2]++)
-        {
+          Edge target = myIntersectionTarget(i);
           // check if points are on different side
           target.myFirst += v;
           target.mySecond += v;
@@ -340,21 +151,13 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
 
           // if target is on the same side -> skip current iteration
           if( isSameSide )
-          {
-            target.myFirst -= v;
-            target.mySecond -= v;
             continue;
-          }
 
-          pp[0] = myE1base[i].dot(target.myFirst);
-          pp[1] = myE2base[i].dot(target.myFirst);
+          PointR2 pp = myIntersectionTarget.project(i, v);
 
           // check if current voxel projection is inside ABC projection
-          if( pointIsInside2DTriangle(AA, BB, CC, pp) != OUTSIDE )
+          if(pointIsInside2DTriangle(AA, BB, CC, pp) != OUTSIDE)
             outputSet.insert(v);
-
-          target.myFirst -= v;
-          target.mySecond -= v;
         }
   }
 }
@@ -409,16 +212,9 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
                                                         const Mesh<PointR3> &aMesh,
                                                         const double scaleFactor)
 {
-  MeshFace currentFace;
-  std::pair<PointR3, PointR3> bbox;
-
-  VectorR3 n, e1, e2;
-  PointR3 A, B, C;
-
   for(unsigned int i = 0; i < aMesh.nbFaces(); i++)
   {
-    //std::cout << "\rvoxelize face [" << i << "] out of [" << aMesh.nbFaces() << "]" << std::flush;
-    currentFace = aMesh.getFace(i);
+    MeshFace currentFace = aMesh.getFace(i);
     voxelize(outputSet, aMesh.getVertex(currentFace[0]),
              aMesh.getVertex(currentFace[1]),
              aMesh.getVertex(currentFace[2]),
