@@ -135,7 +135,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
       for(v[0] = bbox.first[0]; v[0] <= bbox.second[0]; v[0]++)
         for(v[2] = bbox.first[2]; v[2] <= bbox.second[2]; v[2]++)
         {
-          Edge target = myIntersectionTarget(i);
+          auto target = myIntersectionTarget(i);
           // check if points are on different side
           target.myFirst += v;
           target.mySecond += v;

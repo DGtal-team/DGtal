@@ -35,6 +35,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/shapes/Mesh.h"
+#include "DGtal/shapes/IntersectionTarget.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
@@ -100,113 +101,8 @@ namespace DGtal
     using PointR2  = typename Space2D::RealPoint;
     using PointZ3  = typename Space::Point;
     using OrientationFunctor = InHalfPlaneBySimple3x3Matrix<PointR2, double>;
+    using IntersectionTarget = typename IntersectionTargetTrait<Space, Separation, 1>::Type;
     /*********************************************/
-
-  private:
-
-    ///Internal Edge structure
-    struct Edge
-    {
-      PointR3 myFirst, mySecond;
-      Edge() {}
-      Edge(const PointR3& mf, const PointR3& ms) : myFirst(mf), mySecond(ms) {}
-      Edge(const Edge&) = default;
-    };
-
-    /**
-     * Internal Intersection Target structure
-     *
-     * @tparam Dimension dimension of the intersection target
-     * @tparam Separation strategy of the voxelization (6 or 26)
-     * @tparam Dummy dummy parameter just to be able to specialize inside template class (FIXME with another location)
-     */
-    template<size_t Sep, size_t Dimension = 1, typename Dummy = void>
-    struct IntersectionTarget { };
-
-    /**
-     * Specialization for 6-separated with 1D intersection target
-     */
-    template<typename Dummy>
-    struct IntersectionTarget<6, 1, Dummy>
-    {
-      const std::array<Edge, 3> myTarget {{
-          { { 0.5, 0.0, 0.0 }, { -0.5,  0.0,  0.0} } , // AB
-          { { 0.0, 0.0, 0.5 }, {  0.0,  0.0, -0.5} } , // CD
-          { { 0.0, 0.5, 0.0 }, {  0.0, -0.5,  0.0} }   // EF
-        }};
-
-      const std::array<Edge, 3>& operator()() {
-        return myTarget;
-      }
-
-      const Edge& operator()(int i) {
-        return myTarget[i];
-      }
-      
-      PointR2 project(int i, const PointR3& p) const {
-        ASSERT( 0 <= i && i <= 2 );
-
-        if(myTarget[i].myFirst[0] == 0.5)
-          return { p[1], p[2] }; // ignore x
-        else if(myTarget[i].myFirst[1] == 0.5)
-          return { p[0], p[2] }; // ignore y
-        else
-          return { p[0], p[1] }; // ignore z
-      }
-    };
-
-    /**
-     * Specialization for 26-separated with 1D intersection target
-     */
-    template<typename Dummy>
-    struct IntersectionTarget<26, 1, Dummy>
-    {
-      const std::array<Edge, 4> myTarget {{
-          { { -0.5, 0.5,  0.5}, {  0.5, -0.5, -0.5} } , // AG
-          { {  0.5, 0.5,  0.5}, { -0.5, -0.5, -0.5} } , // BH
-          { {  0.5, 0.5, -0.5}, { -0.5, -0.5,  0.5} } , // CE
-          { { -0.5, 0.5, -0.5}, {  0.5, -0.5,  0.5} }   // DF
-        }};
-
-      std::array<VectorR3, 4> myE1base;
-      std::array<VectorR3, 4> myE2base;
-
-      IntersectionTarget<26, 1, Dummy>()
-      {
-        double coef = 1. / std::sqrt(3.);
-
-        std::array<VectorR3, 4> myNormal;
-
-        myNormal[0] = {  coef, -coef, -coef };
-        myNormal[1] = { -coef, -coef, -coef };
-        myNormal[2] = { -coef, -coef,  coef };
-        myNormal[3] = {  coef, -coef,  coef };
-
-        for(int i = 0; i < 4; i++)
-        {
-          auto& x = myNormal[i][0];
-          auto& y = myNormal[i][1];
-          auto& z = myNormal[i][2];
-
-          myE1base[i] = std::move( VectorR3(-y, x, 0).getNormalized() );
-          myE2base[i] = std::move( VectorR3(-x*z, -y*z, x*x + y*y).getNormalized() );
-        }
-      }
- 
-      const std::array<Edge, 4>& operator()() const {
-        return myTarget;
-      }
-
-      const Edge& operator()(int i) const {
-        return myTarget[i];
-      }
-
-      PointR2 project(int i, const PointR3& p) const {
-        ASSERT( 0 <= i && i <= 3 );
-
-        return { myE1base[i].dot(p), myE2base[i].dot(p) };
-      }
-    };
 
   public:
 
@@ -307,7 +203,7 @@ namespace DGtal
   private:
 
     ///Intersection target
-    IntersectionTarget<Separation, 1> myIntersectionTarget;
+    IntersectionTarget myIntersectionTarget;
   };
 }
 
