@@ -159,10 +159,6 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
 
     voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
 
-    // Display3D<> viewer;
-    // viewer << outputSet;
-    // viewer >> "26_outmesh.off";
-
     REQUIRE( outputSet.size() == 46 );
   }
 
@@ -175,29 +171,6 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
 
     voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
 
-    // Display3D<> viewer;
-    // viewer << outputSet;
-    // viewer >> "6_outmesh.off";
-
     REQUIRE( outputSet.size() == 21 );
   }
-
-  // ---------------------------------------------------------
-  // SECTION("6-sep voxelization of octaflower")
-  // {
-  //   Mesh<PointR3> aMesh;
-  //   std::string filename = "m_octaflower.off";
-  //   MeshReader<PointR3>::importOFFFile(filename.c_str(), aMesh);
-
-  //   int res = 128;
-  //   Domain domain(PointZ3(-res, -res, -res), PointZ3(res, res, res));
-  //   DigitalSet outputSet(domain);
-  //   MeshVoxelizer6 voxelizer;
-
-  //   voxelizer.voxelize(outputSet, aMesh, res/aMesh.getBoundingBox().second[0]);
-
-  //   Display3D<> viewer;
-  //   viewer << outputSet;
-  //   viewer >> "26_m_octaflower.off";
-  // }
 }
