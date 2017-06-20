@@ -81,7 +81,7 @@ struct AngleLessCell
 template <typename Shape>
 void digitize(Shape& shape, std::vector<SCell>& sCells0, std::vector<SCell>& sCells1, KSpace& kspace, const double h)
 {
-	typedef typename DGtal::GaussDigitizer<Space, Shape> Digitizer;
+  typedef typename DGtal::GaussDigitizer<Space, Shape> Digitizer;
   typedef SurfelAdjacency<2> SurfelAdj;
   typedef Surfaces<KSpace> Surf;
 
@@ -136,13 +136,10 @@ bool test_shape(Shape& shape, const double h, const double epsilon)
     inner *= h;
     outer *= h;
 
-    RealPoint q = shape.segmentProjection(inner, outer, epsilon);
-
-    //trace.info() << (q - h * canonicSCellEmbedder(sCells0[i])).norm() << std::endl;
+    RealPoint q = shape.findIntersection(inner, outer, epsilon);
 
     const double norm2 = (q - h * canonicSCellEmbedder(sCells0[i])).norm();
 
-    //if (norm2 > sqrt(2) * h) trace.info() << sqrt(2) * epsilon << " < " << norm2 << std::endl;
     if (norm2 > sqrt(2.0) * h) return false;
   }
 
@@ -164,8 +161,8 @@ int main()
   const Ellipse2D ellipse2D(Point(0,0), 1., 0.4, 0.2);
 
   double h = 1.0;
-  
- 	while(h >= 0.001) 
+
+ 	while(h >= 0.001)
   {
   	if(test_shape(ball, h, h * 0.1)) return 0;
   	if(test_shape(flower2D, h, h * 0.1)) return 0;
