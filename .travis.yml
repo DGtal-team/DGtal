@@ -103,4 +103,4 @@ script:
 ## Building the documentation
 ###########
 after_success:
-  - if [ $UPLOAD_DOC == "true" ]; then .travis/publish_doc.sh;  fi
+  - if [ $UPLOAD_DOC == "true" ]; then echo "Uploading the doc..."; .travis/publish_doc.sh;  fi
