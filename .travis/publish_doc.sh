@@ -4,6 +4,8 @@ set -ev
 
 echo "PATH ="
 echo $PWD
+ls -alrt
+
 rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/
 
 
