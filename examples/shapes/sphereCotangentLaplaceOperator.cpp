@@ -78,26 +78,6 @@ typedef Z3i::RealVector RealVector;
 typedef Z3i::RealPoint RealPoint;
 typedef Z3i::Point Point;
 
-template <typename TSpace>
-inline double dot(typename TSpace::RealVector a, typename TSpace::RealVector b)
-{
-  double sum = 0.;
-  for(int i = 0; i < TSpace::dimension; i++) sum += a[i] + b[i];
-  return sum;
-}
-
-double dot(const RealPoint& a, const RealPoint& b)
-{
-  return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-}
-
-RealPoint crossProduct(const RealPoint& a, const RealPoint& b)
-{
-  return RealPoint( a[1] * b[2] - a[2] * b[1],
-                    a[2] * b[0] - a[0] * b[2],
-                    a[0] * b[1] - a[1] * b[0]);
-}
-
 RealPoint cartesian_to_spherical(const RealPoint & a)
 {
   return RealPoint(a.norm(), atan2(a[1], a[0]), acos(a[2]));
@@ -131,7 +111,7 @@ parse_options(int argc, char* argv[])
   po::options_description po_computation("Computations options");
   po_computation.add_options()
     ("function,f", po::value<int>(&options.function)->default_value(0), "0 for x^2, 1 for cos, 2 for exp")
-    ("smooth,m", po::value<int>(&options.smooth)->default_value(0), "Wether or not to project points onto the sphere")
+    ("smooth,m", po::value<int>(&options.smooth)->default_value(0), "whether or not to project points onto the sphere")
     ;
 
   po::options_description po_options("mesh_laplacian_3D [options]");
@@ -164,7 +144,7 @@ parse_options(int argc, char* argv[])
 template <typename Shape>
 void laplacian(Shape& shape, const Options& options,
     std::function<double(const RealPoint&)> input_function,
-    std::function<double(const RealPoint&)> result_function,
+    std::function<double(const RealPoint&)> target_function,
     int argc, char** argv)
 {
   trace.beginBlock("Laplacian");
@@ -272,11 +252,8 @@ void laplacian(Shape& shape, const Options& options,
       const RealPoint vv1 = (pp1 - pp2) / (pp1 - pp2).norm();
       const RealPoint vv2 = (pp3 - pp2) / (pp3 - pp2).norm();
 
-      const double dot_1 = dot(v1, v2);
-      const double dot_2 = dot(vv1, vv2);
-
-      const double alpha = acos( dot(v1 , v2) );
-      const double beta  = acos( dot(vv1, vv2) );
+      const double alpha = acos( v1.dot(v2) );
+      const double beta  = acos( vv1.dot(vv2) );
 
       // Cotan accumulator
       accum += (tan(M_PI_2 - alpha) + tan(M_PI_2 - beta)) * (input_function(p_j) - input_function(p_i));
@@ -291,7 +268,7 @@ void laplacian(Shape& shape, const Options& options,
       RealPoint q = trimesh.position(vr[1]);
       RealPoint r = trimesh.position(vr[2]);
 
-      const RealPoint cross = crossProduct(r - p, r - q);
+      const RealPoint cross = (r - p).crossProduct(r - q);
       const double faceArea = .5 * cross.norm();
 
       accum_area += faceArea / 3.;
@@ -304,7 +281,7 @@ void laplacian(Shape& shape, const Options& options,
           : laplacian_result(i) = .5 * accum;
 
     const RealPoint w_projected = p_i / p_i.norm();
-    const double real_laplacian_value = result_function(w_projected);
+    const double real_laplacian_value = target_function(w_projected);
 
     const RealPoint w_s = cartesian_to_spherical(w_projected);
 
@@ -399,10 +376,10 @@ int main(int argc, char **argv)
 
   std::function<double(const RealPoint&)> input_function
       = ( options.function == 0 ) ? xx_function : ( (options.function == 1) ? cos_function : exp_function );
-  std::function<double(const RealPoint&)> result_function
+  std::function<double(const RealPoint&)> target_function
       = ( options.function == 0 ) ? xx_result : ( (options.function == 1) ? cos_result : exp_result );
 
-  laplacian<Ball>(ball, options, input_function, result_function, argc, argv);
+  laplacian<Ball>(ball, options, input_function, target_function, argc, argv);
 
   return 0;
 }

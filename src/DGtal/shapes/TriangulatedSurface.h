@@ -432,6 +432,8 @@ namespace DGtal
     Arc opposite( const Arc & a ) const;
 
     /**
+       Constant-time access to the next arc
+
        @param a any arc (s,t)
        @return the next arc
     */
