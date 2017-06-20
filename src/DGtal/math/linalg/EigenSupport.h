@@ -50,13 +50,17 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#if defined(__GNUG__)
+#if defined(__GNUG__) && !defined(__clang__)
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
+#pragma GCC diagnostic ignored "-Wshadow"
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
+#pragma clang diagnostic ignored "-Wignored-attributes"
 #endif
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
@@ -67,9 +71,9 @@
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
-#if defined(__GNUG__)
-#endif
+#if defined(__GNUG__) && !defined(__clang__)
 #pragma GCC diagnostic pop
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -96,7 +100,7 @@ struct EigenLinearAlgebraBackend
     typedef Eigen::MatrixXd DenseMatrix;
 
     typedef Eigen::Triplet<double> Triplet;
-    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor> SparseMatrix;
+    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor, long int> SparseMatrix;
 
     typedef Eigen::SimplicialLLT<SparseMatrix> SolverSimplicialLLT;
     typedef Eigen::SimplicialLDLT<SparseMatrix> SolverSimplicialLDLT;

@@ -30,7 +30,7 @@ namespace DGtal {
    contours (in 2D or 3D). If you require more advanced operations on
    surfaces (for instance using afterwards the topology defined on the
    surface), it is better to wrap a DigitalSurface object around your
-   surface of interest, see \ref dgtal_digital_surface.
+   surface of interest, see \ref moduleDigitalSurfaces.
 
    @section dgtal_helpsurf_sec1  The 2D case: the boundary is a sequence of cells
 
@@ -347,64 +347,9 @@ If you succeed the exercise you will obtain the following pgm image:
 
   @image html resulExerciceHelpSurface.png "Awaited result of exercice with the main region filled in white and holes represented in gray."
 
- 
 
-
-*/
-
-
-
-
-
-
-
-
-
-/**
-   A simple example illustrating the extraction of the sequence of
-   surfels boudary. This program outputs this image.
-
-   @see \ref dgtal_helpsurf_sec1
-
-   @image html ctopo2c.png 
-
-   \example topology/ctopo-2.cpp
-
-*/
-
-
-
-/**
-   A simple example illustrating the extraction of the sequence of
-   surfels boudary. This program outputs this image.
-
-   @see \ref dgtal_helpsurf_sec2
-
-   @image html ctopo3dSurfelCut.png 
-
-   \example topology/ctopo-2-3d.cpp
-
-*/
-
-
-/**
-   A simple example illustrating the extraction of 3d connected set of
-   KhalimskyCell. This program outputs these images:
-
-   @see \ref dgtal_helpsurf_sec3
-   
-   @image html KSurfelsConnectedOrientExt.png 
-   \example  topology/3dKSSurfaceExtraction.cpp
-*/
-
-
-/**
-   A simple example illustrating the filling of the interior/exterior of a given 2D contour. This program outputs these images:
-
-   @see \ref dgtal_helpsurf_sec4
-   
-   @image html ctopo-fillContours.png 
-   \example  topology/ctopo-fillContours.cpp
 */
 
 }
+
+

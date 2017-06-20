@@ -1,8 +1,16 @@
+/// @file dec/exampleDiscreteExteriorCalculusSolve.cpp
+/**
+   Example of primal and dual Helmoltz decomposition in 2D and 3D using Discrete Exterior Calculus.
+   @see \ref sectDECHelmoltzProblem
+   \image  html  solve_2d_primal_decomposition_calculusSmall.png "Primal Helmoltz decomposition harmonic component."
+   \example dec/exampleDiscreteExteriorCalculusSolve.cpp
+**/
+
 #include <string>
 
 #include <QApplication>
 
-#include "common.h"
+#include "DECExamplesCommon.h"
 
 // always include EigenSupport.h before any other Eigen headers
 #include "DGtal/math/linalg/EigenSupport.h"
@@ -215,7 +223,7 @@ void solve2d_dual_decomposition()
     Calculus::DualVectorField input_vector_field(calculus);
     for (Calculus::Index ii=0; ii<input_vector_field.length(); ii++)
     {
-        const Z2i::RealPoint cell_center = Z2i::RealPoint(input_vector_field.getSCell(ii).myCoordinates)/2.;
+        const Z2i::RealPoint cell_center = Z2i::RealPoint(input_vector_field.getSCell(ii).preCell().coordinates)/2.;
         input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
         input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
@@ -340,7 +348,7 @@ void solve2d_primal_decomposition()
     Calculus::PrimalVectorField input_vector_field(calculus);
     for (Calculus::Index ii=0; ii<input_vector_field.length(); ii++)
     {
-        const Z2i::RealPoint cell_center = Z2i::RealPoint(input_vector_field.getSCell(ii).myCoordinates)/2.;
+        const Z2i::RealPoint cell_center = Z2i::RealPoint(input_vector_field.getSCell(ii).preCell().coordinates)/2.;
         input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
         input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
@@ -843,7 +851,7 @@ void solve3d_decomposition()
         {
             const int degree = laplace_diag[kk];
             ASSERT( degree >= 0 );
-            ASSERT( degree < degrees.size() );
+            ASSERT( static_cast<unsigned int>(degree) < degrees.size() );
             degrees[degree] ++;
         }
 
@@ -856,7 +864,7 @@ void solve3d_decomposition()
     Calculus::PrimalVectorField input_vector_field(calculus);
     for (Calculus::Index ii=0; ii<input_vector_field.length(); ii++)
     {
-        const Z3i::RealPoint cell_center = Z3i::RealPoint(input_vector_field.getSCell(ii).myCoordinates)/2.;
+        const Z3i::RealPoint cell_center = Z3i::RealPoint(input_vector_field.getSCell(ii).preCell().coordinates)/2.;
         input_vector_field.myCoordinates(ii, 0) = -cos(-.3*cell_center[0] + .6*cell_center[1] + .8*cell_center[2]);
         input_vector_field.myCoordinates(ii, 1) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
         input_vector_field.myCoordinates(ii, 2) = -cos(cell_center[2]*.5);
@@ -961,4 +969,3 @@ int main(int argc, char* argv[])
 
     return app.exec();
 }
-

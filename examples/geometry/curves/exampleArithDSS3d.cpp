@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testArithDSS3d.cpp
+ * @file geometry/curves/exampleArithDSS3d.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -27,9 +27,20 @@
  */
 
 /**
- * Description of testArithDSS3dViewer <p>
- * Aim: simple example of \ref StandardDSS6Computer
- */
+   This example outputs a greedy segmentation of an open and 6-connected 3d digital curve into DSSs. 
+   
+@verbatim
+$ ./examples/geometry/curves/exampleArithDSS3d
+@endverbatim
+
+@image html exampleArithDSS3d.png "Greedy segmentation of a 3d digital curve into DSSs"
+@image latex exampleArithDSS3d.png "Greedy segmentation of a 3d digital curve into DSSs"
+
+
+@see \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleArithDSS3d.cpp
+*/
 
 
 

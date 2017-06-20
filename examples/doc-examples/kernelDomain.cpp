@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file kernelDomain.cpp
+ * @file doc-examples/kernelDomain.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,16 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+
+/**
+ * Example of DGtal kernel with Domain.
+ * @see \ref sectSpace
+ * \image html kernel-domain-it-arrow.png "Iteration over a domain with displacements depicted as arrows."
+ * \example doc-examples/kernelDomain.cpp
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

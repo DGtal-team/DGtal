@@ -1,5 +1,5 @@
 /**
- * @file approximation.cpp
+ * @file arithmetic/approximation.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -10,6 +10,40 @@
  *
  * This file is part of the DGtal library.
  */
+/**
+   Computes a fraction from a floating-point number
+
+@see \ref dgtal_irrfrac_sec3_8
+
+@verbatim
+$ ./examples/arithmetic/approximation 1.33333333333333
+z = 1 / 1 =~ 1
+z = 4 / 3 =~ 1.333333333333333
+z = 4 / 3
+
+$./examples/arithmetic/approximation 1.33333333333338
+z = 1 / 1 =~ 1
+z = 3 / 2 =~ 1.5
+z = 4 / 3 =~ 1.333333333333333
+z = 9523805234895 / 7142853926171 =~ 1.33333333333338
+z = 9523805234895 / 7142853926171
+
+$ ./examples/arithmetic/approximation 3.141592654 
+z = 3 / 1 =~ 3
+z = 22 / 7 =~ 3.142857142857143
+z = 333 / 106 =~ 3.141509433962264
+z = 355 / 113 =~ 3.141592920353982
+z = 104348 / 33215 =~ 3.141592653921421
+z = 1148183 / 365478 =~ 3.141592654003798
+z = 1252531 / 398693 =~ 3.141592653996935
+z = 2400714 / 764171 =~ 3.141592654000217
+z = 18057529 / 5747890 =~ 3.14159265399999
+z = 38515772 / 12259951 =~ 3.141592654000004
+z = 38515772 / 12259951
+@endverbatim
+
+\example arithmetic/approximation.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [approximation-basicIncludes]

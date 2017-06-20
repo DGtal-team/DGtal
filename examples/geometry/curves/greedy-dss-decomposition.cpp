@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file greedy-dss-decomposition.cpp
+ * @file geometry/curves/greedy-dss-decomposition.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -26,6 +26,24 @@
  * An example file named greedy-dss-decomposition.
  *
  * This file is part of the DGtal library.
+ */
+
+/**
+ *
+ * \example geometry/curves/greedy-dss-decomposition.cpp
+ * This example outputs a greedy segmentation of a closed and 4-connected digital curve into DSSs. 
+ *
+ *  @verbatim
+ * $ ./examples/geometry/curves/greedy-dss-decomposition
+ * @endverbatim
+ *
+ * @image html greedy-dss-decomposition.png "Greedy segmentation into DSSs"
+ * @image latex greedy-dss-decomposition.png "Greedy segmentation into DSSs"
+ *
+ *
+ * @see \ref moduleArithDSSReco and \ref moduleGridCurveAnalysis
+ *
+ * @see geometry/curves/greedy-dss-decomposition.cpp
  */
 
 ///////////////////////////////////////////////////////////////////////////////

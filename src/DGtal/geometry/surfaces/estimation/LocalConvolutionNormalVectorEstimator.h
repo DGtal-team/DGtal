@@ -95,7 +95,7 @@ namespace DGtal
     typedef typename Surface::KSpace::Space::RealVector Quantity;
     typedef typename Surface::SCell SCell;
 
-    BOOST_CONCEPT_ASSERT(( CConvolutionWeights<TKernelFunctor>));
+    BOOST_CONCEPT_ASSERT(( concepts::CConvolutionWeights<TKernelFunctor>));
 
     // ----------------------- Standard services ------------------------------
   public:

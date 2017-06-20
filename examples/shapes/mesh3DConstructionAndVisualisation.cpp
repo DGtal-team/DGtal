@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file Mesh3DConstructionAndVisualisation.cpp
+ * @file shapes/mesh3DConstructionAndVisualisation.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,15 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ * \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
+ *  \image latex example3dMeshConstruction.png  "Simple example of 3D mesh construction."  width=5cm
+ * 
+ *   \example shapes/mesh3DConstructionAndVisualisation.cpp
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/base/Common.h"

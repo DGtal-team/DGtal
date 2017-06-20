@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ctopo-1-3d.cpp.cpp
+ * @file topology/ctopo-1s-3d.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -25,6 +25,17 @@
  * An example file named ctopo-1-3d.cpp.
  *
  * This file is part of the DGtal library.
+ */
+
+/**
+ * A simple example of cellular grid space with several cells
+ * instantiated and visualized in 3D. This program outputs this image.
+ * 
+ * @see \ref dgtal_ctopo_sec6
+ *  
+ * @image html ctopo-1s-3d.png
+ * 
+ * \example topology/ctopo-1s-3d.cpp
  */
 
 ///////////////////////////////////////////////////////////////////////////////

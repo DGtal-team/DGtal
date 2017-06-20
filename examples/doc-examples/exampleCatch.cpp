@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleCatch.cpp
+ * @file doc-examples/exampleCatch.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,13 @@
  *
  * This file is part of the DGtal library.
  */
+/**
+DGtal/Catch examples
+
+@see \ref moduleCatch
+
+\example doc-examples/exampleCatch.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

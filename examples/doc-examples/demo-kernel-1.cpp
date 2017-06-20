@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file demo-kernel-1.cpp
+ * @file doc-examples/demo-kernel-1.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -24,6 +24,12 @@
  * An example file named demo-kernel-1.
  *
  * This file is part of the DGtal library.
+ */
+
+/**
+ * Example of DGtal kernel and export with Board2D.
+ *  \image html exampleDemoKernel-1.png "Display 2D points in its domain and export woth Board2D."
+ *  \example doc-examples/demo-kernel-1.cpp
  */
 
 ///////////////////////////////////////////////////////////////////////////////

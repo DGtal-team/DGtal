@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file dgtalBoard2D-4-colormaps.cpp
+ * @file io/boards/dgtalBoard2D-4-colormaps.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -25,6 +25,15 @@
  * An example file named dgtalboard-4-colormaps.
  *
  * This file is part of the DGtal library.
+ */
+
+/**
+ * \example io/boards/dgtalBoard2D-4-colormaps.cpp
+ *
+ * This example shows you how to use colormaps with Board2D
+ * streams. Note how we redefine the style of a specific mode for
+ * the drawable element.
+ *  \image html  dgtalboard-4-colormaps.png  "visualization of resulting export."
  */
 
 ///////////////////////////////////////////////////////////////////////////////

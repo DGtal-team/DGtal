@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalBoard3DTo2D-3-objects.cpp
+ * @file io/boards/dgtalBoard3DTo2D-3-objects.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -24,6 +24,14 @@
  * Simple example of class Board3DTo2D.
  *
  * This file is part of the DGtal library.
+ */
+
+/**
+ * Example of 6-18 digital Adjacencies visualization  with Board3DTo2D.
+ * @see \ref DGtalGLV_ModeEx
+ * \example io/boards/dgtalBoard3DTo2D-3-objects.cpp
+ * \image html dgtalBoard3DTo2D-3-objects.png " 6-18 digital Adjacencies visualization  with Board3DTo2D."
+ *
  */
 
 ///////////////////////////////////////////////////////////////////////////////

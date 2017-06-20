@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleArithmeticalDSS.cpp
+ * @file geometry/curves/exampleArithmeticalDSS.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,15 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   This example shows the basic usage of a 8-connected and a 4-connected 
+arithmetical DSS.  
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSS.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

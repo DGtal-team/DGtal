@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-7-planes.cpp
+ * @file io/viewers/viewer3D-7-stdplane.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -26,6 +26,27 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+   This example shows the recognition of a simple standard digital
+   plane with the COBA algorithm (class
+   \ref DGtal::COBAGenericStandardPlaneComputer). Green points belong to the naive
+   plane. Grey points show farther points that also belong to the
+   strip.
+
+@see \ref modulePlaneRecognition_sec25
+
+@verbatim
+$ ./examples/io/viewers/viewer3D-7-stdplane
+@endverbatim
+
+@image html coba-stdplane.png "Piece of standard plane."
+@image latex coba-stdplane.png "Piece of standard plane." width=5cm
+
+\example io/viewers/viewer3D-7-stdplane.cpp
+*/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleFMM3D.cpp
+ * @file geometry/volumes/distance/exampleFMM3D.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -29,6 +29,18 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   Example of use the FMM (fast marching method) class in 3D.
+@see \ref moduleFMM
+
+This program outputs this image:
+@image html exampleFMM3D.png
+
+\example geometry/volumes/distance/exampleFMM3D.cpp
+*/
+
+
 
 #include <iostream>
 

@@ -1,5 +1,5 @@
 /**
- * @file lower-integer-convex-hull.cpp
+ * @file arithmetic/lower-integer-convex-hull.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -10,6 +10,34 @@
  *
  * This file is part of the DGtal library.
  */
+/**
+   This example shows how to create a LatticePolytope2D that
+   represents a square. Then given integer parameters \a a, \a b, \a
+   c, it cuts the polygon by the half-plane \f$ ax+by \le c \f$. It
+   also outputs some statistics.
+
+@see \ref dgtal_lattice_polytope_2d_sec6
+
+@verbatim
+$ ./examples/arithmetic/lower-integer-convex-hull -5 8 41
+Number of vertices        = 8
+Area                      = 299.5
+Number of interior points = 273
+Number of boundary points = 55
+# The animation below was created by this script (needs ImageMagick)
+$ let x=130; while test $x -ge -130; do echo "--- $x ---"; ./examples/arithmetic/lower-integer-convex-hull -5 8 $x; let z=x+130; y=`printf "%03d" $z`; convert -resize 300x300 -background white -layers flatten lower-integer-convex-hull-cut.eps lower-integer-convex-hull-$y.gif; let x=x-2; done
+...
+$ convert -delay 20 -loop 0 lower-integer-convex-hull-*.gif lower-animation.gif
+$ animate lower-animation.gif 
+@endverbatim
+
+@image html lower-integer-convex-hull-cut-2.png "Square of side 20 cut by the half-plane -5x+8y <= 41"
+@image latex lower-integer-convex-hull-cut-2.png "Square of side 20 cut by the half-plane -5x+8y <= 41" width=5cm
+
+@image html lower-animation.gif "Square cut by the half space -5x+8y <= c, for c from -130 to 130"
+
+\example arithmetic/lower-integer-convex-hull.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [lower-integer-convex-hull-basicIncludes]

@@ -6,15 +6,20 @@ SET(DGTAL_TESTS_SRC_MATH
        testHistogram
        testMPolynomial
        testAngleLinearMinimizer
-       testBasicMathFunctions 
+       testBasicMathFunctions
        testMultiStatistics
        testProfile
-       testMeaningfulScaleAnalysis)
+       testMeaningfulScaleAnalysis
+       )
+
+if (WITH_FFTW3)
+  set (DGTAL_TESTS_SRC_MATH ${DGTAL_TESTS_SRC_MATH} testRealFFT)
+endif (WITH_FFTW3)
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO)
+  target_link_libraries (${FILE} DGtal )
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 

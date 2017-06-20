@@ -223,9 +223,25 @@ namespace DGtal
       myGLScaleFactorX=sx;
       myGLScaleFactorY=sy;
       myGLScaleFactorZ=sz;
+      // In order to have the light source rendering the same as wtih the default scale 1. 
+      glEnable(GL_NORMALIZE);  
     }
 
 
+    /**
+     * Changes the light rendering mode (GL_LIGHT_MODEL_TWO_SIDE) for
+     * single face primitives (polygons, quads or triangles). It will have no
+     * effect for cube or ball primitive which will be always rendered with
+     * single face.
+     *
+     * @param[in] doubleSidedRendering if true (resp. false) the
+     * double (resp. single) rendering mode will be activated for
+     * polygons, quads and triangles.
+     * 
+     **/
+    void setGLDoubleRenderingMode(bool doubleSidedRendering);
+
+    
     /**
      * Change the light shininess coefficients used in opengl
      * rendering (used in glMaterialf with GL_SPECULAR parameters). 
@@ -285,9 +301,10 @@ namespace DGtal
      * Change the current rendering mode of the viewer.
      * 
      * @param[in] aRenderMode the mode of the rendering.
+     * @param[in] displayState if true (default) the viewer will display the current rendering mode.
      * 
      **/
-    void updateRenderingCoefficients(const RenderingMode aRenderMode);
+    void updateRenderingCoefficients(const RenderingMode aRenderMode, bool displayState=true);
     
     
     /// the 3 possible axes for the image direction
@@ -770,8 +787,8 @@ namespace DGtal
      * @param angleRotation the angle of rotation.
      * @param dirRotation the rotation will be applied around this direction.
      **/
-
-    void  rotateLineD3D(typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine, DGtal::PointVector<3, int> pt,
+    template < typename TContainer >
+    void  rotateLineD3D(typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine, DGtal::PointVector<3, int, TContainer> pt,
       double angleRotation, ImageDirection dirRotation);
 
 
@@ -1304,6 +1321,15 @@ namespace DGtal
      **/
     void glUpdateTextureImages(const VectorTextureImage  &aVectImage);
 
+
+    /**
+     * Updates opengl light rendering mode (GL_LIGHT_MODEL_TWO_SIDE)
+     * according to the values of private attribute
+     * myIsDoubleFaceRendering.
+     **/
+    
+    void glUpdateLightRenderingMode() const;
+
     
     /**
      * Updates the light source coordinates (myLightPosition) from the
@@ -1413,8 +1439,8 @@ namespace DGtal
     /// list of the images textures in this viewer
     std::vector<GLTextureImage> myVectTextureImage;
 
-    bool myIsDoubleFaceRendering; ///< true if is double face rendering
-
+    bool myIsDoubleFaceRendering = true; ///< true if is double face rendering
+    
     double camera_position[3]; ///< camera position
     double camera_direction[3]; ///< camera direction
     double camera_upVector[3]; ///< camera up-vector

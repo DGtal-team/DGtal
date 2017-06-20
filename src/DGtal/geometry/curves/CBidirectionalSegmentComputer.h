@@ -47,65 +47,66 @@
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CBidirectionalSegmentComputer
-  /**
-Description of \b concept '\b CBidirectionalSegmentComputer' <p>
-     @ingroup Concepts
-     @brief Aim: Defines the concept describing a bidirectional segment computer,  
-    ie. a model of CSegment that can extend itself in the two possible directions. 
-     
- ### Refinement of CForwardSegmentComputer 
-    
- ### Associated types : the same as CForwardSegmentComputer
-  
- ### Notation
-     - \t X : A type that is a model of CBidirectionalSegmentComputer
-     - \t x : object of type X
-  
- ### Definitions
-    
- ### Valid expressions and 
-
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| Extension test | x.isExtendableBack() |      |bool         |                  | check whether x can be extended to - -x.begin() or not | | |
-| Extension      | x.extendBack()       |      |bool         |                  | check whether x can be extended to - -x.begin() or not, extend if true | | |
-     
-    
- ### Invariants###
-    
- ### Models###
-
-   StandardDSS6Computer, StabbingLineComputer, StabbingCircleComputer    
-
- ### Notes###
-
-@tparam T the type that should be a model of CBidirectionalSegmentComputer.
-   */
-  template <typename T> 
-  struct CBidirectionalSegmentComputer : CForwardSegmentComputer<T>
+  namespace concepts
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // Methods
-    BOOST_CONCEPT_USAGE( CBidirectionalSegmentComputer )
-    {
-      concepts::ConceptUtils::sameType( myB, myX.isExtendableBack() );
-      concepts::ConceptUtils::sameType( myB, myX.extendBack() );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    bool myB; 
-  
-    // ------------------------- Internals ------------------------------------
-  private:
+    /////////////////////////////////////////////////////////////////////////////
+    // class CBidirectionalSegmentComputer
+    /**
+       Description of \b concept '\b CBidirectionalSegmentComputer' <p>
+       @ingroup Concepts
+       @brief Aim: Defines the concept describing a bidirectional segment computer,  
+       ie. a model of concepts::CSegment that can extend itself in the two possible directions. 
+     
+       ### Refinement of CForwardSegmentComputer 
     
-  }; // end of concept CBidirectionalSegmentComputer
+       ### Associated types : the same as concepts::CForwardSegmentComputer
   
+       ### Notation
+       - \a X : A type that is a model of CBidirectionalSegmentComputer
+       - \a x : object of type X
+  
+       ### Definitions
+    
+       ### Valid expressions and 
+
+
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       | Extension test | x.isExtendableBack() |      |bool         |                  | check whether x can be extended to - -x.begin() or not | | |
+       | Extension      | x.extendBack()       |      |bool         |                  | check whether x can be extended to - -x.begin() or not, extend if true | | |
+     
+    
+       ### Invariants###
+    
+       ### Models###
+
+       StandardDSS6Computer, StabbingLineComputer, StabbingCircleComputer    
+
+       ### Notes###
+
+       @tparam T the type that should be a model of CBidirectionalSegmentComputer.
+    */
+    template <typename T> 
+    struct CBidirectionalSegmentComputer : concepts::CForwardSegmentComputer<T>
+    {
+      // ----------------------- Concept checks ------------------------------
+    public:
+      // Methods
+      BOOST_CONCEPT_USAGE( CBidirectionalSegmentComputer )
+      {
+        concepts::ConceptUtils::sameType( myB, myX.isExtendableBack() );
+        concepts::ConceptUtils::sameType( myB, myX.extendBack() );
+      }
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // only if T is default constructible.
+      bool myB; 
+  
+      // ------------------------- Internals ------------------------------------
+    private:
+    
+    }; // end of concept CBidirectionalSegmentComputer
+  } //namespace concepts
 } // namespace DGtal
 
 //                                                                           //

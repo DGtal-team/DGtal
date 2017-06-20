@@ -86,7 +86,7 @@ namespace DGtal
      * Type of the adapter orientation functor
      */
     typedef TOrientationFunctor Functor; 
-    BOOST_CONCEPT_ASSERT(( COrientationFunctor2<Functor> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> )); 
     
     /**
      * Type of input points

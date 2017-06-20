@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleArithmeticalDSL.cpp
+ * @file geometry/curves/exampleArithmeticalDSL.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,16 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   This example 
+- shows the basic usage of a naive/standard DSL, 
+- displays the steps of a DSL for all octants. 
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSL.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

@@ -161,7 +161,7 @@ namespace DGtal
                                           HyperRectDomain<typename Domain::Space > >::value));
 
     /// values range
-    BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CLabel<TValue> ));
     typedef TValue Value;
     //typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange;
     typedef DefaultConstImageRange<Self> ConstRange;
@@ -238,21 +238,21 @@ namespace DGtal
 
 
     // TODO
-    // /**
+    // /*
     //  * Copy contructor.
     //  *
     //  * @param other object to copy.
     //  */
     // ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& other);
 
-    // /**
+    // /*
     //  * Assignment.
     //  *
     //  * @param other object to copy.
     //  */
     // ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& other);
 
-    // /**
+    // /*
     //  * Destructor
     //  * Free the memory allocated by @a myData
     //  */
@@ -396,7 +396,7 @@ namespace DGtal
      * valid.  A tree is valid if there's one (and only one) leaf for
      * each position at maximal depth.
      * @param key the key
-     * @param leafAbove  leafAbove (@TODO)
+     * @param leafAbove  leafAbove (@todo)
      */
     bool checkIntegrity(HashKey key = ROOT_KEY, bool leafAbove = false) const;
 
@@ -409,7 +409,7 @@ namespace DGtal
 
     int* getCoordinatesFromKey(HashKey key) const;
 
-    /*
+    /**
      * Prints in the state of the container as a tree. (Calls
      * printTree)
      *
@@ -485,9 +485,9 @@ namespace DGtal
 
 
     // -------------------------------------------------------------
-    /*  Iterator inner-class
+    /**  Iterator inner-class
      *
-     *  @brief Buil-in iterator on an HashTree. This iterator visits
+     *  @brief Built-in iterator on an HashTree. This iterator visits
      *  all node in the tree.
      *
      * -------------------------------------------------------------

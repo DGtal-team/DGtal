@@ -72,7 +72,7 @@ namespace DGtal
      * and outputs the parameters of an AlgebraicSphere (please see
      * Patate documentation for details).
      *
-     * Model of CLocalEstimatorFromSurfelFunctor.
+     * Model of concepts::CLocalEstimatorFromSurfelFunctor.
      *
      * @tparam TSurfel type of surfels
      * @tparam TEmbedder type of functors which embed surfel to @f$

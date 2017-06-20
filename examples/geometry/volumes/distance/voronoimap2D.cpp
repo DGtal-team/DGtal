@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file voronoimap2D.cpp
+ * @file geometry/volumes/distance/voronoimap2D.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,15 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   Example of a Voronoi map construction in dimension 2 for the
+   Euclidean metric.
+
+   @see \ref voronoiSect
+   \image html voronoimap-dt.png "Distance transformation for the l_2 metric."
+   \example geometry/volumes/distance/voronoimap2D.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

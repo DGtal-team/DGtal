@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalBoard3DTo2D-2bis-sets.cpp
+ * @file io/boards/dgtalBoard3DTo2D-2bis-sets.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -25,6 +25,16 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ * Example of digital point visualization with Board3DTo2D (wireframe visualisation).
+ * @see \ref DGtalGLV_VisualizationDigitalSet
+ * \example io/boards/dgtalBoard3DTo2D-2bis-sets.cpp
+ * \image html dgtalBoard3DTo2D-2bis-sets-wireframe.png "Digital point visualization  with Board3DTo2D (wireframe visualisation))."
+ *
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

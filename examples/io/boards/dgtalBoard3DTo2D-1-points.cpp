@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalBoard3DTo2D-1-points.cpp
+ * @file io/boards/dgtalBoard3DTo2D-1-points.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -25,6 +25,16 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+
+/**
+ * Example of digital point visualization with Board3DTo2D.
+ * @see \ref DGtalGLV_VisualizationDigitalSet
+ * \example io/boards/dgtalBoard3DTo2D-1-points.cpp
+ * \image html dgtalBoard3DTo2D-1-points.png "Digital point visualization  with Board3DTo2D."
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

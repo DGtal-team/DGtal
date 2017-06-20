@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleAlphaThickSegmentTgtCover.cpp
+ * @file geometry/curves/exampleAlphaThickSegmentTgtCover.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,19 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+
+/**
+   This example shows the tangential cover of an noisy contour from the alpha-thick segment primitive with alpha = 4.
+   @see \ref moduleAlphaThickSegmentReco
+
+   @image html exampleAlphaThickSegmentTgtCoverAll_Single.png "Tangential cover with alpha-thick segments with alpha = 4"
+   @image latex exampleAlphaThickSegmentTgtCoverAll_Single.png "Tangential cover with alpha-thick segments with alpha = 4" width=6cm
+   \example geometry/curves/exampleAlphaThickSegmentTgtCover.cpp
+*/
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

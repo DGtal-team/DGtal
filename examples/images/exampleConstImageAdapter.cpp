@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleConstImageAdapter.cpp
+ * @file images/exampleConstImageAdapter.cpp
  * @ingroup Examples
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,14 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+ *  Example of ConstImageAdapter.
+   @see @ref constimage
+   \image html logImage.png " 16x16 image: (1,1) to (16,16) adapted from with a log scale functor." 
+ *  \example images/exampleConstImageAdapter.cpp
+ **/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

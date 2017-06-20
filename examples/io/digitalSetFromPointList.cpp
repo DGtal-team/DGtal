@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file digitalSetFromVol.cpp
+ * @file io/digitalSetFromPointList.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,17 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+
+/**
+ * Example of point list import.
+ *  @see @ref moduleIO 
+ *  \image html visuPointList.png "Visualisation of 3d imported point list " 
+ * \example io/digitalSetFromPointList.cpp
+ */
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/base/Common.h"

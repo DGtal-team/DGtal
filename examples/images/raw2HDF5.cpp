@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file raw2HDF5.cpp
+ * @file images/raw2HDF5.cpp
  * @ingroup Examples
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,13 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+ *  Example of image format transformation from raw to HDF5.
+ *   @see @ref  dgtalBigImagesAbstract   
+ *  \example images/raw2HDF5.cpp
+ **/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

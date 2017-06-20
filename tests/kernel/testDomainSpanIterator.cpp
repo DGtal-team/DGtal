@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file test_DomainSpanIterator.cpp
+ * @file
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
  *

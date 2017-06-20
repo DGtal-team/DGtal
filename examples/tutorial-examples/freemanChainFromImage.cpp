@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file freemanChainDisplay.cpp
+ * @file tutorial-examples/freemanChainFromImage.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,15 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+\example tutorial-examples/freemanChainFromImage.cpp
+* A simple example to show how to extract the set of boundary contours obtained from the image level set.
+* This programm outputs this image: 
+*   @image html fcExtraction.png 
+*
+*/
+
 
 //! [freemanChainFromImage-basicIncludes]
 #include "DGtal/base/Common.h"

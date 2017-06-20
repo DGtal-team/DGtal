@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-8bis-2Dimages.cpp
+ * @file io/viewers/viewer3D-8bis-2Dimages.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -25,6 +25,13 @@
  * An example file named viewer3D-8bis-2Dimages.
  *
  * This file is part of the DGtal library.
+ */
+
+/**
+ *  Example of 2D image display in 3D by 3D embedding.
+ *
+ * \image html viewer3D-8bis.png "Illustration of multiple 2D image extraction and visualisation  from 3D embedding"
+ * \example io/viewers/viewer3D-8bis-2Dimages.cpp
  */
 
 ///////////////////////////////////////////////////////////////////////////////

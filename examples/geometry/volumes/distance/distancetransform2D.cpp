@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file distancetransform2D.cpp
+ * @file geometry/volumes/distance/distancetransform2D.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -30,6 +30,16 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+   Example of distance transformation in dimension 2.
+
+   @see \ref moduleVolumetric
+   \image  html  example-DT-L2.png "Distance transform with L2 norm."
+   \example geometry/volumes/distance/distancetransform2D.cpp
+*/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

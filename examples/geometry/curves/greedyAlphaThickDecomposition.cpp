@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleAlphaThickSegment.cpp
+ * @file geometry/curves/greedyAlphaThickDecomposition.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,17 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   This example shows the greedy decomposition of an noisy contour from the alpha-thick segment primitive with alpha = 4.
+   @see \ref moduleAlphaThickSegmentReco
+
+   @image html examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha-thick segments with alpha = 4"
+   @image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha-thick segment with alpha = 4" width=6cm
+   \example geometry/curves/greedyAlphaThickDecomposition.cpp
+*/
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

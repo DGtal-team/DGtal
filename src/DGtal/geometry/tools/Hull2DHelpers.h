@@ -450,13 +450,13 @@ namespace DGtal
     /**
      * Computes the thickness of an anti podal pair (represented by
      * the segment [ @a p , @a q ] and vertex @a r) according to the given
-     * distance @def definition.  
+     * distance @a def definition.  
      *
-     * If the distance definition is @HorizontalVerticalThickness, it
+     * If the distance definition is @a HorizontalVerticalThickness, it
      * returns the minimal distance between the vertical/horizontal
-     * projection of @r on ( @a p , @a q ).
+     * projection of @a r on ( @a p , @a q ).
      *
-     * If the distance definition is @EuclideanThickness, it returns
+     * If the distance definition is @a EuclideanThickness, it returns
      * the distance between r and its projection on the line ( @a p ,@a q ).
      *
      * @param[in] p the first point of the edge anti podal pair.

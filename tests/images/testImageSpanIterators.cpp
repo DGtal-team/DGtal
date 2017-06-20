@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file test_ImageSpanIterators.cpp
+ * @file
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
@@ -49,10 +49,10 @@ bool testSpanIterators()
     typedef Space3Type::Point Point;
     typedef HyperRectDomain<Space3Type> TDomain;
     typedef ImageContainerBySTLVector<TDomain, double> TContainerV;
-    
-    const int t[ ] = { 0, 0, 0};
-    const int t2[ ] = { 5, 5, 5};
-    const int t3[ ] = { 0, 0, 0};
+
+    const Point::Component t[ ] = { 0, 0, 0};
+    const Point::Component t2[ ] = { 5, 5, 5};
+    const Point::Component t3[ ] = { 0, 0, 0};
     Point a ( t );
     Point b ( t2 );
     Point c( t3 );
@@ -61,7 +61,7 @@ bool testSpanIterators()
     TContainerV myImageV ( TDomain(a,b ));
 
     double cpt=0;
-    //Image Construction 
+    //Image Construction
     for ( TContainerV::Iterator it = myImageV.begin();
             it != myImageV.end();
             ++it)
@@ -78,7 +78,7 @@ bool testSpanIterators()
     ++it)
       trace.info() << (*it)<<" ";
     trace.info() << endl;
-    
+
     //We process a 1D slice
     trace.info()<<"Slice dim 1 ";
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
@@ -86,7 +86,7 @@ bool testSpanIterators()
     ++it)
       trace.info() << (*it)<<" ";
     trace.info() << endl;
-  
+
     //We process a 1D slice
     trace.info()<<"Slice dim 2 ";
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,2), itend = myImageV.spanEnd(c,2);
@@ -94,7 +94,7 @@ bool testSpanIterators()
     ++it)
       trace.info() << (*it)<<" ";
     trace.info() << endl;
-  
+
 
     //We process a 1D slice to set a value
     trace.info()<<"SetValue Slice dim 1 "<<endl;
@@ -102,7 +102,7 @@ bool testSpanIterators()
     it != itend;
     ++it)
       myImageV.setValue(it, 12);
-    
+
     //We check the a 1D slice
     trace.info()<<"Check Slice dim 1 ";
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
@@ -110,9 +110,9 @@ bool testSpanIterators()
     ++it)
       trace.info() << (*it)<<" ";
     trace.info() << endl;
-  
 
-  
+
+
     trace.endBlock();
 
     return true;

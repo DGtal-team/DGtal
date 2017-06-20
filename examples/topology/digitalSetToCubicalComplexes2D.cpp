@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file digitalSetToCubicalComplexes2D.cpp
+ * @file topology/digitalSetToCubicalComplexes2D.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
@@ -26,6 +26,15 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ * Converting a digital set to cubical complex.
+ * @see @ref  moduleCubicalComplex
+ * @image html cubicalComplexes.png "Resulting cubical complex obtained on a flower shape."
+ * @example topology/digitalSetToCubicalComplexes2D.cpp
+*/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

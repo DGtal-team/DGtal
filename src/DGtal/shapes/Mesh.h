@@ -219,7 +219,8 @@ namespace DGtal
      *
      * @param indexVertex1 the index of the first vertex face.
      * @param indexVertex2 the index of the second vertex face.
-     * @param indexVertex3 the index of the second vertex face.
+     * @param indexVertex3 the index of the third vertex face.
+     * @param aColor       the triangle face color.
      * 
      * @note If you want to follow the OBJ format convention, you have
      * to order the vertices in CCW (to have the correct normal orientation).
@@ -234,7 +235,9 @@ namespace DGtal
      *
      * @param indexVertex1 the index of the first vertex face.
      * @param indexVertex2 the index of the second vertex face.
-     * @param indexVertex3 the index of the second vertex face.
+     * @param indexVertex3 the index of the third vertex face.
+     * @param indexVertex4 the index of the fourth vertex face.
+     * @param aColor       the quad face color.
      *
      * @note If you want to follow the OBJ format convention, you have
      * to order the vertices in CCW (to have the correct normal orientation).

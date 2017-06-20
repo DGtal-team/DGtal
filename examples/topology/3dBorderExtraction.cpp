@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file 3dBorderExtraction.cpp
+ * @file topology/3dBorderExtraction.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -25,6 +25,19 @@
  * An example file named 3dBorderExtraction.
  *
  * This file is part of the DGtal library.
+ */
+
+
+/**
+ * Objects have a border, which are the points which touch the
+ * complement in the sense of background adjacency. A border of an
+ * object is itself an object, with the same topology as the object.
+ *  
+ * @see \ref dgtal_topology_sec3_3
+ *
+ * @image html visuBorderExtraction.png  "Border extraction visualisation" 
+ *
+ * \example topology/3dBorderExtraction.cpp
  */
 
 ///////////////////////////////////////////////////////////////////////////////

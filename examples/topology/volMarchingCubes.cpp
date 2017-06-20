@@ -1,5 +1,5 @@
 /**
- * @file volMarchingCubes.cpp
+ * @file topology/volMarchingCubes.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -10,6 +10,24 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ * Marching-cube like surface extracted using the combinatorial
+ * manifold structure of digital surfaces.
+ *
+ * @see \ref dgtal_digsurf_sec4_3
+ *
+ * @verbatim
+ * # Commands
+ * $ ./examples/topology/volMarchingCubes  ../examples/samples/Al.100.vol 0 1 0 
+ * @endverbatim
+ * 
+ * @image html digital-surface-mc-Al100.png "Marching-cube surface of Al.100.vol file."
+ * 
+ * \example topology/volMarchingCubes.cpp
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [volMarchingCubes-basicIncludes]
@@ -109,7 +127,10 @@ int main( int argc, char** argv )
     ImageLinearCellEmbedder< KSpace, Image, MyEmbedder > CellEmbedder;
   CellEmbedder cellEmbedder;
   MyEmbedder trivialEmbedder;
-  cellEmbedder.init( ks, image, trivialEmbedder, minThreshold );
+  // The +0.5 is to avoid isosurface going exactly through a voxel
+  // center, especially for binary volumes.
+  cellEmbedder.init( ks, image, trivialEmbedder, 
+                     ( (double) minThreshold ) + 0.5 );
   ofstream out( "marching-cube.off" );
   if ( out.good() )
     digSurf.exportEmbeddedSurfaceAs3DOFF( out, cellEmbedder );

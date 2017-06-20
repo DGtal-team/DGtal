@@ -1,5 +1,5 @@
 /**
- * @file extended-euclid.cpp
+ * @file arithmetic/extended-euclid.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -10,6 +10,23 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   Computes a solution to the diophantine equation \f$ ax+by=c \f$, where the
+   integers \a a, \a b, \a c are given and \a x, \a y are the unknowns
+   (integers). Note that \a c must be a multiple of gcd( \a a, \a b ).
+
+@see \ref dgtal_integer_computations_sec2
+
+@verbatim
+$ ./examples/arithmetic/extended-euclid 5 7 1
+x=3 y=-2
+$ ./examples/arithmetic/extended-euclid 12 32 4
+x=3 y=-1
+@endverbatim
+
+\example arithmetic/extended-euclid.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [extended-euclid-basicIncludes]

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file meshFromOFF.cpp
+ * @file io/meshFromOFF.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,18 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ *  Example of OFF file importation and display.
+ *
+ * @see \ref importMesh3D
+ *
+ * \image html visuTrefExample.png   "Visualisation of the sample/tref.off file"
+ *
+ * \example io/meshFromOFF.cpp
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 

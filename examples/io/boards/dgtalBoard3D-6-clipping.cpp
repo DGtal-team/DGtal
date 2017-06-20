@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file Board3D-6-clipping.cpp
+ * @file io/boards/dgtalBoard3D-6-clipping.cpp
  * @ingroup examples/3dboard
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,18 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+
+/**
+ *  Example of clipped object export with Display3D.
+ *  @see \ref DGtalGLV_OBJExport
+ *  \image html  dgtalBoard3D-6-clipping.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
+ $  \example io/boards/dgtalBoard3D-6-clipping.cpp
+ *
+ */
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleGridCurve3d-2.cpp
+ * @file geometry/curves/exampleGridCurve3d-2.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,29 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   This example shows how to use GridCurve as a sequence of 2-scells in a 3d Khalimsky space. 
+
+@verbatim
+$ ./examples/geometry/curves/exampleGridCurve3d-2
+@endverbatim
+
+Note that the data type you want to display may be passed as argument as follows: 
+@verbatim
+$ ./examples/geometry/curves/exampleGridCurve3d-2 gridcurve
+@endverbatim
+
+This command line produces the following output: 
+
+@image html exampleGridCurveCat.png "Slice of a digital surface"
+@image latex exampleGridCurveCat.png "Slice of a digital surface"
+
+
+@see \ref moduleGridCurveAnalysis
+
+\example geometry/curves/exampleGridCurve3d-2.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

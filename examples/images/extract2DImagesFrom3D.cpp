@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file extract2DImagesFrom3D.cpp
+ * @file images/extract2DImagesFrom3D.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,17 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ *  Example of 2D images extraction from 3D images.
+ *
+ * \image html lobster2DExtract.png "Example of one of the resulting
+ * 2D images of the sample/lobster.vol file (with increased size)."
+ *
+ * \example images/extract2DImagesFrom3D.cpp
+ **/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

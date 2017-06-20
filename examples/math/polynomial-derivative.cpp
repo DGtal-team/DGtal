@@ -1,5 +1,5 @@
 /**
- * @file polynomial-derivative.cpp
+ * @file math/polynomial-derivative.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -10,6 +10,25 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+ * Computes the first and second derivative of the given polynomial P (in one variable).
+ *
+ *  @see \ref dgtal_mpolynomial_sec1_5 and \ref dgtal_mpolynomial_sec3 
+ * @verbatim
+ * $ ./examples/math/polynomial-derivative "1+x+x^2-3*x^4"
+ * P(X_0)   = (1 + 1 X_0 + 1 X_0^2 + -3 X_0^4)
+ * P'(X_0)  = (1 + 2 X_0 + -12 X_0^3)
+ * P''(X_0) = (2 + -36 X_0^2)
+ * $ ./examples/math/polynomial-derivative "(2 + -36 X_0^2)"
+ * P(X_0)   = (2 + -36 X_0^2)
+ * P'(X_0)  = -72 X_0
+ * P''(X_0) = -72
+ * @endverbatim
+ *
+ * \example math/polynomial-derivative.cpp
+*/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [polynomial-derivative-basicIncludes]

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file rigidtransformation2d.cpp
+ * @file images/exampleRigidtransformation2d.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
@@ -26,6 +26,14 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+*  Example of 2D rigid transformation using forward and backward model.
+   @see @ref moduleGeometricTransform
+   \image html church_backward.jpg "Result for backward model" 
+*  \example images/exampleRigidtransformation2d.cpp
+**/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

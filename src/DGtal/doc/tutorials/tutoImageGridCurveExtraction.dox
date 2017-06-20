@@ -120,7 +120,7 @@ you will obtain the followings contours:
 
 \section  FCfromImageTools Extracting and displaying contours from the DGtalTools project 
 
-Project available in the DGtal website (@href http://libdgtal.org/tools/)
+Project available in the DGtal website (http://libdgtal.org/tools/)
 
 
 The directory 2dContourTools contains command line program "pgm2freeman" 
@@ -187,15 +187,6 @@ For the display with gradient color:
 */
 
 
-
-
-/**
-\example tutorial-examples/freemanChainFromImage.cpp
-* A simple example to show how to extract the set of boundary contours obtained from the image level set.
-* This programm outputs this image: 
-*   @image html fcExtraction.png 
-*
-*/
 }
 
 

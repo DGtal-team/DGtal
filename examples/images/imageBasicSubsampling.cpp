@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file imageBasicSubsampling.cpp
+ * @file images/imageBasicSubsampling.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,16 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ * Examples of 2D and 3D basic image subsampling.
+ *
+ * \image html imageBasicSubsamplingExample.png "Illustration of the resulting subsampling produced by this example."
+ *
+ * \example images/imageBasicSubsampling.cpp
+ **/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

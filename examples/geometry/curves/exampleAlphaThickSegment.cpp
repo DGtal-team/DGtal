@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleAlphaThickSegment.cpp
+ * @file geometry/curves/exampleAlphaThickSegment.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,17 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+   This example a simple alpha-thick segment recognition given from a freeman chain contour.
+   @see \ref moduleAlphaThickSegmentReco
+
+   @image html exampleAlphaThickSegment.png "Simple example of some alpha-thick segments recognition with alpha = 2, 5  and 15."
+   @image latex exampleAlphaThickSegment.png "Simple example of some alpha-thick segments recognition with alpha = 2, 5  and 15." width=6cm
+   \example geometry/curves/exampleAlphaThickSegment.cpp
+*/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

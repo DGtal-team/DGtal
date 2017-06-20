@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ctopo-fillContours.cpp
+ * @file topology/ctopo-fillContours.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -25,6 +25,17 @@
  * An example file named ctopo-fillContours.
  *
  * This file is part of the DGtal library.
+ */
+
+/**
+ *   A simple example illustrating the filling of the
+ *   interior/exterior of a given 2D contour. This program outputs
+ *   these images:
+ *
+ * @see \ref dgtal_helpsurf_sec4
+ * 
+ * @image html ctopo-fillContours.png 
+ * \example  topology/ctopo-fillContours.cpp
  */
 
 ///////////////////////////////////////////////////////////////////////////////

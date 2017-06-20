@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file 3dKSSurfaceExtraction.cpp
+ * @file topology/3dKSSurfaceExtraction.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,17 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+ * A simple example illustrating the extraction of 3d connected set of
+ *  KhalimskyCell. This program outputs these images:
+ *
+ *  @see \ref dgtal_helpsurf_sec3
+ *  
+ *  @image html KSurfelsConnectedOrientExt.png 
+ *  \example  topology/3dKSSurfaceExtraction.cpp
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

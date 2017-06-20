@@ -83,8 +83,8 @@ algorithm optimizes iteratively the direction so as to get a direction
 with feasible bounds or no solutions. All this is hidden to the user,
 but explains the worst-case complexity.
 
-\note You may have a look at \ref pageArithmeticPackage, more
-precisely at module \ref dgtal_lattice_polytope_2d to see how
+\note You may have a look at \ref packageArithmetic, more
+precisely at module \ref moduleLatticePolytope2D to see how
 lattice polytopes are represented.
 
 \section moduleCOBANaivePlaneRecognition_sec2 How to recognize a plane ?
@@ -168,7 +168,7 @@ COBANaivePlaneComputer::extend does not induce a speed up on the second
 method. You should prefer calling directly COBANaivePlaneComputer::extend()
 whenever you wish to extend the plane at this point.
 
-You may also have a look at example \ref viewer3D-7-planes.cpp.
+You may also have a look at example viewer3D-7-planes.cpp.
 
 @image html coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points."
 @image latex coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points." width=5cm
@@ -244,7 +244,7 @@ BigInteger.
 @image latex COBA-timings.png "Time (in ms) to recognize a naive plane as a function of the number of points N (x-axis) and the diameter (y-axis). Time is averaged over 1000 random recognitions." width=5cm
 
 @image html COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions."
-@image latex html COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions." width=5cm
+@image latex COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions." width=5cm
 
 
 \section moduleCOBANaivePlaneRecognition_sec5 Application to greedy segmentation into digital planes
@@ -331,69 +331,6 @@ the object COBAGenericNaivePlaneComputer will have at least one active
 COBANaivePlaneComputer instance. COBAGenericNaivePlaneComputer is thus a correct
 recognizer of arbitrary pieces of naive planes.
 
-*/
-
-/**
-   This example shows the recognition of a simple digital plane with
-   the COBA algorithm (class COBANaivePlaneComputer). Green points belong to
-   the naive plane.  There is no naive plane containing the green
-   points and any one of the red points.
-
-@see \ref moduleCOBANaivePlaneRecognition_sec2
-
-@verbatim
-$ ./examples/io/viewers/viewer3D-7-planes
-@endverbatim
-
-@image html coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points."
-@image latex coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points." width=5cm
-
-\example io/viewers/viewer3D-7-planes.cpp
-*/
-
-/**
-   This example shows a greedy segmentation into naive planes of the surface at threshold 0 within volume Al.100.vol.
-
-   Colors for each plane are chosen randomly. Surfels in the same plane have the same color.
-
-@see \ref moduleCOBANaivePlaneRecognition_sec5
-
-@verbatim
-# naive plane: width=1/1
-$ ./examples/geometry/surfaces/greedy-plane-segmentation -i ./examples/samples/Al.100.vol -t 0 -w 1 -d 1
-@endverbatim
-
-@image html greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes."
-@image latex greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes." width=6cm
-
-\example geometry/surfaces/greedy-plane-segmentation.cpp
-*/
-
-/**
-   This example shows a not-so-greedy segmentation into naive planes
-   of the surface at threshold 0 within volume Al.100.vol.
-
-   It enhances the polyhedrization of greedy-plane-segmentation.cpp by
-   selecting first the vertices that induces the biggest planes. This
-   is much slower than the other, but it gives nicer results. For each
-   vertex, it computes its best plane by breadth-first traversal. It
-   stores the obtained size for each vertex independently. It puts
-   them in a priority queue, the first to be popped are the ones with
-   the biggest size. The remaining of the algorithm is unchanged.
-
-   Colors for each plane are chosen randomly. Surfels in the same plane have the same color.
-
-@see \ref moduleCOBANaivePlaneRecognition_sec5 (solution of exercice 2)
-
-@verbatim
-# naive plane: width=1/1
-$ ./examples/geometry/surfaces/greedy-plane-segmentation-ex2 -i ./examples/samples/Al.100.vol -t 0 -w 1 -d 1
-@endverbatim
-
-@image html greedy-plane-segmentation-ex2-al-w1.png "Not-so-greedy segmentation of Al capone into naive planes."
-@image latex greedy-plane-segmentation-ex2-al-w1.png "Not-so-greedy segmentation of Al capone into naive planes." width=6cm
-
-\example geometry/surfaces/greedy-plane-segmentation-ex2.cpp
 */
 
 
