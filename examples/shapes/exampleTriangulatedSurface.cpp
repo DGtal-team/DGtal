@@ -29,39 +29,19 @@
 
 //! [TriangulatedSurfaceUsageFull]
 
-//#define WITH_3D
+#define WITH_3D
 
 ////////// INCLUDES /////////
-
-#include <numeric>
-#include <map>
-#include <set>
 
 #include <DGtal/helpers/StdDefs.h>
 
 #include <DGtal/base/BasicFunctors.h>
 
 #include <DGtal/topology/DigitalSurface.h>
-#include <DGtal/topology/DigitalSetBoundary.h>
 #include <DGtal/topology/SetOfSurfels.h>
 #include <DGtal/topology/LightImplicitDigitalSurface.h>
 
-#include <DGtal/arithmetic/IntegerComputer.h>
-
-#include <DGtal/io/readers/GenericReader.h>
-#include <DGtal/io/colormaps/ColorBrightnessColorMap.h>
-#include <DGtal/io/colormaps/TickedColorMap.h>
 #include <DGtal/io/viewers/Viewer3D.h>
-#include <DGtal/io/boards/Board3D.h>
-#include <DGtal/io/colormaps/TickedColorMap.h>
-#include "DGtal/io/readers/GenericReader.h"
-
-#include <DGtal/images/SimpleThresholdForegroundPredicate.h>
-#include <DGtal/images/imagesSetsUtils/SetFromImage.h>
-#include <DGtal/images/ImageLinearCellEmbedder.h>
-
-#include <DGtal/graph/DepthFirstVisitor.h>
-#include <DGtal/graph/GraphVisitorRange.h>
 
 #include <DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h>
 #include <DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h>
@@ -351,7 +331,6 @@ void laplacian(Shape& shape, const Options& options,
     MeshHelpers::triangulatedSurface2Mesh( trimesh, viewmesh );
     trace.info() << "Mesh has " << viewmesh.nbVertex()
                  << " vertices and " << viewmesh.nbFaces() << " faces." << std::endl;
-    trace.endBlock();
 
     QApplication application(argc,argv);
     Viewer3D<> viewer;
