@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-7bis-planes.cpp
+ * @file io/viewers/viewer3D-7bis-stdplane.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -26,6 +26,25 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   This example shows the recognition of a simple standard digital
+   plane with the Chord algorithm (class
+   ChordGenericStandardPlaneComputer ). Green points belong to the naive
+   plane. Grey points show farther points that also belong to the
+   strip.
+
+@see \ref modulePlaneRecognition_sec26
+
+@verbatim
+$ ./examples/io/viewers/viewer3D-7bis-stdplane
+@endverbatim
+
+@image html coba-stdplane.png "Piece of standard plane."
+@image latex coba-stdplane.png "Piece of standard plane." width=5cm
+
+\example io/viewers/viewer3D-7bis-stdplane.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>

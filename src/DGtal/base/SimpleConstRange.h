@@ -90,7 +90,6 @@ namespace DGtal
      * and one functor.
      * @param itb begin iterator.
      * @param ite end iterator.
-     * @param aFunctor functor used to adapt on-the-fly the elements of the range
      *
      */
     SimpleConstRange(const TConstIterator& itb, const TConstIterator& ite)

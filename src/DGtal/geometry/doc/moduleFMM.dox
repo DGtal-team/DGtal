@@ -154,12 +154,12 @@ distance values.
 \subsection sectmoduleFMM12 Basic usage 
 
 In DGtal, the class FMM is parametrized by the following types: 
-- a model of CDigitalSet (for the accepted point set)
-- a model of CImage (which stores the distance values)
+- a model of concepts::CDigitalSet (for the accepted point set)
+- a model of concepts::CImage (which stores the distance values)
 - a model of concepts::CPointPredicate (which implicitly represents the finite point set where the distance values
   must be computed) 
 - an optional type to compute the distance value of a given point from the 
-distance values of its neighbors (a model of CPointFunctor set to L2FirstOrderLocalDistance
+distance values of its neighbors (a model of concepts::CPointFunctor set to L2FirstOrderLocalDistance
 by default).  
 
 After the inclusion of the following file
@@ -296,29 +296,5 @@ The result is displayed below.
 
 
 */
-
-/**
-   Example of use the FMM (fast marching method) class in 2D.
-@see \ref moduleFMM
-
-This program outputs this image:
-
-@image html DTbyFMM-25.png
-
-\example geometry/volumes/distance/exampleFMM2D.cpp
-*/
-
-
-/**
-
-   Example of use the FMM (fast marching method) class in 3D.
-@see \ref moduleFMM
-
-This program outputs this image:
-@image html exampleFMM3D.png
-
-\example geometry/volumes/distance/exampleFMM3D.cpp
-*/
-
 
 }

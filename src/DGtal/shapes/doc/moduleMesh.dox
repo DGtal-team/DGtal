@@ -131,14 +131,4 @@ You will obtain such a small height field display (with previous tube mesh):
 @see  tests/shapes/testMesh.cpp
 */
 
-
-
-/**
-   \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
-   \image latex example3dMeshConstruction.png  "Simple example of 3D mesh construction."  width=5cm
-
-   \example shapes/mesh3DConstructionAndVisualisation.cpp
-*/
-
-
 }

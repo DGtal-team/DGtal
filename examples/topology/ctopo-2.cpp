@@ -16,7 +16,7 @@
  **/
 
 /**
- * @file ctopo-2.cpp
+ * @file topology/ctopo-2.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,18 @@
  * An example file named ctopo-2.
  *
  * This file is part of the DGtal library.
+ */
+
+
+/**
+ *  A simple example illustrating the extraction of the sequence of
+ *  surfels boudary. This program outputs this image.
+ *
+ *  @see \ref dgtal_helpsurf_sec1
+ *
+ * @image html ctopo2c.png 
+ *
+ * \example topology/ctopo-2.cpp
  */
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file imageGridCurveEstimator.cpp
+ * @file tutorial-examples/imageGridCurveEstimator.cpp
  * @ingroup tutorial-examples
  * @author Tristan Roussillon (tristan.roussillon@liris.cnrs.fr)
  *

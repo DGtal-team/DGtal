@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file logoDGtal.cpp
+ * @file io/boards/logoDGtal.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * CNRS, LIRIS UMR 5205, Université de Lyon, France
@@ -23,6 +23,16 @@
  * @date 2012/04/19
  * 
  */
+
+
+/**
+ *  \example io/boards/logoDGtal.cpp
+ * 
+ *  Simple example to generate DGtal logo in DGtal.
+ *  \image html  logo_DGtal_small.png   "visualization of resulting export."
+ */
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

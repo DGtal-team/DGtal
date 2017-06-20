@@ -59,7 +59,7 @@ namespace DGtal
    * @tparam TIterator the type of the iterator to adapt
    *
    * To achieve this goal, the adapter is based on a functor f
-   * given at construction so that operator* calls f(*it), 
+   * given at construction so that operator* calls f(\*it), 
    * instead of calling directly operator* of the underlying 
    * iterator it. This operation returns a reference (or constant
    * reference) on a member of the element pointed to by the 

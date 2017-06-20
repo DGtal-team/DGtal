@@ -1,7 +1,13 @@
+/// @file dec/examplePropagation.cpp
+/**
+   Example of 2D wave propagation using the DEC package.
+    @see \ref moduleDECPropagation
+   \image html  propagation_time_wave_ii.gif  "You should obtain such wave propagation (by converting svg files)."
+   \example dec/examplePropagation.cpp
+**/
+
 #include <iomanip>
-
-#include "common.h"
-
+#include "DECExamplesCommon.h"
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
@@ -265,7 +271,7 @@ void propa_2d()
     trace.endBlock();
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     propa_2d();
     return 0;

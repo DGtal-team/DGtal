@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file visuDistanceTransform.cpp
+ * @file geometry/volumes/distance/distancetransform3D.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -24,6 +24,17 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   Example of distance transformation in dimension 3 with DGtal Viewer3D.
+This program outputs this image:
+@see \ref moduleVolumetric
+
+@image html example-DT-3D.png
+
+\example geometry/volumes/distance/distancetransform3D.cpp
+*/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

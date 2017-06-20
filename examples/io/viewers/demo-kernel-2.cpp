@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file kernelDomain.cpp
+ * @file io/viewers/demo-kernel-2.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -25,6 +25,16 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ * Example of Domain and Point display in Viewer3D.
+ *  @see @ref moduleDisplay3D 
+ * \image html demo-kernel-2.png " " 
+ *  \example io/viewers/demo-kernel-2.cpp
+ **/
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

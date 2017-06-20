@@ -20,27 +20,12 @@ namespace DGtal {
 @page moduleFrechetShortcut Fréchet Shortcuts 
 @writers Isabelle Sivignon
 
+[TOC]
 
-Table of contents:
- -# \ref sectOverview
-   -# \ref subsectFrechet
-   -# \ref subsectCurve
- -# \ref sectAlgo 
-   -# \ref subsectDef
-   -# \ref subsectWidth
-   -# \ref subsectBackpath
-   -# \ref subsectDirections
- -# \ref sectQuality
-   -# \ref subsectGuarantee
-   -# \ref subsectComplexity
- -# \ref sectImplementation
+\section FS_sectOverview Overview
 
 
-
-\section sectOverview Overview
-
-
-The algorithm implemented in the class DGtal::FrechetShortcut is the one
+The algorithm implemented in the class FrechetShortcut is the one
 presented in the article @cite sivignon2011.  
 We present here the basic ideas of the algorithm and at the end, give
 pointers to the relative structures used in the implementation.    
@@ -134,9 +119,9 @@ shortcuts of a @f$ \varepsilon @f$-simplification.
 @image latex local.png "Illustration of the local property." width=5cm
 
 
-\section sectAlgo Guaranteed algorithm using an approximated distance 
+\section FS_sectAlgo Guaranteed algorithm using an approximated distance 
 
-\subsection subsectDef Definitions and overall algorithm
+\subsection FS_subsectDef Definitions and overall algorithm
 
 Using the exact Fréchet distance appears to be too expensive to design an
 efficient algorithm. Instead, we use an approximation of the
@@ -153,7 +138,7 @@ longest backpath in the direction @f$\overrightarrow{p_ip_j}@f$.
 @image html def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 @image latex def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 
-We have the following property from @cite Abam1247103: 
+We have the following property from @cite Abam1247103 : 
 
 The Fréchet error of a shortcut @f$p_ip_j@f$ satisfies:
 
@@ -203,8 +188,8 @@ To do so, we consider a set of points named
 We can prove easily (see @cite sivignon2011) that the
 origin of the longest backpath is an occulter.
 
-@image html occulters.png "Occulters for the direction <i>d</i> in red. Green arrows represent backpathes: the length of the plain arrows is to be checked, whereas we know that the backpathes represented by dashed arrows are not the longest ones."
-@image latex occulters.png "Occulters for the direction <i>d</i> in red. Green arrows represent backpathes: the length of the plain arrows is to be checked, whereas we know that the backpathes represented by dashed arrows are not the longest ones."
+@image html occulters.png "Occulters for the direction @e d in red. Green arrows represent backpathes: the length of the plain arrows is to be checked, whereas we know that the backpathes represented by dashed arrows are not the longest ones."
+@image latex occulters.png "Occulters for the direction @e d in red. Green arrows represent backpathes: the length of the plain arrows is to be checked, whereas we know that the backpathes represented by dashed arrows are not the longest ones."
 
 
 Considering whether the last movement @f$\overrightarrow{p_jp_{j+1}}@f$ is forward or backward in the direction @f$\overrightarrow{p_ip_j}@f$, we can decide if there is a new backpath possibly
@@ -226,8 +211,8 @@ cluster.
 
 
 @image html clusters.png "Left: The directions of the plane are clustered into 8 octants. For instance, direction
-<i>d</i> is in octant <i>0</i>. Right: Illustration of the positive (or forward) elementary shifts for each octant."
-@image latex clusters.png "Left: The directions of the plane are clustered into 8 octants. For instance, direction <i>d</i> is in octant <i>0</i>. Right: Illustration of the positive (or forward) elementary shifts for each octant."
+@e d is in octant 0. Right: Illustration of the positive (or forward) elementary shifts for each octant."
+@image latex clusters.png "Left: The directions of the plane are clustered into 8 octants. For instance, direction @e d is in octant 0. Right: Illustration of the positive (or forward) elementary shifts for each octant."
 
 
 If we now go back to Algorithm 2, we see that the result of the test lines 2-3 is
@@ -256,8 +241,8 @@ figures below for the octant @f$0@f$:
 @image html zones.png ""
 @image latex zones.png ""
 
-@image html ordre_projections.png "For two points <i>p</i> and <i>q</i> and a direction <i>&alpha;</i>: on  the left, <i>q</i> is <i>after</i> <i>p</i>, and is the active occulter for direction <i>&alpha;</i>, whereas on the right, <i>p</i> is after <i>q</i> and is the active occulter."
-@image latex ordre_projections.png "For two points <i>p</i> and <i>q</i> and a direction <i>&alpha;</i>: on  the left, <i>q</i> is <i>after</i> <i>p</i>, and is the active occulter for direction <i>&alpha;</i>, whereas on the right, <i>p</i> is after <i>q</i> and is the active occulter."
+@image html ordre_projections.png "For two points @e p and @e q and a direction @e &alpha;: on  the left, @e q is @e after @e p, and is the active occulter for direction @e &alpha;, whereas on the right, @e p is after @e q and is the active occulter."
+@image latex ordre_projections.png "For two points @e p and @e q and a direction @e &alpha;: on  the left, @e q is @e after @e p, and is the active occulter for direction @e &alpha;, whereas on the right, @e p is after @e q and is the active occulter."
 
 Algorithm 3 below puts together these observations to update the list of
 active occulters for one octant. 
@@ -324,7 +309,7 @@ bounded by @f$n@f$. Nevertheless, experiments on noisy shapes show that the
 general behaviour of the algorithm in linear in time. 
 
 
-\section sectImplementation Implementation in DGtal
+\section FS_sectImplementation Implementation in DGtal
 
 
 In DGtal, the FrechetShortcut should be used with a Curve object, using its PointsRange, as in the example below: 
@@ -332,30 +317,22 @@ In DGtal, the FrechetShortcut should be used with a Curve object, using its Poin
 @snippet geometry/curves/exampleFrechetShortcut.cpp FrechetShortcutUsage
 
 
-The function DGtal::FrechetShortcut::extendFront() is called when a new point is added to the current shortcut. It calls DGtal::FrechetShortcut::updateWidth() and DGtal::FrechetShortcut::updateBackpath(). 
+The function FrechetShortcut::extendFront() is called when a new point is added to the current shortcut. It calls FrechetShortcut::updateWidth() and FrechetShortcut::updateBackpath(). 
 
-The function DGtal::FrechetShortcut::updateWidth() implements the update of the width @f$\omega(i,j)@f$ and uses the subclass 
-DGtal::FrechetShortcut::Cone for the cone definition and manipulation.  
+The function FrechetShortcut::updateWidth() implements the update of the width @f$\omega(i,j)@f$ and uses the subclass 
+FrechetShortcut::Cone for the cone definition and manipulation.  
 
-The length of the longest backpath is managed in the function DGtal::FrechetShortcut::updateBackpath(). It updates a vector of $8$ backpaths, one per each octant. The subclass DGtal::FrechetShortcut::Backpath contains all the necessary structures
-- DGtal::FrechetShortcut::Backpath::myQuad is the octant number
-- DGtal::FrechetShortcut::Backpath::myOcculters is the list of occulters
-- DGtal::FrechetShortcut::Backpath::addPositivePoint() is called when the next elementary move is forward for the octant
-- DGtal::FrechetShortcut::Backpath::addNegativePoint() is called when the next elementary move is backward for the octant: it implements Algorithm 2 and calls updateOcculters()
-- DGtal::FrechetShortcut::Backpath::updateOcculters() implements Algorithm 3
-- the list of interval used to memorize the directions for which there exist a too long backpath is implemented through DGtal::FrechetShortcut::Backpath::myForbiddenIntervals using the Boost Interval Container Library (http://www.boost.org/doc/libs/1_52_0/libs/icl). It is updated with the function DGtal::FrechetShortcut::Backpath::updateIntervals().
+The length of the longest backpath is managed in the function FrechetShortcut::updateBackpath(). It updates a vector of $8$ backpaths, one per each octant. The subclass FrechetShortcut::Backpath contains all the necessary structures
+- FrechetShortcut::Backpath::myQuad is the octant number
+- FrechetShortcut::Backpath::myOcculters is the list of occulters
+- FrechetShortcut::Backpath::addPositivePoint() is called when the next elementary move is forward for the octant
+- FrechetShortcut::Backpath::addNegativePoint() is called when the next elementary move is backward for the octant: it implements Algorithm 2 and calls updateOcculters()
+- FrechetShortcut::Backpath::updateOcculters() implements Algorithm 3
+- the list of interval used to memorize the directions for which there exist a too long backpath is implemented through FrechetShortcut::Backpath::myForbiddenIntervals using the Boost Interval Container Library (http://www.boost.org/doc/libs/1_52_0/libs/icl). It is updated with the function FrechetShortcut::Backpath::updateIntervals().
 
-An output using the DGtal::Board mecanism is provided (see example above to output an eps file).
+An output using the Board mecanism is provided (see example above to output an eps file).
 
 */
 
-
-/**
-   This snippet segments a digital curve into Frechet shortcuts.  
-
-@see \ref moduleFrechetShortcut and \ref moduleGridCurveAnalysis
-
-\example geometry/curves/exampleFrechetShortcut.cpp
-*/
 
 }

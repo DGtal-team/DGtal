@@ -499,12 +499,11 @@ We have shown before that a digital surface has a dual structure
 that is the graph whose vertices are n-1-cells and whose arcs are
 (almost) n-2-cells. We can go further and use n-3-cells to define
 faces on this graph. This is related to the concept of \b umbrellas
-in 3D (see [Françon]). More precisely, given a start surfel, an
+in 3D (see \cite papier1998). More precisely, given a start surfel, an
 incident n-2-cell (the separator) and an incident n-3-cell (the
 pivot), one can turn around the pivot progressively to get a
 face. This gives precisely in 3D the dual to a digital surface that
-is a kind of marching-cube surface (see [Lachaud:1998-icip,
-Lachaud:2000-gmod]).
+is a kind of marching-cube surface (see \cite Lachaud:1998-icip, \cite Lachaud:2000-gmod).
 
 The main class for computing umbrellas is the class
 UmbrellaComputer.  Turning around the pivot means moving the face
@@ -605,111 +604,5 @@ the edge.
 @image html digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file."
 @image latex digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file." width=0.5\textwidth
 
-
-
 */
-
-/**
-Given a domain and a predicate telling whether we are inside or
-outside the object of interest, it is easy to determine the set of
-surfels by a simple scanning of the space. This is done for you by
-static methods Surfaces::uMakeBoundary and Surfaces::sMakeBoundary.
-
-@see \ref dgtal_digsurf_sec2_1
-
-On the lobser.vol volume, volScanBoundary.cpp extracts 155068 surfels
-in 3866ms
-
-@verbatim
-# Commands
-$ ./examples/topology/volScanBoundary ../examples/samples/lobster.vol 50 255
-@endverbatim
-
-@image html volTrackBoundary-lobster.png "Digital surface that is the boundary of a (6,18)-connected component in image lobster.vol, extracted by scanning the whole space in 3866ms."
-
-\example topology/volScanBoundary.cpp 
-*/
-
-/**
-In many circumstances, it is better to use the presented graph
-structure of digital surfaces. For instance it may be used to find
-the surface just by searching it by adjacencies. This process is
-called \b tracking. This is done for you by
-static method Surfaces::trackBoundary.
-
-@see \ref dgtal_digsurf_sec2_2
-
-On the lobser.vol volume, volTrackBoundary.cpp extracts 148364
-surfels in 351ms.
-
-@verbatim
-# Commands
-$ ./examples/topology/volTrackBoundary ../examples/samples/lobster.vol 50 255
-@endverbatim
-
-@image html volTrackBoundary-lobster.png "Digital surface that is the boundary of a (6,18)-connected component in image lobster.vol, extracted by tracking from an initial surfel in 351ms."
-
-\example topology/volTrackBoundary.cpp
-*/
-
-/**
-Frontiers and boundary of two intersecting balls. The first ball is
-labelled 1 (red), the second 2 (yellow), their intersection 3
-(orange). The frontier between 1 and 0 is displayed in red, the
-frontier between 2 and 0 is displayed in yellow, the boundary of
-region 3 is displayed in orange.
-
-@see \ref dgtal_digsurf_sec3_5
-
-@image html digital-surface-intersecting-balls.png
-@image latex digital-surface-intersecting-balls.png width=0.5\textwidth
-
-\example topology/frontierAndBoundary.cpp
-*/
-
-/**
-Marching-cube like surface extracted using the combinatorial
-manifold structure of digital surfaces.
-
-@see \ref dgtal_digsurf_sec4_3
-
-On the lobser.vol volume, volToOFF.cpp builds an OFF surface of
-155068 vertices, 154910 faces, 310136 edges in 3879ms+1646ms.
-
-@verbatim
-# Commands
-$ ./examples/topology/volToOff ../examples/samples/cat10.vol 1 255 0
-$ ./examples/topology/volToOff ../examples/samples/lobster.vol 50 255 0
-@endverbatim
-
-@image html digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file."
-@image html digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file."
-
-\example topology/volToOFF.cpp
-*/
-
-/** 
-Implicit polynomial surface defined on the command-line by the
-user (as "(x^2+y^2+2z^2-1)*(z^2x-0.1)"), then extracted using digital
-surface tracking and converted into the corresponding combinatorial
-surface.
-
-@see \ref dgtal_mpolynomial_sec3
-@see \ref dgtal_digsurf_sec4_3
-
-@verbatim
-$ ./examples/topology/trackImplicitPolynomialSurfaceToOFF "(x^2+y^2+2*z^2-1)*(z^2x-0.1)" -2 -2 -2 2 2 2 0.02
-# Digital surface has 112826 surfels.
-# output in marching-cube.off (in 1809ms)
-# You may display it with your favorite OFF displayer (like geomview, etc).
-$ ctmviewer marching-cube.off
-@endverbatim
-
-@image html nice-mpolynomial.png "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
-@image latex nice-mpolynomial.png width=0.5\textwidth "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
-
-\example topology/trackImplicitPolynomialSurfaceToOFF.cpp
-
-*/
-
 }

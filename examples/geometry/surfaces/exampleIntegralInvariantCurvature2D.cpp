@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleIntegralInvariantCurvature2D.cpp
+ * @file geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp
  * @ingroup Examples
  * @author Jérémy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France

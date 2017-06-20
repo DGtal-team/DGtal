@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file examplePreimage.cpp
+ * @file geometry/tools/examplePreimage.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,14 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+
+/**
+   Example of Preimage2D.
+   \image  html  preimageExample2.png "Example of preimage based arc recognition."
+   \example geometry/tools/examplePreimage.cpp
+**/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

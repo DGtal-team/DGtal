@@ -47,70 +47,75 @@
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class CBackInsertable
-/**
-Description of \b concept '\b CBackInsertable' <p>
-@ingroup Concepts
-
-@brief Aim: Represents types for which a std::back_insert_iterator can
-be constructed with std::back_inserter. Back Insertion Sequence are
-refinements of CBackInsertable. They require more services than
-CBackInsertable, for instance read services or erase services.
-
-### Refinement of
-
-### Associated types :
-- \e value_type: the type of object that can be inserted at the back.
-
-### Notation
- - \e X : A type that is a model of CBackInsertable
- - \e x : object of type X
- - \e e : object of type value_type
-
-### Definitions
-
-### Valid expressions and semantics
-
-| Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
-|-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Add to back | \e x.push_back( \e e )|  |               |              | adds the element \e e at the end of object \e x | | |
-
-### Invariants
-
-### Models
-
-- Most standard linear containers: std::vector, std::list, std::deque
-- CPositiveIrreducibleFraction is a refinement of CBackInsertable
-- hence fractions: SternBrocot::Fraction, LighterSternBrocot::Fraction, LightSternBrocot::Fraction
-
-### Notes
-
-@tparam T the type that should be a model of CBackInsertable.
- */
-template <typename T>
-struct CBackInsertable
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::value_type value_type;
-  BOOST_CONCEPT_USAGE( CBackInsertable )
+  namespace concepts
   {
-    myX.push_back( myV );
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
-  {
-  }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  value_type myV;
 
-    // ------------------------- Internals ------------------------------------
-private:
+    /////////////////////////////////////////////////////////////////////////////
+    // class CBackInsertable
+    /**
+       Description of \b concept '\b CBackInsertable' <p>
+       @ingroup Concepts
 
-}; // end of concept CBackInsertable
+       @brief Aim: Represents types for which a std::back_insert_iterator can
+       be constructed with std::back_inserter. Back Insertion Sequence are
+       refinements of CBackInsertable. They require more services than
+       CBackInsertable, for instance read services or erase services.
+
+       ### Refinement of
+
+       ### Associated types :
+       - \e value_type: the type of object that can be inserted at the back.
+
+       ### Notation
+       - \e X : A type that is a model of CBackInsertable
+       - \e x : object of type X
+       - \e e : object of type value_type
+
+       ### Definitions
+
+       ### Valid expressions and semantics
+
+       | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
+       |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
+       | Add to back | \e x.push_back( \e e )|  |               |              | adds the element \e e at the end of object \e x | | |
+
+       ### Invariants
+
+       ### Models
+
+       - Most standard linear containers: std::vector, std::list, std::deque
+       - CPositiveIrreducibleFraction is a refinement of CBackInsertable
+       - hence fractions: SternBrocot::Fraction, LighterSternBrocot::Fraction, LightSternBrocot::Fraction
+
+       ### Notes
+
+       @tparam T the type that should be a model of CBackInsertable.
+    */
+    template <typename T>
+    struct CBackInsertable
+    {
+      // ----------------------- Concept checks ------------------------------
+    public:
+      typedef typename T::value_type value_type;
+      BOOST_CONCEPT_USAGE( CBackInsertable )
+      {
+        myX.push_back( myV );
+        checkConstConstraints();
+      }
+      void checkConstConstraints() const
+      {
+      }
+      // ------------------------- Private Datas --------------------------------
+    private:
+      T myX; // do not require T to be default constructible.
+      value_type myV;
+
+      // ------------------------- Internals ------------------------------------
+    private:
+
+    }; // end of concept CBackInsertable
+
+  } // namespace concepts
 
 } // namespace DGtal
 

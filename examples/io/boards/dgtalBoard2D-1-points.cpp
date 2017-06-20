@@ -16,7 +16,7 @@
  **/
 
 /**
- * @file dgtalBoard2D-1-points.cpp
+ * @file io/boards/dgtalBoard2D-1-points.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -26,6 +26,16 @@
  * An example file named dgtalBoard2D-1-points.
  * 
  */
+
+/**
+ *   \example io/boards/dgtalBoard2D-1-points.cpp
+ *
+ * This simple example shows the basic usage of a Board2D to
+ * export graphical representations of dgtal objects (here, a
+ * HyperRectDomain and three points exported as SVG and EPS).
+ * \image html  dgtalboard-1-points.png  "visualization of one of the  resulting export."
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

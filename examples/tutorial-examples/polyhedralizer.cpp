@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file polyhedralizer.cpp
+ * @file tutorial-examples/polyhedralizer.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -26,6 +26,29 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   This example shows how to make a polyhedron surface from a digital object vol file.
+
+@see \ref tutoPolyhedralisation
+
+@verbatim
+$ ./examples/tutorial-examples/polyhedralizer
+@endverbatim
+
+\image html polyhedral-al-finished-w3.png "The polyhedral surface approaching Al Capone digital object, for width=3/1."
+\image latex polyhedral-al-finished-w3.png "The polyhedral surface approaching Al Capone digital object, for width=3/1."
+
+\example examples/tutorial-examples/polyhedralizer.cpp
+*/
+
+/**
+Example of tutorial 2: making a polyhedron from a digital object
+   @see @ref tutoPolyhedralisation
+   \image html polyhedral-al-finished-w3.png "The polyhedral surface approaching Al Capone digital object, for width=3/1."
+   @example tutorial-examples/polyhedralizer.cpp
+ 
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [polyhedralizer-basicIncludes]

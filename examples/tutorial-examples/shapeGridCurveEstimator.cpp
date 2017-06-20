@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file shapeGridCurveEstimator.cpp
+ * @file tutorial-examples/shapeGridCurveEstimator.cpp
  * @ingroup tutorial-examples
  * @author Tristan Roussillon (tristan.roussillon@liris.cnrs.fr)
  *
@@ -70,12 +70,12 @@ using namespace DGtal;
 int main()
 {
   //shape
-  typedef Flower2D<Z2i::Space> Flower; 
-  Flower2D<Z2i::Space> flower(Z2i::Point(0,0), 20, 5, 5, 0);
-  
   //! [shapeGridCurveEstimator-dig]
   //implicit digitization of a shape of type Flower 
   //into a digital space of type Space
+  typedef Flower2D<Z2i::Space> Flower; 
+  Flower2D<Z2i::Space> flower(Z2i::Point(0,0), 20, 5, 5, 0);
+  
   double h = 1; 
   GaussDigitizer<Z2i::Space,Flower> dig;  
   dig.attach( flower );

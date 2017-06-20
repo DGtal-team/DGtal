@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleNaive3DDSSComputer.cpp
+ * @file geometry/curves/exampleNaive3DDSSComputer.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
@@ -26,6 +26,14 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   This example shows the basic usage of a naive 3D DSS recognition. 
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleNaive3DDSSComputer.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

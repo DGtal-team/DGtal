@@ -26,13 +26,16 @@ Quick Install
 
 * Linux: [Binary packages](https://software.opensuse.org/download.html?project=home%3Acopyme%3ADGtal&package=DGtal) (Arch, CentOS, Fedora, openSUSE, RHEL, SL)
 * MacOS (using [homebrew](http://brew.sh)):
-        brew install dgtal
+ 
+       ```brew install dgtal```
+
+
 (```brew options dgtal``` to enable optional features)
 
 * Windows: no binary package, please compile the library.
 
 
-Additional instructions are availalbe in the
+Additional instructions are available in the
 [documentation](http://dgtal.org/doc/nightly/moduleBuildDGtal.html).
 
 Quick Build Instructions
@@ -57,7 +60,11 @@ More Information
 * Project homepage http://dgtal.org
 * Related DGtalTools project: http://dgtal.org/tools, https://github.com/DGtal-team/DGtalTools, https://github.com/DGtal-team/DGtalTools-contrib
 
+* Release 0.9.3 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.290419.svg)](https://doi.org/10.5281/zenodo.290419)
+* Release 0.9.2 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.56430.svg)](http://dx.doi.org/10.5281/zenodo.56430)
 * Release 0.9.1 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.45125.svg)](http://dx.doi.org/10.5281/zenodo.45125)
 * Release 0.9 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.31884.svg)](http://dx.doi.org/10.5281/zenodo.31884)
 * Release 0.8 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11586.png)](http://dx.doi.org/10.5281/zenodo.11586)
-* Continuous Integration [![Build Status](https://travis-ci.org/DGtal-team/DGtal.svg?branch=master)](https://travis-ci.org/DGtal-team/DGtal)
+* Continuous Integration (Linux/MacOS) [![Build Status](https://travis-ci.org/DGtal-team/DGtal.svg?branch=master)](https://travis-ci.org/DGtal-team/DGtal)
+*  Continuous Integration (Windows) [![Build status](https://ci.appveyor.com/api/projects/status/7labe8ft0jf30ng7/branch/master?svg=true)](https://ci.appveyor.com/project/kerautret/dgtal-8op01/branch/master)
+

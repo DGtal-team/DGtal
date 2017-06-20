@@ -16,13 +16,21 @@
  **/
 
 /**
- * @file dgtalBoard2D-1-points.cpp
+ * @file io/boards/dgtalBoard3D-1-points.cpp
  * @ingroup Examples
  * @author Aline MARTIN (\c aline.martin@insa-lyon.fr )
  *
  * @date 2013/06/16
  *
  * An example file named dgtalBoard3D-1-points.
+ *
+ */
+
+/**
+ * Example of digital point export with Display3D.
+ *  @see \ref DGtalGLV_OBJExport
+ *  \image html  dgtalBoard3D-1-points.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
+ * \example io/boards/dgtalBoard3D-1-points.cpp
  *
  */
 

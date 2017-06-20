@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file trackImplicitPolynomialSurfaceToOFF.cpp
+ * @file topology/trackImplicitPolynomialSurfaceToOFF.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -26,6 +26,31 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/** 
+ * Implicit polynomial surface defined on the command-line by the
+ * user (as "(x^2+y^2+2z^2-1)*(z^2x-0.1)"), then extracted using digital
+ * surface tracking and converted into the corresponding combinatorial
+ * surface.
+ * 
+ * @see \ref dgtal_mpolynomial_sec3
+ * @see \ref dgtal_digsurf_sec4_3
+ *
+ * @verbatim
+ * $ ./examples/topology/trackImplicitPolynomialSurfaceToOFF "(x^2+y^2+2*z^2-1)*(z^2x-0.1)" -2 -2 -2 2 2 2 0.02
+ * # Digital surface has 112826 surfels.
+ * # output in marching-cube.off (in 1809ms)
+ * # You may display it with your favorite OFF displayer (like geomview, etc).
+ * $ ctmviewer marching-cube.off
+ * @endverbatim
+ *
+ * @image html nice-mpolynomial.png "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
+ * @image latex nice-mpolynomial.png width=0.5\textwidth "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
+ *
+ * \example topology/trackImplicitPolynomialSurfaceToOFF.cpp
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [trackImplicitPolynomialSurfaceToOFF-basicIncludes]

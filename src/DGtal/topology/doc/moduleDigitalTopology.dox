@@ -32,7 +32,7 @@ namespace DGtal {
    as possible. 
   
    Once a topology (class \ref DigitalTopology) has been defined from two
-   adjacencies (models of \ref CAdjacency), a digital object (class \ref Object)
+   adjacencies (models of concepts::CAdjacency), a digital object (class \ref Object)
    has a \e border which is the set of elements adjacent to its
    complement. The border is again a digital object. A digital object
    can also be seen as a graph, which can be traversed in many ways,
@@ -342,7 +342,7 @@ see example: <a href="3dBorderExtractionImg_8cpp-example.html"> 3dBorderExtracti
 
    A basic mechanism for simple points is implemented in the Object
    class. It relies on the well-known definition of simple points of
-   [Bertrand:1994], based on the number of connected components in a
+   \cite Bertrand:1994 , based on the number of connected components in a
    geodesic neighborhood of the point. It is valid in 2D and 3D. It
    should not be sufficient in nD, since toric connected components
    may appear. However, you can use it anyway as a kind of
@@ -427,51 +427,49 @@ Finally the result can simply be displayed using Viewer3D:
    @image html visuThinning.png  "Resulting 3d thinning  with the 6_26 object"
    @image latex DiskWithAdj4.png  "Resulting 3d thinning  with the 6_26 object" width=5cm	
 
-  
+
+   \section dgtal_topology_sec4 Neighborhood configurations, predicates and look up tables.
+
+   `Object::isSimple(input_point)` is an example of a predicate
+   (ie. a function returning a Boolean value) that depends on the topology
+   of the object and on the occupancy configuration of the `input_point` neighborhood.\n
+   There is a limited amount of possible configuration of the neighborhood
+   depending on the dimension of the space. In 2D, there are 2^8 different
+   neighborhood configurations, and in 3D 2^26.
+   The result of the predicate will vary depending on the topology of the space,
+   but the number of occupancy configurations will be the same for any topology
+   in that dimension.
+
+   The calculation of a predicate for each point is repetitive and can be
+   computationally intensive. However thanks to the limited amount of
+   neighborhood occupancy configurations, we can pre-compute the Boolean
+   result of the predicate for each configuration and store it in a look up table.
+
+   In DGtal, pre-computed look up tables for different predicates and topologies
+   are distributed with the source code, and decompressed at build/install
+   time to be ready to use. The tables locations are stored in string variables in:
+   "DGtal/topology/tables/NeighborhoodTables.h"
+
+   Different functions to work with these pre-computed tables are in the header:
+   "DGtal/topology/NeighborhoodConfigurations.h"
+
+   @ref Object is able to take advantage of this just preloading the table before calling isSimple. This speeds up a thinning process by orders of magnitude.  @see testNeighborhoodConfigurations.cpp
+
+   @code
+   Object26_6 object( dt26_6, point_set );
+   object.setTable(functions::loadTable<3>(simplicity::tableSimple26_6))
+   // Any following call to isSimple after setTable will use the pre-computed calculations.
+   object.isSimple(a_point);
+   @endcode
+
+   In 2D:
+
+   @code
+   Object4_8 object( dt4_8, point_set );
+   object.setTable(functions::loadTable<2>(simplicity::tableSimple4_8))
+   @endcode
+
+   @note Be sure to choose the table with the same topology than the object.
  */
 
-
-
-/**
-   Objects have a border, which are the points which touch the
-   complement in the sense of background adjacency. A border of an
-   object is itself an object, with the same topology as the object.
-   
-   @see \ref dgtal_topology_sec3_3
-
-   @image html visuBorderExtraction.png  "Border extraction visualisation" 
-
-   \example topology/3dBorderExtraction.cpp
-*/
-
-/**
-   Objects have a border, which are the points which touch the
-   complement in the sense of background adjacency. A border of an
-   object is itself an object, with the same topology as the object.
-   
-   @see \ref dgtal_topology_sec3_3
-
-   @image html visuBorderExtraction2.png  "Border extraction visualisation from imported volume " 
-
-   \example topology/3dBorderExtractionImg.cpp
-*/
-
-/**
-   An homotopic thinning is an iterative removal of simple points from
-   a given digital object.
-
-   @see \ref dgtal_topology_sec3_5
-
-   @image html visuThinning-18-6.png  "Resulting 3d thinning with the 18_6 object"
-   @image html visuThinning.png  "Resulting 3d thinning with the 6_26 object"
-
-   \example topology/homotopicThinning3D.cpp
-*/
-
-
-
-
 }
-
-
-

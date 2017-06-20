@@ -16,7 +16,7 @@
  **/
 
 /**
- * @file dgtalBoard2D-1-points.cpp
+ * @file io/boards/dgtalBoard3D-2-ks.cpp
  * @ingroup Examples
  * @author Aline MARTIN (\c aline.martin@insa-lyon.fr )
  *
@@ -25,6 +25,16 @@
  * An example file named dgtalBoard3D-2-ks.
  *
  */
+
+
+/**
+ *   Example of Khalimsky Signed Cell export with Display3D.
+ *  @see \ref DGtalGLV_OBJExport
+ *  \image html  dgtalBoard3D-2-ks.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
+ *  \example io/boards/dgtalBoard3D-2-ks.cpp
+ *
+ */
+
 
 #include <iostream>
 #include "DGtal/io/boards/Board3D.h"

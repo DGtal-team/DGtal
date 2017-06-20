@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ArithmeticalDSSComputer.cpp
+ * @file geometry/curves/exampleArithmeticalDSSComputer.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,15 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   This example shows the basic usage of a 4-connected standard segment computer, 
+an object devoted to the on-line recognition of 4-connected standard DSSs.  
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/exampleArithmeticalDSSComputer.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

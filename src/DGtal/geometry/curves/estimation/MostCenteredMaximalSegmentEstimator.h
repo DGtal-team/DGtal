@@ -66,11 +66,11 @@ namespace DGtal
    *
    Here is a basic example of curvature estimation: 
    - 1. Construct an instance from a segment computer and a segment computer estimator
-   @snippet geometry/curves/estimation exampleCurvature.cpp MostCenteredConstruction
+   @snippet geometry/curves/estimation/exampleCurvature.cpp MostCenteredConstruction
    - 2. Initialize it with a range @e r and a grid step @e h
-   @snippet geometry/curves/estimation exampleCurvature.cpp MostCenteredInit
+   @snippet geometry/curves/estimation/exampleCurvature.cpp MostCenteredInit
    - 3. Get the estimations
-   @snippet geometry/curves/estimation exampleCurvature.cpp MostCenteredEvaluation
+   @snippet geometry/curves/estimation/exampleCurvature.cpp MostCenteredEvaluation
 
    * @tparam SegmentComputer at least a model of CForwardSegmentComputer
    * @tparam SCEstimator a model of CSegmentComputerEstimator
@@ -83,8 +83,8 @@ namespace DGtal
   class MostCenteredMaximalSegmentEstimator
   {
 
-    BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<SegmentComputer> )); 
-    BOOST_CONCEPT_ASSERT(( CSegmentComputerEstimator<SCEstimator> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<SegmentComputer> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CSegmentComputerEstimator<SCEstimator> )); 
     BOOST_STATIC_ASSERT(( boost::is_same< SegmentComputer, 
 			  typename SCEstimator::SegmentComputer >::value ));
 

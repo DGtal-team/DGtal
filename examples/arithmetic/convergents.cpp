@@ -1,5 +1,5 @@
 /**
- * @file convergents.cpp
+ * @file arithmetic/convergents.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -10,6 +10,26 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   Computes the quotients and the convergents of a given fraction.
+
+@see \ref dgtal_irrfrac_sec3_2
+
+@verbatim
+# Approximations of pi
+$ ./examples/arithmetic/convergents 103993 33102
+z = [3,7,15,1,292]
+z_0 = 3 / 1
+z_1 = 22 / 7
+z_2 = 333 / 106
+z_3 = 355 / 113
+z_4 = 103993 / 33102
+@endverbatim
+
+\example arithmetic/convergents.cpp
+*/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [convergents-basicIncludes]

@@ -625,9 +625,9 @@ namespace DGtal
 
     /**
        Orient the SCell positively in the direction of the exterior of
-       the DigitalSet @ref aShape. It simply check if the direct
+       the DigitalSet shape. It simply check if the direct
        incident Cell in the first upper dimension (obtain with
-       @ref sDirectIncident) belongs to the DigitalSet or not.
+       @ref KhalimskySpaceND::sDirectIncident) belongs to the DigitalSet or not.
        
        This method is used to change the default cell orientation in
        order to get the direction of shape exterior (default

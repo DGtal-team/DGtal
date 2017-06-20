@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleLambdaMST3D.cpp
+ * @file geometry/curves/estimation/exampleLMST3D.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
@@ -26,6 +26,17 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+   This example shows the basic usage of the Lambda maximal segment tangent estimation
+   in 3D.
+
+@see \ref moduleArithDSSReco
+
+\example geometry/curves/estimation/exampleLMST3D.cpp
+*/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

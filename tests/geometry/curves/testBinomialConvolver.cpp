@@ -90,8 +90,8 @@ bool testBinomialConvolver()
     CurvatureBCFct;
   typedef BinomialConvolverEstimator< MyBinomialConvolver, TangentBCFct> BCTangentEstimator;
   typedef BinomialConvolverEstimator< MyBinomialConvolver, CurvatureBCFct> BCCurvatureEstimator;
-  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< BCTangentEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< BCCurvatureEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< BCTangentEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< BCCurvatureEstimator > ));
   BCTangentEstimator tgtEstimator;
   BCCurvatureEstimator curvEstimator;
 

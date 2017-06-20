@@ -63,7 +63,7 @@ namespace DGtal
    * 26 adjacencies in 3D, and the \f$ \omega \f$ and \f$ \alpha \f$
    * adjacencies in nD.
    *
-   * \b Model of CAdjacency.
+   * \b Model of concepts::CAdjacency.
    *
    * @tparam TSpace any digital space (see concept CSpace).
    *

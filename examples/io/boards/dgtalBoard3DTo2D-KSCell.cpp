@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalBoard3DTo2D-KSCell.cpp
+ * @file io/boards/dgtalBoard3DTo2D-KSCell.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 31 aout 2011
  * 
@@ -24,6 +24,14 @@
  * Simple example of class Board3DTo2D to display KSCell.
  *
  * This file is part of the DGtal library.
+ */
+
+
+/**
+ * Khalimsky Signed Cell Visualization (with Board3DTo2D)
+ * \image html dgtalBoard3DTo2D-KSCell.png "Khalimsky Signed Cell Visualization (with Board3DTo2D)"
+ * \example io/boards/dgtalBoard3DTo2D-KSCell.cpp
+ *
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -74,7 +82,7 @@ int main()
   SCell linelC = K.sCell(Point(1,2 ,2), false);
   board << linelA << linelB << linelC;
 
-  Cell center(Point(5,5,5));
+  Cell center = K.uCell(Point(5,5,5));
 
   // Testing display of oriented surfels:
   SCell ssurfelXZ = K.sCell( Point( 5, 6, 5 ), false ); 

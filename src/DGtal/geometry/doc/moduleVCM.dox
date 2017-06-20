@@ -59,13 +59,13 @@ integrable function \f$\chi:\mathbb{R}^3 \to \mathbb{R}^+\f$ to the matrix
 @image html vcm.png "Voronoi Covariance Measure of a point set in the plane."
 @image latex vcm.png "Voronoi Covariance Measure of a point set in the plane." width=8cm
 
-\note The stability result of \cite{Merigot_2011-tvcg} implies that
+\note The stability result of @cite Merigot_2011-tvcg implies that
 information extracted from the covariance matrix such as normals or
 principal directions are \b stable with respect to \b Hausdorff
 \b perturbation.
 
 \advanced Remark that this definition matches the definition
-introduced in \cite{Merigot_2011-tvcg}: when \f$\chi\f$ is the
+introduced in @cite Merigot_2011-tvcg : when \f$\chi\f$ is the
 characteristic function of a ball, one recovers a notion similar to
 the convolved VCM.
 
@@ -85,7 +85,7 @@ requires two type parameters:
 
 - \b TSpace: the digital space (any model of CSpace), like \ref SpaceND.
 
-- \b TSeparableMetric: the metric used for computing the Voronoi map (any model of CSeparableMetric), like \ref ExactPredicateLpSeparableMetric<TSpace, 2> for the Euclidean metric.
+- \b TSeparableMetric: the metric used for computing the Voronoi map (any model of CSeparableMetric), like \link ExactPredicateLpSeparableMetric ExactPredicateLpSeparableMetric<TSpace, 2>\endlink for the Euclidean metric.
 
 The instantiation of the class VoronoiCovarianceMeasure requires the
 following parameters:
@@ -317,62 +317,6 @@ Example geometry/surfaces/dvcm-2d-curvature.cpp shows how to extract the curvatu
 
 */
 
-
-/**
-This example shows the computation of the VCM of a set of 2D
-digital points. The normal is estimated from the diagonalization of
-the VCM tensor. Feature detection is achieved with the eigenvalues
-of the VCM. A red color indicates a feature. Normals are displayed
-as arrows.
-
-@see \ref moduleVCM_sec2
-
-@verbatim
-$ ./examples/geometry/volumes/dvcm-2d
-@endverbatim
-
-@image html dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
-@image latex dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
-
-\example geometry/volumes/dvcm-2d.cpp
-*/
-
-/** 
-This example shows the computation of the VCM of a digital surface
-read from a .vol file. The normal is estimated from the
-diagonalization of the VCM tensor, while the orientation is deduced
-from the orientation of the trivial surfel normals. Feature
-detection is achieved with the eigenvalues of the VCM. A red color
-indicates a feature. Normals are displayed as black lines.
-
-@see \ref moduleVCM_sec3
-
-@verbatim
-$ ./examples/geometry/surfaces/dvcm-3d
-@endverbatim
-
-@image html dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
-@image latex dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
-
-\example geometry/surfaces/dvcm-3d.cpp
-*/
-
-/**
-This example shows the computation of the VCM of a sequence of 2D
-digital points forming a 4-connected curve. The absolute curvature is estimated from the diagonalization of
-the VCM tensor. A red color indicates a strong curvature, flat zones are blue, in-between is yellow.
-
-@see \ref moduleVCM_sec3_2
-
-@verbatim
-$ ./examples/geometry/surfaces/dvcm-2d-curvature
-@endverbatim
-
-@image html dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure."
-@image latex dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure." width=8cm
-
-\example geometry/surfaces/dvcm-2d-curvature.cpp
-*/
 
 
 }

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleAlphaShape.cpp
+ * @file geometry/tools/exampleAlphaShape.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,17 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+Computation of the alpha shape of the border of a digital shape. 
+
+@see \ref moduleHull2D
+
+
+\example geometry/tools/exampleAlphaShape.cpp
+*/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

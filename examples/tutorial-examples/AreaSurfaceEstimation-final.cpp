@@ -1,4 +1,11 @@
+/// @file tutorial-examples/AreaSurfaceEstimation-final.cpp
 /// Shape
+/**
+ Example of tutorial 4: Surface area estimation
+ @see @ref tutoAreaSurface
+ \example tutorial-examples/AreaSurfaceEstimation-final.cpp
+**/
+
 #include "DGtal/shapes/parametric/Ball3D.h"
 
 /// Shape construction

@@ -15,6 +15,7 @@
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
+namespace concepts{
 //----------------------------------------
 /*!
 @page moduleMetrics Metric Spaces, Digital Metric Spaces and Related Concepts
@@ -69,25 +70,25 @@ integer numbers (i.e. @f$(\mathbb{Z}^n, \mathbb{Z}, d)@f$)). For
 example,
 
  - @f$ l_p@f$ metrics (ExactPredicateLpSeparableMetric or
- InexactPredicateLpSeparableMetric) are models of concepts::CMetricSpace for
+ InexactPredicateLpSeparableMetric) are models of CMetricSpace for
  @f$p>1@f$
 
  - Chamfer norms with axis symmetric unit ball (see experimental::ChamferNorm2D in dimension 2).
 
  - DigitalMetricAdapter which adapts any metric (model of
-   concepts::CMetricSpace) to digital space using the ceil function. This induces
+   CMetricSpace) to digital space using the ceil function. This induces
    a digital metric (ceil function preserves the
    triangular inequality).
  
 
 @dot
 digraph metric_concepts_2_vor {
-    CMetricSpace [label="CMetricSpace" URL="@ref concepts::CMetricSpace"];
-    CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref concepts::CDigitalMetricSpace"];
-    CSeparableMetric [label="CSeparableMetric" URL="@ref concepts::CSeparableMetric"];
-    CDigitalSeparableMetric [label="CDigitalSeparableMetric" URL="@ref concepts::CDigitalSeparableMetric"];
-    CPowerMetric [label="CPowerMetric" URL="@ref concepts::CPowerMetric"];
-    CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref concepts::CPowerSeparableMetric"];
+    CMetricSpace [label="CMetricSpace" URL="@ref CMetricSpace"];
+    CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref CDigitalMetricSpace"];
+    CSeparableMetric [label="CSeparableMetric" URL="@ref CSeparableMetric"];
+    CDigitalSeparableMetric [label="CDigitalSeparableMetric"];
+    CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];
+    CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref CPowerSeparableMetric"];
 
     CSeparableMetric -> CMetricSpace;
     CSeparableMetric -> CMetricSpace;
@@ -155,14 +156,14 @@ As discussed in @cite Hirata1996, any metric induced by a norm with
 axis symmetric unit ball is monotonic. Hence, all @f$l_p@f$ are
 monotonic, as well as most path based norms (chamfer norms,
 neighborhood sequence norms,...). Such properties are implemented in
-the concept of concepts::CSeparableMetric. 
-Similarly, concepts::CPowerSeparableMetric can be defined as a
-refinement of concepts::CPowerMetric with monotonicity property of the
+the concept of CSeparableMetric. 
+Similarly, CPowerSeparableMetric can be defined as a
+refinement of CPowerMetric with monotonicity property of the
 power metric.
 
 
-The Separable metric concept is a refinement of the concepts::CMetricSpace
-(resp. concepts::CPowerMetric) concept in which we require models to implement a
+The Separable metric concept is a refinement of the CMetricSpace
+(resp. CPowerMetric) concept in which we require models to implement a
 method
 @a  hiddenBy(u,v,w,startingPoint,endPoint,dim): given three digital points
 @a u, @a v, @a w and an isothetic segment defined by the pair
@@ -189,8 +190,8 @@ wu,v,wv,w,ww,startingPoint,endPoint,dim) on triplet of weighted points
 
 
 The class SeparableMetricAdapter adapts any model of
-concepts::CMetricSpace which is monotonic to a model of
-concepts::CSeparableMetric. Please refer to the following table for
+CMetricSpace which is monotonic to a model of
+CSeparableMetric. Please refer to the following table for
 computational costs.
 
 
@@ -198,16 +199,16 @@ computational costs.
 @section CostSec Main models and Computational Costs for Volumetric Analysis
 
 
-Main models of concepts::CSeparableMetric and
-concepts::CPowerSeparableMetric are:
+Main models of CSeparableMetric and
+CPowerSeparableMetric are:
 
  - ExactPredicateLpSeparableMetric: main class for @f$ l_p@f$ metrics
   (with exact predicates)
  - InexactPredicateLpSeparableMetric: main class for @f$ l_p@f$ metrics
   (with approximated predicates)
- - SeparableMetricAdapter: adapts any model of concepts::CMetricSpace (with
- - monotonicity property) to concepts::CSeparableMetric
- - ExactPredicateLpPowerSeparableMetric:  main class for power @f@f$
+ - SeparableMetricAdapter: adapts any model of CMetricSpace (with
+ - monotonicity property) to CSeparableMetric
+ - ExactPredicateLpPowerSeparableMetric:  main class for power @f$
   l_p@f$ functions (with exact predicates).
  - experimental::ChamferNorm2D: proof-of-concept of sperable volumetric computation from path based norms.
 
@@ -237,5 +238,5 @@ Following this table, VoronoiMap, DistanceTransformation, PowerMap, ReverseDista
 
 For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ \Theta(dn^d)@f$.
 */
-
+}
 }

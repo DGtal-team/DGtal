@@ -1,3 +1,10 @@
+/// @file dec/exampleDECSurface.cpp
+/**
+   Example of solving Poisson equation using the DEC package.
+    @see \ref sectDECPoissonProblem
+   \image html alcapone_phi.png "Solution dual 0-form."
+   \example dec/exampleDECSurface.cpp
+**/
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SurfelAdjacency.h"
@@ -21,20 +28,20 @@ struct FalseOutsideDomain
 
     typedef typename Predicate::Point Point;
 
-    FalseOutsideDomain(DGtal::ConstAlias<Predicate> predicate, DGtal::ConstAlias<Domain> domain) :
-        predicate(&predicate), domain(&domain)
+    FalseOutsideDomain(DGtal::ConstAlias<Predicate> predicate, DGtal::ConstAlias<Domain> adomain) :
+        myPredicate(&predicate), myDomain(&adomain)
     {
     }
 
     bool
     operator()(const Point& point) const
     {
-        if (!domain->isInside(point)) return false;
-        return (*predicate)(point);
+        if (!myDomain->isInside(point)) return false;
+        return (*myPredicate)(point);
     }
 
-    const Predicate* predicate;
-    const Domain* domain;
+    const Predicate* myPredicate;
+    const Domain* myDomain;
 };
 
 void
@@ -300,4 +307,3 @@ int main(int argc, char* argv[])
 
     return app.exec();
 }
-

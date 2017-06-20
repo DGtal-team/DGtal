@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleConvexHull2D.cpp
+ * @file geometry/tools/exampleConvexHull2D.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,18 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+Computation of the convex hull of a planar point set by different algorithms: 
+- functions::Hull2D::andrewConvexHullAlgorithm \cite Andrew1979
+- functions::Hull2D::grahamConvexHullAlgorithm \cite Graham1972
+- functions::Hull2D::melkmanConvexHullAlgorithm \cite Melkman1987
+
+@see \ref moduleHull2D
+
+
+\example geometry/tools/exampleConvexHull2D.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

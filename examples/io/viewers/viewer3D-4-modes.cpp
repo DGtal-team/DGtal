@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-4-modes.cpp
+ * @file io/viewers/viewer3D-4-modes.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,14 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ * Example of default visualization of a digital point sets with the associated domain
+ * @see \ref DGtalGLV_ModeExamplesDomain
+ * \example io/viewers/viewer3D-4-modes.cpp
+   \image html  viewer3D-4-modes.png  "Illustration of the Paving/Grid modes  on 3D points"
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

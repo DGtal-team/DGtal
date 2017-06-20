@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-7bis-planes.cpp
+ * @file io/viewers/viewer3D-7bis-planes.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -26,6 +26,25 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+   This example shows the recognition of a simple digital plane with
+   the Chord algorithm (class \ref DGtal::ChordNaivePlaneComputer). Green points belong to
+   the naive plane.  There is no naive plane containing the green
+   points and any one of the red points.
+
+@see \ref modulePlaneRecognition_sec22
+
+@verbatim
+$ ./examples/io/viewers/viewer3D-7bis-planes
+@endverbatim
+
+@image html chord-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points."
+@image latex chord-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points." width=5cm
+
+\example io/viewers/viewer3D-7bis-planes.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>

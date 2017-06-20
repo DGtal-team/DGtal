@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleImageFactoryFromHDF5.cpp
+ * @file images/exampleImageFactoryFromHDF5.cpp
  * @ingroup Examples
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -26,6 +26,15 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+*  Example of HDF5 ImageFactory.
+   @see @ref dgtalBigImagesAbstract   
+
+   \image html TiledImageFromImage-11-write.png "Example of writing in cache. "
+*  \example images/exampleImageFactoryFromHDF5.cpp
+**/
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

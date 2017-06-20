@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-6-clipping.cpp
+ * @file io/viewers/viewer3D-6-clipping.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,15 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/**
+ * Example of visualization after adding two clipping planes
+ * @see \ref DGtalGLV_CLipping
+ * \image html  visuClipping2.png "Visualization after adding a second clipping plane (1,0,0,-4.9) ."
+ * \example io/viewers/viewer3D-6-clipping.cpp
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

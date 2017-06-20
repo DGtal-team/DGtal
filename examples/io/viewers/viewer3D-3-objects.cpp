@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file viewer3D-3-objects.cpp
+ * @file io/viewers/viewer3D-3-objects.cpp
  * @ingroup examples/3dViewer
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,14 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+ * Example of 6-18 digital Adjacencies visualization  with Viewer3D.
+ * @see \ref DGtalGLV_ModeEx
+ * \example io/viewers/viewer3D-3-objects.cpp
+ * \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D."
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

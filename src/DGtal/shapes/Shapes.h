@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file Shapes.h
+ * @file
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *

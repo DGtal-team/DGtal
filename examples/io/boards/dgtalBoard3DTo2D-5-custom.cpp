@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalBoard3DTo2D-5-custom.cpp
+ * @file io/boards/dgtalBoard3DTo2D-5-custom.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -24,6 +24,14 @@
  * Simple example of class Board3DTo2D.
  *
  * This file is part of the DGtal library.
+ */
+
+
+/**
+ * Example of a custom display (with Board3DTo2D)
+ * @see \ref DGtalGLV_Custom
+ * \example io/boards/dgtalBoard3DTo2D-5-custom.cpp
+ * \image html dgtalBoard3DTo2D-5-custom.png "Example of several custom display  (with Board3DTo2D)." width=5cm
  */
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -329,6 +329,7 @@ namespace DGtal
      * Partial equality.
      *
      * @param pv Point/Vector to compare to this.
+     * @param dimensions  Dimensions along which to compare the points.
      *
      * @return true iff points are equal for given dimensions .
      */
@@ -339,6 +340,7 @@ namespace DGtal
      * Partial inverse equality.
      *
      * @param pv Point/Vector to compare to this.
+     * @param dimensions  Dimensions along which to compare the points.
      *
      * @return true iff points are equal for dimensions not in dimensions.
      */

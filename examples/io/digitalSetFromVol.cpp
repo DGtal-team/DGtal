@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file digitalSetFromVol.cpp
+ * @file io/digitalSetFromVol.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -26,6 +26,16 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+ *   Example of digital set extraction from volumetric file (.vol).
+ * 
+ * @see @ref moduleIO 
+ *  \image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" 
+ *  \example io/digitalSetFromVol.cpp
+ */
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

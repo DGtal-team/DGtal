@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file cubical-complex-collapse.cpp
+ * @file topology/cubical-complex-collapse.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -26,6 +26,43 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+/** 
+ * Collapse of 3D cubical complex that is made of 20x20x20 voxels with
+ * their faces.  Fixed cells were marked in red. It was the eight
+ * vertices, plus all border linels on the upper faces plus a random
+ * linel within the complex. The priority was the distance to the
+ * diagonal.  Note that the Euler characteristic of the complex is
+ * unchanged after collapse.
+ *
+ * @see \ref dgtal_ccomplex_sec7
+ *
+ * @verbatim
+ * $ ./examples/topology/cubical-complex-collapse
+ * New Block [Creating Cubical Complex]
+ *   After close: [CubicalComplex dim=3 chi=1 #0=9261 #1=26460 #2=25200 #3=8000]
+ * EndBlock [Creating Cubical Complex] (12.088 ms)
+ * New Block [Collapsing complex]
+ * [CC::collapse]-+ tag collapsible elements...    68756 found.
+ * [CC::collapse]-+ entering collapsing loop. 
+ * [CC::collapse]---+ Pass 1, Card(PQ)=68921 elements, nb_exam=0
+ * [CC::collapse]---+ Pass 2, Card(PQ)=16219 elements, nb_exam=68921
+ * [CC::collapse]---+ Pass 3, Card(PQ)=7956 elements, nb_exam=85140
+ * [CC::collapse]---+ Pass 4, Card(PQ)=36 elements, nb_exam=93096
+ * [CC::collapse]-+ cleaning complex.
+ * Collapse removed 64066 cells.
+ * After collapse: [CubicalComplex dim=2 chi=1 #0=1268 #1=2427 #2=1160 #3=0]
+ * EndBlock [Collapsing complex] (162.069 ms)
+ * $
+ * @endverbatim
+ *
+ * @image html cubical-complex-collapse-snapshot.png "Collapse of a cubical complex made of 20x20x20 voxels with some cells marked as fixed (in red)."
+ * @image latex cubical-complex-collapse-snapshot.png "Collapse of a cubical complex made of 20x20x20 voxels with some cells marked as fixed (in red)." width=5cm
+ *\example topology/cubical-complex-collapse.cpp
+ *
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

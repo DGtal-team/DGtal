@@ -45,7 +45,7 @@ where @f$ \textbf{n_e}(x) @f$ denotes the normal vector estimated at position @f
 @f$ \textbf{n_s}(\hat{x}) @f$ the normal vector of surface element (surfel) @f$ \hat{x}  \in Dig_h{\mathcal{X}} @f$, and @f$ . @f$ the dot product.
 
 
-@section tutosectLoadVol Import volumetric image an visualization 
+@section AS_tutosectLoadVol Import volumetric image an visualization 
 
 Let start with shape construction. First of all, create a source
 file with the following includes (or copy the AreaSurfaceEstimation-template.cpp
@@ -122,5 +122,6 @@ VoronoiCovarianceMeasureLocalEstimator.
 
 
 */
+
 
 }

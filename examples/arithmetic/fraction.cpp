@@ -1,5 +1,5 @@
 /**
- * @file fraction.cpp
+ * @file arithmetic/fraction.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -10,6 +10,20 @@
  *
  * This file is part of the DGtal library.
  */
+
+/**
+   Computes a fraction from its quotients.
+
+@see \ref dgtal_irrfrac_sec3_4
+
+@verbatim
+# More precise approximation of pi
+$ ./examples/arithmetic/fraction 3 7 15 1 292 1 1 1 2 1 3 1 14
+z = 80143857 / 25510582
+@endverbatim
+
+\example arithmetic/fraction.cpp
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [fraction-basicIncludes]

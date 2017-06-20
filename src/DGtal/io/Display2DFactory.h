@@ -66,6 +66,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/KhalimskyPreSpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/kernel/PointVector.h"
@@ -99,6 +100,11 @@ template <Dimension dim, typename TInteger>
 static
 void
 drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyCell<dim, TInteger>& cell);
+
+template <Dimension dim, typename TInteger>
+static
+void
+drawDECSignedKhalimskyCell(DGtal::Board2D& board, const DGtal::SignedKhalimskyPreCell<dim, TInteger>& cell);
 
 // DiscreteExteriorCalculus
 template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
@@ -352,6 +358,10 @@ template < Dimension dim, typename TInteger >
   static void draw( DGtal::Board2D & board, const DGtal::KhalimskyCell<dim, TInteger> & );
 // KhalimskyCell
     
+// KhalimskyPreCell
+template < Dimension dim, typename TInteger >
+  static void draw( DGtal::Board2D & board, const DGtal::KhalimskyPreCell<dim, TInteger> & );
+// KhalimskyPreCell
     
 // Object
 template <typename TDigitalTopology, typename TDigitalSet>
@@ -370,19 +380,20 @@ template < typename TKSpace, typename TCellContainer >
     
     
 // PointVector
-template<Dimension dim, typename TComponent>
-  static void drawAsPaving( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+template<Dimension dim, typename TComponent, typename TContainer>
+  static void drawAsPaving( DGtal::Board2D & board, const DGtal::PointVector<dim, TComponent, TContainer> & );
 
-template<Dimension dim, typename TComponent>
-  static void drawAsGrid( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+template<Dimension dim, typename TComponent, typename TContainer>
+  static void drawAsGrid( DGtal::Board2D & board, const DGtal::PointVector<dim, TComponent, TContainer> & );
 
-template<Dimension dim, typename TComponent>
-  static void draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+template<Dimension dim, typename TComponent, typename TContainer>
+  static void draw( DGtal::Board2D & board, const DGtal::PointVector<dim, TComponent, TContainer> & );
 
-template<Dimension dim, typename TComponent>
+//arrow drawing
+template<Dimension dim, typename TComponent1, typename TComponent2, typename TContainer1, typename TContainer2>
   static void draw( DGtal::Board2D & board, 
-	     const DGtal::PointVector<dim,TComponent> &, 
-	     const DGtal::PointVector<dim,TComponent> & );
+	     const DGtal::PointVector<dim, TComponent1, TContainer1> & shift,
+	     const DGtal::PointVector<dim, TComponent2, TContainer2> & basepoint);
 // PointVector
     
     
@@ -397,6 +408,10 @@ template < Dimension dim, typename TInteger >
   static void draw( DGtal::Board2D & board, const DGtal::SignedKhalimskyCell<dim, TInteger> & );
 // SignedKhalimskyCell
     
+// SignedKhalimskyPreCell
+template < Dimension dim, typename TInteger >
+  static void draw( DGtal::Board2D & board, const DGtal::SignedKhalimskyPreCell<dim, TInteger> & );
+// SignedKhalimskyPreCell
     
 // StraightLineFrom2Points
 template <typename TPoint>

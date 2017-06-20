@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file   dgtalBoard3DTo2D-4-modes.cpp
+ * @file io/boards/dgtalBoard3DTo2D-4-modes.cpp
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 25 mai 2011
  * 
@@ -24,6 +24,15 @@
  * Simple example of class Board3DTo2D.
  *
  * This file is part of the DGtal library.
+ */
+
+
+/**
+ * Example of default visualization of a digital point sets with the associated domain (with Board3DTo2D)
+ * @see \ref DGtalGLV_ModeExamplesDomain
+ * \example io/boards/dgtalBoard3DTo2D-4-modes.cpp
+ *\image html visuModeDefault.png "Default visualization of a digital point sets with the associated domain (with Board3DTo2D) "
+ *
  */
 
 ///////////////////////////////////////////////////////////////////////////////

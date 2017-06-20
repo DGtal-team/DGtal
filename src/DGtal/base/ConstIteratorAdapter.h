@@ -53,15 +53,15 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class ConstIteratorAdapter
   /**
-   * Description of template class 'ConstIteratorAdapter' <p>
+   * Description of template class 'ConstIteratorAdapter'
    * \brief This class adapts any iterator
    * so that operator* returns another element 
    * than the one pointed to by the iterator.
    *
-   * @tparam TIterator the type of the iterator to adapt
-   *
+   * @tparam TIterator the type of the iterator to adapt.
+   * 
    * To achieve this goal, the adapter is based on a functor f
-   * given at construction so that operator* calls f(*it), 
+   * given at construction so that operator* calls f(\*it), 
    * instead of calling directly operator* of the underlying 
    * iterator it.
    *

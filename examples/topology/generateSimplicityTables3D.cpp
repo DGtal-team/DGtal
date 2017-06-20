@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file generateSimplicityTables3D.cpp
+ * @file topology/generateSimplicityTables3D.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -30,96 +30,69 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <iostream>
-#include <vector>
-#include <bitset>
-#include "DGtal/topology/Object.h"
-#include "DGtal/helpers/StdDefs.h"
+#include <DGtal/topology/tables/NeighborhoodTablesGenerators.h>
+
+// For saving compressed tables.
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
-///////////////////////////////////////////////////////////////////////////////
-
-/**
-   Given a digital topology \a dt, generates tables that tells if the
-   central point is simple for the specified configuration. The
-   configuration is determined by a sequence of bits, the first bit
-   for the point in the neighborhood, the second bit for the second
-   point, etc. When set to one, the point is in the neighborhood.
-
-   @tparam Object the type of object whose simpleness we wish to
-   precompute. Includes the topology.
-
-   @tparam Map the type used to store the mapping configuration -> bool.
-
-   @param dt an instance of the digital topology.
-   @param map (modified) the mapping configuration -> bool.
-*/
-template <typename Object, typename Map>
-void 
-generateSimplicityTable( const typename Object::DigitalTopology & dt,
-			 Map & map )
+int main( int argc, char** argv )
 {
-  typedef typename Object::DigitalSet DigitalSet;
-  typedef typename Object::Point Point;
-  typedef typename DigitalSet::Domain Domain;
-  typedef typename Domain::ConstIterator DomainConstIterator;
-
-  Point p1 = Point::diagonal( -1 );
-  Point p2 = Point::diagonal(  1 );
-  Point c = Point::diagonal( 0 );
-  Domain domain( p1, p2 );
-  DigitalSet shapeSet( domain );
-  Object shape( dt, shapeSet );
-  unsigned int k = 0;
-  for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
-    if ( *it != c ) ++k;
-  ASSERT( ( k < 32 )
-	  && "[generateSimplicityTable] number of configurations is too high." );
-  unsigned int nbCfg = 1 << k;
-  for ( unsigned int cfg = 0; cfg < nbCfg; ++cfg )
-    {
-      if ( ( cfg % 1000 ) == 0 )
-	{
-	  trace.progressBar( (double) cfg, (double) nbCfg );
-	}
-      shape.pointSet().clear();
-      shape.pointSet().insert( c );
-      unsigned int mask = 1;
-      for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
-	{
-	  if ( *it != c )
-	    {
-	      if ( cfg & mask ) shape.pointSet().insert( *it );
-	      mask <<= 1;
-	    }
-	}
-      bool simple = shape.isSimple( c );
-      map[ cfg ] = simple;
-    }
-}
-
-
-
-int main( int /*argc*/, char** /*argv*/ )
-{
-  typedef std::bitset<67108864> ConfigMap; // 2^26
-
   using namespace Z3i;
-  trace.beginBlock ( "Generate 3d table for 26_6 topology" );
+  string error_message(
+      "Select ForegroundAdjacency for object topology:\n"
+      "- 26_6 \n"
+      "- 18_6 \n"
+      "- 6_18 \n"
+      "- 6_26 \n");
+  if (argc != 2 ){
+    cout << error_message << std::endl;
+    return 1;
+  }
+  std::string input_str = std::string(argv[1]);
+
+  using ConfigMap = std::bitset<67108864> ; // 2^26
   // Too big for stack. Use heap instead.
-  ConfigMap* table26_6 = new ConfigMap;
-  generateSimplicityTable< Object6_26 >( dt6_26, *table26_6 );
+  unique_ptr<ConfigMap> table(new ConfigMap);
+  trace.beginBlock ( "Generate 3d table for " + input_str + " topology" );
+
+  if (input_str == "26_6")
+    functions::generateSimplicityTable< Object26_6, ConfigMap >( dt26_6, *table );
+  else if (input_str == "18_6")
+    functions::generateSimplicityTable< Object18_6, ConfigMap >( dt18_6, *table );
+  else if (input_str == "6_18")
+    functions::generateSimplicityTable< Object6_18, ConfigMap >( dt6_18, *table );
+  else if (input_str == "6_26")
+    functions::generateSimplicityTable< Object6_26, ConfigMap >( dt6_26, *table );
+  else {
+    cout << error_message << endl;
+    return 1;
+  }
   trace.endBlock();
 
-  ofstream file26_6( "simplicity_table6_26.txt" );
-  file26_6 << *table26_6;
-  file26_6.close();
+  // string filename = "simplicity_table" + input_str + ".txt";
+  // ofstream file( filename  );
+  // file << *table;
+  // file.close();
+  {
+    string filename = "simplicity_table" + input_str + ".zlib";
+    ofstream file( filename );
+    std::stringstream table_stream;
+    table_stream << *table;
+    namespace io = boost::iostreams;
+    io::filtering_streambuf<io::input> filter;
+    filter.push(io::zlib_compressor());
+    filter.push(table_stream);
+    io::copy(filter,file);
+    file.close();
+  }
 
-  delete table26_6;
   return 0;
 }
 //                                                                           //

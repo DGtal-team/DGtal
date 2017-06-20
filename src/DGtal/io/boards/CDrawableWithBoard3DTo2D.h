@@ -47,83 +47,84 @@
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithBoard3DTo2D
-  /**
-Description of \b concept '\b CDrawableWithBoard3DTo2D' <p>
-@ingroup Concepts
-
-@brief Aim:  The concept CDrawableWithBoard3DTo2D specifies what are the classes
-that admit an export with Board3DTo2D.
-    
-An object x satisfying this concept may then be used as:
-    
-   \code
-   Board3DTo2D display;
-   display << CustomStyle( x.className(), x.defaultStyle() )
-         << x;
-   \endcode 
-   
-### Refinement of
-   
-### Associated types :
-   
-### Notation
-    - \t X : A type that is a model of CDrawableWithBoard3DTo2DD
-    - \t x, \t y  : Object of type X
-    - \t m  : a string of characters
-   
-### Definitions
-   
-### Valid expressions and semantics
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|the default draw style | x.defaultStyle( m = "") | mode \t m: \c std::string | CDrawableWithBoard3DTo2D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
-|the name of the model X | x.className() | | std::string | | returns a string telling the name of the model X | | |
-|the way the object \t x is drawn | x.setStyle(CDrawableWithBoard3DTo2D &display) | | | |draws the object \c x on the \c display stream | | |
-
-### Invariants
-   
-### Models
-    ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
-   
-### Notes
-    @todo ImageContainerByHashTree does not implement setStyle(display &).
-    @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
-   */  
-  
-  template < class S, class KS> class Board3DTo2D;
-  
-  template <typename T, typename S, typename KS >
-  struct CDrawableWithBoard3DTo2D : public CDrawableWithDisplay3D<T, S , KS>
+  namespace concepts
   {
+    /////////////////////////////////////////////////////////////////////////////
+    // class CDrawableWithBoard3DTo2D
+    /**
+       Description of \b concept '\b CDrawableWithBoard3DTo2D' <p>
+       @ingroup Concepts
 
-  BOOST_CONCEPT_USAGE( CDrawableWithBoard3DTo2D )
-    {
-      //Drawable model should have a className() returning a string
-      concepts::ConceptUtils::sameType( myS, myT.className() );
+       @brief Aim:  The concept CDrawableWithBoard3DTo2D specifies what are the classes
+       that admit an export with Board3DTo2D.
+    
+       An object x satisfying this concept may then be used as:
+    
+       \code
+       Board3DTo2D display;
+       display << CustomStyle( x.className(), x.defaultStyle() )
+               << x;
+       \endcode 
+   
+       ### Refinement of
+   
+       ### Associated types :
+   
+       ### Notation
+       - \a X : A type that is a model of CDrawableWithBoard3DTo2DD
+       - \a x, \a y  : Object of type X
+       - \a m  : a string of characters
+   
+       ### Definitions
+   
+       ### Valid expressions and semantics
 
-      //Drawable model should be associated to global functions draw and defaultStyle.
-      //draw(myD3D, myT);
-      //concepts::ConceptUtils::sameType( myD, defaultStyle( myT) );
-    }
+       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+       |the default draw style | x.defaultStyle( m = "") | mode \a m: \c std::string | CDrawableWithBoard3DTo2D | | returns a dynamic allocation of the default style for the model \a X in mode \a m | | |
+       |the name of the model X | x.className() | | std::string | | returns a string telling the name of the model X | | |
+       |the way the object \a x is drawn | x.setStyle(CDrawableWithBoard3DTo2D &display) | | | |draws the object \c x on the \c display stream | | |
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    T myT;//! the drawable object
-    DrawableWithBoard3DTo2D *myD;
-
-    Board3DTo2D<S, KS> myD3D;
-    std::string myS;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CDrawableWithBoard3DTo2D
+       ### Invariants
+   
+       ### Models
+       ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
+   
+       ### Notes
+       @todo ImageContainerByHashTree does not implement setStyle(display &).
+       @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
+    */  
   
+    template < class S, class KS> class Board3DTo2D;
+  
+    template <typename T, typename S, typename KS >
+    struct CDrawableWithBoard3DTo2D : public concepts::CDrawableWithDisplay3D<T, S , KS>
+    {
+
+      BOOST_CONCEPT_USAGE( CDrawableWithBoard3DTo2D )
+      {
+        //Drawable model should have a className() returning a string
+        concepts::ConceptUtils::sameType( myS, myT.className() );
+
+        //Drawable model should be associated to global functions draw and defaultStyle.
+        //draw(myD3D, myT);
+        //concepts::ConceptUtils::sameType( myD, defaultStyle( myT) );
+      }
+
+      // ------------------------- Private Datas --------------------------------
+    private:
+
+      T myT;//! the drawable object
+      DrawableWithBoard3DTo2D *myD;
+
+      DGtal::Board3DTo2D<S, KS> myD3D;
+      std::string myS;
+
+      // ------------------------- Internals ------------------------------------
+    private:
+
+    }; // end of concept CDrawableWithBoard3DTo2D
+  } // namespace concepts
 } // namespace DGtal
 
 

@@ -10,7 +10,7 @@ if (WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
         add_executable(${FILE} ${FILE})
-        target_link_libraries (${FILE} DGtal DGtalIO)
+        target_link_libraries (${FILE} DGtal )
     endforeach(FILE)
 
 endif(WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)

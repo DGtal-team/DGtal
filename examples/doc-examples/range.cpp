@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file range.cpp
+ * @file doc-examples/range.cpp
  * @ingroup Examples
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * @author Guillaume Damiand
@@ -27,6 +27,15 @@
  *
  * This file is part of the DGtal library.
  */
+
+
+
+/**
+ * Example of range on Domain.
+ *  @see \ref sectSpace
+ *  \example doc-examples/range.cpp
+ */
+
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
