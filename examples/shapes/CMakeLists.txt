@@ -13,7 +13,7 @@ if (  WITH_VISU3D_QGLVIEWER )
   SET(DGTAL_SHAPES_EXAMPLES_QGL_SRC
      mesh3DConstructionAndVisualisation
      viewMarchingCubes
-    exampleTriangulatedSurface
+     sphereCotangentLaplaceOperator
 )
   FOREACH(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC}) 
     add_executable(${FILE} ${FILE})
