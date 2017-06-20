@@ -205,7 +205,7 @@ namespace DGtal
      * @param epsilon error parameter
      * @return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
      */
-    RealPoint segmentProjection( RealPoint& inner, RealPoint& outer, const double epsilon ) const;
+    RealPoint findIntersection( const RealPoint& inner, const RealPoint& outer, const double epsilon ) const;
 
     /**
      * @param p the point to be projected
@@ -215,7 +215,7 @@ namespace DGtal
      * @param h the grid step
      * @return a point that lies between the projection of left and right and that is the closest in term of \f$L_2\f$ norm.
      * */
-    RealPoint normProjection( RealPoint& p, RealPoint& left, RealPoint& right, const int step, const double h ) const;
+    RealPoint closestPointWithWitnesses( const RealPoint& p, const RealPoint& left, const RealPoint& right, const int step, const double h ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
