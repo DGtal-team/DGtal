@@ -1,7 +1,9 @@
 #!/bin/bash
 
-set -e
+set -ev
 
+echo "PATH ="
+echo $PWD
 rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/
 
 
@@ -14,7 +16,7 @@ tar zcvf DGtal-devel.tgz org.dgtal.docset
 
 cd ..
 
-rsync  -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/DGtal-devel.tgz dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/docset   
+rsync  -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/DGtal-devel.tgz dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/docset
 
 
 ###TAGS for DGtalTools
