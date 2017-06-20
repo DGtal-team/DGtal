@@ -98,7 +98,7 @@ namespace DGtal
 
     // Required by CUndirectedSimpleLocalGraph
     typedef VertexIndex                        Vertex;
-    typedef std::set<Vertex>                   VertexSet; 
+    typedef std::set<Vertex>                   VertexSet;
     template <typename Value> struct           VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
@@ -106,7 +106,7 @@ namespace DGtal
     // Required by CUndirectedSimpleGraph
     typedef EdgeIndex                          Edge;
     typedef IntegerSequenceIterator< VertexIndex > ConstIterator;
-    
+
     // Required for CCombinatorialSurface
     typedef HalfEdgeDataStructure::HalfEdgeIndex Arc;
     typedef HalfEdgeDataStructure::FaceIndex     Face;
@@ -161,7 +161,7 @@ namespace DGtal
         ASSERT( isValid() );
         return *mySurface;
       }
-      
+
       /// This object is a function : Argument -> Data
       /// @param v any index
       /// @return the associated data
@@ -188,7 +188,7 @@ namespace DGtal
         ASSERT( isValid() && v < myData->size() );
         return (*myData)[ v ];
       }
-      
+
       /// @return if the object was properly initialized.
       bool isValid() const { return mySurface != 0; }
 
@@ -200,17 +200,17 @@ namespace DGtal
 
       /// @return a const reference to the storage class (a vector of Data).
       const Storage& storage() const { return *myData; }
-      
+
     private:
       const Self* mySurface;
       OwningOrAliasingPtr<Storage> myData;
     };
 
     typedef IndexedPropertyMap< Point >          PositionsMap;
-    
+
   protected:
     typedef HalfEdgeDataStructure::HalfEdge      HalfEdge;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -223,10 +223,10 @@ namespace DGtal
      * Constructor.
      */
     TriangulatedSurface() : isHEDSValid( false ) {}
-    
-    /// Clears everything. 
+
+    /// Clears everything.
     void clear();
-    
+
     /// Builds the half-edge data structure from the given triangles
     /// and vertices. After that, the surface is valid.
     ///
@@ -234,12 +234,12 @@ namespace DGtal
     /// possible to build a consistent data structure (e.g., butterfly
     /// neighborhoods).
     bool build();
-    
+
     /// Adds a new vertex to the surface with data \a vdata.
     /// @param vdata the data associated to this new vertex.
     /// @return the new index given to this vertex.
     VertexIndex addVertex( const Point& vdata );
-    
+
     /// Adds a new triangle of vertices \a v0, \a v1, \a v2 to the surface.
     /// @return the corresponding index of the triangle.
     FaceIndex addTriangle( VertexIndex v0, VertexIndex v1, VertexIndex v2 );
@@ -251,10 +251,10 @@ namespace DGtal
 
     /// @return the number of vertices in the structure.
     Size nbVertices() const { return myHEDS.nbVertices(); }
-    
+
     /// @return the number of unoriented edges in the structure.
     Size nbEdges() const { return myHEDS.nbEdges(); }
-    
+
     /// @return the number of faces in the structure.
     Size nbFaces() const { return myHEDS.nbFaces(); }
 
@@ -323,14 +323,14 @@ namespace DGtal
     /// @param v any vertex.
     /// @return the non-mutable data associated to \a v.
     const Point& position( Vertex v ) const;
-    
+
     // ----------------------- Undirected simple graph services -------------------------
   public:
     /**
      * @return the number of vertices of the surface.
      */
     Size size() const;
-    
+
     /**
      * @return an estimate of the maximum number of neighbors for this adjacency
      *
@@ -338,44 +338,44 @@ namespace DGtal
      * for planar triangulations.
      */
     Size bestCapacity() const;
-    
+
     /**
      * @param v any vertex
-     * 
+     *
      * @return the number of neighbors of this vertex
      */
     Size degree( const Vertex & v ) const;
-    
+
     /**
      * Writes the neighbors of a vertex using an output iterator
-     * 
-     * 
+     *
+     *
      * @tparam OutputIterator the type of an output iterator writing
      * in a container of vertices.
-     * 
+     *
      * @param it the output iterator
-     * 
+     *
      * @param v the vertex whose neighbors will be writen
      */
     template <typename OutputIterator>
-    void  
+    void
     writeNeighbors( OutputIterator &it ,
 		    const Vertex & v ) const;
-    
+
     /**
-     * Writes the neighbors of a vertex which satisfy a predicate using an 
+     * Writes the neighbors of a vertex which satisfy a predicate using an
      * output iterator
-     * 
-     * 
+     *
+     *
      * @tparam OutputIterator the type of an output iterator writing
      * in a container of vertices.
-     * 
+     *
      * @tparam VertexPredicate the type of the predicate
-     * 
+     *
      * @param it the output iterator
-     * 
+     *
      * @param v the vertex whose neighbors will be written
-     * 
+     *
      * @param pred the predicate that must be satisfied
      */
     template <typename OutputIterator, typename VertexPredicate>
@@ -391,7 +391,7 @@ namespace DGtal
     /// @return a (non mutable) iterator pointing after the last vertex.
     ConstIterator end() const
     { return ConstIterator( nbVertices() ); }
-    
+
     // ----------------------- CombinatorialSurface --------------------------
   public:
 
@@ -432,8 +432,16 @@ namespace DGtal
     Arc opposite( const Arc & a ) const;
 
     /**
+       Constant-time access to the next arc
+
+       @param a any arc (s,t)
+       @return the next arc
+    */
+    Arc next( const Arc & a ) const;
+
+    /**
        [t] and [h] should be adjacent vertices.
-       
+
        @param t the vertex at the tail of the arc.
        @param h the vertex at the head of the arc.
        @return the arc (tail, head)
@@ -451,7 +459,7 @@ namespace DGtal
        arc was a boundary arc.
     */
     Face faceAroundArc( const Arc & a ) const;
-    
+
     /**
        Computes the faces incident to a given arc. There is only one
        for triangulated surface since it is a combinatorial
@@ -487,7 +495,7 @@ namespace DGtal
        @note O(1) operation
     */
     bool isArcBoundary( const Arc& v ) const;
-    
+
     /**
        @return the range of all faces of the triangulated surface,
        i.e. an array containing 0, 1, 2, ..., nbVertices()-1.
@@ -547,7 +555,7 @@ namespace DGtal
     PositionsStorage myPositions;
     /// Stores the triangles.
     TriangleStorage myTriangles;
-    
+
     // ------------------------- Private Datas --------------------------------
   private:
 
