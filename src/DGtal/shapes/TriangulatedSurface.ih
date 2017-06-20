@@ -256,6 +256,14 @@ DGtal::TriangulatedSurface<TPoint>::opposite( const Arc & a ) const
 template <typename TPoint>
 inline
 typename DGtal::TriangulatedSurface<TPoint>::Arc
+DGtal::TriangulatedSurface<TPoint>::next( const Arc & a ) const
+{
+  return myHEDS.halfEdge( a ).next;
+}
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+typename DGtal::TriangulatedSurface<TPoint>::Arc
 DGtal::TriangulatedSurface<TPoint>::arc
 ( const Vertex & t, const Vertex & h ) const
 {

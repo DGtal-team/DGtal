@@ -3,7 +3,6 @@ SET(DGTAL_EXAMPLES_SRC
 	exampleEuclideanShapesDecorator
 )
 
-
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} DGtal  )
@@ -14,6 +13,7 @@ if (  WITH_VISU3D_QGLVIEWER )
   SET(DGTAL_SHAPES_EXAMPLES_QGL_SRC
      mesh3DConstructionAndVisualisation
      viewMarchingCubes
+     sphereCotangentLaplaceOperator
 )
   FOREACH(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC}) 
     add_executable(${FILE} ${FILE})
