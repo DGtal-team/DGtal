@@ -57,12 +57,6 @@
 
 #include <DGtal/math/linalg/EigenSupport.h>
 
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/positional_options.hpp>
-#include <boost/program_options/variables_map.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/errors.hpp>
-
 ///////// NAMESPACES //////////
 
 using namespace std;
@@ -91,55 +85,6 @@ struct Options
 
   std::string error_output;
 };
-
-Options
-parse_options(int argc, char* argv[])
-{
-  namespace po = boost::program_options;
-
-  using DGtal::trace;
-  using std::endl;
-
-  Options options;
-
-  po::options_description po_shape("Shape options");
-  po_shape.add_options()
-    ("step,s", po::value<double>(&options.h)->default_value(0.1), "grid step")
-    ("error-output", po::value<std::string>(&options.error_output)->default_value("error.dat"), "error output")
-    ;
-
-  po::options_description po_computation("Computations options");
-  po_computation.add_options()
-    ("function,f", po::value<int>(&options.function)->default_value(0), "0 for x^2, 1 for cos, 2 for exp")
-    ("smooth,m", po::value<int>(&options.smooth)->default_value(0), "whether or not to project points onto the sphere")
-    ;
-
-  po::options_description po_options("mesh_laplacian_3D [options]");
-  po_options.add(po_shape).add(po_computation).add_options()
-    ("help,h", "display this message")
-    ;
-
-  try
-  {
-    po::variables_map vm;
-    po::store(po::command_line_parser(argc, argv).options(po_options).run(), vm);
-    po::notify(vm);
-
-    if (vm.count("help"))
-    {
-      trace.info() << po_options;
-      std::exit(0);
-    }
-  }
-  catch (std::exception& ex)
-  {
-    trace.error() << ex.what() << endl;
-    trace.info() << po_options;
-    std::exit(1);
-  }
-
-  return options;
-}
 
 template <typename Shape>
 void laplacian(Shape& shape, const Options& options,
@@ -333,7 +278,11 @@ void laplacian(Shape& shape, const Options& options,
 
 int main(int argc, char **argv)
 {
-  Options options = parse_options(argc, argv);
+  Options options;
+  options.h = 0.1;
+  options.function = 0;
+  options.smooth = 0;
+  options.error_output = "error_out.dat";
 
   typedef Ball3D<Z3i::Space> Ball;
   Ball ball(Point(0.0,0.0,0.0), 1.0);
