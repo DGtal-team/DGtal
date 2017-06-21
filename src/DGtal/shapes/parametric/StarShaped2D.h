@@ -213,7 +213,7 @@ namespace DGtal
      * @param right a point that is supposed to be projected right of p (regarding the angle)
      * @param step precision of the approximation
      * @param h the grid step
-     * @return a point that lies between the projection of left and right and that is the closest in term of \f$L_2\f$ norm.
+     * @return a point that lies between the projection of left and right and that is the closest regarding the \f$L_2\f$ norm.
      * */
     RealPoint closestPointWithWitnesses( const RealPoint& p, const RealPoint& left, const RealPoint& right, const int step, const double h ) const;
 
