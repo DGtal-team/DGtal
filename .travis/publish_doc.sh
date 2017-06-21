@@ -4,7 +4,7 @@ set -ev
 
 cd build/
 
-rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/
+rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  ~/.travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/
 
 
 ##DOCSET build
@@ -20,4 +20,5 @@ rsync  -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  .trav
 
 
 ###TAGS for DGtalTools
-scp -i  .travis/dgtal_rsa  DGtal-tagfile dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/tags/;scp -i  .travis/dgtal_rsa  Board-tagfile dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/tags/
+scp -i  ~/.travis/dgtal_rsa  DGtal-tagfile dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/tags/
+scp -i  ~/.travis/dgtal_rsa  Board-tagfile dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/tags/
