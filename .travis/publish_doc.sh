@@ -4,8 +4,6 @@ set -ev
 
 cd build/
 
-ls -alrt ../.travis/
-
 rsync -azv --delete --delete-after -e 'ssh -oStrictHostKeyChecking=no -i  ~/.travis/dgtal_rsa' html/ dgtal@liris.cnrs.fr:/home/dgtal/public_html/doc/nightly/
 
 
