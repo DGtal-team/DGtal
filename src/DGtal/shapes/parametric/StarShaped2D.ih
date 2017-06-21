@@ -178,8 +178,6 @@ inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint
 DGtal::StarShaped2D<TSpace>::closestPointWithWitnesses( const typename DGtal::StarShaped2D<TSpace>::RealPoint& p, const typename DGtal::StarShaped2D<TSpace>::RealPoint& left, const typename DGtal::StarShaped2D<TSpace>::RealPoint& right, const int step, const double h ) const
 {
-  auto dotProd = [](RealPoint& a, RealPoint& b) { return a[0] * b[0] + a[1] * b[1]; };
-
   double left_angl = parameter(left);
   double right_angl = parameter(right);
 
