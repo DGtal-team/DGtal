@@ -28,5 +28,6 @@ fi
 ### DGtal doc
 if [ $BUILD_DOC = "true" ];
 then
-    make doc
+    echo "Building the doc"
+    make doc > buildDoc.log
 fi
