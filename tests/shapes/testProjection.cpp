@@ -137,7 +137,7 @@ bool test_shape(Shape& shape, const double h, const double epsilon)
     outer *= h;
 
     RealPoint q = shape.findIntersection(inner, outer, epsilon);
-    RealPoint p = shape.closestPointWithWitnesses(q, q, q, 100, h);
+    RealPoint p = shape.closestPointWithWitnesses(q, q, q, 100);
 
     const double norm2 = (q - h * canonicSCellEmbedder(sCells0[i])).norm();
 
