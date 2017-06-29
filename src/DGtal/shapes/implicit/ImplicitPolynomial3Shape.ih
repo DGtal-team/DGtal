@@ -115,6 +115,8 @@ init( const Polynomial3 & poly )
 				( myFx*myFx +myFy*myFy+myFz*myFz )*(myFxx+myFyy+myFzz);
 
   myLowPolynome = myFx*myFx +myFy*myFy+myFz*myFz;
+  // trace.info() << "myUpPolynome=" << myUpPolynome << std::endl;
+  // trace.info() << "myLowPolynome=" << myLowPolynome << std::endl;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
@@ -202,7 +204,40 @@ double
 DGtal::ImplicitPolynomial3Shape<TSpace>::
 gaussianCurvature( const RealPoint &aPoint ) const
 {
+  /*
+    JOL: new Gaussian curvature formula
+    var('Fx','Fy','Fz','Fxx','Fxy','Fxz','Fyy','Fyz','Fzz')
+    M=Matrix(4,4,[[Fxx,Fxy,Fxz,Fx],[Fxy,Fyy,Fyz,Fy],[Fxz,Fyz,Fzz,Fz],[Fx,Fy,Fz,0]])
+    det(M)
+# Fxz^2*Fy^2 - 2*Fx*Fxz*Fy*Fyz + Fx^2*Fyz^2 - 2*Fxy*Fxz*Fy*Fz + 2*Fx*Fxz*Fyy*Fz - 2*Fx*Fxy*Fyz*Fz + 2*Fxx*Fy*Fyz*Fz + Fxy^2*Fz^2 - Fxx*Fyy*Fz^2 + 2*Fx*Fxy*Fy*Fzz - Fxx*Fy^2*Fzz - Fx^2*Fyy*Fzz
+    G = -det(M) / ( Fx^2 + Fy^2 + Fz^2 )^2
+   */
+  const double   x = aPoint[ 0 ];
+  const double   y = aPoint[ 1 ];
+  const double   z = aPoint[ 2 ];
+  const double  Fx = myFx( x )( y )( z );
+  const double  Fy = myFy( x )( y )( z );
+  const double  Fz = myFz( x )( y )( z );
+  const double Fx2 = Fx * Fx;
+  const double Fy2 = Fy * Fy;
+  const double Fz2 = Fz * Fz;
+  const double  G2 = Fx2 + Fy2 + Fz2;
+  const double Fxx = myFxx( x )( y )( z );
+  const double Fxy = myFxy( x )( y )( z );
+  const double Fxz = myFxz( x )( y )( z );
+  const double Fyy = myFyy( x )( y )( z );
+  const double Fyz = myFyz( x )( y )( z );
+  const double Fzz = myFzz( x )( y )( z );
+  const double Ax2 = ( Fyz * Fyz - Fyy * Fzz ) * Fx2;
+  const double Ay2 = ( Fxz * Fxz - Fxx * Fzz ) * Fy2; 
+  const double Az2 = ( Fxy * Fxy - Fxx * Fyy ) * Fz2;
+  const double Axy = ( Fxy * Fzz - Fxz * Fyz ) * Fx * Fy;
+  const double Axz = ( Fxz * Fyy - Fxy * Fyz ) * Fx * Fz;
+  const double Ayz = ( Fxx * Fyz - Fxy * Fxz ) * Fy * Fz;
+  const double det = Ax2 + Ay2 + Az2 + 2 * ( Axy + Axz + Ayz );
+  return - det / ( G2*G2 );
 
+  /*
   double vFx= myFx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   double vFy= myFy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   double vFz= myFz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
@@ -211,14 +246,10 @@ gaussianCurvature( const RealPoint &aPoint ) const
   double vFxy= myFxy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   double vFxz= myFxz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
-  //double vFyx= myFyx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   double vFyy= myFyy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   double vFyz= myFyz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
   
-  /*double vFzx = myFzx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
-  double vFzy = myFzy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
-  */
   double vFzz = myFzz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
  
 
@@ -232,10 +263,10 @@ gaussianCurvature( const RealPoint &aPoint ) const
 
   //ASSERT ( D != 0.0 );
 
-  double G= (A*B-C*C)/(D*D);
+  double G= ( fabs( D ) < 1e-8 ) ? 0.0 : (A*B-C*C)/(D*D);
 
   return G;
-
+  */
 }
 
 template< typename TSpace >
@@ -269,28 +300,41 @@ typename DGtal::ImplicitPolynomial3Shape<TSpace>::RealPoint
 DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint( const RealPoint &aPoint, const double accuracy, 
                                                        const int maxIter, const double gamma ) const
 {
-   RealPoint agradient= (*this).gradient(aPoint);
-   RealPoint X=aPoint;
-   int numberIter=0;
-   while((fabs((*this)(X))>=accuracy) && (numberIter<maxIter))
-   {
-        double norm=agradient.norm();
-	RealPoint normalizedGradient= RealPoint(agradient[0]/norm,agradient[1]/norm,agradient[2]/norm);
-        double alpha =gamma;
-	if((*this)(X)>0)
-	{
-		alpha=-alpha;
-	}
-	else
-	{
+   RealPoint X = aPoint;
+   for ( int numberIter = 0; numberIter < maxIter; numberIter++ )
+     {
+       double val_X = (*this)( X );
+       // trace.info() << "[" << numberIter << "] vX=" << val_X << " X=" << X;
+       if ( fabs( val_X ) < accuracy ) break;
+       RealVector grad_X = (*this).gradient( X );
+       double  n2_grad_X = grad_X.dot( grad_X );
+       if ( n2_grad_X > 0.000001 ) grad_X /= n2_grad_X;
+       // std::cout << " gX=" << grad_X << std::endl;
+       X -= val_X * gamma * grad_X ;
+     }
+   return X;
+   // RealPoint agradient= (*this).gradient(aPoint);
+   // RealPoint X=aPoint;
+   // int numberIter=0;
+   // while((fabs((*this)(X))>=accuracy) && (numberIter<maxIter))
+   // {
+   //      double norm=agradient.norm();
+   // 	RealPoint normalizedGradient= RealPoint(agradient[0]/norm,agradient[1]/norm,agradient[2]/norm);
+   //      double alpha =gamma;
+   // 	if((*this)(X)>0)
+   // 	{
+   // 		alpha=-alpha;
+   // 	}
+   // 	else
+   // 	{
 
-	}
+   // 	}
 	
-	X=X+normalizedGradient*alpha;
-	agradient=  (*this).gradient(X);
-	numberIter++;
-   }
-	return X;
+   // 	X=X+normalizedGradient*alpha;
+   // 	agradient=  (*this).gradient(X);
+   // 	numberIter++;
+   // }
+   // 	return X;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
