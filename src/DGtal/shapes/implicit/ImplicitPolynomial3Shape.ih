@@ -290,51 +290,26 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::principalCurvatures
  *@param accuracy refers to the precision 
  *@param maxIter refers to the maximum iterations the fonction user authorises
  *@param gamma refers to the step
- * This function is very useful for mean and gaussian curvature computation (If the set step is big) .For a small one ( <0.5) it's less
- * usefull
  *@return the nearest point on the surface to the one given in parameter.
  */
 template <typename TSpace>
 inline
 typename DGtal::ImplicitPolynomial3Shape<TSpace>::RealPoint 
-DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint( const RealPoint &aPoint, const double accuracy, 
-                                                       const int maxIter, const double gamma ) const
+DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint
+( const RealPoint &aPoint, const double accuracy, 
+  const int maxIter, const double gamma ) const
 {
    RealPoint X = aPoint;
    for ( int numberIter = 0; numberIter < maxIter; numberIter++ )
      {
        double val_X = (*this)( X );
-       // trace.info() << "[" << numberIter << "] vX=" << val_X << " X=" << X;
        if ( fabs( val_X ) < accuracy ) break;
        RealVector grad_X = (*this).gradient( X );
        double  n2_grad_X = grad_X.dot( grad_X );
        if ( n2_grad_X > 0.000001 ) grad_X /= n2_grad_X;
-       // std::cout << " gX=" << grad_X << std::endl;
        X -= val_X * gamma * grad_X ;
      }
    return X;
-   // RealPoint agradient= (*this).gradient(aPoint);
-   // RealPoint X=aPoint;
-   // int numberIter=0;
-   // while((fabs((*this)(X))>=accuracy) && (numberIter<maxIter))
-   // {
-   //      double norm=agradient.norm();
-   // 	RealPoint normalizedGradient= RealPoint(agradient[0]/norm,agradient[1]/norm,agradient[2]/norm);
-   //      double alpha =gamma;
-   // 	if((*this)(X)>0)
-   // 	{
-   // 		alpha=-alpha;
-   // 	}
-   // 	else
-   // 	{
-
-   // 	}
-	
-   // 	X=X+normalizedGradient*alpha;
-   // 	agradient=  (*this).gradient(X);
-   // 	numberIter++;
-   // }
-   // 	return X;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

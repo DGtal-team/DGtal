@@ -157,6 +157,12 @@ namespace DGtal
        Gaussian curvature estimation at @a aPoint 
        @pre @a aPoint must be close to the surface. 
 
+       Uses the formula \f$ G = -det(M) / \|\nabla f\|^4 \f$, 
+       where \f$ M := \left[ \begin{array}{cccc} f_{xx}& f_{xy} & f_{xz} & f_x \\
+       f_{xy}& f_{yy} & f_{yz} & f_y \\
+       f_{xz}& f_{yz} & f_{zz} & f_z \\
+       f_x& f_y & f_z & 0 \end{array} \right] \f$.
+
        @param aPoint any point in the Euclidean space.
        @return the gaussian curvature value of the polynomial at \a aPoint.
     */
@@ -176,10 +182,9 @@ namespace DGtal
 
     /**
        Perform a gradient descent in order to move a point @a aPoint
-       closer to the implicit surface. More precisely, we use a
-       sequence: x_n = x_(n-1) - gamma.gradient(x_(n-1).
-       The descent is stopped if @a maxIter is reached or if |x_n -
-       x_(n-1)| < accuracy. 
+       closer to the implicit surface f(x)=0. More precisely, we use a
+       sequence: x_n = x_(n-1) - gamma * f(x) * gradient(x_(n-1))/ ||gradient(x_(n-1))||^2
+       The descent is stopped if @a maxIter is reached or if | f(x_n) | < accuracy. 
        
        @param aPoint any point in the Euclidean space.
        @param accuracy distance criterion to stop the descent.
