@@ -189,9 +189,9 @@ namespace DGtal
     */
     inline
     RealPoint  nearestPoint(  const RealPoint &aPoint, 
-                              const double accuracy, 
-                              const int maxIter  , 
-                              const double gamma ) const;
+                              const double accuracy = 0.0001, 
+                              const int maxIter     = 20, 
+                              const double gamma    = 0.5 ) const;
 
 
 
