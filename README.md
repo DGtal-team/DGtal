@@ -30,7 +30,7 @@ Quick Install
 
 * MacOS (using [homebrew](http://brew.sh)):
  
-       ```brew install dgtal```
+       brew install dgtal
 
 
 (```brew options dgtal``` to enable optional features)
