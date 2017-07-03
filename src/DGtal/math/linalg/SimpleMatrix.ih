@@ -84,7 +84,7 @@ DGtal::SimpleMatrix<T,TM, TN>::SimpleMatrix(std::initializer_list<T> values)
   const Component one       = NumberTraits<Component>::ONE;
   const Component minus_one = -NumberTraits<Component>::ONE;
   // Cofactor coefs computation
-  for ( DGtal::Dimension i = 0; i < TM; i++ )
+  for ( i = 0; i < TM; i++ )
     for ( DGtal::Dimension j       = 0; j < TN; j++ )
       myCofactorCoefs[ i * N + j ] = ( ( i + j ) & 1 ) ? minus_one : one;
 }
