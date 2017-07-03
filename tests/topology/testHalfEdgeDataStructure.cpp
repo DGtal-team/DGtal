@@ -43,6 +43,7 @@ using namespace DGtal;
 // Functions for testing class HalfEdgeDataStructure.
 ///////////////////////////////////////////////////////////////////////////////
 typedef HalfEdgeDataStructure::Triangle         Triangle;
+typedef HalfEdgeDataStructure::PolygonalFace    PolygonalFace;
 typedef HalfEdgeDataStructure::Edge             Edge;
 typedef HalfEdgeDataStructure::Arc              Arc;
 typedef HalfEdgeDataStructure::VertexIndexRange VertexIndexRange;
@@ -117,6 +118,48 @@ HalfEdgeDataStructure makeTriangulatedDisk()
   mesh.build( kNumVertices, triangles, edges );
   return mesh;
 }
+
+HalfEdgeDataStructure makePyramid()
+{
+  std::vector< PolygonalFace > faces( 5 );
+  faces[ 0 ] = PolygonalFace( { 0, 3, 2, 1 } );
+  faces[ 1 ] = PolygonalFace( { 0, 1, 4 } );
+  faces[ 2 ] = PolygonalFace( { 1, 2, 4 } );
+  faces[ 3 ] = PolygonalFace( { 2, 3, 4 } );
+  faces[ 4 ] = PolygonalFace( { 3, 0, 4 } );
+  HalfEdgeDataStructure mesh;
+  mesh.build( faces );
+  return mesh;
+}
+
+HalfEdgeDataStructure makeCube()
+{
+  std::vector< PolygonalFace > faces( 6 );
+  faces[ 0 ] = PolygonalFace( { 1, 0, 2, 3 } );
+  faces[ 1 ] = PolygonalFace( { 0, 1, 5, 4 } );
+  faces[ 2 ] = PolygonalFace( { 1, 3, 7, 5 } );
+  faces[ 3 ] = PolygonalFace( { 3, 2, 6, 7 } );
+  faces[ 4 ] = PolygonalFace( { 2, 0, 4, 6 } );
+  faces[ 5 ] = PolygonalFace( { 4, 5, 7, 6 } );
+  HalfEdgeDataStructure mesh;
+  mesh.build( faces );
+  return mesh;
+}
+
+HalfEdgeDataStructure makeBox()
+{
+  std::vector< PolygonalFace > faces( 6 );
+  faces[ 0 ] = PolygonalFace( { 1, 0, 2, 3 } );
+  faces[ 1 ] = PolygonalFace( { 0, 1, 5, 4 } );
+  faces[ 2 ] = PolygonalFace( { 1, 3, 7, 5 } );
+  faces[ 3 ] = PolygonalFace( { 3, 2, 6, 7 } );
+  faces[ 4 ] = PolygonalFace( { 2, 0, 4, 6 } );
+  faces[ 5 ] = PolygonalFace( { 4, 5, 8, 9 } );
+  HalfEdgeDataStructure mesh;
+  mesh.build( faces );
+  return mesh;
+}
+
 
 SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
 {
@@ -240,6 +283,58 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
       REQUIRE( bdry[ 2 ] == Arc( 5, 3 ) );
     }
   }
+  GIVEN( "A pyramid with a square base" ) {
+    HalfEdgeDataStructure mesh = makePyramid();
+    THEN( "The mesh has 5 vertices, 8 edges, 5 faces, 16 half-edges" ) {
+      REQUIRE( mesh.nbVertices()  ==  5 );
+      REQUIRE( mesh.nbEdges()     ==  8 );
+      REQUIRE( mesh.nbFaces()     ==  5 );
+      REQUIRE( mesh.nbHalfEdges() == 16 );
+    }
+    THEN( "The mesh has 0 boundary vertices" ) {
+      VertexIndexRange bdry = mesh.boundaryVertices();
+      REQUIRE( bdry.size() == 0 );
+    }
+    THEN( "The mesh has 0 boundary arcs" ) {
+      std::vector<Arc> bdry = mesh.boundaryArcs();
+      REQUIRE( bdry.size() == 0 );
+    }
+  }
+  GIVEN( "A cube" ) {
+    HalfEdgeDataStructure mesh = makeCube();
+    THEN( "The mesh has 8 vertices, 12 edges, 6 faces, 24 half-edges" ) {
+      REQUIRE( mesh.nbVertices()  ==  8 );
+      REQUIRE( mesh.nbEdges()     ==  12 );
+      REQUIRE( mesh.nbFaces()     ==  6 );
+      REQUIRE( mesh.nbHalfEdges() == 24 );
+    }
+    THEN( "The mesh has 0 boundary vertices" ) {
+      VertexIndexRange bdry = mesh.boundaryVertices();
+      REQUIRE( bdry.size() == 0 );
+    }
+    THEN( "The mesh has 0 boundary arcs" ) {
+      std::vector<Arc> bdry = mesh.boundaryArcs();
+      REQUIRE( bdry.size() == 0 );
+    }
+  }
+  GIVEN( "A box with an open side" ) {
+    HalfEdgeDataStructure mesh = makeBox();
+    THEN( "The mesh has 10 vertices, 15 edges, 6 faces, 30 half-edges" ) {
+      REQUIRE( mesh.nbVertices()  ==  10 );
+      REQUIRE( mesh.nbEdges()     ==  15 );
+      REQUIRE( mesh.nbFaces()     ==  6 );
+      REQUIRE( mesh.nbHalfEdges() == 30 );
+    }
+    THEN( "The mesh has 6 boundary vertices" ) {
+      VertexIndexRange bdry = mesh.boundaryVertices();
+      REQUIRE( bdry.size() == 6 );
+    }
+    THEN( "The mesh has 6 boundary arcs" ) {
+      std::vector<Arc> bdry = mesh.boundaryArcs();
+      REQUIRE( bdry.size() == 6 );
+    }
+  }
+
 }
 
 SCENARIO( "HalfEdgeDataStructure neighboring relations", "[halfedge][neighbors]" ){
@@ -290,6 +385,29 @@ SCENARIO( "HalfEdgeDataStructure neighboring relations", "[halfedge][neighbors]"
       mesh.getNeighboringVertices( 2, nv );
       VertexIndexRange expected = { 0, 1, 3, 4 };
       REQUIRE( nv.size()  ==  4 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+  }
+
+  GIVEN( "A box with an open side" ) {
+    HalfEdgeDataStructure mesh = makeBox();
+    VertexIndexRange nv;
+    THEN( "Vertex 0 has 3 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 0, nv );
+      VertexIndexRange expected = { 1, 4, 2 };
+      REQUIRE( nv.size()  ==  3 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 5 has 4 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 5, nv );
+      VertexIndexRange expected = { 8, 4, 1, 7 };
+      REQUIRE( nv.size()  ==  4 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 7 has 3 neighboring vertices" ) {
+      mesh.getNeighboringVertices( 7, nv );
+      VertexIndexRange expected = { 5, 3, 6 };
+      REQUIRE( nv.size()  ==  3 );
       REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
     }
   }
