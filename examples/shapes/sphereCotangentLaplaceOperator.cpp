@@ -53,9 +53,7 @@
 #include <DGtal/shapes/MeshHelpers.h>
 #include "DGtal/shapes/TriangulatedSurface.h"
 
-#ifdef WITH_3D
 #include <DGtal/io/viewers/Viewer3D.h>
-#endif
 
 #include <DGtal/math/linalg/EigenSupport.h>
 
@@ -266,14 +264,12 @@ void laplacian(Shape& shape, const Options& options,
   for(int k = 0; k < viewmesh.nbFaces(); k++)
     viewmesh.setFaceColor(k, colormap_error( error_faces(k) ));
 
-#ifdef WITH_3D  
   QApplication application(argc,argv);
   Viewer3D<> viewer;
   viewer.show();
     viewer << viewmesh;
   viewer << Viewer3D<>::updateDisplay;
   application.exec();
-#endif
 
   trace.endBlock();
 }
