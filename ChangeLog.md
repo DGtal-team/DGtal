@@ -18,6 +18,12 @@
  
 ## Bug Fixes
 
+- *Shapes Package*
+ - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
+   Improves projection operator on implicit surface and curvature
+   computations. (Jacques-Olivier Lachaud,
+   [#1279](https://github.com/DGtal-team/DGtal/pull/1279))
+
 - *Configuration/General*
  - Upgrading the benchmarks to match with the new google-benchmark API
    (David Coeurjolly,
