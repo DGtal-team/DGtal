@@ -256,6 +256,24 @@ namespace DGtal
         }
       return vertexSet.size();
     }
+
+    /** 
+     * Computes all the unoriented edges of the given polygonal faces.
+     *
+     * @note Method build() needs the unordered edges of the mesh.  If
+     * you don't have them, call this first.
+     *
+     * @param[in] polygonal_faces the vector of input oriented polygonal faces.
+     *
+     * @param[out] edges_out the vector of all the unoriented edges of
+     * the given triangles.
+     *
+     * @return the total number of different vertices (note that the
+     * vertex numbering should be between 0 and this number minus
+     * one).
+     */
+    static Size getUnorderedEdgesFromPolygonalFaces
+    ( const std::vector<PolygonalFace>& polygonal_faces, std::vector< Edge >& edges_out );
     
     /**
      * Builds the half-edge data structures from the given triangles
@@ -284,7 +302,33 @@ namespace DGtal
                 const std::vector<Edge>&     edges );
 
     /**
-     * Builds the half-edge data structures from the given triangles.
+     * Builds the half-edge data structures from the given polygonal faces
+     * and edges.  It keeps the numbering of vertices given in the
+     * input \a polygonal_faces as well as the numbering of faces in the
+     * vector \a polygonal_faces.
+     *
+     * @note Parameter \a edges can be computed from \a polygonal_faces by calling
+     * getUnorderedEdgesFromPolygonalFaces() before.
+     *
+     * @note Both \a polygonal_faces and \a edges are not needed after the call to build()
+     * completes and may be destroyed. 
+     *
+     * @param[in] num_vertices the number of vertices (one more than the
+     * maximal vertex index).
+     *
+     * @param[in] polygonal_faces the vector of input polygonal_faces.
+     * @param[in] edges the vector of input unoriented edges.
+     *
+     * @return 'true' if everything went well, 'false' if their was
+     * error in the given topology (for instance, three triangles
+     * sharing an edge).
+     */
+    bool build( const Size                        num_vertices, 
+                const std::vector<PolygonalFace>& polygonal_faces,
+                const std::vector<Edge>&          edges );
+
+    /**
+     * Builds the half-edge data structure from the given triangles.
      * It keeps the numbering of vertices given in the input \a
      * triangles as well as the numbering of triangles in the vector
      * \a triangles.
@@ -296,6 +340,21 @@ namespace DGtal
       std::vector<Edge> edges;
       const int nbVtx = getUnorderedEdgesFromTriangles( triangles, edges );
       return build( nbVtx, triangles, edges );
+    }
+
+    /**
+     * Builds the half-edge data structure from the given polygonal faces.
+     * It keeps the numbering of vertices given in the input \a
+     * polygonal_faces as well as the numbering of faces in the vector
+     * \a polygonal_faces.
+     *
+     * @param[in] polygonal_faces the vector of input polygonal faces.
+     */
+    bool build( const std::vector<PolygonalFace>& polygonal_faces )
+    {
+      std::vector<Edge> edges;
+      const int nbVtx = getUnorderedEdgesFromPolygonalFaces( polygonal_faces, edges );
+      return build( nbVtx, polygonal_faces, edges );
     }
 
     /// Clears the data structure.

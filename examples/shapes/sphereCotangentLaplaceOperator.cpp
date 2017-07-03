@@ -37,6 +37,7 @@
 
 #include <DGtal/topology/DigitalSurface.h>
 #include <DGtal/topology/SetOfSurfels.h>
+#include <DGtal/topology/CanonicCellEmbedder.h>
 #include <DGtal/topology/LightImplicitDigitalSurface.h>
 
 #include <DGtal/io/colormaps/ColorBrightnessColorMap.h>
