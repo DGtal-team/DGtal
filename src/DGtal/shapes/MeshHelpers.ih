@@ -93,7 +93,8 @@ DGtal::MeshHelpers::digitalSurface2TriangulatedSurface
   typedef typename Surface::VertexRange                VertexRange;
   typedef typename CellEmbedder::Value                 Point;
   typedef typename TriangulatedSurface< Point >::Index Index;
-
+  BOOST_STATIC_ASSERT(( Kspace::dimension == 3 ));
+  
   trisurf.clear();
   // Numbers all vertices and add them to the triangulated surface.
   std::map<Vertex, Index> v_indices;

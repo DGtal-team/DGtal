@@ -11,7 +11,8 @@
 
 - *Shapes Package*
  - Adding classes and helpers to create triangulated surfaces and
-   to convert them from/to mesh and digital surfaces (Jacques-Olivier
+   to convert them from/to mesh, as well as a conversion from digital
+   surfaces to triangulated surface (Jacques-Olivier
    Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
 
 - *IO*

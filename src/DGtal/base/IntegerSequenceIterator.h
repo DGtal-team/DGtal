@@ -58,6 +58,8 @@ namespace DGtal
    * collection of consecutive integers, and you wish to create an
    * iterator over it. It is used in the class TriangulatedSurface for
    * example, since vertices are numbers from 0 to nbVertices - 1.
+   *
+   * It is model of boost::RandomAccessIterator.
    */
   template <typename TInteger>
   class IntegerSequenceIterator
@@ -155,9 +157,6 @@ namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/base/IntegerSequenceIterator.ih"
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
