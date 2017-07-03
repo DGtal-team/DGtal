@@ -180,6 +180,10 @@ namespace DGtal
         v[2] = v2;
       }
     };
+
+    /// Defines an arbitrary polygonal face as a vector of vertex
+    /// indices. To be valid, its size must be at least 3.
+    typedef std::vector<VertexIndex> PolygonalFace;
     
     /// The half edge structure. Each half-edge points to some Vertex,
     /// is incident to one face, lies on one undirected edge, has an
