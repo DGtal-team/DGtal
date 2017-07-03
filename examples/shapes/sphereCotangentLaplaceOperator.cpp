@@ -29,8 +29,6 @@
 
 //! [TriangulatedSurfaceUsageFull]
 
-#define WITH_3D
-
 ////////// INCLUDES /////////
 
 #include <DGtal/helpers/StdDefs.h>
@@ -41,7 +39,6 @@
 #include <DGtal/topology/SetOfSurfels.h>
 #include <DGtal/topology/LightImplicitDigitalSurface.h>
 
-#include <DGtal/io/viewers/Viewer3D.h>
 #include <DGtal/io/colormaps/ColorBrightnessColorMap.h>
 
 #include <DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h>
@@ -54,6 +51,10 @@
 #include <DGtal/shapes/Mesh.h>
 #include <DGtal/shapes/MeshHelpers.h>
 #include "DGtal/shapes/TriangulatedSurface.h"
+
+#ifdef WITH_3D
+#include <DGtal/io/viewers/Viewer3D.h>
+#endif
 
 #include <DGtal/math/linalg/EigenSupport.h>
 
@@ -254,7 +255,6 @@ void laplacian(Shape& shape, const Options& options,
 
   trace.endBlock();
 
-#ifdef WITH_3D
   typedef Mesh< CanonicCellEmbedder::Value > ViewMesh;
   ViewMesh viewmesh;
   MeshHelpers::triangulatedSurface2Mesh( trimesh, viewmesh );
@@ -265,6 +265,7 @@ void laplacian(Shape& shape, const Options& options,
   for(int k = 0; k < viewmesh.nbFaces(); k++)
     viewmesh.setFaceColor(k, colormap_error( error_faces(k) ));
 
+#ifdef WITH_3D  
   QApplication application(argc,argv);
   Viewer3D<> viewer;
   viewer.show();
