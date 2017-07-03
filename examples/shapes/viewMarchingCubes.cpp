@@ -43,10 +43,11 @@ using namespace Z3i;
 void usage( int, char** argv )
 {
   std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> <maxT> <Adj>" << std::endl;
-  std::cerr << "\t - displays the boundary of the shape stored in vol file <fileName.vol>." << std::endl;
+  std::cerr << "\t - displays the boundary of the shape stored in vol file <fileName.vol>" << std::endl;
+  std::cerr << "\t   as a Marching-Cube triangulated surface (more precisely a dual" << std::endl;
+  std::cerr << "\t   surface to the digital boundary)." << std::endl;
   std::cerr << "\t - voxel v belongs to the shape iff its value I(v) follows minT <= I(v) <= maxT." << std::endl;
-  std::cerr << "\t - 0: interior adjacency, 1: exterior adjacency." << std::endl;
-
+  std::cerr << "\t - 0: interior adjacency, 1: exterior adjacency (rules used to connect surface elements unambiguously)." << std::endl;
 }
 
 int main( int argc, char** argv )

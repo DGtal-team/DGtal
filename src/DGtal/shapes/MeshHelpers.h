@@ -64,10 +64,10 @@ namespace DGtal
   public:
     /// Builds a triangulated surface (class TriangulatedSurface) from
     /// a mesh (class Mesh). Note that a triangulated surface contains
-    /// only triangles, so faces of the input mesh are (naively)
-    /// triangulated (triangles (0,1,2), (0,2,3), (0,3,4),
-    /// etc). Furthermore, the output triangulated surface rebuilds a
-    /// topology between faces.
+    /// only triangles, so polygonal faces (0,1,2,3,4,...) of the
+    /// input mesh are (naively) triangulated (triangles (0,1,2),
+    /// (0,2,3), (0,3,4), etc). Furthermore, the output triangulated
+    /// surface rebuilds a topology between faces.
     ///
     /// @tparam Point the type for points.
     /// @param[in]  mesh the input mesh.
@@ -77,11 +77,12 @@ namespace DGtal
     /// not a combinatorial surface.
     template <typename Point>
     static
-    bool mesh2TriangulatedSurface( const Mesh<Point>& mesh,
-                                   TriangulatedSurface<Point>& trisurf );
+    bool mesh2TriangulatedSurface
+    ( const Mesh<Point>& mesh,
+      TriangulatedSurface<Point>& trisurf );
 
     /// Builds a triangulated surface (class TriangulatedSurface) from
-    /// the dual graph of a digital surface (class
+    /// the dual graph of a 2-dimensional digital surface in K^3 (class
     /// DigitalSurface).
     ///
     /// @note that a triangulated surface contains only triangles, so
@@ -93,7 +94,7 @@ namespace DGtal
     /// @tparam CellEmbedder the embedder chosen for the digital surface.
     ///
     /// @param[in]  dsurf the input digital surface.
-    /// @param[in]  cembedder the embedder for n-1-cells of the digital surface, which are vertices in the output triangulated surface.
+    /// @param[in]  cembedder the embedder for 2-cells of the digital surface, which are vertices in the output triangulated surface.
     /// @param[out] trisurf the output triangulated surface mesh.
     template < typename DigitalSurfaceContainer,
                typename CellEmbedder >
@@ -114,22 +115,9 @@ namespace DGtal
     /// @param[in,out] mesh the input mesh (which should be empty).
     template <typename Point>
     static
-    void triangulatedSurface2Mesh( const TriangulatedSurface<Point>& trisurf,
-                                   Mesh<Point>& mesh );
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    // ------------------------- Internals ------------------------------------
-  private:
+    void triangulatedSurface2Mesh
+    ( const TriangulatedSurface<Point>& trisurf,
+      Mesh<Point>& mesh );
 
   }; // end of class MeshHelpers
 
