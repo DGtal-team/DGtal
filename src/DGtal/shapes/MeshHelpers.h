@@ -81,6 +81,22 @@ namespace DGtal
     ( const Mesh<Point>& mesh,
       TriangulatedSurface<Point>& trisurf );
 
+    /// Builds a polygon mesh (class PolygonalSurface) from
+    /// a mesh (class Mesh). The output polygonal
+    /// surface rebuilds a topology between faces.
+    ///
+    /// @tparam Point the type for points.
+    /// @param[in]  mesh the input mesh.
+    /// @param[out] polysurf the output polygonal surface mesh.
+    ///
+    /// @return 'true' on success, 'false' if the input \a mesh was
+    /// not a combinatorial surface.
+    template <typename Point>
+    static
+    bool mesh2PolygonalSurface
+    ( const Mesh<Point>& mesh,
+      PolygonalSurface<Point>& polysurf );
+
     /// Builds a triangulated surface (class TriangulatedSurface) from
     /// the dual graph of a 2-dimensional digital surface in K^3 (class
     /// DigitalSurface).

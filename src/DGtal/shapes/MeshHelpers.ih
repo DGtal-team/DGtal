@@ -61,6 +61,22 @@ DGtal::MeshHelpers::mesh2TriangulatedSurface
 
 template <typename Point>
 inline
+bool
+DGtal::MeshHelpers::mesh2PolygonalSurface
+( const Mesh<Point>& mesh,
+  PolygonalSurface<Point>& polysurf )
+{
+  typedef typename PolygonalSurface<Point>::PolygonalFace PolygonalFace;
+  polysurf.clear();
+  for ( auto it = mesh.vertexBegin(), itE = mesh.vertexEnd(); it != itE; ++it )
+    polysurf.addVertex( *it );
+  for ( auto it = mesh.faceBegin(), itE = mesh.faceEnd(); it != itE; ++it )
+    polysurf.addPolygonalFace( PolygonalFace( it->cbegin(), it->cend() ) );
+  return polysurf.build();
+}
+
+template <typename Point>
+inline
 void
 DGtal::MeshHelpers::triangulatedSurface2Mesh
 ( const TriangulatedSurface<Point>& trisurf,
