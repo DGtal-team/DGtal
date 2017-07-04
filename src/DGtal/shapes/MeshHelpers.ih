@@ -204,7 +204,7 @@ DGtal::MeshHelpers::digitalSurface2DualPolygonalSurface
       VertexRange vtcs = dsurf.verticesAroundFace( *itf );
       PolygonalFace face( vtcs.size() );
       std::transform( vtcs.cbegin(), vtcs.cend(), face.begin(),
-		      [ vertexmap ] ( const Vertex& v ) { return vertexmap[ v ]; } );
+		      [ &vertexmap ] ( const Vertex& v ) { return vertexmap[ v ]; } );
       polysurf.addPolygonalFace( face );
     }
   polysurf.build();
