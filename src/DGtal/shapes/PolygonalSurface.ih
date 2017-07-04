@@ -46,13 +46,13 @@ DGtal::PolygonalSurface<TPoint>::build()
 {
   if ( isHEDSValid ) {
     trace.warning() << "[DGtal::PolygonalSurface<TPoint>::build()]"
-                    << " attempting to rebuild a triangulated surface." << std::endl;
+                    << " attempting to rebuild a polygonal surface." << std::endl;
     return false;
   }
-  isHEDSValid = myHEDS.build( myTriangles );
+  isHEDSValid = myHEDS.build( myPolygonalFaces );
   if ( myHEDS.nbVertices() != myPositions.size() ) {
     trace.warning() << "[DGtal::PolygonalSurface<TPoint>::build()]"
-                    << " the size of vertex data array (s1) and the number of vertices (s2) in the triangulated surface does not match:"
+                    << " the size of vertex data array (s1) and the number of vertices (s2) in the polygonal surface does not match:"
                     << " s1=" << myPositions.size()
                     << " s2=" << myHEDS.nbVertices() << std::endl;
     isHEDSValid = false;
@@ -69,7 +69,7 @@ DGtal::PolygonalSurface<TPoint>::clear()
   isHEDSValid = false;
   myHEDS.clear();
   myPositions.clear();
-  myTriangles.clear();
+  myPolygonalFaces.clear();
   
 }
 //-----------------------------------------------------------------------------
@@ -90,10 +90,33 @@ typename DGtal::PolygonalSurface<TPoint>::FaceIndex
 DGtal::PolygonalSurface<TPoint>::addTriangle
 ( VertexIndex v0, VertexIndex v1, VertexIndex v2 )
 {
-  FaceIndex fi = myTriangles.size();
-  myTriangles.push_back( Triangle( v0, v1, v2 ) );
+  FaceIndex fi = myPolygonalFaces.size();
+  myPolygonalFaces.push_back( PolygonalFace( { v0, v1, v2 } ) );
   return fi;
 }
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+typename DGtal::PolygonalSurface<TPoint>::FaceIndex
+DGtal::PolygonalSurface<TPoint>::addQuadrangle
+( VertexIndex v0, VertexIndex v1, VertexIndex v2, VertexIndex v3 )
+{
+  FaceIndex fi = myPolygonalFaces.size();
+  myPolygonalFaces.push_back( PolygonalFace( { v0, v1, v2, v3 } ) );
+  return fi;
+}
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+typename DGtal::PolygonalSurface<TPoint>::FaceIndex
+DGtal::PolygonalSurface<TPoint>::addPolygonalFace
+( const PolygonalFace& f )
+{
+  FaceIndex fi = myPolygonalFaces.size();
+  myPolygonalFaces.push_back( f );
+  return fi;
+}
+
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline
@@ -301,13 +324,12 @@ DGtal::PolygonalSurface<TPoint>::verticesAroundFace( const Face & f ) const
   Index hei = start_hei;
   do {
     const HalfEdge& he = myHEDS.halfEdge( hei );
-    if ( he.face != f )
-      trace.warning() << "[PolygonalSurface::verticesAroundFace] invalid face: he.face=" << he.face << " f=" << f << std::endl;
-    ASSERT( he.face == f );
+    ASSERT( ( he.face == f )
+	    && "[PolygonalSurface::verticesAroundFace] invalid face." );
     result.push_back( he.toVertex );
     hei = he.next;
   } while ( hei != start_hei );
-  ASSERT( result.size() == 3 );
+  ASSERT( result.size() >= 3 );
   return result;
 }
 
@@ -395,7 +417,8 @@ void
 DGtal::PolygonalSurface<TPoint>::selfDisplay ( std::ostream & out ) const
 {
   out << "[PolygonalSurface #V=" << myHEDS.nbVertices()
-      << " #E=" << myHEDS.nbEdges() << " #F=" << myHEDS.nbFaces() << "]";
+      << " #E=" << myHEDS.nbEdges() << " #F=" << myHEDS.nbFaces()
+      << " Chi=" << Euler() << "]";
 }
 
 /**
