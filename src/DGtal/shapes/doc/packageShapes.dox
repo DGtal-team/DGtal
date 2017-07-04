@@ -51,6 +51,10 @@ shapes in DGtal. More precisely, this package contains analytical
 objects (parametric, implicit, from point sets,...) with digitization schemes to
 make concrete such objects in a given grid step grid.
 
+Since 0.9.4, there is a module that provides classes and services to
+represent combinatorial surfaces, based on an half-edge data
+structure.
+
 @b Modules
 
 - \ref moduleShape (Jacques-Olivier Lachaud, David Coeurjolly)

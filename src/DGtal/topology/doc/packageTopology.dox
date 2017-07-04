@@ -61,12 +61,17 @@ Since 0.9.1, a class for representing cubical complexes is provided
 and offers many services (incidence, closure, link, star, collapse,
 boundary, union, etc).
 
+Since 0.9.4, there is a module that provides classes and services to
+represent combinatorial surfaces, based on an half-edge data
+structure.
+
 @b Modules
  - \ref moduleDigitalTopology (Jacques-Olivier Lachaud, Bertrand Kerautret)
  - \ref moduleCellularTopology (Jacques-Olivier Lachaud)
  - \ref moduleDigitalSurfaces (Jacques-Olivier Lachaud)
  - \ref moduleDigitalSurfaceHelpers (Jacques-Olivier Lachaud, Bertrand Kerautret)
  - \ref moduleCubicalComplex (Jacques-Olivier Lachaud)
+ - \ref moduleHalfEdgeMesh (Jacques-Olivier Lachaud)
 
 
  @b Package @b Concepts @b Overview
