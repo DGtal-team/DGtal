@@ -48,19 +48,13 @@ using namespace DGtal;
 // Functions for testing class PolygonalSurface.
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef PointVector<3,double>                 RealPoint;
-typedef PolygonalSurface< RealPoint >         PolygonMesh;
-typedef PolygonMesh::PolygonalFace            PolygonalFace;
-typedef PolygonMesh::VertexRange              VertexRange;
-typedef PolygonMesh::ArcRange                 ArcRange;
-typedef PolygonMesh::Arc                      Arc;
-typedef PolygonMesh::Face                     Face;
-typedef PolygonMesh::Vertex                   Vertex;
-typedef PolygonMesh::PositionsMap             PositionsMap;
 
 
-PolygonMesh makeBox()
+PolygonalSurface< PointVector<3,double> > makeBox()
 {
+  typedef PointVector<3,double>                 RealPoint;
+  typedef PolygonalSurface< RealPoint >         PolygonMesh;
+  typedef PolygonMesh::PolygonalFace            PolygonalFace;
   PolygonMesh mesh;
   mesh.addVertex( RealPoint( 0, 0, 0 ) );
   mesh.addVertex( RealPoint( 1, 0, 0 ) );
@@ -84,6 +78,15 @@ PolygonMesh makeBox()
 
 SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
 {
+  typedef PointVector<3,double>                 RealPoint;
+  typedef PolygonalSurface< RealPoint >         PolygonMesh;
+  typedef PolygonMesh::PolygonalFace            PolygonalFace;
+  typedef PolygonMesh::VertexRange              VertexRange;
+  typedef PolygonMesh::ArcRange                 ArcRange;
+  typedef PolygonMesh::Arc                      Arc;
+  typedef PolygonMesh::Face                     Face;
+  typedef PolygonMesh::Vertex                   Vertex;
+  typedef PolygonMesh::PositionsMap             PositionsMap;
   GIVEN( "A box with an open side" ) {
     PolygonMesh polymesh = makeBox();
     THEN( "The mesh has 10 vertices, v0 has 3 neighbors, v1 has 3 neighbors, etc" ) {
@@ -201,6 +204,8 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
 
 SCENARIO( "PolygonalSurface< RealPoint3 > concept check tests", "[polysurf][concepts]" )
 {
+  typedef PointVector<3,double>                 RealPoint;
+  typedef PolygonalSurface< RealPoint >         PolygonMesh;
   BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< PolygonMesh > ));
 }
 
