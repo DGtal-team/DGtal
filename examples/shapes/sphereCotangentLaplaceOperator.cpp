@@ -133,13 +133,16 @@ void laplacian(Shape& shape, const Options& options,
   trace.endBlock();
 
   trace.beginBlock( "Making triangulated surface. " );
-  typedef CanonicCellEmbedder<KSpace> CanonicCellEmbedder;
-  typedef TriangulatedSurface< CanonicCellEmbedder::Value > TriMesh;
+  typedef CanonicCellEmbedder<KSpace>      CanonicCellEmbedder;
+  typedef CanonicCellEmbedder::Value       RealPoint;
+  typedef TriangulatedSurface< RealPoint > TriMesh;
+  typedef std::map< MyDigitalSurface::Vertex, TriMesh::Index > VertexMap;
   TriMesh trimesh;
   CanonicCellEmbedder canonicCellembedder(kspace);
 
-  MeshHelpers::digitalSurface2TriangulatedSurface
-    ( digSurf, canonicCellembedder, trimesh );
+  VertexMap vmap; // stores the map Vertex -> Index
+  MeshHelpers::digitalSurface2DualTriangulatedSurface
+    ( digSurf, canonicCellembedder, trimesh, vmap );
 
   trace.info() << "Triangulated surface is " << trimesh << std::endl;
 
