@@ -185,7 +185,6 @@ DGtal::MeshHelpers::digitalSurface2DualPolygonalSurface
   typedef typename Surface::Vertex                     Vertex;
   typedef typename Surface::VertexRange                VertexRange;
   typedef typename CellEmbedder::Value                 Point;
-  typedef typename PolygonalSurface< Point >::Index    Index;
   typedef typename PolygonalSurface< Point >::PolygonalFace PolygonalFace;
   BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
   

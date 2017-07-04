@@ -85,30 +85,30 @@ PolygonMesh makeBox()
 SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
 {
   GIVEN( "A box with an open side" ) {
-    PolygonMesh trimesh = makeBox();
+    PolygonMesh polymesh = makeBox();
     THEN( "The mesh has 10 vertices, v0 has 3 neighbors, v1 has 3 neighbors, etc" ) {
-      REQUIRE( trimesh.size() == 10 );
-      REQUIRE( trimesh.degree( 0 ) == 3 );
-      REQUIRE( trimesh.degree( 1 ) == 3 );
-      REQUIRE( trimesh.degree( 2 ) == 3 );
-      REQUIRE( trimesh.degree( 3 ) == 3 );
-      REQUIRE( trimesh.degree( 4 ) == 4 );
-      REQUIRE( trimesh.degree( 5 ) == 4 );
-      REQUIRE( trimesh.degree( 6 ) == 3 );
-      REQUIRE( trimesh.degree( 7 ) == 3 );
-      REQUIRE( trimesh.degree( 8 ) == 2 );
-      REQUIRE( trimesh.degree( 9 ) == 2 );
+      REQUIRE( polymesh.size() == 10 );
+      REQUIRE( polymesh.degree( 0 ) == 3 );
+      REQUIRE( polymesh.degree( 1 ) == 3 );
+      REQUIRE( polymesh.degree( 2 ) == 3 );
+      REQUIRE( polymesh.degree( 3 ) == 3 );
+      REQUIRE( polymesh.degree( 4 ) == 4 );
+      REQUIRE( polymesh.degree( 5 ) == 4 );
+      REQUIRE( polymesh.degree( 6 ) == 3 );
+      REQUIRE( polymesh.degree( 7 ) == 3 );
+      REQUIRE( polymesh.degree( 8 ) == 2 );
+      REQUIRE( polymesh.degree( 9 ) == 2 );
     }
     THEN( "Euler number is 1 as is the Euler number of a disk." )
       {
-	REQUIRE( trimesh.nbVertices() == 10 );
-	REQUIRE( trimesh.nbEdges() == 15 );
-	REQUIRE( trimesh.nbFaces() == 6 );
-	REQUIRE( trimesh.Euler() == 1 );
+	REQUIRE( polymesh.nbVertices() == 10 );
+	REQUIRE( polymesh.nbEdges() == 15 );
+	REQUIRE( polymesh.nbFaces() == 6 );
+	REQUIRE( polymesh.Euler() == 1 );
       }
     THEN( "Breadth-first visiting the mesh from vertex 0, visit {0}, then {1,2,4}, then {3,5,6,9}, then {7,8}." )
       {
-        BreadthFirstVisitor< PolygonMesh > visitor( trimesh, 0 );
+        BreadthFirstVisitor< PolygonMesh > visitor( polymesh, 0 );
         std::vector<int> vertices;
         std::vector<int> distances;
         while ( ! visitor.finished() )
@@ -133,7 +133,7 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
         REQUIRE( distances_ok );
       }      
     THEN( "The mesh has 6 boundary vertices" ) {
-      VertexRange bv = trimesh.allBoundaryVertices();
+      VertexRange bv = polymesh.allBoundaryVertices();
       std::sort( bv.begin(), bv.end() );
       int expected_bv [] = { 4, 5, 6, 7, 8, 9 };
       REQUIRE( bv.size() == 6 );
@@ -141,13 +141,13 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
       REQUIRE( bv_ok );
     }
     THEN( "The mesh has 6 boundary arcs" ) {
-      ArcRange ba = trimesh.allBoundaryArcs();
+      ArcRange ba = polymesh.allBoundaryArcs();
       REQUIRE( ba.size() == 6 );
     }
     THEN( "The face along (1,3) is a quadrangle (1,3,7,5)" ) {
-      Arc  a13      = trimesh.arc( 1, 3 );
-      Face f        = trimesh.faceAroundArc( a13 );
-      VertexRange T = trimesh.verticesAroundFace( f );
+      Arc  a13      = polymesh.arc( 1, 3 );
+      Face f        = polymesh.faceAroundArc( a13 );
+      VertexRange T = polymesh.verticesAroundFace( f );
       REQUIRE( T.size() == 4 );
       std::sort( T.begin(), T.end() );
       REQUIRE( T[ 0 ] == 1 );
@@ -156,9 +156,9 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
       REQUIRE( T[ 3 ] == 7 );
     }
     THEN( "The face along (3,1) is a quadrangle (3,1,0,2)" ) {
-      Arc  a31      = trimesh.arc( 3, 1 );
-      Face f        = trimesh.faceAroundArc( a31 );
-      VertexRange T = trimesh.verticesAroundFace( f );
+      Arc  a31      = polymesh.arc( 3, 1 );
+      Face f        = polymesh.faceAroundArc( a31 );
+      VertexRange T = polymesh.verticesAroundFace( f );
       REQUIRE( T.size() == 4 );
       std::sort( T.begin(), T.end() );
       REQUIRE( T[ 0 ] == 0 );
@@ -167,7 +167,7 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
       REQUIRE( T[ 3 ] == 3 );
     }
     THEN( "The lower part of the mesh has the barycenter (0.5, 0.5, 0.5) " ) {
-      PositionsMap positions = trimesh.positions();
+      PositionsMap positions = polymesh.positions();
       RealPoint b;
       for ( Vertex v = 0; v < 8; ++v )
         b += positions( v );
@@ -176,23 +176,23 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
       REQUIRE( b[ 1 ] == 0.5 );
       REQUIRE( b[ 2 ] == 0.5 );
     }
-    // THEN( "We can convert the triangulated surface to a mesh and vice versa" ) {
-    //   Mesh<RealPoint> mesh;
-    //   MeshHelpers::triangulatedSurface2Mesh( trimesh, mesh );
-    //   PolygonMesh trimesh2;
-    //   MeshHelpers::mesh2PolygonalSurface( mesh, trimesh2 );
-    //   REQUIRE( mesh.nbVertex() == trimesh.nbVertices() );
-    //   REQUIRE( mesh.nbFaces()  == trimesh.nbFaces() );
-    //   REQUIRE( trimesh2.nbVertices() == trimesh.nbVertices() );
-    //   REQUIRE( trimesh2.nbArcs()     == trimesh.nbArcs() );
-    //   REQUIRE( trimesh2.nbFaces()    == trimesh.nbFaces() );
-    // }
+    THEN( "We can convert the triangulated surface to a mesh and vice versa" ) {
+      Mesh<RealPoint> mesh;
+      MeshHelpers::polygonalSurface2Mesh( polymesh, mesh );
+      PolygonMesh polymesh2;
+      MeshHelpers::mesh2PolygonalSurface( mesh, polymesh2 );
+      REQUIRE( mesh.nbVertex() == polymesh.nbVertices() );
+      REQUIRE( mesh.nbFaces()  == polymesh.nbFaces() );
+      REQUIRE( polymesh2.nbVertices() == polymesh.nbVertices() );
+      REQUIRE( polymesh2.nbArcs()     == polymesh.nbArcs() );
+      REQUIRE( polymesh2.nbFaces()    == polymesh.nbFaces() );
+    }
     THEN( "We can iterate over the vertices" ) {
-      PositionsMap positions       = trimesh.positions();
+      PositionsMap positions       = polymesh.positions();
       RealPoint    exp_positions[] = { { 0,0,0 }, { 1,0,0 }, { 0,1,0 }, { 1,1,0 },
 				       { 0,0,1 }, { 1,0,1 }, { 0,1,1 }, { 1,1,1 },
 				       { 1,0,2 }, { 0,0,2 } };
-      for ( auto it = trimesh.begin(), itE = trimesh.end(); it != itE; ++it ) {
+      for ( auto it = polymesh.begin(), itE = polymesh.end(); it != itE; ++it ) {
 	REQUIRE( positions[ *it ] == exp_positions[ *it ] );
       }
     }
