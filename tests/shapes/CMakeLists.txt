@@ -29,6 +29,7 @@ SET(DGTAL_TESTS_SRC
   testEuclideanShapesDecorator
   testDigitalShapesDecorator
   testTriangulatedSurface
+  testPolygonalSurface
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
