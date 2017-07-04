@@ -112,8 +112,10 @@ int main( int argc, char** argv )
   trace.beginBlock( "Making triangulated surface. " );
   typedef CanonicEmbedder< Space >                                  TrivialEmbedder;
   typedef ImageLinearCellEmbedder< KSpace, Image, TrivialEmbedder > CellEmbedder;
-  typedef TriangulatedSurface< CellEmbedder::Value >                TriMesh;
-  typedef Mesh< CellEmbedder::Value >                               ViewMesh;
+  typedef CellEmbedder::Value                                       RealPoint;
+  typedef TriangulatedSurface< RealPoint >                          TriMesh;
+  typedef Mesh< RealPoint >                                         ViewMesh;
+  typedef std::map< MyDigitalSurface::Vertex, TriMesh::Index >      VertexMap;
   TriMesh         trimesh;
   ViewMesh        viewmesh;
   TrivialEmbedder trivialEmbedder;
@@ -122,8 +124,9 @@ int main( int argc, char** argv )
   // center, especially for binary volumes.
   cellEmbedder.init( ks, image, trivialEmbedder, 
                      ( (double) minThreshold ) + 0.5 );
-  MeshHelpers::digitalSurface2TriangulatedSurface
-    ( digSurf, cellEmbedder, trimesh );
+  VertexMap vmap; // stores the map Vertex -> Index
+  MeshHelpers::digitalSurface2DualTriangulatedSurface
+    ( digSurf, cellEmbedder, trimesh, vmap );
   trace.info() << "Triangulated surface is " << trimesh << std::endl;
   MeshHelpers::triangulatedSurface2Mesh( trimesh, viewmesh );
   trace.info() << "Mesh has " << viewmesh.nbVertex()

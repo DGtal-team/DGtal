@@ -46,6 +46,7 @@
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/shapes/TriangulatedSurface.h"
+#include "DGtal/shapes/PolygonalSurface.h"
 #include "DGtal/shapes/Mesh.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -112,14 +113,38 @@ namespace DGtal
     /// @param[in]  dsurf the input digital surface.
     /// @param[in]  cembedder the embedder for 2-cells of the digital surface, which are vertices in the output triangulated surface.
     /// @param[out] trisurf the output triangulated surface mesh.
+    /// @param[out] vertexmap the output mapping between a Vertex of \a dsurf and an Index in \a trisurf.
     template < typename DigitalSurfaceContainer,
-               typename CellEmbedder >
+               typename CellEmbedder,
+	       typename VertexMap >
     static
-    void digitalSurface2TriangulatedSurface
+    void digitalSurface2DualTriangulatedSurface
     ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
       const CellEmbedder& cembedder,
-      TriangulatedSurface<typename CellEmbedder::Value>& trisurf );
+      TriangulatedSurface<typename CellEmbedder::Value>& trisurf,
+      VertexMap& vertexmap );
 
+    /// Builds a polygonal surface (class PolygonalSurface) from
+    /// the dual graph of a 2-dimensional digital surface in K^3 (class
+    /// DigitalSurface).
+    ///
+    /// @tparam DigitalSurfaceContainer the container chosen for the digital surface.
+    /// @tparam CellEmbedder the embedder chosen for the digital surface.
+    ///
+    /// @param[in]  dsurf the input digital surface.
+    /// @param[in]  cembedder the embedder for 2-cells of the digital surface, which are vertices in the output polygonal surface.
+    /// @param[out] polysurf the output polygonal surface mesh.
+    /// @param[out] vertexmap the output mapping between a Vertex of \a dsurf and an Index in \a polysurf.
+    template < typename DigitalSurfaceContainer,
+               typename CellEmbedder,
+	       typename VertexMap >
+    static
+    void digitalSurface2DualPolygonalSurface
+    ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
+      const CellEmbedder& cembedder,
+      PolygonalSurface<typename CellEmbedder::Value>& polysurf,
+      VertexMap& vertexmap );
+    
     
     /// Builds a mesh (class Mesh) from a triangulated surface (class
     /// TriangulatedSurface). Note that the mesh looses the topology
@@ -127,14 +152,28 @@ namespace DGtal
     /// triangles.
     ///
     /// @tparam Point the type for points.
-    /// @param[in]  trisurf the output triangulated surface mesh.
-    /// @param[in,out] mesh the input mesh (which should be empty).
+    /// @param[in]  trisurf the input triangulated surface mesh.
+    /// @param[in,out] mesh the output mesh (which should be empty).
     template <typename Point>
     static
     void triangulatedSurface2Mesh
     ( const TriangulatedSurface<Point>& trisurf,
       Mesh<Point>& mesh );
 
+    /// Builds a mesh (class Mesh) from a polygon mesh (class
+    /// PolygonalSurface). Note that the mesh looses the topology
+    /// of the polygonal surface, since it is essentially a soup of
+    /// triangles.
+    ///
+    /// @tparam Point the type for points.
+    /// @param[in]     polysurf the input polygonal surface (ie a polygon mesh).
+    /// @param[in,out] mesh the output mesh (which should be empty).
+    template <typename Point>
+    static
+    void polygonalSurface2Mesh
+    ( const PolygonalSurface<Point>& polysurf,
+      Mesh<Point>& mesh );
+    
   }; // end of class MeshHelpers
 
 } // namespace DGtal
