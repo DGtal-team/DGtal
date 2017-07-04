@@ -301,9 +301,8 @@ DGtal::TriangulatedSurface<TPoint>::verticesAroundFace( const Face & f ) const
   Index hei = start_hei;
   do {
     const HalfEdge& he = myHEDS.halfEdge( hei );
-    if ( he.face != f )
-      trace.warning() << "[TriangulatedSurface::verticesAroundFace] invalid face: he.face=" << he.face << " f=" << f << std::endl;
-    ASSERT( he.face == f );
+    ASSERT( ( he.face == f )
+	    && "[TriangulatedSurface::verticesAroundFace] invalid face." );
     result.push_back( he.toVertex );
     hei = he.next;
   } while ( hei != start_hei );
@@ -395,7 +394,8 @@ void
 DGtal::TriangulatedSurface<TPoint>::selfDisplay ( std::ostream & out ) const
 {
   out << "[TriangulatedSurface #V=" << myHEDS.nbVertices()
-      << " #E=" << myHEDS.nbEdges() << " #F=" << myHEDS.nbFaces() << "]";
+      << " #E=" << myHEDS.nbEdges() << " #F=" << myHEDS.nbFaces()
+      << " Chi=" << Euler() << "]";
 }
 
 /**
