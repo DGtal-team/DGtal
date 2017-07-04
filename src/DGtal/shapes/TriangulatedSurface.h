@@ -198,7 +198,9 @@ namespace DGtal
       const Storage& storage() const { return *myData; }
 
     private:
+      /// The associated polygonal surface
       const Self* mySurface;
+      /// An owned or aliased pointer to the vector of data.
       OwningOrAliasingPtr<Storage> myData;
     };
 
@@ -470,7 +472,7 @@ namespace DGtal
        If f is incident to the arcs (s,t) and (t,u) (say), then
        (s,t,u) is a subsequence of the returned sequence.
 
-       @param f any valid face on the digital surface (open or closed ).
+       @param f any valid face on the surface (open or closed ).
 
        @return the sequence of vertices that touches this face. The
        order follows the order of incident arcs (the range size should be 3).
@@ -512,7 +514,7 @@ namespace DGtal
        This set of arcs is sufficient for displaying the boundary of
        the surface.
 
-       @return the set of all arcs (oriented edges) lying on the
+       @return the array of all arcs (oriented edges) lying on the
        boundary of the surface (in no particular order).
     */
     ArcRange allBoundaryArcs() const;
@@ -521,7 +523,7 @@ namespace DGtal
        This set of arcs is sufficient for displaying the boundary of
        the surface.
 
-       @return the set of vertices lying on the boundary of the
+       @return the array of vertices lying on the boundary of the
        surface (in no particular order).
     */
     VertexRange allBoundaryVertices() const;
