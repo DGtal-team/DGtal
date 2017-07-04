@@ -18,7 +18,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleHalfEdgeMesh Half-edge data structure and triangulated surfaces
+@page moduleHalfEdgeMesh Half-edge data structure, triangulated surfaces and polygonal surfaces
 @author Jacques-Olivier Lachaud
 
 @since 0.9.4
