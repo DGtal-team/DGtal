@@ -65,21 +65,17 @@ namespace DGtal
    * For now, the user must add vertices and triangles, and when
    * finished, call 'build()'.
    *
-   * Model of CUndirectedSimpleLocalGraph: the vertices and edges of the
+   * Model of CUndirectedSimpleGraph: the vertices and edges of the
    * triangulated surface form indeed a graph structure.
    *
    * @note Vertices, Arcs, and Faces are all integer ranging from 0 to
    * one less than the total number of the respective elements. You
    * may thus iterate on them by just looping on integers. The index
-   * INVALID_FACE is an invalid element (equal to HalfEdgeDataStructure::INVALID_INDEX).
+   * INVALID_FACE is an invalid element (equal to HALF_EDGE_INVALID_INDEX).
    *
    * @tparam TPoint a type defining the position in space of vertices.
    *
    * @see HalfEdgeDataStructure
-   *
-   * @todo Model of CUndirectedSimpleGraph, because we could provide a
-   * trivial iterator that enumerates integer from 0 to the number of
-   * vertices.
    */
   template <typename TPoint>
   class TriangulatedSurface
