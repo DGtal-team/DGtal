@@ -80,7 +80,6 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
 {
   typedef PointVector<3,double>                 RealPoint;
   typedef PolygonalSurface< RealPoint >         PolygonMesh;
-  typedef PolygonMesh::PolygonalFace            PolygonalFace;
   typedef PolygonMesh::VertexRange              VertexRange;
   typedef PolygonMesh::ArcRange                 ArcRange;
   typedef PolygonMesh::Arc                      Arc;
