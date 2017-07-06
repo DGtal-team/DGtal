@@ -230,7 +230,7 @@ namespace DGtal
       OwningOrAliasingPtr<Storage> myData;
     };
 
-    typedef IndexedPropertyMap< Point >          PositionsMap;
+    typedef IndexedPropertyMap< RealPoint >          PositionsMap;
 
   protected:
     typedef HalfEdgeDataStructure::HalfEdge      HalfEdge;
@@ -256,14 +256,6 @@ namespace DGtal
       : isHEDSValid( false ), myContainer( 0 )
     {
       build( surfContainer );
-    }
-
-    /// Constructor from digital surface container.
-    /// @param surface any instance of digital surface.
-    IndexedDigitalSurface( DigitalSurface< DigitalSurfaceContainer > surface )
-      : isHEDSValid( false ), myContainer( 0 )
-    {
-      build( &( surface.container() ) );
     }
     
     /// Clears everything.
@@ -376,11 +368,11 @@ namespace DGtal
     /// Mutable accessor to vertex data.
     /// @param v any vertex.
     /// @return the mutable data associated to \a v.
-    Point& position( Vertex v );
+    RealPoint& position( Vertex v );
     /// Const accessor to vertex data.
     /// @param v any vertex.
     /// @return the non-mutable data associated to \a v.
-    const Point& position( Vertex v ) const;
+    const RealPoint& position( Vertex v ) const;
 
     /// @param[in] v any vertex index.
     /// @return the corresponding surfel.

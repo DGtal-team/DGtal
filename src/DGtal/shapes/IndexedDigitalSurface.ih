@@ -52,8 +52,8 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::build
                     << " attempting to rebuild a polygonal surface." << std::endl;
     return false;
   }
-  myContainer = surfContainer;
-  DigitalSurface< DigitalSurfaceContainer > surface( myContainer );
+  myContainer = CountedConstPtrOrConstPtr< DigitalSurfaceContainer >( surfContainer );
+  DigitalSurface< DigitalSurfaceContainer > surface( *myContainer );
   CanonicSCellEmbedder< KSpace > embedder( myContainer->space() );
   // Numbering surfels / vertices
   VertexIndex i = 0;
@@ -67,11 +67,11 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::build
   auto faces = surface.allClosedFaces();
   for ( auto f : faces )
     {
-      VertexRange vtcs = dsurf.verticesAroundFace( f );
+      auto vtcs = surface.verticesAroundFace( f );
       PolygonalFace idx_face( vtcs.size() );
       std::transform( vtcs.cbegin(), vtcs.cend(), idx_face.begin(),
-		      [ &mySurfel2VertesIndex ]
-		      ( const Vertex& v ) { return mySurfel2VertexIndex[ v ]; } );
+		      [&]
+		      ( const SCell& v ) { return mySurfel2VertexIndex[ v ]; } );
       myPolygonalFaces.push_back( idx_face );
       myPointel2FaceIndex[ surface.pivot( f ) ] = j++;
     }
@@ -89,16 +89,16 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::build
       myFaceIndex2Pointel .resize( nbFaces() );
       myArc2Linel         .resize( nbArcs() );
       for ( auto p : mySurfel2VertexIndex )
-	myVertexIndex2Surfel[ p->second ] = p->first;
+	myVertexIndex2Surfel[ p.second ] = p.first;
       for ( auto p : myPointel2FaceIndex )
-	myFaceIndex2Pointel [ p->second ] = p->first;
+	myFaceIndex2Pointel [ p.second ] = p.first;
       // We build the mapping for arcs
       // Visiting arcs
       for ( Arc fi = 0; fi < myArc2Linel.size(); ++fi  )
 	{
 	  auto  vi_vj = myHEDS.arcFromHalfEdgeIndex( fi );
-	  SCell surfi = myVertexIndex2Surfel[ myvi_vj.first ];
-	  SCell surfj = myVertexIndex2Surfel[ myvi_vj.second ];
+	  SCell surfi = myVertexIndex2Surfel[ vi_vj.first ];
+	  SCell surfj = myVertexIndex2Surfel[ vi_vj.second ];
 	  SCell linel = surface.separator( surface.arc( surfi, surfj ) );
 	  myLinel2Arc[ linel ] = fi;
 	  myArc2Linel[ fi ]    = linel;
@@ -129,7 +129,7 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::clear()
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 inline
-typename DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::Point&
+typename DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::RealPoint&
 DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::position( Vertex v )
 {
   ASSERT( 0 <= v && v < myPositions.size() );
@@ -138,7 +138,7 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::position( Vertex v )
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 inline
-const typename DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::Point&
+const typename DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::RealPoint&
 DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::position( Vertex v ) const
 {
   ASSERT( 0 <= v && v < myPositions.size() );
