@@ -340,14 +340,23 @@ arc( const Vertex & t, const Vertex & h ) const
   Point p1 = K.sKCoords( t );
   Point p2 = K.sKCoords( h );
   p2 -= p1;
-  for ( typename KSpace::DirIterator q = K.sDirs( h );
+  for ( typename KSpace::DirIterator q = K.sDirs( t );
         q != 0; ++q )
     {
       Dimension i = *q;
-      if ( p1[ i ] != 0 ) return Arc( t, i, p1[ i ] > 0 );
+      if ( p2[ i ] != 0 ) return Arc( t, i, p2[ i ] > 0 );
     }
   ASSERT( false && "DGtal::DigitalSurface<TDigitalSurfaceContainer>::arc( tail, head ): tail and head are not adjacent." );
   return Arc( t, 0, true );
+  // // JOL 2017/07/4: bad test.
+  // for ( typename KSpace::DirIterator q = K.sDirs( h );
+  //       q != 0; ++q )
+  //   {
+  //     Dimension i = *q;
+  //     if ( p1[ i ] != 0 ) return Arc( t, i, p1[ i ] > 0 );
+  //   }
+  // ASSERT( false && "DGtal::DigitalSurface<TDigitalSurfaceContainer>::arc( tail, head ): tail and head are not adjacent." );
+  // return Arc( t, 0, true );
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>

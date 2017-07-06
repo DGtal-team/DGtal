@@ -64,7 +64,7 @@ SCENARIO( "IndexedDigitalSurface< DigitalSetBoundary > build tests", "[idxdsurf]
   Shapes<Domain>::addNorm2Ball( aSet, Point( 0, 0, 0 ), 3 );
   DigSurface dsurf( new DigitalSurfaceContainer( K, aSet ) );
   GIVEN( "A digital set boundary over a ball of radius 3" ) {
-    THEN( "The indexed digital surface has " ) {
+    THEN( "The indexed digital surface has 174 vertices, 348 edges, 176 edges, and Euler=2 as the sphere" ) {
       REQUIRE( dsurf.nbVertices() == 174 );
       REQUIRE( dsurf.nbEdges() == 348 );
       REQUIRE( dsurf.nbFaces() == 176 );
@@ -76,6 +76,34 @@ SCENARIO( "IndexedDigitalSurface< DigitalSetBoundary > build tests", "[idxdsurf]
       REQUIRE( dsurf.degree( 54) == 4 );
       REQUIRE( dsurf.degree( 102 ) == 4 );
     }
+    THEN( "Vertices corresponds to surfels, Arcs to linels, Faces to pointels" ) {
+      REQUIRE( K.sDim( dsurf.surfel( 0 ) ) == 2 );
+      REQUIRE( K.sDim( dsurf.surfel( 17 ) ) == 2 );
+      REQUIRE( K.sDim( dsurf.linel( 0  ) ) == 1 );
+      REQUIRE( K.sDim( dsurf.linel( 25 ) ) == 1 );
+      REQUIRE( K.sDim( dsurf.pointel( 0 ) ) == 0 );
+      REQUIRE( K.sDim( dsurf.pointel( 25 ) ) == 0 );
+    }
+    THEN( "Linels of opposite arcs are opposite cells" ) {
+      REQUIRE( K.sOpp( dsurf.linel( 15 ) ) == dsurf.linel( dsurf.opposite( 15 ) ) );
+      REQUIRE( K.sOpp( dsurf.linel( 34 ) ) == dsurf.linel( dsurf.opposite( 34 ) ) );
+      REQUIRE( K.sOpp( dsurf.linel( 112 ) ) == dsurf.linel( dsurf.opposite( 112 ) ) );
+      REQUIRE( K.sOpp( dsurf.linel( 200 ) ) == dsurf.linel( dsurf.opposite( 200 ) ) );
+    }
+    THEN( "Breadth-first visiting the digital surface from vertex 0 goes to a distance 13." ) {
+      BreadthFirstVisitor< DigSurface > visitor( dsurf, 0 );
+      std::vector<int> vertices;
+      std::vector<int> distances;
+      while ( ! visitor.finished() )
+	{
+	  vertices.push_back( visitor.current().first );
+	  distances.push_back( visitor.current().second );
+	  visitor.expand();
+	}
+      REQUIRE( vertices.size() == 174 );
+      REQUIRE( distances.size() == 174 );
+      REQUIRE( distances.back() == 13 );
+    }      
   }
 }
 
