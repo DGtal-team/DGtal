@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <algorithm>
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -57,23 +58,23 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::build
   CanonicSCellEmbedder< KSpace > embedder( myContainer->space() );
   // Numbering surfels / vertices
   VertexIndex i = 0;
-  for ( SCell surfel : surface )
+  for ( SCell aSurfel : surface )
     {
-      myPositions.push_back( embedder( surfel ) );
-      mySurfel2VertexIndex[ surfel ] = i++;
+      myPositions.push_back( embedder( aSurfel ) );
+      mySurfel2VertexIndex[ aSurfel ] = i++;
     }
   // Numbering pointels / faces
   FaceIndex   j = 0;
   auto faces = surface.allClosedFaces();
-  for ( auto f : faces )
+  for ( auto aFace : faces )
     {
-      auto vtcs = surface.verticesAroundFace( f );
+      auto vtcs = surface.verticesAroundFace( aFace );
       PolygonalFace idx_face( vtcs.size() );
       std::transform( vtcs.cbegin(), vtcs.cend(), idx_face.begin(),
 		      [&]
 		      ( const SCell& v ) { return mySurfel2VertexIndex[ v ]; } );
       myPolygonalFaces.push_back( idx_face );
-      myPointel2FaceIndex[ surface.pivot( f ) ] = j++;
+      myPointel2FaceIndex[ surface.pivot( aFace ) ] = j++;
     }
   isHEDSValid = myHEDS.build( myPolygonalFaces );
   if ( myHEDS.nbVertices() != myPositions.size() ) {
@@ -99,9 +100,13 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::build
 	  auto  vi_vj = myHEDS.arcFromHalfEdgeIndex( fi );
 	  SCell surfi = myVertexIndex2Surfel[ vi_vj.first ];
 	  SCell surfj = myVertexIndex2Surfel[ vi_vj.second ];
-	  SCell linel = surface.separator( surface.arc( surfi, surfj ) );
-	  myLinel2Arc[ linel ] = fi;
-	  myArc2Linel[ fi ]    = linel;
+	  SCell   lnl = surface.separator( surface.arc( surfi, surfj ) );
+	  myLinel2Arc[ lnl ] = fi;
+	  myArc2Linel[ fi ]  = lnl;
+	  // trace.info() << "- Arc " << fi
+	  // 	       << " (" << vi_vj.first << "," << vi_vj.second << ") "
+	  // 	       << " (" << surfi << "," << surfj << ") "
+	  // 	       << " lnl=" << lnl << space().sDim( lnl ) << std::endl;
 	}
     }
   return isHEDSValid;

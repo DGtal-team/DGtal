@@ -273,6 +273,16 @@ namespace DGtal
     /// neighborhoods).
     bool build( ConstAlias< DigitalSurfaceContainer > surfContainer );
 
+    /**
+       @return a const reference to the stored container.
+    */
+    const DigitalSurfaceContainer & container() const
+    { return *myContainer; }
+
+    /// @return a const reference to the digital space containing the digital surface.
+    const KSpace& space() const
+    { return myContainer->space(); }
+    
     // ------------------------- standard services ------------------------------
   public:
     /// @return the number of half edges in the structure.
@@ -398,33 +408,33 @@ namespace DGtal
       return myFaceIndex2Pointel[ f ];
     }
     
-    /// @param[in] surfel any surfel of the surface
+    /// @param[in] aSurfel any surfel of the surface
     ///
     /// @return the vertex (ie an index) corresponding to this surfel,
     /// or INVALID_FACE if it does not exist.
-    Vertex getVertex( const SCell& surfel ) const
+    Vertex getVertex( const SCell& aSurfel ) const
     {
-      auto it = mySurfel2VertexIndex.find( surfel );
+      auto it = mySurfel2VertexIndex.find( aSurfel );
       return it != mySurfel2VertexIndex.end() ? it->second : INVALID_FACE;
     }
 
-    /// @param[in] linel any linel that is a separator on the surface (orientation is important).
+    /// @param[in] aLinel any linel that is a separator on the surface (orientation is important).
     ///
     /// @return the arc (ie an index) corresponding to this separator linel,
     /// or INVALID_FACE if it does not exist.
-    Arc getArc( const SCell& linel ) const
+    Arc getArc( const SCell& aLinel ) const
     {
-      auto it = myLinel2Arc.find( linel );
+      auto it = myLinel2Arc.find( aLinel );
       return it != myLinel2Arc.end() ? it->second : INVALID_FACE;
     }
 
-    /// @param[in] pointel any pointel that is a pivot on the surface (orientation is positive).
+    /// @param[in] aPointel any pointel that is a pivot on the surface (orientation is positive).
     ///
     /// @return the face (ie an index) corresponding to this pivot pointel,
     /// or INVALID_FACE if it does not exist.
-    Face getFace( const SCell& pointel ) const
+    Face getFace( const SCell& aPointel ) const
     {
-      auto it = myPointel2FaceIndex.find( pointel );
+      auto it = myPointel2FaceIndex.find( aPointel );
       return it != myPointel2FaceIndex.end() ? it->second : INVALID_FACE;
     }
     
