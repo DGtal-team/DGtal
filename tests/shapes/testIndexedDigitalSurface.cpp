@@ -62,8 +62,12 @@ SCENARIO( "IndexedDigitalSurface< DigitalSetBoundary > build tests", "[idxdsurf]
   K.init( p1, p2, true );
   DigitalSet aSet( Domain( p1, p2 ) );
   Shapes<Domain>::addNorm2Ball( aSet, Point( 0, 0, 0 ), 3 );
-  DigSurface dsurf( new DigitalSurfaceContainer( K, aSet ) );
+  DigSurface dsurf;
+  bool build_ok = dsurf.build( new DigitalSurfaceContainer( K, aSet ) );
   GIVEN( "A digital set boundary over a ball of radius 3" ) {
+    THEN( "Build of underlying half-edge data structure should be ok" ) {
+      REQUIRE( build_ok == true );
+    }
     THEN( "The indexed digital surface has 174 vertices, 348 edges, 176 edges, and Euler=2 as the sphere" ) {
       REQUIRE( dsurf.nbVertices() == 174 );
       REQUIRE( dsurf.nbEdges() == 348 );
