@@ -34,7 +34,8 @@
  *
  * @see moduleQGLExtension
  * \example io/viewers/viewer3D-11-extension.cpp
- * \image html simple3dVisu1.png "Extending the Viewer3D interface: just press Shift+R and you have new points added randomly in the scene."
+ * \image html simple3dVisu1.png "Extending the Viewer3D interface: just press
+ * Shift+R and you have new points added randomly in the scene."
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -49,84 +50,82 @@ using namespace std;
 using namespace DGtal;
 using namespace Z3i;
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-
 //! [viewer3D-extension-derivation]
 // Deriving from Viewer3D::Extension to add new callbacks to events.
-struct RandomPointKeyExtension : public Viewer3D<Space,KSpace>::Extension
+struct RandomPointKeyExtension : public Viewer3D<Space, KSpace>::Extension
 {
-  RandomPointKeyExtension() {}
+  RandomPointKeyExtension()
+  {
+  }
 
   // Here we override the "key pressed" event, and a point randomly in
   // the scene if the key "Shift+R" is pressed.
-  virtual bool keyPressEvent ( Viewer& viewer, QKeyEvent * event )
+  virtual bool keyPressEvent( Viewer & viewer, QKeyEvent * event )
   {
     bool handled = false;
     // Get event modifiers key
     const Qt::KeyboardModifiers modifiers = event->modifiers();
-    if( ( event->key() == Qt::Key_R ) && ( modifiers == Qt::ShiftModifier ) )
-      {
-        typedef Viewer::KSpace KSpace;
-        Point p = viewer.space().lowerBound();
-        Point q = viewer.space().upperBound();
-        Point d = q - p;
-        Point a( ( rand() % d[ 0 ] ) + p[ 0 ],
-                 ( rand() % d[ 1 ] ) + p[ 1 ],
-                 ( rand() % d[ 2 ] ) + p[ 2 ] );
-        viewer << a;
-        viewer << Viewer::updateDisplay;
-        trace.info() << "Adding point " << a << std::endl;
-        handled = true;
-      }
+    if ( ( event->key() == Qt::Key_R ) && ( modifiers == Qt::ShiftModifier ) )
+    {
+      typedef Viewer::KSpace KSpace;
+      Point p = viewer.space().lowerBound();
+      Point q = viewer.space().upperBound();
+      Point d = q - p;
+      Point a( ( rand() % d[ 0 ] ) + p[ 0 ], ( rand() % d[ 1 ] ) + p[ 1 ],
+               ( rand() % d[ 2 ] ) + p[ 2 ] );
+      viewer << a;
+      viewer << Viewer::updateDisplay;
+      trace.info() << "Adding point " << a << std::endl;
+      handled = true;
+    }
     return handled;
   }
 
   // We also override the Viewer3D::init method to add a key
   // description in the help window.
-  virtual void init( Viewer& viewer )
+  virtual void init( Viewer & viewer )
   {
-    viewer.setKeyDescription ( Qt::ShiftModifier+Qt::Key_R,
-                               "Creates a random digital point." );
+    viewer.setKeyDescription( Qt::ShiftModifier + Qt::Key_R,
+                              "Creates a random digital point." );
   }
 
   // We also override the Viewer3D::helpString method to add a
   // description to the viewer.
-  virtual QString helpString(const Viewer& viewer) const
+  virtual QString helpString( const Viewer & viewer ) const
   {
     QString text( "<h2> Random point Viewer3D </h2>" );
     text += "Press Shift+R to add points.";
     return text;
   }
-
 };
 //! [viewer3D-extension-derivation]
 
-int main( int argc, char** argv )
+int main( int argc, char ** argv )
 {
 
- QApplication application(argc,argv);
+  QApplication application( argc, argv );
 
- Point p1( 0, 0, 0 );
- Point p2( 5, 5 ,5 );
- Point p3( 2, 3, 4 );
- Domain domain( p1, p2 );
+  Point p1( 0, 0, 0 );
+  Point p2( 5, 5, 5 );
+  Point p3( 2, 3, 4 );
+  Domain domain( p1, p2 );
 
- typedef Viewer3D<> MyViewer;
- KSpace K;
- K.init( p1, p2, true );
- //! [viewer3D-extension-set-extension]
- MyViewer viewer( K );
- viewer.setExtension( new RandomPointKeyExtension );
- //! [viewer3D-extension-set-extension]
- viewer.show();
- viewer << domain;
- viewer << p1 << p2 << p3;
+  typedef Viewer3D<> MyViewer;
+  KSpace K;
+  K.init( p1, p2, true );
+  //! [viewer3D-extension-set-extension]
+  MyViewer viewer( K );
+  viewer.setExtension( new RandomPointKeyExtension );
+  //! [viewer3D-extension-set-extension]
+  viewer.show();
+  viewer << domain;
+  viewer << p1 << p2 << p3;
 
- viewer<< MyViewer::updateDisplay;
- return application.exec();
+  viewer << MyViewer::updateDisplay;
+  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

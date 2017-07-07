@@ -59,9 +59,10 @@ bool testGenericReader()
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
 
 #ifdef WITH_ITK
-  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint16_t> Image3D16bits;
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint16_t>
+  Image3D16bits;
 #endif // WITH_ITK
-  
+
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint32_t> Image3D32bits;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint64_t> Image3D64bits;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned int> Image2D32bits;
@@ -165,26 +166,40 @@ bool testGenericReader()
 
 #ifdef WITH_ITK
   std::string filenameImage6 = testPath + "samples/lobsterCroped16b.mhd";
-  typedef DGtal::functors::Rescaling<uint16_t ,unsigned char > RescalFCT2;
-  RescalFCT2 resc2 = RescalFCT2(0, 65535,0, 255);
-  Image3D anImportedImage6= DGtal::GenericReader<Image3D>::importWithValueFunctor(filenameImage6,resc2);
-  DGtal::Z3i::Domain domain6 = anImportedImage6.domain(); 
-  unsigned int size0Img6= domain6.upperBound()[0]-domain6.lowerBound()[0]+1;
-  unsigned int size1Img6= domain6.upperBound()[1]-domain6.lowerBound()[1]+1;
-  unsigned int size2Img6= domain6.upperBound()[2]-domain6.lowerBound()[2]+1;
-  
-  DGtal::trace.info()<<"mhd 16 bits 3D image read: size[0]:" << size0Img6;
-  DGtal::trace.info()<<"size[1]:  " << size1Img6 << std::endl;
-  DGtal::trace.info()<<"Image value of Point (35,29, 3): " << anImportedImage6(DGtal::Z3i::Point(35,29, 3)) << " (should be" << resc2(60400) <<std::endl;
-  nbok += (size0Img6==51 && size1Img6==91 && size2Img6==31  && anImportedImage6(DGtal::Z3i::Point(35,29,3))==resc2(60400)) ? 1 : 0; 
+  typedef DGtal::functors::Rescaling<uint16_t, unsigned char> RescalFCT2;
+  RescalFCT2 resc2 = RescalFCT2( 0, 65535, 0, 255 );
+  Image3D anImportedImage6 =
+  DGtal::GenericReader<Image3D>::importWithValueFunctor( filenameImage6,
+                                                         resc2 );
+  DGtal::Z3i::Domain domain6 = anImportedImage6.domain();
+  unsigned int size0Img6 =
+  domain6.upperBound()[ 0 ] - domain6.lowerBound()[ 0 ] + 1;
+  unsigned int size1Img6 =
+  domain6.upperBound()[ 1 ] - domain6.lowerBound()[ 1 ] + 1;
+  unsigned int size2Img6 =
+  domain6.upperBound()[ 2 ] - domain6.lowerBound()[ 2 ] + 1;
+
+  DGtal::trace.info() << "mhd 16 bits 3D image read: size[0]:" << size0Img6;
+  DGtal::trace.info() << "size[1]:  " << size1Img6 << std::endl;
+  DGtal::trace.info() << "Image value of Point (35,29, 3): "
+                      << anImportedImage6( DGtal::Z3i::Point( 35, 29, 3 ) )
+                      << " (should be" << resc2( 60400 ) << std::endl;
+  nbok +=
+  ( size0Img6 == 51 && size1Img6 == 91 && size2Img6 == 31 &&
+    anImportedImage6( DGtal::Z3i::Point( 35, 29, 3 ) ) == resc2( 60400 ) )
+  ? 1
+  : 0;
   nb++;
-  
-  Image3D16bits anImportedImage7= DGtal::GenericReader<Image3D16bits>::import(filenameImage6);
-  DGtal::trace.info()<<"Image value of Point (35,29, 3): " << anImportedImage7(DGtal::Z3i::Point(35,29, 3)) << " (should be" << 60400 << " )"<< std::endl;
-  nbok += (anImportedImage7(DGtal::Z3i::Point(35,29,3))==60400) ? 1 : 0; 
+
+  Image3D16bits anImportedImage7 =
+  DGtal::GenericReader<Image3D16bits>::import( filenameImage6 );
+  DGtal::trace.info() << "Image value of Point (35,29, 3): "
+                      << anImportedImage7( DGtal::Z3i::Point( 35, 29, 3 ) )
+                      << " (should be" << 60400 << " )" << std::endl;
+  nbok +=
+  ( anImportedImage7( DGtal::Z3i::Point( 35, 29, 3 ) ) == 60400 ) ? 1 : 0;
   nb++;
 #endif // WITH_ITK
-
 
   DGtal::trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   DGtal::trace.endBlock();
