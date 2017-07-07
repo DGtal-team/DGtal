@@ -2,20 +2,21 @@
 
 ## New Features / Critical Changes
 
+## Changes
+
+- *Math package*
+ - New SimpleMatrix constructor with a initializer_list argument
+   (Nicolas Normand,
+   [#1250](https://github.com/DGtal-team/DGtal/pull/1250))
 - *IO*
   - New simple way to extend the QGLViewer-based Viewer3D interface,
     for instance to add callbacks to key or mouse events, or to modify
     what is drawn on the window.
     (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
-    
-## Changes
-
-- *IO*
- - TableReader can now read all elements contained in each line of a file 
+ - TableReader can now read all elements contained in each line of a file
    with the new method getLinesElementsFromFile().
    (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
 
- 
 ## Bug Fixes
 
 - *Shapes Package*
@@ -37,10 +38,10 @@
    handle 32/16 bits images. Also includes a new testITKReader and ITK tests in
    GenericReader.
    (Bertrand Kerautret, [#1255](https://github.com/DGtal-team/DGtal/pull/1255))
- - Viewer3D: fix bad light source move according X/Y mouse move and new Key_Z to 
+ - Viewer3D: fix bad light source move according X/Y mouse move and new Key_Z to
    move away/closer the light source.
    (Bertrand Kerautret, [#1262](https://github.com/DGtal-team/DGtal/pull/1262))
-   
+
 - *Kernel Package*
  - Fix testBasicPointFunctor. (Bertrand Kerautret
    [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
@@ -52,7 +53,7 @@
    was also added to the generic readers when ITK is present (Bertrand
    Kerautret [1251](https://github.com/DGtal-team/DGtal/pull/1245))
  - Fix exampleArithDSS3d compilation (which was not activated).
-   (Bertrand Kerautret 
+   (Bertrand Kerautret
    [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
 
 # DGtal 0.9.3
