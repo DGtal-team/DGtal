@@ -34,7 +34,7 @@
    [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
 
 - *IO*
-- Fix QGLViewer based viewer compilation using QT 5.9
+- Fix for compilation with 2.7.0 QGLViewer version.
    (Bertrand Kerautret, [#1280](https://github.com/DGtal-team/DGtal/pull/1280))
 - Fix on the ITK reader when used with a functor which is not able to
    handle 32/16 bits images. Also includes a new testITKReader and ITK tests in
