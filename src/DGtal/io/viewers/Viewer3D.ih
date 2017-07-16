@@ -635,6 +635,9 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::drawWithNames()
 template <typename TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
 {
+
+  glUpdateBackground();
+  
   if ( myExtension != 0 )
     myExtension->draw( *this );
 
@@ -827,8 +830,8 @@ void DGtal::Viewer3D<TSpace, TKSpace>::init()
   Viewer3D<TSpace, TKSpace>::myMeshDefaultLineWidth = 10.0;
   myNbListe=0;
   myViewWire=false;
-  setBackgroundColor ( QColor ( 217, 228, 255 ) );
-  setForegroundColor ( QColor ( 217, 22, 25 ) );
+  setBackgroundColor ( QColor ( 217, 228, 255, 255 ) );
+  setForegroundColor ( QColor ( 217, 22, 25, 255  ) );
 
   Viewer3D<TSpace, TKSpace>::createNewCubeList();
   vector<typename Viewer3D<TSpace, TKSpace>::LineD3D> listeLine;
@@ -1353,14 +1356,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
     {
       handled=true;
       myIsBackgroundDefault=!myIsBackgroundDefault;
-      if ( !myIsBackgroundDefault )
-        {
-          setBackgroundColor ( QColor ( 255, 255,255 ) );
-        }
-      else
-        {
-          setBackgroundColor ( QColor ( 217, 228, 255 ) );
-        }
+      glUpdateBackground();
       update();
     }
 
@@ -1868,6 +1864,25 @@ void DGtal::Viewer3D<TSpace, TKSpace>::glUpdateLightRenderingMode() const
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 }
 
+
+template <typename TSpace, typename TKSpace>
+void DGtal::Viewer3D<TSpace, TKSpace>::glUpdateBackground() 
+{
+  
+  if ( !myIsBackgroundDefault )
+  {
+    setBackgroundColor ( QColor ( 255, 255,255, 255 ) );
+  }
+  else
+  {
+    setBackgroundColor ( QColor ( myDefaultBackgroundColor.red(),
+                                  myDefaultBackgroundColor.green(),
+                                  myDefaultBackgroundColor.blue(),
+                                  myDefaultBackgroundColor.alpha()));
+  }
+}
+
+
 template <typename TSpace, typename TKSpace>
 QDomElement
 DGtal::Viewer3D<TSpace, TKSpace>::domElement( const QString & name,
@@ -2100,3 +2115,6 @@ void DGtal::Viewer3D<TSpace, TKSpace>::updateRelativeCameraFromLightPosition()
   myLightPositionRefCamera[1] = static_cast<GLfloat>(posLCam[1]);
   myLightPositionRefCamera[2] = static_cast<GLfloat>(posLCam[2]);
 }
+
+
+
