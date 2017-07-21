@@ -635,6 +635,9 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::drawWithNames()
 template <typename TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
 {
+
+  glUpdateBackground();
+  
   if ( myExtension != 0 )
     myExtension->draw( *this );
 
@@ -827,8 +830,8 @@ void DGtal::Viewer3D<TSpace, TKSpace>::init()
   Viewer3D<TSpace, TKSpace>::myMeshDefaultLineWidth = 10.0;
   myNbListe=0;
   myViewWire=false;
-  setBackgroundColor ( QColor ( 217, 228, 255 ) );
-  setForegroundColor ( QColor ( 217, 22, 25 ) );
+  setBackgroundColor ( QColor ( 217, 228, 255, 255 ) );
+  setForegroundColor ( QColor ( 217, 22, 25, 255  ) );
 
   Viewer3D<TSpace, TKSpace>::createNewCubeList();
   vector<typename Viewer3D<TSpace, TKSpace>::LineD3D> listeLine;
@@ -1095,7 +1098,7 @@ bool needToUpdateBoundingBox )
       showEntireScene();
       Viewer3D<TSpace, TKSpace>::myBoundingPtChangedTag = false;
     }
-    updateGL();
+    update();
     glPopMatrix();
 }
 
@@ -1178,7 +1181,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::mouseReleaseEvent( QMouseEvent * e )
 
   if(e->modifiers() == (Qt::ControlModifier|Qt::ShiftModifier) || myIsMovingLight){
     myIsMovingLight=false;
-    updateGL();
+    update();
   }else{
     QGLViewer::mouseReleaseEvent(e);
   }
@@ -1210,7 +1213,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::mouseMoveEvent( QMouseEvent * e )
     glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);
     myRefMouseXPos = e->x();
     myRefMouseYPos = e->y();
-    updateGL();
+    update();
   }else{
     QGLViewer::mouseMoveEvent(e);
   }
@@ -1232,7 +1235,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
     {
       myIsDoubleFaceRendering = !myIsDoubleFaceRendering;
       glUpdateLightRenderingMode();
-      updateGL();
+      update();
 
     }
   if( e->key() == Qt::Key_E)
@@ -1267,7 +1270,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
     {
       myViewWire=!myViewWire;
       updateList(false);
-      updateGL();
+      update();
     }
     if ( e->key() == Qt::Key_Z )
     {
@@ -1302,7 +1305,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
       }
       myIsMovingLight = true;
       glLightfv( GL_LIGHT0, GL_POSITION, myLightPosition );
-      updateGL();
+      update();
     }
 
     if ( ( e->key() == Qt::Key_P ) )
@@ -1319,14 +1322,14 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
           displayMessage(QString("Light source position fixed to main scene."), 3000);
           //updateLightCoordsFromCamera();
         }
-      updateGL();
+      update();
     }
   
   if ( ( e->key() ==Qt::Key_O ) )
     {
       myUseGLPointsForBalls = !myUseGLPointsForBalls;
       updateList(false);
-      updateGL();
+      update();
     }
 
   if ( ( e->key() ==Qt::Key_R ) )
@@ -1334,7 +1337,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
       myGLScaleFactorX=1.0f;
       myGLScaleFactorY=1.0f;
       myGLScaleFactorZ=1.0f;
-      updateGL();
+      update();
     }
 
   if ( ( e->key() ==Qt::Key_T ) )
@@ -1347,21 +1350,14 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
       sortPolygonFromCamera();
       DGtal::trace.info() << " [done]"<< std::endl;
       updateList(false);
-      updateGL();
+      update();
     }
   if ( ( e->key() ==Qt::Key_B ) )
     {
       handled=true;
       myIsBackgroundDefault=!myIsBackgroundDefault;
-      if ( !myIsBackgroundDefault )
-        {
-          setBackgroundColor ( QColor ( 255, 255,255 ) );
-        }
-      else
-        {
-          setBackgroundColor ( QColor ( 217, 228, 255 ) );
-        }
-      updateGL();
+      glUpdateBackground();
+      update();
     }
 
  if ( ( e->key() ==Qt::Key_L ) )
@@ -1370,7 +1366,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
         saveStateToFile();
       }else{
         restoreStateFromFile();
-        updateGL();
+        update();
       }
     }
   if ( ( e->key() ==Qt::Key_C ) )
@@ -1868,6 +1864,25 @@ void DGtal::Viewer3D<TSpace, TKSpace>::glUpdateLightRenderingMode() const
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 }
 
+
+template <typename TSpace, typename TKSpace>
+void DGtal::Viewer3D<TSpace, TKSpace>::glUpdateBackground() 
+{
+  
+  if ( !myIsBackgroundDefault )
+  {
+    setBackgroundColor ( QColor ( 255, 255,255, 255 ) );
+  }
+  else
+  {
+    setBackgroundColor ( QColor ( myDefaultBackgroundColor.red(),
+                                  myDefaultBackgroundColor.green(),
+                                  myDefaultBackgroundColor.blue(),
+                                  myDefaultBackgroundColor.alpha()));
+  }
+}
+
+
 template <typename TSpace, typename TKSpace>
 QDomElement
 DGtal::Viewer3D<TSpace, TKSpace>::domElement( const QString & name,
@@ -1922,7 +1937,7 @@ const QDomElement & element )
     updateRelativeCameraFromLightPosition();
   }
   updateRenderingCoefficients(myRenderingMode, false);
-  updateGL();
+  update();
 }
 
 template <typename TSpace, typename TKSpace>
@@ -1948,7 +1963,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::setGLMaterialShininessCoefficient(
 const GLfloat matShininessCoeff )
 {
   myMaterialShininessCoeff = matShininessCoeff;  
-  updateGL();
+  update();
 }
 
 template <typename TSpace, typename TKSpace>
@@ -1959,7 +1974,7 @@ const GLfloat lightAmbientCoeffs[ 4 ] )
   myLightAmbientCoeffs[1] =  lightAmbientCoeffs[1];
   myLightAmbientCoeffs[2] =  lightAmbientCoeffs[2];
   myLightAmbientCoeffs[3] =  lightAmbientCoeffs[3]; 
-  updateGL();
+  update();
 }
 
 template <typename TSpace, typename TKSpace>
@@ -1970,7 +1985,7 @@ const GLfloat lightDiffuseCoeffs[ 4 ] )
   myLightDiffuseCoeffs[1] =  lightDiffuseCoeffs[1];
   myLightDiffuseCoeffs[2] =  lightDiffuseCoeffs[2];
   myLightDiffuseCoeffs[3] =  lightDiffuseCoeffs[3];
-  updateGL();
+  update();
 }
 
 template <typename TSpace, typename TKSpace>
@@ -2021,7 +2036,7 @@ const RenderingMode aRenderMode, bool displayState )
     {
       displayMessage(QString(ss.str().c_str()), 3000);
     }
-  updateGL();
+  update();
 }
 
 template <typename TSpace, typename TKSpace>
@@ -2032,7 +2047,7 @@ const GLfloat lightSpecularCoeffs[ 4 ] )
   myLightSpecularCoeffs[1] =  lightSpecularCoeffs[1];
   myLightSpecularCoeffs[2] =  lightSpecularCoeffs[2];
   myLightSpecularCoeffs[3] =  lightSpecularCoeffs[3];
-  updateGL();
+  update();
 }
 
 template <typename TSpace, typename TKSpace>
@@ -2100,3 +2115,6 @@ void DGtal::Viewer3D<TSpace, TKSpace>::updateRelativeCameraFromLightPosition()
   myLightPositionRefCamera[1] = static_cast<GLfloat>(posLCam[1]);
   myLightPositionRefCamera[2] = static_cast<GLfloat>(posLCam[2]);
 }
+
+
+
