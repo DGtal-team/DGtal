@@ -46,6 +46,9 @@ using namespace std;
 using namespace DGtal;
 using namespace Z2i;
 
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :/
+
 double angle(const DGtal::Z2i::RealPoint& point)
 {
   double angle = atan2(point[1], point[0]);
@@ -81,6 +84,7 @@ struct AngleLessCell
 template <typename Shape>
 void digitize(Shape& shape, std::vector<SCell>& sCells0, std::vector<SCell>& sCells1, KSpace& kspace, const double h)
 {
+  // -------------------------------------------------------------------------- Type declaring
   typedef typename DGtal::GaussDigitizer<Space, Shape> Digitizer;
   typedef SurfelAdjacency<2> SurfelAdj;
   typedef Surfaces<KSpace> Surf;
@@ -88,6 +92,7 @@ void digitize(Shape& shape, std::vector<SCell>& sCells0, std::vector<SCell>& sCe
   sCells0.clear();
   sCells1.clear();
 
+  // -------------------------------------------------------------------------- Creating the shape
   Digitizer digitizer;
   digitizer.attach(shape);
   digitizer.init(shape.getLowerBound() + Vector(-1,-1), shape.getUpperBound() + Vector(1,1), h);
@@ -165,10 +170,10 @@ int main()
 
  	while(h >= 0.001)
   {
-  	if(test_shape(ball, h, h * 0.1)) return 0;
-  	if(test_shape(flower2D, h, h * 0.1)) return 0;
+  	if(test_shape(ball, h, h * 0.1))        return 0;
+  	if(test_shape(flower2D, h, h * 0.1))    return 0;
   	if(test_shape(accFlower2D, h, h * 0.1)) return 0;
-  	if(test_shape(ellipse2D, h, h * 0.1)) return 0;
+  	if(test_shape(ellipse2D, h, h * 0.1))   return 0;
 
   	h /= 1.1;
   }
