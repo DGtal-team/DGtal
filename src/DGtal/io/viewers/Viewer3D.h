@@ -1497,7 +1497,12 @@ namespace DGtal
     
     void glUpdateLightRenderingMode() const;
 
-    
+    /**
+     * Updates opengl background color according the current mode
+     * (default or customized color)
+     **/
+    void glUpdateBackground() ; 
+        
     /**
      * Updates the light source coordinates (myLightPosition) from the
      * camera relative coordinates (myLightPositionRefCamera). It
@@ -1515,7 +1520,6 @@ namespace DGtal
     void updateRelativeCameraFromLightPosition();
 
 
-    
     
   public:
     /**
