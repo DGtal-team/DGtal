@@ -153,26 +153,42 @@ DGtal::StarShaped2D<TSpace>::arclength( double t1, double t2, unsigned int nb ) 
 }
 
 /**
- * @param inner a point that is inside the shape
- * @param outer a point that is outside the shape
- * @param epsilon error parameter
- * @return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
- */
+  * Return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
+  *
+  * @param inner a point that is inside the shape
+  * @param outer a point that is outside the shape
+  * @param epsilon error parameter
+  *
+  * @return the intersected point.
+  */
 template <typename TSpace>
 inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint
-DGtal::StarShaped2D<TSpace>::findIntersection( const typename DGtal::StarShaped2D<TSpace>::RealPoint& inner, const typename DGtal::StarShaped2D<TSpace>::RealPoint& outer, double epsilon ) const
+DGtal::StarShaped2D<TSpace>::findIntersection( const typename DGtal::StarShaped2D<TSpace>::RealPoint& inner, 
+                                               const typename DGtal::StarShaped2D<TSpace>::RealPoint& outer, 
+                                               double epsilon ) const
 {
   typename DGtal::StarShaped2D<TSpace>::RealPoint mid = RealPoint(0.5 * (inner + outer));
 
   if((inner - outer).norm() < epsilon) return mid; // We found a point that is at distance epsilon from the shape
-  else if(orientation(mid) == 0) return findIntersection( mid, outer, epsilon ); // The point lies inside the shape
-  else if(orientation(mid) == 1) return mid; // The point is right onto the shape
-  else if(orientation(mid) == 2) return findIntersection( inner, mid, epsilon ); // The point lies outside the shape
+  else if(orientation(mid) == Orientation::INSIDE)  return findIntersection( mid, outer, epsilon ); // The point lies inside the shape
+  else if(orientation(mid) == Orientation::ON)      return mid; // The point is right onto the shape
+  else if(orientation(mid) == Orientation::OUTSIDE) return findIntersection( inner, mid, epsilon ); // The point lies outside the shape
 
+  ASSERT( false ); //this should not be reached
   return RealPoint(0., 0.);
 }
 
+/**
+  * Return a point that lies between the projection of left and right and that is the closest regarding the \f$L_2\f$ norm
+  *
+  * @param p the point to be projected
+  * @param left a point that is supposed to be projected left of p (regarding the angle)
+  * @param right a point that is supposed to be projected right of p (regarding the angle)
+  * @param step precision of the approximation
+  *
+  * @return a point.
+  **/
 template <typename TSpace>
 inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint
