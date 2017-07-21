@@ -161,10 +161,9 @@ namespace DGtal
      *
      * @param p input point
      *
-     * @return the orientation of the point (0 is inside, 1 is on, 2 is outside).
+     * @return the orientation of the point (INSIDE ON or OUTSIDE).
      */
     Orientation orientation( const RealPoint &p) const;
-
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -195,24 +194,31 @@ namespace DGtal
      * @param t1 any angle between 0 and 2*Pi.
      * @param t2 any angle between 0 and 2*Pi, further from [t1].
      * @param nb the number of points used to estimate the arclength between x(t1) and x(t2).
+     *
      * @return the estimated arclength.
      */
     double arclength( double t1, double t2, unsigned int nb ) const;
 
     /**
+     * Return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
+     *
      * @param inner a point that is inside the shape
      * @param outer a point that is outside the shape
      * @param epsilon error parameter
-     * @return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
+     *
+     * @return the intersected point.
      */
     RealPoint findIntersection( const RealPoint& inner, const RealPoint& outer, const double epsilon ) const;
 
     /**
+     * Return a point that lies between the projection of left and right and that is the closest regarding the \f$L_2\f$ norm
+     *
      * @param p the point to be projected
      * @param left a point that is supposed to be projected left of p (regarding the angle)
      * @param right a point that is supposed to be projected right of p (regarding the angle)
      * @param step precision of the approximation
-     * @return a point that lies between the projection of left and right and that is the closest regarding the \f$L_2\f$ norm.
+     *
+     * @return a point.
      * */
     RealPoint closestPointWithWitnesses( const RealPoint& p, const RealPoint& left, const RealPoint& right, const int step) const;
 
