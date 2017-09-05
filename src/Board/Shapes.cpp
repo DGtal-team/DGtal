@@ -1,4 +1,3 @@
-/* -*- mode: c++ -*- */
 /**
  * @file   Shapes.cpp
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
