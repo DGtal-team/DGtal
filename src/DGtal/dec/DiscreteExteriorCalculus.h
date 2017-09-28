@@ -401,6 +401,14 @@ namespace DGtal
     laplace() const;
 
     /**
+     * Laplace operator from duality 0-forms to duality 0-forms.
+     * @return Laplace operator.
+     */
+    template <Duality duality>
+    LinearOperator<Self, 0, duality, 0, duality>
+    heatLaplace(const double& h, const double& t, const double& cut_locus) const;
+
+    /**
      * Hodge operator from duality _order_-form to opposite duality _(dimEmbedded-order)_-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.

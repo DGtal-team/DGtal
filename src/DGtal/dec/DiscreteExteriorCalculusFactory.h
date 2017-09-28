@@ -103,6 +103,11 @@ public:
     DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
     createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, const bool add_border = true);
 
+    template <DGtal::Dimension dimEmbedded, typename TNSCellConstIterator, typename TSCellMeasureFunctor>
+    static
+    DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
+    createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, const TSCellMeasureFunctor& measureFunctor, const double h, const bool add_border = true);
+
     // ----------------------- Interface --------------------------------------
 public:
 
@@ -142,6 +147,11 @@ protected:
     static
     void
     accumulateAllLowerIncidentCells(const KSpace& kspace, const typename CellsAccum::key_type& cell, CellsAccum& cells_accum);
+
+    template <typename KSpace, typename CellsAccum, typename MeasureAccum>
+    static
+    void
+    accumulateAllLowerIncidentCells(const KSpace& kspace, const typename CellsAccum::key_type& cell, CellsAccum& cells_accum, CellsAccum& local_accum, MeasureAccum& cell_to_measure, const double measure);
 
 private:
 
