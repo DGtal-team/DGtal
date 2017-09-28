@@ -217,6 +217,8 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
     const double cut = cut_locus * sqrt(2. * t);
 
+    trace.info() << "Using h=" << h << ", t=" << t << ", cut_locus=" << cut << std::endl;
+
     CanonicSCellEmbedder<KSpace> canonicSCellEmbedder(myKSpace);
 
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
