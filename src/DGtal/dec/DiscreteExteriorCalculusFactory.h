@@ -103,10 +103,22 @@ public:
     DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
     createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, const bool add_border = true);
 
+    /**
+     * Create a DEC structure from a range of signed n-cells, where n is the embedded dimension. A functor from cell to its measure is given.
+		 * Signed n-cells may live in an ambient Khamlisky space with dimension greater than n.
+     * N-cells get attached to primal n-cell <-> dual 0-cell. See section \ref sectDECEmbedding for more information.
+     * @tparam dimEmbedded dimension of emmbedded manifold. All input n-cells must have their dimension equal to dimEmbedded.
+     * @tparam TNSCellConstIterator signed cells collection const iterator type.
+     * @param begin beginning of iteration range.
+     * @param end end of iteration range.
+     * @param add_border add border to the computed structure. For a precise definition see section \ref sectDECBorderDefinition.
+     * @param measureFunctor functor from a cell to its normal
+     * @param h the grid step
+     */
     template <DGtal::Dimension dimEmbedded, typename TNSCellConstIterator, typename TSCellMeasureFunctor>
     static
     DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
-    createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, const TSCellMeasureFunctor& measureFunctor, const double h, const bool add_border = true);
+    createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, const TSCellMeasureFunctor& normalFunctor, const double h, const bool add_border = true);
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -148,6 +160,19 @@ protected:
     void
     accumulateAllLowerIncidentCells(const KSpace& kspace, const typename CellsAccum::key_type& cell, CellsAccum& cells_accum);
 
+    /**
+     * Insert and count recursively all lower incident cells into cells accumulator, starting from cell embedding the measure of such cell.
+     * Internal use only.
+     * @tparam KSpace Khalimsky space type.
+     * @tparam CellsAccum cells accumulator type, should be similar to std::map<KSpace::Cell, int> or std::map<KSpace::SCell, int>.
+     * Counts are stored as values, cells are stored as keys.
+     * @param kspace Khalimsky space instance.
+     * @param cell starting cell.
+     * @param cells_accum cells accumulator in which lower incident cells get inserted and counted.
+     * @param local_accum local cells accumulator for measure embedding
+     * @param cell_to_measure a map from cell to its measure
+     * @param measure the current measure to be embedded
+     */
     template <typename KSpace, typename CellsAccum, typename MeasureAccum>
     static
     void

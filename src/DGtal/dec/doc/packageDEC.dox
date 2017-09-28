@@ -55,6 +55,7 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 - \ref moduleDECPoisson
 - \ref moduleDECHelmoltz
 - \ref moduleDECPropagation
+- \ref moduleHeatLaplaceOperator
 
 @b Package @b Concepts @b Overview
 - \ref packageDECConcepts

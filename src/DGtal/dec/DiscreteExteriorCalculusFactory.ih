@@ -230,7 +230,7 @@ template <typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Dimension dimEmbedded, typename TNSCellConstIterator, typename TSCellMeasureFunctor>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, 
-    const TSCellMeasureFunctor& measureFunctor, const double h, const bool add_border)
+    const TSCellMeasureFunctor& normalFunctor, const double h, const bool add_border)
 {
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<TNSCellConstIterator> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<TNSCellConstIterator> ));
@@ -247,7 +247,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     typedef typename TSCellMeasureFunctor::Quantity Quantity;
     std::vector<Quantity> measures;
     std::back_insert_iterator< std::vector<Quantity> > back_insert( measures );
-    measureFunctor.eval(begin, end, back_insert);
+    normalFunctor.eval(begin, end, back_insert);
     typename std::vector<Quantity>::const_iterator measure_it = measures.begin();
 
     Calculus calculus;
@@ -260,7 +260,6 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     CellsAccum lower_accum;
     for (TNSCellConstIterator ci=begin; ci!=end; ++ci)
     {
-        //trace.info() << *ci << std::endl;
         const SCell cell_signed = *ci;
         const Dimension cell_dim = calculus.myKSpace.sDim(cell_signed);
         ASSERT_MSG( cell_dim == dimEmbedded, "wrong n-cell dimension" );
