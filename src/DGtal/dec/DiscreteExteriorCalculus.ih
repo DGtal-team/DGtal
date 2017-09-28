@@ -209,6 +209,62 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Duality duality>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::heatLaplace(const double& h, const double& t, const double& cut_locus) const
+{
+    ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+
+    const double cut = cut_locus * sqrt(2. * t);
+
+    CanonicSCellEmbedder<KSpace> canonicSCellEmbedder(myKSpace);
+
+    typedef typename TLinearAlgebraBackend::Triplet Triplet;
+    typedef std::vector<Triplet> Triplets;
+    Triplets triplets;
+
+    for (Index i = 0; i < kFormLength(0, duality); i++)
+    {
+        const SCell signed_cell_i = myIndexSignedCells[ actualOrder(0, duality) ][i];
+        const auto p_i = h * canonicSCellEmbedder( signed_cell_i );
+
+        double total_weight = 0.;
+
+        for(Index j = 0; j < kFormLength(0, duality); j++)
+        {
+            if(i == j) continue;
+
+            const SCell signed_cell_j = myIndexSignedCells[ actualOrder(0, duality) ][j];
+            const auto p_j = h * canonicSCellEmbedder( signed_cell_j );
+
+            const double l2_distance = (p_i - p_j).norm();
+            if(l2_distance < cut)
+            {
+                const typename Properties::const_iterator iter_property = myCellProperties.find( myKSpace.unsigns( signed_cell_j ) );
+                if ( iter_property == myCellProperties.end() )
+                    continue;
+
+                const double measure = (duality == DUAL) ? iter_property->second.primal_size : iter_property->second.dual_size;
+                const double laplace = measure * exp(- l2_distance * l2_distance / (4. * t)) * ( 1. / (t * pow(4. * M_PI * t, dimEmbedded / 2.)) );
+
+                triplets.push_back( Triplet(i, j, laplace) );
+                total_weight -= laplace;
+             }
+        }
+
+        triplets.push_back( Triplet(i, i, total_weight) );
+    }
+
+    typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
+    Operator _operator( *this );
+    ASSERT( _operator.myContainer.rows() == kFormLength(0, duality) );
+    ASSERT( _operator.myContainer.cols() == kFormLength(0, duality) );
+    _operator.myContainer.setFromTriplets(triplets.begin(), triplets.end());
+
+    return _operator;
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order-1, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::antiderivative() const
