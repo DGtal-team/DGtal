@@ -1,12 +1,11 @@
 /**
- * @file moduleDECIntroduction.dox
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
+ * @file moduleHeatLaplaceOperator.dox
+ * @author Thomas Caissard (\c thomas.caissard@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/04/04
+ * @date 2017/09/28
  *
- * Documentation file for feature DECIntroduction
+ * Documentation file for feature HeatLaplaceOperator
  *
  * This file is part of the DGtal library.
  */
@@ -18,12 +17,146 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleDECIntroduction Discrete exterior calculus
-@writers Pierre Gueth
+@page moduleHeatLaplaceOperator Heat Kernel Laplace-Beltrami Operator
+@writers Caissard Thomas
 
 [TOC]
 
-\section sectDECIntroduction Introduction
+\section sectHeatIntro Continuous Laplace-Beltrami operator
+
+Let \f$M\f$ be a smooth manifold. The linear operator \f$\Delta : C^2(\partial M) \rightarrow C^2(\partial M)\f$ (where \f$C^2(\partial M)\f$ is the set of twice differentiable function acting on \f$\partial M\f$)
+defined by
+\f[
+    \Delta u = \nabla^2 u = \nabla \cdot \nabla u,
+\f]
+is called the Laplace-Beltrami operator.
+@note The sign of the operator is arbitrary, and one may found in the litterature the alternative definition \f$-\nabla \cdot \nabla u\f$ for \f$\Delta u\f$.
+
+For example it is, in \f$ \mathbb{R}^d \f$, the operator is the sum of the second derivatives:
+\f[
+    \Delta_{\mathbb{R}^d} u(x) = \sum_i \frac{\partial^2}{\partial x_i^2}u(x).
+\f]
+This operator can be expressed in local coordinates on a manifold given the metric tensor \f$g_{ij}\f$:
+\f[
+    \Delta u = \frac{1}{\sqrt{g}} \partial_i \left( \sqrt{|g|}g^{ij}\partial_j u \right),
+\f]
+with the einstein notation implied (meaning that repeated indexes are summed over), \f$ \sqrt{|g|}\f$ is the absolute value of the determinant of \f$ g_{ij} \f$ 
+and \f$ \partial_i = \frac{\partial}{\partial x^i}\f$ is the basis of the tangent plane \f$T_p M\f$ at a point \f$p\f$.
+
+The operator can also be written in a coordinate-free manner using the exterior calculus theory. Given a function \f$w\f$ (ie. a 0-form) we have
+\f[
+    \Delta w = \star d \star d w,
+\f]
+where \f$\star\f$ is the hodge operator and \f$ d \f$ the exterior derivative.
+
+\section subBelkin The Laplace-Beltrami operator from the Heat Equation
+
+Let \f$g : \partial M \times (0, T) \rightarrow \mathbb{R}\f$ be
+a time-dependent function which solves the partial differential
+equation called the heat equation:
+\f[
+    \Delta g(x, t) = \frac{\partial}{\partial t}g(x, t),
+\f]
+with initial condition \f$u = g(\cdot, 0) : \partial M \rightarrow \mathbb{R}\f$ which is the initial temperature distribution.
+
+\image html heat_diffusion_manifold.png "The heat diffusion on a manifold. The heat kernel is represented in green, the geodesic distance in blue."
+
+An exact solution is:
+\f[
+    \int_{y\in \partial M} p(t, x, y) u(y) dy,
+\f]
+where \f$p \in C^\infty(\mathbb{R}^+ \times \partial M \times \partial M)\f$ is the heat
+kernel \cite rosenberg.
+
+There is a wide range of studies on the behavior of \f$p\f$ when \f$t\f$ tends to zero (called small time
+asymptotics of diffusion process).
+Early work includes the famous Varadhan formula \cite varadhan on closed manifolds with or without borders
+later extended by Molchanov \cite molchanov on a wider class of shapes:
+\f[
+    p(t,x,y) \mathrel{\mathop{\sim}\limits_{t \rightarrow 0}} \frac{e^{- \frac{d(x,y)}{4 t}}}{(4\pi t)^{\frac{d}{2}}}
+\f]
+where \f$d(\cdot,\cdot)\f$ corresponds to the intrinsic geodesic distance. 
+This approximation is not robust in practice and very sensitive
+to both geodesic distance approximation and numerical errors \cite Crane2013.
+Fortunately we know from Belkin et al. \cite DBLP:journals/jcss/BelkinN08 that in small time asymptotics, the geodesic distance can be approximated by the
+\f$l_2\f$ distance:
+\f[
+    p(t,x,y) \mathrel{\mathop{\sim}\limits_{t \rightarrow 0}} \tilde{p}(t,x,y) := \frac{e^{ - \frac{||x - y||^2}{4t} }}{(4 \pi t)^{\frac{d}{2}}},
+\f]
+which leads to the following approximated solution of the heat equation:
+\f[
+    g(x,t) = \int_{y \in \partial M} \tilde{p}(t,x,y) u(y)dy.
+\f]
+
+By injecting the approximation into the heat equation we obtain:
+\f[
+    \Delta g(x, t) = \frac{\partial}{\partial t} \int_{ y\in \partial M } \tilde{p}(t, x, y) u(y)dy.
+\f]
+Using a finite difference on \f$t\f$, and the basic property that the integral
+of the heat kernel must be one:
+\f[
+    \Delta g(x, t) = \lim\limits_{t \rightarrow 0} \frac{1}{t} \int_{y\in \partial M } \tilde{p}(t, x, y) (u(y) - u(x))dy.
+\f]
+
+\section secDiscre The Discretization on Digital Surfaces
+
+We adapt the formulation of Belkin et al. on digital surfaces.
+In the continuous heat kernel formulation, the parameter \f$t\f$ must tend to zero. On digital surfaces, we set \f$t\f$ as a function of the grid step \f$h\f$,
+denoted \f$t_h\f$, that tends to zero as $h$ tends to zero.
+
+@note Typically the time parameter is set to \f$t_h = k \cdot h^{\alpha}\f$ with \f$\alpha\f$ positive and \f$k\f$ is a constant depending on the input shape.
+
+Given a gauss discretization of a shape, we know that the \f$h\f$-boundary \f$\partial_h M\f$ is an \f$O(h)\f$-Hausdorff approximation of \f$\partial M\f$
+(meaning that there always exists a point a most at distance \f$h\f$ from the discrete boundary).
+We therefore extend the definition of the input function \f$u\f$ (which was valid on \f$\partial M\f$) to \f$\mathbb{R}^d\f$.
+To do so, we use the projection function \f$\xi\f$ defined by Lachaud and Thibert \cite LachaudJMIV :
+Given a smooth function $u$ on $\partial M$, we define the extension
+   \f$\tilde{u}\f$ of \f$u\f$ to \f$\mathbb{R}^{d+1}\f$ as
+   \f[
+    \tilde{u} : x \mapsto
+        \begin{cases}
+            u(x) & \text{ if } x\in\partial M \\
+            (u \circ \xi)(x) & \text{ if } x\in\mathbb{R}^{d+1} \setminus \partial M \text{ and } \delta_{\partial M}(x) \leq \frac{\sqrt{d+1}}{2} h \\
+            0 & \text{otherwise}
+        \end{cases}
+   \f]
+where \f$\xi\f$ is the map defined as before and \f$\delta_{\partial M}\f$ is the distance function.
+
+\image html tube_definition_2D.png "blabla"
+
+\begin{figure}
+   \centering
+   \includegraphics[width=\linewidth]{img/tube_definition_2D}
+   \caption{Illustration of the tube definition of \uf on $\partial M$. The functions equals
+    $u$ when $x \in \partial M$, the black curve on the figure,
+    is equal to $u\circ \xi$ when $x$ lies in the $\frac{\sqrt{d+1}}{2}h$-offset of $\partial M$ (namely $(\partial M)^{\frac{\sqrt{d+1}}{2}h})$,
+    that is the interior and the boundary of the tube, represented in yellow and blue on the figure,
+    and valued $0$ everywhere else.}
+    \label{fig:tube}
+\end{figure}
+
+Applying the discretization scheme defined in \RefDefinition{def:integration} to \Equ{eq:heatequation2},
+we derive a definition for our digital Laplace operator in \RefDefinition{def:laplacedigi}. 
+Motivation for choosing \Equ{eq:heatequation2} over \Equ{eq:heatequation1} is theoretical as you will see later in the proof:
+we can use the Lipschitz property of $\tilde{u}$ to bounds several quantities and thus proving the convergence.
+
+\begin{definition}[Digital Laplace operator]
+    Let $Z$ be a digital set and $h$ the grid step. Let $f$ be some function defined at least in $\partial_h M$. The discrete Laplace operator is:
+    \begin{gather*}
+        (\laplaceDIGI\, f)({\mathbf{s}}) \EqDef \frac{1}{t_h(4 \pi
+          t_h)^{\frac{d}{2}}} \sum_{\mathbf{r}\in \dSumRange} e^{- \frac{||\dot{\mathbf{r}}
+            - \dot{\mathbf{s}}||^2}{4t_h}}  [f(\dot{{\mathbf{r}}})
+        - f(\dot{{\mathbf{s}}})]\mu(\mathbf{r}),
+    \end{gather*}
+    where $\dot{\mathbf{r}}$ (resp. $\dot{\mathbf{s}}$) is the centroid of the surfel $\mathbf{r}$ (resp. $\mathbf{s}$),
+    $\mu(\mathbf{r})$ is equal to the dot product
+    between an estimated normal and the trivial normal orthogonal to the
+    surfel $\mathbf{s}$ and $t_h$ is a function of $h$ tending to zero as
+    $h$ tends to zero, which will be specified later.
+    \label{def:laplacedigi}
+\end{definition}
+
+We present here the discritization of the Laplace-Beltrami operator on digital surfaces. The Laplace-Beltrami operator is a second order 
 
 Discrete Exterior Calculus (DEC) provides a nice way to represent discrete scalar and vector fields, as well as linear vector analysis operators.
 It can be potentially applied to a large number of field theory problem, such as electrodynamics, thermodynamics or really any linear physics problem.
