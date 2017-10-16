@@ -40,6 +40,10 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/GaussDigitizer.h"
+
+#include "DGtal/io/boards/Board2D.h"
+
+#include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -81,6 +85,8 @@ struct AngleLessCell
   const double _h;
 };
 
+Domain domain;
+
 template <typename Shape>
 void digitize(Shape& shape, std::vector<SCell>& sCells0, std::vector<SCell>& sCells1, KSpace& kspace, const double h)
 {
@@ -96,7 +102,6 @@ void digitize(Shape& shape, std::vector<SCell>& sCells0, std::vector<SCell>& sCe
   Digitizer digitizer;
   digitizer.attach(shape);
   digitizer.init(shape.getLowerBound() + Vector(-1,-1), shape.getUpperBound() + Vector(1,1), h);
-  Domain domain;
   domain = digitizer.getDomain();
 
   kspace.init(digitizer.getLowerBound(), digitizer.getUpperBound(), true);
@@ -121,7 +126,6 @@ void digitize(Shape& shape, std::vector<SCell>& sCells0, std::vector<SCell>& sCe
 template <typename Shape>
 bool test_shape(Shape& shape, const double h, const double epsilon)
 {
-
   std::vector<SCell> sCells0, sCells1;
 
   KSpace kspace;
@@ -135,24 +139,34 @@ bool test_shape(Shape& shape, const double h, const double epsilon)
   	functors::SCellToInnerPoint<KSpace> sCellToInnerPoint(kspace);
     functors::SCellToOuterPoint<KSpace> sCellToOuterPoint(kspace);
 
-    RealPoint inner = sCellToInnerPoint(sCells1[i]);
-    RealPoint outer = sCellToOuterPoint(sCells1[i]);
+    const int prev = ( i + sCells0.size() - 3 ) % sCells0.size(), next = (i + 3) % sCells0.size();
 
-    inner *= h;
-    outer *= h;
+    RealPoint inner_prev = sCellToInnerPoint( sCells0[prev] );
+    RealPoint outer_prev = sCellToOuterPoint( sCells0[prev] );
 
-    RealPoint q = shape.findIntersection(inner, outer, epsilon);
-    RealPoint p = shape.closestPointWithWitnesses(q, q, q, 100);
+    RealPoint inner_next = sCellToInnerPoint( sCells0[next] );
+    RealPoint outer_next = sCellToOuterPoint( sCells0[next] );
 
-    const double norm2 = (q - h * canonicSCellEmbedder(sCells0[i])).norm();
+    inner_prev *= h;
+    inner_next *= h;
 
-    if (norm2 > sqrt(2.0) * h) return false;
+    outer_prev *= h;
+    outer_next *= h;
+
+    RealPoint q_prev = shape.findIntersection(inner_prev, outer_prev, epsilon);
+    RealPoint q_next = shape.findIntersection(inner_next, outer_next, epsilon);
+    RealPoint p = shape.closestPointWithWitnesses(h * canonicSCellEmbedder( sCells0[i] ), q_prev, q_next, 300);
+
+    const double norm2 = (p - h * canonicSCellEmbedder( sCells0[i]) ).norm();
+
+    if ( norm2 > sqrt(2.) * h)
+        return false;
   }
 
   return true;
 }
 
-int main()
+TEST_CASE( "Projection test on various shapes" )
 {
   typedef Ball2D<Space> Ball;
   const Ball ball(Point(0,0), 1.0);
@@ -166,19 +180,16 @@ int main()
   typedef Ellipse2D<Space> Ellipse2D;
   const Ellipse2D ellipse2D(Point(0,0), 1., 0.4, 0.2);
 
-  double h = 1.0;
+  double h = 0.1;
 
- 	while(h >= 0.001)
+  SECTION( "Actual test" )
   {
-  	if(test_shape(ball, h, h * 0.1))        return 0;
-  	if(test_shape(flower2D, h, h * 0.1))    return 0;
-  	if(test_shape(accFlower2D, h, h * 0.1)) return 0;
-  	if(test_shape(ellipse2D, h, h * 0.1))   return 0;
-
-  	h /= 1.1;
+      while(h > 0.01)
+      {
+        REQUIRE( test_shape( ball, h, h * 0.01 ) );
+        REQUIRE( test_shape( flower2D, h, h * 0.01 ) );
+        REQUIRE( test_shape( ellipse2D, h, h * 0.01 ) );
+        h /= 1.3;
+      }
   }
-
-  return 1;
 }
-
-
