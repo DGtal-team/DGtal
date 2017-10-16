@@ -110,7 +110,7 @@ Given a gauss discretization of a shape, we know that the \f$h\f$-boundary \f$\p
 (meaning that there always exists a point a most at distance \f$h\f$ from the discrete boundary).
 We therefore extend the definition of the input function \f$u\f$ (which was valid on \f$\partial M\f$) to \f$\mathbb{R}^d\f$.
 To do so, we use the projection function \f$\xi\f$ defined by Lachaud and Thibert \cite LachaudJMIV :
-Given a smooth function $u$ on $\partial M$, we define the extension
+Given a smooth function \f$u\f$ on \f$\partial M\f$, we define the extension
    \f$\tilde{u}\f$ of \f$u\f$ to \f$\mathbb{R}^{d+1}\f$ as
    \f[
     \tilde{u} : x \mapsto
@@ -120,7 +120,10 @@ Given a smooth function $u$ on $\partial M$, we define the extension
             0 & \text{otherwise}
         \end{cases}
    \f]
-where \f$\xi\f$ is the map defined as before and \f$\delta_{\partial M}\f$ is the distance function.
+where \f$\xi\f$ is the projection map and \f$\delta_{\partial M}\f$ is the distance function such that for \f$x\in\mathbb{R}^d\f$
+\f[
+    \delta_{\partial M} (x) := \inf \{||x - a|| : a \in \partial M\}.
+\f]
 
 \image html tube_definition_2D.png "blabla"
 
