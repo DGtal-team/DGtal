@@ -84,7 +84,7 @@ DGtal::Ball2D<T>::parameter( const RealPoint2D & pp ) const
 {
   RealPoint2D p( pp );
   p -= myCenter;
-  
+
   double angle = atan2( p[1], p[0] );
   angle = ( angle < 0.0 ) ? angle + 2*M_PI : angle;
 
