@@ -93,26 +93,10 @@ DGtal::NGon2D<T>::parameter( const RealPoint2D & pp ) const
   RealPoint2D p( pp );
   p -= myCenter;
 
-  double t = atan2( p[ 1 ], p[ 0 ] );
-  return ( t < 0.0 ) ? ( t + 2.0 * M_PI ) : t;
-  // double angle = 0.0;
-  // if ( p[0] == 0.0 ) 
-  //   {
-  //     if ( p[1] >0 )
-  //       angle = M_PI/2.0; 
-  //     else 
-  //       angle = 1.5*M_PI; 
-  //   }
-  // else if (  ( p[0] > 0.0 ) && (   p[1] >= 0.0 ) )
-  //   angle = atan(p[1]/p[0]);
-  // else if (  ( p[0] > 0.0 ) && (   p[1] <= 0.0 ) )
-  //   angle = 2*M_PI + atan(p[1]/p[0]);
-  // else if (  ( p[0] < 0.0 ) && (   p[1] >= 0.0 ) )
-  //   angle = atan(p[1]/p[0]) + M_PI;
-  // else // (  ( p[0] < 0.0 ) && (   p[1] <= 0.0 ) )
-  //   angle = atan(p[1]/p[0]) + M_PI;
+  double angle = atan2( p[1], p[0] );
+  angle = ( angle < 0.0 ) ? angle + 2 * M_PI : angle;
 
-  // return angle;
+  return angle;
 }
 
 /**
@@ -126,30 +110,31 @@ inline
 typename DGtal::NGon2D<T>::RealPoint2D 
 DGtal::NGon2D<T>::x( double t ) const
 {
-  double angle = t - myPhi; 
-  while ( angle < 0.0 )
-    angle += 2.0*M_PI;
-  
-  
+  double angle = t - myPhi;
+  angle = (angle < 0.0) ? angle + 2 * M_PI : angle;
+
   // seek the vertices between the point, then compute the vector from one vertex to the next one.
-  
-  unsigned int intervale_lower = static_cast<unsigned int>( floor( ( angle )* myK / (2.0 * M_PI ) ) );
-  unsigned int intervale_upper = intervale_lower == ( myK -1 ) ? 0 : intervale_lower+1;
-  double dist = myRadius*cos ( M_PI / myK );
-  RealPoint2D s1 ( myRadius*cos(myPhi + intervale_lower*2.0*M_PI/myK),
-       myRadius*sin(myPhi + intervale_lower*2.0*M_PI/myK) );
-  RealPoint2D s2 ( myRadius*cos(myPhi + intervale_upper*2.0*M_PI/myK),
-       myRadius*sin(myPhi + intervale_upper*2.0*M_PI/myK) );
-  RealPoint2D s3( s2[0] - s1[0], s2[1] - s1[1]);
-  
-  double line_angle = atan2f( (float)s3[ 1 ], (float)s3[ 0 ]);
-  
-  double rho = dist/(cos (t - line_angle - 0.5*M_PI));
-  
-  RealPoint2D c( rho*cos(t), rho*sin(t) );
-  
+
+  unsigned int intervale_lower = static_cast<unsigned int>( floor( ( angle ) * myK / (2.0 * M_PI ) ) );
+  unsigned int intervale_upper = intervale_lower == ( myK - 1 ) ? 0 : intervale_lower + 1;
+  double dist = myRadius * cos( M_PI / myK );
+  RealPoint2D s1 ( myRadius * cos( myPhi + intervale_lower * 2.0 * M_PI / myK ),
+                   myRadius * sin( myPhi + intervale_lower * 2.0 * M_PI / myK ));
+  RealPoint2D s2 ( myRadius * cos( myPhi + intervale_upper * 2.0 * M_PI / myK ),
+                   myRadius * sin( myPhi + intervale_upper * 2.0 * M_PI / myK ));
+  RealPoint2D s3 ( s2[0] - s1[0],
+                   s2[1] - s1[1]);
+
+  //double line_angle = atan2f( (float)s3[ 1 ], (float)s3[ 0 ]);
+  double line_angle = atan2( s3[1], s3[0] );
+  //line_angle = (line_angle < 0.0) ? angle + 2 * M_PI : line_angle;
+
+  double rho = dist / ( cos(t - line_angle - 0.5 * M_PI) );
+
+  RealPoint2D c( - rho*cos(t), - rho*sin(t) );
+
   c += myCenter;
-  
+
   return c;
 }
 
