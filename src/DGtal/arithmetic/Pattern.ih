@@ -96,7 +96,8 @@ rE() const
     }
   else if ( mySlope.k() == NumberTraits<Quotient>::ZERO )
     {
-      std::string s( NumberTraits<Quotient>::castToInt64_t( mySlope.p() ), '1' );
+      std::string s( static_cast<int32_t>(NumberTraits<Quotient>::castToInt64_t( mySlope.p() )),
+                    '1' );
       return '0' + s;
     }
   // else if ( mySlope.k() == NumberTraits<Quotient>::ONE )
@@ -135,7 +136,7 @@ rEs( const std::string & seps ) const
     }
   else if ( mySlope.k() == NumberTraits<Quotient>::ZERO )
     {
-      std::string s( static_cast<unsigned int>(NumberTraits<Quotient>::castToInt64_t( mySlope.p() )), '1' );
+      std::string s( static_cast<int32_t>(NumberTraits<Quotient>::castToInt64_t( mySlope.p() )), '1' );
       return '0' + s;
     }
   // else if ( mySlope.k() == NumberTraits<Quotient>::ONE )

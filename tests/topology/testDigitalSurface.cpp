@@ -88,7 +88,7 @@ bool testDigitalSetBoundary()
       ++nbsurfels;
     }
   trace.info() << nbsurfels << " surfels found." << std::endl;
-  nb++, nbok += nbsurfels == ( 12 + 44 ) ? 1 : 0;
+  ++nb; nbok += nbsurfels == ( 12 + 44 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "nbsurfels == (12 + 44 )" << std::endl;
   for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
@@ -103,10 +103,10 @@ bool testDigitalSetBoundary()
       trace.info() << "s = " << s << std::endl;
       trace.info() << "s1 = " << s1 << " m1 = " << m1 << std::endl;
       trace.info() << "s2 = " << s2 << " m2 = " << m2 << std::endl;
-      nb++, nbok += boundary.isInside( s1 ) ? 1 : 0;
+      ++nb; nbok += boundary.isInside( s1 ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << "boundary.isInside( s1 )" << std::endl;
-      nb++, nbok += boundary.isInside( s2 ) ? 1 : 0;
+      ++nb; nbok += boundary.isInside( s2 ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << "boundary.isInside( s2 )" << std::endl;
       delete ptrTracker;
@@ -163,7 +163,7 @@ bool testImplicitDigitalSurface()
       ++nbsurfels;
     }
   trace.info() << nbsurfels << " surfels found." << std::endl;
-  // nb++, nbok += nbsurfels == ( 12 + 44 ) ? 1 : 0;
+  // ++nb; nbok += nbsurfels == ( 12 + 44 ) ? 1 : 0;
   // trace.info() << "(" << nbok << "/" << nb << ") "
   //              << "nbsurfels == (12 + 44 )" << std::endl;
   for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
@@ -178,10 +178,10 @@ bool testImplicitDigitalSurface()
       trace.info() << "s = " << s << std::endl;
       trace.info() << "s1 = " << s1 << " m1 = " << m1 << std::endl;
       trace.info() << "s2 = " << s2 << " m2 = " << m2 << std::endl;
-      nb++, nbok += boundary.isInside( s1 ) ? 1 : 0;
+      ++nb; nbok += boundary.isInside( s1 ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << "boundary.isInside( s1 )" << std::endl;
-      nb++, nbok += boundary.isInside( s2 ) ? 1 : 0;
+      ++nb; nbok += boundary.isInside( s2 ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << "boundary.isInside( s2 )" << std::endl;
       delete ptrTracker;
@@ -239,10 +239,10 @@ bool testLightImplicitDigitalSurface()
       // trace.info() << "s = " << s << std::endl;
       // trace.info() << "s1 = " << s1 << " m1 = " << m1 << std::endl;
       // trace.info() << "s2 = " << s2 << " m2 = " << m2 << std::endl;
-      nb++, nbok += boundary.isInside( s1 ) ? 1 : 0;
+      ++nb; nbok += boundary.isInside( s1 ) ? 1 : 0;
       // trace.info() << "(" << nbok << "/" << nb << ") "
       //              << "boundary.isInside( s1 )" << std::endl;
-      nb++, nbok += boundary.isInside( s2 ) ? 1 : 0;
+      ++nb; nbok += boundary.isInside( s2 ) ? 1 : 0;
       // trace.info() << "(" << nbok << "/" << nb << ") "
       //              << "boundary.isInside( s2 )" << std::endl;
       delete ptrTracker;
@@ -308,7 +308,7 @@ bool testExplicitDigitalSurface()
         ++nbsurfels;
       }
     trace.info() << nbsurfels << " surfels found." << std::endl;
-    nb++, nbok += nbsurfels == 9 ? 1 : 0;
+    ++nb; nbok += nbsurfels == 9 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") "
                  << "frontier20: nbsurfels == 9" << std::endl;
   }
@@ -326,7 +326,7 @@ bool testExplicitDigitalSurface()
         ++nbsurfels;
       }
     trace.info() << nbsurfels << " surfels found." << std::endl;
-    nb++, nbok += nbsurfels == 140 ? 1 : 0; // 4*25(sides) + 16(top) + 24(bot)
+    ++nb; nbok += nbsurfels == 140 ? 1 : 0; // 4*25(sides) + 16(top) + 24(bot)
     trace.info() << "(" << nbok << "/" << nb << ") "
                  << "frontier10: nbsurfels == 140" << std::endl;
   }
@@ -344,7 +344,7 @@ bool testExplicitDigitalSurface()
         ++nbsurfels;
       }
     trace.info() << nbsurfels << " surfels found." << std::endl;
-    nb++, nbok += nbsurfels == 36 ? 1 : 0; // 8+12(top) + 16(axis) 
+    ++nb; nbok += nbsurfels == 36 ? 1 : 0; // 8+12(top) + 16(axis) 
     trace.info() << "(" << nbok << "/" << nb << ") "
                  << "frontier12: nbsurfels == 36" << std::endl;
   }
@@ -368,7 +368,7 @@ bool testExplicitDigitalSurface()
         ++nbsurfels;
       }
     trace.info() << nbsurfels << " surfels found." << std::endl;
-    nb++, nbok += nbsurfels == 176 ? 1 : 0; 
+    ++nb; nbok += nbsurfels == 176 ? 1 : 0; 
     trace.info() << "(" << nbok << "/" << nb << ") "
                  << "boundary1x: nbsurfels == 176" << std::endl;
   }
@@ -417,7 +417,7 @@ bool testLightExplicitDigitalSurface()
         ++nbsurfels;
       }
     trace.info() << nbsurfels << " surfels found." << std::endl;
-    nb++, nbok += nbsurfels == 9 ? 1 : 0;
+    ++nb; nbok += nbsurfels == 9 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") "
                  << "frontier20: nbsurfels == 9" << std::endl;
   }
@@ -435,7 +435,7 @@ bool testLightExplicitDigitalSurface()
         ++nbsurfels;
       }
     trace.info() << nbsurfels << " surfels found." << std::endl;
-    nb++, nbok += nbsurfels == 140 ? 1 : 0; // 4*25(sides) + 16(top) + 24(bot)
+    ++nb; nbok += nbsurfels == 140 ? 1 : 0; // 4*25(sides) + 16(top) + 24(bot)
     trace.info() << "(" << nbok << "/" << nb << ") "
                  << "frontier10: nbsurfels == 140" << std::endl;
   }
@@ -453,7 +453,7 @@ bool testLightExplicitDigitalSurface()
         ++nbsurfels;
       }
     trace.info() << nbsurfels << " surfels found." << std::endl;
-    nb++, nbok += nbsurfels == 36 ? 1 : 0; // 8+12(top) + 16(axis) 
+    ++nb; nbok += nbsurfels == 36 ? 1 : 0; // 8+12(top) + 16(axis) 
     trace.info() << "(" << nbok << "/" << nb << ") "
                  << "frontier12: nbsurfels == 36" << std::endl;
   }
@@ -477,7 +477,7 @@ bool testLightExplicitDigitalSurface()
         ++nbsurfels;
       }
     trace.info() << nbsurfels << " surfels found." << std::endl;
-    nb++, nbok += nbsurfels == 176 ? 1 : 0; 
+    ++nb; nbok += nbsurfels == 176 ? 1 : 0; 
     trace.info() << "(" << nbok << "/" << nb << ") "
                  << "boundary1x: nbsurfels == 176" << std::endl;
   }
@@ -535,7 +535,7 @@ bool testDigitalSurface()
     ( K.dimension == 3 ) ? 30+174 :
     ( K.dimension == 4 ) ? 56+984 : 
     ( K.dimension == 5 ) ? 4340 : 0;
-  nb++, nbok += digsurf.size() == nbsurfels ? 1 : 0;
+  ++nb; nbok += digsurf.size() == nbsurfels ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "digsurf.size() = " << digsurf.size() 
                << " == " << nbsurfels << std::endl;
@@ -545,7 +545,7 @@ bool testDigitalSurface()
         ++it )
     {
       Surfel s = *it;
-      nb++, nbok += digsurf.degree( s ) == 2*(K.dimension-1) ? 1 : 0;
+      ++nb; nbok += digsurf.degree( s ) == 2*(K.dimension-1) ? 1 : 0;
     }
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "digsurf.degree( s ) == "
@@ -564,7 +564,7 @@ bool testDigitalSurface()
       visitor.expand();
     }
   trace.info() << "last node v=" << node.first << " d=" << node.second << std::endl;
-  nb++, nbok += nb_dist_1 == 2*(K.dimension-1) ? 1 : 0;
+  ++nb; nbok += nb_dist_1 == 2*(K.dimension-1) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "nb surfels at distance 1 == "
                << 2*(K.dimension-1) << std::endl;
@@ -573,7 +573,7 @@ bool testDigitalSurface()
     ( K.dimension == 2 ) ? 28 :
     ( K.dimension == 3 ) ? 174 :
     ( K.dimension == 4 ) ? 984 : 0;
-  nb++, nbok += visitedVtx.size() == nbsurfelsComp1 ? 1 : 0;
+  ++nb; nbok += visitedVtx.size() == nbsurfelsComp1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "nb visited = " << visitedVtx.size() << " == "
                << nbsurfelsComp1 << std::endl;

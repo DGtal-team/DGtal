@@ -100,13 +100,7 @@ bool testImplicitShape()
   board.saveSVG("implicitrounded-2.5.svg");
   
 
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();
-  
-  return nbok == nb;
+  return true;
 }
 /**
  * Example of a test. To be completed.
@@ -140,14 +134,8 @@ bool testImplicitShape3D()
     }
 
   VolWriter<Image>::exportVol("implicitrounded.vol",image);
-
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();
   
-  return nbok == nb;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
