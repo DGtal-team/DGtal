@@ -1018,7 +1018,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 #endif
 
   typedef typename Functor::Quantity FQuantity;
-  DGtal::Dimension nbMasks = myMasks->size() - 1;
+  DGtal::Dimension nbMasks =static_cast<DGtal::Dimension>( (long)myMasks->size() - 1);
   DGtal::Dimension positionOfFullKernel = 4;
 
   Quantity m = NumberTraits< Quantity >::ZERO;

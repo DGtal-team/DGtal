@@ -18,7 +18,7 @@
  * @file geometry/curves/exampleAlphaThickSegmentTgtCover.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * LORIA (CNRS, UMR 7503), University of Nancy, France>
  *
  * @date 2015/11/08
  *

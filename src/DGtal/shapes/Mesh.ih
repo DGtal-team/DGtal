@@ -327,7 +327,7 @@ DGtal::Mesh<TPoint>::getFaceBarycenter(unsigned int i) const
 
 template<typename TPoint>
 inline
-unsigned int 
+typename DGtal::Mesh<TPoint>::Size
 DGtal::Mesh<TPoint>::nbFaces() const
 {
   return myFaceList.size();
@@ -335,7 +335,7 @@ DGtal::Mesh<TPoint>::nbFaces() const
 
 template<typename TPoint>
 inline
-unsigned int 
+typename DGtal::Mesh<TPoint>::Size
 DGtal::Mesh<TPoint>::nbVertex() const
 {
   return myVertexList.size();
@@ -730,7 +730,8 @@ DGtal::Mesh<TPoint>::createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const st
     posY++;
   }  
   // Generating faces...
-  i = 0, posY = 0;
+  i = 0;
+  posY = 0;
   while(i+lengthSequence-1 < anValueSequence.size() - lengthSequence){
     for(unsigned int j = 0; j < lengthSequence-1; j++, i++){
       aMesh.addQuadFace(nbVertexInitial+i, nbVertexInitial+i+1, 

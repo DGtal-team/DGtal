@@ -163,7 +163,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
               it != itE; ++it )
           {
             CC::Cells faces = complex.cellBoundary( it->first, true );
-            int n = faces.size();
+            size_t n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
             nbBdry[ n ]++;
@@ -172,7 +172,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
               it != itE; ++it )
           {
             CC::Cells faces = complex.cellBoundary( it->first, false );
-            int n = faces.size();
+            size_t n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
             nbBdry2[ n ]++;

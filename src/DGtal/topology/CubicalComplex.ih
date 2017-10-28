@@ -220,7 +220,7 @@ DGtal::Dimension
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 dim() const
 {
-  Dimension d = myCells.size()-1;
+  Dimension d = static_cast<Dimension>((int)myCells.size()-1);
   for ( typename std::vector<CellMap>::const_reverse_iterator it = myCells.rbegin(), itE = myCells.rend();
         it != itE; ++it, --d )
     if ( ! it->empty() ) return d;

@@ -81,7 +81,7 @@ Fraction( Integer aP, Integer aQ, Fraction )
       while ( aQ != NumberTraits<Integer>::ZERO )
         {
           ic.getEuclideanDiv( _quot, _rem, aP, aQ );
-          v = NumberTraits<Integer>::castToInt64_t( _quot );
+          v = static_cast<Quotient>( _quot );
           if ( f.k() == j ) 
             f = f.next( v );
           else 

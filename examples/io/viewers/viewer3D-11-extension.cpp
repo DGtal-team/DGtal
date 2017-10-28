@@ -70,7 +70,6 @@ struct RandomPointKeyExtension : public Viewer3D<Space, KSpace>::Extension
     const Qt::KeyboardModifiers modifiers = event->modifiers();
     if ( ( event->key() == Qt::Key_R ) && ( modifiers == Qt::ShiftModifier ) )
     {
-      typedef Viewer::KSpace KSpace;
       Point p = viewer.space().lowerBound();
       Point q = viewer.space().upperBound();
       Point d = q - p;
