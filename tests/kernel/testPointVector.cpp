@@ -248,10 +248,10 @@ bool testOperators()
   trace.beginBlock("Vector Operators Test");
   PointVector<4,DGtal::int32_t> p3 = -p1;
   PointVector<4,DGtal::int32_t> p4 = -p3;
-  ++nb, nbok += ( p4 == p1 ) ? 1 : 0;
+  ++nb; nbok += ( p4 == p1 ) ? 1 : 0;
   p4 = 2*p1 + p3;
   trace.info() << "2*p1+p3: "<< p4 << " (==p1)" << std::endl;
-  ++nb, nbok += ( p4 == p1 ) ? 1 : 0;
+  ++nb; nbok += ( p4 == p1 ) ? 1 : 0;
   trace.info() << "2*p1+3*p2: "<< 2*p1+3*p2 << std::endl;
   trace.endBlock();
 

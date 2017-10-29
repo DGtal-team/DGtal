@@ -299,15 +299,15 @@ bool testFindABel()
       SCell bel = Surfaces<KSpace>::findABel( K, aSet, pts[ i ], Point::zero );
       trace.info() << "- Exterior point is " << pts[ i ] << std::endl;
       trace.info() << "  - Found bel = " << bel << std::endl;
-      ++nb, nbok += K.sDim( bel ) == 2;
+      ++nb; nbok += K.sDim( bel ) == 2;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << " K.sDim( bel ) == " <<  K.sDim( bel ) << " (should be 2)" << std::endl;
       SCell vox_in = K.sDirectIncident( bel, K.sOrthDir( bel ) );
       SCell vox_out = K.sIndirectIncident( bel, K.sOrthDir( bel ) );
-      ++nb, nbok += aSet( K.sCoords( vox_in ) ) ? 1 : 0;
+      ++nb; nbok += aSet( K.sCoords( vox_in ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << " vox_in should be inside the shape." << std::endl;
-      ++nb, nbok += aSet( K.sCoords( vox_out ) ) ? 0 : 1;
+      ++nb; nbok += aSet( K.sCoords( vox_out ) ) ? 0 : 1;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << " vox_out should be outside the shape." << std::endl;
     }

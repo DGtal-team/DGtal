@@ -58,9 +58,6 @@ using namespace DGtal;
  */
 bool testHashTree()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-
   trace.beginBlock ( "Testing simple init ..." );
 
 
@@ -87,13 +84,9 @@ bool testHashTree()
   trace.info() << myImage;
   trace.info() << myImage2;
 
-  nbok += true ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
   trace.endBlock();
 
-  return nbok == nb;
+  return true;
 }
 
 

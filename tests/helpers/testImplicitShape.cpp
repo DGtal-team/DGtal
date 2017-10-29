@@ -51,9 +51,6 @@ using namespace DGtal;
  */
 bool testImplicitShape()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing implicit shaper ..." );
   Z2i::Point a(0,0);
   Z2i::Point b(64,64);
@@ -108,9 +105,6 @@ bool testImplicitShape()
  */
 bool testImplicitShape3D()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing implicit shaper in 3D..." );
   Z3i::Point a(0,0);
   Z3i::Point b(64,64,64);

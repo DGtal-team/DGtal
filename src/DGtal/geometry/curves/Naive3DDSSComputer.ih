@@ -329,9 +329,9 @@ void
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
 ::getParameters ( Point3d& direction, PointR3d& intercept, PointR3d& thickness ) const
 {
-  unsigned int lenXY = std::distance ( myXYalgo.begin(), myXYalgo.end() );
-  unsigned int lenXZ = std::distance ( myXZalgo.begin(), myXZalgo.end() );
-  unsigned int lenYZ = std::distance ( myYZalgo.begin(), myYZalgo.end() );
+  auto lenXY = std::distance ( myXYalgo.begin(), myXYalgo.end() );
+  auto lenXZ = std::distance ( myXZalgo.begin(), myXZalgo.end() );
+  auto lenYZ = std::distance ( myYZalgo.begin(), myYZalgo.end() );
   if ( lenXY > lenYZ && lenXZ > lenYZ ) 
   { //XY-plane, XZ-plane
     
@@ -466,9 +466,9 @@ bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::validArithmeticalDSS2d( Dimension i ) const
 {
   ASSERT( i < 3 );
-  unsigned int lenXY = std::distance ( myXYalgo.begin(), myXYalgo.end() );
-  unsigned int lenXZ = std::distance ( myXZalgo.begin(), myXZalgo.end() );
-  unsigned int lenYZ = std::distance ( myYZalgo.begin(), myYZalgo.end() );
+  auto lenXY = std::distance ( myXYalgo.begin(), myXYalgo.end() );
+  auto lenXZ = std::distance ( myXZalgo.begin(), myXZalgo.end() );
+  auto lenYZ = std::distance ( myYZalgo.begin(), myYZalgo.end() );
   if ( i == 0 && ( lenYZ >= lenXZ || lenYZ >= lenXY ) )
     return true; 
   else if ( i == 1 && ( lenXZ >= lenXY || lenXZ >= lenYZ ) )
