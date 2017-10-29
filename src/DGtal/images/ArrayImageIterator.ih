@@ -251,12 +251,12 @@ increment()
 {
   ++myFullIndex;
   ++myPoint[0];
-  for ( std::size_t i = 1; i < Domain::dimension && myPoint[i-1] > myViewDomain.upperBound()[i-1]; ++i )
+  for ( auto i = 1; i < Domain::dimension && myPoint[i-1] > myViewDomain.upperBound()[i-1]; ++i )
     {
       myPoint[i-1] = myViewDomain.lowerBound()[i-1];
       ++myPoint[i];
       std::size_t cum = myFullExtent[i-1] - myViewExtent[i-1];
-      for ( std::size_t j = 0; j < i-1; ++j )
+      for ( auto j = 0; j < i-1; ++j )
         cum *= myFullExtent[j];
 
       myFullIndex += cum;
@@ -272,12 +272,12 @@ decrement()
 {
   --myFullIndex;
   --myPoint[0];
-  for ( std::size_t i = 1; i < Domain::dimension && myPoint[i-1] < myViewDomain.lowerBound()[i-1]; ++i )
+  for ( auto i = 1; i < Domain::dimension && myPoint[i-1] < myViewDomain.lowerBound()[i-1]; ++i )
     {
       myPoint[i-1] = myViewDomain.upperBound()[i-1];
       --myPoint[i];
       std::size_t cum = myFullExtent[i-1] - myViewExtent[i-1];
-      for ( std::size_t j = 0; j < i-1; ++j )
+      for ( auto j = 0; j < i-1; ++j )
         cum *= myFullExtent[j];
 
       myFullIndex -= cum;
