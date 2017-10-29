@@ -76,9 +76,6 @@ struct MyStyleCustomRed : public DrawableWithBoard2D
  */
 bool testSimpleExpander()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-
   trace.beginBlock ( "(4,8) Filling ..." );
 
   //typedef int Integer;                // choose your digital line here.
@@ -202,13 +199,9 @@ bool testSimpleExpander()
   board.saveSVG("house8-4.svg");
 
 
-  nbok += true ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-  << "true == true" << std::endl;
   trace.endBlock();
 
-  return nbok == nb;
+  return true;
 }
 
 using namespace DGtal::Z2i;
