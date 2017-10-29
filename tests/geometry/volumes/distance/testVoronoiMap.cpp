@@ -158,7 +158,7 @@ bool checkVoronoi(const Set &aSet, const Voro & voro)
 
       // Checking if this periodicity possibility is valid.
       bool isValid = true;
-      for ( std::size_t j = 0; j < periodicity.size(); ++j )
+      for ( auto j = 0; j < periodicity.size(); ++j )
         if ( periodicity[j] && ! voro.isPeriodic(j) )
           {
             isValid = false;
@@ -605,7 +605,7 @@ bool testSimple3D()
   sites.insertNew( Z3i::Point(6,0,0));
   sites.insertNew( Z3i::Point(-6,0,3));
 
-  for ( std::size_t i = 0; i < 8; ++i )
+  for ( auto i = 0; i < 8; ++i )
     {
       auto const periodicity = getPeriodicityFromInteger<3>(i);
       trace.beginBlock( "Simple3D with periodicity " + formatPeriodicity(periodicity) );

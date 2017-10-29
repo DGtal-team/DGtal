@@ -109,7 +109,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
             std::vector<Cell> faces;
             std::back_insert_iterator< std::vector<Cell> > outIt( faces );
             complex.directCoFaces( outIt, it->first );
-            int n = faces.size();
+            int n = static_cast<int>(faces.size());
             if ( n >= 3 ) n = 3; // should not happen
             nbCoFaces[ n ]++;
           }
