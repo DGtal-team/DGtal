@@ -112,7 +112,7 @@ namespace DGtal
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importVol(const std::string & filename, 
-                                    const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+                                    const Functor & aFunctor =  Functor());
     
   private:
 

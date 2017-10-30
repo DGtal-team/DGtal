@@ -53,7 +53,7 @@ DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::
 exportFile( const std::string & filename,
             const TContainer &  anImage,
 						const TFunctor &    aFunctor
-          ) throw( DGtal::IOException )
+          )
 {
   DGtal::IOException dgtalio;
   const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
@@ -78,7 +78,7 @@ exportFile( const std::string & filename,
             const TContainer &  anImage,
             const std::string & datasetName,
             const TFunctor &    aFunctor
-          ) throw( DGtal::IOException )
+          )
 {
   DGtal::IOException dgtalio;
   const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
@@ -120,7 +120,7 @@ DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::
 exportFile( const std::string & filename,
             const TContainer &  anImage,
             const TFunctor &    aFunctor
-          ) throw( DGtal::IOException )
+          )
 {
   DGtal::IOException dgtalio;
   const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
@@ -152,7 +152,7 @@ exportFile( const std::string & filename,
             const TContainer &  anImage,
             const std::string & datasetName,
             const TFunctor &    aFunctor
-          ) throw( DGtal::IOException )
+          )
 {
   DGtal::IOException dgtalio;
   const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
@@ -193,7 +193,7 @@ DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::
 exportFile( const std::string & filename,
             const TContainer &  anImage,
             const TFunctor &    aFunctor
-          ) throw( DGtal::IOException )
+          )
 {
   DGtal::IOException dgtalio;
   const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
@@ -222,7 +222,7 @@ DGtal::GenericWriter<TContainer, 2, TValue, DGtal::HueShadeColorMap<TValue> >::
 exportFile( const std::string & filename,
             const TContainer &  anImage,
             const DGtal::HueShadeColorMap<TValue> & aFunctor
-          ) throw( DGtal::IOException )
+          )
 {
   DGtal::IOException dgtalio;
   const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
@@ -251,7 +251,7 @@ DGtal::GenericWriter<TContainer, 2, unsigned char, TFunctor>::
 exportFile( const std::string & filename,
             const TContainer &  anImage,
             const TFunctor &    aFunctor
-          ) throw( DGtal::IOException )
+          )
 {
   DGtal::IOException dgtalio;
   //Getting image extension
@@ -277,7 +277,7 @@ template <typename TImageContainer >
 inline
 bool
 DGtal::operator >> ( const TImageContainer & aContainer,
-                     const std::string & aFilename  ) throw (DGtal::IOException)
+                     const std::string & aFilename  )
 {
   return DGtal::GenericWriter<TImageContainer>::exportFile(aFilename, aContainer);
 }

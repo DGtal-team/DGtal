@@ -38,7 +38,7 @@ template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer 
 DGtal::MagickReader<TImageContainer, TFunctor>::importImage(const std::string & filename,
-						  const Functor & aFunctor, bool topbotomOrder ) throw(DGtal::IOException)
+						  const Functor & aFunctor, bool topbotomOrder )
 {
   int w,h;
   const Magick::PixelPacket *cacheRead;
