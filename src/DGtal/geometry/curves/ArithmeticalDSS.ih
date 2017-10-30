@@ -148,7 +148,7 @@ template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 template <typename Iterator>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
-::ArithmeticalDSS(const Iterator& aItb, const Iterator& aIte)  throw( InputException )
+::ArithmeticalDSS(const Iterator& aItb, const Iterator& aIte)
   : myDSL( NumberTraits<Coordinate>::ZERO, NumberTraits<Coordinate>::ZERO, NumberTraits<Integer>::ZERO )
 {
   if (aItb != aIte)
@@ -1309,7 +1309,7 @@ template <typename TCoordinate, typename TInteger>
 template<typename Iterator>
 inline
 DGtal::StandardDSS4<TCoordinate, TInteger>::
-StandardDSS4(const Iterator& aItb, const Iterator& aIte) throw( InputException )
+StandardDSS4(const Iterator& aItb, const Iterator& aIte)
   : Super(aItb, aIte) 
 {}
 
@@ -1376,7 +1376,7 @@ template <typename TCoordinate, typename TInteger>
 template<typename Iterator>
 inline
 DGtal::NaiveDSS8<TCoordinate, TInteger>::
-NaiveDSS8(const Iterator& aItb, const Iterator& aIte) throw( InputException )
+NaiveDSS8(const Iterator& aItb, const Iterator& aIte)
   : Super(aItb, aIte) 
 {}
 

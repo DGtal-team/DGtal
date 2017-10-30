@@ -45,8 +45,7 @@ namespace DGtal {
   template<typename I,typename C>
   bool
   LongvolWriter<I,C>::exportLongvol(const std::string & filename, const I & aImage, const bool compressed,
-                                    
-                                    const Functor  & aFunctor) throw(DGtal::IOException)
+                                    const Functor  & aFunctor)
   {
     DGtal::IOException dgtalio;
     

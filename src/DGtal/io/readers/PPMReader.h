@@ -127,7 +127,7 @@ namespace DGtal
      */
     static  ImageContainer importPPM(const std::string & aFilename, 
                                      const Functor & aFunctor =  functors::ColorRGBEncoder<Value>(), 
-				     bool topbotomOrder = true) throw(DGtal::IOException);
+				     bool topbotomOrder = true);
 
 
     
