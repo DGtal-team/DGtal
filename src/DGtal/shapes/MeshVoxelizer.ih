@@ -32,12 +32,12 @@
 // ----------------------- Standard services --------------------------------
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t Separation>
+template <typename TDigitalSet, int Separation>
 inline
 double
-DGtal::MeshVoxelizer<TDigitalSet, Separation>::distance(const PointR3& M,
-                                                        const VectorR3& n,
-                                                        const PointZ3& voxel)
+DGtal::MeshVoxelizer<TDigitalSet,Separation>::distance(const PointR3& M,
+                                                       const VectorR3& n,
+                                                       const PointZ3& voxel)
 {
   ASSERT( n.norm()!=0 );
   double distance = 0.;
@@ -54,9 +54,9 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::distance(const PointR3& M,
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t Separation>
+template <typename TDigitalSet, int Separation>
 inline
-typename DGtal::MeshVoxelizer<TDigitalSet, Separation>::TriangleOrientation
+typename DGtal::MeshVoxelizer<TDigitalSet,Separation>::TriangleOrientation
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInside2DTriangle(const PointR2& A,
                                                                        const PointR2& B,
                                                                        const PointR2& C,
@@ -86,7 +86,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInside2DTriangle(const Poi
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t Separation>
+template <typename TDigitalSet, int Separation>
 inline
 bool
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInsideVoxel(const PointR3& P,
@@ -102,7 +102,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInsideVoxel(const PointR3&
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t Separation>
+template <typename TDigitalSet, int Separation>
 inline
 void
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outputSet,
@@ -163,14 +163,14 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t Separation>
+template <typename TDigitalSet, int Separation>
 inline
 void
-DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
-                                                        const PointR3 &a,
-                                                        const PointR3 &b,
-                                                        const PointR3 &c,
-                                                        const double scaleFactor)
+DGtal::MeshVoxelizer<TDigitalSet,Separation>::voxelize(DigitalSet &outputSet,
+                                                       const PointR3 &a,
+                                                       const PointR3 &b,
+                                                       const PointR3 &c,
+                                                       const double scaleFactor)
 {
   std::pair<PointR3, PointR3> bbox;
   VectorR3 n, e1, e2;
@@ -205,19 +205,23 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, size_t Separation>
+template <typename TDigitalSet, int Separation>
 inline
 void
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
                                                         const Mesh<PointR3> &aMesh,
                                                         const double scaleFactor)
 {
+#pragma omp parallel for schedule(dynamic)
   for(unsigned int i = 0; i < aMesh.nbFaces(); i++)
   {
     MeshFace currentFace = aMesh.getFace(i);
-    voxelize(outputSet, aMesh.getVertex(currentFace[0]),
-             aMesh.getVertex(currentFace[1]),
-             aMesh.getVertex(currentFace[2]),
-             scaleFactor);
+    for(auto i=0; i + 2 < currentFace.size(); ++i)
+    {
+      voxelize(outputSet, aMesh.getVertex(currentFace[0]),
+               aMesh.getVertex(currentFace[i+1]),
+               aMesh.getVertex(currentFace[i+2]),
+               scaleFactor);
+    }
   }
 }

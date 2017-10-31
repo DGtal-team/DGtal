@@ -730,7 +730,8 @@ DGtal::Mesh<TPoint>::createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const st
     posY++;
   }  
   // Generating faces...
-  i = 0, posY = 0;
+  i = 0;
+  posY = 0;
   while(i+lengthSequence-1 < anValueSequence.size() - lengthSequence){
     for(unsigned int j = 0; j < lengthSequence-1; j++, i++){
       aMesh.addQuadFace(nbVertexInitial+i, nbVertexInitial+i+1, 
