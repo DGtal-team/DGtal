@@ -58,7 +58,7 @@ namespace DGtal
    the digitization of an Euclidean plane is such that no 6-path
    exists to go from one side to the other of the Euclidean plane (see
    @cite KletteRosenfeld_book).
-
+   
    From the separability parameter, a template is constructed. A voxel
    belongs to the digitization if and only if the template centered at
    a given voxel intersects the triangle.
@@ -75,7 +75,7 @@ namespace DGtal
    @tparam TDigitalSet a DigitalSet (model of concepts::CDigitalSet)
    @tparam Separation strategy of the voxelization (6 or 26)
    */
-  template <typename TDigitalSet, size_t Separation = 6>
+  template <typename TDigitalSet, int Separation = 6>
   class MeshVoxelizer
   {
 
@@ -114,6 +114,9 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
     /**
      * Voxelize the mesh into the digital set.
+     * @warning if the mesh has non-trianuglar faces, we naively triangulate
+     * using a triangle fan at zero. If the face is not convex, the output
+     * will not be correct.
      *
      * @param [out] outputSet the set that collects the voxels.
      * @param [in] aMesh the mesh to voxelize
@@ -141,7 +144,6 @@ namespace DGtal
 
 
     // ----------------------- Internal services ------------------------------
-
     ///Enum type when deciding if a 2D point belongs to a 2D triangle.
     enum TriangleOrientation { OUTSIDE, INSIDE, ONEDGE, ONVERTEX };
 

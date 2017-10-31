@@ -27,12 +27,15 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include "ConfigTest.h"
 #include "DGtalCatch.h"
 #include "DGtal/shapes/MeshVoxelizer.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/readers/MeshReader.h"
 #include "DGtal/io/Display3D.h"
+#include "DGtal/io/readers/MeshReader.h"
+#include "DGtal/io/boards/Board3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace DGtal;
@@ -158,7 +161,11 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     MeshVoxelizer26 voxelizer;
 
     voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
-
+    Board3D<Z3i::Space, Z3i::KSpace> board;
+    for(auto p: outputSet)
+      board << p ;
+    board.saveOBJ("triangle26-dig.obj");
+    
     REQUIRE( outputSet.size() == 46 );
   }
 
@@ -170,7 +177,34 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     MeshVoxelizer6 voxelizer;
 
     voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
-
+    Board3D<Z3i::Space, Z3i::KSpace> board;
+    for(auto p: outputSet)
+      board << p ;
+    board.saveOBJ("triangle6-dig.obj");
+    
     REQUIRE( outputSet.size() == 21 );
+  }
+  
+  // ---------------------------------------------------------
+  SECTION("6-sep voxelization of a OFF cube mesh")
+  {
+    //Importing OFF mesh
+    Mesh<Z3i::RealPoint> inputMesh;
+    MeshReader<Z3i::RealPoint>::importOFFFile(testPath +"/samples/box.off" , inputMesh);
+    Z3i::Domain domain( Point().diagonal(-30), Point().diagonal(30));
+    DigitalSet outputSet(domain);
+    MeshVoxelizer6 voxelizer;
+    
+    CAPTURE(inputMesh.nbFaces());
+    
+    voxelizer.voxelize(outputSet, inputMesh, 10.0 );
+    Board3D<Z3i::Space, Z3i::KSpace> board;
+    for(auto p: outputSet)
+      board << p ;
+    board.saveOBJ("box-dig.obj");
+    
+    CAPTURE(outputSet.size());
+    //hard coded test.
+    REQUIRE( outputSet.size() == 2566 );
   }
 }

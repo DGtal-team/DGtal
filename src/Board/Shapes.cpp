@@ -2078,31 +2078,7 @@ Rectangle::flushTikZ( std::ostream & stream,
     stream << "\\path[" << tikzProperties(transform) << "] ("
       << _path[0].x << ',' << _path[0].y << ')'
       << " rectangle ("
-      << _path[1].x << ',' << _path[3].y << "); "
-      << std::endl;
-/*
-    if ( _path[0].y == _path[1].y ) {
-        stream << "<rect x=\"" << transform.mapX( _path[0].x ) << '"'
-        << " y=\"" << transform.mapY( _path[0].y )  << '"'
-        << " width=\"" << transform.scale( _path[1].x - _path[0].x ) << '"'
-        << " height=\"" << transform.scale( _path[0].y - _path[3].y ) << '"'
-        << svgProperties( transform )
-        << " />" << std::endl;
-    } else {
-        Point v = _path[1] - _path[0];
-        v /= v.norm();
-        double angle = ( _path[1].y > _path[0].y ) ? acos( v * Point(1,0) ) : -acos( v * Point( 1, 0 ) );
-        angle = ( angle * 180 ) / M_PI;
-        stream << "<rect x=\"" << transform.mapX( _path[0].x ) << '"'
-        << " y=\"" << transform.mapY( _path[0].y )  << '"'
-        << " width=\"" << transform.scale( (_path[1] - _path[0]).norm() ) << '"'
-        << " height=\"" << transform.scale( (_path[0] - _path[3]).norm() ) << '"'
-        << svgProperties( transform ) << ' '
-        << " transform=\"rotate(" << -angle << ", "
-        << transform.mapX( _path[0].x ) << ", " << transform.mapY( _path[0].y ) << ") \" "
-        << " />" << std::endl;
-    }
- */
+      << _path[1].x << ',' << _path[3].y << "); ";
 }
 
 /*
