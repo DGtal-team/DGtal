@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <DGtal/topology/DigitalTopology.h>
 #include <DGtal/topology/helpers/NeighborhoodConfigurationsHelper.h>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -38,13 +39,13 @@
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer,
-          typename CellConstIterator, 
+          typename CellConstIterator,
           typename CellMapIteratorPriority >
 DGtal::uint64_t
 DGtal::functions::
-collapse( CubicalComplex< TKSpace, TCellContainer > & K, 
-          CellConstIterator S_itB, CellConstIterator S_itE, 
-          const CellMapIteratorPriority& priority, 
+collapse( CubicalComplex< TKSpace, TCellContainer > & K,
+          CellConstIterator S_itB, CellConstIterator S_itE,
+          const CellMapIteratorPriority& priority,
           bool hintIsSClosed, bool hintIsKClosed,
           bool verbose )
 {
@@ -100,7 +101,7 @@ collapse( CubicalComplex< TKSpace, TCellContainer > & K,
         vector<Cell> cells;
         back_insert_iterator< vector<Cell> > back_it( cells );
         K.faces( back_it, c, hintIsKClosed );
-        for ( typename vector<Cell>::const_iterator 
+        for ( typename vector<Cell>::const_iterator
                 it = cells.begin(), itE = cells.end(); it != itE; ++it )
           {
             it_cell           = K.findCell( *it );
@@ -116,12 +117,12 @@ collapse( CubicalComplex< TKSpace, TCellContainer > & K,
 
   // Fill queue
   priority_queue<CellMapIterator, CMIVector, CellMapIteratorPriority> PQ( priority );
-  
+
   if ( verbose ) trace.info() << "[CC::collapse]-+ entering collapsing loop. " << endl;
   uint64_t nb_pass     = 0;
   uint64_t nb_examined = 0;
   uint64_t nb_removed  = 0;
-  while ( ! S.empty() ) 
+  while ( ! S.empty() )
     {
       for ( CMIVectorConstIterator it = S.begin(), itE = S.end();
             it != itE; ++it )
@@ -130,10 +131,10 @@ collapse( CubicalComplex< TKSpace, TCellContainer > & K,
 	  (*it)->second.data |= CC::USER1;
 	}
       S.clear();
-      if ( verbose ) trace.info() << "[CC::collapse]---+ Pass " << ++nb_pass 
-                                  << ", Card(PQ)=" << PQ.size() << " elements, " 
+      if ( verbose ) trace.info() << "[CC::collapse]---+ Pass " << ++nb_pass
+                                  << ", Card(PQ)=" << PQ.size() << " elements, "
                                   << "nb_exam=" << nb_examined << endl;
-      
+
       // Try to collapse elements according to priority queue.
       while ( ! PQ.empty() )
 	{
@@ -222,13 +223,13 @@ collapse( CubicalComplex< TKSpace, TCellContainer > & K,
 		       && ( data_qlow & CC::COLLAPSIBLE )
 		       && ( ! ( data_qlow & CC::USER1 ) ) )
 		    {
-		      S.push_back( it_cell ); 
+		      S.push_back( it_cell );
 		    }
 		}
 	    }
           Q_low.clear();
 	} // while ( ! PQ.empty() )
-    } // while ( ! S.empty() ) 
+    } // while ( ! S.empty() )
 
   if ( verbose ) trace.info() << "[CC::collapse]-+ cleaning complex." << std::endl;
 
@@ -239,10 +240,10 @@ collapse( CubicalComplex< TKSpace, TCellContainer > & K,
     {
       CellMapIterator cmIt  = *it;
       uint32_t& cur_data    = cmIt->second.data;
-      if ( cur_data & CC::REMOVED ) K.eraseCell( cmIt ); 
+      if ( cur_data & CC::REMOVED ) K.eraseCell( cmIt );
       else                          cur_data &= ~CC::COLLAPSIBLE;
-      // if ( (*it)->second.data & CC::REMOVED ) 
-      //   K.eraseCell( *it ); 
+      // if ( (*it)->second.data & CC::REMOVED )
+      //   K.eraseCell( *it );
       // else
       //   (*it)->second.data &= ~CC::COLLAPSIBLE;
     }
@@ -256,10 +257,10 @@ template <typename TKSpace, typename TCellContainer,
           typename InnerCellOutputIterator>
 void
 DGtal::functions::
-filterCellsWithinBounds( const CubicalComplex< TKSpace, TCellContainer > & K, 
-                         const typename TKSpace::Point& kLow,  
+filterCellsWithinBounds( const CubicalComplex< TKSpace, TCellContainer > & K,
+                         const typename TKSpace::Point& kLow,
                          const typename TKSpace::Point& kUp,
-                         BdryCellOutputIterator itBdry, 
+                         BdryCellOutputIterator itBdry,
                          InnerCellOutputIterator itInner )
 {
   typedef CubicalComplex< TKSpace, TCellContainer > CC;
@@ -289,6 +290,29 @@ filterCellsWithinBounds( const CubicalComplex< TKSpace, TCellContainer > & K,
             }
         }
     }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TObject, typename TKSpace, typename TCellContainer>
+std::unique_ptr<TObject>
+DGtal::functions::
+objectFromSpels(
+    const CubicalComplex< TKSpace, TCellContainer > & C)
+{
+
+  auto & cs = C.space();
+  // Get domain of C KSpace.
+  typename TObject::Domain domain(cs.lowerBound(), cs.upperBound());
+  typename TObject::DigitalSet dset(domain);
+  for(auto it = C.begin(TKSpace::DIM);
+      it!= C.end(TKSpace::DIM) ; ++it)
+    dset.insertNew(cs.uCoords(it->first));
+
+  typename TObject::ForegroundAdjacency fAdj;
+  typename TObject::BackgroundAdjacency bAdj;
+  typename TObject::DigitalTopology topo(fAdj,bAdj, JORDAN_DT);
+  std::unique_ptr<TObject> obj( new TObject(topo, dset) );
+  return obj;
 }
 
   template<typename TComplex>
