@@ -297,3 +297,21 @@ TEST_CASE_METHOD(Objects2D, "Simplicity tables match on-the-fly calculations for
     }
   }
 }
+
+SCENARIO( "Load isthmus tables", "[isthmus]" ){
+  SECTION("isthmus"){
+    const auto & filename = isthmusicity::tableIsthmus;
+    auto ptable = loadTable(filename);
+    const auto & table = *ptable;
+  }
+  SECTION("oneIsthmus"){
+    const auto & filename = isthmusicity::tableOneIsthmus;
+    auto ptable = loadTable(filename);
+    const auto & table = *ptable;
+  }
+  SECTION("twoIsthmus"){
+    const auto & filename = isthmusicity::tableTwoIsthmus;
+    auto ptable = loadTable(filename);
+    const auto & table = *ptable;
+  }
+}

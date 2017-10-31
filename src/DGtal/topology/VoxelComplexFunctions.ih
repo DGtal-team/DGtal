@@ -1,0 +1,562 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file VoxelComplexFunctions.ih
+ * @author Pablo Hernandez-Cerdan (\c pablo.hernandez.cerdan@outlook.com)
+ * Institute of Fundamental Sciences. Massey University.
+ * Palmerston North, New Zealand
+ *
+ * @date 2016/02/01
+ *
+ * Implementation of inline methods defined in VoxelComplexFunctions.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <DGtal/topology/DigitalTopology.h>
+#include <random>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------------
+template < typename TComplex >
+TComplex
+DGtal::functions::
+asymetricThinningScheme(
+    TComplex & vc ,
+    std::function<
+    typename TComplex::Cell (
+      const typename TComplex::Clique &)
+    > Select ,
+    std::function<
+    bool(
+      const TComplex & ,
+      const typename TComplex::Cell & )
+    > Skel,
+    bool verbose )
+{
+  if(verbose) trace.beginBlock("Asymetric Thinning Scheme");
+
+  using Cell = typename TComplex::Cell;
+  using Object = typename TComplex::Object;
+
+  // Initialize K set, and VoxelComplex containers;
+  std::set<Cell> selected_voxels_per_dim;
+  Object empty_obj(vc.object().topology(), vc.object().domain());
+  TComplex already_selected_voxels(vc.space());
+  already_selected_voxels.construct(empty_obj);
+  TComplex constraint_set(vc.space());
+  constraint_set.construct(empty_obj);
+
+  auto & Z = selected_voxels_per_dim;
+  auto & Y = already_selected_voxels;
+  auto & K = constraint_set;
+  auto X = vc;
+  typename TComplex::Parent x_y(vc.space());
+  typename TComplex::Parent x_k(vc.space());
+
+  bool stability{false};
+  uint64_t generation{0};
+  auto xsize =  X.nbCells(3);
+  auto xsize_old =  xsize;
+  typename TComplex::CliqueContainer critical_cliques;
+
+  if(verbose){
+      trace.info() << "generation: " << generation <<
+        " ; X.nbCells(3): " << xsize << std::endl;
+  }
+  do {
+    ++generation;
+
+    Y = K ;
+    /* Select voxels from critical d-cliques,
+     * having priority d=3 down to 0 using Select(clique)
+     * which returns the selected voxel. */
+    // X.close(); // Close K-Space from current voxels.
+    for (int d = 3 ; d >= 0 ; --d) {
+      Z.clear();
+      /* Y is the already_selected voxels (in this generation)
+       * Search critical cliques only in the cells of X-Y,
+       * but which are critical for X. */
+      x_y = X - Y;
+      // x_y.close();
+      critical_cliques = X.criticalCliquesForD(d, x_y);
+      for(auto & clique : critical_cliques){
+        // if (d!=3)
+        //   if (! (clique  <= (x_y)) )  continue ;
+        auto yinclude = std::find_if(
+            std::begin(clique),
+            std::end(clique),
+            [&Y]( const Cell& c) {
+              return Y.belongs(c);
+            });
+        if (yinclude != std::end(clique)) continue ;
+        Z.insert( Select(clique) );
+      } // critical_cliques
+      // Y = Y union Z. From set to VoxelComplex
+      for( const auto & selected_cell : Z){
+        Y.insertVoxelCell(selected_cell);
+        // Y.insertCell(3, selected_cell);
+        // Y.objectSet().insert(Y.space().uCoords(selected_cell));
+      }
+    } // d-loop
+    X = Y;
+    // X - K is equal to X-Y, which is equal to a Ynew - Yold
+    x_k = X  - K;
+    for (auto it = x_k.begin(3), itE = x_k.end(3) ; it != itE ; ++it ){
+      auto new_voxel = it->first ;
+      if( Skel(X, new_voxel) == true){
+        K.insertVoxelCell(new_voxel);
+        // K.insertCell(3, new_voxel);
+        // K.objectSet().insert(K.space().uCoords(new_voxel));
+      }
+    }
+
+    // Stability Update:
+    xsize = X.nbCells(3);
+    if(xsize == xsize_old) stability = true;
+    xsize_old = xsize;
+
+    if(verbose){
+      trace.info() << "generation: " << generation <<
+        " ; X.nbCells(3): " << xsize <<
+        " ; K: " << K.nbCells(3) <<
+        " ; Y: " << Y.nbCells(3) <<
+        " ; X - K ie. Ynew - Yold : " << x_k.nbCells(3) <<
+        " ; X - Y  : " << x_y.nbCells(3) << std::endl;
+    }
+  } while( !stability );
+
+  if(verbose)
+      trace.endBlock();
+
+  return X;
+}
+
+
+template < typename TComplex >
+TComplex
+DGtal::functions::
+persistenceAsymetricThinningScheme(
+    TComplex & vc ,
+    std::function<
+    typename TComplex::Cell (
+      const typename TComplex::Clique &)
+    > Select ,
+    std::function<
+    bool(
+      const TComplex & ,
+      const typename TComplex::Cell & )
+    > Skel,
+    uint32_t persistence,
+    bool verbose )
+{
+  if(verbose) trace.beginBlock("Persistence asymetricThinningScheme");
+
+  using Cell = typename TComplex::Cell;
+  using Object = typename TComplex::Object;
+
+  // Initialize K set, and VoxelComplex containers;
+  std::set<Cell> selected_voxels_per_dim;
+  Object empty_obj(vc.object().topology(), vc.object().domain());
+  TComplex already_selected_voxels(vc.space());
+  already_selected_voxels.construct(empty_obj);
+  TComplex constraint_set(vc.space());
+  constraint_set.construct(empty_obj);
+
+  auto & Z = selected_voxels_per_dim;
+  auto & Y = already_selected_voxels;
+  auto & K = constraint_set;
+  auto X = vc;
+
+  // if(persistence > 0){
+  //   // Set up the mature of cells
+  //   for (auto & c : X.getCells(3))
+  //     c.second.mature = persistence ;
+  // }
+
+  typename TComplex::Parent x_y(vc.space());
+  typename TComplex::Parent x_k(vc.space());
+
+  bool stability{false};
+  uint64_t generation{0};
+  auto xsize =  X.nbCells(3);
+  auto xsize_old =  xsize;
+  typename TComplex::CliqueContainer critical_cliques;
+
+  if(verbose){
+      trace.info() << "generation: " << generation <<
+        " ; X.nbCells(3): " << xsize << std::endl;
+  }
+  do {
+    ++generation;
+    Y = K ;
+    for (int d = 3 ; d >= 0 ; --d) {
+      Z.clear();
+      // x_y = X - Y;
+      critical_cliques = X.criticalCliquesForD(d, X);
+      for(auto & clique : critical_cliques){
+        auto yinclude = std::find_if(
+            std::begin(clique),
+            std::end(clique),
+            [&Y]( const Cell& c) {
+              return Y.belongs(c);
+            });
+        if (yinclude != std::end(clique)) continue ;
+        Z.insert( Select(clique) );
+      } // critical_cliques
+      for( const auto & selected_cell : Z){
+        // TODO Can avoid following find, if Z is a container pair<Cell, Data> instead of just Cells.
+        auto found = X.findCell(3, selected_cell) ;
+        Y.insertVoxelCell(found->first, true, found->second);
+      }
+    } // d-loop
+
+    // x_k = X  - K;
+    for (auto it = Y.begin(3), itE = Y.end(3) ; it != itE ; ++it ){
+      auto &new_voxel = it->first ;
+      auto &new_data = it->second ;
+      if( Skel(Y, new_voxel) == true)
+          if (new_data.birth_date == 0) new_data.birth_date = generation;
+    }
+    // Insert in K only if non-removable cells (Y) are persistent enough.
+    for (auto it = Y.begin(3), itE = Y.end(3) ; it != itE ; ++it ){
+        auto &voxel = it->first;
+        auto &data = it->second;
+        bool is_born_isthmus = data.birth_date > 0 ;
+        bool is_persistent_enough{false};
+        if (is_born_isthmus) is_persistent_enough =
+          (generation + 1 - data.birth_date) >= persistence;
+        if (is_born_isthmus && is_persistent_enough)
+          K.insertVoxelCell(voxel, true, data);
+    }
+    X = Y; // Copy also the CellData of Y into X.
+
+    // Stability Update:
+    xsize = X.nbCells(3);
+    if(xsize == xsize_old) stability = true;
+    xsize_old = xsize;
+
+    if(verbose){
+      trace.info() << "generation: " << generation <<
+        " ; X.nbCells(3): " << xsize <<
+        " ; K: " << K.nbCells(3) <<
+        " ; Y: " << Y.nbCells(3) <<
+        // " ; X - K ie. Ynew - Yold : " << x_k.nbCells(3) <<
+        // " ; X - Y  : " << x_y.nbCells(3) <<
+        std::endl;
+    }
+  } while( !stability );
+
+  if(verbose) trace.endBlock();
+
+  return X;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Select Functions
+//////////////////////////////////////////////////////////////////////////////
+template < typename TComplex >
+typename TComplex::Cell
+DGtal::functions::selectFirst(
+      const typename TComplex::Clique & clique)
+{
+  return clique.begin(3)->first;
+}
+/*--------------------------------------------------------------------------*/
+template < typename TComplex >
+typename TComplex::Cell
+DGtal::functions::selectLexicographicalOrder(
+      const typename TComplex::Clique & clique)
+{
+  auto min_cell = clique.begin(3)->first ;
+  for(typename TComplex::CellMapConstIterator it = clique.begin(3),
+      itE = clique.end(3) ; it!=itE ; ++it){
+    if(it->first < min_cell) min_cell = it->first;
+  }
+  return min_cell;
+}
+
+template < typename TComplex >
+typename TComplex::Cell
+DGtal::functions::selectRandom(
+      const typename TComplex::Clique & clique)
+{
+  static std::random_device rd;
+  static std::mt19937 gen(rd()); // TODO tothink provide seed?
+
+  auto size = clique.nbCells(3);
+  std::uniform_int_distribution<> dis(0, size - 1);
+  auto it = clique.begin(3);
+  std::advance(it, dis(gen));
+  return it->first;
+}
+
+template < typename TDistanceTransform, typename TComplex >
+typename TComplex::Cell
+DGtal::functions::selectMaxValue(
+    const TDistanceTransform & dist_map,
+    const typename TComplex::Clique & clique)
+{
+  typename TDistanceTransform::Value max_value{0};
+  typename TDistanceTransform::Value value{0};
+  using ComplexConstIterator = typename TComplex::CellMapConstIterator;
+  ComplexConstIterator selected_pair;
+
+  for(ComplexConstIterator it = clique.begin(3), itE = clique.end(3);
+      it != itE ; ++it){
+    value = dist_map(clique.space().uCoords(it->first));
+    // trace.info() << "P: " << it->first << " V: " << value << std::endl;
+    if(value > max_value){
+      max_value = value;
+      selected_pair = it;
+      continue;
+    }
+    if(value == max_value){
+      max_value = value;
+      selected_pair = it;
+      continue; // TODO choose one wisely when they have same DM value.
+    }
+  }
+
+  return selected_pair->first;
+}
+//////////////////////////////////////////////////////////////////////////////
+// Skeleton Functions
+//////////////////////////////////////////////////////////////////////////////
+
+template < typename TComplex >
+bool
+DGtal::functions::skelUltimate( const TComplex &,
+                                const typename TComplex::Cell &)
+{
+  return false;
+}
+/*--------------------------------------------------------------------------*/
+
+template < typename TComplex >
+bool
+DGtal::functions::skelEnd( const TComplex & vc,
+                           const typename TComplex::Cell & cell)
+{
+  const auto &ks = vc.space();
+  const auto &pnsize = vc.object().properNeighborhoodSize(ks.uCoords(cell));
+  return (pnsize == 1);
+}
+
+template < typename TComplex >
+bool
+DGtal::functions::skelSimple( const TComplex & vc,
+                              const typename TComplex::Cell & cell)
+{
+  // const auto &ks = vc.space();
+  // return vc.object().isSimple(ks.uCoords(cell));
+  return vc.isSimple(cell);
+}
+
+template < typename TComplex >
+bool
+DGtal::functions::skelIsthmus(const TComplex & vc,
+    const typename TComplex::Cell & cell)
+{
+  if(twoIsthmus<TComplex>(vc,cell))
+    return true;
+  else if(oneIsthmus<TComplex>(vc,cell))
+    return true;
+  else
+    return false;
+}
+
+template < typename TComplex >
+bool
+DGtal::functions::oneIsthmus(const TComplex & vc,
+                             const typename TComplex::Cell & cell)
+{
+
+  auto &ks = vc.space();
+  auto point_cell = ks.uCoords(cell);
+  auto spN = vc.object().properNeighborhood(point_cell);
+  if (isZeroSurface(spN)) return true;
+
+  // else thinning
+  // From TComplex::Object::SmallObject to TComplex::Object
+  typename TComplex::Object pN(
+      vc.object().topology(),
+      vc.object().domain());
+  for(auto it = spN.begin(), itE = spN.end() ; it != itE ; ++it)
+    pN.pointSet().insertNew(*it);
+
+  TComplex pre_thin(ks);
+  pre_thin.construct(pN);
+
+
+  auto after_thin = asymetricThinningScheme<TComplex>( pre_thin,
+      selectFirst<TComplex>,
+      skelUltimate<TComplex>);
+
+  return isZeroSurface(after_thin.object());
+}
+
+template < typename TComplex >
+bool
+DGtal::functions::twoIsthmus( const TComplex & vc,
+                              const typename TComplex::Cell & cell)
+{
+  auto &ks = vc.space();
+  auto point_cell = ks.uCoords(cell);
+  auto spN = vc.object().properNeighborhood(point_cell);
+  if (isOneSurface(spN)) return true;
+
+  // else thinning
+  // From TComplex::Object::SmallObject to TComplex::Object
+  typename TComplex::Object pN(
+      vc.object().topology(),
+      vc.object().domain());
+  for(auto it = spN.begin(), itE = spN.end() ; it != itE ; ++it)
+    pN.pointSet().insertNew(*it);
+
+  TComplex pre_thin(ks);
+  pre_thin.construct(pN);
+
+
+  auto after_thin = asymetricThinningScheme<TComplex>(pre_thin,
+      selectFirst<TComplex>,
+      skelUltimate<TComplex>);
+
+  return isOneSurface(after_thin.object());
+}
+
+template < typename TComplex >
+bool
+DGtal::functions::skelWithTable(
+    const boost::dynamic_bitset<> & table,
+    const std::unordered_map<typename TComplex::Point, unsigned int> & pointToMaskMap,
+    const TComplex & vc,
+    const typename TComplex::Cell & cell)
+{
+  auto conf = functions::getSpelNeighborhoodConfigurationOccupancy(
+      vc,
+      vc.space().uCoords(cell),
+      pointToMaskMap);
+  return table[conf];
+}
+///////////////////////////////////////////////////////////////////////////////
+// Object Helpers
+template < typename TObject >
+bool
+DGtal::functions::isZeroSurface(const TObject & small_obj)
+{
+  if (small_obj.size() != 2) return false;
+  auto connectedness = small_obj.computeConnectedness();
+  if( connectedness == DGtal::Connectedness::CONNECTED ) return false;
+
+  return true;
+}
+
+template < typename TObject >
+bool
+DGtal::functions::isOneSurface(const TObject & small_obj)
+{
+    auto connectedness = small_obj.computeConnectedness();
+    if( connectedness == DGtal::Connectedness::DISCONNECTED )
+      return false;
+
+    for (const auto & p : small_obj.pointSet()){
+      auto pN = small_obj.properNeighborhood(p);
+      if(!isZeroSurface(pN) ) return false;
+    }
+
+    return true;
+}
+
+template <typename TObject >
+std::vector< TObject >
+DGtal::functions::
+connectedComponents(const TObject & input_obj, bool verbose)
+{
+
+  // Graph related alias
+    using Graph = TObject ;
+    using vertex_descriptor =
+      typename boost::graph_traits<Graph>::vertex_descriptor ; // Object::Vertex
+    using edge_descriptor =
+      typename boost::graph_traits<Graph>::edge_descriptor ; // Object::Edge
+    using vertices_size_type =
+      typename boost::graph_traits<Graph>::vertices_size_type ; // Object::Size
+
+  using StdColorMap = std::map< vertex_descriptor, boost::default_color_type > ;
+  StdColorMap colorMap;
+  boost::associative_property_map< StdColorMap > propColorMap( colorMap );
+
+  using StdComponentMap = std::map< vertex_descriptor, vertices_size_type > ;
+  StdComponentMap componentMap;
+  boost::associative_property_map< StdComponentMap > propComponentMap( componentMap );
+
+  if(verbose) trace.beginBlock( "Boost connected_components");
+  vertices_size_type nbComp =
+    boost::connected_components // boost graph connected components algorithm.
+    ( input_obj, // the graph
+      propComponentMap, // the mapping vertex -> label
+      boost::color_map( propColorMap ) // this map is used internally when computing connected components.
+    );
+  if(verbose) trace.info() << "num_components = " << nbComp << std::endl;
+
+  if(verbose) trace.beginBlock( "Filter graph and get components");
+
+  using ComponentGraph =
+    boost::filtered_graph<
+    Graph,
+    std::function<bool(edge_descriptor)>,
+    std::function<bool(vertex_descriptor)>
+      >;
+  auto &g = input_obj;
+
+  std::vector<ComponentGraph> component_graphs;
+
+  for (size_t i = 0; i < nbComp; i++)
+    component_graphs.emplace_back(g,
+	[componentMap,i,&g](edge_descriptor e) {
+	return componentMap.at(boost::source(e,g) )==i
+	|| componentMap.at(boost::target(e,g))==i;
+	},
+	[componentMap,i](vertex_descriptor v) {
+	return componentMap.at(v)==i;
+	});
+  if(verbose) trace.endBlock();
+
+  std::vector<TObject> obj_components;
+  for (auto && c : component_graphs){
+    // Create empty but valid object.
+    obj_components.emplace_back(
+	TObject( input_obj.topology(),input_obj.domain() ));
+    for (auto && vp = boost::vertices(c); vp.first != vp.second ; ++vp.first){
+      obj_components.back().pointSet().insertNew(*vp.first);
+    }
+  }
+  if(verbose) trace.endBlock();
+
+  return obj_components;
+}
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////

@@ -294,10 +294,6 @@ namespace boost
        * Valid constructor from instance of OutEdgeContainer.
        * The iterator shares the container of out edges
        * (a std::vector) with other (potentially) iterators,
-       * through a DGtal::CountedPtr.
-       *
-       * @param it const_iterator of OutEdgeContainer.
-       * @param out_edges CountedPtr of an OutEdgeContainer
        */
       inline
       out_edge_iterator( typename OutEdgeContainer::const_iterator it,

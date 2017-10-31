@@ -80,7 +80,7 @@ template <typename TKSpace, typename TCellContainer>
 template <typename TDigitalSet>
 inline
 void DGtal::CubicalComplex<TKSpace, TCellContainer>::
-construct( const TDigitalSet & set ) 
+construct( const TDigitalSet & set )
 {
   assert ( TDigitalSet::Domain::dimension == dimension );
   for ( typename TDigitalSet::ConstIterator it = set.begin(); it != set.end(); ++it )
@@ -154,7 +154,7 @@ operator=( const CubicalComplex& other )
   if ( this != &other )
     {
       myKSpace = other.myKSpace;
-      myCells  = other.myCells; 
+      myCells  = other.myCells;
     }
   return *this;
 }
@@ -294,7 +294,7 @@ euler() const
   Integer n = 0;
   bool pos = true;
   for ( typename std::vector<CellMap>::const_iterator it = myCells.begin(), itE = myCells.end();
-        it != itE; ++it ) 
+        it != itE; ++it )
     {
       n += pos ? (Integer) it->size() : -(Integer) it->size();
       pos = ! pos;
@@ -311,9 +311,9 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::
 equal_range( const Cell& aCell )
 {
   Dimension d = myKSpace->uDim( aCell );
-  std::pair< CellMapIterator, CellMapIterator > pIt 
+  std::pair< CellMapIterator, CellMapIterator > pIt
     = myCells[ d ].equal_range( aCell );
-  return std::make_pair( Iterator( *this, d, pIt->first ), 
+  return std::make_pair( Iterator( *this, d, pIt->first ),
                          Iterator( *this, d, pIt->second ) );
 }
 
@@ -326,9 +326,9 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::
 equal_range( const Cell& aCell ) const
 {
   Dimension d = myKSpace->uDim( aCell );
-  std::pair< CellMapConstIterator, CellMapConstIterator > pIt 
+  std::pair< CellMapConstIterator, CellMapConstIterator > pIt
     = myCells[ d ].equal_range( aCell );
-  return std::make_pair( ConstIterator( *this, d, pIt->first ), 
+  return std::make_pair( ConstIterator( *this, d, pIt->first ),
                          ConstIterator( *this, d, pIt->second ) );
 }
 
@@ -401,7 +401,7 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::
 insert( const Cell& aCell )
 {
   Dimension d = myKSpace->uDim( aCell );
-  std::pair< CellMapIterator,bool > pIt 
+  std::pair< CellMapIterator,bool > pIt
     = myCells[ d ].insert( std::make_pair( aCell, Data() ) );
   return ( pIt.first == myCells[ d ].end() )
     ? std::make_pair( Iterator( *this, dimension+1 ), false )
@@ -417,11 +417,11 @@ insert( Iterator position, const Cell& aCell )
 {
   Dimension d = myKSpace->uDim( aCell );
   if ( position.dimension() == d )
-    return Iterator( *this, d, 
-                     myCells[ d ].insert( position.myIt, 
+    return Iterator( *this, d,
+                     myCells[ d ].insert( position.myIt,
                                           std::make_pair( aCell, Data() ) ) );
   else
-    return Iterator( *this, d, 
+    return Iterator( *this, d,
                      myCells[ d ].insert( std::make_pair( aCell, Data() ) ).first );
 }
 //-----------------------------------------------------------------------------
@@ -618,7 +618,7 @@ faces( CellOutputIterator& outIt, const Cell& aCell, bool hintClosed ) const
   if ( hintClosed )
     std::copy( all_proper_faces.begin(), all_proper_faces.end(), outIt );
   else
-    for ( typename Cells::ConstIterator it = all_proper_faces.begin(), 
+    for ( typename Cells::ConstIterator it = all_proper_faces.begin(),
             itE = all_proper_faces.end(); it != itE; ++it )
       if ( belongs( *it ) )
         *outIt++ = *it;
@@ -635,7 +635,7 @@ coFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintOpen ) const
   if ( hintOpen )
     std::copy( all_proper_co_faces.begin(), all_proper_co_faces.end(), outIt );
   else
-    for ( typename Cells::ConstIterator it = all_proper_co_faces.begin(), 
+    for ( typename Cells::ConstIterator it = all_proper_co_faces.begin(),
             itE = all_proper_co_faces.end(); it != itE; ++it )
       if ( belongs( *it ) )
         *outIt++ = *it;
@@ -652,7 +652,7 @@ directFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintClosed ) con
   if ( hintClosed )
     std::copy( all_direct_faces.begin(), all_direct_faces.end(), outIt );
   else
-    for ( typename Cells::ConstIterator it = all_direct_faces.begin(), 
+    for ( typename Cells::ConstIterator it = all_direct_faces.begin(),
             itE = all_direct_faces.end(); it != itE; ++it )
       if ( belongs( *it ) )
         *outIt++ = *it;
@@ -667,11 +667,11 @@ directFacesIterators( CellMapIteratorOutputIterator& outIt, const Cell& aCell )
 {
   Cells all_direct_faces = myKSpace->uLowerIncident( aCell );
   Dimension k = dim( aCell );
-  for ( typename Cells::ConstIterator it = all_direct_faces.begin(), 
+  for ( typename Cells::ConstIterator it = all_direct_faces.begin(),
           itE = all_direct_faces.end(); it != itE; ++it )
     {
       CellMapIterator map_it = findCell( *it );
-      if ( map_it != end( k-1 ) ) 
+      if ( map_it != end( k-1 ) )
         *outIt++ = map_it;
     }
 }
@@ -687,7 +687,7 @@ directCoFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintOpen ) con
   if ( hintOpen )
     std::copy( all_direct_co_faces.begin(), all_direct_co_faces.end(), outIt );
   else
-    for ( typename Cells::ConstIterator it = all_direct_co_faces.begin(), 
+    for ( typename Cells::ConstIterator it = all_direct_co_faces.begin(),
             itE = all_direct_co_faces.end(); it != itE; ++it )
       if ( belongs( *it ) )
         *outIt++ = *it;
@@ -702,15 +702,29 @@ directCoFacesIterators( CellMapIteratorOutputIterator& outIt, const Cell& aCell 
 {
   Cells all_direct_faces = myKSpace->uUpperIncident( aCell );
   Dimension k = dim( aCell );
-  for ( typename Cells::ConstIterator it = all_direct_faces.begin(), 
+  for ( typename Cells::ConstIterator it = all_direct_faces.begin(),
           itE = all_direct_faces.end(); it != itE; ++it )
     {
       CellMapIterator map_it = findCell( *it );
-      if ( map_it != end( k+1 ) ) 
+      if ( map_it != end( k+1 ) )
         *outIt++ = map_it;
     }
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMap &
+DGtal::CubicalComplex<TKSpace, TCellContainer>::getCells(const Dimension d)
+{
+  return myCells[d];
+}
+
+template <typename TKSpace, typename TCellContainer>
+const typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMap &
+DGtal::CubicalComplex<TKSpace, TCellContainer>::getCells(const Dimension d) const
+{
+  return myCells[d];
+}
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 inline
@@ -770,11 +784,11 @@ close( Dimension k )
 {
   if ( k <= 0 ) return;
   Dimension l = k - 1;
-  for ( CellMapConstIterator it = begin( k ), itE = end( k ); 
+  for ( CellMapConstIterator it = begin( k ), itE = end( k );
         it != itE; ++it )
     {
       Cells direct_faces = myKSpace->uLowerIncident( it->first );
-      for ( typename Cells::const_iterator cells_it = direct_faces.begin(), 
+      for ( typename Cells::const_iterator cells_it = direct_faces.begin(),
               cells_it_end = direct_faces.end(); cells_it != cells_it_end; ++cells_it )
         insertCell( l, *cells_it );
     }
@@ -805,14 +819,14 @@ open( Dimension k )
         {
           Cells direct_cofaces = myKSpace->uUpperIncident( it->first );
           bool is_open = true;
-          for ( typename Cells::const_iterator cells_it = direct_cofaces.begin(), 
+          for ( typename Cells::const_iterator cells_it = direct_cofaces.begin(),
                   cells_it_end = direct_cofaces.end(); cells_it != cells_it_end; ++cells_it )
-            if ( ! belongs( l, *cells_it ) ) 
+            if ( ! belongs( l, *cells_it ) )
               {
                 is_open = false;
                 break;
               }
-          CellMapIterator itMem = it; 
+          CellMapIterator itMem = it;
           ++it;
           if ( ! is_open ) myCells[ k ].erase( itMem );
         }
@@ -837,7 +851,7 @@ typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapConstIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 findCell( Dimension d, const Cell& aCell ) const
 {
-  return myCells[ d ].findCell( aCell );
+  return myCells[ d ].find( aCell );
 }
 
 //-----------------------------------------------------------------------------
@@ -877,7 +891,7 @@ cellBoundary( const Cell& aCell, bool hintClosed ) const
   typename Cells::iterator result = first;
   for ( ; first != last; ++first )
     {
-      if ( belongs( *first ) ) 
+      if ( belongs( *first ) )
         {
           *result = std::move( *first );
           ++result;
@@ -985,7 +999,7 @@ template <typename TKSpace, typename TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-getInteriorAndBoundary( CubicalComplex& intcc, CubicalComplex& bdcc, 
+getInteriorAndBoundary( CubicalComplex& intcc, CubicalComplex& bdcc,
                         bool hintClosed ) const
 {
   intcc = *this;
@@ -1062,11 +1076,11 @@ computeCellType( const Cell& c, CellMapIterator& it_cell_up, Dimension n )
   // Check if it is a maximal cell
   Dimension k = dim( c );
   if ( k == n ) return Maximal;
-  
+
   std::vector< CellMapIterator > Q_up;
   std::back_insert_iterator< std::vector< CellMapIterator > > back_it( Q_up );
   this->directCoFacesIterators( back_it, c );
-  
+
   // Filtering unwanted up-incident cells.
   uint32_t nb = 0;
   for ( typename std::vector< CellMapIterator >::const_iterator it = Q_up.begin(), itE = Q_up.end();
@@ -1133,7 +1147,7 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::className() const
 template <typename TKSpace, typename TCellContainer>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const CubicalComplex<TKSpace, TCellContainer> & object )
 {
   object.selfDisplay( out );

@@ -40,13 +40,13 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <bitset>
 #include <memory>
 #include "DGtal/topology/Object.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <unordered_map>
 #include "boost/dynamic_bitset.hpp"
 #include <DGtal/topology/helpers/NeighborhoodConfigurationsHelper.h>
+#include "DGtal/topology/VoxelComplexFunctions.h"
 
 namespace DGtal {
   namespace functions {
@@ -110,6 +110,83 @@ namespace DGtal {
     }
   }
 
+  /**
+    Generates a table mapping the number of configuration of a 26 topology voxel
+    neighborhood, and the boolean result of a predicate function applied
+    to the central point for each configuration.
+    The configuration is determined by a sequence of bits, the
+    first bit for the point in the neighborhood, the second bit for the second
+    point, etc. When set to one, the point is in the neighborhood.
+
+    @tparam TVoxelComplex the type of the VoxelComplex whose
+    property we wish to precompute.
+
+    @tparam TMap the type used to store the mapping configuration -> bool.
+
+    @param map (modified) the mapping configuration -> bool.
+    @param skelFunction a predicate function related to the property we want to check.
+    */
+  template <typename TVoxelComplex, typename TMap>
+    void
+    generateVoxelComplexTable(
+        TMap & map,
+        std::function< bool(
+          const TVoxelComplex & ,
+          const typename TVoxelComplex::Cell & )
+        > skelFunction
+        )
+    {
+      using Object = typename TVoxelComplex::Object;
+      using DigitalSet = typename Object::DigitalSet ;
+      using Point = typename Object::Point ;
+      using Domain = typename DigitalSet::Domain ;
+      using DomainConstIterator = typename Domain::ConstIterator ;
+      using KSpace = typename TVoxelComplex::KSpace;
+      using DigitalTopology = typename Object::DigitalTopology;
+      using ForegroundAdjacency = typename Object::ForegroundAdjacency;
+      using BackgroundAdjacency = typename Object::BackgroundAdjacency;
+      ForegroundAdjacency adjF;
+      BackgroundAdjacency adjB;
+      DigitalTopology dt( adjF, adjB,
+          DigitalTopologyProperties::JORDAN_DT);
+
+      Point p1 = Point::diagonal( -1 );
+      Point p2 = Point::diagonal(  1 );
+      Point c = Point::diagonal( 0 );
+      Domain domain( p1, p2 );
+      DigitalSet shapeSet( domain );
+      Object shape( dt, shapeSet );
+      unsigned int k = 0;
+      for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
+        if ( *it != c ) ++k;
+      ASSERT( ( k < 32 )
+          && "[generateVoxelComplexTable] number of configurations is too high." );
+      unsigned int nbCfg = 1 << k;
+
+      KSpace ks;
+      // Pad KSpace domain.
+      ks.init(shape.domain().lowerBound() + Point::diagonal( -1 ) ,
+          shape.domain().upperBound() + Point::diagonal( 1 ),
+          true);
+      TVoxelComplex vc(ks);
+      vc.construct(shape);
+      for ( unsigned int cfg = 0; cfg < nbCfg; ++cfg ){
+        if ( ( cfg % 1000 ) == 0 )
+          trace.progressBar( (double) cfg, (double) nbCfg );
+        vc.clear();
+        vc.insertVoxelPoint(c);
+        unsigned int mask = 1;
+        for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it ){
+          if ( *it != c ) {
+            if ( cfg & mask ) vc.insertVoxelPoint( *it );
+            mask <<= 1;
+          }
+        }
+        const auto &kcell = vc.space().uSpel(c);
+        bool predicate_output = skelFunction(vc, kcell);
+        map[ cfg ] = predicate_output;
+      }
+    }
   }// namespace functions
 }// namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////

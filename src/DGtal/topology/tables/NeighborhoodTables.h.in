@@ -28,8 +28,16 @@ namespace DGtal {
     "@TABLE_DIR@/simplicity_table8_4.zlib";
   const std::string tableSimple4_8 =
     "@TABLE_DIR@/simplicity_table4_8.zlib";
-
   } // simplicity namespace
+
+  namespace isthmusicity {
+    const std::string tableIsthmus =
+      "@TABLE_DIR@/isthmusicity_table26_6.zlib";
+    const std::string tableOneIsthmus =
+      "@TABLE_DIR@/isthmusicityOne_table26_6.zlib";
+    const std::string tableTwoIsthmus =
+      "@TABLE_DIR@/isthmusicityTwo_table26_6.zlib";
+  } // isthmusicity namespace
 } // DGtal namespace
 
 
