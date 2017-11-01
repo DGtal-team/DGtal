@@ -1258,8 +1258,9 @@ namespace DGtal
     /// The Khalimsky space in which lives the cubical complex.
     const KSpace* myKSpace;
 
-    // ------------------------- Private Datas --------------------------------
-  private:
+  //   // ------------------------- Private Datas --------------------------------
+  //  TODO:PHC make VoxelComplex a friend? instead?
+  // private:
 
     /// An array of map Cell -> Data that stores cells dimension per
     /// dimension (i.e. cells of dimension 0 are stored in myCells[0],
