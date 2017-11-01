@@ -774,36 +774,37 @@ TEST_CASE_METHOD(Fixture_isthmus, "Check isthmus", "[isthmus][function]"){
     CHECK(yit != isthmus.end());
   }
 }
-// TEST_CASE_METHOD(Fixture_isthmus, "Thin complex", "[isthmus][thin][function]"){
-//     using namespace DGtal::functions;
-//     auto & vc = complex_fixture ;
-//     auto & ks = vc.space();
-//     SECTION("with skelUltimate"){
-//       auto vc_new = asymetricThinningScheme< FixtureComplex >(
-//           vc, selectFirst<FixtureComplex>, skelUltimate<FixtureComplex>);
-//       CHECK( vc_new.nbCells(3) == 1);
-//     }
-//     SECTION("with skelEnd"){
-//       auto vc_new = asymetricThinningScheme< FixtureComplex >(
-//           vc, selectFirst<FixtureComplex>, skelEnd<FixtureComplex>);
-//       CHECK( vc_new.nbCells(3) == 5);
-//     }
-//     SECTION("with oneIsthmus"){
-//       auto vc_new = asymetricThinningScheme< FixtureComplex >(
-//           vc, selectRandom<FixtureComplex>, oneIsthmus<FixtureComplex>);
-//       CHECK( vc_new.nbCells(3) == 3);
-//     }
-//     SECTION("with twoIsthmus"){
-//       auto vc_new = asymetricThinningScheme< FixtureComplex >(
-//           vc, selectRandom<FixtureComplex>, twoIsthmus<FixtureComplex>);
-//       CHECK( vc_new.nbCells(3) == 1);
-//     }
-//     SECTION("with skelIsthmus"){
-//       auto vc_new = asymetricThinningScheme< FixtureComplex >(
-//           vc, selectRandom<FixtureComplex>, skelIsthmus<FixtureComplex>);
-//       CHECK( vc_new.nbCells(3) == 3);
-//     }
-// }
+
+TEST_CASE_METHOD(Fixture_isthmus, "Thin complex", "[isthmus][thin][function]"){
+    using namespace DGtal::functions;
+    auto & vc = complex_fixture ;
+    auto & ks = vc.space();
+    SECTION("with skelUltimate"){
+      auto vc_new = asymetricThinningScheme< FixtureComplex >(
+          vc, selectFirst<FixtureComplex>, skelUltimate<FixtureComplex>);
+      CHECK( vc_new.nbCells(3) == 1);
+    }
+    SECTION("with skelEnd"){
+      auto vc_new = asymetricThinningScheme< FixtureComplex >(
+          vc, selectFirst<FixtureComplex>, skelEnd<FixtureComplex>);
+      CHECK( vc_new.nbCells(3) == 5);
+    }
+    SECTION("with oneIsthmus"){
+      auto vc_new = asymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, oneIsthmus<FixtureComplex>);
+      CHECK( vc_new.nbCells(3) == 3);
+    }
+    SECTION("with twoIsthmus"){
+      auto vc_new = asymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, twoIsthmus<FixtureComplex>);
+      CHECK( vc_new.nbCells(3) == 1);
+    }
+    SECTION("with skelIsthmus"){
+      auto vc_new = asymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, skelIsthmus<FixtureComplex>);
+      CHECK( vc_new.nbCells(3) == 3);
+    }
+}
 //
 // TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin", "[persistence][isthmus][thin][function]"){
 //     using namespace DGtal::functions;
