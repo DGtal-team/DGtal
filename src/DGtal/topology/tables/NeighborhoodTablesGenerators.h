@@ -40,6 +40,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <bitset>
 #include <memory>
 #include "DGtal/topology/Object.h"
 #include "DGtal/helpers/StdDefs.h"

@@ -1258,6 +1258,9 @@ namespace DGtal
     /// The Khalimsky space in which lives the cubical complex.
     const KSpace* myKSpace;
 
+    // ------------------------- Private Datas --------------------------------
+  private:
+
     /// An array of map Cell -> Data that stores cells dimension per
     /// dimension (i.e. cells of dimension 0 are stored in myCells[0],
     /// cells of dimension 1 in myCells[1] and so on).
