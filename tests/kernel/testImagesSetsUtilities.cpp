@@ -203,10 +203,10 @@ bool testSetFromImage()
   DigitalSet aSet5(d);
   DigitalSetInserter<DigitalSet> inserter5(aSet5);
   //predicate construction
-  using ValuePredicate = std::function<bool(Image::Value)>;
-  ValuePredicate equalTo1 = [](Image::Value&& v)
+  using ValuePredicate = std::function<bool(const Image::Value &)>;
+  ValuePredicate equalTo1 = [](const Image::Value & v)
     {
-      return std::forward<Image::Value>(v) == 1;
+      return v == 1;
     };
   functors::PointFunctorPredicate<Image, ValuePredicate> pred(image, equalTo1);
   //all points whose value is 1
