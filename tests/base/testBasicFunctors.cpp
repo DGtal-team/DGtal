@@ -114,14 +114,12 @@ bool testBasicFunctors()
   //binary to unary functor
   {
     int i = -5; 
-    // std::binder2nd<std::minus<int> > b(std::minus<int>(), 0); 
-    auto b = [](int v) -> int {
-      return v - 0;
-    };
+    // With function and bind:
+    std::function<int(int)> b = std::bind(std::minus<int>(), std::placeholders::_1, 0);
     //i - 0
     nbok += ( b(i) == -5 ) ? 1 : 0; 
     nb++;
-    // std::binder2nd<std::plus<int> > b2(std::plus<int>(), 2); 
+    // With a lambda:
     auto b2 = [](int v) -> int {
       return v + 2;
     };
