@@ -157,7 +157,7 @@ namespace DGtal
           { { -0.5, 0.5, -0.5}, {  0.5, -0.5,  0.5} }   // DF
         }};
 
-      ///E2 base for each target's edge
+      ///E1 base for each target's edge
       std::array<VectorR3, 4> myE1base;
 
       ///E2 base for each target's edge

@@ -212,16 +212,24 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
                                                         const Mesh<PointR3> &aMesh,
                                                         const double scaleFactor)
 {
+  DigitalSet rawEmpty{outputSet.domain()};
+
 #pragma omp parallel for schedule(dynamic)
   for(unsigned int i = 0; i < aMesh.nbFaces(); i++)
   {
+    DigitalSet currentSet{rawEmpty};
     MeshFace currentFace = aMesh.getFace(i);
-    for(auto i=0; i + 2 < currentFace.size(); ++i)
+    for(unsigned int j=0; j + 2 < currentFace.size(); ++j)
     {
-      voxelize(outputSet, aMesh.getVertex(currentFace[0]),
-               aMesh.getVertex(currentFace[i+1]),
-               aMesh.getVertex(currentFace[i+2]),
+      voxelize(currentSet, aMesh.getVertex(currentFace[0]),
+               aMesh.getVertex(currentFace[j+1]),
+               aMesh.getVertex(currentFace[j+2]),
                scaleFactor);
+    }
+
+    #pragma omp critical
+    {
+      outputSet += currentSet;
     }
   }
 }
