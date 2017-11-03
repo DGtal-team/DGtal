@@ -19,6 +19,10 @@
 
 ## Bug Fixes
 
+- *Build*
+ - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
+   Pablo H Cerdan, [#xxxx](https://github.com/DGtal-team/DGtal/pull/xxxx))
+
 - *Shapes Package*
  - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
    Improves projection operator on implicit surface and curvature

@@ -23,7 +23,6 @@ endif( Boost_FOUND )
 # -----------------------------------------------------------------------------
 # Looking for zlib
 # -----------------------------------------------------------------------------
-
 set(ZLIB_FOUND FALSE)
 FIND_PACKAGE(ZLIB REQUIRED)
 if ( ZLIB_FOUND )
@@ -41,8 +40,10 @@ INCLUDE(CheckCPP11)
 IF (CPP11_COMPATIBLE)
   IF (NOT CPP11_COMPATIBLE_FLAG_SET_BY_USER)
     IF (NOT MSVC)
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ")
-      MESSAGE(STATUS "  -std=c++11 added to CMAKE_CXX_FLAGS. ")
+      set(CMAKE_CXX_STANDARD 11) # C++11...
+      set(CMAKE_CXX_STANDARD_REQUIRED ON) #...is required...
+      set(CMAKE_CXX_EXTENSIONS OFF) #...without compiler extensions like gnu++11
+      MESSAGE(STATUS "  c++11 enabled by cmake. ")
     ENDIF()
   ENDIF()
   MESSAGE(STATUS "OK.")
