@@ -73,14 +73,14 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInside2DTriangle(const Poi
   // 1 : inside
   // 2 : on edge
   // 3 : on vertex
-  if( ( val1 == 0 && val2 == 0 ) ||
-      ( val1 == 0 && val3 == 0 ) ||
-      ( val2 == 0 && val3 == 0 ) )
+  if( ( val1 == 0. && val2 == 0. ) ||
+      ( val1 == 0. && val3 == 0. ) ||
+      ( val2 == 0. && val3 == 0. ) )
     return ONVERTEX;
-  else if(val1 == 0 || val2 == 0 || val3 == 0)
-    return ONEDGE;
-  else if(val1 < 0 || val2 < 0 || val3 < 0)
+  else if(val1 < 0. || val2 < 0. || val3 < 0.)
     return OUTSIDE;
+  else if(val1 == 0. || val2 == 0. || val3 == 0.)
+    return ONEDGE;
   else
     return INSIDE;
 }
