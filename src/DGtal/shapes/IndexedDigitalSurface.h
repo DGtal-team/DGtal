@@ -69,15 +69,15 @@ namespace DGtal
    * algorithms, and is more efficient if you need to do a lot of
    * traversal on it (like many k-ring operations).
    *
-   * This object stored the positions of vertices in
+   * This object stores the positions of vertices in
    * space. If you need further data attached to the surface, you may
    * use property maps (see `IndexedDigitalSurface::makeVertexMap`).
    *
-   * The user instantiate the object with a DigitalSurfaceContainer or
+   * The user instantiates the object with a DigitalSurfaceContainer or
    * a DigitalSurface.
    *
    * Model of CUndirectedSimpleGraph: the vertices and edges of the
-   * digitak surface form indeed a graph structure.
+   * digital surface form indeed a graph structure.
    *
    * @note Vertices, Arcs, and Faces are all integer ranging from 0 to
    * one less than the total number of the respective elements. You

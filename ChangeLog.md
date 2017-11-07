@@ -4,7 +4,6 @@
 
 
 - *Topology Package*
-
  - Adding the half-edge data structure to represent arbitrary
    two-dimensional combinatorial surfaces with or without boundary
    (Jacques-Olivier Lachaud

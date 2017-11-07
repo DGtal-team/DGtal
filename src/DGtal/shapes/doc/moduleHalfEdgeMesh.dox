@@ -37,12 +37,12 @@ of the surface can be arbitrary simple polygons.
 [TOC]
 
 The following programs are related to this documentation:
-testHalfEdgeDataStructure.cpp, testTriangulatedSurface.cpp, viewMarchingCubes.cpp, viewPolygonalMarchingCubes.cpp
+@see testHalfEdgeDataStructure.cpp, testTriangulatedSurface.cpp, viewMarchingCubes.cpp, viewPolygonalMarchingCubes.cpp
 
 
 \section HEM_sec1 The half-edge data structure
 
-An half-edge data structure is a way to represent the topology of a
+A half-edge data structure is a way to represent the topology of a
 combinatorial surface. A combinatoirial surface is a union of
 vertices, edges (a curve bordered by two vertices), faces (a piece of
 surface bordered by a sequence of edges). They are often called
@@ -64,9 +64,9 @@ The classical half-edge data structure is implemented in the class HalfEdgeDataS
 https://github.com/yig/halfedge, written by Yotam Gingold.
  
 
-\subsection HEM_sec1_1 Creating an half-edge data structure
+\subsection HEM_sec1_1 Creating a half-edge data structure
 
-For now, you only have methods to create an half-edge data structure
+For now, you only have methods to create a half-edge data structure
 from a set of triangles and edges. For instance, the following code
 builds a half-edge data structure representing two triangles tied
 along one edge:
@@ -84,31 +84,35 @@ along one edge:
 
 All elements within the half-edge data structure are numbered,
 starting from 0. Furthermore, the indices of vertices and triangles
-are the same as the one given at initialization. Unordered edges may
-also be numbered according to your preference, but you need to call
-the other HalfEdgeDataStructure::build method, which takes as input
-triangles and edges.
+are the same as the one given at initialization. 
 
 So, for instance, in the code above, triangle 0 is incident to
 vertices 0, 1, 2 and triangle 1 is incident to vertices 2, 1, 3.
 
+@note Unordered edges may also be numbered according to your
+preference, but you need to call the other
+HalfEdgeDataStructure::build method, which takes as input triangles \b
+and edges, not only triangles. In this case, this other method builds
+a half-edge structure that keeps both the numbering of triangles and
+edges.
+
 \subsection HEM_sec1_2 Elementary operations
 
 Since half-edges are the basis of the structure, you have operations
-to get an half-edge from an arc, or from neighboring vertices or
-faces:
+to get a half-edge from an arc (i.e. a couple of vertices), or from
+neighboring vertices or faces:
 
 - HalfEdgeDataStructure::halfEdgeIndexFromArc : given an arc or two
-  vertices, returns the corresponding half-edge index (logaristhmic
+  vertices, returns the corresponding half-edge index (logarithmic
   cost in the number of half-edges)
 
 - HalfEdgeDataStructure::halfEdgeIndexFromVertexIndex,
   HalfEdgeDataStructure::halfEdgeIndexFromFaceIndex,
   HalfEdgeDataStructure::halfEdgeIndexFromEdgeIndex: returns the index
-  of an half-edge that borders the given vertex, face or edge
+  of a half-edge that borders the given vertex, face or edge
   (constant time operation)
 
-- HalfEdgeDataStructure::halfEdge : given an half-edge index, returns
+- HalfEdgeDataStructure::halfEdge : given a half-edge index, returns
   the half-edge itself.
  
 Then, each half-edge can give you its associated vertex, face, edge, opposite and next half-edge:
@@ -125,7 +129,7 @@ Then, each half-edge can give you its associated vertex, face, edge, opposite an
 
 \image html half-edge-data-structure.png "Illustration of half-edge data structure: each edge corresponds to two half-edges with opposite direction. You have access to the next half-edge along the face or to your opposite half-edge. You can also retrieve your associated face or vertex."
 
-Finally an half-edge data structure can give you all the necessary
+Finally a half-edge data structure can give you all the necessary
 neighboring information, and can also list the vertices and arcs that
 lie on the boundary of the data structure:
 
@@ -296,12 +300,12 @@ MeshHelpers::triangulatedSurface2Mesh.
 
 \subsection HEM_sec2_5 Geometrical operations
 
-The class TriangulatedSurface juste come with a way to get/set the
+The class TriangulatedSurface just come with a way to get/set the
 position of each vertex:
 
 - TriangulatedSurface::position : setter/getter of position given a vertex index.
 
-\subsection HEM_sec2_6 Associating datas to vertices, edges, faces
+\subsection HEM_sec2_6 Associating data to vertices, edges, faces
 
 The easiest way to associate data to vertices, edges or faces is to
 create a relevant TriangulatedSurface::IndexedPropertyMap. In fact,
@@ -565,7 +569,7 @@ For visualization, you may also directly stream a Mesh into a Viewer3D.
 #include "DGtal/shapes/MeshHelpers.h"
 ...
   typedef PolygonalSurface< RealPoint >                PolyMesh;
-  typedef Mesh< RealPoint >                               ViewMesh;
+  typedef Mesh< RealPoint >                            ViewMesh;
 
   // Creates two triangles glued together.
   PolyMesh tmesh;
