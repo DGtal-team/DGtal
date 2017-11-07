@@ -48,6 +48,11 @@
 namespace DGtal
 {
   /**
+  * VoxelComplexCellData stores birth_date and mature
+  * for the persistence thinning algorithm.
+  * @sa CubicalCellData
+  * @sa persistenceAsymetricThinningScheme
+  *
   * Any cell is stored within a cubical complex with an associated
   * data. You may define your own associated data but the type must
   * derive from this class CubicalCellData. Its basic usage is to
@@ -63,7 +68,6 @@ namespace DGtal
   * @note Such data is notably used in collapse operation
   * (CubicalComplex::collapse).
   */
-    // BOOST_STATIC_CONSTANT( uint32_t, NOT_DEATH     = 0x10000000 );
   struct VoxelComplexCellData: public CubicalCellData {
     inline VoxelComplexCellData() :
       CubicalCellData(), birth_date( 0 ), mature( 0 ) {}
@@ -158,7 +162,7 @@ public:
   /**
    * Construct from digital set and precomputed look up table for simplicity.
    * Object and methods involving object will be empty/invalid.
-   * But they might not me needed thanks to the loaded table.
+   * But they might not be needed thanks to the loaded table.
    *
    * @note if you require object operation but also wants the speed up of the table
    * call construct from object, and then loadTable.
@@ -187,21 +191,56 @@ public:
    * @return table[conf]->bool for simplicity.
    */
   const ConfigMap & table() const;
+
   /**
    * Get const reference to isTableLoaded bool member.
    *
    * @return true if table for simplicity has been loaded.
    */
   const bool & isTableLoaded() const;
+
+  /**
+   * Close input voxel.
+   *
+   * @param kcell input voxel to close.
+   *
+   * @see cellsClose
+   */
   void voxelClose( const Cell & kcell );
+
+  /**
+   * Iterate over all the input cells and close them.
+   *
+   * @param k
+   * @param cells
+   */
   void cellsClose( Dimension k, const Cells & cells );
+
+  /**
+   * Insert cell (voxel) in the khalimsky space AND in the object set.
+   *
+   * @param kcell input voxel
+   * @param close_it if true, apply @voxelClose.
+   * @param data associated data with the input cell. @see insertCell
+   */
   void insertVoxelCell( const Cell & kcell, const bool & close_it = true, const Data& data = Data() );
+
+  /**
+   * Create a @uSpel from the input Point and insert it using insertVoxelCell.
+   * @see insertVoxelCell
+   *
+   * @param dig_point input point of the KSpace
+   * @param close_it flag to apply @voxelClose
+   * @param data associated data with the input point.
+   */
   void insertVoxelPoint( const Point & dig_point, const bool & close_it = true, const Data& data = Data());
-    /**
-    * Clears the voxel complex, which becomes empty.
-    * This includes the khalmisky cells and also the object points.
-    */
+
+  /**
+   * Clears the voxel complex, which becomes empty.
+   * This includes the khalmisky cells and also the object points.
+   */
   void clear();
+
   /**
    * Get reference to a point in the DigitalSet of myObject
    * corresponding to input voxel
@@ -236,6 +275,16 @@ public:
    * @see KhalimskySpaceND::uCoFaces
    */
   void spelsFromCell(std::set<Cell>& spels_out, const Cell & input_cell) const;
+
+  /**
+   * Get a clique holding the K-neighborhood of the input cell.
+   * The K-neighborhood is calculated first, getting the pointels
+   * from input_cell (@see pointelsFromCell) and then, getting all
+   * the spels from all those pointels (@see spelsFromCell).
+   *
+   * @param input_cell input cell from which get the surrounding spels.
+   * @return Clique with the the cells forming the K-Neighborhood of the input_cell.
+   */
   Clique Kneighborhood(const Cell & input_cell) const ;
 
   /**
@@ -244,6 +293,7 @@ public:
    * @return const reference to object().
    */
   const Object & populateObjectFromCells();
+
   /**
    * Check if the input_spel from khalimsky space is simple using object properties.
    *
@@ -292,17 +342,53 @@ public:
   // The intersection of all spels of the clique define the type.
   // 0-clique, 1-clique, 2-clique. 3-clique are isolated spels.
 public:
+  /**
+   * Function to call @K_0, @K_1, @K_2, @K_3 according to dimension d
+   *
+   * @param d dimension.
+   * @param cellMapIterator cell iterator of cubical or voxel complex.
+   *
+   * @return <is_critical, Clique>
+   */
   std::pair<bool, Clique> criticalCliquePair(
       const Dimension d, const CellMapConstIterator & cellMapIterator) const;
 
+  /**
+   * Helper. Call @criticalCliques of this VoxelComplex.
+   *
+   * @param verbose print messages
+   *
+   * @return array with cliques containers for dimension: 0, 1, ..., d
+   */
   std::array<CliqueContainer, dimension + 1> criticalCliques(
       bool verbose = false) const;
 
+  /**
+   * Return all critical cliques for \b cubical.
+   * It calls @criticalCliquePairForD
+   *
+   * @param cubical target complex to get critical cliques.
+   * @param verbose print messages
+   *
+   * @return All critical cliques arranged by dimension.
+   */
   std::array<CliqueContainer, dimension + 1> criticalCliques(
       const Parent & cubical, bool verbose = false) const;
 
+  /**
+   * Main method to iterate over cells of selected dimension in a complex, returning critical cliques. Uses @criticalCliquePair.
+   *
+   * @param d dimension of cell.
+   * @param cubical target complex to get critical cliques.
+   * @param verbose print messages
+   *
+   * @return CliqueContainer with the computed cliques for the specified dimension.
+   *
+   * @note it uses OpenMP if available.
+   */
   CliqueContainer criticalCliquesForD(
       const Dimension d, const Parent & cubical, bool verbose = false) const;
+
   /**
    * Compute the criticality of the surfel between A,B voxels and returns the associated 2-clique.
    *
@@ -374,6 +460,8 @@ public:
    * @param verbose bool flag
    *
    * @return <is_critical, 3-clique (=spel)>
+   *
+   * @see VoxelComplex::isSimple
    */
   std::pair<bool, Clique> K_3( const Cell &input_spel,
                                bool verbose = false ) const;
@@ -384,8 +472,8 @@ public:
    *
    * @return true if c is a Spel
    */
-
   bool isSpel( const Cell & c ) const;
+
   /**
    * Surfel between two adjacent spels.
    *
@@ -399,9 +487,9 @@ public:
  /*------------- Data --------------*/
 protected:
   Object myObject; ///< Object with a topology representing spels.
-  CountedPtrOrPtr<ConfigMap> myTablePtr;
-  CountedPtrOrPtr<PointToMaskMap> myPointToMaskPtr;
-  bool myIsTableLoaded{false};
+  CountedPtrOrPtr<ConfigMap> myTablePtr; ///< Look Up Table to speed computations of @isSimple.
+  CountedPtrOrPtr<PointToMaskMap> myPointToMaskPtr; ///< ConfigurationMask (LUT table)
+  bool myIsTableLoaded{false}; ///< Flag if using a LUT for simplicity.
 
  /*------------- Internal Methods --------------*/
   /**

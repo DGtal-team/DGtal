@@ -271,7 +271,7 @@ clear()
 {
   for ( Dimension d = 0; d <= dimension; ++d )
     this->Parent::clear( d );
-objectSet().clear();
+  objectSet().clear();
 }
 
 //---------------------------------------------------------------------------
