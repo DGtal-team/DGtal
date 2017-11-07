@@ -31,6 +31,9 @@
  - TableReader can now read all elements contained in each line of a file
    with the new method getLinesElementsFromFile().
    (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
+- *Topology*
+  - Add VoxelComplex, an extension for CubicalComplex, implementing the Critical-Kernels framework, based on the work of M.Couprie and G.Bertrand on isthmus.
+  (Pablo Hernandez, [#1147](https://github.com/DGtal-team/DGtal/pull/1147))
 
 ## Bug Fixes
 

@@ -87,10 +87,14 @@ namespace DGtal
   * with specialized methods to deal with spels.
   *
   * The aim is to implement critical kernels, ie, cliques of spels, as shown
-  * by M.Couprie and G.Bertrand (2014).
+  * by M.Couprie and G.Bertrand.
+  * References:
+  * - Michel Couprie, Gilles Bertrand. Asymmetric parallel 3D thinning scheme and algorithms based on isthmuses.
+  * Pattern Recognition Letters, Elsevier, 2016, 76, pp.22-31
+  * pre-print: https://hal.archives-ouvertes.fr/hal-01217974/document
   *
   * Implemented using resources from \a CubicalComplex and
-  * (Digital) \a Object.
+  * (Digital) \a Object for simplicity check in voxels.
   *
   * @tparam TKSpace any model of concepts::CCellularGridSpaceND, i.e. a type
   * that models a Khalimsky space.
