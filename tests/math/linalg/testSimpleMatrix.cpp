@@ -351,6 +351,36 @@ bool testInverse()
   return nbok == nb;
 }
 
+bool testConstructor()
+{
+  unsigned int nbok = 0;
+  unsigned int nb   = 0;
+
+  trace.beginBlock( "Initilizer-list constructor test" );
+  SimpleMatrix<double, 3, 3> mat = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  trace.info() << mat << std::endl;
+
+  trace.info() << "Testing values: ";
+  trace.info() << mat( 0, 0 );
+  nbok += ( mat( 0, 0 ) == 1 ) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") ";
+
+  trace.info() << mat( 0, 1 );
+  nbok += ( mat( 0, 1 ) == 2 ) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") ";
+
+  trace.info() << mat( 2, 2 );
+  nbok += ( mat( 2, 2 ) == 9 ) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") ";
+
+  trace.info() << std::endl;
+  trace.endBlock();
+  return nbok == nb;
+}
+
 bool testConcepts()
 {
   typedef DGtal::SimpleMatrix<double,3,3> Matrix;
@@ -378,9 +408,9 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleMatrix() && testArithm() && testColRow()
-    && testDetCofactor() && testM1Matrix()
-    && testInverse() && testConcepts();
+  bool res = testSimpleMatrix() && testArithm() && testColRow() &&
+             testDetCofactor() && testM1Matrix() && testInverse() &&
+             testConcepts() && testConstructor();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

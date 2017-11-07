@@ -19,7 +19,8 @@
 /**
  * @file ITKReader.h
  * @author Pierre Gueth (\c pierre.gueth@gmail.com )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS,
+ * UMR 5205), CNRS, France
  *
  * @author Bertrand Kerautret (\c bertrand.kerautret@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Lorraine, France
@@ -59,49 +60,51 @@ namespace DGtal
    * @see ITKWriter
    * @see ITKIOTrait
    */
-  template <typename TImage >
+  template <typename TImage>
   struct ITKReader
   {
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
-    
 
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3) || (TImage::Domain::dimension == 2) ));
 
-   /**
+    /**
      * Import an Image with a format supported by ITK.
      *
      * First an ImageContainerByITKImage is constructed by using the
      * source type of the input ITK image, and in a second step the
      * resulting image type is adapted to the TImage type with the use
      * of the given Functor.
-     * 
+     *
      * @param filename name of the input file.
      * @param aFunctor functor used to cast image values.
      * @tparam TFunctor the type of functor used in the export.
      *
      * @return read image
      */
-    template<typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor >
-    static Image importITK(const std::string & filename,
-                           const TFunctor & aFunctor = TFunctor()) throw(DGtal::IOException);
+    template <typename TFunctor =
+              typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor>
+    static Image importITK(
+    const std::string & filename,
+    const TFunctor & aFunctor = TFunctor() ) throw( DGtal::IOException );
 
-     /**
-     * Get the type of the ITK image. 
+    /**
+     * Get the type of the ITK image.
      *
      * @param filename  name of the input file.
      * @return the ITK image component type.
      *
      **/
-    static itk::ImageIOBase::IOComponentType getITKComponentType(const std::string & filename);
+    static itk::ImageIOBase::IOComponentType
+    getITKComponentType( const std::string & filename );
 
-  private:  
+    private:
     /**
-     * Read an DGtal image of type TypeDGtalImage with a format supported by ITK.
-     * (used by importITK)
-     * 
+     * Read an DGtal image of type TypeDGtalImage with a format supported by
+     * ITK. (used by importITK)
+     *
      * @param filename name of the input file
      * @param aFunctor functor used to cast image values
      * @tparam TFunctor the type of functor used in the export.
@@ -109,10 +112,9 @@ namespace DGtal
      * @return read image
      */
     template <typename TypeDGtalImage, typename TFunctor>
-    static Image readDGtalImageFromITKtypes(const std::string &filename, const TFunctor &aFunctor) throw(DGtal::IOException);
-
- 
-    
+    static Image readDGtalImageFromITKtypes(
+    const std::string & filename,
+    const TFunctor & aFunctor ) throw( DGtal::IOException );
   };
 }//namespace
 
