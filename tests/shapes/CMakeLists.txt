@@ -31,6 +31,7 @@ SET(DGTAL_TESTS_SRC
   testTriangulatedSurface
   testPolygonalSurface
   testIndexedDigitalSurface
+  testProjection
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
