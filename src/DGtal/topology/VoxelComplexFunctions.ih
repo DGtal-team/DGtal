@@ -283,19 +283,6 @@ DGtal::functions::selectFirst(
 {
   return clique.begin(3)->first;
 }
-/*--------------------------------------------------------------------------*/
-template < typename TComplex >
-typename TComplex::Cell
-DGtal::functions::selectLexicographicalOrder(
-      const typename TComplex::Clique & clique)
-{
-  auto min_cell = clique.begin(3)->first ;
-  for(typename TComplex::CellMapConstIterator it = clique.begin(3),
-      itE = clique.end(3) ; it!=itE ; ++it){
-    if(it->first < min_cell) min_cell = it->first;
-  }
-  return min_cell;
-}
 
 template < typename TComplex >
 typename TComplex::Cell
