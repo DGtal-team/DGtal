@@ -92,9 +92,7 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
 
     if(! pointPredicate(A, B, C))
     {
-      PointR2 tmp = A;
-      A = C;
-      C = tmp;
+      std::swap(A, C);
     }
 
     // Test if point v is inside triangle ABC
@@ -120,13 +118,18 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     v[1] = 1;
     REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::ONVERTEX);
 
-    // another triangle
-    A[0] = -0.891282; A[1] = 9.91201;
-    B[0] = -1.40823; B[1] = 9.91261;
-    C[0] = -1.36963; C[1] = 9.37414;
+    // another case
+    A = { 16.3299, 0. };
+    B = { 0., 16.3299 };
+    C = { -16.3299, 0. };
+    v = { -17., 0.};
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::OUTSIDE);
 
-    v[0] = -1.16961;
-    v[1] = 9.83039;
+    // another case
+    A = { -0.891282, 9.91201 };
+    B = { -1.40823, 9.91261 };
+    C = { -1.36963, 9.37414 };
+    v = { -1.16961, 9.83039 };
     REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::INSIDE);
   }
 
@@ -205,7 +208,7 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     
     CAPTURE(outputSet.size());
     //hard coded test.
-    REQUIRE( outputSet.size() == 2566 );
+    REQUIRE( outputSet.size() == 2562 );
   }
   // ---------------------------------------------------------
   SECTION("26-sep voxelization of a OFF cube mesh")
