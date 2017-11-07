@@ -43,38 +43,38 @@
 /** DGtal Global variables
 *
 **/
-namespace DGtal
-{
-  template <typename TInteger, typename TQuotient>
-  DGtal::SternBrocot<TInteger, TQuotient>*
-  DGtal::SternBrocot<TInteger, TQuotient>::singleton = 0;
+// namespace DGtal
+// {
+//   template <typename TInteger, typename TQuotient>
+//   DGtal::SternBrocot<TInteger, TQuotient>*
+//   DGtal::SternBrocot<TInteger, TQuotient>::singleton = 0;
 
-  template <>
-  SternBrocot<DGtal::int32_t,DGtal::int32_t>*
-  SternBrocot<DGtal::int32_t,DGtal::int32_t>::singleton = 0;
+//   template <>
+//   SternBrocot<DGtal::int32_t,DGtal::int32_t>*
+//   SternBrocot<DGtal::int32_t,DGtal::int32_t>::singleton = 0;
 
-  template <>
-  SternBrocot<DGtal::int64_t,DGtal::int32_t>*
-  SternBrocot<DGtal::int64_t,DGtal::int32_t>::singleton = 0;
+//   template <>
+//   SternBrocot<DGtal::int64_t,DGtal::int32_t>*
+//   SternBrocot<DGtal::int64_t,DGtal::int32_t>::singleton = 0;
 
-  template <>
-  SternBrocot<DGtal::int64_t,DGtal::int64_t>*
-  SternBrocot<DGtal::int64_t,DGtal::int64_t>::singleton = 0;
+//   template <>
+//   SternBrocot<DGtal::int64_t,DGtal::int64_t>*
+//   SternBrocot<DGtal::int64_t,DGtal::int64_t>::singleton = 0;
 
-#ifdef WITH_BIGINTEGER
-  template <>
-  SternBrocot<DGtal::BigInteger,DGtal::int32_t>*
-  SternBrocot<DGtal::BigInteger,DGtal::int32_t>::singleton = 0;
+// #ifdef WITH_BIGINTEGER
+//   template <>
+//   SternBrocot<DGtal::BigInteger,DGtal::int32_t>*
+//   SternBrocot<DGtal::BigInteger,DGtal::int32_t>::singleton = 0;
 
-  template <>
-  SternBrocot<DGtal::BigInteger,DGtal::int64_t>*
-  SternBrocot<DGtal::BigInteger,DGtal::int64_t>::singleton = 0;
+//   template <>
+//   SternBrocot<DGtal::BigInteger,DGtal::int64_t>*
+//   SternBrocot<DGtal::BigInteger,DGtal::int64_t>::singleton = 0;
 
-  template <>
-  SternBrocot<DGtal::BigInteger,DGtal::BigInteger>*
-  SternBrocot<DGtal::BigInteger,DGtal::BigInteger>::singleton = 0;
+//   template <>
+//   SternBrocot<DGtal::BigInteger,DGtal::BigInteger>*
+//   SternBrocot<DGtal::BigInteger,DGtal::BigInteger>::singleton = 0;
 
-#endif
+// #endif
 
 //   template<>
 //   DGtal::SternBrocot<int32_t,int32_t>::Quotient
@@ -301,4 +301,4 @@ namespace DGtal
 //   // const DGtal::BigInteger SternBrocot<DGtal::BigInteger>::ZERO = 0;
 // #endif 
 
-}
+//}

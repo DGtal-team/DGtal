@@ -47,36 +47,36 @@ using namespace std;
 /** DGtal Global variables
 *
 **/
-namespace DGtal
-{
-  template <typename TInteger, typename TQuotient, typename TMap>
-  DGtal::LighterSternBrocot<TInteger, TQuotient, TMap>*
-  DGtal::LighterSternBrocot<TInteger, TQuotient, TMap>::singleton = 0;
+// namespace DGtal
+// {
+//   template <typename TInteger, typename TQuotient, typename TMap>
+//   DGtal::LighterSternBrocot<TInteger, TQuotient, TMap>*
+//   DGtal::LighterSternBrocot<TInteger, TQuotient, TMap>::singleton = 0;
 
-  template <>
-  LighterSternBrocot<DGtal::int32_t,DGtal::int32_t>*
-  LighterSternBrocot<DGtal::int32_t,DGtal::int32_t>::singleton = 0;
+//   template <>
+//   LighterSternBrocot<DGtal::int32_t,DGtal::int32_t>*
+//   LighterSternBrocot<DGtal::int32_t,DGtal::int32_t>::singleton = 0;
 
-  template <>
-  LighterSternBrocot<DGtal::int64_t,DGtal::int32_t>*
-  LighterSternBrocot<DGtal::int64_t,DGtal::int32_t>::singleton = 0;
+//   template <>
+//   LighterSternBrocot<DGtal::int64_t,DGtal::int32_t>*
+//   LighterSternBrocot<DGtal::int64_t,DGtal::int32_t>::singleton = 0;
 
-  template <>
-  LighterSternBrocot<DGtal::int64_t,DGtal::int64_t>*
-  LighterSternBrocot<DGtal::int64_t,DGtal::int64_t>::singleton = 0;
+//   template <>
+//   LighterSternBrocot<DGtal::int64_t,DGtal::int64_t>*
+//   LighterSternBrocot<DGtal::int64_t,DGtal::int64_t>::singleton = 0;
 
-#ifdef WITH_BIGINTEGER
-  template <>
-  LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t>*
-  LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t>::singleton = 0;
+// #ifdef WITH_BIGINTEGER
+//   template <>
+//   LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t>*
+//   LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t>::singleton = 0;
 
-  template <>
-  LighterSternBrocot<DGtal::BigInteger,DGtal::int64_t>*
-  LighterSternBrocot<DGtal::BigInteger,DGtal::int64_t>::singleton = 0;
+//   template <>
+//   LighterSternBrocot<DGtal::BigInteger,DGtal::int64_t>*
+//   LighterSternBrocot<DGtal::BigInteger,DGtal::int64_t>::singleton = 0;
 
-  template <>
-  LighterSternBrocot<DGtal::BigInteger,DGtal::BigInteger>*
-  LighterSternBrocot<DGtal::BigInteger,DGtal::BigInteger>::singleton = 0;
+//   template <>
+//   LighterSternBrocot<DGtal::BigInteger,DGtal::BigInteger>*
+//   LighterSternBrocot<DGtal::BigInteger,DGtal::BigInteger>::singleton = 0;
 
-#endif
-}
+// #endif
+// }
