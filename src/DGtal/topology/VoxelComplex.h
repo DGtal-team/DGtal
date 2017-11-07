@@ -215,10 +215,10 @@ public:
   /**
    * Iterate over all the input cells and close them.
    *
-   * @param k
-   * @param cells
+   * @param k_d dimension
+   * @param cells input cells to close around.
    */
-  void cellsClose( Dimension k, const Cells & cells );
+  void cellsClose( Dimension k_d, const Cells & cells );
 
   /**
    * Insert cell (voxel) in the khalimsky space AND in the object set.
