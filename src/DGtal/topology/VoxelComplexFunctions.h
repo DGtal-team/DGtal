@@ -97,20 +97,6 @@ namespace DGtal
       const typename TComplex::Clique & clique);
 
     /**
-     * Select smaller voxel in a LexicographicalOrder from input clique.
-     * TODO check that this LexicographicalOrder is doind something different than selectFirst.
-     *
-     * @tparam TComplex input CubicalComplex
-     * @param clique from where cell is chosen.
-     *
-     * @return smaller voxel in a LexicographicalOrder of input clique.
-     */
-    template < typename TComplex >
-    typename TComplex::Cell
-    selectLexicographicalOrder(
-      const typename TComplex::Clique & clique);
-
-    /**
      * Select random voxel from input clique.
      *
      * @tparam TComplex input CubicalComplex
