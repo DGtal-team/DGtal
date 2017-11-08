@@ -717,7 +717,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/shapes/IndexedDigitalSurface.ih"
+#include "DGtal/topology/IndexedDigitalSurface.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

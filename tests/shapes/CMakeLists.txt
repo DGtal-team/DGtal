@@ -30,7 +30,6 @@ SET(DGTAL_TESTS_SRC
   testDigitalShapesDecorator
   testTriangulatedSurface
   testPolygonalSurface
-  testIndexedDigitalSurface
   testProjection
   )
 
