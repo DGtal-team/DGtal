@@ -546,10 +546,10 @@ namespace DGtal
     Arc opposite( const Arc & a ) const;
 
     /**
-       Constant-time access to the next arc
+       Constant-time access to the next arc along the face.
 
        @param a any arc (s,t)
-       @return the next arc
+       @return the next arc along the face.
     */
     Arc next( const Arc & a ) const;
 
@@ -613,7 +613,7 @@ namespace DGtal
 
     /**
        @return the range of all faces of the indexed digital surface,
-       i.e. an array containing 0, 1, 2, ..., nbVertices()-1.
+       i.e. an array containing 0, 1, 2, ..., nbFaces()-1.
     */
     FaceRange allFaces() const;
     /**
