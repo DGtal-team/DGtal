@@ -38,9 +38,8 @@
 #include "DGtal/graph/CUndirectedSimpleGraph.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/topology/DigitalSetBoundary.h"
+#include "DGtal/topology/IndexedDigitalSurface.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/shapes/IndexedDigitalSurface.h"
-#include "DGtal/shapes/MeshHelpers.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

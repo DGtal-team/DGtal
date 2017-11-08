@@ -14,7 +14,8 @@ SET(DGTAL_TESTS_SRC
    testNeighborhoodConfigurations
    testParDirCollapse
    testHalfEdgeDataStructure
- )
+   testIndexedDigitalSurface
+)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
