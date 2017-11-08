@@ -48,6 +48,10 @@
  - Fix testBasicPointFunctor. (Bertrand Kerautret
    [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
+- *Arithmetic Package*
+ - Fix SternBrocot and variants static instanciations. (Jacques-Olivier Lachaud
+   [#1293](https://github.com/DGtal-team/DGtal/pull/1293))
+
 - *Documentation*
  - Add import with functors in GenericReader in the main default reader.
    (mainly motivated to show documentation of specialized version of
