@@ -42,7 +42,6 @@ IF (CPP11_COMPATIBLE)
     IF (NOT MSVC)
       set(CMAKE_CXX_STANDARD 11) # C++11...
       set(CMAKE_CXX_STANDARD_REQUIRED ON) #...is required...
-      set(CMAKE_CXX_EXTENSIONS OFF) #...without compiler extensions like gnu++11
       MESSAGE(STATUS "  c++11 enabled by cmake. ")
     ENDIF()
   ENDIF()
