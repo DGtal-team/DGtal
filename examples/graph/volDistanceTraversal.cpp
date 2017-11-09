@@ -129,8 +129,7 @@ int main( int argc, char** argv )
   typedef SCellEmbedder::Value RealPoint;
   typedef RealPoint::Coordinate Scalar;
   typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
-
-  typedef std::binder1st< Distance > DistanceToPoint;
+  using DistanceToPoint = std::function<double(const Space::Point &)>;
   typedef DGtal::functors::Composer<SCellEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceBreadthFirstVisitor< MyDigitalSurface, VertexFunctor, std::set<SCell> >
     MyDistanceVisitor;
@@ -139,7 +138,7 @@ int main( int argc, char** argv )
 
   SCellEmbedder embedder( ks );
   Distance distance;
-  DistanceToPoint distanceToPoint = std::bind1st( distance, embedder( bel ) );
+  DistanceToPoint distanceToPoint = std::bind( distance, embedder( bel ), std::placeholders::_1 );
   VertexFunctor vfunctor( embedder, distanceToPoint );
   MyDistanceVisitor visitor( digSurf, vfunctor, bel );
 

@@ -203,9 +203,11 @@ bool testSetFromImage()
   DigitalSet aSet5(d);
   DigitalSetInserter<DigitalSet> inserter5(aSet5);
   //predicate construction
-  typedef std::equal_to<Image::Value> EqualBinaryFunctor;
-  typedef std::binder2nd<EqualBinaryFunctor> ValuePredicate;
-  ValuePredicate equalTo1 (EqualBinaryFunctor(),1);
+  using ValuePredicate = std::function<bool(const Image::Value &)>;
+  ValuePredicate equalTo1 = [](const Image::Value & v)
+    {
+      return v == 1;
+    };
   functors::PointFunctorPredicate<Image, ValuePredicate> pred(image, equalTo1);
   //all points whose value is 1
   setFromPointsRangeAndPredicate( d.begin(), d.end(), inserter5, pred );
