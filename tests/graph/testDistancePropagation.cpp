@@ -101,7 +101,7 @@ bool testDistancePropagation()
   typedef VertexEmbedder::Value RealPoint;
   typedef RealPoint::Coordinate Scalar;
   typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
-  typedef std::binder1st< Distance > DistanceToPoint; 
+  using DistanceToPoint = std::function<double(const Space::Point &)>;
   typedef DGtal::functors::Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceBreadthFirstVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
 
@@ -110,7 +110,8 @@ bool testDistancePropagation()
 
   VertexEmbedder embedder;
   Distance distance;
-  DistanceToPoint distanceToPoint = std::bind1st( distance, embedder( c1 ) );
+  DistanceToPoint distanceToPoint = std::bind(distance, embedder(c1), std::placeholders::_1);
+
   VertexFunctor vfunctor( embedder, distanceToPoint );
   Visitor visitor( obj, vfunctor, c1 );
   
