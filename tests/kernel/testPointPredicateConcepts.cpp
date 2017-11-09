@@ -96,9 +96,9 @@ int main( int argc, char** argv )
 
   bool res = true;
   typedef ImageSelector<Z3i::Domain, int>::Type IntImage;
-  typedef std::binder2nd< std::less<int> > IntPredicate;
+  using IntPredicate = std::function<bool(int)>;
   typedef ImageSelector<Z3i::Domain, float>::Type FloatImage;
-  typedef std::binder2nd< std::greater<float> > FloatPredicate;
+  using FloatPredicate = std::function<bool(float)>;
   res &= testPointPredicateConcepts<IntImage, IntPredicate, FloatImage, FloatPredicate>();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

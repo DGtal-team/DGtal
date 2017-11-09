@@ -100,14 +100,14 @@ namespace DGtal
      typedef VertexEmbedder::Value RealPoint;
      typedef RealPoint::Coordinate Scalar;
      typedef ExactPredicateLpSeparableMetric<Space,2> Distance; // Euclidean distance
-     typedef std::binder1st< Distance > EDToPoint;        // Fix one point
+     using EDToPoint = std::function<double(const Space::Point &)>; // Fix one point
      typedef Composer<VertexEmbedder, EDToPoint, Scalar> VertexFunctor; 
        // Compose the vertex embedding with the distance computation.
      typedef DistanceBreadthFirstVisitor< Graph, VertexFunctor > Visitor;
 
      VertexEmbedder embedder( g.space() );  //We assume the graph to be a DigitalSurface
      ED distance;
-     EDToPoint distanceToPoint = std::bind1st( distance, embedder( p ) );
+     EDToPoint distanceToPoint = std::bind( distance, embedder( p ), std::placeholders::_1 );
      VertexFunctor vfunctor( embedder, distanceToPoint );
      DistanceBreadthFirstVisitor< Graph, VertexFunctor > visitor( g, vfunctor, p );
      while ( ! visitor.finished() )
