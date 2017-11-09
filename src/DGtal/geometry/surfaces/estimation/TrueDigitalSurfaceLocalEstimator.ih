@@ -52,7 +52,7 @@ DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 TrueDigitalSurfaceLocalEstimator()
   : myKSpace( 0 ), myFct( 0 ), myEmbedder(),
     myShape( 0 ), myH( 1.0 ),
-    myMaxIter( 0 ), myAccuracy( 0.1 ), myGamma( 0.01 )
+    myMaxIter( 20 ), myAccuracy( 0.0001 ), myGamma( 0.5 )
 {
 }
 //-----------------------------------------------------------------------------

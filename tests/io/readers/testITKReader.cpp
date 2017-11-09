@@ -34,7 +34,7 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/io/readers/ITKReader.h" 
+#include "DGtal/io/readers/ITKReader.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -46,25 +46,28 @@ using namespace DGtal;
 
 TEST_CASE( "Testing ITKReader" )
 {
- //Default image selector = STLVector
-  typedef ImageContainerBySTLVector<Z3i::Domain,  unsigned char > Image3DUC;
-  typedef ImageContainerBySTLVector<Z3i::Domain,  uint16_t > Image3D16b;
-  
-  SECTION("Testing feature io/readers of ITKReader with  16 bits (unit16) images")
-    {
-      Image3D16b im = ITKReader<Image3D16b>::importITK(testPath + "samples/lobsterCroped16b.mhd");
-      REQUIRE((im(Z3i::Point(35,29,3))==60400));
-    }
-  
-  SECTION("Testing feature io/readers of ITKReader with rescaled 16 bits (unit16) images")
-    {
-      typedef DGtal::functors::Rescaling<uint16_t ,unsigned char > RescalFCT;
-      RescalFCT resc = RescalFCT(0, 65535,0, 255);
-      Image3DUC im = ITKReader<Image3DUC>::importITK(testPath + "samples/lobsterCroped16b.mhd", resc);
-      REQUIRE((im(Z3i::Point(35,29,3))==resc(60400) ));
-    }
-  
+  // Default image selector = STLVector
+  typedef ImageContainerBySTLVector<Z3i::Domain, unsigned char> Image3DUC;
+  typedef ImageContainerBySTLVector<Z3i::Domain, uint16_t> Image3D16b;
 
+  SECTION(
+  "Testing feature io/readers of ITKReader with  16 bits (unit16) images" )
+  {
+    Image3D16b im = ITKReader<Image3D16b>::importITK(
+    testPath + "samples/lobsterCroped16b.mhd" );
+    REQUIRE( ( im( Z3i::Point( 35, 29, 3 ) ) == 60400 ) );
+  }
+
+  SECTION(
+  "Testing feature io/readers of ITKReader with rescaled 16 bits (unit16) "
+  "images" )
+  {
+    typedef DGtal::functors::Rescaling<uint16_t, unsigned char> RescalFCT;
+    RescalFCT resc = RescalFCT( 0, 65535, 0, 255 );
+    Image3DUC im   = ITKReader<Image3DUC>::importITK(
+    testPath + "samples/lobsterCroped16b.mhd", resc );
+    REQUIRE( ( im( Z3i::Point( 35, 29, 3 ) ) == resc( 60400 ) ) );
+  }
 }
 
 /** @ingroup Tests **/

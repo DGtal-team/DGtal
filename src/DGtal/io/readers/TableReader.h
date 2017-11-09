@@ -53,7 +53,8 @@ namespace DGtal
   // class TableReader
   /**
    * Description of class 'TableReader' <p>
-   *  \brief Aim: Implements method to read a set of numbers represented in each line of a file.
+   *  \brief Aim: Implements method to read a set of numbers represented in each
+   *line of a file.
    *
    *
    *  The main method to read a set of numbers where each number is
@@ -68,11 +69,13 @@ namespace DGtal
    *  #include "DGtal/io/readers/TableReader.h"
    *  ....
    *  string filename= "testFile.dat";
-   *  vector<unsigned int> vectPoints = TableReader<unsigned int>::getColumnElementsFromFile(filename);
+   *  vector<unsigned int> vectPoints = TableReader<unsigned
+   *int>::getColumnElementsFromFile(filename);
    * @endcode
    * and you can specifying the point position:
    *  @code
-   *  vector<unsigned int> vectPoints = TableReader<unsigned int>::getColumnElementsFromFile(filename, 2);
+   *  vector<unsigned int> vectPoints = TableReader<unsigned
+   *int>::getColumnElementsFromFile(filename, 2);
    *  @endcode
    *
    * @see testTableReader.cpp
@@ -84,65 +87,62 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
+  /**
+   * Method to import a vector containing a list of elements given
+   * in an input stream. One element is extracted on each line of
+   * the input stream.  Each elements are identified between space
+   * or tab characters. Blank line or line beginning with "#" are
+   * skipped.
+   *
+   * @param aFilename a file name
+   * @param aPosition the position of indices where the element has to be
+   *extracted.
+   * @return a vector containing the set of elements.
+   **/
+  static std::vector<TQuantity>
+  getColumnElementsFromFile( const std::string & aFilename,
+                             unsigned int aPosition );
 
+  /**
+   * Method to import a vector containing a list of elements given
+   * in a file. One element is extracted on each line of the input
+   * file.  Each elements are identified between space or tab
+   * characters. Blank line or line beginning with "#" are skipped.
+   *
+   * @param in the input file.
+   * @param aPosition the position of indices where the elements has to be
+   *extracted.
+   * @return a vector containing the set of elements.
+   **/
 
-    /**
-     * Method to import a vector containing a list of elements given
-     * in an input stream. One element is extracted on each line of
-     * the input stream.  Each elements are identified between space
-     * or tab characters. Blank line or line beginning with "#" are
-     * skipped.
-     *
-     * @param aFilename a file name
-     * @param aPosition the position of indices where the element has to be extracted.
-     * @return a vector containing the set of elements.
-     **/
-    static std::vector< TQuantity >
-    getColumnElementsFromFile (const std::string & aFilename,
-                               unsigned int aPosition);
+  static std::vector<TQuantity>
+  getColumnElementsFromInputStream( std::istream & in, unsigned int aPosition );
 
-    /**
-     * Method to import a vector containing a list of elements given
-     * in a file. One element is extracted on each line of the input
-     * file.  Each elements are identified between space or tab
-     * characters. Blank line or line beginning with "#" are skipped.
-     *
-     * @param in the input file.
-     * @param aPosition the position of indices where the elements has to be extracted.
-     * @return a vector containing the set of elements.
-     **/
+  /**
+   * Method to import a vector where each element contains the line
+   * elements of a given file.  Each elements are identified between
+   * space or tab characters. Blank line or line beginning with "#"
+   * are skipped.
+   *
+   * @param aFilename the input file.
+   * @return a vector containing a vector which contains each line elements.
+   **/
+  static std::vector<std::vector<TQuantity>>
+  getLinesElementsFromFile( const std::string & aFilename );
 
-    static std::vector< TQuantity >
-    getColumnElementsFromInputStream (std::istream &in,
-                                      unsigned int aPosition);
+  /**
+   * Method to import a vector where each element contains the line
+   * elements of a given file.  Each elements are identified between
+   * space or tab characters. Blank line or line beginning with "#"
+   * are skipped.
+   *
+   * @param in the input file.
+   * @return a vector containing a vector which contains each line elements.
+   **/
 
-    /**
-     * Method to import a vector where each element contains the line
-     * elements of a given file.  Each elements are identified between
-     * space or tab characters. Blank line or line beginning with "#"
-     * are skipped.
-     *
-     * @param aFilename the input file.
-     * @return a vector containing a vector which contains each line elements.
-     **/
-    static std::vector<std::vector< TQuantity > >
-    getLinesElementsFromFile (const std::string & aFilename);
-    
-    /**
-     * Method to import a vector where each element contains the line
-     * elements of a given file.  Each elements are identified between
-     * space or tab characters. Blank line or line beginning with "#"
-     * are skipped.
-     *
-     * @param in the input file.
-     * @return a vector containing a vector which contains each line elements.
-     **/
+  static std::vector<std::vector<TQuantity>>
+  getLinesElementsFromInputStream( std::istream & in );
 
-    static std::vector<std::vector< TQuantity > >
-    getLinesElementsFromInputStream (std::istream &in);
-    
-
-    
   }; // end of class TableReader
 
 

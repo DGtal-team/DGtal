@@ -127,173 +127,180 @@ namespace DGtal
    *
    * @see Display3D, Board3DTo2D
    */
-  template < typename TSpace = SpaceND<3>,
-             typename TKSpace = KhalimskySpaceND<3> >
+  template <typename TSpace  = SpaceND<3>,
+            typename TKSpace = KhalimskySpaceND<3>>
   class Viewer3D : public QGLViewer, public Display3D<TSpace, TKSpace>
   {
 
-    BOOST_CONCEPT_ASSERT((concepts::CSpace<TSpace>));
+    BOOST_CONCEPT_ASSERT( (concepts::CSpace<TSpace>));
 
     //---------------overwritting some functions of Display3D -------------------
 
     // ----------------------- public types ------------------------------
   public:
-    typedef TSpace                              Space;
-    typedef TKSpace                             KSpace;
-    typedef Viewer3D<Space, KSpace>             Self;
-    typedef Display3D<Space, KSpace>            Display;
-    typedef typename Display::SelectCallbackFct SelectCallbackFct;
-    typedef typename Display::RealPoint         RealPoint;
-    using Display::getSelectCallback3D;
+  typedef TSpace Space;
+  typedef TKSpace KSpace;
+  typedef Viewer3D<Space, KSpace> Self;
+  typedef Display3D<Space, KSpace> Display;
+  typedef typename Display::SelectCallbackFct SelectCallbackFct;
+  typedef typename Display::RealPoint RealPoint;
+  using Display::getSelectCallback3D;
 
-    enum RenderingMode {RenderingDefault, RenderingMetallic, RenderingPlastic, RenderingLambertian };
+  enum RenderingMode
+  {
+    RenderingDefault,
+    RenderingMetallic,
+    RenderingPlastic,
+    RenderingLambertian
+  };
 
-    /**
-     * Interface that can be used so that one can extend a few service
-     * of Viewer3D, like keyPressEvent and others. You may thus give an
-     * extension to a Viewer3D by simply handling it a pointer to an
-     * object deriving from this class.
-     */
-    struct Extension {
-      /// The associated viewer.
-      typedef Viewer3D<Space, KSpace> Viewer;
-      
-      /// This method may be overloaded to capture other key
-      /// events. It will be called at the beginning of Viewer3D::keyPressEvent.
-      ///
-      /// @param viewer the viewer calling this method
-      /// @param event the key event
-      ///
-      /// @return 'true' if the event was handled (in this case,
-      /// Viewer3D::keyPressEvent will not do anything).
-      virtual bool keyPressEvent ( Viewer& viewer, QKeyEvent * event )
-      {
-        boost::ignore_unused_variable_warning( viewer ); 
-        boost::ignore_unused_variable_warning( event ); 
-        return false;
-      }
+  /**
+   * Interface that can be used so that one can extend a few service
+   * of Viewer3D, like keyPressEvent and others. You may thus give an
+   * extension to a Viewer3D by simply handling it a pointer to an
+   * object deriving from this class.
+   */
+  struct Extension
+  {
+    /// The associated viewer.
+    typedef Viewer3D<Space, KSpace> Viewer;
 
-      /// This method may be overloaded and is called at the beginning
-      /// of Viewer3D::drawWithNames. This method is useful for
-      /// drawing elements with additional information for selection.
-      ///
-      /// @param viewer the viewer calling this method
-      virtual void drawWithNames( Viewer& viewer )
-      {
-        boost::ignore_unused_variable_warning( viewer ); 
-      }
-      
-      /// This method may be overloaded and is called at the beginning
-      /// of Viewer3D::draw. This method is called for drawing
-      /// elements.
-      ///
-      /// @param viewer the viewer calling this method
-      virtual void draw( Viewer& viewer )
-      {
-        boost::ignore_unused_variable_warning( viewer ); 
-      }
-      
-      /// This method may be overloaded and is called at QGLViewer
-      /// initialization. It will be called at the beginning of
-      /// Viewer3D::init.
-      /// @param viewer the viewer calling this method
-      virtual void init(Viewer& viewer)
-      {
-        boost::ignore_unused_variable_warning( viewer ); 
-      }
+    /// This method may be overloaded to capture other key
+    /// events. It will be called at the beginning of Viewer3D::keyPressEvent.
+    ///
+    /// @param viewer the viewer calling this method
+    /// @param event the key event
+    ///
+    /// @return 'true' if the event was handled (in this case,
+    /// Viewer3D::keyPressEvent will not do anything).
+    virtual bool keyPressEvent( Viewer & viewer, QKeyEvent * event )
+    {
+      boost::ignore_unused_variable_warning( viewer );
+      boost::ignore_unused_variable_warning( event );
+      return false;
+    }
 
-      /// This method may be overloaded and is called when pressing
-      /// help. It will be added before Viewer3D::helpString.
-      ///
-      /// @param viewer the viewer calling this method
-      /// @return astring corresponding to the help of the viewer (list of commands, etc)
-      virtual QString helpString(const Viewer& viewer) const
-      {
-        boost::ignore_unused_variable_warning( viewer ); 
-        return "";
-      }
+    /// This method may be overloaded and is called at the beginning
+    /// of Viewer3D::drawWithNames. This method is useful for
+    /// drawing elements with additional information for selection.
+    ///
+    /// @param viewer the viewer calling this method
+    virtual void drawWithNames( Viewer & viewer )
+    {
+      boost::ignore_unused_variable_warning( viewer );
+    }
 
-      /// This method may be overloaded to take care of a mouse
-      /// selection event. It will be called at the beginning of
-      /// Viewer3D::postSelection.
-      ///
-      /// @param viewer the viewer calling this method
-      /// @param point the point clicked by the user in the window
-      ///
-      /// @return 'true' if the event was handled (in this case,
-      /// Viewer3D::postSelection will not do anything).
-      virtual bool postSelection(const Viewer& viewer, const QPoint& point )
-      {
-        boost::ignore_unused_variable_warning( viewer ); 
-        boost::ignore_unused_variable_warning( point ); 
-        return false;
-      }
+    /// This method may be overloaded and is called at the beginning
+    /// of Viewer3D::draw. This method is called for drawing
+    /// elements.
+    ///
+    /// @param viewer the viewer calling this method
+    virtual void draw( Viewer & viewer )
+    {
+      boost::ignore_unused_variable_warning( viewer );
+    }
 
-      /// This method may be overloaded to capture other mouse move
-      /// events. It will be called at the beginning of Viewer3D::mouseMoveEvent.
-      ///
-      /// @param viewer the viewer calling this method
-      /// @param event the mouse move event
-      ///
-      /// @return 'true' if the event was handled (in this case,
-      /// Viewer3D::mouseMoveEvent will not do anything).
-      virtual bool mouseMoveEvent(const Viewer& viewer, QMouseEvent* event )
-      {
-        boost::ignore_unused_variable_warning( viewer ); 
-        boost::ignore_unused_variable_warning( event ); 
-        return false;
-      }
+    /// This method may be overloaded and is called at QGLViewer
+    /// initialization. It will be called at the beginning of
+    /// Viewer3D::init.
+    /// @param viewer the viewer calling this method
+    virtual void init( Viewer & viewer )
+    {
+      boost::ignore_unused_variable_warning( viewer );
+    }
 
-      /// This method may be overloaded to capture other mouse press
-      /// events. It will be called at the beginning of Viewer3D::mousePressEvent.
-      ///
-      /// @param viewer the viewer calling this method
-      /// @param event the mouse press event
-      ///
-      /// @return 'true' if the event was handled (in this case,
-      /// Viewer3D::mousePressEvent will not do anything).
-      virtual bool mousePressEvent(const Viewer& viewer, QMouseEvent* event )
-      {
-        boost::ignore_unused_variable_warning( viewer ); 
-        boost::ignore_unused_variable_warning( event ); 
-        return false;
-      }
+    /// This method may be overloaded and is called when pressing
+    /// help. It will be added before Viewer3D::helpString.
+    ///
+    /// @param viewer the viewer calling this method
+    /// @return astring corresponding to the help of the viewer (list of
+    /// commands, etc)
+    virtual QString helpString( const Viewer & viewer ) const
+    {
+      boost::ignore_unused_variable_warning( viewer );
+      return "";
+    }
 
-      /// This method may be overloaded to capture other mouse release
-      /// events. It will be called at the beginning of Viewer3D::mouseReleaseEvent.
-      ///
-      /// @param viewer the viewer calling this method
-      /// @param event the mouse release event
-      ///
-      /// @return 'true' if the event was handled (in this case,
-      /// Viewer3D::mouseReleaseEvent will not do anything).
-      virtual bool mouseReleaseEvent(const Viewer& viewer, QMouseEvent* event )
-      {
-        boost::ignore_unused_variable_warning( viewer ); 
-        boost::ignore_unused_variable_warning( event ); 
-        return false;
-      }
+    /// This method may be overloaded to take care of a mouse
+    /// selection event. It will be called at the beginning of
+    /// Viewer3D::postSelection.
+    ///
+    /// @param viewer the viewer calling this method
+    /// @param point the point clicked by the user in the window
+    ///
+    /// @return 'true' if the event was handled (in this case,
+    /// Viewer3D::postSelection will not do anything).
+    virtual bool postSelection( const Viewer & viewer, const QPoint & point )
+    {
+      boost::ignore_unused_variable_warning( viewer );
+      boost::ignore_unused_variable_warning( point );
+      return false;
+    }
 
-    };
-    
-    // ----------------------- Standard services ------------------------------
+    /// This method may be overloaded to capture other mouse move
+    /// events. It will be called at the beginning of Viewer3D::mouseMoveEvent.
+    ///
+    /// @param viewer the viewer calling this method
+    /// @param event the mouse move event
+    ///
+    /// @return 'true' if the event was handled (in this case,
+    /// Viewer3D::mouseMoveEvent will not do anything).
+    virtual bool mouseMoveEvent( const Viewer & viewer, QMouseEvent * event )
+    {
+      boost::ignore_unused_variable_warning( viewer );
+      boost::ignore_unused_variable_warning( event );
+      return false;
+    }
+
+    /// This method may be overloaded to capture other mouse press
+    /// events. It will be called at the beginning of Viewer3D::mousePressEvent.
+    ///
+    /// @param viewer the viewer calling this method
+    /// @param event the mouse press event
+    ///
+    /// @return 'true' if the event was handled (in this case,
+    /// Viewer3D::mousePressEvent will not do anything).
+    virtual bool mousePressEvent( const Viewer & viewer, QMouseEvent * event )
+    {
+      boost::ignore_unused_variable_warning( viewer );
+      boost::ignore_unused_variable_warning( event );
+      return false;
+    }
+
+    /// This method may be overloaded to capture other mouse release
+    /// events. It will be called at the beginning of
+    /// Viewer3D::mouseReleaseEvent.
+    ///
+    /// @param viewer the viewer calling this method
+    /// @param event the mouse release event
+    ///
+    /// @return 'true' if the event was handled (in this case,
+    /// Viewer3D::mouseReleaseEvent will not do anything).
+    virtual bool mouseReleaseEvent( const Viewer & viewer, QMouseEvent * event )
+    {
+      boost::ignore_unused_variable_warning( viewer );
+      boost::ignore_unused_variable_warning( event );
+      return false;
+    }
+  };
+
+  // ----------------------- Standard services ------------------------------
   public:
 
     /**
      * Constructor
      */
-    Viewer3D() :QGLViewer(), Display3D<Space, KSpace>(),
-      myExtension( 0 )
-    {
-      resize(800,600);
+  Viewer3D() : QGLViewer(), Display3D<Space, KSpace>(), myExtension( 0 )
+  {
+    resize( 800, 600 );
     };
 
     /**
      *Constructor with a khalimsky space
      * @param KSEmb the Khalimsky space
      */
-    Viewer3D(const KSpace &KSEmb):QGLViewer(), Display3D<Space,KSpace>(KSEmb),
-      myExtension( 0 )
+    Viewer3D( const KSpace & KSEmb )
+      : QGLViewer(), Display3D<Space, KSpace>( KSEmb ), myExtension( 0 )
     {
       resize(800,600);
     }
@@ -301,9 +308,10 @@ namespace DGtal
     /// Sets the extension \a ext to the viewer. The object is
     /// acquired by the viewer and should be dynamically allocated.
     /// @param ext any dynamically allocated object deriving from Extension.
-    void setExtension( Extension* ext )
+    void setExtension( Extension * ext )
     {
-      if ( myExtension != 0 ) delete myExtension;
+      if ( myExtension != 0 )
+        delete myExtension;
       myExtension = ext;
     }
 
@@ -311,10 +319,11 @@ namespace DGtal
     /// no extension was present.
     void removeExtension()
     {
-      if ( myExtension != 0 ) delete myExtension;
+      if ( myExtension != 0 )
+        delete myExtension;
       myExtension = 0;
     }
-    
+
     /**
      * Set camera position.
      * @param ax x position.
@@ -963,94 +972,93 @@ namespace DGtal
 
 
   public:
+  /// To call the protected method `drawLight`.
+  void drawSomeLight( GLenum light ) const
+  {
+    QGLViewer::drawLight( light );
+  }
+  /// To call the protected method `drawLight`.
+  void drawSomeLight( GLenum light, float zoom ) const
+  {
+    QGLViewer::drawLight( light, zoom );
+  }
 
-      /// To call the protected method `drawLight`.
-      void drawSomeLight( GLenum light ) const
-      {
-        QGLViewer::drawLight( light );
-      }
-      /// To call the protected method `drawLight`.
-      void drawSomeLight( GLenum light, float zoom ) const
-      {
-        QGLViewer::drawLight( light, zoom );
-      }
+  // ------------------------- Hidden services ------------------------------
+  // protected:
 
+  /**
+   * Permit to update the OpenGL list to be displayed.
+   * Need to called after a number of addVoxel or after a
+   * sortSurfelFromCamera().
+   * @param needToUpdateBoundingBox flag to update the bounding box
+   */
+  void updateList( bool needToUpdateBoundingBox = true );
 
+  /**
+   * Draw a ball by using quads strip primitive.
+   * @param[in] aBall the ball to be drawn
+   */
+  void glDrawGLBall( const typename Viewer3D<Space, KSpace>::BallD3D & aBall );
 
+  /**
+   * Used to manage new key event (wich are added from the default
+   * QGLviewer keys).
+   *
+   * Note that when a new key event is taken into account it could be
+   * added in the QGLviewer init() method to update automatically the
+   * key description in the help QGLviewer window. For instance when
+   * a new key is processed in this method you simply should add the following
+   * code in the init() method:
 
-    // ------------------------- Hidden services ------------------------------
-    //protected:
+   @code
+   setKeyDescription(Qt::Key_NEW, "Description of the new Key.");
+   @endcode
 
+   *
+   * @param e the QKeyEvent
+   **/
+  virtual void keyPressEvent( QKeyEvent * e );
 
-    /**
-     * Permit to update the OpenGL list to be displayed.
-     * Need to called after a number of addVoxel or after a sortSurfelFromCamera().
-     * @param needToUpdateBoundingBox flag to update the bounding box
-     */
-    void updateList ( bool needToUpdateBoundingBox=true );
+  /**
+   * Used to manage a mouse move event (to handle light move).
+   *
+   * @param e the QMouseEvent
+   **/
+  virtual void mouseMoveEvent( QMouseEvent * e );
 
+  /**
+   * Used to manage a mouse press event (to handle light move).
+   *
+   * @param e the QMouseEvent
+   **/
+  virtual void mousePressEvent( QMouseEvent * e );
 
-    /**
-     * Draw a ball by using quads strip primitive.
-     * @param[in] aBall the ball to be drawn
-     */
-    void glDrawGLBall (const typename Viewer3D<Space,KSpace>::BallD3D & aBall );
+  /**
+   * Used to manage a mouse release event (to handle light move).
+   *
+   * @param e the QMouseEvent
+   **/
+  virtual void mouseReleaseEvent( QMouseEvent * e );
 
-
-
-    /**
-     * Used to manage new key event (wich are added from the default
-     * QGLviewer keys).
-     *
-     * Note that when a new key event is taken into account it could be
-     * added in the QGLviewer init() method to update automatically the
-     * key description in the help QGLviewer window. For instance when
-     * a new key is processed in this method you simply should add the following
-     * code in the init() method:
-
-     @code
-     setKeyDescription(Qt::Key_NEW, "Description of the new Key.");
-     @endcode
-
-     *
-     * @param e the QKeyEvent
-     **/
-    virtual void keyPressEvent ( QKeyEvent *e );
-    
-    /**
-     * Used to manage a mouse move event (to handle light move).
-     *
-     * @param e the QMouseEvent
-     **/
-    virtual void mouseMoveEvent ( QMouseEvent *e );
-    
-    /**
-     * Used to manage a mouse press event (to handle light move).
-     *
-     * @param e the QMouseEvent
-     **/
-    virtual void mousePressEvent ( QMouseEvent *e );
-    
-    /**
-     * Used to manage a mouse release event (to handle light move).
-     *
-     * @param e the QMouseEvent
-     **/
-    virtual void mouseReleaseEvent ( QMouseEvent *e );
-    
-    /**
-     * Used to sort pixel from camera
-     **/
-    struct CompFarthestVoxelFromCamera
+  /**
+   * Used to sort pixel from camera
+   **/
+  struct CompFarthestVoxelFromCamera
+  {
+    qglviewer::Vec posCam;
+    bool operator()( typename Viewer3D<Space, KSpace>::CubeD3D s1,
+                     typename Viewer3D<Space, KSpace>::CubeD3D s2 )
     {
-      qglviewer::Vec posCam;
-      bool operator() (typename Viewer3D<Space,KSpace>::CubeD3D s1,
-                       typename Viewer3D<Space,KSpace>::CubeD3D s2 )
-      {
-        double dist1= sqrt ( ( posCam.x-s1.center[0] ) * ( posCam.x-s1.center[0] ) + ( posCam.y-s1.center[1] ) * ( posCam.y-s1.center[1] ) + ( posCam.z-s1.center[2] ) * ( posCam.z-s1.center[2] ) );
-        double dist2= sqrt ( ( posCam.x-s2.center[0] ) * ( posCam.x-s2.center[0] ) + ( posCam.y-s2.center[1] ) * ( posCam.y-s2.center[1] ) + ( posCam.z-s2.center[2] ) * ( posCam.z-s2.center[2] ) );
-        return dist1>dist2;
-      }
+      double dist1 =
+      sqrt( ( posCam.x - s1.center[ 0 ] ) * ( posCam.x - s1.center[ 0 ] ) +
+            ( posCam.y - s1.center[ 1 ] ) * ( posCam.y - s1.center[ 1 ] ) +
+            ( posCam.z - s1.center[ 2 ] ) * ( posCam.z - s1.center[ 2 ] ) );
+      double dist2 =
+      sqrt( ( posCam.x - s2.center[ 0 ] ) * ( posCam.x - s2.center[ 0 ] ) +
+            ( posCam.y - s2.center[ 1 ] ) * ( posCam.y - s2.center[ 1 ] ) +
+            ( posCam.z - s2.center[ 2 ] ) * ( posCam.z - s2.center[ 2 ] ) );
+      return dist1 > dist2;
+    }
     };
 
 
@@ -1489,7 +1497,12 @@ namespace DGtal
     
     void glUpdateLightRenderingMode() const;
 
-    
+    /**
+     * Updates opengl background color according the current mode
+     * (default or customized color)
+     **/
+    void glUpdateBackground() ; 
+        
     /**
      * Updates the light source coordinates (myLightPosition) from the
      * camera relative coordinates (myLightPositionRefCamera). It
@@ -1507,7 +1520,6 @@ namespace DGtal
     void updateRelativeCameraFromLightPosition();
 
 
-    
     
   public:
     /**
@@ -1650,21 +1662,19 @@ namespace DGtal
     /// Used to store all the domains
     std::vector<Image2DDomainD3D> myImageDomainList;
     /// Stored a possible extension to the viewer (pointer owned).
-    Extension* myExtension;
-    
+    Extension * myExtension;
+
   }; // end of class Viewer3D
 
-
-
-  template < typename TSpace, typename TKSpace>
+  template <typename TSpace, typename TKSpace>
   /**
    * Overloads 'operator<<' for displaying objects of class 'Viewer3D'.
    * @param out the output stream where the object is written.
    * @param object the object of class 'Viewer3D' to write.
    * @return the output stream after the writing.
    */
-  std::ostream&
-  operator<< ( std::ostream & out, const Viewer3D<TSpace, TKSpace> & object );
+  std::ostream & operator<<( std::ostream & out,
+                             const Viewer3D<TSpace, TKSpace> & object );
 } // namespace DGtal
 
 
