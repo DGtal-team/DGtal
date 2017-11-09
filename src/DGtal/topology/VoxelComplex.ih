@@ -820,9 +820,9 @@ std::array<
   typename DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::CliqueContainer,
   DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::dimension + 1
 >
-DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::
-criticalCliques(
-    bool verbose) const
+DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::criticalCliques(
+    bool verbose
+    ) const
 {
   return criticalCliques(*this, verbose);
 }
@@ -833,10 +833,10 @@ std::array<
   typename DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::CliqueContainer,
   DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::dimension + 1
 >
-DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::
-criticalCliques(
-    const DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::Parent & cubical,
-    bool verbose) const
+DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::criticalCliques(
+    const Parent & cubical,
+    bool verbose
+    ) const
 {
   ASSERT((dimension + 1) == 4);
   std::array<CliqueContainer, dimension + 1> criticals;
