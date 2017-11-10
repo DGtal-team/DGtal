@@ -60,7 +60,7 @@ namespace functors
 /// Duplicated STL functors
 /////////////////////////////////////////////////////////////////////////////
   template<typename T>
-  struct Min : std::binary_function <T,T,T>
+  struct Min
   {
     inline
     T operator() (const T&a, const T&b) const
@@ -68,7 +68,7 @@ namespace functors
   };
 
   template<typename T>
-  struct Max : std::binary_function <T,T,T>
+  struct Max
   {
     inline
     T operator() (const T&a, const T&b) const
@@ -79,7 +79,7 @@ namespace functors
    * Copy of the std::minus binary operator (not implemented on MS-VS)
    */
   template <class T>
-  struct Minus : std::binary_function <T,T,T>
+  struct Minus
   {
     T operator() (const T& x, const T& y) const
     {return x-y;}
@@ -89,7 +89,7 @@ namespace functors
    * Abs functor.
    */
   template <class T>
-  struct Abs : std::unary_function<T,T>
+  struct Abs
   {
     inline
     T operator() (const T &x) const
@@ -105,7 +105,7 @@ namespace functors
    * Unary minus functor.
    */
   template <class T>
-  struct UnaryMinus : std::unary_function<T,T>
+  struct UnaryMinus
   {
     /**
        @param x any value.
@@ -122,7 +122,7 @@ namespace functors
    * Unary minus functor.
    */
   template <class T>
-  struct MultiplicationByScalar : std::unary_function<T,T>
+  struct MultiplicationByScalar
   {
     inline
     MultiplicationByScalar( const T & aValue )
@@ -174,7 +174,7 @@ namespace functors
    * @tparam TValue type of the value
    */
   template <typename TValue>
-  class ConstValue : std::unary_function <TValue,TValue>
+  class ConstValue
   {
   public:
     typedef TValue Value;
@@ -217,7 +217,7 @@ namespace functors
    * @tparam TCell type of the cell
    */
   template <typename TQuantity, typename TCell>
-  class ConstValueCell : std::unary_function <TQuantity,TQuantity>
+  class ConstValueCell
   {
   public:
     typedef TCell Cell;
@@ -366,7 +366,6 @@ namespace functors
  */
 template <typename T, bool isLower = true, bool isEqual = true >
 class Thresholder
-   : public std::unary_function <T,bool>
  {
   public:
     BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
@@ -398,7 +397,6 @@ class Thresholder
 //specializations
 template <typename T>
 struct Thresholder<T,false,false>
-   : public std::unary_function <T,bool>
 {
 
   public:
@@ -419,7 +417,6 @@ struct Thresholder<T,false,false>
 };
 template <typename T>
 struct Thresholder<T,false,true>
-  : public std::unary_function <T,bool>
  {
   public:
     BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
@@ -439,7 +436,6 @@ struct Thresholder<T,false,true>
 
 template <typename T>
 struct Thresholder<T,true,false>
-  : public std::unary_function <T,bool>
   {
   public:
     BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
@@ -460,7 +456,6 @@ struct Thresholder<T,true,false>
 
 template <typename T>
 struct Thresholder<T,true,true>
-   : public std::unary_function <T,bool>
  {
   public:
     BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
@@ -571,7 +566,6 @@ struct Thresholder<T,true,true>
  */
 template <typename T>
 class IntervalThresholder
-   : public std::unary_function <T,bool>
 {
 public:
   BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));

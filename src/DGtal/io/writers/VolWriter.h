@@ -86,7 +86,7 @@ namespace DGtal
      */
     static bool exportVol(const std::string & filename, const Image &aImage, 
                           const bool compressed=true,
-                          const Functor & aFunctor = Functor()) throw(DGtal::IOException);
+                          const Functor & aFunctor = Functor());
   };
 }//namespace
 

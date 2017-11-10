@@ -144,7 +144,7 @@ namespace DGtal
      *
      * @param r the smart pointer to acquire.
      */
-    CountedConstPtrOrConstPtr( const CountedPtr<T> & r ) throw()
+    CountedConstPtrOrConstPtr( const CountedPtr<T> & r ) noexcept
       : myIsCountedPtr( true )
     { 
       acquire( r.myCounter ); 
@@ -159,7 +159,7 @@ namespace DGtal
      * @param r the other pointer to clone, which may be \b smart or
      * \b simple.
      */
-    CountedConstPtrOrConstPtr(const CountedConstPtrOrConstPtr& r) throw()
+    CountedConstPtrOrConstPtr(const CountedConstPtrOrConstPtr& r) noexcept
       : myIsCountedPtr( r.myIsCountedPtr )
     { 
       if ( myIsCountedPtr )
@@ -177,7 +177,7 @@ namespace DGtal
      * @param r the other pointer to clone, which may be \b smart or
      * \b simple.
      */
-    CountedConstPtrOrConstPtr(const CountedPtrOrPtr<T>& r) throw()
+    CountedConstPtrOrConstPtr(const CountedPtrOrPtr<T>& r) noexcept
       : myIsCountedPtr( r.myIsCountedPtr )
     { 
       if ( myIsCountedPtr )
@@ -294,7 +294,7 @@ namespace DGtal
      *
      * @pre 'isValid()' is true
      */
-    const T& operator*()  const throw()
+    const T& operator*()  const noexcept
     { 
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( isValid() );
@@ -310,7 +310,7 @@ namespace DGtal
      *
      * @pre 'isValid()' is true
      */
-    const T* operator->() const throw()
+    const T* operator->() const noexcept
     { 
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( isValid() );
@@ -324,7 +324,7 @@ namespace DGtal
      * or \b simply pointed by 'this' or 0 if the object is not valid
      * ('isValid()' is false).
      */
-    const T* get()        const throw()
+    const T* get()        const noexcept
     {
       return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) : ptr(); 
     }
@@ -334,7 +334,7 @@ namespace DGtal
      * on this object or if the smart pointer is invalid ('isValid()'
      * is false) or if 'this' object is \b simple.
      */
-    bool unique()   const throw()
+    bool unique()   const noexcept
     {
       return myIsCountedPtr
 	? ( myAny ? counterPtr()->count == 1 : true )
@@ -417,7 +417,7 @@ private:
      * @param c any counter (except this.myCounter).
      * @pre 'this' pointer object is \b smart.
      */
-    inline void acquire(Counter* c) throw()
+    inline void acquire(Counter* c) noexcept
     { // increment the count
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( myIsCountedPtr );
