@@ -139,7 +139,7 @@ namespace DGtal
      * 
      * @param r the object to copy.
      */
-    CountedPtr(const CountedPtr& r) throw()
+    CountedPtr(const CountedPtr& r) noexcept
     {
       acquire(r.myCounter);
     }
@@ -171,7 +171,7 @@ namespace DGtal
      * @return a reference on the object that is pointed by the smart pointer.
      * @pre 'isValid()' is true
      */
-    T& operator*()  const throw()   
+    T& operator*()  const noexcept
     {
       return *myCounter->ptr;
     }
@@ -181,7 +181,7 @@ namespace DGtal
      * @return a pointer on the object that is pointed by the smart pointer.
      * @pre 'isValid()' is true
      */
-    T* operator->() const throw()   
+    T* operator->() const noexcept
     {
       return myCounter->ptr;
     }
@@ -192,7 +192,7 @@ namespace DGtal
      * @return a pointer on the object that is pointed by the smart
      * pointer or 0 if the object is not valid ('isValid()' is false).
      */
-    T* get()        const throw()   
+    T* get()        const noexcept
     {
       return myCounter ? myCounter->ptr : 0;
     }
@@ -201,7 +201,7 @@ namespace DGtal
      * @return 'true' iff the smart pointer is the sole one pointing
      * on this object or if the smart pointer is invalid ('isValid()' is false).
      */
-    bool unique()   const throw()
+    bool unique()   const noexcept
     {
       return (myCounter ? myCounter->count == 1 : true);
     }
@@ -262,7 +262,7 @@ private:
      * incremented.
      * @param c any counter (except this.myCounter).
      */
-    void acquire(Counter* c) throw()
+    void acquire(Counter* c) noexcept
     { // increment the count
         myCounter = c;
         if (c) ++c->count;
