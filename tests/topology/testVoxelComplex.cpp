@@ -117,7 +117,7 @@ struct Fixture_complex_diamond {
   FixtureComplex& create_complex_from_object(FixtureObject & input_obj)
   {
 
-    bool space_ok = ks_fixture.init( input_obj.domain().lowerBound(),
+    ks_fixture.init( input_obj.domain().lowerBound(),
         input_obj.domain().upperBound(), true );
     complex_fixture = FixtureComplex(ks_fixture);
     complex_fixture.construct(input_obj);
@@ -539,7 +539,7 @@ struct Fixture_complex_fig4 {
   FixtureComplex& create_complex_from_object(FixtureObject & input_obj)
   {
 
-    bool space_ok = ks_fixture.init( input_obj.domain().lowerBound(),
+    ks_fixture.init( input_obj.domain().lowerBound(),
         input_obj.domain().upperBound(), true );
     complex_fixture = FixtureComplex(ks_fixture);
     complex_fixture.construct(input_obj);
@@ -707,7 +707,7 @@ struct Fixture_isthmus {
   FixtureComplex& create_complex_from_object(FixtureObject & input_obj)
   {
 
-    bool space_ok = ks_fixture.init( input_obj.domain().lowerBound(),
+    ks_fixture.init( input_obj.domain().lowerBound(),
         input_obj.domain().upperBound(), true );
     complex_fixture = FixtureComplex(ks_fixture);
     complex_fixture.construct(input_obj);
@@ -946,7 +946,7 @@ struct Fixture_X {
   FixtureComplex& create_complex_from_object(FixtureObject & input_obj)
   {
 
-    bool space_ok = ks_fixture.init( input_obj.domain().lowerBound(),
+    ks_fixture.init( input_obj.domain().lowerBound(),
         input_obj.domain().upperBound(), true );
     complex_fixture = FixtureComplex(ks_fixture);
     complex_fixture.construct(input_obj);
