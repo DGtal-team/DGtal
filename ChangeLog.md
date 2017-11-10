@@ -74,6 +74,8 @@
    (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
  - Remove cpp11 deprecated usage of std::binder1st and std::binder2nd --generates error with c++17 flag.
    (Pablo Hernandez, [#1287](https://github.com/DGtal-team/DGtal/pull/1287))
+ - Remove cpp11 deprecated usage of std::unary_function and std::binary_function --generates error with c++17 flag.
+   (Pablo Hernandez, [#1291](https://github.com/DGtal-team/DGtal/pull/1291))
 
 - *Topology Package*
  -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.
