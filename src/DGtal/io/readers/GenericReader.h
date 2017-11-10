@@ -113,7 +113,7 @@ namespace DGtal
      **/
 
     static TContainer import(const std::string &filename,
-                             std::vector<unsigned int> dimSpace= std::vector<unsigned int > () )  throw(DGtal::IOException);
+                             std::vector<unsigned int> dimSpace= std::vector<unsigned int > () );
 
     /**
      * Import  a volume nd image file by specifying a value functor.
@@ -131,7 +131,7 @@ namespace DGtal
     static TContainer importWithValueFunctor(
     const std::string & filename, const TFunctor & aFunctor,
     std::vector<unsigned int> dimSpace =
-    std::vector<unsigned int>() ) throw( DGtal::IOException )
+    std::vector<unsigned int>() )
     {
       BOOST_CONCEPT_ASSERT(
       (concepts::CUnaryFunctor<TFunctor, TValue, typename TContainer::Value>));
@@ -176,7 +176,7 @@ namespace DGtal
     static TContainer importWithColorFunctor(
     const std::string & filename, const TFunctor & aFunctor,
     std::vector<unsigned int> dimSpace =
-    std::vector<unsigned int>() ) throw( DGtal::IOException )
+    std::vector<unsigned int>() )
 
     {
       BOOST_CONCEPT_ASSERT(
@@ -227,7 +227,7 @@ namespace DGtal
      **/
 
     static TContainer import(const std::string &filename,  unsigned int x=0,
-                             unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
+                             unsigned int y=0, unsigned int z=0);
 
 
 
@@ -247,7 +247,7 @@ namespace DGtal
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const TFunctor &aFunctor,
                                              unsigned int x=0,
-                                             unsigned int y=0, unsigned int z=0)  throw( DGtal::IOException )
+                                             unsigned int y=0, unsigned int z=0)
       {
         BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
         DGtal::IOException dgtalio;
@@ -318,7 +318,7 @@ namespace DGtal
      **/
 
     static TContainer import(const std::string &filename,  unsigned int x=0,
-                             unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
+                             unsigned int y=0, unsigned int z=0);
 
 
 
@@ -338,7 +338,7 @@ namespace DGtal
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const TFunctor &aFunctor,
                                              unsigned int x=0,
-                                             unsigned int y=0, unsigned int z=0)  throw( DGtal::IOException )
+                                             unsigned int y=0, unsigned int z=0)
       {
         BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::uint32_t, typename TContainer::Value > )) ;
         DGtal::IOException dgtalio;
@@ -389,7 +389,7 @@ namespace DGtal
      *
      **/
 
-    static TContainer import(const std::string &filename)  throw(DGtal::IOException);
+    static TContainer import(const std::string &filename);
 
   };
 
@@ -415,7 +415,7 @@ namespace DGtal
      **/
 
     static TContainer import(const std::string &filename, unsigned int x=0,
-                             unsigned int y=0)  throw(DGtal::IOException);
+                             unsigned int y=0);
 
 
     /**
@@ -434,7 +434,7 @@ namespace DGtal
     static TContainer importWithColorFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor,
                                              unsigned int x=0,
-                                             unsigned int y=0)  throw( DGtal::IOException )
+                                             unsigned int y=0)
       {
         BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TContainer::Value> )) ;
         DGtal::IOException dgtalio;
@@ -481,7 +481,7 @@ namespace DGtal
     template<typename TFunctor>
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
-                                             unsigned int y=0)  throw( DGtal::IOException )
+                                             unsigned int y=0)
       {
         BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
 
@@ -533,7 +533,7 @@ namespace DGtal
      **/
 
     static TContainer import(const std::string &filename,unsigned int x=0,
-                             unsigned int y=0 )  throw(DGtal::IOException);
+                             unsigned int y=0 );
 
 
     /**
@@ -551,7 +551,7 @@ namespace DGtal
     template<typename TFunctor>
     static TContainer importWithColorFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
-                                             unsigned int y=0)  throw(DGtal::IOException)
+                                             unsigned int y=0)
       {
 
         BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TContainer::Value> )) ;
@@ -598,7 +598,7 @@ namespace DGtal
     template<typename TFunctor>
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
-                                             unsigned int y=0)  throw(DGtal::IOException)
+                                             unsigned int y=0)
       {
         BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
 

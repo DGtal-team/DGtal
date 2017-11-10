@@ -131,7 +131,7 @@ struct PGMReader
      */
     static  ImageContainer importPGM(const std::string & aFilename, 
                                      const Functor & aFunctor =  Functor(), 
-				     bool topbotomOrder = true) throw(DGtal::IOException);
+				     bool topbotomOrder = true);
 
 
    
@@ -148,7 +148,7 @@ struct PGMReader
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importPGM3D(const std::string & aFilename,
-				      const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+				      const Functor & aFunctor =  Functor());
     
     
     

@@ -71,9 +71,9 @@ namespace DGtal
 public:
     typedef T element_type;
 
-    explicit CowPtr(T* p = 0) throw()            : myPtr(p) {}
+    explicit CowPtr(T* p = 0) noexcept           : myPtr(p) {}
     // no need for ~CowPtr - the CountedPtr takes care of everything.
-    CowPtr(const CowPtr& r) throw()             : myPtr(r.myPtr) {}
+    CowPtr(const CowPtr& r) noexcept             : myPtr(r.myPtr) {}
     /**
      * @todo JOL: check this.
      */
@@ -86,9 +86,9 @@ public:
     }
 
 
-    const T& operator*()    const throw()   {return *myPtr;}
-    const T* operator->()   const throw()   {return myPtr.get();}
-    const T* get()          const throw()   {return myPtr.get();}
+    const T& operator*()    const noexcept   {return *myPtr;}
+    const T* operator->()   const noexcept   {return myPtr.get();}
+    const T* get()          const noexcept   {return myPtr.get();}
 
     /* The following non-const methods are deactivated if T is a const type.
      * The goal here is to avoid unecessary copies when it is known that
@@ -144,9 +144,9 @@ public:
     /**
      * For debug.
      */
-    unsigned int count() const      {return myPtr.count();}
+    unsigned int count() const          { return myPtr.count(); }
     inline T* drop() { return myPtr.drop(); }
-    inline bool unique() const throw() { return myPtr.unique(); }
+    inline bool unique() const noexcept { return myPtr.unique(); }
 
   private:
 

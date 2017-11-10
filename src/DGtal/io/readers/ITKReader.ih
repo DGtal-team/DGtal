@@ -55,7 +55,7 @@ namespace DGtal {
   template <typename TFunctor>
   I ITKReader<I>::importITK(
   const std::string & filename,
-  const TFunctor & aFunctor ) throw( DGtal::IOException )
+  const TFunctor & aFunctor )
   {
     typedef typename Image::Domain Domain;
     typedef typename Domain::Point Point;
@@ -154,7 +154,7 @@ namespace DGtal {
   template <typename TypeDGtalImage, typename TFunctor>
   typename ITKReader<I>::Image ITKReader<I>::readDGtalImageFromITKtypes(
   const std::string & filename,
-  const TFunctor & aFunctor ) throw( DGtal::IOException )
+  const TFunctor & aFunctor )
   {
 
     typedef typename TypeDGtalImage::ITKImagePointer ITKImagePointer;
