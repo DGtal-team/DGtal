@@ -65,7 +65,7 @@ namespace functors
      * @see exampleRigidtransformation2d.cpp
      */
 template <typename TSpace>
-class ForwardRigidTransformation2D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
+class ForwardRigidTransformation2D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
@@ -129,7 +129,7 @@ protected:
      * @see exampleRigidtransformation2d.cpp
      */
 template <typename TSpace>
-class BackwardRigidTransformation2D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
+class BackwardRigidTransformation2D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
@@ -193,8 +193,7 @@ protected:
      * @see exampleRigidtransformation2d.cpp
      */
 template <typename TDomain, typename TRigidTransformFunctor >
-class DomainRigidTransformation2D :
-        std::unary_function < std::pair < typename TDomain::Point, typename TDomain::Point >, TDomain>
+class DomainRigidTransformation2D
 {
     ///Checking concepts
     BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));

@@ -52,7 +52,6 @@ namespace DGtal {
   template<typename I,typename F>
   bool
   ITKWriter<I,F>::exportITK(const std::string& filename, const I& aImage, const Functor& aFunctor)
-  throw(DGtal::IOException)
   {
     typedef typename Image::Domain Domain;
     const Domain& domain = aImage.domain();

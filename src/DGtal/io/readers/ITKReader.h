@@ -88,7 +88,7 @@ namespace DGtal
               typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor>
     static Image importITK(
     const std::string & filename,
-    const TFunctor & aFunctor = TFunctor() ) throw( DGtal::IOException );
+    const TFunctor & aFunctor = TFunctor() );
 
     /**
      * Get the type of the ITK image.
@@ -114,7 +114,7 @@ namespace DGtal
     template <typename TypeDGtalImage, typename TFunctor>
     static Image readDGtalImageFromITKtypes(
     const std::string & filename,
-    const TFunctor & aFunctor ) throw( DGtal::IOException );
+    const TFunctor & aFunctor );
   };
 }//namespace
 
