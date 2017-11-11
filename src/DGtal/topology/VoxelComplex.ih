@@ -815,19 +815,8 @@ DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::K_3 (
 }
 //---------------------------------------------------------------------------
 
-template <typename TKSpace, typename TObject, typename TCellContainer>
-std::array<
-  typename DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::CliqueContainer,
-  DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::dimension + 1
->
-DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::criticalCliques(
-    bool verbose
-    ) const
-{
-  return criticalCliques(*this, verbose);
-}
-//---------------------------------------------------------------------------
-
+/* BUG workaround: MSVC compiler error C2244.
+ * It doesn't see the definition of these declarations (Moved to header)
 template <typename TKSpace, typename TObject, typename TCellContainer>
 std::array<
   typename DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::CliqueContainer,
@@ -837,22 +826,16 @@ DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::criticalCliques(
     const Parent & cubical,
     bool verbose
     ) const
-{
-  ASSERT((dimension + 1) == 4);
-  std::array<CliqueContainer, dimension + 1> criticals;
-  if(verbose){
-    trace.beginBlock("criticalCliques of CubicalComplex");
-    trace.info() << cubical << std::endl;
-  }
-  for(size_t d = 0 ; d != dimension+1 ; ++d )
-    criticals[d] = criticalCliquesForD(d, cubical, verbose);
 
-  if(verbose){
-    trace.info() << std::endl;
-    trace.endBlock();
-  }
-  return criticals;
-}
+template <typename TKSpace, typename TObject, typename TCellContainer>
+std::array<
+  typename DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::CliqueContainer,
+  DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::dimension + 1
+>
+DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::criticalCliques(
+    bool verbose
+    ) const
+*/
 //---------------------------------------------------------------------------
 
 template <typename TKSpace, typename TObject, typename TCellContainer>
