@@ -32,6 +32,9 @@
  - The documentation mainpage now refers to the DGtalTools documentation
    (David Coeurjolly,
    [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
+ - Fix ITK related try_compile command to work for non-default locations.
+   (Pablo Hernandez,
+   [#1286]((https://github.com/DGtal-team/DGtal/pull/1286))
 
 - *IO*
 - Fix for compilation with 2.7.0 QGLViewer version.
