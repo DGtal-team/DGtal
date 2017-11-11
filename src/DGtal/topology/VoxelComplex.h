@@ -358,16 +358,6 @@ public:
       const Dimension d, const CellMapConstIterator & cellMapIterator) const;
 
   /**
-   * Helper. Call @criticalCliques of this VoxelComplex.
-   *
-   * @param verbose print messages
-   *
-   * @return array with cliques containers for dimension: 0, 1, ..., d
-   */
-  std::array<CliqueContainer, dimension + 1> criticalCliques(
-      bool verbose = false) const;
-
-  /**
    * Return all critical cliques for \b cubical.
    * It calls @criticalCliquePairForD
    *
@@ -377,7 +367,36 @@ public:
    * @return All critical cliques arranged by dimension.
    */
   std::array<CliqueContainer, dimension + 1> criticalCliques(
-      const Parent & cubical, bool verbose = false) const;
+      const Parent & cubical, bool verbose = false) const
+  {
+    ASSERT((dimension + 1) == 4);
+    std::array<CliqueContainer, dimension + 1> criticals;
+    if(verbose){
+      trace.beginBlock("criticalCliques of CubicalComplex");
+      trace.info() << cubical << std::endl;
+    }
+    for(size_t d = 0 ; d != dimension+1 ; ++d )
+      criticals[d] = criticalCliquesForD(d, cubical, verbose);
+
+    if(verbose){
+      trace.info() << std::endl;
+      trace.endBlock();
+    }
+    return criticals;
+  }
+  /**
+   * Helper. Call @criticalCliques of this VoxelComplex.
+   *
+   * @param verbose print messages
+   *
+   * @return array with cliques containers for dimension: 0, 1, ..., d
+   */
+  std::array<CliqueContainer, dimension + 1> criticalCliques(
+      bool verbose = false) const
+  {
+    return criticalCliques(*this, verbose);
+  }
+
 
   /**
    * Main method to iterate over cells of selected dimension in a complex, returning critical cliques. Uses @criticalCliquePair.
