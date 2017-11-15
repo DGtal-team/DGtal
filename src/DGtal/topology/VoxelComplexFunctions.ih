@@ -140,8 +140,8 @@ asymetricThinningScheme(
     if(verbose){
       trace.info() << "generation: " << generation <<
         " ; X.nbCells(3): " << xsize <<
-        " ; K: " << K.nbCells(3) <<
-        " ; Y: " << Y.nbCells(3) <<
+        " ; K (constrain set): " << K.nbCells(3) <<
+        " ; Y (selected in this generation): " << Y.nbCells(3) <<
         " ; X - K ie. Ynew - Yold : " << x_k.nbCells(3) <<
         " ; X - Y  : " << x_y.nbCells(3) << std::endl;
     }
@@ -202,6 +202,7 @@ persistenceAsymetricThinningScheme(
   uint64_t generation{0};
   auto xsize =  X.nbCells(3);
   auto xsize_old =  xsize;
+  const bool close_it = true;
   typename TComplex::CliqueContainer critical_cliques;
 
   if(verbose){
@@ -211,10 +212,12 @@ persistenceAsymetricThinningScheme(
   do {
     ++generation;
     Y = K ;
+    // From voxels (d=3) to pointels (d=0)
     for (int d = 3 ; d >= 0 ; --d) {
       Z.clear();
-      // x_y = X - Y;
-      critical_cliques = X.criticalCliquesForD(d, X);
+      x_y = X - Y; // Y is changing in this d-loop.
+      critical_cliques = X.criticalCliquesForD(d, x_y);
+      // If clique not in Y, select one and insert in Z.
       for(auto & clique : critical_cliques){
         auto yinclude = std::find_if(
             std::begin(clique),
@@ -222,39 +225,44 @@ persistenceAsymetricThinningScheme(
             [&Y]( const Cell& c) {
               return Y.belongs(c);
             });
-        if (yinclude != std::end(clique)) continue ;
-        Z.insert( Select(clique) );
+        if (yinclude == std::end(clique))
+          Z.insert( Select(clique) );
       } // critical_cliques
       for( const auto & selected_cell : Z){
-        // TODO Can avoid following find, if Z is a container pair<Cell, Data> instead of just Cells.
+        // Insert cell in Y with its data.
+        // TODO: ensure you need to close_it.
         auto found = X.findCell(3, selected_cell) ;
-        Y.insertVoxelCell(found->first, true, found->second);
+        Y.insertVoxelCell(found->first, close_it, found->second);
       }
     } // d-loop
+    // At the end of the d-rank insert loop, we will have populated Y
 
     // x_k = X  - K;
-    for (auto it = Y.begin(3), itE = Y.end(3) ; it != itE ; ++it ){
+    for (auto && it = Y.begin(3), itE = Y.end(3) ; it != itE ; ++it ){
       auto &new_voxel = it->first ;
       auto &new_data = it->second ;
       if( Skel(Y, new_voxel) == true)
-          if (new_data.birth_date == 0) new_data.birth_date = generation;
+          if (new_data.birth_date == 0)
+            new_data.birth_date = generation;
     }
-    // Insert in K only if non-removable cells (Y) are persistent enough.
-    for (auto it = Y.begin(3), itE = Y.end(3) ; it != itE ; ++it ){
+    // Insert in K (inmutable set) only if non-removable cells (Y) are persistent enough.
+    for (auto && it = Y.begin(3), itE = Y.end(3) ; it != itE ; ++it ){
         auto &voxel = it->first;
         auto &data = it->second;
         bool is_born_isthmus = data.birth_date > 0 ;
         bool is_persistent_enough{false};
-        if (is_born_isthmus) is_persistent_enough =
-          (generation + 1 - data.birth_date) >= persistence;
+        if (is_born_isthmus)
+          is_persistent_enough = (generation + 1 - data.birth_date) >= persistence;
         if (is_born_isthmus && is_persistent_enough)
-          K.insertVoxelCell(voxel, true, data);
+          K.insertVoxelCell(voxel, close_it, data);
     }
     X = Y; // Copy also the CellData of Y into X.
+    // Y = K; // At the start of the loop.
 
     // Stability Update:
     xsize = X.nbCells(3);
-    if(xsize == xsize_old) stability = true;
+    if(xsize == xsize_old)
+      stability = true;
     xsize_old = xsize;
 
     if(verbose){
