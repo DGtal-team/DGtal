@@ -78,6 +78,21 @@ namespace DGtal
     uint32_t birth_date;
     uint32_t mature;
   };
+
+  // Forward definitions.
+  template < typename TKSpace, typename TObject, typename TCellContainer >
+  class VoxelComplex;
+  namespace functions {
+    template < typename TKSpace, typename TObject, typename TCellContainer >
+    VoxelComplex< TKSpace, TObject, TCellContainer >&
+    operator-=( VoxelComplex< TKSpace, TObject, TCellContainer >&,
+                const VoxelComplex< TKSpace, TObject, TCellContainer >& );
+    template < typename TKSpace, typename TObject, typename TCellContainer >
+    VoxelComplex< TKSpace, TObject, TCellContainer >
+    operator- ( const VoxelComplex< TKSpace, TObject, TCellContainer >&,
+                const VoxelComplex< TKSpace, TObject, TCellContainer >& );
+
+  } // namespace functions
   /////////////////////////////////////////////////////////////////////////////
   // template class VoxelComplex
   /**
@@ -113,12 +128,16 @@ template < typename TKSpace, typename TObject, typename TCellContainer =
 class VoxelComplex :
   public CubicalComplex< TKSpace, TCellContainer >
 {
+public:
   // The TObject::DigitalSet::Container must be associative.
   BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< typename TObject::DigitalSet::Container > ));
-    // ----------------------- associated types ------------------------------
-public:
-  using Parent          = CubicalComplex< TKSpace, TCellContainer > ; ///< Type of the parent class CubicalComplex.
+
   using Self            = VoxelComplex< TKSpace, TObject, TCellContainer > ; ///< Type of this instance of VoxelComplex.
+
+    friend Self& DGtal::functions::operator-=<>( Self&, const Self& );
+    friend Self  DGtal::functions::operator- <>( const Self&, const Self& );
+    // ----------------------- associated types ------------------------------
+  using Parent          = CubicalComplex< TKSpace, TCellContainer > ; ///< Type of the parent class CubicalComplex.
   using KSpace          = TKSpace ;  ///< Type of the cellular grid space.
   using CellContainer   = TCellContainer ; ///< Type for storing cells, an associative container Cell -> Data
   using Data            = typename CellContainer::mapped_type ; ///< Type of data associated to each cell.
@@ -148,6 +167,12 @@ public:
 public:
   /// Inherit all constructors from parent CubicalComplex.
   using CubicalComplex<KSpace, CellContainer>::CubicalComplex;
+
+    // #<{(|*
+    // * Copy constructor.
+    // * @param other the object to clone.
+    // |)}>#
+    // VoxelComplex ( const VoxelComplex & other );
   /**
    * Assignment.
    * @param other the object to copy.
@@ -228,6 +253,17 @@ public:
    * @param data associated data with the input cell. @see insertCell
    */
   void insertVoxelCell( const Cell & kcell, const bool & close_it = true, const Data& data = Data() );
+
+  /**
+   * Insert cell(voxel) in K-space and in the object set.
+   *
+   * @param data_pair pair<Cell, Data>
+   * @param close_it if true, apply @voxelClose
+   */
+  void insertVoxelCell( const std::pair<Cell, Data> & data_pair, const bool & close_it = true)
+  {
+    insertVoxelCell(data_pair.first, close_it, data_pair.second);
+  }
 
   /**
    * Create a @uSpel from the input Point and insert it using insertVoxelCell.

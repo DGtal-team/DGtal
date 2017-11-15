@@ -54,7 +54,7 @@ namespace DGtal
     asymetricThinningScheme(
        TComplex & vc ,
        std::function<
-       typename TComplex::Cell (
+       std::pair<typename TComplex::Cell, typename TComplex::Data> (
          const typename TComplex::Clique &)
        > Select ,
        std::function<
@@ -70,7 +70,7 @@ namespace DGtal
     persistenceAsymetricThinningScheme(
        TComplex & vc ,
        std::function<
-       typename TComplex::Cell (
+       std::pair<typename TComplex::Cell, typename TComplex::Data> (
          const typename TComplex::Clique &)
        > Select ,
        std::function<
@@ -92,7 +92,7 @@ namespace DGtal
      * @return first voxel of clique.
      */
     template < typename TComplex >
-    typename TComplex::Cell
+    std::pair<typename TComplex::Cell, typename TComplex::Data>
     selectFirst(
       const typename TComplex::Clique & clique);
 
@@ -105,7 +105,7 @@ namespace DGtal
      * @return random voxel from input clique.
      */
     template < typename TComplex >
-    typename TComplex::Cell
+    std::pair<typename TComplex::Cell, typename TComplex::Data>
     selectRandom(
       const typename TComplex::Clique & clique);
 
@@ -135,7 +135,7 @@ namespace DGtal
      * @see DistanceTransformation.h
      */
     template < typename TDistanceTransform, typename TComplex >
-    typename TComplex::Cell
+    std::pair<typename TComplex::Cell, typename TComplex::Data>
     selectMaxValue(
       const TDistanceTransform & dist_map,
       const typename TComplex::Clique & clique);
@@ -345,6 +345,73 @@ namespace DGtal
     template <typename TObject >
     std::vector< TObject >
     connectedComponents(const TObject & input_obj, bool verbose);
+
+
+//////////////////////////////////////////////////////////////////////////////
+//Operators between VoxelComplexes//
+
+    /**
+     * Voxel Complex difference operation. Updates the voxel complex S1 as S1 - S2.
+     * @tparam TKSpace the digital space in which lives the voxel complex.
+     * @tparam TObject the object type to store voxels and its connectivity.
+     * @tparam TCellContainer the associative container used to store cells within the voxel complex.
+     *
+     * @param[in,out] S1 an input voxel complex, \a S1 - \a S2 as output.
+     * @param[in] S2 another input voxel complex.
+     *
+     * @return a reference to the modified voxel complex S1.
+     */
+    template <typename TKSpace, typename TObject, typename TCellContainer>
+    inline VoxelComplex< TKSpace, TObject, TCellContainer >&
+    operator-=( VoxelComplex< TKSpace, TObject, TCellContainer >& S1,
+                const VoxelComplex< TKSpace, TObject, TCellContainer >& S2 )
+    {
+      typedef VoxelComplex< TKSpace, TObject, TCellContainer > VC;
+      for ( Dimension i = 0; i <= VC::dimension; ++i )
+        setops::operator-=( S1.myCells[ i ],S2.myCells[ i ] );
+      // Update Object. Assuming is an AssociativeContainer
+      auto & S1ObjPoints = S1.myObject.pointSet();
+      const auto & S2ObjPoints = S2.myObject.pointSet();
+      for(auto it2 = S2ObjPoints.begin(); it2 != S2ObjPoints.end(); ++it2)
+      {
+        const auto it_search = S1ObjPoints.find(*it2);
+        if(it_search != S1ObjPoints.end())
+          S1ObjPoints.erase(it_search);
+      }
+      return S1;
+    }
+
+    /**
+     * Voxel Complex difference operation. Returns the difference of \a S1 - \a S2.
+     * @tparam TKSpace the digital space in which lives the voxel complex.
+     * @tparam TObject the object type to store voxels and its connectivity.
+     * @tparam TCellContainer the associative container used to store cells within the voxel complex.
+     *
+     * @param[in] S1 an input voxel complex
+     * @param[in] S2 another input voxel complex.
+     *
+     * @return the voxel complex \a S1 - \a S2.
+     */
+    template <typename TKSpace, typename TObject, typename TCellContainer>
+    inline VoxelComplex< TKSpace, TObject, TCellContainer >
+    operator-( const VoxelComplex< TKSpace, TObject, TCellContainer >& S1,
+               const VoxelComplex< TKSpace, TObject, TCellContainer >& S2 )
+    {
+      typedef VoxelComplex< TKSpace, TObject, TCellContainer > VC;
+      VC S = S1;
+      for ( Dimension i = 0; i <= VC::dimension; ++i )
+        setops::operator-=( S.myCells[ i ],S2.myCells[ i ] );
+      // Update Object. Assuming is an AssociativeContainer
+      auto & SObjPoints = S.myObject.pointSet();
+      const auto & S2ObjPoints = S2.myObject.pointSet();
+      for(auto it2 = S2ObjPoints.begin(); it2 != S2ObjPoints.end(); ++it2)
+      {
+        auto it_search = SObjPoints.find(*it2);
+        if(it_search != SObjPoints.end())
+          SObjPoints.erase(it_search);
+      }
+      return S;
+    }
 
   } // namespace functions
 } // namespace DGtal

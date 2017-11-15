@@ -958,7 +958,7 @@ TEST_CASE_METHOD(Fixture_X, "X Thin", "[x][persistence][isthmus][thin][function]
   using namespace DGtal::functions;
   auto & vc = complex_fixture ;
   auto & ks = vc.space();
-  bool verbose = false;
+  bool verbose = true;
   SECTION( "persistence value of 1 is equivalent to the assymetric algorithm" ){
     auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
         vc, selectFirst<FixtureComplex>, skelEnd<FixtureComplex>, 1, verbose);
