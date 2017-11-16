@@ -119,11 +119,15 @@ namespace DGtal
      * will not be correct.
      *
      * @param [out] outputSet the set that collects the voxels.
-     * @param [in] aMesh the mesh to voxelize
-     * @param [in] scaleFactor the scale factor to apply to the mesh (default=1.0)
+     * @param [in] aMesh the mesh to voxelize (vertex coordinates will
+     * be casted to @e PointR3 points.
+     * @param [in] scaleFactor the scale factor to apply to the mesh
+     * (default=1.0)
+     * @tparam MeshPoint the type of point of the mesh.
      */
+    template<typename MeshPoint>
     void voxelize(DigitalSet &outputSet,
-                  const Mesh<PointR3> &aMesh,
+                  const Mesh<MeshPoint> &aMesh,
                   const double scaleFactor = 1.0);
 
     /**
@@ -135,10 +139,13 @@ namespace DGtal
      * @param [in] b the second point of the triangle
      * @param [in] c the third point of the triangle
      * @param [in] scaleFactor the scale factor to apply to the triangle (default=1.0)
+     * @tparam MeshPoint the type of point of the triangle (casted to
+     * PointR3 later).
      *
      */
+    template<typename MeshPoint>
     void voxelize(DigitalSet &outputSet,
-                  const PointR3 &a, const PointR3 &b, const PointR3 &c,
+                  const MeshPoint &a, const MeshPoint &b, const MeshPoint &c,
                   const double scaleFactor = 1.0);
 
 

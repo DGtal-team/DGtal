@@ -164,18 +164,20 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
 
 // ---------------------------------------------------------
 template <typename TDigitalSet, int Separation>
+template <typename MeshPoint>
 inline
 void
 DGtal::MeshVoxelizer<TDigitalSet,Separation>::voxelize(DigitalSet &outputSet,
-                                                       const PointR3 &a,
-                                                       const PointR3 &b,
-                                                       const PointR3 &c,
+                                                       const MeshPoint &a,
+                                                       const MeshPoint &b,
+                                                       const MeshPoint &c,
                                                        const double scaleFactor)
 {
   std::pair<PointR3, PointR3> bbox;
   VectorR3 n, e1, e2;
   PointR3 A, B, C;
 
+  //Scaling + casting to PointR3
   A = a*scaleFactor;
   B = b*scaleFactor;
   C = c*scaleFactor;
@@ -206,10 +208,11 @@ DGtal::MeshVoxelizer<TDigitalSet,Separation>::voxelize(DigitalSet &outputSet,
 
 // ---------------------------------------------------------
 template <typename TDigitalSet, int Separation>
+template <typename MeshPoint>
 inline
 void
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
-                                                        const Mesh<PointR3> &aMesh,
+                                                        const Mesh<MeshPoint> &aMesh,
                                                         const double scaleFactor)
 {
   DigitalSet rawEmpty{outputSet.domain()};

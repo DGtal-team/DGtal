@@ -1,6 +1,7 @@
 
 SET(DGTAL_EXAMPLES_SRC
-	exampleEuclideanShapesDecorator
+  exampleEuclideanShapesDecorator
+  exampleMeshVoxelizer
 )
 
 
