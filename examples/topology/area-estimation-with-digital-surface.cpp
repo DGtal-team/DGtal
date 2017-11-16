@@ -41,7 +41,7 @@
  * @see \ref dgtal_digsurf_sec5
  *
 @verbatim
-$ ./examples/topology/area-estimation-with-digital-surface
+$ ./examples/topology/area-estimation-with-digital-surface 13 6
 New Block [Creating surface]
   Sphere of radius 13, 6-ring neighborhood
   [OK] Sphere has 3174 vertices/surfels
@@ -61,6 +61,7 @@ EndBlock [Estimating area] (0.626 ms)
 
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
 #include <iostream>
 #include <map>
 #include "DGtal/base/Common.h"
@@ -81,8 +82,8 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
-  const double    R = 13.0; // radius of ball
-  const int k_neigh = 6;    // size of neighborhood
+  const double    R = argc >= 2 ? atof( argv[ 1 ] ) : 13.0; // radius of ball
+  const int k_neigh = argc >= 3 ? atoi( argv[ 2 ] ) : 6;    // size of neighborhood
   const int       M = (int) ceil( R + 2.0 );
   trace.beginBlock( "Creating surface" );
   trace.info() << "Sphere of radius " << R

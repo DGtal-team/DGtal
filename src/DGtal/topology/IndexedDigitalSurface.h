@@ -90,8 +90,7 @@ namespace DGtal
    * ImplicitDigitalSurface, ExplicitDigitalSurface,
    * DigitalSetBoundary, etc.
    *
-   * @see \ref dgtal_digsurf_sec3_2
-   * @see \ref HalfEdgeDataStructure
+   * See \ref dgtal_digsurf_sec3_2 and \ref HalfEdgeDataStructure.
    */
   template <typename TDigitalSurfaceContainer>
   class IndexedDigitalSurface
