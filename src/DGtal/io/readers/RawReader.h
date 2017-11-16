@@ -116,7 +116,7 @@ namespace DGtal
     template <typename Word>
     static ImageContainer importRaw(const std::string & filename,
              const Vector & extent,
-             const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+             const Functor & aFunctor =  Functor());
 
     /**
      * Method to import a Raw (unsigned 8bits little endian, uint8_t, unsigned char) into an instance of the
@@ -132,7 +132,7 @@ namespace DGtal
      */
     static ImageContainer importRaw8(const std::string & filename,
              const Vector & extent,
-             const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+             const Functor & aFunctor =  Functor());
 
     /**
      * Method to import a Raw (unsigned 16bits little endian, uint16_t, unsigned short) into an instance of the
@@ -148,7 +148,7 @@ namespace DGtal
      */
     static ImageContainer importRaw16(const std::string & filename,
              const Vector & extent,
-             const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+             const Functor & aFunctor =  Functor());
 
     /**
      * Method to import a Raw (unsigned 32bits little endian, uint32_t, unsigned int) into an instance of the
@@ -164,7 +164,7 @@ namespace DGtal
      */
     static ImageContainer importRaw32(const std::string & filename,
              const Vector & extent,
-             const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+             const Functor & aFunctor =  Functor());
 
 
   private:

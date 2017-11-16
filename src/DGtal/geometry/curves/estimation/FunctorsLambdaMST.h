@@ -62,7 +62,7 @@ namespace functors
    * \f$ 64 ( -x^6 + 3 x^5 - 3 x^4 + x^3 ) \f$
    * 
    */
-  struct Lambda64Function : std::unary_function < double, double >
+  struct Lambda64Function
   {
       double operator() (double x) const
       {
@@ -76,7 +76,7 @@ namespace functors
    * \f$ \sin x \pi \f$
    * 
    */
-  struct LambdaSinFromPiFunction : std::unary_function < double, double >
+  struct LambdaSinFromPiFunction
   {
       double operator() (double x) const
       {
@@ -89,7 +89,7 @@ namespace functors
    * \f$ \frac{2}{\exp ( 15 (x- \frac{1}{2} ) ) + \exp(15(\frac{1}{2}-x)) } \f$
    * 
    */
-  struct LambdaExponentialFunction : std::unary_function < double, double >
+  struct LambdaExponentialFunction
   {
       double operator() (double x) const
       {

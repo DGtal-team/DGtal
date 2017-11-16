@@ -19,6 +19,10 @@
 
 ## Bug Fixes
 
+- *Build*
+ - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
+   Pablo H Cerdan, [#1290](https://github.com/DGtal-team/DGtal/pull/1290))
+
 - *Shapes Package*
  - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
    Improves projection operator on implicit surface and curvature
@@ -32,6 +36,9 @@
  - The documentation mainpage now refers to the DGtalTools documentation
    (David Coeurjolly,
    [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
+ - Fix ITK related try_compile command to work for non-default locations.
+   (Pablo Hernandez,
+   [#1286]((https://github.com/DGtal-team/DGtal/pull/1286))
 
 - *IO*
 - Fix for compilation with 2.7.0 QGLViewer version.
@@ -74,6 +81,8 @@
    (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
  - Remove cpp11 deprecated usage of std::binder1st and std::binder2nd --generates error with c++17 flag.
    (Pablo Hernandez, [#1287](https://github.com/DGtal-team/DGtal/pull/1287))
+ - Remove cpp11 deprecated usage of std::unary_function and std::binary_function --generates error with c++17 flag.
+   (Pablo Hernandez, [#1291](https://github.com/DGtal-team/DGtal/pull/1291))
 
 - *Topology Package*
  -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.

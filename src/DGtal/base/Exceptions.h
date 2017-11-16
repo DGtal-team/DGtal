@@ -51,7 +51,7 @@ namespace DGtal
    */ 
   class IOException: public std::exception
   {
-    virtual const char* what() const throw()
+    virtual const char* what() const noexcept
     {
       return "DGtal IO error";
     }
@@ -63,7 +63,7 @@ namespace DGtal
   class InputException: public std::exception
   {
     public:
-    virtual const char* what() const throw()
+    virtual const char* what() const noexcept
     {
       return "DGtal bad input error";
     }
@@ -75,7 +75,7 @@ namespace DGtal
   class ConnectivityException: public std::exception
   {
     public:
-    virtual const char* what() const throw()
+    virtual const char* what() const noexcept
     {
       return "DGtal bad connectivity error";
     }
@@ -86,7 +86,7 @@ namespace DGtal
    */ 
   class MemoryException: public std::exception
   {
-    virtual const char* what() const throw()
+    virtual const char* what() const noexcept
     {
       return "DGtal memory error";
     }
@@ -97,7 +97,7 @@ namespace DGtal
    */ 
   class InfiniteNumberException: public std::exception
   {
-    virtual const char* what() const throw()
+    virtual const char* what() const noexcept
     {
       return "DGtal infinite number error";
     }

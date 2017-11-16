@@ -55,7 +55,7 @@ template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer
 DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFilename, const std::string & aDataset,
-					       const Functor & aFunctor, bool topbotomOrder) throw(DGtal::IOException)
+					       const Functor & aFunctor, bool topbotomOrder)
 {
   DGtal::IOException dgtalio;
 
@@ -153,7 +153,7 @@ template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer
 DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & aFilename, const std::string & aDataset,
-                                               const Functor & aFunctor) throw(DGtal::IOException)
+                                               const Functor & aFunctor)
 {
   DGtal::IOException dgtalio;
 
