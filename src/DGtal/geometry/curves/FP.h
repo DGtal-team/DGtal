@@ -318,7 +318,7 @@ namespace DGtal
      * @param itb  begin iterator
      * @param ite  end iterator
      */
-    FP(const TIterator& itb, const TIterator& ite) throw( InputException ) ;
+    FP(const TIterator& itb, const TIterator& ite);
   
     /**
      * Destructor.
@@ -439,7 +439,7 @@ namespace DGtal
      * @param itb  begin iterator
      * @param ite  end iterator
      */
-    void algorithm(const TIterator& itb, const TIterator& ite)  throw( InputException );
+    void algorithm(const TIterator& itb, const TIterator& ite);
 
     /**
      * Main algorithm overloading for classic iterator types
@@ -447,7 +447,7 @@ namespace DGtal
      * @param itb  begin iterator
      * @param ite  end iterator
      */
-    void algorithm(const TIterator& itb, const TIterator& ite, IteratorType )  throw( InputException );
+    void algorithm(const TIterator& itb, const TIterator& ite, IteratorType );
 
     /**
      * Main algorithm overloading for circular iterator types
@@ -455,7 +455,7 @@ namespace DGtal
      * @param itb  begin iterator
      * @param ite  end iterator
      */
-    void algorithm(const TIterator& itb, const TIterator& ite, CirculatorType )  throw( InputException );
+    void algorithm(const TIterator& itb, const TIterator& ite, CirculatorType );
 
 
 

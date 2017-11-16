@@ -48,6 +48,10 @@
  - Fix testBasicPointFunctor. (Bertrand Kerautret
    [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
+- *Arithmetic Package*
+ - Fix SternBrocot and variants static instanciations. (Jacques-Olivier Lachaud
+   [#1293](https://github.com/DGtal-team/DGtal/pull/1293))
+
 - *Documentation*
  - Add import with functors in GenericReader in the main default reader.
    (mainly motivated to show documentation of specialized version of
@@ -68,6 +72,10 @@
    [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
  - New mandatory dependency for DGtal: zlib must be installed in the system.
    (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
+ - Remove cpp11 deprecated usage of std::binder1st and std::binder2nd --generates error with c++17 flag.
+   (Pablo Hernandez, [#1287](https://github.com/DGtal-team/DGtal/pull/1287))
+ - Remove cpp11 deprecated usage of std::unary_function and std::binary_function --generates error with c++17 flag.
+   (Pablo Hernandez, [#1291](https://github.com/DGtal-team/DGtal/pull/1291))
 
 - *Topology Package*
  -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.

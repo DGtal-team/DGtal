@@ -295,7 +295,7 @@ namespace DGtal
      * NB: linear-time in the size of the range
      */
     template <typename Iterator>
-    ArithmeticalDSS(const Iterator& aItb, const Iterator& aIte) throw( InputException );
+    ArithmeticalDSS(const Iterator& aItb, const Iterator& aIte);
 
     /**
      * Copy constructor.
@@ -912,7 +912,7 @@ namespace DGtal
      * NB: linear-time in the size of the range
      */
     template <typename Iterator>
-    StandardDSS4(const Iterator& aItb, const Iterator& aIte) throw( InputException );
+    StandardDSS4(const Iterator& aItb, const Iterator& aIte);
 
     /**
      * Copy constructor.
@@ -1051,7 +1051,7 @@ namespace DGtal
      * NB: linear-time in the size of the range
      */
     template <typename Iterator>
-    NaiveDSS8(const Iterator& aItb, const Iterator& aIte) throw( InputException );
+    NaiveDSS8(const Iterator& aItb, const Iterator& aIte);
 
     /**
      * Copy constructor.
