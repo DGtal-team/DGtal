@@ -17,14 +17,77 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleMeshVoxelization Mesh Digitization
+@page moduleMeshVoxelization Mesh Voxelization
 @writers David Coeurjolly, Monir Hadji
 
 [TOC]
 
-\section sectMeshVoxelization1 First Section
+@seeDGtalTools @ref meshVoxelizer
 
-\subsection subsectMeshVoxelization11 Subsection 1.1
+
+\section sectVoxelization1 Introduction
+
+This documentation describes a voxelization approach of a triangulated structure.
+The proposed approach follows the method described by Laine @cite Laine13.
+
+@note The digitization is not a @e solid voxelization in the sense
+that if the input mesh is a closed surface, interior voxels are not
+exported. Only the triangles are digitized.
+
+The approach is rather simple: Given a triangulated mesh, the
+MeshVoxlizer processes each triangle independently. If the triangle
+intersects a given @a template centered ot a given grid point, then
+the grid point belongs to the digitization of the triangle.
+
+The geometry of the template is used to control the topology of the
+resulting digital set. We provide two templates to obtain 6- and
+26-separable digital sets (see \ref sectVoxelization3 for discussion).
+
+@image html 6-sep.png "Template for 6-separating digitization"
+@image html 26-sep.png "Template for 26-separating digitization"
+
+
+\section sectVoxelization2 Basic Usage
+
+Given a Mesh @a aMesh, the MeshVoxelizer class is template by a
+type of digital set (model of concepts::CDigitalSet) to store the
+voxels, and an integer specifying the expected separability of the
+surface (either 6 or 26).
+
+Let us first create a simple unit cube (see exampleMeshVoxelizer)
+
+@snippet examples/shapes/exampleMeshVoxelizer.cpp MeshVoxelizerCreatingMesh
+
+We then create a voxelization of a scaled version of the cube onto a
+@f$ 128^3@f$ domain:
+
+@snippet examples/shapes/exampleMeshVoxelizer.cpp MeshVoxelizerDig
+
+Once exported
+
+@snippet examples/shapes/exampleMeshVoxelizer.cpp MeshVoxelizerExport
+
+we obtain the following voxel set:
+
+@image html resultCube.png "Resulting voxelSet (quad faces triangulated by the viewer)"
+
+
+@note If you have enabled OpenMP in DGtal, the voxelizer will perform
+the digitization of the triangles in parallel. 
+
+
+@warning If the input mesh has non-triangular faces, such faces will
+be automatically triangulated using a naive fan approach. Hence, if
+the face in not planar and/or convex, the resulting digitization might
+be incorrect.
+
+\section sectVoxelization3 Limitations
+
+At this point intersection tests are performed using arithmetics on @e
+double as an approximation of @f$ \mathbb{R}^3@f$. The digitization
+may not be exact when the mesh are integer or rational vertices for
+instance.
+
 
 */
 
