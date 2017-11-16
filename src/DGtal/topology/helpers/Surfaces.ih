@@ -64,7 +64,7 @@ DGtal::Surfaces<TKSpace>::
 findABel
 ( const KSpace & K,
   const PointPredicate & pp,
-  unsigned int nbtries) throw (DGtal::InputException)
+  unsigned int nbtries)
 {
   BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
 

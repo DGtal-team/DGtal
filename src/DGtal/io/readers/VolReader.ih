@@ -47,7 +47,7 @@ template <typename T, typename TFunctor>
 inline
 T
 DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
-                                         const Functor & aFunctor)   throw( DGtal::IOException )
+                                         const Functor & aFunctor)
 {
   FILE * fin;
   DGtal::IOException dgtalexception;

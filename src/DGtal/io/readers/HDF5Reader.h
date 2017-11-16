@@ -95,7 +95,7 @@ namespace DGtal
      *
      */
     static ImageContainer importHDF5(const std::string & aFilename, const std::string & aDataset,
-				      const Functor & aFunctor =  Functor(), bool topbotomOrder = true) throw(DGtal::IOException);
+				      const Functor & aFunctor =  Functor(), bool topbotomOrder = true);
                                       
                                       
     /** 
@@ -111,7 +111,7 @@ namespace DGtal
      *
      */
     static ImageContainer importHDF5_3D(const std::string & aFilename, const std::string & aDataset,
-                                      const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+                                      const Functor & aFunctor =  Functor());
     
  }; // end of class  HDF5Reader
 

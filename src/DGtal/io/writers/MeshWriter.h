@@ -91,7 +91,7 @@ namespace DGtal
      */
     
     static bool export2OFF(std::ostream &out, const  Mesh<TPoint>  &aMesh, 
-                           bool exportColor=true) throw(DGtal::IOException);
+                           bool exportColor=true);
   
   
 
@@ -104,7 +104,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     
-    static bool export2OBJ(std::ostream &out, const  Mesh<TPoint>  &aMesh) throw(DGtal::IOException);
+    static bool export2OBJ(std::ostream &out, const  Mesh<TPoint>  &aMesh);
 
     /** 
      * Export a Mesh towards a OBJ format including face colors.
@@ -118,7 +118,7 @@ namespace DGtal
     
     static bool export2OBJ_colors(std::ostream &out, std::ostream &outMTL,
                                   const std::string nameMTLFile,
-                                  const  Mesh<TPoint>  &aMesh) throw(DGtal::IOException);
+                                  const  Mesh<TPoint>  &aMesh);
     
     
   };
