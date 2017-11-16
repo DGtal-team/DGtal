@@ -673,7 +673,7 @@ pointels). It is because the topology of the primal digital surface
 seen as a 2-dimensional cubical complex is not a 2-manifold in
 general. However, for its dual, we are able to define a 2-manifold.
 
-@subsection dgtal_digsurf_sec5_2  Using an IndexedDigitalSurface
+@subsection dgtal_digsurf_sec5_2  Guide for using an IndexedDigitalSurface
 
 Once the indexed surface is created, you may use it as a
 DigitalSurface. First it is a model of graph
@@ -736,6 +736,20 @@ The following services are also provided:
   on the boundary.
 - IndexedDigitalSurface::isArcBoundary (Arc): true iff it lies
   on the boundary.
+
+@subsection dgtal_digsurf_sec5_3  When using an IndexedDigitalSurface instead of a DigitalSurface ?
+
+You should use an IndexedDigitalSurface when:
+- the digital surface is never modified
+- you use a lot traversal operations (like computing k-neighborhoods everywhere)
+- you do not use too much the cell geometry and topology but just their combinatorial relations
+
+You should use a DigitalSurface when
+- you use a lot the geometry and topology of cells
+- the digital surface is sometimes modified (then use light containers)
+- you just iterate over surfels and perform few neighborhood operations.
+
+
 
 
 */

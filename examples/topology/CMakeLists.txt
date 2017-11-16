@@ -11,6 +11,8 @@ SET(DGTAL_EXAMPLES_TOPO_SRC
   digitalSetToCubicalComplexes2D
   cubical-complex-illustrations
   cubicalComplexThinning
+  area-estimation-with-digital-surface
+  area-estimation-with-indexed-digital-surface
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_TOPO_SRC}) 
