@@ -2,6 +2,12 @@
 
 ## New Features / Critical Changes
 
+- *Shapes*
+
+  - Mesh Voxelizer using 6- or 26-separability templated
+    (DavidCoeurjolly, Monir Hadji,
+    [#1209](https://github.com/DGtal-team/DGtal/pull/1209))
+
 ## Changes
 
 - *Math package*
