@@ -73,10 +73,10 @@ namespace DGtal
    * space. If you need further data attached to the surface, you may
    * use property maps (see `IndexedDigitalSurface::makeVertexMap`).
    *
-   * The user instantiates the object with a DigitalSurfaceContainer or
-   * a DigitalSurface.
+   * The user instantiates the object with a model of
+   * concepts::CDigitalSurfaceContainer or a DigitalSurface.
    *
-   * Model of CUndirectedSimpleGraph: the vertices and edges of the
+   * Model of concepts::CUndirectedSimpleGraph: the vertices and edges of the
    * digital surface form indeed a graph structure.
    *
    * @note Vertices, Arcs, and Faces are all integer ranging from 0 to
@@ -90,8 +90,8 @@ namespace DGtal
    * ImplicitDigitalSurface, ExplicitDigitalSurface,
    * DigitalSetBoundary, etc.
    *
-   * @see dgtal_digsurf_sec3_2
-   * @see HalfEdgeDataStructure
+   * @see \ref dgtal_digsurf_sec3_2
+   * @see \ref HalfEdgeDataStructure
    */
   template <typename TDigitalSurfaceContainer>
   class IndexedDigitalSurface
