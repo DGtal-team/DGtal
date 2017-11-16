@@ -113,7 +113,7 @@ namespace DGtal
 	 * @return an instance of the ImageContainer.
 	 */
 	static ImageContainer importDicom(const std::string & aFilename,
-									  const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+									  const Functor & aFunctor =  Functor());
 
  }; // end of class  DicomReader
 

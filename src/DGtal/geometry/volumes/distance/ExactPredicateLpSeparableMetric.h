@@ -85,15 +85,9 @@ namespace DGtal
   template <typename TSpace, DGtal::uint32_t p,
             typename TRawValue=DGtal::int64_t>
   class ExactPredicateLpSeparableMetric
-    : public std::binary_function< typename TSpace::Point, typename TSpace::Point, double >
   {
     // ----------------------- Standard services ------------------------------
   public:
-    typedef std::binary_function< typename TSpace::Point, typename TSpace::Point, double > Base;
-    typedef typename Base::first_argument_type first_argument_type;
-    typedef typename Base::second_argument_type second_argument_type;
-    typedef typename Base::result_type result_type;
-
     ///Copy the space type
     typedef TSpace Space;
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
@@ -265,7 +259,6 @@ namespace DGtal
  template <typename TSpace,
            typename TRawValue>
  class ExactPredicateLpSeparableMetric<TSpace, 2, TRawValue>
-   : public std::binary_function< typename TSpace::Point, typename TSpace::Point, double >
   {
     // ----------------------- Standard services ------------------------------
   public:

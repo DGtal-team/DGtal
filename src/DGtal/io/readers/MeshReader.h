@@ -109,7 +109,7 @@ public:
   */
   
   static  bool  importOFFFile(const std::string & filename, 
-			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
+			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false);
   
 
   
@@ -125,7 +125,7 @@ public:
   */
   
   static  bool  importOFSFile(const std::string & filename, 
-			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false, double scale=1.0) throw(DGtal::IOException);
+			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false, double scale=1.0);
   
   
   
