@@ -27,7 +27,6 @@
  * This file is part of the DGtal library.
  */
 
-
 /** 
  * Computing the area of a sphere with an indexed digital
  * surface. First normals are estimated by averaging the trivial
@@ -35,26 +34,26 @@
  * area (scalar product of estimated normal with trivial normal) and
  * the averaged area (inverse of L1-norm of estimated normal) is
  * computed per surfel, and summed in order to get area estimation.
- * This example illustrates the use of an IndexedDigitalSurface and
- * BreadthFirstVisitor onto it. This method is slightly faster than
- * using a DigitalSurface.
+ * This example illustrates the use of a \ref DGtal::IndexedDigitalSurface and
+ * \ref DGtal::BreadthFirstVisitor onto it. This method is slightly faster than
+ * using a \ref DGtal::DigitalSurface.
  *
  * @see \ref dgtal_digsurf_sec5
  *
- * @verbatim
- * $ ./examples/topology/area-estimation-with-indexed-digital-surface
- * New Block [Creating surface]
- *   Sphere of radius 13, 6-ring neighborhood
- *   [OK] Sphere has 3174 vertices/surfels with euler 2
- * EndBlock [Creating surface] (55.999 ms)
- * New Block [Estimating normals]
- * EndBlock [Estimating normals] (274.712 ms)
- * New Block [Estimating area]
- *   - true area      = 2123.72
- *   - corrected area = 2109.58
- *   - averaged area  = 2150.34
- * EndBlock [Estimating area] (0.023 ms)
- * @endverbatim
+@verbatim
+$ ./examples/topology/area-estimation-with-indexed-digital-surface
+New Block [Creating surface]
+  Sphere of radius 13, 6-ring neighborhood
+  [OK] Sphere has 3174 vertices/surfels with euler 2
+EndBlock [Creating surface] (55.999 ms)
+New Block [Estimating normals]
+EndBlock [Estimating normals] (274.712 ms)
+New Block [Estimating area]
+  - true area      = 2123.72
+  - corrected area = 2109.58
+  - averaged area  = 2150.34
+EndBlock [Estimating area] (0.023 ms)
+@endverbatim
  *
  *\example topology/area-estimation-with-indexed-digital-surface.cpp
  *

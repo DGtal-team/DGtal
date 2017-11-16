@@ -30,7 +30,9 @@ traversals), this can speed-up algorithms up to three times faster.
 The following programs are related to this documentation:
 volToOFF.cpp, volMarchingCubes.cpp,
 volScanBoundary.cpp, volTrackBoundary.cpp, frontierAndBoundary.cpp,
-volBreadthFirstTraversal.cpp, trackImplicitPolynomialSurfaceToOFF.cpp
+volBreadthFirstTraversal.cpp, trackImplicitPolynomialSurfaceToOFF.cpp,
+area-estimation-with-digital-surface.cpp,
+area-estimation-with-indexed-digital-surface.cpp
 
 @section dgtal_digsurf_sec1  Introduction to digital surfaces
 
@@ -749,7 +751,11 @@ You should use a DigitalSurface when
 - the digital surface is sometimes modified (then use light containers)
 - you just iterate over surfels and perform few neighborhood operations.
 
-
+Examples area-estimation-with-digital-surface.cpp and
+area-estimation-with-indexed-digital-surface.cpp illustrate the
+similarities of classes DigitalSurface and IndexedDigitalSurface as
+well as their slight differences. They show how to estimate the area
+of a digital sphere.
 
 
 */
