@@ -59,6 +59,10 @@
  - Fix SternBrocot and variants static instanciations. (Jacques-Olivier Lachaud
    [#1293](https://github.com/DGtal-team/DGtal/pull/1293))
 
+- *Topology Package*
+ - Fix invalid KhalimskyCell coordinates in ctopo-fillContours.cpp example.
+   (Roland Denis, [#1296](https://github.com/DGtal-team/DGtal/pull/1296))
+
 - *Documentation*
  - Add import with functors in GenericReader in the main default reader.
    (mainly motivated to show documentation of specialized version of
