@@ -744,7 +744,9 @@ The following services are also provided:
 You should use an IndexedDigitalSurface when:
 - the digital surface is never modified
 - you use a lot traversal operations (like computing k-neighborhoods everywhere)
+- you use a lot surface operations (order of faces around a vertex)
 - you do not use too much the cell geometry and topology but just their combinatorial relations
+- or you need to number your cells consecutively.
 
 You should use a DigitalSurface when
 - you use a lot the geometry and topology of cells
