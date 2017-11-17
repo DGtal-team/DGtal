@@ -70,13 +70,12 @@ namespace DGtal
   */
   struct VoxelComplexCellData: public CubicalCellData {
     inline VoxelComplexCellData() :
-      CubicalCellData(), birth_date( 0 ), mature( 0 ) {}
+      CubicalCellData(), birth_date( 0 ){}
     VoxelComplexCellData( uint32_t d ) :
-      CubicalCellData( d ), birth_date( 0 ), mature( 0 ) {}
-    VoxelComplexCellData( uint32_t d, uint32_t birth, uint32_t lifetime ) :
-      CubicalCellData( d ), birth_date( birth ), mature( lifetime ) {}
+      CubicalCellData( d ), birth_date( 0 ) {}
+    VoxelComplexCellData( uint32_t d, uint32_t birth) :
+      CubicalCellData( d ), birth_date( birth ){}
     uint32_t birth_date;
-    uint32_t mature;
   };
 
   // Forward definitions.
