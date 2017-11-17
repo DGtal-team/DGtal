@@ -231,7 +231,9 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
                scaleFactor);
     }
 
-    #pragma omp critical
+#ifdef WITH_OPENMP
+   #pragma omp critical
+#endif
     {
       outputSet += currentSet;
     }
