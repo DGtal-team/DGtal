@@ -82,12 +82,12 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
-  const double    R = argc >= 2 ? atof( argv[ 1 ] ) : 13.0; // radius of ball
-  const int k_neigh = argc >= 3 ? atoi( argv[ 2 ] ) : 6;    // size of neighborhood
-  const int       M = (int) ceil( R + 2.0 );
+  const double        R = argc >= 2 ? atof( argv[ 1 ] ) : 13.0; // radius of ball
+  const unsigned int KN = argc >= 3 ? atoi( argv[ 2 ] ) : 6;    // size of neighborhood
+  const int           M = (int) ceil( R + 2.0 );
   trace.beginBlock( "Creating surface" );
   trace.info() << "Sphere of radius " << R
-	       << ", " << k_neigh << "-ring neighborhood" << std::endl;
+	       << ", " << KN << "-ring neighborhood" << std::endl;
   typedef DigitalSetBoundary   < KSpace, DigitalSet >      DigitalSurfaceContainer;
   typedef DigitalSurface       < DigitalSurfaceContainer > DigSurface;
   typedef BreadthFirstVisitor  < DigSurface >              BFSVisitor;
@@ -112,7 +112,7 @@ int main( int argc, char** argv )
       while( ! bfv.finished() )
 	{ // Vertex are colored according to the distance to initial seed.
 	  auto node    = bfv.current();
-	  if ( k_neigh < node.second ) break;
+	  if ( KN < node.second ) break;
           auto surfel  = node.first;
 	  RealPoint nv = RealPoint::zero;
 	  Dimension  k = K.sOrthDir( surfel );
