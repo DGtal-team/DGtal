@@ -103,6 +103,7 @@ digraph GTOPOLOGY {
             label="(main graph models)";
 
             DigitalSurface [ label="DigitalSurface" URL="\ref DigitalSurface" ];
+            IndexedDigitalSurface [ label="IndexedDigitalSurface" URL="\ref IndexedDigitalSurface" ] ;
         }   
 
         subgraph cluster_models_1 {
@@ -142,6 +143,8 @@ digraph GTOPOLOGY {
     LightExplicitDigitalSurface -> CUndirectedSimpleLocalGraph;
     DigitalSurface -> CUndirectedSimpleGraph;
     DigitalSurface -> CDigitalSurfaceContainer [label="use",style=dashed];
+    IndexedDigitalSurface -> CUndirectedSimpleGraph;
+    IndexedDigitalSurface -> CDigitalSurfaceContainer [label="use",style=dashed];
 
     SurfelSetPredicate -> CSurfelPredicate;
     BoundaryPredicate -> CSurfelPredicate;

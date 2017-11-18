@@ -2,12 +2,27 @@
 
 ## New Features / Critical Changes
 
+
+- *Topology Package*
+ - Adding the half-edge data structure to represent arbitrary
+   two-dimensional combinatorial surfaces with or without boundary
+   (Jacques-Olivier Lachaud
+    [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+
+- *Shapes Package*
+ - Adding classes and helpers to create triangulated surfaces and
+   polygonal surfaces to convert them from/to mesh, as well as a conversion from digital
+   surfaces to dual triangulated or polygonal surface (Jacques-Olivier
+   Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+
+
 ## Changes
 
 - *Math package*
  - New SimpleMatrix constructor with a initializer_list argument
-   (Nicolas Normand,
+   (Nicolas Normand,
    [#1250](https://github.com/DGtal-team/DGtal/pull/1250))
+
 - *IO*
   - New simple way to extend the QGLViewer-based Viewer3D interface,
     for instance to add callbacks to key or mouse events, or to modify
@@ -18,6 +33,10 @@
    (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
 
 ## Bug Fixes
+
+- *Build*
+ - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
+   Pablo H Cerdan, [#1290](https://github.com/DGtal-team/DGtal/pull/1290))
 
 - *Shapes Package*
  - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
@@ -32,6 +51,9 @@
  - The documentation mainpage now refers to the DGtalTools documentation
    (David Coeurjolly,
    [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
+ - Fix ITK related try_compile command to work for non-default locations.
+   (Pablo Hernandez,
+   [#1286]((https://github.com/DGtal-team/DGtal/pull/1286))
 
 - *IO*
 - Fix for compilation with 2.7.0 QGLViewer version.
@@ -61,6 +83,7 @@
  - Fix exampleArithDSS3d compilation (which was not activated).
    (Bertrand Kerautret
    [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
+
 
 # DGtal 0.9.3
 
