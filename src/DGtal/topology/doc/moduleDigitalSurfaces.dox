@@ -10,19 +10,29 @@ namespace DGtal {
 
 @writers Jacques-Olivier Lachaud
 
-  Part of the \ref packageTopology.
+Part of the \ref packageTopology.
   
 This part of the manual describes how to define digital surfaces,
 closed or open. A lot of the ideas, concepts, algorithms,
 documentation and code is a backport from <a
-href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. \cite ImaGene
+href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a> \cite
+ImaGene.  Digital surfaces can be defined in very different way
+depending on input data, but they can be manipulated uniformly with
+class \ref DigitalSurface, whichever is the dimension. Note that the
+topology within digital surfaces is computed on-the-fly. Since 0.9.4,
+one can precompute the topology of a 3D digital surface with class
+\ref IndexedDigitalSurface. In some usages (typically local
+traversals), this can speed-up algorithms up to three times faster.
+
 [TOC]
 
 
 The following programs are related to this documentation:
 volToOFF.cpp, volMarchingCubes.cpp,
 volScanBoundary.cpp, volTrackBoundary.cpp, frontierAndBoundary.cpp,
-volBreadthFirstTraversal.cpp, trackImplicitPolynomialSurfaceToOFF
+volBreadthFirstTraversal.cpp, trackImplicitPolynomialSurfaceToOFF.cpp,
+area-estimation-with-digital-surface.cpp,
+area-estimation-with-indexed-digital-surface.cpp
 
 @section dgtal_digsurf_sec1  Introduction to digital surfaces
 
@@ -534,18 +544,15 @@ for each face it lists the coordinates of its vertices.
 // digSurf is any object of type MyDigitalSurface. 
 // K is a cellular space. 
 MyDigitalSurface::FaceSet all_faces = digSurf.allFaces();
-for ( MyDigitalSurface::FaceSet::const_iterator it = all_faces.begin(),
- it_end = all_faces.end(); it != it_end; ++it )
- {
-std::cerr << " face=" << K.sKCoords( digSurf.pivot( *it ) ) << ":";
-std::cerr << "(" << it->nbVertices << ")" << (it->isClosed() ? "C": "O");
-MyDigitalSurface::VertexRange vtx = digSurf.verticesAroundFace( *it );
-for ( unsigned int i = 0; i < vtx.size(); ++i )
+for ( auto it = all_faces.begin(), it_end = all_faces.end(); it != it_end; ++it )
   {
- std::cerr << " " << K.sKCoords( vtx[ i ] );
+    std::cerr << " face=" << K.sKCoords( digSurf.pivot( *it ) ) << ":";
+    std::cerr << "(" << it->nbVertices << ")" << (it->isClosed() ? "C": "O");
+    MyDigitalSurface::VertexRange vtx = digSurf.verticesAroundFace( *it );
+    for ( unsigned int i = 0; i < vtx.size(); ++i )
+      std::cerr << " " << K.sKCoords( vtx[ i ] );
+    std::cerr << std::endl;
   }
-std::cerr << std::endl;
- }
 @endcode 
 
 DigitalSurface provides you with many methods to get faces from
@@ -603,6 +610,155 @@ the edge.
 @image latex digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file." width=0.5\textwidth
 @image html digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file."
 @image latex digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file." width=0.5\textwidth
+
+
+@section dgtal_digsurf_sec5  Precomputed 3D digital surface with IndexedDigitalSurface
+
+Digital surfaces are built upon digital surface containers. Although
+containers may be very differnt, digital surfaces provide a uniform
+interface to visit them and to explore their topology. But they are
+merely just an interface. Hence neighbors, umbrellas, and sometimes
+even vertices are recomputed on-the-fly as needed.
+
+In some cases, it is a better idea to compute the topology once and
+for all and to store it as fixed arrays. This is the purpose of class
+\ref IndexedDigitalSurface.
+
+@note For now, the class IndexedDigitalSurface can only handle 3D
+digital surface containers. It is because the topology is stored in a
+half-edge data structure (\ref HalfEdgeDataStructure), which can only
+represents 2D combinatorial manifolds.
+
+
+@subsection dgtal_digsurf_sec5_1  Creating an IndexedDigitalSurface
+
+Similarly to a DigitalSurface, one creates an IndexedDigitalSurface
+with a model of digital surface container
+(concepts::CDigitalSurfaceContainer). The following snippet creates it
+from a DigitalSetBoundary (the boundary of a ball of radius 3 here).
+
+\code
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/topology/DigitalSetBoundary.h"
+#include "DGtal/topology/IndexedDigitalSurface.h"
+#include "DGtal/shapes/Shapes.h"
+...
+using namespace DGtal;
+using namespace Z3i;
+
+typedef DigitalSetBoundary< KSpace, DigitalSet > DSContainer;
+typedef IndexedDigitalSurface< DSContainer >     IDSurface;
+// Creating the ball
+Point p1( -5, -5, -5 );
+Point p2(  5,  5,  5 );
+KSpace K;
+K.init( p1, p2, true );
+DigitalSet aSet( Domain( p1, p2 ) );
+Shapes<Domain>::addNorm2Ball( aSet, Point( 0, 0, 0 ), 3 );
+// Creating the IndexedDigitalSurface by handling it a container
+DSContainer dsc( K, aSet ) );
+IDSurface   idx_dig_surf( dsc );
+// The surface topology is now completely built.
+std::cout << dsurf.nbVertices() << std::endl; // 174 
+std::cout << dsurf.nbEdges()    << std::endl; // 348 
+std::cout << dsurf.nbFaces()    << std::endl; // 176 
+std::cout << dsurf.Euler()      << std::endl; //   2 
+\endcode
+
+@note We recall that, as for a DigitalSurface, an
+IndexedDigitalSurface represents the topology of the dual of the
+cubical cell complex formed by the surfels and their incident
+cells. Hence vertices are surfels, edges correspond to linels (more
+precisely a couple of surfels sharing an edge) and faces correspond to
+pointels (more precisely an umbrella of surfels around this
+pointels). It is because the topology of the primal digital surface
+seen as a 2-dimensional cubical complex is not a 2-manifold in
+general. However, for its dual, we are able to define a 2-manifold.
+
+@subsection dgtal_digsurf_sec5_2  Guide for using an IndexedDigitalSurface
+
+Once the indexed surface is created, you may use it as a
+DigitalSurface. First it is a model of graph
+(concepts::CUndirectedSimpleGraph). Hence traversal operations and
+visitors apply. The main difference is that vertices, arcs and faces
+are now numbered consecutively starting from 0. Therefore you have
+methods to get a surfel from its vertex index, a linel from its arc
+index, a pointel from its face index.
+
+- IndexedDigitalSurface::surfel  : gets the surfel associated with a given vertex index.
+- IndexedDigitalSurface::linel   : gets the linel associated with a given arc index.
+- IndexedDigitalSurface::pointel : gets the pointel associated with a given face index.
+- IndexedDigitalSurface::surfels : gets the whole mapping vertex index -> surfel.
+- IndexedDigitalSurface::linels  : gets the whole mapping arc index -> surfel.
+- IndexedDigitalSurface::pointels: gets the whole mapping face index -> surfel.
+- IndexedDigitalSurface::getVertex: gets the vertex index of the given (oriented) surfel.
+- IndexedDigitalSurface::getArc: gets the arc index of the given (oriented) linel (i.e. its separator).
+- IndexedDigitalSurface::getFace: gets a face index of the given pointel (i.e. its pivot). Note that several faces may have the same pivot (up to four).
+
+An indexed digital surface associates positions to its vertices (see IndexedDigitalSurface::position and IndexedDigitalSurface::positions). 
+
+Then, most the services of DigitalSurface described in \ref
+dgtal_digsurf_sec4 are available in IndexedDigitalSurface.
+
+- IndexedDigitalSurface::outArcs (Vertex): the vector of outgoing arcs from
+  the given vertex.
+- IndexedDigitalSurface::inArcs (Vertex): the vector of ingoing arcs from
+  the given vertex.
+- IndexedDigitalSurface::facesAroundVertex (Vertex): the vector of faces
+  containing this vertex [v]: 4 faces in 3D.
+- IndexedDigitalSurface::head (Arc): the head vertex of the given arc
+- IndexedDigitalSurface::tail (Arc): the tail vertex of the given arc
+- IndexedDigitalSurface::opposite (Arc): the opposite arc of the given arc
+  (may not exist if the arc lies on some boundary).
+- IndexedDigitalSurface::arc (Vertex,Vertex): the arc from the first
+  vertex toward the second.
+- IndexedDigitalSurface::facesAroundArc (Arc): the vector of faces incident
+  to a given arc. Only 1 face in 3D. Returned face may be open.
+- IndexedDigitalSurface::verticesAroundFace (Face): the sequence of
+  vertices that touches this face. The order follows the order of
+  incident arcs.
+- IndexedDigitalSurface::allFaces (): the vector of all faces of the
+  digital surface, i.e. an array containing 0,
+  1, 2, ..., nbFaces()-1.
+
+The following services are also provided:
+
+- IndexedDigitalSurface::allArcs (): the vector of all arcs of the
+  digital surface, i.e. an array containing 0, 1, 2, ..., nbArcs()-1.
+- IndexedDigitalSurface::allVertices (): the vector of all vertices of the
+  digital surface, i.e. an array containing 0, 1, 2, ..., nbVertices()-1.
+- IndexedDigitalSurface::allBoundaryArcs (): the vector of all arcs of the
+  digital surface lying on its boundary.
+- IndexedDigitalSurface::allBoundaryVertices (): the vector of all vertices of the
+  digital surface lying on its boundary.
+- IndexedDigitalSurface::next (Arc): the next arc along the (only) incident face.
+- IndexedDigitalSurface::faceAroundArc (Arc): the (only) face incident
+  to a given arc (in 3D). Returned face may be open.
+- IndexedDigitalSurface::isVertexBoundary (Vertex): true iff it lies
+  on the boundary.
+- IndexedDigitalSurface::isArcBoundary (Arc): true iff it lies
+  on the boundary.
+
+@subsection dgtal_digsurf_sec5_3  When using an IndexedDigitalSurface instead of a DigitalSurface ?
+
+You should use an IndexedDigitalSurface when:
+- the digital surface is never modified
+- you use a lot traversal operations (like computing k-neighborhoods everywhere)
+- you use a lot surface operations (order of faces around a vertex)
+- you do not use too much the cell geometry and topology but just their combinatorial relations
+- or you need to number your cells consecutively.
+
+You should use a DigitalSurface when
+- you use a lot the geometry and topology of cells
+- the digital surface is sometimes modified (then use light containers)
+- you just iterate over surfels and perform few neighborhood operations.
+
+Examples area-estimation-with-digital-surface.cpp and
+area-estimation-with-indexed-digital-surface.cpp illustrate the
+similarities of classes DigitalSurface and IndexedDigitalSurface as
+well as their slight differences. They show how to estimate the area
+of a digital sphere.
+
 
 */
 }
