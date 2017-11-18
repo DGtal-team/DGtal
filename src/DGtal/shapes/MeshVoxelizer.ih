@@ -216,8 +216,9 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
                                                         const double scaleFactor)
 {
   DigitalSet rawEmpty{outputSet.domain()};
-
+#ifdef WITH_OPENMP
 #pragma omp parallel for schedule(dynamic)
+#endif
   for(unsigned int i = 0; i < aMesh.nbFaces(); i++)
   {
     DigitalSet currentSet{rawEmpty};
@@ -230,7 +231,9 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
                scaleFactor);
     }
 
-    #pragma omp critical
+#ifdef WITH_OPENMP
+   #pragma omp critical
+#endif
     {
       outputSet += currentSet;
     }
