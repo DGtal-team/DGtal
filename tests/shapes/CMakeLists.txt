@@ -28,6 +28,8 @@ SET(DGTAL_TESTS_SRC
   testBall3DSurface
   testEuclideanShapesDecorator
   testDigitalShapesDecorator
+  testTriangulatedSurface
+  testPolygonalSurface
   testProjection
   )
 
