@@ -13,7 +13,9 @@ SET(DGTAL_TESTS_SRC
    testDigitalSetToCellularGridConverter
    testNeighborhoodConfigurations
    testParDirCollapse
- )
+   testHalfEdgeDataStructure
+   testIndexedDigitalSurface
+)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
