@@ -182,7 +182,7 @@ persistenceAsymetricThinningScheme(
   using Data = typename TComplex::Data;
   using Object = typename TComplex::Object;
 
-  // Initialize K set, and VoxelComplex containers;
+  // Initialize Z set, and VoxelComplex containers;
   struct FirstComparator
   {
     bool operator() (const std::pair<Cell, Data>& lhs, const std::pair<Cell, Data>& rhs) const
@@ -202,16 +202,8 @@ persistenceAsymetricThinningScheme(
   auto & K = constraint_set;
   auto X = vc;
 
-  // if(persistence > 0){
-  //   // Set up the mature of cells
-  //   for (auto & c : X.getCells(3))
-  //     c.second.mature = persistence ;
-  // }
-
   TComplex x_y(vc.space());
   x_y.construct(empty_obj);
-  TComplex x_k(vc.space());
-  x_k.construct(empty_obj);
 
   bool stability{false};
   uint64_t generation{0};
@@ -235,42 +227,52 @@ persistenceAsymetricThinningScheme(
       auto & data = it->second ;
       if( Skel(X, voxel) == true)
           if (data.birth_date == 0)
+            //TODO is this getting saved in X?
             data.birth_date = generation;
     }
     Y = K ;
+    x_y = X; //optimization instead of x_y = X-Y, use x_y -= Y;
     // d-cliques: From voxels (d=3) to pointels (d=0)
     for (int d = 3 ; d >= 0 ; --d) {
-      Z.clear();
+      // Z.clear();
       // Search only critical cliques of X in the set X \ Y
-      x_y = X - Y; // Y is changing in this d-loop.
+      x_y -= Y; // Y is growing in this d-loop.
       critical_cliques = X.criticalCliquesForD(d, x_y);
 
       for(auto & clique : critical_cliques)
-        Z.insert(Select(clique));
-
-      for( const auto & selected_celldata_pair : Z)
-        Y.insertVoxelCell(selected_celldata_pair, close_it);
+      {
+        // Find the selected clique in x to get associated Data.
+        auto selected_voxelpair = Select(clique);
+        selected_voxelpair.second = X.findCell(3,selected_voxelpair.first)->second;
+        Y.insertVoxelCell(selected_voxelpair, close_it);
+        if(verbose){
+          trace.info() << " selected_voxel.birth_date: " << selected_voxelpair.second.birth_date << std::endl;
+        }
+      }
     } // d-loop
-    // Y is now just populated.  The set of critical cliques for this generation,
-    // along with the already selected K.
+    // Y is now  populated with some selected critical cliques for this generation,
+    // plus with the fixed points in K.
+    // Store result (final or for the next generation)
+    X = Y;
 
     /*** Modify K (the set of voxels to conserve) ***/
-    // Insert in K (inmutable set) only if the NEW critical cells of this generation (X-K) are:
+    // Insert in K (inmutable set) only if the NEW critical cells of this generation (Y-K) are:
     // a) Part of the Skeleton (Skel) user wants to preserve.
     // b) persistent enough.
 
-
     // Update K
+    Y -= K;
     for (auto it = Y.begin(3), itE = Y.end(3) ; it != itE ; ++it ){
         auto & voxel = it->first;
         auto & data = it->second;
-        bool is_skel = Skel(Y, voxel);
+        bool is_skel = Skel(X, voxel);
         bool is_persistent_enough = (generation + 1 - data.birth_date) >= persistence;
+        if(verbose){
+          trace.info() << "is_skel: " << is_skel << " ; is_persistent_enough: " << is_persistent_enough << " data.birth_date: " << data.birth_date << std::endl;
+        }
         if (is_skel && is_persistent_enough)
           K.insertVoxelCell(voxel, close_it, data);
     }
-    // Store result (final or for the next generation)
-    X = Y;
 
     /***** Stability Update: ****/
     xsize = X.nbCells(3);
