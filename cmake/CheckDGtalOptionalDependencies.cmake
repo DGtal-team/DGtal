@@ -216,6 +216,7 @@ IF(WITH_ITK)
       ${CMAKE_BINARY_DIR}/CMakeTmp
       ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
       ITKCPP11BUG
+      CMAKE_FLAGS "-DITK_DIR=${ITK_DIR}"
       OUTPUT_VARIABLE OUTPUT )
     if ( CPP11_ITK )
       message(STATUS "ITK accepts [c++11]" )
