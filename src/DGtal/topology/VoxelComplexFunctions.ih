@@ -200,8 +200,7 @@ persistenceAsymetricThinningScheme(
   auto & Z = selected_voxels_per_dim;
   auto & Y = already_selected_voxels;
   auto & K = constraint_set;
-  auto X = vc;
-
+  TComplex X = vc;
   TComplex x_y(vc.space());
   x_y.construct(empty_obj);
 
@@ -213,7 +212,7 @@ persistenceAsymetricThinningScheme(
   typename TComplex::CliqueContainer critical_cliques;
 
   if(verbose){
-      trace.info() << "generation: " << generation <<
+      trace.info() << "Initial Voxels at generation: " << generation <<
         " ; X.nbCells(3): " << xsize << std::endl;
   }
   do {
@@ -225,10 +224,8 @@ persistenceAsymetricThinningScheme(
         continue;
       auto & voxel = it->first ;
       auto & data = it->second ;
-      if( Skel(X, voxel) == true)
-          if (data.birth_date == 0)
-            //TODO is this getting saved in X?
-            data.birth_date = generation;
+      if( Skel(X, voxel) == true && data.birth_date == 0)
+        data.birth_date = generation;
     }
     Y = K ;
     x_y = X; //optimization instead of x_y = X-Y, use x_y -= Y;
@@ -241,13 +238,10 @@ persistenceAsymetricThinningScheme(
 
       for(auto & clique : critical_cliques)
       {
-        // Find the selected clique in x to get associated Data.
+        // Find the selected voxel in x to get associated Data.
         auto selected_voxelpair = Select(clique);
         selected_voxelpair.second = X.findCell(3,selected_voxelpair.first)->second;
         Y.insertVoxelCell(selected_voxelpair, close_it);
-        if(verbose){
-          trace.info() << " selected_voxel.birth_date: " << selected_voxelpair.second.birth_date << std::endl;
-        }
       }
     } // d-loop
     // Y is now  populated with some selected critical cliques for this generation,
@@ -267,11 +261,17 @@ persistenceAsymetricThinningScheme(
         auto & data = it->second;
         bool is_skel = Skel(X, voxel);
         bool is_persistent_enough = (generation + 1 - data.birth_date) >= persistence;
-        if(verbose){
-          trace.info() << "is_skel: " << is_skel << " ; is_persistent_enough: " << is_persistent_enough << " data.birth_date: " << data.birth_date << std::endl;
-        }
         if (is_skel && is_persistent_enough)
           K.insertVoxelCell(voxel, close_it, data);
+    }
+
+    if(verbose){
+      trace.info() << "generation: " << generation <<
+        " ; X  at start generation: " << xsize_old <<
+        " ; K (constraint set): " << K.nbCells(3) <<
+        " ; Y - K: " << Y.nbCells(3) <<
+        " ; Y (X at the end): " << X.nbCells(3) <<
+        std::endl;
     }
 
     /***** Stability Update: ****/
@@ -280,15 +280,6 @@ persistenceAsymetricThinningScheme(
       stability = true;
     xsize_old = xsize;
 
-    if(verbose){
-      trace.info() << "generation: " << generation <<
-        " ; X.nbCells(3): " << xsize <<
-        " ; K: " << K.nbCells(3) <<
-        " ; Y: " << Y.nbCells(3) <<
-        // " ; X - K ie. Ynew - Yold : " << x_k.nbCells(3) <<
-        // " ; X - Y  : " << x_y.nbCells(3) <<
-        std::endl;
-    }
   } while( !stability );
 
   if(verbose) trace.endBlock();
