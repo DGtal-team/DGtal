@@ -806,56 +806,92 @@ TEST_CASE_METHOD(Fixture_isthmus, "Thin complex", "[isthmus][thin][function]"){
     }
 }
 //
-// TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin", "[persistence][isthmus][thin][function]"){
-//     using namespace DGtal::functions;
-//     auto & vc = complex_fixture ;
-//     auto & ks = vc.space();
-//     SECTION("with skelUltimate"){
-//       auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
-//           vc, selectRandom<FixtureComplex>, skelUltimate<FixtureComplex>, 0);
-//       CHECK( vc_new.nbCells(3) == 1);
-//     }
-//     SECTION("with skelEnd"){
-//       auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
-//           vc, selectRandom<FixtureComplex>, skelEnd<FixtureComplex>, 0);
-//       CHECK( vc_new.nbCells(3) == 5);
-//     }
-//     SECTION("with oneIsthmus"){
-//       auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
-//           vc, selectRandom<FixtureComplex>, oneIsthmus<FixtureComplex>, 0);
-//       CHECK( vc_new.nbCells(3) == 3);
-//     }
-//     SECTION("with twoIsthmus"){
-//       auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
-//           vc, selectRandom<FixtureComplex>, twoIsthmus<FixtureComplex>, 0);
-//       CHECK( vc_new.nbCells(3) == 1);
-//     }
-//     SECTION("with skelIsthmus"){
-//       auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
-//           vc, selectRandom<FixtureComplex>, skelIsthmus<FixtureComplex>, 0);
-//       CHECK( vc_new.nbCells(3) == 3);
-//       // SECTION( "visualize the thining" ){
-//       //   int argc(1);
-//       //   char** argv(nullptr);
-//       //   QApplication app(argc, argv);
-//       //   Viewer3D<> viewer(ks_fixture);
-//       //   viewer.show();
-//       //
-//       //   viewer.setFillColor(Color(200, 200, 200, 100));
-//       //   for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
-//       //     viewer << it->first;
-//       //
-//       //   viewer.setFillColor(Color(200, 200, 200, 100));
-//       //   // All kspace voxels
-//       //   viewer.setFillColor(Color(40, 200, 55, 30));
-//       //   for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
-//       //     viewer << it->first;
-//       //
-//       //   viewer << Viewer3D<>::updateDisplay;
-//       //   app.exec();
-//       // }
-//     }
-// }
+TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin", "[persistence][isthmus][thin][function]"){
+    using namespace DGtal::functions;
+    auto & vc = complex_fixture ;
+    auto & ks = vc.space();
+    SECTION("with skelUltimate"){
+      auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, skelUltimate<FixtureComplex>, 0);
+      CHECK( vc_new.nbCells(3) == 1);
+    }
+    SECTION("with skelEnd"){
+      auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, skelEnd<FixtureComplex>, 0);
+      CHECK( vc_new.nbCells(3) == 5);
+    }
+    SECTION("with oneIsthmus"){
+      /* Not using LUT skel function (slow):
+      auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, oneIsthmus<FixtureComplex>, 0);
+      */
+      // with LUT:
+      auto table = *functions::loadTable(isthmusicity::tableOneIsthmus);
+      auto pointToMaskMap = *functions::mapZeroPointNeighborhoodToConfigurationMask<FixtureObject::Point>();
+      auto oneIsthmusTable = [&table, &pointToMaskMap](
+          const FixtureComplex & fc,
+          const FixtureComplex::Cell & c){
+        return skelWithTable(table, pointToMaskMap, fc, c);
+      };
+      auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, oneIsthmusTable, 0);
+      CHECK( vc_new.nbCells(3) == 3);
+    }
+    SECTION("with twoIsthmus"){
+      /* Not using LUT skel function (slow):
+      auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, twoIsthmus<FixtureComplex>, 0);
+      */
+      // with LUT:
+      auto table = *functions::loadTable(isthmusicity::tableTwoIsthmus);
+      auto pointToMaskMap = *functions::mapZeroPointNeighborhoodToConfigurationMask<FixtureObject::Point>();
+      auto twoIsthmusTable = [&table, &pointToMaskMap](
+          const FixtureComplex & fc,
+          const FixtureComplex::Cell & c){
+        return skelWithTable(table, pointToMaskMap, fc, c);
+      };
+      auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, twoIsthmusTable, 0);
+      CHECK( vc_new.nbCells(3) == 1);
+    }
+    SECTION("with skelIsthmus"){
+      /* Not using LUT skel function (slow):
+      auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, skelIsthmus<FixtureComplex>, 0);
+      */
+      // with LUT:
+      auto table = *functions::loadTable(isthmusicity::tableIsthmus);
+      auto pointToMaskMap = *functions::mapZeroPointNeighborhoodToConfigurationMask<FixtureObject::Point>();
+      auto isthmusTable = [&table, &pointToMaskMap](
+          const FixtureComplex & fc,
+          const FixtureComplex::Cell & c){
+        return skelWithTable(table, pointToMaskMap, fc, c);
+      };
+      auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+          vc, selectRandom<FixtureComplex>, isthmusTable, 0);
+      CHECK( vc_new.nbCells(3) == 3);
+      // SECTION( "visualize the thining" ){
+      //   int argc(1);
+      //   char** argv(nullptr);
+      //   QApplication app(argc, argv);
+      //   Viewer3D<> viewer(ks_fixture);
+      //   viewer.show();
+      //
+      //   viewer.setFillColor(Color(200, 200, 200, 100));
+      //   for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
+      //     viewer << it->first;
+      //
+      //   viewer.setFillColor(Color(200, 200, 200, 100));
+      //   // All kspace voxels
+      //   viewer.setFillColor(Color(40, 200, 55, 30));
+      //   for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
+      //     viewer << it->first;
+      //
+      //   viewer << Viewer3D<>::updateDisplay;
+      //   app.exec();
+      // }
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////
 // Fixture for a thick X
