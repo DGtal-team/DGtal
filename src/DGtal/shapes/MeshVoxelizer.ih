@@ -157,7 +157,10 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
 
           // check if current voxel projection is inside ABC projection
           if(pointIsInside2DTriangle(AA, BB, CC, pp) != OUTSIDE)
-            outputSet.insert(v);
+          {
+            if (outputSet.domain().isInside( v ) )
+              outputSet.insert(v);
+          }
         }
   }
 }

@@ -40,8 +40,11 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/Mesh.h"
+//! [MeshVoxelizerInc]
 #include "DGtal/shapes/MeshVoxelizer.h"
+//! [MeshVoxelizerInc]
 #include "DGtal/io/boards/Board3D.h"
+#include "DGtal/io/writers/MeshWriter.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
