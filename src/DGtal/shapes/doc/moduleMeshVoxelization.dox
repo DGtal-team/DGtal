@@ -36,7 +36,7 @@ exported. Only the triangles are digitized.
 
 The approach is rather simple: Given a triangulated mesh, the
 MeshVoxlizer processes each triangle independently. If the triangle
-intersects a given @a template centered ot a given grid point, then
+intersects a given @a template centered at a given grid point, then
 the grid point belongs to the digitization of the triangle.
 
 The geometry of the template is used to control the topology of the
@@ -49,7 +49,7 @@ resulting digital set. We provide two templates to obtain 6- and
 
 \section sectVoxelization2 Basic Usage
 
-Given a Mesh @a aMesh, the MeshVoxelizer class is template by a
+Given a Mesh @a aMesh, the MeshVoxelizer class is templated by a
 type of digital set (model of concepts::CDigitalSet) to store the
 voxels, and an integer specifying the expected separability of the
 surface (either 6 or 26).
@@ -57,6 +57,9 @@ surface (either 6 or 26).
 Let us first create a simple unit cube (see exampleMeshVoxelizer)
 
 @snippet examples/shapes/exampleMeshVoxelizer.cpp MeshVoxelizerCreatingMesh
+
+We first include the class:
+@snippet examples/shapes/exampleMeshVoxelizer.cpp MeshVoxelizerInc
 
 We then create a voxelization of a scaled version of the cube onto a
 @f$ 128^3@f$ domain:
@@ -73,7 +76,7 @@ we obtain the following voxel set:
 
 
 @note If you have enabled OpenMP in DGtal, the voxelizer will perform
-the digitization of the triangles in parallel. 
+the digitization of the triangles in parallel.
 
 
 @warning If the input mesh has non-triangular faces, such faces will

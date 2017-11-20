@@ -118,6 +118,9 @@ namespace DGtal
      * using a triangle fan at zero. If the face is not convex, the output
      * will not be correct.
      *
+     * If one voxel is outside the digtial set (@a outputSet) domain, the voxel
+     * is skipped.
+     *
      * @param [out] outputSet the set that collects the voxels.
      * @param [in] aMesh the mesh to voxelize (vertex coordinates will
      * be casted to @e PointR3 points.
