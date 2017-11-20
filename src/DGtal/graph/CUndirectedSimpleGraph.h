@@ -92,7 +92,7 @@ namespace DGtal {
   ### Invariants###
     
   ### Models###
-  DigitalSurface, Object
+  DigitalSurface, Object, IndexedDigitalSurface
 
   ### Notes###
 
