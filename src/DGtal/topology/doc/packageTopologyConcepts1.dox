@@ -102,6 +102,7 @@ digraph GTOPOLOGY {
             MetricAdjacency [ label="MetricAdjacency" URL="\ref MetricAdjacency" ];
             DomainAdjacency [ label="DomainAdjacency" URL="\ref DomainAdjacency" ];
             DigitalSurface [ label="DigitalSurface" URL="\ref DigitalSurface" ];
+            IndexedDigitalSurface [ label="IndexedDigitalSurface" URL="\ref IndexedDigitalSurface" ] ;
             Object [ label="Object" URL="\ref Object" ];
         }
 
@@ -122,6 +123,8 @@ digraph GTOPOLOGY {
     DomainAdjacency -> CDomainAdjacency;
     DigitalSurface -> CUndirectedSimpleGraph;
     DigitalSurface -> CDigitalSurfaceContainer [label="use",style=dashed];
+    IndexedDigitalSurface -> CUndirectedSimpleGraph;
+    IndexedDigitalSurface -> CDigitalSurfaceContainer [label="use",style=dashed];
     KhalimskySpaceND -> CCellularGridSpaceND;
     KhalimskyPreSpaceND -> CPreCellularGridSpaceND;
 

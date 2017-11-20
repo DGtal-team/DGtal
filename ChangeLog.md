@@ -8,12 +8,26 @@
     (DavidCoeurjolly, Monir Hadji,
     [#1209](https://github.com/DGtal-team/DGtal/pull/1209))
 
+- *Topology Package*
+ - Adding the half-edge data structure to represent arbitrary
+   two-dimensional combinatorial surfaces with or without boundary
+   (Jacques-Olivier Lachaud
+    [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+
+- *Shapes Package*
+ - Adding classes and helpers to create triangulated surfaces and
+   polygonal surfaces to convert them from/to mesh, as well as a conversion from digital
+   surfaces to dual triangulated or polygonal surface (Jacques-Olivier
+   Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+
+
 ## Changes
 
 - *Math package*
  - New SimpleMatrix constructor with a initializer_list argument
-   (Nicolas Normand,
+   (Nicolas Normand,
    [#1250](https://github.com/DGtal-team/DGtal/pull/1250))
+
 - *IO*
   - New simple way to extend the QGLViewer-based Viewer3D interface,
     for instance to add callbacks to key or mouse events, or to modify
@@ -74,6 +88,7 @@
  - Fix exampleArithDSS3d compilation (which was not activated).
    (Bertrand Kerautret
    [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
+
 
 # DGtal 0.9.3
 
