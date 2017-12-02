@@ -48,7 +48,7 @@ More details are given in the [documentation pages](http://dgtal.org/download/).
 
 ```shell
 git clone https://github.com/DGtal-team/DGtal.git
-cd DGtal ; mkdir buid ; cd build
+cd DGtal ; mkdir build ; cd build
 cmake ..
 make install
 ```
