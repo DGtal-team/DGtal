@@ -86,7 +86,7 @@ be incorrect.
 
 Here you have another example with a more complex mesh (using DGtaltools tools for visualization):
 
-@image html bunnies.png "Voxelization at different resolution of a Stanford Bunny."
+@image html bunnies.png "Voxelization at different resolutions of a Stanford Bunny."
 
 
 \section sectVoxelization3 Limitations
