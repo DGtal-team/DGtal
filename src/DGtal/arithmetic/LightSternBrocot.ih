@@ -50,14 +50,14 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::singleton = 0;
 // ----------------------- Standard services ------------------------------
 
 ///////////////////////////////////////////////////////////////////////////////
-// DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Node 
+// DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Node
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Node::
-Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 
+Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
       Node* _ascendant )
-  : p( p1 ), q( q1 ), u( u1 ), k( k1 ), 
+  : p( p1 ), q( q1 ), u( u1 ), k( k1 ),
     ascendant( _ascendant )
 {
   //  if ( k == 0 )
@@ -73,8 +73,8 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 Fraction( Integer aP, Integer aQ, Fraction )
 {
   // special case 1/0
-  if ( ( aP == NumberTraits<Integer>::ONE ) 
-       && ( aQ == NumberTraits<Integer>::ZERO ) ) 
+  if ( ( aP == NumberTraits<Integer>::ONE )
+       && ( aQ == NumberTraits<Integer>::ZERO ) )
     this->operator=( oneOverZero() );
   else
     {
@@ -89,10 +89,10 @@ Fraction( Integer aP, Integer aQ, Fraction )
       while ( aQ != NumberTraits<Integer>::ZERO )
         {
           ic.getEuclideanDiv( _quot, _rem, aP, aQ );
-          v = static_cast<Quotient>( _quot );
-          if ( f.k() == j ) 
+          v = NumberTraits<Integer>::castToInt64_t( _quot );
+          if ( f.k() == j )
             f = f.next( v );
-          else 
+          else
             f = f.next1( v );
           if ( v != 0 ) ++j;
           aP = aQ;
@@ -135,7 +135,7 @@ operator=( const Self & other )
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient, typename TMap>
 inline
-bool 
+bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 null() const
 {
@@ -179,7 +179,7 @@ k() const
   ASSERT( myNode != 0 );
   if ( mySup1 )
     {
-      // if ( ( myNode->k == 0 ) 
+      // if ( ( myNode->k == 0 )
       //      && ( myNode != instance().myZeroOverOne )
       //      && ( myNode != instance().myOneOverOne ) )
       //   {
@@ -191,10 +191,10 @@ k() const
       //               << " u=" << myNode->u;
       //     std::cerr << std::endl;
       //   }
-      ASSERT( ( myNode->k != 0 ) 
+      ASSERT( ( myNode->k != 0 )
               || ( myNode == instance().myZeroOverOne )
               || ( myNode == instance().myOneOverOne ) );
-      ASSERT( ( myNode->k != -1 ) 
+      ASSERT( ( myNode->k != -1 )
               || ( myNode == instance().myOneOverZero ) );
       if ( myNode->k == -NumberTraits<Quotient>::ONE )
         return NumberTraits<Quotient>::ZERO;
@@ -243,7 +243,7 @@ bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 operator==( const Fraction & other ) const
 {
-  if ( mySup1 == other.mySup1 ) 
+  if ( mySup1 == other.mySup1 )
     return ( myNode == other.myNode );
   else
     return ( ( myNode->p == other.myNode->q )
@@ -289,15 +289,15 @@ next( Quotient v ) const
   ASSERT( ! this->null() );
   if ( v == NumberTraits<Quotient>::ZERO )
     return *this;
-  else if ( ( v == NumberTraits<Quotient>::ONE ) 
+  else if ( ( v == NumberTraits<Quotient>::ONE )
             && ( this->myNode != instance().myZeroOverOne ) )
     { // Specific case: same depth.
       v += u();
       bool anc_direct = isAncestorDirect();
-      Iterator itkey = anc_direct 
+      Iterator itkey = anc_direct
         ? myNode->ascendant->descendant.find( v )
         : myNode->ascendant->descendant2.find( v );
-      Iterator itend = anc_direct 
+      Iterator itend = anc_direct
         ? myNode->ascendant->descendant.end()
         : myNode->ascendant->descendant2.end();
       if ( itkey != itend ) // found
@@ -317,7 +317,7 @@ next( Quotient v ) const
         {
           return Fraction( itkey->second, mySup1 );
         }
-      Node* new_node = 
+      Node* new_node =
         new Node( myNode->p * v + myNode->ascendant->p,
                   myNode->q * v + myNode->ascendant->q,
                   v, myNode->k + 1, myNode );
@@ -339,7 +339,7 @@ next1( Quotient v ) const
   ASSERT( ! this->null() );
   if ( v == NumberTraits<Quotient>::ZERO )
     return *this;
-  else if ( v == NumberTraits<Quotient>::ONE ) 
+  else if ( v == NumberTraits<Quotient>::ONE )
     { // Specific case: depth + 1.  [u_0, ..., u_n] => [u_0, ..., u_n -1, 2]
       Fraction f = father();
       if ( f.myNode->k == myNode->k )
@@ -368,7 +368,7 @@ typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 left() const
 {
-  if ( myNode->isSameDepthLeft() ) 
+  if ( myNode->isSameDepthLeft() )
     // Use the fact that [...,u_n,1] = [...,u_n + 1]
     return next( NumberTraits<Quotient>::ONE );
   else
@@ -381,7 +381,7 @@ typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 right() const
 {
-  if ( ! myNode->isSameDepthLeft() ) 
+  if ( ! myNode->isSameDepthLeft() )
     // Use the fact that [...,u_n,1] = [...,u_n + 1]
     return next( NumberTraits<Quotient>::ONE );
   else
@@ -417,7 +417,7 @@ ancestor() const
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient, typename TMap>
 inline
-bool 
+bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 isAncestorDirect() const
 {
@@ -444,13 +444,13 @@ father( Quotient m ) const
 {
   if ( m >= NumberTraits<Quotient>::ONE ) // >= 1
     {
-      return isAncestorDirect() 
+      return isAncestorDirect()
         ? ancestor().next( m )
         : ancestor().next1( m );
     }
   else // == 0
     return reduced( 2 );
-  // isAncestorDirect() 
+  // isAncestorDirect()
   //     ? ancestor().ancestor()
   //     : ancestor();
 }
@@ -515,7 +515,7 @@ void
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 pushBack( const std::pair<Quotient, Quotient> & ) //quotient )
 {
-  ASSERT( false 
+  ASSERT( false
           && "UNIMPLEMENTED. Use SternBrocot::Fraction or LighterSternBrocot::Fraction instead." );
 }
 //-----------------------------------------------------------------------------
@@ -541,7 +541,7 @@ template <typename TInteger, typename TQuotient, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
-getSplitBerstel( Fraction & f1, Quotient & nb1, 
+getSplitBerstel( Fraction & f1, Quotient & nb1,
 		 Fraction & f2, Quotient & nb2 ) const
 {
   // TODO
@@ -612,7 +612,7 @@ selfDisplay( std::ostream & out ) const
   if ( this->null() ) out << "[Fraction null]";
   else
     {
-      out << "[Fraction f=" << this->p() 
+      out << "[Fraction f=" << this->p()
           << "/" << this->q()
           << " u=" << this->u()
           << " k=" << this->k()
@@ -729,17 +729,17 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::oneOverZero()
 template <typename TInteger, typename TQuotient, typename TMap>
 inline
 void
-DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::display( std::ostream & out, 
+DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::display( std::ostream & out,
                                               const Fraction & f )
 {
   if ( f.null() ) out << "[Fraction null]";
   else
     {
-      out << "[Fraction f=" << f.p() 
+      out << "[Fraction f=" << f.p()
           << "/" << f.q()
           << " u=" << f.u()
           << " k=" << f.k()
-        // << " s1=" << f.isSup1() 
+        // << " s1=" << f.isSup1()
           << std::flush;
       std::vector<Quotient> quotients;
       if ( f.k() >= 0 )
@@ -779,8 +779,8 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::fraction
 {
   return Fraction( p, q );
   // // special case 1/0
-  // if ( ( p == NumberTraits<Integer>::ONE ) 
-  //      && ( q == NumberTraits<Integer>::ZERO ) ) 
+  // if ( ( p == NumberTraits<Integer>::ONE )
+  //      && ( q == NumberTraits<Integer>::ZERO ) )
   //   return oneOverZero();
   // Fraction f = zeroOverOne();
   // bool sup1 = p > q;
@@ -794,9 +794,9 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::fraction
   //   {
   //     ic.getEuclideanDiv( _quot, _rem, p, q );
   //     v = NumberTraits<Integer>::castToInt64_t( _quot );
-  //     if ( f.k() == j ) 
+  //     if ( f.k() == j )
   //       f = f.next( v );
-  //     else 
+  //     else
   //       f = f.next1( v );
   //     if ( v != 0 ) ++j;
   //     p = q;
@@ -814,7 +814,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::fraction
 // template <typename TInteger, typename TQuotient, typename TMap>
 // inline
 // std::ostream&
-// DGtal::operator<< ( std::ostream & out, 
+// DGtal::operator<< ( std::ostream & out,
 //                     const typename LightSternBrocot<TInteger, TQuotient, TMap>::Fraction & object )
 // {
 //   typedef LightSternBrocot<TInteger, TQuotient, TMap> SB;
@@ -824,5 +824,3 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::fraction
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
