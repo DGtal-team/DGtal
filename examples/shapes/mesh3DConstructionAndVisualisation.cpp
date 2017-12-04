@@ -107,7 +107,7 @@ int main( int argc, char** argv )
   //! [MeshUseDisplay]
   bool res = application.exec();
   FATAL_ERROR(res);
-  return true;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
