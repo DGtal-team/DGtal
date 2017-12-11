@@ -181,7 +181,6 @@ bool testMPolynomial()
   MPolynomial<3,double> P;
   P = Xe_k<3,double>( 2, 7 ) + Xe_k<3,double>( 1, 3 );
   trace.info() << "P=" << P << std::endl;
-  trace.endBlock();
   return nbok == nb;
 }
 
