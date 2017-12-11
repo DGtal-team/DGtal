@@ -1,0 +1,217 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file MeshHelpers.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2017/02/11
+ *
+ * Implementation of inline methods defined in MeshHelpers.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+template <typename Point>
+inline
+bool
+DGtal::MeshHelpers::mesh2TriangulatedSurface
+( const Mesh<Point>& mesh,
+  TriangulatedSurface<Point>& trisurf )
+{
+  trisurf.clear();
+  for ( auto it = mesh.vertexBegin(), itE = mesh.vertexEnd(); it != itE; ++it )
+    trisurf.addVertex( *it );
+  for ( auto it = mesh.faceBegin(), itE = mesh.faceEnd(); it != itE; ++it )
+    {
+      typename Mesh<Point>::MeshFace face = *it;
+      for (unsigned int i = 1; i < face.size() - 1; i++ )
+        {
+          trisurf.addTriangle( face[ 0 ], face[ i ], face[ i+1 ] );
+        }
+    }
+  return trisurf.build();
+}
+
+template <typename Point>
+inline
+bool
+DGtal::MeshHelpers::mesh2PolygonalSurface
+( const Mesh<Point>& mesh,
+  PolygonalSurface<Point>& polysurf )
+{
+  typedef typename PolygonalSurface<Point>::PolygonalFace PolygonalFace;
+  polysurf.clear();
+  for ( auto it = mesh.vertexBegin(), itE = mesh.vertexEnd(); it != itE; ++it )
+    polysurf.addVertex( *it );
+  for ( auto it = mesh.faceBegin(), itE = mesh.faceEnd(); it != itE; ++it )
+    polysurf.addPolygonalFace( PolygonalFace( it->cbegin(), it->cend() ) );
+  return polysurf.build();
+}
+
+template <typename Point>
+inline
+void
+DGtal::MeshHelpers::triangulatedSurface2Mesh
+( const TriangulatedSurface<Point>& trisurf,
+  Mesh<Point>& mesh )
+{
+  typedef typename TriangulatedSurface<Point>::Index Index;
+  for ( Index idx = 0; idx < trisurf.nbVertices(); ++idx )
+    mesh.addVertex( trisurf.position( idx ) );
+  for ( Index idx = 0; idx < trisurf.nbFaces(); ++idx )
+    {
+      auto vertices = trisurf.verticesAroundFace( idx );
+      mesh.addTriangularFace( vertices[ 0 ], vertices[ 1 ], vertices[ 2 ] );
+    }
+}
+
+template <typename Point>
+inline
+void
+DGtal::MeshHelpers::polygonalSurface2Mesh
+( const PolygonalSurface<Point>& polysurf,
+  Mesh<Point>& mesh )
+{
+  typedef typename Mesh<Point>::MeshFace          MeshFace;
+  typedef typename PolygonalSurface<Point>::Index Index;
+  for ( Index idx = 0; idx < polysurf.nbVertices(); ++idx )
+    mesh.addVertex( polysurf.position( idx ) );
+  for ( Index idx = 0; idx < polysurf.nbFaces(); ++idx )
+    {
+      auto vertices = polysurf.verticesAroundFace( idx );
+      MeshFace face( vertices.cbegin(), vertices.cend() );
+      mesh.addFace( face );
+    }
+}
+
+
+template < typename DigitalSurfaceContainer,
+           typename CellEmbedder,
+	   typename VertexMap >
+inline
+void
+DGtal::MeshHelpers::digitalSurface2DualTriangulatedSurface
+( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
+  const CellEmbedder& cembedder,
+  TriangulatedSurface<typename CellEmbedder::Value>& trisurf,
+  VertexMap& vertexmap )
+{
+  BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
+  typedef DigitalSurface< DigitalSurfaceContainer >    Surface;
+  typedef typename Surface::KSpace                     KSpace;
+  typedef typename Surface::Vertex                     Vertex;
+  typedef typename Surface::VertexRange                VertexRange;
+  typedef typename CellEmbedder::Value                 Point;
+  typedef typename TriangulatedSurface< Point >::Index Index;
+  BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
+  
+  trisurf.clear();
+  // Numbers all vertices and add them to the triangulated surface.
+  const KSpace & K = dsurf.container().space();
+  for ( auto it = dsurf.begin(), it_end = dsurf.end(); it != it_end; ++it )
+    {
+      const Vertex& v = *it;
+      vertexmap[ v ] = trisurf.addVertex( cembedder( K.unsigns( v ) ) );
+    }
+
+  // Outputs closed faces.
+  auto faces = dsurf.allClosedFaces();
+  for ( auto itf = faces.begin(), itf_end = faces.end(); itf != itf_end; ++itf )
+    {
+      VertexRange vtcs = dsurf.verticesAroundFace( *itf );
+      if ( vtcs.size() == 3 )
+        trisurf.addTriangle( vertexmap[ vtcs[ 0 ]   ],
+                             vertexmap[ vtcs[ 1 ]   ],
+                             vertexmap[ vtcs[ 2 ] ] );
+      else
+        { // We must add a vertex before triangulating.
+          Point barycenter;
+          for ( unsigned int i = 0; i < vtcs.size(); ++i )
+            barycenter += cembedder( K.unsigns( vtcs[ i ] ) );
+          barycenter /= vtcs.size();
+          Index idx = trisurf.addVertex( barycenter );
+          for ( unsigned int i = 0; i < vtcs.size(); ++i )
+            trisurf.addTriangle( vertexmap[ vtcs[ i ]   ],
+                                 vertexmap[ vtcs[ (i+1) % vtcs.size() ]   ],
+                                 idx );
+        }
+    }
+  trisurf.build();
+}
+
+template < typename DigitalSurfaceContainer,
+           typename CellEmbedder,
+	   typename VertexMap >
+inline
+void
+DGtal::MeshHelpers::digitalSurface2DualPolygonalSurface
+( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
+  const CellEmbedder& cembedder,
+  PolygonalSurface<typename CellEmbedder::Value>& polysurf,
+  VertexMap& vertexmap )
+{
+  BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
+  typedef DigitalSurface< DigitalSurfaceContainer >    Surface;
+  typedef typename Surface::KSpace                     KSpace;
+  typedef typename Surface::Vertex                     Vertex;
+  typedef typename Surface::VertexRange                VertexRange;
+  typedef typename CellEmbedder::Value                 Point;
+  typedef typename PolygonalSurface< Point >::PolygonalFace PolygonalFace;
+  BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
+  
+  polysurf.clear();
+  // Numbers all vertices and add them to the triangulated surface.
+  const KSpace & K = dsurf.container().space();
+  for ( auto it = dsurf.begin(), it_end = dsurf.end(); it != it_end; ++it )
+    {
+      const Vertex& v = *it;
+      vertexmap[ v ] = polysurf.addVertex( cembedder( K.unsigns( v ) ) );
+    }
+
+  // Outputs closed faces.
+  auto faces = dsurf.allClosedFaces();
+  for ( auto itf = faces.begin(), itf_end = faces.end(); itf != itf_end; ++itf )
+    {
+      VertexRange vtcs = dsurf.verticesAroundFace( *itf );
+      PolygonalFace face( vtcs.size() );
+      std::transform( vtcs.cbegin(), vtcs.cend(), face.begin(),
+		      [ &vertexmap ] ( const Vertex& v ) { return vertexmap[ v ]; } );
+      polysurf.addPolygonalFace( face );
+    }
+  polysurf.build();
+}
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

@@ -25,9 +25,12 @@ SET(DGTAL_TESTS_SRC
   testImplicitFunctionModels
   testShapesFromPoints
   testMesh
+  testMeshVoxelization
   testBall3DSurface
   testEuclideanShapesDecorator
   testDigitalShapesDecorator
+  testTriangulatedSurface
+  testPolygonalSurface
   testProjection
   )
 
