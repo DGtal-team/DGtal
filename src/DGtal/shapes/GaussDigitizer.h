@@ -88,12 +88,8 @@ namespace DGtal
     typedef HyperRectDomain<Space> Domain;
     typedef RegularPointEmbedder<Space> PointEmbedder;
 
-    // JOL: GaussDigitizer do not need a bounded shape.
-    // BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
-    
     BOOST_CONCEPT_ASSERT(( concepts::CEuclideanOrientedShape<TEuclideanShape> ));
-
-    
+   
     /**
      * Destructor.
      */
