@@ -18,7 +18,7 @@ find_path(QGLVIEWER_INCLUDE_DIR
 
 
 find_library(QGLVIEWER_LIBRARY_RELEASE 
-  NAMES qglviewer-qt4 qglviewer QGLViewer QGLViewer2
+  NAMES qglviewer-qt4 qglviewer QGLViewer QGLViewer2 QGLViewer-qt5
   PATHS 
   /usr/lib
   /usr/local/lib
