@@ -37,7 +37,7 @@
    with the new method getLinesElementsFromFile().
    (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
  - SimpleDistanceColorMap new colormap to easily display distance maps.
-     (David Coeurjolly, [#xxxx](https://github.com/DGtal-team/DGtal/pull/xxx))
+     (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))
 
 ## Bug Fixes
 
