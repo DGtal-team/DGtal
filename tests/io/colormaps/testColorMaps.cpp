@@ -35,6 +35,7 @@
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
+#include "DGtal/io/colormaps/SimpleDistanceColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/RandomColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -213,12 +214,19 @@ int main()
          board );
   addColorMapSample( "Random", cmap_random, 1, board );  
 
+  SimpleDistanceColorMap<int> dt(0,500, false);
+  addColorMapSample( "SimpleDistanceColorMap", dt, 1, board );
+
+  SimpleDistanceColorMap<int> dtticks(0,500, true);
+  addColorMapSample( "SimpleDistanceColorMap with ticks", dtticks, 1, board );
+
+  
   board.saveEPS( "colormaps.eps" );
   board.saveSVG( "colormaps.svg" );
   board.saveTikZ( "colormaps.tikz" );
   
 #ifdef WITH_CAIRO
-  board.saveCairo("colormaps-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("colormaps-cairo.pdf", Board2D::CairoPDF);
 #endif
 
   return ( res1 ) ? 0 : 1;
