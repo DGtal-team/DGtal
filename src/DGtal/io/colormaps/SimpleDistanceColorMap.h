@@ -54,7 +54,9 @@ namespace DGtal
   /**
    * Description of class 'SimpleDistanceColorMap' <p>
    * \brief Aim: simple blue to red colormap for distance information for instance.
-   *  
+   *
+   * Color formula from a fragment shader in https://github.com/dgpdec/course.
+   *
    * @tparam TValue the value type
    */
   
