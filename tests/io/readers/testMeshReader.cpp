@@ -122,12 +122,6 @@ bool testMeshReader()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();  
-
-  
-  
-
-  
-
   
   
   return nbok == nb;
