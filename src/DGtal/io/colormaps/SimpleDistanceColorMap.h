@@ -88,14 +88,14 @@ namespace DGtal
     /**
      * Constructor from two min and max values.
      *
-     * @param[in] min the minimum value of the range.
-     * @param[in] max the maximum value of the range.
+     * @param[in] amin the minimum value of the range.
+     * @param[in] amax the maximum value of the range.
      * @param[in] withTick if true, white ticks are displayed (default true).
      **/
-    SimpleDistanceColorMap(const Value & min,
-                           const Value & max,
+    SimpleDistanceColorMap(const Value & amin,
+                           const Value & amax,
                            const bool withTick=true):
-    myMin(min), myMax(max), myTick(withTick)
+    myMin(amin), myMax(amax), myTick(withTick)
     {}
     
     
