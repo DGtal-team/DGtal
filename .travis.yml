@@ -66,6 +66,7 @@ addons:
     - libqglviewer-dev
     - libinsighttoolkit3-dev
     - libfftw3-dev
+    - ninja-build
 
 before_install:
   - source .travis/before_global.sh
