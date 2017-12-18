@@ -160,6 +160,6 @@ int main( int /* argc */, char** /* argv */ )
   board.saveEPS("graphTraversal-dfs-range.eps");
   //! [graphTraversal-graph-dfs-range]
 
-  return true;
+  return 0;
 }
 
