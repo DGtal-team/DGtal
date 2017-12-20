@@ -24,5 +24,5 @@ fi
 if [ $BUILD_DOC = "true" ];
 then
     echo "Building the doc"
-    ninja doc
+    make doc > buildDoc.log
 fi
