@@ -247,10 +247,10 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
                     continue;
 
                 const double measure = (duality == DUAL) ? iter_property->second.primal_size : iter_property->second.dual_size;
-                const double laplace = measure * exp(- l2_distance * l2_distance / (4. * t)) * ( 1. / (t * pow(4. * M_PI * t, dimEmbedded / 2.)) );
+                const double laplace_value = measure * exp(- l2_distance * l2_distance / (4. * t)) * ( 1. / (t * pow(4. * M_PI * t, dimEmbedded / 2.)) );
 
-                triplets.push_back( Triplet(i, j, laplace) );
-                total_weight -= laplace;
+                triplets.push_back( Triplet(i, j, laplace_value) );
+                total_weight -= laplace_value;
              }
         }
 
