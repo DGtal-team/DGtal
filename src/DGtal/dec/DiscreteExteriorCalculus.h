@@ -401,8 +401,11 @@ namespace DGtal
     laplace() const;
 
     /**
-     * Laplace operator from duality 0-forms to duality 0-forms.
-     * @return Laplace operator.
+     * Convolutional Laplace operator from duality 0-forms to duality 0-forms. See \ref secHowToHeatLaplace.
+     * @param h the grid step
+     * @param t the time parameter for the convolution
+     * @param cut_locus the cut locus for for the integration. Generaly setted to \f$ \log( - \log( t ) + 1 ) + 2 \f$
+     * @return Heat Laplace operator.
      */
     template <Duality duality>
     LinearOperator<Self, 0, duality, 0, duality>
