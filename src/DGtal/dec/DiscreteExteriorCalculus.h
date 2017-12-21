@@ -55,6 +55,7 @@
 #include "DGtal/dec/LinearOperator.h"
 #include "DGtal/dec/VectorField.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 
 #include <DGtal/kernel/sets/CDigitalSet.h>
 #include <DGtal/math/linalg/CDynamicMatrix.h>

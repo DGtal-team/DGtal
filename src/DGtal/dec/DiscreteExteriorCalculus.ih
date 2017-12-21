@@ -219,7 +219,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
     trace.info() << "Using h=" << h << ", t=" << t << ", cut_locus=" << cut << std::endl;
 
-    CanonicSCellEmbedder<KSpace> canonicSCellEmbedder(myKSpace);
+    DGtal::CanonicSCellEmbedder<KSpace> canonicSCellEmbedder(myKSpace);
 
     typedef typename TLinearAlgebraBackend::Triplet Triplet;
     typedef std::vector<Triplet> Triplets;
