@@ -111,9 +111,9 @@ public:
      * @tparam TNSCellConstIterator signed cells collection const iterator type.
      * @param begin beginning of iteration range.
      * @param end end of iteration range.
-     * @param add_border add border to the computed structure. For a precise definition see section \ref sectDECBorderDefinition.
-     * @param measureFunctor functor from a cell to its normal
+     * @param normalFunctor functor from a cell to its normal
      * @param h the grid step
+     * @param add_border add border to the computed structure. For a precise definition see section \ref sectDECBorderDefinition.
      */
     template <DGtal::Dimension dimEmbedded, typename TNSCellConstIterator, typename TSCellMeasureFunctor>
     static
