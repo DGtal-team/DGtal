@@ -1,3 +1,67 @@
+# DGtal 0.9.4
+
+## New Features / Critical Changes
+
+## Changes
+
+- *Math package*
+ - New SimpleMatrix constructor with a initializer_list argument
+   (Nicolas Normand,
+   [#1250](https://github.com/DGtal-team/DGtal/pull/1250))
+- *IO*
+  - New simple way to extend the QGLViewer-based Viewer3D interface,
+    for instance to add callbacks to key or mouse events, or to modify
+    what is drawn on the window.
+    (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
+ - TableReader can now read all elements contained in each line of a file
+   with the new method getLinesElementsFromFile().
+   (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
+
+## Bug Fixes
+
+- *Shapes Package*
+ - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
+   Improves projection operator on implicit surface and curvature
+   computations. (Jacques-Olivier Lachaud,
+   [#1279](https://github.com/DGtal-team/DGtal/pull/1279))
+
+- *Configuration/General*
+ - Upgrading the benchmarks to match with the new google-benchmark API
+   (David Coeurjolly,
+   [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
+ - The documentation mainpage now refers to the DGtalTools documentation
+   (David Coeurjolly,
+   [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
+
+- *IO*
+- Fix for compilation with 2.7.0 QGLViewer version.
+   (Bertrand Kerautret, [#1280](https://github.com/DGtal-team/DGtal/pull/1280))
+- Fix on the ITK reader when used with a functor which is not able to
+   handle 32/16 bits images. Also includes a new testITKReader and ITK tests in
+   GenericReader.
+   (Bertrand Kerautret, [#1255](https://github.com/DGtal-team/DGtal/pull/1255))
+ - Viewer3D: fix bad light source move according X/Y mouse move and new Key_Z to
+   move away/closer the light source.
+   (Bertrand Kerautret, [#1262](https://github.com/DGtal-team/DGtal/pull/1262))
+
+- *Kernel Package*
+ - Fix testBasicPointFunctor. (Bertrand Kerautret
+   [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
+
+- *Arithmetic Package*
+ - Fix SternBrocot and variants static instanciations. (Jacques-Olivier Lachaud
+   [#1293](https://github.com/DGtal-team/DGtal/pull/1293))
+
+- *Documentation*
+ - Add import with functors in GenericReader in the main default reader.
+   (mainly motivated to show documentation of specialized version of
+   importWithValueFunctor and importWithColorFunctor). The tiff format
+   was also added to the generic readers when ITK is present (Bertrand
+   Kerautret [1251](https://github.com/DGtal-team/DGtal/pull/1245))
+ - Fix exampleArithDSS3d compilation (which was not activated).
+   (Bertrand Kerautret
+   [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
+
 # DGtal 0.9.3
 
 ## New Features / Critical Changes
@@ -8,6 +72,8 @@
    [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
  - New mandatory dependency for DGtal: zlib must be installed in the system.
    (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
+ - Remove cpp11 deprecated usage of std::binder1st and std::binder2nd --generates error with c++17 flag.
+   (Pablo Hernandez, [#1287](https://github.com/DGtal-team/DGtal/pull/1287))
 
 - *Topology Package*
  -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.

@@ -166,9 +166,9 @@ namespace DGtal
      */
     void setParams( ConstAlias<KSpace> ks, 
                     Clone<GeometricFunctor> fct,
-                    const int maxIter = 0, 
-                    const Scalar accuracy = 0.1, 
-                    const Scalar gamma = 0.01 );
+                    const int maxIter = 20, 
+                    const Scalar accuracy = 0.0001, 
+                    const Scalar gamma = 0.5 );
 
     /**
      * Model of CDigitalSurfaceLocalEstimator. Initialisation.
