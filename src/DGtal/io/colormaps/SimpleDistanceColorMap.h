@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file SimpleDistanceColorMap
+ * @file SimpleDistanceColorMap.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * LIRIS (CNRS, UMR 5205), Université de Lyon, France
  *
