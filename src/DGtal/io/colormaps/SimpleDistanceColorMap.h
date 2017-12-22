@@ -71,14 +71,14 @@ namespace DGtal
     
     /**
      * Copy constructor.
-     * @param other the object to clone.
+     * @param[in] other the object to clone.
      * Forbidden by default.
      */
     SimpleDistanceColorMap ( const SimpleDistanceColorMap & other );
     
     /**
      * Assignment.
-     * @param anOther the object to copy.
+     * @param [in] anOther the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
@@ -103,7 +103,7 @@ namespace DGtal
     /**
      * Computes the color associated with a value.
      *
-     * @param aValue A value within the value range.
+     * @param[in] aValue A value within the value range.
      * @return A  color.
      */
     Color operator()( const Value & aValue ) const
@@ -140,7 +140,7 @@ namespace DGtal
     
     /**
      * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
+     * @param[in,out] out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
     
