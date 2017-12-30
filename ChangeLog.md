@@ -39,7 +39,7 @@
    [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
   - New ImageMagick writer to export images to PNG or JPG formats for
   instance.  (David Coeurjolly,
-  [#xxx](https://github.com/DGtal-team/DGtal/pull/xxx))
+  [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
 
 ## Bug Fixes
 
