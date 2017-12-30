@@ -61,7 +61,7 @@ void addColorMapSample( const char * name,
   board.translate( 0, 15 );
   board.setPenColor(Color::Black);
   board.setFont( LibBoard::Fonts::Courier, 12 );  // todo with Cairo
-  board.drawText( -150, 0, name );      // todo with Cairo
+  board.drawText( -250, 0, name );      // todo with Cairo
   board.setPenColor(Color::None);
   for ( Value x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
     board.setFillColor( aColorMap( x ) );
@@ -218,7 +218,7 @@ int main()
   addColorMapSample( "SimpleDistanceColorMap", dt, 1, board );
 
   SimpleDistanceColorMap<int> dtticks(0,500, true);
-  addColorMapSample( "SimpleDistanceColorMap with ticks", dtticks, 1, board );
+  addColorMapSample( "SimpleDistanceColorMap (ticks)", dtticks, 1, board );
 
   
   board.saveEPS( "colormaps.eps" );
