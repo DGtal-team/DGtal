@@ -90,8 +90,8 @@ namespace DGtal
      * 
      * @param filename name of the output file the suffix is used to select
      * the file format (png, bmp, jpg,...).
-     * @param aImage the image to export
-     * @param aFunctor  functor used to cast image values
+     * @param anImage the image to export
+     * @param aFunctor  functor used to cast image values to DGtal::Color
      *
      * @return true if no errors occur.
      */
