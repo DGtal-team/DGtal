@@ -23,6 +23,9 @@ then
     cd examples ; make  -j 3
     cd ../tests ;  make -j 3
     ctest -j 3--output-on-failure
+
+    io/writers/testMagickWriter
+    io/readers/testMagickReader
 fi
 
 ### DGtal doc
