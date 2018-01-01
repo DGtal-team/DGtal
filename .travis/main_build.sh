@@ -24,8 +24,12 @@ then
     cd ../tests ;  make -j 3
     ctest -j 3--output-on-failure
 
-    io/writers/testMagickWriter
-    io/readers/testMagickReader
+    if [ -f io/writers/testMagickWriter ]; then
+      io/writers/testMagickWriter -s
+    fi
+    if [ -f io/readers/testMagickReader ]; then
+      io/readers/testMagickReader
+    fi
 fi
 
 ### DGtal doc
