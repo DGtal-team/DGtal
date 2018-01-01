@@ -22,7 +22,6 @@ if [ $NEEDEXAMPLESANDTESTS = "true" ];
 then
     cd examples ; make  -j 3
     cd ../tests ;  make -j 3
-    ctest -j 3--output-on-failure
 
     if [ -f io/writers/testMagickWriter ]; then
       io/writers/testMagickWriter -s
@@ -30,6 +29,10 @@ then
     if [ -f io/readers/testMagickReader ]; then
       io/readers/testMagickReader
     fi
+
+    ctest -j 3--output-on-failure
+
+
 fi
 
 ### DGtal doc
