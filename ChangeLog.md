@@ -40,6 +40,8 @@
   - New ImageMagick writer to export images to PNG or JPG formats for
   instance.  (David Coeurjolly,
   [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
+ - SimpleDistanceColorMap new colormap to easily display distance maps.
+     (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))
 
 ## Bug Fixes
 

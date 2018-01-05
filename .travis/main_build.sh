@@ -7,14 +7,11 @@ cd build
 
 ### Cmake
 echo "Using C++ = $CXXCOMPILER"
-cmake ..  $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER
+cmake ..  $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER 
 
 
-### DGtal Core build
-if [ $NEEDCORE = "true" ];
-then
-    make -j 3 DGtal
-fi
+### DGtal  build
+make -j 4
 
 echo "NeedExample $NEEDEXAMPLESANDTESTS"
 ### DGtal Examples and Examples
