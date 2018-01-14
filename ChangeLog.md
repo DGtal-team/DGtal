@@ -47,7 +47,10 @@
 
  - Fix HDF5 link missing in compilation (Bertrand Kerautret,
     [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
- 
+
+ - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
+    [#1300](https://github.com/DGtal-team/DGtal/pull/1300))
+
 - *Shapes Package*
  - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
    Improves projection operator on implicit surface and curvature
