@@ -36,12 +36,20 @@
  - TableReader can now read all elements contained in each line of a file
    with the new method getLinesElementsFromFile().
    (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
+ - SimpleDistanceColorMap new colormap to easily display distance maps.
+     (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))
 
 ## Bug Fixes
 
 - *Build*
  - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
    Pablo H Cerdan, [#1290](https://github.com/DGtal-team/DGtal/pull/1290))
+
+ - Fix HDF5 link missing in compilation (Bertrand Kerautret,
+    [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
+
+ - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
+    [#1300](https://github.com/DGtal-team/DGtal/pull/1300))
 
 - *Shapes Package*
  - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.

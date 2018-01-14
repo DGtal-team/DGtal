@@ -1947,7 +1947,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::closeEvent( QCloseEvent * e )
   {
     saveStateToFile();
   }
-  QGLWidget::closeEvent(e);
+  QGLViewer::closeEvent(e);
 }
 
 template <typename TSpace, typename TKSpace>
@@ -2053,7 +2053,7 @@ const GLfloat lightSpecularCoeffs[ 4 ] )
 template <typename TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::show()
 {
-  QGLWidget::show();
+  QGLViewer::show();
   updateList(false);
 }
 
