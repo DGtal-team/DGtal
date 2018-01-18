@@ -53,7 +53,7 @@ inline
 TImageContainer 
 DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFilename, 
 						       const TFunctor &aFunctor,
-						       bool topbotomOrder ) throw(DGtal::IOException)
+						       bool topbotomOrder )
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;
@@ -173,7 +173,7 @@ template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer 
 DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFilename, 
-					       const TFunctor &aFunctor) throw(DGtal::IOException)
+					       const TFunctor &aFunctor)
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;

@@ -2,12 +2,32 @@
 
 ## New Features / Critical Changes
 
+- *Shapes*
+
+  - Mesh Voxelizer using 6- or 26-separability templated
+    (DavidCoeurjolly, Monir Hadji,
+    [#1209](https://github.com/DGtal-team/DGtal/pull/1209))
+
+- *Topology Package*
+ - Adding the half-edge data structure to represent arbitrary
+   two-dimensional combinatorial surfaces with or without boundary
+   (Jacques-Olivier Lachaud
+    [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+
+- *Shapes Package*
+ - Adding classes and helpers to create triangulated surfaces and
+   polygonal surfaces to convert them from/to mesh, as well as a conversion from digital
+   surfaces to dual triangulated or polygonal surface (Jacques-Olivier
+   Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+
+
 ## Changes
 
 - *Math package*
  - New SimpleMatrix constructor with a initializer_list argument
-   (Nicolas Normand,
+   (Nicolas Normand,
    [#1250](https://github.com/DGtal-team/DGtal/pull/1250))
+
 - *IO*
   - New simple way to extend the QGLViewer-based Viewer3D interface,
     for instance to add callbacks to key or mouse events, or to modify
@@ -16,8 +36,20 @@
  - TableReader can now read all elements contained in each line of a file
    with the new method getLinesElementsFromFile().
    (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
+ - SimpleDistanceColorMap new colormap to easily display distance maps.
+     (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))
 
 ## Bug Fixes
+
+- *Build*
+ - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
+   Pablo H Cerdan, [#1290](https://github.com/DGtal-team/DGtal/pull/1290))
+
+ - Fix HDF5 link missing in compilation (Bertrand Kerautret,
+    [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
+
+ - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
+    [#1300](https://github.com/DGtal-team/DGtal/pull/1300))
 
 - *Shapes Package*
  - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
@@ -32,6 +64,9 @@
  - The documentation mainpage now refers to the DGtalTools documentation
    (David Coeurjolly,
    [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
+ - Fix ITK related try_compile command to work for non-default locations.
+   (Pablo Hernandez,
+   [#1286]((https://github.com/DGtal-team/DGtal/pull/1286))
 
 - *IO*
 - Fix for compilation with 2.7.0 QGLViewer version.
@@ -52,6 +87,10 @@
  - Fix SternBrocot and variants static instanciations. (Jacques-Olivier Lachaud
    [#1293](https://github.com/DGtal-team/DGtal/pull/1293))
 
+- *Topology Package*
+ - Fix invalid KhalimskyCell coordinates in ctopo-fillContours.cpp example.
+   (Roland Denis, [#1296](https://github.com/DGtal-team/DGtal/pull/1296))
+
 - *Documentation*
  - Add import with functors in GenericReader in the main default reader.
    (mainly motivated to show documentation of specialized version of
@@ -61,6 +100,7 @@
  - Fix exampleArithDSS3d compilation (which was not activated).
    (Bertrand Kerautret
    [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
+
 
 # DGtal 0.9.3
 
@@ -74,6 +114,8 @@
    (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
  - Remove cpp11 deprecated usage of std::binder1st and std::binder2nd --generates error with c++17 flag.
    (Pablo Hernandez, [#1287](https://github.com/DGtal-team/DGtal/pull/1287))
+ - Remove cpp11 deprecated usage of std::unary_function and std::binary_function --generates error with c++17 flag.
+   (Pablo Hernandez, [#1291](https://github.com/DGtal-team/DGtal/pull/1291))
 
 - *Topology Package*
  -  Implementation of ParDirCollapse with CollapseSurface and CollapseIsthmus.

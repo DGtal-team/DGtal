@@ -55,11 +55,18 @@ incidence operations. This package is notably used by the geometry
 package, especially to define curves and surfaces.
 
 Since 0.4.1, high-level classes are provided to navigate onto digital
-surfaces and to represent the topology on the surface.
+surfaces and to represent the topology on the surface. Since 0.9.4,
+the topology of a 3D digital surface can be precomputed and stored as
+a half-edge data structure.
 
 Since 0.9.1, a class for representing cubical complexes is provided
 and offers many services (incidence, closure, link, star, collapse,
 boundary, union, etc).
+
+Since 0.9.4, there is a module that provides classes and services to
+represent combinatorial surfaces, based on an half-edge data
+structure.
+
 
 @b Modules
  - \ref moduleDigitalTopology (Jacques-Olivier Lachaud, Bertrand Kerautret)
@@ -67,6 +74,7 @@ boundary, union, etc).
  - \ref moduleDigitalSurfaces (Jacques-Olivier Lachaud)
  - \ref moduleDigitalSurfaceHelpers (Jacques-Olivier Lachaud, Bertrand Kerautret)
  - \ref moduleCubicalComplex (Jacques-Olivier Lachaud)
+ - \ref moduleHalfEdgeMesh (Jacques-Olivier Lachaud)
 
 
  @b Package @b Concepts @b Overview

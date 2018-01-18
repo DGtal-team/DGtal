@@ -320,7 +320,7 @@ namespace DGtal
      *
      * @return an ImagePtr.
      */
-    OutputImage * requestImage(const Domain &aDomain) throw(DGtal::IOException) // time consuming
+    OutputImage * requestImage(const Domain &aDomain) // time consuming
     {
       DGtal::IOException dgtalio;
       
@@ -432,7 +432,7 @@ namespace DGtal
      *
      * @param outputImage the OutputImage.
      */
-    void flushImage(OutputImage* outputImage) throw(DGtal::IOException) 
+    void flushImage(OutputImage* outputImage)
     {
       DGtal::IOException dgtalio;
       

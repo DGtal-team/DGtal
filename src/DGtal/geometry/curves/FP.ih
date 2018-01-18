@@ -42,7 +42,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::FP<TIterator,TInteger,connectivity>::
 FP(const TIterator& itb, 
-   const TIterator& ite ) throw( InputException ) 
+   const TIterator& ite )
 {
   algorithm(itb, ite);
 }
@@ -52,7 +52,7 @@ inline
 void
 DGtal::FP<TIterator,TInteger,connectivity>::
 algorithm(const TIterator& itb, 
-	  const TIterator& ite ) throw( InputException ) 
+	  const TIterator& ite )
 {
   if (isNotEmpty(itb,ite)) 
     {
@@ -66,7 +66,7 @@ inline
 void
 DGtal::FP<TIterator,TInteger,connectivity>::
 algorithm(const TIterator& itb, 
-	  const TIterator& ite, IteratorType ) throw( InputException ) 
+	  const TIterator& ite, IteratorType )
 {
   ASSERT(isNotEmpty(itb,ite)); 
 
@@ -158,7 +158,7 @@ inline
 void
 DGtal::FP<TIterator,TInteger,connectivity>::
 algorithm(const TIterator& itb, 
-	  const TIterator& ite, CirculatorType ) throw( InputException ) 
+	  const TIterator& ite, CirculatorType )
 {
   ASSERT(isNotEmpty(itb,ite)); boost::ignore_unused_variable_warning(ite);
 

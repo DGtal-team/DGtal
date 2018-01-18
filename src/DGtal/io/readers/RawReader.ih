@@ -39,7 +39,6 @@ template <typename T, typename TFunctor>
 template <typename Word>
 T
 DGtal::RawReader<T, TFunctor>::importRaw(const std::string& filename, const Vector& extent, const Functor& aFunctor)
-throw(DGtal::IOException)
 {
     BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Word, Value > )) ;
 
@@ -91,7 +90,6 @@ throw(DGtal::IOException)
 template <typename T, typename TFunctor>
 T
 DGtal::RawReader<T, TFunctor>::importRaw8(const std::string& filename, const Vector& extent, const Functor& aFunctor)
-throw(DGtal::IOException)
 {
     return importRaw<uint8_t>(filename, extent, aFunctor);
 }
@@ -99,7 +97,6 @@ throw(DGtal::IOException)
 template <typename T, typename TFunctor>
 T
 DGtal::RawReader<T, TFunctor>::importRaw16(const std::string& filename, const Vector& extent, const Functor& aFunctor)
-throw(DGtal::IOException)
 {
     return importRaw<uint16_t>(filename, extent, aFunctor);
 }
@@ -107,7 +104,6 @@ throw(DGtal::IOException)
 template <typename T, typename TFunctor>
 T
 DGtal::RawReader<T, TFunctor>::importRaw32(const std::string& filename, const Vector& extent, const Functor& aFunctor)
-throw(DGtal::IOException)
 {
     return importRaw<uint32_t>(filename, extent, aFunctor);
 }
