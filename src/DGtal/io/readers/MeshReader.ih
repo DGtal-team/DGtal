@@ -51,7 +51,7 @@ inline
 bool
 DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename, 
 					 DGtal::Mesh<TPoint> & aMesh, 
-					 bool invertVertexOrder) throw(DGtal::IOException)
+					 bool invertVertexOrder)
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;
@@ -185,7 +185,7 @@ inline
 bool
 DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename, 
 					 DGtal::Mesh<TPoint> & aMesh, 
-					 bool invertVertexOrder, double scale) throw(DGtal::IOException)
+					 bool invertVertexOrder, double scale)
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;

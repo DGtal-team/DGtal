@@ -216,6 +216,7 @@ IF(WITH_ITK)
       ${CMAKE_BINARY_DIR}/CMakeTmp
       ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
       ITKCPP11BUG
+      CMAKE_FLAGS "-DITK_DIR=${ITK_DIR}"
       OUTPUT_VARIABLE OUTPUT )
     if ( CPP11_ITK )
       message(STATUS "ITK accepts [c++11]" )
@@ -273,7 +274,7 @@ IF(WITH_HDF5)
   FIND_PACKAGE (HDF5 REQUIRED HL C)
   IF(HDF5_FOUND)
     INCLUDE_DIRECTORIES(${HDF5_INCLUDE_DIRS})
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${HDF5_LIBRARIES})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${HDF5_LIBRARIES} ${HDF5_HL_LIBRARIES})
     message(STATUS "HDF5 found")
     SET(HDF5_FOUND_DGTAL 1)
     SET(DGtalLibInc ${DGtalLibInc} ${HDF5_INCLUDE_DIRS})

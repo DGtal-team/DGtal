@@ -102,7 +102,7 @@ namespace DGtal
      **/
     static bool exportFile(const std::string &filename,
                            const TContainer &anImage,
-                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+                           const TFunctor & aFunctor = TFunctor() );
   };
 
   /**
@@ -124,7 +124,7 @@ namespace DGtal
      *
      **/
     static bool exportFile(const std::string &filename,  const TContainer &anImage, const std::string &datasetName="UInt8Array3D",
-                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+                           const TFunctor & aFunctor = TFunctor() );
 
   };
 
@@ -148,7 +148,7 @@ namespace DGtal
      *
      **/
     static bool exportFile(const std::string &filename,  const TContainer &anImage,
-                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+                           const TFunctor & aFunctor = TFunctor() );
 
   };
 
@@ -172,7 +172,7 @@ namespace DGtal
     static bool exportFile(const std::string &filename,
                            const TContainer &anImage,
                            const std::string &datasetName="UInt8Array3D",
-                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+                           const TFunctor & aFunctor = TFunctor() );
 
   };
 
@@ -195,7 +195,7 @@ namespace DGtal
 
     static bool exportFile(const std::string &filename,
                            const TContainer &anImage,
-                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+                           const TFunctor & aFunctor = TFunctor() );
 
   };
 
@@ -221,7 +221,7 @@ namespace DGtal
      **/
 
     static bool exportFile(const std::string &filename, const TContainer &anImage,
-                           const HueShadeColorMap<TValue> & aFunctor )  throw(DGtal::IOException);
+                           const HueShadeColorMap<TValue> & aFunctor );
 
   };
 
@@ -241,7 +241,7 @@ namespace DGtal
      *
      **/
     static bool exportFile(const std::string &filename, const TContainer &anImage,
-                           const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+                           const TFunctor & aFunctor = TFunctor() );
 
   };
 
@@ -256,7 +256,7 @@ namespace DGtal
    */
   template <typename TImageContainer >
   bool
-  operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
+  operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  );
 
 
 } // namespace DGtal

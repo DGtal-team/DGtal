@@ -48,7 +48,7 @@ namespace DGtal {
   bool VolWriter<I,F>::exportVol(const std::string & filename,
                                  const I & aImage,
                                  const bool compressed,
-                                 const Functor & aFunctor) throw(DGtal::IOException)
+                                 const Functor & aFunctor)
   {
     DGtal::IOException dgtalio;
     

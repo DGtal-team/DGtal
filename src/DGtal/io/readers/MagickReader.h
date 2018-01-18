@@ -87,7 +87,7 @@ namespace DGtal
      */
     static ImageContainer importImage(const std::string & filename, 
 				      const Functor & aFunctor =  Functor(), 
-				      bool topbotomOrder = true) throw(DGtal::IOException);
+				      bool topbotomOrder = true);
     
   }; // end of class MagickReader
 

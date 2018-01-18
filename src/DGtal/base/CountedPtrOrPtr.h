@@ -146,7 +146,7 @@ namespace DGtal
      *
      * @param r the smart pointer to acquire.
      */
-    CountedPtrOrPtr( const CountedPtr<T> & r ) throw()
+    CountedPtrOrPtr( const CountedPtr<T> & r ) noexcept
       : myIsCountedPtr( true )
     { 
       acquire( r.myCounter ); 
@@ -161,7 +161,7 @@ namespace DGtal
      * @param r the other pointer to clone, which may be \b smart or
      * \b simple.
      */
-    CountedPtrOrPtr(const CountedPtrOrPtr& r) throw()
+    CountedPtrOrPtr(const CountedPtrOrPtr& r) noexcept
       : myIsCountedPtr( r.myIsCountedPtr )
     { 
       if ( myIsCountedPtr )
@@ -257,7 +257,7 @@ namespace DGtal
      *
      * @pre 'isValid()' is true
      */
-    T& operator*()  const throw()
+    T& operator*()  const noexcept
     {
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( isValid() );
@@ -273,7 +273,7 @@ namespace DGtal
      *
      * @pre 'isValid()' is true
      */
-    T* operator->() const throw()
+    T* operator->() const noexcept
     {
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( isValid() );
@@ -287,7 +287,7 @@ namespace DGtal
      * or \b simply pointed by 'this' or 0 if the object is not valid
      * ('isValid()' is false).
      */
-    T* get()        const throw() 
+    T* get()        const noexcept
     {
       return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) : ptr(); 
     }
@@ -297,7 +297,7 @@ namespace DGtal
      * on this object or if the smart pointer is invalid ('isValid()'
      * is false) or if 'this' object is \b simple.
      */
-    bool unique()   const throw()
+    bool unique()   const noexcept
     {
       return myIsCountedPtr
 	? ( myAny ? counterPtr()->count == 1 : true )
@@ -379,7 +379,7 @@ private:
      * @param c any counter (except this.myCounter).
      * @pre 'this' pointer object is \b smart.
      */
-    inline void acquire(Counter* c) throw()
+    inline void acquire(Counter* c) noexcept
     { // increment the count
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( myIsCountedPtr );

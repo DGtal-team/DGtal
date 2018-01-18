@@ -73,7 +73,7 @@ template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer
 DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & aFilename,
-							   const TFunctor &aFunctor) throw(DGtal::IOException)
+							   const TFunctor &aFunctor)
 {
   DGtal::IOException dgtalio;
 

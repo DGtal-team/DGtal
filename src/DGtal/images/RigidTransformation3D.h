@@ -67,7 +67,7 @@ namespace functors
      * @see exampleRigidtransformation3d.cpp
      */
 template <typename TSpace>
-class ForwardRigidTransformation3D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
+class ForwardRigidTransformation3D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
@@ -148,7 +148,7 @@ protected:
      * @see exampleRigidtransformation3d.cpp
      */
 template <typename TSpace>
-class BackwardRigidTransformation3D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
+class BackwardRigidTransformation3D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
@@ -225,8 +225,7 @@ private:
      * @see exampleRigidtransformation3d.cpp
      */
 template <typename TDomain, typename TRigidTransformFunctor >
-class DomainRigidTransformation3D :
-        std::unary_function < std::pair < typename TDomain::Point, typename TDomain::Point >, TDomain>
+class DomainRigidTransformation3D
 {
     ///Checking concepts
     BOOST_STATIC_ASSERT(( TDomain::dimension == 3 ));
