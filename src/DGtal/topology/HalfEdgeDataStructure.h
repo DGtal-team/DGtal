@@ -649,7 +649,8 @@ namespace DGtal
       myFaceHalfEdges[ he1.face ] = i1;
       myFaceHalfEdges[ he2.face ] = i2;
       // No need to reassign edge... it has just changed of vertices
-      // but still is based on half-edges i1 and i2
+      // but is still based on half-edges i1 and i2
+      // Now taking care of mapping (vertex,vertex) -> half-edge.
       if ( update_arc2index ) 
         {
           myArc2Index.erase( Arc( v1, v2 ) );
@@ -662,6 +663,8 @@ namespace DGtal
     }
     
     /// Checks the whole half-edge structure for consistency.
+    /// Complexity is at O(n log n) if n in the number of half-edges.
+    /// 
     /// @return 'true' iff all checks have passed.
     bool isValid( bool check_arc2index = true ) const
     {
@@ -723,6 +726,26 @@ namespace DGtal
           }
           while ( i != start );          
         }
+      // Checks that turning around a vertex gives half-edges associated to this vertex.
+      for ( VertexIndex v = 0; v < nbVertices(); v++ )
+        {
+          const Index s = halfEdgeIndexFromVertexIndex( v );
+          Index       i = s;
+          do
+            {
+              const HalfEdge&  he = halfEdge( i );
+              const VertexIndex w = halfEdge( he.opposite ).toVertex;
+              if ( v != w ) {
+                trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                                << "when turning around vertex " << v << ", some opposite half-edge "
+                                << he.opposite << " points to " << w << std::endl;
+                ok = false;
+              }
+              i = halfEdge( he.opposite ).next;
+            }
+          while ( i != s );          
+        }
+
       // Checks that boundary vertices have specific associated half-edges.
       VertexIndexRange bdryV = boundaryVertices();
       for ( VertexIndex i : bdryV ) {
