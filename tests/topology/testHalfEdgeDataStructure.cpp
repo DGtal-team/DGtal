@@ -485,25 +485,18 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
     THEN( "Vertex 0 has 2,3,1 as neighbors after flip" ) {
       VertexIndexRange nv = mesh.neighboringVertices( 0 );
       VertexIndexRange expected = { 2, 3, 1 };
-      CAPTURE( nv[ 0 ] );
-      CAPTURE( nv[ 1 ] );
-      CAPTURE( nv[ 2 ] );
       REQUIRE( nv.size()  ==  3 );
       REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
     }
     THEN( "Vertex 1 has 0,3 as neighbors after flip" ) {
       VertexIndexRange nv = mesh.neighboringVertices( 1 );
       VertexIndexRange expected = { 0, 3 };
-      CAPTURE( nv[ 0 ] );
-      CAPTURE( nv[ 1 ] );
       REQUIRE( nv.size()  ==  2 );
       REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
     }
     THEN( "Vertex 2 has 3,0 as neighbors after flip" ) {
       VertexIndexRange nv = mesh.neighboringVertices( 2 );
       VertexIndexRange expected = { 3, 0 };
-      CAPTURE( nv[ 0 ] );
-      CAPTURE( nv[ 1 ] );
       REQUIRE( nv.size()  ==  2 );
       REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
     }
@@ -511,6 +504,42 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
       VertexIndexRange nv = mesh.neighboringVertices( 3 );
       VertexIndexRange expected = { 1, 0, 2 }; 
       REQUIRE( nv.size()  ==  3 );
+      REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
+    }
+  }
+  GIVEN( "Two triangles incident by an edge" ) {
+    HalfEdgeDataStructure mesh = makeTwoTriangles();
+    auto he  = mesh.findHalfEdgeIndexFromArc( {1,2} );
+    REQUIRE( mesh.isFlippable( he ) );
+    mesh.flip( he );
+    auto he2 = mesh.findHalfEdgeIndexFromArc( {0,3} );
+    REQUIRE( mesh.isFlippable( he2 ) );
+    mesh.flip( he2 );
+    THEN( "The mesh is valid after two flips" ) {
+      REQUIRE( mesh.isValid() );
+    }
+    THEN( "Vertex 0 has 2,1 as neighbors after flip" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 0 );
+      VertexIndexRange expected = { 2, 1 };
+      REQUIRE( nv.size()  ==  2 );
+      REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 1 has 0,2,3 as neighbors after flip" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 1 );
+      VertexIndexRange expected = { 0,2,3 };
+      REQUIRE( nv.size()  ==  3 );
+      REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 2 has 3,1,0 as neighbors after flip" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 2 );
+      VertexIndexRange expected = { 3, 1, 0 };
+      REQUIRE( nv.size()  ==  3 );
+      REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 3 has 1,2 as neighbors after flip" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 3 );
+      VertexIndexRange expected = { 1, 2 }; 
+      REQUIRE( nv.size()  ==  2 );
       REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
     }
   }
