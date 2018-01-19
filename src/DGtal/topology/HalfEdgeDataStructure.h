@@ -425,8 +425,8 @@ namespace DGtal
     { return myEdgeHalfEdges[ ei ]; }
     
     /// @param[in] vi any vertex index.
-    /// @param[out] result the sequence of vertex neighbors of the given vertex \a vi .
-    void getNeighboringVertices( const Index vi, VertexIndexRange& result ) const
+    /// @param[out] result the sequence of vertex neighbors of the given vertex \a vi (clockwise if triangles were given ccw).
+    void getNeighboringVertices( const VertexIndex vi, VertexIndexRange& result ) const
     {
       result.clear();
       const Index start_hei = halfEdgeIndexFromVertexIndex( vi );
@@ -441,8 +441,8 @@ namespace DGtal
     }
 
     /// @param[in] vi any vertex index.
-    /// @return the sequence of vertex neighbors of the given vertex \a vi .
-    VertexIndexRange neighboringVertices( const Index vi ) const
+    /// @return the sequence of vertex neighbors of the given vertex \a vi (clockwise if triangles were given ccw).
+    VertexIndexRange neighboringVertices( const VertexIndex vi ) const
     {
       VertexIndexRange result;
       getNeighboringVertices( vi, result );
@@ -545,6 +545,224 @@ namespace DGtal
         return result;
     }
 
+    /// @param hei any valid half-edge index.
+    /// @return the number of sides of the face that contains the half-edge \a hei.
+    Size nbSides( Index hei ) const
+    {
+       ASSERT( hei != HALF_EDGE_INVALID_INDEX );
+       Size nb = 0;
+       const Index start = hei;
+       do {
+         hei = halfEdge( hei ).next;
+         nb++;
+       }
+       while ( hei != start );
+       return nb;
+    }
+
+    /// @param f any valid face index.
+    /// @return the number of sides of the face \a f.
+    Size nbSidesOfFace( const FaceIndex f ) const
+    {
+      return nbSides( halfEdgeIndexFromFaceIndex( f ) );
+    }
+    
+    /// @param f any valid face index.
+    /// @return the sequence of vertices of the face \a f.
+    VertexIndexRange verticesOfFace( const FaceIndex f ) const
+    {
+      VertexIndexRange result;
+      result.reserve( 3 );
+      Index hei = halfEdgeIndexFromFaceIndex( f );
+      const Index start = hei;
+       do {
+         const HalfEdge& he = halfEdge( hei );
+         result.push_back( he.toVertex );
+         hei = he.next;
+       }
+       while ( hei != start );
+       return result;
+    }
+
+    // -------------------- Modification services -------------------------
+  public:
+    
+    /// An edge is (topologically) flippable iff: (1) it does not lie
+    /// on the boundary, (2) it is bordered by two triangles.
+    ///
+    /// @param hei any valid half-edge index.
+    /// @return 'true' if the edge containing \a hei is topologically flippable.
+    bool isFlippable( const Index hei ) const
+    {
+      ASSERT( hei != HALF_EDGE_INVALID_INDEX );
+      const HalfEdge& he = halfEdge( hei );
+      const Index    hei2 = he.opposite;
+      // check if hei borders an infinite face.
+      if ( he.face == HALF_EDGE_INVALID_INDEX ) return false; 
+      // check if hei2 borders an infinite face.
+      if ( halfEdge( hei2 ).face == HALF_EDGE_INVALID_INDEX ) return false; 
+      // Checks that he1 and he2 border a triangle.
+      return ( nbSides( hei ) == 3 ) && ( nbSides( hei2 ) == 3);
+    }
+
+    /// Tries to flip the edge containing \a hei.
+    ///
+    /// @param hei any valid half-edge index.
+    ///
+    /// @param update_arc2index (optimisation parameter), when 'true'
+    /// updates everything consistently; when 'false' do not update
+    /// myArc2Index map, which means you cannot get an half edge from
+    /// two vertices afterwards. Use 'false' only if you know that you
+    /// never use this mapping (e.g. no call to halfEdgeIndexFromArc)
+    ///
+    /// @pre the edge must be flippable, `isFlippable( hei ) == true`
+    /// @see isFlippable
+    void flip( const Index hei, bool update_arc2index = true )
+    {
+      const Index       i1 = hei;
+      HalfEdge&        he1 = myHalfEdges[ i1 ];
+      const Index       i2 = he1.opposite;
+      HalfEdge&        he2 = myHalfEdges[ i2 ];
+      const VertexIndex v2 = he1.toVertex;
+      const VertexIndex v1 = he2.toVertex;
+      const Index  i1_next = he1.next;
+      const Index  i2_next = he2.next;
+      HalfEdge&   he1_next = myHalfEdges[ i1_next ];
+      HalfEdge&   he2_next = myHalfEdges[ i2_next ];
+      const Index i1_next2 = he1_next.next;
+      const Index i2_next2 = he2_next.next;
+      myHalfEdges[ i1_next2 ].next = i2_next;
+      myHalfEdges[ i2_next2 ].next = i1_next;
+      he2_next.next  = i1;
+      he1_next.next  = i2;
+      he2_next.face  = he1.face;
+      he1_next.face  = he2.face;
+      he1.next       = i1_next2;
+      he2.next       = i2_next2;
+      he1.toVertex   = he1_next.toVertex;
+      he2.toVertex   = he2_next.toVertex;
+      // Reassign the mapping vertex v -> index of half edge starting from v
+      // (JOL): must check before reassign for boundary vertices.
+      if ( myVertexHalfEdges[ v1 ] == i1 ) myVertexHalfEdges[ v1 ] = i2_next;
+      if ( myVertexHalfEdges[ v2 ] == i2 ) myVertexHalfEdges[ v2 ] = i1_next;
+      // Reassign the mapping face f -> index of half edge contained in f
+      myFaceHalfEdges[ he1.face ] = i1;
+      myFaceHalfEdges[ he2.face ] = i2;
+      // No need to reassign edge... it has just changed of vertices
+      // but still is based on half-edges i1 and i2
+      if ( update_arc2index ) 
+        {
+          myArc2Index.erase( Arc( v1, v2 ) );
+          myArc2Index.erase( Arc( v2, v1 ) );
+          const VertexIndex v2p = he1.toVertex;
+          const VertexIndex v1p = he2.toVertex;
+          myArc2Index[ Arc( v1p, v2p ) ] = i1;
+          myArc2Index[ Arc( v2p, v1p ) ] = i2;
+        }
+    }
+    
+    /// Checks the whole half-edge structure for consistency.
+    /// @return 'true' iff all checks have passed.
+    bool isValid( bool check_arc2index = true ) const
+    {
+      bool ok = true;
+      // Checks that opposite are correct
+      for ( Index i = 0; i < nbHalfEdges(); i++ )
+        {
+          const Index j = myHalfEdges[ i ].opposite;
+          if ( j == HALF_EDGE_INVALID_INDEX ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                            << "half-edge " << i << " has invalid opposite half-edge." << std::endl;
+            ok = false;
+          }
+          if ( myHalfEdges[ j ].opposite != i ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                            << "half-edge " << i << " has opposite half-edge " << j
+                            << " but the latter has opposite half-edge " << myHalfEdges[ j ].opposite << std::endl;
+            ok = false;
+          }
+        }
+      // Checks that vertices have a correct starting half-edge.
+      for ( VertexIndex i = 0; i < nbVertices(); i++ )
+        {
+          const Index        j = myVertexHalfEdges[ i ];
+          const Index     jopp = myHalfEdges[ j ].opposite;
+          const VertexIndex ip = myHalfEdges[ jopp ].toVertex;
+          if ( ip != i ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                            << "vertex " << i << " is associated to half-edge " << j
+                            << " but its opposite half-edge " << jopp << " points to vertex " << ip << std::endl;
+            ok = false;
+          }
+        }
+      // Checks that faces have a correct bordering half-edge.
+      for ( FaceIndex f = 0; f < nbFaces(); f++ )
+        {
+          const Index        i = myFaceHalfEdges[ f ];
+          if ( myHalfEdges[ i ].face != f ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                            << "face " << f << " is associated to half-edge " << i
+                            << " but its associated face is " << myHalfEdges[ i ].face << std::endl;
+            ok = false;
+          }
+        }
+      // Checks that following next half-edges turns around the same face.
+      for ( FaceIndex f = 0; f < nbFaces(); f++ )
+        {
+          Index           i = myFaceHalfEdges[ f ];
+          const Index start = i;
+          do {
+            const HalfEdge& he = halfEdge( i );
+            if ( he.face != f ) {
+              trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                              << "when turning around face " << f << ", half-edge " << i
+                              << " is associated to face " << he.face << std::endl;
+              ok = false;
+            }
+            i = he.next;
+          }
+          while ( i != start );          
+        }
+      // Checks that boundary vertices have specific associated half-edges.
+      VertexIndexRange bdryV = boundaryVertices();
+      for ( VertexIndex i : bdryV ) {
+        const Index j = myVertexHalfEdges[ i ];
+        if ( halfEdge( j ).face != HALF_EDGE_INVALID_INDEX ) {
+          trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                          << "boundary vertex " << i << " is associated to the half-edge " << j 
+                          << " that does not lie on the boundary but on face " << halfEdge( j ).face 
+                          << std::endl;
+          ok = false;
+        }
+      }
+
+      // Checks that edges have a correct associated half-edge.
+      if ( check_arc2index )
+        {
+          for ( auto arc2idx : myArc2Index )
+            {
+              const VertexIndex v1 = arc2idx.first.first;
+              const VertexIndex v2 = arc2idx.first.second;
+              const Index        i = arc2idx.second;
+              if ( myHalfEdges[ i ].toVertex != v2 ) {
+                trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                                << "arc (" << v1 << "," << v2 << ") is associated to half-edge " << i 
+                                << " but it points to vertex " << myHalfEdges[ i ].toVertex << std::endl;
+                ok = false;
+              }
+              const Index       i2 = myHalfEdges[ i ].opposite;
+              if ( myHalfEdges[ i2 ].toVertex != v1 ) {
+                trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                                << "arc (" << v1 << "," << v2 << ") is associated to half-edge " << i 
+                                << " but its opposite half-edge " << i2 << " points to vertex " << myHalfEdges[ i2 ].toVertex 
+                                << std::endl;
+                ok = false;
+              }
+            }
+        }
+      return ok;
+    }
+
   protected:
 
     /// Stores all the half-edges.
@@ -573,12 +791,6 @@ namespace DGtal
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
   private:

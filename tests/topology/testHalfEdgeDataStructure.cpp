@@ -165,6 +165,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
 {
   GIVEN( "Two triangles incident by an edge" ) {
     HalfEdgeDataStructure mesh = makeTwoTriangles();
+    THEN( "The mesh is valid" ) {
+      REQUIRE( mesh.isValid() );
+    }
     THEN( "The mesh has 4 vertices, 5 edges, 2 faces, 10 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  4 );
       REQUIRE( mesh.nbEdges()     ==  5 );
@@ -193,6 +196,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
   }
   GIVEN( "Three triangles forming a fan around a vertex" ) {
     HalfEdgeDataStructure mesh = makeThreeTriangles();
+    THEN( "The mesh is valid" ) {
+      REQUIRE( mesh.isValid() );
+    }
     THEN( "The mesh has 4 vertices, 6 edges, 3 faces, 12 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  4 );
       REQUIRE( mesh.nbEdges()     ==  6 );
@@ -219,6 +225,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
   }
   GIVEN( "Four triangles forming a tetrahedron" ) {
     HalfEdgeDataStructure mesh = makeTetrahedron();
+    THEN( "The mesh is valid" ) {
+      REQUIRE( mesh.isValid() );
+    }
     THEN( "The mesh has 4 vertices, 6 edges, 4 faces, 12 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  4 );
       REQUIRE( mesh.nbEdges()     ==  6 );
@@ -236,6 +245,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
   }
   GIVEN( "A ribbon with a hole" ) {
     HalfEdgeDataStructure mesh = makeRibbonWithHole();
+    THEN( "The mesh is valid" ) {
+      REQUIRE( mesh.isValid() );
+    }
     THEN( "The mesh has 6 vertices, 12 edges, 6 faces, 24 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  6 );
       REQUIRE( mesh.nbEdges()     ==  12 );
@@ -260,6 +272,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
   }
   GIVEN( "The same ribbon with his hole closed" ) {
     HalfEdgeDataStructure mesh = makeTriangulatedDisk();
+    THEN( "The mesh is valid" ) {
+      REQUIRE( mesh.isValid() );
+    }
     THEN( "The mesh has 6 vertices, 12 edges, 7 faces, 24 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  6 );
       REQUIRE( mesh.nbEdges()     ==  12 );
@@ -285,6 +300,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
   }
   GIVEN( "A pyramid with a square base" ) {
     HalfEdgeDataStructure mesh = makePyramid();
+    THEN( "The mesh is valid" ) {
+      REQUIRE( mesh.isValid() );
+    }
     THEN( "The mesh has 5 vertices, 8 edges, 5 faces, 16 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  5 );
       REQUIRE( mesh.nbEdges()     ==  8 );
@@ -302,6 +320,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
   }
   GIVEN( "A cube" ) {
     HalfEdgeDataStructure mesh = makeCube();
+    THEN( "The mesh is valid" ) {
+      REQUIRE( mesh.isValid() );
+    }
     THEN( "The mesh has 8 vertices, 12 edges, 6 faces, 24 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  8 );
       REQUIRE( mesh.nbEdges()     ==  12 );
@@ -319,6 +340,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
   }
   GIVEN( "A box with an open side" ) {
     HalfEdgeDataStructure mesh = makeBox();
+    THEN( "The mesh is valid" ) {
+      REQUIRE( mesh.isValid() );
+    }
     THEN( "The mesh has 10 vertices, 15 edges, 6 faces, 30 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  10 );
       REQUIRE( mesh.nbEdges()     ==  15 );
@@ -409,6 +433,85 @@ SCENARIO( "HalfEdgeDataStructure neighboring relations", "[halfedge][neighbors]"
       VertexIndexRange expected = { 5, 3, 6 };
       REQUIRE( nv.size()  ==  3 );
       REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+  }
+}
+
+SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
+  GIVEN( "Two triangles incident by an edge" ) {
+    HalfEdgeDataStructure mesh = makeTwoTriangles();
+    THEN( "Only one edge is flippable" ) {
+      int nbflippable = 0;
+      for ( int e = 0; e < mesh.nbEdges(); e++ )
+        {
+          if ( mesh.isFlippable( mesh.halfEdgeIndexFromEdgeIndex( e ) ) )
+            nbflippable++;
+        }
+      REQUIRE( nbflippable == 1 );
+    }
+  }
+  GIVEN( "A pyramid" ) {
+    HalfEdgeDataStructure mesh = makePyramid();
+    THEN( "Only four edges are flippable" ) {
+      int nbflippable = 0;
+      for ( int e = 0; e < mesh.nbEdges(); e++ )
+        {
+          if ( mesh.isFlippable( mesh.halfEdgeIndexFromEdgeIndex( e ) ) )
+            nbflippable++;
+        }
+      REQUIRE( nbflippable == 4 );
+    }
+  }
+  GIVEN( "A tetrahedron" ) {
+    HalfEdgeDataStructure mesh = makeTetrahedron();
+    THEN( "All edges are flippable" ) {
+      int nbflippable = 0;
+      for ( int e = 0; e < mesh.nbEdges(); e++ )
+        {
+          if ( mesh.isFlippable( mesh.halfEdgeIndexFromEdgeIndex( e ) ) )
+            nbflippable++;
+        }
+      REQUIRE( nbflippable == mesh.nbEdges() );
+    }
+  }
+  GIVEN( "Two triangles incident by an edge" ) {
+    HalfEdgeDataStructure mesh = makeTwoTriangles();
+    auto he = mesh.halfEdgeIndexFromArc( {1,2} );
+    REQUIRE( mesh.isFlippable( he ) );
+    mesh.flip( he );
+    THEN( "The mesh is valid after flip" ) {
+      REQUIRE( mesh.isValid() );
+    }
+    THEN( "Vertex 0 has 2,3,1 as neighbors after flip" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 0 );
+      VertexIndexRange expected = { 2, 3, 1 };
+      CAPTURE( nv[ 0 ] );
+      CAPTURE( nv[ 1 ] );
+      CAPTURE( nv[ 2 ] );
+      REQUIRE( nv.size()  ==  3 );
+      REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 1 has 0,3 as neighbors after flip" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 1 );
+      VertexIndexRange expected = { 0, 3 };
+      CAPTURE( nv[ 0 ] );
+      CAPTURE( nv[ 1 ] );
+      REQUIRE( nv.size()  ==  2 );
+      REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 2 has 3,0 as neighbors after flip" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 2 );
+      VertexIndexRange expected = { 3, 0 };
+      CAPTURE( nv[ 0 ] );
+      CAPTURE( nv[ 1 ] );
+      REQUIRE( nv.size()  ==  2 );
+      REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
+    }
+    THEN( "Vertex 3 has 2,0,1 as neighbors after flip" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 3 );
+      VertexIndexRange expected = { 1, 0, 2 }; 
+      REQUIRE( nv.size()  ==  3 );
+      REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
     }
   }
 }

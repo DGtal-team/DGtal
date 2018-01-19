@@ -441,17 +441,6 @@ DGtal::HalfEdgeDataStructure::selfDisplay ( std::ostream & out ) const
       << "]";
 }
 
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-inline
-bool
-DGtal::HalfEdgeDataStructure::isValid() const
-{
-  return true;
-}
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
