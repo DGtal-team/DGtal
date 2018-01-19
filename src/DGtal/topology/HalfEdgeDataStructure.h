@@ -409,6 +409,40 @@ namespace DGtal
       return ( result == myArc2Index.end() ) ? HALF_EDGE_INVALID_INDEX : result->second;
     }
 
+    /// @note In opposition with halfEdgeIndexFromArc, this method
+    /// does not use the map myArc2Index to find the half-edge
+    /// associated with arc (v1,v2), but rather gets an half-edge
+    /// originating from v1, and turn around to find the one pointing
+    /// to v2. This method is useful if you do not update myArc2Index
+    /// when flipping.
+    /// 
+    /// @param i the vertex index of some vertex.
+    /// @param j the vertex index of some other vertex.
+    /// @return the index of the half-edge from \a i to \a j or HALF_EDGE_INVALID_INDEX if not found.
+    Index findHalfEdgeIndexFromArc( const VertexIndex i, const VertexIndex j ) const
+    { return findHalfEdgeIndexFromArc( std::make_pair( i, j ) ); }
+
+    /// @note In opposition with halfEdgeIndexFromArc, this method
+    /// does not use the map myArc2Index to find the half-edge
+    /// associated with arc (v1,v2), but rather gets an half-edge
+    /// originating from v1, and turn around to find the one pointing
+    /// to v2. This method is useful if you do not update myArc2Index
+    /// when flipping.
+    /// 
+    /// @param arc any directed edge (i,j)
+    /// @return the index of the half-edge from \a i to \a j or HALF_EDGE_INVALID_INDEX if not found.
+    Index findHalfEdgeIndexFromArc( const Arc& arc ) const
+    {
+      const Index s = halfEdgeIndexFromVertexIndex( arc.first );
+      Index       i = s;
+      do {
+        const HalfEdge& he = myHalfEdges[ i ];
+        if ( he.toVertex == arc.second ) return i;
+        i = halfEdge( he.opposite ).next;
+      } while ( i != s );
+      return HALF_EDGE_INVALID_INDEX;
+    }
+
     /// @param[in] vi any vertex index.
     /// @return the index of an half-edge originating from \a vi.
     Index halfEdgeIndexFromVertexIndex( const VertexIndex vi ) const
@@ -755,6 +789,21 @@ namespace DGtal
                           << "boundary vertex " << i << " is associated to the half-edge " << j 
                           << " that does not lie on the boundary but on face " << halfEdge( j ).face 
                           << std::endl;
+          ok = false;
+        }
+      }
+
+      // Checks that that we can find arcs.
+      for ( Index i = 0; i < nbHalfEdges(); i++ ) {
+        const HalfEdge&   he = halfEdge( i );
+        const VertexIndex v2 = he.toVertex;
+        const VertexIndex v1 = halfEdge( he.opposite ).toVertex;
+        const Index        j = findHalfEdgeIndexFromArc( v1, v2 );
+        const HalfEdge&  he2 = halfEdge( j );
+        if ( he2.toVertex != v2 ) {
+          trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                          << "arc (" << v1 << "," << v2 << ") was found to be half-edge " << j
+                          << " but it should be half-edge " << i << std::endl;
           ok = false;
         }
       }
