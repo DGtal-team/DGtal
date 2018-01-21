@@ -331,6 +331,40 @@ DGtal::TriangulatedSurface<TPoint>::isArcBoundary( const Arc& v ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline
+typename DGtal::TriangulatedSurface<TPoint>::VertexRange
+DGtal::TriangulatedSurface<TPoint>::verticesAroundArc( Arc a ) const
+{
+  Arc a2 = opposite( a );
+  if ( isArcBoundary( a ) )
+    {
+      VertexRange V( 3 );
+      V[ 0 ] = head( a );
+      V[ 1 ] = head( a2 );
+      V[ 2 ] = head( next( a2 ) );
+      return V;
+    }
+  else if ( isArcBoundary( a2 ) )
+    {
+      VertexRange V( 3 );
+      V[ 0 ] = head( a );
+      V[ 1 ] = head( next( a ) );
+      V[ 2 ] = head( a2 );
+      return V;
+    }
+  else
+    {
+      VertexRange V( 4 );
+      V[ 0 ] = head( a );
+      V[ 1 ] = head( next( a ) );
+      V[ 2 ] = head( a2 );
+      V[ 3 ] = head( next( a2 ) );
+      return V;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
 typename DGtal::TriangulatedSurface<TPoint>::FaceRange
 DGtal::TriangulatedSurface<TPoint>::allFaces() const
 {
@@ -380,6 +414,24 @@ DGtal::TriangulatedSurface<TPoint>::allBoundaryVertices() const
   return myHEDS.boundaryVertices();
 }
 
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+bool
+DGtal::TriangulatedSurface<TPoint>::isFlippable( const Arc a ) const
+{
+  return ( ! isArcBoundary( a ) )
+    && ( ! isArcBoundary( opposite( a ) ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+void
+DGtal::TriangulatedSurface<TPoint>::flip( const Arc a )
+{
+  myHEDS.flip( a );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

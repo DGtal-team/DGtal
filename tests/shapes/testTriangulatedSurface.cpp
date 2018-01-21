@@ -175,6 +175,39 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
   }
 }
 
+SCENARIO( "TriangulatedSurface< RealPoint3 > flip tests", "[trisurf][flip]" )
+{
+  GIVEN( "Two triangles incident by an edge" ) {
+    TriMesh trimesh = makeTwoTriangles();
+    auto nbv = trimesh.nbVertices();
+    auto nbe = trimesh.nbEdges();
+    auto nbf = trimesh.nbFaces();
+    int nbfl = 0;
+    int  afl = 0;
+    for ( int a = 0; a < trimesh.nbArcs(); a++ )
+      if ( trimesh.isFlippable( a ) ) {
+	nbfl++;
+	afl = a;
+      }
+    THEN( "Only two arcs are flippable" ){
+      REQUIRE( nbfl == 2 );
+    }      
+    THEN( "The mesh has same number of vertices, edges, faces after flip." ) {
+      trimesh.flip( afl );
+      REQUIRE( trimesh.nbVertices() == nbv ); 
+      REQUIRE( trimesh.nbEdges() == nbe ); 
+      REQUIRE( trimesh.nbFaces() == nbf ); 
+    }
+    THEN( "Edge (1,2) has 4 vertices around, in order (2,0,1,3)." ) {
+      VertexRange V = trimesh.verticesAroundArc( trimesh.arc( 1, 2 ) );
+      int expected_V [] = { 2, 0, 1, 3};
+      REQUIRE( V.size() == 4 );
+      bool V_ok = std::equal( V.begin(), V.end(), expected_V );
+      REQUIRE( V_ok );
+    }
+  }
+}
+
 SCENARIO( "TriangulatedSurface< RealPoint3 > concept check tests", "[trisurf][concepts]" )
 {
   BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< TriMesh > ));
