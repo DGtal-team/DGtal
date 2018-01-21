@@ -699,7 +699,14 @@ namespace DGtal
     /// Checks the whole half-edge structure for consistency.
     /// Complexity is at O(n log n) if n in the number of half-edges.
     /// 
+    /// @param check_arc2index (optimisation parameter), when 'true'
+    /// checks everything, otherwise does not check that the mapping
+    /// myArc2Index is correct. This is used in conjunction with flip
+    /// method when using the optimisation.
+    ///
     /// @return 'true' iff all checks have passed.
+    ///
+    /// @see flip
     bool isValid( bool check_arc2index = true ) const
     {
       bool ok = true;

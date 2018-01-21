@@ -242,6 +242,14 @@ namespace DGtal
     /// @return the corresponding index of the triangle.
     FaceIndex addTriangle( VertexIndex v0, VertexIndex v1, VertexIndex v2 );
 
+    /// @return (getter) a reference to the topological structure of the
+    /// triangulated surface.
+    HalfEdgeDataStructure& heds() { return myHEDS; }
+    
+    /// @return (setter) a const reference to the topological structure of the
+    /// triangulated surface.
+    const HalfEdgeDataStructure& heds() const { return myHEDS; }
+    
     // ------------------------- standard services ------------------------------
   public:
     /// @return the number of half edges in the structure.
@@ -527,6 +535,37 @@ namespace DGtal
        surface (in no particular order).
     */
     VertexRange allBoundaryVertices() const;
+
+    /**
+       @param a any arc.
+       @return either the four vertices of the two triangles bordering \a a, or the three vertices if this is an edge on the boundary.
+       @note O(1) operation
+       @note Order is, if arc a is (s,t), and a belongs to triangle (s,t,u) and opposite arc belongs to triangle (t,s,v): (t,u,s,v), (t,u,s), (t,s,v) 
+    */
+    VertexRange verticesAroundArc( const Arc a ) const;
+      
+    // ----------------------- Other services ---------------------------------
+  public:
+
+    /// An edge is (topologically) flippable iff: (1) it does not lie
+    /// on the boundary, (2) it is bordered by two triangles. (2) is
+    /// always true for a triangulated surface.
+    ///
+    /// @param a any arc.
+    /// @return 'true' if the edge containing \a a is topologically flippable.
+    bool isFlippable( const Arc a ) const;
+
+    /// Flip the edge associated to arc \a a.
+    ///
+    /// @param a any valid arc.
+    ///
+    /// @pre the edge must be flippable, `isFlippable( a ) == true`
+    /// @see isFlippable
+    ///
+    /// @post After flip the arc \a a corresponding to the flipped
+    /// edge (if you reflip it you get your former triangulation).
+    void flip( const Arc a );
+
 
     // ----------------------- Interface --------------------------------------
   public:
