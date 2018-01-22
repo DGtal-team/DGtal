@@ -566,6 +566,17 @@ namespace DGtal
     /// edge (if you reflip it you get your former triangulation).
     void flip( const Arc a );
 
+    /// Splits the edge specified by the arc \a a. The two faces
+    /// incident to a are split into four faces.
+    ///
+    /// @param a any valid arc.
+    /// @param data the position for the newly created vertex.
+    ///
+    /// @return the index of the created vertex.
+    ///
+    /// @pre the edge must be flippable, `isFlippable( a ) == true`
+    /// @see isFlippable
+    VertexIndex split( const Arc a, const Point& data );
 
     // ----------------------- Interface --------------------------------------
   public:
