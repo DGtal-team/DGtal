@@ -545,4 +545,27 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
   }
 }
 
+SCENARIO( "HalfEdgeDataStructure splits", "[halfedge][splits]" ){
+  GIVEN( "Two triangles incident by an edge" ) {
+    HalfEdgeDataStructure mesh = makeTwoTriangles();
+    auto he  = mesh.findHalfEdgeIndexFromArc( {1,2} );
+    REQUIRE( mesh.isFlippable( he ) );
+    auto vtx = mesh.split( he );
+    THEN( "After split, mesh is valid" ) {
+      REQUIRE( mesh.isValid() );
+    }
+    THEN( "After split, mesh has 5 vertices, 8 edges, 4 faces" ) {
+      REQUIRE( mesh.nbVertices() == 5 );
+      REQUIRE( mesh.nbEdges() == 8 );
+      REQUIRE( mesh.nbFaces() == 4 );
+    }
+    THEN( "After split, vertex 4 has 4 neighbors { 0,1,2,3 }" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 4 );
+      VertexIndexRange expected = { 0, 1, 2, 3 };
+      REQUIRE( nv.size()  ==  4 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+  }
+}
+
 /** @ingroup Tests **/
