@@ -695,6 +695,110 @@ namespace DGtal
           myArc2Index[ Arc( v2p, v1p ) ] = i2;
         }
     }
+
+    /// Splits the edge specified by the half-edge \a i.
+    ///
+    /// @param i any valid half-edge index.
+    ///
+    /// @param update_arc2index (optimisation parameter), when 'true'
+    /// updates everything consistently; when 'false' do not update
+    /// myArc2Index map, which means you cannot get an half edge from
+    /// two vertices afterwards. Use 'false' only if you know that you
+    /// never use this mapping (e.g. no call to halfEdgeIndexFromArc)
+    ///
+    /// @return the index of the created vertex.
+    ///
+    /// @pre the edge must be flippable, `isFlippable( i ) == true`
+    /// @see isFlippable
+    /// @todo We could also split boundary triangles or more general faces.
+    VertexIndex split( const Index i, bool update_arc2index = true )
+    {
+      Index        new_hei = myHalfEdges.size();
+      VertexIndex new_vtxi = myVertexHalfEdges.size();
+      EdgeIndex  new_edgei = myEdgeHalfEdges.size();
+      FaceIndex  new_facei = myFaceHalfEdges.size();
+      myHalfEdges.resize( new_hei + 6 );
+      myVertexHalfEdges.push_back( new_hei );
+      HalfEdge&       hei = myHalfEdges[ i ];
+      HalfEdge&  hei_next = myHalfEdges[ hei.next ];
+      Index             j = hei.opposite;
+      HalfEdge&       hej = myHalfEdges[ j ];
+      HalfEdge&  hej_next = myHalfEdges[ hej.next ];
+      HalfEdge&       he0 = myHalfEdges[ new_hei ];
+      HalfEdge&       he1 = myHalfEdges[ new_hei + 1 ];
+      HalfEdge&       he2 = myHalfEdges[ new_hei + 2 ];
+      HalfEdge&       he3 = myHalfEdges[ new_hei + 3 ];
+      HalfEdge&       he4 = myHalfEdges[ new_hei + 4 ];
+      HalfEdge&       he5 = myHalfEdges[ new_hei + 5 ];
+      // HalfEdge = { toVertex, face, edge, opposite, next }
+      // Taking care of new half-edges
+      he0.toVertex = hei_next.toVertex;
+      he0.face     = hei.face;
+      he0.edge     = new_edgei;
+      he0.opposite = new_hei + 1;
+      he0.next     = hei_next.next;
+      he1.toVertex = new_vtxi;
+      he1.face     = new_facei;
+      he1.edge     = new_edgei;
+      he1.opposite = new_hei;
+      he1.next     = new_hei + 2;
+      he2.toVertex = hei.toVertex;
+      he2.face     = new_facei;
+      he2.edge     = new_edgei + 1;
+      he2.opposite = j;
+      he2.next     = hei.next;
+      he3.toVertex = hej_next.toVertex;
+      he3.face     = hej.face;
+      he3.edge     = new_edgei + 2;
+      he3.opposite = new_hei + 4;
+      he3.next     = hej_next.next;
+      he4.toVertex = new_vtxi;
+      he4.face     = new_facei + 1;
+      he4.edge     = new_edgei + 2;
+      he4.opposite = new_hei + 3;
+      he4.next     = new_hei + 5;
+      he5.toVertex = hej.toVertex;
+      he5.face     = new_facei + 1;
+      he5.edge     = hei.edge;
+      he5.opposite = i;
+      he5.next     = hej.next;
+      // Updating existing half-edges
+      hei.toVertex = new_vtxi;
+      hei.opposite = new_hei + 5;
+      hei.next     = new_hei;
+      hej.toVertex = new_vtxi;
+      hej.edge     = new_edgei + 1;
+      hej.opposite = new_hei + 2;
+      hej.next     = new_hei + 3;
+      hei_next.face     = new_facei;
+      hei_next.next     = new_hei + 1;
+      hej_next.face     = new_facei + 1;
+      hej_next.next     = new_hei + 4;
+      // Updating other arrays
+      myEdgeHalfEdges.push_back( new_hei );
+      myEdgeHalfEdges.push_back( j );
+      myEdgeHalfEdges.push_back( new_hei + 3 );
+      myFaceHalfEdges.push_back( new_hei + 1 );
+      myFaceHalfEdges.push_back( new_hei + 4 );
+      if ( update_arc2index )
+	{
+          const VertexIndex vi = he5.toVertex;
+          const VertexIndex vk = hei_next.toVertex;
+          const VertexIndex vj = he2.toVertex;
+          const VertexIndex vl = hej_next.toVertex;
+          myArc2Index.erase( Arc( vi, vj ) );
+          myArc2Index.erase( Arc( vj, vi ) );
+          myArc2Index[ Arc( vi, new_vtxi ) ] = i;
+          myArc2Index[ Arc( new_vtxi, vi ) ] = new_hei + 5;
+          myArc2Index[ Arc( vj, new_vtxi ) ] = j;
+          myArc2Index[ Arc( new_vtxi, vj ) ] = new_hei + 2;
+          myArc2Index[ Arc( vk, new_vtxi ) ] = new_hei + 1;
+          myArc2Index[ Arc( new_vtxi, vk ) ] = new_hei;
+          myArc2Index[ Arc( vl, new_vtxi ) ] = new_hei + 4;
+          myArc2Index[ Arc( new_vtxi, vl ) ] = new_hei + 3;
+	}
+      return new_vtxi;
+    }
     
     /// Checks the whole half-edge structure for consistency.
     /// Complexity is at O(n log n) if n in the number of half-edges.
