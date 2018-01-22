@@ -780,6 +780,9 @@ namespace DGtal
       myEdgeHalfEdges.push_back( new_hei + 3 );
       myFaceHalfEdges.push_back( new_hei + 1 );
       myFaceHalfEdges.push_back( new_hei + 4 );
+      myFaceHalfEdges[ hei.face ] = i;
+      myFaceHalfEdges[ hej.face ] = j;
+      myEdgeHalfEdges[ hei.edge ] = i;
       if ( update_arc2index )
 	{
           const VertexIndex vi = he5.toVertex;

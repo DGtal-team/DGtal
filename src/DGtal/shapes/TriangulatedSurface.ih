@@ -433,6 +433,19 @@ DGtal::TriangulatedSurface<TPoint>::flip( const Arc a )
   myHEDS.flip( a );
 }
 
+
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+typename DGtal::TriangulatedSurface<TPoint>::VertexIndex
+DGtal::TriangulatedSurface<TPoint>::split( const Arc a, const Point& data )
+{
+  VertexIndex v = myHEDS.split( a );
+  ASSERT( v == myPositions.size() );
+  myPositions.push_back( data );
+  return v;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
