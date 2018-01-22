@@ -410,7 +410,7 @@ namespace DGtal
      */
     template <Duality duality>
     LinearOperator<Self, 0, duality, 0, duality>
-    heatLaplace(const double& h, const double& t, const double& cut_locus) const;
+    heatLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& t, const typename DenseVector::Scalar& cut_locus) const;
 
     /**
      * Hodge operator from duality _order_-form to opposite duality _(dimEmbedded-order)_-forms.
