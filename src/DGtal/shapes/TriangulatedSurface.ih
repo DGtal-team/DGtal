@@ -267,7 +267,8 @@ typename DGtal::TriangulatedSurface<TPoint>::Arc
 DGtal::TriangulatedSurface<TPoint>::arc
 ( const Vertex & t, const Vertex & h ) const
 {
-  return myHEDS.halfEdgeIndexFromArc( t, h );
+  //return myHEDS.halfEdgeIndexFromArc( t, h );
+  return myHEDS.findHalfEdgeIndexFromArc( t, h );
 }
 
 //-----------------------------------------------------------------------------
@@ -430,7 +431,7 @@ inline
 void
 DGtal::TriangulatedSurface<TPoint>::flip( const Arc a )
 {
-  myHEDS.flip( a );
+  myHEDS.flip( a, false );
 }
 
 
@@ -440,7 +441,7 @@ inline
 typename DGtal::TriangulatedSurface<TPoint>::VertexIndex
 DGtal::TriangulatedSurface<TPoint>::split( const Arc a, const Point& data )
 {
-  VertexIndex v = myHEDS.split( a );
+  VertexIndex v = myHEDS.split( a, false );
   ASSERT( v == myPositions.size() );
   myPositions.push_back( data );
   return v;
