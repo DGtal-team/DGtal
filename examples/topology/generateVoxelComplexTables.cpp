@@ -30,6 +30,15 @@
  * The options for the functions are the Skel function from
  * @see VoxelComplexFunctions.h.
  *
+ * The options are:
+ *  skelFunction = functions::oneIsthmus<VoxelComplex>;
+ *  skelFunction = functions::twoIsthmus<VoxelComplex>;
+ *  skelFunction = functions::skelIsthmus<VoxelComplex>;
+ *
+ *  where the latest is equivalent to (oneIsthmus OR twoIsthmus)
+ *
+ *  Isthmuses are implemented to work with 3D cubical(voxel) complexes. Right now the tables are only generated with 26_6 topology, but other 3D topologies can be added.
+ *
  * This file is part of the DGtal library.
  */
 
