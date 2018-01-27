@@ -441,7 +441,13 @@ namespace DGtal
     /**
      * Create object from the spels in the complex.
      *
-     * @tparam TObject object type
+     * User has to provide a 3D TObject type with its
+     * associated DigitalSet and DigitalTopology.
+     *
+     * Given a dimension n, spels are the n-cells,
+     * equivalently, spels are the grid-points in Z^n.
+     *
+     * @tparam TObject with its associdated DigitalSet and DigitalTopology
      * @tparam TKSpace kspace type of the input CubicalComplex.
      * @tparam TCellContainer cell container type of the input CubicalComplex
      * @param C input CubicalComplex
