@@ -21,7 +21,7 @@
  * @author Pablo Hernandez-Cerdan. Institute of Fundamental Sciences.
  * Massey University. Palmerston North, New Zealand
  *
- * @date 2016/03/25
+ * @date 2018/01/01
  *
  * Testing classs of NeighborhoodConfigurations
  * @see NeighborhoodConfigurations.h

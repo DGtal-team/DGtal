@@ -21,7 +21,7 @@
  * Institute of Fundamental Sciences. Massey University.
  * Palmerston North, New Zealand
  *
- * @date 2016/03/20
+ * @date 2018/01/01
  *
  * Creates precomputed tables for all possible configurations of the
  * neighborhood of a voxel in 3D with a topology of 26 neighbors.
