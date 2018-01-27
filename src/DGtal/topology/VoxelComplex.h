@@ -21,7 +21,7 @@
 * @author Pablo Hernandez-Cerdan (\c pablo.hernandez.cerdan@outlook.com)
 * Insitute of Fundamental Sciences, Massey University, New Zealand.
 *
-* @date 2016/01/21
+* @date 2018/01/01
 *
 * Header file for module VoxelComplex.cpp
 *
