@@ -1,0 +1,72 @@
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+
+@page moduleVoxelComplex  Voxel Complex
+
+@writers Pablo Hernandez-Cerdan
+
+@since 0.9.4
+
+Part of the \ref packageTopology.
+
+This part of the manual describes how to represent and process
+arbitrary voxel complexes, which are cubical complexes with an associated DigitalObject.
+
+[TOC]
+
+
+The following programs are related to this documentation:
+testVoxelComplex.cpp.
+
+@section dgtal_vcomplex_sec1  Introduction to voxel complexes
+
+The aim is to implement critical kernels, ie, cliques of spels,
+as shown by M.Couprie and G.Bertrand in @cite Couprie201622 .
+
+Implemented using resources from \a CubicalComplex and
+(Digital) \a Object for simplicity check in voxels.
+
+A \b voxel \b complex \a V is a \b cubical \b complex (living in a Khalimsky space) with a member of type DigitalObject. Voxel complexes are used for thinning in 3D.
+
+To create a voxel complex, we need to specify in which Khalimsky
+space it lives and also, optionally, the type of container used for
+storing cells. By default it is \c std::map but \c boost::unordered_map
+or \c std::unordered_map is also possible.
+
+\code
+using namespace DGtal;
+using KSpace = KhalimskySpaceND<3,int>;                 // ZxZxZ
+using DigitalTopology = DGtal::Z3i::DT26_6;
+using DigitalSet =  DGtal::DigitalSetByAssociativeContainer<
+    DGtal::Z3i::Domain,
+    std::unordered_set< typename DGtal::Z3i::Domain::Point> >;
+using Object = DGtal::Object<FixtureDigitalTopology, FixtureDigitalSet>;
+using Map = std::map<Cell, CubicalCellData>;            // each cell must store at least a CubicalCellData
+using VC = typedef VoxelComplex< KSpace, Object, Map >; // the type of voxel complex
+
+KSpace K;                                               // The cellular grid space
+K.init( Point( 0,0,0 ), Point( 100,100,100 ), true );   // Limits of the grid space
+VC complex( K );                                        // The complex
+\endcode
+
+Last, there is a data associated with each cell of a complex. The data
+type must either be CubicalCellData or a type that derives from
+CubicalCellData. This data is used by the functions::collapse
+operation, a function that is used to make a homotopic thinning of the
+cubical complex. It may also be used by the user for other purposes,
+like storing flags, coordinates or anything else associated to a
+cell. Look at the documentation of CubicalCellData to see the default
+stored flags and data.
+
+@section dgtal_vcomplex_sec2 Thinning in voxel complexes
+
+@cite Couprie201622
+
+*/
+
+}
