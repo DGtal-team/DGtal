@@ -43,16 +43,17 @@
 template <typename TKSpace, typename TObject, typename TCellContainer>
 inline DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::VoxelComplex()
     : Parent(), myObject(),
-      myTablePtr(nullptr), myIsTableLoaded(false),
-      myPointToMaskPtr(nullptr) {}
+      myTablePtr(nullptr), myPointToMaskPtr(nullptr),
+      myIsTableLoaded(false) {}
 
 // Copy constructor:
 template <typename TKSpace, typename TObject, typename TCellContainer>
 inline DGtal::VoxelComplex<TKSpace, TObject, TCellContainer>::VoxelComplex(
     const VoxelComplex &other)
     : Parent(other), myObject(other.myObject),
-      myTablePtr(other.myTablePtr), myIsTableLoaded(other.myIsTableLoaded),
-      myPointToMaskPtr(other.myPointToMaskPtr) {}
+      myTablePtr(other.myTablePtr),
+      myPointToMaskPtr(other.myPointToMaskPtr),
+      myIsTableLoaded(other.myIsTableLoaded) {}
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
@@ -67,8 +68,8 @@ operator=(const Self &other) {
         this->myCells = other.myCells;
         myObject = other.myObject;
         myTablePtr = other.myTablePtr;
-        myIsTableLoaded = other.myIsTableLoaded;
         myPointToMaskPtr = other.myPointToMaskPtr;
+        myIsTableLoaded = other.myIsTableLoaded;
     }
     return *this;
 }
