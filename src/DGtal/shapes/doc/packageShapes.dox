@@ -59,6 +59,7 @@ structure.
 
 - \ref moduleShape (Jacques-Olivier Lachaud, David Coeurjolly)
 - \ref moduleMesh (Bertrand Kerautret)
+- \ref moduleMeshVoxelization (David Coeurjolly, Monir Hadji)
 - \ref moduleHalfEdgeMesh (Jacques-Olivier Lachaud)
 
 @b Package @b Concepts @b Overview
