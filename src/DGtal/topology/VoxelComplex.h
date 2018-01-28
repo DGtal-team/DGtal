@@ -175,15 +175,24 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     using ConfigMap = boost::dynamic_bitset<>;
     using PointToMaskMap = std::unordered_map<Point, unsigned int>;
 
+  protected:
+    /**
+     * Default constructor.
+     * Note that the state of the VoxelComplex is invalid without a k-space.
+     * Use CubicalComplex(KSpace ks) constructor.
+     */
+    VoxelComplex();
   public:
     /// Inherit all constructors from parent CubicalComplex.
     using CubicalComplex<KSpace, CellContainer>::CubicalComplex;
 
-    // #<{(|*
-    // * Copy constructor.
-    // * @param other the object to clone.
-    // |)}>#
-    // VoxelComplex ( const VoxelComplex & other );
+    /**
+     * Copy constructor.
+     *
+     * @param other VoxelComplex to copy.
+     */
+    VoxelComplex( const VoxelComplex & other );
+
     /**
      * Assignment.
      * @param other the object to copy.

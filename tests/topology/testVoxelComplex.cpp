@@ -83,7 +83,7 @@ struct Fixture_complex_diamond {
   ///////////////////////////////////////////////////////////
   // Constructor
   ///////////////////////////////////////////////////////////
-  Fixture_complex_diamond() {
+  Fixture_complex_diamond(): complex_fixture(ks_fixture) {
     create_complex_from_object(create_object());
   }
 
@@ -500,7 +500,7 @@ struct Fixture_complex_fig4 {
   ///////////////////////////////////////////////////////////
   // Constructor
   ///////////////////////////////////////////////////////////
-  Fixture_complex_fig4() {
+  Fixture_complex_fig4() :complex_fixture(ks_fixture) {
     create_complex_from_object(create_object());
   }
 
@@ -652,7 +652,7 @@ struct Fixture_isthmus {
   ///////////////////////////////////////////////////////////
   // Constructor
   ///////////////////////////////////////////////////////////
-  Fixture_isthmus() {
+  Fixture_isthmus() : complex_fixture(ks_fixture) {
     create_complex_from_object(create_object());
   }
 
@@ -925,7 +925,7 @@ struct Fixture_X {
   ///////////////////////////////////////////////////////////
   // Constructor
   ///////////////////////////////////////////////////////////
-  Fixture_X() {
+  Fixture_X(): complex_fixture(ks_fixture) {
     create_complex_from_object(create_object());
   }
 
