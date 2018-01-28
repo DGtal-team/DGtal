@@ -1,5 +1,6 @@
 SET(DGTAL_EXAMPLES_SRC
-	exampleEuclideanShapesDecorator
+  exampleEuclideanShapesDecorator
+  exampleMeshVoxelizer
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
