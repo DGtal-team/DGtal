@@ -20,7 +20,7 @@
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/30
+ * @date 2018/01/30
  *
  * Functions for testing class MagickReader.
  *
@@ -31,19 +31,13 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/GrayscaleColorMap.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
-
 #include "DGtal/io/readers/MagickReader.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "ConfigTest.h"
-
-
+#include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -53,72 +47,58 @@ using namespace DGtal;
 // Functions for testing class MagickReader.
 ////////////////////////////////////////////////////////////////
 ///////////////
-/**
- * Example of a test. To be completed.
- *
- */
-bool testMagickReader()
+
+struct Color2Gray{
+  Color2Gray(){}
+  unsigned char operator()(const Color &c)
+  {
+    return (c.red() + c+green() + c.blue())%256;
+  }
+};
+
+TEST_CASE( "Magick Reader" )
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing MagickReader ..." );
-
-  typedef SpaceND<2> Space2;
-  typedef HyperRectDomain<Space2> TDomain;
-  
-  //Default image selector = STLVector
-  typedef ImageSelector<TDomain, unsigned char>::Type Image;
-
-  std::string filename = testPath + "samples/color64.png";
-
-  trace.info()<<"Importing: "<<filename<<endl;
-
-  MagickReader<Image> reader;
-  Image img = reader.importImage( filename );
-
-  nbok += img.isValid() ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "img.isValid() == true"
-         << std::endl;
-
-  nbok += img.extent() == Image::Vector( 64, 64 ) ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "img.extent() = " << img.extent() 
-         << "( == {64,64} )"
-         << std::endl;
-
-  Board2D board;
-  typedef HueShadeColorMap<unsigned char,2> HueTwice;
-  
-
-  board.setUnit(LibBoard::Board::UCentimeter);
-
-  Display2DFactory::drawImage<HueTwice>(board, img, (unsigned char)0, (unsigned char)255);
-  board.saveSVG("testMagick-export.svg");
+  SECTION("Color->grayscale");
+  {
+    //Default image selector = STLVector
+    typedef ImageSelector<Z2i::Domain, unsigned char>::Type Image;
     
-  trace.endBlock();
+    std::string filename = testPath + "samples/color64.png";
+    
+    trace.info()<<"Importing: "<<filename<<endl;
+    
+    MagickReader<Image, Color2Gray> reader;
+    Image img = reader.importImage( filename , Color2Gray());
+    
+    Board2D board;
+    typedef HueShadeColorMap<unsigned char,2> HueTwice;
+    
+    board.setUnit(LibBoard::Board::UCentimeter);
+    Display2DFactory::drawImage<HueTwice>(board, img, (unsigned char)0, (unsigned char)255);
+    board.saveSVG("testMagick-export.svg");
+    
+    REQUIRE(img.isValid());
+    REQUIRE(img.extent() == Image::Vector(64,64));
+  }
   
-  return nbok == nb;
+  SECTION("Color->Color")
+  {
+    typedef ImageSelector<Z2i::Domain, Color::Type ImageColor;
+    
+    std::string filename = testPath + "samples/color64.png";
+    
+    trace.info()<<"Importing: "<<filename<<endl;
+    
+    MagickReader<ImageColor> reader;
+    ImageColor img = reader.importImage( filename );
+    
+    Color a = img( Point(1,1));
+    CAPTURE( a );
+    img.setValue( Point(1,1), Color(13,13,13));
+    CAPTURE( a );
+    
+    REQUIRE(img.isValid());
+    REQUIRE(img.extent() == Image::Vector(64,64));
+  }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
-
-int main( int argc, char** argv )
-{
-  trace.beginBlock ( "Testing class MagickReader" );
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << endl;
-
-  bool res = testMagickReader(); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  trace.endBlock();
-  return res ? 0 : 1;
-}
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////

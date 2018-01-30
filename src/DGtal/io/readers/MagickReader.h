@@ -57,9 +57,14 @@ namespace DGtal
    * Description of template class 'MagickReader' <p>
    * \brief Aim: implements methods to read a 2D image using the ImageMagick library.
    *
+   * The functor cast colors (DGtal::Color) to the image value type (@a TimageContainer::Value).
+   *
+   * Typical examples of functor are:
+   *   - Color to scalar values (e.g. unsigned char) for "grayscale" images
+   *   - Identity functor but the image needs to have DGtal::Color as value type.
    *
    * @tparam TImageContainer the image container to use. 
-   * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
+   * @tparam TFunctor the type of functor used in the import to cast color to image values (by default set to functors::Cast< TImageContainer::Value>) .
    */
   template <typename TImageContainer, typename TFunctor=  functors::Cast< typename TImageContainer::Value > >
   struct MagickReader
