@@ -50,7 +50,28 @@
 
 namespace DGtal
 {
-
+  namespace functors
+  {
+    template<typename TValue>
+    struct MagickCast
+    {
+      Cast<TValue> myCast;
+      TValue operator()(const Color &col) const
+      {
+        return myCast( col.red() + col.green() + col.blue() );
+      }
+    };
+    
+    template<>  
+    struct MagickCast<Color>
+    {
+      Color operator()(const Color &col) const
+      {
+        return col;
+      }
+    };
+  } 
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class MagickReader
   /**
@@ -64,9 +85,9 @@ namespace DGtal
    *   - Identity functor but the image needs to have DGtal::Color as value type.
    *
    * @tparam TImageContainer the image container to use. 
-   * @tparam TFunctor the type of functor used in the import to cast color to image values (by default set to functors::Cast< TImageContainer::Value>) .
+   * @tparam TFunctor the type of functor used in the import to cast color to image values (by default set to functors::MagickCast< TImageContainer::Value>) .
    */
-  template <typename TImageContainer, typename TFunctor=  functors::Cast< typename TImageContainer::Value > >
+  template <typename TImageContainer, typename TFunctor=  functors::MagickCast< typename TImageContainer::Value > >
   struct MagickReader
   {
     // ----------------------- Standard services ------------------------------
