@@ -50,15 +50,15 @@ using namespace DGtal;
 
 struct Color2Gray{
   Color2Gray(){}
-  unsigned char operator()(const Color &c)
+  unsigned char operator()(const Color &c) const
   {
-    return (c.red() + c+green() + c.blue())%256;
+    return (c.red() + c.green() + c.blue())%256;
   }
 };
 
 TEST_CASE( "Magick Reader" )
 {
-  SECTION("Color->grayscale");
+  SECTION("Color->grayscale")
   {
     //Default image selector = STLVector
     typedef ImageSelector<Z2i::Domain, unsigned char>::Type Image;
@@ -78,12 +78,12 @@ TEST_CASE( "Magick Reader" )
     board.saveSVG("testMagick-export.svg");
     
     REQUIRE(img.isValid());
-    REQUIRE(img.extent() == Image::Vector(64,64));
+    REQUIRE(img.extent() == Z2i::Vector(64,64));
   }
   
   SECTION("Color->Color")
   {
-    typedef ImageSelector<Z2i::Domain, Color::Type ImageColor;
+    typedef ImageSelector<Z2i::Domain, Color>::Type ImageColor;
     
     std::string filename = testPath + "samples/color64.png";
     
@@ -92,13 +92,14 @@ TEST_CASE( "Magick Reader" )
     MagickReader<ImageColor> reader;
     ImageColor img = reader.importImage( filename );
     
-    Color a = img( Point(1,1));
+    Color a = img( Z2i::Point(1,1));
     CAPTURE( a );
-    img.setValue( Point(1,1), Color(13,13,13));
+    img.setValue( Z2i::Point(1,1), Color(13,13,13));
+    a = img( Z2i::Point(1,1));
     CAPTURE( a );
     
     REQUIRE(img.isValid());
-    REQUIRE(img.extent() == Image::Vector(64,64));
+    REQUIRE(img.extent() == Z2i::Vector(64,64));
   }
 }
 
