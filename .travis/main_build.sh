@@ -17,7 +17,19 @@ echo "NeedExample $NEEDEXAMPLESANDTESTS"
 ### DGtal Examples and Examples
 if [ $NEEDEXAMPLESANDTESTS = "true" ];
 then
-    ctest -j 3 --output-on-failure
+    cd examples ; make  -j 3
+    cd ../tests ;  make -j 3
+
+    if [ -f io/writers/testMagickWriter ]; then
+      io/writers/testMagickWriter -s
+    fi
+    if [ -f io/readers/testMagickReader ]; then
+      io/readers/testMagickReader
+    fi
+
+    ctest -j 3--output-on-failure
+
+
 fi
 
 ### DGtal doc
