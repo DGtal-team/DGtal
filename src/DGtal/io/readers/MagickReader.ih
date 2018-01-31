@@ -87,8 +87,8 @@ DGtal::MagickReader<TImageContainer, TFunctor>::importImage(const std::string & 
   for(; it != itend; ++it)
     {
       const Magick::PixelPacket *pixel = cacheRead + w * ((topbotomOrder)? ( h - 1 - (*it)[1] ): (*it)[1] ) + (*it)[0];
-      val = (pixel->red + pixel->green + pixel->blue) % 256;
-      image.setValue( (*it),  aFunctor(val)  );
+      Color col(pixel->red,pixel->green,pixel->blue);
+      image.setValue( (*it),  aFunctor(col)  );
     }
 
   return image;
