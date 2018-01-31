@@ -25,3 +25,7 @@ src/DGtal/shapes/doc/#packageShapes\.dox#
 tests/base/testTrace2\.cpp
 
 tests/base/testTrace3\.cpp
+
+tests/io/readers/#testGenericReader\.cpp#
+
+src/DGtal/io/writers/\.#MagickWriter\.h
