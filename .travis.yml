@@ -66,8 +66,11 @@ addons:
     - libqglviewer-dev
     - libinsighttoolkit3-dev
     - libfftw3-dev
+     - g++-5
+     - gcc-5
 
 before_install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
   - source .travis/before_global.sh
   - echo "C++ ===> $CXXCOMPILER"
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then source .travis/install_eigen.sh  ; cd $TRAVIS_BUILD_DIR; fi
