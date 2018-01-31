@@ -81,7 +81,7 @@ int main( int /* argc */, char** /* argv */ )
   cmap_grad.addColor( Color( 255, 255, 0 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 0, 255 ) );
-  
+
   Board2D board;
   board << SetMode( domain.className(), "Paving" )
         << domain << SetMode( p1.className(), "Paving" );
@@ -108,9 +108,9 @@ int main( int /* argc */, char** /* argv */ )
     std::vector<Vertex> neighbors;
     for ( Graph::ConstIterator it = g.begin(), itEnd = g.end();
           it != itEnd; ++it, ++nn )
-      { 
+      {
         Vertex vtx = *it;
-        std::back_insert_iterator< std::vector<Vertex> > neighIt 
+        std::back_insert_iterator< std::vector<Vertex> > neighIt
           = std::back_inserter( neighbors );
         g.writeNeighbors( neighIt, vtx );
         mm += neighbors.size();
@@ -160,6 +160,5 @@ int main( int /* argc */, char** /* argv */ )
   board.saveEPS("graphTraversal-dfs-range.eps");
   //! [graphTraversal-graph-dfs-range]
 
-  return true;
+  return 0;
 }
-
