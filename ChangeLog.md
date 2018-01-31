@@ -38,7 +38,9 @@
    (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
  - SimpleDistanceColorMap new colormap to easily display distance maps.
      (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))
-
+ - Fix in MagicReader allowing to load colored images. (David
+   Coeurjolly, [#1305](https://github.com/DGtal-team/DGtal/pull/1305))
+ 
 ## Bug Fixes
 
 - *Build*
