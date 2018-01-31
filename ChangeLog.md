@@ -33,15 +33,29 @@
     for instance to add callbacks to key or mouse events, or to modify
     what is drawn on the window.
     (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
- - TableReader can now read all elements contained in each line of a file
+  - TableReader can now read all elements contained in each line of a file
    with the new method getLinesElementsFromFile().
-   (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
-
+   (Bertrand Kerautret,
+   [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
+  - New ImageMagick writer to export images to PNG or JPG formats for
+  instance.  (David Coeurjolly,
+  [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
+ - SimpleDistanceColorMap new colormap to easily display distance maps.
+     (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))
+ - Fix in MagicReader allowing to load colored images. (David
+   Coeurjolly, [#1305](https://github.com/DGtal-team/DGtal/pull/1305))
+ 
 ## Bug Fixes
 
 - *Build*
  - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
    Pablo H Cerdan, [#1290](https://github.com/DGtal-team/DGtal/pull/1290))
+
+ - Fix HDF5 link missing in compilation (Bertrand Kerautret,
+    [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
+
+ - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
+    [#1300](https://github.com/DGtal-team/DGtal/pull/1300))
 
 - *Shapes Package*
  - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
