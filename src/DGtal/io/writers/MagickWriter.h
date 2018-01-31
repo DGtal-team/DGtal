@@ -86,7 +86,7 @@ namespace DGtal
     BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) );
 
     /** 
-     * Export an Image with Imagemagick.
+     * Export an Image with ImageMagick.
      * 
      * @param filename name of the output file the suffix is used to select
      * the file format (png, bmp, jpg,...).
