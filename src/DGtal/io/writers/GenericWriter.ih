@@ -36,7 +36,9 @@
 #include "DGtal/io/writers/PPMWriter.h"
 #include "DGtal/io/writers/PGMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
+#ifdef WITH_MAGICK
 #include "DGtal/io/writers/MagickWriter.h"
+#endif
 
 
 
