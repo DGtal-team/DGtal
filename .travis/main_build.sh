@@ -8,8 +8,8 @@ cd build
 ### Cmake
 echo "Using C++ = $CXXCOMPILER"
 cmake ..  $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER 
-
-if [ $DEC = "true"];
+make DGtal;
+if [ $DEC = "true" ];
     then
         echo "Compile Dec not in //";
         cd examples; 
@@ -28,7 +28,7 @@ echo "NeedExample $NEEDEXAMPLESANDTESTS"
 ### DGtal Examples and Examples
 if [ $NEEDEXAMPLESANDTESTS = "true" ];
 then
-   if [ $DEC = "true"];
+   if [ $DEC = "true" ];
     then
         echo "Compile Dec not in //";
         cd examples; 
