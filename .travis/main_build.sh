@@ -17,6 +17,18 @@ echo "NeedExample $NEEDEXAMPLESANDTESTS"
 ### DGtal Examples and Examples
 if [ $NEEDEXAMPLESANDTESTS = "true" ];
 then
+   if [ $DEC = "true"];
+    then
+        echo "Compile Dec not in //";
+        cd examples; 
+        make exampleDiscreteExteriorCalculusChladni;
+        make exampleDiscreteExteriorCalculusSolve;
+        make exampleDECSurface;
+        make examplePropagation;
+        cd ../tests;
+        make testDiscreteExteriorCalculusExtended;        
+   fi
+    
     cd examples ; make  -j 3
     cd ../tests ;  make -j 3
 
@@ -26,7 +38,15 @@ then
     if [ -f io/readers/testMagickReader ]; then
       io/readers/testMagickReader
     fi
-
+    if [ $DEC = "true"];
+    then
+        echo "Compile Dec not in //";
+        make testDiscreteExteriorCalculusExtended;
+        make exampleDiscreteExteriorCalculusChladni;
+        make exampleDiscreteExteriorCalculusSolve;
+        make exampleDECSurface;
+        make examplePropagation;
+    fi
     ctest -j 3--output-on-failure
 
 
