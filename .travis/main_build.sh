@@ -9,7 +9,18 @@ cd build
 echo "Using C++ = $CXXCOMPILER"
 cmake ..  $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER 
 
-
+if [ $DEC = "true"];
+    then
+        echo "Compile Dec not in //";
+        cd examples; 
+        make exampleDiscreteExteriorCalculusChladni;
+        make exampleDiscreteExteriorCalculusSolve;
+        make exampleDECSurface;
+        make examplePropagation;
+        cd ../tests;
+        make testDiscreteExteriorCalculusExtended;        
+fi
+    
 ### DGtal  build
 make -j 4
 
