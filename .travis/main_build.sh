@@ -12,12 +12,10 @@ make DGtal;
 if [ $DEC = "true" ];
     then
         echo "Compile Dec not in //";
-        cd examples; 
         make exampleDiscreteExteriorCalculusChladni;
         make exampleDiscreteExteriorCalculusSolve;
         make exampleDECSurface;
         make examplePropagation;
-        cd ../tests;
         make testDiscreteExteriorCalculusExtended;        
 fi
     
@@ -28,18 +26,6 @@ echo "NeedExample $NEEDEXAMPLESANDTESTS"
 ### DGtal Examples and Examples
 if [ $NEEDEXAMPLESANDTESTS = "true" ];
 then
-   if [ $DEC = "true" ];
-    then
-        echo "Compile Dec not in //";
-        cd examples; 
-        make exampleDiscreteExteriorCalculusChladni;
-        make exampleDiscreteExteriorCalculusSolve;
-        make exampleDECSurface;
-        make examplePropagation;
-        cd ../tests;
-        make testDiscreteExteriorCalculusExtended;        
-   fi
-    
     cd examples ; make  -j 3
     cd ../tests ;  make -j 3
 
