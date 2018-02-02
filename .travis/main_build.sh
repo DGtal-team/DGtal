@@ -11,10 +11,10 @@ cmake ..  $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER
 make DGtal;
 if [ $DEC = "true" ];
     then
-        echo "Compile Dec in non parallel mode to save memory (to fix gcc internal compiler error(Killed)";
+        echo "Compile Dec in non parallel mode to save memory (to fix gcc internal compiler error(Killed))";
         make exampleDiscreteExteriorCalculusChladni;
-        make exampleDiscreteExteriorCalculusSolve;
-        make exampleDECSurface;
+        #make exampleDiscreteExteriorCalculusSolve;
+        #make exampleDECSurface;
         make examplePropagation;
         make testDiscreteExteriorCalculusExtended;        
 fi
