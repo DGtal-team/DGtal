@@ -70,7 +70,7 @@ addons:
      - gcc-4.9
 
 before_install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; export DEC="true";fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9";fi
   - source .travis/before_global.sh
   - echo "C++ ===> $CXXCOMPILER"
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then source .travis/install_eigen.sh  ; cd $TRAVIS_BUILD_DIR; fi
