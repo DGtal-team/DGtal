@@ -82,7 +82,7 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
                 {
                     for ( CellMapConstIterator begin = boundary.begin ( dim ); begin != boundary.end ( dim ); ++begin, priority++ )
                     {
-                        if ( K.uDim ( begin->first ) == dim )
+                        if ( K.uDim ( begin->first ) == (unsigned int) dim )
                         {
                             Cell G;
                             if ( completeFreepair ( begin, G, orient, dir ) )
