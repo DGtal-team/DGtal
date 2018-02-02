@@ -134,7 +134,7 @@ bool test_shape(Shape& shape, const double h, const double epsilon)
 
   CanonicSCellEmbedder<KSpace> canonicSCellEmbedder(kspace);
 
-  for(int i = 0; i < sCells0.size(); i++)
+  for(unsigned int i = 0; i < sCells0.size(); i++)
   {
   	functors::SCellToInnerPoint<KSpace> sCellToInnerPoint(kspace);
     functors::SCellToOuterPoint<KSpace> sCellToOuterPoint(kspace);
