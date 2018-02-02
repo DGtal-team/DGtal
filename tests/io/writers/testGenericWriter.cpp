@@ -136,7 +136,7 @@ bool testGenericWriter()
   bool ok9 = true;
 #endif  
 
-  nbok += (ok1 && okh5 && okh5bis && ok2 && ok3 && ok3bis && ok4 & ok5 & ok6 & ok7 & ok8 & ok9) ? 1 : 0; 
+  nbok += ((ok1 && okh5 && okh5bis && ok2 && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && ok9) ? 1 : 0); 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
