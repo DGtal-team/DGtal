@@ -130,7 +130,7 @@ DGtal::MeshHelpers::digitalSurface2DualTriangulatedSurface
   typedef typename Surface::Vertex                     SVertex;
   typedef typename Surface::VertexRange                SVertexRange;
   typedef typename CellEmbedder::Value                 SPoint;
-  typedef typename TriangulatedSurface< Point >::Index Index;
+  typedef typename TriangulatedSurface< SPoint >::Index SIndex;
   BOOST_STATIC_ASSERT(( SKSpace::dimension == 3 ));
   
   trisurf.clear();
@@ -157,7 +157,7 @@ DGtal::MeshHelpers::digitalSurface2DualTriangulatedSurface
           for ( unsigned int i = 0; i < vtcs.size(); ++i )
             barycenter += cembedder( K.unsigns( vtcs[ i ] ) );
           barycenter /= vtcs.size();
-          Index idx = trisurf.addVertex( barycenter );
+          SIndex idx = trisurf.addVertex( barycenter );
           for ( unsigned int i = 0; i < vtcs.size(); ++i )
             trisurf.addTriangle( vertexmap[ vtcs[ i ]   ],
                                  vertexmap[ vtcs[ (i+1) % vtcs.size() ]   ],
