@@ -11,7 +11,7 @@ cmake ..  $BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER
 make DGtal;
 if [ $DEC = "true" ];
     then
-        echo "Compile Dec not in //";
+        echo "Compile Dec in non parallel mode to save memory (to fix gcc internal compiler error(Killed)";
         make exampleDiscreteExteriorCalculusChladni;
         make exampleDiscreteExteriorCalculusSolve;
         make exampleDECSurface;
@@ -34,15 +34,6 @@ then
     fi
     if [ -f io/readers/testMagickReader ]; then
       io/readers/testMagickReader
-    fi
-    if [ $DEC = "true"];
-    then
-        echo "Compile Dec not in //";
-        make testDiscreteExteriorCalculusExtended;
-        make exampleDiscreteExteriorCalculusChladni;
-        make exampleDiscreteExteriorCalculusSolve;
-        make exampleDECSurface;
-        make examplePropagation;
     fi
     ctest -j 3--output-on-failure
 
