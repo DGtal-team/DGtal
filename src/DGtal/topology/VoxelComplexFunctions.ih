@@ -215,6 +215,7 @@ persistenceAsymetricThinningScheme(
       trace.info() << "Initial Voxels at generation: " << generation <<
         " ; X.nbCells(3): " << xsize << std::endl;
   }
+    // cubical cell data (aka, the birth_date) is initialized to zero already.
   do {
     ++generation;
     // Update birth_date for our Skel function. (isIsthmus for example)
@@ -223,9 +224,9 @@ persistenceAsymetricThinningScheme(
       if (K.findCell(3, it->first) != K.end(3))
         continue;
       auto & voxel = it->first ;
-      auto & data = it->second ;
-      if( Skel(X, voxel) == true && data.birth_date == 0)
-        data.birth_date = generation;
+      auto & ccdata = it->second.data ;
+      if( Skel(X, voxel) == true && ccdata == 0)
+        ccdata = generation;
     }
     Y = K ;
     x_y = X; //optimization instead of x_y = X-Y, use x_y -= Y;
@@ -258,11 +259,11 @@ persistenceAsymetricThinningScheme(
     Y -= K;
     for (auto it = Y.begin(3), itE = Y.end(3) ; it != itE ; ++it ){
         auto & voxel = it->first;
-        auto & data = it->second;
+        auto & ccdata = it->second.data;
         bool is_skel = Skel(X, voxel);
-        bool is_persistent_enough = (generation + 1 - data.birth_date) >= persistence;
+        bool is_persistent_enough = (generation + 1 - ccdata) >= persistence;
         if (is_skel && is_persistent_enough)
-          K.insertVoxelCell(voxel, close_it, data);
+          K.insertVoxelCell(voxel, close_it, ccdata);
     }
 
     if(verbose){

@@ -31,6 +31,7 @@
 #include "DGtal/base/SetFunctions.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/CubicalComplexFunctions.h"
+#include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/topology/KhalimskyCellHashFunctions.h"
 #include "DGtal/topology/VoxelComplex.h"
 #include "DGtal/topology/VoxelComplexFunctions.h"
@@ -45,7 +46,7 @@
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/topology/NeighborhoodConfigurations.h"
 #include "DGtal/topology/tables/NeighborhoodTables.h"
-// #include <DGtal/io/viewers/Viewer3D.h>
+#include <DGtal/io/viewers/Viewer3D.h>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -498,7 +499,7 @@ struct Fixture_complex_fig4 {
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
     using FixtureObject =
         DGtal::Object<FixtureDigitalTopology, FixtureDigitalSet>;
-    using FixtureMap = std::unordered_map<KSpace::Cell, VoxelComplexCellData>;
+    using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellData>;
     using FixtureComplex =
         DGtal::VoxelComplex<KSpace, FixtureObject, FixtureMap>;
 
@@ -656,7 +657,7 @@ struct Fixture_isthmus {
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
     using FixtureObject =
         DGtal::Object<FixtureDigitalTopology, FixtureDigitalSet>;
-    using FixtureMap = std::unordered_map<KSpace::Cell, VoxelComplexCellData>;
+    using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellData>;
     using FixtureComplex =
         DGtal::VoxelComplex<KSpace, FixtureObject, FixtureMap>;
 
@@ -952,9 +953,9 @@ struct Fixture_X {
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
     using FixtureObject =
         DGtal::Object<FixtureDigitalTopology, FixtureDigitalSet>;
-    using FixtureMap = std::unordered_map<KSpace::Cell, VoxelComplexCellData>;
+    using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellData>;
     using FixtureComplex =
-        DGtal::VoxelComplex<KSpace, FixtureObject, FixtureMap>;
+        DGtal::VoxelComplex<KSpace, FixtureObject>;
 
     ///////////////////////////////////////////////////////////
     // fixture data
@@ -1126,6 +1127,7 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap", "[x][distance][thin]") {
     using Predicate = Z3i::DigitalSet;
     using L3Metric = ExactPredicateLpSeparableMetric<Z3i::Space, 3>;
     using DT = DistanceTransformation<Z3i::Space, Predicate, L3Metric>;
+    bool verbose = true;
     SECTION("Distance Map") {
         trace.beginBlock("With a Distance Map");
         L3Metric l3;
@@ -1134,31 +1136,49 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap", "[x][distance][thin]") {
         auto selectDistMax = [&dt](const FixtureComplex::Clique &clique) {
             return selectMaxValue<DT, FixtureComplex>(dt, clique);
         };
-        auto vc_new = asymetricThinningScheme<FixtureComplex>(
-            vc, selectDistMax, skelEnd<FixtureComplex>, true);
+        SECTION("asymetricThinning"){
+            auto vc_new = asymetricThinningScheme<FixtureComplex>(
+                    vc, selectDistMax, skelEnd<FixtureComplex>, verbose);
+        }
+        SECTION("persistenceThinning"){
+            auto table = *functions::loadTable(isthmusicity::tableOneIsthmus);
+            auto pointToMaskMap =
+                *functions::mapZeroPointNeighborhoodToConfigurationMask<
+                FixtureObject::Point>();
+            auto oneIsthmusTable =
+                [&table, &pointToMaskMap](const FixtureComplex &fc,
+                        const FixtureComplex::Cell &c) {
+                    return skelWithTable(table, pointToMaskMap, fc, c);
+                };
+            int persistence = 3;
+            auto vc_new = persistenceAsymetricThinningScheme<FixtureComplex>(
+                    vc, selectDistMax, oneIsthmusTable,
+                    persistence, verbose);
+            SECTION( "visualize the thining" ){
+                int argc(1);
+                char** argv(nullptr);
+                QApplication app(argc, argv);
+                Viewer3D<> viewer(ks_fixture);
+                viewer.show();
+
+                viewer.setFillColor(Color(200, 200, 200, 100));
+                for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
+                    viewer << it->first;
+
+                // All kspace voxels
+                viewer.setFillColor(Color(40, 40, 40, 10));
+                for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
+                    viewer << it->first;
+
+                viewer << Viewer3D<>::updateDisplay;
+                app.exec();
+            }
+        }
+
     }
 
     trace.endBlock();
 }
 
 // REQUIRE(vc_new.nbCells(3) == 38);
-// SECTION( "visualize the thining" ){
-//   int argc(1);
-//   char** argv(nullptr);
-//   QApplication app(argc, argv);
-//   Viewer3D<> viewer(ks_fixture);
-//   viewer.show();
-//
-//   viewer.setFillColor(Color(200, 200, 200, 100));
-//   for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
-//     viewer << it->first;
-//
-//   // All kspace voxels
-//   viewer.setFillColor(Color(40, 40, 40, 10));
-//   for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
-//     viewer << it->first;
-//
-//   viewer << Viewer3D<>::updateDisplay;
-//   app.exec();
-// }
 ///////////////////////////////////////////////////////////////////////////////

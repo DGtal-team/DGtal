@@ -46,34 +46,6 @@
 #include <DGtal/topology/Object.h>
 
 namespace DGtal {
-/**
- * VoxelComplexCellData stores birth_date and mature
- * for the persistence thinning algorithm.
- * @sa CubicalCellData
- * @sa persistenceAsymetricThinningScheme
- *
- * Any cell is stored within a cubical complex with an associated
- * data. You may define your own associated data but the type must
- * derive from this class CubicalCellData. Its basic usage is to
- * store flags associated to the cells, but it may store other
- * values.
- *
- * @note Predefined flags are CubicalComplex::REMOVED,
- * CubicalComplex::COLLAPSIBLE, CubicalComplex::FIXED,
- * CubicalComplex::USER1. Other bits can be used to associate an
- * integer to the cell. The corresponding mask is
- * CubicalComplex::VALUE.
- *
- * @note Such data is notably used in collapse operation
- * (CubicalComplex::collapse).
- */
-struct VoxelComplexCellData : public CubicalCellData {
-    inline VoxelComplexCellData() : CubicalCellData(), birth_date(0) {}
-    VoxelComplexCellData(uint32_t d) : CubicalCellData(d), birth_date(0) {}
-    VoxelComplexCellData(uint32_t d, uint32_t birth)
-        : CubicalCellData(d), birth_date(birth) {}
-    uint32_t birth_date;
-};
 
 // Forward definitions.
 template <typename TKSpace, typename TObject, typename TCellContainer>
@@ -116,8 +88,7 @@ operator-(const VoxelComplex<TKSpace, TObject, TCellContainer> &,
    */
 
 template <typename TKSpace, typename TObject,
-          typename TCellContainer =
-              typename TKSpace::template CellMap<VoxelComplexCellData>::Type>
+          typename TCellContainer = typename TKSpace::template CellMap< CubicalCellData >::Type >
 class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
   public:
     // The TObject::DigitalSet::Container must be associative.
