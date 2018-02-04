@@ -56,6 +56,7 @@ bool testGenericWriter()
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned int > Image3D32bits;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain,  unsigned char > Image2D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain,  unsigned int > Image2D32bits;
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain,  DGtal::Color > Image2DColor;
 
   Image3D32bits an32bitsImage3D (DGtal::Z3i::Domain(DGtal::Z3i::Point(0,0,0),  DGtal::Z3i::Point(4,4,4)));
   for(unsigned int i =0; i< 5; i++){
@@ -71,6 +72,16 @@ bool testGenericWriter()
       an32bitsImage2D.setValue(DGtal::Z2i::Point(j,i), 250000*i*j*4);
     }
   }
+
+  Image2DColor anColorImage2D (DGtal::Z2i::Domain(DGtal::Z2i::Point(0,0),  DGtal::Z2i::Point(255,255)));
+
+
+  for(unsigned int i =0; i<= 255; i++){
+    for(unsigned int j =0; j<= 255; j++){
+      anColorImage2D.setValue(DGtal::Z2i::Point(i,j),DGtal::Color(i,j,(i+j)%255));
+    }
+  }
+
   
   trace.beginBlock ( "Testing block ..." );
   std::string filenameImage1 = testPath + "samples/cat10.pgm3d";    
@@ -117,10 +128,15 @@ bool testGenericWriter()
   trace.info() <<"[done]"  << std::endl;
   bool ok7 = DGtal::GenericWriter<Image2D32bits>::exportFile( "testGenericWriter32bits2D.raw", an32bitsImage2D);
   trace.info() <<"[done]"  << std::endl;
+  bool ok8 = DGtal::GenericWriter<Image2DColor>::exportFile( "testGenericWriterColorImage.ppm", anColorImage2D);
+  trace.info() <<"[done]"  << std::endl;
+#ifdef WITH_MAGICK
+  bool ok9 = DGtal::GenericWriter<Image2DColor>::exportFile( "testGenericWriterColorImage.png", anColorImage2D);
+#else
+  bool ok9 = true;
+#endif  
 
-
-
-  nbok += ok1 && okh5 && okh5bis && ok2 && ok3 && ok3bis && ok4 & ok5 & ok6 & ok7 ? 1 : 0; 
+  nbok += ((ok1 && okh5 && okh5bis && ok2 && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && ok9) ? 1 : 0); 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
