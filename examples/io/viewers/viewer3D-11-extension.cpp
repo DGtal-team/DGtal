@@ -93,7 +93,7 @@ struct RandomPointKeyExtension : public Viewer3D<Space, KSpace>::Extension
 
   // We also override the Viewer3D::helpString method to add a
   // description to the viewer.
-  virtual QString helpString( const Viewer & viewer ) const
+  virtual QString helpString( const Viewer & /*viewer*/ ) const
   {
     QString text( "<h2> Random point Viewer3D </h2>" );
     text += "Press Shift+R to add points.";

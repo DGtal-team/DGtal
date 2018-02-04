@@ -132,7 +132,7 @@ namespace DGtal
     {
       aValue = 0;
       char c;
-      for (auto size = 0; size < sizeof( Word ); ++size)
+      for (unsigned int size = 0; size < sizeof( Word ); ++size)
       {
         fin.get( c ) ;
         unsigned char cc=static_cast<unsigned char>(c);

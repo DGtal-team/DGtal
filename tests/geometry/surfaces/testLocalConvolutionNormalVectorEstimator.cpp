@@ -189,7 +189,8 @@ int main ( int argc, char** argv )
     bool res = testLocalConvolutionNormalVectorEstimator ( argc,argv ); // && ... other tests
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
-    return (res == true);
+    
+    return (res ? 0:1);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
