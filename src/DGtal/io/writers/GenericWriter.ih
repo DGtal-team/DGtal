@@ -36,6 +36,9 @@
 #include "DGtal/io/writers/PPMWriter.h"
 #include "DGtal/io/writers/PGMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
+#ifdef WITH_MAGICK
+#include "DGtal/io/writers/MagickWriter.h"
+#endif
 
 
 
@@ -215,6 +218,38 @@ exportFile( const std::string & filename,
   return false;
 }
 
+
+
+template <typename TContainer, typename TFunctor>
+inline
+bool
+DGtal::GenericWriter<TContainer, 2, DGtal::Color, TFunctor>::
+exportFile( const std::string & filename,
+            const TContainer &  anImage,
+            const TFunctor &    aFunctor
+          )
+{
+  DGtal::IOException dgtalio;
+  const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
+  if ( extension == "ppm"  )
+    {
+      return PPMWriter< TContainer, TFunctor >::exportPPM( filename, anImage, aFunctor );
+    }
+#ifdef WITH_MAGICK
+  else if ( extension == "gif"  || extension == "jpg"  || extension == "bmp" || extension == "png"   )
+    {
+      return MagickWriter< TContainer, TFunctor >::exportMagick( filename, anImage, aFunctor );
+    }
+#endif
+  else
+    {
+      trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericWriter." << std::endl;
+      throw dgtalio;
+    }
+
+  return false;
+}
+
 template <typename TContainer, typename TValue>
 inline
 bool
@@ -230,6 +265,13 @@ exportFile( const std::string & filename,
     {
       return PPMWriter<TContainer, DGtal::HueShadeColorMap<TValue> >::exportPPM( filename, anImage, aFunctor );
     }
+   #ifdef WITH_MAGICK
+   else if ( extension == "gif"  || extension == "jpg"  || extension == "bmp" || extension == "png"   )
+    {
+      return MagickWriter< TContainer, DGtal::HueShadeColorMap<TValue> >::exportMagick( filename, anImage, aFunctor );
+    }
+   #endif
+
   else if ( extension == "raw" )
     {
       return RawWriter< TContainer, DGtal::HueShadeColorMap<TValue> >::template exportRaw<DGtal::Color>( filename, anImage, aFunctor );

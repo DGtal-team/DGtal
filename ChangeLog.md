@@ -40,10 +40,12 @@
   - New ImageMagick writer to export images to PNG or JPG formats for
   instance.  (David Coeurjolly,
   [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
- - SimpleDistanceColorMap new colormap to easily display distance maps.
+  - SimpleDistanceColorMap new colormap to easily display distance maps.
      (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))
- - Fix in MagicReader allowing to load colored images. (David
+  - Fix in MagicReader allowing to load colored images. (David
    Coeurjolly, [#1305](https://github.com/DGtal-team/DGtal/pull/1305))
+  - Include New ImageMagick writer in GenericWriter.  (Bertrand Kerautret,
+  [#1306](https://github.com/DGtal-team/DGtal/pull/1306))
  
 ## Bug Fixes
 

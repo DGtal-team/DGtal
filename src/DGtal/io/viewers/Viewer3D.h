@@ -165,6 +165,8 @@ namespace DGtal
     /// The associated viewer.
     typedef Viewer3D<Space, KSpace> Viewer;
 
+    virtual ~Extension() = default;
+    
     /// This method may be overloaded to capture other key
     /// events. It will be called at the beginning of Viewer3D::keyPressEvent.
     ///
