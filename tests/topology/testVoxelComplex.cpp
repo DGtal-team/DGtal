@@ -46,7 +46,7 @@
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/topology/NeighborhoodConfigurations.h"
 #include "DGtal/topology/tables/NeighborhoodTables.h"
-#include <DGtal/io/viewers/Viewer3D.h>
+// #include <DGtal/io/viewers/Viewer3D.h>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -1154,25 +1154,25 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap", "[x][distance][thin]") {
             auto vc_new = persistenceAsymetricThinningScheme<FixtureComplex>(
                     vc, selectDistMax, oneIsthmusTable,
                     persistence, verbose);
-            SECTION( "visualize the thining" ){
-                int argc(1);
-                char** argv(nullptr);
-                QApplication app(argc, argv);
-                Viewer3D<> viewer(ks_fixture);
-                viewer.show();
-
-                viewer.setFillColor(Color(200, 200, 200, 100));
-                for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
-                    viewer << it->first;
-
-                // All kspace voxels
-                viewer.setFillColor(Color(40, 40, 40, 10));
-                for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
-                    viewer << it->first;
-
-                viewer << Viewer3D<>::updateDisplay;
-                app.exec();
-            }
+            // SECTION( "visualize the thining" ){
+            //     int argc(1);
+            //     char** argv(nullptr);
+            //     QApplication app(argc, argv);
+            //     Viewer3D<> viewer(ks_fixture);
+            //     viewer.show();
+            //
+            //     viewer.setFillColor(Color(200, 200, 200, 100));
+            //     for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
+            //         viewer << it->first;
+            //
+            //     // All kspace voxels
+            //     viewer.setFillColor(Color(40, 40, 40, 10));
+            //     for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
+            //         viewer << it->first;
+            //
+            //     viewer << Viewer3D<>::updateDisplay;
+            //     app.exec();
+            // }
         }
 
     }
