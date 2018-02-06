@@ -84,6 +84,22 @@ HalfEdgeDataStructure makeTetrahedron()
   return mesh;
 }
 
+HalfEdgeDataStructure makeOctahedron()
+{
+  std::vector< Triangle > triangles( 8 );
+  triangles[0].v = { 0, 1, 2 };
+  triangles[1].v = { 0, 2, 3 };
+  triangles[2].v = { 0, 3, 4 };
+  triangles[3].v = { 0, 4, 1 };
+  triangles[4].v = { 5, 2, 1 };
+  triangles[5].v = { 5, 3, 2 };
+  triangles[6].v = { 5, 4, 3 };
+  triangles[7].v = { 5, 1, 4 };
+  HalfEdgeDataStructure mesh;
+  mesh.build( triangles );
+  return mesh;
+}
+
 HalfEdgeDataStructure makeRibbonWithHole()
 {
   std::vector< Triangle > triangles( 6 );
@@ -563,6 +579,30 @@ SCENARIO( "HalfEdgeDataStructure splits", "[halfedge][splits]" ){
       VertexIndexRange nv = mesh.neighboringVertices( 4 );
       VertexIndexRange expected = { 0, 1, 2, 3 };
       REQUIRE( nv.size()  ==  4 );
+      REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
+    }
+  }
+}
+
+SCENARIO( "HalfEdgeDataStructure merges", "[halfedge][merges]" ){
+  GIVEN( "An octahedron" ) {
+    HalfEdgeDataStructure mesh = makeOctahedron();
+    auto he  = mesh.findHalfEdgeIndexFromArc( {1,2} );
+    REQUIRE( mesh.isMergeable( he ) );
+    auto vtx = mesh.merge( he );
+    THEN( "After merge, mesh is valid" ) {
+      CAPTURE( mesh.isValid() );
+      REQUIRE( mesh.isValid() );
+    }
+    THEN( "After merge, mesh has 5 vertices, 9 edges, 6 faces" ) {
+      REQUIRE( mesh.nbVertices() == 5 );
+      REQUIRE( mesh.nbEdges() == 9 );
+      REQUIRE( mesh.nbFaces() == 6 );
+    }
+    THEN( "After merge, vertex 0 has 3 neighbors { 1,3,4 }" ) {
+      VertexIndexRange nv = mesh.neighboringVertices( 0 );
+      VertexIndexRange expected = { 1, 3, 4 };
+      REQUIRE( nv.size()  ==  3 );
       REQUIRE( std::is_permutation( nv.begin(), nv.end(), expected.begin() ) );
     }
   }
