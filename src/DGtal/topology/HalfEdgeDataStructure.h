@@ -829,9 +829,9 @@ namespace DGtal
     }
 
     
-    /// Merges the edge specified by the half-edge \a i.
+    /// Merges the edge specified by the half-edge \a hei.
     ///
-    /// @param i any valid half-edge index.
+    /// @param hei any valid half-edge index.
     ///
     /// @param update_arc2index (optimisation parameter), when 'true'
     /// updates everything consistently; when 'false' do not update
@@ -841,7 +841,7 @@ namespace DGtal
     ///
     /// @return the index of the merged vertex.
     ///
-    /// @pre the edge must be mergeable, `isMergeable( i ) == true`
+    /// @pre the edge must be mergeable, `isMergeable( hei ) == true`
     /// @see isMergeable
     /// @todo We could also merge boundary triangles or more general faces.
     VertexIndex merge( const Index hei, bool update_arc2index = true ) {
