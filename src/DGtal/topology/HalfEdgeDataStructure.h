@@ -947,6 +947,7 @@ namespace DGtal
       for ( Index t : T ) {
 	std::cout << "Renumbering half-edge" << t << "/" << nbHalfEdges() << std::endl;
 	renumberHalfEdge( t );
+      }
       return v1;
     }
 
@@ -1244,7 +1245,7 @@ namespace DGtal
         }
       return it->second;
     }
-    
+        
   }; // end of class HalfEdgeDataStructure
 
 
