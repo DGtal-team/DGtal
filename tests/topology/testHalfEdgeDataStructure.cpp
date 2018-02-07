@@ -591,8 +591,10 @@ SCENARIO( "HalfEdgeDataStructure merges", "[halfedge][merges]" ){
     REQUIRE( mesh.isMergeable( he ) );
     auto vtx = mesh.merge( he );
     THEN( "After merge, mesh is valid" ) {
-      CAPTURE( mesh.isValid() );
       REQUIRE( mesh.isValid() );
+    }
+    THEN( "After merge, merged vertex is 1" ) {
+      REQUIRE( vtx == 1 );
     }
     THEN( "After merge, mesh has 5 vertices, 9 edges, 6 faces" ) {
       REQUIRE( mesh.nbVertices() == 5 );
