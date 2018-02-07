@@ -301,9 +301,17 @@ std::pair<typename TComplex::Cell, typename TComplex::Data>
 DGtal::functions::selectRandom(
       const typename TComplex::Clique & clique)
 {
-  static std::random_device rd;
-  static std::mt19937 gen(rd()); // TODO tothink provide seed?
+  static std::mt19937 gen( std::random_device{}() );
+  return selectRandom<TComplex>(clique, gen);
+}
 
+template < typename TComplex, typename TRandomGenerator >
+std::pair<typename TComplex::Cell, typename TComplex::Data>
+DGtal::functions::selectRandom(
+      const typename TComplex::Clique & clique,
+      TRandomGenerator & gen
+)
+{
   auto size = clique.nbCells(3);
   std::uniform_int_distribution<> dis(0, size - 1);
   auto it = clique.begin(3);
