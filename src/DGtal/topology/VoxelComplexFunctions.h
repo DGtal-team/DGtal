@@ -110,6 +110,22 @@ namespace DGtal
       const typename TComplex::Clique & clique);
 
     /**
+     * Select random voxel from input clique.
+     *
+     * @tparam TComplex CubicalComplex
+     * @tparam TRandomGenerator RandomGenerator
+     * @param clique from where cell is chosen
+     * @param gen random generator
+     *
+     * @return random voxel from input clique.
+     */
+    template < typename TComplex, typename TRandomGenerator >
+    std::pair<typename TComplex::Cell, typename TComplex::Data>
+    selectRandom(
+      const typename TComplex::Clique & clique,
+      TRandomGenerator & gen);
+
+    /**
      * Select cell from clique that has max value looking at the input dist_map.
      * The points in the dist_map and in the clique must refer
      * to the same position.
