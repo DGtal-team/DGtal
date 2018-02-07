@@ -438,12 +438,33 @@ DGtal::TriangulatedSurface<TPoint>::flip( const Arc a )
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TPoint>::VertexIndex
+typename DGtal::TriangulatedSurface<TPoint>::Vertex
 DGtal::TriangulatedSurface<TPoint>::split( const Arc a, const Point& data )
 {
-  VertexIndex v = myHEDS.split( a, false );
+  Vertex v = myHEDS.split( a, false );
   ASSERT( v == myPositions.size() );
   myPositions.push_back( data );
+  return v;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+bool
+DGtal::TriangulatedSurface<TPoint>::isMergeable( const Arc a ) const
+{
+  return myHEDS.isMergeable( a );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+typename DGtal::TriangulatedSurface<TPoint>::Vertex
+DGtal::TriangulatedSurface<TPoint>::merge( const Arc a, const Point& data )
+{
+  Vertex v = myHEDS.merge( a, false );
+  ASSERT( v < myPositions.size() );
+  myPositions[ v ] = data;
   return v;
 }
 
