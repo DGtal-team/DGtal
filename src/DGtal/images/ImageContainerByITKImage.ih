@@ -75,6 +75,7 @@ namespace DGtal
 
       myITKImagePointer->SetRegions(region);
       myITKImagePointer->Allocate();
+      myITKImagePointer->FillBuffer(0);
     }
 
     template <typename TDomain, typename TValue>
