@@ -86,6 +86,9 @@
  - Viewer3D: fix bad light source move according X/Y mouse move and new Key_Z to
    move away/closer the light source.
    (Bertrand Kerautret, [#1262](https://github.com/DGtal-team/DGtal/pull/1262))
+ - Fix ImageContainerByITKImage, fill the itk image buffer with 0 when using the
+   domain constructor.
+   (Pablo Hernandez, [#1307](https://github.com/DGtal-team/DGtal/pull/1307))
 
 - *Kernel Package*
  - Fix testBasicPointFunctor. (Bertrand Kerautret
