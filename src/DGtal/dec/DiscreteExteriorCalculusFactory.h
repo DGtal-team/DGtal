@@ -105,7 +105,7 @@ public:
 
     /**
      * Create a DEC structure from a range of signed n-cells, where n is the embedded dimension. A functor from cell to its measure is given.
-		 * Signed n-cells may live in an ambient Khamlisky space with dimension greater than n.
+     * Signed n-cells may live in an ambient Khamlisky space with dimension greater than n.
      * N-cells get attached to primal n-cell <-> dual 0-cell. See section \ref sectDECEmbedding for more information.
      * @tparam dimEmbedded dimension of emmbedded manifold. All input n-cells must have their dimension equal to dimEmbedded.
      * @tparam TNSCellConstIterator signed cells collection const iterator type.
