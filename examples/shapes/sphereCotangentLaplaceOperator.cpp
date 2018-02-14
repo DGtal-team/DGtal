@@ -134,7 +134,6 @@ void laplacian(Shape& shape, const Options& options,
 
   trace.beginBlock( "Making triangulated surface. " );
   typedef CanonicCellEmbedder<KSpace>      CanonicCellEmbedder;
-  typedef CanonicCellEmbedder::Value       RealPoint;
   typedef TriangulatedSurface< RealPoint > TriMesh;
   typedef std::map< MyDigitalSurface::Vertex, TriMesh::Index > VertexMap;
   TriMesh trimesh;
