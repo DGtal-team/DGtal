@@ -214,6 +214,10 @@ DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, T
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::heatLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& t, const typename DenseVector::Scalar& cut_locus) const
 {
   ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
+  
+  typedef typename TLinearAlgebraBackend::IntegerVector IntegerVector;
+  typedef typename TLinearAlgebraBackend::Triplet Triplet;
+  typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
 
   const typename DenseVector::Scalar cut = cut_locus * sqrt(2. * t);
 
@@ -221,13 +225,12 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
   DGtal::CanonicSCellEmbedder<KSpace> canonicSCellEmbedder(myKSpace);
 
-  typedef typename TLinearAlgebraBackend::Triplet Triplet;
   typedef std::vector<Triplet> Triplets;
   Triplets triplets;
 
   for (Index i = 0; i < kFormLength(0, duality); i++)
   {
-    trace.progressBar( i, kFormLength( 0, duality ) );
+    trace.progressBar( i, kFormLength( 0, duality ) - 1 );
 
     const SCell signed_cell_i = myIndexSignedCells[ actualOrder(0, duality) ][i];
     const auto p_i = double( h ) * canonicSCellEmbedder( signed_cell_i );
@@ -256,14 +259,14 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
       }
     }
 
-    triplets.push_back( Triplet(i, i, total_weight) );
+    _operator.myContainer.insert( i, i ) = total_weight;
   }
-
-  typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
+  
   Operator _operator( *this );
   ASSERT( _operator.myContainer.rows() == kFormLength(0, duality) );
   ASSERT( _operator.myContainer.cols() == kFormLength(0, duality) );
   _operator.myContainer.setFromTriplets(triplets.begin(), triplets.end());
+  _operator.myContainer.makeCompressed();
 
   return _operator;
 }
