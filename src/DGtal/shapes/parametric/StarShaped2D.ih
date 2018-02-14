@@ -213,7 +213,7 @@ DGtal::StarShaped2D<TSpace>::closestPointWithWitnesses( const typename DGtal::St
   double p_norm = 1e15;
   RealPoint p_return = Point(0., 0.);
 
-  for(int i = 0; i < points.size(); i++)
+  for(unsigned int i = 0; i < points.size(); i++)
   {
     const double p_norm_current = (points[i] - p).norm();
     if(p_norm_current < p_norm)

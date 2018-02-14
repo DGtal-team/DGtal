@@ -92,6 +92,7 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 |------------|---------|---------------------------------|---------------------------------------------|---------------|----------------------------------------------------------|
 |         2D | PGM     | Grayscale  netpbm image format  | the functor should return an unsigned char  | PGMWriter     | http://netpbm.sourceforge.net/                           |
 |            | PPM     | Color netpbm image format       | the functor should return a DGtal::Color    | PPMWriter     | http://netpbm.sourceforge.net/                           |
+|            | any ImageMagick format  | Color image format (png,jpg...)      | the functor must return a DGtal::Color    | MagickWriter     | with @a WITH_MAGICK build http://www.imagemagick.org                           |
 |            | any 2D ITK format | Grayscale or 2D ITK image   | the functor should return a ITKIOTrait<Image::Value>::ValueOut | ITKWriter | with @a WITH_ITK build flag, http://www.itk.org/ |
 |         3D | PGM3D   | Grayscale  netpbm image format  | the functor should return an unsigned char  | PGMWriter     |                                                          |
 |            | PPM3D   | Color netpbm image format       | the functor should return a DGtal::Color    | PPMWriter     |                                                          |

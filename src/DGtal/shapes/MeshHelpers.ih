@@ -126,19 +126,19 @@ DGtal::MeshHelpers::digitalSurface2DualTriangulatedSurface
   BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
   typedef DigitalSurface< DigitalSurfaceContainer >    Surface;
-  typedef typename Surface::KSpace                     KSpace;
-  typedef typename Surface::Vertex                     Vertex;
-  typedef typename Surface::VertexRange                VertexRange;
-  typedef typename CellEmbedder::Value                 Point;
-  typedef typename TriangulatedSurface< Point >::Index Index;
-  BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
+  typedef typename Surface::KSpace                     SKSpace;
+  typedef typename Surface::Vertex                     SVertex;
+  typedef typename Surface::VertexRange                SVertexRange;
+  typedef typename CellEmbedder::Value                 SPoint;
+  typedef typename TriangulatedSurface< SPoint >::Index SIndex;
+  BOOST_STATIC_ASSERT(( SKSpace::dimension == 3 ));
   
   trisurf.clear();
   // Numbers all vertices and add them to the triangulated surface.
-  const KSpace & K = dsurf.container().space();
+  const SKSpace & K = dsurf.container().space();
   for ( auto it = dsurf.begin(), it_end = dsurf.end(); it != it_end; ++it )
     {
-      const Vertex& v = *it;
+      const SVertex& v = *it;
       vertexmap[ v ] = trisurf.addVertex( cembedder( K.unsigns( v ) ) );
     }
 
@@ -146,18 +146,18 @@ DGtal::MeshHelpers::digitalSurface2DualTriangulatedSurface
   auto faces = dsurf.allClosedFaces();
   for ( auto itf = faces.begin(), itf_end = faces.end(); itf != itf_end; ++itf )
     {
-      VertexRange vtcs = dsurf.verticesAroundFace( *itf );
+      SVertexRange vtcs = dsurf.verticesAroundFace( *itf );
       if ( vtcs.size() == 3 )
         trisurf.addTriangle( vertexmap[ vtcs[ 0 ]   ],
                              vertexmap[ vtcs[ 1 ]   ],
                              vertexmap[ vtcs[ 2 ] ] );
       else
         { // We must add a vertex before triangulating.
-          Point barycenter;
+          SPoint barycenter;
           for ( unsigned int i = 0; i < vtcs.size(); ++i )
             barycenter += cembedder( K.unsigns( vtcs[ i ] ) );
           barycenter /= vtcs.size();
-          Index idx = trisurf.addVertex( barycenter );
+          SIndex idx = trisurf.addVertex( barycenter );
           for ( unsigned int i = 0; i < vtcs.size(); ++i )
             trisurf.addTriangle( vertexmap[ vtcs[ i ]   ],
                                  vertexmap[ vtcs[ (i+1) % vtcs.size() ]   ],

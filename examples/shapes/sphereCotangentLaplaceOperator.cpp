@@ -69,12 +69,11 @@ using namespace Z3i;
 typedef Z3i::Space Space;
 typedef Z3i::KSpace KSpace;
 typedef Z3i::RealVector RealVector;
-typedef Z3i::RealPoint RealPoint;
-typedef Z3i::Point Point;
+typedef Z3i::RealPoint RealPoint3D;
 
-RealPoint cartesian_to_spherical(const RealPoint & a)
+RealPoint cartesian_to_spherical(const RealPoint3D & a)
 {
-  return RealPoint(a.norm(), atan2(a[1], a[0]), acos(a[2]));
+  return RealPoint3D(a.norm(), atan2(a[1], a[0]), acos(a[2]));
 }
 
 struct Options
@@ -88,8 +87,8 @@ struct Options
 
 template <typename Shape>
 void laplacian(Shape& shape, const Options& options,
-    std::function<double(const RealPoint&)> input_function,
-    std::function<double(const RealPoint&)> target_function,
+    std::function<double(const RealPoint3D&)> input_function,
+    std::function<double(const RealPoint3D&)> target_function,
     int argc, char** argv)
 {
   trace.beginBlock("Laplacian");
@@ -170,7 +169,7 @@ void laplacian(Shape& shape, const Options& options,
   // Iteration over all vertices
   for(auto v : vertices)
   {
-    const RealPoint p_i = trimesh.position(v);
+    const RealPoint3D p_i = trimesh.position(v);
     const TriangulatedSurface::ArcRange out_arcs = trimesh.outArcs(v);
     double accum = 0.;
 
@@ -178,26 +177,26 @@ void laplacian(Shape& shape, const Options& options,
     for(auto a : out_arcs)
     {
       // The point p_i -----> p_j
-      const RealPoint p_j = trimesh.position( trimesh.head(a) );
+      const RealPoint3D p_j = trimesh.position( trimesh.head(a) );
 
       const TriangulatedSurface::Arc next_left_arc = trimesh.next( a );
       const TriangulatedSurface::Arc next_right_arc = trimesh.next( trimesh.opposite(a) );
 
       // Three points of the left triangle
-      const RealPoint p1 = p_j;
-      const RealPoint p2 = trimesh.position( trimesh.head( next_left_arc ) );
-      const RealPoint p3 = p_i;
+      const RealPoint3D p1 = p_j;
+      const RealPoint3D p2 = trimesh.position( trimesh.head( next_left_arc ) );
+      const RealPoint3D p3 = p_i;
 
       // Three points of the right triangle
-      const RealPoint pp1 = p_j;
-      const RealPoint pp2 = trimesh.position(trimesh.head( next_right_arc ));
-      const RealPoint pp3 = p_i;
+      const RealPoint3D pp1 = p_j;
+      const RealPoint3D pp2 = trimesh.position(trimesh.head( next_right_arc ));
+      const RealPoint3D pp3 = p_i;
 
       // Left and right angles
-      const RealPoint v1 =  (p1 - p2)   / (p1 - p2).norm();
-      const RealPoint v2 =  (p3 - p2)   / (p3 - p2).norm();
-      const RealPoint vv1 = (pp1 - pp2) / (pp1 - pp2).norm();
-      const RealPoint vv2 = (pp3 - pp2) / (pp3 - pp2).norm();
+      const RealPoint3D v1 =  (p1 - p2)   / (p1 - p2).norm();
+      const RealPoint3D v2 =  (p3 - p2)   / (p3 - p2).norm();
+      const RealPoint3D vv1 = (pp1 - pp2) / (pp1 - pp2).norm();
+      const RealPoint3D vv2 = (pp3 - pp2) / (pp3 - pp2).norm();
 
       const double alpha = acos( v1.dot(v2) );
       const double beta  = acos( vv1.dot(vv2) );
@@ -211,11 +210,11 @@ void laplacian(Shape& shape, const Options& options,
     for(auto f : faces_around)
     {
       const TriangulatedSurface::VertexRange vr = trimesh.verticesAroundFace(f);
-      RealPoint p = trimesh.position(vr[0]);
-      RealPoint q = trimesh.position(vr[1]);
-      RealPoint r = trimesh.position(vr[2]);
+      RealPoint3D p = trimesh.position(vr[0]);
+      RealPoint3D q = trimesh.position(vr[1]);
+      RealPoint3D r = trimesh.position(vr[2]);
 
-      const RealPoint cross = (r - p).crossProduct(r - q);
+      const RealPoint3D cross = (r - p).crossProduct(r - q);
       const double faceArea = .5 * cross.norm();
 
       accum_area += faceArea / 3.;
@@ -227,10 +226,10 @@ void laplacian(Shape& shape, const Options& options,
           ? laplacian_result(i) = (1 / (2. * accum_area)) * accum
           : laplacian_result(i) = .5 * accum;
 
-    const RealPoint w_projected = p_i / p_i.norm();
+    const RealPoint3D w_projected = p_i / p_i.norm();
     const double real_laplacian_value = target_function(w_projected);
 
-    const RealPoint w_s = cartesian_to_spherical(w_projected);
+    const RealPoint3D w_s = cartesian_to_spherical(w_projected);
 
     function_out << w_s[1] << " "
         << w_s[2] << " "
@@ -263,7 +262,7 @@ void laplacian(Shape& shape, const Options& options,
          << " vertices and " << viewmesh.nbFaces() << " faces." << std::endl;
 
   DGtal::ColorBrightnessColorMap<float> colormap_error(error_faces.minCoeff(), error_faces.maxCoeff(), DGtal::Color::Red);
-  for(int k = 0; k < viewmesh.nbFaces(); k++)
+  for(unsigned int k = 0; k < viewmesh.nbFaces(); k++)
     viewmesh.setFaceColor(k, colormap_error( error_faces(k) ));
 
   QApplication application(argc,argv);
@@ -287,30 +286,30 @@ int main(int argc, char **argv)
   typedef Ball3D<Z3i::Space> Ball;
   Ball ball(Point(0.0,0.0,0.0), 1.0);
 
-  std::function<double(const RealPoint&)> xx_function = [](const RealPoint& p) {return p[0] * p[0];};
-  std::function<double(const RealPoint&)> xx_result = [](const RealPoint& p)
+  std::function<double(const RealPoint3D&)> xx_function = [](const RealPoint3D& p) {return p[0] * p[0];};
+  std::function<double(const RealPoint3D&)> xx_result = [](const RealPoint3D& p)
   {
-    const RealPoint p_s = cartesian_to_spherical(p);
+    const RealPoint3D p_s = cartesian_to_spherical(p);
     return 2 * cos(p_s[1]) * cos(p_s[1]) * (2 * cos(p_s[2]) * cos(p_s[2]) - sin(p_s[2]) * sin(p_s[2]))
             + 2 * (sin(p_s[1]) * sin(p_s[1]) - cos(p_s[1]) * cos(p_s[1]));
   };
 
-  std::function<double(const RealPoint&)> cos_function = [](const RealPoint& p) {return p[2];};
-  std::function<double(const RealPoint&)> cos_result = [](const RealPoint& p)
+  std::function<double(const RealPoint3D&)> cos_function = [](const RealPoint3D& p) {return p[2];};
+  std::function<double(const RealPoint3D&)> cos_result = [](const RealPoint3D& p)
   {
-    const RealPoint p_s = cartesian_to_spherical(p);
+    const RealPoint3D p_s = cartesian_to_spherical(p);
     return - 2 * cos(p_s[2]);
   };
 
-  std::function<double(const RealPoint&)> exp_function = [](const RealPoint& p)
+  std::function<double(const RealPoint3D&)> exp_function = [](const RealPoint3D& p)
   {
-    const RealPoint p_sphere = p / p.norm();
+    const RealPoint3D p_sphere = p / p.norm();
     return exp(p_sphere[0]);
   };
-  std::function<double(const RealPoint&)> exp_result   = [](const RealPoint& p)
+  std::function<double(const RealPoint3D&)> exp_result   = [](const RealPoint3D& p)
   {
-    const RealPoint p_sphere = p / p.norm();
-    const RealPoint p_s = cartesian_to_spherical(p);
+    const RealPoint3D p_sphere = p / p.norm();
+    const RealPoint3D p_s = cartesian_to_spherical(p);
 
     if(p_s[1] == 0 && p_s[2] == 0) return 1.;
 
@@ -323,9 +322,9 @@ int main(int argc, char **argv)
     return theta_derivative + phi_derivative;
   };
 
-  std::function<double(const RealPoint&)> input_function
+  std::function<double(const RealPoint3D&)> input_function
       = ( options.function == 0 ) ? xx_function : ( (options.function == 1) ? cos_function : exp_function );
-  std::function<double(const RealPoint&)> target_function
+  std::function<double(const RealPoint3D&)> target_function
       = ( options.function == 0 ) ? xx_result : ( (options.function == 1) ? cos_result : exp_result );
 
   laplacian<Ball>(ball, options, input_function, target_function, argc, argv);
