@@ -405,12 +405,12 @@ namespace DGtal
      * Convolutional Laplace operator from duality 0-forms to duality 0-forms. See \ref secHowToHeatLaplace.
      * @param h the grid step
      * @param t the time parameter for the convolution
-     * @param cut_locus the cut locus for for the integration. Generaly setted to \f$ \log( - \log( t ) + 1 ) + 2 \f$
+     * @param K the multiplier for the integration. Must be at least 2.
      * @return Heat Laplace operator.
      */
     template <Duality duality>
     LinearOperator<Self, 0, duality, 0, duality>
-    heatLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& t, const typename DenseVector::Scalar& cut_locus) const;
+    heatLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& t, const typename DenseVector::Scalar& K) const;
 
     /**
      * Hodge operator from duality _order_-form to opposite duality _(dimEmbedded-order)_-forms.

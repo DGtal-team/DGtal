@@ -211,7 +211,8 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::heatLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& t, const typename DenseVector::Scalar& cut_locus) const
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::heatLaplace(const typename DenseVector::Scalar& h, 
+  const typename DenseVector::Scalar& t, const typename DenseVector::Scalar& K) const
 {
   ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
   
@@ -219,9 +220,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
   typedef typename TLinearAlgebraBackend::Triplet Triplet;
   typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
 
-  const typename DenseVector::Scalar cut = cut_locus * sqrt(2. * t);
-
-  trace.info() << "Using h=" << h << ", t=" << t << ", cut_locus=" << cut << std::endl;
+  const typename DenseVector::Scalar cut = K * sqrt(2. * t);
 
   DGtal::CanonicSCellEmbedder<KSpace> canonicSCellEmbedder(myKSpace);
 
