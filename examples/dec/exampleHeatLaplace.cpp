@@ -186,8 +186,8 @@ void convergence(const Options& options, Shape& shape, int argc, char** argv,
     trace.beginBlock("Computing the Laplace operator");
 //! [laplace_operator]
     const double t = options.convolution_radius * pow(options.h, 2. / 3.);
-    const double cut_locus = ( log( - log(t) + 1. ) + 2. );
-    const Calculus::DualIdentity0 laplace = calculus.heatLaplace<DUAL>(options.h, t, cut_locus);
+    const double K = ( log( - log(t) + 1. ) + 2. );
+    const Calculus::DualIdentity0 laplace = calculus.heatLaplace<DUAL>(options.h, t, K);
 //! [laplace_operator]
     trace.info() << "Matrix has " << ((double)laplace.myContainer.nonZeros() / (double)laplace.myContainer.size() * 100.) << "% of non-zeros elements." << std::endl;
     trace.endBlock();
