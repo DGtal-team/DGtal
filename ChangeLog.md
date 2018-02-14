@@ -33,12 +33,20 @@
     for instance to add callbacks to key or mouse events, or to modify
     what is drawn on the window.
     (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
- - TableReader can now read all elements contained in each line of a file
+  - TableReader can now read all elements contained in each line of a file
    with the new method getLinesElementsFromFile().
-   (Bertrand Kerautret, [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
- - SimpleDistanceColorMap new colormap to easily display distance maps.
+   (Bertrand Kerautret,
+   [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
+  - New ImageMagick writer to export images to PNG or JPG formats for
+  instance.  (David Coeurjolly,
+  [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
+  - SimpleDistanceColorMap new colormap to easily display distance maps.
      (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))
-
+  - Fix in MagicReader allowing to load colored images. (David
+   Coeurjolly, [#1305](https://github.com/DGtal-team/DGtal/pull/1305))
+  - Include New ImageMagick writer in GenericWriter.  (Bertrand Kerautret,
+  [#1306](https://github.com/DGtal-team/DGtal/pull/1306))
+ 
 ## Bug Fixes
 
 - *Build*
@@ -78,6 +86,9 @@
  - Viewer3D: fix bad light source move according X/Y mouse move and new Key_Z to
    move away/closer the light source.
    (Bertrand Kerautret, [#1262](https://github.com/DGtal-team/DGtal/pull/1262))
+ - Fix ImageContainerByITKImage, fill the itk image buffer with 0 when using the
+   domain constructor.
+   (Pablo Hernandez, [#1307](https://github.com/DGtal-team/DGtal/pull/1307))
 
 - *Kernel Package*
  - Fix testBasicPointFunctor. (Bertrand Kerautret

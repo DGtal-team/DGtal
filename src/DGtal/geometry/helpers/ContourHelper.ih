@@ -42,24 +42,24 @@
 
 
 
-template <typename TPoint> 
+template <typename TPoint>
 inline
-DGtal::PointVector<TPoint::dimension, double> 
+DGtal::PointVector<TPoint::dimension, double>
 DGtal::ContourHelper::getBarycenter(const std::vector<TPoint> & aSet)
 {
   DGtal::PointVector<TPoint::dimension, double> ptMean;
   for(unsigned int i =0; i<aSet.size(); i++)
     {
       for(typename TPoint::Dimension j=0; j < TPoint::dimension; j++)
-        {          
+        {
           ptMean[j] +=  static_cast<double>(aSet.at(i)[j]);
         }
     }
   for(unsigned int j=0; j < TPoint::dimension; j++)
-    {          
+    {
       ptMean[j] /= aSet.size();
-    }      
-  return ptMean; 
+    }
+  return ptMean;
 }
 
 
@@ -69,7 +69,7 @@ DGtal::ContourHelper::getBarycenter(const std::vector<TPoint> & aSet)
 
 template <typename TIterator, typename TOutputIterator>
 inline
-void 
+void
 DGtal::ContourHelper::pixels2pixels8C(const TIterator &itb, const TIterator &ite,
                                       TOutputIterator out)
 {
@@ -77,7 +77,7 @@ DGtal::ContourHelper::pixels2pixels8C(const TIterator &itb, const TIterator &ite
   *out++ = *it;
   unsigned int size = std::distance(itb, ite);
   int i=0;
-  while(i<size-1)
+  while(i<(int)size-1)
     {
 
       short code = FreemanChain<int>::freemanCode4C((*(it+1))[0]-(*it)[0],(*(it+1))[1]-(*it)[1]);
@@ -86,9 +86,9 @@ DGtal::ContourHelper::pixels2pixels8C(const TIterator &itb, const TIterator &ite
         {
           it++;
           i++;
-        } 
+        }
       it++;
-      *out++ = *it;     
+      *out++ = *it;
       i++;
     }
 }
@@ -96,7 +96,7 @@ DGtal::ContourHelper::pixels2pixels8C(const TIterator &itb, const TIterator &ite
 
 
 
-template <typename TPoint> 
+template <typename TPoint>
 inline
 bool
 DGtal::ContourHelper::isCounterClockWise(const std::vector<TPoint> & aCurve)
@@ -144,5 +144,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
