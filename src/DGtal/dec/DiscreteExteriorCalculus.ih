@@ -258,7 +258,8 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
       }
     }
 
-    _operator.myContainer.insert( i, i ) = total_weight;
+    //_operator.myContainer.insert( i, i ) = total_weight;
+    triplets.push_back( Triplet( i, i, total_weight ) );
   }
   
   Operator _operator( *this );
