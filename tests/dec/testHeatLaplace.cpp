@@ -128,6 +128,5 @@ TEST_CASE( "Operator Test" )
     REQUIRE( laplace_sphere( 1.0 ) );
     REQUIRE( laplace_sphere( 0.5 ) );
     REQUIRE( laplace_sphere( 0.2 ) );
-    REQUIRE( laplace_sphere( 0.1 ) );
   }
 }
