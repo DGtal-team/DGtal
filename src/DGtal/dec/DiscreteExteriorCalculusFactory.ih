@@ -328,8 +328,6 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
     //ASSERT( primal_measure_accum == dual_measure_accum );
 
-    trace.info() << primal_measure_accum << " " << dual_measure_accum << std::endl;
-
     calculus.updateIndexes();
 
     return calculus;
