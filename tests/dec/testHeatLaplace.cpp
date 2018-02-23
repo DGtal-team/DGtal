@@ -114,7 +114,7 @@ bool laplace_sphere( const double& h )
   const Calculus calculus = CalculusFactory::createFromNSCells<2>( digSurf.begin(), digSurf.end(), normalEstimator, h );
 
   const double t = 0.1 * pow( h, 2./3. );
-  const double cut_locus = log( - log(t) + 1. ) + 2.;
+  const double cut_locus = log( - log1p( t ) ) + 2.;
   const Calculus::PrimalIdentity0 laplace_primal = calculus.heatLaplace<PRIMAL>( h, t, cut_locus );
   const Calculus::DualIdentity0   laplace_dual   = calculus.heatLaplace<DUAL>( h, t, cut_locus );
 

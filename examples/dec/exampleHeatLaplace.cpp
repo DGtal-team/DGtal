@@ -100,9 +100,9 @@ std::function<double(const RealPoint&)> xx_derivative =
 
 template <typename Shape>
 void convergence(const Options& options, Shape& shape, int argc, char** argv,
-        std::function< double(const RealPoint&) > input_function,
-        std::function< double(const RealPoint&) > result_function,
-        std::function< double(const RealPoint&, const RealPoint&) > distance_function)
+        const std::function< double(const RealPoint&) >& input_function,
+        const std::function< double(const RealPoint&) >& result_function,
+        const std::function< double(const RealPoint&, const RealPoint&) >& distance_function)
 {
     trace.beginBlock("Laplacian 3D");
 
@@ -186,7 +186,7 @@ void convergence(const Options& options, Shape& shape, int argc, char** argv,
     trace.beginBlock("Computing the Laplace operator");
 //! [laplace_operator]
     const double t = options.convolution_radius * pow(options.h, 2. / 3.);
-    const double K = ( log( - log(t) + 1. ) + 2. );
+    const double K = log( - log1p( t ) ) + 2.;
     const Calculus::DualIdentity0 laplace = calculus.heatLaplace<DUAL>(options.h, t, K);
 //! [laplace_operator]
     trace.info() << "Matrix has " << ((double)laplace.myContainer.nonZeros() / (double)laplace.myContainer.size() * 100.) << "% of non-zeros elements." << std::endl;
@@ -222,7 +222,7 @@ void convergence(const Options& options, Shape& shape, int argc, char** argv,
     trace.info() << "Estimated Laplacian Range : " << estimated_laplacian_values.minCoeff() << " / " << estimated_laplacian_values.maxCoeff() << std::endl;
     trace.info() << "Real Laplacian Range : " << real_laplacian_values.minCoeff() << " / " << real_laplacian_values.maxCoeff() << std::endl;
 
-    trace.info() << "h = " << options.h << " t = " << t << " cut_locus = " << cut_locus << std::endl;
+    trace.info() << "h = " << options.h << " t = " << t << " K = " << K << std::endl;
     trace.info() << "Mean error = " << error.array().abs().mean() << " max error = " << error.array().abs().maxCoeff() << std::endl;
 
     trace.endBlock();

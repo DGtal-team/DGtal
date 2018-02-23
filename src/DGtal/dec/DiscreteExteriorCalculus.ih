@@ -216,7 +216,6 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 {
   ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
   
-  typedef typename TLinearAlgebraBackend::IntegerVector IntegerVector;
   typedef typename TLinearAlgebraBackend::Triplet Triplet;
   typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
 
