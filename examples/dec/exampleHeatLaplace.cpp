@@ -69,7 +69,6 @@ using namespace Eigen;
 ////////// TYPEDEFS /////////
 
 typedef Z3i::Space Space;
-typedef Z3i::KSpace KSpace;
 typedef Z3i::RealVector RealVector;
 typedef Z3i::RealPoint RealPoint;
 typedef Z3i::Point Point;
@@ -107,6 +106,7 @@ void convergence(const Options& options, Shape& shape,
 
   trace.beginBlock("Extracting Digital Surface");
 
+  typedef Z3i::KSpace KSpace;
   Board3D<Space, KSpace> board;
 
 //! [surface_extract]
