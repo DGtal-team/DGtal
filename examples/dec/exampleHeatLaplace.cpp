@@ -227,7 +227,7 @@ void convergence(const Options& options, Shape& shape,
   trace.endBlock();
 }
 
-int main(int argc, char **argv)
+int main()
 {
   Options options;
 
