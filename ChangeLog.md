@@ -114,7 +114,7 @@
 
 - *DEC*
  - Fix dependencies flags for DEC examples.
-   (Jean-David Génevaux, [#XXXX]())
+   (Jean-David Génevaux, [#1310](https://github.com/DGtal-team/DGtal/pull/1310))
 
 # DGtal 0.9.3
 
