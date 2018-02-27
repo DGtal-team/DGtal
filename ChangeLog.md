@@ -112,6 +112,9 @@
    (Bertrand Kerautret
    [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
 
+- *DEC*
+ - Fix dependencies flags for DEC examples.
+   (Jean-David Génevaux, [#XXXX]())
 
 # DGtal 0.9.3
 
