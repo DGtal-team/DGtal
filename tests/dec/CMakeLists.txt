@@ -17,5 +17,9 @@ if(WITH_EIGEN)
     target_link_libraries(testEmbedding DGtal )
     add_test(testEmbedding testEmbedding)
 
+    add_executable(testHeatLaplace testHeatLaplace)
+    target_link_libraries(testHeatLaplace DGtal )
+    add_test(testHeatLaplace testHeatLaplace)
+
 endif(WITH_EIGEN)
 
