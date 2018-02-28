@@ -50,6 +50,9 @@
 ## Bug Fixes
 
 - *Build*
+ - Fix compilation by using DGtal from swift wrapping (Bertrand Kerautret,
+   [#1309](https://github.com/DGtal-team/DGtal/pull/1309))
+
  - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
    Pablo H Cerdan, [#1290](https://github.com/DGtal-team/DGtal/pull/1290))
 
