@@ -5,6 +5,7 @@ if (WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
         exampleDiscreteExteriorCalculusUsage
         exampleDiscreteExteriorCalculusSolve
         exampleDiscreteExteriorCalculusChladni
+        exampleHeatLaplace
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
