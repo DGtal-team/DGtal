@@ -36,6 +36,7 @@
 #include <ostream>
 #include <iostream>
 #include <stack>
+#include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -233,7 +234,6 @@ DGtal::Trace::progressBar(const double currentValue, const double maximumValue)
 {
   // how wide you want the progress meter to be
   double fraction = currentValue /maximumValue;
-
   // part of the progressmeter that's already "full"
   int dotz = static_cast<int>(floor(fraction * PROGRESSBARWIDTH));
   if (dotz > PROGRESSBARWIDTH) dotz = PROGRESSBARWIDTH;
@@ -259,7 +259,7 @@ DGtal::Trace::progressBar(const double currentValue, const double maximumValue)
     }
   // and back to line begin - do not forget the fflush to avoid output buffering problems!
 
-  BOOST_STATIC_CONSTANT(std::string, rotation_string = "|\\-/");
+  const std::string rotation_string = "|\\-/";
   myProgressBarRotation %= 4;
 
   myWriter.outputStream()<< "] " << rotation_string[myProgressBarRotation] << " " << (int)(fraction*100)<<"/100\r";
