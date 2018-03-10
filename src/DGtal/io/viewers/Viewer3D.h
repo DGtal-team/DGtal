@@ -510,7 +510,7 @@ namespace DGtal
       /// the mode of representation of the image domain
       std::string myMode;
       /// the index of the line of the domain in the lineSetList of the viewer
-      unsigned int myLineSetIndex;
+      std::size_t myLineSetIndex;
 
       /**
        * Constructor

@@ -40,27 +40,6 @@ using namespace DGtal;
 using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class Viewer3D.
-///////////////////////////////////////////////////////////////////////////////
-/**
- * Example of a test. To be completed.
- *
- */
-bool testViewer3D()
-{
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();
-
-  return nbok == nb;
-}
-
-///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int argc, char** argv )

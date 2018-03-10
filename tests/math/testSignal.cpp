@@ -45,9 +45,6 @@ using namespace DGtal;
  */
 bool testSignal()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing block ..." );
   //double values[ 8 ] = { 1.0, 5.0, 3.0, 4.3, 6.2, 7.1, 5.7, 8.4 };
   double values[ ] = { 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -69,13 +66,9 @@ bool testSignal()
       Signal<double> conv_signal = signal2 * Gauss;
       trace.info() << conv_signal << endl;
     }
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
   trace.endBlock();
   
-  return nbok == nb;
+  return true;
 }
 
 

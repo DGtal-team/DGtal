@@ -108,7 +108,7 @@ inline
 typename DGtal::DigitalSetFromMap<TMapImage>::Size
 DGtal::DigitalSetFromMap<TMapImage>::size() const
 {
-  return myImgPtr->size();
+  return static_cast<Size>(myImgPtr->size());
 }
 
 // ------------------------------------------------------------------------
@@ -170,7 +170,7 @@ template <typename TMapImage>
 typename DGtal::DigitalSetFromMap<TMapImage>::Size
 DGtal::DigitalSetFromMap<TMapImage>::erase( const Point & p )
 {
-  return myImgPtr->erase( p );
+  return static_cast<Size>(myImgPtr->erase( p ));
 }
 
 // ------------------------------------------------------------------------

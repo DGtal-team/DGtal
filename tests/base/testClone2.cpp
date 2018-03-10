@@ -494,8 +494,8 @@ bool testAliasCases()
   trace.beginBlock ( "Alias: #DummyTbl with DummyTbl& to DummyTbl& member. no duplication (0/0)" );
   AliasToRefMember c00( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c00.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -504,8 +504,8 @@ bool testAliasCases()
   trace.beginBlock ( "Alias: #DummyTbl with DummyTbl* to DummyTbl& member. no duplication (0/0)" );
   AliasToRefMember c10( ptr_a2 ); // 0/0
   trace.info() << "D: d1.value() = " << c10.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -514,8 +514,8 @@ bool testAliasCases()
   trace.beginBlock ( "Alias: #DummyTbl with DummyTbl& to DummyTbl* member. no duplication (0/0)" );
   AliasToPtrMember c01( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c01.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -524,8 +524,8 @@ bool testAliasCases()
   trace.beginBlock ( "Alias: #DummyTbl with DummyTbl* to DummyTbl* member. no duplication (0/0)" );
   AliasToPtrMember c11( ptr_a2 ); // 0/0
   trace.info() << "D: d1.value() = " << c11.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -535,8 +535,8 @@ bool testAliasCases()
   AliasToCountedPtrOrPtrMember c06( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c06.value() << std::endl;
   trace.info() << c06.myDummyTbl << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -546,8 +546,8 @@ bool testAliasCases()
   AliasToCountedPtrOrPtrMember c16( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c16.value() << std::endl;
   trace.info() << c16.myDummyTbl << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -595,8 +595,8 @@ bool testConstAliasCases()
   trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl& to const DummyTbl& member. no duplication (0/0)" );
   ConstAliasToConstRefMember c00( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c00.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -605,8 +605,8 @@ bool testConstAliasCases()
   trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl* to const DummyTbl& member. no duplication (0/0)" );
   ConstAliasToConstRefMember c10( ptr_a2 ); // 0/0
   trace.info() << "D: d1.value() = " << c10.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -615,8 +615,8 @@ bool testConstAliasCases()
   trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl& to const DummyTbl* member. no duplication (0/0)" );
   ConstAliasToConstPtrMember c01( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c01.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -625,8 +625,8 @@ bool testConstAliasCases()
   trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl* to const DummyTbl* member. no duplication (0/0)" );
   ConstAliasToConstPtrMember c11( ptr_a2 ); // 0/0
   trace.info() << "D: d1.value() = " << c11.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -635,8 +635,8 @@ bool testConstAliasCases()
   trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl* to CountedConstPtrOrConstPtr<DummyTbl> member. No duplication (0/0)" );
   ConstAliasToCountedConstPtrOrConstPtrMember c17( ptr_a2 ); // 0/0
   trace.info() << "D: d1.value() = " << c17.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -645,8 +645,8 @@ bool testConstAliasCases()
   trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl& to CountedConstPtrOrConstPtr<DummyTbl> member. No duplication (0/0)" );
   ConstAliasToCountedConstPtrOrConstPtrMember c07( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c07.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -655,8 +655,8 @@ bool testConstAliasCases()
   trace.beginBlock ( "ConstAlias: #DummyTbl with CountedPtr<DummyTbl> to CountedConstPtrOrConstPtr<DummyTbl> member. No duplication (0/0)" );
   ConstAliasToCountedConstPtrOrConstPtrMember c37( counted_a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c37.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -704,8 +704,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (const DummyTbl &) to DummyTbl member. Duplication (+1/0)" );
   CloneToValueMember c00( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c00.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==1 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==1 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -714,8 +714,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl member. Duplication (+1/0)" );
   CloneToValueMember c30( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c30.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==2 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==2 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -724,8 +724,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (const DummyTbl &) to CountedPtr<DummyTbl> member. Duplication (+1/0)" );
   CloneToCountedMember c03( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c03.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==3 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==3 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -734,8 +734,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (const DummyTbl &) to CowPtr<DummyTbl> member. Duplication (+1/0)" );
   CloneToCowMember c02( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c02.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==4 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==4 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -744,16 +744,16 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (CowPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
   CloneToCowMember c22( cow_a1 ); // +0/0
   trace.info() << "D: d1.value() = " << c22.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==4 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==4 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   c22.setValue( 17 );
   trace.info() << "D: d1.setValue( 17 ) -> now duplicating " << std::endl;
   trace.info() << "D: d1.value() = " << c22.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==5 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==5 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -762,16 +762,16 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (CountedPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
   CloneToCowMember c32( counted_a1 ); // +0/0
   trace.info() << "D: d1.value() = " << c32.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==5 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==5 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   c32.setValue( 21 );
   trace.info() << "D: d1.setValue( 21 ) -> now duplicating " << std::endl;
   trace.info() << "D: d1.value() = " << c32.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==6 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==6 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -780,8 +780,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl*) to DummyTbl member. Acquisition, duplication, delete (+2/+1)" );
   CloneToValueMember c10( new DummyTbl( 50, 2 ) ); // +2/+1
   trace.info() << "D: d1.value() = " << c10.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==8 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==8 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -790,8 +790,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl*) to CowPtr<DummyTbl> member. Acquisition, no duplication (+1/0)" );
   CloneToCowMember c12( new DummyTbl( 50, 15 ) ); // +1/0
   trace.info() << "D: d1.value() = " << c12.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==9 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==9 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -800,8 +800,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (const DummyTbl&) to DummyTbl* member. Duplication (+1/0)" );
   CloneToPtrMember c01( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c01.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==10 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==10 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -810,8 +810,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl*) to DummyTbl* member. Acquisition (+1/0)" );
   CloneToPtrMember c11( new DummyTbl( 50, 42 ) ); // +1/0
   trace.info() << "D: d1.value() = " << c11.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==11 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==11 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -820,8 +820,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (CowPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
   CloneToPtrMember c21( cow_a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c21.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==12 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==12 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -830,8 +830,8 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
   CloneToPtrMember c31( counted_a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c31.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==13 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==13 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
@@ -840,9 +840,9 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl &&) to DummyTbl member. Duplication by move (+2/+1/+1)" );
   CloneToValueMember c40( DummyTbl( 50, -4 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c40.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==15 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==2 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbMoved==1 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==15 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==2 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbMoved==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted
@@ -853,9 +853,9 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl &&) to CowPtr<DummyTbl> member. Duplication by move (+2/+1/+1)" );
   CloneToCowMember c42( DummyTbl( 50, -9 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c42.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==17 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==3 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbMoved==2 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==17 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==3 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbMoved==2 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted
@@ -866,9 +866,9 @@ bool testCloneCases()
   trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl &&) to DummyTbl* member. Duplication by move (+2/+1/+1)" );
   CloneToCowMember c41( DummyTbl( 50, -12 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c41.value() << std::endl;
-  ++nb, nbok += DummyTbl::nbCreated==19 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbDeleted==4 ? 1 : 0;
-  ++nb, nbok += DummyTbl::nbMoved==3 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbCreated==19 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbDeleted==4 ? 1 : 0;
+  ++nb; nbok += DummyTbl::nbMoved==3 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << DummyTbl::nbCreated 
                << " nbDeleted=" << DummyTbl::nbDeleted
@@ -891,7 +891,7 @@ bool testCloneTimings()
   trace.beginBlock ( "Total perimeter of triangles with by-value parameter passing." );
   double t1 = computeTriangles<TriangleByValue>( size );
   trace.info() << "Perimeter is " << t1 << std::endl;
-  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb; nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " Point nbCreated=" << Point::nbCreated 
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
@@ -901,8 +901,8 @@ bool testCloneTimings()
   trace.beginBlock ( "Total perimeter of triangles with by-const reference parameter passing." );
   double t2 = computeTriangles<TriangleByConstReference>( size );
   trace.info() << "Perimeter is " << t2 << std::endl;
-  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
-  ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
+  ++nb; nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb; nbok += Point::nbCreated < nbC ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " Point nbCreated=" << Point::nbCreated 
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
@@ -911,8 +911,8 @@ bool testCloneTimings()
   trace.beginBlock ( "Total perimeter of triangles with by Clone parameter passing." );
   double t4 = computeTriangles<TriangleByClone>( size );
   trace.info() << "Perimeter is " << t4 << std::endl;
-  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
-  ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
+  ++nb; nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb; nbok += Point::nbCreated < nbC ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " Point nbCreated=" << Point::nbCreated 
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
@@ -921,8 +921,8 @@ bool testCloneTimings()
   trace.beginBlock ( "Total perimeter of triangles with by CloneAndCow parameter passing." );
   double t5 = computeTriangles<TriangleByCloneAndCow>( size );
   trace.info() << "Perimeter is " << t5 << std::endl;
-  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
-  ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
+  ++nb; nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb; nbok += Point::nbCreated < nbC ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " Point nbCreated=" << Point::nbCreated 
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
@@ -931,8 +931,8 @@ bool testCloneTimings()
   trace.beginBlock ( "Total perimeter of triangles with CowPtr by CloneAndCow parameter passing." );
   double t6 = computeTrianglesByCowPtr<TriangleByCloneAndCow>( size );
   trace.info() << "Perimeter is " << t6 << std::endl;
-  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
-  ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
+  ++nb; nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb; nbok += Point::nbCreated < nbC ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " Point nbCreated=" << Point::nbCreated 
                << " nbDeleted=" << Point::nbDeleted << std::endl; 

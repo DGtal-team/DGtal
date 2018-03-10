@@ -326,7 +326,7 @@ DGtal::Mesh<TPoint>::getFaceBarycenter(unsigned int i) const
 
 template<typename TPoint>
 inline
-unsigned int 
+typename DGtal::Mesh<TPoint>::Size
 DGtal::Mesh<TPoint>::nbFaces() const
 {
   return myFaceList.size();
@@ -334,7 +334,7 @@ DGtal::Mesh<TPoint>::nbFaces() const
 
 template<typename TPoint>
 inline
-unsigned int 
+typename DGtal::Mesh<TPoint>::Size
 DGtal::Mesh<TPoint>::nbVertex() const
 {
   return myVertexList.size();
@@ -578,10 +578,10 @@ DGtal::Mesh<TPoint>::createTubularMesh(DGtal::Mesh<TPoint> &aMesh, const std::ve
                                        const std::vector<double> &aVectRadius, 
                                        const double angleStep, const DGtal::Color &aMeshColor)
 {
-  unsigned int nbVertexInitial = aMesh.nbVertex();
+  auto nbVertexInitial = aMesh.nbVertex();
   ASSERT(aVectRadius.size() > 0);
   // Generating vertices..
-  for(unsigned int i = 0; i< aSkeleton.size(); i++)
+  for(auto i = 0; i< aSkeleton.size(); i++)
     {
       TPoint vectDir;
       TPoint uDir1, uDirPrec;
@@ -649,7 +649,7 @@ DGtal::Mesh<TPoint>::createTubularMesh(DGtal::Mesh<TPoint> &aMesh, const std::ve
             
           }
     }
-  unsigned int nbPtPerFaces = (aMesh.nbVertex()-nbVertexInitial)/aSkeleton.size();
+  unsigned int nbPtPerFaces = static_cast<unsigned int>((aMesh.nbVertex()-nbVertexInitial)/aSkeleton.size());
   
   // Generating faces...
   for(unsigned int i = 0; i< aSkeleton.size()-1; i++)

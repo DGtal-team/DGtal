@@ -158,7 +158,7 @@ bool testDistancePropagation()
         it != itEnd; ++it )
     { // Vertex is *it.first
       Scalar next_d = (*it).second;
-      ++nb, nbok += (next_d >= d-0.75 ) ? 1 : 0;
+      ++nb; nbok += (next_d >= d-0.75 ) ? 1 : 0;
       nbperfect += (next_d >= d ) ? 1 : 0;
       d = next_d;
     }

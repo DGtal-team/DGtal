@@ -54,9 +54,6 @@ using namespace Z2i;
  */
 bool testCheckImageConcept()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing block ..." );
   
   typedef ImageContainerBySTLVector<Domain, int> ImageVector;
@@ -77,13 +74,9 @@ bool testCheckImageConcept()
 
   BOOST_CONCEPT_ASSERT(( concepts::CImage< ImageHash >));
 
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
   trace.endBlock();
   
-  return nbok == nb;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

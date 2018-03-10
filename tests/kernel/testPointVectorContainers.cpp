@@ -50,9 +50,6 @@ using namespace DGtal;
  */
 bool testPointVectorContainers()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing different point containers ..." );
 
   typedef PointVector<3, int, boost::array<int, 3> > PA6;
@@ -64,13 +61,9 @@ bool testPointVectorContainers()
   PV6 pv(1,3,4);
   trace.info() <<"std::array container "<< pv<<std::endl;
 
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
   trace.endBlock();
   
-  return nbok == nb;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
