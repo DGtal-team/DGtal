@@ -22,6 +22,12 @@
    surfaces to dual triangulated or polygonal surface (Jacques-Olivier
    Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
 
+- *Geometry Package*
+ - Laplace-Beltrami operators on digital surfaces. (Thomas Caissard,
+   [#1303](https://github.com/DGtal-team/DGtal/pull/1303))
+
+
+
 ## Changes
 
 - *Math package*
