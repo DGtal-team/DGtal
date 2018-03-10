@@ -22,7 +22,6 @@
    surfaces to dual triangulated or polygonal surface (Jacques-Olivier
    Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
 
-
 ## Changes
 
 - *Math package*
