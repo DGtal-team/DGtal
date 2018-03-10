@@ -2,6 +2,7 @@ SET(DGTAL_TESTS_SRC
    testAdjacency
    testKhalimskySpaceND
    testCubicalComplex
+   testVoxelComplex
    testDigitalSurface
    testDigitalTopology
    testObject
