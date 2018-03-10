@@ -3,22 +3,29 @@
 ## New Features / Critical Changes
 
 - *Shapes*
-
-  - Mesh Voxelizer using 6- or 26-separability templated
-    (DavidCoeurjolly, Monir Hadji,
-    [#1209](https://github.com/DGtal-team/DGtal/pull/1209))
+ - Mesh Voxelizer using 6- or 26-separability templated
+   (David Coeurjolly, Monir Hadji,
+   [#1209](https://github.com/DGtal-team/DGtal/pull/1209))
 
 - *Topology Package*
  - Adding the half-edge data structure to represent arbitrary
    two-dimensional combinatorial surfaces with or without boundary
    (Jacques-Olivier Lachaud
-    [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+    [#1266](https://github.com/DGtal-team/DGtal/pull/1266))    
+ - Add VoxelComplex, an extension for CubicalComplex, implementing the Critical-Kernels
+   framework, based on the work of M.Couprie and G.Bertrand on isthmus.
+   (Pablo Hernandez, [#1147](https://github.com/DGtal-team/DGtal/pull/1147))
 
 - *Shapes Package*
  - Adding classes and helpers to create triangulated surfaces and
    polygonal surfaces to convert them from/to mesh, as well as a conversion from digital
    surfaces to dual triangulated or polygonal surface (Jacques-Olivier
    Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+
+- *Geometry Package*
+ - Laplace-Beltrami operators on digital surfaces. (Thomas Caissard,
+   [#1303](https://github.com/DGtal-team/DGtal/pull/1303))
+
 
 
 ## Changes
@@ -29,41 +36,33 @@
    [#1250](https://github.com/DGtal-team/DGtal/pull/1250))
 
 - *IO*
-  - New simple way to extend the QGLViewer-based Viewer3D interface,
-    for instance to add callbacks to key or mouse events, or to modify
-    what is drawn on the window.
-    (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
-  - TableReader can now read all elements contained in each line of a file
+ - New simple way to extend the QGLViewer-based Viewer3D interface,
+   for instance to add callbacks to key or mouse events, or to modify
+   what is drawn on the window.
+   (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
+ - TableReader can now read all elements contained in each line of a file
    with the new method getLinesElementsFromFile().
    (Bertrand Kerautret,
    [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
-  - New ImageMagick writer to export images to PNG or JPG formats for
-  instance.  (David Coeurjolly,
-  [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
+ - New ImageMagick writer to export images to PNG or JPG formats for
+   instance.  (David Coeurjolly,
+   [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
  - SimpleDistanceColorMap new colormap to easily display distance maps.
-     (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))   
+   (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))   
  - Fix in MagicReader allowing to load colored images. (David
    Coeurjolly, [#1305](https://github.com/DGtal-team/DGtal/pull/1305))
-  - Include New ImageMagick writer in GenericWriter.  (Bertrand Kerautret,
-  [#1306](https://github.com/DGtal-team/DGtal/pull/1306))
+ - Include New ImageMagick writer in GenericWriter.  (Bertrand Kerautret,
+   [#1306](https://github.com/DGtal-team/DGtal/pull/1306))
 
-- *Topology Package*
-  - Add VoxelComplex, an extension for CubicalComplex, implementing the Critical-Kernels framework, based on the work of M.Couprie and G.Bertrand on isthmus.
-  (Pablo Hernandez, [#1147](https://github.com/DGtal-team/DGtal/pull/1147))
-
- 
 ## Bug Fixes
 
 - *Build*
  - Fix compilation by using DGtal from swift wrapping (Bertrand Kerautret,
    [#1309](https://github.com/DGtal-team/DGtal/pull/1309))
-
  - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
    Pablo H Cerdan, [#1290](https://github.com/DGtal-team/DGtal/pull/1290))
-
  - Fix HDF5 link missing in compilation (Bertrand Kerautret,
     [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
-
  - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
     [#1300](https://github.com/DGtal-team/DGtal/pull/1300))
 

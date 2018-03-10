@@ -74,9 +74,6 @@ using namespace Z3i;
  */
 bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
 {
-    unsigned int nbok = 0;
-    unsigned int nb = 0;
-
     trace.beginBlock ( "Testing convolution neighborhood ..." );
 
     std::string filename = testPath + "samples/cat10.vol";
@@ -171,11 +168,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
         digSurf.exportAs3DNOFF ( out2 ,mySurfelEmbedderG );
     out2.close();
 
-    nbok += true ? 1 : 0;
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "true == true" << std::endl;
-    trace.endBlock();
+   trace.endBlock();
 
     return true;
 }

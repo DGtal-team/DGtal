@@ -95,36 +95,36 @@ int main( int argc, char** argv )
                << std::endl;
   Point pt1( 8, 1, 3 );
   bool pt1_inside = plane.extend( pt1 );
-  ++nb, nbok += pt1_inside == true ? 1 : 0;
+  ++nb; nbok += pt1_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt1
                << " Plane=" << plane << std::endl;
   Point pt2( 2, 7, 1 );
   bool pt2_inside = plane.extend( pt2 );
-  ++nb, nbok += pt2_inside == true ? 1 : 0;
+  ++nb; nbok += pt2_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt2
                << " Plane=" << plane << std::endl;
 
   Point pt3( 0, 5, 12 );
   bool pt3_inside = plane.extend( pt3 );
-  ++nb, nbok += pt3_inside == false ? 1 : 0;
+  ++nb; nbok += pt3_inside == false ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt3
                << " Plane=" << plane << std::endl;
 
   Point pt4( -5, -5, 10 );
   bool pt4_inside = plane.extend( pt4 );
-  ++nb, nbok += pt4_inside == false ? 1 : 0;
+  ++nb; nbok += pt4_inside == false ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt4
                << " Plane=" << plane << std::endl;
 
   Point pt5 = pt0 + pt1 + pt2 + Point( 0, 0, 1 );
   bool pt5_inside = plane.extend( pt5 );
-  ++nb, nbok += pt5_inside == true ? 1 : 0;
+  ++nb; nbok += pt5_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt5
                << " Plane=" << plane << std::endl;
 
   Point pt6 = Point( 1, 0, 1 );
   bool pt6_inside = plane.extend( pt6 );
-  ++nb, nbok += pt6_inside == true ? 1 : 0;
+  ++nb; nbok += pt6_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt5
                << " Plane=" << plane << std::endl;
 
@@ -135,10 +135,10 @@ int main( int argc, char** argv )
                << " diag=" << strip.mainDiagonal()
                << " diagwidth=" << strip.diagonalWidth()
                << std::endl;
-  ++nb, nbok += strip.axisWidth() < 1.0 ? 1 : 0;
+  ++nb; nbok += strip.axisWidth() < 1.0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") axiswidth < 1 "
                << std::endl;
-  ++nb, nbok += strip.diagonalWidth() < sqrt(3.0) ? 1 : 0;
+  ++nb; nbok += strip.diagonalWidth() < sqrt(3.0) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") axiswidth < sqrt(3) "
                << std::endl;
 

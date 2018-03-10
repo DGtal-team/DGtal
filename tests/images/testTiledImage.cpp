@@ -287,12 +287,13 @@ bool test_range_constRange()
       if (to_vector[i]==i)
       {
         cout << "ok, ";
-        nbok += true ? 1 : 0; nb++;
+        nbok += 1;
+        nb++;
       }
       else
       {
         cout << "!ok -> " << to_vector[i] << ", "; 
-        nbok += false ? 1 : 0; nb++;
+        nb++;
       }
     }
     cout << endl;
@@ -310,12 +311,13 @@ bool test_range_constRange()
       if (to_vector2[i]==i+72)
       {
         cout << "ok, ";
-        nbok += true ? 1 : 0; nb++;
+        nbok += 1 ;
+        nb++;
       }
       else
       {
         cout << "!ok -> " << to_vector2[i] << ", "; 
-        nbok += false ? 1 : 0; nb++;
+        nb++;
       }
     }
     cout << endl;

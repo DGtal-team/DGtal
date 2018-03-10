@@ -140,13 +140,13 @@ ImageDirection dirRotation )
 template <typename TSpace, typename TKSpace>
 inline unsigned int DGtal::Viewer3D<TSpace, TKSpace>::getCurrentDomainNumber()
 {
-  return myImageDomainList.size();
+  return static_cast<unsigned int>(myImageDomainList.size());
 }
 
 template <typename TSpace, typename TKSpace>
 inline unsigned int DGtal::Viewer3D<TSpace, TKSpace>::getCurrentGLImageNumber()
 {
-  return myGSImageList.size();
+  return static_cast<unsigned int>(myGSImageList.size());
 }
 
 template <typename TSpace, typename TKSpace>
@@ -1009,11 +1009,11 @@ bool needToUpdateBoundingBox )
   // Storing ID for each list
   myCubesMapId = glGenLists(1);
   myLineSetListId =
-  glGenLists( Viewer3D<TSpace, TKSpace>::myLineSetList.size() );
-  myNbLineSetList = Viewer3D<TSpace, TKSpace>::myLineSetList.size();
+  glGenLists( static_cast<GLsizei>(Viewer3D<TSpace, TKSpace>::myLineSetList.size() ));
+  myNbLineSetList = static_cast<unsigned int>(Viewer3D<TSpace, TKSpace>::myLineSetList.size());
   myBallSetListId =
-  glGenLists( Viewer3D<TSpace, TKSpace>::myBallSetList.size() );
-  myNbBallSetList          = Viewer3D<TSpace, TKSpace>::myBallSetList.size();
+  glGenLists( static_cast<GLsizei>(Viewer3D<TSpace, TKSpace>::myBallSetList.size() ) );
+  myNbBallSetList          = static_cast<unsigned int>(Viewer3D<TSpace, TKSpace>::myBallSetList.size());
   myTriangleSetListId = glGenLists(1);
   myTriangleSetListWiredId = glGenLists(1);
   myCubeSetListWiredId = glGenLists(1);

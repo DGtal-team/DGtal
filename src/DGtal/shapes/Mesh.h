@@ -142,7 +142,11 @@ namespace DGtal
      **/
     typedef typename VertexStorage::iterator Iterator;
 
-    
+    /**
+     * Define the size type of the containers.
+     **/
+    typedef typename std::size_t Size;
+
 
 
     // ----------------------- Standard services ------------------------------
@@ -435,13 +439,13 @@ namespace DGtal
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    unsigned int nbFaces() const;
+    Size nbFaces() const;
 
     /**
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    unsigned int  nbVertex() const;
+    Size  nbVertex() const;
     
     
     
