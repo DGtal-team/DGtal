@@ -29,7 +29,8 @@ Quick Install
     * [Debian, Ubuntu, etc.](http://software.opensuse.org//download.html?project=home%3Acopyme%3ADGtal&package=dgtal) 
 
 * MacOS (using [homebrew](http://brew.sh)):
- 
+
+       brew tap DGtal-team/DGtal
        brew install dgtal
 
 
