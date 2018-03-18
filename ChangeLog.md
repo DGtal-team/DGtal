@@ -3,125 +3,125 @@
 ## New Features / Critical Changes
 
 - *Shapes*
- - Mesh Voxelizer using 6- or 26-separability templated
+  - Mesh Voxelizer using 6- or 26-separability templated
    (David Coeurjolly, Monir Hadji,
    [#1209](https://github.com/DGtal-team/DGtal/pull/1209))
 
 - *Topology Package*
- - Adding the half-edge data structure to represent arbitrary
-   two-dimensional combinatorial surfaces with or without boundary
-   (Jacques-Olivier Lachaud
-    [#1266](https://github.com/DGtal-team/DGtal/pull/1266))    
- - Add VoxelComplex, an extension for CubicalComplex, implementing the Critical-Kernels
-   framework, based on the work of M.Couprie and G.Bertrand on isthmus.
-   (Pablo Hernandez, [#1147](https://github.com/DGtal-team/DGtal/pull/1147))
+  - Adding the half-edge data structure to represent arbitrary
+    two-dimensional combinatorial surfaces with or without boundary
+    (Jacques-Olivier Lachaud
+     [#1266](https://github.com/DGtal-team/DGtal/pull/1266))    
+  - Add VoxelComplex, an extension for CubicalComplex, implementing the Critical-Kernels
+    framework, based on the work of M.Couprie and G.Bertrand on isthmus.
+    (Pablo Hernandez, [#1147](https://github.com/DGtal-team/DGtal/pull/1147))
 
 - *Shapes Package*
- - Adding classes and helpers to create triangulated surfaces and
-   polygonal surfaces to convert them from/to mesh, as well as a conversion from digital
-   surfaces to dual triangulated or polygonal surface (Jacques-Olivier
-   Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
+  - Adding classes and helpers to create triangulated surfaces and
+    polygonal surfaces to convert them from/to mesh, as well as a conversion from digital
+    surfaces to dual triangulated or polygonal surface (Jacques-Olivier
+    Lachaud [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
 
 - *Geometry Package*
- - Laplace-Beltrami operators on digital surfaces. (Thomas Caissard,
-   [#1303](https://github.com/DGtal-team/DGtal/pull/1303))
+  - Laplace-Beltrami operators on digital surfaces. (Thomas Caissard,
+    [#1303](https://github.com/DGtal-team/DGtal/pull/1303))
 
 
 
 ## Changes
 
 - *Math package*
- - New SimpleMatrix constructor with a initializer_list argument
-   (Nicolas Normand,
-   [#1250](https://github.com/DGtal-team/DGtal/pull/1250))
+  - New SimpleMatrix constructor with a initializer_list argument
+    (Nicolas Normand,
+    [#1250](https://github.com/DGtal-team/DGtal/pull/1250))
 
 - *IO*
- - New simple way to extend the QGLViewer-based Viewer3D interface,
-   for instance to add callbacks to key or mouse events, or to modify
-   what is drawn on the window.
-   (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
- - TableReader can now read all elements contained in each line of a file
-   with the new method getLinesElementsFromFile().
-   (Bertrand Kerautret,
-   [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
- - New ImageMagick writer to export images to PNG or JPG formats for
-   instance.  (David Coeurjolly,
-   [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
- - SimpleDistanceColorMap new colormap to easily display distance maps.
-   (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))   
- - Fix in MagicReader allowing to load colored images. (David
-   Coeurjolly, [#1305](https://github.com/DGtal-team/DGtal/pull/1305))
- - Include New ImageMagick writer in GenericWriter.  (Bertrand Kerautret,
-   [#1306](https://github.com/DGtal-team/DGtal/pull/1306))
+  - New simple way to extend the QGLViewer-based Viewer3D interface,
+    for instance to add callbacks to key or mouse events, or to modify
+    what is drawn on the window.
+    (Jacques-Olivier Lachaud, [#1259](https://github.com/DGtal-team/DGtal/pull/1259))
+  - TableReader can now read all elements contained in each line of a file
+    with the new method getLinesElementsFromFile().
+    (Bertrand Kerautret,
+    [#1260](https://github.com/DGtal-team/DGtal/pull/1260))
+  - New ImageMagick writer to export images to PNG or JPG formats for
+    instance.  (David Coeurjolly,
+    [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
+  - SimpleDistanceColorMap new colormap to easily display distance maps.
+    (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))   
+  - Fix in MagicReader allowing to load colored images. (David
+    Coeurjolly, [#1305](https://github.com/DGtal-team/DGtal/pull/1305))
+  - Include New ImageMagick writer in GenericWriter.  (Bertrand Kerautret,
+    [#1306](https://github.com/DGtal-team/DGtal/pull/1306))
 
 ## Bug Fixes
 
 - *Build*
- - Fix compilation by using DGtal from swift wrapping (Bertrand Kerautret,
-   [#1309](https://github.com/DGtal-team/DGtal/pull/1309))
- - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
-   Pablo H Cerdan, [#1290](https://github.com/DGtal-team/DGtal/pull/1290))
- - Fix HDF5 link missing in compilation (Bertrand Kerautret,
-    [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
- - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
-    [#1300](https://github.com/DGtal-team/DGtal/pull/1300))
+  - Fix compilation by using DGtal from swift wrapping (Bertrand Kerautret,
+    [#1309](https://github.com/DGtal-team/DGtal/pull/1309))
+  - Fix C++11 cmake flags and cmake >3.1 is now required (David Coeurjolly,
+    Pablo H Cerdan, [#1290](https://github.com/DGtal-team/DGtal/pull/1290))
+  - Fix HDF5 link missing in compilation (Bertrand Kerautret,
+     [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
+  - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
+     [#1300](https://github.com/DGtal-team/DGtal/pull/1300)) 
 
 - *Shapes Package*
- - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
-   Improves projection operator on implicit surface and curvature
-   computations. (Jacques-Olivier Lachaud,
-   [#1279](https://github.com/DGtal-team/DGtal/pull/1279))
+  - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
+    Improves projection operator on implicit surface and curvature
+    computations. (Jacques-Olivier Lachaud,
+    [#1279](https://github.com/DGtal-team/DGtal/pull/1279))
 
 - *Configuration/General*
- - Upgrading the benchmarks to match with the new google-benchmark API
+  - Upgrading the benchmarks to match with the new google-benchmark API
    (David Coeurjolly,
-   [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
- - The documentation mainpage now refers to the DGtalTools documentation
-   (David Coeurjolly,
-   [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
- - Fix ITK related try_compile command to work for non-default locations.
-   (Pablo Hernandez,
-   [#1286]((https://github.com/DGtal-team/DGtal/pull/1286))
+     [#1244]((https://github.com/DGtal-team/DGtal/pull/1244))
+  - The documentation mainpage now refers to the DGtalTools documentation
+    (David Coeurjolly,
+    [#1249]((https://github.com/DGtal-team/DGtal/pull/1249))
+  - Fix ITK related try_compile command to work for non-default locations.
+    (Pablo Hernandez,
+    [#1286]((https://github.com/DGtal-team/DGtal/pull/1286))
 
 - *IO*
-- Fix for compilation with 2.7.0 QGLViewer version.
+  - Fix for compilation with 2.7.0 QGLViewer version.
    (Bertrand Kerautret, [#1280](https://github.com/DGtal-team/DGtal/pull/1280))
-- Fix on the ITK reader when used with a functor which is not able to
-   handle 32/16 bits images. Also includes a new testITKReader and ITK tests in
-   GenericReader.
-   (Bertrand Kerautret, [#1255](https://github.com/DGtal-team/DGtal/pull/1255))
- - Viewer3D: fix bad light source move according X/Y mouse move and new Key_Z to
-   move away/closer the light source.
-   (Bertrand Kerautret, [#1262](https://github.com/DGtal-team/DGtal/pull/1262))
- - Fix ImageContainerByITKImage, fill the itk image buffer with 0 when using the
-   domain constructor.
-   (Pablo Hernandez, [#1307](https://github.com/DGtal-team/DGtal/pull/1307))
+  - Fix on the ITK reader when used with a functor which is not able to
+    handle 32/16 bits images. Also includes a new testITKReader and ITK tests in
+    GenericReader.
+    (Bertrand Kerautret, [#1255](https://github.com/DGtal-team/DGtal/pull/1255))
+  - Viewer3D: fix bad light source move according X/Y mouse move and new Key_Z to
+    move away/closer the light source.
+    (Bertrand Kerautret, [#1262](https://github.com/DGtal-team/DGtal/pull/1262))
+  - Fix ImageContainerByITKImage, fill the itk image buffer with 0 when using the
+    domain constructor.
+    (Pablo Hernandez, [#1307](https://github.com/DGtal-team/DGtal/pull/1307))
 
 - *Kernel Package*
- - Fix testBasicPointFunctor. (Bertrand Kerautret
-   [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
+  - Fix testBasicPointFunctor. (Bertrand Kerautret
+    [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
 - *Arithmetic Package*
  - Fix SternBrocot and variants static instanciations. (Jacques-Olivier Lachaud
    [#1293](https://github.com/DGtal-team/DGtal/pull/1293))
 
 - *Topology Package*
- - Fix invalid KhalimskyCell coordinates in ctopo-fillContours.cpp example.
-   (Roland Denis, [#1296](https://github.com/DGtal-team/DGtal/pull/1296))
+  - Fix invalid KhalimskyCell coordinates in ctopo-fillContours.cpp example.
+    (Roland Denis, [#1296](https://github.com/DGtal-team/DGtal/pull/1296))
 
 - *Documentation*
- - Add import with functors in GenericReader in the main default reader.
-   (mainly motivated to show documentation of specialized version of
-   importWithValueFunctor and importWithColorFunctor). The tiff format
-   was also added to the generic readers when ITK is present (Bertrand
-   Kerautret [1251](https://github.com/DGtal-team/DGtal/pull/1245))
- - Fix exampleArithDSS3d compilation (which was not activated).
-   (Bertrand Kerautret
-   [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
+  - Add import with functors in GenericReader in the main default reader.
+    (mainly motivated to show documentation of specialized version of
+    importWithValueFunctor and importWithColorFunctor). The tiff format
+    was also added to the generic readers when ITK is present (Bertrand
+    Kerautret [1251](https://github.com/DGtal-team/DGtal/pull/1245))
+  - Fix exampleArithDSS3d compilation (which was not activated).
+    (Bertrand Kerautret
+    [#1254](https://github.com/DGtal-team/DGtal/pull/1254))
 
 - *DEC*
- - Fix dependencies flags for DEC examples.
-   (Jean-David Génevaux, [#1310](https://github.com/DGtal-team/DGtal/pull/1310))
+  - Fix dependencies flags for DEC examples.
+    (Jean-David Génevaux, [#1310](https://github.com/DGtal-team/DGtal/pull/1310))
 
 # DGtal 0.9.3
 
