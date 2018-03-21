@@ -84,7 +84,7 @@ void incrementImageWithPointFn ( TImage& anImage, TFunction const& aFunction, TD
   for ( auto const& point : domain )
     {
       Value value = anImage(point);
-      for ( auto i = 0; i < Image::dimension; ++i )
+      for ( Dimension i = 0; i < Image::dimension; ++i )
         value += aFunction( i, point[i] );
 
       anImage.setValue(point, value);
@@ -123,7 +123,7 @@ void fastFillImageWithPointFn ( ArrayImageAdapter<TIterator, TDomain>& anImage, 
       Value value = 0;
       auto const point = imgit.getPoint();
 
-      for ( auto i = 0; i < Image::dimension; ++i )
+      for ( Dimension i = 0; i < Image::dimension; ++i )
         value += aFunction( i, point[i] );
 
       *imgit = value;
