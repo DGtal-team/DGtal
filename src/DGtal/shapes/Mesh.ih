@@ -588,7 +588,7 @@ DGtal::Mesh<TPoint>::createTubularMesh(DGtal::Mesh<TPoint> &aMesh, const std::ve
       TPoint uDir2;
       TPoint firstPoint;
       
-      if(i != aSkeleton.size()-1)
+      if(i != (int)aSkeleton.size()-1)
         { 
           vectDir = aSkeleton.at(i+1) - aSkeleton.at(i);
         }
@@ -668,7 +668,7 @@ DGtal::Mesh<TPoint>::createTubularMesh(DGtal::Mesh<TPoint> &aMesh, const std::ve
 
     unsigned int shift = 0;
     TPoint vectDir;
-    if(i != aSkeleton.size()-1)
+    if(i != (int)aSkeleton.size()-1)
     {
       vectDir = aSkeleton.at(i+1) - aSkeleton.at(i);
     }
@@ -720,9 +720,9 @@ DGtal::Mesh<TPoint>::createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const st
                                                   const DGtal::Color &aMeshColor ){
   unsigned int nbVertexInitial = aMesh.nbVertex();
   // Generating vertices..
-  unsigned int i = 0;
+  int i = 0;
   unsigned int posY = 0;
-  while(i+lengthSequence-1 < anValueSequence.size()){
+  while(i+(int)lengthSequence-1 < anValueSequence.size()){
     for(unsigned int j = 0; j < lengthSequence; j++, i++){
       aMesh.addVertex(TPoint(j*stepX, posY*stepY,  stepZ*anValueSequence.at(i)));
     }
@@ -731,7 +731,7 @@ DGtal::Mesh<TPoint>::createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const st
   // Generating faces...
   i = 0;
   posY = 0;
-  while(i+lengthSequence-1 < anValueSequence.size() - lengthSequence){
+  while(i+(int)lengthSequence-1 < anValueSequence.size() - lengthSequence){
     for(unsigned int j = 0; j < lengthSequence-1; j++, i++){
       aMesh.addQuadFace(nbVertexInitial+i, nbVertexInitial+i+1, 
                         nbVertexInitial+i+1+lengthSequence, 
