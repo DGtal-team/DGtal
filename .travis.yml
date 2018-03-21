@@ -66,6 +66,7 @@ addons:
     - libqglviewer-dev
     - libinsighttoolkit3-dev
     - libfftw3-dev
+    - g++-5
 
 before_install:
   - export DEC="false";
