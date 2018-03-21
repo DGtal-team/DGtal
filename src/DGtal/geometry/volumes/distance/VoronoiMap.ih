@@ -304,7 +304,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
      , myPeriodicitySpec(aPeriodicitySpec)
 {
   // Finding periodic dimension index.
-  for ( auto i = 0; i < Space::dimension; ++i )
+  for ( Dimension i = 0; i < Space::dimension; ++i )
     if ( isPeriodic(i) )
       myPeriodicityIndex.push_back( i );
 
