@@ -7,8 +7,11 @@ export NEEDCORE="true"
 export NEEDEXAMPLESANDTESTS="true";
 export SRC_DIR="`pwd`"
 
-export CCOMPILER=gcc-5
-export CXXCOMPILER=g++-5
+export CCOMPILER = $CC
+export CXXCOMPILER = $CXX
+if [ $CC == "gcc" ]; then  export CCOMPILER=gcc-5 ; export CXXCOMPILER=g++-5; fi
+
+
 export MAGICK_CONFIG_PATH=".travis/delegate.mgk"
 $MAGICK_CODER_MODULE_PATH
 $MAGICK_FILTER_MODULE_PATH
