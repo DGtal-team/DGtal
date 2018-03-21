@@ -251,7 +251,7 @@ increment()
 {
   ++myFullIndex;
   ++myPoint[0];
-  for ( auto i = 1; i < Domain::dimension && myPoint[i-1] > myViewDomain.upperBound()[i-1]; ++i )
+  for ( auto i = 1; i < (int)Domain::dimension && myPoint[i-1] > myViewDomain.upperBound()[i-1]; ++i )
     {
       myPoint[i-1] = myViewDomain.lowerBound()[i-1];
       ++myPoint[i];

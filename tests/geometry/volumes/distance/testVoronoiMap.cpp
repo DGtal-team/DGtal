@@ -158,7 +158,7 @@ bool checkVoronoi(const Set &aSet, const Voro & voro)
 
       // Checking if this periodicity possibility is valid.
       bool isValid = true;
-      for ( auto j = 0; j < periodicity.size(); ++j )
+      for ( size_t j = 0; j < periodicity.size(); ++j )
         if ( periodicity[j] && ! voro.isPeriodic(j) )
           {
             isValid = false;
