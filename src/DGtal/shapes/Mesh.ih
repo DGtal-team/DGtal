@@ -722,7 +722,7 @@ DGtal::Mesh<TPoint>::createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const st
   // Generating vertices..
   int i = 0;
   unsigned int posY = 0;
-  while(i+(int)lengthSequence-1 < anValueSequence.size()){
+  while(i+(int)lengthSequence-1 < (int)anValueSequence.size()){
     for(unsigned int j = 0; j < lengthSequence; j++, i++){
       aMesh.addVertex(TPoint(j*stepX, posY*stepY,  stepZ*anValueSequence.at(i)));
     }
