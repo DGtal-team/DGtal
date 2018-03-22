@@ -63,7 +63,7 @@ void fillImageWithPointFn ( TImage& anImage, TFunction const& aFunction, TDomain
   for ( auto const& point : domain )
     {
       Value value = 0;
-      for ( Image::Dimension i = 0; i < Image::dimension; ++i )
+      for ( Dimension i = 0; i < Image::dimension; ++i )
         value += aFunction( i, point[i] );
 
       anImage.setValue(point, value);
