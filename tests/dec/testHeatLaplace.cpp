@@ -74,7 +74,6 @@ bool laplace_sphere( const double& h )
   typedef Z3i::KSpace KSpace;
   typedef Z3i::Domain Domain;
   typedef Z3i::Point Point;
-  typedef Z3i::RealPoint RealPoint;
   typedef Z3i::Vector Vector;
   typedef Ball3D<Space> Ball;
   typedef GaussDigitizer<Space, Ball> GaussDigitizer;
@@ -123,7 +122,7 @@ bool laplace_sphere( const double& h )
 
 TEST_CASE( "Operator Test" )
 {
-  SECTION( "Test" );
+  SECTION( "Test" )
   {
     REQUIRE( laplace_sphere( 1.0 ) );
     REQUIRE( laplace_sphere( 0.5 ) );
