@@ -168,7 +168,7 @@ struct PointConverter<RowMajorStorage>
   TPoint apply( TPoint const& aPoint )
     {
       TPoint result;
-      for ( auto i = 0 ; i < TPoint::dimension ; ++i )
+      for ( auto i = 0 ; i < (int)TPoint::dimension ; ++i )
         result[i] = aPoint[ TPoint::dimension - i - 1 ];
 
       return result;

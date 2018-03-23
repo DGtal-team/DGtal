@@ -1,3 +1,6 @@
+# DGtal 1.0.0
+
+
 # DGtal 0.9.4
 
 ## New Features / Critical Changes
