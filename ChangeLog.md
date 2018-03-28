@@ -1,5 +1,10 @@
 # DGtal 1.0.0
 
+## Bug Fixes
+
+- *Documentation*
+  - Fixing path to Mathjax CDN in documentation (David Coeurjolly,
+    [#1222](https://github.com/DGtal-team/DGtal/pull/1209))
 
 # DGtal 0.9.4
 
@@ -67,7 +72,7 @@
   - Fix HDF5 link missing in compilation (Bertrand Kerautret,
      [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
   - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
-     [#1300](https://github.com/DGtal-team/DGtal/pull/1300)) 
+     [#1300](https://github.com/DGtal-team/DGtal/pull/1300))
 
 - *Shapes Package*
   - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
