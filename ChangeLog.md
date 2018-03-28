@@ -4,7 +4,7 @@
 
 - *Documentation*
   - Fixing path to Mathjax CDN in documentation (David Coeurjolly,
-    [#1222](https://github.com/DGtal-team/DGtal/pull/1209))
+    [#1318](https://github.com/DGtal-team/DGtal/pull/1318))
 
 # DGtal 0.9.4
 
