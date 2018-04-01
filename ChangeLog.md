@@ -1,4 +1,4 @@
-# DGtal 1.0.0
+# DGtal 0.9.4.1
 
 ## Bug Fixes
 
@@ -19,7 +19,7 @@
   - Adding the half-edge data structure to represent arbitrary
     two-dimensional combinatorial surfaces with or without boundary
     (Jacques-Olivier Lachaud
-     [#1266](https://github.com/DGtal-team/DGtal/pull/1266))    
+     [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
   - Add VoxelComplex, an extension for CubicalComplex, implementing the Critical-Kernels
     framework, based on the work of M.Couprie and G.Bertrand on isthmus.
     (Pablo Hernandez, [#1147](https://github.com/DGtal-team/DGtal/pull/1147))
