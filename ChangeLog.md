@@ -1,3 +1,8 @@
+
+# DGtal 1.0
+
+
+
 # DGtal 0.9.4.1
 
 ## Bug Fixes

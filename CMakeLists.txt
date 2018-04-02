@@ -13,9 +13,9 @@ ENDIF()
 # Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
-SET(DGtal_VERSION_MAJOR 0)
-SET(DGtal_VERSION_MINOR 9)
-SET(DGtal_VERSION_PATCH 4.1)
+SET(DGtal_VERSION_MAJOR 1)
+SET(DGtal_VERSION_MINOR 0)
+SET(DGtal_VERSION_PATCH beta)
 SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
