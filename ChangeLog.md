@@ -1,5 +1,10 @@
-# DGtal 1.0.0
+# DGtal 0.9.4.1
 
+## Bug Fixes
+
+- *Documentation*
+  - Fixing path to Mathjax CDN in documentation (David Coeurjolly,
+    [#1318](https://github.com/DGtal-team/DGtal/pull/1318))
 
 # DGtal 0.9.4
 
@@ -14,7 +19,7 @@
   - Adding the half-edge data structure to represent arbitrary
     two-dimensional combinatorial surfaces with or without boundary
     (Jacques-Olivier Lachaud
-     [#1266](https://github.com/DGtal-team/DGtal/pull/1266))    
+     [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
   - Add VoxelComplex, an extension for CubicalComplex, implementing the Critical-Kernels
     framework, based on the work of M.Couprie and G.Bertrand on isthmus.
     (Pablo Hernandez, [#1147](https://github.com/DGtal-team/DGtal/pull/1147))
@@ -67,7 +72,7 @@
   - Fix HDF5 link missing in compilation (Bertrand Kerautret,
      [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
   - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
-     [#1300](https://github.com/DGtal-team/DGtal/pull/1300)) 
+     [#1300](https://github.com/DGtal-team/DGtal/pull/1300))
 
 - *Shapes Package*
   - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
