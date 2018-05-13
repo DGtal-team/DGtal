@@ -4,7 +4,7 @@
 ## Bug Fixes
 
 - *base*
-  - Wrong members in PredicateCombiner (David Coeurjolly,
+  - Fixes wrong members in PredicateCombiner (David Coeurjolly,
   [#XXXX](https://github.com/DGtal-team/DGtal/pull/1318))
   
 
