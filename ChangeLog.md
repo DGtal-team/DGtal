@@ -3,9 +3,9 @@
 
 ## Bug Fixes
 
-- *base*
+- *Base*
   - Fixes wrong members in PredicateCombiner (David Coeurjolly,
-  [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
+    [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
   
 
 # DGtal 0.9.4.1
