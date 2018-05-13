@@ -5,7 +5,7 @@
 
 - *base*
   - Fixes wrong members in PredicateCombiner (David Coeurjolly,
-  [#XXXX](https://github.com/DGtal-team/DGtal/pull/1318))
+  [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
   
 
 # DGtal 0.9.4.1
