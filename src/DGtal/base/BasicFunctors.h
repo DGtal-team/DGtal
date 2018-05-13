@@ -511,7 +511,7 @@ struct Thresholder<T,true,true>
        @param other the object to copy
       */
     PredicateCombiner(  const PredicateCombiner& other )
-      : myPred1( other.pred1 ), myPred2( other.pred2 ), myBoolFunctor( other.boolFunctor )
+      : myPred1( other.myPred1 ), myPred2( other.myPred2 ), myBoolFunctor( other.myBoolFunctor )
     {
     }
 
