@@ -1,7 +1,12 @@
 
 # DGtal 1.0
 
+## Bug Fixes
 
+- *base*
+  - Wrong members in PredicateCombiner (David Coeurjolly,
+  [#XXXX](https://github.com/DGtal-team/DGtal/pull/1318))
+  
 
 # DGtal 0.9.4.1
 
