@@ -52,11 +52,7 @@ using namespace DGtal;
  */
 bool testPNMReader()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;  
   trace.beginBlock ( "Testing pgm reader ..." );
-  nbok += true ? 1 : 0; 
-  nb++;
   std::string filename = testPath + "samples/circleR10.pgm";
 
   trace.info() << "Loading filename: "<< filename<<std::endl;
@@ -71,13 +67,9 @@ bool testPNMReader()
   board << image.domain() << set2d; // display domain and set
   
   board.saveEPS( "testPNMReaderPGM.eps");
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();  
+  trace.endBlock();
 
   trace.beginBlock ( "Testing ppm reader ..." );
-  nbok += true ? 1 : 0; 
-  nb++;
   std::string filenamePPM = testPath + "samples/color64.ppm";
 
   trace.info() << "Loading filename: "<< filenamePPM <<std::endl;
@@ -92,11 +84,9 @@ bool testPNMReader()
   boardPPM << imagePPM.domain() << set2dPPM; // display domain and set
   
   boardPPM.saveEPS( "testPNMReaderPPM.eps");
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
   trace.endBlock();  
 
-  return nbok == nb;
+  return true;
 }
 /**
  * Example of a test. To be completed.
@@ -104,11 +94,7 @@ bool testPNMReader()
  */
 bool testPNM3DReader()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;  
   trace.beginBlock ( "Testing pgm3D reader ..." );
-  nbok += true ? 1 : 0; 
-  nb++;
   std::string filename = testPath + "samples/simple.pgm3d";
 
   trace.info() << "Loading filename: "<< filename<<std::endl;
@@ -118,19 +104,13 @@ bool testPNM3DReader()
   
   trace.info() << "Image 3D = "<<image<<std::endl;
   
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();  
-  return nbok == nb;
+  trace.endBlock();
+  return true;
 }
 
 bool testPNM3DASCIIReader()
 {
-    unsigned int nbok = 0;
-    unsigned int nb = 0;
     trace.beginBlock ( "Testing P2 pgm3D reader ..." );
-    nbok += true ? 1 : 0;
-    nb++;
     std::string filename = testPath + "samples/ascii_ball.pgm3d";
 
     trace.info() << "Loading filename: "<< filename<<std::endl;
@@ -140,10 +120,8 @@ bool testPNM3DASCIIReader()
 
     trace.info() << "Image 3D = "<<image<<std::endl;
 
-    trace.info() << "(" << nbok << "/" << nb << ") "
-           << "true == true" << std::endl;
     trace.endBlock();
-    return nbok == nb;
+    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

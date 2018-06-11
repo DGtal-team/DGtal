@@ -70,7 +70,6 @@ struct RandomPointKeyExtension : public Viewer3D<Space, KSpace>::Extension
     const Qt::KeyboardModifiers modifiers = event->modifiers();
     if ( ( event->key() == Qt::Key_R ) && ( modifiers == Qt::ShiftModifier ) )
     {
-      typedef Viewer::KSpace KSpace;
       Point p = viewer.space().lowerBound();
       Point q = viewer.space().upperBound();
       Point d = q - p;
@@ -94,7 +93,7 @@ struct RandomPointKeyExtension : public Viewer3D<Space, KSpace>::Extension
 
   // We also override the Viewer3D::helpString method to add a
   // description to the viewer.
-  virtual QString helpString( const Viewer & viewer ) const
+  virtual QString helpString( const Viewer & /*viewer*/ ) const
   {
     QString text( "<h2> Random point Viewer3D </h2>" );
     text += "Press Shift+R to add points.";

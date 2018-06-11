@@ -164,10 +164,6 @@ bool testMPolynomial()
   nbok += gcd(l, derivative<0>(l)) == 1.0 * mmonomial<double>(0) ? 1 : 0; 
   nb++;
   trace.info() << "Durchblick (x3y+xz3+y3z+z3+5z)= " << durchblick<double>() << std::endl;
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
   trace.endBlock();
   MPolynomial<3, double> Q = mmonomial<double>( 0, 0, 0 )
     + mmonomial<double>( 1, 2, 0 ) + mmonomial<double>( 4, 1, 1 );

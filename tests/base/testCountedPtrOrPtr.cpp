@@ -79,62 +79,62 @@ bool testCountedPtrOrPtrMemory()
   {
     CountedPtrOrPtr<A> cptr;
   }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  ++nb; nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "A CountedPtrOrPtr can be used as a simple pointer on an object without acquiring it." );
   {
     A a( 17 );
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    ++nb; nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
     {
       CountedPtrOrPtr<A> cptr( &a, false );
-      ++nb, nbok += A::nb == 1 ? 1 : 0;
+      ++nb; nbok += A::nb == 1 ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
-      ++nb, nbok += cptr.isSimple() ? 1 : 0;
+      ++nb; nbok += cptr.isSimple() ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.isSimple()" << std::endl;
     }
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    ++nb; nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
   }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  ++nb; nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "CountedPtrOrPtr can be used as a smart pointer with acquisition and automatic deallocation." );
   {
     CountedPtrOrPtr<A> cptr( new A( 10 ) );
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    ++nb; nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
-    ++nb, nbok += cptr.isSmart() ? 1 : 0;
+    ++nb; nbok += cptr.isSmart() ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.isSmart()" << std::endl;
   }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  ++nb; nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "CountedPtrOrPtr can be initialized with = CountedPtrOrPtr<A>( pointer )." );
   {
     CountedPtrOrPtr<A> cptr =  CountedPtrOrPtr<A>( new A( 5 ) );
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    ++nb; nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
-    ++nb, nbok += cptr.isSmart() ? 1 : 0;
+    ++nb; nbok += cptr.isSmart() ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.isSmart()" << std::endl;
   }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  ++nb; nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "CountedPtrOrPtr can be initialized with = CountedPtr<A>( pointer )." );
   {
     CountedPtrOrPtr<A> cptr =  CountedPtr<A>( new A( 5 ) );
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    ++nb; nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
-    ++nb, nbok += cptr.isSmart() ? 1 : 0;
+    ++nb; nbok += cptr.isSmart() ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.isSmart()" << std::endl;
   }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  ++nb; nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
@@ -142,16 +142,16 @@ bool testCountedPtrOrPtrMemory()
   {
     CountedPtrOrPtr<A> cptr( new A( 7 ) );
     CountedPtrOrPtr<A> cptr2 = cptr;
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    ++nb; nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
-    ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
+    ++nb; nbok += cptr.get() == cptr2.get() ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() == cptr2.get()" << std::endl;
-    ++nb, nbok += cptr.count() == 2 ? 1 : 0;
+    ++nb; nbok += cptr.count() == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.count() == 2" << std::endl;
-    ++nb, nbok += cptr2.count() == 2 ? 1 : 0;
+    ++nb; nbok += cptr2.count() == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr2.count() == 2" << std::endl;
   }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  ++nb; nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
@@ -159,16 +159,16 @@ bool testCountedPtrOrPtrMemory()
   {
     CountedPtr<A> cptr( new A( 7 ) );
     CountedPtrOrPtr<A> cptr2 = cptr;
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    ++nb; nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
-    ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
+    ++nb; nbok += cptr.get() == cptr2.get() ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() == cptr2.get()" << std::endl;
-    ++nb, nbok += cptr.count() == 2 ? 1 : 0;
+    ++nb; nbok += cptr.count() == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.count() == 2" << std::endl;
-    ++nb, nbok += cptr2.count() == 2 ? 1 : 0;
+    ++nb; nbok += cptr2.count() == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr2.count() == 2" << std::endl;
   }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  ++nb; nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
@@ -176,23 +176,23 @@ bool testCountedPtrOrPtrMemory()
   {
     CountedPtrOrPtr<A> cptr( new A( 3 ) );
     CountedPtrOrPtr<A> cptr2( new A( 12 ) );
-    ++nb, nbok += A::nb == 2 ? 1 : 0;
+    ++nb; nbok += A::nb == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 2" << std::endl;
-    ++nb, nbok += cptr.get() != cptr2.get() ? 1 : 0;
+    ++nb; nbok += cptr.get() != cptr2.get() ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() != cptr2.get()" << std::endl;
     cptr = cptr2;
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    ++nb; nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
-    ++nb, nbok += cptr.get()->a == 12 ? 1 : 0;
+    ++nb; nbok += cptr.get()->a == 12 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get()->a == 12" << std::endl;
-    ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
+    ++nb; nbok += cptr.get() == cptr2.get() ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() == cptr2.get()" << std::endl;
-    ++nb, nbok += cptr.count() == 2 ? 1 : 0;
+    ++nb; nbok += cptr.count() == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.count() == 2" << std::endl;
-    ++nb, nbok += cptr2.count() == 2 ? 1 : 0;
+    ++nb; nbok += cptr2.count() == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr2.count() == 2" << std::endl;
   }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  ++nb; nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
@@ -200,26 +200,26 @@ bool testCountedPtrOrPtrMemory()
   {
     CountedPtrOrPtr<A> cptr( new A( 3 ) );
     CountedPtr<A> cptr2( new A( 12 ) );
-    ++nb, nbok += A::nb == 2 ? 1 : 0;
+    ++nb; nbok += A::nb == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 2" << std::endl;
-    ++nb, nbok += cptr.get() != cptr2.get() ? 1 : 0;
+    ++nb; nbok += cptr.get() != cptr2.get() ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() != cptr2.get()" << std::endl;
     cptr = cptr2;
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    ++nb; nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
-    ++nb, nbok += cptr.get()->a == 12 ? 1 : 0;
+    ++nb; nbok += cptr.get()->a == 12 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get()->a == 12" << std::endl;
-    ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
+    ++nb; nbok += cptr.get() == cptr2.get() ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() == cptr2.get()" << std::endl;
     cptr.get()->a = 5; // does compile.
-    ++nb, nbok += cptr.get()->a == 5 ? 1 : 0;
+    ++nb; nbok += cptr.get()->a == 5 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get()->a == 5" << std::endl;
-    ++nb, nbok += cptr.count() == 2 ? 1 : 0;
+    ++nb; nbok += cptr.count() == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.count() == 2" << std::endl;
-    ++nb, nbok += cptr2.count() == 2 ? 1 : 0;
+    ++nb; nbok += cptr2.count() == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "cptr2.count() == 2" << std::endl;
   }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  ++nb; nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 

@@ -51,9 +51,6 @@ using namespace DGtal;
  */
 bool testImplicitShape()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing implicit shaper ..." );
   Z2i::Point a(0,0);
   Z2i::Point b(64,64);
@@ -100,13 +97,7 @@ bool testImplicitShape()
   board.saveSVG("implicitrounded-2.5.svg");
   
 
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();
-  
-  return nbok == nb;
+  return true;
 }
 /**
  * Example of a test. To be completed.
@@ -114,9 +105,6 @@ bool testImplicitShape()
  */
 bool testImplicitShape3D()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing implicit shaper in 3D..." );
   Z3i::Point a(0,0);
   Z3i::Point b(64,64,64);
@@ -140,14 +128,8 @@ bool testImplicitShape3D()
     }
 
   VolWriter<Image>::exportVol("implicitrounded.vol",image);
-
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();
   
-  return nbok == nb;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -126,12 +126,12 @@ int main( int argc, char** argv )
      if (to_vector[i]==1)
      {
       cout << "ok, ";
-      nbok += true ? 1 : 0; nb++;
+      nbok +=  1 ; nb++;
      }
      else
      {
       cout << "!ok, ";
-      nbok += false ? 1 : 0; nb++;
+      nb++;
      }
     }
     else
@@ -139,12 +139,12 @@ int main( int argc, char** argv )
      if (to_vector[i]==0)
      {
       cout << "ok, ";
-      nbok += true ? 1 : 0; nb++;
+      nbok +=  1 ; nb++;
      }
      else
      {
       cout << "!ok, ";
-      nbok += false ? 1 : 0; nb++;
+      nb++;
      }
     }
   }

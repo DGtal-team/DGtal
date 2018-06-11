@@ -70,9 +70,6 @@ using namespace Z3i;
  */
 bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 {
-    unsigned int nbok = 0;
-    unsigned int nb = 0;
-
     trace.beginBlock ( "Testing convolution neighborhood ..." );
 
     QApplication application ( argc,argv );
@@ -175,14 +172,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     viewer.setLineColor( lineColorSave);
     viewer<< Viewer3D<>::updateDisplay;
 
-
-    nbok += true ? 1 : 0;
-    nb++;
-    trace.info() << "(" << nbok << "/" << nb << ") "
-                 << "true == true" << std::endl;
-    trace.endBlock();
-
-    return application.exec();
+  return application.exec();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -199,7 +189,8 @@ int main ( int argc, char** argv )
     bool res = testLocalConvolutionNormalVectorEstimator ( argc,argv ); // && ... other tests
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
-    return true;
+    
+    return (res ? 0:1);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
