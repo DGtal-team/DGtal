@@ -881,7 +881,7 @@ insert( const Value & val )
   bool exists = myLabels.test( val.first );
   if ( ! exists ) 
     {
-      unsigned int block_size = size();
+      unsigned int block_size = static_cast<unsigned int>( size() );
       myLabels.set( val.first ); // must be done before so that 'index' works.
       blockInsert( myLabels.index( val.first ), block_size, val.second );
     }
@@ -1078,7 +1078,7 @@ DGtal::LabelledMap<TData, L, TWord, N, M>::
 blockErase( unsigned int idx )
 {
   ASSERT( idx < size() ); // end is not ok.
-  myFirstBlock.erase( idx, size() );
+  myFirstBlock.erase( idx, static_cast<unsigned long>(size() ));
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>

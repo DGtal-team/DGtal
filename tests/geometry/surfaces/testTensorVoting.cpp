@@ -200,11 +200,6 @@ bool testCube()
   trace.endBlock();
   trace.endBlock();
 
-  nbok += true ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-
   return nbok == nb;
 }
 

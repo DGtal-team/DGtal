@@ -73,9 +73,6 @@ bool testVolReader()
   
   trace.info() << image <<endl;
   
-  nbok += true ? 1 : 0; 
-  nb++;
-
   unsigned int nbval=0;
   for(Image::ConstIterator it=image.begin(), itend=image.end();
       it != itend;   ++it)

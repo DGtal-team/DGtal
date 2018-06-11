@@ -231,7 +231,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsFaces( Display & display,
   for(unsigned int i=0; i< aMesh.nbFaces(); i++)
     {
       typename Mesh<TPoint>::MeshFace aFace = aMesh.getFace(i);
-      unsigned int aNum = aFace.size();
+      size_t aNum = aFace.size();
       if(!useGlobalColor){
         display.setFillColor(aMesh.getFaceColor(i));
       }
@@ -1014,26 +1014,21 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
 							const DGtal::HyperRectDomain<SpaceDom> & h )
 {
-  typedef typename Space::Integer Integer;
-
   ASSERT(Space::dimension == 3 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
 
   if (Space::dimension == 3)
     {
       // Face XY
-      for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-           z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
+      for (auto z = h.myLowerBound[2]; z <= h.myUpperBound[2]; z++)
         {
-          for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]);
-               x <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++)
+          for (auto x = h.myLowerBound[0];  x <= h.myUpperBound[0]; x++)
             {
               DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, h.myLowerBound[1], z) );
               DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, h.myUpperBound[1], z) );
 
               display.addLine( rp1, rp2);
             }
-          for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-               y <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++)
+          for (auto y = h.myLowerBound[1]; y <= h.myUpperBound[1]; y++)
             {
               DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], y, z) );
               DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], y, z) );
@@ -1043,19 +1038,16 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
         }
 
       // Faces XZ
-      for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-           y <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++)
+      for (auto y = h.myLowerBound[1]; y <= h.myUpperBound[1]; y++)
         {
-          for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]);
-               x <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++)
+          for (auto x = h.myLowerBound[0]; x <= h.myUpperBound[0]; x++)
             {
               DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
               DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
 
               display.addLine( rp1, rp2);
             }
-          for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-               z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
+          for (auto z =  h.myLowerBound[2]; z <= h.myUpperBound[2]; z++)
             {
               DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], y, z) );
               DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], y, z) );
@@ -1065,19 +1057,16 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
         }
 
       // Faces YZ
-      for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]);
-           x <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++)
+      for (auto x = h.myLowerBound[0]; x <= h.myUpperBound[0]; x++)
         {
-          for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-               y <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++)
+          for (auto y = h.myLowerBound[1];  y <= h.myUpperBound[1]; y++)
             {
               DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
               DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, y, h.myUpperBound[2]) );
 
               display.addLine( rp1, rp2);
             }
-          for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-               z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
+            for (auto z = h.myLowerBound[2]; z <= h.myUpperBound[2]; z++)
             {
               DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, h.myLowerBound[1], z) );
               DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, h.myLowerBound[1], z) );
@@ -1095,21 +1084,17 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingBalls( Display & display
 							       const DGtal::HyperRectDomain<SpaceDom> & h )
 {
   DGtal::Color fillColorSave = display.getFillColor();
-  typedef typename Space::Integer Integer;
 
   ASSERT(Space::dimension == 3 || "drawAsPavingPoints-NOT-YET-IMPLEMENTED-in-ND");
   if (Space::dimension == 3)
     {
       // Face XY
-      for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-           z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
+      for (auto z = h.myLowerBound[2]; z <= h.myUpperBound[2]; z++)
         {
-          for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]);
-               x <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++)
+          for (auto x = h.myLowerBound[0]; x <= h.myUpperBound[0]; x++)
             {
 
-              for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-                   y <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++)
+              for (auto y = h.myLowerBound[1]; y <= h.myUpperBound[1]; y++)
                 {
                   DGtal::Z3i::RealPoint rp = display.embed( DGtal::Z3i::Point(x, y, z) );
                   display.setFillColor(DGtal::Color(255, 0 ,0));
@@ -1128,21 +1113,17 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
 							  const DGtal::HyperRectDomain<SpaceDom> & h )
 {
   DGtal::Color fillColorSave = display.getFillColor();
-  typedef typename Space::Integer Integer;
 
   ASSERT(Space::dimension == 3 || "drawAsPaving-NOT-YET-IMPLEMENTED-in-ND");
 
   if (Space::dimension == 3)
     {
       // Face XY
-      for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-           z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
+      for (auto z = h.myLowerBound[2];   z <= h.myUpperBound[2]; z++)
         {
-          for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]);
-               x <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++)
+          for (auto x = h.myLowerBound[0]; x <= h.myUpperBound[0]; x++)
             {
-              for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-                   y <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++)
+              for (auto y = h.myLowerBound[1]; y <= h.myUpperBound[1]; y++)
                 {
                   DGtal::Z3i::RealPoint rp = display.embed( DGtal::Z3i::Point(x, y, z) );
                   rp[0]+=0.5;

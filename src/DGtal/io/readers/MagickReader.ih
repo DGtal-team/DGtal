@@ -36,7 +36,7 @@
 
 template <typename TImageContainer, typename TFunctor>
 inline
-TImageContainer 
+TImageContainer
 DGtal::MagickReader<TImageContainer, TFunctor>::importImage(const std::string & filename,
 						  const Functor & aFunctor, bool topbotomOrder )
 {
@@ -45,10 +45,10 @@ DGtal::MagickReader<TImageContainer, TFunctor>::importImage(const std::string & 
   DGtal::IOException dgtalio;
 
   Magick::InitializeMagick(NULL);
-  
+
   Magick::Image img;
 
-  try 
+  try
     {
       img.read ( filename );
     }
@@ -57,7 +57,7 @@ DGtal::MagickReader<TImageContainer, TFunctor>::importImage(const std::string & 
       std::cout << "MagickReader : can't open " << filename << std::endl;
       throw dgtalio;
     }
-  
+
   w = img.size().width();
   h = img.size().height();
 
@@ -65,32 +65,30 @@ DGtal::MagickReader<TImageContainer, TFunctor>::importImage(const std::string & 
   img.type ( Magick::TrueColorType );
   img.modifyImage();
   cacheRead = img.getConstPixels ( 0, 0, w, h );
-  
+
   //@todo check ImageMagick errors.
   //trace.error() << "MagickReader : can't open "<< filename<<endl;
-  
+
   typename TImageContainer::Point firstPoint;
   typename TImageContainer::Point lastPoint;
-      
+
   firstPoint = TImageContainer::Point::zero;
   lastPoint[0] = w-1;
   lastPoint[1] = h-1;
 
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
   TImageContainer image(domain);
-  typename TImageContainer::Value val;
 
   //We scan the file
   typename TImageContainer::Domain::ConstIterator it = domain.begin(),
     itend=domain.end();
-  
+
   for(; it != itend; ++it)
     {
       const Magick::PixelPacket *pixel = cacheRead + w * ((topbotomOrder)? ( h - 1 - (*it)[1] ): (*it)[1] ) + (*it)[0];
-      val = (pixel->red + pixel->green + pixel->blue) % 256;
-      image.setValue( (*it),  aFunctor(val)  );
+      Color col(pixel->red,pixel->green,pixel->blue);
+      image.setValue( (*it),  aFunctor(col)  );
     }
 
   return image;
 }
-

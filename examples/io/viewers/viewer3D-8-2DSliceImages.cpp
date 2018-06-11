@@ -141,8 +141,6 @@ int main( int argc, char** argv )
 
 return application.exec();
 
-  trace.endBlock();
-  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

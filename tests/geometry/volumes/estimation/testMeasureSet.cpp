@@ -59,9 +59,6 @@ bool testConcept()
  */
 bool testMeasure()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing Measure ..." );
 
 
@@ -88,13 +85,9 @@ bool testMeasure()
   
   trace.info()<<measure<<std::endl;
 
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
   trace.endBlock();
   
-  return nbok == nb;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
