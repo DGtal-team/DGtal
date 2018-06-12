@@ -1,0 +1,119 @@
+ #include <cstdlib>
+#ifndef M_PI
+   #define M_PI 3.14159265358979323846
+#endif
+//#include "Lemniscate2D.h" 
+// IMPLEMENTATION of inline methods.
+
+// ----------------------- Standard services ------------------------------
+
+template <typename T>
+inline
+Lemniscate2D<T>::~Lemniscate2D()
+{
+}
+
+template <typename T>
+inline
+Lemniscate2D<T>::Lemniscate2D(const double a, const double b,
+           		const double x, const double y)
+  : myCenter(x,y), myA(a), myB(b)
+{}
+
+
+// ------------- Implementation of 'StarShaped' services ------------------
+
+template <typename T>
+inline
+double
+Lemniscate2D<T>::parameter( const RealPoint2D & pp ) const
+{
+ RealPoint2D p( pp );
+ p -= myCenter;
+ double angle;
+
+if(abs(p[1]) > abs(p[0]))
+	return 0.0;
+			if(p[0]==0. ) angle=0.0;
+			else if(p[0]==0. && p[1]<0.) angle=M_PI;
+			else if(p[1]==0. && p[0]>0.) angle=M_PI/2.0; 
+			else if(p[1]==0. && p[0]<0.) angle=3.0*M_PI/2.0;
+			else
+			{
+
+				angle = acos(p[1]/p[0]);
+				
+			}
+ 	return angle; 
+}
+
+
+template <typename T>
+inline
+typename Lemniscate2D<T>::RealPoint2D 
+Lemniscate2D<T>::x( double t ) const
+{
+ 
+ RealPoint2D c( myA * (sin(t)/ ( 1 + pow(cos(t),2) ) ) , myB * ((sin(t) * cos(t)) / ( 1 + pow(cos(t),2) ))  );
+ c += myCenter;
+ return c;
+ }
+ 
+ 
+template <typename T>
+inline
+typename Lemniscate2D<T>::RealVector2D 
+Lemniscate2D<T>::xp( const double t ) const
+{
+ 
+  RealVector2D c( myA * ( cos(t)+2*pow(sin(t),2)*cos(t)+pow(cos(t),3) )/ pow(1+pow(cos(t),2),2)  ,myB * (pow(cos(t),4)+pow(cos(t),2)-pow(sin(t),2)+pow(sin(t),2)*pow(cos(t),2) )/ pow( 1+pow(cos(t),2) ,2) );
+  return c;
+}
+ 
+template <typename T>
+inline
+typename Lemniscate2D<T>::RealVector2D
+Lemniscate2D<T>::xpp( const double t ) const
+{
+  
+  RealVector2D c(myA *  ( 4*pow(sin(t),3)*pow(cos(t),2)+6*pow(sin(t),3)*pow(cos(t),4)+3*sin(t)*pow(cos(t),2)-sin(t)+9*sin(t)*pow(cos(t),4)+5*pow(cos(t),6) * sin(t)-2*pow(sin(t),3) )/  pow(1+pow(cos(t),2),4) 
+  , myB * (  -4*pow(sin(t),3)*pow(cos(t),3)-6*pow(sin(t),3)*cos(t)+2*pow(sin(t),3)*pow(cos(t),5)-4*sin(t)*cos(t)-6*sin(t)*pow(cos(t),3)+2*sin(t)*pow(cos(t),7)  )/ pow(1+pow(cos(t),2),4) );
+   return c;
+}
+ 
+ 
+// Interface - public :
+ 
+template <typename T>
+inline
+ void
+Lemniscate2D<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Lemniscate2D] center= "<<myCenter<<" a="<<myA<<" b="<<myB;
+}
+ 
+template <typename T>
+ inline
+ bool
+ Lemniscate2D<T>::isValid() const
+ {
+    return true;
+ }
+
+ 
+ 
+ // Implementation of inline functions                                        //
+ 
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+      const Lemniscate2D<T> & object )
+{
+   object.selfDisplay( out );
+   return out;
+}
+ 
+ //                                                                           //
+ 
+
