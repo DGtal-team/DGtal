@@ -1,0 +1,124 @@
+ #include <cstdlib>
+#ifndef M_PI
+   #define M_PI 3.14159265358979323846
+#endif
+#include <stdlib.h> 
+//#include "Astroid2D.h" 
+// IMPLEMENTATION of inline methods.
+
+// ----------------------- Standard services ------------------------------
+
+template <typename T>
+inline
+Astroid2D<T>::~Astroid2D()
+{
+}
+
+template <typename T>
+inline
+Astroid2D<T>::Astroid2D(const double a, const double b,
+           		const double x, const double y)
+  : myCenter(x,y), myA(a), myB(b)
+{}
+
+
+// ------------- Implementation of 'StarShaped' services ------------------
+
+template <typename T>
+inline
+double
+Astroid2D<T>::parameter( const RealPoint2D & pp ) const
+{
+ RealPoint2D p( pp );
+ p -= myCenter;
+ double angle;
+//std::cout<<"myA = "<<myA<<"myB = "<<myB<<std::endl; 
+			if(p[0]==0. && p[1]>0.) angle=M_PI/2.0;
+			else if(p[0]==0. && p[1]<0.) angle=3.0*M_PI/2.0;
+			else if(p[1]==0. && p[0]>=0.) angle=0.0;
+			else if(p[1]==0. && p[0]<0.) angle=M_PI;
+			else
+			{
+				if( (p[1]/p[0]) < 0.)
+				angle = atan(-pow(-( myA*p[1])/(myB*p[0]) ,1./3.));
+				else
+				angle = atan(pow(( myA*p[1])/(myB*p[0]) ,1./3.));
+				
+				if(p[1]<0. && p[0]>0.)
+					angle +=M_PI;
+				else if(p[0]<0. && p[1]>0.)
+					angle +=2*M_PI;
+				else if(p[0]<0. && p[1]<0.)
+					angle+=M_PI;
+			}
+ 	return angle; 
+}
+
+template <typename T>
+inline
+typename Astroid2D<T>::RealPoint2D 
+Astroid2D<T>::x( double t ) const
+{
+ 
+ RealPoint2D c( myA * pow(cos(t),3) , myB * pow(sin(t),3)  );
+ c += myCenter;
+ return c;
+ }
+ 
+ 
+template <typename T>
+inline
+typename Astroid2D<T>::RealVector2D 
+Astroid2D<T>::xp( const double t ) const
+{
+ 
+  RealVector2D c( myA * 3 * (-sin(t)) * pow(cos(t),2) , myB * 3 * cos(t) * pow(sin(t) , 2) );
+  return c;
+}
+ 
+template <typename T>
+inline
+typename Astroid2D<T>::RealVector2D
+Astroid2D<T>::xpp( const double t ) const
+{
+  
+  RealVector2D c(myA *  -3*pow(cos(t),3)+6*pow(sin(t),2)*cos(t), myB * (6 * pow(cos(t),2) * sin(t) - 3 * pow(sin(t) , 3)) );
+   return c;
+}
+ 
+ 
+// Interface - public :
+ 
+template <typename T>
+inline
+ void
+Astroid2D<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Astroid2D] center= "<<myCenter<<" a="<<myA<<" b="<<myB;
+}
+ 
+template <typename T>
+ inline
+ bool
+ Astroid2D<T>::isValid() const
+ {
+    return true;
+ }
+
+ 
+ 
+ // Implementation of inline functions                                        //
+ 
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+      const Astroid2D<T> & object )
+{
+   object.selfDisplay( out );
+   return out;
+}
+ 
+ //                                                                           //
+ 
+
