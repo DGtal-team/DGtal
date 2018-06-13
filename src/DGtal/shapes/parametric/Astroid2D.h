@@ -77,8 +77,8 @@ namespace DGtal
      * Constructor.
      * @param x0 the x-coordinate of the circle center.
      * @param y0 the y-coordinate of the circle center.
-     * @param a  TODO
-     * @param b  TODO
+     * @param a  coefficient along x-axis 
+     * @param b  coefficient along y-axis
      */
    Astroid2D( const double x0, const double y0,
               const double a, const double b );
@@ -155,14 +155,14 @@ namespace DGtal
     RealPoint2D myCenter;
 
     /**
-     * TODO
+     * Coefficient along x-axis
      */
     double myA;
 
     /**
-     * TODO
+     * Coefficient along y-axis
      */
-	double myB;
+    double myB;
 
     // ----------------------- Interface --------------------------------------
   public:
