@@ -52,6 +52,19 @@ DGtal::Astroid2D<T>::Astroid2D( const double x0, const double y0,
   const double a, const double b ) : myCenter(x0,y0), myA(a), myB(b)
 {}
 
+template <typename T>
+inline
+DGtal::Astroid2D<T>::Astroid2D( const RealPoint2D &aPoint,
+  const double a, const double b ) : myCenter(aPoint), myA(a), myB(b)
+{}
+
+template <typename T>
+inline
+DGtal::Astroid2D<T>::Astroid2D( const Point2D &aPoint,
+  const double a, const double b ) : myA(a), myB(b)
+{
+  myCenter = aPoint;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // ------------- Implementation of 'StarShaped' services ----------------------
