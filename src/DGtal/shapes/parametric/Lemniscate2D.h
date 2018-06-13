@@ -83,6 +83,22 @@ namespace DGtal
    Lemniscate2D( const double x0, const double y0,
                  const double a, const double b);
 
+     /**
+      * Constructor.
+      * @param aPoint the lemniscate center
+      * @param a      coefficient along x-axis
+      * @param b      coefficient along y-axis
+      */
+    Lemniscate2D( const RealPoint2D &aPoint, const double a, const double b );
+
+     /**
+      * Constructor.
+      * @param aPoint the lemniscate center
+      * @param a      coefficient along x-axis
+      * @param b      coefficient along y-axis
+      */
+    Lemniscate2D( const Point2D &aPoint, const double a, const double b );
+
 
    // ------------- Implementation of 'StarShaped' services ------------------
     public:
