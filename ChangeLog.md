@@ -6,7 +6,10 @@
 - *Base*
   - Fixes wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
-  
+
+- *IO*
+  - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
+    [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
 
 # DGtal 0.9.4.1
 
