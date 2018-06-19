@@ -11,6 +11,13 @@
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
 
+## Documentation
+
+- *geometry*
+  - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
+    [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
+
+
 # DGtal 0.9.4.1
 
 ## Bug Fixes
