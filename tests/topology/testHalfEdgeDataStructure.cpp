@@ -184,6 +184,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
     THEN( "The mesh is valid" ) {
       REQUIRE( mesh.isValid() );
     }
+    THEN( "The mesh is a valid triangulation" ) {
+      REQUIRE( mesh.isValidTriangulation() );
+    }
     THEN( "The mesh has 4 vertices, 5 edges, 2 faces, 10 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  4 );
       REQUIRE( mesh.nbEdges()     ==  5 );
@@ -215,6 +218,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
     THEN( "The mesh is valid" ) {
       REQUIRE( mesh.isValid() );
     }
+    THEN( "The mesh is a valid triangulation" ) {
+      REQUIRE( mesh.isValidTriangulation() );
+    }
     THEN( "The mesh has 4 vertices, 6 edges, 3 faces, 12 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  4 );
       REQUIRE( mesh.nbEdges()     ==  6 );
@@ -243,6 +249,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
     HalfEdgeDataStructure mesh = makeTetrahedron();
     THEN( "The mesh is valid" ) {
       REQUIRE( mesh.isValid() );
+    }
+    THEN( "The mesh is a valid triangulation" ) {
+      REQUIRE( mesh.isValidTriangulation() );
     }
     THEN( "The mesh has 4 vertices, 6 edges, 4 faces, 12 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  4 );
@@ -290,6 +299,9 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
     HalfEdgeDataStructure mesh = makeTriangulatedDisk();
     THEN( "The mesh is valid" ) {
       REQUIRE( mesh.isValid() );
+    }
+    THEN( "The mesh is a valid triangulation" ) {
+      REQUIRE( mesh.isValidTriangulation() );
     }
     THEN( "The mesh has 6 vertices, 12 edges, 7 faces, 24 half-edges" ) {
       REQUIRE( mesh.nbVertices()  ==  6 );
@@ -498,6 +510,9 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
     THEN( "The mesh is valid after flip" ) {
       REQUIRE( mesh.isValid() );
     }
+    THEN( "The mesh is a valid triangulation after flip" ) {
+      REQUIRE( mesh.isValidTriangulation() );
+    }
     THEN( "Vertex 0 has 2,3,1 as neighbors after flip" ) {
       VertexIndexRange nv = mesh.neighboringVertices( 0 );
       VertexIndexRange expected = { 2, 3, 1 };
@@ -533,6 +548,9 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
     mesh.flip( he2 );
     THEN( "The mesh is valid after two flips" ) {
       REQUIRE( mesh.isValid() );
+    }
+    THEN( "The mesh is a valid triangulation after two flips" ) {
+      REQUIRE( mesh.isValidTriangulation() );
     }
     THEN( "Vertex 0 has 2,1 as neighbors after flip" ) {
       VertexIndexRange nv = mesh.neighboringVertices( 0 );
@@ -570,6 +588,9 @@ SCENARIO( "HalfEdgeDataStructure splits", "[halfedge][splits]" ){
     THEN( "After split, mesh is valid" ) {
       REQUIRE( mesh.isValid() );
     }
+    THEN( "The mesh is a valid triangulation after split" ) {
+      REQUIRE( mesh.isValidTriangulation() );
+    }
     THEN( "After split, mesh has 5 vertices, 8 edges, 4 faces" ) {
       REQUIRE( mesh.nbVertices() == 5 );
       REQUIRE( mesh.nbEdges() == 8 );
@@ -592,6 +613,9 @@ SCENARIO( "HalfEdgeDataStructure merges", "[halfedge][merges]" ){
     auto vtx = mesh.merge( he );
     THEN( "After merge, mesh is valid" ) {
       REQUIRE( mesh.isValid() );
+    }
+    THEN( "The mesh is a valid triangulation after merge" ) {
+      REQUIRE( mesh.isValidTriangulation() );
     }
     THEN( "After merge, merged vertex is 1" ) {
       REQUIRE( vtx == 1 );

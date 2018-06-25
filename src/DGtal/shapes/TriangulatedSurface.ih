@@ -453,6 +453,21 @@ inline
 bool
 DGtal::TriangulatedSurface<TPoint>::isMergeable( const Arc a ) const
 {
+  const Vertex v3 = head( next( a ) );
+  if ( degree( v3 ) < 4 ) return false;
+  const Vertex v4 = head( next( opposite( a ) ) );
+  if ( degree( v4 ) < 4 ) return false;
+  auto A1 = outArcs( head( a ) );
+  auto A2 = outArcs( tail( a ) );
+  std::vector<Vertex> V1, V2;
+  for ( Arc a1 : A1 ) V1.push_back( head( a1 ) );
+  for ( Arc a2 : A2 ) V2.push_back( head( a2 ) );
+  std::sort( V1.begin(), V1.end() );
+  std::sort( V2.begin(), V2.end() );
+  std::vector<Vertex> VI( V1.size() );
+  auto it = std::set_intersection( V1.begin(), V1.end(), V2.begin(), V2.end(),
+				   VI.begin() );
+  if ( ( it - VI.begin() ) != 2 ) return false;
   return myHEDS.isMergeable( a );
 }
 
@@ -462,9 +477,12 @@ inline
 typename DGtal::TriangulatedSurface<TPoint>::Vertex
 DGtal::TriangulatedSurface<TPoint>::merge( const Arc a, const Point& data )
 {
-  Vertex v = myHEDS.merge( a, false );
+  const Vertex  v_sup = head( a );
+  const Vertex      v = myHEDS.merge( a, false );
   ASSERT( v < myPositions.size() );
-  myPositions[ v ] = data;
+  myPositions[ v ]     = data;
+  myPositions[ v_sup ] = myPositions.back();
+  myPositions.pop_back();
   return v;
 }
 
