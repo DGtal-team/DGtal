@@ -55,6 +55,7 @@
 #include "DGtal/helpers/Parameters.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/io/readers/GenericReader.h"
+#include "DGtal/io/writers/GenericWriter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -224,13 +225,13 @@ namespace DGtal
     ///   - closed   [1]: specifies if the Khalimsky space is closed (!=0) or not (==0).
     ///
     /// @return the Khalimsky space.
-    static KSpace makeKSpace( const Point& low, const Point& up,
+    static KSpace getKSpace( const Point& low, const Point& up,
 			      Parameters params = parametersKSpace() )
     {
       int closed  = params[ "closed"  ].as<int>();
       KSpace K;
       if ( ! K.init( low, up, closed ) )
-	trace.error() << "[Shortcuts::makeKSpace]"
+	trace.error() << "[Shortcuts::getKSpace]"
 		      << " Error building Khalimsky space K=" << K << std::endl;
       return K;
     }
@@ -249,7 +250,7 @@ namespace DGtal
     ///
     /// @return the Khalimsky space.
     /// @see makeImplicitDigitalShape
-    static KSpace makeKSpaceDigitization( Parameters params =
+    static KSpace getKSpaceDigitization( Parameters params =
 					  parametersKSpace() | parametersDigitization() )
     {
       Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
@@ -264,13 +265,13 @@ namespace DGtal
       Domain domain = dshape->getDomain();
       KSpace K;
       if ( ! K.init( domain.lowerBound(), domain.upperBound(), closed ) )
-	trace.error() << "[Shortcuts::makeKSpace]"
+	trace.error() << "[Shortcuts::getKSpace]"
 		      << " Error building Khalimsky space K=" << K << std::endl;
       return K;
     }
 
     /// Makes the Gauss digitization of the given implicit shape
-    /// according to parameters. Use makeKSpace to build the associated digital space.
+    /// according to parameters. Use getKSpace to build the associated digital space.
     ///
     /// @param[in] shape a smart pointer on the implicit shape.
     /// @param[in] params the parameters:
@@ -281,7 +282,7 @@ namespace DGtal
     ///                       useful when you process shapes and that you add noise.
     ///
     /// @return a smart pointer on the created implicit digital shape.
-    /// @see makeKSpaceDigitization 
+    /// @see getKSpaceDigitization 
     static CountedPtr<ImplicitDigitalShape>
     makeImplicitDigitalShape
     ( CountedPtr<ImplicitShape> shape,
@@ -429,6 +430,27 @@ namespace DGtal
       return noisify( img, params );
     }
     
+    /// Saves an arbitrary image file (e.g. vol file in 3D).
+    ///
+    /// @param[in] output the output filename .
+    /// @return 'true' if everything went well, 'false' if there was an error during save.
+    static bool
+    saveBinaryImage
+    ( CountedPtr<BinaryImage> bimage, std::string output )
+    {
+      typedef typename GrayScaleImage::Value Value;
+      // struct ValueFunctor {
+      // 	Value operator()( bool v ) const
+      // 	{ return v ? (Value) 255 : (Value) 0; }
+      // };
+      const Domain domain = bimage->domain(); 
+      GrayScaleImage img( domain );
+      std::transform( bimage->begin(), bimage->end(),
+		      img.begin(),
+		      [] ( bool v ) { return v ? (Value) 255 : (Value) 0; } );
+      return GenericWriter< GrayScaleImage > //, Point::dimension, bool, ValueFunctor >
+	::exportFile( output, img );
+    }
     
     // ----------------------- Standard services ------------------------------
   public:
