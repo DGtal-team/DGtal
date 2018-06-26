@@ -12,7 +12,7 @@ namespace DGtal {
 
 @since 1.0
 
-Part of the \ref packageTutotials.
+Part of the \ref packageTutorials.
   
 This part of the manual describes how to use shortcuts to quickly
 create shapes and surfaces, and to analyze their geometry.

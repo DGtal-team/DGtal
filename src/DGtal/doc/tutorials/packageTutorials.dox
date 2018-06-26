@@ -18,9 +18,9 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page packageTutorials Tutorials
-@writers David Coeurjolly, Tristan Roussillon
+@writers David Coeurjolly, Tristan Roussillon, Bertrand Kerautret, Jacques-Olivier Lachaud, Jérémy Levallois
 
-Table of contents:
+[TOC]
 
 @section secttuto1 Basic guides
 
@@ -39,6 +39,10 @@ Table of contents:
 3. \ref tutoVolDTGranulometry
 4. \ref tutoAreaSurface
 5. \ref tutoImageManipulations
+
+@section secttuto3 Helpers, quick development with DGtal
+
+1. \ref moduleShortcuts
 
 */
 
