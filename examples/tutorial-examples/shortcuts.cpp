@@ -61,6 +61,10 @@ int main( int argc, char** argv )
   auto implicit_digital_shape = SH3::makeImplicitDigitalShape( implicit_shape, params );
   std::cout << *implicit_digital_shape << std::endl;
   trace.endBlock();
+  trace.beginBlock ( "Making binary image from implicit digital shape" );
+  auto binary_image = SH3::makeBinaryImage( implicit_digital_shape );
+  std::cout << *binary_image << std::endl;
+  trace.endBlock();
   return 0;
 }
 //                                                                           //
