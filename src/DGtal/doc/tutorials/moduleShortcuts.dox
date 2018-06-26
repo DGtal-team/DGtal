@@ -1,0 +1,84 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+@page moduleShortcuts  Shortcuts (for the impatient developper)
+
+@writers Jacques-Olivier Lachaud
+
+@since 1.0
+
+Part of the \ref packageTutotials.
+  
+This part of the manual describes how to use shortcuts to quickly
+create shapes and surfaces, and to analyze their geometry.
+
+[TOC]
+
+
+The following programs are related to this documentation:
+shortcuts.cpp.
+
+@section dgtal_shortcuts_sec1 Introduction
+
+To use shortcuts, you must include the following header:
+
+\code
+#include "DGtal/helpers/Shortcuts.h"
+\endcode
+
+And choose an appropriate Khalimsky space according to the dimension
+of the object you will be processing.
+
+\code
+// Using standard 3D digital space.
+typedef Shortcuts<Z3i::KSpace> SH3;
+\endcode
+
+The general philosophy of the shorcut module is to choose reasonnable
+data structures so as to minimize the number of lines to build
+frequent digital geometry code. For instance, the following lines
+builds a shape that represents the digitization of an ellipsoid.
+
+\code
+  auto params = SH3::defaultParameters();
+  // Set your own parameters with operator().
+  params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 );
+  auto implicit_shape  = SH3::makeImplicitShape( params );
+  auto kspace          = SH3::makeKSpaceDigitization( params );
+  auto digitized_shape = SH3::makeImplicitDigitalShape( implicit_shape, params );
+  std::cout << *implicit_digital_shape << std::endl;
+\endcode
+
+As one can see, a Parameters object stores parameter values and can be
+simply updated by the user with the function operator().
+
+Big objects (like images, shapes, surfaces) are always returned or
+passed as smart pointers (with CountedPtr). Hence you do not have to
+take care of their life-length and you do not need to delete them
+explicitly.
+
+The following name conventions for types are used:
+
+- KSpace: represents a cellular grid space (generally a KhalimskySpaceND)
+
+- ImplicitShape: represents a functor RealPoint -> Scalar which adds
+  geometry services: isInside, orientation, gradient, meanCurvature,
+  GaussianCurvature, principalCurvatures, nearestPoint
+
+- ImplicitDigitalShape: represents the digitization of an
+  ImplicitShape as a predicate Point -> bool (isInside), and adds some
+  services: getLowerBound, getUpperBound, embed, round, getDomain,
+  gridSteps, resolution. Note that pixels/voxels are not stored
+  explicitly, so the resolution may be arbirary high.
+
+
+
+
+*/
+
+}

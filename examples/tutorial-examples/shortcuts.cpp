@@ -45,6 +45,7 @@ int main( int argc, char** argv )
   typedef Shortcuts< Z3i::KSpace > SH3;
   trace.beginBlock ( "Setting parameters" );
   auto params = SH3::defaultParameters();
+  // Set your own parameters with operator().
   params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.5 );
   std::cout << params << std::endl;
   trace.endBlock();
