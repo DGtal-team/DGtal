@@ -44,13 +44,21 @@ int main( int argc, char** argv )
 {
   typedef Shortcuts< Z3i::KSpace > SH3;
   trace.beginBlock ( "Setting parameters" );
-  // Preferred way of creating parameters.
-  auto params = Parameters( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.5 );
+  auto params = SH3::defaultParameters();
+  params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.5 );
   std::cout << params << std::endl;
   trace.endBlock();
   trace.beginBlock ( "Making implicit shape" );
   auto implicit_shape = SH3::makeImplicitShape( params );
   std::cout << *implicit_shape << std::endl;
+  trace.endBlock();
+  trace.beginBlock ( "Making Khalimsky space" );
+  auto K = SH3::makeKSpaceDigitization( params );
+  std::cout << K << std::endl;
+  trace.endBlock();
+  trace.beginBlock ( "Making implicit digital shape" );
+  auto implicit_digital_shape = SH3::makeImplicitDigitalShape( implicit_shape, params );
+  std::cout << *implicit_digital_shape << std::endl;
   trace.endBlock();
   return 0;
 }

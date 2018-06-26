@@ -45,6 +45,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/CountedConstPtrOrConstPtr.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/RegularPointEmbedder.h"
 #include "DGtal/shapes/CEuclideanOrientedShape.h"
@@ -110,7 +112,7 @@ namespace DGtal
     /**
        @param shape the digitizer now references the given shape.
     */
-    void attach( const EuclideanShape & shape );
+    void attach( ConstAlias<EuclideanShape> shape );
 
     /**
        Initializes the digital bounds of the digitizer so as to cover
@@ -243,7 +245,7 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   protected:
     /// The referenced shape or 0 if not initialized.
-    const EuclideanShape* myEShape;
+    CountedConstPtrOrConstPtr<EuclideanShape> myEShape;
 
     /// The embedder
     RegularPointEmbedder<Space> myPointEmbedder;

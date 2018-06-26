@@ -45,9 +45,11 @@
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
+#include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/helpers/Parameters.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -78,6 +80,7 @@ namespace DGtal
     typedef typename Space::RealVector               RealVector;
     typedef typename Space::RealPoint                RealPoint;
     typedef typename RealVector::Component           Scalar;
+    typedef HyperRectDomain<Space>                   Domain;
 
     // ----------------------- Shortcut types --------------------------------------
   public:
@@ -86,10 +89,22 @@ namespace DGtal
     /// defines an implicit shape of the space, which is the
     /// zero-level set of a ScalarPolynomial.
     typedef ImplicitPolynomial3Shape<Space>          ImplicitShape;
+    /// defines the digitization of an implicit shape.
+    typedef GaussDigitizer< Space, ImplicitShape >   ImplicitDigitalShape;
      
 
     // ----------------------- Static services --------------------------------------
   public:
+
+    /// @return the parameters and their default values used in shortcuts.
+    /// - "polynomial" : "sphere1"
+    static Parameters defaultParameters()
+    {
+      return parametersImplicitShape()
+	| parametersKSpace()
+	| parametersDigitization();
+    }
+
     /// Returns a map associating a name and a polynomial,
     /// e.g. "sphere1", "x^2+y^2+z^2-1".
     ///
@@ -131,6 +146,8 @@ namespace DGtal
 
     /// @return the parameters and their default values which are used
     /// to define an implicit shape.
+    ///   - polynomial["sphere1"]: the implicit polynomial whose zero-level set
+    ///                            defines the shape of interest.
     static Parameters parametersImplicitShape()
     {
       return Parameters( "polynomial", "sphere1" );
@@ -139,8 +156,8 @@ namespace DGtal
     /// Builds a 3D implicit shape from parameters
     ///
     /// @param[in] params the parameters:
-    ///   - polynomial: the implicit polynomial whose zero-level set
-    ///     defines the shape of interest.
+    ///   - polynomial["sphere1"]: the implicit polynomial whose zero-level set
+    ///                            defines the shape of interest.
     ///
     /// @return a smart pointer on the created implicit shape.
     static CountedPtr<ImplicitShape>
@@ -165,15 +182,116 @@ namespace DGtal
       return CountedPtr<ImplicitShape>( new ImplicitShape( poly ) );
     }
 
+    /// @return the parameters and their default values which are used for digitization.
+    ///   - closed   [1]: specifies if the Khalimsky space is closed (!=0) or not (==0).
+    static Parameters parametersKSpace()
+    {
+      return Parameters
+	( "closed",  1 );
+    }
+
+    /// @return the parameters and their default values which are used for digitization.
+    ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
+    ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+    ///   - offset   [  5.0]: the digital dilation of the digital space,
+    ///                       useful when you process shapes and that you add noise.
+    static Parameters parametersDigitization()
+    {
+      return Parameters
+	( "minAABB",  -10.0 )
+	( "maxAABB",   10.0 )
+	( "gridstep",   1.0 )
+	( "offset",     5.0 );
+    }
+
+    /// Builds a Khalimsky space that encompasses the lower and upper
+    /// digital points.  Note that digital points are cells of the
+    /// Khalimsky space with maximal dimensions.  A closed Khalimsky
+    /// space adds lower dimensional cells all around its boundary to
+    /// define a closed complex.
+    ///
+    /// @param[in] params the parameters:
+    ///   - closed   [1]: specifies if the Khalimsky space is closed (!=0) or not (==0).
+    ///
+    /// @return the Khalimsky space.
+    static KSpace makeKSpace( const Point& low, const Point& up,
+			      Parameters params = parametersKSpace() )
+    {
+      int closed  = params[ "closed"  ].as<int>();
+      KSpace K;
+      if ( ! K.init( low, up, closed ) )
+	trace.error() << "[Shortcuts::makeKSpace]"
+		      << " Error building Khalimsky space K=" << K << std::endl;
+      return K;
+    }
+    
+    /// Builds a Khalimsky space that encompasses the bounding box
+    /// specified by \a params. It is for instance useful when
+    /// digitizing an implicit shape.
+    ///
+    /// @param[in] params the parameters:
+    ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
+    ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+    ///   - offset   [  5.0]: the digital dilation of the digital space,
+    ///                       useful when you process shapes and that you add noise.
+    ///   - closed   [1]    : specifies if the Khalimsky space is closed (!=0) or not (==0).
+    ///
+    /// @return the Khalimsky space.
+    /// @see makeImplicitDigitalShape
+    static KSpace makeKSpaceDigitization( Parameters params =
+					  parametersKSpace() | parametersDigitization() )
+    {
+      Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
+      Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
+      Scalar h      = params[ "gridstep" ].as<Scalar>();
+      Scalar offset = params[ "offset"   ].as<Scalar>();
+      bool   closed = params[ "closed"   ].as<int>();
+      RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
+      RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
+      CountedPtr<ImplicitDigitalShape> dshape( new ImplicitDigitalShape() );
+      dshape->init( p1, p2, h );
+      Domain domain = dshape->getDomain();
+      KSpace K;
+      if ( ! K.init( domain.lowerBound(), domain.upperBound(), closed ) )
+	trace.error() << "[Shortcuts::makeKSpace]"
+		      << " Error building Khalimsky space K=" << K << std::endl;
+      return K;
+    }
+
+    /// Makes the Gauss digitization of the given implicit shape
+    /// according to parameters. Use makeKSpace to build the associated digital space.
+    ///
+    /// @param[in] shape a smart pointer on the implicit shape.
+    /// @param[in] params the parameters:
+    ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
+    ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+    ///   - offset   [  5.0]: the digital dilation of the digital space,
+    ///                       useful when you process shapes and that you add noise.
+    ///
+    /// @return a smart pointer on the created implicit digital shape.
+    /// @see makeKSpaceDigitization 
+    static CountedPtr<ImplicitDigitalShape>
+    makeImplicitDigitalShape
+    ( CountedPtr<ImplicitShape> shape,
+      Parameters params = parametersDigitization() )
+    {
+      Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
+      Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
+      Scalar h      = params[ "gridstep" ].as<Scalar>();
+      Scalar offset = params[ "offset"   ].as<Scalar>();
+      RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
+      RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
+      CountedPtr<ImplicitDigitalShape> dshape( new ImplicitDigitalShape() );
+      dshape->attach( shape );
+      dshape->init( p1, p2, h );
+      return dshape;
+    }
     
     // ----------------------- Standard services ------------------------------
   public:
-
-    /* TODO: The following special members are currently deleted.
-     * TODO: Replace `= delete` by `= default` if you want to use the compiler-
-     * TODO: generated version of the operation, or implement your own version
-     * TODO: in Shortcuts.ih.
-     */
 
     /**
      * Default constructor.

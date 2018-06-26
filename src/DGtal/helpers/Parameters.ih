@@ -76,6 +76,24 @@ DGtal::Parameters::operator()( std::string name, ParameterValue pv )
 }
 // ----------------------------------------------------------------------------
 inline
+DGtal::Parameters::Self&
+DGtal::Parameters::operator()( const Parameters& params )
+{
+  // if keys collide, values of params overrides this's values.
+  for(auto& it : params._parameters)
+    _parameters[it.first] = it.second;
+  return *this;
+}
+// ----------------------------------------------------------------------------
+inline
+DGtal::Parameters::Self
+DGtal::Parameters::operator|( const Self& other ) const
+{
+  return Parameters( *this )( other );
+}
+
+// ----------------------------------------------------------------------------
+inline
 DGtal::ParameterValue
 DGtal::Parameters::operator[]( std::string name ) const
 {

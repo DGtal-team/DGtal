@@ -143,6 +143,9 @@ namespace DGtal
     /// @param[in] name the name of the parameter.
     /// @param[in] pv the value of the parameter (string,int,float,double).
     Self& operator()( std::string name, ParameterValue pv = ParameterValue() );
+    /// Add parameters params to this object.
+    /// @param[in] params a set of parameters
+    Self& operator()( const Self& params );
     /// @param[in] name any parameter name
     /// @param[in] unset the returned value if parameter is unset.
     /// @return the associated value (if it does not exist, return "UNSET PARAMETER").
@@ -151,6 +154,10 @@ namespace DGtal
     /// @return 'true' if and only if the parameter has been set or assigned.
     bool count( std::string name ) const;
 
+    /// Merge the two parameter sets and returns a new one.
+    /// @param[in] other a set of parameters
+    Self operator|( const Self& other ) const;
+    
     // ----------------------- Interface --------------------------------------
   public:
 
