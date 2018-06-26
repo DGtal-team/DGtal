@@ -41,15 +41,13 @@ DGtal::ParameterValue::ParameterValue ( const std::string& v )
   : _value( v )
 {}
 // ----------------------------------------------------------------------------
-inline
 template <typename X>
 DGtal::ParameterValue::ParameterValue ( const X& v )
   : _value( ValueConverter< X, std::string>::cast( v ) )
 {} 
 // ----------------------------------------------------------------------------
-inline
 template <typename T>
-const T&
+T
 DGtal::ParameterValue::as() const
 {
   return ValueConverter< std::string, T >::cast( _value );
@@ -79,10 +77,10 @@ DGtal::Parameters::operator()( std::string name, ParameterValue pv )
 // ----------------------------------------------------------------------------
 inline
 DGtal::ParameterValue
-DGtal::Parameters::operator[]( std::string name, ParameterValue unset ) const
+DGtal::Parameters::operator[]( std::string name ) const
 {
   auto it = _parameters.find( name );
-  return ( it != _parameters.end() ) ? *it : unset;
+  return ( it != _parameters.end() ) ? it->second : ParameterValue( "UNSET PARAMETER" );
 }
 // ----------------------------------------------------------------------------
 inline
@@ -106,11 +104,11 @@ DGtal::Parameters::selfDisplay ( std::ostream & out ) const
       ++it;
       if ( it != itE ) out << ", ";
     }
-  out << "}";
+  out << " }";
 }
 // ----------------------------------------------------------------------------
 inline
-void
+bool
 DGtal::Parameters::isValid() const
 {
   return true;
@@ -125,6 +123,16 @@ DGtal::Parameters::isValid() const
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
+
+// ----------------------------------------------------------------------------
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+		    const ParameterValue & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
 
 // ----------------------------------------------------------------------------
 inline
