@@ -67,6 +67,10 @@ int main( int argc, char** argv )
   auto binary_image = SH3::makeBinaryImage( implicit_digital_shape );
   std::cout << *binary_image << std::endl;
   trace.endBlock();
+  trace.beginBlock ( "Making binary image from vol file" );
+  auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+  std::cout << *al_capone << std::endl;
+  trace.endBlock();
   return 0;
 }
 //                                                                           //
