@@ -54,6 +54,7 @@
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/helpers/Parameters.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
+#include "DGtal/io/readers/GenericReader.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -109,7 +110,8 @@ namespace DGtal
     {
       return parametersImplicitShape()
 	| parametersKSpace()
-	| parametersDigitization();
+	| parametersDigitization()
+	| parametersBinaryImage();
     }
 
     /// Returns a map associating a name and a polynomial,
@@ -299,12 +301,14 @@ namespace DGtal
 
     /// @return the parameters and their default values which are
     /// related to binary images and synthetic noise.
-    ///   - noise   [0.0]: specifies the Kanungo noise level for binary pictures.
+    ///   - noise        [0.0]: specifies the Kanungo noise level for binary pictures.
+    ///   - thresholdMin [  0]: specifies the threshold min (excluded) to define binary shape
+    ///   - thresholdMax [255]: specifies the threshold max (included) to define binary shape
     static Parameters parametersBinaryImage()
     {
       return Parameters
 	( "noise", 0.0 )
-	( "input", examplesPath + "samples/Al.100.vol" )
+	//	( "input", examplesPath + "samples/Al.100.vol" )
 	( "thresholdMin", 0 )
 	( "thresholdMax", 255 );
     }
@@ -396,6 +400,35 @@ namespace DGtal
 		      [&noisy_dshape] ( const Point& p ) { return noisy_dshape(p); } );
       return img;
     }
+
+    /// Loads an arbitrary image file (e.g. vol file in 3D) and returns
+    /// the binary image corresponding to the threshold/noise parameters.
+    ///
+    /// @param[in] input the input filename.
+    /// @param[in] params the parameters:
+    ///   - noise        [0.0]: specifies the Kanungo noise level for binary pictures.
+    ///   - thresholdMin [  0]: specifies the threshold min (excluded) to define binary shape
+    ///   - thresholdMax [255]: specifies the threshold max (included) to define binary sha    ///
+    /// @return a smart pointer on a binary image that represents the
+    /// (thresholded/noisified) image file.
+    static CountedPtr<BinaryImage>
+    makeBinaryImage
+    ( std::string input,
+      Parameters params = parametersBinaryImage() )
+    {
+      int     thresholdMin = params["thresholdMin"].as<int>();
+      int     thresholdMax = params["thresholdMax"].as<int>();
+      GrayScaleImage image = GenericReader<GrayScaleImage>::import( input );
+      Domain        domain = image.domain();
+      typedef functors::IntervalForegroundPredicate<GrayScaleImage> ThresholdedImage;
+      ThresholdedImage tImage( image, thresholdMin, thresholdMax );
+      CountedPtr<BinaryImage> img ( new BinaryImage( domain ) );
+      std::transform( domain.begin(), domain.end(),
+		      img->begin(),
+		      [tImage] ( const Point& p ) { return tImage(p); } );
+      return noisify( img, params );
+    }
+    
     
     // ----------------------- Standard services ------------------------------
   public:
