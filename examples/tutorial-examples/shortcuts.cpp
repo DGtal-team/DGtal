@@ -46,7 +46,9 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Setting parameters" );
   auto params = SH3::defaultParameters();
   // Set your own parameters with operator().
-  params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.5 );
+  params( "polynomial", "3*x^2+2*y^2+z^2-90" )
+    ( "gridstep", 0.5 )
+    ( "noise",    0.2 );
   std::cout << params << std::endl;
   trace.endBlock();
   trace.beginBlock ( "Making implicit shape" );

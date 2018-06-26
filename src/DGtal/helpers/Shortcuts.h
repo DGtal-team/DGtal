@@ -53,6 +53,7 @@
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/helpers/Parameters.h"
+#include "DGtal/geometry/volumes/KanungoNoise.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -296,37 +297,103 @@ namespace DGtal
       return dshape;
     }
 
-    /// Vectorizes an implicitly defined digital shape into a binary image.
+    /// @return the parameters and their default values which are
+    /// related to binary images and synthetic noise.
+    ///   - noise   [0.0]: specifies the Kanungo noise level for binary pictures.
+    static Parameters parametersBinaryImage()
+    {
+      return Parameters
+	( "noise", 0.0 )
+	( "input", examplesPath + "samples/Al.100.vol" )
+	( "thresholdMin", 0 )
+	( "thresholdMax", 255 );
+    }
+    
+    /// Makes an empty binary image within a given domain.
     ///
-    /// @param[in] implicit_digital_shape a smart pointer on an implicit digital shape.
+    /// @param[in] domain any domain.
+    ///
     /// @return a smart pointer on a binary image that samples the digital shape.
     static CountedPtr<BinaryImage>
-    makeBinaryImage( CountedPtr<ImplicitDigitalShape> implicit_digital_shape )
+    makeBinaryImage( Domain shapeDomain )
     {
-      const Domain shapeDomain    = implicit_digital_shape->getDomain();
-      CountedPtr<BinaryImage> img ( new BinaryImage( shapeDomain ) );
-      std::transform( shapeDomain.begin(), shapeDomain.end(),
-		      img->begin(),
-		      [implicit_digital_shape&]
-		      ( const Point& p ) { return (*implicit_digital_shape)(p); } );
-      return img;
+      return CountedPtr<BinaryImage>( new BinaryImage( shapeDomain ) );
     }
     
     /// Vectorizes an implicitly defined digital shape into a binary
-    /// image, in the specified (hyper-)rectangular domain.
+    /// image, and possibly add Kanungo noise to the result depending
+    /// on parameters given in \a params.
     ///
     /// @param[in] implicit_digital_shape a smart pointer on an implicit digital shape.
-    /// @param[in] domain any domain.
+    /// @param[in] params the parameters:
+    ///   - noise   [0.0]: specifies the Kanungo noise level for binary pictures.
+    ///
     /// @return a smart pointer on a binary image that samples the digital shape.
     static CountedPtr<BinaryImage>
     makeBinaryImage( CountedPtr<ImplicitDigitalShape> implicit_digital_shape,
-		     const Domain shapeDomain )
+		     Parameters params = parametersBinaryImage() )
     {
+      return makeBinaryImage( implicit_digital_shape,
+			      implicit_digital_shape->getDomain(),
+			      params );
+    }
+    
+    /// Vectorizes an implicitly defined digital shape into a binary
+    /// image, in the specified (hyper-)rectangular domain, and
+    /// possibly add Kanungo noise to the result depending on
+    /// parameters given in \a params.
+    ///
+    /// @param[in] implicit_digital_shape a smart pointer on an implicit digital shape.
+    /// @param[in] domain any domain.
+    /// @param[in] params the parameters:
+    ///   - noise   [0.0]: specifies the Kanungo noise level for binary pictures.
+    ///
+    /// @return a smart pointer on a binary image that samples the digital shape.
+    static CountedPtr<BinaryImage>
+    makeBinaryImage( CountedPtr<ImplicitDigitalShape> implicit_digital_shape,
+		     Domain shapeDomain,
+		     Parameters params = parametersBinaryImage() )
+    {
+      const Scalar noise        = params[ "noise"  ].as<Scalar>();
       CountedPtr<BinaryImage> img ( new BinaryImage( shapeDomain ) );
+      if ( noise <= 0.0 )
+	{
+	  std::transform( shapeDomain.begin(), shapeDomain.end(),
+			  img->begin(),
+			  [&implicit_digital_shape]
+			  ( const Point& p ) { return (*implicit_digital_shape)(p); } );
+	}
+      else
+	{
+	  typedef KanungoNoise< ImplicitDigitalShape, Domain > KanungoPredicate;
+	  KanungoPredicate noisy_dshape( *implicit_digital_shape, shapeDomain, noise );
+	  std::transform( shapeDomain.begin(), shapeDomain.end(),
+			  img->begin(),
+			  [&noisy_dshape] ( const Point& p ) { return noisy_dshape(p); } );
+	}
+      return img;
+    }
+
+    /// Adds Kanungo noise to a binary image.
+    ///
+    /// @param[in] bimage a smart pointer on a binary image.
+    /// @param[in] params the parameters:
+    ///   - noise   [0.0]: specifies the Kanungo noise level for binary pictures.
+    ///
+    /// @return a smart pointer on the noisified binary image.
+    static CountedPtr<BinaryImage>
+    noisify( CountedPtr<BinaryImage> bimage,
+	     Parameters params = parametersBinaryImage() )
+    {
+      const Scalar noise = params[ "noise"  ].as<Scalar>();
+      if ( noise <= 0.0 ) return bimage;
+      typedef KanungoNoise< BinaryImage, Domain > KanungoPredicate;
+      const Domain shapeDomain    = bimage->domain();
+      CountedPtr<BinaryImage> img ( new BinaryImage( shapeDomain ) );
+      KanungoPredicate noisy_dshape( *bimage, shapeDomain, noise );
       std::transform( shapeDomain.begin(), shapeDomain.end(),
 		      img->begin(),
-		      [implicit_digital_shape&]
-		      ( const Point& p ) { return (*implicit_digital_shape)(p); } );
+		      [&noisy_dshape] ( const Point& p ) { return noisy_dshape(p); } );
       return img;
     }
     
