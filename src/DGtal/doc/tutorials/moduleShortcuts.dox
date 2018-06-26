@@ -76,6 +76,9 @@ The following name conventions for types are used:
   gridSteps, resolution. Note that pixels/voxels are not stored
   explicitly, so the resolution may be arbirary high.
 
+- BinaryImage: represents a black and white image as an array of
+  bits. It is generally a faster representation of a predicate Point
+  -> bool than an implicit digital shape.
 
 
 
