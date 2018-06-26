@@ -52,45 +52,38 @@ namespace DGtal
   template <typename X, typename Y>
   struct ValueConverter {
     /// By default, it is impossible to do such conversions.
-    static const Y& cast( const X& value ) const
+    static Y cast( const X& value )
     {
-      BOOST_STATIC_ASSERT( false
-			   && "[ValueConverter<X,Y>::cast] there is no such generic type converter." );
+      ASSERT( false
+	      && "[ValueConverter<X,Y>::cast] there is no such generic type converter." );
+      return Y();
     }
   };
-  
-  /// Specialized definitions of a class for converting type X toward type Y.
-  template <typename X>
-  struct ValueConverter< X, X >{
-    /// In this case, there is no conversion.
-    static const X& cast( const X& value ) const
-    { return value; }
-  };
-  
+    
   /// Specialized definitions of a class for converting type X toward type Y.
   template <>
   struct ValueConverter< std::string, double >{
-    static double cast( const std::string& value ) const
-    { return atof( value ); }
+    static double cast( const std::string& value )
+    { return atof( value.c_str() ); }
   };
   
   /// Specialized definitions of a class for converting type X toward type Y.
   template <>
   struct ValueConverter< std::string, float >{
-    static float cast( const std::string& value ) const
-    { return (float) atof( value ); }
+    static float cast( const std::string& value )
+    { return (float) atof( value.c_str() ); }
   };
 
   /// Specialized definitions of a class for converting type X toward type Y.
   template <>
   struct ValueConverter< std::string, int >{
-    static int cast( const std::string& value ) const
-    { return atoi( value ); }
+    static int cast( const std::string& value )
+    { return atoi( value.c_str() ); }
   };
   /// Specialized definitions of a class for converting type X toward type Y.
   template < typename X >
   struct ValueConverter< X, std::string >{
-    static std::string cast( const X& value ) const
+    static std::string cast( const X& value )
     {
       std::ostringstream ss;
       ss << value;
@@ -111,11 +104,20 @@ namespace DGtal
     template <typename X>
     ParameterValue ( const X& v );
     template <typename T>
-    const T& as() const;
+    T    as() const;
     void selfDisplay ( std::ostream & out ) const;
   protected:
     std::string _value;
   };
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'ParameterValue'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'ParameterValue' to write.
+   * @return the output stream after the writing.
+   */
+  std::ostream&
+  operator<< ( std::ostream & out, const ParameterValue & object );
   
   /// This class represents a set of (input) simple parameters,
   /// i.e. mapping names to values.
@@ -143,9 +145,8 @@ namespace DGtal
     Self& operator()( std::string name, ParameterValue pv = ParameterValue() );
     /// @param[in] name any parameter name
     /// @param[in] unset the returned value if parameter is unset.
-    /// @return the associated value (if it does not exist, return unset).
-    ParameterValue operator[]( std::string name,
-			       ParameterValue unset = "UNSET PARAMETER" ) const;
+    /// @return the associated value (if it does not exist, return "UNSET PARAMETER").
+    ParameterValue operator[]( std::string name ) const;
     /// @param[in] name any parameter name
     /// @return 'true' if and only if the parameter has been set or assigned.
     bool count( std::string name ) const;
@@ -164,6 +165,7 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+    
   protected:
     std::map< std::string, ParameterValue > _parameters;
   };

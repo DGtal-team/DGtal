@@ -44,8 +44,10 @@
 #include <iostream>
 #include <string>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CoountedPtr.h"
+#include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
+#include "DGtal/io/readers/MPolynomialReader.h"
+#include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/helpers/Parameters.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -79,33 +81,83 @@ namespace DGtal
 
     // ----------------------- Shortcut types --------------------------------------
   public:
-    
+    /// defines a multi-variate polynomial : RealPoint -> Scalar
+    typedef MPolynomial< Space::dimension, Scalar >  ScalarPolynomial;
+    /// defines an implicit shape of the space, which is the
+    /// zero-level set of a ScalarPolynomial.
+    typedef ImplicitPolynomial3Shape<Space>          ImplicitShape;
+     
 
     // ----------------------- Static services --------------------------------------
   public:
-
-    /// Builds a 3D implicit shape from argument "-polynomial".
+    /// Returns a map associating a name and a polynomial,
+    /// e.g. "sphere1", "x^2+y^2+z^2-1".
     ///
-    /// @param[in] vm the options sets in the variable map (arguments
-    /// given to the program). Recognized parameters are given in \ref
-    /// optionsImplicitShape.
+    /// { "sphere1", "x^2+y^2+z^2-1" },
+    /// { "sphere9", "x^2+y^2+z^2-81" },
+    /// { "ellipsoid", "3*x^2+2*y^2+z^2-90" },
+    /// { "cylinder", "x^2+2*z^2-90" },
+    ///	{ "torus",   "(x^2+y^2+z^2+6*6-2*2)^2-4*6*6*(x^2+y^2)" },
+    /// { "rcube",   "x^4+y^4+z^4-6561" },
+    /// { "goursat", "-1*(8-0.03*x^4-0.03*y^4-0.03*z^4+2*x^2+2*y^2+2*z^2)" },
+    /// { "distel",  "10000-(x^2+y^2+z^2+1000*(x^2+y^2)*(x^2+z^2)*(y^2+z^2))"},
+    /// { "leopold", "(x^2*y^2*z^2+4*x^2+4*y^2+3*z^2)-100" },
+    /// { "diabolo", "x^2-(y^2+z^2)^2" },
+    /// { "heart",   "-1*(x^2+2.25*y^2+z^2-1)^3+x^2*z^3+0.1125*y^2*z^3" },
+    /// { "crixxi",  "-0.9*(y^2+z^2-1)^2-(x^2+y^2-1)^3" }
+    ///
+    /// @return the map associating a polynomial to a name.
+    static std::map< std::string, std::string >
+    polynomialList()
+    {
+      std::vector< std::pair< std::string, std::string > >
+	Ps = { { "sphere1", "x^2+y^2+z^2-1" },
+	       { "sphere9", "x^2+y^2+z^2-81" },
+	       { "ellipsoid", "3*x^2+2*y^2+z^2-90" },
+	       { "cylinder", "x^2+2*z^2-90" },
+	       { "torus",   "(x^2+y^2+z^2+6*6-2*2)^2-4*6*6*(x^2+y^2)" },
+	       { "rcube",   "x^4+y^4+z^4-6561" },
+	       { "goursat", "-1*(8-0.03*x^4-0.03*y^4-0.03*z^4+2*x^2+2*y^2+2*z^2)" },
+	       { "distel",  "10000-(x^2+y^2+z^2+1000*(x^2+y^2)*(x^2+z^2)*(y^2+z^2))"},
+	       { "leopold", "(x^2*y^2*z^2+4*x^2+4*y^2+3*z^2)-100" },
+	       { "diabolo", "x^2-(y^2+z^2)^2" },
+	       { "heart",   "-1*(x^2+2.25*y^2+z^2-1)^3+x^2*z^3+0.1125*y^2*z^3" },
+	       { "crixxi",  "-0.9*(y^2+z^2-1)^2-(x^2+y^2-1)^3" } };
+      std::map< std::string, std::string > L;
+      for ( auto p : Ps )
+	L[ p.first ] = p.second;
+      return L;
+    }
+
+    /// @return the parameters and their default values which are used
+    /// to define an implicit shape.
+    static Parameters parametersImplicitShape()
+    {
+      return Parameters( "polynomial", "sphere1" );
+    }
+
+    /// Builds a 3D implicit shape from parameters
+    ///
+    /// @param[in] params the parameters:
+    ///   - polynomial: the implicit polynomial whose zero-level set
+    ///     defines the shape of interest.
     ///
     /// @return a smart pointer on the created implicit shape.
     static CountedPtr<ImplicitShape>
-    makeImplicitShape( const po::variables_map& vm )
+    makeImplicitShape( const Parameters& params = parametersImplicitShape() )
     {
       typedef MPolynomialReader< Space::dimension, Scalar> Polynomial3Reader;
-      std::string poly_str = vm[ "polynomial" ].as<std::string>();
-      // Recognizes some strings:
-      auto PL = getPolynomialList();
+      std::string poly_str = params[ "polynomial" ].as<std::string>();
+      // Recognizes specific strings as polynomials.
+      auto PL = polynomialList();
       if ( PL[ poly_str ] != "" ) poly_str = PL[ poly_str ];
-      PolynomialN poly;
+      ScalarPolynomial poly;
       Polynomial3Reader reader;
       std::string::const_iterator iter
 	= reader.read( poly, poly_str.begin(), poly_str.end() );
       if ( iter != poly_str.end() )
 	{
-	  trace.error() << "[EstimatorHelpers::makeImplicitShape]"
+	  trace.error() << "[Shortcuts::makeImplicitShape]"
 			<< " ERROR reading polynomial: I read only <"
 			<< poly_str.substr( 0, iter - poly_str.begin() )
 			<< ">, and I built P=" << poly << std::endl;
