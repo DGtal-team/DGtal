@@ -74,6 +74,8 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Making binary image from vol file" );
   auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
   std::cout << *al_capone << std::endl;
+  auto ok2 = SH3::saveBinaryImage( al_capone, "dummy2.vol" );
+  std::cout << ( ok ? "dummy2.vol OK" : "dummy2.vol ERROR" ) << std::endl;
   trace.endBlock();
   return 0;
 }

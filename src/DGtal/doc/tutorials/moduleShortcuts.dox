@@ -80,6 +80,33 @@ The following name conventions for types are used:
   bits. It is generally a faster representation of a predicate Point
   -> bool than an implicit digital shape.
 
+@section dgtal_shortcuts_sec2 Short examples
+
+We give below some minimalistic examples to show that shortcuts can
+save a lot of lines of code.
+
+@subsection dgtal_shortcuts_ssec2_1 Build Polynomial shape -> noisify -> save as vol file.
+
+\code
+  auto params = SH3::defaultParameters();
+  // Set your own parameters with operator().
+  params( "polynomial", "3*x^2+2*y^2+z^2-90" )
+        ( "gridstep", 0.25 )
+        ( "noise", 0.3 );
+  auto implicit_shape  = SH3::makeImplicitShape( params );
+  auto digitized_shape = SH3::makeImplicitDigitalShape( implicit_shape, params );
+  auto ok = SH3::saveBinaryImage( digitized_shape, "noisy-ellipsoid.vol" );
+\endcode 
+
+@subsection dgtal_shortcuts_ssec2_2 Load vol file -> noisify -> save as vol file.
+
+\code
+  auto params = SH3::defaultParameters();
+  params( "noise", 0.3 );
+  // load and noisify image directly.
+  auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+  auto ok = SH3::saveBinaryImage( al_capone, "noisy-Al.vol" );
+\endcode 
 
 
 */
