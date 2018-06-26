@@ -46,6 +46,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/IntervalForegroundPredicate.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
@@ -85,12 +87,16 @@ namespace DGtal
     // ----------------------- Shortcut types --------------------------------------
   public:
     /// defines a multi-variate polynomial : RealPoint -> Scalar
-    typedef MPolynomial< Space::dimension, Scalar >  ScalarPolynomial;
+    typedef MPolynomial< Space::dimension, Scalar >          ScalarPolynomial;
     /// defines an implicit shape of the space, which is the
     /// zero-level set of a ScalarPolynomial.
-    typedef ImplicitPolynomial3Shape<Space>          ImplicitShape;
+    typedef ImplicitPolynomial3Shape<Space>                  ImplicitShape;
     /// defines the digitization of an implicit shape.
-    typedef GaussDigitizer< Space, ImplicitShape >   ImplicitDigitalShape;
+    typedef GaussDigitizer< Space, ImplicitShape >           ImplicitDigitalShape;
+    /// defines a black and white image with (hyper-)rectangular domain.
+    typedef ImageContainerBySTLVector<Domain, bool>          BinaryImage;
+    /// defines a grey-level image with (hyper-)rectangular domain.
+    typedef ImageContainerBySTLVector<Domain, unsigned char> GrayScaleImage;
      
 
     // ----------------------- Static services --------------------------------------
@@ -288,6 +294,40 @@ namespace DGtal
       dshape->attach( shape );
       dshape->init( p1, p2, h );
       return dshape;
+    }
+
+    /// Vectorizes an implicitly defined digital shape into a binary image.
+    ///
+    /// @param[in] implicit_digital_shape a smart pointer on an implicit digital shape.
+    /// @return a smart pointer on a binary image that samples the digital shape.
+    static CountedPtr<BinaryImage>
+    makeBinaryImage( CountedPtr<ImplicitDigitalShape> implicit_digital_shape )
+    {
+      const Domain shapeDomain    = implicit_digital_shape->getDomain();
+      CountedPtr<BinaryImage> img ( new BinaryImage( shapeDomain ) );
+      std::transform( shapeDomain.begin(), shapeDomain.end(),
+		      img->begin(),
+		      [implicit_digital_shape&]
+		      ( const Point& p ) { return (*implicit_digital_shape)(p); } );
+      return img;
+    }
+    
+    /// Vectorizes an implicitly defined digital shape into a binary
+    /// image, in the specified (hyper-)rectangular domain.
+    ///
+    /// @param[in] implicit_digital_shape a smart pointer on an implicit digital shape.
+    /// @param[in] domain any domain.
+    /// @return a smart pointer on a binary image that samples the digital shape.
+    static CountedPtr<BinaryImage>
+    makeBinaryImage( CountedPtr<ImplicitDigitalShape> implicit_digital_shape,
+		     const Domain shapeDomain )
+    {
+      CountedPtr<BinaryImage> img ( new BinaryImage( shapeDomain ) );
+      std::transform( shapeDomain.begin(), shapeDomain.end(),
+		      img->begin(),
+		      [implicit_digital_shape&]
+		      ( const Point& p ) { return (*implicit_digital_shape)(p); } );
+      return img;
     }
     
     // ----------------------- Standard services ------------------------------
