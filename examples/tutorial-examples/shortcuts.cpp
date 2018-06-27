@@ -52,15 +52,15 @@ int main( int argc, char** argv )
   std::cout << params << std::endl;
   trace.endBlock();
   trace.beginBlock ( "Making implicit shape" );
-  auto implicit_shape = SH3::makeImplicitShape( params );
+  auto implicit_shape = SH3::makeImplicitShape3D( params );
   std::cout << *implicit_shape << std::endl;
   trace.endBlock();
   trace.beginBlock ( "Making Khalimsky space" );
-  auto K = SH3::getKSpaceShapeDigitization( params );
+  auto K = SH3::getKSpaceDigitizedImplicitShape3D( params );
   std::cout << K << std::endl;
   trace.endBlock();
   trace.beginBlock ( "Making implicit digital shape" );
-  auto digital_shape = SH3::makeShapeDigitization( implicit_shape, params );
+  auto digital_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   std::cout << *digital_shape << std::endl;
   trace.endBlock();
   trace.beginBlock ( "Making binary image from implicit digital shape" );

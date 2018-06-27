@@ -48,9 +48,9 @@ builds a shape that represents the digitization of an ellipsoid.
   auto params = SH3::defaultParameters();
   // Set your own parameters with operator().
   params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 );
-  auto implicit_shape  = SH3::makeImplicitShape( params );
-  auto kspace          = SH3::makeKSpaceShapeDigitization( params );
-  auto digitized_shape = SH3::makeShapeDigitization( implicit_shape, params );
+  auto implicit_shape  = SH3::makeImplicitShape3D( params );
+  auto kspace          = SH3::makeKSpaceDigitizedImplicitShape3D( params );
+  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   std::cout << *digitized_shape << std::endl;
 \endcode
 
@@ -76,8 +76,8 @@ save a lot of lines of code.
   params( "polynomial", "3*x^2+2*y^2+z^2-90" )
         ( "gridstep", 0.25 )
         ( "noise", 0.3 );
-  auto implicit_shape  = SH3::makeImplicitShape    ( params );
-  auto digitized_shape = SH3::makeShapeDigitization( implicit_shape, params );
+  auto implicit_shape  = SH3::makeImplicitShape3D    ( params );
+  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto noisy_shape     = SH3::makeBinaryImage      ( digitized_shape, params );
   auto ok              = SH3::saveBinaryImage      ( digitized_shape, "noisy-ellipsoid.vol" );
 \endcode 
@@ -126,12 +126,12 @@ The following name conventions for types are used:
 - Shortcuts::Space: represents a digital space (generally a SpaceND)
 - Shortcuts::KSpace: represents a cellular grid space (generally a KhalimskySpaceND)
 
-- Shortcuts::ImplicitShape: represents a functor RealPoint -> Scalar which adds
+- Shortcuts::ImplicitShape3D: represents a functor RealPoint -> Scalar which adds
   geometry services: isInside, orientation, gradient, meanCurvature,
   GaussianCurvature, principalCurvatures, nearestPoint
 
-- Shortcuts::ShapeDigitization: represents the digitization of an
-  ImplicitShape as a predicate Point -> bool (isInside), and adds some
+- Shortcuts::DigitizedImplicitShape3D: represents the digitization of an
+  ImplicitShape3D as a predicate Point -> bool (isInside), and adds some
   services: getLowerBound, getUpperBound, embed, round, getDomain,
   gridSteps, resolution. Note that pixels/voxels are not stored
   explicitly, so the resolution may be arbirary high.
@@ -147,18 +147,18 @@ The following name conventions for types are used:
 
 -# General methods
   - Shortcuts::defaultParameters: return the set of all shorcut parameters.
--# ImplicitShape methods
+-# ImplicitShape3D methods
   - Shortcuts::getPolynomialList: return the list of polynomial shapes predefined for implicit shapes 
-  - Shortcuts::parametersImplicitShape: parameters related to implicit shapes (polynomial)
-  - Shortcuts::makeImplicitShape: builds an implicit shape
+  - Shortcuts::parametersImplicitShape3D: parameters related to implicit shapes (polynomial)
+  - Shortcuts::makeImplicitShape3D: builds an implicit shape
 -# KSpace methods
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
   - Shortcuts::getKSpace: builds a Khalimsky space from a domain.
-  - Shortcuts::getKSpaceShapeDigitization: builds a Khalimsky space from a shape digitization.
--# ShapeDigitization methods
-  - Shortcuts::parametersShapeDigitization: parameters related to shape digitization (bounding box, sampling)
-  - Shortcuts::makeShapeDigitization: digitizes an implicit shape.
-  - Shortcuts::getKSpaceShapeDigitization: builds a Khalimsky space associated to a shape digitization.
+  - Shortcuts::getKSpaceDigitizedImplicitShape3D: builds a Khalimsky space from a shape digitization.
+-# DigitizedImplicitShape3D methods
+  - Shortcuts::parametersDigitizedImplicitShape3D: parameters related to shape digitization (bounding box, sampling)
+  - Shortcuts::makeDigitizedImplicitShape3D: digitizes an implicit shape.
+  - Shortcuts::getKSpaceDigitizedImplicitShape3D: builds a Khalimsky space associated to a shape digitization.
 -# BinaryImage methods
   - Shortcuts::parametersBinaryImage: parameters related to binary images (noise, threshold).
   - Shortcuts::makeBinaryImage: many overloaded methods for creating from scratch, vectorizing shape digitization, loading, copying/noisifying binary images, thresholding gray-scale images.
