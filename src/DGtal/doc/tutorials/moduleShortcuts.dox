@@ -153,7 +153,7 @@ The following name conventions for types are used:
   - Shortcuts::makeImplicitShape3D: builds an implicit shape
 -# KSpace methods
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
-  - Shortcuts::getKSpace: builds a Khalimsky space from a domain.
+  - Shortcuts::getKSpace: overloaded methods for building a Khalimsky space from a domain or an image.
   - Shortcuts::getKSpaceDigitizedImplicitShape3D: builds a Khalimsky space from a shape digitization.
 -# DigitizedImplicitShape3D methods
   - Shortcuts::parametersDigitizedImplicitShape3D: parameters related to shape digitization (bounding box, sampling)
