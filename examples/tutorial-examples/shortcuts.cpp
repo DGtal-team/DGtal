@@ -77,6 +77,17 @@ int main( int argc, char** argv )
   auto ok2 = SH3::saveBinaryImage( al_capone, "dummy2.vol" );
   std::cout << ( ok ? "dummy2.vol OK" : "dummy2.vol ERROR" ) << std::endl;
   trace.endBlock();
+
+  // 2d tests
+  {
+    typedef Shortcuts< Z2i::KSpace > SH2;
+    trace.beginBlock ( "Load and threshold gray-scale image" );
+    auto gl_image = SH2::makeGrayScaleImage( examplesPath + "samples/contourS.pgm" );
+    auto b_image  = SH2::makeBinaryImage( gl_image, params( "thresholdMin", 128 ) );
+    auto ok       = SH2::saveBinaryImage( b_image, "dummy3.pgm" );
+    std::cout << *gl_image << std::endl;
+    trace.endBlock();
+  } 
   return 0;
 }
 //                                                                           //

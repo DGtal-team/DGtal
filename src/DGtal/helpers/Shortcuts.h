@@ -98,20 +98,22 @@ namespace DGtal
     typedef typename RealVector::Component           Scalar;
     /// An (hyper-)rectangular domain.
     typedef HyperRectDomain<Space>                   Domain;
+    /// The type for 8-bits gray-scale elements.
+    typedef unsigned char                            GrayScale;
 
     // ----------------------- Shortcut types --------------------------------------
   public:
     /// defines a multi-variate polynomial : RealPoint -> Scalar
-    typedef MPolynomial< Space::dimension, Scalar >          ScalarPolynomial;
+    typedef MPolynomial< Space::dimension, Scalar >      ScalarPolynomial;
     /// defines an implicit shape of the space, which is the
     /// zero-level set of a ScalarPolynomial.
-    typedef ImplicitPolynomial3Shape<Space>                  ImplicitShape;
+    typedef ImplicitPolynomial3Shape<Space>              ImplicitShape;
     /// defines the digitization of an implicit shape.
-    typedef GaussDigitizer< Space, ImplicitShape >           ShapeDigitization;
+    typedef GaussDigitizer< Space, ImplicitShape >       ShapeDigitization;
     /// defines a black and white image with (hyper-)rectangular domain.
-    typedef ImageContainerBySTLVector<Domain, bool>          BinaryImage;
+    typedef ImageContainerBySTLVector<Domain, bool>      BinaryImage;
     /// defines a grey-level image with (hyper-)rectangular domain.
-    typedef ImageContainerBySTLVector<Domain, unsigned char> GrayScaleImage;
+    typedef ImageContainerBySTLVector<Domain, GrayScale> GrayScaleImage;
      
 
     // ----------------------- Static services --------------------------------------
@@ -212,21 +214,6 @@ namespace DGtal
 	( "closed",  1 );
     }
 
-    /// @return the parameters and their default values which are used for digitization.
-    ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
-    ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
-    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
-    ///   - offset   [  5.0]: the digital dilation of the digital space,
-    ///                       useful when you process shapes and that you add noise.
-    static Parameters parametersShapeDigitization()
-    {
-      return Parameters
-	( "minAABB",  -10.0 )
-	( "maxAABB",   10.0 )
-	( "gridstep",   1.0 )
-	( "offset",     5.0 );
-    }
-
     /// Builds a Khalimsky space that encompasses the lower and upper
     /// digital points.  Note that digital points are cells of the
     /// Khalimsky space with maximal dimensions.  A closed Khalimsky
@@ -247,6 +234,22 @@ namespace DGtal
 		      << " Error building Khalimsky space K=" << K << std::endl;
       return K;
     }
+
+    /// @return the parameters and their default values which are used for digitization.
+    ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
+    ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+    ///   - offset   [  5.0]: the digital dilation of the digital space,
+    ///                       useful when you process shapes and that you add noise.
+    static Parameters parametersShapeDigitization()
+    {
+      return Parameters
+	( "minAABB",  -10.0 )
+	( "maxAABB",   10.0 )
+	( "gridstep",   1.0 )
+	( "offset",     5.0 );
+    }
+
     
     /// Builds a Khalimsky space that encompasses the bounding box
     /// specified by \a params. It is for instance useful when
@@ -329,7 +332,7 @@ namespace DGtal
     ///
     /// @param[in] domain any domain.
     ///
-    /// @return a smart pointer on a binary image that samples the digital shape.
+    /// @return a smart pointer on a binary image that fits the given domain.
     static CountedPtr<BinaryImage>
     makeBinaryImage( Domain shapeDomain )
     {
@@ -399,7 +402,7 @@ namespace DGtal
     /// @return a smart pointer on the noisified binary image.
     static CountedPtr<BinaryImage>
     makeBinaryImage( CountedPtr<BinaryImage> bimage,
-			  Parameters params = parametersBinaryImage() )
+		     Parameters params = parametersBinaryImage() )
     {
       const Scalar noise = params[ "noise"  ].as<Scalar>();
       if ( noise <= 0.0 ) return bimage;
@@ -420,7 +423,8 @@ namespace DGtal
     /// @param[in] params the parameters:
     ///   - noise        [0.0]: specifies the Kanungo noise level for binary pictures.
     ///   - thresholdMin [  0]: specifies the threshold min (excluded) to define binary shape
-    ///   - thresholdMax [255]: specifies the threshold max (included) to define binary sha    ///
+    ///   - thresholdMax [255]: specifies the threshold max (included) to define binary shape
+    ///
     /// @return a smart pointer on a binary image that represents the
     /// (thresholded/noisified) image file.
     static CountedPtr<BinaryImage>
@@ -440,6 +444,35 @@ namespace DGtal
 		      [tImage] ( const Point& p ) { return tImage(p); } );
       return makeBinaryImage( img, params );
     }
+
+    /// Binarizes an arbitrary gray scale image file and returns
+    /// the binary image corresponding to the threshold/noise parameters.
+    ///
+    /// @param[in] gray_scale_image the input gray scale image.
+    /// @param[in] params the parameters:
+    ///   - noise        [0.0]: specifies the Kanungo noise level for binary pictures.
+    ///   - thresholdMin [  0]: specifies the threshold min (excluded) to define binary shape
+    ///   - thresholdMax [255]: specifies the threshold max (included) to define binary shape
+    ///
+    /// @return a smart pointer on a binary image that represents the
+    /// (thresholded/noisified) gray scale image.
+    static CountedPtr<BinaryImage>
+    makeBinaryImage
+    ( CountedPtr<GrayScaleImage> gray_scale_image,
+      Parameters params = parametersBinaryImage() )
+    {
+      int     thresholdMin = params["thresholdMin"].as<int>();
+      int     thresholdMax = params["thresholdMax"].as<int>();
+      Domain        domain = gray_scale_image->domain();
+      typedef functors::IntervalForegroundPredicate<GrayScaleImage> ThresholdedImage;
+      ThresholdedImage tImage( *gray_scale_image, thresholdMin, thresholdMax );
+      CountedPtr<BinaryImage> img ( new BinaryImage( domain ) );
+      std::transform( domain.begin(), domain.end(),
+		      img->begin(),
+		      [tImage] ( const Point& p ) { return tImage(p); } );
+      return makeBinaryImage( img, params );
+    }
+
     
     /// Saves an arbitrary image file (e.g. vol file in 3D).
     ///
@@ -449,14 +482,64 @@ namespace DGtal
     saveBinaryImage
     ( CountedPtr<BinaryImage> bimage, std::string output )
     {
-      typedef typename GrayScaleImage::Value Value;
-      const Domain domain = bimage->domain(); 
-      GrayScaleImage img( domain );
-      std::transform( bimage->begin(), bimage->end(),
-		      img.begin(),
-		      [] ( bool v ) { return v ? (Value) 255 : (Value) 0; } );
-      return GenericWriter< GrayScaleImage > //, Point::dimension, bool, ValueFunctor >
-	::exportFile( output, img );
+      auto gray_scale_image = makeGrayScaleImage( bimage );
+      return saveGrayScaleImage( gray_scale_image, output );
+    }
+
+    /// Makes an empty gray scale image within a given domain (values are unsigned char).
+    ///
+    /// @param[in] domain any domain.
+    ///
+    /// @return a smart pointer on a gray scale image that fits the given domain.
+    static CountedPtr<GrayScaleImage>
+    makeGrayScaleImage( Domain shapeDomain )
+    {
+      return CountedPtr<GrayScaleImage>( new BinaryImage( shapeDomain ) );
+    }
+
+    /// Loads an arbitrary binary image file (e.g. vol file in 3D) and returns
+    /// the corresponding gray-scale image.
+    ///
+    /// @param[in] input the input filename.
+    ///
+    /// @return a smart pointer on the loaded gray-scale image.
+    static CountedPtr<GrayScaleImage>
+    makeGrayScaleImage
+    ( std::string input )
+    {
+      GrayScaleImage image = GenericReader<GrayScaleImage>::import( input );
+      return CountedPtr<GrayScaleImage>( new GrayScaleImage( image ) );
+    }
+
+    /// Makes a gray-scale image from a binary image using the given transformation
+    ///
+    /// @param[in] binary_image the input binary image.
+    ///
+    /// @return a smart pointer on the resulting gray-scale image.
+    static CountedPtr<GrayScaleImage>
+    makeGrayScaleImage
+    ( CountedPtr<BinaryImage> binary_image,
+      std::function< GrayScale( bool ) > const & bool2grayscale
+      = [] ( bool v ) { return v ? (GrayScale) 255 : (GrayScale) 0; } )
+    {
+      const Domain domain = binary_image->domain(); 
+      CountedPtr<GrayScaleImage> gray_scale_image( new GrayScaleImage( domain ) );
+      std::transform( binary_image->begin(), binary_image->end(),
+		      gray_scale_image->begin(),
+		      bool2grayscale );
+      return gray_scale_image;
+    }
+
+    /// Saves an arbitrary gray-scale image file (e.g. vol file in 3D).
+    ///
+    /// @param[in] output the output filename .
+    /// @return 'true' if everything went well, 'false' if there was an error during save.
+    static bool
+    saveGrayScaleImage
+    ( CountedPtr<GrayScaleImage> gray_scale_image, std::string output )
+    {
+      return GenericWriter< GrayScaleImage > 
+	::exportFile( output, *gray_scale_image );
     }
     
     // ----------------------- Standard services ------------------------------

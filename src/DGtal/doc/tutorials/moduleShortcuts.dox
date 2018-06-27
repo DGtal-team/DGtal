@@ -71,24 +71,25 @@ save a lot of lines of code.
 @subsection dgtal_shortcuts_ssec2_1 Build Polynomial shape -> digitize -> noisify -> save as vol file.
 
 \code
-  auto params = SH3::defaultParameters();
+  auto params          = SH3::defaultParameters();
   // Set your own parameters with operator().
   params( "polynomial", "3*x^2+2*y^2+z^2-90" )
         ( "gridstep", 0.25 )
         ( "noise", 0.3 );
-  auto implicit_shape  = SH3::makeImplicitShape( params );
+  auto implicit_shape  = SH3::makeImplicitShape    ( params );
   auto digitized_shape = SH3::makeShapeDigitization( implicit_shape, params );
-  auto ok = SH3::saveBinaryImage( digitized_shape, "noisy-ellipsoid.vol" );
+  auto noisy_shape     = SH3::makeBinaryImage      ( digitized_shape, params );
+  auto ok              = SH3::saveBinaryImage      ( digitized_shape, "noisy-ellipsoid.vol" );
 \endcode 
 
 @subsection dgtal_shortcuts_ssec2_2 Load vol file -> noisify -> save as vol file.
 
 \code
-  auto params = SH3::defaultParameters();
+  auto params    = SH3::defaultParameters();
   params( "noise", 0.3 );
   // load and noisify image directly.
   auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
-  auto ok = SH3::saveBinaryImage( al_capone, "noisy-Al.vol" );
+  auto ok        = SH3::saveBinaryImage( al_capone, "noisy-Al.vol" );
 \endcode 
 
 
@@ -139,13 +140,42 @@ The following name conventions for types are used:
   bits. It is generally a faster representation of a predicate Point
   -> bool than an implicit digital shape.
 
+- Shortcuts::GrayScaleImage: represents an 8-bits gray-scale image as an array of
+  bytes (unsigned char). 
+
 @subsection dgtal_shortcuts_ssec3_3 Main methods
 
-- 
+-# General methods
+  - Shortcuts::defaultParameters: return the set of all shorcut parameters.
+-# ImplicitShape methods
+  - Shortcuts::getPolynomialList: return the list of polynomial shapes predefined for implicit shapes 
+  - Shortcuts::parametersImplicitShape: parameters related to implicit shapes (polynomial)
+  - Shortcuts::makeImplicitShape: builds an implicit shape
+-# KSpace methods
+  - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
+  - Shortcuts::getKSpace: builds a Khalimsky space from a domain.
+  - Shortcuts::getKSpaceShapeDigitization: builds a Khalimsky space from a shape digitization.
+-# ShapeDigitization methods
+  - Shortcuts::parametersShapeDigitization: parameters related to shape digitization (bounding box, sampling)
+  - Shortcuts::makeShapeDigitization: digitizes an implicit shape.
+  - Shortcuts::getKSpaceShapeDigitization: builds a Khalimsky space associated to a shape digitization.
+-# BinaryImage methods
+  - Shortcuts::parametersBinaryImage: parameters related to binary images (noise, threshold).
+  - Shortcuts::makeBinaryImage: many overloaded methods for creating from scratch, vectorizing shape digitization, loading, copying/noisifying binary images, thresholding gray-scale images.
+  - Shortcuts::saveBinaryImage: saves a binary image to a file.
+-# GrayScaleImage methods
+  - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images.
+  - Shortcuts::saveGrayScaleImage: save a gray scale image to a file.
 
+@subsection dgtal_shortcuts_ssec3_4 Parameters
 
-Also, methods whose result can be influenced by global
-parameters are parameterized through a Parameters object. The simplest way to get default values is to start with a line:
+Also, methods whose result can be influenced by global parameters are
+parameterized through a Parameters object. The simplest way to get
+default values is to start with a line:
+\code
+auto params = Shortcuts<KSpace>::defaultParameters();
+\endcode
+And then to change your parameter settings with Parameters::operator().
 
 
 */
