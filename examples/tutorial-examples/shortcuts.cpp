@@ -42,45 +42,53 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-  typedef Shortcuts< Z3i::KSpace > SH3;
-  trace.beginBlock ( "Setting parameters" );
-  auto params = SH3::defaultParameters();
-  // Set your own parameters with operator().
-  params( "polynomial", "3*x^2+2*y^2+z^2-90" )
-    ( "gridstep", 0.5 )
-    ( "noise",    0.2 );
-  std::cout << params << std::endl;
-  trace.endBlock();
-  trace.beginBlock ( "Making implicit shape" );
-  auto implicit_shape = SH3::makeImplicitShape3D( params );
-  std::cout << *implicit_shape << std::endl;
-  trace.endBlock();
-  trace.beginBlock ( "Making Khalimsky space" );
-  auto K = SH3::getKSpaceDigitizedImplicitShape3D( params );
-  std::cout << K << std::endl;
-  trace.endBlock();
-  trace.beginBlock ( "Making implicit digital shape" );
-  auto digital_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
-  std::cout << *digital_shape << std::endl;
-  trace.endBlock();
-  trace.beginBlock ( "Making binary image from implicit digital shape" );
-  auto binary_image = SH3::makeBinaryImage( digital_shape, params );
-  std::cout << *binary_image << std::endl;
-  trace.endBlock();
-  trace.beginBlock ( "Save binary image into file" );
-  auto ok = SH3::saveBinaryImage( binary_image, "dummy.vol" );
-  std::cout << ( ok ? "dummy.vol OK" : "dummy.vol ERROR" ) << std::endl;
-  trace.endBlock();
-  trace.beginBlock ( "Making binary image from vol file" );
-  auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
-  std::cout << *al_capone << std::endl;
-  auto ok2 = SH3::saveBinaryImage( al_capone, "dummy2.vol" );
-  std::cout << ( ok ? "dummy2.vol OK" : "dummy2.vol ERROR" ) << std::endl;
-  trace.endBlock();
-
+  // 3d tests
+  {
+    typedef Shortcuts< Z3i::KSpace > SH3;
+    trace.beginBlock ( "Setting parameters" );
+    auto params = SH3::defaultParameters();
+    // Set your own parameters with operator().
+    params( "polynomial", "3*x^2+2*y^2+z^2-90" )
+      ( "gridstep", 0.5 )
+      ( "noise",    0.2 );
+    std::cout << params << std::endl;
+    trace.endBlock();
+    trace.beginBlock ( "Making implicit shape" );
+    auto implicit_shape = SH3::makeImplicitShape3D( params );
+    std::cout << *implicit_shape << std::endl;
+    trace.endBlock();
+    trace.beginBlock ( "Making Khalimsky space" );
+    auto K = SH3::getKSpaceDigitizedImplicitShape3D( params );
+    std::cout << K << std::endl;
+    trace.endBlock();
+    trace.beginBlock ( "Making implicit digital shape" );
+    auto digital_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+    std::cout << *digital_shape << std::endl;
+    trace.endBlock();
+    trace.beginBlock ( "Making binary image from implicit digital shape" );
+    auto binary_image = SH3::makeBinaryImage( digital_shape, params );
+    std::cout << *binary_image << std::endl;
+    trace.endBlock();
+    trace.beginBlock ( "Save binary image into file" );
+    auto ok = SH3::saveBinaryImage( binary_image, "dummy.vol" );
+    std::cout << ( ok ? "dummy.vol OK" : "dummy.vol ERROR" ) << std::endl;
+    trace.endBlock();
+    trace.beginBlock ( "Making binary image from vol file" );
+    auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+    std::cout << *al_capone << std::endl;
+    auto ok2 = SH3::saveBinaryImage( al_capone, "dummy2.vol" );
+    std::cout << ( ok ? "dummy2.vol OK" : "dummy2.vol ERROR" ) << std::endl;
+    trace.endBlock();
+    trace.beginBlock ( "Making simple digital surface" );
+    auto Kal         = SH3::getKSpace( al_capone, params );
+    auto simple_surf = SH3::makeSimpleDigitalSurface( al_capone, Kal, params );
+    std::cout << "#surfels = " << simple_surf->size() << std::endl;
+    trace.endBlock();
+  }
   // 2d tests
   {
     typedef Shortcuts< Z2i::KSpace > SH2;
+    auto params = SH2::defaultParameters();
     trace.beginBlock ( "Load and threshold gray-scale image" );
     auto gl_image = SH2::makeGrayScaleImage( examplesPath + "samples/contourS.pgm" );
     auto b_image  = SH2::makeBinaryImage( gl_image, params( "thresholdMin", 128 ) );
