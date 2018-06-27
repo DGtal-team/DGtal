@@ -69,6 +69,9 @@ namespace DGtal
    * you can create new shapes and surface in a few lines. The
    * drawback is that you use specific types or objects, which could
    * lead to faster code or more compact data structures.
+   *
+   * @tparam TKSpace any cellular grid space, a model of
+   * concepts::CCellularGridSpaceND like KhalimskySpaceND.
    */
   template  < typename TKSpace >
   class Shortcuts
@@ -77,14 +80,23 @@ namespace DGtal
 
     // ----------------------- Usual space types --------------------------------------
   public:
+    /// Digital cellular space
     typedef TKSpace                                  KSpace;
+    /// Digital space
     typedef typename KSpace::Space                   Space;
+    /// Integer numbers
     typedef typename Space::Integer                  Integer;
+    /// Point with integer coordinates.
     typedef typename Space::Point                    Point;
+    /// Vector with integer coordinates.
     typedef typename Space::Vector                   Vector;
+    /// Vector with floating-point coordinates.
     typedef typename Space::RealVector               RealVector;
+    /// Point with floating-point coordinates.
     typedef typename Space::RealPoint                RealPoint;
+    /// Floating-point numbers.
     typedef typename RealVector::Component           Scalar;
+    /// An (hyper-)rectangular domain.
     typedef HyperRectDomain<Space>                   Domain;
 
     // ----------------------- Shortcut types --------------------------------------
@@ -95,7 +107,7 @@ namespace DGtal
     /// zero-level set of a ScalarPolynomial.
     typedef ImplicitPolynomial3Shape<Space>                  ImplicitShape;
     /// defines the digitization of an implicit shape.
-    typedef GaussDigitizer< Space, ImplicitShape >           ImplicitDigitalShape;
+    typedef GaussDigitizer< Space, ImplicitShape >           ShapeDigitization;
     /// defines a black and white image with (hyper-)rectangular domain.
     typedef ImageContainerBySTLVector<Domain, bool>          BinaryImage;
     /// defines a grey-level image with (hyper-)rectangular domain.
@@ -111,7 +123,7 @@ namespace DGtal
     {
       return parametersImplicitShape()
 	| parametersKSpace()
-	| parametersDigitization()
+	| parametersShapeDigitization()
 	| parametersBinaryImage();
     }
 
@@ -133,7 +145,7 @@ namespace DGtal
     ///
     /// @return the map associating a polynomial to a name.
     static std::map< std::string, std::string >
-    polynomialList()
+    getPolynomialList()
     {
       std::vector< std::pair< std::string, std::string > >
 	Ps = { { "sphere1", "x^2+y^2+z^2-1" },
@@ -176,7 +188,7 @@ namespace DGtal
       typedef MPolynomialReader< Space::dimension, Scalar> Polynomial3Reader;
       std::string poly_str = params[ "polynomial" ].as<std::string>();
       // Recognizes specific strings as polynomials.
-      auto PL = polynomialList();
+      auto PL = getPolynomialList();
       if ( PL[ poly_str ] != "" ) poly_str = PL[ poly_str ];
       ScalarPolynomial poly;
       Polynomial3Reader reader;
@@ -206,7 +218,7 @@ namespace DGtal
     ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
     ///   - offset   [  5.0]: the digital dilation of the digital space,
     ///                       useful when you process shapes and that you add noise.
-    static Parameters parametersDigitization()
+    static Parameters parametersShapeDigitization()
     {
       return Parameters
 	( "minAABB",  -10.0 )
@@ -249,9 +261,9 @@ namespace DGtal
     ///   - closed   [1]    : specifies if the Khalimsky space is closed (!=0) or not (==0).
     ///
     /// @return the Khalimsky space.
-    /// @see makeImplicitDigitalShape
-    static KSpace getKSpaceDigitization( Parameters params =
-					  parametersKSpace() | parametersDigitization() )
+    /// @see makeShapeDigitization
+    static KSpace getKSpaceShapeDigitization( Parameters params =
+					  parametersKSpace() | parametersShapeDigitization() )
     {
       Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
       Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
@@ -260,7 +272,7 @@ namespace DGtal
       bool   closed = params[ "closed"   ].as<int>();
       RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
       RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
-      CountedPtr<ImplicitDigitalShape> dshape( new ImplicitDigitalShape() );
+      CountedPtr<ShapeDigitization> dshape( new ShapeDigitization() );
       dshape->init( p1, p2, h );
       Domain domain = dshape->getDomain();
       KSpace K;
@@ -282,11 +294,11 @@ namespace DGtal
     ///                       useful when you process shapes and that you add noise.
     ///
     /// @return a smart pointer on the created implicit digital shape.
-    /// @see getKSpaceDigitization 
-    static CountedPtr<ImplicitDigitalShape>
-    makeImplicitDigitalShape
+    /// @see getKSpaceShapeDigitization 
+    static CountedPtr<ShapeDigitization>
+    makeShapeDigitization
     ( CountedPtr<ImplicitShape> shape,
-      Parameters params = parametersDigitization() )
+      Parameters params = parametersShapeDigitization() )
     {
       Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
       Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
@@ -294,7 +306,7 @@ namespace DGtal
       Scalar offset = params[ "offset"   ].as<Scalar>();
       RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
       RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
-      CountedPtr<ImplicitDigitalShape> dshape( new ImplicitDigitalShape() );
+      CountedPtr<ShapeDigitization> dshape( new ShapeDigitization() );
       dshape->attach( shape );
       dshape->init( p1, p2, h );
       return dshape;
@@ -309,7 +321,6 @@ namespace DGtal
     {
       return Parameters
 	( "noise", 0.0 )
-	//	( "input", examplesPath + "samples/Al.100.vol" )
 	( "thresholdMin", 0 )
 	( "thresholdMax", 255 );
     }
@@ -329,17 +340,17 @@ namespace DGtal
     /// image, and possibly add Kanungo noise to the result depending
     /// on parameters given in \a params.
     ///
-    /// @param[in] implicit_digital_shape a smart pointer on an implicit digital shape.
+    /// @param[in] shape_digitization a smart pointer on an implicit digital shape.
     /// @param[in] params the parameters:
     ///   - noise   [0.0]: specifies the Kanungo noise level for binary pictures.
     ///
     /// @return a smart pointer on a binary image that samples the digital shape.
     static CountedPtr<BinaryImage>
-    makeBinaryImage( CountedPtr<ImplicitDigitalShape> implicit_digital_shape,
+    makeBinaryImage( CountedPtr<ShapeDigitization> shape_digitization,
 		     Parameters params = parametersBinaryImage() )
     {
-      return makeBinaryImage( implicit_digital_shape,
-			      implicit_digital_shape->getDomain(),
+      return makeBinaryImage( shape_digitization,
+			      shape_digitization->getDomain(),
 			      params );
     }
     
@@ -348,14 +359,14 @@ namespace DGtal
     /// possibly add Kanungo noise to the result depending on
     /// parameters given in \a params.
     ///
-    /// @param[in] implicit_digital_shape a smart pointer on an implicit digital shape.
+    /// @param[in] shape_digitization a smart pointer on an implicit digital shape.
     /// @param[in] domain any domain.
     /// @param[in] params the parameters:
     ///   - noise   [0.0]: specifies the Kanungo noise level for binary pictures.
     ///
     /// @return a smart pointer on a binary image that samples the digital shape.
     static CountedPtr<BinaryImage>
-    makeBinaryImage( CountedPtr<ImplicitDigitalShape> implicit_digital_shape,
+    makeBinaryImage( CountedPtr<ShapeDigitization> shape_digitization,
 		     Domain shapeDomain,
 		     Parameters params = parametersBinaryImage() )
     {
@@ -365,13 +376,13 @@ namespace DGtal
 	{
 	  std::transform( shapeDomain.begin(), shapeDomain.end(),
 			  img->begin(),
-			  [&implicit_digital_shape]
-			  ( const Point& p ) { return (*implicit_digital_shape)(p); } );
+			  [&shape_digitization]
+			  ( const Point& p ) { return (*shape_digitization)(p); } );
 	}
       else
 	{
-	  typedef KanungoNoise< ImplicitDigitalShape, Domain > KanungoPredicate;
-	  KanungoPredicate noisy_dshape( *implicit_digital_shape, shapeDomain, noise );
+	  typedef KanungoNoise< ShapeDigitization, Domain > KanungoPredicate;
+	  KanungoPredicate noisy_dshape( *shape_digitization, shapeDomain, noise );
 	  std::transform( shapeDomain.begin(), shapeDomain.end(),
 			  img->begin(),
 			  [&noisy_dshape] ( const Point& p ) { return noisy_dshape(p); } );
@@ -379,7 +390,7 @@ namespace DGtal
       return img;
     }
 
-    /// Adds Kanungo noise to a binary image.
+    /// Adds Kanungo noise to a binary image and returns the resulting new image. 
     ///
     /// @param[in] bimage a smart pointer on a binary image.
     /// @param[in] params the parameters:
@@ -387,8 +398,8 @@ namespace DGtal
     ///
     /// @return a smart pointer on the noisified binary image.
     static CountedPtr<BinaryImage>
-    noisify( CountedPtr<BinaryImage> bimage,
-	     Parameters params = parametersBinaryImage() )
+    makeBinaryImage( CountedPtr<BinaryImage> bimage,
+			  Parameters params = parametersBinaryImage() )
     {
       const Scalar noise = params[ "noise"  ].as<Scalar>();
       if ( noise <= 0.0 ) return bimage;
@@ -427,7 +438,7 @@ namespace DGtal
       std::transform( domain.begin(), domain.end(),
 		      img->begin(),
 		      [tImage] ( const Point& p ) { return tImage(p); } );
-      return noisify( img, params );
+      return makeBinaryImage( img, params );
     }
     
     /// Saves an arbitrary image file (e.g. vol file in 3D).
@@ -439,10 +450,6 @@ namespace DGtal
     ( CountedPtr<BinaryImage> bimage, std::string output )
     {
       typedef typename GrayScaleImage::Value Value;
-      // struct ValueFunctor {
-      // 	Value operator()( bool v ) const
-      // 	{ return v ? (Value) 255 : (Value) 0; }
-      // };
       const Domain domain = bimage->domain(); 
       GrayScaleImage img( domain );
       std::transform( bimage->begin(), bimage->end(),
