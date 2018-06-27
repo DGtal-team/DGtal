@@ -107,9 +107,9 @@ namespace DGtal
     typedef MPolynomial< Space::dimension, Scalar >      ScalarPolynomial;
     /// defines an implicit shape of the space, which is the
     /// zero-level set of a ScalarPolynomial.
-    typedef ImplicitPolynomial3Shape<Space>              ImplicitShape;
+    typedef ImplicitPolynomial3Shape<Space>              ImplicitShape3D;
     /// defines the digitization of an implicit shape.
-    typedef GaussDigitizer< Space, ImplicitShape >       ShapeDigitization;
+    typedef GaussDigitizer< Space, ImplicitShape3D >     DigitizedImplicitShape3D;
     /// defines a black and white image with (hyper-)rectangular domain.
     typedef ImageContainerBySTLVector<Domain, bool>      BinaryImage;
     /// defines a grey-level image with (hyper-)rectangular domain.
@@ -123,9 +123,9 @@ namespace DGtal
     /// - "polynomial" : "sphere1"
     static Parameters defaultParameters()
     {
-      return parametersImplicitShape()
+      return parametersImplicitShape3D()
 	| parametersKSpace()
-	| parametersShapeDigitization()
+	| parametersDigitizedImplicitShape3D()
 	| parametersBinaryImage();
     }
 
@@ -172,7 +172,7 @@ namespace DGtal
     /// to define an implicit shape.
     ///   - polynomial["sphere1"]: the implicit polynomial whose zero-level set
     ///                            defines the shape of interest.
-    static Parameters parametersImplicitShape()
+    static Parameters parametersImplicitShape3D()
     {
       return Parameters( "polynomial", "sphere1" );
     }
@@ -184,8 +184,8 @@ namespace DGtal
     ///                            defines the shape of interest.
     ///
     /// @return a smart pointer on the created implicit shape.
-    static CountedPtr<ImplicitShape>
-    makeImplicitShape( const Parameters& params = parametersImplicitShape() )
+    static CountedPtr<ImplicitShape3D>
+    makeImplicitShape3D( const Parameters& params = parametersImplicitShape3D() )
     {
       typedef MPolynomialReader< Space::dimension, Scalar> Polynomial3Reader;
       std::string poly_str = params[ "polynomial" ].as<std::string>();
@@ -198,12 +198,12 @@ namespace DGtal
 	= reader.read( poly, poly_str.begin(), poly_str.end() );
       if ( iter != poly_str.end() )
 	{
-	  trace.error() << "[Shortcuts::makeImplicitShape]"
+	  trace.error() << "[Shortcuts::makeImplicitShape3D]"
 			<< " ERROR reading polynomial: I read only <"
 			<< poly_str.substr( 0, iter - poly_str.begin() )
 			<< ">, and I built P=" << poly << std::endl;
 	}
-      return CountedPtr<ImplicitShape>( new ImplicitShape( poly ) );
+      return CountedPtr<ImplicitShape3D>( new ImplicitShape3D( poly ) );
     }
 
     /// @return the parameters and their default values which are used for digitization.
@@ -241,7 +241,7 @@ namespace DGtal
     ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
     ///   - offset   [  5.0]: the digital dilation of the digital space,
     ///                       useful when you process shapes and that you add noise.
-    static Parameters parametersShapeDigitization()
+    static Parameters parametersDigitizedImplicitShape3D()
     {
       return Parameters
 	( "minAABB",  -10.0 )
@@ -264,9 +264,9 @@ namespace DGtal
     ///   - closed   [1]    : specifies if the Khalimsky space is closed (!=0) or not (==0).
     ///
     /// @return the Khalimsky space.
-    /// @see makeShapeDigitization
-    static KSpace getKSpaceShapeDigitization( Parameters params =
-					  parametersKSpace() | parametersShapeDigitization() )
+    /// @see makeDigitizedImplicitShape3D
+    static KSpace getKSpaceDigitizedImplicitShape3D( Parameters params =
+					  parametersKSpace() | parametersDigitizedImplicitShape3D() )
     {
       Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
       Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
@@ -275,7 +275,7 @@ namespace DGtal
       bool   closed = params[ "closed"   ].as<int>();
       RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
       RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
-      CountedPtr<ShapeDigitization> dshape( new ShapeDigitization() );
+      CountedPtr<DigitizedImplicitShape3D> dshape( new DigitizedImplicitShape3D() );
       dshape->init( p1, p2, h );
       Domain domain = dshape->getDomain();
       KSpace K;
@@ -297,11 +297,11 @@ namespace DGtal
     ///                       useful when you process shapes and that you add noise.
     ///
     /// @return a smart pointer on the created implicit digital shape.
-    /// @see getKSpaceShapeDigitization 
-    static CountedPtr<ShapeDigitization>
-    makeShapeDigitization
-    ( CountedPtr<ImplicitShape> shape,
-      Parameters params = parametersShapeDigitization() )
+    /// @see getKSpaceDigitizedImplicitShape3D 
+    static CountedPtr<DigitizedImplicitShape3D>
+    makeDigitizedImplicitShape3D
+    ( CountedPtr<ImplicitShape3D> shape,
+      Parameters params = parametersDigitizedImplicitShape3D() )
     {
       Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
       Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
@@ -309,7 +309,7 @@ namespace DGtal
       Scalar offset = params[ "offset"   ].as<Scalar>();
       RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
       RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
-      CountedPtr<ShapeDigitization> dshape( new ShapeDigitization() );
+      CountedPtr<DigitizedImplicitShape3D> dshape( new DigitizedImplicitShape3D() );
       dshape->attach( shape );
       dshape->init( p1, p2, h );
       return dshape;
@@ -349,7 +349,7 @@ namespace DGtal
     ///
     /// @return a smart pointer on a binary image that samples the digital shape.
     static CountedPtr<BinaryImage>
-    makeBinaryImage( CountedPtr<ShapeDigitization> shape_digitization,
+    makeBinaryImage( CountedPtr<DigitizedImplicitShape3D> shape_digitization,
 		     Parameters params = parametersBinaryImage() )
     {
       return makeBinaryImage( shape_digitization,
@@ -369,7 +369,7 @@ namespace DGtal
     ///
     /// @return a smart pointer on a binary image that samples the digital shape.
     static CountedPtr<BinaryImage>
-    makeBinaryImage( CountedPtr<ShapeDigitization> shape_digitization,
+    makeBinaryImage( CountedPtr<DigitizedImplicitShape3D> shape_digitization,
 		     Domain shapeDomain,
 		     Parameters params = parametersBinaryImage() )
     {
@@ -384,7 +384,7 @@ namespace DGtal
 	}
       else
 	{
-	  typedef KanungoNoise< ShapeDigitization, Domain > KanungoPredicate;
+	  typedef KanungoNoise< DigitizedImplicitShape3D, Domain > KanungoPredicate;
 	  KanungoPredicate noisy_dshape( *shape_digitization, shapeDomain, noise );
 	  std::transform( shapeDomain.begin(), shapeDomain.end(),
 			  img->begin(),
