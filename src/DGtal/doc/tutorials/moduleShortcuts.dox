@@ -79,7 +79,7 @@ save a lot of lines of code.
   auto implicit_shape  = SH3::makeImplicitShape3D    ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto noisy_shape     = SH3::makeBinaryImage      ( digitized_shape, params );
-  auto ok              = SH3::saveBinaryImage      ( digitized_shape, "noisy-ellipsoid.vol" );
+  auto ok              = SH3::saveBinaryImage      ( noisy_shape, "noisy-ellipsoid.vol" );
 \endcode 
 
 @subsection dgtal_shortcuts_ssec2_2 Load vol file -> noisify -> save as vol file.
@@ -109,7 +109,7 @@ parameters.
 - \b save + `Type`: means that it will save the pointed object of type `Type` as a file.
 
 - \b parameters + `Type`: returns the Parameters object associated to
-  the creation/copy/load of the given `Type`.
+  the operations related to the given `Type`.
 
 - \b get + `Type`: means that it will return \e by \e value an object of type `Type`.
 
@@ -172,11 +172,18 @@ The following name conventions for types are used:
 Also, methods whose result can be influenced by global parameters are
 parameterized through a Parameters object. The simplest way to get
 default values is to start with a line:
+
 \code
 auto params = Shortcuts<KSpace>::defaultParameters();
 \endcode
-And then to change your parameter settings with Parameters::operator().
 
+And then to change your parameter settings with Parameters::operator(), for instance:
+
+\code
+params( "gridstep", 0.1 )( "closed", 1 );
+\endcode
+
+You also have the bitwise-or (`operator|`) to merge Parameters.
 
 */
 

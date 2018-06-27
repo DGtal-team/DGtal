@@ -52,10 +52,14 @@
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
-#include "DGtal/helpers/Parameters.h"
+#include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/topology/DigitalSurface.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
+#include "DGtal/helpers/Parameters.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -114,11 +118,24 @@ namespace DGtal
     typedef ImageContainerBySTLVector<Domain, bool>      BinaryImage;
     /// defines a grey-level image with (hyper-)rectangular domain.
     typedef ImageContainerBySTLVector<Domain, GrayScale> GrayScaleImage;
-     
+
+    /// defines a light container that represents a connected digital
+    /// surface over a binary image.
+    typedef LightImplicitDigitalSurface< KSpace, BinaryImage >  SimpleSurfaceContainer;
+    typedef DigitalSurface< SimpleSurfaceContainer >            SimpleDigitalSurface;
+    typedef typename SimpleDigitalSurface::Surfel               Surfel;
+    typedef typename SimpleDigitalSurface::Cell                 Cell;
+    typedef typename SimpleDigitalSurface::SCell                SCell;
+    typedef typename SimpleDigitalSurface::Vertex               Vertex;
+    typedef typename SimpleDigitalSurface::Arc                  Arc;
+    typedef typename SimpleDigitalSurface::ArcRange             ArcRange;
 
     // ----------------------- Static services --------------------------------------
   public:
 
+    // ----------------------- General static services ------------------------------
+  public:
+    
     /// @return the parameters and their default values used in shortcuts.
     /// - "polynomial" : "sphere1"
     static Parameters defaultParameters()
@@ -126,8 +143,12 @@ namespace DGtal
       return parametersImplicitShape3D()
 	| parametersKSpace()
 	| parametersDigitizedImplicitShape3D()
-	| parametersBinaryImage();
+	| parametersBinaryImage()
+	| parametersDigitalSurface();
     }
+
+    // ----------------------- ImplicitShape3D static services ------------------------
+  public:
 
     /// Returns a map associating a name and a polynomial,
     /// e.g. "sphere1", "x^2+y^2+z^2-1".
@@ -206,6 +227,9 @@ namespace DGtal
       return CountedPtr<ImplicitShape3D>( new ImplicitShape3D( poly ) );
     }
 
+    // ----------------------- KSpace static services ------------------------------
+  public:
+    
     /// @return the parameters and their default values which are used for digitization.
     ///   - closed   [1]: specifies if the Khalimsky space is closed (!=0) or not (==0).
     static Parameters parametersKSpace()
@@ -235,6 +259,32 @@ namespace DGtal
       return K;
     }
 
+    /// Builds a Khalimsky space that encompasses the domain of the given image.
+    /// Note that digital points are cells of the Khalimsky space with
+    /// maximal dimensions.  A closed Khalimsky space adds lower
+    /// dimensional cells all around its boundary to define a closed
+    /// complex.
+    ///
+    /// @param[in] params the parameters:
+    ///   - closed   [1]: specifies if the Khalimsky space is closed (!=0) or not (==0).
+    ///
+    /// @return the Khalimsky space.
+    static KSpace getKSpace( CountedPtr<BinaryImage> bimage,
+			     Parameters params = parametersKSpace() )
+    {
+      int closed  = params[ "closed"  ].as<int>();
+      KSpace K;
+      if ( ! K.init( bimage->domain().lowerBound(),
+		     bimage->domain().upperBound(),
+		     closed ) )
+	trace.error() << "[Shortcuts::getKSpace]"
+		      << " Error building Khalimsky space K=" << K << std::endl;
+      return K;
+    }
+
+    // ----------------------- DigitizedImplicitShape3D static services --------------
+  public:
+    
     /// @return the parameters and their default values which are used for digitization.
     ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
     ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
@@ -315,6 +365,9 @@ namespace DGtal
       return dshape;
     }
 
+    // ----------------------- BinaryImage static services --------------------------
+  public:
+    
     /// @return the parameters and their default values which are
     /// related to binary images and synthetic noise.
     ///   - noise        [0.0]: specifies the Kanungo noise level for binary pictures.
@@ -486,6 +539,10 @@ namespace DGtal
       return saveGrayScaleImage( gray_scale_image, output );
     }
 
+
+    // ----------------------- GrayScaleImage static services -------------------------
+  public:
+    
     /// Makes an empty gray scale image within a given domain (values are unsigned char).
     ///
     /// @param[in] domain any domain.
@@ -541,6 +598,65 @@ namespace DGtal
       return GenericWriter< GrayScaleImage > 
 	::exportFile( output, *gray_scale_image );
     }
+
+    /// @return the parameters and their default values which are
+    /// related to digital surfaces.
+    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - nbTriesToFindABel [100000]: number of tries in method Surfaces::findABel
+    static Parameters parametersDigitalSurface()
+    {
+      return Parameters
+	( "surfelAdjacency", 1 )
+	( "nbTriesToFindABel", 100000 );
+    }
+
+    /// Builds a simple digital surface from a space \a K and a binary image \a bimage.
+    ///
+    /// @param[in] bimage a binary image representing the characteristic function of a digital shape.
+    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+    ///
+    /// @return a smart pointer on a (light) digital surface that
+    /// represents the boundary of the digital shape (at least a big
+    /// component).
+    static CountedPtr<SimpleDigitalSurface>
+    makeSimpleDigitalSurface
+    ( CountedPtr<BinaryImage> bimage,
+      const KSpace& K,
+      Parameters params = parametersDigitalSurface() )
+    {
+      bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
+      int nb_tries_to_find_a_bel = params[ "nbTriesToFindABel" ].as<int>();
+      SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
+
+      // We have to search for a surfel that belong to a big connected component.
+      CountedPtr<SimpleDigitalSurface> ptrSurface;
+      Surfel              bel;
+      Scalar              minsize    = bimage->extent().norm();
+      unsigned int        nb_surfels = 0;
+      unsigned int        tries      = 0;
+      do {
+        try { // Search initial bel
+          bel = Surfaces<KSpace>::findABel( K, *bimage, nb_tries_to_find_a_bel );
+        } catch (DGtal::InputException e) {
+          trace.error() << "[Shortcuts::makeSimpleDigitalSurface]"
+			<< " ERROR Unable to find bel." << std::endl;
+          return ptrSurface;
+        }
+	// this pointer will be acquired by the surface.
+        SimpleSurfaceContainer* surfContainer
+	  = new SimpleSurfaceContainer( K, *bimage, surfAdj, bel );
+        ptrSurface = CountedPtr<SimpleDigitalSurface>
+	  ( new SimpleDigitalSurface( surfContainer ) ); // acquired
+        nb_surfels = ptrSurface->size();
+      } while ( ( nb_surfels < 2 * minsize ) && ( tries++ < 150 ) );
+      if( tries >= 150 ) {
+	trace.warning() << "[Shortcuts::makeSimpleDigitalSurface]"
+			<< "ERROR cannot find a proper bel in a big enough component."
+			<< std::endl;
+      }
+      return ptrSurface;
+    }
+
     
     // ----------------------- Standard services ------------------------------
   public:
