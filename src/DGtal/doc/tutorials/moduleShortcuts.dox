@@ -66,17 +66,26 @@ explicitly.
 @section dgtal_shortcuts_sec2 Short examples
 
 We give below some minimalistic examples to show that shortcuts can
-save a lot of lines of code.
+save a lot of lines of code. All examples need at least the following lines:
+
+\code
+#include "DGtal/helpers/Stddefs.h"
+#include "DGtal/helpers/Shortcuts.h"
+
+...
+// Using standard 3D digital space.
+typedef Shortcuts<Z3i::KSpace> SH3;
+auto params          = SH3::defaultParameters();
+\endcode
 
 @subsection dgtal_shortcuts_ssec2_1 Build Polynomial shape -> digitize -> noisify -> save as vol file.
 
 \code
-  auto params          = SH3::defaultParameters();
   // Set your own parameters with operator().
   params( "polynomial", "3*x^2+2*y^2+z^2-90" )
         ( "gridstep", 0.25 )
         ( "noise", 0.3 );
-  auto implicit_shape  = SH3::makeImplicitShape3D    ( params );
+  auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto noisy_shape     = SH3::makeBinaryImage      ( digitized_shape, params );
   auto ok              = SH3::saveBinaryImage      ( noisy_shape, "noisy-ellipsoid.vol" );
@@ -85,13 +94,34 @@ save a lot of lines of code.
 @subsection dgtal_shortcuts_ssec2_2 Load vol file -> noisify -> save as vol file.
 
 \code
-  auto params    = SH3::defaultParameters();
-  params( "noise", 0.3 );
   // load and noisify image directly.
-  auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+  auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params( "noise", 0.3 ) );
   auto ok        = SH3::saveBinaryImage( al_capone, "noisy-Al.vol" );
 \endcode 
 
+@subsection dgtal_shortcuts_ssec2_3 Load vol file -> build its main connected digital surface
+
+\code
+  auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+  auto K         = SH3::getKSpace( al_capone );
+  auto surface   = SH3::makeAnyBigSimpleDigitalSurface( al_capone, K, params );
+\endcode
+
+@subsection dgtal_shortcuts_ssec2_4 Build Polynomial shape -> digitize -> build an indexed surface representing its boundary in some region
+
+\code
+  params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 )
+        ( "minAABB", -12.0 )( "maxAABB", 12.0 )
+        ( "surfaceComponents", "All" ) );
+  auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+  auto Kwhole          = SH3::getKSpaceDigitizedImplicitShape3D( params );
+  auto K               = SH3::getKSpace( SH3::Point::zero, Kwhole.upperBound() );
+  auto binary_image    = SH3::makeBinaryImage( digitized_shape, 
+                                               SH3::Domain(K.lowerBound(),K.upperBound()),
+					       params );
+  auto surface         = SH3::makeIdxDigitalSurface( binary_image, K, params );
+\endcode
 
 @section dgtal_shortcuts_sec3 Philosophy and naming conventions
 
@@ -105,6 +135,9 @@ parameters.
   `Type` and returns it as a \e smart \e pointer onto it. Depending on
   parameters, \b make can \b load a file, \b copy and \b transform an
   object, \b build an empty/not object according to parameters.
+
+- \b make + `Type` + \b s: means that it will create new objects of type
+  `Type` and returns them as a vector of \e smart \e pointers onto it. 
 
 - \b save + `Type`: means that it will save the pointed object of type `Type` as a file.
 
@@ -143,6 +176,10 @@ The following name conventions for types are used:
 - Shortcuts::GrayScaleImage: represents an 8-bits gray-scale image as an array of
   bytes (unsigned char). 
 
+- Shortcuts::SimpleDigitalSurface: represents a connected digital surface over a binary image with an implicit representation.
+
+- Shortcuts::IdxDigitalSurface: represents a indexed digital surface with an explicit array-like representation.
+
 @subsection dgtal_shortcuts_ssec3_3 Main methods
 
 -# General methods
@@ -167,9 +204,10 @@ The following name conventions for types are used:
   - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images.
   - Shortcuts::saveGrayScaleImage: saves a gray scale image to a file.
 -# DigitalSurface methods
-  - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, internal heuristics)
-  - Shortcuts::makeSimpleDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
-  - Shortcuts::getSimpleDigitalSurfaces: creates the vector of all simple digital surfaces of the binary image.
+  - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, components, internal heuristics)
+  - Shortcuts::makeAnyBigSimpleDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
+  - Shortcuts::makeSimpleDigitalSurfaces: creates the vector of all simple digital surfaces of the binary image or any one of its big components, can also output representant surfels  - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels.
+  - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
 
 @subsection dgtal_shortcuts_ssec3_4 Parameters
 

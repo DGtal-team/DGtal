@@ -50,7 +50,8 @@ int main( int argc, char** argv )
     // Set your own parameters with operator().
     params( "polynomial", "3*x^2+2*y^2+z^2-90" )
       ( "gridstep", 0.5 )
-      ( "noise",    0.2 );
+      ( "noise",    0.2 )
+      ( "surfaceComponents", "All" );
     std::cout << params << std::endl;
     trace.endBlock();
     trace.beginBlock ( "Making implicit shape" );
@@ -81,11 +82,19 @@ int main( int argc, char** argv )
     trace.endBlock();
     trace.beginBlock ( "Making simple digital surface" );
     auto Kal         = SH3::getKSpace( al_capone, params );
-    auto simple_surf = SH3::makeSimpleDigitalSurface( al_capone, Kal, params );
+    auto simple_surf = SH3::makeAnyBigSimpleDigitalSurface( al_capone, Kal, params );
     std::cout << "#surfels = " << simple_surf->size() << std::endl;
+    std::vector< std::string > traversals { "Default", "DepthFirst", "BreadthFirst" };
+    for ( auto&& mode : traversals ) {
+      auto surfels = SH3::getSurfelRange( simple_surf, params( "surfaceTraversal", mode ) );
+      double distance  = 0.0;
+      for ( int i = 1; i < surfels.size(); ++i )
+	distance += ( K.sCoords( surfels[ i-1 ] ) - K.sCoords( surfels[ i ] ) ).norm();
+      std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
+    }
     trace.endBlock();
     trace.beginBlock ( "Making all simple digital surfaces" );
-    auto vec_surfs   = SH3::getSimpleDigitalSurfaces( al_capone, Kal, params );
+    auto vec_surfs   = SH3::makeSimpleDigitalSurfaces( al_capone, Kal, params );
     std::cout << "#connected components        = " << vec_surfs.size() << std::endl;
     unsigned int nb_small = 0;
     unsigned int nb_big = 0;
@@ -97,6 +106,10 @@ int main( int argc, char** argv )
       }
     std::cout << "#connected components <  100 = " << nb_small << std::endl;
     std::cout << "#connected components >= 100 = " << nb_big << std::endl;
+    trace.endBlock();
+    trace.beginBlock ( "Making indexed digital surface" );
+    auto idx_surf    = SH3::makeIdxDigitalSurface( al_capone, Kal, params );
+    std::cout << "#surfels = " << idx_surf->size() << std::endl;
     trace.endBlock();
   }
   // 2d tests
