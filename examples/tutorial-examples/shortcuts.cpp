@@ -123,13 +123,29 @@ int main( int argc, char** argv )
     }
     trace.endBlock();
 
-    trace.beginBlock ( "Compute true normals" );
+    trace.beginBlock ( "Compute true geometry" );
     {
-      auto K       = SH3::getKSpace( params );
-      auto surface = SH3::makeAnyBigSimpleDigitalSurface( binary_image, K, params );
-      auto surfels = SH3::getSurfelRange( surface, params );
-      auto normals = SH3::getTrueNormals( implicit_shape, K, surfels, params ); 
+      auto K         = SH3::getKSpace( params );
+      auto surface   = SH3::makeAnyBigSimpleDigitalSurface( binary_image, K, params );
+      auto surfels   = SH3::getSurfelRange( surface, params );
+      auto positions = SH3::getPositions( implicit_shape, K, surfels, params ); 
+      auto normals   = SH3::getNormalVectors( implicit_shape, K, surfels, params ); 
+      auto mean_curv = SH3::getMeanCurvatures( implicit_shape, K, surfels, params ); 
+      SH3::RealPoint p = positions.front();
+      SH3::RealPoint q = p;
+      for ( auto&& r : positions ) {
+	p = p.inf( r ); q = q.sup( r );
+      }
+      SH3::Scalar   h0 =  1000.0;
+      SH3::Scalar   h1 = -1000.0;
+      for ( auto&& h : mean_curv ) {
+	h0 = std::min( h0, h );
+	h1 = std::max( h1, h );
+      }
+      std::cout << "#position = " << positions.size()
+		<< " p=" << p << " q=" << q << std::endl;
       std::cout << "#normals = " << normals.size() << std::endl;
+      std::cout << "H_min = " << h0 << " H_max = " << h1 << std::endl;
     }
     trace.endBlock();
 

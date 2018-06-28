@@ -160,8 +160,11 @@ namespace DGtal
     typedef std::vector< RealVector >                           RealVectors;
 
     
+    typedef sgf::ShapePositionFunctor<ImplicitShape3D>          PositionFunctor;
     typedef sgf::ShapeNormalVectorFunctor<ImplicitShape3D>      NormalFunctor;
     typedef sgf::ShapeMeanCurvatureFunctor<ImplicitShape3D>     MeanCurvatureFunctor;
+    typedef TrueDigitalSurfaceLocalEstimator
+    < KSpace, ImplicitShape3D, PositionFunctor >                TruePositionEstimator;
     typedef TrueDigitalSurfaceLocalEstimator
     < KSpace, ImplicitShape3D, NormalFunctor >                  TrueNormalEstimator;
     typedef TrueDigitalSurfaceLocalEstimator
@@ -272,24 +275,68 @@ namespace DGtal
     }
 
     /// Given a space \a K, an implicit \a shape, a sequence of \a
-    /// surfels, and a gridstep \a h, returns the true normals at the
-    /// specified surfels, in the same order.
+    /// surfels, and a gridstep \a h, returns the closest positions on
+    /// the surface at the specified surfels, in the same order.
+    ///
+    /// @note The surfel centroids are iteratively projected onto the
+    /// implicit surface through a damped Newton process.
     ///
     /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     /// @param[in] shape the implicit shape.
     /// @param[in] h the grid step to embed surfels.
     /// @param[in] surfels the sequence of surfels at which we compute the normals
-
+    ///
     /// @param[in] params the parameters:
+    ///   - gridstep          [   1.0]: the digitization gridstep (often denoted by h).
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
     ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
-
     ///
     /// @return the vector containing the true normals, in the same
     /// order as \a surfels.
     static RealVectors
-    getTrueNormals
+    getPositions
+    ( CountedPtr<ImplicitShape3D> shape,
+      const KSpace&               K,
+      const SurfelRange&          surfels,
+      const Parameters&           params = parametersImplicitShape3D() )
+    {
+      RealVectors         n_true_estimations;
+      TruePositionEstimator true_estimator;
+      int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+      double accuracy = params[ "projectionAccuracy" ].as<double>();
+      double    gamma = params[ "projectionGamma"    ].as<double>();
+      double gridstep = params[ "gridstep"           ].as<double>();
+      true_estimator.attach( *shape );
+      true_estimator.setParams( K, PositionFunctor(), maxIter, accuracy, gamma );
+      true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+      true_estimator.eval( surfels.begin(), surfels.end(),
+			   std::back_inserter( n_true_estimations ) );
+      return n_true_estimations;
+    }
+    
+    /// Given a space \a K, an implicit \a shape, a sequence of \a
+    /// surfels, and a gridstep \a h, returns the normal vectors at the
+    /// specified surfels, in the same order.
+    ///
+    /// @note that the normal vector is approximated by projecting the
+    /// surfel centroid onto the implicit 3D shape.
+    ///
+    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+    /// @param[in] shape the implicit shape.
+    /// @param[in] h the grid step to embed surfels.
+    /// @param[in] surfels the sequence of surfels at which we compute the normals
+    ///
+    /// @param[in] params the parameters:
+    ///   - gridstep          [   1.0]: the digitization gridstep (often denoted by h).
+    ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+    ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+    ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+    ///
+    /// @return the vector containing the true normals, in the same
+    /// order as \a surfels.
+    static RealVectors
+    getNormalVectors
     ( CountedPtr<ImplicitShape3D> shape,
       const KSpace&               K,
       const SurfelRange&          surfels,
@@ -303,6 +350,47 @@ namespace DGtal
       double gridstep = params[ "gridstep"           ].as<double>();
       true_estimator.attach( *shape );
       true_estimator.setParams( K, NormalFunctor(), maxIter, accuracy, gamma );
+      true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+      true_estimator.eval( surfels.begin(), surfels.end(),
+			   std::back_inserter( n_true_estimations ) );
+      return n_true_estimations;
+    }
+    
+    /// Given a space \a K, an implicit \a shape, a sequence of \a
+    /// surfels, and a gridstep \a h, returns the mean curvatures at the
+    /// specified surfels, in the same order.
+    ///
+    /// @note that the mean curvature is approximated by projecting the
+    /// surfel centroid onto the implicit 3D shape.
+    ///
+    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+    /// @param[in] shape the implicit shape.
+    /// @param[in] h the grid step to embed surfels.
+    /// @param[in] surfels the sequence of surfels at which we compute the normals
+    ///
+    /// @param[in] params the parameters:
+    ///   - gridstep          [   1.0]: the digitization gridstep (often denoted by h).
+    ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+    ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+    ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+    ///
+    /// @return the vector containing the mean curvatures, in the same
+    /// order as \a surfels.
+    static Scalars
+    getMeanCurvatures
+    ( CountedPtr<ImplicitShape3D> shape,
+      const KSpace&               K,
+      const SurfelRange&          surfels,
+      const Parameters&           params = parametersImplicitShape3D() )
+    {
+      Scalars                n_true_estimations;
+      TrueMeanCurvatureEstimator true_estimator;
+      int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+      double accuracy = params[ "projectionAccuracy" ].as<double>();
+      double    gamma = params[ "projectionGamma"    ].as<double>();
+      double gridstep = params[ "gridstep"           ].as<double>();
+      true_estimator.attach( *shape );
+      true_estimator.setParams( K, MeanCurvatureFunctor(), maxIter, accuracy, gamma );
       true_estimator.init( gridstep, surfels.begin(), surfels.end() );
       true_estimator.eval( surfels.begin(), surfels.end(),
 			   std::back_inserter( n_true_estimations ) );
