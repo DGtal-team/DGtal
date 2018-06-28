@@ -52,6 +52,7 @@
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
+#include "DGtal/shapes/ShapeGeometricFunctors.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -59,6 +60,13 @@
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
+#include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceLocalEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
@@ -69,6 +77,8 @@
 
 namespace DGtal
 {
+
+  namespace sgf = DGtal::functors::ShapeGeometricFunctors;
   
   /////////////////////////////////////////////////////////////////////////////
   // template class Shortcuts
@@ -140,14 +150,22 @@ namespace DGtal
     typedef typename SimpleDigitalSurface::Vertex               Vertex;
     typedef typename SimpleDigitalSurface::Arc                  Arc;
     typedef typename SimpleDigitalSurface::ArcRange             ArcRange;
-    typedef typename IdxDigitalSurface::Surfel                  IdxSurfel;
-    typedef typename IdxDigitalSurface::Cell                    IdxCell;
-    typedef typename IdxDigitalSurface::SCell                   IdxSCell;
+    typedef typename IdxDigitalSurface::Vertex                  IdxSurfel;
     typedef typename IdxDigitalSurface::Vertex                  IdxVertex;
     typedef typename IdxDigitalSurface::Arc                     IdxArc;
     typedef typename IdxDigitalSurface::ArcRange                IdxArcRange;
     typedef std::vector< Surfel >                               SurfelRange;
     typedef std::vector< IdxSurfel >                            IdxSurfelRange;
+    typedef std::vector< Scalar >                               Scalars;
+    typedef std::vector< RealVector >                           RealVectors;
+
+    
+    typedef sgf::ShapeNormalVectorFunctor<ImplicitShape3D>      NormalFunctor;
+    typedef sgf::ShapeMeanCurvatureFunctor<ImplicitShape3D>     MeanCurvatureFunctor;
+    typedef TrueDigitalSurfaceLocalEstimator
+    < KSpace, ImplicitShape3D, NormalFunctor >                  TrueNormalEstimator;
+    typedef TrueDigitalSurfaceLocalEstimator
+    < KSpace, ImplicitShape3D, MeanCurvatureFunctor >           TrueMeanCurvatureEstimator;
     
     // ----------------------- Static services --------------------------------------
   public:
@@ -210,13 +228,20 @@ namespace DGtal
 
     /// @return the parameters and their default values which are used
     /// to define an implicit shape.
-    ///   - polynomial["sphere1"]: the implicit polynomial whose zero-level set
-    ///                            defines the shape of interest.
+    ///   - polynomial     ["sphere1"]: the implicit polynomial whose zero-level set
+    ///                                 defines the shape of interest.
+    ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+    ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+    ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
     static Parameters parametersImplicitShape3D()
     {
-      return Parameters( "polynomial", "sphere1" );
+      return Parameters
+	( "polynomial", "sphere1" )
+	( "projectionMaxIter", 20 )
+	( "projectionAccuracy", 0.0001 )
+	( "projectionGamma",    0.5 );
     }
-
+    
     /// Builds a 3D implicit shape from parameters
     ///
     /// @param[in] params the parameters:
@@ -246,6 +271,45 @@ namespace DGtal
       return CountedPtr<ImplicitShape3D>( new ImplicitShape3D( poly ) );
     }
 
+    /// Given a space \a K, an implicit \a shape, a sequence of \a
+    /// surfels, and a gridstep \a h, returns the true normals at the
+    /// specified surfels, in the same order.
+    ///
+    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+    /// @param[in] shape the implicit shape.
+    /// @param[in] h the grid step to embed surfels.
+    /// @param[in] surfels the sequence of surfels at which we compute the normals
+
+    /// @param[in] params the parameters:
+    ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+    ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+    ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+
+    ///
+    /// @return the vector containing the true normals, in the same
+    /// order as \a surfels.
+    static RealVectors
+    getTrueNormals
+    ( CountedPtr<ImplicitShape3D> shape,
+      const KSpace&               K,
+      const SurfelRange&          surfels,
+      const Parameters&           params = parametersImplicitShape3D() )
+    {
+      RealVectors         n_true_estimations;
+      TrueNormalEstimator true_estimator;
+      int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+      double accuracy = params[ "projectionAccuracy" ].as<double>();
+      double    gamma = params[ "projectionGamma"    ].as<double>();
+      double gridstep = params[ "gridstep"           ].as<double>();
+      true_estimator.attach( *shape );
+      true_estimator.setParams( K, NormalFunctor(), maxIter, accuracy, gamma );
+      true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+      true_estimator.eval( surfels.begin(), surfels.end(),
+			   std::back_inserter( n_true_estimations ) );
+      return n_true_estimations;
+    }
+    
+    
     // ----------------------- KSpace static services ------------------------------
   public:
     
@@ -268,7 +332,7 @@ namespace DGtal
     ///
     /// @return the Khalimsky space.
     static KSpace getKSpace( const Point& low, const Point& up,
-			      Parameters params = parametersKSpace() )
+			     Parameters params = parametersKSpace() )
     {
       int closed  = params[ "closed"  ].as<int>();
       KSpace K;
@@ -321,7 +385,7 @@ namespace DGtal
 
     
     /// Builds a Khalimsky space that encompasses the bounding box
-    /// specified by \a params. It is for instance useful when
+    /// specified by a digitization in \a params. It is useful when
     /// digitizing an implicit shape.
     ///
     /// @param[in] params the parameters:
@@ -335,9 +399,8 @@ namespace DGtal
     /// @return the Khalimsky space.
     /// @see makeDigitizedImplicitShape3D
     static KSpace
-    getKSpaceDigitizedImplicitShape3D
-    ( Parameters params =
-      parametersKSpace() | parametersDigitizedImplicitShape3D() )
+    getKSpace( Parameters params =
+	       parametersKSpace() | parametersDigitizedImplicitShape3D() )
     {
       Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
       Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
@@ -845,6 +908,8 @@ namespace DGtal
     ///
     /// @param[in] surface a smart pointer on a digital surface.
     ///
+    /// @param[in] surface a smart pointer on a digital surface.
+    ///
     /// @param[in] params the parameters:
     ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
     ///
@@ -854,13 +919,34 @@ namespace DGtal
     ( CountedPtr<SimpleDigitalSurface> surface,
       const Parameters&   params = parametersDigitalSurface() )
     {
+      return getSurfelRange( surface, *( surface->begin() ), params );
+    }
+
+    /// Given a simple digital surface, returns a vector of surfels in
+    /// some specified order.
+    ///
+    /// @param[in] surface a smart pointer on a digital surface.
+    ///
+    /// @param[in] start_surfel the surfel where the traversal starts
+    /// in case of depth-first/breadth-first traversal.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
+    ///
+    /// @return a range of surfels as a vector.
+    static SurfelRange
+    getSurfelRange
+    ( CountedPtr<SimpleDigitalSurface> surface,
+      const Surfel&       start_surfel,
+      const Parameters&   params = parametersDigitalSurface() )
+    {
       SurfelRange result;
       std::string traversal = params[ "surfaceTraversal" ].as<std::string>();
       if ( traversal == "DepthFirst" )
 	{
 	  typedef DepthFirstVisitor< SimpleDigitalSurface > Visitor;
 	  typedef GraphVisitorRange< Visitor > VisitorRange;
-	  VisitorRange range( new Visitor( *surface, *( surface->begin() ) ) );
+	  VisitorRange range( new Visitor( *surface, start_surfel ) );
 	  std::for_each( range.begin(), range.end(),
 			 [&result] ( Surfel s ) { result.push_back( s ); } );
 	}
@@ -868,7 +954,7 @@ namespace DGtal
 	{
 	  typedef BreadthFirstVisitor< SimpleDigitalSurface > Visitor;
 	  typedef GraphVisitorRange< Visitor > VisitorRange;
-	  VisitorRange range( new Visitor( *surface, *( surface->begin() ) ) );
+	  VisitorRange range( new Visitor( *surface, start_surfel ) );
 	  std::for_each( range.begin(), range.end(),
 			 [&result] ( Surfel s ) { result.push_back( s ); } );
 	}
@@ -879,6 +965,64 @@ namespace DGtal
 	}
       return result;
     }
+
+    /// Given an indexed digital surface, returns a vector of surfels in
+    /// some specified order.
+    ///
+    /// @param[in] surface a smart pointer on a digital surface.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
+    ///
+    /// @return a range of indexed surfels as a vector.
+    static IdxSurfelRange
+    getIdxSurfelRange
+    ( CountedPtr<IdxDigitalSurface> surface,
+      const Parameters&   params = parametersDigitalSurface() )
+    {
+      return getIdxSurfelRange( surface, (IdxSurfel) 0, params );
+    }
+    
+    /// Given an indexed digital surface, returns a vector of surfels in
+    /// some specified order.
+    ///
+    /// @param[in] surface a smart pointer on a digital surface.
+    ///
+    /// @param[in] start_surfel the surfel where the traversal starts
+    /// in case of depth-first/breadth-first traversal.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
+    ///
+    /// @return a range of indexed surfels as a vector.
+    static IdxSurfelRange
+    getIdxSurfelRange
+    ( CountedPtr<IdxDigitalSurface> surface,
+      const IdxSurfel&    start_surfel,
+      const Parameters&   params = parametersDigitalSurface() )
+    {
+      IdxSurfelRange result;
+      std::string traversal = params[ "surfaceTraversal" ].as<std::string>();
+      if ( traversal == "DepthFirst" )
+	{
+	  typedef DepthFirstVisitor< IdxDigitalSurface > Visitor;
+	  typedef GraphVisitorRange< Visitor > VisitorRange;
+	  VisitorRange range( new Visitor( *surface, start_surfel ) );
+	  std::for_each( range.begin(), range.end(),
+			 [&result] ( IdxSurfel s ) { result.push_back( s ); } );
+	}
+      else if ( traversal == "BreadthFirst" )
+	{
+	  typedef BreadthFirstVisitor< IdxDigitalSurface > Visitor;
+	  typedef GraphVisitorRange< Visitor > VisitorRange;
+	  VisitorRange range( new Visitor( *surface, start_surfel ) );
+	  std::for_each( range.begin(), range.end(),
+			 [&result] ( IdxSurfel s ) { result.push_back( s ); } );
+	}
+      else return surface->allVertices();
+      return result;
+    }
+
     
     
     // ----------------------- Standard services ------------------------------
