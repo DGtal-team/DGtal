@@ -165,7 +165,11 @@ The following name conventions for types are used:
   - Shortcuts::saveBinaryImage: saves a binary image to a file.
 -# GrayScaleImage methods
   - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images.
-  - Shortcuts::saveGrayScaleImage: save a gray scale image to a file.
+  - Shortcuts::saveGrayScaleImage: saves a gray scale image to a file.
+-# DigitalSurface methods
+  - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, internal heuristics)
+  - Shortcuts::makeSimpleDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
+  - Shortcuts::getSimpleDigitalSurfaces: creates the vector of all simple digital surfaces of the binary image.
 
 @subsection dgtal_shortcuts_ssec3_4 Parameters
 
