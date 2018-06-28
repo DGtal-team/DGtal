@@ -84,6 +84,20 @@ int main( int argc, char** argv )
     auto simple_surf = SH3::makeSimpleDigitalSurface( al_capone, Kal, params );
     std::cout << "#surfels = " << simple_surf->size() << std::endl;
     trace.endBlock();
+    trace.beginBlock ( "Making all simple digital surfaces" );
+    auto vec_surfs   = SH3::getSimpleDigitalSurfaces( al_capone, Kal, params );
+    std::cout << "#connected components        = " << vec_surfs.size() << std::endl;
+    unsigned int nb_small = 0;
+    unsigned int nb_big = 0;
+    for ( auto&& surf : vec_surfs )
+      {
+	unsigned int n = surf->size();
+	nb_small += n <  100 ? 1 : 0;
+	nb_big   += n >= 100 ? 1 : 0;
+      }
+    std::cout << "#connected components <  100 = " << nb_small << std::endl;
+    std::cout << "#connected components >= 100 = " << nb_big << std::endl;
+    trace.endBlock();
   }
   // 2d tests
   {

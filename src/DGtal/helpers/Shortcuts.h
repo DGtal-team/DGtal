@@ -53,6 +53,7 @@
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/helpers/Surfaces.h"
@@ -119,6 +120,9 @@ namespace DGtal
     /// defines a grey-level image with (hyper-)rectangular domain.
     typedef ImageContainerBySTLVector<Domain, GrayScale> GrayScaleImage;
 
+    /// defines a set of surfels
+    typedef typename KSpace::SurfelSet                   SurfelSet;
+    
     /// defines a light container that represents a connected digital
     /// surface over a binary image.
     typedef LightImplicitDigitalSurface< KSpace, BinaryImage >  SimpleSurfaceContainer;
@@ -630,10 +634,10 @@ namespace DGtal
 
       // We have to search for a surfel that belong to a big connected component.
       CountedPtr<SimpleDigitalSurface> ptrSurface;
-      Surfel              bel;
-      Scalar              minsize    = bimage->extent().norm();
-      unsigned int        nb_surfels = 0;
-      unsigned int        tries      = 0;
+      Surfel       bel;
+      Scalar       minsize    = bimage->extent().norm();
+      unsigned int nb_surfels = 0;
+      unsigned int tries      = 0;
       do {
         try { // Search initial bel
           bel = Surfaces<KSpace>::findABel( K, *bimage, nb_tries_to_find_a_bel );
@@ -655,6 +659,49 @@ namespace DGtal
 			<< std::endl;
       }
       return ptrSurface;
+    }
+
+    /// Returns a vector containing all the simple digital surface in
+    /// the binary image \a bimage.
+    ///
+    /// @param[in] bimage a binary image representing the
+    /// characteristic function of a digital shape.
+    ///
+    /// @param[in] K the Khalimsky space whose domain encompasses the
+    /// digital shape.
+    ///
+    /// @return a vector of smart pointers to the connected (light)
+    /// digital surfaces present in the binary image.
+    static std::vector< CountedPtr<SimpleDigitalSurface> >
+    getSimpleDigitalSurfaces
+    ( CountedPtr<BinaryImage> bimage,
+      const KSpace& K,
+      Parameters params = parametersDigitalSurface() )
+    {
+      bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
+      int nb_tries_to_find_a_bel = params[ "nbTriesToFindABel" ].as<int>();
+      SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
+      // Extracts all boundary surfels
+      SurfelSet all_surfels;
+      Surfaces<KSpace>::sMakeBoundary( all_surfels, K, *bimage,
+				       K.lowerBound(), K.upperBound() );
+      // Builds all connected components of surfels.
+      SurfelSet marked_surfels;
+      std::vector< CountedPtr<SimpleDigitalSurface> > result;
+      CountedPtr<SimpleDigitalSurface> ptrSurface;
+      for ( auto bel : all_surfels )
+	{
+	  if ( marked_surfels.count( bel ) != 0 ) continue;
+	  SimpleSurfaceContainer* surfContainer
+	    = new SimpleSurfaceContainer( K, *bimage, surfAdj, bel );
+	  ptrSurface = CountedPtr<SimpleDigitalSurface>
+	    ( new SimpleDigitalSurface( surfContainer ) ); // acquired
+	  // mark all surfels of the surface component.
+	  marked_surfels.insert( ptrSurface->begin(), ptrSurface->end() );
+	  // add surface component to result.
+	  result.push_back( ptrSurface );
+	}
+      return result;
     }
 
     
