@@ -108,7 +108,7 @@ auto params          = SH3::defaultParameters();
   auto surface   = SH3::makeAnyBigSimpleDigitalSurface( al_capone, K, params );
 \endcode
 
-@subsection dgtal_shortcuts_ssec2_4 Build Polynomial shape -> digitize -> build an indexed surface representing its boundary in some region
+@subsection dgtal_shortcuts_ssec2_4 Build Polynomial shape -> digitize -> build indexed surface approximating part of its boundary
 
 \code
   params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 )
@@ -122,6 +122,21 @@ auto params          = SH3::defaultParameters();
                                                SH3::Domain(K.lowerBound(),K.upperBound()),
 					       params );
   auto surface         = SH3::makeIdxDigitalSurface( binary_image, K, params );
+\endcode
+
+@subsection dgtal_shortcuts_ssec2_5 Build Polynomial shape -> digitize -> extract ground-truth geometry along digital approximation
+
+\code
+  params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 );
+  auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+  auto binary_shape    = SH3::makeBinaryImage      ( digitized_shape, params );
+  auto K               = SH3::getKSpace( params );
+  auto surface         = SH3::makeAnyBigDigitalSurface( binary_image, K, params );
+  auto surfels         = SH3::getSurfelRange( surface, params );
+  auto positions       = SH3::getPositions( implicit_shape, K, surfels, params );
+  auto normals         = SH3::getNormalVectors( implicit_shape, K, surfels, params );
+  auto mean_curvs      = SH3::getMeanCurvatures( implicit_shape, K, surfels, params );
 \endcode
 
 @section dgtal_shortcuts_sec3 Philosophy and naming conventions
@@ -190,7 +205,7 @@ The following name conventions for types are used:
   - Shortcuts::parametersImplicitShape3D: parameters related to implicit shapes (polynomial)
   - Shortcuts::makeImplicitShape3D: builds an implicit shape
   - Shortcuts::getPositions: returns the positions on the implicit shape close to the specified surfels.
-  - Shortcuts::getNormals: returns the vectors normal to the implicit shape close to the specified surfels.
+  - Shortcuts::getNormalVectors: returns the vectors normal to the implicit shape close to the specified surfels.
   - Shortcuts::getMeanCurvatures: returns the mean curvatures on the implicit shape close to the specified surfels.
 -# KSpace methods
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
