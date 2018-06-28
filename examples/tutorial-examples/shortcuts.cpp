@@ -59,7 +59,7 @@ int main( int argc, char** argv )
     std::cout << *implicit_shape << std::endl;
     trace.endBlock();
     trace.beginBlock ( "Making Khalimsky space" );
-    auto K = SH3::getKSpaceDigitizedImplicitShape3D( params );
+    auto K = SH3::getKSpace( params );
     std::cout << K << std::endl;
     trace.endBlock();
     trace.beginBlock ( "Making implicit digital shape" );
@@ -108,9 +108,31 @@ int main( int argc, char** argv )
     std::cout << "#connected components >= 100 = " << nb_big << std::endl;
     trace.endBlock();
     trace.beginBlock ( "Making indexed digital surface" );
-    auto idx_surf    = SH3::makeIdxDigitalSurface( al_capone, Kal, params );
-    std::cout << "#surfels = " << idx_surf->size() << std::endl;
+    auto idx_surf    = SH3::makeIdxDigitalSurface
+      ( al_capone, Kal, params( "surfaceComponents", "AnyBig" ) );
     trace.endBlock();
+    trace.beginBlock ( "Traversing indexed digital surface" );
+    auto positions   = idx_surf->positions();
+    std::cout << "#surfels = " << idx_surf->size() << std::endl;
+    for ( auto&& mode : traversals ) {
+      auto surfels = SH3::getIdxSurfelRange( idx_surf, params( "surfaceTraversal", mode ) );
+      double distance  = 0.0;
+      for ( int i = 1; i < surfels.size(); ++i ) 
+	distance += ( positions[ surfels[ i-1 ] ] - positions[ surfels[ i ] ] ).norm();
+      std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
+    }
+    trace.endBlock();
+
+    trace.beginBlock ( "Compute true normals" );
+    {
+      auto K       = SH3::getKSpace( params );
+      auto surface = SH3::makeAnyBigSimpleDigitalSurface( binary_image, K, params );
+      auto surfels = SH3::getSurfelRange( surface, params );
+      auto normals = SH3::getTrueNormals( implicit_shape, K, surfels, params ); 
+      std::cout << "#normals = " << normals.size() << std::endl;
+    }
+    trace.endBlock();
+
   }
   // 2d tests
   {
