@@ -189,6 +189,9 @@ The following name conventions for types are used:
   - Shortcuts::getPolynomialList: return the list of polynomial shapes predefined for implicit shapes 
   - Shortcuts::parametersImplicitShape3D: parameters related to implicit shapes (polynomial)
   - Shortcuts::makeImplicitShape3D: builds an implicit shape
+  - Shortcuts::getPositions: returns the positions on the implicit shape close to the specified surfels.
+  - Shortcuts::getNormals: returns the vectors normal to the implicit shape close to the specified surfels.
+  - Shortcuts::getMeanCurvatures: returns the mean curvatures on the implicit shape close to the specified surfels.
 -# KSpace methods
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
   - Shortcuts::getKSpace: overloaded methods for building a Khalimsky space from a domain or an image, from a bounding box, or from a digitization process.
@@ -205,7 +208,8 @@ The following name conventions for types are used:
 -# DigitalSurface methods
   - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, components, internal heuristics)
   - Shortcuts::makeAnyBigSimpleDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
-  - Shortcuts::makeSimpleDigitalSurfaces: creates the vector of all simple digital surfaces of the binary image or any one of its big components, can also output representant surfels  - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels.
+  - Shortcuts::makeSimpleDigitalSurfaces: creates the vector of all simple digital surfaces of the binary image or any one of its big components, can also output representant surfels
+  - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels.
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
 
