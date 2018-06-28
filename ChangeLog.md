@@ -2,6 +2,9 @@
 # DGtal 1.0
 
 ## Bug Fixes
+- *Configuration/General*
+  - Continuous integration AppVeyor fix
+    [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
 
 - *Base*
   - Fixes wrong members in PredicateCombiner (David Coeurjolly,
