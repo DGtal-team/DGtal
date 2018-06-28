@@ -55,11 +55,15 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/topology/DigitalSurface.h"
+#include "DGtal/topology/IndexedDigitalSurface.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
+#include "DGtal/graph/DepthFirstVisitor.h"
+#include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/helpers/Parameters.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -119,21 +123,32 @@ namespace DGtal
     typedef ImageContainerBySTLVector<Domain, bool>      BinaryImage;
     /// defines a grey-level image with (hyper-)rectangular domain.
     typedef ImageContainerBySTLVector<Domain, GrayScale> GrayScaleImage;
-
     /// defines a set of surfels
     typedef typename KSpace::SurfelSet                   SurfelSet;
-    
     /// defines a light container that represents a connected digital
     /// surface over a binary image.
     typedef LightImplicitDigitalSurface< KSpace, BinaryImage >  SimpleSurfaceContainer;
+    /// defines a connected digital surface over a binary image.
     typedef DigitalSurface< SimpleSurfaceContainer >            SimpleDigitalSurface;
+    /// defines a heavy container that represents any digital surface.
+    typedef SetOfSurfels< KSpace, SurfelSet >                   MultiSurfaceContainer;
+    /// defines a connected or not indexed digital surface.
+    typedef IndexedDigitalSurface< MultiSurfaceContainer >      IdxDigitalSurface;
     typedef typename SimpleDigitalSurface::Surfel               Surfel;
     typedef typename SimpleDigitalSurface::Cell                 Cell;
     typedef typename SimpleDigitalSurface::SCell                SCell;
     typedef typename SimpleDigitalSurface::Vertex               Vertex;
     typedef typename SimpleDigitalSurface::Arc                  Arc;
     typedef typename SimpleDigitalSurface::ArcRange             ArcRange;
-
+    typedef typename IdxDigitalSurface::Surfel                  IdxSurfel;
+    typedef typename IdxDigitalSurface::Cell                    IdxCell;
+    typedef typename IdxDigitalSurface::SCell                   IdxSCell;
+    typedef typename IdxDigitalSurface::Vertex                  IdxVertex;
+    typedef typename IdxDigitalSurface::Arc                     IdxArc;
+    typedef typename IdxDigitalSurface::ArcRange                IdxArcRange;
+    typedef std::vector< Surfel >                               SurfelRange;
+    typedef std::vector< IdxSurfel >                            IdxSurfelRange;
+    
     // ----------------------- Static services --------------------------------------
   public:
 
@@ -319,8 +334,10 @@ namespace DGtal
     ///
     /// @return the Khalimsky space.
     /// @see makeDigitizedImplicitShape3D
-    static KSpace getKSpaceDigitizedImplicitShape3D( Parameters params =
-					  parametersKSpace() | parametersDigitizedImplicitShape3D() )
+    static KSpace
+    getKSpaceDigitizedImplicitShape3D
+    ( Parameters params =
+      parametersKSpace() | parametersDigitizedImplicitShape3D() )
     {
       Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
       Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
@@ -605,13 +622,17 @@ namespace DGtal
 
     /// @return the parameters and their default values which are
     /// related to digital surfaces.
-    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
-    ///   - nbTriesToFindABel [100000]: number of tries in method Surfaces::findABel
+    ///   - surfelAdjacency   [        1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - nbTriesToFindABel [   100000]: number of tries in method Surfaces::findABel
+    ///   - surfaceComponents [ "AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough componen
+    ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
     static Parameters parametersDigitalSurface()
     {
       return Parameters
-	( "surfelAdjacency", 1 )
-	( "nbTriesToFindABel", 100000 );
+	( "surfelAdjacency",   1 )
+	( "nbTriesToFindABel", 100000 )
+	( "surfaceComponents", "AnyBig" )
+	( "surfaceTraversal",  "Default" );
     }
 
     /// Builds a simple digital surface from a space \a K and a binary image \a bimage.
@@ -619,14 +640,17 @@ namespace DGtal
     /// @param[in] bimage a binary image representing the characteristic function of a digital shape.
     /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     ///
+    /// @param[in] params the parameters:
+    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - nbTriesToFindABel [100000]: number of tries in method Surfaces::findABel
+    ///
     /// @return a smart pointer on a (light) digital surface that
-    /// represents the boundary of the digital shape (at least a big
-    /// component).
+    /// represents the boundary of any big component of the digital shape.
     static CountedPtr<SimpleDigitalSurface>
-    makeSimpleDigitalSurface
+    makeAnyBigSimpleDigitalSurface
     ( CountedPtr<BinaryImage> bimage,
-      const KSpace& K,
-      Parameters params = parametersDigitalSurface() )
+      const KSpace&           K,
+      const Parameters&       params = parametersDigitalSurface() )
     {
       bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
       int nb_tries_to_find_a_bel = params[ "nbTriesToFindABel" ].as<int>();
@@ -661,8 +685,9 @@ namespace DGtal
       return ptrSurface;
     }
 
-    /// Returns a vector containing all the simple digital surface in
-    /// the binary image \a bimage.
+    /// Returns a vector containing either all the simple digital
+    /// surfaces in the binary image \a bimage, or any one of its big
+    /// components according to parameters.
     ///
     /// @param[in] bimage a binary image representing the
     /// characteristic function of a digital shape.
@@ -670,14 +695,57 @@ namespace DGtal
     /// @param[in] K the Khalimsky space whose domain encompasses the
     /// digital shape.
     ///
+    /// @param[in] params the parameters:
+    ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - nbTriesToFindABel [  100000]: number of tries in method Surfaces::findABel
+    ///   - surfaceComponents ["AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough component (> twice space width), "All": all components
+    ///
     /// @return a vector of smart pointers to the connected (light)
     /// digital surfaces present in the binary image.
     static std::vector< CountedPtr<SimpleDigitalSurface> >
-    getSimpleDigitalSurfaces
+    makeSimpleDigitalSurfaces
     ( CountedPtr<BinaryImage> bimage,
-      const KSpace& K,
-      Parameters params = parametersDigitalSurface() )
+      const KSpace&           K,
+      const Parameters&       params = parametersDigitalSurface() )
     {
+      SurfelRange surfel_reps;
+      return makeSimpleDigitalSurfaces( bimage, K, surfel_reps, params );
+    }
+
+    /// Returns a vector containing either all the simple digital
+    /// surfaces in the binary image \a bimage, or any one of its big
+    /// components according to parameters.
+    ///
+    /// @param[in] bimage a binary image representing the
+    /// characteristic function of a digital shape.
+    ///
+    /// @param[in] K the Khalimsky space whose domain encompasses the
+    /// digital shape.
+    ///
+    /// @param[out] surfel_reps a vector of surfels, one surfel per
+    /// digital surface component.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - nbTriesToFindABel [  100000]: number of tries in method Surfaces::findABel
+    ///   - surfaceComponents ["AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough component (> twice space width), "All": all components
+    ///
+    /// @return a vector of smart pointers to the connected (light)
+    /// digital surfaces present in the binary image.
+    static std::vector< CountedPtr<SimpleDigitalSurface> >
+    makeSimpleDigitalSurfaces
+    ( CountedPtr<BinaryImage> bimage,
+      const KSpace&           K,
+      SurfelRange&            surfel_reps,
+      const Parameters&       params = parametersDigitalSurface() )
+    {
+      std::vector< CountedPtr<SimpleDigitalSurface> > result;
+      std::string component      = params[ "surfaceComponents" ].as<std::string>();
+      if ( component == "AnyBig" ) {
+	result.push_back( makeAnyBigSimpleDigitalSurface( bimage, K, params ) );
+	surfel_reps.push_back( *( result[ 0 ]->begin() ) );
+	return result;
+      }	
       bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
       int nb_tries_to_find_a_bel = params[ "nbTriesToFindABel" ].as<int>();
       SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
@@ -687,11 +755,11 @@ namespace DGtal
 				       K.lowerBound(), K.upperBound() );
       // Builds all connected components of surfels.
       SurfelSet marked_surfels;
-      std::vector< CountedPtr<SimpleDigitalSurface> > result;
       CountedPtr<SimpleDigitalSurface> ptrSurface;
       for ( auto bel : all_surfels )
 	{
 	  if ( marked_surfels.count( bel ) != 0 ) continue;
+	  surfel_reps.push_back( bel );
 	  SimpleSurfaceContainer* surfContainer
 	    = new SimpleSurfaceContainer( K, *bimage, surfAdj, bel );
 	  ptrSurface = CountedPtr<SimpleDigitalSurface>
@@ -704,6 +772,114 @@ namespace DGtal
       return result;
     }
 
+    /// Builds an indexed digital surface from a space \a K and a
+    /// binary image \a bimage. Note that it may connected or not
+    /// depending on parameters.
+    ///
+    /// @param[in] bimage a binary image representing the
+    /// characteristic function of a digital shape.
+    ///
+    /// @param[in] K the Khalimsky space whose domain encompasses the
+    /// digital shape.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - nbTriesToFindABel [100000]: number of tries in method Surfaces::findABel
+    ///   - surfaceComponents ["AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough component (> twice space width), "All": all components
+    ///
+    /// @return a smart pointer on the required indexed digital surface.
+    static CountedPtr<IdxDigitalSurface>
+    makeIdxDigitalSurface
+    ( CountedPtr<BinaryImage> bimage,
+      const KSpace&           K,
+      const Parameters&       params = parametersDigitalSurface() )
+    {
+      std::string component      = params[ "surfaceComponents" ].as<std::string>();
+      SurfelSet surfels;
+      if ( component == "AnyBig" )
+	{
+	  auto simple_surface = makeAnyBigSimpleDigitalSurface( bimage, K, params );
+	  surfels.insert( simple_surface->begin(), simple_surface->end() );
+	}
+      else if ( component == "All" )
+	{
+	  Surfaces<KSpace>::sMakeBoundary( surfels, K, *bimage,
+					   K.lowerBound(), K.upperBound() );
+	}
+      return makeIdxDigitalSurface( surfels, K, params );
+    }    
+
+    /// Builds an indexed digital surface from a space \a K and an
+    /// arbitrary range of surfels.
+    ///
+    /// @param[in] surfels an arbitrary range of surfels.
+    ///
+    /// @param[in] K the Khalimsky space whose domain encompasses the given surfels.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///
+    /// @return a smart pointer on the indexed digital surface built over the surfels.
+    template <typename TSurfelRange>
+    static CountedPtr<IdxDigitalSurface>
+    makeIdxDigitalSurface
+    ( const TSurfelRange& surfels,
+      const KSpace&       K,
+      const Parameters&   params = parametersDigitalSurface() )
+    {
+      bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
+      SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
+      // Build indexed digital surface.
+      CountedPtr<MultiSurfaceContainer> ptrSurfContainer
+        ( new MultiSurfaceContainer( K, surfAdj, surfels ) );
+      CountedPtr<IdxDigitalSurface> ptrSurface
+	( new IdxDigitalSurface() );
+      bool ok = ptrSurface->build( ptrSurfContainer );
+      if ( !ok )
+	trace.warning() << "[Shortcuts::makeIdxDigitalSurface] Error building indexed digital surface." << std::endl;
+      return ptrSurface;
+    }
+
+    /// Given a simple digital surface, returns a vector of surfels in
+    /// some specified order.
+    ///
+    /// @param[in] surface a smart pointer on a digital surface.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
+    ///
+    /// @return a range of surfels as a vector.
+    static SurfelRange
+    getSurfelRange
+    ( CountedPtr<SimpleDigitalSurface> surface,
+      const Parameters&   params = parametersDigitalSurface() )
+    {
+      SurfelRange result;
+      std::string traversal = params[ "surfaceTraversal" ].as<std::string>();
+      if ( traversal == "DepthFirst" )
+	{
+	  typedef DepthFirstVisitor< SimpleDigitalSurface > Visitor;
+	  typedef GraphVisitorRange< Visitor > VisitorRange;
+	  VisitorRange range( new Visitor( *surface, *( surface->begin() ) ) );
+	  std::for_each( range.begin(), range.end(),
+			 [&result] ( Surfel s ) { result.push_back( s ); } );
+	}
+      else if ( traversal == "BreadthFirst" )
+	{
+	  typedef BreadthFirstVisitor< SimpleDigitalSurface > Visitor;
+	  typedef GraphVisitorRange< Visitor > VisitorRange;
+	  VisitorRange range( new Visitor( *surface, *( surface->begin() ) ) );
+	  std::for_each( range.begin(), range.end(),
+			 [&result] ( Surfel s ) { result.push_back( s ); } );
+	}
+      else
+	{
+	  std::for_each( surface->begin(), surface->end(),
+			 [&result] ( Surfel s ) { result.push_back( s ); } );
+	}
+      return result;
+    }
+    
     
     // ----------------------- Standard services ------------------------------
   public:
