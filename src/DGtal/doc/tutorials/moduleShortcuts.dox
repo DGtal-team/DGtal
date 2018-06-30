@@ -137,6 +137,7 @@ auto params          = SH3::defaultParameters();
   auto positions       = SH3::getPositions( implicit_shape, K, surfels, params );
   auto normals         = SH3::getNormalVectors( implicit_shape, K, surfels, params );
   auto mean_curvs      = SH3::getMeanCurvatures( implicit_shape, K, surfels, params );
+  auto gauss_curvs     = SH3::getGaussianCurvatures( implicit_shape, K, surfels, params );
 \endcode
 
 @section dgtal_shortcuts_sec3 Philosophy and naming conventions
@@ -202,11 +203,12 @@ The following name conventions for types are used:
   - Shortcuts::defaultParameters: return the set of all shorcut parameters.
 -# ImplicitShape3D methods
   - Shortcuts::getPolynomialList: return the list of polynomial shapes predefined for implicit shapes 
-  - Shortcuts::parametersImplicitShape3D: parameters related to implicit shapes (polynomial)
-  - Shortcuts::makeImplicitShape3D: builds an implicit shape
-  - Shortcuts::getPositions: returns the positions on the implicit shape close to the specified surfels.
-  - Shortcuts::getNormalVectors: returns the vectors normal to the implicit shape close to the specified surfels.
-  - Shortcuts::getMeanCurvatures: returns the mean curvatures on the implicit shape close to the specified surfels.
+  - Shortcuts::parametersImplicitShape3D: parameters related to 3D implicit shapes (polynomial)
+  - Shortcuts::makeImplicitShape3D: builds a 3D implicit shape
+  - Shortcuts::getPositions: returns the positions on the 3D implicit shape close to the specified surfels.
+  - Shortcuts::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
+  - Shortcuts::getMeanCurvatures: returns the mean curvatures along the 3D implicit shape close to the specified surfels.
+  - Shortcuts::getGaussianCurvatures: returns the Gaussian curvatures along the 3D implicit shape close to the specified surfels.
 -# KSpace methods
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
   - Shortcuts::getKSpace: overloaded methods for building a Khalimsky space from a domain or an image, from a bounding box, or from a digitization process.

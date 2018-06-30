@@ -125,12 +125,13 @@ int main( int argc, char** argv )
 
     trace.beginBlock ( "Compute true geometry" );
     {
-      auto K         = SH3::getKSpace( params );
-      auto surface   = SH3::makeAnyBigSimpleDigitalSurface( binary_image, K, params );
-      auto surfels   = SH3::getSurfelRange( surface, params );
-      auto positions = SH3::getPositions( implicit_shape, K, surfels, params ); 
-      auto normals   = SH3::getNormalVectors( implicit_shape, K, surfels, params ); 
-      auto mean_curv = SH3::getMeanCurvatures( implicit_shape, K, surfels, params ); 
+      auto K           = SH3::getKSpace( params );
+      auto surface     = SH3::makeAnyBigSimpleDigitalSurface( binary_image, K, params );
+      auto surfels     = SH3::getSurfelRange( surface, params );
+      auto positions   = SH3::getPositions( implicit_shape, K, surfels, params ); 
+      auto normals     = SH3::getNormalVectors( implicit_shape, K, surfels, params ); 
+      auto mean_curv   = SH3::getMeanCurvatures( implicit_shape, K, surfels, params ); 
+      auto gauss_curv  = SH3::getGaussianCurvatures( implicit_shape, K, surfels, params ); 
       SH3::RealPoint p = positions.front();
       SH3::RealPoint q = p;
       for ( auto&& r : positions ) {
@@ -139,13 +140,20 @@ int main( int argc, char** argv )
       SH3::Scalar   h0 =  1000.0;
       SH3::Scalar   h1 = -1000.0;
       for ( auto&& h : mean_curv ) {
-	h0 = std::min( h0, h );
-	h1 = std::max( h1, h );
+	h0 = std::min( h0, h );	h1 = std::max( h1, h );
+      }
+      SH3::Scalar   g0 =  1000.0;
+      SH3::Scalar   g1 = -1000.0;
+      for ( auto&& g : gauss_curv ) {
+	g0 = std::min( g0, g );	g1 = std::max( g1, g );
       }
       std::cout << "#position = " << positions.size()
 		<< " p=" << p << " q=" << q << std::endl;
       std::cout << "#normals = " << normals.size() << std::endl;
-      std::cout << "H_min = " << h0 << " H_max = " << h1 << std::endl;
+      std::cout << "H_min = " << h0 << " H_max = " << h1;
+      std::cout << " expected: H_min = 0.0912870 H_max = 0.263523" << std::endl;
+      std::cout << "G_min = " << g0 << " G_max = " << g1;
+      std::cout << " expected: G_min = 0.0074074 G_max = 0.0666666" << std::endl;
     }
     trace.endBlock();
 
