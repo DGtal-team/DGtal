@@ -58,6 +58,8 @@
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/IndexedDigitalSurface.h"
 #include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/CCellEmbedder.h"
+#include "DGtal/topology/CanonicCellEmbedder.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
@@ -149,12 +151,14 @@ namespace DGtal
     typedef typename SimpleDigitalSurface::SCell                SCell;
     typedef typename SimpleDigitalSurface::Vertex               Vertex;
     typedef typename SimpleDigitalSurface::Arc                  Arc;
+    typedef typename SimpleDigitalSurface::Face                 Face;
     typedef typename SimpleDigitalSurface::ArcRange             ArcRange;
     typedef typename IdxDigitalSurface::Vertex                  IdxSurfel;
     typedef typename IdxDigitalSurface::Vertex                  IdxVertex;
     typedef typename IdxDigitalSurface::Arc                     IdxArc;
     typedef typename IdxDigitalSurface::ArcRange                IdxArcRange;
     typedef std::vector< Surfel >                               SurfelRange;
+    typedef std::vector< Cell >                                 CellRange;
     typedef std::vector< IdxSurfel >                            IdxSurfelRange;
     typedef std::vector< Scalar >                               Scalars;
     typedef std::vector< RealVector >                           RealVectors;
@@ -817,17 +821,19 @@ namespace DGtal
 
     /// @return the parameters and their default values which are
     /// related to digital surfaces.
-    ///   - surfelAdjacency   [        1]: specifies the surfel adjacency (1:ext, 0:int)
-    ///   - nbTriesToFindABel [   100000]: number of tries in method Surfaces::findABel
-    ///   - surfaceComponents [ "AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough componen
-    ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
+    ///   - surfelAdjacency     [        1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - nbTriesToFindABel   [   100000]: number of tries in method Surfaces::findABel
+    ///   - surfaceComponents   [ "AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough componen
+    ///   - surfaceTraversal    ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
+    ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     static Parameters parametersDigitalSurface()
     {
       return Parameters
 	( "surfelAdjacency",   1 )
 	( "nbTriesToFindABel", 100000 )
 	( "surfaceComponents", "AnyBig" )
-	( "surfaceTraversal",  "Default" );
+	( "surfaceTraversal",  "Default" )
+	( "dualFaceSubdivision",   "No" ); 
     }
 
     /// Builds a simple digital surface from a space \a K and a binary image \a bimage.
@@ -1155,7 +1161,243 @@ namespace DGtal
       return result;
     }
 
+    /// Outputs a range of surfels as an OBJ file, embedding each
+    /// vertex using the given cell embedder (3D only).
+    ///
+    /// @tparam TCellEmbedder any model of CCellEmbedder
+    /// @param[out] output the output stream.
+    /// @param[in] surfels the range of surfels (oriented cells of dimension 2).
+    /// @param[in] embedder the embedder for mapping surfel vertices (cells of dimension 0) to points in space.
+    /// @return 'true' if the output stream is good.
+    template <typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
+    static bool
+    outputSurfelsAsObj
+    ( std::ostream&              output,
+      const SurfelRange&         surfels,
+      const TCellEmbedder&       embedder )
+    {
+      typedef unsigned long Size;
+      BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+      BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< TCellEmbedder > ));
+      const KSpace& K = embedder.space();
+      // Number and ouput vertices.
+      std::map< Cell, Size > vtx_numbering;
+      Size n = 1;  // OBJ vertex numbering start at 1 
+      for ( auto&& s : surfels ) {
+	CellRange primal_vtcs = getPrimalVertices( K, s );
+	for ( auto&& primal_vtx : primal_vtcs ) {
+	  if ( ! vtx_numbering.count( primal_vtx ) ) {
+	    vtx_numbering[ primal_vtx ] = n++;
+	    // Output vertex positions
+	    RealPoint p = embedder( primal_vtx );
+	    output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+	  }
+	}
+      }
+      // Outputs all faces
+      for ( auto&& s : surfels ) {
+	output << "f";
+	CellRange primal_vtcs = getPrimalVertices( K, s, true );
+	for ( auto&& primal_vtx : primal_vtcs ) {
+	  output << " " << vtx_numbering[ primal_vtx ];
+	}
+	output << std::endl;
+      }      
+      return output.good();
+    }
     
+    /// Outputs a digital surface, seen from the primal point of view
+    /// (surfels=face), as an OBJ file (3D only). Note that faces are
+    /// oriented consistently (normals toward outside).
+    ///
+    /// @param[out] output the output stream.
+    /// @param[in] surface a smart pointer on a digital surface.
+    ///
+    /// @return 'true' if the output stream is good.
+    static bool
+    outputPrimalDigitalSurfaceAsObj
+    ( std::ostream&              output,
+      CountedPtr<SimpleDigitalSurface> surface )
+    {
+      CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
+      return outputPrimalDigitalSurfaceAsObj( output, surface, embedder );
+    }
+    
+    /// Outputs a digital surface, seen from the primal point of view
+    /// (surfels=face), as an OBJ file (3D only). Note that faces are
+    /// oriented consistently (normals toward outside). Each vertex is
+    /// mapped to a 3D point using the given cell embedder.
+    ///
+    /// @tparam TCellEmbedder any model of CCellEmbedder
+    /// @param[out] output the output stream.
+    /// @param[in] surface a smart pointer on a digital surface.
+    /// @param[in] embedder the embedder for mapping surfel vertices (cells of dimension 0) to points in space.
+    /// @return 'true' if the output stream is good.
+    template <typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
+    static bool
+    outputPrimalDigitalSurfaceAsObj
+    ( std::ostream&              output,
+      CountedPtr<SimpleDigitalSurface> surface,
+      const TCellEmbedder&       embedder )
+    {
+      auto surfels = getSurfelRange( surface, Parameters( "Traversal", "Default" ) );
+      return outputSurfelsAsObj( output, surfels, embedder );
+    }
+
+    /// Outputs a digital surface, seen from the dual point of view
+    /// (surfels=vertices), as an OBJ file (3D only). Note that faces are
+    /// oriented consistently (normals toward outside).
+    ///
+    /// @param[out] output the output stream.
+    /// @param[in] surface a smart pointer on a digital surface.
+    /// @param[in] params the parameters:
+    ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
+    ///
+    /// @return 'true' if the output stream is good.
+    static bool
+    outputDualDigitalSurfaceAsObj
+    ( std::ostream&              output,
+      CountedPtr<SimpleDigitalSurface> surface,
+      const Parameters&   params = parametersDigitalSurface() )
+    {
+      CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
+      return outputDualDigitalSurfaceAsObj( output, surface, embedder, params );
+    }
+    
+    /// Outputs a digital surface, seen from the dual point of view
+    /// (surfels=vertices), as an OBJ file (3D only). Note that faces are
+    /// oriented consistently (normals toward outside). Each vertex is
+    /// mapped to a 3D point using the given cell embedder.
+    ///
+    /// @tparam TCellEmbedder any model of CCellEmbedder
+    /// @param[out] output the output stream.
+    /// @param[in] surface a smart pointer on a digital surface.
+    /// @param[in] embedder the embedder for mapping (unsigned) surfels (cells of dimension 2) to points in space.
+    /// @param[in] params the parameters:
+    ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
+    ///
+    /// @return 'true' if the output stream is good.
+    template <typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
+    static bool
+    outputDualDigitalSurfaceAsObj
+    ( std::ostream&              output,
+      CountedPtr<SimpleDigitalSurface> surface,
+      const TCellEmbedder&       embedder,
+      const Parameters&   params = parametersDigitalSurface() )
+    {
+      typedef unsigned long Size;
+      BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+      BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< TCellEmbedder > ));
+      std::string dualFaceSubdivision = params[ "dualFaceSubdivision" ].as<std::string>();
+      const int   subdivide
+	= dualFaceSubdivision == "Naive"    ? 1
+	: dualFaceSubdivision == "Centroid" ? 2
+	: 0;
+      const KSpace& K = embedder.space();
+      // Number and ouput vertices.
+      std::map< Surfel, Size > vtx_numbering;
+      std::map< Face,   Size > sub_numbering;
+      Size n = 1;  // OBJ vertex numbering start at 1 
+      for ( auto&& s : *surface ) {
+	if ( ! vtx_numbering.count( s ) ) {
+	  vtx_numbering[ s ] = n++;
+	  // Output vertex positions
+	  RealPoint p = embedder( K.unsigns( s ) );
+	  output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+	}
+      }
+      auto faces = surface->allClosedFaces();
+      Size c = 0;
+      // Prepare centroids if necessary
+      if ( subdivide == 2 ) {
+	for ( auto&& f : faces ) {
+	  auto vtcs = surface->verticesAroundFace( f );
+	  Size   nv = vtcs.size();
+	  if ( nv > 3 ) {
+	    sub_numbering[ f ] = n++;
+	    RealPoint p = RealPoint::zero;
+	    for ( auto&& s : vtcs ) p += embedder( K.unsigns( s ) );
+	    p /= nv;
+	    output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+	  }
+	}
+      }
+      // Outputs closed faces.
+      if ( subdivide == 0 ) { // No subdivision
+	for ( auto&& f : faces ) {
+	  output << "f";
+	  auto vtcs = surface->verticesAroundFace( f );
+	  for ( auto&& s : vtcs )
+	    output << " " << vtx_numbering[ s ];
+	  output << std::endl;
+	}
+      } else if ( subdivide == 1 ) { // naive subdivision
+	for ( auto&& f : faces ) {
+	  auto vtcs = surface->verticesAroundFace( f );
+	  Size   nv = vtcs.size();
+	  for ( Size i = 1; i < nv - 1; ++i )
+	    output << "f " << vtx_numbering[ vtcs[ 0 ] ]
+		   << " "  << vtx_numbering[ vtcs[ i+1 ] ]
+		   << " "  << vtx_numbering[ vtcs[ i ] ] << std::endl;
+	}
+      } else if ( subdivide == 2 ) { // centroid subdivision
+	for ( auto&& f : faces ) {
+	  auto vtcs = surface->verticesAroundFace( f );
+	  Size   nv = vtcs.size();
+	  if ( nv == 3 )
+	    output << "f " << vtx_numbering[ vtcs[ 0 ] ]
+		   << " "  << vtx_numbering[ vtcs[ 2 ] ]
+		   << " "  << vtx_numbering[ vtcs[ 1 ] ] << std::endl;
+	  else {
+	    Size c = sub_numbering[ f ];
+	    for ( Size i = 0; i < nv; ++i ) {
+	      output << "f " << c
+		     << " "  << vtx_numbering[ vtcs[ (i+1)%nv ] ]
+		     << " "  << vtx_numbering[ vtcs[ i ] ] << std::endl;
+	    }
+	  }
+	}
+      }
+      return output.good();
+    }
+
+    /// Given a space \a K and an oriented cell \a s, returns its vertices.
+    /// @param K any cellular grid space.
+    /// @param s any signed cell.
+    /// @return the vector of the vertices of s, as unsigned cells of dimension 0.
+    static
+    CellRange getPrimalVertices( const KSpace& K, const SCell& s )
+    {
+      auto faces = K.uFaces( K.unsigns( s ) );
+      CellRange primal_vtcs;
+      for ( auto&& f : faces ) {
+	if ( K.uDim( f ) == 0 ) primal_vtcs.push_back( f );
+      }
+      return primal_vtcs;
+    }
+    
+    /// Given a space \a K and a surfel \a s, returns its vertices in ccw or cw order.
+    /// @param K any cellular grid space of dimension 3.
+    /// @param s any surfel, a signed cell of dimension 2.
+    /// @param ccw when 'true', the order corresponds to a ccw orientation seen from the exterior normal to the surfel, otherwise it is a cw order.
+    /// @return the vector of the vertices of s, as unsigned cells of dimension 0.
+    /// @note useful when exporting faces to OBJ format. 
+    static
+    CellRange getPrimalVertices( const KSpace& K, const Surfel& s, bool ccw )
+    {
+      BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
+      CellRange vtcs = getPrimalVertices( K, s );
+      std::swap( vtcs[ 2 ], vtcs[ 3 ] );
+      auto  orth_dir = K.sOrthDir( s );
+      auto    direct = K.sDirect( s, orth_dir ) ? ccw : ! ccw;
+      Vector    s0s1 = K.uCoords( vtcs[ 1 ] ) - K.uCoords( vtcs[ 0 ] );
+      Vector    s0s2 = K.uCoords( vtcs[ 2 ] ) - K.uCoords( vtcs[ 0 ] );
+      Vector       t = s0s1.crossProduct( s0s2 );
+      if ( ( ( t[ orth_dir ] > 0.0 ) && direct )
+	   || ( ( t[ orth_dir ] < 0.0 ) && ! direct ) )
+	std::reverse( vtcs.begin(), vtcs.end() );
+      return vtcs;
+    }
     
     // ----------------------- Standard services ------------------------------
   public:
