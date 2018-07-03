@@ -51,7 +51,8 @@ int main( int argc, char** argv )
     params( "polynomial", "3*x^2+2*y^2+z^2-90" )
       ( "gridstep", 0.5 )
       ( "noise",    0.2 )
-      ( "surfaceComponents", "All" );
+      ( "surfaceComponents", "All" )
+      ( "surfelAdjacency",   1 );
     std::cout << params << std::endl;
     trace.endBlock();
     trace.beginBlock ( "Making implicit shape" );
@@ -89,7 +90,7 @@ int main( int argc, char** argv )
       auto surfels = SH3::getSurfelRange( simple_surf, params( "surfaceTraversal", mode ) );
       double distance  = 0.0;
       for ( int i = 1; i < surfels.size(); ++i )
-	distance += ( K.sCoords( surfels[ i-1 ] ) - K.sCoords( surfels[ i ] ) ).norm();
+  	distance += ( K.sCoords( surfels[ i-1 ] ) - K.sCoords( surfels[ i ] ) ).norm();
       std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
     }
     trace.endBlock();
@@ -100,12 +101,25 @@ int main( int argc, char** argv )
     unsigned int nb_big = 0;
     for ( auto&& surf : vec_surfs )
       {
-	unsigned int n = surf->size();
-	nb_small += n <  100 ? 1 : 0;
-	nb_big   += n >= 100 ? 1 : 0;
+  	unsigned int n = surf->size();
+  	nb_small += n <  100 ? 1 : 0;
+  	nb_big   += n >= 100 ? 1 : 0;
       }
     std::cout << "#connected components <  100 = " << nb_small << std::endl;
     std::cout << "#connected components >= 100 = " << nb_big << std::endl;
+    trace.endBlock();
+    trace.beginBlock ( "Save digital surface as .obj file" );
+    {
+      ofstream objfile( "primal-al.obj" );
+      bool ok = SH3::outputPrimalDigitalSurfaceAsObj( objfile, simple_surf );
+      std::cout << "- saving as primal-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
+    }
+    {
+      ofstream objfile( "dual-al.obj" );
+      bool ok = SH3::outputDualDigitalSurfaceAsObj
+	( objfile, simple_surf, params( "dualFaceSubdivision", "Centroid" ) );
+      std::cout << "- saving as dual-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
+    }
     trace.endBlock();
     trace.beginBlock ( "Making indexed digital surface" );
     auto idx_surf    = SH3::makeIdxDigitalSurface
@@ -118,7 +132,7 @@ int main( int argc, char** argv )
       auto surfels = SH3::getIdxSurfelRange( idx_surf, params( "surfaceTraversal", mode ) );
       double distance  = 0.0;
       for ( int i = 1; i < surfels.size(); ++i ) 
-	distance += ( positions[ surfels[ i-1 ] ] - positions[ surfels[ i ] ] ).norm();
+  	distance += ( positions[ surfels[ i-1 ] ] - positions[ surfels[ i ] ] ).norm();
       std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
     }
     trace.endBlock();
@@ -135,20 +149,20 @@ int main( int argc, char** argv )
       SH3::RealPoint p = positions.front();
       SH3::RealPoint q = p;
       for ( auto&& r : positions ) {
-	p = p.inf( r ); q = q.sup( r );
+  	p = p.inf( r ); q = q.sup( r );
       }
       SH3::Scalar   h0 =  1000.0;
       SH3::Scalar   h1 = -1000.0;
       for ( auto&& h : mean_curv ) {
-	h0 = std::min( h0, h );	h1 = std::max( h1, h );
+  	h0 = std::min( h0, h );	h1 = std::max( h1, h );
       }
       SH3::Scalar   g0 =  1000.0;
       SH3::Scalar   g1 = -1000.0;
       for ( auto&& g : gauss_curv ) {
-	g0 = std::min( g0, g );	g1 = std::max( g1, g );
+  	g0 = std::min( g0, g );	g1 = std::max( g1, g );
       }
       std::cout << "#position = " << positions.size()
-		<< " p=" << p << " q=" << q << std::endl;
+  		<< " p=" << p << " q=" << q << std::endl;
       std::cout << "#normals = " << normals.size() << std::endl;
       std::cout << "H_min = " << h0 << " H_max = " << h1;
       std::cout << " expected: H_min = 0.0912870 H_max = 0.263523" << std::endl;
@@ -169,6 +183,34 @@ int main( int argc, char** argv )
     std::cout << *gl_image << std::endl;
     trace.endBlock();
   } 
+  // debug
+  {
+    using namespace Z3i;
+    typedef Shortcuts< KSpace > SH3;
+    trace.beginBlock ( "Setting parameters" );
+    auto params = SH3::defaultParameters();
+    params( "dualFaceSubdivision", "Centroid" );
+    Domain domain( Point::diagonal(-1), Point::diagonal(2) );
+    auto b_image = SH3::makeBinaryImage( domain );
+    auto K       = SH3::getKSpace( b_image, params );
+    b_image->setValue( Point( 0, 0, 0 ), true );
+    b_image->setValue( Point( 0, 0, 1 ), true );
+    b_image->setValue( Point( 0, 1, 1 ), true );
+    b_image->setValue( Point( 1, 1, 1 ), true );
+    auto simple_surf = SH3::makeSimpleDigitalSurfaces( b_image, K, params )[ 0 ];
+    std::cout << simple_surf << std::endl;
+    {
+      ofstream objfile( "primal-test.obj" );
+      bool ok = SH3::outputPrimalDigitalSurfaceAsObj( objfile, simple_surf );
+      std::cout << "- saving as primal-test.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
+    }
+    {
+      ofstream objfile( "dual-test.obj" );
+      bool ok = SH3::outputDualDigitalSurfaceAsObj( objfile, simple_surf, params );
+      std::cout << "- saving as dual-test.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
+    }
+    trace.endBlock();
+  }
   return 0;
 }
 //                                                                           //

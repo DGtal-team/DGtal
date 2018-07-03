@@ -230,6 +230,13 @@ The following name conventions for types are used:
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
 
+-# Utilities
+  - Shortcuts::getPrimalVertices: returns the vertices (possibly consistently ordered along the face) of the given signed cell.
+  - Shortcuts::outputSurfelsAsObj: outputs surfels in standard OBJ file format.
+  - Shortcuts::outputPrimalDigitalSurfaceAsObj: outputs a simple digital surface in standard OBJ file format as its primal quadrangulated mesh.
+  - Shortcuts::outputDualDigitalSurfaceAsObj: outputs a simple digital surface in standard OBJ file format as its dual polygonal or triangulated mesh.
+
+
 @subsection dgtal_shortcuts_ssec3_4 Parameters
 
 Also, methods whose result can be influenced by global parameters are
