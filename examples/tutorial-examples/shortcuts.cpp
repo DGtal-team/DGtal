@@ -123,7 +123,7 @@ int main( int argc, char** argv )
     trace.endBlock();
     trace.beginBlock ( "Making indexed digital surface" );
     auto idx_surf    = SH3::makeIdxDigitalSurface
-      ( al_capone, Kal, params( "surfaceComponents", "AnyBig" ) );
+      ( al_capone, Kal, params( "surfaceComponents", "All" ) );
     trace.endBlock();
     trace.beginBlock ( "Traversing indexed digital surface" );
     auto positions   = idx_surf->positions();
@@ -134,6 +134,14 @@ int main( int argc, char** argv )
       for ( int i = 1; i < surfels.size(); ++i ) 
   	distance += ( positions[ surfels[ i-1 ] ] - positions[ surfels[ i ] ] ).norm();
       std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
+    }
+    trace.endBlock();
+    trace.beginBlock ( "Save indexed-digital surface as .obj file" );
+    {
+      auto new_idx_surf = SH3::makeIdxDigitalSurface( vec_surfs );
+      ofstream objfile( "primal-idx-al.obj" );
+      bool ok = SH3::outputPrimalIdxDigitalSurfaceAsObj( objfile, new_idx_surf );
+      std::cout << "- saving as primal-idx-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
     }
     trace.endBlock();
 
