@@ -244,6 +244,8 @@ The following name conventions for types are used:
 
 @subsection dgtal_shortcuts_ssec3_4 Parameters
 
+In all methods, \b out parameters are listed before \b in parameters.
+
 Also, methods whose result can be influenced by global parameters are
 parameterized through a Parameters object. The simplest way to get
 default values is to start with a line:

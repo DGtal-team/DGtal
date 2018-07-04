@@ -913,21 +913,21 @@ namespace DGtal
       const Parameters&       params = parametersDigitalSurface() )
     {
       SurfelRange surfel_reps;
-      return makeSimpleDigitalSurfaces( bimage, K, surfel_reps, params );
+      return makeSimpleDigitalSurfaces( surfel_reps, bimage, K, params );
     }
 
     /// Returns a vector containing either all the simple digital
     /// surfaces in the binary image \a bimage, or any one of its big
     /// components according to parameters.
     ///
+    /// @param[out] surfel_reps a vector of surfels, one surfel per
+    /// digital surface component.
+    ///
     /// @param[in] bimage a binary image representing the
     /// characteristic function of a digital shape.
     ///
     /// @param[in] K the Khalimsky space whose domain encompasses the
     /// digital shape.
-    ///
-    /// @param[out] surfel_reps a vector of surfels, one surfel per
-    /// digital surface component.
     ///
     /// @param[in] params the parameters:
     ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
@@ -938,9 +938,9 @@ namespace DGtal
     /// digital surfaces present in the binary image.
     static std::vector< CountedPtr<SimpleDigitalSurface> >
     makeSimpleDigitalSurfaces
-    ( CountedPtr<BinaryImage> bimage,
+    ( SurfelRange&            surfel_reps,
+      CountedPtr<BinaryImage> bimage,
       const KSpace&           K,
-      SurfelRange&            surfel_reps,
       const Parameters&       params = parametersDigitalSurface() )
     {
       std::vector< CountedPtr<SimpleDigitalSurface> > result;
@@ -985,9 +985,6 @@ namespace DGtal
     ///
     /// @param[in] K the Khalimsky space whose domain encompasses the
     /// digital shape.
-    ///
-    /// @param[out] surfel_reps a vector of surfels, one surfel per
-    /// digital surface component.
     ///
     /// @param[in] params the parameters:
     ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
