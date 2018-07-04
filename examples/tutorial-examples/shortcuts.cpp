@@ -53,6 +53,7 @@ int main( int argc, char** argv )
       ( "noise",    0.2 )
       ( "surfaceComponents", "All" )
       ( "surfelAdjacency",   1 );
+    params( "dualFaceSubdivision", "Centroid" );
     std::cout << params << std::endl;
     trace.endBlock();
     trace.beginBlock ( "Making implicit shape" );
@@ -117,7 +118,7 @@ int main( int argc, char** argv )
     {
       ofstream objfile( "dual-al.obj" );
       bool ok = SH3::outputDualDigitalSurfaceAsObj
-	( objfile, simple_surf, params( "dualFaceSubdivision", "Centroid" ) );
+	( objfile, simple_surf, params );
       std::cout << "- saving as dual-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
     }
     trace.endBlock();
@@ -137,11 +138,16 @@ int main( int argc, char** argv )
     }
     trace.endBlock();
     trace.beginBlock ( "Save indexed-digital surface as .obj file" );
+    auto new_idx_surf = SH3::makeIdxDigitalSurface( vec_surfs );
     {
-      auto new_idx_surf = SH3::makeIdxDigitalSurface( vec_surfs );
       ofstream objfile( "primal-idx-al.obj" );
       bool ok = SH3::outputPrimalIdxDigitalSurfaceAsObj( objfile, new_idx_surf );
       std::cout << "- saving as primal-idx-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
+    }
+    {
+      ofstream objfile( "dual-idx-al.obj" );
+      bool ok = SH3::outputDualIdxDigitalSurfaceAsObj( objfile, new_idx_surf, params );
+      std::cout << "- saving as dual-idx-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
     }
     trace.endBlock();
 

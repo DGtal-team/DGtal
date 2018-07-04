@@ -976,6 +976,42 @@ namespace DGtal
       return result;
     }
 
+    /// Creates a multi digital surface representing the boundaries in
+    /// the binary image \a bimage, or any one of its big components
+    /// according to parameters.
+    ///
+    /// @param[in] bimage a binary image representing the
+    /// characteristic function of a digital shape.
+    ///
+    /// @param[in] K the Khalimsky space whose domain encompasses the
+    /// digital shape.
+    ///
+    /// @param[out] surfel_reps a vector of surfels, one surfel per
+    /// digital surface component.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///
+    /// @return a smart pointer on the multi digital surface
+    /// representing the boundaries in the binary image.
+    static CountedPtr< MultiDigitalSurface >
+    makeMultiDigitalSurface
+    ( CountedPtr<BinaryImage> bimage,
+      const KSpace&           K,
+      const Parameters&       params = parametersDigitalSurface() )
+    {
+      SurfelSet all_surfels;
+      bool      surfel_adjacency = params[ "surfelAdjacency" ].as<int>();
+      SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
+      // Extracts all boundary surfels
+      Surfaces<KSpace>::sMakeBoundary( all_surfels, K, *bimage,
+				       K.lowerBound(), K.upperBound() );
+      MultiSurfaceContainer* surfContainer
+	= new MultiSurfaceContainer( K, surfAdj, all_surfels );
+      return CountedPtr< MultiDigitalSurface >
+	    ( new MultiDigitalSurface( surfContainer ) ); // acquired
+    }
+
 
     /// Builds a multi digital surface from an indexed digital surface.
     ///
@@ -1438,6 +1474,7 @@ namespace DGtal
       const Parameters&   params = parametersDigitalSurface() )
     {
       typedef unsigned long Size;
+      typedef typename TAnyDigitalSurface::Face Face;
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< TCellEmbedder > ));
       std::string dualFaceSubdivision = params[ "dualFaceSubdivision" ].as<std::string>();
@@ -1479,6 +1516,7 @@ namespace DGtal
 	for ( auto&& f : faces ) {
 	  output << "f";
 	  auto vtcs = surface->verticesAroundFace( f );
+	  std::reverse( vtcs.begin(), vtcs.end() );
 	  for ( auto&& s : vtcs )
 	    output << " " << vtx_numbering[ s ];
 	  output << std::endl;
@@ -1513,6 +1551,54 @@ namespace DGtal
       return output.good();
     }
 
+    /// Outputs an indexed digital surface, seen from the dual point of view
+    /// (surfels=vertices), as an OBJ file (3D only). Note that faces are
+    /// oriented consistently (normals toward outside).
+    ///
+    /// @param[out] output the output stream.
+    /// @param[in] surface a smart pointer on an indexed digital surface.
+    /// @param[in] params the parameters:
+    ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
+    ///
+    /// @return 'true' if the output stream is good.
+    static bool
+    outputDualIdxDigitalSurfaceAsObj
+    ( std::ostream&                 output,
+      CountedPtr<IdxDigitalSurface> surface,
+      const Parameters&             params = parametersDigitalSurface() )
+    {
+      const KSpace& K = surface->container().space();
+      auto multi_surface = makeMultiDigitalSurface( surface, params );
+      struct CellEmbedder {
+	using KSpace    = KSpace;
+	using Cell      = Cell;
+	using RealPoint = RealPoint;
+	using Argument  = Cell;
+	using Value     = RealPoint;
+	const KSpace* _K;
+	std::map< Cell, RealPoint > _embedding;
+	CellEmbedder( ConstAlias< KSpace > K ) : _K( &K ) {}
+	const KSpace & space() const { return *_K; }
+	RealPoint embed( const Cell & cell ) const
+	{
+	  auto it = _embedding.find( cell );
+	  return it != _embedding.end() ? it->second : RealPoint::zero;
+	}
+	RealPoint operator()( const Cell & cell ) const
+	{ return embed( cell ); }
+      };
+      
+      CellEmbedder embedder( K );
+      for ( auto&& idx_surfel : *surface ) {
+	Cell      s = K.unsigns( surface->surfel( idx_surfel ) );
+	RealPoint p = surface->position( idx_surfel );
+	embedder._embedding[ s ] = p;
+      }
+      return outputDualDigitalSurfaceAsObj( output,
+					    multi_surface, embedder, params );
+    }
+
+    
     /// Given a space \a K and an oriented cell \a s, returns its vertices.
     /// @param K any cellular grid space.
     /// @param s any signed cell.
