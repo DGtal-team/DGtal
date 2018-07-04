@@ -232,6 +232,9 @@ The following name conventions for types are used:
   - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from simple digital surface(s).
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
+-# GeometryEstimation services
+  - Shortcuts::getTrivialNormalVectors:: returns the trivial normal vectors to the given surfel range  
+  - Shortcuts::getConvolvedTrivialNormalVectors: returns the convolved trivial normal vectors to the given surfel range
 
 -# Utilities
   - Shortcuts::getPrimalVertices: returns the vertices (possibly consistently ordered along the face) of the given signed cell.

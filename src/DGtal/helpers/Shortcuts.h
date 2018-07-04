@@ -60,6 +60,7 @@
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/CCellEmbedder.h"
 #include "DGtal/topology/CanonicCellEmbedder.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
@@ -1290,6 +1291,95 @@ namespace DGtal
       return result;
     }
 
+    // --------------------------- geometry estimation ------------------------------
+  public:
+
+    /// @return the parameters and their default values which are used
+    /// to estimate the geometry of a digital surface.
+    ///   - trivialRadius     [   3.0]: the radius used when computing convolved trivial normals.
+    static Parameters parametersGeometryEstimation()
+    {
+      return Parameters
+	( "trivialRadius", 3.0 );
+    }
+    
+    /// Given a digital space \a K and a vector of \a surfels,
+    /// returns the trivial normals at the specified surfels, in the
+    /// same order.
+    ///
+    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+    /// @param[in] surfels the sequence of surfels at which we compute the normals
+    ///
+    /// @return the vector containing the trivial normal vectors, in the
+    /// same order as \a surfels.
+    static RealVectors
+    getTrivialNormalVectors( const KSpace&      K,
+			     const SurfelRange& surfels )
+    {
+      std::vector< RealVector > result;
+      for ( auto s : surfels )
+	{
+	  Dimension  k = K.sOrthDir( s );
+	  bool  direct = K.sDirect( s, k );
+	  RealVector t = RealVector::zero;
+	  t[ k ]       = direct ? -1.0 : 1.0;
+	  result.push_back( t );
+	}
+      return result;
+    }
+
+    /// Given a digital surface \a surface, a sequence of \a surfels,
+    /// and some parameters \a params, returns the convolved trivial
+    /// normal vector estimations at the specified surfels, in the
+    /// same order.
+    ///
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    ///
+    /// @param[in] surface the digital surface
+    /// @param[in] surfels the sequence of surfels at which we compute the normals
+    /// @param[in] params the parameters:
+    ///   - trivialRadius     [   3.0]: the radius used when computing convolved trivial normals.
+    ///
+    /// @return the vector containing the estimated normals, in the
+    /// same order as \a surfels.
+    template <typename TAnyDigitalSurface>
+    static RealVectors
+    getConvolvedTrivialNormalVectors
+    ( CountedPtr<TAnyDigitalSurface> surface,
+      const SurfelRange&             surfels,
+      const Parameters&               params = parametersGeometryEstimation() )
+    {
+      Scalar t = params[ "trivialRadius" ].as<double>();
+      typedef typename TAnyDigitalSurface::DigitalSurfaceContainer  SurfaceContainer;
+      typedef ExactPredicateLpSeparableMetric<Space,2>              Metric;
+      typedef functors::HatFunction<Scalar>                         Functor;
+      typedef functors::ElementaryConvolutionNormalVectorEstimator
+	< Surfel, CanonicSCellEmbedder<KSpace> >                    SurfelFunctor;
+      typedef LocalEstimatorFromSurfelFunctorAdapter
+	< SurfaceContainer, Metric, SurfelFunctor, Functor>         NormalEstimator;
+      trace.info() << " CTrivial normal t=" << t << " (discrete)" << std::endl;
+      const Functor fct( 1.0, t );
+      const KSpace &  K = surface->container().space();
+      Metric    aMetric;
+      CanonicSCellEmbedder<KSpace> canonic_embedder( K );
+      std::vector< RealVector >    n_estimations;
+      SurfelFunctor                surfelFct( canonic_embedder, 1.0 );
+      NormalEstimator              estimator;
+      estimator.attach( *surface);
+      estimator.setParams( aMetric, surfelFct, fct, t );
+      estimator.init( 1.0, surfels.begin(), surfels.end());
+      estimator.eval( surfels.begin(), surfels.end(),
+		      std::back_inserter( n_estimations ) );
+      std::transform( n_estimations.cbegin(), n_estimations.cend(), n_estimations.begin(),
+		      [] ( RealVector v ) { return -v; } );
+      return n_estimations;
+    }
+
+
+    
+    // ------------------------------ utilities ------------------------------
+  public:
+    
     /// Outputs a range of surfels as an OBJ file, embedding each
     /// vertex using the given cell embedder (3D only).
     ///
