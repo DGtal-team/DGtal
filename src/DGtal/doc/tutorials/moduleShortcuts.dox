@@ -226,7 +226,7 @@ The following name conventions for types are used:
   - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, components, internal heuristics)
   - Shortcuts::makeAnyBigSimpleDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
   - Shortcuts::makeSimpleDigitalSurfaces: creates the vector of all simple digital surfaces of the binary image or any one of its big components, can also output representant surfels
-  - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels.
+  - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from simple digital surface(s).
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
 
@@ -234,6 +234,7 @@ The following name conventions for types are used:
   - Shortcuts::getPrimalVertices: returns the vertices (possibly consistently ordered along the face) of the given signed cell.
   - Shortcuts::outputSurfelsAsObj: outputs surfels in standard OBJ file format.
   - Shortcuts::outputPrimalDigitalSurfaceAsObj: outputs a simple digital surface in standard OBJ file format as its primal quadrangulated mesh.
+  - Shortcuts::outputPrimalIdxDigitalSurfaceAsObj: outputs any indexed digital surface in standard OBJ file format as its primal quadrangulated mesh.
   - Shortcuts::outputDualDigitalSurfaceAsObj: outputs a simple digital surface in standard OBJ file format as its dual polygonal or triangulated mesh.
 
 

@@ -144,6 +144,8 @@ namespace DGtal
     typedef DigitalSurface< SimpleSurfaceContainer >            SimpleDigitalSurface;
     /// defines a heavy container that represents any digital surface.
     typedef SetOfSurfels< KSpace, SurfelSet >                   MultiSurfaceContainer;
+    /// defines an arbitrary digital surface over a binary image.
+    typedef DigitalSurface< MultiSurfaceContainer >             MultiDigitalSurface;
     /// defines a connected or not indexed digital surface.
     typedef IndexedDigitalSurface< MultiSurfaceContainer >      IdxDigitalSurface;
     typedef typename SimpleDigitalSurface::Surfel               Surfel;
@@ -157,6 +159,7 @@ namespace DGtal
     typedef typename IdxDigitalSurface::Vertex                  IdxVertex;
     typedef typename IdxDigitalSurface::Arc                     IdxArc;
     typedef typename IdxDigitalSurface::ArcRange                IdxArcRange;
+    typedef std::set< IdxSurfel >                               IdxSurfelSet;
     typedef std::vector< Surfel >                               SurfelRange;
     typedef std::vector< Cell >                                 CellRange;
     typedef std::vector< IdxSurfel >                            IdxSurfelRange;
@@ -973,6 +976,38 @@ namespace DGtal
       return result;
     }
 
+
+    /// Builds a multi digital surface from an indexed digital surface.
+    ///
+    /// @note if the given surfel adjacency is not the same as the one
+    /// chosen for the input indexed digital surface, the number of
+    /// connected components may change in the process.
+    ///
+    /// @param[in] idx_surface any indexed digital surface.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///
+    /// @return a smart pointer on a multi digital surface.
+    static CountedPtr< MultiDigitalSurface >
+    makeMultiDigitalSurface
+    ( CountedPtr<IdxDigitalSurface> idx_surface,
+      const Parameters&             params = parametersDigitalSurface() )
+    {
+      bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
+      const KSpace& K = idx_surface->container().space();
+      SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
+      auto all_idx_surfels
+	= getIdxSurfelRange( idx_surface, Parameters( "surfaceTraversal", "Default" ) );
+      auto idx2surfel = idx_surface->surfels();
+      SurfelSet all_surfels;
+      for ( auto idx : all_idx_surfels ) all_surfels.insert( idx2surfel[ idx ] );
+      MultiSurfaceContainer* surfContainer
+	= new MultiSurfaceContainer( K, surfAdj, all_surfels );
+      return CountedPtr<MultiDigitalSurface>
+	( new MultiDigitalSurface( surfContainer ) ); // acquired
+    }
+    
     /// Builds an indexed digital surface from a space \a K and a
     /// binary image \a bimage. Note that it may connected or not
     /// depending on parameters.
@@ -1024,9 +1059,9 @@ namespace DGtal
     template <typename TSurfelRange>
     static CountedPtr<IdxDigitalSurface>
     makeIdxDigitalSurface
-    ( const TSurfelRange& surfels,
-      const KSpace&       K,
-      const Parameters&   params = parametersDigitalSurface() )
+    ( const TSurfelRange&  surfels,
+      ConstAlias< KSpace > K,
+      const Parameters&    params = parametersDigitalSurface() )
     {
       bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
       SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
@@ -1041,8 +1076,65 @@ namespace DGtal
       return ptrSurface;
     }
 
-    /// Given a simple digital surface, returns a vector of surfels in
+    /// Builds an indexed digital surface from a simple digital
+    /// surface. Note that the surfel adjacency may be changed and a
+    /// connected simple digital surface could be disconnected in the process.
+    ///
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    ///
+    /// @param[in] surface a smart pointer on a simple digital surface.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///
+    /// @return a smart pointer on the required indexed digital surface.
+    template <typename TAnyDigitalSurface>
+    static CountedPtr<IdxDigitalSurface>
+    makeIdxDigitalSurface
+    ( CountedPtr< TAnyDigitalSurface> surface,
+      const Parameters&               params = parametersDigitalSurface() )
+    {
+      const KSpace& K = surface->container().space();
+      SurfelSet     surfels;
+      surfels.insert( surface->begin(), surface->end() );
+      return makeIdxDigitalSurface( surfels, K, params );
+    }    
+
+    /// Builds an indexed digital surface from a vector of simple digital
+    /// surfaces. Note that the surfel adjacency may be changed and a
+    /// connected simple digital surface could be disconnected in the process.
+    ///
+    /// @note the surfaces must live in the same digital spaces. 
+    ///
+    /// @param[in] surfaces a vector of smart pointers on simple digital surfaces.
+    ///
+    /// @param[in] params the parameters:
+    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///
+    /// @return a smart pointer on the required indexed digital surface.
+    static CountedPtr<IdxDigitalSurface>
+    makeIdxDigitalSurface
+    ( const std::vector< CountedPtr<SimpleDigitalSurface> >& surfaces,
+      const Parameters&       params = parametersDigitalSurface()  )
+    {
+      if ( surfaces.empty() ) return CountedPtr<IdxDigitalSurface>( 0 );
+      const KSpace& K = surfaces[ 0 ]->container().space();
+      SurfelSet     surfels;
+      for ( auto i = 0; i < surfaces.size(); ++i ) {
+	const KSpace& Ki = surfaces[ i ]->container().space();
+	if ( ( Ki.lowerBound() != K.lowerBound() )
+	     || ( Ki.upperBound() != K.upperBound() ) )
+	  trace.warning() << "[Shortcuts::makeIdxDigitalSurface] Incompatible digital spaces for surface " << i << std::endl;
+	surfels.insert( surfaces[ i ]->begin(), surfaces[ i ]->end() );
+      }
+      return makeIdxDigitalSurface( surfels, K, params );
+    }    
+
+    
+    /// Given any digital surface, returns a vector of surfels in
     /// some specified order.
+    ///
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
     ///
     /// @param[in] surface a smart pointer on a digital surface.
     ///
@@ -1052,9 +1144,10 @@ namespace DGtal
     ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
     ///
     /// @return a range of surfels as a vector.
+    template <typename TAnyDigitalSurface>
     static SurfelRange
     getSurfelRange
-    ( CountedPtr<SimpleDigitalSurface> surface,
+    ( CountedPtr< TAnyDigitalSurface> surface,
       const Parameters&   params = parametersDigitalSurface() )
     {
       return getSurfelRange( surface, *( surface->begin() ), params );
@@ -1062,6 +1155,8 @@ namespace DGtal
 
     /// Given a simple digital surface, returns a vector of surfels in
     /// some specified order.
+    ///
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
     ///
     /// @param[in] surface a smart pointer on a digital surface.
     ///
@@ -1072,9 +1167,10 @@ namespace DGtal
     ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
     ///
     /// @return a range of surfels as a vector.
+    template <typename TAnyDigitalSurface>
     static SurfelRange
     getSurfelRange
-    ( CountedPtr<SimpleDigitalSurface> surface,
+    ( CountedPtr< TAnyDigitalSurface> surface,
       const Surfel&       start_surfel,
       const Parameters&   params = parametersDigitalSurface() )
     {
@@ -1082,7 +1178,7 @@ namespace DGtal
       std::string traversal = params[ "surfaceTraversal" ].as<std::string>();
       if ( traversal == "DepthFirst" )
 	{
-	  typedef DepthFirstVisitor< SimpleDigitalSurface > Visitor;
+	  typedef DepthFirstVisitor< TAnyDigitalSurface > Visitor;
 	  typedef GraphVisitorRange< Visitor > VisitorRange;
 	  VisitorRange range( new Visitor( *surface, start_surfel ) );
 	  std::for_each( range.begin(), range.end(),
@@ -1090,7 +1186,7 @@ namespace DGtal
 	}
       else if ( traversal == "BreadthFirst" )
 	{
-	  typedef BreadthFirstVisitor< SimpleDigitalSurface > Visitor;
+	  typedef BreadthFirstVisitor< TAnyDigitalSurface > Visitor;
 	  typedef GraphVisitorRange< Visitor > VisitorRange;
 	  VisitorRange range( new Visitor( *surface, start_surfel ) );
 	  std::for_each( range.begin(), range.end(),
@@ -1180,7 +1276,7 @@ namespace DGtal
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< TCellEmbedder > ));
       const KSpace& K = embedder.space();
-      // Number and ouput vertices.
+      // Number and output vertices.
       std::map< Cell, Size > vtx_numbering;
       Size n = 1;  // OBJ vertex numbering start at 1 
       for ( auto&& s : surfels ) {
@@ -1210,14 +1306,17 @@ namespace DGtal
     /// (surfels=face), as an OBJ file (3D only). Note that faces are
     /// oriented consistently (normals toward outside).
     ///
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    ///
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
     ///
     /// @return 'true' if the output stream is good.
+    template <typename TAnyDigitalSurface>
     static bool
     outputPrimalDigitalSurfaceAsObj
     ( std::ostream&              output,
-      CountedPtr<SimpleDigitalSurface> surface )
+      CountedPtr<TAnyDigitalSurface> surface )
     {
       CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
       return outputPrimalDigitalSurfaceAsObj( output, surface, embedder );
@@ -1228,19 +1327,65 @@ namespace DGtal
     /// oriented consistently (normals toward outside). Each vertex is
     /// mapped to a 3D point using the given cell embedder.
     ///
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    ///
     /// @tparam TCellEmbedder any model of CCellEmbedder
+    ///
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
     /// @param[in] embedder the embedder for mapping surfel vertices (cells of dimension 0) to points in space.
     /// @return 'true' if the output stream is good.
-    template <typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
+    template < typename TAnyDigitalSurface,
+	       typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
     static bool
     outputPrimalDigitalSurfaceAsObj
     ( std::ostream&              output,
-      CountedPtr<SimpleDigitalSurface> surface,
+      CountedPtr<TAnyDigitalSurface> surface,
       const TCellEmbedder&       embedder )
     {
       auto surfels = getSurfelRange( surface, Parameters( "Traversal", "Default" ) );
+      return outputSurfelsAsObj( output, surfels, embedder );
+    }
+
+    /// Outputs an indexed digital surface, seen from the primal point
+    /// of view (surfels=face), as an OBJ file (3D only). Note that
+    /// faces are oriented consistently (normals toward outside).
+    ///
+    /// @param[out] output the output stream.
+    /// @param[in] surface a smart pointer on an indexed digital surface.
+    ///
+    /// @return 'true' if the output stream is good.
+    static bool
+    outputPrimalIdxDigitalSurfaceAsObj
+    ( std::ostream&              output,
+      CountedPtr<IdxDigitalSurface> surface )
+    {
+      CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
+      return outputPrimalIdxDigitalSurfaceAsObj( output, surface, embedder );
+    }
+    
+    /// Outputs an indexed digital surface, seen from the primal point of view
+    /// (surfels=face), as an OBJ file (3D only). Note that faces are
+    /// oriented consistently (normals toward outside). Each vertex is
+    /// mapped to a 3D point using the given cell embedder.
+    ///
+    /// @tparam TCellEmbedder any model of CCellEmbedder
+    /// @param[out] output the output stream.
+    /// @param[in] surface a smart pointer on an indexed digital surface.
+    /// @param[in] embedder the embedder for mapping surfel vertices (cells of dimension 0) to points in space.
+    /// @return 'true' if the output stream is good.
+    template <typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
+    static bool
+    outputPrimalIdxDigitalSurfaceAsObj
+    ( std::ostream&                 output,
+      CountedPtr<IdxDigitalSurface> surface,
+      const TCellEmbedder&          embedder )
+    {
+      auto idxsurfels = getIdxSurfelRange( surface, Parameters( "Traversal", "Default" ) );
+      auto  surfelmap = surface->surfels();
+      SurfelRange surfels;
+      for ( auto&& idx : idxsurfels )
+	surfels.push_back( surfelmap[ idx ] );
       return outputSurfelsAsObj( output, surfels, embedder );
     }
 
@@ -1248,16 +1393,19 @@ namespace DGtal
     /// (surfels=vertices), as an OBJ file (3D only). Note that faces are
     /// oriented consistently (normals toward outside).
     ///
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    ///
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
     /// @param[in] params the parameters:
     ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
+    template <typename TAnyDigitalSurface>
     static bool
     outputDualDigitalSurfaceAsObj
     ( std::ostream&              output,
-      CountedPtr<SimpleDigitalSurface> surface,
+      CountedPtr<TAnyDigitalSurface> surface,
       const Parameters&   params = parametersDigitalSurface() )
     {
       CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
@@ -1269,7 +1417,10 @@ namespace DGtal
     /// oriented consistently (normals toward outside). Each vertex is
     /// mapped to a 3D point using the given cell embedder.
     ///
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    ///
     /// @tparam TCellEmbedder any model of CCellEmbedder
+    ///
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
     /// @param[in] embedder the embedder for mapping (unsigned) surfels (cells of dimension 2) to points in space.
@@ -1277,11 +1428,12 @@ namespace DGtal
     ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
-    template <typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
+    template < typename TAnyDigitalSurface,
+	       typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
     static bool
     outputDualDigitalSurfaceAsObj
     ( std::ostream&              output,
-      CountedPtr<SimpleDigitalSurface> surface,
+      CountedPtr<TAnyDigitalSurface> surface,
       const TCellEmbedder&       embedder,
       const Parameters&   params = parametersDigitalSurface() )
     {
