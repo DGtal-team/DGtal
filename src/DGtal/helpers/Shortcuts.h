@@ -46,6 +46,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/math/MPolynomial.h"
+#include "DGtal/math/Statistic.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/IntervalForegroundPredicate.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
@@ -167,6 +169,7 @@ namespace DGtal
     typedef std::vector< Scalar >                               Scalars;
     typedef std::vector< RealVector >                           RealVectors;
 
+    typedef DGtal::Statistic<Scalar>                            ScalarStatistic;
     
     typedef sgf::ShapePositionFunctor<ImplicitShape3D>          PositionFunctor;
     typedef sgf::ShapeNormalVectorFunctor<ImplicitShape3D>      NormalFunctor;
@@ -188,14 +191,14 @@ namespace DGtal
   public:
     
     /// @return the parameters and their default values used in shortcuts.
-    /// - "polynomial" : "sphere1"
     static Parameters defaultParameters()
     {
       return parametersImplicitShape3D()
 	| parametersKSpace()
 	| parametersDigitizedImplicitShape3D()
 	| parametersBinaryImage()
-	| parametersDigitalSurface();
+	| parametersDigitalSurface()
+	| parametersGeometryEstimation();
     }
 
     // ----------------------- ImplicitShape3D static services ------------------------
@@ -1296,11 +1299,24 @@ namespace DGtal
 
     /// @return the parameters and their default values which are used
     /// to estimate the geometry of a digital surface.
-    ///   - trivialRadius     [   3.0]: the radius used when computing convolved trivial normals.
+    ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+    ///   - t-ring          [   3.0]: the radius used when computing convolved trivial normals (it is a graph distance, not related to the grid step).
+    ///   - R-radius        [  10.0]: the constant for distance parameter R in R(h)=R h^alpha (VCM).
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - kernel          [ "hat"]: the kernel integration function chi_r, either "hat" or "ball". )
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+    ///   - surfelEmbedding [     0]: the surfel -> point embedding for VCM estimator: 0: Pointels, 1: InnerSpel, 2: OuterSpel.
     static Parameters parametersGeometryEstimation()
     {
       return Parameters
-	( "trivialRadius", 3.0 );
+	( "verbose",           1 )
+	( "t-ring",          3.0 )
+	( "kernel",        "hat" )
+	( "gridstep",        1.0 )
+	( "R-radius",       10.0 )
+	( "r-radius",        3.0 )
+	( "alpha",          0.33 )
+	( "surfelEmbedding",   0 );
     }
     
     /// Given a digital space \a K and a vector of \a surfels,
@@ -1338,7 +1354,8 @@ namespace DGtal
     /// @param[in] surface the digital surface
     /// @param[in] surfels the sequence of surfels at which we compute the normals
     /// @param[in] params the parameters:
-    ///   - trivialRadius     [   3.0]: the radius used when computing convolved trivial normals.
+    ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+    ///   - t-ring          [   3.0]: the radius used when computing convolved trivial normals (it is a graph distance, not related to the grid step).
     ///
     /// @return the vector containing the estimated normals, in the
     /// same order as \a surfels.
@@ -1347,9 +1364,10 @@ namespace DGtal
     getConvolvedTrivialNormalVectors
     ( CountedPtr<TAnyDigitalSurface> surface,
       const SurfelRange&             surfels,
-      const Parameters&               params = parametersGeometryEstimation() )
+      const Parameters&              params = parametersGeometryEstimation() )
     {
-      Scalar t = params[ "trivialRadius" ].as<double>();
+      int    verbose = params[ "verbose"  ].as<int>();
+      Scalar       t = params[ "t-ring"   ].as<double>();
       typedef typename TAnyDigitalSurface::DigitalSurfaceContainer  SurfaceContainer;
       typedef ExactPredicateLpSeparableMetric<Space,2>              Metric;
       typedef functors::HatFunction<Scalar>                         Functor;
@@ -1357,7 +1375,8 @@ namespace DGtal
 	< Surfel, CanonicSCellEmbedder<KSpace> >                    SurfelFunctor;
       typedef LocalEstimatorFromSurfelFunctorAdapter
 	< SurfaceContainer, Metric, SurfelFunctor, Functor>         NormalEstimator;
-      trace.info() << " CTrivial normal t=" << t << " (discrete)" << std::endl;
+      if ( verbose > 0 )
+	trace.info() << " CTrivial normal t=" << t << " (discrete)" << std::endl;
       const Functor fct( 1.0, t );
       const KSpace &  K = surface->container().space();
       Metric    aMetric;
@@ -1375,6 +1394,189 @@ namespace DGtal
       return n_estimations;
     }
 
+    /// Given a digital surface \a surface, a sequence of \a surfels,
+    /// and some parameters \a params, returns the normal Voronoi
+    /// Covariance Measure (VCM) estimation at the specified surfels,
+    /// in the same order.
+    ///
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    ///
+    /// @param[in] surface the digital surface
+    /// @param[in] surfels the sequence of surfels at which we compute the normals
+    /// @param[in] params the parameters:
+    ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+    ///   - t-ring          [   3.0]: the radius used when computing convolved trivial normals (it is a graph distance, not related to the grid step).
+    ///   - R-radius        [  10.0]: the constant for distance parameter R in R(h)=R h^alpha (VCM).
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - kernel          [ "hat"]: the kernel integration function chi_r, either "hat" or "ball". )
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+    ///   - surfelEmbedding [     0]: the surfel -> point embedding for VCM estimator: 0: Pointels, 1: InnerSpel, 2: OuterSpel.
+    ///
+    /// @return the vector containing the estimated normals, in the
+    /// same order as \a surfels.
+    template <typename TAnyDigitalSurface>
+    static RealVectors
+    getVCMNormalVectors
+    ( CountedPtr<TAnyDigitalSurface> surface,
+      const SurfelRange&             surfels,
+      const Parameters&              params = parametersGeometryEstimation() )
+    {
+      typedef ExactPredicateLpSeparableMetric<Space,2> Metric;
+      typedef typename TAnyDigitalSurface::DigitalSurfaceContainer SurfaceContainer;
+      RealVectors n_estimations;
+      int        verbose = params[ "verbose"   ].as<int>();
+      std::string kernel = params[ "kernel"    ].as<std::string>();
+      Scalar      h      = params[ "gridstep"  ].as<Scalar>();
+      Scalar      R      = params[ "R-radius"  ].as<Scalar>();
+      Scalar      r      = params[ "r-radius"  ].as<Scalar>();
+      Scalar      t      = params[ "t-ring"    ].as<Scalar>();
+      Scalar      alpha  = params[ "alpha"     ].as<Scalar>();
+      int      embedding = params[ "embedding" ].as<int>();
+      // Adjust parameters according to gridstep if specified.
+      if ( alpha != 1.0 ) R *= pow( h, alpha-1.0 );
+      if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
+      Surfel2PointEmbedding embType = embedding == 0 ? Pointels :
+                                      embedding == 1 ? InnerSpel : OuterSpel;
+      if ( verbose > 0 ) {
+	trace.info() << "- VCM normal kernel=" << kernel << " emb=" << embedding
+		     << " alpha=" << alpha << std::endl;
+	trace.info() << "- VCM normal r=" << (r*h)  << " (continuous) "
+		     << r << " (discrete)" << std::endl;
+	trace.info() << "- VCM normal R=" << (R*h)  << " (continuous) "
+		     << R << " (discrete)" << std::endl;
+	trace.info() << "- VCM normal t=" << t << " (discrete)" << std::endl;
+      }
+      if ( kernel == "hat" ) {
+	typedef functors::HatPointFunction<Point,Scalar>             KernelFunction;
+	typedef VoronoiCovarianceMeasureOnDigitalSurface
+	  < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
+	typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
+	typedef VCMDigitalSurfaceLocalEstimator
+	  < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
+	KernelFunction chi_r( 1.0, r );
+	VCMNormalEstimator estimator;
+	estimator.attach( *surface );
+	estimator.setParams( embType, R, r, chi_r, t, Metric(), verbose > 0 );
+	estimator.init( h, surfels.begin(), surfels.end() );
+	estimator.eval( surfels.begin(), surfels.end(),
+			std::back_inserter( n_estimations ) );
+      } else if ( kernel == "ball" ) {
+	typedef functors::BallConstantPointFunction<Point,Scalar>    KernelFunction;
+	typedef VoronoiCovarianceMeasureOnDigitalSurface
+	  < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
+	typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
+	typedef VCMDigitalSurfaceLocalEstimator
+	  < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
+	KernelFunction chi_r( 1.0, r );
+	VCMNormalEstimator estimator;
+	estimator.attach( *surface );
+	estimator.setParams( embType, R, r, chi_r, t, Metric(), verbose > 0 );
+	estimator.init( h, surfels.begin(), surfels.end() );
+	estimator.eval( surfels.begin(), surfels.end(),
+			std::back_inserter( n_estimations ) );
+      }
+      return n_estimations;
+    }
+
+    // ------------------------- Error measures services -------------------------
+
+    /// Orient \a v so that it points in the same direction as \a
+    /// ref_v (scalar product is then non-negative afterwards).
+    ///
+    /// @param[inout] v the vectors to reorient.
+    /// @param[in]    ref_v the vectors having the reference orientation.
+    static void
+    orientVectors( RealVectors&       v,
+		   const RealVectors& ref_v )
+    {
+      std::transform( ref_v.cbegin(), ref_v.cend(), v.cbegin(), v.begin(), 
+		      [] ( RealVector rw, RealVector w )
+		      { return rw.dot( w ) >= 0.0 ? w : -w; } );
+    }
+    
+    /// Computes the statistic that measures the angle differences
+    /// between the two arrays of unit vectors.
+    ///
+    /// @param[in] v1 the first array of unit vectors (normals)
+    /// @param[in] v2 the second array of unit vectors (normals)
+    /// @return their angle difference as a statistic.
+    static ScalarStatistic
+    getVectorsAngleDeviation( const RealVectors& v1,
+			      const RealVectors& v2 )
+    {
+      ScalarStatistic stat;
+      for ( auto it1 = v1.cbegin(), it2 = v2.cbegin(), itE1 = v1.end();
+	    it1 != itE1; ++it1, ++it2 )
+	{
+          Scalar angle_error = acos( (*it1).dot( *it2 ) );
+          stat.addValue( angle_error );
+	}
+      stat.terminate();
+      return stat;
+    }
+    
+    /// Computes the absolute difference between each element of the two vectors.
+    /// @param[in] v1 any vector of values.
+    /// @param[in] v2 any vector of values.
+    /// @return the vector composed of elemenst |v1[i]-v2[i]|.
+    static Scalars
+    getScalarsAbsoluteDifference( const Scalars & v1,
+				  const Scalars & v2 )
+    {
+      Scalars result( v1.size() );
+      std::transform( v2.cbegin(), v2.cend(), v1.cbegin(), result.begin(), 
+		      [] ( Scalar val1, Scalar val2 )
+		      { return fabs( val1 - val2 ); } );
+      return result;
+    }
+
+    /// Computes the l2-norm of v1-v2, ie the square root of the
+    /// mean-squared error of the two vectors.
+    ///
+    /// @param[in] v1 any vector of values.
+    /// @param[in] v2 any vector of values.
+    /// @return the normL2 of v1-v2, ie. sqrt( 1/n sum_i (v1[i]-v2[i])^2 ).
+    static Scalar
+    getScalarsNormL2( const Scalars & v1,
+		      const Scalars & v2 )
+    {
+      Scalar sum = 0;
+      for ( unsigned int i = 0; i < v1.size(); i++ )
+	sum += ( v1[ i ] - v2[ i ] ) * ( v1[ i ] - v2[ i ] );
+      return sqrt( sum / v1.size() );
+    }
+
+    /// Computes the l1-norm of v1-v2, ie the average of the absolute
+    /// differences of the two vectors.
+    ///
+    /// @param[in] v1 any vector of values.
+    /// @param[in] v2 any vector of values.
+    /// @return the normL1 of v1-v2, ie. 1/n sum_i |v1[i]-v2[i]|.
+    static Scalar
+    getScalarsNormL1( const Scalars & v1,
+		      const Scalars & v2 )
+    {
+      Scalar sum = 0;
+      for ( unsigned int i = 0; i < v1.size(); i++ )
+	sum += fabs( v1[ i ] - v2[ i ] );
+      return sum / v1.size();
+    }
+
+    /// Computes the loo-norm of v1-v2, ie the maximum of the absolute
+    /// differences of the two vectors.
+    ///
+    /// @param[in] v1 any vector of values.
+    /// @param[in] v2 any vector of values.
+    /// @return the normLoo of v1-v2, ie. max_i |v1[i]-v2[i]|.
+    static Scalar
+    getScalarsNormLoo( const Scalars & v1,
+		       const Scalars & v2 )
+    {
+      Scalar loo = 0;
+      for ( unsigned int i = 0; i < v1.size(); i++ )
+	loo = std::max( loo, fabs( v1[ i ] - v2[ i ] ) );
+      return loo;
+    }
 
     
     // ------------------------------ utilities ------------------------------
