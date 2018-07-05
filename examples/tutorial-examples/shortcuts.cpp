@@ -153,6 +153,7 @@ int main( int argc, char** argv )
 
     trace.beginBlock ( "Compute true geometry" );
     {
+      params( "surfaceTraversal", "DepthFirst" )( "verbose", 0 );
       auto K           = SH3::getKSpace( params );
       auto surface     = SH3::makeAnyBigSimpleDigitalSurface( binary_image, K, params );
       auto surfels     = SH3::getSurfelRange( surface, params );
@@ -182,6 +183,19 @@ int main( int argc, char** argv )
       std::cout << " expected: H_min = 0.0912870 H_max = 0.263523" << std::endl;
       std::cout << "G_min = " << g0 << " G_max = " << g1;
       std::cout << " expected: G_min = 0.0074074 G_max = 0.0666666" << std::endl;
+
+      auto     t_normals = SH3::getTrivialNormalVectors( K, surfels );
+      auto    ct_normals = SH3::getConvolvedTrivialNormalVectors( surface, surfels, params );
+      auto   vcm_normals = SH3::getVCMNormalVectors( surface, surfels, params );
+      auto   t_angle_dev = SH3::getVectorsAngleDeviation( normals, t_normals );
+      auto  ct_angle_dev = SH3::getVectorsAngleDeviation( normals, ct_normals );
+      auto vcm_angle_dev = SH3::getVectorsAngleDeviation( normals, vcm_normals );
+      std::cout << "Trivial  angle_dev  mean="
+		<< t_angle_dev.mean() << " max=" << t_angle_dev.max() << std::endl;
+      std::cout << "CTrivial angle_dev  mean="
+		<< ct_angle_dev.mean() << " max=" << ct_angle_dev.max() << std::endl;
+      std::cout << "VCM      angle_dev  mean="
+		<< vcm_angle_dev.mean() << " max=" << vcm_angle_dev.max() << std::endl;
     }
     trace.endBlock();
 
