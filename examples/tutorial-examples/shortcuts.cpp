@@ -187,15 +187,21 @@ int main( int argc, char** argv )
       auto     t_normals = SH3::getTrivialNormalVectors( K, surfels );
       auto    ct_normals = SH3::getConvolvedTrivialNormalVectors( surface, surfels, params );
       auto   vcm_normals = SH3::getVCMNormalVectors( surface, surfels, params );
+      auto    ii_normals = SH3::getIINormalVectors( binary_image, surfels, params );
+      // Need to reorient II normals with CTrivial (otherwise unstable orientation).
+      SH3::orientVectors( ii_normals, ct_normals );
       auto   t_angle_dev = SH3::getVectorsAngleDeviation( normals, t_normals );
       auto  ct_angle_dev = SH3::getVectorsAngleDeviation( normals, ct_normals );
       auto vcm_angle_dev = SH3::getVectorsAngleDeviation( normals, vcm_normals );
+      auto  ii_angle_dev = SH3::getVectorsAngleDeviation( normals, ii_normals );
       std::cout << "Trivial  angle_dev  mean="
 		<< t_angle_dev.mean() << " max=" << t_angle_dev.max() << std::endl;
       std::cout << "CTrivial angle_dev  mean="
 		<< ct_angle_dev.mean() << " max=" << ct_angle_dev.max() << std::endl;
       std::cout << "VCM      angle_dev  mean="
 		<< vcm_angle_dev.mean() << " max=" << vcm_angle_dev.max() << std::endl;
+      std::cout << "II       angle_dev  mean="
+		<< ii_angle_dev.mean() << " max=" << ii_angle_dev.max() << std::endl;
     }
     trace.endBlock();
 
