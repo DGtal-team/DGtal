@@ -829,9 +829,9 @@ namespace DGtal
     }
 
     
-    /// Merges the edge specified by the half-edge \a i.
+    /// Merges the edge specified by the half-edge \a hei.
     ///
-    /// @param i any valid half-edge index.
+    /// @param hei any valid half-edge index.
     ///
     /// @param update_arc2index (optimisation parameter), when 'true'
     /// updates everything consistently; when 'false' do not update
@@ -841,7 +841,7 @@ namespace DGtal
     ///
     /// @return the index of the merged vertex.
     ///
-    /// @pre the edge must be mergeable, `isMergeable( i ) == true`
+    /// @pre the edge must be mergeable, `isMergeable( hei ) == true`
     /// @see isMergeable
     /// @todo We could also merge boundary triangles or more general faces.
     VertexIndex merge( const Index hei, bool update_arc2index = true ) {
@@ -873,6 +873,11 @@ namespace DGtal
       const EdgeIndex   e3 = halfEdge( i2nn ).edge;
       const EdgeIndex ev13 = halfEdge( iext1nn ).edge;
       const EdgeIndex ev14 = halfEdge( iext2n ).edge;
+      // For debug
+      int nbV1 = nbNeighboringVertices( v1 );
+      int nbV2 = nbNeighboringVertices( v2 );
+      int nbV3 = nbNeighboringVertices( v3 );
+      int nbV4 = nbNeighboringVertices( v4 );
       // Changes toVertex field of half-edges pointing to v2	 
       std::vector<VertexIndex> outer_v;  // stores vertices around v2
       std::vector<Index>       inner_he; // stores half-edges from v2
@@ -889,20 +894,20 @@ namespace DGtal
 	heopp.toVertex = v1;
 	i = heopp.next;
       } while ( i != i1n ); // i2 precedes i1n around the vertex v2.
-      std::cout << "#outer_v=" << outer_v.size() << std::endl;
+      // std::cout << "#outer_v=" << outer_v.size() << std::endl;
       // Gluing arcs around the two triangles
-      std::cout << "Gluing arcs around the two triangles" << std::endl;
+      // std::cout << "Gluing arcs around the two triangles" << std::endl;
       myHalfEdges[ iext1nn ].opposite = iext1n;
       myHalfEdges[ iext1n  ].opposite = iext1nn;
       myHalfEdges[ iext2nn ].opposite = iext2n;
       myHalfEdges[ iext2n  ].opposite = iext2nn;
       // Changing edges of merged edges
-      std::cout << "Changing edges of merged edges" << std::endl;
-      myHalfEdges[ iext1n  ].edge     = halfEdge( iext1nn ).edge;
-      myHalfEdges[ iext2nn ].edge     = halfEdge( iext2n ).edge;
+      // std::cout << "Changing edges of merged edges" << std::endl;
+      myHalfEdges[ iext1n  ].edge     = ev13;
+      myHalfEdges[ iext2nn ].edge     = ev14;
       // Taking care of look-up tables.
       // (1) myVertexHalfEdges
-      std::cout << "(1) myVertexHalfEdges" << std::endl;
+      // std::cout << "(1) myVertexHalfEdges" << std::endl;
       myVertexHalfEdges[ v1 ] = iext1nn;
       if ( myVertexHalfEdges[ v3 ] == i1nn )
 	myVertexHalfEdges[ v3 ] = iext1n;
@@ -910,12 +915,12 @@ namespace DGtal
 	myVertexHalfEdges[ v4 ] = iext2n;
       // (2) myFaceHalfEdges -> nothing to do.
       // (3) myEdgeHalfEdges
-      std::cout << "(3) myEdgeHalfEdges" << std::endl;
+      // std::cout << "(3) myEdgeHalfEdges" << std::endl;
       myEdgeHalfEdges[ ev13 ] = iext1nn;
       myEdgeHalfEdges[ ev14 ] = iext2n;
       // (4) myArc2Index only if asked
       if ( update_arc2index ) {
-	std::cout << "Updating arc2index" << std::endl;
+	// std::cout << "Updating arc2index" << std::endl;
 	for ( int j = 0; j < outer_v.size(); ++j ) {
 	  myArc2Index.erase( Arc( v2, outer_v[ j ] ) );
 	  myArc2Index.erase( Arc( outer_v[ j ], v2 ) );
@@ -927,30 +932,49 @@ namespace DGtal
 	myArc2Index[ Arc( v3, v1 ) ] = iext1n;
 	myArc2Index[ Arc( v1, v4 ) ] = iext2nn;
       }
+      // Debug
+      int new_nbV1 = nbNeighboringVertices( v1 );
+      int new_nbV3 = nbNeighboringVertices( v3 );
+      int new_nbV4 = nbNeighboringVertices( v4 );
+      if ( ( new_nbV1 != nbV1+nbV2-4 )
+	   || ( new_nbV3 != nbV3 -1 )
+	   || ( new_nbV4 != nbV4 -1 ) )
+	trace.warning() << "Invalid nb of neighbors: "
+			<< " nbV1=" << nbV1
+			<< " nbV2=" << nbV2
+			<< " nbV3=" << nbV3
+			<< " nbV4=" << nbV4 << std::endl
+			<< " new_nbV1=" << new_nbV1
+			<< " new_nbV3=" << new_nbV3
+			<< " new_nbV4=" << new_nbV4 << std::endl;
+
       // Renumbering of 1 vertex, 3 edges, 2 faces, 6 half-edges
-      std::cout << "Renumbering vertex" << v2 << "/" << nbVertices() << std::endl;
+      // std::cout << "Renumbering vertex" << v2 << "/" << nbVertices() << std::endl;
       renumberVertex( v2, update_arc2index );
       std::array< EdgeIndex, 3 > E = { e1, e2, e3 };
       std::sort( E.begin(), E.end(), std::greater<EdgeIndex>() );
       for ( Index e : E ) {
-	std::cout << "Renumbering edge" << e  << "/" << nbEdges() << std::endl;
+	// std::cout << "Renumbering edge" << e  << "/" << nbEdges() << std::endl;
 	renumberEdge( e );
       }
       std::array< FaceIndex, 2 > F = { f1, f2 };
       std::sort( F.begin(), F.end(), std::greater<FaceIndex>() );
       for ( Index f : F ) {
-	std::cout << "Renumbering face" << f << "/" << nbFaces() << std::endl;
+	// std::cout << "Renumbering face" << f << "/" << nbFaces() << std::endl;
 	renumberFace( f );
       }
       std::array< Index, 6 > T = { i1, i1n, i1nn, i2, i2n, i2nn };
       std::sort( T.begin(), T.end(), std::greater<Index>() );
       for ( Index t : T ) {
-	std::cout << "Renumbering half-edge" << t << "/" << nbHalfEdges() << std::endl;
+	// std::cout << "Renumbering half-edge" << t << "/" << nbHalfEdges() << std::endl;
 	renumberHalfEdge( t );
       }
       return v1;
     }
 
+    // ------------------------ protected services -------------------------
+  protected:
+    
     /// Renumber the last vertex of the triangulated surface as vertex
     /// i (this replaces it). The number of vertices of the data
     /// structure is decreased by 1.
@@ -958,7 +982,7 @@ namespace DGtal
       // Vertex j becomes vertex i
       const VertexIndex vj = nbVertices() - 1;
       if ( vi != vj ) {
-	const Index        j = myVertexHalfEdges[ j ];
+	const Index        j = myVertexHalfEdges[ vj ];
 	const HalfEdge&  hej = halfEdge( j );
 	Index              k = j;
 	// Turns around vertex vj to modify toVertex fields.
@@ -971,8 +995,8 @@ namespace DGtal
 	  if ( update_arc2index ) {
 	    myArc2Index.erase( Arc( vj, hek.toVertex ) );
 	    myArc2Index.erase( Arc( hek.toVertex, vj ) );
-	    myArc2Index[ Arc( vj, hek.toVertex ) ] = k;
-	    myArc2Index[ Arc( hek.toVertex, vj ) ] = kopp;
+	    myArc2Index[ Arc( vi, hek.toVertex ) ] = k;
+	    myArc2Index[ Arc( hek.toVertex, vi ) ] = kopp;
 	  }
 	  k = hekopp.next;
 	} while ( k != j );
@@ -1003,7 +1027,7 @@ namespace DGtal
     /// Renumber the last face of the triangulated surface as face fi
     /// (this replaces it). The number of faces of the data
     /// structure is decreased by 1.
-    void renumberFace( const EdgeIndex fi ) {
+    void renumberFace( const FaceIndex fi ) {
       const FaceIndex     fj = nbFaces() - 1;
       if ( fi != fj ) {
 	const Index          j = myFaceHalfEdges[ fj ];
@@ -1011,7 +1035,7 @@ namespace DGtal
 	do {
 	  HalfEdge&    hek = myHalfEdges[ k ];
 	  ASSERT( hek.face == fj );
-	  hek.face         = fj;
+	  hek.face         = fi;
 	  k = hek.next;
 	} while ( k != j );
 	myFaceHalfEdges[ fi ] = j;
@@ -1025,18 +1049,29 @@ namespace DGtal
     void renumberHalfEdge( const Index i, bool update_arc2index = true ) {
       const Index          j = nbHalfEdges() - 1;
       if ( i != j ) {
+	// std::cout << "renumberHalfEdge j=" << j  << std::endl;
 	const HalfEdge&    hej = halfEdge( j );
 	const Index       jopp = hej.opposite;
-	const HalfEdge& hejopp = halfEdge( jopp );
+	// std::cout << "renumberHalfEdge jopp=" << jopp << std::endl;
+	HalfEdge&       hejopp = myHalfEdges[ jopp ];
 	const VertexIndex   vj = hejopp.toVertex; // hej corresponds to (vj,vk)
 	const VertexIndex   vk = hej.toVertex;    // hejopp corresponds to (vk,vj)
+	// Update opposite and previous
+	Index k = hej.next;
+	while ( halfEdge( k ).next != j ) k = halfEdge( k ).next;
+	myHalfEdges[ k ].next = i;
+	hejopp.opposite       = i;
 	// Take care of look-up tables
+	// std::cout << "myVertexHalfEdges[" << vj << "]" << std::endl;
 	if ( myVertexHalfEdges[ vj ] == j )
 	  myVertexHalfEdges[ vj ] = i;
+	// std::cout << "myEdgeHalfEdges[" << hej.edge << "]" << std::endl;
 	if ( myEdgeHalfEdges[ hej.edge ] == j )
 	  myEdgeHalfEdges[ hej.edge ] = i;
+	// std::cout << "myFaceHalfEdges[" << hej.face << "]" << std::endl;
 	if ( myFaceHalfEdges[ hej.face ] == j )
 	  myFaceHalfEdges[ hej.face ] = i;
+	// std::cout << "myArc2Index[" << vj << "," << vk << "]" << std::endl;
 	if ( update_arc2index ) {
 	  myArc2Index[ Arc( vj, vk ) ] = i;
 	}
@@ -1046,6 +1081,8 @@ namespace DGtal
       myHalfEdges.pop_back();
     }
 
+    // ------------------------- consistency services --------------------
+  public:
     /// Checks the whole half-edge structure for consistency.
     /// Complexity is at O(n log n) if n in the number of half-edges.
     /// 
@@ -1060,6 +1097,39 @@ namespace DGtal
     bool isValid( bool check_arc2index = true ) const
     {
       bool ok = true;
+      // Checks that indices are within range
+      for ( Index i = 0; i < nbHalfEdges(); i++ )
+	{
+          const HalfEdge& he = myHalfEdges[ i ];
+	  if ( he.next >= nbHalfEdges() ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                            << "half-edge " << i
+			    << " has invalid next half-edge " << he.next
+			    << std::endl;
+            ok = false;
+          }
+	  if ( he.opposite >= nbHalfEdges() ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                            << "half-edge " << i
+			    << " has invalid opposite half-edge " << he.opposite
+			    << std::endl;
+            ok = false;
+          }
+	  if ( he.toVertex >= nbVertices() ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                            << "half-edge " << i
+			    << " has invalid toVertex " << he.toVertex
+			    << std::endl;
+            ok = false;
+          }
+	  if ( he.face >= nbFaces() && he.face != HALF_EDGE_INVALID_INDEX ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                            << "half-edge " << i
+			    << " has invalid face " << he.face
+			    << std::endl;
+            ok = false;
+          }
+	}
       // Checks that opposite are correct
       for ( Index i = 0; i < nbHalfEdges(); i++ )
         {
@@ -1073,6 +1143,26 @@ namespace DGtal
             trace.warning() << "[HalfEdgeDataStructure::isValid] "
                             << "half-edge " << i << " has opposite half-edge " << j
                             << " but the latter has opposite half-edge " << myHalfEdges[ j ].opposite << std::endl;
+            ok = false;
+          }
+	  const VertexIndex vi = myHalfEdges[ i ].toVertex;
+	  const VertexIndex vj = myHalfEdges[ j ].toVertex;
+	  if ( vi == vj ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+			    << "half-edge " << i << " and its opposite half-edge " << j
+                            << " have the same toVertex " << vi << std::endl;
+            ok = false;
+          }
+	  if ( vi >= nbVertices()  ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+			    << "half-edge " << i
+			    << " points to an invalid vertex " << vi << std::endl;
+            ok = false;
+          }
+	  if ( vj >= nbVertices()  ) {
+            trace.warning() << "[HalfEdgeDataStructure::isValid] "
+			    << "opposite half-edge " << j
+			    << " points to an invalid vertex " << vj << std::endl;
             ok = false;
           }
         }
@@ -1165,7 +1255,28 @@ namespace DGtal
         }
       }
 
-      // Checks that edges have a correct associated half-edge.
+      // Checks that edges have two correct associated half-edges.
+      for ( EdgeIndex ei = 0; ei < nbEdges(); ei++ ) {
+	const Index        i = myEdgeHalfEdges[ ei ];
+        const HalfEdge&  hei = halfEdge( i );
+	const Index        j = hei.opposite;
+        const HalfEdge&  hej = halfEdge( j );
+	if ( hei.edge != ei ) {
+          trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                          << "edge " << ei << " is associated to half-edge " << i
+                          << " but its edge is " << hei.edge << std::endl;
+          ok = false;
+	}
+	if ( hej.edge != ei ) {
+          trace.warning() << "[HalfEdgeDataStructure::isValid] "
+                          << "edge " << ei << " is associated to half-edge " << i
+			  << " of opposite half-edge " << j 
+                          << " but its edge is " << hej.edge << std::endl;
+          ok = false;
+	}
+      }
+      
+      // Checks that arcs have a correct associated half-edge.
       if ( check_arc2index )
         {
           for ( auto arc2idx : myArc2Index )
@@ -1192,6 +1303,64 @@ namespace DGtal
       return ok;
     }
 
+    /// Specific checks that are meaningful only for a triangulation
+    /// (i.e. faces have three vertices).
+    ///
+    /// @return 'true' if all checks have passed.
+    bool isValidTriangulation() const
+    {
+      bool ok = true;
+      // Checks that indices are within range
+      // Checks that following next half-edges turns around the same face.
+      for ( FaceIndex f = 0; f < nbFaces(); f++ )
+        {
+          Index           i = myFaceHalfEdges[ f ];
+          const Index start = i;
+	  int           nbv = 0;
+	  std::set<VertexIndex> V;
+	  std::set<EdgeIndex>   E;
+          do {
+            const HalfEdge& he = halfEdge( i );
+            if ( he.face != f ) {
+              trace.warning() << "[HalfEdgeDataStructure::isValidTriangulation] "
+                              << "when turning around face " << f
+			      << ", half-edge " << i
+                              << " is associated to face " << he.face
+			      << std::endl;
+              ok = false;
+            }
+	    V.insert( he.toVertex );
+	    E.insert( he.edge );
+	    nbv++;
+            i = he.next;
+          }
+          while ( i != start );          
+	  if ( nbv != 3 ) {
+	    trace.warning() << "[HalfEdgeDataStructure::isValidTriangulation] "
+			    << "when turning around face " << f
+			    << ", we had to visit " << nbv
+			    << " half-edges to loop (instead of 3)" << std::endl;
+	    ok = false;
+	  }
+	  if ( V.size() != 3 ) {
+	    trace.warning() << "[HalfEdgeDataStructure::isValidTriangulation] "
+			    << "when turning around face " << f
+			    << ", the set of vertices has not a size 3:";
+	    for ( auto v : V ) trace.warning() << " " << v;
+	    trace.warning() << std::endl;
+	    ok = false;
+	  }
+	  if ( E.size() != 3 ) {
+	    trace.warning() << "[HalfEdgeDataStructure::isValidTriangulation] "
+			    << "when turning around face " << f
+			    << ", the set of edges has not a size 3:";
+	    for ( auto e : E ) trace.warning() << " " << e;
+	    trace.warning() << std::endl;
+	    ok = false;
+	  }
+        }
+      return ok;
+    }
   protected:
 
     /// Stores all the half-edges.

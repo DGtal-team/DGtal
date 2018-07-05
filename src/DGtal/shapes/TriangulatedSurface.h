@@ -567,7 +567,7 @@ namespace DGtal
     void flip( const Arc a );
 
     /// Splits the edge specified by the arc \a a. The two faces
-    /// incident to a are split into four faces.
+    /// incident to \a a are split into four faces.
     ///
     /// @param a any valid arc.
     /// @param data the position for the newly created vertex.
@@ -576,7 +576,36 @@ namespace DGtal
     ///
     /// @pre the edge must be flippable, `isFlippable( a ) == true`
     /// @see isFlippable
-    VertexIndex split( const Arc a, const Point& data );
+    Vertex split( const Arc a, const Point& data );
+
+    /// An edge is (topologically) mergeable iff: (1) it is bordered
+    /// by two triangles (for now), (2) there is no boundary vertex in
+    /// the two triangles bordering the edge (for now).
+    ///
+    /// @param a any arc.
+    /// @return 'true' if the edge containing \a a is topologically mergeable.
+    bool isMergeable( const Arc a ) const;
+
+    /// Merges the edge specified by the half-edge \a i.
+    ///
+    /// @param a any valid arc.
+    /// @param data the position for the merged vertex.
+    ///
+    /// @return the index of the merged vertex (which is the tail of
+    /// the arc \a a)..
+    ///
+    /// @pre the edge must be mergeable, `isMergeable( i ) == true`
+    /// @see isMergeable
+    /// @todo We could also merge boundary triangles.
+    ///
+    /// @note All the underlying data-structure is renumbered so that
+    /// vertex, edge, face and half-edge indices are consecutive. In
+    /// other words, since 1 vertex, 3 edges, 2 faces and 6 half-edges
+    /// have been deleted, then the last vertices, edges, faces,
+    /// half-edges have been renumbered into the freed indices. For
+    /// instance, the vertex `head(a)` does not exist anymore (but has
+    /// been replaced by a renumbered vertex).
+    Vertex merge( const Arc a, const Point& data );
 
     // ----------------------- Interface --------------------------------------
   public:
