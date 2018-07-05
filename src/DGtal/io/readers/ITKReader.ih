@@ -120,7 +120,7 @@ namespace DGtal {
     }
     case itk::ImageIOBase::DOUBLE:
     {
-      typedef ImageContainerByITKImage<Domain, float> DGtalITKImage;
+      typedef ImageContainerByITKImage<Domain, double> DGtalITKImage;
       Domain d;
       DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
