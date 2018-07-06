@@ -185,7 +185,7 @@ int main( int argc, char** argv )
       std::cout << " expected: G_min = 0.0074074 G_max = 0.0666666" << std::endl;
 
       auto     t_normals = SH3::getTrivialNormalVectors( K, surfels );
-      auto    ct_normals = SH3::getConvolvedTrivialNormalVectors( surface, surfels, params );
+      auto    ct_normals = SH3::getCTrivialNormalVectors( surface, surfels, params );
       auto   vcm_normals = SH3::getVCMNormalVectors( surface, surfels, params );
       auto    ii_normals = SH3::getIINormalVectors( binary_image, surfels, params );
       // Need to reorient II normals with CTrivial (otherwise unstable orientation).

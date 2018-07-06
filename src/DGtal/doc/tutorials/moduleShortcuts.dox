@@ -233,8 +233,10 @@ The following name conventions for types are used:
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
 -# GeometryEstimation services
-  - Shortcuts::getTrivialNormalVectors:: returns the trivial normal vectors to the given surfel range  
-  - Shortcuts::getConvolvedTrivialNormalVectors: returns the convolved trivial normal vectors to the given surfel range
+  - Shortcuts::getTrivialNormalVectors:: returns the trivial (Trivial) normal vectors to the given surfel range  
+  - Shortcuts::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
+  - Shortcuts::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
+  - Shortcuts::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range
 
 -# Utilities
   - Shortcuts::getPrimalVertices: returns the vertices (possibly consistently ordered along the face) of the given signed cell.

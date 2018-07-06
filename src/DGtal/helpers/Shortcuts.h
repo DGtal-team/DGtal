@@ -1361,7 +1361,7 @@ namespace DGtal
     /// same order as \a surfels.
     template <typename TAnyDigitalSurface>
     static RealVectors
-    getConvolvedTrivialNormalVectors
+    getCTrivialNormalVectors
     ( CountedPtr<TAnyDigitalSurface> surface,
       const SurfelRange&             surfels,
       const Parameters&              params = parametersGeometryEstimation() )
