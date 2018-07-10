@@ -77,6 +77,24 @@ namespace
       }
   };
 
+  /// Type traits to detect storage based on std::shared_ptr (for debug purpose)
+  struct SharedPtrTrait
+    {
+      template <typename T>
+      static constexpr std::true_type   apply(std::shared_ptr<T> const&) { return {}; }
+
+      static constexpr std::false_type  apply(...) { return {}; }
+    };
+
+  /// Type traits to detect storage based on std::reference_wrapper (for debug purpose)
+  struct ReferenceWrapperTrait
+    {
+      template <typename T>
+      static constexpr std::true_type   apply(std::reference_wrapper<T> const&) { return {}; }
+
+      static constexpr std::false_type  apply(...) { return {}; }
+    };
+
 } // anonymous namespace
 
 
@@ -158,6 +176,12 @@ public:
   void selfDisplay ( std::ostream & out ) const
     {
       out << "[FunctorHolder]";
+      if ( SharedPtrTrait::apply(myFunctor) )
+        out << " using std::shared_ptr storage (lvalue)";
+      else if ( ReferenceWrapperTrait::apply(myFunctor) )
+        out << " using std::reference_wrapper storage (rvalue)";
+      else
+        out << " using custom storage";
     }
 
   /**
