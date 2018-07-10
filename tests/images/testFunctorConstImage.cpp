@@ -55,7 +55,6 @@ void checkImage( TImage const& anImage, TFunction const& fn )
 {
   using Image = TImage;
   using Domain = typename Image::Domain;
-  using Point = typename Image::Point;
 
   // Image's domain
   Domain const& domain = anImage.domain();
