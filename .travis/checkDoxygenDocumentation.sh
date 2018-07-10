@@ -5,6 +5,8 @@ return_code2=0
 return_code3=0
 HOMEPATH=$PWD
 
+echo "doxygen.log"
+cat doxygen.log
 
 ## We first check that the doxygen.log is empty
 if [[ -s doxygen.log ]]

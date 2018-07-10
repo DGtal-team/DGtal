@@ -25,10 +25,7 @@ notifications:
 #
 ########
 env:
-  - CONFIG="Debug,Magick,GMP,ITK,FFTW3"
-  - CONFIG="Debug,Cairo,QGLviewer,HDF5,EIGEN"
   - CONFIG="Documentation"
-  - CONFIG="DGtalTools"
 
 matrix:
   fast_finish: true
