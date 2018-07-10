@@ -58,15 +58,16 @@ namespace DGtal
  * @tparam TValue   Value type returned by the functor.
  * @tparam TFunctor Type of the functor.
  *
- * The functor must accept a point and return a value whose type is \a Value.
- * Since the functor will be stored by copy, prefer a lightweight type.
+ * The functor must accept a point, and eventually a domain, and return
+ *    a value whose type is \a Value.
  *
  * @warning This class is not meant to be directly constructed by the user.
- * Use instead the makeFunctorConstImage helper that will choose the more
- *  appropriate storage type for the functor depending on the given callable
- *  object.
+ * As illustrated below, use instead the makeFunctorConstImage helper that
+ * will choose the more appropriate storage type for the functor depending
+ * on the given callable object.
  *
- * @see makeFunctorConstImage
+ *
+ * @see makeFunctorConstImage, FunctorHolder
  *
  * @todo domain storage ?
  */
@@ -76,124 +77,175 @@ template <
   typename TFunctor
 >
 class FunctorConstImage
-  {
-    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDomain<TDomain> ));
+{
+  BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDomain<TDomain> ));
 
+  // ----------------------- Interface --------------------------------------
 public:
-    // DGtal types
-    using Self      = FunctorConstImage<TDomain, TValue, TFunctor>;
-    using Domain    = TDomain;
-    using Point     = typename Domain::Point;
-    using Vector    = typename Domain::Vector;
-    using Integer   = typename Domain::Integer;
-    using Size      = typename Domain::Size;
-    using Dimension = typename Domain::Dimension;
-    using Vertex    = Point;
-    using Value     = TValue;
-    using Functor   = TFunctor;
-    
-    using ConstIterator = boost::transform_iterator< std::reference_wrapper<const Self>, typename Domain::ConstIterator >;
-    using ConstReverseIterator = std::reverse_iterator< ConstIterator >;
-    class ConstRange;
 
-    BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::Space::dimension );
+  // DGtal types
+  using Self      = FunctorConstImage<TDomain, TValue, TFunctor>;
+  using Domain    = TDomain;
+  using Point     = typename Domain::Point;
+  using Vector    = typename Domain::Vector;
+  using Integer   = typename Domain::Integer;
+  using Size      = typename Domain::Size;
+  using Dimension = typename Domain::Dimension;
+  using Vertex    = Point;
+  using Value     = TValue;
+  using Functor   = TFunctor;
 
-    // Private members moved to the beginning of the class because of
-    //  the SFINAE trick in the operator() methods.
+  using ConstIterator = boost::transform_iterator< std::reference_wrapper<const Self>, typename Domain::ConstIterator >;
+  using ConstReverseIterator = std::reverse_iterator< ConstIterator >;
+  class ConstRange;
+
+  BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::Space::dimension );
+
+  // ------------------------- Private Datas --------------------------------
+  // Private members moved to the beginning of the class because of
+  //  the SFINAE trick in the operator() methods.
 private:
-    Domain  myDomain;   ///< The image domain.
-    Functor myFunctor;  ///< The functor that generates the image.
+  Domain  myDomain;   ///< The image domain.
+  Functor myFunctor;  ///< The functor that generates the image.
 
+  // ----------------------- Standard services ------------------------------
 public:
-    /** Constructor
-     * @param aDomain   The domain of the image.
-     * @param aFunctor  The functor taking point as parameter.
-     */
-    template < class TGivenFunctor >
-    FunctorConstImage( Domain const& aDomain, TGivenFunctor && aFunctor )
-      : myDomain( aDomain )
-      , myFunctor( std::forward<TGivenFunctor>(aFunctor) )
+
+  /** Constructor
+   * @param aDomain   The domain of the image.
+   * @param aFunctor  The functor taking point as parameter.
+   */
+  template < class TGivenFunctor >
+  FunctorConstImage( Domain const& aDomain, TGivenFunctor && aFunctor )
+    : myDomain( aDomain )
+    , myFunctor( std::forward<TGivenFunctor>(aFunctor) )
+  {
+  }
+
+  // ----------------------- Interface --------------------------------------
+public:
+
+  /**
+   * @return the associated domain.
+   */
+  inline
+  Domain const& domain() const
     {
+      return myDomain;
     }
 
-    /**
-     * @return the associated domain.
-     */
-    inline
-    Domain const& domain() const
-      {
-        return myDomain;
-      }
+  //@{
 
-    /** Gets the value of the functor for the given point.
-     * @param aPoint the point.
-     * @return the value at \a aPoint.
-     *
-     * @todo merge doc of the two versions of operator()
-     */
-    template <typename TPoint>
-    inline
-    auto operator() ( TPoint const& aPoint ) const
-        -> decltype( myFunctor( aPoint ) )
-      {
-        return myFunctor( aPoint );
-      }
-    
-    template <typename TPoint>
-    inline
-    auto operator() ( TPoint const& aPoint ) const
-        -> decltype( myFunctor( aPoint, myDomain ) )
-      {
-        return myFunctor( aPoint, myDomain );
-      }
-    
-    /**
-     * @return a constant range over this image.
-     */
-    inline
-    ConstRange constRange() const 
-      {
-        return ConstRange( *this );
-      }
+  /** Gets the value of the functor for the given point.
+   * @param aPoint the point.
+   * @return the value at \a aPoint.
+   *
+   * @todo merge doc of the two versions of operator()
+   */
+  template <typename TPoint>
+  inline
+  auto operator() ( TPoint const& aPoint ) const
+      -> decltype( myFunctor( aPoint ) )
+    {
+      ASSERT_MSG(
+          myDomain.isInside(aPoint),
+          "The point is outside the domain."
+      );
+      return myFunctor( aPoint );
+    }
+
+  template <typename TPoint>
+  inline
+  auto operator() ( TPoint const& aPoint ) const
+      -> decltype( myFunctor( aPoint, myDomain ) )
+    {
+      ASSERT_MSG(
+          myDomain.isInside(aPoint),
+          "The point is outside the domain."
+      );
+      return myFunctor( aPoint, myDomain );
+    }
+
+  //@}
+  /**
+   * @return a constant range over this image.
+   */
+  inline
+  ConstRange constRange() const
+    {
+      return ConstRange( *this );
+    }
+
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  inline
+  void selfDisplay ( std::ostream & out ) const
+    {
+      out << "[FunctorConstImage] holding a " << myFunctor << " on domain " << myDomain;
+    }
+
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  inline constexpr
+  bool isValid() const
+    {
+      return true;
+    }
 
 public:
-    /// Constant range
-    class ConstRange
-      {
-    public:
-        ConstRange( Self const& aFunctorConstImage )
-          : myFunctorConstImage( aFunctorConstImage )
-        {}
+  /// Constant range
+  class ConstRange
+    {
+  public:
+      ConstRange( Self const& aFunctorConstImage )
+        : myFunctorConstImage( aFunctorConstImage )
+      {}
 
-        using ConstIterator = Self::ConstIterator;
-        using ConstReverseIterator = Self::ConstReverseIterator;
-        using Point = Self::Point;
+      using ConstIterator = Self::ConstIterator;
+      using ConstReverseIterator = Self::ConstReverseIterator;
+      using Point = Self::Point;
 
-        inline ConstIterator begin()  const { return { myFunctorConstImage.myDomain.begin(), myFunctorConstImage }; }
-        inline ConstIterator begin( Point const& aPoint ) const { return { myFunctorConstImage.myDomain.begin(aPoint), myFunctorConstImage }; }
-        inline ConstIterator end()    const { return { myFunctorConstImage.myDomain.end(), myFunctorConstImage }; }
-        
-        inline ConstReverseIterator rbegin()  const { return ConstReverseIterator( end() ); }
-        inline ConstReverseIterator rbegin( Point const& aPoint ) const { return ConstReverseIterator( ++begin(aPoint) ); }
-        inline ConstReverseIterator rend()    const { return ConstReverseIterator( begin() ); }
+      inline ConstIterator begin()  const { return { myFunctorConstImage.myDomain.begin(), myFunctorConstImage }; }
+      inline ConstIterator begin( Point const& aPoint ) const { return { myFunctorConstImage.myDomain.begin(aPoint), myFunctorConstImage }; }
+      inline ConstIterator end()    const { return { myFunctorConstImage.myDomain.end(), myFunctorConstImage }; }
 
-    private:
-        Self const& myFunctorConstImage;
-      };
+      inline ConstReverseIterator rbegin()  const { return ConstReverseIterator( end() ); }
+      inline ConstReverseIterator rbegin( Point const& aPoint ) const { return ConstReverseIterator( ++begin(aPoint) ); }
+      inline ConstReverseIterator rend()    const { return ConstReverseIterator( begin() ); }
 
+  private:
+      Self const& myFunctorConstImage;
+    }; // End of class ConstRange
+}; // End of class FunctorConstImage
 
-  };
+/**
+ * Overloads 'operator<<' for displaying objects of class 'XXX'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'XXX' to write.
+ * @return the output stream after the writing.
+ */
+template <typename TDomain, typename TValue, typename TFunctor>
+std::ostream&
+operator<< ( std::ostream & out, const FunctorConstImage<TDomain, TValue, TFunctor> & object )
+{
+  object.selfDisplay(out);
+  return out;
+}
 
-/** FunctorConstImage construction helper.
+/** FunctorConstImage construction helper with specification of the return type.
  *
- * @tparam  TValue    The image value type. 
+ * @tparam  TValue    The image value type.
  * @tparam  TDomain   The domain type (auto-deduced).
  * @tparam  TFunctor  The functor type (auto-deduced).
  * @param   aDomain   The image domain.
  * @param   aFunctor  The functor that generates the image.
  * @return an instance of the appropriate FunctorConstImage type.
  *
- * @todo merge the doc for the 3 helpers
+ * @see FunctorConstImage
  */
 template <
   typename TValue,
@@ -207,6 +259,18 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
     return { aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
   }
 
+//@{
+
+/** FunctorConstImage construction helper with auto-deduction of the return type.
+ *
+ * @tparam  TDomain   The domain type (auto-deduced).
+ * @tparam  TFunctor  The functor type (auto-deduced).
+ * @param   aDomain   The image domain.
+ * @param   aFunctor  The functor that generates the image.
+ * @return an instance of the appropriate FunctorConstImage type.
+ *
+ * @see FunctorConstImage
+ */
 template <
   typename TDomain,
   typename TFunctor
@@ -236,6 +300,8 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
   {
     return { aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
   }
+
+//@}
 
 } // namespace DGtal
 
