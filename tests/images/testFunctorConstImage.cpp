@@ -54,11 +54,8 @@ template < typename TImage, typename TFunction >
 void checkImage( TImage const& anImage, TFunction const& fn )
 {
   using Image = TImage;
-  using Value = typename Image::Value;
   using Domain = typename Image::Domain;
   using Point = typename Image::Point;
-  using Dimension = typename Point::Dimension;
-  using Coordinate = typename Point::Coordinate;
 
   // Image's domain
   Domain const& domain = anImage.domain();
@@ -100,7 +97,7 @@ void checkImage( TImage const& anImage, TFunction const& fn )
 struct UnaryFunctor
 {
   double cst;
-  UnaryFunctor(double cst) : cst(cst) {}
+  UnaryFunctor(double c) : cst(c) {}
 
   template <typename Point>
   double operator() (Point const& pt) const
@@ -113,7 +110,7 @@ struct UnaryFunctor
 struct BinaryFunctor
 {
   double cst;
-  BinaryFunctor(double cst) : cst(cst) {}
+  BinaryFunctor(double c) : cst(c) {}
 
   template <typename Point, typename Domain>
   double operator() (Point const& pt, Domain const &d) const
@@ -125,7 +122,6 @@ struct BinaryFunctor
 TEST_CASE( "2D Image from unary functor by rvalue", "[2D][functor][unary][rvalue]" )
 {
   using namespace DGtal;
-  using real = double;
   using Space = SpaceND<2, int>;
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
@@ -139,7 +135,6 @@ TEST_CASE( "2D Image from unary functor by rvalue", "[2D][functor][unary][rvalue
 TEST_CASE( "2D Image from binary functor by rvalue", "[2D][functor][binary][rvalue]" )
 {
   using namespace DGtal;
-  using real = double;
   using Space = SpaceND<2, int>;
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
@@ -153,7 +148,6 @@ TEST_CASE( "2D Image from binary functor by rvalue", "[2D][functor][binary][rval
 TEST_CASE( "2D Image from binary functor by lvalue", "[2D][functor][binary][lvalue]" )
 {
   using namespace DGtal;
-  using real = double;
   using Space = SpaceND<2, int>;
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
@@ -168,7 +162,6 @@ TEST_CASE( "2D Image from binary functor by lvalue", "[2D][functor][binary][lval
 TEST_CASE( "2D Image from binary lambda by rvalue", "[2D][lambda][binary][rvalue]" )
 {
   using namespace DGtal;
-  using real = double;
   using Space = SpaceND<2, int>;
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
@@ -182,7 +175,6 @@ TEST_CASE( "2D Image from binary lambda by rvalue", "[2D][lambda][binary][rvalue
 TEST_CASE( "2D Image from binary std::function by lvalue", "[2D][function][binary][lvalue]" )
 {
   using namespace DGtal;
-  using real = double;
   using Space = SpaceND<2, int>;
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
