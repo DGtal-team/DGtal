@@ -38,6 +38,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+#include <iostream>
 #include <type_traits>
 #include <utility>
 #include <iterator>
