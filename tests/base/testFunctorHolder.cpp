@@ -44,7 +44,7 @@ struct Functor
 {
   double cst;
 
-  Functor(double cst) : cst(cst) {}
+  Functor(double c) : cst(c) {}
   inline double operator() (double v) const { return v + cst; }
 };
 
@@ -105,7 +105,7 @@ TEST_CASE( "Holding a lambda", "[lambda]" )
 
   // Holding a binary lambda by rvalue
   {
-    auto holder = holdFunctor( [] (double v, double cst) { return v + cst; } );
+    auto holder = holdFunctor( [] (double v, double c) { return v + c; } );
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
     REQUIRE( holder(0.5, 1.5) == 2.0 );
     auto holder2 = holder;
