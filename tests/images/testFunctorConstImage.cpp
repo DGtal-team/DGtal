@@ -1,41 +1,195 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Roland Denis (\c denis@math.univ-lyon1.fr )
+ * CNRS, Institut Camille Jordan (UMR 5208), Université Lyon 1, France
+ *
+ * @date 2018/07/10
+ *
+ * This file is part of the DGtal library.
+ */
+
 #include <iostream>
 #include <cmath>
 
-#include <boost/concept/assert.hpp>
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/CConstImage.h"
+
 #include "DGtal/images/FunctorConstImage.h"
 
-int main()
+#include "DGtalCatch.h"
+
+template < typename TPoint, typename TDomain >
+inline
+typename TPoint::Scalar unary_kernel( TPoint const& pt, TDomain const&, typename TPoint::Scalar cst )
 {
-  const std::size_t N = 2;
+  return cst * pt.norm();
+}
 
+template <typename TPoint, typename TDomain>
+inline
+typename TPoint::Scalar binary_kernel( TPoint const& pt, TDomain const& domain, typename TPoint::Scalar cst )
+{
+  return cst * (pt - domain.lowerBound()).norm();
+}
+
+template < typename TImage, typename TFunction >
+void checkImage( TImage const& anImage, TFunction const& fn )
+{
+  using Image = TImage;
+  using Value = typename Image::Value;
+  using Domain = typename Image::Domain;
+  using Point = typename Image::Point;
+  using Dimension = typename Point::Dimension;
+  using Coordinate = typename Point::Coordinate;
+
+  // Image's domain
+  Domain const& domain = anImage.domain();
+  REQUIRE( !domain.isEmpty() );
+
+  // Checks CConstImage concept.
+  BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage<TImage>) );
+
+  // Checking standard services
+  std::cout << anImage << std::endl;
+  REQUIRE( anImage.isValid() );
+
+  // Checking operator()
+  for ( auto const& pt : domain )
+    REQUIRE( anImage(pt) == fn(pt, domain) );
+
+  // Checking forward range
+    {
+      auto pt_it = domain.begin();
+      auto im_it = anImage.constRange().begin();
+      for ( ; pt_it != domain.end(); ++pt_it, ++im_it )
+          REQUIRE( *im_it == fn(*pt_it, domain) );
+
+      REQUIRE( im_it == anImage.constRange().end() );
+    }
+
+  // Checking reverse range
+    {
+      auto pt_it = domain.rbegin();
+      auto im_it = anImage.constRange().rbegin();
+      for ( ; pt_it != domain.rend(); ++pt_it, ++im_it )
+          REQUIRE( *im_it == fn(*pt_it, domain) );
+
+      REQUIRE( im_it == anImage.constRange().rend() );
+    }
+}
+
+// Unary functor
+struct UnaryFunctor
+{
+  double cst;
+  UnaryFunctor(double cst) : cst(cst) {}
+
+  template <typename Point>
+  double operator() (Point const& pt) const
+    {
+      return unary_kernel(pt, 0, cst);
+    }
+};
+
+// Binary functor
+struct BinaryFunctor
+{
+  double cst;
+  BinaryFunctor(double cst) : cst(cst) {}
+
+  template <typename Point, typename Domain>
+  double operator() (Point const& pt, Domain const &d) const
+    {
+      return binary_kernel(pt, d, cst);
+    }
+};
+
+TEST_CASE( "2D Image from unary functor by rvalue", "[2D][functor][unary][rvalue]" )
+{
   using namespace DGtal;
-  using namespace std;
-
   using real = double;
-  using Space = SpaceND<N, int>;
+  using Space = SpaceND<2, int>;
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
 
-  const Domain domain({0,0}, {100,150});
+  const Domain domain({-10, -15}, {20, 25});
+  const double cst = 3.5;
+  auto image = makeFunctorConstImage( domain, UnaryFunctor(cst) );
+  checkImage(image, [&cst] (Point pt, Domain d) { return unary_kernel(pt, d, cst); });
+}
 
-  //auto image = makeFunctorConstImage( domain, [] ( Point p  ) -> real { return std::cos( (p-Point(50,75)).norm()*0.1); } );
-  auto image = makeFunctorConstImage( domain, [] ( Point p, Domain const& d  ) -> real { return std::cos( (p-d.lowerBound()).norm()*0.1); } );
+TEST_CASE( "2D Image from binary functor by rvalue", "[2D][functor][binary][rvalue]" )
+{
+  using namespace DGtal;
+  using real = double;
+  using Space = SpaceND<2, int>;
+  using Domain = HyperRectDomain<Space>;
+  using Point = typename Domain::Point;
 
-  BOOST_CONCEPT_ASSERT(( DGtal::concepts::CConstImage< decltype(image) > ));
+  const Domain domain({-10, -15}, {20, 25});
+  const double cst = 3.5;
+  auto image = makeFunctorConstImage( domain, BinaryFunctor(cst) );
+  checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
+}
 
-  /*
-  for ( auto v : image.constRange() )
-    std::cout << v << std::endl;
-  */
+TEST_CASE( "2D Image from binary functor by lvalue", "[2D][functor][binary][lvalue]" )
+{
+  using namespace DGtal;
+  using real = double;
+  using Space = SpaceND<2, int>;
+  using Domain = HyperRectDomain<Space>;
+  using Point = typename Domain::Point;
 
-  //DGtal::VTKWriter<Domain>( "testFunctorConstImage", domain ) << "value" << image;
+  const Domain domain({-10, -15}, {20, 25});
+  const double cst = 3.5;
+  const auto fn = BinaryFunctor(cst);
+  auto image = makeFunctorConstImage( domain, fn );
+  checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
+}
 
-  //std::cout << image(Point(1, 2)) << std::endl;
-  std::cout << image(Point(1, 2)) << std::endl;
+TEST_CASE( "2D Image from binary lambda by rvalue", "[2D][lambda][binary][rvalue]" )
+{
+  using namespace DGtal;
+  using real = double;
+  using Space = SpaceND<2, int>;
+  using Domain = HyperRectDomain<Space>;
+  using Point = typename Domain::Point;
 
-  return 0;
+  const Domain domain({-10, -15}, {20, 25});
+  const double cst = 3.5;
+  auto image = makeFunctorConstImage( domain, [cst] (Point const& pt, Domain const& d) { return binary_kernel(pt, d, cst); } );
+  checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
+}
+
+TEST_CASE( "2D Image from binary std::function by lvalue", "[2D][function][binary][lvalue]" )
+{
+  using namespace DGtal;
+  using real = double;
+  using Space = SpaceND<2, int>;
+  using Domain = HyperRectDomain<Space>;
+  using Point = typename Domain::Point;
+
+  const Domain domain({-10, -15}, {20, 25});
+  const double cst = 3.5;
+  std::function<double(Point, Domain)> fn = [cst] (Point const& pt, Domain const& d) { return binary_kernel(pt, d, cst); };
+  auto image = makeFunctorConstImage( domain, fn );
+  checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
 }
