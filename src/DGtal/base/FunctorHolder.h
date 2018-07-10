@@ -84,7 +84,8 @@ namespace
       template <typename T>
       static constexpr std::true_type   apply(std::shared_ptr<T> const&) { return {}; }
 
-      static constexpr std::false_type  apply(...) { return {}; }
+      template <typename T>
+      static constexpr std::false_type  apply(T const&) { return {}; }
     };
 
   /// Type traits to detect storage based on std::reference_wrapper (for debug purpose)
@@ -93,7 +94,8 @@ namespace
       template <typename T>
       static constexpr std::true_type   apply(std::reference_wrapper<T> const&) { return {}; }
 
-      static constexpr std::false_type  apply(...) { return {}; }
+      template <typename T>
+      static constexpr std::false_type  apply(T const&) { return {}; }
     };
 
 } // anonymous namespace
