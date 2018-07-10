@@ -88,9 +88,9 @@ namespace
  * @tparam FunctorStorage  Type used to store the given callable object.
  * @tparam NeedDereference  true if the object must be dereferenced before calls.
  *
- * This class is not meant to be directly constructed by the user.
- * Use instead the holdFunctor helper that will choose the more appropriate storage type
- * depending on the given callable object.
+ * @warning This class is not meant to be directly constructed by the user.
+ * Use instead the DGtal::holdFunctor helper that will choose the more appropriate
+ *    storage type depending on the given callable object.
  *
  * @see holdFunctor
  */
@@ -100,10 +100,12 @@ template <
 >
 class FunctorHolder
 {
+  // ------------------------- Private Datas --------------------------------
 private:
 
   FunctorStorage myFunctor; ///< The callable object.
 
+  // ----------------------- Standard services ------------------------------
 public:
 
   /** Constructor
@@ -120,6 +122,9 @@ public:
       : myFunctor(std::forward<Function>(fn))
   {
   }
+
+  // ----------------------- Interface --------------------------------------
+public:
 
   /** Invokes the stored callable object in a constant context.
    *
@@ -144,7 +149,41 @@ public:
     {
       return Invoker<NeedDereference>::apply(myFunctor, std::forward<T>(args)...);
     }
-};
+
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  inline
+  void selfDisplay ( std::ostream & out ) const
+    {
+      out << "[FunctorHolder]";
+    }
+
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  inline constexpr
+  bool isValid() const
+    {
+      return true;
+    }
+}; // End of class FunctorHolder
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'XXX'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'XXX' to write.
+ * @return the output stream after the writing.
+ */
+template <typename FunctorStorage, bool NeedDereference>
+std::ostream&
+operator<< ( std::ostream & out, const FunctorHolder<FunctorStorage, NeedDereference> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 // Implementation details
@@ -213,7 +252,8 @@ namespace {
  *
  * ...
  *
- * TODO: performance tips
+ * @todo performance tips
+ * @todo need of class helpers
  *
  * You may want to read the dedicated page ???
  *
