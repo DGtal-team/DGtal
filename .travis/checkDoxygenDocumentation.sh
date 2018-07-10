@@ -6,15 +6,15 @@ return_code3=0
 HOMEPATH=$PWD
 
 echo "doxygen.log"
-cat doxygen.log
+cat build/doxygen.log
 
 ## We first check that the doxygen.log is empty
-if [[ -s doxygen.log ]]
+if [[ -s build/doxygen.log ]]
 then
     return_code=1
     echo "Doxygen log file not empty !"
     echo "====================================="
-    cat doxygen.log
+    cat build/doxygen.log
     echo "====================================="
 else
     return_code=0
