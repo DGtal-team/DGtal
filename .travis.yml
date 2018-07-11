@@ -78,7 +78,7 @@ before_install:
   - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then export BUILD_ALL="true"; export BUILD_DEC="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_EIGEN=true -DWARNING_AS_ERROR=OFF -DEIGEN3_INCLUDE_DIR='$EIGEN_ROOT/include/eigen3'"; fi
   - if [ $CONFIG == "DGtalTools" ]; then export BUILD_DGTAL="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true"; fi
   - if [ $UPLOAD_DOC == "true" ]; then openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in "$SRC_DIR/.travis/dgtal_rsa.enc" -out "$SRC_DIR/.travis/dgtal_rsa" -d; chmod 600 "$SRC_DIR/.travis/dgtal_rsa"; fi
-  - if [ $BUILD_DOC == "true" ]; then wget --no-check-certificate http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
+  - if [ $BUILD_DOC == "true" ]; then wget --no-check-certificate -O "$BUILD_DIR/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
   - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/install_doxygen.sh";  export BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen"; fi
 
 
