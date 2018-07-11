@@ -2,7 +2,6 @@
 set -e
 
 # Build directory
-mkdir -p "$BUILD_DIR"
 cd "$BUILD_DIR"
 
 # Common build options
