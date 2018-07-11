@@ -9,7 +9,7 @@ export EIGEN_ROOT="/usr/local/"
 
 if [ $TRAVIS_OS_NAME == linux ];
 then
-    cd deps
+    cd "$SRC_DIR/deps"
     wget http://bitbucket.org/eigen/eigen/get/3.2.10.tar.bz2
 
     bunzip2 3.2.10.tar.bz2
