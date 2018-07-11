@@ -94,7 +94,7 @@ before_script:
 # Main rules
 ############
 script:
-  - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/configure_build.sh"; fi
+  - "$SRC_DIR/.travis/configure_build.sh"
   - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_dgtal.sh"; fi
   - if [ $BUILD_DEC == "true" ]; then "$SRC_DIR/.travis/build_dec.sh"; fi
   - if [ $BUILD_EXAMPLES == "true" ]; then "$SRC_DIR/.travis/build_examples.sh"; fi
