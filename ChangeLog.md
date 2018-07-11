@@ -14,6 +14,12 @@
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
 
+- *Documentation*
+  - Fix examples' filenames in Digital Topology module documentation (Isabelle
+    Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
+
+
+
 # DGtal 0.9.4.1
 
 ## Bug Fixes
