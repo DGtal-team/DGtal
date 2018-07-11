@@ -44,7 +44,7 @@ struct Functor
 {
   double cst;
 
-  Functor(double c) : cst(c) {}
+  explicit Functor(double c) : cst(c) {}
   inline double operator() (double v) const { return v + cst; }
 };
 
@@ -152,8 +152,6 @@ TEST_CASE( "Holding a functor", "[functor]" )
 
 TEST_CASE( "Holding a function", "[function]" )
 {
-  double cst = 1.5;
-
   // Holding a function by reference
   {
     auto holder = holdFunctor( add );
@@ -180,13 +178,11 @@ TEST_CASE( "Holding a std::function", "[std::function]" )
   double cst = 1.5;
 
   // Holding a std::function
-  {
-    std::function<double(double)> fn = Functor(cst);
-    auto holder = holdFunctor( fn );
-    BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
-    REQUIRE( holder(0.5) == 2.0 );
-    auto holder2 = holder;
-    REQUIRE( holder2(0.5) == 2.0 );
-  }
+  std::function<double(double)> fn = Functor(cst);
+  auto holder = holdFunctor( fn );
+  BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+  REQUIRE( holder(0.5) == 2.0 );
+  auto holder2 = holder;
+  REQUIRE( holder2(0.5) == 2.0 );
 }

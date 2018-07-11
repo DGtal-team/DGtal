@@ -96,7 +96,7 @@ void checkImage( TImage const& anImage, TFunction const& fn )
 struct UnaryFunctor
 {
   double cst;
-  UnaryFunctor(double c) : cst(c) {}
+  explicit UnaryFunctor(double c) : cst(c) {}
 
   template <typename Point>
   double operator() (Point const& pt) const
@@ -109,7 +109,7 @@ struct UnaryFunctor
 struct BinaryFunctor
 {
   double cst;
-  BinaryFunctor(double c) : cst(c) {}
+  explicit BinaryFunctor(double c) : cst(c) {}
 
   template <typename Point, typename Domain>
   double operator() (Point const& pt, Domain const &d) const
