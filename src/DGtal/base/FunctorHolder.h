@@ -139,7 +139,7 @@ public:
     // SFINAE trick to disable this constructor in a copy/move construction context.
     typename std::enable_if<!std::is_base_of<FunctorHolder, typename std::decay<Function>::type>::value, int>::type = 0
   >
-  FunctorHolder(Function && fn)
+  explicit FunctorHolder(Function && fn)
       : myFunctor(std::forward<Function>(fn))
   {
   }
@@ -221,7 +221,7 @@ namespace {
   inline auto holdFunctorImpl(Function && fn, std::true_type)
       -> FunctorHolder<decltype(std::ref(std::forward<Function>(fn))), false>
     {
-      return { std::forward<Function>(fn) };
+      return FunctorHolder<decltype(std::ref(std::forward<Function>(fn))), false>{ std::forward<Function>(fn) };
     }
 
   /// Overload that stores the object in a std::shared_ptr when given object isn't a lvalue reference.
@@ -229,7 +229,7 @@ namespace {
   inline auto holdFunctorImpl(Function && fn, std::false_type)
       -> FunctorHolder<std::shared_ptr<Function>, true>
   {
-      return { std::make_shared<Function>(std::forward<Function>(fn)) };
+      return FunctorHolder<std::shared_ptr<Function>, true>{ std::make_shared<Function>(std::forward<Function>(fn)) };
   }
 
 } // anonymous namespace

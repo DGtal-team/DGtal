@@ -117,7 +117,7 @@ public:
    * @param aFunctor  The functor taking point as parameter.
    */
   template < class TGivenFunctor >
-  FunctorConstImage( Domain const& aDomain, TGivenFunctor && aFunctor )
+  explicit FunctorConstImage( Domain const& aDomain, TGivenFunctor && aFunctor )
     : myDomain( aDomain )
     , myFunctor( std::forward<TGivenFunctor>(aFunctor) )
   {
@@ -257,7 +257,7 @@ auto
 makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
     -> FunctorConstImage<TDomain, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>
   {
-    return { aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
+    return FunctorConstImage<TDomain, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>{ aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
   }
 
 //@{
@@ -284,7 +284,11 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
           decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
         >
   {
-    return { aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
+    return FunctorConstImage<
+        TDomain,
+        typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>()))>::type,
+        decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+      >{ aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
   }
 
 template <
@@ -299,7 +303,11 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
           decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
         >
   {
-    return { aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
+    return FunctorConstImage<
+        TDomain,
+        typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>(), aDomain))>::type,
+        decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+      >{ aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
   }
 
 //@}
