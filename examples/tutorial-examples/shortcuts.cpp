@@ -82,21 +82,21 @@ int main( int argc, char** argv )
     auto ok2 = SH3::saveBinaryImage( al_capone, "dummy2.vol" );
     std::cout << ( ok ? "dummy2.vol OK" : "dummy2.vol ERROR" ) << std::endl;
     trace.endBlock();
-    trace.beginBlock ( "Making simple digital surface" );
+    trace.beginBlock ( "Making digital surface" );
     auto Kal         = SH3::getKSpace( al_capone, params );
-    auto simple_surf = SH3::makeAnyBigSimpleDigitalSurface( al_capone, Kal, params );
-    std::cout << "#surfels = " << simple_surf->size() << std::endl;
+    auto light_surf = SH3::makeLightDigitalSurface( al_capone, Kal, params );
+    std::cout << "#surfels = " << light_surf->size() << std::endl;
     std::vector< std::string > traversals { "Default", "DepthFirst", "BreadthFirst" };
     for ( auto&& mode : traversals ) {
-      auto surfels = SH3::getSurfelRange( simple_surf, params( "surfaceTraversal", mode ) );
+      auto surfels = SH3::getSurfelRange( light_surf, params( "surfaceTraversal", mode ) );
       double distance  = 0.0;
       for ( int i = 1; i < surfels.size(); ++i )
   	distance += ( K.sCoords( surfels[ i-1 ] ) - K.sCoords( surfels[ i ] ) ).norm();
       std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
     }
     trace.endBlock();
-    trace.beginBlock ( "Making all simple digital surfaces" );
-    auto vec_surfs   = SH3::makeSimpleDigitalSurfaces( al_capone, Kal, params );
+    trace.beginBlock ( "Making all light digital surfaces" );
+    auto vec_surfs   = SH3::makeLightDigitalSurfaces( al_capone, Kal, params );
     std::cout << "#connected components        = " << vec_surfs.size() << std::endl;
     unsigned int nb_small = 0;
     unsigned int nb_big = 0;
@@ -112,13 +112,13 @@ int main( int argc, char** argv )
     trace.beginBlock ( "Save digital surface as .obj file" );
     {
       ofstream objfile( "primal-al.obj" );
-      bool ok = SH3::outputPrimalDigitalSurfaceAsObj( objfile, simple_surf );
+      bool ok = SH3::outputPrimalDigitalSurfaceAsObj( objfile, light_surf );
       std::cout << "- saving as primal-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
     }
     {
       ofstream objfile( "dual-al.obj" );
       bool ok = SH3::outputDualDigitalSurfaceAsObj
-	( objfile, simple_surf, params );
+	( objfile, light_surf, params );
       std::cout << "- saving as dual-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
     }
     trace.endBlock();
@@ -155,7 +155,7 @@ int main( int argc, char** argv )
     {
       params( "surfaceTraversal", "DepthFirst" )( "verbose", 0 );
       auto K           = SH3::getKSpace( params );
-      auto surface     = SH3::makeAnyBigSimpleDigitalSurface( binary_image, K, params );
+      auto surface     = SH3::makeLightDigitalSurface( binary_image, K, params );
       auto surfels     = SH3::getSurfelRange( surface, params );
       auto positions   = SH3::getPositions( implicit_shape, K, surfels, params ); 
       auto normals     = SH3::getNormalVectors( implicit_shape, K, surfels, params ); 
@@ -231,16 +231,16 @@ int main( int argc, char** argv )
     b_image->setValue( Point( 0, 0, 1 ), true );
     b_image->setValue( Point( 0, 1, 1 ), true );
     b_image->setValue( Point( 1, 1, 1 ), true );
-    auto simple_surf = SH3::makeSimpleDigitalSurfaces( b_image, K, params )[ 0 ];
-    std::cout << simple_surf << std::endl;
+    auto light_surf = SH3::makeLightDigitalSurfaces( b_image, K, params )[ 0 ];
+    std::cout << light_surf << std::endl;
     {
       ofstream objfile( "primal-test.obj" );
-      bool ok = SH3::outputPrimalDigitalSurfaceAsObj( objfile, simple_surf );
+      bool ok = SH3::outputPrimalDigitalSurfaceAsObj( objfile, light_surf );
       std::cout << "- saving as primal-test.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
     }
     {
       ofstream objfile( "dual-test.obj" );
-      bool ok = SH3::outputDualDigitalSurfaceAsObj( objfile, simple_surf, params );
+      bool ok = SH3::outputDualDigitalSurfaceAsObj( objfile, light_surf, params );
       std::cout << "- saving as dual-test.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
     }
     trace.endBlock();

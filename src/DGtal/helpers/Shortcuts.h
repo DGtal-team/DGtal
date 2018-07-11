@@ -142,22 +142,22 @@ namespace DGtal
     typedef typename KSpace::SurfelSet                   SurfelSet;
     /// defines a light container that represents a connected digital
     /// surface over a binary image.
-    typedef LightImplicitDigitalSurface< KSpace, BinaryImage >  SimpleSurfaceContainer;
+    typedef LightImplicitDigitalSurface< KSpace, BinaryImage >  LightSurfaceContainer;
     /// defines a connected digital surface over a binary image.
-    typedef DigitalSurface< SimpleSurfaceContainer >            SimpleDigitalSurface;
+    typedef DigitalSurface< LightSurfaceContainer >             LightDigitalSurface;
     /// defines a heavy container that represents any digital surface.
-    typedef SetOfSurfels< KSpace, SurfelSet >                   MultiSurfaceContainer;
+    typedef SetOfSurfels< KSpace, SurfelSet >                   ExplicitSurfaceContainer;
     /// defines an arbitrary digital surface over a binary image.
-    typedef DigitalSurface< MultiSurfaceContainer >             MultiDigitalSurface;
+    typedef DigitalSurface< ExplicitSurfaceContainer >             DigitalSurface;
     /// defines a connected or not indexed digital surface.
-    typedef IndexedDigitalSurface< MultiSurfaceContainer >      IdxDigitalSurface;
-    typedef typename SimpleDigitalSurface::Surfel               Surfel;
-    typedef typename SimpleDigitalSurface::Cell                 Cell;
-    typedef typename SimpleDigitalSurface::SCell                SCell;
-    typedef typename SimpleDigitalSurface::Vertex               Vertex;
-    typedef typename SimpleDigitalSurface::Arc                  Arc;
-    typedef typename SimpleDigitalSurface::Face                 Face;
-    typedef typename SimpleDigitalSurface::ArcRange             ArcRange;
+    typedef IndexedDigitalSurface< ExplicitSurfaceContainer >      IdxDigitalSurface;
+    typedef typename LightDigitalSurface::Surfel                Surfel;
+    typedef typename LightDigitalSurface::Cell                  Cell;
+    typedef typename LightDigitalSurface::SCell                 SCell;
+    typedef typename LightDigitalSurface::Vertex                Vertex;
+    typedef typename LightDigitalSurface::Arc                   Arc;
+    typedef typename LightDigitalSurface::Face                  Face;
+    typedef typename LightDigitalSurface::ArcRange              ArcRange;
     typedef typename IdxDigitalSurface::Vertex                  IdxSurfel;
     typedef typename IdxDigitalSurface::Vertex                  IdxVertex;
     typedef typename IdxDigitalSurface::Arc                     IdxArc;
@@ -843,7 +843,7 @@ namespace DGtal
 	( "dualFaceSubdivision",   "No" ); 
     }
 
-    /// Builds a simple digital surface from a space \a K and a binary image \a bimage.
+    /// Builds a light digital surface from a space \a K and a binary image \a bimage.
     ///
     /// @param[in] bimage a binary image representing the characteristic function of a digital shape.
     /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
@@ -854,8 +854,8 @@ namespace DGtal
     ///
     /// @return a smart pointer on a (light) digital surface that
     /// represents the boundary of any big component of the digital shape.
-    static CountedPtr<SimpleDigitalSurface>
-    makeAnyBigSimpleDigitalSurface
+    static CountedPtr<LightDigitalSurface>
+    makeLightDigitalSurface
     ( CountedPtr<BinaryImage> bimage,
       const KSpace&           K,
       const Parameters&       params = parametersDigitalSurface() )
@@ -865,7 +865,7 @@ namespace DGtal
       SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
 
       // We have to search for a surfel that belong to a big connected component.
-      CountedPtr<SimpleDigitalSurface> ptrSurface;
+      CountedPtr<LightDigitalSurface> ptrSurface;
       Surfel       bel;
       Scalar       minsize    = bimage->extent().norm();
       unsigned int nb_surfels = 0;
@@ -874,26 +874,26 @@ namespace DGtal
         try { // Search initial bel
           bel = Surfaces<KSpace>::findABel( K, *bimage, nb_tries_to_find_a_bel );
         } catch (DGtal::InputException e) {
-          trace.error() << "[Shortcuts::makeSimpleDigitalSurface]"
+          trace.error() << "[Shortcuts::makeLightDigitalSurface]"
 			<< " ERROR Unable to find bel." << std::endl;
           return ptrSurface;
         }
 	// this pointer will be acquired by the surface.
-        SimpleSurfaceContainer* surfContainer
-	  = new SimpleSurfaceContainer( K, *bimage, surfAdj, bel );
-        ptrSurface = CountedPtr<SimpleDigitalSurface>
-	  ( new SimpleDigitalSurface( surfContainer ) ); // acquired
+        LightSurfaceContainer* surfContainer
+	  = new LightSurfaceContainer( K, *bimage, surfAdj, bel );
+        ptrSurface = CountedPtr<LightDigitalSurface>
+	  ( new LightDigitalSurface( surfContainer ) ); // acquired
         nb_surfels = ptrSurface->size();
       } while ( ( nb_surfels < 2 * minsize ) && ( tries++ < 150 ) );
       if( tries >= 150 ) {
-	trace.warning() << "[Shortcuts::makeSimpleDigitalSurface]"
+	trace.warning() << "[Shortcuts::makeLightDigitalSurface]"
 			<< "ERROR cannot find a proper bel in a big enough component."
 			<< std::endl;
       }
       return ptrSurface;
     }
 
-    /// Returns a vector containing either all the simple digital
+    /// Returns a vector containing either all the light digital
     /// surfaces in the binary image \a bimage, or any one of its big
     /// components according to parameters.
     ///
@@ -910,17 +910,17 @@ namespace DGtal
     ///
     /// @return a vector of smart pointers to the connected (light)
     /// digital surfaces present in the binary image.
-    static std::vector< CountedPtr<SimpleDigitalSurface> >
-    makeSimpleDigitalSurfaces
+    static std::vector< CountedPtr<LightDigitalSurface> >
+    makeLightDigitalSurfaces
     ( CountedPtr<BinaryImage> bimage,
       const KSpace&           K,
       const Parameters&       params = parametersDigitalSurface() )
     {
       SurfelRange surfel_reps;
-      return makeSimpleDigitalSurfaces( surfel_reps, bimage, K, params );
+      return makeLightDigitalSurfaces( surfel_reps, bimage, K, params );
     }
 
-    /// Returns a vector containing either all the simple digital
+    /// Returns a vector containing either all the light digital
     /// surfaces in the binary image \a bimage, or any one of its big
     /// components according to parameters.
     ///
@@ -940,17 +940,17 @@ namespace DGtal
     ///
     /// @return a vector of smart pointers to the connected (light)
     /// digital surfaces present in the binary image.
-    static std::vector< CountedPtr<SimpleDigitalSurface> >
-    makeSimpleDigitalSurfaces
+    static std::vector< CountedPtr<LightDigitalSurface> >
+    makeLightDigitalSurfaces
     ( SurfelRange&            surfel_reps,
       CountedPtr<BinaryImage> bimage,
       const KSpace&           K,
       const Parameters&       params = parametersDigitalSurface() )
     {
-      std::vector< CountedPtr<SimpleDigitalSurface> > result;
+      std::vector< CountedPtr<LightDigitalSurface> > result;
       std::string component      = params[ "surfaceComponents" ].as<std::string>();
       if ( component == "AnyBig" ) {
-	result.push_back( makeAnyBigSimpleDigitalSurface( bimage, K, params ) );
+	result.push_back( makeLightDigitalSurface( bimage, K, params ) );
 	surfel_reps.push_back( *( result[ 0 ]->begin() ) );
 	return result;
       }	
@@ -963,15 +963,15 @@ namespace DGtal
 				       K.lowerBound(), K.upperBound() );
       // Builds all connected components of surfels.
       SurfelSet marked_surfels;
-      CountedPtr<SimpleDigitalSurface> ptrSurface;
+      CountedPtr<LightDigitalSurface> ptrSurface;
       for ( auto bel : all_surfels )
 	{
 	  if ( marked_surfels.count( bel ) != 0 ) continue;
 	  surfel_reps.push_back( bel );
-	  SimpleSurfaceContainer* surfContainer
-	    = new SimpleSurfaceContainer( K, *bimage, surfAdj, bel );
-	  ptrSurface = CountedPtr<SimpleDigitalSurface>
-	    ( new SimpleDigitalSurface( surfContainer ) ); // acquired
+	  LightSurfaceContainer* surfContainer
+	    = new LightSurfaceContainer( K, *bimage, surfAdj, bel );
+	  ptrSurface = CountedPtr<LightDigitalSurface>
+	    ( new LightDigitalSurface( surfContainer ) ); // acquired
 	  // mark all surfels of the surface component.
 	  marked_surfels.insert( ptrSurface->begin(), ptrSurface->end() );
 	  // add surface component to result.
@@ -980,7 +980,7 @@ namespace DGtal
       return result;
     }
 
-    /// Creates a multi digital surface representing the boundaries in
+    /// Creates a explicit digital surface representing the boundaries in
     /// the binary image \a bimage, or any one of its big components
     /// according to parameters.
     ///
@@ -993,10 +993,10 @@ namespace DGtal
     /// @param[in] params the parameters:
     ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
     ///
-    /// @return a smart pointer on the multi digital surface
+    /// @return a smart pointer on the explicit digital surface
     /// representing the boundaries in the binary image.
-    static CountedPtr< MultiDigitalSurface >
-    makeMultiDigitalSurface
+    static CountedPtr< DigitalSurface >
+    makeDigitalSurface
     ( CountedPtr<BinaryImage> bimage,
       const KSpace&           K,
       const Parameters&       params = parametersDigitalSurface() )
@@ -1007,14 +1007,14 @@ namespace DGtal
       // Extracts all boundary surfels
       Surfaces<KSpace>::sMakeBoundary( all_surfels, K, *bimage,
 				       K.lowerBound(), K.upperBound() );
-      MultiSurfaceContainer* surfContainer
-	= new MultiSurfaceContainer( K, surfAdj, all_surfels );
-      return CountedPtr< MultiDigitalSurface >
-	    ( new MultiDigitalSurface( surfContainer ) ); // acquired
+      ExplicitSurfaceContainer* surfContainer
+	= new ExplicitSurfaceContainer( K, surfAdj, all_surfels );
+      return CountedPtr< DigitalSurface >
+	    ( new DigitalSurface( surfContainer ) ); // acquired
     }
 
 
-    /// Builds a multi digital surface from an indexed digital surface.
+    /// Builds a explicit digital surface from an indexed digital surface.
     ///
     /// @note if the given surfel adjacency is not the same as the one
     /// chosen for the input indexed digital surface, the number of
@@ -1025,9 +1025,9 @@ namespace DGtal
     /// @param[in] params the parameters:
     ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
     ///
-    /// @return a smart pointer on a multi digital surface.
-    static CountedPtr< MultiDigitalSurface >
-    makeMultiDigitalSurface
+    /// @return a smart pointer on a explicit digital surface.
+    static CountedPtr< DigitalSurface >
+    makeDigitalSurface
     ( CountedPtr<IdxDigitalSurface> idx_surface,
       const Parameters&             params = parametersDigitalSurface() )
     {
@@ -1039,10 +1039,10 @@ namespace DGtal
       auto idx2surfel = idx_surface->surfels();
       SurfelSet all_surfels;
       for ( auto idx : all_idx_surfels ) all_surfels.insert( idx2surfel[ idx ] );
-      MultiSurfaceContainer* surfContainer
-	= new MultiSurfaceContainer( K, surfAdj, all_surfels );
-      return CountedPtr<MultiDigitalSurface>
-	( new MultiDigitalSurface( surfContainer ) ); // acquired
+      ExplicitSurfaceContainer* surfContainer
+	= new ExplicitSurfaceContainer( K, surfAdj, all_surfels );
+      return CountedPtr<DigitalSurface>
+	( new DigitalSurface( surfContainer ) ); // acquired
     }
     
     /// Builds an indexed digital surface from a space \a K and a
@@ -1071,8 +1071,8 @@ namespace DGtal
       SurfelSet surfels;
       if ( component == "AnyBig" )
 	{
-	  auto simple_surface = makeAnyBigSimpleDigitalSurface( bimage, K, params );
-	  surfels.insert( simple_surface->begin(), simple_surface->end() );
+	  auto light_surface = makeLightDigitalSurface( bimage, K, params );
+	  surfels.insert( light_surface->begin(), light_surface->end() );
 	}
       else if ( component == "All" )
 	{
@@ -1103,8 +1103,8 @@ namespace DGtal
       bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
       SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
       // Build indexed digital surface.
-      CountedPtr<MultiSurfaceContainer> ptrSurfContainer
-        ( new MultiSurfaceContainer( K, surfAdj, surfels ) );
+      CountedPtr<ExplicitSurfaceContainer> ptrSurfContainer
+        ( new ExplicitSurfaceContainer( K, surfAdj, surfels ) );
       CountedPtr<IdxDigitalSurface> ptrSurface
 	( new IdxDigitalSurface() );
       bool ok = ptrSurface->build( ptrSurfContainer );
@@ -1113,13 +1113,13 @@ namespace DGtal
       return ptrSurface;
     }
 
-    /// Builds an indexed digital surface from a simple digital
+    /// Builds an indexed digital surface from a light digital
     /// surface. Note that the surfel adjacency may be changed and a
-    /// connected simple digital surface could be disconnected in the process.
+    /// connected light digital surface could be disconnected in the process.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
-    /// @param[in] surface a smart pointer on a simple digital surface.
+    /// @param[in] surface a smart pointer on a light digital surface.
     ///
     /// @param[in] params the parameters:
     ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
@@ -1137,13 +1137,13 @@ namespace DGtal
       return makeIdxDigitalSurface( surfels, K, params );
     }    
 
-    /// Builds an indexed digital surface from a vector of simple digital
+    /// Builds an indexed digital surface from a vector of light digital
     /// surfaces. Note that the surfel adjacency may be changed and a
-    /// connected simple digital surface could be disconnected in the process.
+    /// connected light digital surface could be disconnected in the process.
     ///
     /// @note the surfaces must live in the same digital spaces. 
     ///
-    /// @param[in] surfaces a vector of smart pointers on simple digital surfaces.
+    /// @param[in] surfaces a vector of smart pointers on light digital surfaces.
     ///
     /// @param[in] params the parameters:
     ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
@@ -1151,7 +1151,7 @@ namespace DGtal
     /// @return a smart pointer on the required indexed digital surface.
     static CountedPtr<IdxDigitalSurface>
     makeIdxDigitalSurface
-    ( const std::vector< CountedPtr<SimpleDigitalSurface> >& surfaces,
+    ( const std::vector< CountedPtr<LightDigitalSurface> >& surfaces,
       const Parameters&       params = parametersDigitalSurface()  )
     {
       if ( surfaces.empty() ) return CountedPtr<IdxDigitalSurface>( 0 );
@@ -1171,7 +1171,7 @@ namespace DGtal
     /// Given any digital surface, returns a vector of surfels in
     /// some specified order.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @param[in] surface a smart pointer on a digital surface.
     ///
@@ -1190,10 +1190,10 @@ namespace DGtal
       return getSurfelRange( surface, *( surface->begin() ), params );
     }
 
-    /// Given a simple digital surface, returns a vector of surfels in
+    /// Given a light digital surface, returns a vector of surfels in
     /// some specified order.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @param[in] surface a smart pointer on a digital surface.
     ///
@@ -1349,7 +1349,7 @@ namespace DGtal
     /// normal vector estimations at the specified surfels, in the
     /// same order.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @param[in] surface the digital surface
     /// @param[in] surfels the sequence of surfels at which we compute the normals
@@ -1399,7 +1399,7 @@ namespace DGtal
     /// Covariance Measure (VCM) estimation at the specified surfels,
     /// in the same order.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @param[in] surface the digital surface
     /// @param[in] surfels the sequence of surfels at which we compute the normals
@@ -1684,7 +1684,7 @@ namespace DGtal
     /// (surfels=face), as an OBJ file (3D only). Note that faces are
     /// oriented consistently (normals toward outside).
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
@@ -1705,7 +1705,7 @@ namespace DGtal
     /// oriented consistently (normals toward outside). Each vertex is
     /// mapped to a 3D point using the given cell embedder.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @tparam TCellEmbedder any model of CCellEmbedder
     ///
@@ -1771,7 +1771,7 @@ namespace DGtal
     /// (surfels=vertices), as an OBJ file (3D only). Note that faces are
     /// oriented consistently (normals toward outside).
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
@@ -1795,7 +1795,7 @@ namespace DGtal
     /// oriented consistently (normals toward outside). Each vertex is
     /// mapped to a 3D point using the given cell embedder.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::SimpleDigitalSurface or Shortcuts::MultiDigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @tparam TCellEmbedder any model of CCellEmbedder
     ///
@@ -1910,7 +1910,7 @@ namespace DGtal
       const Parameters&             params = parametersDigitalSurface() )
     {
       const KSpace& K = surface->container().space();
-      auto multi_surface = makeMultiDigitalSurface( surface, params );
+      auto explicit_surface = makeDigitalSurface( surface, params );
       struct CellEmbedder {
 	using KSpace    = KSpace;
 	using Cell      = Cell;
@@ -1937,7 +1937,7 @@ namespace DGtal
 	embedder._embedding[ s ] = p;
       }
       return outputDualDigitalSurfaceAsObj( output,
-					    multi_surface, embedder, params );
+					    explicit_surface, embedder, params );
     }
 
     

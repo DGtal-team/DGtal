@@ -105,7 +105,7 @@ auto params          = SH3::defaultParameters();
 \code
   auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
   auto K         = SH3::getKSpace( al_capone );
-  auto surface   = SH3::makeAnyBigSimpleDigitalSurface( al_capone, K, params );
+  auto surface   = SH3::makeLightDigitalSurface( al_capone, K, params );
 \endcode
 
 @subsection dgtal_shortcuts_ssec2_4 Build Polynomial shape -> digitize -> build indexed surface approximating part of its boundary
@@ -132,7 +132,7 @@ auto params          = SH3::defaultParameters();
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto binary_shape    = SH3::makeBinaryImage      ( digitized_shape, params );
   auto K               = SH3::getKSpace( params );
-  auto surface         = SH3::makeAnyBigDigitalSurface( binary_image, K, params );
+  auto surface         = SH3::makeLightDigitalSurface( binary_image, K, params );
   auto surfels         = SH3::getSurfelRange( surface, params );
   auto positions       = SH3::getPositions( implicit_shape, K, surfels, params );
   auto normals         = SH3::getNormalVectors( implicit_shape, K, surfels, params );
@@ -193,9 +193,9 @@ The following name conventions for types are used:
 - Shortcuts::GrayScaleImage: represents an 8-bits gray-scale image as an array of
   bytes (unsigned char). 
 
-- Shortcuts::SimpleDigitalSurface: represents a connected digital surface over a binary image with an implicit representation.
+- Shortcuts::LightDigitalSurface: represents a connected digital surface over a binary image with an implicit representation.
 
-- Shortcuts::MultiDigitalSurface: represents an arbitrary digital surface with an explicit surfel set representation.
+- Shortcuts::DigitalSurface: represents an arbitrary digital surface with an explicit surfel set representation.
 
 - Shortcuts::IdxDigitalSurface: represents an indexed digital surface with an explicit array-like representation.
 
@@ -226,10 +226,10 @@ The following name conventions for types are used:
   - Shortcuts::saveGrayScaleImage: saves a gray scale image to a file.
 -# DigitalSurface methods
   - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, components, internal heuristics)
-  - Shortcuts::makeAnyBigSimpleDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
-  - Shortcuts::makeSimpleDigitalSurfaces: creates the vector of all simple digital surfaces of the binary image or any one of its big components, can also output representant surfels
-  - Shortcuts::makeMultiDigitalSurface: creates a multi digital surface from a binary image or from an indexed digital surface.
-  - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from simple digital surface(s).
+  - Shortcuts::makeLightDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
+  - Shortcuts::makeLightDigitalSurfaces: creates the vector of all light digital surfaces of the binary image or any one of its big components, can also output representant surfels
+  - Shortcuts::makeDigitalSurface: creates an arbitrary (connected or not) digital surface from a binary image or from an indexed digital surface.
+  - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from light digital surface(s).
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
 -# GeometryEstimation services
@@ -250,10 +250,13 @@ The following name conventions for types are used:
 @subsection dgtal_shortcuts_ssec3_4 Parameters
 
 In all methods, \b out parameters are listed before \b in parameters.
-
 Also, methods whose result can be influenced by global parameters are
-parameterized through a Parameters object. The simplest way to get
-default values is to start with a line:
+parameterized through a Parameters object. Hence static methods follow this pattern:
+
+\a <return-type> Shortcuts::`fonction-name` ( [ \a <out-parameter(s)> ], [ \a <in-parameter(s)> ], [ Parameters params ] ) 
+
+The simplest way to get default values for global parameters is to
+start with a line:
 
 \code
 auto params = Shortcuts<KSpace>::defaultParameters();
