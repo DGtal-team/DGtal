@@ -22,6 +22,8 @@ export CCOMPILER=$CC
 export CXXCOMPILER=$CXX
 if [ $CC == "gcc" ]; then  export CCOMPILER=gcc-5 ; export CXXCOMPILER=g++-5; fi
 
+# Build directory
+mkdir -p "$BUILD_DIR"
 
 export MAGICK_CONFIG_PATH=".travis/delegate.mgk"
 $MAGICK_CODER_MODULE_PATH
