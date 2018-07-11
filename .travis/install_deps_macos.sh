@@ -1,4 +1,5 @@
 #!/bin/bash
+set +e
 
 #
 # Note: gmp and boost already installed
