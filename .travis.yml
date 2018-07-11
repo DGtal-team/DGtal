@@ -100,6 +100,7 @@ script:
   - if [ $BUILD_EXAMPLES == "true" ]; then "$SRC_DIR/.travis/build_examples.sh"; fi
   - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/build_tests.sh"; fi
   - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/check_tests.sh"; fi
+  - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_all.sh"; fi
   - if [ $CONFIG == "DGtalTools" ]; then "$SRC_DIR/.travis/getAndCheckDGtalTools.sh" ; fi
   - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/build_doc.sh"; fi
   - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/checkDoxygenDocumentation.sh"; fi
