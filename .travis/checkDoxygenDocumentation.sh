@@ -2,10 +2,7 @@
 
 return_code=0
 
-HOMEPATH=$PWD
-BUILDPATH=$PWD/build
-DOXYGENLOG=${BUILDPATH}/doxygen.log
-
+DOXYGENLOG=${BUILD_DIR}/doxygen.log
 
 ## We first check that the doxygen.log is empty
 if [[ -f "$DOXYGENLOG" ]]
@@ -28,8 +25,8 @@ fi
 
 
 ## We check src code consitency
-cd src/
-"$HOMEPATH/.travis/check_src_file_tag.sh"
+cd "$SRC_DIR/src"
+"$SRC_DIR/.travis/check_src_file_tag.sh"
 if [[ $? == 0 ]]
 then
     echo "@file tag OK"
