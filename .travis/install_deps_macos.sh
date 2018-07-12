@@ -1,5 +1,5 @@
 #!/bin/bash
-set +e
+$SCRIPT_BEGIN
 
 #
 # Note: gmp and boost already installed
@@ -13,3 +13,5 @@ brew install http://liris.cnrs.fr/david.coeurjolly/misc/libqglviewer.rb
 ## Temporary HDF5 build issue
 export BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS";
 export BTYPE="$BTYPE -DWITH_QT5=true -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)" && echo "Forcing Qt5 on MacOS";
+
+$SCRIPT_END

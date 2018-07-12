@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+$SCRIPT_BEGIN
 
 if [[ "$BUILD_DEC" == "true" ]]
 then
@@ -23,3 +23,5 @@ if [[ "$UPLOAD_DOC" == "true" ]]
 then
   export BUILD_DOC="true"
 fi
+
+$SCRIPT_END

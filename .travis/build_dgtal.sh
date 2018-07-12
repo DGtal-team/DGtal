@@ -1,6 +1,8 @@
 #!/bin/bash
-set -e
+$SCRIPT_BEGIN
 
 ### DGtal build
 cd "$BUILD_DIR"
-make -j 4 DGtal
+make -j $BJOBS DGtal
+
+$SCRIPT_END

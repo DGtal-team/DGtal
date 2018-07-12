@@ -1,6 +1,8 @@
 #!/bin/bash
-set -e
+$SCRIPT_BEGIN
 
 ### DGtal Examples
 cd "$BUILD_DIR/examples"
-make -j 2
+make -j $BJOBS
+
+$SCRIPT_END

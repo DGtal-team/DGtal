@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+$SCRIPT_BEGIN
 
 ### DGtal Tests
 cd "$BUILD_DIR/tests"
@@ -12,4 +12,6 @@ if [ -f io/readers/testMagickReader ]; then
     io/readers/testMagickReader
 fi
 
-ctest -j 3 --output-on-failure
+ctest -j $BJOBS --output-on-failure
+
+$SCRIPT_END

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+$SCRIPT_BEGIN
 
 # Build directory
 cd "$BUILD_DIR"
@@ -11,3 +11,5 @@ export BTYPE="$BTYPE -DBUILD_TESTING=$BUILD_TESTS -DBUILD_EXAMPLES=$BUILD_EXAMPL
 echo "Using C++ = $CXXCOMPILER"
 echo "CMake options = $BTYPE"
 cmake "$SRC_DIR" $BTYPE
+
+$SCRIPT_END
