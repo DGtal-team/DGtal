@@ -1,6 +1,8 @@
 #!/bin/bash
 $SCRIPT_BEGIN
 
+set +e # The brew install has errors
+
 #
 # Note: gmp and boost already installed
 #
