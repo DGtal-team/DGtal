@@ -1,3 +1,4 @@
+#!/bin/bash
 $SCRIPT_BEGIN
 
 ## Get and test if DGtalTools compiles
