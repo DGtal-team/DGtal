@@ -4,8 +4,7 @@ $SCRIPT_BEGIN
 return_code=0
 
 # Checking that source code has proper @file tag
-#for file in `find * -type f \( -name \*.cpp -o -name \*.h -o -name \*.ih \)`
-for file in $(find * -type f \( -name \*.c -o -name \*.cpp -o -name \*.cxx -o -name \*.h -o -name \*.ih -o -name \*.hpp -o -name \*.hxx \))
+for file in $(find * -type f \( -name \*.cpp -o -name \*.h -o -name \*.ih \))
 do
   expected_name=$(basename $file)
   if ! $(grep -aqE "^\s*(\**|//[/!]|/\*[\*!])\s*?[@\\\\]file(\s+${expected_name})?\s*$" $file)
