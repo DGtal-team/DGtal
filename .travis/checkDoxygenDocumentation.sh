@@ -1,4 +1,5 @@
 #!/bin/bash
+$SCRIPT_BEGIN
 
 return_code=0
 
@@ -39,5 +40,7 @@ cd ..
 #
 # TODO
 # 
+
+$SCRIPT_END
 
 exit $return_code

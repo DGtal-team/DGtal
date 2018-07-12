@@ -1,4 +1,5 @@
 #!/bin/bash
+$SCRIPT_BEGIN
 
 return_code=0
 
@@ -18,5 +19,7 @@ do
     return_code=1
   fi
 done
+
+$SCRIPT_END
 
 exit $return_code

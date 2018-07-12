@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+$SCRIPT_BEGIN
 
 ### Dec
 echo "Compile Dec in non parallel mode to save memory (to fix gcc internal compiler error(Killed))";
@@ -10,3 +10,5 @@ make exampleDiscreteExteriorCalculusChladni
 #make exampleDECSurface
 make examplePropagation
 make testDiscreteExteriorCalculusExtended
+
+$SCRIPT_END
