@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set +e
 
 #
 # Local install of Eigen on linux system
