@@ -5,6 +5,8 @@
 - *Configuration/General*
   - Continuous integration AppVeyor fix
     [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
+  - Fixing documentation checks and updating Travis scripts
+    (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
 
 - *Base*
   - Fixes wrong members in PredicateCombiner (David Coeurjolly,
