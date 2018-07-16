@@ -138,15 +138,16 @@ public:
   //@{
 
   /** Gets the value of the functor for the given point.
-   * @param aPoint the point.
+   * @tparam  TPoint  point type (auto-deduced).
+   * @param   aPoint  the point.
    * @return the value at \a aPoint.
    *
-   * @todo merge doc of the two versions of operator()
+   * @note There are two overloads of this operator, automatically dispatched depending on the arity of the functor.
    */
-  template <typename TPoint>
+  template <typename TPoint> // Needed template parameter to enable SFINAE trick
   inline
   auto operator() ( TPoint const& aPoint ) const
-      -> decltype( myFunctor( aPoint ) )
+      -> decltype( myFunctor( aPoint ) ) // Using SFINAE to enable this overload for unary functor
     {
       ASSERT_MSG(
           myDomain.isInside(aPoint),
@@ -155,10 +156,10 @@ public:
       return myFunctor( aPoint );
     }
 
-  template <typename TPoint>
+  template <typename TPoint> // Needed template parameter to enable SFINAE trick
   inline
   auto operator() ( TPoint const& aPoint ) const
-      -> decltype( myFunctor( aPoint, myDomain ) )
+      -> decltype( myFunctor( aPoint, myDomain ) ) // Using SFINAE to enable this overload for binary functor
     {
       ASSERT_MSG(
           myDomain.isInside(aPoint),
@@ -168,6 +169,7 @@ public:
     }
 
   //@}
+
   /**
    * @return a constant range over this image.
    */
