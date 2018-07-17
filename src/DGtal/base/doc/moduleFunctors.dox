@@ -329,7 +329,155 @@ You may want to add such classes because some concepts derived from
 @ref DGtal::concepts::CUnaryFunctor may need additional data or typedef,
 like @ref DGtal::concepts::CPointFunctor.
 
+
 @subsection tutorial_cpointfunctor A simple CUnaryFunctor model with additional typedef
+
+In this section, we will explain how to write a @ref concepts::CPointFunctor model
+that is basically a @ref concepts::CUnaryFunctor model with additional typedef
+(the point and value types).
+
+The resulting class is more or less the @ref PointFunctorHolder class which
+source code is visible in @ref PointFunctorHolder.h .
+
+
+@subsubsection pointfunctorholder_core_skeleton The core skeleton
+
+A basic implementation of such a class would be:
+@code
+template <
+  typename TPoint,
+  typename TValue,
+  typename TFunctor
+>
+class PointFunctorHolder
+{
+public:
+
+  // DGtal types
+  using Self    = PointFunctorHolder<TPoint, TValue, TFunctor>;
+  using Point   = TPoint;
+  using Value   = TValue;
+  using Functor = TFunctor;
+
+public:
+  // Storing the functor
+  explicit PointFunctorHolder(TFunctor const& fn)
+      : myFunctor(fn)
+  {}
+
+  // Evaluating the functor
+  inline Value operator() ( Point const& aPoint ) const
+    {
+      return myFunctor( aPoint );
+    }
+
+private:
+  Functor myFunctor;
+
+};
+@endcode
+
+There is nothing special to say about this first draft except that there is
+no references to @ref FunctorHolder because it is the helper (factory)
+that will actually choose @ref FunctorHolder as the @a TFunctor template
+parameter of this class.
+
+
+@subsubsection pointfunctorholder_helper The helper (factory)
+
+Before continuing, you should read the previous section about
+@ref creating_a_helper .
+
+The helper of the above draft should be:
+@code
+template <
+  typename TPoint,
+  typename TValue,
+  typename TFunctor
+>
+inline auto
+makePointFunctorHolder( TFunctor && aFunctor )
+    -> PointFunctorHolder<TPoint, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>
+  {
+    return PointFunctorHolder<TPoint, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>{
+        holdFunctor(std::forward<TFunctor>(aFunctor))
+    };
+  }
+@endcode
+
+Here we use the trailing return type (`auto` as returned type, followed by `->`)
+in order to choose the @a TFunctor template parameter type of our class
+depending on the result of @ref holdFunctor.
+
+As explained before, this type is not easily guessable and it is why we use
+the `decltype` keyword.
+
+Also note the perfect forwarding syntax (using universal references and
+`std::forward`) to avoid modifying the actual type of the given callable
+object (particulary keeping lvalue and rvalue references).
+
+@remark
+There is many repetitions in this helper.
+Starting with C++14 standard, the trailing return type (after the `->`) could
+be removed.
+
+
+@subsubsection pointfunctorholder_usage First test
+
+That's it ! You can enjoy using this @ref concepts::CPointFunctor model,
+for example to hold a lambda returning the point norm:
+@code
+using Point = PointVector<2, int>;
+auto fn = makePointFunctorHolder<Point, double>(
+  [] (Point const& pt) { return pt.norm(); }
+);
+
+BOOST_CONCEPT_ASSERT( (concepts::CPointFunctor<decltype(fn)>) );
+@endcode
+
+
+@subsubsection pointfunctorholder_advanced_helper Auto-deducing the return type of the functor
+
+Since the functor's return type can be easily deduced by calling it with a point,
+we can then provide an additional helper that needs only one template parameter:
+@code
+template <
+  typename TPoint,
+  typename TFunctor
+>
+inline auto
+makePointFunctorHolder( TFunctor && aFunctor )
+    -> PointFunctorHolder<
+          TPoint,
+          typename std::decay<decltype(aFunctor(std::declval<TPoint>()))>::type,
+          decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+        >
+  {
+    return PointFunctorHolder<
+        TPoint,
+        typename std::decay<decltype(aFunctor(std::declval<TPoint>()))>::type,
+        decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+      >{ holdFunctor(std::forward<TFunctor>(aFunctor)) };
+  }
+@endcode
+
+It is a little bit more tricky : we use `std::declval` in order to generate
+a fake point, we give it as a parameter to the functor and we deduce the
+result type using `decltype`.
+The use of `std::decay` allows us to remove any reference and const specifier
+from the deduced type.
+
+The usage is very similar:
+@code
+using Point = PointVector<2, int>;
+auto fn = makePointFunctorHolder<Point>( // auto-deduced Value template
+  [] (Point const& pt) { return pt.norm(); }
+);
+
+BOOST_CONCEPT_ASSERT( (concepts::CPointFunctor<decltype(fn)>) );
+@endcode
+
+@todo snippet from a PointFunctorHolder example file.
 
  */
 }

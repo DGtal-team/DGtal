@@ -142,7 +142,6 @@ namespace
  * @ref moduleFunctors .
  *
  * @see holdFunctor
- * @see @ref moduleFunctors
  */
 template <
   typename FunctorStorage,
