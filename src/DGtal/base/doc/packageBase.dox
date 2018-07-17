@@ -50,6 +50,7 @@ This package gathers many concepts and stand-alone classes that are used in othe
 -      Smart pointers --- coming soon ---
 - \ref moduleCloneAndReference (Jacques-Olivier Lachaud)
 - \ref moduleSetFunctions (Jacques-Olivier Lachaud)
+- \ref moduleFunctors (Roland Denis)
 
 @b Package @b Concepts @b Overview
 - \ref packageBaseConcepts

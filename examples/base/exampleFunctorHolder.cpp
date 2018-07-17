@@ -470,7 +470,7 @@ int main()
     Image image = DGtal::PGMReader<Image>::importPGM(filename);
 
     //! [Binarizer deduction guide in C++17]
-    auto binarizer = DGtal::holdFunctor( Binarizer(135) );
+    auto binarizer = DGtal::holdFunctor( Binarizer(135) ); // Binarizer template parameter is not specified.
     DGtal::functors::PointFunctorPredicate<Image, decltype(binarizer)> predicate(image, binarizer);
     //! [Binarizer deduction guide in C++17]
 
