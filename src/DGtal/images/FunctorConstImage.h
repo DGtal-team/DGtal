@@ -226,9 +226,9 @@ public:
 }; // End of class FunctorConstImage
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'XXX'.
+ * Overloads 'operator<<' for displaying objects of class 'FunctorConstImage'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'XXX' to write.
+ * @param object the object of class 'FunctorConstImage' to write.
  * @return the output stream after the writing.
  */
 template <typename TDomain, typename TValue, typename TFunctor>
@@ -255,7 +255,7 @@ template <
   typename TDomain,
   typename TFunctor
 >
-auto
+inline auto
 makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
     -> FunctorConstImage<TDomain, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>
   {
@@ -278,7 +278,7 @@ template <
   typename TDomain,
   typename TFunctor
 >
-auto
+inline auto
 makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
     -> FunctorConstImage<
           TDomain,
@@ -297,7 +297,7 @@ template <
   typename TDomain,
   typename TFunctor
 >
-auto
+inline auto
 makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
     -> FunctorConstImage<
           TDomain,

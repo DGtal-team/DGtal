@@ -140,6 +140,10 @@ namespace
  * As a consequence, the type of the returned FunctorHolder cannot be guessed
  * easily and the use of the `auto` keyword is thus mandatory.
  *
+ * @note
+ * Almost all the snippets used in the following explanations come from
+ * the example file @ref exampleFunctorHolder.cpp
+ *
  * @section holding_an_object Holding a callable object
  *
  * As warned before, @ref FunctorHolder is not meant to be directly constructed
@@ -283,14 +287,21 @@ namespace
  *
  * @section type_of_functorholder The type of a FunctorHolder instance
  *
+ * @note
+ * Note that the above topics are not specific to @ref FunctorHolder.
+ * They may be useful in many cases where you can't or don't want to
+ * guess the result type of an expression.
+ *
+ *
  * @subsection storing_functorholder Storing a FunctorHolder
  * As explained before (see @ref auto_holdfunctor), you cannot easily guess
  * the result type of a @ref holdFunctor call.
  * Moreover, it becomes impossible when passing a lambda in an inline way.
  *
  * Thus, it is recommended to use the `auto` keyword as the type placeholder
- * for any instance of @ref FunctorHolder:
+ * for any instance of @ref FunctorHolder :
  * @snippet exampleFunctorHolder.cpp Storing a FunctorHolder
+ *
  *
  * @subsection passing_functorholder Passing a FunctorHolder as a parameter
  *
@@ -302,20 +313,106 @@ namespace
  * deduce its type by using the `decltype` keyword:
  * @snippet exampleFunctorHolder.cpp Passing a FunctorHolder
  *
- * To ease such usage, you may want to see if there exist a helper (or factory)
+ * To ease such usage, you may want to search if there exist a helper (or factory)
  * for that class (see also @ref creating_a_helper).
  *
+ *
  * @subsection returning_functorholder Returning a FunctorHolder
- * The most complicated part begins when you need a function to return a
+ * The most tricky part begins when you need a function to return a
  * @ref FunctorHolder.
  *
+ * The problem comes from the fact that up to C++11 standard, you need to
+ * somehow specify the function's return type.
+ * In C++11, you can slightly delay this type specification using the trailing
+ * return syntax but the type still needs to be known in the signature.
+ * Basically, you need to duplicate the line of code that generates the
+ * @ref FunctorHolder (optionaly using the function's parameters) into the
+ * function signature and deduce its type using `decltype`:
+ * @snippet exampleFunctorHolder.cpp Returning a FunctorHolder
+ * @snippet exampleFunctorHolder.cpp Returning a FunctorHolder in caller
+ *
+ * If it is more easier to get the return type using the actual parameters,
+ * you can use the trailing return syntax:
+ * @snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return
+ * @snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return in caller
+ *
+ * @note
+ * Note that you don't have to put the exact same expression in the trailing
+ * return type deduction and in the actual return. Like in the previous
+ * snippet, you can simply use another expression you know the result type will
+ * be the same as the actual return expression.
+ *
+ * @note
+ * Going further, if writting such simplier expression is difficult, you can
+ * use `std::declval` function that construct a fake instance of any given type:
+ * @snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return and declval
  *
  *
- * delctype to get the type ?
+ * Starting with C++14 standard, you can simply use the `auto` keyword as
+ * a return type and the compiler should deduce the actual type from the
+ * `return` statements of the function:
+ * @snippet exampleFunctorHolder.cpp Returning a FunctorHolder using auto in C++14
  *
- * ...
  *
- * @todo need of class helper
+ * @subsection creating_a_helper Creating a helper
+ *
+ * Usage of @ref FunctorHolder (as other kind of objects whose type is
+ * difficult to guess) can be simplified by adding helpers (or factories)
+ * to classes whose template parameters depend on such objects.
+ *
+ * A helper is only a templated function that benefits from the auto deduction
+ * of template parameters of a function in order to deduce the appropriate
+ * class type:
+ * @snippet exampleFunctorHolder.cpp Factory of Binarizer
+ * @snippet exampleFunctorHolder.cpp Using the Binarizer factory
+ *
+ * @note
+ * Starting with C++17, these helpers can be replaced by deduction guides that
+ * are custom rules for deducing class template parameters from a direct call
+ * to the constructor (without specifying the deductible template parameters):
+ * @snippet exampleFunctorHolder.cpp Binarizer deduction guide in C++17
+ *
+ *
+ * For more complex classes, like @ref DGtal::functors::PointFunctorPredicate
+ * that use @ref DGtal::ConstAlias in the constructor parameters, you cannot
+ * simply use @ref DGtal::ConstAlias in the factory and hope that the compiler
+ * will deduce the aliases type:
+ * @snippet exampleFunctorHolder.cpp Wrong factory of PointFunctorPredicate
+ *
+ * The problem here is that implicit conversions are ignored during the
+ * template deduction step.
+ * In this case, the first solution is to remove the @ref DGtal::ConstAlias
+ * from the helper signature:
+ * @snippet exampleFunctorHolder.cpp Factory of PointFunctorPredicate
+ * @snippet exampleFunctorHolder.cpp Using the PointFunctorPredicate factory
+ *
+ * Another problem arises here: the constructor of
+ * @ref DGtal::functors::PointFunctorPredicate will get as parameters only
+ * left-value references because the parameters have a name in the factory.
+ * Thus, you might miss some optimizations for right-value references.
+ *
+ * In order to make a factory that doesn't change the parameters type, you
+ * must use forwarding references (by using `&&` references together with
+ * template paremeter deduction, also known as universal references)
+ * and perfect forwarding using `std::forward`:
+ * @snippet exampleFunctorHolder.cpp Factory of PointFunctorPredicate using perfect forwarding
+ * Note the use of `std::decay` because the template parameter will be deduced
+ * with an included reference specification that you don't want to be part of
+ * the returned class specification (`std::decay` removes reference and
+ * constness from a given type).
+ *
+ *
+ * @section marking_cunaryfunctor Making a C(Unary)Functor model based on FunctorHolder
+ *
+ * In the following sections, we will explain how to create new DGtal functor
+ * models using @ref FunctorHolder as an internal storage in order to accept
+ * any kind of callable objects (lambda included).
+ *
+ * You may want to add such classes because some concepts derived from
+ * @ref DGtal::concepts::CUnaryFunctor may need additional data or typedef,
+ * like @ref DGtal::concepts::CPointFunctor.
+ *
+ * @subsection tutorial_cpointfunctor A simple CUnaryFunctor model with additional typedef
  *
  *
  * @see ???

@@ -127,7 +127,7 @@ TEST_CASE( "2D Image from unary functor by rvalue", "[2D][functor][unary][rvalue
 
   const Domain domain({-10, -15}, {20, 25});
   const double cst = 3.5;
-  auto image = makeFunctorConstImage( domain, UnaryFunctor(cst) );
+  auto image = makeFunctorConstImage<double>( domain, UnaryFunctor(cst) ); // Specifying explicitly the returned value type.
   checkImage(image, [&cst] (Point pt, Domain d) { return unary_kernel(pt, d, cst); });
 }
 
