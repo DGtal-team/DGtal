@@ -20,9 +20,9 @@
  * @author Roland Denis (\c denis@math.univ-lyon1.fr )
  * CNRS, Institut Camille Jordan (UMR 5208), Université Lyon 1, France
  *
- * @date 2018/07/19
+ * @date 2018/07/17
  *
- * @brief An example file for @ref FunctorHolder and @ref holdFunctor.
+ * @brief An example file for @ref DGtal::FunctorHolder and @ref DGtal::holdFunctor.
  *
  * This file is part of the DGtal library.
  */
@@ -98,7 +98,7 @@ struct Binarizer
 
 template <typename T>
 inline
-decltype(DGtal::holdFunctor(Binarizer<T>(128)))
+decltype(DGtal::holdFunctor(Binarizer<T>(128))) // Deduced return type
 get_trivial_binarizer()
 {
   return DGtal::holdFunctor( Binarizer<T>(128) );
@@ -145,7 +145,7 @@ auto get_mean_binarizer_from_range_cpp14(Iterator first, Iterator last)
 //! [Factory of Binarizer]
 template <typename T>
 inline
-Binarizer<T> makeBinarizer( T const& v )
+Binarizer<T> makeBinarizer( T const& v ) // T auto-deduced from the parameter v
 {
   return Binarizer<T>(v);
 }

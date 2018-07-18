@@ -58,14 +58,32 @@ namespace DGtal
  * The functor must accept a poitn and return a value whose type is @a Value.
  *
  * @warning This class is not meant to be directly constructed by the user.
- * Use instead the makePointFunctorHolder helper that will choose the more
+ * Use instead the @ref makePointFunctorHolder helper that will choose the more
  * appropriate storage type for the functor depending on the given callable
  * object.
  *
- * @see makePointFunctorHolder, FunctorHolder
+ * A typical usage would be:
+@code
+using Point = PointVector<2, int>;
+auto fn = makePointFunctorHolder<Point>( // auto-deduced Value template
+  [] (Point const& pt) { return pt.norm(); }
+);
+@endcode
  *
- * @todo example ?
+ * In you want to use a function instead of a functor or lambda, consider
+ * wrapping it into a lambda to avoid a performance penalty due to the fact
+ * that a pointer to a function cannot be inlined:
+@code
+using Point = PointVector<2, int>;
+auto fn = makePointFunctorHolder<Point>( // auto-deduced Value template
+  [] (Point const& pt) { return my_function(pt); }
+);
+@endcode
  *
+ * You can find more informations about how to use this class appropriately
+ * in the module about @ref moduleFunctors.
+ *
+ * @see makePointFunctorHolder, FunctorHolder, @ref moduleFunctors
  */
 template <
   typename TPoint,
@@ -188,7 +206,7 @@ makePointFunctorHolder( TFunctor && aFunctor )
  * @param   aFunctor  The functor to hold.
  * @return an instance of the appropriate PointFunctorHolder type.
  *
- * @see PointFunctorHolder
+ * @see PointFunctorHolder and @ref moduleFunctors for more informations.
  */
 template <
   typename TPoint,
