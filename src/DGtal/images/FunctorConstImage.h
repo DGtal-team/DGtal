@@ -53,7 +53,7 @@ namespace DGtal
 {
 
 /**
- * @brief Transform a point-dependant functor into a constant image.
+ * @brief Transform a point-dependent (and possibly domain-dependent) functor into a constant image.
  *
  * @tparam TDomain  Domain type.
  * @tparam TValue   Value type returned by the functor.
@@ -67,10 +67,30 @@ namespace DGtal
  * will choose the more appropriate storage type for the functor depending
  * on the given callable object.
  *
+ * A typical usage would be:
+ * @snippet exampleFunctorConstImage.cpp example1
+ * resulting in:
+ * \image html FunctorConstImage_example1.png "Image generated from a point-dependent lambda."
+ * \image latex FunctorConstImage_example1.png "Image generated from a point-dependent lambda." width=5cm
  *
- * @see makeFunctorConstImage, FunctorHolder
+ * In you want to use a function instead of a functor or lambda, consider
+ * wrapping it into a lambda to avoid a performance penalty due to the fact
+ * that a pointer to a function cannot be inlined:
+@code
+auto image = DGtal::makeFunctorConstImage(
+    domain,
+    [] (Point const& pt) { return my_function(pt); }
+);
+@endcode
  *
- * @todo domain storage ?
+ * This example is illustrated in @ref moduleImages_functorconstimage
+ * and you can find more informations about how to use this class appropriately
+ * in the module about @ref moduleFunctors .
+ *
+ * @see makeFunctorConstImage, FunctorHolder, @ref moduleFunctors
+ *
+ * @see exampleFunctorConstImage.cpp
+ *
  */
 template <
   typename TDomain,
@@ -272,7 +292,7 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
  * @param   aFunctor  The functor that generates the image.
  * @return an instance of the appropriate FunctorConstImage type.
  *
- * @see FunctorConstImage
+ * @see FunctorConstImage and @ref moduleImages for more informations.
  */
 template <
   typename TDomain,

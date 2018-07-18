@@ -271,7 +271,7 @@ namespace {
  * @param   fn        The callable object to be holded.
  * @return  a FunctorHolder instance with appropriate storage type depending on the given object.
  *
- * @see FunctorHolder documentation for more informations
+ * @see FunctorHolder and @ref moduleFunctors for more informations
  */
 template <typename Function>
 inline auto holdFunctor(Function && fn)

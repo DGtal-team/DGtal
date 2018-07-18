@@ -523,9 +523,42 @@ The resulting image can be exported with the GenericWriter class:
 
 
 You will obtain such a result (with also the result on 3D images):
- \image html imageBasicSubsamplingExample.png "Illustration of the resulting subsampling given by the imageBasicSubsampling.cpp example".
+ \image html imageBasicSubsamplingExample.png "(11) Illustration of the resulting subsampling given by the imageBasicSubsampling.cpp example".
 
 
+@subsection moduleImages_functorconstimage Constant image from a function, functor or lambda
+
+If you need to define an image as the result of a callable object (function,
+functor or lambda) and you don't want to precalculate it or to store it, you
+should consider using the @ref FunctorConstImage class.
+
+An instance of this class must be constructed through the associated helper
+@ref makeFunctorConstImage and you can use any callable object that
+accepts a point alone or a point and a domain (in order to have a domain
+dependent image definition).
+
+A first usage example should be composed of the appropriate include:
+@snippet exampleFunctorConstImage.cpp include
+followed by the image definition:
+@snippet exampleFunctorConstImage.cpp example1
+that gives us the following result:
+\image html FunctorConstImage_example1.png "(12) Image generated from a point-dependent lambda."
+\image latex FunctorConstImage_example1.png "(12) Image generated from a point-dependent lambda." width=5cm
+
+You can also use a functor that depends on the point and the image's domain:
+@snippet exampleFunctorConstImage.cpp example2
+resulting in:
+\image html FunctorConstImage_example2.png "(13) Image generated from a lambda that depends on the point and the domain."
+\image latex FunctorConstImage_example2.png "(13) Image generated from a lambda that depends on the point and the domain." width=5cm
+
+Going further, you can also capture other images in the lambda so that to
+define a mix:
+@snippet exampleFunctorConstImage.cpp example3
+resulting in:
+\image html FunctorConstImage_example3.png "(14) Image generated as the sum of two images."
+\image latex FunctorConstImage_example3.png "(14) Image generated as the sum of two images." width=5cm
+
+@see FunctorHolder, @ref moduleFunctors
 */
 }
 
