@@ -43,8 +43,9 @@
 #include <utility>
 #include <iterator>
 
-#include "boost/iterator/transform_iterator.hpp"
-#include "boost/concept/assert.hpp"
+#include <boost/iterator/transform_iterator.hpp>
+#include <boost/concept/assert.hpp>
+
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/FunctorHolder.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -228,9 +229,9 @@ public:
         : myFunctorConstImage( aFunctorConstImage )
       {}
 
-      using ConstIterator = Self::ConstIterator;
-      using ConstReverseIterator = Self::ConstReverseIterator;
-      using Point = Self::Point;
+      using ConstIterator = typename Self::ConstIterator;
+      using ConstReverseIterator = typename Self::ConstReverseIterator;
+      using Point = typename Self::Point;
 
       inline ConstIterator begin()  const { return { myFunctorConstImage.myDomain.begin(), myFunctorConstImage }; }
       inline ConstIterator begin( Point const& aPoint ) const { return { myFunctorConstImage.myDomain.begin(aPoint), myFunctorConstImage }; }
