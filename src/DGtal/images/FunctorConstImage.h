@@ -133,7 +133,7 @@ private:
   // ----------------------- Standard services ------------------------------
 public:
 
-  /** Constructor
+  /** @brief Constructor
    * @param aDomain   The domain of the image.
    * @param aFunctor  The functor taking point as parameter.
    */
@@ -147,9 +147,7 @@ public:
   // ----------------------- Interface --------------------------------------
 public:
 
-  /**
-   * @return the associated domain.
-   */
+  /// @brief Returns the associated domain.
   inline
   Domain const& domain() const
     {
@@ -158,7 +156,7 @@ public:
 
   //@{
 
-  /** Gets the value of the functor for the given point.
+  /** @brief Evaluates the functor at the given point.
    * @tparam  TPoint  point type (auto-deduced).
    * @param   aPoint  the point.
    * @return the value at \a aPoint.
@@ -191,8 +189,7 @@ public:
 
   //@}
 
-  /**
-   * @return a constant range over this image.
+  /** @brief Returns a constant range over this image.
    */
   inline
   ConstRange constRange() const
@@ -200,8 +197,7 @@ public:
       return ConstRange( *this );
     }
 
-  /**
-   * Writes/Displays the object on an output stream.
+  /** @brief Writes/Displays the object on an output stream.
    * @param out the output stream where the object is written.
    */
   inline
@@ -210,8 +206,7 @@ public:
       out << "[FunctorConstImage] holding a " << myFunctor << " on domain " << myDomain;
     }
 
-  /**
-   * Checks the validity/consistency of the object.
+  /** @brief Checks the validity/consistency of the object.
    * @return 'true' if the object is valid, 'false' otherwise.
    */
   inline constexpr
@@ -221,7 +216,7 @@ public:
     }
 
 public:
-  /// Constant range
+  /// Constant range on a @ref FunctorConstImage
   class ConstRange
     {
   public:
@@ -246,10 +241,10 @@ public:
     }; // End of class ConstRange
 }; // End of class FunctorConstImage
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'FunctorConstImage'.
+/** @brief Overloads 'operator<<' for displaying objects of class @ref FunctorConstImage.
+ *
  * @param out the output stream where the object is written.
- * @param object the object of class 'FunctorConstImage' to write.
+ * @param object the object of class @ref FunctorConstImage to write.
  * @return the output stream after the writing.
  */
 template <typename TDomain, typename TValue, typename TFunctor>
@@ -260,7 +255,7 @@ operator<< ( std::ostream & out, const FunctorConstImage<TDomain, TValue, TFunct
   return out;
 }
 
-/** FunctorConstImage construction helper with specification of the return type.
+/** @brief FunctorConstImage construction helper with specification of the return type.
  *
  * @tparam  TValue    The image value type.
  * @tparam  TDomain   The domain type (auto-deduced).
@@ -285,7 +280,7 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
 
 //@{
 
-/** FunctorConstImage construction helper with auto-deduction of the return type.
+/** @brief FunctorConstImage construction helper with auto-deduction of the return type.
  *
  * @tparam  TDomain   The domain type (auto-deduced).
  * @tparam  TFunctor  The functor type (auto-deduced).

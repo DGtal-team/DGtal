@@ -157,7 +157,7 @@ private:
   // ----------------------- Standard services ------------------------------
 public:
 
-  /** Constructor
+  /** @brief Constructor
    *
    * @tparam  Function  The type of the callable object (auto-deduced).
    * @param   fn        The callable object.
@@ -175,7 +175,7 @@ public:
   // ----------------------- Interface --------------------------------------
 public:
 
-  /** Invokes the stored callable object in a constant context.
+  /** @brief Invokes the stored callable object in a constant context.
    *
    * @tparam  T     Arguments's types.
    * @param   args  The arguments.
@@ -187,7 +187,7 @@ public:
       return Invoker<NeedDereference>::apply(myFunctor, std::forward<T>(args)...);
     }
 
-  /** Invokes the stored callable object in a mutable context.
+  /** @brief Invokes the stored callable object in a mutable context.
    *
    * @tparam  T     Arguments's types.
    * @param   args  The arguments.
@@ -199,8 +199,8 @@ public:
       return Invoker<NeedDereference>::apply(myFunctor, std::forward<T>(args)...);
     }
 
-  /**
-   * Writes/Displays the object on an output stream.
+  /** @brief Writes/Displays the object on an output stream.
+   *
    * @param out the output stream where the object is written.
    */
   inline
@@ -215,8 +215,8 @@ public:
         out << " using custom storage";
     }
 
-  /**
-   * Checks the validity/consistency of the object.
+  /** @brief Checks the validity/consistency of the object.
+   *
    * @return 'true' if the object is valid, 'false' otherwise.
    */
   inline constexpr
@@ -226,10 +226,10 @@ public:
     }
 }; // End of class FunctorHolder
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'XXX'.
+/** @brief Overloads 'operator<<' for displaying objects of class @ref FunctorHolder.
+ *
  * @param out the output stream where the object is written.
- * @param object the object of class 'XXX' to write.
+ * @param object the object of class @ref FunctorHolder to write.
  * @return the output stream after the writing.
  */
 template <typename FunctorStorage, bool NeedDereference>

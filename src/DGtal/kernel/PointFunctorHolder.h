@@ -55,7 +55,7 @@ namespace DGtal
  * @tparam  TValue    Value type returned by the functor.
  * @tparam  TFunctor  Type of the functor.
  *
- * The functor must accept a poitn and return a value whose type is @a Value.
+ * The functor must accept a point and return a value whose type is @a Value.
  *
  * @warning This class is not meant to be directly constructed by the user.
  * Use instead the @ref makePointFunctorHolder helper that will choose the more
@@ -104,7 +104,7 @@ public:
   // ----------------------- Standard services ------------------------------
 public:
 
-  /** Constructor
+  /** @brief Constructor
    *
    * @tparam  Function  The type of the callable object (auto-deduced).
    * @param   fn        The callable object.
@@ -122,7 +122,7 @@ public:
   // ----------------------- Interface --------------------------------------
 public:
 
-  /** Gets the value of the functor for the given point.
+  /** @brief Evaluates the functor at the given point.
    *
    * @param aPoint  The point.
    */
@@ -132,8 +132,8 @@ public:
       return myFunctor( aPoint );
     }
 
-  /**
-   * Writes/Displays the object on an output stream.
+  /** @brief Writes/Displays the object on an output stream.
+   *
    * @param out the output stream where the object is written.
    */
   inline
@@ -142,8 +142,8 @@ public:
       out << "[PointFunctorHolder] holding a " << myFunctor;
     }
 
-  /**
-   * Checks the validity/consistency of the object.
+  /** @brief Checks the validity/consistency of the object.
+   *
    * @return 'true' if the object is valid, 'false' otherwise.
    */
   inline constexpr
@@ -155,15 +155,15 @@ public:
 
   // ------------------------- Private Datas --------------------------------
 private:
-  Functor myFunctor;
+  Functor myFunctor; ///< The held functor.
 
 }; // End of class PointFunctorHolder
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'PointFunctorHolder'.
+/** @brief Overloads 'operator<<' for displaying objects of class @ref PointFunctorHolder.
+ *
  * @param out the output stream where the object is written.
- * @param object the object of class 'PointFunctorHolder' to write.
+ * @param object the object of class @ref PointFunctorHolder to write.
  * @return the output stream after the writing.
  */
 template <typename TPoint, typename TValue, typename TFunctor>
@@ -175,7 +175,7 @@ operator<< ( std::ostream & out, const PointFunctorHolder<TPoint, TValue, TFunct
 }
 
 
-/** PointFunctorHolder construction helper with specification of the return type.
+/** @brief @ref PointFunctorHolder construction helper with specification of the return type.
  *
  * @tparam  TPoint    The point type.
  * @tparam  TValue    The functor value type.
@@ -199,7 +199,7 @@ makePointFunctorHolder( TFunctor && aFunctor )
     };
   }
 
-/** PointFunctorHolder construction helper with auto-deduction of the return type.
+/** @brief @ref PointFunctorHolder construction helper with auto-deduction of the return type.
  *
  * @tparam  TPoint    The point type.
  * @tparam  TFunctor  The functor type (auto-deduced).
