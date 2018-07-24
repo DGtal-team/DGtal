@@ -175,7 +175,7 @@ operator<< ( std::ostream & out, const PointFunctorHolder<TPoint, TValue, TFunct
 }
 
 
-/** @brief @ref PointFunctorHolder construction helper with specification of the return type.
+/** @brief PointFunctorHolder construction helper with specification of the return type.
  *
  * @tparam  TPoint    The point type.
  * @tparam  TValue    The functor value type.
@@ -199,7 +199,7 @@ makePointFunctorHolder( TFunctor && aFunctor )
     };
   }
 
-/** @brief @ref PointFunctorHolder construction helper with auto-deduction of the return type.
+/** @brief PointFunctorHolder construction helper with auto-deduction of the return type.
  *
  * @tparam  TPoint    The point type.
  * @tparam  TFunctor  The functor type (auto-deduced).
