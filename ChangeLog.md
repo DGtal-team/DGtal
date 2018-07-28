@@ -4,9 +4,11 @@
 ## Bug Fixes
 
 - *Base*
-  - Fixes wrong members in PredicateCombiner (David Coeurjolly,
+  - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
-  
+  - Fixing openmp flags (David Coeurjolly,
+    [#1324](https://github.com/DGtal-team/DGtal/pull/1324))
+
 
 # DGtal 0.9.4.1
 
