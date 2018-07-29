@@ -25,10 +25,16 @@
 - *Configuration/General*
   - Continuous integration AppVeyor fix
     [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
+  - Fixing documentation checks and updating Travis scripts
+    (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
 
 - *Base*
-  - Fixes wrong members in PredicateCombiner (David Coeurjolly,
+  - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
+  - Fixing openmp flags (David Coeurjolly,
+    [#1324](https://github.com/DGtal-team/DGtal/pull/1324))
+  - Add assignment operator to ImageContainerByITKImage (Pablo Hernandez,
+    [#1336](https://github.com/DGtal-team/DGtal/pull/1336))
 
 - *IO*
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,

@@ -105,8 +105,7 @@ e^{- \frac{||\dot{\mathbf{r}}
       the centroid of the surfel \f$\mathbf{r}\f$ (resp. \f$\mathbf{s}\f$), and
       \f$\mu(\mathbf{r})\f$ is equal to the dot product between an estimated
       normal and the trivial normal orthogonal to the surfel \f$\mathbf{s}\f$.
-      We typically use the Integral Invariant estimator for normal computation
-      .
+      We typically use the Integral Invariant estimator for normal computation.
 
 \section secHowToHeatLaplace Hands on the Operator in DGtal
 

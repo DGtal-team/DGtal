@@ -133,7 +133,7 @@ CubicalCellData. This data is used by the thinning algorithm with persistence.
 But can be used for other purposes, take a look at the documentation
 of CubicalCellData to see the default stored flags and data.
 
-@section dgtal_vcomplex_sec3 Implementation Details
+@section dgtal_vcomplex_sec4 Implementation Details
 
 The details of the implementation can be summarized int he implementation of four masks
 that given a d-cell (pointel, linel, surfel, spel) returns a d-clique and a boolean flag with its criticality.
@@ -147,7 +147,7 @@ VoxelComplex::K_2 applies to surfels,
 
 VoxelComplex::K_1 to linels, and VoxelComplex::K_0 to pointels.
 
-@section dgtal_vcomplex_sec4 Thinning in voxel complexes
+@section dgtal_vcomplex_sec5 Thinning in voxel complexes
 
 In VoxelComplexFunctions.h a couple of thinning methods are implemented in a functional style,
 taking a VoxelComplex, a Select function, and a Skel function.
@@ -230,7 +230,7 @@ K.insertVoxelCell(voxel, close_it, birth_date);
 \endcode
 
 
-@section dgtal_vcomplex_sec5 Examples
+@section dgtal_vcomplex_sec6 Examples
 
 DGtalTools provide a script \b criticalKernelsThinning3D.cpp ready to use for 3D inputs.
 Some results:
