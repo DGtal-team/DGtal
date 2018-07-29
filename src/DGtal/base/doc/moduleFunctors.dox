@@ -42,9 +42,9 @@ More precisely, the storage mode depends on the lifetime of the given
 object, deduced from its passing mode :
 
 - if the given object is passed by left-value reference (long lifetime),
-  it will be stored as a reference (using [`std::reference_wrapper`](https://en.cppreference.com/w/cpp/utility/functional/reference_wrapper)).
+  it will be stored as a reference (using [<tt>std::reference_wrapper</tt>](https://en.cppreference.com/w/cpp/utility/functional/reference_wrapper)).
 - otherwise (short lifetime, like right-value references),
-  it will be moved to a dynamically allocated memory place ([`std::shared_ptr`](https://en.cppreference.com/w/cpp/memory/shared_ptr))
+  it will be moved to a dynamically allocated memory place ([<tt>std::shared_ptr</tt>](https://en.cppreference.com/w/cpp/memory/shared_ptr))
   so that the object lifetime matches the FunctorHolder lifetime.
 
 In both case, the returned object is copy/move constructible and
@@ -59,9 +59,9 @@ callable object.
 @remark It is important to not explicitly specify the given object type
 so that it's real lifetime can be deduced using a [universal reference](https://en.cppreference.com/w/cpp/language/reference#Forwarding_references).
 However, you can transfer ownership of the object to FunctorHolder by moving
-it using [`std::move`](https://en.cppreference.com/w/cpp/utility/move).
+it using [<tt>std::move</tt>](https://en.cppreference.com/w/cpp/utility/move).
 As a consequence, the type of the returned FunctorHolder cannot be guessed
-easily and the use of the [`auto`](https://en.cppreference.com/w/cpp/language/auto) keyword is thus mandatory.
+easily and the use of the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto) keyword is thus mandatory.
 
 @see FunctorHolder, holdFunctor
 
@@ -72,7 +72,7 @@ The first motivation is to be able to use lambdas as functors in DGtal
 but the problem is that all functor's concepts inherits from
 @ref boost::Assignable and a lambda is unfortunately not assignable.
 
-A solution would be to rely on [`std::function`](https://en.cppreference.com/w/cpp/utility/functional/function) but this solution has two main
+A solution would be to rely on [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function) but this solution has two main
 issues:
 - it refers to the callable object by using a generic pointer, like
   `double (*) (int)` for a function returning a `double` from an `int`.
@@ -101,10 +101,10 @@ a @ref FunctorHolder, like explained in the section below about
 
 
 For example, on a modern processor and if your functor only adds values,
-you can have a performance ratio of about 26.7 between using a [`std::function`](https://en.cppreference.com/w/cpp/utility/functional/function)
+you can have a performance ratio of about 26.7 between using a [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function)
 and @ref FunctorHolder.
 Even with more complex operations, there is still a significant performance
-penalty to use [`std::function`](https://en.cppreference.com/w/cpp/utility/functional/function) over @ref FunctorHolder.
+penalty to use [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function) over @ref FunctorHolder.
 
 @section holding_an_object Holding a callable object
 
@@ -173,7 +173,7 @@ Without surprise, holding a lambda works the same way:
 @ref FunctorHolder should be able to hold any callable object.
 However, as warned before, if you are concerned by performance,
 you should avoid holding a function by reference or pointer
-or, even worse, holding a [`std::function`](https://en.cppreference.com/w/cpp/utility/functional/function)
+or, even worse, holding a [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function)
 that is more or less a pointer with an additional cost due to the polymorphism.
 
 @subsection held_object_lifetime Held object lifetime
@@ -185,13 +185,13 @@ Otherwise, consider constructing the functor directly during the
 @ref holdFunctor call or transfer its ownership by using the move semantic.
 See the examples in section @ref holding_a_functor.
 
-@subsection auto_holdfunctor Why using the `auto` keyword ?
+@subsection auto_holdfunctor Why using the auto keyword ?
 Since the exact storage type used in @ref FunctorHolder is choosen by
 @ref holdFunctor depending on the passing mode of the callable object,
 it is not easily possible to known the template parameters of
 @ref FunctorHolder.
 
-Thus, it is recommended to use the [`auto`](https://en.cppreference.com/w/cpp/language/auto)
+Thus, it is recommended to use the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto)
 keyword as the type placeholder for any instance of @ref FunctorHolder.
 
 See also the section about @ref storing_functorholder.
@@ -237,9 +237,9 @@ it:
 @warning
 It is also the case when passing the object by rvalue reference to
 @ref holdFunctor since it moves it to a dynamically allocated memory
-place, managed by [`std::shared_ptr`](https://en.cppreference.com/w/cpp/memory/shared_ptr).
+place, managed by [<tt>std::shared_ptr</tt>](https://en.cppreference.com/w/cpp/memory/shared_ptr).
 Copying or assigning the resulting @ref FunctorHolder is like copying
-or assigning the underlying [`std::shared_ptr`](https://en.cppreference.com/w/cpp/memory/shared_ptr):
+or assigning the underlying [<tt>std::shared_ptr</tt>](https://en.cppreference.com/w/cpp/memory/shared_ptr):
 @snippet exampleFunctorHolder.cpp Copying a lambda by rvalue ref
 
 @note
@@ -260,7 +260,7 @@ As explained before (see @ref auto_holdfunctor), you cannot easily guess
 the result type of a @ref holdFunctor call.
 Moreover, it becomes impossible when passing a lambda in an inline way.
 
-Thus, it is recommended to use the [`auto`](https://en.cppreference.com/w/cpp/language/auto) keyword as the type placeholder
+Thus, it is recommended to use the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto) keyword as the type placeholder
 for any instance of @ref FunctorHolder :
 @snippet exampleFunctorHolder.cpp Storing a FunctorHolder
 
@@ -272,7 +272,7 @@ may still need to known the @ref FunctorHolder exact type (including
 the template parameters).
 
 In those cases, a solution is to first store the @ref FunctorHolder and then to
-deduce its type by using the [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) keyword:
+deduce its type by using the [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype) keyword:
 @snippet exampleFunctorHolder.cpp Passing a FunctorHolder
 
 To ease such usage, you may want to search if there exist an helper (or factory)
@@ -289,7 +289,7 @@ In C++11, you can slightly delay this type specification using the trailing
 return syntax but the type still needs to be known in the signature.
 Basically, you need to duplicate the line of code that generates the
 @ref FunctorHolder (optionaly using the function's parameters) into the
-function signature and deduce its type using [`decltype`](https://en.cppreference.com/w/cpp/language/decltype):
+function signature and deduce its type using [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype):
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder in caller
 
@@ -306,11 +306,11 @@ be the same as the actual return expression.
 
 @note
 Going further, if writting such simplier expression is difficult, you can
-use [`std::declval`](https://en.cppreference.com/w/cpp/utility/declval) function that constructs a fake instance of any given type:
+use [<tt>std::declval</tt>](https://en.cppreference.com/w/cpp/utility/declval) function that constructs a fake instance of any given type:
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return and declval
 
 
-Starting with C++14 standard, you can simply use the [`auto`](https://en.cppreference.com/w/cpp/language/auto) keyword as
+Starting with C++14 standard, you can simply use the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto) keyword as
 a return type and the compiler should deduce the actual type from the
 `return` statements of the function:
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder using auto in C++14
@@ -356,11 +356,11 @@ Thus, you might miss some optimizations for right-value references.
 In order to make a factory that doesn't change the parameters type, you
 must use [forwarding references](https://en.cppreference.com/w/cpp/language/reference#Forwarding_references)
 (by using `&&` references together with template paremeter deduction, also
- known as universal references) and perfect forwarding using [`std::forward`](https://en.cppreference.com/w/cpp/utility/forward):
+ known as universal references) and perfect forwarding using [<tt>std::forward</tt>](https://en.cppreference.com/w/cpp/utility/forward):
 @snippet exampleFunctorHolder.cpp Factory of PointFunctorPredicate using perfect forwarding
-Note the use of [`std::decay`](https://en.cppreference.com/w/cpp/types/decay) because the template parameter will be deduced
+Note the use of [<tt>std::decay</tt>](https://en.cppreference.com/w/cpp/types/decay) because the template parameter will be deduced
 with an included reference specification that you don't want to be part of
-the returned class specification ([`std::decay`](https://en.cppreference.com/w/cpp/types/decay) removes reference and
+the returned class specification ([<tt>std::decay</tt>](https://en.cppreference.com/w/cpp/types/decay) removes reference and
 constness from a given type).
 
 
@@ -449,16 +449,16 @@ makePointFunctorHolder( TFunctor && aFunctor )
   }
 @endcode
 
-Here we use the trailing return type ([`auto`](https://en.cppreference.com/w/cpp/language/auto)
+Here we use the trailing return type ([<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto)
 as returned type, followed by `->`)
 in order to choose the @a TFunctor template parameter type of our class
 depending on the result of @ref holdFunctor.
 
 As explained before, this type is not easily guessable and it is why we use
-the [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) keyword.
+the [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype) keyword.
 
 Also note the perfect forwarding syntax (using [universal references](https://en.cppreference.com/w/cpp/language/reference#Forwarding_references)
-and [`std::forward`](https://en.cppreference.com/w/cpp/utility/forward))
+and [<tt>std::forward</tt>](https://en.cppreference.com/w/cpp/utility/forward))
 to avoid modifying the actual type of the given callable object (particulary
 keeping lvalue and rvalue references).
 
@@ -507,10 +507,10 @@ makePointFunctorHolder( TFunctor && aFunctor )
   }
 @endcode
 
-It is a little bit more tricky : we use [`std::declval`](https://en.cppreference.com/w/cpp/utility/declval)
+It is a little bit more tricky : we use [<tt>std::declval</tt>](https://en.cppreference.com/w/cpp/utility/declval)
 in order to generate a fake point, we give it as a parameter to the functor and
-we deduce the result type using [`decltype`](https://en.cppreference.com/w/cpp/language/decltype).
-The use of [`std::decay`](https://en.cppreference.com/w/cpp/types/decay) allows us to remove any reference and const specifier
+we deduce the result type using [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype).
+The use of [<tt>std::decay</tt>](https://en.cppreference.com/w/cpp/types/decay) allows us to remove any reference and const specifier
 from the deduced type.
 
 The usage is very similar:
@@ -566,7 +566,7 @@ some types. To do so, we can add some code in :
 
 @note
 This trick works before C++11 but this standard makes it easier with the
-[`std::enable_if`](https://en.cppreference.com/w/cpp/types/enable_if)
+[<tt>std::enable_if</tt>](https://en.cppreference.com/w/cpp/types/enable_if)
 structure and the trailing return type.
 
 @note
@@ -582,7 +582,7 @@ auto do_something_if_addable(T v) // Considered only if v is addable
 @endcode
 
 @note
-If the type deduced by [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) is not the actual return type, you can
+If the type deduced by [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype) is not the actual return type, you can
 use the comma operator to specify an additional expression:
 @code
 template <typename T>
@@ -605,7 +605,7 @@ explicit PointFunctorHolder(Function && fn)
     : myFunctor(std::forward<Function>(fn))
 {}
 @endcode
-that uses [`std::is_base_of`](https://en.cppreference.com/w/cpp/types/is_base_of)
+that uses [<tt>std::is_base_of</tt>](https://en.cppreference.com/w/cpp/types/is_base_of)
 type traits to check if the given parameter is a or inherits from
 @ref PointFunctorHolder.
 
