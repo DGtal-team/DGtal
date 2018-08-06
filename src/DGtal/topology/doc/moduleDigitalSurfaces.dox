@@ -14,9 +14,9 @@ Part of the \ref packageTopology.
   
 This part of the manual describes how to define digital surfaces,
 closed or open. A lot of the ideas, concepts, algorithms,
-documentation and code is a backport from <a
-href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a> \cite
-ImaGene.  Digital surfaces can be defined in very different way
+documentation and code is a backport from
+<a href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>
+\cite ImaGene. Digital surfaces can be defined in very different way
 depending on input data, but they can be manipulated uniformly with
 class \ref DigitalSurface, whichever is the dimension. Note that the
 topology within digital surfaces is computed on-the-fly. Since 0.9.4,
