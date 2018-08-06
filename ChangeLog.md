@@ -2,15 +2,28 @@
 # DGtal 1.0
 
 ## Bug Fixes
+- *Configuration/General*
+  - Continuous integration AppVeyor fix
+    [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
+  - Fixing documentation checks and updating Travis scripts
+    (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
 
 - *Base*
-  - Fixes wrong members in PredicateCombiner (David Coeurjolly,
+  - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
 
 - *Shapes*
   - Add two new star shapes: Astroid and Lemniscate
    (Adrien Krähenbühl, Chouaib Fellah,
    [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
+  - Fixing openmp flags (David Coeurjolly,
+    [#1324](https://github.com/DGtal-team/DGtal/pull/1324))
+  - Add assignment operator to ImageContainerByITKImage (Pablo Hernandez,
+    [#1336](https://github.com/DGtal-team/DGtal/pull/1336))
+
+- *IO*
+  - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
+    [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
 
 # DGtal 0.9.4.1
 
