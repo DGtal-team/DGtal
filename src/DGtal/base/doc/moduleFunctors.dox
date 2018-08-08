@@ -2,6 +2,7 @@
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
+namespace functors {
 
 /*!
 
@@ -808,4 +809,6 @@ resulting in:
 \image html FunctorConstImage_example1.png "Image generated from a point-dependent lambda."
 \image latex FunctorConstImage_example1.png "Image generated from a point-dependent lambda." width=5cm
  */
-}
+
+} // namespace functors
+} // namespace DGtal

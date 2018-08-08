@@ -52,6 +52,8 @@
 
 namespace DGtal
 {
+namespace functors
+{
 
 /**
  * @brief Transform a point-dependent (and possibly domain-dependent) functor into a constant image.
@@ -330,6 +332,7 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
 
 //@}
 
+} // namespace functors
 } // namespace DGtal
 
 #endif // !defined FunctorConstImage_h

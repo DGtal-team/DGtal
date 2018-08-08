@@ -22,7 +22,7 @@
  *
  * @date 2018/07/17
  *
- * @brief An example file for @ref DGtal::FunctorHolder and @ref DGtal::holdFunctor.
+ * @brief An example file for @ref DGtal::functors::FunctorHolder and @ref DGtal::functors::holdFunctor.
  *
  * This file is part of the DGtal library.
  */
@@ -98,23 +98,23 @@ struct Binarizer
 
 template <typename T>
 inline
-decltype(DGtal::holdFunctor(Binarizer<T>(128))) // Deduced return type
+decltype(DGtal::functors::holdFunctor(Binarizer<T>(128))) // Deduced return type
 get_trivial_binarizer()
 {
-  return DGtal::holdFunctor( Binarizer<T>(128) );
+  return DGtal::functors::holdFunctor( Binarizer<T>(128) );
 }
 //! [Returning a FunctorHolder]
 
 //! [Returning a FunctorHolder using trailing return]
 template <typename Iterator>
 auto get_mean_binarizer_from_range(Iterator first, Iterator last) // auto as return type
-     -> decltype(DGtal::holdFunctor(Binarizer<decltype(*first / std::distance(first, last))>(0)))
+     -> decltype(DGtal::functors::holdFunctor(Binarizer<decltype(*first / std::distance(first, last))>(0)))
      // with trailing return type specification using ->
 {
   using value_type = typename std::iterator_traits<Iterator>::value_type;
   auto const mean = std::accumulate(first, last, value_type(0));
   auto const size = std::distance(first, last);
-  return DGtal::holdFunctor(Binarizer<decltype(mean / size)>(mean / size));
+  return DGtal::functors::holdFunctor(Binarizer<decltype(mean / size)>(mean / size));
 }
 //! [Returning a FunctorHolder using trailing return]
 
@@ -137,7 +137,7 @@ auto get_mean_binarizer_from_range_cpp14(Iterator first, Iterator last)
   using value_type = typename std::iterator_traits<Iterator>::value_type;
   auto const mean = std::accumulate(first, last, value_type(0));
   auto const size = std::distance(first, last);
-  return DGtal::holdFunctor(Binarizer<decltype(mean / size)>(mean / size));
+  return DGtal::functors::holdFunctor(Binarizer<decltype(mean / size)>(mean / size));
 }
 //! [Returning a FunctorHolder using auto in C++14]
 #endif
@@ -210,7 +210,7 @@ int main()
   {
     std::cout << "Holding a function" << std::endl;
     //! [Holding a function]
-    auto fn = DGtal::holdFunctor( signed_dist_to_unit_circle );
+    auto fn = DGtal::functors::holdFunctor( signed_dist_to_unit_circle );
     using Point = DGtal::PointVector<2, double>;
     std::cout << fn( Point(1, 1) ) << std::endl;
     //! [Holding a function]
@@ -220,7 +220,7 @@ int main()
     std::cout << "Holding a templated function" << std::endl;
     //! [Holding a templated function]
     using Point = DGtal::PointVector<2, double>;
-    auto fn = DGtal::holdFunctor( templated_signed_dist_to_unit_circle<Point> );
+    auto fn = DGtal::functors::holdFunctor( templated_signed_dist_to_unit_circle<Point> );
     std::cout << fn( Point(1, 1) ) << std::endl;
     //! [Holding a templated function]
   }
@@ -229,7 +229,7 @@ int main()
     std::cout << "Holding a function through a lambda" << std::endl;
     //! [Holding a function through a lambda]
     using Point = DGtal::PointVector<2, double>;
-    auto fn = DGtal::holdFunctor( [] (Point const& pt) { return signed_dist_to_unit_circle(pt); } );
+    auto fn = DGtal::functors::holdFunctor( [] (Point const& pt) { return signed_dist_to_unit_circle(pt); } );
     std::cout << fn( Point(1, 1) ) << std::endl;
     //! [Holding a function through a lambda]
   }
@@ -238,7 +238,7 @@ int main()
     std::cout << "Holding a templated function through a lambda" << std::endl;
     //! [Holding a templated function through a lambda]
     using Point = DGtal::PointVector<2, double>;
-    auto fn = DGtal::holdFunctor( [] (Point const& pt) { return templated_signed_dist_to_unit_circle(pt); } );
+    auto fn = DGtal::functors::holdFunctor( [] (Point const& pt) { return templated_signed_dist_to_unit_circle(pt); } );
     std::cout << fn( Point(1, 1) ) << std::endl;
     //! [Holding a templated function through a lambda]
   }
@@ -247,7 +247,7 @@ int main()
   {
     std::cout << "Holding a templated function through a C++14 lambda" << std::endl;
     //! [Holding a templated function through a C++14 lambda]
-    auto fn = DGtal::holdFunctor( [] (auto const& pt) { return templated_signed_dist_to_unit_circle(pt); } );
+    auto fn = DGtal::functors::holdFunctor( [] (auto const& pt) { return templated_signed_dist_to_unit_circle(pt); } );
     using Point = DGtal::PointVector<2, double>;
     std::cout << fn( Point(1, 1) ) << std::endl; // <- template parameter is resolved to Point
     //! [Holding a templated function through a C++14 lambda]
@@ -262,7 +262,7 @@ int main()
     //! [Holding a functor by lvalue ref]
     using Point = DGtal::PointVector<2, double>;
     SignedDistToCircle<Point> dist(Point(0, 1), 2);
-    auto fn = DGtal::holdFunctor( dist );
+    auto fn = DGtal::functors::holdFunctor( dist );
     std::cout << fn( Point(1, 1) ) << std::endl;
     //! [Holding a functor by lvalue ref]
   }
@@ -271,7 +271,7 @@ int main()
     std::cout << "Holding a functor by rvalue reference" << std::endl;
     //! [Holding a functor by rvalue ref]
     using Point = DGtal::PointVector<2, double>;
-    auto fn = DGtal::holdFunctor( SignedDistToCircle<Point>( Point(0, 1), 2 ) );
+    auto fn = DGtal::functors::holdFunctor( SignedDistToCircle<Point>( Point(0, 1), 2 ) );
     std::cout << fn( Point(1, 1) ) << std::endl;
     //! [Holding a functor by rvalue ref]
   }
@@ -281,7 +281,7 @@ int main()
     //! [Holding a functor by moving it]
     using Point = DGtal::PointVector<2, double>;
     SignedDistToCircle<Point> dist(Point(0, 1), 2);
-    auto fn = DGtal::holdFunctor( std::move(dist) );
+    auto fn = DGtal::functors::holdFunctor( std::move(dist) );
     std::cout << fn( Point(1, 1) ) << std::endl;
     //! [Holding a functor by moving it]
   }
@@ -296,7 +296,7 @@ int main()
     Point center(0, 1);
     double radius = 2;
 
-    auto fn = DGtal::holdFunctor(
+    auto fn = DGtal::functors::holdFunctor(
         [&center, &radius] (Point const& pt) {
             return (pt - center).norm() - radius;
         }
@@ -315,7 +315,7 @@ int main()
         return (pt - center).norm() - radius;
       };
 
-    auto fn = DGtal::holdFunctor( dist );
+    auto fn = DGtal::functors::holdFunctor( dist );
 
     std::cout << fn( Point(1, 1), Point(0, 1), 2 ) << std::endl;
     //! [Holding a non-unary lambda]
@@ -329,7 +329,7 @@ int main()
     //! [Copying a functor by lvalue ref]
     using Point = DGtal::PointVector<2, double>;
     SignedDistToCircle<Point> dist(Point(0, 1), 2);
-    auto fn = DGtal::holdFunctor( dist );
+    auto fn = DGtal::functors::holdFunctor( dist );
     auto fn2 = fn;
 
     std::cout << fn( Point(1, 1) ) << std::endl;  // Output: -1
@@ -346,7 +346,7 @@ int main()
     std::cout << "Copying a lambda helb by rvalue reference" << std::endl;
     //! [Copying a lambda by rvalue ref]
     int init_cnt = 0;
-    auto fn = DGtal::holdFunctor( [init_cnt] () mutable { return ++init_cnt; } );
+    auto fn = DGtal::functors::holdFunctor( [init_cnt] () mutable { return ++init_cnt; } );
     std::cout << fn() << std::endl;  // Output: 1
     auto fn2 = fn;
     std::cout << fn2() << std::endl; // Output: 2
@@ -362,7 +362,7 @@ int main()
 
     //! [Storing a FunctorHolder]
     using Point = DGtal::PointVector<2, double>;
-    auto fn = DGtal::holdFunctor( SignedDistToCircle<Point>( Point(0, 1), 2 ) );
+    auto fn = DGtal::functors::holdFunctor( SignedDistToCircle<Point>( Point(0, 1), 2 ) );
     //! [Storing a FunctorHolder]
   }
 
@@ -376,7 +376,7 @@ int main()
     Image image = DGtal::PGMReader<Image>::importPGM(filename);
 
     //! [Passing a FunctorHolder]
-    auto binarizer = DGtal::holdFunctor( [] (Image::Value v) { return v <= 135; } );
+    auto binarizer = DGtal::functors::holdFunctor( [] (Image::Value v) { return v <= 135; } );
     DGtal::functors::PointFunctorPredicate<Image, decltype(binarizer)> predicate(image, binarizer);
     //! [Passing a FunctorHolder]
 
@@ -450,7 +450,7 @@ int main()
     Image image = DGtal::PGMReader<Image>::importPGM(filename);
 
     //! [Using the Binarizer factory]
-    auto binarizer = DGtal::holdFunctor( makeBinarizer(135) );
+    auto binarizer = DGtal::functors::holdFunctor( makeBinarizer(135) );
     DGtal::functors::PointFunctorPredicate<Image, decltype(binarizer)> predicate(image, binarizer);
     //! [Using the Binarizer factory]
 
@@ -470,7 +470,7 @@ int main()
     Image image = DGtal::PGMReader<Image>::importPGM(filename);
 
     //! [Binarizer deduction guide in C++17]
-    auto binarizer = DGtal::holdFunctor( Binarizer(135) ); // Binarizer template parameter is not specified.
+    auto binarizer = DGtal::functors::holdFunctor( Binarizer(135) ); // Binarizer template parameter is not specified.
     DGtal::functors::PointFunctorPredicate<Image, decltype(binarizer)> predicate(image, binarizer);
     //! [Binarizer deduction guide in C++17]
 
@@ -489,7 +489,7 @@ int main()
     Image image = DGtal::PGMReader<Image>::importPGM(filename);
 
     //! [Using the PointFunctorPredicate factory]
-    auto binarizer = DGtal::holdFunctor( makeBinarizer(135) );
+    auto binarizer = DGtal::functors::holdFunctor( makeBinarizer(135) );
     auto predicate = makePointFunctorPredicate_Example( image, binarizer );
     //! [Using the PointFunctorPredicate factory]
 
@@ -506,7 +506,7 @@ int main()
     std::string filename =  examplesPath + "samples/contourS.pgm";
     Image image = DGtal::PGMReader<Image>::importPGM(filename);
 
-    auto binarizer = DGtal::holdFunctor( makeBinarizer(135) );
+    auto binarizer = DGtal::functors::holdFunctor( makeBinarizer(135) );
     auto predicate = makePointFunctorPredicate_Example2( image, binarizer );
 
     Point const pt(50, 25);

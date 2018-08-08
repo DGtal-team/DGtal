@@ -47,6 +47,8 @@
 
 namespace DGtal
 {
+namespace functors
+{
 
 /**
  * @brief Aim: hold any object callable on points as a @ref DGtal::concepts::CPointFunctor model.
@@ -227,6 +229,7 @@ makePointFunctorHolder( TFunctor && aFunctor )
       >{ holdFunctor(std::forward<TFunctor>(aFunctor)) };
   }
 
+} // namespace functors
 } // namespace DGtal
 
 #endif // !defined PointFunctorHolder_h

@@ -22,7 +22,7 @@
  *
  * @date 2018/07/18
  *
- * @brief An example file for @ref DGtal::FunctorConstImage
+ * @brief An example file for @ref DGtal::functors::FunctorConstImage
  *
  * This file is part of the DGtal library.
  */
@@ -56,7 +56,7 @@ int main()
   //! [example1]
   const Domain domain1(Point(1,1), Point(16,16));
 
-  auto image1 = DGtal::makeFunctorConstImage(
+  auto image1 = DGtal::functors::makeFunctorConstImage(
       domain1,
       [] (Point const& pt) { return 25 * ( std::cos( (pt - Point(4,4)).norm() ) + 1 ); }
   );
@@ -70,7 +70,7 @@ int main()
   //! [example2]
   const Domain domain2(Point(-1,1), Point(18,18));
 
-  auto image2 = DGtal::makeFunctorConstImage(
+  auto image2 = DGtal::functors::makeFunctorConstImage(
       domain2,
       [] (Point const& pt, Domain const& d) { // we could also capture the domain
         return 2 * std::min( ( pt - d.lowerBound() ).norm(), ( pt - d.upperBound() ).norm() );
@@ -84,7 +84,7 @@ int main()
 
   // Image that depends on other images
   //! [example3]
-  auto image3 = DGtal::makeFunctorConstImage(
+  auto image3 = DGtal::functors::makeFunctorConstImage(
       domain1,
       [&image1, &image2] (Point const& pt) { return image1(pt) + image2(pt); }
   );

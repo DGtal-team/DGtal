@@ -46,6 +46,8 @@
 
 namespace DGtal
 {
+namespace functors
+{
 
 //////////////////////////////////////////////////////////////////////////////
 // Implementation details
@@ -280,6 +282,7 @@ inline auto holdFunctor(Function && fn)
   return holdFunctorImpl(std::forward<Function>(fn), typename std::is_lvalue_reference<Function>{});
 }
 
+} // namespace functors
 } // namespace DGtal
 
 #endif // !defined FunctorHolder_h

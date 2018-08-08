@@ -127,7 +127,7 @@ TEST_CASE( "2D Image from unary functor by rvalue", "[2D][functor][unary][rvalue
 
   const Domain domain({-10, -15}, {20, 25});
   const double cst = 3.5;
-  auto image = makeFunctorConstImage<double>( domain, UnaryFunctor(cst) ); // Specifying explicitly the returned value type.
+  auto image = functors::makeFunctorConstImage<double>( domain, UnaryFunctor(cst) ); // Specifying explicitly the returned value type.
   checkImage(image, [&cst] (Point pt, Domain d) { return unary_kernel(pt, d, cst); });
 }
 
@@ -140,7 +140,7 @@ TEST_CASE( "2D Image from binary functor by rvalue", "[2D][functor][binary][rval
 
   const Domain domain({-10, -15}, {20, 25});
   const double cst = 3.5;
-  auto image = makeFunctorConstImage( domain, BinaryFunctor(cst) );
+  auto image = functors::makeFunctorConstImage( domain, BinaryFunctor(cst) );
   checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
 }
 
@@ -154,7 +154,7 @@ TEST_CASE( "2D Image from binary functor by lvalue", "[2D][functor][binary][lval
   const Domain domain({-10, -15}, {20, 25});
   const double cst = 3.5;
   const auto fn = BinaryFunctor(cst);
-  auto image = makeFunctorConstImage( domain, fn );
+  auto image = functors::makeFunctorConstImage( domain, fn );
   checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
 }
 
@@ -167,7 +167,7 @@ TEST_CASE( "2D Image from binary lambda by rvalue", "[2D][lambda][binary][rvalue
 
   const Domain domain({-10, -15}, {20, 25});
   const double cst = 3.5;
-  auto image = makeFunctorConstImage( domain, [cst] (Point const& pt, Domain const& d) { return binary_kernel(pt, d, cst); } );
+  auto image = functors::makeFunctorConstImage( domain, [cst] (Point const& pt, Domain const& d) { return binary_kernel(pt, d, cst); } );
   checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
 }
 
@@ -181,6 +181,6 @@ TEST_CASE( "2D Image from binary std::function by lvalue", "[2D][function][binar
   const Domain domain({-10, -15}, {20, 25});
   const double cst = 3.5;
   std::function<double(Point, Domain)> fn = [cst] (Point const& pt, Domain const& d) { return binary_kernel(pt, d, cst); };
-  auto image = makeFunctorConstImage( domain, fn );
+  auto image = functors::makeFunctorConstImage( domain, fn );
   checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
 }
