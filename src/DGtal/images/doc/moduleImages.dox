@@ -530,10 +530,10 @@ You will obtain such a result (with also the result on 3D images):
 
 If you need to define an image as the result of a callable object (function,
 functor or lambda) and you don't want to precalculate it or to store it, you
-should consider using the @ref FunctorConstImage class.
+should consider using the @ref functors::FunctorConstImage class.
 
 An instance of this class must be constructed through the associated helper
-@ref makeFunctorConstImage and you can use any callable object that
+@ref functors::makeFunctorConstImage and you can use any callable object that
 accepts a point alone or a point and a domain (in order to have a domain
 dependent image definition).
 

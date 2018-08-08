@@ -61,7 +61,7 @@ TEST_CASE( "2D PointFunctorHolder from functor by rvalue", "[2D][functor][rvalue
   using Point = PointVector<2, int>;
   using Value = double;
 
-  auto fn = makePointFunctorHolder<Point, Value>( Functor<Value, Point>( Point(1, 0), 1 ) );
+  auto fn = functors::makePointFunctorHolder<Point, Value>( Functor<Value, Point>( Point(1, 0), 1 ) );
 
   // Checks CPointFunctor concept.
   BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
@@ -81,7 +81,7 @@ TEST_CASE( "2D PointFunctorHolder from functor by lvalue", "[2D][functor][lvalue
   using Value = double;
 
   const auto functor = Functor<Value, Point>( Point(1, 0), 1 );
-  auto fn = makePointFunctorHolder<Point>( functor ); // auto deduction of the return type
+  auto fn = functors::makePointFunctorHolder<Point>( functor ); // auto deduction of the return type
 
   // Checks CPointFunctor concept.
   BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
@@ -103,7 +103,7 @@ TEST_CASE( "2D PointFunctorHolder from lambda by rvalue", "[2D][lambda][rvalue]"
   const Point center(1, 0);
   const Value radius = 1;
 
-  auto fn = makePointFunctorHolder<Point, Value>(
+  auto fn = functors::makePointFunctorHolder<Point, Value>(
     [&center, &radius] (Point const& pt) { return kernel<Value>(pt, center, radius); }
   );
 
@@ -128,7 +128,7 @@ TEST_CASE( "2D PointFunctorHolder from lambda by lvalue", "[2D][lambda][lvalue]"
   const Value radius = 1;
 
   const auto lambda = [&center, &radius] (Point const& pt) { return kernel<Value>(pt, center, radius); };
-  auto fn = makePointFunctorHolder<Point, Value>( lambda );
+  auto fn = functors::makePointFunctorHolder<Point, Value>( lambda );
 
   // Checks CPointFunctor concept.
   BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
