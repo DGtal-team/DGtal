@@ -99,9 +99,10 @@ struct EigenLinearAlgebraBackend
     typedef Eigen::VectorXd DenseVector;
     typedef Eigen::MatrixXd DenseMatrix;
     typedef Eigen::VectorXi IntegerVector;
+    typedef Eigen::Vector3d Vector3;
 
     typedef Eigen::Triplet<double> Triplet;
-    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor, DenseVector::Index> SparseMatrix;
+    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor, long int> SparseMatrix;
 
     typedef Eigen::SimplicialLLT<SparseMatrix> SolverSimplicialLLT;
     typedef Eigen::SimplicialLDLT<SparseMatrix> SolverSimplicialLDLT;
@@ -109,6 +110,9 @@ struct EigenLinearAlgebraBackend
     typedef Eigen::BiCGSTAB<SparseMatrix> SolverBiCGSTAB;
     typedef Eigen::SparseLU<SparseMatrix> SolverSparseLU;
     typedef Eigen::SparseQR<SparseMatrix, Eigen::COLAMDOrdering<SparseMatrix::Index> > SolverSparseQR;
+
+    //JacobiSVD declaration
+    typedef Eigen::JacobiSVD<DenseMatrix> JacobiSVD;
 };
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -56,6 +56,7 @@
 #include "DGtal/dec/VectorField.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/topology/CanonicCellEmbedder.h"
 
 #include <DGtal/kernel/sets/CDigitalSet.h>
 #include <DGtal/math/linalg/CDynamicMatrix.h>
@@ -411,6 +412,18 @@ namespace DGtal
     template <Duality duality>
     LinearOperator<Self, 0, duality, 0, duality>
     heatLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& t, const typename DenseVector::Scalar& K) const;
+
+    /**
+     * Local Laplace operator based on the paper of Alexa and Wardetzky. This operator works only for 2D surfaces.
+     * @param h the grid step
+     * @param lambda regularity parameter for the algorithm. It penalizes deviation from planarity
+     * @param point_mapper a map from digital points to regularized point
+     * @param weak if true, the weak laplace operator is returned
+     * @return Heat Laplace operator.
+     */
+    template <Duality duality, typename TPointMapper>
+    LinearOperator<Self, 0, duality, 0, duality>
+    quadLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& lambda, const TPointMapper& point_mapper, const bool& weak) const;
 
     /**
      * Hodge operator from duality _order_-form to opposite duality _(dimEmbedded-order)_-forms.

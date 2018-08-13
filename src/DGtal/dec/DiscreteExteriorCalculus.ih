@@ -271,6 +271,145 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Duality duality, typename TPointMapper>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::quadLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& lambda,
+  const TPointMapper& point_mapper, const bool& weak) const
+{
+  ASSERT_MSG( dimEmbedded != 2, "the algorithm works only for 2D surfaces" );
+
+  typedef typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger> Calculus;
+  typedef typename TLinearAlgebraBackend::Triplet Triplet;
+  typedef typename TLinearAlgebraBackend::DenseMatrix DenseMatrix;
+  typedef typename TLinearAlgebraBackend::SparseMatrix SparseMatrix;
+  typedef typename TLinearAlgebraBackend::Vector3 Vector3;
+  typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
+  typedef std::vector<Triplet> Triplets;
+  typedef typename KSpace::SCell SCell;
+  typedef typename KSpace::Cell Cell;
+  typedef typename DGtal::CanonicSCellEmbedder<KSpace>::RealPoint RealPoint;
+
+  typedef typename TLinearAlgebraBackend::JacobiSVD JacobiSVD;
+
+  DGtal::CanonicSCellEmbedder<KSpace> canonicSCellEmbedder(myKSpace);
+  DGtal::CanonicCellEmbedder<KSpace> canonicCellEmbedder(myKSpace);
+
+  Triplets triplets_M0, triplets_d, triplets_M1;
+  DenseVector M0_vector = DenseVector::Zero( kFormLength( 0, duality ) );
+
+  int current_halfedge_index = 0;
+  //Iteration through each quad of the surface
+  for( Index face_index = 0; face_index < kFormLength( 2, duality ); ++face_index )
+  {
+    const SCell face = myIndexSignedCells[ actualOrder( 2, duality ) ][ face_index ];
+    const auto face_sign = myKSpace.sSign( face );
+
+    // Constructing associated quad vertices
+    std::set<Cell> pointels;
+    for( const auto& l : myKSpace.uLowerIncident( myKSpace.unsigns( face ) ) )
+      for( const auto& p : myKSpace.uLowerIncident( l ) )
+        pointels.insert( p );
+    ASSERT( pointels.size() == 4 );
+
+    // Clockwise ordered table of point -> index (the order on pointels is the canonical lexical order on Z)
+    std::pair<RealPoint, int> ordered_point[4];
+    RealPoint centroid( 0, 0, 0 );
+    int pos = 0;
+    for( auto const& p : pointels )
+    {
+      const typename Properties::const_iterator   iter_property = myCellProperties.find( p );
+      const typename TPointMapper::const_iterator iter_point    = point_mapper.find( canonicCellEmbedder( p ) );
+      ASSERT( iter_property != myCellProperties.end() && iter_point != point_mapper.end() );
+
+      ordered_point[pos++] = std::make_pair( h * iter_point->second, iter_property->second.index );
+      centroid += h * iter_point->second / 4.;
+    }
+    std::swap( ordered_point[2], ordered_point[3] );
+
+    // Local coordinates system (the origin corresponds to the centroid of the projected quad)
+    for( int i = 0; i < 4; ++i )
+      ordered_point[i].first -= centroid;
+
+    // Actual algorithm (see paper)
+    DenseMatrix E( 4, 3 ), B( 4, 3 );
+    for( int i = 0; i < 4; i++ )
+    {
+      const int next = ( i + 1 ) % 4;
+      const RealPoint current_point = ordered_point[ i    ].first;
+      const RealPoint next_point    = ordered_point[ next ].first;
+
+      for( int dim = 0; dim < 3; ++dim )
+      {
+        E( i, dim ) = next_point[ dim ] - current_point[ dim ];
+        B( i, dim ) = 0.5 * ( next_point[ dim ] + current_point[ dim ] );
+      }
+    }
+
+    const DenseMatrix A = E.transpose() * B;
+    const typename DenseMatrix::Scalar area = A.norm() / sqrt( 2 );
+
+    //Filling M0
+    for( int i = 0; i < 4; ++i )
+      M0_vector( ordered_point[i].second ) += area / 4.;
+
+    //Filling d
+    for( int i = 0; i < 4; ++i )
+    {
+      triplets_d.push_back( Triplet( current_halfedge_index + i, ordered_point[i].second            , ( face_sign == KSpace::POS ) ? -1 :  1 ) );
+      triplets_d.push_back( Triplet( current_halfedge_index + i, ordered_point[ (i + 1) % 4 ].second, ( face_sign == KSpace::POS ) ?  1 : -1 ) );
+    }
+
+    //Filling M1
+    const Vector3 n = Vector3( - A( 1, 2 ), A( 0, 2 ), - A( 0, 1 ) ).normalized();
+    DenseMatrix nn( 4, 3 );
+    for( int i = 0; i < 4; ++i )
+    {
+      const RealPoint p = ordered_point[i].first;
+      const float dot_value = p[0] * n(0) + p[1] * n(1) + p[2] * n(2);
+      for( int dim = 0; dim < 3; ++dim )
+        nn( i, dim ) = p[dim] - dot_value * n( dim );
+    }
+
+    DenseMatrix EE( 4, 3 );
+    for( int i = 0; i < 4; ++i )
+    {
+      const int next = ( i + 1 ) % 4;
+      for( int dim = 0; dim < 3; ++dim )
+        EE( i, dim ) = nn( next, dim ) - nn( i , dim );
+    }
+
+    //We need all the decomposition for the algorithm (0x04 and 0x10 parameters)
+    JacobiSVD svd( EE.transpose(), 0x04 | 0x10 );
+    svd.setThreshold( 1e-6 );
+    const int kernel_dimension = EE.transpose().cols() - svd.rank();
+    DenseMatrix C = svd.matrixV().block( 0, EE.transpose().cols() - kernel_dimension, 4, kernel_dimension );
+    ASSERT( C.cols() == 2 && C.rows() == 4 );
+    DenseMatrix Mf = ( 1. / area ) * B * B.transpose() + lambda * C * C.transpose();
+
+    for( int i = 0; i < 4; ++i )
+    for( int j = 0; j < 4; ++j )
+    if( Mf( i, j ) != 0 )
+      triplets_M1.push_back( Triplet( current_halfedge_index + i, current_halfedge_index + j, Mf( i, j ) ) );
+
+    current_halfedge_index += 4;
+  }
+
+  for( int i = 0; i < M0_vector.size(); ++i ) M0_vector( i ) = 1. / M0_vector( i );
+  SparseMatrix d ( current_halfedge_index + 1 , kFormLength( 0, PRIMAL )   );
+  SparseMatrix M1( current_halfedge_index + 1 , current_halfedge_index + 1 );
+
+  d.setFromTriplets ( triplets_d.begin() , triplets_d.end()  );
+  M1.setFromTriplets( triplets_M1.begin(), triplets_M1.end() );
+
+  typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
+  Operator laplace(*this);
+  laplace.myContainer = (-1) * d.transpose() * M1 * d;
+  if( ! weak ) laplace.myContainer = M0_vector.asDiagonal() * laplace.myContainer;
+
+  return laplace;
+}
+
+template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order-1, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::antiderivative() const
