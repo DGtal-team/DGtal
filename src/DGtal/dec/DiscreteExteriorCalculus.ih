@@ -273,20 +273,16 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality, typename TPointMapper>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::quadLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& lambda,
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::quadLaplace(const Scalar& h, const Scalar& lambda,
   const TPointMapper& point_mapper, const bool& weak) const
 {
   ASSERT_MSG( dimEmbedded != 2, "the algorithm works only for 2D surfaces" );
 
   typedef typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger> Calculus;
   typedef typename TLinearAlgebraBackend::Triplet Triplet;
-  typedef typename TLinearAlgebraBackend::DenseMatrix DenseMatrix;
-  typedef typename TLinearAlgebraBackend::SparseMatrix SparseMatrix;
   typedef typename TLinearAlgebraBackend::Vector3 Vector3;
   typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
   typedef std::vector<Triplet> Triplets;
-  typedef typename KSpace::SCell SCell;
-  typedef typename KSpace::Cell Cell;
   typedef typename DGtal::CanonicSCellEmbedder<KSpace>::RealPoint RealPoint;
 
   typedef typename TLinearAlgebraBackend::JacobiSVD JacobiSVD;
@@ -346,7 +342,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     }
 
     const DenseMatrix A = E.transpose() * B;
-    const typename DenseMatrix::Scalar area = A.norm() / sqrt( 2 );
+    const Scalar area = A.norm() / sqrt( 2 );
 
     //Filling M0
     for( int i = 0; i < 4; ++i )
