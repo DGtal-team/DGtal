@@ -398,11 +398,11 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
   M1.setFromTriplets( triplets_M1.begin(), triplets_M1.end() );
 
   typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
-  Operator laplace(*this);
-  laplace.myContainer = (-1) * d.transpose() * M1 * d;
-  if( ! weak ) laplace.myContainer = M0_vector.asDiagonal() * laplace.myContainer;
+  Operator _operator(*this);
+  _operator.myContainer = (-1) * d.transpose() * M1 * d;
+  if( ! weak ) _operator.myContainer = M0_vector.asDiagonal() * _operator.myContainer;
 
-  return laplace;
+  return _operator;
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
