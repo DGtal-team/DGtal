@@ -47,6 +47,7 @@
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/kernel/domains/CDomain.h>
 #include <DGtal/kernel/CSpace.h>
+#include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -64,16 +65,17 @@ namespace functors
      *
      * @see exampleRigidtransformation2d.cpp
      */
-template <typename TSpace>
-class ForwardRigidTransformation2D
+template <typename TSpace, typename TFunctor, typename TInputValue, typename TOutputValue >
+class ForwardRigidTransformation2D : std::unary_function <TInputValue, TOutputValue>
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TOutputValue::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TInputValue::dimension == 2 ));
 
     // ----------------------- Types ------------------------------
 public:
-    typedef typename TSpace::Point Point;
     typedef typename TSpace::RealPoint RealPoint;
     typedef typename TSpace::RealVector RealVector;
 
@@ -98,15 +100,15 @@ public:
        * @return the transformed point.
        */
     inline
-    Point operator()( const Point& aInput ) const
+    TOutputValue operator()( const TInputValue & aInput ) const
     {
-        Point p;
-        p[0] = std::floor ( ( ( t_cos * ( aInput[0] - origin[0] ) -
-               t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + origin[0] + 0.5 );
+        RealPoint p;
+        p[0] = ( ( t_cos * ( aInput[0] - origin[0] ) -
+               t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + origin[0];
 
-        p[1] = std::floor ( ( ( t_sin * ( aInput[0] - origin[0] ) +
-               t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + origin[1] + 0.5 );
-        return p;
+        p[1] = ( ( t_sin * ( aInput[0] - origin[0] ) +
+               t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + origin[1];
+        return functor ( p );
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -115,6 +117,7 @@ protected:
     double t_sin;
     double t_cos;
     RealVector translation;
+    TFunctor functor;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -128,16 +131,17 @@ protected:
      *
      * @see exampleRigidtransformation2d.cpp
      */
-template <typename TSpace>
-class BackwardRigidTransformation2D
+template <typename TSpace, typename TFunctor, typename TInputValue, typename TOutputValue >
+class BackwardRigidTransformation2D : std::unary_function <TInputValue, TOutputValue>
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TOutputValue::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TInputValue::dimension == 2 ));
 
     // ----------------------- Types ------------------------------
 public:
-    typedef typename TSpace::Point Point;
     typedef typename TSpace::RealPoint RealPoint;
     typedef typename TSpace::RealVector RealVector;
 
@@ -162,15 +166,15 @@ public:
        * @return transformed point.
        */
     inline
-    Point operator()( const Point& aInput ) const
+    TOutputValue operator()( const TInputValue & aInput ) const
     {
-        Point p;
-        p[0] = std::floor ( ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
-               t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + origin[0] + 0.5 );
+        RealPoint p;
+        p[0] = ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
+               t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + origin[0];
 
-        p[1] = std::floor ( ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) +
-               t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + origin[1] + 0.5 );
-        return p;
+        p[1] = ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) +
+               t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + origin[1];
+        return functor ( p);
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -179,6 +183,7 @@ protected:
     double t_sin;
     double t_cos;
     RealVector translation;
+    TFunctor functor;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -193,7 +198,8 @@ protected:
      * @see exampleRigidtransformation2d.cpp
      */
 template <typename TDomain, typename TRigidTransformFunctor >
-class DomainRigidTransformation2D
+class DomainRigidTransformation2D :
+        std::unary_function < std::pair < typename TDomain::Point, typename TDomain::Point >, TDomain>
 {
     ///Checking concepts
     BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
