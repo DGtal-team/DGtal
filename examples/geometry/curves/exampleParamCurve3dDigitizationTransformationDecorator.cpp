@@ -34,9 +34,9 @@
 #include "ConfigExamples.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 
-#include "DGtal/curves/parametric/EllipticHelix.h"
-#include "DGtal/curves/UglyNaiveParametricCurveDigitizer3D.h"
-#include "DGtal/curves/parametric/DecoratorParametricCurveTransformation.h"
+#include "DGtal/geometry/curves/parametric/EllipticHelix.h"
+#include "DGtal/geometry/curves/parametric/UglyNaiveParametricCurveDigitizer3D.h"
+#include "DGtal/geometry/curves/parametric/DecoratorParametricCurveTransformation.h"
 #include "DGtal/images/RigidTransformation3D.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
@@ -71,8 +71,8 @@ unsigned char findMainAxis ( const T & curve, const long double & t )
 int main( int argc, char** argv )
 {
  QApplication application(argc,argv);
- typedef EllipticHelix < Z3i::Space > MyHelix;
- typedef ForwardRigidTransformation3D < Z3i::Space, Identity, Z3i::RealPoint, Z3i::Space::RealPoint > ForwardTrans;
+ typedef EllipticHelix < Space > MyHelix;
+ typedef ForwardRigidTransformation3D < Space, Identity, RealPoint, RealPoint > ForwardTrans;
  typedef DecoratorParametricCurveTransformation < MyHelix, ForwardTrans > MyRotatedCurve;
  typedef UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >  Digitizer;
  typedef typename UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >::DigitalCurve MyDigitalCurve;
@@ -94,7 +94,7 @@ int main( int argc, char** argv )
  Digitizer digitize;
  digitize.attach ( &rotCurve );
  digitize.init ( 0, MyHelix::getPeriod() * 10., 0.0001 );
- digitize.digitize( std::back_insert_iterator < MyDigitalCurve> ( digitalCurve ), std::back_insert_iterator < MyMetaData > ( metaData ) );
+ digitize.digitize( back_insert_iterator < MyDigitalCurve> ( digitalCurve ), back_insert_iterator < MyMetaData > ( metaData ) );
 
  trace.info() << "Number of points: " << digitalCurve.size () << " number of metadata: " << metaData.size () << endl;
 
