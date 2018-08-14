@@ -20,6 +20,8 @@
     [#1324](https://github.com/DGtal-team/DGtal/pull/1324))
   - Add assignment operator to ImageContainerByITKImage (Pablo Hernandez,
     [#1336](https://github.com/DGtal-team/DGtal/pull/1336))
+  - Fix compilation warning: const qualifier ignored in cast (Pablo Hernandez,
+    [#1337](https://github.com/DGtal-team/DGtal/pull/1337))
 
 - *IO*
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
