@@ -47,7 +47,7 @@ template < typename T>
 inline
 typename DGtal::Knot_3_1<T>::RealPoint DGtal::Knot_3_1<T>::x ( const long double t ) const
 {
-    return DRealPoint ( scale[0] * (std::pow ( t, 3 ) - 3. * t),  scale[1] * ( std::pow ( t , 4 ) - 4. * t * t ),
+    return RealPoint ( scale[0] * (std::pow ( t, 3 ) - 3. * t),  scale[1] * ( std::pow ( t , 4 ) - 4. * t * t ),
                         scale[2] * ( 1. / 5. * std::pow ( t, 5 ) - 2. * t ) );
 }
 
