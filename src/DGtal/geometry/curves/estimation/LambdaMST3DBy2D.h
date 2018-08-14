@@ -93,17 +93,19 @@ namespace DGtal {
      * @return A and B
      */
     RealVector3D eval ( const Point3D & point );
-    
+
     /**
-     * @param result output iterator on the estimated quantity
-     * @todo find better algorithm
-     *
-     * @return the estimated quantity
-     * from itb till ite (excluded)
+     * @tparam OutputIterator writable iterator.
+     * A way to compute tangent for points in a range. NOTE: In contrary to LambdaMST3D::eval() this method
+     * is NOT faster than calling eval (const Point &) for each points in a range. In fact, eval ( const Point & )
+     * is internally called.
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param result writable iterator over a container which stores estimated tangent directions.
      */
-    template < typename Containter >
-    void eval ( std::back_insert_iterator < Containter > result );
-    
+    template <typename OutputIterator>
+    OutputIterator eval ( Iterator3D itb, Iterator3D ite, OutputIterator result );
+
     // ------------------------- Internals ------------------------------------
   protected:
     
