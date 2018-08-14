@@ -24,12 +24,92 @@
  * This file is part of the DGtal library.
  */
 
+namespace DGtal{
+TangentFromDSS3DBy2DFunctor::Vector3D TangentFromDSS3DBy2DFunctor::operator() ( TangentFromDSS3DBy2DFunctor::MAIN_AXIS mainAxis, const TangentFromDSS3DBy2DFunctor::Vector2D & v0, const TangentFromDSS3DBy2DFunctor::Vector2D & v1 ) const
+{
+  TangentFromDSS3DBy2DFunctor::Vector3D tangent;
+  if ( mainAxis == X )
+  {
+    if ( v1[0] == 0 || ( v0[1] == 0 && v1[1] == 0 ) )
+    {
+      tangent[0] = v0[1];
+      tangent[1] = v0[0];
+      tangent[2] = v1[0];
+    }
+    else
+    {
+      if ( v0[0] == 0 )
+      {
+        tangent[0] = v1[1];
+        tangent[1] = 0;
+        tangent[2] = v1[0];
+      }
+      else
+      {
+        tangent[0] = v1[1] * v0[1];
+        tangent[1] = v1[1] * v0[0];
+        tangent[2] = v0[1] * v1[0];
+      }
+    }
+  }
+  else if ( mainAxis == Y )
+  {
+    if ( v0[1] == 0 || ( v1[1] == 0 && v0[0] == 0 ) )
+    {
+      tangent[0] = v0[1];
+      tangent[1] = v1[1];
+      tangent[2] = v1[0];
+    }
+    else
+    {
+      if ( v1[0] == 0 )
+      {
+        tangent[0] = v0[1];
+        tangent[1] = v0[0];
+        tangent[2] = 0;
+      }
+      else
+      {
+        tangent[0] = v1[1] * v0[1];
+        tangent[1] = v1[1] * v0[0];
+        tangent[2] = v0[0] * v1[0];
+      }
+    }
+  }
+  else
+  {
+    if ( v0[1] == 0 || ( v0[0] == 0 && v1[0] == 0 ) )
+    {
+      tangent[0] = v0[1];
+      tangent[1] = v1[1];
+      tangent[2] = v1[0];
+    }
+    else
+    {
+      if ( v1[1] == 0 )
+      {
+        tangent[0] = v0[1];
+        tangent[1] = 0;
+        tangent[2]= v0[0];
+      }
+      else
+      {
+        tangent[0] = v0[1] * v1[0];
+        tangent[1] = v1[1] * v0[0];
+        tangent[2] = v0[0] * v1[0];
+      }
+    }
+  }
+  return tangent;
+}
+
+
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
 inline
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::LambdaMST3DBy2DEstimator() : myBegin(), myEnd()
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::LambdaMST3DBy2DEstimator() : myBegin(), myEnd()
 {
   //projections
-  std::vector<DGtal::Dimension> v1,v2,v3;
+  std::vector<Dimension> v1,v2,v3;
   v1.push_back(0);
   v1.push_back(1);
   v2.push_back(0);
@@ -44,7 +124,7 @@ DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVIT
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
 inline
 void
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::init 
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::init
 ( const Iterator3D & itB, const Iterator3D & itE )
 {
   myBegin = itB;
@@ -54,16 +134,16 @@ DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVIT
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
 inline
 bool
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::isValid() const
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::isValid() const
 {
   return ( myBegin != myEnd );
 }
 
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
 inline
-typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector3D
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval
-( const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point3D & point )
+typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector3D
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval
+( const typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point3D & point )
 {
   assert ( isValid() );
   Iterator3D it = std::find ( myBegin, myEnd, point );
@@ -80,23 +160,24 @@ DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVIT
 }
 
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
-template < typename Containter >
+template < typename OutputIterator >
 inline
-void
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval
-( std::back_insert_iterator < Containter > result )
+OutputIterator
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval ( Iterator3D itb, Iterator3D ite,
+                                                                                     OutputIterator result )
 {
-  assert ( isValid() );
-  for( Iterator3D it = myBegin; it != myEnd; ++it )
-    result = eval ( *it );
+  assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
+  for ( Iterator3D it = itb; it != ite; ++it )
+    *result++ = eval ( *it );
+  return result;
 }
 
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
 void 
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::ExtendFront
-( DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXY,
-  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXZ,
-  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveYZ,
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::ExtendFront
+( LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXY,
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXZ,
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveYZ,
   const Iterator3D & it )
 {
   Iterator3D front = it;
@@ -137,10 +218,10 @@ DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVIT
 
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
 void 
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::ExtendBack
-( DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXY,
-  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXZ,
-  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveYZ,
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::ExtendBack
+( LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXY,
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveXZ,
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curveYZ,
   const Iterator3D & it )
 {
   Iterator3D back = it; ++back;
@@ -181,12 +262,12 @@ DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVIT
 
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
 inline
-typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::MAIN_AXIS
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::detectMainAxis
-( const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & tXY,
-  const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & tXZ,
-  const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & tYZ,
-  const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point3D & point )
+typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::MAIN_AXIS
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::detectMainAxis
+( const typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & tXY,
+  const typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & tXZ,
+  const typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & tYZ,
+  const typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point3D & point )
 {
   unsigned int rankXY = CurveRank ( tXY, myProjXY ( point ) );
   unsigned int rankXZ = CurveRank ( tXZ, myProjXZ ( point ) );
@@ -202,28 +283,31 @@ DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVIT
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
 inline
 unsigned int
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::CurveRank
-( const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curve,
-  const typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point2D & point )
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::CurveRank
+( const typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curve,
+  const typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point2D & point )
 {
   unsigned int rank = 0;
   Segmentation2D segmenter ( curve.begin(), curve.end(), SegmentComputer2D() );
   for ( typename Segmentation2D::SegmentComputerIterator it = segmenter.begin(); it != segmenter.end(); ++it )
+  {
     if ( it->isInDSS ( point ) )
       rank += std::distance ( it->begin(), it->end() );
+  }
     return rank;
 }
 
 template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
 inline
-typename DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector2D
-DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Estimate2DTangent 
-( const DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curve,
-  const DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point2D & point )
+typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector2D
+LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Estimate2DTangent
+( const LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TCurve2D & curve,
+  const LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Point2D & point )
 {
-  typedef DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Segmentation2D Segmentation2D;
+  typedef LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Segmentation2D Segmentation2D;
   Segmentation2D segmenter ( curve.begin(), curve.end(), SegmentComputer2D() );
-  DGtal::LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TEstimator lmst;
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TEstimator lmst;
   lmst.attach ( segmenter );
   return lmst.eval ( point );
+}
 }

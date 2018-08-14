@@ -2,6 +2,7 @@ SET(DGTAL_EXAMPLES_SRC
   exampleCurvature
   exampleLMST2D
   exampleLMST3D
+  exampleLMST3DBy2D
 )
 
 
