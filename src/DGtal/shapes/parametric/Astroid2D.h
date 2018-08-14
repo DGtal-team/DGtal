@@ -64,7 +64,7 @@ namespace DGtal
   public:
 
     typedef TSpace Space;
-    typedef typename Space::Point Point;
+    typedef typename Space::Point Point2D;
     typedef typename Space::RealPoint RealPoint2D;
     typedef typename Space::RealVector RealVector2D;
 
@@ -75,8 +75,8 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param x0 the x-coordinate of the circle center.
-     * @param y0 the y-coordinate of the circle center.
+     * @param x0 the x-coordinate of the astroid center.
+     * @param y0 the y-coordinate of the astroid center.
      * @param a  coefficient along x-axis
      * @param b  coefficient along y-axis
      */

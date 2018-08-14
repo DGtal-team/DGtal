@@ -64,7 +64,7 @@ namespace DGtal
   public:
 
     typedef TSpace Space;
-    typedef typename Space::Point Point;
+    typedef typename Space::Point Point2D;
     typedef typename Space::RealPoint RealPoint2D;
     typedef typename Space::RealVector RealVector2D;
 
@@ -75,8 +75,8 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param x0 the x-coordinate of the circle center.
-     * @param y0 the y-coordinate of the circle center.
+     * @param x0 the x-coordinate of the lemniscate center.
+     * @param y0 the y-coordinate of the lemniscate center.
      * @param a  coefficient along x-axis
      * @param b  coefficient along y-axis
      */
@@ -231,14 +231,14 @@ namespace DGtal
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'Lemniscate'.
+   * Overloads 'operator<<' for displaying objects of class 'Lemniscate2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Lemniscate' to write.
+   * @param object the object of class 'Lemniscate2D' to write.
    * @return the output stream after the writing.
    */
    template <typename T>
    std::ostream&
-   operator<< ( std::ostream & out, const Lemniscate<T> & object );
+   operator<< ( std::ostream & out, const Lemniscate2D<T> & object );
 
 } // namespace DGtal
 
