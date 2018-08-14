@@ -59,7 +59,7 @@ template < typename TSpace, typename TSegmentation, typename Functor >
 inline
 typename DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::RealVector
 DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval 
-( const typename DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::ConstIterator & it )
+( const typename DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::Point & p )
 {
   assert ( isValid() );
   typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
@@ -68,11 +68,11 @@ DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval
   
   for ( ; DSS != lastDSS; ++DSS )
   {
-    if ( DSS->isInDSS ( *it ) )
+    if ( DSS->isInDSS ( p ) )
     {
       auto dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
       prev = partial;
-      auto pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), *it ) ) + 1;
+      auto pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), p ) ) + 1;
       SegmentComputer comp ( *DSS );
       partial = myFunctor ( comp, pos, dssLen );
       if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
