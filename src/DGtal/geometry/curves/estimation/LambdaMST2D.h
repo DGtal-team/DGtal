@@ -58,9 +58,9 @@ namespace DGtal {
   {
     //Checking concepts
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS<Functor> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS < Functor > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer < typename TSegmentation::SegmentComputer > ));
     // ----------------------- Types ------------------------------
   public:
     /// Tangential cover algorithm
@@ -79,14 +79,14 @@ namespace DGtal {
     // ----------------------- Interface --------------------------------------
   public:
     //! Default constructor.
-    LambdaMST2DEstimator();
+    LambdaMST2DEstimator ( );
     
     /**
      * Initialization.
      * @param itb begin iterator
      * @param ite end iterator
      */
-    void init ( const ConstIterator & itb, const ConstIterator & ite );
+    void init ( ConstIterator itb, ConstIterator ite );
     
     /**
      * Attach tangential cover computer.
@@ -108,8 +108,7 @@ namespace DGtal {
      * @param result writable iterator over a container which stores estimated tangent directions.
      */
     template <typename OutputIterator>
-    OutputIterator eval ( const ConstIterator & itb, const ConstIterator & ite, 
-                         OutputIterator result );
+    OutputIterator eval ( ConstIterator itb, ConstIterator ite, OutputIterator result );
     
     // ----------------------- Standard services ------------------------------
   public:
@@ -118,7 +117,7 @@ namespace DGtal {
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    bool isValid ( ) const;
     // ------------------------- Internals ------------------------------------
   protected:
     

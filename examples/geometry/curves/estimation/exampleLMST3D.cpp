@@ -101,7 +101,7 @@ int main()
     lmst.eval < std::back_insert_iterator< std::vector < RealVector > > > ( contour.begin(), contour.end(), std::back_insert_iterator< vector < RealVector > > ( tangent ) );
   //! [LambdaMST3DFast]
   
-  return 1;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
