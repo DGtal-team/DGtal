@@ -47,6 +47,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 //! [include]
 #include "DGtal/images/RigidTransformation3D.h"
 //! [include]
@@ -63,8 +64,8 @@ int main( int , char** )
 {
   typedef ImageSelector<Domain, unsigned char >::Type Image;
   //! [def]
-  typedef ForwardRigidTransformation3D < Space > ForwardTrans;
-  typedef BackwardRigidTransformation3D < Space > BackwardTrans;
+  typedef ForwardRigidTransformation3D < Space, VectorRounding < RealPoint, Point>, RealPoint, Point > ForwardTrans;
+  typedef BackwardRigidTransformation3D < Space, VectorRounding < RealPoint, Point>, RealPoint, Point > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation3D < Domain, ForwardTrans > MyTransformedDomain;
   typedef MyTransformedDomain::Bounds Bounds;
