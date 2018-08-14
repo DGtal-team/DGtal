@@ -42,8 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/curves/parametric/C3DParametricCurve.h"
-#include "DGtal/curves/ParametricCurveDigitizer3D.h"
+#include "DGtal/geometry/curves/parametric/C3DParametricCurve.h"
 #include <functional>
 //////////////////////////////////////////////////////////////////////////////
 
