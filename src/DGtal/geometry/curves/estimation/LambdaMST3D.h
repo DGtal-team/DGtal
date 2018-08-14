@@ -103,10 +103,10 @@ namespace DGtal {
     bool isValid() const;
     
     /**
-     * @param it ConstIterator defined over the underlying curve
+     * @param p a point of the underlying curve
      * @return tangent direction
      */
-    RealVector eval ( const ConstIterator & it );
+    RealVector eval ( const Point & p );
     
     /**
      * @tparam OutputIterator writable iterator.

@@ -91,7 +91,7 @@ int main()
   
   //! [LambdaMST2DPoint]
   for ( ConstIterator it = contour.begin(); it != contour.end(); ++it )
-    lmst.eval ( it );
+    lmst.eval ( *it );
   //! [LambdaMST2DPoint]
   
   //! [LambdaMST2DFast]

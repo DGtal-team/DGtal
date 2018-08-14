@@ -56,7 +56,7 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::isValid () const
 template < typename TSpace, typename TSegmentation, typename Functor >
 inline
 typename TSpace::RealVector
-DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval( const typename DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::ConstIterator & it )
+DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval( const typename DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::Point & p )
 {
   assert ( dssSegments != 0 );
   typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
@@ -64,9 +64,9 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval( const typen
   Value tangent, partial;
   for ( ; DSS != lastDSS; ++DSS )
   {
-    if ( DSS->isInDSS ( *it ) )
+    if ( DSS->isInDSS ( p ) )
     {
-      unsigned int pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), *it ) );
+      unsigned int pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), p ) );
       unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() );
       SegmentComputer comp ( *DSS );
       partial = myFunctor ( comp, pos, dssLen );
