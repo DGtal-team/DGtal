@@ -35,8 +35,8 @@
 #include "ConfigExamples.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 
-#include "DGtal/curves/parametric/Knot_5_2.h"
-#include "DGtal/curves/UglyNaiveParametricCurveDigitizer3D.h"
+#include "DGtal/geometry/curves/parametric/Knot_5_2.h"
+#include "DGtal/geometry/curves/parametric/UglyNaiveParametricCurveDigitizer3D.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -70,7 +70,7 @@ unsigned char findMainAxis ( const T & curve, const long double & t )
 int main( int argc, char** argv )
 {
  QApplication application(argc,argv);
- typedef Knot_5_2< Z3i::Space > MyKnot;
+ typedef Knot_5_2< Space > MyKnot;
  typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
  typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
  typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
@@ -85,7 +85,7 @@ int main( int argc, char** argv )
  Digitizer digitize;
  digitize.attach ( &knot );
  digitize.init ( 0, MyKnot::getPeriod(), 0.0001 );
- digitize.digitize( std::back_insert_iterator < MyDigitalCurve> ( digitalCurve ), std::back_insert_iterator < MyMetaData > ( metaData ) );
+ digitize.digitize( back_insert_iterator < MyDigitalCurve> ( digitalCurve ), back_insert_iterator < MyMetaData > ( metaData ) );
 
  trace.info() << "Number of points: " << digitalCurve.size () << " number of metadata: " << metaData.size () << endl;
 
