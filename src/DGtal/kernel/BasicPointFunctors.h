@@ -766,7 +766,7 @@ namespace functors
      {
          TVector out;
          for ( unsigned int i = 0; i < TVector::dimension; i++ )
-             out.at ( i ) = std::round ( point.at ( i ) );
+             out[i] = std::round ( point[i] );
          return out;
      }
  };
