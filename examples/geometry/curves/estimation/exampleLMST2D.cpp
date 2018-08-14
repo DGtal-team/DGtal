@@ -100,7 +100,7 @@ int main()
   lmst.eval < back_insert_iterator< vector < RealVector > > > ( contour.begin(), contour.end(),  back_inserter ( tangent ) );
   //! [LambdaMST2DFast]
   
-  return 1;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
