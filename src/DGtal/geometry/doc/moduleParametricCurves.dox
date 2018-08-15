@@ -21,16 +21,39 @@ namespace DGtal {
 @date 2018/08/15
 
 
-This part of the manual describes how to digitize 3D parametric curves using a simple semi-automatic method.
+This part of the manual describes how to digitize 3D parametric curves using a simple semi-automatic
+method.
 
 [TOC]
 
 \section paramCurves 3D Parametric Curves.
 
-Curves defined by parametric equations i.e., a group of functions of one or more variables, are called parametric.
-Each coordinate of a parametric curve for a given parameter \f$ t \f$ is given by a corresponding function e.g.,
-a parametric equation of a circle is \f$ \gamma : t \mapsto ( cos (t), sin(t) ) \f$.
-This module is related to digitization of 3D parametric curves.
+Curves defined by parametric equations i.e., a group of functions of one or more variables, are
+called parametric.  Each coordinate of a parametric curve for a given parameter \f$ t \f$ is given
+by a corresponding function e.g., a parametric equation of a circle is given as \f$ \gamma : t
+\mapsto ( cos (t), sin(t) ) \f$.  This module is related to digitization of 3D parametric curves.
+
+
+\subsection digitHelix Digitization
+
+In this section we describe how to digitize 3D parametric curves using ugly-naive digitization
+method. Note that, the name of the method reflects the fact that this is a very naive method that
+simply sample a curve with a given step parameter, and ugly because it is a numerical method that
+does not have any solid theoretical basis. But in comparison to other known methods, that generate
+26-connected digital curves, it does not require the coordinates' functions to be re-parametrized by
+each other, which often would involve existence of inverses of such functions.
+
+In short the algorithm implemented in UglyNaiveParametricCurveDigitizer3D.h is as follows.
+
+<b>Input:</b> a 3D parametric curve (model of C3DParametricCurve), sampling step \f$ t \f$, and a
+sampling interval \f$ [t_{min}, t_{max}] \f$ such that \f$ t \in [t_{min}, t_{max}] \f$. Optionally,
+the user map provide a search \f$ K_{NEXT} > 0 \f$ parameter that controls how 26-adjacent neighbors
+are found.  By default \f$ K_{NEXT} = 5 \f$.
+
+<b>Output:</b> A sequence of integer points, which connectivity depends on \f$ K_{NEXT}, t \f$ and
+the relation between the curve's curvature and the digital grid (see some examples below).
+
+<B>Algorithm In Short:</B>
 
 */
 
