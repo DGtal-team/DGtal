@@ -20,6 +20,24 @@
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
 
+
+## New Features / Critical Changes
+
+- *Base*
+  - VectorRounding - a functor that performs std::round on each component of a vector.
+
+- *Geometry*
+  - Parametric 3D curve digitization see (UglyNaiveParametricCurveDigitizer3D)
+  - A set of 3D parametric curves: EllipticHelix, Knot_3_1, Knot_3_2, Knot_4_1, Knot_4_3, Knot_5_1, Knot_5_2,
+    Knot_6_2, Knot_7_4
+  - DecoratorParametricCurveTransformation - a decorator to apply isometries to parametric curves
+  - LambdaMST3DBy2D - a variation of 3D Lambda Maximal Segment tangent estimator that uses only 2D tangents along
+    maximal axis. This estimator has only a research value.
+
+
+- *Image*
+  - RigidTransformation2D/3D depends on a vector functor that can be, for example, VectorRounding
+
 # DGtal 0.9.4.1
 
 ## Bug Fixes
