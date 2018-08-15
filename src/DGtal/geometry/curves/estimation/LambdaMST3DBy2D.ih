@@ -26,79 +26,80 @@
 
 namespace DGtal
 {
+  inline
   TangentFromDSS3DBy2DFunctor::Vector3D
   TangentFromDSS3DBy2DFunctor::operator() ( MAIN_AXIS mainAxis, const Vector2D & v0, const Vector2D & v1 ) const
   {
     Vector3D tangent;
     if ( mainAxis == X )
     {
-      if ( v1[0] == 0 || ( v0[1] == 0 && v1[1] == 0 ) )
+      if ( v1[1] == 0 || ( v0[0] == 0 && v1[0] == 0 ) )
       {
-        tangent[0] = v0[1];
-        tangent[1] = v0[0];
-        tangent[2] = v1[0];
+        tangent[0] = v0[0];
+        tangent[1] = v0[1];
+        tangent[2] = v1[1];
       }
       else
       {
-        if ( v0[0] == 0 )
+        if ( v0[1] == 0 )
         {
-          tangent[0] = v1[1];
+          tangent[0] = v1[0];
           tangent[1] = 0;
-          tangent[2] = v1[0];
+          tangent[2] = v1[1];
         }
         else
         {
-          tangent[0] = v1[1] * v0[1];
-          tangent[1] = v1[1] * v0[0];
-          tangent[2] = v0[1] * v1[0];
+          tangent[0] = v1[0] * v0[0];
+          tangent[1] = v1[0] * v0[1];
+          tangent[2] = v0[0] * v1[1];
         }
       }
     }
     else if ( mainAxis == Y )
     {
-      if ( v0[1] == 0 || ( v1[1] == 0 && v0[0] == 0 ) )
+      if ( v0[0] == 0 || ( v1[0] == 0 && v0[1] == 0 ) )
       {
-        tangent[0] = v0[1];
-        tangent[1] = v1[1];
-        tangent[2] = v1[0];
-      }
-      else
-      {
-        if ( v1[0] == 0 )
-        {
-          tangent[0] = v0[1];
-          tangent[1] = v0[0];
-          tangent[2] = 0;
-        }
-        else
-        {
-          tangent[0] = v1[1] * v0[1];
-          tangent[1] = v1[1] * v0[0];
-          tangent[2] = v0[0] * v1[0];
-        }
-      }
-    }
-    else
-    {
-      if ( v0[1] == 0 || ( v0[0] == 0 && v1[0] == 0 ) )
-      {
-        tangent[0] = v0[1];
-        tangent[1] = v1[1];
-        tangent[2] = v1[0];
+        tangent[0] = v0[0];
+        tangent[1] = v1[0];
+        tangent[2] = v1[1];
       }
       else
       {
         if ( v1[1] == 0 )
         {
-          tangent[0] = v0[1];
-          tangent[1] = 0;
-          tangent[2]= v0[0];
+          tangent[0] = v0[0];
+          tangent[1] = v0[1];
+          tangent[2] = 0;
         }
         else
         {
-          tangent[0] = v0[1] * v1[0];
-          tangent[1] = v1[1] * v0[0];
-          tangent[2] = v0[0] * v1[0];
+          tangent[0] = v1[0] * v0[0];
+          tangent[1] = v1[0] * v0[1];
+          tangent[2] = v0[1] * v1[1];
+        }
+      }
+    }
+    else
+    {
+      if ( v0[0] == 0 || ( v0[1] == 0 && v1[1] == 0 ) )
+      {
+        tangent[0] = v0[0];
+        tangent[1] = v1[0];
+        tangent[2] = v1[1];
+      }
+      else
+      {
+        if ( v1[0] == 0 )
+        {
+          tangent[0] = v0[0];
+          tangent[1] = 0;
+          tangent[2]= v0[1];
+        }
+        else
+        {
+          tangent[0] = v0[0] * v1[1];
+          tangent[1] = v1[0] * v0[1];
+          tangent[2] = v0[1] * v1[1];
         }
       }
     }
@@ -143,8 +144,7 @@ namespace DGtal
   template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
   inline
   typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector3D
-  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval
-  ( const Point3D & point )
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval ( const Point3D & point )
   {
     assert ( isValid ( ) );
     Iterator3D it = std::find ( myBegin, myEnd, point );
