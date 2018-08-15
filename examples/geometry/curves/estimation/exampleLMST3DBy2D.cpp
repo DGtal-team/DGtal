@@ -46,11 +46,11 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/helpers/StdDefs.h"
 
-//! [LambdaMST3DHeader]
+//! [LambdaMST3DBy2DHeader]
 #include "DGtal/geometry/curves/Naive3DDSSComputer.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 #include "DGtal/geometry/curves/estimation/LambdaMST3DBy2D.h"
-//! [LambdaMST3DHeader]
+//! [LambdaMST3By2DDHeader]
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -62,43 +62,39 @@ using namespace Z3i;
 
 int main()
 {
-  //! [LambdaMST3DStandardCtor]
+  //! [LambdaMST3DBy2DStandardCtor]
   typedef vector < Point > Container;
   typedef Container::const_iterator ConstIterator;
   typedef Naive3DDSSComputer < ConstIterator, int, 8 > SegmentComputer;
   typedef SaturatedSegmentation < SegmentComputer > Segmentation;
   LambdaMST3DBy2D < ConstIterator > lmst;
-  //! [LambdaMST3DStandardCtor]
+  //! [LambdaMST3DBy2DStandardCtor]
   
   // Input points
   Container contour;
-  contour.push_back(Point(18,25,18));
-  contour.push_back(Point(17,25,19));
-  contour.push_back(Point(16,25,20));
-  contour.push_back(Point(15,25,21));
-  contour.push_back(Point(14,25,22));
-  contour.push_back(Point(13,25,23));
-  contour.push_back(Point(12,25,24));
-  contour.push_back(Point(11,25,25));
-  contour.push_back(Point(10,25,26));
-  contour.push_back(Point(9,25,27));
-  contour.push_back(Point(8,25,28));
+  contour.push_back ( Point ( 18, 25, 18 ) );
+  contour.push_back ( Point ( 17, 25, 19 ) );
+  contour.push_back ( Point ( 16, 25, 20 ) );
+  contour.push_back ( Point ( 15, 25, 21 ) );
+  contour.push_back ( Point ( 14, 25, 22 ) );
+  contour.push_back ( Point ( 13, 25, 23 ) );
+  contour.push_back ( Point ( 12, 25, 24 ) );
+  contour.push_back ( Point ( 11, 25, 25 ) );
+  contour.push_back ( Point ( 10, 25, 26 ) );
+  contour.push_back ( Point ( 9, 25, 27 ) );
+  contour.push_back ( Point ( 8, 25, 28 ) );
   
-  //! [LambdaMST3DTangential]
-  // Initialization of tangential cover
-  Segmentation segmenter ( contour.begin(), contour.end(), SegmentComputer() );
-  //! [LambdaMST3DTangential]
-  
-  //! [LambdaMST3DPoint]
-  for ( ConstIterator it = contour.begin(); it != contour.end(); ++it )
-    lmst.eval ( *it );
-  //! [LambdaMST3DPoint]
+  lmst.init ( contour.begin ( ), contour.end ( ) ) ;
+  //! [LambdaMST3DBy2DPoint]
+  for ( ConstIterator it = contour.begin ( ); it != contour.end ( ); ++it )
+    trace.info ( ) << lmst.eval ( *it ) << std::endl;
+  //! [LambdaMST3DBy2DPoint]
 
-  //! [LambdaMST2DFast]
-  lmst.init ( contour.begin(), contour.end() );
+  //! [LambdaMST3DBy2DRange]
+  lmst.init ( contour.begin ( ), contour.end ( ) );
   vector < RealVector > tangent;
   lmst.eval ( contour.begin ( ), contour.end ( ), back_insert_iterator < vector < RealVector > > ( tangent ) );
-  //! [LambdaMST2DFast]
+  //! [LambdaMST3DBy2DRange]
   return 0;
 }
 //                                                                           //

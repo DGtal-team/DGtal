@@ -57,13 +57,13 @@ namespace DGtal {
   public:
     // ----------------------- Types ------------------------------
   public:
-    typedef PointVector<3, double> RealVector3D;
-    typedef PointVector<3, int> Point3D;
-    typedef PointVector<2, int> Point2D;
-    typedef PointVector<2, double> RealVector2D;
-    typedef std::list<Point2D> TCurve2D;
+    typedef PointVector < 3, double > RealVector3D;
+    typedef PointVector < 3, int > Point3D;
+    typedef PointVector < 2, int > Point2D;
+    typedef PointVector < 2, double > RealVector2D;
+    typedef std::list < Point2D > TCurve2D;
     typedef ArithmeticalDSSComputer < typename TCurve2D::const_iterator, int, CONNECTIVITY > SegmentComputer2D;
-    typedef SaturatedSegmentation<SegmentComputer2D> Segmentation2D;
+    typedef SaturatedSegmentation < SegmentComputer2D > Segmentation2D;
     
     // ----------------------- Private types ------------------------------
   private:
@@ -80,7 +80,7 @@ namespace DGtal {
      * @param itb, begin iterator
      * @param ite, end iterator
      */
-    void init ( const Iterator3D & itB, const Iterator3D & itE );
+    void init ( Iterator3D itB, Iterator3D itE );
     
     /**
      * Checks the validity/consistency of the object.
@@ -109,13 +109,10 @@ namespace DGtal {
     // ------------------------- Internals ------------------------------------
   protected:
     
-    void ExtendFront ( TCurve2D & curveXY, TCurve2D & curveXZ, TCurve2D & curveYZ, const Iterator3D & it );
-    void ExtendBack ( TCurve2D & curveXY, TCurve2D & curveXZ, TCurve2D & curveYZ, const Iterator3D & it );
-    
+    void ExtendFront ( TCurve2D & curveXY, TCurve2D & curveXZ, TCurve2D & curveYZ, Iterator3D it );
+    void ExtendBack ( TCurve2D & curveXY, TCurve2D & curveXZ, TCurve2D & curveYZ, Iterator3D it );
     MAIN_AXIS detectMainAxis ( const TCurve2D & tXY, const TCurve2D & tXZ, const TCurve2D & tYZ, const Point3D & point );
-    
     unsigned int CurveRank ( const TCurve2D & curve, const Point2D & point );
-    
     RealVector2D Estimate2DTangent ( const TCurve2D & curve, const Point2D & point );
     
     // ------------------------- Private Datas --------------------------------
