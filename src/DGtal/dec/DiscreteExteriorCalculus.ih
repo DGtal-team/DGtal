@@ -278,7 +278,6 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 {
   ASSERT_MSG( dimEmbedded != 2, "the algorithm works only for 2D surfaces" );
 
-  typedef typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger> Calculus;
   typedef typename TLinearAlgebraBackend::Triplet Triplet;
   typedef typename TLinearAlgebraBackend::Vector3 Vector3;
   typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
