@@ -9,7 +9,7 @@ namespace concepts{
    
 @page moduleArithDSSReco Digital straight lines and segments   
 
-@author Tristan Roussillon
+@author Tristan Roussillon and Kacper Pluta
 
 Part of the \ref packageGeometry.
 
@@ -536,7 +536,7 @@ choice is to do this in following way:
 @snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DFast
 
 
-Note that the 3D extension provides similar interface:
+Note that the 3D extension provides a similar interface:
 
 @snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DHeader
 
@@ -552,9 +552,28 @@ Notice that both LambdaMST2D and LambdaMST3D are models of CCurveLocalGeometricE
 
 Both examples are in exampleLMST2D.cpp and exampleLMST3D.cpp
 
+
+Moreover, there exists a version of LamdaMST3D that uses only 2D projections of the 3D curve (see LambdaMST3DBy2D.h).
+This version detects maximal axes during segmentation of the 2D projections, and then the 3D tangent is
+reconstructed from two 2D tangents that were computed for valid 2D projections. Note that, this version has only
+a research value, and for any application LambdaMST3D should be used.
+
+Note that this 3D by 2D tangent estimator provides a similar interface to the two other versions:
+
+@snippet geometry/curves/estimation/exampleLMST3DBy2D.cpp LambdaMST3DBy2DHeader
+
+@snippet geometry/curves/estimation/exampleLMST3DBy2D.cpp LambdaMST3DBy2DStandardCtor
+
+@snippet geometry/curves/estimation/exampleLMST3DBy2D.cpp LambdaMST3DBy2DPoint
+
+@snippet geometry/curves/estimation/exampleLMST3DBy2D.cpp LambdaMST3DBy2DRange
+
+See exampleLMST3DBy2D.cpp
+
+Finally, not that this version does not provide a fast estimation over ranges!
+
+
 */
-
-
 
 }
 }

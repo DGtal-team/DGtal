@@ -30,7 +30,7 @@
 
 /**
    This example shows the basic usage of the Lambda maximal segment tangent estimation
-   in 3D.
+   in 3D by the method using only 2D projections.
 
 @see \ref moduleArithDSSReco
 
