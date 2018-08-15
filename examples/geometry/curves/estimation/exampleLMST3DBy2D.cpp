@@ -47,8 +47,6 @@
 #include "DGtal/helpers/StdDefs.h"
 
 //! [LambdaMST3DBy2DHeader]
-#include "DGtal/geometry/curves/Naive3DDSSComputer.h"
-#include "DGtal/geometry/curves/SaturatedSegmentation.h"
 #include "DGtal/geometry/curves/estimation/LambdaMST3DBy2D.h"
 //! [LambdaMST3By2DDHeader]
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,8 +63,6 @@ int main()
   //! [LambdaMST3DBy2DStandardCtor]
   typedef vector < Point > Container;
   typedef Container::const_iterator ConstIterator;
-  typedef Naive3DDSSComputer < ConstIterator, int, 8 > SegmentComputer;
-  typedef SaturatedSegmentation < SegmentComputer > Segmentation;
   LambdaMST3DBy2D < ConstIterator > lmst;
   //! [LambdaMST3DBy2DStandardCtor]
   
