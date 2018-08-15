@@ -6,6 +6,7 @@ SET(DGTAL_TESTS_SRC
   testMostCenteredMSEstimator
   testLambdaMST2D
   testLambdaMST3D
+  testLambdaMST3DBy2D
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
