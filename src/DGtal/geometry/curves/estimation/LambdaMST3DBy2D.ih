@@ -295,7 +295,7 @@ namespace DGtal
   ( const TCurve2D & curve, const Point2D & point )
   {
     Segmentation2D segmenter ( curve.begin(), curve.end(), SegmentComputer2D() );
-    LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::TEstimator lmst;
+    TEstimator lmst;
     lmst.attach ( segmenter );
     return lmst.eval ( point );
   }
