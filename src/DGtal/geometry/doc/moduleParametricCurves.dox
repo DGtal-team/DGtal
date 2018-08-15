@@ -1,0 +1,40 @@
+/**
+ * @file moduleParametricCurves.dox
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
+ *
+ * @date 2018/08/15
+ * 
+ * Documentation file for 3D parametric curves module
+ *
+ * This file is part of the DGtal library.
+ */
+namespace DGtal {
+
+//----------------------------------------
+/*!
+
+
+@page moduleParametricCurves Digitization of 3D parametric curves.
+@authors Kacper Pluta
+
+@date 2018/08/15
+
+
+This part of the manual describes how to digitize 3D parametric curves using a simple semi-automatic method.
+
+[TOC]
+
+\section paramCurves 3D Parametric Curves.
+
+Curves defined by parametric equations i.e., a group of functions of one or more variables, are called parametric.
+Each coordinate of a parametric curve for a given parameter \f$ t \f$ is given by a corresponding function e.g.,
+a parametric equation of a circle is \f$ \gamma : t \mapsto ( cos (t), sin(t) ) \f$.
+This module is related to digitization of 3D parametric curves.
+
+*/
+
+}
+
+
+
