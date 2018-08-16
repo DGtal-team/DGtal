@@ -35,8 +35,10 @@
 #include "ConfigExamples.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 
+//! [DigiHelixHeader]
 #include "DGtal/geometry/curves/parametric/EllipticHelix.h"
 #include "DGtal/geometry/curves/parametric/UglyNaiveParametricCurveDigitizer3D.h"
+//! [DigiHelixHeader]
 
 #ifdef WITH_VISU3D_QGLVIEWER
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -70,26 +72,34 @@ unsigned char findMainAxis ( const T & curve, const long double & t )
 int main( int argc, char** argv )
 {
  QApplication application(argc,argv);
+//! [DigiHelixConstr]
  typedef EllipticHelix < Space > MyHelix;
  typedef UglyNaiveParametricCurveDigitizer3D < MyHelix >  DigitizerHelix;
  typedef UglyNaiveParametricCurveDigitizer3D < MyHelix >::DigitalCurve MyDigitalCurve;
  typedef UglyNaiveParametricCurveDigitizer3D < MyHelix >::MetaData MyMetaData;
-
+//! [DigiHelixConstr]
  trace.info() << "exampleParamCurve3dDigitization" << endl;
 
  Viewer3D<> viewer;
 
+//! [DigiHelixInit]
  MyDigitalCurve digitalCurve;
  MyMetaData metaData;
  MyHelix helix( 15, 10, 1 );
  DigitizerHelix digitize;
  digitize.init ( M_PI / 2., ( MyHelix::getPeriod() * 10. ) + M_PI / 2., 0.0001 );
  digitize.attach ( &helix );
+//! [DigiHelixInit]
+
+//! [DigiHelixComp]
  digitize.digitize( back_insert_iterator < MyDigitalCurve> ( digitalCurve ), back_insert_iterator < MyMetaData > ( metaData ) );
+//! [DigiHelixComp]
 
  trace.info() << "Number of points: " << digitalCurve.size () << " number of metadata: " << metaData.size () << endl;
 
  viewer.show();
+
+//! [DigiHelixMetadata]
  for ( unsigned int i = 0; i < digitalCurve.size ( ); i++ )
  {
   if ( findMainAxis ( helix, metaData.at ( i ).first ) == 0 )
@@ -100,6 +110,7 @@ int main( int argc, char** argv )
    viewer.setFillColor ( Color ( 0, 0, 255, 128 ) );
   viewer << SetMode3D ( digitalCurve.at ( i ).className ( ), "PavingWired" ) << digitalCurve.at ( i );
  }
+//! [DigiHelixMetadata]
  viewer << Viewer3D<>::updateDisplay;
 
  return application.exec();

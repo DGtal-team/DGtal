@@ -26,15 +26,16 @@ method.
 
 [TOC]
 
-\section paramCurves 3D Parametric Curves.
+\section paramCurves 3D Parametric Curves
 
 Curves defined by parametric equations i.e., a group of functions of one or more variables, are
 called parametric.  Each coordinate of a parametric curve for a given parameter \f$ t \f$ is given
 by a corresponding function e.g., a parametric equation of a circle is given as \f$ \gamma : t
 \mapsto ( cos (t), sin(t) ) \f$.  This module is related to digitization of 3D parametric curves.
 
+Each 3D parametric curve has to be of model C3DParametricCurve.h.
 
-\subsection digitHelix Digitization
+\subsection digitHelix Digitization - The algorithm
 
 In this section we describe how to digitize 3D parametric curves using ugly-naive digitization
 method. Note that, the name of the method reflects the fact that this is a very naive method that
@@ -45,7 +46,7 @@ each other, which often would involve existence of inverses of such functions.
 
 In short the algorithm implemented in UglyNaiveParametricCurveDigitizer3D.h is as follows.
 
-<b>Input:</b> a 3D parametric curve (model of C3DParametricCurve), sampling step \f$ t \f$, and a
+<b>Input:</b> a 3D parametric curve \f$ \gamma \f$ (model of C3DParametricCurve), sampling step \f$ t \f$, and a
 sampling interval \f$ [t_{min}, t_{max}] \f$ such that \f$ t \in [t_{min}, t_{max}] \f$. Optionally,
 the user map provide a search \f$ K_{NEXT} > 0 \f$ parameter that controls how 26-adjacent neighbors
 are found.  By default \f$ K_{NEXT} = 5 \f$.
@@ -53,8 +54,108 @@ are found.  By default \f$ K_{NEXT} = 5 \f$.
 <b>Output:</b> A sequence of integer points, which connectivity depends on \f$ K_{NEXT}, t \f$ and
 the relation between the curve's curvature and the digital grid (see some examples below).
 
-<B>Algorithm In Short:</B>
+<B>Simplified pseudocode:</B><br>
+>  <I>Create a raw digitization</I><br>
+> <B>while</B> \f$ t \in [t_{min}, t_{tmax}] \f$ <B>do</B>
+>> point = [\f$ \gamma(t) \f$]<br>
+>> weights[point] = rank[point] + 1<br>
+>> buffer.push_back(point)<br>
+>> t = t + step<br>
+>  digital_curve.push_back(buffer[0])<br>
+>  <I>Refine the digitization by keeping only the most meaningful points i.e., points of high coverage of
+>  \f$ \gamma \f$.</I><br>
+>  <B>for</B> i = 1 <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
+>>  <B>for</B> j = i + 1 <B>and</B> k = 0 <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
+>>>>  <B>if</B> is26Connected(digital_curve.back(), buffer[j]) <B>and</B> weights[buffer[j]] \f$ > \f$ weights[buffer[i]] <B>then</B><br>
+>>>>>>  i = j<br>
+>>>>>>  k = 0<br>
+>>>>  else
+>>>>>>  k = k + 1
+>>>>  j = j + 1
+>>  digital_curve.push_back(buffer[i])<br>
+>>  i = i + 1
+>  <I>Due to the weights fluctuations or curve behaviour we can still have points that should be removed to ensure 26-connectivity.</I><br>
+>  <B>for</B> i = 0 <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
+>>  tmp = i + 1<br>
+>>  <B>for</B> j = i + 1 <B>and</B> k = 0 <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
+>>>>  <B>if</B> is26Connected(digital_curve[i], digital_curve[j]) <B>then</B><br>
+>>>>>>  tmp = j<br>
+>>>>>>  k = 0<br>
+>>>>  else
+>>>>>>  k = k + 1
+>>>>  j = j + 1
+>>  digital_curve.erase(i + 1, tmp)<br>
+>>  i = tmp + 1
 
+In the implemented version the buffer has size three times the value of \f$ K_{NEXT} \f$, and each time the buffer is
+flushed a part of the digital curve is created (see two nested loops in the code above). Also, the implemented version
+can treat closed curves and collect useful metadata.
+
+\subsection metData Additional Information
+
+The digitization implemented in UglyNaiveParametricCurveDigitizer3D can collect, for each point of the output digital
+curve, information like
+
+* weights i.e., the point importance
+* time - a time value that minimize the distance between the integer point and \f$ \gamma \f$ for a given step.
+
+Note that, the time information is not computed by default therefore if not needed the user should avoid calling
+<B>UglyNaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator, back_inserter_iterator)</B>, and use
+<B>UglyNaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator)</B>, instead.
+
+\section digiExample Examples
+
+Example below shows how to digitize an elliptic helix (see EllipticHelix.h).
+
+Before using UglyNaiveParametricCurveDigitizer3D, you must include the following headers:
+
+@snippet geometry/curves/exampleParamCurve3dDigitization.cpp DigiHelixHeader
+
+Note that, EllipticHelix.h should be replaced with the desirable curve.
+The list of 3D parametric curves is given below. <B>Note that</B>, EllipticHelix is the only
+curve that implements inverse functions (see EllipticHelix.h) for more detail.
+
+Then, you can construct the needed types as follows:
+@snippet geometry/curves/exampleParamCurve3dDigitization.cpp DigiHelixConstr
+
+Also, we can state instances of the digitizer and the curve:
+@snippet geometry/curves/exampleParamCurve3dDigitization.cpp DigiHelixInit
+
+Finally, we can compute a digitization together with the meta information by calling:
+@snippet geometry/curves/exampleParamCurve3dDigitization.cpp DigiHelixComp
+
+The meta information can be then used, for example, to find main axis:
+@snippet geometry/curves/exampleParamCurve3dDigitization.cpp DigiHelixMetadata
+
+\image html elliptic_helix_main_axis.png
+\image latex elliptic_helix_main_axis.png
+
+
+See exampleParamCurve3dDigitization.cpp and exampleTrofoliKnot.cpp
+
+\subsection implCurves Implemented Curves
+
+* Elliptic Helix (see EllipticHelix.h)
+\image html elliptic_helix_main_axis.png
+\image latex elliptic_helix_main_axis.png
+
+* Knot \f$ 3_1 \f$
+\image html knot_3_1.png
+\image latex knot_3_1.png
+
+* Knot \f$ 3_1 \f$ (see Knot_3_1.h)
+\image html knot_3_1.png
+\image latex knot_3_1.png
+
+\section transCurves Geometric Transformations of 3D Parametric Curves
+TODO
+
+\section handProb Handling Problems
+
+TODO : describe how to set K_NEXT in order to deal with possible problems.
+
+List of related examples: exampleParamCurve3dDigitization.cpp, exampleParamCurve3dDigitizationTransformationDecorator.cpp,
+exampleTrofoliKnot.cpp
 */
 
 }
