@@ -35,7 +35,7 @@
 #include "ConfigExamples.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 
-#include "DGtal/geometry/curves/parametric/Knot_4_3.h"
+#include "DGtal/geometry/curves/parametric/Knot_3_1.h"
 #include "DGtal/geometry/curves/parametric/UglyNaiveParametricCurveDigitizer3D.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
@@ -70,7 +70,7 @@ unsigned char findMainAxis ( const T & curve, const long double & t )
 int main( int argc, char** argv )
 {
  QApplication application(argc,argv);
- typedef Knot_4_3< Space > MyKnot;
+ typedef Knot_3_1< Space > MyKnot;
  typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
  typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
  typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
@@ -84,7 +84,7 @@ int main( int argc, char** argv )
  MyKnot knot ( 10, 10, 10 );
  Digitizer digitize;
  digitize.attach ( &knot );
- digitize.init ( 0, MyKnot::getPeriod(), 0.0001 );
+ digitize.init ( -2.1, 2.1, 0.0001 );
  digitize.digitize( back_insert_iterator < MyDigitalCurve> ( digitalCurve ), back_insert_iterator < MyMetaData > ( metaData ) );
 
  trace.info() << "Number of points: " << digitalCurve.size () << " number of metadata: " << metaData.size () << endl;
