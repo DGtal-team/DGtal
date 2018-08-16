@@ -127,10 +127,6 @@ Finally, we can compute a digitization together with the meta information by cal
 The meta information can be then used, for example, to find main axis:
 @snippet geometry/curves/exampleParamCurve3dDigitization.cpp DigiHelixMetadata
 
-\image html elliptic_helix_main_axis.png
-\image latex elliptic_helix_main_axis.png
-
-
 See exampleParamCurve3dDigitization.cpp and exampleTrofoliKnot.cpp
 
 \subsection implCurves Implemented Curves
@@ -148,6 +144,13 @@ See exampleParamCurve3dDigitization.cpp and exampleTrofoliKnot.cpp
 \image html knot_3_2.png
 \image latex knot_3_2.png
 
+* Knot \f$ 4_1 \f$ (see Knot_4_1.h)
+\image html knot_4_1.png
+\image latex knot_4_1.png
+
+* Knot \f$ 4_3 \f$ (see Knot_4_3.h)
+\image html knot_4_3.png
+\image latex knot_4_3.png
 
 * Knot \f$ 5_2 \f$ (see Knot_5_2.h)
 \image html knot_5_2.png
