@@ -139,13 +139,19 @@ See exampleParamCurve3dDigitization.cpp and exampleTrofoliKnot.cpp
 \image html elliptic_helix_main_axis.png
 \image latex elliptic_helix_main_axis.png
 
-* Knot \f$ 3_1 \f$
-\image html knot_3_1.png
-\image latex knot_3_1.png
 
 * Knot \f$ 3_1 \f$ (see Knot_3_1.h)
 \image html knot_3_1.png
 \image latex knot_3_1.png
+
+* Knot \f$ 3_2 \f$ (see Knot_3_2.h)
+\image html knot_3_2.png
+\image latex knot_3_2.png
+
+
+* Knot \f$ 5_2 \f$ (see Knot_5_2.h)
+\image html knot_5_2.png
+\image latex knot_5_2.png
 
 \section transCurves Geometric Transformations of 3D Parametric Curves
 TODO
