@@ -257,7 +257,7 @@ namespace DGtal
       if ( std::find ( buffer.begin (), buffer.end (), p ) == buffer.end ( ) )
         buffer.push_back ( p );
 
-      if ( buffer.size() == BUFFER_SIZE + K_NEXT )
+      if ( buffer.size() == BUFFER_SIZE )
         flashBuffers ( buffer, weights );
     }
     syncData ( buffer.begin (), buffer.end (), weights );
