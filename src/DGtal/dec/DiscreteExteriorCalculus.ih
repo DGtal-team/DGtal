@@ -373,11 +373,11 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
         EE( i, dim ) = nn( next, dim ) - nn( i , dim );
     }
 
-    //We need all the decomposition for the algorithm (0x04 and 0x10 parameters)
+    //We need all the decomposition for the algorithm (0x04 and 0x10 parameters).
+    //The maximum projection beeing planar, the kernel dimension is 2.
     JacobiSVD svd( EE.transpose(), 0x04 | 0x10 );
     svd.setThreshold( 1e-6 );
-    const int kernel_dimension = EE.transpose().cols() - svd.rank();
-    DenseMatrix C = svd.matrixV().block( 0, EE.transpose().cols() - kernel_dimension, 4, kernel_dimension );
+    DenseMatrix C = svd.matrixV().block( 0, 2, 4, 2 );
     ASSERT( C.cols() == 2 && C.rows() == 4 );
     DenseMatrix Mf = ( 1. / area ) * B * B.transpose() + lambda * C * C.transpose();
 
