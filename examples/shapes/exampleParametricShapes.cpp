@@ -15,12 +15,12 @@
  **/
 
 /**
- * @file shapes/exampleParaetricShapes.cpp
+ * @file shapes/exampleParametricShapes.cpp
  * @ingroup Examples
  * @author Adrien Krähenbühl (\c krahenbuhl@unistra.fr )
  * Laboratoire des sciences de l'ingénieur, de l'informatique et de l'imagerie - ICube (UMR 7357), France
  *
- * @date 2018/14/18
+ * @date 2018/08/14
  *
  * An example file named exampleParametricShapes.
  *
@@ -36,7 +36,7 @@
 // Shape construction
 #include <DGtal/shapes/Shapes.h>
 #include <DGtal/shapes/GaussDigitizer.h>
-#include <DGtae/shapes/Astroid2D.h>
+#include <DGtal/shapes/parametric/Astroid2D.h>
 
 // Drawing
 #include <DGtal/io/boards/Board2D.h>
@@ -46,7 +46,7 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-    trace.beginBlock ( "Example EuclideanShapesDecorator" );
+    trace.beginBlock ( "Example Parametric Shapes" );
 
     typedef Z2i::Space Space;
 
@@ -81,6 +81,6 @@ int main( int argc, char** argv )
     return 0;
 }
 
-//! [EuclideanShapesDecoratorUsageFull]
+//! [ParametricShapesUsageFull]
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
