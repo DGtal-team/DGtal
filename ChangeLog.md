@@ -11,6 +11,11 @@
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
+
+- *Shapes*
+  - Add two new star shapes: Astroid and Lemniscate
+   (Adrien Krähenbühl, Chouaib Fellah,
+   [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
   - Fixing openmp flags (David Coeurjolly,
     [#1324](https://github.com/DGtal-team/DGtal/pull/1324))
   - Add assignment operator to ImageContainerByITKImage (Pablo Hernandez,
