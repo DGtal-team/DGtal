@@ -120,6 +120,7 @@ namespace DGtal
                                                                        OutputIterator & result )
   {
     Value prev = outValues.lower_bound( *itb )->second;
+    Value accum_prev = outValues.lower_bound( *itb )->second;
     for ( ConstIterator itt = itb; itt != ite; ++itt )
     {
       typename std::multimap< Point, Value >::const_iterator it  = outValues.lower_bound ( *itt );
@@ -134,6 +135,12 @@ namespace DGtal
         tangent += partial;
       }
       outValues.erase ( *itt );
+      // avoid tangent flapping
+      if (  accum_prev.first.cosineSimilarity ( tangent.first ) > M_PI_2 )
+      {
+        tangent.first = -tangent.first;
+        accum_prev = tangent;
+      }
       if ( tangent.second != 0 )
         *result++ = ( tangent.first / tangent.second );
       else
