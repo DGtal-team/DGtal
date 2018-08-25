@@ -84,7 +84,7 @@ public:
     lmst64.init ( curve.begin(), curve.end() );
     for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
     {
-      lmst64.eval ( it );
+      lmst64.eval ( *it );
     }
     return true;
   }

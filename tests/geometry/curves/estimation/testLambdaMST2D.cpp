@@ -76,7 +76,7 @@ public:
     LambdaMST2D < Segmentation > lmst64;
     lmst64.attach ( segmenter );
     for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
-      lmst64.eval ( it );
+      lmst64.eval ( *it );
     return true;
   }
   bool lambda64()

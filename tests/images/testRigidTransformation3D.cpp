@@ -37,6 +37,7 @@
 #include <DGtal/images/ImageContainerBySTLVector.h>
 #include "DGtal/images/ConstImageAdapter.h"
 #include "DGtal/images/RigidTransformation3D.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
@@ -58,8 +59,8 @@ using namespace functors;
 class testRigidTransformation3D
 {
   typedef ImageSelector<Domain, unsigned char >::Type Image;
-  typedef ForwardRigidTransformation3D < Space > ForwardTrans;
-  typedef BackwardRigidTransformation3D < Space > BackwardTrans;
+  typedef ForwardRigidTransformation3D < Space, VectorRounding < RealPoint, Point>, RealPoint, Point > ForwardTrans;
+  typedef BackwardRigidTransformation3D < Space, VectorRounding < RealPoint, Point>, RealPoint, Point > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation3D < Domain, ForwardTrans > DomainTrans;
   typedef DomainTrans::Bounds Bounds;
