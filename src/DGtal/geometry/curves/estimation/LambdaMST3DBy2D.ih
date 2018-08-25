@@ -168,8 +168,16 @@ namespace DGtal
                                                                                        OutputIterator result )
   {
     assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
+    RealVector3D accum_prev = eval ( *itb );
     for ( Iterator3D it = itb; it != ite; ++it )
-      *result++ = eval ( *it );
+    {
+      RealVector3D tangent = eval (* it );
+      // avoid tangent flapping
+      if ( accum_prev.cosineSimilarity ( tangent ) > M_PI_2 )
+        tangent = -tangent;
+      accum_prev = tangent;
+      *result++ = tangent;
+    }
     return result;
   }
 
