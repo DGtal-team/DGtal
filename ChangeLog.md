@@ -20,6 +20,9 @@
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
 
+- *Geometry*
+   - Fix a possible tangent vector flapping during L-MST3D and L-MST3DBy2D
+   - Fix a possible issue with data structures orderings in L-MST3D accumulation step
 
 ## New Features / Critical Changes
 
@@ -33,6 +36,7 @@
   - DecoratorParametricCurveTransformation - a decorator to apply isometries to parametric curves
   - LambdaMST3DBy2D - a variation of 3D Lambda Maximal Segment tangent estimator that uses only 2D tangents along
     maximal axis. This estimator has only a research value.
+  - DSSes filtration during L-MST3D computations.
 
 
 - *Image*
