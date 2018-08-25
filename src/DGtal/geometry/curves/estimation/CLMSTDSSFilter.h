@@ -79,8 +79,8 @@ namespace DGtal
      * 
      * ### Models
      * 
-     * - CLMSTTangentFromDSS
-     * 
+     * - DSSLengthLessEqualFilter, DSSMuteFilter
+     *
      * ### Notes
      * 
      * @tparam T the type that should be a model of CLMSTDSSFilter.
