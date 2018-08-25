@@ -137,10 +137,8 @@ namespace DGtal
       outValues.erase ( *itt );
       // avoid tangent flapping
       if (  accum_prev.first.cosineSimilarity ( tangent.first ) > M_PI_2 )
-      {
         tangent.first = -tangent.first;
-        accum_prev = tangent;
-      }
+      accum_prev = tangent;
       if ( tangent.second != 0 )
         *result++ = ( tangent.first / tangent.second );
       else
