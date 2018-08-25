@@ -27,40 +27,49 @@
 namespace DGtal
 {
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::LambdaMST3DEstimator() : myBegin(), myEnd(), dssSegments ( 0 ), myFunctor() {}
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::LambdaMST3DEstimator() : myBegin(), myEnd(), dssSegments ( 0 ), myFunctor() {}
 
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
   void
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::init ( ConstIterator itb, ConstIterator ite )
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::init ( ConstIterator itb, ConstIterator ite )
   {
     myBegin = itb;
     myEnd = ite;
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
   void
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::attach ( Alias<TSegmentation> segmentComputer )
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::attach ( Alias<TSegmentation> segmentComputer )
   {
     dssSegments = &segmentComputer;
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
   bool
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::isValid () const
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::isValid () const
   {
     return ( dssSegments != 0 );
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
-  typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::RealVector
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval( const Point & p )
+  DSSFilter &
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::getDSSFilter ( )
+  {
+    return myDSSFilter;
+  }
+
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  inline
+  typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::RealVector
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::eval( const Point & p )
   {
     assert ( isValid() );
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
@@ -69,6 +78,8 @@ namespace DGtal
   
     for ( ; DSS != lastDSS; ++DSS )
     {
+      if ( myDSSFilter ( *DSS ) )
+        continue;
       if ( DSS->isInDSS ( p ) )
       {
         auto dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
@@ -87,11 +98,11 @@ namespace DGtal
       return tangent.first;
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   template < typename OutputIterator >
   inline
   OutputIterator
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval ( ConstIterator itb, ConstIterator ite,
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::eval ( ConstIterator itb, ConstIterator ite,
                                                                  OutputIterator result )
   {
     assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
@@ -102,6 +113,8 @@ namespace DGtal
   
     for(; DSS != lastDSS; ++DSS)
     {
+      if ( myDSSFilter ( *DSS ) )
+        continue;
       auto dssLen = std::distance ( DSS.begin(), DSS.end() );
       SegmentComputer comp ( *DSS );
       for ( unsigned int indexOfPointInDSS = 0; indexOfPointInDSS < dssLen; indexOfPointInDSS++ )
@@ -111,11 +124,11 @@ namespace DGtal
     return result;
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   template <typename OutputIterator>
   inline
   void
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::accumulate ( std::multimap < Point, Value > & outValues,
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::accumulate ( std::multimap < Point, Value > & outValues,
                                                                        ConstIterator itb, ConstIterator ite,
                                                                        OutputIterator & result )
   {
