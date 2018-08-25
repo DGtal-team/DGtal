@@ -119,7 +119,7 @@ namespace DGtal
                                                                        ConstIterator itb, ConstIterator ite,
                                                                        OutputIterator & result )
   {
-    Value prev = outValues.begin()->second;
+    Value prev = outValues.lower_bound( *itb )->second;
     for ( ConstIterator itt = itb; itt != ite; ++itt )
     {
       typename std::multimap< Point, Value >::const_iterator it  = outValues.lower_bound ( *itt );
