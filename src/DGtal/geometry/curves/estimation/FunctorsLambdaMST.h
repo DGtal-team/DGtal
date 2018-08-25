@@ -39,6 +39,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <functional>
+#include  <stdexcept>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -212,6 +213,61 @@ private:
   // ------------------------- Private Datas --------------------------------
   //! 
   LambdaFunction lambdaFunctor;
+};
+
+
+/**
+ * Description of class 'DSSMuteFilter' -- model of CLMSTDSSFilter.
+ * Aim: Provide a functor which does nothing i.e., always returns false.
+ * @tparam DSS digital straight segment recognition algorithm
+ */
+template<typename DSS >
+class DSSMuteFilter
+{
+public:
+// ----------------------- Types ------------------------------
+  typedef DSS DSSType;
+
+  bool operator()( const DSSType & ) const
+  {
+     return false;
+  }
+};
+
+
+/**
+ * Description of class 'DSSLengthLessEqualFilter' -- model of CLMSTDSSFilter.
+ * Aim: Provide a functor which allow for filtering DSSes of length lower than
+ * a given threshold.
+ * @tparam DSS digital straight segment recognition algorithm
+ */
+template<typename DSS >
+class DSSLengthLessEqualFilter
+{
+public:
+// ----------------------- Types ------------------------------
+  typedef DSS DSSType;
+
+  DSSLengthLessEqualFilter ( ) :  initThreshold ( false ) { }
+
+  void init ( unsigned int threshold )
+  {
+    lenTreshold = threshold;
+    initThreshold = true;
+  }
+
+  bool operator()( const DSSType & dss ) const
+  {
+    if (! initThreshold )
+      throw std::runtime_error ( "The filter has to be initialized!" );
+
+    if ( std::distance ( dss.begin ( ), dss.end ( ) ) <= lenTreshold )
+      return true;
+    return false;
+  }
+private:
+    unsigned int lenTreshold;
+    bool initThreshold;
 };
 
 } // namespace DGtal

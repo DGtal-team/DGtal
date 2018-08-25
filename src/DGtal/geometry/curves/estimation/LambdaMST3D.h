@@ -47,6 +47,7 @@
 #include "DGtal/geometry/curves/estimation/FunctorsLambdaMST.h"
 #include "DGtal/geometry/curves/CForwardSegmentComputer.h"
 #include "DGtal/geometry/curves/estimation/CLMSTTangentFromDSS.h"
+#include "DGtal/geometry/curves/estimation/CLMSTDSSFilter.h"
 
 namespace DGtal {
   /**
@@ -55,7 +56,7 @@ namespace DGtal {
    * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
    * @tparam Functor model of CLMSTTangentFrom2DSS
    */
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   class LambdaMST3DEstimator
   {
   public: 
@@ -63,6 +64,7 @@ namespace DGtal {
     BOOST_CONCEPT_ASSERT(( concepts::CSpace < TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
     BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS < Functor > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLMSTDSSFilter < DSSFilter > ));
     BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer< typename TSegmentation::SegmentComputer > ));
     // ----------------------- Types ------------------------------
   public:
@@ -117,6 +119,12 @@ namespace DGtal {
      */
     template <typename OutputIterator>
     OutputIterator eval ( ConstIterator itb, ConstIterator ite, OutputIterator result );
+
+    /**
+     *
+     * @return the internal dss filter
+     */
+    DSSFilter & getDSSFilter ( );
     
     // ------------------------- Internals ------------------------------------
   protected:
@@ -157,7 +165,9 @@ namespace DGtal {
      * and returns DSS's direction and the eccentricity of the point in the DSS.
      */
     Functor myFunctor;
-    
+
+    DSSFilter myDSSFilter;
+
   }; // end of class LambdaTangentFromDSSEstimator
   
   //-------------------------------------------------------------------------------------------
@@ -168,14 +178,15 @@ namespace DGtal {
    * @tparam DSSSegmentationComputer tangential cover obtained by segmentation of a 2D digital curve by maximal straight segments
    * @tparam LambdaFunction Lambda functor @see FunctorsLambdaMST.h
    */
-  template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function>
+  template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function,
+             typename DSSFilter = DSSMuteFilter < typename DSSSegmentationComputer::SegmentComputer > >
   class LambdaMST3D:
   public LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
-    TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction> >
+    TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction >, DSSFilter >
     {
       typedef 
       LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
-      TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction> > Super;
+      TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction >, DSSFilter > Super;
       
     public: 
       /**
