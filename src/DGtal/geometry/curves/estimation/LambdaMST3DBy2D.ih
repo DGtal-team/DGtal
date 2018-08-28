@@ -272,9 +272,9 @@ namespace DGtal
     unsigned int rankXY = CurveRank ( tXY, myProjXY ( point ) );
     unsigned int rankXZ = CurveRank ( tXZ, myProjXZ ( point ) );
     unsigned int rankYZ = CurveRank ( tYZ, myProjYZ ( point ) );
-    if ( rankXY > rankYZ && rankXZ > rankYZ )
+    if ( rankXY >= rankYZ && rankXZ >= rankYZ )
       return MAIN_AXIS::X;
-    else if ( rankXY > rankXZ && rankYZ > rankXZ )
+    else if ( rankXY >= rankXZ && rankYZ >= rankXZ )
       return MAIN_AXIS::Y;
     else
       return MAIN_AXIS::Z;
@@ -290,8 +290,9 @@ namespace DGtal
     Segmentation2D segmenter ( curve.begin(), curve.end(), SegmentComputer2D() );
     for ( typename Segmentation2D::SegmentComputerIterator it = segmenter.begin(); it != segmenter.end(); ++it )
     {
-      if ( it->isInDSS ( point ) )
-        rank += std::distance ( it->begin(), it->end() );
+      unsigned int dist = std::distance ( it->begin ( ), it->end ( ) );
+      if ( it->isInDSS ( point ) && rank < dist )
+        rank = dist;
     }
       return rank;
   }
