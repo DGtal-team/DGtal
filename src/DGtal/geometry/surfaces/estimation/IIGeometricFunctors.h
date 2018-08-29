@@ -180,7 +180,6 @@ namespace DGtal {
           ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
         }
 #endif
-
         return eigenVectors.column( 1 ); // tangent vector is associated to greatest eigenvalue.
       }
 
