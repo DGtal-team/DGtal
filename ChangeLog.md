@@ -45,9 +45,14 @@
     maximal axis. This estimator has only a research value.
   - DSSes filtration during L-MST3D computations.
 
-
 - *Image*
   - RigidTransformation2D/3D depends on a vector functor that can be, for example, VectorRounding
+- *Documentation*
+  - Fix examples' filenames in Digital Topology module documentation (Isabelle
+    Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
+  - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
+    [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
+
 
 # DGtal 0.9.4.1
 
