@@ -10,7 +10,7 @@
 
 - Miscellaneous
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
-    [#1316](https://github.com/DGtal-team/DGtal/pull/1316)
+    (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
 
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
