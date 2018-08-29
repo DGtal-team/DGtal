@@ -27,9 +27,9 @@
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
 
-## Documentation
-
-- *geometry*
+- *Documentation*
+  - Fix examples' filenames in Digital Topology module documentation (Isabelle
+    Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
   - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
 
