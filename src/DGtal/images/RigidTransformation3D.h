@@ -138,58 +138,6 @@ protected:
     TFunctor functor;
 };
 
-/////////////////////////////////////////////////////////////////////////////
-// Template class QuaternionRotation
-template <typename TSpace, typename TFunctor, typename TInputValue, typename TOutputValue >
-class QuaternionRotation : std::unary_function <TInputValue, TOutputValue>
-{
-    ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
-    BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
-    BOOST_STATIC_ASSERT(( TOutputValue::dimension == 3 ));
-    BOOST_STATIC_ASSERT(( TInputValue::dimension == 3 ));
-
-    // ----------------------- Types ------------------------------
-public:
-    typedef typename TSpace::RealPoint RealPoint;
-    typedef typename TSpace::RealVector RealVector;
-
-    // ----------------------- Interface --------------------------------------
-public:
-    /**
-       * Constructor.
-       * @param A -- Pythagorean quadruple component.
-       * @param B -- Pythagorean quadruple component.
-       * @param C -- Pythagorean quadruple component.
-       */
-    QuaternionRotation ( long int p_M, long int  p_N, long int  p_P, long int p_Q ) : m ( p_M ), n ( p_N ), p ( p_P ), q ( p_Q )
-    {
-       norm = m * m + n * n + p * p + q * q;
-    }
-
-    /**
-       * Operator
-       *
-       * @return the transformed point.
-       */
-    inline
-    TOutputValue operator()( const TInputValue & aInput ) const
-    {
-        RealPoint point;
-
-        point[0] = double( m * m + n * n - p * p - q * q )/(double)norm * aInput[0] + 2. * double( n * p - m * q )/(double)norm * aInput[1] + 2. * double( m * p + n * q )/(double)norm * aInput[2];
-        point[1] = 2. * double(  m * q + n * p )/(double)norm * aInput[0] + double( m * m - n * n + p * p - q * q )/(double)norm * aInput[1] + 2. * double( p * q - m * n )/(double)norm * aInput[2];
-        point[2] = 2. * double(  n * q - m * p )/(double)norm * aInput[0] + 2. * double( m * n + p * q )/(double)norm * aInput[1] + double( m * m - n * n - p * p + q * q )/(double)norm * aInput[2];
-
-        return functor ( point );
-    }
-
-    // ------------------------- Protected Datas ------------------------------
-protected:
-    long int m, n, p, q, norm;
-    TFunctor functor;
-};
-
 
 /////////////////////////////////////////////////////////////////////////////
 // Template class BackwardRigidTransformation3D
