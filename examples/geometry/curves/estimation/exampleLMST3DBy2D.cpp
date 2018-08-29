@@ -48,7 +48,7 @@
 
 //! [LambdaMST3DBy2DHeader]
 #include "DGtal/geometry/curves/estimation/LambdaMST3DBy2D.h"
-//! [LambdaMST3By2DHeader]
+//! [LambdaMST3DBy2DHeader]
 ///////////////////////////////////////////////////////////////////////////////
 
 
