@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CurveDigitizer.h
+ * @file UglyNaiveParametricCurveDigitizer3D.h
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, A3SI, France
  *
@@ -56,7 +56,9 @@ namespace DGtal
 // class CurveDigitizer
 /**
  * Description of class 'UglyNaiveParametricCurveDigitizer3D' <p>
- * \brief Aim:
+ * \brief Aim: Digitization of 3D parametric curves.
+ * This method produces, for good parameters step and k_next, a 26-connected
+ * digital curves obtained from a digitization process of 3D parametric curves.
  */
 template <typename TParametricCurve>
 class UglyNaiveParametricCurveDigitizer3D
