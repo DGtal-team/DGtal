@@ -5,10 +5,23 @@
 - *Configuration/General*
   - Continuous integration AppVeyor fix
     [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
+  - Fixing documentation checks and updating Travis scripts
+    (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
 
 - *Base*
-  - Fixes wrong members in PredicateCombiner (David Coeurjolly,
+  - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
+
+- *Shapes*
+  - Add two new star shapes: Astroid and Lemniscate
+   (Adrien Krähenbühl, Chouaib Fellah,
+   [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
+  - Fixing openmp flags (David Coeurjolly,
+    [#1324](https://github.com/DGtal-team/DGtal/pull/1324))
+  - Add assignment operator to ImageContainerByITKImage (Pablo Hernandez,
+    [#1336](https://github.com/DGtal-team/DGtal/pull/1336))
+  - Fix compilation warning: const qualifier ignored in cast (Pablo Hernandez,
+    [#1337](https://github.com/DGtal-team/DGtal/pull/1337))
 
 - *IO*
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
@@ -17,7 +30,8 @@
 - *Documentation*
   - Fix examples' filenames in Digital Topology module documentation (Isabelle
     Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
-
+  - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
+    [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
 
 
 # DGtal 0.9.4.1

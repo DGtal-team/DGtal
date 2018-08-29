@@ -48,7 +48,7 @@ vertices, edges (a curve bordered by two vertices), faces (a piece of
 surface bordered by a sequence of edges). They are often called
 0-cells, 1-cells and 2-cells respectively. The half-edge data
 structure describes which cells are connected to each other. Its
-principle is to associate two \i half-edges to each edge. Once this is
+principle is to associate two \em half-edges to each edge. Once this is
 done, it is easy to tie cells together by simply indicating for each
 half-edge:
 
