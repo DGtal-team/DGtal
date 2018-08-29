@@ -1,5 +1,46 @@
-# DGtal 1.0.0
 
+# DGtal 1.0
+
+## Bug Fixes
+- *Configuration/General*
+  - Continuous integration AppVeyor fix
+    [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
+  - Fixing documentation checks and updating Travis scripts
+    (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
+
+- *Base*
+  - Fixing wrong members in PredicateCombiner (David Coeurjolly,
+    [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
+
+- *Shapes*
+  - Add two new star shapes: Astroid and Lemniscate
+   (Adrien Krähenbühl, Chouaib Fellah,
+   [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
+  - Fixing openmp flags (David Coeurjolly,
+    [#1324](https://github.com/DGtal-team/DGtal/pull/1324))
+  - Add assignment operator to ImageContainerByITKImage (Pablo Hernandez,
+    [#1336](https://github.com/DGtal-team/DGtal/pull/1336))
+  - Fix compilation warning: const qualifier ignored in cast (Pablo Hernandez,
+    [#1337](https://github.com/DGtal-team/DGtal/pull/1337))
+
+- *IO*
+  - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
+    [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
+
+## Documentation
+
+- *geometry*
+  - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
+    [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
+
+
+# DGtal 0.9.4.1
+
+## Bug Fixes
+
+- *Documentation*
+  - Fixing path to Mathjax CDN in documentation (David Coeurjolly,
+    [#1318](https://github.com/DGtal-team/DGtal/pull/1318))
 
 # DGtal 0.9.4
 
@@ -14,7 +55,7 @@
   - Adding the half-edge data structure to represent arbitrary
     two-dimensional combinatorial surfaces with or without boundary
     (Jacques-Olivier Lachaud
-     [#1266](https://github.com/DGtal-team/DGtal/pull/1266))    
+     [#1266](https://github.com/DGtal-team/DGtal/pull/1266))
   - Add VoxelComplex, an extension for CubicalComplex, implementing the Critical-Kernels
     framework, based on the work of M.Couprie and G.Bertrand on isthmus.
     (Pablo Hernandez, [#1147](https://github.com/DGtal-team/DGtal/pull/1147))
@@ -67,7 +108,7 @@
   - Fix HDF5 link missing in compilation (Bertrand Kerautret,
      [#1301](https://github.com/DGtal-team/DGtal/pull/1301))
   - Fix compilation with QGLViewer (2.7.x) and Qt5 (Boris Mansencal,
-     [#1300](https://github.com/DGtal-team/DGtal/pull/1300)) 
+     [#1300](https://github.com/DGtal-team/DGtal/pull/1300))
 
 - *Shapes Package*
   - Fix ImplicitPolynomial3Shape and TrueDigitalSurfaceLocalEstimator.
