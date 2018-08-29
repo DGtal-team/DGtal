@@ -14,7 +14,7 @@
 **/
 
 /**
- * @file shapes/exampleTriangulatedSurface.cpp
+ * @file shapes/sphereCotangentLaplaceOperator.cpp
  * @ingroup Examples
  * @author Thomas Caissard (\c thomas.caissard@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
