@@ -298,11 +298,12 @@ Viewer3D<> viewer;
  
 @image html visuBorderExtraction.png  "Border extraction visualisation" 
 @image latex visuBorderExtraction.png  "Border extraction visualisation" width=5cm
-see example  @ref 3dBorderExtraction.cpp
+see example <a href="3dBorderExtraction_8cpp_source.html" >  3dBorderExtraction.cpp</a>
 
 @image html visuBorderExtraction2.png  "Border extraction visualisation from imported volume " 
 @image latex visuBorderExtraction2.png  "Border extraction visualisation" width=5cm
-see example: @ref 3dBorderExtractionImg.cpp
+see example: <a href="3dBorderExtractionImg_8cpp_source.html"> 3dBorderExtractionImg.cpp</a>
+   
    
    \subsection dgtal_topology_sec3_4   Connectedness and connected components
   
