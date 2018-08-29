@@ -32,6 +32,9 @@
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
 
 - *Documentation*
+  - Replacing html internal links by ref command in Digital Topology module
+    documentation. Also ignoring doxygen warning when ref begins with a digit.
+    (Roland Denis, [#1340](https://github.com/DGtal-team/DGtal/pull/1340))
   - Fix examples' filenames in Digital Topology module documentation (Isabelle
     Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
   - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
