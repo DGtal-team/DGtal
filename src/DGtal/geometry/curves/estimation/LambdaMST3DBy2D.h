@@ -77,8 +77,8 @@ namespace DGtal {
     
     /**
      * Initialisation.
-     * @param itB, begin iterator
-     * @param itE, end iterator
+     * @param itB begin iterator
+     * @param itE end iterator
      */
     void init ( Iterator3D itB, Iterator3D itE );
     
