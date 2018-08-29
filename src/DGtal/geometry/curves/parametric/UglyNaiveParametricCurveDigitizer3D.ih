@@ -125,7 +125,6 @@ namespace DGtal
   {
     if ( bbegin == bend )
       return;
-
     auto it = bbegin;
     if ( digitalCurve.size() == 0 )
     {
@@ -138,7 +137,7 @@ namespace DGtal
     for (; it != bend; it++ )
     {
       // search for better candidates i.e. search for 26-connected points of higher scores in the k-neighborhood.
-      for ( struct { ConstIterator jt; unsigned int k; } s = { it + 1, 0 };  s.jt != bend && s.k < K_NEXT; s.jt++ )
+      for ( KConstIter s = { it + 1, 0 };  s.jt != bend && s.k < K_NEXT; s.jt++ )
       {
         if ( is26Connected ( digitalCurve.back(), *s.jt ) && weights[*s.jt].second >= weights[*it].second )
         {
@@ -213,11 +212,12 @@ namespace DGtal
   inline
   void UglyNaiveParametricCurveDigitizer3D<T>::cleanCurve ( )
   {
+    struct KIter { typename DigitalCurve::iterator jt; unsigned int k; };
     cleanClosedPart ();
     for ( auto it = digitalCurve.begin (); it != digitalCurve.end (); )
     {
       auto tmp = it + 1;
-      for ( struct { typename DigitalCurve::iterator jt; unsigned int k; } s = { tmp, 0 };  s.jt != digitalCurve.end () && s.k < K_NEXT; s.jt++ )
+      for ( KIter  s = { tmp, 0 };  s.jt != digitalCurve.end () && s.k < K_NEXT; s.jt++ )
         if ( is26Connected ( *it, *s.jt ) )
         {
           tmp = s.jt;

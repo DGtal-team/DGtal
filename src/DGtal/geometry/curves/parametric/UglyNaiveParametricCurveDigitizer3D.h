@@ -118,6 +118,10 @@ protected:
 protected:
 private:
 
+    // This is defined here due the the problems with MS co
+    struct KConstIter { typename DigitalCurve::const_iterator jt; unsigned int k; };
+    struct KIter { typename DigitalCurve::iterator jt; unsigned int k; };
+
     /**
      * Copy constructor.
      * @param other the object to clone.
