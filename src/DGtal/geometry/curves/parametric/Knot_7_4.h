@@ -67,11 +67,12 @@ public:
      * Destructor.
      */
     ~Knot_7_4() {}
+
     /**
      * Constructor.
-     * @param scale_1
-     * @param scale_2
-     * @param scale_3
+     * @param scale_1 x-axis scaling factor
+     * @param scale_2 y-axis scaling factor
+     * @param scale_3 z-axis scaling factor
      */
     Knot_7_4 ( long double scale_1, long double scale_2,  long double scale_3 );
 
