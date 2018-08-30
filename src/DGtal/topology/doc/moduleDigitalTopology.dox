@@ -286,7 +286,7 @@ namespace DGtal {
   
  
  The resulting border can be visualized for instance by: 
- (see <a href="3dBorderExtraction_8cpp_source.html" >  3dBorderExtraction.cpp</a>)
+ (see @ref 3dBorderExtraction.cpp)
 @code 
 Viewer3D<> viewer;
  viewer.show(); 
@@ -298,11 +298,12 @@ Viewer3D<> viewer;
  
 @image html visuBorderExtraction.png  "Border extraction visualisation" 
 @image latex visuBorderExtraction.png  "Border extraction visualisation" width=5cm
-see example  @ref 3dBorderExtraction.cpp
+see example @ref 3dBorderExtraction.cpp
 
 @image html visuBorderExtraction2.png  "Border extraction visualisation from imported volume " 
 @image latex visuBorderExtraction2.png  "Border extraction visualisation" width=5cm
 see example: @ref 3dBorderExtractionImg.cpp
+   
    
    \subsection dgtal_topology_sec3_4   Connectedness and connected components
   
@@ -353,8 +354,7 @@ see example: @ref 3dBorderExtractionImg.cpp
    we give the full code for the homotopic thinning of a shape in 2D
    and 3D.
   
-   The file <a href="homotopicThinning3D_8cpp_source.html" >
-   homotopicThinning3D.cpp </a> illustrates the homotopic thinning on
+   The file @ref homotopicThinning3D.cpp illustrates the homotopic thinning on
    a 26_6 object. 
   
  First a digital object (with 6_26 adjacency) is defined from a digital set representing two rings :
