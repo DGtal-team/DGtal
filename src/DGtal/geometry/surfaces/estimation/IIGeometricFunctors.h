@@ -106,7 +106,7 @@ namespace DGtal {
         }
 #endif
 
-        return eigenVectors.column( 0 ); // normal vector is associated to smallest eigenvalue.      
+        return eigenVectors.column( 0 ); // normal vector is associated to smallest eigenvalue.
       }
 
       /**
@@ -115,7 +115,7 @@ namespace DGtal {
       */
       void init( Component /* h */, Component /* r */ ) {}
 
-    private: 
+    private:
       /// A data member only used for temporary calculations.
       mutable Matrix eigenVectors;
       /// A data member only used for temporary calculations.
@@ -180,9 +180,14 @@ namespace DGtal {
           ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
         }
 #endif
-
-        return eigenVectors.column( 1 ); // tangent vector is associated to greatest eigenvalue.      
+        return eigenVectors.column( 1 ); // tangent vector is associated to greatest eigenvalue.
       }
+
+      /**
+      * Initializes the functor with the gridstep and the ball
+      * Euclidean radius. Not used for this estimator.
+      */
+      void init( Component /* h */, Component /* r */ ) {}
 
     private:
       /// A data member only used for temporary calculations.
@@ -254,7 +259,7 @@ namespace DGtal {
         }
 #endif
 
-        return eigenVectors.column( Space::dimension - 1 ); // first principal curvature direction is associated to greatest eigenvalue.      
+        return eigenVectors.column( Space::dimension - 1 ); // first principal curvature direction is associated to greatest eigenvalue.
       }
 
       /**
@@ -333,7 +338,7 @@ namespace DGtal {
         }
 #endif
 
-        return eigenVectors.column( Space::dimension - 2 ); // second principal curvature direction is associated to greatest eigenvalue.      
+        return eigenVectors.column( Space::dimension - 2 ); // second principal curvature direction is associated to greatest eigenvalue.
       }
 
       /**
@@ -395,7 +400,7 @@ namespace DGtal {
       * @param arg any symmetric positive matrix (covariance matrix
       *
       * @return the first and the second principal curvature direction in
-      * a std::pair for the II covariance matrix, which is the eigenvector 
+      * a std::pair for the II covariance matrix, which is the eigenvector
       * associated with the highest eigenvalues.
       */
       Value operator()( const Argument& arg ) const
@@ -414,7 +419,7 @@ namespace DGtal {
         return Value(
                 eigenVectors.column( Space::dimension - 1 ),
                 eigenVectors.column( Space::dimension - 2 )
-                );   
+                );
       }
 
       /**
@@ -602,7 +607,7 @@ namespace DGtal {
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
         ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
-        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
+        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1]))
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
         Value k1 = d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r;
@@ -685,7 +690,7 @@ namespace DGtal {
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
         ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
-        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
+        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1]))
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
 
@@ -767,7 +772,7 @@ namespace DGtal {
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
         ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
-        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
+        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1]))
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
         return d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r;
@@ -805,9 +810,9 @@ namespace DGtal {
     // template class IIPrincipalCurvatures3DFunctor
     /**
     * Description of template class 'IIPrincipalCurvatures3DFunctor' <p> \brief
-    * Aim: A functor Matrix -> std::pair<Real,Real> that returns the first and 
+    * Aim: A functor Matrix -> std::pair<Real,Real> that returns the first and
     * the second principal curvature value by diagonalizing the given covariance
-    * matrix. This functor is valid starting from 3D space. Note that by first 
+    * matrix. This functor is valid starting from 3D space. Note that by first
     * we mean the value with first greatest curvature in absolute value.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
@@ -837,7 +842,7 @@ namespace DGtal {
       * Apply operator.
       * @param arg any symmetric positive matrix (covariance matrix
       *
-      * @return the first and the second principal curvature value in a 
+      * @return the first and the second principal curvature value in a
       * std::pair for the II covariance matrix, which are the first and the
       * second highest eigenvalue.
       */
@@ -849,10 +854,10 @@ namespace DGtal {
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
         ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
-        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
+        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1]))
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
-        return Value( 
+        return Value(
                 d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r,
                 d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r
                );
