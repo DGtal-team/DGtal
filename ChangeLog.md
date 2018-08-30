@@ -8,6 +8,10 @@
   - Fixing documentation checks and updating Travis scripts
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
 
+- Miscellaneous
+  - Fix Small bug in Integral Invariant Volume Estimator in 2D
+    (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
+
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
@@ -48,6 +52,9 @@
 - *Image*
   - RigidTransformation2D/3D depends on a vector functor that can be, for example, VectorRounding
 - *Documentation*
+  - Replacing html internal links by ref command in Digital Topology module
+    documentation. Also ignoring doxygen warning when ref begins with a digit.
+    (Roland Denis, [#1340](https://github.com/DGtal-team/DGtal/pull/1340))
   - Fix examples' filenames in Digital Topology module documentation (Isabelle
     Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
   - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
