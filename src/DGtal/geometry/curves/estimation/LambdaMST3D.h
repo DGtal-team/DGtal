@@ -51,10 +51,11 @@
 
 namespace DGtal {
   /**
-   * Aim: Implement Lambda MST tangent estimators. This class is a model of CCurveLocalGeometricEstimator.
+   * Aim: Implement 3D Lambda MST tangent estimators. This class is a model of CCurveLocalGeometricEstimator.
    * @tparam TSpace model of CSpace
    * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
    * @tparam Functor model of CLMSTTangentFrom2DSS
+   * @tparam CONNECTIVITY connectivity used for 2D digital line recognition algorithm
    */
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   class LambdaMST3DEstimator
