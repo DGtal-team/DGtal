@@ -57,6 +57,7 @@
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
+using namespace functors;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -67,9 +68,9 @@ int main()
   typedef Container::const_iterator ConstIterator;
   typedef Naive3DDSSComputer < ConstIterator, int, 8 > SegmentComputer;
   typedef SaturatedSegmentation < SegmentComputer > Segmentation;
-  LambdaMST3D < Segmentation > lmst;
+  LambdaMST3D < Segmentation, Lambda64Function, DSSLengthLessEqualFilter < SegmentComputer > > lmst;
   //! [LambdaMST3DStandardCtor]
-  
+
   // Input points
   Container contour;
   contour.push_back(Point(18,25,18));
@@ -89,12 +90,16 @@ int main()
   Segmentation segmenter ( contour.begin(), contour.end(), SegmentComputer() );
   lmst.attach ( segmenter );
   //! [LambdaMST3DTangential]
-  
+
+  //! [LambdaMST3DTSetupTheFilter]
+  lmst.getDSSFilter ( ).init ( 7 );
+  //! [LambdaMST3DTSetupTheFilter]
+
   //! [LambdaMST3DPoint]
   for ( ConstIterator it = contour.begin(); it != contour.end(); ++it )
     lmst.eval ( *it );
   //! [LambdaMST3DPoint]
-  
+
   //! [LambdaMST3DFast]
     lmst.init ( contour.begin(), contour.end() );
     std::vector < RealVector > tangent;
