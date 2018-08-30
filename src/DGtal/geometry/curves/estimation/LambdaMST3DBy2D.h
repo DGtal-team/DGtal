@@ -55,7 +55,6 @@ namespace DGtal {
   * @tparam Iterator3D iterator over a sequence of 3D integer points
   * @tparam Functor a functor that constructs 3D tangent vector from two 2D projections
   * @tparam LambdaFunctor model of CLMSTTangentFrom2DSS
-  * @tparam CONNECTIVITY connectivity used for 2D digital line recognition algorithm
   */
   template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY = 8 >
   class LambdaMST3DBy2DEstimator
