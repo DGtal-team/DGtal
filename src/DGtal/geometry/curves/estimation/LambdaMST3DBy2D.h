@@ -50,13 +50,13 @@
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 
 namespace DGtal {
-    /**
-     * Aim: Implement 3D Lambda MST tangent estimators. This class is a model of CCurveLocalGeometricEstimator.
-     * @tparam Iterator3D iterator over a sequence of 3D integer points
-     * @tparam Functor a functor that constructs 3D tangent vector from two 2D projections
-     * @tparam Functor model of CLMSTTangentFrom2DSS
-     * @tparam CONNECTIVITY connectivity used for 2D digital line recognition algorithm
-     */
+ /**
+  * Aim: Implement 3D Lambda MST tangent estimators. This class is a model of CCurveLocalGeometricEstimator.
+  * @tparam Iterator3D iterator over a sequence of 3D integer points
+  * @tparam Functor a functor that constructs 3D tangent vector from two 2D projections
+  * @tparam Functor model of CLMSTTangentFrom2DSS
+  * @tparam CONNECTIVITY connectivity used for 2D digital line recognition algorithm
+  */
   template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY = 8 >
   class LambdaMST3DBy2DEstimator
   {
