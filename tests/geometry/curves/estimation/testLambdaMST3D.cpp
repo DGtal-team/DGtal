@@ -38,6 +38,7 @@
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/geometry/curves/Naive3DDSSComputer.h"
 #include "DGtal/geometry/curves/estimation/LambdaMST3D.h"
+#include "DGtal/geometry/curves/estimation/FunctorsLambdaMST.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,6 +46,7 @@
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
+using namespace functors;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class LambdaMST3D.
@@ -83,9 +85,7 @@ public:
     lmst64.attach ( segmenter );
     lmst64.init ( curve.begin(), curve.end() );
     for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
-    {
       lmst64.eval ( *it );
-    }
     return true;
   }
   bool lambda64()
@@ -97,6 +97,73 @@ public:
     vector < RealVector > tangent;
     lmst64.eval < back_insert_iterator< vector < RealVector > > > ( curve.begin(), curve.end(), back_insert_iterator< vector < RealVector > > ( tangent ) );
     return true;
+  }
+
+  bool lambda64FilteredByPoint ()
+  {
+      Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
+      LambdaMST3D < Segmentation, Lambda64Function, DSSLengthLessEqualFilter < SegmentComputer > > lmst64;
+      lmst64.attach ( segmenter );
+      lmst64.getDSSFilter ( ).init ( 7 );
+      lmst64.init ( curve.begin(), curve.end() );
+      for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
+          lmst64.eval ( *it );
+      return true;
+  }
+  bool lambda64Filtered()
+  {
+      Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
+      LambdaMST3D < Segmentation, Lambda64Function, DSSLengthLessEqualFilter < SegmentComputer > > lmst64;
+      lmst64.attach ( segmenter );
+      lmst64.getDSSFilter ( ).init ( 7 );
+      lmst64.init ( curve.begin(), curve.end() );
+      vector < RealVector > tangent;
+      lmst64.eval < back_insert_iterator< vector < RealVector > > > ( curve.begin(), curve.end(), back_insert_iterator< vector < RealVector > > ( tangent ) );
+      return true;
+   }
+
+   bool lambdaSinByPoint ()
+   {
+      Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
+      LambdaMST3D < Segmentation, LambdaSinFromPiFunction > lmst;
+      lmst.attach ( segmenter );
+      lmst.init ( curve.begin(), curve.end() );
+      for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
+          lmst.eval ( *it );
+      return true;
+  }
+
+  bool lambdaSin()
+  {
+      Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
+      LambdaMST3D < Segmentation, LambdaSinFromPiFunction > lmst;
+      lmst.attach ( segmenter );
+      lmst.init ( curve.begin(), curve.end() );
+      vector < RealVector > tangent;
+      lmst.eval < back_insert_iterator< vector < RealVector > > > ( curve.begin(), curve.end(), back_insert_iterator< vector < RealVector > > ( tangent ) );
+      return true;
+  }
+
+  bool lambdaExpByPoint ()
+  {
+      Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
+      LambdaMST3D < Segmentation, LambdaExponentialFunction > lmst;
+      lmst.attach ( segmenter );
+      lmst.init ( curve.begin(), curve.end() );
+      for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
+          lmst.eval ( *it );
+      return true;
+  }
+
+  bool lambdaExp()
+  {
+      Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
+      LambdaMST3D < Segmentation, LambdaExponentialFunction > lmst;
+      lmst.attach ( segmenter );
+      lmst.init ( curve.begin(), curve.end() );
+      vector < RealVector > tangent;
+      lmst.eval < back_insert_iterator< vector < RealVector > > > ( curve.begin(), curve.end(), back_insert_iterator< vector < RealVector > > ( tangent ) );
+      return true;
   }
 };
 
@@ -111,9 +178,15 @@ int main( int , char**  )
     trace.beginBlock ( "Testing LambdaMST3D" );
         trace.beginBlock ( "Testing point only calculation" );
           res &= testLMST.lambda64ByPoint();
+          res &= testLMST.lambda64FilteredByPoint();
+          res &= testLMST.lambdaSinByPoint();
+          res &= testLMST.lambdaExpByPoint();
         trace.endBlock();
         trace.beginBlock ( "Testing calculation for whole curve" );
            res &= testLMST.lambda64();
+           res &= testLMST.lambda64Filtered();
+           res &= testLMST.lambdaSin();
+           res &= testLMST.lambdaExp();
         trace.endBlock();
     trace.endBlock();
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
