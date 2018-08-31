@@ -236,12 +236,12 @@ public:
      return false;
   }
 
-  bool admissibility ( const DSSType & dss, const Point & p ) const
+  bool admissibility ( const DSSType &, const Point & ) const
   {
-    return dss->isInDSS ( p );
+    return false;
   }
 
-  int position ( const DSSType & dss, const Point & p ) const
+  int position ( const DSSType &, const Point & ) const
   {
     throw std::runtime_error ( "You are not suppose to see this error!" );
   }
