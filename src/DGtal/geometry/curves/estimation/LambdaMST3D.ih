@@ -72,6 +72,8 @@ namespace DGtal
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::eval( const Point & p )
   {
     assert ( isValid() );
+    std::vector < SegmentComputer > nearOrphantDSS;
+    bool isOrphant = true;
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
     typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
     Value tangent, partial, prev;
@@ -80,18 +82,40 @@ namespace DGtal
     {
       if ( myDSSFilter ( *DSS ) )
         continue;
+
+      // collect DSSes that may need to be required to ensure coverage if the only covering DSS was filtered out
+      if ( isOrphant && ! DSS->isInDSS ( p ) && myDSSFilter.admissibility ( *DSS, p ) )
+        nearOrphantDSS.push_back ( *DSS );
+
       if ( DSS->isInDSS ( p ) )
       {
-        auto dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
+        unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
         prev = partial;
-        auto pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), p ) ) + 1;
-        SegmentComputer comp ( *DSS );
-        partial = myFunctor ( comp, pos, dssLen );
+        unsigned int pos = std::distance ( DSS.begin(), std::find ( DSS.begin ( ), DSS.end ( ), p ) ) + 1;
+        partial = myFunctor ( *DSS, pos, dssLen );
         if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
 	      partial.first = -partial.first;
-      tangent += partial;
+        tangent += partial;
+        isOrphant = false;
       }
     }
+
+    if ( isOrphant && nearOrphantDSS.size ( ) > 0 )
+    {
+      for ( auto it = nearOrphantDSS.begin ( ) ; it != nearOrphantDSS.end ( ); ++it )
+      {
+        unsigned int dssLen = std::distance ( it->begin(), it->end() ) + 1;
+        prev = partial;
+        int pos = myDSSFilter. position ( *it, p );
+        partial = myFunctor ( *it, pos, dssLen );
+        if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
+          partial.first = -partial.first;
+        tangent += partial;
+      }
+    }
+    else if ( isOrphant && nearOrphantDSS.size ( ) == 0 )
+      throw std::runtime_error ( "The DSS filter is not well constructed! The point is not DSS covered!" );
+
     if ( tangent.second != 0. )
       return tangent.first / tangent.second;
     else
