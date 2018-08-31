@@ -96,15 +96,21 @@ namespace DGtal
       BOOST_CONCEPT_USAGE(CLMSTDSSFilter)
       {
          ConceptUtils::sameType( c, x.operator()( dss ) );
+         ConceptUtils::sameType( c, x.admissibility ( dss, p ) );
+         ConceptUtils::sameType( i, x.position ( dss, p ) );
       }
       void checkConstConstraints() const
       {
-          ConceptUtils::sameType( c, x.operator()( dss ) );
+         ConceptUtils::sameType( c, x.operator()( dss ) );
+         ConceptUtils::sameType( c, x.admissibility ( dss, p ) );
+         ConceptUtils::sameType( i, x.position ( dss, p ) );
       }
       // ------------------------- Private Datas --------------------------------
     private:
       bool c;
+      int i;
       T x;
+      typename T::Point p;
       TDSS dss;
     }; // end of concept CLMSTDSSFilter
     

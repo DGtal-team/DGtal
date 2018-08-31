@@ -39,8 +39,10 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <functional>
+#include <iterator>
 #include  <stdexcept>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -227,10 +229,21 @@ class DSSMuteFilter
 public:
 // ----------------------- Types ------------------------------
   typedef DSS DSSType;
+  typedef typename IteratorCirculatorTraits< typename DSSType::ConstIterator >::Value Point;
 
   bool operator()( const DSSType & ) const
   {
      return false;
+  }
+
+  bool admissibility ( const DSSType & dss, const Point & p ) const
+  {
+    throw std::runtime_error ( "You are not suppose to see this error!" );
+  }
+
+  int position ( const DSSType & dss, const Point & p ) const
+  {
+    throw std::runtime_error ( "You are not suppose to see this error!" );
   }
 };
 
@@ -247,11 +260,14 @@ class DSSLengthLessEqualFilter
 public:
 // ----------------------- Types ------------------------------
   typedef DSS DSSType;
+  typedef typename IteratorCirculatorTraits< typename DSSType::ConstIterator >::Value Point;
 
   DSSLengthLessEqualFilter ( ) :  initThreshold ( false ) { }
 
-  void init ( unsigned int threshold )
+  void init ( double threshold )
   {
+    if ( threshold < 0. )
+      throw std::runtime_error ( "The threshold has to be positive!" );
     lenTreshold = threshold;
     initThreshold = true;
   }
@@ -265,8 +281,26 @@ public:
       return true;
     return false;
   }
+
+  bool admissibility ( const DSSType & dss, const Point & p ) const
+  {
+    if ( ( p - *dss.begin ( ) ).norm ( ) <= lenTreshold || ( p - *( dss.end ( ) - 1 ) ).norm ( ) <= lenTreshold )
+      return true;
+    return false;
+  }
+
+  int position ( const DSSType & dss, const Point & p ) const
+  {
+    if ( ( p - *dss.begin ( ) ).norm ( ) <= lenTreshold )
+      return 1;
+    else if ( ( p - *( dss.end ( ) - 1 ) ).norm ( ) <= lenTreshold )
+      return std::distance ( dss.begin ( ), dss.end ( ) );
+    else
+      throw std::runtime_error ( "The DSS and the poit are not admissibility!" );
+  }
+
 private:
-    unsigned int lenTreshold;
+    double lenTreshold;
     bool initThreshold;
 };
 
