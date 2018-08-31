@@ -39,6 +39,7 @@
 #include <algorithm>
 #include <iterator>
 #include <cmath>
+#include <vector>
 #include <map>
 #include <DGtal/base/Common.h>
 #include <DGtal/helpers/StdDefs.h>
@@ -105,6 +106,11 @@ namespace DGtal {
     bool isValid ( ) const;
     
     /**
+     * For ranges of points the second version of this method is faster
+     * than iterating over this version.
+     *
+     * NOTE THAT ONLY THIS VERSION ALLOWS FOR DSS FILTRATION!
+     *
      * @param p a point of the underlying curve
      * @return tangent direction
      */
@@ -113,6 +119,9 @@ namespace DGtal {
     /**
      * @tparam OutputIterator writable iterator.
      * More efficient way to compute tangent directions for all points of a curve.
+     *
+     * NOTE THAT THIS VERSION DOES NOT SUPPORT DSS FILTRATION! YOU HAVE BEEN WARNED!
+     *
      * @param itb begin iterator
      * @param ite end iterator
      * @param result writable iterator over a container which stores estimated tangent directions.
@@ -128,6 +137,8 @@ namespace DGtal {
     
     // ------------------------- Internals ------------------------------------
   protected:
+
+      typedef typename std::vector<SegmentComputer >::const_iterator OrphantDSSIterator;
     
     /**
      * @brief Accumulate partial results obtained for each point.
@@ -144,7 +155,18 @@ namespace DGtal {
      */
     template <typename OutputIterator>
     void accumulate ( std::multimap < Point, Value > & outValues, ConstIterator itb, ConstIterator ite, OutputIterator & result );
-    
+
+    /**
+     * @brief Use the DSS filter defined conditions to ensure estiamtion over not covered points.
+     *
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param p a point of the underlying curve
+     * @ return estimated tangent
+     */
+    Value treat_orphant ( OrphantDSSIterator begin, OrphantDSSIterator end, const Point & p );
+
+
     // ------------------------- Private Datas --------------------------------
   private:
     /**
