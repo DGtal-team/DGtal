@@ -48,6 +48,7 @@
   - LambdaMST3DBy2D - a variation of 3D Lambda Maximal Segment tangent estimator that uses only 2D tangents along
     maximal axis. This estimator has only a research value.
   - DSSes filtration during L-MST3D computations.
+  - An option for filtaring DSSes during LambdaMST3D calculations
 
 - *Image*
   - RigidTransformation2D/3D depends on a vector functor that can be, for example, VectorRounding
