@@ -68,11 +68,32 @@ namespace DGtal
 
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
+  typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::Value
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treat_orphant ( OrphantDSSIterator begin, OrphantDSSIterator end,
+                                                                                     const Point & p )
+  {
+    Value tangent, prev, partial;
+    for ( auto it = begin ; it != end; ++it )
+    {
+      unsigned int dssLen = std::distance ( it->begin(), it->end() ) + 1;
+      prev = partial;
+      int pos = myDSSFilter. position ( *it, p );
+      partial = myFunctor ( *it, pos, dssLen );
+      if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
+        partial.first = -partial.first;
+      tangent += partial;
+    }
+    return tangent;
+  }
+
+
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  inline
   typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::RealVector
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::eval( const Point & p )
   {
     assert ( isValid() );
-    std::vector < SegmentComputer > nearOrphantDSS;
+    std::vector < SegmentComputer > admissibleDSS;
     bool isOrphant = true;
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
     typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
@@ -85,7 +106,7 @@ namespace DGtal
 
       // collect DSSes that may need to be required to ensure coverage if the only covering DSS was filtered out
       if ( isOrphant && ! DSS->isInDSS ( p ) && myDSSFilter.admissibility ( *DSS, p ) )
-        nearOrphantDSS.push_back ( *DSS );
+        admissibleDSS.push_back ( *DSS );
 
       if ( DSS->isInDSS ( p ) )
       {
@@ -100,20 +121,9 @@ namespace DGtal
       }
     }
 
-    if ( isOrphant && nearOrphantDSS.size ( ) > 0 )
-    {
-      for ( auto it = nearOrphantDSS.begin ( ) ; it != nearOrphantDSS.end ( ); ++it )
-      {
-        unsigned int dssLen = std::distance ( it->begin(), it->end() ) + 1;
-        prev = partial;
-        int pos = myDSSFilter. position ( *it, p );
-        partial = myFunctor ( *it, pos, dssLen );
-        if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
-          partial.first = -partial.first;
-        tangent += partial;
-      }
-    }
-    else if ( isOrphant && nearOrphantDSS.size ( ) == 0 )
+    if ( isOrphant && admissibleDSS.size ( ) > 0 )
+      tangent = treat_orphant ( admissibleDSS.cbegin ( ), admissibleDSS.cend ( ), p );
+    else if ( isOrphant && admissibleDSS.size ( ) == 0 )
       throw std::runtime_error ( "The DSS filter is not well constructed! The point is not DSS covered!" );
 
     if ( tangent.second != 0. )
@@ -137,13 +147,11 @@ namespace DGtal
   
     for(; DSS != lastDSS; ++DSS)
     {
-      if ( myDSSFilter ( *DSS ) )
-        continue;
       auto dssLen = std::distance ( DSS.begin(), DSS.end() );
-      SegmentComputer comp ( *DSS );
       for ( unsigned int indexOfPointInDSS = 0; indexOfPointInDSS < dssLen; indexOfPointInDSS++ )
-        outValues.insert ( std::make_pair ( *(DSS.begin() + indexOfPointInDSS), myFunctor ( comp, indexOfPointInDSS+1, dssLen+1 ) ) );
+        outValues.insert ( std::make_pair ( *(DSS.begin() + indexOfPointInDSS), myFunctor ( *DSS, indexOfPointInDSS+1, dssLen+1 ) ) );
     }
+
     accumulate< OutputIterator >( outValues, itb, ite, result );
     return result;
   }
