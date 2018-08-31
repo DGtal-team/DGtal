@@ -238,7 +238,7 @@ public:
 
   bool admissibility ( const DSSType & dss, const Point & p ) const
   {
-    throw std::runtime_error ( "You are not suppose to see this error!" );
+    return dss->isInDSS ( p );
   }
 
   int position ( const DSSType & dss, const Point & p ) const
@@ -294,7 +294,7 @@ public:
     if ( ( p - *dss.begin ( ) ).norm ( ) <= lenTreshold )
       return 1;
     else if ( ( p - *( dss.end ( ) - 1 ) ).norm ( ) <= lenTreshold )
-      return std::distance ( dss.begin ( ), dss.end ( ) );
+      return std::distance ( dss.begin ( ), dss.end ( ) ) + 1;
     else
       throw std::runtime_error ( "The DSS and the poit are not admissibility!" );
   }
