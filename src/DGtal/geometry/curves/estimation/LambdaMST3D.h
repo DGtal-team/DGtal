@@ -159,8 +159,8 @@ namespace DGtal {
     /**
      * @brief Use the DSS filter defined conditions to ensure estiamtion over not covered points.
      *
-     * @param itb begin iterator
-     * @param ite end iterator
+     * @param begin begin iterator
+     * @param end end iterator
      * @param p a point of the underlying curve
      * @ return estimated tangent
      */
