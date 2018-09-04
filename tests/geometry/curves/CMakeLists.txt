@@ -19,7 +19,7 @@ SET(DGTAL_TESTS_SRC
   testArithDSSIterator
   testArithmeticalDSSConvexHull
   testAlphaThickSegmentComputer
-  testParamericCurveDigitiztion
+  testParametricCurveDigitiztion
   )
 
 
