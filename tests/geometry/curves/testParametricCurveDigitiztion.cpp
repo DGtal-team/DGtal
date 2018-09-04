@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testParametricCurveDigitization.cpp
+ * @file testParametricCurveDigitiztion.cpp
  * @brief Tests for the parametric curves and their digitization.
  * @ingroup Tests
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
