@@ -49,11 +49,15 @@
 #include <algorithm>
 #include <array>
 #include <vector>
+#include <type_traits>
+#include <utility>
+#include <functional>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CBidirectionalRange.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
+#include "DGtal/kernel/ArithmeticConversionTraits.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -68,11 +72,11 @@ namespace DGtal
   std::bitset<dim> setDimensionsNotIn( const Container &dimensions );
 
   /////////////////////////////////////////////////////////////////////////////
-  // class PointVector
+  // class PointVector pre-declaration
   /**
    * Description of class 'PointVector' <p>
    *
-   * @brief Aim: Implements basic operations that will be used in 
+   * @brief Aim: Implements basic operations that will be used in
    * Point and  Vector classes.
    *
    * A PointVector may represent either a symbolic point or a symbolic
@@ -103,11 +107,11 @@ namespace DGtal
    *
    * If TEuclideanRing is a Integer type (built-in integers,
    * BigIntegers, ...), the "/" operator on Points corresponds to
-   * component by component Euclidean division. 
+   * component by component Euclidean division.
    *
    * If TEuclideanRing is a double, the "/" operator on Points
    * correspond to the classical division on real numbers (x*1/x = 1).
-   * 
+   *
    *
    * The default less than operator is the one of the lexicographic
    * ordering, starting from dimension 0 to N-1.
@@ -131,35 +135,462 @@ namespace DGtal
    * @endcode
    *
    * PointVector is a model of CBidirectionalRange.
-   * 
+   *
    * @see testPointVector.cpp
    *
    */
-  template < DGtal::Dimension dim, 
-	     typename TEuclideanRing,
-	     typename TContainer=std::array<TEuclideanRing,dim> >
+  template < DGtal::Dimension dim,
+      typename TEuclideanRing,
+      typename TContainer=std::array<TEuclideanRing,dim> >
+  class PointVector;
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Type traits
+
+  /** @brief Type trait to check if a given type is a @ref PointVector
+   *
+   * Default definition inherits from `std::false_type`.
+   */
+  template <typename T>
+  struct IsAPointVector : std::false_type {};
+
+  /** @brief Specialization of @ref IsAPointVector for a @ref PointVector
+   *
+   * Inherits from `std::true_type`
+   */
+  template <DGtal::Dimension dim, typename TEuclideanRing, typename TContainer>
+  struct IsAPointVector<PointVector<dim, TEuclideanRing, TContainer>> : std::true_type {};
+
+  /** @brief Specialization of @ref ArithmeticConversionTraits when both operands are @ref PointVector
+   *
+   * @see ArithmeticConversionTraits
+   */
+  template < DGtal::Dimension dim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+  struct ArithmeticConversionTraits< PointVector<dim, LeftEuclideanRing, LeftContainer>, PointVector<dim, RightEuclideanRing, RightContainer>,
+        typename std::enable_if< IsArithmeticConversionValid<LeftEuclideanRing, RightEuclideanRing>::value >::type >
+    {
+      using type = typename std::conditional<
+        std::is_same< LeftEuclideanRing, ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing> >::value,
+        PointVector<dim, LeftEuclideanRing, LeftContainer>,
+        PointVector<dim, RightEuclideanRing, RightContainer> >::type;
+    };
+
+  /** @brief Specialization of @ref ArithmeticConversionTraits when left operand is a @ref PointVector
+   *
+   * @see ArithmeticConversionTraits
+   */
+  template < DGtal::Dimension dim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing >
+  struct ArithmeticConversionTraits< PointVector<dim, LeftEuclideanRing, LeftContainer>, RightEuclideanRing,
+        typename std::enable_if<
+               IsArithmeticConversionValid<LeftEuclideanRing, RightEuclideanRing>::value
+            && ! IsAPointVector<RightEuclideanRing>::value >::type >
+    {
+      using type = typename std::conditional<
+        std::is_same< LeftEuclideanRing, ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing> >::value,
+        PointVector<dim, LeftEuclideanRing, LeftContainer>,
+        PointVector<dim, RightEuclideanRing> >::type;
+    };
+
+  /** @brief Specialization of @ref ArithmeticConversionTraits when right operand is a @ref PointVector
+   *
+   * @see ArithmeticConversionTraits
+   */
+  template < DGtal::Dimension dim,
+    typename LeftEuclideanRing,
+    typename RightEuclideanRing, typename RightContainer >
+  struct ArithmeticConversionTraits< LeftEuclideanRing, PointVector<dim, RightEuclideanRing, RightContainer>,
+        typename std::enable_if<
+                 IsArithmeticConversionValid<LeftEuclideanRing, RightEuclideanRing>::value
+            && ! IsAPointVector<LeftEuclideanRing>::value  >::type >
+    {
+      using type = typename std::conditional<
+        std::is_same< LeftEuclideanRing, ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing> >::value,
+        PointVector<dim, LeftEuclideanRing>,
+        PointVector<dim, RightEuclideanRing, RightContainer> >::type;
+    };
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // PointVector comparison operators
+
+  /** @brief Equality operator between two Points/Vectors.
+   *
+   * @return true iff the two points are equal.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline bool
+  operator== ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+               PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /** @brief Difference operator on Points/Vectors.
+   *
+   * @return true iff the two points differ, false otherwise.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline bool
+  operator!= ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+               PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /** @brief Comparison operator on Points/Vectors (LesserThan).
+   *
+   * @return true iff lhs < rhs, false otherwise.
+   *
+   * @note It uses the lexicographical order.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline bool
+  operator< ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /** @brief Comparison operator on Points/Vectors (GreaterThan).
+   *
+   * @return true iff lhs > rhs, false otherwise.
+   *
+   * @note It uses the lexicographical order.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline bool
+  operator> ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /** @brief Comparison operator on Points/Vectors (LesserOrEqualThan).
+   *
+   * @return true iff lhs <= rhs, false otherwise.
+   *
+   * @note It uses the lexicographical order.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline bool
+  operator<= ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+               PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /** @brief Comparison operator on Points/Vectors (GreaterOrEqualThan).
+   *
+   * @return true iff lhs >= rhs, false otherwise.
+   *
+   * @note It uses the lexicographical order.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline bool
+  operator>= ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+               PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Binary arithmetics operators between two PointVectors
+
+  /** @brief Addition operator between two Points/Vectors.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  operator+ ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Subtraction operator between two Points/Vectors.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  operator- ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Multiplication operator between two Points/Vectors.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  operator* ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Division operator between two Points/Vectors.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  operator/ ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Binary arithmetics operators between a PointVector and a scalar
+
+  /** @brief Addition operator between a Point/Vector and a scalar.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightScalar >
+  inline auto
+  operator+ ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              RightScalar const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Addition operator between a scalar and a Point/Vector.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftScalar,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  operator+ ( LeftScalar const& lhs,
+             PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Subtraction operator between a Point/Vector and a scalar.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightScalar >
+  inline auto
+  operator- ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              RightScalar const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Substraction operator between a scalar and a Point/Vector.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftScalar,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  operator- ( LeftScalar const& lhs,
+             PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Multiplication operator between a Point/Vector and a scalar.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightScalar >
+  inline auto
+  operator* ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              RightScalar const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Multiplication operator between a scalar and a Point/Vector.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftScalar,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  operator* ( LeftScalar const& lhs,
+             PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Division operator between a Point/Vector and a scalar.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightScalar >
+  inline auto
+  operator/ ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+              RightScalar const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Division operator between a scalar and a Point/Vector.
+   *
+   * @return a point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftScalar,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  operator/ ( LeftScalar const& lhs,
+             PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Operations between Points/Vectors
+
+  /** @brief Dot product between two points/vectors.
+   *
+   * @return the dot product in the best Euclidean ring accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline
+  DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>
+  dotProduct ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+               PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /** @brief Cross product of two 3D Points/Vectors.
+   *
+   * @return a 3D point/vector with best component type accordingly to
+   *   the C++ conversion rules in arithmetic operations context.
+   */
+  template <
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  crossProduct( PointVector<3, LeftEuclideanRing, LeftContainer> const& lhs,
+                PointVector<3, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Cross product of two 2D Points/Vectors.
+   *
+   * @return the 3th component of the cross product of the two points/vectors
+   *    embedded in 3D.
+   */
+  template <
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline
+  DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>
+  crossProduct( PointVector<2, LeftEuclideanRing, LeftContainer> const& lhs,
+                PointVector<2, RightEuclideanRing, RightContainer> const& rhs );
+
+  /** @brief Positive angle between two vectors, deduced from their scalar product.
+   *
+   * @return the angle between @a lhs and @a rhs in [0,pi].
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline double
+  cosineSimilarity( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                    PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /** @brief Implements the infimum (or greatest lower bound).
+   *
+   * It means the point whose coordinates are exactly the minimum of the two
+   * points coordinate by coordinate.
+   *
+   * @return a new point (with best Euclidean ring type accordingly to
+   *    the C++ conversion rules) being the inf between @a lhs and @a rhs;
+   * @see isLower
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  inf( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+       PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Implements the supremum (or least upper bound).
+   *
+   * It means the point whose coordinates are exactly the maximum of the two
+   * points coordinate by coordinate.
+   *
+   * @return a new point (with best Euclidean ring type accordingly to
+   *    the C++ conversion rules) being the sup between *this and apoint.
+   * @see isUpper
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline auto
+  sup( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+       PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+      -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+  /** @brief Return true if the first point is below the second point.
+   *
+   * @return true if @a lhs is below @a rhs (ie. lhs == inf(lhs,rhs))
+   * @note faster than computing the infimum and compare it afterwards.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline bool
+  isLower( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+           PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /** @brief Return true if the first point is upper the second point.
+   *
+   * @return true if @a lhs is upper @a rhs (ie. lhs == sup(lhs,rhs))
+   * @note faster than computing the supremum and compare it afterwards.
+   */
+  template < Dimension ptDim,
+      typename LeftEuclideanRing, typename LeftContainer,
+      typename RightEuclideanRing, typename RightContainer >
+  inline bool
+  isUpper( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+           PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+  /////////////////////////////////////////////////////////////////////////////
+  // class PointVector full declaration
+  template < DGtal::Dimension dim,
+      typename TEuclideanRing,
+      typename TContainer >
   class PointVector
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<TEuclideanRing> ) );
-    
+
     ///We cannot check the TContainer since boost::array is not a
     ///model of boost::RandomAccessContainer
-  
+
     ///Self type
     typedef PointVector<dim, TEuclideanRing, TContainer> Self;
 
     ///Type for Vector elements
     typedef TEuclideanRing Component;
-  
+
     ///Type for Point elements
     typedef Component Coordinate;
 
     ///Unsigned version of the components.
     typedef typename NumberTraits<Component>::UnsignedVersion UnsignedComponent;
-    
+
     ///Copy of the dimension type
     typedef DGtal::Dimension Dimension;
 
@@ -223,8 +654,8 @@ namespace DGtal
      * @param z the third value.
      * @param t the fourth value.
      */
-    PointVector( const Component & x, const Component & y, 
-		 const Component & z, const Component & t );
+    PointVector( const Component & x, const Component & y,
+                 const Component & z, const Component & t );
 
     /**
      * Constructor from initializer list.
@@ -235,71 +666,79 @@ namespace DGtal
     /** Constructor taking two points and a functor as parameters.
      *  The new point is initialized by the result of functor f
      *  applied for each pair of coordinates of apoint1 and apoint2
+     *  FIXME: Doc
      */
-    template<typename BinaryFunctor>
-    PointVector( const Self& apoint1, const Self& apoint2,
-		 const BinaryFunctor& f );
+    template <
+      typename LeftComponent, typename LeftStorage,
+      typename RightComponent, typename RightStorage,
+      typename BinaryFunctor >
+    PointVector( const PointVector<dim, LeftComponent, LeftStorage> & apoint1,
+                 const PointVector<dim, RightComponent, RightStorage> & apoint2,
+                 const BinaryFunctor& f );
 
     /** Constructor taking a point and a unary functor as parameters.
      *  The new point is initialized by the result of functor f for
      *  each coordinate of apoint1
+     *  FIXME: Doc
      */
-    template<typename UnaryFunctor>
-    PointVector( const Self& apoint1, 
-		 const UnaryFunctor& f );
+    template <
+      typename OtherComponent, typename OtherStorage,
+      typename UnaryFunctor >
+    PointVector( const PointVector<dim, OtherComponent, OtherStorage> & apoint1,
+                 const UnaryFunctor & f );
 
     /**
      * Destructor.
      */
     ~PointVector();
 
-    // ----------------------- Iterator services ------------------------------
+    // ----------------------- Standard services ------------------------------
+
   public:
-    /**
-     * Copy constructor.
+    /** @brief Copy constructor.
      * @param other the object to clone.
      */
     PointVector( const Self & other );
 
-    /**
-     * Copy constructor from another component PointVector.
+    /** @brief Copy constructor from another component PointVector.
      * A static cast is used to cast the values during the copy.
      * @param other the object to clone.
+     *  FIXME: Doc
      */
-    template <typename OtherComponent, typename OtherCont>
+    template <
+      typename OtherComponent, typename OtherCont,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
     PointVector( const PointVector<dim,OtherComponent,OtherCont> & other );
 
-    /**
-     * Assignement Operator
+    //  FIXME: Doc
+    template <
+      typename OtherComponent, typename OtherCont,
+      typename std::enable_if< ! std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    explicit
+    PointVector( const PointVector<dim,OtherComponent,OtherCont> & other );
+
+    /** @brief Assignement Operator
      *
      * @param pv the object to copy.
      * @return a reference on 'this'.
      */
     Self & operator= ( const Self & pv );
 
-    /**
-     * Partial copy of a given PointVector. Only coordinates in dimensions
-     * are copied.
+    /** @brief Assignment operator from PointVector with different component
+     * type.
      *
-     * @param pv the object to copy.
-     * @param dimensions the dimensions of v to copy
-     *        (Size between 0 and N, all differents).
-     * @return a reference on 'this'.
-     */
-    Self& partialCopy (const Self & pv,
-		       std::initializer_list<Dimension> dimensions);
-
-    /**
-     * Inverse partial copy of a given PointVector. Only coordinates not 
-     * in dimensions are copied.
+     * A static cast is used to cast the values during the copy.
      *
-     * @param pv the object to copy.
-     * @param dimensions the dimensions of v to copy
-     *        (Size between 0 and N, all differents).
+     * @param v is the Point that gets divided to @a *this.
      * @return a reference on 'this'.
+     *
+     *  FIXME: Doc
      */
-    Self& partialCopyInv (const Self & pv,
-			  std::initializer_list<Dimension> dimensions);
+    template <
+      typename OtherComponent,
+      typename OtherContainer,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    Self & operator= ( const PointVector<dim, OtherComponent, OtherContainer> & v );
 
     /**
      * Partial copy of a given PointVector. Only coordinates in dimensions
@@ -309,12 +748,13 @@ namespace DGtal
      * @param dimensions the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
+     * TODO
      */
-    Self& partialCopy (const Self & pv,
-		       const std::vector<Dimension> &dimensions);
+    Self& partialCopy ( const Self & pv,
+                        std::initializer_list<Dimension> dimensions);
 
     /**
-     * Partial copy of a given PointVector. Only coordinates not 
+     * Inverse partial copy of a given PointVector. Only coordinates not
      * in dimensions are copied.
      *
      * @param pv the object to copy.
@@ -322,8 +762,32 @@ namespace DGtal
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
      */
-    Self& partialCopyInv (const Self & pv,
-			  const std::vector<Dimension> &dimensions);
+    Self& partialCopyInv ( const Self & pv,
+                           std::initializer_list<Dimension> dimensions);
+
+    /**
+     * Partial copy of a given PointVector. Only coordinates in dimensions
+     * are copied.
+     *
+     * @param pv the object to copy.
+     * @param dimensions the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @return a reference on 'this'.
+     */
+    Self& partialCopy ( const Self & pv,
+                        const std::vector<Dimension> &dimensions);
+
+    /**
+     * Partial copy of a given PointVector. Only coordinates not
+     * in dimensions are copied.
+     *
+     * @param pv the object to copy.
+     * @param dimensions the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @return a reference on 'this'.
+     */
+    Self& partialCopyInv ( const Self & pv,
+                           const std::vector<Dimension> &dimensions);
 
     /**
      * Partial equality.
@@ -332,9 +796,10 @@ namespace DGtal
      * @param dimensions  Dimensions along which to compare the points.
      *
      * @return true iff points are equal for given dimensions .
+     * TODO
      */
     bool partialEqual ( const Self & pv,
-			const std::vector<Dimension> &dimensions )  const;
+                        const std::vector<Dimension> &dimensions )  const;
 
     /**
      * Partial inverse equality.
@@ -345,8 +810,8 @@ namespace DGtal
      * @return true iff points are equal for dimensions not in dimensions.
      */
     bool partialEqualInv ( const Self & pv,
-			   const std::vector<Dimension> &dimensions )  const;
-    
+                           const std::vector<Dimension> &dimensions )  const;
+
     // ----------------------- Iterator services ------------------------------
   public:
     /**
@@ -397,7 +862,7 @@ namespace DGtal
      * @return an ConstReverseIterator on the first element of a Point/Vector.
      **/
     ConstReverseIterator rbegin() const;
-    
+
     /**
      * PointVector rend() const reverse iterator.
      *
@@ -412,7 +877,7 @@ namespace DGtal
      * coefficients).
      */
     static Dimension size();
-		inline Dimension rows() const { return dim; }
+    inline Dimension rows() const { return dim; }
 
     /**
      * Returns the  @a i-th coefficient of the vector.
@@ -436,146 +901,257 @@ namespace DGtal
     Component& operator()(Dimension i ) { return (*this)[i]; }
 
     // ----------------------- Comparison operations --------------------------
+    // Friend declarations in order to have them documented on the same page
+    // as PointVector.
   public:
-    /**
-     * Equality operator.
-     *
-     * @param pv Point/Vector to compare to this.
-     *
-     * @return true iff points are equal.
-     *
-     * @warning It inherits from operator== of TContainer.
-     */
-    bool operator== ( const Self & pv ) const;
 
-    /**
-     * Difference operator on Points/Vectors.
-     *
-     * @param pv the Point/Vector to compare to this.
-     *
-     * @return true iff this differs from pv, false otherwise.
-     *
-     * @warning It inherits from operator!= of TContainer.
-     */
-    bool operator!= ( const Self & pv ) const;
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline bool
+    operator== ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                 PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
 
-    /**
-     * Comparison operator on Points/Vectors (LesserThan).
-     *
-     * @param pv the Point/Vector to compare to this.
-     *
-     * @return true iff this < pv, false otherwise.
-     *
-     * @warning It inherits from operator< of TContainer. Consequently, it uses the lexicographical order when using default container.
-     */
-    bool operator< ( const Self & pv ) const;
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline bool
+    operator!= ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                 PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
 
-    /**
-     * Comparison operator on Points/Vectors (LesserOrEqualThan).
-     *
-     * @param pv the Point/Vector to compare to this.
-     *
-     * @return true iff this <= pv, false otherwise.
-     *
-     * @warning It inherits from operator<= of TContainer. Consequently, it uses the lexicographical order when using default container.
-     */
-    bool operator<= ( const Self & pv ) const;
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline bool
+    operator< ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
 
-    /**
-     * Comparison operator on Points/Vectors (GreaterThan).
-     *
-     * @param pv the Point/Vector to compare to this.
-     *
-     * @return true iff this > pv, false otherwise.
-     *
-     * @warning It inherits from operator> of TContainer. Consequently, it uses the lexicographical order when using default container.
-     */
-    bool operator> ( const Self & pv ) const;
-    
-    /**
-     * Comparison operator on Points/Vectors (GreaterOrEqualThan).
-     *
-     * @param pv the Point/Vector to compare to this.
-     *
-     * @return true iff this >= pv, false otherwise.
-     *
-     * @warning It inherits from operator>= of TContainer. Consequently, it uses the lexicographical order when using default container.
-     */
-    bool operator>= ( const Self & pv ) const;
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline bool
+    operator<= ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                 PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
 
-    // ----------------------- Operations ------------------------------
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline bool
+    operator>= ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                 PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+    // ------------- Binary arithmetic operations between points --------------
+    // Friend declarations in order to have them documented on the same page
+    // as PointVector.
   public:
-    /**
-     * Multiplies @a *this by the @a coeff scalar number.
+
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    operator+ ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    operator- ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    operator* ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    operator/ ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    // ------ Binary arithmetic operations between a point and a vector -------
+    // Friend declarations in order to have them documented on the same page
+    // as PointVector.
+  public:
+
+    template < DGtal::Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightScalar >
+    friend inline auto
+    operator+ ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                RightScalar const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < Dimension ptDim,
+        typename LeftScalar,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    operator+ ( LeftScalar const& lhs,
+               PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < DGtal::Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightScalar >
+    friend inline auto
+    operator- ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                RightScalar const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < Dimension ptDim,
+        typename LeftScalar,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    operator- ( LeftScalar const& lhs,
+               PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < DGtal::Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightScalar >
+    friend inline auto
+    operator* ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                RightScalar const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < Dimension ptDim,
+        typename LeftScalar,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    operator* ( LeftScalar const& lhs,
+               PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < DGtal::Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightScalar >
+    friend inline auto
+    operator/ ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                RightScalar const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template < Dimension ptDim,
+        typename LeftScalar,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    operator/ ( LeftScalar const& lhs,
+               PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    // -------- Unary arithmetic operations on a point or a vector ------------
+  public:
+
+    /** @brief Adds the @a coeff scalar number to @a *this.
      *
-     * @param coeff is the factor @a *this get multiplied by.
      * @return a reference on 'this'.
-     */
-    PointVector & operator*= ( Component coeff );
-
-    /**
-     * Multiplication operator with a scalar number
      *
-     * @param coeff is the factor 'this' is multiplied by.
-     * @return a new Point that is the multiplication of 'this' by coeff.
+     * @note Enabled only if the conversion from @a OtherComponent to
+     *   @a Component is valid (see the doc of @ref PointVector).
      */
-    PointVector operator*( Component coeff ) const;
-    
-    /**
-     * dot product with a PointVector
-     *
-     * @param v a vector that is dot-producted to *this.
-     * @return the dot product of this and v.
-     */
-    Component dot( const Self &v) const;
+    template <
+      typename OtherComponent,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    inline
+    PointVector & operator+= ( OtherComponent coeff );
 
-    /**
-     * cross product with a PointVector
+    /** @brief Adds the @a v vector/point to @a *this, componentwise.
      *
-     * @param v a vector that is cross-producted to *this.
-     * @return the cross product product 
-     */
-    Self crossProduct( const Self &v) const;
-
-    /**
-     * Positive angle between two vectors, deduced from their scalar product.
-     * @param v any vector
-     * @return the angle between *this and v in [0,pi].
-     */
-    double cosineSimilarity ( const Self & v ) const;
-
-    /**
-     * Addition operator with assignement.
-     *
-     * @param v is the Point that gets added to @a *this.
      * @return a reference on 'this'.
-     */
-    Self & operator+= ( const Self & v );
-
-    /**
-     * Addition operator.
      *
-     * @param v is the Point that gets added to @a *this.
-     * @return a new Point that is the addition of 'this' to [v].
+     * @note Enabled only if the conversion from @a OtherComponent to
+     *   @a Component is valid (see the doc of @ref PointVector).
      */
-    Self operator+ ( const Self & v ) const;
+    template <
+      typename OtherComponent, typename OtherStorage,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    inline
+    PointVector & operator+= ( PointVector<dim, OtherComponent, OtherStorage> const& v );
 
-    /**
-     * Substraction operator with assignement.
+    /** @brief Subtracts the @a coeff scalar number to @a *this.
      *
-     * @param v is the Point that gets substracted to  *this.
      * @return a reference on 'this'.
-     */
-    Self & operator-= ( const Self & v );
-
-    /**
-     * Substraction operator.
-     * Point - Vector => Point
      *
-     * @param v is the Point that gets substracted to @a *this.
-     * @return a new Point that is the subtraction 'this'-[v].
+     * @note Enabled only if the conversion from @a OtherComponent to
+     *   @a Component is valid (see the doc of @ref PointVector).
      */
-    Self operator- ( const Self & v ) const;
+    template <
+      typename OtherComponent,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    inline
+    PointVector & operator-= ( OtherComponent coeff );
+
+    /** @brief Subtracts the @a v vector/point to @a *this, componentwise.
+     *
+     * @return a reference on 'this'.
+     *
+     * @note Enabled only if the conversion from @a OtherComponent to
+     *   @a Component is valid (see the doc of @ref PointVector).
+     */
+    template <
+      typename OtherComponent, typename OtherStorage,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    inline
+    PointVector & operator-= ( PointVector<dim, OtherComponent, OtherStorage> const& v );
+
+    /** @brief Multiplies @a *this by the @a coeff scalar number.
+     *
+     * @return a reference on 'this'.
+     *
+     * @note Enabled only if the conversion from @a OtherComponent to
+     *   @a Component is valid (see the doc of @ref PointVector).
+     */
+    template <
+      typename OtherComponent,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    inline
+    PointVector & operator*= ( OtherComponent coeff );
+
+    /** @brief Multiplies @a *this by the @a v vector/point, componentwise.
+     *
+     * @return a reference on 'this'.
+     *
+     * @note Enabled only if the conversion from @a OtherComponent to
+     *   @a Component is valid (see the doc of @ref PointVector).
+     */
+    template <
+      typename OtherComponent, typename OtherStorage,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    inline
+    PointVector & operator*= ( PointVector<dim, OtherComponent, OtherStorage> const& v );
+
+    /** @brief Divides @a *this by the @a coeff scalar number.
+     *
+     * @return a reference on 'this'.
+     *
+     * @note Enabled only if the conversion from @a OtherComponent to
+     *   @a Component is valid (see the doc of @ref PointVector).
+     */
+    template <
+      typename OtherComponent,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    inline
+    PointVector & operator/= ( OtherComponent coeff );
+
+    /** @brief Divides @a *this by the @a v vector/point, componentwise.
+     *
+     * @return a reference on 'this'.
+     *
+     * @note Enabled only if the conversion from @a OtherComponent to
+     *   @a Component is valid (see the doc of @ref PointVector).
+     */
+    template <
+      typename OtherComponent, typename OtherStorage,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    inline
+    PointVector & operator/= ( PointVector<dim, OtherComponent, OtherStorage> const& v );
 
     /**
      * Unary minus operator.
@@ -583,127 +1159,187 @@ namespace DGtal
      *
      * @return a new Vector that is the opposite of 'this', i.e. -'this'.
      */
+    inline
     Self operator-() const;
 
-    
-    /**
-     * Division operator with assignement.
+
+    // ------------------ Other operators between vectors ---------------------
+  public:
+    /** @brief Dot product with a PointVector
      *
-     * @param v is the Point that gets divided to @a *this.
-     * @return a reference on 'this'.
+     * @param v a vector that is dot-producted to *this.
+     * @return the dot product in the best Euclidean ring accordingly to
+     *   the C++ conversion rules in arithmetic operations context.
+     *
+     * @see DGtal::dotProduct
      */
-    Self & operator/= ( const Self & v );
+    template < typename OtherComponent, typename OtherStorage >
+    inline auto
+    dot( const PointVector<dim, OtherComponent, OtherStorage> &v) const
+        -> decltype( DGtal::dotProduct(*this, v) );
+
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline
+    DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>
+    dotProduct ( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                 PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+    /** @brief Cross product with a PointVector
+     *
+     * @param v a vector that is cross-producted to *this.
+     * @return the cross product (3D vector for 3D input, scalar for 2D input)
+     *    in the best Euclidean ring accordingly to the C++ conversion rules
+     *    in arithmetic operations context.
+     *
+     * @warning Only available in 3D and 2D (return the 3th component of the
+     *    corresponding cross produt in 3D).
+     * @see DGtal::crossProduct
+     */
+    template < typename OtherComponent, typename OtherStorage >
+    inline auto
+    crossProduct( const PointVector<dim, OtherComponent, OtherStorage> &v) const
+        -> decltype( DGtal::crossProduct(*this, v) );
+
+    template <
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    crossProduct( PointVector<3, LeftEuclideanRing, LeftContainer> const& lhs,
+                  PointVector<3, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    template <
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline
+    DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>
+    crossProduct( PointVector<2, LeftEuclideanRing, LeftContainer> const& lhs,
+                  PointVector<2, RightEuclideanRing, RightContainer> const& rhs );
 
     /**
-     * Division operator.
-     *
-     * @param v is the Point that gets divided to @a *this.
-     * @return the component division of *this by v.
+     * Positive angle between two vectors, deduced from their scalar product.
+     * @param v any vector
+     * @return the angle between *this and v in [0,pi].
      */
-    Self  operator/ ( const Self & v ) const ;
-  
-    /**
-     * Divides @a *this by the @a coeff scalar number.
-     *
-     * @param coeff is the factor @a *this get divided by.
-     * @return the component division of *this by coeff.
-     */
-    Self operator/ ( const Component coeff ) const;
-    
-    /**
-     * Divides @a *this by the @a coeff scalar number.
-     *
-     * @param coeff is the factor @a *this get divided by.
-     * @return a reference on 'this'.
-     */
-    Self & operator/= ( const Component coeff );
-   
-    /**
-     * Assignment operator from PointVector with different component
-     * type.
-     * A static cast is used to cast the values during the copy.
-     *
-     * @param v is the Point that gets divided to @a *this.
-     * @return a reference on 'this'.
-     */
-    template<typename AnotherComponent>
-    Self & operator= ( const PointVector<dim,AnotherComponent, Container> & v );
-  
-    
-    /**
-     * Resets all the values to zero.
-     */
-    void reset();
+    template < typename OtherComponent, typename OtherStorage >
+    inline double
+    cosineSimilarity ( const PointVector<dim, OtherComponent, OtherStorage> & v ) const;
 
-    /**
-     * Resets all the values to zero. Needed by CLinearAlgebraContainer.
-     */
-		inline void clear() { reset(); }
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline double
+    cosineSimilarity( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+                      PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
 
-    /**
-     * Implements the infimum (or greatest lower bound). It means the
-     * point whose coordinates are exactly the minimum of the two
+    /** @brief Implements the infimum (or greatest lower bound).
+     *
+     * It means the point whose coordinates are exactly the minimum of the two
      * points coordinate by coordinate.
      *
-     * @param apoint any point.
-     * @return a new point being the inf between *this and apoint.
+     * @param aPoint any point.
+     * @return a new point (with best Euclidean ring type accordingly to
+     *    the C++ conversion rules) being the inf between *this and apoint.
      * @see isLower
      */
-    Self inf( const Self& apoint ) const;
+    template < typename OtherComponent, typename OtherStorage >
+    inline auto
+    inf( const PointVector<dim, OtherComponent, OtherStorage> & aPoint ) const
+        -> decltype( DGtal::inf(*this, aPoint) );
 
-    /**
-     * Implements the supremum (or least upper bound). It means the
-     * point whose coordinates are exactly the maximum of the two
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    inf( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+         PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    /** @brief Implements the supremum (or least upper bound).
+     *
+     * It means the point whose coordinates are exactly the maximum of the two
      * points coordinate by coordinate.
      *
-     * @param apoint any point.
-     * @return a new point being the sup between *this and apoint.
+     * @param aPoint any point.
+     * @return a new point (with best Euclidean ring type accordingly to
+     *    the C++ conversion rules) being the sup between *this and apoint.
      * @see isUpper
      */
-    Self sup( const Self& apoint ) const;
+    template < typename OtherComponent, typename OtherStorage >
+    inline auto
+    sup( const PointVector<dim, OtherComponent, OtherStorage> & aPoint ) const
+        -> decltype( DGtal::sup(*this, aPoint) );
+
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline auto
+    sup( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+         PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+        -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
+
+    /** @brief Return true if this point is below a given point.
+     *
+     * @param p any point.
+     * @return true if this is below @a p (ie. this == inf(this,p))
+     * @note faster than computing the infimum and compare it afterwards.
+     */
+    template < typename OtherComponent, typename OtherStorage >
+    bool isLower( const PointVector<dim, OtherComponent, OtherStorage>& p ) const;
+
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline bool
+    isLower( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
+
+    /** @brief Return true if this point is upper a given point.
+     *
+     * @param p any point.
+     * @return true if this is upper @a p (ie. this == sup(this,p))
+     * @note faster than computing the supremum and compare it afterwards.
+     */
+    template < typename OtherComponent, typename OtherStorage >
+    bool isUpper( const PointVector<dim, OtherComponent, OtherStorage>& p ) const;
+
+    template < Dimension ptDim,
+        typename LeftEuclideanRing, typename LeftContainer,
+        typename RightEuclideanRing, typename RightContainer >
+    friend inline bool
+    isUpper( PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
 
     /**
-     * @param p any point.
-     * @return true if this is below p (ie. this==inf(this,p))
-     * NB: faster than computing the infimum and compare it afterwards.
-     */
-    bool isLower( const Self& p ) const;
-
-    /**
-     * @param p any point.
-     * @return true if this is upper p (ie. this==sup(this,p))
-     * NB: faster than computing the supremum and compare it afterwards.
-     */
-    bool isUpper( const Self& p ) const;
-
-    /** 
      * Return the maximum component value of a point/vector.
-     * 
+     *
      * @return the maximum value.
      */
     Component max() const;
-   
-    /** 
+
+    /**
      * Return the minimum component value of a point/vector.
-     * 
+     *
      * @return the minimum value.
-     */ 
+     */
     Component min() const;
 
-    /** 
+    /**
      * Return the iterator on the component with maximim value of a
      * point/vector.
-     * 
+     *
      * @return an iterator.
      */
     Iterator maxElement() ;
-   
-    /** 
+
+    /**
      * Return the iterator on the component with minimum value of a
      * point/vector.
-     * 
+     *
      * @return an iterator.
-     */ 
+     */
     Iterator minElement() ;
 
     /**
@@ -722,7 +1358,7 @@ namespace DGtal
      * \warning This method performs a conversion
      * from the type T to double for each components to compute the
      * norms. For exact norms (restricted to L_1 and L_infinity
-     * norms), please refer to PointVector::norm1 and PointVector::normInfinity. 
+     * norms), please refer to PointVector::norm1 and PointVector::normInfinity.
      *
 
      * @param type specifies the type of norm to consider (see @ref NormType).
@@ -745,15 +1381,26 @@ namespace DGtal
     UnsignedComponent normInfinity() const;
 
 
-    /** 
+    /**
      * Compute the normalization of a given vector (*this) and return
      * a unitary vector on double.
-     * 
-     * @return a unitary vector with double as coordiante type. 
-     * @advanced the point container is forced to boost::array<double,dim> 
+     *
+     * @return a unitary vector with double as coordiante type.
+     * @advanced the point container is forced to std::array<double,dim>
      */
     PointVector<dim, double, std::array<double,dim> > getNormalized() const;
-    
+
+    /** @brief Resets all the values to zero.
+     */
+    void reset();
+
+    /** @brief Resets all the values to zero.
+     *
+     * @note Needed by CLinearAlgebraContainer.
+     */
+    inline void clear() { reset(); }
+
+
 
     // ------------------------- Standard vectors ------------------------------
   public:
@@ -773,7 +1420,7 @@ namespace DGtal
 
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
- 
+
     /**
      * @return the style name used for drawing this object.
      */
@@ -796,10 +1443,10 @@ namespace DGtal
 
     /// Static const for zero PointVector.
     static Self zero;
-    
+
     // ------------------------- Hidden services ------------------------------
   protected:
-    
+
     ///Internal data-structure: std::array with constant size.
     Container myArray;
 
@@ -810,26 +1457,10 @@ namespace DGtal
   std::ostream&
   operator<<( std::ostream & out, const PointVector<dim, Component, TC> & object );
 
-  /**
-     External multiplication operator with a scalar number
-
-     @param coeff is the factor \a aVector is multiplied by.
-     @param aVector is the vector that is multiplied by the factor \a coef.
-
-     @return a new Vector that is the multiplication of \a aVector by
-     \a coeff.
-  */
-  template<Dimension dim, typename Component, typename Container>
-  PointVector<dim, Component,Container> 
-  operator*( Component coeff,
-	     const PointVector<dim, Component,Container> & aVector );
-
-
   ///Static const for zero definition
   template< Dimension dim, typename Component, typename TC>
   PointVector<dim, Component,TC>  PointVector<dim, Component,TC>::zero;
 
-  
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
