@@ -78,25 +78,29 @@ DGtal::PointVector<dim, TComponent, TContainer>::PointVector()
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-template<typename BinaryFunctor>
+template <
+      typename LeftComponent, typename LeftStorage,
+      typename RightComponent, typename RightStorage,
+      typename BinaryFunctor >
 inline
-DGtal::PointVector<dim, TComponent, TContainer>::PointVector(const Self& apoint1,
-                                                             const Self& apoint2,
-                                                             const BinaryFunctor& f)
+DGtal::PointVector<dim, TComponent, TContainer>::PointVector(
+    const PointVector<dim, LeftComponent, LeftStorage> & apoint1,
+    const PointVector<dim, RightComponent, RightStorage> & apoint2,
+    const BinaryFunctor & f)
 {
   for ( Dimension i = 0; i < dim; ++i )
-    myArray[ i ] = f.operator() (apoint1[i], apoint2[i]);
+    myArray[ i ] = static_cast<TComponent>( f(apoint1[i], apoint2[i]) );
 }
 //------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-template<typename UnaryFunctor>
+template <DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <typename OtherComponent, typename OtherStorage, typename UnaryFunctor>
 inline
 DGtal::PointVector<dim, TComponent,TContainer>::
-PointVector(const Self& apoint1,
-	    const UnaryFunctor& f)
+PointVector(const PointVector<dim, OtherComponent, OtherStorage> & apoint1,
+            const UnaryFunctor& f)
 {
   for ( Dimension i = 0; i < dim; ++i )
-    myArray[ i ] = f.operator()( apoint1[i] );
+    myArray[ i ] = static_cast<TComponent>( f( apoint1[i] ) );
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -172,12 +176,27 @@ DGtal::PointVector<dim, TComponent, TContainer>::PointVector ( const Self & othe
 {}
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-template<typename OtherComponent, typename OtherCont>
+template <
+  typename OtherComponent, typename OtherCont,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type >
 inline
 DGtal::PointVector<dim, TComponent, TContainer>::PointVector (const PointVector<dim,OtherComponent,OtherCont> & other )
 {
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
-    this->myArray[ i ] = (int)(static_cast<OtherComponent>(other[ i ]));
+    //this->myArray[ i ] = (int)(static_cast<OtherComponent>(other[ i ]));
+    this->myArray[ i ] = static_cast<TComponent>(other[ i ]);
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent, typename OtherCont,
+  typename std::enable_if< ! std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type >
+inline
+DGtal::PointVector<dim, TComponent, TContainer>::PointVector (const PointVector<dim,OtherComponent,OtherCont> & other )
+{
+  for ( DGtal::Dimension i = 0; i < dimension; ++i )
+    //this->myArray[ i ] = (int)(static_cast<OtherComponent>(other[ i ]));
+    this->myArray[ i ] = static_cast<TComponent>(other[ i ]);
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -271,34 +290,6 @@ DGtal::PointVector<dim, TComponent, TContainer>::operator[]( Dimension i )
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-DGtal::PointVector<dim, TComponent, TContainer>&
-DGtal::PointVector<dim, TComponent, TContainer>::operator*= ( Component coeff )
-{
-  for ( DGtal::Dimension i = 0; i < myArray.size(); ++i )
-    myArray[ i ] *= coeff;
-  return *this;
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-DGtal::PointVector<dim, TComponent, TContainer>
-DGtal::PointVector<dim, TComponent, TContainer>::operator* ( Component coeff ) const
-{
-  Self v = *this;
-  v *= coeff;
-  return v;
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-DGtal::PointVector<dim, TComponent, TContainer> 
-DGtal::operator*( TComponent coeff,
-		  const PointVector<dim, TComponent,TContainer> & aVector )
-{
-  return PointVector<dim, TComponent,TContainer>
-    ( aVector, functors::MultiplicationByScalar<TComponent>( coeff ) );
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 DGtal::PointVector<dim, TComponent, TContainer>&
 DGtal::PointVector<dim, TComponent, TContainer>::operator= ( const Self & pv )
@@ -308,14 +299,17 @@ DGtal::PointVector<dim, TComponent, TContainer>::operator= ( const Self & pv )
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-template<typename Component2>
+template <
+  typename OtherComponent,
+  typename OtherContainer,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type>
 inline
-DGtal::PointVector<dim,TComponent, TContainer>&
-DGtal::PointVector<dim, TComponent, TContainer>::operator= ( const DGtal::PointVector<dim,Component2,TContainer> & v )
+DGtal::PointVector<dim, TComponent, TContainer> &
+DGtal::PointVector<dim, TComponent, TContainer>::operator= ( const DGtal::PointVector<dim, OtherComponent, OtherContainer> & v )
 {
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
     {
-      this->myArray[ i ] = static_cast<Component>(v[ i ]);
+      this->myArray[ i ] = static_cast<Component>( v[ i ] );
     }
   return *this;
 }
@@ -408,58 +402,73 @@ DGtal::PointVector<dim, TComponent, TContainer>::partialEqualInv
   return true;
 }
 //------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-bool
-DGtal::PointVector<dim, TComponent, TContainer>::operator==( const Self & pv ) const
-{
-  return (myArray == pv.myArray);
-}
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline bool
+DGtal::operator== ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+  {
+    return std::equal( lhs.begin(), lhs.end(), rhs.begin() );
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline bool
+DGtal::operator!= ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+  {
+    return ! (lhs == rhs);
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline bool
+DGtal::operator< ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+            DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+  {
+    return std::lexicographical_compare( lhs.begin(), lhs.end(), rhs.begin(), rhs.end() );
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline bool
+DGtal::operator> ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+            DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+  {
+    return rhs < lhs;
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline bool
+DGtal::operator<= ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+  {
+    return ! ( lhs > rhs );
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline bool
+DGtal::operator>= ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+  {
+    return ! ( lhs < rhs );
+  }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-bool
-DGtal::PointVector<dim, TComponent, TContainer>::operator!= ( const Self & pv ) const
-{
-  return (myArray != pv.myArray);
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-bool
-DGtal::PointVector<dim, TComponent, TContainer>::operator< ( const Self & pv ) const
-{
-  return (myArray < pv.myArray);
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-bool
-DGtal::PointVector<dim, TComponent, TContainer>::operator<= ( const Self & pv ) const
-{
-  return (myArray <= pv.myArray);
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-bool
-DGtal::PointVector<dim, TComponent, TContainer>::operator> ( const Self & pv ) const
-{
-  return (myArray > pv.myArray);
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-bool
-DGtal::PointVector<dim, TComponent, TContainer>::operator>= ( const Self & pv ) const
-{
-  return (myArray >= pv.myArray);
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent, typename OtherStorage,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type >
 inline
 DGtal::PointVector<dim, TComponent, TContainer>&
-DGtal::PointVector<dim, TComponent, TContainer>::operator+= ( const Self& v )
+DGtal::PointVector<dim, TComponent, TContainer>::operator+= ( PointVector<dim, OtherComponent, OtherStorage> const& v )
 {
   for ( DGtal::Dimension i = 0; i < dim; ++i )
     this->myArray[ i ] += v[ i ];
@@ -467,103 +476,309 @@ DGtal::PointVector<dim, TComponent, TContainer>::operator+= ( const Self& v )
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type >
 inline
-DGtal::PointVector<dim, TComponent, TContainer>
-DGtal::PointVector<dim, TComponent, TContainer>::operator+ ( const Self& v ) const
+DGtal::PointVector<dim, TComponent, TContainer>&
+DGtal::PointVector<dim, TComponent, TContainer>::operator+= ( OtherComponent coeff )
 {
-  return Self(*this, v, std::plus<Component>());
+  for ( DGtal::Dimension i = 0; i < dim; ++i )
+    this->myArray[ i ] += coeff;
+  return *this;
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent, typename OtherStorage,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type >
 inline
 DGtal::PointVector<dim, TComponent, TContainer>&
-DGtal::PointVector<dim, TComponent, TContainer>::operator-= ( const Self& v )
+DGtal::PointVector<dim, TComponent, TContainer>::operator-= ( PointVector<dim, OtherComponent, OtherStorage> const& v )
 {
   for ( DGtal::Dimension i = 0; i < dim; ++i )
     this->myArray[ i ] -= v[ i ];
   return *this;
 }
 //------------------------------------------------------------------------------
-template<DGtal::Dimension dim,typename TComponent, typename TContainer>
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type >
 inline
-DGtal::PointVector<dim,TComponent, TContainer>&
-DGtal::PointVector<dim,TComponent, TContainer>::operator/= ( const Self& v )
+DGtal::PointVector<dim, TComponent, TContainer>&
+DGtal::PointVector<dim, TComponent, TContainer>::operator-= ( OtherComponent coeff )
 {
   for ( DGtal::Dimension i = 0; i < dim; ++i )
-    this->myArray[ i ] /= v[ i ];
+    this->myArray[ i ] -= coeff;
   return *this;
 }
 //------------------------------------------------------------------------------
-template<DGtal::Dimension dim,typename TComponent, typename TContainer>
-inline
-DGtal::PointVector<dim,TComponent, TContainer>
-DGtal::PointVector<dim,TComponent, TContainer>::operator/ ( const Self& v ) const
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type>
+DGtal::PointVector<dim, TComponent, TContainer>&
+DGtal::PointVector<dim, TComponent, TContainer>::operator*= ( OtherComponent coeff )
 {
-  return Self(*this, v, std::divides<Component>());
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim,typename TComponent, typename TContainer>
-inline
-DGtal::PointVector<dim,TComponent, TContainer> &
-DGtal::PointVector<dim,TComponent, TContainer>::operator/= ( const Component coeff )
-{
-  for ( DGtal::Dimension i = 0; i < dimension; ++i )
-    this->myArray[ i ] /= coeff;
+  for ( DGtal::Dimension i = 0; i < myArray.size(); ++i )
+    myArray[ i ] *= coeff;
   return *this;
 }
 //------------------------------------------------------------------------------
-template<DGtal::Dimension dim,typename TComponent, typename TContainer>
-inline
-DGtal::PointVector<dim,TComponent, TContainer>
-DGtal::PointVector<dim,TComponent, TContainer>::operator/ ( const Component coeff ) const
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent, typename OtherStorage,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type>
+DGtal::PointVector<dim, TComponent, TContainer>&
+DGtal::PointVector<dim, TComponent, TContainer>::operator*= ( PointVector<dim, OtherComponent, OtherStorage> const& v )
 {
-  Self p;
-  for ( DGtal::Dimension i = 0; i < dimension; ++i )
-    p[i] = this->myArray[ i ] / coeff;
-  return p;
+  for ( DGtal::Dimension i = 0; i < myArray.size(); ++i )
+    myArray[ i ] *= v[ i ];
+  return *this;
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-typename DGtal::PointVector<dim, TComponent, TContainer>::Component
-DGtal::PointVector<dim, TComponent, TContainer>::dot( const Self& v ) const
+template <
+  typename OtherComponent,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type>
+DGtal::PointVector<dim, TComponent, TContainer>&
+DGtal::PointVector<dim, TComponent, TContainer>::operator/= ( OtherComponent coeff )
 {
-  Component dotprod= NumberTraits<Component>::ZERO;
-  for ( DGtal::Dimension i = 0; i < dim; ++i )
-    dotprod += this->myArray[ i ]*v[ i ];
-  return dotprod;
+  for ( DGtal::Dimension i = 0; i < myArray.size(); ++i )
+    myArray[ i ] /= coeff;
+  return *this;
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-double
-DGtal::PointVector<dim, TComponent, TContainer>::cosineSimilarity( const Self& v ) const
+template <
+  typename OtherComponent, typename OtherStorage,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type>
+DGtal::PointVector<dim, TComponent, TContainer>&
+DGtal::PointVector<dim, TComponent, TContainer>::operator/= ( PointVector<dim, OtherComponent, OtherStorage> const& v )
 {
-    double angle = std::acos ( this->dot ( v ) / ( this->norm() * v.norm() ) );
+  for ( DGtal::Dimension i = 0; i < myArray.size(); ++i )
+    myArray[ i ] /= v[ i ];
+  return *this;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template < typename OtherComponent, typename OtherStorage >
+inline auto
+DGtal::PointVector<dim, TComponent, TContainer>::dot( const DGtal::PointVector<dim, OtherComponent, OtherStorage>& v ) const
+    -> decltype( DGtal::dotProduct(*this, v) )
+{
+  return DGtal::dotProduct(*this, v);
+}
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline
+DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>
+DGtal::dotProduct ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+  {
+    using EuclideanRing = ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>;
+    auto dotprod = NumberTraits<EuclideanRing>::ZERO;
+    for ( DGtal::Dimension i = 0; i < ptDim; ++i )
+      dotprod += lhs[ i ] * rhs[ i ];
+    return dotprod;
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline double
+DGtal::cosineSimilarity ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+  {
+    double angle = std::acos( dotProduct(lhs, rhs)  / ( lhs.norm() * rhs.norm() ) );
     if ( std::isnan ( angle ) )
         angle = 0.0;
     return angle;
-}
+  }
+
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-typename DGtal::PointVector<dim, TComponent, TContainer>
-DGtal::PointVector<dim, TComponent, TContainer>::crossProduct( const Self& v ) const
-{
-  Self crossprod;
-  for ( DGtal::Dimension i = 0; i < dim; ++i )
-    crossprod[i] = this->myArray[ (i+1)%dim ]*v[ (i+2)%dim ] - 
-      this->myArray[ (i+2)%dim ]*v[ (i+1)%dim ];
-  return crossprod;
-}
+template < typename OtherComponent, typename OtherStorage >
+inline double
+DGtal::PointVector<dim, TComponent, TContainer>::cosineSimilarity( const DGtal::PointVector<dim, OtherComponent, OtherStorage>& v ) const
+  {
+    return DGtal::cosineSimilarity(*this, v);
+  }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-DGtal::PointVector<dim, TComponent, TContainer>
-DGtal::PointVector<dim, TComponent, TContainer>::operator- ( const Self& v ) const
+template < typename OtherComponent, typename OtherStorage >
+inline auto
+DGtal::PointVector<dim, TComponent, TContainer>::crossProduct( const DGtal::PointVector<dim, OtherComponent, OtherStorage>& v ) const
+    -> decltype( DGtal::crossProduct(*this, v) )
 {
-  return Self(*this, v, functors::Minus<Component>());
+  return DGtal::crossProduct(*this, v);
 }
+//------------------------------------------------------------------------------
+template <
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::crossProduct ( DGtal::PointVector<3, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<3, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    auto crossprod = constructFromArithmeticConversion(lhs, rhs);
+    for ( DGtal::Dimension i = 0; i < 3; ++i )
+      crossprod[i] =
+            lhs[ (i+1)%3 ] * rhs[ (i+2)%3 ]
+          - lhs[ (i+2)%3 ] * rhs[ (i+1)%3 ];
+    return crossprod;
+  }
+//------------------------------------------------------------------------------
+template <
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline
+DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>
+DGtal::crossProduct ( DGtal::PointVector<2, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<2, RightEuclideanRing, RightContainer> const& rhs )
+  {
+    return lhs[0] * rhs[1] - lhs[1] * rhs[0];
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::operator+ ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    using EuclideanRing = ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>;
+    return constructFromArithmeticConversion(lhs, rhs, lhs, rhs, std::plus<EuclideanRing>());
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::operator- ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    using EuclideanRing = ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>;
+    return constructFromArithmeticConversion(lhs, rhs, lhs, rhs, std::minus<EuclideanRing>());
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::operator* ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    using EuclideanRing = ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>;
+    return constructFromArithmeticConversion(lhs, rhs, lhs, rhs, std::multiplies<EuclideanRing>());
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::operator/ ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+             DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    using EuclideanRing = ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>;
+    return constructFromArithmeticConversion(lhs, rhs, lhs, rhs, std::divides<EuclideanRing>());
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightScalar >
+inline auto
+DGtal::operator+ ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+            RightScalar const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    return constructFromArithmeticConversion(lhs, rhs, lhs, [&rhs] (LeftEuclideanRing v) { return v + rhs; });
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftScalar,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::operator+ ( LeftScalar const& lhs,
+           DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    return constructFromArithmeticConversion(lhs, rhs, rhs, [&lhs] (RightEuclideanRing v) { return lhs + v; });
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightScalar >
+inline auto
+DGtal::operator- ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+            RightScalar const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    return constructFromArithmeticConversion(lhs, rhs, lhs, [&rhs] (LeftEuclideanRing v) { return v - rhs; });
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftScalar,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::operator- ( LeftScalar const& lhs,
+           DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    return constructFromArithmeticConversion(lhs, rhs, rhs, [&lhs] (RightEuclideanRing v) { return lhs - v; });
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightScalar >
+inline auto
+DGtal::operator* ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+            RightScalar const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    return constructFromArithmeticConversion(lhs, rhs, lhs, [&rhs] (LeftEuclideanRing v) { return v * rhs; });
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftScalar,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::operator* ( LeftScalar const& lhs,
+           DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    return constructFromArithmeticConversion(lhs, rhs, rhs, [&lhs] (RightEuclideanRing v) { return lhs * v; });
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightScalar >
+inline auto
+DGtal::operator/ ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+            RightScalar const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    return constructFromArithmeticConversion(lhs, rhs, lhs, [&rhs] (LeftEuclideanRing v) { return v / rhs; });
+  }
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftScalar,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::operator/ ( LeftScalar const& lhs,
+           DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+  {
+    return constructFromArithmeticConversion(lhs, rhs, rhs, [&lhs] (RightEuclideanRing v) { return lhs / v; });
+  }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
@@ -582,42 +797,88 @@ DGtal::PointVector<dim, TComponent, TContainer>::reset()
     myArray[ i ] = NumberTraits< Component >::ZERO;
 }
 //------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-DGtal::PointVector<dim, TComponent, TContainer>
-DGtal::PointVector<dim, TComponent, TContainer>::inf( const Self& apoint ) const
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::inf( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+     DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
 {
-  return Self(*this, apoint, functors::Min<Component>());
+  using EuclideanRing = ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>;
+  return DGtal::constructFromArithmeticConversion(lhs, rhs, lhs, rhs, functors::Min<EuclideanRing>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-DGtal::PointVector<dim, TComponent, TContainer>
-DGtal::PointVector<dim, TComponent, TContainer>::sup( const Self& apoint ) const
+template < typename OtherComponent, typename OtherStorage >
+inline auto
+DGtal::PointVector<dim, TComponent, TContainer>::inf( const DGtal::PointVector<dim, OtherComponent, OtherStorage>& aPoint ) const
+    -> decltype( DGtal::inf(*this, aPoint) )
 {
-  return Self(*this, apoint, functors::Max<Component>());
+  return DGtal::inf(*this, aPoint);
+}
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline auto
+DGtal::sup( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+     DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+    -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) )
+{
+  using EuclideanRing = ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>;
+  return DGtal::constructFromArithmeticConversion(lhs, rhs, lhs, rhs, functors::Max<EuclideanRing>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-bool
-DGtal::PointVector<dim, TComponent, TContainer>::isLower( const Self& p ) const
+template < typename OtherComponent, typename OtherStorage >
+inline auto
+DGtal::PointVector<dim, TComponent, TContainer>::sup( const DGtal::PointVector<dim, OtherComponent, OtherStorage>& aPoint ) const
+    -> decltype( DGtal::sup(*this, aPoint) )
 {
-  for ( DGtal::Dimension i = 0; i < myArray.size(); ++i )
-    if ( p[ i ] < myArray[ i ] )
+  return DGtal::sup(*this, aPoint);
+}
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline bool
+DGtal::isLower( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+         DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+{
+  for ( DGtal::Dimension i = 0; i < ptDim; ++i )
+    if ( rhs[ i ] < lhs[ i ] )
       return false;
   return true;
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-bool
-DGtal::PointVector<dim, TComponent, TContainer>::isUpper( const Self& p ) const
+template < typename OtherComponent, typename OtherStorage >
+inline bool
+DGtal::PointVector<dim, TComponent, TContainer>::isLower( const DGtal::PointVector<dim, OtherComponent, OtherStorage> & p ) const
 {
-  for ( DGtal::Dimension i = 0; i < myArray.size(); ++i )
-    if ( p[ i ] > myArray[ i ] )
+  return DGtal::isLower(*this, p);
+}
+//------------------------------------------------------------------------------
+template < DGtal::Dimension ptDim,
+    typename LeftEuclideanRing, typename LeftContainer,
+    typename RightEuclideanRing, typename RightContainer >
+inline bool
+DGtal::isUpper( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftContainer> const& lhs,
+         DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
+{
+  for ( DGtal::Dimension i = 0; i < ptDim; ++i )
+    if ( rhs[ i ] > lhs[ i ] )
       return false;
   return true;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template < typename OtherComponent, typename OtherStorage >
+inline bool
+DGtal::PointVector<dim, TComponent, TContainer>::isUpper( const DGtal::PointVector<dim, OtherComponent, OtherStorage> & p ) const
+{
+  return DGtal::isUpper(*this, p);
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -646,8 +907,8 @@ DGtal::PointVector<dim, TComponent, TContainer>::maxElement(  )
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
-typename DGtal::PointVector<dim, TComponent, TContainer>::Iterator 
-DGtal::PointVector<dim, TComponent, TContainer>::minElement( ) 
+typename DGtal::PointVector<dim, TComponent, TContainer>::Iterator
+DGtal::PointVector<dim, TComponent, TContainer>::minElement( )
 {
   return  std::min_element(this->begin(), this->end());
 }
@@ -665,8 +926,8 @@ negate()
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 double
-DGtal::PointVector<dim, TComponent, TContainer>::norm (const
-						       typename Self::NormType aType ) const
+DGtal::PointVector<dim, TComponent, TContainer>::norm (
+    const typename Self::NormType aType ) const
 {
   double tmp = 0.0;
 
