@@ -32,7 +32,13 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <boost/version.hpp>
+#define BOOST_MINOR (BOOST_VERSION / 100 % 1000)
+#if BOOST_MINOR < 58
+#include <boost/math/common_factor_rt.hpp>
+#else
 #include <boost/integer/common_factor_rt.hpp>
+#endif
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
