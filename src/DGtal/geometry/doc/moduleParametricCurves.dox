@@ -68,24 +68,24 @@ the relation between the curve's curvature and the digital grid (see some exampl
 >  \f$ \gamma \f$.</I><br>
 >  <B>for</B> i = 1 <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
 >>  <B>for</B> j = i + 1 <B>and</B> k = 0 <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
->>>>  <B>if</B> is26Connected(digital_curve.back(), buffer[j]) <B>and</B> weights[buffer[j]] \f$ > \f$ weights[buffer[i]] <B>then</B><br>
->>>>>>  i = j<br>
->>>>>>  k = 0<br>
->>>>  else
->>>>>>  k = k + 1
->>>>  j = j + 1
+>>>  <B>if</B> is26Connected(digital_curve.back(), buffer[j]) <B>and</B> weights[buffer[j]] \f$ > \f$ weights[buffer[i]] <B>then</B><br>
+>>>>  i = j<br>
+>>>>  k = 0<br>
+>>>  else
+>>>>  k = k + 1
+>>  j = j + 1
 >>  digital_curve.push_back(buffer[i])<br>
 >>  i = i + 1
 >  <I>Due to the weights fluctuations or curve behaviour we can still have points that should be removed to ensure 26-connectivity.</I><br>
 >  <B>for</B> i = 0 <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
 >>  tmp = i + 1<br>
 >>  <B>for</B> j = i + 1 <B>and</B> k = 0 <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
->>>>  <B>if</B> is26Connected(digital_curve[i], digital_curve[j]) <B>then</B><br>
->>>>>>  tmp = j<br>
->>>>>>  k = 0<br>
->>>>  else
->>>>>>  k = k + 1
->>>>  j = j + 1
+>>>  <B>if</B> is26Connected(digital_curve[i], digital_curve[j]) <B>then</B><br>
+>>>>  tmp = j<br>
+>>>>  k = 0<br>
+>>>  else
+>>>>  k = k + 1
+>>>  j = j + 1
 >>  digital_curve.erase(i + 1, tmp)<br>
 >>  i = tmp + 1
 
