@@ -45,10 +45,10 @@
 #include <climits>
 #include <utility>
 #include <exception>
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/CSpace.h"
-#include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -65,11 +65,14 @@ namespace functors
      * Warring: This version uses closest neighbor interpolation.
      *
      * @tparam TSpace a 3 dimensional space.
+     * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
+     * @tparam TInputValue type of the output point e.g., TSpace::Point
      *
      * @see exampleRigidtransformation3d.cpp
      */
-template <typename TSpace, typename TFunctor, typename TInputValue, typename TOutputValue >
-class ForwardRigidTransformation3D : std::unary_function <TInputValue, TOutputValue>
+template < typename TSpace, typename TInputValue, typename TOutputValue,
+           typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
+class ForwardRigidTransformation3D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
@@ -149,11 +152,14 @@ protected:
      * Warring: This version uses closest neighbor interpolation.
      *
      * @tparam TSpace a 3 dimensional space.
+     * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
+     * @tparam TInputValue type of the output point e.g., TSpace::Point
      *
      * @see exampleRigidtransformation3d.cpp
      */
-template <typename TSpace, typename TFunctor, typename TInputValue, typename TOutputValue >
-class BackwardRigidTransformation3D : std::unary_function <TInputValue, TOutputValue>
+template < typename TSpace, typename TInputValue, typename TOutputValue,
+           typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
+class BackwardRigidTransformation3D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
@@ -232,8 +238,7 @@ private:
      * @see exampleRigidtransformation3d.cpp
      */
 template <typename TDomain, typename TRigidTransformFunctor >
-class DomainRigidTransformation3D :
-        std::unary_function < std::pair < typename TDomain::Point, typename TDomain::Point >, TDomain>
+class DomainRigidTransformation3D
 {
     ///Checking concepts
     BOOST_STATIC_ASSERT(( TDomain::dimension == 3 ));
