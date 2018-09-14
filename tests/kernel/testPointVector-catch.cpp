@@ -34,6 +34,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <type_traits>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 
@@ -42,20 +44,124 @@
 using namespace DGtal;
 using namespace std;
 
+// Compare the value of the two parameters and also their component type.
+#define COMPARE_VALUE_AND_TYPE(expr, check) \
+  REQUIRE( (expr) == (check) ); \
+  REQUIRE( ( std::is_same<decltype(expr)::Component, decltype(check)::Component>::value ) );
 
-TEST_CASE( "Point Vector Unit tests" )
+TEST_CASE( "2D Point Vector Unit tests" )
 {
-  typedef PointVector<4, DGtal::int32_t> Point;
-  typedef PointVector<4, double> RealPoint;
+  using Real = double;
+  using Integer = DGtal::int32_t;
 
-  DGtal::int32_t t1[] = {1,2,3,4};
-  DGtal::int32_t t2[]= {5,4,3,2};
-  double t3[]= {1.0,-1.0,2.0,-2.0};
+  typedef PointVector<2, Integer> Point2D;
+  typedef PointVector<2, Real> RealPoint2D;
+  typedef PointVector<3, Integer> Point3D;
+  typedef PointVector<3, Real> RealPoint3D;
+
+  Integer t1[] = {1,2};
+  Integer t2[] = {5,4};
+  Real t3[] = {1.5,2.5};
+  Real t4[] = {5.5,4.5};
+
+  Point2D p1( t1 );
+  Point2D p2( t2 );
+  RealPoint2D p3(t3);
+  RealPoint2D p4(t4);
+  
+  Point3D p1_3d( p1[0], p1[1] );
+  Point3D p2_3d( p2[0], p2[1] );
+  RealPoint3D p3_3d( p3[0], p3[1] );
+  RealPoint3D p4_3d( p4[0], p4[1] );
+  
+  SECTION("Cross products with integers")
+    {
+      REQUIRE( p1.crossProduct(p2) == p1_3d.crossProduct(p2_3d)[2] );
+      REQUIRE( crossProduct(p1, p2) == crossProduct(p1_3d, p2_3d)[2] );
+      REQUIRE( p2.crossProduct(p1) == p2_3d.crossProduct(p1_3d)[2] );
+      REQUIRE( crossProduct(p2, p1) == crossProduct(p2_3d, p1_3d)[2] );
+    }
+  
+  SECTION("Cross products with reals")
+    {
+      REQUIRE( p3.crossProduct(p4) == p3_3d.crossProduct(p4_3d)[2] );
+      REQUIRE( crossProduct(p3, p4) == crossProduct(p3_3d, p4_3d)[2] );
+      REQUIRE( p4.crossProduct(p3) == p4_3d.crossProduct(p3_3d)[2] );
+      REQUIRE( crossProduct(p4, p3) == crossProduct(p4_3d, p3_3d)[2] );
+    }
+  
+  SECTION("Cross products with mixed integers/reals")
+    {
+      REQUIRE( p1.crossProduct(p3) == p1_3d.crossProduct(p3_3d)[2] );
+      REQUIRE( crossProduct(p1, p3) == crossProduct(p1_3d, p3_3d)[2] );
+      REQUIRE( p3.crossProduct(p1) == p3_3d.crossProduct(p1_3d)[2] );
+      REQUIRE( crossProduct(p3, p1) == crossProduct(p3_3d, p1_3d)[2] );
+    }
+}
+
+TEST_CASE( "3D Point Vector Unit tests" )
+{
+  using Real = double;
+  using Integer = DGtal::int32_t;
+
+  typedef PointVector<3, Integer> Point;
+  typedef PointVector<3, Real> RealPoint;
+
+  Integer t1[] = {1,2,3};
+  Integer t2[] = {5,4,3};
+  Real t3[] = {1.5,2.5,3.5};
+  Real t4[] = {5.5,4.5,3.5};
+
+  Point p1( t1 );
+  Point p2( t2 );
+  RealPoint p3(t3);
+  RealPoint p4(t4);
+  
+  SECTION("Cross products with integers")
+    {
+      COMPARE_VALUE_AND_TYPE( p1.crossProduct(p2), Point(-6, 12, -6) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p1, p2), Point(-6, 12, -6) );
+      COMPARE_VALUE_AND_TYPE( p2.crossProduct(p1), Point(6, -12, 6) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p2, p1), Point(6, -12, 6) );
+    }
+  
+  SECTION("Cross products with reals")
+    {
+      COMPARE_VALUE_AND_TYPE( p3.crossProduct(p4), RealPoint(-7., 14., -7.) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p3, p4), RealPoint(-7., 14., -7.) );
+      COMPARE_VALUE_AND_TYPE( p4.crossProduct(p3), RealPoint(7., -14., 7.) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p4, p3), RealPoint(7., -14., 7.) );
+    }
+  
+  SECTION("Cross products with mixed integers/reals")
+    {
+      COMPARE_VALUE_AND_TYPE( p1.crossProduct(p3), RealPoint(-0.5, 1., -0.5) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p1, p3), RealPoint(-0.5, 1., -0.5) );
+      COMPARE_VALUE_AND_TYPE( p3.crossProduct(p1), RealPoint(0.5, -1., 0.5) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p3, p1), RealPoint(0.5, -1., 0.5) );
+    }
+}
+
+TEST_CASE( "4D Point Vector Unit tests" )
+{
+  using Real = double;
+  using Integer = DGtal::int32_t;
+
+  typedef PointVector<4, Integer> Point;
+  typedef PointVector<4, Real> RealPoint;
+
+  const Real pi = std::acos(Real(-1));
+
+  Integer t1[] = {1,2,3,4};
+  Integer t2[] = {5,4,3,2};
+  Real t3[] = {1.0,-1.0,2.0,-2.0};
+  Real t4[] = {5.5,-4.5,3.5,2.5};
 
   Point p1( t1 );
   Point p1bis( t1 );
   Point p2( t2 );
   RealPoint p3(t3);
+  RealPoint p4(t4);
 
 
   SECTION("Comparisons")
@@ -108,16 +214,198 @@ TEST_CASE( "Point Vector Unit tests" )
       REQUIRE( sum == 300 );
     }
 
-  SECTION("Arithmetical Operators")
+  SECTION("Arithmetical operators with integers")
     {
-      REQUIRE( (p1 + p2) == Point(6,6,6,6) );
-      REQUIRE( (p1 - p2) == Point(-4,-2,0,2) );
-      REQUIRE( (p1*2) == Point(2,4,6,8) );
-      REQUIRE( (2*p1) == Point(2,4,6,8) );
-      REQUIRE( (-p1) == Point(-1,-2,-3,-4) );
-      REQUIRE( p1.inf(p2) == Point(1,2,3,2) );
-      REQUIRE( p1.sup(p2) == Point(5,4,3,4) );
+      COMPARE_VALUE_AND_TYPE( p1 + p2, Point(6,6,6,6) );
+      COMPARE_VALUE_AND_TYPE( p1 - p2, Point(-4,-2,0,2) );
+      COMPARE_VALUE_AND_TYPE( p1 * p2, Point(5,8,9,8) );
+      COMPARE_VALUE_AND_TYPE( p2 / p1, Point(5,2,1,0) );
+
+      COMPARE_VALUE_AND_TYPE( p1 + 2, Point(3,4,5,6) );
+      COMPARE_VALUE_AND_TYPE( 2 + p1, Point(3,4,5,6) );
+      COMPARE_VALUE_AND_TYPE( p1 - 2, Point(-1,0,1,2) );
+      COMPARE_VALUE_AND_TYPE( 2 - p1, Point(1,0,-1,-2) );
+      COMPARE_VALUE_AND_TYPE( p1 * 2, Point(2,4,6,8) );
+      COMPARE_VALUE_AND_TYPE( 2 * p1, Point(2,4,6,8) );
+      COMPARE_VALUE_AND_TYPE( p1 / 2, Point(0,1,1,2) );
+      COMPARE_VALUE_AND_TYPE( 2 / p1, Point(2,1,0,0) );
+
+      COMPARE_VALUE_AND_TYPE( -p1, Point(-1,-2,-3,-4) );
+
+      p1 *= 2; COMPARE_VALUE_AND_TYPE( p1, Point(2,4,6,8) );
+      p1 += 2; COMPARE_VALUE_AND_TYPE( p1, Point(4,6,8,10) );
+      p1 -= 2; COMPARE_VALUE_AND_TYPE( p1, Point(2,4,6,8) );
+      p1 /= 2; COMPARE_VALUE_AND_TYPE( p1, Point(1,2,3,4) );
+
+      p1 *= p2; COMPARE_VALUE_AND_TYPE( p1, Point(5,8,9,8) );
+      p1 += p2; COMPARE_VALUE_AND_TYPE( p1, Point(10,12,12,10) );
+      p1 -= p2; COMPARE_VALUE_AND_TYPE( p1, Point(5,8,9,8) );
+      p1 /= p2; COMPARE_VALUE_AND_TYPE( p1, Point(1,2,3,4) );
+    }
+
+  SECTION("Other operators with integers")
+    {
+      COMPARE_VALUE_AND_TYPE( p1.inf(p2), Point(1,2,3,2) );
+      COMPARE_VALUE_AND_TYPE( p1.sup(p2), Point(5,4,3,4) );
+      COMPARE_VALUE_AND_TYPE( inf(p1, p2), Point(1,2,3,2) );
+      COMPARE_VALUE_AND_TYPE( sup(p1, p2), Point(5,4,3,4) );
+
       REQUIRE( p1.dot(p2) == 30 );
+      REQUIRE( dotProduct(p1, p2) == 30 );
+
+      REQUIRE( p1.cosineSimilarity(p1) == Approx(0.) );
+      REQUIRE( p1.cosineSimilarity(-p1) == Approx(pi) );
+      REQUIRE( p1.cosineSimilarity( Point(-2,1,-4,3) ) == Approx(pi/2) );
+      REQUIRE( cosineSimilarity(p1, p1) == Approx(0.) );
+      REQUIRE( cosineSimilarity(p1, -p1) == Approx(pi) );
+      REQUIRE( cosineSimilarity(p1, Point(-2,1,-4,3)) == Approx(pi/2) );
+
+      REQUIRE( p1.isLower(p2) == false );
+      REQUIRE( isLower(p1, p2) == false );
+      REQUIRE( p2.isUpper(p1) == false );
+      REQUIRE( isUpper(p2, p1) == false );
+      p1[3] = 2;
+      REQUIRE( p1.isLower(p2) ==  true );
+      REQUIRE( isLower(p1, p2) == true );
+      REQUIRE( p2.isUpper(p1) == true );
+      REQUIRE( isUpper(p2, p1) == true );
+    }
+
+  SECTION("Arithmetical Operators with reals")
+    {
+      COMPARE_VALUE_AND_TYPE( p3 + p4, RealPoint(6.5,-5.5,5.5,0.5) );
+      COMPARE_VALUE_AND_TYPE( p3 - p4, RealPoint(-4.5,3.5,-1.5,-4.5) );
+      COMPARE_VALUE_AND_TYPE( p3 * p4, RealPoint(5.5,4.5,7.0,-5.0) );
+      COMPARE_VALUE_AND_TYPE( p4 / p3, RealPoint(5.5,4.5,1.75,-1.25) );
+
+      COMPARE_VALUE_AND_TYPE( p3 + 2., RealPoint(3.,1.,4.,0.) );
+      COMPARE_VALUE_AND_TYPE( 2. + p3, RealPoint(3.,1.,4.,0.) );
+      COMPARE_VALUE_AND_TYPE( p3 - 2., RealPoint(-1.,-3.,0.,-4.) );
+      COMPARE_VALUE_AND_TYPE( 2. - p3, RealPoint(1.,3.,0.,4.) );
+      COMPARE_VALUE_AND_TYPE( p3 * 2., RealPoint(2.,-2.,4.,-4.) );
+      COMPARE_VALUE_AND_TYPE( 2. * p3, RealPoint(2.,-2.,4.,-4.) );
+      COMPARE_VALUE_AND_TYPE( p3 / 2., RealPoint(0.5,-0.5,1.,-1.) );
+      COMPARE_VALUE_AND_TYPE( 2. / p3, RealPoint(2.,-2.,1.,-1.) );
+
+      COMPARE_VALUE_AND_TYPE( -p3, RealPoint(-1.,1.,-2.,2.) );
+
+      p3 *= 2.5; COMPARE_VALUE_AND_TYPE( p3, RealPoint(2.5, -2.5, 5., -5.) );
+      p3 += 2.5; COMPARE_VALUE_AND_TYPE( p3, RealPoint(5., 0., 7.5, -2.5) );
+      p3 -= 2.5; COMPARE_VALUE_AND_TYPE( p3, RealPoint(2.5, -2.5, 5., -5.) );
+      p3 /= 2.5; COMPARE_VALUE_AND_TYPE( p3, RealPoint(1., -1., 2., -2.) );
+
+      p3 *= p4; COMPARE_VALUE_AND_TYPE( p3, RealPoint(5.5, 4.5, 7., -5.) );
+      p3 += p4; COMPARE_VALUE_AND_TYPE( p3, RealPoint(11, 0., 10.5, -2.5) );
+      p3 -= p4; COMPARE_VALUE_AND_TYPE( p3, RealPoint(5.5, 4.5, 7., -5.) );
+      p3 /= p4; COMPARE_VALUE_AND_TYPE( p3, RealPoint(1., -1., 2., -2.) );
+    }
+  
+  SECTION("Other operators with reals")
+    {
+      COMPARE_VALUE_AND_TYPE( p3.inf(p4), RealPoint(1.,-4.5,2.,-2.) );
+      COMPARE_VALUE_AND_TYPE( p3.sup(p4), RealPoint(5.5,-1.,3.5,2.5) );
+      COMPARE_VALUE_AND_TYPE( inf(p3, p4), RealPoint(1.,-4.5,2.,-2.) );
+      COMPARE_VALUE_AND_TYPE( sup(p3, p4), RealPoint(5.5,-1.,3.5,2.5) );
+
+      REQUIRE( p3.dot(p4) == 12. );
+      REQUIRE( dotProduct(p3, p4) == 12. );
+
+      REQUIRE( p3.cosineSimilarity(p3) == Approx(0.) );
+      REQUIRE( p3.cosineSimilarity(-p3) == Approx(pi) );
+      REQUIRE( p3.cosineSimilarity( RealPoint(1.0,1.0,2.0,2.0) ) == Approx(pi/2) );
+      REQUIRE( cosineSimilarity(p3, p3) == Approx(0.) );
+      REQUIRE( cosineSimilarity(p3, -p3) == Approx(pi) );
+      REQUIRE( cosineSimilarity(p3, RealPoint(1.0,1.0,2.0,2.0)) == Approx(pi/2) );
+      
+      REQUIRE( p3.isLower(p4) == false );
+      REQUIRE( isLower(p3, p4) == false );
+      REQUIRE( p4.isUpper(p3) == false );
+      REQUIRE( isUpper(p4, p3) == false );
+      p4[1] = -p4[1];
+      REQUIRE( p3.isLower(p4) == true );
+      REQUIRE( isLower(p3, p4) == true );
+      REQUIRE( p4.isUpper(p3) == true );
+      REQUIRE( isUpper(p4, p3) == true );
+    }
+  
+  SECTION("Arithmetical Operators with mixed integers/reals")
+    {
+      COMPARE_VALUE_AND_TYPE( p1 + p4, RealPoint(6.5,-2.5,6.5,6.5) );
+      COMPARE_VALUE_AND_TYPE( p4 + p1, RealPoint(6.5,-2.5,6.5,6.5) );
+      COMPARE_VALUE_AND_TYPE( p1 - p4, RealPoint(-4.5,6.5,-0.5,1.5) );
+      COMPARE_VALUE_AND_TYPE( p4 - p1, RealPoint(4.5,-6.5,0.5,-1.5) );
+      COMPARE_VALUE_AND_TYPE( p1 * p4, RealPoint(5.5,-9.0,10.5,10.0) );
+      COMPARE_VALUE_AND_TYPE( p4 * p1, RealPoint(5.5,-9.0,10.5,10.0) );
+      COMPARE_VALUE_AND_TYPE( p1 / p3, RealPoint(1.,-2.,1.5,-2.0) );
+      COMPARE_VALUE_AND_TYPE( p3 / p1, RealPoint(1.,-0.5,2./3.,-0.5) );
+
+      COMPARE_VALUE_AND_TYPE( p3 + 2, RealPoint(3.,1.,4.,0.) );
+      COMPARE_VALUE_AND_TYPE( 2 + p3, RealPoint(3.,1.,4.,0.) );
+      COMPARE_VALUE_AND_TYPE( p3 - 2, RealPoint(-1.,-3.,0.,-4.) );
+      COMPARE_VALUE_AND_TYPE( 2 - p3, RealPoint(1.,3.,0.,4.) );
+      COMPARE_VALUE_AND_TYPE( p3 * 2, RealPoint(2.,-2.,4.,-4.) );
+      COMPARE_VALUE_AND_TYPE( 2 * p3, RealPoint(2.,-2.,4.,-4.) );
+      COMPARE_VALUE_AND_TYPE( p3 / 2, RealPoint(0.5,-0.5,1.,-1.) );
+      COMPARE_VALUE_AND_TYPE( 2 / p3, RealPoint(2.,-2.,1.,-1.) );
+      
+      COMPARE_VALUE_AND_TYPE( p1 + 2.5, RealPoint(3.5,4.5,5.5,6.5) );
+      COMPARE_VALUE_AND_TYPE( 2.5 + p1, RealPoint(3.5,4.5,5.5,6.5) );
+      COMPARE_VALUE_AND_TYPE( p1 - 2.5, RealPoint(-1.5,-0.5,0.5,1.5) );
+      COMPARE_VALUE_AND_TYPE( 2.5 - p1, RealPoint(1.5,0.5,-0.5,-1.5) );
+      COMPARE_VALUE_AND_TYPE( p1 * 2.5, RealPoint(2.5,5.,7.5,10.) );
+      COMPARE_VALUE_AND_TYPE( 2.5 * p1, RealPoint(2.5,5.,7.5,10.) );
+      COMPARE_VALUE_AND_TYPE( p1 / 0.5, RealPoint(2.,4.,6.,8.) );
+      COMPARE_VALUE_AND_TYPE( 2. / p1, RealPoint(2.,1.,2./3.,0.5) );
+
+      p3 *= 2; COMPARE_VALUE_AND_TYPE( p3, RealPoint(2, -2, 4., -4.) );
+      p3 += 2; COMPARE_VALUE_AND_TYPE( p3, RealPoint(4., 0., 6., -2.) );
+      p3 -= 2; COMPARE_VALUE_AND_TYPE( p3, RealPoint(2, -2, 4., -4.) );
+      p3 /= 2; COMPARE_VALUE_AND_TYPE( p3, RealPoint(1., -1., 2., -2.) );
+
+      p3 *= p1; COMPARE_VALUE_AND_TYPE( p3, RealPoint(1., -2., 6., -8.) );
+      p3 += p1; COMPARE_VALUE_AND_TYPE( p3, RealPoint(2., 0., 9., -4.) );
+      p3 -= p1; COMPARE_VALUE_AND_TYPE( p3, RealPoint(1., -2., 6., -8.) );
+      p3 /= p1; COMPARE_VALUE_AND_TYPE( p3, RealPoint(1., -1., 2., -2.) );
+    }
+  
+  SECTION("Other operators with mixed integers/reals")
+    {
+      COMPARE_VALUE_AND_TYPE( p1.inf(p3), RealPoint(1.,-1.,2.,-2.) );
+      COMPARE_VALUE_AND_TYPE( p3.inf(p1), RealPoint(1.,-1.,2.,-2.) );
+      COMPARE_VALUE_AND_TYPE( p1.sup(p3), RealPoint(1.,2.,3.,4.) );
+      COMPARE_VALUE_AND_TYPE( p3.sup(p1), RealPoint(1.,2.,3.,4.) );
+      COMPARE_VALUE_AND_TYPE( inf(p1, p3), RealPoint(1.,-1.,2.,-2.) );
+      COMPARE_VALUE_AND_TYPE( inf(p3, p1), RealPoint(1.,-1.,2.,-2.) );
+      COMPARE_VALUE_AND_TYPE( sup(p1, p3), RealPoint(1.,2.,3.,4.) );
+      COMPARE_VALUE_AND_TYPE( sup(p3, p1), RealPoint(1.,2.,3.,4.) );
+
+      REQUIRE( p4.dot(p1) == 17.0 );
+      REQUIRE( dotProduct(p4, p1) == 17.0 );
+      REQUIRE( dotProduct(p1, p4) == 17.0 );
+      
+      REQUIRE( p1.cosineSimilarity(RealPoint(p1)) == Approx(0.) );
+      REQUIRE( p1.cosineSimilarity(-RealPoint(p1)) == Approx(pi) );
+      REQUIRE( p1.cosineSimilarity( RealPoint(-2,1,-4,3) ) == Approx(pi/2) );
+      REQUIRE( cosineSimilarity(p1, RealPoint(p1)) == Approx(0.) );
+      REQUIRE( cosineSimilarity(p1, -RealPoint(p1)) == Approx(pi) );
+      REQUIRE( cosineSimilarity(p1, RealPoint(-2,1,-4,3)) == Approx(pi/2) );
+
+      REQUIRE( p3.cosineSimilarity(Point(1,-1,2,-2)) == Approx(0.) );
+      REQUIRE( p3.cosineSimilarity(-Point(1,-1,2,-2)) == Approx(pi) );
+      REQUIRE( p3.cosineSimilarity( Point(1,1,2,2) ) == Approx(pi/2) );
+      REQUIRE( cosineSimilarity(p3, Point(1,-1,2,-2)) == Approx(0.) );
+      REQUIRE( cosineSimilarity(p3, -Point(1,-1,2,-2)) == Approx(pi) );
+      REQUIRE( cosineSimilarity(p3, Point(1,1,2,2)) == Approx(pi/2) );
+      
+      REQUIRE( p2.isLower(p4) == false );
+      REQUIRE( isLower(p2, p4) == false );
+      REQUIRE( p4.isUpper(p2) == false );
+      REQUIRE( isUpper(p4, p2) == false );
+      p4[1] = -p4[1];
+      REQUIRE( p2.isLower(p4) == true );
+      REQUIRE( isLower(p2, p4) == true );
+      REQUIRE( p4.isUpper(p2) == true );
+      REQUIRE( isUpper(p4, p2) == true );
     }
 
 }
