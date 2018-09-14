@@ -64,8 +64,8 @@ int main( int , char** )
 {
   typedef ImageSelector<Domain, unsigned char >::Type Image;
   //! [def]
-  typedef ForwardRigidTransformation3D < Space, RealPoint, Point > ForwardTrans;
-  typedef BackwardRigidTransformation3D < Space, RealPoint, Point > BackwardTrans;
+  typedef ForwardRigidTransformation3D < Space > ForwardTrans;
+  typedef BackwardRigidTransformation3D < Space > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation3D < Domain, ForwardTrans > MyTransformedDomain;
   typedef MyTransformedDomain::Bounds Bounds;

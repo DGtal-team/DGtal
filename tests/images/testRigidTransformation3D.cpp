@@ -58,8 +58,8 @@ using namespace functors;
 class testRigidTransformation3D
 {
   typedef ImageSelector<Domain, unsigned char >::Type Image;
-  typedef ForwardRigidTransformation3D < Space, RealPoint, Point > ForwardTrans;
-  typedef BackwardRigidTransformation3D < Space, RealPoint, Point > BackwardTrans;
+  typedef ForwardRigidTransformation3D < Space > ForwardTrans;
+  typedef BackwardRigidTransformation3D < Space > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation3D < Domain, ForwardTrans > DomainTrans;
   typedef DomainTrans::Bounds Bounds;
