@@ -75,7 +75,7 @@ int main( int argc, char** argv )
  QApplication application(argc,argv);
  //! [DigiRotHelixConstr]
  typedef EllipticHelix < Space > MyHelix;
- typedef ForwardRigidTransformation3D < Space, Identity, RealPoint, RealPoint > ForwardTrans;
+ typedef ForwardRigidTransformation3D < Space, RealPoint, RealPoint, Identity > ForwardTrans;
  typedef DecoratorParametricCurveTransformation < MyHelix, ForwardTrans > MyRotatedCurve;
  typedef UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >  Digitizer;
  typedef typename UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >::DigitalCurve MyDigitalCurve;

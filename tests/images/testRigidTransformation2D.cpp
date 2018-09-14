@@ -37,7 +37,6 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/RigidTransformation2D.h"
-#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 
@@ -59,8 +58,8 @@ using namespace Z2i;
 class testRigidTransformation2D
 {
   typedef ImageSelector<Domain, unsigned char >::Type Image;
-  typedef ForwardRigidTransformation2D < Space, VectorRounding < RealPoint, Point>, RealPoint, Point > ForwardTrans;
-  typedef BackwardRigidTransformation2D < Space, VectorRounding < RealPoint, Point>, RealPoint, Point > BackwardTrans;
+  typedef ForwardRigidTransformation2D < Space, RealPoint, Point > ForwardTrans;
+  typedef BackwardRigidTransformation2D < Space, RealPoint, Point > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation2D < Domain, ForwardTrans > DomainTrans;
   typedef DomainTrans::Bounds Bounds;
