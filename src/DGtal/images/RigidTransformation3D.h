@@ -66,7 +66,8 @@ namespace functors
      *
      * @tparam TSpace a 3 dimensional space.
      * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
-     * @tparam TInputValue type of the output point e.g., TSpace::Point
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+     * @tparam TFunctor a functor operating on the output e.g., a rounding function.
      *
      * @see exampleRigidtransformation3d.cpp
      */
@@ -153,7 +154,8 @@ protected:
      *
      * @tparam TSpace a 3 dimensional space.
      * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
-     * @tparam TInputValue type of the output point e.g., TSpace::Point
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+     * @tparam TFunctor a functor operating on the output e.g., a rounding function.
      *
      * @see exampleRigidtransformation3d.cpp
      */

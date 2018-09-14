@@ -62,9 +62,10 @@ namespace functors
      *
      * @tparam TSpace a 2 dimensional space.
      * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
-     * @tparam TInputValue type of the output point e.g., TSpace::Point
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+     * @tparam TFunctor a functor operating on the output e.g., a rounding function.
      *
-     * @see exampleRigidtransformation2d.cpp
+     * @see exampleRigidtransformation3d.cpp
      */
 template < typename TSpace, typename TInputValue, typename TOutputValue,
            typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
@@ -131,9 +132,10 @@ protected:
      *
      * @tparam TSpace a 2 dimensional space.
      * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
-     * @tparam TInputValue type of the output point e.g., TSpace::Point
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+     * @tparam TFunctor a functor operating on the output e.g., a rounding function.
      *
-     * @see exampleRigidtransformation2d.cpp
+     * @see exampleRigidtransformation3d.cpp
      */
 template < typename TSpace, typename TInputValue, typename TOutputValue,
            typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
