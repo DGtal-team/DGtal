@@ -30,6 +30,8 @@
 - *IO*
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
+  - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
+    [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
@@ -39,6 +41,8 @@
     Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
   - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
+  - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
+    [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
 
 
 # DGtal 0.9.4.1
