@@ -66,31 +66,31 @@ the relation between the curve's curvature and the digital grid (see some exampl
 >  digital_curve.push_back(buffer[0])<br>
 >  <I>Refine the digitization by keeping only the most meaningful points i.e., points of high coverage of
 >  \f$ \gamma \f$.</I><br>
->  <B>for</B> i = 1 <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
->>  <B>for</B> j = i + 1 <B>and</B> k = 0 <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
+>  <B>for</B> \f$i = 1\f$ <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
+>>  <B>for</B> \f$ j = i + 1 \f$ <B>and</B> \f$ k = 0 \f$ <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
 >>>  <B>if</B> is26Connected(digital_curve.back(), buffer[j]) <B>and</B> weights[buffer[j]] \f$ > \f$ weights[buffer[i]] <B>then</B><br>
->>>>  i = j<br>
->>>>  k = 0<br>
+>>>>  \f$ i = j \f$ <br>
+>>>>  \f$k = 0 \f$ <br>
 >>>  else
->>>>  k = k + 1
->>  j = j + 1
+>>>>  \f$ k = k + 1 \f$
+>>>  \f$ j = j + 1 \f$
 >>  digital_curve.push_back(buffer[i])<br>
->>  i = i + 1
+>>  \f$ i = i + 1 \f$
 >  <I>Due to the weights fluctuations or curve behaviour we can still have points that should be removed to ensure 26-connectivity.</I><br>
->  <B>for</B> i = 0 <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
->>  tmp = i + 1<br>
->>  <B>for</B> j = i + 1 <B>and</B> k = 0 <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
+>  <B>for</B> \f$ i = 0 \f$ <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
+>>  \f$ tmp = i + 1 \f$ <br>
+>>  <B>for</B> \f$ j = i + 1 \f$ <B>and</B> \f$ k = 0 \f$ <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
 >>>  <B>if</B> is26Connected(digital_curve[i], digital_curve[j]) <B>then</B><br>
->>>>  tmp = j<br>
->>>>  k = 0<br>
+>>>>  \f$ tmp = j \f$ <br>
+>>>>  \f$ k = 0 \f$ <br>
 >>>  else
->>>>  k = k + 1
->>>  j = j + 1
+>>>>  \f$ k = k + 1 \f$
+>>>  \f$ j = j + 1 \f$
 >>  digital_curve.erase(i + 1, tmp)<br>
->>  i = tmp + 1
+>>  \f$ i = tmp + 1 \f$
 
 In the implemented version the buffer has size three times the value of \f$ K_{NEXT} \f$, and each
-time the buffer is flushed a part of the digital curve is created (see two nested loops in the code
+time the buffer is flushed a part of the digital curve is created (see the two first nested loops in the code
 above). Also, the implemented version can treat closed curves and collect useful metadata.
 
 \subsection metData Additional Information
@@ -98,8 +98,8 @@ above). Also, the implemented version can treat closed curves and collect useful
 The digitization implemented in UglyNaiveParametricCurveDigitizer3D can collect, for each point of
 the output digital curve, information like
 
-* weights i.e., the point importance
-* time - a time value that minimize the distance between the integer point and \f$ \gamma \f$ for a given step.
+- weights i.e., the point importance
+- time - a time value that minimize the distance between the integer point and \f$ \gamma \f$ for a given time step.
 
 Note that, the time information is not computed by default therefore if not needed the user should
 avoid calling <B>UglyNaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator,
@@ -116,7 +116,7 @@ Before using UglyNaiveParametricCurveDigitizer3D, you must include the following
 
 Note that, EllipticHelix.h should be replaced with the desirable curve.
 The list of 3D parametric curves is given below. <B>Note that</B>, EllipticHelix is the only
-curve that implements inverse functions (see EllipticHelix.h) for more detail.
+curve that implements inverse functions (see EllipticHelix.h) for more information.
 
 Then, you can construct the needed types as follows:
 @snippet geometry/curves/exampleParamCurve3dDigitization.cpp DigiHelixConstr
@@ -170,13 +170,13 @@ Knot \f$ 7_4 \f$ (see Knot_7_4.h)
 \image html knot_7_4.png
 \image latex knot_7_4.png
 
-For more information about parametric knots see  <a
+For more information about parametrized knots see  <a
 href="https://www.maa.org/sites/default/files/images/upload_library/23/stemkoski/knots/page1.html">https://www.maa.org/sites/default/files/images/upload_library/23/stemkoski/knots/page1.html</a>
 by Lee Stemkoski of Adelphi University.
 
 \section transCurves Geometric Transformations of 3D Parametric Curves
 
-It is possible to rotate 3D parametric around an arbitrary origin by using
+It is possible to rotate a 3D parametric curve around an arbitrary origin and an axis by using
 DecoratorParametricCurveTransformation.
 
 Example below shows how to digitize an elliptic helix (see EllipticHelix.h) rotated by \f$
@@ -204,11 +204,11 @@ See exampleParamCurve3dDigitizationTransformationDecorator.cpp.
 \section handProb Handling Problems
 
 In this section we discuss how to deal with problems such as curves that do not lead to a
-26-connected digitization with the default parameters (\f$ K_{NEXT}, step \f$).
+26-connected digitization with the default parameters (\f$ K_{NEXT}, t_{step} \f$).
 
 \subsection stepProblems Step values
 
-Low step values can lead to disconnectivity of the digitization. For example, knot $3_1$ with
+High step values can lead to disconnections in the digitization. For example, knot $3_1$ with
 scaling factors all equal 10 for a step 0.03 leads to
 
 \image html knot_3_1_low_step_value.png
@@ -222,7 +222,7 @@ A high step value can also lead to wrong weights which can impact quality of the
 
 By trying to digitize a curve with a high, with respect to the grid, curvature we can arrive at a
 connectivity problems.  For instance, if we consider an elliptic helix of radii 20, 1 and period
-distance 1, and \f$ K_{NEXT} = 2 \f$ we can observe connectivity issues i.e., there are at least
+distance 1, and \f$ K_{NEXT} = 2 \f$, we can observe connectivity issues i.e., there are at least
 three points such that they are 26-connected to each other and therefore the curve is not
 26-connected in such a place.
 
