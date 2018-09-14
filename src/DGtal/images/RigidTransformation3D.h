@@ -71,7 +71,7 @@ namespace functors
      *
      * @see exampleRigidtransformation3d.cpp
      */
-template < typename TSpace, typename TInputValue, typename TOutputValue,
+template < typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
            typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
 class ForwardRigidTransformation3D
 {
@@ -159,7 +159,7 @@ protected:
      *
      * @see exampleRigidtransformation3d.cpp
      */
-template < typename TSpace, typename TInputValue, typename TOutputValue,
+template < typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
            typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
 class BackwardRigidTransformation3D
 {
