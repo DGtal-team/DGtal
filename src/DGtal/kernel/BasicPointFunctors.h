@@ -43,6 +43,9 @@
 // Inclusions
 #include <iostream>
 #include <iterator>
+#include <array>
+#include <cmath>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/SpaceND.h"
@@ -52,7 +55,6 @@
 #include "DGtal/base/CQuantity.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/ConstAlias.h"
-#include <array>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -456,10 +458,9 @@ namespace functors
 
       uDir2/=uDir2.norm();
 
-      myOriginPointEmbeddedIn3D = anOriginPoint + uDir1*anWidth/2 + uDir2*anWidth/2;
+      myOriginPointEmbeddedIn3D = Point(anOriginPoint + uDir1*anWidth/2 + uDir2*anWidth/2, functors::Round<>());
       myFirstAxisEmbeddedDirection = -uDir1;
       mySecondAxisEmbeddedDirection = -uDir2;
-
     }
 
 
