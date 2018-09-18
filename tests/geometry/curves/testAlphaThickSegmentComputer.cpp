@@ -29,6 +29,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <cmath>
+
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -356,9 +358,10 @@ bool testAlphaThickSpecialInit()
   aBoard << SetMode((*segment.begin()).className(), "Grid");
   aBoard << segment;
 
-  Z2i::Point p = segment.getAntipodalLeaningPoints().first.first;
-  Z2i::Point q = segment.getAntipodalLeaningPoints().first.second;
-  Z2i::Point s = segment.getAntipodalLeaningPoints().second;
+  functors::Round<> rounding_functor;
+  Z2i::Point p( segment.getAntipodalLeaningPoints().first.first, rounding_functor );
+  Z2i::Point q( segment.getAntipodalLeaningPoints().first.second, rounding_functor );
+  Z2i::Point s( segment.getAntipodalLeaningPoints().second, rounding_functor );
   aBoard.setPenColor(DGtal::Color::Blue);
   aBoard.drawLine(p[0], p[1], q[0], q[1]);
   aBoard.setPenColor(DGtal::Color::Green);
