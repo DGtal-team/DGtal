@@ -212,7 +212,6 @@ namespace DGtal
   inline
   void UglyNaiveParametricCurveDigitizer3D<T>::cleanCurve ( )
   {
-    struct KIter { typename DigitalCurve::iterator jt; unsigned int k; };
     cleanClosedPart ();
     for ( auto it = digitalCurve.begin (); it != digitalCurve.end (); )
     {
