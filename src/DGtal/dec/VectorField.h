@@ -46,6 +46,7 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/dec/Duality.h"
 #include "DGtal/dec/KForm.h"
+#include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
