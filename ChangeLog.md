@@ -44,6 +44,9 @@
   - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
 
+- *DEC*
+  - Adding missing headers in some files of DEC.
+    (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
 
 # DGtal 0.9.4.1
 
