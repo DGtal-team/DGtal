@@ -11,6 +11,10 @@
 - *Configuration/General*
   - Simplifying Travis CI scripts (David Coeurjolly, [#1371](https://github.com/DGtal-team/DGtal/pull/1371))
 
+- *Topology*
+  - Remove the internal object from VoxelComplex, improving performance
+    (Pablo Hernandez, [#1369](https://github.com/DGtal-team/DGtal/pull/1369))
+
 ## Bug Fixes
 - *Configuration/General*
   - Continuous integration AppVeyor fix
