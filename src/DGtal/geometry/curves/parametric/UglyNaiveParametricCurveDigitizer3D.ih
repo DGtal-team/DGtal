@@ -103,10 +103,12 @@ namespace DGtal
       {
           unsigned int tmp = K_NEXT;
           K_NEXT = knext;
+          BUFFER_SIZE = K_NEXT * 3;
           return tmp;
       }
       throw std::runtime_error ( "The value of k-next cannot be 0!" );
   }
+
 
   template <typename T>
   inline
@@ -257,7 +259,7 @@ namespace DGtal
         buffer.push_back ( p );
 
       if ( buffer.size() == BUFFER_SIZE )
-        flashBuffers ( buffer, weights );
+        flashBuffers(buffer, weights);
     }
     syncData ( buffer.begin (), buffer.end (), weights );
     cleanCurve ( );
