@@ -145,8 +145,16 @@ public:
     Value result;
     double norm = std::sqrt ( aDSS.a() * aDSS.a() + aDSS.b() * aDSS.b() );
     result.second = lambdaFunctor ( (double)indexOfPointInDSS / (double)dssLen );
-    result.first[0] = result.second * aDSS.b () / norm;
-    result.first[1] = result.second * aDSS.a () / norm;
+    if ( norm > 0. )
+    {
+      result.first[0] = result.second * aDSS.b() / norm;
+      result.first[1] = result.second * aDSS.a() / norm;
+    }
+    else
+    {
+      result.first[0] = 0.;
+      result.first[1] = 0.;
+    }
     return result;
   }
 private:
