@@ -44,6 +44,17 @@
 **/
 namespace DGtal
 {
+
+#ifndef NDEBUG
+#ifdef __GNUG__
+  void beforeMain (void) __attribute__((constructor));
+  void beforeMain (void)
+  {
+      feenableexcept ( FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW );
+  }
+#endif
+#endif
+
   TraceWriterTerm traceWriterTerm(std::cerr);
   Trace trace(traceWriterTerm);
 }
