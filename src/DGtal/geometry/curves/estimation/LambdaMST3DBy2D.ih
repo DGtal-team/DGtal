@@ -173,7 +173,7 @@ namespace DGtal
     {
       RealVector3D tangent = eval (* it );
       // avoid tangent flapping
-      if ( accum_prev.cosineSimilarity ( tangent ) > M_PI_2 )
+      if ( accum_prev.norm() > 0. && tangent.norm() > 0. && accum_prev.cosineSimilarity ( tangent ) > M_PI_2 )
         tangent = -tangent;
       accum_prev = tangent;
       *result++ = tangent;
