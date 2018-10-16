@@ -114,7 +114,7 @@ namespace DGtal
         prev = partial;
         unsigned int pos = std::distance ( DSS.begin(), std::find ( DSS.begin ( ), DSS.end ( ), p ) ) + 1;
         partial = myFunctor ( *DSS, pos, dssLen );
-        if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
+        if ( partial.first.norm() > 0. && prev.first.norm() > 0. && prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
 	      partial.first = -partial.first;
         tangent += partial;
         isOrphant = false;
@@ -174,14 +174,14 @@ namespace DGtal
       for (; it != it2; it++ )
       {
         Value partial = it->second;
-        if (  prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
+        if ( partial.first.norm() > 0. && prev.first.norm() > 0. && prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
 	      partial.first = -partial.first;
         prev = partial;
         tangent += partial;
       }
       outValues.erase ( *itt );
       // avoid tangent flapping
-      if ( accum_prev.first.cosineSimilarity ( tangent.first ) > M_PI_2 )
+      if ( accum_prev.first.norm() > 0. && tangent.first.norm() > 0. && accum_prev.first.cosineSimilarity ( tangent.first ) > M_PI_2 )
         tangent.first = -tangent.first;
       accum_prev = tangent;
       if ( tangent.second != 0 )
