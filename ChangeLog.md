@@ -12,6 +12,9 @@
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
     (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
 
+  - Change from private to public access of types Input and Output in SCellToPoint
+    (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
+
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
@@ -30,6 +33,8 @@
 - *IO*
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
+  - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
+    [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
@@ -39,7 +44,12 @@
     Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
   - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
+  - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
+    [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
 
+- *DEC*
+  - Adding missing headers in some files of DEC.
+    (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
 
 # DGtal 0.9.4.1
 
