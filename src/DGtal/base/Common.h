@@ -61,7 +61,9 @@
 #include <boost/static_assert.hpp>
 
 #ifndef NDEBUG
+#ifdef __linux__
 #include <fenv.h>
+#endif
 #endif
 
 

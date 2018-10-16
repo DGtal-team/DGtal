@@ -46,7 +46,7 @@ namespace DGtal
 {
 
 #ifndef NDEBUG
-#ifdef __GNUG__
+#ifdef __linux__
   void beforeMain (void) __attribute__((constructor));
   void beforeMain (void)
   {
