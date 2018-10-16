@@ -85,7 +85,7 @@ namespace DGtal
     if ( tmin > tmax )
       throw std::runtime_error ( "Starting time is bigger than the end time!" );
 
-    if ( step >= tmax - tmin )
+    if ( timeStep > ( tmax - tmin ) )
       throw std::runtime_error ( "The step is too big!" );
 
     timeMin = tmin;
