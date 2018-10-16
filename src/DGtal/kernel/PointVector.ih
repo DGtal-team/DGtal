@@ -539,10 +539,16 @@ inline
 double
 DGtal::PointVector<dim, TComponent, TContainer>::cosineSimilarity( const Self& v ) const
 {
-    double angle = std::acos ( this->dot ( v ) / ( this->norm() * v.norm() ) );
-    if ( std::isnan ( angle ) )
-        angle = 0.0;
-    return angle;
+    double radians = 0.;
+    if ( this->norm() > 0. && v.norm() > 0. )
+      radians = this->dot ( v ) / ( this->norm() * v.norm() );
+    else
+      throw std::runtime_error ( "Operation involving a null vector is not defined!" );
+    if ( radians > 1. )
+      radians = 1.;
+    else if ( radians < -1. )
+      radians = -1.;
+    return std::acos ( radians );
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
