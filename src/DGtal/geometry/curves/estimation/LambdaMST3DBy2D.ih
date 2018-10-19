@@ -168,16 +168,33 @@ namespace DGtal
                                                                                        OutputIterator result )
   {
     assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
-    RealVector3D accum_prev = eval ( *itb );
-    for ( Iterator3D it = itb; it != ite; ++it )
+    TCurve2D tXY, tXZ, tYZ;
+    for (auto it  = itb; it != ite; ++it)
     {
-      RealVector3D tangent = eval (* it );
-      // avoid tangent flapping
-      if ( accum_prev.norm() > 0. && tangent.norm() > 0. && accum_prev.cosineSimilarity ( tangent ) > M_PI_2 )
-        tangent = -tangent;
-      accum_prev = tangent;
-      *result++ = tangent;
+      tXY.push_back( myProjXY ( *it ) );
+      tXZ.push_back( myProjXZ ( *it ) );
+      tYZ.push_back( myProjYZ ( *it ) );
     }
+    MAIN_AXIS axis = detectMainAxis ( tXY, tXZ, tYZ );
+    std::vector < RealVector2D > tangen1;
+    std::vector < RealVector2D > tangen2;
+
+    if ( axis == MAIN_AXIS::X )
+    {
+      Estimate2DTangent( tXY, back_inserter ( tangent1 ) );
+      Estimate2DTangent( tXZ, back_inserter ( tangent2 ) );
+    }
+    else if ( axis == MAIN_AXIS::Y )
+    {
+      Estimate2DTangent( tXY, back_inserter ( tangent1 ) );
+      Estimate2DTangent( tYZ, back_inserter ( tangent2 ) );
+    }
+    else
+    {
+      Estimate2DTangent( tXZ, back_inserter ( tangent1 ) );
+      Estimate2DTangent( tYZ, back_inserter ( tangent2 ) );
+    }
+
     return result;
   }
 
@@ -280,6 +297,25 @@ namespace DGtal
       return MAIN_AXIS::Z;
   }
 
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  inline
+  typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::MAIN_AXIS
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::detectMainAxis ( const TCurve2D & tXY,
+                                                                           const TCurve2D & tXZ, const TCurve2D & tYZ )
+  {
+    unsigned int rankXY = CurveRank ( tXY );
+    unsigned int rankXZ = CurveRank ( tXZ );
+    unsigned int rankYZ = CurveRank ( tYZ );
+    if ( rankXY >= rankYZ && rankXZ >= rankYZ )
+      return MAIN_AXIS::X;
+    else if ( rankXY >= rankXZ && rankYZ >= rankXZ )
+      return MAIN_AXIS::Y;
+    else
+      return MAIN_AXIS::Z;
+  }
+
+
   template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
   inline
   unsigned int
@@ -297,6 +333,23 @@ namespace DGtal
       return rank;
   }
 
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  inline
+  unsigned int
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::CurveRank ( const TCurve2D & curve )
+  {
+    unsigned int rank = 0;
+    Segmentation2D segmenter ( curve.begin(), curve.end(), SegmentComputer2D() );
+    for ( typename Segmentation2D::SegmentComputerIterator it = segmenter.begin(); it != segmenter.end(); ++it )
+    {
+      unsigned int dist = std::distance ( it->begin ( ), it->end ( ) );
+      if ( rank < dist )
+        rank = dist;
+    }
+    return rank;
+  }
+
   template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
   inline
   typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector2D
@@ -307,5 +360,21 @@ namespace DGtal
     TEstimator lmst;
     lmst.attach ( segmenter );
     return lmst.eval ( point );
+  }
+
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  template < typename OutputIterator >
+  inline
+  OutputIterator
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Estimate2DTangent
+          ( const TCurve2D &, curve OutputIterator result )
+  {
+    TEstimator lmst;
+    Segmentation2D segmenter ( curve.begin(), curve.end(), SegmentComputer2D() );
+    lmst.attach ( segmenter );
+    lmst.init ( curve.begin(), curve.end() );
+    lmst.eval < OutputIterator > ( curve.begin(), curve.end(),  result );
+    return result;
   }
 }
