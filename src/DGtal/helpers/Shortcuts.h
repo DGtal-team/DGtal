@@ -193,6 +193,7 @@ namespace DGtal
     typedef TriangulatedSurface<RealPoint>                      TriangulatedSurface;
     typedef PolygonalSurface<RealPoint>                         PolygonalSurface;
     typedef std::map<Surfel, IdxSurfel>                         Surfel2Index;
+    typedef std::map<Cell,   IdxVertex>                         Cell2Index;
     
     // ----------------------- Static services --------------------------------------
   public:
@@ -1819,6 +1820,43 @@ namespace DGtal
       return pPolySurf;
     }
 
+    /// Builds the dual polygonal surface associated to the
+    /// given digital surface.
+    ///
+    /// @param[out] s2i the map Surfel -> Vertex index in the polygonal surface.
+    /// @param[in] aSurface any digital surface
+    /// @return a smart pointer on the built polygonal surface.
+    static CountedPtr< PolygonalSurface >
+    makeDualPolygonalSurface( Surfel2Index& s2i,
+			      CountedPtr< DigitalSurface > aSurface )
+    {
+      BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+      CanonicCellEmbedder< KSpace > cembedder;
+      auto pPolySurf = CountedPtr<PolygonalSurface>
+	    ( new PolygonalSurface ); // acquired
+      MeshHelpers::digitalSurface2DualPolygonalSurface
+	( *aSurface, cembedder, *pPolySurf, s2i );
+      return pPolySurf;
+    }
+
+    /// Builds the primal polygonal surface associated to the
+    /// given digital surface.
+    ///
+    /// @param[out] c2i the map Cell -> Vertex index in the polygonal surface.
+    /// @param[in] aSurface any digital surface
+    /// @return a smart pointer on the built polygonal surface or 0 if it fails because aSurface is not a combinatorial 2-manifold.
+    static CountedPtr< PolygonalSurface >
+    makePrimalPolygonalSurface( Cell2Index& c2i,
+				CountedPtr< DigitalSurface > aSurface )
+    {
+      BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+      CanonicCellEmbedder< KSpace > cembedder;
+      auto pPolySurf = CountedPtr<PolygonalSurface>
+	( new PolygonalSurface ); // acquired
+      bool ok = MeshHelpers::digitalSurface2PrimalPolygonalSurface
+	( *aSurface, cembedder, *pPolySurf, c2i );
+      return ok ? pPolySurf : 0;
+    }
 			     
     // ------------------------------ utilities ------------------------------
   public:
