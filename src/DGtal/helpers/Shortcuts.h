@@ -189,9 +189,6 @@ namespace DGtal
     typedef TrueDigitalSurfaceLocalEstimator
     < KSpace, ImplicitShape3D, GaussianCurvatureFunctor >       TrueGaussianCurvatureEstimator;
 
-    typedef RegularPointEmbedder<Space>                         PointEmbedder;
-    typedef ImageLinearCellEmbedder
-    < KSpace, GrayScaleImage, PointEmbedder >                   ImageCellEmbedder;
     typedef Mesh<RealPoint>                                     Mesh;
     typedef TriangulatedSurface<RealPoint>                      TriangulatedSurface;
     typedef PolygonalSurface<RealPoint>                         PolygonalSurface;
@@ -872,17 +869,6 @@ namespace DGtal
 	::exportFile( output, *gray_scale_image );
     }
 
-    /// @param[in] params the parameters:
-    ///   - gridsizex[1.0]: specifies the space between points along x.
-    ///   - gridsizey[1.0]: specifies the space between points along y.
-    ///   - gridsizez[1.0]: specifies the space between points along z.
-    static ImageCellEmbedder
-    getImageLinearEmbedder( CountedPtr<GrayScaleImage> gray_scale_image,
-			    const Parameters&          params = parametersKSpace() )
-    {
-      auto K = getKSpace();
-    }
-
     
     // ----------------------- DigitalSurface static services ------------------------
   public:
@@ -893,15 +879,13 @@ namespace DGtal
     ///   - nbTriesToFindABel   [   100000]: number of tries in method Surfaces::findABel
     ///   - surfaceComponents   [ "AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough componen
     ///   - surfaceTraversal    ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
-    ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     static Parameters parametersDigitalSurface()
     {
       return Parameters
 	( "surfelAdjacency",   1 )
 	( "nbTriesToFindABel", 100000 )
 	( "surfaceComponents", "AnyBig" )
-	( "surfaceTraversal",  "Default" )
-	( "dualFaceSubdivision",   "No" ); 
+	( "surfaceTraversal",  "Default" );
     }
 
     /// Builds a light digital surface from a space \a K and a binary image \a bimage.
@@ -1694,6 +1678,15 @@ namespace DGtal
 
     // ----------------------- Mesh services ------------------------------
   public:
+
+    /// @return the parameters and their default values which are
+    /// related to meshes.
+    ///   - faceSubdivision [     "No"]: "No|Naive"|"Centroid" specifies how polygonal faces should be subdivided when triangulated or when exported.
+    static Parameters parametersMesh()
+    {
+      return Parameters
+	( "faceSubdivision",   "No" ); 
+    }
       
     /// Builds a triangulated surface (class TriangulatedSurface) from
     /// a mesh (class Mesh). Note that a triangulated surface contains
@@ -1749,6 +1742,25 @@ namespace DGtal
       return pTriSurf;
     }
 
+    /// Builds a triangulated surface from a polygonal surface
+    ///
+    /// @param[in] polySurf any polygonal surface.
+    /// @param[in] params the parameters:
+    ///   - faceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how faces are subdivided, "No" is considered as "Naive" since faces must be triangulated.
+    ///
+    /// @return a smart pointer on the built triangulated surface.
+    static CountedPtr< TriangulatedSurface >
+    makeTriangulatedSurface( CountedPtr< PolygonalSurface > polySurf,
+			     const Parameters&   params = parametersMesh() )
+    {
+      std::string faceSubdivision = params[ "faceSubdivision" ].as<std::string>();
+      bool centroid = ( faceSubdivision == "Centroid" );
+      auto pTriSurf = CountedPtr<TriangulatedSurface>
+	    ( new TriangulatedSurface ); // acquired
+      polygonalSurface2TriangulatedSurface( *polySurf, *pTriSurf, centroid );
+      return pTriSurf;
+    }
+    
     /// Builds a polygon mesh (class PolygonalSurface) from
     /// a mesh (class Mesh). The output polygonal
     /// surface rebuilds a topology between faces.
@@ -1764,6 +1776,47 @@ namespace DGtal
 	    ( new PolygonalSurface ); // acquired
       bool ok = MeshHelpers::mesh2PolygonalSurface( *aMesh, *pPolySurf );
       return ok ? pPolySurf : 0;
+    }
+
+    /// Builds the marching-cubes surface that approximate an
+    /// iso-surface of value "thresholdMin+0.5" in the given 3D
+    /// gray-scale image.
+    ///
+    /// @param[in] params the parameters: ###
+    ///   - surfelAdjacency[1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - thresholdMin   [0]: specifies the threshold min (excluded) to define binary shape
+    ///   - gridsizex    [1.0]: specifies the space between points along x.
+    ///   - gridsizey    [1.0]: specifies the space between points along y.
+    ///   - gridsizez    [1.0]: specifies the space between points along z.
+    /// @return a smart pointer on the built polygonal surface or 0 if
+    /// the mesh was invalid.
+    static CountedPtr< PolygonalSurface >
+    makePolygonalSurface( CountedPtr<GrayScaleImage> gray_scale_image,
+			  const Parameters&          params =
+			  parametersKSpace()
+			  | parametersBinaryImage()
+			  | parametersDigitalSurface() )
+    {
+      auto K       = getKSpace( gray_scale_image );
+      auto bimage  = makeBinaryImage( gray_scale_image, params );
+      auto digSurf = makeDigitalSurface( bimage, K, params );
+      RealVector gh = { params[ "gridsizex" ].as<double>(),
+			params[ "gridsizey" ].as<double>(),
+			params[ "gridsizez" ].as<double>() };
+      double threshold = params[ "thresholdMin" ].as<double>() + 0.5;
+      typedef RegularPointEmbedder<Space>         PointEmbedder;
+      typedef ImageLinearCellEmbedder
+	< KSpace, GrayScaleImage, PointEmbedder > ImageCellEmbedder;
+      PointEmbedder pembedder;
+      pembedder.init( gh );
+      ImageCellEmbedder cembedder;
+      cembedder.init( K, *gray_scale_image, pembedder, threshold );
+      auto pPolySurf = CountedPtr<PolygonalSurface>
+	( new PolygonalSurface ); // acquired
+      Surfel2Index s2i;
+      MeshHelpers::digitalSurface2DualPolygonalSurface
+	( *digSurf, cembedder, *pPolySurf, s2i );
+      return pPolySurf;
     }
 
 			     
@@ -1911,7 +1964,7 @@ namespace DGtal
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
     /// @param[in] params the parameters:
-    ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
+    ///   - faceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
     template <typename TAnyDigitalSurface>
@@ -1919,7 +1972,7 @@ namespace DGtal
     outputDualDigitalSurfaceAsObj
     ( std::ostream&              output,
       CountedPtr<TAnyDigitalSurface> surface,
-      const Parameters&   params = parametersDigitalSurface() )
+      const Parameters&   params = parametersMesh() )
     {
       CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
       return outputDualDigitalSurfaceAsObj( output, surface, embedder, params );
@@ -1938,7 +1991,7 @@ namespace DGtal
     /// @param[in] surface a smart pointer on a digital surface.
     /// @param[in] embedder the embedder for mapping (unsigned) surfels (cells of dimension 2) to points in space.
     /// @param[in] params the parameters:
-    ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
+    ///   - faceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
     template < typename TAnyDigitalSurface,
@@ -1948,13 +2001,13 @@ namespace DGtal
     ( std::ostream&              output,
       CountedPtr<TAnyDigitalSurface> surface,
       const TCellEmbedder&       embedder,
-      const Parameters&   params = parametersDigitalSurface() )
+      const Parameters&   params = parametersMesh() )
     {
       typedef unsigned long Size;
       typedef typename TAnyDigitalSurface::Face Face;
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< TCellEmbedder > ));
-      std::string dualFaceSubdivision = params[ "dualFaceSubdivision" ].as<std::string>();
+      std::string dualFaceSubdivision = params[ "faceSubdivision" ].as<std::string>();
       const int   subdivide
 	= dualFaceSubdivision == "Naive"    ? 1
 	: dualFaceSubdivision == "Centroid" ? 2
@@ -2035,14 +2088,14 @@ namespace DGtal
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on an indexed digital surface.
     /// @param[in] params the parameters:
-    ///   - dualFaceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
+    ///   - faceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
     static bool
     outputDualIdxDigitalSurfaceAsObj
     ( std::ostream&                 output,
       CountedPtr<IdxDigitalSurface> surface,
-      const Parameters&             params = parametersDigitalSurface() )
+      const Parameters&             params = parametersMesh() )
     {
       const KSpace& K = surface->container().space();
       auto explicit_surface = makeDigitalSurface( surface, params );

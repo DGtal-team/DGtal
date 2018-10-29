@@ -61,6 +61,42 @@ DGtal::MeshHelpers::mesh2TriangulatedSurface
 
 template <typename Point>
 inline
+void
+DGtal::MeshHelpers::polygonalSurface2TriangulatedSurface
+( const PolygonalSurface<Point>& polysurf,
+  TriangulatedSurface<Point>&    trisurf,
+  bool  centroid )
+{
+  typedef typename PolygonalSurface<Point>::Index Index;
+  trisurf.clear();
+  for ( Index idx = 0; idx < polysurf.nbVertices(); ++idx )
+    trisurf.addVertex( polysurf.position( idx ) );
+  for ( Index idx = 0; idx < polysurf.nbFaces(); ++idx )
+    {
+      auto vertices = polysurf.verticesAroundFace( idx );
+      if ( ! centroid ) {
+	for (unsigned int i = 1; i < vertices.size() - 1; i++ )
+          trisurf.addTriangle( vertices[ 0 ], vertices[ i ], vertices[ i+1 ] );
+      } else {
+	const auto nb = vertices.size();
+	Point c = polysurf.position( vertices[ 0 ] );
+	for (unsigned int i = 1; i < nb ; i++ )
+	  c += polysurf.position( vertices[ i ] );
+	c /= nb;
+	auto idx_c = trisurf.addVertex( c );
+	for (unsigned int i = 0; i < nb; i++ )
+          trisurf.addTriangle( idx_c, vertices[ i ],
+			       vertices[ (i+1) % nb  ] );
+      }
+    }
+  bool ok = trisurf.build();
+  if ( ! ok )
+    trace.error() << "[MeshHelpers::polygonalSurface2TriangulatedSurface]"
+		  << " Error building triangulated surface." << std::endl;
+}
+
+template <typename Point>
+inline
 bool
 DGtal::MeshHelpers::mesh2PolygonalSurface
 ( const Mesh<Point>& mesh,

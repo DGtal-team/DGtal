@@ -116,6 +116,15 @@ int main( int argc, char** argv )
       std::cout << "trisurf=" << *trisurf << std::endl;
     }
     trace.endBlock();
+    trace.beginBlock ( "Make marching-cubes polygonal surface from gray-scale image" );
+    {
+      auto gimage   = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );
+      auto params = SH3::defaultParameters();
+      params( "thresholdMin", 40 );
+      auto polysurf = SH3::makePolygonalSurface( gimage, params );
+      std::cout << "polysurf=" << *polysurf << std::endl;
+    }
+    trace.endBlock();
 
     trace.beginBlock ( "Save digital surface as .obj file" );
     {

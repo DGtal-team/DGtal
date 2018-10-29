@@ -254,7 +254,7 @@ The following name conventions for types are used:
   - Shortcuts::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range
 
 -# Mesh services
-  - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh. 
+  - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh, or triangulate a polygonal surface, or builds the marching cubes surface approximating an isosurface in a gray-scale image. 
 
 -# Utilities
   - Shortcuts::getPrimalVertices: returns the vertices (possibly consistently ordered along the face) of the given signed cell.
