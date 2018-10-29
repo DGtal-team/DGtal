@@ -199,10 +199,19 @@ The following name conventions for types are used:
 
 - Shortcuts::IdxDigitalSurface: represents an indexed digital surface with an explicit array-like representation.
 
+- Shortcuts::Mesh: represents a simple mesh with arbitrary faces, but without topology.
+
+- Shortcuts::TriangulatedSurface: represents a triangulated surface
+  which may have boundaries (use HalfEdgeDataStructure).
+
+- Shortcuts::PolygonalSurface: represents a polygonal surface which
+  may have boundaries (use HalfEdgeDataStructure).
+
 @subsection dgtal_shortcuts_ssec3_3 Main methods
 
 -# General methods
   - Shortcuts::defaultParameters: return the set of all shorcut parameters.
+
 -# ImplicitShape3D methods
   - Shortcuts::getPolynomialList: return the list of polynomial shapes predefined for implicit shapes 
   - Shortcuts::parametersImplicitShape3D: parameters related to 3D implicit shapes (polynomial)
@@ -211,19 +220,24 @@ The following name conventions for types are used:
   - Shortcuts::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
   - Shortcuts::getMeanCurvatures: returns the mean curvatures along the 3D implicit shape close to the specified surfels.
   - Shortcuts::getGaussianCurvatures: returns the Gaussian curvatures along the 3D implicit shape close to the specified surfels.
+
 -# KSpace methods
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
   - Shortcuts::getKSpace: overloaded methods for building a Khalimsky space from a domain or an image, from a bounding box, or from a digitization process.
+
 -# DigitizedImplicitShape3D methods
   - Shortcuts::parametersDigitizedImplicitShape3D: parameters related to shape digitization (bounding box, sampling)
   - Shortcuts::makeDigitizedImplicitShape3D: digitizes an implicit shape.
+
 -# BinaryImage methods
   - Shortcuts::parametersBinaryImage: parameters related to binary images (noise, threshold).
   - Shortcuts::makeBinaryImage: many overloaded methods for creating from scratch, vectorizing shape digitization, loading, copying/noisifying binary images, thresholding gray-scale images.
   - Shortcuts::saveBinaryImage: saves a binary image to a file.
+
 -# GrayScaleImage methods
   - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images.
   - Shortcuts::saveGrayScaleImage: saves a gray scale image to a file.
+
 -# DigitalSurface methods
   - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, components, internal heuristics)
   - Shortcuts::makeLightDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
@@ -232,11 +246,15 @@ The following name conventions for types are used:
   - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from light digital surface(s).
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
+
 -# GeometryEstimation services
-  - Shortcuts::getTrivialNormalVectors:: returns the trivial (Trivial) normal vectors to the given surfel range  
+  - Shortcuts::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range  
   - Shortcuts::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
   - Shortcuts::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
   - Shortcuts::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range
+
+-# Mesh services
+  - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh. 
 
 -# Utilities
   - Shortcuts::getPrimalVertices: returns the vertices (possibly consistently ordered along the face) of the given signed cell.

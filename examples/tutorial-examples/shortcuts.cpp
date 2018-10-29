@@ -109,6 +109,14 @@ int main( int argc, char** argv )
     std::cout << "#connected components <  100 = " << nb_small << std::endl;
     std::cout << "#connected components >= 100 = " << nb_big << std::endl;
     trace.endBlock();
+    trace.beginBlock ( "Make triangulated surface from digital surface" );
+    {
+      SH3::Surfel2Index s2i;
+      auto trisurf = SH3::makeTriangulatedSurface( light_surf, s2i );
+      std::cout << "trisurf=" << *trisurf << std::endl;
+    }
+    trace.endBlock();
+
     trace.beginBlock ( "Save digital surface as .obj file" );
     {
       ofstream objfile( "primal-al.obj" );
