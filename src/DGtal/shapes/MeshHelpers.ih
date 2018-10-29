@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/topology/helpers/Surfaces.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -244,6 +245,53 @@ DGtal::MeshHelpers::digitalSurface2DualPolygonalSurface
       polysurf.addPolygonalFace( face );
     }
   polysurf.build();
+}
+
+template < typename DigitalSurfaceContainer,
+	   typename CellEmbedder,
+	   typename CellMap >
+inline
+bool
+DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
+( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
+  const CellEmbedder& cembedder,
+  PolygonalSurface<typename CellEmbedder::Value>& polysurf,
+  CellMap& cellmap )
+{
+  BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
+  typedef DigitalSurface< DigitalSurfaceContainer >    Surface;
+  typedef typename Surface::KSpace                     KSpace;
+  typedef typename KSpace::Cell                        Cell;
+  typedef typename Surface::Vertex                     Vertex;
+  typedef typename Surface::VertexRange                VertexRange;
+  typedef typename CellEmbedder::Value                 Point;
+  typedef typename PolygonalSurface< Point >::PolygonalFace PolygonalFace;
+  BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
+  
+  polysurf.clear();
+  cellmap.clear();
+  // Numbers all vertices and add them to the triangulated surface.
+  const KSpace & K = dsurf.container().space();
+  for ( auto&& s : dsurf ) {
+    auto primal_vertices = Surfaces<KSpace>::getPrimalVertices( K, s );
+    for ( auto&& primal_vtx : primal_vertices ) {
+      if ( ! cellmap.count( primal_vtx ) ) {
+	auto p = cembedder( primal_vtx );
+	cellmap[ primal_vtx ] = polysurf.addVertex( p );
+      }
+    }
+  }
+
+  // Outputs all faces
+  for ( auto&& s : dsurf ) {
+    auto primal_vertices = getPrimalVertices( K, s, true );
+    PolygonalFace face( primal_vertices.size() );
+    std::transform( primal_vertices.cbegin(), primal_vertices.cend(), face.begin(),
+		    [ &cellmap ] ( const Cell& v ) { return cellmap[ v ]; } );
+    polysurf.addPolygonalFace( face );
+  }      
+  return polysurf.build();
 }
 
 
