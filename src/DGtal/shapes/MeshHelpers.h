@@ -98,6 +98,23 @@ namespace DGtal
     ( const Mesh<Point>& mesh,
       PolygonalSurface<Point>& polysurf );
 
+    /// Builds a polygonal surface from a triangulated surface. Polygonal faces are triangulated according to the chosen policy (
+    ///
+    /// @tparam Point the type for points.
+    /// @param[in]  polysurf the input polygonal surface mesh.
+    /// @param[out] trisurf the output triangulated surface.
+    /// @param[in]  centroid when 'true' creates a vertex in the middle of non triangular faces, otherwise naively subdivides the face keeping first vertex for each triangular face.
+    ///
+    /// @note The vertices of \a trisurf are the same as the one of \a
+    /// polysurf, except if there are newly created vertices (centroid
+    /// case) which are put at the end.
+    template <typename Point>
+    static
+    void polygonalSurface2TriangulatedSurface
+    ( const PolygonalSurface<Point>& polysurf,
+      TriangulatedSurface<Point>&    trisurf,
+      bool  centroid = true );
+
     /// Builds a triangulated surface (class TriangulatedSurface) from
     /// the dual graph of a 2-dimensional digital surface in K^3 (class
     /// DigitalSurface).
