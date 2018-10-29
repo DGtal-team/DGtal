@@ -42,19 +42,24 @@
 // Inclusions
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
+#include <iterator>
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/RegularPointEmbedder.h"
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/math/Statistic.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/IntervalForegroundPredicate.h"
+#include <DGtal/images/ImageLinearCellEmbedder.h>
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/ShapeGeometricFunctors.h"
+#include "DGtal/shapes/MeshHelpers.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -148,9 +153,9 @@ namespace DGtal
     /// defines a heavy container that represents any digital surface.
     typedef SetOfSurfels< KSpace, SurfelSet >                   ExplicitSurfaceContainer;
     /// defines an arbitrary digital surface over a binary image.
-    typedef DigitalSurface< ExplicitSurfaceContainer >             DigitalSurface;
+    typedef DigitalSurface< ExplicitSurfaceContainer >          DigitalSurface;
     /// defines a connected or not indexed digital surface.
-    typedef IndexedDigitalSurface< ExplicitSurfaceContainer >      IdxDigitalSurface;
+    typedef IndexedDigitalSurface< ExplicitSurfaceContainer >   IdxDigitalSurface;
     typedef typename LightDigitalSurface::Surfel                Surfel;
     typedef typename LightDigitalSurface::Cell                  Cell;
     typedef typename LightDigitalSurface::SCell                 SCell;
@@ -183,6 +188,14 @@ namespace DGtal
     < KSpace, ImplicitShape3D, MeanCurvatureFunctor >           TrueMeanCurvatureEstimator;
     typedef TrueDigitalSurfaceLocalEstimator
     < KSpace, ImplicitShape3D, GaussianCurvatureFunctor >       TrueGaussianCurvatureEstimator;
+
+    typedef RegularPointEmbedder<Space>                         PointEmbedder;
+    typedef ImageLinearCellEmbedder
+    < KSpace, GrayScaleImage, PointEmbedder >                   ImageCellEmbedder;
+    typedef Mesh<RealPoint>                                     Mesh;
+    typedef TriangulatedSurface<RealPoint>                      TriangulatedSurface;
+    typedef PolygonalSurface<RealPoint>                         PolygonalSurface;
+    typedef std::map<Surfel, IdxSurfel>                         Surfel2Index;
     
     // ----------------------- Static services --------------------------------------
   public:
@@ -457,11 +470,17 @@ namespace DGtal
   public:
     
     /// @return the parameters and their default values which are used for digitization.
-    ///   - closed   [1]: specifies if the Khalimsky space is closed (!=0) or not (==0).
+    ///   - closed   [1  ]: specifies if the Khalimsky space is closed (!=0) or not (==0).
+    ///   - gridsizex[1.0]: specifies the space between points along x.
+    ///   - gridsizey[1.0]: specifies the space between points along y.
+    ///   - gridsizez[1.0]: specifies the space between points along z.
     static Parameters parametersKSpace()
     {
       return Parameters
-	( "closed",  1 );
+	( "closed",    1   )
+	( "gridsizex", 1.0 )
+	( "gridsizey", 1.0 )
+	( "gridsizez", 1.0 );
     }
 
     /// Builds a Khalimsky space that encompasses the lower and upper
@@ -470,6 +489,8 @@ namespace DGtal
     /// space adds lower dimensional cells all around its boundary to
     /// define a closed complex.
     ///
+    /// @param[in] low the lowest point in the space
+    /// @param[in] up the highest point in the space
     /// @param[in] params the parameters:
     ///   - closed   [1]: specifies if the Khalimsky space is closed (!=0) or not (==0).
     ///
@@ -491,6 +512,7 @@ namespace DGtal
     /// dimensional cells all around its boundary to define a closed
     /// complex.
     ///
+    /// @param[in] bimage any binary image
     /// @param[in] params the parameters:
     ///   - closed   [1]: specifies if the Khalimsky space is closed (!=0) or not (==0).
     ///
@@ -502,6 +524,30 @@ namespace DGtal
       KSpace K;
       if ( ! K.init( bimage->domain().lowerBound(),
 		     bimage->domain().upperBound(),
+		     closed ) )
+	trace.error() << "[Shortcuts::getKSpace]"
+		      << " Error building Khalimsky space K=" << K << std::endl;
+      return K;
+    }
+
+    /// Builds a Khalimsky space that encompasses the domain of the given image.
+    /// Note that digital points are cells of the Khalimsky space with
+    /// maximal dimensions.  A closed Khalimsky space adds lower
+    /// dimensional cells all around its boundary to define a closed
+    /// complex.
+    ///
+    /// @param[in] gimage any gray-scale image
+    /// @param[in] params the parameters:
+    ///   - closed   [1]: specifies if the Khalimsky space is closed (!=0) or not (==0).
+    ///
+    /// @return the Khalimsky space.
+    static KSpace getKSpace( CountedPtr<GrayScaleImage> gimage,
+			     Parameters params = parametersKSpace() )
+    {
+      int closed  = params[ "closed"  ].as<int>();
+      KSpace K;
+      if ( ! K.init( gimage->domain().lowerBound(),
+		     gimage->domain().upperBound(),
 		     closed ) )
 	trace.error() << "[Shortcuts::getKSpace]"
 		      << " Error building Khalimsky space K=" << K << std::endl;
@@ -826,6 +872,21 @@ namespace DGtal
 	::exportFile( output, *gray_scale_image );
     }
 
+    /// @param[in] params the parameters:
+    ///   - gridsizex[1.0]: specifies the space between points along x.
+    ///   - gridsizey[1.0]: specifies the space between points along y.
+    ///   - gridsizez[1.0]: specifies the space between points along z.
+    static ImageCellEmbedder
+    getImageLinearEmbedder( CountedPtr<GrayScaleImage> gray_scale_image,
+			    const Parameters&          params = parametersKSpace() )
+    {
+      auto K = getKSpace();
+    }
+
+    
+    // ----------------------- DigitalSurface static services ------------------------
+  public:
+        
     /// @return the parameters and their default values which are
     /// related to digital surfaces.
     ///   - surfelAdjacency     [        1]: specifies the surfel adjacency (1:ext, 0:int)
@@ -1631,7 +1692,81 @@ namespace DGtal
       return loo;
     }
 
-    
+    // ----------------------- Mesh services ------------------------------
+  public:
+      
+    /// Builds a triangulated surface (class TriangulatedSurface) from
+    /// a mesh (class Mesh). Note that a triangulated surface contains
+    /// only triangles, so polygonal faces (0,1,2,3,4,...) of the
+    /// input mesh are (naively) triangulated (triangles (0,1,2),
+    /// (0,2,3), (0,3,4), etc). Furthermore, the output triangulated
+    /// surface rebuilds a topology between faces.
+    ///
+    /// @param[in] aMesh any mesh (which should be a valid combinatorial surface).
+    ///
+    /// @return a smart pointer on the built triangulated surface or 0 if
+    /// the mesh was invalid.
+    static CountedPtr< TriangulatedSurface >
+    makeTriangulatedSurface( CountedPtr< Mesh > aMesh )
+    {
+      auto pTriSurf = CountedPtr<TriangulatedSurface>
+	    ( new TriangulatedSurface ); // acquired
+      bool ok = MeshHelpers::mesh2TriangulatedSurface( *aMesh, *pTriSurf );
+      return ok ? pTriSurf : 0;
+    }
+
+    /// Builds the dual triangulated surface associated to the given digital surface.
+    ///
+    /// @param[in] aSurface any digital surface
+    /// @param[out] s2i the map Surfel -> Vertex index in the triangulated surface.
+    /// @return a smart pointer on the built triangulated surface.
+    static CountedPtr< TriangulatedSurface >
+    makeTriangulatedSurface( CountedPtr< DigitalSurface > aSurface,
+			     Surfel2Index& s2i )
+    {
+      CanonicCellEmbedder< KSpace > cembedder;
+      auto pTriSurf = CountedPtr<TriangulatedSurface>
+	    ( new TriangulatedSurface ); // acquired
+      MeshHelpers::digitalSurface2DualTriangulatedSurface
+	( *aSurface, cembedder, *pTriSurf, s2i );
+      return pTriSurf;
+    }
+
+    /// Builds the dual triangulated surface associated to the given digital surface.
+    ///
+    /// @param[in] aSurface any (light) digital surface
+    /// @param[out] s2i the map Surfel -> Vertex index in the triangulated surface.
+    /// @return a smart pointer on the built triangulated surface.
+    static CountedPtr< TriangulatedSurface >
+    makeTriangulatedSurface( CountedPtr< LightDigitalSurface > aSurface,
+			     Surfel2Index& s2i )
+    {
+      CanonicCellEmbedder< KSpace > cembedder;
+      auto pTriSurf = CountedPtr<TriangulatedSurface>
+	    ( new TriangulatedSurface ); // acquired
+      MeshHelpers::digitalSurface2DualTriangulatedSurface
+	( *aSurface, cembedder, *pTriSurf, s2i );
+      return pTriSurf;
+    }
+
+    /// Builds a polygon mesh (class PolygonalSurface) from
+    /// a mesh (class Mesh). The output polygonal
+    /// surface rebuilds a topology between faces.
+    ///
+    /// @param[in] aMesh any mesh (which should be a valid combinatorial surface).
+    ///
+    /// @return a smart pointer on the built polygonal surface or 0 if
+    /// the mesh was invalid.
+    static CountedPtr< PolygonalSurface >
+    makePolygonalSurface( CountedPtr< Mesh > aMesh )
+    {
+      auto pPolySurf = CountedPtr<PolygonalSurface>
+	    ( new PolygonalSurface ); // acquired
+      bool ok = MeshHelpers::mesh2PolygonalSurface( *aMesh, *pPolySurf );
+      return ok ? pPolySurf : 0;
+    }
+
+			     
     // ------------------------------ utilities ------------------------------
   public:
     
@@ -1940,6 +2075,148 @@ namespace DGtal
 					    explicit_surface, embedder, params );
     }
 
+    // -------------------- map I/O services ------------------------------------------
+  public:
+    struct CellWriter {
+      void operator()( std::ostream& output, const KSpace& K, const Cell & cell )
+      {
+	for ( Dimension d = 0; d < KSpace::dimension; ++d )
+	  output << " " << K.sKCoord( cell, d );
+      }
+    };
+    struct CellReader {
+      Cell operator()( std::istream& input, const KSpace& K )
+      {
+	Point kp;
+	for ( Dimension d = 0; d < KSpace::dimension; ++d )
+	  input >> kp[ d ];
+	return K.uCell( kp );
+      }
+    };
+    struct SCellWriter {
+      void operator()( std::ostream& output, const KSpace& K, const SCell & scell )
+      {
+	CellWriter::operator()( output, K, K.unsigns( scell ) );
+	output << " " << K.sSign( scell );
+      }
+    };
+    struct SCellReader {
+      SCell operator()( std::istream& input, const KSpace& K )
+      {
+	Point                 kp;
+	typename KSpace::Sign s;
+	for ( Dimension d = 0; d < KSpace::dimension; ++d )
+	  input >> kp[ d ];
+	input >> s;
+	return K.sCell( kp, s );
+      }
+    };
+
+    template <typename Value>
+    struct ValueWriter {
+      void operator()( std::ostream& output, const Value& v )
+      {
+	output << " " << v;
+      }
+      void operator()( std::ostream& output, const std::vector<Value>& vv )
+      {
+	for ( auto&& v : vv ) output << " " << v;
+      }
+    };
+
+    template <typename Value>
+    struct ValueReader {
+      bool operator()( std::istream& input, Value& value )
+      {
+	std::string str;
+	std::getline( input, str );
+	// construct a stream from the string
+	std::stringstream strstr(str);
+	// use stream iterators to copy the stream to the vector as whitespace separated strings
+	std::istream_iterator<std::string> it(strstr);
+	std::istream_iterator<std::string> end;
+	std::vector<std::string> results(it, end);
+	std::stringstream sstr( results[ 0 ] );
+	sstr >> value;
+	return ( results.size() == 1 ) && input.good();
+      }
+      
+      bool operator()( std::istream& input, std::vector<Value>& values )
+      {
+	std::string str;
+	std::getline( input, str );
+	// construct a stream from the string
+	std::stringstream strstr(str);
+	// use stream iterators to copy the stream to the vector as whitespace separated strings
+	std::istream_iterator<std::string> it(strstr);
+	std::istream_iterator<std::string> end;
+	std::vector<std::string> results(it, end);
+	values.resize( results.size() );
+	for ( unsigned int i = 0; i < results.size(); ++i ) {
+	  std::stringstream sstr( results[ i ] );
+	  sstr >> values[ i ];
+	}
+	return input.good();
+      }
+    };
+
+    // Outputs in \a output a map \a anyMap: SCell -> Value given the
+    // appropriate value \a writer.
+    //
+    // @tparam TSCellMap any model of map SCell -> Value., e.g. std::map<SCell,double>
+    // @tparam TValueWriter any model of value writer, e.g. ValueWriter<double>
+    //
+    // @param[out] output the output stream
+    // @param[in]  K the Khalimsky space where cells are defined.
+    // @param[in]  anyMap the map associated a value to signed cells.
+    // @param[in]  writer the writer that can write values on the ouput
+    // stream, e.g. ValueWriter<double> to write double value or
+    // vector<double> values.
+    template <typename TSCellMap, typename TValueWriter>
+    static
+    bool outputSCellMapAsCSV
+    ( std::ostream&       output,
+      const KSpace&       K,
+      const TSCellMap&     anyMap,
+      const TValueWriter& writer )
+    {
+      SCellWriter w;
+      for ( auto&& v : anyMap ) {
+	w( output, K, v.first );
+	writer( output, v.second );
+	output << std::endl;
+      }
+      return output.good();
+    }
+    
+    // Outputs in \a output a map \a anyMap: SCell -> value given the
+    // appropriate value \a writer.
+    //
+    // @tparam TCellMap any model of map Cell -> Value., e.g. std::map<Cell,double>
+    // @tparam TValueWriter any model of value writer, e.g. ValueWriter<double>
+    //
+    // @param[out] output the output stream
+    // @param[in]  K the Khalimsky space where cells are defined.
+    // @param[in]  anyMap the map associated a value to signed cells.
+    // @param[in]  writer the writer that can write values on the ouput
+    // stream, e.g. ValueWriter<double> to write double value or
+    // vector<double> values.
+    template <typename TCellMap, typename TValueWriter>
+    static
+    bool outputCellMapAsCSV
+    ( std::ostream&       output,
+      const KSpace&       K,
+      const TCellMap&      anyMap,
+      const TValueWriter& writer )
+    {
+      CellWriter w;
+      for ( auto&& v : anyMap ) {
+	w( output, K, v.first );
+	writer( output, v.second );
+	output << std::endl;
+      }
+      return output.good();
+    }
     
     /// Given a space \a K and an oriented cell \a s, returns its vertices.
     /// @param K any cellular grid space.
