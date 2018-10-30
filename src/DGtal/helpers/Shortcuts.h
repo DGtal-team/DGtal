@@ -42,6 +42,7 @@
 // Inclusions
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <iterator>
 #include <string>
@@ -1711,12 +1712,14 @@ namespace DGtal
 
     /// Builds the dual triangulated surface associated to the given digital surface.
     ///
-    /// @param[in] aSurface any digital surface
+    /// @tparam TContainer the digital surface container
     /// @param[out] s2i the map Surfel -> Vertex index in the triangulated surface.
+    /// @param[in] aSurface any digital surface (e.g. LightDigitalSurface or DigitalSurface)
     /// @return a smart pointer on the built triangulated surface.
+    template < typename TContainer >
     static CountedPtr< TriangulatedSurface >
-    makeTriangulatedSurface( CountedPtr< DigitalSurface > aSurface,
-			     Surfel2Index& s2i )
+    makeTriangulatedSurface( Surfel2Index& s2i,
+			     CountedPtr< DGtal::DigitalSurface< TContainer > > aSurface )
     {
       CanonicCellEmbedder< KSpace > cembedder;
       auto pTriSurf = CountedPtr<TriangulatedSurface>
@@ -1728,19 +1731,15 @@ namespace DGtal
 
     /// Builds the dual triangulated surface associated to the given digital surface.
     ///
-    /// @param[in] aSurface any (light) digital surface
-    /// @param[out] s2i the map Surfel -> Vertex index in the triangulated surface.
+    /// @tparam TContainer the digital surface container
+    /// @param[in] aSurface any digital surface (e.g. LightDigitalSurface or DigitalSurface)
     /// @return a smart pointer on the built triangulated surface.
+    template < typename TContainer >
     static CountedPtr< TriangulatedSurface >
-    makeTriangulatedSurface( CountedPtr< LightDigitalSurface > aSurface,
-			     Surfel2Index& s2i )
+    makeTriangulatedSurface( CountedPtr< DGtal::DigitalSurface< TContainer > > aSurface )
     {
-      CanonicCellEmbedder< KSpace > cembedder;
-      auto pTriSurf = CountedPtr<TriangulatedSurface>
-	    ( new TriangulatedSurface ); // acquired
-      MeshHelpers::digitalSurface2DualTriangulatedSurface
-	( *aSurface, cembedder, *pTriSurf, s2i );
-      return pTriSurf;
+      Surfel2Index s2i;
+      return makeTriangulatedSurface( s2i, aSurface );
     }
 
     /// Builds a triangulated surface from a polygonal surface
@@ -1758,7 +1757,7 @@ namespace DGtal
       bool centroid = ( faceSubdivision == "Centroid" );
       auto pTriSurf = CountedPtr<TriangulatedSurface>
 	    ( new TriangulatedSurface ); // acquired
-      polygonalSurface2TriangulatedSurface( *polySurf, *pTriSurf, centroid );
+      MeshHelpers::polygonalSurface2TriangulatedSurface( *polySurf, *pTriSurf, centroid );
       return pTriSurf;
     }
     
@@ -1820,15 +1819,17 @@ namespace DGtal
       return pPolySurf;
     }
 
-    /// Builds the dual polygonal surface associated to the
-    /// given digital surface.
+    /// Builds the dual polygonal surface associated to the given
+    /// digital surface.
     ///
+    /// @tparam TContainer the digital surface container
     /// @param[out] s2i the map Surfel -> Vertex index in the polygonal surface.
-    /// @param[in] aSurface any digital surface
+    /// @param[in] aSurface any digital surface (e.g. DigitalSurface or LightDigitalSurface)
     /// @return a smart pointer on the built polygonal surface.
+    template < typename TContainer >
     static CountedPtr< PolygonalSurface >
     makeDualPolygonalSurface( Surfel2Index& s2i,
-			      CountedPtr< DigitalSurface > aSurface )
+			      CountedPtr< DGtal::DigitalSurface< TContainer > > aSurface )
     {
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       CanonicCellEmbedder< KSpace > cembedder;
@@ -1839,15 +1840,31 @@ namespace DGtal
       return pPolySurf;
     }
 
-    /// Builds the primal polygonal surface associated to the
-    /// given digital surface.
+    /// Builds the dual polygonal surface associated to the given
+    /// digital surface.
     ///
+    /// @tparam TContainer the digital surface container
+    /// @param[in] aSurface any digital surface (e.g. DigitalSurface or LightDigitalSurface)
+    /// @return a smart pointer on the built polygonal surface.
+    template < typename TContainer >
+    static CountedPtr< PolygonalSurface >
+    makeDualPolygonalSurface( CountedPtr< DGtal::DigitalSurface< TContainer > > aSurface )
+    {
+      Surfel2Index s2i;
+      return makeDualPolygonalSurface( s2i, aSurface );
+    }
+
+    /// Builds the primal polygonal surface associated to the given
+    /// digital surface.
+    ///
+    /// @tparam TContainer the digital surface container
     /// @param[out] c2i the map Cell -> Vertex index in the polygonal surface.
-    /// @param[in] aSurface any digital surface
+    /// @param[in] aSurface any digital surface (e.g. DigitalSurface or LightDigitalSurface)
     /// @return a smart pointer on the built polygonal surface or 0 if it fails because aSurface is not a combinatorial 2-manifold.
+    template < typename TContainer >
     static CountedPtr< PolygonalSurface >
     makePrimalPolygonalSurface( Cell2Index& c2i,
-				CountedPtr< DigitalSurface > aSurface )
+				CountedPtr< DGtal::DigitalSurface<TContainer> > aSurface )
     {
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       CanonicCellEmbedder< KSpace > cembedder;
@@ -1857,7 +1874,57 @@ namespace DGtal
 	( *aSurface, cembedder, *pPolySurf, c2i );
       return ok ? pPolySurf : 0;
     }
-			     
+
+    /// Builds the primal polygonal surface associated to the given
+    /// digital surface.
+    ///
+    /// @tparam TContainer the digital surface container
+    /// @param[in] aSurface any digital surface (e.g. DigitalSurface or LightDigitalSurface)
+    /// @return a smart pointer on the built polygonal surface or 0 if it fails because aSurface is not a combinatorial 2-manifold.
+    template < typename TContainer >
+    static CountedPtr< PolygonalSurface >
+    makePrimalPolygonalSurface( CountedPtr< DGtal::DigitalSurface<TContainer> > aSurface )
+    {
+      Cell2Index c2i;
+      return makePrimalPolygonalSurface( c2i, aSurface );
+    }
+
+    /// Outputs a polygonal surface as an OBJ file (with its topology).
+    ///
+    /// @tparam TPoint any model of point
+    /// @param[in] polysurf the polygonal surface to output as an OBJ file
+    /// @param[in] objfile the output filename.
+    /// @return 'true' if the output stream is good.
+    template <typename TPoint>
+    static bool
+    saveOBJ
+    ( CountedPtr< DGtal::PolygonalSurface<TPoint> > polysurf,
+      const std::string&                            objfile )
+    {
+      std::ofstream output( objfile.c_str() );
+      bool ok = MeshHelpers::exportOBJ( output, *polysurf );
+      output.close();
+      return ok;
+    }
+
+    /// Outputs a triangulated surface as an OBJ file (with its topology).
+    ///
+    /// @tparam TPoint any model of point
+    /// @param[in] trisurf the triangulated surface to output as an OBJ file
+    /// @param[in] objfile the output filename.
+    /// @return 'true' if the output stream is good.
+    template <typename TPoint>
+    static bool
+    saveOBJ
+    ( CountedPtr< DGtal::TriangulatedSurface<TPoint> > trisurf,
+      const std::string&                               objfile )
+    {
+      std::ofstream output( objfile.c_str() );
+      bool ok = MeshHelpers::exportOBJ( output, *trisurf );
+      output.close();
+      return ok;
+    }
+    
     // ------------------------------ utilities ------------------------------
   public:
     

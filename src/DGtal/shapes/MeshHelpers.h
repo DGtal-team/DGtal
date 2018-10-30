@@ -214,6 +214,29 @@ namespace DGtal
     ( const PolygonalSurface<Point>& polysurf,
       Mesh<Point>& mesh );
 
+    /// Exports a triangulated surface as an OBJ file (with topology)
+    /// into the given output stream.
+    ///
+    /// @tparam Point the type for points.
+    /// @param[in,out] output an output stream
+    /// @param[in]     trisurf the input triangulated surface mesh.
+    template <typename Point>
+    static
+    bool exportOBJ
+    ( std::ostream& output,
+      const TriangulatedSurface<Point>& trisurf );
+
+    /// Exports a polygonal surface as an OBJ file (with topology)
+    /// into the given output stream.
+    ///
+    /// @tparam Point the type for points.
+    /// @param[in,out] output an output stream
+    /// @param[in]     polysurf the input polygonal surface mesh.
+    template <typename Point>
+    static
+    bool exportOBJ
+    ( std::ostream& output,
+      const PolygonalSurface<Point>& polysurf );
     
   }; // end of class MeshHelpers
 
