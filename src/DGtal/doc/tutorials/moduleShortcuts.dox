@@ -193,13 +193,18 @@ The following name conventions for types are used:
 - Shortcuts::GrayScaleImage: represents an 8-bits gray-scale image as an array of
   bytes (unsigned char). 
 
-- Shortcuts::LightDigitalSurface: represents a connected digital surface over a binary image with an implicit representation.
+- Shortcuts::LightDigitalSurface: represents a connected digital
+  surface over a binary image with an implicit representation.
 
-- Shortcuts::DigitalSurface: represents an arbitrary digital surface with an explicit surfel set representation.
+- Shortcuts::DigitalSurface: represents an arbitrary digital surface
+  with an explicit surfel set representation.
 
-- Shortcuts::IdxDigitalSurface: represents an indexed digital surface with an explicit array-like representation.
+- Shortcuts::IdxDigitalSurface: represents an indexed digital surface
+  with an explicit array-like representation.
 
-- Shortcuts::Mesh: represents a simple mesh with arbitrary faces, but without topology.
+- Shortcuts::Mesh: represents a simple mesh with arbitrary faces, but
+  without topology (should be used when no surface topology is needed
+  or when working with non-manifold surfaces).
 
 - Shortcuts::TriangulatedSurface: represents a triangulated surface
   which may have boundaries (use HalfEdgeDataStructure).
@@ -258,6 +263,7 @@ The following name conventions for types are used:
   - Shortcuts::makePolygonalSurface: builds a polygonal surface from a mesh, or builds the marching cubes surface approximating an isosurface in a gray-scale image. 
   - Shortcuts::makePrimalPolygonalSurface: builds a polygonal surface that represents the primal digital surface
   - Shortcuts::makeDualPolygonalSurface: builds a polygonal surface that represents the dual digital surface
+  - Shortcuts::saveOBJ: saves a triangulated or polygonal surface as an OBJ file.
 
 -# Utilities
   - Shortcuts::getPrimalVertices: returns the vertices (possibly consistently ordered along the face) of the given signed cell.

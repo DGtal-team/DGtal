@@ -112,17 +112,21 @@ int main( int argc, char** argv )
     trace.beginBlock ( "Make triangulated surface from digital surface" );
     {
       SH3::Surfel2Index s2i;
-      auto trisurf = SH3::makeTriangulatedSurface( light_surf, s2i );
+      auto trisurf = SH3::makeTriangulatedSurface( s2i, light_surf );
       std::cout << "trisurf=" << *trisurf << std::endl;
     }
     trace.endBlock();
     trace.beginBlock ( "Make marching-cubes polygonal surface from gray-scale image" );
     {
       auto gimage   = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );
-      auto params = SH3::defaultParameters();
-      params( "thresholdMin", 40 );
+      auto params   = SH3::defaultParameters();
+      params( "thresholdMin", 40 )( "faceSubdivision", "Naive" );
       auto polysurf = SH3::makePolygonalSurface( gimage, params );
       std::cout << "polysurf=" << *polysurf << std::endl;
+      bool ok       = SH3::saveOBJ( polysurf, "lobster-40.obj" );
+      // TODO: bug in conversion (or in build ?)
+      // auto trisurf  = SH3::makeTriangulatedSurface( polysurf );
+      // bool ok2      = SH3::saveOBJ( trisurf, "lobster-40-tri.obj" );
     }
     trace.endBlock();
 

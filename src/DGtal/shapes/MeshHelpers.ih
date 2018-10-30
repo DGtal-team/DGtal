@@ -75,11 +75,11 @@ DGtal::MeshHelpers::polygonalSurface2TriangulatedSurface
   for ( Index idx = 0; idx < polysurf.nbFaces(); ++idx )
     {
       auto vertices = polysurf.verticesAroundFace( idx );
-      if ( ! centroid ) {
-	for (unsigned int i = 1; i < vertices.size() - 1; i++ )
+      const auto nb = vertices.size();
+      if ( nb == 3 || ! centroid ) {
+	for (unsigned int i = 1; i < nb - 1; i++ )
           trisurf.addTriangle( vertices[ 0 ], vertices[ i ], vertices[ i+1 ] );
       } else {
-	const auto nb = vertices.size();
 	Point c = polysurf.position( vertices[ 0 ] );
 	for (unsigned int i = 1; i < nb ; i++ )
 	  c += polysurf.position( vertices[ i ] );
@@ -282,7 +282,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
       }
     }
   }
-
+  
   // Outputs all faces
   for ( auto&& s : dsurf ) {
     auto primal_vertices = getPrimalVertices( K, s, true );
@@ -292,6 +292,52 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
     polysurf.addPolygonalFace( face );
   }      
   return polysurf.build();
+}
+
+template <typename Point>
+bool
+DGtal::MeshHelpers::exportOBJ
+( std::ostream& output,
+  const TriangulatedSurface<Point>& trisurf )
+{
+  output <<  "# DGtal::MeshHelpers::exportOBJ(std::ostream&,const TriangulatedSurface<Point>&)" << std::endl;
+  // Outputing vertices
+  for ( auto i : trisurf ) {
+    Point p  = trisurf.position( i );
+    output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+  }
+  // Outputing faces
+  auto faces = trisurf.allFaces();
+  for ( auto f : faces   ) {
+    output << "f";
+    auto vertices = trisurf.verticesAroundFace( f );
+    for ( auto i : vertices ) output << " " << (i+1);
+    output << std::endl;
+  }
+  return output.good();
+}
+
+template <typename Point>
+bool
+DGtal::MeshHelpers::exportOBJ
+( std::ostream& output,
+  const PolygonalSurface<Point>& polysurf )
+{
+  output <<  "# DGtal::MeshHelpers::exportOBJ(std::ostream&,const PolygonalSurface<Point>&)" << std::endl;
+  // Outputing vertices
+  for ( auto i : polysurf ) {
+    Point p  = polysurf.position( i );
+    output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+  }
+  // Outputing faces
+  auto faces = polysurf.allFaces();
+  for ( auto f : faces   ) {
+    output << "f";
+    auto vertices = polysurf.verticesAroundFace( f );
+    for ( auto i : vertices ) output << " " << (i+1);
+    output << std::endl;
+  }
+  return output.good();
 }
 
 
