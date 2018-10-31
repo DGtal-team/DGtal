@@ -116,17 +116,31 @@ int main( int argc, char** argv )
       std::cout << "trisurf=" << *trisurf << std::endl;
     }
     trace.endBlock();
+    trace.beginBlock ( "Load a vol file as a float image" );
+    {
+      auto gimage   = SH3::makeFloatImage( examplesPath + "samples/lobster.vol" );
+      auto m        = * std::min_element( gimage->begin(), gimage->end() );
+      auto M        = * std::max_element( gimage->begin(), gimage->end() );
+      float     avg = 0.0;
+      int        nb = 0;
+      std::for_each( gimage->begin(), gimage->end(),
+		     [&avg,&nb] (float x) { avg += x; nb += 1; } );
+      avg          /= nb;
+      std::cout << "min=" << m << " avg=" << avg << " max=" << M << std::endl;
+    }
+    trace.endBlock();
     trace.beginBlock ( "Make marching-cubes triangulated surface from implicit shape 3D" );
     {
-      auto params   = SH3::defaultParameters();
+      auto params   = SH3::defaultParameters  ();
       params( "polynomial", "goursat" )( "gridstep", 0.25 )
 	( "thresholdMin", 128 );
-      auto implicit_shape = SH3::makeImplicitShape3D( params );
-      std::cout << *implicit_shape << std::endl;
-      auto gimage   = SH3::makeGrayScaleImage( implicit_shape );
+      auto ishape   = SH3::makeImplicitShape3D( params );
+      auto fimage   = SH3::makeFloatImage     ( ishape, params );
+      auto gimage   = SH3::makeGrayScaleImage ( fimage, params );
       auto trisurf  = SH3::makeTriangulatedSurface( gimage, params );
+      bool ok       = SH3::saveOBJ            ( trisurf, "goursat.obj" );
+      std::cout << *ishape << std::endl;
       std::cout << "trisurf =" << *trisurf << std::endl;
-      bool ok       = SH3::saveOBJ( trisurf, "goursat.obj" );
     }
     trace.endBlock();
 
