@@ -56,6 +56,7 @@
 #include "DGtal/images/IntervalForegroundPredicate.h"
 #include <DGtal/images/ImageLinearCellEmbedder.h>
 #include "DGtal/topology/CCellularGridSpaceND.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
@@ -1929,11 +1930,13 @@ namespace DGtal
     /// triangles.
     ///
     /// @param[in]  triSurf the input triangulated surface mesh.
+    /// @param[in]  aColor the default color of the mesh.
     /// @return a smart pointer on the output mesh.
     static CountedPtr< Mesh >
-    makeMesh( CountedPtr< TriangulatedSurface > triSurf )
+    makeMesh( CountedPtr< TriangulatedSurface > triSurf,
+	      const Color& aColor = Color::White )
     {
-      auto pMesh = CountedPtr<Mesh>( new Mesh ); // acquired
+      auto pMesh = CountedPtr<Mesh>( new Mesh( aColor ) ); // acquired
       MeshHelpers::triangulatedSurface2Mesh( *triSurf, *pMesh );
       return pMesh;
     }
@@ -1944,11 +1947,13 @@ namespace DGtal
     /// triangles.
     ///
     /// @param[in]  polySurf the input polygonal surface mesh.
+    /// @param[in]  aColor the default color of the mesh.
     /// @return a smart pointer on the output mesh.
     static CountedPtr< Mesh >
-    makeMesh( CountedPtr< PolygonalSurface > polySurf )
+    makeMesh( CountedPtr< PolygonalSurface > polySurf,
+	      const Color& aColor = Color::White )
     {
-      auto pMesh = CountedPtr<Mesh>( new Mesh ); // acquired
+      auto pMesh = CountedPtr<Mesh>( new Mesh( aColor ) ); // acquired
       MeshHelpers::polygonalSurface2Mesh( *polySurf, *pMesh );
       return pMesh;
     }

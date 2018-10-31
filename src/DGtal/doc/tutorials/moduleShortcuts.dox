@@ -140,18 +140,36 @@ auto params          = SH3::defaultParameters();
   auto gauss_curvs     = SH3::getGaussianCurvatures( implicit_shape, K, surfels, params );
 \endcode
 
-@subsection dgtal_shortcuts_ssec2_6 Build Polynomial shape -> build gray-scale image -> extract triangulated iso-surface -> save as OBJ file.
+@subsection dgtal_shortcuts_ssec2_6 Build Polynomial shape -> float image -> gray-scale image -> extract triangulated iso-surface -> save as OBJ file.
 
 \code
   // Set your own parameters with operator().
-  params( "polynomial", "goursat" )
-        ( "gridstep", 0.25 );
-  auto implicit_shape  = SH3::makeImplicitShape3D    ( params );
-  auto g_image         = SH3::makeGrayScaleImage     ( implicit_shape, params );
-  auto tri_surf        = SH3::makeTriangulatedSurface( g_image, params );
-  auto ok              = SH3::saveOBJ                ( tri_surf, "goursat.vol" );
+  auto params   = SH3::defaultParameters  ();
+  params( "polynomial", "goursat" )( "gridstep", 0.25 )( "thresholdMin", 128 );
+  auto ishape   = SH3::makeImplicitShape3D( params );
+  auto fimage   = SH3::makeFloatImage     ( ishape, params );
+  auto gimage   = SH3::makeGrayScaleImage ( fimage, params );
+  auto trisurf  = SH3::makeTriangulatedSurface( gimage, params );
+  bool ok       = SH3::saveOBJ            ( trisurf, "goursat.obj" );
 \endcode 
 
+@subsection dgtal_shortcuts_ssec2_7 Load Vol file -> extract 2 isosurfaces -> displays them with two different colors
+
+\code
+auto params   = SH3::defaultParameters();
+params( "faceSubdivision", "Centroid" )( "surfelAdjacency", 1);
+auto gimage   = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );
+auto trisurf40= SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 40 ) );
+auto trisurf20= SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 20 ) );
+auto mesh40   = SH3::makeMesh( trisurf40, Color::Red );
+auto mesh20   = SH3::makeMesh( trisurf20, Color::Blue );
+QApplication application(argc,argv);
+Viewer3D<> viewer;
+viewer.show();
+viewer << *mesh40 << *mesh20;
+viewer << Viewer3D<>::updateDisplay;
+application.exec();
+\endcode
 
 @section dgtal_shortcuts_sec3 Philosophy and naming conventions
 
@@ -263,7 +281,7 @@ The following name conventions for types are used:
   - Shortcuts::saveBinaryImage: saves a binary image to a file.
 
 -# GrayScaleImage methods
-  - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images, or for creating a gray-scale image from an implicit shape.
+  - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images, or for creating a gray-scale image from a float or double image.
   - Shortcuts::saveGrayScaleImage: saves a gray scale image to a file.
 
 -# FloatImage methods
