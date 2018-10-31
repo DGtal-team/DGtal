@@ -124,6 +124,7 @@ operator()( const Cell & cell ) const
   Point p1( myPtrK->uCoords( cell ) );
   RealPoint x1( embed( p1 ) );
   ImageValue y1 = (*myPtrImage)( p1 );
+  double     v1 = NumberTraits<ImageValue>::castToDouble( y1 );
   for ( typename KSpace::DirIterator qit = myPtrK->uOrthDirs( cell );
         qit != 0; ++qit )
     { // cell is closed along this dimension.
@@ -132,9 +133,8 @@ operator()( const Cell & cell ) const
       Point p2( p1 ); --p2[ k ];
       RealPoint x2( embed( p2 ) );
       ImageValue y2 = (*myPtrImage)( p2 );
-      x1[ k ] -= ( NumberTraits<ImageValue>::castToDouble( y1 ) - myIsoValue )
-        * ( x2[ k ] - x1[ k ] )
-        / NumberTraits<ImageValue>::castToDouble( y2 - y1 );
+      double     v2 = NumberTraits<ImageValue>::castToDouble( y2 );
+      x1[ k ] -= ( v1 - myIsoValue ) * ( x2[ k ] - x1[ k ] ) / ( v2 - v1 );
     }
   return x1;
 }
