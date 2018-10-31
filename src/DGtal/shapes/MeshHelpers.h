@@ -98,7 +98,11 @@ namespace DGtal
     ( const Mesh<Point>& mesh,
       PolygonalSurface<Point>& polysurf );
 
-    /// Builds a polygonal surface from a triangulated surface. Polygonal faces are triangulated according to the chosen policy (
+    /// Builds a polygonal surface from a triangulated
+    /// surface. Polygonal faces are triangulated according to \a
+    /// centroid: when 'true', creates a vertex in each non triangular
+    /// face, otherwise creates triangles (0,i,i+1) in face (0, 1,
+    /// ..., n) for i < n-1.
     ///
     /// @tparam Point the type for points.
     /// @param[in]  polysurf the input polygonal surface mesh.
@@ -108,6 +112,16 @@ namespace DGtal
     /// @note The vertices of \a trisurf are the same as the one of \a
     /// polysurf, except if there are newly created vertices (centroid
     /// case) which are put at the end.
+    ///
+    /// @note Be \b very \b careful \b with \b "Naive" \b subdivision,
+    /// since it may create non-manifold edges on general polygonal
+    /// surfaces. Indeed, take the closed surface made of faces (0, 1,
+    /// 2, 3) and (3, 2, 1, 0). Depending on how faces are
+    /// triangulated, it is still a valid combinatorial triangulated
+    /// 2-manifold (e.g. (0,1,2,3) gives (0,1,2) and (2,0,3) and
+    /// (3,2,1,0) gives (3,2,1) and (1,3,0)) or a non-valid one
+    /// (e.g. (0,1,2,3) gives (0,1,2) and (2,0,3) and (3,2,1,0) gives
+    /// (3,2,0) and (0,2,1): then edge {2,0} is shared by four faces).
     template <typename Point>
     static
     void polygonalSurface2TriangulatedSurface
