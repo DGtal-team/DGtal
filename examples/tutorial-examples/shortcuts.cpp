@@ -116,6 +116,20 @@ int main( int argc, char** argv )
       std::cout << "trisurf=" << *trisurf << std::endl;
     }
     trace.endBlock();
+    trace.beginBlock ( "Make marching-cubes triangulated surface from implicit shape 3D" );
+    {
+      auto params   = SH3::defaultParameters();
+      params( "polynomial", "goursat" )( "gridstep", 0.25 )
+	( "thresholdMin", 128 );
+      auto implicit_shape = SH3::makeImplicitShape3D( params );
+      std::cout << *implicit_shape << std::endl;
+      auto gimage   = SH3::makeGrayScaleImage( implicit_shape );
+      auto trisurf  = SH3::makeTriangulatedSurface( gimage, params );
+      std::cout << "trisurf =" << *trisurf << std::endl;
+      bool ok       = SH3::saveOBJ( trisurf, "goursat.obj" );
+    }
+    trace.endBlock();
+
     trace.beginBlock ( "Make marching-cubes polygonal surface from gray-scale image" );
     {
       auto gimage   = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );

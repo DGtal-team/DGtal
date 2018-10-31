@@ -240,7 +240,7 @@ The following name conventions for types are used:
   - Shortcuts::saveBinaryImage: saves a binary image to a file.
 
 -# GrayScaleImage methods
-  - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images.
+  - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images, or for creating a gray-scale image from an implict shape.
   - Shortcuts::saveGrayScaleImage: saves a gray scale image to a file.
 
 -# DigitalSurface methods
