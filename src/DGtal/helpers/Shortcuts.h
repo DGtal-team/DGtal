@@ -144,6 +144,10 @@ namespace DGtal
     typedef ImageContainerBySTLVector<Domain, bool>      BinaryImage;
     /// defines a grey-level image with (hyper-)rectangular domain.
     typedef ImageContainerBySTLVector<Domain, GrayScale> GrayScaleImage;
+    /// defines a float image with (hyper-)rectangular domain.
+    typedef ImageContainerBySTLVector<Domain, float>     FloatImage;
+    /// defines a double image with (hyper-)rectangular domain.
+    typedef ImageContainerBySTLVector<Domain, double>    DoubleImage;
     /// defines a set of surfels
     typedef typename KSpace::SurfelSet                   SurfelSet;
     /// defines a light container that represents a connected digital
@@ -209,8 +213,10 @@ namespace DGtal
 	| parametersKSpace()
 	| parametersDigitizedImplicitShape3D()
 	| parametersBinaryImage()
+	| parametersGrayScaleImage()
 	| parametersDigitalSurface()
-	| parametersGeometryEstimation();
+	| parametersGeometryEstimation()
+	| parametersMesh();
     }
 
     // ----------------------- ImplicitShape3D static services ------------------------
@@ -637,46 +643,6 @@ namespace DGtal
       return dshape;
     }
 
-    /// Makes a gray-scale image from the given implicit shape
-    /// according to parameters. Use getKSpace to build the associated
-    /// digital space.
-    ///
-    /// @param[in] shape a smart pointer on the implicit shape.
-    /// @param[in] params the parameters:
-    ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
-    ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
-    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
-    ///   - offset   [  5.0]: the digital dilation of the digital space,
-    ///                       useful when you process shapes and that you add noise.
-    ///
-    /// @return a smart pointer on the created implicit digital shape.
-    /// @see getKSpaceDigitizedImplicitShape3D 
-    static CountedPtr<GrayScaleImage>
-    makeGrayScaleImage
-    ( CountedPtr<ImplicitShape3D> shape,
-      Parameters params = parametersDigitizedImplicitShape3D() )
-    {
-      Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
-      Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
-      Scalar h      = params[ "gridstep" ].as<Scalar>();
-      Scalar offset = params[ "offset"   ].as<Scalar>();
-      RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
-      RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
-      CountedPtr<DigitizedImplicitShape3D> dshape( new DigitizedImplicitShape3D() );
-      dshape->attach( shape );
-      dshape->init( p1, p2, h );
-      std::function< unsigned char( double ) > f
-	= [] (double v)
-	{ return (unsigned char) std::min( 255.0, std::max( 0.0, v+128.0 ) ); };
-      Domain domain = dshape->getDomain();
-      auto   gimage = makeGrayScaleImage( domain );
-      auto       it = gimage->begin();
-      for ( auto p : domain ) {
-	double val = (*shape)( p );
-	*it++      = f( val );
-      }
-      return gimage;
-    }
 
     // ----------------------- BinaryImage static services --------------------------
   public:
@@ -855,6 +821,18 @@ namespace DGtal
 
     // ----------------------- GrayScaleImage static services -------------------------
   public:
+
+    /// @return the parameters and their default values which are used for quantification.
+    ///   - qShift   [128.0]: the shift used when quantifying the implicit shape
+    ///                       (q(x)=qSlope*x+qShift, e.g. to build a grayscale image).
+    ///   - qSlope   [  1.0]: the slope used when quantifying the implicit shape
+    ///                       (q(x)=qSlope*x+qShift, e.g. to build a grayscale image).
+    static Parameters parametersGrayScaleImage()
+    {
+      return Parameters
+	( "qShift",   128.0 )
+	( "qSlope",     1.0 );
+    }
     
     /// Makes an empty gray scale image within a given domain (values are unsigned char).
     ///
@@ -912,6 +890,200 @@ namespace DGtal
 	::exportFile( output, *gray_scale_image );
     }
 
+
+    /// Makes a gray-scale image from the given float image
+    /// (i.e. quantify the given image)..
+    ///
+    /// @param[in] fimage a smart pointer on the float image.
+    /// @param[in] params the parameters:
+    ///   - qShift   [128.0]: the shift used when quantifying the implicit shape
+    ///                       (q(x)=qSlope*x+qShift, e.g. to build a grayscale image).
+    ///   - qSlope   [  1.0]: the slope used when quantifying the implicit shape
+    ///                       (q(x)=qSlope*x+qShift, e.g. to build a grayscale image).
+    ///
+    /// @return a smart pointer on the created image
+    static CountedPtr<GrayScaleImage>
+    makeGrayScaleImage
+    ( CountedPtr<FloatImage> fimage,
+      Parameters params = parametersGrayScaleImage() )
+    {
+      float qShift = params[ "qShift"   ].as<float>();
+      float qSlope = params[ "qSlope"   ].as<float>();
+      std::function< unsigned char( float ) > f
+	= [qShift,qSlope] (float v)
+	{ return (unsigned char)
+	  std::min( 255.0f, std::max( 0.0f, qSlope * v + qShift ) ); };
+      Domain domain = fimage->domain();
+      auto   gimage = makeGrayScaleImage( domain );
+      auto       it = gimage->begin();
+      for ( auto p : domain ) {
+	float val = (*fimage)( p );
+	*it++      = f( val );
+      }
+      return gimage;
+    }
+
+    /// Makes a gray-scale image from the given double image.
+    /// (i.e. quantify the given image)..
+    ///
+    /// @param[in] fimage a smart pointer on the double image.
+    /// @param[in] params the parameters:
+    ///   - qShift   [128.0]: the shift used when quantifying the implicit shape
+    ///                       (q(x)=qSlope*x+qShift, e.g. to build a grayscale image).
+    ///   - qSlope   [  1.0]: the slope used when quantifying the implicit shape
+    ///                       (q(x)=qSlope*x+qShift, e.g. to build a grayscale image).
+    ///
+    /// @return a smart pointer on the created image
+    static CountedPtr<GrayScaleImage>
+    makeGrayScaleImage
+    ( CountedPtr<DoubleImage> fimage,
+      Parameters params = parametersGrayScaleImage() )
+    {
+      double qShift = params[ "qShift"   ].as<double>();
+      double qSlope = params[ "qSlope"   ].as<double>();
+      std::function< unsigned char( double ) > f
+	= [qShift,qSlope] (double v)
+	{ return (unsigned char)
+	  std::min( 255.0, std::max( 0.0, qSlope * v + qShift ) ); };
+      Domain domain = fimage->domain();
+      auto   gimage = makeGrayScaleImage( domain );
+      auto       it = gimage->begin();
+      for ( auto p : domain ) {
+	double val = (*fimage)( p );
+	*it++      = f( val );
+      }
+      return gimage;
+    }
+
+    // ----------------------- FloatImage static services -------------------------
+  public:
+
+    /// Makes an empty float image within a given domain (values are unsigned char).
+    ///
+    /// @param[in] domain any domain.
+    ///
+    /// @return a smart pointer on a float image that fits the given domain.
+    static CountedPtr<FloatImage>
+    makeFloatImage( Domain shapeDomain )
+    {
+      return CountedPtr<FloatImage>( new FloatImage( shapeDomain ) );
+    }
+
+    /// Loads an arbitrary image file (e.g. vol file in 3D) and returns
+    /// the corresponding float image.
+    ///
+    /// @param[in] input the input filename.
+    ///
+    /// @return a smart pointer on the loaded float image.
+    static CountedPtr<FloatImage>
+    makeFloatImage
+    ( std::string input )
+    {
+      FloatImage image = GenericReader<FloatImage>::import( input );
+      return CountedPtr<FloatImage>( new FloatImage( image ) );
+    }
+
+    /// Makes a float image from the given implicit shape
+    /// according to parameters. Use getKSpace to build the associated
+    /// digital space.
+    ///
+    /// @param[in] shape a smart pointer on the implicit shape.
+    /// @param[in] params the parameters:
+    ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
+    ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+    ///   - offset   [  5.0]: the digital dilation of the digital space,
+    ///                       useful when you process shapes and that you add noise.
+    ///
+    /// @return a smart pointer on the created image.
+    static CountedPtr<FloatImage>
+    makeFloatImage
+    ( CountedPtr<ImplicitShape3D> shape,
+      Parameters params = parametersDigitizedImplicitShape3D() )
+    {
+      Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
+      Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
+      Scalar h      = params[ "gridstep" ].as<Scalar>();
+      Scalar offset = params[ "offset"   ].as<Scalar>();
+      RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
+      RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
+      CountedPtr<DigitizedImplicitShape3D> dshape( new DigitizedImplicitShape3D() );
+      dshape->attach( shape );
+      dshape->init( p1, p2, h );
+      Domain domain = dshape->getDomain();
+      auto   fimage = makeFloatImage( domain );
+      auto       it = fimage->begin();
+      for ( auto p : domain ) {
+	float val = (float) (*shape)( p );
+	*it++      = val;
+      }
+      return fimage;
+    }
+
+    // ----------------------- DoubleImage static services -------------------------
+  public:
+
+    /// Makes an empty double image within a given domain (values are unsigned char).
+    ///
+    /// @param[in] domain any domain.
+    ///
+    /// @return a smart pointer on a double image that fits the given domain.
+    static CountedPtr<DoubleImage>
+    makeDoubleImage( Domain shapeDomain )
+    {
+      return CountedPtr<DoubleImage>( new DoubleImage( shapeDomain ) );
+    }
+
+    /// Loads an arbitrary image file (e.g. vol file in 3D) and returns
+    /// the corresponding double image.
+    ///
+    /// @param[in] input the input filename.
+    ///
+    /// @return a smart pointer on the loaded double image.
+    static CountedPtr<DoubleImage>
+    makeDoubleImage
+    ( std::string input )
+    {
+      DoubleImage image = GenericReader<DoubleImage>::import( input );
+      return CountedPtr<DoubleImage>( new DoubleImage( image ) );
+    }
+
+    /// Makes a double image from the given implicit shape
+    /// according to parameters. Use getKSpace to build the associated
+    /// digital space.
+    ///
+    /// @param[in] shape a smart pointer on the implicit shape.
+    /// @param[in] params the parameters:
+    ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
+    ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+    ///   - offset   [  5.0]: the digital dilation of the digital space,
+    ///                       useful when you process shapes and that you add noise.
+    ///
+    /// @return a smart pointer on the created image.
+    static CountedPtr<DoubleImage>
+    makeDoubleImage
+    ( CountedPtr<ImplicitShape3D> shape,
+      Parameters params = parametersDigitizedImplicitShape3D() )
+    {
+      Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
+      Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
+      Scalar h      = params[ "gridstep" ].as<Scalar>();
+      Scalar offset = params[ "offset"   ].as<Scalar>();
+      RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
+      RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
+      CountedPtr<DigitizedImplicitShape3D> dshape( new DigitizedImplicitShape3D() );
+      dshape->attach( shape );
+      dshape->init( p1, p2, h );
+      Domain domain = dshape->getDomain();
+      auto   fimage = makeDoubleImage( domain );
+      auto       it = fimage->begin();
+      for ( auto p : domain ) {
+	double val = (double) (*shape)( p );
+	*it++      = val;
+      }
+      return fimage;
+    }
     
     // ----------------------- DigitalSurface static services ------------------------
   public:
@@ -1749,6 +1921,36 @@ namespace DGtal
 	    ( new TriangulatedSurface ); // acquired
       bool ok = MeshHelpers::mesh2TriangulatedSurface( *aMesh, *pTriSurf );
       return ok ? pTriSurf : 0;
+    }
+
+    /// Builds a mesh (class Mesh) from a triangulated surface (class
+    /// TriangulatedSurface). Note that the mesh looses the topology
+    /// of the triangulated surface, since it is essentially a soup of
+    /// triangles.
+    ///
+    /// @param[in]  triSurf the input triangulated surface mesh.
+    /// @return a smart pointer on the output mesh.
+    static CountedPtr< Mesh >
+    makeMesh( CountedPtr< TriangulatedSurface > triSurf )
+    {
+      auto pMesh = CountedPtr<Mesh>( new Mesh ); // acquired
+      MeshHelpers::triangulatedSurface2Mesh( *triSurf, *pMesh );
+      return pMesh;
+    }
+
+    /// Builds a mesh (class Mesh) from a polygonal surface (class
+    /// PolygonalSurface). Note that the mesh looses the topology
+    /// of the polygonal surface, since it is essentially a soup of
+    /// triangles.
+    ///
+    /// @param[in]  polySurf the input polygonal surface mesh.
+    /// @return a smart pointer on the output mesh.
+    static CountedPtr< Mesh >
+    makeMesh( CountedPtr< PolygonalSurface > polySurf )
+    {
+      auto pMesh = CountedPtr<Mesh>( new Mesh ); // acquired
+      MeshHelpers::polygonalSurface2Mesh( *polySurf, *pMesh );
+      return pMesh;
     }
 
     /// Builds the dual triangulated surface associated to the given digital surface.

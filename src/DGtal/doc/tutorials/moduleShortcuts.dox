@@ -140,6 +140,19 @@ auto params          = SH3::defaultParameters();
   auto gauss_curvs     = SH3::getGaussianCurvatures( implicit_shape, K, surfels, params );
 \endcode
 
+@subsection dgtal_shortcuts_ssec2_6 Build Polynomial shape -> build gray-scale image -> extract triangulated iso-surface -> save as OBJ file.
+
+\code
+  // Set your own parameters with operator().
+  params( "polynomial", "goursat" )
+        ( "gridstep", 0.25 );
+  auto implicit_shape  = SH3::makeImplicitShape3D    ( params );
+  auto g_image         = SH3::makeGrayScaleImage     ( implicit_shape, params );
+  auto tri_surf        = SH3::makeTriangulatedSurface( g_image, params );
+  auto ok              = SH3::saveOBJ                ( tri_surf, "goursat.vol" );
+\endcode 
+
+
 @section dgtal_shortcuts_sec3 Philosophy and naming conventions
 
 Commands are constructed as \b prefix + \b type name. Most of them are
@@ -155,6 +168,10 @@ parameters.
 
 - \b make + `Type` + \b s: means that it will create new objects of type
   `Type` and returns them as a vector of \e smart \e pointers onto it. 
+
+- \b make + `Spec` + `Type`: means that it will create a new object of
+  type `Type` with some specialized meaning according to `Spec` and
+  returns it as a \e smart \e pointer onto it.
 
 - \b save + `Type`: means that it will save the pointed object of type `Type` as a file.
 
@@ -192,6 +209,12 @@ The following name conventions for types are used:
 
 - Shortcuts::GrayScaleImage: represents an 8-bits gray-scale image as an array of
   bytes (unsigned char). 
+
+- Shortcuts::FloatImage: represents a float image as an array of
+  floats.
+
+- Shortcuts::DoubleImage: represents a double image as an array of
+  doubles.
 
 - Shortcuts::LightDigitalSurface: represents a connected digital
   surface over a binary image with an implicit representation.
@@ -240,8 +263,14 @@ The following name conventions for types are used:
   - Shortcuts::saveBinaryImage: saves a binary image to a file.
 
 -# GrayScaleImage methods
-  - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images, or for creating a gray-scale image from an implict shape.
+  - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images, or for creating a gray-scale image from an implicit shape.
   - Shortcuts::saveGrayScaleImage: saves a gray scale image to a file.
+
+-# FloatImage methods
+  - Shortcuts::makeFloatImage: overloaded methods for creating a float image from a domain or from an implicit shape.
+
+-# DoubleImage methods
+  - Shortcuts::makeDoubleImage: overloaded methods for creating a double image from a domain or from an implicit shape.
 
 -# DigitalSurface methods
   - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, components, internal heuristics)
@@ -259,8 +288,8 @@ The following name conventions for types are used:
   - Shortcuts::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range
 
 -# Mesh services
-  - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh, or subdivide a polygonal surface into a triangulated surface.
-  - Shortcuts::makePolygonalSurface: builds a polygonal surface from a mesh, or builds the marching cubes surface approximating an isosurface in a gray-scale image. 
+  - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh, or subdivide a polygonal surface into a triangulated surface, or builds the marching cubes triangulated surface approximating an isosurface in a gray-scale image. 
+  - Shortcuts::makePolygonalSurface: builds a polygonal surface from a mesh, or builds the marching cubes polygonal surface approximating an isosurface in a gray-scale image. 
   - Shortcuts::makePrimalPolygonalSurface: builds a polygonal surface that represents the primal digital surface
   - Shortcuts::makeDualPolygonalSurface: builds a polygonal surface that represents the dual digital surface
   - Shortcuts::saveOBJ: saves a triangulated or polygonal surface as an OBJ file.
