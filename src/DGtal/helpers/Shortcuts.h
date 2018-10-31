@@ -877,14 +877,14 @@ namespace DGtal
         
     /// @return the parameters and their default values which are
     /// related to digital surfaces.
-    ///   - surfelAdjacency     [        1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency     [        0]: specifies the surfel adjacency (1:ext, 0:int)
     ///   - nbTriesToFindABel   [   100000]: number of tries in method Surfaces::findABel
     ///   - surfaceComponents   [ "AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough componen
     ///   - surfaceTraversal    ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
     static Parameters parametersDigitalSurface()
     {
       return Parameters
-	( "surfelAdjacency",   1 )
+	( "surfelAdjacency",   0 )
 	( "nbTriesToFindABel", 100000 )
 	( "surfaceComponents", "AnyBig" )
 	( "surfaceTraversal",  "Default" );
@@ -896,7 +896,7 @@ namespace DGtal
     /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     ///
     /// @param[in] params the parameters:
-    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency   [     0]: specifies the surfel adjacency (1:ext, 0:int)
     ///   - nbTriesToFindABel [100000]: number of tries in method Surfaces::findABel
     ///
     /// @return a smart pointer on a (light) digital surface that
@@ -951,7 +951,7 @@ namespace DGtal
     /// digital shape.
     ///
     /// @param[in] params the parameters:
-    ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency   [       0]: specifies the surfel adjacency (1:ext, 0:int)
     ///   - nbTriesToFindABel [  100000]: number of tries in method Surfaces::findABel
     ///   - surfaceComponents ["AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough component (> twice space width), "All": all components
     ///
@@ -981,7 +981,7 @@ namespace DGtal
     /// digital shape.
     ///
     /// @param[in] params the parameters:
-    ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency   [       0]: specifies the surfel adjacency (1:ext, 0:int)
     ///   - nbTriesToFindABel [  100000]: number of tries in method Surfaces::findABel
     ///   - surfaceComponents ["AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough component (> twice space width), "All": all components
     ///
@@ -1038,7 +1038,7 @@ namespace DGtal
     /// digital shape.
     ///
     /// @param[in] params the parameters:
-    ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency   [       0]: specifies the surfel adjacency (1:ext, 0:int)
     ///
     /// @return a smart pointer on the explicit digital surface
     /// representing the boundaries in the binary image.
@@ -1070,7 +1070,7 @@ namespace DGtal
     /// @param[in] idx_surface any indexed digital surface.
     ///
     /// @param[in] params the parameters:
-    ///   - surfelAdjacency   [       1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency   [       0]: specifies the surfel adjacency (1:ext, 0:int)
     ///
     /// @return a smart pointer on a explicit digital surface.
     static CountedPtr< DigitalSurface >
@@ -1103,7 +1103,7 @@ namespace DGtal
     /// digital shape.
     ///
     /// @param[in] params the parameters:
-    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency   [     0]: specifies the surfel adjacency (1:ext, 0:int)
     ///   - nbTriesToFindABel [100000]: number of tries in method Surfaces::findABel
     ///   - surfaceComponents ["AnyBig"]: "AnyBig"|"All", "AnyBig": any big-enough component (> twice space width), "All": all components
     ///
@@ -1137,7 +1137,7 @@ namespace DGtal
     /// @param[in] K the Khalimsky space whose domain encompasses the given surfels.
     ///
     /// @param[in] params the parameters:
-    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency   [     0]: specifies the surfel adjacency (1:ext, 0:int)
     ///
     /// @return a smart pointer on the indexed digital surface built over the surfels.
     template <typename TSurfelRange>
@@ -1169,7 +1169,7 @@ namespace DGtal
     /// @param[in] surface a smart pointer on a light digital surface.
     ///
     /// @param[in] params the parameters:
-    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency   [     0]: specifies the surfel adjacency (1:ext, 0:int)
     ///
     /// @return a smart pointer on the required indexed digital surface.
     template <typename TAnyDigitalSurface>
@@ -1193,7 +1193,7 @@ namespace DGtal
     /// @param[in] surfaces a vector of smart pointers on light digital surfaces.
     ///
     /// @param[in] params the parameters:
-    ///   - surfelAdjacency   [     1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency   [     0]: specifies the surfel adjacency (1:ext, 0:int)
     ///
     /// @return a smart pointer on the required indexed digital surface.
     static CountedPtr<IdxDigitalSurface>
@@ -1683,11 +1683,11 @@ namespace DGtal
 
     /// @return the parameters and their default values which are
     /// related to meshes.
-    ///   - faceSubdivision [     "No"]: "No|Naive"|"Centroid" specifies how polygonal faces should be subdivided when triangulated or when exported.
+    ///   - faceSubdivision ["Centroid"]: "No|"Naive"|"Centroid" specifies how polygonal faces should be subdivided when triangulated or when exported.
     static Parameters parametersMesh()
     {
       return Parameters
-	( "faceSubdivision",   "No" ); 
+	( "faceSubdivision", "Centroid" ); 
     }
       
     /// Builds a triangulated surface (class TriangulatedSurface) from
@@ -1742,11 +1742,21 @@ namespace DGtal
       return makeTriangulatedSurface( s2i, aSurface );
     }
 
-    /// Builds a triangulated surface from a polygonal surface
+    /// Builds a triangulated surface from a polygonal surface.
+    ///
+    /// @note Be \b very \b careful \b with \b "Naive" \b subdivision,
+    /// since it may create non-manifold edges on general polygonal
+    /// surfaces. Indeed, take the closed surface made of faces (0, 1,
+    /// 2, 3) and (3, 2, 1, 0). Depending on how faces are
+    /// triangulated, it is still a valid combinatorial triangulated
+    /// 2-manifold (e.g. (0,1,2,3) gives (0,1,2) and (2,0,3) and
+    /// (3,2,1,0) gives (3,2,1) and (1,3,0)) or a non-valid one
+    /// (e.g. (0,1,2,3) gives (0,1,2) and (2,0,3) and (3,2,1,0) gives
+    /// (3,2,0) and (0,2,1): then edge {2,0} is shared by four faces).
     ///
     /// @param[in] polySurf any polygonal surface.
     /// @param[in] params the parameters:
-    ///   - faceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how faces are subdivided, "No" is considered as "Naive" since faces must be triangulated.
+    ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how faces are subdivided, "No" is considered as "Naive" since faces must be triangulated.
     ///
     /// @return a smart pointer on the built triangulated surface.
     static CountedPtr< TriangulatedSurface >
@@ -1778,12 +1788,12 @@ namespace DGtal
       return ok ? pPolySurf : 0;
     }
 
-    /// Builds the marching-cubes surface that approximate an
+    /// Builds the polygonal marching-cubes surface that approximate an
     /// iso-surface of value "thresholdMin+0.5" in the given 3D
     /// gray-scale image.
     ///
     /// @param[in] params the parameters: ###
-    ///   - surfelAdjacency[1]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - surfelAdjacency[0]: specifies the surfel adjacency (1:ext, 0:int)
     ///   - thresholdMin   [0]: specifies the threshold min (excluded) to define binary shape
     ///   - gridsizex    [1.0]: specifies the space between points along x.
     ///   - gridsizey    [1.0]: specifies the space between points along y.
@@ -1815,6 +1825,48 @@ namespace DGtal
 	( new PolygonalSurface ); // acquired
       Surfel2Index s2i;
       MeshHelpers::digitalSurface2DualPolygonalSurface
+	( *digSurf, cembedder, *pPolySurf, s2i );
+      return pPolySurf;
+    }
+
+    /// Builds the marching-cubes surface that approximate an
+    /// iso-surface of value "thresholdMin+0.5" in the given 3D
+    /// gray-scale image. Non triangular faces are triangulated by
+    /// putting a centroid vertex.
+    ///
+    /// @param[in] params the parameters: ###
+    ///   - surfelAdjacency[0]: specifies the surfel adjacency (1:ext, 0:int)
+    ///   - thresholdMin   [0]: specifies the threshold min (excluded) to define binary shape
+    ///   - gridsizex    [1.0]: specifies the space between points along x.
+    ///   - gridsizey    [1.0]: specifies the space between points along y.
+    ///   - gridsizez    [1.0]: specifies the space between points along z.
+    /// @return a smart pointer on the built triangulated surface or 0 if
+    /// the mesh was invalid.
+    static CountedPtr< TriangulatedSurface >
+    makeTriangulatedSurface( CountedPtr<GrayScaleImage> gray_scale_image,
+			  const Parameters&          params =
+			  parametersKSpace()
+			  | parametersBinaryImage()
+			  | parametersDigitalSurface() )
+    {
+      auto K       = getKSpace( gray_scale_image );
+      auto bimage  = makeBinaryImage( gray_scale_image, params );
+      auto digSurf = makeDigitalSurface( bimage, K, params );
+      RealVector gh = { params[ "gridsizex" ].as<double>(),
+			params[ "gridsizey" ].as<double>(),
+			params[ "gridsizez" ].as<double>() };
+      double threshold = params[ "thresholdMin" ].as<double>() + 0.5;
+      typedef RegularPointEmbedder<Space>         PointEmbedder;
+      typedef ImageLinearCellEmbedder
+	< KSpace, GrayScaleImage, PointEmbedder > ImageCellEmbedder;
+      PointEmbedder pembedder;
+      pembedder.init( gh );
+      ImageCellEmbedder cembedder;
+      cembedder.init( K, *gray_scale_image, pembedder, threshold );
+      auto pPolySurf = CountedPtr<TriangulatedSurface>
+	( new TriangulatedSurface ); // acquired
+      Surfel2Index s2i;
+      MeshHelpers::digitalSurface2DualTriangulatedSurface
 	( *digSurf, cembedder, *pPolySurf, s2i );
       return pPolySurf;
     }
@@ -2069,7 +2121,7 @@ namespace DGtal
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
     /// @param[in] params the parameters:
-    ///   - faceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
+    ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
     template <typename TAnyDigitalSurface>
@@ -2096,7 +2148,7 @@ namespace DGtal
     /// @param[in] surface a smart pointer on a digital surface.
     /// @param[in] embedder the embedder for mapping (unsigned) surfels (cells of dimension 2) to points in space.
     /// @param[in] params the parameters:
-    ///   - faceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
+    ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
     template < typename TAnyDigitalSurface,
@@ -2193,7 +2245,7 @@ namespace DGtal
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on an indexed digital surface.
     /// @param[in] params the parameters:
-    ///   - faceSubdivision [     "No"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
+    ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
     static bool

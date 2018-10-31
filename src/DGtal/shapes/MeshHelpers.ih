@@ -86,8 +86,8 @@ DGtal::MeshHelpers::polygonalSurface2TriangulatedSurface
 	c /= nb;
 	auto idx_c = trisurf.addVertex( c );
 	for (unsigned int i = 0; i < nb; i++ )
-          trisurf.addTriangle( idx_c, vertices[ i ],
-			       vertices[ (i+1) % nb  ] );
+          trisurf.addTriangle( vertices[ i ],
+			       vertices[ (i+1) % nb  ], idx_c );
       }
     }
   bool ok = trisurf.build();

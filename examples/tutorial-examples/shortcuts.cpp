@@ -52,8 +52,8 @@ int main( int argc, char** argv )
       ( "gridstep", 0.5 )
       ( "noise",    0.2 )
       ( "surfaceComponents", "All" )
-      ( "surfelAdjacency",   1 );
-    params( "dualFaceSubdivision", "Centroid" );
+      ( "surfelAdjacency",   0 );
+    params( "faceSubdivision", "Centroid" );
     std::cout << params << std::endl;
     trace.endBlock();
     trace.beginBlock ( "Making implicit shape" );
@@ -120,13 +120,17 @@ int main( int argc, char** argv )
     {
       auto gimage   = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );
       auto params   = SH3::defaultParameters();
-      params( "thresholdMin", 40 )( "faceSubdivision", "Naive" );
+      params( "thresholdMin", 40 )( "faceSubdivision", "Centroid" )( "surfelAdjacency", 1);
       auto polysurf = SH3::makePolygonalSurface( gimage, params );
       std::cout << "polysurf=" << *polysurf << std::endl;
       bool ok       = SH3::saveOBJ( polysurf, "lobster-40.obj" );
+      auto trisurf  = SH3::makeTriangulatedSurface( gimage, params );
+      std::cout << "trisurf =" << *trisurf << std::endl;
+      bool ok2      = SH3::saveOBJ( trisurf, "lobster-40-tri.obj" );
       // TODO: bug in conversion (or in build ?)
-      // auto trisurf  = SH3::makeTriangulatedSurface( polysurf );
-      // bool ok2      = SH3::saveOBJ( trisurf, "lobster-40-tri.obj" );
+      auto trisurf2 = SH3::makeTriangulatedSurface( polysurf, params );
+      std::cout << "trisurf2=" << *trisurf2 << std::endl;
+      bool ok3      = SH3::saveOBJ( trisurf2, "lobster-40-tri2.obj" );
     }
     trace.endBlock();
 
@@ -244,7 +248,7 @@ int main( int argc, char** argv )
     typedef Shortcuts< KSpace > SH3;
     trace.beginBlock ( "Setting parameters" );
     auto params = SH3::defaultParameters();
-    params( "dualFaceSubdivision", "Centroid" );
+    params( "faceSubdivision", "Centroid" );
     Domain domain( Point::diagonal(-1), Point::diagonal(2) );
     auto b_image = SH3::makeBinaryImage( domain );
     auto K       = SH3::getKSpace( b_image, params );
