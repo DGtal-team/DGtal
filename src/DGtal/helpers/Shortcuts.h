@@ -637,6 +637,47 @@ namespace DGtal
       return dshape;
     }
 
+    /// Makes a gray-scale image from the given implicit shape
+    /// according to parameters. Use getKSpace to build the associated
+    /// digital space.
+    ///
+    /// @param[in] shape a smart pointer on the implicit shape.
+    /// @param[in] params the parameters:
+    ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
+    ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+    ///   - offset   [  5.0]: the digital dilation of the digital space,
+    ///                       useful when you process shapes and that you add noise.
+    ///
+    /// @return a smart pointer on the created implicit digital shape.
+    /// @see getKSpaceDigitizedImplicitShape3D 
+    static CountedPtr<GrayScaleImage>
+    makeGrayScaleImage
+    ( CountedPtr<ImplicitShape3D> shape,
+      Parameters params = parametersDigitizedImplicitShape3D() )
+    {
+      Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
+      Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
+      Scalar h      = params[ "gridstep" ].as<Scalar>();
+      Scalar offset = params[ "offset"   ].as<Scalar>();
+      RealPoint p1( min_x - offset * h, min_x - offset * h, min_x - offset * h );
+      RealPoint p2( max_x + offset * h, max_x + offset * h, max_x + offset * h );
+      CountedPtr<DigitizedImplicitShape3D> dshape( new DigitizedImplicitShape3D() );
+      dshape->attach( shape );
+      dshape->init( p1, p2, h );
+      std::function< unsigned char( double ) > f
+	= [] (double v)
+	{ return (unsigned char) std::min( 255.0, std::max( 0.0, v+128.0 ) ); };
+      Domain domain = dshape->getDomain();
+      auto   gimage = makeGrayScaleImage( domain );
+      auto       it = gimage->begin();
+      for ( auto p : domain ) {
+	double val = (*shape)( p );
+	*it++      = f( val );
+      }
+      return gimage;
+    }
+
     // ----------------------- BinaryImage static services --------------------------
   public:
     
@@ -823,7 +864,7 @@ namespace DGtal
     static CountedPtr<GrayScaleImage>
     makeGrayScaleImage( Domain shapeDomain )
     {
-      return CountedPtr<GrayScaleImage>( new BinaryImage( shapeDomain ) );
+      return CountedPtr<GrayScaleImage>( new GrayScaleImage( shapeDomain ) );
     }
 
     /// Loads an arbitrary binary image file (e.g. vol file in 3D) and returns
