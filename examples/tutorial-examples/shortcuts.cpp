@@ -144,21 +144,20 @@ int main( int argc, char** argv )
     }
     trace.endBlock();
 
-    trace.beginBlock ( "Make marching-cubes polygonal surface from gray-scale image" );
+    trace.beginBlock ( "View marching-cubes surface from gray-scale image" );
     {
       auto gimage   = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );
       auto params   = SH3::defaultParameters();
-      params( "thresholdMin", 40 )( "faceSubdivision", "Centroid" )( "surfelAdjacency", 1);
-      auto polysurf = SH3::makePolygonalSurface( gimage, params );
+      params( "faceSubdivision", "Centroid" )( "surfelAdjacency", 1);
+      auto polysurf = SH3::makePolygonalSurface( gimage, params( "thresholdMin", 40 ) );
       std::cout << "polysurf=" << *polysurf << std::endl;
       bool ok       = SH3::saveOBJ( polysurf, "lobster-40.obj" );
-      auto trisurf  = SH3::makeTriangulatedSurface( gimage, params );
+      auto trisurf  = SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 20 ) );
       std::cout << "trisurf =" << *trisurf << std::endl;
-      bool ok2      = SH3::saveOBJ( trisurf, "lobster-40-tri.obj" );
-      // TODO: bug in conversion (or in build ?)
+      bool ok2      = SH3::saveOBJ( trisurf, "lobster-20-tri.obj" );
       auto trisurf2 = SH3::makeTriangulatedSurface( polysurf, params );
       std::cout << "trisurf2=" << *trisurf2 << std::endl;
-      bool ok3      = SH3::saveOBJ( trisurf2, "lobster-40-tri2.obj" );
+      bool ok3      = SH3::saveOBJ( trisurf2, "lobster-40-tri.obj" );
     }
     trace.endBlock();
 
