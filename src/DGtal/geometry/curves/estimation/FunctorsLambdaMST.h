@@ -285,7 +285,7 @@ public:
     if (! initThreshold )
       throw std::runtime_error ( "The filter has to be initialized!" );
 
-    if ( std::distance ( dss.begin ( ), dss.end ( ) ) <= lenTreshold )
+    if ( std::distance ( dss.begin ( ), dss.end ( ) ) < lenTreshold )
       return true;
     return false;
   }
@@ -304,7 +304,7 @@ public:
     else if ( ( p - *( dss.end ( ) - 1 ) ).norm ( ) <= lenTreshold )
       return std::distance ( dss.begin ( ), dss.end ( ) ) + 1;
     else
-      throw std::runtime_error ( "The DSS and the poit are not admissibility!" );
+      throw std::runtime_error ( "The DSS and the poit are not admissible!" );
   }
 
 private:
