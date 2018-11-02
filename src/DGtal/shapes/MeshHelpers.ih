@@ -285,7 +285,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
   
   // Outputs all faces
   for ( auto&& s : dsurf ) {
-    auto primal_vertices = getPrimalVertices( K, s, true );
+    auto primal_vertices = Surfaces<KSpace>::getPrimalVertices( K, s, true );
     PolygonalFace face( primal_vertices.size() );
     std::transform( primal_vertices.cbegin(), primal_vertices.cend(), face.begin(),
 		    [ &cellmap ] ( const Cell& v ) { return cellmap[ v ]; } );

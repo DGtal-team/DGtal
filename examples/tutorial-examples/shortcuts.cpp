@@ -141,6 +141,12 @@ int main( int argc, char** argv )
       bool ok       = SH3::saveOBJ            ( trisurf, "goursat.obj" );
       std::cout << *ishape << std::endl;
       std::cout << "trisurf =" << *trisurf << std::endl;
+      auto K        = SH3::getKSpace( gimage, params );
+      auto bimage   = SH3::makeBinaryImage ( gimage, params );
+      auto idx_surf = SH3::makeIdxDigitalSurface( bimage, K,
+						  params( "surfaceComponents", "All" ) );
+      auto primal   = SH3::makePrimalPolygonalSurface( idx_surf );
+      bool ok2      = SH3::saveOBJ            ( primal, "goursat-primal.obj" );
     }
     trace.endBlock();
 
@@ -175,18 +181,21 @@ int main( int argc, char** argv )
     }
     trace.endBlock();
     trace.beginBlock ( "Making indexed digital surface" );
-    auto idx_surf    = SH3::makeIdxDigitalSurface
-      ( al_capone, Kal, params( "surfaceComponents", "All" ) );
-    trace.endBlock();
-    trace.beginBlock ( "Traversing indexed digital surface" );
-    auto positions   = idx_surf->positions();
-    std::cout << "#surfels = " << idx_surf->size() << std::endl;
-    for ( auto&& mode : traversals ) {
-      auto surfels = SH3::getIdxSurfelRange( idx_surf, params( "surfaceTraversal", mode ) );
-      double distance  = 0.0;
-      for ( int i = 1; i < surfels.size(); ++i ) 
-  	distance += ( positions[ surfels[ i-1 ] ] - positions[ surfels[ i ] ] ).norm();
-      std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
+    {
+      auto idx_surf    = SH3::makeIdxDigitalSurface
+	( al_capone, Kal, params( "surfaceComponents", "All" ) );
+      auto positions   = idx_surf->positions();
+      std::cout << "#surfels = " << idx_surf->size() << std::endl;
+      for ( auto&& mode : traversals ) {
+	auto surfels = SH3::getIdxSurfelRange( idx_surf, params( "surfaceTraversal", mode ) );
+	double distance  = 0.0;
+	for ( int i = 1; i < surfels.size(); ++i ) 
+	  distance += ( positions[ surfels[ i-1 ] ] - positions[ surfels[ i ] ] ).norm();
+	std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
+      }
+      auto poly_surf   = SH3::makeDualPolygonalSurface( idx_surf );
+      std::cout << "polysurf = " << *poly_surf << std::endl;
+      bool      okd    = SH3::saveOBJ( poly_surf, "al-idx-dual.obj" );
     }
     trace.endBlock();
     trace.beginBlock ( "Save indexed-digital surface as .obj file" );
