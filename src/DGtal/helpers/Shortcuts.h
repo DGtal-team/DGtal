@@ -1378,18 +1378,18 @@ namespace DGtal
     /// surface. Note that the surfel adjacency may be changed and a
     /// connected light digital surface could be disconnected in the process.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
     ///
-    /// @param[in] surface a smart pointer on a light digital surface.
+    /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
     ///
     /// @param[in] params the parameters:
     ///   - surfelAdjacency   [     0]: specifies the surfel adjacency (1:ext, 0:int)
     ///
     /// @return a smart pointer on the required indexed digital surface.
-    template <typename TAnyDigitalSurface>
+    template <typename TDigitalSurfaceContainer>
     static CountedPtr<IdxDigitalSurface>
     makeIdxDigitalSurface
-    ( CountedPtr< TAnyDigitalSurface> surface,
+    ( CountedPtr< DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface,
       const Parameters&               params = parametersDigitalSurface() )
     {
       const KSpace& K = surface->container().space();
@@ -1921,7 +1921,7 @@ namespace DGtal
       auto pTriSurf = CountedPtr<TriangulatedSurface>
 	    ( new TriangulatedSurface ); // acquired
       bool ok = MeshHelpers::mesh2TriangulatedSurface( *aMesh, *pTriSurf );
-      return ok ? pTriSurf : 0;
+      return ok ? pTriSurf : CountedPtr< TriangulatedSurface >( nullptr );
     }
 
     /// Builds a mesh (class Mesh) from a triangulated surface (class
@@ -2033,7 +2033,7 @@ namespace DGtal
       auto pPolySurf = CountedPtr<PolygonalSurface>
 	    ( new PolygonalSurface ); // acquired
       bool ok = MeshHelpers::mesh2PolygonalSurface( *aMesh, *pPolySurf );
-      return ok ? pPolySurf : 0;
+      return ok ? pPolySurf : CountedPtr< PolygonalSurface >( nullptr );
     }
 
     /// Builds the polygonal marching-cubes surface that approximate an
@@ -2154,6 +2154,25 @@ namespace DGtal
       return makeDualPolygonalSurface( s2i, aSurface );
     }
 
+    /// Builds the dual polygonal surface associated to the given
+    /// indexed digital surface.
+    ///
+    /// @tparam TContainer the digital surface container
+    /// @param[in] aSurface any indexed digital surface (e.g. IdxDigitalSurface)
+    /// @return a smart pointer on the built polygonal surface.
+    template < typename TContainer >
+    static CountedPtr< PolygonalSurface >
+    makeDualPolygonalSurface
+    ( CountedPtr< DGtal::IndexedDigitalSurface< TContainer > > aSurface )
+    {
+      BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+      CanonicCellEmbedder< KSpace > cembedder;
+      auto pPolySurf = CountedPtr<PolygonalSurface>
+	( new PolygonalSurface( aSurface->heds(),
+				aSurface->positions().storage() ) );
+      return pPolySurf;
+    }
+
     /// Builds the primal polygonal surface associated to the given
     /// digital surface.
     ///
@@ -2172,7 +2191,7 @@ namespace DGtal
 	( new PolygonalSurface ); // acquired
       bool ok = MeshHelpers::digitalSurface2PrimalPolygonalSurface
 	( *aSurface, cembedder, *pPolySurf, c2i );
-      return ok ? pPolySurf : 0;
+      return ok ? pPolySurf : CountedPtr< PolygonalSurface >( nullptr );
     }
 
     /// Builds the primal polygonal surface associated to the given
@@ -2187,6 +2206,22 @@ namespace DGtal
     {
       Cell2Index c2i;
       return makePrimalPolygonalSurface( c2i, aSurface );
+    }
+
+    /// Builds the primal polygonal surface associated to the given
+    /// indexed digital surface.
+    ///
+    /// @tparam TContainer the digital surface container
+    /// @param[in] aSurface any indexed digital surface (e.g. IdxDigitalSurface)
+    /// @return a smart pointer on the built polygonal surface or 0 if it fails because aSurface is not a combinatorial 2-manifold.
+    template < typename TContainer >
+    static CountedPtr< PolygonalSurface >
+    makePrimalPolygonalSurface
+    ( CountedPtr< DGtal::IndexedDigitalSurface<TContainer> > aSurface )
+    {
+      auto dsurf = makeDigitalSurface( aSurface );
+      Cell2Index c2i;
+      return makePrimalPolygonalSurface( c2i, dsurf );
     }
 
     /// Outputs a polygonal surface as an OBJ file (with its topology).

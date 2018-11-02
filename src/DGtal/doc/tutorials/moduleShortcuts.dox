@@ -179,6 +179,32 @@ application.exec();
 \endcode 
 
 
+@section dgtal_shortcuts_sec2b Short 2D examples
+
+We give below some minimalistic examples to show that shortcuts can
+save a lot of lines of code. All examples need at least the following lines:
+
+\code
+#include "DGtal/helpers/Stddefs.h"
+#include "DGtal/helpers/Shortcuts.h"
+
+...
+// Using standard 2D digital space.
+typedef Shortcuts<Z2i::KSpace> SH2;
+auto params          = SH2::defaultParameters();
+\endcode
+
+@subsection dgtal_shortcuts_ssec2b_1 Load pgm file -> ...
+
+@subsubsection dgtal_shortcuts_ssec2b_1_1 -> threshold -> save pgm 
+
+\code
+auto g_image = SH2::makeGrayScaleImage( examplesPath + "samples/contourS.pgm" );
+auto b_image = SH2::makeBinaryImage   ( g_image, params( "thresholdMin", 128 ) );
+auto ok      = SH2::saveBinaryImage   ( b_image, "contourS-128.pgm" );
+\endcode
+
+
 @section dgtal_shortcuts_sec3 Philosophy and naming conventions
 
 Commands are constructed as \b prefix + \b type name. Most of them are
