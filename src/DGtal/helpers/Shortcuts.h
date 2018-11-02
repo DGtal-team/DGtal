@@ -83,8 +83,6 @@
 namespace DGtal
 {
 
-  namespace sgf = DGtal::functors::ShapeGeometricFunctors;
-  
   /////////////////////////////////////////////////////////////////////////////
   // template class Shortcuts
   /**
