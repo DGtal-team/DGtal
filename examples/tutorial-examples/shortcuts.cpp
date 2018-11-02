@@ -212,59 +212,59 @@ int main( int argc, char** argv )
     }
     trace.endBlock();
 
-    trace.beginBlock ( "Compute true geometry" );
-    {
-      params( "surfaceTraversal", "DepthFirst" )( "verbose", 0 );
-      auto K           = SH3::getKSpace( params );
-      auto surface     = SH3::makeLightDigitalSurface( binary_image, K, params );
-      auto surfels     = SH3::getSurfelRange( surface, params );
-      auto positions   = SH3::getPositions( implicit_shape, K, surfels, params ); 
-      auto normals     = SH3::getNormalVectors( implicit_shape, K, surfels, params ); 
-      auto mean_curv   = SH3::getMeanCurvatures( implicit_shape, K, surfels, params ); 
-      auto gauss_curv  = SH3::getGaussianCurvatures( implicit_shape, K, surfels, params ); 
-      SH3::RealPoint p = positions.front();
-      SH3::RealPoint q = p;
-      for ( auto&& r : positions ) {
-  	p = p.inf( r ); q = q.sup( r );
-      }
-      SH3::Scalar   h0 =  1000.0;
-      SH3::Scalar   h1 = -1000.0;
-      for ( auto&& h : mean_curv ) {
-  	h0 = std::min( h0, h );	h1 = std::max( h1, h );
-      }
-      SH3::Scalar   g0 =  1000.0;
-      SH3::Scalar   g1 = -1000.0;
-      for ( auto&& g : gauss_curv ) {
-  	g0 = std::min( g0, g );	g1 = std::max( g1, g );
-      }
-      std::cout << "#position = " << positions.size()
-  		<< " p=" << p << " q=" << q << std::endl;
-      std::cout << "#normals = " << normals.size() << std::endl;
-      std::cout << "H_min = " << h0 << " H_max = " << h1;
-      std::cout << " expected: H_min = 0.0912870 H_max = 0.263523" << std::endl;
-      std::cout << "G_min = " << g0 << " G_max = " << g1;
-      std::cout << " expected: G_min = 0.0074074 G_max = 0.0666666" << std::endl;
+    // trace.beginBlock ( "Compute true geometry" );
+    // {
+    //   params( "surfaceTraversal", "DepthFirst" )( "verbose", 0 );
+    //   auto K           = SH3::getKSpace( params );
+    //   auto surface     = SH3::makeLightDigitalSurface( binary_image, K, params );
+    //   auto surfels     = SH3::getSurfelRange( surface, params );
+    //   auto positions   = SH3::getPositions( implicit_shape, K, surfels, params ); 
+    //   auto normals     = SH3::getNormalVectors( implicit_shape, K, surfels, params ); 
+    //   auto mean_curv   = SH3::getMeanCurvatures( implicit_shape, K, surfels, params ); 
+    //   auto gauss_curv  = SH3::getGaussianCurvatures( implicit_shape, K, surfels, params ); 
+    //   SH3::RealPoint p = positions.front();
+    //   SH3::RealPoint q = p;
+    //   for ( auto&& r : positions ) {
+    // 	p = p.inf( r ); q = q.sup( r );
+    //   }
+    //   SH3::Scalar   h0 =  1000.0;
+    //   SH3::Scalar   h1 = -1000.0;
+    //   for ( auto&& h : mean_curv ) {
+    // 	h0 = std::min( h0, h );	h1 = std::max( h1, h );
+    //   }
+    //   SH3::Scalar   g0 =  1000.0;
+    //   SH3::Scalar   g1 = -1000.0;
+    //   for ( auto&& g : gauss_curv ) {
+    // 	g0 = std::min( g0, g );	g1 = std::max( g1, g );
+    //   }
+    //   std::cout << "#position = " << positions.size()
+    // 		<< " p=" << p << " q=" << q << std::endl;
+    //   std::cout << "#normals = " << normals.size() << std::endl;
+    //   std::cout << "H_min = " << h0 << " H_max = " << h1;
+    //   std::cout << " expected: H_min = 0.0912870 H_max = 0.263523" << std::endl;
+    //   std::cout << "G_min = " << g0 << " G_max = " << g1;
+    //   std::cout << " expected: G_min = 0.0074074 G_max = 0.0666666" << std::endl;
 
-      auto     t_normals = SH3::getTrivialNormalVectors( K, surfels );
-      auto    ct_normals = SH3::getCTrivialNormalVectors( surface, surfels, params );
-      auto   vcm_normals = SH3::getVCMNormalVectors( surface, surfels, params );
-      auto    ii_normals = SH3::getIINormalVectors( binary_image, surfels, params );
-      // Need to reorient II normals with CTrivial (otherwise unstable orientation).
-      SH3::orientVectors( ii_normals, ct_normals );
-      auto   t_angle_dev = SH3::getVectorsAngleDeviation( normals, t_normals );
-      auto  ct_angle_dev = SH3::getVectorsAngleDeviation( normals, ct_normals );
-      auto vcm_angle_dev = SH3::getVectorsAngleDeviation( normals, vcm_normals );
-      auto  ii_angle_dev = SH3::getVectorsAngleDeviation( normals, ii_normals );
-      std::cout << "Trivial  angle_dev  mean="
-		<< t_angle_dev.mean() << " max=" << t_angle_dev.max() << std::endl;
-      std::cout << "CTrivial angle_dev  mean="
-		<< ct_angle_dev.mean() << " max=" << ct_angle_dev.max() << std::endl;
-      std::cout << "VCM      angle_dev  mean="
-		<< vcm_angle_dev.mean() << " max=" << vcm_angle_dev.max() << std::endl;
-      std::cout << "II       angle_dev  mean="
-		<< ii_angle_dev.mean() << " max=" << ii_angle_dev.max() << std::endl;
-    }
-    trace.endBlock();
+    //   auto     t_normals = SH3::getTrivialNormalVectors( K, surfels );
+    //   auto    ct_normals = SH3::getCTrivialNormalVectors( surface, surfels, params );
+    //   auto   vcm_normals = SH3::getVCMNormalVectors( surface, surfels, params );
+    //   auto    ii_normals = SH3::getIINormalVectors( binary_image, surfels, params );
+    //   // Need to reorient II normals with CTrivial (otherwise unstable orientation).
+    //   SH3::orientVectors( ii_normals, ct_normals );
+    //   auto   t_angle_dev = SH3::getVectorsAngleDeviation( normals, t_normals );
+    //   auto  ct_angle_dev = SH3::getVectorsAngleDeviation( normals, ct_normals );
+    //   auto vcm_angle_dev = SH3::getVectorsAngleDeviation( normals, vcm_normals );
+    //   auto  ii_angle_dev = SH3::getVectorsAngleDeviation( normals, ii_normals );
+    //   std::cout << "Trivial  angle_dev  mean="
+    // 		<< t_angle_dev.mean() << " max=" << t_angle_dev.max() << std::endl;
+    //   std::cout << "CTrivial angle_dev  mean="
+    // 		<< ct_angle_dev.mean() << " max=" << ct_angle_dev.max() << std::endl;
+    //   std::cout << "VCM      angle_dev  mean="
+    // 		<< vcm_angle_dev.mean() << " max=" << vcm_angle_dev.max() << std::endl;
+    //   std::cout << "II       angle_dev  mean="
+    // 		<< ii_angle_dev.mean() << " max=" << ii_angle_dev.max() << std::endl;
+    // }
+    // trace.endBlock();
 
   }
   // 2d tests
