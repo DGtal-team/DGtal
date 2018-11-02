@@ -48,7 +48,8 @@ int main( int argc, char** argv )
     typedef Shortcuts< Z3i::KSpace >         SH3;
     typedef ShortcutsGeometry< Z3i::KSpace > SHG3;
     trace.beginBlock ( "Setting up shape, space, etc" );
-    auto params         = SH3::defaultParameters();
+    auto params         = SH3::defaultParameters()
+      | SHG3::defaultParameters();
     params( "polynomial", "goursat" )( "gridstep", 0.5 )
       ( "surfaceComponents", "All" )( "surfelAdjacency",   0 );
     auto implicit_shape = SH3::makeImplicitShape3D( params );
@@ -108,8 +109,8 @@ int main( int argc, char** argv )
 	      << vcm_angle_dev.mean() << " max=" << vcm_angle_dev.max() << std::endl;
     std::cout << "II       angle_dev  mean="
 	      << ii_angle_dev.mean() << " max=" << ii_angle_dev.max() << std::endl;
+    trace.endBlock();
   }
-  trace.endBlock();
   return 0;
 }
 //                                                                           //

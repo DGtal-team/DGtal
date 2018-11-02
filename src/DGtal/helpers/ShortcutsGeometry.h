@@ -576,6 +576,9 @@ namespace DGtal
 	estimator.init( h, surfels.begin(), surfels.end() );
 	estimator.eval( surfels.begin(), surfels.end(),
 			std::back_inserter( n_estimations ) );
+      } else {
+	trace.warning() << "[ShortcutsGeometry::getVCMNormalVectors] Unknown kernel: "
+			<< kernel << std::endl;
       }
       return n_estimations;
     }
@@ -661,13 +664,19 @@ namespace DGtal
 			      const RealVectors& v2 )
     {
       ScalarStatistic stat;
-      for ( auto it1 = v1.cbegin(), it2 = v2.cbegin(), itE1 = v1.end();
-	    it1 != itE1; ++it1, ++it2 )
-	{
-          Scalar angle_error = acos( (*it1).dot( *it2 ) );
-          stat.addValue( angle_error );
-	}
-      stat.terminate();
+      if ( v1.size() == v2.size() ) {
+	for ( auto it1 = v1.cbegin(), it2 = v2.cbegin(), itE1 = v1.cend();
+	      it1 != itE1; ++it1, ++it2 )
+	  {
+	    Scalar angle_error = acos( (*it1).dot( *it2 ) );
+	    stat.addValue( angle_error );
+	  }
+	stat.terminate();
+      } else {
+	trace.warning() << "[ShortcutsGeometry::getVectorsAngleDeviation]"
+			<< " v1.size()=" << v1.size() " should be equal to "
+			<< " v2.size()=" << v2.size() << std::endl;
+      }
       return stat;
     }
     
