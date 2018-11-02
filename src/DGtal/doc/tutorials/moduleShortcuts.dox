@@ -74,12 +74,26 @@ save a lot of lines of code. All examples need at least the following lines:
 \code
 #include "DGtal/helpers/Stddefs.h"
 #include "DGtal/helpers/Shortcuts.h"
-
 ...
 // Using standard 3D digital space.
 typedef Shortcuts<Z3i::KSpace> SH3;
-auto params          = SH3::defaultParameters();
+auto params = SH3::defaultParameters();
 \endcode
+
+Examples requiring geometric functions (ground-truth or estimation) need the following lines:
+
+\code
+#include "DGtal/helpers/Stddefs.h"
+#include "DGtal/helpers/Shortcuts.h"
+#include "DGtal/helpers/ShortcutsGeometry.h"
+...
+// Using standard 3D digital space.
+typedef Shortcuts<Z3i::KSpace>         SH3;
+typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
+auto params = SH3::defaultParameters()
+              | SHG3::defaultParameters();
+\endcode
+
 
 @subsection dgtal_shortcuts_ssec2_1 Load vol file -> ...
 
@@ -172,10 +186,10 @@ application.exec();
   auto K               = SH3::getKSpace( params );
   auto surface         = SH3::makeLightDigitalSurface( binary_image, K, params );
   auto surfels         = SH3::getSurfelRange( surface, params );
-  auto positions       = SH3::getPositions( implicit_shape, K, surfels, params );
-  auto normals         = SH3::getNormalVectors( implicit_shape, K, surfels, params );
-  auto mean_curvs      = SH3::getMeanCurvatures( implicit_shape, K, surfels, params );
-  auto gauss_curvs     = SH3::getGaussianCurvatures( implicit_shape, K, surfels, params );
+  auto positions       = SHG3::getPositions( implicit_shape, K, surfels, params );
+  auto normals         = SHG3::getNormalVectors( implicit_shape, K, surfels, params );
+  auto mean_curvs      = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params );
+  auto gauss_curvs     = SHG3::getGaussianCurvatures( implicit_shape, K, surfels, params );
 \endcode
 
 @subsubsection dgtal_shortcuts_ssec2_2_5 -> float image -> gray-scale image -> extract iso-surface -> save as OBJ file.
