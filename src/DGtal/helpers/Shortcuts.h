@@ -72,13 +72,6 @@
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
-#include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
-#include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceLocalEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
@@ -179,21 +172,6 @@ namespace DGtal
     typedef std::vector< IdxSurfel >                            IdxSurfelRange;
     typedef std::vector< Scalar >                               Scalars;
     typedef std::vector< RealVector >                           RealVectors;
-
-    typedef DGtal::Statistic<Scalar>                            ScalarStatistic;
-    
-    typedef sgf::ShapePositionFunctor<ImplicitShape3D>          PositionFunctor;
-    typedef sgf::ShapeNormalVectorFunctor<ImplicitShape3D>      NormalFunctor;
-    typedef sgf::ShapeMeanCurvatureFunctor<ImplicitShape3D>     MeanCurvatureFunctor;
-    typedef sgf::ShapeGaussianCurvatureFunctor<ImplicitShape3D> GaussianCurvatureFunctor;
-    typedef TrueDigitalSurfaceLocalEstimator
-    < KSpace, ImplicitShape3D, PositionFunctor >                TruePositionEstimator;
-    typedef TrueDigitalSurfaceLocalEstimator
-    < KSpace, ImplicitShape3D, NormalFunctor >                  TrueNormalEstimator;
-    typedef TrueDigitalSurfaceLocalEstimator
-    < KSpace, ImplicitShape3D, MeanCurvatureFunctor >           TrueMeanCurvatureEstimator;
-    typedef TrueDigitalSurfaceLocalEstimator
-    < KSpace, ImplicitShape3D, GaussianCurvatureFunctor >       TrueGaussianCurvatureEstimator;
 
     typedef Mesh<RealPoint>                                     Mesh;
     typedef TriangulatedSurface<RealPoint>                      TriangulatedSurface;

@@ -54,14 +54,11 @@
 #include "DGtal/math/Statistic.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/IntervalForegroundPredicate.h"
-#include <DGtal/images/ImageLinearCellEmbedder.h>
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/ShapeGeometricFunctors.h"
-#include "DGtal/shapes/MeshHelpers.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -70,8 +67,6 @@
 #include "DGtal/topology/CCellEmbedder.h"
 #include "DGtal/topology/CanonicCellEmbedder.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
-#include "DGtal/topology/helpers/Surfaces.h"
-#include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
@@ -79,11 +74,6 @@
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
-#include "DGtal/io/readers/GenericReader.h"
-#include "DGtal/io/writers/GenericWriter.h"
-#include "DGtal/graph/BreadthFirstVisitor.h"
-#include "DGtal/graph/DepthFirstVisitor.h"
-#include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/helpers/Parameters.h"
 #include "DGtal/helpers/Shortcuts.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -674,7 +664,7 @@ namespace DGtal
 	stat.terminate();
       } else {
 	trace.warning() << "[ShortcutsGeometry::getVectorsAngleDeviation]"
-			<< " v1.size()=" << v1.size() " should be equal to "
+			<< " v1.size()=" << v1.size() << " should be equal to "
 			<< " v2.size()=" << v2.size() << std::endl;
       }
       return stat;
