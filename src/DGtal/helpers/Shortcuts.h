@@ -71,6 +71,7 @@
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
@@ -181,6 +182,7 @@ namespace DGtal
 
     typedef Color                                               Color;
     typedef std::vector< Color >                                Colors;
+    typedef GradientColorMap<Scalar>                            ColorMap;
     
     // ----------------------- Static services --------------------------------------
   public:
@@ -197,7 +199,8 @@ namespace DGtal
 	| parametersBinaryImage()
 	| parametersGrayScaleImage()
 	| parametersDigitalSurface()
-	| parametersMesh();
+	| parametersMesh()
+	| parametersUtilities();
     }
 
     // ----------------------- ImplicitShape3D static services ------------------------
@@ -1395,7 +1398,7 @@ namespace DGtal
 
     /// @return the parameters and their default values which are
     /// related to meshes.
-    ///   - faceSubdivision ["Centroid"]: "No|"Naive"|"Centroid" specifies how polygonal faces should be subdivided when triangulated or when exported.
+    ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how polygonal faces should be subdivided when triangulated or when exported.
     static Parameters parametersMesh()
     {
       return Parameters
@@ -1764,9 +1767,10 @@ namespace DGtal
     /// @tparam TPoint any model of point
     /// @param[in] polysurf the polygonal surface to output as an OBJ file
     /// @param[in] normals the normal vector per face.
+    /// @param[in] diffuse_colors either empty or a vector of size `polysurf.nbFaces` specifying the diffuse color for each face.
     /// @param[in] objfile the output filename.
     /// @param[in] ambient_color the ambient color of all faces.
-    /// @param[in] diffuse_color the diffuse color of all faces.
+    /// @param[in] diffuse_color the diffuse color of all faces (if diffuse_colors is empty).
     /// @param[in] specular_color the specular color of all faces.
     /// @return 'true' if the output stream is good.
     template <typename TPoint>
@@ -1774,6 +1778,7 @@ namespace DGtal
     saveOBJ
     ( CountedPtr< DGtal::PolygonalSurface<TPoint> > polysurf,
       const RealVectors&                            normals,
+      const Colors&                                 diffuse_colors,
       std::string                                   objfile,
       const Color&                   ambient_color  = Color( 32, 32, 32 ),
       const Color&                   diffuse_color  = Color( 200, 200, 255 ),
@@ -1788,9 +1793,8 @@ namespace DGtal
 	mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
       }
       std::ofstream output( objfile.c_str() );
-      Colors dummy_diffuse_colors;
       bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
-	( output, mtlfile, *polysurf, normals, dummy_diffuse_colors,
+	( output, mtlfile, *polysurf, normals, diffuse_colors,
 	  ambient_color, diffuse_color, specular_color );
       output.close();
       return ok;
@@ -1800,6 +1804,62 @@ namespace DGtal
     
     // ------------------------------ utilities ------------------------------
   public:
+
+    /// @return the parameters and their default values which are
+    /// related to utilities
+    ///   - colormap   [ "Tics" ]: "Cool"|"Copper"|"Hot"|"Jet"|"Spring"|"Summer"|"Autumn"|"Winter"|"Tics" specifies standard colormaps (if invalid, falls back to "Tics").
+    static Parameters parametersUtilities()
+    {
+      return Parameters
+	( "colormap", "Tics" ); 
+    }
+      
+    /// @param[in] min the minimum considered value for the colormap.
+    /// @param[in] max the maximum considered value for the colormap.
+    /// @param[in] params the parameters:
+    ///   - colormap   [ "Jet" ]: "Cool"|"Copper"|"Hot"|"Jet"|"Spring"|"Summer"|"Autumn"|"Winter"|"Custom" specifies standard colormaps (if invalid, falls back to "Custom").
+    /// @return a colormap according to the specified parameters
+    static ColorMap
+    getColorMap( Scalar            min,
+		 Scalar            max,
+		 const Parameters& params = parametersUtilities() )
+    {
+      std::string cmap = params[ "colormap" ].as<std::string>();
+      if      ( cmap == "Cool" )   return ColorMap( min, max, CMAP_COOL );
+      else if ( cmap == "Copper" ) return ColorMap( min, max, CMAP_COPPER );
+      else if ( cmap == "Hot" )    return ColorMap( min, max, CMAP_HOT );
+      else if ( cmap == "Jet" )    return ColorMap( min, max, CMAP_JET );
+      else if ( cmap == "Spring" ) return ColorMap( min, max, CMAP_SPRING );
+      else if ( cmap == "Summer" ) return ColorMap( min, max, CMAP_SUMMER );
+      else if ( cmap == "Autumn" ) return ColorMap( min, max, CMAP_AUTUMN );
+      else if ( cmap == "Winter" ) return ColorMap( min, max, CMAP_WINTER );
+      // Custom
+      ColorMap gradcmap( min, max );
+      gradcmap.addColor( Color( 0, 0, 255 ) );
+      gradcmap.addColor( Color( 0, 255, 255 ) );
+      gradcmap.addColor( Color( 255, 255, 255 ) );
+      gradcmap.addColor( Color( 255, 255, 0 ) );
+      gradcmap.addColor( Color( 255, 0, 0 ) );
+      return gradcmap;
+    }
+
+    /// @param[in] min the minimum considered value for the colormap.
+    /// @param[in] max the maximum considered value for the colormap.
+    /// @return a colormap according to the specified parameters adapted to make darker tics for a background "Tics" colormap.
+    static ColorMap
+    getTicsColorMap( Scalar           min,
+		     Scalar           max )
+    {
+      ColorMap gradcmap( min, max );
+      gradcmap.addColor( Color( 0, 0, 155 ) );
+      gradcmap.addColor( Color( 0, 155, 155 ) );
+      gradcmap.addColor( Color( 155, 155, 155 ) );
+      gradcmap.addColor( Color( 155, 155, 0 ) );
+      gradcmap.addColor( Color( 155, 0, 0 ) );
+      return gradcmap;
+    }
+
+
     
     /// Outputs a range of surfels as an OBJ file, embedding each
     /// vertex using the given cell embedder (3D only).
@@ -2286,6 +2346,7 @@ namespace DGtal
 	std::reverse( vtcs.begin(), vtcs.end() );
       return vtcs;
     }
+
     
     // ----------------------- Standard services ------------------------------
   public:
