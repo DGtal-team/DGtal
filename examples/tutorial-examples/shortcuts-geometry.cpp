@@ -102,16 +102,20 @@ int main( int argc, char** argv )
     auto  ct_angle_dev = SHG3::getVectorsAngleDeviation( normals, ct_normals );
     auto vcm_angle_dev = SHG3::getVectorsAngleDeviation( normals, vcm_normals );
     auto  ii_angle_dev = SHG3::getVectorsAngleDeviation( normals, ii_normals );
+    auto        stat_t = SHG3::getStatistic(   t_angle_dev );
+    auto       stat_ct = SHG3::getStatistic(  ct_angle_dev );
+    auto      stat_vcm = SHG3::getStatistic( vcm_angle_dev );
+    auto       stat_ii = SHG3::getStatistic(  ii_angle_dev );
     std::cout << "Trivial  angle_dev  mean="
-	      << t_angle_dev.mean() << " max=" << t_angle_dev.max() << std::endl;
+	      << stat_t.mean() << " max=" << stat_t.max() << std::endl;
     std::cout << "CTrivial angle_dev  mean="
-	      << ct_angle_dev.mean() << " max=" << ct_angle_dev.max() << std::endl;
+	      << stat_ct.mean() << " max=" << stat_ct.max() << std::endl;
     std::cout << "VCM      angle_dev  mean="
-	      << vcm_angle_dev.mean() << " max=" << vcm_angle_dev.max() << std::endl;
+	      << stat_vcm.mean() << " max=" << stat_vcm.max() << std::endl;
     std::cout << "II       angle_dev  mean="
-	      << ii_angle_dev.mean() << " max=" << ii_angle_dev.max() << std::endl;
-    auto M = std::max( std::max( t_angle_dev.max(),   ct_angle_dev.max() ),
-		       std::max( vcm_angle_dev.max(), ii_angle_dev.max() ) );
+	      << stat_ii.mean() << " max=" << stat_ii.max() << std::endl;
+    auto M = std::max( std::max( stat_t.max(),   stat_ct.max() ),
+		       std::max( stat_vcm.max(), stat_ii.max() ) );
     trace.endBlock();
     trace.beginBlock ( "Save as OBj with normals" );
     {
