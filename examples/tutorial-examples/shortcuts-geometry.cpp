@@ -110,6 +110,17 @@ int main( int argc, char** argv )
     std::cout << "II       angle_dev  mean="
 	      << ii_angle_dev.mean() << " max=" << ii_angle_dev.max() << std::endl;
     trace.endBlock();
+    trace.beginBlock ( "Save as OBj with normals" );
+    {
+      auto default_surfels = SH3::getSurfelRange( surface, Parameters( "Traversal", "Default" ) );
+      auto match    = SH3::getSurfelRangeMatch( default_surfels, surfels );
+      auto polysurf = SH3::makePrimalPolygonalSurface( surface );
+      auto new_vcm_normals = vcm_normals;
+      for ( SH3::Idx i = 0; i < new_vcm_normals.size(); i++ )
+	new_vcm_normals[ i ] = vcm_normals[ match[ i ] ]; 
+      bool ok       = SH3::saveOBJ( polysurf, new_vcm_normals, "goursat-vcm-n.obj" );
+    }
+    trace.endBlock();
   }
   return 0;
 }
