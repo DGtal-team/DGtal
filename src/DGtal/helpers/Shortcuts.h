@@ -55,13 +55,11 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/IntervalForegroundPredicate.h"
 #include <DGtal/images/ImageLinearCellEmbedder.h>
-#include "DGtal/topology/CCellularGridSpaceND.h"
-#include "DGtal/io/Color.h"
-#include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/ShapeGeometricFunctors.h"
 #include "DGtal/shapes/MeshHelpers.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -72,6 +70,8 @@
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
+#include "DGtal/io/Color.h"
+#include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
@@ -170,12 +170,17 @@ namespace DGtal
     typedef std::vector< IdxSurfel >                            IdxSurfelRange;
     typedef std::vector< Scalar >                               Scalars;
     typedef std::vector< RealVector >                           RealVectors;
+    typedef IdxVertex                                           Idx;
+    typedef std::vector< IdxVertex >                            IdxRange;
 
     typedef Mesh<RealPoint>                                     Mesh;
     typedef TriangulatedSurface<RealPoint>                      TriangulatedSurface;
     typedef PolygonalSurface<RealPoint>                         PolygonalSurface;
     typedef std::map<Surfel, IdxSurfel>                         Surfel2Index;
     typedef std::map<Cell,   IdxVertex>                         Cell2Index;
+
+    typedef Color                                               Color;
+    typedef std::vector< Color >                                Colors;
     
     // ----------------------- Static services --------------------------------------
   public:
@@ -1308,6 +1313,25 @@ namespace DGtal
       return result;
     }
 
+    /// Given two surfel ranges with same surfels, returns a vector V:
+    /// index -> index such that `s1[ i ] == s2[ V[ i ] ]`.
+    ///
+    /// @param[in] s1 a surfel range
+    /// @param[in] s2 another surfel range which contains the same surfels as \a s1 but in any order.
+    /// @return the vector
+    static IdxRange
+    getSurfelRangeMatch( const SurfelRange& s1, const SurfelRange& s2 )
+    {
+      if ( s1.size() != s2.size() ) return IdxRange();
+      std::map<Surfel, Idx> M;
+      Idx idx = 0;
+      for ( auto surfel : s2 ) M[ surfel ] = idx++;
+      IdxRange V( s1.size() );
+      idx = 0;
+      for ( auto surfel : s1 ) V[ idx++ ] = M[ surfel ];
+      return V;
+    }
+    
     /// Given an indexed digital surface, returns a vector of surfels in
     /// some specified order.
     ///
@@ -1733,6 +1757,46 @@ namespace DGtal
       output.close();
       return ok;
     }
+
+    /// Outputs a polygonal surface as an OBJ file (with its topology)
+    /// (and a material MTL file).
+    ///
+    /// @tparam TPoint any model of point
+    /// @param[in] polysurf the polygonal surface to output as an OBJ file
+    /// @param[in] normals the normal vector per face.
+    /// @param[in] objfile the output filename.
+    /// @param[in] ambient_color the ambient color of all faces.
+    /// @param[in] diffuse_color the diffuse color of all faces.
+    /// @param[in] specular_color the specular color of all faces.
+    /// @return 'true' if the output stream is good.
+    template <typename TPoint>
+    static bool
+    saveOBJ
+    ( CountedPtr< DGtal::PolygonalSurface<TPoint> > polysurf,
+      const RealVectors&                            normals,
+      std::string                                   objfile,
+      const Color&                   ambient_color  = Color( 32, 32, 32 ),
+      const Color&                   diffuse_color  = Color( 200, 200, 255 ),
+      const Color&                   specular_color = Color::White )
+    {
+      std::string mtlfile;
+      auto lastindex = objfile.find_last_of(".");
+      if ( lastindex == std::string::npos ) {
+	mtlfile  = objfile + ".mtl";
+	objfile  = objfile + ".obj";
+      } else {
+	mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+      }
+      std::ofstream output( objfile.c_str() );
+      Colors dummy_diffuse_colors;
+      bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
+	( output, mtlfile, *polysurf, normals, dummy_diffuse_colors,
+	  ambient_color, diffuse_color, specular_color );
+      output.close();
+      return ok;
+    }
+
+
     
     // ------------------------------ utilities ------------------------------
   public:

@@ -340,6 +340,97 @@ DGtal::MeshHelpers::exportOBJ
   return output.good();
 }
 
+inline
+bool
+DGtal::MeshHelpers::exportMTLNewMaterial
+( std::ostream& output_mtl,
+  unsigned int idxMaterial,
+  const Color& ambient_color,
+  const Color& diffuse_color,
+  const Color& specular_color )
+{
+  output_mtl << "newmtl material_" << idxMaterial << std::endl;
+  output_mtl << "Ka " << ambient_color.red()/255.0
+	     << " "   << ambient_color.green()/255.0
+	     << " "   << ambient_color.blue()/255.0 << std::endl;
+  output_mtl << "Kd " << diffuse_color.red()/255.0
+	     << " "   << diffuse_color.green()/255.0
+	     << " "   << diffuse_color.blue()/255.0 << std::endl;
+  output_mtl << "Ks " << specular_color.red()/255.0
+	     << " "   << specular_color.green()/255.0
+	     << " "   << specular_color.blue()/255.0 << std::endl;
+  return output_mtl.good();
+}
+
+template <typename TTriangulatedOrPolygonalSurface>
+bool
+DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
+( std::ostream& output_obj,
+  const std::string&             mtl_filename,
+  const TTriangulatedOrPolygonalSurface& polysurf,
+  const std::vector< typename TTriangulatedOrPolygonalSurface::Point >&    normals,
+  const std::vector< Color >&    diffuse_colors,
+  const Color&                   ambient_color,
+  const Color&                   diffuse_color,
+  const Color&                   specular_color )
+{
+  output_obj << "#  OBJ format" << std::endl;
+  output_obj << "# DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor" << std::endl;
+  output_obj << "o anObject" << std::endl;
+  output_obj << "mtllib " << mtl_filename << std::endl;
+  std::ofstream output_mtl( mtl_filename.c_str() );
+  output_mtl << "#  MTL format"<< std::endl;
+  output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
+  // Outputing vertices
+  for ( auto i : polysurf ) {
+    auto p  = polysurf.position( i );
+    output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+  }
+  // Outputing faces
+  auto faces = polysurf.allFaces();
+  // Taking care of normals
+  bool has_normals = ( faces.size() == normals.size() );
+  if ( has_normals ) {
+    for ( auto f : faces ) {
+      const auto& p = normals[ f ];
+      output_obj << "vn " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+    }
+  }
+  // Taking care of materials
+  bool has_material = ( faces.size() == diffuse_colors.size() );
+  std::map<Color, unsigned int > mapMaterial;
+  unsigned int idxMaterial = 0;
+  if ( has_material ) {
+    for ( auto f : faces ) {
+      Color c = diffuse_colors[ f ];
+      if ( mapMaterial.count( c ) == 0 ) {
+	exportMTLNewMaterial( output_mtl, idxMaterial,
+			   ambient_color, c, specular_color );
+	mapMaterial[ c ] = idxMaterial++;
+      }
+    }
+  } else {
+    exportMTLNewMaterial( output_mtl, idxMaterial,
+		       ambient_color, diffuse_color, specular_color );
+  }
+  // Taking care of faces
+  for ( auto f : faces ) {
+    output_obj << "usemtl material_"
+	       << ( has_material ? mapMaterial[ diffuse_colors[ f ] ] : idxMaterial )
+	       << std::endl; 
+    output_obj << "f";
+    auto vertices = polysurf.verticesAroundFace( f );
+    if ( has_normals ) {
+      for ( auto i : vertices ) output_obj << " " << (i+1) << "//" << f;
+    } else {
+      for ( auto i : vertices ) output_obj << " " << (i+1);
+    }
+    output_obj << std::endl;
+  }
+  output_mtl.close();
+  return output_obj.good();
+}
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
