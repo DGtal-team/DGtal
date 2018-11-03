@@ -39,34 +39,7 @@
 #define ShortcutsGeometry_h
 
 //////////////////////////////////////////////////////////////////////////////
-// Inclusions
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <iterator>
-#include <string>
-#include "DGtal/base/Common.h"
-#include "DGtal/base/CountedPtr.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/RegularPointEmbedder.h"
-#include "DGtal/math/MPolynomial.h"
-#include "DGtal/math/Statistic.h"
-#include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/images/IntervalForegroundPredicate.h"
-#include "DGtal/topology/CCellularGridSpaceND.h"
-#include "DGtal/io/Color.h"
-#include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
-#include "DGtal/shapes/GaussDigitizer.h"
-#include "DGtal/shapes/ShapeGeometricFunctors.h"
-#include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/topology/SetOfSurfels.h"
-#include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/topology/IndexedDigitalSurface.h"
-#include "DGtal/topology/SurfelAdjacency.h"
-#include "DGtal/topology/CCellEmbedder.h"
-#include "DGtal/topology/CanonicCellEmbedder.h"
-#include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
@@ -74,8 +47,6 @@
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
-#include "DGtal/helpers/Parameters.h"
-#include "DGtal/helpers/Shortcuts.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
