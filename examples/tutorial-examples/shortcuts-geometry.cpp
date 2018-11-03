@@ -59,7 +59,8 @@ int main( int argc, char** argv )
     trace.endBlock();
 
     trace.beginBlock ( "Compute true geometry" );
-    params( "surfaceTraversal", "DepthFirst" )( "verbose", 0 );
+    //params( "surfaceTraversal", "DepthFirst" )( "verbose", 0 );
+    params( "surfaceTraversal", "Default" )( "verbose", 0 );
     auto surface     = SH3::makeLightDigitalSurface( binary_image, K, params );
     auto surfels     = SH3::getSurfelRange( surface, params );
     auto positions   = SHG3::getPositions( implicit_shape, K, surfels, params ); 

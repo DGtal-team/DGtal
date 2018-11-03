@@ -421,7 +421,7 @@ DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
     output_obj << "f";
     auto vertices = polysurf.verticesAroundFace( f );
     if ( has_normals ) {
-      for ( auto i : vertices ) output_obj << " " << (i+1) << "//" << f;
+      for ( auto i : vertices ) output_obj << " " << (i+1) << "//" << (f+1);
     } else {
       for ( auto i : vertices ) output_obj << " " << (i+1);
     }
