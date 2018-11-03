@@ -614,31 +614,44 @@ namespace DGtal
 		      { return rw.dot( w ) >= 0.0 ? w : -w; } );
     }
     
+    /// Computes the statistic of a vector of scalars
+    ///
+    /// @param[in] v a vector of scalars
+    /// @return its statistic.
+    static ScalarStatistic
+    getStatistic( const Scalars& v )
+    {
+      ScalarStatistic stat;
+      stat.addValues( v.begin(), v.end() );
+      stat.terminate();
+      return stat;
+    }
+    
     /// Computes the statistic that measures the angle differences
     /// between the two arrays of unit vectors.
     ///
     /// @param[in] v1 the first array of unit vectors (normals)
     /// @param[in] v2 the second array of unit vectors (normals)
-    /// @return their angle difference as a statistic.
-    static ScalarStatistic
+    /// @return the vector of angle differences.
+    static Scalars
     getVectorsAngleDeviation( const RealVectors& v1,
 			      const RealVectors& v2 )
     {
-      ScalarStatistic stat( true );
+      Scalars v( v1.size() );
       if ( v1.size() == v2.size() ) {
+	auto outIt = v.begin();
 	for ( auto it1 = v1.cbegin(), it2 = v2.cbegin(), itE1 = v1.cend();
 	      it1 != itE1; ++it1, ++it2 )
 	  {
 	    Scalar angle_error = acos( (*it1).dot( *it2 ) );
-	    stat.addValue( angle_error );
+	    *outIt++ = angle_error;
 	  }
-	stat.terminate();
       } else {
 	trace.warning() << "[ShortcutsGeometry::getVectorsAngleDeviation]"
 			<< " v1.size()=" << v1.size() << " should be equal to "
 			<< " v2.size()=" << v2.size() << std::endl;
       }
-      return stat;
+      return v;
     }
     
     /// Computes the absolute difference between each element of the two vectors.
