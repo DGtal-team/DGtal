@@ -624,7 +624,7 @@ namespace DGtal
     getVectorsAngleDeviation( const RealVectors& v1,
 			      const RealVectors& v2 )
     {
-      ScalarStatistic stat;
+      ScalarStatistic stat( true );
       if ( v1.size() == v2.size() ) {
 	for ( auto it1 = v1.cbegin(), it2 = v2.cbegin(), itE1 = v1.cend();
 	      it1 != itE1; ++it1, ++it2 )
