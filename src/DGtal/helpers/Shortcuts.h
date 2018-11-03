@@ -1331,7 +1331,15 @@ namespace DGtal
       for ( auto surfel : s2 ) M[ surfel ] = idx++;
       IdxRange V( s1.size() );
       idx = 0;
-      for ( auto surfel : s1 ) V[ idx++ ] = M[ surfel ];
+      for ( auto surfel : s1 ) {
+	auto it = M.find( surfel );
+	if ( it != M.end() ) V[ idx++ ] = it->second;
+	else {
+	  trace.warning() << "[Shortcuts::getSurfelRangeMatch] bad surfel " << surfel
+			  << std::endl;
+	  V[ idx++ ] = 0;
+	}
+      }
       return V;
     }
     
