@@ -147,11 +147,11 @@ namespace DGtal
     /// surface over a binary image.
     typedef LightImplicitDigitalSurface< KSpace, BinaryImage >  LightSurfaceContainer;
     /// defines a connected digital surface over a binary image.
-    typedef DigitalSurface< LightSurfaceContainer >             LightDigitalSurface;
+    typedef ::DGtal::DigitalSurface< LightSurfaceContainer >    LightDigitalSurface;
     /// defines a heavy container that represents any digital surface.
     typedef SetOfSurfels< KSpace, SurfelSet >                   ExplicitSurfaceContainer;
     /// defines an arbitrary digital surface over a binary image.
-    typedef DigitalSurface< ExplicitSurfaceContainer >          DigitalSurface;
+    typedef ::DGtal::DigitalSurface< ExplicitSurfaceContainer > DigitalSurface;
     /// defines a connected or not indexed digital surface.
     typedef IndexedDigitalSurface< ExplicitSurfaceContainer >   IdxDigitalSurface;
     typedef typename LightDigitalSurface::Surfel                Surfel;
@@ -174,9 +174,9 @@ namespace DGtal
     typedef IdxVertex                                           Idx;
     typedef std::vector< IdxVertex >                            IdxRange;
 
-    typedef Mesh<RealPoint>                                     Mesh;
-    typedef TriangulatedSurface<RealPoint>                      TriangulatedSurface;
-    typedef PolygonalSurface<RealPoint>                         PolygonalSurface;
+    typedef ::DGtal::Mesh<RealPoint>                            Mesh;
+    typedef ::DGtal::TriangulatedSurface<RealPoint>             TriangulatedSurface;
+    typedef ::DGtal::PolygonalSurface<RealPoint>                PolygonalSurface;
     typedef std::map<Surfel, IdxSurfel>                         Surfel2Index;
     typedef std::map<Cell,   IdxVertex>                         Cell2Index;
 
