@@ -93,7 +93,7 @@ DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
   if ( p.norm() > 0 )
     angle.second = acos( tmp / p.norm() );
   else
-    throw std::runtime_error( "Error in Ball3D::parameter: operation involving null vector!" );
+    angle.second = 0;
 
   angle.first = ( angle.first < 0.0 ) ? angle.first + 2*M_PI : angle.first;
   angle.second = ( angle.second < 0.0 ) ? angle.second + M_PI : angle.second;
