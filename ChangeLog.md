@@ -51,6 +51,10 @@
   - Adding missing headers in some files of DEC.
     (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
 
+- *Image*
+  - Fix bug in ImageLinearCellEmbedder.
+    (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
+
 # DGtal 0.9.4.1
 
 ## Bug Fixes
