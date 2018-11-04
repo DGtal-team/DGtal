@@ -385,8 +385,8 @@ The following name conventions for types are used:
   - Shortcuts::saveOBJ: saves a triangulated or polygonal surface as an OBJ file, with optionnaly normals and colors information.
 
 -# Utilities
-  - Shortcuts::getColormap: returns the specified colormap.
-  - Shortcuts::getTicsColormap: returns the specified colormap used for tics.
+  - Shortcuts::getColorMap: returns the specified colormap.
+  - Shortcuts::getTicsColorMap: returns the specified colormap used for tics.
   - Shortcuts::getRangeMatch: returns the perfect or approximate  match/correspondence between two ranges.
   - Shortcuts::getMatchedRange: returns the perfectly or approximately matched/corresponding range.
   - Shortcuts::getPrimalVertices: returns the vertices (possibly consistently ordered along the face) of the given signed cell.
