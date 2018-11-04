@@ -378,6 +378,7 @@ The following name conventions for types are used:
   - Shortcuts::saveOBJ: saves a digital surface as an OBJ file, with optionally positions, normals and colors information.
 
 -# Mesh services
+  - Shortcuts::parametersMesh: parameters related to mesh, triangulated or polygonal surfaces.
   - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh, or subdivide a polygonal surface into a triangulated surface, or builds the marching cubes triangulated surface approximating an isosurface in a gray-scale image. 
   - Shortcuts::makePolygonalSurface: builds a polygonal surface from a mesh, or builds the marching cubes polygonal surface approximating an isosurface in a gray-scale image. 
   - Shortcuts::makePrimalPolygonalSurface: builds the primal polygonal surface of a digital surface
@@ -385,6 +386,7 @@ The following name conventions for types are used:
   - Shortcuts::saveOBJ: saves a triangulated or polygonal surface as an OBJ file, with optionnaly normals and colors information.
 
 -# Utilities
+  - Shortcuts::parametersUtilities: parameters related to colormaps.
   - Shortcuts::getColorMap: returns the specified colormap.
   - Shortcuts::getTicsColorMap: returns the specified colormap used for tics.
   - Shortcuts::getRangeMatch: returns the perfect or approximate  match/correspondence between two ranges.
@@ -397,12 +399,14 @@ The following name conventions for types are used:
   - Shortcuts::outputDualIdxDigitalSurfaceAsObj: outputs any indexed digital surface in standard OBJ file format as its dual polygonal or triangulated mesh.
 
 -# ShapeGeometry services
+  - ShortcutsGeometry::parametersShapeGeometry: parameters related to implicit shape geometry. 
   - ShortcutsGeometry::getPositions: returns the positions on the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getMeanCurvatures: returns the mean curvatures along the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getGaussianCurvatures: returns the Gaussian curvatures along the 3D implicit shape close to the specified surfels.
 
 -# GeometryEstimation services
+  - ShortcutsGeometry::parametersGeometryEstimation: parameters related to geometric estimators.
   - ShortcutsGeometry::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range  
   - ShortcutsGeometry::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
   - ShortcutsGeometry::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
