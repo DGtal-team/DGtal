@@ -343,10 +343,6 @@ The following name conventions for types are used:
   - Shortcuts::getPolynomialList: return the list of polynomial shapes predefined for implicit shapes 
   - Shortcuts::parametersImplicitShape3D: parameters related to 3D implicit shapes (polynomial)
   - Shortcuts::makeImplicitShape3D: builds a 3D implicit shape
-  - Shortcuts::getPositions: returns the positions on the 3D implicit shape close to the specified surfels.
-  - Shortcuts::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
-  - Shortcuts::getMeanCurvatures: returns the mean curvatures along the 3D implicit shape close to the specified surfels.
-  - Shortcuts::getGaussianCurvatures: returns the Gaussian curvatures along the 3D implicit shape close to the specified surfels.
 
 -# KSpace methods
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
@@ -379,12 +375,7 @@ The following name conventions for types are used:
   - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from light digital surface(s).
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
-
--# GeometryEstimation services
-  - Shortcuts::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range  
-  - Shortcuts::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
-  - Shortcuts::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
-  - Shortcuts::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range
+  - Shortcuts::saveOBJ: saves a digital surface as an OBJ file, with optionally positions, normals and colors information.
 
 -# Mesh services
   - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh, or subdivide a polygonal surface into a triangulated surface, or builds the marching cubes triangulated surface approximating an isosurface in a gray-scale image. 
@@ -404,6 +395,18 @@ The following name conventions for types are used:
   - Shortcuts::outputPrimalIdxDigitalSurfaceAsObj: outputs any indexed digital surface in standard OBJ file format as its primal quadrangulated mesh.
   - Shortcuts::outputDualDigitalSurfaceAsObj: outputs any digital surface in standard OBJ file format as its dual polygonal or triangulated mesh.
   - Shortcuts::outputDualIdxDigitalSurfaceAsObj: outputs any indexed digital surface in standard OBJ file format as its dual polygonal or triangulated mesh.
+
+-# ShapeGeometry services
+  - ShortcutsGeometry::getPositions: returns the positions on the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getMeanCurvatures: returns the mean curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getGaussianCurvatures: returns the Gaussian curvatures along the 3D implicit shape close to the specified surfels.
+
+-# GeometryEstimation services
+  - ShortcutsGeometry::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range  
+  - ShortcutsGeometry::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
+  - ShortcutsGeometry::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
+  - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range
 
 
 @subsection dgtal_shortcuts_ssec3_4 Parameters
