@@ -165,8 +165,7 @@ int main( int argc, char** argv )
 	( "surfaceComponents", "All" )( "surfelAdjacency",   0 )
 	( "surfaceTraversal", "Default" )( "verbose", 0 )
 	( "projectionMaxIter", 50 )( "projectionAccuracy", 0.00001 )
-	( "projectionGamma", 0.05 );
-	
+	( "projectionGamma", 0.05 ); // leopold requires less gamma in projections.
       auto implicit_shape = SH3::makeImplicitShape3D( params );
       auto K              = SH3::getKSpace( params );
       auto digital_shape  = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
@@ -175,7 +174,7 @@ int main( int argc, char** argv )
       auto surfels     = SH3::getSurfelRange( surface, params );
       auto normals     = SHG3::getNormalVectors( implicit_shape, K, surfels, params ); 
       auto gauss_curv  = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params );
-      auto cmap        = SH3::getColorMap( -0.3, 0.3, Parameters( "colormap", "Tics" ) );
+      auto cmap        = SH3::getColorMap( -0.01, 0.01, Parameters( "colormap", "Tics" ) );
       auto colors      = SH3::Colors( normals.size() );
       std::transform( gauss_curv.cbegin(), gauss_curv.cend(), colors.begin(), cmap );
       bool ok          = SH3::saveOBJ( surface, normals, colors, "leopold-G.obj" );
