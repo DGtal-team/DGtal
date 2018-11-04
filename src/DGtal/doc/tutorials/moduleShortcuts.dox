@@ -209,6 +209,8 @@ application.exec();
   bool ok              = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-H.obj" );
 \endcode
 
+\image html goursat-H-blender-small.png "Blender rendering of goursat-H.obj"
+
 @subsubsection dgtal_shortcuts_ssec2_2_6 -> float image -> gray-scale image -> extract iso-surface -> save as OBJ file.
 
 \code
