@@ -202,11 +202,9 @@ namespace DGtal
     /// @note The surfel centroids are iteratively projected onto the
     /// implicit surface through a damped Newton process.
     ///
-    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     /// @param[in] shape the implicit shape.
-    /// @param[in] h the grid step to embed surfels.
+    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     /// @param[in] surfels the sequence of surfels at which we compute the normals
-    ///
     /// @param[in] params the parameters:
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
@@ -242,11 +240,9 @@ namespace DGtal
     /// @note that the normal vector is approximated by projecting the
     /// surfel centroid onto the implicit 3D shape.
     ///
-    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     /// @param[in] shape the implicit shape.
-    /// @param[in] h the grid step to embed surfels.
+    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     /// @param[in] surfels the sequence of surfels at which we compute the normals
-    ///
     /// @param[in] params the parameters:
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
@@ -282,11 +278,9 @@ namespace DGtal
     /// @note that the mean curvature is approximated by projecting the
     /// surfel centroid onto the implicit 3D shape.
     ///
-    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     /// @param[in] shape the implicit shape.
-    /// @param[in] h the grid step to embed surfels.
+    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     /// @param[in] surfels the sequence of surfels at which we compute the normals
-    ///
     /// @param[in] params the parameters:
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
@@ -322,9 +316,8 @@ namespace DGtal
     /// @note that the gaussian curvature is approximated by projecting the
     /// surfel centroid onto the implicit 3D shape.
     ///
-    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     /// @param[in] shape the implicit shape.
-    /// @param[in] h the grid step to embed surfels.
+    /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
     /// @param[in] surfels the sequence of surfels at which we compute the normals
     ///
     /// @param[in] params the parameters:

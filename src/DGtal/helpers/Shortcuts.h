@@ -481,7 +481,7 @@ namespace DGtal
     
     /// Makes an empty binary image within a given domain.
     ///
-    /// @param[in] domain any domain.
+    /// @param[in] shapeDomain any domain.
     ///
     /// @return a smart pointer on a binary image that fits the given domain.
     static CountedPtr<BinaryImage>
@@ -514,7 +514,7 @@ namespace DGtal
     /// parameters given in \a params.
     ///
     /// @param[in] shape_digitization a smart pointer on an implicit digital shape.
-    /// @param[in] domain any domain.
+    /// @param[in] shapeDomain any domain.
     /// @param[in] params the parameters:
     ///   - noise   [0.0]: specifies the Kanungo noise level for binary pictures.
     ///
@@ -681,6 +681,7 @@ namespace DGtal
     /// Makes a gray-scale image from a binary image using the given transformation
     ///
     /// @param[in] binary_image the input binary image.
+    /// @param[in] bool2grayscale the binarizing function.
     ///
     /// @return a smart pointer on the resulting gray-scale image.
     static CountedPtr<GrayScaleImage>
@@ -846,11 +847,11 @@ namespace DGtal
 
     /// Makes an empty double image within a given domain (values are unsigned char).
     ///
-    /// @param[in] domain any domain.
+    /// @param[in] aDomain any domain.
     ///
     /// @return a smart pointer on a double image that fits the given domain.
     static CountedPtr<DoubleImage>
-    makeDoubleImage( Domain shapeDomain )
+    makeDoubleImage( Domain aDomain )
     {
       return CountedPtr<DoubleImage>( new DoubleImage( shapeDomain ) );
     }
@@ -1666,7 +1667,8 @@ namespace DGtal
     /// iso-surface of value "thresholdMin+0.5" in the given 3D
     /// gray-scale image.
     ///
-    /// @param[in] params the parameters: ###
+    /// @param[in] gray_scale_image any gray-scale image.
+    /// @param[in] params the parameters: 
     ///   - surfelAdjacency[0]: specifies the surfel adjacency (1:ext, 0:int)
     ///   - thresholdMin   [0]: specifies the threshold min (excluded) to define binary shape
     ///   - gridsizex    [1.0]: specifies the space between points along x.
@@ -1708,7 +1710,8 @@ namespace DGtal
     /// gray-scale image. Non triangular faces are triangulated by
     /// putting a centroid vertex.
     ///
-    /// @param[in] params the parameters: ###
+    /// @param[in] gray_scale_image any gray-scale image.
+    /// @param[in] params the parameters:
     ///   - surfelAdjacency[0]: specifies the surfel adjacency (1:ext, 0:int)
     ///   - thresholdMin   [0]: specifies the threshold min (excluded) to define binary shape
     ///   - gridsizex    [1.0]: specifies the space between points along x.

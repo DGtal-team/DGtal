@@ -147,7 +147,6 @@ namespace DGtal
     /// @param[in] params a set of parameters
     Self& operator()( const Self& params );
     /// @param[in] name any parameter name
-    /// @param[in] unset the returned value if parameter is unset.
     /// @return the associated value (if it does not exist, return "UNSET PARAMETER").
     ParameterValue operator[]( std::string name ) const;
     /// @param[in] name any parameter name
