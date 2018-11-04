@@ -131,7 +131,6 @@ int main( int argc, char** argv )
     trace.endBlock();
     trace.beginBlock ( "Make marching-cubes triangulated surface from implicit shape 3D" );
     {
-      auto params   = SH3::defaultParameters  ();
       params( "polynomial", "goursat" )( "gridstep", 0.25 )
 	( "thresholdMin", 128 );
       auto ishape   = SH3::makeImplicitShape3D( params );
@@ -204,11 +203,6 @@ int main( int argc, char** argv )
       ofstream objfile( "primal-idx-al.obj" );
       bool ok = SH3::outputPrimalIdxDigitalSurfaceAsObj( objfile, new_idx_surf );
       std::cout << "- saving as primal-idx-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
-    }
-    {
-      ofstream objfile( "dual-idx-al.obj" );
-      bool ok = SH3::outputDualIdxDigitalSurfaceAsObj( objfile, new_idx_surf, params );
-      std::cout << "- saving as dual-idx-al.obj: " << ( ok ? "OK" : "ERROR" ) << std::endl;
     }
     trace.endBlock();
 

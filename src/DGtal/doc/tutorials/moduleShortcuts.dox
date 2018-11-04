@@ -398,7 +398,6 @@ The following name conventions for types are used:
   - Shortcuts::outputPrimalDigitalSurfaceAsObj: outputs any digital surface in standard OBJ file format as its primal quadrangulated mesh.
   - Shortcuts::outputPrimalIdxDigitalSurfaceAsObj: outputs any indexed digital surface in standard OBJ file format as its primal quadrangulated mesh.
   - Shortcuts::outputDualDigitalSurfaceAsObj: outputs any digital surface in standard OBJ file format as its dual polygonal or triangulated mesh.
-  - Shortcuts::outputDualIdxDigitalSurfaceAsObj: outputs any indexed digital surface in standard OBJ file format as its dual polygonal or triangulated mesh.
 
 -# ShapeGeometry services
   - ShortcutsGeometry::parametersShapeGeometry: parameters related to implicit shape geometry. 

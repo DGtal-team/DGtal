@@ -180,7 +180,7 @@ namespace DGtal
     typedef std::map<Surfel, IdxSurfel>                         Surfel2Index;
     typedef std::map<Cell,   IdxVertex>                         Cell2Index;
 
-    typedef Color                                               Color;
+    typedef ::DGtal::Color                                      Color;
     typedef std::vector< Color >                                Colors;
     typedef GradientColorMap<Scalar>                            ColorMap;
     
@@ -2220,19 +2220,20 @@ namespace DGtal
     /// (surfels=vertices), as an OBJ file (3D only). Note that faces are
     /// oriented consistently (normals toward outside).
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
+    /// @tparam TDigitalSurfaceContainer either model of
+    /// concepts::CDigitalSurfaceContainer.
     ///
     /// @param[out] output the output stream.
-    /// @param[in] surface a smart pointer on a digital surface.
+    /// @param[in] surface a smart pointer on a digital surface (a DigitalSurface or a LightDigitalSurface).
     /// @param[in] params the parameters:
     ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
-    template <typename TAnyDigitalSurface>
+    template <typename TDigitalSurfaceContainer>
     static bool
     outputDualDigitalSurfaceAsObj
     ( std::ostream&              output,
-      CountedPtr<TAnyDigitalSurface> surface,
+      CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface,
       const Parameters&   params = parametersMesh() )
     {
       CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
@@ -2244,28 +2245,28 @@ namespace DGtal
     /// oriented consistently (normals toward outside). Each vertex is
     /// mapped to a 3D point using the given cell embedder.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
+    /// @tparam TDigitalSurfaceContainer either model of
+    /// concepts::CDigitalSurfaceContainer.
     ///
     /// @tparam TCellEmbedder any model of CCellEmbedder
     ///
     /// @param[out] output the output stream.
-    /// @param[in] surface a smart pointer on a digital surface.
+    /// @param[in] surface a smart pointer on a digital surface (either DigitalSurface or LightDigitalSurface).
     /// @param[in] embedder the embedder for mapping (unsigned) surfels (cells of dimension 2) to points in space.
     /// @param[in] params the parameters:
     ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
     /// @return 'true' if the output stream is good.
-    template < typename TAnyDigitalSurface,
+    template < typename TDigitalSurfaceContainer,
 	       typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
     static bool
     outputDualDigitalSurfaceAsObj
     ( std::ostream&              output,
-      CountedPtr<TAnyDigitalSurface> surface,
+      CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer > > surface,
       const TCellEmbedder&       embedder,
       const Parameters&   params = parametersMesh() )
     {
       typedef unsigned long Size;
-      typedef typename TAnyDigitalSurface::Face Face;
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< TCellEmbedder > ));
       std::string dualFaceSubdivision = params[ "faceSubdivision" ].as<std::string>();
@@ -2275,10 +2276,10 @@ namespace DGtal
 	: 0;
       const KSpace& K = embedder.space();
       // Number and ouput vertices.
-      std::map< Surfel, Size > vtx_numbering;
+      std::map< Vertex, Size > vtx_numbering;
       std::map< Face,   Size > sub_numbering;
       Size n = 1;  // OBJ vertex numbering start at 1 
-      for ( auto&& s : *surface ) {
+      for ( auto && s : *surface ) {
 	if ( ! vtx_numbering.count( s ) ) {
 	  vtx_numbering[ s ] = n++;
 	  // Output vertex positions
@@ -2287,7 +2288,6 @@ namespace DGtal
 	}
       }
       auto faces = surface->allClosedFaces();
-      Size c = 0;
       // Prepare centroids if necessary
       if ( subdivide == 2 ) {
 	for ( auto&& f : faces ) {
@@ -2342,52 +2342,6 @@ namespace DGtal
       return output.good();
     }
 
-    /// Outputs an indexed digital surface, seen from the dual point of view
-    /// (surfels=vertices), as an OBJ file (3D only). Note that faces are
-    /// oriented consistently (normals toward outside).
-    ///
-    /// @param[out] output the output stream.
-    /// @param[in] surface a smart pointer on an indexed digital surface.
-    /// @param[in] params the parameters:
-    ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
-    ///
-    /// @return 'true' if the output stream is good.
-    static bool
-    outputDualIdxDigitalSurfaceAsObj
-    ( std::ostream&                 output,
-      CountedPtr<IdxDigitalSurface> surface,
-      const Parameters&             params = parametersMesh() )
-    {
-      const KSpace& K = surface->container().space();
-      auto explicit_surface = makeDigitalSurface( surface, params );
-      struct CellEmbedder {
-	using KSpace    = KSpace;
-	using Cell      = Cell;
-	using RealPoint = RealPoint;
-	using Argument  = Cell;
-	using Value     = RealPoint;
-	const KSpace* _K;
-	std::map< Cell, RealPoint > _embedding;
-	CellEmbedder( ConstAlias< KSpace > K ) : _K( &K ) {}
-	const KSpace & space() const { return *_K; }
-	RealPoint embed( const Cell & cell ) const
-	{
-	  auto it = _embedding.find( cell );
-	  return it != _embedding.end() ? it->second : RealPoint::zero;
-	}
-	RealPoint operator()( const Cell & cell ) const
-	{ return embed( cell ); }
-      };
-      
-      CellEmbedder embedder( K );
-      for ( auto&& idx_surfel : *surface ) {
-	Cell      s = K.unsigns( surface->surfel( idx_surfel ) );
-	RealPoint p = surface->position( idx_surfel );
-	embedder._embedding[ s ] = p;
-      }
-      return outputDualDigitalSurfaceAsObj( output,
-					    explicit_surface, embedder, params );
-    }
 
     // -------------------- map I/O services ------------------------------------------
   public:
