@@ -52,7 +52,8 @@
     (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
     
 - *Math*
-  - Fix possible division by zero in the MultiStatistics class.
+  - Fix possible division by zero in the MultiStatistics class. 
+  (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358)) 
 
 # DGtal 0.9.4.1
 
