@@ -687,7 +687,9 @@ namespace DGtal
     makeGrayScaleImage
     ( CountedPtr<BinaryImage> binary_image,
       std::function< GrayScale( bool ) > const & bool2grayscale
-      = [] ( bool v ) { return v ? (GrayScale) 255 : (GrayScale) 0; } )
+      = [] ( bool v ) { return v ? (unsigned char) 255 : (unsigned char) 0; }
+      // JOL: (GrayScale) was not working with visual C++: error C2065
+      )
     {
       const Domain domain = binary_image->domain(); 
       CountedPtr<GrayScaleImage> gray_scale_image( new GrayScaleImage( domain ) );
