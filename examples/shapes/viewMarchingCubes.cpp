@@ -42,11 +42,13 @@ using namespace Z3i;
 
 void usage( int, char** argv )
 {
-  std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> <maxT> <Adj>" << std::endl;
+  std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> [<maxT>=255] [<Adj>=0]" << std::endl;
   std::cerr << "\t - displays the boundary of the shape stored in vol file <fileName.vol>" << std::endl;
   std::cerr << "\t   as a Marching-Cube triangulated surface (more precisely a dual" << std::endl;
   std::cerr << "\t   surface to the digital boundary)." << std::endl;
-  std::cerr << "\t - voxel v belongs to the shape iff its value I(v) follows minT <= I(v) <= maxT." << std::endl;
+  std::cerr << "\t - voxel v belongs to the shape iff its value I(v) follows minT < I(v) <= maxT." << std::endl;
+  std::cerr << "\t - minT is the iso-surface level." << std::endl;
+  std::cerr << "\t - maxT should be equal to the maximum possible value in the image." << std::endl;
   std::cerr << "\t - 0: interior adjacency, 1: exterior adjacency (rules used to connect surface elements unambiguously)." << std::endl;
 }
 
@@ -59,8 +61,8 @@ int main( int argc, char** argv )
     }
   std::string inputFilename = argv[ 1 ];
   unsigned int minThreshold = atoi( argv[ 2 ] );
-  unsigned int maxThreshold = atoi( argv[ 3 ] );
-  bool intAdjacency = atoi( argv[ 4 ] ) == 0;
+  unsigned int maxThreshold = argc > 3 ? atoi( argv[ 3 ] ) : 255;
+  bool intAdjacency = argc > 4 ? (atoi( argv[ 4 ] ) == 0) : true;
 
   typedef ImageSelector < Domain, int>::Type Image;
       
