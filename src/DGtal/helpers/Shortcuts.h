@@ -1316,33 +1316,6 @@ namespace DGtal
       return result;
     }
 
-    /// Given two surfel ranges with same surfels, returns a vector V:
-    /// index -> index such that `s1[ i ] == s2[ V[ i ] ]`.
-    ///
-    /// @param[in] s1 a surfel range
-    /// @param[in] s2 another surfel range which contains the same surfels as \a s1 but in any order.
-    /// @return the vector
-    static IdxRange
-    getSurfelRangeMatch( const SurfelRange& s1, const SurfelRange& s2 )
-    {
-      if ( s1.size() != s2.size() ) return IdxRange();
-      std::map<Surfel, Idx> M;
-      Idx idx = 0;
-      for ( auto surfel : s2 ) M[ surfel ] = idx++;
-      IdxRange V( s1.size() );
-      idx = 0;
-      for ( auto surfel : s1 ) {
-	auto it = M.find( surfel );
-	if ( it != M.end() ) V[ idx++ ] = it->second;
-	else {
-	  trace.warning() << "[Shortcuts::getSurfelRangeMatch] bad surfel " << surfel
-			  << std::endl;
-	  V[ idx++ ] = 0;
-	}
-      }
-      return V;
-    }
-    
     /// Given an indexed digital surface, returns a vector of surfels in
     /// some specified order.
     ///
@@ -1821,7 +1794,67 @@ namespace DGtal
       return Parameters
 	( "colormap", "Tics" ); 
     }
-      
+
+    /// Given two ranges with same elements but not necessarily in the
+    /// same order, returns a vector V: index -> index such that `s1[
+    /// i ] == s2[ V[ i ] ]`.
+    ///
+    /// @tparam TValue a model of boost::Assignable,
+    /// boost::CopyConstructible, boost::LessThanComparable
+    ///
+    /// @param[in] s1 a range of values
+    /// @param[in] s2 another range of values which contains the same values as \a s1 but in any order.
+    /// @param[in] perfect if 'true' ask for a perfect match, otherwise extracts correspondences.
+    ///
+    /// @return the vector V: index -> index such that `s1[ i ] == s2[
+    /// V[ i ] ]`. If \a perfect is true, then an empty range is
+    /// returned in case of mismatch.
+    ///
+    /// @note if `perfect==false` and `s1[ i ]` is not in `s2`, then `V[ i ] = s2.size()`.
+    template <typename TValue>
+    static IdxRange
+    getRangeMatch( const std::vector< TValue >& s1, const std::vector< TValue >& s2,
+		   bool perfect = false )
+    {
+      if ( perfect && ( s1.size() != s2.size() ) ) return IdxRange();
+      std::map<TValue, Idx> M;
+      Idx idx = 0;
+      for ( auto val : s2 ) M[ val ] = idx++;
+      IdxRange V( s1.size() );
+      idx = 0;
+      for ( auto val : s1 ) {
+	auto it = M.find( val );
+	if ( it != M.end() ) V[ idx++ ] = it->second;
+	else {
+	  if ( perfect ) return IdxRange();
+	  V[ idx++ ] = s2.size();
+	}
+      }
+      return V;
+    }
+
+    /// Given a perfect or approximate \a match, returns the
+    /// corresponding reordered/rematched \a range.
+    ///
+    /// @param[in] range any range.
+    ///
+    /// @param[in] match a function V: Idx -> Idx such that `result[ i
+    /// ] = range[ match[ i ] ]`.
+    ///
+    /// @return the the corresponding reordered/rematched \a range.
+    ///
+    /// @see getRangeMatch
+    template <typename TValue>
+    static std::vector< TValue >
+    getMatchedRange( const std::vector< TValue >& range, const IdxRange& match )
+    {
+      std::vector< TValue > result( match.size() );
+      for ( Idx i = 0; i < result.size(); i++ )
+	result[ i ] = range[ match[ i ] ]; 
+      return result;
+    }
+    
+    
     /// @param[in] min the minimum considered value for the colormap.
     /// @param[in] max the maximum considered value for the colormap.
     /// @param[in] params the parameters:
