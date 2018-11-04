@@ -1781,6 +1781,45 @@ namespace DGtal
       return ok;
     }
 
+    /// Outputs a triangulated surface as an OBJ file (with its topology)
+    /// (and a material MTL file).
+    ///
+    /// @tparam TPoint any model of point
+    /// @param[in] trisurf the triangulated surface to output as an OBJ file
+    /// @param[in] normals the normal vector per face.
+    /// @param[in] diffuse_colors either empty or a vector of size `trisurf.nbFaces` specifying the diffuse color for each face.
+    /// @param[in] objfile the output filename.
+    /// @param[in] ambient_color the ambient color of all faces.
+    /// @param[in] diffuse_color the diffuse color of all faces (if diffuse_colors is empty).
+    /// @param[in] specular_color the specular color of all faces.
+    /// @return 'true' if the output stream is good.
+    template <typename TPoint>
+    static bool
+    saveOBJ
+    ( CountedPtr< DGtal::TriangulatedSurface<TPoint> > trisurf,
+      const RealVectors&                            normals,
+      const Colors&                                 diffuse_colors,
+      std::string                                   objfile,
+      const Color&                   ambient_color  = Color( 32, 32, 32 ),
+      const Color&                   diffuse_color  = Color( 200, 200, 255 ),
+      const Color&                   specular_color = Color::White )
+    {
+      std::string mtlfile;
+      auto lastindex = objfile.find_last_of(".");
+      if ( lastindex == std::string::npos ) {
+	mtlfile  = objfile + ".mtl";
+	objfile  = objfile + ".obj";
+      } else {
+	mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+      }
+      std::ofstream output( objfile.c_str() );
+      bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
+	( output, mtlfile, *trisurf, normals, diffuse_colors,
+	  ambient_color, diffuse_color, specular_color );
+      output.close();
+      return ok;
+    }
+
 
     
     // ------------------------------ utilities ------------------------------
@@ -1900,6 +1939,147 @@ namespace DGtal
       return gradcmap;
     }
 
+    /// Outputs a digital surface as an OBJ file (with its topology)
+    /// and a material MTL file. Optionnaly you can specify the
+    /// surfels normals and diffuse colors, and even specify how
+    /// 0-cells are embedded into the space.
+    ///
+    /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
+    /// @tparam TCellEmbedder any type for maping Cell -> RealPoint.
+    ///
+    /// @param[in] digsurf the digital surface to output as an OBJ file
+    /// @param[in] embedder any map Cell->RealPoint
+    /// @param[in] normals the normal vector per face.
+    /// @param[in] diffuse_colors either empty or a vector of size `trisurf.nbFaces` specifying the diffuse color for each face.
+    /// @param[in] objfile the output filename.
+    /// @param[in] ambient_color the ambient color of all faces.
+    /// @param[in] diffuse_color the diffuse color of all faces (if diffuse_colors is empty).
+    /// @param[in] specular_color the specular color of all faces.
+    /// @return 'true' if the output stream is good.
+    template <typename TDigitalSurfaceContainer,
+	      typename TCellEmbedder>
+    static bool
+    saveOBJ
+    ( CountedPtr< DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
+      const TCellEmbedder&           embedder,
+      const RealVectors&             normals,
+      const Colors&                  diffuse_colors,
+      std::string                    objfile,
+      const Color&                   ambient_color  = Color( 32, 32, 32 ),
+      const Color&                   diffuse_color  = Color( 200, 200, 255 ),
+      const Color&                   specular_color = Color::White )
+    {
+      BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+      std::string mtlfile;
+      auto lastindex = objfile.find_last_of(".");
+      if ( lastindex == std::string::npos ) {
+	mtlfile  = objfile + ".mtl";
+	objfile  = objfile + ".obj";
+      } else {
+	mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+      }
+      std::ofstream output_obj( objfile.c_str() );
+      output_obj << "#  OBJ format" << std::endl;
+      output_obj << "# DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor" << std::endl;
+      output_obj << "o anObject" << std::endl;
+      output_obj << "mtllib " << mtlfile << std::endl;
+      std::ofstream output_mtl( mtlfile.c_str() );
+      output_mtl << "#  MTL format"<< std::endl;
+      output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
+      // Number and output vertices.
+      const KSpace&       K = digsurf->container().space();
+      std::map<Cell, Idx> vtx_numbering;
+      Idx                 n = 1; // indexing starts at 1 in OBJ file format.  
+      for ( auto&& surfel : *digsurf ) {
+	CellRange primal_vtcs = getPrimalVertices( K, surfel );
+	for ( auto&& primal_vtx : primal_vtcs ) {
+	  if ( ! vtx_numbering.count( primal_vtx ) ) {
+	    vtx_numbering[ primal_vtx ] = n++;
+	    // Output vertex positions
+	    RealPoint p = embedder( primal_vtx );
+	    output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+	  }
+	}
+      }
+      // Taking care of normals
+      Idx nbfaces = digsurf->size();
+      bool has_normals = ( nbfaces == normals.size() );
+      if ( has_normals ) {
+	for ( Idx f = 0; f < nbfaces; ++f ) {
+	  const auto& p = normals[ f ];
+	  output_obj << "vn " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+	}
+      }
+      // Taking care of materials
+      bool has_material = ( nbfaces == diffuse_colors.size() );
+      Idx   idxMaterial = 0;
+      std::map<Color, unsigned int > mapMaterial;
+      if ( has_material ) {
+	for ( Idx f = 0; f < nbfaces; ++f ) {
+	  Color c = diffuse_colors[ f ];
+	  if ( mapMaterial.count( c ) == 0 ) {
+	    MeshHelpers::exportMTLNewMaterial
+	      ( output_mtl, idxMaterial, ambient_color, c, specular_color );
+	    mapMaterial[ c ] = idxMaterial++;
+	  }
+	}
+      } else {
+	MeshHelpers::exportMTLNewMaterial
+	  ( output_mtl, idxMaterial, ambient_color, diffuse_color, specular_color );
+      }
+
+      // Taking care of faces
+      Idx f = 0;
+      for ( auto&& surfel : *digsurf ) {
+	output_obj << "usemtl material_"
+		   << ( has_material ? mapMaterial[ diffuse_colors[ f ] ] : idxMaterial )
+		   << std::endl; 
+	output_obj << "f";
+	CellRange primal_vtcs = getPrimalVertices( K, surfel, true );
+	if ( has_normals ) {
+	  for ( auto&& primal_vtx : primal_vtcs )
+	    output_obj << " " << vtx_numbering[ primal_vtx ] << "//" << (f+1);
+	} else {
+	  for ( auto&& primal_vtx : primal_vtcs )
+	    output_obj << " " << vtx_numbering[ primal_vtx ];
+	}
+	output_obj << std::endl;
+	f += 1;
+      }
+      output_mtl.close();
+      return output_obj.good();
+    }
+    
+    /// Outputs a digital surface as an OBJ file (with its topology)
+    /// and a material MTL file. Optionnaly you can specify the
+    /// surfels normals and diffuse colors. Here surfels are
+    /// canonically embedded into the space.
+    ///
+    /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
+    ///
+    /// @param[in] digsurf the digital surface to output as an OBJ file
+    /// @param[in] normals the normal vector per face.
+    /// @param[in] diffuse_colors either empty or a vector of size `trisurf.nbFaces` specifying the diffuse color for each face.
+    /// @param[in] objfile the output filename.
+    /// @param[in] ambient_color the ambient color of all faces.
+    /// @param[in] diffuse_color the diffuse color of all faces (if diffuse_colors is empty).
+    /// @param[in] specular_color the specular color of all faces.
+    /// @return 'true' if the output stream is good.
+    template <typename TDigitalSurfaceContainer>
+    static bool
+    saveOBJ
+    ( CountedPtr< DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
+      const RealVectors&                            normals,
+      const Colors&                                 diffuse_colors,
+      std::string                                   objfile,
+      const Color&                   ambient_color  = Color( 32, 32, 32 ),
+      const Color&                   diffuse_color  = Color( 200, 200, 255 ),
+      const Color&                   specular_color = Color::White )
+    {
+      CanonicCellEmbedder< KSpace > embedder( digsurf->container().space() );
+      return saveOBJ( digsurf, embedder, normals, diffuse_colors, objfile,
+		      ambient_color, diffuse_color, specular_color );
+    }
 
     
     /// Outputs a range of surfels as an OBJ file, embedding each
