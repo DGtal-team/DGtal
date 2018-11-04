@@ -1238,7 +1238,7 @@ namespace DGtal
       if ( surfaces.empty() ) return CountedPtr<IdxDigitalSurface>( 0 );
       const KSpace& K = surfaces[ 0 ]->container().space();
       SurfelSet     surfels;
-      for ( auto i = 0; i < surfaces.size(); ++i ) {
+      for ( std::size_t i = 0; i < surfaces.size(); ++i ) {
 	const KSpace& Ki = surfaces[ i ]->container().space();
 	if ( ( Ki.lowerBound() != K.lowerBound() )
 	     || ( Ki.upperBound() != K.upperBound() ) )
