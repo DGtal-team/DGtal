@@ -277,6 +277,7 @@ namespace DGtal
       const Color&                   ambient_color  = Color( 32, 32, 32 ),
       const Color&                   diffuse_color  = Color( 200, 200, 255 ),
       const Color&                   specular_color = Color::White );
+
     
     /// Exports a new material in a MTL stream.
     ///
