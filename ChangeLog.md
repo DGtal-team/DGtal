@@ -50,6 +50,9 @@
 - *DEC*
   - Adding missing headers in some files of DEC.
     (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
+    
+- *Math*
+  - Fix possible division by zero in the MultiStatistics class.
 
 # DGtal 0.9.4.1
 
