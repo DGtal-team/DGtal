@@ -120,11 +120,11 @@ int main( int argc, char** argv )
     trace.beginBlock ( "Save as OBj with normals" );
     {
       auto default_surfels = SH3::getSurfelRange( surface, Parameters( "Traversal", "Default" ) );
-      auto match    = SH3::getSurfelRangeMatch( default_surfels, surfels );
+      auto match    = SH3::getRangeMatch( default_surfels, surfels );
       auto polysurf = SH3::makePrimalPolygonalSurface( surface );
-      auto normals  = vcm_normals;
-      for ( SH3::Idx i = 0; i < normals.size(); i++ )
-	normals[ i ] = vcm_normals[ match[ i ] ]; 
+      auto normals  = SH3::getMatchedRange( vcm_normals, match );
+      // for ( SH3::Idx i = 0; i < normals.size(); i++ )
+      // 	normals[ i ] = vcm_normals[ match[ i ] ]; 
       bool ok       = SH3::saveOBJ( polysurf, normals, SH3::Colors(),
 				    "goursat-vcm-n.obj" );
       auto cmap     = SH3::getColorMap( -0.3, 0.3 );
@@ -135,29 +135,25 @@ int main( int argc, char** argv )
 				    "goursat-vcm-mcurv.obj" );
       auto errcmap  = SH3::getColorMap( 0.0, M, Parameters( "colormap", "Tics" ) );
       // Output error for trivial normals
+      normals       = SH3::getMatchedRange( t_normals, match );
       for ( SH3::Idx i = 0; i < normals.size(); i++ )
-	normals[ i ] = t_normals[ match[ i ] ]; 
-      for ( SH3::Idx i = 0; i < normals.size(); i++ )
-	colors[ i ]  = errcmap( t_angle_dev[ match[ i ] ] ); 
-      bool ok_t      = SH3::saveOBJ( polysurf, normals, colors, "goursat-t-err.obj" );
+	colors[ i ] = errcmap( t_angle_dev[ match[ i ] ] ); 
+      bool ok_t     = SH3::saveOBJ( polysurf, normals, colors, "goursat-t-err.obj" );
       // Output error for convolved trivial normals
+      normals       = SH3::getMatchedRange( ct_normals, match );
       for ( SH3::Idx i = 0; i < normals.size(); i++ )
-	normals[ i ] = ct_normals[ match[ i ] ]; 
-      for ( SH3::Idx i = 0; i < normals.size(); i++ )
-	colors[ i ]  = errcmap( ct_angle_dev[ match[ i ] ] ); 
-      bool ok_ct     = SH3::saveOBJ( polysurf, normals, colors, "goursat-ct-err.obj" );
+	colors[ i ] = errcmap( ct_angle_dev[ match[ i ] ] ); 
+      bool ok_ct    = SH3::saveOBJ( polysurf, normals, colors, "goursat-ct-err.obj" );
       // Output error for vcm trivial normals
+      normals       = SH3::getMatchedRange( vcm_normals, match );
       for ( SH3::Idx i = 0; i < normals.size(); i++ )
-	normals[ i ] = vcm_normals[ match[ i ] ]; 
-      for ( SH3::Idx i = 0; i < normals.size(); i++ )
-	colors[ i ]  = errcmap( vcm_angle_dev[ match[ i ] ] ); 
-      bool ok_vcm    = SH3::saveOBJ( polysurf, normals, colors, "goursat-vcm-err.obj" );
+	colors[ i ] = errcmap( vcm_angle_dev[ match[ i ] ] ); 
+      bool ok_vcm   = SH3::saveOBJ( polysurf, normals, colors, "goursat-vcm-err.obj" );
       // Output error for ii trivial normals
+      normals       = SH3::getMatchedRange( ii_normals, match );
       for ( SH3::Idx i = 0; i < normals.size(); i++ )
-	normals[ i ] = ii_normals[ match[ i ] ]; 
-      for ( SH3::Idx i = 0; i < normals.size(); i++ )
-	colors[ i ]  = errcmap( ii_angle_dev[ match[ i ] ] ); 
-      bool ok_ii     = SH3::saveOBJ( polysurf, normals, colors, "goursat-ii-err.obj" );
+	colors[ i ] = errcmap( ii_angle_dev[ match[ i ] ] ); 
+      bool ok_ii    = SH3::saveOBJ( polysurf, normals, colors, "goursat-ii-err.obj" );
     }
     trace.endBlock();
   }
