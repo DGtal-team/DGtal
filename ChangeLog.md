@@ -29,6 +29,8 @@
     [#1336](https://github.com/DGtal-team/DGtal/pull/1336))
   - Fix compilation warning: const qualifier ignored in cast (Pablo Hernandez,
     [#1337](https://github.com/DGtal-team/DGtal/pull/1337))
+  - Filter data passed to acos in order to avoid division by zero or anargument
+    out of range.
 
 - *IO*
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
