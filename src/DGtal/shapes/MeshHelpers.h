@@ -281,7 +281,7 @@ namespace DGtal
     
     /// Exports a new material in a MTL stream.
     ///
-    /// @param[in,out] output an output stream into a MTL file
+    /// @param[in,out] output_mtl an output stream into a MTL file
     /// @param[in]     idxMaterial the index of the new material.
     /// @param[in]     ambient_color the ambient color for the material.
     /// @param[in]     diffuse_color the diffuse color for the material.
