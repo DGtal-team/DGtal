@@ -90,7 +90,7 @@ int main( int argc, char** argv )
     for ( auto&& mode : traversals ) {
       auto surfels = SH3::getSurfelRange( light_surf, params( "surfaceTraversal", mode ) );
       double distance  = 0.0;
-      for ( int i = 1; i < surfels.size(); ++i )
+      for ( unsigned int i = 1; i < surfels.size(); ++i )
   	distance += ( K.sCoords( surfels[ i-1 ] ) - K.sCoords( surfels[ i ] ) ).norm();
       std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
     }
@@ -189,7 +189,7 @@ int main( int argc, char** argv )
       for ( auto&& mode : traversals ) {
 	auto surfels = SH3::getIdxSurfelRange( idx_surf, params( "surfaceTraversal", mode ) );
 	double distance  = 0.0;
-	for ( int i = 1; i < surfels.size(); ++i ) 
+	for ( unsigned int i = 1; i < surfels.size(); ++i ) 
 	  distance += ( positions[ surfels[ i-1 ] ] - positions[ surfels[ i ] ] ).norm();
 	std::cout << "avg " << mode << " distance = " << distance / (surfels.size()-1.0) << std::endl;
       }
