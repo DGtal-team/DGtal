@@ -205,9 +205,8 @@ application.exec();
   auto mean_curv       = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params );
   auto cmap            = SH3::getColorMap( -0.3, 0.3 );
   auto colors          = SH3::Colors( surfels.size() );
-  for ( SH3::Idx i = 0; i < normals.size(); i++ ) colors[ i ] = cmap( mean_curv[ i ] ); 
-  auto polysurf        = SH3::makePrimalPolygonalSurface( surface );
-  bool ok              = SH3::saveOBJ( polysurf, SH3::RealVectors(), colors, "goursat-H.obj" );
+  std::transform( mean_curv.cbegin(), mean_curv.cend(), colors.begin(), cmap );
+  bool ok              = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-H.obj" );
 \endcode
 
 @subsubsection dgtal_shortcuts_ssec2_2_6 -> float image -> gray-scale image -> extract iso-surface -> save as OBJ file.
