@@ -43,6 +43,7 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
+  unsigned int nb = 0, nbok = 0;
   // 3d tests
   {
     typedef Shortcuts< Z3i::KSpace >         SH3;
@@ -127,12 +128,14 @@ int main( int argc, char** argv )
       // 	normals[ i ] = vcm_normals[ match[ i ] ]; 
       bool ok       = SH3::saveOBJ( polysurf, normals, SH3::Colors(),
 				    "goursat-vcm-n.obj" );
+      ++nb, nbok += ok ? 1 : 0; 
       auto cmap     = SH3::getColorMap( -0.3, 0.3 );
       auto colors   = SH3::Colors( normals.size() );
       for ( SH3::Idx i = 0; i < normals.size(); i++ )
 	colors[ i ] = cmap( mean_curv[ match[ i ] ] ); 
       bool ok2      = SH3::saveOBJ( polysurf, normals, colors,
 				    "goursat-vcm-mcurv.obj" );
+      ++nb, nbok += ok2 ? 1 : 0; 
       auto errcmap  = SH3::getColorMap( 0.0, M, Parameters( "colormap", "Tics" ) );
       // Output error for trivial normals
       normals       = SH3::getMatchedRange( t_normals, match );
@@ -154,6 +157,10 @@ int main( int argc, char** argv )
       for ( SH3::Idx i = 0; i < normals.size(); i++ )
 	colors[ i ] = errcmap( ii_angle_dev[ match[ i ] ] ); 
       bool ok_ii    = SH3::saveOBJ( polysurf, normals, colors, "goursat-ii-err.obj" );
+      ++nb, nbok += ok_t   ? 1 : 0; 
+      ++nb, nbok += ok_ct  ? 1 : 0; 
+      ++nb, nbok += ok_vcm ? 1 : 0; 
+      ++nb, nbok += ok_ii  ? 1 : 0; 
     }
     trace.endBlock();
 
@@ -178,9 +185,11 @@ int main( int argc, char** argv )
       auto colors      = SH3::Colors( normals.size() );
       std::transform( gauss_curv.cbegin(), gauss_curv.cend(), colors.begin(), cmap );
       bool ok          = SH3::saveOBJ( surface, normals, colors, "leopold-G.obj" );
+      ++nb, nbok += ok ? 1 : 0; 
       trace.endBlock();
     }
   }
+  trace.info() << nbok << "/" << nb << " passed tests." << std::endl;
   return 0;
 }
 //                                                                           //
