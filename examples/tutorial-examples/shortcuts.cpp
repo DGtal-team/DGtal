@@ -97,12 +97,6 @@ int main( int argc, char** argv )
     // viewer << CustomColors3D( Color::Black, Color::Blue ) << *mesh150;
     // viewer << Viewer3D<>::updateDisplay;
     // application.exec();
-    auto ok40 = SH3::saveOBJ( trisurf40, SH3::RealVectors(), SH3::Colors(),
-			      "lobster-40.obj",
-			      SH3::Color( 30,30,30 ), SH3::Color( 255,0,0,100 ) );
-    auto ok150= SH3::saveOBJ( trisurf150, SH3::RealVectors(), SH3::Colors(),
-			      "lobster-150.obj",
-			      SH3::Color( 30,30,30 ), SH3::Color( 0,0,255,100 ) );
   }
   trace.endBlock();
 
@@ -114,18 +108,69 @@ int main( int argc, char** argv )
     auto gimage    = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );
     auto trisurf150= SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 150 ) );
     auto trisurf40 = SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 40 ) );
-    auto ok40 = SH3::saveOBJ( trisurf40, SH3::RealVectors(), SH3::Colors(),
-			      "lobster-40.obj", // semi-transparent red diffuse color
-			      SH3::Color( 30,30,30 ), SH3::Color( 255,0,0,100 ) );
-    auto ok150= SH3::saveOBJ( trisurf150, SH3::RealVectors(), SH3::Colors(),
-			      "lobster-150.obj", // opaque blue diffuse color
-			      SH3::Color( 30,30,30 ), SH3::Color( 0,0,255,255 ) );
+    auto ok40      = SH3::saveOBJ( trisurf40, SH3::RealVectors(), SH3::Colors(),
+				   "lobster-40.obj", // semi-transparent red diffuse color
+				   SH3::Color( 30,30,30 ), SH3::Color( 255,0,0,100 ) );
+    auto ok150     = SH3::saveOBJ( trisurf150, SH3::RealVectors(), SH3::Colors(),
+				   "lobster-150.obj", // opaque blue diffuse color
+				   SH3::Color( 30,30,30 ), SH3::Color( 0,0,255,255 ) );
     //! [dgtal_shortcuts_ssec2_1_4s]
     ++nb, nbok += ok40  ? 1 : 0;
     ++nb, nbok += ok150 ? 1 : 0;
   }
   trace.endBlock();
 
+  trace.beginBlock ( "Load vol file -> build main digital surface -> breadth first traversal -> save OBJ with colored distance." );
+  {
+    auto params    = SH3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_1_5s]
+    params( "surfaceTraversal", "BreadthFirst" ) // specifies breadth-first traversal
+      ( "colormap", "Jet" ); // specifies the colormap
+    auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+    auto K         = SH3::getKSpace( al_capone );
+    auto surface   = SH3::makeLightDigitalSurface( al_capone, K, params );
+    auto surfels   = SH3::getSurfelRange( surface, params );
+    auto cmap      = SH3::getColorMap( 0, surfels.size(), params );
+    SH3::Colors colors( surfels.size() );
+    for ( unsigned int i = 0; i < surfels.size(); ++i ) colors[ i ] = cmap( i );
+    bool ok        = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "al-primal-bft.obj" );
+    //! [dgtal_shortcuts_ssec2_1_5s]
+    ++nb, nbok += ok ? 1 : 0; 
+  }
+  trace.endBlock();
+
+  trace.beginBlock ( "Build polynomial shape -> digitize -> noisify -> save as vol file." );
+  {
+    auto params          = SH3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_2_1s]
+    params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 ) 
+      ( "noise", 0.3 );
+    auto implicit_shape  = SH3::makeImplicitShape3D( params );
+    auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+    auto noisy_shape     = SH3::makeBinaryImage    ( digitized_shape, params );
+    auto ok              = SH3::saveBinaryImage    ( noisy_shape, "noisy-ellipsoid.vol" );
+    //! [dgtal_shortcuts_ssec2_2_1s]
+    ++nb, nbok += ok ? 1 : 0;
+  }
+  trace.endBlock();
+
+  trace.beginBlock ( "Build polynomial shape -> digitize -> build digital surface -> save primal surface as obj." );
+  {
+    auto params          = SH3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_2_2s]
+    params( "polynomial", "goursat" )( "gridstep", 0.25 );
+    auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+    auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+    auto K               = SH3::getKSpace( params );
+    auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
+    auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
+    bool ok              = SH3::saveOBJ( surface, "goursat-primal.obj" );
+    //! [dgtal_shortcuts_ssec2_2_2s]
+    ++nb, nbok += ok ? 1 : 0;
+  }
+  trace.endBlock();
+  
+  
   trace.info() << nbok << "/" << nb << " passed tests." << std::endl;
   
   // trace.beginBlock ( "Set parameters" );
