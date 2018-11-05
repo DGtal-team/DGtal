@@ -105,18 +105,35 @@ auto params = SH3::defaultParameters()
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_1_2s
 
-@subsubsection dgtal_shortcuts_ssec2_1_3 -> extract 2 isosurfaces -> displays them with two different colors
+@subsubsection dgtal_shortcuts_ssec2_1_3 -> extract 2 isosurfaces -> build mesh -> displays them
+
+The following code extracts iso-surfaces in the given gray-scale 3D image and builds meshes, which can be displayed.
+
+@note Iso-surfaces are built by duality from digital surfaces. The
+output triangulated surfaces share similarities with marching-cubes
+surfaces, but they are guaranteed to be 2-manifold (closed if the
+surface does not touch the boundary of the domain).
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_1_3s
 
+If you wish to display them with two different colors, you may write:
 \code
-QApplication application(argc,argv);
-Viewer3D<> viewer;
-viewer.show();
-viewer << *mesh40 << *mesh20;
-viewer << Viewer3D<>::updateDisplay;
-application.exec();
+    QApplication application(argc,argv);
+    Viewer3D<> viewer;
+    viewer.show();
+    viewer << CustomColors3D( Color::Black, Color::Red  ) << *mesh40;
+    viewer << CustomColors3D( Color::Black, Color::Blue ) << *mesh200;
+    viewer << Viewer3D<>::updateDisplay;
+    application.exec();
 \endcode
+
+@subsubsection dgtal_shortcuts_ssec2_1_4 -> extract 2 triangulated isosurfaces -> save as OBJ
+
+The following code extracts iso-surfaces in the given gray-scale 3D image and saves them as OBJ file with color information.
+
+\snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_1_4s
+
+\image html lobster-40-150-blender-small.png "Blender rendering of lobster 40 (red semi-transparent) and 150 (blue) isosurfaces."
 
 
 @subsection dgtal_shortcuts_ssec2_2 Build polynomial shape -> ...
