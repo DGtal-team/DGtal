@@ -85,7 +85,7 @@ DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
   AngularCoordinates angle;
   
   angle.first = atan2( p[1], p[0] );
-  double tmp = std::min ( abs( p[2] ), 1.0 );
+  double tmp = std::min ( std::abs( p[2] ), 1.0 );
   double pn = p.norm();
   angle.second = pn > 0.0 ? acos( tmp / pn ) : 0.0;
 
