@@ -52,7 +52,7 @@
 namespace DGtal
 {
 
-  namespace sgf = DGtal::functors::ShapeGeometricFunctors;
+  namespace sgf = ::DGtal::functors::ShapeGeometricFunctors;
   
   /////////////////////////////////////////////////////////////////////////////
   // template class ShortcutsGeometry
@@ -148,7 +148,7 @@ namespace DGtal
     typedef std::vector< Scalar >                               Scalars;
     typedef std::vector< RealVector >                           RealVectors;
 
-    typedef DGtal::Statistic<Scalar>                            ScalarStatistic;
+    typedef ::DGtal::Statistic<Scalar>                          ScalarStatistic;
     
     typedef sgf::ShapePositionFunctor<ImplicitShape3D>          PositionFunctor;
     typedef sgf::ShapeNormalVectorFunctor<ImplicitShape3D>      NormalFunctor;
@@ -596,7 +596,7 @@ namespace DGtal
     /// Orient \a v so that it points in the same direction as \a
     /// ref_v (scalar product is then non-negative afterwards).
     ///
-    /// @param[inout] v the vectors to reorient.
+    /// @param[in,out] v the vectors to reorient.
     /// @param[in]    ref_v the vectors having the reference orientation.
     static void
     orientVectors( RealVectors&       v,
