@@ -74,26 +74,55 @@ int main( int argc, char** argv )
   }
   trace.endBlock();
 
-  trace.beginBlock ( "Load vol file -> build main connected digital surface." );
+  trace.beginBlock ( "Load vol file -> extract 2 isosurfaces -> build mesh -> displays them." );
   {
     auto params    = SH3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_1_3s]
     params( "faceSubdivision", "Centroid" )( "surfelAdjacency", 1);
     auto gimage    = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );
+    auto trisurf150= SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 150 ) );
     auto trisurf40 = SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 40 ) );
-    auto trisurf20 = SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 20 ) );
-    auto mesh40    = SH3::makeMesh( trisurf40, Color::Red );
-    auto mesh20    = SH3::makeMesh( trisurf20, Color::Blue );
-    trace.info() << " #mesh20=" << mesh20->nbVertex()
+    auto mesh150   = SH3::makeMesh( trisurf150 );
+    auto mesh40    = SH3::makeMesh( trisurf40 );
+    trace.info() << "#mesh150=" << mesh150->nbVertex()
 		 << " #mesh40=" << mesh40->nbVertex() << std::endl;
-    QApplication application(argc,argv);
-    Viewer3D<> viewer;
-    viewer.show();
-    viewer << *mesh40 << *mesh20;
-    viewer << Viewer3D<>::updateDisplay;
-    application.exec();
     //! [dgtal_shortcuts_ssec2_1_3s]
-    ++nb, nbok += true ? 1 : 0; 
+    ++nb, nbok += ( mesh150->nbVertex() < mesh40->nbVertex() )
+      && ( mesh40->nbVertex() == 273182 ) ? 1 : 0;
+    // // If you wish to display them.
+    // QApplication application(argc,argv);
+    // Viewer3D<> viewer;
+    // viewer.show();
+    // viewer << CustomColors3D( Color::Black, Color::Red  ) << *mesh40;
+    // viewer << CustomColors3D( Color::Black, Color::Blue ) << *mesh150;
+    // viewer << Viewer3D<>::updateDisplay;
+    // application.exec();
+    auto ok40 = SH3::saveOBJ( trisurf40, SH3::RealVectors(), SH3::Colors(),
+			      "lobster-40.obj",
+			      SH3::Color( 30,30,30 ), SH3::Color( 255,0,0,100 ) );
+    auto ok150= SH3::saveOBJ( trisurf150, SH3::RealVectors(), SH3::Colors(),
+			      "lobster-150.obj",
+			      SH3::Color( 30,30,30 ), SH3::Color( 0,0,255,100 ) );
+  }
+  trace.endBlock();
+
+  trace.beginBlock ( "Load vol file -> extract 2 triangulated isosurfaces -> save as OBJ." );
+  {
+    auto params    = SH3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_1_4s]
+    params( "faceSubdivision", "Centroid" )( "surfelAdjacency", 1);
+    auto gimage    = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );
+    auto trisurf150= SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 150 ) );
+    auto trisurf40 = SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 40 ) );
+    auto ok40 = SH3::saveOBJ( trisurf40, SH3::RealVectors(), SH3::Colors(),
+			      "lobster-40.obj", // semi-transparent red diffuse color
+			      SH3::Color( 30,30,30 ), SH3::Color( 255,0,0,100 ) );
+    auto ok150= SH3::saveOBJ( trisurf150, SH3::RealVectors(), SH3::Colors(),
+			      "lobster-150.obj", // opaque blue diffuse color
+			      SH3::Color( 30,30,30 ), SH3::Color( 0,0,255,255 ) );
+    //! [dgtal_shortcuts_ssec2_1_4s]
+    ++nb, nbok += ok40  ? 1 : 0;
+    ++nb, nbok += ok150 ? 1 : 0;
   }
   trace.endBlock();
 
@@ -209,7 +238,7 @@ int main( int argc, char** argv )
     params( "faceSubdivision", "Centroid" )( "surfelAdjacency", 1);
     auto polysurf = SH3::makePolygonalSurface( gimage, params( "thresholdMin", 40 ) );
     std::cout << "polysurf=" << *polysurf << std::endl;
-    bool ok       = SH3::saveOBJ( polysurf, "lobster-40.obj" );
+    //bool ok       = SH3::saveOBJ( polysurf, "lobster-40.obj" );
     auto trisurf  = SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 20 ) );
     std::cout << "trisurf =" << *trisurf << std::endl;
     bool ok2      = SH3::saveOBJ( trisurf, "lobster-20-tri.obj" );
