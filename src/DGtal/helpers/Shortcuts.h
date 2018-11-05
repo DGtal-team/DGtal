@@ -1518,6 +1518,32 @@ namespace DGtal
 		      ambient_color, diffuse_color, specular_color );
     }
 
+    /// Outputs a digital surface as an OBJ file (with its topology)
+    /// and a simple MTL file. Here surfels are canonically embedded
+    /// into the space.
+    ///
+    /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
+    ///
+    /// @param[in] digsurf the digital surface to output as an OBJ file
+    /// @param[in] objfile the output filename.
+    /// @param[in] ambient_color the ambient color of all faces.
+    /// @param[in] diffuse_color the diffuse color of all faces (if diffuse_colors is empty).
+    /// @param[in] specular_color the specular color of all faces.
+    /// @return 'true' if the output stream is good.
+    template <typename TDigitalSurfaceContainer>
+    static bool
+    saveOBJ
+    ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
+      std::string                                   objfile,
+      const Color&                   ambient_color  = Color( 32, 32, 32 ),
+      const Color&                   diffuse_color  = Color( 200, 200, 255 ),
+      const Color&                   specular_color = Color::White )
+    {
+      CanonicCellEmbedder< KSpace > embedder( digsurf->container().space() );
+      return saveOBJ( digsurf, embedder, RealVectors(), Colors(), objfile,
+		      ambient_color, diffuse_color, specular_color );
+    }
+
 
     // ----------------------- Mesh services ------------------------------
   public:
