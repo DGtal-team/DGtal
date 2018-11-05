@@ -99,30 +99,17 @@ auto params = SH3::defaultParameters()
 
 @subsubsection dgtal_shortcuts_ssec2_1_1 -> noisify -> save as vol file.
 
-\code
-  // load and noisify image directly.
-  auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params( "noise", 0.3 ) );
-  auto ok        = SH3::saveBinaryImage( al_capone, "noisy-Al.vol" );
-\endcode 
+\snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_1_1s
 
 @subsubsection dgtal_shortcuts_ssec2_1_2  -> build main connected digital surface
 
-\code
-  auto al_capone = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
-  auto K         = SH3::getKSpace( al_capone );
-  auto surface   = SH3::makeLightDigitalSurface( al_capone, K, params );
-\endcode
+\snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_1_2s
 
 @subsubsection dgtal_shortcuts_ssec2_1_3 -> extract 2 isosurfaces -> displays them with two different colors
 
+\snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_1_3s
+
 \code
-auto params   = SH3::defaultParameters();
-params( "faceSubdivision", "Centroid" )( "surfelAdjacency", 1);
-auto gimage   = SH3::makeGrayScaleImage( examplesPath + "samples/lobster.vol" );
-auto trisurf40= SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 40 ) );
-auto trisurf20= SH3::makeTriangulatedSurface( gimage, params( "thresholdMin", 20 ) );
-auto mesh40   = SH3::makeMesh( trisurf40, Color::Red );
-auto mesh20   = SH3::makeMesh( trisurf20, Color::Blue );
 QApplication application(argc,argv);
 Viewer3D<> viewer;
 viewer.show();
