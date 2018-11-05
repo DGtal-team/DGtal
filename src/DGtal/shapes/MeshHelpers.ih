@@ -358,7 +358,7 @@ DGtal::MeshHelpers::exportMTLNewMaterial
 	     << " "   << specular_color.green()/255.0
 	     << " "   << specular_color.blue()/255.0 << std::endl;
   if ( diffuse_color.alpha() < 255 )
-    output_mtl << "d " << diffuse_color.alpha()/255.0
+    output_mtl << "d " << diffuse_color.alpha()/255.0 << std::endl;
   return output_mtl.good();
 }
 
