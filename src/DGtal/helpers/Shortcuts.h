@@ -625,8 +625,9 @@ namespace DGtal
     }
 
     
-    /// Saves an arbitrary image file (e.g. vol file in 3D).
+    /// Saves an arbitrary binary image file (e.g. vol file in 3D).
     ///
+    /// @param[in] bimage the input binary image.
     /// @param[in] output the output filename .
     /// @return 'true' if everything went well, 'false' if there was an error during save.
     static bool
@@ -655,13 +656,13 @@ namespace DGtal
     
     /// Makes an empty gray scale image within a given domain (values are unsigned char).
     ///
-    /// @param[in] domain any domain.
+    /// @param[in] aDomain any domain.
     ///
     /// @return a smart pointer on a gray scale image that fits the given domain.
     static CountedPtr<GrayScaleImage>
-    makeGrayScaleImage( Domain shapeDomain )
+    makeGrayScaleImage( Domain aDomain )
     {
-      return CountedPtr<GrayScaleImage>( new GrayScaleImage( shapeDomain ) );
+      return CountedPtr<GrayScaleImage>( new GrayScaleImage( aDomain ) );
     }
 
     /// Loads an arbitrary binary image file (e.g. vol file in 3D) and returns
@@ -702,6 +703,7 @@ namespace DGtal
 
     /// Saves an arbitrary gray-scale image file (e.g. vol file in 3D).
     ///
+    /// @param[in] gray_scale_image the input gray-scale image.
     /// @param[in] output the output filename .
     /// @return 'true' if everything went well, 'false' if there was an error during save.
     static bool
@@ -782,13 +784,13 @@ namespace DGtal
 
     /// Makes an empty float image within a given domain (values are unsigned char).
     ///
-    /// @param[in] domain any domain.
+    /// @param[in] aDomain any domain.
     ///
     /// @return a smart pointer on a float image that fits the given domain.
     static CountedPtr<FloatImage>
-    makeFloatImage( Domain shapeDomain )
+    makeFloatImage( Domain aDomain )
     {
-      return CountedPtr<FloatImage>( new FloatImage( shapeDomain ) );
+      return CountedPtr<FloatImage>( new FloatImage( aDomain ) );
     }
 
     /// Loads an arbitrary image file (e.g. vol file in 3D) and returns
@@ -853,7 +855,7 @@ namespace DGtal
     static CountedPtr<DoubleImage>
     makeDoubleImage( Domain aDomain )
     {
-      return CountedPtr<DoubleImage>( new DoubleImage( shapeDomain ) );
+      return CountedPtr<DoubleImage>( new DoubleImage( aDomain ) );
     }
 
     /// Loads an arbitrary image file (e.g. vol file in 3D) and returns
@@ -1037,7 +1039,6 @@ namespace DGtal
 	return result;
       }	
       bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
-      int nb_tries_to_find_a_bel = params[ "nbTriesToFindABel" ].as<int>();
       SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
       // Extracts all boundary surfels
       SurfelSet all_surfels;
@@ -1210,7 +1211,7 @@ namespace DGtal
     template <typename TDigitalSurfaceContainer>
     static CountedPtr<IdxDigitalSurface>
     makeIdxDigitalSurface
-    ( CountedPtr< DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface,
+    ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface,
       const Parameters&               params = parametersDigitalSurface() )
     {
       const KSpace& K = surface->container().space();
@@ -1253,20 +1254,18 @@ namespace DGtal
     /// Given any digital surface, returns a vector of surfels in
     /// some specified order.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
     ///
-    /// @param[in] surface a smart pointer on a digital surface.
-    ///
-    /// @param[in] surface a smart pointer on a digital surface.
+    /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
     ///
     /// @param[in] params the parameters:
     ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
     ///
     /// @return a range of surfels as a vector.
-    template <typename TAnyDigitalSurface>
+    template <typename TDigitalSurfaceContainer>
     static SurfelRange
     getSurfelRange
-    ( CountedPtr< TAnyDigitalSurface> surface,
+    ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface,
       const Parameters&   params = parametersDigitalSurface() )
     {
       return getSurfelRange( surface, *( surface->begin() ), params );
@@ -1275,9 +1274,9 @@ namespace DGtal
     /// Given a light digital surface, returns a vector of surfels in
     /// some specified order.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
     ///
-    /// @param[in] surface a smart pointer on a digital surface.
+    /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
     ///
     /// @param[in] start_surfel the surfel where the traversal starts
     /// in case of depth-first/breadth-first traversal.
@@ -1286,18 +1285,19 @@ namespace DGtal
     ///   - surfaceTraversal  ["Default"]: "Default"|"DepthFirst"|"BreadthFirst": "Default" default surface traversal, "DepthFirst": depth-first surface traversal, "BreadthFirst": breadth-first surface traversal.
     ///
     /// @return a range of surfels as a vector.
-    template <typename TAnyDigitalSurface>
+    template <typename TDigitalSurfaceContainer>
     static SurfelRange
     getSurfelRange
-    ( CountedPtr< TAnyDigitalSurface> surface,
+    ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface,
       const Surfel&       start_surfel,
       const Parameters&   params = parametersDigitalSurface() )
     {
+      typedef ::DGtal::DigitalSurface<TDigitalSurfaceContainer> AnyDigitalSurface;
       SurfelRange result;
       std::string traversal = params[ "surfaceTraversal" ].as<std::string>();
       if ( traversal == "DepthFirst" )
 	{
-	  typedef DepthFirstVisitor< TAnyDigitalSurface > Visitor;
+	  typedef DepthFirstVisitor< AnyDigitalSurface > Visitor;
 	  typedef GraphVisitorRange< Visitor > VisitorRange;
 	  VisitorRange range( new Visitor( *surface, start_surfel ) );
 	  std::for_each( range.begin(), range.end(),
@@ -1305,7 +1305,7 @@ namespace DGtal
 	}
       else if ( traversal == "BreadthFirst" )
 	{
-	  typedef BreadthFirstVisitor< TAnyDigitalSurface > Visitor;
+	  typedef BreadthFirstVisitor< AnyDigitalSurface > Visitor;
 	  typedef GraphVisitorRange< Visitor > VisitorRange;
 	  VisitorRange range( new Visitor( *surface, start_surfel ) );
 	  std::for_each( range.begin(), range.end(),
@@ -1397,7 +1397,7 @@ namespace DGtal
 	      typename TCellEmbedder>
     static bool
     saveOBJ
-    ( CountedPtr< DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
+    ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
       const TCellEmbedder&           embedder,
       const RealVectors&             normals,
       const Colors&                  diffuse_colors,
@@ -1505,7 +1505,7 @@ namespace DGtal
     template <typename TDigitalSurfaceContainer>
     static bool
     saveOBJ
-    ( CountedPtr< DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
+    ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
       const RealVectors&                            normals,
       const Colors&                                 diffuse_colors,
       std::string                                   objfile,
@@ -1594,7 +1594,7 @@ namespace DGtal
     template < typename TContainer >
     static CountedPtr< TriangulatedSurface >
     makeTriangulatedSurface( Surfel2Index& s2i,
-			     CountedPtr< DGtal::DigitalSurface< TContainer > > aSurface )
+			     CountedPtr< ::DGtal::DigitalSurface< TContainer > > aSurface )
     {
       CanonicCellEmbedder< KSpace > cembedder;
       auto pTriSurf = CountedPtr<TriangulatedSurface>
@@ -1611,7 +1611,7 @@ namespace DGtal
     /// @return a smart pointer on the built triangulated surface.
     template < typename TContainer >
     static CountedPtr< TriangulatedSurface >
-    makeTriangulatedSurface( CountedPtr< DGtal::DigitalSurface< TContainer > > aSurface )
+    makeTriangulatedSurface( CountedPtr< ::DGtal::DigitalSurface< TContainer > > aSurface )
     {
       Surfel2Index s2i;
       return makeTriangulatedSurface( s2i, aSurface );
@@ -1758,7 +1758,7 @@ namespace DGtal
     template < typename TContainer >
     static CountedPtr< PolygonalSurface >
     makeDualPolygonalSurface( Surfel2Index& s2i,
-			      CountedPtr< DGtal::DigitalSurface< TContainer > > aSurface )
+			      CountedPtr< ::DGtal::DigitalSurface< TContainer > > aSurface )
     {
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       CanonicCellEmbedder< KSpace > cembedder;
@@ -1777,7 +1777,7 @@ namespace DGtal
     /// @return a smart pointer on the built polygonal surface.
     template < typename TContainer >
     static CountedPtr< PolygonalSurface >
-    makeDualPolygonalSurface( CountedPtr< DGtal::DigitalSurface< TContainer > > aSurface )
+    makeDualPolygonalSurface( CountedPtr< ::DGtal::DigitalSurface< TContainer > > aSurface )
     {
       Surfel2Index s2i;
       return makeDualPolygonalSurface( s2i, aSurface );
@@ -1792,7 +1792,7 @@ namespace DGtal
     template < typename TContainer >
     static CountedPtr< PolygonalSurface >
     makeDualPolygonalSurface
-    ( CountedPtr< DGtal::IndexedDigitalSurface< TContainer > > aSurface )
+    ( CountedPtr< ::DGtal::IndexedDigitalSurface< TContainer > > aSurface )
     {
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       CanonicCellEmbedder< KSpace > cembedder;
@@ -1812,7 +1812,7 @@ namespace DGtal
     template < typename TContainer >
     static CountedPtr< PolygonalSurface >
     makePrimalPolygonalSurface( Cell2Index& c2i,
-				CountedPtr< DGtal::DigitalSurface<TContainer> > aSurface )
+				CountedPtr< ::DGtal::DigitalSurface<TContainer> > aSurface )
     {
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       CanonicCellEmbedder< KSpace > cembedder;
@@ -1831,7 +1831,7 @@ namespace DGtal
     /// @return a smart pointer on the built polygonal surface or 0 if it fails because aSurface is not a combinatorial 2-manifold.
     template < typename TContainer >
     static CountedPtr< PolygonalSurface >
-    makePrimalPolygonalSurface( CountedPtr< DGtal::DigitalSurface<TContainer> > aSurface )
+    makePrimalPolygonalSurface( CountedPtr< ::DGtal::DigitalSurface<TContainer> > aSurface )
     {
       Cell2Index c2i;
       return makePrimalPolygonalSurface( c2i, aSurface );
@@ -1846,7 +1846,7 @@ namespace DGtal
     template < typename TContainer >
     static CountedPtr< PolygonalSurface >
     makePrimalPolygonalSurface
-    ( CountedPtr< DGtal::IndexedDigitalSurface<TContainer> > aSurface )
+    ( CountedPtr< ::DGtal::IndexedDigitalSurface<TContainer> > aSurface )
     {
       auto dsurf = makeDigitalSurface( aSurface );
       Cell2Index c2i;
@@ -1862,7 +1862,7 @@ namespace DGtal
     template <typename TPoint>
     static bool
     saveOBJ
-    ( CountedPtr< DGtal::PolygonalSurface<TPoint> > polysurf,
+    ( CountedPtr< ::DGtal::PolygonalSurface<TPoint> > polysurf,
       const std::string&                            objfile )
     {
       std::ofstream output( objfile.c_str() );
@@ -1880,7 +1880,7 @@ namespace DGtal
     template <typename TPoint>
     static bool
     saveOBJ
-    ( CountedPtr< DGtal::TriangulatedSurface<TPoint> > trisurf,
+    ( CountedPtr< ::DGtal::TriangulatedSurface<TPoint> > trisurf,
       const std::string&                               objfile )
     {
       std::ofstream output( objfile.c_str() );
@@ -1904,7 +1904,7 @@ namespace DGtal
     template <typename TPoint>
     static bool
     saveOBJ
-    ( CountedPtr< DGtal::PolygonalSurface<TPoint> > polysurf,
+    ( CountedPtr< ::DGtal::PolygonalSurface<TPoint> > polysurf,
       const RealVectors&                            normals,
       const Colors&                                 diffuse_colors,
       std::string                                   objfile,
@@ -1943,7 +1943,7 @@ namespace DGtal
     template <typename TPoint>
     static bool
     saveOBJ
-    ( CountedPtr< DGtal::TriangulatedSurface<TPoint> > trisurf,
+    ( CountedPtr< ::DGtal::TriangulatedSurface<TPoint> > trisurf,
       const RealVectors&                            normals,
       const Colors&                                 diffuse_colors,
       std::string                                   objfile,
