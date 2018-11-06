@@ -163,19 +163,11 @@ when they are well-composed.
 
 @subsubsection dgtal_shortcuts_ssec2_2_3 -> digitize -> build indexed surface on a subpart
 
-\code
-  params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 )
-        ( "minAABB", -12.0 )( "maxAABB", 12.0 )
-        ( "surfaceComponents", "All" ) );
-  auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
-  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
-  auto Kwhole          = SH3::getKSpace( params );
-  auto K               = SH3::getKSpace( SH3::Point::zero, Kwhole.upperBound(), params );
-  auto binary_image    = SH3::makeBinaryImage( digitized_shape, 
-                                               SH3::Domain(K.lowerBound(),K.upperBound()),
-					       params );
-  auto surface         = SH3::makeIdxDigitalSurface( binary_image, K, params );
-\endcode
+You may choose which part of a domain is digitized as a binary image,
+here the first orthant is chosen.
+
+\snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_2_3s
+
 
 @subsubsection dgtal_shortcuts_ssec2_2_4 -> digitize -> extract ground-truth geometry
 
