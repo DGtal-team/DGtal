@@ -144,6 +144,14 @@ You may choose your traversal order ("Default", "DepthFirst", "BreadthFirst").
 
 \image html al-primal-bft-blender-small.png "Blender rendering of Al Capone with a breadth-first traversal colored according to distance (blue to red)."
 
+@subsubsection dgtal_shortcuts_ssec2_1_6 -> build digital surface -> estimate mean curvature -> save OBJ.
+
+This example requires ShortcutsGeometry. It shows how tu use the integral invariant curvature estimator on a digital shape model to estimate its mean curvature.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_1_6s
+
+\image html al-H-II-blender-small.png "Blender rendering of Al Capone with estimated mean curvatures (blue is negative, white zero, red is positive). "
+
 
 @subsection dgtal_shortcuts_ssec2_2 Build polynomial shape -> ...
 
@@ -396,6 +404,8 @@ The following name conventions for types are used:
   - ShortcutsGeometry::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
   - ShortcutsGeometry::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
   - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range
+  - ShortcutsGeometry::getIIMeanCurvatures: returns the Integral Invariant (II) mean curvatures onto the given surfel range
+  - ShortcutsGeometry::getIIGaussianCurvatures: returns the Integral Invariant (II) Gaussian curvatures onto the given surfel range
 
 
 @subsection dgtal_shortcuts_ssec3_4 Parameters

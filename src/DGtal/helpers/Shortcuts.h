@@ -999,6 +999,7 @@ namespace DGtal
     getCellEmbedder
     ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
     {
+      trace.info() << "getCellEmbedder" << std::endl;
       return getCellEmbedder( refKSpace( surface ) );
     }
 
@@ -1611,9 +1612,11 @@ namespace DGtal
       output_mtl << "#  MTL format"<< std::endl;
       output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
       // Number and output vertices.
+      trace.info() << "Number and output vertices"  << std::endl;
       const KSpace&     K = refKSpace( digsurf );
       Cell2Index      c2i;
       auto       pointels = getPointelRange( c2i, digsurf );
+      trace.info() << "#pointels=" << pointels.size() << std::endl;
       for ( auto&& pointel : pointels ) {
 	    RealPoint p = embedder( pointel );
 	    output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;

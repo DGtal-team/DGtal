@@ -567,7 +567,7 @@ namespace DGtal
     }
 
     /// Given a digital shape \a bimage, a sequence of \a surfels,
-    /// and some parameters \a vm, returns the normal Integral
+    /// and some parameters \a params, returns the normal Integral
     /// Invariant (VCM) estimation at the specified surfels, in the
     /// same order.
     ///
@@ -620,6 +620,111 @@ namespace DGtal
       return n_estimations;
     }
 
+    /// Given a digital shape \a bimage, a sequence of \a surfels,
+    /// and some parameters \a vm, returns the mean curvature Integral
+    /// Invariant (II) estimation at the specified surfels, in the
+    /// same order.
+    ///
+    /// @param[in] bimage the characteristic function of the shape as a binary image (inside is true, outside is false).
+    /// @param[in] surfels the sequence of surfels at which we compute the mean curvatures
+    /// @param[in] params the parameters:
+    ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+    ///
+    /// @return the vector containing the estimated mean curvatures, in the
+    /// same order as \a surfels.
+    ///
+    /// @note The function is faster when surfels are in a specific order, as
+    /// given for instance by a depth-first traversal (@see getSurfelRange)
+    static Scalars
+    getIIMeanCurvatures( CountedPtr<BinaryImage> bimage,
+			 const SurfelRange&      surfels,
+			 const Parameters&       params
+			 = parametersGeometryEstimation()
+			 | parametersKSpace() )
+    {
+      typedef functors::IIMeanCurvature3DFunctor<Space> IIMeanCurvFunctor;
+      typedef IntegralInvariantVolumeEstimator
+	<KSpace, BinaryImage, IIMeanCurvFunctor>        IIMeanCurvEstimator;
+      auto K =  getKSpace( bimage, params );
+
+      Scalars  mc_estimations;
+      int      verbose = params[ "verbose"   ].as<int>();
+      Scalar   h       = params[ "gridstep"  ].as<Scalar>();
+      Scalar   r       = params[ "r-radius"  ].as<Scalar>();
+      Scalar   alpha   = params[ "alpha"     ].as<Scalar>();
+      if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
+      if ( verbose > 0 ) {
+	trace.info() << "- II mean curvature alpha=" << alpha << std::endl;
+	trace.info() << "- II mean curvature r=" << (r*h)  << " (continuous) "
+		     << r << " (discrete)" << std::endl;
+      }
+      IIMeanCurvFunctor   functor;
+      functor.init( h, r*h );
+      IIMeanCurvEstimator ii_estimator( functor );
+      ii_estimator.attach( K, *bimage );
+      ii_estimator.setParams( r );
+      ii_estimator.init( h, surfels.begin(), surfels.end() );
+      ii_estimator.eval( surfels.begin(), surfels.end(),
+			 std::back_inserter( mc_estimations ) );
+      return mc_estimations;
+    }
+
+    /// Given a digital shape \a bimage, a sequence of \a surfels,
+    /// and some parameters \a vm, returns the Gaussian curvature Integral
+    /// Invariant (II) estimation at the specified surfels, in the
+    /// same order.
+    ///
+    /// @param[in] bimage the characteristic function of the shape as a binary image (inside is true, outside is false).
+    /// @param[in] surfels the sequence of surfels at which we compute the Gaussian curvatures
+    /// @param[in] params the parameters:
+    ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+    ///
+    /// @return the vector containing the estimated Gaussian curvatures, in the
+    /// same order as \a surfels.
+    ///
+    /// @note The function is faster when surfels are in a specific order, as
+    /// given for instance by a depth-first traversal (@see getSurfelRange)
+    static Scalars
+    getIIGaussianCurvatures( CountedPtr<BinaryImage> bimage,
+			     const SurfelRange&      surfels,
+			     const Parameters&       params
+			     = parametersGeometryEstimation()
+			     | parametersKSpace() )
+    {
+      typedef functors::IIGaussianCurvature3DFunctor<Space> IIGaussianCurvFunctor;
+      typedef IntegralInvariantCovarianceEstimator
+	<KSpace, BinaryImage, IIGaussianCurvFunctor>        IIGaussianCurvEstimator;
+      auto K =  getKSpace( bimage, params );
+
+      Scalars  mc_estimations;
+      int      verbose = params[ "verbose"   ].as<int>();
+      Scalar   h       = params[ "gridstep"  ].as<Scalar>();
+      Scalar   r       = params[ "r-radius"  ].as<Scalar>();
+      Scalar   alpha   = params[ "alpha"     ].as<Scalar>();
+      if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
+      if ( verbose > 0 ) {
+	trace.info() << "- II Gauss curvature alpha=" << alpha << std::endl;
+	trace.info() << "- II Gauss curvature r=" << (r*h)  << " (continuous) "
+		     << r << " (discrete)" << std::endl;
+      }
+      IIGaussianCurvFunctor   functor;
+      functor.init( h, r*h );
+      IIGaussianCurvEstimator ii_estimator( functor );
+      ii_estimator.attach( K, *bimage );
+      ii_estimator.setParams( r );
+      ii_estimator.init( h, surfels.begin(), surfels.end() );
+      ii_estimator.eval( surfels.begin(), surfels.end(),
+			 std::back_inserter( mc_estimations ) );
+      return mc_estimations;
+    }
+
+    
     // ------------------------- Error measures services -------------------------
 
     /// Orient \a v so that it points in the same direction as \a
