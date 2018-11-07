@@ -343,6 +343,8 @@ The following name conventions for types are used:
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
   - Shortcuts::getKSpace: overloaded methods for building a Khalimsky space from a domain or an image, from a bounding box, from a digitization process, or from a (indexed or not) digital surface.
   - Shortcuts::refKSpace: overloaded methods for referencing the Khalimsky space of a (indexed or not) digital surface.
+  - Shortcuts::getCellEmbedder: returns the canonic cell embedder of the given space.
+  - Shortcuts::getSCellEmbedder: returns the canonic signed cell embedder of the given space.
 
 -# DigitizedImplicitShape3D methods
   - Shortcuts::parametersDigitizedImplicitShape3D: parameters related to shape digitization (bounding box, sampling)
@@ -365,6 +367,8 @@ The following name conventions for types are used:
 
 -# DigitalSurface methods
   - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, components, internal heuristics)
+  - Shortcuts::getCellEmbedder: returns the canonic cell embedder of the given (indexed or not) digital surface
+  - Shortcuts::getSCellEmbedder: returns the canonic signed cell embedder of the given (indexed or not) digital surface.
   - Shortcuts::makeLightDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
   - Shortcuts::makeLightDigitalSurfaces: creates the vector of all light digital surfaces of the binary image or any one of its big components, can also output representant surfels
   - Shortcuts::makeDigitalSurface: creates an arbitrary (connected or not) digital surface from a binary image or from an indexed digital surface.
