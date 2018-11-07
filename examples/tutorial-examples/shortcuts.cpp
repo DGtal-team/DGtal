@@ -231,7 +231,7 @@ int main( int /* argc */, char** /* argv */ )
 	colors[ i ] = cmap( label[ all_surfels[ i ] ] );
       bool ok = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "leopold-primal-cc.obj" );
       //! [dgtal_shortcuts_ssec2_2_4s]
-      ++nb, nbok += surface->size() > 1000 ? 1 : 0;
+      ++nb, nbok += ok ? 1 : 0;
     }
     trace.endBlock();
   }

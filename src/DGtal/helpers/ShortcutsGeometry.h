@@ -256,7 +256,6 @@ namespace DGtal
       int     maxIter = params[ "projectionMaxIter"  ].as<int>();
       double accuracy = params[ "projectionAccuracy" ].as<double>();
       double    gamma = params[ "projectionGamma"    ].as<double>();
-      double gridstep = 1.0; // not used, dummy value
       for ( unsigned int i = 0; i < points.size(); ++i )
 	proj_points[ i ] = shape->nearestPoint( points[ i ], accuracy,
 						maxIter, gamma );
