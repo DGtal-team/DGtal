@@ -60,10 +60,11 @@ builds a shape that represents the digitization of an ellipsoid.
 As one can see, a Parameters object stores parameter values and can be
 simply updated by the user with the function operator().
 
-Big objects (like images, shapes, surfaces) are always returned or
-passed as smart pointers (with CountedPtr). Hence you do not have to
-take care of their life-length and you do not need to delete them
-explicitly.
+\note Big objects (like images, shapes, surfaces) are always returned
+or passed as smart pointers (with CountedPtr). Smaller objects (like
+vectors of scalars, etc) are efficiently passed by value. Hence you
+never have to take care of their life-length and you do not need to
+delete them explicitly.
 
 
 @section dgtal_shortcuts_sec2 Short 3D examples
@@ -168,24 +169,23 @@ here the first orthant is chosen.
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_2_3s
 
+@subsubsection dgtal_shortcuts_ssec2_2_4 -> digitize -> noisify -> count components -> save OBJ with different colors.
 
-@subsubsection dgtal_shortcuts_ssec2_2_4 -> digitize -> extract ground-truth geometry
+\snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_2_4s
 
-\code
-  params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 );
-  auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
-  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
-  auto binary_shape    = SH3::makeBinaryImage      ( digitized_shape, params );
-  auto K               = SH3::getKSpace( params );
-  auto surface         = SH3::makeLightDigitalSurface( binary_image, K, params );
-  auto surfels         = SH3::getSurfelRange( surface, params );
-  auto positions       = SHG3::getPositions( implicit_shape, K, surfels, params );
-  auto normals         = SHG3::getNormalVectors( implicit_shape, K, surfels, params );
-  auto mean_curvs      = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params );
-  auto gauss_curvs     = SHG3::getGaussianCurvatures( implicit_shape, K, surfels, params );
-\endcode
+\image html leopold-primal-cc-blender-small.png "Blender rendering of leopold-primal-cc.obj."
 
-@subsubsection dgtal_shortcuts_ssec2_2_5 -> digitize -> extract mean curvature -> save as OBJ with colors
+
+@subsubsection dgtal_shortcuts_ssec2_2_5 -> digitize -> extract ground-truth geometry
+
+This example requires ShortcutsGeometry. It shows you how to recover
+ground-truth positions, normal vectors, mean and Gaussian curvatures
+onto an implicit 3D shape. For each surfel, the geometry is the one of
+the point nearest to the given surfel centroid.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_5s
+
+@subsubsection dgtal_shortcuts_ssec2_2_6 -> digitize -> extract mean curvature -> save as OBJ with colors
 
 \code
   params( "polynomial", "goursat" )( "gridstep", 0.25 )( "Traversal", "Default" );
@@ -370,6 +370,7 @@ The following name conventions for types are used:
   - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from light digital surface(s).
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
+  - Shortcuts::getPointelRange: returns the pointels of a digital surface in the default order and optionnaly the map Pointel -> Index giving the indices of each pointel.
   - Shortcuts::saveOBJ: saves a digital surface as an OBJ file, with optionally positions, normals and colors information.
 
 -# Mesh services
