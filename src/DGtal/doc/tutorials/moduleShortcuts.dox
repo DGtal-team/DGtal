@@ -341,7 +341,8 @@ The following name conventions for types are used:
 
 -# KSpace methods
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
-  - Shortcuts::getKSpace: overloaded methods for building a Khalimsky space from a domain or an image, from a bounding box, or from a digitization process.
+  - Shortcuts::getKSpace: overloaded methods for building a Khalimsky space from a domain or an image, from a bounding box, from a digitization process, or from a (indexed or not) digital surface.
+  - Shortcuts::refKSpace: overloaded methods for referencing the Khalimsky space of a (indexed or not) digital surface.
 
 -# DigitizedImplicitShape3D methods
   - Shortcuts::parametersDigitizedImplicitShape3D: parameters related to shape digitization (bounding box, sampling)
