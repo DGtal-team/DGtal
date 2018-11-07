@@ -1383,10 +1383,10 @@ namespace DGtal
     {
       PointelRange result;
       result.reserve( surface->size() );
-      const KSpace& K = surface->container.space();
+      const KSpace& K = refKSpace( surface );
       Idx n = 0;
       for ( auto&& surfel : *surface ) {
-	CellRange primal_vtcs = getPrimalVertices( K, surfel );
+	CellRange primal_vtcs = getPointelRange( K, surfel );
 	for ( auto&& primal_vtx : primal_vtcs ) {
 	  if ( ! c2i.count( primal_vtx ) ) {
 	    result.push_back( primal_vtx );
@@ -1396,7 +1396,7 @@ namespace DGtal
       }
       return result;
     }
-    
+
     /// Given any digital surface, returns the vector of its pointels.
     ///
     /// @note The order of pointels is given by the default traversal
@@ -1420,6 +1420,21 @@ namespace DGtal
     {
       Cell2Index c2i;
       return getPointelRange( c2i, surface );
+    }
+
+    /// Given any surfel, returns its 4 pointels in ccw order.
+    ///
+    /// @see getPrimalVertices
+    ///
+    /// @param[in] K the Khalimsky space
+    /// @param[in] surfel any surfel that lives in the Khalimsky space
+    ///
+    /// @return a range of pointels as a vector.
+    static PointelRange
+    getPointelRange
+    ( const KSpace& K, const SCell& surfel )
+    {
+      return getPrimalVertices( K, surfel, true );
     }
     
     /// Given any digital surface, returns a vector of surfels in
@@ -1595,20 +1610,13 @@ namespace DGtal
       output_mtl << "#  MTL format"<< std::endl;
       output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
       // Number and output vertices.
-      const KSpace&       K = digsurf->container().space();
-      std::map<Cell, Idx> vtx_numbering;
-      Idx                 n = 1; // indexing starts at 1 in OBJ file format.  
-      for ( auto&& surfel : *digsurf ) {
-	CellRange primal_vtcs = getPrimalVertices( K, surfel );
-	for ( auto&& primal_vtx : primal_vtcs ) {
-	  if ( ! vtx_numbering.count( primal_vtx ) ) {
-	    vtx_numbering[ primal_vtx ] = n++;
-	    // Output vertex positions
-	    RealPoint p = embedder( primal_vtx );
+      const KSpace&     K = refKSpace( digsurf );
+      Cell2Index      c2i;
+      auto       pointels = getPointelRange( c2i, digsurf );
+      for ( auto&& pointel : pointels ) {
+	    RealPoint p = embedder( pointel );
 	    output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
-	  }
-	}
-      }
+      }	
       // Taking care of normals
       Idx nbfaces = digsurf->size();
       bool has_normals = ( nbfaces == normals.size() );
@@ -1643,13 +1651,14 @@ namespace DGtal
 		   << ( has_material ? mapMaterial[ diffuse_colors[ f ] ] : idxMaterial )
 		   << std::endl; 
 	output_obj << "f";
-	CellRange primal_vtcs = getPrimalVertices( K, surfel, true );
+	auto primal_vtcs = getPointelRange( K, surfel );
+	// The +1 in lines below is because indexing starts at 1 in OBJ file format.
 	if ( has_normals ) {
 	  for ( auto&& primal_vtx : primal_vtcs )
-	    output_obj << " " << vtx_numbering[ primal_vtx ] << "//" << (f+1);
+	    output_obj << " " << (c2i[ primal_vtx ]+1) << "//" << (f+1);
 	} else {
 	  for ( auto&& primal_vtx : primal_vtcs )
-	    output_obj << " " << vtx_numbering[ primal_vtx ];
+	    output_obj << " " << (c2i[ primal_vtx ]+1);
 	}
 	output_obj << std::endl;
 	f += 1;
@@ -2306,7 +2315,7 @@ namespace DGtal
       std::map< Cell, Size > vtx_numbering;
       Size n = 1;  // OBJ vertex numbering start at 1 
       for ( auto&& s : surfels ) {
-	CellRange primal_vtcs = getPrimalVertices( K, s );
+	auto primal_vtcs = getPointelRange( K, s );
 	for ( auto&& primal_vtx : primal_vtcs ) {
 	  if ( ! vtx_numbering.count( primal_vtx ) ) {
 	    vtx_numbering[ primal_vtx ] = n++;
@@ -2319,7 +2328,7 @@ namespace DGtal
       // Outputs all faces
       for ( auto&& s : surfels ) {
 	output << "f";
-	CellRange primal_vtcs = getPrimalVertices( K, s, true );
+	auto primal_vtcs = getPointelRange( K, s, true );
 	for ( auto&& primal_vtx : primal_vtcs ) {
 	  output << " " << vtx_numbering[ primal_vtx ];
 	}
