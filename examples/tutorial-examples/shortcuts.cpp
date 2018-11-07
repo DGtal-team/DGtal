@@ -234,31 +234,6 @@ int main( int argc, char** argv )
       ++nb, nbok += surface->size() > 1000 ? 1 : 0;
     }
     trace.endBlock();
-
-    trace.beginBlock ( "Build polynomial shape -> digitize -> extract ground-truth geometry." );
-    {
-      auto params          = SH3::defaultParameters();
-      //! [dgtal_shortcuts_ssec2_2_5s]
-      params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 );
-      auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
-      auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
-      auto binary_shape    = SH3::makeBinaryImage      ( digitized_shape, params );
-      auto K               = SH3::getKSpace( params );
-      auto surface         = SH3::makeLightDigitalSurface( binary_image, K, params );
-      auto surfels         = SH3::getSurfelRange( surface, params );
-      auto positions       = SHG3::getPositions( implicit_shape, K, surfels, params );
-      auto normals         = SHG3::getNormalVectors( implicit_shape, K, surfels, params );
-      auto mean_curvs      = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params );
-      auto gauss_curvs     = SHG3::getGaussianCurvatures( implicit_shape, K, surfels, params );
-      //! [dgtal_shortcuts_ssec2_2_5s]
-      auto stat_mean       = SHG3::getStatistic( mean_curvs );
-      auto stat_gauss      = SHG3::getStatistic( gauss_curvs );
-      trace.info() << " min(H)=" << stat_mean.min()
-		   << " avg(H)=" << stat_mean.mean()
-		   << " max(H)=" << stat_mean.max() << std::endl;
-      trace.info() << " min(G)=" << stat_gauss.min()
-		   << " avg(G)=" << stat_gauss.mean()
-		   << " max(G)=" << stat_gauss.max() << std::endl;
   }
   
   trace.info() << nbok << "/" << nb << " passed tests." << std::endl;

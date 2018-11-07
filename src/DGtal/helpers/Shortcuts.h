@@ -998,7 +998,7 @@ namespace DGtal
     getCellEmbedder
     ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
     {
-      return getCellEmbedder( surface.refKSpace() );
+      return getCellEmbedder( refKSpace( surface ) );
     }
 
     /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
@@ -1009,7 +1009,7 @@ namespace DGtal
     getSCellEmbedder
     ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
     {
-      return getSCellEmbedder( surface.refKSpace() );
+      return getSCellEmbedder( refKSpace( surface ) );
     }
 
     /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
@@ -1020,7 +1020,7 @@ namespace DGtal
     getCellEmbedder
     ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
     {
-      return getCellEmbedder( surface.refKSpace() );
+      return getCellEmbedder( refKSpace( surface ) );
     }
 
     /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
@@ -1031,7 +1031,7 @@ namespace DGtal
     getSCellEmbedder
     ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
     {
-      return getSCellEmbedder( surface.refKSpace() );
+      return getSCellEmbedder( refKSpace( surface ) );
     }
     
     /// Builds a light digital surface from a space \a K and a binary image \a bimage.
@@ -1684,7 +1684,7 @@ namespace DGtal
       const Color&                   diffuse_color  = Color( 200, 200, 255 ),
       const Color&                   specular_color = Color::White )
     {
-      CanonicCellEmbedder< KSpace > embedder( digsurf->container().space() );
+      auto embedder = getCellEmbedder( digsurf );
       return saveOBJ( digsurf, embedder, normals, diffuse_colors, objfile,
 		      ambient_color, diffuse_color, specular_color );
     }
@@ -1710,7 +1710,7 @@ namespace DGtal
       const Color&                   diffuse_color  = Color( 200, 200, 255 ),
       const Color&                   specular_color = Color::White )
     {
-      CanonicCellEmbedder< KSpace > embedder( digsurf->container().space() );
+      auto embedder = getCellEmbedder( digsurf );
       return saveOBJ( digsurf, embedder, RealVectors(), Colors(), objfile,
 		      ambient_color, diffuse_color, specular_color );
     }
@@ -1793,11 +1793,11 @@ namespace DGtal
     makeTriangulatedSurface( Surfel2Index& s2i,
 			     CountedPtr< ::DGtal::DigitalSurface< TContainer > > aSurface )
     {
-      CanonicCellEmbedder< KSpace > cembedder( aSurface->container().space() );
+      auto embedder = getCellEmbedder( aSurface );
       auto pTriSurf = CountedPtr<TriangulatedSurface>
 	    ( new TriangulatedSurface ); // acquired
       MeshHelpers::digitalSurface2DualTriangulatedSurface
-	( *aSurface, cembedder, *pTriSurf, s2i );
+	( *aSurface, embedder, *pTriSurf, s2i );
       return pTriSurf;
     }
 
@@ -1958,11 +1958,11 @@ namespace DGtal
 			      CountedPtr< ::DGtal::DigitalSurface< TContainer > > aSurface )
     {
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
-      CanonicCellEmbedder< KSpace > cembedder;
+      auto embedder = getCellEmbedder( aSurface );
       auto pPolySurf = CountedPtr<PolygonalSurface>
 	    ( new PolygonalSurface ); // acquired
       MeshHelpers::digitalSurface2DualPolygonalSurface
-	( *aSurface, cembedder, *pPolySurf, s2i );
+	( *aSurface, embedder, *pPolySurf, s2i );
       return pPolySurf;
     }
 
@@ -1992,7 +1992,6 @@ namespace DGtal
     ( CountedPtr< ::DGtal::IndexedDigitalSurface< TContainer > > aSurface )
     {
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
-      CanonicCellEmbedder< KSpace > cembedder;
       auto pPolySurf = CountedPtr<PolygonalSurface>
 	( new PolygonalSurface( aSurface->heds(),
 				aSurface->positions().storage() ) );
@@ -2012,11 +2011,11 @@ namespace DGtal
 				CountedPtr< ::DGtal::DigitalSurface<TContainer> > aSurface )
     {
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
-      CanonicCellEmbedder< KSpace > cembedder;
+      auto embedder = getCellEmbedder( aSurface );
       auto pPolySurf = CountedPtr<PolygonalSurface>
 	( new PolygonalSurface ); // acquired
       bool ok = MeshHelpers::digitalSurface2PrimalPolygonalSurface
-	( *aSurface, cembedder, *pPolySurf, c2i );
+	( *aSurface, embedder, *pPolySurf, c2i );
       return ok ? pPolySurf : CountedPtr< PolygonalSurface >( nullptr );
     }
 
@@ -2345,7 +2344,7 @@ namespace DGtal
     ( std::ostream&              output,
       CountedPtr<TAnyDigitalSurface> surface )
     {
-      CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
+      auto embedder = getCellEmbedder( surface );
       return outputPrimalDigitalSurfaceAsObj( output, surface, embedder );
     }
     
@@ -2387,7 +2386,7 @@ namespace DGtal
     ( std::ostream&              output,
       CountedPtr<IdxDigitalSurface> surface )
     {
-      CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
+      auto embedder = getCellEmbedder( surface );
       return outputPrimalIdxDigitalSurfaceAsObj( output, surface, embedder );
     }
     
@@ -2436,7 +2435,7 @@ namespace DGtal
       CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface,
       const Parameters&   params = parametersMesh() )
     {
-      CanonicCellEmbedder< KSpace > embedder( surface->container().space() );
+      auto embedder = getCellEmbedder( surface );
       return outputDualDigitalSurfaceAsObj( output, surface, embedder, params );
     }
     
