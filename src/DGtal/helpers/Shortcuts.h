@@ -1251,6 +1251,82 @@ namespace DGtal
     }    
 
     
+    /// Given any digital surface, returns the vector of its pointels.
+    ///
+    /// @note The order of pointels is given by the default traversal
+    /// of the surfels of the surface, where the 4 pointels of each
+    /// surfel are visited in order.
+    ///
+    /// @note If you wish to consider the primal digital surface, and
+    /// visits pointels as vertices of this graph in
+    /// breadth-first/depth-first order, the best is to build first a
+    /// PolygonalSurface and then use specialized visitors.
+    ///
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    ///
+    /// @param[out] c2i the map Cell -> Vertex index in the pointel range.
+    /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
+    ///
+    /// @return a range of pointels as a vector.
+    template <typename TDigitalSurfaceContainer>
+    static PointelRange
+    getPointelRange
+    ( Cell2Index& c2i,
+      CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface )
+    {
+      PointelRange result;
+      result.reserve( surface->size() );
+      const KSpace& K = surface->container.space();
+      Idx n = 0;
+      for ( auto&& surfel : *digsurf ) {
+	CellRange primal_vtcs = getPrimalVertices( K, surfel );
+	for ( auto&& primal_vtx : primal_vtcs ) {
+	  if ( ! c2i.count( primal_vtx ) ) {
+	    result.push_back( primal_vtx );
+	    c2i[ primal_vtx ] = n++;
+	  }
+	}
+      }
+      return result;
+    }
+    
+    /// Given any digital surface, returns the vector of its pointels.
+    ///
+    /// @note The order of pointels is given by the default traversal
+    /// of the surfels of the surface, where the 4 pointels of each
+    /// surfel are visited in order.
+    ///
+    /// @note If you wish to consider the primal digital surface, and
+    /// visits pointels as vertices of this graph in
+    /// breadth-first/depth-first order, the best is to build first a
+    /// PolygonalSurface and then use specialized visitors.
+    ///
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    ///
+    /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
+    ///
+    /// @return a range of pointels as a vector.
+    template <typename TDigitalSurfaceContainer>
+    static PointelRange
+    getPointelRange
+    ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface )
+    {
+      PointelRange result;
+      result.reserve( surface->size() );
+      const KSpace& K = surface->container.space();
+      Idx n = 0;
+      for ( auto&& surfel : *digsurf ) {
+	CellRange primal_vtcs = getPrimalVertices( K, surfel );
+	for ( auto&& primal_vtx : primal_vtcs ) {
+	  if ( ! c2i.count( primal_vtx ) ) {
+	    result.push_back( primal_vtx );
+	    c2i[ primal_vtx ] = n++;
+	  }
+	}
+      }
+      return result;
+    }
+    
     /// Given any digital surface, returns a vector of surfels in
     /// some specified order.
     ///
@@ -1622,7 +1698,7 @@ namespace DGtal
     makeTriangulatedSurface( Surfel2Index& s2i,
 			     CountedPtr< ::DGtal::DigitalSurface< TContainer > > aSurface )
     {
-      CanonicCellEmbedder< KSpace > cembedder;
+      CanonicCellEmbedder< KSpace > cembedder( aSurface->container().space() );
       auto pTriSurf = CountedPtr<TriangulatedSurface>
 	    ( new TriangulatedSurface ); // acquired
       MeshHelpers::digitalSurface2DualTriangulatedSurface
