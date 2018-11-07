@@ -48,6 +48,26 @@ int main( int /* argc */, char** /* argv */ )
   typedef Shortcuts< Z3i::KSpace >         SH3;
   typedef ShortcutsGeometry< Z3i::KSpace > SHG3;
 
+  trace.beginBlock ( "Load vol file -> build digital surface -> estimate mean curvature -> save OBJ." );
+  {
+    //! [dgtal_shortcuts_ssec2_1_6s]
+    auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
+    params( "colormap", "Tics" );
+    auto bimage    = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+    auto K         = SH3::getKSpace( bimage, params );
+    auto surface   = SH3::makeDigitalSurface( bimage, K, params );
+    auto surfels   = SH3::getSurfelRange( surface, params );
+    auto mean_curv = SHG3::getIIMeanCurvatures( bimage, surfels, params );
+    auto cmap      = SH3::getColorMap( -0.5, 0.5, params );
+    auto colors    = SH3::Colors( surfels.size() );
+    std::transform( mean_curv.cbegin(), mean_curv.cend(), colors.begin(), cmap );
+    bool ok        = SH3::saveOBJ( surface, SH3::RealVectors(), colors,
+				   "al-H-II.obj" );
+    //! [dgtal_shortcuts_ssec2_1_6s]
+    ++nb, nbok += ok ? 1 : 0;
+  }
+  trace.endBlock();
+  
   trace.beginBlock ( "Build polynomial shape -> digitize -> extract ground-truth geometry." );
   {
     auto params          = SH3::defaultParameters();
@@ -111,7 +131,7 @@ int main( int /* argc */, char** /* argv */ )
   {
     auto params          = SH3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_7s]
-    params( "polynomial", "goursat" )( "gridstep", 0.25 )( "Traversal", "Default" );
+    params( "polynomial", "goursat" )( "gridstep", 0.25 )( "colormap", "Tics" );
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
     auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
     auto binary_image    = SH3::makeBinaryImage      ( digitized_shape, params );
@@ -119,7 +139,7 @@ int main( int /* argc */, char** /* argv */ )
     auto surface         = SH3::makeLightDigitalSurface( binary_image, K, params );
     auto surfels         = SH3::getSurfelRange( surface, params );
     auto mean_curv       = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params );
-    auto cmap            = SH3::getColorMap( -0.3, 0.3 );
+    auto cmap            = SH3::getColorMap( -0.3, 0.3, params );
     auto colors          = SH3::Colors( surfels.size() );
     std::transform( mean_curv.cbegin(), mean_curv.cend(), colors.begin(), cmap );
     bool ok              = SH3::saveOBJ( surface, SH3::RealVectors(), colors,
