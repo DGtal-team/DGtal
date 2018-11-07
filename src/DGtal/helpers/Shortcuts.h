@@ -173,6 +173,7 @@ namespace DGtal
     typedef std::vector< IdxSurfel >                            IdxSurfelRange;
     typedef std::vector< Scalar >                               Scalars;
     typedef std::vector< RealVector >                           RealVectors;
+    typedef std::vector< RealPoint >                            RealPoints;
     typedef IdxVertex                                           Idx;
     typedef std::vector< IdxVertex >                            IdxRange;
 
@@ -1630,6 +1631,9 @@ namespace DGtal
       bool has_material = ( nbfaces == diffuse_colors.size() );
       Idx   idxMaterial = 0;
       std::map<Color, unsigned int > mapMaterial;
+      // MeshHelpers::exportMTLNewMaterial
+      // 	( output_mtl, idxMaterial, ambient_color, Color::Black, specular_color );
+      // mapMaterial[ Color::Black ] = idxMaterial++;
       if ( has_material ) {
 	for ( Idx f = 0; f < nbfaces; ++f ) {
 	  Color c = diffuse_colors[ f ];
@@ -1663,6 +1667,15 @@ namespace DGtal
 	output_obj << std::endl;
 	f += 1;
       }
+      // output_obj << "usemtl material_" << 0 << std::endl;
+      // for ( auto&& surfel : *digsurf ) {
+      // 	output_obj << "l";
+      // 	auto primal_vtcs = getPointelRange( K, surfel );
+      // 	// The +1 in lines below is because indexing starts at 1 in OBJ file format.
+      // 	for ( auto&& primal_vtx : primal_vtcs )
+      // 	  output_obj << " " << (c2i[ primal_vtx ]+1);
+      // 	output_obj << std::endl;
+      // }
       output_mtl.close();
       return output_obj.good();
     }

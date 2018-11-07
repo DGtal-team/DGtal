@@ -147,6 +147,7 @@ namespace DGtal
     typedef std::vector< IdxSurfel >                            IdxSurfelRange;
     typedef std::vector< Scalar >                               Scalars;
     typedef std::vector< RealVector >                           RealVectors;
+    typedef std::vector< RealPoint >                            RealPoints;
 
     typedef ::DGtal::Statistic<Scalar>                          ScalarStatistic;
     
@@ -204,7 +205,7 @@ namespace DGtal
     ///
     /// @param[in] shape the implicit shape.
     /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
-    /// @param[in] surfels the sequence of surfels at which we compute the normals
+    /// @param[in] surfels the sequence of surfels that we project onto the shape's surface
     /// @param[in] params the parameters:
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
@@ -212,7 +213,7 @@ namespace DGtal
     ///
     /// @return the vector containing the true normals, in the same
     /// order as \a surfels.
-    static RealVectors
+    static RealPoints
     getPositions
     ( CountedPtr<ImplicitShape3D> shape,
       const KSpace&               K,
@@ -231,6 +232,35 @@ namespace DGtal
       true_estimator.eval( surfels.begin(), surfels.end(),
 			   std::back_inserter( n_true_estimations ) );
       return n_true_estimations;
+    }
+
+    /// Given an implicit \a shape and a sequence of \a points,
+    /// returns the closest positions on the surface at the specified
+    /// points, in the same order.
+    ///
+    /// @param[in] shape the implicit shape.
+    /// @param[in] points the sequence of points that we project onto the shape's surface.
+    /// @param[in] params the parameters:
+    ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+    ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+    ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+    ///
+    /// @return the vector containing the projected points.
+    static RealPoints
+    getPositions
+    ( CountedPtr<ImplicitShape3D> shape,
+      const RealPoints&           points,
+      const Parameters&           params = parametersShapeGeometry() )
+    {
+      RealPoints proj_points( points.size() );
+      int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+      double accuracy = params[ "projectionAccuracy" ].as<double>();
+      double    gamma = params[ "projectionGamma"    ].as<double>();
+      double gridstep = 1.0; // not used, dummy value
+      for ( unsigned int i = 0; i < points.size(); ++i )
+	proj_points[ i ] = shape->nearestPoint( points[ i ], accuracy,
+						maxIter, gamma );
+      return proj_points;
     }
     
     /// Given a space \a K, an implicit \a shape, a sequence of \a
