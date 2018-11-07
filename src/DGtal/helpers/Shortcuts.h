@@ -424,6 +424,23 @@ namespace DGtal
       return surface->container().space();
     }
 
+    /// @param[in] K any Khalimsky space.
+    /// @return the canonic cell embedder associated to the given Khalimsky space.
+    static CanonicCellEmbedder<KSpace>
+    getCellEmbedder( const KSpace& K )
+    {
+      return CanonicCellEmbedder<KSpace>( K );
+    }
+
+    /// @param[in] K any Khalimsky space.
+    /// @return the canonic signed cell embedder associated to the given Khalimsky space.
+    static CanonicSCellEmbedder<KSpace>
+    getSCellEmbedder( const KSpace& K )
+    {
+      return CanonicSCellEmbedder<KSpace>( K );
+    }
+      
+    
     // ----------------------- DigitizedImplicitShape3D static services --------------
   public:
     
@@ -973,6 +990,50 @@ namespace DGtal
 	( "surfaceTraversal",  "Default" );
     }
 
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
+    /// @return the canonic cell embedder associated to the given digital surface.
+    template <typename TDigitalSurfaceContainer>
+    static CanonicCellEmbedder<KSpace>
+    getCellEmbedder
+    ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
+    {
+      return getCellEmbedder( surface.refKSpace() );
+    }
+
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
+    /// @return the canonic signed cell embedder associated to the given digital surface.
+    template <typename TDigitalSurfaceContainer>
+    static CanonicSCellEmbedder<KSpace>
+    getSCellEmbedder
+    ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
+    {
+      return getSCellEmbedder( surface.refKSpace() );
+    }
+
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    /// @param[in] surface a smart pointer on any indexed digital surface.
+    /// @return the canonic cell embedder associated to the given indexed digital surface.
+    template <typename TDigitalSurfaceContainer>
+    static CanonicCellEmbedder<KSpace>
+    getCellEmbedder
+    ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
+    {
+      return getCellEmbedder( surface.refKSpace() );
+    }
+
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    /// @param[in] surface a smart pointer on any indexed digital surface.
+    /// @return the canonic signed cell embedder associated to the given indexed digital surface.
+    template <typename TDigitalSurfaceContainer>
+    static CanonicSCellEmbedder<KSpace>
+    getSCellEmbedder
+    ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
+    {
+      return getSCellEmbedder( surface.refKSpace() );
+    }
+    
     /// Builds a light digital surface from a space \a K and a binary image \a bimage.
     ///
     /// @param[in] bimage a binary image representing the characteristic function of a digital shape.
