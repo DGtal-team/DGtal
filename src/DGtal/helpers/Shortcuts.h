@@ -166,8 +166,10 @@ namespace DGtal
     typedef typename IdxDigitalSurface::Arc                     IdxArc;
     typedef typename IdxDigitalSurface::ArcRange                IdxArcRange;
     typedef std::set< IdxSurfel >                               IdxSurfelSet;
-    typedef std::vector< Surfel >                               SurfelRange;
+    typedef std::vector< SCell >                                SCellRange;
     typedef std::vector< Cell >                                 CellRange;
+    typedef CellRange                                           PointelRange;
+    typedef SCellRange                                          SurfelRange;
     typedef std::vector< IdxSurfel >                            IdxSurfelRange;
     typedef std::vector< Scalar >                               Scalars;
     typedef std::vector< RealVector >                           RealVectors;
@@ -376,6 +378,50 @@ namespace DGtal
 	trace.error() << "[Shortcuts::getKSpace]"
 		      << " Error building Khalimsky space K=" << K << std::endl;
       return K;
+    }
+
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
+    /// @return the Khalimsky space associated to the given surface.
+    template <typename TDigitalSurfaceContainer>
+    static KSpace
+    getKSpace
+    ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
+    {
+      return surface->container().space();
+    }
+
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    /// @param[in] surface a smart pointer on any indexed digital surface.
+    /// @return the Khalimsky space associated to the given surface.
+    template <typename TDigitalSurfaceContainer>
+    static KSpace
+    getKSpace
+    ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
+    {
+      return surface->container().space();
+    }
+
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
+    /// @return a const reference to the Khalimsky space associated to the given surface.
+    template <typename TDigitalSurfaceContainer>
+    static const KSpace&
+    refKSpace
+    ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
+    {
+      return surface->container().space();
+    }
+
+    /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+    /// @param[in] surface a smart pointer on any indexed digital surface.
+    /// @return a const reference to the Khalimsky space associated to the given surface.
+    template <typename TDigitalSurfaceContainer>
+    static const KSpace&
+    refKSpace
+    ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
+    {
+      return surface->container().space();
     }
 
     // ----------------------- DigitizedImplicitShape3D static services --------------
@@ -1115,7 +1161,7 @@ namespace DGtal
       const Parameters&             params = parametersDigitalSurface() )
     {
       bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
-      const KSpace& K = idx_surface->container().space();
+      const KSpace& K = refKSpace( idx_surface );
       SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
       auto all_idx_surfels
 	= getIdxSurfelRange( idx_surface, Parameters( "surfaceTraversal", "Default" ) );
@@ -1214,7 +1260,7 @@ namespace DGtal
     ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface,
       const Parameters&               params = parametersDigitalSurface() )
     {
-      const KSpace& K = surface->container().space();
+      const KSpace& K = refKSpace( surface );
       SurfelSet     surfels;
       surfels.insert( surface->begin(), surface->end() );
       return makeIdxDigitalSurface( surfels, K, params );
@@ -1278,7 +1324,7 @@ namespace DGtal
       result.reserve( surface->size() );
       const KSpace& K = surface->container.space();
       Idx n = 0;
-      for ( auto&& surfel : *digsurf ) {
+      for ( auto&& surfel : *surface ) {
 	CellRange primal_vtcs = getPrimalVertices( K, surfel );
 	for ( auto&& primal_vtx : primal_vtcs ) {
 	  if ( ! c2i.count( primal_vtx ) ) {
@@ -1311,20 +1357,8 @@ namespace DGtal
     getPointelRange
     ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface )
     {
-      PointelRange result;
-      result.reserve( surface->size() );
-      const KSpace& K = surface->container.space();
-      Idx n = 0;
-      for ( auto&& surfel : *digsurf ) {
-	CellRange primal_vtcs = getPrimalVertices( K, surfel );
-	for ( auto&& primal_vtx : primal_vtcs ) {
-	  if ( ! c2i.count( primal_vtx ) ) {
-	    result.push_back( primal_vtx );
-	    c2i[ primal_vtx ] = n++;
-	  }
-	}
-      }
-      return result;
+      Cell2Index c2i;
+      return getPointelRange( c2i, surface );
     }
     
     /// Given any digital surface, returns a vector of surfels in
