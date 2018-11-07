@@ -41,7 +41,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( int /* argc */, char** /* argv */ )
 {
   unsigned int nb = 0, nbok = 0;
   // Using standard 2D digital space.

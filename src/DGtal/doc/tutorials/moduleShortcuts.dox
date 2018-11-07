@@ -185,37 +185,22 @@ the point nearest to the given surfel centroid.
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_5s
 
-@subsubsection dgtal_shortcuts_ssec2_2_6 -> digitize -> extract mean curvature -> save as OBJ with colors
+@subsubsection dgtal_shortcuts_ssec2_2_6 -> digitize -> get pointels -> save projected quadrangulated surface.
 
-\code
-  params( "polynomial", "goursat" )( "gridstep", 0.25 )( "Traversal", "Default" );
-  auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
-  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
-  auto binary_shape    = SH3::makeBinaryImage      ( digitized_shape, params );
-  auto K               = SH3::getKSpace( params );
-  auto surface         = SH3::makeLightDigitalSurface( binary_image, K, params );
-  auto surfels         = SH3::getSurfelRange( surface, params );
-  auto mean_curv       = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params );
-  auto cmap            = SH3::getColorMap( -0.3, 0.3 );
-  auto colors          = SH3::Colors( surfels.size() );
-  std::transform( mean_curv.cbegin(), mean_curv.cend(), colors.begin(), cmap );
-  bool ok              = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-H.obj" );
-\endcode
+This example requires ShortcutsGeometry. It shows you how to get pointels from a digital surface and how to project the digital surface onto the given implicit shape.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_6s
+
+\image html goursat-quad-proj-lines-blender-small.png "Blender rendering of goursat-quad-proj.obj with quad edges in blue."
+
+@subsubsection dgtal_shortcuts_ssec2_2_7 -> digitize -> extract mean curvature -> save as OBJ with colors
+
+This example requires ShortcutsGeometry. The ground-truth mean curvature is just displayed as a color, using the specified colormap.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_7s
 
 \image html goursat-H-blender-small.png "Blender rendering of goursat-H.obj"
 
-@subsubsection dgtal_shortcuts_ssec2_2_6 -> float image -> gray-scale image -> extract iso-surface -> save as OBJ file.
-
-\code
-  // Set your own parameters with operator().
-  auto params   = SH3::defaultParameters  ();
-  params( "polynomial", "goursat" )( "gridstep", 0.25 )( "thresholdMin", 128 );
-  auto ishape   = SH3::makeImplicitShape3D( params );
-  auto fimage   = SH3::makeFloatImage     ( ishape, params );
-  auto gimage   = SH3::makeGrayScaleImage ( fimage, params );
-  auto trisurf  = SH3::makeTriangulatedSurface( gimage, params );
-  bool ok       = SH3::saveOBJ            ( trisurf, "goursat.obj" );
-\endcode 
 
 
 @section dgtal_shortcuts_sec2b Short 2D examples
