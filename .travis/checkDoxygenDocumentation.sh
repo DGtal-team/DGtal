@@ -1,29 +1,55 @@
 #!/bin/bash
+$SCRIPT_BEGIN
 
 return_code=0
-return_code2=0
-return_code3=0
-HOMEPATH=$PWD
 
+DOXYGENLOG=${BUILD_DIR}/doxygen.log
 
 ## We first check that the doxygen.log is empty
-if [[ -s doxygen.log ]]
+if [[ -f "$DOXYGENLOG" ]]
 then
-    return_code=1
-    echo "Doxygen log file not empty !"
-    echo "====================================="
-    cat doxygen.log
-    echo "====================================="
+
+    # Filtering doxygen log (e.g. to ignore some bugs)
+    # See https://github.com/doxygen/doxygen/issues/6352
+    rm -f /tmp/doxygen.*.log
+    awk '/unexpected token TK_EOF as the argument of ref/ \
+        {print $0 > "/tmp/doxygen.ignored.log"; next} \
+        {print $0 > "/tmp/doxygen.kept.log"}' \
+        "$DOXYGENLOG"
+
+    if [[ -s "/tmp/doxygen.kept.log" ]]
+    then
+        return_code=1
+        echo "Doxygen log file not empty !"
+        echo "====================================="
+        cat "/tmp/doxygen.kept.log"
+        echo "====================================="
+    else
+        echo "Doxygen log OK"
+        return_code=0
+    fi
+
+    if [[ -s "/tmp/doxygen.ignored.log" ]]
+    then
+        echo "Ignored doxygen log messages:"
+        echo "====================================="
+        cat "/tmp/doxygen.ignored.log"
+        echo "====================================="
+    fi
 else
-    return_code=0
+  return_code=1
+  echo "Doxygen log file not found !"
 fi
 
+
 ## We check src code consitency
-cd src/
-$HOMEPATH/.travis/check_src_file_tag.sh
-if [[ $? -ne 0 ]]
+cd "$SRC_DIR/src"
+"$SRC_DIR/.travis/check_src_file_tag.sh"
+if [[ $? == 0 ]]
 then
-    return_code2=1;
+    echo "@file tag OK"
+else
+    return_code=1;
 fi
 cd ..
 
@@ -32,5 +58,6 @@ cd ..
 # TODO
 # 
 
-return_code=$((return_code + return_code2 + return_code3))
+$SCRIPT_END
+
 exit $return_code

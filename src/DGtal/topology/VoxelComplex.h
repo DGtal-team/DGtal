@@ -240,7 +240,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      * Insert cell (voxel) in the khalimsky space AND in the object set.
      *
      * @param kcell input voxel
-     * @param close_it if true, apply @voxelClose.
+     * @param close_it if true, apply @ref voxelClose.
      * @param data associated data with the input cell. @see insertCell
      */
     void insertVoxelCell(const Cell &kcell, const bool &close_it = true,
@@ -250,7 +250,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      * Insert cell(voxel) in K-space and in the object set.
      *
      * @param data_pair pair<Cell, Data>
-     * @param close_it if true, apply @voxelClose
+     * @param close_it if true, apply @ref voxelClose
      */
     void insertVoxelCell(const std::pair<Cell, Data> &data_pair,
                          const bool &close_it = true) {
@@ -258,11 +258,11 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     }
 
     /**
-     * Create a @uSpel from the input Point and insert it using insertVoxelCell.
+     * Create a uSpel from the input Point and insert it using insertVoxelCell.
      * @see insertVoxelCell
      *
      * @param dig_point input point of the KSpace
-     * @param close_it flag to apply @voxelClose
+     * @param close_it flag to apply @ref voxelClose
      * @param data associated data with the input point.
      */
     void insertVoxelPoint(const Point &dig_point, const bool &close_it = true,
@@ -377,7 +377,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     // 0-clique, 1-clique, 2-clique. 3-clique are isolated spels.
   public:
     /**
-     * Function to call @K_0, @K_1, @K_2, @K_3 according to dimension d
+     * Function to call @ref K_0, @ref K_1, @ref K_2, @ref K_3 according to dimension d
      *
      * @param d dimension.
      * @param cellMapIterator cell iterator of cubical or voxel complex.
@@ -390,7 +390,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
 
     /**
      * Return all critical cliques for \b cubical.
-     * It calls @criticalCliquePairForD
+     * It calls criticalCliquesForD()
      *
      * @param cubical target complex to get critical cliques.
      * @param verbose print messages
@@ -415,7 +415,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
         return criticals;
     }
     /**
-     * Helper. Call @criticalCliques of this VoxelComplex.
+     * Helper. Call @ref criticalCliques() of this VoxelComplex.
      *
      * @param verbose print messages
      *
@@ -428,7 +428,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
 
     /**
      * Main method to iterate over cells of selected dimension in a complex,
-     * returning critical cliques. Uses @criticalCliquePair.
+     * returning critical cliques. Uses @ref criticalCliquePair().
      *
      * @param d dimension of cell.
      * @param cubical target complex to get critical cliques.
@@ -537,7 +537,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
   protected:
     /** Object with a topology representing spels. */
     Object myObject;
-    /** Look Up Table to speed computations of @isSimple. */
+    /** Look Up Table to speed computations of @ref isSimple. */
     CountedPtrOrPtr<ConfigMap> myTablePtr;
     /** ConfigurationMask (LUT table). */
     CountedPtrOrPtr<PointToMaskMap> myPointToMaskPtr;
@@ -546,11 +546,11 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     /*------------- Internal Methods --------------*/
     /**
      * pointToMask map, used internally in @ref VoxelComplex::isSimple for
-     * @ref LookUpTableFunctions.h::getSpelNeighborhoodConfigurationOccupancy
+     * @ref functions::getSpelNeighborhoodConfigurationOccupancy
      *
-     * @return reference to pointToMaskMap member.
+     * @return reference to @ref PointToMaskMap member.
      *
-     * @see LookUpTableFunctions.h::pointToBitMaskMap()
+     * @see pointToBitMaskMap()
      */
     const PointToMaskMap &pointToMask() const;
 

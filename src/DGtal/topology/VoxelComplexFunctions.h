@@ -180,7 +180,7 @@ namespace DGtal
       const typename TComplex::Cell & cell);
 
     /**
-     * Check if input cell only has one neighbor, using \ref Object::Topology.
+     * Check if input cell only has one neighbor, using @ref Object::topology.
      *
      * @tparam TComplex VoxelComplex
      * @param vc input voxel complex.
